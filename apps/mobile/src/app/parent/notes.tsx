@@ -42,7 +42,7 @@ export default function ParentNotesScreen() {
     queryFn: async () => {
       let query = supabase
         .from("notes")
-        .select("id, title, body, subject, visibility, child_id, updated_at, children(name)")
+        .select("id, title, body, subject, visibility, child_id, updated_at, children!notes_child_id_fkey(name)")
         .order("updated_at", { ascending: false })
         .limit(100);
       if (childId) query = query.eq("child_id", childId);
