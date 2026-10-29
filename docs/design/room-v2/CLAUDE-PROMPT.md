@@ -1,3 +1,15 @@
+# Güncel ek talimat — 30 Ekim 2026
+
+Kullanıcı eski görev/ders/etkinlik/oyunlaştırma çizimlerini reddetti ve yeni premium, hikâye kitabı koleksiyon stilini onayladı. Kapsam: 66 görev, 19 ders, 20 etkinlik ve oyunlaştırma. Referans: docs/design/icon-refresh-v3/concepts/collectibles-direction.webp. Aynı klasördeki sekiz düz SVG önceki denemedir; seçilen yön değildir.
+
+Eski SVG'leri görsel hedef olarak uygulama. Yeni resimli dosyalar ilgili kategori altındaki illustrated-v3/ dizininde WebP olacak. Küçük arayüz kullanımı için native SVG/Lucide, büyük görev kartları ve raf için resimli varlık ayrımı yap; karmaşık rozetleri 24 px'e küçültme. Yeni manifest hazır olmadan var olmayan dosya yollarına import ekleme. PNG kaynakları çalışma alanı dışında saklanır, teslim WebP'dir. Bu yeni resimli katman için onaylanan tonlama/doku önceki flat-only kurala istisnadır; temel renk aileleri ve ders/etkinlik renk eşlemesi korunur. SVG içine bitmap gömme.
+
+Marka Yan Yana'dır. Ödül yıldızı simetrik beş kollu ayrı semboldür, eski yıldız-tik işareti hiçbir yeni görselde kullanılmaz. Seri/yükleme animasyonları aynı taban varlığı döndürme/ölçekleme/opaklık parametreleriyle çalıştırır; tutarsız AI kareleri üretme. Reduced motion sabit kareyi gösterir.
+
+Yeni set üretim aşamasındadır; tüm manifestler doğrulanana kadar tamamlandı sayma. Kod değiştirmeden asset PR'ları kategori bazında gelecek. Yerel değişiklikleri koru. Önceki CI lockfile engeli main 28fa6cd ile giderilmiş görünüyor; güncel CI'ı yeniden kontrol et. Prova modülü ve sonradan gelen kodu koru.
+
+---
+
 # Claude'a tek seferde verilecek prompt
 
 Gina projesinde tasarım yönünü değiştirdik. Önce `docs/design/room-v2/README.md`, `DESIGN-DECISIONS.md`, `IMPLEMENTATION.md`, `ART-HANDOFF.md`, `PRODUCT-EXTENSIONS.md`, `ACCEPTANCE.md`, `docs/DECISIONS.md` ve `apps/mobile/AGENTS.md` dosyalarını oku. `references/child-home-approved.png` ve `parent-home-approved.png` son onaylanan ana ekranlardır. Yeni main'i incele; paket inceleme tabanı 5d20850, sonraki değişiklikleri koru. Teslim sırasında bb390aa güncellemesindeki mevcut Haftam ve AI özet altyapısı da incelendi; bunları yeniden yaratma. Yerel pnpm-lock.yaml gibi kullanıcı değişikliklerini sıfırlama.
