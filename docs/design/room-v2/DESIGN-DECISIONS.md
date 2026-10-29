@@ -14,3 +14,7 @@
 README, 4–6 ikonlarında önceliklidir: exact palet; SVG; yazı/font/filter/mask/gradient/clipPath yok. Kilitli rozet için brief'teki gri yerine README'deki Mist kullanıldı; doktor ikonunda tek Gök vurgusu korunur. Avatar ten renkleri ve varsayılan gri için kullanıcının verdiği istisna avatarlarla sınırlıdır.
 
 Onaylı ekran mockup'ları illüstratif doku ve metin içerir; bunlar çalışma referansıdır, ikon kurallarını değiştirmez. `art-candidates/*.webp` yeni konsept katmanlarıdır; raster room üretimi ve geniş renk geçişleri için mevcut paket README'siyle çelişki açık kalır. Bu dosyaları sessizce üretime alma veya SVG içine gömme. Ana ekran prototipinde referans olarak kullan; üretim oda görseli için palet uyumlu sanat teslimini ya da yalnız oda katmanına açık stil istisnasını kullanıcıyla tasarım turunda netleştir. PNG kuralını WebP uzantısıyla aşmaya çalışma. Bu nedenle bunlar `packages/assets` yerine tasarım dokümanlarında tutulur.
+
+## Güncel v3 kararı
+
+Kullanıcı koleksiyon illüstrasyonu yönünü ve 66 görev / 19 ders / 20 etkinlik / oyunlaştırmanın tamamının yenilenmesini onayladı. Bu resimli katman için yeni packages/assets/README.md başlangıç bölümü önceki flat-only üretim tarifinin yerini alır. Ayrı şeffaf WebP varlıklar kullanılır; monokrom SVG arayüz kaynaklarına bitmap gömülmez. Yeni resimli varlıklar ile eski flat SVG'ler aynı stilin renkli/mono varyantları diye sunulamaz.
