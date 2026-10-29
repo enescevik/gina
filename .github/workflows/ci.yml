@@ -28,8 +28,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: supabase/setup-cli@v1
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
         with:
-          version: latest
-      - run: supabase db start
-      - run: supabase test db
+          node-version-file: .node-version
+          cache: pnpm
+      # Supabase CLI kök devDependency olarak sabitlenmiştir; GitHub API'ye "latest" sorgusu gerekmez.
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec supabase db start
+      - run: pnpm exec supabase test db
