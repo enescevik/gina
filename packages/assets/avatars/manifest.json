@@ -1,0 +1,182 @@
+[
+  {
+    "slug": "avatar-curly",
+    "label_tr": "Kıvırcık saçlı çocuk",
+    "file": "avatar-curly.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-glasses",
+    "label_tr": "Gözlüklü çocuk",
+    "file": "avatar-glasses.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-bun",
+    "label_tr": "Topuz saçlı çocuk",
+    "file": "avatar-bun.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-spiky",
+    "label_tr": "Dik saçlı çocuk",
+    "file": "avatar-spiky.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-braids",
+    "label_tr": "Örgülü saçlı çocuk",
+    "file": "avatar-braids.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-cap",
+    "label_tr": "Şapkalı çocuk",
+    "file": "avatar-cap.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-headband",
+    "label_tr": "Saç bantlı çocuk",
+    "file": "avatar-headband.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-wavy",
+    "label_tr": "Dalgalı saçlı çocuk",
+    "file": "avatar-wavy.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-afro",
+    "label_tr": "Afro saçlı çocuk",
+    "file": "avatar-afro.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-hearing-aid",
+    "label_tr": "İşitme cihazlı çocuk",
+    "file": "avatar-hearing-aid.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-beanie",
+    "label_tr": "Bereli çocuk",
+    "file": "avatar-beanie.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-astronaut",
+    "label_tr": "Astronot çocuk",
+    "file": "avatar-astronaut.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-default",
+    "label_tr": "Varsayılan çocuk",
+    "file": "avatar-default.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-parent-default",
+    "label_tr": "Varsayılan ebeveyn",
+    "file": "avatar-parent-default.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-adult-short",
+    "label_tr": "Kısa saçlı yetişkin",
+    "file": "avatar-adult-short.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-adult-long",
+    "label_tr": "Uzun saçlı yetişkin",
+    "file": "avatar-adult-long.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-adult-glasses",
+    "label_tr": "Gözlüklü yetişkin",
+    "file": "avatar-adult-glasses.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "avatar-adult-beard",
+    "label_tr": "Sakallı yetişkin",
+    "file": "avatar-adult-beard.svg",
+    "viewBox": "0 0 128 128",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  }
+]
