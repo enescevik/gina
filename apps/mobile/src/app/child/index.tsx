@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
+import { Avatar } from "@/components/avatar";
 import { ErrorText, Screen } from "@/components/ui/screen";
 import { supabase } from "@/lib/supabase";
 
@@ -29,7 +30,9 @@ export default function ChildPickerScreen() {
             className="min-h-32 min-w-40 flex-1 items-center justify-center rounded-child bg-white p-6 active:bg-teal-light dark:bg-night-surface"
             onPress={() => router.push({ pathname: "/child/pin", params: { childId: child.id, name: child.name } })}
           >
-            <View className="mb-3 h-16 w-16 rounded-full bg-teal-light" />
+            <View className="mb-3">
+              <Avatar slug={child.avatar} size={72} />
+            </View>
             <Text className="text-xl font-bold text-ink dark:text-night-text">{child.name}</Text>
           </Pressable>
         ))}

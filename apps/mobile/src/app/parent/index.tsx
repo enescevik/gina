@@ -2,8 +2,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, TextInput, View } from "react-native";
+import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 
+import { Avatar, CHILD_AVATAR_SLUGS } from "@/components/avatar";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText, Screen } from "@/components/ui/screen";
@@ -12,7 +13,7 @@ import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
 /** Çocuk satırı: ad, sınıf ve 4 haneli PIN belirleme (set_child_pin RPC). */
-function ChildRow({ id, name, grade }: { id: string; name: string; grade: number | null }) {
+function ChildRow({ id, name, grade, avatar }: { id: string; name: string; grade: number | null; avatar: string | null }) {
   const { t } = useTranslation();
   const [pin, setPin] = useState("");
   const setChildPin = useMutation({
@@ -25,8 +26,9 @@ function ChildRow({ id, name, grade }: { id: string; name: string; grade: number
   return (
     <View className="gap-1">
       <View className="flex-row items-center gap-2">
+        <Avatar slug={avatar} size={36} />
         <Text className="flex-1 text-base text-ink dark:text-night-text">
-          • {name}
+          {name}
           {grade ? ` (${t("parent.gradeShort", { grade })})` : ""}
         </Text>
         <TextInput
@@ -85,6 +87,7 @@ export default function ParentHomeScreen() {
   const familyId = claims?.family_id ?? "";
   const queryClient = useQueryClient();
   const [childName, setChildName] = useState("");
+  const [childAvatar, setChildAvatar] = useState<string>(CHILD_AVATAR_SLUGS[0] ?? "avatar-default");
   const [pairCode, setPairCode] = useState("");
 
   const family = useQuery({
@@ -100,7 +103,7 @@ export default function ParentHomeScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name, grade").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, grade, avatar").order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -133,7 +136,7 @@ export default function ParentHomeScreen() {
 
   const addChild = useMutation({
     mutationFn: async (name: string) => {
-      const { error } = await supabase.from("children").insert({ family_id: familyId, name });
+      const { error } = await supabase.from("children").insert({ family_id: familyId, name, avatar: childAvatar });
       if (error) throw error;
     },
     onSuccess: () => {
@@ -207,9 +210,23 @@ export default function ParentHomeScreen() {
       <View className="gap-2 rounded-parent border border-mist p-4">
         <Text className="text-lg font-semibold text-ink dark:text-night-text">{t("parent.children")}</Text>
         {children.data?.map((child) => (
-          <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} />
+          <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} avatar={child.avatar} />
         ))}
         <Field label={t("parent.addChild")} value={childName} onChangeText={setChildName} placeholder={t("parent.childNamePlaceholder")} />
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View className="flex-row gap-2">
+            {CHILD_AVATAR_SLUGS.map((slug) => (
+              <Pressable
+                key={slug}
+                accessibilityRole="button"
+                onPress={() => setChildAvatar(slug)}
+                className={`rounded-full border-2 p-0.5 ${childAvatar === slug ? "border-teal" : "border-transparent"}`}
+              >
+                <Avatar slug={slug} size={44} />
+              </Pressable>
+            ))}
+          </View>
+        </ScrollView>
         <Button variant="secondary" title={t("common.add")} loading={addChild.isPending} disabled={!childName.trim()} onPress={() => addChild.mutate(childName.trim())} />
       </View>
 

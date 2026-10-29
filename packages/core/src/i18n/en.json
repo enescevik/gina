@@ -102,6 +102,7 @@
   "tasks.none": "No tasks for this child yet.",
   "tasks.title": "Task",
   "tasks.titlePlaceholder": "Brush your teeth",
+  "tasks.icon": "Icon",
   "tasks.stars": "Stars (0-10)",
   "tasks.pause": "Pause",
   "tasks.resume": "Resume",

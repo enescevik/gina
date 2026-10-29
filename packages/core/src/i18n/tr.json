@@ -102,6 +102,7 @@
   "tasks.none": "Bu çocuk için henüz görev yok.",
   "tasks.title": "Görev",
   "tasks.titlePlaceholder": "Dişlerini fırçala",
+  "tasks.icon": "İkon",
   "tasks.stars": "Yıldız (0-10)",
   "tasks.pause": "Durdur",
   "tasks.resume": "Aç",

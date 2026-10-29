@@ -2,10 +2,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 
 import { taskTemplateInputSchema, type IsoWeekday } from "@gina/core";
 
+import { TASK_ICON_SLUGS, TaskIcon } from "@/components/task-icon";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText, Screen } from "@/components/ui/screen";
@@ -33,6 +34,7 @@ export default function ParentTasksScreen() {
   const [title, setTitle] = useState("");
   const [stars, setStars] = useState("1");
   const [days, setDays] = useState<IsoWeekday[]>([1, 2, 3, 4, 5]);
+  const [icon, setIcon] = useState<string>("task-custom");
   const [formError, setFormError] = useState<string | null>(null);
 
   const children = useQuery({
@@ -51,7 +53,7 @@ export default function ParentTasksScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_templates")
-        .select("id, title, stars, days_of_week, active")
+        .select("id, title, icon, stars, days_of_week, active")
         .eq("child_id", selectedChild ?? "")
         .order("sort_order");
       if (error) throw error;
@@ -64,6 +66,7 @@ export default function ParentTasksScreen() {
       const parsed = taskTemplateInputSchema.safeParse({
         child_id: selectedChild,
         title,
+        icon,
         stars: Number(stars),
         days_of_week: days,
         starts_on: new Date().toISOString().slice(0, 10),
@@ -112,6 +115,7 @@ export default function ParentTasksScreen() {
 
       {templates.data?.map((template) => (
         <View key={template.id} className={`flex-row items-center gap-3 rounded-parent border border-mist p-3 ${template.active ? "" : "opacity-50"}`}>
+          <TaskIcon slug={template.icon} size={36} />
           <View className="flex-1">
             <Text className="text-base font-semibold text-ink dark:text-night-text">{template.title}</Text>
             <Text className="text-sm text-gray-600">
@@ -131,6 +135,21 @@ export default function ParentTasksScreen() {
         <View className="gap-3 rounded-parent bg-teal-light p-4">
           <Text className="text-lg font-semibold text-ink">{t("tasks.new")}</Text>
           <Field label={t("tasks.title")} value={title} onChangeText={setTitle} placeholder={t("tasks.titlePlaceholder")} />
+          <Text className="text-sm font-medium text-ink">{t("tasks.icon")}</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View className="flex-row gap-2">
+              {TASK_ICON_SLUGS.map((slug) => (
+                <Pressable
+                  key={slug}
+                  accessibilityRole="button"
+                  onPress={() => setIcon(slug)}
+                  className={`rounded-parent border p-1.5 ${icon === slug ? "border-teal bg-white" : "border-transparent"}`}
+                >
+                  <TaskIcon slug={slug} size={36} />
+                </Pressable>
+              ))}
+            </View>
+          </ScrollView>
           <Field label={t("tasks.stars")} keyboardType="number-pad" maxLength={2} value={stars} onChangeText={setStars} />
           <View className="flex-row flex-wrap gap-2">
             {WEEKDAYS.map((w) => (

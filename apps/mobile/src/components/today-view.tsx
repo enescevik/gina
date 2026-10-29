@@ -5,6 +5,7 @@ import { Pressable, Text, View } from "react-native";
 
 import { DEFAULT_TIMEZONE, localDateOf, starBalance, templatesDueOn } from "@gina/core";
 
+import { TaskIcon } from "@/components/task-icon";
 import { ErrorText } from "@/components/ui/screen";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { supabase } from "@/lib/supabase";
@@ -103,7 +104,8 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
               status === "approved" ? "bg-green-light" : status === "done" ? "bg-star/30" : "bg-white active:bg-teal-light dark:bg-night-surface"
             }`}
           >
-            <View className="flex-1">
+            <TaskIcon slug={task.icon} size={44} />
+            <View className="ml-4 flex-1">
               <Text className="text-xl font-semibold text-ink">{task.title}</Text>
               <Text className="text-sm text-gray-600">
                 {status === "approved" ? t("child.approved") : status === "done" ? t("child.waitingApproval") : `${task.stars} ⭐`}

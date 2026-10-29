@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
+import { Avatar } from "@/components/avatar";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText, Screen } from "@/components/ui/screen";
@@ -31,7 +32,7 @@ export default function ChildModeEntryScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error: queryError } = await supabase.from("children").select("id, name").order("sort_order");
+      const { data, error: queryError } = await supabase.from("children").select("id, name, avatar").order("sort_order");
       if (queryError) throw queryError;
       return data;
     },
@@ -78,7 +79,9 @@ export default function ChildModeEntryScreen() {
               className="min-h-32 min-w-40 flex-1 items-center justify-center rounded-child bg-white p-6 active:bg-teal-light dark:bg-night-surface"
               onPress={() => setSelected(child)}
             >
-              <View className="mb-3 h-16 w-16 rounded-full bg-teal-light" />
+              <View className="mb-3">
+                <Avatar slug={child.avatar} size={72} />
+              </View>
               <Text className="text-xl font-bold text-ink dark:text-night-text">{child.name}</Text>
             </Pressable>
           ))}
