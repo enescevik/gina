@@ -1,0 +1,222 @@
+[
+  {
+    "slug": "school",
+    "label_tr": "Okul",
+    "file": "color/school.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "class-schedule",
+    "label_tr": "Ders programı",
+    "file": "color/class-schedule.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "online-lesson",
+    "label_tr": "Çevrimiçi ders",
+    "file": "color/online-lesson.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "activity",
+    "label_tr": "Etkinlik",
+    "file": "color/activity.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "club",
+    "label_tr": "Kulüp",
+    "file": "color/club.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "sports-event",
+    "label_tr": "Spor etkinliği",
+    "file": "color/sports-event.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "holiday",
+    "label_tr": "Tatil",
+    "file": "color/holiday.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "school-break",
+    "label_tr": "Okul tatili",
+    "file": "color/school-break.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "public-holiday",
+    "label_tr": "Resmî tatil",
+    "file": "color/public-holiday.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "exam",
+    "label_tr": "Sınav",
+    "file": "color/exam.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "homework-due",
+    "label_tr": "Ödev teslimi",
+    "file": "color/homework-due.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "family",
+    "label_tr": "Aile",
+    "file": "color/family.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "birthday",
+    "label_tr": "Doğum günü",
+    "file": "color/birthday.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "visit",
+    "label_tr": "Ziyaret",
+    "file": "color/visit.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "doctor",
+    "label_tr": "Doktor",
+    "file": "color/doctor.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "parent-meeting",
+    "label_tr": "Veli toplantısı",
+    "file": "color/parent-meeting.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "trip",
+    "label_tr": "Gezi",
+    "file": "color/trip.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "reminder",
+    "label_tr": "Hatırlatma",
+    "file": "color/reminder.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "shopping",
+    "label_tr": "Alışveriş",
+    "file": "color/shopping.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "other",
+    "label_tr": "Diğer etkinlik",
+    "file": "color/other.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  }
+]
