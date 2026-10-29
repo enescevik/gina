@@ -199,6 +199,116 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"exam_answers": {
+                  Row: {
+                    "ai_feedback": string | null,"ai_score": number | null,"answer_key": string | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"is_correct": boolean | null,"question_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "ai_feedback"?: string | null,"ai_score"?: number | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"is_correct"?: boolean | null,"question_id": string
+                  }
+                  Update: {
+                    "ai_feedback"?: string | null,"ai_score"?: number | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"is_correct"?: boolean | null,"question_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "exam_answers_attempt_id_fkey"
+      columns: ["attempt_id"]
+isOneToOne: false
+      referencedRelation: "exam_attempts"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "exam_answers_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"exam_attempts": {
+                  Row: {
+                    "ai_feedback": Json | null,"child_id": string,"created_at": string,"deadline_at": string | null,"exam_id": string,"family_id": string,"finished_at": string | null,"id": string,"mc_correct": number | null,"mc_total": number | null,"started_at": string,"status": Database["public"]['Enums']["attempt_status"]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "ai_feedback"?: Json | null,"child_id": string,"created_at"?: string,"deadline_at"?: string | null,"exam_id": string,"family_id": string,"finished_at"?: string | null,"id"?: string,"mc_correct"?: number | null,"mc_total"?: number | null,"started_at"?: string,"status"?: Database["public"]['Enums']["attempt_status"]
+                  }
+                  Update: {
+                    "ai_feedback"?: Json | null,"child_id"?: string,"created_at"?: string,"deadline_at"?: string | null,"exam_id"?: string,"family_id"?: string,"finished_at"?: string | null,"id"?: string,"mc_correct"?: number | null,"mc_total"?: number | null,"started_at"?: string,"status"?: Database["public"]['Enums']["attempt_status"]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "exam_attempts_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "exam_attempts_exam_id_fkey"
+      columns: ["exam_id"]
+isOneToOne: false
+      referencedRelation: "exams"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "exam_attempts_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"exam_blueprints": {
+                  Row: {
+                    "created_at": string,"created_by": string | null,"family_id": string,"grade": number,"id": string,"name": string,"rows": NonNullable<Json>,"source_url": string | null,"subject": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"created_by"?: string | null,"family_id": string,"grade": number,"id"?: string,"name": string,"rows"?: NonNullable<Json>,"source_url"?: string | null,"subject": string
+                  }
+                  Update: {
+                    "created_at"?: string,"created_by"?: string | null,"family_id"?: string,"grade"?: number,"id"?: string,"name"?: string,"rows"?: NonNullable<Json>,"source_url"?: string | null,"subject"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "exam_blueprints_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"exams": {
+                  Row: {
+                    "blueprint_id": string | null,"child_id": string,"created_at": string,"created_by": string | null,"duration_minutes": number | null,"family_id": string,"grade": number,"id": string,"kind": string,"question_ids": (string)[],"status": Database["public"]['Enums']["exam_status"],"subject": string,"timed": boolean,"title": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "blueprint_id"?: string | null,"child_id": string,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"family_id": string,"grade": number,"id"?: string,"kind"?: string,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject": string,"timed"?: boolean,"title": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "blueprint_id"?: string | null,"child_id"?: string,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"family_id"?: string,"grade"?: number,"id"?: string,"kind"?: string,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject"?: string,"timed"?: boolean,"title"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "exams_blueprint_id_fkey"
+      columns: ["blueprint_id"]
+isOneToOne: false
+      referencedRelation: "exam_blueprints"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "exams_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "exams_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"families": {
                   Row: {
                     "created_at": string,"created_by": string,"id": string,"invite_code": string,"locale": string,"name": string,"timezone": string
@@ -358,6 +468,26 @@ isOneToOne: false
                   }
                   Relationships: [
                     
+                  ]
+                },"question_bank": {
+                  Row: {
+                    "choices": Json | null,"correct_key": string | null,"created_at": string,"created_by": string | null,"difficulty": Database["public"]['Enums']["question_difficulty"],"expected_answer": string | null,"explanation": string | null,"family_id": string | null,"grade": number,"id": string,"kind": Database["public"]['Enums']["question_kind"],"provenance": NonNullable<Json>,"scenario_code": string | null,"solution": string | null,"source_urls": (string)[],"stem": string,"subject": string,"times_asked": number,"topic": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"],"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade": number,"id"?: string,"kind": Database["public"]['Enums']["question_kind"],"provenance"?: NonNullable<Json>,"scenario_code"?: string | null,"solution"?: string | null,"source_urls"?: (string)[],"stem": string,"subject": string,"times_asked"?: number,"topic": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"],"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number,"id"?: string,"kind"?: Database["public"]['Enums']["question_kind"],"provenance"?: NonNullable<Json>,"scenario_code"?: string | null,"solution"?: string | null,"source_urls"?: (string)[],"stem"?: string,"subject"?: string,"times_asked"?: number,"topic"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "question_bank_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"star_events": {
                   Row: {
@@ -521,6 +651,32 @@ isOneToOne: false
 "custom_access_token_hook":
 { Args: { "event": Json }; Returns: Json
                            },
+"finish_exam_attempt":
+{ Args: { "p_attempt_id": string }; Returns: {
+              "ai_feedback": Json | null,
+"child_id": string,
+"created_at": string,
+"deadline_at": string | null,
+"exam_id": string,
+"family_id": string,
+"finished_at": string | null,
+"id": string,
+"mc_correct": number | null,
+"mc_total": number | null,
+"started_at": string,
+"status": Database["public"]['Enums']["attempt_status"]
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "exam_attempts"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
+"get_attempt_questions":
+{ Args: { "p_exam_id": string }; Returns: {
+              "choices": Json,"difficulty": Database["public"]['Enums']["question_difficulty"],"id": string,"kind": Database["public"]['Enums']["question_kind"],"ord": number,"stem": string
+            }[]
+                           },
 "get_family_entitlement":
 { Args: { "p_family_id"?: string }; Returns: {
               "expires_at": string,"plan": Database["public"]['Enums']["plan_code"],"source": string
@@ -570,6 +726,30 @@ isOneToOne: false
 "set_parent_pin":
 { Args: { "p_pin": string }; Returns: undefined
                            },
+"start_exam_attempt":
+{ Args: { "p_exam_id": string }; Returns: {
+              "ai_feedback": Json | null,
+"child_id": string,
+"created_at": string,
+"deadline_at": string | null,
+"exam_id": string,
+"family_id": string,
+"finished_at": string | null,
+"id": string,
+"mc_correct": number | null,
+"mc_total": number | null,
+"started_at": string,
+"status": Database["public"]['Enums']["attempt_status"]
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "exam_attempts"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
+"submit_exam_answer":
+{ Args: { "p_answer_key"?: string,"p_answer_text"?: string,"p_attempt_id": string,"p_question_id": string }; Returns: undefined
+                           },
 "undo_complete":
 { Args: { "p_completion_id": string }; Returns: undefined
                            },
@@ -581,7 +761,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "billing_period": "monthly"|"yearly","completion_status": "done"|"approved"|"returned","event_type": "school"|"activity"|"holiday"|"exam"|"family"|"doctor"|"birthday"|"other","grade_kind": "exam"|"homework"|"project"|"oral"|"performance","member_role": "parent"|"guardian","note_visibility": "private"|"family"|"child"|"teacher","plan_code": "free"|"plus"|"pro","store_platform": "apple"|"google","subscription_status": "active"|"grace"|"on_hold"|"expired"|"revoked","time_of_day": "morning"|"afternoon"|"evening"|"any"
+            "attempt_status": "in_progress"|"submitted"|"graded","billing_period": "monthly"|"yearly","completion_status": "done"|"approved"|"returned","event_type": "school"|"activity"|"holiday"|"exam"|"family"|"doctor"|"birthday"|"other","exam_status": "draft"|"ready"|"assigned"|"completed","grade_kind": "exam"|"homework"|"project"|"oral"|"performance","member_role": "parent"|"guardian","note_visibility": "private"|"family"|"child"|"teacher","plan_code": "free"|"plus"|"pro","question_difficulty": "kolay"|"orta"|"orta_ustu"|"zor","question_kind": "multiple_choice"|"open_ended","store_platform": "apple"|"google","subscription_status": "active"|"grace"|"on_hold"|"expired"|"revoked","time_of_day": "morning"|"afternoon"|"evening"|"any"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -697,7 +877,7 @@ export type CompositeTypes<
 export const Constants = {
   "public": {
           Enums: {
-            "billing_period": ["monthly", "yearly"],"completion_status": ["done", "approved", "returned"],"event_type": ["school", "activity", "holiday", "exam", "family", "doctor", "birthday", "other"],"grade_kind": ["exam", "homework", "project", "oral", "performance"],"member_role": ["parent", "guardian"],"note_visibility": ["private", "family", "child", "teacher"],"plan_code": ["free", "plus", "pro"],"store_platform": ["apple", "google"],"subscription_status": ["active", "grace", "on_hold", "expired", "revoked"],"time_of_day": ["morning", "afternoon", "evening", "any"]
+            "attempt_status": ["in_progress", "submitted", "graded"],"billing_period": ["monthly", "yearly"],"completion_status": ["done", "approved", "returned"],"event_type": ["school", "activity", "holiday", "exam", "family", "doctor", "birthday", "other"],"exam_status": ["draft", "ready", "assigned", "completed"],"grade_kind": ["exam", "homework", "project", "oral", "performance"],"member_role": ["parent", "guardian"],"note_visibility": ["private", "family", "child", "teacher"],"plan_code": ["free", "plus", "pro"],"question_difficulty": ["kolay", "orta", "orta_ustu", "zor"],"question_kind": ["multiple_choice", "open_ended"],"store_platform": ["apple", "google"],"subscription_status": ["active", "grace", "on_hold", "expired", "revoked"],"time_of_day": ["morning", "afternoon", "evening", "any"]
           }
         }
 } as const
