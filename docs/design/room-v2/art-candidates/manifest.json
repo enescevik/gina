@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "room-base",
+    "file": "room-base.webp",
+    "width": 1586,
+    "height": 992,
+    "alpha": false,
+    "status": "new-design-candidate-not-approved-production",
+    "source": "exec-551de668-221b-42b8-818f-7d1b73512aa8.png",
+    "sha256": "3001cee94c30a7b4b69f725a9a03883e8bf2ac0504285ba56439365cb4d11fd5"
+  },
+  {
+    "slug": "character-girl",
+    "file": "character-girl.webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "status": "new-design-candidate-not-approved-production",
+    "source": "exec-2fb71519-d11b-4c8e-b230-601ea5d550bb.png",
+    "sha256": "51a24be08a6f5fe13d5e316ac29fbb05fd21a67111106aa375c7bc873a4ad84e"
+  },
+  {
+    "slug": "character-boy",
+    "file": "character-boy.webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "status": "new-design-candidate-not-approved-production",
+    "source": "exec-5c0f5ca7-edcc-43ed-aa75-2536410845ff.png",
+    "sha256": "ab9ddfa91b4a2305e829233b79f0a7506abd14a1b4279bc212551a4478afd2c1"
+  },
+  {
+    "slug": "character-unspecified",
+    "file": "character-unspecified.webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "status": "new-design-candidate-not-approved-production",
+    "source": "exec-0387a446-d453-480d-a175-d175ba85cce2.png",
+    "sha256": "06b18f4e75b905f4d252d535830cc4b42d1aecd6db2d4b94a218fe34238774e1"
+  }
+]

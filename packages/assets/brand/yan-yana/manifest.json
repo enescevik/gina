@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "logo-mark",
+    "label_tr": "Yan Yana marka işareti",
+    "file": "logo-mark.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "logo-mark-mono",
+    "label_tr": "Yan Yana tek renk",
+    "file": "logo-mark-mono.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "logo-wordmark",
+    "label_tr": "Yan Yana Gina sözcük logosu",
+    "file": "logo-wordmark.svg",
+    "viewBox": "0 0 580 256",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  }
+]

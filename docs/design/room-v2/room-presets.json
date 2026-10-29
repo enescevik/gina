@@ -1,0 +1,40 @@
+{
+  "status": "proposed",
+  "default": "unspecified",
+  "allow_any_combination": true,
+  "requires_gender": false,
+  "presets": [
+    {
+      "id": "girl",
+      "character": "character-girl",
+      "suggested_theme": "sunny"
+    },
+    {
+      "id": "boy",
+      "character": "character-boy",
+      "suggested_theme": "explorer"
+    },
+    {
+      "id": "unspecified",
+      "character": "character-unspecified",
+      "suggested_theme": "nature"
+    }
+  ],
+  "themes": [
+    {
+      "id": "sunny",
+      "label_tr": "Güneşli Oda",
+      "decor": "decor-sun"
+    },
+    {
+      "id": "explorer",
+      "label_tr": "Keşif Odası",
+      "decor": "decor-orbit"
+    },
+    {
+      "id": "nature",
+      "label_tr": "Doğa Odası",
+      "decor": "decor-leaf"
+    }
+  ]
+}

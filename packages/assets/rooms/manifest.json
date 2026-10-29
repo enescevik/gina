@@ -1,0 +1,72 @@
+[
+  {
+    "slug": "reward-cinema-ticket",
+    "label_tr": "Sinema bileti",
+    "file": "v2/reward-cinema-ticket.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "decor-leaf",
+    "label_tr": "Doğa odası dekoru",
+    "file": "v2/decor-leaf.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-tooth-care",
+    "label_tr": "Diş bakım sembolü",
+    "file": "v2/badge-tooth-care.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "reward-console",
+    "label_tr": "Oyun konsolu",
+    "file": "v2/reward-console.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "decor-sun",
+    "label_tr": "Güneşli oda dekoru",
+    "file": "v2/decor-sun.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "reward-bicycle",
+    "label_tr": "Bisiklet",
+    "file": "v2/reward-bicycle.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "decor-orbit",
+    "label_tr": "Keşif odası dekoru",
+    "file": "v2/decor-orbit.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  }
+]

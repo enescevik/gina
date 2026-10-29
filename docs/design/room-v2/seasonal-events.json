@@ -1,0 +1,29 @@
+{
+  "status": "configuration proposal; no dates or production overlays delivered",
+  "default_enabled": false,
+  "events": [
+    {
+      "id": "new-year",
+      "date_source": "family calendar year boundary",
+      "decor": "neutral stars/lights"
+    },
+    {
+      "id": "local-liberation-day",
+      "date_source": "verified municipality plus annual local date",
+      "requires_family_selection": true
+    },
+    {
+      "id": "ramadan-bayram",
+      "date_source": "verified annual holidays interval",
+      "requires_family_opt_in": true
+    }
+  ],
+  "constraints": [
+    "no content/hitbox occlusion",
+    "no religious inference",
+    "pointerEvents none",
+    "reduced motion",
+    "family timezone",
+    "single dominant event"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "status": "UI proposal; asset README palette remains authoritative",
+  "colors": {
+    "background": "#FFF8EF",
+    "ink": "#1F2937",
+    "primary": "#0FA3A3",
+    "primaryDark": "#0B7F7F",
+    "primaryLight": "#D9F4F2",
+    "reward": "#F5B301",
+    "success": "#2FB47C",
+    "returned": "#FF6B6B",
+    "mist": "#E5E7EB",
+    "white": "#FFFFFF"
+  },
+  "fonts": {
+    "child": "Nunito 600–800",
+    "parent": "Inter 400–600"
+  },
+  "radius": {
+    "childCard": 24,
+    "parentCard": 12,
+    "button": 14
+  },
+  "minimumTouchDp": 48,
+  "motion": {
+    "celebrationMaxMs": 700,
+    "loopDecor": false,
+    "respectReducedMotion": true
+  }
+}
