@@ -1,0 +1,392 @@
+[
+  {
+    "slug": "star-filled",
+    "label_tr": "Dolu yıldız",
+    "file": "stars/star-filled.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-empty",
+    "label_tr": "Boş yıldız",
+    "file": "stars/star-empty.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-half",
+    "label_tr": "Yarım yıldız",
+    "file": "stars/star-half.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-jar",
+    "label_tr": "Yıldız kavanozu",
+    "file": "stars/star-jar.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-burst-01",
+    "label_tr": "Yıldız kutlaması kare 1",
+    "file": "stars/star-burst-01.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-burst-02",
+    "label_tr": "Yıldız kutlaması kare 2",
+    "file": "stars/star-burst-02.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-burst-03",
+    "label_tr": "Yıldız kutlaması kare 3",
+    "file": "stars/star-burst-03.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-burst-04",
+    "label_tr": "Yıldız kutlaması kare 4",
+    "file": "stars/star-burst-04.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-burst-05",
+    "label_tr": "Yıldız kutlaması kare 5",
+    "file": "stars/star-burst-05.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-burst-06",
+    "label_tr": "Yıldız kutlaması kare 6",
+    "file": "stars/star-burst-06.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "streak-flame",
+    "label_tr": "Seri alevi",
+    "file": "streaks/streak-flame.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "streak-3",
+    "label_tr": "Üç günlük seri",
+    "file": "streaks/streak-3.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "streak-7",
+    "label_tr": "Yedi günlük seri",
+    "file": "streaks/streak-7.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "streak-30",
+    "label_tr": "Otuz günlük seri",
+    "file": "streaks/streak-30.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-bronze",
+    "label_tr": "Bronz rozeti",
+    "file": "badges/badge-bronze.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-silver",
+    "label_tr": "Gümüş rozeti",
+    "file": "badges/badge-silver.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-gold",
+    "label_tr": "Altın rozeti",
+    "file": "badges/badge-gold.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-diamond",
+    "label_tr": "Elmas rozeti",
+    "file": "badges/badge-diamond.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-first-task",
+    "label_tr": "İlk görev",
+    "file": "badges/badge-first-task.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-bookworm",
+    "label_tr": "Kitap kurdu",
+    "file": "badges/badge-bookworm.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-early-bird",
+    "label_tr": "Erkenci kuş",
+    "file": "badges/badge-early-bird.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-tidy",
+    "label_tr": "Düzen ustası",
+    "file": "badges/badge-tidy.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-helper",
+    "label_tr": "Yardımsever",
+    "file": "badges/badge-helper.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-math-star",
+    "label_tr": "Matematik yıldızı",
+    "file": "badges/badge-math-star.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-week-hero",
+    "label_tr": "Haftanın kahramanı",
+    "file": "badges/badge-week-hero.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-locked",
+    "label_tr": "Kilitli rozet",
+    "file": "badges/badge-locked.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "stamp-approved",
+    "label_tr": "Onaylandı",
+    "file": "stamps/stamp-approved.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "stamp-pending",
+    "label_tr": "Onay bekliyor",
+    "file": "stamps/stamp-pending.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "stamp-returned",
+    "label_tr": "Tekrar dene",
+    "file": "stamps/stamp-returned.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-01",
+    "label_tr": "Yükleniyor kare 1",
+    "file": "loading/loading-star-01.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-02",
+    "label_tr": "Yükleniyor kare 2",
+    "file": "loading/loading-star-02.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-03",
+    "label_tr": "Yükleniyor kare 3",
+    "file": "loading/loading-star-03.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-04",
+    "label_tr": "Yükleniyor kare 4",
+    "file": "loading/loading-star-04.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-05",
+    "label_tr": "Yükleniyor kare 5",
+    "file": "loading/loading-star-05.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-06",
+    "label_tr": "Yükleniyor kare 6",
+    "file": "loading/loading-star-06.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-07",
+    "label_tr": "Yükleniyor kare 7",
+    "file": "loading/loading-star-07.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-08",
+    "label_tr": "Yükleniyor kare 8",
+    "file": "loading/loading-star-08.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-static",
+    "label_tr": "Yükleniyor sabit",
+    "file": "loading/loading-star-static.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  }
+]

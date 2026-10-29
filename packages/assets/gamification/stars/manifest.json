@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "star-filled",
+    "label_tr": "Dolu yıldız",
+    "file": "star-filled.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-empty",
+    "label_tr": "Boş yıldız",
+    "file": "star-empty.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-half",
+    "label_tr": "Yarım yıldız",
+    "file": "star-half.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-jar",
+    "label_tr": "Yıldız kavanozu",
+    "file": "star-jar.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-burst-01",
+    "label_tr": "Yıldız kutlaması kare 1",
+    "file": "star-burst-01.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-burst-02",
+    "label_tr": "Yıldız kutlaması kare 2",
+    "file": "star-burst-02.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-burst-03",
+    "label_tr": "Yıldız kutlaması kare 3",
+    "file": "star-burst-03.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-burst-04",
+    "label_tr": "Yıldız kutlaması kare 4",
+    "file": "star-burst-04.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-burst-05",
+    "label_tr": "Yıldız kutlaması kare 5",
+    "file": "star-burst-05.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-burst-06",
+    "label_tr": "Yıldız kutlaması kare 6",
+    "file": "star-burst-06.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  }
+]

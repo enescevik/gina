@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "loading-star-01",
+    "label_tr": "Yükleniyor kare 1",
+    "file": "loading-star-01.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-02",
+    "label_tr": "Yükleniyor kare 2",
+    "file": "loading-star-02.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-03",
+    "label_tr": "Yükleniyor kare 3",
+    "file": "loading-star-03.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-04",
+    "label_tr": "Yükleniyor kare 4",
+    "file": "loading-star-04.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-05",
+    "label_tr": "Yükleniyor kare 5",
+    "file": "loading-star-05.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-06",
+    "label_tr": "Yükleniyor kare 6",
+    "file": "loading-star-06.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-07",
+    "label_tr": "Yükleniyor kare 7",
+    "file": "loading-star-07.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-08",
+    "label_tr": "Yükleniyor kare 8",
+    "file": "loading-star-08.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "loading-star-static",
+    "label_tr": "Yükleniyor sabit",
+    "file": "loading-star-static.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  }
+]

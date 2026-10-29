@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "streak-flame",
+    "label_tr": "Seri alevi",
+    "file": "streak-flame.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "streak-3",
+    "label_tr": "Üç günlük seri",
+    "file": "streak-3.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "streak-7",
+    "label_tr": "Yedi günlük seri",
+    "file": "streak-7.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "streak-30",
+    "label_tr": "Otuz günlük seri",
+    "file": "streak-30.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  }
+]
