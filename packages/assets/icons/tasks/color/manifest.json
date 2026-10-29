@@ -1,0 +1,302 @@
+[
+  {
+    "slug": "make-bed",
+    "label_tr": "Yatağını topla",
+    "file": "make-bed.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "brush-teeth",
+    "label_tr": "Diş fırçala",
+    "file": "brush-teeth.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "wash-face",
+    "label_tr": "Yüz yıka",
+    "file": "wash-face.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "get-dressed",
+    "label_tr": "Giyin",
+    "file": "get-dressed.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "eat-breakfast",
+    "label_tr": "Kahvaltı",
+    "file": "eat-breakfast.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "wash-hands",
+    "label_tr": "El yıka",
+    "file": "wash-hands.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "pajamas",
+    "label_tr": "Pijama giy",
+    "file": "pajamas.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "homework-general",
+    "label_tr": "Defter ve kalem",
+    "file": "homework-general.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "homework-turkish",
+    "label_tr": "Türkçe ödevi",
+    "file": "homework-turkish.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "homework-math",
+    "label_tr": "Matematik ödevi",
+    "file": "homework-math.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "homework-english",
+    "label_tr": "İngilizce ödevi",
+    "file": "homework-english.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "homework-science",
+    "label_tr": "Fen ödevi",
+    "file": "homework-science.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "read-book",
+    "label_tr": "Kitap oku",
+    "file": "read-book.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "tidy-room",
+    "label_tr": "Oda topla",
+    "file": "tidy-room.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "tidy-toys",
+    "label_tr": "Oyuncak topla",
+    "file": "tidy-toys.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "set-table",
+    "label_tr": "Masayı kur",
+    "file": "set-table.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "clear-table",
+    "label_tr": "Masayı topla",
+    "file": "clear-table.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "take-out-trash",
+    "label_tr": "Çöp at",
+    "file": "take-out-trash.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "water-plants",
+    "label_tr": "Bitki sula",
+    "file": "water-plants.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "pack-school-bag",
+    "label_tr": "Çanta hazırla",
+    "file": "pack-school-bag.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "fill-water-bottle",
+    "label_tr": "Matara doldur",
+    "file": "fill-water-bottle.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "drink-water",
+    "label_tr": "Su iç",
+    "file": "drink-water.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "screen-time",
+    "label_tr": "Ekran süresi",
+    "file": "screen-time.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "put-away-tablet",
+    "label_tr": "Tableti kaldır",
+    "file": "put-away-tablet.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "bedtime",
+    "label_tr": "Uyku vakti",
+    "file": "bedtime.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "exercise",
+    "label_tr": "Spor",
+    "file": "exercise.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "practice-instrument",
+    "label_tr": "Enstrüman çalış",
+    "file": "practice-instrument.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "drawing",
+    "label_tr": "Resim yap",
+    "file": "drawing.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "feed-pet",
+    "label_tr": "Evcil hayvanı besle",
+    "file": "feed-pet.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "task-custom",
+    "label_tr": "Özel görev",
+    "file": "task-custom.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  }
+]

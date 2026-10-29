@@ -1,0 +1,332 @@
+[
+  {
+    "slug": "make-bed",
+    "label_tr": "Yatağını topla",
+    "file": "color/make-bed.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "brush-teeth",
+    "label_tr": "Diş fırçala",
+    "file": "color/brush-teeth.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "wash-face",
+    "label_tr": "Yüz yıka",
+    "file": "color/wash-face.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "get-dressed",
+    "label_tr": "Giyin",
+    "file": "color/get-dressed.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "eat-breakfast",
+    "label_tr": "Kahvaltı",
+    "file": "color/eat-breakfast.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "wash-hands",
+    "label_tr": "El yıka",
+    "file": "color/wash-hands.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "pajamas",
+    "label_tr": "Pijama giy",
+    "file": "color/pajamas.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "homework-general",
+    "label_tr": "Defter ve kalem",
+    "file": "color/homework-general.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "homework-turkish",
+    "label_tr": "Türkçe ödevi",
+    "file": "color/homework-turkish.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "homework-math",
+    "label_tr": "Matematik ödevi",
+    "file": "color/homework-math.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "homework-english",
+    "label_tr": "İngilizce ödevi",
+    "file": "color/homework-english.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "homework-science",
+    "label_tr": "Fen ödevi",
+    "file": "color/homework-science.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "read-book",
+    "label_tr": "Kitap oku",
+    "file": "color/read-book.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "tidy-room",
+    "label_tr": "Oda topla",
+    "file": "color/tidy-room.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "tidy-toys",
+    "label_tr": "Oyuncak topla",
+    "file": "color/tidy-toys.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "set-table",
+    "label_tr": "Masayı kur",
+    "file": "color/set-table.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "clear-table",
+    "label_tr": "Masayı topla",
+    "file": "color/clear-table.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "take-out-trash",
+    "label_tr": "Çöp at",
+    "file": "color/take-out-trash.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "water-plants",
+    "label_tr": "Bitki sula",
+    "file": "color/water-plants.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "pack-school-bag",
+    "label_tr": "Çanta hazırla",
+    "file": "color/pack-school-bag.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "fill-water-bottle",
+    "label_tr": "Matara doldur",
+    "file": "color/fill-water-bottle.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "drink-water",
+    "label_tr": "Su iç",
+    "file": "color/drink-water.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "screen-time",
+    "label_tr": "Ekran süresi",
+    "file": "color/screen-time.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "put-away-tablet",
+    "label_tr": "Tableti kaldır",
+    "file": "color/put-away-tablet.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "bedtime",
+    "label_tr": "Uyku vakti",
+    "file": "color/bedtime.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "exercise",
+    "label_tr": "Spor",
+    "file": "color/exercise.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "practice-instrument",
+    "label_tr": "Enstrüman çalış",
+    "file": "color/practice-instrument.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "drawing",
+    "label_tr": "Resim yap",
+    "file": "color/drawing.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "feed-pet",
+    "label_tr": "Evcil hayvanı besle",
+    "file": "color/feed-pet.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "task-custom",
+    "label_tr": "Özel görev",
+    "file": "color/task-custom.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color",
+      "mono"
+    ],
+    "png": []
+  }
+]
