@@ -1,0 +1,17 @@
+[
+  {
+    "slug": "email-logo@2x",
+    "label_tr": "email logo@2x",
+    "file": "email-logo@2x.svg",
+    "viewBox": "0 0 240 80",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "240x80",
+        "path": "email-logo@2x.png"
+      }
+    ]
+  }
+]

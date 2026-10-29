@@ -1,0 +1,67 @@
+[
+  {
+    "slug": "icon-background",
+    "label_tr": "icon background",
+    "file": "icon-background.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "icon-foreground",
+    "label_tr": "icon foreground",
+    "file": "icon-foreground.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "ios-icon-dark",
+    "label_tr": "ios icon dark",
+    "file": "ios-icon-dark.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "ios-icon-dark.png"
+      }
+    ]
+  },
+  {
+    "slug": "ios-icon-light",
+    "label_tr": "ios icon light",
+    "file": "ios-icon-light.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "ios-icon-light.png"
+      }
+    ]
+  },
+  {
+    "slug": "ios-icon-tinted",
+    "label_tr": "ios icon tinted",
+    "file": "ios-icon-tinted.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "mono"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "ios-icon-tinted.png"
+      }
+    ]
+  }
+]
