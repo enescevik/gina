@@ -204,7 +204,14 @@ export default function ParentHomeScreen() {
           <Button variant="secondary" title={t("parent.grades")} onPress={() => router.push("/parent/grades")} />
         </View>
       </View>
-      <Button title={t("parent.childMode")} onPress={() => router.push("/parent/child-mode")} />
+      <View className="flex-row gap-2">
+        <View className="flex-1">
+          <Button title={t("parent.childMode")} onPress={() => router.push("/parent/child-mode")} />
+        </View>
+        <View className="flex-1">
+          <Button variant="secondary" title={t("parent.subscription")} onPress={() => router.push("/parent/subscription")} />
+        </View>
+      </View>
       <ParentPinRow />
 
       <View className="gap-2 rounded-parent border border-mist p-4">

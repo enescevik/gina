@@ -113,6 +113,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"entitlement_overrides": {
+                  Row: {
+                    "created_at": string,"ends_at": string,"family_id": string,"granted_by": string | null,"id": string,"plan": Database["public"]['Enums']["plan_code"],"reason": string,"revoked_at": string | null,"starts_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"ends_at": string,"family_id": string,"granted_by"?: string | null,"id"?: string,"plan": Database["public"]['Enums']["plan_code"],"reason": string,"revoked_at"?: string | null,"starts_at"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"ends_at"?: string,"family_id"?: string,"granted_by"?: string | null,"id"?: string,"plan"?: Database["public"]['Enums']["plan_code"],"reason"?: string,"revoked_at"?: string | null,"starts_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "entitlement_overrides_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"event_exceptions": {
                   Row: {
                     "cancelled": boolean,"event_id": string,"occurrence_date": string
@@ -285,6 +305,20 @@ isOneToOne: true
       referencedColumns: ["id"]
     }
                   ]
+                },"plans": {
+                  Row: {
+                    "ai_model": string | null,"ai_weekly": boolean,"code": Database["public"]['Enums']["plan_code"],"history_days": number | null,"max_active_tasks_per_child": number | null,"max_children": number,"max_devices": number | null,"max_notes": number | null,"name_i18n": NonNullable<Json>,"sort_order": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code": Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"max_active_tasks_per_child"?: number | null,"max_children": number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n": NonNullable<Json>,"sort_order"?: number
+                  }
+                  Update: {
+                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code"?: Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"max_active_tasks_per_child"?: number | null,"max_children"?: number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n"?: NonNullable<Json>,"sort_order"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"star_events": {
                   Row: {
                     "child_id": string,"completion_id": string | null,"created_at": string,"created_by": string | null,"delta": number,"family_id": string,"id": number,"reason": string
@@ -311,6 +345,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     },{
       foreignKeyName: "star_events_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"store_subscriptions": {
+                  Row: {
+                    "auto_renewing": boolean,"created_at": string,"expires_at": string,"family_id": string,"id": string,"plan": Database["public"]['Enums']["plan_code"],"platform": Database["public"]['Enums']["store_platform"],"product_id": string,"purchaser_user_id": string | null,"raw": Json | null,"status": Database["public"]['Enums']["subscription_status"],"store_key": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "auto_renewing"?: boolean,"created_at"?: string,"expires_at": string,"family_id": string,"id"?: string,"plan": Database["public"]['Enums']["plan_code"],"platform": Database["public"]['Enums']["store_platform"],"product_id": string,"purchaser_user_id"?: string | null,"raw"?: Json | null,"status"?: Database["public"]['Enums']["subscription_status"],"store_key": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "auto_renewing"?: boolean,"created_at"?: string,"expires_at"?: string,"family_id"?: string,"id"?: string,"plan"?: Database["public"]['Enums']["plan_code"],"platform"?: Database["public"]['Enums']["store_platform"],"product_id"?: string,"purchaser_user_id"?: string | null,"raw"?: Json | null,"status"?: Database["public"]['Enums']["subscription_status"],"store_key"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "store_subscriptions_family_id_fkey"
       columns: ["family_id"]
 isOneToOne: false
       referencedRelation: "families"
@@ -413,6 +467,11 @@ isOneToOne: false
 "custom_access_token_hook":
 { Args: { "event": Json }; Returns: Json
                            },
+"get_family_entitlement":
+{ Args: { "p_family_id"?: string }; Returns: {
+              "expires_at": string,"plan": Database["public"]['Enums']["plan_code"],"source": string
+            }[]
+                           },
 "join_family":
 { Args: { "p_display_name"?: string,"p_invite_code": string }; Returns: string
                            },
@@ -465,7 +524,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "completion_status": "done"|"approved"|"returned","event_type": "school"|"activity"|"holiday"|"exam"|"family"|"doctor"|"birthday"|"other","grade_kind": "exam"|"homework"|"project"|"oral"|"performance","member_role": "parent"|"guardian","note_visibility": "private"|"family"|"child"|"teacher","time_of_day": "morning"|"afternoon"|"evening"|"any"
+            "completion_status": "done"|"approved"|"returned","event_type": "school"|"activity"|"holiday"|"exam"|"family"|"doctor"|"birthday"|"other","grade_kind": "exam"|"homework"|"project"|"oral"|"performance","member_role": "parent"|"guardian","note_visibility": "private"|"family"|"child"|"teacher","plan_code": "free"|"plus"|"pro","store_platform": "apple"|"google","subscription_status": "active"|"grace"|"on_hold"|"expired"|"revoked","time_of_day": "morning"|"afternoon"|"evening"|"any"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -581,7 +640,7 @@ export type CompositeTypes<
 export const Constants = {
   "public": {
           Enums: {
-            "completion_status": ["done", "approved", "returned"],"event_type": ["school", "activity", "holiday", "exam", "family", "doctor", "birthday", "other"],"grade_kind": ["exam", "homework", "project", "oral", "performance"],"member_role": ["parent", "guardian"],"note_visibility": ["private", "family", "child", "teacher"],"time_of_day": ["morning", "afternoon", "evening", "any"]
+            "completion_status": ["done", "approved", "returned"],"event_type": ["school", "activity", "holiday", "exam", "family", "doctor", "birthday", "other"],"grade_kind": ["exam", "homework", "project", "oral", "performance"],"member_role": ["parent", "guardian"],"note_visibility": ["private", "family", "child", "teacher"],"plan_code": ["free", "plus", "pro"],"store_platform": ["apple", "google"],"subscription_status": ["active", "grace", "on_hold", "expired", "revoked"],"time_of_day": ["morning", "afternoon", "evening", "any"]
           }
         }
 } as const

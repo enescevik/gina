@@ -37,4 +37,11 @@ Son güncelleme: 2026-10-30. Kaynak: proje dokümanı (Claude Docs) ve 29-30 Eki
 - Apple standart EULA + kendi Kullanım Koşulları; özel EULA yok. Fiyat artışında mağaza kuralları geçerli (Apple onay kuralı), ek «30 gün» taahhüdü yok; iadeler mağaza üzerinden, biz destek oluruz.
 - AI özeti: işleme dayanağı sözleşmenin ifası (m.5/2-c), yurt dışı aktarım için ayrı açık rıza/özellik izni (varsayılan kapalı, ayarlardan geri alınabilir) — avukat onayına tabi. Üretilen özetler 12 ay saklanır; Anthropic'te kural olarak 30 gün (politika ihlali şüphesinde 2 yıla kadar).
 - Kids Category seçilmez; Play hedef kitlesi 18+ ebeveyn; metadata «çocuklar için» demez.
-- Açık karar: hukuki kimlik (şahıs mı şirket mi) — mağaza satıcı adı, aydınlatma metni kimliği ve vergi (GVK mük. 20/B) buna bağlı.
+## Kesinleşen kararlar (30 Ekim 2026; Enes karar yetkisini devretti)
+
+- **Hukuki kimlik:** şahıs (bireysel geliştirici) olarak başlanır; mağazada satıcı adı olarak yasal ad görünür, GVK mük. 20/B stopaj istisnası muhasebeciyle teyit edilir; ileride şirkete devir mümkündür. Belgelerdeki kimlik yer tutucuları Enes'in bilgileriyle dolacak.
+- **Paketler:** önerildiği gibi onaylandı — Başlangıç (ücretsiz, 2 çocuk, AI yok) / Plus ₺99,99-ay, ₺999,99-yıl (4 çocuk, haftalık Haiku özeti) / Pro ₺199,99-ay, ₺1.999,99-yıl (8 çocuk, Sonnet + fotoğraftan takvim 20/ay); 7 gün deneme, yıllık ≈ 10 ay.
+- **Alan adı:** kapalı betadan önce ucuz bir alan adı alınır (ör. `ginaaile.app`; satın alma Enes'te). O güne kadar yerel/TestFlight betası e-posta doğrulamasız ve «şifremi unuttum»suz çalışır (Supabase'de Confirm email kapalı); domain + Resend SMTP gelince açılır.
+- **Android:** Play kapalı testi (12 Google hesabı × 14 gün) ticari katman haftalarında paralel başlar; Play lansmanı iOS'tan 2-3 hafta sonra; hedef kitle beyanı «18+ ebeveyn».
+- **Boy/kilo:** v1'de yok; gelişim takibi kilometre taşlarıyla.
+- **Avukat:** `docs/legal` yayına girmeden önce avukat incelemesinden geçer; belgelerdeki [AVUKAT] işaretli sorular o görüşmeye taşınır.
