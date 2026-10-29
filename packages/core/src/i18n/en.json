@@ -67,6 +67,7 @@
   "child.calendar": "My calendar",
   "child.taskDone": "Done!",
   "child.waitingApproval": "Waiting for approval",
+    "child.returnedTryAgain": "Sent back — try again!",
   "child.approved": "Approved",
   "child.allDone": "All of today's tasks are done!",
   "child.noTasks": "No tasks",

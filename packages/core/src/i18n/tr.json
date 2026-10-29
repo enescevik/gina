@@ -67,6 +67,7 @@
   "child.calendar": "Takvimim",
   "child.taskDone": "Yaptım!",
   "child.waitingApproval": "Onay bekliyor",
+    "child.returnedTryAgain": "Geri gönderildi — tekrar dene!",
   "child.approved": "Onaylandı",
   "child.allDone": "Bugünkü görevlerin tamam!",
   "child.noTasks": "Görev yok",

@@ -4,11 +4,12 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
-import { DEFAULT_TIMEZONE, localDateOf, type Enums } from "@gina/core";
+import { localDateOf, type Enums } from "@gina/core";
 
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText, Screen } from "@/components/ui/screen";
+import { useFamilyTimezone } from "@/lib/family";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -27,7 +28,8 @@ export default function ParentGradesScreen() {
   const [kind, setKind] = useState<GradeKind>("exam");
   const [score, setScore] = useState("");
   const [maxScore, setMaxScore] = useState("100");
-  const [gradedOn, setGradedOn] = useState(localDateOf(new Date(), DEFAULT_TIMEZONE));
+  const timeZone = useFamilyTimezone();
+  const [gradedOn, setGradedOn] = useState(localDateOf(new Date(), timeZone));
   const [formError, setFormError] = useState<string | null>(null);
 
   const children = useQuery({
