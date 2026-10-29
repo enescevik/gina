@@ -1,0 +1,5 @@
+{
+  "CFBundleDisplayName": "Gina Aile",
+  "NSCameraUsageDescription": "Okul duyurularını fotoğraflayıp takvime eklemek için kamera kullanılır.",
+  "NSPhotoLibraryUsageDescription": "Okul belgelerini takvime eklemek için fotoğraf seçilir."
+}
