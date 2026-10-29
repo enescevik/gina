@@ -2,6 +2,8 @@
 module.exports = {
   content: ["./src/**/*.{ts,tsx}", "../../packages/core/src/**/*.{ts,tsx}"],
   presets: [require("nativewind/preset")],
+  // Web'de "media" modu colorScheme.set çağrısında hata veriyor (react-native-css-interop); class modu güvenli.
+  darkMode: "class",
   theme: {
     extend: {
       // Gina paleti (tasarım brief'i ile aynı)
