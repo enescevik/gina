@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "splash-icon-dark",
+    "label_tr": "splash icon dark",
+    "file": "splash-icon-dark.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "splash-icon-dark.png"
+      }
+    ]
+  },
+  {
+    "slug": "splash-icon",
+    "label_tr": "splash icon",
+    "file": "splash-icon.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "splash-icon.png"
+      }
+    ]
+  }
+]

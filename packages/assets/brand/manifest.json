@@ -1,0 +1,372 @@
+[
+  {
+    "slug": "contact-sheet",
+    "label_tr": "Marka küçük boyut önizlemeleri",
+    "file": "contact-sheet.svg",
+    "viewBox": "0 0 116 512",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "logo-mark-mono",
+    "label_tr": "Gina tek renk marka işareti",
+    "file": "logo-mark-mono.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "logo-mark",
+    "label_tr": "Gina marka işareti",
+    "file": "logo-mark.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "logo-wordmark",
+    "label_tr": "Gina sözcük logosu",
+    "file": "logo-wordmark.svg",
+    "viewBox": "0 0 580 256",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "og-image",
+    "label_tr": "og image",
+    "file": "og-image.svg",
+    "viewBox": "0 0 1200 630",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1200x630",
+        "path": "og-image.png"
+      }
+    ]
+  },
+  {
+    "slug": "icon-background",
+    "label_tr": "icon background",
+    "file": "ios/icon-background.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "icon-foreground",
+    "label_tr": "icon foreground",
+    "file": "ios/icon-foreground.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "ios-icon-dark",
+    "label_tr": "ios icon dark",
+    "file": "ios/ios-icon-dark.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "ios/ios-icon-dark.png"
+      }
+    ]
+  },
+  {
+    "slug": "ios-icon-light",
+    "label_tr": "ios icon light",
+    "file": "ios/ios-icon-light.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "ios/ios-icon-light.png"
+      }
+    ]
+  },
+  {
+    "slug": "ios-icon-tinted",
+    "label_tr": "ios icon tinted",
+    "file": "ios/ios-icon-tinted.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "mono"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "ios/ios-icon-tinted.png"
+      }
+    ]
+  },
+  {
+    "slug": "android-icon-background",
+    "label_tr": "android icon background",
+    "file": "android/android-icon-background.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "android/android-icon-background.png"
+      }
+    ]
+  },
+  {
+    "slug": "android-icon-foreground",
+    "label_tr": "android icon foreground",
+    "file": "android/android-icon-foreground.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "android/android-icon-foreground.png"
+      }
+    ]
+  },
+  {
+    "slug": "android-icon-legacy",
+    "label_tr": "android icon legacy",
+    "file": "android/android-icon-legacy.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "android/android-icon-legacy.png"
+      }
+    ]
+  },
+  {
+    "slug": "android-icon-monochrome",
+    "label_tr": "android icon monochrome",
+    "file": "android/android-icon-monochrome.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "mono"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "android/android-icon-monochrome.png"
+      }
+    ]
+  },
+  {
+    "slug": "notification-icon",
+    "label_tr": "notification icon",
+    "file": "android/notification-icon.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "96x96",
+        "path": "android/notification-icon.png"
+      }
+    ]
+  },
+  {
+    "slug": "play-store-icon",
+    "label_tr": "play store icon",
+    "file": "android/play-store-icon.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "512x512",
+        "path": "android/play-store-icon.png"
+      }
+    ]
+  },
+  {
+    "slug": "splash-icon-dark",
+    "label_tr": "splash icon dark",
+    "file": "splash/splash-icon-dark.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "splash/splash-icon-dark.png"
+      }
+    ]
+  },
+  {
+    "slug": "splash-icon",
+    "label_tr": "splash icon",
+    "file": "splash/splash-icon.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "splash/splash-icon.png"
+      }
+    ]
+  },
+  {
+    "slug": "apple-touch-icon-180",
+    "label_tr": "apple touch icon 180",
+    "file": "web/apple-touch-icon-180.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "180x180",
+        "path": "web/apple-touch-icon-180.png"
+      }
+    ]
+  },
+  {
+    "slug": "favicon-32",
+    "label_tr": "favicon 32",
+    "file": "web/favicon-32.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "32x32",
+        "path": "web/favicon-32.png"
+      }
+    ]
+  },
+  {
+    "slug": "favicon-48",
+    "label_tr": "favicon 48",
+    "file": "web/favicon-48.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "48x48",
+        "path": "web/favicon-48.png"
+      }
+    ]
+  },
+  {
+    "slug": "favicon",
+    "label_tr": "favicon",
+    "file": "web/favicon.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "icon-192-maskable",
+    "label_tr": "icon 192 maskable",
+    "file": "web/icon-192-maskable.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "192x192",
+        "path": "web/icon-192-maskable.png"
+      }
+    ]
+  },
+  {
+    "slug": "icon-192",
+    "label_tr": "icon 192",
+    "file": "web/icon-192.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "192x192",
+        "path": "web/icon-192.png"
+      }
+    ]
+  },
+  {
+    "slug": "icon-512-maskable",
+    "label_tr": "icon 512 maskable",
+    "file": "web/icon-512-maskable.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "512x512",
+        "path": "web/icon-512-maskable.png"
+      }
+    ]
+  },
+  {
+    "slug": "icon-512",
+    "label_tr": "icon 512",
+    "file": "web/icon-512.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "512x512",
+        "path": "web/icon-512.png"
+      }
+    ]
+  },
+  {
+    "slug": "email-logo@2x",
+    "label_tr": "email logo@2x",
+    "file": "email/email-logo@2x.svg",
+    "viewBox": "0 0 240 80",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "240x80",
+        "path": "email/email-logo@2x.png"
+      }
+    ]
+  }
+]

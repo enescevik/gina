@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "android-icon-background",
+    "label_tr": "android icon background",
+    "file": "android-icon-background.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "android-icon-background.png"
+      }
+    ]
+  },
+  {
+    "slug": "android-icon-foreground",
+    "label_tr": "android icon foreground",
+    "file": "android-icon-foreground.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "android-icon-foreground.png"
+      }
+    ]
+  },
+  {
+    "slug": "android-icon-legacy",
+    "label_tr": "android icon legacy",
+    "file": "android-icon-legacy.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "android-icon-legacy.png"
+      }
+    ]
+  },
+  {
+    "slug": "android-icon-monochrome",
+    "label_tr": "android icon monochrome",
+    "file": "android-icon-monochrome.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "mono"
+    ],
+    "png": [
+      {
+        "size": "1024x1024",
+        "path": "android-icon-monochrome.png"
+      }
+    ]
+  },
+  {
+    "slug": "notification-icon",
+    "label_tr": "notification icon",
+    "file": "notification-icon.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "96x96",
+        "path": "notification-icon.png"
+      }
+    ]
+  },
+  {
+    "slug": "play-store-icon",
+    "label_tr": "play store icon",
+    "file": "play-store-icon.svg",
+    "viewBox": "0 0 256 256",
+    "variants": [
+      "color"
+    ],
+    "png": [
+      {
+        "size": "512x512",
+        "path": "play-store-icon.png"
+      }
+    ]
+  }
+]
