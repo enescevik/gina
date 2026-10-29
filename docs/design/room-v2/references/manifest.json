@@ -1,0 +1,12 @@
+[
+  {
+    "file": "child-home-approved.png",
+    "status": "user-approved-direction-reference-not-runtime",
+    "sha256": "988102f7e6e7f7c0db77e55d468b70d3bac740fccbbf90963a00f86da0948ec4"
+  },
+  {
+    "file": "parent-home-approved.png",
+    "status": "user-approved-direction-reference-not-runtime",
+    "sha256": "0aa751ac253c5da78d73796c2fac7235c6cc4de1befd80ae2c40d1c455f183e1"
+  }
+]

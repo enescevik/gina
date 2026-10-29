@@ -1,0 +1,34 @@
+{
+  "status": "threshold proposals, not deployed rules",
+  "basis": "approved completions on eligible due dates in family timezone",
+  "no_duration_ranking": true,
+  "awards": [
+    {
+      "id": "first-task",
+      "label_tr": "İlk Adım",
+      "threshold": 1,
+      "metric": "approved_task_count",
+      "asset": "gamification/badges/badge-first-task.svg"
+    },
+    {
+      "id": "tooth-care-7",
+      "label_tr": "Diş Parlatan",
+      "threshold": 7,
+      "metric": "eligible_brush_teeth_days",
+      "asset": "rooms/v2/badge-tooth-care.svg"
+    },
+    {
+      "id": "bookworm-7",
+      "label_tr": "Kitap Kurdu",
+      "threshold": 7,
+      "metric": "approved_read_book_count",
+      "asset": "gamification/badges/badge-bookworm.svg"
+    }
+  ],
+  "dedupe_key": [
+    "child_id",
+    "badge_id",
+    "rule_version"
+  ],
+  "backfill": "explicit migration with dry run; no automatic client award"
+}
