@@ -263,6 +263,9 @@ export default function ParentHomeScreen() {
       <Button title={t("parent.addTaskTogether")} onPress={() => router.push("/parent/tasks")} />
       <View className="flex-row gap-2">
         <View className="flex-1">
+          <Button variant="secondary" title={t("parent.rewards")} onPress={() => router.push("/parent/rewards")} />
+        </View>
+        <View className="flex-1">
           <Button variant="secondary" title={t("parent.notes")} onPress={() => router.push("/parent/notes")} />
         </View>
         <View className="flex-1">

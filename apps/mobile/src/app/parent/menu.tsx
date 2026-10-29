@@ -191,6 +191,7 @@ export default function ParentMenuScreen() {
       </View>
 
       <ParentPinRow />
+      <Button variant="secondary" title={t("parent.rewards")} onPress={() => router.push("/parent/rewards")} />
       <Button variant="secondary" title={t("parent.subscription")} onPress={() => router.push("/parent/subscription")} />
       <ErrorText error={family.error ?? children.error ?? devices.error ?? addChild.error ?? pairDevice.error ?? revokeDevice.error} />
       <Button variant="ghost" title={t("auth.signOut")} onPress={() => void supabase.auth.signOut().then(() => router.replace("/"))} />

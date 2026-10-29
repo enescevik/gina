@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, View } from "react-native";
 
@@ -6,6 +7,7 @@ import LogoMark from "../../../../../packages/assets/brand/yan-yana/logo-mark.sv
 import { TaskIcon } from "@/components/task-icon";
 import { ZONES } from "@/components/room/layout";
 import { RoomScene, type CharacterKey } from "@/components/room/scene";
+import { useChildGoal } from "@/lib/use-child-goal";
 import { useChildToday } from "@/lib/use-child-today";
 
 export interface RoomChildHomeProps {
@@ -22,13 +24,14 @@ const DAY_LETTERS = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"];
 export function RoomChildHome({ childId, childName, character = "unspecified", actingAsParent = false, onParentExit }: RoomChildHomeProps) {
   const { t } = useTranslation();
   const data = useChildToday(childId, actingAsParent);
+  const goal = useChildGoal(childId);
 
   return (
     <RoomScene character={character}>
       {({ rect }) => {
         const header = rect(ZONES.header);
         const board = rect(ZONES.taskBoard);
-        const goal = rect(ZONES.goal);
+        const goalRect = rect(ZONES.goal);
         const week = rect(ZONES.week);
         const drawer = rect(ZONES.treasureDrawer);
         const slots = ZONES.displaySlots.map(rect);
@@ -114,12 +117,34 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
               </ScrollView>
             </View>
 
-            {/* Hedef bileti: hedef modeli henüz yok — yapı duruyor, 'yakında' etiketi */}
-            <View style={{ position: "absolute", ...goal }} className="justify-center rounded-parent p-2">
+            {/* Hedef bileti */}
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => router.push("/child/goal")}
+              style={{ position: "absolute", ...goalRect }}
+              className="justify-center rounded-parent p-2"
+            >
               <Text className="font-display text-base text-ink">{t("room.myGoal")}</Text>
-              <Text className="text-sm text-ink">{t("room.goalComingSoon")}</Text>
-              <Text className="mt-1 text-xs text-gray-700">⭐ {t("room.starCount", { count: data.stars })}</Text>
-            </View>
+              {goal.data ? (
+                <>
+                  <Text className="font-body-bold text-sm text-ink">{goal.data.rewardTitle}</Text>
+                  <View className="mt-1 h-2 overflow-hidden rounded-full bg-white/80">
+                    <View
+                      className="h-2 rounded-full bg-star"
+                      style={{ width: `${Math.min(100, Math.round((data.stars / goal.data.cost) * 100))}%` }}
+                    />
+                  </View>
+                  <Text className="mt-0.5 text-xs text-gray-700">
+                    {data.stars >= goal.data.cost
+                      ? t("goal.reached")
+                      : t("room.starsLeft", { count: goal.data.cost - data.stars })}
+                    {"  ·  "}⭐ {data.stars}/{goal.data.cost}
+                  </Text>
+                </>
+              ) : (
+                <Text className="text-sm text-teal-dark">{t("goal.pickCta")}</Text>
+              )}
+            </Pressable>
 
             {/* Haftam duvar takvimi */}
             <View style={{ position: "absolute", ...week }} className="justify-center">

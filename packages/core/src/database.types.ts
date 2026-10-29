@@ -53,6 +53,128 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"badge_definitions": {
+                  Row: {
+                    "active": boolean,"family_id": string | null,"icon": string,"rule": NonNullable<Json>,"slug": string,"sort_order": number,"title_i18n": NonNullable<Json>
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "active"?: boolean,"family_id"?: string | null,"icon": string,"rule": NonNullable<Json>,"slug": string,"sort_order"?: number,"title_i18n": NonNullable<Json>
+                  }
+                  Update: {
+                    "active"?: boolean,"family_id"?: string | null,"icon"?: string,"rule"?: NonNullable<Json>,"slug"?: string,"sort_order"?: number,"title_i18n"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "badge_definitions_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"child_badge_awards": {
+                  Row: {
+                    "awarded_at": string,"badge_slug": string,"child_id": string,"family_id": string,"source": Json | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "awarded_at"?: string,"badge_slug": string,"child_id": string,"family_id": string,"source"?: Json | null
+                  }
+                  Update: {
+                    "awarded_at"?: string,"badge_slug"?: string,"child_id"?: string,"family_id"?: string,"source"?: Json | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "child_badge_awards_badge_slug_fkey"
+      columns: ["badge_slug"]
+isOneToOne: false
+      referencedRelation: "badge_definitions"
+      referencedColumns: ["slug"]
+    },{
+      foreignKeyName: "child_badge_awards_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "child_badge_awards_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"child_goals": {
+                  Row: {
+                    "child_id": string,"created_at": string,"created_by": string | null,"decided_at": string | null,"family_id": string,"id": string,"reward_id": string,"status": Database["public"]['Enums']["child_goal_status"]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "child_id": string,"created_at"?: string,"created_by"?: string | null,"decided_at"?: string | null,"family_id": string,"id"?: string,"reward_id": string,"status"?: Database["public"]['Enums']["child_goal_status"]
+                  }
+                  Update: {
+                    "child_id"?: string,"created_at"?: string,"created_by"?: string | null,"decided_at"?: string | null,"family_id"?: string,"id"?: string,"reward_id"?: string,"status"?: Database["public"]['Enums']["child_goal_status"]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "child_goals_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "child_goals_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "child_goals_reward_id_fkey"
+      columns: ["reward_id"]
+isOneToOne: false
+      referencedRelation: "family_rewards"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"child_inventory": {
+                  Row: {
+                    "acquired_at": string,"child_id": string,"display_slot": number | null,"family_id": string,"id": string,"request_id": string,"reward_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "acquired_at"?: string,"child_id": string,"display_slot"?: number | null,"family_id": string,"id"?: string,"request_id": string,"reward_id": string
+                  }
+                  Update: {
+                    "acquired_at"?: string,"child_id"?: string,"display_slot"?: number | null,"family_id"?: string,"id"?: string,"request_id"?: string,"reward_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "child_inventory_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "child_inventory_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "child_inventory_request_id_fkey"
+      columns: ["request_id"]
+isOneToOne: true
+      referencedRelation: "reward_requests"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "child_inventory_reward_id_fkey"
+      columns: ["reward_id"]
+isOneToOne: false
+      referencedRelation: "family_rewards"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"child_pins": {
                   Row: {
                     "child_id": string,"failed_count": number,"locked_until": string | null,"pin_hash": string,"updated_at": string
@@ -70,6 +192,32 @@ isOneToOne: false
       columns: ["child_id"]
 isOneToOne: true
       referencedRelation: "children"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"child_room_preferences": {
+                  Row: {
+                    "character_key": string,"child_id": string,"family_id": string,"theme_key": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "character_key"?: string,"child_id": string,"family_id": string,"theme_key"?: string,"updated_at"?: string
+                  }
+                  Update: {
+                    "character_key"?: string,"child_id"?: string,"family_id"?: string,"theme_key"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "child_room_preferences_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: true
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "child_room_preferences_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
       referencedColumns: ["id"]
     }
                   ]
@@ -343,6 +491,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"family_rewards": {
+                  Row: {
+                    "active": boolean,"cost_stars": number,"created_at": string,"created_by": string | null,"family_id": string,"icon": string,"id": string,"title": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "active"?: boolean,"cost_stars": number,"created_at"?: string,"created_by"?: string | null,"family_id": string,"icon"?: string,"id"?: string,"title": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "active"?: boolean,"cost_stars"?: number,"created_at"?: string,"created_by"?: string | null,"family_id"?: string,"icon"?: string,"id"?: string,"title"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "family_rewards_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"grades": {
                   Row: {
                     "child_id": string,"created_at": string,"family_id": string,"graded_on": string,"id": string,"kind": Database["public"]['Enums']["grade_kind"],"max_score": number,"note": string | null,"score": number,"subject": string
@@ -489,16 +657,54 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"star_events": {
+                },"reward_requests": {
                   Row: {
-                    "child_id": string,"completion_id": string | null,"created_at": string,"created_by": string | null,"delta": number,"family_id": string,"id": number,"reason": string
+                    "child_id": string,"cost_snapshot": number,"decided_at": string | null,"decided_by": string | null,"delivered_at": string | null,"family_id": string,"goal_id": string | null,"id": string,"idempotency_key": string,"requested_at": string,"reward_id": string,"status": Database["public"]['Enums']["reward_request_status"]
                   }
                   ComputedFields: never
                   Insert: {
-                    "child_id": string,"completion_id"?: string | null,"created_at"?: string,"created_by"?: string | null,"delta": number,"family_id": string,"id"?: never,"reason": string
+                    "child_id": string,"cost_snapshot": number,"decided_at"?: string | null,"decided_by"?: string | null,"delivered_at"?: string | null,"family_id": string,"goal_id"?: string | null,"id"?: string,"idempotency_key": string,"requested_at"?: string,"reward_id": string,"status"?: Database["public"]['Enums']["reward_request_status"]
                   }
                   Update: {
-                    "child_id"?: string,"completion_id"?: string | null,"created_at"?: string,"created_by"?: string | null,"delta"?: number,"family_id"?: string,"id"?: never,"reason"?: string
+                    "child_id"?: string,"cost_snapshot"?: number,"decided_at"?: string | null,"decided_by"?: string | null,"delivered_at"?: string | null,"family_id"?: string,"goal_id"?: string | null,"id"?: string,"idempotency_key"?: string,"requested_at"?: string,"reward_id"?: string,"status"?: Database["public"]['Enums']["reward_request_status"]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "reward_requests_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "reward_requests_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "reward_requests_goal_id_fkey"
+      columns: ["goal_id"]
+isOneToOne: false
+      referencedRelation: "child_goals"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "reward_requests_reward_id_fkey"
+      columns: ["reward_id"]
+isOneToOne: false
+      referencedRelation: "family_rewards"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"star_events": {
+                  Row: {
+                    "child_id": string,"completion_id": string | null,"created_at": string,"created_by": string | null,"delta": number,"family_id": string,"id": number,"reason": string,"refund_request_id": string | null,"reward_request_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "child_id": string,"completion_id"?: string | null,"created_at"?: string,"created_by"?: string | null,"delta": number,"family_id": string,"id"?: never,"reason": string,"refund_request_id"?: string | null,"reward_request_id"?: string | null
+                  }
+                  Update: {
+                    "child_id"?: string,"completion_id"?: string | null,"created_at"?: string,"created_by"?: string | null,"delta"?: number,"family_id"?: string,"id"?: never,"reason"?: string,"refund_request_id"?: string | null,"reward_request_id"?: string | null
                   }
                   Relationships: [
                     {
@@ -518,6 +724,18 @@ isOneToOne: false
       columns: ["family_id"]
 isOneToOne: false
       referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "star_events_refund_request_id_fkey"
+      columns: ["refund_request_id"]
+isOneToOne: false
+      referencedRelation: "reward_requests"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "star_events_reward_request_id_fkey"
+      columns: ["reward_request_id"]
+isOneToOne: false
+      referencedRelation: "reward_requests"
       referencedColumns: ["id"]
     }
                   ]
@@ -619,7 +837,28 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "child_logout":
+            "cancel_reward_request":
+{ Args: { "p_request_id": string }; Returns: {
+              "child_id": string,
+"cost_snapshot": number,
+"decided_at": string | null,
+"decided_by": string | null,
+"delivered_at": string | null,
+"family_id": string,
+"goal_id": string | null,
+"id": string,
+"idempotency_key": string,
+"requested_at": string,
+"reward_id": string,
+"status": Database["public"]['Enums']["reward_request_status"]
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "reward_requests"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
+"child_logout":
 { Args: Record<PropertyKey, never>; Returns: undefined
                            },
 "child_pin_login":
@@ -651,6 +890,48 @@ isOneToOne: false
 "custom_access_token_hook":
 { Args: { "event": Json }; Returns: Json
                            },
+"decide_reward_request":
+{ Args: { "p_approve": boolean,"p_request_id": string }; Returns: {
+              "child_id": string,
+"cost_snapshot": number,
+"decided_at": string | null,
+"decided_by": string | null,
+"delivered_at": string | null,
+"family_id": string,
+"goal_id": string | null,
+"id": string,
+"idempotency_key": string,
+"requested_at": string,
+"reward_id": string,
+"status": Database["public"]['Enums']["reward_request_status"]
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "reward_requests"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
+"deliver_reward_request":
+{ Args: { "p_request_id": string }; Returns: {
+              "child_id": string,
+"cost_snapshot": number,
+"decided_at": string | null,
+"decided_by": string | null,
+"delivered_at": string | null,
+"family_id": string,
+"goal_id": string | null,
+"id": string,
+"idempotency_key": string,
+"requested_at": string,
+"reward_id": string,
+"status": Database["public"]['Enums']["reward_request_status"]
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "reward_requests"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "finish_exam_attempt":
 { Args: { "p_attempt_id": string }; Returns: {
               "ai_feedback": Json | null,
@@ -697,6 +978,27 @@ isOneToOne: false
 "request_pairing":
 { Args: { "p_device_name"?: string }; Returns: string
                            },
+"request_reward":
+{ Args: { "p_acting_child_id"?: string,"p_idempotency_key": string,"p_reward_id": string }; Returns: {
+              "child_id": string,
+"cost_snapshot": number,
+"decided_at": string | null,
+"decided_by": string | null,
+"delivered_at": string | null,
+"family_id": string,
+"goal_id": string | null,
+"id": string,
+"idempotency_key": string,
+"requested_at": string,
+"reward_id": string,
+"status": Database["public"]['Enums']["reward_request_status"]
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "reward_requests"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "review_task":
 { Args: { "p_approve": boolean,"p_completion_id": string }; Returns: {
               "child_id": string,
@@ -720,11 +1022,31 @@ isOneToOne: false
 "revoke_device":
 { Args: { "p_device_id": string }; Returns: undefined
                            },
+"set_child_goal":
+{ Args: { "p_acting_child_id"?: string,"p_reward_id": string }; Returns: {
+              "child_id": string,
+"created_at": string,
+"created_by": string | null,
+"decided_at": string | null,
+"family_id": string,
+"id": string,
+"reward_id": string,
+"status": Database["public"]['Enums']["child_goal_status"]
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "child_goals"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "set_child_pin":
 { Args: { "p_child_id": string,"p_pin": string }; Returns: undefined
                            },
 "set_parent_pin":
 { Args: { "p_pin": string }; Returns: undefined
+                           },
+"set_room_preference":
+{ Args: { "p_acting_child_id"?: string,"p_character": string,"p_theme"?: string }; Returns: undefined
                            },
 "start_exam_attempt":
 { Args: { "p_exam_id": string }; Returns: {
@@ -761,7 +1083,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "attempt_status": "in_progress"|"submitted"|"graded","billing_period": "monthly"|"yearly","completion_status": "done"|"approved"|"returned","event_type": "school"|"activity"|"holiday"|"exam"|"family"|"doctor"|"birthday"|"other","exam_status": "draft"|"ready"|"assigned"|"completed","grade_kind": "exam"|"homework"|"project"|"oral"|"performance","member_role": "parent"|"guardian","note_visibility": "private"|"family"|"child"|"teacher","plan_code": "free"|"plus"|"pro","question_difficulty": "kolay"|"orta"|"orta_ustu"|"zor","question_kind": "multiple_choice"|"open_ended","store_platform": "apple"|"google","subscription_status": "active"|"grace"|"on_hold"|"expired"|"revoked","time_of_day": "morning"|"afternoon"|"evening"|"any"
+            "attempt_status": "in_progress"|"submitted"|"graded","billing_period": "monthly"|"yearly","child_goal_status": "active"|"reached"|"redeemed"|"cancelled","completion_status": "done"|"approved"|"returned","event_type": "school"|"activity"|"holiday"|"exam"|"family"|"doctor"|"birthday"|"other","exam_status": "draft"|"ready"|"assigned"|"completed","grade_kind": "exam"|"homework"|"project"|"oral"|"performance","member_role": "parent"|"guardian","note_visibility": "private"|"family"|"child"|"teacher","plan_code": "free"|"plus"|"pro","question_difficulty": "kolay"|"orta"|"orta_ustu"|"zor","question_kind": "multiple_choice"|"open_ended","reward_request_status": "requested"|"approved"|"declined"|"delivered"|"cancelled","store_platform": "apple"|"google","subscription_status": "active"|"grace"|"on_hold"|"expired"|"revoked","time_of_day": "morning"|"afternoon"|"evening"|"any"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -877,7 +1199,7 @@ export type CompositeTypes<
 export const Constants = {
   "public": {
           Enums: {
-            "attempt_status": ["in_progress", "submitted", "graded"],"billing_period": ["monthly", "yearly"],"completion_status": ["done", "approved", "returned"],"event_type": ["school", "activity", "holiday", "exam", "family", "doctor", "birthday", "other"],"exam_status": ["draft", "ready", "assigned", "completed"],"grade_kind": ["exam", "homework", "project", "oral", "performance"],"member_role": ["parent", "guardian"],"note_visibility": ["private", "family", "child", "teacher"],"plan_code": ["free", "plus", "pro"],"question_difficulty": ["kolay", "orta", "orta_ustu", "zor"],"question_kind": ["multiple_choice", "open_ended"],"store_platform": ["apple", "google"],"subscription_status": ["active", "grace", "on_hold", "expired", "revoked"],"time_of_day": ["morning", "afternoon", "evening", "any"]
+            "attempt_status": ["in_progress", "submitted", "graded"],"billing_period": ["monthly", "yearly"],"child_goal_status": ["active", "reached", "redeemed", "cancelled"],"completion_status": ["done", "approved", "returned"],"event_type": ["school", "activity", "holiday", "exam", "family", "doctor", "birthday", "other"],"exam_status": ["draft", "ready", "assigned", "completed"],"grade_kind": ["exam", "homework", "project", "oral", "performance"],"member_role": ["parent", "guardian"],"note_visibility": ["private", "family", "child", "teacher"],"plan_code": ["free", "plus", "pro"],"question_difficulty": ["kolay", "orta", "orta_ustu", "zor"],"question_kind": ["multiple_choice", "open_ended"],"reward_request_status": ["requested", "approved", "declined", "delivered", "cancelled"],"store_platform": ["apple", "google"],"subscription_status": ["active", "grace", "on_hold", "expired", "revoked"],"time_of_day": ["morning", "afternoon", "evening", "any"]
           }
         }
 } as const
