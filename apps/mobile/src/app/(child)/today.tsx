@@ -118,6 +118,7 @@ export default function TodayScreen() {
           </Pressable>
         );
       })}
+      <Button variant="secondary" size="child" title={t("child.calendar")} onPress={() => router.push("/(child)/calendar")} />
       <Button variant="ghost" title={t("child.switchProfile")} onPress={() => void logout()} />
     </Screen>
   );

@@ -153,7 +153,14 @@ export default function ParentHomeScreen() {
         ))}
       </View>
 
-      <Button variant="secondary" title={t("parent.tasks")} onPress={() => router.push("/(parent)/tasks")} />
+      <View className="flex-row gap-2">
+        <View className="flex-1">
+          <Button variant="secondary" title={t("parent.tasks")} onPress={() => router.push("/(parent)/tasks")} />
+        </View>
+        <View className="flex-1">
+          <Button variant="secondary" title={t("parent.calendar")} onPress={() => router.push("/(parent)/calendar")} />
+        </View>
+      </View>
 
       <View className="gap-2 rounded-parent border border-mist p-4">
         <Text className="text-lg font-semibold text-ink dark:text-night-text">{t("parent.children")}</Text>
