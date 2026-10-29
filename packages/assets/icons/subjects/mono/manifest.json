@@ -1,0 +1,192 @@
+[
+  {
+    "slug": "turkish",
+    "label_tr": "Türkçe",
+    "file": "turkish.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "math",
+    "label_tr": "Matematik",
+    "file": "math.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "life-science",
+    "label_tr": "Hayat bilgisi",
+    "file": "life-science.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "science",
+    "label_tr": "Fen bilimleri",
+    "file": "science.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "social-studies",
+    "label_tr": "Sosyal bilgiler",
+    "file": "social-studies.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "citizenship",
+    "label_tr": "Vatandaşlık",
+    "file": "citizenship.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "english",
+    "label_tr": "İngilizce",
+    "file": "english.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "religion-ethics",
+    "label_tr": "Din kültürü ve ahlak bilgisi",
+    "file": "religion-ethics.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "physical-education",
+    "label_tr": "Beden eğitimi",
+    "file": "physical-education.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "play-physical",
+    "label_tr": "Oyun ve fiziki etkinlikler",
+    "file": "play-physical.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "music",
+    "label_tr": "Müzik",
+    "file": "music.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "visual-arts",
+    "label_tr": "Görsel sanatlar",
+    "file": "visual-arts.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "ict",
+    "label_tr": "Bilişim teknolojileri",
+    "file": "ict.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "technology-design",
+    "label_tr": "Teknoloji ve tasarım",
+    "file": "technology-design.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "traffic-safety",
+    "label_tr": "Trafik güvenliği",
+    "file": "traffic-safety.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "free-activity",
+    "label_tr": "Serbest etkinlik",
+    "file": "free-activity.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "guidance",
+    "label_tr": "Rehberlik",
+    "file": "guidance.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "study-hall",
+    "label_tr": "Etüt",
+    "file": "study-hall.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  },
+  {
+    "slug": "elective",
+    "label_tr": "Seçmeli ders",
+    "file": "elective.svg",
+    "viewBox": "0 0 24 24",
+    "variants": [
+      "mono"
+    ],
+    "png": []
+  }
+]
