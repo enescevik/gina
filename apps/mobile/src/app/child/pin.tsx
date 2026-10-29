@@ -28,7 +28,7 @@ export default function ChildPinScreen() {
         return;
       }
       await refreshClaims();
-      router.replace("/(child)/today");
+      router.replace("/child/today");
     } catch (e) {
       setError(e);
     } finally {

@@ -27,7 +27,7 @@ export default function ChildPickerScreen() {
             key={child.id}
             accessibilityRole="button"
             className="min-h-32 min-w-40 flex-1 items-center justify-center rounded-child bg-white p-6 active:bg-teal-light dark:bg-night-surface"
-            onPress={() => router.push({ pathname: "/(child)/pin", params: { childId: child.id, name: child.name } })}
+            onPress={() => router.push({ pathname: "/child/pin", params: { childId: child.id, name: child.name } })}
           >
             <View className="mb-3 h-16 w-16 rounded-full bg-teal-light" />
             <Text className="text-xl font-bold text-ink dark:text-night-text">{child.name}</Text>

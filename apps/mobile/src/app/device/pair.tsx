@@ -25,7 +25,7 @@ export default function PairScreen() {
   }, [loading, session]);
 
   useEffect(() => {
-    if (claims?.role === "device") router.replace("/(child)");
+    if (claims?.role === "device") router.replace("/child");
   }, [claims?.role]);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function PairScreen() {
         .then((next) => {
           if (next?.role === "device") {
             clearInterval(timer);
-            router.replace("/(child)");
+            router.replace("/child");
           }
         })
         .catch(setError);

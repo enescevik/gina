@@ -15,8 +15,8 @@ export default function Index() {
     );
   }
   if (!session) return <Redirect href="/(auth)/sign-in" />;
-  if (claims?.role === "parent") return <Redirect href="/(parent)" />;
-  if (claims?.role === "device") return <Redirect href={claims.child_id ? "/(child)/today" : "/(child)"} />;
-  if (isAnonymous) return <Redirect href="/(device)/pair" />;
+  if (claims?.role === "parent") return <Redirect href="/parent" />;
+  if (claims?.role === "device") return <Redirect href={claims.child_id ? "/child/today" : "/child"} />;
+  if (isAnonymous) return <Redirect href="/device/pair" />;
   return <Redirect href="/(auth)/family" />;
 }

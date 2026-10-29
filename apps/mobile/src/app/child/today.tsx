@@ -82,7 +82,7 @@ export default function TodayScreen() {
     await supabase.rpc("child_logout");
     await refreshClaims();
     queryClient.clear();
-    router.replace("/(child)");
+    router.replace("/child");
   }
 
   return (
@@ -118,7 +118,7 @@ export default function TodayScreen() {
           </Pressable>
         );
       })}
-      <Button variant="secondary" size="child" title={t("child.calendar")} onPress={() => router.push("/(child)/calendar")} />
+      <Button variant="secondary" size="child" title={t("child.calendar")} onPress={() => router.push("/child/calendar")} />
       <Button variant="ghost" title={t("child.switchProfile")} onPress={() => void logout()} />
     </Screen>
   );

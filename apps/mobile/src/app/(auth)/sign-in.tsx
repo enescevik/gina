@@ -65,7 +65,7 @@ export default function SignInScreen() {
         <Button variant="secondary" title={t("auth.withGoogle")} disabled />
         <Text className="text-center text-xs text-gray-500">{t("auth.socialSoon")}</Text>
       </View>
-      <Link href="/(device)/pair" className="mt-8 text-center text-base text-teal-dark">
+      <Link href="/device/pair" className="mt-8 text-center text-base text-teal-dark">
         {t("auth.thisIsChildTablet")}
       </Link>
     </Screen>
