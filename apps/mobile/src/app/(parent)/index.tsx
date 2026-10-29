@@ -2,13 +2,47 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText, Screen } from "@/components/ui/screen";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
+
+/** Çocuk satırı: ad, sınıf ve 4 haneli PIN belirleme (set_child_pin RPC). */
+function ChildRow({ id, name, grade }: { id: string; name: string; grade: number | null }) {
+  const [pin, setPin] = useState("");
+  const setChildPin = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.rpc("set_child_pin", { p_child_id: id, p_pin: pin });
+      if (error) throw error;
+    },
+    onSuccess: () => setPin(""),
+  });
+  return (
+    <View className="gap-1">
+      <View className="flex-row items-center gap-2">
+        <Text className="flex-1 text-base text-ink dark:text-night-text">
+          • {name}
+          {grade ? ` (${grade}. sınıf)` : ""}
+        </Text>
+        <TextInput
+          keyboardType="number-pad"
+          secureTextEntry
+          maxLength={4}
+          value={pin}
+          onChangeText={setPin}
+          placeholder="PIN"
+          placeholderTextColor="#9CA3AF"
+          className="w-20 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink dark:bg-night-surface dark:text-night-text"
+        />
+        <Button variant="ghost" title="PIN" loading={setChildPin.isPending} disabled={pin.length !== 4} onPress={() => setChildPin.mutate()} />
+      </View>
+      <ErrorText error={setChildPin.error} />
+    </View>
+  );
+}
 
 /** Veli ana sayfası (iskelet): aile ve davet kodu, çocuklar, cihaz eşleştirme, onay kuyruğu. */
 export default function ParentHomeScreen() {
@@ -114,13 +148,12 @@ export default function ParentHomeScreen() {
         ))}
       </View>
 
+      <Button variant="secondary" title={t("parent.tasks")} onPress={() => router.push("/(parent)/tasks")} />
+
       <View className="gap-2 rounded-parent border border-mist p-4">
         <Text className="text-lg font-semibold text-ink dark:text-night-text">{t("parent.children")}</Text>
         {children.data?.map((child) => (
-          <Text key={child.id} className="text-base text-ink dark:text-night-text">
-            • {child.name}
-            {child.grade ? ` (${child.grade}. sınıf)` : ""}
-          </Text>
+          <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} />
         ))}
         <Field label="Çocuk ekle" value={childName} onChangeText={setChildName} placeholder="Ad" />
         <Button variant="secondary" title="Ekle" loading={addChild.isPending} disabled={!childName.trim()} onPress={() => addChild.mutate(childName.trim())} />
