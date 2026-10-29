@@ -1,6 +1,6 @@
 # İkon yenileme — görsel yön önerisi
 
-Kullanıcı önceki oyunlaştırma çizimlerini reddetti. Bu sekiz örnek yalnız yeni stil değerlendirmesi içindir; üretim seti veya tamamlanmış BRIEF kategorisi değildir. Henüz merge edilmedi.
+Kullanıcı önceki oyunlaştırma çizimlerini reddetti. Bu sekiz örnek yalnız yeni stil değerlendirmesi içindir; üretim seti veya tamamlanmış BRIEF kategorisi değildir. Düz SVG denemesi seçilen yön değildir.
 
 Marka işareti Yan Yana olarak kalır. Ödül yıldızı artık eski yıldız/tik logosunu kullanmaz: simetrik, yumuşak köşeli ayrı semboldür. Koleksiyon rozetleri aynı çember/kurdele geometrisini paylaşır; içerik tek büyük sembole indirgenir. En küçük kullanım ayrı sadeleştirmeyle ele alınmalı; 96 ızgara rozetin detayını 16 px'e sıkıştırmamak gerekir.
 
@@ -11,4 +11,4 @@ Eski üretim dosyaları ve uygulama kodu değiştirilmedi. Yeni koleksiyon yön�
 
 ## İkinci yön: oda koleksiyonları
 
-`concepts/collectibles-direction.webp` onaylı oda ile eşleşen büyük ödül/rozet illüstrasyon yönüdür. İlk sekiz düz SVG ile aynı teslim türü değildir. Kullanıcı değerlendirmesi bekleniyor; büyük nesneler için önerilen yön budur. Eski üretim seti henüz değiştirilmedi.
+`concepts/collectibles-direction.webp` onaylı oda ile eşleşen büyük ödül/rozet illüstrasyon yönüdür. İlk sekiz düz SVG ile aynı teslim türü değildir. Kullanıcı bu illüstratif yönü onayladı ve dört kategorinin tamamına uygulanmasını istedi. Eski üretim seti henüz değiştirilmedi.
