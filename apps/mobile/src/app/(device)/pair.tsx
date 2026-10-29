@@ -1,5 +1,6 @@
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import { supabase } from "@/lib/supabase";
  * veli telefonundan "Cihaz ekle" ile kod girilince claim'ler yenilenir ve çocuk alanına geçilir.
  */
 export default function PairScreen() {
+  const { t } = useTranslation();
   const { session, claims, loading, isAnonymous } = useSession();
   const [code, setCode] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -56,22 +58,22 @@ export default function PairScreen() {
   }
 
   return (
-    <Screen tone="child" title="Tableti aileye bağla">
+    <Screen tone="child" title={t("device.pairTitle")}>
       <Text className="text-base text-ink dark:text-night-text">
-        Veli telefonunda Gina&apos;yı aç, &laquo;Cihaz ekle&raquo; de ve buradaki kodu gir. Kod 10 dakika geçerli.
+        {t("device.pairHelp")}
       </Text>
       {code ? (
         <View className="items-center rounded-child bg-white p-8 dark:bg-night-surface">
           <Text className="text-5xl font-bold tracking-widest text-teal-dark">{code}</Text>
-          <Text className="mt-3 text-sm text-gray-500">Eşleşme bekleniyor…</Text>
+          <Text className="mt-3 text-sm text-gray-500">{t("device.waiting")}</Text>
         </View>
       ) : (
-        <Button size="child" title="Eşleştirme kodu al" loading={busy || !isAnonymous} onPress={requestCode} />
+        <Button size="child" title={t("device.getCode")} loading={busy || !isAnonymous} onPress={requestCode} />
       )}
       <ErrorText error={error} />
       <Button
         variant="ghost"
-        title="Bu cihaz veli telefonu"
+        title={t("device.thisIsParentPhone")}
         onPress={() => void supabase.auth.signOut().then(() => router.replace("/(auth)/sign-in"))}
       />
     </Screen>

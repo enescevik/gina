@@ -23,7 +23,7 @@ export default function ChildPinScreen() {
       const { data: ok, error: rpcError } = await supabase.rpc("child_pin_login", { p_child_id: childId, p_pin: pin });
       if (rpcError) throw rpcError;
       if (!ok) {
-        setError(new Error("PIN yanlış, tekrar dene."));
+        setError(new Error(t("child.wrongPin")));
         setPin("");
         return;
       }
@@ -37,7 +37,7 @@ export default function ChildPinScreen() {
   }
 
   return (
-    <Screen tone="child" title={name ? `Merhaba ${name}!` : t("child.enterPin")}>
+    <Screen tone="child" title={name ? t("child.hello", { name }) : t("child.enterPin")}>
       <Text className="text-base text-ink dark:text-night-text">{t("child.enterPin")}</Text>
       <Field
         label="PIN"

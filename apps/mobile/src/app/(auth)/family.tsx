@@ -39,7 +39,7 @@ export default function FamilyScreen() {
     <Screen title={t("app.name")}>
       <View className="gap-3 rounded-parent bg-teal-light p-4">
         <Text className="text-lg font-semibold text-ink">{t("auth.createFamily")}</Text>
-        <Field label="Aile adı" value={familyName} onChangeText={setFamilyName} placeholder="Çevik Ailesi" />
+        <Field label={t("family.name")} value={familyName} onChangeText={setFamilyName} placeholder={t("family.namePlaceholder")} />
         <Button title={t("auth.createFamily")} loading={busy === "create"} disabled={!familyName.trim()} onPress={() => run("create")} />
       </View>
       <View className="gap-3 rounded-parent bg-mist p-4">
@@ -49,12 +49,12 @@ export default function FamilyScreen() {
           autoCapitalize="characters"
           value={inviteCode}
           onChangeText={setInviteCode}
-          placeholder="8 haneli kod"
+          placeholder={t("family.invitePlaceholder")}
         />
         <Button variant="secondary" title={t("auth.joinFamily")} loading={busy === "join"} disabled={!inviteCode.trim()} onPress={() => run("join")} />
       </View>
       <ErrorText error={error} />
-      <Button variant="ghost" title="Çıkış yap" onPress={() => void supabase.auth.signOut().then(() => router.replace("/"))} />
+      <Button variant="ghost" title={t("auth.signOut")} onPress={() => void supabase.auth.signOut().then(() => router.replace("/"))} />
     </Screen>
   );
 }

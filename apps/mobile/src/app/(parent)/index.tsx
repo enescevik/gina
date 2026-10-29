@@ -7,11 +7,13 @@ import { Text, TextInput, View } from "react-native";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText, Screen } from "@/components/ui/screen";
+import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
 /** Çocuk satırı: ad, sınıf ve 4 haneli PIN belirleme (set_child_pin RPC). */
 function ChildRow({ id, name, grade }: { id: string; name: string; grade: number | null }) {
+  const { t } = useTranslation();
   const [pin, setPin] = useState("");
   const setChildPin = useMutation({
     mutationFn: async () => {
@@ -25,7 +27,7 @@ function ChildRow({ id, name, grade }: { id: string; name: string; grade: number
       <View className="flex-row items-center gap-2">
         <Text className="flex-1 text-base text-ink dark:text-night-text">
           • {name}
-          {grade ? ` (${grade}. sınıf)` : ""}
+          {grade ? ` (${t("parent.gradeShort", { grade })})` : ""}
         </Text>
         <TextInput
           keyboardType="number-pad"
@@ -94,6 +96,9 @@ export default function ParentHomeScreen() {
     },
   });
 
+  // Çocuk tablette tik atınca onay kuyruğu anında güncellenir.
+  useRealtimeInvalidate("task_completions", familyId ? `family_id=eq.${familyId}` : null, [["approvals"]]);
+
   const addChild = useMutation({
     mutationFn: async (name: string) => {
       const { error } = await supabase.from("children").insert({ family_id: familyId, name });
@@ -133,7 +138,7 @@ export default function ParentHomeScreen() {
 
       <View className="gap-2 rounded-parent border border-mist p-4">
         <Text className="text-lg font-semibold text-ink dark:text-night-text">{t("parent.approvals")}</Text>
-        {approvals.data?.length === 0 ? <Text className="text-gray-500">Onay bekleyen görev yok.</Text> : null}
+        {approvals.data?.length === 0 ? <Text className="text-gray-500">{t("parent.noApprovals")}</Text> : null}
         {approvals.data?.map((item) => (
           <View key={item.id} className="flex-row items-center gap-2 rounded-parent bg-star/20 p-3">
             <View className="flex-1">
@@ -155,8 +160,8 @@ export default function ParentHomeScreen() {
         {children.data?.map((child) => (
           <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} />
         ))}
-        <Field label="Çocuk ekle" value={childName} onChangeText={setChildName} placeholder="Ad" />
-        <Button variant="secondary" title="Ekle" loading={addChild.isPending} disabled={!childName.trim()} onPress={() => addChild.mutate(childName.trim())} />
+        <Field label={t("parent.addChild")} value={childName} onChangeText={setChildName} placeholder={t("parent.childNamePlaceholder")} />
+        <Button variant="secondary" title={t("common.add")} loading={addChild.isPending} disabled={!childName.trim()} onPress={() => addChild.mutate(childName.trim())} />
       </View>
 
       <View className="gap-2 rounded-parent border border-mist p-4">
@@ -166,12 +171,12 @@ export default function ParentHomeScreen() {
             • {device.name}
           </Text>
         ))}
-        <Field label="Tabletteki 6 haneli kod" keyboardType="number-pad" maxLength={6} value={pairCode} onChangeText={setPairCode} />
+        <Field label={t("parent.pairCodeLabel")} keyboardType="number-pad" maxLength={6} value={pairCode} onChangeText={setPairCode} />
         <Button variant="secondary" title={t("parent.pairDevice")} loading={pairDevice.isPending} disabled={pairCode.length !== 6} onPress={() => pairDevice.mutate(pairCode)} />
       </View>
 
       <ErrorText error={family.error ?? children.error ?? devices.error ?? approvals.error ?? addChild.error ?? pairDevice.error ?? review.error} />
-      <Button variant="ghost" title="Çıkış yap" onPress={() => void supabase.auth.signOut().then(() => router.replace("/"))} />
+      <Button variant="ghost" title={t("auth.signOut")} onPress={() => void supabase.auth.signOut().then(() => router.replace("/"))} />
     </Screen>
   );
 }

@@ -115,23 +115,23 @@ export default function ParentTasksScreen() {
           <View className="flex-1">
             <Text className="text-base font-semibold text-ink dark:text-night-text">{template.title}</Text>
             <Text className="text-sm text-gray-600">
-              {template.stars} ⭐ · {WEEKDAYS.filter((w) => template.days_of_week.includes(w.day)).map((w) => w.label).join(" ")}
+              {template.stars} ⭐ · {WEEKDAYS.filter((w) => template.days_of_week.includes(w.day)).map((w) => t(`weekday.${w.day}`)).join(" ")}
             </Text>
           </View>
           <Button
             variant="ghost"
-            title={template.active ? "Durdur" : "Aç"}
+            title={template.active ? t("tasks.pause") : t("tasks.resume")}
             onPress={() => toggleActive.mutate({ id: template.id, active: !template.active })}
           />
         </View>
       ))}
-      {templates.data?.length === 0 ? <Text className="text-gray-500">Bu çocuk için henüz görev yok.</Text> : null}
+      {templates.data?.length === 0 ? <Text className="text-gray-500">{t("tasks.none")}</Text> : null}
 
       {selectedChild ? (
         <View className="gap-3 rounded-parent bg-teal-light p-4">
-          <Text className="text-lg font-semibold text-ink">Yeni görev</Text>
-          <Field label="Görev" value={title} onChangeText={setTitle} placeholder="Dişlerini fırçala" />
-          <Field label="Yıldız (0-10)" keyboardType="number-pad" maxLength={2} value={stars} onChangeText={setStars} />
+          <Text className="text-lg font-semibold text-ink">{t("tasks.new")}</Text>
+          <Field label={t("tasks.title")} value={title} onChangeText={setTitle} placeholder={t("tasks.titlePlaceholder")} />
+          <Field label={t("tasks.stars")} keyboardType="number-pad" maxLength={2} value={stars} onChangeText={setStars} />
           <View className="flex-row flex-wrap gap-2">
             {WEEKDAYS.map((w) => (
               <Pressable
@@ -140,7 +140,7 @@ export default function ParentTasksScreen() {
                 onPress={() => toggleDay(w.day)}
                 className={`rounded-full px-3 py-2 ${days.includes(w.day) ? "bg-teal" : "bg-white"}`}
               >
-                <Text className={days.includes(w.day) ? "font-semibold text-white" : "text-ink"}>{w.label}</Text>
+                <Text className={days.includes(w.day) ? "font-semibold text-white" : "text-ink"}>{t(`weekday.${w.day}`)}</Text>
               </Pressable>
             ))}
           </View>
@@ -148,7 +148,7 @@ export default function ParentTasksScreen() {
           <Button title={t("common.save")} loading={addTemplate.isPending} disabled={!title.trim() || days.length === 0} onPress={() => addTemplate.mutate()} />
         </View>
       ) : (
-        <Text className="text-gray-500">Önce ana sayfadan bir çocuk ekle.</Text>
+        <Text className="text-gray-500">{t("tasks.addChildFirst")}</Text>
       )}
 
       <ErrorText error={children.error ?? templates.error ?? toggleActive.error} />

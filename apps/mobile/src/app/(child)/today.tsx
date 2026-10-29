@@ -8,6 +8,7 @@ import { DEFAULT_TIMEZONE, localDateOf, starBalance, templatesDueOn } from "@gin
 
 import { Button } from "@/components/ui/button";
 import { ErrorText, Screen } from "@/components/ui/screen";
+import { useRealtimeInvalidate } from "@/lib/realtime";
 import { refreshClaims, useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -69,6 +70,11 @@ export default function TodayScreen() {
     onSettled: () => void queryClient.invalidateQueries({ queryKey: ["task_completions", childId, today] }),
   });
 
+  // Veli onayladığında ya da görev eklediğinde tablet anında yenilenir.
+  useRealtimeInvalidate("task_completions", childId ? `child_id=eq.${childId}` : null, [["task_completions", childId, today]]);
+  useRealtimeInvalidate("star_events", childId ? `child_id=eq.${childId}` : null, [["star_events", childId]]);
+  useRealtimeInvalidate("task_templates", childId ? `child_id=eq.${childId}` : null, [["task_templates", childId]]);
+
   const due = templatesDueOn(templates.data ?? [], today);
   const byTemplate = new Map((completions.data ?? []).map((c) => [c.template_id, c]));
 
@@ -105,14 +111,14 @@ export default function TodayScreen() {
             <View className="flex-1">
               <Text className="text-xl font-semibold text-ink">{task.title}</Text>
               <Text className="text-sm text-gray-600">
-                {status === "approved" ? "Onaylandı" : status === "done" ? t("child.waitingApproval") : `${task.stars} ⭐`}
+                {status === "approved" ? t("child.approved") : status === "done" ? t("child.waitingApproval") : `${task.stars} ⭐`}
               </Text>
             </View>
             <Text className="text-3xl">{status === "approved" ? "✅" : status === "done" ? "⏳" : "⬜️"}</Text>
           </Pressable>
         );
       })}
-      <Button variant="ghost" title="Profil değiştir" onPress={() => void logout()} />
+      <Button variant="ghost" title={t("child.switchProfile")} onPress={() => void logout()} />
     </Screen>
   );
 }

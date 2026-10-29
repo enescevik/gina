@@ -63,10 +63,10 @@ export default function SignInScreen() {
       <View className="mt-6 gap-2">
         <Button variant="secondary" title={t("auth.withApple")} disabled />
         <Button variant="secondary" title={t("auth.withGoogle")} disabled />
-        <Text className="text-center text-xs text-gray-500">Apple ve Google ile giriş, sağlayıcılar tanımlanınca açılır.</Text>
+        <Text className="text-center text-xs text-gray-500">{t("auth.socialSoon")}</Text>
       </View>
       <Link href="/(device)/pair" className="mt-8 text-center text-base text-teal-dark">
-        Bu cihaz çocuk tableti
+        {t("auth.thisIsChildTablet")}
       </Link>
     </Screen>
   );

@@ -35,7 +35,7 @@ export default function ChildPickerScreen() {
         ))}
       </View>
       {children.data?.length === 0 ? (
-        <Text className="text-base text-gray-500">Henüz çocuk eklenmemiş; veli telefonundan ekleyin.</Text>
+        <Text className="text-base text-gray-500">{t("child.noChildren")}</Text>
       ) : null}
     </Screen>
   );
