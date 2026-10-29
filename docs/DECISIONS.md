@@ -37,6 +37,10 @@ Son güncelleme: 2026-10-30. Kaynak: proje dokümanı (Claude Docs) ve 29-30 Eki
 - Apple standart EULA + kendi Kullanım Koşulları; özel EULA yok. Fiyat artışında mağaza kuralları geçerli (Apple onay kuralı), ek «30 gün» taahhüdü yok; iadeler mağaza üzerinden, biz destek oluruz.
 - AI özeti: işleme dayanağı sözleşmenin ifası (m.5/2-c), yurt dışı aktarım için ayrı açık rıza/özellik izni (varsayılan kapalı, ayarlardan geri alınabilir) — avukat onayına tabi. Üretilen özetler 12 ay saklanır; Anthropic'te kural olarak 30 gün (politika ihlali şüphesinde 2 yıla kadar).
 - Kids Category seçilmez; Play hedef kitlesi 18+ ebeveyn; metadata «çocuklar için» demez.
+## Prova modülü (30 Ekim 2026; Enes'in isteği)
+
+Sınav hazırlığı + kendini deneme + öğrenme modülünün adı **Prova**; işleyiş [PROVA.md](./PROVA.md)'de. Soru kütüphanesi beklenen cevap/çözüm/anlatım ve provenance ile; MEB senaryoları blueprint; süreli/süresiz denemeler; açık uçluları AI puanlar, eksikleri çıkarır, istenirse çalışma planına çevirir; seviye tespiti ilk girişte ve istenince. Paket kapısı: ücretsizde seviye tespiti + ayda 1 kütüphane denemesi; Plus'ta senaryolu deneme + AI üretim; Pro'da açık uçlu değerlendirme + plan + kitapçık. Çocuk AI ile doğrudan etkileşmez.
+
 ## Kesinleşen kararlar (30 Ekim 2026; Enes karar yetkisini devretti)
 
 - **Hukuki kimlik:** şahıs (bireysel geliştirici) olarak başlanır; mağazada satıcı adı olarak yasal ad görünür, GVK mük. 20/B stopaj istisnası muhasebeciyle teyit edilir; ileride şirkete devir mümkündür. Belgelerdeki kimlik yer tutucuları Enes'in bilgileriyle dolacak.
