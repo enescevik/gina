@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "stamp-approved",
+    "label_tr": "Onaylandı",
+    "file": "stamp-approved.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "stamp-pending",
+    "label_tr": "Onay bekliyor",
+    "file": "stamp-pending.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "stamp-returned",
+    "label_tr": "Tekrar dene",
+    "file": "stamp-returned.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  }
+]

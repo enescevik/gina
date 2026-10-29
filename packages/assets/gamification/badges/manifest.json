@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "badge-bronze",
+    "label_tr": "Bronz rozeti",
+    "file": "badge-bronze.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-silver",
+    "label_tr": "Gümüş rozeti",
+    "file": "badge-silver.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-gold",
+    "label_tr": "Altın rozeti",
+    "file": "badge-gold.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-diamond",
+    "label_tr": "Elmas rozeti",
+    "file": "badge-diamond.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-first-task",
+    "label_tr": "İlk görev",
+    "file": "badge-first-task.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-bookworm",
+    "label_tr": "Kitap kurdu",
+    "file": "badge-bookworm.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-early-bird",
+    "label_tr": "Erkenci kuş",
+    "file": "badge-early-bird.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-tidy",
+    "label_tr": "Düzen ustası",
+    "file": "badge-tidy.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-helper",
+    "label_tr": "Yardımsever",
+    "file": "badge-helper.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-math-star",
+    "label_tr": "Matematik yıldızı",
+    "file": "badge-math-star.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-week-hero",
+    "label_tr": "Haftanın kahramanı",
+    "file": "badge-week-hero.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-locked",
+    "label_tr": "Kilitli rozet",
+    "file": "badge-locked.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  }
+]
