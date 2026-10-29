@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "units": {
+    "rotation": "degrees",
+    "duration": "milliseconds"
+  },
+  "rendering": "native transform of SAME image, no pre-rendered AI frames",
+  "reduced_motion": "loading/loading-star-static.webp",
+  "loading": {
+    "asset": "loading/loading-star-static.webp",
+    "duration_ms": 1200,
+    "loop": true,
+    "stop_when_hidden": true,
+    "frames": [
+      {
+        "legacy_slug": "loading-star-01",
+        "offset": 0.0,
+        "rotate": 0
+      },
+      {
+        "legacy_slug": "loading-star-02",
+        "offset": 0.125,
+        "rotate": 45
+      },
+      {
+        "legacy_slug": "loading-star-03",
+        "offset": 0.25,
+        "rotate": 90
+      },
+      {
+        "legacy_slug": "loading-star-04",
+        "offset": 0.375,
+        "rotate": 135
+      },
+      {
+        "legacy_slug": "loading-star-05",
+        "offset": 0.5,
+        "rotate": 180
+      },
+      {
+        "legacy_slug": "loading-star-06",
+        "offset": 0.625,
+        "rotate": 225
+      },
+      {
+        "legacy_slug": "loading-star-07",
+        "offset": 0.75,
+        "rotate": 270
+      },
+      {
+        "legacy_slug": "loading-star-08",
+        "offset": 0.875,
+        "rotate": 315
+      }
+    ],
+    "end_rotate": 360
+  },
+  "star_burst": {
+    "asset": "stars/star-filled.webp",
+    "duration_ms": 600,
+    "loop": false,
+    "frames": [
+      {
+        "legacy_slug": "star-burst-01",
+        "offset": 0.0,
+        "scale": 0.7,
+        "opacity": 0
+      },
+      {
+        "legacy_slug": "star-burst-02",
+        "offset": 0.2,
+        "scale": 0.95,
+        "opacity": 1
+      },
+      {
+        "legacy_slug": "star-burst-03",
+        "offset": 0.4,
+        "scale": 1.12,
+        "opacity": 1
+      },
+      {
+        "legacy_slug": "star-burst-04",
+        "offset": 0.6,
+        "scale": 1.03,
+        "opacity": 1
+      },
+      {
+        "legacy_slug": "star-burst-05",
+        "offset": 0.8,
+        "scale": 1,
+        "opacity": 1
+      },
+      {
+        "legacy_slug": "star-burst-06",
+        "offset": 1.0,
+        "scale": 1,
+        "opacity": 0
+      }
+    ],
+    "sparkles": {
+      "count": 8,
+      "shape": "native small four-point sparkle",
+      "color": "#F5B301",
+      "radius_dp": [
+        10,
+        38
+      ],
+      "opacity": [
+        0,
+        1,
+        0
+      ]
+    }
+  },
+  "legacy_frame_files": "replaced by these declarative states; do not import missing WebP frames"
+}
