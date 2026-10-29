@@ -27,6 +27,12 @@ module.exports = {
         parent: "12px",
         button: "14px",
       },
+      fontFamily: {
+        display: ["Baloo2_800ExtraBold"],
+        "display-semi": ["Baloo2_600SemiBold"],
+        body: ["Nunito_600SemiBold"],
+        "body-bold": ["Nunito_700Bold"],
+      },
     },
   },
   plugins: [],

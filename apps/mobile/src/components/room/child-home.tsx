@@ -38,12 +38,12 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
             <View style={{ position: "absolute", ...header }} className="flex-row items-center justify-between">
               <View className="flex-row items-center gap-3">
                 <LogoMark width={40} height={40} />
-                <Text className="text-2xl font-bold text-ink">{t("child.hello", { name: childName })}</Text>
+                <Text className="font-display text-2xl text-ink">{t("child.hello", { name: childName })}</Text>
               </View>
               <View className="flex-row items-center gap-2">
                 <View className="min-h-12 flex-row items-center gap-1 rounded-full bg-star/20 px-4">
                   <Text className="text-base">⭐</Text>
-                  <Text className="text-base font-bold text-ink">{t("room.starCount", { count: data.stars })}</Text>
+                  <Text className="font-body-bold text-base text-ink">{t("room.starCount", { count: data.stars })}</Text>
                 </View>
                 <Pressable
                   accessibilityRole="button"
@@ -58,7 +58,7 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
 
             {/* Görev panosu */}
             <View style={{ position: "absolute", ...board }}>
-              <Text className="text-lg font-bold text-ink">{t("room.todayTasks")}</Text>
+              <Text className="font-display text-lg text-ink">{t("room.todayTasks")}</Text>
               <Text className="mb-1 text-sm text-gray-700">
                 {t("room.completedOf", { done: data.todayDone, total: data.due.length })}
               </Text>
@@ -88,7 +88,7 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
                     >
                       <TaskIcon slug={task.icon} size={28} />
                       <View className="flex-1">
-                        <Text numberOfLines={1} className="text-sm font-semibold text-ink">
+                        <Text numberOfLines={1} className="font-body-bold text-sm text-ink">
                           {task.title}
                         </Text>
                         <Text className="text-xs text-gray-700">
@@ -116,14 +116,14 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
 
             {/* Hedef bileti: hedef modeli henüz yok — yapı duruyor, 'yakında' etiketi */}
             <View style={{ position: "absolute", ...goal }} className="justify-center rounded-parent p-2">
-              <Text className="text-base font-bold text-ink">{t("room.myGoal")}</Text>
+              <Text className="font-display text-base text-ink">{t("room.myGoal")}</Text>
               <Text className="text-sm text-ink">{t("room.goalComingSoon")}</Text>
               <Text className="mt-1 text-xs text-gray-700">⭐ {t("room.starCount", { count: data.stars })}</Text>
             </View>
 
             {/* Haftam duvar takvimi */}
             <View style={{ position: "absolute", ...week }} className="justify-center">
-              <Text className="text-sm font-bold text-ink">{t("room.myWeek")}</Text>
+              <Text className="font-display text-sm text-ink">{t("room.myWeek")}</Text>
               <View className="mt-1 flex-row justify-between">
                 {data.weekSummary.map((day, i) => (
                   <View key={day.date} className="items-center" style={{ width: `${100 / 7}%` }}>
@@ -145,7 +145,7 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
 
             {/* Başardıklarım çekmecesi: bugünün gerçek özeti */}
             <Pressable accessibilityRole="button" style={{ position: "absolute", ...drawer }} className="flex-row items-center justify-center gap-2">
-              <Text className="text-sm font-bold text-ink">⭐ {t("room.myWins")}</Text>
+              <Text className="font-display text-sm text-ink">⭐ {t("room.myWins")}</Text>
               <Text className="text-xs text-ink">
                 {t("room.todaySummary", { tasks: data.todayDone, stars: data.todayStarsEarned })}
               </Text>

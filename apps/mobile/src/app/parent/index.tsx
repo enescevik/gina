@@ -151,7 +151,7 @@ export default function ParentHomeScreen() {
         <LogoMark width={44} height={44} />
         <Button variant="secondary" title={t("parent.menu")} onPress={() => router.push("/parent/menu")} />
       </View>
-      <Text className="text-3xl font-bold text-ink dark:text-night-text">{t("parent.goodDay")}</Text>
+      <Text className="font-display text-3xl text-ink dark:text-night-text">{t("parent.goodDay")}</Text>
       <Text className="text-base text-gray-600">{dateFormat.format(new Date(`${today}T12:00:00Z`))}</Text>
 
       <View className="flex-row flex-wrap gap-2">
@@ -176,7 +176,7 @@ export default function ParentHomeScreen() {
       </View>
 
       <View className="gap-3 rounded-parent bg-white p-4 dark:bg-night-surface">
-        <Text className="text-xl font-bold text-ink dark:text-night-text">{t("parent.familyDay")}</Text>
+        <Text className="font-display text-xl text-ink dark:text-night-text">{t("parent.familyDay")}</Text>
         {familyDay.length === 0 ? <Text className="text-gray-500">{t("tasks.addChildFirst")}</Text> : null}
         {familyDay.map(({ child, due, done, stars: childStars }) => (
           <Pressable
@@ -201,7 +201,7 @@ export default function ParentHomeScreen() {
 
       <View className="gap-2 rounded-parent bg-star/15 p-4">
         <View className="flex-row items-center justify-between">
-          <Text className="text-xl font-bold text-ink">{t("parent.waitingApproval")}</Text>
+          <Text className="font-display text-xl text-ink">{t("parent.waitingApproval")}</Text>
           <View className="h-7 w-7 items-center justify-center rounded-full bg-star">
             <Text className="font-bold text-ink">{pendingApprovals.length}</Text>
           </View>
@@ -230,7 +230,7 @@ export default function ParentHomeScreen() {
 
       <View className="gap-2 rounded-parent bg-white p-4 dark:bg-night-surface">
         <View className="flex-row items-center justify-between">
-          <Text className="text-xl font-bold text-ink dark:text-night-text">{t("parent.todaysPlan")}</Text>
+          <Text className="font-display text-xl text-ink dark:text-night-text">{t("parent.todaysPlan")}</Text>
           <Pressable accessibilityRole="button" onPress={() => router.push("/parent/calendar")}>
             <Text className="font-semibold text-teal-dark">{t("parent.openCalendar")} ›</Text>
           </Pressable>
