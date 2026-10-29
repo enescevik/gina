@@ -69,6 +69,7 @@
   "child.waitingApproval": "Waiting for approval",
   "child.approved": "Approved",
   "child.allDone": "All of today's tasks are done!",
+  "child.noTasks": "No tasks",
   "child.switchProfile": "Switch profile",
   "child.starsEarned_one": "You earned {{count}} star",
   "child.starsEarned_other": "You earned {{count}} stars",

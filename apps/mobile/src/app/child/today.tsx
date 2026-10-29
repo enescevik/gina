@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 
 import { TodayView } from "@/components/today-view";
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,14 @@ export default function TodayScreen() {
   return (
     <Screen tone="child" title={t("child.today")}>
       {childId ? <TodayView childId={childId} /> : null}
-      <Button variant="secondary" size="child" title={t("child.calendar")} onPress={() => router.push("/child/calendar")} />
+      <View className="flex-row gap-2">
+        <View className="flex-1">
+          <Button variant="secondary" size="child" title={t("child.week")} onPress={() => router.push("/child/week")} />
+        </View>
+        <View className="flex-1">
+          <Button variant="secondary" size="child" title={t("child.calendar")} onPress={() => router.push("/child/calendar")} />
+        </View>
+      </View>
       <Button variant="ghost" title={t("child.switchProfile")} onPress={() => void logout()} />
     </Screen>
   );

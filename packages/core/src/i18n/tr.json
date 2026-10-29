@@ -69,6 +69,7 @@
   "child.waitingApproval": "Onay bekliyor",
   "child.approved": "Onaylandı",
   "child.allDone": "Bugünkü görevlerin tamam!",
+  "child.noTasks": "Görev yok",
   "child.switchProfile": "Profil değiştir",
   "child.starsEarned_one": "{{count}} yıldız kazandın",
   "child.starsEarned_other": "{{count}} yıldız kazandın",
