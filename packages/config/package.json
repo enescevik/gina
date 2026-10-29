@@ -1,0 +1,9 @@
+{
+  "name": "@gina/config",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Paylaşılan tsconfig ve lint ayarları",
+  "files": [
+    "tsconfig.base.json"
+  ]
+}

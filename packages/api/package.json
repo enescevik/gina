@@ -1,0 +1,23 @@
+{
+  "name": "@gina/api",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Supabase istemcisi, sorgu/mutasyon sarmalayıcıları, çevrimdışı kuyruk",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gina/core": "workspace:*",
+    "@supabase/supabase-js": "^2.118.0"
+  },
+  "devDependencies": {
+    "@gina/config": "workspace:*",
+    "typescript": "~6.0.3"
+  }
+}

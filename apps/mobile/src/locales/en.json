@@ -1,0 +1,5 @@
+{
+  "CFBundleDisplayName": "Gina Family",
+  "NSCameraUsageDescription": "The camera is used to photograph school notices and add them to the calendar.",
+  "NSPhotoLibraryUsageDescription": "Photos are selected to add school documents to the calendar."
+}
