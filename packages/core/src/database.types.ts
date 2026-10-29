@@ -419,6 +419,9 @@ isOneToOne: false
 "pair_device":
 { Args: { "p_code": string }; Returns: string
                            },
+"parent_pin_set":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
 "request_pairing":
 { Args: { "p_device_name"?: string }; Returns: string
                            },
@@ -453,6 +456,9 @@ isOneToOne: false
                            },
 "undo_complete":
 { Args: { "p_completion_id": string }; Returns: undefined
+                           },
+"verify_child_pin":
+{ Args: { "p_child_id": string,"p_pin": string }; Returns: boolean
                            },
 "verify_parent_pin":
 { Args: { "p_pin": string }; Returns: boolean

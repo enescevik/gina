@@ -46,6 +46,38 @@ function ChildRow({ id, name, grade }: { id: string; name: string; grade: number
   );
 }
 
+/** Veli PIN'i: telefonda çocuk modundan çıkış ve cihaz ayarları için (set_parent_pin RPC). */
+function ParentPinRow() {
+  const { t } = useTranslation();
+  const [pin, setPin] = useState("");
+  const savePin = useMutation({
+    mutationFn: async () => {
+      const { error } = await supabase.rpc("set_parent_pin", { p_pin: pin });
+      if (error) throw error;
+    },
+    onSuccess: () => setPin(""),
+  });
+  return (
+    <View className="gap-1">
+      <View className="flex-row items-center gap-2">
+        <Text className="flex-1 text-sm text-ink dark:text-night-text">{t("parent.parentPin")}</Text>
+        <TextInput
+          keyboardType="number-pad"
+          secureTextEntry
+          maxLength={4}
+          value={pin}
+          onChangeText={setPin}
+          placeholder="PIN"
+          placeholderTextColor="#9CA3AF"
+          className="w-20 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink dark:bg-night-surface dark:text-night-text"
+        />
+        <Button variant="ghost" title={t("parent.savePin")} loading={savePin.isPending} disabled={pin.length !== 4} onPress={() => savePin.mutate()} />
+      </View>
+      <ErrorText error={savePin.error} />
+    </View>
+  );
+}
+
 /** Veli ana sayfası (iskelet): aile ve davet kodu, çocuklar, cihaz eşleştirme, onay kuyruğu. */
 export default function ParentHomeScreen() {
   const { t } = useTranslation();
@@ -161,6 +193,8 @@ export default function ParentHomeScreen() {
           <Button variant="secondary" title={t("parent.calendar")} onPress={() => router.push("/parent/calendar")} />
         </View>
       </View>
+      <Button title={t("parent.childMode")} onPress={() => router.push("/parent/child-mode")} />
+      <ParentPinRow />
 
       <View className="gap-2 rounded-parent border border-mist p-4">
         <Text className="text-lg font-semibold text-ink dark:text-night-text">{t("parent.children")}</Text>
