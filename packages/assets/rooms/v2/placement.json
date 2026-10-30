@@ -1,0 +1,57 @@
+{
+  "coordinateSpace": {
+    "width": 1586,
+    "height": 992
+  },
+  "themes": {
+    "sunny": {
+      "room": "room-base",
+      "characterAnchor": [
+        800,
+        857
+      ],
+      "petAnchor": [
+        565,
+        857
+      ]
+    },
+    "explorer": {
+      "room": "room-base",
+      "characterAnchor": [
+        800,
+        857
+      ],
+      "petAnchor": [
+        565,
+        857
+      ]
+    },
+    "nature": {
+      "room": "room-base",
+      "characterAnchor": [
+        800,
+        857
+      ],
+      "petAnchor": [
+        565,
+        857
+      ]
+    }
+  },
+  "petOptions": [
+    "none",
+    "cat",
+    "dog",
+    "monkey",
+    "lion"
+  ],
+  "selectedPetLayer": "pet-{slug}.webp",
+  "selectionPortrait": "pet-{slug}-portrait.webp",
+  "characterOptions": [
+    "girl",
+    "boy",
+    "unspecified"
+  ],
+  "defaultSelectionDoesNotRestrictUserChoice": true,
+  "units": "scene pixels; scale entire composition uniformly"
+}

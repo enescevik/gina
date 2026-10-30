@@ -1,0 +1,182 @@
+[
+  {
+    "slug": "avatar-adult-beard",
+    "file": "avatar-adult-beard.webp",
+    "source_image": "exec-cabfc080-5aa3-45c5-a57b-3cbca6312568.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly adult with short neat beard and brown hair, adult, medium warm brown skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "8057c76aff8aedf272ae9e439d7ce8db73f8d660ab12b611747103fd9f152c46",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-adult-glasses",
+    "file": "avatar-adult-glasses.webp",
+    "source_image": "exec-c4452fc9-93b7-4e09-91e7-4177863dfc4c.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly adult with round glasses and short brown hair, adult, light tan skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "a3eca1381a424bc191819d6636867f03ee84366901caa4dc430c1fdbeab353e8",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-adult-long",
+    "file": "avatar-adult-long.webp",
+    "source_image": "exec-168b4bae-b9b8-4cb8-b0a7-0688cd5d41d3.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly adult with shoulder length brown hair, adult, fair peach skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "180d19ff66d1c11de567c4cab91bb1afbb8103ac0497a2558a47efcbc8bd01f0",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-adult-short",
+    "file": "avatar-adult-short.webp",
+    "source_image": "exec-fe0ea045-720f-44c4-9294-3725193937e3.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly adult with short neat brown hair, adult, dark brown skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "e9c82e9429dd0094d77b6873b0796ddbad779d37ec09be8a68d9f1eabf4f2187",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-afro",
+    "file": "avatar-afro.webp",
+    "source_image": "exec-b3694771-ab2f-4eb7-8b03-a1a391238a90.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly 7–10 year old child with rounded natural afro hair, deep warm brown skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "29fd0639a815488af4d7fa648bcecc8e25173ee27becbc1dbe09ef8ff57e81fb",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-astronaut",
+    "file": "avatar-astronaut.webp",
+    "source_image": "exec-63dfe644-e15c-474b-8c3a-dcd6c9b1784a.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly 7–10 year old child with simple cream toy astronaut helmet with face visible, no logos, light tan skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "8f1a255be1f366844ae5f5e1a533b38b222a58256f14fccd0feefa4f4c449a19",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-beanie",
+    "file": "avatar-beanie.webp",
+    "source_image": "exec-6a48589f-e185-4c7c-bfe3-525e6f802f0b.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly 7–10 year old child with plain soft teal knitted beanie, fair peach skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "eabb2768d2794b2e65bbda2dc67b6a1b0cca76f4ceab590f976a0f4bff152ee7",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-braids",
+    "file": "avatar-braids.webp",
+    "source_image": "exec-6f7bf048-5413-4750-9da8-f2f6c8f67d3a.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly 7–10 year old child with two neat dark hair braids, dark brown skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "b14fd14a92ce5b39025649b37a6533c6d3a3a4d709bd2414d0270581ce7a132b",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-bun",
+    "file": "avatar-bun.webp",
+    "source_image": "exec-892b7d42-8de4-4db6-8238-f73794ab0d0a.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly 7–10 year old child with brown hair in a small bun, medium warm brown skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "48e8cd94f0a607d40db596d8cd949ed33b2e4d7264015239b7cba41e723a5a42",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-cap",
+    "file": "avatar-cap.webp",
+    "source_image": "exec-ef4962f4-c87a-4cdb-aab8-ed0c5a9e87e8.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly 7–10 year old child with a simple plain teal baseball cap, fair peach skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "8f78d74f477f95baabb96f58e4004150171d61baa99eb94c4c0ab14a1468aa23",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-curly",
+    "file": "avatar-curly.webp",
+    "source_image": "exec-e371a4e8-9e57-45d8-9074-ed9368c18a02.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly 7–10 year old child with short curly brown hair, fair peach skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "ddbe94f08e459880ceed75901d68560ae7d67c9dcccdd43542ca7d5610294e9a",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-default",
+    "file": "avatar-default.webp",
+    "source_image": "exec-b3697f39-4731-4e30-8aad-7f1080ecf4fe.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a neutral faceless gray bust silhouette, child proportions, softly shaded in storybook style. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "78ab2ddba53a510a49ead3effc01dee94413fc8c66db1e9d068dd380d95c2274",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-glasses",
+    "file": "avatar-glasses.webp",
+    "source_image": "exec-3ce68141-8619-4d99-9aa6-c09b803dc42d.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly 7–10 year old child with round glasses and straight brown hair, light tan skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "f101cf4dd20c3d760cab357504bbd4e6b55252c454ebd3d94d71cde0da643778",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-headband",
+    "file": "avatar-headband.webp",
+    "source_image": "exec-66f0d339-6993-45f1-af87-68208b3b0c40.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly 7–10 year old child with straight bob hair with simple teal headband, light tan skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "061ee3d8b25ee1f921deca09056b02cf47fb68f0d4f9fcc99cdaeb8d35646618",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-hearing-aid",
+    "file": "avatar-hearing-aid.webp",
+    "source_image": "exec-26fdb6fa-6d14-4b2e-91d0-715bb3e810b3.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly 7–10 year old child with short hair with clearly visible small behind-ear hearing aid, dark brown skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "2fcd92b36e27ef5d7377d3f9fa74d599158a2f17af1d08735a70a57101678149",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-parent-default",
+    "file": "avatar-parent-default.webp",
+    "source_image": "exec-f750a38e-b55d-4ffe-a135-773449d772ad.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a neutral faceless gray bust silhouette, adult proportions, softly shaded in storybook style. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "70bb642b458ffabb8ec94f74ac8128c5bab3293f0783f1744fac3df9e89580bf",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-reference-boy",
+    "file": "avatar-reference-boy.webp",
+    "source_image": "exec-0f16013b-ccb2-453b-ba5d-089f3b6bac73.png",
+    "prompt": "Use case: identity-preserve. Head and shoulders portrait of THIS EXACT Gina character, preserve same face, hair, skin tone and coral clothing. It will match the reference parent screen avatars. Soft cream circular background behind head, outside circle transparent. No text, no logo, no letters, no numbers. Centered head, gentle smile, same painted texture. Do not change identity or haircut.",
+    "sha256": "9ab8829e64807e3af232805fc6ad43b40a05590175e9f56463a05887b15dce8c",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "exec-f11bceb5-c3d6-4812-a61c-1bda67c3ca89.png"
+  },
+  {
+    "slug": "avatar-reference-girl",
+    "file": "avatar-reference-girl.webp",
+    "source_image": "exec-49b53f13-6532-4d67-b65e-b151fb452f1f.png",
+    "prompt": "Use case: identity-preserve. Head and shoulders portrait of THIS EXACT Gina character, preserve same face, hair, skin tone and coral clothing. It will match the reference parent screen avatars. Soft cream circular background behind head, outside circle transparent. No text, no logo, no letters, no numbers. Centered head, gentle smile, same painted texture. Do not change identity or haircut.",
+    "sha256": "f3f1dddcee1b6cb11afa231bb384cf8ff85f722c097bc2c0e7bc4d656918e8bc",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "exec-be5848b4-802a-41ac-8419-c82ebadffab6.png"
+  },
+  {
+    "slug": "avatar-spiky",
+    "file": "avatar-spiky.webp",
+    "source_image": "exec-ebce4ce9-5ed0-45bb-8067-6d00e8b37343.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly 7–10 year old child with short tousled spiky brown hair like the boy in parent reference, deep warm brown skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "e26d418bfe7cf918da2525da7aa2c5f9f8c29f6ea452a64ab8e448bb8f4fc03b",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "avatar-wavy",
+    "file": "avatar-wavy.webp",
+    "source_image": "exec-a30f7dec-b99a-41f5-a29e-f2c3ff9bb36f.png",
+    "prompt": "Use case: precise-object-edit. Create a circular portrait avatar matching the TWO illustrated child faces in parent reference (same hand-painted face style, head scale and eye line). Subject: a friendly 7–10 year old child with brown shoulder-length gently wavy hair, medium warm brown skin, small dark oval eyes, tiny warm smile, simple cream or teal shirt. Head and shoulders only, softly cream circular backdrop, outside circle truly transparent. No UI card, words, numerals, borders or logos. NOT flat outlined SVG art. Center face, breathing room around hair. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "938b37877733c305f85acfe5328ce4a3e5981a4c5ce8ecd4e9a6cbb612b8d320",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  }
+]

@@ -1,31 +1,22 @@
-[
-  {
-    "slug": "character-girl",
-    "ref": "character-girl.webp",
-    "transparent": true,
-    "prompt": "Create a NEW clean production sprite matching this character as identity/style reference only. Same hair, skin tone, coral long sleeve shirt, teal trousers, white socks, holding blank teal book, seated cross-legged. Entire character centered occupying only 80 percent of square canvas, with at least 10 percent truly empty transparent padding on ALL FOUR sides. Clean vector-like outer silhouette, smooth antialiased alpha. No ground contact marks, no shadow, no dust, no sparkles, no white fragments, no lines, no baseline, no colored pixels outside the single connected body silhouette. DO NOT copy stray fragments from input. Premium warm storybook shading. Absolutely no text or numbers. Fully transparent background.",
-    "source": "exec-2b9eece3-70aa-471a-8527-bde078ada5ca.png"
-  },
-  {
-    "slug": "character-boy",
-    "ref": "character-boy.webp",
-    "transparent": true,
-    "prompt": "Create a NEW clean production sprite matching this character as identity/style reference only. Same hair, skin tone, coral long sleeve shirt, teal trousers, white socks, holding blank teal book, seated cross-legged. Entire character centered occupying only 80 percent of square canvas, with at least 10 percent truly empty transparent padding on ALL FOUR sides. Clean vector-like outer silhouette, smooth antialiased alpha. No ground contact marks, no shadow, no dust, no sparkles, no white fragments, no lines, no baseline, no colored pixels outside the single connected body silhouette. DO NOT copy stray fragments from input. Premium warm storybook shading. Absolutely no text or numbers. Fully transparent background.",
-    "source": "exec-ba4851e6-b31c-412f-995c-7827b2dcbe23.png"
-  },
-  {
-    "slug": "character-unspecified",
-    "ref": "character-unspecified.webp",
-    "transparent": true,
-    "prompt": "Create a NEW clean production sprite matching this character as identity/style reference only. Same hair, skin tone, coral long sleeve shirt, teal trousers, white socks, holding blank teal book, seated cross-legged. Entire character centered occupying only 80 percent of square canvas, with at least 10 percent truly empty transparent padding on ALL FOUR sides. Clean vector-like outer silhouette, smooth antialiased alpha. No ground contact marks, no shadow, no dust, no sparkles, no white fragments, no lines, no baseline, no colored pixels outside the single connected body silhouette. DO NOT copy stray fragments from input. Premium warm storybook shading. Absolutely no text or numbers. Fully transparent background.",
-    "source": "exec-bfa77e23-72aa-4a01-82d2-75f5c872cc3b.png"
-  },
-  {
-    "slug": "room-base",
-    "ref": "room-base.webp",
-    "transparent": false,
-    "prompt": "Edit this approved Gina room concept into a production background plate, landscape target exactly 1586 by 992 pixels. Preserve the room viewpoint, warm cream wall, wooden floor, central window and curtain, bookcase and plant, yellow beanbag, teal cushion and teal rug, soft watercolor children's storybook style. REMOVE completely the large left wall task board and its frame, upper right ticket, right wall calendar and frame, and lower right trophy shelf/drawer cabinet: these will be separate UI layers. Replace their areas with naturally continued blank cream wall and floor. Keep central bookcase and plant. No people, no cat, no UI, no text, letters, numbers, logos, badges, medals, stars, or buttons. Clean full bleed opaque background, no borders. Keep cream/teal/warm wood and restrained golden accents of the reference. Large blank left wall and right wall zones must remain usable for native UI panels.",
-    "source": "exec-476d79af-d8cb-40cd-885b-1b4fe405aad8.png",
-    "normalization": "1585x992 to requested 1586x992 using sips; lossless WebP encoding"
-  }
-]
+{
+  "brief": 13,
+  "current": "generation-brief-13.json",
+  "previous": "previous/brief-12/generation-production.json",
+  "assets": [
+    "character-boy",
+    "character-girl",
+    "character-unspecified",
+    "family-group",
+    "parent-header-scene",
+    "parent-insight-book",
+    "pet-cat-portrait",
+    "pet-cat",
+    "pet-dog-portrait",
+    "pet-dog",
+    "pet-lion-portrait",
+    "pet-lion",
+    "pet-monkey-portrait",
+    "pet-monkey",
+    "room-base"
+  ]
+}

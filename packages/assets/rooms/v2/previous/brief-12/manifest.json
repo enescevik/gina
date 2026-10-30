@@ -1,0 +1,157 @@
+[
+  {
+    "slug": "reward-cinema-ticket",
+    "label_tr": "Sinema bileti",
+    "file": "reward-cinema-ticket.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "reward-bicycle",
+    "label_tr": "Bisiklet",
+    "file": "reward-bicycle.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "reward-console",
+    "label_tr": "Oyun konsolu",
+    "file": "reward-console.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "decor-sun",
+    "label_tr": "Güneşli oda dekoru",
+    "file": "decor-sun.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "decor-leaf",
+    "label_tr": "Doğa odası dekoru",
+    "file": "decor-leaf.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "decor-orbit",
+    "label_tr": "Keşif odası dekoru",
+    "file": "decor-orbit.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-tooth-care",
+    "label_tr": "Diş bakım sembolü",
+    "file": "badge-tooth-care.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "character-girl",
+    "file": "character-girl.webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "format": "webp",
+    "lossless": true,
+    "source": "exec-2b9eece3-70aa-471a-8527-bde078ada5ca.png",
+    "sha256": "e81ca8a4193bd637959f34bd8ec7b765099595813d0f60e99fd58906fe21a6bc",
+    "status": "production-export",
+    "contentBounds": [
+      219,
+      79,
+      1075,
+      1180
+    ],
+    "anchor": {
+      "x": 0.5,
+      "y": 0.96
+    },
+    "placement": "contain; align feet by contentBounds bottom, do not stretch",
+    "visualQA": "browser light/dark backgrounds"
+  },
+  {
+    "slug": "character-boy",
+    "file": "character-boy.webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "format": "webp",
+    "lossless": true,
+    "source": "exec-ba4851e6-b31c-412f-995c-7827b2dcbe23.png",
+    "sha256": "04d0a56a77177dae4e18a3e6f6b32b5863eeaeff3b762e4279a5bd04c02631d1",
+    "status": "production-export",
+    "contentBounds": [
+      229,
+      59,
+      1070,
+      1209
+    ],
+    "anchor": {
+      "x": 0.5,
+      "y": 0.96
+    },
+    "placement": "contain; align feet by contentBounds bottom, do not stretch",
+    "visualQA": "browser light/dark backgrounds"
+  },
+  {
+    "slug": "character-unspecified",
+    "file": "character-unspecified.webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "format": "webp",
+    "lossless": true,
+    "source": "exec-bfa77e23-72aa-4a01-82d2-75f5c872cc3b.png",
+    "sha256": "97e210db6177b373ba129a6eaacf302941c4a2aeab76308cb8a830ce43cd3c84",
+    "status": "production-export",
+    "contentBounds": [
+      234,
+      72,
+      1099,
+      1199
+    ],
+    "anchor": {
+      "x": 0.5,
+      "y": 0.96
+    },
+    "placement": "contain; align feet by contentBounds bottom, do not stretch",
+    "visualQA": "browser light/dark backgrounds"
+  },
+  {
+    "slug": "room-base",
+    "file": "room-base.webp",
+    "width": 1586,
+    "height": 992,
+    "alpha": false,
+    "format": "webp",
+    "lossless": true,
+    "source": "exec-476d79af-d8cb-40cd-885b-1b4fe405aad8.png",
+    "sha256": "099f87bc400f684fd6516a5833720240fe88101ab4e5188d1d8b663a245ef9a1",
+    "status": "production-export",
+    "visualQA": "browser light/dark backgrounds"
+  }
+]

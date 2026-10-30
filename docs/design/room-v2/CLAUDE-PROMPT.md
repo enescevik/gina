@@ -1,3 +1,7 @@
+## Güncel öncelik: BRIEF 13
+
+Önce `references/preview-note.md`, `references/brief-13-montage.html`, `CODEX-BRIEF-13-birebir.md` ve dört güncel asset manifestini oku. Bu teslim önceki düz kaplamaların yerine boyalı üretim parçaları getirir. Aynı slug’ın manifest `file` kaynağını kullan; eski SVG fallback’i yeni PNG sanma. room-chrome 9-slice kaynak piksel @3x; rooms/v2 içerik sınırları ve ortak zemin ankrajları; bağımsız dört hayvan ve portreleri; tek dolap ve display-* sergi nesneleri; tüm avatarların resimli sürümleri yeni sözleşmedir. Native metin/etkileşimleri sen uygula. Yeni bir ana ekran yorumu tasarlama; onaylı referanslarla gerçek cihaz ekran görüntüsünü karşılaştır. Bu PR’de uygulama kodu değişmedi.
+
 > **Odam kaplamaları teslim edildi:** Önce `references/preview-note.md` ve `packages/assets/room-chrome/manifest.json` dosyalarını oku. 30 SVG + @3x PNG kaplama ve `packages/assets/rooms/v2/` altında room-base + üç karakter üretim WebP’si var. Uygulamada bu üretim kaynaklarını kullan; eski art-candidates konsept olarak kalır. Metinler native; kaplamaları manifestteki 9-slice/contentInsets sözleşmesiyle bağla.
 
 # Claude’a verilecek güncel uygulama talimatı — premium v3
