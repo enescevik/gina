@@ -4,12 +4,13 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
-import { localDateOf, type Enums } from "@gina/core";
+import { isCalendarDate, localDateOf, type Enums } from "@gina/core";
 
 import { SubjectIcon } from "@/components/subject-icon";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, parentStyles, ChildPicker, EmptyCard } from "@/components/ui/parent-screen";
 import { useFamilyTimezone } from "@/lib/family";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -36,7 +37,7 @@ export default function ParentGradesScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, avatar").order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -62,7 +63,7 @@ export default function ParentGradesScreen() {
     mutationFn: async () => {
       const scoreNum = Number(score.replace(",", "."));
       const maxNum = Number(maxScore.replace(",", "."));
-      if (!selectedChild || !subject.trim() || Number.isNaN(scoreNum) || Number.isNaN(maxNum) || maxNum <= 0 || !/^\d{4}-\d{2}-\d{2}$/.test(gradedOn)) {
+      if (!selectedChild || !subject.trim() || !score.trim() || !Number.isFinite(scoreNum) || !Number.isFinite(maxNum) || scoreNum < 0 || scoreNum > maxNum || maxNum <= 0 || !isCalendarDate(gradedOn)) {
         throw new Error(t("grades.invalid"));
       }
       const { error } = await supabase.from("grades").insert({
@@ -88,31 +89,20 @@ export default function ParentGradesScreen() {
   const numberFormat = new Intl.NumberFormat(i18n.language, { maximumFractionDigits: 1 });
 
   return (
-    <Screen title={t("parent.grades")}>
-      <View className="flex-row flex-wrap gap-2">
-        {children.data?.map((child) => (
-          <Pressable
-            key={child.id}
-            accessibilityRole="button"
-            onPress={() => setChildId(child.id)}
-            className={`rounded-full px-4 py-2 ${child.id === selectedChild ? "bg-teal" : "bg-mist"}`}
-          >
-            <Text className={child.id === selectedChild ? "font-body-bold text-white" : "text-ink"}>{child.name}</Text>
-          </Pressable>
-        ))}
-      </View>
+    <Screen title={t("parent.grades")} subtitle={t("parentV5.gradesSubtitle")} loading={children.isLoading || grades.isLoading} error={children.error ?? grades.error} onRetry={() => { void children.refetch(); if (selectedChild) void grades.refetch(); }}>
+      <ChildPicker profiles={children.data ?? []} selected={selectedChild} onSelect={setChildId} />
 
-      {grades.data?.length === 0 ? <Text className="font-body text-gray-500">{t("grades.none")}</Text> : null}
+      {grades.data?.length === 0 ? <EmptyCard title={t("grades.none")} slug="display-bookworm" /> : null}
       {grades.data?.map((grade) => (
         <View key={grade.id} className="flex-row items-center gap-3 rounded-parent border border-mist p-3">
           <SubjectIcon subject={grade.subject} size={48} variant="illustrated" />
           <View className="flex-1">
-            <Text className="text-base font-body-bold text-ink dark:text-night-text">{grade.subject}</Text>
+            <Text className="text-base font-body-bold text-ink">{grade.subject}</Text>
             <Text className="font-body text-xs text-gray-500">
               {t(`grade.kind.${grade.kind}`)} · {dateFormat.format(new Date(`${grade.graded_on}T00:00:00Z`))}
             </Text>
           </View>
-          <Text className="text-xl font-body-bold text-ink dark:text-night-text">
+          <Text className="text-xl font-body-bold text-ink">
             {numberFormat.format(Number(grade.score))}
             <Text className="text-sm font-body text-gray-500"> / {numberFormat.format(Number(grade.max_score))}</Text>
           </Text>
@@ -120,7 +110,7 @@ export default function ParentGradesScreen() {
       ))}
 
       {selectedChild ? (
-        <View className="gap-3 rounded-parent bg-teal-light p-4">
+        <View style={parentStyles.form}>
           <Text className="text-lg font-body-bold text-ink">{t("grades.new")}</Text>
           <Field label={t("grades.subject")} value={subject} onChangeText={setSubject} placeholder={t("grades.subjectPlaceholder")} />
           <View className="flex-row flex-wrap gap-2">
@@ -128,10 +118,11 @@ export default function ParentGradesScreen() {
               <Pressable
                 key={option}
                 accessibilityRole="button"
+                accessibilityState={{ selected: kind === option }}
                 onPress={() => setKind(option)}
-                className={`rounded-full px-3 py-2 ${kind === option ? "bg-teal" : "bg-white"}`}
+                className={`min-h-12 items-center justify-center rounded-full px-3 py-2 ${kind === option ? "bg-teal-dark" : "bg-white"}`}
               >
-                <Text className={kind === option ? "font-body-bold text-white" : "text-ink"}>{t(`grade.kind.${option}`)}</Text>
+                <Text className={kind === option ? "font-body-bold text-white" : "font-body text-ink"}>{t(`grade.kind.${option}`)}</Text>
               </Pressable>
             ))}
           </View>

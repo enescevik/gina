@@ -2,11 +2,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
+import { Collectible } from "@/components/collectible";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -18,6 +20,7 @@ export default function ParentRewardsScreen() {
   const familyId = claims?.family_id ?? "";
   const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
+  const [icon, setIcon] = useState("reward-mystery-box");
   const [cost, setCost] = useState("10");
 
   const rewards = useQuery({
@@ -26,7 +29,7 @@ export default function ParentRewardsScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("family_rewards")
-        .select("id, title, cost_stars, active")
+        .select("id, title, icon, cost_stars, active")
         .order("cost_stars");
       if (error) throw error;
       return data;
@@ -39,7 +42,7 @@ export default function ParentRewardsScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("reward_requests")
-        .select("id, status, cost_snapshot, requested_at, family_rewards(title), children(name)")
+        .select("id, status, cost_snapshot, requested_at, family_rewards(title, icon), children(name)")
         .in("status", ["requested", "approved"])
         .order("requested_at");
       if (error) throw error;
@@ -51,10 +54,10 @@ export default function ParentRewardsScreen() {
   const addReward = useMutation({
     mutationFn: async () => {
       const costNum = Number(cost);
-      if (!title.trim() || Number.isNaN(costNum) || costNum < 1) throw new Error(t("rewards.invalid"));
+      if (!title.trim() || !Number.isSafeInteger(costNum) || costNum < 1) throw new Error(t("rewards.invalid"));
       const { error } = await supabase
         .from("family_rewards")
-        .insert({ family_id: familyId, title: title.trim(), cost_stars: costNum, created_by: null });
+        .insert({ family_id: familyId, title: title.trim(), icon, cost_stars: costNum, created_by: null });
       if (error) throw error;
     },
     onSuccess: () => {
@@ -87,29 +90,27 @@ export default function ParentRewardsScreen() {
   });
 
   return (
-    <Screen title={t("rewards.title")}>
+    <Screen title={t("rewards.title")} subtitle={t("parentV5.rewardsSubtitle")} loading={rewards.isLoading || requests.isLoading} error={rewards.error ?? requests.error} onRetry={() => { void rewards.refetch(); void requests.refetch(); }}>
       <View className="gap-2 rounded-parent bg-star/15 p-4">
         <Text className="font-display text-xl text-ink">{t("rewards.requests")}</Text>
         {requests.data?.length === 0 ? <Text className="font-body text-gray-600">{t("rewards.noRequests")}</Text> : null}
         {requests.data?.map((request) => (
           <View key={request.id} className="gap-2 rounded-parent bg-white p-3">
-            <Text className="font-body-bold text-base text-ink">
-              {request.family_rewards?.title} · {request.children?.name} · ⭐ {request.cost_snapshot}
-            </Text>
+            <View style={parentStyles.row}><Collectible slug={request.family_rewards?.icon ?? "reward-mystery-box"} size={80} /><View className="flex-1 gap-1"><Text style={[parentStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{request.family_rewards?.title}</Text><Text style={parentStyles.muted}>{request.children?.name} · {t("room.starCount", { count: request.cost_snapshot })}</Text></View></View>
             <View className="flex-row gap-2">
               {request.status === "requested" ? (
                 <>
                   <View className="flex-1">
                     <Button title={t("parent.approve")} loading={act.isPending} onPress={() => act.mutate({ id: request.id, action: "approve" })} />
                   </View>
-                  <Button variant="ghost" title={t("rewards.decline")} onPress={() => act.mutate({ id: request.id, action: "decline" })} />
+                  <Button variant="ghost" disabled={act.isPending} title={t("rewards.decline")} onPress={() => act.mutate({ id: request.id, action: "decline" })} />
                 </>
               ) : (
                 <>
                   <View className="flex-1">
                     <Button title={t("rewards.deliver")} loading={act.isPending} onPress={() => act.mutate({ id: request.id, action: "deliver" })} />
                   </View>
-                  <Button variant="ghost" title={t("rewards.cancelRefund")} onPress={() => act.mutate({ id: request.id, action: "cancel" })} />
+                  <Button variant="ghost" disabled={act.isPending} title={t("rewards.cancelRefund")} onPress={() => act.mutate({ id: request.id, action: "cancel" })} />
                 </>
               )}
             </View>
@@ -117,26 +118,34 @@ export default function ParentRewardsScreen() {
         ))}
       </View>
 
-      <View className="gap-2 rounded-parent border border-mist p-4">
-        <Text className="font-display text-xl text-ink dark:text-night-text">{t("rewards.catalog")}</Text>
+      <View style={parentStyles.card}>
+        <Text className="font-display text-xl text-ink">{t("rewards.catalog")}</Text>
         {rewards.data?.map((reward) => (
           <View key={reward.id} className={`flex-row items-center gap-2 ${reward.active ? "" : "opacity-50"}`}>
-            <Text className="font-body flex-1 text-base text-ink dark:text-night-text">
-              🎁 {reward.title} · ⭐ {reward.cost_stars}
-            </Text>
+            <Collectible slug={reward.icon} size={56} />
+            <Text style={[parentStyles.copy, { flex: 1 }]}>{reward.title} · {t("room.starCount", { count: reward.cost_stars })}</Text>
             <Button
               variant="ghost"
               title={reward.active ? t("tasks.pause") : t("tasks.resume")}
+              disabled={toggleReward.isPending} loading={toggleReward.isPending && toggleReward.variables?.id === reward.id}
               onPress={() => toggleReward.mutate({ id: reward.id, active: !reward.active })}
             />
           </View>
         ))}
+        <Text style={parentStyles.copy}>{t("rewards.chooseIcon")}</Text>
+        <View className="flex-row flex-wrap gap-2">
+          {["reward-movie-night", "reward-book", "reward-toy", "reward-bike-ride", "reward-park", "reward-ice-cream", "reward-game-with-parent", "reward-mystery-box"].map(slug => <Pressable key={slug}
+            accessibilityRole="button" accessibilityLabel={t(`rewardIcon.${slug}`)} accessibilityState={{ selected: icon === slug }}
+            onPress={() => setIcon(slug)} style={{ padding: 5, borderRadius: 14, borderWidth: 2, borderColor: icon === slug ? "#0B7F7F" : "#E4DAC8", backgroundColor: icon === slug ? "#E1F2EB" : "#FFFCF6" }}>
+            <Collectible slug={slug} size={48} />
+          </Pressable>)}
+        </View>
         <Field label={t("rewards.newTitle")} value={title} onChangeText={setTitle} placeholder={t("rewards.titlePlaceholder")} />
         <Field label={t("rewards.cost")} keyboardType="number-pad" maxLength={3} value={cost} onChangeText={setCost} />
         <Button variant="secondary" title={t("common.add")} loading={addReward.isPending} disabled={!title.trim()} onPress={() => addReward.mutate()} />
       </View>
 
-      <ErrorText error={rewards.error ?? requests.error ?? addReward.error ?? act.error} />
+      <ErrorText error={addReward.error ?? act.error ?? toggleReward.error} />
       <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />
     </Screen>
   );

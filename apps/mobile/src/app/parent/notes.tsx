@@ -6,9 +6,11 @@ import { Pressable, Text, View } from "react-native";
 
 import { noteVisibilitySchema, type NoteVisibility } from "@gina/core";
 
+import { ConfirmAction } from "@/components/ui/confirm-action";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, parentStyles, ChildPicker, EmptyCard } from "@/components/ui/parent-screen";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -30,7 +32,7 @@ export default function ParentNotesScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, avatar").order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -84,41 +86,27 @@ export default function ParentNotesScreen() {
   const dateFormat = new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "short" });
 
   return (
-    <Screen title={t("parent.notes")}>
-      <View className="flex-row flex-wrap gap-2">
-        <Pressable accessibilityRole="button" onPress={() => setChildId(null)} className={`rounded-full px-4 py-2 ${childId === null ? "bg-teal" : "bg-mist"}`}>
-          <Text className={childId === null ? "font-body-bold text-white" : "text-ink"}>{t("calendar.allFamily")}</Text>
-        </Pressable>
-        {children.data?.map((child) => (
-          <Pressable
-            key={child.id}
-            accessibilityRole="button"
-            onPress={() => setChildId(child.id)}
-            className={`rounded-full px-4 py-2 ${childId === child.id ? "bg-teal" : "bg-mist"}`}
-          >
-            <Text className={childId === child.id ? "font-body-bold text-white" : "text-ink"}>{child.name}</Text>
-          </Pressable>
-        ))}
-      </View>
+    <Screen title={t("parent.notes")} subtitle={t("parentV5.notesSubtitle")} loading={children.isLoading || notes.isLoading} error={children.error ?? notes.error} onRetry={() => { void children.refetch(); void notes.refetch(); }}>
+      <ChildPicker profiles={children.data ?? []} selected={childId} onSelect={setChildId} allLabel={t("calendar.allFamily")} />
 
-      {notes.data?.length === 0 ? <Text className="font-body text-gray-500">{t("notes.none")}</Text> : null}
+      {notes.data?.length === 0 ? <EmptyCard title={t("notes.none")} slug="display-bookworm" /> : null}
       {notes.data?.map((note) => (
-        <View key={note.id} className="gap-1 rounded-parent border border-mist p-3">
+        <View key={note.id} style={parentStyles.card}>
           <View className="flex-row items-center gap-2">
-            <Text className="flex-1 text-base font-body-bold text-ink dark:text-night-text">{note.title ?? t("notes.untitled")}</Text>
+            <Text className="flex-1 text-base font-body-bold text-ink">{note.title ?? t("notes.untitled")}</Text>
             <Text className="font-body text-xs text-gray-500">{dateFormat.format(new Date(note.updated_at))}</Text>
           </View>
-          <Text className="font-body text-sm text-ink dark:text-night-text">{note.body}</Text>
+          <Text className="font-body text-sm text-ink">{note.body}</Text>
           <View className="flex-row items-center gap-2">
             <Text className="font-body flex-1 text-xs text-gray-500">
               {[note.children?.name, note.subject, t(`note.visibility.${note.visibility}`)].filter(Boolean).join(" · ")}
             </Text>
-            <Button variant="ghost" title={t("common.delete")} onPress={() => removeNote.mutate(note.id)} />
+            <ConfirmAction title={t("common.delete")} busy={removeNote.isPending} onConfirm={() => removeNote.mutate(note.id)} />
           </View>
         </View>
       ))}
 
-      <View className="gap-3 rounded-parent bg-teal-light p-4">
+      <View style={parentStyles.form}>
         <Text className="text-lg font-body-bold text-ink">{t("notes.new")}</Text>
         <Field label={t("notes.title")} value={title} onChangeText={setTitle} />
         <Field label={t("notes.body")} value={body} onChangeText={setBody} multiline className="min-h-24" />
@@ -129,9 +117,9 @@ export default function ParentNotesScreen() {
               key={option}
               accessibilityRole="button"
               onPress={() => setVisibility(option)}
-              className={`rounded-full px-3 py-2 ${visibility === option ? "bg-teal" : "bg-white"}`}
+              className={`min-h-12 items-center justify-center rounded-full px-3 py-2 ${visibility === option ? "bg-teal-dark" : "bg-white"}`}
             >
-              <Text className={visibility === option ? "font-body-bold text-white" : "text-ink"}>{t(`note.visibility.${option}`)}</Text>
+              <Text className={visibility === option ? "font-body-bold text-white" : "font-body text-ink"}>{t(`note.visibility.${option}`)}</Text>
             </Pressable>
           ))}
         </View>

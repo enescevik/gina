@@ -9,7 +9,7 @@ export interface FieldProps extends TextInputProps {
 export function Field({ label, error, labelStyle, className, ...rest }: FieldProps) {
   return (
     <View className="gap-1">
-      <Text style={labelStyle} className="text-base font-body-bold text-ink dark:text-night-text">{label}</Text>
+      <Text style={[{ color: "#294A48" }, labelStyle]} className="text-base font-body-bold text-ink dark:text-night-text">{label}</Text>
       <TextInput
         accessibilityLabel={label}
         placeholderTextColor="#7B827A"

@@ -84,7 +84,9 @@ export interface CollectibleProps {
 
 /** Koleksiyon nesnesi (rozet, yıldız, seri, mühür). Bilinmeyen slug star-filled'a düşer. */
 export function Collectible({ slug, size = 64, locked, style, accessibilityLabel }: CollectibleProps) {
-  const key: CollectibleSlug = locked ? "badge-locked" : isCollectible(slug) ? slug : "star-filled";
+  // Ticket rewards may have paired art instead of a standalone icon (e.g. movie night).
+  const paired = `${slug}-left`;
+  const key: CollectibleSlug = locked ? "badge-locked" : isCollectible(slug) ? slug : isCollectible(paired) ? paired : "star-filled";
   if (size < ILLUSTRATED_MIN_DP) {
     const Svg = SMALL_SVGS[key] ?? SvgStarFilled;
     return (

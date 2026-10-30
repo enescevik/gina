@@ -2,12 +2,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 
 import { Avatar, CHILD_AVATAR_SLUGS } from "@/components/avatar";
+import { ConfirmAction } from "@/components/ui/confirm-action";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
 import { useSession } from "@/lib/session";
 import { unregisterPush } from "@/lib/push";
 import { supabase } from "@/lib/supabase";
@@ -23,61 +25,32 @@ function ChildRow({ id, name, grade, avatar }: { id: string; name: string; grade
     },
     onSuccess: () => setPin(""),
   });
-  return (
-    <View className="gap-1">
-      <View className="flex-row items-center gap-2">
-        <Avatar slug={avatar} size={36} />
-        <Text className="font-body flex-1 text-base text-ink dark:text-night-text">
-          {name}
-          {grade ? ` (${t("parent.gradeShort", { grade })})` : ""}
-        </Text>
-        <TextInput
-          keyboardType="number-pad"
-          secureTextEntry
-          maxLength={4}
-          value={pin}
-          onChangeText={setPin}
-          placeholder="PIN"
-          placeholderTextColor="#9CA3AF"
-          className="w-20 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink dark:bg-night-surface dark:text-night-text"
-        />
-        <Button variant="ghost" title="PIN" loading={setChildPin.isPending} disabled={pin.length !== 4} onPress={() => setChildPin.mutate()} />
-      </View>
-      <ErrorText error={setChildPin.error} />
-    </View>
-  );
+  return <View style={parentStyles.card}>
+    <View style={parentStyles.row}><Avatar slug={avatar} size={56} /><View className="flex-1 gap-1"><Text style={[parentStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{name}</Text>{grade !== null ? <Text style={parentStyles.muted}>{t("parent.gradeShort", { grade })}</Text> : null}</View></View>
+    <Field label={t("parentV5.childPinLabel", { name })} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} />
+    <Button variant="secondary" title={t("parent.savePin")} loading={setChildPin.isPending} disabled={pin.length !== 4} onPress={() => setChildPin.mutate()} />
+    <ErrorText error={setChildPin.error} />
+  </View>;
 }
 
 /** Veli PIN'i: telefonda çocuk modundan çıkış için (set_parent_pin RPC). */
 function ParentPinRow() {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const [pin, setPin] = useState("");
   const savePin = useMutation({
     mutationFn: async () => {
       const { error } = await supabase.rpc("set_parent_pin", { p_pin: pin });
       if (error) throw error;
     },
-    onSuccess: () => setPin(""),
+    onSuccess: () => { setPin(""); void queryClient.invalidateQueries({ queryKey: ["parent_pin_set"] }); },
   });
-  return (
-    <View className="gap-1">
-      <View className="flex-row items-center gap-2">
-        <Text className="font-body flex-1 text-sm text-ink dark:text-night-text">{t("parent.parentPin")}</Text>
-        <TextInput
-          keyboardType="number-pad"
-          secureTextEntry
-          maxLength={4}
-          value={pin}
-          onChangeText={setPin}
-          placeholder="PIN"
-          placeholderTextColor="#9CA3AF"
-          className="w-20 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink dark:bg-night-surface dark:text-night-text"
-        />
-        <Button variant="ghost" title={t("parent.savePin")} loading={savePin.isPending} disabled={pin.length !== 4} onPress={() => savePin.mutate()} />
-      </View>
-      <ErrorText error={savePin.error} />
-    </View>
-  );
+  return <View style={parentStyles.card}>
+    <Text style={parentStyles.title}>{t("parent.parentPin")}</Text>
+    <Field label={t("parentV5.newParentPin")} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} />
+    <Button variant="secondary" title={t("parent.savePin")} loading={savePin.isPending} disabled={pin.length !== 4} onPress={() => savePin.mutate()} />
+    <ErrorText error={savePin.error} />
+  </View>;
 }
 
 /** Menü: aile kurulumu ve yönetim — davet kodu, çocuklar, cihaz eşleştirme, PIN'ler, paketler, çıkış. */
@@ -149,15 +122,15 @@ export default function ParentMenuScreen() {
   });
 
   return (
-    <Screen title={family.data?.name ?? t("parent.menu")}>
+    <Screen title={family.data?.name ?? t("parent.menu")} subtitle={t("parentV5.menuSubtitle")} loading={family.isLoading || children.isLoading || devices.isLoading} error={family.error ?? children.error ?? devices.error} onRetry={() => { void family.refetch(); void children.refetch(); void devices.refetch(); }}>
       <View className="rounded-parent bg-teal-light p-4">
         <Text className="font-body text-sm text-ink">{t("parent.inviteCode")}</Text>
         <Text className="text-2xl font-body-bold tracking-widest text-teal-dark">{family.data?.invite_code ?? "…"}</Text>
         <Text className="font-body mt-1 text-xs text-gray-700">{t("parent.inviteHelp")}</Text>
       </View>
 
-      <View className="gap-2 rounded-parent border border-mist p-4">
-        <Text className="text-lg font-body-bold text-ink dark:text-night-text">{t("parent.children")}</Text>
+      <View style={parentStyles.card}>
+        <Text className="text-lg font-body-bold text-ink">{t("parent.children")}</Text>
         {children.data?.map((child) => (
           <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} avatar={child.avatar} />
         ))}
@@ -167,9 +140,9 @@ export default function ParentMenuScreen() {
             {CHILD_AVATAR_SLUGS.map((slug) => (
               <Pressable
                 key={slug}
-                accessibilityRole="button"
+                accessibilityRole="button" accessibilityLabel={t("parentV5.avatarLabel", { number: CHILD_AVATAR_SLUGS.indexOf(slug) + 1 })} accessibilityState={{ selected: childAvatar === slug }} aria-pressed={childAvatar === slug}
                 onPress={() => setChildAvatar(slug)}
-                className={`rounded-full border-2 p-0.5 ${childAvatar === slug ? "border-teal" : "border-transparent"}`}
+                className={`min-h-12 items-center justify-center rounded-full border-2 p-0.5 ${childAvatar === slug ? "border-teal" : "border-transparent"}`}
               >
                 <Avatar slug={slug} size={44} />
               </Pressable>
@@ -179,12 +152,12 @@ export default function ParentMenuScreen() {
         <Button variant="secondary" title={t("common.add")} loading={addChild.isPending} disabled={!childName.trim()} onPress={() => addChild.mutate(childName.trim())} />
       </View>
 
-      <View className="gap-2 rounded-parent border border-mist p-4">
-        <Text className="text-lg font-body-bold text-ink dark:text-night-text">{t("parent.pairDevice")}</Text>
+      <View style={parentStyles.card}>
+        <Text className="text-lg font-body-bold text-ink">{t("parent.pairDevice")}</Text>
         {devices.data?.map((device) => (
           <View key={device.id} className="flex-row items-center gap-2">
-            <Text className="font-body flex-1 text-base text-ink dark:text-night-text">• {device.name}</Text>
-            <Button variant="ghost" title={t("parent.removeDevice")} onPress={() => revokeDevice.mutate(device.id)} />
+            <Text className="font-body flex-1 text-base text-ink">• {device.name}</Text>
+            <ConfirmAction title={t("parent.removeDevice")} busy={revokeDevice.isPending} onConfirm={() => revokeDevice.mutate(device.id)} />
           </View>
         ))}
         <Field label={t("parent.pairCodeLabel")} keyboardType="number-pad" maxLength={6} value={pairCode} onChangeText={setPairCode} />

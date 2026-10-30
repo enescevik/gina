@@ -4,3 +4,4 @@ export * from "./recurrence";
 export * from "./events";
 export * from "./stars";
 export * from "./locale";
+export * from "./form-validation";
