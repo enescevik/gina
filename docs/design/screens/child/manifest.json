@@ -18,7 +18,7 @@
   "files": [
     {
       "file": "README.md",
-      "sha256": "12aba884c7ce13278d561aee9d9203759f898cb52bd9d310ffc4bc75f2981b03"
+      "sha256": "c82f9df9f452ed3e5c526012f79cf61f9823c1797fae9b7bea982e7296f77593"
     },
     {
       "file": "calendar-empty-phone.png",
@@ -300,7 +300,7 @@
     },
     {
       "file": "index.html",
-      "sha256": "77b0a92c3a375e36f0ac3dde83b1530aa1c1ee060c04f0002ed8cd419377512e"
+      "sha256": "5b618f68d2ba937f7f1664b0dcb84605a0277f0ec3f546315fb21f059d058139"
     },
     {
       "file": "motion.html",
@@ -673,5 +673,14 @@
     "examMotionPaused": true
   },
   "tabletV1V2": "rejected-do-not-implement",
-  "currentProposal": "game-direction-v3/README.md"
+  "currentProposal": "game-materials-v4/README.md",
+  "gameMaterialsV4": {
+    "status": "reference-driven-3d-review-candidates",
+    "viewer": "game-materials-v4/viewer.html",
+    "contactSheet": "game-materials-v4/contact-sheet.png",
+    "weatherSheet": "game-materials-v4/weather-sheet.png",
+    "manifest": "game-materials-v4/manifest.json",
+    "approvalPending": true,
+    "mobileCodeChanged": false
+  }
 }

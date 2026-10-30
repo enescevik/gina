@@ -1,4 +1,4 @@
-> **Güncel durum:** Tablet v1/v2 ürün sahibi tarafından reddedildi; uygulanmamalı. [Oyun sahnesi yön önerisi ve gerçek 3D çalışma](game-direction-v3/README.md) yeni inceleme konusudur. Ürün/teknik kararlar henüz kesinleşmedi.
+> **Güncel durum:** Tablet v1/v2 reddedildi; uygulanmamalı. Yeni inceleme: [v4 — referansa göre 20 model, malzeme ve 24 atmosfer birleşimi](game-materials-v4/viewer.html). [Teslim ve açık işler](game-materials-v4/README.md) · [Referans karşılaştırması](game-materials-v4/comparison.html). Final sanat ve mobil giydirme onayı bekleniyor. V3 mekân çalışması arşivdir.
 
 # Tablet v2 revizyonu — 30 Ekim 2026
 

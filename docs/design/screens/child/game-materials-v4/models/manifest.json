@@ -1,0 +1,589 @@
+{
+  "status": "review-candidates",
+  "units": "meters",
+  "upAxis": "Y",
+  "frontAxis": "+Z",
+  "rootOrigin": [
+    0,
+    0,
+    0
+  ],
+  "commonRoomFloorY": 0.1,
+  "entries": [
+    {
+      "file": "character-girl.glb",
+      "bytes": 1972016,
+      "sha256": "811ea34a63e6cedbb98a59d80996fe09ac79a5b56ac89f58a0e8e6729504d5c0",
+      "slug": "character-girl",
+      "meshes": 52,
+      "triangles": 36464,
+      "skins": 1,
+      "materials": 10,
+      "animations": [
+        {
+          "name": "read_idle",
+          "durationSeconds": 8
+        },
+        {
+          "name": "look_up",
+          "durationSeconds": 3.3333333333333335
+        }
+      ],
+      "contentBounds": {
+        "min": [
+          -0.550485372543335,
+          0.02499999850988388,
+          -0.3468400835990906
+        ],
+        "max": [
+          0.5504854917526245,
+          1.504967451095581,
+          0.3725000023841858
+        ]
+      },
+      "sourceCollection": "children-girl"
+    },
+    {
+      "file": "character-boy.glb",
+      "bytes": 1914384,
+      "sha256": "bf467fb1b8dd13ad64637acf1e5338de4842a88b067e918555a920b379ac19b6",
+      "slug": "character-boy",
+      "meshes": 50,
+      "triangles": 35024,
+      "skins": 1,
+      "materials": 10,
+      "animations": [
+        {
+          "name": "read_idle",
+          "durationSeconds": 8
+        },
+        {
+          "name": "look_up",
+          "durationSeconds": 3.3333333333333335
+        }
+      ],
+      "contentBounds": {
+        "min": [
+          -0.550485372543335,
+          0.02499999850988388,
+          -0.34684911370277405
+        ],
+        "max": [
+          0.5504854917526245,
+          1.5049686431884766,
+          0.3725000023841858
+        ]
+      },
+      "sourceCollection": "children-boy"
+    },
+    {
+      "file": "character-unspecified.glb",
+      "bytes": 1967704,
+      "sha256": "6126f10a4d2274bb9dcafa8eb3779da4e4c4fa3665da3890d8b8304333b2fbdf",
+      "slug": "character-unspecified",
+      "meshes": 52,
+      "triangles": 36464,
+      "skins": 1,
+      "materials": 10,
+      "animations": [
+        {
+          "name": "read_idle",
+          "durationSeconds": 8
+        },
+        {
+          "name": "look_up",
+          "durationSeconds": 3.3333333333333335
+        }
+      ],
+      "contentBounds": {
+        "min": [
+          -0.550485372543335,
+          0.02499999850988388,
+          -0.34661489725112915
+        ],
+        "max": [
+          0.5504854917526245,
+          1.5049675703048706,
+          0.3725000023841858
+        ]
+      },
+      "sourceCollection": "children-unspecified"
+    },
+    {
+      "file": "pet-cat.glb",
+      "bytes": 858240,
+      "sha256": "384f7cd076b4bc51148181210394d2cb8390dfa85a24599dd41ef208cf79e544",
+      "slug": "pet-cat",
+      "meshes": 29,
+      "triangles": 16080,
+      "skins": 1,
+      "materials": 4,
+      "animations": [
+        {
+          "name": "sleep_loop",
+          "durationSeconds": 3.0416666666666665
+        },
+        {
+          "name": "yawn_stretch",
+          "durationSeconds": 3.6666666666666665
+        },
+        {
+          "name": "play_tap",
+          "durationSeconds": 2.6666666666666665
+        },
+        {
+          "name": "look_at_touch",
+          "durationSeconds": 3
+        }
+      ],
+      "contentBounds": {
+        "min": [
+          -0.7171512543311697,
+          0,
+          -0.35999980568885803
+        ],
+        "max": [
+          0.5451983897166653,
+          0.6699999873121004,
+          0.4799999507405664
+        ]
+      },
+      "sourceCollection": "pets-cat"
+    },
+    {
+      "file": "pet-dog.glb",
+      "bytes": 902416,
+      "sha256": "4ba3436aed5bf594d7370ad68f61c84066f38ddb0892d32650ccb8f8ad305d44",
+      "slug": "pet-dog",
+      "meshes": 24,
+      "triangles": 14400,
+      "skins": 1,
+      "materials": 4,
+      "animations": [
+        {
+          "name": "sleep_loop",
+          "durationSeconds": 3.0416666666666665
+        },
+        {
+          "name": "yawn_stretch",
+          "durationSeconds": 3.6666666666666665
+        },
+        {
+          "name": "play_tap",
+          "durationSeconds": 2.6666666666666665
+        },
+        {
+          "name": "look_at_touch",
+          "durationSeconds": 3
+        }
+      ],
+      "contentBounds": {
+        "min": [
+          -0.7171512543311697,
+          0,
+          -0.35999980568885803
+        ],
+        "max": [
+          0.6325782581016145,
+          0.550000011920929,
+          0.4799999507405664
+        ]
+      },
+      "sourceCollection": "pets-dog"
+    },
+    {
+      "file": "pet-monkey.glb",
+      "bytes": 897980,
+      "sha256": "15f771f9489aae4a59667701bde07ac575fc01e9d29fcefc1f12b25959c0c89e",
+      "slug": "pet-monkey",
+      "meshes": 24,
+      "triangles": 14400,
+      "skins": 1,
+      "materials": 4,
+      "animations": [
+        {
+          "name": "sleep_loop",
+          "durationSeconds": 3.0416666666666665
+        },
+        {
+          "name": "yawn_stretch",
+          "durationSeconds": 3.6666666666666665
+        },
+        {
+          "name": "play_tap",
+          "durationSeconds": 2.6666666666666665
+        },
+        {
+          "name": "look_at_touch",
+          "durationSeconds": 3
+        }
+      ],
+      "contentBounds": {
+        "min": [
+          -0.7099997997283936,
+          0,
+          -0.35999980568885803
+        ],
+        "max": [
+          0.6299999990664121,
+          0.5700000210556823,
+          0.4799999507405664
+        ]
+      },
+      "sourceCollection": "pets-monkey"
+    },
+    {
+      "file": "pet-lion.glb",
+      "bytes": 908888,
+      "sha256": "de5fbff0bdcd5d37a2839096844650f8d7a101b153950f4698baf809d308a3f0",
+      "slug": "pet-lion",
+      "meshes": 27,
+      "triangles": 14640,
+      "skins": 1,
+      "materials": 5,
+      "animations": [
+        {
+          "name": "sleep_loop",
+          "durationSeconds": 3.0416666666666665
+        },
+        {
+          "name": "yawn_stretch",
+          "durationSeconds": 3.6666666666666665
+        },
+        {
+          "name": "play_tap",
+          "durationSeconds": 2.6666666666666665
+        },
+        {
+          "name": "look_at_touch",
+          "durationSeconds": 3
+        }
+      ],
+      "contentBounds": {
+        "min": [
+          -0.7171512543311697,
+          0,
+          -0.35999980568885803
+        ],
+        "max": [
+          0.6299999990664121,
+          0.5700000210556823,
+          0.4799999507405664
+        ]
+      },
+      "sourceCollection": "pets-lion"
+    },
+    {
+      "file": "display-tooth-care.glb",
+      "bytes": 678356,
+      "sha256": "8386288d0829c6b7c9d4b144b3e8526eb7995115f2f23fcd85d1e5eae8b459fb",
+      "slug": "display-tooth-care",
+      "meshes": 8,
+      "triangles": 8148,
+      "skins": 0,
+      "materials": 4,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.31999997049570084,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.3199999928474426,
+          0.6430000462289358,
+          0.125
+        ]
+      },
+      "sourceCollection": "collectibles-tooth-care"
+    },
+    {
+      "file": "display-tidy.glb",
+      "bytes": 638148,
+      "sha256": "880cee229b2da0df65bfbce19552599381e4a3db7f7a75e8a79e3afe08cc9a5d",
+      "slug": "display-tidy",
+      "meshes": 10,
+      "triangles": 6712,
+      "skins": 0,
+      "materials": 4,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.31999997049570084,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.3199999928474426,
+          0.6430000462289358,
+          0.125
+        ]
+      },
+      "sourceCollection": "collectibles-tidy"
+    },
+    {
+      "file": "display-bookworm.glb",
+      "bytes": 787548,
+      "sha256": "8cffa1792ce23a9fb1edc50ffe9033ff32488f740aafe69a940a7fd5aabf53ff",
+      "slug": "display-bookworm",
+      "meshes": 4,
+      "triangles": 752,
+      "skins": 0,
+      "materials": 4,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.23000000417232513,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.23000000417232513,
+          0.3499999921768904,
+          0.17000000178813934
+        ]
+      },
+      "sourceCollection": "collectibles-bookworm"
+    },
+    {
+      "file": "display-first-task.glb",
+      "bytes": 234040,
+      "sha256": "14c455214b6a525c27a0912d0aea19a8554f66e7b1e80619232f6ebf24f89d8f",
+      "slug": "display-first-task",
+      "meshes": 4,
+      "triangles": 2192,
+      "skins": 0,
+      "materials": 2,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.23000000417232513,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.23000000417232513,
+          0.6045842170715332,
+          0.125
+        ]
+      },
+      "sourceCollection": "collectibles-first-task"
+    },
+    {
+      "file": "display-bronze.glb",
+      "bytes": 234268,
+      "sha256": "a25b004147366514495308ea383b5a4085675c51a9adf7569443932b01899e4e",
+      "slug": "display-bronze",
+      "meshes": 4,
+      "triangles": 2192,
+      "skins": 0,
+      "materials": 3,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.23000000417232513,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.23000000417232513,
+          0.6045842170715332,
+          0.125
+        ]
+      },
+      "sourceCollection": "collectibles-bronze"
+    },
+    {
+      "file": "display-silver.glb",
+      "bytes": 234252,
+      "sha256": "915a13a618a602fe255274b00bb5fd5c6186452ceb8b218d22c1a9e72cbb4f78",
+      "slug": "display-silver",
+      "meshes": 4,
+      "triangles": 2192,
+      "skins": 0,
+      "materials": 3,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.23000000417232513,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.23000000417232513,
+          0.6045842170715332,
+          0.125
+        ]
+      },
+      "sourceCollection": "collectibles-silver"
+    },
+    {
+      "file": "display-gold.glb",
+      "bytes": 234052,
+      "sha256": "225fe1b323960bc6539b36433f17e812a9f3a0030822f3ef1f0fbcfdb4760c22",
+      "slug": "display-gold",
+      "meshes": 4,
+      "triangles": 2192,
+      "skins": 0,
+      "materials": 2,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.23000000417232513,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.23000000417232513,
+          0.6045842170715332,
+          0.125
+        ]
+      },
+      "sourceCollection": "collectibles-gold"
+    },
+    {
+      "file": "display-diamond.glb",
+      "bytes": 243700,
+      "sha256": "bc3147afc0506b61a89454f4707ad15083529700c52dcba7ba1d87fc230ad56a",
+      "slug": "display-diamond",
+      "meshes": 4,
+      "triangles": 2352,
+      "skins": 0,
+      "materials": 4,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.23000000417232513,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.23000000417232513,
+          0.607292115688324,
+          0.12965014576911926
+        ]
+      },
+      "sourceCollection": "collectibles-diamond"
+    },
+    {
+      "file": "display-locked.glb",
+      "bytes": 206116,
+      "sha256": "f2aaac17aabc87f30b67dfced02e05a1bce3de941ecec7f350541448dc36c253",
+      "slug": "display-locked",
+      "meshes": 5,
+      "triangles": 2244,
+      "skins": 0,
+      "materials": 3,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.23000000417232513,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.23000000417232513,
+          0.5120000277880807,
+          0.12700000032782555
+        ]
+      },
+      "sourceCollection": "collectibles-locked"
+    },
+    {
+      "file": "display-early-bird.glb",
+      "bytes": 343740,
+      "sha256": "311a9048c88f7721d4576c10970ce9cb59da516a2d470ebbc67cc6a9a7e9f1f5",
+      "slug": "display-early-bird",
+      "meshes": 9,
+      "triangles": 5018,
+      "skins": 0,
+      "materials": 3,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.28634738126920256,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.28634739836475775,
+          0.6000000014901161,
+          0.16750000646276186
+        ]
+      },
+      "sourceCollection": "collectibles-early-bird"
+    },
+    {
+      "file": "display-helper.glb",
+      "bytes": 351492,
+      "sha256": "9cdee0b05cef79a866e8caafe29db9770707a82bfd776a90e332d89e45d8e287",
+      "slug": "display-helper",
+      "meshes": 14,
+      "triangles": 9784,
+      "skins": 0,
+      "materials": 2,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.23000000417232513,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.23000000417232513,
+          0.5620009542759764,
+          0.125
+        ]
+      },
+      "sourceCollection": "collectibles-helper"
+    },
+    {
+      "file": "display-math-star.glb",
+      "bytes": 533888,
+      "sha256": "ee8d8f29655c5e3074cec609ef7bbd269a602a8443ca59c1ed374a1453d79f9f",
+      "slug": "display-math-star",
+      "meshes": 6,
+      "triangles": 2384,
+      "skins": 0,
+      "materials": 4,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.23000000417232513,
+          0,
+          -0.125
+        ],
+        "max": [
+          0.23000000417232513,
+          0.5639806985855103,
+          0.20500000193715096
+        ]
+      },
+      "sourceCollection": "collectibles-math-star"
+    },
+    {
+      "file": "display-week-hero.glb",
+      "bytes": 223332,
+      "sha256": "d404fa54ac84f9bce7556ed60ae7479a9ec6a5d12841871dc7e911cb8a9d9940",
+      "slug": "display-week-hero",
+      "meshes": 5,
+      "triangles": 3032,
+      "skins": 0,
+      "materials": 2,
+      "animations": [],
+      "contentBounds": {
+        "min": [
+          -0.3001774549484253,
+          0,
+          -0.18000000715255737
+        ],
+        "max": [
+          0.3001774549484253,
+          0.550000011920929,
+          0.18000000715255737
+        ]
+      },
+      "sourceCollection": "collectibles-week-hero"
+    }
+  ]
+}

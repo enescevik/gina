@@ -1,0 +1,236 @@
+{
+  "status": "review-only-not-app-assets",
+  "source": "real Three.js WebGL captures, no generated replacement screenshots",
+  "entries": [
+    {
+      "file": "character-boy.png",
+      "bytes": 63456,
+      "sha256": "f062fc1c3e10c638d5699d4fa9eafea3f5f187f9abd96c35b4e75edd42e56753"
+    },
+    {
+      "file": "character-girl.png",
+      "bytes": 66278,
+      "sha256": "ed58bfc7dc2b6dbe90a83db1bfda829f84327ede9991a5b9713df1c66d8307d2"
+    },
+    {
+      "file": "character-unspecified.png",
+      "bytes": 65891,
+      "sha256": "2e6401de562af1b8815035f186507ca649ef4b426fa0b08802c6f5efd2df2656"
+    },
+    {
+      "file": "display-bookworm.png",
+      "bytes": 61276,
+      "sha256": "8aa3356e61719174b4b4b25ef6f8da039ed52bc51463dfaa075e57d406ef9606"
+    },
+    {
+      "file": "display-bronze.png",
+      "bytes": 40161,
+      "sha256": "6845c5580b41e40648975832aaa6934f9aef06e60d146f7c46cd22f28f447382"
+    },
+    {
+      "file": "display-diamond.png",
+      "bytes": 44219,
+      "sha256": "289ef324edd1974d2bbecd96f01bb2002645d610001b0b541092c9e049cd7e22"
+    },
+    {
+      "file": "display-early-bird.png",
+      "bytes": 68410,
+      "sha256": "53d9213eec7b257c982f32ca65525c18852c9cfcb6f7cecfdb31df90ef7ec1bb"
+    },
+    {
+      "file": "display-first-task.png",
+      "bytes": 39963,
+      "sha256": "6bc7a136c694256c19d06cc6618f82112a024ca15fde18e187763d9720f34a4d"
+    },
+    {
+      "file": "display-gold.png",
+      "bytes": 39963,
+      "sha256": "6bc7a136c694256c19d06cc6618f82112a024ca15fde18e187763d9720f34a4d"
+    },
+    {
+      "file": "display-helper.png",
+      "bytes": 70150,
+      "sha256": "351fff98cd94c325fad83cf279c6f0095a7dc10c7d636f1d57ef81bd2c335a5e"
+    },
+    {
+      "file": "display-locked.png",
+      "bytes": 53392,
+      "sha256": "41945eb19202071d24f9370989bdbc4c6f7f2cafde024209fb09efc13b0d63a7"
+    },
+    {
+      "file": "display-math-star.png",
+      "bytes": 48044,
+      "sha256": "58bbbe48e18fb21df88b5a474938a9993a620b6e425ef88e7ec3df1736d29430"
+    },
+    {
+      "file": "display-silver.png",
+      "bytes": 40183,
+      "sha256": "39724414aa17d0cbae4e2fe8e63e65a8b1507dd79b9dff6081f58b53affc7be7"
+    },
+    {
+      "file": "display-tidy.png",
+      "bytes": 101843,
+      "sha256": "b1259ff3b66eb5361e03cfe49ba97e37f2240a3a024f6aac2bc386e5b4cb3653"
+    },
+    {
+      "file": "display-tooth-care.png",
+      "bytes": 78907,
+      "sha256": "eb3239945144eda879ceaa64bbdc5be51d35e8a4404b1dceef5648e2652d06cc"
+    },
+    {
+      "file": "display-week-hero.png",
+      "bytes": 72214,
+      "sha256": "96b68b7096e3de47c8021c8193cc689aad3b6058e23704f2c637d42b7c63e8c9"
+    },
+    {
+      "file": "drawer-open.png",
+      "bytes": 220482,
+      "sha256": "f92c1c3a084111dda56145264b7eaaa6e07b670c64f7cd7238914dcf304fa3a0"
+    },
+    {
+      "file": "pet-cat.png",
+      "bytes": 53919,
+      "sha256": "d99ec90097ea2e8741019d21e4e720d42628f7a2d324d49e470b4b8618c49ba4"
+    },
+    {
+      "file": "pet-dog.png",
+      "bytes": 52184,
+      "sha256": "3e10415b87596d9a237969fa781c4acfbecded5effe2ba360b2ebf0921d140ac"
+    },
+    {
+      "file": "pet-lion.png",
+      "bytes": 44743,
+      "sha256": "4ae6b8fdbdc31dd12d3e5270a5a059c6e409a38305901321587baebcc3bff24a"
+    },
+    {
+      "file": "pet-monkey.png",
+      "bytes": 55651,
+      "sha256": "0d24a7b9ab796968f3d7d41c8b63866b7911fbb778638e54c0f3c22c95e179f0"
+    },
+    {
+      "file": "pet-yawn.png",
+      "bytes": 220521,
+      "sha256": "5d4ee966d06fea8b68745b5eb49d2b202fcd2c7d2ade3b503b0aaf6a38c5d0e2"
+    },
+    {
+      "file": "weather-day-clear.png",
+      "bytes": 219837,
+      "sha256": "fe16380780771069a4049dcd0cb4b19c50389f1b8447a17c7ada3af737b5e6ca"
+    },
+    {
+      "file": "weather-day-cloudy.png",
+      "bytes": 216599,
+      "sha256": "4f9063f15fedb5912ce8206d92a3b2dc7ac0a69c90e8baea8e967057fc92c6a4"
+    },
+    {
+      "file": "weather-day-fog.png",
+      "bytes": 216114,
+      "sha256": "be35d5ab0e9a059bb7eece4b968af523282ac5672e4486a2cbbade10b7f7c6e9"
+    },
+    {
+      "file": "weather-day-rain.png",
+      "bytes": 220409,
+      "sha256": "b2494b14342422f627f6e43778fc8ccc5208de790c88085c0c40a9bcf0c04478"
+    },
+    {
+      "file": "weather-day-snow.png",
+      "bytes": 218120,
+      "sha256": "39ea31025219e174e00bc8c0f535e39b4382b1d91ee187cddc59e71327526bff"
+    },
+    {
+      "file": "weather-day-wind.png",
+      "bytes": 222985,
+      "sha256": "21207512bb6e506d642c349c375ba8e55ed8ca97c080d7d92adbfe1916fc79cb"
+    },
+    {
+      "file": "weather-night-clear.png",
+      "bytes": 244357,
+      "sha256": "821d8ad45c225c4b236c22c1f0156a2b4a0690f62cce3e35eaaeb76e7b4050bc"
+    },
+    {
+      "file": "weather-night-cloudy.png",
+      "bytes": 243152,
+      "sha256": "c5cbe80b8e10c21b71f9930d9545bc93b1618719b534dfcbb448dfca836ed670"
+    },
+    {
+      "file": "weather-night-fog.png",
+      "bytes": 242883,
+      "sha256": "038ba5ffed2007122dcd45125847e0a7ac645028e516d7ae25ba058e57de826c"
+    },
+    {
+      "file": "weather-night-rain.png",
+      "bytes": 247516,
+      "sha256": "cd000f3e9b8477e04217a8087a88601a7d6ae5d92a128de191b45b28269f3e7f"
+    },
+    {
+      "file": "weather-night-snow.png",
+      "bytes": 244825,
+      "sha256": "71640335cec5f6e9b5acdb5bffd2a60c4fe82f91e8753ed28ffd87f1edc61b8a"
+    },
+    {
+      "file": "weather-night-wind.png",
+      "bytes": 246651,
+      "sha256": "1ce813799882210c51d29fca03dc11263d9651d8b9b803adb1f180b5fe081bdb"
+    },
+    {
+      "file": "weather-sunrise-clear.png",
+      "bytes": 213815,
+      "sha256": "5e709ac085406232a707e5d13e74bb4af1af60ae4610d26ffb122d18c2ec6cfc"
+    },
+    {
+      "file": "weather-sunrise-cloudy.png",
+      "bytes": 213414,
+      "sha256": "a466780b1b06fdf1595cee6759e8a04229daadc9149364afba4a861621b4e7f3"
+    },
+    {
+      "file": "weather-sunrise-fog.png",
+      "bytes": 212243,
+      "sha256": "e66c0155e99dec0aeea585d14feacc336899cf9dccc47f66336f860cde6b84f1"
+    },
+    {
+      "file": "weather-sunrise-rain.png",
+      "bytes": 217717,
+      "sha256": "db9fba3e79a0a071414895007a7636a72793f8bff5dcf95bf8180ff6f43d6233"
+    },
+    {
+      "file": "weather-sunrise-snow.png",
+      "bytes": 214930,
+      "sha256": "0be6ad70b8ddd30ada269ea81d2a655a7963e7bb8a93bfc7e9c3ec8018233028"
+    },
+    {
+      "file": "weather-sunrise-wind.png",
+      "bytes": 216205,
+      "sha256": "69039e10d5f4f7676c7f0783a13829e0293efe6dd82a010c723982ee89c8772d"
+    },
+    {
+      "file": "weather-sunset-clear.png",
+      "bytes": 228364,
+      "sha256": "ff11b269b585354205840f47c8f2d9ec77878cd27d5fac123d1540f4a7fae748"
+    },
+    {
+      "file": "weather-sunset-cloudy.png",
+      "bytes": 226804,
+      "sha256": "c34af9358330bd9c679b84e8967f9e14157f7d4a610495cede51ff902bee061e"
+    },
+    {
+      "file": "weather-sunset-fog.png",
+      "bytes": 225076,
+      "sha256": "bf3d7d538738a244095e003b3114f65f2d54a47237bd5df5a3444929470b0069"
+    },
+    {
+      "file": "weather-sunset-rain.png",
+      "bytes": 231387,
+      "sha256": "8d17614d535a7df2561bbacb727609edd1aaa7760749b3453470d924d6021cf2"
+    },
+    {
+      "file": "weather-sunset-snow.png",
+      "bytes": 228234,
+      "sha256": "04b9f46110cf98fd81d66a42a8791b852a73687955413faafc32967e95f90853"
+    },
+    {
+      "file": "weather-sunset-wind.png",
+      "bytes": 230717,
+      "sha256": "70517d90b59f8b98a34b31a354d2cc577351fa757e86903501f12136c90746d8"
+    }
+  ]
+}
