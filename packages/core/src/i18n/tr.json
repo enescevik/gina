@@ -663,5 +663,14 @@
   "icon.collectible.stamp-returned": "Tekrar Dene",
   "icon.collectible.loading-star-static": "Yükleniyor sabit",
   "motion.loading": "Yükleniyor",
-  "motion.badgeEarned": "Yeni rozet kazandın!"
+  "motion.badgeEarned": "Yeni rozet kazandın!",
+  "parent.greeting.morning": "Günaydın, {{name}}",
+  "parent.greeting.day": "İyi günler, {{name}}",
+  "parent.greeting.evening": "İyi akşamlar, {{name}}",
+  "parent.greeting.morningNoName": "Günaydın!",
+  "parent.greeting.dayNoName": "İyi günler!",
+  "parent.greeting.eveningNoName": "İyi akşamlar!",
+  "parent.namesAnd": "{{names}} ve {{last}}",
+  "parent.insightHighlight_one": "{{child}} bu hafta {{count}} gün «{{task}}» görevini yaptı.",
+  "parent.insightHighlight_other": "{{child}} bu hafta {{count}} gün «{{task}}» görevini yaptı."
 }

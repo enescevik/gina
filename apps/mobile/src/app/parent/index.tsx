@@ -9,6 +9,8 @@ import { localDateOf, occurrencesBetween, templatesDueOn, weekDatesOf } from "@g
 import Wordmark from "../../../../../packages/assets/brand/yan-yana/logo-wordmark.svg";
 
 import { Avatar } from "@/components/avatar";
+import { DayTimeline } from "@/components/calendar/day-timeline";
+import type { WeekEvent } from "@/components/calendar/week-list";
 import { NineSlice, SkinPressable } from "@/components/room/nine-slice";
 import { TaskIcon } from "@/components/task-icon";
 import { Button } from "@/components/ui/button";
@@ -17,11 +19,64 @@ import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
+import { useFamilyEvents } from "@/lib/use-family-events";
+
+/** Aile saat dilimindeki saate göre selam anahtarı (05–11 sabah, 12–17 gün, diğer akşam). */
+function greetingKey(timeZone: string, now = new Date()) {
+  const hour = Number(new Intl.DateTimeFormat("en-GB", { hour: "2-digit", hourCycle: "h23", timeZone }).format(now));
+  if (hour >= 5 && hour < 12) return "morning";
+  if (hour >= 12 && hour < 18) return "day";
+  return "evening";
+}
+
+interface WeeklyHighlight {
+  childId: string;
+  templateId: string;
+  days: number;
+}
+
+/**
+ * «Küçük adımlar birikiyor» içgörüsü (yapay zekâ yok, deterministik): bu hafta aynı görevi en çok farklı günde
+ * tamamlayan (yapıldı/onaylandı) çocuk + görev. Eşitlikte çocuk ve görev sırası (sort_order) belirler.
+ * En az 2 gün yoksa null (genel haftalık sayı gösterilir).
+ */
+function weeklyHighlight(
+  completions: readonly { child_id: string; template_id: string; due_date: string; status: string }[],
+  childOrder: readonly string[],
+  templateOrder: ReadonlyMap<string, number>,
+): WeeklyHighlight | null {
+  const days = new Map<string, Set<string>>();
+  for (const c of completions) {
+    if (c.status !== "done" && c.status !== "approved") continue;
+    const key = `${c.child_id}|${c.template_id}`;
+    const set = days.get(key) ?? new Set<string>();
+    set.add(c.due_date);
+    days.set(key, set);
+  }
+  let best: WeeklyHighlight | null = null;
+  const rank = (h: WeeklyHighlight) => [-h.days, childOrder.indexOf(h.childId), templateOrder.get(h.templateId) ?? 0, h.templateId] as const;
+  for (const [key, set] of days) {
+    const [childId = "", templateId = ""] = key.split("|");
+    const candidate = { childId, templateId, days: set.size };
+    if (!best) {
+      best = candidate;
+      continue;
+    }
+    const a = rank(candidate);
+    const b = rank(best);
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] === b[i]) continue;
+      if ((a[i] as number | string) < (b[i] as number | string)) best = candidate;
+      break;
+    }
+  }
+  return best && best.days >= 2 ? best : null;
+}
 
 /** Veli ana sayfası (onaylı tasarım, resim 2): ailenin günü, onay kuyruğu, bugünün planı, içgörü. */
 export default function ParentHomeScreen() {
   const { t, i18n } = useTranslation();
-  const { claims } = useSession();
+  const { claims, session } = useSession();
   const familyId = claims?.family_id ?? "";
   const timeZone = useFamilyTimezone();
   const today = localDateOf(new Date(), timeZone);
@@ -46,7 +101,7 @@ export default function ParentHomeScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_templates")
-        .select("id, child_id, days_of_week, starts_on, ends_on, active, sort_order")
+        .select("id, child_id, title, icon, days_of_week, starts_on, ends_on, active, sort_order")
         .eq("family_id", familyId);
       if (error) throw error;
       return data;
@@ -95,16 +150,18 @@ export default function ParentHomeScreen() {
     },
   });
 
-  const events = useQuery({
-    queryKey: ["events", familyId],
-    enabled: !!familyId,
+  const { events, exceptions } = useFamilyEvents();
+
+  // Selamdaki ad: family_members.display_name (oturumdaki veli).
+  const userId = session?.user.id ?? "";
+  const me = useQuery({
+    queryKey: ["family_member_me", userId],
+    enabled: !!userId,
+    staleTime: 10 * 60 * 1000,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("events")
-        .select("id, title, type, child_id, starts_at, ends_at, all_day, rrule, location, children!events_child_id_fkey(name)")
-        .order("starts_at");
+      const { data, error } = await supabase.from("family_members").select("display_name").eq("user_id", userId).maybeSingle();
       if (error) throw error;
-      return data;
+      return data?.display_name?.trim() || null;
     },
   });
 
@@ -126,7 +183,8 @@ export default function ParentHomeScreen() {
   });
 
   const dateFormat = new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "long", weekday: "long" });
-  const timeFormat = new Intl.DateTimeFormat(i18n.language, { hour: "2-digit", minute: "2-digit", hour12: false, timeZone });
+  const greeting = greetingKey(timeZone);
+  const parentName = me.data;
 
   const visibleChildren = (children.data ?? []).filter((c) => !childFilter || c.id === childFilter);
   const familyDay = visibleChildren.map((child) => {
@@ -137,12 +195,29 @@ export default function ParentHomeScreen() {
     return { child, due, done, stars: stars.data?.get(child.id) ?? 0 };
   });
 
-  const todaysPlan = occurrencesBetween(events.data ?? [], today, today, timeZone).filter(
+  const todaysPlan = occurrencesBetween(events.data ?? [], today, today, timeZone, exceptions.data ?? new Set()).filter(
     (o) => !childFilter || o.event.child_id === null || o.event.child_id === childFilter,
   );
+  // Çocuğa bağlı olmayan etkinlik tüm çocuklarındır: «Ece ve Can»; tek çocukta adı, hiç yoksa «Tüm aile».
+  const allChildNames = (children.data ?? []).map((c) => c.name);
+  const whoOf = (event: WeekEvent) => {
+    if (event.childName) return event.childName;
+    if (allChildNames.length === 0) return t("calendar.allFamily");
+    if (allChildNames.length === 1) return allChildNames[0] ?? "";
+    return t("parent.namesAnd", { names: allChildNames.slice(0, -1).join(", "), last: allChildNames[allChildNames.length - 1] });
+  };
 
-  // İçgörü: bu hafta onaylanan görev sayısı (aile geneli, gerçek veri)
-  const weekApproved = (completions.data ?? []).filter((c) => c.status === "approved").length;
+  // İçgörü: bu haftanın gerçek tamamlamalarından deterministik öne çıkan (filtreye uyar); yoksa haftalık onay sayısı.
+  const weekCompletions = (completions.data ?? []).filter((c) => !childFilter || c.child_id === childFilter);
+  const weekApproved = weekCompletions.filter((c) => c.status === "approved").length;
+  const templateById = new Map((templates.data ?? []).map((tt) => [tt.id, tt]));
+  const highlight = weeklyHighlight(
+    weekCompletions,
+    (children.data ?? []).map((c) => c.id),
+    new Map((templates.data ?? []).map((tt) => [tt.id, tt.sort_order])),
+  );
+  const highlightTemplate = highlight ? templateById.get(highlight.templateId) : undefined;
+  const highlightChild = highlight ? children.data?.find((c) => c.id === highlight.childId) : undefined;
 
   const pendingApprovals = (approvals.data ?? []).filter((a) => !childFilter || a.child_id === childFilter);
 
@@ -162,7 +237,9 @@ export default function ParentHomeScreen() {
         </Pressable>
       </View>
       <View>
-        <Text className="font-display text-4xl text-ink dark:text-night-text">{t("parent.goodDay")}</Text>
+        <Text accessibilityRole="header" className="font-display text-4xl text-ink dark:text-night-text">
+          {parentName ? t(`parent.greeting.${greeting}`, { name: parentName }) : t(`parent.greeting.${greeting}NoName`)}
+        </Text>
         <Text className="font-body text-lg text-gray-600 dark:text-night-text/80">{dateFormat.format(new Date(`${today}T12:00:00Z`))}</Text>
       </View>
 
@@ -258,24 +335,36 @@ export default function ParentHomeScreen() {
           <Text accessibilityRole="header" className="flex-1 font-display text-[26px] leading-9 text-ink">
             {t("parent.todaysPlan")}
           </Text>
-          <Pressable accessibilityRole="button" onPress={() => router.push("/parent/calendar")} className="min-h-12 justify-center">
+          <Pressable accessibilityRole="link" onPress={() => router.push("/parent/calendar")} hitSlop={8} className="min-h-12 justify-center">
             <Text className="font-body-bold text-base text-teal-dark">{t("parent.openCalendar")} ›</Text>
           </Pressable>
         </View>
         {todaysPlan.length === 0 ? <Text className="font-body text-gray-500">{t("calendar.noEvents")}</Text> : null}
-        {todaysPlan.map((o, i) => (
-          <View key={`${o.event.id}:${o.date}`} className="flex-row items-center gap-3">
-            <View className={`h-4 w-4 rounded-full ${i === 0 ? "bg-teal" : "bg-teal-light"}`} />
-            <Text className="w-16 font-body text-base text-gray-600">
-              {o.event.all_day ? t("calendar.allDay") : timeFormat.format(o.startsAt)}
-            </Text>
-            <View className="flex-1">
-              <Text className="font-body-bold text-base text-ink">{o.event.title}</Text>
-              <Text className="font-body text-sm text-gray-600">{o.event.children?.name ?? t("calendar.allFamily")}</Text>
-            </View>
-          </View>
-        ))}
+        <DayTimeline occurrences={todaysPlan} timeZone={timeZone} whoOf={whoOf} />
       </NineSlice>
+
+      {/* İçgörü kartı: açık teal zemin native.
+          TODO(BRIEF 13 / E.5): `parent-insight-card` kaplaması ve açık kitap illüstrasyonu gelince NineSlice'a geç. */}
+      <Pressable
+        accessibilityRole="link"
+        onPress={() => router.push("/parent/prova/progress")}
+        className="min-h-20 flex-row items-center gap-3 rounded-[20px] bg-teal-light p-4 active:bg-mist"
+      >
+        {highlightTemplate ? (
+          <TaskIcon slug={highlightTemplate.icon} size={56} variant="illustrated" />
+        ) : (
+          <Text className="text-4xl">📖</Text>
+        )}
+        <View className="flex-1">
+          <Text className="font-display text-base leading-6 text-ink">{t("parent.insightTitle")}</Text>
+          <Text className="font-body text-sm text-gray-700">
+            {highlight && highlightTemplate && highlightChild
+              ? t("parent.insightHighlight", { child: highlightChild.name, count: highlight.days, task: highlightTemplate.title })
+              : t("parent.insightWeek", { count: weekApproved })}
+          </Text>
+        </View>
+        <Text className="font-body-bold text-sm text-teal-dark">{t("parent.seeProgress")} ›</Text>
+      </Pressable>
 
       <SkinPressable skin="parent-card" onPress={() => router.push("/parent/prova")} contentClassName="flex-row items-center gap-3">
         <Text className="text-3xl">📝</Text>
@@ -286,17 +375,7 @@ export default function ParentHomeScreen() {
         <Text className="font-display text-xl text-teal-dark">›</Text>
       </SkinPressable>
 
-      <View className="flex-row items-center gap-3 rounded-[20px] bg-teal-light p-4">
-        <Text className="text-4xl">📖</Text>
-        <View className="flex-1">
-          <Text className="font-display text-lg text-ink">{t("parent.insightTitle")}</Text>
-          <Text className="font-body text-sm text-gray-700">{t("parent.insightWeek", { count: weekApproved })}</Text>
-        </View>
-        <Pressable accessibilityRole="button" onPress={() => router.push("/parent/grades")} className="min-h-12 justify-center">
-          <Text className="font-body-bold text-teal-dark">{t("parent.seeProgress")} ›</Text>
-        </Pressable>
-      </View>
-
+      {/* TODO(BRIEF 13 / E.6): `button-outline` kaplaması gelince bu konturlu native butonu SkinPressable'a geçir. */}
       <Pressable
         accessibilityRole="button"
         onPress={() => router.push("/parent/tasks")}
@@ -320,7 +399,7 @@ export default function ParentHomeScreen() {
         </View>
       </View>
 
-      <ErrorText error={children.error ?? templates.error ?? completions.error ?? approvals.error ?? events.error ?? review.error} />
+      <ErrorText error={children.error ?? templates.error ?? completions.error ?? approvals.error ?? events.error ?? me.error ?? review.error} />
     </Screen>
   );
 }

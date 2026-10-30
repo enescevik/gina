@@ -15,12 +15,12 @@ import {
   type IsoWeekday,
 } from "@gina/core";
 
-import { WeekList, type WeekEvent } from "@/components/calendar/week-list";
+import { WeekList } from "@/components/calendar/week-list";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText, Screen } from "@/components/ui/screen";
 import { useFamilyTimezone } from "@/lib/family";
-import { useRealtimeInvalidate } from "@/lib/realtime";
+import { useFamilyEvents } from "@/lib/use-family-events";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -64,30 +64,7 @@ export default function ParentCalendarScreen() {
     },
   });
 
-  const events = useQuery({
-    queryKey: ["events", familyId],
-    enabled: !!familyId,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("events")
-        .select("id, title, type, child_id, starts_at, ends_at, all_day, rrule, location, children(name)")
-        .order("starts_at");
-      if (error) throw error;
-      return data.map<WeekEvent>((e) => ({ ...e, childName: e.children?.name ?? null }));
-    },
-  });
-
-  const exceptions = useQuery({
-    queryKey: ["event_exceptions", familyId],
-    enabled: !!familyId,
-    queryFn: async () => {
-      const { data, error } = await supabase.from("event_exceptions").select("event_id, occurrence_date, cancelled");
-      if (error) throw error;
-      return new Set(data.filter((x) => x.cancelled).map((x) => `${x.event_id}:${x.occurrence_date}`));
-    },
-  });
-
-  useRealtimeInvalidate("events", familyId ? `family_id=eq.${familyId}` : null, [["events", familyId]]);
+  const { events, exceptions } = useFamilyEvents();
 
   const addEvent = useMutation({
     mutationFn: async () => {

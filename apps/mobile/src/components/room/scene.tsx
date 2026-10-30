@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
-import { Image, View, useWindowDimensions } from "react-native";
+import { Image, View, useWindowDimensions, type ImageSourcePropType } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import roomsManifest from "../../../../../packages/assets/rooms/v2/manifest.json";
 
-import { CHARACTER_PLACEMENT, sceneFrame, zoneRect, type SceneRect, type Zone } from "./layout";
+import { CHARACTER_PLACEMENT, PET_PLACEMENT, sceneFrame, zoneRect, type SceneRect, type Zone } from "./layout";
 
 // Üretim kaynakları (packages/assets/rooms/v2): pano/bilet/takvim/dolap tabana gömülü değil, kaplama olarak ayrı yerleşir.
 const ROOM_BASE = require("../../../../../packages/assets/rooms/v2/room-base.webp");
@@ -14,6 +14,23 @@ const CHARACTERS = {
   boy: require("../../../../../packages/assets/rooms/v2/character-boy.webp"),
 } as const;
 export type CharacterKey = keyof typeof CHARACTERS;
+
+/** child_room_preferences.pet_key değerleri (20261030160000_room_pet.sql). */
+export type PetKey = "none" | "cat" | "dog" | "monkey" | "lion";
+
+// Evcil hayvan katmanları (BRIEF 13): Codex packages/assets/rooms/v2/pet-{slug}.webp teslim edince ilgili satırın
+// yorumunu kaldırmak yeterli. Görseli olmayan seçim (ve 'none') hiç çizilmez.
+const PETS: Partial<Record<Exclude<PetKey, "none">, ImageSourcePropType>> = {
+  // cat: require("../../../../../packages/assets/rooms/v2/pet-cat.webp"),
+  // dog: require("../../../../../packages/assets/rooms/v2/pet-dog.webp"),
+  // monkey: require("../../../../../packages/assets/rooms/v2/pet-monkey.webp"),
+  // lion: require("../../../../../packages/assets/rooms/v2/pet-lion.webp"),
+};
+
+function petSource(pet: string | null | undefined): ImageSourcePropType | null {
+  if (!pet || pet === "none") return null;
+  return PETS[pet as Exclude<PetKey, "none">] ?? null;
+}
 
 interface CharacterEntry {
   slug: string;
@@ -51,22 +68,26 @@ function characterRect(key: CharacterKey, frame: SceneRect): SceneRect {
 
 export interface RoomSceneProps {
   character: CharacterKey;
+  /** Odadaki evcil hayvan (child_room_preferences.pet_key); görseli yoksa çizilmez. */
+  pet?: string | null;
   /** Bölge adı → gerçek RN içeriği; dekor erişilebilirlik ağacına girmez, içerik girer. */
   children: (helpers: { rect: (zone: Zone) => SceneRect; frame: SceneRect }) => ReactNode;
 }
 
 /**
- * Katmanlı oda sahnesi: oda tabanı → karakter → kaplamalar + gerçek metin/kontroller (children).
+ * Katmanlı oda sahnesi: oda tabanı → evcil hayvan → karakter → kaplamalar + gerçek metin/kontroller (children).
  * Sanat Image olarak contain-fit ile çizilir; hiçbir buton görselin içine gömülmez.
  * Özel gün dekoru gelecekte taban ile karakter arasına ayrı katman olarak eklenir.
  */
-export function RoomScene({ character, children }: RoomSceneProps) {
+export function RoomScene({ character, pet, children }: RoomSceneProps) {
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const containerWidth = width - insets.left - insets.right;
   const containerHeight = height - insets.top - insets.bottom;
   const frame = sceneFrame(containerWidth, containerHeight);
   const charRect = characterRect(character, frame);
+  const petImage = petSource(pet);
+  const petSize = PET_PLACEMENT.height * frame.height;
 
   return (
     <View
@@ -81,6 +102,21 @@ export function RoomScene({ character, children }: RoomSceneProps) {
           importantForAccessibility="no-hide-descendants"
           style={{ position: "absolute", left: frame.left, top: frame.top, width: frame.width, height: frame.height }}
         />
+        {petImage ? (
+          <Image
+            source={petImage}
+            resizeMode="contain"
+            accessible={false}
+            importantForAccessibility="no-hide-descendants"
+            style={{
+              position: "absolute",
+              left: frame.left + PET_PLACEMENT.centerX * frame.width - petSize / 2,
+              top: frame.top + PET_PLACEMENT.footY * frame.height - petSize,
+              width: petSize,
+              height: petSize,
+            }}
+          />
+        ) : null}
         <Image
           source={CHARACTERS[character]}
           resizeMode="contain"

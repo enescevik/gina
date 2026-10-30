@@ -30,6 +30,8 @@ export function SkinTaskCard({
   completing,
   onComplete,
   stacked = false,
+  large = false,
+  height,
 }: {
   task: Task;
   s: number;
@@ -38,6 +40,10 @@ export function SkinTaskCard({
   onComplete: () => void;
   /** Dar ekran/büyük yazı: çip ve durum metnin altına iner, başlık tam genişlikte sarar. */
   stacked?: boolean;
+  /** Geniş oda panosu (onaylı referans): iki büyük kâğıt; ~68 dp resimli ikon, büyük başlık. */
+  large?: boolean;
+  /** Panoda kâğıt yüksekliği (görünür alana tam iki kart sığsın diye); verilmezse içerik kadar. */
+  height?: number;
 }) {
   const { t } = useTranslation();
   const fs = (n: number) => Math.round(n * s);
@@ -61,8 +67,9 @@ export function SkinTaskCard({
       accessibilityLabel={`${task.title}, ${subtitle}`}
       accessibilityHint={actionable ? t("room.tapWhenDone") : undefined}
       accessibilityState={{ disabled: !actionable || completing }}
+      style={height ? { height } : undefined}
       contentClassName="flex-row items-center"
-      contentStyle={{ gap: 12 * s }}
+      contentStyle={{ gap: (large ? 16 : 12) * s }}
     >
       {({ pressed }) => {
         const trailing = (
@@ -74,7 +81,7 @@ export function SkinTaskCard({
                 scale={s}
                 contentClassName="items-center justify-center"
               >
-                <Text className="font-display text-white" style={{ fontSize: fs(isNext ? 20 : 18), lineHeight: fs(24) }}>
+                <Text className="font-display text-white" style={{ fontSize: fs(large ? 22 : isNext ? 20 : 18), lineHeight: fs(large ? 28 : 24) }}>
                   {t("room.start")}
                 </Text>
               </NineSlice>
@@ -83,15 +90,15 @@ export function SkinTaskCard({
         );
         return (
           <>
-            <TaskIcon slug={task.icon} size={Math.max(48, Math.round(60 * s))} variant="illustrated" />
+            <TaskIcon slug={task.icon} size={Math.max(48, Math.round((large ? 72 : 60) * s))} variant="illustrated" />
             <View className="flex-1">
-              <Text numberOfLines={stacked ? undefined : 2} className="font-display-semi text-ink" style={{ fontSize: fs(24), lineHeight: fs(30) }}>
+              <Text numberOfLines={stacked ? undefined : 2} className="font-display-semi text-ink" style={{ fontSize: fs(large ? 26 : 24), lineHeight: fs(large ? 32 : 30) }}>
                 {task.title}
               </Text>
               <Text
                 numberOfLines={stacked ? undefined : 2}
                 className={`font-body-bold ${task.status === "returned" ? "text-danger" : task.status === "approved" ? "text-teal-dark" : "text-ink/80"}`}
-                style={{ fontSize: fs(18) }}
+                style={{ fontSize: fs(large ? 20 : 18) }}
               >
                 {subtitle}
               </Text>

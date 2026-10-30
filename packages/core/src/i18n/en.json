@@ -663,5 +663,14 @@
   "icon.collectible.stamp-returned": "Stamp returned",
   "icon.collectible.loading-star-static": "Loading star static",
   "motion.loading": "Loading",
-  "motion.badgeEarned": "You earned a new badge!"
+  "motion.badgeEarned": "You earned a new badge!",
+  "parent.greeting.morning": "Good morning, {{name}}",
+  "parent.greeting.day": "Good afternoon, {{name}}",
+  "parent.greeting.evening": "Good evening, {{name}}",
+  "parent.greeting.morningNoName": "Good morning!",
+  "parent.greeting.dayNoName": "Good afternoon!",
+  "parent.greeting.eveningNoName": "Good evening!",
+  "parent.namesAnd": "{{names}} and {{last}}",
+  "parent.insightHighlight_one": "{{child}} did “{{task}}” on {{count}} day this week.",
+  "parent.insightHighlight_other": "{{child}} did “{{task}}” on {{count}} days this week."
 }

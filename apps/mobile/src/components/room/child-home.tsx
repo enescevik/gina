@@ -1,19 +1,56 @@
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
+import { useState } from "react";
+import { ActivityIndicator, Image, Pressable, ScrollView, Text, View, type ImageSourcePropType } from "react-native";
 
 import Wordmark from "../../../../../packages/assets/brand/yan-yana/logo-wordmark.svg";
 
 import { Collectible } from "@/components/collectible";
+import { BoardProgress } from "@/components/room/board-progress";
 import { ZONES, roomSkinScale } from "@/components/room/layout";
 import { NineSlice, SkinIcon, SkinPressable, SkinProgress } from "@/components/room/nine-slice";
+import { rewardTicketArt, shelfDisplayArt } from "@/components/room/room-art";
 import { RoomScene, type CharacterKey } from "@/components/room/scene";
 import { SkinTaskCard, sortForBoard } from "@/components/room/skin-task-card";
 import { ErrorText } from "@/components/ui/screen";
 import { useChildBadges } from "@/lib/use-child-badges";
 import { useChildExamCount } from "@/lib/use-child-exam-count";
 import { useChildGoal } from "@/lib/use-child-goal";
+import { useChildRoomPrefs } from "@/lib/use-child-room-prefs";
 import { useChildToday } from "@/lib/use-child-today";
+
+/** Panoda görünür alana sığan görev kâğıdı sayısı (onaylı referans: iki büyük kâğıt; kalanı pano içinde kayar). */
+const BOARD_VISIBLE_CARDS = 2;
+
+/** Raftaki nesne: Codex display-* sergi görseli teslim edince otomatik kullanılır; yoksa madalya (BRIEF 13 / D.2). */
+function ShelfObject({ badge, s }: { badge: { slug: string; icon: string }; s: number }) {
+  const display = shelfDisplayArt(badge);
+  if (!display) return <Collectible slug={badge.icon} size={Math.max(48, 64 * s)} style={{ marginTop: -34 * s }} />;
+  const size = Math.max(56, 84 * s);
+  return (
+    <Image
+      source={display}
+      resizeMode="contain"
+      accessible={false}
+      importantForAccessibility="no-hide-descendants"
+      style={{ width: size, height: size, marginTop: -50 * s }}
+    />
+  );
+}
+
+/** Bilet yanındaki ödül görseli yuvası; görsel yoksa yer kaplamaz. */
+function TicketArt({ source, size }: { source: ImageSourcePropType | null; size: number }) {
+  if (!source) return null;
+  return (
+    <Image
+      source={source}
+      resizeMode="contain"
+      accessible={false}
+      importantForAccessibility="no-hide-descendants"
+      style={{ width: size, height: size }}
+    />
+  );
+}
 
 export interface RoomChildHomeProps {
   childId: string;
@@ -33,9 +70,13 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
   const assignedExams = useChildExamCount(childId);
   const goal = useChildGoal(childId);
   const weekday = new Intl.DateTimeFormat(i18n.language, { weekday: "short", timeZone: "UTC" });
+  // Satır yoksa sütun varsayılanı ('cat') geçerlidir.
+  const pet = useChildRoomPrefs(childId).data?.petKey ?? "cat";
+  // Pano kaydırma alanının yüksekliği: iki kâğıt tam sığacak şekilde kart yüksekliği buradan hesaplanır.
+  const [listHeight, setListHeight] = useState(0);
 
   return (
-    <RoomScene character={character}>
+    <RoomScene character={character} pet={pet}>
       {({ rect, frame }) => {
         const s = roomSkinScale(frame.width);
         const fs = (n: number) => Math.round(n * s);
@@ -50,6 +91,12 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
         const nextTaskId = data.due.find((d) => d.status === null || d.status === "returned")?.id;
         const goalData = goal.data;
         const remaining = goalData ? Math.max(0, goalData.cost - data.stars) : 0;
+        const ticketArt = rewardTicketArt(goalData?.rewardIcon);
+        const ticketArtSize = Math.round(68 * s);
+        const boardTasks = sortForBoard(data.due);
+        const cardGap = 10 * s;
+        // Kâğıdın minimum yüksekliği (task-card minimumLogicalSize ~57 dp) altına inilmez; çok kısa sahnede kart içerik kadar olur.
+        const cardHeight = listHeight > 0 ? Math.max(96 * s, (listHeight - cardGap * (BOARD_VISIBLE_CARDS - 1) - 4) / BOARD_VISIBLE_CARDS) : undefined;
 
         return (
           <>
@@ -58,12 +105,10 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
               <View className="flex-row items-center" style={{ gap: 16 * s }}>
                 <Wordmark width={160 * s} height={70 * s} accessibilityLabel="Gina" />
                 <View className="bg-ink/15" style={{ width: 2, height: 44 * s }} />
-                <View>
-                  <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(38), lineHeight: fs(48) }}>
-                    {t("child.hello", { name: childName })}
-                  </Text>
-                  <NineSlice skin="header-greeting-underline" scale={s} style={{ marginTop: -6 * s }} />
-                </View>
+                {/* Onaylı referansta selamlamanın altında vurgu çizgisi yok (header-greeting-underline kullanılmıyor). */}
+                <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(42), lineHeight: fs(52) }}>
+                  {t("child.hello", { name: childName })}
+                </Text>
               </View>
               <View className="flex-row items-center" style={{ gap: 12 * s }}>
                 <View accessible accessibilityLabel={t("room.starCount", { count: data.stars })}>
@@ -96,41 +141,42 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
               style={{ position: "absolute", ...board }}
               contentStyle={{ flex: 1, flexGrow: 1 }}
             >
-              <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(34), lineHeight: fs(40) }}>
+              <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(40), lineHeight: fs(48) }}>
                 {t("room.todayTasks")}
               </Text>
-              <Text className="font-body text-ink/80" style={{ fontSize: fs(19) }}>
+              <Text className="font-body text-ink/80" style={{ fontSize: fs(20) }}>
                 {t("room.completedOf", { done: doneCount, total: data.due.length })}
               </Text>
-              {data.due.length > 0 ? (
-                <View
-                  className="flex-row flex-wrap"
-                  style={{ gap: 6 * s, marginTop: 6 * s, marginBottom: 8 * s }}
-                  accessible={false}
-                  importantForAccessibility="no-hide-descendants"
-                >
-                  {data.due.map((task) => (
-                    <SkinIcon
-                      key={task.id}
-                      skin={task.status === "done" || task.status === "approved" ? "progress-dot-filled" : "progress-dot-empty"}
-                      size={16 * s}
-                    />
-                  ))}
-                </View>
-              ) : null}
+              <View style={{ marginTop: 6 * s, marginBottom: 10 * s }}>
+                <BoardProgress
+                  done={doneCount}
+                  total={data.due.length}
+                  s={s}
+                  statuses={data.due.map((task) => task.status === "done" || task.status === "approved")}
+                />
+              </View>
               <ErrorText error={data.error} />
-              <ScrollView style={{ flex: 1 }} contentContainerStyle={{ gap: 8 * s, paddingBottom: 4 }}>
+              <ScrollView
+                style={{ flex: 1 }}
+                onLayout={(e) => setListHeight(e.nativeEvent.layout.height)}
+                contentContainerStyle={{ gap: cardGap, paddingBottom: 4 }}
+                snapToInterval={cardHeight ? cardHeight + cardGap : undefined}
+                decelerationRate="fast"
+                showsVerticalScrollIndicator={boardTasks.length > BOARD_VISIBLE_CARDS}
+              >
                 {data.loading ? <ActivityIndicator color="#0B7F7F" /> : null}
                 {data.due.length === 0 && !data.loading && !data.error ? (
                   <Text className="font-body text-ink" style={{ fontSize: fs(18) }}>
                     {t("child.allDone")}
                   </Text>
                 ) : null}
-                {sortForBoard(data.due).map((task) => (
+                {boardTasks.map((task) => (
                   <SkinTaskCard
                     key={task.id}
                     task={task}
                     s={s}
+                    large
+                    height={cardHeight}
                     isNext={task.id === nextTaskId}
                     completing={data.completing}
                     onComplete={() => data.complete(task.id)}
@@ -154,8 +200,12 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
                     : `${t("room.myGoal")}: ${t("goal.pickCta")}`
                 }
                 style={{ width: goalRect.width, flexGrow: 272, flexBasis: 0 }}
-                contentClassName="items-center justify-center"
+                contentClassName="flex-row items-center justify-center"
+                contentStyle={{ gap: 6 * s }}
               >
+                {/* Sol/sağ ödül görseli yuvaları (BRIEF 13 / D.1): görsel yoksa hiç çizilmez, metin ortada kalır. */}
+                <TicketArt source={goalData ? ticketArt.left : null} size={ticketArtSize} />
+                <View className="flex-1 items-center justify-center">
                 <Text className="font-display text-ink" style={{ fontSize: fs(24), lineHeight: fs(28) }}>
                   {t("room.myGoal")}
                 </Text>
@@ -178,6 +228,8 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
                     {t("goal.pickCta")}
                   </Text>
                 ) : null}
+                </View>
+                <TicketArt source={goalData ? ticketArt.right : null} size={ticketArtSize} />
               </SkinPressable>
 
               {/* Haftam duvar takvimi: week-frame; gün hücreleri native, durumlar kaplama */}
@@ -227,7 +279,7 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
                     >
                       {badge ? (
                         <>
-                          <Collectible slug={badge.icon} size={Math.max(48, 64 * s)} style={{ marginTop: -34 * s }} />
+                          <ShelfObject badge={badge} s={s} />
                           <Text numberOfLines={1} className="font-body-bold text-cream" style={{ fontSize: fs(12) }}>
                             {badge.title}
                           </Text>
