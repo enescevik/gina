@@ -2,11 +2,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -18,7 +19,7 @@ function parseBlueprintRows(text: string): { topic: string; count: number }[] {
     .filter(Boolean)
     .map((line) => {
       const [topic, count] = line.split(/[;|\t]/).map((p) => p.trim());
-      return { topic: topic ?? "", count: Math.max(0, Number(count ?? "1") || 1) };
+      return { topic: topic ?? "", count: Number(count ?? "1") };
     })
     .filter((r) => r.topic.length > 0);
 }
@@ -31,15 +32,15 @@ export default function BlueprintScreen() {
   const queryClient = useQueryClient();
   const [subject, setSubject] = useState("");
   const [grade, setGrade] = useState("5");
-  const [name, setName] = useState("Senaryo 1");
+  const [name, setName] = useState("");
   const [rowsText, setRowsText] = useState("");
-  const [sourceUrl, setSourceUrl] = useState("https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724");
+  const [sourceUrl, setSourceUrl] = useState("");
 
   const rows = parseBlueprintRows(rowsText);
 
   const save = useMutation({
     mutationFn: async () => {
-      if (!subject.trim() || rows.length === 0) throw new Error(t("prova.blueprintInvalid"));
+      if (!subject.trim() || !name.trim() || !Number.isInteger(Number(grade)) || Number(grade) < 1 || Number(grade) > 12 || rows.length === 0 || rows.some(row => !Number.isInteger(row.count) || row.count < 1 || row.count > 60)) throw new Error(t("prova.blueprintInvalid"));
       const { error } = await supabase.from("exam_blueprints").insert({
         family_id: familyId,
         subject: subject.trim(),
@@ -59,7 +60,8 @@ export default function BlueprintScreen() {
 
   return (
     <Screen title={t("prova.newBlueprint")}>
-      <Field label={t("grades.subject")} value={subject} onChangeText={setSubject} placeholder="Fen Bilimleri" />
+      <View style={parentStyles.card}>
+      <Field label={t("grades.subject")} value={subject} onChangeText={setSubject} placeholder={t("provaV5.subjectExample")} />
       <Field label={t("prova.grade")} keyboardType="number-pad" maxLength={2} value={grade} onChangeText={setGrade} />
       <Field label={t("prova.blueprintName")} value={name} onChangeText={setName} />
       <Field
@@ -68,13 +70,14 @@ export default function BlueprintScreen() {
         onChangeText={setRowsText}
         multiline
         className="min-h-32"
-        placeholder={"Isı ve Sıcaklık; 2\nMaddenin Halleri; 2\nEnerji Dönüşümleri; 1"}
+        placeholder={t("provaV5.rowsExample")}
       />
       <Text className="font-body text-sm text-gray-600">{t("prova.rowsParsed", { count: rows.length, total: rows.reduce((s, r) => s + r.count, 0) })}</Text>
       <Field label={t("prova.source")} value={sourceUrl} onChangeText={setSourceUrl} autoCapitalize="none" />
       <ErrorText error={save.error} />
       <Button title={t("common.save")} loading={save.isPending} onPress={() => save.mutate()} />
       <Button variant="ghost" title={t("common.cancel")} onPress={() => router.back()} />
+    </View>
     </Screen>
   );
 }

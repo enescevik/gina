@@ -25,17 +25,18 @@ export function Screen({ title, children, tone = "parent", scroll = true }: Scre
 }
 
 export function ErrorText({ error }: { error: unknown }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   if (!error) return null;
   const detail = typeof error === "object" && error !== null ? error as { message?: string; code?: string; status?: number } : {};
   const message = detail.message ?? String(error);
   let copy: string;
-  if (/network|fetch|connection|timeout/i.test(message)) copy = t("release.networkError");
+  if (i18n.exists(`prova.ai.errors.${detail.code ?? message}`)) copy = t(`prova.ai.errors.${detail.code ?? message}`);
+  else if (/network|fetch|connection|timeout/i.test(message)) copy = t("release.networkError");
   else if (/invalid.login.credentials|invalid_credentials/i.test(message + detail.code)) copy = t("auth.invalidLogin");
   else if (/locked|rate.limit|too.many/i.test(message)) copy = t("release.pinLocked");
   else if (detail.code === "42501" || detail.status === 403) copy = t("release.accessError");
   else if (detail.code?.startsWith("23") || detail.status === 400) copy = t("release.invalidForm");
-  else if (error instanceof Error && !detail.code && !detail.status && /\s/.test(message) && !/^(TypeError|SyntaxError|JSON|Cannot|Unexpected)/.test(message)) copy = message;
+  else if ((error instanceof Error || typeof error === "string") && !detail.code && !detail.status && /\s/.test(message) && !/^(TypeError|SyntaxError|JSON|Cannot|Unexpected)/.test(message)) copy = message;
   else copy = t("release.genericError");
   return <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={{ fontFamily: "Nunito_600SemiBold", color: "#A43135", fontSize: 15, lineHeight: 22 }}>{copy}</Text>;
 }

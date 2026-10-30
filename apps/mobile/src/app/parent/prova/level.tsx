@@ -2,11 +2,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Switch, Text, TextInput, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
+import { Toggle } from "@/components/ui/toggle";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ChildPicker, ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -42,7 +44,7 @@ export default function LevelTestScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name, grade").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, grade, avatar").order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -118,6 +120,7 @@ export default function LevelTestScreen() {
 
   const create = useMutation({
     mutationFn: async () => {
+      if (!Number.isInteger(Number(grade)) || Number(grade) < 1 || Number(grade) > 12 || !Number.isInteger(Number(perTopic)) || Number(perTopic) < 1 || Number(perTopic) > 10 || !Number.isInteger(Number(maxQuestions)) || Number(maxQuestions) < 1 || Number(maxQuestions) > 60 || (timed && (!Number.isInteger(Number(minutes)) || Number(minutes) < 1 || Number(minutes) > 180))) throw new Error(t("release.invalidForm"));
       if (!childId) throw new Error(t("prova.pickChild"));
       if (!subject.trim()) throw new Error(t("prova.level.subjectRequired"));
       const { error } = await supabase.rpc("create_level_test", {
@@ -139,26 +142,21 @@ export default function LevelTestScreen() {
     },
   });
 
-  const chip = (active: boolean) => `rounded-full px-3 py-2 ${active ? "bg-teal" : "bg-mist"}`;
-  const chipText = (active: boolean) => (active ? "font-semibold text-white" : "text-ink");
+  const chip = (active: boolean) => `min-h-12 min-w-12 items-center justify-center rounded-full border px-4 py-2 ${active ? "bg-teal-dark border-teal-dark" : "bg-[#FFFCF6] border-[#D7CDBB]"}`;
+  const chipText = (active: boolean) => (active ? "font-body-bold text-white" : "font-body text-ink");
   const blueprintsForSubject = blueprints.data ?? [];
 
   return (
-    <Screen title={t("prova.level.title")}>
+    <Screen title={t("prova.level.title")} loading={children.isLoading || blueprints.isLoading || subjects.isLoading} error={children.error ?? blueprints.error ?? subjects.error} onRetry={() => { void children.refetch(); void blueprints.refetch(); void subjects.refetch(); }}>
+      <View style={parentStyles.card}>
       <Text className="font-body text-base text-gray-600">{t("prova.level.intro")}</Text>
 
-      <Text className="font-body-bold text-sm text-ink dark:text-night-text">{t("prova.forChild")}</Text>
-      <View className="flex-row flex-wrap gap-2">
-        {children.data?.map((c) => (
-          <Pressable key={c.id} accessibilityRole="button" onPress={() => pickChild(c.id)} className={chip(childId === c.id)}>
-            <Text className={chipText(childId === c.id)}>{c.name}</Text>
-          </Pressable>
-        ))}
-      </View>
+      <Text className="font-body-bold text-sm text-ink">{t("prova.forChild")}</Text>
+      <ChildPicker profiles={children.data ?? []} selected={childId} onSelect={id => { if (id) pickChild(id); }} />
 
       {subjects.data && subjects.data.length > 0 ? (
         <>
-          <Text className="font-body-bold text-sm text-ink dark:text-night-text">{t("prova.level.fromLibrary")}</Text>
+          <Text className="font-body-bold text-sm text-ink">{t("prova.level.fromLibrary")}</Text>
           <View className="flex-row flex-wrap gap-2">
             {subjects.data.map((s) => {
               const active = !blueprintId && subject.trim() === s.subject && gradeNum === s.grade;
@@ -171,7 +169,7 @@ export default function LevelTestScreen() {
                     setSubject(s.subject);
                     setGrade(String(s.grade));
                   }}
-                  className={chip(active)}
+                  accessibilityState={{ selected: active }} className={chip(active)}
                 >
                   <Text className={chipText(active)}>
                     {s.subject} · {s.grade}. {t("prova.gradeWord")}
@@ -192,13 +190,13 @@ export default function LevelTestScreen() {
         </View>
       </View>
 
-      <Text className="font-body-bold text-sm text-ink dark:text-night-text">{t("prova.level.topicsFrom")}</Text>
+      <Text className="font-body-bold text-sm text-ink">{t("prova.level.topicsFrom")}</Text>
       <View className="flex-row flex-wrap gap-2">
-        <Pressable accessibilityRole="button" onPress={() => pickBlueprint(null)} className={chip(blueprintId === null)}>
+        <Pressable accessibilityRole="button" onPress={() => pickBlueprint(null)} accessibilityState={{ selected: blueprintId === null }} className={chip(blueprintId === null)}>
           <Text className={chipText(blueprintId === null)}>{t("prova.level.allTopics")}</Text>
         </Pressable>
         {blueprintsForSubject.map((bp) => (
-          <Pressable key={bp.id} accessibilityRole="button" onPress={() => pickBlueprint(bp.id)} className={chip(blueprintId === bp.id)}>
+          <Pressable key={bp.id} accessibilityRole="button" onPress={() => pickBlueprint(bp.id)} accessibilityState={{ selected: blueprintId === bp.id }} className={chip(blueprintId === bp.id)}>
             <Text className={chipText(blueprintId === bp.id)}>
               {bp.subject} · {bp.name}
             </Text>
@@ -241,22 +239,22 @@ export default function LevelTestScreen() {
       ) : null}
 
       <View className="flex-row items-center gap-3">
-        <Switch value={timed} onValueChange={setTimed} />
-        <Text className="font-body text-base text-ink dark:text-night-text">{t("prova.timed")}</Text>
+        <Toggle value={timed} onChange={setTimed} label={t("prova.timed")} />
         {timed ? (
           <TextInput
             keyboardType="number-pad"
             value={minutes}
             onChangeText={setMinutes}
-            className="w-16 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink"
+            className="font-body min-h-12 w-16 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink"
           />
         ) : null}
-        {timed ? <Text className="font-body text-ink dark:text-night-text">{t("prova.min")}</Text> : null}
+        {timed ? <Text className="font-body text-ink">{t("prova.min")}</Text> : null}
       </View>
 
       <ErrorText error={friendlyError(create.error ?? preview.error ?? children.error ?? blueprints.error ?? subjects.error, t)} />
-      <Button title={t("prova.level.create")} loading={create.isPending} disabled={summary.total === 0} onPress={() => create.mutate()} />
+      <Button title={t("prova.level.create")} loading={create.isPending} disabled={summary.total === 0 || !childId || preview.isFetching} onPress={() => create.mutate()} />
       <Button variant="ghost" title={t("common.cancel")} onPress={() => router.back()} />
+    </View>
     </Screen>
   );
 }

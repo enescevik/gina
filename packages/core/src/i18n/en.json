@@ -794,5 +794,16 @@
   "rewardIcon.reward-park": "Park",
   "rewardIcon.reward-ice-cream": "Ice cream",
   "rewardIcon.reward-game-with-parent": "Game with parent",
-  "rewardIcon.reward-mystery-box": "Surprise"
+  "rewardIcon.reward-mystery-box": "Surprise",
+  "provaV5.correctChoice": "Mark choice {{key}} as correct",
+  "provaV5.choice": "Choice {{key}}",
+  "provaV5.topicExample": "Fractions",
+  "provaV5.scenarioExample": "Scenario 3",
+  "provaV5.subjectExample": "Science",
+  "provaV5.rowsExample": "Heat and Temperature; 2\nStates of Matter; 2",
+  "provaV5.topicCount": "Number of questions for {{topic}}",
+  "provaV5.duration": "Duration (minutes)",
+  "provaV5.library": "Your question library",
+  "provaV5.scenarios_one": "{{count}} scenario",
+  "provaV5.scenarios_other": "{{count}} scenarios"
 }

@@ -6,7 +6,8 @@ import { Pressable, Text, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen } from "@/components/ui/parent-screen";
 import { invokeProvaAi, provaErrorMessage, type GradeResponse, type PlanResponse } from "@/lib/prova-ai";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -129,13 +130,13 @@ export default function AttemptReviewScreen() {
   const ent = entitlement.data;
 
   return (
-    <Screen title={a?.exams?.title ?? t("prova.ai.reviewTitle")}>
+    <Screen title={a?.exams?.title ?? t("prova.ai.reviewTitle")} loading={attempt.isLoading || questions.isLoading || answers.isLoading || plans.isLoading || entitlement.isLoading} error={attempt.error ?? questions.error ?? answers.error ?? plans.error ?? entitlement.error} onRetry={() => { void attempt.refetch(); if (questionIds.length) void questions.refetch(); void answers.refetch(); void plans.refetch(); void entitlement.refetch(); }}>
       {a ? (
-        <View className="gap-1 rounded-parent bg-white p-4 dark:bg-night-surface">
+        <View className="gap-1 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
           <Text className="font-body text-sm text-gray-600">
             {a.children?.name} · {a.exams?.subject} {a.exams?.grade}. {t("prova.gradeWord")}
           </Text>
-          <Text className="font-display text-xl text-ink dark:text-night-text">
+          <Text className="font-display text-xl text-ink">
             {a.score_pct !== null ? t("prova.ai.scorePct", { pct: a.score_pct }) : t(`prova.ai.attemptStatus.${a.status}`)}
           </Text>
           <Text className="font-body text-sm text-teal-dark">{t("prova.resultMc", { correct: a.mc_correct ?? 0, total: a.mc_total ?? 0 })}</Text>
@@ -184,10 +185,10 @@ export default function AttemptReviewScreen() {
       ))}
 
       {finished ? (
-        <View className="gap-2 rounded-parent bg-white p-4 dark:bg-night-surface">
-          <Text className="font-display text-xl text-ink dark:text-night-text">{t("prova.ai.studyPlans")}</Text>
+        <View className="gap-2 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
+          <Text className="font-display text-xl text-ink">{t("prova.ai.studyPlans")}</Text>
           {plans.data?.map((p) => (
-            <Pressable key={p.id} accessibilityRole="button" onPress={() => router.push(`/parent/prova/plan/${p.id}`)}>
+            <Pressable key={p.id} accessibilityRole="button" style={{ minHeight: 48, justifyContent: "center" }} onPress={() => router.push(`/parent/prova/plan/${p.id}`)}>
               <Text className="font-body-bold text-teal-dark">
                 • {new Date(p.created_at).toLocaleDateString(i18n.language)} · {t(`prova.ai.planStatus.${p.status}`)}
               </Text>
@@ -270,11 +271,11 @@ function AnswerCard({
   const answered = isMc ? !!answer?.answer_key : !!answer?.answer_text?.trim();
 
   return (
-    <View className="gap-2 rounded-parent border border-mist bg-white p-3 dark:bg-night-surface">
+    <View className="gap-2 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
       <Text className="font-body text-xs text-gray-500">
         {t("prova.ai.questionN", { n: index })} · {q.topic} · {t(`prova.kind.${q.kind}`)}
       </Text>
-      <Text className="font-body-bold text-base text-ink dark:text-night-text">{q.stem}</Text>
+      <Text className="font-body-bold text-base text-ink">{q.stem}</Text>
 
       {isMc ? (
         <View className="gap-1">
@@ -284,24 +285,24 @@ function AnswerCard({
             return (
               <Text
                 key={c.key}
-                className={correct ? "font-body-bold text-green" : chosen ? "font-body-bold text-danger" : "text-ink dark:text-night-text"}
+                className={correct ? "font-body-bold text-teal-dark" : chosen ? "font-body-bold text-danger" : "font-body text-ink"}
               >
                 {c.key}) {c.text}
                 {chosen ? ` ← ${t("prova.ai.childChoice")}` : ""}
               </Text>
             );
           })}
-          <Text className={answer?.is_correct ? "font-body-bold text-green" : "font-body-bold text-danger"}>
+          <Text className={answer?.is_correct ? "font-body-bold text-teal-dark" : "font-body-bold text-danger"}>
             {!answered ? t("prova.ai.unanswered") : answer?.is_correct ? t("prova.ai.correct") : t("prova.ai.incorrect")}
           </Text>
         </View>
       ) : (
         <View className="gap-2">
-          <View className="rounded-parent bg-cream p-3 dark:bg-night">
+          <View className="rounded-parent bg-cream p-3">
             <Text className="font-body text-xs text-gray-500">{t("prova.ai.childAnswer")}</Text>
-            <Text className="font-body text-base text-ink dark:text-night-text">{answered ? answer?.answer_text : t("prova.ai.unanswered")}</Text>
+            <Text className="font-body text-base text-ink">{answered ? answer?.answer_text : t("prova.ai.unanswered")}</Text>
           </View>
-          <Pressable accessibilityRole="button" onPress={() => setShowKey((v) => !v)}>
+          <Pressable accessibilityRole="button" style={{ minHeight: 48, justifyContent: "center" }} accessibilityState={{ expanded: showKey }} onPress={() => setShowKey((v) => !v)}>
             <Text className="font-body-bold text-teal-dark">{showKey ? t("prova.ai.hideExpected") : t("prova.ai.showExpected")}</Text>
           </Pressable>
           {showKey ? (
@@ -332,12 +333,12 @@ function AnswerCard({
             <Text className="font-body text-xs text-gray-500">{t("prova.ai.aiSuggested", { score: answer.ai_score })}</Text>
           ) : null}
           {details?.eksikler?.length ? (
-            <Text className="font-body text-sm text-ink dark:text-night-text">
+            <Text className="font-body text-sm text-ink">
               {t("prova.ai.missing")}: {details.eksikler.join("; ")}
             </Text>
           ) : null}
           {details?.iyilestirme_onerileri?.length ? (
-            <Text className="font-body text-sm text-ink dark:text-night-text">
+            <Text className="font-body text-sm text-ink">
               {t("prova.ai.suggestions")}: {details.iyilestirme_onerileri.join("; ")}
             </Text>
           ) : null}
