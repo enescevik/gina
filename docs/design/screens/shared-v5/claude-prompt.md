@@ -11,7 +11,7 @@ Yeni ekran maketleri dört grup hâlinde hazır:
 
 Her klasörde `index.html`, `contact-sheet.png`, ekran PNG’leri, durum sayfaları, devam görüntüleri, `manifest.json`, `route-map.json`, `render-report.json` ve `REVIEW.md` var. Ortak inceleme girişi `docs/design/screens/shared-v5/index.html`. HTML dosyaları **maket üretimi ve inceleme kaynağı**; uygulama mimarisi kararı değildir.
 
-**Görsel dil onaylandı; bu yeni ekran düzenleri henüz grup bazında onaylanmadı.** Ürün sahibi ilgili grubun maketlerini onaylamadan uygulama koduna geçme. Tasarım ve giydirme PR’larını ayrı tut.
+**31 Ekim güncellemesi:** Ürün sahibinin “devam edelim, yayına geçmek istiyorum” kararıyla v5 giydirme aşamasına geçildi; tasarım PR’ları #17–20 main’de. Sıra: çocuk, veli günlük, veli Prova, hesap. Codex sunum/asset, Claude veri/iş kuralı/backend tarafını üstlenir. Her grubun giydirme PR’ı ayrı kalır; gerçek uygulama görsel kabulü henüz tamamlanmadı. Yayın hedefi önce TestFlight, sonra mağaza. Güncel işler: [TestFlight kontrol listesi](../../../release/TESTFLIGHT.md).
 
 Onay sonrası giydirme:
 
@@ -24,6 +24,6 @@ Onay sonrası giydirme:
 - Yeni Türkçe metinler i18n tr/en anahtarlarına taşınır; var olan anahtarlar silinmez. En az 48 dp dokunma alanı, büyük yazıda yeniden akış, safe area, iOS/Android/web. Çocukta bottom-nav yok. Uzun formlardaki bütün alanlar ve mevcut seçim seçenekleri korunur.
 - Örnek sayılar ve tarihler maket verisidir. Abonelik özellikleri mevcut plans migration’ından; fiyat uydurulmadı. Gerçek fiyat mağaza offer.displayPrice’dan gelir. Webde satın alma düğmesi gösterme; öğretmen raporuna düzenleme yetkisi ekleme.
 
-30 Ekim kontrolünde localhost:8081 açıldı fakat verilen demo hesabı “Database error querying schema” ile giriş yapamadı. Veritabanı değiştirilmedi/resetlenmedi/seedlenmedi. Kanıt `shared-v5/evidence/demo-schema-error.png`. Giriş ekranı dışındaki gerçek uygulama karşılaştırmaları eksik; auth sorunu ayrı ele alınmalı. Prova route’una girerek deneme başlatmak gibi kayıt değiştiren işlemler ekran görüntüsü almak için kullanılmadı.
+30 Ekimdeki demo giriş hatası 31 Ekimde Docker disk alanı sorunu olarak çözüldü: kullanılmayan build cache temizlendi, Postgres/Realtime yeniden başlatıldı. Veli girişi ve çocuk PIN akışı çalıştı; güncel telefon/tablet web kanıtları `docs/release/evidence/` içinde. Veritabanı resetlenmedi/seedlenmedi, migration uygulanmadı. Görev veya Prova kaydı değiştiren işlemler ekran görüntüsü almak için kullanılmadı. Önceki hata görüntüsü tarihsel kanıt olarak korunur; bütün alt ekranların ve gerçek cihazların karşılaştırması henüz tamamlanmadı.
 
 Her uygulama PR’ından önce: `cd apps/mobile && pnpm exec tsc --noEmit && pnpm exec expo lint`; sonra gerçek cihaz/web görüntülerini onaylı maketle yan yana ekle. Tasarım paketinin derlenmesi, native uygulamanın bu görünüme ulaştığı anlamına gelmez.

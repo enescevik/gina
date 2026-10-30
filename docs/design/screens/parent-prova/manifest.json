@@ -1,7 +1,7 @@
 {
   "version": "v5",
   "group": "parent-prova",
-  "status": "screen-layout-approval-pending",
+  "status": "design-approved-implementation-pending",
   "visualDirection": "approved-2026-10-30",
   "isAppImplementation": false,
   "isGLB": false,
@@ -101,8 +101,8 @@
   "files": [
     {
       "file": "REVIEW.md",
-      "bytes": 3538,
-      "sha256": "962984f5ed1b60f7e661d70124d9e4dcc4c192e7bfc32ef25dba09680a550f18"
+      "bytes": 3733,
+      "sha256": "4ed4f273135fe50d5d9d553f02c29f929fed46faf9b8020eefd67acc65b4b224"
     },
     {
       "file": "attempt-empty-phone.png",
@@ -716,5 +716,6 @@
       "bytes": 11203,
       "sha256": "fdf522cd18cc1d7a024f28b09678a28a0945def06cbf69585cea16c010452df7"
     }
-  ]
+  ],
+  "approvalRecord": "../../../release/TESTFLIGHT.md"
 }

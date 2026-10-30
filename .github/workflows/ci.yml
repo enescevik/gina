@@ -22,6 +22,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm turbo run lint typecheck test
+      - run: node --test scripts/check-testflight.test.mjs
 
   db:
     name: supabase migrations + pgTAP

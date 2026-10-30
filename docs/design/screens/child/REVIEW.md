@@ -1,6 +1,6 @@
 # Çocuk ekranları — v5 tasarım teslimi
 
-Ürün sahibinin “bu güzel, tüm ekranları yap bu şekilde” mesajıyla **art-direction-v5 görsel dili onaylandı**. Bu grubun ekran düzenleri, üretim kaplamaları ve uygulama entegrasyonu ayrıca onay bekliyor. Önceki v4 GLB/model/animasyonları onaylanmış sayılmaz.
+**31 Ekim 2026:** Ürün sahibinin v5 onayı ve “devam edelim, yayına geçmek istiyorum” kararıyla giydirme aşamasına geçildi. Tasarım PR’ları main’de; üretim kaplamaları ve native entegrasyon henüz tamamlanmadı. Güncel karar ve işler: [TestFlight kontrol listesi](../../../release/TESTFLIGHT.md). Önceki v4 GLB/model/animasyonları reddedilmiş olarak kalır.
 
 - 10 ana görünüm; telefon 390×844, tablet 1280×800.
 - Her ekran için normal, boş/başlangıç, yükleniyor ve hata PNG’si; üç durum birlikte `*-states.png`.
@@ -15,15 +15,15 @@ Ahşap/krem/teal, Baloo 2 başlıklar ve Nunito gövde; yumuşak malzeme ayrım�
 
 ## Gerçek uygulama karşılaştırması
 
-30 Ekim 2026 yeniden denendi: `http://localhost:8081/sign-in` açıldı; demo hesabı girişinde **Database error querying schema** alındı. Veritabanı değiştirilmedi, sıfırlanmadı, seed çalıştırılmadı. `../shared-v5/evidence/demo-schema-error.png` gerçek uygulama kanıtıdır. Oturum gerektiren ekranlar için gerçek karşılaştırma eksik; maketler “uygulama ekranı” diye sunulmadı. Hesap grubunda erişilebilen giriş ekranı ayrıca yan yana verilir.
+30 Ekimdeki **Database error querying schema** hatası 31 Ekimde Docker disk alanı açılıp Postgres/Realtime yeniden başlatılarak çözüldü. Veli ve çocuk PIN girişi doğrulandı; güncel ana ekran kanıtları [yayın kontrol listesinde](../../../release/TESTFLIGHT.md). Veritabanı resetlenmedi, seed/migration çalıştırılmadı; önceki hata görüntüsü tarihsel kanıttır. Bu grubun bütün alt ekranları ve gerçek cihaz karşılaştırmaları hâlâ giydirme PR’ında tamamlanmalı.
 
 ## Claude için
 
-1. Ekran düzeni onayından önce bu grubu uygulamaya giydirme. Tasarım PR’ı uygulama PR’ından ayrı tutulur.
+1. Onaylı v5 düzeniyle bu grubun üretim parçalarını ve giydirmesini hazırla. Tasarım PR’ı uygulama PR’ından ayrı tutulur; gerçek uygulama kabulü ayrıca yapılır.
 2. Onaydan sonra gereken art/skin parçalarını `room-chrome` 9-slice (`capInsets`, `contentInsets` @3x, `minimumLogicalSize`) ve `rooms/v2` içerik sınırı/ortak ayak çizgisi sözleşmesine göre ayrı asset olarak teslim et. Bu maket plakasını production arka plan/hitbox çözümü yapma.
 3. Mevcut NineSlice, SkinPressable, SkinProgress, TaskIcon, SubjectIcon, EventIcon ve Collectible bileşenleri korunacak. Metinler tr/en i18n, en az 48 dp hedef, safe area, büyük yazıda reflow ve iOS/Android/web doğrulaması uygulama PR’ında yapılacak.
 4. Mevcut davranışlar ve erişim kısıtları korunur. PIN, yıldız/rozet verme, Prova deneme başlatma/puanlama, oda tercihi kalıcılığı ve mağaza işlemleri makette gerçek çalışmaz. Yeni veri/RPC gereksinimi kodlanmadan ayrı istek olarak açıklanır.
-5. Demo auth şema sorununu ayrıca incele; bu sanat işinde veritabanına müdahale edilmedi. Gerçek ekran yan yana karşılaştırmaları oturum erişimiyle tamamlanmalı.
+5. Demo oturumu artık erişilebilir. Gerçek ekran yan yana karşılaştırmalarını tamamla; ekran görüntüsü almak için görev, ödül veya Prova kaydı değiştirme.
 
 ## Dosyalar ve kontrol
 
