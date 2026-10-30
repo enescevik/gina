@@ -1,3 +1,28 @@
+# Tablet v2 revizyonu — 30 Ekim 2026
+
+Tablet v1 onaylanmadı. Bu revizyon yalnız tasarım dosyalarını değiştirir; aşağıdaki eski tablet kararlarının yerine geçer. Telefonlar korunur. **Uygulama giydirmesi için onay hâlâ bekleniyor.**
+
+[Hareketli oda demosu](motion.html) · [Sekiz tablet ekranı](tablet-contact-sheet.png) · [Tüm maketler](index.html)
+
+- Pano artık pencereyi, kitaplığı ve halıyı örten büyük çerçeve değil; boş duvara bağlı, klipsli bir kâğıt yüzeyi. Uzun listeler yüzeyin içinde kayar.
+- Koleksiyon, ortak ahşap tonunda raflar ve 3B nesneler kullanır. Kilitli katalog korunur.
+- Tek oda vardır. Karakter ve pet, içerik sınırlarıyla ölçeklenir; görünür alt sınırları aynı 738 px zemin çizgisindedir. Oda düzenleyicide ikinci minyatür oda yoktur.
+- İnteraktif karakter/pet seçimleri ve tema dekorları yalnız yerel demo durumudur; kalıcılık veya yeni iş kuralı eklenmedi.
+- Pencerenin gece/yağmur/kar katmanları aynı cam alanına kırpılır. Gece oda ışığı hafifçe azalır; okunacak içerik karartılmaz.
+- Pet nefesi 5 sn, kedi esnemesi 22 sn aralıkla 2.9 sn; dokunma/inceleme kontrolüyle kısa oyun. Sekme görünmezken yeni esneme başlamaz. Prova hareketi durdurur; reduced-motion tüm hareketi durdurur.
+- Yeni `concepts/pet-cat-yawn.webp` imagegen ile aynı kediden türetildi. Bu bir **tasarım konsepti**, üretim sprite paketi değildir. Oyun mevcut görselin konum dönüşümüdür. Diğer hayvanlara yanlış esneme resmi uygulanmaz.
+- Ses başlangıçta kapalı. Demoda yalnız kullanıcı hareketiyle kısa **sentetik zamanlama sesi** var; gerçek miyav/hayvan kaydı teslim edilmiş değildir.
+
+### Claude için — tasarım onayından sonra
+
+Şehir tercihini veli ayarlarından almak, saat dilimini ve hava sağlayıcısını belirlemek, çevrimdışı/izin yok durumunda son bilinen görünüm + gündüz varsayılanını kullanmak gerekiyor. Bu demoda GPS, konum izni veya hava API isteği yok. Ses/motion tercihlerinin kalıcılığı, tüm petler için uyku/esneme/oyun kareleri ve lisanslı/üretilmiş gerçek ses dosyaları ayrıca tamamlanmalı. Animasyonlar yıldız veya rozet vermez; bildirim ya da oyun süresi baskısı oluşturmaz. Üretimde bu katmanlar ayrı native parçalar olacak, ekran resmi butonların altına yerleştirilmeyecek.
+
+### Revizyon doğrulaması
+
+37 tablet renderı: 8 ekranın normal/boş/yükleniyor/hata durumları + 5 ek akış; eksik görsel 0, yatay taşma 0, tüm görünür düğmeler en az 48 dp. Prova hareket engeli ve reduced-motion tarayıcıda doğrulandı. Gündüz/gece/yağmur/kar ve esneme PNG'leri `concepts/` altında. Gerçek uygulama karşılaştırması önceki demo giriş hatası nedeniyle halen eksik; v1/v2 kıyası uygulama ekran görüntüsü değildir.
+
+---
+
 # BRIEF 14 · Grup 1 · Çocuk maketleri
 
 **Durum: Enes’in tasarım onayını bekliyor.** Uygulama koduna geçilmedi. Bu PR yalnız bu grubu kapsar. BRIEF 13 sanat düzeltmeleri ayrı PR #16 üzerindedir; bu tasarım PR’ı ona bağımlıdır. Grup 2–4 ve giydirme ayrı işlerdir.
