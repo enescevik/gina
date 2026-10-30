@@ -1,0 +1,86 @@
+[
+  {
+    "slug": "streak-flame",
+    "label_tr": "Seri alevi",
+    "file": "streak-flame.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      197,
+      116,
+      1057,
+      1173
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "f0aa4af4bcbf8b1cafa62985f0de9ddcd1faddd656000cd3e3e33a3ed671ccd5",
+    "png": []
+  },
+  {
+    "slug": "streak-3",
+    "label_tr": "Üç günlük seri",
+    "file": "streak-3.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      206,
+      131,
+      1075,
+      1159
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "8b9cefab777a280fcb8dd9d168d053319d320735461b14e1d5abed7ec9f81812",
+    "png": []
+  },
+  {
+    "slug": "streak-7",
+    "label_tr": "Yedi günlük seri",
+    "file": "streak-7.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      239,
+      135,
+      1083,
+      1142
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "60d719a264299229ec243d93b249f948a0888064680a332daf85148e0d9c8310",
+    "png": []
+  },
+  {
+    "slug": "streak-30",
+    "label_tr": "Otuz günlük seri",
+    "file": "streak-30.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      287,
+      74,
+      982,
+      1193
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "6de3e5d034c7756667ecf744fd6a48d95116276af04782294c5f55ba8149ff64",
+    "png": []
+  }
+]

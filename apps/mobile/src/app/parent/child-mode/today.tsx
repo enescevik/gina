@@ -1,8 +1,10 @@
 import { Redirect, router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { Text, View, useWindowDimensions } from "react-native";
 
+import { RoomChildHome } from "@/components/room/child-home";
+import { WIDE_LAYOUT_MIN_DP } from "@/components/room/layout";
 import { TodayView } from "@/components/today-view";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
@@ -19,7 +21,14 @@ export default function ChildModeTodayScreen() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
 
+  const { width, fontScale } = useWindowDimensions();
+  const wide = width >= WIDE_LAYOUT_MIN_DP && fontScale <= 1.2;
+
   if (!actingChild) return <Redirect href="/parent/child-mode" />;
+
+  if (wide && !asking) {
+    return <RoomChildHome childId={actingChild.id} childName={actingChild.name} actingAsParent onParentExit={() => setAsking(true)} />;
+  }
 
   async function confirmExit() {
     setBusy(true);

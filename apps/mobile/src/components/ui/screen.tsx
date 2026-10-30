@@ -25,6 +25,11 @@ export function Screen({ title, children, tone = "parent", scroll = true }: Scre
 
 export function ErrorText({ error }: { error: unknown }) {
   if (!error) return null;
-  const message = error instanceof Error ? error.message : String(error);
+  const message =
+    error instanceof Error
+      ? error.message
+      : typeof error === "object" && error !== null && "message" in error
+        ? String((error as { message: unknown }).message)
+        : String(error);
   return <Text className="text-sm text-danger">{message}</Text>;
 }
