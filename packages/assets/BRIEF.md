@@ -194,3 +194,7 @@ Klasör `packages/assets/room-chrome/`. Amaç: onaylı ana ekranlardaki (docs/de
 **Oda sanatı üretimi (aynı PR'da):** `art-candidates` konseptlerinin üretim sürümü: `room-base` (1586×992, boş oda, paletle uyumlu, kenarları temiz) + `character-{unspecified,girl,boy}` (şeffaf, alfa pürüzsüz) `packages/assets/rooms/v2/` altına lossless WebP; ileri temalar için katman ayrımı (zemin/mobilya) mümkünse ayrı dosya.
 
 **Kabul ölçütü:** referans ekran PNG'lerinin yanına, bu kaplamalarla kurulmuş bir `contact-sheet.svg` (kaplamalar boş hâlleriyle ızgarada) + `preview-note.md` (hangi kaplamanın referansın hangi parçasına karşılık geldiği).
+
+## 13. Birebir eşleşme (BRIEF 13)
+
+Onaylı ana ekranlarla birebir eşleşme için eksik dekor, karakter, kaplama ve ödül görselleri: [docs/design/room-v2/CODEX-BRIEF-13-birebir.md](../../docs/design/room-v2/CODEX-BRIEF-13-birebir.md).
