@@ -1,0 +1,531 @@
+{
+  "version": "v5",
+  "group": "parent-daily",
+  "status": "screen-layout-approval-pending",
+  "visualDirection": "approved-2026-10-30",
+  "isAppImplementation": false,
+  "isGLB": false,
+  "isAnimation": false,
+  "productionAssetsReady": false,
+  "mockupSizes": {
+    "phone": [
+      390,
+      844
+    ]
+  },
+  "fixtureData": true,
+  "textLayer": "native-style HTML text; no lettering baked into art plates",
+  "shared": "../shared-v5/manifest.json",
+  "screenCount": 8,
+  "captureCount": 44,
+  "screenRoutes": [
+    {
+      "id": "index",
+      "title": "Merhaba!",
+      "route": "parent/index",
+      "variants": []
+    },
+    {
+      "id": "tasks",
+      "title": "Görevler",
+      "route": "parent/tasks",
+      "variants": []
+    },
+    {
+      "id": "rewards",
+      "title": "Ödüller",
+      "route": "parent/rewards",
+      "variants": []
+    },
+    {
+      "id": "calendar",
+      "title": "Aile takvimi",
+      "route": "parent/calendar",
+      "variants": []
+    },
+    {
+      "id": "grades",
+      "title": "Ders notları",
+      "route": "parent/grades",
+      "variants": []
+    },
+    {
+      "id": "notes",
+      "title": "Notlar",
+      "route": "parent/notes",
+      "variants": []
+    },
+    {
+      "id": "menu",
+      "title": "Çevik Ailesi",
+      "route": "parent/menu",
+      "variants": []
+    },
+    {
+      "id": "child-mode",
+      "title": "Çocuk modu",
+      "route": "parent/child-mode/index",
+      "variants": [
+        "pin",
+        "no-pin"
+      ]
+    }
+  ],
+  "validation": {
+    "browserBrokenImages": 0,
+    "horizontalOverflows": 0,
+    "shortVisibleTargets": 0,
+    "tsc": "passed",
+    "expoLint": "passed",
+    "realAppComparison": "sign-in only; demo auth schema error blocks authenticated routes",
+    "nativeDeviceTesting": "not performed: design phase only"
+  },
+  "files": [
+    {
+      "file": "REVIEW.md",
+      "bytes": 3540,
+      "sha256": "c8aaa1fc07058180807af1b6aaee05becd6de32d17f36b1a01bf4e66499ba84d"
+    },
+    {
+      "file": "calendar-empty-phone.png",
+      "bytes": 75432,
+      "sha256": "a28bf96405c6dfaf123515fa36e38dc2b51294ebef05299bc973eb769d15b607",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-error-phone.png",
+      "bytes": 68109,
+      "sha256": "e262d2ebd0133807e1f107a3ae6ce88db1a2a178dcbd5002774f8b68d1f95df5",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-loading-phone.png",
+      "bytes": 51815,
+      "sha256": "d1ac10d593941e4fed806a92e80d2c1379dfa65edce2bc0068e1a43423d65642",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-phone-part-2.png",
+      "bytes": 86886,
+      "sha256": "8497f50adf388e0105959f9aa1be9189544d50931fc399e8e9d4c72f465187c0",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-phone-part-3.png",
+      "bytes": 86011,
+      "sha256": "c890d6900aab77da287de30c4894511ec2918dc638c77b8d8811fce4ab33974b",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-phone.png",
+      "bytes": 87507,
+      "sha256": "f9eee2b2863497ac57b7a38f7fbb21361a1aeeb5be902225b6189820a8aa41f3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-states.html",
+      "bytes": 2299,
+      "sha256": "74d170807bd973733cc70694838ed727e8d1924f34ce1cbd31424b8a182c2352"
+    },
+    {
+      "file": "calendar-states.png",
+      "bytes": 227450,
+      "sha256": "af611b3c20527f21d15bb700bb656f007f54a513139ee1a14daafb53a14d4c94",
+      "width": 1245,
+      "height": 1065
+    },
+    {
+      "file": "child-mode-empty-phone.png",
+      "bytes": 65361,
+      "sha256": "5038c7e462d3a1ea955eae59b80ae8dcc2098b85ab48fe0b968856a9e5092a6c",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "child-mode-error-phone.png",
+      "bytes": 68099,
+      "sha256": "9d474a7f406537c86bfa66a51e50a114ce46cb9c38a3c20322bfba4134b4290d",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "child-mode-loading-phone.png",
+      "bytes": 51816,
+      "sha256": "a6712b0263351cc294e62729be60e45c82aea0f805e50fb4a33eac8b9ba1b974",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "child-mode-no-pin-phone.png",
+      "bytes": 57989,
+      "sha256": "3c96c0a0f7ce5873a5a908fb7c6ac4719474a53da240f343181c146a988dbabb",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "child-mode-phone.png",
+      "bytes": 73927,
+      "sha256": "0612b5ce6d01d4f144fcb526378a92625eadfed637bb06595c691a19504d8c26",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "child-mode-pin-phone.png",
+      "bytes": 60461,
+      "sha256": "9adb595afbbace5493828838dcfaf0e3c7c8a42f59650b1815717d0b3e9b5417",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "child-mode-states.html",
+      "bytes": 2303,
+      "sha256": "9ad65d631e5f3b9adf12e5e3211bf93f58e9ee3cf233b56c582f2324902b8154"
+    },
+    {
+      "file": "child-mode-states.png",
+      "bytes": 183500,
+      "sha256": "4a44df40f0c038dd47f6d7449ac0fe3170a09ee5d64cc035c9e7ec0a2878bfdd",
+      "width": 1245,
+      "height": 1065
+    },
+    {
+      "file": "contact-sheet.html",
+      "bytes": 2983,
+      "sha256": "8092f6e0591a99b8750a9191dea077c1886134126c5e4feefec705e9f8866d99"
+    },
+    {
+      "file": "contact-sheet.png",
+      "bytes": 945967,
+      "sha256": "43ca5b73a9a554b50eff7bb7acaeef2f52d75c24ca937df82fe3f6fa2fd6ee82",
+      "width": 1385,
+      "height": 3216
+    },
+    {
+      "file": "grades-empty-phone.png",
+      "bytes": 81389,
+      "sha256": "2b7e2f53329448d510145f40ad052d5168a9efd5e5035b196364b75f85fc7f64",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "grades-error-phone.png",
+      "bytes": 68773,
+      "sha256": "57fc633b6781e9b0c732e0c0f65aedc6bf27aea68191c0f198d79454cc534953",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "grades-loading-phone.png",
+      "bytes": 52388,
+      "sha256": "2dfd2d6af62623f4230de9a4b17e2eda943468f4d873baf6db585014415b2417",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "grades-phone-part-2.png",
+      "bytes": 87907,
+      "sha256": "d4418bc84fa0e7215adbc6709f995e95a3146466e033f13931472be1c0a780b1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "grades-phone.png",
+      "bytes": 88310,
+      "sha256": "c807f544f4ce828b0d2f2fb5dfdc36bfc37a818b5bb1f6853d4a00f75895d372",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "grades-states.html",
+      "bytes": 2295,
+      "sha256": "ea2d4aba9404db800d7ed0c6b2a07cb37cb4c08195ab8ff8578d9e54118184b3"
+    },
+    {
+      "file": "grades-states.png",
+      "bytes": 230611,
+      "sha256": "5ea383fc1f52f880e65194471ba2dd1476c41afcff5df4310af2afcc706b921b",
+      "width": 1245,
+      "height": 1065
+    },
+    {
+      "file": "index-empty-phone.png",
+      "bytes": 64272,
+      "sha256": "b45975ea2b17e5a50b9238b736792ffd38fae0623bdea64ed9de65e4cbed601f",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "index-error-phone.png",
+      "bytes": 68735,
+      "sha256": "182f3f5b2460c4129770f1e5ffb7cced25fe8d0a5c558f927433a8c5a42ec5eb",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "index-loading-phone.png",
+      "bytes": 52368,
+      "sha256": "f4c548e55a04d89910105224d99d3a1d9d45fe4ba82472a0719146ccec046161",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "index-phone-part-2.png",
+      "bytes": 101932,
+      "sha256": "b1d4147ad93b37c149204f8366756c6059eee29d278ff8e1dae9d97e93557d11",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "index-phone.png",
+      "bytes": 106476,
+      "sha256": "8d5ff01f2e933c4aea18d476da759748f265025fb51c97f67f1df18e0213ee7b",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "index-states.html",
+      "bytes": 2282,
+      "sha256": "88ac369f5788a2013bcb249b0571598e357a5488ac3ca6a9e7059c36825c38fa"
+    },
+    {
+      "file": "index-states.png",
+      "bytes": 181642,
+      "sha256": "bda14af18931c375dbec34eff8c133c401238816234abaacfc0e095b288ae0dd",
+      "width": 1245,
+      "height": 1065
+    },
+    {
+      "file": "index.html",
+      "bytes": 6390,
+      "sha256": "98f000d5a3ea23bc1de5ba047146fa34df89b02c06765ccd000a124f104b7fcd"
+    },
+    {
+      "file": "menu-empty-phone.png",
+      "bytes": 79505,
+      "sha256": "7c420673ff81026959ccb99978e702ec6495032b8e1435e4dc1e5cbdb7bbf8a5",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "menu-error-phone.png",
+      "bytes": 68917,
+      "sha256": "ab9bf051fe9879c92682f7965fbee282168df87f4974d039e5cd1ea6450c0994",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "menu-loading-phone.png",
+      "bytes": 52507,
+      "sha256": "814a4d3c07de8972e82ececed883a42de55dce8603f6a93050ebd804f102dd58",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "menu-phone-part-2.png",
+      "bytes": 87159,
+      "sha256": "c16c114d0d9dece49585dc6d1859907b23a7e443c1bf89de8feedcce8cfe222e",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "menu-phone-part-3.png",
+      "bytes": 84221,
+      "sha256": "aabecd3657c8c6f4a393dda22ef3fa6019601df5f6546dea5f2e54d8b2fb5c1b",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "menu-phone-part-4.png",
+      "bytes": 83086,
+      "sha256": "d3be8023968c61a4d65c3acde4794e7aad2fcd321f876445f92b8183f943cd13",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "menu-phone.png",
+      "bytes": 87242,
+      "sha256": "4f4009ede7a1b1eb6da99a2b251ee55a9dc4b5906dc5feac588f65566e2b2a2e",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "menu-states.html",
+      "bytes": 2289,
+      "sha256": "3c7c159a57486a4f0c62ed61cbcdeb460e48a84dff4e431c7661ef2d2f2d871d"
+    },
+    {
+      "file": "menu-states.png",
+      "bytes": 232554,
+      "sha256": "5ad827a13f962d8ead5cb1ca30a429a8cc2c03093fe77519309961ea264b53a7",
+      "width": 1245,
+      "height": 1065
+    },
+    {
+      "file": "notes-empty-phone.png",
+      "bytes": 81523,
+      "sha256": "b465c81e1e7f28c325c7a58eeb14e0d4ed2c603cf7c089c15fafee16896f18a8",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "notes-error-phone.png",
+      "bytes": 67760,
+      "sha256": "4da09313c246d8263892075a5c89ebd9388623e9a1a4ef46409138ca049bdff3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "notes-loading-phone.png",
+      "bytes": 51515,
+      "sha256": "89c4e805a56302fe9bcce9a0acae2785d9b4fbfabe80aaa7fdd0fb4480da1231",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "notes-phone-part-2.png",
+      "bytes": 83430,
+      "sha256": "e19fb2338ee1dac1db57f338b3b1c0c243a76523a4b802c263dff6f87b4a2c7b",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "notes-phone.png",
+      "bytes": 84213,
+      "sha256": "6675015e0a80052cae84f0a7ab78374ffa9f2ddff6dc9b7bdb482c0076c75290",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "notes-states.html",
+      "bytes": 2278,
+      "sha256": "a584199dc2a151a2543f825d6bec740c8818965774d5923c51bc60261ff8a8a8"
+    },
+    {
+      "file": "notes-states.png",
+      "bytes": 227543,
+      "sha256": "4614b0a246818618378273702b640c646f0ae7f5dbaee18009efbab8ecb97a07",
+      "width": 1245,
+      "height": 1065
+    },
+    {
+      "file": "reference-v5.html",
+      "bytes": 310,
+      "sha256": "126de17881d2265fc0879042e967903f8c9b618df466cefeae6640d2edb85641"
+    },
+    {
+      "file": "render-report.json",
+      "bytes": 15343,
+      "sha256": "9c935122b50c6b7518415af0bf133fec8deaa68f3d7023b155a1d690fa40bd42"
+    },
+    {
+      "file": "rewards-empty-phone.png",
+      "bytes": 80407,
+      "sha256": "c2bba101839e4bbb696a1bb4067777867ff3cb04669e57c954b4c3db4fe26b2f",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "rewards-error-phone.png",
+      "bytes": 68184,
+      "sha256": "57d141570b3bc76c8a948093296ff2c217b90513b354508e3479b698fea7f37d",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "rewards-loading-phone.png",
+      "bytes": 51891,
+      "sha256": "092e38cc20145ca1cb0a82ade081d2a64467aa9e88c360390c8c66bf97c4a78e",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "rewards-phone-part-2.png",
+      "bytes": 98838,
+      "sha256": "07cbdba2f3ce4afbd146f8f7a40c537fd051b0f01bef20b41e77d53baa05b0be",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "rewards-phone.png",
+      "bytes": 97589,
+      "sha256": "43b2abafc8138d22d1a69714c42f4585a41956faf58245fae1b390fd96f1ce3b",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "rewards-states.html",
+      "bytes": 2290,
+      "sha256": "54bf2254a47ea233fd21748eac2ad8bd6140b51a3f04f79eece2b0038c71b858"
+    },
+    {
+      "file": "rewards-states.png",
+      "bytes": 228600,
+      "sha256": "1f8d59a6065f9e45e443d56550359a5d63d9131a63a811f7997aa2fc3572f995",
+      "width": 1245,
+      "height": 1065
+    },
+    {
+      "file": "route-map.json",
+      "bytes": 19867,
+      "sha256": "a0141281596b970e0266236578c8a0d0ac429318a3140a434a57a9ab55914064"
+    },
+    {
+      "file": "screens-v5.js",
+      "bytes": 14971,
+      "sha256": "792ec984e64582dc238475ab512b359fe60b3a296611259b61016c688c162573"
+    },
+    {
+      "file": "tasks-empty-phone.png",
+      "bytes": 84807,
+      "sha256": "9991e064a71678247c2c2b93c36607e8487151b06589915d530e34e244b5070c",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "tasks-error-phone.png",
+      "bytes": 86174,
+      "sha256": "e29fc45e5d50d7bf6ed3d894a93233e493b67088f1479461371df40366e70629",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "tasks-loading-phone.png",
+      "bytes": 52601,
+      "sha256": "6f3941910d3aae5d7d373312ddca0a37b65f59ef2f6cbc5525070ed1e884b722",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "tasks-phone-part-2.png",
+      "bytes": 90489,
+      "sha256": "2677b769d5b0b58d5b254ae00b2bb4d6571a93a0585fdbb8b8672375f6d32d16",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "tasks-phone.png",
+      "bytes": 90837,
+      "sha256": "35e406bcddc55f9be87c40e3c40c1c4782293ee74792c0f35575d3cb1caf7c47",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "tasks-states.html",
+      "bytes": 2284,
+      "sha256": "89ab6940969a19f8a6c89ff2dc81768943a8d626076b9a1a0af2063d245455db"
+    },
+    {
+      "file": "tasks-states.png",
+      "bytes": 231698,
+      "sha256": "e17513320e796543c458b21c880d881480b3c89ad084adaed793be0bbc6ea983",
+      "width": 1245,
+      "height": 1065
+    }
+  ]
+}

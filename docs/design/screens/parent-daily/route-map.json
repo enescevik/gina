@@ -1,0 +1,560 @@
+[
+  {
+    "id": "index",
+    "route": "parent/index",
+    "sourceFile": "apps/mobile/src/app/parent/index.tsx",
+    "sourceSha256": "5b3b3614c8683d2a5ce3c8d636dc1dd4ac9ff3047b038ecc2605b5a66b21400c",
+    "variants": [],
+    "existingCopyAndFields": {
+      "route": "parent/index.tsx",
+      "copy": {
+        "calendar.allFamily": "Tüm aile",
+        "parent.namesAnd": "{{names}} ve {{last}}",
+        "parent.menu": "Menü",
+        "parent.allChildren": "Tümü",
+        "parent.familyDay": "Ailenin günü",
+        "tasks.addChildFirst": "Önce ana sayfadan bir çocuk ekle.",
+        "parent.tasksOf": "{{done}} / {{total}} görev",
+        "room.starCount": null,
+        "parent.waitingApproval": "Onayını bekliyor",
+        "parent.noApprovals": "Onay bekleyen görev yok.",
+        "room.plusStars": null,
+        "parent.return": "Geri gönder",
+        "parent.approve": "Onayla",
+        "parent.todaysPlan": "Bugünün planı",
+        "parent.openCalendar": "Takvimi aç",
+        "calendar.noEvents": "Etkinlik yok",
+        "parent.insightTitle": "Küçük adımlar birikiyor",
+        "parent.insightHighlight": null,
+        "parent.insightWeek": null,
+        "parent.seeProgress": "Gelişimi gör",
+        "prova.title": "Prova",
+        "prova.parentCard": "Senaryodan deneme hazırla, çocuğuna ata, sonuçları gör.",
+        "parent.addTaskTogether": "Birlikte yeni görev ekle",
+        "parent.rewards": "Ödüller",
+        "parent.notes": "Notlar",
+        "parent.childMode": "Çocuk modu (bu telefonda)"
+      },
+      "states": [
+        "childFilter, setChildFilter"
+      ],
+      "formProps": [
+        "t(\"parent.approve\")",
+        "t(\"parent.rewards\")",
+        "t(\"parent.notes\")",
+        "t(\"parent.childMode\")"
+      ],
+      "links": [
+        "router.push(\"/parent/menu\")}",
+        "router.push(\"/parent/tasks\")}",
+        "router.push(\"/parent/calendar\")} hitSlop={8} className=\"min-h-12 justify-center\">",
+        "router.push(\"/parent/prova/progress\")}",
+        "router.push(\"/parent/prova\")} contentClassName=\"flex-row items-center gap-3\">",
+        "router.push(\"/parent/tasks\")}",
+        "router.push(\"/parent/rewards\")} />",
+        "router.push(\"/parent/notes\")} />",
+        "router.push(\"/parent/child-mode\")} />"
+      ]
+    },
+    "existingI18nKeys": {
+      "calendar.allFamily": "Tüm aile",
+      "calendar.noEvents": "Etkinlik yok",
+      "child_id, delta": null,
+      "display_name": null,
+      "en-GB": null,
+      "id, child_id, template_id, due_date, status": null,
+      "id, child_id, title, icon, days_of_week, starts_on, ends_on, active, sort_order": null,
+      "id, due_date, child_id, task_templates(title, icon, stars), children!task_completions_child_id_fkey(name)": null,
+      "id, name, avatar": null,
+      "parent.addTaskTogether": "Birlikte yeni görev ekle",
+      "parent.allChildren": "Tümü",
+      "parent.approve": "Onayla",
+      "parent.childMode": "Çocuk modu (bu telefonda)",
+      "parent.familyDay": "Ailenin günü",
+      "parent.insightHighlight": null,
+      "parent.insightTitle": "Küçük adımlar birikiyor",
+      "parent.insightWeek": null,
+      "parent.menu": "Menü",
+      "parent.namesAnd": "{{names}} ve {{last}}",
+      "parent.noApprovals": "Onay bekleyen görev yok.",
+      "parent.notes": "Notlar",
+      "parent.openCalendar": "Takvimi aç",
+      "parent.return": "Geri gönder",
+      "parent.rewards": "Ödüller",
+      "parent.seeProgress": "Gelişimi gör",
+      "parent.tasksOf": "{{done}} / {{total}} görev",
+      "parent.todaysPlan": "Bugünün planı",
+      "parent.waitingApproval": "Onayını bekliyor",
+      "prova.parentCard": "Senaryodan deneme hazırla, çocuğuna ata, sonuçları gör.",
+      "prova.title": "Prova",
+      "room.plusStars": null,
+      "room.starCount": null,
+      "tasks.addChildFirst": "Önce ana sayfadan bir çocuk ekle.",
+      "|": null
+    },
+    "existingRpcNames": [
+      "review_task"
+    ]
+  },
+  {
+    "id": "tasks",
+    "route": "parent/tasks",
+    "sourceFile": "apps/mobile/src/app/parent/tasks.tsx",
+    "sourceSha256": "8324ae256d0099eb1baf60509a8141a9ee201a235fe55a6bcb02bac067645a5e",
+    "variants": [],
+    "existingCopyAndFields": {
+      "route": "parent/tasks.tsx",
+      "copy": {
+        "parent.tasks": "Görevler",
+        "tasks.pause": "Durdur",
+        "tasks.resume": "Aç",
+        "tasks.none": "Bu çocuk için henüz görev yok.",
+        "tasks.new": "Yeni görev",
+        "tasks.title": "Görev",
+        "tasks.titlePlaceholder": "Dişlerini fırçala",
+        "tasks.icon": "İkon",
+        "tasks.stars": "Yıldız (0-10)",
+        "common.save": "Kaydet",
+        "tasks.addChildFirst": "Önce ana sayfadan bir çocuk ekle.",
+        "parent.home": "Ana sayfa"
+      },
+      "states": [
+        "childId, setChildId",
+        "title, setTitle",
+        "stars, setStars",
+        "days, setDays",
+        "icon, setIcon",
+        "formError, setFormError"
+      ],
+      "formProps": [
+        "t(\"parent.tasks\")",
+        "template.active ? t(\"tasks.pause\") : t(\"tasks.resume\")",
+        "t(\"tasks.title\")",
+        "t(\"tasks.titlePlaceholder\")",
+        "t(\"tasks.stars\")",
+        "t(\"common.save\")",
+        "t(\"parent.home\")"
+      ],
+      "links": []
+    },
+    "existingI18nKeys": {
+      "common.save": "Kaydet",
+      "id, name": null,
+      "id, title, icon, stars, days_of_week, active": null,
+      "parent.home": "Ana sayfa",
+      "parent.tasks": "Görevler",
+      "tasks.addChildFirst": "Önce ana sayfadan bir çocuk ekle.",
+      "tasks.icon": "İkon",
+      "tasks.new": "Yeni görev",
+      "tasks.none": "Bu çocuk için henüz görev yok.",
+      "tasks.pause": "Durdur",
+      "tasks.resume": "Aç",
+      "tasks.stars": "Yıldız (0-10)",
+      "tasks.title": "Görev",
+      "tasks.titlePlaceholder": "Dişlerini fırçala"
+    },
+    "existingRpcNames": []
+  },
+  {
+    "id": "rewards",
+    "route": "parent/rewards",
+    "sourceFile": "apps/mobile/src/app/parent/rewards.tsx",
+    "sourceSha256": "0c0d5e68d2f7999e33015b258cced08b9077f586655bcd417e3ee4b4ba0b6fd3",
+    "variants": [],
+    "existingCopyAndFields": {
+      "route": "parent/rewards.tsx",
+      "copy": {
+        "rewards.invalid": "Başlık ve geçerli bir yıldız bedeli gerekli.",
+        "rewards.title": "Ödüller",
+        "rewards.requests": "Harcama istekleri",
+        "rewards.noRequests": "Bekleyen istek yok.",
+        "parent.approve": "Onayla",
+        "rewards.decline": "Reddet",
+        "rewards.deliver": "Teslim edildi",
+        "rewards.cancelRefund": "İptal (iade)",
+        "rewards.catalog": "Ödül kataloğu",
+        "tasks.pause": "Durdur",
+        "tasks.resume": "Aç",
+        "rewards.newTitle": "Yeni ödül",
+        "rewards.titlePlaceholder": "Ailece sinema",
+        "rewards.cost": "Yıldız bedeli",
+        "common.add": "Ekle",
+        "parent.home": "Ana sayfa"
+      },
+      "states": [
+        "title, setTitle",
+        "cost, setCost"
+      ],
+      "formProps": [
+        "t(\"rewards.title\")",
+        "t(\"parent.approve\")",
+        "t(\"rewards.decline\")",
+        "t(\"rewards.deliver\")",
+        "t(\"rewards.cancelRefund\")",
+        "reward.active ? t(\"tasks.pause\") : t(\"tasks.resume\")",
+        "t(\"rewards.newTitle\")",
+        "t(\"rewards.titlePlaceholder\")",
+        "t(\"rewards.cost\")",
+        "t(\"common.add\")",
+        "t(\"parent.home\")"
+      ],
+      "links": []
+    },
+    "existingI18nKeys": {
+      "common.add": "Ekle",
+      "id, status, cost_snapshot, requested_at, family_rewards(title), children(name)": null,
+      "id, title, cost_stars, active": null,
+      "parent.approve": "Onayla",
+      "parent.home": "Ana sayfa",
+      "rewards.cancelRefund": "İptal (iade)",
+      "rewards.catalog": "Ödül kataloğu",
+      "rewards.cost": "Yıldız bedeli",
+      "rewards.decline": "Reddet",
+      "rewards.deliver": "Teslim edildi",
+      "rewards.invalid": "Başlık ve geçerli bir yıldız bedeli gerekli.",
+      "rewards.newTitle": "Yeni ödül",
+      "rewards.noRequests": "Bekleyen istek yok.",
+      "rewards.requests": "Harcama istekleri",
+      "rewards.title": "Ödüller",
+      "rewards.titlePlaceholder": "Ailece sinema",
+      "tasks.pause": "Durdur",
+      "tasks.resume": "Aç"
+    },
+    "existingRpcNames": [
+      "cancel_reward_request",
+      "decide_reward_request",
+      "deliver_reward_request"
+    ]
+  },
+  {
+    "id": "calendar",
+    "route": "parent/calendar",
+    "sourceFile": "apps/mobile/src/app/parent/calendar.tsx",
+    "sourceSha256": "5df6026b02fb559693aad667fa396a27f06a06214b8cf5923111def84a827883",
+    "variants": [],
+    "existingCopyAndFields": {
+      "route": "parent/calendar.tsx",
+      "copy": {
+        "calendar.invalidDateTime": "Tarih YYYY-AA-GG, saat SS:DD biçiminde olmalı.",
+        "parent.calendar": "Takvim",
+        "calendar.newEvent": "Yeni etkinlik veya ders",
+        "calendar.title": "Başlık",
+        "calendar.allFamily": "Tüm aile",
+        "calendar.date": "Tarih (YYYY-AA-GG)",
+        "calendar.start": "Başlangıç (SS:DD)",
+        "calendar.end": "Bitiş (SS:DD)",
+        "calendar.repeatWeekly": "Her hafta tekrar et (ders programı için günleri seç)",
+        "common.save": "Kaydet",
+        "parent.home": "Ana sayfa"
+      },
+      "states": [
+        "anchor, setAnchor",
+        "title, setTitle",
+        "type, setType",
+        "childId, setChildId",
+        "date, setDate",
+        "start, setStart",
+        "end, setEnd",
+        "repeatDays, setRepeatDays",
+        "formError, setFormError"
+      ],
+      "formProps": [
+        "t(\"parent.calendar\")",
+        "t(\"calendar.title\")",
+        "t(\"calendar.date\")",
+        "t(\"calendar.start\")",
+        "t(\"calendar.end\")",
+        "t(\"common.save\")",
+        "t(\"parent.home\")"
+      ],
+      "links": []
+    },
+    "existingI18nKeys": {
+      "calendar.allFamily": "Tüm aile",
+      "calendar.date": "Tarih (YYYY-AA-GG)",
+      "calendar.end": "Bitiş (SS:DD)",
+      "calendar.invalidDateTime": "Tarih YYYY-AA-GG, saat SS:DD biçiminde olmalı.",
+      "calendar.newEvent": "Yeni etkinlik veya ders",
+      "calendar.repeatWeekly": "Her hafta tekrar et (ders programı için günleri seç)",
+      "calendar.start": "Başlangıç (SS:DD)",
+      "calendar.title": "Başlık",
+      "common.save": "Kaydet",
+      "id, name": null,
+      "parent.calendar": "Takvim",
+      "parent.home": "Ana sayfa"
+    },
+    "existingRpcNames": []
+  },
+  {
+    "id": "grades",
+    "route": "parent/grades",
+    "sourceFile": "apps/mobile/src/app/parent/grades.tsx",
+    "sourceSha256": "a2b944b5f45e8e456c48a734ddcefb6c2721c7fff9140b05feb6f704d62418ae",
+    "variants": [],
+    "existingCopyAndFields": {
+      "route": "parent/grades.tsx",
+      "copy": {
+        "grades.invalid": "Ders, puan ve tarih (YYYY-AA-GG) gerekli.",
+        "parent.grades": "Puanlar",
+        "grades.none": "Henüz puan girilmemiş.",
+        "grades.new": "Yeni puan",
+        "grades.subject": "Ders",
+        "grades.subjectPlaceholder": "Matematik",
+        "grades.score": "Puan",
+        "grades.maxScore": "Tam puan",
+        "calendar.date": "Tarih (YYYY-AA-GG)",
+        "common.save": "Kaydet",
+        "tasks.addChildFirst": "Önce ana sayfadan bir çocuk ekle.",
+        "parent.home": "Ana sayfa"
+      },
+      "states": [
+        "childId, setChildId",
+        "subject, setSubject",
+        "kind, setKind",
+        "score, setScore",
+        "maxScore, setMaxScore",
+        "gradedOn, setGradedOn",
+        "formError, setFormError"
+      ],
+      "formProps": [
+        "t(\"parent.grades\")",
+        "t(\"grades.subject\")",
+        "t(\"grades.subjectPlaceholder\")",
+        "t(\"grades.score\")",
+        "t(\"grades.maxScore\")",
+        "t(\"calendar.date\")",
+        "t(\"common.save\")",
+        "t(\"parent.home\")"
+      ],
+      "links": []
+    },
+    "existingI18nKeys": {
+      "calendar.date": "Tarih (YYYY-AA-GG)",
+      "common.save": "Kaydet",
+      "grades.invalid": "Ders, puan ve tarih (YYYY-AA-GG) gerekli.",
+      "grades.maxScore": "Tam puan",
+      "grades.new": "Yeni puan",
+      "grades.none": "Henüz puan girilmemiş.",
+      "grades.score": "Puan",
+      "grades.subject": "Ders",
+      "grades.subjectPlaceholder": "Matematik",
+      "id, name": null,
+      "id, subject, kind, score, max_score, graded_on, note": null,
+      "parent.grades": "Puanlar",
+      "parent.home": "Ana sayfa",
+      "tasks.addChildFirst": "Önce ana sayfadan bir çocuk ekle."
+    },
+    "existingRpcNames": []
+  },
+  {
+    "id": "notes",
+    "route": "parent/notes",
+    "sourceFile": "apps/mobile/src/app/parent/notes.tsx",
+    "sourceSha256": "15687e98d9d102275e2c03aa8bb31f160313643bcde883254890d28cfd22cf6f",
+    "variants": [],
+    "existingCopyAndFields": {
+      "route": "parent/notes.tsx",
+      "copy": {
+        "parent.notes": "Notlar",
+        "calendar.allFamily": "Tüm aile",
+        "notes.none": "Henüz not yok.",
+        "notes.untitled": "Başlıksız",
+        "common.delete": "Sil",
+        "notes.new": "Yeni not",
+        "notes.title": "Başlık",
+        "notes.body": "Not",
+        "notes.subject": "Ders (isteğe bağlı)",
+        "notes.subjectPlaceholder": "Matematik",
+        "common.save": "Kaydet",
+        "parent.home": "Ana sayfa"
+      },
+      "states": [
+        "childId, setChildId",
+        "title, setTitle",
+        "body, setBody",
+        "subject, setSubject",
+        "visibility, setVisibility"
+      ],
+      "formProps": [
+        "t(\"parent.notes\")",
+        "t(\"common.delete\")",
+        "t(\"notes.title\")",
+        "t(\"notes.body\")",
+        "t(\"notes.subject\")",
+        "t(\"notes.subjectPlaceholder\")",
+        "t(\"common.save\")",
+        "t(\"parent.home\")"
+      ],
+      "links": []
+    },
+    "existingI18nKeys": {
+      "calendar.allFamily": "Tüm aile",
+      "common.delete": "Sil",
+      "common.save": "Kaydet",
+      "id, name": null,
+      "id, title, body, subject, visibility, child_id, updated_at, children!notes_child_id_fkey(name)": null,
+      "notes.body": "Not",
+      "notes.new": "Yeni not",
+      "notes.none": "Henüz not yok.",
+      "notes.subject": "Ders (isteğe bağlı)",
+      "notes.subjectPlaceholder": "Matematik",
+      "notes.title": "Başlık",
+      "notes.untitled": "Başlıksız",
+      "parent.home": "Ana sayfa",
+      "parent.notes": "Notlar"
+    },
+    "existingRpcNames": []
+  },
+  {
+    "id": "menu",
+    "route": "parent/menu",
+    "sourceFile": "apps/mobile/src/app/parent/menu.tsx",
+    "sourceSha256": "766297f41d4f763b87e862cbf742b89977257c6d0fe6d72495721e87858aebd3",
+    "variants": [],
+    "existingCopyAndFields": {
+      "route": "parent/menu.tsx",
+      "copy": {
+        "parent.gradeShort": "{{grade}}. sınıf",
+        "parent.parentPin": "Veli PIN'i (çocuk modundan çıkış için)",
+        "parent.savePin": "Kaydet",
+        "parent.menu": "Menü",
+        "parent.inviteCode": "Davet kodu",
+        "parent.inviteHelp": "Eşin bu kodla kayıt ekranındaki «Davet koduyla aileye katıl» bölümünden katılır.",
+        "parent.children": "Çocuklar",
+        "parent.addChild": "Çocuk ekle",
+        "parent.childNamePlaceholder": "Ad",
+        "common.add": "Ekle",
+        "parent.pairDevice": "Cihaz ekle",
+        "parent.removeDevice": "Kaldır",
+        "parent.pairCodeLabel": "Tabletteki 6 haneli kod",
+        "prova.title": "Prova",
+        "push.menu": "Bildirimler",
+        "share.title": "Öğretmenle paylaş",
+        "parent.rewards": "Ödüller",
+        "parent.subscription": "Paketler",
+        "auth.signOut": "Çıkış yap",
+        "parent.home": "Ana sayfa"
+      },
+      "states": [
+        "pin, setPin",
+        "pin, setPin",
+        "childName, setChildName",
+        "childAvatar, setChildAvatar",
+        "pairCode, setPairCode"
+      ],
+      "formProps": [
+        "t(\"parent.savePin\")",
+        "family.data?.name ?? t(\"parent.menu\")",
+        "t(\"parent.addChild\")",
+        "t(\"parent.childNamePlaceholder\")",
+        "t(\"common.add\")",
+        "t(\"parent.removeDevice\")",
+        "t(\"parent.pairCodeLabel\")",
+        "t(\"parent.pairDevice\")",
+        "t(\"prova.title\")",
+        "t(\"push.menu\")",
+        "t(\"share.title\")",
+        "t(\"parent.rewards\")",
+        "t(\"parent.subscription\")",
+        "t(\"auth.signOut\")",
+        "t(\"parent.home\")"
+      ],
+      "links": [
+        "router.push(\"/parent/prova\")} />",
+        "router.push(\"/parent/notifications\")} />",
+        "router.push(\"/parent/share\")} />",
+        "router.push(\"/parent/rewards\")} />",
+        "router.push(\"/parent/subscription\")} />",
+        "router.replace(\"/\"))} />"
+      ]
+    },
+    "existingI18nKeys": {
+      "auth.signOut": "Çıkış yap",
+      "common.add": "Ekle",
+      "id, name, grade, avatar": null,
+      "id, name, paired_at": null,
+      "name, invite_code": null,
+      "parent.addChild": "Çocuk ekle",
+      "parent.childNamePlaceholder": "Ad",
+      "parent.children": "Çocuklar",
+      "parent.gradeShort": "{{grade}}. sınıf",
+      "parent.home": "Ana sayfa",
+      "parent.inviteCode": "Davet kodu",
+      "parent.inviteHelp": "Eşin bu kodla kayıt ekranındaki «Davet koduyla aileye katıl» bölümünden katılır.",
+      "parent.menu": "Menü",
+      "parent.pairCodeLabel": "Tabletteki 6 haneli kod",
+      "parent.pairDevice": "Cihaz ekle",
+      "parent.parentPin": "Veli PIN'i (çocuk modundan çıkış için)",
+      "parent.removeDevice": "Kaldır",
+      "parent.rewards": "Ödüller",
+      "parent.savePin": "Kaydet",
+      "parent.subscription": "Paketler",
+      "prova.title": "Prova",
+      "push.menu": "Bildirimler",
+      "share.title": "Öğretmenle paylaş"
+    },
+    "existingRpcNames": [
+      "pair_device",
+      "revoke_device",
+      "set_child_pin",
+      "set_parent_pin"
+    ]
+  },
+  {
+    "id": "child-mode",
+    "route": "parent/child-mode/index",
+    "sourceFile": "apps/mobile/src/app/parent/child-mode/index.tsx",
+    "sourceSha256": "4638f68d7e246d8ff64d3974f413f2be40082a806f0bb52fb8d77b8e20571261",
+    "variants": [
+      "pin",
+      "no-pin"
+    ],
+    "existingCopyAndFields": {
+      "route": "parent/child-mode/index.tsx",
+      "copy": {
+        "child.wrongPin": "PIN yanlış, tekrar dene.",
+        "parent.childMode": "Çocuk modu (bu telefonda)",
+        "childMode.setParentPinFirst": "Çocuk moduna girmeden önce ana sayfadan 4 haneli veli PIN'i belirle.",
+        "parent.home": "Ana sayfa",
+        "child.hello": "Merhaba {{name}}!",
+        "child.pickProfile": "Kim giriyor?",
+        "child.enterPin": "PIN'ini gir",
+        "common.ok": "Tamam",
+        "common.cancel": "Vazgeç"
+      },
+      "states": [
+        "selected, setSelected",
+        "pin, setPin",
+        "busy, setBusy",
+        "error, setError"
+      ],
+      "formProps": [
+        "t(\"parent.childMode\")",
+        "t(\"parent.home\")",
+        "selected ? t(\"child.hello\", { name: selected.name ",
+        "t(\"common.ok\")",
+        "t(\"common.cancel\")",
+        "t(\"parent.home\")"
+      ],
+      "links": [
+        "router.replace(\"/parent/child-mode/today\");"
+      ]
+    },
+    "existingI18nKeys": {
+      "child.enterPin": "PIN'ini gir",
+      "child.hello": "Merhaba {{name}}!",
+      "child.pickProfile": "Kim giriyor?",
+      "child.wrongPin": "PIN yanlış, tekrar dene.",
+      "childMode.setParentPinFirst": "Çocuk moduna girmeden önce ana sayfadan 4 haneli veli PIN'i belirle.",
+      "common.cancel": "Vazgeç",
+      "common.ok": "Tamam",
+      "id, name, avatar": null,
+      "parent.childMode": "Çocuk modu (bu telefonda)",
+      "parent.home": "Ana sayfa"
+    },
+    "existingRpcNames": [
+      "parent_pin_set",
+      "verify_child_pin"
+    ]
+  }
+]
