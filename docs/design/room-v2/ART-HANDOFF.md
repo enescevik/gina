@@ -14,8 +14,12 @@ Yatay tablet ≥900 dp ve fontScale≤1.2: tüm oda. Daha dar/dikey veya büyük
 
 ## Logo
 
-`packages/assets/brand/yan-yana/logo-mark.svg`, `logo-mark-mono.svg`, `logo-wordmark.svg` yeni native kaynaklar. Seçilen iki kemerli yönün düz paletli yorumu; yeni wordmark eski özel path harflerini kullanır, font bağımlılığı yok. App/splash/notification/web/e-posta platform ihracı hâlâ eski yıldız işareti. Claude marka geçişini ayrı bütünlüklü değişiklikte yapmalı: tüm platform varyantları + safe area + iOS alfa/Android mono kontrolleri; sadece bir PNG değiştirip iki kimliği karıştırma. Yeni logo 24/48 px contact-sheet mevcut.
+`packages/assets/brand/yan-yana/logo-mark.svg`, `logo-mark-mono.svg`, `logo-wordmark.svg` yeni native kaynaklar. Seçilen iki kemerli yönün düz paletli yorumu; yeni wordmark eski özel path harflerini kullanır, font bağımlılığı yok. Platform geçişi main `8f81896` ile yapıldı; `scripts/generate-brand.mjs` ve güncel platform kaynaklarını koru. Eski yıldız-tik markasına dönme. Yeni logo 24/48 px contact-sheet mevcut.
 
 ## Üretim durumu
 
 4–6 ikonları ve yeni logo/dekor SVG'leri düzenlenebilir kaynak teslimidir. Oda görselinin shader, texture veya 3D motor ihtiyacı yok; hedef katmanlı 2D. Konseptlerin üretim sanatına dönüşümü ve üç dekor seçeneğinin birleşik ekran önizlemeleri sonraki görsel onay turuna tabidir; bu belgelerde “tamamlanmış uygulama” iddiası yoktur.
+
+## Resimli v3 teslimi
+
+Görev/ders/etkinlik/oyunlaştırma için yeni resimli katman üretildi. Kaynak yolları, boyut ve animasyon sözleşmesi CLAUDE-PROMPT.md içindedir. Koleksiyon stili onayı, yukarıdaki oda/karakter adaylarının üretim onayı değildir.

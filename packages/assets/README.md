@@ -4,7 +4,7 @@
 
 Kullanıcı yeni koleksiyon stilini görev (66), ders (19), etkinlik (20) ve oyunlaştırmanın tamamına uygulamayı onayladı. Yeni kaynaklar kategori altında `illustrated-v3/` içinde şeffaf WebP olarak teslim edilir. Bu katman için aşağıdaki flat-only, raster yasağı ve piksel başına exact renk sınırlaması yerine onaylı referansın teal/krem/altın ve kategori renk aileleri içinde boyalı tonları geçerlidir. Yazı/rakam/logo ve telifli marka yok. SVG kaynakların teknik kısıtları aynen sürer. PNG yalnız marka/mağaza tesliminde kalır; WebP kaynakları SVG içine gömülmez.
 
-Marka `brand/yan-yana/` kaynaklarıdır. Eski yıldız-tik artık marka referansı değildir; ödül yıldızı bağımsız simetrik beş kollu semboldür. Yeni resimli set tamamlandığında manifest ve kullanım boyutları esas alınır; eski SVG setleri geçişte uyumluluk için kalır, yeni sanat yönü sayılmaz. Ayrıntılar: `docs/design/room-v2/CLAUDE-PROMPT.md`.
+Marka `brand/yan-yana/` kaynaklarıdır. Eski yıldız-tik artık marka referansı değildir; ödül yıldızı bağımsız simetrik beş kollu semboldür. Yeni resimli setin manifest ve kullanım boyutları esas alınır; eski SVG setleri geçişte uyumluluk için kalır, yeni sanat yönü sayılmaz. Ayrıntılar: `docs/design/room-v2/CLAUDE-PROMPT.md`.
 
 
 Bu paket Gina'ya özgü tüm çizimleri taşır: marka, avatarlar, görev/ders/etkinlik ikonları, oyunlaştırma, illüstrasyonlar, mağaza görselleri. Arayüz "chrome" ikonları (ok, artı, ayarlar, arama, çöp, kalem, takvim gezinme, kullanıcı, çıkış, bildirim, göz, kilit) **Lucide**'den gelir (`lucide-react-native` / `lucide-react`); burada yeniden çizilmez.

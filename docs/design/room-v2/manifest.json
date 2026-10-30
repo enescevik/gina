@@ -1,8 +1,8 @@
 {
-  "version": 2,
-  "base_commit": "5d20850",
-  "additional_reviewed_commit": "bb390aa",
-  "status": "handoff",
+  "version": 3,
+  "base_commit": "3d81e4b",
+  "additional_reviewed_commit": "c358624",
+  "status": "premium-v3-handoff",
   "files": [
     {
       "file": "ACCEPTANCE.md",
@@ -10,27 +10,27 @@
     },
     {
       "file": "ART-HANDOFF.md",
-      "sha256": "28124f9377c8014435b87df619a84a1de76351739ffe1e4211771b308c951182"
+      "sha256": "1ab35fa2fc76854058f4e4e740ea974271c4db154f884e788567f67489d814f1"
     },
     {
       "file": "CLAUDE-PROMPT.md",
-      "sha256": "06f800dea19601ccb57caad6d09a9b03de434e3b1fab6142f2912c0aad67ab7b"
+      "sha256": "2f2d3594e910904b19d3aacf347ff3e658ac677a0a1892a48fb17d79419ce9ad"
     },
     {
       "file": "DELIVERY.md",
-      "sha256": "9a63879d92fcd81429c58ede4609ff6412a09e3d3f221c4c611cfb4a6f089a8f"
+      "sha256": "b2d64e66fa2e204da790b1b4687a71e185682351282dd31a51baa40ccac64c9e"
     },
     {
       "file": "DESIGN-DECISIONS.md",
-      "sha256": "59eacc91fb040d5144426acd5fcd257ca265bedb7c33b09da2d02bdc797ee881"
+      "sha256": "4839122d2ac43791f4e91c4a8d7c3c94f0c46eb9279797939711b93b95b79279"
     },
     {
       "file": "GENERATION.md",
-      "sha256": "5e5b3237124c11ad2413eb66263e9c4e3f5864fc72bf56fc2d4f83e2ab5d9863"
+      "sha256": "21195ac8aaf2d925e47610d97ede0f8c51c7f2d22f8f73adc4cb4357bcaad429"
     },
     {
       "file": "IMPLEMENTATION.md",
-      "sha256": "257f63eef8fc29f0d08365fd4b7060096491b1f53f14df36285b4c2e70509132"
+      "sha256": "33200bbd4c3dcf1d0521cb31794731b36613de9c41418fe7204d05371a1e9e3b"
     },
     {
       "file": "OWNER-SETUP.md",
@@ -38,11 +38,11 @@
     },
     {
       "file": "PRODUCT-EXTENSIONS.md",
-      "sha256": "62230dfa1082290cfda51331e7c288d2ee8eda101bea293d6e1b8f915620ae97"
+      "sha256": "23cc9641e843549bf70f667678f5fc3725eee2f5b28483bea3b9c43c1aeb052b"
     },
     {
       "file": "README.md",
-      "sha256": "9753c8afabf8d458508a2e9b87de1e7d36157ed26fa25a6695e141201d319e72"
+      "sha256": "032f79f68a9b5407ce7acac4324ca52962b315badee4526ac446c53ad93a2b7c"
     },
     {
       "file": "art-candidates/character-boy.webp",
@@ -66,11 +66,11 @@
     },
     {
       "file": "badge-catalog.json",
-      "sha256": "098e8bf26d2b35f3e060be2f5a17d4f8205786543daa0623e68c8d7569d3f0f4"
+      "sha256": "2f358790890b540e645fa744c73cac8f20efb8c623573d56faded7ee29a5f92f"
     },
     {
       "file": "design-tokens.json",
-      "sha256": "8316701cb4a59fb11da03e3577bb1f7037b59bd890af9a64433c9ea590f0e2ea"
+      "sha256": "885275c56e257f36afcb05029bfe2cf621ed70f4886614216a2c7da8b2f19fea"
     },
     {
       "file": "references/child-home-approved.png",
