@@ -1,0 +1,15 @@
+{
+  "result": {
+    "savedChoiceRestored": true,
+    "autoSave": true,
+    "survivesReload": true,
+    "savedTextRestored": true,
+    "unsavedNavigationBlocked": true,
+    "retrySaved": true,
+    "timeUpFailsOnce": true,
+    "finishRetry": true
+  },
+  "errors": [],
+  "allBackendTrafficMocked": true,
+  "interceptedRequests": 17
+}

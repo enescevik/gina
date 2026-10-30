@@ -1256,6 +1256,8 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"get_saved_exam_answers":
+{ Args: { "p_attempt_id": string }; Returns: { "question_id": string; "answer_key": string | null; "answer_text": string | null }[] },
 "get_attempt_questions":
 { Args: { "p_exam_id": string }; Returns: {
               "choices": Json,"difficulty": Database["public"]['Enums']["question_difficulty"],"id": string,"kind": Database["public"]['Enums']["question_kind"],"ord": number,"stem": string

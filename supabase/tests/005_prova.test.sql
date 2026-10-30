@@ -1,6 +1,6 @@
 -- Prova: deneme akışı (atama, soru çekme cevapsız, cevap, bitirme) ve izolasyon.
 begin;
-select plan(12);
+select plan(17);
 
 insert into auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at)
 values
@@ -15,6 +15,10 @@ insert into public.children (id, family_id, name, grade) values
   ('20000000-0000-0000-0000-0000000000e1', '10000000-0000-0000-0000-00000000000e', 'Çocuk E', 5);
 insert into public.devices (id, family_id, auth_user_id, active_child_id) values
   ('30000000-0000-0000-0000-0000000000e1', '10000000-0000-0000-0000-00000000000e', '00000000-0000-0000-0000-00000000e0d1', '20000000-0000-0000-0000-0000000000e1');
+
+-- The public library must not expose answer keys to paired child devices either.
+insert into public.question_bank (id, family_id, grade, subject, topic, kind, difficulty, stem, choices, correct_key)
+values ('50000000-0000-0000-0000-0000000000e3', null, 5, 'Fen', 'Isı', 'multiple_choice', 'orta', 'Global soru', '[{"key":"A","text":"A"},{"key":"B","text":"B"}]', 'A');
 
 -- Ebeveyn: soru + deneme oluşturur
 set local role authenticated;
@@ -72,6 +76,12 @@ select results_eq(
   $$ values (1, 1) $$,
   'şıklı özet doğru (1/1)'
 );
+
+select is((select answer_key from public.get_saved_exam_answers((select id from public.exam_attempts limit 1)) where question_id = '50000000-0000-0000-0000-0000000000e1'), 'A', 'resume returns the entered choice');
+select throws_ok($$ select feedback from public.get_saved_exam_answers((select id from public.exam_attempts limit 1)) $$, '42703', null, 'resume never exposes feedback');
+select throws_ok($$ select is_correct from public.get_saved_exam_answers((select id from public.exam_attempts limit 1)) $$, '42703', null, 'resume never exposes correctness');
+select lives_ok($$ select public.start_exam_attempt('60000000-0000-0000-0000-0000000000e1') $$, 'completed exam can reopen its result');
+select is((select count(*)::int from public.exam_attempts), 1, 'reopening completed exam does not create a new attempt');
 
 select * from finish();
 rollback;
