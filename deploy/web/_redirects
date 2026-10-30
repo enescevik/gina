@@ -1,0 +1,9 @@
+# Veli webi (Expo web export) için Cloudflare Pages yönlendirmeleri.
+#
+# SPA fallback: Cloudflare Pages, kökte 404.html yoksa projeyi tek sayfalı uygulama sayar ve
+# bilinmeyen her yol için /index.html'i 200 ile sunar; expo-router istemcide doğru ekranı açar.
+# Açık bir "/*  /index.html  200" kuralı Pages'te "sonsuz döngü" uyarısıyla yok sayıldığı için
+# yazılmaz; scripts/cf-pages-finalize.mjs dist/ içinde 404.html olmadığını doğrular.
+#
+# Eski/kısa yollar buraya eklenir (biçim: kaynak hedef durum), ör.:
+# /giris  /sign-in  301

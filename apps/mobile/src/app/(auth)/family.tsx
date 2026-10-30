@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText, Screen } from "@/components/ui/screen";
 import { refreshClaims } from "@/lib/session";
+import { unregisterPush } from "@/lib/push";
 import { supabase } from "@/lib/supabase";
 
 /** Giriş yapmış ama henüz bir ailesi olmayan veli: aile kurar ya da davet koduyla katılır. */
@@ -54,7 +55,7 @@ export default function FamilyScreen() {
         <Button variant="secondary" title={t("auth.joinFamily")} loading={busy === "join"} disabled={!inviteCode.trim()} onPress={() => run("join")} />
       </View>
       <ErrorText error={error} />
-      <Button variant="ghost" title={t("auth.signOut")} onPress={() => void supabase.auth.signOut().then(() => router.replace("/"))} />
+      <Button variant="ghost" title={t("auth.signOut")} onPress={() => void unregisterPush().then(() => supabase.auth.signOut()).then(() => router.replace("/"))} />
     </Screen>
   );
 }

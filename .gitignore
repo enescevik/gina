@@ -47,3 +47,7 @@ yarn-error.log*
 
 # test
 coverage/
+
+# Firebase/FCM istemci dosyası EAS secret olarak verilir, repoya girmez
+apps/mobile/google-services.json
+apps/mobile/GoogleService-Info.plist

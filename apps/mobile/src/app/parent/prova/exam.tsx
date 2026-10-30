@@ -7,6 +7,7 @@ import { Pressable, Switch, Text, TextInput, View } from "react-native";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText, Screen } from "@/components/ui/screen";
+import { provaErrorMessage } from "@/lib/prova-ai";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -198,7 +199,7 @@ export default function ExamCreateScreen() {
         {timed ? <Text className="text-ink dark:text-night-text">{t("prova.min")}</Text> : null}
       </View>
 
-      <ErrorText error={create.error ?? children.error ?? blueprints.error ?? bank.error} />
+      <ErrorText error={(create.error && provaErrorMessage(create.error)) || (create.error ?? children.error ?? blueprints.error ?? bank.error)} />
       <Button title={t("prova.assign")} loading={create.isPending} onPress={() => create.mutate()} />
       <Button variant="ghost" title={t("common.cancel")} onPress={() => router.back()} />
     </Screen>

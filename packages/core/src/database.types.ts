@@ -19,6 +19,46 @@ export type Database = {
                   Relationships: [
                     
                   ]
+                },"ai_models": {
+                  Row: {
+                    "active": boolean,"created_at": string,"display_name": string,"id": string,"input_usd_per_mtok": number | null,"notes": string | null,"output_usd_per_mtok": number | null,"provider": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "active"?: boolean,"created_at"?: string,"display_name": string,"id": string,"input_usd_per_mtok"?: number | null,"notes"?: string | null,"output_usd_per_mtok"?: number | null,"provider"?: string,"updated_at"?: string
+                  }
+                  Update: {
+                    "active"?: boolean,"created_at"?: string,"display_name"?: string,"id"?: string,"input_usd_per_mtok"?: number | null,"notes"?: string | null,"output_usd_per_mtok"?: number | null,"provider"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"ai_settings": {
+                  Row: {
+                    "enabled": boolean,"max_input_tokens": number,"max_output_tokens": number,"model_id": string | null,"plan_code": Database["public"]['Enums']["plan_code"],"prompt_version": string,"updated_at": string,"updated_by": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "enabled"?: boolean,"max_input_tokens"?: number,"max_output_tokens"?: number,"model_id"?: string | null,"plan_code": Database["public"]['Enums']["plan_code"],"prompt_version"?: string,"updated_at"?: string,"updated_by"?: string | null
+                  }
+                  Update: {
+                    "enabled"?: boolean,"max_input_tokens"?: number,"max_output_tokens"?: number,"model_id"?: string | null,"plan_code"?: Database["public"]['Enums']["plan_code"],"prompt_version"?: string,"updated_at"?: string,"updated_by"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ai_settings_model_id_fkey"
+      columns: ["model_id"]
+isOneToOne: false
+      referencedRelation: "ai_models"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ai_settings_plan_code_fkey"
+      columns: ["plan_code"]
+isOneToOne: true
+      referencedRelation: "plans"
+      referencedColumns: ["code"]
+    }
+                  ]
                 },"ai_summaries": {
                   Row: {
                     "created_at": string,"error": string | null,"family_id": string,"id": string,"input_hash": string,"input_tokens": number | null,"model": string,"output_json": Json | null,"output_tokens": number | null,"prompt_version": string,"requested_by": string | null,"status": string,"week_start": string
@@ -52,6 +92,26 @@ isOneToOne: false
                   }
                   Relationships: [
                     
+                  ]
+                },"audit_log": {
+                  Row: {
+                    "action": string,"actor_id": string | null,"created_at": string,"details": NonNullable<Json>,"family_id": string | null,"id": number,"reason": string | null,"target_id": string | null,"target_table": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "action": string,"actor_id"?: string | null,"created_at"?: string,"details"?: NonNullable<Json>,"family_id"?: string | null,"id"?: never,"reason"?: string | null,"target_id"?: string | null,"target_table"?: string | null
+                  }
+                  Update: {
+                    "action"?: string,"actor_id"?: string | null,"created_at"?: string,"details"?: NonNullable<Json>,"family_id"?: string | null,"id"?: never,"reason"?: string | null,"target_id"?: string | null,"target_table"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "audit_log_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"badge_definitions": {
                   Row: {
@@ -221,6 +281,32 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"child_shares": {
+                  Row: {
+                    "child_id": string,"created_at": string,"created_by": string | null,"expires_at": string,"family_id": string,"id": string,"label": string,"last_viewed_at": string | null,"revoked_at": string | null,"scopes": (string)[],"token_hash": string,"view_count": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "child_id": string,"created_at"?: string,"created_by"?: string | null,"expires_at"?: string,"family_id": string,"id"?: string,"label": string,"last_viewed_at"?: string | null,"revoked_at"?: string | null,"scopes": (string)[],"token_hash": string,"view_count"?: number
+                  }
+                  Update: {
+                    "child_id"?: string,"created_at"?: string,"created_by"?: string | null,"expires_at"?: string,"family_id"?: string,"id"?: string,"label"?: string,"last_viewed_at"?: string | null,"revoked_at"?: string | null,"scopes"?: (string)[],"token_hash"?: string,"view_count"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "child_shares_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "child_shares_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"children": {
                   Row: {
                     "avatar": string,"birth_date": string | null,"created_at": string,"family_id": string,"grade": number | null,"id": string,"name": string,"sort_order": number
@@ -349,14 +435,14 @@ isOneToOne: false
                   ]
                 },"exam_answers": {
                   Row: {
-                    "ai_feedback": string | null,"ai_score": number | null,"answer_key": string | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"is_correct": boolean | null,"question_id": string
+                    "ai_details": Json | null,"ai_feedback": string | null,"ai_score": number | null,"answer_key": string | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"feedback": string | null,"graded_at": string | null,"graded_by": string | null,"is_correct": boolean | null,"question_id": string,"score": number | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_feedback"?: string | null,"ai_score"?: number | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"is_correct"?: boolean | null,"question_id": string
+                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id": string,"score"?: number | null
                   }
                   Update: {
-                    "ai_feedback"?: string | null,"ai_score"?: number | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"is_correct"?: boolean | null,"question_id"?: string
+                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id"?: string,"score"?: number | null
                   }
                   Relationships: [
                     {
@@ -375,14 +461,14 @@ isOneToOne: false
                   ]
                 },"exam_attempts": {
                   Row: {
-                    "ai_feedback": Json | null,"child_id": string,"created_at": string,"deadline_at": string | null,"exam_id": string,"family_id": string,"finished_at": string | null,"id": string,"mc_correct": number | null,"mc_total": number | null,"started_at": string,"status": Database["public"]['Enums']["attempt_status"]
+                    "ai_feedback": Json | null,"child_id": string,"created_at": string,"deadline_at": string | null,"exam_id": string,"family_id": string,"finished_at": string | null,"graded_at": string | null,"id": string,"mc_correct": number | null,"mc_total": number | null,"open_graded": number | null,"open_total": number | null,"score_pct": number | null,"started_at": string,"status": Database["public"]['Enums']["attempt_status"]
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_feedback"?: Json | null,"child_id": string,"created_at"?: string,"deadline_at"?: string | null,"exam_id": string,"family_id": string,"finished_at"?: string | null,"id"?: string,"mc_correct"?: number | null,"mc_total"?: number | null,"started_at"?: string,"status"?: Database["public"]['Enums']["attempt_status"]
+                    "ai_feedback"?: Json | null,"child_id": string,"created_at"?: string,"deadline_at"?: string | null,"exam_id": string,"family_id": string,"finished_at"?: string | null,"graded_at"?: string | null,"id"?: string,"mc_correct"?: number | null,"mc_total"?: number | null,"open_graded"?: number | null,"open_total"?: number | null,"score_pct"?: number | null,"started_at"?: string,"status"?: Database["public"]['Enums']["attempt_status"]
                   }
                   Update: {
-                    "ai_feedback"?: Json | null,"child_id"?: string,"created_at"?: string,"deadline_at"?: string | null,"exam_id"?: string,"family_id"?: string,"finished_at"?: string | null,"id"?: string,"mc_correct"?: number | null,"mc_total"?: number | null,"started_at"?: string,"status"?: Database["public"]['Enums']["attempt_status"]
+                    "ai_feedback"?: Json | null,"child_id"?: string,"created_at"?: string,"deadline_at"?: string | null,"exam_id"?: string,"family_id"?: string,"finished_at"?: string | null,"graded_at"?: string | null,"id"?: string,"mc_correct"?: number | null,"mc_total"?: number | null,"open_graded"?: number | null,"open_total"?: number | null,"score_pct"?: number | null,"started_at"?: string,"status"?: Database["public"]['Enums']["attempt_status"]
                   }
                   Relationships: [
                     {
@@ -605,14 +691,14 @@ isOneToOne: true
                   ]
                 },"plan_products": {
                   Row: {
-                    "active": boolean,"period": Database["public"]['Enums']["billing_period"],"plan": Database["public"]['Enums']["plan_code"],"platform": Database["public"]['Enums']["store_platform"] | null,"product_id": string
+                    "active": boolean,"android_base_plan_id": string | null,"android_offer_id": string | null,"android_product_id": string | null,"period": Database["public"]['Enums']["billing_period"],"plan": Database["public"]['Enums']["plan_code"],"platform": Database["public"]['Enums']["store_platform"] | null,"product_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "active"?: boolean,"period": Database["public"]['Enums']["billing_period"],"plan": Database["public"]['Enums']["plan_code"],"platform"?: Database["public"]['Enums']["store_platform"] | null,"product_id": string
+                    "active"?: boolean,"android_base_plan_id"?: string | null,"android_offer_id"?: string | null,"android_product_id"?: string | null,"period": Database["public"]['Enums']["billing_period"],"plan": Database["public"]['Enums']["plan_code"],"platform"?: Database["public"]['Enums']["store_platform"] | null,"product_id": string
                   }
                   Update: {
-                    "active"?: boolean,"period"?: Database["public"]['Enums']["billing_period"],"plan"?: Database["public"]['Enums']["plan_code"],"platform"?: Database["public"]['Enums']["store_platform"] | null,"product_id"?: string
+                    "active"?: boolean,"android_base_plan_id"?: string | null,"android_offer_id"?: string | null,"android_product_id"?: string | null,"period"?: Database["public"]['Enums']["billing_period"],"plan"?: Database["public"]['Enums']["plan_code"],"platform"?: Database["public"]['Enums']["store_platform"] | null,"product_id"?: string
                   }
                   Relationships: [
                     {
@@ -625,17 +711,109 @@ isOneToOne: false
                   ]
                 },"plans": {
                   Row: {
-                    "ai_model": string | null,"ai_weekly": boolean,"code": Database["public"]['Enums']["plan_code"],"history_days": number | null,"max_active_tasks_per_child": number | null,"max_children": number,"max_devices": number | null,"max_notes": number | null,"name_i18n": NonNullable<Json>,"sort_order": number
+                    "ai_model": string | null,"ai_weekly": boolean,"code": Database["public"]['Enums']["plan_code"],"history_days": number | null,"max_active_tasks_per_child": number | null,"max_children": number,"max_devices": number | null,"max_notes": number | null,"name_i18n": NonNullable<Json>,"prova_ai_generate_monthly": number,"prova_ai_grading": boolean,"prova_booklet": boolean,"prova_monthly_exams": number | null,"prova_scenarios": boolean,"prova_study_plan": boolean,"sort_order": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code": Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"max_active_tasks_per_child"?: number | null,"max_children": number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n": NonNullable<Json>,"sort_order"?: number
+                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code": Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"max_active_tasks_per_child"?: number | null,"max_children": number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n": NonNullable<Json>,"prova_ai_generate_monthly"?: number,"prova_ai_grading"?: boolean,"prova_booklet"?: boolean,"prova_monthly_exams"?: number | null,"prova_scenarios"?: boolean,"prova_study_plan"?: boolean,"sort_order"?: number
                   }
                   Update: {
-                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code"?: Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"max_active_tasks_per_child"?: number | null,"max_children"?: number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n"?: NonNullable<Json>,"sort_order"?: number
+                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code"?: Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"max_active_tasks_per_child"?: number | null,"max_children"?: number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n"?: NonNullable<Json>,"prova_ai_generate_monthly"?: number,"prova_ai_grading"?: boolean,"prova_booklet"?: boolean,"prova_monthly_exams"?: number | null,"prova_scenarios"?: boolean,"prova_study_plan"?: boolean,"sort_order"?: number
                   }
                   Relationships: [
                     
+                  ]
+                },"prova_ai_usage": {
+                  Row: {
+                    "action": string,"created_at": string,"family_id": string,"id": string,"input_tokens": number | null,"items": number,"model": string | null,"output_tokens": number | null,"requested_by": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "action": string,"created_at"?: string,"family_id": string,"id"?: string,"input_tokens"?: number | null,"items"?: number,"model"?: string | null,"output_tokens"?: number | null,"requested_by"?: string | null
+                  }
+                  Update: {
+                    "action"?: string,"created_at"?: string,"family_id"?: string,"id"?: string,"input_tokens"?: number | null,"items"?: number,"model"?: string | null,"output_tokens"?: number | null,"requested_by"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "prova_ai_usage_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"push_outbox": {
+                  Row: {
+                    "attempts": number,"audience": string,"claimed_at": string | null,"created_at": string,"exclude_user_id": string | null,"family_id": string,"id": number,"kind": string,"last_error": string | null,"payload": NonNullable<Json>,"sent_at": string | null,"status": string,"target_child_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempts"?: number,"audience": string,"claimed_at"?: string | null,"created_at"?: string,"exclude_user_id"?: string | null,"family_id": string,"id"?: never,"kind": string,"last_error"?: string | null,"payload"?: NonNullable<Json>,"sent_at"?: string | null,"status"?: string,"target_child_id"?: string | null
+                  }
+                  Update: {
+                    "attempts"?: number,"audience"?: string,"claimed_at"?: string | null,"created_at"?: string,"exclude_user_id"?: string | null,"family_id"?: string,"id"?: never,"kind"?: string,"last_error"?: string | null,"payload"?: NonNullable<Json>,"sent_at"?: string | null,"status"?: string,"target_child_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "push_outbox_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "push_outbox_target_child_id_fkey"
+      columns: ["target_child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"push_preferences": {
+                  Row: {
+                    "approvals": boolean,"exams": boolean,"family_id": string,"updated_at": string,"user_id": string,"weekly_summary": boolean
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "approvals"?: boolean,"exams"?: boolean,"family_id": string,"updated_at"?: string,"user_id": string,"weekly_summary"?: boolean
+                  }
+                  Update: {
+                    "approvals"?: boolean,"exams"?: boolean,"family_id"?: string,"updated_at"?: string,"user_id"?: string,"weekly_summary"?: boolean
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "push_preferences_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"push_tokens": {
+                  Row: {
+                    "created_at": string,"device_id": string | null,"family_id": string,"id": string,"locale": string,"platform": string,"role": string,"token": string,"token_type": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"device_id"?: string | null,"family_id": string,"id"?: string,"locale"?: string,"platform": string,"role": string,"token": string,"token_type": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"device_id"?: string | null,"family_id"?: string,"id"?: string,"locale"?: string,"platform"?: string,"role"?: string,"token"?: string,"token_type"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "push_tokens_device_id_fkey"
+      columns: ["device_id"]
+isOneToOne: false
+      referencedRelation: "devices"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "push_tokens_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"question_bank": {
                   Row: {
@@ -773,6 +951,38 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"study_plans": {
+                  Row: {
+                    "attempt_id": string | null,"child_id": string,"created_at": string,"created_by": string | null,"family_id": string,"grade": number,"id": string,"input_hash": string | null,"model": string | null,"plan": NonNullable<Json>,"prompt_version": string | null,"status": string,"subject": string,"updated_at": string,"weak_topics": NonNullable<Json>
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempt_id"?: string | null,"child_id": string,"created_at"?: string,"created_by"?: string | null,"family_id": string,"grade": number,"id"?: string,"input_hash"?: string | null,"model"?: string | null,"plan"?: NonNullable<Json>,"prompt_version"?: string | null,"status"?: string,"subject": string,"updated_at"?: string,"weak_topics"?: NonNullable<Json>
+                  }
+                  Update: {
+                    "attempt_id"?: string | null,"child_id"?: string,"created_at"?: string,"created_by"?: string | null,"family_id"?: string,"grade"?: number,"id"?: string,"input_hash"?: string | null,"model"?: string | null,"plan"?: NonNullable<Json>,"prompt_version"?: string | null,"status"?: string,"subject"?: string,"updated_at"?: string,"weak_topics"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "study_plans_attempt_id_fkey"
+      columns: ["attempt_id"]
+isOneToOne: false
+      referencedRelation: "exam_attempts"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "study_plans_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "study_plans_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"task_completions": {
                   Row: {
                     "child_id": string,"client_id": string,"completed_at": string,"completed_by": string | null,"due_date": string,"family_id": string,"id": string,"reviewed_at": string | null,"reviewed_by": string | null,"status": Database["public"]['Enums']["completion_status"],"template_id": string
@@ -837,7 +1047,62 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "cancel_reward_request":
+            "admin_dashboard":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"admin_delete_global_question":
+{ Args: { "p_question_id": string }; Returns: undefined
+                           },
+"admin_expire_override":
+{ Args: { "p_override_id": string,"p_reason": string }; Returns: undefined
+                           },
+"admin_grant_override":
+{ Args: { "p_ends_at": string,"p_family_id": string,"p_plan": Database["public"]['Enums']["plan_code"],"p_reason": string,"p_starts_at"?: string }; Returns: string
+                           },
+"admin_list_overrides":
+{ Args: { "p_family_id"?: string,"p_include_inactive"?: boolean }; Returns: {
+              "created_at": string,"ends_at": string,"family_id": string,"family_name": string,"granted_by": string,"id": string,"is_active": boolean,"plan": Database["public"]['Enums']["plan_code"],"reason": string,"revoked_at": string,"starts_at": string
+            }[]
+                           },
+"admin_question_facets":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "grade": number,"question_count": number,"subject": string,"times_asked_total": number,"topic": string
+            }[]
+                           },
+"admin_search_families":
+{ Args: { "p_limit"?: number,"p_query"?: string }; Returns: {
+              "child_count": number,"created_at": string,"device_count": number,"id": string,"member_count": number,"name": string,"plan": Database["public"]['Enums']["plan_code"],"plan_expires_at": string,"plan_source": string
+            }[]
+                           },
+"admin_set_ai_enabled":
+{ Args: { "p_enabled": boolean }; Returns: undefined
+                           },
+"apply_ai_grades":
+{ Args: { "p_attempt_id": string,"p_grades": Json,"p_summary"?: Json }; Returns: {
+              "ai_feedback": Json | null,
+"child_id": string,
+"created_at": string,
+"deadline_at": string | null,
+"exam_id": string,
+"family_id": string,
+"finished_at": string | null,
+"graded_at": string | null,
+"id": string,
+"mc_correct": number | null,
+"mc_total": number | null,
+"open_graded": number | null,
+"open_total": number | null,
+"score_pct": number | null,
+"started_at": string,
+"status": Database["public"]['Enums']["attempt_status"]
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "exam_attempts"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
+"cancel_reward_request":
 { Args: { "p_request_id": string }; Returns: {
               "child_id": string,
 "cost_snapshot": number,
@@ -864,6 +1129,11 @@ isOneToOne: false
 "child_pin_login":
 { Args: { "p_child_id": string,"p_pin": string }; Returns: boolean
                            },
+"child_topic_mastery":
+{ Args: { "p_child_id": string }; Returns: {
+              "accuracy": number,"correct": number,"grade": number,"last_at": string,"level_total": number,"pending": number,"score": number,"subject": string,"topic": string,"total": number
+            }[]
+                           },
 "complete_task":
 { Args: { "p_acting_child_id"?: string,"p_client_id": string,"p_due_date": string,"p_template_id": string }; Returns: {
               "child_id": string,
@@ -884,9 +1154,38 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"create_child_share":
+{ Args: { "p_child_id": string,"p_expires_in_days"?: number,"p_label": string,"p_scopes": (string)[] }; Returns: {
+              "expires_at": string,"id": string,"token": string
+            }[]
+                           },
 "create_family":
 { Args: { "p_display_name"?: string,"p_name": string }; Returns: string
                            },
+"create_level_test":
+{ Args: { "p_blueprint_id"?: string,"p_child_id": string,"p_duration_minutes"?: number,"p_grade": number,"p_max_questions"?: number,"p_per_topic"?: number,"p_subject": string,"p_timed"?: boolean,"p_title"?: string }; Returns: {
+              "blueprint_id": string | null,
+"child_id": string,
+"created_at": string,
+"created_by": string | null,
+"duration_minutes": number | null,
+"family_id": string,
+"grade": number,
+"id": string,
+"kind": string,
+"question_ids": (string)[],
+"status": Database["public"]['Enums']["exam_status"],
+"subject": string,
+"timed": boolean,
+"title": string,
+"updated_at": string
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "exams"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "custom_access_token_hook":
 { Args: { "event": Json }; Returns: Json
                            },
@@ -941,9 +1240,13 @@ isOneToOne: false
 "exam_id": string,
 "family_id": string,
 "finished_at": string | null,
+"graded_at": string | null,
 "id": string,
 "mc_correct": number | null,
 "mc_total": number | null,
+"open_graded": number | null,
+"open_total": number | null,
+"score_pct": number | null,
 "started_at": string,
 "status": Database["public"]['Enums']["attempt_status"]
             }
@@ -958,13 +1261,29 @@ isOneToOne: false
               "choices": Json,"difficulty": Database["public"]['Enums']["question_difficulty"],"id": string,"kind": Database["public"]['Enums']["question_kind"],"ord": number,"stem": string
             }[]
                            },
+"get_attempt_topic_stats":
+{ Args: { "p_attempt_id": string }; Returns: {
+              "pct": number,"pending": number,"topic": string,"total": number
+            }[]
+                           },
 "get_family_entitlement":
 { Args: { "p_family_id"?: string }; Returns: {
               "expires_at": string,"plan": Database["public"]['Enums']["plan_code"],"source": string
             }[]
                            },
+"get_prova_entitlement":
+{ Args: { "p_family_id"?: string }; Returns: Json
+                           },
+"get_shared_child_view":
+{ Args: { "p_token": string }; Returns: Json
+                           },
 "get_weekly_summary_data":
 { Args: { "p_family_id": string,"p_week_start": string }; Returns: Json
+                           },
+"iap_reconcile_candidates":
+{ Args: { "p_limit"?: number,"p_min_age"?: string,"p_window"?: string }; Returns: {
+              "expires_at": string,"family_id": string,"id": string,"platform": Database["public"]['Enums']["store_platform"],"product_id": string,"status": Database["public"]['Enums']["subscription_status"],"store_key": string
+            }[]
                            },
 "join_family":
 { Args: { "p_display_name"?: string,"p_invite_code": string }; Returns: string
@@ -974,6 +1293,41 @@ isOneToOne: false
                            },
 "parent_pin_set":
 { Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"pick_level_questions":
+{ Args: { "p_blueprint_id"?: string,"p_grade": number,"p_max_questions"?: number,"p_per_topic"?: number,"p_subject": string }; Returns: {
+              "difficulty": Database["public"]['Enums']["question_difficulty"],"ord": number,"question_id": string,"topic": string
+            }[]
+                           },
+"push_claim_batch":
+{ Args: { "p_limit"?: number }; Returns: {
+              "attempts": number,
+"audience": string,
+"claimed_at": string | null,
+"created_at": string,
+"exclude_user_id": string | null,
+"family_id": string,
+"id": number,
+"kind": string,
+"last_error": string | null,
+"payload": NonNullable<Json>,
+"sent_at": string | null,
+"status": string,
+"target_child_id": string | null
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "push_outbox"
+        isOneToOne: false
+        isSetofReturn: true
+      } },
+"push_targets":
+{ Args: { "p_outbox_id": number }; Returns: {
+              "locale": string,"platform": string,"token": string,"token_id": string,"token_type": string
+            }[]
+                           },
+"register_push_token":
+{ Args: { "p_locale"?: string,"p_platform": string,"p_token": string }; Returns: undefined
                            },
 "request_pairing":
 { Args: { "p_device_name"?: string }; Returns: string
@@ -1019,9 +1373,37 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"revoke_child_share":
+{ Args: { "p_share_id": string }; Returns: undefined
+                           },
 "revoke_device":
 { Args: { "p_device_id": string }; Returns: undefined
                            },
+"score_open_answer":
+{ Args: { "p_attempt_id": string,"p_feedback"?: string,"p_question_id": string,"p_score": number }; Returns: {
+              "ai_feedback": Json | null,
+"child_id": string,
+"created_at": string,
+"deadline_at": string | null,
+"exam_id": string,
+"family_id": string,
+"finished_at": string | null,
+"graded_at": string | null,
+"id": string,
+"mc_correct": number | null,
+"mc_total": number | null,
+"open_graded": number | null,
+"open_total": number | null,
+"score_pct": number | null,
+"started_at": string,
+"status": Database["public"]['Enums']["attempt_status"]
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "exam_attempts"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "set_child_goal":
 { Args: { "p_acting_child_id"?: string,"p_reward_id": string }; Returns: {
               "child_id": string,
@@ -1048,6 +1430,30 @@ isOneToOne: false
 "set_room_preference":
 { Args: { "p_acting_child_id"?: string,"p_character": string,"p_theme"?: string }; Returns: undefined
                            },
+"set_study_plan_status":
+{ Args: { "p_plan_id": string,"p_status": string }; Returns: {
+              "attempt_id": string | null,
+"child_id": string,
+"created_at": string,
+"created_by": string | null,
+"family_id": string,
+"grade": number,
+"id": string,
+"input_hash": string | null,
+"model": string | null,
+"plan": NonNullable<Json>,
+"prompt_version": string | null,
+"status": string,
+"subject": string,
+"updated_at": string,
+"weak_topics": NonNullable<Json>
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "study_plans"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "start_exam_attempt":
 { Args: { "p_exam_id": string }; Returns: {
               "ai_feedback": Json | null,
@@ -1057,9 +1463,13 @@ isOneToOne: false
 "exam_id": string,
 "family_id": string,
 "finished_at": string | null,
+"graded_at": string | null,
 "id": string,
 "mc_correct": number | null,
 "mc_total": number | null,
+"open_graded": number | null,
+"open_total": number | null,
+"score_pct": number | null,
 "started_at": string,
 "status": Database["public"]['Enums']["attempt_status"]
             }
@@ -1074,6 +1484,9 @@ isOneToOne: false
                            },
 "undo_complete":
 { Args: { "p_completion_id": string }; Returns: undefined
+                           },
+"unregister_push_token":
+{ Args: { "p_token": string }; Returns: undefined
                            },
 "verify_child_pin":
 { Args: { "p_child_id": string,"p_pin": string }; Returns: boolean

@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, View } from "react-native";
@@ -9,8 +8,8 @@ import { Collectible } from "@/components/collectible";
 import { TaskIcon } from "@/components/task-icon";
 import { ZONES } from "@/components/room/layout";
 import { RoomScene, type CharacterKey } from "@/components/room/scene";
-import { supabase } from "@/lib/supabase";
 import { useChildBadges } from "@/lib/use-child-badges";
+import { useChildExamCount } from "@/lib/use-child-exam-count";
 import { useChildGoal } from "@/lib/use-child-goal";
 import { useChildToday } from "@/lib/use-child-today";
 
@@ -31,19 +30,7 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
   const badges = useChildBadges(childId, i18n.language);
   const shelf = (badges.data ?? []).filter((b) => b.earned).slice(0, 3);
   const earnedCount = (badges.data ?? []).filter((b) => b.earned).length;
-  const assignedExams = useQuery({
-    queryKey: ["child_exam_count", childId],
-    enabled: !!childId,
-    queryFn: async () => {
-      const { count, error } = await supabase
-        .from("exams")
-        .select("id", { count: "exact", head: true })
-        .eq("child_id", childId)
-        .eq("status", "assigned");
-      if (error) throw error;
-      return count ?? 0;
-    },
-  });
+  const assignedExams = useChildExamCount(childId);
   const goal = useChildGoal(childId);
 
   return (

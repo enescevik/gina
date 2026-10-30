@@ -61,7 +61,7 @@ select lives_ok(
   $$ select public.submit_exam_answer((select id from public.exam_attempts limit 1), '50000000-0000-0000-0000-0000000000e1', 'A', null) $$,
   'şıklı cevap yazılır'
 );
-select is((select is_correct from public.exam_answers where question_id = '50000000-0000-0000-0000-0000000000e1'), true, 'şıklı cevap otomatik puanlanır');
+select is((select count(*)::int from public.exam_answers), 0, 'cihaz cevap satırlarını (geri bildirim dahil) doğrudan okuyamaz');
 select lives_ok(
   $$ select public.submit_exam_answer((select id from public.exam_attempts limit 1), '50000000-0000-0000-0000-0000000000e2', null, 'Isı enerjidir, sıcaklık ölçümdür; çay örneği...') $$,
   'açık uçlu cevap yazılır'

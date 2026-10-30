@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Crypto from "expo-crypto";
+import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
@@ -10,6 +11,7 @@ import { ErrorText } from "@/components/ui/screen";
 import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { supabase } from "@/lib/supabase";
+import { useChildExamCount } from "@/lib/use-child-exam-count";
 
 export interface TodayViewProps {
   childId: string;
@@ -53,8 +55,9 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
     },
   });
 
+  // Anahtar use-child-today'deki ham satır listesinden ayrı: bu sorgu bakiyeyi (sayı) önbelleğe yazar.
   const stars = useQuery({
-    queryKey: ["star_events", childId],
+    queryKey: ["star_balance", childId],
     queryFn: async () => {
       const { data, error } = await supabase.from("star_events").select("delta").eq("child_id", childId);
       if (error) throw error;
@@ -64,7 +67,7 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
 
   // Veli onayladığında ya da görev eklediğinde ekran anında yenilenir.
   useRealtimeInvalidate("task_completions", `child_id=eq.${childId}`, [["task_completions", childId, today]]);
-  useRealtimeInvalidate("star_events", `child_id=eq.${childId}`, [["star_events", childId]]);
+  useRealtimeInvalidate("star_events", `child_id=eq.${childId}`, [["star_balance", childId]]);
   useRealtimeInvalidate("task_templates", `child_id=eq.${childId}`, [["task_templates", childId]]);
 
   const complete = useMutation({
@@ -79,6 +82,9 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
     },
     onSettled: () => void queryClient.invalidateQueries({ queryKey: ["task_completions", childId, today] }),
   });
+
+  // Prova kartı: dar akışta kitaplığın karşılığı; atanmış deneme sayısı rozet olarak.
+  const examCount = useChildExamCount(childId).data ?? 0;
 
   const due = templatesDueOn(templates.data ?? [], today);
   const byTemplate = new Map((completions.data ?? []).map((c) => [c.template_id, c]));
@@ -117,6 +123,29 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
           </Pressable>
         );
       })}
+      {/* Prova kapısı (geniş ekrandaki kitaplığın dar akış karşılığı) */}
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={examCount > 0 ? `${t("prova.title")}, ${t("prova.waitingCount", { count: examCount })}` : t("prova.title")}
+        accessibilityHint={examCount > 0 ? undefined : t("prova.noneWaiting")}
+        onPress={() => router.push(actingAsParent ? "/parent/child-mode/prova" : "/child/prova")}
+        className="min-h-20 flex-row items-center justify-between rounded-child bg-white p-5 active:bg-teal-light dark:bg-night-surface"
+      >
+        <Text className="text-4xl">📚</Text>
+        <View className="ml-4 flex-1">
+          <Text className="text-xl font-semibold text-ink dark:text-night-text">{t("prova.title")}</Text>
+          <Text className="text-sm text-gray-600">
+            {examCount > 0 ? t("prova.waitingCount", { count: examCount }) : t("prova.noneWaiting")}
+          </Text>
+        </View>
+        {examCount > 0 ? (
+          <View className="h-8 min-w-8 items-center justify-center rounded-full bg-coral px-2">
+            <Text className="text-base font-bold text-white">{examCount}</Text>
+          </View>
+        ) : (
+          <Text className="text-2xl text-gray-600">›</Text>
+        )}
+      </Pressable>
     </View>
   );
 }

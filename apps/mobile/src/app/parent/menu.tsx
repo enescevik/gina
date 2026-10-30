@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText, Screen } from "@/components/ui/screen";
 import { useSession } from "@/lib/session";
+import { unregisterPush } from "@/lib/push";
 import { supabase } from "@/lib/supabase";
 
 /** Çocuk satırı: ad, sınıf ve 4 haneli PIN belirleme (set_child_pin RPC). */
@@ -192,10 +193,12 @@ export default function ParentMenuScreen() {
 
       <ParentPinRow />
       <Button variant="secondary" title={t("prova.title")} onPress={() => router.push("/parent/prova")} />
+      <Button variant="secondary" title={t("push.menu")} onPress={() => router.push("/parent/notifications")} />
+      <Button variant="secondary" title={t("share.title")} onPress={() => router.push("/parent/share")} />
       <Button variant="secondary" title={t("parent.rewards")} onPress={() => router.push("/parent/rewards")} />
       <Button variant="secondary" title={t("parent.subscription")} onPress={() => router.push("/parent/subscription")} />
       <ErrorText error={family.error ?? children.error ?? devices.error ?? addChild.error ?? pairDevice.error ?? revokeDevice.error} />
-      <Button variant="ghost" title={t("auth.signOut")} onPress={() => void supabase.auth.signOut().then(() => router.replace("/"))} />
+      <Button variant="ghost" title={t("auth.signOut")} onPress={() => void unregisterPush().then(() => supabase.auth.signOut()).then(() => router.replace("/"))} />
       <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />
     </Screen>
   );

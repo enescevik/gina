@@ -6,6 +6,7 @@ import { Text, View } from "react-native";
 import { Button } from "@/components/ui/button";
 import { ErrorText, Screen } from "@/components/ui/screen";
 import { refreshClaims, useSession } from "@/lib/session";
+import { unregisterPush } from "@/lib/push";
 import { supabase } from "@/lib/supabase";
 
 /**
@@ -74,7 +75,7 @@ export default function PairScreen() {
       <Button
         variant="ghost"
         title={t("device.thisIsParentPhone")}
-        onPress={() => void supabase.auth.signOut().then(() => router.replace("/(auth)/sign-in"))}
+        onPress={() => void unregisterPush().then(() => supabase.auth.signOut()).then(() => router.replace("/(auth)/sign-in"))}
       />
     </Screen>
   );

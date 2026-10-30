@@ -1,0 +1,247 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { router } from "expo-router";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Platform, Pressable, Share, Text, View } from "react-native";
+
+import { Button } from "@/components/ui/button";
+import { Field } from "@/components/ui/field";
+import { ErrorText, Screen } from "@/components/ui/screen";
+import { supabase } from "@/lib/supabase";
+
+type ShareScope = "grades" | "prova" | "tasks_summary";
+const SCOPES: ShareScope[] = ["grades", "prova", "tasks_summary"];
+const EXPIRY_DAYS = [7, 30, 90, 180] as const;
+
+/** Paylaşım bağlantısının kökü: EXPO_PUBLIC_WEB_URL, yoksa webde bulunulan origin. */
+function shareBaseUrl(): string | null {
+  const fromEnv = process.env.EXPO_PUBLIC_WEB_URL?.replace(/\/+$/, "");
+  if (fromEnv) return fromEnv;
+  if (Platform.OS === "web" && typeof window !== "undefined") return window.location.origin;
+  return null;
+}
+
+/** RPC hata kodunu (ör. 'invalid_scopes') çeviri anahtarına eşler; bilinmeyeni olduğu gibi gösterir. */
+function errorMessage(t: (key: string) => string, error: unknown): string | null {
+  if (!error) return null;
+  const message = error instanceof Error ? error.message : typeof error === "object" && error && "message" in error ? String(error.message) : String(error);
+  const known = ["invalid_label", "invalid_scopes", "invalid_expiry", "too_many_shares", "child_not_found", "share_not_found", "share_failed"];
+  return known.includes(message) ? t(`share.error.${message}`) : message;
+}
+
+/**
+ * Veli: çocuk başına öğretmenle salt okunur paylaşım bağlantıları.
+ * Bağlantı bir kez gösterilir (sunucu yalnız özetini saklar); iptal anında etkilidir.
+ */
+export default function ParentShareScreen() {
+  const { t, i18n } = useTranslation();
+  const queryClient = useQueryClient();
+
+  const [childId, setChildId] = useState<string | null>(null);
+  const [label, setLabel] = useState("");
+  const [scopes, setScopes] = useState<ShareScope[]>(["grades"]);
+  const [days, setDays] = useState<number>(30);
+  const [createdLink, setCreatedLink] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const children = useQuery({
+    queryKey: ["children"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("children").select("id, name").order("sort_order");
+      if (error) throw error;
+      return data;
+    },
+  });
+  const selectedChild = childId ?? children.data?.[0]?.id ?? null;
+
+  const shares = useQuery({
+    queryKey: ["child_shares", selectedChild],
+    enabled: !!selectedChild,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("child_shares")
+        .select("id, label, scopes, created_at, expires_at, revoked_at, last_viewed_at, view_count")
+        .eq("child_id", selectedChild ?? "")
+        .order("created_at", { ascending: false })
+        .limit(50);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const createShare = useMutation({
+    mutationFn: async () => {
+      if (!selectedChild) throw new Error("child_not_found");
+      const { data, error } = await supabase.rpc("create_child_share", {
+        p_child_id: selectedChild,
+        p_label: label.trim(),
+        p_scopes: scopes,
+        p_expires_in_days: days,
+      });
+      if (error) throw error;
+      const token = data?.[0]?.token;
+      if (!token) throw new Error("share_failed");
+      return token;
+    },
+    onSuccess: (token) => {
+      const base = shareBaseUrl();
+      setCreatedLink(base ? `${base}/s/${token}` : `/s/${token}`);
+      setCopied(false);
+      setLabel("");
+      void queryClient.invalidateQueries({ queryKey: ["child_shares", selectedChild] });
+    },
+  });
+
+  const revokeShare = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.rpc("revoke_child_share", { p_share_id: id });
+      if (error) throw error;
+    },
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: ["child_shares", selectedChild] }),
+  });
+
+  const toggleScope = (scope: ShareScope) =>
+    setScopes((current) => (current.includes(scope) ? current.filter((s) => s !== scope) : [...current, scope]));
+
+  const copyLink = async () => {
+    if (!createdLink) return;
+    // Webde panoya kopyalanır; mobilde sistem paylaşım sayfası açılır (ek paket gerekmez).
+    if (Platform.OS === "web" && typeof navigator !== "undefined" && navigator.clipboard) {
+      await navigator.clipboard.writeText(createdLink);
+      setCopied(true);
+      return;
+    }
+    await Share.share({ message: createdLink });
+  };
+
+  const shareLink = async () => {
+    if (!createdLink) return;
+    try {
+      await Share.share({ message: t("share.shareMessage", { url: createdLink }), url: createdLink });
+    } catch {
+      // Webde navigator.share yoksa reddedilir; kopyalama düğmesi kalır.
+    }
+  };
+
+  const dateFormat = new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "short", year: "numeric" });
+  // Süre kontrolü listenin çekildiği ana göre (render saf kalsın).
+  const now = shares.dataUpdatedAt;
+
+  return (
+    <Screen title={t("share.title")}>
+      <Text className="text-sm text-gray-500">{t("share.intro")}</Text>
+
+      <View className="flex-row flex-wrap gap-2">
+        {children.data?.map((child) => (
+          <Pressable
+            key={child.id}
+            accessibilityRole="button"
+            onPress={() => {
+              setChildId(child.id);
+              setCreatedLink(null);
+            }}
+            className={`rounded-full px-4 py-2 ${child.id === selectedChild ? "bg-teal" : "bg-mist"}`}
+          >
+            <Text className={child.id === selectedChild ? "font-semibold text-white" : "text-ink"}>{child.name}</Text>
+          </Pressable>
+        ))}
+      </View>
+
+      {createdLink ? (
+        <View className="gap-3 rounded-parent border border-teal bg-teal-light p-4">
+          <Text className="text-lg font-semibold text-ink">{t("share.linkReady")}</Text>
+          <Text className="text-sm text-ink">{t("share.linkOnce")}</Text>
+          <Text selectable className="rounded-parent bg-white p-3 font-mono text-sm text-ink">
+            {createdLink}
+          </Text>
+          {shareBaseUrl() ? null : <Text className="text-xs text-danger">{t("share.noWebUrl")}</Text>}
+          <View className="flex-row gap-2">
+            <View className="flex-1">
+              <Button title={copied ? t("share.copied") : t("share.copy")} onPress={() => void copyLink()} />
+            </View>
+            <View className="flex-1">
+              <Button variant="secondary" title={t("share.share")} onPress={() => void shareLink()} />
+            </View>
+          </View>
+          <Button variant="ghost" title={t("share.done")} onPress={() => setCreatedLink(null)} />
+        </View>
+      ) : null}
+
+      {shares.data?.length === 0 ? <Text className="text-gray-500">{t("share.none")}</Text> : null}
+      {shares.data?.map((share) => {
+        const expired = new Date(share.expires_at).getTime() <= now;
+        const status = share.revoked_at ? t("share.status.revoked") : expired ? t("share.status.expired") : t("share.status.active");
+        const active = !share.revoked_at && !expired;
+        return (
+          <View key={share.id} className={`gap-2 rounded-parent border border-mist p-3 ${active ? "" : "opacity-60"}`}>
+            <View className="flex-row items-center gap-2">
+              <Text className="flex-1 text-base font-semibold text-ink dark:text-night-text">{share.label}</Text>
+              <Text className={`text-xs font-semibold ${active ? "text-teal-dark" : "text-gray-500"}`}>{status}</Text>
+            </View>
+            <Text className="text-xs text-gray-500">{share.scopes.map((s) => t(`share.scope.${s}`)).join(" · ")}</Text>
+            <Text className="text-xs text-gray-500">
+              {t("share.expiresOn", { date: dateFormat.format(new Date(share.expires_at)) })} · {t("share.views", { count: share.view_count })}
+              {share.last_viewed_at ? ` · ${t("share.lastViewed", { date: dateFormat.format(new Date(share.last_viewed_at)) })}` : ""}
+            </Text>
+            {active ? (
+              <Button
+                variant="danger"
+                title={t("share.revoke")}
+                loading={revokeShare.isPending && revokeShare.variables === share.id}
+                onPress={() => revokeShare.mutate(share.id)}
+              />
+            ) : null}
+          </View>
+        );
+      })}
+      {revokeShare.error ? <Text className="text-sm text-danger">{errorMessage(t, revokeShare.error)}</Text> : null}
+
+      {selectedChild ? (
+        <View className="gap-3 rounded-parent bg-teal-light p-4">
+          <Text className="text-lg font-semibold text-ink">{t("share.new")}</Text>
+          <Field label={t("share.label")} value={label} onChangeText={setLabel} placeholder={t("share.labelPlaceholder")} maxLength={80} />
+          <Text className="text-sm font-medium text-ink">{t("share.scopes")}</Text>
+          <View className="flex-row flex-wrap gap-2">
+            {SCOPES.map((scope) => (
+              <Pressable
+                key={scope}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: scopes.includes(scope) }}
+                onPress={() => toggleScope(scope)}
+                className={`rounded-full px-3 py-2 ${scopes.includes(scope) ? "bg-teal" : "bg-white"}`}
+              >
+                <Text className={scopes.includes(scope) ? "font-semibold text-white" : "text-ink"}>{t(`share.scope.${scope}`)}</Text>
+              </Pressable>
+            ))}
+          </View>
+          <Text className="text-xs text-gray-500">{t("share.neverShared")}</Text>
+          <Text className="text-sm font-medium text-ink">{t("share.expiry")}</Text>
+          <View className="flex-row flex-wrap gap-2">
+            {EXPIRY_DAYS.map((option) => (
+              <Pressable
+                key={option}
+                accessibilityRole="button"
+                onPress={() => setDays(option)}
+                className={`rounded-full px-3 py-2 ${days === option ? "bg-teal" : "bg-white"}`}
+              >
+                <Text className={days === option ? "font-semibold text-white" : "text-ink"}>{t("share.days", { count: option })}</Text>
+              </Pressable>
+            ))}
+          </View>
+          {createShare.error ? <Text className="text-sm text-danger">{errorMessage(t, createShare.error)}</Text> : null}
+          <Button
+            title={t("share.create")}
+            loading={createShare.isPending}
+            disabled={!label.trim() || scopes.length === 0}
+            onPress={() => createShare.mutate()}
+          />
+        </View>
+      ) : (
+        <Text className="text-gray-500">{t("tasks.addChildFirst")}</Text>
+      )}
+
+      <ErrorText error={children.error ?? shares.error} />
+      <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />
+    </Screen>
+  );
+}

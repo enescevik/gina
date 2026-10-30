@@ -41,7 +41,7 @@ export default function ParentProvaScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("exams")
-        .select("id, title, status, timed, duration_minutes, question_ids, children(name), exam_attempts(id, status, mc_total, mc_correct, finished_at)")
+        .select("id, title, kind, status, timed, duration_minutes, question_ids, children(name), exam_attempts(id, status, mc_total, mc_correct, finished_at)")
         .order("created_at", { ascending: false })
         .limit(30);
       if (error) throw error;
@@ -61,6 +61,20 @@ export default function ParentProvaScreen() {
           <Button variant="secondary" title={t("prova.newQuestion")} onPress={() => router.push("/parent/prova/question")} />
         </View>
       </View>
+      <View className="flex-row flex-wrap gap-2">
+        <View className="min-w-[30%] flex-1">
+          <Button variant="secondary" title={t("prova.ai.generateTitle")} onPress={() => router.push("/parent/prova/generate")} />
+        </View>
+        <View className="min-w-[30%] flex-1">
+          <Button variant="secondary" title={t("prova.level.title")} onPress={() => router.push("/parent/prova/level")} />
+        </View>
+        <View className="min-w-[30%] flex-1">
+          <Button variant="secondary" title={t("prova.progress.title")} onPress={() => router.push("/parent/prova/progress")} />
+        </View>
+        <View className="min-w-[30%] flex-1">
+          <Button variant="secondary" title={t("prova.booklet.title")} onPress={() => router.push("/parent/prova/booklet")} />
+        </View>
+      </View>
 
       <View className="gap-2 rounded-parent bg-white p-4 dark:bg-night-surface">
         <View className="flex-row items-center justify-between">
@@ -70,21 +84,32 @@ export default function ParentProvaScreen() {
         {exams.data?.length === 0 ? <Text className="text-gray-500">{t("prova.noExams")}</Text> : null}
         {exams.data?.map((exam) => {
           const attempt = exam.exam_attempts?.[0];
+          const finished = attempt?.status === "submitted" || attempt?.status === "graded";
           return (
-            <View key={exam.id} className="gap-1 rounded-parent border border-mist p-3">
-              <Text className="font-body-bold text-base text-ink dark:text-night-text">{exam.title}</Text>
+            <Pressable
+              key={exam.id}
+              accessibilityRole="button"
+              disabled={!finished}
+              onPress={() => attempt && router.push({ pathname: "/parent/prova/attempt/[attemptId]", params: { attemptId: attempt.id } })}
+              className="gap-1 rounded-parent border border-mist p-3 active:bg-teal-light"
+            >
+              <Text className="font-body-bold text-base text-ink dark:text-night-text">
+                {exam.kind === "level_test" ? `🎯 ${t("prova.level.badge")} · ` : ""}
+                {exam.title}
+              </Text>
               <Text className="text-sm text-gray-600">
                 {exam.children?.name} · {t("prova.questionCount", { count: exam.question_ids.length })}
                 {exam.timed ? ` · ${exam.duration_minutes} ${t("prova.min")}` : ` · ${t("prova.untimed")}`}
               </Text>
               <Text className="text-sm text-teal-dark">
-                {attempt?.status === "submitted" || attempt?.status === "graded"
+                {finished
                   ? t("prova.resultMc", { correct: attempt.mc_correct ?? 0, total: attempt.mc_total ?? 0 })
                   : attempt?.status === "in_progress"
                     ? t("prova.inProgress")
                     : t(`prova.status.${exam.status}`)}
+                {finished ? ` · ${t("prova.ai.review")} ›` : ""}
               </Text>
-            </View>
+            </Pressable>
           );
         })}
       </View>

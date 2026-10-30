@@ -37,12 +37,17 @@ export default function ChildProvaScreen() {
 
   return (
     <Screen tone="child" title={t("prova.title")}>
-      <Text className="font-display text-lg text-ink dark:text-night-text">{t("prova.toDo")}</Text>
+      <Text accessibilityRole="header" className="font-display text-lg text-ink dark:text-night-text">{t("prova.toDo")}</Text>
       {open.length === 0 ? <Text className="text-base text-gray-600">{t("prova.nothingAssigned")}</Text> : null}
-      {open.map((exam) => (
+      {open.map((exam) => {
+        const resuming = exam.exam_attempts?.some((a) => a.status === "in_progress") ?? false;
+        const meta = `${t("prova.questionCount", { count: exam.question_ids.length })}, ${exam.timed ? `${exam.duration_minutes} ${t("prova.min")}` : t("prova.untimed")}`;
+        return (
         <Pressable
           key={exam.id}
           accessibilityRole="button"
+          accessibilityLabel={`${exam.title}, ${meta}`}
+          accessibilityHint={resuming ? t("prova.a11yContinueHint") : t("prova.a11yStartHint")}
           onPress={() => router.push({
               pathname: actingChild ? "/parent/child-mode/prova/[examId]" : "/child/prova/[examId]",
               params: { examId: exam.id },
@@ -58,16 +63,22 @@ export default function ChildProvaScreen() {
             </Text>
           </View>
           <View className="rounded-button bg-teal px-4 py-2">
-            <Text className="font-bold text-white">{exam.exam_attempts?.some((a) => a.status === "in_progress") ? t("prova.continue") : t("room.start")}</Text>
+            <Text className="font-bold text-white">{resuming ? t("prova.continue") : t("room.start")}</Text>
           </View>
         </Pressable>
-      ))}
+        );
+      })}
 
-      {done.length > 0 ? <Text className="mt-2 font-display text-lg text-ink dark:text-night-text">{t("prova.done")}</Text> : null}
+      {done.length > 0 ? <Text accessibilityRole="header" className="mt-2 font-display text-lg text-ink dark:text-night-text">{t("prova.done")}</Text> : null}
       {done.map((exam) => {
         const attempt = exam.exam_attempts?.[0];
         return (
-          <View key={exam.id} className="flex-row items-center gap-3 rounded-child bg-green-light p-4">
+          <View
+            key={exam.id}
+            accessible
+            accessibilityLabel={`${exam.title}, ${t("prova.status.completed")}, ${t("prova.resultMc", { correct: attempt?.mc_correct ?? 0, total: attempt?.mc_total ?? 0 })}`}
+            className="flex-row items-center gap-3 rounded-child bg-green-light p-4"
+          >
             <Text className="text-3xl">✅</Text>
             <View className="flex-1">
               <Text className="font-body-bold text-base text-ink">{exam.title}</Text>
