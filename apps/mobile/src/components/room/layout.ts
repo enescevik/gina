@@ -18,6 +18,8 @@ export const ZONES = {
   treasureDrawer: [0.735, 0.78, 0.22, 0.065],
   character: [0.36, 0.45, 0.23, 0.4],
   roomSwitch: [0.6, 0.49, 0.055, 0.1],
+  // Kitaplık: Prova kapısı (oda sanatındaki kitaplık bölgesi; cihazda doğrulanacak).
+  bookshelf: [0.535, 0.37, 0.095, 0.4],
 } as const satisfies Record<string, Zone | readonly Zone[]>;
 
 /** Geniş oda düzeni eşiği (dp) ve büyük yazı eşiği — altında dikey akışa düşülür. */
