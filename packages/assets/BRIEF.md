@@ -198,3 +198,7 @@ Klasör `packages/assets/room-chrome/`. Amaç: onaylı ana ekranlardaki (docs/de
 ## 13. Birebir eşleşme (BRIEF 13)
 
 Onaylı ana ekranlarla birebir eşleşme için eksik dekor, karakter, kaplama ve ödül görselleri: [docs/design/room-v2/CODEX-BRIEF-13-birebir.md](../../docs/design/room-v2/CODEX-BRIEF-13-birebir.md).
+
+## 14. Alt ekranlar (BRIEF 14)
+
+Alt ekranların maket, kaplama ve giydirme işi: [docs/design/room-v2/CODEX-BRIEF-14-alt-ekranlar.md](../../docs/design/room-v2/CODEX-BRIEF-14-alt-ekranlar.md).
