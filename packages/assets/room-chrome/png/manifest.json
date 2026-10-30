@@ -1,0 +1,242 @@
+[
+  {
+    "slug": "board-frame",
+    "file": "board-frame@3x.png",
+    "width": 1080,
+    "height": 960,
+    "pixelRatio": 3,
+    "sha256": "e958d21bc01a45fe2095a351254b58c0abcc0d1ee58c1dd2e7d3814fc36fb1ed"
+  },
+  {
+    "slug": "task-card",
+    "file": "task-card@3x.png",
+    "width": 900,
+    "height": 300,
+    "pixelRatio": 3,
+    "sha256": "c041aeb7a56eb01ee51fa16289ab6aacf981209397548e60ff2839491b60c7b6"
+  },
+  {
+    "slug": "task-card-pressed",
+    "file": "task-card-pressed@3x.png",
+    "width": 900,
+    "height": 300,
+    "pixelRatio": 3,
+    "sha256": "89b8d9ff8cd12b145ddd2a2292ba94483d810bbf3bc4fe9fb3f76845c93bc09b"
+  },
+  {
+    "slug": "chip-start",
+    "file": "chip-start@3x.png",
+    "width": 336,
+    "height": 156,
+    "pixelRatio": 3,
+    "sha256": "e41f529493c794ca9f139105eda5cab72907bf6a9e43b7b75252d7851508321f"
+  },
+  {
+    "slug": "chip-start-pressed",
+    "file": "chip-start-pressed@3x.png",
+    "width": 336,
+    "height": 156,
+    "pixelRatio": 3,
+    "sha256": "0d1af030d5abf59a7ee0a4779c35507cbedf6de3915c1fbe0631a2a6e24bc699"
+  },
+  {
+    "slug": "chip-start-disabled",
+    "file": "chip-start-disabled@3x.png",
+    "width": 336,
+    "height": 156,
+    "pixelRatio": 3,
+    "sha256": "8345aff9448367882e6da88cf27657f64d3728f3f9d39dd0b7c6b5203f7abe4b"
+  },
+  {
+    "slug": "status-done",
+    "file": "status-done@3x.png",
+    "width": 144,
+    "height": 144,
+    "pixelRatio": 3,
+    "sha256": "8c5903a9df42f5a73366428a8c5ebcee9465f29f884d0a9ae18af50730a46bed"
+  },
+  {
+    "slug": "status-waiting",
+    "file": "status-waiting@3x.png",
+    "width": 144,
+    "height": 144,
+    "pixelRatio": 3,
+    "sha256": "f8cddbc9736b086d4fe6a5ff2697e6a737568e875390c8018269a50607a91169"
+  },
+  {
+    "slug": "status-returned",
+    "file": "status-returned@3x.png",
+    "width": 144,
+    "height": 144,
+    "pixelRatio": 3,
+    "sha256": "a1481ec319388fcd64b60df535a9eeb615d1989212e73182c0e2b9350241e85c"
+  },
+  {
+    "slug": "progress-dot-filled",
+    "file": "progress-dot-filled@3x.png",
+    "width": 48,
+    "height": 48,
+    "pixelRatio": 3,
+    "sha256": "3c7c978d705f2b6d5cc88d44430effcc2f9a61784196302daa47c53af1c28c99"
+  },
+  {
+    "slug": "progress-dot-empty",
+    "file": "progress-dot-empty@3x.png",
+    "width": 48,
+    "height": 48,
+    "pixelRatio": 3,
+    "sha256": "6f33b603554badf5833b0ba4b52d3707077287277e856fe525814a9923de6706"
+  },
+  {
+    "slug": "ticket-goal",
+    "file": "ticket-goal@3x.png",
+    "width": 900,
+    "height": 540,
+    "pixelRatio": 3,
+    "sha256": "5012bd77ad85d3aa44b9e4c57419fb868f7e24258f07b67f831df2de9fd59634"
+  },
+  {
+    "slug": "ticket-goal-empty",
+    "file": "ticket-goal-empty@3x.png",
+    "width": 900,
+    "height": 540,
+    "pixelRatio": 3,
+    "sha256": "4c1d4f82e6d813445fd237b12153315f4d9054f3886cb5f6b6a1906a2101d197"
+  },
+  {
+    "slug": "progress-bar-track",
+    "file": "progress-bar-track@3x.png",
+    "width": 480,
+    "height": 60,
+    "pixelRatio": 3,
+    "sha256": "cdbeba30c694d6b06dd44673ed7c1c94512c577a1c0b41990ffb8802706c2b88"
+  },
+  {
+    "slug": "progress-bar-fill",
+    "file": "progress-bar-fill@3x.png",
+    "width": 480,
+    "height": 60,
+    "pixelRatio": 3,
+    "sha256": "0d1ae548a995058ee79c2b2db0913a03bd0015bce635336d3ec0bb60ba66281b"
+  },
+  {
+    "slug": "week-frame",
+    "file": "week-frame@3x.png",
+    "width": 900,
+    "height": 510,
+    "pixelRatio": 3,
+    "sha256": "f364d426f890e6ea83aa1f5593cd47c8483c32ec3c8aa3be1db939aa95b31cf8"
+  },
+  {
+    "slug": "week-check",
+    "file": "week-check@3x.png",
+    "width": 72,
+    "height": 72,
+    "pixelRatio": 3,
+    "sha256": "457532dfa2e9f95d5aa476715e3690c1a13dcafb417206a3cd4c3967081f2c7f"
+  },
+  {
+    "slug": "week-partial",
+    "file": "week-partial@3x.png",
+    "width": 72,
+    "height": 72,
+    "pixelRatio": 3,
+    "sha256": "985847493accf4ad787b92c4a4f28d73823f90c4cddf5ab5d7316275b3704800"
+  },
+  {
+    "slug": "week-empty",
+    "file": "week-empty@3x.png",
+    "width": 72,
+    "height": 72,
+    "pixelRatio": 3,
+    "sha256": "bad0a4becbf3640bf7efa32e8d5f9bb46d051a1d0d67fd781c03ceda67a77be2"
+  },
+  {
+    "slug": "shelf-display",
+    "file": "shelf-display@3x.png",
+    "width": 1080,
+    "height": 348,
+    "pixelRatio": 3,
+    "sha256": "68d8ab17006116ab0e29b1057e1e819ac587f652ef0c333d054611d7a04878ab"
+  },
+  {
+    "slug": "drawer-front",
+    "file": "drawer-front@3x.png",
+    "width": 1020,
+    "height": 270,
+    "pixelRatio": 3,
+    "sha256": "287ab105cab19c876c0a8632d924efb38d716fbb43c9f739a790e5ce560cbe61"
+  },
+  {
+    "slug": "drawer-front-pressed",
+    "file": "drawer-front-pressed@3x.png",
+    "width": 1020,
+    "height": 270,
+    "pixelRatio": 3,
+    "sha256": "5c024da2a5ee5390cbd717887207ca042e60de4549734ee6f18d484e492b7bd8"
+  },
+  {
+    "slug": "pill-star",
+    "file": "pill-star@3x.png",
+    "width": 456,
+    "height": 156,
+    "pixelRatio": 3,
+    "sha256": "0646343a397d60b38af7b8ad1e84ed4a74b7e104320deddb86a57c41c29b19b2"
+  },
+  {
+    "slug": "pill-star-pressed",
+    "file": "pill-star-pressed@3x.png",
+    "width": 456,
+    "height": 156,
+    "pixelRatio": 3,
+    "sha256": "728812dff213eb62adebfc3557fe09fbbf5ecb61ece693866f8c8b16cd2d5ecd"
+  },
+  {
+    "slug": "pill-parent",
+    "file": "pill-parent@3x.png",
+    "width": 456,
+    "height": 156,
+    "pixelRatio": 3,
+    "sha256": "a1a775e8770ad8d3352364b64351b3b48282f78abeef67a71034a93f6572ece1"
+  },
+  {
+    "slug": "pill-parent-pressed",
+    "file": "pill-parent-pressed@3x.png",
+    "width": 456,
+    "height": 156,
+    "pixelRatio": 3,
+    "sha256": "57c4633a3d44df380b2f255c0a15e1bbee906b49803edb102b0f872a3f9876b8"
+  },
+  {
+    "slug": "header-greeting-underline",
+    "file": "header-greeting-underline@3x.png",
+    "width": 720,
+    "height": 42,
+    "pixelRatio": 3,
+    "sha256": "f3ce1666248c2f666002bdebcc02d7a4cb82de40d27451711c7eb877f742b2f0"
+  },
+  {
+    "slug": "panel-generic",
+    "file": "panel-generic@3x.png",
+    "width": 900,
+    "height": 480,
+    "pixelRatio": 3,
+    "sha256": "5d2ffc2c84d98b44dff0d4c292c39967b7e93bd660bfff3eed23e3d6f2bb5ac1"
+  },
+  {
+    "slug": "parent-card",
+    "file": "parent-card@3x.png",
+    "width": 900,
+    "height": 480,
+    "pixelRatio": 3,
+    "sha256": "b4c535f576b8e6130df21025a15ffed11bd2eee5f11282ba5d4cc60645080ea7"
+  },
+  {
+    "slug": "parent-approval-card",
+    "file": "parent-approval-card@3x.png",
+    "width": 900,
+    "height": 480,
+    "pixelRatio": 3,
+    "sha256": "a1dfb2ed3d56c04cf7c68f5e0b3f311c86e13af7589136eb5d1236a7fad006f3"
+  }
+]
