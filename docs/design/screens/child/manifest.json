@@ -1,0 +1,552 @@
+{
+  "group": "child",
+  "status": "awaiting-design-approval",
+  "applicationCodeChanged": false,
+  "artDependency": "PR #16",
+  "normalScreens": 8,
+  "referenceRenders": 74,
+  "stateSheets": 8,
+  "currentAppEvidence": "current-app-access-error.png",
+  "currentAppComparison": "blocked: demo authentication returns Database error querying schema",
+  "validation": {
+    "tsc": "pass",
+    "expoLint": "pass",
+    "missingImages": 0,
+    "horizontalOverflow": 0,
+    "minButtonDp": 48
+  },
+  "files": [
+    {
+      "file": "README.md",
+      "sha256": "cafbf4cd3ce864c71ec1679de3fa2980c41b3037cf9eb7cf9622c264f1f0d036"
+    },
+    {
+      "file": "calendar-empty-phone.png",
+      "sha256": "06d8a3befdd1dcdf421ee1dcce224963c1fe55bb95efae42cd0939dcd31d389f",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-empty-tablet.png",
+      "sha256": "5bb03b1caf282cf69df57c89b94b43fea0ed3789ca74d0d5dce4a5709b404b76",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "calendar-error-phone.png",
+      "sha256": "5af81dc3d8fe0f4d2989b8f29b150389c17e8ac1a45284e1455ee19282b7e9e5",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-error-tablet.png",
+      "sha256": "aa6ffee2fe3e577d0860bb04eea48a0f6ea492ec38be25b5686d2014f1076a84",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "calendar-loading-phone.png",
+      "sha256": "466e5cfa4486c1f1a46df452ed05750de65650182e67c546125ce302a83d99c5",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-loading-tablet.png",
+      "sha256": "dc5a979f8ad7b8c553b6664df6596a1ffbba4e38f5baec685ef5d500cc3cfac5",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "calendar-phone.png",
+      "sha256": "e65343a39a619fa90372748cfb6733574571d938f4fb2c8356f66d466a287ef0",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-states.png",
+      "sha256": "1d81d828c106793a7858cce5bce08348067b3bc49a00c050b76eae750e8cb85f",
+      "width": 1195,
+      "height": 961
+    },
+    {
+      "file": "calendar-tablet.png",
+      "sha256": "eda1a91d914434aa851cc6be66ffb872794e8950fe6a595ffaecee8ebb536e8e",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "collection-empty-phone.png",
+      "sha256": "99c0a3e883d10a9ebf1ea200e4dba6177bf022c3b468ed9f2076e744f0b90c79",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "collection-empty-tablet.png",
+      "sha256": "392f1e2f0b31e3157578ec12e37af7d7bec83e18d7db8fed098bbced9b6df6c4",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "collection-error-phone.png",
+      "sha256": "c4a4ba69c9e6d22fd6dd702dcbf4050ba07db0e87713c4c3c975c3664f32e457",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "collection-error-tablet.png",
+      "sha256": "1d77cb7ead281babfc267ba58fad2d3ce2067506e64cab82034f9105ecc247d7",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "collection-loading-phone.png",
+      "sha256": "16f100186a375e129ee18d4c93bb035bb4b7eafe9cb9ec1ebe4a9d1bc463301e",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "collection-loading-tablet.png",
+      "sha256": "0eacb2cbc03dc878dfe05974664aa89ce3c4d9fe61456c22d0ab1177fba640b8",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "collection-phone.png",
+      "sha256": "38160128ee8a807da3ea758cc7e8e5cbb7ccaf5cc0dda90f5aac01704caec0a7",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "collection-states.png",
+      "sha256": "bbac84979ada9756cd76c14d8377a3783a3c8069245d0ce98d0deebd6760b7b0",
+      "width": 1195,
+      "height": 961
+    },
+    {
+      "file": "collection-tablet.png",
+      "sha256": "3b8748af396b8b8b467e9ffccf04d83d40ae2599ddd08b6286c4bce4da06902b",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "comparison.html",
+      "sha256": "42838c2c6fff4e440e188a41e70bdd7b6a05247e13b1d56ce3d1a611e8a1d7d8"
+    },
+    {
+      "file": "contact-sheet.html",
+      "sha256": "70cb3c314a56e19e24d26d852919ade4d758d1057b27c1f0850dad66a6b24b92"
+    },
+    {
+      "file": "contact-sheet.png",
+      "sha256": "6984e4b5865e3f3e77da6cfda592e6d77f5306ea9565930170da7e91082a676b",
+      "width": 1000,
+      "height": 1200
+    },
+    {
+      "file": "copy-map.json",
+      "sha256": "80b8a125dc82d98c0ab63ffc8d1c481bf4c1e37fb222c2019a85420716898249"
+    },
+    {
+      "file": "current-app-access-error.png",
+      "sha256": "e9fd09995a50ae39759889a2010f94d10cff0cbaaa121f51c8a928d0b0ce312c",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "goal-empty-phone.png",
+      "sha256": "70845e93a253a04d74e071a59f76acf50d197ea72a7fc24710c31aad0f1b08c3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "goal-empty-tablet.png",
+      "sha256": "5f31c2a847e6aa6dec7e30562f1edede54c56b5c60d3c173792895cb886ee307",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "goal-error-phone.png",
+      "sha256": "0ca0f6787ad1d858eea724f139d78d2286759f8da4cd95d5d8588cde5d932fd0",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "goal-error-tablet.png",
+      "sha256": "34c4b2a2d8b2c0284f8d20aebb318729048bf70df74d6a3e81cfc55639a06c7b",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "goal-loading-phone.png",
+      "sha256": "394183cfbda8d18c526e66ebdf518f61712fb1f74b978ff4563da72cf45e92df",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "goal-loading-tablet.png",
+      "sha256": "43a21309ef9fb260a47d2c7f054ec78b59edcb4342095034b4d64fc4b442ca3c",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "goal-phone.png",
+      "sha256": "1faa7b58406b331d7c0181f2ce3870baa6a55973cb09995b1ac4b4b5981bb79e",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "goal-states.png",
+      "sha256": "ae3ce868ae799035f7490a5ea3ba33f6d5c9b1d15a6250c6d9e89307bc0977c1",
+      "width": 1195,
+      "height": 960
+    },
+    {
+      "file": "goal-tablet.png",
+      "sha256": "611cfebb4a60b401dbbf8f6ded61e354cb9819984342f85a3bd455550c8660a7",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "index.html",
+      "sha256": "14812dd84c10e0934dbe9a18134f46f1a0fe3ffd66e6848a2c2e3c642573f1ad"
+    },
+    {
+      "file": "pin-empty-phone.png",
+      "sha256": "ae922fe570710ff2b53d4dd4963efa05f1c6f0182eed5fab0f39002dbcd4d898",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "pin-empty-tablet.png",
+      "sha256": "eec43f133cbf097ec5907e93ca4339cbf8029c2088d1da912789df3ba2a086ba",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "pin-error-phone.png",
+      "sha256": "103a8099515c065f491111c3875439a119fc68990a10d3adeb433479063acc90",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "pin-error-tablet.png",
+      "sha256": "1ee539d335f4aaa62e17acc0904fa7a3092a4975484656c309474e67dc9ce44a",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "pin-loading-phone.png",
+      "sha256": "02b595bbd5b93163a9a8cb169f7e0dde360c5b1029802522d1dee7c842b0c4ae",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "pin-loading-tablet.png",
+      "sha256": "29d4640b830ad65fa1c97a59ea672f1cdfc72614f3882efaed1ef674b76d5abf",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "pin-phone.png",
+      "sha256": "d3697eb076d8d757723e05c792fe4b91805962639b996c230768d2cb4bf49920",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "pin-states.png",
+      "sha256": "b97d01b45659b114c923cd1b69136f00601ac4604bef7225ac4e2a2b56b1b876",
+      "width": 1195,
+      "height": 960
+    },
+    {
+      "file": "pin-tablet.png",
+      "sha256": "03dea20a5983f624e060ae8ee16ff7566bdc54756ea5a190905f5ee4f5d705d6",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-confirm-phone.png",
+      "sha256": "bb8622483b048051ed08e6b3b2dcc1097edfa25da6c901e717f8af98a5662611",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-confirm-tablet.png",
+      "sha256": "3b044948756732f99beb268e288648577d2e70e7bc7da210767e3bd12061483f",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-empty-phone.png",
+      "sha256": "93c8a45fd4335c812402201646fced135707a60b88452fa338c827f8caf00409",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-empty-tablet.png",
+      "sha256": "5d02625ae6e4f10f2c7662810193ae1275b512c12c318e67eea8b4a4567ee2eb",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-error-phone.png",
+      "sha256": "42d295dddc3c5218b084018d4cac5efbf48620b28d33b3b8257a16d028f8815b",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-error-tablet.png",
+      "sha256": "c43be278d1a22d4b5cd42a357af2b40ffd233733b9f7ebb6f3f6b15d82985359",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-loading-phone.png",
+      "sha256": "1662064193be5008f8e16c8fbc8c307aece7c41c89c2f798fba9639188951eac",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-loading-tablet.png",
+      "sha256": "e8495995d1931f5e1c0ad36326bf60cb842112d4aaf4b5b97082609859c26384",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-open-phone.png",
+      "sha256": "6d8ecfbb6890bb08692afa31dc7d3e8486410901e456123bb9621863d1d1512e",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-open-tablet.png",
+      "sha256": "dcf3bd3b3c0a68038e67e9a0d2c82d8c1ea66d49d443dd5ad904b02070cee6b9",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-phone.png",
+      "sha256": "37db5a33ec0eba564cb96ecd7e6be2c8eb3cb8456fe9c0d544e648c56462760e",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-result-phone.png",
+      "sha256": "0b7cbb65c25d2c9cc332718e6d067d52221412fd661f5a3d2adf558a5506c558",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-result-tablet.png",
+      "sha256": "d88b774926a452bb43eabdb27a0623f832de724ffcf341e593f83ef1c42af0a4",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-states.png",
+      "sha256": "ec4cb7decc7fcbfe9bf2059c1ec38c824d45e66dee285d848fac9dff8d8adeac",
+      "width": 1195,
+      "height": 961
+    },
+    {
+      "file": "prova-exam-tablet.png",
+      "sha256": "5a260aad6c8abee5ddac781f8c9308d24001a4e36ac0db6c551d970153441dd6",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-index-empty-phone.png",
+      "sha256": "acee21c9158f1c1f97bb63b68918d0b28e38d4fd82095df67687d5cb85f86071",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-index-empty-tablet.png",
+      "sha256": "ff0bb0f81713fb27cb0f06ba8f303dd3eb18c1495cd480e8e56f16a57d5a56f9",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-index-error-phone.png",
+      "sha256": "97b5bb244e6667b3636c4821eda063f9c8a66ca1ce9ea0063dc7cfab65fdcd4c",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-index-error-tablet.png",
+      "sha256": "fbb89a205c11c772330221bd6922b0a04199b9858bfd214cc28bd602a436814e",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-index-loading-phone.png",
+      "sha256": "1b7b595f3145f005a87c1d8a6f98a0cc129fd88dea72681340c34ad6f2000f83",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-index-loading-tablet.png",
+      "sha256": "23c79eaedba33b74d0d8119ce2b0707efa9a85945d456ed06cbacca40ea4579c",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-index-phone.png",
+      "sha256": "e320dc69f0cd5e55ede82b2b7fca1eb8e6a22b40627de086688e4e947044aa03",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-index-states.png",
+      "sha256": "098bf614984d7e04841c3322bb12fba3b88c729b8b3682a81ed35c4ad82e9e4e",
+      "width": 1195,
+      "height": 961
+    },
+    {
+      "file": "prova-index-tablet.png",
+      "sha256": "ef8a49f053a44585352751986fde3d94265576a6b3c8c8da166f6cce08ec96c6",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "reference.html",
+      "sha256": "6bfe7d98ed81c4dcf292ca4f0333dc6e4d887c61eb6b00eea16230621390c6bf"
+    },
+    {
+      "file": "room-preview-empty-phone.png",
+      "sha256": "8689b9ff5f0f49564ae3c14a69d0cd944d04e15a454074a201eb53a8634dc706",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "room-preview-empty-tablet.png",
+      "sha256": "dfa704d7c0886fd12fd8bbd8e6baaead534d5b6425d37aaf4205dcf4cb581ea3",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "room-preview-error-phone.png",
+      "sha256": "880175326a37d8104b946aa7a21bf9ef266b95af63ab10a543a4af0e7833fede",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "room-preview-error-tablet.png",
+      "sha256": "ae2e5ddebaa3a047df652e16e55cf74bf171ac65fa1320f67758ce268bf342d6",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "room-preview-loading-phone.png",
+      "sha256": "7dc833119715a36cf2aada547f4a0bed42b40ab1aacb6948720c8b12e91716be",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "room-preview-loading-tablet.png",
+      "sha256": "31e21cad8af822dc7da166386525d54f23b875d44435ece6c7ae7f942d2ae2b7",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "room-preview-pets-phone.png",
+      "sha256": "20d340d8eaafe0cd57158369e0c661b1b513c1f575e69cf8860ce2fa1dca22b6",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "room-preview-pets-tablet.png",
+      "sha256": "0ed62ff433cc9c5be5bc423a22e57f816171c687d6bb88aaf35d1ac43a36dc0c",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "room-preview-phone.png",
+      "sha256": "bc6b58518bce1be131fb68e61a66f6e553bbe89745fcd0d32400ec577cc4d8d1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "room-preview-states.png",
+      "sha256": "2f548759631921c789349be2b3afe520e12f35c3675c51d724f49dfff8558557",
+      "width": 1195,
+      "height": 961
+    },
+    {
+      "file": "room-preview-tablet.png",
+      "sha256": "27f15894a733c0eeb0632c543995e78179d2f2b1c1861f66dc5a0dcf0f260ff9",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "room-preview-themes-phone.png",
+      "sha256": "858616f29d79f4ee1e78622e4e94c2dac286db1b4cd535888ab607417ae903c4",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "room-preview-themes-tablet.png",
+      "sha256": "8f1f56ed1522a2f3b86e6b991f4743bfd48327063aea32c00568f035aa722a8c",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "states.html",
+      "sha256": "5264a3eac11d389e76de33a2c57599208e5dcfa4d83cd0c4cfc3a0dc0ba34bee"
+    },
+    {
+      "file": "week-empty-phone.png",
+      "sha256": "a924d772aa50bcd5597b0aa91361019b54f89db51b1c2e704d74027496b93e65",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "week-empty-tablet.png",
+      "sha256": "30663e5bb9a47bf4615ede48803cb7022fc92eab01472b17164a8b2dc99732b7",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "week-error-phone.png",
+      "sha256": "083fa6624a36b31b5c73ecb3e8e3c5fac78770eef4f3180807ae7e5e43048fb6",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "week-error-tablet.png",
+      "sha256": "a354d958d4e69bd8b946e88b27993b56f4e105a96ba2ec4e6e7bc92b19875039",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "week-loading-phone.png",
+      "sha256": "d5c83e326bb1d9e59c3955a9dfd3a4baa375f9e5a8b79092a09126d8667c0525",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "week-loading-tablet.png",
+      "sha256": "b0b27aea318648668acd18a8979cf8904b76d426158bae176cb425b1735a147d",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "week-phone.png",
+      "sha256": "473043554ec85c02fed70a4c8d78368cb0d9c22c56aa63104697b04f5a0884d3",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "week-states.png",
+      "sha256": "c3f82d6e17df76840ffb01a5fc5374ab1980d6547d9b42cdbe7d15f4bfaeff44",
+      "width": 1195,
+      "height": 961
+    },
+    {
+      "file": "week-tablet.png",
+      "sha256": "3df1ec2e9be06b4539a917f220166f80e7fc48bb8c780215ccafc6ad07d5114a",
+      "width": 1280,
+      "height": 800
+    }
+  ]
+}
