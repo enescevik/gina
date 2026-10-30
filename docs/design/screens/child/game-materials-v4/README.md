@@ -1,3 +1,5 @@
+> **REDDEDİLDİ:** Ürün sahibi bu görselleri beğenmedi. Bu 3D sanat üretim hedefi değildir. [Eleştiri ve yeni görsel hedef](../art-direction-v5/REVIEW.md). Yeni hedef henüz yeniden modellenmiş GLB değildir.
+
 # Gina · Referansa göre 3D model ve atmosfer paketi · v4
 
 **Durum: görsel inceleme için ilk 3D adaylar.** Bu paket BRIEF 14 tasarım onayı veya mobil giydirme teslimi değildir. Tablet v1/v2 reddedilmiş olarak kalır. Oda fikri korunur; 3D sanat eşleşmesi ayrıca değerlendirilir.

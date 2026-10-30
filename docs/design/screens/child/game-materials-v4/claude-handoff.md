@@ -1,3 +1,5 @@
+> **Bu sanat yönü geçersiz:** V4 ürün sahibi tarafından reddedildi. [Güncel Claude notunu oku](../art-direction-v5/claude-handoff.md). Aşağıdaki eski teslim açıklaması yalnız arşivdir.
+
 # Claude'a verilecek güncel ek
 
 Gina'da çocuk odası yönü gerçek 3D nesneler ve kontrollü kamera olarak inceleniyor. Son inceleme paketi `docs/design/screens/child/game-materials-v4/`. Önce `README.md`, `manifest.json`, `qa-report.json`, `comparison.html` ve `viewer.html` içeriğini incele. V1/V2 tablet maketleri reddedildi; onları uygulama hedefi olarak kullanma. Bu v4 paketinin final sanat onayı da henüz yok; bu tur mobil kodu değiştirme.

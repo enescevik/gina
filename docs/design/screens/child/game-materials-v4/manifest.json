@@ -1,5 +1,5 @@
 {
-  "status": "reference-driven-3d-review-candidates",
+  "status": "rejected-by-product-owner",
   "supersedes": {
     "reviewDirection": "../game-direction-v3/viewer.html",
     "productionAssets": null
@@ -78,8 +78,8 @@
   "files": [
     {
       "file": "README.md",
-      "bytes": 8026,
-      "sha256": "1e0b56cffe70057fcdb522036658efbb81ed12d80331133d205c58639dc165ae"
+      "bytes": 8246,
+      "sha256": "5d66fae51988b179a43736617afb6d21927437628c71b22e93b64f4b22db5aa8"
     },
     {
       "file": "atmosphere.js",
@@ -103,8 +103,8 @@
     },
     {
       "file": "claude-handoff.md",
-      "bytes": 2677,
-      "sha256": "3ead7ac8d9cc300201a241e533ba4f16253565f12fc72c2c5a38560f21e43686"
+      "bytes": 2878,
+      "sha256": "59869b81e3916a197c91f8fcdddce6af3a12808f8b2ec6da9785f38bb1b937e8"
     },
     {
       "file": "comparison.html",
@@ -158,8 +158,8 @@
     },
     {
       "file": "materials/manifest.json",
-      "bytes": 2191,
-      "sha256": "9c01b269f6026040598a4df126dcf8ca60ea61684d69c6fe849f05dec4ea01e6"
+      "bytes": 2192,
+      "sha256": "caeca615a728efe9ae675965c1cd32637f098182732f16c7048c60584d8eb414"
     },
     {
       "file": "materials/oak-basecolor.png",
@@ -283,8 +283,8 @@
     },
     {
       "file": "models/manifest.json",
-      "bytes": 14068,
-      "sha256": "77f434ee40c3dd67439c253d4223c85cd9e49590141d2906e38590b94c32781e"
+      "bytes": 14069,
+      "sha256": "8354bbdeffc9b48c6855e155a996f06cd61fd659a9fa55192a93e9ca14de0e93"
     },
     {
       "file": "models/pet-cat.glb",
@@ -308,8 +308,8 @@
     },
     {
       "file": "package_review.py",
-      "bytes": 9042,
-      "sha256": "61f62a0587f2a3f5bc1928db1ed5faff9ea85cfbe7bc30d1c7dfcbf2b359ad39"
+      "bytes": 9080,
+      "sha256": "7eed954393c6808757c920b719f226ce98f51ab8989d96a66b031596ee398874"
     },
     {
       "file": "previews/character-boy.png",
@@ -548,8 +548,8 @@
     },
     {
       "file": "qa-report.json",
-      "bytes": 19958,
-      "sha256": "5c09594e630fd759083dd5863e9357bba823e73931c5d9e4c350dd40a98fe192"
+      "bytes": 19976,
+      "sha256": "65da4455edc045d4b51a10022ba9950dc6351d65e6b07becc9fa11d5183a74bd"
     },
     {
       "file": "reference-room-day.png",
@@ -563,8 +563,8 @@
     },
     {
       "file": "viewer.html",
-      "bytes": 4944,
-      "sha256": "a5009f6665173c7c85eb60eb7843c969dc4dfcb93ad81c2cd8782fc5468740e6"
+      "bytes": 4967,
+      "sha256": "24fe66f26e4927cb1171e607e4302057d16db509b45f5d05c098717005bd4318"
     },
     {
       "file": "viewer.js",
@@ -581,5 +581,10 @@
       "bytes": 942832,
       "sha256": "bad1c0b087c47020ca969f29648e2423752b6d415b3523e85e5a53bf168ea43d"
     }
-  ]
+  ],
+  "rejection": {
+    "reason": "visual quality and reference identity",
+    "newArtTarget": "../art-direction-v5/index.html",
+    "newArtTargetIsGLB": false
+  }
 }

@@ -848,7 +848,7 @@
     "typeScript": "pnpm exec tsc --noEmit: passed",
     "lint": "pnpm exec expo lint: passed",
     "nativeDevices": "not tested",
-    "artApproval": "pending",
+    "artApproval": "rejected by product owner",
     "audio": "not delivered",
     "monkeyEyes": "occlusion fixed and screenshot reviewed"
   },

@@ -1,4 +1,4 @@
-> **Güncel durum:** Tablet v1/v2 reddedildi; uygulanmamalı. Yeni inceleme: [v4 — referansa göre 20 model, malzeme ve 24 atmosfer birleşimi](game-materials-v4/viewer.html). [Teslim ve açık işler](game-materials-v4/README.md) · [Referans karşılaştırması](game-materials-v4/comparison.html). Final sanat ve mobil giydirme onayı bekleniyor. V3 mekân çalışması arşivdir.
+> **Güncel durum:** Tablet v1/v2 ve V4 3D görselleri reddedildi. [Yeni sanat hedefi: v5](art-direction-v5/index.html) · [Eleştiri ve düzeltmeler](art-direction-v5/REVIEW.md). V5 üç raster referans görselidir; henüz çalışan 3D model değildir. Tasarım onayı ve mobil giydirme bekliyor.
 
 # Tablet v2 revizyonu — 30 Ekim 2026
 
