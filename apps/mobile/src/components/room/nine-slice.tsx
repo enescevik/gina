@@ -109,7 +109,7 @@ export function SkinPressable({
   ...rest
 }: SkinPressableProps) {
   return (
-    <Pressable accessibilityRole="button" disabled={disabled} style={style} {...rest}>
+    <Pressable accessibilityRole="button" disabled={disabled} accessibilityState={{ disabled: !!disabled }} style={[{ minHeight: 48 }, style]} {...rest}>
       {({ pressed }) => (
         <NineSlice
           skin={disabled && disabledSkin ? disabledSkin : pressed && pressedSkin ? pressedSkin : skin}
@@ -129,14 +129,14 @@ export function SkinPressable({
  * Hedef ilerlemesi: track kaplaması + dolgu kapsülü native clip ile gerçek yüzdeye kesilir.
  * %0'da dolgu hiç çizilmez; düşük yüzdede minimum kapsül çizilip ilerleme abartılmaz.
  */
-export function SkinProgress({ value, scale = 1, style }: { value: number; scale?: number; style?: StyleProp<ViewStyle> }) {
+export function SkinProgress({ value, scale = 1, style, track = "progress-bar-track", fill = "progress-bar-fill" }: { value: number; scale?: number; style?: StyleProp<ViewStyle>; track?: SkinSlug; fill?: SkinSlug }) {
   const clamped = Math.max(0, Math.min(1, Number.isFinite(value) ? value : 0));
   return (
     <View style={style} accessible={false} importantForAccessibility="no-hide-descendants">
-      <NineSlice skin="progress-bar-track" scale={scale} />
+      <NineSlice skin={track} scale={scale} />
       {clamped > 0 ? (
         <View style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: pct(clamped), overflow: "hidden" }}>
-          <NineSlice skin="progress-bar-fill" scale={scale} style={{ position: "absolute", left: 0, top: 0, width: pct(1 / clamped) }} />
+          <NineSlice skin={fill} scale={scale} style={{ position: "absolute", left: 0, top: 0, width: pct(1 / clamped) }} />
         </View>
       ) : null}
     </View>

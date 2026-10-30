@@ -167,14 +167,14 @@ export default function ExamCreateScreen() {
             const available = availableByTopic.get(row.topic.toLocaleLowerCase("tr")) ?? 0;
             return (
               <View key={`${row.topic}-${i}`} className="flex-row items-center gap-2">
-                <Text className="flex-1 text-sm text-ink">{row.topic}</Text>
+                <Text className="font-body flex-1 text-sm text-ink">{row.topic}</Text>
                 <TextInput
                   keyboardType="number-pad"
                   value={String(row.count)}
                   onChangeText={(v) => setRows((rs) => rs.map((r, j) => (j === i ? { ...r, count: Math.max(0, Number(v) || 0) } : r)))}
                   className="w-12 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink"
                 />
-                <Text className={`w-20 text-xs ${available >= row.count ? "text-gray-600" : "text-danger"}`}>
+                <Text className={`font-body w-20 text-xs ${available >= row.count ? "text-gray-600" : "text-danger"}`}>
                   {t("prova.available", { count: available })}
                 </Text>
               </View>
@@ -183,11 +183,11 @@ export default function ExamCreateScreen() {
         </View>
       ) : null}
 
-      <Text className="text-sm text-gray-600">{t("prova.selectedCount", { count: selectedIds.length })}</Text>
+      <Text className="font-body text-sm text-gray-600">{t("prova.selectedCount", { count: selectedIds.length })}</Text>
       <Field label={t("calendar.title")} value={title} onChangeText={setTitle} />
       <View className="flex-row items-center gap-3">
         <Switch value={timed} onValueChange={setTimed} />
-        <Text className="text-base text-ink dark:text-night-text">{t("prova.timed")}</Text>
+        <Text className="font-body text-base text-ink dark:text-night-text">{t("prova.timed")}</Text>
         {timed ? (
           <TextInput
             keyboardType="number-pad"
@@ -196,7 +196,7 @@ export default function ExamCreateScreen() {
             className="w-16 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink"
           />
         ) : null}
-        {timed ? <Text className="text-ink dark:text-night-text">{t("prova.min")}</Text> : null}
+        {timed ? <Text className="font-body text-ink dark:text-night-text">{t("prova.min")}</Text> : null}
       </View>
 
       <ErrorText error={(create.error && provaErrorMessage(create.error)) || (create.error ?? children.error ?? blueprints.error ?? bank.error)} />

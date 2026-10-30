@@ -129,7 +129,7 @@ export default function ParentShareScreen() {
 
   return (
     <Screen title={t("share.title")}>
-      <Text className="text-sm text-gray-500">{t("share.intro")}</Text>
+      <Text className="font-body text-sm text-gray-500">{t("share.intro")}</Text>
 
       <View className="flex-row flex-wrap gap-2">
         {children.data?.map((child) => (
@@ -142,19 +142,19 @@ export default function ParentShareScreen() {
             }}
             className={`rounded-full px-4 py-2 ${child.id === selectedChild ? "bg-teal" : "bg-mist"}`}
           >
-            <Text className={child.id === selectedChild ? "font-semibold text-white" : "text-ink"}>{child.name}</Text>
+            <Text className={child.id === selectedChild ? "font-body-bold text-white" : "text-ink"}>{child.name}</Text>
           </Pressable>
         ))}
       </View>
 
       {createdLink ? (
         <View className="gap-3 rounded-parent border border-teal bg-teal-light p-4">
-          <Text className="text-lg font-semibold text-ink">{t("share.linkReady")}</Text>
-          <Text className="text-sm text-ink">{t("share.linkOnce")}</Text>
-          <Text selectable className="rounded-parent bg-white p-3 font-mono text-sm text-ink">
+          <Text className="text-lg font-body-bold text-ink">{t("share.linkReady")}</Text>
+          <Text className="font-body text-sm text-ink">{t("share.linkOnce")}</Text>
+          <Text selectable className="font-body rounded-parent bg-white p-3 font-mono text-sm text-ink">
             {createdLink}
           </Text>
-          {shareBaseUrl() ? null : <Text className="text-xs text-danger">{t("share.noWebUrl")}</Text>}
+          {shareBaseUrl() ? null : <Text className="font-body text-xs text-danger">{t("share.noWebUrl")}</Text>}
           <View className="flex-row gap-2">
             <View className="flex-1">
               <Button title={copied ? t("share.copied") : t("share.copy")} onPress={() => void copyLink()} />
@@ -167,7 +167,7 @@ export default function ParentShareScreen() {
         </View>
       ) : null}
 
-      {shares.data?.length === 0 ? <Text className="text-gray-500">{t("share.none")}</Text> : null}
+      {shares.data?.length === 0 ? <Text className="font-body text-gray-500">{t("share.none")}</Text> : null}
       {shares.data?.map((share) => {
         const expired = new Date(share.expires_at).getTime() <= now;
         const status = share.revoked_at ? t("share.status.revoked") : expired ? t("share.status.expired") : t("share.status.active");
@@ -175,11 +175,11 @@ export default function ParentShareScreen() {
         return (
           <View key={share.id} className={`gap-2 rounded-parent border border-mist p-3 ${active ? "" : "opacity-60"}`}>
             <View className="flex-row items-center gap-2">
-              <Text className="flex-1 text-base font-semibold text-ink dark:text-night-text">{share.label}</Text>
-              <Text className={`text-xs font-semibold ${active ? "text-teal-dark" : "text-gray-500"}`}>{status}</Text>
+              <Text className="flex-1 text-base font-body-bold text-ink dark:text-night-text">{share.label}</Text>
+              <Text className={`text-xs font-body-bold ${active ? "text-teal-dark" : "text-gray-500"}`}>{status}</Text>
             </View>
-            <Text className="text-xs text-gray-500">{share.scopes.map((s) => t(`share.scope.${s}`)).join(" · ")}</Text>
-            <Text className="text-xs text-gray-500">
+            <Text className="font-body text-xs text-gray-500">{share.scopes.map((s) => t(`share.scope.${s}`)).join(" · ")}</Text>
+            <Text className="font-body text-xs text-gray-500">
               {t("share.expiresOn", { date: dateFormat.format(new Date(share.expires_at)) })} · {t("share.views", { count: share.view_count })}
               {share.last_viewed_at ? ` · ${t("share.lastViewed", { date: dateFormat.format(new Date(share.last_viewed_at)) })}` : ""}
             </Text>
@@ -194,13 +194,13 @@ export default function ParentShareScreen() {
           </View>
         );
       })}
-      {revokeShare.error ? <Text className="text-sm text-danger">{errorMessage(t, revokeShare.error)}</Text> : null}
+      {revokeShare.error ? <Text className="font-body text-sm text-danger">{errorMessage(t, revokeShare.error)}</Text> : null}
 
       {selectedChild ? (
         <View className="gap-3 rounded-parent bg-teal-light p-4">
-          <Text className="text-lg font-semibold text-ink">{t("share.new")}</Text>
+          <Text className="text-lg font-body-bold text-ink">{t("share.new")}</Text>
           <Field label={t("share.label")} value={label} onChangeText={setLabel} placeholder={t("share.labelPlaceholder")} maxLength={80} />
-          <Text className="text-sm font-medium text-ink">{t("share.scopes")}</Text>
+          <Text className="text-sm font-body text-ink">{t("share.scopes")}</Text>
           <View className="flex-row flex-wrap gap-2">
             {SCOPES.map((scope) => (
               <Pressable
@@ -210,12 +210,12 @@ export default function ParentShareScreen() {
                 onPress={() => toggleScope(scope)}
                 className={`rounded-full px-3 py-2 ${scopes.includes(scope) ? "bg-teal" : "bg-white"}`}
               >
-                <Text className={scopes.includes(scope) ? "font-semibold text-white" : "text-ink"}>{t(`share.scope.${scope}`)}</Text>
+                <Text className={scopes.includes(scope) ? "font-body-bold text-white" : "text-ink"}>{t(`share.scope.${scope}`)}</Text>
               </Pressable>
             ))}
           </View>
-          <Text className="text-xs text-gray-500">{t("share.neverShared")}</Text>
-          <Text className="text-sm font-medium text-ink">{t("share.expiry")}</Text>
+          <Text className="font-body text-xs text-gray-500">{t("share.neverShared")}</Text>
+          <Text className="text-sm font-body text-ink">{t("share.expiry")}</Text>
           <View className="flex-row flex-wrap gap-2">
             {EXPIRY_DAYS.map((option) => (
               <Pressable
@@ -224,11 +224,11 @@ export default function ParentShareScreen() {
                 onPress={() => setDays(option)}
                 className={`rounded-full px-3 py-2 ${days === option ? "bg-teal" : "bg-white"}`}
               >
-                <Text className={days === option ? "font-semibold text-white" : "text-ink"}>{t("share.days", { count: option })}</Text>
+                <Text className={days === option ? "font-body-bold text-white" : "text-ink"}>{t("share.days", { count: option })}</Text>
               </Pressable>
             ))}
           </View>
-          {createShare.error ? <Text className="text-sm text-danger">{errorMessage(t, createShare.error)}</Text> : null}
+          {createShare.error ? <Text className="font-body text-sm text-danger">{errorMessage(t, createShare.error)}</Text> : null}
           <Button
             title={t("share.create")}
             loading={createShare.isPending}
@@ -237,7 +237,7 @@ export default function ParentShareScreen() {
           />
         </View>
       ) : (
-        <Text className="text-gray-500">{t("tasks.addChildFirst")}</Text>
+        <Text className="font-body text-gray-500">{t("tasks.addChildFirst")}</Text>
       )}
 
       <ErrorText error={children.error ?? shares.error} />

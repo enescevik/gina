@@ -88,7 +88,7 @@ export default function ProvaProgressScreen() {
 
   return (
     <Screen title={t("prova.progress.title")}>
-      <Text className="text-base text-gray-600">{t("prova.progress.intro")}</Text>
+      <Text className="font-body text-base text-gray-600">{t("prova.progress.intro")}</Text>
       <View className="flex-row flex-wrap gap-2">
         {children.data?.map((c) => (
           <Pressable key={c.id} accessibilityRole="button" onPress={() => setChildId(c.id)} className={chip(activeChildId === c.id)}>
@@ -99,7 +99,7 @@ export default function ProvaProgressScreen() {
 
       {mastery.data && mastery.data.length === 0 ? (
         <View className="gap-2 rounded-parent bg-white p-4 dark:bg-night-surface">
-          <Text className="text-gray-500">{t("prova.progress.empty")}</Text>
+          <Text className="font-body text-gray-500">{t("prova.progress.empty")}</Text>
           <Button variant="secondary" title={t("prova.level.title")} onPress={() => router.push("/parent/prova/level")} />
         </View>
       ) : null}
@@ -107,9 +107,9 @@ export default function ProvaProgressScreen() {
       {weak.length > 0 ? (
         <View className="gap-2 rounded-parent bg-coral-light p-4">
           <Text className="font-display text-lg text-ink">{t("prova.progress.weakTitle")}</Text>
-          <Text className="text-sm text-gray-600">{t("prova.progress.weakHint")}</Text>
+          <Text className="font-body text-sm text-gray-600">{t("prova.progress.weakHint")}</Text>
           {weak.map((r) => (
-            <Text key={`${r.subject}-${r.topic}`} className="text-base text-ink">
+            <Text key={`${r.subject}-${r.topic}`} className="font-body text-base text-ink">
               • {r.subject} — {r.topic} ({t("prova.progress.scoreShort", { score: r.score ?? 0 })})
             </Text>
           ))}
@@ -120,18 +120,18 @@ export default function ProvaProgressScreen() {
         <View key={subject} className="gap-3 rounded-parent bg-white p-4 dark:bg-night-surface">
           <View className="flex-row items-center justify-between">
             <Text className="font-display text-xl text-ink dark:text-night-text">{subject}</Text>
-            {avg !== null ? <Text className="text-sm text-gray-500">{t("prova.progress.average", { score: avg })}</Text> : null}
+            {avg !== null ? <Text className="font-body text-sm text-gray-500">{t("prova.progress.average", { score: avg })}</Text> : null}
           </View>
           {rows.map((r) => (
             <View key={r.topic} className="gap-1">
               <View className="flex-row items-baseline justify-between gap-2">
-                <Text className="flex-1 text-base text-ink dark:text-night-text">{r.topic}</Text>
+                <Text className="font-body flex-1 text-base text-ink dark:text-night-text">{r.topic}</Text>
                 <Text className="font-body-bold text-sm text-ink dark:text-night-text">{r.score !== null ? `${r.score}` : "—"}</Text>
               </View>
               <View className="h-2 overflow-hidden rounded-full bg-mist">
                 {r.score !== null ? <View className={`h-2 rounded-full ${barColor(r.score)}`} style={{ width: `${Math.max(2, r.score)}%` }} /> : null}
               </View>
-              <Text className="text-xs text-gray-500">
+              <Text className="font-body text-xs text-gray-500">
                 {t("prova.progress.correctOf", { correct: Number(r.correct).toLocaleString(), count: r.total })}
                 {r.pending > 0 ? ` · ${t("prova.progress.pending", { count: r.pending })}` : ""}
                 {r.level_total > 0 ? ` · ${t("prova.progress.fromLevel")}` : ""}
@@ -141,7 +141,7 @@ export default function ProvaProgressScreen() {
         </View>
       ))}
 
-      <Text className="text-xs text-gray-500">{t("prova.progress.scoreNote")}</Text>
+      <Text className="font-body text-xs text-gray-500">{t("prova.progress.scoreNote")}</Text>
       <ErrorText error={children.error ?? mastery.error} />
       <Button variant="ghost" title={t("prova.backToList")} onPress={() => router.back()} />
     </Screen>

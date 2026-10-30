@@ -27,7 +27,7 @@ function ChildRow({ id, name, grade, avatar }: { id: string; name: string; grade
     <View className="gap-1">
       <View className="flex-row items-center gap-2">
         <Avatar slug={avatar} size={36} />
-        <Text className="flex-1 text-base text-ink dark:text-night-text">
+        <Text className="font-body flex-1 text-base text-ink dark:text-night-text">
           {name}
           {grade ? ` (${t("parent.gradeShort", { grade })})` : ""}
         </Text>
@@ -62,7 +62,7 @@ function ParentPinRow() {
   return (
     <View className="gap-1">
       <View className="flex-row items-center gap-2">
-        <Text className="flex-1 text-sm text-ink dark:text-night-text">{t("parent.parentPin")}</Text>
+        <Text className="font-body flex-1 text-sm text-ink dark:text-night-text">{t("parent.parentPin")}</Text>
         <TextInput
           keyboardType="number-pad"
           secureTextEntry
@@ -151,13 +151,13 @@ export default function ParentMenuScreen() {
   return (
     <Screen title={family.data?.name ?? t("parent.menu")}>
       <View className="rounded-parent bg-teal-light p-4">
-        <Text className="text-sm text-ink">{t("parent.inviteCode")}</Text>
-        <Text className="text-2xl font-bold tracking-widest text-teal-dark">{family.data?.invite_code ?? "…"}</Text>
-        <Text className="mt-1 text-xs text-gray-700">{t("parent.inviteHelp")}</Text>
+        <Text className="font-body text-sm text-ink">{t("parent.inviteCode")}</Text>
+        <Text className="text-2xl font-body-bold tracking-widest text-teal-dark">{family.data?.invite_code ?? "…"}</Text>
+        <Text className="font-body mt-1 text-xs text-gray-700">{t("parent.inviteHelp")}</Text>
       </View>
 
       <View className="gap-2 rounded-parent border border-mist p-4">
-        <Text className="text-lg font-semibold text-ink dark:text-night-text">{t("parent.children")}</Text>
+        <Text className="text-lg font-body-bold text-ink dark:text-night-text">{t("parent.children")}</Text>
         {children.data?.map((child) => (
           <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} avatar={child.avatar} />
         ))}
@@ -180,10 +180,10 @@ export default function ParentMenuScreen() {
       </View>
 
       <View className="gap-2 rounded-parent border border-mist p-4">
-        <Text className="text-lg font-semibold text-ink dark:text-night-text">{t("parent.pairDevice")}</Text>
+        <Text className="text-lg font-body-bold text-ink dark:text-night-text">{t("parent.pairDevice")}</Text>
         {devices.data?.map((device) => (
           <View key={device.id} className="flex-row items-center gap-2">
-            <Text className="flex-1 text-base text-ink dark:text-night-text">• {device.name}</Text>
+            <Text className="font-body flex-1 text-base text-ink dark:text-night-text">• {device.name}</Text>
             <Button variant="ghost" title={t("parent.removeDevice")} onPress={() => revokeDevice.mutate(device.id)} />
           </View>
         ))}

@@ -53,7 +53,7 @@ export default function ParentProvaScreen() {
 
   return (
     <Screen title={t("prova.title")}>
-      <Text className="text-base text-gray-600">{t("prova.subtitle")}</Text>
+      <Text className="font-body text-base text-gray-600">{t("prova.subtitle")}</Text>
       <View className="flex-row gap-2">
         <View className="flex-1">
           <Button title={t("prova.newExam")} onPress={() => router.push("/parent/prova/exam")} />
@@ -80,9 +80,9 @@ export default function ParentProvaScreen() {
       <View className="gap-2 rounded-parent bg-white p-4 dark:bg-night-surface">
         <View className="flex-row items-center justify-between">
           <Text className="font-display text-xl text-ink dark:text-night-text">{t("prova.exams")}</Text>
-          <Text className="text-sm text-gray-500">{t("prova.bankCount", { count: bankCount.data ?? 0 })}</Text>
+          <Text className="font-body text-sm text-gray-500">{t("prova.bankCount", { count: bankCount.data ?? 0 })}</Text>
         </View>
-        {exams.data?.length === 0 ? <Text className="text-gray-500">{t("prova.noExams")}</Text> : null}
+        {exams.data?.length === 0 ? <Text className="font-body text-gray-500">{t("prova.noExams")}</Text> : null}
         {exams.data?.map((exam) => {
           const attempt = exam.exam_attempts?.[0];
           const finished = attempt?.status === "submitted" || attempt?.status === "graded";
@@ -98,11 +98,11 @@ export default function ParentProvaScreen() {
                 {exam.kind === "level_test" ? `🎯 ${t("prova.level.badge")} · ` : ""}
                 {exam.title}
               </Text>
-              <Text className="text-sm text-gray-600">
+              <Text className="font-body text-sm text-gray-600">
                 {exam.children?.name} · {t("prova.questionCount", { count: exam.question_ids.length })}
                 {exam.timed ? ` · ${exam.duration_minutes} ${t("prova.min")}` : ` · ${t("prova.untimed")}`}
               </Text>
-              <Text className="text-sm text-teal-dark">
+              <Text className="font-body text-sm text-teal-dark">
                 {finished
                   ? t("prova.resultMc", { correct: attempt.mc_correct ?? 0, total: attempt.mc_total ?? 0 })
                   : attempt?.status === "in_progress"
@@ -119,14 +119,14 @@ export default function ParentProvaScreen() {
         <View className="flex-row items-center justify-between">
           <Text className="font-display text-xl text-ink dark:text-night-text">{t("prova.blueprints")}</Text>
           <Pressable accessibilityRole="button" onPress={() => router.push("/parent/prova/blueprint")}>
-            <Text className="font-semibold text-teal-dark">+ {t("prova.newBlueprint")}</Text>
+            <Text className="font-body-bold text-teal-dark">+ {t("prova.newBlueprint")}</Text>
           </Pressable>
         </View>
-        {blueprints.data?.length === 0 ? <Text className="text-gray-500">{t("prova.noBlueprints")}</Text> : null}
+        {blueprints.data?.length === 0 ? <Text className="font-body text-gray-500">{t("prova.noBlueprints")}</Text> : null}
         {blueprints.data?.map((bp) => (
           <View key={bp.id} className="flex-row items-center gap-3">
             <SubjectIcon subject={bp.subject} size={48} variant="illustrated" />
-            <Text className="flex-1 text-base text-ink dark:text-night-text">
+            <Text className="font-body flex-1 text-base text-ink dark:text-night-text">
               {bp.subject} {bp.grade}. {t("prova.gradeWord")} — {bp.name} ({Array.isArray(bp.rows) ? bp.rows.length : 0} {t("prova.topicWord")})
             </Text>
           </View>

@@ -162,7 +162,7 @@ export default function ProvaBookletScreen() {
 
   return (
     <Screen title={t("prova.booklet.title")}>
-      <Text className="text-base text-gray-600">{t("prova.booklet.intro")}</Text>
+      <Text className="font-body text-base text-gray-600">{t("prova.booklet.intro")}</Text>
 
       <View className="flex-row gap-2">
         {(["library", "exam"] as const).map((s) => (
@@ -220,7 +220,7 @@ export default function ProvaBookletScreen() {
         </>
       ) : (
         <View className="gap-2">
-          {exams.data?.length === 0 ? <Text className="text-gray-500">{t("prova.noExams")}</Text> : null}
+          {exams.data?.length === 0 ? <Text className="font-body text-gray-500">{t("prova.noExams")}</Text> : null}
           {exams.data?.map((exam) => (
             <Pressable
               key={exam.id}
@@ -229,7 +229,7 @@ export default function ProvaBookletScreen() {
               className={`gap-1 rounded-parent border p-3 ${examId === exam.id ? "border-teal bg-teal-light" : "border-mist"}`}
             >
               <Text className="font-body-bold text-base text-ink dark:text-night-text">{exam.title}</Text>
-              <Text className="text-sm text-gray-600">
+              <Text className="font-body text-sm text-gray-600">
                 {exam.children?.name} · {t("prova.questionCount", { count: exam.question_ids.length })}
               </Text>
             </Pressable>
@@ -240,10 +240,10 @@ export default function ProvaBookletScreen() {
       <Field label={t("prova.booklet.titleField")} value={title} onChangeText={setTitle} placeholder={defaultTitle} />
       <View className="flex-row items-center gap-3">
         <Switch value={includeSolutions} onValueChange={setIncludeSolutions} />
-        <Text className="flex-1 text-base text-ink dark:text-night-text">{t("prova.booklet.includeSolutions")}</Text>
+        <Text className="font-body flex-1 text-base text-ink dark:text-night-text">{t("prova.booklet.includeSolutions")}</Text>
       </View>
 
-      <Text className="text-sm text-gray-600">{t("prova.selectedCount", { count: questions.length })}</Text>
+      <Text className="font-body text-sm text-gray-600">{t("prova.selectedCount", { count: questions.length })}</Text>
       <ErrorText error={generate.error ?? subjects.error ?? libraryQuestions.error ?? exams.error ?? examQuestions.error} />
       <Button title={t("prova.booklet.generate")} loading={generate.isPending} disabled={questions.length === 0} onPress={() => generate.mutate()} />
       <Button variant="ghost" title={t("prova.backToList")} onPress={() => router.back()} />

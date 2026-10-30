@@ -1,156 +1,68 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, ScrollView, Text, View, useWindowDimensions } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 
-import { TaskIcon } from "@/components/task-icon";
-import { WIDE_LAYOUT_MIN_DP, ZONES } from "@/components/room/layout";
-import { RoomScene, type CharacterKey } from "@/components/room/scene";
-import { Screen } from "@/components/ui/screen";
+import { ChildScreen, V5_CHARACTERS, V5_PETS, childStyles } from "@/components/room/child-screen";
+import { useActiveChild } from "@/lib/active-child";
+import { useChildRoomPrefs } from "@/lib/use-child-room-prefs";
+import { supabase } from "@/lib/supabase";
+import { Button } from "@/components/ui/button";
+import { ErrorText } from "@/components/ui/screen";
+import type { CharacterKey, PetKey } from "@/components/room/scene";
 
-// Sahte veri: prototip yalnız düzeni gösterir (docs/design/room-v2, Sıra 1); DB'ye bağlanmaz.
-const MOCK_TASKS = [
-  { id: "1", icon: "make-bed", title: "Yatağını topla", status: "todo" as const },
-  { id: "2", icon: "brush-teeth", title: "Dişlerini fırçala", status: "done" as const },
-  { id: "3", icon: "read-book", title: "Kitap oku", status: "approved" as const },
-  { id: "4", icon: "pack-school-bag", title: "Okul çantanı hazırla", status: "todo" as const },
-];
-const MOCK = { name: "Deniz", stars: 14, goalTitle: "Sinema bileti", goalRemaining: 6, weekDone: 9, weekTotal: 16 };
-
-const STATUS_EMOJI = { todo: "⬜️", done: "⏳", approved: "✅" } as const;
-
-function TaskRows({ compact }: { compact?: boolean }) {
-  const { t } = useTranslation();
-  return (
-    <>
-      {MOCK_TASKS.map((task) => (
-        <Pressable
-          key={task.id}
-          accessibilityRole="button"
-          accessibilityLabel={`${task.title}: ${task.status === "todo" ? t("room.tapWhenDone") : task.status === "done" ? t("child.waitingApproval") : t("child.approved")}`}
-          className="min-h-12 flex-row items-center gap-2 rounded-parent bg-white/90 px-2 py-1"
-          style={{ minHeight: 48 }}
-        >
-          <TaskIcon slug={task.icon} size={compact ? 24 : 30} />
-          <Text numberOfLines={2} className={`flex-1 font-semibold text-ink ${compact ? "text-xs" : "text-sm"}`}>
-            {task.title}
-          </Text>
-          <Text className="text-base">{STATUS_EMOJI[task.status]}</Text>
-        </Pressable>
-      ))}
-    </>
-  );
-}
-
-/** Oyun odası ana ekran prototipi (geniş düzen: tam oda; dar düzen: aynı mobilya dili dikey akışta). */
+/** Preview before saving. Character and pet have independent server-side preferences. */
 export default function RoomPreviewScreen() {
   const { t } = useTranslation();
-  const { width, fontScale } = useWindowDimensions();
-  const [character, setCharacter] = useState<CharacterKey>("unspecified");
-  const wide = width >= WIDE_LAYOUT_MIN_DP && fontScale <= 1.2;
-
-  const characterPicker = (
-    <View className="flex-row gap-2">
-      {(["unspecified", "girl", "boy"] as CharacterKey[]).map((key) => (
-        <Pressable
-          key={key}
-          accessibilityRole="button"
-          onPress={() => setCharacter(key)}
-          className={`rounded-full px-3 py-2 ${character === key ? "bg-teal" : "bg-white/80"}`}
-        >
-          <Text className={character === key ? "text-xs font-semibold text-white" : "text-xs text-ink"}>{t(`room.character.${key}`)}</Text>
-        </Pressable>
-      ))}
+  const [draftCharacter, setCharacter] = useState<CharacterKey>();
+  const [draftPet, setPet] = useState<PetKey>();
+  const [tab, setTab] = useState<"character" | "room" | "pet">("character");
+  const { childId, actingAsParent } = useActiveChild();
+  const prefs = useChildRoomPrefs(childId);
+  const queryClient = useQueryClient();
+  const [saved, setSaved] = useState(false);
+  const savedCharacter = prefs.data?.characterKey;
+  const character = draftCharacter ?? (savedCharacter === "girl" || savedCharacter === "boy" ? savedCharacter : "unspecified");
+  const pet = draftPet ?? (prefs.data?.petKey as PetKey | undefined) ?? "cat";
+  const save = useMutation({
+    mutationFn: async () => {
+      const args = { p_acting_child_id: actingAsParent ? childId : undefined };
+      const result = tab === "pet"
+        ? await supabase.rpc("set_room_pet", { ...args, p_pet: pet })
+        : await supabase.rpc("set_room_preference", { ...args, p_character: character, p_theme: "default" });
+      if (result.error) throw result.error;
+    },
+    onSuccess: async () => { await queryClient.invalidateQueries({ queryKey: ["child_room_prefs", childId] }); setSaved(true); if (tab === "pet") setPet(undefined); else setCharacter(undefined); },
+  });
+  const dirty = tab === "pet" ? pet !== (prefs.data?.petKey ?? "cat") : character !== (prefs.data?.characterKey ?? "unspecified");
+  return <ChildScreen loading={prefs.isLoading} title={t("childV5.customize")} character={character} pet={pet}>
+    <View accessibilityRole="tablist" className="flex-row flex-wrap gap-2">
+      {(["character", "room", "pet"] as const).map(key => <Pressable key={key} accessibilityRole="tab" accessibilityState={{ selected: key === tab }} aria-selected={key === tab}
+        disabled={save.isPending} onPress={() => { setTab(key); setSaved(false); }} style={[childStyles.card, { minHeight: 48, paddingVertical: 10, backgroundColor: key === tab ? "#D9F4F2" : "#FFFCF5" }]}>
+        <Text style={childStyles.copy}>{t(`childV5.tab.${key}`)}</Text>
+      </Pressable>)}
     </View>
-  );
-
-  if (!wide) {
-    // Dar/dikey ya da büyük yazı: oda görseli dekoratif başlık, paneller dikey akışta (crop yok).
-    return (
-      <Screen tone="child" title={t("child.hello", { name: MOCK.name })}>
-        <View className="gap-3 rounded-child bg-blue-light p-4">
-          <Text className="text-lg font-bold text-ink">{t("room.todayTasks")}</Text>
-          <TaskRows />
-        </View>
-        <View className="gap-1 rounded-child bg-orange-light p-4">
-          <Text className="text-lg font-bold text-ink">{t("room.myGoal")}</Text>
-          <Text className="text-base text-ink">{MOCK.goalTitle}</Text>
-          <Text className="text-sm text-gray-700">{t("room.starsLeft", { count: MOCK.goalRemaining })}</Text>
-        </View>
-        <View className="flex-row gap-3">
-          <View className="flex-1 rounded-child bg-green-light p-4">
-            <Text className="font-bold text-ink">{t("room.myWeek")}</Text>
-            <Text className="text-sm text-ink">{t("room.weekProgress", { done: MOCK.weekDone, total: MOCK.weekTotal })}</Text>
-          </View>
-          <View className="flex-1 rounded-child bg-purple-light p-4">
-            <Text className="font-bold text-ink">⭐ {MOCK.stars}</Text>
-            <Text className="text-sm text-ink">{t("room.myTreasure")} · {t("room.myCollection")}</Text>
-          </View>
-        </View>
-        {characterPicker}
-        <Text className="text-xs text-gray-500">{t("room.previewNote")}</Text>
-      </Screen>
-    );
-  }
-
-  return (
-    <RoomScene character={character}>
-      {({ rect }) => {
-        const header = rect(ZONES.header);
-        const board = rect(ZONES.taskBoard);
-        const goal = rect(ZONES.goal);
-        const week = rect(ZONES.week);
-        const drawer = rect(ZONES.treasureDrawer);
-        const slots = ZONES.displaySlots.map(rect);
-        return (
-          <>
-            <View style={{ position: "absolute", ...header }} className="flex-row items-center justify-between">
-              <Text className="text-xl font-bold text-ink">{t("child.hello", { name: MOCK.name })}</Text>
-              <View className="flex-row items-center gap-3">
-                {characterPicker}
-                <Pressable accessibilityRole="button" className="min-h-12 justify-center rounded-button bg-white/90 px-4">
-                  <Text className="font-semibold text-teal-dark">{t("room.parentExit")}</Text>
-                </Pressable>
-              </View>
-            </View>
-
-            <View style={{ position: "absolute", ...board }} accessibilityLabel={t("room.todayTasks")}>
-              <Text className="mb-1 text-base font-bold text-ink">{t("room.todayTasks")}</Text>
-              <ScrollView contentContainerStyle={{ gap: 6 }}>
-                <TaskRows compact />
-              </ScrollView>
-            </View>
-
-            <Pressable accessibilityRole="button" style={{ position: "absolute", ...goal }} className="justify-center rounded-parent p-2">
-              <Text className="text-sm font-bold text-ink">{t("room.myGoal")}: {MOCK.goalTitle}</Text>
-              <Text className="text-xs text-ink">{t("room.starsLeft", { count: MOCK.goalRemaining })}</Text>
-              <Text className="text-xs text-gray-700">⭐ {MOCK.stars}</Text>
-            </Pressable>
-
-            <Pressable accessibilityRole="button" style={{ position: "absolute", ...week }} className="justify-center rounded-parent p-1">
-              <Text className="text-xs font-bold text-ink">{t("room.myWeek")}</Text>
-              <Text className="text-xs text-ink">{t("room.weekProgress", { done: MOCK.weekDone, total: MOCK.weekTotal })}</Text>
-            </Pressable>
-
-            {slots.map((slot, i) => (
-              <Pressable
-                key={i}
-                accessibilityRole="button"
-                accessibilityLabel={`${t("room.displaySlot")} ${i + 1}`}
-                style={{ position: "absolute", ...slot }}
-                className="items-center justify-center"
-              >
-                <Text className="text-lg">{["🎬", "🚲", "🎮"][i]}</Text>
-              </Pressable>
-            ))}
-
-            <Pressable accessibilityRole="button" style={{ position: "absolute", ...drawer }} className="flex-row items-center justify-center gap-2">
-              <Text className="text-sm font-bold text-ink">{t("room.myTreasure")}</Text>
-              <Text className="text-sm text-ink">·</Text>
-              <Text className="text-sm font-bold text-ink">{t("room.myCollection")}</Text>
-            </Pressable>
-          </>
-        );
-      }}
-    </RoomScene>
-  );
+    {tab === "character" ? <View accessibilityRole="radiogroup" accessibilityLabel={t("childV5.tab.character")} className="flex-row flex-wrap gap-3">
+      {(["unspecified", "girl", "boy"] as const).map(key => <Pressable key={key} accessibilityRole="radio" accessibilityState={{ checked: character === key }} aria-checked={character === key}
+        accessibilityLabel={t(`room.character.${key}`)} disabled={save.isPending || !prefs.isSuccess} onPress={() => { setCharacter(key); setSaved(false); }}
+        style={[childStyles.card, { flexBasis: 140, flexGrow: 1, alignItems: "center", borderWidth: 2, borderColor: key === character ? "#0B7F7F" : "#E2CFB2", backgroundColor: key === character ? "#E6F7EF" : "#FFFCF5" }]}>
+        <Image source={V5_CHARACTERS[key]} style={{ width: 100, height: 120 }} resizeMode="contain" accessible={false} />
+        <Text style={childStyles.copy}>{t(`room.character.${key}`)}</Text>
+      </Pressable>)}
+    </View> : tab === "pet" ? <View accessibilityRole="radiogroup" accessibilityLabel={t("childV5.tab.pet")} className="flex-row flex-wrap gap-3">
+      {(["cat", "dog", "monkey", "lion", "none"] as const).map(key => <Pressable key={key} accessibilityRole="radio" accessibilityState={{ checked: pet === key }} aria-checked={pet === key}
+        accessibilityLabel={t(`childV5.pet.${key}`)} disabled={save.isPending || !prefs.isSuccess} onPress={() => { setPet(key); setSaved(false); }}
+        style={[childStyles.card, { flexBasis: 140, flexGrow: 1, alignItems: "center", borderWidth: 2, borderColor: key === pet ? "#0B7F7F" : "#E2CFB2" }]}>
+        {key !== "none" ? <Image source={V5_PETS[key]} style={{ width: 100, height: 80 }} resizeMode="contain" accessible={false} /> : null}
+        <Text style={childStyles.copy}>{t(`childV5.pet.${key}`)}</Text>
+      </Pressable>)}
+    </View> : <View style={childStyles.card}>
+      <Image source={require("../../../../../packages/assets/rooms/v2/room-study-v5.webp")} style={{ width: "100%", aspectRatio: 1586 / 992, borderRadius: 12 }} resizeMode="contain" accessible={false} />
+      <Text style={childStyles.title}>{t("childV5.currentRoom")}</Text>
+      <Text style={childStyles.copy}>{t("childV5.roomThemesNote")}</Text>
+    </View>}
+    <ErrorText error={prefs.error ?? save.error} />
+    {tab !== "room" ? <Button title={t("common.save")} loading={save.isPending} disabled={!childId || !prefs.isSuccess || !dirty} onPress={() => save.mutate()} /> : null}
+    {saved ? <Text style={childStyles.copy} accessibilityLiveRegion="polite">{t("release.roomSaved")}</Text> : null}
+  </ChildScreen>;
 }

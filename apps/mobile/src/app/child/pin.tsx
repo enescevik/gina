@@ -5,7 +5,8 @@ import { Text } from "react-native";
 
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ChildScreen as Screen } from "@/components/room/child-screen";
 import { refreshClaims } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -38,9 +39,10 @@ export default function ChildPinScreen() {
 
   return (
     <Screen tone="child" title={name ? t("child.hello", { name }) : t("child.enterPin")}>
-      <Text className="text-base text-ink dark:text-night-text">{t("child.enterPin")}</Text>
+      <Text className="font-body text-base text-ink">{t("child.enterPin")}</Text>
       <Field
-        label="PIN"
+        label={t("childV5.pinLabel")}
+        labelStyle={{ color: "#284E4B" }}
         keyboardType="number-pad"
         secureTextEntry
         maxLength={4}

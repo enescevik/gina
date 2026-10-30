@@ -50,7 +50,7 @@ export default function ChildModeEntryScreen() {
         setPin("");
         return;
       }
-      enter(selected);
+      await enter(selected);
       router.replace("/parent/child-mode/today");
     } catch (e) {
       setError(e);
@@ -62,7 +62,7 @@ export default function ChildModeEntryScreen() {
   if (parentPinSet.isSuccess && !parentPinSet.data) {
     return (
       <Screen title={t("parent.childMode")}>
-        <Text className="text-base text-ink dark:text-night-text">{t("childMode.setParentPinFirst")}</Text>
+        <Text className="font-body text-base text-ink dark:text-night-text">{t("childMode.setParentPinFirst")}</Text>
         <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />
       </Screen>
     );
@@ -82,13 +82,13 @@ export default function ChildModeEntryScreen() {
               <View className="mb-3">
                 <Avatar slug={child.avatar} size={72} />
               </View>
-              <Text className="text-xl font-bold text-ink dark:text-night-text">{child.name}</Text>
+              <Text className="text-xl font-body-bold text-ink dark:text-night-text">{child.name}</Text>
             </Pressable>
           ))}
         </View>
       ) : (
         <>
-          <Text className="text-base text-ink dark:text-night-text">{t("child.enterPin")}</Text>
+          <Text className="font-body text-base text-ink dark:text-night-text">{t("child.enterPin")}</Text>
           <Field label="PIN" keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={setPin} className="text-center text-3xl tracking-widest" />
           <Button size="child" title={t("common.ok")} loading={busy} disabled={pin.length !== 4} onPress={submit} />
           <Button variant="ghost" title={t("common.cancel")} onPress={() => setSelected(null)} />

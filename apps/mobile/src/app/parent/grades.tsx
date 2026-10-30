@@ -97,31 +97,31 @@ export default function ParentGradesScreen() {
             onPress={() => setChildId(child.id)}
             className={`rounded-full px-4 py-2 ${child.id === selectedChild ? "bg-teal" : "bg-mist"}`}
           >
-            <Text className={child.id === selectedChild ? "font-semibold text-white" : "text-ink"}>{child.name}</Text>
+            <Text className={child.id === selectedChild ? "font-body-bold text-white" : "text-ink"}>{child.name}</Text>
           </Pressable>
         ))}
       </View>
 
-      {grades.data?.length === 0 ? <Text className="text-gray-500">{t("grades.none")}</Text> : null}
+      {grades.data?.length === 0 ? <Text className="font-body text-gray-500">{t("grades.none")}</Text> : null}
       {grades.data?.map((grade) => (
         <View key={grade.id} className="flex-row items-center gap-3 rounded-parent border border-mist p-3">
           <SubjectIcon subject={grade.subject} size={48} variant="illustrated" />
           <View className="flex-1">
-            <Text className="text-base font-semibold text-ink dark:text-night-text">{grade.subject}</Text>
-            <Text className="text-xs text-gray-500">
+            <Text className="text-base font-body-bold text-ink dark:text-night-text">{grade.subject}</Text>
+            <Text className="font-body text-xs text-gray-500">
               {t(`grade.kind.${grade.kind}`)} · {dateFormat.format(new Date(`${grade.graded_on}T00:00:00Z`))}
             </Text>
           </View>
-          <Text className="text-xl font-bold text-ink dark:text-night-text">
+          <Text className="text-xl font-body-bold text-ink dark:text-night-text">
             {numberFormat.format(Number(grade.score))}
-            <Text className="text-sm font-normal text-gray-500"> / {numberFormat.format(Number(grade.max_score))}</Text>
+            <Text className="text-sm font-body text-gray-500"> / {numberFormat.format(Number(grade.max_score))}</Text>
           </Text>
         </View>
       ))}
 
       {selectedChild ? (
         <View className="gap-3 rounded-parent bg-teal-light p-4">
-          <Text className="text-lg font-semibold text-ink">{t("grades.new")}</Text>
+          <Text className="text-lg font-body-bold text-ink">{t("grades.new")}</Text>
           <Field label={t("grades.subject")} value={subject} onChangeText={setSubject} placeholder={t("grades.subjectPlaceholder")} />
           <View className="flex-row flex-wrap gap-2">
             {KINDS.map((option) => (
@@ -131,7 +131,7 @@ export default function ParentGradesScreen() {
                 onPress={() => setKind(option)}
                 className={`rounded-full px-3 py-2 ${kind === option ? "bg-teal" : "bg-white"}`}
               >
-                <Text className={kind === option ? "font-semibold text-white" : "text-ink"}>{t(`grade.kind.${option}`)}</Text>
+                <Text className={kind === option ? "font-body-bold text-white" : "text-ink"}>{t(`grade.kind.${option}`)}</Text>
               </Pressable>
             ))}
           </View>
@@ -144,11 +144,11 @@ export default function ParentGradesScreen() {
             </View>
           </View>
           <Field label={t("calendar.date")} value={gradedOn} onChangeText={setGradedOn} autoCapitalize="none" />
-          {formError ? <Text className="text-sm text-danger">{formError}</Text> : null}
+          {formError ? <Text className="font-body text-sm text-danger">{formError}</Text> : null}
           <Button title={t("common.save")} loading={addGrade.isPending} disabled={!subject.trim() || !score.trim()} onPress={() => addGrade.mutate()} />
         </View>
       ) : (
-        <Text className="text-gray-500">{t("tasks.addChildFirst")}</Text>
+        <Text className="font-body text-gray-500">{t("tasks.addChildFirst")}</Text>
       )}
 
       <ErrorText error={children.error ?? grades.error} />

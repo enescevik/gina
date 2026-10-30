@@ -3,16 +3,17 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text } from "react-native";
 
+import { Collectible } from "@/components/collectible";
 import { Button } from "@/components/ui/button";
-import { ErrorText, Screen } from "@/components/ui/screen";
-import { useSession } from "@/lib/session";
+import { ErrorText } from "@/components/ui/screen";
+import { ChildScreen as Screen, childStyles } from "@/components/room/child-screen";
+import { useActiveChild } from "@/lib/active-child";
 import { supabase } from "@/lib/supabase";
 
 /** Çocuk hedef seçer: ailenin ödül kataloğundan biri (set_child_goal RPC). */
 export default function ChildGoalScreen() {
   const { t } = useTranslation();
-  const { claims } = useSession();
-  const childId = claims?.child_id ?? "";
+  const { childId, actingAsParent } = useActiveChild();
   const queryClient = useQueryClient();
 
   const rewards = useQuery({
@@ -30,7 +31,7 @@ export default function ChildGoalScreen() {
 
   const choose = useMutation({
     mutationFn: async (rewardId: string) => {
-      const { error } = await supabase.rpc("set_child_goal", { p_reward_id: rewardId });
+      const { error } = await supabase.rpc("set_child_goal", { p_reward_id: rewardId, p_acting_child_id: actingAsParent ? childId : undefined });
       if (error) throw error;
     },
     onSuccess: () => {
@@ -40,19 +41,19 @@ export default function ChildGoalScreen() {
   });
 
   return (
-    <Screen tone="child" title={t("goal.pick")}>
-      {rewards.data?.length === 0 ? <Text className="text-base text-gray-600">{t("goal.noRewards")}</Text> : null}
+    <Screen tone="child" loading={rewards.isLoading} title={t("goal.pick")}>
+      {rewards.data?.length === 0 ? <Text className="font-body text-base text-gray-600">{t("goal.noRewards")}</Text> : null}
       {rewards.data?.map((reward) => (
         <Pressable
           key={reward.id}
           accessibilityRole="button"
           disabled={choose.isPending}
           onPress={() => choose.mutate(reward.id)}
-          className="min-h-16 flex-row items-center gap-3 rounded-child bg-white p-4 active:bg-teal-light dark:bg-night-surface"
+          style={[childStyles.card, childStyles.row]}
         >
-          <Text className="text-2xl">🎁</Text>
-          <Text className="flex-1 font-body-bold text-lg text-ink dark:text-night-text">{reward.title}</Text>
-          <Text className="font-display text-base text-ink dark:text-night-text">⭐ {reward.cost_stars}</Text>
+          <Collectible slug={reward.icon} size={64} />
+          <Text className="flex-1 font-body-bold text-lg text-ink">{reward.title}</Text>
+          <Text className="font-display text-base text-ink">⭐ {reward.cost_stars}</Text>
         </Pressable>
       ))}
       <ErrorText error={rewards.error ?? choose.error} />

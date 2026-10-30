@@ -87,7 +87,7 @@ export default function ParentNotesScreen() {
     <Screen title={t("parent.notes")}>
       <View className="flex-row flex-wrap gap-2">
         <Pressable accessibilityRole="button" onPress={() => setChildId(null)} className={`rounded-full px-4 py-2 ${childId === null ? "bg-teal" : "bg-mist"}`}>
-          <Text className={childId === null ? "font-semibold text-white" : "text-ink"}>{t("calendar.allFamily")}</Text>
+          <Text className={childId === null ? "font-body-bold text-white" : "text-ink"}>{t("calendar.allFamily")}</Text>
         </Pressable>
         {children.data?.map((child) => (
           <Pressable
@@ -96,21 +96,21 @@ export default function ParentNotesScreen() {
             onPress={() => setChildId(child.id)}
             className={`rounded-full px-4 py-2 ${childId === child.id ? "bg-teal" : "bg-mist"}`}
           >
-            <Text className={childId === child.id ? "font-semibold text-white" : "text-ink"}>{child.name}</Text>
+            <Text className={childId === child.id ? "font-body-bold text-white" : "text-ink"}>{child.name}</Text>
           </Pressable>
         ))}
       </View>
 
-      {notes.data?.length === 0 ? <Text className="text-gray-500">{t("notes.none")}</Text> : null}
+      {notes.data?.length === 0 ? <Text className="font-body text-gray-500">{t("notes.none")}</Text> : null}
       {notes.data?.map((note) => (
         <View key={note.id} className="gap-1 rounded-parent border border-mist p-3">
           <View className="flex-row items-center gap-2">
-            <Text className="flex-1 text-base font-semibold text-ink dark:text-night-text">{note.title ?? t("notes.untitled")}</Text>
-            <Text className="text-xs text-gray-500">{dateFormat.format(new Date(note.updated_at))}</Text>
+            <Text className="flex-1 text-base font-body-bold text-ink dark:text-night-text">{note.title ?? t("notes.untitled")}</Text>
+            <Text className="font-body text-xs text-gray-500">{dateFormat.format(new Date(note.updated_at))}</Text>
           </View>
-          <Text className="text-sm text-ink dark:text-night-text">{note.body}</Text>
+          <Text className="font-body text-sm text-ink dark:text-night-text">{note.body}</Text>
           <View className="flex-row items-center gap-2">
-            <Text className="flex-1 text-xs text-gray-500">
+            <Text className="font-body flex-1 text-xs text-gray-500">
               {[note.children?.name, note.subject, t(`note.visibility.${note.visibility}`)].filter(Boolean).join(" · ")}
             </Text>
             <Button variant="ghost" title={t("common.delete")} onPress={() => removeNote.mutate(note.id)} />
@@ -119,7 +119,7 @@ export default function ParentNotesScreen() {
       ))}
 
       <View className="gap-3 rounded-parent bg-teal-light p-4">
-        <Text className="text-lg font-semibold text-ink">{t("notes.new")}</Text>
+        <Text className="text-lg font-body-bold text-ink">{t("notes.new")}</Text>
         <Field label={t("notes.title")} value={title} onChangeText={setTitle} />
         <Field label={t("notes.body")} value={body} onChangeText={setBody} multiline className="min-h-24" />
         <Field label={t("notes.subject")} value={subject} onChangeText={setSubject} placeholder={t("notes.subjectPlaceholder")} />
@@ -131,7 +131,7 @@ export default function ParentNotesScreen() {
               onPress={() => setVisibility(option)}
               className={`rounded-full px-3 py-2 ${visibility === option ? "bg-teal" : "bg-white"}`}
             >
-              <Text className={visibility === option ? "font-semibold text-white" : "text-ink"}>{t(`note.visibility.${option}`)}</Text>
+              <Text className={visibility === option ? "font-body-bold text-white" : "text-ink"}>{t(`note.visibility.${option}`)}</Text>
             </Pressable>
           ))}
         </View>

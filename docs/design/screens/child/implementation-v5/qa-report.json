@@ -1,0 +1,146 @@
+{
+  "results": [
+    {
+      "slug": "room-preview",
+      "device": "tablet",
+      "missingImages": 0,
+      "body": "Odamı düzenle\nHer küçük adım burada.\nKarakter\nOda\nDostum\nKarakter 1\nKarakter 2\nKarakter 3\nÖnizleme: seçimlerin bu ekranda görünür, henüz odana kaydedilmez.",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "week",
+      "device": "tablet",
+      "missingImages": 0,
+      "body": "Haftam\nHer küçük adım burada.\nPzt\n26\nSal\n27\nÇar\n28\nPer\n29\nCum\n30\nCmt\n31\nPaz\n1\n31 Ekim Cumartesi · Bugün\nDişlerini fırçala\nOnaylandı\n20 dakika kitap oku\nSırada\nO",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "calendar",
+      "device": "tablet",
+      "missingImages": 0,
+      "body": "Takvimim\nHer küçük adım burada.\nPzt\n26\nSal\n27\nÇar\n28\nPer\n29\nCum\n30\nCmt\n31\nPaz\n1\n31 Ekim Cumartesi · Bugün\n19:00–21:00\nAilece sinema\nAile · Kent sineması\nBugün",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "goal",
+      "device": "tablet",
+      "missingImages": 0,
+      "body": "Hedefini seç\nHer küçük adım burada.\nAilece sinema\n⭐ 20\nBirlikte oyun\n⭐ 15\nVazgeç",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "collection",
+      "device": "tablet",
+      "missingImages": 0,
+      "body": "Koleksiyonum\n3 / 4 rozet kazandın\nDiş Parlatan\nKazanıldı\nKitap Kurdu\nKazanıldı\nİlk Adım\nKazanıldı\n25 Görev\nKilitli\nBugün",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "index",
+      "device": "tablet",
+      "missingImages": 0,
+      "body": "Kim giriyor?\nHer küçük adım burada.\nEce\nCan",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "pin",
+      "device": "tablet",
+      "missingImages": 0,
+      "body": "Merhaba Ece!\nHer küçük adım burada.\nPIN'ini gir\nÇocuk PIN’i\nTamam\nVazgeç",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "prova-index",
+      "device": "tablet",
+      "missingImages": 0,
+      "body": "Prova\nDüşünmek için zamanın var.\nSeni bekleyen denemeler\nMatematik provası\n2 soru · süresiz\nBaşla\nTamamlananlar\nHayat Bilgisi\nŞıklı: 3 / 4 doğru\nBugün",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "prova-exam",
+      "device": "tablet",
+      "missingImages": 0,
+      "body": "Soru 1 / 2\nDüşünmek için zamanın var.\nEce’nin 12 kalemi vardı. 4 kalemini arkadaşına verdi. Kaç kalemi kaldı?\nA\n6\nB\n8\nC\n10\nD\n16\nSonraki",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "today",
+      "device": "tablet",
+      "missingImages": 0,
+      "body": "Merhaba Ece!\n12 yıldız\nEbeveyn\nBugünkü görevlerim\n1 / 3 tamamlandı\n20 dakika kitap oku\n+2 yıldız\nBaşla\nOdanı düzenle\n+3 yıldız\nBaşla\nDişlerini fırçala\nOnaylandı",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "room-preview",
+      "device": "phone",
+      "missingImages": 0,
+      "body": "Odamı düzenle\nHer küçük adım burada.\nKarakter\nOda\nDostum\nKarakter 1\nKarakter 2\nKarakter 3\nÖnizleme: seçimlerin bu ekranda görünür, henüz odana kaydedilmez.",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "week",
+      "device": "phone",
+      "missingImages": 0,
+      "body": "Haftam\nHer küçük adım burada.\nPzt\n26\nSal\n27\nÇar\n28\nPer\n29\nCum\n30\nCmt\n31\nPaz\n1\n31 Ekim Cumartesi · Bugün\nDişlerini fırçala\nOnaylandı\n20 dakika kitap oku\nSırada\nO",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "calendar",
+      "device": "phone",
+      "missingImages": 0,
+      "body": "Takvimim\nHer küçük adım burada.\nPzt\n26\nSal\n27\nÇar\n28\nPer\n29\nCum\n30\nCmt\n31\nPaz\n1\n31 Ekim Cumartesi · Bugün\n19:00–21:00\nAilece sinema\nAile · Kent sineması\nBugün",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "goal",
+      "device": "phone",
+      "missingImages": 0,
+      "body": "Hedefini seç\nHer küçük adım burada.\nAilece sinema\n⭐ 20\nBirlikte oyun\n⭐ 15\nVazgeç",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "collection",
+      "device": "phone",
+      "missingImages": 0,
+      "body": "Koleksiyonum\n3 / 4 rozet kazandın\nDiş Parlatan\nKazanıldı\nKitap Kurdu\nKazanıldı\nİlk Adım\nKazanıldı\n25 Görev\nKilitli\nBugün",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "index",
+      "device": "phone",
+      "missingImages": 0,
+      "body": "Kim giriyor?\nHer küçük adım burada.\nEce\nCan",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "pin",
+      "device": "phone",
+      "missingImages": 0,
+      "body": "Merhaba Ece!\nHer küçük adım burada.\nPIN'ini gir\nÇocuk PIN’i\nTamam\nVazgeç",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "prova-index",
+      "device": "phone",
+      "missingImages": 0,
+      "body": "Prova\nDüşünmek için zamanın var.\nSeni bekleyen denemeler\nMatematik provası\n2 soru · süresiz\nBaşla\nTamamlananlar\nHayat Bilgisi\nŞıklı: 3 / 4 doğru\nBugün",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "prova-exam",
+      "device": "phone",
+      "missingImages": 0,
+      "body": "Soru 1 / 2\nDüşünmek için zamanın var.\nEce’nin 12 kalemi vardı. 4 kalemini arkadaşına verdi. Kaç kalemi kaldı?\nA\n6\nB\n8\nC\n10\nD\n16\nSonraki",
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "today",
+      "device": "phone",
+      "missingImages": 0,
+      "body": "Bugün\nHer küçük adım burada.\n12 yıldız\nHedefim\nAilece sinema\n12 / 20 yıldız\n8 yıldız kaldı\nBugünkü görevlerim\n1 / 3 tamamlandı\n20 dakika kitap oku\n+2 yıldız\nBaş",
+      "horizontalOverflow": false
+    }
+  ],
+  "interceptedRequests": 43,
+  "allBackendTrafficMocked": true
+}

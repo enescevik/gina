@@ -98,7 +98,7 @@ export default function ParentCalendarScreen() {
       <View className="flex-row items-center justify-between">
         <Button variant="ghost" title="‹" onPress={() => setAnchor(shiftWeek(anchor, -1))} />
         <Pressable accessibilityRole="button" onPress={() => setAnchor(today)}>
-          <Text className="text-base font-semibold text-ink dark:text-night-text">
+          <Text className="text-base font-body-bold text-ink dark:text-night-text">
             {from} – {to}
           </Text>
         </Pressable>
@@ -108,7 +108,7 @@ export default function ParentCalendarScreen() {
       <WeekList week={week} occurrences={occurrences} today={today} timeZone={timeZone} />
 
       <View className="gap-3 rounded-parent bg-teal-light p-4">
-        <Text className="text-lg font-semibold text-ink">{t("calendar.newEvent")}</Text>
+        <Text className="text-lg font-body-bold text-ink">{t("calendar.newEvent")}</Text>
         <Field label={t("calendar.title")} value={title} onChangeText={setTitle} />
         <View className="flex-row flex-wrap gap-2">
           {eventTypeSchema.options.map((option) => (
@@ -118,13 +118,13 @@ export default function ParentCalendarScreen() {
               onPress={() => setType(option)}
               className={`rounded-full px-3 py-2 ${type === option ? "bg-teal" : "bg-white"}`}
             >
-              <Text className={type === option ? "font-semibold text-white" : "text-ink"}>{t(`event.type.${option}`)}</Text>
+              <Text className={type === option ? "font-body-bold text-white" : "text-ink"}>{t(`event.type.${option}`)}</Text>
             </Pressable>
           ))}
         </View>
         <View className="flex-row flex-wrap gap-2">
           <Pressable accessibilityRole="button" onPress={() => setChildId(null)} className={`rounded-full px-3 py-2 ${childId === null ? "bg-teal" : "bg-white"}`}>
-            <Text className={childId === null ? "font-semibold text-white" : "text-ink"}>{t("calendar.allFamily")}</Text>
+            <Text className={childId === null ? "font-body-bold text-white" : "text-ink"}>{t("calendar.allFamily")}</Text>
           </Pressable>
           {children.data?.map((child) => (
             <Pressable
@@ -133,7 +133,7 @@ export default function ParentCalendarScreen() {
               onPress={() => setChildId(child.id)}
               className={`rounded-full px-3 py-2 ${childId === child.id ? "bg-teal" : "bg-white"}`}
             >
-              <Text className={childId === child.id ? "font-semibold text-white" : "text-ink"}>{child.name}</Text>
+              <Text className={childId === child.id ? "font-body-bold text-white" : "text-ink"}>{child.name}</Text>
             </Pressable>
           ))}
         </View>
@@ -146,7 +146,7 @@ export default function ParentCalendarScreen() {
             <Field label={t("calendar.end")} value={end} onChangeText={setEnd} placeholder="10:00" />
           </View>
         </View>
-        <Text className="text-sm font-medium text-ink">{t("calendar.repeatWeekly")}</Text>
+        <Text className="text-sm font-body text-ink">{t("calendar.repeatWeekly")}</Text>
         <View className="flex-row flex-wrap gap-2">
           {WEEKDAYS.map((day) => (
             <Pressable
@@ -155,11 +155,11 @@ export default function ParentCalendarScreen() {
               onPress={() => setRepeatDays((prev) => (prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day].sort()))}
               className={`rounded-full px-3 py-2 ${repeatDays.includes(day) ? "bg-teal" : "bg-white"}`}
             >
-              <Text className={repeatDays.includes(day) ? "font-semibold text-white" : "text-ink"}>{t(`weekday.${day}`)}</Text>
+              <Text className={repeatDays.includes(day) ? "font-body-bold text-white" : "text-ink"}>{t(`weekday.${day}`)}</Text>
             </Pressable>
           ))}
         </View>
-        {formError ? <Text className="text-sm text-danger">{formError}</Text> : null}
+        {formError ? <Text className="font-body text-sm text-danger">{formError}</Text> : null}
         <Button title={t("common.save")} loading={addEvent.isPending} disabled={!title.trim()} onPress={() => addEvent.mutate()} />
       </View>
 

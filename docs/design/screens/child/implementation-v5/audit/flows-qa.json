@@ -1,0 +1,41 @@
+{
+  "characterPersisted": true,
+  "petPersisted": true,
+  "lockSurvivesReload": true,
+  "parentDeepLinkBlocked": true,
+  "childDeepLinkBlocked": true,
+  "wrongPinRejected": true,
+  "correctPinUnlocks": true,
+  "allBackendTrafficMocked": true,
+  "mutations": [
+    {
+      "path": "/rest/v1/rpc/set_room_preference",
+      "method": "POST",
+      "body": {
+        "p_character": "girl",
+        "p_theme": "default"
+      }
+    },
+    {
+      "path": "/rest/v1/rpc/set_room_pet",
+      "method": "POST",
+      "body": {
+        "p_pet": "dog"
+      }
+    },
+    {
+      "path": "/rest/v1/rpc/verify_parent_pin",
+      "method": "POST",
+      "body": {
+        "p_pin": "fixture PIN omitted"
+      }
+    },
+    {
+      "path": "/rest/v1/rpc/verify_parent_pin",
+      "method": "POST",
+      "body": {
+        "p_pin": "fixture PIN omitted"
+      }
+    }
+  ]
+}

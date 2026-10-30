@@ -70,7 +70,7 @@ export default function BlueprintScreen() {
         className="min-h-32"
         placeholder={"Isı ve Sıcaklık; 2\nMaddenin Halleri; 2\nEnerji Dönüşümleri; 1"}
       />
-      <Text className="text-sm text-gray-600">{t("prova.rowsParsed", { count: rows.length, total: rows.reduce((s, r) => s + r.count, 0) })}</Text>
+      <Text className="font-body text-sm text-gray-600">{t("prova.rowsParsed", { count: rows.length, total: rows.reduce((s, r) => s + r.count, 0) })}</Text>
       <Field label={t("prova.source")} value={sourceUrl} onChangeText={setSourceUrl} autoCapitalize="none" />
       <ErrorText error={save.error} />
       <Button title={t("common.save")} loading={save.isPending} onPress={() => save.mutate()} />

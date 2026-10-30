@@ -7,7 +7,7 @@ import { RoomChildHome } from "@/components/room/child-home";
 import { WIDE_LAYOUT_MIN_DP } from "@/components/room/layout";
 import { TodayView } from "@/components/today-view";
 import { Button } from "@/components/ui/button";
-import { Screen } from "@/components/ui/screen";
+import { ChildScreen as Screen } from "@/components/room/child-screen";
 import { refreshClaims, useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -52,6 +52,7 @@ export default function TodayScreen() {
           <Button variant="secondary" size="child" title={t("child.calendar")} onPress={() => router.push("/child/calendar")} />
         </View>
       </View>
+      <Button variant="secondary" title={t("childV5.customize")} onPress={() => router.push("/child/room-preview")} />
       <Button variant="ghost" title={t("child.switchProfile")} onPress={() => void logout()} />
     </Screen>
   );

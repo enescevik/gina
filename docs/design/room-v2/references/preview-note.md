@@ -171,3 +171,32 @@ Pano dış çerçevesi eğimli perspektife döndü; ara çıta ve başlık süsl
 BRIEF 13 A–E parça kapsamı tamamdır. Bu bir bağımsız katman teslimidir; onaylı raster referansın birebir piksel kopyası değildir. BRIEF 14 maketleri bu parçaları ve onaylı ekranların dilini kullanır. Uygulama giydirmesi ayrı onaydan sonra yapılacaktır.
 
 İstenen mobil kontroller: `cd apps/mobile && pnpm exec tsc --noEmit && pnpm exec expo lint` — geçti. Yeni paket eklenmedi; kilitli bağımlılıklar kuruldu.
+
+
+## 31 Ekim — çocuk v5 uygulama katmanları
+
+| Onaylı referans | Ayrı üretim parçası | Uygulama |
+| --- | --- | --- |
+| art-direction-v5/room-day.png | rooms/v2/room-home-v5.webp | RoomScene ana oda; pano/bilet/takvim/dolap gömülü değil |
+| shared-v5/art/board-tablet.png | rooms/v2/room-study-v5.webp | ChildScreen alt ekran arka planı; boş duvar + kitaplık |
+| Aynı v5 karakter ailesi | character-{girl,boy,unspecified}-v5.webp | Ortak içerik sınırı/ayak çizgisiyle bağımsız alfa katmanları |
+| Ahşap pano/krem kâğıt | room-chrome/child-board-v5.svg + png/child-board-v5@3x.png | NineSlice; raster üretim, SVG yapısal yedek; etkileşimsiz yüzey |
+| Prova defteri | room-chrome/child-notebook-v5.svg + png/child-notebook-v5@3x.png | NineSlice; köşe bölgelerinde sabit teal cilt halkaları |
+| Koleksiyon dolabı | room-chrome/child-cabinet-v5.svg + png/child-cabinet-v5@3x.png | NineSlice; tek dış ahşap gövde, içeride native raf/rozet grid'i |
+| Önceki BRIEF 13 petleri | pet-{cat,dog,monkey,lion}.webp | Mevcut kaynaklar etkinleştirildi, yeni animasyon iddiası yok |
+
+Önceki dosya/slug'lar korunur; v5 karakterleri ve ana oda manifestte supersedes ile ilişkilidir. Yeni kaynaklar image_gen ile, onaylı referanslardan üretildi. PNG/WebP boyut dönüştürme ve lossless kodlama dışında raster çizim yapılmadı. Oda/karakter kaynakları metinsiz; native başlıklar ve kontroller ayrıdır. Üretim envanteri: rooms/v2/contact-sheet-v5.svg ve güncellenmiş iki contact-sheet.svg.
+
+## V5 ikinci göz entegrasyonu · 31 Ekim
+
+| Kaynak | Native kullanım |
+|---|---|
+| `rooms/v2/pet-{cat,dog,monkey,lion}.webp` | Aynı slug, yenilenen v5 kürk/ışık; manifest içerik sınırı ile ortak ayak çizgisi |
+| `rooms/v2/pet-*-portrait.webp` | Aynı 256 px portre yolları |
+| `room-chrome/child-cabinet-cell-v5.svg` + `png/*@3x.png` | Tekrarlanan koleksiyon bölmesi; başlık, durum ve isimler native |
+| `gamification/illustrated-v3/display-*` → generated | Raflarda 3B nesne; küçük madalya yerine sergi nesnesi |
+| `progress-bar-teal-track/fill` | Görev panosunda gerçek tamamlanma yüzdesi |
+| `cabinet-display` | Ana ekranda tek parça dolap; native nesne ve çekmece etiketleri |
+| `rooms/v2/parent-header-v5.webp` | Onaylı shared-v5 başlık sanatından lossless üretim türevi |
+
+Üretim, alfa kontrolü ve karşılaştırmalar: `docs/design/screens/child/implementation-v5/audit/`. Statik pet katmanları animasyon rig'i değildir.

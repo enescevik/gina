@@ -60,13 +60,13 @@ export default function PairScreen() {
 
   return (
     <Screen tone="child" title={t("device.pairTitle")}>
-      <Text className="text-base text-ink dark:text-night-text">
+      <Text className="font-body text-base text-ink dark:text-night-text">
         {t("device.pairHelp")}
       </Text>
       {code ? (
         <View className="items-center rounded-child bg-white p-8 dark:bg-night-surface">
-          <Text className="text-5xl font-bold tracking-widest text-teal-dark">{code}</Text>
-          <Text className="mt-3 text-sm text-gray-500">{t("device.waiting")}</Text>
+          <Text className="text-5xl font-body-bold tracking-widest text-teal-dark">{code}</Text>
+          <Text className="font-body mt-3 text-sm text-gray-500">{t("device.waiting")}</Text>
         </View>
       ) : (
         <Button size="child" title={t("device.getCode")} loading={busy || !isAnonymous} onPress={requestCode} />

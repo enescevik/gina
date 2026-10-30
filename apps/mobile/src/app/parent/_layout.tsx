@@ -1,5 +1,6 @@
-import { Stack } from "expo-router";
+import { Redirect, Stack, usePathname } from "expo-router";
 
+import { useChildMode } from "@/lib/child-mode";
 import { useIapObserver } from "@/lib/iap";
 import { usePush } from "@/lib/push";
 
@@ -8,5 +9,9 @@ export default function ParentLayout() {
   usePush("parent");
   // IAP: bitmemiş işlemler her açılışta sunucuda doğrulanır (web'de no-op).
   useIapObserver();
-  return <Stack screenOptions={{ headerShown: false }} />;
+  const { actingChild } = useChildMode();
+  const path = usePathname();
+  if (actingChild && !path.startsWith("/parent/child-mode/")) return <Redirect href="/parent/child-mode/today" />;
+  if (!actingChild && path.startsWith("/parent/child-mode/") ) return <Redirect href="/parent/child-mode" />;
+  return <Stack screenOptions={{ headerShown: false, gestureEnabled: !actingChild }} />;
 }

@@ -2824,5 +2824,151 @@
       "height": 51
     },
     "renderState": "brightness 1.04, saturation 0.25; alpha unchanged"
+  },
+  {
+    "slug": "child-board-v5",
+    "file": "child-board-v5.svg",
+    "width": 512,
+    "height": 341,
+    "pngWidth": 1536,
+    "pngHeight": 1023,
+    "pixelRatio": 3,
+    "stretch": "both",
+    "capInsets": {
+      "top": 210,
+      "left": 210,
+      "right": 210,
+      "bottom": 150
+    },
+    "contentInsets": {
+      "top": 150,
+      "left": 126,
+      "right": 126,
+      "bottom": 126
+    },
+    "minimumLogicalSize": {
+      "width": 160,
+      "height": 160
+    },
+    "png": [
+      "png/child-board-v5@3x.png"
+    ],
+    "productionSource": "png/child-board-v5@3x.png",
+    "source": "exec-a438e6b3-ed7b-4270-8c20-5651f4e2d03b.png",
+    "svgRole": "structural-fallback; painted PNG is production source",
+    "alpha": true,
+    "variants": [
+      "child-v5"
+    ],
+    "sha256_png_3x": "78266faa3ef3ad87184bbbdf68bc4d0f6014e02fdc51dd553cdb70175df4b22f"
+  },
+  {
+    "slug": "child-notebook-v5",
+    "label_tr": "Çocuk Prova defteri v5",
+    "file": "child-notebook-v5.svg",
+    "viewBox": "0 0 512 341",
+    "width": 512,
+    "height": 341,
+    "pngWidth": 1536,
+    "pngHeight": 1023,
+    "pixelRatio": 3,
+    "stretch": "both",
+    "capInsets": {
+      "top": 330,
+      "left": 165,
+      "right": 120,
+      "bottom": 360
+    },
+    "contentInsets": {
+      "top": 120,
+      "left": 160,
+      "right": 120,
+      "bottom": 140
+    },
+    "minimumLogicalSize": {
+      "width": 220,
+      "height": 240
+    },
+    "variants": [
+      "child-v5"
+    ],
+    "png": [
+      "png/child-notebook-v5@3x.png"
+    ],
+    "productionSource": "png",
+    "svgRole": "structural-fallback",
+    "alpha": true,
+    "sha256_png_3x": "0533b524e0d5898428dd6db28ed1982525ffa45c8c480bf66e65d1684d475af3"
+  },
+  {
+    "slug": "child-cabinet-v5",
+    "label_tr": "Çocuk koleksiyon dolabı v5",
+    "file": "child-cabinet-v5.svg",
+    "viewBox": "0 0 512 341",
+    "width": 512,
+    "height": 341,
+    "pngWidth": 1536,
+    "pngHeight": 1023,
+    "pixelRatio": 3,
+    "stretch": "both",
+    "capInsets": {
+      "top": 180,
+      "left": 180,
+      "right": 180,
+      "bottom": 255
+    },
+    "contentInsets": {
+      "top": 170,
+      "left": 150,
+      "right": 150,
+      "bottom": 255
+    },
+    "minimumLogicalSize": {
+      "width": 220,
+      "height": 240
+    },
+    "variants": [
+      "child-v5"
+    ],
+    "png": [
+      "png/child-cabinet-v5@3x.png"
+    ],
+    "productionSource": "png",
+    "svgRole": "structural-fallback",
+    "alpha": true,
+    "sha256_png_3x": "4657ed416ce0005d23c4fe4893e8de19e1791f41607efe3d36b8ea2c2f54294b"
+  },
+  {
+    "slug": "child-cabinet-cell-v5",
+    "file": "png/child-cabinet-cell-v5@3x.png",
+    "width": 360,
+    "height": 300,
+    "format": "png",
+    "alpha": true,
+    "sha256": "a691fc3f4d5efccb718274487b95c2d4f75e08c69c8f0e48bf431e42cbd5ad08",
+    "pngWidth": 1080,
+    "pngHeight": 900,
+    "pixelRatio": 3,
+    "stretch": "both",
+    "capInsets": {
+      "top": 175,
+      "left": 150,
+      "right": 150,
+      "bottom": 150
+    },
+    "contentInsets": {
+      "top": 190,
+      "left": 170,
+      "right": 170,
+      "bottom": 155
+    },
+    "minimumLogicalSize": {
+      "width": 110,
+      "height": 115
+    },
+    "source": "exec-75a90d45-3022-43fc-8ae8-cad91f98143d.png",
+    "legacyVectorFallback": "child-cabinet-cell-v5.svg",
+    "vectorFallbackRole": "structural only; painted PNG is production source",
+    "status": "approved-v5-style-refinement"
   }
 ]

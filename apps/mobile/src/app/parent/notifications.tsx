@@ -64,15 +64,15 @@ export default function NotificationsScreen() {
   return (
     <Screen title={t("push.title")}>
       {Platform.OS === "web" || permission.data === "unsupported" ? (
-        <Text className="text-sm text-gray-600">{t("push.webNote")}</Text>
+        <Text className="font-body text-sm text-gray-600">{t("push.webNote")}</Text>
       ) : permission.data === "undetermined" ? (
         <View className="gap-2 rounded-parent bg-teal-light p-3">
-          <Text className="text-sm text-ink">{t("push.permissionAsk")}</Text>
+          <Text className="font-body text-sm text-ink">{t("push.permissionAsk")}</Text>
           <Button title={t("push.allow")} loading={allow.isPending} onPress={() => allow.mutate()} />
         </View>
       ) : permission.data === "denied" ? (
         <View className="gap-2 rounded-parent bg-coral-light p-3">
-          <Text className="text-sm text-ink">{t("push.permissionDenied")}</Text>
+          <Text className="font-body text-sm text-ink">{t("push.permissionDenied")}</Text>
           <Button variant="secondary" title={t("push.openSettings")} onPress={() => void Linking.openSettings()} />
         </View>
       ) : null}
@@ -80,8 +80,8 @@ export default function NotificationsScreen() {
       {PREF_KEYS.map((key) => (
         <View key={key} className="flex-row items-center gap-3 rounded-parent border border-mist p-3 dark:bg-night-surface">
           <View className="flex-1 gap-1">
-            <Text className="text-base font-semibold text-ink dark:text-night-text">{t(`push.pref.${key}`)}</Text>
-            <Text className="text-sm text-gray-600">{t(`push.pref.${key}Hint`)}</Text>
+            <Text className="text-base font-body-bold text-ink dark:text-night-text">{t(`push.pref.${key}`)}</Text>
+            <Text className="font-body text-sm text-gray-600">{t(`push.pref.${key}Hint`)}</Text>
           </View>
           <Switch
             value={prefs.data?.[key] ?? true}
@@ -91,7 +91,7 @@ export default function NotificationsScreen() {
         </View>
       ))}
 
-      <Text className="text-xs text-gray-600">{t("push.privacyNote")}</Text>
+      <Text className="font-body text-xs text-gray-600">{t("push.privacyNote")}</Text>
       <ErrorText error={prefs.error ?? save.error ?? allow.error} />
     </Screen>
   );

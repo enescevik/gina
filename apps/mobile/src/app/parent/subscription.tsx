@@ -160,32 +160,32 @@ export default function SubscriptionScreen() {
   return (
     <Screen title={t("subscription.title")}>
       {entitlement.data?.source === "comp" ? (
-        <Text className="rounded-parent bg-star/20 p-3 text-sm text-ink">{t("subscription.compNote")}</Text>
+        <Text className="font-body rounded-parent bg-star/20 p-3 text-sm text-ink">{t("subscription.compNote")}</Text>
       ) : null}
 
       {sub && isParent ? (
         <View className="gap-1 rounded-parent bg-teal-light p-3">
           {sub.status === "grace" ? (
-            <Text className="text-sm font-semibold text-ink">{t("iap.status.grace", { date: dateFormat.format(new Date(sub.expires_at)) })}</Text>
+            <Text className="text-sm font-body-bold text-ink">{t("iap.status.grace", { date: dateFormat.format(new Date(sub.expires_at)) })}</Text>
           ) : sub.status === "on_hold" ? (
-            <Text className="text-sm font-semibold text-ink">{t("iap.status.onHold")}</Text>
+            <Text className="text-sm font-body-bold text-ink">{t("iap.status.onHold")}</Text>
           ) : (
-            <Text className="text-sm text-ink">
+            <Text className="font-body text-sm text-ink">
               {sub.auto_renewing
                 ? t("iap.renewsOn", { date: dateFormat.format(new Date(sub.expires_at)) })
                 : t("iap.endsOn", { date: dateFormat.format(new Date(sub.expires_at)) })}
             </Text>
           )}
           {subOnOtherStore || !iapSupported ? (
-            <Text className="text-xs text-ink">{t("iap.otherStore", { store: t(`iap.store.${sub.platform}`) })}</Text>
+            <Text className="font-body text-xs text-ink">{t("iap.otherStore", { store: t(`iap.store.${sub.platform}`) })}</Text>
           ) : null}
         </View>
       ) : null}
 
       {!iapSupported ? (
-        <Text className="rounded-parent bg-mist p-3 text-sm text-ink">{t("iap.webNote")}</Text>
+        <Text className="font-body rounded-parent bg-mist p-3 text-sm text-ink">{t("iap.webNote")}</Text>
       ) : !isParent ? (
-        <Text className="rounded-parent bg-mist p-3 text-sm text-ink">{t("iap.parentOnly")}</Text>
+        <Text className="font-body rounded-parent bg-mist p-3 text-sm text-ink">{t("iap.parentOnly")}</Text>
       ) : (
         <View className="flex-row gap-2 self-start rounded-full bg-mist p-1" accessibilityRole="tablist">
           {(["monthly", "yearly"] as const).map((p) => (
@@ -196,7 +196,7 @@ export default function SubscriptionScreen() {
               onPress={() => setPeriod(p)}
               className={`rounded-full px-4 py-2 ${period === p ? "bg-white dark:bg-night-surface" : ""}`}
             >
-              <Text className="text-sm font-semibold text-ink dark:text-night-text">{t(`iap.${p}`)}</Text>
+              <Text className="text-sm font-body-bold text-ink dark:text-night-text">{t(`iap.${p}`)}</Text>
             </Pressable>
           ))}
         </View>
@@ -221,23 +221,23 @@ export default function SubscriptionScreen() {
             className={`gap-2 rounded-parent border-2 p-4 ${isCurrent ? "border-teal bg-teal-light" : "border-mist bg-white dark:bg-night-surface"}`}
           >
             <View className="flex-row items-center justify-between">
-              <Text className="text-lg font-bold text-ink">{i18nText(plan.name_i18n, i18n.language)}</Text>
-              {isCurrent ? <Text className="rounded-full bg-teal px-3 py-1 text-xs font-semibold text-white">{t("subscription.current")}</Text> : null}
+              <Text className="text-lg font-body-bold text-ink">{i18nText(plan.name_i18n, i18n.language)}</Text>
+              {isCurrent ? <Text className="rounded-full bg-teal px-3 py-1 text-xs font-body-bold text-white">{t("subscription.current")}</Text> : null}
             </View>
             {features.map((feature) => (
-              <Text key={feature} className="text-sm text-ink dark:text-night-text">
+              <Text key={feature} className="font-body text-sm text-ink dark:text-night-text">
                 • {feature}
               </Text>
             ))}
             {plan.code !== "free" && canBuy ? (
               offer ? (
                 <View className="gap-2">
-                  <Text className="text-base font-semibold text-ink dark:text-night-text">
+                  <Text className="text-base font-body-bold text-ink dark:text-night-text">
                     {t(period === "monthly" ? "iap.pricePerMonth" : "iap.pricePerYear", { price: offer.displayPrice })}
                   </Text>
-                  {offer.hasTrial && !sub ? <Text className="text-sm text-teal-dark">{t("iap.trial")}</Text> : null}
+                  {offer.hasTrial && !sub ? <Text className="font-body text-sm text-teal-dark">{t("iap.trial")}</Text> : null}
                   {ownsThis ? (
-                    <Text className="text-sm text-ink dark:text-night-text">{t("iap.currentProduct")}</Text>
+                    <Text className="font-body text-sm text-ink dark:text-night-text">{t("iap.currentProduct")}</Text>
                   ) : (
                     <Button
                       title={sub ? t("iap.change") : t("iap.buy")}
@@ -249,7 +249,7 @@ export default function SubscriptionScreen() {
                   )}
                 </View>
               ) : (
-                <Text className="text-xs text-gray-500">{offers.isLoading ? t("iap.loadingPrices") : t("iap.priceUnavailable")}</Text>
+                <Text className="font-body text-xs text-gray-500">{offers.isLoading ? t("iap.loadingPrices") : t("iap.priceUnavailable")}</Text>
               )
             ) : null}
           </View>
@@ -259,7 +259,7 @@ export default function SubscriptionScreen() {
       {notice ? (
         <Text
           accessibilityLiveRegion="polite"
-          className={`rounded-parent p-3 text-sm ${notice.tone === "ok" ? "bg-teal-light text-ink" : notice.tone === "warn" ? "bg-star/20 text-ink" : "bg-coral-light text-danger"}`}
+          className={`font-body rounded-parent p-3 text-sm ${notice.tone === "ok" ? "bg-teal-light text-ink" : notice.tone === "warn" ? "bg-star/20 text-ink" : "bg-coral-light text-danger"}`}
         >
           {notice.text}
         </Text>
@@ -279,25 +279,25 @@ export default function SubscriptionScreen() {
         </View>
       ) : null}
 
-      <Text className="text-xs text-gray-500">{iapSupported ? t("iap.legal") : t("subscription.storeNote")}</Text>
+      <Text className="font-body text-xs text-gray-500">{iapSupported ? t("iap.legal") : t("subscription.storeNote")}</Text>
       {canBuy ? (
         <View className="flex-row flex-wrap gap-4">
           {Platform.OS === "ios" ? (
-            <Text className="text-xs text-teal-dark underline" accessibilityRole="link" onPress={() => void Linking.openURL(APPLE_EULA_URL)}>
+            <Text className="font-body text-xs text-teal-dark underline" accessibilityRole="link" onPress={() => void Linking.openURL(APPLE_EULA_URL)}>
               {t("iap.eula")}
             </Text>
           ) : null}
           {LEGAL_BASE_URL ? (
             <>
               <Text
-                className="text-xs text-teal-dark underline"
+                className="font-body text-xs text-teal-dark underline"
                 accessibilityRole="link"
                 onPress={() => void Linking.openURL(`${LEGAL_BASE_URL}/legal/abonelik-kosullari`)}
               >
                 {t("iap.subscriptionTerms")}
               </Text>
               <Text
-                className="text-xs text-teal-dark underline"
+                className="font-body text-xs text-teal-dark underline"
                 accessibilityRole="link"
                 onPress={() => void Linking.openURL(`${LEGAL_BASE_URL}/legal/gizlilik-politikasi`)}
               >

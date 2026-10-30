@@ -91,7 +91,7 @@ export default function GenerateQuestionsScreen() {
   if (result) {
     return (
       <Screen title={t("prova.ai.generatedTitle")}>
-        <Text className="text-base text-gray-600">{t("prova.ai.generatedCount", { count: result.length })}</Text>
+        <Text className="font-body text-base text-gray-600">{t("prova.ai.generatedCount", { count: result.length })}</Text>
         {result.map((q, i) => (
           <QuestionCard key={q.id} index={i + 1} question={q} />
         ))}
@@ -104,18 +104,18 @@ export default function GenerateQuestionsScreen() {
 
   return (
     <Screen title={t("prova.ai.generateTitle")}>
-      <Text className="text-base text-gray-600">{t("prova.ai.generateIntro")}</Text>
+      <Text className="font-body text-base text-gray-600">{t("prova.ai.generateIntro")}</Text>
       {ent && ent.ai_generate_limit <= 0 ? (
         <View className="rounded-parent bg-coral-light p-3">
-          <Text className="text-base text-ink">{t("prova.ai.needsPlus")}</Text>
+          <Text className="font-body text-base text-ink">{t("prova.ai.needsPlus")}</Text>
         </View>
       ) : remaining !== null ? (
-        <Text className="text-sm text-teal-dark">{t("prova.ai.quotaLeft", { count: remaining })}</Text>
+        <Text className="font-body text-sm text-teal-dark">{t("prova.ai.quotaLeft", { count: remaining })}</Text>
       ) : null}
 
       {ent?.scenarios && blueprints.data?.length ? (
         <View className="gap-2">
-          <Text className="text-sm font-medium text-ink dark:text-night-text">{t("prova.fromBlueprint")}</Text>
+          <Text className="text-sm font-body text-ink dark:text-night-text">{t("prova.fromBlueprint")}</Text>
           <View className="flex-row flex-wrap gap-2">
             <Pressable accessibilityRole="button" onPress={() => setBlueprintId(null)} className={chip(blueprintId === null)}>
               <Text className={chipText(blueprintId === null)}>{t("prova.noBlueprint")}</Text>
@@ -128,7 +128,7 @@ export default function GenerateQuestionsScreen() {
               </Pressable>
             ))}
           </View>
-          {blueprintId ? <Text className="text-xs text-gray-500">{t("prova.ai.blueprintCountHint")}</Text> : null}
+          {blueprintId ? <Text className="font-body text-xs text-gray-500">{t("prova.ai.blueprintCountHint")}</Text> : null}
         </View>
       ) : null}
 
@@ -162,7 +162,7 @@ export default function GenerateQuestionsScreen() {
         ))}
       </View>
 
-      <Text className="text-xs text-gray-500">{t("prova.ai.privacyNote")}</Text>
+      <Text className="font-body text-xs text-gray-500">{t("prova.ai.privacyNote")}</Text>
       <ErrorText error={generate.error ?? entitlement.error ?? blueprints.error} />
       <Button
         title={generate.isPending ? t("prova.ai.generating") : t("prova.ai.generate")}
@@ -180,34 +180,34 @@ function QuestionCard({ index, question: q }: { index: number; question: Generat
   const [open, setOpen] = useState(false);
   return (
     <View className="gap-2 rounded-parent border border-mist bg-white p-3 dark:bg-night-surface">
-      <Text className="text-xs text-gray-500">
+      <Text className="font-body text-xs text-gray-500">
         {index}. {q.topic} · {t(`prova.kind.${q.kind}`)} · {t(`prova.difficulty.${q.difficulty}`)}
       </Text>
       <Text className="font-body-bold text-base text-ink dark:text-night-text">{q.stem}</Text>
       {q.choices?.map((c) => (
-        <Text key={c.key} className={c.key === q.correct_key ? "font-semibold text-green" : "text-ink dark:text-night-text"}>
+        <Text key={c.key} className={c.key === q.correct_key ? "font-body-bold text-green" : "text-ink dark:text-night-text"}>
           {c.key}) {c.text}
         </Text>
       ))}
       {q.kind === "open_ended" && q.expected_answer ? (
-        <Text className="text-sm text-ink dark:text-night-text">
-          <Text className="font-semibold">{t("prova.expected")}: </Text>
+        <Text className="font-body text-sm text-ink dark:text-night-text">
+          <Text className="font-body-bold">{t("prova.expected")}: </Text>
           {q.expected_answer}
         </Text>
       ) : null}
       <Pressable accessibilityRole="button" onPress={() => setOpen((v) => !v)}>
-        <Text className="font-semibold text-teal-dark">{open ? t("prova.ai.hideSolution") : t("prova.ai.showSolution")}</Text>
+        <Text className="font-body-bold text-teal-dark">{open ? t("prova.ai.hideSolution") : t("prova.ai.showSolution")}</Text>
       </Pressable>
       {open ? (
         <View className="gap-1">
           {q.solution ? (
-            <Text className="text-sm text-gray-600">
-              <Text className="font-semibold">{t("prova.solution")}: </Text>
+            <Text className="font-body text-sm text-gray-600">
+              <Text className="font-body-bold">{t("prova.solution")}: </Text>
               {q.solution}
             </Text>
           ) : null}
-          {q.explanation ? <Text className="text-sm text-gray-600">{q.explanation}</Text> : null}
-          {q.source_urls.length ? <Text className="text-xs text-gray-500">{t("prova.ai.sources")}: {q.source_urls.join(", ")}</Text> : null}
+          {q.explanation ? <Text className="font-body text-sm text-gray-600">{q.explanation}</Text> : null}
+          {q.source_urls.length ? <Text className="font-body text-xs text-gray-500">{t("prova.ai.sources")}: {q.source_urls.join(", ")}</Text> : null}
         </View>
       ) : null}
     </View>

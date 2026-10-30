@@ -110,14 +110,14 @@ export default function QuestionScreen() {
           {KEYS.map((k) => (
             <View key={k} className="flex-row items-center gap-2">
               <Pressable accessibilityRole="button" onPress={() => setCorrect(k)} className={`h-10 w-10 items-center justify-center rounded-full ${correct === k ? "bg-green" : "bg-mist"}`}>
-                <Text className={correct === k ? "font-bold text-white" : "text-ink"}>{k}</Text>
+                <Text className={correct === k ? "font-body-bold text-white" : "text-ink"}>{k}</Text>
               </Pressable>
               <View className="flex-1">
                 <Field label="" value={choices[k] ?? ""} onChangeText={(v) => setChoices((c) => ({ ...c, [k]: v }))} />
               </View>
             </View>
           ))}
-          <Text className="text-xs text-gray-500">{t("prova.correctHint")}</Text>
+          <Text className="font-body text-xs text-gray-500">{t("prova.correctHint")}</Text>
         </View>
       ) : (
         <Field label={t("prova.expected")} value={expected} onChangeText={setExpected} multiline className="min-h-20" />

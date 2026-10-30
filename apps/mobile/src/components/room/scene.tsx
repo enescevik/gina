@@ -7,24 +7,23 @@ import roomsManifest from "../../../../../packages/assets/rooms/v2/manifest.json
 import { CHARACTER_PLACEMENT, PET_PLACEMENT, sceneFrame, zoneRect, type SceneRect, type Zone } from "./layout";
 
 // Üretim kaynakları (packages/assets/rooms/v2): pano/bilet/takvim/dolap tabana gömülü değil, kaplama olarak ayrı yerleşir.
-const ROOM_BASE = require("../../../../../packages/assets/rooms/v2/room-base.webp");
+const ROOM_BASE = require("../../../../../packages/assets/rooms/v2/room-home-v5.webp");
 const CHARACTERS = {
-  unspecified: require("../../../../../packages/assets/rooms/v2/character-unspecified.webp"),
-  girl: require("../../../../../packages/assets/rooms/v2/character-girl.webp"),
-  boy: require("../../../../../packages/assets/rooms/v2/character-boy.webp"),
+  unspecified: require("../../../../../packages/assets/rooms/v2/character-unspecified-v5.webp"),
+  girl: require("../../../../../packages/assets/rooms/v2/character-girl-v5.webp"),
+  boy: require("../../../../../packages/assets/rooms/v2/character-boy-v5.webp"),
 } as const;
 export type CharacterKey = keyof typeof CHARACTERS;
 
 /** child_room_preferences.pet_key değerleri (20261030160000_room_pet.sql). */
 export type PetKey = "none" | "cat" | "dog" | "monkey" | "lion";
 
-// Evcil hayvan katmanları (BRIEF 13): Codex packages/assets/rooms/v2/pet-{slug}.webp teslim edince ilgili satırın
-// yorumunu kaldırmak yeterli. Görseli olmayan seçim (ve 'none') hiç çizilmez.
+// BRIEF 13 evcil hayvan katmanları; petsiz seçimde dekor çizilmez.
 const PETS: Partial<Record<Exclude<PetKey, "none">, ImageSourcePropType>> = {
-  // cat: require("../../../../../packages/assets/rooms/v2/pet-cat.webp"),
-  // dog: require("../../../../../packages/assets/rooms/v2/pet-dog.webp"),
-  // monkey: require("../../../../../packages/assets/rooms/v2/pet-monkey.webp"),
-  // lion: require("../../../../../packages/assets/rooms/v2/pet-lion.webp"),
+  cat: require("../../../../../packages/assets/rooms/v2/pet-cat.webp"),
+  dog: require("../../../../../packages/assets/rooms/v2/pet-dog.webp"),
+  monkey: require("../../../../../packages/assets/rooms/v2/pet-monkey.webp"),
+  lion: require("../../../../../packages/assets/rooms/v2/pet-lion.webp"),
 };
 
 function petSource(pet: string | null | undefined): ImageSourcePropType | null {
@@ -41,7 +40,7 @@ interface CharacterEntry {
 
 /** Manifestteki alfa içerik sınırları: [x0, y0, x1, y1] kaynak pikseli. */
 function contentBoundsOf(key: CharacterKey) {
-  const entry = (roomsManifest as CharacterEntry[]).find((e) => e.slug === `character-${key}`);
+  const entry = (roomsManifest as CharacterEntry[]).find((e) => e.slug === `character-${key}-v5`);
   const size = entry?.width ?? 1254;
   const [x0, y0, x1, y1] = entry?.contentBounds ?? [0, 0, size, size];
   return { size, x0: x0 ?? 0, y0: y0 ?? 0, x1: x1 ?? size, y1: y1 ?? size };
@@ -88,6 +87,10 @@ export function RoomScene({ character, pet, children }: RoomSceneProps) {
   const charRect = characterRect(character, frame);
   const petImage = petSource(pet);
   const petSize = PET_PLACEMENT.height * frame.height;
+  const petEntry = (roomsManifest as CharacterEntry[]).find((entry) => entry.slug === `pet-${pet}`);
+  const petCanvas = petEntry?.width ?? 1254;
+  const [px0 = 0, py0 = 0, px1 = petCanvas, py1 = petCanvas] = petEntry?.contentBounds ?? [];
+  const petScale = petSize / Math.max(1, py1 - py0);
 
   return (
     <View
@@ -110,10 +113,10 @@ export function RoomScene({ character, pet, children }: RoomSceneProps) {
             importantForAccessibility="no-hide-descendants"
             style={{
               position: "absolute",
-              left: frame.left + PET_PLACEMENT.centerX * frame.width - petSize / 2,
-              top: frame.top + PET_PLACEMENT.footY * frame.height - petSize,
-              width: petSize,
-              height: petSize,
+              left: frame.left + PET_PLACEMENT.centerX * frame.width - (px0 + px1) / 2 * petScale,
+              top: frame.top + PET_PLACEMENT.footY * frame.height - py1 * petScale,
+              width: petCanvas * petScale,
+              height: (petEntry?.height ?? petCanvas) * petScale,
             }}
           />
         ) : null}
