@@ -163,3 +163,11 @@ Boyalı parçalar referans rehberli ayrı üretimlerdir; referansın piksel kesi
 110 güncel varlık için dosya/hash/boyut/alfa/contentBounds ve manifest kontrolleri geçti. 20 pressed/disabled varyantın alfa kanalı ve kapak geometrisi tabanıyla aynı. 80 ayrı resimli kaynak üretildi; kalanlar basit SVG kontrolleri ve deterministik durum varyantları. Contact sheet ve montajlar tarayıcıda gerçek dosyalardan oluşturuldu. OCR yalnız yardımcı kontroldür; görsel tarama ile birlikte kullanıldı. Uygulama koduna veya `apps/mobile` dosyalarına dokunulmadı.
 
 Statik çıktılar: `brief-13-compare-child.webp`, `brief-13-compare-parent.webp`; yalnız parçalar: `brief-13-montage-child.webp`, `brief-13-montage-parent.webp`. Her kategoride `contact-sheet.webp` bulunur.
+
+## 31 Ekim öncesi referans düzeltme turu
+
+Pano dış çerçevesi eğimli perspektife döndü; ara çıta ve başlık süsleri korundu. Hedef biletinin simetrik ince süslü bordürü çıkarıldı; dolgulu kâğıt, organik çentikler ve başlık çevresi ışınları getirildi. Kız karakterin yüzü/saç silüeti ve oturuşu referansa yaklaştırıldı. Veli başlığındaki çekmeceli dolap, referanstaki açık ayaklı masaya dönüştü; dış alfa parlaması giderildi. Önceki üretimler `previous/brief-13-r1` içinde; yeni supersedes bağlantıları bu sürüme işaret eder.
+
+BRIEF 13 A–E parça kapsamı tamamdır. Bu bir bağımsız katman teslimidir; onaylı raster referansın birebir piksel kopyası değildir. BRIEF 14 maketleri bu parçaları ve onaylı ekranların dilini kullanır. Uygulama giydirmesi ayrı onaydan sonra yapılacaktır.
+
+İstenen mobil kontroller: `cd apps/mobile && pnpm exec tsc --noEmit && pnpm exec expo lint` — geçti. Yeni paket eklenmedi; kilitli bağımlılıklar kuruldu.

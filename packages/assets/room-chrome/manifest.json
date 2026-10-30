@@ -6,25 +6,25 @@
     "height": 360,
     "format": "png",
     "alpha": true,
-    "sha256": "9ff8846905ddb42bbd88e6f8cf79f5baeeee8fa12af3466f51457f33cd9b3f9c",
+    "sha256": "e5cb531a3b7196d98801a057a376f1d68926be9f7b701012c012c5bdc98023d1",
     "variants": [
       "brief-13"
     ],
     "status": "reference-match-assets",
     "content_bounds_alpha32": [
       7,
-      7,
-      1073,
-      1073
+      9,
+      1074,
+      1072
     ],
-    "source": "exec-182f9738-005d-4561-96e3-08cef0785bc8.png",
+    "source": "exec-7d028934-b315-4b7e-9026-1613118f9091.png",
     "png": [
       "png/board-frame@3x.png"
     ],
     "pixelRatio": 3,
     "pngWidth": 1080,
     "pngHeight": 1080,
-    "pngSha256": "9ff8846905ddb42bbd88e6f8cf79f5baeeee8fa12af3466f51457f33cd9b3f9c",
+    "pngSha256": "e5cb531a3b7196d98801a057a376f1d68926be9f7b701012c012c5bdc98023d1",
     "base": "board-frame",
     "state": "default",
     "stretch": "both",
@@ -63,9 +63,9 @@
       "units": "source pixels @3x"
     },
     "supersedes": {
-      "file": "previous/brief-12/png/board-frame@3x.png",
-      "sha256": "e958d21bc01a45fe2095a351254b58c0abcc0d1ee58c1dd2e7d3814fc36fb1ed",
-      "reason": "BRIEF 13 approved-reference fidelity"
+      "file": "previous/brief-13-r1/png/board-frame@3x.png",
+      "sha256": "9ff8846905ddb42bbd88e6f8cf79f5baeeee8fa12af3466f51457f33cd9b3f9c",
+      "reason": "Reference fidelity refinement: perspective, paper edges, face and open table"
     }
   },
   {
@@ -503,7 +503,7 @@
     "height": 200,
     "format": "png",
     "alpha": true,
-    "sha256": "d1e276d9dc4e6d90bbbbb458975e7dee01d4f0d3de659119e8594dfcf49eed67",
+    "sha256": "4189dc040e1d706f7088246e68ffe48ca5ec124642d207c2815293011bcb305e",
     "variants": [
       "brief-13"
     ],
@@ -511,17 +511,17 @@
     "content_bounds_alpha32": [
       5,
       6,
-      1075,
-      593
+      1076,
+      594
     ],
-    "source": "exec-2f6446f4-31ba-4018-a1fa-593bc38cad82.png",
+    "source": "exec-afef7516-c47d-4738-9313-09136eca12b3.png",
     "png": [
       "png/ticket-goal@3x.png"
     ],
     "pixelRatio": 3,
     "pngWidth": 1080,
     "pngHeight": 600,
-    "pngSha256": "d1e276d9dc4e6d90bbbbb458975e7dee01d4f0d3de659119e8594dfcf49eed67",
+    "pngSha256": "4189dc040e1d706f7088246e68ffe48ca5ec124642d207c2815293011bcb305e",
     "base": "ticket-goal",
     "state": "default",
     "stretch": "horizontal",
@@ -566,9 +566,9 @@
       "units": "source pixels @3x"
     },
     "supersedes": {
-      "file": "previous/brief-12/png/ticket-goal@3x.png",
-      "sha256": "5012bd77ad85d3aa44b9e4c57419fb868f7e24258f07b67f831df2de9fd59634",
-      "reason": "BRIEF 13 approved-reference fidelity"
+      "file": "previous/brief-13-r1/png/ticket-goal@3x.png",
+      "sha256": "d1e276d9dc4e6d90bbbbb458975e7dee01d4f0d3de659119e8594dfcf49eed67",
+      "reason": "Reference fidelity refinement: perspective, paper edges, face and open table"
     }
   },
   {
@@ -578,7 +578,7 @@
     "height": 200,
     "format": "png",
     "alpha": true,
-    "sha256": "52443a610313a839c92cc006d655c2e15f60dddb3f2d16a79ac8b882fd4cd159",
+    "sha256": "eb07d76b2c2c2255c1c20980fc9eaee33a10f9b22b67608ab21589e889f2c359",
     "variants": [
       "brief-13"
     ],
@@ -586,17 +586,17 @@
     "content_bounds_alpha32": [
       5,
       6,
-      1075,
-      593
+      1076,
+      594
     ],
-    "source": "exec-2f6446f4-31ba-4018-a1fa-593bc38cad82.png",
+    "source": "exec-afef7516-c47d-4738-9313-09136eca12b3.png",
     "png": [
       "png/ticket-goal-empty@3x.png"
     ],
     "pixelRatio": 3,
     "pngWidth": 1080,
     "pngHeight": 600,
-    "pngSha256": "52443a610313a839c92cc006d655c2e15f60dddb3f2d16a79ac8b882fd4cd159",
+    "pngSha256": "eb07d76b2c2c2255c1c20980fc9eaee33a10f9b22b67608ab21589e889f2c359",
     "base": "ticket-goal",
     "state": "empty",
     "stretch": "horizontal",
@@ -641,9 +641,9 @@
       "units": "source pixels @3x"
     },
     "supersedes": {
-      "file": "previous/brief-12/png/ticket-goal-empty@3x.png",
-      "sha256": "4c1d4f82e6d813445fd237b12153315f4d9054f3886cb5f6b6a1906a2101d197",
-      "reason": "BRIEF 13 approved-reference fidelity"
+      "file": "previous/brief-13-r1/png/ticket-goal-empty@3x.png",
+      "sha256": "52443a610313a839c92cc006d655c2e15f60dddb3f2d16a79ac8b882fd4cd159",
+      "reason": "Reference fidelity refinement: perspective, paper edges, face and open table"
     }
   },
   {
@@ -2356,7 +2356,7 @@
     "height": 200,
     "format": "png",
     "alpha": true,
-    "sha256": "261a44b3795b88b074a4b4855a342d9a4b3f537cd6ad6d3463ea2865e6e69f35",
+    "sha256": "86be146c5354ceb0a6820889dd5fe26f60c324a27c379cfa7778d5ceec8d408b",
     "variants": [
       "brief-13"
     ],
@@ -2364,17 +2364,17 @@
     "content_bounds_alpha32": [
       5,
       6,
-      1075,
-      593
+      1076,
+      594
     ],
-    "source": "exec-2f6446f4-31ba-4018-a1fa-593bc38cad82.png",
+    "source": "exec-afef7516-c47d-4738-9313-09136eca12b3.png",
     "png": [
       "png/ticket-goal-pressed@3x.png"
     ],
     "pixelRatio": 3,
     "pngWidth": 1080,
     "pngHeight": 600,
-    "pngSha256": "261a44b3795b88b074a4b4855a342d9a4b3f537cd6ad6d3463ea2865e6e69f35",
+    "pngSha256": "86be146c5354ceb0a6820889dd5fe26f60c324a27c379cfa7778d5ceec8d408b",
     "base": "ticket-goal",
     "state": "pressed",
     "stretch": "horizontal",
@@ -2416,6 +2416,11 @@
         "height": 450
       },
       "units": "source pixels @3x"
+    },
+    "supersedes": {
+      "file": "previous/brief-13-r1/png/ticket-goal-pressed@3x.png",
+      "sha256": "261a44b3795b88b074a4b4855a342d9a4b3f537cd6ad6d3463ea2865e6e69f35",
+      "reason": "Reference fidelity refinement: perspective, paper edges, face and open table"
     }
   },
   {
@@ -2425,7 +2430,7 @@
     "height": 200,
     "format": "png",
     "alpha": true,
-    "sha256": "2c1412f3f121edc3fc37d16e89f15ff6c282c0682f9ae9cd1ab2958cd35a6dcd",
+    "sha256": "6b5ff6c2fb4c912bf8ba83cf7d2e37a33f66a7f8c0bfce7f9e06bfa2e5fc82b9",
     "variants": [
       "brief-13"
     ],
@@ -2433,17 +2438,17 @@
     "content_bounds_alpha32": [
       5,
       6,
-      1075,
-      593
+      1076,
+      594
     ],
-    "source": "exec-2f6446f4-31ba-4018-a1fa-593bc38cad82.png",
+    "source": "exec-afef7516-c47d-4738-9313-09136eca12b3.png",
     "png": [
       "png/ticket-goal-disabled@3x.png"
     ],
     "pixelRatio": 3,
     "pngWidth": 1080,
     "pngHeight": 600,
-    "pngSha256": "2c1412f3f121edc3fc37d16e89f15ff6c282c0682f9ae9cd1ab2958cd35a6dcd",
+    "pngSha256": "6b5ff6c2fb4c912bf8ba83cf7d2e37a33f66a7f8c0bfce7f9e06bfa2e5fc82b9",
     "base": "ticket-goal",
     "state": "disabled",
     "stretch": "horizontal",
@@ -2485,6 +2490,11 @@
         "height": 450
       },
       "units": "source pixels @3x"
+    },
+    "supersedes": {
+      "file": "previous/brief-13-r1/png/ticket-goal-disabled@3x.png",
+      "sha256": "2c1412f3f121edc3fc37d16e89f15ff6c282c0682f9ae9cd1ab2958cd35a6dcd",
+      "reason": "Reference fidelity refinement: perspective, paper edges, face and open table"
     }
   },
   {

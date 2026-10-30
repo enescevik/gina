@@ -2,9 +2,9 @@
   {
     "slug": "board-frame",
     "file": "png/board-frame@3x.png",
-    "source_image": "exec-182f9738-005d-4561-96e3-08cef0785bc8.png",
+    "source_image": "exec-7d028934-b315-4b7e-9026-1613118f9091.png",
     "prompt": "Use case: precise-object-edit. Extract the complete left wooden task board from the reference, including thick softly painted honey wood outer frame, CREAM inner paper/cork area, and the horizontal wooden divider at 34 percent of board height. Preserve the sun doodle and leaf sprig ONLY in the top-right header corner, and two teal pushpins near top corners. REMOVE all text, progress bar, task cards, buttons, icons and book/bag. Return one empty framed board alone, front elevation, width:height about 1:1. Keep divider in fixed top third. Outer edges nearly straight and central paper uniform so it can use 9-slice: top cap includes entire header and divider, bottom cap includes bottom frame, left/right cap include wood. Do not place texture across the blank center. Board fills 96 percent of image with tiny transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
-    "sha256": "9ff8846905ddb42bbd88e6f8cf79f5baeeee8fa12af3466f51457f33cd9b3f9c",
+    "sha256": "e5cb531a3b7196d98801a057a376f1d68926be9f7b701012c012c5bdc98023d1",
     "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
     "reference": "child-home-approved.png"
   },
@@ -128,9 +128,9 @@
   {
     "slug": "ticket-goal",
     "file": "png/ticket-goal@3x.png",
-    "source_image": "exec-2f6446f4-31ba-4018-a1fa-593bc38cad82.png",
+    "source_image": "exec-afef7516-c47d-4738-9313-09136eca12b3.png",
     "prompt": "Use case: precise-object-edit. Extract ONLY the upper-right goal ticket background from reference. Cream-YELLOW filled hand-painted ticket, scalloped/serrated corners, subtle double gold ornamental edge, soft warm shadow, golden star corner accents and little header sunshine rays near upper corners. REMOVE text, numbers, popcorn, clapperboard and progress bar. NOT an outline-only ticket. Blank roomy center for native text. Width:height 1.8:1. Front elevation, edges straight across middle and all notches/embellishments confined to corner end regions for 9-slice. Fill 96 percent of canvas with tiny transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
-    "sha256": "d1e276d9dc4e6d90bbbbb458975e7dee01d4f0d3de659119e8594dfcf49eed67",
+    "sha256": "4189dc040e1d706f7088246e68ffe48ca5ec124642d207c2815293011bcb305e",
     "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
     "reference": "child-home-approved.png"
   },

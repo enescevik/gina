@@ -82,19 +82,19 @@
     },
     {
       "file": "references/brief-13-compare-child.webp",
-      "sha256": "ef2921e6a1625209a8230399f2c440ab413733d3c384e94d4baa674d2cb7fef9"
+      "sha256": "aa96eecc5bdb13555a3f680639d90b3561e4bd3b20e9a42fe1d91eac971ac9cc"
     },
     {
       "file": "references/brief-13-compare-parent.webp",
-      "sha256": "142e087514d7c6d9b530c37f8593533ca9a3cf015c67a5f54466fa5833527c5c"
+      "sha256": "a47494db928f4e0ba622d23035840f3b574bfdf817f703857cb8ed1ed933d59d"
     },
     {
       "file": "references/brief-13-montage-child.webp",
-      "sha256": "380dd77cf95c4c6e2adcd5d045ce99c0b03a36e416a370f53d21cf0dcb64f720"
+      "sha256": "7415083843e47c960d8a117fd85f809e4a39a205405b7f2de7752bbecefb1329"
     },
     {
       "file": "references/brief-13-montage-parent.webp",
-      "sha256": "0797cd14ea5619e5e98ffdaf6a97d0422248ce9728ac84523cd42107fa0e1ee1"
+      "sha256": "c99d2871f001dee34d7a5476987e2f7e04cdd77bf686d4acbecc7283b704d576"
     },
     {
       "file": "references/brief-13-montage.html",
@@ -130,7 +130,7 @@
     },
     {
       "file": "references/preview-note.md",
-      "sha256": "c9d985ed2bc7f3ab7215f1fe65043ce2ba6affd19e9c1db3b0e948b4b6c1a373"
+      "sha256": "87ba1e52645aefc8d3848d57a4e187f6cb4b83f0eb5172a2dfe98459de103876"
     },
     {
       "file": "room-presets.json",

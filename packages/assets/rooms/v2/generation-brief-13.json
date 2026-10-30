@@ -11,9 +11,9 @@
   {
     "slug": "character-girl",
     "file": "character-girl.webp",
-    "source_image": "exec-be5848b4-802a-41ac-8419-c82ebadffab6.png",
+    "source_image": "exec-d415e824-c828-45bc-a316-8596eba30dce.png",
     "prompt": "Use case: precise-object-edit. Extract ONLY the seated girl from the approved reference as a transparent cutout, reconstructing occluded edges faithfully. Exact brown straight shoulder-length bob hair, side fringe, small oval dark eyes, coral sweater with a white five-petal daisy with yellow center on chest, teal trousers, blank teal open book, white socks. Same cross-legged pose, expression and proportions. No curls, no pet, no rug, no beanbag. Entire body in frame with 10 percent transparent margin. Feet horizontal baseline at 90 percent height. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
-    "sha256": "26adb218a946988c2b983cb42f11314682a27538d76d85a91162ca8c3c546f49",
+    "sha256": "c77c3a56e715697f8c7e6b27d5190141f4d01d2454d82154054e3fa1d2818f1b",
     "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
     "reference": "child-home-approved.png"
   },
@@ -38,9 +38,9 @@
   {
     "slug": "parent-header-scene",
     "file": "parent-header-scene.webp",
-    "source_image": "exec-e26e48b2-37d7-4946-b98f-89ecac687af4.png",
+    "source_image": "exec-e11c6360-1df0-4221-a20c-b321f4eb431d.png",
     "prompt": "Use case: precise-object-edit. Extract ONLY the upper-right decorative header vignette of the parent reference: tall cream window and mint curtain, blue sky with small yellow sun, green potted plants, wooden tabletop with teal/coral books, small framed gray cat photo, yellow mug. Preserve exact arrangement and style of the top-right corner. No child avatars, cards, text, statusbar, logos, buttons. Transparent outside illustration, vignette only; do not fill left empty area. This is a wide header illustration with most detail on its right half. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
-    "sha256": "a92d9a5ebd630a90d87bf6b3c054d036f45fbd08add7eb97360408675ea98f4b",
+    "sha256": "5569980ec5240cec6d42f28e21241516c37445a9fb61d07f21aa8a92cfc6c755",
     "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
     "reference": "parent-home-approved.png"
   },

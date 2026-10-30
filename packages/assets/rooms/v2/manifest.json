@@ -76,29 +76,29 @@
     "height": 1254,
     "format": "webp",
     "alpha": true,
-    "sha256": "26adb218a946988c2b983cb42f11314682a27538d76d85a91162ca8c3c546f49",
+    "sha256": "c77c3a56e715697f8c7e6b27d5190141f4d01d2454d82154054e3fa1d2818f1b",
     "variants": [
       "brief-13"
     ],
     "status": "reference-match-assets",
     "content_bounds_alpha32": [
-      229,
-      85,
-      1033,
-      1180
+      263,
+      95,
+      1043,
+      1177
     ],
     "lossless": true,
-    "source": "exec-be5848b4-802a-41ac-8419-c82ebadffab6.png",
+    "source": "exec-d415e824-c828-45bc-a316-8596eba30dce.png",
     "contentBounds": [
-      229,
-      85,
-      1033,
-      1180
+      263,
+      95,
+      1043,
+      1177
     ],
-    "groundLine": 1180,
+    "groundLine": 1177,
     "anchor": {
-      "x": 631,
-      "y": 1180,
+      "x": 653,
+      "y": 1177,
       "units": "source pixels"
     },
     "sceneAnchor": {
@@ -112,9 +112,9 @@
     },
     "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch",
     "supersedes": {
-      "file": "previous/brief-12/character-girl.webp",
-      "sha256": "e81ca8a4193bd637959f34bd8ec7b765099595813d0f60e99fd58906fe21a6bc",
-      "reason": "BRIEF 13 approved-reference fidelity"
+      "file": "previous/brief-13-r1/character-girl.webp",
+      "sha256": "26adb218a946988c2b983cb42f11314682a27538d76d85a91162ca8c3c546f49",
+      "reason": "Reference fidelity refinement: perspective, paper edges, face and open table"
     }
   },
   {
@@ -279,25 +279,30 @@
     "height": 640,
     "format": "webp",
     "alpha": true,
-    "sha256": "a92d9a5ebd630a90d87bf6b3c054d036f45fbd08add7eb97360408675ea98f4b",
+    "sha256": "5569980ec5240cec6d42f28e21241516c37445a9fb61d07f21aa8a92cfc6c755",
     "variants": [
       "brief-13"
     ],
     "status": "reference-match-assets",
     "content_bounds_alpha32": [
-      368,
-      0,
-      967,
-      638
+      494,
+      37,
+      1118,
+      605
     ],
     "lossless": true,
-    "source": "exec-e26e48b2-37d7-4946-b98f-89ecac687af4.png",
+    "source": "exec-e11c6360-1df0-4221-a20c-b321f4eb431d.png",
     "contentBounds": [
-      368,
-      0,
-      967,
-      638
-    ]
+      494,
+      37,
+      1118,
+      605
+    ],
+    "supersedes": {
+      "file": "previous/brief-13-r1/parent-header-scene.webp",
+      "sha256": "a92d9a5ebd630a90d87bf6b3c054d036f45fbd08add7eb97360408675ea98f4b",
+      "reason": "Reference fidelity refinement: perspective, paper edges, face and open table"
+    }
   },
   {
     "slug": "parent-insight-book",
