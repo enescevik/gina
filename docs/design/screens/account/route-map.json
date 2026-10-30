@@ -1,0 +1,458 @@
+[
+  {
+    "id": "sign-in",
+    "route": "(auth)/sign-in",
+    "sourceFile": "apps/mobile/src/app/(auth)/sign-in.tsx",
+    "sourceSha256": "6eab8d0b889a23654a2d2fd7b516c5685578947bb520ef66552ab03eccf13ada",
+    "variants": [
+      "signup"
+    ],
+    "existingCopyAndFields": {
+      "route": "(auth)/sign-in.tsx",
+      "copy": {
+        "app.name": "Gina Aile",
+        "auth.signIn": "Giriş yap",
+        "auth.signUp": "Kayıt ol",
+        "auth.email": "E-posta",
+        "auth.password": "Şifre",
+        "auth.withApple": "Apple ile devam et",
+        "auth.withGoogle": "Google ile devam et",
+        "auth.socialSoon": "Apple ve Google ile giriş, sağlayıcılar tanımlanınca açılır.",
+        "auth.thisIsChildTablet": "Bu cihaz çocuk tableti"
+      },
+      "states": [
+        "mode, setMode",
+        "email, setEmail",
+        "password, setPassword",
+        "busy, setBusy",
+        "error, setError"
+      ],
+      "formProps": [
+        "t(\"app.name\")",
+        "t(\"auth.email\")",
+        "t(\"auth.password\")",
+        "mode === \"in\" ? t(\"auth.signIn\") : t(\"auth.signUp\")",
+        "mode === \"in\" ? t(\"auth.signUp\") : t(\"auth.signIn\")",
+        "t(\"auth.withApple\")",
+        "t(\"auth.withGoogle\")"
+      ],
+      "links": [
+        "router.replace(\"/\");",
+        "href=\"/device/pair\" className=\"mt-8 text-center text-base text-teal-dark\">"
+      ]
+    },
+    "existingI18nKeys": {
+      "app.name": "Gina Aile",
+      "auth.email": "E-posta",
+      "auth.password": "Şifre",
+      "auth.signIn": "Giriş yap",
+      "auth.signUp": "Kayıt ol",
+      "auth.socialSoon": "Apple ve Google ile giriş, sağlayıcılar tanımlanınca açılır.",
+      "auth.thisIsChildTablet": "Bu cihaz çocuk tableti",
+      "auth.withApple": "Apple ile devam et",
+      "auth.withGoogle": "Google ile devam et"
+    },
+    "existingRpcNames": []
+  },
+  {
+    "id": "family",
+    "route": "(auth)/family",
+    "sourceFile": "apps/mobile/src/app/(auth)/family.tsx",
+    "sourceSha256": "51c9d615440561bd673f68148a8e0f331a4eeface76a7bd894d6e0d8bd9ac2f6",
+    "variants": [],
+    "existingCopyAndFields": {
+      "route": "(auth)/family.tsx",
+      "copy": {
+        "app.name": "Gina Aile",
+        "auth.createFamily": "Yeni aile oluştur",
+        "family.name": "Aile adı",
+        "family.namePlaceholder": "Çevik Ailesi",
+        "auth.joinFamily": "Davet koduyla aileye katıl",
+        "parent.inviteCode": "Davet kodu",
+        "family.invitePlaceholder": "8 haneli kod",
+        "auth.signOut": "Çıkış yap"
+      },
+      "states": [
+        "familyName, setFamilyName",
+        "inviteCode, setInviteCode",
+        "busy, setBusy",
+        "error, setError"
+      ],
+      "formProps": [
+        "t(\"app.name\")",
+        "t(\"family.name\")",
+        "t(\"family.namePlaceholder\")",
+        "t(\"auth.createFamily\")",
+        "t(\"parent.inviteCode\")",
+        "t(\"family.invitePlaceholder\")",
+        "t(\"auth.joinFamily\")",
+        "t(\"auth.signOut\")"
+      ],
+      "links": [
+        "router.replace(\"/\");",
+        "router.replace(\"/\"))} />"
+      ]
+    },
+    "existingI18nKeys": {
+      "app.name": "Gina Aile",
+      "auth.createFamily": "Yeni aile oluştur",
+      "auth.joinFamily": "Davet koduyla aileye katıl",
+      "auth.signOut": "Çıkış yap",
+      "family.invitePlaceholder": "8 haneli kod",
+      "family.name": "Aile adı",
+      "family.namePlaceholder": "Çevik Ailesi",
+      "parent.inviteCode": "Davet kodu"
+    },
+    "existingRpcNames": [
+      "create_family",
+      "join_family"
+    ]
+  },
+  {
+    "id": "pair",
+    "route": "device/pair",
+    "sourceFile": "apps/mobile/src/app/device/pair.tsx",
+    "sourceSha256": "eab2937055a75d9442f6303500935d80f8bc7e8f53d572789543b1ac0abaa239",
+    "variants": [],
+    "existingCopyAndFields": {
+      "route": "device/pair.tsx",
+      "copy": {
+        "device.pairTitle": "Tableti aileye bağla",
+        "device.pairHelp": "Veli telefonunda Gina'yı aç, «Cihaz ekle» de ve buradaki kodu gir. Kod 10 dakika geçerli.",
+        "device.waiting": "Eşleşme bekleniyor…",
+        "device.getCode": "Eşleştirme kodu al",
+        "device.thisIsParentPhone": "Bu cihaz veli telefonu"
+      },
+      "states": [
+        "code, setCode",
+        "busy, setBusy",
+        "error, setError"
+      ],
+      "formProps": [
+        "t(\"device.pairTitle\")",
+        "t(\"device.getCode\")",
+        "t(\"device.thisIsParentPhone\")"
+      ],
+      "links": [
+        "router.replace(\"/child\");",
+        "router.replace(\"/child\");",
+        "router.replace(\"/(auth)/sign-in\"))}"
+      ]
+    },
+    "existingI18nKeys": {
+      "device.getCode": "Eşleştirme kodu al",
+      "device.pairHelp": "Veli telefonunda Gina'yı aç, «Cihaz ekle» de ve buradaki kodu gir. Kod 10 dakika geçerli.",
+      "device.pairTitle": "Tableti aileye bağla",
+      "device.thisIsParentPhone": "Bu cihaz veli telefonu",
+      "device.waiting": "Eşleşme bekleniyor…"
+    },
+    "existingRpcNames": [
+      "request_pairing"
+    ]
+  },
+  {
+    "id": "notifications",
+    "route": "parent/notifications",
+    "sourceFile": "apps/mobile/src/app/parent/notifications.tsx",
+    "sourceSha256": "cc7a34907fea0b4a1b2fac2f39347fb45db132a0ee5948df7ccff47f3ebc9896",
+    "variants": [
+      "denied",
+      "web"
+    ],
+    "existingCopyAndFields": {
+      "route": "parent/notifications.tsx",
+      "copy": {
+        "push.channelName": "Gina bildirimleri",
+        "push.title": "Bildirimler",
+        "push.webNote": "Bildirimler yalnız iOS ve Android uygulamasında çalışır.",
+        "push.permissionAsk": "Onay bekleyen görevler ve biten denemeler için bildirim almak ister misin?",
+        "push.allow": "Bildirimlere izin ver",
+        "push.permissionDenied": "Bildirimler bu cihazda kapalı. Telefon ayarlarından açabilirsin.",
+        "push.openSettings": "Ayarları aç",
+        "push.privacyNote": "Bildirimlerde çocuk adı, not ya da puan yer almaz."
+      },
+      "states": [],
+      "formProps": [
+        "t(\"push.title\")",
+        "t(\"push.allow\")",
+        "t(\"push.openSettings\")"
+      ],
+      "links": []
+    },
+    "existingI18nKeys": {
+      "approvals, exams, weekly_summary": null,
+      "push.allow": "Bildirimlere izin ver",
+      "push.channelName": "Gina bildirimleri",
+      "push.openSettings": "Ayarları aç",
+      "push.permissionAsk": "Onay bekleyen görevler ve biten denemeler için bildirim almak ister misin?",
+      "push.permissionDenied": "Bildirimler bu cihazda kapalı. Telefon ayarlarından açabilirsin.",
+      "push.privacyNote": "Bildirimlerde çocuk adı, not ya da puan yer almaz.",
+      "push.title": "Bildirimler",
+      "push.webNote": "Bildirimler yalnız iOS ve Android uygulamasında çalışır."
+    },
+    "existingRpcNames": []
+  },
+  {
+    "id": "share",
+    "route": "parent/share",
+    "sourceFile": "apps/mobile/src/app/parent/share.tsx",
+    "sourceSha256": "4fcaa00c91d5901ffa8c9be7f1620e4961cef70258387eb677d7c48f2a9c69bd",
+    "variants": [
+      "created"
+    ],
+    "existingCopyAndFields": {
+      "route": "parent/share.tsx",
+      "copy": {
+        "share.shareMessage": "Gina Aile üzerinden paylaşılan salt okunur rapor: {{url}}",
+        "share.title": "Öğretmenle paylaş",
+        "share.intro": "Öğretmene hesap açmadan, salt okunur bir bağlantı gönderebilirsin. Ne paylaşılacağını ve ne kadar süre açık kalacağını sen seçersin; istediğin an iptal edebilirsin.",
+        "share.linkReady": "Bağlantı hazır",
+        "share.linkOnce": "Bu bağlantı yalnız şimdi gösterilir; güvenlik için bir daha görüntülenemez. Kopyala ya da paylaş.",
+        "share.noWebUrl": "Web adresi tanımlı değil (EXPO_PUBLIC_WEB_URL); bağlantının başına web adresini eklemen gerekir.",
+        "share.copied": "Kopyalandı",
+        "share.copy": "Kopyala",
+        "share.share": "Paylaş",
+        "share.done": "Tamam, kaydettim",
+        "share.none": "Bu çocuk için henüz paylaşım bağlantısı yok.",
+        "share.status.revoked": "İptal edildi",
+        "share.status.expired": "Süresi doldu",
+        "share.status.active": "Etkin",
+        "share.expiresOn": "Son geçerlilik: {{date}}",
+        "share.views": null,
+        "share.lastViewed": "son: {{date}}",
+        "share.revoke": "İptal et",
+        "share.new": "Yeni paylaşım bağlantısı",
+        "share.label": "Kiminle paylaşıyorsun?",
+        "share.labelPlaceholder": "Ayşe Öğretmen",
+        "share.scopes": "Paylaşılacaklar",
+        "share.neverShared": "Notlar, PIN'ler, doğum tarihi, soyadı ve aile üyelerinin e-postaları hiçbir zaman paylaşılmaz.",
+        "share.expiry": "Geçerlilik süresi",
+        "share.days": null,
+        "share.create": "Bağlantı oluştur",
+        "tasks.addChildFirst": "Önce ana sayfadan bir çocuk ekle.",
+        "parent.home": "Ana sayfa"
+      },
+      "states": [
+        "childId, setChildId",
+        "label, setLabel",
+        "scopes, setScopes",
+        "days, setDays",
+        "createdLink, setCreatedLink",
+        "copied, setCopied"
+      ],
+      "formProps": [
+        "t(\"share.title\")",
+        "copied ? t(\"share.copied\") : t(\"share.copy\")",
+        "t(\"share.share\")",
+        "t(\"share.done\")",
+        "t(\"share.revoke\")",
+        "t(\"share.label\")",
+        "t(\"share.labelPlaceholder\")",
+        "t(\"share.create\")",
+        "t(\"parent.home\")"
+      ],
+      "links": []
+    },
+    "existingI18nKeys": {
+      "id, label, scopes, created_at, expires_at, revoked_at, last_viewed_at, view_count": null,
+      "id, name": null,
+      "parent.home": "Ana sayfa",
+      "share.copied": "Kopyalandı",
+      "share.copy": "Kopyala",
+      "share.create": "Bağlantı oluştur",
+      "share.days": null,
+      "share.done": "Tamam, kaydettim",
+      "share.expiresOn": "Son geçerlilik: {{date}}",
+      "share.expiry": "Geçerlilik süresi",
+      "share.intro": "Öğretmene hesap açmadan, salt okunur bir bağlantı gönderebilirsin. Ne paylaşılacağını ve ne kadar süre açık kalacağını sen seçersin; istediğin an iptal edebilirsin.",
+      "share.label": "Kiminle paylaşıyorsun?",
+      "share.labelPlaceholder": "Ayşe Öğretmen",
+      "share.lastViewed": "son: {{date}}",
+      "share.linkOnce": "Bu bağlantı yalnız şimdi gösterilir; güvenlik için bir daha görüntülenemez. Kopyala ya da paylaş.",
+      "share.linkReady": "Bağlantı hazır",
+      "share.neverShared": "Notlar, PIN'ler, doğum tarihi, soyadı ve aile üyelerinin e-postaları hiçbir zaman paylaşılmaz.",
+      "share.new": "Yeni paylaşım bağlantısı",
+      "share.noWebUrl": "Web adresi tanımlı değil (EXPO_PUBLIC_WEB_URL); bağlantının başına web adresini eklemen gerekir.",
+      "share.none": "Bu çocuk için henüz paylaşım bağlantısı yok.",
+      "share.revoke": "İptal et",
+      "share.scopes": "Paylaşılacaklar",
+      "share.share": "Paylaş",
+      "share.shareMessage": "Gina Aile üzerinden paylaşılan salt okunur rapor: {{url}}",
+      "share.status.active": "Etkin",
+      "share.status.expired": "Süresi doldu",
+      "share.status.revoked": "İptal edildi",
+      "share.title": "Öğretmenle paylaş",
+      "share.views": null,
+      "tasks.addChildFirst": "Önce ana sayfadan bir çocuk ekle."
+    },
+    "existingRpcNames": [
+      "create_child_share",
+      "revoke_child_share"
+    ]
+  },
+  {
+    "id": "subscription",
+    "route": "parent/subscription",
+    "sourceFile": "apps/mobile/src/app/parent/subscription.tsx",
+    "sourceSha256": "6e4758786e6a86926a55da13f573270726ae7c41ae3f49b86909de54b3813fac",
+    "variants": [
+      "web",
+      "pending"
+    ],
+    "existingCopyAndFields": {
+      "route": "parent/subscription.tsx",
+      "copy": {
+        "iap.success": "Teşekkürler! {{plan}} paketin etkin.",
+        "iap.pending": "Ödemen onay bekliyor; onaylanınca paketin kendiliğinden açılır.",
+        "iap.error.generic": "Satın alma doğrulanamadı. Ödemen kaybolmaz; biraz sonra «Satın alımları geri yükle»yi dene.",
+        "iap.restoreDone": null,
+        "iap.restoreNone": "Bu mağaza hesabında etkin bir abonelik bulunamadı.",
+        "iap.error.store_unavailable": "Mağazaya bağlanılamadı. Biraz sonra tekrar dene.",
+        "subscription.title": "Paketler",
+        "subscription.compNote": "Ailenize tanımlı ücretsiz erişim süresi var.",
+        "iap.status.grace": "Ödeme alınamadı. Paketin {{date}} tarihine kadar açık; ödeme yöntemini mağazada güncelle.",
+        "iap.status.onHold": "Ödeme alınamadığı için paketin askıda. Ödeme yöntemini mağazada güncelle.",
+        "iap.renewsOn": "Aboneliğin {{date}} tarihinde yenilenecek.",
+        "iap.endsOn": "Aboneliğin {{date}} tarihinde bitecek (otomatik yenileme kapalı).",
+        "iap.otherStore": "Aboneliğin {{store}} üzerinden alındı; değişiklikleri oradan yapabilirsin.",
+        "iap.webNote": "Paket satın alma yalnız Gina Aile mobil uygulamasından (App Store / Google Play) yapılır. Aldığın paket burada otomatik görünür.",
+        "iap.parentOnly": "Paketleri yalnız veli hesabı satın alabilir.",
+        "subscription.children": null,
+        "subscription.devicesUnlimited": "Sınırsız eşleştirilmiş tablet",
+        "subscription.devices": null,
+        "subscription.tasksUnlimited": "Sınırsız görev",
+        "subscription.tasksLimited": null,
+        "subscription.historyUnlimited": "Sınırsız geçmiş",
+        "subscription.historyDays": null,
+        "subscription.aiWeekly": "Haftalık AI aile özeti",
+        "subscription.aiNone": "AI özeti yok",
+        "subscription.current": "Mevcut paket",
+        "iap.trial": "İlk 7 gün ücretsiz",
+        "iap.currentProduct": "Şu anki aboneliğin",
+        "iap.change": "Bu pakete geç",
+        "iap.buy": "Abone ol",
+        "iap.loadingPrices": "Mağaza fiyatları yükleniyor…",
+        "iap.priceUnavailable": "Bu paket mağazada şu an sunulmuyor.",
+        "iap.restore": "Satın alımları geri yükle",
+        "iap.manage": "Aboneliği yönet",
+        "iap.redeemIos": "Kampanya kodu kullan",
+        "iap.redeemAndroid": "Google Play kodu kullan",
+        "iap.legal": "Abonelik, dönem bitmeden en az 24 saat önce iptal edilmezse aynı süre ve fiyatla otomatik yenilenir; ücret mağaza hesabından alınır. İptal ve iade App Store / Google Play üzerinden yapılır.",
+        "subscription.storeNote": "Satın alma ve iptal App Store / Google Play üzerinden yapılır; fiyatlar mağazada gösterilir.",
+        "iap.eula": "Kullanım Koşulları (EULA)",
+        "iap.subscriptionTerms": "Abonelik Koşulları",
+        "iap.privacy": "Gizlilik Politikası",
+        "parent.home": "Ana sayfa"
+      },
+      "states": [
+        "period, setPeriod",
+        "notice, setNotice"
+      ],
+      "formProps": [
+        "t(\"subscription.title\")",
+        "sub ? t(\"iap.change\") : t(\"iap.buy\")",
+        "t(\"iap.restore\")",
+        "t(\"iap.manage\")",
+        "Platform.OS === \"ios\" ? t(\"iap.redeemIos\") : t(\"iap.redeemAndroid\")",
+        "t(\"parent.home\")"
+      ],
+      "links": []
+    },
+    "existingI18nKeys": {
+      "*": null,
+      "expires_at": null,
+      "iap.buy": "Abone ol",
+      "iap.change": "Bu pakete geç",
+      "iap.currentProduct": "Şu anki aboneliğin",
+      "iap.endsOn": "Aboneliğin {{date}} tarihinde bitecek (otomatik yenileme kapalı).",
+      "iap.error.generic": "Satın alma doğrulanamadı. Ödemen kaybolmaz; biraz sonra «Satın alımları geri yükle»yi dene.",
+      "iap.error.store_unavailable": "Mağazaya bağlanılamadı. Biraz sonra tekrar dene.",
+      "iap.eula": "Kullanım Koşulları (EULA)",
+      "iap.legal": "Abonelik, dönem bitmeden en az 24 saat önce iptal edilmezse aynı süre ve fiyatla otomatik yenilenir; ücret mağaza hesabından alınır. İptal ve iade App Store / Google Play üzerinden yapılır.",
+      "iap.loadingPrices": "Mağaza fiyatları yükleniyor…",
+      "iap.manage": "Aboneliği yönet",
+      "iap.otherStore": "Aboneliğin {{store}} üzerinden alındı; değişiklikleri oradan yapabilirsin.",
+      "iap.parentOnly": "Paketleri yalnız veli hesabı satın alabilir.",
+      "iap.pending": "Ödemen onay bekliyor; onaylanınca paketin kendiliğinden açılır.",
+      "iap.priceUnavailable": "Bu paket mağazada şu an sunulmuyor.",
+      "iap.privacy": "Gizlilik Politikası",
+      "iap.redeemAndroid": "Google Play kodu kullan",
+      "iap.redeemIos": "Kampanya kodu kullan",
+      "iap.renewsOn": "Aboneliğin {{date}} tarihinde yenilenecek.",
+      "iap.restore": "Satın alımları geri yükle",
+      "iap.restoreDone": null,
+      "iap.restoreNone": "Bu mağaza hesabında etkin bir abonelik bulunamadı.",
+      "iap.status.grace": "Ödeme alınamadı. Paketin {{date}} tarihine kadar açık; ödeme yöntemini mağazada güncelle.",
+      "iap.status.onHold": "Ödeme alınamadığı için paketin askıda. Ödeme yöntemini mağazada güncelle.",
+      "iap.subscriptionTerms": "Abonelik Koşulları",
+      "iap.success": "Teşekkürler! {{plan}} paketin etkin.",
+      "iap.trial": "İlk 7 gün ücretsiz",
+      "iap.webNote": "Paket satın alma yalnız Gina Aile mobil uygulamasından (App Store / Google Play) yapılır. Aldığın paket burada otomatik görünür.",
+      "parent.home": "Ana sayfa",
+      "platform, product_id, plan, status, expires_at, auto_renewing, store_key": null,
+      "subscription.aiNone": "AI özeti yok",
+      "subscription.aiWeekly": "Haftalık AI aile özeti",
+      "subscription.children": null,
+      "subscription.compNote": "Ailenize tanımlı ücretsiz erişim süresi var.",
+      "subscription.current": "Mevcut paket",
+      "subscription.devices": null,
+      "subscription.devicesUnlimited": "Sınırsız eşleştirilmiş tablet",
+      "subscription.historyDays": null,
+      "subscription.historyUnlimited": "Sınırsız geçmiş",
+      "subscription.storeNote": "Satın alma ve iptal App Store / Google Play üzerinden yapılır; fiyatlar mağazada gösterilir.",
+      "subscription.tasksLimited": null,
+      "subscription.tasksUnlimited": "Sınırsız görev",
+      "subscription.title": "Paketler"
+    },
+    "existingRpcNames": [
+      "get_family_entitlement"
+    ]
+  },
+  {
+    "id": "teacher-report",
+    "route": "s/[token]",
+    "sourceFile": "apps/mobile/src/app/s/[token].tsx",
+    "sourceSha256": "3c806f79d56f52a5e17391ad9b7451c7e8bdc1276a4deeb618b4cfc148ec5fd7",
+    "variants": [],
+    "existingCopyAndFields": {
+      "route": "s/[token].tsx",
+      "copy": {
+        "share.viewer.pageTitle": "Paylaşılan rapor · Gina Aile",
+        "share.viewer.invalidTitle": "Bu bağlantı geçerli değil",
+        "share.viewer.invalidBody": "Bağlantının süresi dolmuş, iptal edilmiş ya da hatalı olabilir. Yeni bir bağlantı için veliyle iletişime geçin.",
+        "share.viewer.headingWithGrade": "{{name}} · {{grade}}. sınıf",
+        "share.viewer.sharedWith": "{{label}} için paylaşıldı",
+        "share.expiresOn": "Son geçerlilik: {{date}}",
+        "share.scope.grades": "Puanlar",
+        "share.viewer.empty": "Henüz kayıt yok.",
+        "share.scope.prova": "Prova sonuçları",
+        "share.scope.tasks_summary": "Görev özeti",
+        "share.viewer.lastDays": null,
+        "share.viewer.footer": "Gina Aile ile paylaşıldı",
+        "share.viewer.footerNote": "Bu salt okunur rapor veli tarafından paylaşılmıştır. Lütfen başkalarıyla paylaşmayın."
+      },
+      "states": [],
+      "formProps": [],
+      "links": []
+    },
+    "existingI18nKeys": {
+      "meta": null,
+      "share.expiresOn": "Son geçerlilik: {{date}}",
+      "share.scope.grades": "Puanlar",
+      "share.scope.prova": "Prova sonuçları",
+      "share.scope.tasks_summary": "Görev özeti",
+      "share.viewer.empty": "Henüz kayıt yok.",
+      "share.viewer.footer": "Gina Aile ile paylaşıldı",
+      "share.viewer.footerNote": "Bu salt okunur rapor veli tarafından paylaşılmıştır. Lütfen başkalarıyla paylaşmayın.",
+      "share.viewer.headingWithGrade": "{{name}} · {{grade}}. sınıf",
+      "share.viewer.invalidBody": "Bağlantının süresi dolmuş, iptal edilmiş ya da hatalı olabilir. Yeni bir bağlantı için veliyle iletişime geçin.",
+      "share.viewer.invalidTitle": "Bu bağlantı geçerli değil",
+      "share.viewer.lastDays": null,
+      "share.viewer.pageTitle": "Paylaşılan rapor · Gina Aile",
+      "share.viewer.sharedWith": "{{label}} için paylaşıldı"
+    },
+    "existingRpcNames": [
+      "get_shared_child_view"
+    ]
+  }
+]

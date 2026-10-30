@@ -1,0 +1,764 @@
+{
+  "group": "account",
+  "screens": [
+    {
+      "id": "sign-in",
+      "title": "Hoş geldin",
+      "route": "(auth)/sign-in",
+      "variants": [
+        "signup"
+      ]
+    },
+    {
+      "id": "family",
+      "title": "Ailenle başla",
+      "route": "(auth)/family",
+      "variants": []
+    },
+    {
+      "id": "pair",
+      "title": "Tableti aileye bağla",
+      "route": "device/pair",
+      "variants": []
+    },
+    {
+      "id": "notifications",
+      "title": "Bildirimler",
+      "route": "parent/notifications",
+      "variants": [
+        "denied",
+        "web"
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Öğretmenle paylaş",
+      "route": "parent/share",
+      "variants": [
+        "created"
+      ]
+    },
+    {
+      "id": "subscription",
+      "title": "Paketim",
+      "route": "parent/subscription",
+      "variants": [
+        "web",
+        "pending"
+      ]
+    },
+    {
+      "id": "teacher-report",
+      "title": "Paylaşılan rapor",
+      "route": "s/[token]",
+      "variants": []
+    }
+  ],
+  "captures": [
+    {
+      "screen": "sign-in",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "sign-in-phone.png"
+    },
+    {
+      "screen": "sign-in",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "sign-in-phone-part-2.png"
+    },
+    {
+      "screen": "sign-in",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "sign-in-empty-phone.png"
+    },
+    {
+      "screen": "sign-in",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "sign-in-loading-phone.png"
+    },
+    {
+      "screen": "sign-in",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "sign-in-error-phone.png"
+    },
+    {
+      "screen": "sign-in",
+      "device": "phone",
+      "state": "signup",
+      "part": 1,
+      "file": "sign-in-signup-phone.png"
+    },
+    {
+      "screen": "sign-in",
+      "device": "phone",
+      "state": "signup",
+      "part": 2,
+      "file": "sign-in-signup-phone-part-2.png"
+    },
+    {
+      "screen": "family",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "family-phone.png"
+    },
+    {
+      "screen": "family",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "family-phone-part-2.png"
+    },
+    {
+      "screen": "family",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "family-empty-phone.png"
+    },
+    {
+      "screen": "family",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "family-loading-phone.png"
+    },
+    {
+      "screen": "family",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "family-error-phone.png"
+    },
+    {
+      "screen": "pair",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "pair-phone.png"
+    },
+    {
+      "screen": "pair",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "pair-empty-phone.png"
+    },
+    {
+      "screen": "pair",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "pair-loading-phone.png"
+    },
+    {
+      "screen": "pair",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "pair-error-phone.png"
+    },
+    {
+      "screen": "notifications",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "notifications-phone.png"
+    },
+    {
+      "screen": "notifications",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "notifications-empty-phone.png"
+    },
+    {
+      "screen": "notifications",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "notifications-loading-phone.png"
+    },
+    {
+      "screen": "notifications",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "notifications-error-phone.png"
+    },
+    {
+      "screen": "notifications",
+      "device": "phone",
+      "state": "denied",
+      "part": 1,
+      "file": "notifications-denied-phone.png"
+    },
+    {
+      "screen": "notifications",
+      "device": "phone",
+      "state": "web",
+      "part": 1,
+      "file": "notifications-web-phone.png"
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "share-phone.png"
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "share-phone-part-2.png"
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "share-empty-phone.png"
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "share-loading-phone.png"
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "share-error-phone.png"
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "created",
+      "part": 1,
+      "file": "share-created-phone.png"
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "created",
+      "part": 2,
+      "file": "share-created-phone-part-2.png"
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "created",
+      "part": 3,
+      "file": "share-created-phone-part-3.png"
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "subscription-phone.png"
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "subscription-phone-part-2.png"
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "normal",
+      "part": 3,
+      "file": "subscription-phone-part-3.png"
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "subscription-empty-phone.png"
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "subscription-loading-phone.png"
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "subscription-error-phone.png"
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "web",
+      "part": 1,
+      "file": "subscription-web-phone.png"
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "web",
+      "part": 2,
+      "file": "subscription-web-phone-part-2.png"
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "web",
+      "part": 3,
+      "file": "subscription-web-phone-part-3.png"
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "pending",
+      "part": 1,
+      "file": "subscription-pending-phone.png"
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "pending",
+      "part": 2,
+      "file": "subscription-pending-phone-part-2.png"
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "pending",
+      "part": 3,
+      "file": "subscription-pending-phone-part-3.png"
+    },
+    {
+      "screen": "teacher-report",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "teacher-report-phone.png"
+    },
+    {
+      "screen": "teacher-report",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "teacher-report-phone-part-2.png"
+    },
+    {
+      "screen": "teacher-report",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "teacher-report-empty-phone.png"
+    },
+    {
+      "screen": "teacher-report",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "teacher-report-loading-phone.png"
+    },
+    {
+      "screen": "teacher-report",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "teacher-report-error-phone.png"
+    }
+  ],
+  "checks": [
+    {
+      "screen": "sign-in",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 582,
+      "scrollHeight": 706,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "sign-in",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 582,
+      "scrollHeight": 706,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "sign-in",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 582,
+      "scrollHeight": 706,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "sign-in",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 582,
+      "scrollHeight": 803,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "sign-in",
+      "device": "phone",
+      "state": "signup",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 582,
+      "scrollHeight": 706,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "family",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 627,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "family",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 627,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "family",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "family",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 724,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "pair",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 567,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "pair",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 567,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "pair",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 567,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "pair",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 567,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "notifications",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "notifications",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "notifications",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "notifications",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "notifications",
+      "device": "phone",
+      "state": "denied",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "notifications",
+      "device": "phone",
+      "state": "web",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 999,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 814,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 567,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 1095,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "share",
+      "device": "phone",
+      "state": "created",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 1313,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1408,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1500,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "web",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1331,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "subscription",
+      "device": "phone",
+      "state": "pending",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1500,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "teacher-report",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 964,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "teacher-report",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "teacher-report",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "teacher-report",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    }
+  ]
+}
