@@ -1,0 +1,401 @@
+[
+  {
+    "slug": "turkish",
+    "label_tr": "Türkçe",
+    "file": "turkish.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      31,
+      134,
+      1236,
+      1133
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "c6b56b1d0a42cc9fa81beb15942c3c9cd1872f1bf51e33aa480dcc0b2338cf26",
+    "png": []
+  },
+  {
+    "slug": "math",
+    "label_tr": "Matematik",
+    "file": "math.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      113,
+      157,
+      1210,
+      1096
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "91b39f1d859b073178cf2844e165a8f44556981c27bd9415563c7ede4fb848eb",
+    "png": []
+  },
+  {
+    "slug": "life-science",
+    "label_tr": "Hayat bilgisi",
+    "file": "life-science.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      102,
+      143,
+      1177,
+      1122
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "19a7de8f76f16cb5fbb83a117435f59a23f196c7e213701966d543c82e4c6aa3",
+    "png": []
+  },
+  {
+    "slug": "science",
+    "label_tr": "Fen bilimleri",
+    "file": "science.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      219,
+      165,
+      1105,
+      1084
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "d3c05cea4c891bb430c3cf69d39568517ca5f61245fe4d5e9845139550569c9f",
+    "png": []
+  },
+  {
+    "slug": "social-studies",
+    "label_tr": "Sosyal bilgiler",
+    "file": "social-studies.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      143,
+      78,
+      1127,
+      1169
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "29dafd89e58c0d29143ff5c187f847b15802fa8170ca06e0aa7afc27b663d693",
+    "png": []
+  },
+  {
+    "slug": "citizenship",
+    "label_tr": "Vatandaşlık",
+    "file": "citizenship.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      58,
+      300,
+      1195,
+      998
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "61d15050d2a0778cb2fbdc74b9c0edf754afab8fe1f0250370c5294a71c225da",
+    "png": []
+  },
+  {
+    "slug": "english",
+    "label_tr": "İngilizce",
+    "file": "english.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      119,
+      145,
+      1215,
+      1159
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "eff0e9b2057f8901cf8eeb982a7b5484ea78dcc936cab67d16bb931c8ada9abf",
+    "png": []
+  },
+  {
+    "slug": "religion-ethics",
+    "label_tr": "Din kültürü ve ahlak bilgisi",
+    "file": "religion-ethics.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      26,
+      317,
+      1229,
+      1023
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "90cc5e3a9d9235421af7ff764c56d3cd9a519dc9319366e9f976cae5aa1024b9",
+    "png": []
+  },
+  {
+    "slug": "physical-education",
+    "label_tr": "Beden eğitimi",
+    "file": "physical-education.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      53,
+      296,
+      1198,
+      1054
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "84286ba9e27f872ac97958a3dc311fc54c6073b19d06698e34521f530d30cbe5",
+    "png": []
+  },
+  {
+    "slug": "play-physical",
+    "label_tr": "Oyun ve fiziki etkinlikler",
+    "file": "play-physical.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      88,
+      145,
+      1189,
+      1126
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "3cefbd31aa053c84a45717fbdd815af929bb30e9c91a83f0840bc3d26cf63f1b",
+    "png": []
+  },
+  {
+    "slug": "music",
+    "label_tr": "Müzik",
+    "file": "music.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      168,
+      82,
+      1114,
+      1197
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "b64dedc06ef6ede0dcff294239131e4b49776683e19ea25740ddfc53a6c3e1bf",
+    "png": []
+  },
+  {
+    "slug": "visual-arts",
+    "label_tr": "Görsel sanatlar",
+    "file": "visual-arts.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      78,
+      138,
+      1193,
+      1147
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "965d340dd55890a0d8f61743494cdb5927ed817f44e42c303b0ea2e83a3a335d",
+    "png": []
+  },
+  {
+    "slug": "ict",
+    "label_tr": "Bilişim teknolojileri",
+    "file": "ict.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      60,
+      180,
+      1194,
+      1130
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "970f8fb9dac50da6a2e189177ce2da6d4646947effc7fea996a9cff51289661a",
+    "png": []
+  },
+  {
+    "slug": "technology-design",
+    "label_tr": "Teknoloji ve tasarım",
+    "file": "technology-design.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      107,
+      200,
+      1206,
+      1129
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "abed74ef47be289f71a5fdac2fa374fa252c639a54cb1436b2d8a8fa06f2a665",
+    "png": []
+  },
+  {
+    "slug": "traffic-safety",
+    "label_tr": "Trafik güvenliği",
+    "file": "traffic-safety.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      229,
+      105,
+      964,
+      1196
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "71e0fe8036051ef408718852be7be2c30eb73233a3850238a80c2aa059a45a22",
+    "png": []
+  },
+  {
+    "slug": "free-activity",
+    "label_tr": "Serbest etkinlik",
+    "file": "free-activity.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      25,
+      231,
+      1237,
+      1134
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "46cfa67d78a7fd04924a4dfe022157c3bfeba2a237590664752ed4a922f055e8",
+    "png": []
+  },
+  {
+    "slug": "guidance",
+    "label_tr": "Rehberlik",
+    "file": "guidance.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      218,
+      74,
+      1039,
+      1174
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "286caf202e3a0293d80c047e360875d13d21160ce72d1d088d24b7965594af31",
+    "png": []
+  },
+  {
+    "slug": "study-hall",
+    "label_tr": "Etüt",
+    "file": "study-hall.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      220,
+      95,
+      1081,
+      1188
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "5634a2f517b754b42e2ea36d85ca353746a61a0404aaf8e8adbd95a06433361a",
+    "png": []
+  },
+  {
+    "slug": "elective",
+    "label_tr": "Seçmeli ders",
+    "file": "elective.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      186,
+      132,
+      1087,
+      1175
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "cd3b0a2ed402e4c26f501dd3d07b5a78c87dddef11d733922282f3a38e533249",
+    "png": []
+  }
+]
