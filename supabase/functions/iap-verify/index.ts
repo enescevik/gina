@@ -15,7 +15,7 @@
 // Apple Root CA G3'e karşı çevrimdışı doğrulanır; App Store Server API anahtarı varsa durum ayrıca
 // API'den tazelenir. Google tarafı yalnız Play Developer API yanıtına güvenir ve satın almayı onaylar.
 
-import { json, serviceClient } from "../_shared/supabase.ts";
+import { json, preflight, serviceClient } from "../_shared/supabase.ts";
 import {
   appleApiConfigured,
   applyStoreState,
@@ -29,22 +29,7 @@ import {
   type StoreState,
 } from "../_shared/iap.ts";
 
-interface GinaClaims {
-  family_id?: string | null;
-  role?: string;
-}
-
-function readClaims(authHeader: string | null): { sub?: string; gina: GinaClaims } {
-  const token = authHeader?.replace(/^Bearer\s+/i, "") ?? "";
-  const part = token.split(".")[1];
-  if (!part) return { gina: {} };
-  try {
-    const payload = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/")));
-    return { sub: payload.sub, gina: (payload.gina ?? {}) as GinaClaims };
-  } catch {
-    return { gina: {} };
-  }
-}
+import { readParent } from "../_shared/auth.ts";
 
 type Input =
   | { platform: "apple"; signedTransaction: string }
@@ -69,11 +54,12 @@ function parseInput(body: unknown): Input | null {
 }
 
 Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return preflight();
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
 
-  const { sub, gina } = readClaims(req.headers.get("authorization"));
-  if (gina.role !== "parent" || !gina.family_id || !sub) return json({ error: "forbidden" }, 403);
-  const familyId = gina.family_id;
+  const parent = await readParent(req);
+  if (!parent) return json({ error: "forbidden" }, 403);
+  const familyId = parent.familyId;
 
   let input: Input | null = null;
   try {
@@ -109,7 +95,7 @@ Deno.serve(async (req) => {
       if (androidProductId !== input.productId) return json({ error: "product_mismatch" }, 422);
     }
 
-    const result = await applyStoreState(db, state, { callerFamilyId: familyId, purchaserUserId: sub });
+    const result = await applyStoreState(db, state, { callerFamilyId: familyId, purchaserUserId: parent.userId });
     return json({
       ok: true,
       plan: result.plan,

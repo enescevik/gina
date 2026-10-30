@@ -1,82 +1,73 @@
-import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
-
+import { AppState, Text, View } from "react-native";
 import { Button } from "@/components/ui/button";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ParentScreen, parentStyles } from "@/components/ui/parent-screen";
+import { ErrorText } from "@/components/ui/screen";
 import { refreshClaims, useSession } from "@/lib/session";
 import { unregisterPush } from "@/lib/push";
 import { supabase } from "@/lib/supabase";
 
-/**
- * Çocuk tableti kurulumu: anonim oturum açılır, 6 haneli kod üretilir,
- * veli telefonundan "Cihaz ekle" ile kod girilince claim'ler yenilenir ve çocuk alanına geçilir.
- */
 export default function PairScreen() {
   const { t } = useTranslation();
   const { session, claims, loading, isAnonymous } = useSession();
-  const [code, setCode] = useState<string | null>(null);
+  const [pairing, setPairing] = useState<{ code: string; expires: number } | null>(null);
+  const [remaining, setRemaining] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
-
-  useEffect(() => {
-    if (loading || session) return;
-    void supabase.auth.signInAnonymously().then(({ error: e }) => e && setError(e));
-  }, [loading, session]);
-
+  const signingIn = useRef(false);
+  const leaving = useRef(false);
+  const authenticate = useCallback(async () => {
+    if (signingIn.current) return;
+    signingIn.current = true; setBusy(true); setError(null);
+    try { const { error } = await supabase.auth.signInAnonymously(); if (error) throw error; }
+    catch (e) { setError(e); } finally { signingIn.current = false; setBusy(false); }
+  }, []);
+  useEffect(() => { if (!loading && !session && !leaving.current) void authenticate(); }, [loading, session, authenticate]);
   useEffect(() => {
     if (claims?.role === "device") router.replace("/child");
-  }, [claims?.role]);
-
-  useEffect(() => {
-    if (!code) return;
-    const timer = setInterval(() => {
-      void refreshClaims()
-        .then((next) => {
-          if (next?.role === "device") {
-            clearInterval(timer);
-            router.replace("/child");
-          }
-        })
-        .catch(setError);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [code]);
-
+    else if (session && !isAnonymous) router.replace("/");
+  }, [claims?.role, session, isAnonymous]);
+  useFocusEffect(useCallback(() => {
+    if (!pairing) return;
+    let live = true; let polling = false; let lastPoll = 0;
+    const tick = () => {
+      const seconds = Math.max(0, Math.ceil((pairing.expires - Date.now()) / 1000));
+      setRemaining(seconds);
+      if (!seconds || AppState.currentState === "background" || polling || Date.now() - lastPoll < 5000) return;
+      polling = true; lastPoll = Date.now();
+      void refreshClaims().then(next => { if (live && next?.role === "device") router.replace("/child"); })
+        .catch(e => { if (live) setError(e); }).finally(() => { polling = false; });
+    };
+    tick(); const timer = setInterval(tick, 1000);
+    const sub = AppState.addEventListener("change", state => { if (state === "active") tick(); });
+    return () => { live = false; clearInterval(timer); sub.remove(); };
+  }, [pairing]));
   async function requestCode() {
-    setBusy(true);
-    setError(null);
+    if (busy || !isAnonymous) return;
+    setBusy(true); setError(null);
     try {
-      const { data, error: rpcError } = await supabase.rpc("request_pairing", { p_device_name: "Tablet" });
-      if (rpcError) throw rpcError;
-      setCode(data);
-    } catch (e) {
-      setError(e);
-    } finally {
-      setBusy(false);
-    }
+      const started = Date.now();
+      const { data, error } = await supabase.rpc("request_pairing", { p_device_name: "Tablet" });
+      if (error) throw error;
+      setPairing({ code: data, expires: started + 10 * 60_000 }); setRemaining(600);
+    } catch (e) { setError(e); } finally { setBusy(false); }
   }
-
-  return (
-    <Screen tone="child" title={t("device.pairTitle")}>
-      <Text className="font-body text-base text-ink dark:text-night-text">
-        {t("device.pairHelp")}
-      </Text>
-      {code ? (
-        <View className="items-center rounded-child bg-white p-8 dark:bg-night-surface">
-          <Text className="text-5xl font-body-bold tracking-widest text-teal-dark">{code}</Text>
-          <Text className="font-body mt-3 text-sm text-gray-500">{t("device.waiting")}</Text>
-        </View>
-      ) : (
-        <Button size="child" title={t("device.getCode")} loading={busy || !isAnonymous} onPress={requestCode} />
-      )}
-      <ErrorText error={error} />
-      <Button
-        variant="ghost"
-        title={t("device.thisIsParentPhone")}
-        onPress={() => void unregisterPush().then(() => supabase.auth.signOut()).then(() => router.replace("/(auth)/sign-in"))}
-      />
-    </Screen>
-  );
+  async function exit() {
+    if (busy) return; leaving.current = true; setBusy(true); setError(null);
+    try { await unregisterPush(); const { error } = await supabase.auth.signOut(); if (error) throw error; router.replace("/(auth)/sign-in"); }
+    catch (e) { leaving.current = false; setError(e); } finally { setBusy(false); }
+  }
+  return <ParentScreen navigation={false} title={t("device.pairTitle")} subtitle={t("device.pairHelp")}>
+    {pairing ? <View style={[parentStyles.card, { alignItems: "center", paddingVertical: 32 }]}>
+      <Text selectable style={{ fontFamily: "Baloo2_700Bold", fontSize: 44, letterSpacing: 5, color: remaining ? "#0B7F7F" : "#63736B" }}>{pairing.code}</Text>
+      <Text style={[parentStyles.copy, { textAlign: "center" }]}>{t(remaining ? "device.waiting" : "accountV5.codeExpired")}</Text>
+      {remaining ? <Text style={parentStyles.muted}>{t("accountV5.codeRemaining", { time: `${Math.floor(remaining / 60)}:${String(remaining % 60).padStart(2, "0")}` })}</Text> : null}
+    </View> : null}
+    {!pairing || !remaining ? <Button title={t(pairing ? "accountV5.newCode" : "device.getCode")} disabled={!isAnonymous} loading={busy} onPress={requestCode} /> : null}
+    {!session && error ? <Button title={t("common.retry")} onPress={authenticate} loading={busy} /> : null}
+    <ErrorText error={error} />
+    <Button variant="ghost" title={t("device.thisIsParentPhone")} disabled={busy} onPress={exit} />
+  </ParentScreen>;
 }

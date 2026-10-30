@@ -1,9 +1,10 @@
 import type { Session } from "@supabase/supabase-js";
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 import { ginaClaimsSchema, type GinaClaims } from "@gina/core";
 
 import { supabase } from "./supabase";
+import { queryClient } from "./query";
 
 export interface SessionState {
   session: Session | null;
@@ -11,7 +12,18 @@ export interface SessionState {
   /** Oturum depodan okunana kadar true. */
   loading: boolean;
   isAnonymous: boolean;
+  error: unknown;
+  recovering: boolean;
+  retry: () => void;
 }
+
+// Auth can consume the web recovery callback while fonts are still loading, before the provider mounts.
+// Keep only the event kind (no token/password), for this JS runtime; clear on sign-out or password update.
+let recoveryPending = false;
+supabase.auth.onAuthStateChange(event => {
+  if (event === "PASSWORD_RECOVERY") recoveryPending = true;
+  else if (event === "SIGNED_OUT" || event === "USER_UPDATED" || event === "SIGNED_IN") recoveryPending = false;
+});
 
 const SessionContext = createContext<SessionState | null>(null);
 
@@ -31,17 +43,40 @@ export function decodeClaims(accessToken: string | undefined): GinaClaims | null
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<unknown>(null);
+  const [attempt, setAttempt] = useState(0);
+  const [recovering, setRecovering] = useState(() => recoveryPending);
+  const account = useRef<string | null>(null);
+  const retry = useCallback(() => { setLoading(true); setError(null); setAttempt(value => value + 1); }, []);
 
   useEffect(() => {
-    void supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setLoading(false);
-    });
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, next) => {
+    let live = true;
+    let changed = false;
+    const apply = (next: Session | null) => {
+      if (!live) return;
+      // Clear before exposing another identity; query keys are shared across accounts.
+      if (account.current !== (next?.user.id ?? null)) queryClient.clear();
+      account.current = next?.user.id ?? null;
+      setRecovering(recoveryPending);
       setSession(next);
+      setError(null);
+      setLoading(false);
+    };
+    const { data: subscription } = supabase.auth.onAuthStateChange((_event, next) => {
+      if (_event === "INITIAL_SESSION") return; // getSession below owns initial read errors.
+      changed = true;
+      setRecovering(recoveryPending);
+      apply(next);
     });
-    return () => subscription.subscription.unsubscribe();
-  }, []);
+    void supabase.auth.getSession().then(({ data, error: readError }) => {
+      if (!live || changed) return;
+      if (readError) throw readError;
+      apply(data.session);
+    }).catch(readError => {
+      if (live && !changed) { setError(readError); setLoading(false); }
+    });
+    return () => { live = false; subscription.subscription.unsubscribe(); };
+  }, [attempt]);
 
   const value = useMemo<SessionState>(
     () => ({
@@ -49,8 +84,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       claims: decodeClaims(session?.access_token),
       loading,
       isAnonymous: session?.user.is_anonymous === true,
+      error,
+      recovering,
+      retry,
     }),
-    [session, loading],
+    [session, loading, error, recovering, retry],
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;

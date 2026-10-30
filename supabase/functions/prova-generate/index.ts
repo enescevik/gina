@@ -5,7 +5,7 @@
 // Modele yalnız ders/sınıf/konu/zorluk gider; aileye ya da çocuğa ait hiçbir veri gönderilmez.
 // Üretilen sorular question_bank'a provenance ile yazılır: {generator:"ai", model, prompt_version, prompt_hash, prompt, ...}.
 
-import { json, serviceClient } from "../_shared/supabase.ts";
+import { json, preflight, serviceClient } from "../_shared/supabase.ts";
 import {
   apiKeyOrResponse,
   callClaude,
@@ -117,8 +117,9 @@ function clampInt(v: unknown, min: number, max: number, fallback: number): numbe
 }
 
 Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return preflight();
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
-  const parent = readParent(req);
+  const parent = await readParent(req);
   if (!parent) return json({ error: "forbidden" }, 403);
 
   let body: GenerateBody;

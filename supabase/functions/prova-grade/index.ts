@@ -5,7 +5,7 @@
 // (ve konu adı) gider; çocuk adı, aile, kimlik gönderilmez — cevap metnindeki çocuk adı da maskelenir.
 // Veli puanı varsa AI onu ezmez (apply_ai_grades).
 
-import { json, serviceClient } from "../_shared/supabase.ts";
+import { json, preflight, serviceClient } from "../_shared/supabase.ts";
 import { apiKeyOrResponse, callClaude, logUsage, provaEntitlement, readParent, resolveAi } from "../_shared/prova.ts";
 
 const PROMPT_VERSION = "prova-grade/v1";
@@ -76,8 +76,9 @@ function escapeRegExp(s: string): string {
 }
 
 Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return preflight();
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
-  const parent = readParent(req);
+  const parent = await readParent(req);
   if (!parent) return json({ error: "forbidden" }, 403);
 
   let attemptId: string;

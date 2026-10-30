@@ -7,30 +7,7 @@ import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 
 import { json } from "./supabase.ts";
 
-export interface GinaClaims {
-  family_id?: string | null;
-  role?: string;
-}
-
-export interface ParentContext {
-  familyId: string;
-  userId: string | null;
-}
-
-/** JWT gateway'de doğrulanır (verify_jwt açık); burada yalnız gina claim'i okunur. */
-export function readParent(req: Request): ParentContext | null {
-  const token = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ?? "";
-  const part = token.split(".")[1];
-  if (!part) return null;
-  try {
-    const payload = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/")));
-    const gina = (payload.gina ?? {}) as GinaClaims;
-    if (gina.role !== "parent" || !gina.family_id) return null;
-    return { familyId: gina.family_id, userId: typeof payload.sub === "string" ? payload.sub : null };
-  } catch {
-    return null;
-  }
-}
+export { readParent } from "./auth.ts";
 
 export async function sha256(text: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));

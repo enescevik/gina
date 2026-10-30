@@ -16,12 +16,13 @@ export interface ParentScreenProps {
   subtitle?: string;
   children: ReactNode;
   home?: boolean;
+  navigation?: boolean;
   loading?: boolean;
   error?: unknown;
   onRetry?: () => void;
 }
 /** Approved v5 paper surface. Text stays native; only the window vignette is raster art. */
-export function ParentScreen({ title, subtitle, children, home = false, loading, error, onRetry }: ParentScreenProps) {
+export function ParentScreen({ title, subtitle, children, home = false, navigation = true, loading, error, onRetry }: ParentScreenProps) {
   const { t } = useTranslation();
   return <SafeAreaView style={styles.root}>
     <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === "ios" ? "padding" : undefined}>
@@ -29,12 +30,12 @@ export function ParentScreen({ title, subtitle, children, home = false, loading,
         <View style={styles.header}>
           <Image source={require("../../../../../packages/assets/rooms/v2/parent-header-v5.webp")} accessible={false} pointerEvents="none" resizeMode="contain" style={styles.art} />
           <View style={styles.topbar}>
-            <Pressable accessibilityRole="button" accessibilityLabel={t(home ? "parent.menu" : "common.back")}
+            {navigation ? <Pressable accessibilityRole="button" accessibilityLabel={t(home ? "parent.menu" : "common.back")}
               onPress={() => home ? router.push("/parent/menu") : router.canGoBack() ? router.back() : router.replace("/parent")}
               style={({ pressed }) => [styles.back, { opacity: pressed ? .65 : 1 }]}>
               {home ? <Menu size={23} color="#294A48" /> : <ArrowLeft size={23} color="#294A48" />}
-            </Pressable>
-            <Text style={styles.eyebrow}>{t("release.parentSpace")}</Text>
+            </Pressable> : null}
+            <Text style={styles.eyebrow}>{t(navigation ? "release.parentSpace" : "app.name")}</Text>
           </View>
           <Text accessibilityRole="header" style={styles.title}>{title}</Text>
           {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}

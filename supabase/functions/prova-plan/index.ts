@@ -4,7 +4,7 @@
 // ANTHROPIC_API_KEY yoksa 503 ai_not_configured. Modele yalnız ders, sınıf ve konu bazlı yüzdeler gider
 // (çocuk adı/yaşı/aile verisi gönderilmez). Plan veli onaylayınca (set_study_plan_status) 'approved' olur.
 
-import { json, serviceClient } from "../_shared/supabase.ts";
+import { json, preflight, serviceClient } from "../_shared/supabase.ts";
 import { apiKeyOrResponse, callClaude, logUsage, provaEntitlement, readParent, resolveAi, sha256 } from "../_shared/prova.ts";
 
 const PROMPT_VERSION = "prova-plan/v1";
@@ -52,8 +52,9 @@ const SCHEMA = {
 };
 
 Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return preflight();
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
-  const parent = readParent(req);
+  const parent = await readParent(req);
   if (!parent) return json({ error: "forbidden" }, 403);
 
   let attemptId: string;

@@ -3,24 +3,9 @@
 // Kurallar: yalnız parent rolü; paket ai_weekly olmalı; girdiler get_weekly_summary_data ile takma adlı;
 // ANTHROPIC_API_KEY yoksa 'skipped' yazar ve istemciye not_configured döner.
 
-import { json, serviceClient } from "../_shared/supabase.ts";
+import { json, preflight, serviceClient } from "../_shared/supabase.ts";
 
-interface GinaClaims {
-  family_id?: string | null;
-  role?: string;
-}
-
-function readClaims(authHeader: string | null): GinaClaims {
-  const token = authHeader?.replace(/^Bearer\s+/i, "") ?? "";
-  const part = token.split(".")[1];
-  if (!part) return {};
-  try {
-    const payload = JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/")));
-    return (payload.gina ?? {}) as GinaClaims;
-  } catch {
-    return {};
-  }
-}
+import { readParent } from "../_shared/auth.ts";
 
 async function sha256(text: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
@@ -32,11 +17,12 @@ Kurallar: tıbbi, psikolojik, hukuki veya eğitimsel teşhis/karar verme; çocuk
 Yanıtı SADECE şu JSON şemasıyla ver: {"haftanin_ozeti": string, "cocuk_basina": [{"etiket": string, "basarilar": string[], "zorlananlar": string[], "oneri": string}], "veliye_oneriler": string[] (en fazla 3)}.`;
 
 Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") return preflight();
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
 
-  const claims = readClaims(req.headers.get("authorization"));
-  if (claims.role !== "parent" || !claims.family_id) return json({ error: "forbidden" }, 403);
-  const familyId = claims.family_id;
+  const parent = await readParent(req);
+  if (!parent) return json({ error: "forbidden" }, 403);
+  const familyId = parent.familyId;
 
   let weekStart: string;
   try {
