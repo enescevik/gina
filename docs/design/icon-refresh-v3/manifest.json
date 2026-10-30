@@ -1,0 +1,82 @@
+[
+  {
+    "slug": "reward-star",
+    "label_tr": "Yıldız",
+    "file": "reward-star.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "star-jar",
+    "label_tr": "Yıldız kavanozu",
+    "file": "star-jar.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "streak-flame",
+    "label_tr": "Seri",
+    "file": "streak-flame.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-first-task",
+    "label_tr": "İlk Adım",
+    "file": "badge-first-task.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-bookworm",
+    "label_tr": "Kitap Kurdu",
+    "file": "badge-bookworm.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-tooth-care",
+    "label_tr": "Diş Parlatan",
+    "file": "badge-tooth-care.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "stamp-approved",
+    "label_tr": "Onaylandı",
+    "file": "stamp-approved.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "stamp-pending",
+    "label_tr": "Onay Bekliyor",
+    "file": "stamp-pending.svg",
+    "viewBox": "0 0 96 96",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  }
+]

@@ -1,0 +1,275 @@
+[
+  {
+    "slug": "badge-bronze",
+    "label_tr": "Bronz",
+    "file": "badge-bronze.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      259,
+      107,
+      992,
+      1182
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "bdc5f5b191576835234d5463646a07021d7f6a863dd1560e62f670e5d266db1d",
+    "png": []
+  },
+  {
+    "slug": "badge-silver",
+    "label_tr": "Gümüş",
+    "file": "badge-silver.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      244,
+      81,
+      1004,
+      1189
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "5fcf7fbb448d85e4dd65f6eb92a9fe3a3bac7c6febbf645c7bb6bf4bf3703c51",
+    "png": []
+  },
+  {
+    "slug": "badge-gold",
+    "label_tr": "Altın",
+    "file": "badge-gold.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      249,
+      96,
+      998,
+      1179
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "18b6c17d9c65693dbc8251651c7e3e7199071d3bffb95b98f3f5fd6e2f2adb13",
+    "png": []
+  },
+  {
+    "slug": "badge-diamond",
+    "label_tr": "Elmas",
+    "file": "badge-diamond.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      255,
+      88,
+      996,
+      1182
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "4a72af4011ad3dbd09424c774dd8d8a861aa3dd1cafa74b5fa5b0f8b0a15aea8",
+    "png": []
+  },
+  {
+    "slug": "badge-first-task",
+    "label_tr": "İlk Adım",
+    "file": "badge-first-task.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      244,
+      85,
+      1005,
+      1197
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "6ed2d5440bc42f64a6dc6b3100026ed3c0a742ae50ebd85ee87ddc55c23b54ff",
+    "png": []
+  },
+  {
+    "slug": "badge-bookworm",
+    "label_tr": "Kitap Kurdu",
+    "file": "badge-bookworm.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      239,
+      83,
+      1012,
+      1173
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "e25e4d5346ae8ab6e7073448b6fad14e8fb0a6001c17c3f69d2f2994936007f2",
+    "png": []
+  },
+  {
+    "slug": "badge-early-bird",
+    "label_tr": "Erkenci Kuş",
+    "file": "badge-early-bird.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      244,
+      85,
+      1007,
+      1188
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "5ad7a27e8498f821a9afae685fcfc868fa4d40ebac0ac8e322a843f5e8ea79d8",
+    "png": []
+  },
+  {
+    "slug": "badge-tidy",
+    "label_tr": "Düzen Ustası",
+    "file": "badge-tidy.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      246,
+      111,
+      1001,
+      1167
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "093b42935dcb6dd0780e9bb9c9120a46b007ff7417cefe5cfb4d55dd4a072e4e",
+    "png": []
+  },
+  {
+    "slug": "badge-helper",
+    "label_tr": "Yardımsever",
+    "file": "badge-helper.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      233,
+      82,
+      1011,
+      1192
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "6bcbca1b9dda7aa0e752ad938805fd09d12b5c50b93ca9a6c3093717082c434c",
+    "png": []
+  },
+  {
+    "slug": "badge-math-star",
+    "label_tr": "Matematik Yıldızı",
+    "file": "badge-math-star.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      239,
+      94,
+      1002,
+      1179
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "b3a5d89f2e9e9c6c1350a8114601f8a786b0957de062ffbf56d9240819f00730",
+    "png": []
+  },
+  {
+    "slug": "badge-week-hero",
+    "label_tr": "Haftanın Kahramanı",
+    "file": "badge-week-hero.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      223,
+      81,
+      1022,
+      1186
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "608145538cedf7fa87f66b7eab603667613b825f014a359026d6b430752e8932",
+    "png": []
+  },
+  {
+    "slug": "badge-locked",
+    "label_tr": "Kilitli Rozet",
+    "file": "badge-locked.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      246,
+      110,
+      1003,
+      1206
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "59ac33763a989dabf3761f7b19e3427620b1ff43bb27c7ca9826efca4d4c03a7",
+    "png": []
+  },
+  {
+    "slug": "badge-tooth-care",
+    "label_tr": "Diş Parlatan",
+    "file": "badge-tooth-care.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      252,
+      115,
+      995,
+      1172
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 96,
+    "sha256": "6e997d0a9ff2e306f16e85375bdc41f37df27c770c4f35cd6dbc848e8ce1cbd3",
+    "png": []
+  }
+]

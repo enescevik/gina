@@ -1,0 +1,1388 @@
+[
+  {
+    "slug": "make-bed",
+    "label_tr": "Yatağını topla",
+    "file": "make-bed.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      88,
+      144,
+      1171,
+      1131
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "f7d162e8410b8c0b89d1a1d50eae5e45816ed743d2baba036fb076f938f6571f",
+    "png": []
+  },
+  {
+    "slug": "brush-teeth",
+    "label_tr": "Dişlerini fırçala",
+    "file": "brush-teeth.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      245,
+      90,
+      1106,
+      1121
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "036dc2fe51f35c0386465d44f018a67a5d6fa2428ad71bb3bda6c0fcafe19e5c",
+    "png": []
+  },
+  {
+    "slug": "wash-face",
+    "label_tr": "Yüzünü yıka",
+    "file": "wash-face.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      121,
+      128,
+      1142,
+      1181
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "1130fdc3ea9ae9d9152c4b05817e3772144bf67dfaa18362ecbbb374de896439",
+    "png": []
+  },
+  {
+    "slug": "get-dressed",
+    "label_tr": "Giyin",
+    "file": "get-dressed.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      105,
+      200,
+      1177,
+      1097
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "ca4b5a2bd0f2ca52c7984115371bfaa5c6c6ae65358745b2151e3e2b6d218dcc",
+    "png": []
+  },
+  {
+    "slug": "eat-breakfast",
+    "label_tr": "Kahvaltı yap",
+    "file": "eat-breakfast.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      50,
+      212,
+      1205,
+      1057
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "3d4a97559e538593eb4034142610b7987147eb600de02104d6ff772905a53140",
+    "png": []
+  },
+  {
+    "slug": "wash-hands",
+    "label_tr": "Ellerini yıka",
+    "file": "wash-hands.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      84,
+      85,
+      1174,
+      1193
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "06c9636b5a2d806efbdf2e6794bc51942bd83db646077892e0a4ba23038f2ede",
+    "png": []
+  },
+  {
+    "slug": "pajamas",
+    "label_tr": "Pijamanı giy",
+    "file": "pajamas.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      105,
+      138,
+      1182,
+      1145
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "ff2fd66a5a63f19c6ea700c888bd7d8b2e14cabc54848bfaae3479f12725b4f1",
+    "png": []
+  },
+  {
+    "slug": "homework-general",
+    "label_tr": "Ödevini yap",
+    "file": "homework-general.webp",
+    "format": "webp",
+    "width": 1374,
+    "height": 1145,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      65,
+      156,
+      1345,
+      994
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "ed5da409f58be4397f607b67196b596b8f72f2686aa815eb13bbeeee63b4795f",
+    "png": []
+  },
+  {
+    "slug": "homework-turkish",
+    "label_tr": "Türkçe ödevi",
+    "file": "homework-turkish.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      78,
+      137,
+      1169,
+      1107
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "f2ab4438804e52eaacbf817e5caf635e7503e49ab28c7c0f98f72541d8294a0c",
+    "png": []
+  },
+  {
+    "slug": "homework-math",
+    "label_tr": "Matematik ödevi",
+    "file": "homework-math.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      89,
+      176,
+      1166,
+      1135
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "4817918c813b5ee6d7c21b22e7420c54389f10e2f9c7caa6eeb9749c4183e861",
+    "png": []
+  },
+  {
+    "slug": "homework-english",
+    "label_tr": "İngilizce ödevi",
+    "file": "homework-english.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      201,
+      156,
+      1159,
+      1167
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "f905f733bb042fee70e1b4d334bec900b6804154eca0729b19d0dd962d8cd4b0",
+    "png": []
+  },
+  {
+    "slug": "homework-science",
+    "label_tr": "Fen ödevi",
+    "file": "homework-science.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      297,
+      95,
+      958,
+      1131
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "3490d7fec21dac59432f6a7f61cf031b5723b2d7da5ffe25699aa65b27e43f51",
+    "png": []
+  },
+  {
+    "slug": "read-book",
+    "label_tr": "Kitap oku",
+    "file": "read-book.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      27,
+      237,
+      1225,
+      1030
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "694baeb6d144a3206a5900e6171d597fe5287f9d04bfb8b00c8e698894e192da",
+    "png": []
+  },
+  {
+    "slug": "tidy-room",
+    "label_tr": "Odanı topla",
+    "file": "tidy-room.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      189,
+      193,
+      1070,
+      1108
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "6947da32115fdaf61cc66d3fff67208583c67059277d86e71967eb03421f1f85",
+    "png": []
+  },
+  {
+    "slug": "tidy-toys",
+    "label_tr": "Oyuncaklarını topla",
+    "file": "tidy-toys.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      108,
+      130,
+      1173,
+      1190
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "aa62c151625190faaa79c525df198e36cc790db9c85936033e085751b1f42a45",
+    "png": []
+  },
+  {
+    "slug": "set-table",
+    "label_tr": "Masayı kur",
+    "file": "set-table.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      92,
+      161,
+      1164,
+      1099
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "62e0779fc8c72b5105f787ac12ebea3dbef96103cce00e095223200c71d25ea8",
+    "png": []
+  },
+  {
+    "slug": "clear-table",
+    "label_tr": "Sofrayı topla",
+    "file": "clear-table.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      52,
+      202,
+      1209,
+      1084
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "fd5082e24bcb9d5b515ca35015ad7a592cdabf95925f256714a1d3efa33191a3",
+    "png": []
+  },
+  {
+    "slug": "take-out-trash",
+    "label_tr": "Çöpü çıkar",
+    "file": "take-out-trash.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      124,
+      149,
+      1159,
+      1154
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "3072615cea6b8a7a5a42fd94c395103e9cdc9dfdbaca43ede8068dd4638b94fb",
+    "png": []
+  },
+  {
+    "slug": "water-plants",
+    "label_tr": "Bitkileri sula",
+    "file": "water-plants.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      143,
+      122,
+      1196,
+      1173
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "096a52d994858e270013abe4c86cf5b8f125191d0781594715e481d3b94879f6",
+    "png": []
+  },
+  {
+    "slug": "pack-school-bag",
+    "label_tr": "Çantanı hazırla",
+    "file": "pack-school-bag.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      167,
+      101,
+      1124,
+      1150
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "9273ea165cc7548f5b4bd5d2ff46242a0a134804ecb303ec2a912372ac592712",
+    "png": []
+  },
+  {
+    "slug": "fill-water-bottle",
+    "label_tr": "Mataranı doldur",
+    "file": "fill-water-bottle.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      206,
+      79,
+      1038,
+      1184
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "7209212a952a071c73efa804cf83ceee664cdbf7a23999aa226914ac32b4d9e6",
+    "png": []
+  },
+  {
+    "slug": "drink-water",
+    "label_tr": "Su iç",
+    "file": "drink-water.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      251,
+      214,
+      1008,
+      1063
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "d1a4a969517ea610657757dae1c6a8c9527302e37d4ebaf1c16bc4d9004892a1",
+    "png": []
+  },
+  {
+    "slug": "screen-time",
+    "label_tr": "Ekran zamanı",
+    "file": "screen-time.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      154,
+      142,
+      1118,
+      1097
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "919ce453323bb8b83e102bbbe9d18ccc101a3c2215a75945bdac1533fd2f8d46",
+    "png": []
+  },
+  {
+    "slug": "put-away-tablet",
+    "label_tr": "Tableti kaldır",
+    "file": "put-away-tablet.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      170,
+      83,
+      1080,
+      1194
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "34202363de1212fea53a4406cc7d83edd9ba358b99b0a2e0e8b1c438a8832aae",
+    "png": []
+  },
+  {
+    "slug": "bedtime",
+    "label_tr": "Uyku zamanı",
+    "file": "bedtime.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      192,
+      123,
+      1100,
+      1135
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "702b2994ce969de5eef960d10cfb0cd74e1de2a6aa9d3055aa8e99bd0d55faa4",
+    "png": []
+  },
+  {
+    "slug": "exercise",
+    "label_tr": "Egzersiz yap",
+    "file": "exercise.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      36,
+      252,
+      1238,
+      1081
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "87be7f27cb3e05bd7fa8f6a1ecb76ce873f3fc95ddc73e523bbe57bb7089b371",
+    "png": []
+  },
+  {
+    "slug": "practice-instrument",
+    "label_tr": "Enstrüman çalış",
+    "file": "practice-instrument.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      316,
+      47,
+      1064,
+      1219
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "643f18afdacca556e5046bbe63dd1e7d0103f1c0640f2fda1fb318ec4c0304e3",
+    "png": []
+  },
+  {
+    "slug": "drawing",
+    "label_tr": "Resim yap",
+    "file": "drawing.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      155,
+      167,
+      1136,
+      1119
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "48f970a3a7dbdbed018a0dbf569199055f087499869bff16695fbe8fb003ac84",
+    "png": []
+  },
+  {
+    "slug": "feed-pet",
+    "label_tr": "Evcil hayvanını besle",
+    "file": "feed-pet.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      96,
+      296,
+      1162,
+      1031
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "6094ee3563064af72f6be7d0656e92e0be8d794042dff0933340b6a6c8227503",
+    "png": []
+  },
+  {
+    "slug": "task-custom",
+    "label_tr": "Özel görev",
+    "file": "task-custom.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      192,
+      70,
+      1063,
+      1190
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "074d31596cdfd2d4da20263733e502eb52313dff1adf624990f898d48770d20a",
+    "png": []
+  },
+  {
+    "slug": "comb-hair",
+    "label_tr": "Saçını tara",
+    "file": "comb-hair.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      136,
+      109,
+      1154,
+      1163
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "14051f0a929847a4cf97bfdbf74ac17bf1f8ffd7335789bc7399547a0e9978d6",
+    "png": []
+  },
+  {
+    "slug": "take-shower",
+    "label_tr": "Duş al",
+    "file": "take-shower.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      215,
+      138,
+      1169,
+      1154
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "60a52705dbb17382a1b3cbde4c287d6151d90c02d5f603a96fddeea098b22d22",
+    "png": []
+  },
+  {
+    "slug": "cut-nails",
+    "label_tr": "Tırnaklarını kes",
+    "file": "cut-nails.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      121,
+      185,
+      1163,
+      1072
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "9edee92cc7c48bcc2bdfe6d4eafee1ef4adc84c1daa1ac2edd65efc33b1c8bfb",
+    "png": []
+  },
+  {
+    "slug": "homework-life-science",
+    "label_tr": "Hayat bilgisi ödevi",
+    "file": "homework-life-science.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      122,
+      83,
+      1165,
+      1145
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "c2bdec9d9e54e5920701f0f28a5d93333b23331aa7abfe7426a345303269f80f",
+    "png": []
+  },
+  {
+    "slug": "homework-social",
+    "label_tr": "Sosyal bilgiler ödevi",
+    "file": "homework-social.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      120,
+      268,
+      1196,
+      1042
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "a5f0205588f9fec8786e9b415d94c6baa394dd33b1a5815879ea4de79681cadf",
+    "png": []
+  },
+  {
+    "slug": "study",
+    "label_tr": "Ders çalış",
+    "file": "study.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      130,
+      110,
+      1127,
+      1186
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "8381ee05f1028871211c6f7a610156d6872f3af41d8a6021385caa2c879ba324",
+    "png": []
+  },
+  {
+    "slug": "practice-test",
+    "label_tr": "Test çöz",
+    "file": "practice-test.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      172,
+      107,
+      1150,
+      1163
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "94733a871d4c99ddeabc7c245350ce3a5135369b84c0dadb71cf8fc3a7a6ebaf",
+    "png": []
+  },
+  {
+    "slug": "vocabulary",
+    "label_tr": "Kelime çalış",
+    "file": "vocabulary.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      165,
+      153,
+      1184,
+      1107
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "ea4c8650772c0f40b6db36e673f869ccc02c1d3edba07e5c4c9a73096f7a44f1",
+    "png": []
+  },
+  {
+    "slug": "write-journal",
+    "label_tr": "Günlük yaz",
+    "file": "write-journal.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      76,
+      179,
+      1217,
+      1090
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "93b575f83d4a0f0b62589694be78b3dfe09cf111e3d34112f325bb099f15f772",
+    "png": []
+  },
+  {
+    "slug": "unload-dishwasher",
+    "label_tr": "Bulaşıkları yerleştir",
+    "file": "unload-dishwasher.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      126,
+      118,
+      1195,
+      1166
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "d0ca18adab37a9e9e77076f0e77f4861c69544189f077a1c944cc706dd164a7b",
+    "png": []
+  },
+  {
+    "slug": "laundry-basket",
+    "label_tr": "Çamaşırları sepete koy",
+    "file": "laundry-basket.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      76,
+      216,
+      1186,
+      1124
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "9f58734b48e332550e9cf5b8d781c37f7a63b11015da28ba47659a97526f43a5",
+    "png": []
+  },
+  {
+    "slug": "sweep-floor",
+    "label_tr": "Yeri süpür",
+    "file": "sweep-floor.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      84,
+      114,
+      1203,
+      1132
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "c697ca97f53ff8ef5f63f6fa490142cf994d29d0ab2bd7614e9b7f2b9e4477a5",
+    "png": []
+  },
+  {
+    "slug": "carry-groceries",
+    "label_tr": "Alışverişe yardım et",
+    "file": "carry-groceries.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      196,
+      78,
+      1110,
+      1169
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "95cb1020dd429f4e4473f96cd64be9f29e0581133a6cdaf7040238a169e20404",
+    "png": []
+  },
+  {
+    "slug": "tidy-desk",
+    "label_tr": "Masanı topla",
+    "file": "tidy-desk.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      166,
+      147,
+      1159,
+      1144
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "a790d5a30a3fd7581031d92645ac8138da028b4b99edabe0ba98bd3c81433c4f",
+    "png": []
+  },
+  {
+    "slug": "charge-tablet",
+    "label_tr": "Tableti şarj et",
+    "file": "charge-tablet.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      64,
+      226,
+      1216,
+      1072
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "e13523733ca86194508c30a3f7820fc8f1bac87159af9d603a67de6c61b9fc78",
+    "png": []
+  },
+  {
+    "slug": "football-practice",
+    "label_tr": "Futbol çalış",
+    "file": "football-practice.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      84,
+      211,
+      1224,
+      1082
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "313d2572e5b56f084e24e1c31cf34ab01216a55ce916154df5d6737bf21d5148",
+    "png": []
+  },
+  {
+    "slug": "swimming",
+    "label_tr": "Yüzme",
+    "file": "swimming.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      68,
+      220,
+      1210,
+      1057
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "719a967c049a1d9cf24cd63fa9736f3ef9fdf6ea5fe8efa2873ac6e7615745c5",
+    "png": []
+  },
+  {
+    "slug": "cycling",
+    "label_tr": "Bisiklete bin",
+    "file": "cycling.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      34,
+      247,
+      1231,
+      1028
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "9b6412ef082d3203884eaf84f7280923df011b955327451f5da79ada7266a6eb",
+    "png": []
+  },
+  {
+    "slug": "play-outside",
+    "label_tr": "Dışarıda oyna",
+    "file": "play-outside.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      273,
+      58,
+      982,
+      1169
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "c9c78f124a4c45ff84daad27f956acdcd3f06a8a21a353b0725f81c45d83c9a0",
+    "png": []
+  },
+  {
+    "slug": "crafts",
+    "label_tr": "El işi yap",
+    "file": "crafts.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      107,
+      96,
+      1179,
+      1176
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "b2baef88701dd9132b60811eda62f2abd588c292f3679364030dc2d1f8f2afd0",
+    "png": []
+  },
+  {
+    "slug": "dance",
+    "label_tr": "Dans et",
+    "file": "dance.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      116,
+      115,
+      1154,
+      1178
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "aacfaeb716a92ccd605b84f913ce24662c85809fcf56fc5595fd1c3073f43fa7",
+    "png": []
+  },
+  {
+    "slug": "puzzle",
+    "label_tr": "Yapboz yap",
+    "file": "puzzle.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      44,
+      131,
+      1220,
+      1126
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "4f4dbfc59507c8efe61e3ec6f6ec9d7c826290580fb7bc8d53f5a7c01fa76c70",
+    "png": []
+  },
+  {
+    "slug": "chess",
+    "label_tr": "Satranç oyna",
+    "file": "chess.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      245,
+      96,
+      1065,
+      1172
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "aa1fc20e28cb5049d76998de4bf9c2d992569cf62627f2b77b36a57ec13642cc",
+    "png": []
+  },
+  {
+    "slug": "coding",
+    "label_tr": "Kodlama çalış",
+    "file": "coding.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      46,
+      159,
+      1207,
+      1136
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "e028cec1f418c6b22df096c7994879d4d85b5fc9e3fac44eeb9fc1139716276a",
+    "png": []
+  },
+  {
+    "slug": "read-aloud",
+    "label_tr": "Sesli oku",
+    "file": "read-aloud.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      105,
+      116,
+      1150,
+      1166
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "d52b8c576b5ba480de599885ec70c6935ffa41d6cdb9c5db322e1016b80dd8b0",
+    "png": []
+  },
+  {
+    "slug": "bedtime-story",
+    "label_tr": "Uyku öncesi hikâye",
+    "file": "bedtime-story.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      59,
+      147,
+      1195,
+      1103
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "901ca0e82500f1d30dd6ad5020b13ed36e44499d873cc5cc2759c3c2f620a241",
+    "png": []
+  },
+  {
+    "slug": "walk-dog",
+    "label_tr": "Köpeğini gezdir",
+    "file": "walk-dog.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      74,
+      122,
+      1204,
+      1136
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "d968ce130202a8dbff03a6674b72f974a9fdb5df2d97a7898a901e5757e68096",
+    "png": []
+  },
+  {
+    "slug": "feed-fish",
+    "label_tr": "Balıkları besle",
+    "file": "feed-fish.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      119,
+      172,
+      1135,
+      1130
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "1e18497d276c1196eb8eff448f5add56841c6c16fbdb2ed4088c9456d0234243",
+    "png": []
+  },
+  {
+    "slug": "pack-lunchbox",
+    "label_tr": "Beslenmeni hazırla",
+    "file": "pack-lunchbox.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      142,
+      124,
+      1163,
+      1161
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "beba9c9b12b76f81d1febc9272b79897e98f196392768910ee626a396b463033",
+    "png": []
+  },
+  {
+    "slug": "eat-fruit",
+    "label_tr": "Meyve ye",
+    "file": "eat-fruit.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      88,
+      114,
+      1170,
+      1155
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "ff425fa643ba57dd54ff0df41f5cdaba2d3c91e7f737efcf9887b255a54bd652",
+    "png": []
+  },
+  {
+    "slug": "finish-meal",
+    "label_tr": "Yemeğini bitir",
+    "file": "finish-meal.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      116,
+      268,
+      1179,
+      1039
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "e01f758ddca000ea691b18a6745447ccdc85a00f147e50d570e8df7edd313c3f",
+    "png": []
+  },
+  {
+    "slug": "take-medicine",
+    "label_tr": "İlacını al",
+    "file": "take-medicine.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      309,
+      147,
+      946,
+      1122
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "e878797d6ea4f72350b3dcb4a42029c5e873f56366028453860b3d51b5b0904d",
+    "png": []
+  },
+  {
+    "slug": "call-grandparents",
+    "label_tr": "Büyüklerini ara",
+    "file": "call-grandparents.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      172,
+      133,
+      1160,
+      1171
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "ae91cf95c0f591b6dc638bbcd7c7a50fc2a1ff7cd6d8d39b2f669ce4aa79f58f",
+    "png": []
+  },
+  {
+    "slug": "help-sibling",
+    "label_tr": "Kardeşine yardım et",
+    "file": "help-sibling.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      207,
+      146,
+      1061,
+      1113
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "eceaf76f4e2e05ed09c88656a7eb42c86fb5eb2f566aeb22158b0abf8a71ee59",
+    "png": []
+  },
+  {
+    "slug": "kindness",
+    "label_tr": "İyilik yap",
+    "file": "kindness.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      143,
+      227,
+      1182,
+      1141
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "b691a8f2af45ee43ee11562759a55d3cc45497d233c1e75b91e9fbfeaadc69a9",
+    "png": []
+  },
+  {
+    "slug": "save-money",
+    "label_tr": "Birikim yap",
+    "file": "save-money.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      98,
+      189,
+      1190,
+      1140
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "963b03b86952bab1ddf19544df80df0477692186e69a30caf52dda4ad4675d41",
+    "png": []
+  }
+]
