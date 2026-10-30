@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "base_commit": "53412d5c673a09bb233eaf418e4cdf8bd7b89350",
+  "base_commit": "37456c26e95624d4a332b4e7dd3b2fcb22d334c2",
   "additional_reviewed_commit": "c358624",
   "status": "brief-13-reference-assets",
   "files": [
@@ -19,6 +19,10 @@
     {
       "file": "CODEX-BRIEF-13-birebir.md",
       "sha256": "9f43f11293828d61b5d36e85897db6baa4882ce6d724f4d214455ed84220ad87"
+    },
+    {
+      "file": "CODEX-BRIEF-14-alt-ekranlar.md",
+      "sha256": "08d5abbab70d84362132f596d7609e11e8d2f04d42ffc6ae05e917dafe40413c"
     },
     {
       "file": "DELIVERY.md",
@@ -95,6 +99,10 @@
     {
       "file": "references/brief-13-montage.html",
       "sha256": "93d7a238faec676d6c458b9f8a04d734da85fd420256f34caca9cd4d7e2537f3"
+    },
+    {
+      "file": "references/brief-13-validation.json",
+      "sha256": "ecb71fd3ba2585316768c767df723618ba21c663a45c53d273563a8bbcd4f990"
     },
     {
       "file": "references/child-home-approved.png",
