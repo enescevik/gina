@@ -1,3 +1,5 @@
+> **30 Ekim güncellemesi:** v5 görsel yönü onaylandı: “bu güzel, tüm ekranları yap bu şekilde”. Yeni ekran maketleri hazırlanıyor; v4 modeller ve animasyonlar onaylı değildir.
+
 # Oda sanatını düzeltme · v5
 
 **V4 görselleri ürün sahibi tarafından reddedildi.** Teknik olarak açılan GLB, görsel kalite kabulü değildir. V4 üretim hedefi olarak kullanılmayacak. Bu klasör yeni görsel hedefin incelemesidir; henüz onaylanmış değildir.

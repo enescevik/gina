@@ -1,0 +1,118 @@
+{
+  "status": "review-reference-not-production",
+  "visualDirectionApproved": true,
+  "screenLayoutsApproved": false,
+  "groups": [
+    "child",
+    "parent-daily",
+    "parent-prova",
+    "account"
+  ],
+  "containsBakedTextInArt": false,
+  "artTool": "built-in image_gen",
+  "art": [
+    {
+      "file": "art/board-tablet.png",
+      "bytes": 2030789,
+      "sha256": "792e9f121bd14b634c7ee400a303d50fc134f8cecaa340792bbdcabce832343d",
+      "width": 1586,
+      "height": 992
+    },
+    {
+      "file": "art/collection-tablet.png",
+      "bytes": 2024900,
+      "sha256": "36d24eb6e3f8e4b4f54040f4a3d80ac0398991ccacad5ec390d8968150dd54ba",
+      "width": 1585,
+      "height": 992
+    },
+    {
+      "file": "art/desk-tablet.png",
+      "bytes": 1979533,
+      "sha256": "19c6d9725c65e357a2fe8d071a6064ea66c78777d6e1c9cdee716a2abe30e925",
+      "width": 1586,
+      "height": 992
+    },
+    {
+      "file": "art/parent-header.png",
+      "bytes": 1083306,
+      "sha256": "145f299020e9ab6f9c6d889740ae24961fe46b52b23fe2f93912fd3756cafcb5",
+      "width": 1585,
+      "height": 992
+    }
+  ],
+  "productionHandoff": "claude-prompt.md",
+  "files": [
+    {
+      "file": "art/board-tablet.png",
+      "bytes": 2030789,
+      "sha256": "792e9f121bd14b634c7ee400a303d50fc134f8cecaa340792bbdcabce832343d",
+      "width": 1586,
+      "height": 992
+    },
+    {
+      "file": "art/collection-tablet.png",
+      "bytes": 2024900,
+      "sha256": "36d24eb6e3f8e4b4f54040f4a3d80ac0398991ccacad5ec390d8968150dd54ba",
+      "width": 1585,
+      "height": 992
+    },
+    {
+      "file": "art/desk-tablet.png",
+      "bytes": 1979533,
+      "sha256": "19c6d9725c65e357a2fe8d071a6064ea66c78777d6e1c9cdee716a2abe30e925",
+      "width": 1586,
+      "height": 992
+    },
+    {
+      "file": "art/parent-header.png",
+      "bytes": 1083306,
+      "sha256": "145f299020e9ab6f9c6d889740ae24961fe46b52b23fe2f93912fd3756cafcb5",
+      "width": 1585,
+      "height": 992
+    },
+    {
+      "file": "build_review.py",
+      "bytes": 9422,
+      "sha256": "fcdf86922adb391a4dfbe2ccc24bdf86b1a4d9ca95dd6a810937489d9fd5d59e"
+    },
+    {
+      "file": "claude-prompt.md",
+      "bytes": 4366,
+      "sha256": "4fc75a16ccba0a4d4bcb6d2c7bd7e531b4c96cd9f7f809b941515f6b5c892657"
+    },
+    {
+      "file": "design.css",
+      "bytes": 17814,
+      "sha256": "3a1a0e3ec23624a2ff3dae46077863f56592fc4d0405055bf75fd97be92dc9e6"
+    },
+    {
+      "file": "evidence/current-sign-in.png",
+      "bytes": 24800,
+      "sha256": "45ce0b5ae5faa14ac25d6a9e903cd1ae6fa6c6f1269874a2a28da30a30d0e344",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "evidence/demo-schema-error.png",
+      "bytes": 31198,
+      "sha256": "68ad861d91ac225fc8829a5099eabda06c0051ec14b4d861187a03874e0700c1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "generation.json",
+      "bytes": 6382,
+      "sha256": "c1aaa414e94212c0deb8e4a077f5a9461713562fa8cbd9aa95ac08eb0b12cb49"
+    },
+    {
+      "file": "index.html",
+      "bytes": 5227,
+      "sha256": "1b35c2d46119be189ac34e45cbe98c9de0651e1a6a398ef41da3ff658c8252bb"
+    },
+    {
+      "file": "runtime.js",
+      "bytes": 6460,
+      "sha256": "d506a196ec8da5cf4eba2ed425d4e423589a9a7e1393e882771467e4706fc6af"
+    }
+  ]
+}

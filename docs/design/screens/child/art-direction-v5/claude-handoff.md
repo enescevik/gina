@@ -1,3 +1,5 @@
+> **30 Ekim güncellemesi:** v5 görsel yönü onaylandı: “bu güzel, tüm ekranları yap bu şekilde”. Yeni ekran maketleri hazırlanıyor; v4 modeller ve animasyonlar onaylı değildir.
+
 # Claude için güncel düzeltme
 
 Ürün sahibi `game-materials-v4` görsellerini reddetti. O GLB'leri, karakterleri, petleri, malzemeleri ve hareket kalitesini onaylanmış üretim hedefi olarak kullanma. V4 içindeki önceki handoff artık sanat yönü için geçerli değil; dosyalar inceleme geçmişi olarak korunuyor.
