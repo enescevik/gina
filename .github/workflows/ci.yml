@@ -32,8 +32,8 @@ jobs:
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.9.6
-      - run: deno check supabase/functions/delete-account/index.ts supabase/functions/prova-generate/index.ts supabase/functions/prova-grade/index.ts supabase/functions/prova-plan/index.ts supabase/functions/iap-verify/index.ts supabase/functions/ai-weekly-summary/index.ts
-      - run: deno test supabase/functions/_shared/auth.test.ts supabase/functions/delete-account/handler.test.ts
+      - run: deno check --config supabase/functions/deno.json supabase/functions/delete-account/index.ts supabase/functions/prova-generate/index.ts supabase/functions/prova-grade/index.ts supabase/functions/prova-plan/index.ts supabase/functions/iap-verify/index.ts supabase/functions/ai-weekly-summary/index.ts
+      - run: deno test --config supabase/functions/deno.json supabase/functions/_shared/auth.test.ts supabase/functions/delete-account/handler.test.ts
 
   db:
     name: supabase migrations + pgTAP
