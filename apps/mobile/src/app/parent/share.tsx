@@ -6,7 +6,9 @@ import { Platform, Pressable, Share, Text, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, ChildPicker, parentStyles } from "@/components/ui/parent-screen";
+import { ConfirmAction } from "@/components/ui/confirm-action";
 import { supabase } from "@/lib/supabase";
 
 type ShareScope = "grades" | "prova" | "tasks_summary";
@@ -16,7 +18,7 @@ const EXPIRY_DAYS = [7, 30, 90, 180] as const;
 /** Paylaşım bağlantısının kökü: EXPO_PUBLIC_WEB_URL, yoksa webde bulunulan origin. */
 function shareBaseUrl(): string | null {
   const fromEnv = process.env.EXPO_PUBLIC_WEB_URL?.replace(/\/+$/, "");
-  if (fromEnv) return fromEnv;
+  if (fromEnv) { try { const url = new URL(fromEnv); if (url.protocol === "https:") return url.origin; } catch { /* invalid deployment configuration */ } }
   if (Platform.OS === "web" && typeof window !== "undefined") return window.location.origin;
   return null;
 }
@@ -26,7 +28,7 @@ function errorMessage(t: (key: string) => string, error: unknown): string | null
   if (!error) return null;
   const message = error instanceof Error ? error.message : typeof error === "object" && error && "message" in error ? String(error.message) : String(error);
   const known = ["invalid_label", "invalid_scopes", "invalid_expiry", "too_many_shares", "child_not_found", "share_not_found", "share_failed"];
-  return known.includes(message) ? t(`share.error.${message}`) : message;
+  return known.includes(message) ? t(`share.error.${message}`) : t("release.genericError");
 }
 
 /**
@@ -43,6 +45,8 @@ export default function ParentShareScreen() {
   const [days, setDays] = useState<number>(30);
   const [createdLink, setCreatedLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [actionError, setActionError] = useState<unknown>(null);
+  const baseUrl = shareBaseUrl();
 
   const children = useQuery({
     queryKey: ["children"],
@@ -71,6 +75,7 @@ export default function ParentShareScreen() {
 
   const createShare = useMutation({
     mutationFn: async () => {
+      if (!baseUrl) throw new Error(t("share.noWebUrl"));
       if (!selectedChild) throw new Error("child_not_found");
       const { data, error } = await supabase.rpc("create_child_share", {
         p_child_id: selectedChild,
@@ -85,7 +90,7 @@ export default function ParentShareScreen() {
     },
     onSuccess: (token) => {
       const base = shareBaseUrl();
-      setCreatedLink(base ? `${base}/s/${token}` : `/s/${token}`);
+      setCreatedLink(base ? `${base}/s/${token}` : null);
       setCopied(false);
       setLabel("");
       void queryClient.invalidateQueries({ queryKey: ["child_shares", selectedChild] });
@@ -105,6 +110,8 @@ export default function ParentShareScreen() {
 
   const copyLink = async () => {
     if (!createdLink) return;
+    setActionError(null);
+    try {
     // Webde panoya kopyalanır; mobilde sistem paylaşım sayfası açılır (ek paket gerekmez).
     if (Platform.OS === "web" && typeof navigator !== "undefined" && navigator.clipboard) {
       await navigator.clipboard.writeText(createdLink);
@@ -112,15 +119,14 @@ export default function ParentShareScreen() {
       return;
     }
     await Share.share({ message: createdLink });
+    } catch (e) { setActionError(e); }
   };
 
   const shareLink = async () => {
     if (!createdLink) return;
     try {
       await Share.share({ message: t("share.shareMessage", { url: createdLink }), url: createdLink });
-    } catch {
-      // Webde navigator.share yoksa reddedilir; kopyalama düğmesi kalır.
-    }
+    } catch (e) { setActionError(e); }
   };
 
   const dateFormat = new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "short", year: "numeric" });
@@ -128,30 +134,14 @@ export default function ParentShareScreen() {
   const now = shares.dataUpdatedAt;
 
   return (
-    <Screen title={t("share.title")}>
-      <Text className="font-body text-sm text-gray-500">{t("share.intro")}</Text>
-
-      <View className="flex-row flex-wrap gap-2">
-        {children.data?.map((child) => (
-          <Pressable
-            key={child.id}
-            accessibilityRole="button"
-            onPress={() => {
-              setChildId(child.id);
-              setCreatedLink(null);
-            }}
-            className={`rounded-full px-4 py-2 ${child.id === selectedChild ? "bg-teal" : "bg-mist"}`}
-          >
-            <Text className={child.id === selectedChild ? "font-body-bold text-white" : "text-ink"}>{child.name}</Text>
-          </Pressable>
-        ))}
-      </View>
-
+    <Screen title={t("share.title")} subtitle={t("share.intro")} loading={children.isLoading || (!!selectedChild && shares.isLoading)} error={children.error ?? shares.error} onRetry={() => { void children.refetch(); if (selectedChild) void shares.refetch(); }}>
+      <ChildPicker profiles={children.data ?? []} selected={selectedChild} onSelect={id => { if (!createShare.isPending) { setChildId(id); setCreatedLink(null); setActionError(null); } }} />
+      {!baseUrl ? <Text style={parentStyles.copy}>{t("share.noWebUrl")}</Text> : null}
       {createdLink ? (
         <View className="gap-3 rounded-parent border border-teal bg-teal-light p-4">
           <Text className="text-lg font-body-bold text-ink">{t("share.linkReady")}</Text>
           <Text className="font-body text-sm text-ink">{t("share.linkOnce")}</Text>
-          <Text selectable className="font-body rounded-parent bg-white p-3 font-mono text-sm text-ink">
+          <Text selectable style={parentStyles.copy}>
             {createdLink}
           </Text>
           {shareBaseUrl() ? null : <Text className="font-body text-xs text-danger">{t("share.noWebUrl")}</Text>}
@@ -173,9 +163,9 @@ export default function ParentShareScreen() {
         const status = share.revoked_at ? t("share.status.revoked") : expired ? t("share.status.expired") : t("share.status.active");
         const active = !share.revoked_at && !expired;
         return (
-          <View key={share.id} className={`gap-2 rounded-parent border border-mist p-3 ${active ? "" : "opacity-60"}`}>
+          <View key={share.id} style={[parentStyles.card, { opacity: active ? 1 : .7 }]}>
             <View className="flex-row items-center gap-2">
-              <Text className="flex-1 text-base font-body-bold text-ink dark:text-night-text">{share.label}</Text>
+              <Text className="flex-1 text-base font-body-bold text-ink">{share.label}</Text>
               <Text className={`text-xs font-body-bold ${active ? "text-teal-dark" : "text-gray-500"}`}>{status}</Text>
             </View>
             <Text className="font-body text-xs text-gray-500">{share.scopes.map((s) => t(`share.scope.${s}`)).join(" · ")}</Text>
@@ -184,12 +174,7 @@ export default function ParentShareScreen() {
               {share.last_viewed_at ? ` · ${t("share.lastViewed", { date: dateFormat.format(new Date(share.last_viewed_at)) })}` : ""}
             </Text>
             {active ? (
-              <Button
-                variant="danger"
-                title={t("share.revoke")}
-                loading={revokeShare.isPending && revokeShare.variables === share.id}
-                onPress={() => revokeShare.mutate(share.id)}
-              />
+              <ConfirmAction title={t("share.revoke")} busy={revokeShare.isPending} onConfirm={() => revokeShare.mutate(share.id)} />
             ) : null}
           </View>
         );
@@ -197,9 +182,9 @@ export default function ParentShareScreen() {
       {revokeShare.error ? <Text className="font-body text-sm text-danger">{errorMessage(t, revokeShare.error)}</Text> : null}
 
       {selectedChild ? (
-        <View className="gap-3 rounded-parent bg-teal-light p-4">
+        <View style={parentStyles.form}>
           <Text className="text-lg font-body-bold text-ink">{t("share.new")}</Text>
-          <Field label={t("share.label")} value={label} onChangeText={setLabel} placeholder={t("share.labelPlaceholder")} maxLength={80} />
+          <Field label={t("share.label")} editable={!createShare.isPending} value={label} onChangeText={setLabel} placeholder={t("share.labelPlaceholder")} maxLength={80} />
           <Text className="text-sm font-body text-ink">{t("share.scopes")}</Text>
           <View className="flex-row flex-wrap gap-2">
             {SCOPES.map((scope) => (
@@ -208,6 +193,7 @@ export default function ParentShareScreen() {
                 accessibilityRole="checkbox"
                 accessibilityState={{ checked: scopes.includes(scope) }}
                 onPress={() => toggleScope(scope)}
+                style={{ minHeight: 48, justifyContent: "center" }} disabled={createShare.isPending}
                 className={`rounded-full px-3 py-2 ${scopes.includes(scope) ? "bg-teal" : "bg-white"}`}
               >
                 <Text className={scopes.includes(scope) ? "font-body-bold text-white" : "text-ink"}>{t(`share.scope.${scope}`)}</Text>
@@ -221,7 +207,8 @@ export default function ParentShareScreen() {
               <Pressable
                 key={option}
                 accessibilityRole="button"
-                onPress={() => setDays(option)}
+                accessibilityState={{ selected: days === option }} aria-pressed={days === option} onPress={() => setDays(option)}
+                style={{ minHeight: 48, justifyContent: "center" }} disabled={createShare.isPending}
                 className={`rounded-full px-3 py-2 ${days === option ? "bg-teal" : "bg-white"}`}
               >
                 <Text className={days === option ? "font-body-bold text-white" : "text-ink"}>{t("share.days", { count: option })}</Text>
@@ -232,7 +219,7 @@ export default function ParentShareScreen() {
           <Button
             title={t("share.create")}
             loading={createShare.isPending}
-            disabled={!label.trim() || scopes.length === 0}
+            disabled={!baseUrl || !label.trim() || scopes.length === 0 || createShare.isPending}
             onPress={() => createShare.mutate()}
           />
         </View>
@@ -240,7 +227,7 @@ export default function ParentShareScreen() {
         <Text className="font-body text-gray-500">{t("tasks.addChildFirst")}</Text>
       )}
 
-      <ErrorText error={children.error ?? shares.error} />
+      <ErrorText error={actionError} />
       <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />
     </Screen>
   );

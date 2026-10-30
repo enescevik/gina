@@ -10,6 +10,12 @@
 | Yayın yeri | [WEB ADRESİ]/legal/hesap-ve-veri-silme; Google Play "Veri güvenliği" ve App Store Connect "Privacy Choices" bağlantısı; uygulamada Ayarlar > Hesap > Hesabı Sil |
 | İlgili belgeler | [Gizlilik Politikası](./gizlilik-politikasi.md) · [KVKK Aydınlatma Metni](./kvkk-aydinlatma-metni.md) · [Kullanım Koşulları](./kullanim-kosullari.md) · [Abonelik Koşulları](./abonelik-kosullari-ve-on-bilgilendirme.md) · [Çerez Politikası](./cerez-politikasi.md) · [KVKK Başvuru Formu](./kvkk-basvuru-formu.md) |
 
+## 31 Ekim 2026 uygulama denetimi — yayımlamadan önce güncellenmeli
+
+Bu belgenin aşağıdaki bölümleri hedef davranışı anlatan **hukuki taslaktır**, çalışan özelliğin kanıtı değildir. Mevcut uygulama: veli menüsünde ve aile kurulum ekranında **Hesabımı sil** → mevcut şifre + geri alınamaz işlem onayı → hemen silme. Başka veli varsa ortak çocuk kayıtları korunur ve aile sahipliği devredilir; son veli silinirse aile/çocuk verisi ve eşlenmiş anonim cihaz hesapları silinir. Silinen kullanıcının yazdığı notlar, oluşturduğu paylaşım bağlantıları, push tercihleri ve oturumları kaldırılır. Sunucu RLS/Edge üyelik kontrolü eski JWT erişimini de kapatır. Mağaza aboneliği iptal edilmez.
+
+**Henüz uygulanmayan taslak vaatleri:** dönem sonuna planlı silme; girişsiz e-posta doğrulamalı web silme formu; silme tamamlandı e-postası; 18 yaşında otomatik pasifleştirme; Apple/Google sosyal giriş belirteci iptali (bu sağlayıcılar beta girişinde açık değil); tek çocuk profilini silme arayüzü; hukuki saklama süresi ve yedekten silme otomasyonu. Bunları varmış gibi yayımlamayın. Supabase/mağaza hizmet günlükleri ve yedekleri uygulama transaction'ıyla silinmez; saklama/imha politikası gerçek üretim ayarlarıyla ayrıca doğrulanmalıdır. Yayın metni uygulamadaki yol ve davranışla eşleştirilmeli; sorumlu unvanı, iletişim, saklama süreleri ve web başvuru yolu tamamlanmalıdır.
+
 ## Kısa özet (bağlayıcı değildir)
 
 - Hesabınızı uygulama içinden **Ayarlar > Hesap > Hesabı Sil** yoluyla silebilirsiniz; giriş yapamıyorsanız bu sayfadaki formla, kayıtlı e-postanızı doğrulayarak talep gönderirsiniz. Hesap askıya alınmaz, tamamen silinir.

@@ -7,7 +7,8 @@ import { Linking, Platform, Pressable, Text, View } from "react-native";
 import type { Enums, Json } from "@gina/core";
 
 import { Button } from "@/components/ui/button";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
 import {
   buySubscription,
   iapSupported,
@@ -29,7 +30,7 @@ const PLAN_RANK: Record<PlanCode, number> = { free: 0, plus: 1, pro: 2 };
 /** Apple standart EULA (DECISIONS.md: özel EULA yok). */
 const APPLE_EULA_URL = "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
 /** Yayındaki hukuki sayfaların kökü (Cloudflare); tanımlı değilse bağlantılar gizlenir. */
-const LEGAL_BASE_URL = process.env.EXPO_PUBLIC_LEGAL_BASE_URL;
+const LEGAL_BASE_URL = /^https:\/\//.test(process.env.EXPO_PUBLIC_LEGAL_BASE_URL ?? "") ? process.env.EXPO_PUBLIC_LEGAL_BASE_URL?.replace(/\/+$/, "") : undefined;
 
 function i18nText(j: Json | null, lang: string): string {
   if (j && typeof j === "object" && !Array.isArray(j)) {
@@ -52,7 +53,8 @@ export default function SubscriptionScreen() {
   const { claims } = useSession();
   const familyId = claims?.family_id ?? "";
   const isParent = claims?.role === "parent" && !!familyId;
-  const canBuy = iapSupported && isParent;
+  const canManage = iapSupported && isParent;
+  const canBuy = canManage && !!LEGAL_BASE_URL;
 
   const [period, setPeriod] = useState<Period>("yearly");
   const [notice, setNotice] = useState<Notice>(null);
@@ -105,7 +107,7 @@ export default function SubscriptionScreen() {
 
   const offers = useQuery({
     queryKey: ["store_offers", Platform.OS, planProducts.data?.map((p) => p.product_id).join(",")],
-    enabled: canBuy && !!planProducts.data,
+    enabled: canManage && !!planProducts.data,
     staleTime: 30 * 60 * 1000,
     retry: false,
     queryFn: () => loadStoreOffers(planProducts.data ?? []),
@@ -134,6 +136,7 @@ export default function SubscriptionScreen() {
 
   const buy = useMutation({
     mutationFn: async (offer: StoreOffer) => {
+      if (!canBuy) throw new Error("store_not_configured");
       setNotice(null);
       const currentRank = sub ? PLAN_RANK[sub.plan] : 0;
       const upgrade = PLAN_RANK[offer.plan] > currentRank || (PLAN_RANK[offer.plan] === currentRank && offer.period === "yearly");
@@ -157,10 +160,14 @@ export default function SubscriptionScreen() {
   const manage = useMutation({ mutationFn: () => openManageSubscriptions(currentAndroidSku) });
   const redeem = useMutation({ mutationFn: () => openRedeemCode() });
 
+  const openLink = useMutation({ mutationFn: (url: string) => Linking.openURL(url) });
+  const pending = buy.isPending || restore.isPending || manage.isPending || redeem.isPending;
+
   return (
-    <Screen title={t("subscription.title")}>
+    <Screen title={t("subscription.title")} subtitle={t("accountV5.subscriptionBody")} loading={plans.isLoading || entitlement.isLoading || storeSub.isLoading} error={plans.error ?? entitlement.error ?? storeSub.error ?? planProducts.error} onRetry={() => { void plans.refetch(); void entitlement.refetch(); void storeSub.refetch(); void planProducts.refetch(); }}>
+      {canManage && !LEGAL_BASE_URL ? <Text style={parentStyles.copy}>{t("accountV5.purchaseNotReady")}</Text> : null}
       {entitlement.data?.source === "comp" ? (
-        <Text className="font-body rounded-parent bg-star/20 p-3 text-sm text-ink">{t("subscription.compNote")}</Text>
+        <Text className="font-body rounded-parent bg-star/20 p-3 text-base text-ink">{t("subscription.compNote")}</Text>
       ) : null}
 
       {sub && isParent ? (
@@ -170,7 +177,7 @@ export default function SubscriptionScreen() {
           ) : sub.status === "on_hold" ? (
             <Text className="text-sm font-body-bold text-ink">{t("iap.status.onHold")}</Text>
           ) : (
-            <Text className="font-body text-sm text-ink">
+            <Text className="font-body text-base text-ink">
               {sub.auto_renewing
                 ? t("iap.renewsOn", { date: dateFormat.format(new Date(sub.expires_at)) })
                 : t("iap.endsOn", { date: dateFormat.format(new Date(sub.expires_at)) })}
@@ -183,9 +190,9 @@ export default function SubscriptionScreen() {
       ) : null}
 
       {!iapSupported ? (
-        <Text className="font-body rounded-parent bg-mist p-3 text-sm text-ink">{t("iap.webNote")}</Text>
+        <Text className="font-body rounded-parent bg-mist p-3 text-base text-ink">{t("iap.webNote")}</Text>
       ) : !isParent ? (
-        <Text className="font-body rounded-parent bg-mist p-3 text-sm text-ink">{t("iap.parentOnly")}</Text>
+        <Text className="font-body rounded-parent bg-mist p-3 text-base text-ink">{t("iap.parentOnly")}</Text>
       ) : (
         <View className="flex-row gap-2 self-start rounded-full bg-mist p-1" accessibilityRole="tablist">
           {(["monthly", "yearly"] as const).map((p) => (
@@ -194,9 +201,10 @@ export default function SubscriptionScreen() {
               accessibilityRole="tab"
               accessibilityState={{ selected: period === p }}
               onPress={() => setPeriod(p)}
-              className={`rounded-full px-4 py-2 ${period === p ? "bg-white dark:bg-night-surface" : ""}`}
+              style={{ minHeight: 48, justifyContent: "center" }} disabled={pending}
+              className={`rounded-full px-4 py-2 ${period === p ? "bg-white" : ""}`}
             >
-              <Text className="text-sm font-body-bold text-ink dark:text-night-text">{t(`iap.${p}`)}</Text>
+              <Text className="text-sm font-body-bold text-ink">{t(`iap.${p}`)}</Text>
             </Pressable>
           ))}
         </View>
@@ -218,38 +226,38 @@ export default function SubscriptionScreen() {
         return (
           <View
             key={plan.code}
-            className={`gap-2 rounded-parent border-2 p-4 ${isCurrent ? "border-teal bg-teal-light" : "border-mist bg-white dark:bg-night-surface"}`}
+            style={[parentStyles.card, isCurrent ? { backgroundColor: "#E6F3ED", borderColor: "#0B7F7F" } : null]}
           >
             <View className="flex-row items-center justify-between">
-              <Text className="text-lg font-body-bold text-ink">{i18nText(plan.name_i18n, i18n.language)}</Text>
+              <Text style={parentStyles.title}>{i18nText(plan.name_i18n, i18n.language)}</Text>
               {isCurrent ? <Text className="rounded-full bg-teal px-3 py-1 text-xs font-body-bold text-white">{t("subscription.current")}</Text> : null}
             </View>
             {features.map((feature) => (
-              <Text key={feature} className="font-body text-sm text-ink dark:text-night-text">
+              <Text key={feature} className="font-body text-base text-ink">
                 • {feature}
               </Text>
             ))}
             {plan.code !== "free" && canBuy ? (
               offer ? (
                 <View className="gap-2">
-                  <Text className="text-base font-body-bold text-ink dark:text-night-text">
+                  <Text className="text-base font-body-bold text-ink">
                     {t(period === "monthly" ? "iap.pricePerMonth" : "iap.pricePerYear", { price: offer.displayPrice })}
                   </Text>
                   {offer.hasTrial && !sub ? <Text className="font-body text-sm text-teal-dark">{t("iap.trial")}</Text> : null}
                   {ownsThis ? (
-                    <Text className="font-body text-sm text-ink dark:text-night-text">{t("iap.currentProduct")}</Text>
+                    <Text className="font-body text-base text-ink">{t("iap.currentProduct")}</Text>
                   ) : (
                     <Button
                       title={sub ? t("iap.change") : t("iap.buy")}
                       variant={isCurrent ? "secondary" : "primary"}
-                      disabled={subOnOtherStore || buy.isPending}
+                      disabled={subOnOtherStore || pending}
                       loading={buy.isPending && buy.variables?.productId === offer.productId}
                       onPress={() => buy.mutate(offer)}
                     />
                   )}
                 </View>
               ) : (
-                <Text className="font-body text-xs text-gray-500">{offers.isLoading ? t("iap.loadingPrices") : t("iap.priceUnavailable")}</Text>
+                <Text className="font-body text-sm text-gray-500">{offers.isLoading ? t("iap.loadingPrices") : t("iap.priceUnavailable")}</Text>
               )
             ) : null}
           </View>
@@ -265,50 +273,28 @@ export default function SubscriptionScreen() {
         </Text>
       ) : null}
 
-      {canBuy ? (
+      {canManage ? (
         <View className="gap-2">
-          <Button variant="secondary" title={t("iap.restore")} loading={restore.isPending} onPress={() => restore.mutate()} />
+          <Button variant="secondary" title={t("iap.restore")} loading={restore.isPending} disabled={pending} onPress={() => restore.mutate()} />
           {sub && !subOnOtherStore ? (
-            <Button variant="secondary" title={t("iap.manage")} onPress={() => manage.mutate()} />
+            <Button variant="secondary" title={t("iap.manage")} loading={manage.isPending} disabled={pending} onPress={() => manage.mutate()} />
           ) : null}
           <Button
             variant="ghost"
             title={Platform.OS === "ios" ? t("iap.redeemIos") : t("iap.redeemAndroid")}
-            onPress={() => redeem.mutate()}
+            disabled={pending || !canBuy} loading={redeem.isPending} onPress={() => redeem.mutate()}
           />
         </View>
       ) : null}
 
-      <Text className="font-body text-xs text-gray-500">{iapSupported ? t("iap.legal") : t("subscription.storeNote")}</Text>
-      {canBuy ? (
-        <View className="flex-row flex-wrap gap-4">
-          {Platform.OS === "ios" ? (
-            <Text className="font-body text-xs text-teal-dark underline" accessibilityRole="link" onPress={() => void Linking.openURL(APPLE_EULA_URL)}>
-              {t("iap.eula")}
-            </Text>
-          ) : null}
-          {LEGAL_BASE_URL ? (
-            <>
-              <Text
-                className="font-body text-xs text-teal-dark underline"
-                accessibilityRole="link"
-                onPress={() => void Linking.openURL(`${LEGAL_BASE_URL}/legal/abonelik-kosullari`)}
-              >
-                {t("iap.subscriptionTerms")}
-              </Text>
-              <Text
-                className="font-body text-xs text-teal-dark underline"
-                accessibilityRole="link"
-                onPress={() => void Linking.openURL(`${LEGAL_BASE_URL}/legal/gizlilik-politikasi`)}
-              >
-                {t("iap.privacy")}
-              </Text>
-            </>
-          ) : null}
-        </View>
-      ) : null}
+      <Text className="font-body text-sm text-gray-500">{iapSupported ? t("iap.legal") : t("subscription.storeNote")}</Text>
+      <View style={{ gap: 4 }}>
+        {Platform.OS === "ios" ? <Button variant="ghost" title={t("iap.eula")} onPress={() => openLink.mutate(APPLE_EULA_URL)} /> : null}
+        {LEGAL_BASE_URL ? <><Button variant="ghost" title={t("iap.subscriptionTerms")} onPress={() => openLink.mutate(`${LEGAL_BASE_URL}/legal/abonelik-kosullari`)} />
+          <Button variant="ghost" title={t("iap.privacy")} onPress={() => openLink.mutate(`${LEGAL_BASE_URL}/legal/gizlilik-politikasi`)} /></> : null}
+      </View>
 
-      <ErrorText error={plans.error ?? entitlement.error ?? planProducts.error ?? storeSub.error} />
+      <ErrorText error={manage.error ?? redeem.error ?? openLink.error ?? offers.error} />
       <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />
     </Screen>
   );

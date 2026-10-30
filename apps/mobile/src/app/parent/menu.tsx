@@ -6,6 +6,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 
 import { Avatar, CHILD_AVATAR_SLUGS } from "@/components/avatar";
 import { ConfirmAction } from "@/components/ui/confirm-action";
+import { AccountDeletion } from "@/components/account-deletion";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
@@ -113,6 +114,10 @@ export default function ParentMenuScreen() {
     },
   });
 
+  const signOut = useMutation({ mutationFn: async () => {
+    await unregisterPush(); const { error } = await supabase.auth.signOut(); if (error) throw error; router.replace("/");
+  } });
+
   const revokeDevice = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.rpc("revoke_device", { p_device_id: id });
@@ -170,8 +175,9 @@ export default function ParentMenuScreen() {
       <Button variant="secondary" title={t("share.title")} onPress={() => router.push("/parent/share")} />
       <Button variant="secondary" title={t("parent.rewards")} onPress={() => router.push("/parent/rewards")} />
       <Button variant="secondary" title={t("parent.subscription")} onPress={() => router.push("/parent/subscription")} />
-      <ErrorText error={family.error ?? children.error ?? devices.error ?? addChild.error ?? pairDevice.error ?? revokeDevice.error} />
-      <Button variant="ghost" title={t("auth.signOut")} onPress={() => void unregisterPush().then(() => supabase.auth.signOut()).then(() => router.replace("/"))} />
+      <ErrorText error={family.error ?? children.error ?? devices.error ?? addChild.error ?? pairDevice.error ?? revokeDevice.error ?? signOut.error} />
+      <AccountDeletion />
+      <Button variant="ghost" title={t("auth.signOut")} loading={signOut.isPending} onPress={() => signOut.mutate()} />
       <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />
     </Screen>
   );

@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Platform, Text, View } from "react-native";
 
-import { Screen } from "@/components/ui/screen";
+import { ParentScreen as Screen } from "@/components/ui/parent-screen";
 import { supabase } from "@/lib/supabase";
 
 /** get_shared_child_view RPC'sinin döndürdüğü asgari görünüm (kapsam dışı alanlar hiç gelmez). */
@@ -60,8 +60,9 @@ export default function SharedChildViewScreen() {
     queryKey: ["shared_child_view", token],
     enabled: !!token,
     retry: false,
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
+    staleTime: 0,
+    refetchInterval: 60_000,
+    refetchOnWindowFocus: true,
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_shared_child_view", { p_token: token ?? "" });
       if (error) throw error;
@@ -72,10 +73,10 @@ export default function SharedChildViewScreen() {
   const dateFormat = new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
   const numberFormat = new Intl.NumberFormat(i18n.language, { maximumFractionDigits: 1 });
   const formatDay = (day: string) => dateFormat.format(new Date(`${day}T00:00:00Z`));
-  const data = view.data;
+  const data = view.isError ? undefined : view.data;
 
   return (
-    <Screen>
+    <Screen navigation={false} title={t("share.viewer.pageTitle")}>
       <Head>
         <title>{t("share.viewer.pageTitle")}</title>
         <meta name="robots" content="noindex, nofollow, noarchive" />
@@ -86,7 +87,7 @@ export default function SharedChildViewScreen() {
 
       {view.isError || (!view.isLoading && !data) ? (
         <View className="gap-2 rounded-parent border border-mist p-4">
-          <Text className="text-lg font-body-bold text-ink dark:text-night-text">{t("share.viewer.invalidTitle")}</Text>
+          <Text className="text-2xl font-display text-ink">{t("share.viewer.invalidTitle")}</Text>
           <Text className="font-body text-sm text-gray-500">{t("share.viewer.invalidBody")}</Text>
         </View>
       ) : null}
@@ -94,7 +95,7 @@ export default function SharedChildViewScreen() {
       {data ? (
         <>
           <View className="gap-1">
-            <Text className="text-2xl font-body-bold text-ink dark:text-night-text">
+            <Text className="text-2xl font-body-bold text-ink">
               {data.child.grade != null
                 ? t("share.viewer.headingWithGrade", { name: data.child.first_name, grade: data.child.grade })
                 : data.child.first_name}
@@ -106,15 +107,15 @@ export default function SharedChildViewScreen() {
 
           {data.grades ? (
             <View className="gap-2">
-              <Text className="text-lg font-body-bold text-ink dark:text-night-text">{t("share.scope.grades")}</Text>
+              <Text className="text-2xl font-display text-ink">{t("share.scope.grades")}</Text>
               {data.grades.length === 0 ? <Text className="font-body text-gray-500">{t("share.viewer.empty")}</Text> : null}
               {data.grades.map((grade, index) => (
                 <View key={`${grade.subject}-${grade.date}-${index}`} className="flex-row items-center gap-3 rounded-parent border border-mist p-3">
                   <View className="flex-1">
-                    <Text className="text-base font-body-bold text-ink dark:text-night-text">{grade.subject}</Text>
-                    <Text className="font-body text-xs text-gray-500">{formatDay(grade.date)}</Text>
+                    <Text className="text-base font-body-bold text-ink">{grade.subject}</Text>
+                    <Text className="font-body text-sm text-gray-500">{formatDay(grade.date)}</Text>
                   </View>
-                  <Text className="text-xl font-body-bold text-ink dark:text-night-text">
+                  <Text className="text-xl font-body-bold text-ink">
                     {numberFormat.format(Number(grade.score))}
                     <Text className="text-sm font-body text-gray-500"> / {numberFormat.format(Number(grade.max_score))}</Text>
                   </Text>
@@ -125,19 +126,19 @@ export default function SharedChildViewScreen() {
 
           {data.prova ? (
             <View className="gap-2">
-              <Text className="text-lg font-body-bold text-ink dark:text-night-text">{t("share.scope.prova")}</Text>
+              <Text className="text-2xl font-display text-ink">{t("share.scope.prova")}</Text>
               {data.prova.length === 0 ? <Text className="font-body text-gray-500">{t("share.viewer.empty")}</Text> : null}
               {data.prova.map((exam, index) => (
                 <View key={`${exam.title}-${exam.date}-${index}`} className="gap-2 rounded-parent border border-mist p-3">
                   <View className="flex-row items-center gap-3">
                     <View className="flex-1">
-                      <Text className="text-base font-body-bold text-ink dark:text-night-text">{exam.title}</Text>
-                      <Text className="font-body text-xs text-gray-500">
+                      <Text className="text-base font-body-bold text-ink">{exam.title}</Text>
+                      <Text className="font-body text-sm text-gray-500">
                         {exam.subject} · {formatDay(exam.date)}
                       </Text>
                     </View>
                     {exam.mc_total ? (
-                      <Text className="text-xl font-body-bold text-ink dark:text-night-text">
+                      <Text className="text-xl font-body-bold text-ink">
                         {exam.mc_correct ?? 0}
                         <Text className="text-sm font-body text-gray-500"> / {exam.mc_total}</Text>
                       </Text>
@@ -145,7 +146,7 @@ export default function SharedChildViewScreen() {
                   </View>
                   {exam.topics.map((topic) => (
                     <View key={topic.topic} className="flex-row items-center gap-2">
-                      <Text className="font-body flex-1 text-sm text-ink dark:text-night-text">{topic.topic}</Text>
+                      <Text className="font-body flex-1 text-sm text-ink">{topic.topic}</Text>
                       <View className="h-2 w-24 overflow-hidden rounded-full bg-mist">
                         <View className="h-2 rounded-full bg-teal" style={{ width: `${topic.total ? (topic.correct / topic.total) * 100 : 0}%` }} />
                       </View>
@@ -161,8 +162,8 @@ export default function SharedChildViewScreen() {
 
           {data.tasks_summary ? (
             <View className="gap-2">
-              <Text className="text-lg font-body-bold text-ink dark:text-night-text">{t("share.scope.tasks_summary")}</Text>
-              <Text className="font-body text-xs text-gray-500">{t("share.viewer.lastDays", { count: data.tasks_summary.days })}</Text>
+              <Text className="text-2xl font-display text-ink">{t("share.scope.tasks_summary")}</Text>
+              <Text className="font-body text-sm text-gray-500">{t("share.viewer.lastDays", { count: data.tasks_summary.days })}</Text>
               <View className="flex-row gap-2">
                 {(
                   [
@@ -184,7 +185,7 @@ export default function SharedChildViewScreen() {
 
       <View className="mt-6 items-center gap-1 border-t border-mist pt-4">
         <Text className="text-sm font-body-bold text-teal-dark">{t("share.viewer.footer")}</Text>
-        <Text className="font-body text-center text-xs text-gray-500">{t("share.viewer.footerNote")}</Text>
+        <Text className="font-body text-center text-sm text-gray-500">{t("share.viewer.footerNote")}</Text>
       </View>
     </Screen>
   );

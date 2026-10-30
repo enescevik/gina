@@ -29,7 +29,7 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
         <ChildModeProvider>
-          <StatusBar style="auto" />
+          <StatusBar style="dark" />
           <AppRoutes />
         </ChildModeProvider>
       </SessionProvider>
@@ -39,8 +39,11 @@ export default function RootLayout() {
 
 function AppRoutes() {
   const { t } = useTranslation();
-  const { claims } = useSession();
+  const { claims, error: sessionError, loading: sessionLoading, retry: retrySession } = useSession();
   const { actingChild, loading, error, retry } = useChildMode();
+  if (sessionError || sessionLoading) return <View className="flex-1 items-center justify-center gap-4 bg-cream p-6">
+    {sessionError ? <><Text className="font-body text-base text-ink">{t("accountV5.sessionError")}</Text><Button title={t("common.retry")} onPress={retrySession} /></> : <ActivityIndicator color="#0B7F7F" />}
+  </View>;
   if (loading) return <View className="flex-1 items-center justify-center gap-4 bg-cream p-6">
     {error ? <><Text className="font-body text-base text-ink">{t("release.lockRestoreError")}</Text><Button title={t("common.retry")} onPress={retry} /></> : <ActivityIndicator color="#0B7F7F" />}
   </View>;
@@ -48,7 +51,7 @@ function AppRoutes() {
     <Stack.Protected guard={claims?.role === "parent"}><Stack.Screen name="parent" /></Stack.Protected>
     <Stack.Protected guard={!actingChild}>
       <Stack.Screen name="index" /><Stack.Screen name="(auth)" /><Stack.Screen name="child" />
-      <Stack.Screen name="device" /><Stack.Screen name="s/[token]" />
+      <Stack.Screen name="reset-password" /><Stack.Screen name="device" /><Stack.Screen name="s/[token]" />
     </Stack.Protected>
   </Stack>;
 }

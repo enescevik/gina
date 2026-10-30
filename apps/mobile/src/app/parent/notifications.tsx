@@ -1,9 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { Linking, Platform, Switch, Text, View } from "react-native";
+import { Linking, Platform, Text, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
+import { Toggle } from "@/components/ui/toggle";
 import { getPushPermission, requestPushPermission } from "@/lib/push";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -47,12 +49,6 @@ export default function NotificationsScreen() {
         .upsert({ ...current, [key]: value, user_id: userId, family_id: familyId }, { onConflict: "user_id" });
       if (error) throw error;
     },
-    onMutate: ({ key, value }) => {
-      // İyimser güncelleme: anahtar anında döner.
-      queryClient.setQueryData(["push-preferences", userId], (old: typeof prefs.data) =>
-        old ? { ...old, [key]: value } : old,
-      );
-    },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["push-preferences", userId] }),
   });
 
@@ -61,8 +57,10 @@ export default function NotificationsScreen() {
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["push-permission"] }),
   });
 
+  const settings = useMutation({ mutationFn: () => Linking.openSettings() });
+
   return (
-    <Screen title={t("push.title")}>
+    <Screen title={t("push.title")} subtitle={t("accountV5.notificationsBody")} loading={prefs.isLoading || permission.isLoading} error={prefs.error ?? permission.error} onRetry={() => { void prefs.refetch(); void permission.refetch(); }}>
       {Platform.OS === "web" || permission.data === "unsupported" ? (
         <Text className="font-body text-sm text-gray-600">{t("push.webNote")}</Text>
       ) : permission.data === "undetermined" ? (
@@ -73,26 +71,19 @@ export default function NotificationsScreen() {
       ) : permission.data === "denied" ? (
         <View className="gap-2 rounded-parent bg-coral-light p-3">
           <Text className="font-body text-sm text-ink">{t("push.permissionDenied")}</Text>
-          <Button variant="secondary" title={t("push.openSettings")} onPress={() => void Linking.openSettings()} />
+          <Button variant="secondary" title={t("push.openSettings")} loading={settings.isPending} onPress={() => settings.mutate()} />
         </View>
       ) : null}
 
       {PREF_KEYS.map((key) => (
-        <View key={key} className="flex-row items-center gap-3 rounded-parent border border-mist p-3 dark:bg-night-surface">
-          <View className="flex-1 gap-1">
-            <Text className="text-base font-body-bold text-ink dark:text-night-text">{t(`push.pref.${key}`)}</Text>
-            <Text className="font-body text-sm text-gray-600">{t(`push.pref.${key}Hint`)}</Text>
-          </View>
-          <Switch
-            value={prefs.data?.[key] ?? true}
-            disabled={!prefs.data}
-            onValueChange={(value) => save.mutate({ key, value })}
-          />
+        <View key={key} style={parentStyles.card}>
+          <Toggle label={t(`push.pref.${key}`)} value={prefs.data?.[key] ?? false} disabled={!prefs.data || save.isPending} onChange={value => save.mutate({ key, value })} />
+          <Text style={parentStyles.muted}>{t(`push.pref.${key}Hint`)}</Text>
         </View>
       ))}
 
       <Text className="font-body text-xs text-gray-600">{t("push.privacyNote")}</Text>
-      <ErrorText error={prefs.error ?? save.error ?? allow.error} />
+      <ErrorText error={save.error ?? allow.error ?? settings.error} />
     </Screen>
   );
 }
