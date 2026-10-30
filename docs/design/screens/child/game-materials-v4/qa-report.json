@@ -1,0 +1,981 @@
+{
+  "errors": [],
+  "atmosphereCases": [
+    {
+      "memory": {
+        "geometries": 312,
+        "textures": 10
+      },
+      "drawCalls": 318,
+      "triangles": 133658,
+      "phase": "sunrise",
+      "weather": "clear",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 318,
+        "textures": 10
+      },
+      "drawCalls": 323,
+      "triangles": 134818,
+      "phase": "sunrise",
+      "weather": "cloudy",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 320,
+        "textures": 10
+      },
+      "drawCalls": 325,
+      "triangles": 136258,
+      "phase": "sunrise",
+      "weather": "rain",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 322,
+        "textures": 10
+      },
+      "drawCalls": 325,
+      "triangles": 135106,
+      "phase": "sunrise",
+      "weather": "snow",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 335,
+      "triangles": 136650,
+      "phase": "sunrise",
+      "weather": "wind",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 323,
+      "triangles": 134818,
+      "phase": "sunrise",
+      "weather": "fog",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 318,
+      "triangles": 133658,
+      "phase": "day",
+      "weather": "clear",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 323,
+      "triangles": 134818,
+      "phase": "day",
+      "weather": "cloudy",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 325,
+      "triangles": 136258,
+      "phase": "day",
+      "weather": "rain",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 325,
+      "triangles": 135106,
+      "phase": "day",
+      "weather": "snow",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 335,
+      "triangles": 136650,
+      "phase": "day",
+      "weather": "wind",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 323,
+      "triangles": 134818,
+      "phase": "day",
+      "weather": "fog",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 318,
+      "triangles": 133658,
+      "phase": "sunset",
+      "weather": "clear",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 323,
+      "triangles": 134818,
+      "phase": "sunset",
+      "weather": "cloudy",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 325,
+      "triangles": 136258,
+      "phase": "sunset",
+      "weather": "rain",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 325,
+      "triangles": 135106,
+      "phase": "sunset",
+      "weather": "snow",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 335,
+      "triangles": 136650,
+      "phase": "sunset",
+      "weather": "wind",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 323,
+        "textures": 10
+      },
+      "drawCalls": 323,
+      "triangles": 134818,
+      "phase": "sunset",
+      "weather": "fog",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 324,
+        "textures": 10
+      },
+      "drawCalls": 344,
+      "triangles": 134594,
+      "phase": "night",
+      "weather": "clear",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 324,
+        "textures": 10
+      },
+      "drawCalls": 323,
+      "triangles": 134818,
+      "phase": "night",
+      "weather": "cloudy",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 324,
+        "textures": 10
+      },
+      "drawCalls": 325,
+      "triangles": 136258,
+      "phase": "night",
+      "weather": "rain",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 324,
+        "textures": 10
+      },
+      "drawCalls": 325,
+      "triangles": 135106,
+      "phase": "night",
+      "weather": "snow",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 324,
+        "textures": 10
+      },
+      "drawCalls": 335,
+      "triangles": 136650,
+      "phase": "night",
+      "weather": "wind",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 324,
+        "textures": 10
+      },
+      "drawCalls": 323,
+      "triangles": 134818,
+      "phase": "night",
+      "weather": "fog",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    }
+  ],
+  "selectionMemory": [
+    {
+      "memory": {
+        "geometries": 324,
+        "textures": 14
+      },
+      "drawCalls": 318,
+      "triangles": 133658,
+      "phase": "day",
+      "weather": "clear",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 324,
+        "textures": 14
+      },
+      "drawCalls": 318,
+      "triangles": 133658,
+      "phase": "day",
+      "weather": "clear",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    },
+    {
+      "memory": {
+        "geometries": 324,
+        "textures": 14
+      },
+      "drawCalls": 318,
+      "triangles": 133658,
+      "phase": "day",
+      "weather": "clear",
+      "reduced": false,
+      "pet": "cat",
+      "character": "girl",
+      "petClips": [
+        "sleep_loop",
+        "yawn_stretch",
+        "play_tap",
+        "look_at_touch"
+      ],
+      "childClips": [
+        "read_idle",
+        "look_up"
+      ],
+      "roomClips": [
+        "drawer_open_close",
+        "book_open_close"
+      ]
+    }
+  ],
+  "concurrent": {
+    "memory": {
+      "geometries": 317,
+      "textures": 15
+    },
+    "drawCalls": 311,
+    "triangles": 130538,
+    "phase": "day",
+    "weather": "clear",
+    "reduced": false,
+    "pet": "dog",
+    "character": "boy",
+    "petClips": [
+      "sleep_loop",
+      "yawn_stretch",
+      "play_tap",
+      "look_at_touch"
+    ],
+    "childClips": [
+      "read_idle",
+      "look_up"
+    ],
+    "roomClips": [
+      "drawer_open_close",
+      "book_open_close"
+    ]
+  },
+  "none": {
+    "memory": {
+      "geometries": 324,
+      "textures": 14
+    },
+    "drawCalls": 289,
+    "triangles": 117578,
+    "phase": "day",
+    "weather": "clear",
+    "reduced": false,
+    "pet": "none",
+    "character": "girl",
+    "petClips": [
+      "sleep_loop",
+      "yawn_stretch",
+      "play_tap",
+      "look_at_touch"
+    ],
+    "childClips": [
+      "read_idle",
+      "look_up"
+    ],
+    "roomClips": [
+      "drawer_open_close",
+      "book_open_close"
+    ]
+  },
+  "reducedMotion": {
+    "before": {
+      "petTime": 0.04070000000000073,
+      "weatherTime": 8.782100000011896,
+      "petPosition": [
+        -1.13,
+        0.1,
+        0.98
+      ],
+      "characterPosition": [
+        0,
+        0.06625,
+        0.72
+      ]
+    },
+    "after": {
+      "petTime": 0.04070000000000073,
+      "weatherTime": 8.782100000011896,
+      "petPosition": [
+        -1.13,
+        0.1,
+        0.98
+      ],
+      "characterPosition": [
+        0,
+        0.06625,
+        0.72
+      ]
+    }
+  },
+  "final": {
+    "memory": {
+      "geometries": 323,
+      "textures": 10
+    },
+    "drawCalls": 318,
+    "triangles": 133658,
+    "phase": "day",
+    "weather": "clear",
+    "reduced": false,
+    "pet": "cat",
+    "character": "girl",
+    "petClips": [
+      "sleep_loop",
+      "yawn_stretch",
+      "play_tap",
+      "look_at_touch"
+    ],
+    "childClips": [
+      "read_idle",
+      "look_up"
+    ],
+    "roomClips": [
+      "drawer_open_close",
+      "book_open_close"
+    ]
+  },
+  "validation": {
+    "typeScript": "pnpm exec tsc --noEmit: passed",
+    "lint": "pnpm exec expo lint: passed",
+    "nativeDevices": "not tested",
+    "artApproval": "rejected by product owner",
+    "audio": "not delivered",
+    "monkeyEyes": "occlusion fixed and screenshot reviewed"
+  },
+  "responsiveReview": {
+    "width": 390,
+    "height": 844,
+    "horizontalOverflow": false,
+    "minimumButtonHeight": 48,
+    "urlPresetApplied": true
+  },
+  "reviewPages": {
+    "brokenImages": 0,
+    "horizontalOverflow": false
+  },
+  "assetValidation": {
+    "validatedGLB": 21,
+    "textureMaps": 9,
+    "results": [
+      {
+        "file": "models/character-boy.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 10
+      },
+      {
+        "file": "models/character-girl.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 10
+      },
+      {
+        "file": "models/character-unspecified.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 10
+      },
+      {
+        "file": "models/display-bookworm.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/display-bronze.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/display-diamond.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/display-early-bird.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/display-first-task.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/display-gold.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/display-helper.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/display-locked.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/display-math-star.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/display-silver.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/display-tidy.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/display-tooth-care.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/display-week-hero.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 0
+      },
+      {
+        "file": "models/pet-cat.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 36
+      },
+      {
+        "file": "models/pet-dog.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 36
+      },
+      {
+        "file": "models/pet-lion.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 36
+      },
+      {
+        "file": "models/pet-monkey.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 36
+      },
+      {
+        "file": "gina-room-reference.glb",
+        "embeddedResources": true,
+        "constantScaleChannels": 46
+      }
+    ]
+  },
+  "editableSource": {
+    "packedBaseColorMaps": 9,
+    "armatures": 7
+  }
+}

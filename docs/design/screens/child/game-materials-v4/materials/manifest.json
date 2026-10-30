@@ -1,0 +1,79 @@
+{
+  "status": "rejected-art-study",
+  "source": "Blender procedural nodes retained in source .blend",
+  "colorSpace": "sRGB",
+  "maps": [
+    {
+      "file": "coral-basecolor.png",
+      "bytes": 312594,
+      "sha256": "1046a54ddda925a0ad289df66bff8b47c497dd6260dc4464624d39eee98eee5d",
+      "width": 512,
+      "height": 512,
+      "channel": "baseColor"
+    },
+    {
+      "file": "cream-basecolor.png",
+      "bytes": 330688,
+      "sha256": "3e0ec308dda01ad910454b1e0c23bc7105f991a72b2df3cc3d9bfd20438be500",
+      "width": 512,
+      "height": 512,
+      "channel": "baseColor"
+    },
+    {
+      "file": "fur-brown-basecolor.png",
+      "bytes": 287065,
+      "sha256": "742617e4efd555188d776e8dba6d65cb44585e0e021f312e193160c12930ec72",
+      "width": 512,
+      "height": 512,
+      "channel": "baseColor"
+    },
+    {
+      "file": "hair-basecolor.png",
+      "bytes": 96267,
+      "sha256": "33596917c19f6fa0879d39da7ed36f25986e2f677a3db75533810dc9fa8b49c6",
+      "width": 512,
+      "height": 512,
+      "channel": "baseColor"
+    },
+    {
+      "file": "oak-basecolor.png",
+      "bytes": 130772,
+      "sha256": "125a6bb47c423fedd6de8c2e180e1ccf8895b92bcaabbb90acc2248c91b27a1d",
+      "width": 512,
+      "height": 512,
+      "channel": "baseColor"
+    },
+    {
+      "file": "oak-dark-basecolor.png",
+      "bytes": 113481,
+      "sha256": "513f4b48650a9d229e10e89ace48e085f7f2b7e40949b9274d9f2f92af97fe4d",
+      "width": 512,
+      "height": 512,
+      "channel": "baseColor"
+    },
+    {
+      "file": "oak-light-basecolor.png",
+      "bytes": 140495,
+      "sha256": "005a1e6c0155bbb9b7b4aec2ff5697f8cfca3f538f2a1bdba6597a05230ebab8",
+      "width": 512,
+      "height": 512,
+      "channel": "baseColor"
+    },
+    {
+      "file": "paper-basecolor.png",
+      "bytes": 326672,
+      "sha256": "e6c225e2c5e150be17988047a8aff3204b0abc22cc01d945e8be3867c66a0de6",
+      "width": 512,
+      "height": 512,
+      "channel": "baseColor"
+    },
+    {
+      "file": "teal-basecolor.png",
+      "bytes": 288160,
+      "sha256": "702ce4011d0921972f6338188fba22a092e96525ac3cf0a522caa4d5cf0585c8",
+      "width": 512,
+      "height": 512,
+      "channel": "baseColor"
+    }
+  ]
+}

@@ -1,0 +1,590 @@
+{
+  "status": "rejected-by-product-owner",
+  "supersedes": {
+    "reviewDirection": "../game-direction-v3/viewer.html",
+    "productionAssets": null
+  },
+  "artApproved": false,
+  "nativeValidated": false,
+  "sourceTool": "Blender 5.0.1",
+  "viewerDependency": "Three.js 0.180.0 via pinned CDN, no app dependency",
+  "inventory": {
+    "children": 3,
+    "pets": 4,
+    "collectibles": 13,
+    "standaloneGLB": 20,
+    "baseColorMaps": 9,
+    "timePhases": [
+      "sunrise",
+      "day",
+      "sunset",
+      "night"
+    ],
+    "weathers": [
+      "clear",
+      "cloudy",
+      "rain",
+      "snow",
+      "wind",
+      "fog"
+    ],
+    "combinations": 24
+  },
+  "room": {
+    "meshes": 311,
+    "triangles": 132314,
+    "skins": 2,
+    "materials": 25,
+    "animations": [
+      {
+        "name": "drawer_open_close",
+        "durationSeconds": 4.5
+      },
+      {
+        "name": "book_open_close",
+        "durationSeconds": 4.5
+      },
+      {
+        "name": "read_idle",
+        "durationSeconds": 8
+      },
+      {
+        "name": "look_up",
+        "durationSeconds": 3.3333333333333335
+      },
+      {
+        "name": "sleep_loop",
+        "durationSeconds": 3.0416666666666665
+      },
+      {
+        "name": "yawn_stretch",
+        "durationSeconds": 3.6666666666666665
+      },
+      {
+        "name": "play_tap",
+        "durationSeconds": 2.6666666666666665
+      },
+      {
+        "name": "look_at_touch",
+        "durationSeconds": 3
+      }
+    ]
+  },
+  "sources": [
+    "../../../room-v2/references/child-home-approved.png",
+    "../../../../../packages/assets/rooms/v2/",
+    "../../../../../packages/assets/gamification/illustrated-v3/"
+  ],
+  "files": [
+    {
+      "file": "README.md",
+      "bytes": 8246,
+      "sha256": "5d66fae51988b179a43736617afb6d21927437628c71b22e93b64f4b22db5aa8"
+    },
+    {
+      "file": "atmosphere.js",
+      "bytes": 7884,
+      "sha256": "a1afc88235fd0c49e0f495b2e8f34e8a6a1dd1075a0abaf1cfb074adc2e460ee"
+    },
+    {
+      "file": "build-report.json",
+      "bytes": 743,
+      "sha256": "063f12bb6c9a909f950c831c41c660db6bac65270b7a251da2bd0a17f648feea"
+    },
+    {
+      "file": "build_assets.py",
+      "bytes": 34703,
+      "sha256": "611e417dc93bc7a805799c5e2ff46dfd5ea94a90d8043783ea37e4865bbf1712"
+    },
+    {
+      "file": "characters-pets-collectibles.blend",
+      "bytes": 3445261,
+      "sha256": "c7e79e037b50fab0cd8e30d2d8d5ff0ca94d851774eb170e715a6cf09b9f903a"
+    },
+    {
+      "file": "claude-handoff.md",
+      "bytes": 2878,
+      "sha256": "59869b81e3916a197c91f8fcdddce6af3a12808f8b2ec6da9785f38bb1b937e8"
+    },
+    {
+      "file": "comparison.html",
+      "bytes": 2786,
+      "sha256": "7c8eb8de1dce2a95d72c8822e04bc5fc236f356335ba9ecc922011a0a754f5eb"
+    },
+    {
+      "file": "comparison.png",
+      "bytes": 1164112,
+      "sha256": "8ce471c9941e57b7fe734c56fc0a1dea415dd6b577ee3e7f797fa1cf74212815"
+    },
+    {
+      "file": "contact-sheet.html",
+      "bytes": 13815,
+      "sha256": "7f9c631321088c397c48f620dc196819da424a4cb2c5b6fcaf4d9eea03eb7188"
+    },
+    {
+      "file": "contact-sheet.png",
+      "bytes": 1308583,
+      "sha256": "6a53f43831aed15778cd73c4bd93b45631a44b098281df0bd096cfab1dc75e99"
+    },
+    {
+      "file": "gina-room-reference.blend",
+      "bytes": 2372015,
+      "sha256": "8e5a1202bb0e9ab1d90ee5abf7c721d21428cc04f5195952048b3fd3f236f7e7"
+    },
+    {
+      "file": "gina-room-reference.glb",
+      "bytes": 6150944,
+      "sha256": "5f8b3aa1d9423a63d0ab420c4f931304a59a60a7d5e685eef9a315aea6737289"
+    },
+    {
+      "file": "materials/coral-basecolor.png",
+      "bytes": 312594,
+      "sha256": "1046a54ddda925a0ad289df66bff8b47c497dd6260dc4464624d39eee98eee5d"
+    },
+    {
+      "file": "materials/cream-basecolor.png",
+      "bytes": 330688,
+      "sha256": "3e0ec308dda01ad910454b1e0c23bc7105f991a72b2df3cc3d9bfd20438be500"
+    },
+    {
+      "file": "materials/fur-brown-basecolor.png",
+      "bytes": 287065,
+      "sha256": "742617e4efd555188d776e8dba6d65cb44585e0e021f312e193160c12930ec72"
+    },
+    {
+      "file": "materials/hair-basecolor.png",
+      "bytes": 96267,
+      "sha256": "33596917c19f6fa0879d39da7ed36f25986e2f677a3db75533810dc9fa8b49c6"
+    },
+    {
+      "file": "materials/manifest.json",
+      "bytes": 2192,
+      "sha256": "caeca615a728efe9ae675965c1cd32637f098182732f16c7048c60584d8eb414"
+    },
+    {
+      "file": "materials/oak-basecolor.png",
+      "bytes": 130772,
+      "sha256": "125a6bb47c423fedd6de8c2e180e1ccf8895b92bcaabbb90acc2248c91b27a1d"
+    },
+    {
+      "file": "materials/oak-dark-basecolor.png",
+      "bytes": 113481,
+      "sha256": "513f4b48650a9d229e10e89ace48e085f7f2b7e40949b9274d9f2f92af97fe4d"
+    },
+    {
+      "file": "materials/oak-light-basecolor.png",
+      "bytes": 140495,
+      "sha256": "005a1e6c0155bbb9b7b4aec2ff5697f8cfca3f538f2a1bdba6597a05230ebab8"
+    },
+    {
+      "file": "materials/paper-basecolor.png",
+      "bytes": 326672,
+      "sha256": "e6c225e2c5e150be17988047a8aff3204b0abc22cc01d945e8be3867c66a0de6"
+    },
+    {
+      "file": "materials/teal-basecolor.png",
+      "bytes": 288160,
+      "sha256": "702ce4011d0921972f6338188fba22a092e96525ac3cf0a522caa4d5cf0585c8"
+    },
+    {
+      "file": "model-review.json",
+      "bytes": 5825,
+      "sha256": "13fdce7637c8915467c81e2c34968b54845ae8191d214021adba25e3a8849f80"
+    },
+    {
+      "file": "model.html",
+      "bytes": 763,
+      "sha256": "5b1c7de92275ac61206ebc9cd51d5c4caa04392ea715c878fdf6b7d6ee51f5b3"
+    },
+    {
+      "file": "model.js",
+      "bytes": 2745,
+      "sha256": "d42756d2d44a647199fb277069f97cf07ff9ac7e800d6f002599890fb9c63ad7"
+    },
+    {
+      "file": "models/character-boy.glb",
+      "bytes": 1914384,
+      "sha256": "bf467fb1b8dd13ad64637acf1e5338de4842a88b067e918555a920b379ac19b6"
+    },
+    {
+      "file": "models/character-girl.glb",
+      "bytes": 1972016,
+      "sha256": "811ea34a63e6cedbb98a59d80996fe09ac79a5b56ac89f58a0e8e6729504d5c0"
+    },
+    {
+      "file": "models/character-unspecified.glb",
+      "bytes": 1967704,
+      "sha256": "6126f10a4d2274bb9dcafa8eb3779da4e4c4fa3665da3890d8b8304333b2fbdf"
+    },
+    {
+      "file": "models/display-bookworm.glb",
+      "bytes": 787548,
+      "sha256": "8cffa1792ce23a9fb1edc50ffe9033ff32488f740aafe69a940a7fd5aabf53ff"
+    },
+    {
+      "file": "models/display-bronze.glb",
+      "bytes": 234268,
+      "sha256": "a25b004147366514495308ea383b5a4085675c51a9adf7569443932b01899e4e"
+    },
+    {
+      "file": "models/display-diamond.glb",
+      "bytes": 243700,
+      "sha256": "bc3147afc0506b61a89454f4707ad15083529700c52dcba7ba1d87fc230ad56a"
+    },
+    {
+      "file": "models/display-early-bird.glb",
+      "bytes": 343740,
+      "sha256": "311a9048c88f7721d4576c10970ce9cb59da516a2d470ebbc67cc6a9a7e9f1f5"
+    },
+    {
+      "file": "models/display-first-task.glb",
+      "bytes": 234040,
+      "sha256": "14c455214b6a525c27a0912d0aea19a8554f66e7b1e80619232f6ebf24f89d8f"
+    },
+    {
+      "file": "models/display-gold.glb",
+      "bytes": 234052,
+      "sha256": "225fe1b323960bc6539b36433f17e812a9f3a0030822f3ef1f0fbcfdb4760c22"
+    },
+    {
+      "file": "models/display-helper.glb",
+      "bytes": 351492,
+      "sha256": "9cdee0b05cef79a866e8caafe29db9770707a82bfd776a90e332d89e45d8e287"
+    },
+    {
+      "file": "models/display-locked.glb",
+      "bytes": 206116,
+      "sha256": "f2aaac17aabc87f30b67dfced02e05a1bce3de941ecec7f350541448dc36c253"
+    },
+    {
+      "file": "models/display-math-star.glb",
+      "bytes": 533888,
+      "sha256": "ee8d8f29655c5e3074cec609ef7bbd269a602a8443ca59c1ed374a1453d79f9f"
+    },
+    {
+      "file": "models/display-silver.glb",
+      "bytes": 234252,
+      "sha256": "915a13a618a602fe255274b00bb5fd5c6186452ceb8b218d22c1a9e72cbb4f78"
+    },
+    {
+      "file": "models/display-tidy.glb",
+      "bytes": 638148,
+      "sha256": "880cee229b2da0df65bfbce19552599381e4a3db7f7a75e8a79e3afe08cc9a5d"
+    },
+    {
+      "file": "models/display-tooth-care.glb",
+      "bytes": 678356,
+      "sha256": "8386288d0829c6b7c9d4b144b3e8526eb7995115f2f23fcd85d1e5eae8b459fb"
+    },
+    {
+      "file": "models/display-week-hero.glb",
+      "bytes": 223332,
+      "sha256": "d404fa54ac84f9bce7556ed60ae7479a9ec6a5d12841871dc7e911cb8a9d9940"
+    },
+    {
+      "file": "models/manifest.json",
+      "bytes": 14069,
+      "sha256": "8354bbdeffc9b48c6855e155a996f06cd61fd659a9fa55192a93e9ca14de0e93"
+    },
+    {
+      "file": "models/pet-cat.glb",
+      "bytes": 858240,
+      "sha256": "384f7cd076b4bc51148181210394d2cb8390dfa85a24599dd41ef208cf79e544"
+    },
+    {
+      "file": "models/pet-dog.glb",
+      "bytes": 902416,
+      "sha256": "4ba3436aed5bf594d7370ad68f61c84066f38ddb0892d32650ccb8f8ad305d44"
+    },
+    {
+      "file": "models/pet-lion.glb",
+      "bytes": 908888,
+      "sha256": "de5fbff0bdcd5d37a2839096844650f8d7a101b153950f4698baf809d308a3f0"
+    },
+    {
+      "file": "models/pet-monkey.glb",
+      "bytes": 897980,
+      "sha256": "15f771f9489aae4a59667701bde07ac575fc01e9d29fcefc1f12b25959c0c89e"
+    },
+    {
+      "file": "package_review.py",
+      "bytes": 9080,
+      "sha256": "7eed954393c6808757c920b719f226ce98f51ab8989d96a66b031596ee398874"
+    },
+    {
+      "file": "previews/character-boy.png",
+      "bytes": 63456,
+      "sha256": "f062fc1c3e10c638d5699d4fa9eafea3f5f187f9abd96c35b4e75edd42e56753"
+    },
+    {
+      "file": "previews/character-girl.png",
+      "bytes": 66278,
+      "sha256": "ed58bfc7dc2b6dbe90a83db1bfda829f84327ede9991a5b9713df1c66d8307d2"
+    },
+    {
+      "file": "previews/character-unspecified.png",
+      "bytes": 65891,
+      "sha256": "2e6401de562af1b8815035f186507ca649ef4b426fa0b08802c6f5efd2df2656"
+    },
+    {
+      "file": "previews/display-bookworm.png",
+      "bytes": 61276,
+      "sha256": "8aa3356e61719174b4b4b25ef6f8da039ed52bc51463dfaa075e57d406ef9606"
+    },
+    {
+      "file": "previews/display-bronze.png",
+      "bytes": 40161,
+      "sha256": "6845c5580b41e40648975832aaa6934f9aef06e60d146f7c46cd22f28f447382"
+    },
+    {
+      "file": "previews/display-diamond.png",
+      "bytes": 44219,
+      "sha256": "289ef324edd1974d2bbecd96f01bb2002645d610001b0b541092c9e049cd7e22"
+    },
+    {
+      "file": "previews/display-early-bird.png",
+      "bytes": 68410,
+      "sha256": "53d9213eec7b257c982f32ca65525c18852c9cfcb6f7cecfdb31df90ef7ec1bb"
+    },
+    {
+      "file": "previews/display-first-task.png",
+      "bytes": 39963,
+      "sha256": "6bc7a136c694256c19d06cc6618f82112a024ca15fde18e187763d9720f34a4d"
+    },
+    {
+      "file": "previews/display-gold.png",
+      "bytes": 39963,
+      "sha256": "6bc7a136c694256c19d06cc6618f82112a024ca15fde18e187763d9720f34a4d"
+    },
+    {
+      "file": "previews/display-helper.png",
+      "bytes": 70150,
+      "sha256": "351fff98cd94c325fad83cf279c6f0095a7dc10c7d636f1d57ef81bd2c335a5e"
+    },
+    {
+      "file": "previews/display-locked.png",
+      "bytes": 53392,
+      "sha256": "41945eb19202071d24f9370989bdbc4c6f7f2cafde024209fb09efc13b0d63a7"
+    },
+    {
+      "file": "previews/display-math-star.png",
+      "bytes": 48044,
+      "sha256": "58bbbe48e18fb21df88b5a474938a9993a620b6e425ef88e7ec3df1736d29430"
+    },
+    {
+      "file": "previews/display-silver.png",
+      "bytes": 40183,
+      "sha256": "39724414aa17d0cbae4e2fe8e63e65a8b1507dd79b9dff6081f58b53affc7be7"
+    },
+    {
+      "file": "previews/display-tidy.png",
+      "bytes": 101843,
+      "sha256": "b1259ff3b66eb5361e03cfe49ba97e37f2240a3a024f6aac2bc386e5b4cb3653"
+    },
+    {
+      "file": "previews/display-tooth-care.png",
+      "bytes": 78907,
+      "sha256": "eb3239945144eda879ceaa64bbdc5be51d35e8a4404b1dceef5648e2652d06cc"
+    },
+    {
+      "file": "previews/display-week-hero.png",
+      "bytes": 72214,
+      "sha256": "96b68b7096e3de47c8021c8193cc689aad3b6058e23704f2c637d42b7c63e8c9"
+    },
+    {
+      "file": "previews/drawer-open.png",
+      "bytes": 220482,
+      "sha256": "f92c1c3a084111dda56145264b7eaaa6e07b670c64f7cd7238914dcf304fa3a0"
+    },
+    {
+      "file": "previews/manifest.json",
+      "bytes": 7357,
+      "sha256": "8287bfcd37432503c6be980f8ce4ec9bee579aef40e915ce05b1e078143bb302"
+    },
+    {
+      "file": "previews/pet-cat.png",
+      "bytes": 53919,
+      "sha256": "d99ec90097ea2e8741019d21e4e720d42628f7a2d324d49e470b4b8618c49ba4"
+    },
+    {
+      "file": "previews/pet-dog.png",
+      "bytes": 52184,
+      "sha256": "3e10415b87596d9a237969fa781c4acfbecded5effe2ba360b2ebf0921d140ac"
+    },
+    {
+      "file": "previews/pet-lion.png",
+      "bytes": 44743,
+      "sha256": "4ae6b8fdbdc31dd12d3e5270a5a059c6e409a38305901321587baebcc3bff24a"
+    },
+    {
+      "file": "previews/pet-monkey.png",
+      "bytes": 55651,
+      "sha256": "0d24a7b9ab796968f3d7d41c8b63866b7911fbb778638e54c0f3c22c95e179f0"
+    },
+    {
+      "file": "previews/pet-yawn.png",
+      "bytes": 220521,
+      "sha256": "5d4ee966d06fea8b68745b5eb49d2b202fcd2c7d2ade3b503b0aaf6a38c5d0e2"
+    },
+    {
+      "file": "previews/weather-day-clear.png",
+      "bytes": 219837,
+      "sha256": "fe16380780771069a4049dcd0cb4b19c50389f1b8447a17c7ada3af737b5e6ca"
+    },
+    {
+      "file": "previews/weather-day-cloudy.png",
+      "bytes": 216599,
+      "sha256": "4f9063f15fedb5912ce8206d92a3b2dc7ac0a69c90e8baea8e967057fc92c6a4"
+    },
+    {
+      "file": "previews/weather-day-fog.png",
+      "bytes": 216114,
+      "sha256": "be35d5ab0e9a059bb7eece4b968af523282ac5672e4486a2cbbade10b7f7c6e9"
+    },
+    {
+      "file": "previews/weather-day-rain.png",
+      "bytes": 220409,
+      "sha256": "b2494b14342422f627f6e43778fc8ccc5208de790c88085c0c40a9bcf0c04478"
+    },
+    {
+      "file": "previews/weather-day-snow.png",
+      "bytes": 218120,
+      "sha256": "39ea31025219e174e00bc8c0f535e39b4382b1d91ee187cddc59e71327526bff"
+    },
+    {
+      "file": "previews/weather-day-wind.png",
+      "bytes": 222985,
+      "sha256": "21207512bb6e506d642c349c375ba8e55ed8ca97c080d7d92adbfe1916fc79cb"
+    },
+    {
+      "file": "previews/weather-night-clear.png",
+      "bytes": 244357,
+      "sha256": "821d8ad45c225c4b236c22c1f0156a2b4a0690f62cce3e35eaaeb76e7b4050bc"
+    },
+    {
+      "file": "previews/weather-night-cloudy.png",
+      "bytes": 243152,
+      "sha256": "c5cbe80b8e10c21b71f9930d9545bc93b1618719b534dfcbb448dfca836ed670"
+    },
+    {
+      "file": "previews/weather-night-fog.png",
+      "bytes": 242883,
+      "sha256": "038ba5ffed2007122dcd45125847e0a7ac645028e516d7ae25ba058e57de826c"
+    },
+    {
+      "file": "previews/weather-night-rain.png",
+      "bytes": 247516,
+      "sha256": "cd000f3e9b8477e04217a8087a88601a7d6ae5d92a128de191b45b28269f3e7f"
+    },
+    {
+      "file": "previews/weather-night-snow.png",
+      "bytes": 244825,
+      "sha256": "71640335cec5f6e9b5acdb5bffd2a60c4fe82f91e8753ed28ffd87f1edc61b8a"
+    },
+    {
+      "file": "previews/weather-night-wind.png",
+      "bytes": 246651,
+      "sha256": "1ce813799882210c51d29fca03dc11263d9651d8b9b803adb1f180b5fe081bdb"
+    },
+    {
+      "file": "previews/weather-sunrise-clear.png",
+      "bytes": 213815,
+      "sha256": "5e709ac085406232a707e5d13e74bb4af1af60ae4610d26ffb122d18c2ec6cfc"
+    },
+    {
+      "file": "previews/weather-sunrise-cloudy.png",
+      "bytes": 213414,
+      "sha256": "a466780b1b06fdf1595cee6759e8a04229daadc9149364afba4a861621b4e7f3"
+    },
+    {
+      "file": "previews/weather-sunrise-fog.png",
+      "bytes": 212243,
+      "sha256": "e66c0155e99dec0aeea585d14feacc336899cf9dccc47f66336f860cde6b84f1"
+    },
+    {
+      "file": "previews/weather-sunrise-rain.png",
+      "bytes": 217717,
+      "sha256": "db9fba3e79a0a071414895007a7636a72793f8bff5dcf95bf8180ff6f43d6233"
+    },
+    {
+      "file": "previews/weather-sunrise-snow.png",
+      "bytes": 214930,
+      "sha256": "0be6ad70b8ddd30ada269ea81d2a655a7963e7bb8a93bfc7e9c3ec8018233028"
+    },
+    {
+      "file": "previews/weather-sunrise-wind.png",
+      "bytes": 216205,
+      "sha256": "69039e10d5f4f7676c7f0783a13829e0293efe6dd82a010c723982ee89c8772d"
+    },
+    {
+      "file": "previews/weather-sunset-clear.png",
+      "bytes": 228364,
+      "sha256": "ff11b269b585354205840f47c8f2d9ec77878cd27d5fac123d1540f4a7fae748"
+    },
+    {
+      "file": "previews/weather-sunset-cloudy.png",
+      "bytes": 226804,
+      "sha256": "c34af9358330bd9c679b84e8967f9e14157f7d4a610495cede51ff902bee061e"
+    },
+    {
+      "file": "previews/weather-sunset-fog.png",
+      "bytes": 225076,
+      "sha256": "bf3d7d538738a244095e003b3114f65f2d54a47237bd5df5a3444929470b0069"
+    },
+    {
+      "file": "previews/weather-sunset-rain.png",
+      "bytes": 231387,
+      "sha256": "8d17614d535a7df2561bbacb727609edd1aaa7760749b3453470d924d6021cf2"
+    },
+    {
+      "file": "previews/weather-sunset-snow.png",
+      "bytes": 228234,
+      "sha256": "04b9f46110cf98fd81d66a42a8791b852a73687955413faafc32967e95f90853"
+    },
+    {
+      "file": "previews/weather-sunset-wind.png",
+      "bytes": 230717,
+      "sha256": "70517d90b59f8b98a34b31a354d2cc577351fa757e86903501f12136c90746d8"
+    },
+    {
+      "file": "qa-report.json",
+      "bytes": 19976,
+      "sha256": "65da4455edc045d4b51a10022ba9950dc6351d65e6b07becc9fa11d5183a74bd"
+    },
+    {
+      "file": "reference-room-day.png",
+      "bytes": 1691643,
+      "sha256": "ee7cafb5bbb187d482301060bd63ed5eb4820fc50df88bea3acb6bf166c8e901"
+    },
+    {
+      "file": "validate_assets.py",
+      "bytes": 2085,
+      "sha256": "82814c1baa6c7ba003304da228a699cfcc9af6314ec849b4b82532e3fe7abbce"
+    },
+    {
+      "file": "viewer.html",
+      "bytes": 4967,
+      "sha256": "24fe66f26e4927cb1171e607e4302057d16db509b45f5d05c098717005bd4318"
+    },
+    {
+      "file": "viewer.js",
+      "bytes": 9406,
+      "sha256": "a2c117220fe49c88d56a5f34fbe541177bc9319e60d2cb94de71edc17746f084"
+    },
+    {
+      "file": "weather-sheet.html",
+      "bytes": 6497,
+      "sha256": "be7f89b647c4d24c1db88db78aed5eadd2ab94646c11a172ad9e08ea924f7c2c"
+    },
+    {
+      "file": "weather-sheet.png",
+      "bytes": 942832,
+      "sha256": "bad1c0b087c47020ca969f29648e2423752b6d415b3523e85e5a53bf168ea43d"
+    }
+  ],
+  "rejection": {
+    "reason": "visual quality and reference identity",
+    "newArtTarget": "../art-direction-v5/index.html",
+    "newArtTargetIsGLB": false
+  }
+}

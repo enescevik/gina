@@ -1,0 +1,61 @@
+{
+  "status": "proposal-spatial-study-not-production",
+  "sourceTool": "Blender 5.0.1",
+  "meshCount": 176,
+  "triangles": 51324,
+  "animations": [
+    "drawer_open_close",
+    "book_open_close"
+  ],
+  "mobileRuntimeVerified": false,
+  "webViewerVerified": true,
+  "missing": [
+    "rigged pet",
+    "pet animations",
+    "final art",
+    "native integration",
+    "real-device profiling"
+  ],
+  "files": [
+    {
+      "file": "README.md",
+      "sha256": "e7071e0d4bf0482efd81158adf4a091403cb40eb8e60cbbba5e34d2da078e202"
+    },
+    {
+      "file": "build_spatial_study.py",
+      "sha256": "b42760c7072149697412a916bc5f32c0ce3e5c54353ad791ddc66e73a7eae57c"
+    },
+    {
+      "file": "pet-production-contract.json",
+      "sha256": "4a5c7927dd957ed49788853965106384fb7b56441f8acba48646c48c8b6bc5ae"
+    },
+    {
+      "file": "room-spatial-study-open.png",
+      "sha256": "52a9c45479b01610e64b7f80d71b7edb4fece63a9be83a757952c8f523c60919"
+    },
+    {
+      "file": "room-spatial-study.blend",
+      "sha256": "ec215250daf0197343206d0fa951511943db45a7f35d9e3a44273654cff95fdc"
+    },
+    {
+      "file": "room-spatial-study.glb",
+      "sha256": "d01f99cde141c752f3755c09802640290f39f3699c9154ababa73d482120bbec"
+    },
+    {
+      "file": "room-spatial-study.png",
+      "sha256": "ade87b7967d1abf93b93052b8ec8cc8afb2b764b24d208bf8afe46b0ce3e79c9"
+    },
+    {
+      "file": "runtime-webgl-review.png",
+      "sha256": "fbb14bffeb019f8ae969073ab641a3da6cc7702a4dbbb2ff5d57596aa9823b73"
+    },
+    {
+      "file": "study-metadata.json",
+      "sha256": "f90635963b055a9b2b5a6d4c0790c79d8378ad3b6be62889ea5401fca282dd0d"
+    },
+    {
+      "file": "viewer.html",
+      "sha256": "8ec1950f4ea98735d91696704e1cdd41e95cb96dd03a5434c56e6d4521fe9abb"
+    }
+  ]
+}

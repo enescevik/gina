@@ -1,0 +1,109 @@
+{
+  "status": "visual-direction-approved-screen-layouts-pending",
+  "supersedesVisualDirection": "../game-materials-v4/",
+  "previousDirectionRejected": true,
+  "generationTool": "built-in image_gen",
+  "productionReady": false,
+  "isGLB": false,
+  "isRenderedFromGLB": false,
+  "isAnimationSequence": false,
+  "containsBakedText": false,
+  "sourceReferences": [
+    "../../../room-v2/references/child-home-approved.png",
+    "../../../../../packages/assets/rooms/v2/character-girl.webp",
+    "../../../../../packages/assets/rooms/v2/pet-cat.webp",
+    "../../../../../packages/assets/gamification/illustrated-v3/display-tooth-care.webp"
+  ],
+  "assets": [
+    {
+      "slug": "room-day",
+      "file": "room-day.png",
+      "role": "day art target"
+    },
+    {
+      "slug": "room-sunset",
+      "file": "room-sunset.png",
+      "role": "sunset art target"
+    },
+    {
+      "slug": "room-night-snow",
+      "file": "room-night-snow.png",
+      "role": "snowy night art target"
+    }
+  ],
+  "validation": {
+    "tsc": "pass",
+    "expoLint": "pass",
+    "reviewBrokenImages": 0,
+    "reviewHorizontalOverflowAt390": false,
+    "minimumReviewButtonHeight": 48,
+    "visualReview": "visual direction approved by product owner; screen layouts and production assets require subsequent review"
+  },
+  "files": [
+    {
+      "file": "REVIEW.md",
+      "bytes": 5637,
+      "sha256": "0dd64b8cc3f4521dea3b0d40f79d784191e242f9d71bbbd17f40a6081cb9d906"
+    },
+    {
+      "file": "claude-handoff.md",
+      "bytes": 1639,
+      "sha256": "5f24551c35837bb25046e95bd3a58bdf4cd8cf12bac57d6651d33704da6fcc13"
+    },
+    {
+      "file": "contact-sheet.html",
+      "bytes": 1287,
+      "sha256": "08805de7d37e33039bd0dfcefe16ec3c0dfb9b35859a691e00389d4150555bf8"
+    },
+    {
+      "file": "contact-sheet.png",
+      "bytes": 1621892,
+      "sha256": "444306f5d23c713c49f6c0a1b510f07faf66a90f5f860e36ce59b3aae9b22093",
+      "width": 1485,
+      "height": 1206
+    },
+    {
+      "file": "index.html",
+      "bytes": 5247,
+      "sha256": "cb9c702a4ebe981085ca333097b8eed07046193d8a9596c720da5ce7d01538d6"
+    },
+    {
+      "file": "prompts.json",
+      "bytes": 7520,
+      "sha256": "a4e03bb2b565ac39d1b4589df4f0012d5df0486bd633d9a0767221a268a38788"
+    },
+    {
+      "file": "review-page.png",
+      "bytes": 2086351,
+      "sha256": "3d52a4754c394d162acee26d9b60f03cb4140614c5124cdac04e5f1c620991f9",
+      "width": 1485,
+      "height": 2267
+    },
+    {
+      "file": "room-day.png",
+      "bytes": 2027220,
+      "sha256": "a945f03a64eb6c576146fcdab5d425f46a804b7f302292eaaabfd3437a186c9c",
+      "width": 1586,
+      "height": 992
+    },
+    {
+      "file": "room-night-snow.png",
+      "bytes": 2054060,
+      "sha256": "31a6401c6b1472cd5998b338e5711db7da23ac66d9b61110689f69cf45700cbc",
+      "width": 1586,
+      "height": 992
+    },
+    {
+      "file": "room-sunset.png",
+      "bytes": 2032822,
+      "sha256": "65327b3f0a2b94f3e7fb04bddc9bb0215836f072db44edbf372289eb9e1b42cb",
+      "width": 1586,
+      "height": 992
+    }
+  ],
+  "approval": {
+    "date": "2026-10-30",
+    "userQuote": "bu güzel, tüm ekranları yap bu şekilde",
+    "scope": "v5 visual direction only; not v4 GLB, animation, new screen layouts or app implementation"
+  }
+}

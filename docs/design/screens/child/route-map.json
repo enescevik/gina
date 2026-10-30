@@ -1,0 +1,216 @@
+[
+  {
+    "id": "today",
+    "route": "child/today",
+    "sourceFile": "apps/mobile/src/app/child/today.tsx",
+    "sourceSha256": "6110f1ef91c08b0cf8824f4f94139bc40c1464d7b4c5ebcc7ef75070b5b12f80",
+    "variants": [],
+    "existingCopyAndFields": null,
+    "existingI18nKeys": {
+      "child.calendar": "Takvimim",
+      "child.switchProfile": "Profil değiştir",
+      "child.today": "Bugün",
+      "child.week": "Haftam",
+      "name, avatar": null
+    },
+    "existingRpcNames": [
+      "child_logout"
+    ],
+    "existingFormLabels": []
+  },
+  {
+    "id": "index",
+    "route": "child/index",
+    "sourceFile": "apps/mobile/src/app/child/index.tsx",
+    "sourceSha256": "b3f89f6c1af6595a37c63a427b80da997e9883d35ebeea6510b560b3fc1cd964",
+    "variants": [],
+    "existingCopyAndFields": null,
+    "existingI18nKeys": {
+      "child.noChildren": "Henüz çocuk eklenmemiş; veli telefonundan ekleyin.",
+      "child.pickProfile": "Kim giriyor?",
+      "id, name, avatar, grade": null
+    },
+    "existingRpcNames": [],
+    "existingFormLabels": []
+  },
+  {
+    "id": "week",
+    "route": "child/week",
+    "sourceFile": "apps/mobile/src/app/child/week.tsx",
+    "sourceSha256": "72c7dfcde35c32fb2a4e50360837fe014f9653f4a1c645b5d2db9f0ef2d81bbd",
+    "variants": [],
+    "existingCopyAndFields": null,
+    "existingI18nKeys": {
+      "calendar.today": "Bugün",
+      "child.noTasks": "Görev yok",
+      "child.today": "Bugün",
+      "child.week": "Haftam",
+      "id, title, icon, stars, days_of_week, starts_on, ends_on, active, sort_order": null,
+      "template_id, due_date, status": null
+    },
+    "existingRpcNames": [],
+    "existingFormLabels": []
+  },
+  {
+    "id": "calendar",
+    "route": "child/calendar",
+    "sourceFile": "apps/mobile/src/app/child/calendar.tsx",
+    "sourceSha256": "64c1b5e5f9778adac3e2df02c0c0bf764c0920851f8bc2a1b830ba519e22f6f4",
+    "variants": [],
+    "existingCopyAndFields": null,
+    "existingI18nKeys": {
+      "child.calendar": "Takvimim",
+      "child.today": "Bugün",
+      "id, title, type, child_id, starts_at, ends_at, all_day, rrule, location": null
+    },
+    "existingRpcNames": [],
+    "existingFormLabels": []
+  },
+  {
+    "id": "goal",
+    "route": "child/goal",
+    "sourceFile": "apps/mobile/src/app/child/goal.tsx",
+    "sourceSha256": "bcdd56a1eb3be8a3c81842197c255696f8f66c065f881d072277aeef6da4a328",
+    "variants": [],
+    "existingCopyAndFields": null,
+    "existingI18nKeys": {
+      "common.cancel": "Vazgeç",
+      "goal.noRewards": "Henüz ödül tanımlı değil; ebeveyninden eklemesini iste.",
+      "goal.pick": "Hedefini seç",
+      "id, title, icon, cost_stars": null
+    },
+    "existingRpcNames": [
+      "set_child_goal"
+    ],
+    "existingFormLabels": []
+  },
+  {
+    "id": "collection",
+    "route": "child/collection",
+    "sourceFile": "apps/mobile/src/app/child/collection.tsx",
+    "sourceSha256": "29b692e4c6954f8946b0a0519f962828b1dbcc1ceb295fe166563257c16a4baa",
+    "variants": [],
+    "existingCopyAndFields": null,
+    "existingI18nKeys": {
+      "child.today": "Bugün",
+      "collection.earned": "Kazanıldı",
+      "collection.locked": "Kilitli",
+      "collection.summary": "{{earned}} / {{total}} rozet kazandın",
+      "room.myCollection": "Koleksiyonum"
+    },
+    "existingRpcNames": [],
+    "existingFormLabels": []
+  },
+  {
+    "id": "prova-index",
+    "route": "child/prova/index",
+    "sourceFile": "apps/mobile/src/app/child/prova/index.tsx",
+    "sourceSha256": "3c2efec1aafe7955dde45feb6b1235caa4edce9044943724373e32b7c6d98ff2",
+    "variants": [],
+    "existingCopyAndFields": null,
+    "existingI18nKeys": {
+      "child.today": "Bugün",
+      "id, title, status, timed, duration_minutes, question_ids, exam_attempts(status, mc_total, mc_correct)": null,
+      "prova.a11yContinueHint": "Yarım kalan denemeye devam eder",
+      "prova.a11yStartHint": "Denemeyi başlatır",
+      "prova.continue": "Devam",
+      "prova.done": "Tamamlananlar",
+      "prova.min": "dk",
+      "prova.nothingAssigned": "Şu an atanmış deneme yok.",
+      "prova.questionCount": null,
+      "prova.resultMc": "Şıklı: {{correct}} / {{total}} doğru",
+      "prova.status.completed": "Tamamlandı",
+      "prova.title": "Prova",
+      "prova.toDo": "Seni bekleyen denemeler",
+      "prova.untimed": "süresiz",
+      "room.start": "Başla"
+    },
+    "existingRpcNames": [],
+    "existingFormLabels": []
+  },
+  {
+    "id": "prova-exam",
+    "route": "child/prova/[examId]",
+    "sourceFile": "apps/mobile/src/app/child/prova/[examId].tsx",
+    "sourceSha256": "517010031b32c37ab9decc08b1d39a9740da4ad9c66e5806920cecd14c5c64b7",
+    "variants": [
+      "open",
+      "confirm",
+      "result"
+    ],
+    "existingCopyAndFields": null,
+    "existingI18nKeys": {
+      "prova.answerLabel": "Cevabın",
+      "prova.backToList": "Prova'ya dön",
+      "prova.choicesLabel": "Şıklar",
+      "prova.finish": "Bitir",
+      "prova.finishAnyway": "Yine de bitir",
+      "prova.finished": "Deneme bitti!",
+      "prova.goToUnanswered": "Boş soruya git",
+      "prova.minutesLeft": null,
+      "prova.next": "Sonraki",
+      "prova.openEndedNote": "Açık uçlu cevaplarını ebeveynin inceleyecek.",
+      "prova.prev": "Geri",
+      "prova.questionOf": "Soru {{n}} / {{total}}",
+      "prova.resultMc": "Şıklı: {{correct}} / {{total}} doğru",
+      "prova.timeLeft": "Kalan süre {{time}}",
+      "prova.unansweredConfirm": null,
+      "prova.writeAnswer": "Cevabını buraya yaz…"
+    },
+    "existingRpcNames": [
+      "finish_exam_attempt",
+      "get_attempt_questions",
+      "start_exam_attempt",
+      "submit_exam_answer"
+    ],
+    "existingFormLabels": []
+  },
+  {
+    "id": "pin",
+    "route": "child/pin",
+    "sourceFile": "apps/mobile/src/app/child/pin.tsx",
+    "sourceSha256": "e77d4a825a8e964fae54a966a37b66202dec0f3a256d444b20639fd96ea51a41",
+    "variants": [],
+    "existingCopyAndFields": null,
+    "existingI18nKeys": {
+      "child.enterPin": "PIN'ini gir",
+      "child.hello": "Merhaba {{name}}!",
+      "child.wrongPin": "PIN yanlış, tekrar dene.",
+      "common.cancel": "Vazgeç",
+      "common.ok": "Tamam"
+    },
+    "existingRpcNames": [
+      "child_pin_login"
+    ],
+    "existingFormLabels": []
+  },
+  {
+    "id": "room-preview",
+    "route": "child/room-preview",
+    "sourceFile": "apps/mobile/src/app/child/room-preview.tsx",
+    "sourceSha256": "f21fd34728e92a66e232ad8e0df8bde95ae9951d3a6c2cbfd120c51fac183662",
+    "variants": [
+      "themes",
+      "pets"
+    ],
+    "existingCopyAndFields": null,
+    "existingI18nKeys": {
+      "child.approved": "Onaylandı",
+      "child.hello": "Merhaba {{name}}!",
+      "child.waitingApproval": "Onay bekliyor",
+      "room.displaySlot": "Sergi yuvası",
+      "room.myCollection": "Koleksiyonum",
+      "room.myGoal": "Hedefim",
+      "room.myTreasure": "Hazinem",
+      "room.myWeek": "Haftam",
+      "room.parentExit": "Ebeveyn",
+      "room.previewNote": "Önizleme: sahte veriyle düzen taslağı; geniş ekranda tam oda görünür.",
+      "room.starsLeft": null,
+      "room.tapWhenDone": "Yapınca dokun",
+      "room.todayTasks": "Bugünkü görevlerim",
+      "room.weekProgress": "{{done}}/{{total}} görev"
+    },
+    "existingRpcNames": [],
+    "existingFormLabels": []
+  }
+]

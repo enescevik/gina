@@ -1,0 +1,1735 @@
+{
+  "group": "child",
+  "screens": [
+    {
+      "id": "today",
+      "title": "Merhaba Ece!",
+      "route": "child/today",
+      "variants": []
+    },
+    {
+      "id": "index",
+      "title": "Kim giriyor?",
+      "route": "child/index",
+      "variants": []
+    },
+    {
+      "id": "week",
+      "title": "Haftam",
+      "route": "child/week",
+      "variants": []
+    },
+    {
+      "id": "calendar",
+      "title": "Takvimim",
+      "route": "child/calendar",
+      "variants": []
+    },
+    {
+      "id": "goal",
+      "title": "Hedefim",
+      "route": "child/goal",
+      "variants": []
+    },
+    {
+      "id": "collection",
+      "title": "Koleksiyonum",
+      "route": "child/collection",
+      "variants": []
+    },
+    {
+      "id": "prova-index",
+      "title": "Prova",
+      "route": "child/prova/index",
+      "variants": []
+    },
+    {
+      "id": "prova-exam",
+      "title": "Matematik provası",
+      "route": "child/prova/[examId]",
+      "variants": [
+        "open",
+        "confirm",
+        "result"
+      ]
+    },
+    {
+      "id": "pin",
+      "title": "Odamın anahtarı",
+      "route": "child/pin",
+      "variants": []
+    },
+    {
+      "id": "room-preview",
+      "title": "Odamı düzenle",
+      "route": "child/room-preview",
+      "variants": [
+        "themes",
+        "pets"
+      ]
+    }
+  ],
+  "captures": [
+    {
+      "screen": "today",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "today-phone.png"
+    },
+    {
+      "screen": "today",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "today-phone-part-2.png"
+    },
+    {
+      "screen": "today",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "today-empty-phone.png"
+    },
+    {
+      "screen": "today",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "today-loading-phone.png"
+    },
+    {
+      "screen": "today",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "today-error-phone.png"
+    },
+    {
+      "screen": "today",
+      "device": "tablet",
+      "state": "normal",
+      "part": 1,
+      "file": "today-tablet.png"
+    },
+    {
+      "screen": "today",
+      "device": "tablet",
+      "state": "empty",
+      "part": 1,
+      "file": "today-empty-tablet.png"
+    },
+    {
+      "screen": "today",
+      "device": "tablet",
+      "state": "loading",
+      "part": 1,
+      "file": "today-loading-tablet.png"
+    },
+    {
+      "screen": "today",
+      "device": "tablet",
+      "state": "error",
+      "part": 1,
+      "file": "today-error-tablet.png"
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "index-phone.png"
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "index-empty-phone.png"
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "index-loading-phone.png"
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "index-error-phone.png"
+    },
+    {
+      "screen": "index",
+      "device": "tablet",
+      "state": "normal",
+      "part": 1,
+      "file": "index-tablet.png"
+    },
+    {
+      "screen": "index",
+      "device": "tablet",
+      "state": "empty",
+      "part": 1,
+      "file": "index-empty-tablet.png"
+    },
+    {
+      "screen": "index",
+      "device": "tablet",
+      "state": "loading",
+      "part": 1,
+      "file": "index-loading-tablet.png"
+    },
+    {
+      "screen": "index",
+      "device": "tablet",
+      "state": "error",
+      "part": 1,
+      "file": "index-error-tablet.png"
+    },
+    {
+      "screen": "week",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "week-phone.png"
+    },
+    {
+      "screen": "week",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "week-phone-part-2.png"
+    },
+    {
+      "screen": "week",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "week-empty-phone.png"
+    },
+    {
+      "screen": "week",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "week-loading-phone.png"
+    },
+    {
+      "screen": "week",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "week-error-phone.png"
+    },
+    {
+      "screen": "week",
+      "device": "tablet",
+      "state": "normal",
+      "part": 1,
+      "file": "week-tablet.png"
+    },
+    {
+      "screen": "week",
+      "device": "tablet",
+      "state": "empty",
+      "part": 1,
+      "file": "week-empty-tablet.png"
+    },
+    {
+      "screen": "week",
+      "device": "tablet",
+      "state": "loading",
+      "part": 1,
+      "file": "week-loading-tablet.png"
+    },
+    {
+      "screen": "week",
+      "device": "tablet",
+      "state": "error",
+      "part": 1,
+      "file": "week-error-tablet.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "calendar-phone.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "calendar-empty-phone.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "calendar-loading-phone.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "calendar-error-phone.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "tablet",
+      "state": "normal",
+      "part": 1,
+      "file": "calendar-tablet.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "tablet",
+      "state": "empty",
+      "part": 1,
+      "file": "calendar-empty-tablet.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "tablet",
+      "state": "loading",
+      "part": 1,
+      "file": "calendar-loading-tablet.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "tablet",
+      "state": "error",
+      "part": 1,
+      "file": "calendar-error-tablet.png"
+    },
+    {
+      "screen": "goal",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "goal-phone.png"
+    },
+    {
+      "screen": "goal",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "goal-phone-part-2.png"
+    },
+    {
+      "screen": "goal",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "goal-empty-phone.png"
+    },
+    {
+      "screen": "goal",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "goal-loading-phone.png"
+    },
+    {
+      "screen": "goal",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "goal-error-phone.png"
+    },
+    {
+      "screen": "goal",
+      "device": "tablet",
+      "state": "normal",
+      "part": 1,
+      "file": "goal-tablet.png"
+    },
+    {
+      "screen": "goal",
+      "device": "tablet",
+      "state": "normal",
+      "part": 2,
+      "file": "goal-tablet-part-2.png"
+    },
+    {
+      "screen": "goal",
+      "device": "tablet",
+      "state": "empty",
+      "part": 1,
+      "file": "goal-empty-tablet.png"
+    },
+    {
+      "screen": "goal",
+      "device": "tablet",
+      "state": "loading",
+      "part": 1,
+      "file": "goal-loading-tablet.png"
+    },
+    {
+      "screen": "goal",
+      "device": "tablet",
+      "state": "error",
+      "part": 1,
+      "file": "goal-error-tablet.png"
+    },
+    {
+      "screen": "collection",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "collection-phone.png"
+    },
+    {
+      "screen": "collection",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "collection-empty-phone.png"
+    },
+    {
+      "screen": "collection",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "collection-loading-phone.png"
+    },
+    {
+      "screen": "collection",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "collection-error-phone.png"
+    },
+    {
+      "screen": "collection",
+      "device": "tablet",
+      "state": "normal",
+      "part": 1,
+      "file": "collection-tablet.png"
+    },
+    {
+      "screen": "collection",
+      "device": "tablet",
+      "state": "normal",
+      "part": 2,
+      "file": "collection-tablet-part-2.png"
+    },
+    {
+      "screen": "collection",
+      "device": "tablet",
+      "state": "empty",
+      "part": 1,
+      "file": "collection-empty-tablet.png"
+    },
+    {
+      "screen": "collection",
+      "device": "tablet",
+      "state": "loading",
+      "part": 1,
+      "file": "collection-loading-tablet.png"
+    },
+    {
+      "screen": "collection",
+      "device": "tablet",
+      "state": "error",
+      "part": 1,
+      "file": "collection-error-tablet.png"
+    },
+    {
+      "screen": "prova-index",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "prova-index-phone.png"
+    },
+    {
+      "screen": "prova-index",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "prova-index-empty-phone.png"
+    },
+    {
+      "screen": "prova-index",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "prova-index-loading-phone.png"
+    },
+    {
+      "screen": "prova-index",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "prova-index-error-phone.png"
+    },
+    {
+      "screen": "prova-index",
+      "device": "tablet",
+      "state": "normal",
+      "part": 1,
+      "file": "prova-index-tablet.png"
+    },
+    {
+      "screen": "prova-index",
+      "device": "tablet",
+      "state": "empty",
+      "part": 1,
+      "file": "prova-index-empty-tablet.png"
+    },
+    {
+      "screen": "prova-index",
+      "device": "tablet",
+      "state": "loading",
+      "part": 1,
+      "file": "prova-index-loading-tablet.png"
+    },
+    {
+      "screen": "prova-index",
+      "device": "tablet",
+      "state": "error",
+      "part": 1,
+      "file": "prova-index-error-tablet.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "prova-exam-phone.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "prova-exam-empty-phone.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "prova-exam-loading-phone.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "prova-exam-error-phone.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "open",
+      "part": 1,
+      "file": "prova-exam-open-phone.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "confirm",
+      "part": 1,
+      "file": "prova-exam-confirm-phone.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "result",
+      "part": 1,
+      "file": "prova-exam-result-phone.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "normal",
+      "part": 1,
+      "file": "prova-exam-tablet.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "empty",
+      "part": 1,
+      "file": "prova-exam-empty-tablet.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "loading",
+      "part": 1,
+      "file": "prova-exam-loading-tablet.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "error",
+      "part": 1,
+      "file": "prova-exam-error-tablet.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "open",
+      "part": 1,
+      "file": "prova-exam-open-tablet.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "confirm",
+      "part": 1,
+      "file": "prova-exam-confirm-tablet.png"
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "result",
+      "part": 1,
+      "file": "prova-exam-result-tablet.png"
+    },
+    {
+      "screen": "pin",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "pin-phone.png"
+    },
+    {
+      "screen": "pin",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "pin-empty-phone.png"
+    },
+    {
+      "screen": "pin",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "pin-loading-phone.png"
+    },
+    {
+      "screen": "pin",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "pin-error-phone.png"
+    },
+    {
+      "screen": "pin",
+      "device": "tablet",
+      "state": "normal",
+      "part": 1,
+      "file": "pin-tablet.png"
+    },
+    {
+      "screen": "pin",
+      "device": "tablet",
+      "state": "empty",
+      "part": 1,
+      "file": "pin-empty-tablet.png"
+    },
+    {
+      "screen": "pin",
+      "device": "tablet",
+      "state": "loading",
+      "part": 1,
+      "file": "pin-loading-tablet.png"
+    },
+    {
+      "screen": "pin",
+      "device": "tablet",
+      "state": "error",
+      "part": 1,
+      "file": "pin-error-tablet.png"
+    },
+    {
+      "screen": "room-preview",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "room-preview-phone.png"
+    },
+    {
+      "screen": "room-preview",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "room-preview-empty-phone.png"
+    },
+    {
+      "screen": "room-preview",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "room-preview-loading-phone.png"
+    },
+    {
+      "screen": "room-preview",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "room-preview-error-phone.png"
+    },
+    {
+      "screen": "room-preview",
+      "device": "phone",
+      "state": "themes",
+      "part": 1,
+      "file": "room-preview-themes-phone.png"
+    },
+    {
+      "screen": "room-preview",
+      "device": "phone",
+      "state": "pets",
+      "part": 1,
+      "file": "room-preview-pets-phone.png"
+    },
+    {
+      "screen": "room-preview",
+      "device": "tablet",
+      "state": "normal",
+      "part": 1,
+      "file": "room-preview-tablet.png"
+    },
+    {
+      "screen": "room-preview",
+      "device": "tablet",
+      "state": "empty",
+      "part": 1,
+      "file": "room-preview-empty-tablet.png"
+    },
+    {
+      "screen": "room-preview",
+      "device": "tablet",
+      "state": "loading",
+      "part": 1,
+      "file": "room-preview-loading-tablet.png"
+    },
+    {
+      "screen": "room-preview",
+      "device": "tablet",
+      "state": "error",
+      "part": 1,
+      "file": "room-preview-error-tablet.png"
+    },
+    {
+      "screen": "room-preview",
+      "device": "tablet",
+      "state": "themes",
+      "part": 1,
+      "file": "room-preview-themes-tablet.png"
+    },
+    {
+      "screen": "room-preview",
+      "device": "tablet",
+      "state": "pets",
+      "part": 1,
+      "file": "room-preview-pets-tablet.png"
+    }
+  ],
+  "checks": [
+    {
+      "screen": "today",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 526,
+      "scrollHeight": 742,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "today",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 526,
+      "scrollHeight": 526,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "today",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 526,
+      "scrollHeight": 526,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "today",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 526,
+      "scrollHeight": 526,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "today",
+      "device": "tablet",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 800,
+      "scrollHeight": 800,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "today",
+      "device": "tablet",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 350,
+      "scrollHeight": 350,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "today",
+      "device": "tablet",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 350,
+      "scrollHeight": 371,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "today",
+      "device": "tablet",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 350,
+      "scrollHeight": 350,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "tablet",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "tablet",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "tablet",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 381,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "tablet",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "week",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 642,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "week",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "week",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "week",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "week",
+      "device": "tablet",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "week",
+      "device": "tablet",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 445,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "week",
+      "device": "tablet",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 381,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "week",
+      "device": "tablet",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "calendar",
+      "device": "tablet",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "calendar",
+      "device": "tablet",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 445,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "calendar",
+      "device": "tablet",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 381,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "calendar",
+      "device": "tablet",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "goal",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 1013,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "goal",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "goal",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "goal",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "goal",
+      "device": "tablet",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 582,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "goal",
+      "device": "tablet",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "goal",
+      "device": "tablet",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 381,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "goal",
+      "device": "tablet",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "collection",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "collection",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "collection",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "collection",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "collection",
+      "device": "tablet",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 490,
+      "scrollHeight": 498,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "collection",
+      "device": "tablet",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "collection",
+      "device": "tablet",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 381,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "collection",
+      "device": "tablet",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-index",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-index",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-index",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-index",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-index",
+      "device": "tablet",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 390,
+      "scrollHeight": 390,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-index",
+      "device": "tablet",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 390,
+      "scrollHeight": 390,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-index",
+      "device": "tablet",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 390,
+      "scrollHeight": 390,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-index",
+      "device": "tablet",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 390,
+      "scrollHeight": 390,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "open",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "confirm",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "phone",
+      "state": "result",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 390,
+      "scrollHeight": 390,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 390,
+      "scrollHeight": 390,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 390,
+      "scrollHeight": 390,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 390,
+      "scrollHeight": 390,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "open",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 390,
+      "scrollHeight": 390,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "confirm",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 390,
+      "scrollHeight": 390,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "prova-exam",
+      "device": "tablet",
+      "state": "result",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 390,
+      "scrollHeight": 390,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "pin",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "pin",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "pin",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "pin",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "pin",
+      "device": "tablet",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "pin",
+      "device": "tablet",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "pin",
+      "device": "tablet",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "pin",
+      "device": "tablet",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 350,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "room-preview",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "room-preview",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "room-preview",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "room-preview",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "room-preview",
+      "device": "phone",
+      "state": "themes",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "room-preview",
+      "device": "phone",
+      "state": "pets",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 586,
+      "scrollHeight": 586,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "room-preview",
+      "device": "tablet",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "room-preview",
+      "device": "tablet",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "room-preview",
+      "device": "tablet",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 381,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "room-preview",
+      "device": "tablet",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 389,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "room-preview",
+      "device": "tablet",
+      "state": "themes",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "room-preview",
+      "device": "tablet",
+      "state": "pets",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 340,
+      "scrollHeight": 340,
+      "shortTargets": [],
+      "fonts": true
+    }
+  ],
+  "followUpChecks": [
+    "Removed hidden duplicate home footer; live targets rechecked, zero under 48 px.",
+    "Collection objects aligned to shelf contact plane, tablet image recaptured."
+  ]
+}

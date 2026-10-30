@@ -1,0 +1,39 @@
+{
+  "status": "reference-driven-review-assets",
+  "characters": [
+    "girl",
+    "boy",
+    "unspecified"
+  ],
+  "pets": [
+    "cat",
+    "dog",
+    "monkey",
+    "lion"
+  ],
+  "collectibles": [
+    "tooth-care",
+    "tidy",
+    "bookworm",
+    "first-task",
+    "bronze",
+    "silver",
+    "gold",
+    "diamond",
+    "locked",
+    "early-bird",
+    "helper",
+    "math-star",
+    "week-hero"
+  ],
+  "source": "Blender 5.0.1",
+  "rig": "segmented-deformation rigs; acceptance review required",
+  "charactersAndPetsAre3DMeshes": true,
+  "pictureFrameTexture": "existing approved pet-cat-portrait.webp",
+  "notValidated": [
+    "native mobile runtime",
+    "production performance",
+    "final artistic approval",
+    "licensed pet audio"
+  ]
+}

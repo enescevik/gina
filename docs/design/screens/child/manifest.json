@@ -1,0 +1,933 @@
+{
+  "version": "v5",
+  "group": "child",
+  "status": "screen-layout-approval-pending",
+  "visualDirection": "approved-2026-10-30",
+  "isAppImplementation": false,
+  "isGLB": false,
+  "isAnimation": false,
+  "productionAssetsReady": false,
+  "mockupSizes": {
+    "phone": [
+      390,
+      844
+    ],
+    "tablet": [
+      1280,
+      800
+    ]
+  },
+  "fixtureData": true,
+  "textLayer": "native-style HTML text; no lettering baked into art plates",
+  "shared": "../shared-v5/manifest.json",
+  "screenCount": 10,
+  "captureCount": 95,
+  "screenRoutes": [
+    {
+      "id": "today",
+      "title": "Merhaba Ece!",
+      "route": "child/today",
+      "variants": []
+    },
+    {
+      "id": "index",
+      "title": "Kim giriyor?",
+      "route": "child/index",
+      "variants": []
+    },
+    {
+      "id": "week",
+      "title": "Haftam",
+      "route": "child/week",
+      "variants": []
+    },
+    {
+      "id": "calendar",
+      "title": "Takvimim",
+      "route": "child/calendar",
+      "variants": []
+    },
+    {
+      "id": "goal",
+      "title": "Hedefim",
+      "route": "child/goal",
+      "variants": []
+    },
+    {
+      "id": "collection",
+      "title": "Koleksiyonum",
+      "route": "child/collection",
+      "variants": []
+    },
+    {
+      "id": "prova-index",
+      "title": "Prova",
+      "route": "child/prova/index",
+      "variants": []
+    },
+    {
+      "id": "prova-exam",
+      "title": "Matematik provası",
+      "route": "child/prova/[examId]",
+      "variants": [
+        "open",
+        "confirm",
+        "result"
+      ]
+    },
+    {
+      "id": "pin",
+      "title": "Odamın anahtarı",
+      "route": "child/pin",
+      "variants": []
+    },
+    {
+      "id": "room-preview",
+      "title": "Odamı düzenle",
+      "route": "child/room-preview",
+      "variants": [
+        "themes",
+        "pets"
+      ]
+    }
+  ],
+  "validation": {
+    "browserBrokenImages": 0,
+    "horizontalOverflows": 0,
+    "shortVisibleTargets": 0,
+    "tsc": "passed",
+    "expoLint": "passed",
+    "realAppComparison": "sign-in only; demo auth schema error blocks authenticated routes",
+    "nativeDeviceTesting": "not performed: design phase only"
+  },
+  "files": [
+    {
+      "file": "REVIEW.md",
+      "bytes": 3560,
+      "sha256": "f5980cbfc8b144b622465e87cd2f7f9c9618aeb2a423a705ab647f6cb6314118"
+    },
+    {
+      "file": "calendar-empty-phone.png",
+      "bytes": 173232,
+      "sha256": "74617bfaed142da11bd3b6fff7a1141165c13b81fbbcdfb4e7abe0e7221eb6b6",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-empty-tablet.png",
+      "bytes": 1257267,
+      "sha256": "2543d8a6c1ab1af6307c1b6fd51a809c495c1c2cf2df748d25874e3dba77fd9b",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "calendar-error-phone.png",
+      "bytes": 168796,
+      "sha256": "e97a5b1805d6d9accd59582da5a3bf27a6dec6e4f33e0a7a81524107af5eb6f1",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-error-tablet.png",
+      "bytes": 1288070,
+      "sha256": "e5f970d2392417a4d6250a0a7e851b5b40040a5c6c2c1a008b9af950ffadf423",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "calendar-loading-phone.png",
+      "bytes": 152858,
+      "sha256": "e7e48363ca0963dba483a22acadf034591ce8fc9806b299c8f85966f7f17927a",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-loading-tablet.png",
+      "bytes": 1164534,
+      "sha256": "a0c462cd9f1b59851f6cb6b2cf2c392631a936d72fa96f871f062b4fb0376b8c",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "calendar-phone.png",
+      "bytes": 180617,
+      "sha256": "aa745f19aa003350e616561fdca1bd09a45f50b84d02b92fe8b2303aaec08a7c",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "calendar-states.html",
+      "bytes": 2622,
+      "sha256": "e5fdf405c08acc9878567a6e9138fb9e7db0dee342a056e5cc279d86038ee8a6"
+    },
+    {
+      "file": "calendar-states.png",
+      "bytes": 656972,
+      "sha256": "667afcc3396c7be01aeb4ebe0898f524d981a3ad9e1462d0e258f77972d98de9",
+      "width": 1245,
+      "height": 1388
+    },
+    {
+      "file": "calendar-tablet.png",
+      "bytes": 1248977,
+      "sha256": "32e7a87092690b40c9d2be5b47c223a770a439aa5f2f69247e17fe1f5ff8ec5b",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "collection-empty-phone.png",
+      "bytes": 172989,
+      "sha256": "a8fe2a9f3681edcf9d777b6ce14c4f4e85e105d5b1dd4ff01e671de5b7572733",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "collection-empty-tablet.png",
+      "bytes": 1247930,
+      "sha256": "cea73fb4cba00b3ef0bbd8c1d56737035394b49c92e5bd140635f32690a2347e",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "collection-error-phone.png",
+      "bytes": 168982,
+      "sha256": "55e2c5a6bafafe9f1936c8356c15ada27e577561213db34bbb4530b5b10d3b72",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "collection-error-tablet.png",
+      "bytes": 1288633,
+      "sha256": "b11d2d2915954b1f3cf3554b3d0d5f3e0b0b07622b1dd836182b74b19f3d2995",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "collection-loading-phone.png",
+      "bytes": 153059,
+      "sha256": "da0249dfd95e0fcfa208a4f1cafc830ba50cb46f870f0c113ce2dd9204d11972",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "collection-loading-tablet.png",
+      "bytes": 1165073,
+      "sha256": "870c689238bbf92f28be7f969c68702881d69ba43efdc40c205096585c54a9eb",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "collection-phone.png",
+      "bytes": 209436,
+      "sha256": "df6de89e63be86336435c44755ea360043e42725dd646623adae7dcc548f089e",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "collection-states.html",
+      "bytes": 2642,
+      "sha256": "9399d623aef145e9cd07e0f7c1f7d754526a80138e3f618831a78e219dd0f4e0"
+    },
+    {
+      "file": "collection-states.png",
+      "bytes": 665868,
+      "sha256": "a5b6eecdf18120cb532f0a53fb5703d03961be69d5c288b660522907e3abddcc",
+      "width": 1245,
+      "height": 1388
+    },
+    {
+      "file": "collection-tablet-part-2.png",
+      "bytes": 1313380,
+      "sha256": "8a3e6d26bdf7cd9ee4fe3bcc66475e13df2d41b4fc164fbcd3068b9b41445a6c",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "collection-tablet.png",
+      "bytes": 1314266,
+      "sha256": "01e33369a7bb6792b32f24e7c9a5f070d29c6b53d23e7df123abecf566b160a5",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "contact-sheet.html",
+      "bytes": 3273,
+      "sha256": "e0927255882c08879172a12e8beceafe8b2998ea3e95809a2becbe7e0a29a93a"
+    },
+    {
+      "file": "contact-sheet.png",
+      "bytes": 2795306,
+      "sha256": "5639d514ce2a046be33c9adef8bc1ad0b48fa86b78bf55600f812da9d013841c",
+      "width": 1385,
+      "height": 2688
+    },
+    {
+      "file": "goal-empty-phone.png",
+      "bytes": 167804,
+      "sha256": "b308363d2c5581651a5e363aa95fe183b9f6f5e8b5f64e57bb6fc840664a0c23",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "goal-empty-tablet.png",
+      "bytes": 1292278,
+      "sha256": "a5966d4b4d50129525df97bfbef043039e7e388d4efa4a9ff933bd254c33e57d",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "goal-error-phone.png",
+      "bytes": 168395,
+      "sha256": "47809ea15dd4e47abc1071a49bf23ad3e95e9674f1e9990f8bb3c7d8fc7df2b8",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "goal-error-tablet.png",
+      "bytes": 1287106,
+      "sha256": "7295905a4f8c9c5844911551b196a30315a113d26bdb5abc75ae77ed242fc5d7",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "goal-loading-phone.png",
+      "bytes": 152482,
+      "sha256": "f75baea7441be4bd572ffa5fb51ae0cb6f3eacb0a8894aa3a43afb0d9ff15815",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "goal-loading-tablet.png",
+      "bytes": 1163609,
+      "sha256": "b9939201704cc77f654a9e98736ceffa6abf7a2ef6e6f143f90bdf27166ac7e9",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "goal-phone-part-2.png",
+      "bytes": 191785,
+      "sha256": "5d2e0826caab19c0115bed27586839da86e6861e077501ddaf8f25e77028ef8a",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "goal-phone.png",
+      "bytes": 188949,
+      "sha256": "f2ac00b1f51ba9816fb554df1a35b2b0fee9ce9b24afd562275ccd72333954ec",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "goal-states.html",
+      "bytes": 2596,
+      "sha256": "c3e17b9dd0f3c84221807b3aa684d40f13cec32986dc952d916cdc7e08238ed3"
+    },
+    {
+      "file": "goal-states.png",
+      "bytes": 642184,
+      "sha256": "5611f6f2e95c972a3478663ad66f3164384cd61a2dd12d0fc65abb5a16f73495",
+      "width": 1245,
+      "height": 1388
+    },
+    {
+      "file": "goal-tablet-part-2.png",
+      "bytes": 1212287,
+      "sha256": "604b4e700520c346deda23e4f9df8168a78e922557d4455821946352b58a6e37",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "goal-tablet.png",
+      "bytes": 1209559,
+      "sha256": "a35cde01856dc7fb4bf8c278a8958b7d59d210221fdf68bfc3f0e50bdb070b0f",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "index-empty-phone.png",
+      "bytes": 165238,
+      "sha256": "25eba6c46d3c960cebd93b7d98eac455cf82053328cdc3860d2a79f5a5429a3e",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "index-empty-tablet.png",
+      "bytes": 1290767,
+      "sha256": "5e6246f45df4108b51105a2ae46b8e95f4d7fbb5b9c50d08cc59e453370d894b",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "index-error-phone.png",
+      "bytes": 168706,
+      "sha256": "19f05cd8341c5277b0d578c656f480f9585a429232f43234dba876c8b0b85ad8",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "index-error-tablet.png",
+      "bytes": 1287828,
+      "sha256": "9cf2090cc852acecc6eadc6499fd7fe9dcde8ef30724aa2189ba21e54b0372be",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "index-loading-phone.png",
+      "bytes": 152793,
+      "sha256": "4f4cf2d80d96c670c18fc07859bc2523cc502b3ea973a7d60a8bd25495999450",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "index-loading-tablet.png",
+      "bytes": 1164335,
+      "sha256": "4d2f2fc7d031d8da568085cb752eb099675e180f309b2b58b3aee8539b9fc55b",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "index-phone.png",
+      "bytes": 173977,
+      "sha256": "638467066cd4fc8350227cceb2d1f4fd1535812022b3088502c481e9a507abd0",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "index-states.html",
+      "bytes": 2612,
+      "sha256": "9c1819cec14a29026e3728cfb5262fb2034afd5248f1ba7eb8e7e13fe2626e17"
+    },
+    {
+      "file": "index-states.png",
+      "bytes": 639599,
+      "sha256": "9be699aa1442fa09e578704c71a1b790d2e702f25a62070e297e19673c216da3",
+      "width": 1245,
+      "height": 1388
+    },
+    {
+      "file": "index-tablet.png",
+      "bytes": 1213147,
+      "sha256": "bfbeeee79a4a06126adfda7dae7193df3c2ba508250cf96b65384d822d0edb95",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "index.html",
+      "bytes": 9350,
+      "sha256": "838321721d754344d4bcff9fc906169dae3b6c6f6c0cad71f7858dcbbf575744"
+    },
+    {
+      "file": "pin-empty-phone.png",
+      "bytes": 161897,
+      "sha256": "17849f709d8708b187f76acb125741234068710a1d9296df00d77cbe98e80c65",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "pin-empty-tablet.png",
+      "bytes": 1257306,
+      "sha256": "dcaf1937e087735a74e9773b6d2df6c55004fd412a71bf18543b7cb250a1072b",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "pin-error-phone.png",
+      "bytes": 166705,
+      "sha256": "919c52a54ba26045283181c2b5a2c0a16c76f0e439e8d0aaf6f98c069b6240d6",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "pin-error-tablet.png",
+      "bytes": 1208457,
+      "sha256": "7a8a359b16a7ac7084edafc8feb36c46fcaa2d19b3da7a70a000d6245effef8a",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "pin-loading-phone.png",
+      "bytes": 163211,
+      "sha256": "9d2be3e9304a502aeab2d5db3282e3940801ca2bc2fac3ada56eb422707b9978",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "pin-loading-tablet.png",
+      "bytes": 1258383,
+      "sha256": "97019232066e6a5950f83b3f251add368b06fc2b04f161883c2f863aaad13dea",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "pin-phone.png",
+      "bytes": 162305,
+      "sha256": "7cda7a9f6035e2e15a0550ef1fbe4ec3be0161e9c03632dc9632a614dc37643b",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "pin-states.html",
+      "bytes": 2610,
+      "sha256": "48d5f1cfe39ce4865bcae693ed9a559b5a05f9aab521fee5910819d10177a51e"
+    },
+    {
+      "file": "pin-states.png",
+      "bytes": 643654,
+      "sha256": "21725bd2dcafda54cbfd60acd55f225f547a85248e2ccd814988caf60add22cf",
+      "width": 1245,
+      "height": 1388
+    },
+    {
+      "file": "pin-tablet.png",
+      "bytes": 1245605,
+      "sha256": "65fdf447c4c4d6f3e334ce4330e3902f39eb05aea89171c71a24ab09854d83bb",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-confirm-phone.png",
+      "bytes": 154625,
+      "sha256": "58eaf287ddfc4f5917f76f6f16a0a09c3f31f2ef7d950588b17896a05790f855",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-confirm-tablet.png",
+      "bytes": 1231089,
+      "sha256": "d4981097c0d12006ce5551ccd423f9da3d8445e0b3ddc387421db7f6b40b15aa",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-empty-phone.png",
+      "bytes": 162455,
+      "sha256": "bd5b199a4e9da2ccfe73429969ab3b7e14f9a3ca151ec96e6181722f37c2ce90",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-empty-tablet.png",
+      "bytes": 1254160,
+      "sha256": "51463eae3c28074336e0a4fa5f99939c6232072de31014ee3576a7148a70cc25",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-error-phone.png",
+      "bytes": 165807,
+      "sha256": "3286296e273d88d32c1d15720cd31b68e7a8bf0d2eb59eaf350cef481007b9b8",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-error-tablet.png",
+      "bytes": 1255930,
+      "sha256": "5cd95a13a48c49a5cb292e95631136437b56accb8deea09bbbe56af2b4887ec5",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-loading-phone.png",
+      "bytes": 150346,
+      "sha256": "10713a5e854ae0311b51b8de2d6f941586a74de4fc2e8fbc8b03ef141e451ca6",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-loading-tablet.png",
+      "bytes": 1137306,
+      "sha256": "ab1dbc614e252b7c1eaa099047c955b6e8dbb8248924a2053a415c6188999024",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-open-phone.png",
+      "bytes": 165698,
+      "sha256": "f8436123afcd75e66efc6d7bec728e330d680b56f0eb87beaa9c54d8420e480c",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-open-tablet.png",
+      "bytes": 1213748,
+      "sha256": "e5386e3ae122fa7c103be678927a33e5f9bda9d68cd667203bcc3820ca85ab22",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-phone.png",
+      "bytes": 170200,
+      "sha256": "61f43e840d36c79ce8b0e3f48bf631032013f973a5482b6180a87efcb6157229",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-result-phone.png",
+      "bytes": 159910,
+      "sha256": "fc3664914c853f1f13e2641c17a9f73f0915342aef81c2bddf31f81085a0732d",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-exam-result-tablet.png",
+      "bytes": 1185920,
+      "sha256": "25feb3ad1da086dff3fe527c3d03d5afd777b6d0cc4a54de3f749ef5c0cf84e4",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-exam-states.html",
+      "bytes": 2654,
+      "sha256": "ebadc46d74fb27880cef6ec9f39d308c345431ddd7c2df7255f5322e3bbd0a37"
+    },
+    {
+      "file": "prova-exam-states.png",
+      "bytes": 634606,
+      "sha256": "038dc661ab51cedf13b7b302d3b5932db86a39c9386748b90d99064b0d8c0f02",
+      "width": 1245,
+      "height": 1388
+    },
+    {
+      "file": "prova-exam-tablet.png",
+      "bytes": 1190589,
+      "sha256": "8d4b265ffa687f6013d6032cc34988e3498202cbad2306dbbff27f421569f6a8",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-index-empty-phone.png",
+      "bytes": 158725,
+      "sha256": "787f97daf738c15e6dc931535ed0b6418f43aa75a1466a7c8b776f174ee7178b",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-index-empty-tablet.png",
+      "bytes": 1254699,
+      "sha256": "56a67ffef53bdfa5118fa978c45ff75c243247d5b2448a79f44f066a20adc45c",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-index-error-phone.png",
+      "bytes": 163635,
+      "sha256": "5925c5d79b0f271810f53df0c9b198cba989a64ea473f5709ebf779eb26d262f",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-index-error-tablet.png",
+      "bytes": 1252439,
+      "sha256": "fa35d5ad1d0fdf300f82ac4bf602fc5e48b2e777494a400663602ec83b830339",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-index-loading-phone.png",
+      "bytes": 148639,
+      "sha256": "94068b8ec0266f32bf415ed3af665a4c4eb2880bc1520bc0637bebc428be39f8",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-index-loading-tablet.png",
+      "bytes": 1133567,
+      "sha256": "fda6d910bb6007d5627e9039b9e3f841a2af12e27763d6a77c656ec7e4150275",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "prova-index-phone.png",
+      "bytes": 174894,
+      "sha256": "a2f3f70cd1ebc5969c3bf4d76c7fbaaddb8c8bb46861c6a360b9d6a16884d6f7",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "prova-index-states.html",
+      "bytes": 2634,
+      "sha256": "0511dbeecda3929afba68b9e1db01d75118e32fe8765b1f8c9152a52e17cf65f"
+    },
+    {
+      "file": "prova-index-states.png",
+      "bytes": 619131,
+      "sha256": "e9b3f9c72e2734be6d7572d0c2892d7e5c9d1c0ff8297262bfceacb3afc0b817",
+      "width": 1245,
+      "height": 1388
+    },
+    {
+      "file": "prova-index-tablet.png",
+      "bytes": 1186744,
+      "sha256": "323c39e0a3a55b55faeefc30afe4921dc7d2a134b709365846598d1f4f1ac2e5",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "reference-v5.html",
+      "bytes": 321,
+      "sha256": "0fcbed2b2650932da1b255575328269822a1a46708f4d0eab852b362d9da5e16"
+    },
+    {
+      "file": "render-report.json",
+      "bytes": 36673,
+      "sha256": "b9b6b255e8e6cea0a413fa89774b405d08a15971496f9c146d5dcfe22429cf57"
+    },
+    {
+      "file": "room-preview-empty-phone.png",
+      "bytes": 180779,
+      "sha256": "8a4a2d54abc2452b28c4951ed21462e2281a1ccc3a82f4c04ef9c22d032e3436",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "room-preview-empty-tablet.png",
+      "bytes": 1205352,
+      "sha256": "9f5803c04fb3efd00e9cf13c71d4c0be270bdf69477eec345a06d7c0e8512712",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "room-preview-error-phone.png",
+      "bytes": 184983,
+      "sha256": "7c83e8c08a82d873fde29f4bf681366577b72a93d6b4c8cda903fb634004f311",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "room-preview-error-tablet.png",
+      "bytes": 1158163,
+      "sha256": "f162a1e4698c6eb5cc9915f89164a8c2f1b6d78c3911385e9aa5cdbc29f0dcac",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "room-preview-loading-phone.png",
+      "bytes": 154097,
+      "sha256": "ed2d461436abd6baa8fe8d3c028eb73cd9a6f033d22a35016728fa99b0f9ae8f",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "room-preview-loading-tablet.png",
+      "bytes": 1166808,
+      "sha256": "35e08e548d5c5bfef44fb8a0db494c01d24eaee81004be77311c5766a692f6d8",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "room-preview-pets-phone.png",
+      "bytes": 193880,
+      "sha256": "40d23f0931aa2ce75b1f3274f67c23e4beecdbab188a28a21bffedb0a1c5b3da",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "room-preview-pets-tablet.png",
+      "bytes": 1213609,
+      "sha256": "862f26f6cd5fc9476dbe51a4c51ea40279b334b68117014db50f3c397331a2f7",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "room-preview-phone.png",
+      "bytes": 176349,
+      "sha256": "09c683fb84fc126dbc5a1533c5901288fc40ef87df47527c56c630e834a97fb6",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "room-preview-states.html",
+      "bytes": 2660,
+      "sha256": "cff9ff1546756bbefca513141a377d93e97dc1a42e80b515d7ee5c4379464995"
+    },
+    {
+      "file": "room-preview-states.png",
+      "bytes": 684862,
+      "sha256": "6223a970c36a500500ad23e96f326b3b3422bd42af33fd67755ddeb572c4eb9e",
+      "width": 1245,
+      "height": 1388
+    },
+    {
+      "file": "room-preview-tablet.png",
+      "bytes": 1200793,
+      "sha256": "dcdfae735931a3d4186b5513d21d268277725f51c47b0d08fa9a3a33d535f6c9",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "room-preview-themes-phone.png",
+      "bytes": 161001,
+      "sha256": "3c0ccd175ca7995f3a86d53673d17dea85127953883854d8ed61445b179d3cd8",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "room-preview-themes-tablet.png",
+      "bytes": 1195945,
+      "sha256": "c67cb08050dc93480e1892918914cc87c72b20ebb605e11137230faefbdae1bf",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "route-map.json",
+      "bytes": 7279,
+      "sha256": "210ea072e90257741b966eecc6f8fba9c9ee274890b6adbc167067aaaf0331b1"
+    },
+    {
+      "file": "screens-v5.js",
+      "bytes": 10333,
+      "sha256": "339bf7babe74435bee8502a0ed81604675fe086648ee8e9e693a2fdae4589434"
+    },
+    {
+      "file": "today-empty-phone.png",
+      "bytes": 173164,
+      "sha256": "4450295b7712edd6844b24a045b31184d9c13579d02281c93a76585675c09580",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "today-empty-tablet.png",
+      "bytes": 1207595,
+      "sha256": "1bd7cd6991001ab5eeeb42cab24a7a3bf488647c819b12d8875e3edfe80f5d03",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "today-error-phone.png",
+      "bytes": 177815,
+      "sha256": "673442a9938cbaa68416ffdeb9bb0fcab4847a5e8c2e17c6f29f5a3176ae3b6b",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "today-error-tablet.png",
+      "bytes": 1210148,
+      "sha256": "1d125d39edcf0ccefea0c7d57e47269f35808e063471b59291878b50df720c0f",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "today-loading-phone.png",
+      "bytes": 161025,
+      "sha256": "79d232e7804d19291d8061d752586236af1510388c0b7dfdd4abfe269d5d2be4",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "today-loading-tablet.png",
+      "bytes": 1156876,
+      "sha256": "999a03e119ffdbb2650b070128130943ba56519b730b0a7d4d6c4d4e513d2656",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "today-phone-part-2.png",
+      "bytes": 196625,
+      "sha256": "b8d55fbbeaa2e1d6310c536d779da323bf126595e2f2aee145d8e7f514fd9f61",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "today-phone.png",
+      "bytes": 199064,
+      "sha256": "6a4bda00b4933bb9238c5630a8a9b1cef2206fcdd0f1208c6570a2f9a85c119d",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "today-states.html",
+      "bytes": 2612,
+      "sha256": "c754bc39e063cd638d9e83e94b2d55d1c749af2f0bff1ba92bccb37c253acb65"
+    },
+    {
+      "file": "today-states.png",
+      "bytes": 663571,
+      "sha256": "1d85a3ebdb6926eb3bd1d2b9be6da15057b88df4b64d45b53b0694300213245f",
+      "width": 1245,
+      "height": 1388
+    },
+    {
+      "file": "today-tablet.png",
+      "bytes": 1328266,
+      "sha256": "e9a9a442ace020ab40bbc993fe2f31b365e8ba898700344cf258e9025683c2f0",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "week-empty-phone.png",
+      "bytes": 177117,
+      "sha256": "820eaacdb91443360a8c397fd6bbb1330e26d7452e45122aa142633c0509746c",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "week-empty-tablet.png",
+      "bytes": 1257507,
+      "sha256": "45030f803508a0197ccfe5f65333caf77995859a693c81b5e5b57ea23bdf9a06",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "week-error-phone.png",
+      "bytes": 168287,
+      "sha256": "eb8fd7459f79db5275f405290a4c77ceca74fcbf1c1fc66557318b030133ef6f",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "week-error-tablet.png",
+      "bytes": 1287090,
+      "sha256": "db5b90fbfaa3f6034acbd7a8a2575b6895e84946ffc2990e14ca548f0f3129d5",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "week-loading-phone.png",
+      "bytes": 152383,
+      "sha256": "3e573e85772d43882dbd7b85f79a54ea63771580dd6d6f25aabe82a4383a4e5c",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "week-loading-tablet.png",
+      "bytes": 1163599,
+      "sha256": "643dcb443c88c29bf2951a4e0e6d95ea8dd43ce6165b4cc0878105cb3593ecd7",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "file": "week-phone-part-2.png",
+      "bytes": 190357,
+      "sha256": "c01bdf824620ac59569a98261b19072456f390229bd30418bfb52e4b9b7c1a72",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "week-phone.png",
+      "bytes": 193127,
+      "sha256": "1a952e02d3da3f888c2143347e924ba6d2dd37b835e7753f80f2b82311570c22",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "file": "week-states.html",
+      "bytes": 2594,
+      "sha256": "68faabbbe4c7b2a7fa46ae4e83b8233324e35f1fe78cb263b6bcbc74f3b30ac2"
+    },
+    {
+      "file": "week-states.png",
+      "bytes": 658128,
+      "sha256": "7319b58a6842c30d71302f8dfca656a0644c4a019f6798d5e69dbfe23aba9669",
+      "width": 1245,
+      "height": 1388
+    },
+    {
+      "file": "week-tablet.png",
+      "bytes": 1258588,
+      "sha256": "a717b59344cc944ff2a335b53dc78d28c7cf983c7b1acccd5171ab8b96a611d6",
+      "width": 1280,
+      "height": 800
+    }
+  ],
+  "supersedes": "prior root child mockups; v1-v4 historical sources are not approved targets"
+}

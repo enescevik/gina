@@ -1,0 +1,184 @@
+{
+  "existing": {
+    "Haftam": "child.week",
+    "Takvimim": "child.calendar",
+    "Hedefini seç": "goal.pick",
+    "Koleksiyonum": "room.myCollection",
+    "Bugün": "child.today",
+    "Vazgeç": "common.cancel",
+    "Tamam": "common.ok",
+    "Onaylandı": "child.approved",
+    "Onay bekliyor": "child.waitingApproval",
+    "Görev yok": "child.noTasks",
+    "Seni bekleyen denemeler": "prova.toDo",
+    "Tamamlananlar": "prova.done",
+    "Başla": "room.start",
+    "Devam": "prova.continue",
+    "Kazanıldı": "collection.earned",
+    "Kilitli": "collection.locked",
+    "PIN’ini gir": "child.enterPin",
+    "Geri": "prova.prev",
+    "Sonraki": "prova.next",
+    "Bitir": "prova.finish",
+    "Boş soruya git": "prova.goToUnanswered",
+    "Yine de bitir": "prova.finishAnyway"
+  },
+  "proposed": {
+    "room.edit": {
+      "tr": "Odamı düzenle",
+      "en": "Decorate my room"
+    },
+    "room.characterTab": {
+      "tr": "Karakter",
+      "en": "Character"
+    },
+    "room.themeTab": {
+      "tr": "Oda",
+      "en": "Room"
+    },
+    "room.petTab": {
+      "tr": "Dostum",
+      "en": "My pet"
+    },
+    "room.pickCharacter": {
+      "tr": "Karakterini seç",
+      "en": "Choose your character"
+    },
+    "room.pickTheme": {
+      "tr": "Odanın havası",
+      "en": "Your room style"
+    },
+    "room.pickPet": {
+      "tr": "Odandaki dostun",
+      "en": "Your room companion"
+    },
+    "room.previewSelection": {
+      "tr": "Seçimini odanda önizle.",
+      "en": "Preview your choice in your room."
+    },
+    "room.pet.cat": {
+      "tr": "Kedi",
+      "en": "Cat"
+    },
+    "room.pet.dog": {
+      "tr": "Köpek",
+      "en": "Dog"
+    },
+    "room.pet.monkey": {
+      "tr": "Maymun",
+      "en": "Monkey"
+    },
+    "room.pet.lion": {
+      "tr": "Aslan yavrusu",
+      "en": "Lion cub"
+    },
+    "room.pet.none": {
+      "tr": "Dostum yok",
+      "en": "No pet"
+    },
+    "room.theme.sunny": {
+      "tr": "Güneşli",
+      "en": "Sunny"
+    },
+    "room.theme.nature": {
+      "tr": "Doğa",
+      "en": "Nature"
+    },
+    "room.theme.explorer": {
+      "tr": "Keşif",
+      "en": "Explorer"
+    },
+    "room.selected": {
+      "tr": "Seçili",
+      "en": "Selected"
+    },
+    "child.loading": {
+      "tr": "Yükleniyor…",
+      "en": "Loading…"
+    },
+    "child.loadingHint": {
+      "tr": "Birazdan hazır.",
+      "en": "Ready in a moment."
+    },
+    "child.connectionError": {
+      "tr": "Bağlantı kurulamadı",
+      "en": "Unable to connect"
+    },
+    "child.connectionHint": {
+      "tr": "İnternet bağlantını kontrol et. Biraz sonra yeniden açabilirsin.",
+      "en": "Check your connection. You can open this again in a moment."
+    },
+    "goal.next": {
+      "tr": "Bir sonraki hedefin",
+      "en": "Your next goal"
+    },
+    "goal.pickHint": {
+      "tr": "Bir ödül seç; hedefin olsun.",
+      "en": "Choose a reward as your goal."
+    },
+    "goal.select": {
+      "tr": "Hedef olarak seç",
+      "en": "Choose as goal"
+    },
+    "collection.empty": {
+      "tr": "Henüz rozet kazanmadın",
+      "en": "You haven’t earned a badge yet"
+    },
+    "collection.emptyHint": {
+      "tr": "Görevlerini yaptıkça kazandığın rozetler burada birikecek.",
+      "en": "Badges you earn from your tasks will appear here."
+    },
+    "week.hint": {
+      "tr": "Günlük görevlerin ve onay durumları",
+      "en": "Your daily tasks and approval status"
+    },
+    "week.empty": {
+      "tr": "Bu hafta görev yok",
+      "en": "No tasks this week"
+    },
+    "week.emptyHint": {
+      "tr": "Görevler eklendiğinde burada görünecek.",
+      "en": "Tasks will appear here when added."
+    },
+    "calendar.weekHint": {
+      "tr": "Bu haftaki dersler ve etkinlikler",
+      "en": "This week’s lessons and events"
+    },
+    "calendar.emptyWeek": {
+      "tr": "Bu hafta etkinlik yok",
+      "en": "No events this week"
+    },
+    "calendar.emptyHint": {
+      "tr": "Derslerin ve aile etkinliklerin burada görünecek.",
+      "en": "Your lessons and family events will appear here."
+    },
+    "collection.hint": {
+      "tr": "Başardıkların burada birikiyor.",
+      "en": "Your achievements grow here."
+    },
+    "prova.assignedHint": {
+      "tr": "Bir deneme atandığında burada göreceksin.",
+      "en": "Assigned practice tests will appear here."
+    },
+    "prova.questionMissing": {
+      "tr": "Soru bulunamadı",
+      "en": "No question found"
+    },
+    "prova.notReady": {
+      "tr": "Bu deneme henüz hazır değil. Ebeveynine haber verebilirsin.",
+      "en": "This practice test isn’t ready yet. You can tell your parent."
+    },
+    "room.defaultPreview": {
+      "tr": "Varsayılan oda ve karakterin gösteriliyor.",
+      "en": "Your default room and character are shown."
+    },
+    "child.checkingPin": {
+      "tr": "Kontrol ediliyor…",
+      "en": "Checking…"
+    },
+    "child.taskWaiting": {
+      "tr": "Bekliyor",
+      "en": "Waiting"
+    }
+  }
+}

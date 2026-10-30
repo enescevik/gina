@@ -1,0 +1,18 @@
+{
+  "status": "proposal-not-implemented",
+  "firstPet": "cat",
+  "sourceDeliverables": ["editable .blend with rig and actions", "mobile .glb", "texture sources", "audio masters and usage rights"],
+  "requiredClips": [
+    {"name":"sleep_loop","loop":true,"notes":"localized breathing, no whole-model scale"},
+    {"name":"wake","loop":false,"notes":"eyes, ears, head preparation before rising"},
+    {"name":"yawn_stretch","loop":false,"notes":"jaw/lids/spine/paws/tail coordinated; stable floor contact"},
+    {"name":"idle","loop":true,"notes":"quiet posture, no constant attention demand"},
+    {"name":"look_at_touch","loop":false,"notes":"bounded eye/head tracking"},
+    {"name":"play_tap","loop":false,"notes":"anticipation, paw contact, follow-through, settle"},
+    {"name":"settle_sleep","loop":false,"notes":"smooth return to original resting anchor"}
+  ],
+  "runtimeInputs": ["visible", "appActive", "focusMode", "reduceMotion", "soundEnabled", "tapTarget"],
+  "constraints": ["no activity while backgrounded", "no idle attention request during Prova", "audio event markers synchronized with clips", "never award currency or badges client-side"],
+  "acceptance": ["no mesh tearing or joint collapse", "no sliding planted paws", "no popping between clips", "same materials and proportions in every clip", "physical-device frame-time and memory report"],
+  "notDeliveredYet": ["rigged cat", "pet animation clips", "final audio", "native renderer integration"]
+}
