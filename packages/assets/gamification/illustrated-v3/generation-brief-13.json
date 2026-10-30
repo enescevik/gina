@@ -1,0 +1,263 @@
+[
+  {
+    "slug": "display-bookworm",
+    "file": "display-bookworm.webp",
+    "source_image": "exec-e4133da2-b65d-4d9d-8d2d-d3a70d5e1ed4.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: the exact stack of three golden, teal and cream books on the right shelf in the reference. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "f5c72a6422cf02252b54b1932528021a8b1c6c7297049e2ee2b39adc8e3424b5",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "display-bronze",
+    "file": "display-bronze.webp",
+    "source_image": "exec-c35a2b12-631e-4d71-b918-f159c0621711.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: a small bronze five-point star sculpture. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "1d24715b98089a580d42b4b04fb39bc1fd20a9e57791cac22ce89c2107f1f45d",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "display-diamond",
+    "file": "display-diamond.webp",
+    "source_image": "exec-24d9fcd3-90bc-4ea6-b858-52f8aea85f11.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: a sky-blue faceted crystal trophy. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "f446ccc5800ce80bfb78f1d5899061904e8cd45e22f4d9306e78bbec2326cbb9",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "display-early-bird",
+    "file": "display-early-bird.webp",
+    "source_image": "exec-d8d18c87-6a55-44ff-a8e3-1a5ea886f52b.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: a small golden bird sculpture with rounded wings. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "272f9698e29fbbe69946fcf6ab9da235d9c64329f66f83eae41841323c23c090",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "display-first-task",
+    "file": "display-first-task.webp",
+    "source_image": "exec-4066c561-d3a8-4f8a-9ed4-19355313c2fe.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: a golden upright five-point star sculpture. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "f81b99ed4a7340b32831dd987e25be364b250fffe154116fb39b46c4e0da38f5",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "display-gold",
+    "file": "display-gold.webp",
+    "source_image": "exec-a606f3bc-85f2-43d5-868f-7b6d40130558.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: a small gold five-point star sculpture. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "54f0cd8a60badf1de464d70c7a7b3edab3d688b4319bd41a782a8774ab867acb",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "display-helper",
+    "file": "display-helper.webp",
+    "source_image": "exec-e78f839f-0d91-46df-8317-ac089fc65470.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: a small golden heart supported by two sculpted hands. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "1da65f772284c1f5e4469471646171487916f2932a0f72bbf80d032bef07e303",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "display-locked",
+    "file": "display-locked.webp",
+    "source_image": "exec-02dd617f-ad43-431d-a394-5ba6f17ff471.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: a muted cream/gray locked miniature trophy placeholder with a simple padlock shape. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "34f606e8f5f985b9ae4da3f4d16a8b71648e20585fdaa75bed1e92539f3d2bfd",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "display-math-star",
+    "file": "display-math-star.webp",
+    "source_image": "exec-3b625b38-218e-4227-a247-f35c0d9cfff4.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: a golden five-point star beside small teal geometry blocks, no numerals. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "7cd102aca684734c43842c4a1272666134945acd8f561cfbc17e5aced0254987",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "display-silver",
+    "file": "display-silver.webp",
+    "source_image": "exec-b5fb6fcb-8cb2-404e-9d62-172e5f71de71.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: a small silver five-point star sculpture. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "5942b18ab0d02cf66825579b06f645e1cd808b29f40183d840a5429e3fee5c31",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "display-tidy",
+    "file": "display-tidy.webp",
+    "source_image": "exec-d0a1b741-07cb-4549-961e-caf4e6f1eb0c.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: the exact green seedling with two leaves in a golden round standing frame, middle trophy in reference. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "fc0769be884654a2538ff1c4f94c7c1b45536d283fe2d96bc9fc278c40739479",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "display-tooth-care",
+    "file": "display-tooth-care.webp",
+    "source_image": "exec-0d196c34-4fad-44fa-876d-9e0244e0702b.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: the EXACT white tooth sculpture inside a thick golden circular standing frame with small golden sparkles, left trophy in reference. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "61e5c2d6e310db6a412eed9b8f1b5125a412e32589832b62d9b28d36febfec22",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "display-week-hero",
+    "file": "display-week-hero.webp",
+    "source_image": "exec-02c516eb-3649-41fb-bd89-06f720953f29.png",
+    "prompt": "Use case: precise-object-edit. Create shelf display version: a golden trophy cup with a simple star relief. It stands as a THREE-DIMENSIONAL OBJECT on a small honey-brown wooden pedestal with completely blank front. Reference lower-right cabinet trophies are exact visual target. NO medal, NO ribbon, NO hanging badge, no lettering. Front view with slight depth, coherent gold/teal/wood light, keep object and base fully visible, 10 percent transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "be9d873f0e6cedda62591604f18d9ea536be9a6f8ff8757c89719bd609636f79",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-bike-ride",
+    "file": "reward-bike-ride.webp",
+    "source_image": "exec-d54cfbdb-58b7-4b16-89e0-a76f4193c33f.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a small teal bicycle with cream wheels. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "8c498cb057042217609f8d13d254ebc4a21a478209df2915fffec51feff6f98f",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-book",
+    "file": "reward-book.webp",
+    "source_image": "exec-bdede879-60a4-49b3-9a52-d17e282007e9.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a teal closed storybook with cream pages. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "708b86933679ff519e53c927f2bcae343e291e0c2c722f1cf03d440820670544",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-choose-dinner",
+    "file": "reward-choose-dinner.webp",
+    "source_image": "exec-320b1176-0bb6-4b2c-8163-05bc933e42f7.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a cream serving plate with golden cloche lid. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "c9f040948fac52822c1c420e66cdf35b4a2eadcdb94da06083138add4349075c",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-game-with-parent",
+    "file": "reward-game-with-parent.webp",
+    "source_image": "exec-b66deec7-ceac-48a1-8786-a6f25dd17d72.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a simple board game pawn beside a plain wooden cube and two round playing counters, no numerals. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "745dd2130acd3eee7423badd72872fed06b30fc9e3cb6f999e3ac0b3358c23e3",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-ice-cream",
+    "file": "reward-ice-cream.webp",
+    "source_image": "exec-e1e851a9-c6f1-40f3-9eb2-0bd315eedc33.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a simple cream and coral ice cream cone. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "aeb20bd9ada72282c9f2abbf8e583172e5f529e8ed2a5368124a0a959ef5078a",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-late-bedtime",
+    "file": "reward-late-bedtime.webp",
+    "source_image": "exec-e721717c-20a3-4ddc-a362-bae263c03dc0.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a golden crescent moon with small unnumbered clock. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "6e0c1c6a95ec3d555447c513416d31775083f3269ae36d8146150899b271168d",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-movie-night-left",
+    "file": "reward-movie-night-left.webp",
+    "source_image": "exec-9874ac31-9f0f-4e3c-af78-6cb5ce5d543a.png",
+    "prompt": "Use case: precise-object-edit. Extract ONLY the red-and-cream striped popcorn carton on left side of the reference goal ticket, fluffy cream popcorn overflowing. Same shape and mild tilt. No ticket, letters or background. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "06d29ec4df33a96f0965b1b8fb061c09fcb28ccade12ae8dff5becf2d395a9fb",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-movie-night-right",
+    "file": "reward-movie-night-right.webp",
+    "source_image": "exec-9c35a7e8-59bb-4ae3-bc30-4fcf3fb34b13.png",
+    "prompt": "Use case: precise-object-edit. Extract ONLY the dark slate clapperboard on right side of the reference goal ticket, white diagonal stripes on hinged top, blank lower slate with plain horizontal decorative lines but NO letters/numbers. Same tilt and shape. No ticket/background. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "99309b7d9171e0dad0c498389a344707fca9c4091a4926c6a095fd0dd21b3ef2",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-mystery-box",
+    "file": "reward-mystery-box.webp",
+    "source_image": "exec-0130242c-e68e-4907-a05e-933e062918f8.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a warm cream gift box with teal ribbon and bow, no question mark. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "5e1d2537a0cb1524b21cfbca341fece33af638fea76b6af1a39117ccaf228192",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-park",
+    "file": "reward-park.webp",
+    "source_image": "exec-5142eb54-c857-4759-b394-05e99f099702.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a small wooden playground swing with teal seat. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "a11609572bc987591b803f79fe9d75b5742a6193b9e7ff45f60aba200a48a921",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-pizza",
+    "file": "reward-pizza.webp",
+    "source_image": "exec-325d5dc1-2304-4440-9f69-5c3e16b85961.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a triangular pizza slice with warm golden cheese and simple vegetable toppings. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "950d74c4b992866c8e5ee7d8160c88a9ede5b5706c57da1be0a104c7755cbb35",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-pocket-money",
+    "file": "reward-pocket-money.webp",
+    "source_image": "exec-2d6ac813-0f0a-4c82-9e57-b087cf2af4f6.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a friendly teal piggy bank and one plain unmarked gold token, no currency symbol. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "4fd860ee3dc493ce8833262ed7263879bb2cb7227edbcb69d5d93fd537bbb381",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-screen-time",
+    "file": "reward-screen-time.webp",
+    "source_image": "exec-d58a29ea-631f-40dc-89a1-d789c7d9f72c.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a teal tablet with blank screen and small cream hourglass. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "680020908f0d43cb521d2795d76006e7921477247e50867e2cf10cb42e8bc182",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-sleepover",
+    "file": "reward-sleepover.webp",
+    "source_image": "exec-29890408-1979-403a-ae36-886159e768d8.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a cream pillow with two small golden stars. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "3f1935b1447e0b4062be21562221949734b18f0b8213e8864f339f8801c814f2",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-sticker",
+    "file": "reward-sticker.webp",
+    "source_image": "exec-cabc7e7a-d34c-40b2-b6fa-5c3081e9025a.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: a golden five-point star sticker with one peeling cream corner. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "d5b085585b8e4f834a1f6bc773f0152a6b7c4ffa7ec4bfc378a838cf92064e19",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "reward-toy",
+    "file": "reward-toy.webp",
+    "source_image": "exec-6542d9bc-a828-4fdf-a181-52de6dd60568.png",
+    "prompt": "Use case: precise-object-edit. One reward object for goal-ticket illustration: three colorful wooden toy blocks, no letters. Match the reference popcorn/clapperboard rendering and object scale, lightly hand-painted, 3/4 angle, isolated with transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "8400a73611f6cb10e9dc5f10bfeebbad3c9fa267353956fa773544719b4e21dc",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  }
+]

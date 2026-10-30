@@ -1,0 +1,146 @@
+[
+  {
+    "slug": "board-frame",
+    "file": "png/board-frame@3x.png",
+    "source_image": "exec-7d028934-b315-4b7e-9026-1613118f9091.png",
+    "prompt": "Use case: precise-object-edit. Extract the complete left wooden task board from the reference, including thick softly painted honey wood outer frame, CREAM inner paper/cork area, and the horizontal wooden divider at 34 percent of board height. Preserve the sun doodle and leaf sprig ONLY in the top-right header corner, and two teal pushpins near top corners. REMOVE all text, progress bar, task cards, buttons, icons and book/bag. Return one empty framed board alone, front elevation, width:height about 1:1. Keep divider in fixed top third. Outer edges nearly straight and central paper uniform so it can use 9-slice: top cap includes entire header and divider, bottom cap includes bottom frame, left/right cap include wood. Do not place texture across the blank center. Board fills 96 percent of image with tiny transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "e5cb531a3b7196d98801a057a376f1d68926be9f7b701012c012c5bdc98023d1",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "cabinet-display",
+    "file": "png/cabinet-display@3x.png",
+    "source_image": "exec-0dfef99f-3f70-4d76-a337-45fb5351ea61.png",
+    "prompt": "Use case: precise-object-edit. Extract the ENTIRE ONE-PIECE lower-right wooden display cabinet from reference, with top shelf open space, one divider-free horizontal shelf for three trophies, lower cream-front drawer with golden star handle on left, substantial wooden sides and two short feet. REMOVE all trophy objects and their name plaques, lettering, arrow and any progress text. Keep warm honey wood shading, exact modest 3/4 perspective and overall silhouette. Width:height about 1.5:1. Do not separate shelf and drawer. Clear empty upper shelf and lower drawer text areas. Tiny transparent padding. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "3a87287d3fa013b596a5352df67d9f9d67a614cf091814361230d42292eaa817",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "chip-start",
+    "file": "png/chip-start@3x.png",
+    "source_image": "exec-713c67f3-1b96-4cf9-a195-792ba967d199.png",
+    "prompt": "Use case: precise-object-edit. Extract only the teal hanging Start label from the task card, remove lettering. A softly painted teal rectangular rounded tag with warm paper backing and a teal pushpin at upper-left, slight counterclockwise slant like reference, not a pill. Blank central region. Wide ratio 1.6:1, center empty; pin stays fixed in top-left corner. Tiny transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "0ab8240ee430d470b41cf13785e085d19c48f751d831d958468a18ab586d733a",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "parent-approval-card",
+    "file": "png/parent-approval-card@3x.png",
+    "source_image": "exec-b0f292d3-c473-4f4b-a9ea-f8d9264db69a.png",
+    "prompt": "Use case: precise-object-edit. Extract the parent approval section pale buttery cream-yellow rounded card background. No text, buttons, rows, count bubble, icons. Soft filled warm cream-yellow wash, not outline only. Rounded corners, ratio 2.6:1, tiny transparent margin, clean stretchable center. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "4332af2fe889a1f62826e1e22fc12866bba9ff0cabce432a014bdbefcbd2b286",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "parent-card",
+    "file": "png/parent-card@3x.png",
+    "source_image": "exec-f35564b1-5093-42a2-9cff-8dec5ccfe735.png",
+    "prompt": "Use case: precise-object-edit. Extract the large white rounded parent content card surface. No text, avatars, internal rows, icons or content. White softly painted surface, barely visible warm shadow, generous rounded corners like reference. Blank rectangular ratio 2.4:1, tiny transparent margin. Clean uniform center suitable for 9-slice. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "6bc7e9a35721c13691b360cff1a471824799acc976b2cab8a80d26c3dcb4d9ea",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "parent-insight-card",
+    "file": "png/parent-insight-card@3x.png",
+    "source_image": "exec-77787894-e1f5-48d5-9025-34c0c6219cc8.png",
+    "prompt": "Use case: precise-object-edit. Extract the pale mint/teal wide rounded insight card background near bottom of parent reference. Remove all text, book illustration and arrow. Soft aqua filled wash, rounded corners, no border. Wide ratio 5.5:1. Uniform center, tiny transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "f7cd24745778235d2b3228a11f1676251d0a0fd45a64ee6aaee9638980dc1fa1",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "pill-parent",
+    "file": "png/pill-parent@3x.png",
+    "source_image": "exec-4fe26598-3e89-4730-8b46-b2a2c45c97b8.png",
+    "prompt": "Use case: precise-object-edit. Extract the top-right parent access pill from child reference. Filled pale MINT rounded capsule, soft white rim, dark navy padlock only in LEFT cap, no lettering. Horizontal ratio 3:1. Lock entirely inside fixed left end, center plain. Tiny transparent padding. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "90e74fe6b15d2ec2f2d2c90bf55bd19947a5217717cd17ac616970093bc8bf21",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "pill-star",
+    "file": "png/pill-star@3x.png",
+    "source_image": "exec-be3823ef-576f-401e-b26d-0fe31563bba9.png",
+    "prompt": "Use case: precise-object-edit. Extract the top-right star balance pill from child reference. Filled pale cream-YELLOW rounded capsule, soft white rim and subtle warm shadow, gold star only in LEFT cap, no lettering or numbers. Horizontal ratio 3:1. Star entirely inside left fixed end; center plain. Tiny transparent padding. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "7f13d6cb2c8b5c2732d62fa0b063035c4530339ad11890c5abc381a2533e146d",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "pin-blue",
+    "file": "png/pin-blue@3x.png",
+    "source_image": "exec-4a8c4396-adf0-4600-9778-3e96d9464f3c.png",
+    "prompt": "Use case: precise-object-edit. Extract ONLY one sky blue pushpin from the left task board in the Gina reference. Match exact softly painted colored plastic pushpin with little metal tip and subtle tiny contact shadow. No paper, board, lettering or other object. Transparent background. Complete pin fills 85 percent canvas. Portrait ratio 3:4. NO text or numbers.",
+    "sha256": "8a896921285319e7f8860add9eca84eead62ac5860fe07ddde1af2f3f3016d4c",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "pin-red",
+    "file": "png/pin-red@3x.png",
+    "source_image": "exec-9a4753bd-25cd-4b7e-a514-8246a0a09569.png",
+    "prompt": "Use case: precise-object-edit. Extract ONLY one coral red pushpin from the left task board in the Gina reference. Match exact softly painted colored plastic pushpin with little metal tip and subtle tiny contact shadow. No paper, board, lettering or other object. Transparent background. Complete pin fills 85 percent canvas. Portrait ratio 3:4. NO text or numbers.",
+    "sha256": "2e9c4ca8b23074629650868ae4e1846452668aa0bbf4ffad44de5fc05ecbfc25",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "pin-teal",
+    "file": "png/pin-teal@3x.png",
+    "source_image": "exec-fc62d845-1c82-43f6-bafe-52d7096f97eb.png",
+    "prompt": "Use case: precise-object-edit. Extract ONLY one teal pushpin from the left task board in the Gina reference. Match exact softly painted colored plastic pushpin with little metal tip and subtle tiny contact shadow. No paper, board, lettering or other object. Transparent background. Complete pin fills 85 percent canvas. Portrait ratio 3:4. NO text or numbers.",
+    "sha256": "1f02b39e1a3b7bebb2ea956f45475ba81c98555e24c8f71df277fca3afbe96d0",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "plaque",
+    "file": "png/plaque@3x.png",
+    "source_image": "exec-82c79c65-dd68-4e4c-9c47-2c76fa1b2b99.png",
+    "prompt": "Use case: precise-object-edit. Extract one small brown wooden trophy name plaque/pedestal from the lower-right shelf. Empty front face, remove all lettering and objects. Warm dark honey/brown wood, subtle 3D top and side faces, small soft highlight, rectangular ratio 3:1; middle extends horizontally for 9-slice. Transparent margin tiny. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "53d45d703e1377da7fa2e2eacbddc93d0d3036e5390aab44b3c7d9d6c47100fc",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "tag-hanging",
+    "file": "png/tag-hanging@3x.png",
+    "source_image": "exec-1c4597a9-35d0-4569-836c-6896d0f7c5c6.png",
+    "prompt": "Use case: precise-object-edit. Extract the hanging cream paper label attached beside the central bookcase. Remove all words, shirt icon and arrow (native content will be added). Keep teal pin and hanging string at top, warm paper texture, slightly irregular paper corners. Tall narrow rectangle ratio 0.6:1. Transparent background. Empty center. Tiny transparent padding. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "4c8f2e67f99c619a76cc13ceed757ad96b0764e9f664b56b6becbb5260377c4e",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "task-card",
+    "file": "png/task-card@3x.png",
+    "source_image": "exec-3634ea7d-94b9-4ba8-97dd-5d9357fcf901.png",
+    "prompt": "Use case: precise-object-edit. Extract only one blank cream torn-edge task paper from left board. Faithful softly irregular torn corners and deckled paper edge; pale warm paper grain, subtle soft shadow. Remove all content and pushpins (pins delivered separately). Wide horizontal ratio 3.5:1, near-front view, no large tilt; center uniform for 9-slice, irregularity confined to perimeter. Fill 96 percent canvas. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "e05515fe077be1bc7fcf1c738208759cf78cb264f1094c77b9e5fb40b36d9498",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "ticket-goal",
+    "file": "png/ticket-goal@3x.png",
+    "source_image": "exec-afef7516-c47d-4738-9313-09136eca12b3.png",
+    "prompt": "Use case: precise-object-edit. Extract ONLY the upper-right goal ticket background from reference. Cream-YELLOW filled hand-painted ticket, scalloped/serrated corners, subtle double gold ornamental edge, soft warm shadow, golden star corner accents and little header sunshine rays near upper corners. REMOVE text, numbers, popcorn, clapperboard and progress bar. NOT an outline-only ticket. Blank roomy center for native text. Width:height 1.8:1. Front elevation, edges straight across middle and all notches/embellishments confined to corner end regions for 9-slice. Fill 96 percent of canvas with tiny transparent margin. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "4189dc040e1d706f7088246e68ffe48ca5ec124642d207c2815293011bcb305e",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "week-frame",
+    "file": "png/week-frame@3x.png",
+    "source_image": "exec-470086e0-7853-40b2-9d3b-597cb9e847bf.png",
+    "prompt": "Use case: precise-object-edit. Extract only the right wall weekly calendar: honey wood frame, cream white blank paper, string suspended between two small nails at top. Remove heading, dates, grid lines, check marks, all text. Same warm painterly frame as reference. Width:height about 1.65:1. Tiny transparent margin. Uniform blank center and straight middle edges for 9-slice. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "f3d4cb330d09f72a602a99c6e3356814d3beda264941d84ec8218e8e80197ce5",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  }
+]

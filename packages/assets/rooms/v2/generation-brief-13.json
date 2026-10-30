@@ -1,0 +1,137 @@
+[
+  {
+    "slug": "character-boy",
+    "file": "character-boy.webp",
+    "source_image": "exec-7deb2a0a-1523-4be4-831f-272204cceee1.png",
+    "prompt": "Edit ONLY the hairstyle of this seated child to a clearly short boy haircut: cropped hair above both ears, exposed ears and neck, short nape, a small side swept fringe. Remove the bob silhouette entirely. Preserve the exact same face, expression, coral daisy sweater, teal book and trousers, cross-legged pose, white socks, colors, drawing style and transparent background. Full body, same framing. No text, no scenery, no shadow.",
+    "sha256": "65783c8b345ab93264c54d6af1085c5f2cab25905cab1ce7e5cb1e975db82f91",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "exec-f11bceb5-c3d6-4812-a61c-1bda67c3ca89.png"
+  },
+  {
+    "slug": "character-girl",
+    "file": "character-girl.webp",
+    "source_image": "exec-d415e824-c828-45bc-a316-8596eba30dce.png",
+    "prompt": "Use case: precise-object-edit. Extract ONLY the seated girl from the approved reference as a transparent cutout, reconstructing occluded edges faithfully. Exact brown straight shoulder-length bob hair, side fringe, small oval dark eyes, coral sweater with a white five-petal daisy with yellow center on chest, teal trousers, blank teal open book, white socks. Same cross-legged pose, expression and proportions. No curls, no pet, no rug, no beanbag. Entire body in frame with 10 percent transparent margin. Feet horizontal baseline at 90 percent height. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "c77c3a56e715697f8c7e6b27d5190141f4d01d2454d82154054e3fa1d2818f1b",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "character-unspecified",
+    "file": "character-unspecified.webp",
+    "source_image": "exec-2c999bd7-1cd0-493b-9fe8-4f47578c79e4.png",
+    "prompt": "Use case: precise-object-edit. Match the reference girl’s exact pose, body proportions, white socks, teal trousers and blank teal book, but this variant has short softly wavy brown hair, neutral appearance, same age. Coral sweater with small white five-petal daisy, no text. Entire seated cross-legged body visible, 10 percent transparent margin, feet baseline at 90 percent canvas height. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "bbc06dff5dd00c447db1d065737dd06bfa0619e97d3f1a9119194c196ad391c4",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "family-group",
+    "file": "family-group.webp",
+    "source_image": "exec-b9d70701-597e-4604-a099-5c7806df3ae8.png",
+    "prompt": "Use case: precise-object-edit. Extract ONLY the family group silhouette icon from the selected teal All chip in parent reference: three soft white/mint human busts, large central person and two smaller side figures, on a subtle darker teal circular medallion. No words, no chip or card. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "21838f2c37cf16bc0494394d8bb7fbd001228398af074d412d6dd374bf2b82a9",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "parent-header-scene",
+    "file": "parent-header-scene.webp",
+    "source_image": "exec-e11c6360-1df0-4221-a20c-b321f4eb431d.png",
+    "prompt": "Use case: precise-object-edit. Extract ONLY the upper-right decorative header vignette of the parent reference: tall cream window and mint curtain, blue sky with small yellow sun, green potted plants, wooden tabletop with teal/coral books, small framed gray cat photo, yellow mug. Preserve exact arrangement and style of the top-right corner. No child avatars, cards, text, statusbar, logos, buttons. Transparent outside illustration, vignette only; do not fill left empty area. This is a wide header illustration with most detail on its right half. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "5569980ec5240cec6d42f28e21241516c37445a9fb61d07f21aa8a92cfc6c755",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "parent-insight-book",
+    "file": "parent-insight-book.webp",
+    "source_image": "exec-0f9690d2-eb67-4d50-b296-a4aeacf16bfb.png",
+    "prompt": "Use case: precise-object-edit. Extract ONLY the open book illustration from the parent insight card near the bottom. Cream blank pages, teal cover and outlines, warm painterly shading, same slightly perspective opened-book silhouette. No text on pages. No card or background. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "036103a802118d316d2d820dc43bb9a5792a0c0c29b8f53228e3ab93278bcd12",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "parent-home-approved.png"
+  },
+  {
+    "slug": "pet-cat-portrait",
+    "file": "pet-cat-portrait.webp",
+    "source_image": "exec-57897132-62cb-4d43-93bc-3ee57aac68e2.png",
+    "prompt": "Use case: identity-preserve. Create a centered face portrait of THIS SAME cat pet for the Gina selection screen. Preserve exact fur colors, patches, ears, nose and hand-painted storybook appearance. Face and upper shoulders only, calm gently sleeping eyes, circular-friendly composition with transparent background and 12 percent empty margin. No circle frame, no floor, no text, no letters, no numbers, no logo. Same animal identity, not a new design.",
+    "sha256": "20bd7223e76017e5d8b60d2907f0dc2997248f22c30486f442bc099dd6df3320",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "exec-431663b9-c6d9-4f39-908e-4a45beff6359.png"
+  },
+  {
+    "slug": "pet-cat",
+    "file": "pet-cat.webp",
+    "source_image": "exec-431663b9-c6d9-4f39-908e-4a45beff6359.png",
+    "prompt": "Use case: precise-object-edit. Extract or create the EXACT curled sleeping white-and-caramel patched cat left of the girl in the reference, closed eyes, small pink nose, tail curled along front. Match the reference sleeping cat’s painterly style, quiet expression, modest scale and 3/4 front view. One full animal, wide low curled pose, ground baseline at 85 percent canvas height, 12 percent transparent padding. No rug/floor/object/background, no shadow. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "a3520d9e512d283edf1ddaea0ce56408892989096168aa3392532523d2768db3",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "pet-dog-portrait",
+    "file": "pet-dog-portrait.webp",
+    "source_image": "exec-04ea4202-03b6-425d-a25e-2e12a54025fa.png",
+    "prompt": "Use case: identity-preserve. Create a centered face portrait of THIS SAME dog pet for the Gina selection screen. Preserve exact fur colors, patches, ears, nose and hand-painted storybook appearance. Face and upper shoulders only, calm gently sleeping eyes, circular-friendly composition with transparent background and 12 percent empty margin. No circle frame, no floor, no text, no letters, no numbers, no logo. Same animal identity, not a new design.",
+    "sha256": "0022353f058c80af264f851f7bddfa4741bff93f4361dfb8fe50a63a93d18e28",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "exec-5df722e6-5e7d-4177-b49d-a0a7b0f8a3c4.png"
+  },
+  {
+    "slug": "pet-dog",
+    "file": "pet-dog.webp",
+    "source_image": "exec-5df722e6-5e7d-4177-b49d-a0a7b0f8a3c4.png",
+    "prompt": "Use case: precise-object-edit. Extract or create a small white-and-caramel floppy-eared puppy curled asleep, closed eyes, nose resting on paws. Match the reference sleeping cat’s painterly style, quiet expression, modest scale and 3/4 front view. One full animal, wide low curled pose, ground baseline at 85 percent canvas height, 12 percent transparent padding. No rug/floor/object/background, no shadow. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "000cd39e7d0d98455b42f1298f0bbea82100361e449100d4e620db36e7b720b0",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "pet-lion-portrait",
+    "file": "pet-lion-portrait.webp",
+    "source_image": "exec-f86d11ec-bd06-4256-906f-b9fe0bddda85.png",
+    "prompt": "Use case: identity-preserve. Create a centered face portrait of THIS SAME lion pet for the Gina selection screen. Preserve exact fur colors, patches, ears, nose and hand-painted storybook appearance. Face and upper shoulders only, calm gently sleeping eyes, circular-friendly composition with transparent background and 12 percent empty margin. No circle frame, no floor, no text, no letters, no numbers, no logo. Same animal identity, not a new design.",
+    "sha256": "0c5b31f617ba47131f24ea963feedcceb57c2dd42cc1b9d0126a4978cf7fc090",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "exec-c7334c4c-7528-40f8-b134-b9ec3b929955.png"
+  },
+  {
+    "slug": "pet-lion",
+    "file": "pet-lion.webp",
+    "source_image": "exec-c7334c4c-7528-40f8-b134-b9ec3b929955.png",
+    "prompt": "Use case: precise-object-edit. Extract or create a gentle golden lion cub curled asleep, small rounded ears, no large mane, eyes closed, paws tucked. Match the reference sleeping cat’s painterly style, quiet expression, modest scale and 3/4 front view. One full animal, wide low curled pose, ground baseline at 85 percent canvas height, 12 percent transparent padding. No rug/floor/object/background, no shadow. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "f9575112bc0a0c856263b6cdd902de6f81ba7f6c532458c8366acae4394572ab",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "pet-monkey-portrait",
+    "file": "pet-monkey-portrait.webp",
+    "source_image": "exec-d5430761-8c6d-426c-825b-f88006607ef8.png",
+    "prompt": "Use case: identity-preserve. Create a centered face portrait of THIS SAME monkey pet for the Gina selection screen. Preserve exact fur colors, patches, ears, nose and hand-painted storybook appearance. Face and upper shoulders only, calm gently sleeping eyes, circular-friendly composition with transparent background and 12 percent empty margin. No circle frame, no floor, no text, no letters, no numbers, no logo. Same animal identity, not a new design.",
+    "sha256": "f52b07e3c0ea8ba5ba8ccbe7eee436dd00de821d495f3ed8a6c9dfad0a3d16bd",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "exec-e326d7cf-8c40-441b-a6fe-b15c9d732071.png"
+  },
+  {
+    "slug": "pet-monkey",
+    "file": "pet-monkey.webp",
+    "source_image": "exec-e326d7cf-8c40-441b-a6fe-b15c9d732071.png",
+    "prompt": "Use case: precise-object-edit. Extract or create a small gentle brown baby monkey curled asleep, beige face, tail tucked beside body, no clothing. Match the reference sleeping cat’s painterly style, quiet expression, modest scale and 3/4 front view. One full animal, wide low curled pose, ground baseline at 85 percent canvas height, 12 percent transparent padding. No rug/floor/object/background, no shadow. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "064a3efc0b6c57ed66e28bb89749725f346d07291c128a1aa23c9964ea8a62c3",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  },
+  {
+    "slug": "room-base",
+    "file": "room-base.webp",
+    "source_image": "exec-7907f817-07ea-4ffa-b758-521e2aa36331.png",
+    "prompt": "Use case: precise-object-edit. Edit the reference into its EXACT background plate, landscape 1586x992. REMOVE ONLY the entire left task board, upper-right goal ticket, right wall calendar, lower-right display cabinet, top logo and all lettering/header pills, the girl and sleeping cat, and the hanging Odam tag. Fill only removed areas with continued wall/floor. PRESERVE every other detail at its exact original position: lower-left foreground wooden desk with stacked books and teal star pencil cup with colored pencils; pink checked blanket bed corner at far lower left; large green left-edge plant; partial yellow chair at bottom right; rainbow and leaf taped postcards on right wall; central tall wooden bookcase with trailing ivy at top, cat-photo frame upper shelf, teal backpack lower shelf, same books; same window/curtains, yellow beanbag with teal cushion, same teal oval rug. No new design, no rearrangement, no simplifying, do not remove the little decorative objects. Opaque full bleed. Reference is the approved Gina screen. Preserve its exact warm hand-painted storybook rendering, material, colors, lighting and proportions; NOT a flat vector icon, NOT glossy plastic. NO text, letters, numbers, labels, logo, watermark, UI content. Single separate production asset, transparent background and clean alpha unless specified otherwise. Do not include a checkerboard or cast shadow outside the object. ",
+    "sha256": "d53351a5ad09b8c9d5ebe54eacb7aa9be44e7e0085fd454f676dde56247db046",
+    "export": "lossless; transparent margin normalization for chrome; fit requested canvas",
+    "reference": "child-home-approved.png"
+  }
+]

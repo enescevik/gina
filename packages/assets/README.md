@@ -1,5 +1,9 @@
 # Gina görsel varlıkları
 
+## BRIEF 13 referans eşleme teslimi
+
+Onaylı ana ekranları izleyen boyalı room-chrome kaplamalarında manifestteki PNG üretim kaynağıdır; eski SVG çizimler yalnız yapısal uyumluluk yedeği olarak korunur. Yeni basit arayüz parçaları ayrıca gerçek SVG kaynağı taşır. BRIEF 13 bu kategori için resimli PNG, rooms/v2 ve resimli avatar/ödüller için lossless WebP istisnasını genişletir. Metinsizlik ve SVG teknik yasakları sürer. Ayrıntılar: `docs/design/room-v2/references/preview-note.md`.
+
 ## 12. kategori üretim istisnası
 
 Kullanıcının açık talebiyle `room-chrome/` SVG + `png/*@3x.png` teslim eder; PNG yasağı bu kategoriye uygulanmaz. Ahşap/kâğıt katmanlı yumuşak tonlar BRIEF 12 kapsamında serbesttir. SVG teknik yasakları sürer. `rooms/v2/` üretim oda/karakterleri onaylı konsepte uygun lossless WebP’dir; karakterlerin doğal ten/saç tonları korunur. Diğer kategorilerin kuralları değişmez.

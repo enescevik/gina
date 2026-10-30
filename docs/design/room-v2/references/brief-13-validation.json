@@ -1,0 +1,25 @@
+{
+  "brief": 13,
+  "checks": {
+    "currentProductionAssets": 110,
+    "imagegenAssets": 80,
+    "nativeSvgSources": 9,
+    "identicalAlphaStatePairs": 20,
+    "petBodyCanvases": "768x512",
+    "petPortraitCanvases": "256x256",
+    "petVariants": [
+      "cat",
+      "dog",
+      "monkey",
+      "lion",
+      "none"
+    ],
+    "sha256DimensionsAlphaBounds": "passed",
+    "supersedesArchiveHashes": "passed",
+    "svgForbiddenElements": "passed",
+    "browserImageDecode": "passed",
+    "gitDiffWhitespace": "passed"
+  },
+  "applicationCodeChanged": false,
+  "visualAcceptance": "Side-by-side reference review provided; pixel identity is not claimed; mobile integration remains with Claude."
+}

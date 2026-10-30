@@ -1,8 +1,8 @@
 {
   "version": 3,
-  "base_commit": "3d81e4b",
+  "base_commit": "37456c26e95624d4a332b4e7dd3b2fcb22d334c2",
   "additional_reviewed_commit": "c358624",
-  "status": "premium-v3-handoff",
+  "status": "brief-13-reference-assets",
   "files": [
     {
       "file": "ACCEPTANCE.md",
@@ -14,7 +14,15 @@
     },
     {
       "file": "CLAUDE-PROMPT.md",
-      "sha256": "6f583159ec706760100a80c7dbca9da66a576b6f97faf21cdd8a82c89bec7aab"
+      "sha256": "885e1d2de4a98b2affaafe31576c50e938b32101abd92d19ef53edccee8e6a36"
+    },
+    {
+      "file": "CODEX-BRIEF-13-birebir.md",
+      "sha256": "9f43f11293828d61b5d36e85897db6baa4882ce6d724f4d214455ed84220ad87"
+    },
+    {
+      "file": "CODEX-BRIEF-14-alt-ekranlar.md",
+      "sha256": "08d5abbab70d84362132f596d7609e11e8d2f04d42ffc6ae05e917dafe40413c"
     },
     {
       "file": "DELIVERY.md",
@@ -73,8 +81,44 @@
       "sha256": "885275c56e257f36afcb05029bfe2cf621ed70f4886614216a2c7da8b2f19fea"
     },
     {
+      "file": "references/brief-13-compare-child.webp",
+      "sha256": "aa96eecc5bdb13555a3f680639d90b3561e4bd3b20e9a42fe1d91eac971ac9cc"
+    },
+    {
+      "file": "references/brief-13-compare-parent.webp",
+      "sha256": "a47494db928f4e0ba622d23035840f3b574bfdf817f703857cb8ed1ed933d59d"
+    },
+    {
+      "file": "references/brief-13-montage-child.webp",
+      "sha256": "7415083843e47c960d8a117fd85f809e4a39a205405b7f2de7752bbecefb1329"
+    },
+    {
+      "file": "references/brief-13-montage-parent.webp",
+      "sha256": "c99d2871f001dee34d7a5476987e2f7e04cdd77bf686d4acbecc7283b704d576"
+    },
+    {
+      "file": "references/brief-13-montage.html",
+      "sha256": "93d7a238faec676d6c458b9f8a04d734da85fd420256f34caca9cd4d7e2537f3"
+    },
+    {
+      "file": "references/brief-13-validation.json",
+      "sha256": "ecb71fd3ba2585316768c767df723618ba21c663a45c53d273563a8bbcd4f990"
+    },
+    {
       "file": "references/child-home-approved.png",
       "sha256": "988102f7e6e7f7c0db77e55d468b70d3bac740fccbbf90963a00f86da0948ec4"
+    },
+    {
+      "file": "references/compare-2026-10-30-child.jpg",
+      "sha256": "4342e76b90b7971554df3406c52cfd057e4dbbd4f2528738e694668182ea4ee8"
+    },
+    {
+      "file": "references/compare-2026-10-30-parent.jpg",
+      "sha256": "71872abb1d6d0ae4b40f1560b19998d371b128b2e461deb890fdc64efd1c967f"
+    },
+    {
+      "file": "references/contact-sheet.svg",
+      "sha256": "5161c35c6e3e06eb9fae7a06ccdacd090b56fb9d9cac6ce6e2be8d1f6235a59a"
     },
     {
       "file": "references/manifest.json",
@@ -83,6 +127,10 @@
     {
       "file": "references/parent-home-approved.png",
       "sha256": "0aa751ac253c5da78d73796c2fac7235c6cc4de1befd80ae2c40d1c455f183e1"
+    },
+    {
+      "file": "references/preview-note.md",
+      "sha256": "87ba1e52645aefc8d3848d57a4e187f6cb4b83f0eb5172a2dfe98459de103876"
     },
     {
       "file": "room-presets.json",
@@ -95,14 +143,6 @@
     {
       "file": "seasonal-events.json",
       "sha256": "ab71a43d7e881bd983a1d6da617dfdfa32b2b9feb7483b48ac379186e7bb5f2d"
-    },
-    {
-      "file": "references/contact-sheet.svg",
-      "sha256": "5161c35c6e3e06eb9fae7a06ccdacd090b56fb9d9cac6ce6e2be8d1f6235a59a"
-    },
-    {
-      "file": "references/preview-note.md",
-      "sha256": "e214e5c2a74c7be01c4d85e0029a2ee7add7552cc301dbf39ce2a84c1dace409"
     }
   ]
 }

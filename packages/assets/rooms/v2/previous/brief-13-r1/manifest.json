@@ -1,0 +1,609 @@
+[
+  {
+    "slug": "reward-cinema-ticket",
+    "label_tr": "Sinema bileti",
+    "file": "reward-cinema-ticket.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "reward-bicycle",
+    "label_tr": "Bisiklet",
+    "file": "reward-bicycle.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "reward-console",
+    "label_tr": "Oyun konsolu",
+    "file": "reward-console.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "decor-sun",
+    "label_tr": "Güneşli oda dekoru",
+    "file": "decor-sun.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "decor-leaf",
+    "label_tr": "Doğa odası dekoru",
+    "file": "decor-leaf.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "decor-orbit",
+    "label_tr": "Keşif odası dekoru",
+    "file": "decor-orbit.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "badge-tooth-care",
+    "label_tr": "Diş bakım sembolü",
+    "file": "badge-tooth-care.svg",
+    "viewBox": "0 0 48 48",
+    "variants": [
+      "color"
+    ],
+    "png": []
+  },
+  {
+    "slug": "character-girl",
+    "file": "character-girl.webp",
+    "width": 1254,
+    "height": 1254,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "26adb218a946988c2b983cb42f11314682a27538d76d85a91162ca8c3c546f49",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      229,
+      85,
+      1033,
+      1180
+    ],
+    "lossless": true,
+    "source": "exec-be5848b4-802a-41ac-8419-c82ebadffab6.png",
+    "contentBounds": [
+      229,
+      85,
+      1033,
+      1180
+    ],
+    "groundLine": 1180,
+    "anchor": {
+      "x": 631,
+      "y": 1180,
+      "units": "source pixels"
+    },
+    "sceneAnchor": {
+      "x": 800,
+      "y": 857,
+      "units": "1586x992 room pixels"
+    },
+    "sceneFitBox": {
+      "width": 320,
+      "height": 420
+    },
+    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch",
+    "supersedes": {
+      "file": "previous/brief-12/character-girl.webp",
+      "sha256": "e81ca8a4193bd637959f34bd8ec7b765099595813d0f60e99fd58906fe21a6bc",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
+  },
+  {
+    "slug": "character-boy",
+    "file": "character-boy.webp",
+    "width": 1254,
+    "height": 1254,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "65783c8b345ab93264c54d6af1085c5f2cab25905cab1ce7e5cb1e975db82f91",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      245,
+      128,
+      1050,
+      1126
+    ],
+    "lossless": true,
+    "source": "exec-7deb2a0a-1523-4be4-831f-272204cceee1.png",
+    "contentBounds": [
+      245,
+      128,
+      1050,
+      1126
+    ],
+    "groundLine": 1126,
+    "anchor": {
+      "x": 647.5,
+      "y": 1126,
+      "units": "source pixels"
+    },
+    "sceneAnchor": {
+      "x": 800,
+      "y": 857,
+      "units": "1586x992 room pixels"
+    },
+    "sceneFitBox": {
+      "width": 320,
+      "height": 420
+    },
+    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch",
+    "supersedes": {
+      "file": "previous/brief-12/character-boy.webp",
+      "sha256": "04d0a56a77177dae4e18a3e6f6b32b5863eeaeff3b762e4279a5bd04c02631d1",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
+  },
+  {
+    "slug": "character-unspecified",
+    "file": "character-unspecified.webp",
+    "width": 1254,
+    "height": 1254,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "bbc06dff5dd00c447db1d065737dd06bfa0619e97d3f1a9119194c196ad391c4",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      250,
+      135,
+      1025,
+      1145
+    ],
+    "lossless": true,
+    "source": "exec-2c999bd7-1cd0-493b-9fe8-4f47578c79e4.png",
+    "contentBounds": [
+      250,
+      135,
+      1025,
+      1145
+    ],
+    "groundLine": 1145,
+    "anchor": {
+      "x": 637.5,
+      "y": 1145,
+      "units": "source pixels"
+    },
+    "sceneAnchor": {
+      "x": 800,
+      "y": 857,
+      "units": "1586x992 room pixels"
+    },
+    "sceneFitBox": {
+      "width": 320,
+      "height": 420
+    },
+    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch",
+    "supersedes": {
+      "file": "previous/brief-12/character-unspecified.webp",
+      "sha256": "97e210db6177b373ba129a6eaacf302941c4a2aeab76308cb8a830ce43cd3c84",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
+  },
+  {
+    "slug": "room-base",
+    "file": "room-base.webp",
+    "width": 1586,
+    "height": 992,
+    "format": "webp",
+    "alpha": false,
+    "sha256": "d53351a5ad09b8c9d5ebe54eacb7aa9be44e7e0085fd454f676dde56247db046",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      0,
+      0,
+      1586,
+      992
+    ],
+    "lossless": true,
+    "source": "exec-7907f817-07ea-4ffa-b758-521e2aa36331.png",
+    "contentBounds": [
+      0,
+      0,
+      1586,
+      992
+    ],
+    "supersedes": {
+      "file": "previous/brief-12/room-base.webp",
+      "sha256": "099f87bc400f684fd6516a5833720240fe88101ab4e5188d1d8b663a245ef9a1",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
+  },
+  {
+    "slug": "family-group",
+    "file": "family-group.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "21838f2c37cf16bc0494394d8bb7fbd001228398af074d412d6dd374bf2b82a9",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      49,
+      50,
+      207,
+      206
+    ],
+    "lossless": true,
+    "source": "exec-b9d70701-597e-4604-a099-5c7806df3ae8.png",
+    "contentBounds": [
+      49,
+      50,
+      207,
+      206
+    ]
+  },
+  {
+    "slug": "parent-header-scene",
+    "file": "parent-header-scene.webp",
+    "width": 1280,
+    "height": 640,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "a92d9a5ebd630a90d87bf6b3c054d036f45fbd08add7eb97360408675ea98f4b",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      368,
+      0,
+      967,
+      638
+    ],
+    "lossless": true,
+    "source": "exec-e26e48b2-37d7-4946-b98f-89ecac687af4.png",
+    "contentBounds": [
+      368,
+      0,
+      967,
+      638
+    ]
+  },
+  {
+    "slug": "parent-insight-book",
+    "file": "parent-insight-book.webp",
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "036103a802118d316d2d820dc43bb9a5792a0c0c29b8f53228e3ab93278bcd12",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      28,
+      120,
+      484,
+      395
+    ],
+    "lossless": true,
+    "source": "exec-0f9690d2-eb67-4d50-b296-a4aeacf16bfb.png",
+    "contentBounds": [
+      28,
+      120,
+      484,
+      395
+    ]
+  },
+  {
+    "slug": "pet-cat-portrait",
+    "file": "pet-cat-portrait.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "20bd7223e76017e5d8b60d2907f0dc2997248f22c30486f442bc099dd6df3320",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      14,
+      21,
+      248,
+      238
+    ],
+    "lossless": true,
+    "source": "exec-57897132-62cb-4d43-93bc-3ee57aac68e2.png",
+    "contentBounds": [
+      14,
+      21,
+      248,
+      238
+    ]
+  },
+  {
+    "slug": "pet-cat",
+    "file": "pet-cat.webp",
+    "width": 768,
+    "height": 512,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "a3520d9e512d283edf1ddaea0ce56408892989096168aa3392532523d2768db3",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      55,
+      93,
+      723,
+      442
+    ],
+    "lossless": true,
+    "source": "exec-431663b9-c6d9-4f39-908e-4a45beff6359.png",
+    "contentBounds": [
+      55,
+      93,
+      723,
+      442
+    ],
+    "groundLine": 442,
+    "anchor": {
+      "x": 389,
+      "y": 442,
+      "units": "source pixels"
+    },
+    "sceneAnchor": {
+      "x": 565,
+      "y": 857,
+      "units": "1586x992 room pixels"
+    },
+    "sceneFitBox": {
+      "width": 210,
+      "height": 140
+    },
+    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch"
+  },
+  {
+    "slug": "pet-dog-portrait",
+    "file": "pet-dog-portrait.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "0022353f058c80af264f851f7bddfa4741bff93f4361dfb8fe50a63a93d18e28",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      14,
+      41,
+      248,
+      222
+    ],
+    "lossless": true,
+    "source": "exec-04ea4202-03b6-425d-a25e-2e12a54025fa.png",
+    "contentBounds": [
+      14,
+      41,
+      248,
+      222
+    ]
+  },
+  {
+    "slug": "pet-dog",
+    "file": "pet-dog.webp",
+    "width": 768,
+    "height": 512,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "000cd39e7d0d98455b42f1298f0bbea82100361e449100d4e620db36e7b720b0",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      64,
+      140,
+      732,
+      430
+    ],
+    "lossless": true,
+    "source": "exec-5df722e6-5e7d-4177-b49d-a0a7b0f8a3c4.png",
+    "contentBounds": [
+      64,
+      140,
+      732,
+      430
+    ],
+    "groundLine": 430,
+    "anchor": {
+      "x": 398,
+      "y": 430,
+      "units": "source pixels"
+    },
+    "sceneAnchor": {
+      "x": 565,
+      "y": 857,
+      "units": "1586x992 room pixels"
+    },
+    "sceneFitBox": {
+      "width": 210,
+      "height": 140
+    },
+    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch"
+  },
+  {
+    "slug": "pet-lion-portrait",
+    "file": "pet-lion-portrait.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "0c5b31f617ba47131f24ea963feedcceb57c2dd42cc1b9d0126a4978cf7fc090",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      21,
+      33,
+      247,
+      230
+    ],
+    "lossless": true,
+    "source": "exec-f86d11ec-bd06-4256-906f-b9fe0bddda85.png",
+    "contentBounds": [
+      21,
+      33,
+      247,
+      230
+    ]
+  },
+  {
+    "slug": "pet-lion",
+    "file": "pet-lion.webp",
+    "width": 768,
+    "height": 512,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "f9575112bc0a0c856263b6cdd902de6f81ba7f6c532458c8366acae4394572ab",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      53,
+      106,
+      717,
+      439
+    ],
+    "lossless": true,
+    "source": "exec-c7334c4c-7528-40f8-b134-b9ec3b929955.png",
+    "contentBounds": [
+      53,
+      106,
+      717,
+      439
+    ],
+    "groundLine": 439,
+    "anchor": {
+      "x": 385,
+      "y": 439,
+      "units": "source pixels"
+    },
+    "sceneAnchor": {
+      "x": 565,
+      "y": 857,
+      "units": "1586x992 room pixels"
+    },
+    "sceneFitBox": {
+      "width": 210,
+      "height": 140
+    },
+    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch"
+  },
+  {
+    "slug": "pet-monkey-portrait",
+    "file": "pet-monkey-portrait.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "f52b07e3c0ea8ba5ba8ccbe7eee436dd00de821d495f3ed8a6c9dfad0a3d16bd",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      10,
+      26,
+      253,
+      229
+    ],
+    "lossless": true,
+    "source": "exec-d5430761-8c6d-426c-825b-f88006607ef8.png",
+    "contentBounds": [
+      10,
+      26,
+      253,
+      229
+    ]
+  },
+  {
+    "slug": "pet-monkey",
+    "file": "pet-monkey.webp",
+    "width": 768,
+    "height": 512,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "064a3efc0b6c57ed66e28bb89749725f346d07291c128a1aa23c9964ea8a62c3",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      65,
+      95,
+      718,
+      428
+    ],
+    "lossless": true,
+    "source": "exec-e326d7cf-8c40-441b-a6fe-b15c9d732071.png",
+    "contentBounds": [
+      65,
+      95,
+      718,
+      428
+    ],
+    "groundLine": 428,
+    "anchor": {
+      "x": 391.5,
+      "y": 428,
+      "units": "source pixels"
+    },
+    "sceneAnchor": {
+      "x": 565,
+      "y": 857,
+      "units": "1586x992 room pixels"
+    },
+    "sceneFitBox": {
+      "width": 210,
+      "height": 140
+    },
+    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch"
+  }
+]

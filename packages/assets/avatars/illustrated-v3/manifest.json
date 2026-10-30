@@ -1,0 +1,532 @@
+[
+  {
+    "slug": "avatar-spiky",
+    "file": "avatar-spiky.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "e26d418bfe7cf918da2525da7aa2c5f9f8c29f6ea452a64ab8e448bb8f4fc03b",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      18,
+      19,
+      237,
+      236
+    ],
+    "lossless": true,
+    "source": "exec-ebce4ce9-5ed0-45bb-8067-6d00e8b37343.png",
+    "identitySlug": "avatar-spiky",
+    "supersedes": {
+      "file": "../avatar-spiky.svg",
+      "sha256": "031fc4eec877e0d9953c1ea7759aa09f3fa9a8b00fa2d7daf3f4a6ab8becd3d7",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-adult-beard",
+    "file": "avatar-adult-beard.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "8057c76aff8aedf272ae9e439d7ce8db73f8d660ab12b611747103fd9f152c46",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      27,
+      27,
+      229,
+      230
+    ],
+    "lossless": true,
+    "source": "exec-cabfc080-5aa3-45c5-a57b-3cbca6312568.png",
+    "identitySlug": "avatar-adult-beard",
+    "supersedes": {
+      "file": "../avatar-adult-beard.svg",
+      "sha256": "89da2a4e664a0abff7ae6483fbb351054649603566bb629021364ddc7a7d3ab4",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-adult-glasses",
+    "file": "avatar-adult-glasses.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "a3eca1381a424bc191819d6636867f03ee84366901caa4dc430c1fdbeab353e8",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      19,
+      19,
+      236,
+      236
+    ],
+    "lossless": true,
+    "source": "exec-c4452fc9-93b7-4e09-91e7-4177863dfc4c.png",
+    "identitySlug": "avatar-adult-glasses",
+    "supersedes": {
+      "file": "../avatar-adult-glasses.svg",
+      "sha256": "0de6494adab88b8ac4da63f5a80d8699ef58f5b7a34c102bd9044bb70c37027b",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-adult-long",
+    "file": "avatar-adult-long.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "180d19ff66d1c11de567c4cab91bb1afbb8103ac0497a2558a47efcbc8bd01f0",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      16,
+      16,
+      240,
+      240
+    ],
+    "lossless": true,
+    "source": "exec-168b4bae-b9b8-4cb8-b0a7-0688cd5d41d3.png",
+    "identitySlug": "avatar-adult-long",
+    "supersedes": {
+      "file": "../avatar-adult-long.svg",
+      "sha256": "7e171b61ea37e208f6005aad89484d7a8f487ed0f77d5c396afc62ae04a8d9f5",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-adult-short",
+    "file": "avatar-adult-short.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "e9c82e9429dd0094d77b6873b0796ddbad779d37ec09be8a68d9f1eabf4f2187",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      15,
+      19,
+      241,
+      244
+    ],
+    "lossless": true,
+    "source": "exec-fe0ea045-720f-44c4-9294-3725193937e3.png",
+    "identitySlug": "avatar-adult-short",
+    "supersedes": {
+      "file": "../avatar-adult-short.svg",
+      "sha256": "d3f08afce2269512921cb826c568a357be7a36870643e2ea5c532a67f9d0172c",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-afro",
+    "file": "avatar-afro.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "29fd0639a815488af4d7fa648bcecc8e25173ee27becbc1dbe09ef8ff57e81fb",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      15,
+      19,
+      241,
+      243
+    ],
+    "lossless": true,
+    "source": "exec-b3694771-ab2f-4eb7-8b03-a1a391238a90.png",
+    "identitySlug": "avatar-afro",
+    "supersedes": {
+      "file": "../avatar-afro.svg",
+      "sha256": "8be77d72c08bffbc7f5fb6841abb7edcdf5a2bdf15939f25ef99624fda4544e7",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-astronaut",
+    "file": "avatar-astronaut.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "8f1a255be1f366844ae5f5e1a533b38b222a58256f14fccd0feefa4f4c449a19",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      16,
+      19,
+      239,
+      240
+    ],
+    "lossless": true,
+    "source": "exec-63dfe644-e15c-474b-8c3a-dcd6c9b1784a.png",
+    "identitySlug": "avatar-astronaut",
+    "supersedes": {
+      "file": "../avatar-astronaut.svg",
+      "sha256": "0b6cee6aaf94c587d3294a9405f441fa5ddd0712a263eaa9be3916d19c644a51",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-beanie",
+    "file": "avatar-beanie.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "eabb2768d2794b2e65bbda2dc67b6a1b0cca76f4ceab590f976a0f4bff152ee7",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      23,
+      23,
+      232,
+      231
+    ],
+    "lossless": true,
+    "source": "exec-6a48589f-e185-4c7c-bfe3-525e6f802f0b.png",
+    "identitySlug": "avatar-beanie",
+    "supersedes": {
+      "file": "../avatar-beanie.svg",
+      "sha256": "7dd9ef44228c8e084d057f04a2e4697de2d4cf9ec3a79423366bf5ded88263df",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-braids",
+    "file": "avatar-braids.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "b14fd14a92ce5b39025649b37a6533c6d3a3a4d709bd2414d0270581ce7a132b",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      12,
+      14,
+      243,
+      243
+    ],
+    "lossless": true,
+    "source": "exec-6f7bf048-5413-4750-9da8-f2f6c8f67d3a.png",
+    "identitySlug": "avatar-braids",
+    "supersedes": {
+      "file": "../avatar-braids.svg",
+      "sha256": "b07f022b8d65e69f5d298eb064ccd2d19cb1ba40117157575e71764c341dbb76",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-bun",
+    "file": "avatar-bun.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "48e8cd94f0a607d40db596d8cd949ed33b2e4d7264015239b7cba41e723a5a42",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      14,
+      14,
+      242,
+      241
+    ],
+    "lossless": true,
+    "source": "exec-892b7d42-8de4-4db6-8238-f73794ab0d0a.png",
+    "identitySlug": "avatar-bun",
+    "supersedes": {
+      "file": "../avatar-bun.svg",
+      "sha256": "c0cadb5b2a1d3c7c580d35b4a786596aa46c8725397a641b455803b3c8196dc2",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-cap",
+    "file": "avatar-cap.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "8f78d74f477f95baabb96f58e4004150171d61baa99eb94c4c0ab14a1468aa23",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      20,
+      21,
+      236,
+      235
+    ],
+    "lossless": true,
+    "source": "exec-ef4962f4-c87a-4cdb-aab8-ed0c5a9e87e8.png",
+    "identitySlug": "avatar-cap",
+    "supersedes": {
+      "file": "../avatar-cap.svg",
+      "sha256": "63c3e54711315992feebd599aa3c52099aa36701ecf359d9fba1d7b97128cbac",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-curly",
+    "file": "avatar-curly.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "ddbe94f08e459880ceed75901d68560ae7d67c9dcccdd43542ca7d5610294e9a",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      16,
+      17,
+      240,
+      241
+    ],
+    "lossless": true,
+    "source": "exec-e371a4e8-9e57-45d8-9074-ed9368c18a02.png",
+    "identitySlug": "avatar-curly",
+    "supersedes": {
+      "file": "../avatar-curly.svg",
+      "sha256": "aa2a293a1abe02f174780e65716820d9a964211bf808679effeb36cc977c9024",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-default",
+    "file": "avatar-default.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "78ab2ddba53a510a49ead3effc01dee94413fc8c66db1e9d068dd380d95c2274",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      11,
+      13,
+      245,
+      245
+    ],
+    "lossless": true,
+    "source": "exec-b3697f39-4731-4e30-8aad-7f1080ecf4fe.png",
+    "identitySlug": "avatar-default",
+    "supersedes": {
+      "file": "../avatar-default.svg",
+      "sha256": "29ca08b91e9c3dd22c7ffdf161669ae467f4f03779ed6cbca8537dea14eb5e37",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-glasses",
+    "file": "avatar-glasses.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "f101cf4dd20c3d760cab357504bbd4e6b55252c454ebd3d94d71cde0da643778",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      18,
+      19,
+      238,
+      238
+    ],
+    "lossless": true,
+    "source": "exec-3ce68141-8619-4d99-9aa6-c09b803dc42d.png",
+    "identitySlug": "avatar-glasses",
+    "supersedes": {
+      "file": "../avatar-glasses.svg",
+      "sha256": "e21f7a7c85708ca8324aaa02b509e7a12d9be202288e0b5f5566415ef387f911",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-headband",
+    "file": "avatar-headband.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "061ee3d8b25ee1f921deca09056b02cf47fb68f0d4f9fcc99cdaeb8d35646618",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      27,
+      29,
+      229,
+      229
+    ],
+    "lossless": true,
+    "source": "exec-66f0d339-6993-45f1-af87-68208b3b0c40.png",
+    "identitySlug": "avatar-headband",
+    "supersedes": {
+      "file": "../avatar-headband.svg",
+      "sha256": "ede30aba198eb9db2d7cad30fdbb5f3c7e4123dc7848fb3fe03d41a84fdb559a",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-hearing-aid",
+    "file": "avatar-hearing-aid.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "2fcd92b36e27ef5d7377d3f9fa74d599158a2f17af1d08735a70a57101678149",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      15,
+      17,
+      241,
+      242
+    ],
+    "lossless": true,
+    "source": "exec-26fdb6fa-6d14-4b2e-91d0-715bb3e810b3.png",
+    "identitySlug": "avatar-hearing-aid",
+    "supersedes": {
+      "file": "../avatar-hearing-aid.svg",
+      "sha256": "1d8c952a07d73dcb66eae34d52560ae602768a31e1d6a7405e74ed3c1d153497",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-parent-default",
+    "file": "avatar-parent-default.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "70bb642b458ffabb8ec94f74ac8128c5bab3293f0783f1744fac3df9e89580bf",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      18,
+      23,
+      238,
+      242
+    ],
+    "lossless": true,
+    "source": "exec-f750a38e-b55d-4ffe-a135-773449d772ad.png",
+    "identitySlug": "avatar-parent-default",
+    "supersedes": {
+      "file": "../avatar-parent-default.svg",
+      "sha256": "284cb01fce2af1821b640d6f63d5fac50f13816423d9c5c5a93170b1038953fc",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  },
+  {
+    "slug": "avatar-reference-boy",
+    "file": "avatar-reference-boy.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "9ab8829e64807e3af232805fc6ad43b40a05590175e9f56463a05887b15dce8c",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      11,
+      13,
+      244,
+      245
+    ],
+    "lossless": true,
+    "source": "exec-0f16013b-ccb2-453b-ba5d-089f3b6bac73.png",
+    "identitySlug": "avatar-reference-boy"
+  },
+  {
+    "slug": "avatar-reference-girl",
+    "file": "avatar-reference-girl.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "f3f1dddcee1b6cb11afa231bb384cf8ff85f722c097bc2c0e7bc4d656918e8bc",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      14,
+      16,
+      242,
+      242
+    ],
+    "lossless": true,
+    "source": "exec-49b53f13-6532-4d67-b65e-b151fb452f1f.png",
+    "identitySlug": "avatar-reference-girl"
+  },
+  {
+    "slug": "avatar-wavy",
+    "file": "avatar-wavy.webp",
+    "width": 256,
+    "height": 256,
+    "format": "webp",
+    "alpha": true,
+    "sha256": "938b37877733c305f85acfe5328ce4a3e5981a4c5ce8ecd4e9a6cbb612b8d320",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      14,
+      12,
+      242,
+      240
+    ],
+    "lossless": true,
+    "source": "exec-a30f7dec-b99a-41f5-a29e-f2c3ff9bb36f.png",
+    "identitySlug": "avatar-wavy",
+    "supersedes": {
+      "file": "../avatar-wavy.svg",
+      "sha256": "862af9740c2d08672ee270d294bd294a9999a40acb29fa7b65b18d313708808c",
+      "reason": "illustrated portrait variant; original SVG retained"
+    }
+  }
+]

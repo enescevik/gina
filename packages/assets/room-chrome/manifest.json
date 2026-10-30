@@ -1,213 +1,345 @@
 [
   {
     "slug": "board-frame",
-    "file": "board-frame.svg",
-    "viewBox": "0 0 360 320",
+    "file": "png/board-frame@3x.png",
     "width": 360,
-    "height": 320,
+    "height": 360,
+    "format": "png",
+    "alpha": true,
+    "sha256": "e5cb531a3b7196d98801a057a376f1d68926be9f7b701012c012c5bdc98023d1",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      7,
+      9,
+      1074,
+      1072
+    ],
+    "source": "exec-7d028934-b315-4b7e-9026-1613118f9091.png",
     "png": [
       "png/board-frame@3x.png"
     ],
     "pixelRatio": 3,
     "pngWidth": 1080,
-    "pngHeight": 960,
+    "pngHeight": 1080,
+    "pngSha256": "e5cb531a3b7196d98801a057a376f1d68926be9f7b701012c012c5bdc98023d1",
+    "base": "board-frame",
+    "state": "default",
     "stretch": "both",
     "capInsets": {
-      "top": 144,
-      "left": 144,
-      "bottom": 96,
-      "right": 144
+      "top": 405,
+      "right": 110,
+      "bottom": 90,
+      "left": 95
     },
     "contentInsets": {
-      "top": 162,
-      "left": 84,
-      "bottom": 84,
-      "right": 84
+      "top": 430,
+      "right": 85,
+      "bottom": 85,
+      "left": 85
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "default",
-    "base": "board-frame",
     "minimumLogicalSize": {
-      "width": 97,
-      "height": 81
+      "width": 70,
+      "height": 166
     },
-    "sha256": "c1198543afb8f1841d79a59cd0d973226411432cf8f85d25cce73f19fb057903",
-    "pngSha256": "e958d21bc01a45fe2095a351254b58c0abcc0d1ee58c1dd2e7d3814fc36fb1ed"
+    "legacyVectorFallback": "board-frame.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "contentRegions": {
+      "header": {
+        "x": 100,
+        "y": 100,
+        "width": 720,
+        "height": 250
+      },
+      "tasks": {
+        "x": 90,
+        "y": 440,
+        "width": 900,
+        "height": 550
+      },
+      "units": "source pixels @3x"
+    },
+    "supersedes": {
+      "file": "previous/brief-13-r1/png/board-frame@3x.png",
+      "sha256": "9ff8846905ddb42bbd88e6f8cf79f5baeeee8fa12af3466f51457f33cd9b3f9c",
+      "reason": "Reference fidelity refinement: perspective, paper edges, face and open table"
+    }
   },
   {
     "slug": "task-card",
-    "file": "task-card.svg",
-    "viewBox": "0 0 300 100",
-    "width": 300,
-    "height": 100,
+    "file": "png/task-card@3x.png",
+    "width": 360,
+    "height": 110,
+    "format": "png",
+    "alpha": true,
+    "sha256": "e05515fe077be1bc7fcf1c738208759cf78cb264f1094c77b9e5fb40b36d9498",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      4,
+      4,
+      1076,
+      326
+    ],
+    "source": "exec-3634ea7d-94b9-4ba8-97dd-5d9357fcf901.png",
     "png": [
       "png/task-card@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 900,
-    "pngHeight": 300,
+    "pngWidth": 1080,
+    "pngHeight": 330,
+    "pngSha256": "e05515fe077be1bc7fcf1c738208759cf78cb264f1094c77b9e5fb40b36d9498",
+    "base": "task-card",
+    "state": "default",
     "stretch": "both",
     "capInsets": {
-      "top": 96,
-      "left": 156,
-      "bottom": 72,
-      "right": 72
+      "top": 75,
+      "right": 90,
+      "bottom": 75,
+      "left": 90
     },
     "contentInsets": {
-      "top": 84,
-      "left": 72,
-      "bottom": 54,
-      "right": 60
+      "top": 35,
+      "right": 45,
+      "bottom": 35,
+      "left": 45
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "default",
-    "base": "task-card",
     "minimumLogicalSize": {
-      "width": 77,
-      "height": 57
+      "width": 61,
+      "height": 51
     },
-    "sha256": "2f12f9f75cd3ca591fc813e00f56b0336a8c3d328a0b5bdc50773e56884bfc1b",
-    "pngSha256": "c041aeb7a56eb01ee51fa16289ab6aacf981209397548e60ff2839491b60c7b6"
+    "legacyVectorFallback": "task-card.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "supersedes": {
+      "file": "previous/brief-12/png/task-card@3x.png",
+      "sha256": "c041aeb7a56eb01ee51fa16289ab6aacf981209397548e60ff2839491b60c7b6",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
   },
   {
     "slug": "task-card-pressed",
-    "file": "task-card-pressed.svg",
-    "viewBox": "0 0 300 100",
-    "width": 300,
-    "height": 100,
+    "file": "png/task-card-pressed@3x.png",
+    "width": 360,
+    "height": 110,
+    "format": "png",
+    "alpha": true,
+    "sha256": "1e2d8e6480fbb7dbcd1b48820dd49298079c38e885aa386432fef6998507aaf4",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      4,
+      4,
+      1076,
+      326
+    ],
+    "source": "exec-3634ea7d-94b9-4ba8-97dd-5d9357fcf901.png",
     "png": [
       "png/task-card-pressed@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 900,
-    "pngHeight": 300,
+    "pngWidth": 1080,
+    "pngHeight": 330,
+    "pngSha256": "1e2d8e6480fbb7dbcd1b48820dd49298079c38e885aa386432fef6998507aaf4",
+    "base": "task-card",
+    "state": "pressed",
     "stretch": "both",
     "capInsets": {
-      "top": 96.0,
-      "left": 156.0,
-      "bottom": 72.0,
-      "right": 72.0
+      "top": 75,
+      "right": 90,
+      "bottom": 75,
+      "left": 90
     },
     "contentInsets": {
-      "top": 84.0,
-      "left": 72.0,
-      "bottom": 54.0,
-      "right": 60.0
+      "top": 35,
+      "right": 45,
+      "bottom": 35,
+      "left": 45
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "pressed",
-    "base": "task-card",
     "minimumLogicalSize": {
-      "width": 77.0,
-      "height": 57.0
+      "width": 61,
+      "height": 51
     },
-    "sha256": "a1c10f03ac76150c00b36365158b2345c9b848e271e62a067d9ffe7726bd6a4d",
-    "pngSha256": "89b8d9ff8cd12b145ddd2a2292ba94483d810bbf3bc4fe9fb3f76845c93bc09b"
+    "renderState": "brightness 0.91; alpha unchanged",
+    "legacyVectorFallback": "task-card-pressed.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "supersedes": {
+      "file": "previous/brief-12/png/task-card-pressed@3x.png",
+      "sha256": "89b8d9ff8cd12b145ddd2a2292ba94483d810bbf3bc4fe9fb3f76845c93bc09b",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
   },
   {
     "slug": "chip-start",
-    "file": "chip-start.svg",
-    "viewBox": "0 0 112 52",
-    "width": 112,
-    "height": 52,
+    "file": "png/chip-start@3x.png",
+    "width": 120,
+    "height": 80,
+    "format": "png",
+    "alpha": true,
+    "sha256": "0ab8240ee430d470b41cf13785e085d19c48f751d831d958468a18ab586d733a",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      2,
+      2,
+      358,
+      238
+    ],
+    "source": "exec-713c67f3-1b96-4cf9-a195-792ba967d199.png",
     "png": [
       "png/chip-start@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 336,
-    "pngHeight": 156,
-    "stretch": "both",
+    "pngWidth": 360,
+    "pngHeight": 240,
+    "pngSha256": "0ab8240ee430d470b41cf13785e085d19c48f751d831d958468a18ab586d733a",
+    "base": "chip-start",
+    "state": "default",
+    "stretch": "horizontal",
     "capInsets": {
-      "top": 66,
-      "left": 66,
-      "bottom": 72,
-      "right": 66
+      "top": 110,
+      "right": 90,
+      "bottom": 100,
+      "left": 90
     },
     "contentInsets": {
-      "top": 36,
-      "left": 54,
-      "bottom": 42,
-      "right": 54
+      "top": 85,
+      "right": 55,
+      "bottom": 45,
+      "left": 55
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "default",
-    "base": "chip-start",
     "minimumLogicalSize": {
-      "width": 45,
-      "height": 47
+      "width": 61,
+      "height": 71
     },
-    "sha256": "5c17901dff6adcbb69dc0cbb8e9dbc7c44fe197797c960adfe656bc2d3b87093",
-    "pngSha256": "e41f529493c794ca9f139105eda5cab72907bf6a9e43b7b75252d7851508321f"
+    "legacyVectorFallback": "chip-start.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "supersedes": {
+      "file": "previous/brief-12/png/chip-start@3x.png",
+      "sha256": "e41f529493c794ca9f139105eda5cab72907bf6a9e43b7b75252d7851508321f",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
   },
   {
     "slug": "chip-start-pressed",
-    "file": "chip-start-pressed.svg",
-    "viewBox": "0 0 112 52",
-    "width": 112,
-    "height": 52,
+    "file": "png/chip-start-pressed@3x.png",
+    "width": 120,
+    "height": 80,
+    "format": "png",
+    "alpha": true,
+    "sha256": "b048d86963b3821c7e0c41996b26278ac80d449a7beedd46ce66eee1886e667e",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      2,
+      2,
+      358,
+      238
+    ],
+    "source": "exec-713c67f3-1b96-4cf9-a195-792ba967d199.png",
     "png": [
       "png/chip-start-pressed@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 336,
-    "pngHeight": 156,
-    "stretch": "both",
+    "pngWidth": 360,
+    "pngHeight": 240,
+    "pngSha256": "b048d86963b3821c7e0c41996b26278ac80d449a7beedd46ce66eee1886e667e",
+    "base": "chip-start",
+    "state": "pressed",
+    "stretch": "horizontal",
     "capInsets": {
-      "top": 66.0,
-      "left": 66.0,
-      "bottom": 72.0,
-      "right": 66.0
+      "top": 110,
+      "right": 90,
+      "bottom": 100,
+      "left": 90
     },
     "contentInsets": {
-      "top": 36.0,
-      "left": 54.0,
-      "bottom": 42.0,
-      "right": 54.0
+      "top": 85,
+      "right": 55,
+      "bottom": 45,
+      "left": 55
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "pressed",
-    "base": "chip-start",
     "minimumLogicalSize": {
-      "width": 45.0,
-      "height": 47.0
+      "width": 61,
+      "height": 71
     },
-    "sha256": "0486d1e66e45b29fdcb3ac24b6b12df80f5e243f4c2e55e8c3c7b2b5e5d6d2c0",
-    "pngSha256": "0d1af030d5abf59a7ee0a4779c35507cbedf6de3915c1fbe0631a2a6e24bc699"
+    "renderState": "brightness 0.91; alpha unchanged",
+    "legacyVectorFallback": "chip-start-pressed.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "supersedes": {
+      "file": "previous/brief-12/png/chip-start-pressed@3x.png",
+      "sha256": "0d1af030d5abf59a7ee0a4779c35507cbedf6de3915c1fbe0631a2a6e24bc699",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
   },
   {
     "slug": "chip-start-disabled",
-    "file": "chip-start-disabled.svg",
-    "viewBox": "0 0 112 52",
-    "width": 112,
-    "height": 52,
+    "file": "png/chip-start-disabled@3x.png",
+    "width": 120,
+    "height": 80,
+    "format": "png",
+    "alpha": true,
+    "sha256": "f397128fb984711345fecf96db2ddb0db6e8b18d6254e2c7ef3c07718dfb6955",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      2,
+      2,
+      358,
+      238
+    ],
+    "source": "exec-713c67f3-1b96-4cf9-a195-792ba967d199.png",
     "png": [
       "png/chip-start-disabled@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 336,
-    "pngHeight": 156,
-    "stretch": "both",
+    "pngWidth": 360,
+    "pngHeight": 240,
+    "pngSha256": "f397128fb984711345fecf96db2ddb0db6e8b18d6254e2c7ef3c07718dfb6955",
+    "base": "chip-start",
+    "state": "disabled",
+    "stretch": "horizontal",
     "capInsets": {
-      "top": 66.0,
-      "left": 66.0,
-      "bottom": 72.0,
-      "right": 66.0
+      "top": 110,
+      "right": 90,
+      "bottom": 100,
+      "left": 90
     },
     "contentInsets": {
-      "top": 36.0,
-      "left": 54.0,
-      "bottom": 42.0,
-      "right": 54.0
+      "top": 85,
+      "right": 55,
+      "bottom": 45,
+      "left": 55
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "disabled",
-    "base": "chip-start",
     "minimumLogicalSize": {
-      "width": 45.0,
-      "height": 47.0
+      "width": 61,
+      "height": 71
     },
-    "sha256": "2ebfa86970f580638aee1014333cf293348c0e03c6aa6523cb91aa368a8cccfb",
-    "pngSha256": "8345aff9448367882e6da88cf27657f64d3728f3f9d39dd0b7c6b5203f7abe4b"
+    "renderState": "brightness 1.04, saturation 0.25; alpha unchanged",
+    "legacyVectorFallback": "chip-start-disabled.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "supersedes": {
+      "file": "previous/brief-12/png/chip-start-disabled@3x.png",
+      "sha256": "8345aff9448367882e6da88cf27657f64d3728f3f9d39dd0b7c6b5203f7abe4b",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
   },
   {
     "slug": "status-done",
@@ -366,73 +498,153 @@
   },
   {
     "slug": "ticket-goal",
-    "file": "ticket-goal.svg",
-    "viewBox": "0 0 300 180",
-    "width": 300,
-    "height": 180,
+    "file": "png/ticket-goal@3x.png",
+    "width": 360,
+    "height": 200,
+    "format": "png",
+    "alpha": true,
+    "sha256": "4189dc040e1d706f7088246e68ffe48ca5ec124642d207c2815293011bcb305e",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      5,
+      6,
+      1076,
+      594
+    ],
+    "source": "exec-afef7516-c47d-4738-9313-09136eca12b3.png",
     "png": [
       "png/ticket-goal@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 900,
-    "pngHeight": 540,
-    "stretch": "both",
+    "pngWidth": 1080,
+    "pngHeight": 600,
+    "pngSha256": "4189dc040e1d706f7088246e68ffe48ca5ec124642d207c2815293011bcb305e",
+    "base": "ticket-goal",
+    "state": "default",
+    "stretch": "horizontal",
     "capInsets": {
-      "top": 240,
-      "left": 144,
-      "bottom": 240,
-      "right": 144
+      "top": 285,
+      "right": 245,
+      "bottom": 285,
+      "left": 245
     },
     "contentInsets": {
-      "top": 132,
-      "left": 144,
-      "bottom": 90,
-      "right": 120
+      "top": 65,
+      "right": 235,
+      "bottom": 65,
+      "left": 235
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "default",
-    "base": "ticket-goal",
     "minimumLogicalSize": {
-      "width": 97,
-      "height": 161
+      "width": 165,
+      "height": 191
     },
-    "sha256": "109237f8929451abd919417dd4b8c43b17ba184d581917384c6f71ac439dd5d8",
-    "pngSha256": "5012bd77ad85d3aa44b9e4c57419fb868f7e24258f07b67f831df2de9fd59634"
+    "legacyVectorFallback": "ticket-goal.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "contentRegions": {
+      "leftReward": {
+        "x": 55,
+        "y": 125,
+        "width": 180,
+        "height": 240
+      },
+      "rightReward": {
+        "x": 845,
+        "y": 140,
+        "width": 180,
+        "height": 240
+      },
+      "nativeText": {
+        "x": 250,
+        "y": 75,
+        "width": 580,
+        "height": 450
+      },
+      "units": "source pixels @3x"
+    },
+    "supersedes": {
+      "file": "previous/brief-13-r1/png/ticket-goal@3x.png",
+      "sha256": "d1e276d9dc4e6d90bbbbb458975e7dee01d4f0d3de659119e8594dfcf49eed67",
+      "reason": "Reference fidelity refinement: perspective, paper edges, face and open table"
+    }
   },
   {
     "slug": "ticket-goal-empty",
-    "file": "ticket-goal-empty.svg",
-    "viewBox": "0 0 300 180",
-    "width": 300,
-    "height": 180,
+    "file": "png/ticket-goal-empty@3x.png",
+    "width": 360,
+    "height": 200,
+    "format": "png",
+    "alpha": true,
+    "sha256": "eb07d76b2c2c2255c1c20980fc9eaee33a10f9b22b67608ab21589e889f2c359",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      5,
+      6,
+      1076,
+      594
+    ],
+    "source": "exec-afef7516-c47d-4738-9313-09136eca12b3.png",
     "png": [
       "png/ticket-goal-empty@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 900,
-    "pngHeight": 540,
-    "stretch": "both",
+    "pngWidth": 1080,
+    "pngHeight": 600,
+    "pngSha256": "eb07d76b2c2c2255c1c20980fc9eaee33a10f9b22b67608ab21589e889f2c359",
+    "base": "ticket-goal",
+    "state": "empty",
+    "stretch": "horizontal",
     "capInsets": {
-      "top": 240.0,
-      "left": 144.0,
-      "bottom": 240.0,
-      "right": 144.0
+      "top": 285,
+      "right": 245,
+      "bottom": 285,
+      "left": 245
     },
     "contentInsets": {
-      "top": 132.0,
-      "left": 144.0,
-      "bottom": 90.0,
-      "right": 120.0
+      "top": 65,
+      "right": 235,
+      "bottom": 65,
+      "left": 235
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "disabled",
-    "base": "ticket-goal",
     "minimumLogicalSize": {
-      "width": 97.0,
-      "height": 161.0
+      "width": 165,
+      "height": 191
     },
-    "sha256": "d6ae673e00406e47b4925c2c3153ea9ba979fe8d61f380e65230053ca65fe880",
-    "pngSha256": "4c1d4f82e6d813445fd237b12153315f4d9054f3886cb5f6b6a1906a2101d197"
+    "legacyVectorFallback": "ticket-goal-empty.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "contentRegions": {
+      "leftReward": {
+        "x": 55,
+        "y": 125,
+        "width": 180,
+        "height": 240
+      },
+      "rightReward": {
+        "x": 845,
+        "y": 140,
+        "width": 180,
+        "height": 240
+      },
+      "nativeText": {
+        "x": 250,
+        "y": 75,
+        "width": 580,
+        "height": 450
+      },
+      "units": "source pixels @3x"
+    },
+    "supersedes": {
+      "file": "previous/brief-13-r1/png/ticket-goal-empty@3x.png",
+      "sha256": "52443a610313a839c92cc006d655c2e15f60dddb3f2d16a79ac8b882fd4cd159",
+      "reason": "Reference fidelity refinement: perspective, paper edges, face and open table"
+    }
   },
   {
     "slug": "progress-bar-track",
@@ -506,38 +718,57 @@
   },
   {
     "slug": "week-frame",
-    "file": "week-frame.svg",
-    "viewBox": "0 0 300 170",
+    "file": "png/week-frame@3x.png",
     "width": 300,
-    "height": 170,
+    "height": 180,
+    "format": "png",
+    "alpha": true,
+    "sha256": "f3d4cb330d09f72a602a99c6e3356814d3beda264941d84ec8218e8e80197ce5",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      4,
+      5,
+      896,
+      535
+    ],
+    "source": "exec-470086e0-7853-40b2-9d3b-597cb9e847bf.png",
     "png": [
       "png/week-frame@3x.png"
     ],
     "pixelRatio": 3,
     "pngWidth": 900,
-    "pngHeight": 510,
+    "pngHeight": 540,
+    "pngSha256": "f3d4cb330d09f72a602a99c6e3356814d3beda264941d84ec8218e8e80197ce5",
+    "base": "week-frame",
+    "state": "default",
     "stretch": "both",
     "capInsets": {
-      "top": 126,
-      "left": 174,
-      "bottom": 84,
-      "right": 174
+      "top": 130,
+      "right": 100,
+      "bottom": 90,
+      "left": 100
     },
     "contentInsets": {
-      "top": 132,
-      "left": 66,
-      "bottom": 75,
-      "right": 66
+      "top": 130,
+      "right": 70,
+      "bottom": 65,
+      "left": 70
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "default",
-    "base": "week-frame",
     "minimumLogicalSize": {
-      "width": 117,
-      "height": 71
+      "width": 68,
+      "height": 75
     },
-    "sha256": "15c180f6a05070b7742188a4ae30834db3c5499036e14144e4f96f7791d65bee",
-    "pngSha256": "f364d426f890e6ea83aa1f5593cd47c8483c32ec3c8aa3be1db939aa95b31cf8"
+    "legacyVectorFallback": "week-frame.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "supersedes": {
+      "file": "previous/brief-12/png/week-frame@3x.png",
+      "sha256": "f364d426f890e6ea83aa1f5593cd47c8483c32ec3c8aa3be1db939aa95b31cf8",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
   },
   {
     "slug": "week-check",
@@ -680,7 +911,8 @@
     ],
     "slotLayout": "three native equal-width slots inside content rect; no baked dividers",
     "sha256": "c8bc86cda82a4fc909fe6becc04b24f12f158087b810fb3a7ad3f44772969498",
-    "pngSha256": "68d8ab17006116ab0e29b1057e1e819ac587f652ef0c333d054611d7a04878ab"
+    "pngSha256": "68d8ab17006116ab0e29b1057e1e819ac587f652ef0c333d054611d7a04878ab",
+    "replacedBy": "cabinet-display"
   },
   {
     "slug": "drawer-front",
@@ -715,7 +947,8 @@
       "height": 87
     },
     "sha256": "755e74aca1790bfc4724159b91e111203e942e581e3c632abd1478754cbbc89a",
-    "pngSha256": "287ab105cab19c876c0a8632d924efb38d716fbb43c9f739a790e5ce560cbe61"
+    "pngSha256": "287ab105cab19c876c0a8632d924efb38d716fbb43c9f739a790e5ce560cbe61",
+    "replacedBy": "cabinet-display"
   },
   {
     "slug": "drawer-front-pressed",
@@ -731,166 +964,245 @@
     "pngHeight": 270,
     "stretch": "both",
     "capInsets": {
-      "top": 192.0,
-      "left": 192.0,
-      "bottom": 66.0,
-      "right": 84.0
+      "top": 192,
+      "left": 192,
+      "bottom": 66,
+      "right": 84
     },
     "contentInsets": {
-      "top": 72.0,
-      "left": 204.0,
-      "bottom": 72.0,
-      "right": 66.0
+      "top": 72,
+      "left": 204,
+      "bottom": 72,
+      "right": 66
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
     "state": "pressed",
     "base": "drawer-front",
     "minimumLogicalSize": {
-      "width": 93.0,
-      "height": 87.0
+      "width": 93,
+      "height": 87
     },
     "sha256": "b9b1860416e3532100170bf5298a2bc95312856db150c2a661aed240316642c6",
-    "pngSha256": "5c024da2a5ee5390cbd717887207ca042e60de4549734ee6f18d484e492b7bd8"
+    "pngSha256": "5c024da2a5ee5390cbd717887207ca042e60de4549734ee6f18d484e492b7bd8",
+    "replacedBy": "cabinet-display"
   },
   {
     "slug": "pill-star",
-    "file": "pill-star.svg",
-    "viewBox": "0 0 152 52",
-    "width": 152,
-    "height": 52,
+    "file": "png/pill-star@3x.png",
+    "width": 170,
+    "height": 60,
+    "format": "png",
+    "alpha": true,
+    "sha256": "7f13d6cb2c8b5c2732d62fa0b063035c4530339ad11890c5abc381a2533e146d",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      2,
+      3,
+      508,
+      177
+    ],
+    "source": "exec-be3823ef-576f-401e-b26d-0fe31563bba9.png",
     "png": [
       "png/pill-star@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 456,
-    "pngHeight": 156,
+    "pngWidth": 510,
+    "pngHeight": 180,
+    "pngSha256": "7f13d6cb2c8b5c2732d62fa0b063035c4530339ad11890c5abc381a2533e146d",
+    "base": "pill-star",
+    "state": "default",
     "stretch": "horizontal",
     "capInsets": {
-      "top": 72,
-      "left": 150,
-      "bottom": 72,
-      "right": 78
+      "top": 75,
+      "right": 85,
+      "bottom": 75,
+      "left": 165
     },
     "contentInsets": {
-      "top": 36,
-      "left": 150,
-      "bottom": 36,
-      "right": 48
+      "top": 75,
+      "right": 85,
+      "bottom": 75,
+      "left": 165
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "default",
-    "base": "pill-star",
     "minimumLogicalSize": {
-      "width": 77,
-      "height": 49
+      "width": 85,
+      "height": 51
     },
-    "sha256": "08b7e80901e6d56c83eb51c4679a08181552dbd75cf06125123f3b601557fe7a",
-    "pngSha256": "0646343a397d60b38af7b8ad1e84ed4a74b7e104320deddb86a57c41c29b19b2"
+    "legacyVectorFallback": "pill-star.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "supersedes": {
+      "file": "previous/brief-12/png/pill-star@3x.png",
+      "sha256": "0646343a397d60b38af7b8ad1e84ed4a74b7e104320deddb86a57c41c29b19b2",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
   },
   {
     "slug": "pill-star-pressed",
-    "file": "pill-star-pressed.svg",
-    "viewBox": "0 0 152 52",
-    "width": 152,
-    "height": 52,
+    "file": "png/pill-star-pressed@3x.png",
+    "width": 170,
+    "height": 60,
+    "format": "png",
+    "alpha": true,
+    "sha256": "9d50dc95ffb1fdbc2bedeb6ed7a83aa3693e8028aa07c8742767ddc30bcd464c",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      2,
+      3,
+      508,
+      177
+    ],
+    "source": "exec-be3823ef-576f-401e-b26d-0fe31563bba9.png",
     "png": [
       "png/pill-star-pressed@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 456,
-    "pngHeight": 156,
+    "pngWidth": 510,
+    "pngHeight": 180,
+    "pngSha256": "9d50dc95ffb1fdbc2bedeb6ed7a83aa3693e8028aa07c8742767ddc30bcd464c",
+    "base": "pill-star",
+    "state": "pressed",
     "stretch": "horizontal",
     "capInsets": {
-      "top": 72.0,
-      "left": 150.0,
-      "bottom": 72.0,
-      "right": 78.0
+      "top": 75,
+      "right": 85,
+      "bottom": 75,
+      "left": 165
     },
     "contentInsets": {
-      "top": 36.0,
-      "left": 150.0,
-      "bottom": 36.0,
-      "right": 48.0
+      "top": 75,
+      "right": 85,
+      "bottom": 75,
+      "left": 165
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "pressed",
-    "base": "pill-star",
     "minimumLogicalSize": {
-      "width": 77.0,
-      "height": 49.0
+      "width": 85,
+      "height": 51
     },
-    "sha256": "fe0fba368cbbac5c80260ea990db9ef5c210fe717aefe02f822cca6dac132e6c",
-    "pngSha256": "728812dff213eb62adebfc3557fe09fbbf5ecb61ece693866f8c8b16cd2d5ecd"
+    "renderState": "brightness 0.91; alpha unchanged",
+    "legacyVectorFallback": "pill-star-pressed.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "supersedes": {
+      "file": "previous/brief-12/png/pill-star-pressed@3x.png",
+      "sha256": "728812dff213eb62adebfc3557fe09fbbf5ecb61ece693866f8c8b16cd2d5ecd",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
   },
   {
     "slug": "pill-parent",
-    "file": "pill-parent.svg",
-    "viewBox": "0 0 152 52",
-    "width": 152,
-    "height": 52,
+    "file": "png/pill-parent@3x.png",
+    "width": 170,
+    "height": 60,
+    "format": "png",
+    "alpha": true,
+    "sha256": "90e74fe6b15d2ec2f2d2c90bf55bd19947a5217717cd17ac616970093bc8bf21",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      2,
+      2,
+      508,
+      178
+    ],
+    "source": "exec-4fe26598-3e89-4730-8b46-b2a2c45c97b8.png",
     "png": [
       "png/pill-parent@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 456,
-    "pngHeight": 156,
+    "pngWidth": 510,
+    "pngHeight": 180,
+    "pngSha256": "90e74fe6b15d2ec2f2d2c90bf55bd19947a5217717cd17ac616970093bc8bf21",
+    "base": "pill-parent",
+    "state": "default",
     "stretch": "horizontal",
     "capInsets": {
-      "top": 72,
-      "left": 150,
-      "bottom": 72,
-      "right": 78
+      "top": 75,
+      "right": 85,
+      "bottom": 75,
+      "left": 165
     },
     "contentInsets": {
-      "top": 36,
-      "left": 150,
-      "bottom": 36,
-      "right": 48
+      "top": 75,
+      "right": 85,
+      "bottom": 75,
+      "left": 165
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "default",
-    "base": "pill-parent",
     "minimumLogicalSize": {
-      "width": 77,
-      "height": 49
+      "width": 85,
+      "height": 51
     },
-    "sha256": "bd9cedd57fb7d95fbaf980d0899d6a6671d04c9e0f56d08eeb17416fc3285dba",
-    "pngSha256": "a1a775e8770ad8d3352364b64351b3b48282f78abeef67a71034a93f6572ece1"
+    "legacyVectorFallback": "pill-parent.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "supersedes": {
+      "file": "previous/brief-12/png/pill-parent@3x.png",
+      "sha256": "a1a775e8770ad8d3352364b64351b3b48282f78abeef67a71034a93f6572ece1",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
   },
   {
     "slug": "pill-parent-pressed",
-    "file": "pill-parent-pressed.svg",
-    "viewBox": "0 0 152 52",
-    "width": 152,
-    "height": 52,
+    "file": "png/pill-parent-pressed@3x.png",
+    "width": 170,
+    "height": 60,
+    "format": "png",
+    "alpha": true,
+    "sha256": "16cb04170d77e16a226c0ce0dd13b4d30107093f68be25cd62c0d641f1e16dc2",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      2,
+      2,
+      508,
+      178
+    ],
+    "source": "exec-4fe26598-3e89-4730-8b46-b2a2c45c97b8.png",
     "png": [
       "png/pill-parent-pressed@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 456,
-    "pngHeight": 156,
+    "pngWidth": 510,
+    "pngHeight": 180,
+    "pngSha256": "16cb04170d77e16a226c0ce0dd13b4d30107093f68be25cd62c0d641f1e16dc2",
+    "base": "pill-parent",
+    "state": "pressed",
     "stretch": "horizontal",
     "capInsets": {
-      "top": 72.0,
-      "left": 150.0,
-      "bottom": 72.0,
-      "right": 78.0
+      "top": 75,
+      "right": 85,
+      "bottom": 75,
+      "left": 165
     },
     "contentInsets": {
-      "top": 36.0,
-      "left": 150.0,
-      "bottom": 36.0,
-      "right": 48.0
+      "top": 75,
+      "right": 85,
+      "bottom": 75,
+      "left": 165
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "pressed",
-    "base": "pill-parent",
     "minimumLogicalSize": {
-      "width": 77.0,
-      "height": 49.0
+      "width": 85,
+      "height": 51
     },
-    "sha256": "ae1555d5c3e15222f8dea0f1a3623d131fcf54f0c907fb0d7df137da226a1dde",
-    "pngSha256": "57c4633a3d44df380b2f255c0a15e1bbee906b49803edb102b0f872a3f9876b8"
+    "renderState": "brightness 0.91; alpha unchanged",
+    "legacyVectorFallback": "pill-parent-pressed.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "supersedes": {
+      "file": "previous/brief-12/png/pill-parent-pressed@3x.png",
+      "sha256": "57c4633a3d44df380b2f255c0a15e1bbee906b49803edb102b0f872a3f9876b8",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
   },
   {
     "slug": "header-greeting-underline",
@@ -964,72 +1276,1553 @@
   },
   {
     "slug": "parent-card",
-    "file": "parent-card.svg",
-    "viewBox": "0 0 300 160",
-    "width": 300,
-    "height": 160,
+    "file": "png/parent-card@3x.png",
+    "width": 360,
+    "height": 150,
+    "format": "png",
+    "alpha": true,
+    "sha256": "6bc7e9a35721c13691b360cff1a471824799acc976b2cab8a80d26c3dcb4d9ea",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      4,
+      5,
+      1075,
+      445
+    ],
+    "source": "exec-f35564b1-5093-42a2-9cff-8dec5ccfe735.png",
     "png": [
       "png/parent-card@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 900,
-    "pngHeight": 480,
+    "pngWidth": 1080,
+    "pngHeight": 450,
+    "pngSha256": "6bc7e9a35721c13691b360cff1a471824799acc976b2cab8a80d26c3dcb4d9ea",
+    "base": "parent-card",
+    "state": "default",
     "stretch": "both",
     "capInsets": {
-      "top": 72,
-      "left": 72,
-      "bottom": 72,
-      "right": 72
+      "top": 54,
+      "right": 54,
+      "bottom": 54,
+      "left": 54
     },
     "contentInsets": {
-      "top": 60,
-      "left": 60,
-      "bottom": 60,
-      "right": 60
+      "top": 30,
+      "right": 42,
+      "bottom": 30,
+      "left": 42
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "default",
-    "base": "parent-card",
     "minimumLogicalSize": {
-      "width": 49,
-      "height": 49
+      "width": 37,
+      "height": 37
     },
-    "sha256": "143f21bb863d0a2c46a25620af2c756fba078795759611c13fdf6837302119bc",
-    "pngSha256": "b4c535f576b8e6130df21025a15ffed11bd2eee5f11282ba5d4cc60645080ea7"
+    "legacyVectorFallback": "parent-card.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "supersedes": {
+      "file": "previous/brief-12/png/parent-card@3x.png",
+      "sha256": "b4c535f576b8e6130df21025a15ffed11bd2eee5f11282ba5d4cc60645080ea7",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
   },
   {
     "slug": "parent-approval-card",
-    "file": "parent-approval-card.svg",
-    "viewBox": "0 0 300 160",
-    "width": 300,
-    "height": 160,
+    "file": "png/parent-approval-card@3x.png",
+    "width": 360,
+    "height": 140,
+    "format": "png",
+    "alpha": true,
+    "sha256": "4332af2fe889a1f62826e1e22fc12866bba9ff0cabce432a014bdbefcbd2b286",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      4,
+      5,
+      1076,
+      415
+    ],
+    "source": "exec-b0f292d3-c473-4f4b-a9ea-f8d9264db69a.png",
     "png": [
       "png/parent-approval-card@3x.png"
     ],
     "pixelRatio": 3,
-    "pngWidth": 900,
-    "pngHeight": 480,
+    "pngWidth": 1080,
+    "pngHeight": 420,
+    "pngSha256": "4332af2fe889a1f62826e1e22fc12866bba9ff0cabce432a014bdbefcbd2b286",
+    "base": "parent-approval-card",
+    "state": "default",
     "stretch": "both",
     "capInsets": {
-      "top": 72,
-      "left": 84,
-      "bottom": 72,
-      "right": 84
+      "top": 54,
+      "right": 54,
+      "bottom": 54,
+      "left": 54
+    },
+    "contentInsets": {
+      "top": 30,
+      "right": 42,
+      "bottom": 30,
+      "left": 42
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 37,
+      "height": 37
+    },
+    "legacyVectorFallback": "parent-approval-card.svg",
+    "vectorFallbackRole": "BRIEF 12 structural fallback; not the source of the painted PNG",
+    "supersedes": {
+      "file": "previous/brief-12/png/parent-approval-card@3x.png",
+      "sha256": "a1dfb2ed3d56c04cf7c68f5e0b3f311c86e13af7589136eb5d1236a7fad006f3",
+      "reason": "BRIEF 13 approved-reference fidelity"
+    }
+  },
+  {
+    "slug": "cabinet-display",
+    "file": "png/cabinet-display@3x.png",
+    "width": 360,
+    "height": 240,
+    "format": "png",
+    "alpha": true,
+    "sha256": "3a87287d3fa013b596a5352df67d9f9d67a614cf091814361230d42292eaa817",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      6,
+      7,
+      1074,
+      714
+    ],
+    "source": "exec-0dfef99f-3f70-4d76-a337-45fb5351ea61.png",
+    "png": [
+      "png/cabinet-display@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 1080,
+    "pngHeight": 720,
+    "pngSha256": "3a87287d3fa013b596a5352df67d9f9d67a614cf091814361230d42292eaa817",
+    "base": "cabinet-display",
+    "state": "default",
+    "stretch": "both",
+    "capInsets": {
+      "top": 155,
+      "right": 150,
+      "bottom": 315,
+      "left": 145
     },
     "contentInsets": {
       "top": 60,
-      "left": 60,
-      "bottom": 60,
-      "right": 60
+      "right": 80,
+      "bottom": 280,
+      "left": 80
     },
     "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
-    "state": "default",
-    "base": "parent-approval-card",
     "minimumLogicalSize": {
-      "width": 57,
-      "height": 49
+      "width": 100,
+      "height": 158
     },
-    "sha256": "6a0b5fbf3aa3b2e3ea27d7b2428ede238855f0fa7ca50bd91b171d791c732a58",
-    "pngSha256": "a1dfb2ed3d56c04cf7c68f5e0b3f311c86e13af7589136eb5d1236a7fad006f3"
+    "contentRegions": {
+      "display": {
+        "x": 100,
+        "y": 90,
+        "width": 850,
+        "height": 240
+      },
+      "drawer": {
+        "x": 250,
+        "y": 445,
+        "width": 660,
+        "height": 120
+      },
+      "units": "source pixels @3x"
+    }
+  },
+  {
+    "slug": "parent-insight-card",
+    "file": "png/parent-insight-card@3x.png",
+    "width": 360,
+    "height": 70,
+    "format": "png",
+    "alpha": true,
+    "sha256": "f7cd24745778235d2b3228a11f1676251d0a0fd45a64ee6aaee9638980dc1fa1",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      4,
+      4,
+      1076,
+      206
+    ],
+    "source": "exec-77787894-e1f5-48d5-9025-34c0c6219cc8.png",
+    "png": [
+      "png/parent-insight-card@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 1080,
+    "pngHeight": 210,
+    "pngSha256": "f7cd24745778235d2b3228a11f1676251d0a0fd45a64ee6aaee9638980dc1fa1",
+    "base": "parent-insight-card",
+    "state": "default",
+    "stretch": "both",
+    "capInsets": {
+      "top": 75,
+      "right": 75,
+      "bottom": 75,
+      "left": 75
+    },
+    "contentInsets": {
+      "top": 30,
+      "right": 45,
+      "bottom": 30,
+      "left": 45
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 51,
+      "height": 51
+    }
+  },
+  {
+    "slug": "pin-blue",
+    "file": "png/pin-blue@3x.png",
+    "width": 24,
+    "height": 32,
+    "format": "png",
+    "alpha": true,
+    "sha256": "8a896921285319e7f8860add9eca84eead62ac5860fe07ddde1af2f3f3016d4c",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      0,
+      0,
+      72,
+      96
+    ],
+    "source": "exec-4a8c4396-adf0-4600-9778-3e96d9464f3c.png",
+    "png": [
+      "png/pin-blue@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 72,
+    "pngHeight": 96,
+    "pngSha256": "8a896921285319e7f8860add9eca84eead62ac5860fe07ddde1af2f3f3016d4c",
+    "base": "pin-blue",
+    "state": "default",
+    "stretch": "none",
+    "capInsets": {
+      "top": 9,
+      "right": 9,
+      "bottom": 9,
+      "left": 9
+    },
+    "contentInsets": {
+      "top": 9,
+      "right": 9,
+      "bottom": 9,
+      "left": 9
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 7,
+      "height": 7
+    }
+  },
+  {
+    "slug": "pin-red",
+    "file": "png/pin-red@3x.png",
+    "width": 24,
+    "height": 32,
+    "format": "png",
+    "alpha": true,
+    "sha256": "2e9c4ca8b23074629650868ae4e1846452668aa0bbf4ffad44de5fc05ecbfc25",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      0,
+      0,
+      72,
+      96
+    ],
+    "source": "exec-9a4753bd-25cd-4b7e-a514-8246a0a09569.png",
+    "png": [
+      "png/pin-red@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 72,
+    "pngHeight": 96,
+    "pngSha256": "2e9c4ca8b23074629650868ae4e1846452668aa0bbf4ffad44de5fc05ecbfc25",
+    "base": "pin-red",
+    "state": "default",
+    "stretch": "none",
+    "capInsets": {
+      "top": 9,
+      "right": 9,
+      "bottom": 9,
+      "left": 9
+    },
+    "contentInsets": {
+      "top": 9,
+      "right": 9,
+      "bottom": 9,
+      "left": 9
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 7,
+      "height": 7
+    }
+  },
+  {
+    "slug": "pin-teal",
+    "file": "png/pin-teal@3x.png",
+    "width": 24,
+    "height": 32,
+    "format": "png",
+    "alpha": true,
+    "sha256": "1f02b39e1a3b7bebb2ea956f45475ba81c98555e24c8f71df277fca3afbe96d0",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      0,
+      0,
+      72,
+      96
+    ],
+    "source": "exec-fc62d845-1c82-43f6-bafe-52d7096f97eb.png",
+    "png": [
+      "png/pin-teal@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 72,
+    "pngHeight": 96,
+    "pngSha256": "1f02b39e1a3b7bebb2ea956f45475ba81c98555e24c8f71df277fca3afbe96d0",
+    "base": "pin-teal",
+    "state": "default",
+    "stretch": "none",
+    "capInsets": {
+      "top": 9,
+      "right": 9,
+      "bottom": 9,
+      "left": 9
+    },
+    "contentInsets": {
+      "top": 9,
+      "right": 9,
+      "bottom": 9,
+      "left": 9
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 7,
+      "height": 7
+    }
+  },
+  {
+    "slug": "plaque",
+    "file": "png/plaque@3x.png",
+    "width": 120,
+    "height": 40,
+    "format": "png",
+    "alpha": true,
+    "sha256": "53d45d703e1377da7fa2e2eacbddc93d0d3036e5390aab44b3c7d9d6c47100fc",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      1,
+      2,
+      359,
+      118
+    ],
+    "source": "exec-82c79c65-dd68-4e4c-9c47-2c76fa1b2b99.png",
+    "png": [
+      "png/plaque@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 360,
+    "pngHeight": 120,
+    "pngSha256": "53d45d703e1377da7fa2e2eacbddc93d0d3036e5390aab44b3c7d9d6c47100fc",
+    "base": "plaque",
+    "state": "default",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 45,
+      "right": 90,
+      "bottom": 45,
+      "left": 90
+    },
+    "contentInsets": {
+      "top": 45,
+      "right": 90,
+      "bottom": 45,
+      "left": 90
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 61,
+      "height": 31
+    }
+  },
+  {
+    "slug": "tag-hanging",
+    "file": "png/tag-hanging@3x.png",
+    "width": 80,
+    "height": 130,
+    "format": "png",
+    "alpha": true,
+    "sha256": "4c8f2e67f99c619a76cc13ceed757ad96b0764e9f664b56b6becbb5260377c4e",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      3,
+      2,
+      237,
+      388
+    ],
+    "source": "exec-1c4597a9-35d0-4569-836c-6896d0f7c5c6.png",
+    "png": [
+      "png/tag-hanging@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 240,
+    "pngHeight": 390,
+    "pngSha256": "4c8f2e67f99c619a76cc13ceed757ad96b0764e9f664b56b6becbb5260377c4e",
+    "base": "tag-hanging",
+    "state": "default",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 165,
+      "right": 65,
+      "bottom": 80,
+      "left": 65
+    },
+    "contentInsets": {
+      "top": 165,
+      "right": 65,
+      "bottom": 80,
+      "left": 65
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 45,
+      "height": 83
+    }
+  },
+  {
+    "slug": "progress-bar-teal-track",
+    "file": "png/progress-bar-teal-track@3x.png",
+    "width": 300,
+    "height": 18,
+    "format": "png",
+    "alpha": true,
+    "sha256": "58bca52094ecb2e2fc5940361748d81bd085c4e8279287090d0c1f2029f329eb",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/progress-bar-teal-track@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 900,
+    "pngHeight": 54,
+    "pngSha256": "58bca52094ecb2e2fc5940361748d81bd085c4e8279287090d0c1f2029f329eb",
+    "base": "progress-bar-teal-track",
+    "state": "default",
+    "stretch": "both",
+    "capInsets": {
+      "top": 24,
+      "right": 27,
+      "bottom": 24,
+      "left": 27
+    },
+    "contentInsets": {
+      "top": 24,
+      "right": 27,
+      "bottom": 24,
+      "left": 27
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 19,
+      "height": 17
+    },
+    "vectorSource": "progress-bar-teal-track.svg"
+  },
+  {
+    "slug": "progress-bar-teal-fill",
+    "file": "png/progress-bar-teal-fill@3x.png",
+    "width": 300,
+    "height": 18,
+    "format": "png",
+    "alpha": true,
+    "sha256": "6f9253fd7248e938d2da5f2e616b8e9a5cfe99e666cc58d187d0fa05c0cde923",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/progress-bar-teal-fill@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 900,
+    "pngHeight": 54,
+    "pngSha256": "6f9253fd7248e938d2da5f2e616b8e9a5cfe99e666cc58d187d0fa05c0cde923",
+    "base": "progress-bar-teal-fill",
+    "state": "default",
+    "stretch": "both",
+    "capInsets": {
+      "top": 24,
+      "right": 27,
+      "bottom": 24,
+      "left": 27
+    },
+    "contentInsets": {
+      "top": 24,
+      "right": 27,
+      "bottom": 24,
+      "left": 27
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 19,
+      "height": 17
+    },
+    "vectorSource": "progress-bar-teal-fill.svg"
+  },
+  {
+    "slug": "timeline-dot-filled",
+    "file": "png/timeline-dot-filled@3x.png",
+    "width": 24,
+    "height": 24,
+    "format": "png",
+    "alpha": true,
+    "sha256": "a11cc6db84c9505fe41a5784ec611caa45b66bc450c2865a79bd36d76cb241f1",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/timeline-dot-filled@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 72,
+    "pngHeight": 72,
+    "pngSha256": "a11cc6db84c9505fe41a5784ec611caa45b66bc450c2865a79bd36d76cb241f1",
+    "base": "timeline-dot-filled",
+    "state": "default",
+    "stretch": "none",
+    "capInsets": {
+      "top": 30,
+      "right": 30,
+      "bottom": 30,
+      "left": 30
+    },
+    "contentInsets": {
+      "top": 30,
+      "right": 30,
+      "bottom": 30,
+      "left": 30
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 21,
+      "height": 21
+    },
+    "vectorSource": "timeline-dot-filled.svg"
+  },
+  {
+    "slug": "timeline-dot-empty",
+    "file": "png/timeline-dot-empty@3x.png",
+    "width": 24,
+    "height": 24,
+    "format": "png",
+    "alpha": true,
+    "sha256": "72ee1f588c5d70c06fd10241c4d1f3f39480deb55ee93303be3bbd8fc0ea3137",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/timeline-dot-empty@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 72,
+    "pngHeight": 72,
+    "pngSha256": "72ee1f588c5d70c06fd10241c4d1f3f39480deb55ee93303be3bbd8fc0ea3137",
+    "base": "timeline-dot-empty",
+    "state": "default",
+    "stretch": "none",
+    "capInsets": {
+      "top": 30,
+      "right": 30,
+      "bottom": 30,
+      "left": 30
+    },
+    "contentInsets": {
+      "top": 30,
+      "right": 30,
+      "bottom": 30,
+      "left": 30
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 21,
+      "height": 21
+    },
+    "vectorSource": "timeline-dot-empty.svg"
+  },
+  {
+    "slug": "timeline-line",
+    "file": "png/timeline-line@3x.png",
+    "width": 8,
+    "height": 90,
+    "format": "png",
+    "alpha": true,
+    "sha256": "198ae5beb0113dc15aaec8aed32d1d92c9a687dd69f527e7020e15ccd7cf865c",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/timeline-line@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 24,
+    "pngHeight": 270,
+    "pngSha256": "198ae5beb0113dc15aaec8aed32d1d92c9a687dd69f527e7020e15ccd7cf865c",
+    "base": "timeline-line",
+    "state": "default",
+    "stretch": "both",
+    "capInsets": {
+      "top": 9,
+      "right": 9,
+      "bottom": 9,
+      "left": 9
+    },
+    "contentInsets": {
+      "top": 9,
+      "right": 9,
+      "bottom": 9,
+      "left": 9
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 7,
+      "height": 7
+    },
+    "vectorSource": "timeline-line.svg"
+  },
+  {
+    "slug": "button-outline",
+    "file": "png/button-outline@3x.png",
+    "width": 360,
+    "height": 60,
+    "format": "png",
+    "alpha": true,
+    "sha256": "a84129893a7c9e7c2c31218504a16b1f7899290f255c1eda672d3f1c1d7b351c",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/button-outline@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 1080,
+    "pngHeight": 180,
+    "pngSha256": "a84129893a7c9e7c2c31218504a16b1f7899290f255c1eda672d3f1c1d7b351c",
+    "base": "button-outline",
+    "state": "default",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 84,
+      "right": 60,
+      "bottom": 84,
+      "left": 144
+    },
+    "contentInsets": {
+      "top": 30,
+      "right": 35,
+      "bottom": 30,
+      "left": 150
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 69,
+      "height": 57
+    },
+    "vectorSource": "button-outline.svg"
+  },
+  {
+    "slug": "parent-filter-chip",
+    "file": "png/parent-filter-chip@3x.png",
+    "width": 120,
+    "height": 48,
+    "format": "png",
+    "alpha": true,
+    "sha256": "9005bb6dfb90d66396b10291d41422f202359b8f87b81215061f5835b894121e",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/parent-filter-chip@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 360,
+    "pngHeight": 144,
+    "pngSha256": "9005bb6dfb90d66396b10291d41422f202359b8f87b81215061f5835b894121e",
+    "base": "parent-filter-chip",
+    "state": "default",
+    "stretch": "both",
+    "capInsets": {
+      "top": 69,
+      "right": 72,
+      "bottom": 69,
+      "left": 72
+    },
+    "contentInsets": {
+      "top": 69,
+      "right": 72,
+      "bottom": 69,
+      "left": 72
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 49,
+      "height": 47
+    },
+    "vectorSource": "parent-filter-chip.svg"
+  },
+  {
+    "slug": "pill-parent-disabled",
+    "file": "png/pill-parent-disabled@3x.png",
+    "width": 170,
+    "height": 60,
+    "format": "png",
+    "alpha": true,
+    "sha256": "6e5a1f21f84e743f1bcc572bcd555e214b0e90fb38275416bbd86cb7925f1036",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      2,
+      2,
+      508,
+      178
+    ],
+    "source": "exec-4fe26598-3e89-4730-8b46-b2a2c45c97b8.png",
+    "png": [
+      "png/pill-parent-disabled@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 510,
+    "pngHeight": 180,
+    "pngSha256": "6e5a1f21f84e743f1bcc572bcd555e214b0e90fb38275416bbd86cb7925f1036",
+    "base": "pill-parent",
+    "state": "disabled",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 75,
+      "right": 85,
+      "bottom": 75,
+      "left": 165
+    },
+    "contentInsets": {
+      "top": 75,
+      "right": 85,
+      "bottom": 75,
+      "left": 165
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 85,
+      "height": 51
+    },
+    "renderState": "brightness 1.04, saturation 0.25; alpha unchanged"
+  },
+  {
+    "slug": "pill-star-disabled",
+    "file": "png/pill-star-disabled@3x.png",
+    "width": 170,
+    "height": 60,
+    "format": "png",
+    "alpha": true,
+    "sha256": "056be148e8254c05c27aec554c7b6d3e65458859e2ab60997ecae6d9ef1548b4",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      2,
+      3,
+      508,
+      177
+    ],
+    "source": "exec-be3823ef-576f-401e-b26d-0fe31563bba9.png",
+    "png": [
+      "png/pill-star-disabled@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 510,
+    "pngHeight": 180,
+    "pngSha256": "056be148e8254c05c27aec554c7b6d3e65458859e2ab60997ecae6d9ef1548b4",
+    "base": "pill-star",
+    "state": "disabled",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 75,
+      "right": 85,
+      "bottom": 75,
+      "left": 165
+    },
+    "contentInsets": {
+      "top": 75,
+      "right": 85,
+      "bottom": 75,
+      "left": 165
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 85,
+      "height": 51
+    },
+    "renderState": "brightness 1.04, saturation 0.25; alpha unchanged"
+  },
+  {
+    "slug": "plaque-pressed",
+    "file": "png/plaque-pressed@3x.png",
+    "width": 120,
+    "height": 40,
+    "format": "png",
+    "alpha": true,
+    "sha256": "edaf467950c04fe8cebbf97e1f4a1231fe9d30e3887f72e573a8b66d086872de",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      1,
+      2,
+      359,
+      118
+    ],
+    "source": "exec-82c79c65-dd68-4e4c-9c47-2c76fa1b2b99.png",
+    "png": [
+      "png/plaque-pressed@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 360,
+    "pngHeight": 120,
+    "pngSha256": "edaf467950c04fe8cebbf97e1f4a1231fe9d30e3887f72e573a8b66d086872de",
+    "base": "plaque",
+    "state": "pressed",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 45,
+      "right": 90,
+      "bottom": 45,
+      "left": 90
+    },
+    "contentInsets": {
+      "top": 45,
+      "right": 90,
+      "bottom": 45,
+      "left": 90
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 61,
+      "height": 31
+    },
+    "renderState": "brightness 0.91; alpha unchanged"
+  },
+  {
+    "slug": "plaque-disabled",
+    "file": "png/plaque-disabled@3x.png",
+    "width": 120,
+    "height": 40,
+    "format": "png",
+    "alpha": true,
+    "sha256": "673ca172e76dd5c82c163085e2141ca137bb89efd7b44e35084188672d118415",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      1,
+      2,
+      359,
+      118
+    ],
+    "source": "exec-82c79c65-dd68-4e4c-9c47-2c76fa1b2b99.png",
+    "png": [
+      "png/plaque-disabled@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 360,
+    "pngHeight": 120,
+    "pngSha256": "673ca172e76dd5c82c163085e2141ca137bb89efd7b44e35084188672d118415",
+    "base": "plaque",
+    "state": "disabled",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 45,
+      "right": 90,
+      "bottom": 45,
+      "left": 90
+    },
+    "contentInsets": {
+      "top": 45,
+      "right": 90,
+      "bottom": 45,
+      "left": 90
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 61,
+      "height": 31
+    },
+    "renderState": "brightness 1.04, saturation 0.25; alpha unchanged"
+  },
+  {
+    "slug": "tag-hanging-pressed",
+    "file": "png/tag-hanging-pressed@3x.png",
+    "width": 80,
+    "height": 130,
+    "format": "png",
+    "alpha": true,
+    "sha256": "0994a620c0f7c03079a9d5cec85e1dba9bf7c2650098aff2e22a5efe46fbfecf",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      3,
+      2,
+      237,
+      388
+    ],
+    "source": "exec-1c4597a9-35d0-4569-836c-6896d0f7c5c6.png",
+    "png": [
+      "png/tag-hanging-pressed@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 240,
+    "pngHeight": 390,
+    "pngSha256": "0994a620c0f7c03079a9d5cec85e1dba9bf7c2650098aff2e22a5efe46fbfecf",
+    "base": "tag-hanging",
+    "state": "pressed",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 165,
+      "right": 65,
+      "bottom": 80,
+      "left": 65
+    },
+    "contentInsets": {
+      "top": 165,
+      "right": 65,
+      "bottom": 80,
+      "left": 65
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 45,
+      "height": 83
+    },
+    "renderState": "brightness 0.91; alpha unchanged"
+  },
+  {
+    "slug": "tag-hanging-disabled",
+    "file": "png/tag-hanging-disabled@3x.png",
+    "width": 80,
+    "height": 130,
+    "format": "png",
+    "alpha": true,
+    "sha256": "357f3131449b6127c40ed3268f14a84bcfb79c6d6ea8172030328d50b5f3e1a1",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      3,
+      2,
+      237,
+      388
+    ],
+    "source": "exec-1c4597a9-35d0-4569-836c-6896d0f7c5c6.png",
+    "png": [
+      "png/tag-hanging-disabled@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 240,
+    "pngHeight": 390,
+    "pngSha256": "357f3131449b6127c40ed3268f14a84bcfb79c6d6ea8172030328d50b5f3e1a1",
+    "base": "tag-hanging",
+    "state": "disabled",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 165,
+      "right": 65,
+      "bottom": 80,
+      "left": 65
+    },
+    "contentInsets": {
+      "top": 165,
+      "right": 65,
+      "bottom": 80,
+      "left": 65
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 45,
+      "height": 83
+    },
+    "renderState": "brightness 1.04, saturation 0.25; alpha unchanged"
+  },
+  {
+    "slug": "task-card-disabled",
+    "file": "png/task-card-disabled@3x.png",
+    "width": 360,
+    "height": 110,
+    "format": "png",
+    "alpha": true,
+    "sha256": "aeb51e81eff38bcf60965c513dd5e21886af1e8216edbcfc324520694a32c326",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      4,
+      4,
+      1076,
+      326
+    ],
+    "source": "exec-3634ea7d-94b9-4ba8-97dd-5d9357fcf901.png",
+    "png": [
+      "png/task-card-disabled@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 1080,
+    "pngHeight": 330,
+    "pngSha256": "aeb51e81eff38bcf60965c513dd5e21886af1e8216edbcfc324520694a32c326",
+    "base": "task-card",
+    "state": "disabled",
+    "stretch": "both",
+    "capInsets": {
+      "top": 75,
+      "right": 90,
+      "bottom": 75,
+      "left": 90
+    },
+    "contentInsets": {
+      "top": 35,
+      "right": 45,
+      "bottom": 35,
+      "left": 45
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 61,
+      "height": 51
+    },
+    "renderState": "brightness 1.04, saturation 0.25; alpha unchanged"
+  },
+  {
+    "slug": "ticket-goal-pressed",
+    "file": "png/ticket-goal-pressed@3x.png",
+    "width": 360,
+    "height": 200,
+    "format": "png",
+    "alpha": true,
+    "sha256": "86be146c5354ceb0a6820889dd5fe26f60c324a27c379cfa7778d5ceec8d408b",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      5,
+      6,
+      1076,
+      594
+    ],
+    "source": "exec-afef7516-c47d-4738-9313-09136eca12b3.png",
+    "png": [
+      "png/ticket-goal-pressed@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 1080,
+    "pngHeight": 600,
+    "pngSha256": "86be146c5354ceb0a6820889dd5fe26f60c324a27c379cfa7778d5ceec8d408b",
+    "base": "ticket-goal",
+    "state": "pressed",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 285,
+      "right": 245,
+      "bottom": 285,
+      "left": 245
+    },
+    "contentInsets": {
+      "top": 65,
+      "right": 235,
+      "bottom": 65,
+      "left": 235
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 165,
+      "height": 191
+    },
+    "renderState": "brightness 0.91; alpha unchanged",
+    "contentRegions": {
+      "leftReward": {
+        "x": 55,
+        "y": 125,
+        "width": 180,
+        "height": 240
+      },
+      "rightReward": {
+        "x": 845,
+        "y": 140,
+        "width": 180,
+        "height": 240
+      },
+      "nativeText": {
+        "x": 250,
+        "y": 75,
+        "width": 580,
+        "height": 450
+      },
+      "units": "source pixels @3x"
+    },
+    "supersedes": {
+      "file": "previous/brief-13-r1/png/ticket-goal-pressed@3x.png",
+      "sha256": "261a44b3795b88b074a4b4855a342d9a4b3f537cd6ad6d3463ea2865e6e69f35",
+      "reason": "Reference fidelity refinement: perspective, paper edges, face and open table"
+    }
+  },
+  {
+    "slug": "ticket-goal-disabled",
+    "file": "png/ticket-goal-disabled@3x.png",
+    "width": 360,
+    "height": 200,
+    "format": "png",
+    "alpha": true,
+    "sha256": "6b5ff6c2fb4c912bf8ba83cf7d2e37a33f66a7f8c0bfce7f9e06bfa2e5fc82b9",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "content_bounds_alpha32": [
+      5,
+      6,
+      1076,
+      594
+    ],
+    "source": "exec-afef7516-c47d-4738-9313-09136eca12b3.png",
+    "png": [
+      "png/ticket-goal-disabled@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 1080,
+    "pngHeight": 600,
+    "pngSha256": "6b5ff6c2fb4c912bf8ba83cf7d2e37a33f66a7f8c0bfce7f9e06bfa2e5fc82b9",
+    "base": "ticket-goal",
+    "state": "disabled",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 285,
+      "right": 245,
+      "bottom": 285,
+      "left": 245
+    },
+    "contentInsets": {
+      "top": 65,
+      "right": 235,
+      "bottom": 65,
+      "left": 235
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 165,
+      "height": 191
+    },
+    "renderState": "brightness 1.04, saturation 0.25; alpha unchanged",
+    "contentRegions": {
+      "leftReward": {
+        "x": 55,
+        "y": 125,
+        "width": 180,
+        "height": 240
+      },
+      "rightReward": {
+        "x": 845,
+        "y": 140,
+        "width": 180,
+        "height": 240
+      },
+      "nativeText": {
+        "x": 250,
+        "y": 75,
+        "width": 580,
+        "height": 450
+      },
+      "units": "source pixels @3x"
+    },
+    "supersedes": {
+      "file": "previous/brief-13-r1/png/ticket-goal-disabled@3x.png",
+      "sha256": "2c1412f3f121edc3fc37d16e89f15ff6c282c0682f9ae9cd1ab2958cd35a6dcd",
+      "reason": "Reference fidelity refinement: perspective, paper edges, face and open table"
+    }
+  },
+  {
+    "slug": "button-outline-pressed",
+    "file": "png/button-outline-pressed@3x.png",
+    "width": 360,
+    "height": 60,
+    "format": "png",
+    "alpha": true,
+    "sha256": "262e2817c6f3e9e3b85c4a13988adb3a71d893103f787d9a9850c23c9f09bf59",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/button-outline-pressed@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 1080,
+    "pngHeight": 180,
+    "pngSha256": "262e2817c6f3e9e3b85c4a13988adb3a71d893103f787d9a9850c23c9f09bf59",
+    "base": "button-outline",
+    "state": "pressed",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 84,
+      "right": 60,
+      "bottom": 84,
+      "left": 144
+    },
+    "contentInsets": {
+      "top": 30,
+      "right": 35,
+      "bottom": 30,
+      "left": 150
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 69,
+      "height": 57
+    },
+    "renderState": "brightness 0.91; alpha unchanged"
+  },
+  {
+    "slug": "button-outline-disabled",
+    "file": "png/button-outline-disabled@3x.png",
+    "width": 360,
+    "height": 60,
+    "format": "png",
+    "alpha": true,
+    "sha256": "55d910b5c5e0878c86e8110c6fa8326358cff631ab86219a49588f2fe4c56a49",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/button-outline-disabled@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 1080,
+    "pngHeight": 180,
+    "pngSha256": "55d910b5c5e0878c86e8110c6fa8326358cff631ab86219a49588f2fe4c56a49",
+    "base": "button-outline",
+    "state": "disabled",
+    "stretch": "horizontal",
+    "capInsets": {
+      "top": 84,
+      "right": 60,
+      "bottom": 84,
+      "left": 144
+    },
+    "contentInsets": {
+      "top": 30,
+      "right": 35,
+      "bottom": 30,
+      "left": 150
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 69,
+      "height": 57
+    },
+    "renderState": "brightness 1.04, saturation 0.25; alpha unchanged"
+  },
+  {
+    "slug": "parent-filter-chip-pressed",
+    "file": "png/parent-filter-chip-pressed@3x.png",
+    "width": 120,
+    "height": 48,
+    "format": "png",
+    "alpha": true,
+    "sha256": "c359f9fade2322cfcc14f4be57c42d71ca75fa2001d1b83f859727591bad1159",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/parent-filter-chip-pressed@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 360,
+    "pngHeight": 144,
+    "pngSha256": "c359f9fade2322cfcc14f4be57c42d71ca75fa2001d1b83f859727591bad1159",
+    "base": "parent-filter-chip",
+    "state": "pressed",
+    "stretch": "both",
+    "capInsets": {
+      "top": 69,
+      "right": 72,
+      "bottom": 69,
+      "left": 72
+    },
+    "contentInsets": {
+      "top": 69,
+      "right": 72,
+      "bottom": 69,
+      "left": 72
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 49,
+      "height": 47
+    },
+    "renderState": "brightness 0.91; alpha unchanged"
+  },
+  {
+    "slug": "parent-filter-chip-disabled",
+    "file": "png/parent-filter-chip-disabled@3x.png",
+    "width": 120,
+    "height": 48,
+    "format": "png",
+    "alpha": true,
+    "sha256": "5cb83ea2a53e44b586925a23837e71c49de4de769c3df9e1722bf66fa93cef0b",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/parent-filter-chip-disabled@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 360,
+    "pngHeight": 144,
+    "pngSha256": "5cb83ea2a53e44b586925a23837e71c49de4de769c3df9e1722bf66fa93cef0b",
+    "base": "parent-filter-chip",
+    "state": "disabled",
+    "stretch": "both",
+    "capInsets": {
+      "top": 69,
+      "right": 72,
+      "bottom": 69,
+      "left": 72
+    },
+    "contentInsets": {
+      "top": 69,
+      "right": 72,
+      "bottom": 69,
+      "left": 72
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 49,
+      "height": 47
+    },
+    "renderState": "brightness 1.04, saturation 0.25; alpha unchanged"
+  },
+  {
+    "slug": "week-grid",
+    "file": "png/week-grid@3x.png",
+    "width": 280,
+    "height": 90,
+    "format": "png",
+    "alpha": true,
+    "sha256": "ba3edb376b6091b95a493a1b3fd51973235821c93ac1bfb758ff4b9f0c8e5263",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/week-grid@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 840,
+    "pngHeight": 270,
+    "pngSha256": "ba3edb376b6091b95a493a1b3fd51973235821c93ac1bfb758ff4b9f0c8e5263",
+    "base": "week-grid",
+    "state": "default",
+    "stretch": "both",
+    "capInsets": {
+      "top": 3,
+      "right": 3,
+      "bottom": 3,
+      "left": 3
+    },
+    "contentInsets": {
+      "top": 3,
+      "right": 3,
+      "bottom": 3,
+      "left": 3
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 3,
+      "height": 3
+    },
+    "vectorSource": "week-grid.svg"
+  },
+  {
+    "slug": "button-teal",
+    "file": "png/button-teal@3x.png",
+    "width": 160,
+    "height": 68,
+    "format": "png",
+    "alpha": true,
+    "sha256": "a203f1bc12aa564a1a6f17c28ae32af8b0cac345f46feac675ffbd039fa7e7e2",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/button-teal@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 480,
+    "pngHeight": 204,
+    "pngSha256": "a203f1bc12aa564a1a6f17c28ae32af8b0cac345f46feac675ffbd039fa7e7e2",
+    "base": "button-teal",
+    "state": "default",
+    "stretch": "both",
+    "capInsets": {
+      "top": 75,
+      "right": 75,
+      "bottom": 75,
+      "left": 75
+    },
+    "contentInsets": {
+      "top": 75,
+      "right": 75,
+      "bottom": 75,
+      "left": 75
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 51,
+      "height": 51
+    },
+    "vectorSource": "button-teal.svg"
+  },
+  {
+    "slug": "button-teal-pressed",
+    "file": "png/button-teal-pressed@3x.png",
+    "width": 160,
+    "height": 68,
+    "format": "png",
+    "alpha": true,
+    "sha256": "74444b9091b45a45c3e1b3206d5018130d76670149d1ff9321ba57fdc1ffaa25",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/button-teal-pressed@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 480,
+    "pngHeight": 204,
+    "pngSha256": "74444b9091b45a45c3e1b3206d5018130d76670149d1ff9321ba57fdc1ffaa25",
+    "base": "button-teal",
+    "state": "pressed",
+    "stretch": "both",
+    "capInsets": {
+      "top": 75,
+      "right": 75,
+      "bottom": 75,
+      "left": 75
+    },
+    "contentInsets": {
+      "top": 75,
+      "right": 75,
+      "bottom": 75,
+      "left": 75
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 51,
+      "height": 51
+    },
+    "renderState": "brightness 0.91; alpha unchanged"
+  },
+  {
+    "slug": "button-teal-disabled",
+    "file": "png/button-teal-disabled@3x.png",
+    "width": 160,
+    "height": 68,
+    "format": "png",
+    "alpha": true,
+    "sha256": "6788514d5f383c120015d6def37fd3a932d218deaffa7dfd2a7d2d91af4d2d8d",
+    "variants": [
+      "brief-13"
+    ],
+    "status": "reference-match-assets",
+    "png": [
+      "png/button-teal-disabled@3x.png"
+    ],
+    "pixelRatio": 3,
+    "pngWidth": 480,
+    "pngHeight": 204,
+    "pngSha256": "6788514d5f383c120015d6def37fd3a932d218deaffa7dfd2a7d2d91af4d2d8d",
+    "base": "button-teal",
+    "state": "disabled",
+    "stretch": "both",
+    "capInsets": {
+      "top": 75,
+      "right": 75,
+      "bottom": 75,
+      "left": 75
+    },
+    "contentInsets": {
+      "top": 75,
+      "right": 75,
+      "bottom": 75,
+      "left": 75
+    },
+    "insetUnits": "source pixels @3x; divide by 3 for logical layout units",
+    "minimumLogicalSize": {
+      "width": 51,
+      "height": 51
+    },
+    "renderState": "brightness 1.04, saturation 0.25; alpha unchanged"
   }
 ]
