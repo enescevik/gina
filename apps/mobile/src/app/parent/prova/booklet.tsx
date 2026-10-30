@@ -2,11 +2,13 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Switch, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
+import { Toggle } from "@/components/ui/toggle";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
 import { buildBookletHtml, printBooklet, type BookletChoice, type BookletQuestion } from "@/lib/prova-booklet";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -153,20 +155,21 @@ export default function ProvaBookletScreen() {
     },
   });
 
-  const chip = (active: boolean) => `rounded-full px-3 py-2 ${active ? "bg-teal" : "bg-mist"}`;
-  const chipText = (active: boolean) => (active ? "font-semibold text-white" : "text-ink");
+  const chip = (active: boolean) => `min-h-12 min-w-12 items-center justify-center rounded-full border px-4 py-2 ${active ? "bg-teal-dark border-teal-dark" : "bg-[#FFFCF6] border-[#D7CDBB]"}`;
+  const chipText = (active: boolean) => (active ? "font-body-bold text-white" : "font-body text-ink");
 
   function toggleTopic(topic: string) {
     setTopics((ts) => (ts.includes(topic) ? ts.filter((x) => x !== topic) : [...ts, topic]));
   }
 
   return (
-    <Screen title={t("prova.booklet.title")}>
+    <Screen title={t("prova.booklet.title")} loading={subjects.isLoading || exams.isLoading} error={subjects.error ?? exams.error} onRetry={() => { void subjects.refetch(); void exams.refetch(); }}>
+      <View style={parentStyles.card}>
       <Text className="font-body text-base text-gray-600">{t("prova.booklet.intro")}</Text>
 
       <View className="flex-row gap-2">
         {(["library", "exam"] as const).map((s) => (
-          <Pressable key={s} accessibilityRole="button" onPress={() => setSource(s)} className={chip(source === s)}>
+          <Pressable key={s} accessibilityRole="button" onPress={() => setSource(s)} accessibilityState={{ selected: source === s }} className={chip(source === s)}>
             <Text className={chipText(source === s)}>{t(`prova.booklet.source.${s}`)}</Text>
           </Pressable>
         ))}
@@ -187,7 +190,7 @@ export default function ProvaBookletScreen() {
                       setGrade(String(s.grade));
                       setTopics([]);
                     }}
-                    className={chip(active)}
+                    accessibilityState={{ selected: active }} className={chip(active)}
                   >
                     <Text className={chipText(active)}>
                       {s.subject} · {s.grade}. {t("prova.gradeWord")}
@@ -207,10 +210,10 @@ export default function ProvaBookletScreen() {
           </View>
           {availableTopics.length > 0 ? (
             <>
-              <Text className="font-body-bold text-sm text-ink dark:text-night-text">{t("prova.booklet.pickTopics")}</Text>
+              <Text className="font-body-bold text-sm text-ink">{t("prova.booklet.pickTopics")}</Text>
               <View className="flex-row flex-wrap gap-2">
                 {availableTopics.map((topic) => (
-                  <Pressable key={topic} accessibilityRole="button" onPress={() => toggleTopic(topic)} className={chip(topics.includes(topic))}>
+                  <Pressable key={topic} accessibilityRole="button" onPress={() => toggleTopic(topic)} accessibilityState={{ selected: topics.includes(topic) }} className={chip(topics.includes(topic))}>
                     <Text className={chipText(topics.includes(topic))}>{topic}</Text>
                   </Pressable>
                 ))}
@@ -228,7 +231,7 @@ export default function ProvaBookletScreen() {
               onPress={() => setExamId(exam.id)}
               className={`gap-1 rounded-parent border p-3 ${examId === exam.id ? "border-teal bg-teal-light" : "border-mist"}`}
             >
-              <Text className="font-body-bold text-base text-ink dark:text-night-text">{exam.title}</Text>
+              <Text className="font-body-bold text-base text-ink">{exam.title}</Text>
               <Text className="font-body text-sm text-gray-600">
                 {exam.children?.name} · {t("prova.questionCount", { count: exam.question_ids.length })}
               </Text>
@@ -239,14 +242,14 @@ export default function ProvaBookletScreen() {
 
       <Field label={t("prova.booklet.titleField")} value={title} onChangeText={setTitle} placeholder={defaultTitle} />
       <View className="flex-row items-center gap-3">
-        <Switch value={includeSolutions} onValueChange={setIncludeSolutions} />
-        <Text className="font-body flex-1 text-base text-ink dark:text-night-text">{t("prova.booklet.includeSolutions")}</Text>
+        <Toggle value={includeSolutions} onChange={setIncludeSolutions} label={t("prova.booklet.includeSolutions")} />
       </View>
 
       <Text className="font-body text-sm text-gray-600">{t("prova.selectedCount", { count: questions.length })}</Text>
       <ErrorText error={generate.error ?? subjects.error ?? libraryQuestions.error ?? exams.error ?? examQuestions.error} />
       <Button title={t("prova.booklet.generate")} loading={generate.isPending} disabled={questions.length === 0} onPress={() => generate.mutate()} />
       <Button variant="ghost" title={t("prova.backToList")} onPress={() => router.back()} />
+    </View>
     </Screen>
   );
 }

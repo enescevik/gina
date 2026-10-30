@@ -2,10 +2,11 @@ import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ChildPicker, ParentScreen as Screen } from "@/components/ui/parent-screen";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -42,7 +43,7 @@ export default function ProvaProgressScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name, grade").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, grade, avatar").order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -83,22 +84,14 @@ export default function ProvaProgressScreen() {
     [mastery.data],
   );
 
-  const chip = (active: boolean) => `rounded-full px-3 py-2 ${active ? "bg-teal" : "bg-mist"}`;
-  const chipText = (active: boolean) => (active ? "font-semibold text-white" : "text-ink");
 
   return (
-    <Screen title={t("prova.progress.title")}>
+    <Screen title={t("prova.progress.title")} loading={children.isLoading || mastery.isLoading} error={children.error ?? mastery.error} onRetry={() => { void children.refetch(); if (activeChildId) void mastery.refetch(); }}>
       <Text className="font-body text-base text-gray-600">{t("prova.progress.intro")}</Text>
-      <View className="flex-row flex-wrap gap-2">
-        {children.data?.map((c) => (
-          <Pressable key={c.id} accessibilityRole="button" onPress={() => setChildId(c.id)} className={chip(activeChildId === c.id)}>
-            <Text className={chipText(activeChildId === c.id)}>{c.name}</Text>
-          </Pressable>
-        ))}
-      </View>
+      <ChildPicker profiles={children.data ?? []} selected={activeChildId} onSelect={id => { if (id) setChildId(id); }} />
 
       {mastery.data && mastery.data.length === 0 ? (
-        <View className="gap-2 rounded-parent bg-white p-4 dark:bg-night-surface">
+        <View className="gap-2 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
           <Text className="font-body text-gray-500">{t("prova.progress.empty")}</Text>
           <Button variant="secondary" title={t("prova.level.title")} onPress={() => router.push("/parent/prova/level")} />
         </View>
@@ -117,16 +110,16 @@ export default function ProvaProgressScreen() {
       ) : null}
 
       {subjects.map(({ subject, rows, avg }) => (
-        <View key={subject} className="gap-3 rounded-parent bg-white p-4 dark:bg-night-surface">
+        <View key={subject} className="gap-3 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
           <View className="flex-row items-center justify-between">
-            <Text className="font-display text-xl text-ink dark:text-night-text">{subject}</Text>
+            <Text className="font-display text-xl text-ink">{subject}</Text>
             {avg !== null ? <Text className="font-body text-sm text-gray-500">{t("prova.progress.average", { score: avg })}</Text> : null}
           </View>
           {rows.map((r) => (
             <View key={r.topic} className="gap-1">
               <View className="flex-row items-baseline justify-between gap-2">
-                <Text className="font-body flex-1 text-base text-ink dark:text-night-text">{r.topic}</Text>
-                <Text className="font-body-bold text-sm text-ink dark:text-night-text">{r.score !== null ? `${r.score}` : "—"}</Text>
+                <Text className="font-body flex-1 text-base text-ink">{r.topic}</Text>
+                <Text className="font-body-bold text-sm text-ink">{r.score !== null ? `${r.score}` : "—"}</Text>
               </View>
               <View className="h-2 overflow-hidden rounded-full bg-mist">
                 {r.score !== null ? <View className={`h-2 rounded-full ${barColor(r.score)}`} style={{ width: `${Math.max(2, r.score)}%` }} /> : null}

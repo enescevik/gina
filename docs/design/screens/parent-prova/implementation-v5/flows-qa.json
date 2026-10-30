@@ -1,0 +1,10 @@
+{
+  "result": {
+    "invalidGradeBlocked": true,
+    "otherSaveDisabled": true,
+    "oneWrite": true,
+    "correctAnswer": true
+  },
+  "errors": [],
+  "allBackendTrafficMocked": true
+}

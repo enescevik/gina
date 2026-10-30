@@ -2,11 +2,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Switch, Text, TextInput, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
+import { Toggle } from "@/components/ui/toggle";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ChildPicker, ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
 import { provaErrorMessage } from "@/lib/prova-ai";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -38,7 +40,7 @@ export default function ExamCreateScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name, grade").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, grade, avatar").order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -95,11 +97,12 @@ export default function ExamCreateScreen() {
       const matches = pool.filter((q) => q.topic.toLocaleLowerCase("tr") === row.topic.toLocaleLowerCase("tr"));
       ids.push(...matches.slice(0, row.count).map((q) => q.id));
     }
-    return ids;
+    return [...new Set(ids)];
   }, [bank.data, rows]);
 
   const create = useMutation({
     mutationFn: async () => {
+      if (!subject.trim() || !Number.isInteger(Number(grade)) || Number(grade) < 1 || Number(grade) > 12 || (timed && (!Number.isInteger(Number(minutes)) || Number(minutes) < 1 || Number(minutes) > 180))) throw new Error(t("release.invalidForm"));
       if (!childId) throw new Error(t("prova.pickChild"));
       if (selectedIds.length === 0) throw new Error(t("prova.noQuestionsForExam"));
       const { error } = await supabase.from("exams").insert({
@@ -123,27 +126,22 @@ export default function ExamCreateScreen() {
     },
   });
 
-  const chip = (active: boolean) => `rounded-full px-3 py-2 ${active ? "bg-teal" : "bg-mist"}`;
-  const chipText = (active: boolean) => (active ? "font-semibold text-white" : "text-ink");
+  const chip = (active: boolean) => `min-h-12 min-w-12 items-center justify-center rounded-full border px-4 py-2 ${active ? "bg-teal-dark border-teal-dark" : "bg-[#FFFCF6] border-[#D7CDBB]"}`;
+  const chipText = (active: boolean) => (active ? "font-body-bold text-white" : "font-body text-ink");
 
   return (
-    <Screen title={t("prova.newExam")}>
-      <Text className="font-body-bold text-sm text-ink dark:text-night-text">{t("prova.forChild")}</Text>
-      <View className="flex-row flex-wrap gap-2">
-        {children.data?.map((c) => (
-          <Pressable key={c.id} accessibilityRole="button" onPress={() => setChildId(c.id)} className={chip(childId === c.id)}>
-            <Text className={chipText(childId === c.id)}>{c.name}</Text>
-          </Pressable>
-        ))}
-      </View>
+    <Screen title={t("prova.newExam")} loading={children.isLoading || blueprints.isLoading} error={children.error ?? blueprints.error} onRetry={() => { void children.refetch(); void blueprints.refetch(); }}>
+      <View style={parentStyles.card}>
+      <Text className="font-body-bold text-sm text-ink">{t("prova.forChild")}</Text>
+      <ChildPicker profiles={children.data ?? []} selected={childId} onSelect={id => { if (id) setChildId(id); }} />
 
-      <Text className="font-body-bold text-sm text-ink dark:text-night-text">{t("prova.fromBlueprint")}</Text>
+      <Text className="font-body-bold text-sm text-ink">{t("prova.fromBlueprint")}</Text>
       <View className="flex-row flex-wrap gap-2">
-        <Pressable accessibilityRole="button" onPress={() => pickBlueprint(null)} className={chip(blueprintId === null)}>
+        <Pressable accessibilityRole="button" onPress={() => pickBlueprint(null)} accessibilityState={{ selected: blueprintId === null }} className={chip(blueprintId === null)}>
           <Text className={chipText(blueprintId === null)}>{t("prova.noBlueprint")}</Text>
         </Pressable>
         {blueprints.data?.map((bp) => (
-          <Pressable key={bp.id} accessibilityRole="button" onPress={() => pickBlueprint(bp.id)} className={chip(blueprintId === bp.id)}>
+          <Pressable key={bp.id} accessibilityRole="button" onPress={() => pickBlueprint(bp.id)} accessibilityState={{ selected: blueprintId === bp.id }} className={chip(blueprintId === bp.id)}>
             <Text className={chipText(blueprintId === bp.id)}>
               {bp.subject} · {bp.name}
             </Text>
@@ -169,10 +167,11 @@ export default function ExamCreateScreen() {
               <View key={`${row.topic}-${i}`} className="flex-row items-center gap-2">
                 <Text className="font-body flex-1 text-sm text-ink">{row.topic}</Text>
                 <TextInput
+                  accessibilityLabel={t("provaV5.topicCount", { topic: row.topic })}
                   keyboardType="number-pad"
                   value={String(row.count)}
                   onChangeText={(v) => setRows((rs) => rs.map((r, j) => (j === i ? { ...r, count: Math.max(0, Number(v) || 0) } : r)))}
-                  className="w-12 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink"
+                  className="font-body min-h-12 w-14 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink"
                 />
                 <Text className={`font-body w-20 text-xs ${available >= row.count ? "text-gray-600" : "text-danger"}`}>
                   {t("prova.available", { count: available })}
@@ -186,22 +185,23 @@ export default function ExamCreateScreen() {
       <Text className="font-body text-sm text-gray-600">{t("prova.selectedCount", { count: selectedIds.length })}</Text>
       <Field label={t("calendar.title")} value={title} onChangeText={setTitle} />
       <View className="flex-row items-center gap-3">
-        <Switch value={timed} onValueChange={setTimed} />
-        <Text className="font-body text-base text-ink dark:text-night-text">{t("prova.timed")}</Text>
+        <Toggle value={timed} onChange={setTimed} label={t("prova.timed")} />
         {timed ? (
           <TextInput
+            accessibilityLabel={t("provaV5.duration")}
             keyboardType="number-pad"
             value={minutes}
             onChangeText={setMinutes}
-            className="w-16 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink"
+            className="font-body min-h-12 w-16 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink"
           />
         ) : null}
-        {timed ? <Text className="font-body text-ink dark:text-night-text">{t("prova.min")}</Text> : null}
+        {timed ? <Text className="font-body text-ink">{t("prova.min")}</Text> : null}
       </View>
 
       <ErrorText error={(create.error && provaErrorMessage(create.error)) || (create.error ?? children.error ?? blueprints.error ?? bank.error)} />
-      <Button title={t("prova.assign")} loading={create.isPending} onPress={() => create.mutate()} />
+      <Button title={t("prova.assign")} disabled={bank.isFetching || !childId || !selectedIds.length} loading={create.isPending} onPress={() => create.mutate()} />
       <Button variant="ghost" title={t("common.cancel")} onPress={() => router.back()} />
+    </View>
     </Screen>
   );
 }

@@ -794,5 +794,16 @@
   "rewardIcon.reward-park": "Park",
   "rewardIcon.reward-ice-cream": "Dondurma",
   "rewardIcon.reward-game-with-parent": "Birlikte oyun",
-  "rewardIcon.reward-mystery-box": "Sürpriz"
+  "rewardIcon.reward-mystery-box": "Sürpriz",
+  "provaV5.correctChoice": "{{key}} seçeneğini doğru cevap yap",
+  "provaV5.choice": "{{key}} seçeneği",
+  "provaV5.topicExample": "Kesirler",
+  "provaV5.scenarioExample": "Senaryo 3",
+  "provaV5.subjectExample": "Fen Bilimleri",
+  "provaV5.rowsExample": "Isı ve Sıcaklık; 2\nMaddenin Halleri; 2",
+  "provaV5.topicCount": "{{topic}} soru sayısı",
+  "provaV5.duration": "Süre (dakika)",
+  "provaV5.library": "Soru kütüphanen",
+  "provaV5.scenarios_one": "{{count}} senaryo",
+  "provaV5.scenarios_other": "{{count}} senaryo"
 }

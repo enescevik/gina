@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen } from "@/components/ui/parent-screen";
 import type { StudyPlanBody } from "@/lib/prova-ai";
 import { supabase } from "@/lib/supabase";
 
@@ -49,14 +50,14 @@ export default function StudyPlanScreen() {
   const weak = (Array.isArray(p?.weak_topics) ? p.weak_topics : []) as unknown as WeakTopic[];
 
   return (
-    <Screen title={t("prova.ai.planTitle")}>
+    <Screen title={t("prova.ai.planTitle")} loading={plan.isLoading} error={plan.error} onRetry={() => { void plan.refetch(); }}>
       {p ? (
         <>
-          <View className="gap-1 rounded-parent bg-white p-4 dark:bg-night-surface">
+          <View className="gap-1 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
             <Text className="font-body text-sm text-gray-600">
               {p.children?.name} · {p.subject} {p.grade}. {t("prova.gradeWord")} · {t(`prova.ai.planStatus.${p.status}`)}
             </Text>
-            {body.ozet ? <Text className="font-body text-base text-ink dark:text-night-text">{body.ozet}</Text> : null}
+            {body.ozet ? <Text className="font-body text-base text-ink">{body.ozet}</Text> : null}
           </View>
 
           {weak.length ? (
@@ -71,11 +72,11 @@ export default function StudyPlanScreen() {
             </View>
           ) : null}
 
-          <View className="gap-2 rounded-parent bg-white p-4 dark:bg-night-surface">
-            <Text className="font-display text-xl text-ink dark:text-night-text">{t("prova.ai.planDays")}</Text>
+          <View className="gap-2 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
+            <Text className="font-display text-xl text-ink">{t("prova.ai.planDays")}</Text>
             {body.gunler?.map((g) => (
               <View key={g.gun} className="gap-0.5 rounded-parent border border-mist p-3">
-                <Text className="font-body-bold text-base text-ink dark:text-night-text">
+                <Text className="font-body-bold text-base text-ink">
                   {t("prova.ai.dayN", { n: g.gun })} · {g.konu}
                 </Text>
                 <Text className="font-body text-sm text-gray-600">
@@ -86,10 +87,10 @@ export default function StudyPlanScreen() {
           </View>
 
           {body.gorev_onerileri?.length ? (
-            <View className="gap-1 rounded-parent bg-white p-4 dark:bg-night-surface">
-              <Text className="font-display text-xl text-ink dark:text-night-text">{t("prova.ai.taskIdeas")}</Text>
+            <View className="gap-1 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
+              <Text className="font-display text-xl text-ink">{t("prova.ai.taskIdeas")}</Text>
               {body.gorev_onerileri.map((g) => (
-                <Text key={g} className="font-body text-base text-ink dark:text-night-text">
+                <Text key={g} className="font-body text-base text-ink">
                   • {g}
                 </Text>
               ))}
@@ -101,7 +102,7 @@ export default function StudyPlanScreen() {
             <Button title={t("prova.ai.approvePlan")} loading={setStatus.isPending} onPress={() => setStatus.mutate("approved")} />
           ) : null}
           {p.status !== "archived" ? (
-            <Button variant="secondary" title={t("prova.ai.archivePlan")} onPress={() => setStatus.mutate("archived")} />
+            <Button variant="secondary" title={t("prova.ai.archivePlan")} disabled={setStatus.isPending} onPress={() => setStatus.mutate("archived")} />
           ) : null}
         </>
       ) : null}

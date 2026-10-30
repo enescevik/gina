@@ -8,7 +8,8 @@ import type { Enums } from "@gina/core";
 
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
 import { invokeProvaAi, type GenerateResponse, type GeneratedQuestion } from "@/lib/prova-ai";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -64,6 +65,7 @@ export default function GenerateQuestionsScreen() {
   const generate = useMutation({
     mutationFn: async () => {
       const bp = blueprints.data?.find((b) => b.id === blueprintId);
+      if (!Number.isInteger(Number(count)) || Number(count) < 1 || Number(count) > 30 || (!bp && (!Number.isInteger(Number(grade)) || Number(grade) < 1 || Number(grade) > 12))) throw new Error(t("release.invalidForm"));
       if (!bp && (!subject.trim() || !topic.trim())) throw new Error(t("prova.ai.formInvalid"));
       return invokeProvaAi<GenerateResponse>("prova-generate", {
         subject: bp ? bp.subject : subject.trim(),
@@ -79,18 +81,20 @@ export default function GenerateQuestionsScreen() {
     onSuccess: (data) => {
       setResult(data.questions);
       void queryClient.invalidateQueries({ queryKey: ["question_bank_count", familyId] });
+      void queryClient.invalidateQueries({ predicate: query => ["question_bank", "question_bank_subjects", "booklet_library", "level_preview"].includes(String(query.queryKey[0])) });
       void queryClient.invalidateQueries({ queryKey: ["prova_entitlement", familyId] });
     },
   });
 
   const ent = entitlement.data;
   const remaining = ent ? Math.max(0, ent.ai_generate_limit - ent.ai_generate_used) : null;
-  const chip = (active: boolean) => `rounded-full px-3 py-2 ${active ? "bg-teal" : "bg-mist"}`;
-  const chipText = (active: boolean) => (active ? "font-semibold text-white" : "text-ink");
+  const chip = (active: boolean) => `min-h-12 min-w-12 items-center justify-center rounded-full border px-4 py-2 ${active ? "bg-teal-dark border-teal-dark" : "bg-[#FFFCF6] border-[#D7CDBB]"}`;
+  const chipText = (active: boolean) => (active ? "font-body-bold text-white" : "font-body text-ink");
 
   if (result) {
     return (
       <Screen title={t("prova.ai.generatedTitle")}>
+      <View style={parentStyles.card}>
         <Text className="font-body text-base text-gray-600">{t("prova.ai.generatedCount", { count: result.length })}</Text>
         {result.map((q, i) => (
           <QuestionCard key={q.id} index={i + 1} question={q} />
@@ -98,12 +102,14 @@ export default function GenerateQuestionsScreen() {
         <Button title={t("prova.ai.generateMore")} onPress={() => setResult(null)} />
         <Button variant="secondary" title={t("prova.newExam")} onPress={() => router.replace("/parent/prova/exam")} />
         <Button variant="ghost" title={t("prova.backToList")} onPress={() => router.back()} />
-      </Screen>
+      </View>
+    </Screen>
     );
   }
 
   return (
-    <Screen title={t("prova.ai.generateTitle")}>
+    <Screen title={t("prova.ai.generateTitle")} loading={entitlement.isLoading || blueprints.isLoading} error={entitlement.error ?? blueprints.error} onRetry={() => { void entitlement.refetch(); void blueprints.refetch(); }}>
+      <View style={parentStyles.card}>
       <Text className="font-body text-base text-gray-600">{t("prova.ai.generateIntro")}</Text>
       {ent && ent.ai_generate_limit <= 0 ? (
         <View className="rounded-parent bg-coral-light p-3">
@@ -115,13 +121,13 @@ export default function GenerateQuestionsScreen() {
 
       {ent?.scenarios && blueprints.data?.length ? (
         <View className="gap-2">
-          <Text className="text-sm font-body text-ink dark:text-night-text">{t("prova.fromBlueprint")}</Text>
+          <Text className="text-sm font-body text-ink">{t("prova.fromBlueprint")}</Text>
           <View className="flex-row flex-wrap gap-2">
-            <Pressable accessibilityRole="button" onPress={() => setBlueprintId(null)} className={chip(blueprintId === null)}>
+            <Pressable accessibilityRole="button" onPress={() => setBlueprintId(null)} accessibilityState={{ selected: blueprintId === null }} className={chip(blueprintId === null)}>
               <Text className={chipText(blueprintId === null)}>{t("prova.noBlueprint")}</Text>
             </Pressable>
             {blueprints.data.map((bp) => (
-              <Pressable key={bp.id} accessibilityRole="button" onPress={() => setBlueprintId(bp.id)} className={chip(blueprintId === bp.id)}>
+              <Pressable key={bp.id} accessibilityRole="button" onPress={() => setBlueprintId(bp.id)} accessibilityState={{ selected: blueprintId === bp.id }} className={chip(blueprintId === bp.id)}>
                 <Text className={chipText(blueprintId === bp.id)}>
                   {bp.subject} {bp.grade} · {bp.name}
                 </Text>
@@ -136,27 +142,27 @@ export default function GenerateQuestionsScreen() {
         <>
           <View className="flex-row gap-2">
             <View className="flex-[2]">
-              <Field label={t("grades.subject")} value={subject} onChangeText={setSubject} placeholder="Fen Bilimleri" />
+              <Field label={t("grades.subject")} value={subject} onChangeText={setSubject} placeholder={t("provaV5.subjectExample")} />
             </View>
             <View className="flex-1">
               <Field label={t("prova.grade")} keyboardType="number-pad" maxLength={2} value={grade} onChangeText={setGrade} />
             </View>
           </View>
-          <Field label={t("prova.topic")} value={topic} onChangeText={setTopic} placeholder="Isı ve Sıcaklık" />
+          <Field label={t("prova.topic")} value={topic} onChangeText={setTopic} placeholder={t("provaV5.topicExample")} />
         </>
       )}
       <Field label={t("prova.ai.count")} keyboardType="number-pad" maxLength={2} value={count} onChangeText={setCount} />
 
       <View className="flex-row flex-wrap gap-2">
         {KIND_MODES.map((k) => (
-          <Pressable key={k} accessibilityRole="button" onPress={() => setKind(k)} className={chip(kind === k)}>
+          <Pressable key={k} accessibilityRole="button" onPress={() => setKind(k)} accessibilityState={{ selected: kind === k }} className={chip(kind === k)}>
             <Text className={chipText(kind === k)}>{k === "mixed" ? t("prova.ai.kindMixed") : t(`prova.kind.${k}`)}</Text>
           </Pressable>
         ))}
       </View>
       <View className="flex-row flex-wrap gap-2">
         {DIFFICULTIES.map((d) => (
-          <Pressable key={d} accessibilityRole="button" onPress={() => setDifficulty(d)} className={chip(difficulty === d)}>
+          <Pressable key={d} accessibilityRole="button" onPress={() => setDifficulty(d)} accessibilityState={{ selected: difficulty === d }} className={chip(difficulty === d)}>
             <Text className={chipText(difficulty === d)}>{t(`prova.difficulty.${d}`)}</Text>
           </Pressable>
         ))}
@@ -167,10 +173,11 @@ export default function GenerateQuestionsScreen() {
       <Button
         title={generate.isPending ? t("prova.ai.generating") : t("prova.ai.generate")}
         loading={generate.isPending}
-        disabled={!!ent && ent.ai_generate_limit <= 0}
+        disabled={!ent || remaining === 0}
         onPress={() => generate.mutate()}
       />
       <Button variant="ghost" title={t("common.cancel")} onPress={() => router.back()} />
+    </View>
     </Screen>
   );
 }
@@ -179,23 +186,23 @@ function QuestionCard({ index, question: q }: { index: number; question: Generat
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   return (
-    <View className="gap-2 rounded-parent border border-mist bg-white p-3 dark:bg-night-surface">
+    <View className="gap-2 rounded-parent border border-mist bg-white p-3">
       <Text className="font-body text-xs text-gray-500">
         {index}. {q.topic} · {t(`prova.kind.${q.kind}`)} · {t(`prova.difficulty.${q.difficulty}`)}
       </Text>
-      <Text className="font-body-bold text-base text-ink dark:text-night-text">{q.stem}</Text>
+      <Text className="font-body-bold text-base text-ink">{q.stem}</Text>
       {q.choices?.map((c) => (
-        <Text key={c.key} className={c.key === q.correct_key ? "font-body-bold text-green" : "text-ink dark:text-night-text"}>
+        <Text key={c.key} className={c.key === q.correct_key ? "font-body-bold text-green" : "text-ink"}>
           {c.key}) {c.text}
         </Text>
       ))}
       {q.kind === "open_ended" && q.expected_answer ? (
-        <Text className="font-body text-sm text-ink dark:text-night-text">
+        <Text className="font-body text-sm text-ink">
           <Text className="font-body-bold">{t("prova.expected")}: </Text>
           {q.expected_answer}
         </Text>
       ) : null}
-      <Pressable accessibilityRole="button" onPress={() => setOpen((v) => !v)}>
+      <Pressable accessibilityRole="button" style={{ minHeight: 48, justifyContent: "center" }} accessibilityState={{ expanded: open }} onPress={() => setOpen((v) => !v)}>
         <Text className="font-body-bold text-teal-dark">{open ? t("prova.ai.hideSolution") : t("prova.ai.showSolution")}</Text>
       </Pressable>
       {open ? (
