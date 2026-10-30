@@ -14,7 +14,7 @@
     },
     {
       "file": "CLAUDE-PROMPT.md",
-      "sha256": "2f2d3594e910904b19d3aacf347ff3e658ac677a0a1892a48fb17d79419ce9ad"
+      "sha256": "6f583159ec706760100a80c7dbca9da66a576b6f97faf21cdd8a82c89bec7aab"
     },
     {
       "file": "DELIVERY.md",
@@ -95,6 +95,14 @@
     {
       "file": "seasonal-events.json",
       "sha256": "ab71a43d7e881bd983a1d6da617dfdfa32b2b9feb7483b48ac379186e7bb5f2d"
+    },
+    {
+      "file": "references/contact-sheet.svg",
+      "sha256": "5161c35c6e3e06eb9fae7a06ccdacd090b56fb9d9cac6ce6e2be8d1f6235a59a"
+    },
+    {
+      "file": "references/preview-note.md",
+      "sha256": "a83b6d137c14415d1b3eec6a34f9b31518f64e38584ccbdba545416d171486fc"
     }
   ]
 }

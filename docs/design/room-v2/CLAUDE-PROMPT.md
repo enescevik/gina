@@ -1,3 +1,5 @@
+> **Odam kaplamaları teslim edildi:** Önce `references/preview-note.md` ve `packages/assets/room-chrome/manifest.json` dosyalarını oku. 30 SVG + @3x PNG kaplama ve `packages/assets/rooms/v2/` altında room-base + üç karakter üretim WebP’si var. Uygulamada bu üretim kaynaklarını kullan; eski art-candidates konsept olarak kalır. Metinler native; kaplamaları manifestteki 9-slice/contentInsets sözleşmesiyle bağla.
+
 # Claude’a verilecek güncel uygulama talimatı — premium v3
 
 Gina’da onaylanan oyun odası ana ekranını ve premium resimli koleksiyon dilini sürdür. Önce güncel main, `docs/DECISIONS.md`, `apps/mobile/AGENTS.md`, bu klasördeki `IMPLEMENTATION.md`, `ART-HANDOFF.md`, `PRODUCT-EXTENSIONS.md`, `ACCEPTANCE.md` ve kategori manifestlerini oku. Yerel değişiklikleri koru. Bu metin eski teslim promptlarının yerine geçer.

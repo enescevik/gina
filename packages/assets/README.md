@@ -1,5 +1,9 @@
 # Gina görsel varlıkları
 
+## 12. kategori üretim istisnası
+
+Kullanıcının açık talebiyle `room-chrome/` SVG + `png/*@3x.png` teslim eder; PNG yasağı bu kategoriye uygulanmaz. Ahşap/kâğıt katmanlı yumuşak tonlar BRIEF 12 kapsamında serbesttir. SVG teknik yasakları sürer. `rooms/v2/` üretim oda/karakterleri onaylı konsepte uygun lossless WebP’dir; karakterlerin doğal ten/saç tonları korunur. Diğer kategorilerin kuralları değişmez.
+
 ## 30 Ekim 2026 resimli v3 kararı
 
 Kullanıcı yeni koleksiyon stilini görev (66), ders (19), etkinlik (20) ve oyunlaştırmanın tamamına uygulamayı onayladı. Yeni kaynaklar kategori altında `illustrated-v3/` içinde şeffaf WebP olarak teslim edilir. Bu katman için aşağıdaki flat-only, raster yasağı ve piksel başına exact renk sınırlaması yerine onaylı referansın teal/krem/altın ve kategori renk aileleri içinde boyalı tonları geçerlidir. Yazı/rakam/logo ve telifli marka yok. SVG kaynakların teknik kısıtları aynen sürer. PNG yalnız marka/mağaza tesliminde kalır; WebP kaynakları SVG içine gömülmez.
