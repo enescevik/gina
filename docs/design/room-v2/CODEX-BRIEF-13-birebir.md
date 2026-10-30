@@ -18,7 +18,7 @@ Kurallar değişmedi: yazı yok (tüm metin native); kaplamalar room-chrome mani
 4. **Kitaplık:** referanstaki oran ve konumda. Üst rafta kedi fotoğraflı çerçeve, alt rafta **teal okul çantası**, kitapların renk ve dizilimi referanstaki gibi; tepesinde sarkan büyük sarmaşık bitki.
 5. **Pencere ve perde** referanstaki genişlik ve konumda.
 6. **Sarı armut koltuk + teal yastık:** karakterin oturduğu yer, referanstaki gibi.
-7. **Uyuyan kedi** (beyaz-kahve benekli, kıvrılmış): halının üstünde, karakterin solunda. **Ayrı şeffaf katman** olsun (`decor-cat.webp` + içerik sınırları ve ayak çizgisi manifestte); ileride gizlenebilsin ya da canlandırılabilsin.
+7. **Evcil hayvan (seçilebilir):** referanstaki uyuyan kedi (beyaz-kahve benekli, kıvrılmış), halının üstünde, karakterin solunda. Çocuk evcil hayvanını seçebilecek: **kedi, köpek, maymun, aslan yavrusu**. Her biri ayrı şeffaf katman olsun: `pet-cat.webp`, `pet-dog.webp`, `pet-monkey.webp`, `pet-lion.webp`. Hepsi aynı ölçekte, aynı çizim dilinde ve aynı ankrajda (halı üstü, ayak/zemin çizgisi manifestte) dursun; uyuyan ya da kıvrılmış sakin poz kullan. Ayrıca seçim ekranı için her birinin 256 px yüz/portre küçük resmi (`pet-{slug}-portrait.webp`). "Evcil hayvan yok" seçeneği de olacak, onun için görsel gerekmez.
 8. **Halı:** referanstaki boy ve konumda.
 
 Pano, bilet, takvim ve sağ dolap yine tabana gömülmesin; aşağıdaki kaplamalarla ayrı gelsin. Üç oda teması aynı yerleşim ankrajlarını korusun.
