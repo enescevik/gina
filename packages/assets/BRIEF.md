@@ -1,3 +1,5 @@
+> **30 Ekim 2026 güncellemesi:** Görev/ders/etkinlik/oyunlaştırmanın güncel büyük resim katmanı ilgili `illustrated-v3/` dizinleridir. README başındaki resimli v3 kararı, aşağıdaki eski flat teslim biçiminden önceliklidir. Manifest/HTML contact-sheet ve animasyon tarifi esas alınır; eski SVG seti geçiş uyumluluğu içindir. Ayrıntılı devam talimatı: `docs/design/room-v2/CLAUDE-PROMPT.md`.
+
 # Gina görsel varlık brief'i (Codex için)
 
 Bu dosya, `packages/assets/` altına üretilecek tüm varlıkların tam listesini ve kategori başına üretim talimatını içerir. Önce [README.md](./README.md)'deki klasör yapısını ve ortak kuralları oku; çelişki olursa README geçerlidir. Her kategori **ayrı bir dal + PR** olarak teslim edilir; `apps/mobile/assets` klasörüne dokunulmaz (ikonları uygulamaya geliştirici bağlar).

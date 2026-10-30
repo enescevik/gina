@@ -16,7 +16,7 @@ Sinema ödülünde gerçek bilet kodu varsa yalnız yetkili aile üyelerine gös
 
 ## Koleksiyonum
 
-Rozetler satın alınmaz, yıldız harcatmaz. Önerilen isimler: İlk Adım, Kitap Kurdu, Diş Parlatan, Düzen Ustası, Yardımsever, Haftanın Kahramanı. Eşikler `badge-catalog.json` içinde öneridir; ürün onayı olmadan kesin ekonomik kural sayma. Kilitli rozet hedefe kalan görevi açıklar; endişe yaratan sayaç veya arkadaş kıyası yok.
+Rozetler satın alınmaz, yıldız harcatmaz. Önerilen isimler: İlk Adım, Kitap Kurdu, Diş Parlatan, Düzen Ustası, Yardımsever, Haftanın Kahramanı. Güncel eşikler veritabanında tanımlıdır; `badge-catalog.json` seçili kuralların tasarım referansıdır, seed kaynağı değildir. Görsel geçişi için eşikleri değiştirme. Kilitli rozet hedefe kalan görevi açıklar; endişe yaratan sayaç veya arkadaş kıyası yok.
 
 Seri: yalnız ilgili planlı günler, aile saat dilimi ve onaylı görev gerçekleşmeleri. Onay gecikmesi çocuğu cezalandırmaz; completion.due_date esas alınır. Planlanmamış gün seri bozmaz; geçmiş görev planı değişince değerlendirme tutarlı sürümlenir. Tek çocuk + rozet + eşik/sürüm unique; tekrar eden realtime event çift ödül yaratmaz. Geçmiş veriye ilk açılışta dağıtım yapılacaksa migration/backfill ayrı, dry-run ve idempotent olmalı.
 

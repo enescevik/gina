@@ -1,3 +1,9 @@
+# Güncel resimli v3 üretimi
+
+129 ayrı görsel built-in imagegen ile tek tek üretildi, yalnız kayıpsız format dönüşümüyle 130 şeffaf WebP teslim edildi (yükleme yıldızı aynı yıldız kaynağını paylaşır). Tam promptlar, kaynak kimlikleri ve checksum’lar her illustrated-v3/generation.json ve manifest.json dosyasındadır. CLI/API fallback kullanılmadı. Önizlemeler HTML’dir; SVG içine bitmap gömülmedi.
+
+## Önceki teslimin tarihsel üretim kaydı
+
 # Kaynak ve üretim kaydı
 
 4–6 ve yeni marka/dekor: özgün path tabanlı SVG çizimi; SVGO optimizasyonu. İkonlarda üretken raster model kullanılmadı. Contact sheet'ler native SVG; PNG ihracı yok. Üç kategoride toplam 126 varlık + 16 sheet = 142 SVG. Dosya listeleri ilgili PR açıklamalarındadır.

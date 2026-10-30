@@ -1,5 +1,5 @@
 {
-  "status": "threshold proposals, not deployed rules",
+  "status": "Reference to deployed rules at 3d81e4b; database is authoritative, never reseed from this design file",
   "basis": "approved completions on eligible due dates in family timezone",
   "no_duration_ranking": true,
   "awards": [
@@ -8,21 +8,21 @@
       "label_tr": "İlk Adım",
       "threshold": 1,
       "metric": "approved_task_count",
-      "asset": "gamification/badges/badge-first-task.svg"
+      "asset": "gamification/illustrated-v3/badges/badge-first-task.webp"
     },
     {
-      "id": "tooth-care-7",
+      "id": "dis-parlatan",
       "label_tr": "Diş Parlatan",
-      "threshold": 7,
-      "metric": "eligible_brush_teeth_days",
-      "asset": "rooms/v2/badge-tooth-care.svg"
+      "threshold": 14,
+      "metric": "planned_care brush-teeth",
+      "asset": "gamification/illustrated-v3/badges/badge-tooth-care.webp"
     },
     {
-      "id": "bookworm-7",
+      "id": "kitap-kurdu",
       "label_tr": "Kitap Kurdu",
-      "threshold": 7,
-      "metric": "approved_read_book_count",
-      "asset": "gamification/badges/badge-bookworm.svg"
+      "threshold": 10,
+      "metric": "planned_care read-book",
+      "asset": "gamification/illustrated-v3/badges/badge-bookworm.webp"
     }
   ],
   "dedupe_key": [
@@ -30,5 +30,6 @@
     "badge_id",
     "rule_version"
   ],
-  "backfill": "explicit migration with dry run; no automatic client award"
+  "backfill": "explicit migration with dry run; no automatic client award",
+  "scope": "Selected examples only; not the full deployed badge catalog"
 }

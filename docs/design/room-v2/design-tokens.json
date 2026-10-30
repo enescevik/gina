@@ -1,5 +1,5 @@
 {
-  "status": "UI proposal; asset README palette remains authoritative",
+  "status": "UI guidance; fonts aligned with main 3d81e4b; illustrated-v3 follows its art exception",
   "colors": {
     "background": "#FFF8EF",
     "ink": "#1F2937",
@@ -13,8 +13,8 @@
     "white": "#FFFFFF"
   },
   "fonts": {
-    "child": "Nunito 600–800",
-    "parent": "Inter 400–600"
+    "heading": "Baloo 2 600–800",
+    "body": "Nunito 400–700"
   },
   "radius": {
     "childCard": 24,

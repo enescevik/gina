@@ -1,46 +1,21 @@
-# Mevcut uygulamaya uygulama planı
+# Güncel uygulama durumu ve devam planı
 
-## Doğrulanan taban
+30 Ekim 2026, incelenen main `3d81e4b`. Önceki 5d20850/bb390aa analizi tarihsel kaldı; eksik diye listelenen birçok özellik artık mevcut. Güncel main ve DECISIONS kaynak kabul edilir.
 
-- Expo ~58.0.21, React Native 0.88.1; SVG transformer ve react-native-svg mevcut. `apps/mobile/AGENTS.md` ile kullanılan Expo sürümünün dokümanını uygulamadan önce oku.
-- Gerçek route yolları `src/app/child/` ve `src/app/parent/`; eski `(child)` isimlerini üretme.
-- `apps/mobile/src/app/child/today.tsx`: eşlenmiş anonim çocuk oturumu, JWT'deki çocuk kimliği.
-- `apps/mobile/src/app/parent/child-mode/today.tsx`: ebeveyn telefonunda çocuk modu; çıkış `verify_parent_pin` kontrolünü korur.
-- Her ikisi `apps/mobile/src/components/today-view.tsx` kullanır. Ortak sunum bileşeni geliştir; iş kurallarını iki route'a kopyalama.
-- `src/app/parent/index.tsx` mevcut onaylar ve kurulum/kısayol ekranı. Yeni tasarımda kurulum menüye taşınabilir; çocuk ekleme, cihaz eşleme, davet ve PIN işlemleri kaybolamaz.
-- Takvim, ders/not, puan, abonelik ekranları mevcut; bunları tekrar kurma. Mevcut plan/yetki ve IAP webhook altyapısını koru. AI yalnız ebeveyn tarafındadır.
-- SVG kullanan `avatar.tsx` ve `task-icon.tsx` statik import + slug fallback düzenini kullanıyor. Yeni subject/event/badge eşlemelerinde aynı yaklaşım; dinamik require(path) üretme.
+- Odam prototipi, Hazinem/Koleksiyonum, gerçek hedef bileti, üç sergi yuvası ve resimli v3 Collectible bileşeni var.
+- `20261030060000_rewards.sql` ödül kataloğu, hedef, talep, envanter, oda tercihi ve rozet tablolarını/RPC’lerini kuruyor. Aynı modeli tekrar oluşturma.
+- `20261030070000_badge_icons_v3.sql` Diş Parlatan görselini yeni varlığa eşliyor. Rozet kazanma eşiği görsel değişimiyle değiştirilmez.
+- Yan Yana platform kaynakları, Baloo 2/Nunito, görev yeniden gönderme ve saat dilimi geliştirmeleri main’de. Eski “logo bağlanmadı / returned yok / lockfile bloke” ifadeleri güncel görev listesi değildir.
+- Haftam, Prova, AI ve mevcut abonelik/auth/PIN akışları korunur.
 
-## Görev ve yıldız doğruluğu
+## Şimdiki iş
 
-`TodayView` task_templates, task_completions ve star_events okuyor; `templatesDueOn` ile gün görevlerini seçiyor. Gün hesabı şu an DEFAULT_TIMEZONE kullanıyor; `docs/DECISIONS.md` gereği aile saat dilimini esas alacak şekilde düzelt ve gün değişimini test et.
+`CLAUDE-PROMPT.md` yeni kaynak yollarını ve sırayı tanımlar. Görev/ders/etkinlik resimlerini mevcut statik slug eşlemelerine bağla; oyunlaştırma entegrasyonunu doğrula. Native küçük ikonlar ile büyük koleksiyon görsellerinin kullanımını ayır. Mobil boyut türetimini mevcut script üzerinden genişlet; ham yüksek çözünürlükleri tüm listeye yükleme.
 
-`complete_task` sunucusu due_date ve yetkiyi doğrular. Onay gerekiyorsa status=done (bekliyor), gerekmiyorsa approved ve yıldız ledger kaydı oluşur. UI görev gönderildiğinde kendiliğinden yıldız eklememeli. `review_task` ebeveyn onayında satırı kilitler, done→approved/returned geçişini yapar; yıldız onayda yazılır. `undo_complete` yalnız done içindir. Bekleyen ve onaylanmış satırlar aynı başarı etiketiyle gösterilmemeli.
+Önce iki ana ekran: gerçek veriler, telefon/tablet, büyük yazı, uzun metin, loading/empty/error/offline ve pending/approved/returned durumları. Kullanıcı ana ekranları gördükten sonra alt ekran sanat turu. Oda ve karakter art-candidates hâlâ adaydır.
 
-Mevcut TodayView herhangi bir completion bulunduğunda satırı kapatıyor; returned durumunun yeniden gönderme akışı eksik. Bunu tasarımla örtme: mevcut RPC'leri incele, gerekiyorsa migration/RPC ile güvenli yeniden gönderme ekle; UI başına ayrı yıldız mantığı oluşturma. İade edilen eski kazanılmış yıldızın davranışını mevcut sözleşmeden doğrula.
+## Korunacak sözleşmeler
 
-Aynı kullanıcı eyleminin ağ tekrarında aynı client_id kullanılmalı; yeni tıklama için UUID, aynı isteğin tekrarında yeni UUID değil. Offline görev kazanımı onay bekliyor/senkronize ediliyor olarak görünür. Ledger sonucu olmadan harcanabilir yıldız artmaz. Realtime invalidation, logout query temizliği ve kimlik ayrımı korunur.
+Çocuk JWT kimliği ve ebeveyn child-mode PIN kontrolü, aile sınırı, RLS, realtime/logout cache temizliği ve plan yetkileri korunmalı. complete_task/review_task ve ödül RPC’lerinin ledger/idempotency garantileri istemciye taşınamaz. Ağ tekrarı aynı client_id’yi kullanır; istemci harcanabilir yıldız veya rozet yaratamaz. Aile saat dilimi ve onay gecikmesini testle koru. Deployed migration’ı geçmişten düzenlemek yerine gerçekten gereken değişiklik için yeni migration kullan.
 
-## Yeni olanlar
-
-children tablosunda avatar mevcut; gender, room/theme seçimi yok. Ödül kataloğu, envanter, hedef, rozet kazanımı ve seri tabloları yok. star_events.reason içinde reward olması bu sistemi hazır yapmaz. Yeni alanları mevcut kabul eden sorgu yazma.
-
-Önerilen sonraki migration sınırları: child_room_preferences (avatar_key, theme_key, display_slots), family_rewards (type, cost, parent_defined), child_goals, reward_requests/fulfillments, child_inventory, badge_definitions, child_badge_awards. Kesin şema mevcut migration'larla karşılaştırılarak kararlaştırılmalı. Her tabloda family sınırı, çocuk/ebeveyn izinleri, audit timestamp ve ilgili benzersizlik kısıtları gerekir. Etkinlik kaynaklarını çoğaltma; `holidays` tablosunu ve ülke/tarih verilerini kullan.
-
-Ödül talebi/debit RPC'si sunucuda ledger bakiyesi doğrulamalı, eşzamanlı istekleri seri hale getirmeli ve idempotency key ile aynı harcamayı tek defa yapmalı. Teslim/iptal ve yıldız iadesi de ayrı idempotent sunucu geçişleri olmalı. Çocuk maliyet belirleyemez veya delivered yazamaz. Child claims yalnız kendi envanterini görebilir, ebeveyn kendi ailesini yönetebilir.
-
-## Sıra
-
-1. Bu paket + güncel DECISIONS + kodu oku; kısa mevcut/yeni tabloyu güncelle. Veritabanını değiştirmeden ana ekran düzenini senaryolu sahte veriyle component seviyesinde göster.
-2. Çocuk oyun odası ve ebeveyn ana ekranı: mevcut auth/query/RPC'ye bağla; katman, metin, hitbox ve responsive davranışı test et. Eski dashboard'a dönme.
-3. Kullanıcı ana ekran uygulamasını gördükten sonra Hazinem, Koleksiyonum, Odam seçim paneli ve ödül detaylarının tasarım turuna geç.
-4. Yeni sunucu modelleri + RLS/RPC testleri; ardından ödüller/rozetler. Backfill politikası açık olmadan geçmiş olayları tekrar ödüllendirme.
-5. Sezonsal dekor altyapısı; tarih/yerel takvim/tercih doğrulaması. İleride yeni gün eklemek uygulama ana ekranını yeniden yazmayı gerektirmesin.
-
-Her aşama ayrı küçük PR. Testler: etkilenen tip kontrolü ve mevcut testler; yeni RLS/RPC ve yarış koşulları için gerçek davranış testleri. Görsel-only değişiklik için gereksiz snapshot yığını üretme.
-
-## Teslim sırasında gelen main güncellemesi
-
-`bb390aa` ayrıca incelendi: `/child/week.tsx` Haftam ekranı ve AI haftalık özet altyapısı eklendi. Haftam için yeni veri modelini tekrar yaratma; mevcut query/realtime akışını oda takvimine bağla. Bu ekran da DEFAULT_TIMEZONE kullanıyor. Parent çocuk modundan Haftam’a giderken anonim child route claims varsayımına takılmadan ortak görünüm/acting child kimliğiyle güvenli yol tasarla. AI altyapısı ebeveyn + paket kontrolü içeriyor; API anahtarı yoksa skipped/not_configured, hazır içerik varmış gibi gösterme.
-
-CI: main 5d20850 ve yeni PR 5–7, eksik react-native-svg-transformer lock kaydı nedeniyle frozen install aşamasında durdu. Asset-only kapsamda kilit dosyası değiştirilmedi; uygulama testleri bu teslimde geçti deneme. Claude mevcut yerel pnpm-lock.yaml değişikliğini inceleyerek kendi kod akışında düzeltmeli.
+Asset PR’larında lint/typecheck/test ve Supabase migration+pgTAP CI sonuçlarını DELIVERY.md üzerinden izle. Görsel teslim, cihaz üzerinde uygulama kabul testi yapıldığı anlamına gelmez.
