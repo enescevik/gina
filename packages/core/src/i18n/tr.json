@@ -202,5 +202,10 @@
   "rewards.titlePlaceholder": "Ailece sinema",
   "rewards.cost": "Yıldız bedeli",
   "rewards.invalid": "Başlık ve geçerli bir yıldız bedeli gerekli.",
-  "parent.rewards": "Ödüller"
+  "parent.rewards": "Ödüller",
+  "collection.summary": "{{earned}} / {{total}} rozet kazandın",
+  "collection.earned": "Kazanıldı",
+  "collection.locked": "Kilitli",
+  "collection.badgeCount_one": "{{count}} rozet",
+  "collection.badgeCount_other": "{{count}} rozet"
 }

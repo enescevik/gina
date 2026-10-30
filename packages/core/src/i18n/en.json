@@ -202,5 +202,10 @@
   "rewards.titlePlaceholder": "Family movie night",
   "rewards.cost": "Star cost",
   "rewards.invalid": "A title and a valid star cost are required.",
-  "parent.rewards": "Rewards"
+  "parent.rewards": "Rewards",
+  "collection.summary": "You earned {{earned}} of {{total}} badges",
+  "collection.earned": "Earned",
+  "collection.locked": "Locked",
+  "collection.badgeCount_one": "{{count}} badge",
+  "collection.badgeCount_other": "{{count}} badges"
 }
