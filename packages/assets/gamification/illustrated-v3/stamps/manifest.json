@@ -1,0 +1,65 @@
+[
+  {
+    "slug": "stamp-approved",
+    "label_tr": "Onaylandı",
+    "file": "stamp-approved.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      199,
+      201,
+      1056,
+      1057
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "e39440b8b1e2115d36a6db080a992ddf70e6dc173f0fba03b47e1d1d3bc32cfc",
+    "png": []
+  },
+  {
+    "slug": "stamp-pending",
+    "label_tr": "Onay Bekliyor",
+    "file": "stamp-pending.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      151,
+      154,
+      1097,
+      1106
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "7c1668ed78556955ec46f2df397a030ddc23b12ef511b8ba38e6f27d9419730d",
+    "png": []
+  },
+  {
+    "slug": "stamp-returned",
+    "label_tr": "Tekrar Dene",
+    "file": "stamp-returned.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      183,
+      186,
+      1069,
+      1071
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "65ef0e4cd05f6796dd41375ef5d65b596d03dfb614e457720e1ce9e6ec116af3",
+    "png": []
+  }
+]

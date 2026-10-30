@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "loading-star-static",
+    "label_tr": "Yükleniyor sabit",
+    "file": "loading-star-static.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      58,
+      85,
+      1196,
+      1172
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "2a53cf7ae7a21511ddde2042d7d79552699cb772ae85affc2fb7b5ae0b74bda8",
+    "png": []
+  }
+]
