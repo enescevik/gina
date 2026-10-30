@@ -805,5 +805,12 @@
   "provaV5.duration": "Duration (minutes)",
   "provaV5.library": "Your question library",
   "provaV5.scenarios_one": "{{count}} scenario",
-  "provaV5.scenarios_other": "{{count}} scenarios"
+  "provaV5.scenarios_other": "{{count}} scenarios",
+  "provaV5.timeEnded": "Time is up. Your saved answers are being submitted.",
+  "provaV5.savingAnswer": "Saving your answer…",
+  "provaV5.answerSaved": "Your answers are saved.",
+  "provaV5.saveFailed": "Your answer has not been saved yet. You can retry.",
+  "provaV5.unsaved": "This answer has not been saved yet.",
+  "provaV5.keepWorking": "Stay here",
+  "provaV5.discard": "Leave without saving"
 }

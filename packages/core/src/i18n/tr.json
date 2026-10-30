@@ -805,5 +805,12 @@
   "provaV5.duration": "Süre (dakika)",
   "provaV5.library": "Soru kütüphanen",
   "provaV5.scenarios_one": "{{count}} senaryo",
-  "provaV5.scenarios_other": "{{count}} senaryo"
+  "provaV5.scenarios_other": "{{count}} senaryo",
+  "provaV5.timeEnded": "Süre doldu. Kaydedilmiş cevapların değerlendiriliyor.",
+  "provaV5.savingAnswer": "Cevabın kaydediliyor…",
+  "provaV5.answerSaved": "Cevapların kaydedildi.",
+  "provaV5.saveFailed": "Cevabın henüz kaydedilemedi. Yeniden deneyebilirsin.",
+  "provaV5.unsaved": "Bu cevabın henüz kaydedilmedi.",
+  "provaV5.keepWorking": "Burada kal",
+  "provaV5.discard": "Kaydetmeden çık"
 }
