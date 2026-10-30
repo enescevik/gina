@@ -145,7 +145,7 @@ export default function LevelTestScreen() {
 
   return (
     <Screen title={t("prova.level.title")}>
-      <Text className="text-base text-gray-600">{t("prova.level.intro")}</Text>
+      <Text className="font-body text-base text-gray-600">{t("prova.level.intro")}</Text>
 
       <Text className="font-body-bold text-sm text-ink dark:text-night-text">{t("prova.forChild")}</Text>
       <View className="flex-row flex-wrap gap-2">
@@ -214,25 +214,25 @@ export default function LevelTestScreen() {
           <Field label={t("prova.level.maxQuestions")} keyboardType="number-pad" maxLength={2} value={maxQuestions} onChangeText={setMaxQuestions} />
         </View>
       </View>
-      {blueprintId ? <Text className="text-xs text-gray-600">{t("prova.level.blueprintQuotaNote")}</Text> : null}
+      {blueprintId ? <Text className="font-body text-xs text-gray-600">{t("prova.level.blueprintQuotaNote")}</Text> : null}
 
       {subject.trim() ? (
         <View className="gap-2 rounded-parent bg-teal-light p-3">
           <Text className="font-body-bold text-sm text-ink">{t("prova.level.preview", { count: summary.total })}</Text>
-          {summary.total === 0 && !preview.isLoading ? <Text className="text-sm text-danger">{t("prova.level.noQuestions")}</Text> : null}
+          {summary.total === 0 && !preview.isLoading ? <Text className="font-body text-sm text-danger">{t("prova.level.noQuestions")}</Text> : null}
           {summary.total > 0 ? (
             <>
               <View className="flex-row flex-wrap gap-2">
                 {DIFFICULTIES.map((d) => (
-                  <Text key={d} className="rounded-full bg-white px-2 py-1 text-xs text-ink">
+                  <Text key={d} className="font-body rounded-full bg-white px-2 py-1 text-xs text-ink">
                     {t(`prova.difficulty.${d}`)}: {summary.byDifficulty.get(d) ?? 0}
                   </Text>
                 ))}
               </View>
               {summary.byTopic.map(([topic, n]) => (
                 <View key={topic} className="flex-row items-center justify-between">
-                  <Text className="flex-1 text-sm text-ink">{topic}</Text>
-                  <Text className="text-sm text-gray-600">{t("prova.questionCount", { count: n })}</Text>
+                  <Text className="font-body flex-1 text-sm text-ink">{topic}</Text>
+                  <Text className="font-body text-sm text-gray-600">{t("prova.questionCount", { count: n })}</Text>
                 </View>
               ))}
             </>
@@ -242,7 +242,7 @@ export default function LevelTestScreen() {
 
       <View className="flex-row items-center gap-3">
         <Switch value={timed} onValueChange={setTimed} />
-        <Text className="text-base text-ink dark:text-night-text">{t("prova.timed")}</Text>
+        <Text className="font-body text-base text-ink dark:text-night-text">{t("prova.timed")}</Text>
         {timed ? (
           <TextInput
             keyboardType="number-pad"
@@ -251,7 +251,7 @@ export default function LevelTestScreen() {
             className="w-16 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink"
           />
         ) : null}
-        {timed ? <Text className="text-ink dark:text-night-text">{t("prova.min")}</Text> : null}
+        {timed ? <Text className="font-body text-ink dark:text-night-text">{t("prova.min")}</Text> : null}
       </View>
 
       <ErrorText error={friendlyError(create.error ?? preview.error ?? children.error ?? blueprints.error ?? subjects.error, t)} />

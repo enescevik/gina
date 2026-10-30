@@ -690,5 +690,10 @@
   "childV5.pet.none": "No pet",
   "childV5.currentRoom": "My sunny room",
   "childV5.roomThemesNote": "This room is ready. Other room themes are not available yet.",
-  "childV5.previewOnly": "Preview: choices appear here and are not saved to your room yet."
+  "childV5.previewOnly": "Preview: choices appear here and are not saved to your room yet.",
+  "release.lockRestoreError": "The child mode lock could not be restored. Retry to continue safely.",
+  "release.roomSaved": "Your room has been saved.",
+  "common.back": "Back",
+  "release.parentSpace": "FAMILY SPACE",
+  "release.loading": "Almost ready…"
 }

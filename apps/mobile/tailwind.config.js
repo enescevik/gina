@@ -28,7 +28,7 @@ module.exports = {
         button: "14px",
       },
       fontFamily: {
-        display: ["Baloo2_800ExtraBold"],
+        display: ["Baloo2_700Bold"],
         "display-semi": ["Baloo2_600SemiBold"],
         body: ["Nunito_600SemiBold"],
         "body-bold": ["Nunito_700Bold"],

@@ -16,7 +16,7 @@ export function Screen({ title, children, tone = "parent", scroll = true }: Scre
   return (
     <SafeAreaView className={`flex-1 ${bg}`}>
       <Body className="flex-1" contentContainerClassName="w-full max-w-3xl self-center gap-4 p-4">
-        {title ? <Text className="text-2xl font-bold text-ink dark:text-night-text">{title}</Text> : null}
+        {title ? <Text className="text-2xl font-body-bold text-ink dark:text-night-text">{title}</Text> : null}
         {children}
       </Body>
     </SafeAreaView>
@@ -31,5 +31,5 @@ export function ErrorText({ error }: { error: unknown }) {
       : typeof error === "object" && error !== null && "message" in error
         ? String((error as { message: unknown }).message)
         : String(error);
-  return <Text className="text-sm text-danger">{message}</Text>;
+  return <Text className="font-body text-sm text-danger">{message}</Text>;
 }

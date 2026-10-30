@@ -17,6 +17,7 @@ import { useChildBadges } from "@/lib/use-child-badges";
 import { useChildExamCount } from "@/lib/use-child-exam-count";
 import { useChildGoal } from "@/lib/use-child-goal";
 import { useChildRoomPrefs } from "@/lib/use-child-room-prefs";
+import { childPath } from "@/lib/active-child";
 import { useChildToday } from "@/lib/use-child-today";
 
 /** Panoda görünür alana sığan görev kâğıdı sayısı (onaylı referans: iki büyük kâğıt; kalanı pano içinde kayar). */
@@ -61,7 +62,7 @@ export interface RoomChildHomeProps {
 }
 
 /** Onaylı tasarımın (child-home-approved.png) gerçek verili hâli: pano, hedef bileti, Haftam, raf ve Başardıklarım. */
-export function RoomChildHome({ childId, childName, character = "unspecified", actingAsParent = false, onParentExit }: RoomChildHomeProps) {
+export function RoomChildHome({ childId, childName, character: providedCharacter, actingAsParent = false, onParentExit }: RoomChildHomeProps) {
   const { t, i18n } = useTranslation();
   const data = useChildToday(childId, actingAsParent);
   const badges = useChildBadges(childId, i18n.language);
@@ -71,7 +72,9 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
   const goal = useChildGoal(childId);
   const weekday = new Intl.DateTimeFormat(i18n.language, { weekday: "short", timeZone: "UTC" });
   // Satır yoksa sütun varsayılanı ('cat') geçerlidir.
-  const pet = useChildRoomPrefs(childId).data?.petKey ?? "cat";
+  const prefs = useChildRoomPrefs(childId);
+  const pet = prefs.data?.petKey ?? "cat";
+  const character = providedCharacter ?? (prefs.data?.characterKey === "girl" || prefs.data?.characterKey === "boy" ? prefs.data.characterKey : "unspecified");
   // Pano kaydırma alanının yüksekliği: iki kâğıt tam sığacak şekilde kart yüksekliği buradan hesaplanır.
   const [listHeight, setListHeight] = useState(0);
 
@@ -139,8 +142,9 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
               skin="board-frame"
               scale={s}
               style={{ position: "absolute", ...board }}
-              contentStyle={{ flex: 1, flexGrow: 1 }}
+              contentStyle={{ flex: 1, flexGrow: 1, paddingTop: 28 * s }}
             >
+              <View style={{ height: 115 * s }}>
               <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(28), lineHeight: fs(36) }}>
                 {t("room.todayTasks")}
               </Text>
@@ -154,6 +158,7 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
                   s={s}
                   statuses={data.due.map((task) => task.status === "done" || task.status === "approved")}
                 />
+              </View>
               </View>
               <ErrorText error={data.error} />
               <ScrollView
@@ -193,33 +198,33 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
               <SkinPressable
                 skin={goalData ? "ticket-goal" : "ticket-goal-empty"}
                 scale={s}
-                onPress={() => router.push("/child/goal")}
+                onPress={() => router.push(childPath("goal", actingAsParent))}
                 accessibilityLabel={
                   goalData
                     ? `${t("room.myGoal")}: ${goalData.rewardTitle}, ${t("room.goalProgress", { stars: Math.min(data.stars, goalData.cost), cost: goalData.cost })}`
                     : `${t("room.myGoal")}: ${t("goal.pickCta")}`
                 }
                 style={{ width: goalRect.width, flexGrow: 272, flexBasis: 0 }}
-                contentClassName="flex-row items-center justify-center"
-                contentStyle={{ gap: 6 * s }}
+                contentClassName="items-center justify-center"
+                contentStyle={{ paddingTop: 24 * s, paddingBottom: 22 * s, paddingHorizontal: 22 * s, gap: 4 * s }}
               >
                 {/* Sol/sağ ödül görseli yuvaları (BRIEF 13 / D.1): görsel yoksa hiç çizilmez, metin ortada kalır. */}
-                <TicketArt source={goalData ? ticketArt.left : null} size={ticketArtSize} />
-                <View className="flex-1 items-center justify-center">
+                <View pointerEvents="none" style={{ position: "absolute", left: 20 * s, bottom: 28 * s }}><TicketArt source={goalData ? ticketArt.left : null} size={ticketArtSize * .8} /></View>
+                <View className="items-center justify-center" style={{ width: "100%", gap: 2 * s }}>
                 <Text className="font-display text-ink" style={{ fontSize: fs(24), lineHeight: fs(28) }}>
                   {t("room.myGoal")}
                 </Text>
                 {goal.isLoading ? <ActivityIndicator color="#0B7F7F" /> : null}
                 {goalData ? (
                   <>
-                    <Text numberOfLines={1} adjustsFontSizeToFit className="font-display text-ink" style={{ fontSize: fs(32), lineHeight: fs(38) }}>
+                    <Text numberOfLines={1} adjustsFontSizeToFit className="font-display text-ink" style={{ fontSize: fs(25), lineHeight: fs(31) }}>
                       {goalData.rewardTitle}
                     </Text>
                     <Text className="font-body-bold text-ink" style={{ fontSize: fs(17) }}>
                       {t("room.goalProgress", { stars: Math.min(data.stars, goalData.cost), cost: goalData.cost })}
                     </Text>
-                    <SkinProgress value={data.stars / goalData.cost} scale={s} style={{ alignSelf: "stretch", marginVertical: 4 * s }} />
-                    <Text className="font-display text-ink" style={{ fontSize: fs(26), lineHeight: fs(32) }}>
+                    <SkinProgress value={data.stars / goalData.cost} scale={s} style={{ width: "60%", marginVertical: 4 * s }} />
+                    <Text className="font-display text-ink" style={{ fontSize: fs(20), lineHeight: fs(26) }}>
                       {remaining === 0 ? t("goal.reached") : t("room.starsLeft", { count: remaining })}
                     </Text>
                   </>
@@ -229,7 +234,7 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
                   </Text>
                 ) : null}
                 </View>
-                <TicketArt source={goalData ? ticketArt.right : null} size={ticketArtSize} />
+                <View pointerEvents="none" style={{ position: "absolute", right: 20 * s, bottom: 28 * s }}><TicketArt source={goalData ? ticketArt.right : null} size={ticketArtSize * .8} /></View>
               </SkinPressable>
 
               {/* Haftam duvar takvimi: week-frame; gün hücreleri native, durumlar kaplama */}
@@ -264,56 +269,28 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
                 </View>
               </NineSlice>
 
-              {/* Sergi rafı: shelf-display; üç native yuva content rect içinde x=1/6, 1/2, 5/6 */}
-              <NineSlice skin="shelf-display" scale={s} style={{ width: shelfZone.width }} contentClassName="flex-row">
-                {[0, 1, 2].map((i) => {
-                  const badge = shelf[i];
-                  return (
-                    <Pressable
-                      key={i}
-                      accessibilityRole="button"
-                      accessibilityLabel={badge ? badge.title : `${t("room.displaySlot")} ${i + 1}`}
-                      onPress={() => router.push("/child/collection")}
-                      className="flex-1 items-center justify-end"
-                      style={{ minHeight: 48 }}
-                    >
-                      {badge ? (
-                        <>
-                          <ShelfObject badge={badge} s={s} />
-                          <Text numberOfLines={1} className="font-body-bold text-cream" style={{ fontSize: fs(12) }}>
-                            {badge.title}
-                          </Text>
-                        </>
-                      ) : null}
-                    </Pressable>
-                  );
-                })}
+              <NineSlice skin="cabinet-display" scale={s} style={{ width: shelfZone.width, height: 220 * s }}
+                contentClassName="flex-row items-end" contentStyle={{ gap: 4 * s, paddingBottom: 110 * s }}>
+                {[0, 1, 2].map(i => <Pressable key={i} accessibilityRole="button" onPress={() => router.push(childPath("collection", actingAsParent))}
+                  accessibilityLabel={shelf[i]?.title ?? t("room.displaySlot")} style={{ flex: 1, minHeight: 72 * s, alignItems: "center", justifyContent: "flex-end" }}>
+                  {shelf[i] ? <>
+                    <ShelfObject badge={shelf[i]} s={s} />
+                    <Text numberOfLines={1} className="font-body-bold text-ink" style={{ fontSize: fs(12), paddingHorizontal: 4, backgroundColor: "#FFF1D4", borderRadius: 4 }}>{shelf[i].title}</Text>
+                  </> : null}
+                </Pressable>)}
+                <Pressable accessibilityRole="button" accessibilityLabel={t("room.myCollection")} onPress={() => router.push(childPath("collection", actingAsParent))}
+                  style={{ position: "absolute", left: 75 * s, right: 35 * s, bottom: 43 * s, minHeight: 50 * s, justifyContent: "center" }}>
+                  <Text numberOfLines={1} className="font-display text-ink" style={{ fontSize: fs(22), lineHeight: fs(27) }}>{t("room.myWins")}</Text>
+                  <Text className="font-body text-ink" style={{ fontSize: fs(13) }}>{t("collection.badgeCount", { count: earnedCount })}</Text>
+                </Pressable>
               </NineSlice>
-
-              {/* Başardıklarım çekmecesi: bugünün gerçek özeti → Koleksiyonum (yıldız kulpu kaplamada) */}
-              <SkinPressable
-                skin="drawer-front"
-                pressedSkin="drawer-front-pressed"
-                scale={s}
-                onPress={() => router.push("/child/collection")}
-                style={{ width: shelfZone.width }}
-                contentClassName="flex-row items-center"
-              >
-                <View className="flex-1">
-                  <Text numberOfLines={1} className="font-display text-ink" style={{ fontSize: fs(24), lineHeight: fs(30) }}>
-                    {t("room.myWins")}
-                  </Text>
-                  <Text numberOfLines={2} className="font-body text-ink" style={{ fontSize: fs(15) }}>
-                    {t("room.todaySummary", { tasks: data.todayDone, stars: data.todayStarsEarned })}
-                    {earnedCount > 0 ? ` · ${t("collection.badgeCount", { count: earnedCount })}` : ""}
-                  </Text>
-                </View>
-                <Text className="font-display text-ink" style={{ fontSize: fs(28) }}>
-                  ›
-                </Text>
-              </SkinPressable>
             </View>
 
+            <SkinPressable skin="button-outline" pressedSkin="button-outline-pressed" scale={s}
+              accessibilityLabel={t("childV5.customize")} onPress={() => router.push(childPath("room-preview", actingAsParent))}
+              style={{ position: "absolute", left: frame.left + frame.width * .42, bottom: 10, minHeight: 48 }}>
+              <Text className="font-body-bold text-ink">{t("childV5.customize")}</Text>
+            </SkinPressable>
             {/* Kitaplık: Prova kapısı; atanmış deneme varsa işaret */}
             <Pressable
               accessibilityRole="button"
@@ -332,7 +309,7 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
                 </Text>
                 {(assignedExams.data ?? 0) > 0 ? (
                   <View className="h-5 min-w-5 items-center justify-center rounded-full bg-coral px-1">
-                    <Text className="text-xs font-bold text-white">{assignedExams.data}</Text>
+                    <Text className="text-xs font-body-bold text-white">{assignedExams.data}</Text>
                   </View>
                 ) : null}
               </View>

@@ -107,11 +107,11 @@ export default function TakeExamScreen() {
     return (
       <Screen tone="child" surface="desk" title={t("prova.finished")}>
         <View className="items-center gap-3 rounded-child bg-white p-8">
-          <Text className="text-5xl">🎉</Text>
+          <Text className="font-body text-5xl">🎉</Text>
           <Text className="font-display text-2xl text-ink">
             {t("prova.resultMc", { correct: finish.data.mc_correct ?? 0, total: finish.data.mc_total ?? 0 })}
           </Text>
-          <Text className="text-center text-base text-gray-600">{t("prova.openEndedNote")}</Text>
+          <Text className="font-body text-center text-base text-gray-600">{t("prova.openEndedNote")}</Text>
         </View>
         <Button size="child" title={t("prova.backToList")} onPress={() => router.replace(actingChild ? "/parent/child-mode/prova" : "/child/prova")} />
       </Screen>
@@ -168,7 +168,7 @@ export default function TakeExamScreen() {
                   >
                     <Text className={`font-display text-lg ${selected ? "text-white" : "text-ink"}`}>{choice.key}</Text>
                     <Text className={`flex-1 text-base ${selected ? "font-body-bold text-white" : "text-ink"}`}>{choice.text}</Text>
-                    {selected ? <Text className="text-lg text-white">✓</Text> : null}
+                    {selected ? <Text className="font-body text-lg text-white">✓</Text> : null}
                   </Pressable>
                 );
               })}

@@ -1,14 +1,17 @@
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View, useWindowDimensions } from "react-native";
+import { Image, Text, View, useWindowDimensions } from "react-native";
 
+import { NineSlice } from "@/components/room/nine-slice";
+import { shelfDisplayArt } from "@/components/room/room-art";
+import { ILLUSTRATED_GAMIFICATION } from "@/generated/illustrated/gamification";
 import { Collectible } from "@/components/collectible";
 import { CelebrationBurst } from "@/components/collectible-motion";
 import { Button } from "@/components/ui/button";
 import { ErrorText } from "@/components/ui/screen";
 import { ChildScreen as Screen } from "@/components/room/child-screen";
-import { useSession } from "@/lib/session";
+import { useActiveChild } from "@/lib/active-child";
 import { useChildBadges } from "@/lib/use-child-badges";
 
 // Bu oturumda kutlanan rozetler: kutlama yalnız bir kez oynar (yeniden açılışta tekrar etmez).
@@ -20,9 +23,8 @@ export default function ChildCollectionScreen() {
   const { t, i18n } = useTranslation();
   const { width, fontScale } = useWindowDimensions();
   const singleColumn = fontScale > 1.2;
-  const collectibleSize = width >= 900 ? 112 : 88;
-  const { claims } = useSession();
-  const childId = claims?.child_id ?? "";
+  const collectibleSize = width >= 900 ? 138 : 88;
+  const { childId } = useActiveChild();
   const badges = useChildBadges(childId, i18n.language);
   const earnedCount = badges.data?.filter((b) => b.earned).length ?? 0;
   // Son 24 saatte kazanılan ve henüz kutlanmamış en yeni rozet (liste en yeni önce sıralı). Rozet sunucuda verilir; burada yalnız gösterim.
@@ -39,15 +41,16 @@ export default function ChildCollectionScreen() {
         {t("collection.summary", { earned: earnedCount, total: badges.data?.length ?? 0 })}
       </Text>
       <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-        {badges.data?.map((badge, index) => (
+        {badges.data?.map((badge) => (
           <View
             key={badge.slug}
-            style={{ width: singleColumn ? "100%" : "50%", alignItems: "center", gap: 4, padding: 8, borderBottomWidth: 10, borderRightWidth: !singleColumn && index % 2 === 0 ? 10 : 0, borderColor: "#BE843E" }}
+            style={{ width: singleColumn ? "100%" : "50%", marginBottom: -8 }}
             accessible
             accessibilityLabel={`${badge.title}: ${badge.earned ? t("collection.earned") : t("collection.locked")}`}
           >
+            <NineSlice skin="child-cabinet-cell-v5" scale={width >= 900 ? .55 : .3} contentStyle={{ alignItems: "center", gap: 6 }}>
             <View className="items-center justify-center">
-              <Collectible slug={badge.icon} locked={!badge.earned} size={collectibleSize} />
+              {shelfDisplayArt(badge) || !badge.earned ? <Image source={badge.earned ? shelfDisplayArt(badge)! : ILLUSTRATED_GAMIFICATION["display-locked"]} resizeMode="contain" accessible={false} style={{ width: collectibleSize, height: collectibleSize, opacity: badge.earned ? 1 : .5 }} /> : <Collectible slug={badge.icon} size={collectibleSize} />}
               {celebrating === badge.slug ? (
                 <View className="absolute" pointerEvents="none">
                   <CelebrationBurst
@@ -60,8 +63,9 @@ export default function ChildCollectionScreen() {
                 </View>
               ) : null}
             </View>
-            <Text style={{ backgroundColor: "#FFD59A", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4, fontFamily: "Baloo2_800ExtraBold", color: "#65421E", textAlign: "center", fontSize: 16 }}>{badge.title}</Text>
-            <Text className="text-xs text-gray-600">{badge.earned ? t("collection.earned") : t("collection.locked")}</Text>
+            <Text style={{ backgroundColor: "#FFD59A", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4, fontFamily: "Baloo2_700Bold", color: "#65421E", textAlign: "center", fontSize: 16 }}>{badge.title}</Text>
+            <Text className="font-body text-xs text-gray-600">{badge.earned ? t("collection.earned") : t("collection.locked")}</Text>
+            </NineSlice>
           </View>
         ))}
       </View>

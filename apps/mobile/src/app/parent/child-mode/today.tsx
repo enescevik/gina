@@ -8,7 +8,8 @@ import { WIDE_LAYOUT_MIN_DP } from "@/components/room/layout";
 import { TodayView } from "@/components/today-view";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ChildScreen as Screen } from "@/components/room/child-screen";
+import { ErrorText } from "@/components/ui/screen";
 import { useChildMode } from "@/lib/child-mode";
 import { supabase } from "@/lib/supabase";
 
@@ -41,7 +42,7 @@ export default function ChildModeTodayScreen() {
         setPin("");
         return;
       }
-      exit();
+      await exit();
       router.replace("/parent");
     } catch (e) {
       setError(e);
@@ -52,14 +53,20 @@ export default function ChildModeTodayScreen() {
 
   return (
     <Screen tone="child" title={t("child.hello", { name: actingChild.name })}>
-      <TodayView childId={actingChild.id} actingAsParent />
+      {!asking ? <>
+        <TodayView childId={actingChild.id} actingAsParent />
+        <Button variant="secondary" title={t("child.week")} onPress={() => router.push("/parent/child-mode/week")} />
+        <Button variant="secondary" title={t("child.calendar")} onPress={() => router.push("/parent/child-mode/calendar")} />
+        <Button variant="secondary" title={t("room.myCollection")} onPress={() => router.push("/parent/child-mode/collection")} />
+        <Button variant="secondary" title={t("childV5.customize")} onPress={() => router.push("/parent/child-mode/room-preview")} />
+      </> : null}
       {asking ? (
         <View className="gap-3 rounded-child bg-white p-4 dark:bg-night-surface">
-          <Text className="text-base font-semibold text-ink dark:text-night-text">{t("childMode.parentPin")}</Text>
+          <Text className="text-base font-body-bold text-ink dark:text-night-text">{t("childMode.parentPin")}</Text>
           <Field label="PIN" keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={setPin} className="text-center text-2xl tracking-widest" />
           <ErrorText error={error} />
           <Button title={t("childMode.exit")} loading={busy} disabled={pin.length !== 4} onPress={confirmExit} />
-          <Button variant="ghost" title={t("common.cancel")} onPress={() => setAsking(false)} />
+          <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => { setAsking(false); setPin(""); setError(null); }} />
         </View>
       ) : (
         <Button variant="ghost" title={t("childMode.exit")} onPress={() => setAsking(true)} />

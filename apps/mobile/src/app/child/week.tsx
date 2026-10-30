@@ -13,14 +13,13 @@ import { ErrorText } from "@/components/ui/screen";
 import { ChildScreen as Screen, ChildColumns, childStyles } from "@/components/room/child-screen";
 import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
-import { useSession } from "@/lib/session";
+import { useActiveChild } from "@/lib/active-child";
 import { supabase } from "@/lib/supabase";
 
 /** Çocuğun «Haftam» ekranı: haftanın günleri, o gün düşen görevler ve durumları. */
 export default function ChildWeekScreen() {
   const { t, i18n } = useTranslation();
-  const { claims } = useSession();
-  const childId = claims?.child_id ?? "";
+  const { childId, path } = useActiveChild();
   const timeZone = useFamilyTimezone();
   const today = localDateOf(new Date(), timeZone);
   const week = weekDatesOf(today);
@@ -92,7 +91,7 @@ export default function ChildWeekScreen() {
         );
       })}
       </ChildColumns>
-      <Button variant="ghost" title={t("child.today")} onPress={() => router.replace("/child/today")} />
+      <Button variant="ghost" title={t("child.today")} onPress={() => router.replace(path("today"))} />
     </Screen>
   );
 }

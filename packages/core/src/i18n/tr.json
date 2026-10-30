@@ -28,7 +28,7 @@
   "grade.kind.project": "Proje",
   "grade.kind.oral": "Sözlü",
   "grade.kind.performance": "Performans",
-  "common.retry": "Tekrar dene",
+  "common.retry": "Yeniden dene",
   "common.offline": "Çevrimdışısın; yaptıkların bağlantı gelince kaydedilecek.",
   "weekday.1": "Pzt",
   "weekday.2": "Sal",
@@ -690,5 +690,10 @@
   "childV5.pet.none": "Dostum olmasın",
   "childV5.currentRoom": "Güneşli odam",
   "childV5.roomThemesNote": "Bu oda hazır. Diğer oda temaları henüz seçilemiyor.",
-  "childV5.previewOnly": "Önizleme: seçimlerin bu ekranda görünür, henüz odana kaydedilmez."
+  "childV5.previewOnly": "Önizleme: seçimlerin bu ekranda görünür, henüz odana kaydedilmez.",
+  "release.lockRestoreError": "Çocuk modu kilidi okunamadı. Güvenli biçimde devam etmek için yeniden dene.",
+  "release.roomSaved": "Odan kaydedildi.",
+  "common.back": "Geri",
+  "release.parentSpace": "AİLENİN ALANI",
+  "release.loading": "Birazdan hazır…"
 }

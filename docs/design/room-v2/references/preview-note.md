@@ -186,3 +186,17 @@ BRIEF 13 A–E parça kapsamı tamamdır. Bu bir bağımsız katman teslimidir; 
 | Önceki BRIEF 13 petleri | pet-{cat,dog,monkey,lion}.webp | Mevcut kaynaklar etkinleştirildi, yeni animasyon iddiası yok |
 
 Önceki dosya/slug'lar korunur; v5 karakterleri ve ana oda manifestte supersedes ile ilişkilidir. Yeni kaynaklar image_gen ile, onaylı referanslardan üretildi. PNG/WebP boyut dönüştürme ve lossless kodlama dışında raster çizim yapılmadı. Oda/karakter kaynakları metinsiz; native başlıklar ve kontroller ayrıdır. Üretim envanteri: rooms/v2/contact-sheet-v5.svg ve güncellenmiş iki contact-sheet.svg.
+
+## V5 ikinci göz entegrasyonu · 31 Ekim
+
+| Kaynak | Native kullanım |
+|---|---|
+| `rooms/v2/pet-{cat,dog,monkey,lion}.webp` | Aynı slug, yenilenen v5 kürk/ışık; manifest içerik sınırı ile ortak ayak çizgisi |
+| `rooms/v2/pet-*-portrait.webp` | Aynı 256 px portre yolları |
+| `room-chrome/child-cabinet-cell-v5.svg` + `png/*@3x.png` | Tekrarlanan koleksiyon bölmesi; başlık, durum ve isimler native |
+| `gamification/illustrated-v3/display-*` → generated | Raflarda 3B nesne; küçük madalya yerine sergi nesnesi |
+| `progress-bar-teal-track/fill` | Görev panosunda gerçek tamamlanma yüzdesi |
+| `cabinet-display` | Ana ekranda tek parça dolap; native nesne ve çekmece etiketleri |
+| `rooms/v2/parent-header-v5.webp` | Onaylı shared-v5 başlık sanatından lossless üretim türevi |
+
+Üretim, alfa kontrolü ve karşılaştırmalar: `docs/design/screens/child/implementation-v5/audit/`. Statik pet katmanları animasyon rig'i değildir.

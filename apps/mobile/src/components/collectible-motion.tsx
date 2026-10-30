@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AccessibilityInfo, Animated, AppState, Easing, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 
@@ -18,7 +19,7 @@ function assetSlug(path: string, fallback: CollectibleSlug): CollectibleSlug {
 
 /** Sistem "hareketi azalt" ayarı; açıkken animasyon yerine sabit görsel gösterilir. */
 export function useReducedMotion(): boolean {
-  const [reduced, setReduced] = useState(false);
+  const [reduced, setReduced] = useState(true);
   useEffect(() => {
     let alive = true;
     AccessibilityInfo.isReduceMotionEnabled()
@@ -150,6 +151,8 @@ export interface LoadingStarProps {
 export function LoadingStar({ size = 64, accessibilityLabel }: LoadingStarProps) {
   const s = clampSize(size);
   const reduced = useReducedMotion();
+  const [focused, setFocused] = useState(false);
+  useFocusEffect(useCallback(() => { setFocused(true); return () => setFocused(false); }, []));
   const [spin] = useState(() => new Animated.Value(0));
   const [active, setActive] = useState(AppState.currentState === "active");
 
@@ -159,14 +162,14 @@ export function LoadingStar({ size = 64, accessibilityLabel }: LoadingStarProps)
   }, []);
 
   useEffect(() => {
-    if (reduced || !active) return;
+    if (reduced || !active || !focused) return;
     spin.setValue(0);
     const anim = Animated.loop(
       Animated.timing(spin, { toValue: 1, duration: loading.duration_ms, easing: Easing.linear, useNativeDriver: true }),
     );
     anim.start();
     return () => anim.stop();
-  }, [reduced, active, spin]);
+  }, [reduced, active, focused, spin]);
 
   const a11y = {
     accessible: true,

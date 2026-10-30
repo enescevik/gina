@@ -52,6 +52,7 @@ export default function TodayScreen() {
           <Button variant="secondary" size="child" title={t("child.calendar")} onPress={() => router.push("/child/calendar")} />
         </View>
       </View>
+      <Button variant="secondary" title={t("childV5.customize")} onPress={() => router.push("/child/room-preview")} />
       <Button variant="ghost" title={t("child.switchProfile")} onPress={() => void logout()} />
     </Screen>
   );

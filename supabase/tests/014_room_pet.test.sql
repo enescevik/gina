@@ -1,6 +1,6 @@
 -- Evcil hayvan seçimi: geçerli değerler, aile sınırı, varsayılan kedi.
 begin;
-select plan(6);
+select plan(7);
 
 insert into auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at)
 values
@@ -42,5 +42,8 @@ reset role;
 select is((select pet_key from public.child_room_preferences where child_id = '20000000-0000-0000-0000-00000000e1c1'), 'monkey', 'son geçerli seçim kalır');
 select is((select column_default from information_schema.columns where table_name = 'child_room_preferences' and column_name = 'pet_key'), '''cat''::text', 'varsayılan referanstaki kedi');
 
+set local role authenticated;
+select throws_ok($$ select public.set_room_preference('boy', 'default', '20000000-0000-0000-0000-00000000e1c1') $$, 'P0001', 'no_child', 'room preference rejects a child from another family');
+reset role;
 select * from finish();
 rollback;

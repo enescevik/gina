@@ -90,7 +90,7 @@ export default function ParentRewardsScreen() {
     <Screen title={t("rewards.title")}>
       <View className="gap-2 rounded-parent bg-star/15 p-4">
         <Text className="font-display text-xl text-ink">{t("rewards.requests")}</Text>
-        {requests.data?.length === 0 ? <Text className="text-gray-600">{t("rewards.noRequests")}</Text> : null}
+        {requests.data?.length === 0 ? <Text className="font-body text-gray-600">{t("rewards.noRequests")}</Text> : null}
         {requests.data?.map((request) => (
           <View key={request.id} className="gap-2 rounded-parent bg-white p-3">
             <Text className="font-body-bold text-base text-ink">
@@ -121,7 +121,7 @@ export default function ParentRewardsScreen() {
         <Text className="font-display text-xl text-ink dark:text-night-text">{t("rewards.catalog")}</Text>
         {rewards.data?.map((reward) => (
           <View key={reward.id} className={`flex-row items-center gap-2 ${reward.active ? "" : "opacity-50"}`}>
-            <Text className="flex-1 text-base text-ink dark:text-night-text">
+            <Text className="font-body flex-1 text-base text-ink dark:text-night-text">
               🎁 {reward.title} · ⭐ {reward.cost_stars}
             </Text>
             <Button

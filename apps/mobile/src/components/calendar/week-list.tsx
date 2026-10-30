@@ -51,20 +51,20 @@ export function WeekList({ week, occurrences, today, timeZone = DEFAULT_TIMEZONE
         const isToday = date === today;
         return (
           <View key={date} className={`gap-2 rounded-parent p-3 ${isToday ? "bg-teal-light" : "bg-white dark:bg-night-surface"}`}>
-            <Text className={`text-base font-semibold ${isToday ? "text-teal-dark" : "text-ink dark:text-night-text"}`}>
+            <Text className={`text-base font-body-bold ${isToday ? "text-teal-dark" : "text-ink dark:text-night-text"}`}>
               {dayFormat.format(new Date(`${date}T00:00:00Z`))}
               {isToday ? ` · ${t("calendar.today")}` : ""}
             </Text>
-            {items.length === 0 ? <Text className="text-sm text-gray-500">{t("calendar.noEvents")}</Text> : null}
+            {items.length === 0 ? <Text className="font-body text-sm text-gray-500">{t("calendar.noEvents")}</Text> : null}
             {items.map((o) => (
               <View key={`${o.event.id}:${o.date}`} className={`flex-row items-center gap-3 rounded-parent p-2 ${TYPE_TONE[o.event.type]}`}>
                 <EventIcon type={o.event.type} size={48} variant="illustrated" />
-                <Text className="w-24 text-sm font-medium text-ink">
+                <Text className="w-24 text-sm font-body text-ink">
                   {o.event.all_day ? t("calendar.allDay") : `${timeFormat.format(o.startsAt)}${o.endsAt ? `–${timeFormat.format(o.endsAt)}` : ""}`}
                 </Text>
                 <View className="flex-1">
-                  <Text className="text-base font-semibold text-ink">{o.event.title}</Text>
-                  <Text className="text-xs text-gray-600">
+                  <Text className="text-base font-body-bold text-ink">{o.event.title}</Text>
+                  <Text className="font-body text-xs text-gray-600">
                     {t(`event.type.${o.event.type}`)}
                     {showChild ? ` · ${o.event.childName ?? t("calendar.allFamily")}` : ""}
                     {o.event.location ? ` · ${o.event.location}` : ""}

@@ -338,25 +338,29 @@
     "height": 256,
     "format": "webp",
     "alpha": true,
-    "sha256": "20bd7223e76017e5d8b60d2907f0dc2997248f22c30486f442bc099dd6df3320",
+    "sha256": "f026412bd0f40e04cea50fb4ae716927e6f8baf39d2c685506cb81fc48500358",
     "variants": [
       "brief-13"
     ],
-    "status": "reference-match-assets",
+    "status": "approved-v5-style-refinement",
     "content_bounds_alpha32": [
-      14,
-      21,
-      248,
-      238
+      4,
+      3,
+      246,
+      252
     ],
     "lossless": true,
-    "source": "exec-57897132-62cb-4d43-93bc-3ee57aac68e2.png",
+    "source": "exec-f6ef7022-d014-460e-8f38-87ee6395d095.png",
     "contentBounds": [
-      14,
-      21,
-      248,
-      238
-    ]
+      4,
+      3,
+      246,
+      252
+    ],
+    "supersedes": {
+      "file": "previous/v5-audit/pet-cat-portrait.webp",
+      "sha256": "20bd7223e76017e5d8b60d2907f0dc2997248f22c30486f442bc099dd6df3320"
+    }
   },
   {
     "slug": "pet-cat",
@@ -365,24 +369,24 @@
     "height": 512,
     "format": "webp",
     "alpha": true,
-    "sha256": "a3520d9e512d283edf1ddaea0ce56408892989096168aa3392532523d2768db3",
+    "sha256": "96121aad50037aa3bcf05b67e5ed426b3ecb0aedccba61a63d7e13c75d38660d",
     "variants": [
       "brief-13"
     ],
-    "status": "reference-match-assets",
+    "status": "approved-v5-style-refinement",
     "content_bounds_alpha32": [
-      55,
-      93,
-      723,
-      442
+      52,
+      66,
+      736,
+      444
     ],
     "lossless": true,
-    "source": "exec-431663b9-c6d9-4f39-908e-4a45beff6359.png",
+    "source": "exec-f6ef7022-d014-460e-8f38-87ee6395d095.png",
     "contentBounds": [
-      55,
-      93,
-      723,
-      442
+      52,
+      66,
+      736,
+      444
     ],
     "groundLine": 442,
     "anchor": {
@@ -399,7 +403,11 @@
       "width": 210,
       "height": 140
     },
-    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch"
+    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch",
+    "supersedes": {
+      "file": "previous/v5-audit/pet-cat.webp",
+      "sha256": "a3520d9e512d283edf1ddaea0ce56408892989096168aa3392532523d2768db3"
+    }
   },
   {
     "slug": "pet-dog-portrait",
@@ -408,25 +416,29 @@
     "height": 256,
     "format": "webp",
     "alpha": true,
-    "sha256": "0022353f058c80af264f851f7bddfa4741bff93f4361dfb8fe50a63a93d18e28",
+    "sha256": "d67eeeedc1c766c31104bf1becd0c44d8004d3173b6af120eed70bc67e08c1e4",
     "variants": [
       "brief-13"
     ],
-    "status": "reference-match-assets",
+    "status": "approved-v5-style-refinement",
     "content_bounds_alpha32": [
-      14,
-      41,
-      248,
-      222
+      4,
+      31,
+      252,
+      239
     ],
     "lossless": true,
-    "source": "exec-04ea4202-03b6-425d-a25e-2e12a54025fa.png",
+    "source": "exec-c9728ce8-0d23-4921-b90a-ab8c13a189ed.png",
     "contentBounds": [
-      14,
-      41,
-      248,
-      222
-    ]
+      4,
+      31,
+      252,
+      239
+    ],
+    "supersedes": {
+      "file": "previous/v5-audit/pet-dog-portrait.webp",
+      "sha256": "0022353f058c80af264f851f7bddfa4741bff93f4361dfb8fe50a63a93d18e28"
+    }
   },
   {
     "slug": "pet-dog",
@@ -435,24 +447,24 @@
     "height": 512,
     "format": "webp",
     "alpha": true,
-    "sha256": "000cd39e7d0d98455b42f1298f0bbea82100361e449100d4e620db36e7b720b0",
+    "sha256": "97055b05499fa275c278562d7edd23a01e1a95965db523def113e611ad03abd5",
     "variants": [
       "brief-13"
     ],
-    "status": "reference-match-assets",
+    "status": "approved-v5-style-refinement",
     "content_bounds_alpha32": [
-      64,
-      140,
-      732,
-      430
+      38,
+      108,
+      750,
+      431
     ],
     "lossless": true,
-    "source": "exec-5df722e6-5e7d-4177-b49d-a0a7b0f8a3c4.png",
+    "source": "exec-c9728ce8-0d23-4921-b90a-ab8c13a189ed.png",
     "contentBounds": [
-      64,
-      140,
-      732,
-      430
+      38,
+      108,
+      750,
+      431
     ],
     "groundLine": 430,
     "anchor": {
@@ -469,7 +481,11 @@
       "width": 210,
       "height": 140
     },
-    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch"
+    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch",
+    "supersedes": {
+      "file": "previous/v5-audit/pet-dog.webp",
+      "sha256": "000cd39e7d0d98455b42f1298f0bbea82100361e449100d4e620db36e7b720b0"
+    }
   },
   {
     "slug": "pet-lion-portrait",
@@ -478,25 +494,29 @@
     "height": 256,
     "format": "webp",
     "alpha": true,
-    "sha256": "0c5b31f617ba47131f24ea963feedcceb57c2dd42cc1b9d0126a4978cf7fc090",
+    "sha256": "a65dbf5307589472ea396108892c9fa90c32c8b6ef8c62c23dcfda454308889c",
     "variants": [
       "brief-13"
     ],
-    "status": "reference-match-assets",
+    "status": "approved-v5-style-refinement",
     "content_bounds_alpha32": [
-      21,
-      33,
-      247,
-      230
+      4,
+      0,
+      252,
+      234
     ],
     "lossless": true,
-    "source": "exec-f86d11ec-bd06-4256-906f-b9fe0bddda85.png",
+    "source": "exec-cadcd062-4600-4d94-a4ed-8feafa093f2a.png",
     "contentBounds": [
-      21,
-      33,
-      247,
-      230
-    ]
+      4,
+      0,
+      252,
+      234
+    ],
+    "supersedes": {
+      "file": "previous/v5-audit/pet-lion-portrait.webp",
+      "sha256": "0c5b31f617ba47131f24ea963feedcceb57c2dd42cc1b9d0126a4978cf7fc090"
+    }
   },
   {
     "slug": "pet-lion",
@@ -505,24 +525,24 @@
     "height": 512,
     "format": "webp",
     "alpha": true,
-    "sha256": "f9575112bc0a0c856263b6cdd902de6f81ba7f6c532458c8366acae4394572ab",
+    "sha256": "6a48485f82a0d0e4567458ff1a451a930bb82fc0306692908ef6ec8a70661c7c",
     "variants": [
       "brief-13"
     ],
-    "status": "reference-match-assets",
+    "status": "approved-v5-style-refinement",
     "content_bounds_alpha32": [
-      53,
-      106,
-      717,
-      439
+      43,
+      61,
+      751,
+      432
     ],
     "lossless": true,
-    "source": "exec-c7334c4c-7528-40f8-b134-b9ec3b929955.png",
+    "source": "exec-cadcd062-4600-4d94-a4ed-8feafa093f2a.png",
     "contentBounds": [
-      53,
-      106,
-      717,
-      439
+      43,
+      61,
+      751,
+      432
     ],
     "groundLine": 439,
     "anchor": {
@@ -539,7 +559,11 @@
       "width": 210,
       "height": 140
     },
-    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch"
+    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch",
+    "supersedes": {
+      "file": "previous/v5-audit/pet-lion.webp",
+      "sha256": "f9575112bc0a0c856263b6cdd902de6f81ba7f6c532458c8366acae4394572ab"
+    }
   },
   {
     "slug": "pet-monkey-portrait",
@@ -548,25 +572,29 @@
     "height": 256,
     "format": "webp",
     "alpha": true,
-    "sha256": "f52b07e3c0ea8ba5ba8ccbe7eee436dd00de821d495f3ed8a6c9dfad0a3d16bd",
+    "sha256": "f5bc2e8d6c5e1b23c5ef299c602a96d1aa151b5d083847513cdebf301111a2f0",
     "variants": [
       "brief-13"
     ],
-    "status": "reference-match-assets",
+    "status": "approved-v5-style-refinement",
     "content_bounds_alpha32": [
-      10,
-      26,
-      253,
-      229
+      4,
+      13,
+      250,
+      248
     ],
     "lossless": true,
-    "source": "exec-d5430761-8c6d-426c-825b-f88006607ef8.png",
+    "source": "exec-c993cbee-20ad-4421-bdad-64a27d7fe795.png",
     "contentBounds": [
-      10,
-      26,
-      253,
-      229
-    ]
+      4,
+      13,
+      250,
+      248
+    ],
+    "supersedes": {
+      "file": "previous/v5-audit/pet-monkey-portrait.webp",
+      "sha256": "f52b07e3c0ea8ba5ba8ccbe7eee436dd00de821d495f3ed8a6c9dfad0a3d16bd"
+    }
   },
   {
     "slug": "pet-monkey",
@@ -575,24 +603,24 @@
     "height": 512,
     "format": "webp",
     "alpha": true,
-    "sha256": "064a3efc0b6c57ed66e28bb89749725f346d07291c128a1aa23c9964ea8a62c3",
+    "sha256": "a549f90f65d509826af2cc406aae1dd7d008dd5a245b6047db46eab831f97208",
     "variants": [
       "brief-13"
     ],
-    "status": "reference-match-assets",
+    "status": "approved-v5-style-refinement",
     "content_bounds_alpha32": [
-      65,
-      95,
-      718,
-      428
+      48,
+      82,
+      742,
+      440
     ],
     "lossless": true,
-    "source": "exec-e326d7cf-8c40-441b-a6fe-b15c9d732071.png",
+    "source": "exec-c993cbee-20ad-4421-bdad-64a27d7fe795.png",
     "contentBounds": [
-      65,
-      95,
-      718,
-      428
+      48,
+      82,
+      742,
+      440
     ],
     "groundLine": 428,
     "anchor": {
@@ -609,7 +637,11 @@
       "width": 210,
       "height": 140
     },
-    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch"
+    "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch",
+    "supersedes": {
+      "file": "previous/v5-audit/pet-monkey.webp",
+      "sha256": "064a3efc0b6c57ed66e28bb89749725f346d07291c128a1aa23c9964ea8a62c3"
+    }
   },
   {
     "slug": "room-study-v5",
@@ -788,5 +820,18 @@
       "y": 992,
       "units": "source pixels"
     }
+  },
+  {
+    "slug": "parent-header-v5",
+    "file": "parent-header-v5.webp",
+    "width": 1200,
+    "height": 751,
+    "format": "webp",
+    "alpha": true,
+    "lossless": true,
+    "sha256": "caca6000ff8f639fb8a5e7827b1409d9649314c8ebdd13ba6d0bc88bc4ca5d26",
+    "source": "docs/design/screens/shared-v5/art/parent-header.png",
+    "status": "approved-v5-derived",
+    "role": "parent and account header, native text in left clear area"
   }
 ]

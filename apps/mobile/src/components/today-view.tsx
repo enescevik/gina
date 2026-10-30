@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Crypto from "expo-crypto";
+import { childPath } from "@/lib/active-child";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Text, View, useWindowDimensions } from "react-native";
@@ -131,20 +132,14 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
         </NineSlice>
       </View>
 
-      {actingAsParent ? (
-        <NineSlice skin={goalData ? "ticket-goal" : "ticket-goal-empty"} contentClassName="items-center justify-center">
-          {goalBody}
-        </NineSlice>
-      ) : (
         <SkinPressable
           skin={goalData ? "ticket-goal" : "ticket-goal-empty"}
-          onPress={() => router.push("/child/goal")}
+          onPress={() => router.push(childPath("goal", actingAsParent))}
           accessibilityLabel={goalData ? `${t("room.myGoal")}: ${goalData.rewardTitle}` : `${t("room.myGoal")}: ${t("goal.pickCta")}`}
           contentClassName="items-center justify-center"
         >
           {goalBody}
         </SkinPressable>
-      )}
 
       <ErrorText error={templates.error ?? completions.error ?? complete.error} />
 
@@ -189,7 +184,7 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
         onPress={() => router.push(actingAsParent ? "/parent/child-mode/prova" : "/child/prova")}
         contentClassName="flex-row items-center"
       >
-        <Text className="text-4xl">📚</Text>
+        <Text className="font-body text-4xl">📚</Text>
         <View className="ml-4 flex-1">
           <Text className="font-display text-xl text-ink">{t("prova.title")}</Text>
           <Text className="font-body text-sm text-ink/80">
@@ -198,7 +193,7 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
         </View>
         {examCount > 0 ? (
           <View className="h-8 min-w-8 items-center justify-center rounded-full bg-coral px-2">
-            <Text className="text-base font-bold text-white">{examCount}</Text>
+            <Text className="text-base font-body-bold text-white">{examCount}</Text>
           </View>
         ) : (
           <Text className="font-display text-2xl text-ink/70">›</Text>

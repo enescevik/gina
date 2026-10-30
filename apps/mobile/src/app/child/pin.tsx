@@ -39,7 +39,7 @@ export default function ChildPinScreen() {
 
   return (
     <Screen tone="child" title={name ? t("child.hello", { name }) : t("child.enterPin")}>
-      <Text className="text-base text-ink">{t("child.enterPin")}</Text>
+      <Text className="font-body text-base text-ink">{t("child.enterPin")}</Text>
       <Field
         label={t("childV5.pinLabel")}
         labelStyle={{ color: "#284E4B" }}

@@ -3,7 +3,7 @@
   "sizes": [
     256
   ],
-  "total_bytes": 364984,
+  "total_bytes": 775710,
   "files": [
     {
       "slug": "star-filled",
@@ -179,6 +179,209 @@
       "file": "loading-star-static.webp",
       "bytes": 12900,
       "sha256": "88338fff972eaadbe20056957e866fb5d7833309d5feab4d9df8a5ea6c881095"
+    },
+    {
+      "slug": "reward-book",
+      "size": 256,
+      "file": "reward-book.webp",
+      "bytes": 11246,
+      "sha256": "2e784224fb168b51137dbb6606fbd617585463c0017cd89f8c532c9863cd710a"
+    },
+    {
+      "slug": "reward-choose-dinner",
+      "size": 256,
+      "file": "reward-choose-dinner.webp",
+      "bytes": 10808,
+      "sha256": "cb2c1207662eb8386a41cf4dd5ac651ca7880f7427e3dccfb95b4eeb2f008599"
+    },
+    {
+      "slug": "reward-ice-cream",
+      "size": 256,
+      "file": "reward-ice-cream.webp",
+      "bytes": 13094,
+      "sha256": "893c897f0dc8ad6d3150b9ec13d9e376f21aefec510717be183657776200827a"
+    },
+    {
+      "slug": "reward-late-bedtime",
+      "size": 256,
+      "file": "reward-late-bedtime.webp",
+      "bytes": 14596,
+      "sha256": "c2f9a118522e7bbb04abb1126d2f04d2038a1637dbdb3cafc8c65015ab1250c1"
+    },
+    {
+      "slug": "reward-movie-night-left",
+      "size": 256,
+      "file": "reward-movie-night-left.webp",
+      "bytes": 14604,
+      "sha256": "85c63d8986f878fef9606b130008a7deee875f7da407ca30ce11f1cc9793d2fe"
+    },
+    {
+      "slug": "reward-movie-night-right",
+      "size": 256,
+      "file": "reward-movie-night-right.webp",
+      "bytes": 13910,
+      "sha256": "75d2aacec5fb8de7909aa31b4c525f4fd758312fa06cfc268794bfd345cf5432"
+    },
+    {
+      "slug": "reward-mystery-box",
+      "size": 256,
+      "file": "reward-mystery-box.webp",
+      "bytes": 14884,
+      "sha256": "0b752eb14e1ffe3f0ad5cba770a5bc7d61bd3655a83c588ef82f3fbd9673c0e0"
+    },
+    {
+      "slug": "reward-park",
+      "size": 256,
+      "file": "reward-park.webp",
+      "bytes": 19034,
+      "sha256": "c8ecedcde57ae6276157ff11b0d0246bd90bbf48617d1bdc8dd6ca01aaeda3ba"
+    },
+    {
+      "slug": "reward-pizza",
+      "size": 256,
+      "file": "reward-pizza.webp",
+      "bytes": 17168,
+      "sha256": "f4a7b15de7a8366965c149eaa1f73bb7427e457f0c7a9ce735f886f5f8c2cdd1"
+    },
+    {
+      "slug": "reward-pocket-money",
+      "size": 256,
+      "file": "reward-pocket-money.webp",
+      "bytes": 10944,
+      "sha256": "7252d71e4517a899c0d79f62f2ff590a391dd226b5d577daa29a6465561f7370"
+    },
+    {
+      "slug": "reward-screen-time",
+      "size": 256,
+      "file": "reward-screen-time.webp",
+      "bytes": 10460,
+      "sha256": "cff65a502e44757bc74b2728f327ce3ba7029803de7d52562c046a70a761b3c7"
+    },
+    {
+      "slug": "reward-sleepover",
+      "size": 256,
+      "file": "reward-sleepover.webp",
+      "bytes": 11086,
+      "sha256": "10b118fca8ba6fbe1c8f190e077f50414393930ee331c152f45faa1786c6f4d0"
+    },
+    {
+      "slug": "reward-toy",
+      "size": 256,
+      "file": "reward-toy.webp",
+      "bytes": 13072,
+      "sha256": "2cdf99f34960ae24791831131b3bea7e68a72ed0a30aea6baafe6f26e36eff9c"
+    },
+    {
+      "slug": "display-bookworm",
+      "size": 256,
+      "file": "display-bookworm.webp",
+      "bytes": 12350,
+      "sha256": "303d53f7b0a75382e56efd557250f28d03f44a7327ca8a3245a73be5fd606f6f"
+    },
+    {
+      "slug": "display-bronze",
+      "size": 256,
+      "file": "display-bronze.webp",
+      "bytes": 12078,
+      "sha256": "3ced9d883487d74e99c525c5eaa670ffa98a5a97e3475dcfb4e17edc2e0057ae"
+    },
+    {
+      "slug": "display-diamond",
+      "size": 256,
+      "file": "display-diamond.webp",
+      "bytes": 16142,
+      "sha256": "adca0c561a3fb21092be5e7a3ce382bb53ef5cebdafeffac59b4499ccc864cc6"
+    },
+    {
+      "slug": "display-early-bird",
+      "size": 256,
+      "file": "display-early-bird.webp",
+      "bytes": 16256,
+      "sha256": "a9ed0fe402578791625470564385f676d989bdf3a78ddea0c5457bf98c31c3e2"
+    },
+    {
+      "slug": "display-first-task",
+      "size": 256,
+      "file": "display-first-task.webp",
+      "bytes": 12980,
+      "sha256": "9e87b692b02d70a34160a1f97192e7c93ff92910ddf3ad22a10277423334bd07"
+    },
+    {
+      "slug": "display-gold",
+      "size": 256,
+      "file": "display-gold.webp",
+      "bytes": 12440,
+      "sha256": "2982e056a867d1e40e48bac045515f3825b90412cfe69a80707ca5df6c2ff535"
+    },
+    {
+      "slug": "display-math-star",
+      "size": 256,
+      "file": "display-math-star.webp",
+      "bytes": 11712,
+      "sha256": "2da2a40e78c95b822876235fa9773d329f1d574ed9302d11ee1ccd566fe1624b"
+    },
+    {
+      "slug": "display-silver",
+      "size": 256,
+      "file": "display-silver.webp",
+      "bytes": 13418,
+      "sha256": "84f9d459a15a957f4c7d4fcff5d5e5000d9e7857946676de41b4800c824383e7"
+    },
+    {
+      "slug": "reward-bike-ride",
+      "size": 256,
+      "file": "reward-bike-ride.webp",
+      "bytes": 22560,
+      "sha256": "508ea4d9837d48cb201c315310acad9d185b1b482975c675338dbc720c08f4b4"
+    },
+    {
+      "slug": "reward-game-with-parent",
+      "size": 256,
+      "file": "reward-game-with-parent.webp",
+      "bytes": 13346,
+      "sha256": "2031619faa16ba49897c466c11df70d4ca6c492432f80ebf06f1146010a77d38"
+    },
+    {
+      "slug": "reward-sticker",
+      "size": 256,
+      "file": "reward-sticker.webp",
+      "bytes": 12240,
+      "sha256": "5d2d81f3f3c3c52606b0aee8c744ed8e0733be029c4712ae1322de5013e39c47"
+    },
+    {
+      "slug": "display-helper",
+      "size": 256,
+      "file": "display-helper.webp",
+      "bytes": 16250,
+      "sha256": "756f730ffd93e4777cf5fa422bb01c8ba5eb38e55d0079ed7f8278548d047b26"
+    },
+    {
+      "slug": "display-locked",
+      "size": 256,
+      "file": "display-locked.webp",
+      "bytes": 13058,
+      "sha256": "0cfedfc5d0a088df48b6a718f995d6b5ae34956be8d7e11f3d3382269cb3c490"
+    },
+    {
+      "slug": "display-tidy",
+      "size": 256,
+      "file": "display-tidy.webp",
+      "bytes": 14774,
+      "sha256": "42e71a48c277a6df972890b427de440aeb59b5e7c47414486ff4ef12a523c60a"
+    },
+    {
+      "slug": "display-tooth-care",
+      "size": 256,
+      "file": "display-tooth-care.webp",
+      "bytes": 20204,
+      "sha256": "90b765c867e2a915f9dbfc7e20a8f0576702adf72ab780f79dbb4500995bc42e"
+    },
+    {
+      "slug": "display-week-hero",
+      "size": 256,
+      "file": "display-week-hero.webp",
+      "bytes": 16012,
+      "sha256": "f4dd0aa12aaf6660c94271ca6e8476b778f533462af81aebe81c7ab69a13318b"
     }
   ]
 }

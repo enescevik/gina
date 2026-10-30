@@ -132,15 +132,15 @@ export default function AttemptReviewScreen() {
     <Screen title={a?.exams?.title ?? t("prova.ai.reviewTitle")}>
       {a ? (
         <View className="gap-1 rounded-parent bg-white p-4 dark:bg-night-surface">
-          <Text className="text-sm text-gray-600">
+          <Text className="font-body text-sm text-gray-600">
             {a.children?.name} · {a.exams?.subject} {a.exams?.grade}. {t("prova.gradeWord")}
           </Text>
           <Text className="font-display text-xl text-ink dark:text-night-text">
             {a.score_pct !== null ? t("prova.ai.scorePct", { pct: a.score_pct }) : t(`prova.ai.attemptStatus.${a.status}`)}
           </Text>
-          <Text className="text-sm text-teal-dark">{t("prova.resultMc", { correct: a.mc_correct ?? 0, total: a.mc_total ?? 0 })}</Text>
+          <Text className="font-body text-sm text-teal-dark">{t("prova.resultMc", { correct: a.mc_correct ?? 0, total: a.mc_total ?? 0 })}</Text>
           {hasOpen ? (
-            <Text className="text-sm text-teal-dark">{t("prova.ai.openGraded", { graded: a.open_graded ?? 0, total: a.open_total ?? 0 })}</Text>
+            <Text className="font-body text-sm text-teal-dark">{t("prova.ai.openGraded", { graded: a.open_graded ?? 0, total: a.open_total ?? 0 })}</Text>
           ) : null}
         </View>
       ) : null}
@@ -149,16 +149,16 @@ export default function AttemptReviewScreen() {
         <View className="gap-1 rounded-parent bg-teal-light p-4">
           <Text className="font-body-bold text-base text-ink">{t("prova.ai.summaryTitle")}</Text>
           {summary.guclu_konular?.length ? (
-            <Text className="text-sm text-ink">
+            <Text className="font-body text-sm text-ink">
               {t("prova.ai.strong")}: {summary.guclu_konular.join(", ")}
             </Text>
           ) : null}
           {summary.zayif_konular?.length ? (
-            <Text className="text-sm text-ink">
+            <Text className="font-body text-sm text-ink">
               {t("prova.ai.weak")}: {summary.zayif_konular.join(", ")}
             </Text>
           ) : null}
-          {summary.genel_oneri ? <Text className="text-sm text-ink">{summary.genel_oneri}</Text> : null}
+          {summary.genel_oneri ? <Text className="font-body text-sm text-ink">{summary.genel_oneri}</Text> : null}
         </View>
       ) : null}
 
@@ -166,7 +166,7 @@ export default function AttemptReviewScreen() {
         ent?.ai_grading ? (
           <Button title={t("prova.ai.gradeWithAi")} loading={aiGrade.isPending} onPress={() => aiGrade.mutate()} />
         ) : (
-          <Text className="text-sm text-gray-500">{t("prova.ai.needsProGrading")}</Text>
+          <Text className="font-body text-sm text-gray-500">{t("prova.ai.needsProGrading")}</Text>
         )
       ) : null}
       <ErrorText error={aiGrade.error} />
@@ -188,7 +188,7 @@ export default function AttemptReviewScreen() {
           <Text className="font-display text-xl text-ink dark:text-night-text">{t("prova.ai.studyPlans")}</Text>
           {plans.data?.map((p) => (
             <Pressable key={p.id} accessibilityRole="button" onPress={() => router.push(`/parent/prova/plan/${p.id}`)}>
-              <Text className="font-semibold text-teal-dark">
+              <Text className="font-body-bold text-teal-dark">
                 • {new Date(p.created_at).toLocaleDateString(i18n.language)} · {t(`prova.ai.planStatus.${p.status}`)}
               </Text>
             </Pressable>
@@ -196,7 +196,7 @@ export default function AttemptReviewScreen() {
           {ent?.study_plan ? (
             <Button variant="secondary" title={t("prova.ai.makePlan")} loading={makePlan.isPending} onPress={() => makePlan.mutate()} />
           ) : (
-            <Text className="text-sm text-gray-500">{t("prova.ai.needsProPlan")}</Text>
+            <Text className="font-body text-sm text-gray-500">{t("prova.ai.needsProPlan")}</Text>
           )}
           <ErrorText error={makePlan.error} />
         </View>
@@ -271,7 +271,7 @@ function AnswerCard({
 
   return (
     <View className="gap-2 rounded-parent border border-mist bg-white p-3 dark:bg-night-surface">
-      <Text className="text-xs text-gray-500">
+      <Text className="font-body text-xs text-gray-500">
         {t("prova.ai.questionN", { n: index })} · {q.topic} · {t(`prova.kind.${q.kind}`)}
       </Text>
       <Text className="font-body-bold text-base text-ink dark:text-night-text">{q.stem}</Text>
@@ -284,37 +284,37 @@ function AnswerCard({
             return (
               <Text
                 key={c.key}
-                className={correct ? "font-semibold text-green" : chosen ? "font-semibold text-danger" : "text-ink dark:text-night-text"}
+                className={correct ? "font-body-bold text-green" : chosen ? "font-body-bold text-danger" : "text-ink dark:text-night-text"}
               >
                 {c.key}) {c.text}
                 {chosen ? ` ← ${t("prova.ai.childChoice")}` : ""}
               </Text>
             );
           })}
-          <Text className={answer?.is_correct ? "font-semibold text-green" : "font-semibold text-danger"}>
+          <Text className={answer?.is_correct ? "font-body-bold text-green" : "font-body-bold text-danger"}>
             {!answered ? t("prova.ai.unanswered") : answer?.is_correct ? t("prova.ai.correct") : t("prova.ai.incorrect")}
           </Text>
         </View>
       ) : (
         <View className="gap-2">
           <View className="rounded-parent bg-cream p-3 dark:bg-night">
-            <Text className="text-xs text-gray-500">{t("prova.ai.childAnswer")}</Text>
-            <Text className="text-base text-ink dark:text-night-text">{answered ? answer?.answer_text : t("prova.ai.unanswered")}</Text>
+            <Text className="font-body text-xs text-gray-500">{t("prova.ai.childAnswer")}</Text>
+            <Text className="font-body text-base text-ink dark:text-night-text">{answered ? answer?.answer_text : t("prova.ai.unanswered")}</Text>
           </View>
           <Pressable accessibilityRole="button" onPress={() => setShowKey((v) => !v)}>
-            <Text className="font-semibold text-teal-dark">{showKey ? t("prova.ai.hideExpected") : t("prova.ai.showExpected")}</Text>
+            <Text className="font-body-bold text-teal-dark">{showKey ? t("prova.ai.hideExpected") : t("prova.ai.showExpected")}</Text>
           </Pressable>
           {showKey ? (
             <View className="gap-1">
               {q.expected_answer ? (
-                <Text className="text-sm text-gray-600">
-                  <Text className="font-semibold">{t("prova.expected")}: </Text>
+                <Text className="font-body text-sm text-gray-600">
+                  <Text className="font-body-bold">{t("prova.expected")}: </Text>
                   {q.expected_answer}
                 </Text>
               ) : null}
               {q.solution ? (
-                <Text className="text-sm text-gray-600">
-                  <Text className="font-semibold">{t("prova.solution")}: </Text>
+                <Text className="font-body text-sm text-gray-600">
+                  <Text className="font-body-bold">{t("prova.solution")}: </Text>
                   {q.solution}
                 </Text>
               ) : null}
@@ -322,22 +322,22 @@ function AnswerCard({
           ) : null}
 
           {answer?.score !== null && answer?.score !== undefined ? (
-            <Text className="text-sm font-semibold text-teal-dark">
+            <Text className="text-sm font-body-bold text-teal-dark">
               {t("prova.ai.currentScore", { score: answer.score })} · {answer.graded_by === "parent" ? t("prova.ai.byParent") : t("prova.ai.byAi")}
             </Text>
           ) : answered ? (
-            <Text className="text-sm text-gray-500">{t("prova.ai.awaitingScore")}</Text>
+            <Text className="font-body text-sm text-gray-500">{t("prova.ai.awaitingScore")}</Text>
           ) : null}
           {answer?.graded_by === "parent" && answer.ai_score !== null ? (
-            <Text className="text-xs text-gray-500">{t("prova.ai.aiSuggested", { score: answer.ai_score })}</Text>
+            <Text className="font-body text-xs text-gray-500">{t("prova.ai.aiSuggested", { score: answer.ai_score })}</Text>
           ) : null}
           {details?.eksikler?.length ? (
-            <Text className="text-sm text-ink dark:text-night-text">
+            <Text className="font-body text-sm text-ink dark:text-night-text">
               {t("prova.ai.missing")}: {details.eksikler.join("; ")}
             </Text>
           ) : null}
           {details?.iyilestirme_onerileri?.length ? (
-            <Text className="text-sm text-ink dark:text-night-text">
+            <Text className="font-body text-sm text-ink dark:text-night-text">
               {t("prova.ai.suggestions")}: {details.iyilestirme_onerileri.join("; ")}
             </Text>
           ) : null}
@@ -353,7 +353,7 @@ function AnswerCard({
                 </View>
               </View>
               <Button variant="secondary" title={t("prova.ai.saveScore")} loading={save.isPending} onPress={() => save.mutate()} />
-              {save.error ? <Text className="text-sm text-danger">{provaErrorMessage(save.error)}</Text> : null}
+              {save.error ? <Text className="font-body text-sm text-danger">{provaErrorMessage(save.error)}</Text> : null}
             </View>
           ) : null}
         </View>

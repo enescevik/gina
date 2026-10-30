@@ -34,12 +34,12 @@ export default function ChildPickerScreen() {
             <View className="mb-3">
               <Avatar slug={child.avatar} size={72} />
             </View>
-            <Text className="text-xl font-bold text-ink">{child.name}</Text>
+            <Text className="text-xl font-body-bold text-ink">{child.name}</Text>
           </Pressable>
         ))}
       </View>
       {children.data?.length === 0 ? (
-        <Text className="text-base text-gray-500">{t("child.noChildren")}</Text>
+        <Text className="font-body text-base text-gray-500">{t("child.noChildren")}</Text>
       ) : null}
     </Screen>
   );

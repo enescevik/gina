@@ -1,43 +1,26 @@
 import { ActivityIndicator, Pressable, Text, type PressableProps } from "react-native";
 
 type Variant = "primary" | "secondary" | "ghost" | "danger";
-
-const container: Record<Variant, string> = {
-  primary: "bg-teal active:bg-teal-dark",
-  secondary: "bg-teal-light active:bg-mist",
-  ghost: "bg-transparent active:bg-mist",
-  danger: "bg-coral-light active:bg-coral",
+const colors = {
+  primary: { backgroundColor: "#0B7F7F", borderColor: "#086461", color: "#FFFFFF" },
+  secondary: { backgroundColor: "#E1F2EB", borderColor: "#A8CBBB", color: "#0B7F7F" },
+  ghost: { backgroundColor: "#FFFCF6", borderColor: "#D7CDBB", color: "#0B7F7F" },
+  danger: { backgroundColor: "#FFE9E9", borderColor: "#E4B4AF", color: "#A43135" },
 };
-
-const label: Record<Variant, string> = {
-  primary: "text-white",
-  secondary: "text-teal-dark",
-  ghost: "text-teal-dark",
-  danger: "text-danger",
-};
-
 export interface ButtonProps extends Omit<PressableProps, "children"> {
-  title: string;
-  variant?: Variant;
-  loading?: boolean;
-  /** Çocuk alanı: daha büyük dokunma hedefi ve yazı. */
-  size?: "default" | "child";
+  title: string; variant?: Variant; loading?: boolean; size?: "default" | "child";
 }
-
-export function Button({ title, variant = "primary", loading, size = "default", disabled, className, ...rest }: ButtonProps) {
-  const isDisabled = disabled || loading;
-  return (
-    <Pressable
-      accessibilityRole="button"
-      disabled={isDisabled}
-      className={`${container[variant]} ${size === "child" ? "min-h-16 rounded-child px-6" : "min-h-12 rounded-button px-4"} items-center justify-center ${isDisabled ? "opacity-50" : ""} ${className ?? ""}`}
-      {...rest}
-    >
-      {loading ? (
-        <ActivityIndicator color={variant === "primary" ? "#FFFFFF" : "#0B7F7F"} />
-      ) : (
-        <Text className={`${label[variant]} ${size === "child" ? "text-xl" : "text-base"} font-semibold`}>{title}</Text>
-      )}
-    </Pressable>
-  );
+export function Button({ title, variant = "primary", loading = false, size = "default", disabled, className, style, accessibilityState, ...rest }: ButtonProps) {
+  const palette = colors[variant];
+  const isDisabled = !!disabled || loading;
+  return <Pressable {...rest} accessibilityRole="button" accessibilityLabel={rest.accessibilityLabel ?? title}
+    accessibilityState={{ ...accessibilityState, disabled: isDisabled, busy: loading }} disabled={isDisabled} className={className}
+    style={state => [{ minHeight: size === "child" ? 60 : 50, borderRadius: 14, borderWidth: 1, borderBottomWidth: 3,
+      paddingVertical: 10, paddingHorizontal: 16, flexDirection: "row", gap: 8, alignItems: "center", justifyContent: "center",
+      backgroundColor: palette.backgroundColor, borderColor: palette.borderColor,
+      opacity: isDisabled ? .55 : state.pressed ? .85 : 1,
+    }, typeof style === "function" ? style(state) : style]}>
+    {loading ? <ActivityIndicator size="small" color={palette.color} /> : null}
+    <Text style={{ flexShrink: 1, textAlign: "center", fontFamily: "Nunito_700Bold", fontSize: size === "child" ? 20 : 17, lineHeight: size === "child" ? 27 : 23, color: palette.color }}>{title}</Text>
+  </Pressable>;
 }

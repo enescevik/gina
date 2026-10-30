@@ -41,7 +41,7 @@ export default function ChildProvaScreen() {
     <Screen tone="child" surface="desk" loading={exams.isLoading} title={t("prova.title")}>
       <ChildColumns rail={<View style={{ gap: 12 }}>
       <Text accessibilityRole="header" className="font-display text-lg text-ink">{t("prova.toDo")}</Text>
-      {open.length === 0 ? <Text className="text-base text-gray-600">{t("prova.nothingAssigned")}</Text> : null}
+      {open.length === 0 ? <Text className="font-body text-base text-gray-600">{t("prova.nothingAssigned")}</Text> : null}
       {open.map((exam) => {
         const resuming = exam.exam_attempts?.some((a) => a.status === "in_progress") ?? false;
         const meta = `${t("prova.questionCount", { count: exam.question_ids.length })}, ${exam.timed ? `${exam.duration_minutes} ${t("prova.min")}` : t("prova.untimed")}`;
@@ -60,13 +60,13 @@ export default function ChildProvaScreen() {
           <SubjectIcon subject={exam.title} size={56} variant="illustrated" />
           <View className="flex-1">
             <Text className="font-display text-lg text-ink">{exam.title}</Text>
-            <Text className="text-sm text-gray-600">
+            <Text className="font-body text-sm text-gray-600">
               {t("prova.questionCount", { count: exam.question_ids.length })}
               {exam.timed ? ` · ${exam.duration_minutes} ${t("prova.min")}` : ` · ${t("prova.untimed")}`}
             </Text>
           </View>
           <View className="rounded-button bg-teal px-4 py-2">
-            <Text className="font-bold text-white">{resuming ? t("prova.continue") : t("room.start")}</Text>
+            <Text className="font-body-bold text-white">{resuming ? t("prova.continue") : t("room.start")}</Text>
           </View>
         </Pressable>
         );
@@ -85,7 +85,7 @@ export default function ChildProvaScreen() {
             <SubjectIcon subject={exam.title} size={48} variant="illustrated" />
             <View className="flex-1">
               <Text className="font-body-bold text-base text-ink">{exam.title}</Text>
-              <Text className="text-sm text-gray-700">
+              <Text className="font-body text-sm text-gray-700">
                 {t("prova.resultMc", { correct: attempt?.mc_correct ?? 0, total: attempt?.mc_total ?? 0 })}
               </Text>
             </View>

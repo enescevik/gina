@@ -1,0 +1,149 @@
+{
+  "source": "packages/assets/avatars/illustrated-v3",
+  "sizes": [
+    256
+  ],
+  "total_bytes": 291810,
+  "files": [
+    {
+      "slug": "avatar-spiky",
+      "size": 256,
+      "file": "avatar-spiky.webp",
+      "bytes": 15216,
+      "sha256": "a4f07f47d9264999786b5d9834fccb31e5a8b35031f1d15669348017c00474bc"
+    },
+    {
+      "slug": "avatar-adult-beard",
+      "size": 256,
+      "file": "avatar-adult-beard.webp",
+      "bytes": 14526,
+      "sha256": "9f4d16b19bd4d226aa74f3678ba23bc5bf546073d22759c92add0c44a21a63bd"
+    },
+    {
+      "slug": "avatar-adult-glasses",
+      "size": 256,
+      "file": "avatar-adult-glasses.webp",
+      "bytes": 13976,
+      "sha256": "4cc1fd75e83543dadb297cdd9caa71913f2430f685831e770423702523eb0a23"
+    },
+    {
+      "slug": "avatar-adult-long",
+      "size": 256,
+      "file": "avatar-adult-long.webp",
+      "bytes": 14432,
+      "sha256": "7c9684f4b40b9d5f50e9a17d4d951beee6abe87b2998a96bd9c407de4ca18123"
+    },
+    {
+      "slug": "avatar-adult-short",
+      "size": 256,
+      "file": "avatar-adult-short.webp",
+      "bytes": 13132,
+      "sha256": "287f91fb37a089befdc09c36a629f9c4507cff78568f00d69f57d800b75e291e"
+    },
+    {
+      "slug": "avatar-afro",
+      "size": 256,
+      "file": "avatar-afro.webp",
+      "bytes": 14500,
+      "sha256": "9a2e03cc8f8a6f22161441347b230c36635ca886c4305a95fbe642e9490f416b"
+    },
+    {
+      "slug": "avatar-astronaut",
+      "size": 256,
+      "file": "avatar-astronaut.webp",
+      "bytes": 14436,
+      "sha256": "189dac0a72d250959482e748fdd8661ba2407b051da35dcb6679afe967f5cf64"
+    },
+    {
+      "slug": "avatar-beanie",
+      "size": 256,
+      "file": "avatar-beanie.webp",
+      "bytes": 14382,
+      "sha256": "f0bd05eb5675bb95c37989187ab55030fdc586c07a1a512c4ce88eaf0c5db68d"
+    },
+    {
+      "slug": "avatar-braids",
+      "size": 256,
+      "file": "avatar-braids.webp",
+      "bytes": 15250,
+      "sha256": "876c20dcea56892fa317d416c2a5adb69b92e5ce1fec257cc2d5696a830fbe17"
+    },
+    {
+      "slug": "avatar-bun",
+      "size": 256,
+      "file": "avatar-bun.webp",
+      "bytes": 14740,
+      "sha256": "bd0329dbb3ff531fa7fac6fb39593430fc98a5a09760fe8f7a66e40ed5a7daf3"
+    },
+    {
+      "slug": "avatar-cap",
+      "size": 256,
+      "file": "avatar-cap.webp",
+      "bytes": 13864,
+      "sha256": "aecaceace02e2fbdf354decf0dee02ece5a7483c1e4886da838f6bb00ebe6495"
+    },
+    {
+      "slug": "avatar-curly",
+      "size": 256,
+      "file": "avatar-curly.webp",
+      "bytes": 16192,
+      "sha256": "297aa40fa736d27d8107cffedf54f535f2e02ea20e697571bc2c800f31959a2e"
+    },
+    {
+      "slug": "avatar-default",
+      "size": 256,
+      "file": "avatar-default.webp",
+      "bytes": 12680,
+      "sha256": "b27bc3c7f4c0f9d0cbdab1f979b0c1de5c389bc24b4c6317214785991af32ec2"
+    },
+    {
+      "slug": "avatar-glasses",
+      "size": 256,
+      "file": "avatar-glasses.webp",
+      "bytes": 14826,
+      "sha256": "d5c825dc2fcab8d2b36e550ba77f56bef49f6deeb2db8baf8ad883b85e48c736"
+    },
+    {
+      "slug": "avatar-headband",
+      "size": 256,
+      "file": "avatar-headband.webp",
+      "bytes": 15768,
+      "sha256": "415e688150c7ad13daa16eda0b91363392470d0be6de4449c2f3d2a238acd1cc"
+    },
+    {
+      "slug": "avatar-hearing-aid",
+      "size": 256,
+      "file": "avatar-hearing-aid.webp",
+      "bytes": 14166,
+      "sha256": "a5a0f492f9eac6ec419c60ef67f82413bdd7d2183a07feeadc9b8d1fa56277f0"
+    },
+    {
+      "slug": "avatar-parent-default",
+      "size": 256,
+      "file": "avatar-parent-default.webp",
+      "bytes": 9778,
+      "sha256": "d421e3aec1c9c1db67bf5be8117fd86006dcdd295bda3e825dc1d284a2de2368"
+    },
+    {
+      "slug": "avatar-reference-boy",
+      "size": 256,
+      "file": "avatar-reference-boy.webp",
+      "bytes": 16842,
+      "sha256": "ab28b78252a309cd0108fec5098f6a2869fdb5aee071fc6e39af6970a4722916"
+    },
+    {
+      "slug": "avatar-reference-girl",
+      "size": 256,
+      "file": "avatar-reference-girl.webp",
+      "bytes": 16308,
+      "sha256": "3df0014d0db6d63b3eab8af2ced6153a23d212ef8b994eace6f18cbee4233aa6"
+    },
+    {
+      "slug": "avatar-wavy",
+      "size": 256,
+      "file": "avatar-wavy.webp",
+      "bytes": 16796,
+      "sha256": "6cb1aba2e83ebe5934788c51e10a9389ede4a427acc3aa01e92ad2e7891b3b5f"
+    }
+  ]
+}

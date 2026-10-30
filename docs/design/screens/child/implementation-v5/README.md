@@ -63,3 +63,9 @@ Bu PR sunum geçişidir; ayrı Prova defteri ve koleksiyon dolabı da üretildi.
 | ![Prova hedef](../prova-index-tablet.png) | ![Prova uygulama](prova-index-tablet.png) |
 | ![Koleksiyon hedef](../collection-tablet.png) | ![Koleksiyon uygulama](collection-tablet.png) |
 | ![PIN hedef](../pin-phone.png) | ![PIN uygulama](pin-phone.png) |
+
+## 31 Ekim ikinci göz denetimi
+
+`audit/` altındaki güncel karşılaştırmalar ve testler bu sayfanın ilk teslimdeki eksiklerini günceller: oda seçimleri artık kaydolur; veli çocuk modu yeniden açılışta kilidi korur; ana ekrandaki bilet/teal ilerleme/tek parça dolap ve 3B nesneler bağlıdır; pet görselleri v5 malzeme diline yenilendi. `set_room_preference` aile sınırı sunucuda doğrulanır. Metin stilleri ve ortak kontroller uygulama genelinde tutarlı font ve en az 48 dp hedef kullanır. `flows-qa.json` sahte sunucu cevaplarıyla, gerçek kayıtlara yazmadan alınmıştır. Yerel tsc ve lint geçmiştir; bu, gerçek iOS/Android cihaz kabulünün yerine geçmez.
+
+Doğal pet hareketi, konuma bağlı hava ve mevsim, üretim hesapları ve mağaza uçtan uca akışı henüz tamamlanmış sayılmaz. Veli/hesap maketleri bu PR'ın ortak font düzeltmelerine dahildir; grup başına ekran giydirmesi ayrıca ilerler.

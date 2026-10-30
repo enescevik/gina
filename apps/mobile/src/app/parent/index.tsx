@@ -353,7 +353,7 @@ export default function ParentHomeScreen() {
         {highlightTemplate ? (
           <TaskIcon slug={highlightTemplate.icon} size={56} variant="illustrated" />
         ) : (
-          <Text className="text-4xl">📖</Text>
+          <Text className="font-body text-4xl">📖</Text>
         )}
         <View className="flex-1">
           <Text className="font-display text-base leading-6 text-ink">{t("parent.insightTitle")}</Text>
@@ -367,7 +367,7 @@ export default function ParentHomeScreen() {
       </Pressable>
 
       <SkinPressable skin="parent-card" onPress={() => router.push("/parent/prova")} contentClassName="flex-row items-center gap-3">
-        <Text className="text-3xl">📝</Text>
+        <Text className="font-body text-3xl">📝</Text>
         <View className="flex-1">
           <Text className="font-display text-xl text-ink">{t("prova.title")}</Text>
           <Text className="font-body text-sm text-gray-700">{t("prova.parentCard")}</Text>

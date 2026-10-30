@@ -39,12 +39,12 @@ export default function FamilyScreen() {
   return (
     <Screen title={t("app.name")}>
       <View className="gap-3 rounded-parent bg-teal-light p-4">
-        <Text className="text-lg font-semibold text-ink">{t("auth.createFamily")}</Text>
+        <Text className="text-lg font-body-bold text-ink">{t("auth.createFamily")}</Text>
         <Field label={t("family.name")} value={familyName} onChangeText={setFamilyName} placeholder={t("family.namePlaceholder")} />
         <Button title={t("auth.createFamily")} loading={busy === "create"} disabled={!familyName.trim()} onPress={() => run("create")} />
       </View>
       <View className="gap-3 rounded-parent bg-mist p-4">
-        <Text className="text-lg font-semibold text-ink">{t("auth.joinFamily")}</Text>
+        <Text className="text-lg font-body-bold text-ink">{t("auth.joinFamily")}</Text>
         <Field
           label={t("parent.inviteCode")}
           autoCapitalize="characters"

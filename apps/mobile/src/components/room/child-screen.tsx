@@ -4,6 +4,8 @@ import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View, useWindow
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import manifest from "../../../../../packages/assets/rooms/v2/manifest.json";
+import { useActiveChild } from "@/lib/active-child";
+import { useChildRoomPrefs } from "@/lib/use-child-room-prefs";
 import { NineSlice } from "./nine-slice";
 import type { CharacterKey, PetKey } from "./scene";
 
@@ -50,9 +52,13 @@ export interface ChildScreenProps {
   surface?: "board" | "desk" | "collection";
 }
 
-/** v5 presentation only: no session, query, routing or mutation ownership. */
-export function ChildScreen({ title, children, loading = false, character = "unspecified", pet = "cat", surface = "board" }: ChildScreenProps) {
+/** Shared child surface; explicit preview props override the saved room preferences. */
+export function ChildScreen({ title, children, loading = false, character: previewCharacter, pet: previewPet, surface = "board" }: ChildScreenProps) {
   const { t } = useTranslation();
+  const { childId } = useActiveChild();
+  const prefs = useChildRoomPrefs(childId);
+  const character = previewCharacter ?? (prefs.data?.characterKey === "girl" || prefs.data?.characterKey === "boy" ? prefs.data.characterKey : "unspecified");
+  const pet = previewPet ?? (prefs.data?.petKey as PetKey | undefined) ?? "cat";
   const { width, height, fontScale } = useWindowDimensions();
   const wide = width >= 900 && height >= 600 && fontScale <= 1.2;
   const skin = surface === "desk" ? "child-notebook-v5" : surface === "collection" ? "child-cabinet-v5" : "child-board-v5";
@@ -66,12 +72,15 @@ export function ChildScreen({ title, children, loading = false, character = "uns
   return <SafeAreaView style={styles.root}>
     {wide ? <View style={styles.fill}>
       <RoomArt width={width} height={height} character={character} pet={pet} />
-      <NineSlice skin={skin} style={[styles.board, surface === "collection" ? { top: "2%", height: "90%" } : undefined]} contentStyle={styles.fill}>
+      {surface === "collection" ? <View style={[styles.board, { top: "2%", height: "96%" }]}>
+        {header}
+        <ScrollView style={styles.fill} contentContainerStyle={styles.content}>{body}</ScrollView>
+      </View> : <NineSlice skin={skin} style={styles.board} contentStyle={styles.fill}>
         {header}
         <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.content}>
           {body}
         </ScrollView>
-      </NineSlice>
+      </NineSlice>}
     </View> : <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: 24 }}>
       <View style={{ height: Math.max(226 * fontScale, width * .59), overflow: "hidden" }}>
         <RoomArt width={width} height={Math.max(226 * fontScale, width * .59)} character={character} pet={pet} />
@@ -88,7 +97,7 @@ export function ChildScreen({ title, children, loading = false, character = "uns
 export const childStyles = StyleSheet.create({
   card: { backgroundColor: "#FFFCF5", borderColor: "#E2CFB2", borderWidth: 1, borderRadius: 16, padding: 16, gap: 10 },
   row: { minHeight: 72, flexDirection: "row", alignItems: "center", gap: 12 },
-  title: { fontFamily: "Baloo2_800ExtraBold", fontSize: 22, lineHeight: 29, color: "#284E4B" },
+  title: { fontFamily: "Baloo2_700Bold", fontSize: 22, lineHeight: 29, color: "#284E4B" },
   copy: { fontFamily: "Nunito_600SemiBold", fontSize: 16, lineHeight: 24, color: "#425E58" },
   shelf: { borderBottomWidth: 9, borderBottomColor: "#B77B39", backgroundColor: "#EED1A1", borderRadius: 8, padding: 16, alignItems: "center", gap: 8, flexGrow: 1, flexBasis: 180 },
 });
@@ -96,7 +105,7 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: "#FFF8EF" }, fill: { flex: 1, minHeight: 0 },
   board: { position: "absolute", left: "1.5%", top: "5%", width: "64%", height: "82%", borderRadius: 20, overflow: "hidden" },
   heading: { gap: 2, paddingHorizontal: 8, paddingVertical: 8 },
-  title: { fontFamily: "Baloo2_800ExtraBold", color: "#284E4B", fontSize: 30, lineHeight: 38 },
+  title: { fontFamily: "Baloo2_700Bold", color: "#284E4B", fontSize: 30, lineHeight: 38 },
   subtitle: { fontFamily: "Nunito_600SemiBold", color: "#52685D", fontSize: 15, lineHeight: 22 },
   content: { gap: 16, padding: 12 },
   loading: { alignItems: "center", justifyContent: "center", minHeight: 180, gap: 18 },

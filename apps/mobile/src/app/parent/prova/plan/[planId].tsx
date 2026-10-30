@@ -53,17 +53,17 @@ export default function StudyPlanScreen() {
       {p ? (
         <>
           <View className="gap-1 rounded-parent bg-white p-4 dark:bg-night-surface">
-            <Text className="text-sm text-gray-600">
+            <Text className="font-body text-sm text-gray-600">
               {p.children?.name} · {p.subject} {p.grade}. {t("prova.gradeWord")} · {t(`prova.ai.planStatus.${p.status}`)}
             </Text>
-            {body.ozet ? <Text className="text-base text-ink dark:text-night-text">{body.ozet}</Text> : null}
+            {body.ozet ? <Text className="font-body text-base text-ink dark:text-night-text">{body.ozet}</Text> : null}
           </View>
 
           {weak.length ? (
             <View className="gap-1 rounded-parent bg-teal-light p-4">
               <Text className="font-body-bold text-base text-ink">{t("prova.ai.weak")}</Text>
               {weak.map((w) => (
-                <Text key={w.topic} className="text-sm text-ink">
+                <Text key={w.topic} className="font-body text-sm text-ink">
                   • {w.topic}
                   {w.pct !== null ? ` — %${w.pct}` : ""}
                 </Text>
@@ -78,7 +78,7 @@ export default function StudyPlanScreen() {
                 <Text className="font-body-bold text-base text-ink dark:text-night-text">
                   {t("prova.ai.dayN", { n: g.gun })} · {g.konu}
                 </Text>
-                <Text className="text-sm text-gray-600">
+                <Text className="font-body text-sm text-gray-600">
                   {g.etkinlik} · {t("prova.ai.minutes", { count: g.sure_dk })}
                 </Text>
               </View>
@@ -89,11 +89,11 @@ export default function StudyPlanScreen() {
             <View className="gap-1 rounded-parent bg-white p-4 dark:bg-night-surface">
               <Text className="font-display text-xl text-ink dark:text-night-text">{t("prova.ai.taskIdeas")}</Text>
               {body.gorev_onerileri.map((g) => (
-                <Text key={g} className="text-base text-ink dark:text-night-text">
+                <Text key={g} className="font-body text-base text-ink dark:text-night-text">
                   • {g}
                 </Text>
               ))}
-              <Text className="text-xs text-gray-500">{t("prova.ai.taskIdeasHint")}</Text>
+              <Text className="font-body text-xs text-gray-500">{t("prova.ai.taskIdeasHint")}</Text>
             </View>
           ) : null}
 

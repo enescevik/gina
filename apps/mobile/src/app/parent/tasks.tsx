@@ -108,7 +108,7 @@ export default function ParentTasksScreen() {
             onPress={() => setChildId(child.id)}
             className={`rounded-full px-4 py-2 ${child.id === selectedChild ? "bg-teal" : "bg-mist"}`}
           >
-            <Text className={child.id === selectedChild ? "font-semibold text-white" : "text-ink"}>{child.name}</Text>
+            <Text className={child.id === selectedChild ? "font-body-bold text-white" : "text-ink"}>{child.name}</Text>
           </Pressable>
         ))}
       </View>
@@ -117,8 +117,8 @@ export default function ParentTasksScreen() {
         <View key={template.id} className={`flex-row items-center gap-3 rounded-parent border border-mist p-3 ${template.active ? "" : "opacity-50"}`}>
           <TaskIcon slug={template.icon} size={48} variant="illustrated" />
           <View className="flex-1">
-            <Text className="text-base font-semibold text-ink dark:text-night-text">{template.title}</Text>
-            <Text className="text-sm text-gray-600">
+            <Text className="text-base font-body-bold text-ink dark:text-night-text">{template.title}</Text>
+            <Text className="font-body text-sm text-gray-600">
               {template.stars} ⭐ · {WEEKDAYS.filter((w) => template.days_of_week.includes(w.day)).map((w) => t(`weekday.${w.day}`)).join(" ")}
             </Text>
           </View>
@@ -129,13 +129,13 @@ export default function ParentTasksScreen() {
           />
         </View>
       ))}
-      {templates.data?.length === 0 ? <Text className="text-gray-500">{t("tasks.none")}</Text> : null}
+      {templates.data?.length === 0 ? <Text className="font-body text-gray-500">{t("tasks.none")}</Text> : null}
 
       {selectedChild ? (
         <View className="gap-3 rounded-parent bg-teal-light p-4">
-          <Text className="text-lg font-semibold text-ink">{t("tasks.new")}</Text>
+          <Text className="text-lg font-body-bold text-ink">{t("tasks.new")}</Text>
           <Field label={t("tasks.title")} value={title} onChangeText={setTitle} placeholder={t("tasks.titlePlaceholder")} />
-          <Text className="text-sm font-medium text-ink">{t("tasks.icon")}</Text>
+          <Text className="text-sm font-body text-ink">{t("tasks.icon")}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <View className="flex-row gap-2">
               {TASK_ICON_SLUGS.map((slug) => (
@@ -159,15 +159,15 @@ export default function ParentTasksScreen() {
                 onPress={() => toggleDay(w.day)}
                 className={`rounded-full px-3 py-2 ${days.includes(w.day) ? "bg-teal" : "bg-white"}`}
               >
-                <Text className={days.includes(w.day) ? "font-semibold text-white" : "text-ink"}>{t(`weekday.${w.day}`)}</Text>
+                <Text className={days.includes(w.day) ? "font-body-bold text-white" : "text-ink"}>{t(`weekday.${w.day}`)}</Text>
               </Pressable>
             ))}
           </View>
-          {formError ? <Text className="text-sm text-danger">{formError}</Text> : null}
+          {formError ? <Text className="font-body text-sm text-danger">{formError}</Text> : null}
           <Button title={t("common.save")} loading={addTemplate.isPending} disabled={!title.trim() || days.length === 0} onPress={() => addTemplate.mutate()} />
         </View>
       ) : (
-        <Text className="text-gray-500">{t("tasks.addChildFirst")}</Text>
+        <Text className="font-body text-gray-500">{t("tasks.addChildFirst")}</Text>
       )}
 
       <ErrorText error={children.error ?? templates.error ?? toggleActive.error} />

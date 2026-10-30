@@ -22,6 +22,7 @@ const MAP_ROOT = join(root, "apps/mobile/src/generated/illustrated");
 
 /** Kategori → kaynak dizini ve üretilecek boyutlar (yalnız gereken). */
 const CATEGORIES = [
+  { name: "avatars", src: "packages/assets/avatars/illustrated-v3", sizes: [256] },
   { name: "tasks", src: "packages/assets/icons/tasks/illustrated-v3", sizes: [256] },
   { name: "subjects", src: "packages/assets/icons/subjects/illustrated-v3", sizes: [256] },
   { name: "events", src: "packages/assets/icons/events/illustrated-v3", sizes: [256] },

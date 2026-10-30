@@ -11,7 +11,7 @@ export function WeekStrip({ week, selected, onSelect }: { week: string[]; select
       accessibilityState={{ selected: date === selected }} aria-pressed={date === selected} onPress={() => onSelect(date)}
       style={{ minWidth: 48, minHeight: 64, padding: 6, borderWidth: 1, borderColor: "#D8C7AE", borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: date === selected ? "#0B7F7F" : "#FFFCF5" }}>
       <Text style={{ fontFamily: "Nunito_600SemiBold", fontSize: 13, color: date === selected ? "white" : "#284E4B" }}>{weekday.format(new Date(`${date}T12:00:00Z`))}</Text>
-      <Text style={{ fontFamily: "Baloo2_800ExtraBold", fontSize: 23, color: date === selected ? "white" : "#284E4B" }}>{Number(date.slice(-2))}</Text>
+      <Text style={{ fontFamily: "Baloo2_700Bold", fontSize: 23, color: date === selected ? "white" : "#284E4B" }}>{Number(date.slice(-2))}</Text>
     </Pressable>)}
     <View style={{ width: 1 }} />
   </ScrollView>;
