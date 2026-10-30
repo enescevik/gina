@@ -115,7 +115,7 @@ export default function ParentTasksScreen() {
 
       {templates.data?.map((template) => (
         <View key={template.id} className={`flex-row items-center gap-3 rounded-parent border border-mist p-3 ${template.active ? "" : "opacity-50"}`}>
-          <TaskIcon slug={template.icon} size={36} />
+          <TaskIcon slug={template.icon} size={48} variant="illustrated" />
           <View className="flex-1">
             <Text className="text-base font-semibold text-ink dark:text-night-text">{template.title}</Text>
             <Text className="text-sm text-gray-600">
@@ -145,7 +145,7 @@ export default function ParentTasksScreen() {
                   onPress={() => setIcon(slug)}
                   className={`rounded-parent border p-1.5 ${icon === slug ? "border-teal bg-white" : "border-transparent"}`}
                 >
-                  <TaskIcon slug={slug} size={36} />
+                  <TaskIcon slug={slug} size={56} variant="illustrated" />
                 </Pressable>
               ))}
             </View>

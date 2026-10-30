@@ -6,6 +6,7 @@ import { Pressable, Text, View } from "react-native";
 
 import { localDateOf, type Enums } from "@gina/core";
 
+import { SubjectIcon } from "@/components/subject-icon";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText, Screen } from "@/components/ui/screen";
@@ -104,6 +105,7 @@ export default function ParentGradesScreen() {
       {grades.data?.length === 0 ? <Text className="text-gray-500">{t("grades.none")}</Text> : null}
       {grades.data?.map((grade) => (
         <View key={grade.id} className="flex-row items-center gap-3 rounded-parent border border-mist p-3">
+          <SubjectIcon subject={grade.subject} size={48} variant="illustrated" />
           <View className="flex-1">
             <Text className="text-base font-semibold text-ink dark:text-night-text">{grade.subject}</Text>
             <Text className="text-xs text-gray-500">

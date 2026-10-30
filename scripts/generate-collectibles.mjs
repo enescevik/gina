@@ -1,3 +1,5 @@
+// ESKİ: Collectible artık scripts/generate-illustrated.mjs çıktısını kullanır (aynı kırpma/kalite, bayt bayt aynı WebP).
+// apps/mobile/assets/collectibles artık referans edilmiyor; silinmesi sahibin onayına bırakıldı.
 // Resimli v3 koleksiyon görsellerinden (1254px kaynak, ~0.7 MB) uygulama için hafif kopyalar üretir.
 // Çalıştırma: node scripts/generate-collectibles.mjs → apps/mobile/assets/collectibles/{slug}.webp (256px, alfa korunur)
 // Kaynaklar packages/assets/gamification/illustrated-v3/ altında kalır; README: "yalnız gerekli görselleri yükle".

@@ -1,0 +1,471 @@
+{
+  "source": "packages/assets/icons/tasks/illustrated-v3",
+  "sizes": [
+    256
+  ],
+  "total_bytes": 1042226,
+  "files": [
+    {
+      "slug": "make-bed",
+      "size": 256,
+      "file": "make-bed.webp",
+      "bytes": 13726,
+      "sha256": "905887d34e7ee30a797c91957bd642965f2ef2ac5d64908d565e6c35de326964"
+    },
+    {
+      "slug": "brush-teeth",
+      "size": 256,
+      "file": "brush-teeth.webp",
+      "bytes": 13314,
+      "sha256": "619650caff14c39b8e4701d582416313915237bf214095f16bb0937f12d267ab"
+    },
+    {
+      "slug": "wash-face",
+      "size": 256,
+      "file": "wash-face.webp",
+      "bytes": 14716,
+      "sha256": "595b6dfa2ca4d3589a575e50c983d74db88e2b3c4b1eb6a3cd03069548cfdbfe"
+    },
+    {
+      "slug": "get-dressed",
+      "size": 256,
+      "file": "get-dressed.webp",
+      "bytes": 14438,
+      "sha256": "8cf335ad972d7916aad1ac929cd66538761368e45bec37dba670ec7091e17be3"
+    },
+    {
+      "slug": "eat-breakfast",
+      "size": 256,
+      "file": "eat-breakfast.webp",
+      "bytes": 15774,
+      "sha256": "172bf9fa6c6df8ec64461522e69cba0fb3f8092e28e8466f8cdf6ed87ed317df"
+    },
+    {
+      "slug": "wash-hands",
+      "size": 256,
+      "file": "wash-hands.webp",
+      "bytes": 17142,
+      "sha256": "579cdfe18726d005bfc6c4b2746695e45ff76cf9c4a52763f4b89ce50ddbc134"
+    },
+    {
+      "slug": "pajamas",
+      "size": 256,
+      "file": "pajamas.webp",
+      "bytes": 16978,
+      "sha256": "c25f8804e04094418284ba4654d9f58b4707e9c47a0a10e879b9d514e506aa5c"
+    },
+    {
+      "slug": "homework-general",
+      "size": 256,
+      "file": "homework-general.webp",
+      "bytes": 12522,
+      "sha256": "2b99e333f5db565cf023ac214ebba4ae91417d1763ac44df7815cab0c91789a6"
+    },
+    {
+      "slug": "homework-turkish",
+      "size": 256,
+      "file": "homework-turkish.webp",
+      "bytes": 15774,
+      "sha256": "b64975407759adeeb8c531cac0a1c742717a28f7d274e1d9a4df3aada5f7a18e"
+    },
+    {
+      "slug": "homework-math",
+      "size": 256,
+      "file": "homework-math.webp",
+      "bytes": 20760,
+      "sha256": "cc860511819556779b82f9426b43925cec0b2954334735cb5baa9c62e81381b0"
+    },
+    {
+      "slug": "homework-english",
+      "size": 256,
+      "file": "homework-english.webp",
+      "bytes": 18548,
+      "sha256": "7d7b33731648ef6c95b60a6a2aad0bd85dc0f27261483be358bd563daa506ec3"
+    },
+    {
+      "slug": "homework-science",
+      "size": 256,
+      "file": "homework-science.webp",
+      "bytes": 13132,
+      "sha256": "505da16d75f1612e229f278d7ee3990fb5185ba448a90b951d5f8aa3274a4d54"
+    },
+    {
+      "slug": "read-book",
+      "size": 256,
+      "file": "read-book.webp",
+      "bytes": 11968,
+      "sha256": "656b134d71d7ce4d5715a71634e4cd8dc97b2358ef64aa8302a22bbaade475e6"
+    },
+    {
+      "slug": "tidy-room",
+      "size": 256,
+      "file": "tidy-room.webp",
+      "bytes": 16628,
+      "sha256": "521f78f8f3759c8d416b1213837464ffb94e88c9a6156f40002eb7adcfd424a1"
+    },
+    {
+      "slug": "tidy-toys",
+      "size": 256,
+      "file": "tidy-toys.webp",
+      "bytes": 18418,
+      "sha256": "ef99debe1e4318edd4eb3baecce7a917ce3f1329366c531b133389c63a4ea2bb"
+    },
+    {
+      "slug": "set-table",
+      "size": 256,
+      "file": "set-table.webp",
+      "bytes": 16136,
+      "sha256": "a23b6eb4c117c0b4167af16c5b14342c9ac92f5dc41e897487f60d5fb5c2868b"
+    },
+    {
+      "slug": "clear-table",
+      "size": 256,
+      "file": "clear-table.webp",
+      "bytes": 15034,
+      "sha256": "e41a0e4de2f20f9332bbb90ca71dc145450fb8b86775a81b2cf9bfce4bd717e9"
+    },
+    {
+      "slug": "take-out-trash",
+      "size": 256,
+      "file": "take-out-trash.webp",
+      "bytes": 15640,
+      "sha256": "2a53b3037786cea542a353e1c3cd80976b8fbcddb1f3437b2755728add1604bb"
+    },
+    {
+      "slug": "water-plants",
+      "size": 256,
+      "file": "water-plants.webp",
+      "bytes": 18550,
+      "sha256": "8db9e259147dcfa5341dd016300de6eb37064f4fb79390ebf47695c1b7eb1bb9"
+    },
+    {
+      "slug": "pack-school-bag",
+      "size": 256,
+      "file": "pack-school-bag.webp",
+      "bytes": 16434,
+      "sha256": "5d07d05a8dbadea65de0d3d6aea0cf2df2234c0238149f647ebbe534a19bcd66"
+    },
+    {
+      "slug": "fill-water-bottle",
+      "size": 256,
+      "file": "fill-water-bottle.webp",
+      "bytes": 12864,
+      "sha256": "792ba74aefae20e5418ce28e0aeb3f437a7e642abd6185e2e29af6ecc091a989"
+    },
+    {
+      "slug": "drink-water",
+      "size": 256,
+      "file": "drink-water.webp",
+      "bytes": 18166,
+      "sha256": "e46da63e958435dd91ef05d4a9bd98d986eaa533734735ebf57142fde256d5e9"
+    },
+    {
+      "slug": "screen-time",
+      "size": 256,
+      "file": "screen-time.webp",
+      "bytes": 14786,
+      "sha256": "4e90e593e5a0530439470c71ea1f20cacb98475ea1ea2e47fb37962534fa45e7"
+    },
+    {
+      "slug": "put-away-tablet",
+      "size": 256,
+      "file": "put-away-tablet.webp",
+      "bytes": 13250,
+      "sha256": "7e8aa99cfc17ea4c9f8c877b6264f04428ffb70fda1327cb9222c2363e0d62d9"
+    },
+    {
+      "slug": "bedtime",
+      "size": 256,
+      "file": "bedtime.webp",
+      "bytes": 14712,
+      "sha256": "245e793f46d157747c4a10ee527534fafc9cb225a9d0465dc607d876782fb57d"
+    },
+    {
+      "slug": "exercise",
+      "size": 256,
+      "file": "exercise.webp",
+      "bytes": 15240,
+      "sha256": "01b7fbdd7980564addef997033e73fad5da81ed8c7c6366ead275b14c6979201"
+    },
+    {
+      "slug": "practice-instrument",
+      "size": 256,
+      "file": "practice-instrument.webp",
+      "bytes": 13432,
+      "sha256": "fd5527b82ef69c5e718537ceaf639835b12ec3ea3b83237f0d5c2fd147b1723e"
+    },
+    {
+      "slug": "drawing",
+      "size": 256,
+      "file": "drawing.webp",
+      "bytes": 17332,
+      "sha256": "cbbf3d568aee8efad3376158669115e7a988166a43f23667d96f67d3e697c5ae"
+    },
+    {
+      "slug": "feed-pet",
+      "size": 256,
+      "file": "feed-pet.webp",
+      "bytes": 14050,
+      "sha256": "ecb9667ba179e9a9a6f4d74ef61dcea861d7b0747fccbc36cf5486fb97faf74c"
+    },
+    {
+      "slug": "task-custom",
+      "size": 256,
+      "file": "task-custom.webp",
+      "bytes": 10708,
+      "sha256": "93aec535efa427f703036efa88f40b59baed38417fe0e0a98798dd6f98fb3b14"
+    },
+    {
+      "slug": "comb-hair",
+      "size": 256,
+      "file": "comb-hair.webp",
+      "bytes": 14168,
+      "sha256": "616c0530114d11bd1cf111556bff8ab1a4224cb3bf18b13c3ce54d41b4deed53"
+    },
+    {
+      "slug": "take-shower",
+      "size": 256,
+      "file": "take-shower.webp",
+      "bytes": 17906,
+      "sha256": "b6f4d17d142c02873234c6757fd62d6e34a40ce1957a1d2494f9ec03ab852b0f"
+    },
+    {
+      "slug": "cut-nails",
+      "size": 256,
+      "file": "cut-nails.webp",
+      "bytes": 13864,
+      "sha256": "ad58e8e04f0b31db8171367fd632ccda385c78e30609c9cba490faba421a1a62"
+    },
+    {
+      "slug": "homework-life-science",
+      "size": 256,
+      "file": "homework-life-science.webp",
+      "bytes": 18246,
+      "sha256": "1a3908c1c1ac1414a0285bdc7e65b8ed63c07577caf0bab8f7cabe5864ba9e74"
+    },
+    {
+      "slug": "homework-social",
+      "size": 256,
+      "file": "homework-social.webp",
+      "bytes": 16274,
+      "sha256": "e03a0100c8fe4971947dc9dd92721db121e904326deb9fb193469ecd33daa00f"
+    },
+    {
+      "slug": "study",
+      "size": 256,
+      "file": "study.webp",
+      "bytes": 16260,
+      "sha256": "b6912a4f1391b708d48f0c7a27b24922470f338084d4f9d030310314bb6596e0"
+    },
+    {
+      "slug": "practice-test",
+      "size": 256,
+      "file": "practice-test.webp",
+      "bytes": 16782,
+      "sha256": "fb03329d6459a665ce3ca0e5684e633f0490892b118dd55b02034a25f3d6870a"
+    },
+    {
+      "slug": "vocabulary",
+      "size": 256,
+      "file": "vocabulary.webp",
+      "bytes": 14150,
+      "sha256": "f25c0874dee7d5839928bf8f631270a16cac8b9871beaf1b94ca63a039efc48f"
+    },
+    {
+      "slug": "write-journal",
+      "size": 256,
+      "file": "write-journal.webp",
+      "bytes": 14940,
+      "sha256": "44011c044cfe8183a5e8c52fe544fa09b81f2fb76666e284d5669a6e36a5aa87"
+    },
+    {
+      "slug": "unload-dishwasher",
+      "size": 256,
+      "file": "unload-dishwasher.webp",
+      "bytes": 15998,
+      "sha256": "585c3dda6e969463c28754c83d996f9da702a3dd87f36521dcf5c88ad5f89f3b"
+    },
+    {
+      "slug": "laundry-basket",
+      "size": 256,
+      "file": "laundry-basket.webp",
+      "bytes": 15714,
+      "sha256": "c4f651011efbd75f862ec52a77ca3f5375fb69b4b0c359918e3edecba448fea0"
+    },
+    {
+      "slug": "sweep-floor",
+      "size": 256,
+      "file": "sweep-floor.webp",
+      "bytes": 15464,
+      "sha256": "cea2c56673792477ce9cb9eae2f8ca1c1e0e612d1472ee1066470973b7735ebb"
+    },
+    {
+      "slug": "carry-groceries",
+      "size": 256,
+      "file": "carry-groceries.webp",
+      "bytes": 17580,
+      "sha256": "16c758ca1cf2fdc0919d5eb518d5ec30c1076a1ab4b12ffc10ae5679f54dc9aa"
+    },
+    {
+      "slug": "tidy-desk",
+      "size": 256,
+      "file": "tidy-desk.webp",
+      "bytes": 17070,
+      "sha256": "919dd6c2a922d7d6a603fba653b0329f88294978d665bf7266d1c75163fc0e47"
+    },
+    {
+      "slug": "charge-tablet",
+      "size": 256,
+      "file": "charge-tablet.webp",
+      "bytes": 14706,
+      "sha256": "2eda3b8357643689c0ef4ce9f0aad1feaf77c822de1ba26db897b46a61ddad59"
+    },
+    {
+      "slug": "football-practice",
+      "size": 256,
+      "file": "football-practice.webp",
+      "bytes": 16040,
+      "sha256": "51bbb902d299915964331948896ac25b577e68ff613748b6828946ade121d9a5"
+    },
+    {
+      "slug": "swimming",
+      "size": 256,
+      "file": "swimming.webp",
+      "bytes": 16214,
+      "sha256": "4328ac2fc5c050c6faa496be55883d2731680761302e304007859ba90bac6d4b"
+    },
+    {
+      "slug": "cycling",
+      "size": 256,
+      "file": "cycling.webp",
+      "bytes": 24998,
+      "sha256": "480cae101f00a29769cb9b6d872efc846f1b061d56c2a6f17bc2ba2f56786f17"
+    },
+    {
+      "slug": "play-outside",
+      "size": 256,
+      "file": "play-outside.webp",
+      "bytes": 13350,
+      "sha256": "0699651585b2175aa95c523dac406079fc4acf9f55f2967b01b7719e7fccc0b5"
+    },
+    {
+      "slug": "crafts",
+      "size": 256,
+      "file": "crafts.webp",
+      "bytes": 17894,
+      "sha256": "b548b9b28ed804b03de4a40cbb1dfa2a9130e344011dc9b1c47c6b8b14a9d74b"
+    },
+    {
+      "slug": "dance",
+      "size": 256,
+      "file": "dance.webp",
+      "bytes": 23874,
+      "sha256": "4ced1dfe1f41c59103bb28148775c412001a94982164f63f35e83536b96a0796"
+    },
+    {
+      "slug": "puzzle",
+      "size": 256,
+      "file": "puzzle.webp",
+      "bytes": 13966,
+      "sha256": "cc8bf9379a228fb68937802fa5caf11624cd3ddc8b1f0d37d7b90e0423fc06e8"
+    },
+    {
+      "slug": "chess",
+      "size": 256,
+      "file": "chess.webp",
+      "bytes": 15188,
+      "sha256": "ed67acf16492e29eddeb22203131494f7040e988a537ad46ee0a223272811ccc"
+    },
+    {
+      "slug": "coding",
+      "size": 256,
+      "file": "coding.webp",
+      "bytes": 12762,
+      "sha256": "63bf26f70f3bc90c3e136fef518810025aba2491ab8dfc0b586c6506c4023f71"
+    },
+    {
+      "slug": "read-aloud",
+      "size": 256,
+      "file": "read-aloud.webp",
+      "bytes": 16068,
+      "sha256": "9e2f6a859bbc2df7c6b3e3ae2fcf0708e8c6a63c21ac281bf5a6aad9ce116245"
+    },
+    {
+      "slug": "bedtime-story",
+      "size": 256,
+      "file": "bedtime-story.webp",
+      "bytes": 14496,
+      "sha256": "7a7f9a6dd7731848399fe50b7ef0e2e0dbaf41343aecc47faf9777a08784a2e0"
+    },
+    {
+      "slug": "walk-dog",
+      "size": 256,
+      "file": "walk-dog.webp",
+      "bytes": 17022,
+      "sha256": "6e0239e7fd8b722edfda262a1798ebe67e82c0b60041327a23efb6ba463378ff"
+    },
+    {
+      "slug": "feed-fish",
+      "size": 256,
+      "file": "feed-fish.webp",
+      "bytes": 21454,
+      "sha256": "b8bf1cbac9129e0e8ab0fa96efcccfa7e0369ca04fe18d608cd4662a3f5b5381"
+    },
+    {
+      "slug": "pack-lunchbox",
+      "size": 256,
+      "file": "pack-lunchbox.webp",
+      "bytes": 19020,
+      "sha256": "a03281a209287e98a7448184b7ea2284bf549064e5673735b01f4cfd265cfd83"
+    },
+    {
+      "slug": "eat-fruit",
+      "size": 256,
+      "file": "eat-fruit.webp",
+      "bytes": 15612,
+      "sha256": "d0ebbc32bddefcfe73191b69aef572a7bb33f7bdd7fa1382ec583906af12049e"
+    },
+    {
+      "slug": "finish-meal",
+      "size": 256,
+      "file": "finish-meal.webp",
+      "bytes": 12742,
+      "sha256": "361baa90d4010014c9298e1a313b4bc7dd9de14e94e0c7f82909974895ba7a1b"
+    },
+    {
+      "slug": "take-medicine",
+      "size": 256,
+      "file": "take-medicine.webp",
+      "bytes": 11306,
+      "sha256": "f60ca5949c3ec754f06465fd110d01214f1ffa728212128b780606e04e87d525"
+    },
+    {
+      "slug": "call-grandparents",
+      "size": 256,
+      "file": "call-grandparents.webp",
+      "bytes": 15180,
+      "sha256": "83dc1fb1a800bee4c1b44a7a9d7fffb3daaf7832335e860f8321ff9112a89f02"
+    },
+    {
+      "slug": "help-sibling",
+      "size": 256,
+      "file": "help-sibling.webp",
+      "bytes": 18118,
+      "sha256": "c1df3535c458fbdb8dac910d76cb4a509185940fba31265a58839d106e11a047"
+    },
+    {
+      "slug": "kindness",
+      "size": 256,
+      "file": "kindness.webp",
+      "bytes": 12496,
+      "sha256": "52d8f110a9c62437be70885b0195a29d50fa247569326fd2171ade3cc3b8c71e"
+    },
+    {
+      "slug": "save-money",
+      "size": 256,
+      "file": "save-money.webp",
+      "bytes": 15132,
+      "sha256": "179f369a90ae3f8f83c153d3620ec4197faf45218ec14c8bb4b51cb4049579c6"
+    }
+  ]
+}

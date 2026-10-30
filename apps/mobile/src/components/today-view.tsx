@@ -2,16 +2,19 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Crypto from "expo-crypto";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
+import { ActivityIndicator, Text, View, useWindowDimensions } from "react-native";
 
-import { localDateOf, starBalance, templatesDueOn } from "@gina/core";
+import { localDateOf, starBalance, templatesDueOn, type CompletionStatus } from "@gina/core";
 
-import { TaskIcon } from "@/components/task-icon";
+import { LARGE_FONT_REFLOW_ABOVE } from "@/components/room/layout";
+import { NineSlice, SkinIcon, SkinPressable, SkinProgress } from "@/components/room/nine-slice";
+import { SkinTaskCard, sortForBoard } from "@/components/room/skin-task-card";
 import { ErrorText } from "@/components/ui/screen";
 import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { supabase } from "@/lib/supabase";
 import { useChildExamCount } from "@/lib/use-child-exam-count";
+import { useChildGoal } from "@/lib/use-child-goal";
 
 export interface TodayViewProps {
   childId: string;
@@ -85,56 +88,111 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
 
   // Prova kartı: dar akışta kitaplığın karşılığı; atanmış deneme sayısı rozet olarak.
   const examCount = useChildExamCount(childId).data ?? 0;
+  const goal = useChildGoal(childId);
+  const { width, fontScale } = useWindowDimensions();
+  // Dar telefon/büyük yazı: görev kâğıdında çip metnin altına iner (minimumLogicalSize altına sıkıştırılmaz).
+  const stacked = width < 600 || fontScale > LARGE_FONT_REFLOW_ABOVE;
 
   const due = templatesDueOn(templates.data ?? [], today);
   const byTemplate = new Map((completions.data ?? []).map((c) => [c.template_id, c]));
+  const statusOf = (id: string) => (byTemplate.get(id)?.status ?? null) as CompletionStatus | null;
+  const doneCount = due.filter((task) => statusOf(task.id) === "done" || statusOf(task.id) === "approved").length;
+  const nextTaskId = due.find((task) => statusOf(task.id) === null || statusOf(task.id) === "returned")?.id;
+  const balance = stars.data ?? 0;
+  const goalData = goal.data;
+  const remaining = goalData ? Math.max(0, goalData.cost - balance) : 0;
+
+  // Odam kaplamalarıyla dikey akış: oda küçültülmez; aynı pano/kâğıt/çip/bilet dili alt alta akar.
+  const goalBody = (
+    <>
+      <Text className="font-display text-xl text-teal-dark">{t("room.myGoal")}</Text>
+      {goalData ? (
+        <>
+          <Text className="text-center font-display text-2xl text-ink">{goalData.rewardTitle}</Text>
+          <Text className="font-body-bold text-base text-ink">
+            {t("room.goalProgress", { stars: Math.min(balance, goalData.cost), cost: goalData.cost })}
+          </Text>
+          <SkinProgress value={balance / goalData.cost} style={{ alignSelf: "stretch", marginVertical: 4 }} />
+          <Text className="font-display text-xl text-ink">{remaining === 0 ? t("goal.reached") : t("room.starsLeft", { count: remaining })}</Text>
+        </>
+      ) : goal.isLoading ? (
+        <ActivityIndicator color="#0B7F7F" />
+      ) : (
+        <Text className="font-body-bold text-lg text-teal-dark">{t("goal.pickCta")}</Text>
+      )}
+    </>
+  );
 
   return (
     <View className="gap-4">
-      <View className="flex-row items-center justify-between rounded-child bg-star/20 p-4">
-        <Text className="text-lg font-semibold text-ink">{t("child.stars")}</Text>
-        <Text className="text-3xl font-bold text-ink">⭐ {stars.data ?? 0}</Text>
+      <View className="flex-row" accessible accessibilityLabel={`${t("child.stars")}: ${t("room.starCount", { count: balance })}`}>
+        <NineSlice skin="pill-star" contentClassName="justify-center">
+          <Text className="font-body-bold text-lg text-ink">{t("room.starCount", { count: balance })}</Text>
+        </NineSlice>
       </View>
+
+      {actingAsParent ? (
+        <NineSlice skin={goalData ? "ticket-goal" : "ticket-goal-empty"} contentClassName="items-center justify-center">
+          {goalBody}
+        </NineSlice>
+      ) : (
+        <SkinPressable
+          skin={goalData ? "ticket-goal" : "ticket-goal-empty"}
+          onPress={() => router.push("/child/goal")}
+          accessibilityLabel={goalData ? `${t("room.myGoal")}: ${goalData.rewardTitle}` : `${t("room.myGoal")}: ${t("goal.pickCta")}`}
+          contentClassName="items-center justify-center"
+        >
+          {goalBody}
+        </SkinPressable>
+      )}
+
       <ErrorText error={templates.error ?? completions.error ?? complete.error} />
-      {due.length === 0 && templates.isSuccess ? (
-        <Text className="text-lg text-ink dark:text-night-text">{t("child.allDone")}</Text>
-      ) : null}
-      {due.map((task) => {
-        const completion = byTemplate.get(task.id);
-        const status = completion?.status;
-        return (
-          <Pressable
-            key={task.id}
-            accessibilityRole="button"
-            disabled={(!!completion && status !== "returned") || complete.isPending}
-            onPress={() => complete.mutate(task.id)}
-            className={`min-h-20 flex-row items-center justify-between rounded-child p-5 ${
-              status === "approved" ? "bg-green-light" : status === "done" ? "bg-star/30" : status === "returned" ? "bg-coral-light active:bg-teal-light" : "bg-white active:bg-teal-light dark:bg-night-surface"
-            }`}
-          >
-            <TaskIcon slug={task.icon} size={44} />
-            <View className="ml-4 flex-1">
-              <Text className="text-xl font-semibold text-ink">{task.title}</Text>
-              <Text className="text-sm text-gray-600">
-                {status === "approved" ? t("child.approved") : status === "done" ? t("child.waitingApproval") : status === "returned" ? t("child.returnedTryAgain") : `${task.stars} ⭐`}
-              </Text>
+
+      <NineSlice skin="panel-generic" contentStyle={{ gap: 10 }}>
+        <View>
+          <Text accessibilityRole="header" className="font-display text-2xl text-ink">
+            {t("room.todayTasks")}
+          </Text>
+          <Text className="font-body text-base text-ink/80">{t("room.completedOf", { done: doneCount, total: due.length })}</Text>
+          {due.length > 0 ? (
+            <View className="mt-1 flex-row flex-wrap gap-1.5" accessible={false} importantForAccessibility="no-hide-descendants">
+              {due.map((task) => (
+                <SkinIcon
+                  key={task.id}
+                  skin={statusOf(task.id) === "done" || statusOf(task.id) === "approved" ? "progress-dot-filled" : "progress-dot-empty"}
+                  size={16}
+                />
+              ))}
             </View>
-            <Text className="text-3xl">{status === "approved" ? "✅" : status === "done" ? "⏳" : status === "returned" ? "🔁" : "⬜️"}</Text>
-          </Pressable>
-        );
-      })}
+          ) : null}
+        </View>
+        {templates.isLoading ? <ActivityIndicator color="#0B7F7F" /> : null}
+        {due.length === 0 && templates.isSuccess ? <Text className="font-body text-lg text-ink">{t("child.allDone")}</Text> : null}
+        {sortForBoard(due.map((task) => ({ ...task, status: statusOf(task.id) }))).map((task) => (
+          <SkinTaskCard
+            key={task.id}
+            task={task}
+            s={1}
+            stacked={stacked}
+            isNext={task.id === nextTaskId}
+            completing={complete.isPending}
+            onComplete={() => complete.mutate(task.id)}
+          />
+        ))}
+      </NineSlice>
+
       {/* Prova kapısı (geniş ekrandaki kitaplığın dar akış karşılığı) */}
-      <Pressable
-        accessibilityRole="button"
+      <SkinPressable
+        skin="panel-generic"
         accessibilityLabel={examCount > 0 ? `${t("prova.title")}, ${t("prova.waitingCount", { count: examCount })}` : t("prova.title")}
         accessibilityHint={examCount > 0 ? undefined : t("prova.noneWaiting")}
         onPress={() => router.push(actingAsParent ? "/parent/child-mode/prova" : "/child/prova")}
-        className="min-h-20 flex-row items-center justify-between rounded-child bg-white p-5 active:bg-teal-light dark:bg-night-surface"
+        contentClassName="flex-row items-center"
       >
         <Text className="text-4xl">📚</Text>
         <View className="ml-4 flex-1">
-          <Text className="text-xl font-semibold text-ink dark:text-night-text">{t("prova.title")}</Text>
-          <Text className="text-sm text-gray-600">
+          <Text className="font-display text-xl text-ink">{t("prova.title")}</Text>
+          <Text className="font-body text-sm text-ink/80">
             {examCount > 0 ? t("prova.waitingCount", { count: examCount }) : t("prova.noneWaiting")}
           </Text>
         </View>
@@ -143,9 +201,9 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
             <Text className="text-base font-bold text-white">{examCount}</Text>
           </View>
         ) : (
-          <Text className="text-2xl text-gray-600">›</Text>
+          <Text className="font-display text-2xl text-ink/70">›</Text>
         )}
-      </Pressable>
+      </SkinPressable>
     </View>
   );
 }

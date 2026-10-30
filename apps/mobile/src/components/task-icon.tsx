@@ -1,5 +1,9 @@
 import { View } from "react-native";
 
+import { ILLUSTRATED_TASKS, isIllustratedTasksSlug, type IllustratedTasksSlug } from "@/generated/illustrated/tasks";
+
+import { IllustratedImage, shouldUseIllustrated, type IconVariant } from "./illustrated-image";
+
 import IconBedtime from "../../../../packages/assets/icons/tasks/color/bedtime.svg";
 import IconBrushTeeth from "../../../../packages/assets/icons/tasks/color/brush-teeth.svg";
 import IconClearTable from "../../../../packages/assets/icons/tasks/color/clear-table.svg";
@@ -64,19 +68,74 @@ const TASK_ICONS = {
   "water-plants": IconWaterPlants,
 } as const;
 
-export type TaskIconSlug = keyof typeof TASK_ICONS;
-export const TASK_ICON_SLUGS = Object.keys(TASK_ICONS) as TaskIconSlug[];
+type SvgTaskSlug = keyof typeof TASK_ICONS;
+
+// Yalnız resimli kaynağı olan yeni slug'lar küçük boyutta en yakın eski SVG'ye düşer (slug değişmez, yalnız görünüm).
+const SVG_FALLBACK: Partial<Record<IllustratedTasksSlug, SvgTaskSlug>> = {
+  "homework-life-science": "homework-general",
+  "homework-social": "homework-general",
+  "study": "homework-general",
+  "practice-test": "homework-general",
+  "vocabulary": "homework-english",
+  "write-journal": "homework-general",
+  "read-aloud": "read-book",
+  "bedtime-story": "read-book",
+  "comb-hair": "wash-face",
+  "take-shower": "wash-face",
+  "unload-dishwasher": "clear-table",
+  "carry-groceries": "set-table",
+  "tidy-desk": "tidy-room",
+  "sweep-floor": "tidy-room",
+  "laundry-basket": "tidy-room",
+  "charge-tablet": "put-away-tablet",
+  "football-practice": "exercise",
+  "swimming": "exercise",
+  "cycling": "exercise",
+  "play-outside": "exercise",
+  "dance": "exercise",
+  "crafts": "drawing",
+  "walk-dog": "feed-pet",
+  "feed-fish": "feed-pet",
+  "pack-lunchbox": "pack-school-bag",
+  "eat-fruit": "eat-breakfast",
+  "finish-meal": "eat-breakfast",
+};
+
+/** Görev ikonu slug'ı: resimli v3 manifestindeki 66 slug (DB task_templates.icon değerleri). */
+export type TaskIconSlug = IllustratedTasksSlug;
+/** Seçicide gösterilecek slug'lar: manifest sırası. */
+export { ILLUSTRATED_TASKS_SLUGS as TASK_ICON_SLUGS } from "@/generated/illustrated/tasks";
 
 export interface TaskIconProps {
   slug: string | null | undefined;
+  /** dp; varsayılan 40 (native SVG). */
   size?: number;
+  /**
+   * auto (varsayılan): ≥64 dp resimli WebP, altında native SVG; yalnız resimli kaynağı olan slug 48 dp'den itibaren resim.
+   * svg: her zaman native SVG (gezinme/aksiyon). illustrated: büyük kart/raf; 48 dp altında yine SVG'ye düşer.
+   */
+  variant?: IconVariant;
+  accessibilityLabel?: string;
 }
 
-/** Görev ikonu (renkli set); bilinmeyen slug task-custom simgesine düşer. */
-export function TaskIcon({ slug, size = 40 }: TaskIconProps) {
-  const Svg = TASK_ICONS[(slug ?? "task-custom") as TaskIconSlug] ?? TASK_ICONS["task-custom"];
+/** Görev ikonu; bilinmeyen slug task-custom simgesine düşer. */
+export function TaskIcon({ slug, size = 40, variant = "auto", accessibilityLabel }: TaskIconProps) {
+  const key = slug ?? "task-custom";
+  const hasSvg = Object.prototype.hasOwnProperty.call(TASK_ICONS, key);
+  const svgKey: SvgTaskSlug | undefined =
+    hasSvg ? (key as SvgTaskSlug) : isIllustratedTasksSlug(key) ? SVG_FALLBACK[key] : undefined;
+  const illustrated = isIllustratedTasksSlug(key) && shouldUseIllustrated(variant, size, true, hasSvg);
+  if (illustrated) {
+    return <IllustratedImage source={ILLUSTRATED_TASKS[key as IllustratedTasksSlug]} size={size} accessibilityLabel={accessibilityLabel} />;
+  }
+  const Svg = TASK_ICONS[svgKey ?? "task-custom"];
   return (
-    <View style={{ width: size, height: size }}>
+    <View
+      style={{ width: size, height: size }}
+      accessible={!!accessibilityLabel}
+      accessibilityLabel={accessibilityLabel}
+      importantForAccessibility={accessibilityLabel ? "auto" : "no-hide-descendants"}
+    >
       <Svg width={size} height={size} />
     </View>
   );

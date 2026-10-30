@@ -75,7 +75,7 @@ export default function ChildWeekScreen() {
               const status = byKey.get(`${task.id}:${date}`);
               return (
                 <View key={task.id} className="flex-row items-center gap-3">
-                  <TaskIcon slug={task.icon} size={28} />
+                  <TaskIcon slug={task.icon} size={56} variant="illustrated" />
                   <Text className="flex-1 text-base text-ink dark:text-night-text">{task.title}</Text>
                   <Text className="text-xl">{status === "approved" ? "✅" : status === "done" ? "⏳" : date < today ? "▫️" : "⬜️"}</Text>
                 </View>

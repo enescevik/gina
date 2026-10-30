@@ -1,0 +1,142 @@
+{
+  "source": "packages/assets/icons/subjects/illustrated-v3",
+  "sizes": [
+    256
+  ],
+  "total_bytes": 298300,
+  "files": [
+    {
+      "slug": "turkish",
+      "size": 256,
+      "file": "turkish.webp",
+      "bytes": 15272,
+      "sha256": "c54ffa27f7428839515566d392ff73210ebcb5b71e54ec1a965072dc5ffb83fb"
+    },
+    {
+      "slug": "math",
+      "size": 256,
+      "file": "math.webp",
+      "bytes": 14562,
+      "sha256": "8642a27493da6a69e569bcd4d5cf866b192cd013ee99208b9b602666330406a4"
+    },
+    {
+      "slug": "life-science",
+      "size": 256,
+      "file": "life-science.webp",
+      "bytes": 16426,
+      "sha256": "76abbb1f6b8f05843b8dcbfbb299461dacda55bfd0d68055af83c915018e58f9"
+    },
+    {
+      "slug": "science",
+      "size": 256,
+      "file": "science.webp",
+      "bytes": 24186,
+      "sha256": "c5fe19e395ae0513e036b56002ddaba9592daa7c6c472d3898e7a5fb287d1f31"
+    },
+    {
+      "slug": "social-studies",
+      "size": 256,
+      "file": "social-studies.webp",
+      "bytes": 20210,
+      "sha256": "7dc6a1dd406c1d94326ffd4c62e9e2774c5a3d1223a5252896828df091e2dfdc"
+    },
+    {
+      "slug": "citizenship",
+      "size": 256,
+      "file": "citizenship.webp",
+      "bytes": 11112,
+      "sha256": "772cdd67b5a4b042bdac658b4598ee0b1908b00f0f56b10673fe4461d43bb3ce"
+    },
+    {
+      "slug": "english",
+      "size": 256,
+      "file": "english.webp",
+      "bytes": 18754,
+      "sha256": "ccefb38cf296bdec6337198b5006e7104425456bb040ac6e296df5cb7c5b22b0"
+    },
+    {
+      "slug": "religion-ethics",
+      "size": 256,
+      "file": "religion-ethics.webp",
+      "bytes": 12354,
+      "sha256": "726daa2d8794906cd35bc75b55d28ffc34c23af35d239405d36f80a358a146c3"
+    },
+    {
+      "slug": "physical-education",
+      "size": 256,
+      "file": "physical-education.webp",
+      "bytes": 14596,
+      "sha256": "2600e023a68b028656840c85848e425d4ecad7ebbc3bbf633e5db5e03e904451"
+    },
+    {
+      "slug": "play-physical",
+      "size": 256,
+      "file": "play-physical.webp",
+      "bytes": 18026,
+      "sha256": "0a2c96c8663047b8652ed840810aa5c9034802b31eaf40867dab26ad88faab06"
+    },
+    {
+      "slug": "music",
+      "size": 256,
+      "file": "music.webp",
+      "bytes": 16618,
+      "sha256": "78738683bb720bef51c579f28d2b84f0e868b48f811c90f6c9b9b480dbaf0e1a"
+    },
+    {
+      "slug": "visual-arts",
+      "size": 256,
+      "file": "visual-arts.webp",
+      "bytes": 15888,
+      "sha256": "1eb2e49b12b4a3e1163a771b1dd4ddb054de73c7a1c4b7db73a73a84d532700c"
+    },
+    {
+      "slug": "ict",
+      "size": 256,
+      "file": "ict.webp",
+      "bytes": 13050,
+      "sha256": "0f9f385e0df8d34e36877a4076729ddaf407b7c3977bf7090fd229b7da672eee"
+    },
+    {
+      "slug": "technology-design",
+      "size": 256,
+      "file": "technology-design.webp",
+      "bytes": 14762,
+      "sha256": "b410540ad30bb6657d9a7e85fe6c508f2503b56044d74962b79b281db62df51d"
+    },
+    {
+      "slug": "traffic-safety",
+      "size": 256,
+      "file": "traffic-safety.webp",
+      "bytes": 13352,
+      "sha256": "005eee05a76e13a950099f648b82477285581ff20ff197d847f94deb1e5ec60e"
+    },
+    {
+      "slug": "free-activity",
+      "size": 256,
+      "file": "free-activity.webp",
+      "bytes": 13238,
+      "sha256": "b09a541509cc5b211a5861fc09a9f95599510453cfe85b92497066a12230d4c7"
+    },
+    {
+      "slug": "guidance",
+      "size": 256,
+      "file": "guidance.webp",
+      "bytes": 15712,
+      "sha256": "b114463b73a4a51adb45df8f52974b298a90946f404d77f8d6662a493edae899"
+    },
+    {
+      "slug": "study-hall",
+      "size": 256,
+      "file": "study-hall.webp",
+      "bytes": 16100,
+      "sha256": "a2f6633b23232320b0b36e82ee916d73ba044310b9bad7c3bc8c2732b7c69e5e"
+    },
+    {
+      "slug": "elective",
+      "size": 256,
+      "file": "elective.webp",
+      "bytes": 14082,
+      "sha256": "ef0d36c185eaa8f6155ab22147e59e234f02820f5bb5fb8dce9e4b2be3981a01"
+    }
+  ]
+}

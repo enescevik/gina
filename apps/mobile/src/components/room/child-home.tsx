@@ -1,13 +1,15 @@
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
 
-import LogoMark from "../../../../../packages/assets/brand/yan-yana/logo-mark.svg";
+import Wordmark from "../../../../../packages/assets/brand/yan-yana/logo-wordmark.svg";
 
 import { Collectible } from "@/components/collectible";
-import { TaskIcon } from "@/components/task-icon";
-import { ZONES } from "@/components/room/layout";
+import { ZONES, roomSkinScale } from "@/components/room/layout";
+import { NineSlice, SkinIcon, SkinPressable, SkinProgress } from "@/components/room/nine-slice";
 import { RoomScene, type CharacterKey } from "@/components/room/scene";
+import { SkinTaskCard, sortForBoard } from "@/components/room/skin-task-card";
+import { ErrorText } from "@/components/ui/screen";
 import { useChildBadges } from "@/lib/use-child-badges";
 import { useChildExamCount } from "@/lib/use-child-exam-count";
 import { useChildGoal } from "@/lib/use-child-goal";
@@ -21,9 +23,7 @@ export interface RoomChildHomeProps {
   onParentExit: () => void;
 }
 
-const DAY_LETTERS = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"];
-
-/** Onaylı tasarımın (resim 1) gerçek verili hâli: pano, hedef bileti, Haftam, Başardıklarım. */
+/** Onaylı tasarımın (child-home-approved.png) gerçek verili hâli: pano, hedef bileti, Haftam, raf ve Başardıklarım. */
 export function RoomChildHome({ childId, childName, character = "unspecified", actingAsParent = false, onParentExit }: RoomChildHomeProps) {
   const { t, i18n } = useTranslation();
   const data = useChildToday(childId, actingAsParent);
@@ -32,192 +32,257 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
   const earnedCount = (badges.data ?? []).filter((b) => b.earned).length;
   const assignedExams = useChildExamCount(childId);
   const goal = useChildGoal(childId);
+  const weekday = new Intl.DateTimeFormat(i18n.language, { weekday: "short", timeZone: "UTC" });
 
   return (
     <RoomScene character={character}>
-      {({ rect }) => {
+      {({ rect, frame }) => {
+        const s = roomSkinScale(frame.width);
+        const fs = (n: number) => Math.round(n * s);
         const header = rect(ZONES.header);
         const board = rect(ZONES.taskBoard);
+        const column = rect(ZONES.rightColumn);
         const goalRect = rect(ZONES.goal);
         const week = rect(ZONES.week);
-        const drawer = rect(ZONES.treasureDrawer);
-        const slots = ZONES.displaySlots.map(rect);
+        const shelfZone = rect(ZONES.shelf);
         const shelfRect = rect(ZONES.bookshelf);
+        const doneCount = data.due.filter((d) => d.status === "done" || d.status === "approved").length;
+        const nextTaskId = data.due.find((d) => d.status === null || d.status === "returned")?.id;
+        const goalData = goal.data;
+        const remaining = goalData ? Math.max(0, goalData.cost - data.stars) : 0;
+
         return (
           <>
-            {/* Üst çubuk: logo + selamlama solda; yıldız ve Ebeveyn sağda */}
+            {/* Üst çubuk: logo + selamlama solda; yıldız ve Ebeveyn hapları sağda */}
             <View style={{ position: "absolute", ...header }} className="flex-row items-center justify-between">
-              <View className="flex-row items-center gap-3">
-                <LogoMark width={40} height={40} />
-                <Text className="font-display text-2xl text-ink">{t("child.hello", { name: childName })}</Text>
-              </View>
-              <View className="flex-row items-center gap-2">
-                <View className="min-h-12 flex-row items-center gap-1 rounded-full bg-star/20 px-4">
-                  <Collectible slug="star-filled" size={26} />
-                  <Text className="font-body-bold text-base text-ink">{t("room.starCount", { count: data.stars })}</Text>
+              <View className="flex-row items-center" style={{ gap: 16 * s }}>
+                <Wordmark width={160 * s} height={70 * s} accessibilityLabel="Gina" />
+                <View className="bg-ink/15" style={{ width: 2, height: 44 * s }} />
+                <View>
+                  <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(38), lineHeight: fs(48) }}>
+                    {t("child.hello", { name: childName })}
+                  </Text>
+                  <NineSlice skin="header-greeting-underline" scale={s} style={{ marginTop: -6 * s }} />
                 </View>
-                <Pressable
-                  accessibilityRole="button"
+              </View>
+              <View className="flex-row items-center" style={{ gap: 12 * s }}>
+                <View accessible accessibilityLabel={t("room.starCount", { count: data.stars })}>
+                  <NineSlice skin="pill-star" scale={s} contentClassName="justify-center">
+                    <Text className="font-body-bold text-ink" style={{ fontSize: fs(20) }}>
+                      {t("room.starCount", { count: data.stars })}
+                    </Text>
+                  </NineSlice>
+                </View>
+                <SkinPressable
+                  skin="pill-parent"
+                  pressedSkin="pill-parent-pressed"
+                  scale={s}
                   onPress={onParentExit}
-                  className="min-h-12 flex-row items-center gap-1 rounded-full bg-teal-light px-4"
+                  accessibilityLabel={t("room.parentExit")}
+                  contentClassName="justify-center"
+                  hitSlop={6}
                 >
-                  <Text className="text-base">🔒</Text>
-                  <Text className="text-base font-semibold text-teal-dark">{t("room.parentExit")}</Text>
-                </Pressable>
+                  <Text className="font-body-bold text-ink" style={{ fontSize: fs(20) }}>
+                    {t("room.parentExit")}
+                  </Text>
+                </SkinPressable>
               </View>
             </View>
 
-            {/* Görev panosu */}
-            <View style={{ position: "absolute", ...board }}>
-              <Text className="font-display text-lg text-ink">{t("room.todayTasks")}</Text>
-              <Text className="mb-1 text-sm text-gray-700">
-                {t("room.completedOf", { done: data.todayDone, total: data.due.length })}
+            {/* Görev panosu: board-frame + ayrı task-card kâğıtları */}
+            <NineSlice
+              skin="board-frame"
+              scale={s}
+              style={{ position: "absolute", ...board }}
+              contentStyle={{ flex: 1, flexGrow: 1 }}
+            >
+              <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(34), lineHeight: fs(40) }}>
+                {t("room.todayTasks")}
               </Text>
-              <View className="mb-2 flex-row gap-1">
-                {data.due.map((task) => (
-                  <View
+              <Text className="font-body text-ink/80" style={{ fontSize: fs(19) }}>
+                {t("room.completedOf", { done: doneCount, total: data.due.length })}
+              </Text>
+              {data.due.length > 0 ? (
+                <View
+                  className="flex-row flex-wrap"
+                  style={{ gap: 6 * s, marginTop: 6 * s, marginBottom: 8 * s }}
+                  accessible={false}
+                  importantForAccessibility="no-hide-descendants"
+                >
+                  {data.due.map((task) => (
+                    <SkinIcon
+                      key={task.id}
+                      skin={task.status === "done" || task.status === "approved" ? "progress-dot-filled" : "progress-dot-empty"}
+                      size={16 * s}
+                    />
+                  ))}
+                </View>
+              ) : null}
+              <ErrorText error={data.error} />
+              <ScrollView style={{ flex: 1 }} contentContainerStyle={{ gap: 8 * s, paddingBottom: 4 }}>
+                {data.loading ? <ActivityIndicator color="#0B7F7F" /> : null}
+                {data.due.length === 0 && !data.loading && !data.error ? (
+                  <Text className="font-body text-ink" style={{ fontSize: fs(18) }}>
+                    {t("child.allDone")}
+                  </Text>
+                ) : null}
+                {sortForBoard(data.due).map((task) => (
+                  <SkinTaskCard
                     key={task.id}
-                    className={`h-3 w-3 rounded-full ${task.status === "approved" || task.status === "done" ? "bg-teal" : "border border-gray-400 bg-white"}`}
+                    task={task}
+                    s={s}
+                    isNext={task.id === nextTaskId}
+                    completing={data.completing}
+                    onComplete={() => data.complete(task.id)}
                   />
                 ))}
-              </View>
-              <ScrollView contentContainerStyle={{ gap: 6 }}>
-                {data.due.length === 0 && !data.loading ? (
-                  <Text className="text-sm text-gray-700">{t("child.allDone")}</Text>
+              </ScrollView>
+            </NineSlice>
+
+            {/* Sağ sütun: hedef bileti → Haftam → sergi rafı → Başardıklarım çekmecesi */}
+            <View
+              style={{ position: "absolute", left: column.left, top: column.top, width: column.width, height: column.height, gap: 6 * s }}
+              className="items-center"
+            >
+              <SkinPressable
+                skin={goalData ? "ticket-goal" : "ticket-goal-empty"}
+                scale={s}
+                onPress={() => router.push("/child/goal")}
+                accessibilityLabel={
+                  goalData
+                    ? `${t("room.myGoal")}: ${goalData.rewardTitle}, ${t("room.goalProgress", { stars: Math.min(data.stars, goalData.cost), cost: goalData.cost })}`
+                    : `${t("room.myGoal")}: ${t("goal.pickCta")}`
+                }
+                style={{ width: goalRect.width, flexGrow: 272, flexBasis: 0 }}
+                contentClassName="items-center justify-center"
+              >
+                <Text className="font-display text-ink" style={{ fontSize: fs(24), lineHeight: fs(28) }}>
+                  {t("room.myGoal")}
+                </Text>
+                {goal.isLoading ? <ActivityIndicator color="#0B7F7F" /> : null}
+                {goalData ? (
+                  <>
+                    <Text numberOfLines={1} adjustsFontSizeToFit className="font-display text-ink" style={{ fontSize: fs(32), lineHeight: fs(38) }}>
+                      {goalData.rewardTitle}
+                    </Text>
+                    <Text className="font-body-bold text-ink" style={{ fontSize: fs(17) }}>
+                      {t("room.goalProgress", { stars: Math.min(data.stars, goalData.cost), cost: goalData.cost })}
+                    </Text>
+                    <SkinProgress value={data.stars / goalData.cost} scale={s} style={{ alignSelf: "stretch", marginVertical: 4 * s }} />
+                    <Text className="font-display text-ink" style={{ fontSize: fs(26), lineHeight: fs(32) }}>
+                      {remaining === 0 ? t("goal.reached") : t("room.starsLeft", { count: remaining })}
+                    </Text>
+                  </>
+                ) : !goal.isLoading ? (
+                  <Text className="font-body-bold text-teal-dark" style={{ fontSize: fs(18) }}>
+                    {t("goal.pickCta")}
+                  </Text>
                 ) : null}
-                {data.due.map((task) => {
-                  const actionable = task.status === null || task.status === "returned";
+              </SkinPressable>
+
+              {/* Haftam duvar takvimi: week-frame; gün hücreleri native, durumlar kaplama */}
+              <NineSlice
+                skin="week-frame"
+                scale={s}
+                style={{ width: week.width, flexGrow: 186, flexBasis: 0, minHeight: 118 * s }}
+                contentClassName="justify-center"
+              >
+                <Text accessibilityRole="header" className="text-center font-display text-ink" style={{ fontSize: fs(22), lineHeight: fs(26) }}>
+                  {t("room.myWeek")}
+                </Text>
+                <View className="flex-row justify-between" style={{ marginTop: 2 * s }}>
+                  {data.weekSummary.map((day) => {
+                    const label = weekday.format(new Date(`${day.date}T12:00:00Z`));
+                    const skin = day.due > 0 && day.done >= day.due ? "week-check" : day.done > 0 ? "week-partial" : "week-empty";
+                    return (
+                      <View
+                        key={day.date}
+                        accessible
+                        accessibilityLabel={`${label}: ${t("room.weekProgress", { done: day.done, total: day.due })}`}
+                        className="items-center"
+                        style={{ flex: 1, gap: 2 * s, opacity: day.due === 0 ? 0.45 : 1 }}
+                      >
+                        <Text numberOfLines={1} className="font-body text-ink/80" style={{ fontSize: fs(12) }}>
+                          {label}
+                        </Text>
+                        <SkinIcon skin={skin} size={Math.min(26 * s, week.width / 9)} />
+                      </View>
+                    );
+                  })}
+                </View>
+              </NineSlice>
+
+              {/* Sergi rafı: shelf-display; üç native yuva content rect içinde x=1/6, 1/2, 5/6 */}
+              <NineSlice skin="shelf-display" scale={s} style={{ width: shelfZone.width }} contentClassName="flex-row">
+                {[0, 1, 2].map((i) => {
+                  const badge = shelf[i];
                   return (
                     <Pressable
-                      key={task.id}
+                      key={i}
                       accessibilityRole="button"
-                      disabled={!actionable || data.completing}
-                      onPress={() => data.complete(task.id)}
-                      className={`min-h-12 flex-row items-center gap-2 rounded-parent px-2 py-1 ${
-                        task.status === "approved" ? "bg-green-light" : task.status === "done" ? "bg-star/30" : task.status === "returned" ? "bg-coral-light" : "bg-white/95"
-                      }`}
+                      accessibilityLabel={badge ? badge.title : `${t("room.displaySlot")} ${i + 1}`}
+                      onPress={() => router.push("/child/collection")}
+                      className="flex-1 items-center justify-end"
+                      style={{ minHeight: 48 }}
                     >
-                      <TaskIcon slug={task.icon} size={28} />
-                      <View className="flex-1">
-                        <Text numberOfLines={1} className="font-body-bold text-sm text-ink">
-                          {task.title}
-                        </Text>
-                        <Text className="text-xs text-gray-700">
-                          {task.status === "approved"
-                            ? t("child.approved")
-                            : task.status === "done"
-                              ? t("child.waitingApproval")
-                              : task.status === "returned"
-                                ? t("child.returnedTryAgain")
-                                : t("room.plusStars", { count: task.stars })}
-                        </Text>
-                      </View>
-                      {actionable ? (
-                        <View className="rounded-button bg-teal px-3 py-1.5">
-                          <Text className="text-xs font-bold text-white">{task.status === "returned" ? "🔁" : t("room.start")}</Text>
-                        </View>
-                      ) : (
-                        <Text className="text-lg">{task.status === "approved" ? "✅" : "⏳"}</Text>
-                      )}
+                      {badge ? (
+                        <>
+                          <Collectible slug={badge.icon} size={Math.max(48, 64 * s)} style={{ marginTop: -34 * s }} />
+                          <Text numberOfLines={1} className="font-body-bold text-cream" style={{ fontSize: fs(12) }}>
+                            {badge.title}
+                          </Text>
+                        </>
+                      ) : null}
                     </Pressable>
                   );
                 })}
-              </ScrollView>
-            </View>
+              </NineSlice>
 
-            {/* Hedef bileti */}
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => router.push("/child/goal")}
-              style={{ position: "absolute", ...goalRect }}
-              className="justify-center rounded-parent p-2"
-            >
-              <Text className="font-display text-base text-ink">{t("room.myGoal")}</Text>
-              {goal.data ? (
-                <>
-                  <Text className="font-body-bold text-sm text-ink">{goal.data.rewardTitle}</Text>
-                  <View className="mt-1 h-2 overflow-hidden rounded-full bg-white/80">
-                    <View
-                      className="h-2 rounded-full bg-star"
-                      style={{ width: `${Math.min(100, Math.round((data.stars / goal.data.cost) * 100))}%` }}
-                    />
-                  </View>
-                  <Text className="mt-0.5 text-xs text-gray-700">
-                    {data.stars >= goal.data.cost
-                      ? t("goal.reached")
-                      : t("room.starsLeft", { count: goal.data.cost - data.stars })}
-                    {"  ·  "}⭐ {data.stars}/{goal.data.cost}
+              {/* Başardıklarım çekmecesi: bugünün gerçek özeti → Koleksiyonum (yıldız kulpu kaplamada) */}
+              <SkinPressable
+                skin="drawer-front"
+                pressedSkin="drawer-front-pressed"
+                scale={s}
+                onPress={() => router.push("/child/collection")}
+                style={{ width: shelfZone.width }}
+                contentClassName="flex-row items-center"
+              >
+                <View className="flex-1">
+                  <Text numberOfLines={1} className="font-display text-ink" style={{ fontSize: fs(24), lineHeight: fs(30) }}>
+                    {t("room.myWins")}
                   </Text>
-                </>
-              ) : (
-                <Text className="text-sm text-teal-dark">{t("goal.pickCta")}</Text>
-              )}
-            </Pressable>
-
-            {/* Haftam duvar takvimi */}
-            <View style={{ position: "absolute", ...week }} className="justify-center">
-              <Text className="font-display text-sm text-ink">{t("room.myWeek")}</Text>
-              <View className="mt-1 flex-row justify-between">
-                {data.weekSummary.map((day, i) => (
-                  <View key={day.date} className="items-center" style={{ width: `${100 / 7}%` }}>
-                    <Text className="text-[9px] text-gray-700">{DAY_LETTERS[i]}</Text>
-                    <Text className="text-xs">
-                      {day.due === 0 ? "·" : day.done >= day.due ? "✅" : day.done > 0 ? "◐" : "○"}
-                    </Text>
-                  </View>
-                ))}
-              </View>
+                  <Text numberOfLines={2} className="font-body text-ink" style={{ fontSize: fs(15) }}>
+                    {t("room.todaySummary", { tasks: data.todayDone, stars: data.todayStarsEarned })}
+                    {earnedCount > 0 ? ` · ${t("collection.badgeCount", { count: earnedCount })}` : ""}
+                  </Text>
+                </View>
+                <Text className="font-display text-ink" style={{ fontSize: fs(28) }}>
+                  ›
+                </Text>
+              </SkinPressable>
             </View>
-
-            {/* Sergi yuvaları: en yeni kazanılan üç rozet (resimli v3); boş yuva sade kalır */}
-            {slots.map((slot, i) => {
-              const badge = shelf[i];
-              return (
-                <Pressable
-                  key={i}
-                  accessibilityRole="button"
-                  accessibilityLabel={badge ? badge.title : `${t("room.displaySlot")} ${i + 1}`}
-                  onPress={() => router.push("/child/collection")}
-                  style={{ position: "absolute", ...slot }}
-                  className="items-center justify-end"
-                >
-                  {badge ? <Collectible slug={badge.icon} size={Math.min(slot.width, slot.height) * 0.95} /> : null}
-                </Pressable>
-              );
-            })}
 
             {/* Kitaplık: Prova kapısı; atanmış deneme varsa işaret */}
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel={t("prova.title")}
+              accessibilityLabel={
+                (assignedExams.data ?? 0) > 0
+                  ? `${t("prova.title")}, ${t("prova.waitingCount", { count: assignedExams.data ?? 0 })}`
+                  : t("prova.title")
+              }
               onPress={() => router.push(actingAsParent ? "/parent/child-mode/prova" : "/child/prova")}
               style={{ position: "absolute", ...shelfRect }}
               className="items-center justify-start"
             >
               <View className="mt-1 flex-row items-center gap-1 rounded-full bg-white/90 px-3 py-1">
-                <Text className="font-display text-sm text-ink">📚 {t("prova.title")}</Text>
+                <Text className="font-display text-ink" style={{ fontSize: fs(16) }}>
+                  📚 {t("prova.title")}
+                </Text>
                 {(assignedExams.data ?? 0) > 0 ? (
                   <View className="h-5 min-w-5 items-center justify-center rounded-full bg-coral px-1">
                     <Text className="text-xs font-bold text-white">{assignedExams.data}</Text>
                   </View>
                 ) : null}
-              </View>
-            </Pressable>
-
-            {/* Başardıklarım çekmecesi: bugünün gerçek özeti → Koleksiyonum */}
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => router.push("/child/collection")}
-              style={{ position: "absolute", ...drawer }}
-              className="flex-row items-center justify-center gap-2"
-            >
-              <Collectible slug="star-filled" size={Math.min(28, drawer.height)} />
-              <View>
-                <Text className="font-display text-sm text-ink">{t("room.myWins")}</Text>
-                <Text className="text-xs text-ink">
-                  {t("room.todaySummary", { tasks: data.todayDone, stars: data.todayStarsEarned })}
-                  {earnedCount > 0 ? ` · ${t("collection.badgeCount", { count: earnedCount })}` : ""}
-                </Text>
               </View>
             </Pressable>
           </>

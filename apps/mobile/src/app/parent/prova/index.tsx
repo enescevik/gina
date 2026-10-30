@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
+import { SubjectIcon } from "@/components/subject-icon";
 import { Button } from "@/components/ui/button";
 import { ErrorText, Screen } from "@/components/ui/screen";
 import { useRealtimeInvalidate } from "@/lib/realtime";
@@ -123,9 +124,12 @@ export default function ParentProvaScreen() {
         </View>
         {blueprints.data?.length === 0 ? <Text className="text-gray-500">{t("prova.noBlueprints")}</Text> : null}
         {blueprints.data?.map((bp) => (
-          <Text key={bp.id} className="text-base text-ink dark:text-night-text">
-            • {bp.subject} {bp.grade}. {t("prova.gradeWord")} — {bp.name} ({Array.isArray(bp.rows) ? bp.rows.length : 0} {t("prova.topicWord")})
-          </Text>
+          <View key={bp.id} className="flex-row items-center gap-3">
+            <SubjectIcon subject={bp.subject} size={48} variant="illustrated" />
+            <Text className="flex-1 text-base text-ink dark:text-night-text">
+              {bp.subject} {bp.grade}. {t("prova.gradeWord")} — {bp.name} ({Array.isArray(bp.rows) ? bp.rows.length : 0} {t("prova.topicWord")})
+            </Text>
+          </View>
         ))}
       </View>
 

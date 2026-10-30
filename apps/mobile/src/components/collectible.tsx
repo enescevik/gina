@@ -1,43 +1,80 @@
-import { Image, type ImageStyle, type StyleProp } from "react-native";
+import { View, type ImageStyle, type StyleProp } from "react-native";
 
-// Resimli v3 koleksiyon görselleri (scripts/generate-collectibles.mjs ile 256px üretildi).
-// Statik require: Metro yalnız referans verilen görselleri paketler.
-const COLLECTIBLES = {
-  "star-filled": require("../../assets/collectibles/star-filled.webp"),
-  "star-empty": require("../../assets/collectibles/star-empty.webp"),
-  "star-half": require("../../assets/collectibles/star-half.webp"),
-  "star-jar": require("../../assets/collectibles/star-jar.webp"),
-  "streak-flame": require("../../assets/collectibles/streak-flame.webp"),
-  "streak-3": require("../../assets/collectibles/streak-3.webp"),
-  "streak-7": require("../../assets/collectibles/streak-7.webp"),
-  "streak-30": require("../../assets/collectibles/streak-30.webp"),
-  "badge-bronze": require("../../assets/collectibles/badge-bronze.webp"),
-  "badge-silver": require("../../assets/collectibles/badge-silver.webp"),
-  "badge-gold": require("../../assets/collectibles/badge-gold.webp"),
-  "badge-diamond": require("../../assets/collectibles/badge-diamond.webp"),
-  "badge-first-task": require("../../assets/collectibles/badge-first-task.webp"),
-  "badge-bookworm": require("../../assets/collectibles/badge-bookworm.webp"),
-  "badge-early-bird": require("../../assets/collectibles/badge-early-bird.webp"),
-  "badge-tidy": require("../../assets/collectibles/badge-tidy.webp"),
-  "badge-helper": require("../../assets/collectibles/badge-helper.webp"),
-  "badge-math-star": require("../../assets/collectibles/badge-math-star.webp"),
-  "badge-week-hero": require("../../assets/collectibles/badge-week-hero.webp"),
-  "badge-locked": require("../../assets/collectibles/badge-locked.webp"),
-  "badge-tooth-care": require("../../assets/collectibles/badge-tooth-care.webp"),
-  "stamp-approved": require("../../assets/collectibles/stamp-approved.webp"),
-  "stamp-pending": require("../../assets/collectibles/stamp-pending.webp"),
-  "stamp-returned": require("../../assets/collectibles/stamp-returned.webp"),
-  "loading-star-static": require("../../assets/collectibles/loading-star-static.webp"),
-} as const;
+import { ILLUSTRATED_GAMIFICATION, isIllustratedGamificationSlug, type IllustratedGamificationSlug } from "@/generated/illustrated/gamification";
 
-export type CollectibleSlug = keyof typeof COLLECTIBLES;
+import SvgStarEmpty from "../../../../packages/assets/gamification/stars/star-empty.svg";
+import SvgStarFilled from "../../../../packages/assets/gamification/stars/star-filled.svg";
+import SvgStarHalf from "../../../../packages/assets/gamification/stars/star-half.svg";
+import SvgStarJar from "../../../../packages/assets/gamification/stars/star-jar.svg";
+import SvgStreak3 from "../../../../packages/assets/gamification/streaks/streak-3.svg";
+import SvgStreak30 from "../../../../packages/assets/gamification/streaks/streak-30.svg";
+import SvgStreak7 from "../../../../packages/assets/gamification/streaks/streak-7.svg";
+import SvgStreakFlame from "../../../../packages/assets/gamification/streaks/streak-flame.svg";
+import SvgBadgeBookworm from "../../../../packages/assets/gamification/badges/badge-bookworm.svg";
+import SvgBadgeBronze from "../../../../packages/assets/gamification/badges/badge-bronze.svg";
+import SvgBadgeDiamond from "../../../../packages/assets/gamification/badges/badge-diamond.svg";
+import SvgBadgeEarlyBird from "../../../../packages/assets/gamification/badges/badge-early-bird.svg";
+import SvgBadgeFirstTask from "../../../../packages/assets/gamification/badges/badge-first-task.svg";
+import SvgBadgeGold from "../../../../packages/assets/gamification/badges/badge-gold.svg";
+import SvgBadgeHelper from "../../../../packages/assets/gamification/badges/badge-helper.svg";
+import SvgBadgeLocked from "../../../../packages/assets/gamification/badges/badge-locked.svg";
+import SvgBadgeMathStar from "../../../../packages/assets/gamification/badges/badge-math-star.svg";
+import SvgBadgeSilver from "../../../../packages/assets/gamification/badges/badge-silver.svg";
+import SvgBadgeTidy from "../../../../packages/assets/gamification/badges/badge-tidy.svg";
+import SvgBadgeWeekHero from "../../../../packages/assets/gamification/badges/badge-week-hero.svg";
+import SvgStampApproved from "../../../../packages/assets/gamification/stamps/stamp-approved.svg";
+import SvgStampPending from "../../../../packages/assets/gamification/stamps/stamp-pending.svg";
+import SvgStampReturned from "../../../../packages/assets/gamification/stamps/stamp-returned.svg";
+import SvgLoadingStarStatic from "../../../../packages/assets/gamification/loading/loading-star-static.svg";
+
+import { IllustratedImage, ILLUSTRATED_MIN_DP } from "./illustrated-image";
+
+// Resimli v3 koleksiyon görselleri: scripts/generate-illustrated.mjs ile 256px üretilir
+// (packages/assets/generated/illustrated-v3/gamification). Statik require eşlemesi: src/generated/illustrated/gamification.ts.
+// 48 dp altı (ör. sayaç yanındaki yıldız) ayrıntılı görsel küçültülmez; eski native SVG gösterilir.
+const SMALL_SVGS: Partial<Record<IllustratedGamificationSlug, typeof SvgStarFilled>> = {
+  "star-empty": SvgStarEmpty,
+  "star-filled": SvgStarFilled,
+  "star-half": SvgStarHalf,
+  "star-jar": SvgStarJar,
+  "streak-3": SvgStreak3,
+  "streak-30": SvgStreak30,
+  "streak-7": SvgStreak7,
+  "streak-flame": SvgStreakFlame,
+  "badge-bookworm": SvgBadgeBookworm,
+  "badge-bronze": SvgBadgeBronze,
+  "badge-diamond": SvgBadgeDiamond,
+  "badge-early-bird": SvgBadgeEarlyBird,
+  "badge-first-task": SvgBadgeFirstTask,
+  "badge-gold": SvgBadgeGold,
+  "badge-helper": SvgBadgeHelper,
+  "badge-locked": SvgBadgeLocked,
+  "badge-math-star": SvgBadgeMathStar,
+  "badge-silver": SvgBadgeSilver,
+  "badge-tidy": SvgBadgeTidy,
+  "badge-week-hero": SvgBadgeWeekHero,
+  "stamp-approved": SvgStampApproved,
+  "stamp-pending": SvgStampPending,
+  "stamp-returned": SvgStampReturned,
+  "loading-star-static": SvgLoadingStarStatic,
+  // Diş bakımı rozetinin eski SVG'si yok; ilk görev rozeti küçük simge olarak kullanılır.
+  "badge-tooth-care": SvgBadgeFirstTask,
+};
+
+export type CollectibleSlug = IllustratedGamificationSlug;
 
 export function isCollectible(slug: string | null | undefined): slug is CollectibleSlug {
-  return !!slug && slug in COLLECTIBLES;
+  return isIllustratedGamificationSlug(slug);
+}
+
+/** Kaynak görsel (animasyon bileşenleri aynı taban görseli kullanır). */
+export function collectibleSource(slug: CollectibleSlug) {
+  return ILLUSTRATED_GAMIFICATION[slug];
 }
 
 export interface CollectibleProps {
   slug: string | null | undefined;
+  /** dp; varsayılan 64. Rozet için tercihen 96. 48 altında native SVG'ye düşer. */
   size?: number;
   /** Kilitli rozet: badge-locked görseli gösterilir. */
   locked?: boolean;
@@ -45,16 +82,21 @@ export interface CollectibleProps {
   accessibilityLabel?: string;
 }
 
-/** Koleksiyon nesnesi (rozet, yıldız, seri, mühür). 24 px simge olarak kullanılmaz (README); en az 48 dp. */
+/** Koleksiyon nesnesi (rozet, yıldız, seri, mühür). Bilinmeyen slug star-filled'a düşer. */
 export function Collectible({ slug, size = 64, locked, style, accessibilityLabel }: CollectibleProps) {
   const key: CollectibleSlug = locked ? "badge-locked" : isCollectible(slug) ? slug : "star-filled";
-  return (
-    <Image
-      source={COLLECTIBLES[key]}
-      resizeMode="contain"
-      accessibilityLabel={accessibilityLabel}
-      accessible={!!accessibilityLabel}
-      style={[{ width: size, height: size }, style]}
-    />
-  );
+  if (size < ILLUSTRATED_MIN_DP) {
+    const Svg = SMALL_SVGS[key] ?? SvgStarFilled;
+    return (
+      <View
+        style={[{ width: size, height: size }, style as StyleProp<ImageStyle>]}
+        accessible={!!accessibilityLabel}
+        accessibilityLabel={accessibilityLabel}
+        importantForAccessibility={accessibilityLabel ? "auto" : "no-hide-descendants"}
+      >
+        <Svg width={size} height={size} />
+      </View>
+    );
+  }
+  return <IllustratedImage source={ILLUSTRATED_GAMIFICATION[key]} size={size} style={style} accessibilityLabel={accessibilityLabel} />;
 }

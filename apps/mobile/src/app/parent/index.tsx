@@ -6,9 +6,10 @@ import { Pressable, Text, View } from "react-native";
 
 import { localDateOf, occurrencesBetween, templatesDueOn, weekDatesOf } from "@gina/core";
 
-import LogoMark from "../../../../../packages/assets/brand/yan-yana/logo-mark.svg";
+import Wordmark from "../../../../../packages/assets/brand/yan-yana/logo-wordmark.svg";
 
 import { Avatar } from "@/components/avatar";
+import { NineSlice, SkinPressable } from "@/components/room/nine-slice";
 import { TaskIcon } from "@/components/task-icon";
 import { Button } from "@/components/ui/button";
 import { ErrorText, Screen } from "@/components/ui/screen";
@@ -145,135 +146,168 @@ export default function ParentHomeScreen() {
 
   const pendingApprovals = (approvals.data ?? []).filter((a) => !childFilter || a.child_id === childFilter);
 
+  // Odam kaplamaları: beyaz ana kartlar parent-card, onay alanı parent-approval-card (eski düz kart zeminleri kaldırıldı).
+  // Kaplamalar açık renklidir; koyu temada da içlerindeki metin ink kalır (okunur kontrast).
   return (
-    <Screen>
+    <Screen tone="child">
       <View className="flex-row items-center justify-between">
-        <LogoMark width={44} height={44} />
-        <Button variant="secondary" title={t("parent.menu")} onPress={() => router.push("/parent/menu")} />
+        <Wordmark width={128} height={56} accessibilityLabel="Gina" />
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => router.push("/parent/menu")}
+          className="min-h-12 flex-row items-center gap-2 rounded-full bg-teal-light px-5 active:bg-mist"
+        >
+          <Text className="font-body-bold text-xl text-ink">☰</Text>
+          <Text className="font-body-bold text-base text-ink">{t("parent.menu")}</Text>
+        </Pressable>
       </View>
-      <Text className="font-display text-3xl text-ink dark:text-night-text">{t("parent.goodDay")}</Text>
-      <Text className="text-base text-gray-600">{dateFormat.format(new Date(`${today}T12:00:00Z`))}</Text>
+      <View>
+        <Text className="font-display text-4xl text-ink dark:text-night-text">{t("parent.goodDay")}</Text>
+        <Text className="font-body text-lg text-gray-600 dark:text-night-text/80">{dateFormat.format(new Date(`${today}T12:00:00Z`))}</Text>
+      </View>
 
       <View className="flex-row flex-wrap gap-2">
         <Pressable
           accessibilityRole="button"
+          accessibilityState={{ selected: childFilter === null }}
           onPress={() => setChildFilter(null)}
-          className={`min-h-12 flex-row items-center gap-2 rounded-full px-4 ${childFilter === null ? "bg-teal" : "bg-white dark:bg-night-surface"}`}
+          className={`min-h-14 flex-row items-center gap-2 rounded-2xl px-5 ${childFilter === null ? "bg-teal-dark" : "border border-mist bg-white"}`}
         >
-          <Text className={childFilter === null ? "font-semibold text-white" : "text-ink dark:text-night-text"}>{t("parent.allChildren")}</Text>
+          <Text className={`font-display-semi text-lg ${childFilter === null ? "text-white" : "text-ink"}`}>{t("parent.allChildren")}</Text>
         </Pressable>
         {children.data?.map((child) => (
           <Pressable
             key={child.id}
             accessibilityRole="button"
+            accessibilityState={{ selected: childFilter === child.id }}
             onPress={() => setChildFilter(child.id)}
-            className={`min-h-12 flex-row items-center gap-2 rounded-full py-1 pl-1 pr-4 ${childFilter === child.id ? "bg-teal" : "bg-white dark:bg-night-surface"}`}
+            className={`min-h-14 flex-row items-center gap-2 rounded-2xl py-1 pl-1.5 pr-5 ${childFilter === child.id ? "bg-teal-dark" : "border border-mist bg-white"}`}
           >
-            <Avatar slug={child.avatar} size={36} />
-            <Text className={childFilter === child.id ? "font-semibold text-white" : "text-ink dark:text-night-text"}>{child.name}</Text>
+            <Avatar slug={child.avatar} size={40} />
+            <Text className={`font-display-semi text-lg ${childFilter === child.id ? "text-white" : "text-ink"}`}>{child.name}</Text>
           </Pressable>
         ))}
       </View>
 
-      <View className="gap-3 rounded-parent bg-white p-4 dark:bg-night-surface">
-        <Text className="font-display text-xl text-ink dark:text-night-text">{t("parent.familyDay")}</Text>
-        {familyDay.length === 0 ? <Text className="text-gray-500">{t("tasks.addChildFirst")}</Text> : null}
+      <NineSlice skin="parent-card" contentStyle={{ gap: 10 }}>
+        <Text accessibilityRole="header" className="font-display text-[26px] leading-9 text-ink">
+          {t("parent.familyDay")}
+        </Text>
+        {familyDay.length === 0 ? <Text className="font-body text-gray-500">{t("tasks.addChildFirst")}</Text> : null}
         {familyDay.map(({ child, due, done, stars: childStars }) => (
           <Pressable
             key={child.id}
             accessibilityRole="button"
+            accessibilityLabel={`${child.name}, ${t("parent.tasksOf", { done, total: due })}, ${t("room.starCount", { count: childStars })}`}
             onPress={() => router.push("/parent/tasks")}
-            className="flex-row items-center gap-3"
+            className="min-h-16 flex-row items-center gap-2 rounded-2xl border border-mist bg-white px-2 py-2 active:bg-cream"
           >
             <Avatar slug={child.avatar} size={44} />
-            <View className="flex-1">
-              <Text className="text-base font-semibold text-ink dark:text-night-text">{child.name}</Text>
-              <View className="mt-1 h-2 overflow-hidden rounded-full bg-mist">
-                <View className="h-2 rounded-full bg-teal" style={{ width: due > 0 ? `${Math.round((done / due) * 100)}%` : "0%" }} />
+            <Text numberOfLines={1} className="max-w-20 font-display-semi text-lg text-ink">
+              {child.name}
+            </Text>
+            <View className="mx-1 flex-1">
+              <Text numberOfLines={1} className="font-body text-sm text-ink">{t("parent.tasksOf", { done, total: due })}</Text>
+              <View className="mt-1 h-2.5 overflow-hidden rounded-full bg-mist">
+                <View className="h-2.5 rounded-full bg-teal" style={{ width: due > 0 ? `${Math.round((done / due) * 100)}%` : "0%" }} />
               </View>
-              <Text className="mt-0.5 text-xs text-gray-600">{t("parent.tasksOf", { done, total: due })}</Text>
             </View>
-            <Text className="text-base font-bold text-ink dark:text-night-text">⭐ {childStars}</Text>
-            <Text className="text-gray-400">›</Text>
+            <Text className="font-body-bold text-base text-ink">⭐ {t("room.starCount", { count: childStars })}</Text>
+            <Text className="font-display text-xl text-ink/60">›</Text>
           </Pressable>
         ))}
-      </View>
+      </NineSlice>
 
-      <View className="gap-2 rounded-parent bg-star/15 p-4">
+      <NineSlice skin="parent-approval-card" contentStyle={{ gap: 10 }}>
         <View className="flex-row items-center justify-between">
-          <Text className="font-display text-xl text-ink">{t("parent.waitingApproval")}</Text>
-          <View className="h-7 w-7 items-center justify-center rounded-full bg-star">
-            <Text className="font-bold text-ink">{pendingApprovals.length}</Text>
+          <Text accessibilityRole="header" className="flex-1 font-display text-[26px] leading-9 text-ink">
+            {t("parent.waitingApproval")}
+          </Text>
+          <View className="h-10 min-w-10 items-center justify-center rounded-full bg-star px-2">
+            <Text className="font-display text-lg text-white">{pendingApprovals.length}</Text>
           </View>
         </View>
-        {pendingApprovals.length === 0 ? <Text className="text-gray-600">{t("parent.noApprovals")}</Text> : null}
+        {pendingApprovals.length === 0 ? <Text className="font-body text-gray-600">{t("parent.noApprovals")}</Text> : null}
         {pendingApprovals.map((item) => (
-          <View key={item.id} className="gap-2 rounded-parent bg-white p-3">
-            <View className="flex-row items-center gap-3">
-              <TaskIcon slug={item.task_templates?.icon} size={32} />
-              <View className="flex-1">
-                <Text className="font-semibold text-ink">{item.task_templates?.title}</Text>
-                <Text className="text-sm text-gray-600">
-                  {item.children?.name} · {t("room.plusStars", { count: item.task_templates?.stars ?? 0 })}
-                </Text>
-              </View>
+          <View key={item.id} className="flex-row items-center gap-2 rounded-2xl bg-white p-3">
+            <View className="h-12 w-12 items-center justify-center rounded-2xl bg-cream">
+              <TaskIcon slug={item.task_templates?.icon} size={48} variant="illustrated" />
             </View>
-            <View className="flex-row gap-2">
-              <View className="flex-1">
-                <Button title={t("parent.approve")} loading={review.isPending} onPress={() => review.mutate({ id: item.id, approve: true })} />
-              </View>
-              <Button variant="ghost" title={t("parent.return")} onPress={() => review.mutate({ id: item.id, approve: false })} />
+            <View className="flex-1">
+              <Text className="font-display-semi text-lg text-ink">{item.task_templates?.title}</Text>
+              <Text className="font-body text-sm text-gray-600">
+                {item.children?.name} · {t("room.plusStars", { count: item.task_templates?.stars ?? 0 })}
+              </Text>
+              <Pressable
+                accessibilityRole="button"
+                onPress={() => review.mutate({ id: item.id, approve: false })}
+                disabled={review.isPending}
+                hitSlop={14}
+                className="mt-1 self-start py-1"
+              >
+                <Text className="font-body-bold text-sm text-teal-dark">{t("parent.return")}</Text>
+              </Pressable>
             </View>
+            <Button title={t("parent.approve")} loading={review.isPending} onPress={() => review.mutate({ id: item.id, approve: true })} className="min-w-24 rounded-2xl" />
           </View>
         ))}
-      </View>
+      </NineSlice>
 
-      <View className="gap-2 rounded-parent bg-white p-4 dark:bg-night-surface">
+      <NineSlice skin="parent-card" contentStyle={{ gap: 10 }}>
         <View className="flex-row items-center justify-between">
-          <Text className="font-display text-xl text-ink dark:text-night-text">{t("parent.todaysPlan")}</Text>
-          <Pressable accessibilityRole="button" onPress={() => router.push("/parent/calendar")}>
-            <Text className="font-semibold text-teal-dark">{t("parent.openCalendar")} ›</Text>
+          <Text accessibilityRole="header" className="flex-1 font-display text-[26px] leading-9 text-ink">
+            {t("parent.todaysPlan")}
+          </Text>
+          <Pressable accessibilityRole="button" onPress={() => router.push("/parent/calendar")} className="min-h-12 justify-center">
+            <Text className="font-body-bold text-base text-teal-dark">{t("parent.openCalendar")} ›</Text>
           </Pressable>
         </View>
-        {todaysPlan.length === 0 ? <Text className="text-gray-500">{t("calendar.noEvents")}</Text> : null}
-        {todaysPlan.map((o) => (
+        {todaysPlan.length === 0 ? <Text className="font-body text-gray-500">{t("calendar.noEvents")}</Text> : null}
+        {todaysPlan.map((o, i) => (
           <View key={`${o.event.id}:${o.date}`} className="flex-row items-center gap-3">
-            <Text className="w-14 text-sm font-semibold text-teal-dark">
+            <View className={`h-4 w-4 rounded-full ${i === 0 ? "bg-teal" : "bg-teal-light"}`} />
+            <Text className="w-16 font-body text-base text-gray-600">
               {o.event.all_day ? t("calendar.allDay") : timeFormat.format(o.startsAt)}
             </Text>
             <View className="flex-1">
-              <Text className="text-base text-ink dark:text-night-text">{o.event.title}</Text>
-              <Text className="text-xs text-gray-600">{o.event.children?.name ?? t("calendar.allFamily")}</Text>
+              <Text className="font-body-bold text-base text-ink">{o.event.title}</Text>
+              <Text className="font-body text-sm text-gray-600">{o.event.children?.name ?? t("calendar.allFamily")}</Text>
             </View>
           </View>
         ))}
+      </NineSlice>
+
+      <SkinPressable skin="parent-card" onPress={() => router.push("/parent/prova")} contentClassName="flex-row items-center gap-3">
+        <Text className="text-3xl">📝</Text>
+        <View className="flex-1">
+          <Text className="font-display text-xl text-ink">{t("prova.title")}</Text>
+          <Text className="font-body text-sm text-gray-700">{t("prova.parentCard")}</Text>
+        </View>
+        <Text className="font-display text-xl text-teal-dark">›</Text>
+      </SkinPressable>
+
+      <View className="flex-row items-center gap-3 rounded-[20px] bg-teal-light p-4">
+        <Text className="text-4xl">📖</Text>
+        <View className="flex-1">
+          <Text className="font-display text-lg text-ink">{t("parent.insightTitle")}</Text>
+          <Text className="font-body text-sm text-gray-700">{t("parent.insightWeek", { count: weekApproved })}</Text>
+        </View>
+        <Pressable accessibilityRole="button" onPress={() => router.push("/parent/grades")} className="min-h-12 justify-center">
+          <Text className="font-body-bold text-teal-dark">{t("parent.seeProgress")} ›</Text>
+        </Pressable>
       </View>
 
       <Pressable
         accessibilityRole="button"
-        onPress={() => router.push("/parent/prova")}
-        className="flex-row items-center gap-3 rounded-parent bg-purple-light p-4"
+        onPress={() => router.push("/parent/tasks")}
+        className="min-h-14 flex-row items-center justify-center gap-3 rounded-full border-2 border-teal bg-white px-5 active:bg-teal-light"
       >
-        <Text className="text-2xl">📝</Text>
-        <View className="flex-1">
-          <Text className="font-display text-lg text-ink">{t("prova.title")}</Text>
-          <Text className="text-sm text-gray-700">{t("prova.parentCard")}</Text>
+        <View className="h-9 w-9 items-center justify-center rounded-full bg-teal">
+          <Text className="font-display text-2xl leading-8 text-white">+</Text>
         </View>
-        <Text className="font-semibold text-teal-dark">›</Text>
+        <Text className="flex-1 text-center font-display-semi text-lg text-teal-dark">{t("parent.addTaskTogether")}</Text>
+        <Text className="font-display text-xl text-teal-dark">›</Text>
       </Pressable>
-
-      <View className="flex-row items-center gap-3 rounded-parent bg-sky-light p-4">
-        <Text className="text-2xl">📘</Text>
-        <View className="flex-1">
-          <Text className="font-semibold text-ink">{t("parent.insightTitle")}</Text>
-          <Text className="text-sm text-gray-700">{t("parent.insightWeek", { count: weekApproved })}</Text>
-        </View>
-        <Pressable accessibilityRole="button" onPress={() => router.push("/parent/grades")}>
-          <Text className="font-semibold text-teal-dark">{t("parent.seeProgress")} ›</Text>
-        </Pressable>
-      </View>
-
-      <Button title={t("parent.addTaskTogether")} onPress={() => router.push("/parent/tasks")} />
       <View className="flex-row gap-2">
         <View className="flex-1">
           <Button variant="secondary" title={t("parent.rewards")} onPress={() => router.push("/parent/rewards")} />

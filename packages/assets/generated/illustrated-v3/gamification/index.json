@@ -1,0 +1,184 @@
+{
+  "source": "packages/assets/gamification/illustrated-v3",
+  "sizes": [
+    256
+  ],
+  "total_bytes": 364984,
+  "files": [
+    {
+      "slug": "star-filled",
+      "size": 256,
+      "file": "star-filled.webp",
+      "bytes": 12900,
+      "sha256": "88338fff972eaadbe20056957e866fb5d7833309d5feab4d9df8a5ea6c881095"
+    },
+    {
+      "slug": "star-empty",
+      "size": 256,
+      "file": "star-empty.webp",
+      "bytes": 16588,
+      "sha256": "3793f2b8bc162728eee9c83727039581a71f4fb8a9fbb905534b0bba1c79bf20"
+    },
+    {
+      "slug": "star-half",
+      "size": 256,
+      "file": "star-half.webp",
+      "bytes": 19246,
+      "sha256": "35f3fb089df44188df0d49d5274ec9e5abf311244c36355a86e342593030c4f6"
+    },
+    {
+      "slug": "star-jar",
+      "size": 256,
+      "file": "star-jar.webp",
+      "bytes": 17146,
+      "sha256": "221bafc8f43002e796bfe2c621ad17b40db37a984a00e7981d47a2df708ea2f2"
+    },
+    {
+      "slug": "streak-flame",
+      "size": 256,
+      "file": "streak-flame.webp",
+      "bytes": 12128,
+      "sha256": "516cb27cd3412d68410843b127bae7989956e58522093578dae342f0d91778c1"
+    },
+    {
+      "slug": "streak-3",
+      "size": 256,
+      "file": "streak-3.webp",
+      "bytes": 12020,
+      "sha256": "ed14843920bd4adb9f2d52174aababb359fcb9b8415b9aaa767972b4126c423f"
+    },
+    {
+      "slug": "streak-7",
+      "size": 256,
+      "file": "streak-7.webp",
+      "bytes": 13536,
+      "sha256": "2e6e3afdb0d3579a37585e78c287ea7a4fa4413b00c21a14f4f0e301658a8712"
+    },
+    {
+      "slug": "streak-30",
+      "size": 256,
+      "file": "streak-30.webp",
+      "bytes": 12266,
+      "sha256": "a839e7526f2d02563f019b9b2a6f9d2c967753ddd09801f3461cc07315c5b473"
+    },
+    {
+      "slug": "badge-bronze",
+      "size": 256,
+      "file": "badge-bronze.webp",
+      "bytes": 14250,
+      "sha256": "bb23d686b314e862d30e56af90213c12abd29e484d6cf916b15c34f251d23a7c"
+    },
+    {
+      "slug": "badge-silver",
+      "size": 256,
+      "file": "badge-silver.webp",
+      "bytes": 13584,
+      "sha256": "170803dae26c4c89ce2ccd3b900728ffb5b4fb428c44a47d489e07ef1c0922c5"
+    },
+    {
+      "slug": "badge-gold",
+      "size": 256,
+      "file": "badge-gold.webp",
+      "bytes": 14686,
+      "sha256": "9e15cf16a0c51ff13e9f2350f561fc7cc114d5e07ce3d48ef6e94506cc5b3c48"
+    },
+    {
+      "slug": "badge-diamond",
+      "size": 256,
+      "file": "badge-diamond.webp",
+      "bytes": 14252,
+      "sha256": "796746733f0bf2018b659d0fcd87c7fab124a7709a803d1d4be551621c71cf10"
+    },
+    {
+      "slug": "badge-first-task",
+      "size": 256,
+      "file": "badge-first-task.webp",
+      "bytes": 14132,
+      "sha256": "9e5b5a9fb875b87aca1f6d6ef798b52dc422d97ec69c7f4310756a76e37e4360"
+    },
+    {
+      "slug": "badge-bookworm",
+      "size": 256,
+      "file": "badge-bookworm.webp",
+      "bytes": 15440,
+      "sha256": "5447e23e4210674f501b2847d72f557077bd07856bf604334d410ce1ae205f0a"
+    },
+    {
+      "slug": "badge-early-bird",
+      "size": 256,
+      "file": "badge-early-bird.webp",
+      "bytes": 15702,
+      "sha256": "acef6042794386a81af6d8b5526193e2631e086a41a0c28821c95e779796d7a4"
+    },
+    {
+      "slug": "badge-tidy",
+      "size": 256,
+      "file": "badge-tidy.webp",
+      "bytes": 15230,
+      "sha256": "a0007b264e8102c63c6f0f172e26c377817c1880c4caca6813fe8f713c46f547"
+    },
+    {
+      "slug": "badge-helper",
+      "size": 256,
+      "file": "badge-helper.webp",
+      "bytes": 15102,
+      "sha256": "55ed7b181d0f50b89484bd3024c228b1d664b27d0fb0b98803ad8265fbf51661"
+    },
+    {
+      "slug": "badge-math-star",
+      "size": 256,
+      "file": "badge-math-star.webp",
+      "bytes": 13974,
+      "sha256": "4f26d343c6ab80708f1581548297bffa5c8390e9b02ceff6164e04c0570c58c0"
+    },
+    {
+      "slug": "badge-week-hero",
+      "size": 256,
+      "file": "badge-week-hero.webp",
+      "bytes": 15930,
+      "sha256": "5b8dc7697141899123557667302423146b864025cf339368543a2f42dfbec2e6"
+    },
+    {
+      "slug": "badge-locked",
+      "size": 256,
+      "file": "badge-locked.webp",
+      "bytes": 12936,
+      "sha256": "fe3ed3116948b7b38bad1447b78139448ebee34ee759ee6e67c4f40abe2cca18"
+    },
+    {
+      "slug": "badge-tooth-care",
+      "size": 256,
+      "file": "badge-tooth-care.webp",
+      "bytes": 14528,
+      "sha256": "df29546c4954c970685c1acaadd08f373321b94cefb19917626ec47f10e75c2b"
+    },
+    {
+      "slug": "stamp-approved",
+      "size": 256,
+      "file": "stamp-approved.webp",
+      "bytes": 15442,
+      "sha256": "2671781e6edef28719b6ae25163ff1c9bef8a4344d1d4b91626f2647ed04b434"
+    },
+    {
+      "slug": "stamp-pending",
+      "size": 256,
+      "file": "stamp-pending.webp",
+      "bytes": 15398,
+      "sha256": "28e837db68cc8f330dafc812429411fc9e990855116c36f5be2f12c70f8e1644"
+    },
+    {
+      "slug": "stamp-returned",
+      "size": 256,
+      "file": "stamp-returned.webp",
+      "bytes": 15668,
+      "sha256": "ef481a1ef4a6b879f79f620d1aece7d344d6fee36d02eba27c2af2f9be4f8b90"
+    },
+    {
+      "slug": "loading-star-static",
+      "size": 256,
+      "file": "loading-star-static.webp",
+      "bytes": 12900,
+      "sha256": "88338fff972eaadbe20056957e866fb5d7833309d5feab4d9df8a5ea6c881095"
+    }
+  ]
+}

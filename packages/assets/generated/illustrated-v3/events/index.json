@@ -1,0 +1,149 @@
+{
+  "source": "packages/assets/icons/events/illustrated-v3",
+  "sizes": [
+    256
+  ],
+  "total_bytes": 314702,
+  "files": [
+    {
+      "slug": "school",
+      "size": 256,
+      "file": "school.webp",
+      "bytes": 16820,
+      "sha256": "e991b3bf113ba4f4a511cb5d09ea690f38b814d854e432df03cb419d961e7e67"
+    },
+    {
+      "slug": "class-schedule",
+      "size": 256,
+      "file": "class-schedule.webp",
+      "bytes": 17674,
+      "sha256": "2e63c4d25db4e02c92ddcd2f348150268e341ec21676dcd4b203c78ed5c3ebf7"
+    },
+    {
+      "slug": "online-lesson",
+      "size": 256,
+      "file": "online-lesson.webp",
+      "bytes": 14788,
+      "sha256": "c8b8d8ce5429178b4d32c3e209f35d0432c3754edcb03e63b9b4688e2d4dc6a8"
+    },
+    {
+      "slug": "activity",
+      "size": 256,
+      "file": "activity.webp",
+      "bytes": 13558,
+      "sha256": "e4d2f1236c4fab4edaace541b0e49a7fc04e1ac5f84e5add1cca132185326067"
+    },
+    {
+      "slug": "club",
+      "size": 256,
+      "file": "club.webp",
+      "bytes": 14396,
+      "sha256": "d210846187a713d910c3236c223d4955a4e8ec3b3229ded153a2e931c6b2c6a7"
+    },
+    {
+      "slug": "sports-event",
+      "size": 256,
+      "file": "sports-event.webp",
+      "bytes": 17418,
+      "sha256": "7df08b4b5339b6e603fc42096926473b9253110e1e9603eb01e0efe15ff60608"
+    },
+    {
+      "slug": "holiday",
+      "size": 256,
+      "file": "holiday.webp",
+      "bytes": 19806,
+      "sha256": "bf4f20d92116b1d5302979b8ac8205e400d28bd8cc28dfa632018a9a4f48b12d"
+    },
+    {
+      "slug": "school-break",
+      "size": 256,
+      "file": "school-break.webp",
+      "bytes": 20232,
+      "sha256": "238d84146f3ff43328abf1af28dd519b4054545fa0c0936a692687b667462c5c"
+    },
+    {
+      "slug": "public-holiday",
+      "size": 256,
+      "file": "public-holiday.webp",
+      "bytes": 13854,
+      "sha256": "badd9b2f7a6b96d149a8b32a4fcee48e5cc2cce6082e3c0b5aed3fd3fa72bab4"
+    },
+    {
+      "slug": "exam",
+      "size": 256,
+      "file": "exam.webp",
+      "bytes": 14832,
+      "sha256": "029e295ed89a3ecf589df9e90553a0fc5a7ebdc0d38283086bf3cb8f5163908b"
+    },
+    {
+      "slug": "homework-due",
+      "size": 256,
+      "file": "homework-due.webp",
+      "bytes": 16074,
+      "sha256": "c05b010e1b8a467afa4fcc00dfc5ae63d3d02e67ab17f029c8e6a2b6903513cf"
+    },
+    {
+      "slug": "family",
+      "size": 256,
+      "file": "family.webp",
+      "bytes": 15610,
+      "sha256": "3ab3d2ee1b4aa40a8d29057e0abf4d75411e922898defa67ed290525b1a2dcf5"
+    },
+    {
+      "slug": "birthday",
+      "size": 256,
+      "file": "birthday.webp",
+      "bytes": 14892,
+      "sha256": "5dc9308dbe17ccfee0272e176485e577b190a1ac5a7fd1e0d7eee0297d3465e6"
+    },
+    {
+      "slug": "visit",
+      "size": 256,
+      "file": "visit.webp",
+      "bytes": 16632,
+      "sha256": "6601737d9e771d534c8209355f576c301ce629c2479b18abce5aaa15245c0767"
+    },
+    {
+      "slug": "doctor",
+      "size": 256,
+      "file": "doctor.webp",
+      "bytes": 16580,
+      "sha256": "a8a6027686779505d1b18242e98212ca89608e01886db6620f614d26b2fe24be"
+    },
+    {
+      "slug": "parent-meeting",
+      "size": 256,
+      "file": "parent-meeting.webp",
+      "bytes": 10788,
+      "sha256": "e952cc8b80f0f6b57a5e0fcdf482014bb4c5cc4aa49c5471f5d43ccac639c07e"
+    },
+    {
+      "slug": "trip",
+      "size": 256,
+      "file": "trip.webp",
+      "bytes": 15028,
+      "sha256": "ba261f86a3e12b9b793dbc3b989886f2d6eecf8e7b7080b998c246e191d6f896"
+    },
+    {
+      "slug": "reminder",
+      "size": 256,
+      "file": "reminder.webp",
+      "bytes": 11852,
+      "sha256": "9ceb8bf18032b235986c8de45649d334511c03d4e6e36b6ccdcb343e968ced13"
+    },
+    {
+      "slug": "shopping",
+      "size": 256,
+      "file": "shopping.webp",
+      "bytes": 18648,
+      "sha256": "d1e58b83d25590e817ef3285329aef2ba2e3e27276540b5519a58787f165e2e2"
+    },
+    {
+      "slug": "other",
+      "size": 256,
+      "file": "other.webp",
+      "bytes": 15220,
+      "sha256": "df1409da5026d43967b9799ac9069bdd0238c871e3db4d14a72b51c2b55cb935"
+    }
+  ]
+}

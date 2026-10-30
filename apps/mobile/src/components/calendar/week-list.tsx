@@ -3,6 +3,8 @@ import { Text, View } from "react-native";
 
 import { DEFAULT_TIMEZONE, type EventType, type Occurrence } from "@gina/core";
 
+import { EventIcon } from "@/components/event-icon";
+
 export interface WeekEvent {
   id: string;
   title: string;
@@ -56,6 +58,7 @@ export function WeekList({ week, occurrences, today, timeZone = DEFAULT_TIMEZONE
             {items.length === 0 ? <Text className="text-sm text-gray-500">{t("calendar.noEvents")}</Text> : null}
             {items.map((o) => (
               <View key={`${o.event.id}:${o.date}`} className={`flex-row items-center gap-3 rounded-parent p-2 ${TYPE_TONE[o.event.type]}`}>
+                <EventIcon type={o.event.type} size={48} variant="illustrated" />
                 <Text className="w-24 text-sm font-medium text-ink">
                   {o.event.all_day ? t("calendar.allDay") : `${timeFormat.format(o.startsAt)}${o.endsAt ? `–${timeFormat.format(o.endsAt)}` : ""}`}
                 </Text>
