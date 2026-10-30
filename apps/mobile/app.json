@@ -54,7 +54,9 @@
             "image": "./assets/images/splash-icon-dark.png"
           }
         }
-      ]
+      ],
+      "expo-iap",
+      "expo-sharing"
     ],
     "experiments": {
       "typedRoutes": true,
