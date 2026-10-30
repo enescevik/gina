@@ -1,6 +1,6 @@
 {
   "group": "child",
-  "status": "awaiting-design-approval",
+  "status": "direction-revision-awaiting-approval",
   "applicationCodeChanged": false,
   "artDependency": "PR #16",
   "normalScreens": 8,
@@ -18,7 +18,7 @@
   "files": [
     {
       "file": "README.md",
-      "sha256": "fdfc26a0e49b3e30c3d7f7952edd23e47fdce58d5128f64847e35752be138033"
+      "sha256": "12aba884c7ce13278d561aee9d9203759f898cb52bd9d310ffc4bc75f2981b03"
     },
     {
       "file": "calendar-empty-phone.png",
@@ -195,6 +195,56 @@
       "height": 844
     },
     {
+      "file": "game-direction-v3/README.md",
+      "sha256": "a5b3b1f09c072c3abe132ecca3a805863f86df5f255de7cfc689465a8fa57dab"
+    },
+    {
+      "file": "game-direction-v3/build_spatial_study.py",
+      "sha256": "53fe49fde019fddae6052217dcf52bf4ed88fd4f9fbd993426fb63d98bfebdb4"
+    },
+    {
+      "file": "game-direction-v3/manifest.json",
+      "sha256": "cef7a907c9d36a9f08bd276d0b7015874be196f3264612328434c286c391d720"
+    },
+    {
+      "file": "game-direction-v3/pet-production-contract.json",
+      "sha256": "4a5c7927dd957ed49788853965106384fb7b56441f8acba48646c48c8b6bc5ae"
+    },
+    {
+      "file": "game-direction-v3/room-spatial-study-open.png",
+      "sha256": "b3ff5ac540feb70e73557b8df7a2a47cf2d1fd90281761025c1a872fd5f5269e",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "file": "game-direction-v3/room-spatial-study.blend",
+      "sha256": "99a2b72bc153789ad35276a4f028719e416a951fcd3f65d8eca45bee9e253e37"
+    },
+    {
+      "file": "game-direction-v3/room-spatial-study.glb",
+      "sha256": "3b03d1fef466873a1598c13c59b384bbf7210cb3fba7d5511303cd40fd3373e3"
+    },
+    {
+      "file": "game-direction-v3/room-spatial-study.png",
+      "sha256": "bc35b4a421ba8aecf1ebce15b28d63d6b8d729a61bd1ce267c8a817d1302dba5",
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "file": "game-direction-v3/runtime-webgl-review.png",
+      "sha256": "ae466efc46adc3cd93f3a3468e793750e387791ef4dc0d3514b8e13f2dad6474",
+      "width": 1385,
+      "height": 1142
+    },
+    {
+      "file": "game-direction-v3/study-metadata.json",
+      "sha256": "2b5a56f1fb777ef5fa3f81a0a9118c3cf76be09c32bf62f26e8dd31f29c7b1f6"
+    },
+    {
+      "file": "game-direction-v3/viewer.html",
+      "sha256": "0a81e239699fc129920571ded6ccd88bf974b8b2b624f00b8b158eb9d23d86de"
+    },
+    {
       "file": "goal-empty-phone.png",
       "sha256": "70845e93a253a04d74e071a59f76acf50d197ea72a7fc24710c31aad0f1b08c3",
       "width": 390,
@@ -250,7 +300,7 @@
     },
     {
       "file": "index.html",
-      "sha256": "29ae2999f9c2ea48868b0113a242cec69d427b82f5fa9f2f370d54d4b370b83a"
+      "sha256": "77b0a92c3a375e36f0ac3dde83b1530aa1c1ee060c04f0002ed8cd419377512e"
     },
     {
       "file": "motion.html",
@@ -621,5 +671,7 @@
     "weather": "manual day/night/rain/snow prototype; no location or API",
     "reducedMotionVerified": true,
     "examMotionPaused": true
-  }
+  },
+  "tabletV1V2": "rejected-do-not-implement",
+  "currentProposal": "game-direction-v3/README.md"
 }

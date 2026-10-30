@@ -1,3 +1,5 @@
+> **Güncel durum:** Tablet v1/v2 ürün sahibi tarafından reddedildi; uygulanmamalı. [Oyun sahnesi yön önerisi ve gerçek 3D çalışma](game-direction-v3/README.md) yeni inceleme konusudur. Ürün/teknik kararlar henüz kesinleşmedi.
+
 # Tablet v2 revizyonu — 30 Ekim 2026
 
 Tablet v1 onaylanmadı. Bu revizyon yalnız tasarım dosyalarını değiştirir; aşağıdaki eski tablet kararlarının yerine geçer. Telefonlar korunur. **Uygulama giydirmesi için onay hâlâ bekleniyor.**

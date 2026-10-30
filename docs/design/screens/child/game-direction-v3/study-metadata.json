@@ -1,0 +1,21 @@
+{
+  "status": "spatial-study-not-production",
+  "source": "Blender 5.0.1",
+  "models": 138,
+  "animations": [
+    "drawer_open_close",
+    "book_open_close"
+  ],
+  "missing": [
+    "final room art",
+    "characters",
+    "rigged pets",
+    "pet animation",
+    "production materials and texture atlas",
+    "mobile runtime integration",
+    "native text overlays",
+    "mobile profiling"
+  ],
+  "frames": 108,
+  "fps": 24
+}
