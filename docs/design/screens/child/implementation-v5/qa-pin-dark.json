@@ -1,0 +1,22 @@
+{
+  "results": [
+    {
+      "labelColor": "rgb(40, 78, 75)",
+      "slug": "pin",
+      "device": "tablet",
+      "missingImages": 0,
+      "body": "Merhaba Ece!\nHer küçük adım burada.\nPIN'ini gir\nÇocuk PIN’i\nTamam\nVazgeç",
+      "horizontalOverflow": false
+    },
+    {
+      "labelColor": "rgb(40, 78, 75)",
+      "slug": "pin",
+      "device": "phone",
+      "missingImages": 0,
+      "body": "Merhaba Ece!\nHer küçük adım burada.\nPIN'ini gir\nÇocuk PIN’i\nTamam\nVazgeç",
+      "horizontalOverflow": false
+    }
+  ],
+  "interceptedRequests": 0,
+  "allBackendTrafficMocked": true
+}

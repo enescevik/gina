@@ -36,6 +36,7 @@ Yeni sanat built-in image_gen ile onaylı v5 referanslarından üretildi. Kaynak
 - iOS + Android Expo/Hermes export: geçti (2715 / 2805 modül; TestFlight build veya cihaz testi değildir).
 - Sekiz yeni üretim asset'inde boyut/hash, alfa, 9-slice ve SVG teknik sözleşmeleri doğrulandı.
 - Değişen ekranlarda 22 mevcut useQuery/useMutation/useRealtimeInvalidate/supabase.rpc ifadesi TypeScript AST ile main'e karşı karşılaştırıldı: değişiklik yok.
+- PIN etiketi koyu tarayıcı teması altında telefon/tablette kontrol edildi (`qa-pin-dark.json`); krem oda zemininde koyu teal kalır. Ortak Field bileşenine yalnız isteğe bağlı labelStyle eklenir, diğer kullanımların görünümü değişmez.
 - Normal ekranlar: 390×844 ve 1280×800. Görsel kontrol raporu `qa-report.json`; boş/yükleniyor/hata ve etkileşim kontrolü `qa-states.json`.
 - Web seçim durumları için `aria-checked` / `aria-selected` / `aria-pressed` eklendi; native accessibilityState korundu. [RN erişilebilirlik](https://reactnative.dev/docs/accessibility), [RN Web](https://necolas.github.io/react-native-web/docs/accessibility/).
 - Bu test satın alma, push, gerçek cihaz safe area/klavye/fontScale veya gerçek çocuk yetkilerini doğrulamaz.

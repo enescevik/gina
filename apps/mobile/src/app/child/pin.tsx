@@ -42,6 +42,7 @@ export default function ChildPinScreen() {
       <Text className="text-base text-ink">{t("child.enterPin")}</Text>
       <Field
         label={t("childV5.pinLabel")}
+        labelStyle={{ color: "#284E4B" }}
         keyboardType="number-pad"
         secureTextEntry
         maxLength={4}
