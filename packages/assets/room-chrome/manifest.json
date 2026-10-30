@@ -696,9 +696,9 @@
     "pngHeight": 270,
     "stretch": "both",
     "capInsets": {
-      "top": 84,
+      "top": 192,
       "left": 192,
-      "bottom": 84,
+      "bottom": 66,
       "right": 84
     },
     "contentInsets": {
@@ -712,7 +712,7 @@
     "base": "drawer-front",
     "minimumLogicalSize": {
       "width": 93,
-      "height": 57
+      "height": 87
     },
     "sha256": "755e74aca1790bfc4724159b91e111203e942e581e3c632abd1478754cbbc89a",
     "pngSha256": "287ab105cab19c876c0a8632d924efb38d716fbb43c9f739a790e5ce560cbe61"
@@ -731,9 +731,9 @@
     "pngHeight": 270,
     "stretch": "both",
     "capInsets": {
-      "top": 84.0,
+      "top": 192.0,
       "left": 192.0,
-      "bottom": 84.0,
+      "bottom": 66.0,
       "right": 84.0
     },
     "contentInsets": {
@@ -747,7 +747,7 @@
     "base": "drawer-front",
     "minimumLogicalSize": {
       "width": 93.0,
-      "height": 57.0
+      "height": 87.0
     },
     "sha256": "b9b1860416e3532100170bf5298a2bc95312856db150c2a661aed240316642c6",
     "pngSha256": "5c024da2a5ee5390cbd717887207ca042e60de4549734ee6f18d484e492b7bd8"
@@ -764,7 +764,7 @@
     "pixelRatio": 3,
     "pngWidth": 456,
     "pngHeight": 156,
-    "stretch": "both",
+    "stretch": "horizontal",
     "capInsets": {
       "top": 72,
       "left": 150,
@@ -799,7 +799,7 @@
     "pixelRatio": 3,
     "pngWidth": 456,
     "pngHeight": 156,
-    "stretch": "both",
+    "stretch": "horizontal",
     "capInsets": {
       "top": 72.0,
       "left": 150.0,
@@ -834,7 +834,7 @@
     "pixelRatio": 3,
     "pngWidth": 456,
     "pngHeight": 156,
-    "stretch": "both",
+    "stretch": "horizontal",
     "capInsets": {
       "top": 72,
       "left": 150,
@@ -869,7 +869,7 @@
     "pixelRatio": 3,
     "pngWidth": 456,
     "pngHeight": 156,
-    "stretch": "both",
+    "stretch": "horizontal",
     "capInsets": {
       "top": 72.0,
       "left": 150.0,
