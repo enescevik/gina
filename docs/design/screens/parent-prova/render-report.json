@@ -1,0 +1,1028 @@
+{
+  "group": "parent-prova",
+  "screens": [
+    {
+      "id": "index",
+      "title": "Prova",
+      "route": "parent/prova/index",
+      "variants": []
+    },
+    {
+      "id": "exam",
+      "title": "Deneme hazırla",
+      "route": "parent/prova/exam",
+      "variants": []
+    },
+    {
+      "id": "question",
+      "title": "Soru ekle",
+      "route": "parent/prova/question",
+      "variants": [
+        "open"
+      ]
+    },
+    {
+      "id": "blueprint",
+      "title": "Senaryo ekle",
+      "route": "parent/prova/blueprint",
+      "variants": []
+    },
+    {
+      "id": "generate",
+      "title": "AI ile soru üret",
+      "route": "parent/prova/generate",
+      "variants": [
+        "result",
+        "locked"
+      ]
+    },
+    {
+      "id": "level",
+      "title": "Seviye tespiti",
+      "route": "parent/prova/level",
+      "variants": []
+    },
+    {
+      "id": "progress",
+      "title": "Konu ilerlemesi",
+      "route": "parent/prova/progress",
+      "variants": []
+    },
+    {
+      "id": "booklet",
+      "title": "Kitapçık",
+      "route": "parent/prova/booklet",
+      "variants": [
+        "exam"
+      ]
+    },
+    {
+      "id": "attempt",
+      "title": "Deneme incelemesi",
+      "route": "parent/prova/attempt/[attemptId]",
+      "variants": [
+        "manual"
+      ]
+    },
+    {
+      "id": "plan",
+      "title": "Çalışma planı",
+      "route": "parent/prova/plan/[planId]",
+      "variants": []
+    }
+  ],
+  "captures": [
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "index-phone.png"
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "index-phone-part-2.png"
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "index-empty-phone.png"
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "index-loading-phone.png"
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "index-error-phone.png"
+    },
+    {
+      "screen": "exam",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "exam-phone.png"
+    },
+    {
+      "screen": "exam",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "exam-phone-part-2.png"
+    },
+    {
+      "screen": "exam",
+      "device": "phone",
+      "state": "normal",
+      "part": 3,
+      "file": "exam-phone-part-3.png"
+    },
+    {
+      "screen": "exam",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "exam-empty-phone.png"
+    },
+    {
+      "screen": "exam",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "exam-loading-phone.png"
+    },
+    {
+      "screen": "exam",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "exam-error-phone.png"
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "question-phone.png"
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "question-phone-part-2.png"
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "normal",
+      "part": 3,
+      "file": "question-phone-part-3.png"
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "question-empty-phone.png"
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "question-loading-phone.png"
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "question-error-phone.png"
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "open",
+      "part": 1,
+      "file": "question-open-phone.png"
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "open",
+      "part": 2,
+      "file": "question-open-phone-part-2.png"
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "open",
+      "part": 3,
+      "file": "question-open-phone-part-3.png"
+    },
+    {
+      "screen": "blueprint",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "blueprint-phone.png"
+    },
+    {
+      "screen": "blueprint",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "blueprint-empty-phone.png"
+    },
+    {
+      "screen": "blueprint",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "blueprint-loading-phone.png"
+    },
+    {
+      "screen": "blueprint",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "blueprint-error-phone.png"
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "generate-phone.png"
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "generate-phone-part-2.png"
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "generate-empty-phone.png"
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "generate-loading-phone.png"
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "generate-error-phone.png"
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "result",
+      "part": 1,
+      "file": "generate-result-phone.png"
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "result",
+      "part": 2,
+      "file": "generate-result-phone-part-2.png"
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "locked",
+      "part": 1,
+      "file": "generate-locked-phone.png"
+    },
+    {
+      "screen": "level",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "level-phone.png"
+    },
+    {
+      "screen": "level",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "level-phone-part-2.png"
+    },
+    {
+      "screen": "level",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "level-empty-phone.png"
+    },
+    {
+      "screen": "level",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "level-loading-phone.png"
+    },
+    {
+      "screen": "level",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "level-error-phone.png"
+    },
+    {
+      "screen": "progress",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "progress-phone.png"
+    },
+    {
+      "screen": "progress",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "progress-phone-part-2.png"
+    },
+    {
+      "screen": "progress",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "progress-empty-phone.png"
+    },
+    {
+      "screen": "progress",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "progress-loading-phone.png"
+    },
+    {
+      "screen": "progress",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "progress-error-phone.png"
+    },
+    {
+      "screen": "booklet",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "booklet-phone.png"
+    },
+    {
+      "screen": "booklet",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "booklet-phone-part-2.png"
+    },
+    {
+      "screen": "booklet",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "booklet-empty-phone.png"
+    },
+    {
+      "screen": "booklet",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "booklet-loading-phone.png"
+    },
+    {
+      "screen": "booklet",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "booklet-error-phone.png"
+    },
+    {
+      "screen": "booklet",
+      "device": "phone",
+      "state": "exam",
+      "part": 1,
+      "file": "booklet-exam-phone.png"
+    },
+    {
+      "screen": "booklet",
+      "device": "phone",
+      "state": "exam",
+      "part": 2,
+      "file": "booklet-exam-phone-part-2.png"
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "attempt-phone.png"
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "attempt-phone-part-2.png"
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "normal",
+      "part": 3,
+      "file": "attempt-phone-part-3.png"
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "attempt-empty-phone.png"
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "attempt-loading-phone.png"
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "attempt-error-phone.png"
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "manual",
+      "part": 1,
+      "file": "attempt-manual-phone.png"
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "manual",
+      "part": 2,
+      "file": "attempt-manual-phone-part-2.png"
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "manual",
+      "part": 3,
+      "file": "attempt-manual-phone-part-3.png"
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "manual",
+      "part": 4,
+      "file": "attempt-manual-phone-part-4.png"
+    },
+    {
+      "screen": "plan",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "plan-phone.png"
+    },
+    {
+      "screen": "plan",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "plan-phone-part-2.png"
+    },
+    {
+      "screen": "plan",
+      "device": "phone",
+      "state": "normal",
+      "part": 3,
+      "file": "plan-phone-part-3.png"
+    },
+    {
+      "screen": "plan",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "plan-empty-phone.png"
+    },
+    {
+      "screen": "plan",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "plan-loading-phone.png"
+    },
+    {
+      "screen": "plan",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "plan-error-phone.png"
+    }
+  ],
+  "checks": [
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 946,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "exam",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1175,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "exam",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1210,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "exam",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "exam",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1271,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1452,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1487,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1548,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "question",
+      "device": "phone",
+      "state": "open",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1215,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "blueprint",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "blueprint",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 635,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "blueprint",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "blueprint",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 696,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 928,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 963,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1025,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "result",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 615,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "generate",
+      "device": "phone",
+      "state": "locked",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "level",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1159,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "level",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1513,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "level",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "level",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1255,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "progress",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 951,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "progress",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "progress",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "progress",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "booklet",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 737,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "booklet",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 737,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "booklet",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "booklet",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 833,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "booklet",
+      "device": "phone",
+      "state": "exam",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 641,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 1243,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 567,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 567,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 567,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "attempt",
+      "device": "phone",
+      "state": "manual",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 567,
+      "scrollHeight": 1724,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "plan",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1236,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "plan",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "plan",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "plan",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    }
+  ]
+}
