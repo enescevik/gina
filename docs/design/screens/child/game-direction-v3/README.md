@@ -4,6 +4,23 @@ Durum: **öneri, ürün sahibi onayı bekleniyor**. Tablet v1/v2 reddedildi. Bu 
 
 [Gerçek 3D modeli incele](viewer.html) · [Blender kaynağı](room-spatial-study.blend) · [Taşınabilir GLB](room-spatial-study.glb) · [Kapalı görünüm](room-spatial-study.png) · [Açık çekmece](room-spatial-study-open.png)
 
+## Korunan oda mantığı — son kullanıcı düzeltmesi
+
+3D teknik deneme ürünün odasını yeniden tanımlamaz. İlk 3D çalışma kitaplık, hafta takvimi ve çocuk/pet yerleşimini eksik gösterdi; bunlar kapsamdan çıkarılmadı. Onaylı çocuk ana ekranı kompozisyon referansı olmaya devam eder.
+
+| Bölge | Korunan işlev | Bu çalışmadaki durum |
+| --- | --- | --- |
+| Sol pano | Görevler, ilerleme, onay | 3D yazısız yüzeyler mevcut; native içerik henüz yok |
+| Orta pencere | Gün/gece, konuma bağlı hava | Gündüz/gece manuel renk/ışık denemesi var; canlı veri ve yağmur/kar yok |
+| Pencere yanı kitaplık | Prova, eğlenerek öğrenme | 3D kitaplık ve kitaplar geri eklendi |
+| Halının ortası | Seçilebilir çocuk karakteri | GLB/Blender ankrajı var; rigli model yok |
+| Çocuğun solu | Kedi/köpek/maymun/aslan seçimi | Pet ankrajı ve dinlenme yeri var; rigli model yok |
+| Sağ üst | Hedef bileti, hedefe kalan | 3D yüzey var; canlı bilgi henüz yok |
+| Hedefin altı | Hafta takvimi | Yedi hücreli 3D yerleşim geri eklendi |
+| Sağ alt | Rozetler ve kazanılan ödüller | Raf/dolap ve açılan çekmece mevcut |
+
+İnceleme sayfasında onaylı referans ve eşleme birlikte gösterilir. Çocuk/pet konum işaretleri yalnız inceleme aracıdır, ürünün butonları değildir. Karakterler 2D kart olarak yeniden yapıştırılmadı; gerçek modellerin eksikliği açıkça gösterildi.
+
 ## Önerdiğim yön
 
 Gerçek 3D nesneler + kontrollü kamera + dokunmaya dayalı 2.5D etkileşim. Buradaki 2.5D, resim parçalarını birbirine yapıştırmak anlamına gelmiyor: derinliği, nesne ilişkileri ve ışığı olan bir dünya; çocuğun kamerayı yönetmesi gerekmiyor. Kontrollü kamera telefon ve tablet için ayrı kadrajlar kullanır.
@@ -14,7 +31,7 @@ Bu yeni inceleme sayfası da tarayıcıda açılır; ancak içeriği DOM panelle
 
 ## Bu turda gerçekten üretilen
 
-Blender 5.0.1 ile yeniden üretilebilir sahne: 138 mesh, birbiriyle hizalı pano/masa, pencere, koltuk, gerçek raf gövdesi ve çekmece, halı, eğitim kitabı; iki ayrı nesne animasyonu (`drawer_open_close`, `book_open_close`). `.blend`, `.glb`, iki render ve kaynak üretim betiği birlikte teslim edilir. Panolar, mobilyalar ve ödül nesneleri aynı sahnede ışık alır ve birbirlerinin önüne/arkasına geçer.
+Blender 5.0.1 ile yeniden üretilebilir sahne: mesh geometrileri, birbiriyle hizalı pano/masa, pencere, koltuk, gerçek raf gövdesi ve çekmece, halı, eğitim kitabı; iki ayrı nesne animasyonu (`drawer_open_close`, `book_open_close`). `.blend`, `.glb`, iki render ve kaynak üretim betiği birlikte teslim edilir. Panolar, mobilyalar ve ödül nesneleri aynı sahnede ışık alır ve birbirlerinin önüne/arkasına geçer.
 
 Bu bir **mekân ve hareket altyapısı çalışmasıdır**. Final sanat, okunabilir UI, pet, karakter, canlı hava durumu, mobil çalıştırıcı veya tamamlanmış eğitim oyunu içermez. Basit kupa/kitap şekilleri mevcut ödül kataloğunun üretim sürümü değildir. Kamera orbiti inceleme için açık; çocuk arayüzünde serbest orbit önerilmiyor.
 

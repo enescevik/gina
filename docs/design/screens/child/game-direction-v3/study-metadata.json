@@ -1,7 +1,7 @@
 {
   "status": "spatial-study-not-production",
   "source": "Blender 5.0.1",
-  "models": 138,
+  "models": 176,
   "animations": [
     "drawer_open_close",
     "book_open_close"
@@ -15,6 +15,16 @@
     "mobile runtime integration",
     "native text overlays",
     "mobile profiling"
+  ],
+  "referenceElements": [
+    "task-board",
+    "window-day-night",
+    "library-learning",
+    "child-anchor",
+    "pet-anchor",
+    "goal-ticket",
+    "week-calendar",
+    "collection-drawer"
   ],
   "frames": 108,
   "fps": 24

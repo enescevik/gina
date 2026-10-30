@@ -52,7 +52,7 @@ for x in (-.78,.78):box('Window side',(x,2.02,2.22),(.13,.21,2.06),white,.03)
 for z in (1.18,3.25):box('Window crossbar',(0,2.01,z),(1.68,.23,.13),white,.03)
 box('Window center mullion',(0,1.99,2.22),(.055,.15,1.95),white,.01)
 box('Window sill',(0,1.88,1.15),(1.86,.5,.13),lightwood,.045)
-sphere('Sun outside',(.37,2.17,2.78),(.21,.025,.21),gold)
+celestial=mat('Window celestial','F6C453');sphere('Sun or moon outside',(.37,2.17,2.78),(.21,.025,.21),celestial)
 for x in (-.99,1.0):
     for j in range(4):box('Curtain soft fold',(x+j*.055,1.89,2.25),(.07,.09,2.1),rugmat,.03)
 # Board built into left wall. Notes are real paper planes with physical pins.
@@ -79,6 +79,18 @@ box('Chair seat',(0,.84,.55),(1.02,.89,.25),gold,.12)
 box('Chair back',(0,1.20,.93),(1.04,.23,.9),gold,.11)
 for x in (-.54,.54):box('Chair arm',(x,.84,.79),(.19,.93,.24),gold,.09)
 o=box('Teal pillow',(.1,1,.96),(.56,.23,.5),teal,.11);o.rotation_euler.y=-.14
+# Reference room library: Prova and future learning entry, separate from awards.
+for x in (.22,1.06):box('Library side',(x,1.5,1.19),(.09,.55,2.26),wood,.025)
+box('Library back',(.64,1.77,1.19),(.89,.07,2.26),edge,.02)
+for z in (.10,.80,1.50,2.3):box('Library shelf',(.64,1.5,z),(.96,.61,.09),lightwood,.025)
+for level in (0,1,2):
+    for j in range(5):
+        h=.37+(j%3)*.06
+        box('Library reading book',(.32+j*.13,1.46,.18+level*.7+h/2),(.1,.34,h),[teal,paper,coral,gold,deep][j],.012)
+# Persistent named anchors; final rigged character/pet models are still absent.
+empty('anchor.child',(0,-.78,.10))
+empty('anchor.pet',(-.79,-.95,.10))
+empty('anchor.learning',(.64,1.2,1.2))
 # Display cabinet is a true open body; drawer has a rail-axis pivot.
 for x in (1.36,2.90):
     for y in (.89,1.59):box('Cabinet foot',(x,y,.2),(.12,.12,.35),edge,.035)
@@ -96,21 +108,28 @@ drawer.animation_data.action.name='drawer_open_close'
 box('Star plinth',(1.68,1.24,1.06),(.43,.38,.11),wood,.035);star('Star trophy',(1.68,1.23,1.36),.24,.12,gold)
 for i,m in enumerate((teal,paper,coral)):box('Award book',(2.58,1.27,1.07+i*.11),(.42,.35,.09),m,.018)
 # Goal display attached to wall above cabinet, matching board joinery.
-box('Goal mount',(2.12,1.88,2.65),(1.8,.17,1.02),wood,.07)
-box('Goal paper',(2.12,1.77,2.65),(1.58,.035,.8),paper,.04)
-box('Progress trough',(2.12,1.73,2.39),(1.15,.05,.10),white,.04)
-box('Progress fill',(1.90,1.69,2.39),(.72,.045,.095),teal,.04)
-star('Goal star',(2.12,1.68,2.82),.14,.05,gold)
+box('Goal mount',(2.12,1.88,3.00),(1.8,.17,.66),wood,.07)
+box('Goal paper',(2.12,1.77,3.00),(1.58,.035,.53),paper,.04)
+box('Progress trough',(2.12,1.73,2.83),(1.15,.05,.10),white,.04)
+box('Progress fill',(1.90,1.69,2.83),(.72,.045,.095),teal,.04)
+star('Goal star',(2.12,1.68,3.12),.14,.05,gold)
+# Seven-day calendar below target ticket, above the earned-objects cabinet.
+box('Week calendar mount',(2.12,1.86,2.13),(1.78,.14,.69),wood,.045)
+box('Week calendar paper',(2.12,1.76,2.13),(1.6,.025,.53),paper,.015)
+for i in range(7):
+    x=1.49+i*.21
+    box('Week day cell',(x,1.727,2.12),(.17,.015,.28),white,.013)
+    sphere('Week progress marker',(x,1.7,2.07),(.046,.012,.046),teal if i<5 else lightwood)
 # Circular rug and pet resting pad leave clear room for the rigged characters.
 cyl('Rug outer',(0,-.77,.065),1.48,.035,rugmat,96).scale.y=.73
 cyl('Rug inner',(0,-.77,.085),1.26,.024,teal,96).scale.y=.73
-cyl('Pet bed rim',(-.67,-.80,.16),.43,.16,lightwood,64).scale.y=.8
-cyl('Pet bed cushion',(-.67,-.8,.25),.36,.16,white,64).scale.y=.8
+cyl('Pet bed rim',(-.79,-.95,.16),.43,.16,lightwood,64).scale.y=.8
+cyl('Pet bed cushion',(-.79,-.95,.25),.36,.16,white,64).scale.y=.8
 # Plant with actual 3D leaves gives occlusion and contact shadows.
-cyl('Plant pot',(2.84,1.36,1.87),.18,.37,coral)
-cyl('Soil',(2.84,1.36,2.06),.16,.025,soil)
+cyl('Plant pot',(.83,1.48,2.53),.18,.37,coral)
+cyl('Soil',(.83,1.48,2.72),.16,.025,soil)
 for i in range(7):
-    a=i*math.tau/7;o=sphere('Plant leaf',(2.84+math.cos(a)*.19,1.36+math.sin(a)*.12,2.14+(i%3)*.11),(.085,.045,.25),green);o.rotation_euler=(math.sin(a)*.5,math.cos(a)*.55,a)
+    a=i*math.tau/7;o=sphere('Plant leaf',(.83+math.cos(a)*.19,1.48+math.sin(a)*.12,2.8+(i%3)*.11),(.085,.045,.25),green);o.rotation_euler=(math.sin(a)*.5,math.cos(a)*.55,a)
 # Education prop: hinged book opening, reusable object animation.
 hinge=empty('book.hinge',(1.34,-.9,.17))
 box('Book lower cover',(0,0,0),(.46,.58,.055),deep,.015,hinge)
@@ -130,4 +149,4 @@ scene.frame_set(1);bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT,'room-s
 bpy.ops.export_scene.gltf(filepath=os.path.join(OUT,'room-spatial-study.glb'),export_format='GLB',export_animations=True,export_apply=True)
 scene.render.filepath=os.path.join(OUT,'room-spatial-study.png');bpy.ops.render.render(write_still=True)
 scene.frame_set(54);scene.render.filepath=os.path.join(OUT,'room-spatial-study-open.png');bpy.ops.render.render(write_still=True)
-json.dump({'status':'spatial-study-not-production','source':'Blender 5.0.1','models':len([x for x in scene.objects if x.type=='MESH']),'animations':['drawer_open_close','book_open_close'],'missing':['final room art','characters','rigged pets','pet animation','production materials and texture atlas','mobile runtime integration','native text overlays','mobile profiling'],'frames':108,'fps':24},open(os.path.join(OUT,'study-metadata.json'),'w'),indent=2)
+json.dump({'status':'spatial-study-not-production','source':'Blender 5.0.1','models':len([x for x in scene.objects if x.type=='MESH']),'animations':['drawer_open_close','book_open_close'],'missing':['final room art','characters','rigged pets','pet animation','production materials and texture atlas','mobile runtime integration','native text overlays','mobile profiling'],'referenceElements':['task-board','window-day-night','library-learning','child-anchor','pet-anchor','goal-ticket','week-calendar','collection-drawer'],'frames':108,'fps':24},open(os.path.join(OUT,'study-metadata.json'),'w'),indent=2)

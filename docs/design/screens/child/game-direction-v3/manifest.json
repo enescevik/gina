@@ -1,8 +1,8 @@
 {
   "status": "proposal-spatial-study-not-production",
   "sourceTool": "Blender 5.0.1",
-  "meshCount": 138,
-  "triangles": 40456,
+  "meshCount": 176,
+  "triangles": 51324,
   "animations": [
     "drawer_open_close",
     "book_open_close"
@@ -19,11 +19,11 @@
   "files": [
     {
       "file": "README.md",
-      "sha256": "a5b3b1f09c072c3abe132ecca3a805863f86df5f255de7cfc689465a8fa57dab"
+      "sha256": "e7071e0d4bf0482efd81158adf4a091403cb40eb8e60cbbba5e34d2da078e202"
     },
     {
       "file": "build_spatial_study.py",
-      "sha256": "53fe49fde019fddae6052217dcf52bf4ed88fd4f9fbd993426fb63d98bfebdb4"
+      "sha256": "b42760c7072149697412a916bc5f32c0ce3e5c54353ad791ddc66e73a7eae57c"
     },
     {
       "file": "pet-production-contract.json",
@@ -31,31 +31,31 @@
     },
     {
       "file": "room-spatial-study-open.png",
-      "sha256": "b3ff5ac540feb70e73557b8df7a2a47cf2d1fd90281761025c1a872fd5f5269e"
+      "sha256": "52a9c45479b01610e64b7f80d71b7edb4fece63a9be83a757952c8f523c60919"
     },
     {
       "file": "room-spatial-study.blend",
-      "sha256": "99a2b72bc153789ad35276a4f028719e416a951fcd3f65d8eca45bee9e253e37"
+      "sha256": "ec215250daf0197343206d0fa951511943db45a7f35d9e3a44273654cff95fdc"
     },
     {
       "file": "room-spatial-study.glb",
-      "sha256": "3b03d1fef466873a1598c13c59b384bbf7210cb3fba7d5511303cd40fd3373e3"
+      "sha256": "d01f99cde141c752f3755c09802640290f39f3699c9154ababa73d482120bbec"
     },
     {
       "file": "room-spatial-study.png",
-      "sha256": "bc35b4a421ba8aecf1ebce15b28d63d6b8d729a61bd1ce267c8a817d1302dba5"
+      "sha256": "ade87b7967d1abf93b93052b8ec8cc8afb2b764b24d208bf8afe46b0ce3e79c9"
     },
     {
       "file": "runtime-webgl-review.png",
-      "sha256": "ae466efc46adc3cd93f3a3468e793750e387791ef4dc0d3514b8e13f2dad6474"
+      "sha256": "fbb14bffeb019f8ae969073ab641a3da6cc7702a4dbbb2ff5d57596aa9823b73"
     },
     {
       "file": "study-metadata.json",
-      "sha256": "2b5a56f1fb777ef5fa3f81a0a9118c3cf76be09c32bf62f26e8dd31f29c7b1f6"
+      "sha256": "f90635963b055a9b2b5a6d4c0790c79d8378ad3b6be62889ea5401fca282dd0d"
     },
     {
       "file": "viewer.html",
-      "sha256": "0a81e239699fc129920571ded6ccd88bf974b8b2b624f00b8b158eb9d23d86de"
+      "sha256": "8ec1950f4ea98735d91696704e1cdd41e95cb96dd03a5434c56e6d4521fe9abb"
     }
   ]
 }
