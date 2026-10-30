@@ -1,7 +1,7 @@
 {
   "version": "v5",
   "group": "parent-daily",
-  "status": "screen-layout-approval-pending",
+  "status": "design-approved-implementation-pending",
   "visualDirection": "approved-2026-10-30",
   "isAppImplementation": false,
   "isGLB": false,
@@ -83,8 +83,8 @@
   "files": [
     {
       "file": "REVIEW.md",
-      "bytes": 3540,
-      "sha256": "c8aaa1fc07058180807af1b6aaee05becd6de32d17f36b1a01bf4e66499ba84d"
+      "bytes": 3735,
+      "sha256": "62de3b4cec3c76f6180dc0463c9a0a3b87c77bacdfcdc0b33834829cfb7f18c4"
     },
     {
       "file": "calendar-empty-phone.png",
@@ -527,5 +527,6 @@
       "width": 1245,
       "height": 1065
     }
-  ]
+  ],
+  "approvalRecord": "../../../release/TESTFLIGHT.md"
 }

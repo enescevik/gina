@@ -1,7 +1,7 @@
 {
   "status": "review-reference-not-production",
   "visualDirectionApproved": true,
-  "screenLayoutsApproved": false,
+  "screenLayoutsApproved": true,
   "groups": [
     "child",
     "parent-daily",
@@ -72,13 +72,13 @@
     },
     {
       "file": "build_review.py",
-      "bytes": 9422,
-      "sha256": "fcdf86922adb391a4dfbe2ccc24bdf86b1a4d9ca95dd6a810937489d9fd5d59e"
+      "bytes": 9617,
+      "sha256": "cb3d997f249147b0b46d2b0a051386074e739b5eb9ddd85939f68b4e4f8c1cbd"
     },
     {
       "file": "claude-prompt.md",
-      "bytes": 4366,
-      "sha256": "4fc75a16ccba0a4d4bcb6d2c7bd7e531b4c96cd9f7f809b941515f6b5c892657"
+      "bytes": 4798,
+      "sha256": "b24f114df92b11adb93571b506c2aa062947e85c62b0a994c81cb5f6db5f6c78"
     },
     {
       "file": "design.css",
@@ -106,13 +106,14 @@
     },
     {
       "file": "index.html",
-      "bytes": 5227,
-      "sha256": "1b35c2d46119be189ac34e45cbe98c9de0651e1a6a398ef41da3ff658c8252bb"
+      "bytes": 5228,
+      "sha256": "b2b7948551b7294e9f5c6dc191e6f32ba274cae6836e3f65f1a0677c8456fd14"
     },
     {
       "file": "runtime.js",
       "bytes": 6460,
       "sha256": "d506a196ec8da5cf4eba2ed425d4e423589a9a7e1393e882771467e4706fc6af"
     }
-  ]
+  ],
+  "approvalRecord": "../../../release/TESTFLIGHT.md"
 }

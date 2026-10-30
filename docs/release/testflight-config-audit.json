@@ -1,0 +1,64 @@
+{
+  "scope": "ios-testflight-static-configuration-only",
+  "configurationReady": false,
+  "findings": [
+    {
+      "id": "bundle-id",
+      "status": "pass",
+      "message": "Gina iOS bundle kimliği tanımlı."
+    },
+    {
+      "id": "app-version",
+      "status": "pass",
+      "message": "Uygulama sürümü tanımlı."
+    },
+    {
+      "id": "eas-project",
+      "status": "block",
+      "message": "EAS projesi bağlanmamış: extra.eas.projectId yok/geçersiz."
+    },
+    {
+      "id": "asc-app",
+      "status": "block",
+      "message": "eas.json submit.production.ios.ascAppId gerçek sayısal Apple ID ile doldurulmalı."
+    },
+    {
+      "id": "store-profile",
+      "status": "pass",
+      "message": "Production profili fiziksel cihaz/store dağıtımına uygun."
+    },
+    {
+      "id": "ios-icon",
+      "status": "pass",
+      "message": "iOS ikon dosyası mevcut; çözünürlük ve alfa mağaza kontrolünde doğrulanmalı."
+    },
+    {
+      "id": "supabase-url",
+      "status": "block",
+      "message": "Supabase URL boş, yerel veya geçersiz. TestFlight build’i localhost/özel ağ adresi kullanamaz."
+    },
+    {
+      "id": "supabase-public-key",
+      "status": "pass",
+      "message": "Supabase public/anon anahtar biçimi uygun; proje eşleşmesi ayrıca doğrulanmalı."
+    },
+    {
+      "id": "web-url",
+      "status": "warn",
+      "message": "Öğretmen paylaşım bağlantıları: yayın URL’si henüz hazır değil."
+    },
+    {
+      "id": "legal-url",
+      "status": "warn",
+      "message": "Gizlilik ve abonelik bağlantıları: yayın URL’si henüz hazır değil."
+    }
+  ],
+  "manualChecks": [
+    "Apple Developer üyeliği, EAS oturumu, provisioning ve imzalı IPA.",
+    "Supabase migrations, token hook, RLS ve gerçek cihazdan erişim.",
+    "Onaylı v5 ekran entegrasyonu ve iPhone/iPad görsel kabulü.",
+    "Hesap silme, veli beyanı/izinler ve yayınlanmış doğru gizlilik metinleri.",
+    "Giriş, çocuk PIN, eşleştirme, görev/ödül, Prova, push ve IAP kapsam testleri.",
+    "TestFlight test bilgileri, destek adresi ve test kullanıcıları."
+  ]
+}

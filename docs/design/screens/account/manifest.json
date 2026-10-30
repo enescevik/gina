@@ -1,7 +1,7 @@
 {
   "version": "v5",
   "group": "account",
-  "status": "screen-layout-approval-pending",
+  "status": "design-approved-implementation-pending",
   "visualDirection": "approved-2026-10-30",
   "isAppImplementation": false,
   "isGLB": false,
@@ -84,8 +84,8 @@
   "files": [
     {
       "file": "REVIEW.md",
-      "bytes": 3539,
-      "sha256": "a9a798b20024c51db3ce976e358faca869828d48282369cfefd92d97c06b5111"
+      "bytes": 3734,
+      "sha256": "d64712ddbf748a5d9a894ccaa573d0093101a14d4298766af9b1c8d8f6fb37e2"
     },
     {
       "file": "comparison.html",
@@ -549,5 +549,6 @@
       "width": 1245,
       "height": 1065
     }
-  ]
+  ],
+  "approvalRecord": "../../../release/TESTFLIGHT.md"
 }

@@ -16,7 +16,8 @@
     "db:stop": "pnpm exec supabase stop",
     "db:reset": "pnpm exec supabase db reset",
     "db:test": "pnpm exec supabase test db",
-    "db:types": "pnpm exec supabase gen types typescript --local --schema public > packages/core/src/database.types.ts"
+    "db:types": "pnpm exec supabase gen types typescript --local --schema public > packages/core/src/database.types.ts",
+    "release:check:ios": "node scripts/check-testflight.mjs"
   },
   "devDependencies": {
     "sharp": "^0.35.5",
