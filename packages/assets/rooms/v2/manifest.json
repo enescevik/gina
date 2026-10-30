@@ -610,5 +610,183 @@
       "height": 140
     },
     "placement": "scale=min(sceneFitBox.width/contentBounds.width, sceneFitBox.height/contentBounds.height); align contentBounds bottom-center to sceneAnchor; never stretch"
+  },
+  {
+    "slug": "room-study-v5",
+    "file": "room-study-v5.webp",
+    "width": 1586,
+    "height": 992,
+    "format": "webp",
+    "alpha": false,
+    "lossless": true,
+    "source": "exec-b8bebae4-55e5-456e-893d-e94b436799ac.png",
+    "sha256": "0dd1c15c0b33410317d5c1301e355397e926e597c4cf1f48bbe8aa299fe9189c",
+    "contentBounds": [
+      0,
+      0,
+      1586,
+      992
+    ],
+    "groundLine": 992,
+    "anchor": {
+      "x": 793,
+      "y": 992,
+      "units": "source pixels"
+    },
+    "variants": [
+      "child-v5"
+    ],
+    "status": "production-layer"
+  },
+  {
+    "slug": "character-girl-v5",
+    "file": "character-girl-v5.webp",
+    "width": 1254,
+    "height": 1254,
+    "format": "webp",
+    "alpha": true,
+    "lossless": true,
+    "source": "exec-b8f63e42-709d-4ae0-b134-2dabe27457ee.png",
+    "sha256": "9c1b10b9d216dc6dbfd15fa8230697dd909ce41f59674bb1a0dcfb4e280c8e7c",
+    "contentBounds": [
+      236,
+      69,
+      1071,
+      1194
+    ],
+    "groundLine": 1194,
+    "anchor": {
+      "x": 653.5,
+      "y": 1194,
+      "units": "source pixels"
+    },
+    "variants": [
+      "child-v5"
+    ],
+    "status": "production-layer",
+    "sceneAnchor": {
+      "x": 1270,
+      "y": 900,
+      "units": "1586x992 room pixels"
+    },
+    "sceneFitBox": {
+      "width": 410,
+      "height": 500
+    },
+    "supersedes": {
+      "slug": "character-girl",
+      "scope": "v5 child presentation; old file preserved"
+    }
+  },
+  {
+    "slug": "character-boy-v5",
+    "file": "character-boy-v5.webp",
+    "width": 1254,
+    "height": 1254,
+    "format": "webp",
+    "alpha": true,
+    "lossless": true,
+    "source": "exec-5db340d7-0057-48b5-a96a-55aed7088505.png",
+    "sha256": "6a05fd2738a73116a9a7d31dff28ed145cd767d9839279fec0ae3fc7f0bf10c7",
+    "contentBounds": [
+      237,
+      64,
+      1072,
+      1196
+    ],
+    "groundLine": 1196,
+    "anchor": {
+      "x": 654.5,
+      "y": 1196,
+      "units": "source pixels"
+    },
+    "variants": [
+      "child-v5"
+    ],
+    "status": "production-layer",
+    "sceneAnchor": {
+      "x": 1270,
+      "y": 900,
+      "units": "1586x992 room pixels"
+    },
+    "sceneFitBox": {
+      "width": 410,
+      "height": 500
+    },
+    "supersedes": {
+      "slug": "character-boy",
+      "scope": "v5 child presentation; old file preserved"
+    }
+  },
+  {
+    "slug": "character-unspecified-v5",
+    "file": "character-unspecified-v5.webp",
+    "width": 1254,
+    "height": 1254,
+    "format": "webp",
+    "alpha": true,
+    "lossless": true,
+    "source": "exec-241d94a0-da56-41e7-af5d-139c1c88b05c.png",
+    "sha256": "f192a4b8cef5a78a1713042cfa5e2367c729248f446918c21952e71109fa858f",
+    "contentBounds": [
+      237,
+      76,
+      1070,
+      1195
+    ],
+    "groundLine": 1195,
+    "anchor": {
+      "x": 653.5,
+      "y": 1195,
+      "units": "source pixels"
+    },
+    "variants": [
+      "child-v5"
+    ],
+    "status": "production-layer",
+    "sceneAnchor": {
+      "x": 1270,
+      "y": 900,
+      "units": "1586x992 room pixels"
+    },
+    "sceneFitBox": {
+      "width": 410,
+      "height": 500
+    },
+    "supersedes": {
+      "slug": "character-unspecified",
+      "scope": "v5 child presentation; old file preserved"
+    }
+  },
+  {
+    "slug": "room-home-v5",
+    "file": "room-home-v5.webp",
+    "width": 1586,
+    "height": 992,
+    "format": "webp",
+    "alpha": false,
+    "lossless": true,
+    "source": "exec-bdf073dc-b582-4ed0-9822-7dbeedc81fb8.png",
+    "contentBounds": [
+      0,
+      0,
+      1586,
+      992
+    ],
+    "variants": [
+      "child-v5"
+    ],
+    "status": "production-layer",
+    "supersedes": {
+      "slug": "room-base",
+      "scope": "v5 child presentation; old file preserved"
+    },
+    "sha256": "804701594ce5ae066d8ce74dee31f0a3676b50dcd076c31b3a0bb777d22a228c",
+    "groundLine": 992,
+    "anchor": {
+      "x": 793,
+      "y": 992,
+      "units": "source pixels"
+    }
   }
 ]

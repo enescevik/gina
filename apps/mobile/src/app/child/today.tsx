@@ -7,7 +7,7 @@ import { RoomChildHome } from "@/components/room/child-home";
 import { WIDE_LAYOUT_MIN_DP } from "@/components/room/layout";
 import { TodayView } from "@/components/today-view";
 import { Button } from "@/components/ui/button";
-import { Screen } from "@/components/ui/screen";
+import { ChildScreen as Screen } from "@/components/room/child-screen";
 import { refreshClaims, useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 

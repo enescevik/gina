@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
 import { Avatar } from "@/components/avatar";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ChildScreen as Screen, childStyles } from "@/components/room/child-screen";
 import { supabase } from "@/lib/supabase";
 
 /** Tablet: "Kim giriyor?" — profil seçimi, sonra PIN. */
@@ -20,20 +21,20 @@ export default function ChildPickerScreen() {
   });
 
   return (
-    <Screen tone="child" title={t("child.pickProfile")}>
+    <Screen tone="child" loading={children.isLoading} title={t("child.pickProfile")}>
       <ErrorText error={children.error} />
       <View className="flex-row flex-wrap gap-4">
         {children.data?.map((child) => (
           <Pressable
             key={child.id}
             accessibilityRole="button"
-            className="min-h-32 min-w-40 flex-1 items-center justify-center rounded-child bg-white p-6 active:bg-teal-light dark:bg-night-surface"
+            style={[childStyles.card, { flexGrow: 1, flexBasis: 180, minHeight: 176, alignItems: "center", justifyContent: "center" }]}
             onPress={() => router.push({ pathname: "/child/pin", params: { childId: child.id, name: child.name } })}
           >
             <View className="mb-3">
               <Avatar slug={child.avatar} size={72} />
             </View>
-            <Text className="text-xl font-bold text-ink dark:text-night-text">{child.name}</Text>
+            <Text className="text-xl font-bold text-ink">{child.name}</Text>
           </Pressable>
         ))}
       </View>

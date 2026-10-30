@@ -1,0 +1,42 @@
+{
+  "results": [
+    {
+      "state": "empty",
+      "device": "phone",
+      "horizontalOverflow": false
+    },
+    {
+      "state": "empty",
+      "device": "tablet",
+      "horizontalOverflow": false
+    },
+    {
+      "state": "loading",
+      "device": "phone",
+      "horizontalOverflow": false
+    },
+    {
+      "state": "loading",
+      "device": "tablet",
+      "horizontalOverflow": false
+    },
+    {
+      "state": "error",
+      "device": "phone",
+      "horizontalOverflow": false
+    },
+    {
+      "state": "error",
+      "device": "tablet",
+      "horizontalOverflow": false
+    }
+  ],
+  "interactions": {
+    "petNone": true,
+    "character": true,
+    "answer": true,
+    "nextQuestion": true
+  },
+  "interceptedRequests": 19,
+  "allBackendTrafficMocked": true
+}

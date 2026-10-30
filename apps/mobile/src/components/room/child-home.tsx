@@ -103,17 +103,17 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
             {/* Üst çubuk: logo + selamlama solda; yıldız ve Ebeveyn hapları sağda */}
             <View style={{ position: "absolute", ...header }} className="flex-row items-center justify-between">
               <View className="flex-row items-center" style={{ gap: 16 * s }}>
-                <Wordmark width={160 * s} height={70 * s} accessibilityLabel="Gina" />
+                <Wordmark width={110 * s} height={48 * s} accessibilityLabel="Gina" />
                 <View className="bg-ink/15" style={{ width: 2, height: 44 * s }} />
                 {/* Onaylı referansta selamlamanın altında vurgu çizgisi yok (header-greeting-underline kullanılmıyor). */}
-                <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(42), lineHeight: fs(52) }}>
+                <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(30), lineHeight: fs(38) }}>
                   {t("child.hello", { name: childName })}
                 </Text>
               </View>
               <View className="flex-row items-center" style={{ gap: 12 * s }}>
                 <View accessible accessibilityLabel={t("room.starCount", { count: data.stars })}>
                   <NineSlice skin="pill-star" scale={s} contentClassName="justify-center">
-                    <Text className="font-body-bold text-ink" style={{ fontSize: fs(20) }}>
+                    <Text className="font-body-bold text-ink" style={{ fontSize: fs(17) }}>
                       {t("room.starCount", { count: data.stars })}
                     </Text>
                   </NineSlice>
@@ -127,7 +127,7 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
                   contentClassName="justify-center"
                   hitSlop={6}
                 >
-                  <Text className="font-body-bold text-ink" style={{ fontSize: fs(20) }}>
+                  <Text className="font-body-bold text-ink" style={{ fontSize: fs(17) }}>
                     {t("room.parentExit")}
                   </Text>
                 </SkinPressable>
@@ -141,10 +141,10 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
               style={{ position: "absolute", ...board }}
               contentStyle={{ flex: 1, flexGrow: 1 }}
             >
-              <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(40), lineHeight: fs(48) }}>
+              <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(28), lineHeight: fs(36) }}>
                 {t("room.todayTasks")}
               </Text>
-              <Text className="font-body text-ink/80" style={{ fontSize: fs(20) }}>
+              <Text className="font-body text-ink/80" style={{ fontSize: fs(17) }}>
                 {t("room.completedOf", { done: doneCount, total: data.due.length })}
               </Text>
               <View style={{ marginTop: 6 * s, marginBottom: 10 * s }}>

@@ -1,12 +1,13 @@
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View } from "react-native";
+import { Text, View, useWindowDimensions } from "react-native";
 
 import { Collectible } from "@/components/collectible";
 import { CelebrationBurst } from "@/components/collectible-motion";
 import { Button } from "@/components/ui/button";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ChildScreen as Screen } from "@/components/room/child-screen";
 import { useSession } from "@/lib/session";
 import { useChildBadges } from "@/lib/use-child-badges";
 
@@ -17,6 +18,9 @@ const CELEBRATE_WINDOW_MS = 24 * 60 * 60 * 1000;
 /** Koleksiyonum: kazanılan rozetler ve henüz kilitli olanlar (resimli v3 seti). */
 export default function ChildCollectionScreen() {
   const { t, i18n } = useTranslation();
+  const { width, fontScale } = useWindowDimensions();
+  const singleColumn = fontScale > 1.2;
+  const collectibleSize = width >= 900 ? 112 : 88;
   const { claims } = useSession();
   const childId = claims?.child_id ?? "";
   const badges = useChildBadges(childId, i18n.language);
@@ -30,24 +34,24 @@ export default function ChildCollectionScreen() {
   const celebrating = fresh && fresh.slug !== doneSlug ? fresh.slug : null;
 
   return (
-    <Screen tone="child" title={t("room.myCollection")}>
-      <Text className="font-body text-base text-ink dark:text-night-text">
+    <Screen tone="child" surface="collection" loading={badges.isLoading} title={t("room.myCollection")}>
+      <Text className="font-body text-base text-ink">
         {t("collection.summary", { earned: earnedCount, total: badges.data?.length ?? 0 })}
       </Text>
-      <View className="flex-row flex-wrap gap-4">
-        {badges.data?.map((badge) => (
+      <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+        {badges.data?.map((badge, index) => (
           <View
             key={badge.slug}
-            className={`w-36 items-center gap-2 rounded-child p-3 ${badge.earned ? "bg-white dark:bg-night-surface" : "bg-mist/60"}`}
+            style={{ width: singleColumn ? "100%" : "50%", alignItems: "center", gap: 4, padding: 8, borderBottomWidth: 10, borderRightWidth: !singleColumn && index % 2 === 0 ? 10 : 0, borderColor: "#BE843E" }}
             accessible
             accessibilityLabel={`${badge.title}: ${badge.earned ? t("collection.earned") : t("collection.locked")}`}
           >
             <View className="items-center justify-center">
-              <Collectible slug={badge.icon} locked={!badge.earned} size={96} />
+              <Collectible slug={badge.icon} locked={!badge.earned} size={collectibleSize} />
               {celebrating === badge.slug ? (
                 <View className="absolute" pointerEvents="none">
                   <CelebrationBurst
-                    size={96}
+                    size={collectibleSize}
                     onFinish={() => {
                       celebrated.add(`${childId}:${badge.slug}`);
                       setDoneSlug(badge.slug);
@@ -56,7 +60,7 @@ export default function ChildCollectionScreen() {
                 </View>
               ) : null}
             </View>
-            <Text className="text-center font-display text-sm text-ink dark:text-night-text">{badge.title}</Text>
+            <Text style={{ backgroundColor: "#FFD59A", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4, fontFamily: "Baloo2_800ExtraBold", color: "#65421E", textAlign: "center", fontSize: 16 }}>{badge.title}</Text>
             <Text className="text-xs text-gray-600">{badge.earned ? t("collection.earned") : t("collection.locked")}</Text>
           </View>
         ))}

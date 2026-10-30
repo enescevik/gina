@@ -1,0 +1,15 @@
+packages/assets/room-chrome/child-board-v5.svg
+packages/assets/room-chrome/child-cabinet-v5.svg
+packages/assets/room-chrome/child-notebook-v5.svg
+packages/assets/room-chrome/png/child-board-v5.png
+packages/assets/room-chrome/png/child-board-v5@3x.png
+packages/assets/room-chrome/png/child-cabinet-v5.png
+packages/assets/room-chrome/png/child-cabinet-v5@3x.png
+packages/assets/room-chrome/png/child-notebook-v5.png
+packages/assets/room-chrome/png/child-notebook-v5@3x.png
+packages/assets/rooms/v2/character-boy-v5.webp
+packages/assets/rooms/v2/character-girl-v5.webp
+packages/assets/rooms/v2/character-unspecified-v5.webp
+packages/assets/rooms/v2/contact-sheet-v5.svg
+packages/assets/rooms/v2/room-home-v5.webp
+packages/assets/rooms/v2/room-study-v5.webp

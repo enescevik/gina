@@ -3,8 +3,10 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text } from "react-native";
 
+import { Collectible } from "@/components/collectible";
 import { Button } from "@/components/ui/button";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ChildScreen as Screen, childStyles } from "@/components/room/child-screen";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -40,7 +42,7 @@ export default function ChildGoalScreen() {
   });
 
   return (
-    <Screen tone="child" title={t("goal.pick")}>
+    <Screen tone="child" loading={rewards.isLoading} title={t("goal.pick")}>
       {rewards.data?.length === 0 ? <Text className="text-base text-gray-600">{t("goal.noRewards")}</Text> : null}
       {rewards.data?.map((reward) => (
         <Pressable
@@ -48,11 +50,11 @@ export default function ChildGoalScreen() {
           accessibilityRole="button"
           disabled={choose.isPending}
           onPress={() => choose.mutate(reward.id)}
-          className="min-h-16 flex-row items-center gap-3 rounded-child bg-white p-4 active:bg-teal-light dark:bg-night-surface"
+          style={[childStyles.card, childStyles.row]}
         >
-          <Text className="text-2xl">🎁</Text>
-          <Text className="flex-1 font-body-bold text-lg text-ink dark:text-night-text">{reward.title}</Text>
-          <Text className="font-display text-base text-ink dark:text-night-text">⭐ {reward.cost_stars}</Text>
+          <Collectible slug={reward.icon} size={64} />
+          <Text className="flex-1 font-body-bold text-lg text-ink">{reward.title}</Text>
+          <Text className="font-display text-base text-ink">⭐ {reward.cost_stars}</Text>
         </Pressable>
       ))}
       <ErrorText error={rewards.error ?? choose.error} />

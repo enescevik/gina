@@ -37,10 +37,9 @@ export const CHARACTER_PLACEMENT = { centerX: 0.495, footY: 0.865, contentHeight
 
 /**
  * Evcil hayvan katmanı (onaylı referanstaki uyuyan kedi): halının üstünde, karakterin solunda.
- * Görselin alt kenarı footY'de, ortası centerX'te; height = görsel yüksekliğinin sahne yüksekliğine oranı.
- * TODO(BRIEF 13 / A.7): Codex manifeste içerik sınırları/ayak çizgisi verince karakterdeki gibi contentBounds'a hizala.
+ * Manifestteki görünür içeriğin altı footY'de, ortası centerX'te; height = içerik yüksekliğinin sahne yüksekliğine oranı.
  */
-export const PET_PLACEMENT = { centerX: 0.345, footY: 0.86, height: 0.16 } as const;
+export const PET_PLACEMENT = { centerX: 0.345, footY: 0.86, height: 0.11 } as const;
 
 /** Geniş oda düzeni eşiği (dp) ve büyük yazı eşiği — altında dikey akışa düşülür. */
 export const WIDE_LAYOUT_MIN_DP = 900;

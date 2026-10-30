@@ -6,6 +6,9 @@ import manifest from "../../../../../packages/assets/room-chrome/manifest.json";
 // Metro statik require ister ve @3x son ekini ölçek varyantı olarak kendisi çözer (ad.png → ad@3x.png); bu eşleme manifestteki 30 slug ile birebir aynıdır.
 // Native pakette yalnız burada listelenen PNG'ler yer alır (~240 KB toplam); web'de yalnız çizilen dosya indirilir.
 const SKIN_SOURCES = {
+  "child-board-v5": require("../../../../../packages/assets/room-chrome/png/child-board-v5.png"),
+  "child-notebook-v5": require("../../../../../packages/assets/room-chrome/png/child-notebook-v5.png"),
+  "child-cabinet-v5": require("../../../../../packages/assets/room-chrome/png/child-cabinet-v5.png"),
   "board-frame": require("../../../../../packages/assets/room-chrome/png/board-frame.png"),
   "task-card": require("../../../../../packages/assets/room-chrome/png/task-card.png"),
   "task-card-pressed": require("../../../../../packages/assets/room-chrome/png/task-card-pressed.png"),

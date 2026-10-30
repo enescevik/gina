@@ -5,7 +5,8 @@ import { useTranslation } from "react-i18next";
 import { AccessibilityInfo, Pressable, Text, TextInput, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ChildScreen as Screen } from "@/components/room/child-screen";
 import { useChildMode } from "@/lib/child-mode";
 import { supabase } from "@/lib/supabase";
 
@@ -104,10 +105,10 @@ export default function TakeExamScreen() {
 
   if (finish.data) {
     return (
-      <Screen tone="child" title={t("prova.finished")}>
-        <View className="items-center gap-3 rounded-child bg-white p-8 dark:bg-night-surface">
+      <Screen tone="child" surface="desk" title={t("prova.finished")}>
+        <View className="items-center gap-3 rounded-child bg-white p-8">
           <Text className="text-5xl">🎉</Text>
-          <Text className="font-display text-2xl text-ink dark:text-night-text">
+          <Text className="font-display text-2xl text-ink">
             {t("prova.resultMc", { correct: finish.data.mc_correct ?? 0, total: finish.data.mc_total ?? 0 })}
           </Text>
           <Text className="text-center text-base text-gray-600">{t("prova.openEndedNote")}</Text>
@@ -140,7 +141,7 @@ export default function TakeExamScreen() {
   }
 
   return (
-    <Screen tone="child" title={t("prova.questionOf", { n: index + 1, total: list.length })}>
+    <Screen tone="child" surface="desk" loading={attempt.isLoading || questions.isLoading} title={list.length ? t("prova.questionOf", { n: index + 1, total: list.length }) : t("prova.title")}>
       {deadline ? (
         <Text
           accessibilityLabel={t("prova.timeLeft", { time: formatRemaining(deadline - now) })}
@@ -149,8 +150,8 @@ export default function TakeExamScreen() {
         </Text>
       ) : null}
       {q ? (
-        <View className="gap-4 rounded-child bg-white p-5 dark:bg-night-surface">
-          <Text accessibilityRole="header" className="font-body-bold text-xl leading-7 text-ink dark:text-night-text">{q.stem}</Text>
+        <View className="gap-4 rounded-child bg-cream p-5">
+          <Text accessibilityRole="header" className="font-body-bold text-xl leading-7 text-ink">{q.stem}</Text>
           {q.kind === "multiple_choice" ? (
             <View accessibilityRole="radiogroup" accessibilityLabel={t("prova.choicesLabel")} className="gap-2">
               {choices.map((choice) => {
@@ -161,6 +162,7 @@ export default function TakeExamScreen() {
                     accessibilityRole="radio"
                     accessibilityLabel={`${choice.key}, ${choice.text}`}
                     accessibilityState={{ checked: selected, selected }}
+                    aria-checked={selected}
                     onPress={() => setAnswers((a) => ({ ...a, [q.id]: { key: choice.key } }))}
                     className={`min-h-14 flex-row items-center gap-3 rounded-child border-2 px-4 py-3 ${selected ? "border-teal-dark bg-teal" : "border-mist bg-white"}`}
                   >

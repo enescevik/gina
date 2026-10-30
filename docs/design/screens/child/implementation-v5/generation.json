@@ -1,0 +1,48 @@
+{
+  "tool": "built-in image_gen",
+  "operation": "reference-guided production-layer extraction",
+  "textInArt": false,
+  "entries": [
+    {
+      "output": "packages/assets/rooms/v2/room-study-v5.webp",
+      "reference": "docs/design/screens/shared-v5/art/board-tablet.png",
+      "prompt": "Preserve exact v5 camera, sunlit right window, teal curtain, city, bookshelf with books/cat photograph/backpack, yellow pouf, wood floor and teal rug. Remove wall board/pins, girl and cat; reconstruct empty cream wall and empty rug. No panels, text, numbers, people or animals. Landscape 1586x992."
+    },
+    {
+      "output": "packages/assets/rooms/v2/room-home-v5.webp",
+      "reference": "docs/design/screens/child/art-direction-v5/room-day.png",
+      "prompt": "Preserve exact approved v5 main room background and camera. Remove left task board/cards/progress, goal ticket, hanging calendar, trophy cabinet/contents and girl/cat. Reconstruct blank wall/floor/rug. Keep window, city, bookshelf, backpack, photo, vine, pouf, pencil cup, bed edge and postcards. No interface panels, lettering or numbers. 1586x992."
+    },
+    {
+      "output": "packages/assets/rooms/v2/character-girl-v5.webp",
+      "reference": "docs/design/screens/shared-v5/art/board-tablet.png",
+      "prompt": "Extract only exact premium v5 girl with chestnut bob, daisy coral sweater, teal trousers, socks and teal book, seated cross-legged. Preserve face, pose, lighting and proportions. Full uncropped body on clean transparent alpha; remove all room, cat, rug and cast scene shadow. No text."
+    },
+    {
+      "output": "packages/assets/rooms/v2/character-boy-v5.webp",
+      "reference": "character-girl-v5 generation",
+      "prompt": "Preserve exact v5 seated reading pose, proportions, light, book, trousers and socks. Friendly boy child with short chestnut hair, coral sweater with tiny sun symbol; true transparent full-body cutout at same scale/baseline. No text or room."
+    },
+    {
+      "output": "packages/assets/rooms/v2/character-unspecified-v5.webp",
+      "reference": "character-girl-v5 generation",
+      "prompt": "Preserve exact v5 seated reading pose, proportions, skin, light, trousers, socks and book. Short rounded wavy chestnut bob, golden cream sweater with tiny teal leaf. Friendly neutral character option for any child. Full uncropped body, true alpha, same baseline. No text or room."
+    },
+    {
+      "output": "packages/assets/room-chrome/png/child-board-v5@3x.png",
+      "reference": "docs/design/screens/shared-v5/art/board-tablet.png",
+      "prompt": "Extract only front-facing rectangular wooden notice board with blank cream textured interior and teal left/red right pins. Exact premium honey wood grain. Uniform straight edges for 9-slice; pins within corner areas. No text, cards, room or characters. Landscape 1536x1024. Transparent exterior, verified alpha channel."
+    },
+    {
+      "output": "packages/assets/room-chrome/png/child-notebook-v5@3x.png",
+      "reference": "docs/design/screens/child/prova-index-tablet.png",
+      "prompt": "Warm ivory blank notebook on honey oak stand. Axis-aligned, teal binder loops only in upper/lower left corners, plain middle for 9-slice. No room, text, UI or figures; transparent exterior."
+    },
+    {
+      "output": "packages/assets/room-chrome/png/child-cabinet-v5@3x.png",
+      "reference": "docs/design/screens/child/collection-tablet.png",
+      "prompt": "Honey oak outer cabinet and two feet, blank cream recessed back, no trophies, labels or dividers. Front facing, 9-slice border, transparent exterior. Native grid supplies shelves and labels."
+    }
+  ],
+  "processing": "Lossless WebP conversion; board @3x resized 1536x1023 and @1x 512x341. No generative animation or new app dependency."
+}
