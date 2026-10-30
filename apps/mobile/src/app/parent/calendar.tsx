@@ -6,6 +6,8 @@ import { Pressable, Text, View } from "react-native";
 
 import {
   eventTypeSchema,
+  isCalendarDate,
+  isClockTime,
   localDateOf,
   occurrencesBetween,
   weekDatesOf,
@@ -18,7 +20,8 @@ import {
 import { WeekList } from "@/components/calendar/week-list";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
 import { useFamilyTimezone } from "@/lib/family";
 import { useFamilyEvents } from "@/lib/use-family-events";
 import { useSession } from "@/lib/session";
@@ -58,7 +61,7 @@ export default function ParentCalendarScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, avatar").order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -68,7 +71,7 @@ export default function ParentCalendarScreen() {
 
   const addEvent = useMutation({
     mutationFn: async () => {
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !/^\d{2}:\d{2}$/.test(start) || !/^\d{2}:\d{2}$/.test(end)) {
+      if (!title.trim() || !isCalendarDate(date) || !isClockTime(start) || !isClockTime(end) || end <= start) {
         throw new Error(t("calendar.invalidDateTime"));
       }
       const { error } = await supabase.from("events").insert({
@@ -94,20 +97,20 @@ export default function ParentCalendarScreen() {
   const occurrences = occurrencesBetween(events.data ?? [], from, to, timeZone, exceptions.data ?? new Set());
 
   return (
-    <Screen title={t("parent.calendar")}>
+    <Screen title={t("parent.calendar")} subtitle={t("parentV5.calendarSubtitle")} loading={children.isLoading || events.isLoading || exceptions.isLoading} error={children.error ?? events.error ?? exceptions.error} onRetry={() => { void children.refetch(); void events.refetch(); void exceptions.refetch(); }}>
       <View className="flex-row items-center justify-between">
-        <Button variant="ghost" title="‹" onPress={() => setAnchor(shiftWeek(anchor, -1))} />
-        <Pressable accessibilityRole="button" onPress={() => setAnchor(today)}>
-          <Text className="text-base font-body-bold text-ink dark:text-night-text">
+        <Button variant="ghost" title="‹" accessibilityLabel={t("calendar.previousWeek")} onPress={() => setAnchor(shiftWeek(anchor, -1))} />
+        <Pressable accessibilityRole="button" accessibilityLabel={t("calendar.thisWeek")} style={{ minHeight: 48, flex: 1, alignItems: "center", justifyContent: "center" }} onPress={() => setAnchor(today)}>
+          <Text className="text-base font-body-bold text-ink">
             {from} – {to}
           </Text>
         </Pressable>
-        <Button variant="ghost" title="›" onPress={() => setAnchor(shiftWeek(anchor, 1))} />
+        <Button variant="ghost" title="›" accessibilityLabel={t("calendar.nextWeek")} onPress={() => setAnchor(shiftWeek(anchor, 1))} />
       </View>
 
       <WeekList week={week} occurrences={occurrences} today={today} timeZone={timeZone} />
 
-      <View className="gap-3 rounded-parent bg-teal-light p-4">
+      <View style={parentStyles.form}>
         <Text className="text-lg font-body-bold text-ink">{t("calendar.newEvent")}</Text>
         <Field label={t("calendar.title")} value={title} onChangeText={setTitle} />
         <View className="flex-row flex-wrap gap-2">
@@ -115,25 +118,27 @@ export default function ParentCalendarScreen() {
             <Pressable
               key={option}
               accessibilityRole="button"
+              accessibilityState={{ selected: type === option }}
               onPress={() => setType(option)}
-              className={`rounded-full px-3 py-2 ${type === option ? "bg-teal" : "bg-white"}`}
+              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${type === option ? "bg-teal-dark" : "bg-white"}`}
             >
-              <Text className={type === option ? "font-body-bold text-white" : "text-ink"}>{t(`event.type.${option}`)}</Text>
+              <Text className={type === option ? "font-body-bold text-white" : "font-body text-ink"}>{t(`event.type.${option}`)}</Text>
             </Pressable>
           ))}
         </View>
         <View className="flex-row flex-wrap gap-2">
-          <Pressable accessibilityRole="button" onPress={() => setChildId(null)} className={`rounded-full px-3 py-2 ${childId === null ? "bg-teal" : "bg-white"}`}>
-            <Text className={childId === null ? "font-body-bold text-white" : "text-ink"}>{t("calendar.allFamily")}</Text>
+          <Pressable accessibilityRole="button" onPress={() => setChildId(null)} className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${childId === null ? "bg-teal-dark" : "bg-white"}`}>
+            <Text className={childId === null ? "font-body-bold text-white" : "font-body text-ink"}>{t("calendar.allFamily")}</Text>
           </Pressable>
           {children.data?.map((child) => (
             <Pressable
               key={child.id}
               accessibilityRole="button"
+              accessibilityState={{ selected: childId === child.id }}
               onPress={() => setChildId(child.id)}
-              className={`rounded-full px-3 py-2 ${childId === child.id ? "bg-teal" : "bg-white"}`}
+              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${childId === child.id ? "bg-teal-dark" : "bg-white"}`}
             >
-              <Text className={childId === child.id ? "font-body-bold text-white" : "text-ink"}>{child.name}</Text>
+              <Text className={childId === child.id ? "font-body-bold text-white" : "font-body text-ink"}>{child.name}</Text>
             </Pressable>
           ))}
         </View>
@@ -152,10 +157,11 @@ export default function ParentCalendarScreen() {
             <Pressable
               key={day}
               accessibilityRole="button"
+              accessibilityState={{ selected: repeatDays.includes(day) }}
               onPress={() => setRepeatDays((prev) => (prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day].sort()))}
-              className={`rounded-full px-3 py-2 ${repeatDays.includes(day) ? "bg-teal" : "bg-white"}`}
+              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${repeatDays.includes(day) ? "bg-teal-dark" : "bg-white"}`}
             >
-              <Text className={repeatDays.includes(day) ? "font-body-bold text-white" : "text-ink"}>{t(`weekday.${day}`)}</Text>
+              <Text className={repeatDays.includes(day) ? "font-body-bold text-white" : "font-body text-ink"}>{t(`weekday.${day}`)}</Text>
             </Pressable>
           ))}
         </View>

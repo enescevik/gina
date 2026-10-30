@@ -6,7 +6,6 @@ import { Pressable, Text, View } from "react-native";
 
 import { localDateOf, occurrencesBetween, templatesDueOn, weekDatesOf } from "@gina/core";
 
-import Wordmark from "../../../../../packages/assets/brand/yan-yana/logo-wordmark.svg";
 
 import { Avatar } from "@/components/avatar";
 import { DayTimeline } from "@/components/calendar/day-timeline";
@@ -14,7 +13,9 @@ import type { WeekEvent } from "@/components/calendar/week-list";
 import { NineSlice, SkinPressable } from "@/components/room/nine-slice";
 import { TaskIcon } from "@/components/task-icon";
 import { Button } from "@/components/ui/button";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, ChildPicker } from "@/components/ui/parent-screen";
+import { Collectible } from "@/components/collectible";
 import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
@@ -224,47 +225,12 @@ export default function ParentHomeScreen() {
   // Odam kaplamaları: beyaz ana kartlar parent-card, onay alanı parent-approval-card (eski düz kart zeminleri kaldırıldı).
   // Kaplamalar açık renklidir; koyu temada da içlerindeki metin ink kalır (okunur kontrast).
   return (
-    <Screen tone="child">
-      <View className="flex-row items-center justify-between">
-        <Wordmark width={128} height={56} accessibilityLabel="Gina" />
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => router.push("/parent/menu")}
-          className="min-h-12 flex-row items-center gap-2 rounded-full bg-teal-light px-5 active:bg-mist"
-        >
-          <Text className="font-body-bold text-xl text-ink">☰</Text>
-          <Text className="font-body-bold text-base text-ink">{t("parent.menu")}</Text>
-        </Pressable>
-      </View>
-      <View>
-        <Text accessibilityRole="header" className="font-display text-4xl text-ink dark:text-night-text">
-          {parentName ? t(`parent.greeting.${greeting}`, { name: parentName }) : t(`parent.greeting.${greeting}NoName`)}
-        </Text>
-        <Text className="font-body text-lg text-gray-600 dark:text-night-text/80">{dateFormat.format(new Date(`${today}T12:00:00Z`))}</Text>
-      </View>
-
-      <View className="flex-row flex-wrap gap-2">
-        <Pressable
-          accessibilityRole="button"
-          accessibilityState={{ selected: childFilter === null }}
-          onPress={() => setChildFilter(null)}
-          className={`min-h-14 flex-row items-center gap-2 rounded-2xl px-5 ${childFilter === null ? "bg-teal-dark" : "border border-mist bg-white"}`}
-        >
-          <Text className={`font-display-semi text-lg ${childFilter === null ? "text-white" : "text-ink"}`}>{t("parent.allChildren")}</Text>
-        </Pressable>
-        {children.data?.map((child) => (
-          <Pressable
-            key={child.id}
-            accessibilityRole="button"
-            accessibilityState={{ selected: childFilter === child.id }}
-            onPress={() => setChildFilter(child.id)}
-            className={`min-h-14 flex-row items-center gap-2 rounded-2xl py-1 pl-1.5 pr-5 ${childFilter === child.id ? "bg-teal-dark" : "border border-mist bg-white"}`}
-          >
-            <Avatar slug={child.avatar} size={40} />
-            <Text className={`font-display-semi text-lg ${childFilter === child.id ? "text-white" : "text-ink"}`}>{child.name}</Text>
-          </Pressable>
-        ))}
-      </View>
+    <Screen home title={parentName ? t(`parent.greeting.${greeting}`, { name: parentName }) : t(`parent.greeting.${greeting}NoName`)}
+      subtitle={dateFormat.format(new Date(`${today}T12:00:00Z`))}
+      loading={children.isLoading || templates.isLoading || approvals.isLoading}
+      error={children.error ?? templates.error ?? completions.error ?? approvals.error ?? events.error ?? me.error}
+      onRetry={() => { void children.refetch(); void templates.refetch(); void approvals.refetch(); void completions.refetch(); void events.refetch(); void me.refetch(); }}>
+      <ChildPicker profiles={children.data ?? []} selected={childFilter} onSelect={setChildFilter} allLabel={t("parent.allChildren")} />
 
       <NineSlice skin="parent-card" contentStyle={{ gap: 10 }}>
         <Text accessibilityRole="header" className="font-display text-[26px] leading-9 text-ink">
@@ -289,7 +255,7 @@ export default function ParentHomeScreen() {
                 <View className="h-2.5 rounded-full bg-teal" style={{ width: due > 0 ? `${Math.round((done / due) * 100)}%` : "0%" }} />
               </View>
             </View>
-            <Text className="font-body-bold text-base text-ink">⭐ {t("room.starCount", { count: childStars })}</Text>
+            <View className="flex-row items-center gap-1"><Collectible slug="star-filled" size={20} /><Text className="font-body-bold text-base text-ink">{t("room.starCount", { count: childStars })}</Text></View>
             <Text className="font-display text-xl text-ink/60">›</Text>
           </Pressable>
         ))}
@@ -305,29 +271,15 @@ export default function ParentHomeScreen() {
           </View>
         </View>
         {pendingApprovals.length === 0 ? <Text className="font-body text-gray-600">{t("parent.noApprovals")}</Text> : null}
-        {pendingApprovals.map((item) => (
-          <View key={item.id} className="flex-row items-center gap-2 rounded-2xl bg-white p-3">
-            <View className="h-12 w-12 items-center justify-center rounded-2xl bg-cream">
-              <TaskIcon slug={item.task_templates?.icon} size={48} variant="illustrated" />
-            </View>
-            <View className="flex-1">
-              <Text className="font-display-semi text-lg text-ink">{item.task_templates?.title}</Text>
-              <Text className="font-body text-sm text-gray-600">
-                {item.children?.name} · {t("room.plusStars", { count: item.task_templates?.stars ?? 0 })}
-              </Text>
-              <Pressable
-                accessibilityRole="button"
-                onPress={() => review.mutate({ id: item.id, approve: false })}
-                disabled={review.isPending}
-                hitSlop={14}
-                className="mt-1 self-start py-1"
-              >
-                <Text className="font-body-bold text-sm text-teal-dark">{t("parent.return")}</Text>
-              </Pressable>
-            </View>
-            <Button title={t("parent.approve")} loading={review.isPending} onPress={() => review.mutate({ id: item.id, approve: true })} className="min-w-24 rounded-2xl" />
+        {pendingApprovals.map(item => <View key={item.id} className="gap-3 rounded-2xl bg-white p-3">
+          <View className="flex-row items-center gap-3">
+            <TaskIcon slug={item.task_templates?.icon} size={56} variant="illustrated" />
+            <View className="flex-1 gap-1"><Text className="font-body-bold text-lg text-ink">{item.task_templates?.title}</Text>
+            <Text className="font-body text-sm text-gray-600">{item.children?.name} · {t("room.plusStars", { count: item.task_templates?.stars ?? 0 })}</Text></View>
           </View>
-        ))}
+          <View className="flex-row gap-2"><View className="flex-1"><Button variant="ghost" title={t("parent.return")} disabled={review.isPending} onPress={() => review.mutate({ id: item.id, approve: false })} /></View>
+          <View className="flex-1"><Button title={t("parent.approve")} loading={review.isPending && review.variables?.id === item.id} disabled={review.isPending} onPress={() => review.mutate({ id: item.id, approve: true })} /></View></View>
+        </View>)}
       </NineSlice>
 
       <NineSlice skin="parent-card" contentStyle={{ gap: 10 }}>
@@ -343,17 +295,16 @@ export default function ParentHomeScreen() {
         <DayTimeline occurrences={todaysPlan} timeZone={timeZone} whoOf={whoOf} />
       </NineSlice>
 
-      {/* İçgörü kartı: açık teal zemin native.
-          TODO(BRIEF 13 / E.5): `parent-insight-card` kaplaması ve açık kitap illüstrasyonu gelince NineSlice'a geç. */}
-      <Pressable
+      {/* Approved insight skin, with native copy and the actual weekly highlight. */}
+      <SkinPressable skin="parent-insight-card"
         accessibilityRole="link"
         onPress={() => router.push("/parent/prova/progress")}
-        className="min-h-20 flex-row items-center gap-3 rounded-[20px] bg-teal-light p-4 active:bg-mist"
+        contentClassName="flex-row items-center gap-3"
       >
         {highlightTemplate ? (
           <TaskIcon slug={highlightTemplate.icon} size={56} variant="illustrated" />
         ) : (
-          <Text className="font-body text-4xl">📖</Text>
+          <Collectible slug="display-bookworm" size={64} />
         )}
         <View className="flex-1">
           <Text className="font-display text-base leading-6 text-ink">{t("parent.insightTitle")}</Text>
@@ -364,10 +315,10 @@ export default function ParentHomeScreen() {
           </Text>
         </View>
         <Text className="font-body-bold text-sm text-teal-dark">{t("parent.seeProgress")} ›</Text>
-      </Pressable>
+      </SkinPressable>
 
       <SkinPressable skin="parent-card" onPress={() => router.push("/parent/prova")} contentClassName="flex-row items-center gap-3">
-        <Text className="font-body text-3xl">📝</Text>
+        <Collectible slug="display-bookworm" size={56} />
         <View className="flex-1">
           <Text className="font-display text-xl text-ink">{t("prova.title")}</Text>
           <Text className="font-body text-sm text-gray-700">{t("prova.parentCard")}</Text>
@@ -375,31 +326,23 @@ export default function ParentHomeScreen() {
         <Text className="font-display text-xl text-teal-dark">›</Text>
       </SkinPressable>
 
-      {/* TODO(BRIEF 13 / E.6): `button-outline` kaplaması gelince bu konturlu native butonu SkinPressable'a geçir. */}
-      <Pressable
-        accessibilityRole="button"
-        onPress={() => router.push("/parent/tasks")}
-        className="min-h-14 flex-row items-center justify-center gap-3 rounded-full border-2 border-teal bg-white px-5 active:bg-teal-light"
-      >
-        <View className="h-9 w-9 items-center justify-center rounded-full bg-teal">
-          <Text className="font-display text-2xl leading-8 text-white">+</Text>
-        </View>
-        <Text className="flex-1 text-center font-display-semi text-lg text-teal-dark">{t("parent.addTaskTogether")}</Text>
-        <Text className="font-display text-xl text-teal-dark">›</Text>
-      </Pressable>
-      <View className="flex-row gap-2">
-        <View className="flex-1">
+      <SkinPressable skin="button-outline" pressedSkin="button-outline-pressed" onPress={() => router.push("/parent/tasks")}
+        contentClassName="items-center justify-center">
+        <Text className="font-body-bold text-lg text-teal-dark">{t("parent.addTaskTogether")}</Text>
+      </SkinPressable>
+      <View className="flex-row flex-wrap gap-2">
+        <View className="min-w-[45%] flex-1">
           <Button variant="secondary" title={t("parent.rewards")} onPress={() => router.push("/parent/rewards")} />
         </View>
-        <View className="flex-1">
+        <View className="min-w-[45%] flex-1">
           <Button variant="secondary" title={t("parent.notes")} onPress={() => router.push("/parent/notes")} />
         </View>
-        <View className="flex-1">
+        <View className="w-full">
           <Button variant="secondary" title={t("parent.childMode")} onPress={() => router.push("/parent/child-mode")} />
         </View>
       </View>
 
-      <ErrorText error={children.error ?? templates.error ?? completions.error ?? approvals.error ?? events.error ?? me.error ?? review.error} />
+      <ErrorText error={review.error} />
     </Screen>
   );
 }

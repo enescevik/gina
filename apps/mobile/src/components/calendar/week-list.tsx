@@ -50,8 +50,8 @@ export function WeekList({ week, occurrences, today, timeZone = DEFAULT_TIMEZONE
         const items = occurrences.filter((o) => o.date === date);
         const isToday = date === today;
         return (
-          <View key={date} className={`gap-2 rounded-parent p-3 ${isToday ? "bg-teal-light" : "bg-white dark:bg-night-surface"}`}>
-            <Text className={`text-base font-body-bold ${isToday ? "text-teal-dark" : "text-ink dark:text-night-text"}`}>
+          <View key={date} className={`gap-2 rounded-parent p-3 ${isToday ? "bg-teal-light" : "bg-[#FFFCF6] border border-[#E4DAC8]"}`}>
+            <Text className={`text-base font-body-bold ${isToday ? "text-teal-dark" : "text-ink"}`}>
               {dayFormat.format(new Date(`${date}T00:00:00Z`))}
               {isToday ? ` · ${t("calendar.today")}` : ""}
             </Text>

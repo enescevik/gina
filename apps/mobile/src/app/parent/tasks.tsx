@@ -4,12 +4,14 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, View } from "react-native";
 
-import { taskTemplateInputSchema, type IsoWeekday } from "@gina/core";
+import { localDateOf, taskTemplateInputSchema, type IsoWeekday } from "@gina/core";
 
 import { TASK_ICON_SLUGS, TaskIcon } from "@/components/task-icon";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
-import { ErrorText, Screen } from "@/components/ui/screen";
+import { ErrorText } from "@/components/ui/screen";
+import { ParentScreen as Screen, parentStyles, ChildPicker, EmptyCard } from "@/components/ui/parent-screen";
+import { useFamilyTimezone } from "@/lib/family";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -27,6 +29,7 @@ const WEEKDAYS: { day: IsoWeekday; label: string }[] = [
 export default function ParentTasksScreen() {
   const { t } = useTranslation();
   const { claims } = useSession();
+  const timeZone = useFamilyTimezone();
   const familyId = claims?.family_id ?? "";
   const queryClient = useQueryClient();
 
@@ -40,7 +43,7 @@ export default function ParentTasksScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, avatar").order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -69,7 +72,7 @@ export default function ParentTasksScreen() {
         icon,
         stars: Number(stars),
         days_of_week: days,
-        starts_on: new Date().toISOString().slice(0, 10),
+        starts_on: localDateOf(new Date(), timeZone),
       });
       if (!parsed.success) {
         throw new Error(parsed.error.issues.map((i) => i.message).join(", "));
@@ -99,40 +102,24 @@ export default function ParentTasksScreen() {
   }
 
   return (
-    <Screen title={t("parent.tasks")}>
-      <View className="flex-row flex-wrap gap-2">
-        {children.data?.map((child) => (
-          <Pressable
-            key={child.id}
-            accessibilityRole="button"
-            onPress={() => setChildId(child.id)}
-            className={`rounded-full px-4 py-2 ${child.id === selectedChild ? "bg-teal" : "bg-mist"}`}
-          >
-            <Text className={child.id === selectedChild ? "font-body-bold text-white" : "text-ink"}>{child.name}</Text>
-          </Pressable>
-        ))}
-      </View>
-
-      {templates.data?.map((template) => (
-        <View key={template.id} className={`flex-row items-center gap-3 rounded-parent border border-mist p-3 ${template.active ? "" : "opacity-50"}`}>
-          <TaskIcon slug={template.icon} size={48} variant="illustrated" />
-          <View className="flex-1">
-            <Text className="text-base font-body-bold text-ink dark:text-night-text">{template.title}</Text>
-            <Text className="font-body text-sm text-gray-600">
-              {template.stars} ⭐ · {WEEKDAYS.filter((w) => template.days_of_week.includes(w.day)).map((w) => t(`weekday.${w.day}`)).join(" ")}
-            </Text>
+    <Screen title={t("parent.tasks")} subtitle={t("parentV5.tasksSubtitle")} loading={children.isLoading || templates.isLoading} error={children.error ?? templates.error} onRetry={() => { void children.refetch(); if (selectedChild) void templates.refetch(); }}>
+      <ChildPicker profiles={children.data ?? []} selected={selectedChild} onSelect={setChildId} />
+      {templates.data?.map(template => <View key={template.id} style={[parentStyles.card, { opacity: template.active ? 1 : .6 }]}>
+        <View style={parentStyles.row}>
+          <TaskIcon slug={template.icon} size={56} variant="illustrated" />
+          <View className="flex-1 gap-1">
+            <Text style={[parentStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{template.title}</Text>
+            <Text style={parentStyles.muted}>{t("room.starCount", { count: template.stars })} · {WEEKDAYS.filter(w => template.days_of_week.includes(w.day)).map(w => t(`weekday.${w.day}`)).join(" ")}</Text>
           </View>
-          <Button
-            variant="ghost"
-            title={template.active ? t("tasks.pause") : t("tasks.resume")}
-            onPress={() => toggleActive.mutate({ id: template.id, active: !template.active })}
-          />
         </View>
-      ))}
-      {templates.data?.length === 0 ? <Text className="font-body text-gray-500">{t("tasks.none")}</Text> : null}
+        <Button variant="ghost" title={template.active ? t("tasks.pause") : t("tasks.resume")}
+          loading={toggleActive.isPending && toggleActive.variables?.id === template.id} disabled={toggleActive.isPending}
+          onPress={() => toggleActive.mutate({ id: template.id, active: !template.active })} />
+      </View>)}
+      {templates.data?.length === 0 ? <EmptyCard title={t("tasks.none")} body={t("parentV5.firstTask")} /> : null}
 
       {selectedChild ? (
-        <View className="gap-3 rounded-parent bg-teal-light p-4">
+        <View style={parentStyles.form}>
           <Text className="text-lg font-body-bold text-ink">{t("tasks.new")}</Text>
           <Field label={t("tasks.title")} value={title} onChangeText={setTitle} placeholder={t("tasks.titlePlaceholder")} />
           <Text className="text-sm font-body text-ink">{t("tasks.icon")}</Text>
@@ -141,7 +128,7 @@ export default function ParentTasksScreen() {
               {TASK_ICON_SLUGS.map((slug) => (
                 <Pressable
                   key={slug}
-                  accessibilityRole="button"
+                  accessibilityRole="button" accessibilityLabel={t(`taskIcon.${slug}`)} accessibilityState={{ selected: icon === slug }} aria-pressed={icon === slug}
                   onPress={() => setIcon(slug)}
                   className={`rounded-parent border p-1.5 ${icon === slug ? "border-teal bg-white" : "border-transparent"}`}
                 >
@@ -155,11 +142,11 @@ export default function ParentTasksScreen() {
             {WEEKDAYS.map((w) => (
               <Pressable
                 key={w.day}
-                accessibilityRole="button"
+                accessibilityRole="button" accessibilityState={{ selected: days.includes(w.day) }} aria-pressed={days.includes(w.day)}
                 onPress={() => toggleDay(w.day)}
-                className={`rounded-full px-3 py-2 ${days.includes(w.day) ? "bg-teal" : "bg-white"}`}
+                className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${days.includes(w.day) ? "bg-teal-dark" : "bg-white"}`}
               >
-                <Text className={days.includes(w.day) ? "font-body-bold text-white" : "text-ink"}>{t(`weekday.${w.day}`)}</Text>
+                <Text className={days.includes(w.day) ? "font-body-bold text-white" : "font-body text-ink"}>{t(`weekday.${w.day}`)}</Text>
               </Pressable>
             ))}
           </View>

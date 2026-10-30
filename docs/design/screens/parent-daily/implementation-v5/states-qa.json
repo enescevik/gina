@@ -1,0 +1,10 @@
+{
+  "result": {
+    "loading": true,
+    "empty": true,
+    "error": true,
+    "retry": true
+  },
+  "errors": [],
+  "allBackendTrafficMocked": true
+}

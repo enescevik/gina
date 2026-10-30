@@ -15,7 +15,7 @@ export function Button({ title, variant = "primary", loading = false, size = "de
   const isDisabled = !!disabled || loading;
   return <Pressable {...rest} accessibilityRole="button" accessibilityLabel={rest.accessibilityLabel ?? title}
     accessibilityState={{ ...accessibilityState, disabled: isDisabled, busy: loading }} disabled={isDisabled} className={className}
-    style={state => [{ minHeight: size === "child" ? 60 : 50, borderRadius: 14, borderWidth: 1, borderBottomWidth: 3,
+    style={state => [{ minWidth: 48, minHeight: size === "child" ? 60 : 50, borderRadius: 14, borderWidth: 1, borderBottomWidth: 3,
       paddingVertical: 10, paddingHorizontal: 16, flexDirection: "row", gap: 8, alignItems: "center", justifyContent: "center",
       backgroundColor: palette.backgroundColor, borderColor: palette.borderColor,
       opacity: isDisabled ? .55 : state.pressed ? .85 : 1,
