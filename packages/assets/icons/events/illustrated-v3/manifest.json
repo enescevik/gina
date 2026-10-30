@@ -1,0 +1,422 @@
+[
+  {
+    "slug": "school",
+    "label_tr": "Okul",
+    "file": "school.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      47,
+      134,
+      1207,
+      1146
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "99e7f690f1eaa097ca2975c339e5f194f5fb7c1be1b456953c6b952a9f54b41b",
+    "png": []
+  },
+  {
+    "slug": "class-schedule",
+    "label_tr": "Ders programı",
+    "file": "class-schedule.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      75,
+      221,
+      1208,
+      1200
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "2e58b46fa5b4cfead3833a91c02d61e931bfeb40e46973864397fb445d7abf0e",
+    "png": []
+  },
+  {
+    "slug": "online-lesson",
+    "label_tr": "Çevrimiçi ders",
+    "file": "online-lesson.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      130,
+      151,
+      1180,
+      1152
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "1adfc8c3de46985f0377272c48ea09211bedf2ffe7ce459edf25d86706588112",
+    "png": []
+  },
+  {
+    "slug": "activity",
+    "label_tr": "Etkinlik",
+    "file": "activity.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      60,
+      209,
+      1213,
+      1080
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "562be53d8575be56d116658574848a5d3ff41eedc6108130c0f9fc56423ea9ef",
+    "png": []
+  },
+  {
+    "slug": "club",
+    "label_tr": "Kulüp",
+    "file": "club.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      273,
+      134,
+      979,
+      1154
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "4506bd48a4c47f9073b32d3059324ad25d9368f9d900bd0f29a01a824aaff3de",
+    "png": []
+  },
+  {
+    "slug": "sports-event",
+    "label_tr": "Spor etkinliği",
+    "file": "sports-event.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      113,
+      152,
+      1141,
+      1117
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "35be4f6ed900030d59c03801552dd4445ffe7101673b989b4a0979d7e423aadf",
+    "png": []
+  },
+  {
+    "slug": "holiday",
+    "label_tr": "Tatil",
+    "file": "holiday.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      164,
+      82,
+      1132,
+      1182
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "ffd5a38b26ff9565f4729b1757864941f0c736824294c6535249f2c4a1dea600",
+    "png": []
+  },
+  {
+    "slug": "school-break",
+    "label_tr": "Okul tatili",
+    "file": "school-break.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      73,
+      121,
+      1181,
+      1110
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "9383a9c5f977e6b0a841b45422b98085c5135438d59f1906510a38fd657bac9b",
+    "png": []
+  },
+  {
+    "slug": "public-holiday",
+    "label_tr": "Resmî tatil",
+    "file": "public-holiday.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      70,
+      215,
+      1225,
+      1098
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "bc7012ae551bc0cd61aa4ab7b3aaae33c930245115e8a93fceacc50e9b25fbf2",
+    "png": []
+  },
+  {
+    "slug": "exam",
+    "label_tr": "Sınav",
+    "file": "exam.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      154,
+      112,
+      1123,
+      1155
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "554ca8b2a401f6c53181a8dcfd2775033cfc0152739f578c3e1e9e7425d0891a",
+    "png": []
+  },
+  {
+    "slug": "homework-due",
+    "label_tr": "Ödev teslimi",
+    "file": "homework-due.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      130,
+      224,
+      1140,
+      1061
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "c6810b32fe329109d20f021cfec1c43b4b65b13de2ae9f8541648bcd2e6bd605",
+    "png": []
+  },
+  {
+    "slug": "family",
+    "label_tr": "Aile",
+    "file": "family.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      204,
+      128,
+      1050,
+      1148
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "8c55fd90ca37635846ea7c9af04ba370ba6f607ca2ac04b42cc9a67f286c28be",
+    "png": []
+  },
+  {
+    "slug": "birthday",
+    "label_tr": "Doğum günü",
+    "file": "birthday.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      225,
+      75,
+      1120,
+      1201
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "d3b6197f053075a744054762fdb8634cbcadb03d183d3891b636a39fd1c2eeb1",
+    "png": []
+  },
+  {
+    "slug": "visit",
+    "label_tr": "Ziyaret",
+    "file": "visit.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      154,
+      131,
+      1152,
+      1136
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "e8989b1c8f7b897a6072e539f86fa81aeb2828e8809f85ce0e751d0b6adf6122",
+    "png": []
+  },
+  {
+    "slug": "doctor",
+    "label_tr": "Doktor",
+    "file": "doctor.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      245,
+      73,
+      1126,
+      1181
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "0127688b8bb7033661fc5a77cf3685d46e88d4ba1105bc6ce9f8be94faa4526b",
+    "png": []
+  },
+  {
+    "slug": "parent-meeting",
+    "label_tr": "Veli toplantısı",
+    "file": "parent-meeting.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      91,
+      210,
+      1177,
+      1093
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "225dde14b689fe664277bac8f87a0cbf55b0ff45a2f911e5eaccf0375cca64e8",
+    "png": []
+  },
+  {
+    "slug": "trip",
+    "label_tr": "Gezi",
+    "file": "trip.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      150,
+      189,
+      1132,
+      1076
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "99fe0814627a52d16bd40a8a90a4ddd0611caf74932c5b01fb0264fa6b4a9fc4",
+    "png": []
+  },
+  {
+    "slug": "reminder",
+    "label_tr": "Hatırlatma",
+    "file": "reminder.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      173,
+      127,
+      1081,
+      1153
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "f1e0d0bf3690435dd84d4a035437511a41fbcdca829ebc0f92311a280d8e77b9",
+    "png": []
+  },
+  {
+    "slug": "shopping",
+    "label_tr": "Alışveriş",
+    "file": "shopping.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      110,
+      137,
+      1176,
+      1158
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "7ea95ae014ba0d031b5bf135077b763ef16b31d5d2688b51dc0d8e3bf77ad3fb",
+    "png": []
+  },
+  {
+    "slug": "other",
+    "label_tr": "Diğer etkinlik",
+    "file": "other.webp",
+    "format": "webp",
+    "width": 1254,
+    "height": 1254,
+    "alpha": true,
+    "content_bounds_alpha32": [
+      190,
+      195,
+      1064,
+      1076
+    ],
+    "variants": [
+      "illustrated-v3"
+    ],
+    "minimum_recommended_dp": 64,
+    "sha256": "c36319225cf4b964f00f6a7b678a2ded4f8457c485c30782df0e436824b8513f",
+    "png": []
+  }
+]

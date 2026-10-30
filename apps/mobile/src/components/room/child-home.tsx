@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, ScrollView, Text, View } from "react-native";
@@ -8,6 +9,7 @@ import { Collectible } from "@/components/collectible";
 import { TaskIcon } from "@/components/task-icon";
 import { ZONES } from "@/components/room/layout";
 import { RoomScene, type CharacterKey } from "@/components/room/scene";
+import { supabase } from "@/lib/supabase";
 import { useChildBadges } from "@/lib/use-child-badges";
 import { useChildGoal } from "@/lib/use-child-goal";
 import { useChildToday } from "@/lib/use-child-today";
@@ -29,6 +31,19 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
   const badges = useChildBadges(childId, i18n.language);
   const shelf = (badges.data ?? []).filter((b) => b.earned).slice(0, 3);
   const earnedCount = (badges.data ?? []).filter((b) => b.earned).length;
+  const assignedExams = useQuery({
+    queryKey: ["child_exam_count", childId],
+    enabled: !!childId,
+    queryFn: async () => {
+      const { count, error } = await supabase
+        .from("exams")
+        .select("id", { count: "exact", head: true })
+        .eq("child_id", childId)
+        .eq("status", "assigned");
+      if (error) throw error;
+      return count ?? 0;
+    },
+  });
   const goal = useChildGoal(childId);
 
   return (
@@ -40,6 +55,7 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
         const week = rect(ZONES.week);
         const drawer = rect(ZONES.treasureDrawer);
         const slots = ZONES.displaySlots.map(rect);
+        const shelfRect = rect(ZONES.bookshelf);
         return (
           <>
             {/* Üst çubuk: logo + selamlama solda; yıldız ve Ebeveyn sağda */}
@@ -182,6 +198,24 @@ export function RoomChildHome({ childId, childName, character = "unspecified", a
                 </Pressable>
               );
             })}
+
+            {/* Kitaplık: Prova kapısı; atanmış deneme varsa işaret */}
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t("prova.title")}
+              onPress={() => router.push(actingAsParent ? "/parent/child-mode/prova" : "/child/prova")}
+              style={{ position: "absolute", ...shelfRect }}
+              className="items-center justify-start"
+            >
+              <View className="mt-1 flex-row items-center gap-1 rounded-full bg-white/90 px-3 py-1">
+                <Text className="font-display text-sm text-ink">📚 {t("prova.title")}</Text>
+                {(assignedExams.data ?? 0) > 0 ? (
+                  <View className="h-5 min-w-5 items-center justify-center rounded-full bg-coral px-1">
+                    <Text className="text-xs font-bold text-white">{assignedExams.data}</Text>
+                  </View>
+                ) : null}
+              </View>
+            </Pressable>
 
             {/* Başardıklarım çekmecesi: bugünün gerçek özeti → Koleksiyonum */}
             <Pressable

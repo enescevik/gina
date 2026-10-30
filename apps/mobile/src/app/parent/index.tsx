@@ -249,6 +249,19 @@ export default function ParentHomeScreen() {
         ))}
       </View>
 
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => router.push("/parent/prova")}
+        className="flex-row items-center gap-3 rounded-parent bg-purple-light p-4"
+      >
+        <Text className="text-2xl">📝</Text>
+        <View className="flex-1">
+          <Text className="font-display text-lg text-ink">{t("prova.title")}</Text>
+          <Text className="text-sm text-gray-700">{t("prova.parentCard")}</Text>
+        </View>
+        <Text className="font-semibold text-teal-dark">›</Text>
+      </Pressable>
+
       <View className="flex-row items-center gap-3 rounded-parent bg-sky-light p-4">
         <Text className="text-2xl">📘</Text>
         <View className="flex-1">
