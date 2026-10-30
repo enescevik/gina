@@ -1,0 +1,742 @@
+{
+  "group": "parent-daily",
+  "screens": [
+    {
+      "id": "index",
+      "title": "Merhaba!",
+      "route": "parent/index",
+      "variants": []
+    },
+    {
+      "id": "tasks",
+      "title": "Görevler",
+      "route": "parent/tasks",
+      "variants": []
+    },
+    {
+      "id": "rewards",
+      "title": "Ödüller",
+      "route": "parent/rewards",
+      "variants": []
+    },
+    {
+      "id": "calendar",
+      "title": "Aile takvimi",
+      "route": "parent/calendar",
+      "variants": []
+    },
+    {
+      "id": "grades",
+      "title": "Ders notları",
+      "route": "parent/grades",
+      "variants": []
+    },
+    {
+      "id": "notes",
+      "title": "Notlar",
+      "route": "parent/notes",
+      "variants": []
+    },
+    {
+      "id": "menu",
+      "title": "Çevik Ailesi",
+      "route": "parent/menu",
+      "variants": []
+    },
+    {
+      "id": "child-mode",
+      "title": "Çocuk modu",
+      "route": "parent/child-mode/index",
+      "variants": [
+        "pin",
+        "no-pin"
+      ]
+    }
+  ],
+  "captures": [
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "index-phone.png"
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "index-phone-part-2.png"
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "index-empty-phone.png"
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "index-loading-phone.png"
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "index-error-phone.png"
+    },
+    {
+      "screen": "tasks",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "tasks-phone.png"
+    },
+    {
+      "screen": "tasks",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "tasks-phone-part-2.png"
+    },
+    {
+      "screen": "tasks",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "tasks-empty-phone.png"
+    },
+    {
+      "screen": "tasks",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "tasks-loading-phone.png"
+    },
+    {
+      "screen": "tasks",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "tasks-error-phone.png"
+    },
+    {
+      "screen": "rewards",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "rewards-phone.png"
+    },
+    {
+      "screen": "rewards",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "rewards-phone-part-2.png"
+    },
+    {
+      "screen": "rewards",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "rewards-empty-phone.png"
+    },
+    {
+      "screen": "rewards",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "rewards-loading-phone.png"
+    },
+    {
+      "screen": "rewards",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "rewards-error-phone.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "calendar-phone.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "calendar-phone-part-2.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "normal",
+      "part": 3,
+      "file": "calendar-phone-part-3.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "calendar-empty-phone.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "calendar-loading-phone.png"
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "calendar-error-phone.png"
+    },
+    {
+      "screen": "grades",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "grades-phone.png"
+    },
+    {
+      "screen": "grades",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "grades-phone-part-2.png"
+    },
+    {
+      "screen": "grades",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "grades-empty-phone.png"
+    },
+    {
+      "screen": "grades",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "grades-loading-phone.png"
+    },
+    {
+      "screen": "grades",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "grades-error-phone.png"
+    },
+    {
+      "screen": "notes",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "notes-phone.png"
+    },
+    {
+      "screen": "notes",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "notes-phone-part-2.png"
+    },
+    {
+      "screen": "notes",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "notes-empty-phone.png"
+    },
+    {
+      "screen": "notes",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "notes-loading-phone.png"
+    },
+    {
+      "screen": "notes",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "notes-error-phone.png"
+    },
+    {
+      "screen": "menu",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "menu-phone.png"
+    },
+    {
+      "screen": "menu",
+      "device": "phone",
+      "state": "normal",
+      "part": 2,
+      "file": "menu-phone-part-2.png"
+    },
+    {
+      "screen": "menu",
+      "device": "phone",
+      "state": "normal",
+      "part": 3,
+      "file": "menu-phone-part-3.png"
+    },
+    {
+      "screen": "menu",
+      "device": "phone",
+      "state": "normal",
+      "part": 4,
+      "file": "menu-phone-part-4.png"
+    },
+    {
+      "screen": "menu",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "menu-empty-phone.png"
+    },
+    {
+      "screen": "menu",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "menu-loading-phone.png"
+    },
+    {
+      "screen": "menu",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "menu-error-phone.png"
+    },
+    {
+      "screen": "child-mode",
+      "device": "phone",
+      "state": "normal",
+      "part": 1,
+      "file": "child-mode-phone.png"
+    },
+    {
+      "screen": "child-mode",
+      "device": "phone",
+      "state": "empty",
+      "part": 1,
+      "file": "child-mode-empty-phone.png"
+    },
+    {
+      "screen": "child-mode",
+      "device": "phone",
+      "state": "loading",
+      "part": 1,
+      "file": "child-mode-loading-phone.png"
+    },
+    {
+      "screen": "child-mode",
+      "device": "phone",
+      "state": "error",
+      "part": 1,
+      "file": "child-mode-error-phone.png"
+    },
+    {
+      "screen": "child-mode",
+      "device": "phone",
+      "state": "pin",
+      "part": 1,
+      "file": "child-mode-pin-phone.png"
+    },
+    {
+      "screen": "child-mode",
+      "device": "phone",
+      "state": "no-pin",
+      "part": 1,
+      "file": "child-mode-no-pin-phone.png"
+    }
+  ],
+  "checks": [
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 897,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "index",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "tasks",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1118,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "tasks",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1072,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "tasks",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "tasks",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 812,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "rewards",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1105,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "rewards",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 734,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "rewards",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "rewards",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1213,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1237,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "calendar",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "grades",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 927,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "grades",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 999,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "grades",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "grades",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "notes",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 958,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "notes",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 1051,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "notes",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "notes",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "menu",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 2137,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "menu",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 667,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "menu",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "menu",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "child-mode",
+      "device": "phone",
+      "state": "normal",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "child-mode",
+      "device": "phone",
+      "state": "empty",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "child-mode",
+      "device": "phone",
+      "state": "loading",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "child-mode",
+      "device": "phone",
+      "state": "error",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "child-mode",
+      "device": "phone",
+      "state": "pin",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    },
+    {
+      "screen": "child-mode",
+      "device": "phone",
+      "state": "no-pin",
+      "broken": [],
+      "overflow": false,
+      "bodyHeight": 603,
+      "scrollHeight": 603,
+      "shortTargets": [],
+      "fonts": true
+    }
+  ]
+}
