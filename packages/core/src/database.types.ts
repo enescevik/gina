@@ -257,14 +257,14 @@ isOneToOne: true
                   ]
                 },"child_room_preferences": {
                   Row: {
-                    "character_key": string,"child_id": string,"family_id": string,"theme_key": string,"updated_at": string
+                    "character_key": string,"child_id": string,"family_id": string,"pet_key": string,"theme_key": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "character_key"?: string,"child_id": string,"family_id": string,"theme_key"?: string,"updated_at"?: string
+                    "character_key"?: string,"child_id": string,"family_id": string,"pet_key"?: string,"theme_key"?: string,"updated_at"?: string
                   }
                   Update: {
-                    "character_key"?: string,"child_id"?: string,"family_id"?: string,"theme_key"?: string,"updated_at"?: string
+                    "character_key"?: string,"child_id"?: string,"family_id"?: string,"pet_key"?: string,"theme_key"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -1426,6 +1426,9 @@ isOneToOne: false
                            },
 "set_parent_pin":
 { Args: { "p_pin": string }; Returns: undefined
+                           },
+"set_room_pet":
+{ Args: { "p_acting_child_id"?: string,"p_pet": string }; Returns: undefined
                            },
 "set_room_preference":
 { Args: { "p_acting_child_id"?: string,"p_character": string,"p_theme"?: string }; Returns: undefined
