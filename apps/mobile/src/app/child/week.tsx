@@ -3,11 +3,12 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
-import { DEFAULT_TIMEZONE, localDateOf, templatesDueOn, weekDatesOf } from "@gina/core";
+import { localDateOf, templatesDueOn, weekDatesOf } from "@gina/core";
 
 import { TaskIcon } from "@/components/task-icon";
 import { Button } from "@/components/ui/button";
 import { ErrorText, Screen } from "@/components/ui/screen";
+import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -17,7 +18,8 @@ export default function ChildWeekScreen() {
   const { t, i18n } = useTranslation();
   const { claims } = useSession();
   const childId = claims?.child_id ?? "";
-  const today = localDateOf(new Date(), DEFAULT_TIMEZONE);
+  const timeZone = useFamilyTimezone();
+  const today = localDateOf(new Date(), timeZone);
   const week = weekDatesOf(today);
   const from = week[0] ?? today;
   const to = week[6] ?? today;

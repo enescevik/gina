@@ -161,3 +161,34 @@ Klasör `store/`; PNG sRGB, **alfa yok**, yazı yok (başlıklar ve ekran görü
 - Android 12 splash: https://developer.android.com/develop/ui/views/launch/splash-screen
 - Expo app icon/splash: https://docs.expo.dev/develop/user-interface/splash-screen-and-app-icon/
 - App Store screenshot specs: https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications
+
+## 12. Odam kaplamaları — UI chrome (üretim)
+
+Klasör `packages/assets/room-chrome/`. Amaç: onaylı ana ekranlardaki (docs/design/room-v2/references/) görünümün **kontrol başına, yazısız, ölçeklenebilir** üretim kaplamaları. Yazı, sayı ve ikonlar uygulamada gerçek metin/bileşen olarak üstüne gelir; bu yüzden hiçbir kaplamada yazı olamaz. Referans ekranlardaki suluboya doku ve ahşap dil korunur; palet BRIEF paletidir.
+
+**Teknik (bu kategoriye özel):**
+- Her kaplama SVG kaynak + 3x PNG dışa aktarım (`png/{slug}@3x.png`); dokulu parçalar için PNG esas, SVG mümkün olduğunca sade kalabilir (bu kategoride stil istisnası: yumuşak gölge ve hafif doku serbest, ancak foto-gerçekçilik yok).
+- Esneyen parçalar **9-slice** uyumlu: köşe süsleri köşelerde, kenarlar tekrar edebilir/düz; `manifest.json`'a her kaplama için `capInsets {top,left,bottom,right}` (px, @3x) yaz.
+- Durumları ayrı dosya: `-pressed` (hafif koyu/az aşağı), `-disabled` (soluk), gerekiyorsa `-selected`.
+- İç dolgu (içeriğin oturacağı güvenli alan) manifestte `contentInsets` olarak verilir.
+
+**Çıktılar:**
+1. `board-frame` — sol görev panosu: ahşap çerçeve + mantar pano + 2 raptiye süsü (köşelerde); 9-slice.
+2. `task-card` — pano içi görev kartı kâğıdı (hafif bantlı/iğneli, krem); `-pressed`; 9-slice.
+3. `chip-start` — «Başla» eylem çipi (teal, yuvarlak); `-pressed`, `-disabled`; 9-slice.
+4. `status-done` / `status-waiting` / `status-returned` — kartın sağına gelen küçük durum pulları (onaylı tik, bekleyen kum saati, tekrar oku), 48 ızgara.
+5. `progress-dot-filled` / `progress-dot-empty` — pano başlığındaki ilerleme noktaları.
+6. `ticket-goal` — sağ üst hedef bileti: fişek kenarlı (scalloped) krem bilet + köşelerde yıldız parıltısı; sol ucunda süs deliği; 9-slice; `-empty` varyantı (hedef yokken soluk).
+7. `progress-bar-track` / `progress-bar-fill` — bilet içi ilerleme çubuğu parçaları (uçları yuvarlak; fill tekrar edebilir).
+8. `week-frame` — Haftam duvar takvimi: ahşap askılı çerçeve + beyaz kâğıt; 9-slice; gün hücre süsü yok (hücreler native).
+9. `week-check` / `week-partial` / `week-empty` — gün hücre işaretleri (teal tik, yarım daire, boş halka), 24 ızgara.
+10. `shelf-display` — üç yuvalı sergi rafı önü (ahşap); yuva içleri boş; 9-slice yatay.
+11. `drawer-front` — «Başardıklarım/Hazinem» çekmece önü: ahşap çekmece + yıldız kulplu; `-pressed`; 9-slice.
+12. `pill-star` — üst sağ yıldız sayacı hapı (krem, yıldız ikonlu sol uç); `pill-parent` — Ebeveyn kilidi hapı (açık teal, kilit ikonlu); her ikisi `-pressed`; 9-slice.
+13. `header-greeting-underline` — selamlamanın altındaki fırça darbesi süsü (opsiyonel dekor).
+14. `panel-generic` — dar ekran dikey akışta aynı dili taşıyan genel kart zemini (krem kâğıt + hafif gölge); 9-slice.
+15. `parent-card` — veli ekranı kartı zemin kaplaması (beyaz, yumuşak gölge, 16r); `parent-approval-card` (krem vurgulu); 9-slice.
+
+**Oda sanatı üretimi (aynı PR'da):** `art-candidates` konseptlerinin üretim sürümü: `room-base` (1586×992, boş oda, paletle uyumlu, kenarları temiz) + `character-{unspecified,girl,boy}` (şeffaf, alfa pürüzsüz) `packages/assets/rooms/v2/` altına lossless WebP; ileri temalar için katman ayrımı (zemin/mobilya) mümkünse ayrı dosya.
+
+**Kabul ölçütü:** referans ekran PNG'lerinin yanına, bu kaplamalarla kurulmuş bir `contact-sheet.svg` (kaplamalar boş hâlleriyle ızgarada) + `preview-note.md` (hangi kaplamanın referansın hangi parçasına karşılık geldiği).

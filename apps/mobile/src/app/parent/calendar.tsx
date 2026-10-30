@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
 import {
-  DEFAULT_TIMEZONE,
   eventTypeSchema,
   localDateOf,
   occurrencesBetween,
@@ -20,6 +19,7 @@ import { WeekList, type WeekEvent } from "@/components/calendar/week-list";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText, Screen } from "@/components/ui/screen";
+import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -37,7 +37,7 @@ export default function ParentCalendarScreen() {
   const { t } = useTranslation();
   const { claims } = useSession();
   const familyId = claims?.family_id ?? "";
-  const timeZone = DEFAULT_TIMEZONE;
+  const timeZone = useFamilyTimezone();
   const today = localDateOf(new Date(), timeZone);
   const queryClient = useQueryClient();
 
