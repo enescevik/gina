@@ -41,4 +41,4 @@ pnpm exec supabase functions deploy room-weather
 
 ## Doğal pet animasyonları için kalan
 
-Bağlı Runway çalışma alanının ücretsiz planında video üretimi yok. Üretimi orada sürdüreceksek uygun plan etkinleştirilmeli; plan satın almadım. Alternatif, [pet üretim brief'ine](PET-VE-HAVA-URETIM-KABULU.md) göre animatörden düzenlenebilir rig/klip almak. Önce tek kedi: ağırlık aktarımıyla esneme, göz/kulak/baş hareketleri ve pati sabitli nefes. Kabul edilmeden diğer üç hayvana çoğaltılmayacak. Mevcut petler bu teslimde statik; tüm görseli büyütüp küçülten bir animasyon eklenmedi.
+31 Ekim güncellemesi: Enes Pro planını etkinleştirdi; video erişimi doğrulandı. Kedinin uyku ve esneme örnekleri kaynak MP4, şeffaf WebM ve V5 oda montajıyla [inceleme paketinde](../design/screens/child/cat-motion-v5/index.html). Önce bu iki hareketin kimliği ve doğallığı değerlendirilecek; kabul edilmeden diğer üç hayvana çoğaltılmayacak. Uygulamadaki petler hâlâ statik; örnekler henüz native runtime'a bağlanmadı. Üretilen video düzenlenebilir rig değildir; [üretim brief'indeki](PET-VE-HAVA-URETIM-KABULU.md) cihaz performans ve geçiş kabulü sürer.

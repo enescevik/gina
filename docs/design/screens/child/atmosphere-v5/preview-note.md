@@ -33,8 +33,8 @@ Ses varsayılan kapalıdır. Veli izin verdikten sonra çocuk ses düğmesiyle b
 
 ## Dürüst sınırlar
 
-- Kedi, köpek, maymun ve aslan görselleri hâlâ statik. Yeni esneme, oyun, göz kapağı veya nefes klibi yok.
-- Runway bağlantısı doğrulandı; bağlı ücretsiz çalışma alanında video ve ses üretim modeli bulunmuyor. Ücretli plan alınmadı, kredi harcanmadı. Üretim için uygun plan veya sanatçıdan V5 rig/klip teslimi gerekiyor. Ücretli erişim tek başına kalite garantisi değildir; önce tek kedi kabulü yapılmalı.
+- Bu hava/ses teslimindeki uygulama petleri statik. Sonraki kedi hareket adayları aşağıdaki ayrı inceleme paketinde; uygulamaya henüz bağlanmadı.
+- Bu hava/ses teslimi sırasında Runway ücretsiz planındaydı ve pet klibi üretilmemişti. 31 Ekim'deki sonraki çalışmada Enes Pro'yu etkinleştirdi; ilk kedi uyku/esneme adayları [ayrı inceleme paketine](../cat-motion-v5/index.html) eklendi. Henüz kullanıcı kabulü veya native entegrasyon yapılmadı.
 - Köpek, maymun ve aslan için bu tur ses kaydı teslim edilmedi. Kedi kaydı bu türlere kopyalanmaz.
 - Kar parçacıkları vardır; dış manzarada kar örtüsü birikimi ve camda fiziksel damla akışı yok.
 - Web fixture kayıtları gerçek uygulama render'ıdır; gerçek Supabase oturumu veya iPhone/Android performans kanıtı değildir. Demo veritabanına yazılmadı.

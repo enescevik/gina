@@ -1,5 +1,6 @@
 {
-  "status": "blocked-production-access-not-generated",
+  "status": "cat-sleep-stretch-candidates-awaiting-review",
+  "reviewPackage": "docs/design/screens/child/cat-motion-v5/manifest.json",
   "reference": "packages/assets/rooms/v2/pet-cat.webp",
   "portraitReference": "packages/assets/rooms/v2/pet-cat-portrait.webp",
   "sceneReference": "packages/assets/rooms/v2/room-home-v5.webp",
