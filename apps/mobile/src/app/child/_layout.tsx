@@ -10,5 +10,5 @@ export default function ChildLayout() {
   const path = usePathname();
   if (claims?.role !== "device") return <Redirect href="/" />;
   if (!claims.child_id && path !== "/child" && path !== "/child/pin") return <Redirect href="/child" />;
-  return <Stack screenOptions={{ headerShown: false, gestureEnabled: false }} />;
+  return <Stack screenOptions={{ headerShown: false, gestureEnabled: false, orientation: "landscape" }} />;
 }

@@ -3,6 +3,9 @@ import { useEffect } from "react";
 
 import { supabase } from "./supabase";
 
+// Each effect owns a distinct channel, including StrictMode remounts and stacked screens.
+let subscriptionId = 0;
+
 /**
  * Bir tablodaki değişiklikte verilen sorguları geçersiz kılar (Realtime yalnız sinyal taşır, veri taşımaz).
  * `filter` PostgREST biçimindedir: "child_id=eq.<uuid>".
@@ -15,7 +18,7 @@ export function useRealtimeInvalidate(table: string, filter: string | null, quer
     if (!filter) return;
     const keys = JSON.parse(keysJson) as QueryKey[];
     const channel = supabase
-      .channel(`rt:${table}:${filter}`)
+      .channel(`rt:${table}:${filter}:${++subscriptionId}`)
       .on("postgres_changes", { event: "*", schema: "public", table, filter }, () => {
         for (const key of keys) void queryClient.invalidateQueries({ queryKey: key });
       })

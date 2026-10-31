@@ -14,7 +14,7 @@ import { NineSlice, SkinPressable } from "@/components/room/nine-slice";
 import { TaskIcon } from "@/components/task-icon";
 import { Button } from "@/components/ui/button";
 import { ErrorText } from "@/components/ui/screen";
-import { ParentScreen as Screen, ChildPicker } from "@/components/ui/parent-screen";
+import { ParentScreen as Screen, ChildPicker, EmptyCard } from "@/components/ui/parent-screen";
 import { Collectible } from "@/components/collectible";
 import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
@@ -237,7 +237,7 @@ export default function ParentHomeScreen() {
         <Text accessibilityRole="header" className="font-display text-[26px] leading-9 text-ink">
           {t("parent.familyDay")}
         </Text>
-        {familyDay.length === 0 ? <Text className="font-body text-gray-500">{t("tasks.addChildFirst")}</Text> : null}
+        {children.data?.length === 0 ? <EmptyCard title={t("release.firstChildTitle")} body={t("release.firstChildBody")}><Button title={t("release.firstChildAction")} onPress={() => router.push("/parent/menu")} /></EmptyCard> : null}
         {familyDay.map(({ child, due, done, stars: childStars }) => (
           <Pressable
             key={child.id}

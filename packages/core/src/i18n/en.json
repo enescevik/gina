@@ -884,5 +884,10 @@
     "windCredit": "Wind · Mark DiAngelo · CC BY 3.0.",
     "catCredit": "Whiskers’ purr · Adam Cuerden · Public domain.",
     "license": "View license"
-  }
+  },
+  "release.firstChildTitle": "First, add your child",
+  "release.firstChildBody": "Create a child profile to set up their tasks, rewards and room.",
+  "release.firstChildAction": "Create child profile",
+  "release.screenRetry": "This screen could not open. Try again; if the problem continues, reopen the app.",
+  "child.markDone": "Done"
 }

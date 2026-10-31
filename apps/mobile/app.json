@@ -21,7 +21,8 @@
       },
       "infoPlist": {
         "CFBundleAllowMixedLocalizations": true
-      }
+      },
+      "requireFullScreen": true
     },
     "android": {
       "package": "com.enescevik.gina",
@@ -76,6 +77,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "owner": "enescevik",
+    "extra": {
+      "eas": {
+        "projectId": "8fc01433-eb6f-419e-a20b-edc30c8abe84"
+      }
     }
   }
 }

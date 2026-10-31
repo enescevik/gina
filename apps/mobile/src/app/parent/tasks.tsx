@@ -144,7 +144,7 @@ export default function ParentTasksScreen() {
                 key={w.day}
                 accessibilityRole="button" accessibilityState={{ selected: days.includes(w.day) }} aria-pressed={days.includes(w.day)}
                 onPress={() => toggleDay(w.day)}
-                className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${days.includes(w.day) ? "bg-teal-dark" : "bg-white"}`}
+                className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${days.includes(w.day) ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}
               >
                 <Text className={days.includes(w.day) ? "font-body-bold text-white" : "font-body text-ink"}>{t(`weekday.${w.day}`)}</Text>
               </Pressable>
@@ -154,7 +154,7 @@ export default function ParentTasksScreen() {
           <Button title={t("common.save")} loading={addTemplate.isPending} disabled={!title.trim() || days.length === 0} onPress={() => addTemplate.mutate()} />
         </View>
       ) : (
-        <Text className="font-body text-gray-500">{t("tasks.addChildFirst")}</Text>
+        <EmptyCard title={t("release.firstChildTitle")} body={t("release.firstChildBody")}><Button title={t("release.firstChildAction")} onPress={() => router.push("/parent/menu")} /></EmptyCard>
       )}
 
       <ErrorText error={children.error ?? templates.error ?? toggleActive.error} />
