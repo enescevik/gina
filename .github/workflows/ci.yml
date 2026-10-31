@@ -25,15 +25,15 @@ jobs:
       - run: node --test scripts/check-testflight.test.mjs
 
   edge:
-    name: Edge auth + account deletion
+    name: Edge auth, account deletion + weather
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.9.6
-      - run: deno check --config supabase/functions/deno.json supabase/functions/delete-account/index.ts supabase/functions/prova-generate/index.ts supabase/functions/prova-grade/index.ts supabase/functions/prova-plan/index.ts supabase/functions/iap-verify/index.ts supabase/functions/ai-weekly-summary/index.ts
-      - run: deno test --config supabase/functions/deno.json supabase/functions/_shared/auth.test.ts supabase/functions/delete-account/handler.test.ts
+      - run: deno check --config supabase/functions/deno.json supabase/functions/delete-account/index.ts supabase/functions/prova-generate/index.ts supabase/functions/prova-grade/index.ts supabase/functions/prova-plan/index.ts supabase/functions/iap-verify/index.ts supabase/functions/ai-weekly-summary/index.ts supabase/functions/room-weather/index.ts
+      - run: deno test --config supabase/functions/deno.json supabase/functions/_shared/auth.test.ts supabase/functions/delete-account/handler.test.ts supabase/functions/room-weather/handler.test.ts
 
   db:
     name: supabase migrations + pgTAP

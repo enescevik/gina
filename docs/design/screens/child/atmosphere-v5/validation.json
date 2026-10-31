@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-31",
+  "codeCommit": "1c04e89",
+  "ci": "https://github.com/enescevik/gina/actions/runs/41152289059",
+  "exports": [
+    "ios",
+    "android",
+    "web"
+  ],
+  "typecheck": "passed",
+  "expoLint": "passed",
+  "coreTests": 18,
+  "releasePreflightTests": 6,
+  "newEdgeTests": 10,
+  "newPgTapTests": 18,
+  "tabletStates": [
+    "day",
+    "dawn",
+    "sunset",
+    "rain",
+    "snow-night",
+    "fog",
+    "unavailable"
+  ],
+  "viewports": [
+    [
+      1280,
+      800
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "fixturesOnly": true,
+  "databaseWrites": 0,
+  "childFlows": [
+    "default silent",
+    "rain moves",
+    "user tap starts ambient recordings",
+    "cat gesture plays genuine purr",
+    "background pauses motion and sound",
+    "mute pauses all three players",
+    "OS reduced motion stops particles",
+    "offline cache labelled stale",
+    "no cache means unavailable",
+    "parent motion preference stops particles",
+    "phone has no horizontal overflow",
+    "lesson route silences room audio"
+  ],
+  "parentFlows": [
+    "parent chooses city",
+    "parent sound preference saved",
+    "failed save preserves preference",
+    "credits visible in app"
+  ],
+  "finalRuntimeErrors": [],
+  "previewInfrastructure": "Use a no-store preview server after rebuilding exports; stale cached chunks caused failed initial QA runs. Final captures and flows use fresh documents and the no-store server.",
+  "nativeDeviceAcceptance": "pending",
+  "petMotion": "not generated; production access blocked"
+}

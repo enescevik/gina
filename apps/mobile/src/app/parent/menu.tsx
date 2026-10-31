@@ -6,6 +6,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 
 import { Avatar, CHILD_AVATAR_SLUGS } from "@/components/avatar";
 import { ConfirmAction } from "@/components/ui/confirm-action";
+import { AtmosphereSettings } from "@/components/room/atmosphere-settings";
 import { AccountDeletion } from "@/components/account-deletion";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
@@ -176,6 +177,7 @@ export default function ParentMenuScreen() {
         <Button variant="secondary" title={t("parent.pairDevice")} loading={pairDevice.isPending} disabled={pairCode.length !== 6} onPress={() => pairDevice.mutate(pairCode)} />
       </View>
 
+      <AtmosphereSettings />
       <ParentPinRow />
       <Button variant="secondary" title={t("prova.title")} onPress={() => router.push("/parent/prova")} />
       <Button variant="secondary" title={t("push.menu")} onPress={() => router.push("/parent/notifications")} />

@@ -5,6 +5,13 @@ export type Database = {
   
   "public": {
           Tables: {
+            family_room_settings: {
+              Row: { family_id: string; city_id: string | null; sound_enabled: boolean; motion_enabled: boolean; updated_at: string };
+              Insert: { family_id: string; city_id?: string | null; sound_enabled?: boolean; motion_enabled?: boolean; updated_at?: string };
+              Update: { city_id?: string | null; sound_enabled?: boolean; motion_enabled?: boolean; updated_at?: string };
+              Relationships: [];
+            };
+
             "admins": {
                   Row: {
                     "created_at": string,"user_id": string

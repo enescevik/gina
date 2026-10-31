@@ -1,0 +1,53 @@
+[
+  {
+    "slug": "cat-purr",
+    "file": "cat-purr.mp3",
+    "sourceFile": "sources/cat-purr.ogg",
+    "title": "Whiskers’ purr",
+    "author": "Adam Cuerden",
+    "license": "Public domain",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Whiskers%27_purr.ogg",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:Whiskers%27_purr.ogg",
+    "retrievedAt": "2026-10-31",
+    "modifications": "Trimmed, high/low-pass filtered, loudness normalized; fade in/out",
+    "format": "MP3, mono, 44100 Hz, 96kbps",
+    "duration": 8.019592,
+    "loop": false,
+    "sha256": "f91ce3e74f9e4736b941d5a062a00e3ca0343c29e5be192ecd0f516e4d30b1c0",
+    "attributionInApp": "parent/room-credits"
+  },
+  {
+    "slug": "rain",
+    "file": "rain.mp3",
+    "sourceFile": "sources/rain.ogg",
+    "title": "Sound of rain",
+    "author": "Effib",
+    "license": "CC-BY-SA-3.0",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sound_of_rain.ogg",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "retrievedAt": "2026-10-31",
+    "modifications": "Trimmed, high/low-pass filtered, loudness normalized; 2-second crossfade loop",
+    "format": "MP3, mono, 44100 Hz, 96kbps",
+    "duration": 20.035918,
+    "loop": true,
+    "sha256": "e3bc51f16c3798cfbf1eec62d271a2fd3d9fcc36cc5886591a2c7b82df261455",
+    "attributionInApp": "parent/room-credits"
+  },
+  {
+    "slug": "wind",
+    "file": "wind.mp3",
+    "sourceFile": "sources/wind.mp3",
+    "title": "Wind",
+    "author": "Mark DiAngelo",
+    "license": "CC-BY-3.0",
+    "sourceUrl": "https://soundbible.com/1810-Wind.html",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+    "retrievedAt": "2026-10-31",
+    "modifications": "Trimmed, high/low-pass filtered, loudness normalized; 2-second crossfade loop",
+    "format": "MP3, mono, 44100 Hz, 96kbps",
+    "duration": 20.035918,
+    "loop": true,
+    "sha256": "11e4da247afdf2c8f8afd99f8bbd4af6d71a2c34ac9e7294cf671d024ff98603",
+    "attributionInApp": "parent/room-credits"
+  }
+]

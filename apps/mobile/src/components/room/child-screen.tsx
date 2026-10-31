@@ -1,8 +1,12 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { useRoomAudio } from "@/lib/use-room-audio";
+import { AtmosphereControls } from "./atmosphere-controls";
+import { useRoomAtmosphere, type RoomAtmosphere } from "@/lib/use-room-atmosphere";
+import { AtmosphereBackdrop } from "./atmosphere-backdrop";
 import manifest from "../../../../../packages/assets/rooms/v2/manifest.json";
 import { useActiveChild } from "@/lib/active-child";
 import { useChildRoomPrefs } from "@/lib/use-child-room-prefs";
@@ -20,7 +24,7 @@ export const V5_PETS = {
   monkey: require("../../../../../packages/assets/rooms/v2/pet-monkey.webp"),
   lion: require("../../../../../packages/assets/rooms/v2/pet-lion.webp"),
 };
-const ROOM = require("../../../../../packages/assets/rooms/v2/room-study-v5.webp");
+
 
 // All sprites align their visible content, not transparent square canvases, to one floor line.
 function spriteRect(slug: string, centerX: number, floor: number, fitWidth: number, fitHeight: number) {
@@ -31,11 +35,11 @@ function spriteRect(slug: string, centerX: number, floor: number, fitWidth: numb
   return { left: centerX - (x0 + x1) / 2 * scale, top: floor - y1 * scale, width: width * scale, height: height * scale };
 }
 
-function RoomArt({ width, height, character, pet }: { width: number; height: number; character: CharacterKey; pet: PetKey }) {
+function RoomArt({ width, height, character, pet, atmosphere, quiet }: { width: number; height: number; character: CharacterKey; pet: PetKey; atmosphere: RoomAtmosphere; quiet: boolean }) {
   const w = Math.max(width, height * 1586 / 992);
   const h = w * 992 / 1586;
   return <View pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" style={StyleSheet.absoluteFill}>
-    <Image source={ROOM} resizeMode="stretch" style={{ position: "absolute", width: w, height: h, right: 0, bottom: 0 }} />
+    <AtmosphereBackdrop frame={{left:width-w,top:height-h,width:w,height:h}} mode="study" atmosphere={atmosphere} quiet={quiet} />
     <Image source={V5_CHARACTERS[character]} style={{ position: "absolute", ...spriteRect(`character-${character}-v5`, width * .82, height * .92, width * .27, height * .53) }} resizeMode="contain" />
     {pet !== "none" ? <Image source={V5_PETS[pet]} resizeMode="contain" style={{ position: "absolute", ...spriteRect(`pet-${pet}`, width * .665, height * .93, width * .15, height * .13) }} /> : null}
   </View>;
@@ -58,11 +62,14 @@ export function ChildScreen({ title, subtitle, children, loading = false, charac
   const { t } = useTranslation();
   const { childId } = useActiveChild();
   const prefs = useChildRoomPrefs(childId);
+  const atmosphere = useRoomAtmosphere();
+  const audio = useRoomAudio(atmosphere, surface === "desk");
   const character = previewCharacter ?? (prefs.data?.characterKey === "girl" || prefs.data?.characterKey === "boy" ? prefs.data.characterKey : "unspecified");
   const pet = previewPet ?? (prefs.data?.petKey as PetKey | undefined) ?? "cat";
   const { width, height, fontScale } = useWindowDimensions();
   const wide = width >= 900 && height >= 600 && fontScale <= 1.2;
   const skin = surface === "desk" ? "child-notebook-v5" : surface === "collection" ? "child-cabinet-v5" : "child-board-v5";
+  const petTouch = (w: number, h: number) => pet === "cat" && audio.listening ? <Pressable accessibilityRole="button" accessibilityLabel={t("atmosphere.petCat")} accessibilityHint={t("atmosphere.petCatHint")} onPress={audio.petCat} style={{position:"absolute",left:w*.665-Math.max(48,w*.15)/2,top:h*.93-Math.max(48,h*.13),width:Math.max(48,w*.15),height:Math.max(48,h*.13)}}/> : null;
   const header = <View style={styles.heading}>
     <Text accessibilityRole="header" style={styles.title}>{title}</Text>
     {surface !== "collection" ? <Text style={styles.subtitle}>{subtitle ?? t(surface === "desk" ? "childV5.deskSubtitle" : "childV5.subtitle")}</Text> : null}
@@ -72,7 +79,9 @@ export function ChildScreen({ title, subtitle, children, loading = false, charac
   </View> : children;
   return <SafeAreaView style={styles.root}><KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === "ios" ? "padding" : undefined}>
     {wide ? <View style={styles.fill}>
-      <RoomArt width={width} height={height} character={character} pet={pet} />
+      <RoomArt width={width} height={height} character={character} pet={pet} atmosphere={atmosphere} quiet={surface === "desk"} />
+      {petTouch(width,height)}
+      <View style={{position:"absolute",right:16,bottom:16,maxWidth:width*.31}}><AtmosphereControls atmosphere={atmosphere} audio={audio}/></View>
       {surface === "collection" ? <View style={[styles.board, { top: "2%", height: "96%" }]}>
         {header}
         <ScrollView style={styles.fill} contentContainerStyle={styles.content}>{body}</ScrollView>
@@ -84,9 +93,11 @@ export function ChildScreen({ title, subtitle, children, loading = false, charac
       </NineSlice>}
     </View> : <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: 24 }}>
       <View style={{ height: Math.max(226 * fontScale, width * .59), overflow: "hidden" }}>
-        <RoomArt width={width} height={Math.max(226 * fontScale, width * .59)} character={character} pet={pet} />
+        <RoomArt width={width} height={Math.max(226 * fontScale, width * .59)} character={character} pet={pet} atmosphere={atmosphere} quiet={surface === "desk"} />
+        {petTouch(width,Math.max(226 * fontScale,width*.59))}
         <NineSlice skin="child-board-v5" scale={.55} style={{ position: "absolute", left: 6, top: 4, width: width * .65, bottom: 58 }} contentStyle={{ justifyContent: "center" }}>{header}</NineSlice>
       </View>
+      <View style={{paddingHorizontal:12,paddingVertical:4}}><AtmosphereControls atmosphere={atmosphere} audio={audio}/></View>
       {surface === "board" ? <View style={styles.content}>{body}</View> :
         <NineSlice skin={skin} scale={.6} style={{ marginHorizontal: 6 }} contentStyle={{ minWidth: 0 }}>
           <View style={styles.content}>{body}</View>

@@ -6,7 +6,7 @@
 
 Kaynak hedefler: `docs/design/screens/child/art-direction-v5/room-day.png`, `room-sunset.png`, `room-night-snow.png`; uygulamadaki kedi kimliği `packages/assets/rooms/v2/pet-cat.webp` ve portresi. Kompakt kıvrılmış beden, aynı yüz/kulak oranları, boyalı tüy ve sıcak ışık korunur. Sanatçıya yalnız metin değil bu kaynaklar verilir.
 
-Teslim: düzenlenebilir kaynak (Blender veya seçilen 2D rig aracı), doku/atlaslar, rig, ayrı klipler, lisans/üretim kaynağı ve modelden alınmış gerçek uygulama boyutunda ön izleme. 3D seçilirse GLB ve PBR dokuları; 2D seçilirse kemik/deformasyon kaynağı ve runtime çıktısı gerekir. Runtime seçimi bu dosyayla yapılmış sayılmaz; mevcut Expo 58 / RN 0.88.1 üzerinde tek kedi teknik denemesi geçmelidir. Yeni uygulama bağımlılığı henüz eklenmemiştir.
+Teslim: düzenlenebilir kaynak (Blender veya seçilen 2D rig aracı), doku/atlaslar, rig, ayrı klipler, lisans/üretim kaynağı ve modelden alınmış gerçek uygulama boyutunda ön izleme. 3D seçilirse GLB ve PBR dokuları; 2D seçilirse kemik/deformasyon kaynağı ve runtime çıktısı gerekir. Runtime seçimi bu dosyayla yapılmış sayılmaz; mevcut Expo 58 / RN 0.88.1 üzerinde tek kedi teknik denemesi geçmelidir. Kullanıcı onayıyla yalnız ses oynatımı için `expo-audio` eklendi; pet renderer bağımlılığı henüz seçilmedi.
 
 | Klip | Süre hedefi | Kabul |
 | --- | --- | --- |
@@ -33,3 +33,6 @@ Aynı kamera ve nesne konumları korunarak gün doğumu, gündüz, gün batımı
 4. Geçen örneğin runtime ihtiyacı ve ölçülen cihaz maliyeti somutlaşınca yeni paket/renderer kararı verilir. İlk TestFlight'a statik sanatla erken teknik kurulum yapmak, bu animasyon hedefinden vazgeçmek değildir.
 
 Kabul cihazı, build, kare süresi/GPU bellek ve animasyon videosu kaydedilmeden “oyun kalitesinde hazır” denmez. Etkileşimli eğitim içerikleri bu görünümün üstüne ayrıca görev/öğrenme kuralları, geri bildirim ve erişilebilirlik gerektirir; yalnız renderer seçimi eğitim altyapısını tamamlamaz.
+
+
+31 Ekim ek teslim: [hava/ses durumu ve sınırlar](../design/screens/child/atmosphere-v5/preview-note.md), [kurulum ve cihaz kabulü](ODA-ATMOSFERI-KURULUM.md). Bu teslim yukarıdaki doğal pet kliplerinin kabulü yerine geçmez.
