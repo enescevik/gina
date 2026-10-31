@@ -72,7 +72,7 @@ async function saveToken(token: string, locale: string) {
     p_platform: Platform.OS,
     p_locale: locale,
   });
-  if (error) console.warn("push token kaydedilemedi", error.message);
+  if (error) throw error;
 }
 
 /** Bildirim izni şu an verilmiş mi (tercihler ekranı için). */
@@ -140,7 +140,7 @@ export function usePushRegistration(role: PushRole) {
     }, 1500);
 
     const sub = Notifications.addPushTokenListener((next) => {
-      if (typeof next.data === "string") void saveToken(next.data, locale);
+      if (typeof next.data === "string") void saveToken(next.data, locale).catch(() => console.warn("push token kaydedilemedi"));
     });
 
     return () => {
@@ -170,7 +170,7 @@ export function useNotificationRouting(role: PushRole) {
 
   useEffect(() => {
     if (!active) return;
-    void Notifications.getLastNotificationResponseAsync().then((r) => routeResponse(role, r));
+    void Notifications.getLastNotificationResponseAsync().then((r) => routeResponse(role, r)).catch(() => undefined);
     const sub = Notifications.addNotificationResponseReceivedListener((r) => routeResponse(role, r));
     return () => sub.remove();
   }, [active, role]);

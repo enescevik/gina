@@ -32,6 +32,7 @@ export default function ChildModeTodayScreen() {
   }
 
   async function confirmExit() {
+    if (busy || !/^\d{4}$/.test(pin)) return;
     setBusy(true);
     setError(null);
     try {
@@ -63,7 +64,7 @@ export default function ChildModeTodayScreen() {
       {asking ? (
         <View className="gap-3 rounded-child bg-white p-4 dark:bg-night-surface">
           <Text className="text-base font-body-bold text-ink dark:text-night-text">{t("childMode.parentPin")}</Text>
-          <Field label="PIN" keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={setPin} className="text-center text-2xl tracking-widest" />
+          <Field label={t("childMode.parentPin")} keyboardType="number-pad" secureTextEntry maxLength={4} editable={!busy} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} className="text-center text-2xl tracking-widest" />
           <ErrorText error={error} />
           <Button title={t("childMode.exit")} loading={busy} disabled={pin.length !== 4} onPress={confirmExit} />
           <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => { setAsking(false); setPin(""); setError(null); }} />

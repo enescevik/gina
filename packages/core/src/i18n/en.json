@@ -843,5 +843,8 @@
   "accountV5.deleteFailed": "Your account could not be deleted. Check your password and connection, then retry.",
   "accountV5.deleteDone": "Your account has been deleted.",
   "accountV5.account": "My account",
-  "common.continue": "Continue"
+  "common.continue": "Continue",
+  "releaseReview.examDone": "You have finished your practice. Take a little break.",
+  "releaseReview.deleteChild": "Delete {{name}}’s profile",
+  "releaseReview.deleteChildBody": "You are about to permanently delete {{name}}’s profile, tasks, stars, notes, calendar and Prova records for the whole family. Other children are not affected."
 }

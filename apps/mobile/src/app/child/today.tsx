@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { View, useWindowDimensions } from "react-native";
@@ -6,6 +6,7 @@ import { View, useWindowDimensions } from "react-native";
 import { RoomChildHome } from "@/components/room/child-home";
 import { WIDE_LAYOUT_MIN_DP } from "@/components/room/layout";
 import { TodayView } from "@/components/today-view";
+import { ErrorText } from "@/components/ui/screen";
 import { Button } from "@/components/ui/button";
 import { ChildScreen as Screen } from "@/components/room/child-screen";
 import { refreshClaims, useSession } from "@/lib/session";
@@ -30,15 +31,16 @@ export default function TodayScreen() {
     },
   });
 
-  async function logout() {
-    await supabase.rpc("child_logout");
+  const logout = useMutation({ mutationFn: async () => {
+    const { error } = await supabase.rpc("child_logout");
+    if (error) throw error;
     await refreshClaims();
     queryClient.clear();
     router.replace("/child");
-  }
+  } });
 
   if (childId && wide) {
-    return <RoomChildHome childId={childId} childName={child.data?.name ?? ""} onParentExit={() => void logout()} />;
+    return <RoomChildHome childId={childId} childName={child.data?.name ?? ""} onParentExit={() => logout.mutate()} exitBusy={logout.isPending} actionError={logout.error ?? child.error} />;
   }
 
   return (
@@ -52,8 +54,10 @@ export default function TodayScreen() {
           <Button variant="secondary" size="child" title={t("child.calendar")} onPress={() => router.push("/child/calendar")} />
         </View>
       </View>
+      <Button variant="secondary" title={t("room.myCollection")} onPress={() => router.push("/child/collection")} />
+      <ErrorText error={logout.error ?? child.error} />
       <Button variant="secondary" title={t("childV5.customize")} onPress={() => router.push("/child/room-preview")} />
-      <Button variant="ghost" title={t("child.switchProfile")} onPress={() => void logout()} />
+      <Button variant="ghost" title={t("child.switchProfile")} loading={logout.isPending} onPress={() => logout.mutate()} />
     </Screen>
   );
 }

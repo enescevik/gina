@@ -59,10 +59,12 @@ export interface RoomChildHomeProps {
   character?: CharacterKey;
   actingAsParent?: boolean;
   onParentExit: () => void;
+  exitBusy?: boolean;
+  actionError?: unknown;
 }
 
 /** Onaylı tasarımın (child-home-approved.png) gerçek verili hâli: pano, hedef bileti, Haftam, raf ve Başardıklarım. */
-export function RoomChildHome({ childId, childName, character: providedCharacter, actingAsParent = false, onParentExit }: RoomChildHomeProps) {
+export function RoomChildHome({ childId, childName, character: providedCharacter, actingAsParent = false, onParentExit, exitBusy, actionError }: RoomChildHomeProps) {
   const { t, i18n } = useTranslation();
   const data = useChildToday(childId, actingAsParent);
   const badges = useChildBadges(childId, i18n.language);
@@ -125,7 +127,7 @@ export function RoomChildHome({ childId, childName, character: providedCharacter
                   skin="pill-parent"
                   pressedSkin="pill-parent-pressed"
                   scale={s}
-                  onPress={onParentExit}
+                  onPress={onParentExit} disabled={exitBusy}
                   accessibilityLabel={t("room.parentExit")}
                   contentClassName="justify-center"
                   hitSlop={6}
@@ -160,7 +162,7 @@ export function RoomChildHome({ childId, childName, character: providedCharacter
                 />
               </View>
               </View>
-              <ErrorText error={data.error} />
+              <ErrorText error={actionError ?? data.error ?? goal.error ?? badges.error ?? assignedExams.error} />
               <ScrollView
                 style={{ flex: 1 }}
                 onLayout={(e) => setListHeight(e.nativeEvent.layout.height)}
@@ -305,7 +307,7 @@ export function RoomChildHome({ childId, childName, character: providedCharacter
             >
               <View className="mt-1 flex-row items-center gap-1 rounded-full bg-white/90 px-3 py-1">
                 <Text className="font-display text-ink" style={{ fontSize: fs(16) }}>
-                  📚 {t("prova.title")}
+                  {t("prova.title")}
                 </Text>
                 {(assignedExams.data ?? 0) > 0 ? (
                   <View className="h-5 min-w-5 items-center justify-center rounded-full bg-coral px-1">

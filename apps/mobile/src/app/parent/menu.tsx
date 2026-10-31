@@ -18,6 +18,7 @@ import { supabase } from "@/lib/supabase";
 /** Çocuk satırı: ad, sınıf ve 4 haneli PIN belirleme (set_child_pin RPC). */
 function ChildRow({ id, name, grade, avatar }: { id: string; name: string; grade: number | null; avatar: string | null }) {
   const { t } = useTranslation();
+  const cache = useQueryClient();
   const [pin, setPin] = useState("");
   const setChildPin = useMutation({
     mutationFn: async () => {
@@ -26,11 +27,17 @@ function ChildRow({ id, name, grade, avatar }: { id: string; name: string; grade
     },
     onSuccess: () => setPin(""),
   });
+  const remove = useMutation({ mutationFn: async () => {
+    const { data, error } = await supabase.from("children").delete().eq("id", id).select("id");
+    if (error) throw error;
+    if (!data?.length) throw new Error(t("release.genericError"));
+  }, onSuccess: () => cache.invalidateQueries() });
   return <View style={parentStyles.card}>
     <View style={parentStyles.row}><Avatar slug={avatar} size={56} /><View className="flex-1 gap-1"><Text style={[parentStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{name}</Text>{grade !== null ? <Text style={parentStyles.muted}>{t("parent.gradeShort", { grade })}</Text> : null}</View></View>
     <Field label={t("parentV5.childPinLabel", { name })} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} />
-    <Button variant="secondary" title={t("parent.savePin")} loading={setChildPin.isPending} disabled={pin.length !== 4} onPress={() => setChildPin.mutate()} />
-    <ErrorText error={setChildPin.error} />
+    <Button variant="secondary" title={t("parent.savePin")} loading={setChildPin.isPending} disabled={pin.length !== 4 || remove.isPending} onPress={() => setChildPin.mutate()} />
+    <ErrorText error={setChildPin.error ?? remove.error} />
+    <ConfirmAction title={t("releaseReview.deleteChild", { name })} message={t("releaseReview.deleteChildBody", { name })} busy={remove.isPending || setChildPin.isPending} onConfirm={() => remove.mutate()} />
   </View>;
 }
 

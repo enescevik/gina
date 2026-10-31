@@ -157,7 +157,7 @@ export default function TakeExamScreen() {
   }
 
   if (result) {
-    return <Screen tone="child" surface="desk" title={t("prova.finished")}>
+    return <Screen tone="child" surface="desk" title={t("prova.finished")} subtitle={t("releaseReview.examDone")}>
       <View className="items-center gap-3 rounded-child bg-white p-8">
         <Collectible slug="display-first-task" size={96} />
         <Text className="font-display text-2xl text-ink">{t("prova.resultMc", { correct: result.mc_correct ?? 0, total: result.mc_total ?? 0 })}</Text>

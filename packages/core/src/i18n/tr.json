@@ -843,5 +843,8 @@
   "accountV5.deleteFailed": "Hesap silinemedi. Şifreni ve bağlantını kontrol edip yeniden dene.",
   "accountV5.deleteDone": "Hesabın silindi.",
   "accountV5.account": "Hesabım",
-  "common.continue": "Devam et"
+  "common.continue": "Devam et",
+  "releaseReview.examDone": "Çabanı tamamladın. Şimdi küçük bir mola verebilirsin.",
+  "releaseReview.deleteChild": "{{name}} profilini sil",
+  "releaseReview.deleteChildBody": "{{name}} profilini ve bu çocuğa ait görev, yıldız, not, takvim ve Prova kayıtlarını ailedeki herkes için kalıcı olarak silmek üzeresin. Diğer çocuklar etkilenmez."
 }
