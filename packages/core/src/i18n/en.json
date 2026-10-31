@@ -889,5 +889,8 @@
   "release.firstChildBody": "Create a child profile to set up their tasks, rewards and room.",
   "release.firstChildAction": "Create child profile",
   "release.screenRetry": "This screen could not open. Try again; if the problem continues, reopen the app.",
-  "child.markDone": "Done"
+  "child.markDone": "Done",
+  "redesign.childSpace": "Child space",
+  "redesign.firstChildHint": "After creating a profile, choose tasks and rewards together with your child.",
+  "redesign.everyDay": "Every day"
 }

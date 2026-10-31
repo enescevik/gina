@@ -10,7 +10,7 @@ import { TASK_ICON_SLUGS, TaskIcon } from "@/components/task-icon";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
-import { ParentScreen as Screen, parentStyles, ChildPicker, EmptyCard } from "@/components/ui/parent-screen";
+import { ParentScreen as Screen, parentStyles, FormSection, ChildPicker, EmptyCard } from "@/components/ui/parent-screen";
 import { useFamilyTimezone } from "@/lib/family";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -104,23 +104,9 @@ export default function ParentTasksScreen() {
   return (
     <Screen title={t("parent.tasks")} subtitle={t("parentV5.tasksSubtitle")} loading={children.isLoading || templates.isLoading} error={children.error ?? templates.error} onRetry={() => { void children.refetch(); if (selectedChild) void templates.refetch(); }}>
       <ChildPicker profiles={children.data ?? []} selected={selectedChild} onSelect={setChildId} />
-      {templates.data?.map(template => <View key={template.id} style={[parentStyles.card, { opacity: template.active ? 1 : .6 }]}>
-        <View style={parentStyles.row}>
-          <TaskIcon slug={template.icon} size={56} variant="illustrated" />
-          <View className="flex-1 gap-1">
-            <Text style={[parentStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{template.title}</Text>
-            <Text style={parentStyles.muted}>{t("room.starCount", { count: template.stars })} · {WEEKDAYS.filter(w => template.days_of_week.includes(w.day)).map(w => t(`weekday.${w.day}`)).join(" ")}</Text>
-          </View>
-        </View>
-        <Button variant="ghost" title={template.active ? t("tasks.pause") : t("tasks.resume")}
-          loading={toggleActive.isPending && toggleActive.variables?.id === template.id} disabled={toggleActive.isPending}
-          onPress={() => toggleActive.mutate({ id: template.id, active: !template.active })} />
-      </View>)}
-      {templates.data?.length === 0 ? <EmptyCard title={t("tasks.none")} body={t("parentV5.firstTask")} /> : null}
 
       {selectedChild ? (
-        <View style={parentStyles.form}>
-          <Text className="text-lg font-body-bold text-ink">{t("tasks.new")}</Text>
+        <FormSection title={t("tasks.new")}>
           <Field label={t("tasks.title")} value={title} onChangeText={setTitle} placeholder={t("tasks.titlePlaceholder")} />
           <Text className="text-sm font-body text-ink">{t("tasks.icon")}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -152,10 +138,25 @@ export default function ParentTasksScreen() {
           </View>
           {formError ? <Text className="font-body text-sm text-danger">{formError}</Text> : null}
           <Button title={t("common.save")} loading={addTemplate.isPending} disabled={!title.trim() || days.length === 0} onPress={() => addTemplate.mutate()} />
-        </View>
+        </FormSection>
       ) : (
         <EmptyCard title={t("release.firstChildTitle")} body={t("release.firstChildBody")}><Button title={t("release.firstChildAction")} onPress={() => router.push("/parent/menu")} /></EmptyCard>
       )}
+      {templates.data?.map(template => <View key={template.id} style={[parentStyles.card, { opacity: template.active ? 1 : .75, flexDirection:"row", alignItems:"center", padding:14, gap:10 }]}>
+        <View style={[parentStyles.row,{flex:1}]}>
+          <TaskIcon slug={template.icon} size={56} variant="illustrated" />
+          <View className="flex-1 gap-1">
+            <Text style={[parentStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{template.title}</Text>
+            <Text style={parentStyles.muted}>{t("room.starCount", { count: template.stars })} · {template.days_of_week.length === 7 ? t("redesign.everyDay") : WEEKDAYS.filter(w => template.days_of_week.includes(w.day)).map(w => t(`weekday.${w.day}`)).join(" ")}</Text>
+          </View>
+        </View>
+        <Button style={{maxWidth:96,paddingHorizontal:10}} variant="ghost" title={template.active ? t("tasks.pause") : t("tasks.resume")}
+          loading={toggleActive.isPending && toggleActive.variables?.id === template.id} disabled={toggleActive.isPending}
+          onPress={() => toggleActive.mutate({ id: template.id, active: !template.active })} />
+      </View>)}
+      {templates.data?.length === 0 ? <EmptyCard title={t("tasks.none")} body={t("parentV5.firstTask")} /> : null}
+
+
 
       <ErrorText error={children.error ?? templates.error ?? toggleActive.error} />
       <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />

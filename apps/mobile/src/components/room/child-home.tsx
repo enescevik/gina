@@ -1,3 +1,4 @@
+import { Settings2, BookOpen } from "lucide-react-native";
 import { Button } from "@/components/ui/button";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -85,27 +86,33 @@ export function RoomChildHome({ childId, childName, character: providedCharacter
     {() => <>
       <View style={{position:"absolute",left:12,right:12,top:6,flexDirection:"row",alignItems:"center",justifyContent:"space-between",gap:12}}>
         <Text style={{fontFamily:"Baloo2_700Bold",fontSize:23,color:"#284E4B",backgroundColor:"#FFF8EF",paddingHorizontal:12,borderRadius:12}}>{t("child.hello",{name:childName})} · {t("room.starCount",{count:data.stars})}</Text>
-        <Button title={t("room.parentExit")} variant="secondary" onPress={onParentExit} loading={exitBusy}/>
+        <View style={{flexDirection:"row",gap:8}}><Pressable accessibilityRole="button" accessibilityLabel={t("childV5.customize")} onPress={()=>router.push(childPath("room-preview",actingAsParent))} style={{width:48,height:48,borderRadius:18,backgroundColor:"#FFF8EF",alignItems:"center",justifyContent:"center"}}><Settings2 size={24} color="#284E4B"/></Pressable><Button title={t("room.parentExit")} variant="secondary" onPress={onParentExit} loading={exitBusy}/></View>
       </View>
       <NineSlice skin="child-board-v5" scale={.6} style={{position:"absolute",left:8,top:62,bottom:8,width:"43%"}} contentStyle={{flex:1}}>
-        <Text style={{fontFamily:"Baloo2_700Bold",fontSize:22,color:"#284E4B"}}>{t("child.today")}</Text>
+        <Text style={{fontFamily:"Baloo2_700Bold",fontSize:22,color:"#284E4B"}}>{t("room.todayTasks")}</Text><Text style={{fontFamily:"Nunito_700Bold",fontSize:15,color:"#425E58",marginBottom:10}}>{t("parent.tasksOf",{done:data.due.filter(x=>x.status==="done"||x.status==="approved").length,total:data.due.length})}</Text>
         <ScrollView contentContainerStyle={{gap:10,paddingBottom:8}}>
           <ErrorText error={actionError ?? data.error}/>
           {data.loading ? <ActivityIndicator color="#0B7F7F"/> : null}
           {!data.loading && !data.error && !data.due.length ? <Text style={{fontFamily:"Nunito_700Bold",fontSize:17,color:"#284E4B"}}>{t("child.allDone")}</Text> : null}
-          {sortForBoard(data.due).map(task=><SkinTaskCard key={task.id} task={task} s={1} stacked isNext={false} completing={data.completing} onComplete={()=>data.complete(task.id)}/>)}
+          {sortForBoard(data.due).map(task=><SkinTaskCard key={task.id} task={task} s={.85} height={110} isNext={false} completing={data.completing} onComplete={()=>data.complete(task.id)}/>)}
         </ScrollView>
       </NineSlice>
-      <ScrollView style={{position:"absolute",right:10,top:66,bottom:12,width:"28%"}} contentContainerStyle={{gap:8}}>
-        <View style={{backgroundColor:"#FFF2CC",borderWidth:2,borderColor:"#B77B39",borderRadius:16,padding:12,gap:6}}>
-          <Text style={{fontFamily:"Baloo2_700Bold",fontSize:18,color:"#284E4B"}}>{goal.data?.rewardTitle ?? t("room.myGoal")}</Text>
-          {goal.data ? <><Text style={{fontFamily:"Nunito_700Bold",fontSize:16,color:"#425E58"}}>{data.stars} / {goal.data.cost}</Text><BoardProgress done={data.stars} total={goal.data.cost} s={.65}/></> : null}
-        </View>
-        <View style={{flexDirection:"row",flexWrap:"wrap",gap:8}}>
-
-        {([['goal','room.myGoal'],['week','child.week'],['calendar','child.calendar'],['collection','room.myCollection'],['prova','prova.title'],['room-preview','childV5.customize']] as const).map(([page,label])=><View key={page} style={{width:"47%"}}><Button title={t(label)} variant="secondary" onPress={()=>router.push(childPath(page,actingAsParent))}/></View>)}
-        </View>
+      <ScrollView style={{position:"absolute",right:8,top:65,bottom:8,width:"28%"}} contentContainerStyle={{gap:8}}>
+        <SkinPressable skin={goal.data?"ticket-goal":"ticket-goal-empty"} scale={.55} accessibilityLabel={t("room.myGoal")} onPress={()=>router.push(childPath("goal",actingAsParent))} contentStyle={{gap:4,alignItems:"center"}}>
+          <Text style={{fontFamily:"Baloo2_700Bold",fontSize:17,color:"#284E4B",textAlign:"center"}}>{goal.data?.rewardTitle??t("room.myGoal")}</Text>
+          {goal.data?<Text style={{fontFamily:"Nunito_700Bold",fontSize:15,color:"#425E58"}}>{data.stars} / {goal.data.cost}</Text>:null}
+          <View style={{width:"85%"}}><BoardProgress done={data.stars} total={goal.data?.cost??0} s={.55}/></View>
+        </SkinPressable>
+        <NineSlice skin="week-frame" scale={.5} contentStyle={{flexDirection:"row",alignItems:"center",gap:4}}>
+          {([['week','child.week'],['calendar','child.calendar']] as const).map(([page,label])=><Pressable key={page} accessibilityRole="button" onPress={()=>router.push(childPath(page,actingAsParent))} style={{flex:1,minHeight:48,justifyContent:"center",alignItems:"center"}}><Text style={{fontFamily:"Nunito_700Bold",fontSize:16,color:"#284E4B"}}>{t(label)}</Text></Pressable>)}
+        </NineSlice>
+        <SkinPressable skin="cabinet-display" scale={.5} accessibilityLabel={t("room.myCollection")} onPress={()=>router.push(childPath("collection",actingAsParent))} contentStyle={{alignItems:"center",gap:4}}>
+          <View style={{flexDirection:"row",gap:10,minHeight:44}}>{shelf.length?shelf.map(b=>shelfDisplayArt(b)?<Image key={b.slug} source={shelfDisplayArt(b)!} resizeMode="contain" style={{width:48,height:48}}/>:<Collectible key={b.slug} slug={b.icon} size={48}/>):<Collectible slug="star-filled" size={40}/>}</View>
+          <Text style={{fontFamily:"Nunito_700Bold",fontSize:16,color:"#284E4B",backgroundColor:"#FFF1D4",paddingHorizontal:8,borderRadius:6}}>{t("room.myCollection")}</Text>
+        </SkinPressable>
       </ScrollView>
+      <Pressable accessibilityRole="button" accessibilityLabel={t("prova.title")} onPress={()=>router.push(childPath("prova",actingAsParent))} style={{position:"absolute",left:"52%",top:72,minHeight:48,flexDirection:"row",gap:8,alignItems:"center",paddingHorizontal:12,borderRadius:16,backgroundColor:"#FFF8EF"}}><BookOpen size={22} color="#0B7F7F"/><Text style={{fontFamily:"Nunito_700Bold",fontSize:17,color:"#284E4B"}}>{t("prova.title")}</Text></Pressable>
+
     </>}
   </RoomScene>;
 

@@ -889,5 +889,8 @@
   "release.firstChildBody": "Görevleri, ödülleri ve çocuğunun odasını hazırlamak için önce bir çocuk profili oluştur.",
   "release.firstChildAction": "Çocuk profili oluştur",
   "release.screenRetry": "Bu ekran açılamadı. Yeniden deneyebilirsin; sorun sürerse uygulamayı yeniden aç.",
-  "child.markDone": "Yaptım"
+  "child.markDone": "Yaptım",
+  "redesign.childSpace": "Çocuk alanı",
+  "redesign.firstChildHint": "Çocuğun için bir profil oluşturduktan sonra görevlerini ve ödüllerini birlikte seçebilirsiniz.",
+  "redesign.everyDay": "Her gün"
 }

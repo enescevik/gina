@@ -10,7 +10,7 @@ import { ConfirmAction } from "@/components/ui/confirm-action";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
-import { ParentScreen as Screen, parentStyles, ChildPicker, EmptyCard } from "@/components/ui/parent-screen";
+import { ParentScreen as Screen, parentStyles, FormSection, ChildPicker, EmptyCard } from "@/components/ui/parent-screen";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -89,6 +89,25 @@ export default function ParentNotesScreen() {
     <Screen title={t("parent.notes")} subtitle={t("parentV5.notesSubtitle")} loading={children.isLoading || notes.isLoading} error={children.error ?? notes.error} onRetry={() => { void children.refetch(); void notes.refetch(); }}>
       <ChildPicker profiles={children.data ?? []} selected={childId} onSelect={setChildId} allLabel={t("calendar.allFamily")} />
 
+      <FormSection title={t("notes.new")}>
+        <Field label={t("notes.title")} value={title} onChangeText={setTitle} />
+        <Field label={t("notes.body")} value={body} onChangeText={setBody} multiline className="min-h-24" />
+        <Field label={t("notes.subject")} value={subject} onChangeText={setSubject} placeholder={t("notes.subjectPlaceholder")} />
+        <View className="flex-row flex-wrap gap-2">
+          {VISIBILITIES.map((option) => (
+            <Pressable
+              key={option}
+              accessibilityRole="button"
+              onPress={() => setVisibility(option)}
+              className={`min-h-12 items-center justify-center rounded-full px-3 py-2 ${visibility === option ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}
+            >
+              <Text className={visibility === option ? "font-body-bold text-white" : "font-body text-ink"}>{t(`note.visibility.${option}`)}</Text>
+            </Pressable>
+          ))}
+        </View>
+        <Button title={t("common.save")} loading={addNote.isPending} disabled={!body.trim()} onPress={() => addNote.mutate()} />
+      </FormSection>
+
       {notes.data?.length === 0 ? <EmptyCard title={t("notes.none")} slug="display-bookworm" /> : null}
       {notes.data?.map((note) => (
         <View key={note.id} style={parentStyles.card}>
@@ -106,25 +125,7 @@ export default function ParentNotesScreen() {
         </View>
       ))}
 
-      <View style={parentStyles.form}>
-        <Text className="text-lg font-body-bold text-ink">{t("notes.new")}</Text>
-        <Field label={t("notes.title")} value={title} onChangeText={setTitle} />
-        <Field label={t("notes.body")} value={body} onChangeText={setBody} multiline className="min-h-24" />
-        <Field label={t("notes.subject")} value={subject} onChangeText={setSubject} placeholder={t("notes.subjectPlaceholder")} />
-        <View className="flex-row flex-wrap gap-2">
-          {VISIBILITIES.map((option) => (
-            <Pressable
-              key={option}
-              accessibilityRole="button"
-              onPress={() => setVisibility(option)}
-              className={`min-h-12 items-center justify-center rounded-full px-3 py-2 ${visibility === option ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}
-            >
-              <Text className={visibility === option ? "font-body-bold text-white" : "font-body text-ink"}>{t(`note.visibility.${option}`)}</Text>
-            </Pressable>
-          ))}
-        </View>
-        <Button title={t("common.save")} loading={addNote.isPending} disabled={!body.trim()} onPress={() => addNote.mutate()} />
-      </View>
+
 
       <ErrorText error={children.error ?? notes.error ?? addNote.error ?? removeNote.error} />
       <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />

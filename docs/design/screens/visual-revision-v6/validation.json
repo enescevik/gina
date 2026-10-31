@@ -1,0 +1,27 @@
+{
+  "status": "design-review-in-progress",
+  "viewports": [
+    [
+      430,
+      932
+    ],
+    [
+      932,
+      430
+    ]
+  ],
+  "implementation": "actual app components rendered on web",
+  "nativeDeviceVerified": false,
+  "forms": [
+    "tasks",
+    "calendar",
+    "notes",
+    "grades"
+  ],
+  "collapseAndDraftRetentionPassed": true,
+  "dateSelectionPassed": true,
+  "pageErrors": [],
+  "demoDatabaseWrites": 0,
+  "typecheck": "passed",
+  "lint": "passed"
+}
