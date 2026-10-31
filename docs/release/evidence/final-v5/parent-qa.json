@@ -1,0 +1,55 @@
+{
+  "results": [
+    {
+      "slug": "index",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "tasks",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "rewards",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "calendar",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "grades",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "notes",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "menu",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "child-mode",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    }
+  ],
+  "errors": [],
+  "interceptedRequests": 28,
+  "allBackendTrafficMocked": true
+}

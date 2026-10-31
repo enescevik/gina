@@ -189,9 +189,10 @@ export default function ParentHomeScreen() {
 
   const visibleChildren = (children.data ?? []).filter((c) => !childFilter || c.id === childFilter);
   const familyDay = visibleChildren.map((child) => {
-    const due = templatesDueOn((templates.data ?? []).filter((t2) => t2.child_id === child.id), today).length;
+    const dueIds = new Set(templatesDueOn((templates.data ?? []).filter((t2) => t2.child_id === child.id), today).map(task => task.id));
+    const due = dueIds.size;
     const done = (completions.data ?? []).filter(
-      (c) => c.child_id === child.id && c.due_date === today && (c.status === "done" || c.status === "approved"),
+      (c) => c.child_id === child.id && c.due_date === today && dueIds.has(c.template_id) && (c.status === "done" || c.status === "approved"),
     ).length;
     return { child, due, done, stars: stars.data?.get(child.id) ?? 0 };
   });
@@ -246,16 +247,16 @@ export default function ParentHomeScreen() {
             className="min-h-16 flex-row items-center gap-2 rounded-2xl border border-mist bg-white px-2 py-2 active:bg-cream"
           >
             <Avatar slug={child.avatar} size={44} />
-            <Text numberOfLines={1} className="max-w-20 font-display-semi text-lg text-ink">
-              {child.name}
-            </Text>
-            <View className="mx-1 flex-1">
-              <Text numberOfLines={1} className="font-body text-sm text-ink">{t("parent.tasksOf", { done, total: due })}</Text>
-              <View className="mt-1 h-2.5 overflow-hidden rounded-full bg-mist">
-                <View className="h-2.5 rounded-full bg-teal" style={{ width: due > 0 ? `${Math.round((done / due) * 100)}%` : "0%" }} />
+            <View style={{ flex: 1, minWidth: 0, gap: 4 }}>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 4 }}>
+                <Text style={{ flexShrink: 1 }} className="font-display-semi text-lg text-ink">{child.name}</Text>
+                <View className="flex-row items-center gap-1"><Collectible slug="star-filled" size={20} /><Text className="font-body-bold text-sm text-ink">{t("room.starCount", { count: childStars })}</Text></View>
+              </View>
+              <Text className="font-body text-sm text-ink">{t("parent.tasksOf", { done, total: due })}</Text>
+              <View className="h-2.5 overflow-hidden rounded-full bg-mist">
+                <View className="h-2.5 rounded-full bg-teal" style={{ width: due > 0 ? `${Math.min(100, Math.round((done / due) * 100))}%` : "0%" }} />
               </View>
             </View>
-            <View className="flex-row items-center gap-1"><Collectible slug="star-filled" size={20} /><Text className="font-body-bold text-base text-ink">{t("room.starCount", { count: childStars })}</Text></View>
             <Text className="font-display text-xl text-ink/60">›</Text>
           </Pressable>
         ))}

@@ -1,0 +1,67 @@
+{
+  "results": [
+    {
+      "slug": "index",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "exam",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "question",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "blueprint",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "generate",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "level",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "progress",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "booklet",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "attempt",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    },
+    {
+      "slug": "plan",
+      "missingImages": 0,
+      "smallTargets": [],
+      "horizontalOverflow": false
+    }
+  ],
+  "errors": [],
+  "interceptedRequests": 22,
+  "allBackendTrafficMocked": true
+}

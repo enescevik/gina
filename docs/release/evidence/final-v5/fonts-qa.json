@@ -1,0 +1,81 @@
+{
+  "waitsForFontFiles": true,
+  "everyLabelUsesNunito": true,
+  "faces": [
+    {
+      "family": "Baloo2_600SemiBold",
+      "status": "loaded"
+    },
+    {
+      "family": "Baloo2_700Bold",
+      "status": "loaded"
+    },
+    {
+      "family": "Baloo2_800ExtraBold",
+      "status": "loaded"
+    },
+    {
+      "family": "Nunito_400Regular",
+      "status": "loaded"
+    },
+    {
+      "family": "Nunito_600SemiBold",
+      "status": "loaded"
+    },
+    {
+      "family": "Nunito_700Bold",
+      "status": "loaded"
+    }
+  ],
+  "rendered": [
+    {
+      "familyName": "Nunito",
+      "postScriptName": "Nunito-Bold",
+      "isCustomFont": true,
+      "glyphCount": 4
+    },
+    {
+      "familyName": "Nunito",
+      "postScriptName": "Nunito-Bold",
+      "isCustomFont": true,
+      "glyphCount": 3
+    },
+    {
+      "familyName": "Nunito",
+      "postScriptName": "Nunito-Bold",
+      "isCustomFont": true,
+      "glyphCount": 3
+    },
+    {
+      "familyName": "Nunito",
+      "postScriptName": "Nunito-Bold",
+      "isCustomFont": true,
+      "glyphCount": 11
+    },
+    {
+      "familyName": "Nunito",
+      "postScriptName": "Nunito-Bold",
+      "isCustomFont": true,
+      "glyphCount": 6
+    },
+    {
+      "familyName": "Nunito",
+      "postScriptName": "Nunito-Bold",
+      "isCustomFont": true,
+      "glyphCount": 7
+    },
+    {
+      "familyName": "Nunito",
+      "postScriptName": "Nunito-Bold",
+      "isCustomFont": true,
+      "glyphCount": 6
+    },
+    {
+      "familyName": "Nunito",
+      "postScriptName": "Nunito-Bold",
+      "isCustomFont": true,
+      "glyphCount": 25
+    }
+  ],
+  "allBackendTrafficMocked": true
+}

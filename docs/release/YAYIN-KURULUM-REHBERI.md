@@ -51,7 +51,7 @@ pnpm dlx eas-cli@latest init
 ```
 
 4. Yeni proje oluşturmayı seç; ad **gina**, sahibi kendi hesabın/organizasyonun olsun. Mevcut bir Gina projesi gösterirse ikinci kopyayı oluşturmadan doğru sahipliği kontrol et.
-5. Expo Dashboard’da proje açılmalı. Bana **Expo kullanıcı/organizasyon adını ve proje bağlantısını** ilet. `eas init`, gerçek `extra.eas.projectId` değerini app yapılandırmasına ekler; bu yerel değişikliği koruyacağız.
+5. Expo Dashboard’da proje açılmalı. Bana **Expo kullanıcı/organizasyon adını ve proje bağlantısını** ilet. `eas init` gerçek `extra.eas.projectId` değerini bağlar. Dinamik `app.config.js` nedeniyle otomatik yazamadığını söylerse verdiği proje kimliğini bana ilet; yapılandırmaya ben eklerim. Oluşan yerel değişiklikleri koruyacağız.
 
 İlk etkileşimli kurulum için EXPO_TOKEN üretmek zorunda değilsin. Daha sonra otomasyon gerekirse token yalnız yerel güvenli ortamda/CI secret olarak tutulur. [Expo ilk proje ve build kurulumu](https://docs.expo.dev/build/setup/).
 
@@ -133,3 +133,9 @@ Parolalar, EXPO_TOKEN, service_role/secret anahtarları, veritabanı parolası v
 - Yeni `delete-account` Edge Function da deploy edilmeli. `verify_jwt=true` korunur; sunucu ortamındaki service role anahtarı mobil uygulamaya konmaz. Silme için kullan-at bir aile hesabı aç: yanlış şifre reddedilmeli, doğru şifreyle silinmeli; eski cihaz ve veli token'ları veri okuyamamalı. İki velili test ailesinde diğer velinin çocuk verisi kalmalı. Bu testleri mevcut demo ailesiyle yapma.
 - E-posta/şifre beta girişidir. Apple/Google giriş düğmeleri sağlayıcılar kurulup test edilene kadar gösterilmiyor. Hesap silme aboneliği iptal etmez; mağaza yönetimi ayrıca test edilir.
 - Yayımlanacak hukuki metinler hâlâ taslak: planlı silme, web silme talebi, saklama ve yedekten imha gibi yazılı vaatlerin bir bölümü uygulanmış değil. `docs/legal/hesap-ve-veri-silme.md` başındaki uygulama denetimini esas al; metin ile gerçek ürün uyuşmadan mağazaya gönderme.
+
+## 9. Animasyon, hava ve Android bildirimi için ayrı kabul
+
+[Pet ve hava üretim brief'i](PET-VE-HAVA-URETIM-KABULU.md) kaynak görselleri, tek kedi örneğinin kliplerini, artist teslimini ve cihaz kabul ölçütlerini verir. V5 statik katmanlar hazır; organik esneme/oyun/ses ve canlı hava henüz tamamlanmadı. Önce tek kedi örneği; kaliteyi görmeden dört hayvanlık üretime girilmez.
+
+Android FCM dosyası iOS TestFlight için gerekmez. Android bildirimi kurulunca gerçek `google-services.json` yerel/CI güvenli dosyası olarak sağlanır; `GOOGLE_SERVICES_JSON` dosya değişkeni veya `apps/mobile/google-services.json` kullanılabilir. Dosya yokken sahte Firebase yapılandırması üretilmez. İlgili APNs/FCM sunucu anahtarları da ayrıca kurulup fiziksel cihazda denenir. Uygulama v5'in açık paletini kullanır; oda içindeki gece atmosferi ayrı sanat/veri işidir.

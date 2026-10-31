@@ -10,6 +10,8 @@ import { localDateOf, starBalance, templatesDueOn, type CompletionStatus } from 
 import { LARGE_FONT_REFLOW_ABOVE } from "@/components/room/layout";
 import { NineSlice, SkinIcon, SkinPressable, SkinProgress } from "@/components/room/nine-slice";
 import { SkinTaskCard, sortForBoard } from "@/components/room/skin-task-card";
+import { Collectible } from "@/components/collectible";
+import { Button } from "@/components/ui/button";
 import { ErrorText } from "@/components/ui/screen";
 import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
@@ -88,7 +90,8 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
   });
 
   // Prova kartı: dar akışta kitaplığın karşılığı; atanmış deneme sayısı rozet olarak.
-  const examCount = useChildExamCount(childId).data ?? 0;
+  const exams = useChildExamCount(childId);
+  const examCount = exams.data ?? 0;
   const goal = useChildGoal(childId);
   const { width, fontScale } = useWindowDimensions();
   // Dar telefon/büyük yazı: görev kâğıdında çip metnin altına iner (minimumLogicalSize altına sıkıştırılmaz).
@@ -113,7 +116,7 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
           <Text className="font-body-bold text-base text-ink">
             {t("room.goalProgress", { stars: Math.min(balance, goalData.cost), cost: goalData.cost })}
           </Text>
-          <SkinProgress value={balance / goalData.cost} style={{ alignSelf: "stretch", marginVertical: 4 }} />
+          <SkinProgress value={balance / Math.max(1, goalData.cost)} style={{ alignSelf: "stretch", marginVertical: 4 }} />
           <Text className="font-display text-xl text-ink">{remaining === 0 ? t("goal.reached") : t("room.starsLeft", { count: remaining })}</Text>
         </>
       ) : goal.isLoading ? (
@@ -141,7 +144,8 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
           {goalBody}
         </SkinPressable>
 
-      <ErrorText error={templates.error ?? completions.error ?? complete.error} />
+      <ErrorText error={templates.error ?? completions.error ?? stars.error ?? goal.error ?? exams.error ?? complete.error} />
+      {templates.error || completions.error || stars.error || goal.error || exams.error ? <Button title={t("common.retry")} onPress={() => { void templates.refetch(); void completions.refetch(); void stars.refetch(); void goal.refetch(); void exams.refetch(); }} /> : null}
 
       <NineSlice skin="panel-generic" contentStyle={{ gap: 10 }}>
         <View>
@@ -184,7 +188,7 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
         onPress={() => router.push(actingAsParent ? "/parent/child-mode/prova" : "/child/prova")}
         contentClassName="flex-row items-center"
       >
-        <Text className="font-body text-4xl">📚</Text>
+        <Collectible slug="display-bookworm" size={56} />
         <View className="ml-4 flex-1">
           <Text className="font-display text-xl text-ink">{t("prova.title")}</Text>
           <Text className="font-body text-sm text-ink/80">

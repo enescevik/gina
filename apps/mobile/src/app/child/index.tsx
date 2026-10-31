@@ -3,6 +3,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Pressable, Text, View } from "react-native";
 
+import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/avatar";
 import { ErrorText } from "@/components/ui/screen";
 import { ChildScreen as Screen, childStyles } from "@/components/room/child-screen";
@@ -23,6 +24,7 @@ export default function ChildPickerScreen() {
   return (
     <Screen tone="child" loading={children.isLoading} title={t("child.pickProfile")}>
       <ErrorText error={children.error} />
+      {children.error ? <Button title={t("common.retry")} onPress={() => void children.refetch()} /> : null}
       <View className="flex-row flex-wrap gap-4">
         {children.data?.map((child) => (
           <Pressable

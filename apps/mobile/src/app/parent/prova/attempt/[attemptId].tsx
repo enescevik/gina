@@ -247,8 +247,10 @@ function AnswerCard({
   onSaved: () => void;
 }) {
   const { t } = useTranslation();
-  const [score, setScore] = useState(answer?.score !== null && answer?.score !== undefined ? String(answer.score) : "");
-  const [feedback, setFeedback] = useState(answer?.feedback ?? "");
+  const [scoreDraft, setScore] = useState<string | null>(null);
+  const score = scoreDraft ?? (answer?.score != null ? String(answer.score) : "");
+  const [feedbackDraft, setFeedback] = useState<string | null>(null);
+  const feedback = feedbackDraft ?? answer?.feedback ?? "";
   const [showKey, setShowKey] = useState(false);
 
   const save = useMutation({
@@ -263,7 +265,7 @@ function AnswerCard({
       });
       if (error) throw new Error(error.message);
     },
-    onSuccess: onSaved,
+    onSuccess: () => { setScore(null); setFeedback(null); onSaved(); },
   });
 
   const details = (answer?.ai_details ?? null) as AiDetails | null;
@@ -347,10 +349,10 @@ function AnswerCard({
             <View className="gap-2">
               <View className="flex-row items-end gap-2">
                 <View className="w-28">
-                  <Field label={t("prova.ai.scoreLabel")} keyboardType="number-pad" maxLength={3} value={score} onChangeText={setScore} placeholder="0-100" />
+                  <Field label={t("prova.ai.scoreLabel")} keyboardType="number-pad" maxLength={3} editable={!save.isPending} value={score} onChangeText={setScore} placeholder="0-100" />
                 </View>
                 <View className="flex-1">
-                  <Field label={t("prova.ai.feedbackLabel")} value={feedback} onChangeText={setFeedback} />
+                  <Field label={t("prova.ai.feedbackLabel")} editable={!save.isPending} value={feedback} onChangeText={setFeedback} />
                 </View>
               </View>
               <Button variant="secondary" title={t("prova.ai.saveScore")} loading={save.isPending} onPress={() => save.mutate()} />

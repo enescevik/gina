@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import manifest from "../../../../../packages/assets/rooms/v2/manifest.json";
@@ -43,6 +43,7 @@ function RoomArt({ width, height, character, pet }: { width: number; height: num
 
 export interface ChildScreenProps {
   title?: string;
+  subtitle?: string;
   children: ReactNode;
   tone?: "child";
   scroll?: boolean;
@@ -53,7 +54,7 @@ export interface ChildScreenProps {
 }
 
 /** Shared child surface; explicit preview props override the saved room preferences. */
-export function ChildScreen({ title, children, loading = false, character: previewCharacter, pet: previewPet, surface = "board" }: ChildScreenProps) {
+export function ChildScreen({ title, subtitle, children, loading = false, character: previewCharacter, pet: previewPet, surface = "board" }: ChildScreenProps) {
   const { t } = useTranslation();
   const { childId } = useActiveChild();
   const prefs = useChildRoomPrefs(childId);
@@ -64,12 +65,12 @@ export function ChildScreen({ title, children, loading = false, character: previ
   const skin = surface === "desk" ? "child-notebook-v5" : surface === "collection" ? "child-cabinet-v5" : "child-board-v5";
   const header = <View style={styles.heading}>
     <Text accessibilityRole="header" style={styles.title}>{title}</Text>
-    {surface !== "collection" ? <Text style={styles.subtitle}>{t(surface === "desk" ? "childV5.deskSubtitle" : "childV5.subtitle")}</Text> : null}
+    {surface !== "collection" ? <Text style={styles.subtitle}>{subtitle ?? t(surface === "desk" ? "childV5.deskSubtitle" : "childV5.subtitle")}</Text> : null}
   </View>;
   const body = loading ? <View style={styles.loading} accessibilityLiveRegion="polite">
     <ActivityIndicator color="#0B7F7F" size="large" /><Text style={styles.subtitle}>{t("childV5.loading")}</Text>
   </View> : children;
-  return <SafeAreaView style={styles.root}>
+  return <SafeAreaView style={styles.root}><KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === "ios" ? "padding" : undefined}>
     {wide ? <View style={styles.fill}>
       <RoomArt width={width} height={height} character={character} pet={pet} />
       {surface === "collection" ? <View style={[styles.board, { top: "2%", height: "96%" }]}>
@@ -91,7 +92,7 @@ export function ChildScreen({ title, children, loading = false, character: previ
           <View style={styles.content}>{body}</View>
         </NineSlice>}
     </ScrollView>}
-  </SafeAreaView>;
+  </KeyboardAvoidingView></SafeAreaView>;
 }
 
 export const childStyles = StyleSheet.create({

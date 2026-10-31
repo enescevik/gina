@@ -196,7 +196,7 @@ export default function ParentShareScreen() {
                 style={{ minHeight: 48, justifyContent: "center" }} disabled={createShare.isPending}
                 className={`rounded-full px-3 py-2 ${scopes.includes(scope) ? "bg-teal" : "bg-white"}`}
               >
-                <Text className={scopes.includes(scope) ? "font-body-bold text-white" : "text-ink"}>{t(`share.scope.${scope}`)}</Text>
+                <Text className={scopes.includes(scope) ? "font-body-bold text-white" : "font-body text-ink"}>{t(`share.scope.${scope}`)}</Text>
               </Pressable>
             ))}
           </View>
@@ -211,7 +211,7 @@ export default function ParentShareScreen() {
                 style={{ minHeight: 48, justifyContent: "center" }} disabled={createShare.isPending}
                 className={`rounded-full px-3 py-2 ${days === option ? "bg-teal" : "bg-white"}`}
               >
-                <Text className={days === option ? "font-body-bold text-white" : "text-ink"}>{t("share.days", { count: option })}</Text>
+                <Text className={days === option ? "font-body-bold text-white" : "font-body text-ink"}>{t("share.days", { count: option })}</Text>
               </Pressable>
             ))}
           </View>

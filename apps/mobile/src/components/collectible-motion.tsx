@@ -34,6 +34,18 @@ export function useReducedMotion(): boolean {
   return reduced;
 }
 
+/** Decorative motion stops when its route is hidden or the app goes to background. */
+function useMotionActive() {
+  const [focused, setFocused] = useState(false);
+  const [active, setActive] = useState(AppState.currentState === "active");
+  useFocusEffect(useCallback(() => { setFocused(true); return () => setFocused(false); }, []));
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", state => setActive(state === "active"));
+    return () => sub.remove();
+  }, []);
+  return focused && active;
+}
+
 const clampSize = (size: number) => Math.max(ILLUSTRATED_MIN_DP, size);
 
 const burst = recipe.star_burst;
@@ -54,6 +66,7 @@ export interface CelebrationBurstProps {
 export function CelebrationBurst({ size = 120, slug = BURST_SLUG, onFinish, accessibilityLabel }: CelebrationBurstProps) {
   const s = clampSize(size);
   const reduced = useReducedMotion();
+  const motionActive = useMotionActive();
   // useState: Animated.Value tek kez oluşur ve render sırasında okunabilir (ref değil).
   const [progress] = useState(() => new Animated.Value(0));
   const finishRef = useRef(onFinish);
@@ -62,6 +75,7 @@ export function CelebrationBurst({ size = 120, slug = BURST_SLUG, onFinish, acce
   }, [onFinish]);
 
   useEffect(() => {
+    if (!motionActive) return;
     if (reduced) {
       // Hareket yok: sabit görsel gösterilir, akış aynı sürede devam eder.
       const timer = setTimeout(() => finishRef.current?.(), burst.duration_ms);
@@ -76,7 +90,7 @@ export function CelebrationBurst({ size = 120, slug = BURST_SLUG, onFinish, acce
     });
     anim.start(({ finished }) => finished && finishRef.current?.());
     return () => anim.stop();
-  }, [reduced, progress]);
+  }, [reduced, progress, motionActive]);
 
   const image = <Animated.Image source={collectibleSource(slug)} resizeMode="contain" style={{ width: s, height: s }} />;
 
@@ -151,25 +165,18 @@ export interface LoadingStarProps {
 export function LoadingStar({ size = 64, accessibilityLabel }: LoadingStarProps) {
   const s = clampSize(size);
   const reduced = useReducedMotion();
-  const [focused, setFocused] = useState(false);
-  useFocusEffect(useCallback(() => { setFocused(true); return () => setFocused(false); }, []));
+  const motionActive = useMotionActive();
   const [spin] = useState(() => new Animated.Value(0));
-  const [active, setActive] = useState(AppState.currentState === "active");
 
   useEffect(() => {
-    const sub = AppState.addEventListener("change", (state) => setActive(state === "active"));
-    return () => sub.remove();
-  }, []);
-
-  useEffect(() => {
-    if (reduced || !active || !focused) return;
+    if (reduced || !motionActive) return;
     spin.setValue(0);
     const anim = Animated.loop(
       Animated.timing(spin, { toValue: 1, duration: loading.duration_ms, easing: Easing.linear, useNativeDriver: true }),
     );
     anim.start();
     return () => anim.stop();
-  }, [reduced, active, focused, spin]);
+  }, [reduced, motionActive, spin]);
 
   const a11y = {
     accessible: true,

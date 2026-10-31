@@ -18,6 +18,7 @@ export default function ChildPinScreen() {
   const [error, setError] = useState<unknown>(null);
 
   async function submit() {
+    if (busy || !childId || !/^\d{4}$/.test(pin)) return;
     setBusy(true);
     setError(null);
     try {
@@ -47,12 +48,12 @@ export default function ChildPinScreen() {
         secureTextEntry
         maxLength={4}
         value={pin}
-        onChangeText={setPin}
+        editable={!busy} onChangeText={value => setPin(value.replace(/\D/g, ""))}
         className="text-center text-3xl tracking-widest"
       />
       <ErrorText error={error} />
-      <Button size="child" title={t("common.ok")} loading={busy} disabled={pin.length !== 4} onPress={submit} />
-      <Button variant="ghost" title={t("common.cancel")} onPress={() => router.back()} />
+      <Button size="child" title={t("common.ok")} loading={busy} disabled={!childId || pin.length !== 4} onPress={submit} />
+      <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => router.back()} />
     </Screen>
   );
 }
