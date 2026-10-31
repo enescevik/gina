@@ -1,0 +1,184 @@
+{
+  "media": {
+    "sleep": {
+      "decodedFrames": 241,
+      "sampleCanvas": [
+        256,
+        256
+      ],
+      "alpha32BoundsRange": {
+        "left": [
+          45,
+          45
+        ],
+        "top": [
+          95,
+          98
+        ],
+        "right": [
+          216,
+          216
+        ],
+        "bottom": [
+          191,
+          191
+        ]
+      },
+      "noFrameEdgeContact": true,
+      "antialiasedAlphaFrames": 235,
+      "firstLastMeanAbsoluteChannelDifference": [
+        0.3114166259765625,
+        0.2710723876953125,
+        0.3004302978515625,
+        0.0328216552734375
+      ],
+      "note": "Pixel diagnostics only; these do not establish natural anatomy or native performance."
+    },
+    "yawn-stretch": {
+      "decodedFrames": 241,
+      "sampleCanvas": [
+        256,
+        256
+      ],
+      "alpha32BoundsRange": {
+        "left": [
+          23,
+          45
+        ],
+        "top": [
+          55,
+          100
+        ],
+        "right": [
+          212,
+          223
+        ],
+        "bottom": [
+          190,
+          191
+        ]
+      },
+      "noFrameEdgeContact": true,
+      "antialiasedAlphaFrames": 235,
+      "firstLastMeanAbsoluteChannelDifference": [
+        0.272064208984375,
+        0.237945556640625,
+        0.2859344482421875,
+        0.0309600830078125
+      ],
+      "note": "Pixel diagnostics only; these do not establish natural anatomy or native performance."
+    }
+  },
+  "applicationChecks": {
+    "typescript": "passed",
+    "expoLint": "passed"
+  },
+  "nativeDeviceAcceptance": "not performed",
+  "files": [
+    {
+      "file": "comparison.mp4",
+      "bytes": 490082,
+      "sha256": "f8eb3b0da0ff79c44a8fa02fadc083a80f39c38d47b913c38e1da38fce506f69"
+    },
+    {
+      "file": "reference-poster.webp",
+      "bytes": 271746,
+      "sha256": "9650b426aaca4984a116995bccc9814b20d1d83fd1a965a663fb9f34793ce7ac"
+    },
+    {
+      "file": "reference-stage.webp",
+      "bytes": 233048,
+      "sha256": "071f1e4f43a552cdd9d61e5eb3f3d8d2af1cd3a2c266c7f3533e7fa9ac83ec64"
+    },
+    {
+      "file": "review-dark.png",
+      "bytes": 252871,
+      "sha256": "b020e381e98a9fd820474760db100d1855a0ca7109b1d1b5c2a048a248b39396"
+    },
+    {
+      "file": "review-desktop.png",
+      "bytes": 1538565,
+      "sha256": "d7ea696fb5856cf0fb2c587ef918fd057272afdd8a54e7daf9126ba495a38fdf"
+    },
+    {
+      "file": "review-phone.png",
+      "bytes": 386611,
+      "sha256": "7719b491cf4e9fa5dbd78b0f6facdfacc09194354c0e945cd1d7778d66f4816a"
+    },
+    {
+      "file": "review-room-stretch.png",
+      "bytes": 1125728,
+      "sha256": "1d4af1a741711779df179ccd4031f3f5ff1e6b54eb05f64bad296c154c88d72b"
+    },
+    {
+      "file": "sleep-alpha.webm",
+      "bytes": 890604,
+      "sha256": "97e7c710ea33008b33e015b6dc144f25bb2f1a78c2748018cfd36e918810966a"
+    },
+    {
+      "file": "sleep-contact.webp",
+      "bytes": 270566,
+      "sha256": "bf12a7e45b4c26512f252826b955b07a1a66ed0f223682e50ab69b2b6475a737"
+    },
+    {
+      "file": "sleep.mp4",
+      "bytes": 3051155,
+      "sha256": "ce521c0674efd1b7724d21e223be642fe0b29aed589fce6d1835f7a21285d783"
+    },
+    {
+      "file": "yawn-stretch-alpha.webm",
+      "bytes": 1822132,
+      "sha256": "3f75920981de709e556e9f2f1e81c2d6d9d6459f8fe1927de1ffdcb5f91d2809"
+    },
+    {
+      "file": "yawn-stretch-contact.webp",
+      "bytes": 298604,
+      "sha256": "20fe839c4e650d55d88095e1c06462cfe5b1f2664ab04f58c6457d4bd06365a5"
+    },
+    {
+      "file": "yawn-stretch.mp4",
+      "bytes": 5149688,
+      "sha256": "19c9dff3e39886a762c7a50d6538d733089632a1c5bfa349cd2693e3d0788969"
+    }
+  ],
+  "browser": {
+    "desktop": {
+      "width": 1280,
+      "overflow": false,
+      "missingImages": [],
+      "videos": [
+        {
+          "src": "sleep-alpha.webm",
+          "width": 1440,
+          "height": 1440,
+          "duration": 10.042,
+          "paused": true,
+          "time": 3
+        },
+        {
+          "src": "yawn-stretch-alpha.webm",
+          "width": 1440,
+          "height": 1440,
+          "duration": 10.042,
+          "paused": true,
+          "time": 4
+        },
+        {
+          "src": "sleep-alpha.webm",
+          "width": 1440,
+          "height": 1440,
+          "duration": 10.042,
+          "paused": true,
+          "time": 0.7441
+        }
+      ]
+    },
+    "phone": {
+      "width": 390,
+      "overflow": false
+    },
+    "dark": 2,
+    "checker": 2,
+    "errors": []
+  }
+}

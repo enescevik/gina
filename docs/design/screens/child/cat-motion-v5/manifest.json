@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "status": "review-candidates-awaiting-user-feedback",
+  "reference": "../../../../../packages/assets/rooms/v2/pet-cat.webp",
+  "referenceSha256": "96121aad50037aa3bcf05b67e5ed426b3ecb0aedccba61a63d7e13c75d38660d",
+  "stage": {
+    "file": "reference-stage.webp",
+    "width": 1024,
+    "height": 1024,
+    "sourceOffset": [
+      128,
+      320
+    ],
+    "groundLine": 762,
+    "anchor": [
+      517,
+      762
+    ],
+    "contentBounds": [
+      180,
+      386,
+      864,
+      764
+    ],
+    "background": "black",
+    "preparation": "FFmpeg composite of unchanged 768x512 RGBA source over black 1024x1024 canvas at (128,320). No redraw, rescale or distortion.",
+    "poster": "reference-poster.webp"
+  },
+  "clips": [
+    {
+      "slug": "sleep",
+      "taskId": "cb0a8c96-5a6d-4687-b024-b7d8cf5cf74a",
+      "model": "kling-o3-pro",
+      "durationSeconds": 10.041667,
+      "generateAudio": false,
+      "ratio": "1:1",
+      "prompt": "Animate the exact ginger-and-white kitten from the supplied image. Preserve its facial proportions, closed curved eyelids, pink nose and ears, orange patches, fluffy painted fur and warm soft lighting throughout. A premium gently illustrated character with believable feline anatomy, not a live-action cat. One continuous locked-camera shot, fixed framing and character scale, isolated against a completely uniform matte black background. The same compact curled silhouette occupies the same location. No scenery, lettering, props, camera movement, zoom, cuts, whole-sprite scaling or morphing. Keep all paws and fur tips inside the frame, with consistent ground contact. The kitten remains asleep for the entire shot. Only the ribcage and flank softly rise and settle with two small slow breaths, with gentle easing and slightly different timing. Its chin rests on its front paws, eyes remain closed, head and front paws stay still, tail stays curled. The local breathing movement is subtle, not swelling the whole body and not changing head size. Finish in the same resting pose as the first frame for a quiet loop.",
+      "endFrame": "reference-stage.webp",
+      "status": "generated-review-candidate",
+      "file": "sleep.mp4",
+      "alphaFile": "sleep-alpha.webm",
+      "width": 1440,
+      "height": 1440,
+      "frameRate": 24,
+      "alphaProcessing": {
+        "model": "sam3",
+        "taskId": "a24b495f-428b-48ae-970b-48ba12ca0a0a",
+        "output": "VP9 WebM with alpha",
+        "keepSound": false,
+        "declaredCreditsPerSecond": 1,
+        "inputDurationSeconds": 10.041
+      },
+      "estimatedCreditsAtSubmission": 170,
+      "fileSha256": "ce521c0674efd1b7724d21e223be642fe0b29aed589fce6d1835f7a21285d783",
+      "alphaFileSha256": "97e7c710ea33008b33e015b6dc144f25bb2f1a78c2748018cfd36e918810966a"
+    },
+    {
+      "slug": "yawn-stretch",
+      "taskId": "a7b34fb4-3d7d-46c3-9e73-4dbfcabe82d1",
+      "model": "kling-o3-pro",
+      "durationSeconds": 10.041667,
+      "generateAudio": false,
+      "ratio": "1:1",
+      "prompt": "Animate the exact ginger-and-white kitten in the input image through one gentle natural feline yawn and compact lying-down stretch, then settle back to sleep. Preserve exactly its face proportions, orange patch shapes, pink nose and ears, fluffy painted fur, warm lighting and premium illustrated appearance; believable animal anatomy within the same illustration style. Locked camera, fixed scale and framing, perfectly uniform matte black backdrop. First rest quietly curled, then eyelids squeeze softly and head rises with neck and shoulders following. Jaw opens gradually into one relaxed yawn, tongue curls briefly, then jaw closes; no human expression. As it yawns the spine lengthens gently, shoulders shift weight forward and both front paws press and reach a short distance along the ground with visible wrist/toe articulation. Hindquarters and curled tail remain grounded; feet never slide without lifting. Return the front paws, lower the head onto them and settle into the exact initial sleeping shape by the last second. Smooth overlapping easing, soft weight and muscle tension, no abrupt pose changes. Keep the entire cat comfortably within frame. No cuts, camera motion, zoom, whole-body scaling, rubber stretching, extra limbs, changing markings, props, scenery, text or sound.",
+      "endFrame": "reference-stage.webp",
+      "status": "generated-review-candidate",
+      "file": "yawn-stretch.mp4",
+      "alphaFile": "yawn-stretch-alpha.webm",
+      "width": 1440,
+      "height": 1440,
+      "frameRate": 24,
+      "alphaProcessing": {
+        "model": "sam3",
+        "taskId": "517c5cd5-4c30-48d5-af0e-9a7800e59ba8",
+        "output": "VP9 WebM with alpha",
+        "keepSound": false,
+        "declaredCreditsPerSecond": 1,
+        "inputDurationSeconds": 10.041
+      },
+      "estimatedCreditsAtSubmission": 170,
+      "fileSha256": "19c9dff3e39886a762c7a50d6538d733089632a1c5bfa349cd2693e3d0788969",
+      "alphaFileSha256": "3f75920981de709e556e9f2f1e81c2d6d9d6459f8fe1927de1ffdcb5f91d2809"
+    }
+  ],
+  "productionGate": {
+    "userApproval": "pending",
+    "alpha": "generated-review-not-final-native",
+    "nativeRuntime": "not integrated",
+    "otherPets": "not generated",
+    "motion": "first-candidates-under-review"
+  },
+  "estimatedGenerationCreditsAtSubmission": 340,
+  "billing": "Submission estimates only; final billed balance not reconciled.",
+  "comparison": {
+    "file": "comparison.mp4",
+    "left": "sleep",
+    "right": "yawn-stretch",
+    "background": "#FFF8EF",
+    "processing": "FFmpeg RGBA compositing at 1x original playback, unchanged temporal sequence, no interpolation or generated in-between frames."
+  },
+  "contactSheet": "contact-sheet.html"
+}
