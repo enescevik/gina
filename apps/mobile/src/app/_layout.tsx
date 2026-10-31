@@ -6,7 +6,7 @@ import { Nunito_400Regular, Nunito_600SemiBold, Nunito_700Bold } from "@expo-goo
 import { QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { colorScheme } from "nativewind";
-import { Stack } from "expo-router";
+import { Stack, type ErrorBoundaryProps } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Text, View } from "react-native";
 import { Button } from "@/components/ui/button";
@@ -62,4 +62,14 @@ function AppRoutes() {
       <Stack.Screen name="reset-password" /><Stack.Screen name="device" /><Stack.Screen name="s/[token]" />
     </Stack.Protected>
   </Stack>;
+}
+
+/** Keep unexpected route failures recoverable without exposing internal error details. */
+export function ErrorBoundary({ retry }: ErrorBoundaryProps) {
+  const { t } = useTranslation();
+  return <View style={{flex:1,backgroundColor:"#FFF8EF",justifyContent:"center",padding:28,gap:20}}>
+    <Text accessibilityRole="header" style={{fontSize:26,fontWeight:"700",color:"#284E4B"}}>{t("release.loadError")}</Text>
+    <Text style={{fontSize:18,lineHeight:27,color:"#425E58"}}>{t("release.screenRetry")}</Text>
+    <Button title={t("common.retry")} onPress={()=>void retry()}/>
+  </View>;
 }

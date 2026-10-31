@@ -1,7 +1,10 @@
+import { PetMotion } from "./pet-motion";
+import { router, usePathname } from "expo-router";
+import { ArrowLeft } from "lucide-react-native";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useRoomAudio } from "@/lib/use-room-audio";
 import { AtmosphereControls } from "./atmosphere-controls";
@@ -41,7 +44,7 @@ function RoomArt({ width, height, character, pet, atmosphere, quiet }: { width: 
   return <View pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" style={StyleSheet.absoluteFill}>
     <AtmosphereBackdrop frame={{left:width-w,top:height-h,width:w,height:h}} mode="study" atmosphere={atmosphere} quiet={quiet} />
     <Image source={V5_CHARACTERS[character]} style={{ position: "absolute", ...spriteRect(`character-${character}-v5`, width * .82, height * .92, width * .27, height * .53) }} resizeMode="contain" />
-    {pet !== "none" ? <Image source={V5_PETS[pet]} resizeMode="contain" style={{ position: "absolute", ...spriteRect(`pet-${pet}`, width * .665, height * .93, width * .15, height * .13) }} /> : null}
+    {pet !== "none" ? <PetMotion pet={pet} centerX={width * .79} floor={height * .93} restHeight={height * .13} atmosphere={atmosphere} quiet={quiet} /> : null}
   </View>;
 }
 
@@ -60,18 +63,26 @@ export interface ChildScreenProps {
 /** Shared child surface; explicit preview props override the saved room preferences. */
 export function ChildScreen({ title, subtitle, children, loading = false, character: previewCharacter, pet: previewPet, surface = "board" }: ChildScreenProps) {
   const { t } = useTranslation();
-  const { childId } = useActiveChild();
+  const { childId, path } = useActiveChild();
+  const pathname = usePathname();
   const prefs = useChildRoomPrefs(childId);
   const atmosphere = useRoomAtmosphere();
   const audio = useRoomAudio(atmosphere, surface === "desk");
   const character = previewCharacter ?? (prefs.data?.characterKey === "girl" || prefs.data?.characterKey === "boy" ? prefs.data.characterKey : "unspecified");
   const pet = previewPet ?? (prefs.data?.petKey as PetKey | undefined) ?? "cat";
-  const { width, height, fontScale } = useWindowDimensions();
-  const wide = width >= 900 && height >= 600 && fontScale <= 1.2;
+  const window = useWindowDimensions();
+  const insets = useSafeAreaInsets();
+  const width = window.width - insets.left - insets.right;
+  const height = window.height - insets.top - insets.bottom;
+  const fontScale = window.fontScale;
+  const wide = width >= 600 && width > height && fontScale <= 1.2;
   const skin = surface === "desk" ? "child-notebook-v5" : surface === "collection" ? "child-cabinet-v5" : "child-board-v5";
   const petTouch = (w: number, h: number) => pet === "cat" && audio.listening ? <Pressable accessibilityRole="button" accessibilityLabel={t("atmosphere.petCat")} accessibilityHint={t("atmosphere.petCatHint")} onPress={audio.petCat} style={{position:"absolute",left:w*.665-Math.max(48,w*.15)/2,top:h*.93-Math.max(48,h*.13),width:Math.max(48,w*.15),height:Math.max(48,h*.13)}}/> : null;
   const header = <View style={styles.heading}>
-    <Text accessibilityRole="header" style={styles.title}>{title}</Text>
+    <View style={{flexDirection:"row",alignItems:"center",gap:10}}>
+      {!pathname.endsWith("/today") ? <Pressable accessibilityRole="button" accessibilityLabel={t("child.today")} onPress={()=>router.navigate(path("today"))} style={{minWidth:48,minHeight:48,borderRadius:16,borderWidth:2,borderColor:"#527E72",backgroundColor:"#E1F2EB",alignItems:"center",justifyContent:"center"}}><ArrowLeft size={24} color="#284E4B"/></Pressable> : null}
+      <Text accessibilityRole="header" style={[styles.title,{flex:1,fontSize:height<600?24:30}]}>{title}</Text>
+    </View>
     {surface !== "collection" ? <Text style={styles.subtitle}>{subtitle ?? t(surface === "desk" ? "childV5.deskSubtitle" : "childV5.subtitle")}</Text> : null}
   </View>;
   const body = loading ? <View style={styles.loading} accessibilityLiveRegion="polite">
@@ -115,7 +126,7 @@ export const childStyles = StyleSheet.create({
 });
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: "#FFF8EF" }, fill: { flex: 1, minHeight: 0 },
-  board: { position: "absolute", left: "1.5%", top: "5%", width: "64%", height: "82%", borderRadius: 20, overflow: "hidden" },
+  board: { position: "absolute", left: "1.5%", top: "5%", width: "64%", height: "90%", borderRadius: 20, overflow: "hidden" },
   heading: { gap: 2, paddingHorizontal: 8, paddingVertical: 8 },
   title: { fontFamily: "Baloo2_700Bold", color: "#284E4B", fontSize: 30, lineHeight: 38 },
   subtitle: { fontFamily: "Nunito_600SemiBold", color: "#52685D", fontSize: 15, lineHeight: 22 },

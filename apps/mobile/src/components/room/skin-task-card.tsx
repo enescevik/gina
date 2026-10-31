@@ -82,7 +82,7 @@ export function SkinTaskCard({
                 contentClassName="items-center justify-center"
               >
                 <Text className="font-display text-white" style={{ fontSize: fs(large ? 22 : isNext ? 20 : 18), lineHeight: fs(large ? 28 : 24) }}>
-                  {t("room.start")}
+                  {t("child.markDone")}
                 </Text>
               </NineSlice>
             ) : null}

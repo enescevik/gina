@@ -18,8 +18,8 @@ export default function TodayScreen() {
   const { claims } = useSession();
   const childId = claims?.child_id ?? "";
   const queryClient = useQueryClient();
-  const { width, fontScale } = useWindowDimensions();
-  const wide = width >= WIDE_LAYOUT_MIN_DP && fontScale <= 1.2;
+  const { width, height, fontScale } = useWindowDimensions();
+  const wide = (width >= WIDE_LAYOUT_MIN_DP || (width >= 600 && width > height)) && fontScale <= 1.2;
 
   const child = useQuery({
     queryKey: ["child_profile", childId],

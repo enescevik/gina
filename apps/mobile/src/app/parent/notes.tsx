@@ -117,7 +117,7 @@ export default function ParentNotesScreen() {
               key={option}
               accessibilityRole="button"
               onPress={() => setVisibility(option)}
-              className={`min-h-12 items-center justify-center rounded-full px-3 py-2 ${visibility === option ? "bg-teal-dark" : "bg-white"}`}
+              className={`min-h-12 items-center justify-center rounded-full px-3 py-2 ${visibility === option ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}
             >
               <Text className={visibility === option ? "font-body-bold text-white" : "font-body text-ink"}>{t(`note.visibility.${option}`)}</Text>
             </Pressable>

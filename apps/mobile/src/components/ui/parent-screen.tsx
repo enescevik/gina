@@ -38,7 +38,7 @@ export function ParentScreen({ title, subtitle, children, home = false, navigati
             <Text style={styles.eyebrow}>{t(navigation ? "release.parentSpace" : "app.name")}</Text>
           </View>
           <Text accessibilityRole="header" style={styles.title}>{title}</Text>
-          {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+          {subtitle ? <Text style={[styles.subtitle, subtitle.length > 90 ? {maxWidth:"100%",backgroundColor:"#FFF8EF",paddingTop:8} : undefined]}>{subtitle}</Text> : null}
         </View>
         <View style={styles.body}>
           {loading ? <View style={styles.state} accessibilityLiveRegion="polite"><LoadingStar size={64} accessibilityLabel={t("release.loading")} /><Text style={styles.copy}>{t("release.loading")}</Text></View>

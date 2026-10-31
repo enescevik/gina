@@ -120,7 +120,7 @@ export default function ParentGradesScreen() {
                 accessibilityRole="button"
                 accessibilityState={{ selected: kind === option }}
                 onPress={() => setKind(option)}
-                className={`min-h-12 items-center justify-center rounded-full px-3 py-2 ${kind === option ? "bg-teal-dark" : "bg-white"}`}
+                className={`min-h-12 items-center justify-center rounded-full px-3 py-2 ${kind === option ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}
               >
                 <Text className={kind === option ? "font-body-bold text-white" : "font-body text-ink"}>{t(`grade.kind.${option}`)}</Text>
               </Pressable>

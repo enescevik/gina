@@ -1,7 +1,8 @@
+import { Button } from "@/components/ui/button";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { ActivityIndicator, Image, Pressable, ScrollView, Text, View, type ImageSourcePropType } from "react-native";
+import { ActivityIndicator, Image, Pressable, ScrollView, Text, View, useWindowDimensions, type ImageSourcePropType } from "react-native";
 
 import Wordmark from "../../../../../packages/assets/brand/yan-yana/logo-wordmark.svg";
 
@@ -79,6 +80,34 @@ export function RoomChildHome({ childId, childName, character: providedCharacter
   const character = providedCharacter ?? (prefs.data?.characterKey === "girl" || prefs.data?.characterKey === "boy" ? prefs.data.characterKey : "unspecified");
   // Pano kaydırma alanının yüksekliği: iki kâğıt tam sığacak şekilde kart yüksekliği buradan hesaplanır.
   const [listHeight, setListHeight] = useState(0);
+  const { height } = useWindowDimensions();
+  if (height < 600) return <RoomScene character={character} pet={pet}>
+    {() => <>
+      <View style={{position:"absolute",left:12,right:12,top:6,flexDirection:"row",alignItems:"center",justifyContent:"space-between",gap:12}}>
+        <Text style={{fontFamily:"Baloo2_700Bold",fontSize:23,color:"#284E4B",backgroundColor:"#FFF8EF",paddingHorizontal:12,borderRadius:12}}>{t("child.hello",{name:childName})} · {t("room.starCount",{count:data.stars})}</Text>
+        <Button title={t("room.parentExit")} variant="secondary" onPress={onParentExit} loading={exitBusy}/>
+      </View>
+      <NineSlice skin="child-board-v5" scale={.6} style={{position:"absolute",left:8,top:62,bottom:8,width:"43%"}} contentStyle={{flex:1}}>
+        <Text style={{fontFamily:"Baloo2_700Bold",fontSize:22,color:"#284E4B"}}>{t("child.today")}</Text>
+        <ScrollView contentContainerStyle={{gap:10,paddingBottom:8}}>
+          <ErrorText error={actionError ?? data.error}/>
+          {data.loading ? <ActivityIndicator color="#0B7F7F"/> : null}
+          {!data.loading && !data.error && !data.due.length ? <Text style={{fontFamily:"Nunito_700Bold",fontSize:17,color:"#284E4B"}}>{t("child.allDone")}</Text> : null}
+          {sortForBoard(data.due).map(task=><SkinTaskCard key={task.id} task={task} s={1} stacked isNext={false} completing={data.completing} onComplete={()=>data.complete(task.id)}/>)}
+        </ScrollView>
+      </NineSlice>
+      <ScrollView style={{position:"absolute",right:10,top:66,bottom:12,width:"28%"}} contentContainerStyle={{gap:8}}>
+        <View style={{backgroundColor:"#FFF2CC",borderWidth:2,borderColor:"#B77B39",borderRadius:16,padding:12,gap:6}}>
+          <Text style={{fontFamily:"Baloo2_700Bold",fontSize:18,color:"#284E4B"}}>{goal.data?.rewardTitle ?? t("room.myGoal")}</Text>
+          {goal.data ? <><Text style={{fontFamily:"Nunito_700Bold",fontSize:16,color:"#425E58"}}>{data.stars} / {goal.data.cost}</Text><BoardProgress done={data.stars} total={goal.data.cost} s={.65}/></> : null}
+        </View>
+        <View style={{flexDirection:"row",flexWrap:"wrap",gap:8}}>
+
+        {([['goal','room.myGoal'],['week','child.week'],['calendar','child.calendar'],['collection','room.myCollection'],['prova','prova.title'],['room-preview','childV5.customize']] as const).map(([page,label])=><View key={page} style={{width:"47%"}}><Button title={t(label)} variant="secondary" onPress={()=>router.push(childPath(page,actingAsParent))}/></View>)}
+        </View>
+      </ScrollView>
+    </>}
+  </RoomScene>;
 
   return (
     <RoomScene character={character} pet={pet}>
@@ -288,11 +317,7 @@ export function RoomChildHome({ childId, childName, character: providedCharacter
               </NineSlice>
             </View>
 
-            <SkinPressable skin="button-outline" pressedSkin="button-outline-pressed" scale={s}
-              accessibilityLabel={t("childV5.customize")} onPress={() => router.push(childPath("room-preview", actingAsParent))}
-              style={{ position: "absolute", left: frame.left + frame.width * .42, bottom: 10, minHeight: 48 }}>
-              <Text className="font-body-bold text-ink">{t("childV5.customize")}</Text>
-            </SkinPressable>
+            <View style={{ position: "absolute", left: frame.left + frame.width * .42, bottom: 10 }}><Button variant="secondary" title={t("childV5.customize")} onPress={() => router.push(childPath("room-preview", actingAsParent))}/></View>
             {/* Kitaplık: Prova kapısı; atanmış deneme varsa işaret */}
             <Pressable
               accessibilityRole="button"

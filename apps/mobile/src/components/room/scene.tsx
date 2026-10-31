@@ -1,3 +1,4 @@
+import { PetMotion } from "./pet-motion";
 import { useTranslation } from "react-i18next";
 import { useRoomAudio } from "@/lib/use-room-audio";
 import { AtmosphereControls } from "./atmosphere-controls";
@@ -92,13 +93,11 @@ export function RoomScene({ character, pet, children }: RoomSceneProps) {
   const containerWidth = width - insets.left - insets.right;
   const containerHeight = height - insets.top - insets.bottom;
   const frame = sceneFrame(containerWidth, containerHeight);
+  const compact = height < 600;
   const charRect = characterRect(character, frame);
+  if (compact) charRect.left += containerWidth * .62 - (frame.left + CHARACTER_PLACEMENT.centerX * frame.width);
   const petImage = petSource(pet);
   const petSize = PET_PLACEMENT.height * frame.height;
-  const petEntry = (roomsManifest as CharacterEntry[]).find((entry) => entry.slug === `pet-${pet}`);
-  const petCanvas = petEntry?.width ?? 1254;
-  const [px0 = 0, py0 = 0, px1 = petCanvas, py1 = petCanvas] = petEntry?.contentBounds ?? [];
-  const petScale = petSize / Math.max(1, py1 - py0);
 
   return (
     <View
@@ -107,21 +106,7 @@ export function RoomScene({ character, pet, children }: RoomSceneProps) {
     >
       <View style={{ flex: 1 }}>
         <AtmosphereBackdrop frame={frame} atmosphere={atmosphere} />
-        {petImage ? (
-          <Image
-            source={petImage}
-            resizeMode="contain"
-            accessible={false}
-            importantForAccessibility="no-hide-descendants"
-            style={{
-              position: "absolute",
-              left: frame.left + PET_PLACEMENT.centerX * frame.width - (px0 + px1) / 2 * petScale,
-              top: frame.top + PET_PLACEMENT.footY * frame.height - py1 * petScale,
-              width: petCanvas * petScale,
-              height: (petEntry?.height ?? petCanvas) * petScale,
-            }}
-          />
-        ) : null}
+        {petImage ? <PetMotion pet={pet as Exclude<PetKey, "none">} centerX={compact ? containerWidth * .49 : frame.left + PET_PLACEMENT.centerX * frame.width} floor={frame.top + PET_PLACEMENT.footY * frame.height} restHeight={petSize} atmosphere={atmosphere} /> : null}
         <Image
           source={CHARACTERS[character]}
           resizeMode="contain"
@@ -131,7 +116,7 @@ export function RoomScene({ character, pet, children }: RoomSceneProps) {
         />
         {pet === "cat" && audio.listening ? <Pressable accessibilityRole="button" accessibilityLabel={t("atmosphere.petCat")} accessibilityHint={t("atmosphere.petCatHint")} onPress={audio.petCat} style={{position:"absolute",left:frame.left+PET_PLACEMENT.centerX*frame.width-Math.max(60,petSize),top:frame.top+PET_PLACEMENT.footY*frame.height-Math.max(48,petSize),width:Math.max(120,petSize*2),height:Math.max(48,petSize)}} /> : null}
         {children({ rect: (zone) => zoneRect(zone, frame), frame, night: (atmosphere.sun?.daylight ?? 1) < .55 })}
-        <View style={{position:"absolute",left:frame.left+frame.width*.025,bottom:10,maxWidth:frame.width*.36}}><AtmosphereControls atmosphere={atmosphere} audio={audio}/></View>
+        <View style={{position:"absolute",left:compact ? containerWidth*.45 : frame.left+frame.width*.025,bottom:4,maxWidth:frame.width*.36}}><AtmosphereControls atmosphere={atmosphere} audio={audio}/></View>
       </View>
     </View>
   );

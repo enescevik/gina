@@ -1,0 +1,60 @@
+# bağımlılıklar
+node_modules/
+.pnpm-store/
+
+# derleme çıktıları
+dist/
+build/
+out/
+.turbo/
+*.tsbuildinfo
+
+# Expo / React Native
+.expo/
+.expo-shared/
+apps/mobile/ios/
+apps/mobile/android/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+expo-env.d.ts
+
+# Next.js
+.next/
+
+# Supabase (yerel)
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+
+# ortam dosyaları ve sırlar
+.env
+.env.*
+!.env.example
+
+# işletim sistemi / editör
+.DS_Store
+*.log
+npm-debug.log*
+yarn-error.log*
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# test
+coverage/
+
+# Firebase/FCM istemci dosyası EAS secret olarak verilir, repoya girmez
+apps/mobile/google-services.json
+apps/mobile/GoogleService-Info.plist
+
+# Only application sources and production assets belong in the EAS archive.
+.git
+.playwright-mcp/
+docs/
+*.pem
+.metro-health-check*

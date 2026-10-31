@@ -120,14 +120,14 @@ export default function ParentCalendarScreen() {
               accessibilityRole="button"
               accessibilityState={{ selected: type === option }}
               onPress={() => setType(option)}
-              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${type === option ? "bg-teal-dark" : "bg-white"}`}
+              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${type === option ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}
             >
               <Text className={type === option ? "font-body-bold text-white" : "font-body text-ink"}>{t(`event.type.${option}`)}</Text>
             </Pressable>
           ))}
         </View>
         <View className="flex-row flex-wrap gap-2">
-          <Pressable accessibilityRole="button" onPress={() => setChildId(null)} className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${childId === null ? "bg-teal-dark" : "bg-white"}`}>
+          <Pressable accessibilityRole="button" onPress={() => setChildId(null)} className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${childId === null ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}>
             <Text className={childId === null ? "font-body-bold text-white" : "font-body text-ink"}>{t("calendar.allFamily")}</Text>
           </Pressable>
           {children.data?.map((child) => (
@@ -136,7 +136,7 @@ export default function ParentCalendarScreen() {
               accessibilityRole="button"
               accessibilityState={{ selected: childId === child.id }}
               onPress={() => setChildId(child.id)}
-              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${childId === child.id ? "bg-teal-dark" : "bg-white"}`}
+              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${childId === child.id ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}
             >
               <Text className={childId === child.id ? "font-body-bold text-white" : "font-body text-ink"}>{child.name}</Text>
             </Pressable>
@@ -159,7 +159,7 @@ export default function ParentCalendarScreen() {
               accessibilityRole="button"
               accessibilityState={{ selected: repeatDays.includes(day) }}
               onPress={() => setRepeatDays((prev) => (prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day].sort()))}
-              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${repeatDays.includes(day) ? "bg-teal-dark" : "bg-white"}`}
+              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${repeatDays.includes(day) ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}
             >
               <Text className={repeatDays.includes(day) ? "font-body-bold text-white" : "font-body text-ink"}>{t(`weekday.${day}`)}</Text>
             </Pressable>

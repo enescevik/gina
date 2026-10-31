@@ -22,8 +22,8 @@ export default function ChildModeTodayScreen() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
 
-  const { width, fontScale } = useWindowDimensions();
-  const wide = width >= WIDE_LAYOUT_MIN_DP && fontScale <= 1.2;
+  const { width, height, fontScale } = useWindowDimensions();
+  const wide = (width >= WIDE_LAYOUT_MIN_DP || (width >= 600 && width > height)) && fontScale <= 1.2;
 
   if (!actingChild) return <Redirect href="/parent/child-mode" />;
 

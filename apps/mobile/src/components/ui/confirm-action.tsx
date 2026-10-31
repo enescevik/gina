@@ -11,5 +11,5 @@ export function ConfirmAction({ title, busy, onConfirm, message }: { title: stri
     <Text accessibilityLiveRegion="polite" style={{ fontFamily: "Nunito_600SemiBold", fontSize: 16, color: "#294A48" }}>{message ?? t("release.confirmRemove")}</Text>
     <Button title={title} variant="danger" loading={busy} onPress={() => { onConfirm(); setConfirming(false); }} />
     <Button title={t("common.cancel")} variant="ghost" disabled={busy} onPress={() => setConfirming(false)} />
-  </View> : <Button title={title} variant="ghost" disabled={busy} onPress={() => setConfirming(true)} />;
+  </View> : <Button title={title} variant="danger" disabled={busy} onPress={() => setConfirming(true)} />;
 }

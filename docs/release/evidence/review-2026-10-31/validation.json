@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-31",
+  "scope": "browser, fixture regression and compile checks; not physical-device certification",
+  "liveDemo": {
+    "parentScreens": 19,
+    "childScreens": 7,
+    "childViewports": [
+      [
+        844,
+        390
+      ],
+      [
+        1280,
+        800
+      ]
+    ],
+    "calendarRoundTrips": 4,
+    "calendarErrors": [],
+    "databaseRecordsModified": false
+  },
+  "fixtures": {
+    "parentScreens": 8,
+    "provaScreens": 10,
+    "accountScreens": 9,
+    "childScreens": 5,
+    "flowAssertionsPassed": 10,
+    "pageErrors": [],
+    "backend": "fully intercepted"
+  },
+  "core": {
+    "filesPassed": 4,
+    "testsPassed": 18
+  },
+  "pending": [
+    "physical iPhone/iPad animation memory, battery and orientation checks",
+    "real APNs notifications and App Store purchases",
+    "production sign-in/end-to-end transactions",
+    "TestFlight processing"
+  ]
+}

@@ -13,5 +13,5 @@ export default function ParentLayout() {
   const path = usePathname();
   if (actingChild && !path.startsWith("/parent/child-mode/")) return <Redirect href="/parent/child-mode/today" />;
   if (!actingChild && path.startsWith("/parent/child-mode/") ) return <Redirect href="/parent/child-mode" />;
-  return <Stack screenOptions={{ headerShown: false, gestureEnabled: !actingChild }} />;
+  return <Stack screenOptions={{ headerShown: false, gestureEnabled: !actingChild, orientation: actingChild ? "landscape" : "portrait" }} />;
 }
