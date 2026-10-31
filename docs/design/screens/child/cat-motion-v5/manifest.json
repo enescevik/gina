@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "status": "review-candidates-awaiting-user-feedback",
+  "status": "user-approved-motion-direction",
   "reference": "../../../../../packages/assets/rooms/v2/pet-cat.webp",
   "referenceSha256": "96121aad50037aa3bcf05b67e5ed426b3ecb0aedccba61a63d7e13c75d38660d",
   "stage": {
@@ -83,11 +83,11 @@
     }
   ],
   "productionGate": {
-    "userApproval": "pending",
+    "userApproval": "approved by user: Güzel olmuş, bu şekilde devam edelim",
     "alpha": "generated-review-not-final-native",
     "nativeRuntime": "not integrated",
-    "otherPets": "not generated",
-    "motion": "first-candidates-under-review"
+    "otherPets": "sleep and stretch studies in ../pet-motion-v5/manifest.json",
+    "motion": "approved for extending the style to dog, monkey and lion"
   },
   "estimatedGenerationCreditsAtSubmission": 340,
   "billing": "Submission estimates only; final billed balance not reconciled.",

@@ -1,0 +1,518 @@
+{
+  "media": {
+    "dog-sleep": {
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "vp9",
+            "width": 1440,
+            "height": 1440,
+            "avg_frame_rate": "24/1",
+            "tags": {
+              "ALPHA_MODE": "1",
+              "ENCODER": "Lavc61.19.100 libvpx-vp9",
+              "DURATION": "00:00:10.042000000"
+            }
+          }
+        ],
+        "format": {
+          "duration": "10.042000",
+          "size": "17556336"
+        }
+      },
+      "decodedFrames": 241,
+      "sampleCanvas": [
+        256,
+        256
+      ],
+      "alpha32BoundsRange": {
+        "left": [
+          42,
+          42
+        ],
+        "top": [
+          105,
+          108
+        ],
+        "right": [
+          218,
+          220
+        ],
+        "bottom": [
+          186,
+          188
+        ]
+      },
+      "frameEdgeContact": [],
+      "noTransparentPixels": [],
+      "firstLastMeanAbsoluteChannelDifference": [
+        0.27850341796875,
+        0.2376251220703125,
+        0.266510009765625,
+        0.037384033203125
+      ],
+      "note": "Pixel diagnostics only; they do not establish natural anatomy or native performance."
+    },
+    "dog-yawn-stretch": {
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "vp9",
+            "width": 1440,
+            "height": 1440,
+            "avg_frame_rate": "24/1",
+            "tags": {
+              "alpha_mode": "1",
+              "ENCODER": "Lavc59.37.100 libvpx-vp9",
+              "DURATION": "00:00:10.042000000"
+            }
+          }
+        ],
+        "format": {
+          "duration": "10.042000",
+          "size": "1375692"
+        }
+      },
+      "decodedFrames": 241,
+      "sampleCanvas": [
+        256,
+        256
+      ],
+      "alpha32BoundsRange": {
+        "left": [
+          15,
+          42
+        ],
+        "top": [
+          86,
+          108
+        ],
+        "right": [
+          208,
+          219
+        ],
+        "bottom": [
+          186,
+          188
+        ]
+      },
+      "frameEdgeContact": [],
+      "noTransparentPixels": [],
+      "firstLastMeanAbsoluteChannelDifference": [
+        0.25390625,
+        0.2264251708984375,
+        0.275482177734375,
+        0.0309906005859375
+      ],
+      "note": "Pixel diagnostics only; they do not establish natural anatomy or native performance."
+    },
+    "monkey-sleep": {
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "vp9",
+            "width": 1440,
+            "height": 1440,
+            "avg_frame_rate": "24/1",
+            "tags": {
+              "alpha_mode": "1",
+              "ENCODER": "Lavc59.37.100 libvpx-vp9",
+              "DURATION": "00:00:10.042000000"
+            }
+          }
+        ],
+        "format": {
+          "duration": "10.042000",
+          "size": "1074996"
+        }
+      },
+      "decodedFrames": 241,
+      "sampleCanvas": [
+        256,
+        256
+      ],
+      "alpha32BoundsRange": {
+        "left": [
+          36,
+          44
+        ],
+        "top": [
+          99,
+          101
+        ],
+        "right": [
+          217,
+          218
+        ],
+        "bottom": [
+          189,
+          190
+        ]
+      },
+      "frameEdgeContact": [],
+      "noTransparentPixels": [],
+      "firstLastMeanAbsoluteChannelDifference": [
+        0.251708984375,
+        0.2143096923828125,
+        0.261199951171875,
+        0.029541015625
+      ],
+      "note": "Pixel diagnostics only; they do not establish natural anatomy or native performance."
+    },
+    "monkey-yawn-stretch": {
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "vp9",
+            "width": 1440,
+            "height": 1440,
+            "avg_frame_rate": "24/1",
+            "tags": {
+              "alpha_mode": "1",
+              "ENCODER": "Lavc59.37.100 libvpx-vp9",
+              "DURATION": "00:00:10.042000000"
+            }
+          }
+        ],
+        "format": {
+          "duration": "10.042000",
+          "size": "1804736"
+        }
+      },
+      "decodedFrames": 241,
+      "sampleCanvas": [
+        256,
+        256
+      ],
+      "alpha32BoundsRange": {
+        "left": [
+          35,
+          44
+        ],
+        "top": [
+          80,
+          103
+        ],
+        "right": [
+          217,
+          221
+        ],
+        "bottom": [
+          189,
+          191
+        ]
+      },
+      "frameEdgeContact": [],
+      "noTransparentPixels": [],
+      "firstLastMeanAbsoluteChannelDifference": [
+        0.2830352783203125,
+        0.2373809814453125,
+        0.2794036865234375,
+        0.041046142578125
+      ],
+      "note": "Pixel diagnostics only; they do not establish natural anatomy or native performance."
+    },
+    "lion-sleep": {
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "vp9",
+            "width": 1440,
+            "height": 1440,
+            "avg_frame_rate": "24/1",
+            "tags": {
+              "alpha_mode": "1",
+              "ENCODER": "Lavc59.37.100 libvpx-vp9",
+              "DURATION": "00:00:10.042000000"
+            }
+          }
+        ],
+        "format": {
+          "duration": "10.042000",
+          "size": "576550"
+        }
+      },
+      "decodedFrames": 241,
+      "sampleCanvas": [
+        256,
+        256
+      ],
+      "alpha32BoundsRange": {
+        "left": [
+          43,
+          43
+        ],
+        "top": [
+          93,
+          96
+        ],
+        "right": [
+          220,
+          220
+        ],
+        "bottom": [
+          188,
+          188
+        ]
+      },
+      "frameEdgeContact": [],
+      "noTransparentPixels": [],
+      "firstLastMeanAbsoluteChannelDifference": [
+        0.4307403564453125,
+        0.3935546875,
+        0.353729248046875,
+        0.21685791015625
+      ],
+      "note": "Pixel diagnostics only; they do not establish natural anatomy or native performance."
+    },
+    "lion-yawn-stretch": {
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "vp9",
+            "width": 1440,
+            "height": 1440,
+            "avg_frame_rate": "24/1",
+            "tags": {
+              "alpha_mode": "1",
+              "ENCODER": "Lavc59.37.100 libvpx-vp9",
+              "DURATION": "00:00:10.042000000"
+            }
+          }
+        ],
+        "format": {
+          "duration": "10.042000",
+          "size": "1614813"
+        }
+      },
+      "decodedFrames": 241,
+      "sampleCanvas": [
+        256,
+        256
+      ],
+      "alpha32BoundsRange": {
+        "left": [
+          31,
+          43
+        ],
+        "top": [
+          54,
+          96
+        ],
+        "right": [
+          207,
+          241
+        ],
+        "bottom": [
+          184,
+          189
+        ]
+      },
+      "frameEdgeContact": [],
+      "noTransparentPixels": [],
+      "firstLastMeanAbsoluteChannelDifference": [
+        0.4120941162109375,
+        0.354949951171875,
+        0.3624267578125,
+        0.2095489501953125
+      ],
+      "note": "Pixel diagnostics only; they do not establish natural anatomy or native performance."
+    }
+  },
+  "nativeDeviceAcceptance": "not performed",
+  "passed": true,
+  "files": [
+    {
+      "file": "comparison.mp4",
+      "bytes": 1396121,
+      "sha256": "bdea17c01b7bf659803d9dc8ffc83f32c9759477e751435d47a14b7d22c8ad6a"
+    },
+    {
+      "file": "dog-reference-poster.webp",
+      "bytes": 244354,
+      "sha256": "8b22f0afd27c322c34b25f66f6a10474da703b0dff4f4aa74d308970e2b89668"
+    },
+    {
+      "file": "dog-reference-stage.webp",
+      "bytes": 208284,
+      "sha256": "f2d5d1f3bdfd2509532a0b3a8626a9dc908cec24a3041edc477b2c3bed8eaff6"
+    },
+    {
+      "file": "dog-review-cream.png",
+      "bytes": 229304,
+      "sha256": "034d28c46dff521d2491540e67eefdf2615f9938c41761c7cc53c5a971c6503f"
+    },
+    {
+      "file": "dog-review-dark.png",
+      "bytes": 228615,
+      "sha256": "2cd83d662935a7eadba66d04e7ad8283d68642b66bc8e4e83416627d89f36888"
+    },
+    {
+      "file": "dog-review-room.png",
+      "bytes": 1123637,
+      "sha256": "abe62963a3c198328adc29531a51347fd0b7c08634f039588499b82f07b647d9"
+    },
+    {
+      "file": "dog-sleep-alpha.webm",
+      "bytes": 17556336,
+      "sha256": "ac054418c91fd123c24f5c8f92e7eb26ebdcaaaed375ede847f8b5fcd1637e9b"
+    },
+    {
+      "file": "dog-sleep-contact.webp",
+      "bytes": 253596,
+      "sha256": "63db91dbefe7fa20af4cafb06abf42f2011751cc76ced1d9fdf7b279b960faf5"
+    },
+    {
+      "file": "dog-sleep-provider-alpha.webm",
+      "bytes": 975082,
+      "sha256": "7faee47f2849c7be97ca7694ab0b7151f87d2dc6bdcf4983b6b3f40019228505"
+    },
+    {
+      "file": "dog-sleep.mp4",
+      "bytes": 3407753,
+      "sha256": "7d10b015964d649f19c264d32dd73facfea0d0c6aa2bd59c01e324fbdf804572"
+    },
+    {
+      "file": "dog-yawn-stretch-alpha.webm",
+      "bytes": 1375692,
+      "sha256": "fd6d178e7b2fdb43552aaff1ac9e422af623c75fadf95b062d4b475c2563536b"
+    },
+    {
+      "file": "dog-yawn-stretch-contact.webp",
+      "bytes": 262196,
+      "sha256": "c333b6cbdc24770f64f7b19e5772819c98989b26f55c9fdd3b9dfee04052736c"
+    },
+    {
+      "file": "dog-yawn-stretch.mp4",
+      "bytes": 4221664,
+      "sha256": "cbe9eec73b0b67eaaa66a64898ff4f6ca4f12a161dcdef1bf6d90775946fe55f"
+    },
+    {
+      "file": "lion-reference-poster.webp",
+      "bytes": 266448,
+      "sha256": "35d9e1dc23207dc8ea5c784bf13a670633d720e59c884ff1d367095050d82c11"
+    },
+    {
+      "file": "lion-reference-stage.webp",
+      "bytes": 240540,
+      "sha256": "71b6b970bda19eefd73dc6156187a4704664f0c72f0fd8772df92725aee46a0c"
+    },
+    {
+      "file": "lion-review-cream.png",
+      "bytes": 267656,
+      "sha256": "b8dab9a7c9af99327d584f34e24aa101bcf13bf10e40d4c81034511c2a2e5604"
+    },
+    {
+      "file": "lion-review-dark.png",
+      "bytes": 268049,
+      "sha256": "93cf8907862f5ba9946f6221e0c995ca5d91da9db6677dd0c34c5098a9a99add"
+    },
+    {
+      "file": "lion-review-room.png",
+      "bytes": 1126193,
+      "sha256": "2fee5afabdf952eb38f71d021c798ac6a6de98844606bbbe9217d6fe3553d8f7"
+    },
+    {
+      "file": "lion-sleep-alpha.webm",
+      "bytes": 576550,
+      "sha256": "deab9dffd91c5d91d26eca47d4b2ff358d5a041e43030dfae98137b31066fc1c"
+    },
+    {
+      "file": "lion-sleep-contact.webp",
+      "bytes": 283066,
+      "sha256": "130c16643ec4e07300f1c9232467de89abe695fc1ffc0309514f1e99616c9236"
+    },
+    {
+      "file": "lion-sleep.mp4",
+      "bytes": 2959869,
+      "sha256": "5b78fc5cbf6786c8654213545b046c4eed8a735a9a9634cbdcb032b8f0d48abc"
+    },
+    {
+      "file": "lion-yawn-stretch-alpha.webm",
+      "bytes": 1614813,
+      "sha256": "05df559fccb5de9b03ed11c8e5460af60c18f5a3874c348cbd069b8d7de966ae"
+    },
+    {
+      "file": "lion-yawn-stretch-contact.webp",
+      "bytes": 306370,
+      "sha256": "995ffbe6971614516973890ae119e2f2d14d6ced20122c284039ce474a465fb9"
+    },
+    {
+      "file": "lion-yawn-stretch.mp4",
+      "bytes": 6009559,
+      "sha256": "585651845b140897d81e77693bd969dcddfb1b8d7bc264e0c1bf0c0996e033a3"
+    },
+    {
+      "file": "monkey-reference-poster.webp",
+      "bytes": 264406,
+      "sha256": "5fe14e10731c2c1c08313797ae943b53e9cea86141a28d153bf2b793571b99f4"
+    },
+    {
+      "file": "monkey-reference-stage.webp",
+      "bytes": 225140,
+      "sha256": "5ef4aafe80f9f44ccadbe3e44cc2b301b8889463513cd60dac8b6e8afcb55892"
+    },
+    {
+      "file": "monkey-review-cream.png",
+      "bytes": 270956,
+      "sha256": "07ee9e7474b521bb1684c7dc8897dd3ca3bb87c64d7f43759e65688815841f7d"
+    },
+    {
+      "file": "monkey-review-dark.png",
+      "bytes": 270445,
+      "sha256": "dce3529eb4b4093f814271efc272f40a61f25478732f171628925e1e79687a9e"
+    },
+    {
+      "file": "monkey-review-room.png",
+      "bytes": 1127651,
+      "sha256": "acb1bc5ef04567140f1ef4e1d56fbcff5761c0dc7e22b0d54bac0df6224f9f6c"
+    },
+    {
+      "file": "monkey-sleep-alpha.webm",
+      "bytes": 1074996,
+      "sha256": "efc54744d916058a85ca3e0eac5d903ad062c4a83c004903fc43d3055643acd1"
+    },
+    {
+      "file": "monkey-sleep-contact.webp",
+      "bytes": 264672,
+      "sha256": "85352c233917b12caff7f26bcd4bf3e33a83e50bf87b4f5ea6925943e6bf8938"
+    },
+    {
+      "file": "monkey-sleep.mp4",
+      "bytes": 3783288,
+      "sha256": "bf2d45e96c7f88fbeba86f8aeadffaaef9537f109d791333409bfda9550b89d5"
+    },
+    {
+      "file": "monkey-yawn-stretch-alpha.webm",
+      "bytes": 1804736,
+      "sha256": "bf82f600f3314feb9e34d77488947d99969ff79dec09a3059f662c42e111e24e"
+    },
+    {
+      "file": "monkey-yawn-stretch-contact.webp",
+      "bytes": 297378,
+      "sha256": "070a78c811c2e86ff4f00901e021de9f1e43559c8e24a64fd67d401b025098ab"
+    },
+    {
+      "file": "monkey-yawn-stretch.mp4",
+      "bytes": 5645796,
+      "sha256": "1a386f10581b1555fad6231e6a8786096ba05dfd80c8ddc9ad81a2e3f59965a6"
+    },
+    {
+      "file": "review-phone.png",
+      "bytes": 414484,
+      "sha256": "c2723d177aaa4662d3bc398789fe6cdbe63007607ddf2558c8a1006e21f55463"
+    }
+  ]
+}

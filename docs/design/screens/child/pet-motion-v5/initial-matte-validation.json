@@ -1,0 +1,35 @@
+{
+  "media": {
+    "dog-sleep": {
+      "decodedFrames": 241,
+      "frameEdgeContactCount": 0,
+      "noTransparentPixelsCount": 0
+    },
+    "dog-yawn-stretch": {
+      "decodedFrames": 241,
+      "frameEdgeContactCount": 4,
+      "noTransparentPixelsCount": 0
+    },
+    "monkey-sleep": {
+      "decodedFrames": 241,
+      "frameEdgeContactCount": 241,
+      "noTransparentPixelsCount": 241
+    },
+    "monkey-yawn-stretch": {
+      "decodedFrames": 241,
+      "frameEdgeContactCount": 241,
+      "noTransparentPixelsCount": 241
+    },
+    "lion-sleep": {
+      "decodedFrames": 241,
+      "frameEdgeContactCount": 0,
+      "noTransparentPixelsCount": 0
+    },
+    "lion-yawn-stretch": {
+      "decodedFrames": 241,
+      "frameEdgeContactCount": 0,
+      "noTransparentPixelsCount": 0
+    }
+  },
+  "status": "failed; do not use as final acceptance"
+}

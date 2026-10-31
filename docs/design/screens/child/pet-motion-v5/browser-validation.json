@@ -1,0 +1,122 @@
+{
+  "results": [
+    {
+      "species": "dog",
+      "label": "Köpek",
+      "desktop": {
+        "overflow": false,
+        "missingImages": [],
+        "videos": [
+          {
+            "src": "dog-sleep-alpha.webm",
+            "width": 1440,
+            "height": 1440,
+            "duration": 10.042,
+            "time": 3,
+            "paused": true
+          },
+          {
+            "src": "dog-yawn-stretch-alpha.webm",
+            "width": 1440,
+            "height": 1440,
+            "duration": 10.042,
+            "time": 5,
+            "paused": true
+          },
+          {
+            "src": "dog-yawn-stretch-alpha.webm",
+            "width": 1440,
+            "height": 1440,
+            "duration": 10.042,
+            "time": 5,
+            "paused": true
+          }
+        ]
+      },
+      "phone": {
+        "width": 390,
+        "overflow": false
+      },
+      "checker": 2
+    },
+    {
+      "species": "monkey",
+      "label": "Maymun",
+      "desktop": {
+        "overflow": false,
+        "missingImages": [],
+        "videos": [
+          {
+            "src": "monkey-sleep-alpha.webm",
+            "width": 1440,
+            "height": 1440,
+            "duration": 10.042,
+            "time": 3,
+            "paused": true
+          },
+          {
+            "src": "monkey-yawn-stretch-alpha.webm",
+            "width": 1440,
+            "height": 1440,
+            "duration": 10.042,
+            "time": 5,
+            "paused": true
+          },
+          {
+            "src": "monkey-yawn-stretch-alpha.webm",
+            "width": 1440,
+            "height": 1440,
+            "duration": 10.042,
+            "time": 5,
+            "paused": true
+          }
+        ]
+      },
+      "phone": {
+        "width": 390,
+        "overflow": false
+      },
+      "checker": 2
+    },
+    {
+      "species": "lion",
+      "label": "Aslan yavrusu",
+      "desktop": {
+        "overflow": false,
+        "missingImages": [],
+        "videos": [
+          {
+            "src": "lion-sleep-alpha.webm",
+            "width": 1440,
+            "height": 1440,
+            "duration": 10.042,
+            "time": 3,
+            "paused": true
+          },
+          {
+            "src": "lion-yawn-stretch-alpha.webm",
+            "width": 1440,
+            "height": 1440,
+            "duration": 10.042,
+            "time": 5,
+            "paused": true
+          },
+          {
+            "src": "lion-yawn-stretch-alpha.webm",
+            "width": 1440,
+            "height": 1440,
+            "duration": 10.042,
+            "time": 5,
+            "paused": true
+          }
+        ]
+      },
+      "phone": {
+        "width": 390,
+        "overflow": false
+      },
+      "checker": 2
+    }
+  ],
+  "errors": []
+}

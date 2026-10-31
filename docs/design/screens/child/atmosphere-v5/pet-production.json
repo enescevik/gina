@@ -1,5 +1,5 @@
 {
-  "status": "cat-sleep-stretch-candidates-awaiting-review",
+  "status": "four-species-sleep-stretch-generated-native-pending",
   "reviewPackage": "docs/design/screens/child/cat-motion-v5/manifest.json",
   "reference": "packages/assets/rooms/v2/pet-cat.webp",
   "portraitReference": "packages/assets/rooms/v2/pet-cat-portrait.webp",
@@ -8,14 +8,46 @@
   "identity": "Keep the exact approved small curled ginger-and-white kitten, closed relaxed eyes, rounded ears, painted soft fur, warm light. Preserve markings, head proportions and compact silhouette. No new cartoon/3D style.",
   "camera": "Locked orthographic-style side/front camera. Fixed framing and source canvas. No zoom, camera motion or entire-character scaling. Feet/contact shadows must stay on a single ground line.",
   "clips": [
-    {"name":"sleep","seconds":8,"prompt":"A continuous restful sleep loop. Subtle ribcage movement only; head, paws and floor contact remain still. No whole-body breathing scale. Same first and last pose."},
-    {"name":"wake","seconds":3,"prompt":"Begin in the exact sleep pose. Eyelids open, then ears attend, then head lifts gently with neck and shoulder follow-through. Natural small feline weight transfer; paws do not slide."},
-    {"name":"idle-blink","seconds":6,"prompt":"Quiet attentive kitten with one irregular slow eyelid blink, tiny ear swivel and gentle head settling. Body weight remains grounded. Not a repeated metronome bob."},
-    {"name":"yawn-stretch","seconds":5,"prompt":"A small natural feline yawn and stretch. Eyelids narrow, jaw opens and closes, neck extends, spine lengthens, front paws press into the floor and weight transfers gradually. Full articulated anatomy; not a mouth-open still with a zoom effect."},
-    {"name":"play","seconds":4,"prompt":"A single small playful paw reach toward its own tail, a short head follow and gentle return. Stay within the original floor footprint; no extra toys, props, humans or scene changes."},
-    {"name":"settle-sleep","seconds":4,"prompt":"Turn the head gently down, draw paws in, curl into the exact approved resting shape and settle the chin. End in the original sleep reference pose without a cut or snap."}
+    {
+      "name": "sleep",
+      "seconds": 8,
+      "prompt": "A continuous restful sleep loop. Subtle ribcage movement only; head, paws and floor contact remain still. No whole-body breathing scale. Same first and last pose."
+    },
+    {
+      "name": "wake",
+      "seconds": 3,
+      "prompt": "Begin in the exact sleep pose. Eyelids open, then ears attend, then head lifts gently with neck and shoulder follow-through. Natural small feline weight transfer; paws do not slide."
+    },
+    {
+      "name": "idle-blink",
+      "seconds": 6,
+      "prompt": "Quiet attentive kitten with one irregular slow eyelid blink, tiny ear swivel and gentle head settling. Body weight remains grounded. Not a repeated metronome bob."
+    },
+    {
+      "name": "yawn-stretch",
+      "seconds": 5,
+      "prompt": "A small natural feline yawn and stretch. Eyelids narrow, jaw opens and closes, neck extends, spine lengthens, front paws press into the floor and weight transfers gradually. Full articulated anatomy; not a mouth-open still with a zoom effect."
+    },
+    {
+      "name": "play",
+      "seconds": 4,
+      "prompt": "A single small playful paw reach toward its own tail, a short head follow and gentle return. Stay within the original floor footprint; no extra toys, props, humans or scene changes."
+    },
+    {
+      "name": "settle-sleep",
+      "seconds": 4,
+      "prompt": "Turn the head gently down, draw paws in, curl into the exact approved resting shape and settle the chin. End in the original sleep reference pose without a cut or snap."
+    }
   ],
   "deliverable": "Editable rig/animation source if artist-produced; for generated video retain original clip, exact prompt, model, job id and processing provenance. Never label generated video as a rig. Runtime RGBA sequence or transparent lossless animated WebP with fixed canvas/ground line, plus poster and content bounds. Verify alpha edges on cream and dark surfaces.",
-  "acceptance": ["Compare beside V5 at actual phone/tablet size", "No sliding paws, floating ground, identity drift or mouth-only stretch", "No full-sprite scale animation", "Test loop joins and transitions", "Measure native frame time, decoded memory and battery", "Only after cat acceptance produce dog, monkey and lion with species-specific motion"],
-  "sound": "Cat purr exists as a licensed recording. Other species require their own licensed/approved quiet recordings; do not reuse cat purr for lion/monkey/dog. No automatic attention-seeking calls."
+  "acceptance": [
+    "Compare beside V5 at actual phone/tablet size",
+    "No sliding paws, floating ground, identity drift or mouth-only stretch",
+    "No full-sprite scale animation",
+    "Test loop joins and transitions",
+    "Measure native frame time, decoded memory and battery",
+    "Only after cat acceptance produce dog, monkey and lion with species-specific motion"
+  ],
+  "sound": "Cat purr exists as a licensed recording. Other species require their own licensed/approved quiet recordings; do not reuse cat purr for lion/monkey/dog. No automatic attention-seeking calls.",
+  "speciesReviewPackage": "docs/design/screens/child/pet-motion-v5/manifest.json"
 }
