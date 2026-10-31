@@ -23,11 +23,11 @@ Oda montajı mevcut `room-home-v5.webp` ve `character-girl-v5.webp` kaynakların
 
 Her şeffaf klibin 241 karesi çözümlendi. 256×256 kontrol ölçeğinde uykunun sol/sağ/alt sınırı sabit; üst sınır 95–98 arasında. Esnemede alt sınır 190–191 arasında. Hiçbir kare tuval kenarına değmiyor. Bunlar anatomi veya doğallık garantisi değildir; ayrıntılı sonuç `validation.json` içinde.
 
-- Kullanıcı hareket ve kimlik onayı bekleniyor.
+- Kullanıcı bu iki örneği onayladı ve aynı yaklaşımın köpek, maymun ve aslan yavrusuna uygulanmasını istedi. Bu sanat onayı native cihaz kabulü değildir.
 - Şeffaf WebM tarayıcı önizlemesi içindir; native iOS/Android format/performans kararı değildir. Bazı oynatıcılar alfa alanını siyah gösterebilir; önizlemenin krem/koyu/damalı zeminleriyle kontrol edilir.
 - MP4 üretimi düzenlenebilir kemik/rig kaynağı sağlamaz. Bu dosyalar rig diye adlandırılmaz.
 - Döngü birleşimi, klipler arası geçiş, kenar titreşimi, fiziksel cihaz bellek/kare süresi ve pil kabulü ayrı yapılmalıdır.
-- Diğer petler üretilmedi. Uygulama koduna, `apps/mobile/assets` klasörüne ve veritabanına dokunulmadı.
+- Kullanıcı onayından sonra diğer üç hayvanın uyku/esneme çalışması `../pet-motion-v5/` altında yürütülüyor. Bu pakette uygulama koduna, `apps/mobile/assets` klasörüne ve veritabanına dokunulmadı.
 
 ## Doğrulama
 

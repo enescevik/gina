@@ -1,0 +1,345 @@
+{
+  "schemaVersion": 1,
+  "status": "review-ready-frame-alpha-browser-checks-passed",
+  "approvedCat": "../cat-motion-v5/manifest.json",
+  "scope": "Three species, sleep + yawn/stretch each; no native integration",
+  "pets": [
+    {
+      "species": "dog",
+      "reference": "packages/assets/rooms/v2/pet-dog.webp",
+      "referenceSha256": "97055b05499fa275c278562d7edd23a01e1a95965db523def113e611ad03abd5",
+      "stage": {
+        "file": "dog-reference-stage.webp",
+        "poster": "dog-reference-poster.webp",
+        "width": 1024,
+        "height": 1024,
+        "sourceOffset": [
+          128,
+          320
+        ],
+        "contentBounds": [
+          166,
+          428,
+          878,
+          751
+        ],
+        "groundLine": 750,
+        "preparation": "Unchanged source RGBA pixels composited at (128,320); no rescale, redraw or distortion."
+      },
+      "clips": [
+        {
+          "slug": "sleep",
+          "taskId": "7106f7c0-dea4-49c7-a5b2-57c087ed421e",
+          "model": "kling-o3-pro",
+          "requestedDurationSeconds": 10,
+          "ratio": "1:1",
+          "generateAudio": false,
+          "prompt": "This is the small curled caramel-and-white puppy with long floppy caramel ears, a white forehead stripe and muzzle, dark brown nose, round white paws and a white-tipped curled tail. Preserve its puppy head proportions and patch boundaries. Animate only the exact animal in the supplied first frame. Preserve its V5 premium softly painted fur, warm light, face/head proportions, coat colours and markings throughout. Believable species-specific animal movement inside the SAME stylized illustration design, not a photoreal animal or a new character. Locked camera, constant framing and scale, perfectly uniform matte black background. Keep every fur tip, ear, hand/paw and tail fully inside the frame. Ground contact is consistent; don't translate or scale the entire sprite. One unbroken continuous shot, no cuts, zoom, scenery, toys, lettering, new accessories or sound. Return smoothly to the supplied exact resting pose at the end. The puppy stays asleep with eyes closed and chin resting on its forepaws. Two very gentle, slightly uneven breaths move only the ribcage/flank locally. A tiny sleepy ear-tip relaxation follows gravity once; the long ears remain heavy and soft, never stiff or upright. Paws, head support and curled tail stay grounded. No full-body inflation, panting, wagging or head bobbing. Finish with the original resting silhouette.",
+          "startFrame": "dog-reference-stage.webp",
+          "endFrame": "dog-reference-stage.webp",
+          "status": "generated-review-candidate",
+          "estimatedCreditsAtSubmission": 170,
+          "file": "dog-sleep.mp4",
+          "width": 1440,
+          "height": 1440,
+          "frameRate": "24/1",
+          "durationSeconds": 10.041667,
+          "fileSha256": "7d10b015964d649f19c264d32dd73facfea0d0c6aa2bd59c01e324fbdf804572",
+          "contactSheet": "dog-sleep-contact.webp",
+          "alphaFile": "dog-sleep-alpha.webm",
+          "alphaFileSha256": "ac054418c91fd123c24f5c8f92e7eb26ebdcaaaed375ede847f8b5fcd1637e9b",
+          "alphaProcessing": {
+            "model": "sam3",
+            "taskId": "e78de888-d9a4-4647-ae92-629aaf2bbb56",
+            "inputDurationSeconds": 10.041,
+            "keepSound": false,
+            "declaredCreditsPerSecond": 1,
+            "providerFile": "dog-sleep-provider-alpha.webm",
+            "cleanupRecord": "matte-cleanup.json"
+          }
+        },
+        {
+          "slug": "yawn-stretch",
+          "taskId": "62317a67-4cf9-4705-b8f3-2c6da37f04e1",
+          "model": "kling-o3-pro",
+          "requestedDurationSeconds": 10,
+          "ratio": "1:1",
+          "generateAudio": false,
+          "prompt": "Animate the exact original Gina caramel-and-white floppy-eared puppy in this image. Keep its warm painted fur, face proportions, coat patches, long ears, white forehead stripe and white tail tip unchanged. Locked camera, fixed scale, isolated uniform matte black background. A compact lying-down sleepy yawn: gently lift only the head and shoulders; the heavy ears follow with soft delayed movement. Open then close the jaw naturally with a brief tongue curl. Press both front paws into the ground and extend them only a very short distance, then return them and rest the chin on them. The hindquarters and curled tail remain stationary in exactly their original resting positions for the ENTIRE clip: the tail stays wrapped against the hindquarters, never uncoils, never wags and never stretches sideways. This is a small drowsy movement in place, not a full-body long stretch. Preserve generous empty space around the entire animal; all fur tips stay inside the frame throughout. No whole-sprite scaling, walking, sliding, camera motion, cuts, additional objects, text or audio. End in exactly the supplied sleeping pose.",
+          "startFrame": "dog-reference-stage.webp",
+          "endFrame": "dog-reference-stage.webp",
+          "status": "generated-review-candidate",
+          "estimatedCreditsAtSubmission": 170,
+          "width": 1440,
+          "height": 1440,
+          "frameRate": "24/1",
+          "durationSeconds": 10.041667,
+          "previousAttempts": [
+            {
+              "taskId": "9036d06a-9400-4c83-a609-2351e7205706",
+              "prompt": "This is the small curled caramel-and-white puppy with long floppy caramel ears, a white forehead stripe and muzzle, dark brown nose, round white paws and a white-tipped curled tail. Preserve its puppy head proportions and patch boundaries. Animate only the exact animal in the supplied first frame. Preserve its V5 premium softly painted fur, warm light, face/head proportions, coat colours and markings throughout. Believable species-specific animal movement inside the SAME stylized illustration design, not a photoreal animal or a new character. Locked camera, constant framing and scale, perfectly uniform matte black background. Keep every fur tip, ear, hand/paw and tail fully inside the frame. Ground contact is consistent; don't translate or scale the entire sprite. One unbroken continuous shot, no cuts, zoom, scenery, toys, lettering, new accessories or sound. Return smoothly to the supplied exact resting pose at the end. The puppy wakes just enough for one sleepy canine yawn and low foreleg stretch, then settles. Start curled, gently lift the muzzle with neck/shoulder follow-through; the floppy ears lag softly under their own weight. The jaw opens into a relaxed puppy yawn, tongue curves briefly, then closes. Extend the front paws a short distance forward, flex the wrists and lower the chest into a small lying-down stretch while the hindquarters remain tucked on the ground. Place paws deliberately, no sliding feet. The tail tip gives one tiny relaxed sweep, not repetitive wagging. Draw paws back, let the ears settle and rest the chin on the same paws again. No jumping, standing tall, human smile or feline arched-back pose.",
+              "fileSha256": "0b530e7e45a914f842ab735420c81353dff7e961b3c29be58d0816b3b65d3cc0",
+              "status": "rejected-by-frame-QA",
+              "reason": "Tail touches left canvas edge at frames 181–184",
+              "delivered": false,
+              "alphaTaskId": "a7e4fbfd-8d39-4af6-b43e-86f9a5c5d8e7"
+            }
+          ],
+          "file": "dog-yawn-stretch.mp4",
+          "fileSha256": "cbe9eec73b0b67eaaa66a64898ff4f6ca4f12a161dcdef1bf6d90775946fe55f",
+          "contactSheet": "dog-yawn-stretch-contact.webp",
+          "alphaProcessing": {
+            "model": "sam3",
+            "taskId": "3c0fc363-44cb-4814-a290-5afa011a129f",
+            "inputDurationSeconds": 10.041,
+            "keepSound": false,
+            "subject": "dog",
+            "declaredCreditsPerSecond": 1
+          },
+          "alphaFile": "dog-yawn-stretch-alpha.webm",
+          "alphaFileSha256": "fd6d178e7b2fdb43552aaff1ac9e422af623c75fadf95b062d4b475c2563536b"
+        }
+      ]
+    },
+    {
+      "species": "monkey",
+      "reference": "packages/assets/rooms/v2/pet-monkey.webp",
+      "referenceSha256": "a549f90f65d509826af2cc406aae1dd7d008dd5a245b6047db46eab831f97208",
+      "stage": {
+        "file": "monkey-reference-stage.webp",
+        "poster": "monkey-reference-poster.webp",
+        "width": 1024,
+        "height": 1024,
+        "sourceOffset": [
+          128,
+          320
+        ],
+        "contentBounds": [
+          176,
+          402,
+          870,
+          760
+        ],
+        "groundLine": 748,
+        "preparation": "Unchanged source RGBA pixels composited at (128,320); no rescale, redraw or distortion."
+      },
+      "clips": [
+        {
+          "slug": "sleep",
+          "taskId": "af87b07c-606b-4479-a6e1-ddaf74fa846e",
+          "model": "kling-o3-pro",
+          "requestedDurationSeconds": 10,
+          "ratio": "1:1",
+          "generateAudio": false,
+          "prompt": "This is the small curled brown monkey with a light cream face and hands, pink round ear interiors, tiny peach nose, soft cheek blush, a short swept hair tuft and its long curled brown tail. Preserve the large round ears, face mask, proportions and expressive closed eyelids. It is a monkey: hands and wrists, not cat paws. Animate only the exact animal in the supplied first frame. Preserve its V5 premium softly painted fur, warm light, face/head proportions, coat colours and markings throughout. Believable species-specific animal movement inside the SAME stylized illustration design, not a photoreal animal or a new character. Locked camera, constant framing and scale, perfectly uniform matte black background. Keep every fur tip, ear, hand/paw and tail fully inside the frame. Ground contact is consistent; don't translate or scale the entire sprite. One unbroken continuous shot, no cuts, zoom, scenery, toys, lettering, new accessories or sound. Return smoothly to the supplied exact resting pose at the end. The monkey remains peacefully asleep curled on its side with its cheek supported by folded hands. Soft small breaths move the ribs beneath the fur; the cheek support and body weight remain stable. Once, the fingertips relax a tiny amount against the floor and the wrist settles naturally, while the long tail stays loosely curled. Eyes stay closed. No repetitive bobbing, arm waving, whole-body swelling or tail pumping. End in the exact original curled hand-supported sleep pose.",
+          "startFrame": "monkey-reference-stage.webp",
+          "endFrame": "monkey-reference-stage.webp",
+          "status": "generated-review-candidate",
+          "estimatedCreditsAtSubmission": 170,
+          "file": "monkey-sleep.mp4",
+          "width": 1440,
+          "height": 1440,
+          "frameRate": "24/1",
+          "durationSeconds": 10.041667,
+          "fileSha256": "bf2d45e96c7f88fbeba86f8aeadffaaef9537f109d791333409bfda9550b89d5",
+          "contactSheet": "monkey-sleep-contact.webp",
+          "alphaFile": "monkey-sleep-alpha.webm",
+          "alphaFileSha256": "efc54744d916058a85ca3e0eac5d903ad062c4a83c004903fc43d3055643acd1",
+          "alphaProcessing": {
+            "model": "sam3",
+            "taskId": "4828e35c-947b-4889-90b5-8ca2c6bbe55c",
+            "inputDurationSeconds": 10.041,
+            "keepSound": false,
+            "declaredCreditsPerSecond": 1,
+            "previousAttempts": [
+              {
+                "taskId": "668887e4-9eb0-4aff-8c31-1113b6c5e3e2",
+                "status": "rejected-by-local-alpha-QA",
+                "reason": "alpha metadata present but all 241 decoded frames were fully opaque",
+                "delivered": false
+              }
+            ],
+            "subject": "monkey"
+          }
+        },
+        {
+          "slug": "yawn-stretch",
+          "taskId": "976a42f3-69a4-43ab-8552-37f35e5c7dc9",
+          "model": "kling-o3-pro",
+          "requestedDurationSeconds": 10,
+          "ratio": "1:1",
+          "generateAudio": false,
+          "prompt": "This is the small curled brown monkey with a light cream face and hands, pink round ear interiors, tiny peach nose, soft cheek blush, a short swept hair tuft and its long curled brown tail. Preserve the large round ears, face mask, proportions and expressive closed eyelids. It is a monkey: hands and wrists, not cat paws. Animate only the exact animal in the supplied first frame. Preserve its V5 premium softly painted fur, warm light, face/head proportions, coat colours and markings throughout. Believable species-specific animal movement inside the SAME stylized illustration design, not a photoreal animal or a new character. Locked camera, constant framing and scale, perfectly uniform matte black background. Keep every fur tip, ear, hand/paw and tail fully inside the frame. Ground contact is consistent; don't translate or scale the entire sprite. One unbroken continuous shot, no cuts, zoom, scenery, toys, lettering, new accessories or sound. Return smoothly to the supplied exact resting pose at the end. One drowsy primate stretch and small yawn, then curl back to sleep. Begin in the original curled pose. Lift the head gently, keeping the hips seated and tail resting in its curl. One hand braces on the floor with visible palm/finger contact; the opposite arm unfolds through shoulder, elbow and wrist into a short diagonal overhead reach. Gently uncurl its fingers, tilt the head, open and close the jaw in a small relaxed yawn. The braced hand supports the weight; the belly and shoulders lengthen softly without standing up. Lower the reaching hand, fold both hands under the cheek and curl back into the exact original pose. Natural overlapping joint timing; no cat-like forepaw bow, no scratching loop, no extra fingers/limbs or human dancing.",
+          "startFrame": "monkey-reference-stage.webp",
+          "endFrame": "monkey-reference-stage.webp",
+          "status": "generated-review-candidate",
+          "estimatedCreditsAtSubmission": 170,
+          "file": "monkey-yawn-stretch.mp4",
+          "width": 1440,
+          "height": 1440,
+          "frameRate": "24/1",
+          "durationSeconds": 10.041667,
+          "fileSha256": "1a386f10581b1555fad6231e6a8786096ba05dfd80c8ddc9ad81a2e3f59965a6",
+          "contactSheet": "monkey-yawn-stretch-contact.webp",
+          "alphaFile": "monkey-yawn-stretch-alpha.webm",
+          "alphaFileSha256": "bf82f600f3314feb9e34d77488947d99969ff79dec09a3059f662c42e111e24e",
+          "alphaProcessing": {
+            "model": "sam3",
+            "taskId": "3c9fe0a0-56d1-4cb6-a4c5-90217482c5ee",
+            "inputDurationSeconds": 10.041,
+            "keepSound": false,
+            "declaredCreditsPerSecond": 1,
+            "previousAttempts": [
+              {
+                "taskId": "4a3f622b-ca1f-42bc-97fd-0d11ceff9945",
+                "status": "rejected-by-local-alpha-QA",
+                "reason": "alpha metadata present but all 241 decoded frames were fully opaque",
+                "delivered": false
+              }
+            ],
+            "subject": "monkey"
+          }
+        }
+      ]
+    },
+    {
+      "species": "lion",
+      "reference": "packages/assets/rooms/v2/pet-lion.webp",
+      "referenceSha256": "6a48485f82a0d0e4567458ff1a451a930bb82fc0306692908ef6ec8a70661c7c",
+      "stage": {
+        "file": "lion-reference-stage.webp",
+        "poster": "lion-reference-poster.webp",
+        "width": 1024,
+        "height": 1024,
+        "sourceOffset": [
+          128,
+          320
+        ],
+        "contentBounds": [
+          171,
+          381,
+          879,
+          752
+        ],
+        "groundLine": 759,
+        "preparation": "Unchanged source RGBA pixels composited at (128,320); no rescale, redraw or distortion."
+      },
+      "clips": [
+        {
+          "slug": "sleep",
+          "taskId": "cce5bdec-221e-4299-ac6f-fdaea077283b",
+          "model": "kling-o3-pro",
+          "requestedDurationSeconds": 10,
+          "ratio": "1:1",
+          "generateAudio": false,
+          "prompt": "Animate the original Gina animal illustration shown in the supplied image: a small golden young lion resting with its chin on its cream forepaws and a curled brown-tipped tail. Keep this exact soft painted design, rounded ears, short hair tuft, facial proportions, fur colours and markings. A calm continuous sleeping loop: two very subtle slow breaths in the ribs and flank, with one tiny ear relaxation. Closed eyes, stationary paw contact, quiet tail. The head remains supported by the paws. Locked camera and constant size; only local anatomy moves. Uniform matte black background. Full animal visible inside the frame. End in exactly the supplied resting pose. No text or audio.",
+          "startFrame": "lion-reference-stage.webp",
+          "endFrame": "lion-reference-stage.webp",
+          "status": "generated-review-candidate",
+          "estimatedCreditsAtSubmission": 170,
+          "previousAttempts": [
+            {
+              "taskId": "9a1355b4-f243-493e-aced-5eb165db628c",
+              "prompt": "This is the small golden lion cub with rounded ears, cream muzzle and round paws, dark brown nose, short golden head tuft, soft cheek tint, fine white whiskers and a curled tail ending in a dark brown tuft. Keep it a cub, no adult mane, no stripes, no spots added; preserve the existing golden fur and face. Animate only the exact animal in the supplied first frame. Preserve its V5 premium softly painted fur, warm light, face/head proportions, coat colours and markings throughout. Believable species-specific animal movement inside the SAME stylized illustration design, not a photoreal animal or a new character. Locked camera, constant framing and scale, perfectly uniform matte black background. Keep every fur tip, ear, hand/paw and tail fully inside the frame. Ground contact is consistent; don't translate or scale the entire sprite. One unbroken continuous shot, no cuts, zoom, scenery, toys, lettering, new accessories or sound. Return smoothly to the supplied exact resting pose at the end. The lion cub stays deeply asleep, eyes closed and chin resting on its broad forepaws. Two slow low-amplitude breaths move the ribcage/flank locally with a little weight and softness. A single tiny rounded-ear flick settles immediately. Its broad paws, tucked hindquarters and brown tail tuft keep their contact with the floor; the jaw remains closed. No whole-body scaling, muzzle morphing, panting, head bouncing or tail waving. Return to exactly the starting sleep pose.",
+              "status": "rejected-input-text",
+              "category": "CHARACTER",
+              "outputProduced": false
+            }
+          ],
+          "file": "lion-sleep.mp4",
+          "width": 1440,
+          "height": 1440,
+          "frameRate": "24/1",
+          "durationSeconds": 10.041667,
+          "fileSha256": "5b78fc5cbf6786c8654213545b046c4eed8a735a9a9634cbdcb032b8f0d48abc",
+          "contactSheet": "lion-sleep-contact.webp",
+          "alphaProcessing": {
+            "model": "sam3",
+            "taskId": "30a2354a-66fd-4daa-940d-4c2cf1a0b245",
+            "inputDurationSeconds": 10.042,
+            "keepSound": false,
+            "declaredCreditsPerSecond": 1
+          },
+          "alphaFile": "lion-sleep-alpha.webm",
+          "alphaFileSha256": "deab9dffd91c5d91d26eca47d4b2ff358d5a041e43030dfae98137b31066fc1c"
+        },
+        {
+          "slug": "yawn-stretch",
+          "taskId": "ce9c046d-482b-4eb0-b9fb-3c7c5cad3282",
+          "model": "kling-o3-pro",
+          "requestedDurationSeconds": 10,
+          "ratio": "1:1",
+          "generateAudio": false,
+          "prompt": "Animate the original Gina animal illustration in the supplied image: the small golden young lion with round ears, cream muzzle and paws, and a curled tail with a brown tuft. Preserve its exact softly painted design, fur, face and proportions. Start sleeping. Slowly lift the head with the neck and shoulders, make one relaxed small yawn, close the jaw, and press the broad front paws into the ground as the shoulders and back gently lengthen. Hindquarters stay grounded. The paw toes relax and the tail tuft rolls softly once. Withdraw the paws and lower the chin back into the original sleeping pose. Natural slow overlapping joint movement and believable weight. Locked camera, fixed scale and uniform matte black background. Entire animal stays inside frame. End with the supplied resting image. No text or audio.",
+          "startFrame": "lion-reference-stage.webp",
+          "endFrame": "lion-reference-stage.webp",
+          "status": "generated-review-candidate",
+          "estimatedCreditsAtSubmission": 170,
+          "previousAttempts": [
+            {
+              "taskId": "34dd915a-c2f0-4a7d-a631-f5a4adb35fee",
+              "prompt": "This is the small golden lion cub with rounded ears, cream muzzle and round paws, dark brown nose, short golden head tuft, soft cheek tint, fine white whiskers and a curled tail ending in a dark brown tuft. Keep it a cub, no adult mane, no stripes, no spots added; preserve the existing golden fur and face. Animate only the exact animal in the supplied first frame. Preserve its V5 premium softly painted fur, warm light, face/head proportions, coat colours and markings throughout. Believable species-specific animal movement inside the SAME stylized illustration design, not a photoreal animal or a new character. Locked camera, constant framing and scale, perfectly uniform matte black background. Keep every fur tip, ear, hand/paw and tail fully inside the frame. Ground contact is consistent; don't translate or scale the entire sprite. One unbroken continuous shot, no cuts, zoom, scenery, toys, lettering, new accessories or sound. Return smoothly to the supplied exact resting pose at the end. The lion cub performs one slow, weighty feline yawn and forepaw extension, then returns to sleep. From the curled pose, lift the head with neck and shoulders following. Narrow eyelids, gradually open the jaw into a relaxed cub yawn, curl the tongue briefly and close again without roaring or snarling. Roll the shoulders forward; press the broad forepaws into the ground and spread the toes slightly as the back lengthens in a compact stretch. Hindquarters remain heavy and grounded; the tail tuft rolls gently once, never lashes. Draw paws back and lower the chin into the original curled resting position. Slower and heavier than the puppy, rounded cub anatomy, no standing, exaggerated fangs or adult mane.",
+              "status": "rejected-input-text",
+              "category": "CHARACTER",
+              "outputProduced": false
+            }
+          ],
+          "file": "lion-yawn-stretch.mp4",
+          "width": 1440,
+          "height": 1440,
+          "frameRate": "24/1",
+          "durationSeconds": 10.041667,
+          "fileSha256": "585651845b140897d81e77693bd969dcddfb1b8d7bc264e0c1bf0c0996e033a3",
+          "contactSheet": "lion-yawn-stretch-contact.webp",
+          "alphaFile": "lion-yawn-stretch-alpha.webm",
+          "alphaFileSha256": "05df559fccb5de9b03ed11c8e5460af60c18f5a3874c348cbd069b8d7de966ae",
+          "alphaProcessing": {
+            "model": "sam3",
+            "taskId": "7b958472-47c7-41f4-aa11-22040ef7a897",
+            "inputDurationSeconds": 10.041,
+            "keepSound": false,
+            "declaredCreditsPerSecond": 1
+          }
+        }
+      ]
+    }
+  ],
+  "userApproval": {
+    "cat": "approved-by-user-to-continue-species",
+    "dog": "pending",
+    "monkey": "pending",
+    "lion": "pending"
+  },
+  "productionGate": {
+    "nativeIntegration": "not included",
+    "additionalStates": "wake, idle-blink, play, settle-sleep remain separate future work",
+    "audio": "silent motion studies; species sounds not included"
+  },
+  "contactSheet": "contact-sheet.html",
+  "comparison": {
+    "file": "comparison.mp4",
+    "columns": [
+      "dog",
+      "monkey",
+      "lion"
+    ],
+    "rows": [
+      "sleep",
+      "yawn-stretch"
+    ],
+    "background": "#FFF8EF",
+    "playbackRate": 1,
+    "temporalInterpolation": false
+  },
+  "billing": "Estimates only; submission estimates and final billing may differ. Rejected requests are kept as provenance, not counted as delivered outputs.",
+  "reviewNote": "Generated motion samples. Frame, alpha and browser acceptance recorded separately; native device performance and remaining animation states are not included.",
+  "validation": {
+    "media": "media-validation.json",
+    "browser": "browser-validation.json",
+    "applicationChecks": [
+      "pnpm exec tsc --noEmit: passed",
+      "pnpm exec expo lint: passed"
+    ],
+    "physicalDevices": "not tested"
+  }
+}

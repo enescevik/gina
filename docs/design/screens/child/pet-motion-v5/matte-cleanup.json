@@ -1,0 +1,12 @@
+{
+  "dog-sleep": {
+    "source": "dog-sleep-provider-alpha.webm",
+    "keepRect": [
+      208,
+      560,
+      1260,
+      1080
+    ],
+    "method": "Keep union of nonblack source-video content bounds + 24px margin; zero alpha only outside this static rectangle. No mask, RGB or anatomy changes inside; original canvas and timing preserved."
+  }
+}
