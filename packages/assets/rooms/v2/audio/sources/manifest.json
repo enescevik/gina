@@ -1,0 +1,29 @@
+[
+  {
+    "slug": "cat-purr",
+    "sourceFile": "sources/cat-purr.ogg",
+    "author": "Adam Cuerden",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Whiskers%27_purr.ogg",
+    "license": "Public domain",
+    "licenseUrl": "https://commons.wikimedia.org/wiki/File:Whiskers%27_purr.ogg",
+    "file": "cat-purr.ogg"
+  },
+  {
+    "slug": "rain",
+    "sourceFile": "sources/rain.ogg",
+    "author": "Effib",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sound_of_rain.ogg",
+    "license": "CC-BY-SA-3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "file": "rain.ogg"
+  },
+  {
+    "slug": "wind",
+    "sourceFile": "sources/wind.mp3",
+    "author": "Mark DiAngelo",
+    "sourceUrl": "https://soundbible.com/1810-Wind.html",
+    "license": "CC-BY-3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+    "file": "wind.mp3"
+  }
+]

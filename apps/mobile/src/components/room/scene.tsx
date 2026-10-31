@@ -1,5 +1,10 @@
+import { useTranslation } from "react-i18next";
+import { useRoomAudio } from "@/lib/use-room-audio";
+import { AtmosphereControls } from "./atmosphere-controls";
+import { useRoomAtmosphere } from "@/lib/use-room-atmosphere";
+import { AtmosphereBackdrop } from "./atmosphere-backdrop";
 import type { ReactNode } from "react";
-import { Image, View, useWindowDimensions, type ImageSourcePropType } from "react-native";
+import { Image, Pressable, View, useWindowDimensions, type ImageSourcePropType } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import roomsManifest from "../../../../../packages/assets/rooms/v2/manifest.json";
@@ -7,7 +12,7 @@ import roomsManifest from "../../../../../packages/assets/rooms/v2/manifest.json
 import { CHARACTER_PLACEMENT, PET_PLACEMENT, sceneFrame, zoneRect, type SceneRect, type Zone } from "./layout";
 
 // Üretim kaynakları (packages/assets/rooms/v2): pano/bilet/takvim/dolap tabana gömülü değil, kaplama olarak ayrı yerleşir.
-const ROOM_BASE = require("../../../../../packages/assets/rooms/v2/room-home-v5.webp");
+
 const CHARACTERS = {
   unspecified: require("../../../../../packages/assets/rooms/v2/character-unspecified-v5.webp"),
   girl: require("../../../../../packages/assets/rooms/v2/character-girl-v5.webp"),
@@ -70,7 +75,7 @@ export interface RoomSceneProps {
   /** Odadaki evcil hayvan (child_room_preferences.pet_key); görseli yoksa çizilmez. */
   pet?: string | null;
   /** Bölge adı → gerçek RN içeriği; dekor erişilebilirlik ağacına girmez, içerik girer. */
-  children: (helpers: { rect: (zone: Zone) => SceneRect; frame: SceneRect }) => ReactNode;
+  children: (helpers: { rect: (zone: Zone) => SceneRect; frame: SceneRect; night: boolean }) => ReactNode;
 }
 
 /**
@@ -79,6 +84,9 @@ export interface RoomSceneProps {
  * Özel gün dekoru gelecekte taban ile karakter arasına ayrı katman olarak eklenir.
  */
 export function RoomScene({ character, pet, children }: RoomSceneProps) {
+  const atmosphere = useRoomAtmosphere();
+  const audio = useRoomAudio(atmosphere);
+  const {t} = useTranslation();
   const { width, height } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const containerWidth = width - insets.left - insets.right;
@@ -98,13 +106,7 @@ export function RoomScene({ character, pet, children }: RoomSceneProps) {
       style={{ flex: 1, paddingTop: insets.top, paddingLeft: insets.left, paddingRight: insets.right, paddingBottom: insets.bottom }}
     >
       <View style={{ flex: 1 }}>
-        <Image
-          source={ROOM_BASE}
-          resizeMode="stretch"
-          accessible={false}
-          importantForAccessibility="no-hide-descendants"
-          style={{ position: "absolute", left: frame.left, top: frame.top, width: frame.width, height: frame.height }}
-        />
+        <AtmosphereBackdrop frame={frame} atmosphere={atmosphere} />
         {petImage ? (
           <Image
             source={petImage}
@@ -127,7 +129,9 @@ export function RoomScene({ character, pet, children }: RoomSceneProps) {
           importantForAccessibility="no-hide-descendants"
           style={{ position: "absolute", left: charRect.left, top: charRect.top, width: charRect.width, height: charRect.height }}
         />
-        {children({ rect: (zone) => zoneRect(zone, frame), frame })}
+        {pet === "cat" && audio.listening ? <Pressable accessibilityRole="button" accessibilityLabel={t("atmosphere.petCat")} accessibilityHint={t("atmosphere.petCatHint")} onPress={audio.petCat} style={{position:"absolute",left:frame.left+PET_PLACEMENT.centerX*frame.width-Math.max(60,petSize),top:frame.top+PET_PLACEMENT.footY*frame.height-Math.max(48,petSize),width:Math.max(120,petSize*2),height:Math.max(48,petSize)}} /> : null}
+        {children({ rect: (zone) => zoneRect(zone, frame), frame, night: (atmosphere.sun?.daylight ?? 1) < .55 })}
+        <View style={{position:"absolute",left:frame.left+frame.width*.025,bottom:10,maxWidth:frame.width*.36}}><AtmosphereControls atmosphere={atmosphere} audio={audio}/></View>
       </View>
     </View>
   );

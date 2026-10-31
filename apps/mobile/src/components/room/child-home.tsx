@@ -82,7 +82,7 @@ export function RoomChildHome({ childId, childName, character: providedCharacter
 
   return (
     <RoomScene character={character} pet={pet}>
-      {({ rect, frame }) => {
+      {({ rect, frame, night }) => {
         const s = roomSkinScale(frame.width);
         const fs = (n: number) => Math.round(n * s);
         const header = rect(ZONES.header);
@@ -107,7 +107,7 @@ export function RoomChildHome({ childId, childName, character: providedCharacter
           <>
             {/* Üst çubuk: logo + selamlama solda; yıldız ve Ebeveyn hapları sağda */}
             <View style={{ position: "absolute", ...header }} className="flex-row items-center justify-between">
-              <View className="flex-row items-center" style={{ gap: 16 * s }}>
+              <View className="flex-row items-center" style={{ gap: 16 * s, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 16, backgroundColor: night ? "#FFF8EF" : undefined }}>
                 <Wordmark width={110 * s} height={48 * s} accessibilityLabel="Gina" />
                 <View className="bg-ink/15" style={{ width: 2, height: 44 * s }} />
                 {/* Onaylı referansta selamlamanın altında vurgu çizgisi yok (header-greeting-underline kullanılmıyor). */}

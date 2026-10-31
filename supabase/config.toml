@@ -429,3 +429,6 @@ verify_jwt = false
 
 [functions.delete-account]
 verify_jwt = true
+
+[functions.room-weather]
+verify_jwt = true
