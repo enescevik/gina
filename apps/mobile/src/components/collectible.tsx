@@ -27,7 +27,7 @@ import SvgStampPending from "../../../../packages/assets/gamification/stamps/sta
 import SvgStampReturned from "../../../../packages/assets/gamification/stamps/stamp-returned.svg";
 import SvgLoadingStarStatic from "../../../../packages/assets/gamification/loading/loading-star-static.svg";
 
-import { IllustratedImage, ILLUSTRATED_MIN_DP } from "./illustrated-image";
+import { IllustratedImage } from "./illustrated-image";
 
 // Resimli v3 koleksiyon görselleri: scripts/generate-illustrated.mjs ile 256px üretilir
 // (packages/assets/generated/illustrated-v3/gamification). Statik require eşlemesi: src/generated/illustrated/gamification.ts.
@@ -74,8 +74,9 @@ export function collectibleSource(slug: CollectibleSlug) {
 
 export interface CollectibleProps {
   slug: string | null | undefined;
-  /** dp; varsayılan 64. Rozet için tercihen 96. 48 altında native SVG'ye düşer. */
+  /** dp; varsayılan 64. Rozet için tercihen 96; premium raster artwork remains consistent at small sizes. */
   size?: number;
+  variant?: "illustrated" | "symbol";
   /** Kilitli rozet: badge-locked görseli gösterilir. */
   locked?: boolean;
   style?: StyleProp<ImageStyle>;
@@ -83,11 +84,11 @@ export interface CollectibleProps {
 }
 
 /** Koleksiyon nesnesi (rozet, yıldız, seri, mühür). Bilinmeyen slug star-filled'a düşer. */
-export function Collectible({ slug, size = 64, locked, style, accessibilityLabel }: CollectibleProps) {
+export function Collectible({ slug, size = 64, variant = "illustrated", locked, style, accessibilityLabel }: CollectibleProps) {
   // Ticket rewards may have paired art instead of a standalone icon (e.g. movie night).
   const paired = `${slug}-left`;
   const key: CollectibleSlug = locked ? "badge-locked" : isCollectible(slug) ? slug : isCollectible(paired) ? paired : "star-filled";
-  if (size < ILLUSTRATED_MIN_DP) {
+  if (variant === "symbol") {
     const Svg = SMALL_SVGS[key] ?? SvgStarFilled;
     return (
       <View

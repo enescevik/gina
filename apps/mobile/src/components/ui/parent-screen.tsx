@@ -1,6 +1,7 @@
-import type { ReactNode } from "react";
+import Wordmark from "../../../../../packages/assets/brand/yan-yana/logo-wordmark.svg";
+import { useState, type ReactNode } from "react";
 import { router } from "expo-router";
-import { ArrowLeft, Menu } from "lucide-react-native";
+import { ArrowLeft, Menu, Plus, ChevronDown, ChevronUp } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -27,18 +28,14 @@ export function ParentScreen({ title, subtitle, children, home = false, navigati
   return <SafeAreaView style={styles.root}>
     <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.page}>
-        <View style={styles.header}>
-          <Image source={require("../../../../../packages/assets/rooms/v2/parent-header-v5.webp")} accessible={false} pointerEvents="none" resizeMode="contain" style={styles.art} />
-          <View style={styles.topbar}>
-            {navigation ? <Pressable accessibilityRole="button" accessibilityLabel={t(home ? "parent.menu" : "common.back")}
-              onPress={() => home ? router.push("/parent/menu") : router.canGoBack() ? router.back() : router.replace("/parent")}
-              style={({ pressed }) => [styles.back, { opacity: pressed ? .65 : 1 }]}>
-              {home ? <Menu size={23} color="#294A48" /> : <ArrowLeft size={23} color="#294A48" />}
-            </Pressable> : null}
-            <Text style={styles.eyebrow}>{t(navigation ? "release.parentSpace" : "app.name")}</Text>
-          </View>
-          <Text accessibilityRole="header" style={styles.title}>{title}</Text>
-          {subtitle ? <Text style={[styles.subtitle, subtitle.length > 90 ? {maxWidth:"100%",backgroundColor:"#FFF8EF",paddingTop:8} : undefined]}>{subtitle}</Text> : null}
+        <View style={styles.topbar}>
+          {navigation && !home ? <Pressable accessibilityRole="button" accessibilityLabel={t("common.back")} onPress={() => router.canGoBack() ? router.back() : router.replace("/parent")} style={styles.back}><ArrowLeft size={24} color="#284E4B" /></Pressable> : <Wordmark width={112} height={48} accessibilityLabel={t("app.name")} />}
+          {navigation ? <Pressable accessibilityRole="button" accessibilityLabel={t("parent.menu")} onPress={() => router.push("/parent/menu")} style={styles.menu}><Menu size={22} color="#284E4B"/><Text style={styles.menuLabel}>{t("parent.menu")}</Text></Pressable> : null}
+        </View>
+        <View style={[styles.header, home && styles.homeHeader]}>
+          {home ? <Image source={require("../../../../../packages/assets/rooms/v2/parent-header-v5.webp")} accessible={false} pointerEvents="none" resizeMode="contain" style={styles.art} /> : null}
+          <Text accessibilityRole="header" style={[styles.title, home && {maxWidth:"70%"}]}>{title}</Text>
+          {subtitle ? <Text style={[styles.subtitle, home && {maxWidth:"64%"}]}>{subtitle}</Text> : null}
         </View>
         <View style={styles.body}>
           {loading ? <View style={styles.state} accessibilityLiveRegion="polite"><LoadingStar size={64} accessibilityLabel={t("release.loading")} /><Text style={styles.copy}>{t("release.loading")}</Text></View>
@@ -51,7 +48,7 @@ export function ParentScreen({ title, subtitle, children, home = false, navigati
 }
 
 export function EmptyCard({ title, body, slug = "display-first-task", children }: { title: string; body?: string; slug?: string; children?: ReactNode }) {
-  return <View style={styles.state}><Collectible slug={slug} size={88} /><Text style={styles.sectionTitle}>{title}</Text>{body ? <Text style={[styles.copy, { textAlign: "center" }]}>{body}</Text> : null}{children}</View>;
+  return <View style={styles.state}><Collectible slug={slug} size={96} /><Text style={styles.sectionTitle}>{title}</Text>{body ? <Text style={[styles.copy, { textAlign: "center" }]}>{body}</Text> : null}{children}</View>;
 }
 
 export function ChildPicker({ profiles, selected, onSelect, allLabel }: {
@@ -71,25 +68,39 @@ export function ChildPicker({ profiles, selected, onSelect, allLabel }: {
 }
 
 export const parentStyles = StyleSheet.create({
-  card: { backgroundColor: "#FFFCF6", borderColor: "#E4DAC8", borderWidth: 1, borderRadius: 16, padding: 17, gap: 12, boxShadow: "0 3px 0 rgba(145,112,65,0.07)" },
-  form: { backgroundColor: "#E6F3ED", borderColor: "#C4DCD0", borderWidth: 1, borderRadius: 16, padding: 17, gap: 14 },
+  card: { backgroundColor: "#FFFCF6", borderColor: "#E4DAC8", borderWidth: 1, borderRadius: 22, padding: 20, gap: 16 },
+  form: { backgroundColor: "#E6F3ED", borderColor: "#C4DCD0", borderWidth: 1, borderRadius: 22, padding: 18, gap: 14 },
   row: { flexDirection: "row", alignItems: "center", gap: 12, minHeight: 56 },
   title: { fontFamily: "Baloo2_700Bold", fontSize: 24, lineHeight: 30, color: "#294A48" },
   copy: { fontFamily: "Nunito_400Regular", fontSize: 17, lineHeight: 25, color: "#294A48" },
   muted: { fontFamily: "Nunito_400Regular", fontSize: 15, lineHeight: 22, color: "#63736B" },
 });
+/** Forms stay one deliberate action away; draft state belongs to the screen. */
+export function FormSection({title,children,initiallyOpen=false}: {title:string;children:ReactNode;initiallyOpen?:boolean}) {
+  const [open,setOpen]=useState(initiallyOpen);
+  const Icon=open?ChevronUp:ChevronDown;
+  return <View style={parentStyles.form}>
+    <Pressable accessibilityRole="button" accessibilityState={{expanded:open}} onPress={()=>setOpen(!open)} style={{minHeight:52,flexDirection:"row",alignItems:"center",gap:12}}>
+      <View style={{width:40,height:40,borderRadius:14,backgroundColor:"#0B7F7F",alignItems:"center",justifyContent:"center"}}><Plus size={23} color="#FFFFFF"/></View>
+      <Text style={[parentStyles.title,{flex:1,fontSize:21}]}>{title}</Text><Icon size={22} color="#284E4B"/>
+    </Pressable>
+    {open?<View style={{gap:18,paddingTop:12,borderTopWidth:1,borderTopColor:"#C4DCD0"}}>{children}</View>:null}
+  </View>;
+}
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: "#FFF8EF" }, fill: { flex: 1 },
-  page: { width: "100%", maxWidth: 760, alignSelf: "center", paddingBottom: 32 },
-  header: { minHeight: 186, paddingHorizontal: 22, paddingTop: 12, paddingBottom: 22, overflow: "hidden" },
-  art: { position: "absolute", width: 320, height: 205, right: -64, top: -4, opacity: .9 },
-  topbar: { flexDirection: "row", alignItems: "center", gap: 12, paddingBottom: 14 },
-  back: { width: 48, height: 48, alignItems: "center", justifyContent: "center", borderRadius: 24, borderWidth: 1, borderColor: "#D7CDBB", backgroundColor: "#FFFAF0" },
-  eyebrow: { fontFamily: "Nunito_700Bold", fontSize: 11, letterSpacing: 1.4, color: "#63736B", backgroundColor: "#FFF8EF", borderRadius: 8, padding: 5 },
-  title: { fontFamily: "Baloo2_700Bold", fontSize: 32, lineHeight: 36, color: "#294A48", maxWidth: "68%" },
-  subtitle: { fontFamily: "Nunito_400Regular", fontSize: 15, lineHeight: 22, color: "#63736B", maxWidth: "68%", marginTop: 5 },
-  body: { paddingHorizontal: 20, gap: 14 },
-  state: { alignItems: "center", gap: 14, borderRadius: 16, borderWidth: 1, borderColor: "#E4DAC8", backgroundColor: "#FFFCF6", padding: 24, minHeight: 230 },
-  sectionTitle: { fontFamily: "Baloo2_700Bold", fontSize: 23, lineHeight: 29, color: "#294A48", textAlign: "center" },
-  copy: { fontFamily: "Nunito_400Regular", fontSize: 17, lineHeight: 25, color: "#63736B" },
+  page: { width: "100%", maxWidth: 780, alignSelf: "center", paddingBottom: 36 },
+  topbar: {flexDirection:"row",alignItems:"center",justifyContent:"space-between",paddingHorizontal:22,paddingTop:8,paddingBottom:8},
+  header: {paddingHorizontal:24,paddingTop:8,paddingBottom:24,gap:8},
+  homeHeader:{minHeight:138,justifyContent:"center",overflow:"hidden"},
+  art: {position:"absolute",width:240,height:162,right:-62,bottom:0},
+  back:{width:48,height:48,alignItems:"center",justifyContent:"center",borderRadius:16,backgroundColor:"#E1F2EB"},
+  menu:{minHeight:48,flexDirection:"row",alignItems:"center",gap:8,paddingHorizontal:14,borderRadius:18,backgroundColor:"#E1F2EB"},
+  menuLabel:{fontFamily:"Nunito_700Bold",fontSize:16,color:"#284E4B"},
+  title:{fontFamily:"Baloo2_700Bold",fontSize:34,lineHeight:42,color:"#284E4B"},
+  subtitle:{fontFamily:"Nunito_400Regular",fontSize:17,lineHeight:25,color:"#425E58"},
+  body:{paddingHorizontal:20,gap:22},
+  state:{alignItems:"center",gap:12,borderRadius:24,backgroundColor:"#FFFCF6",padding:24},
+  sectionTitle:{fontFamily:"Baloo2_700Bold",fontSize:24,lineHeight:31,color:"#284E4B",textAlign:"center"},
+  copy:{fontFamily:"Nunito_400Regular",fontSize:17,lineHeight:25,color:"#425E58"},
 });

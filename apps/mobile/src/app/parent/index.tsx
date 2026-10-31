@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { localDateOf, occurrencesBetween, templatesDueOn, weekDatesOf } from "@gina/core";
 
@@ -10,11 +10,11 @@ import { localDateOf, occurrencesBetween, templatesDueOn, weekDatesOf } from "@g
 import { Avatar } from "@/components/avatar";
 import { DayTimeline } from "@/components/calendar/day-timeline";
 import type { WeekEvent } from "@/components/calendar/week-list";
-import { NineSlice, SkinPressable } from "@/components/room/nine-slice";
+import { CalendarDays, ChevronRight, Plus, Play } from "lucide-react-native";
 import { TaskIcon } from "@/components/task-icon";
 import { Button } from "@/components/ui/button";
 import { ErrorText } from "@/components/ui/screen";
-import { ParentScreen as Screen, ChildPicker, EmptyCard } from "@/components/ui/parent-screen";
+import { ParentScreen as Screen, ChildPicker } from "@/components/ui/parent-screen";
 import { Collectible } from "@/components/collectible";
 import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
@@ -223,127 +223,81 @@ export default function ParentHomeScreen() {
 
   const pendingApprovals = (approvals.data ?? []).filter((a) => !childFilter || a.child_id === childFilter);
 
-  // Odam kaplamaları: beyaz ana kartlar parent-card, onay alanı parent-approval-card (eski düz kart zeminleri kaldırıldı).
-  // Kaplamalar açık renklidir; koyu temada da içlerindeki metin ink kalır (okunur kontrast).
-  return (
-    <Screen home title={parentName ? t(`parent.greeting.${greeting}`, { name: parentName }) : t(`parent.greeting.${greeting}NoName`)}
-      subtitle={dateFormat.format(new Date(`${today}T12:00:00Z`))}
-      loading={children.isLoading || templates.isLoading || approvals.isLoading}
-      error={children.error ?? templates.error ?? completions.error ?? approvals.error ?? events.error ?? me.error}
-      onRetry={() => { void children.refetch(); void templates.refetch(); void approvals.refetch(); void completions.refetch(); void events.refetch(); void me.refetch(); }}>
-      <ChildPicker profiles={children.data ?? []} selected={childFilter} onSelect={setChildFilter} allLabel={t("parent.allChildren")} />
-
-      <NineSlice skin="parent-card" contentStyle={{ gap: 10 }}>
-        <Text accessibilityRole="header" className="font-display text-[26px] leading-9 text-ink">
-          {t("parent.familyDay")}
-        </Text>
-        {children.data?.length === 0 ? <EmptyCard title={t("release.firstChildTitle")} body={t("release.firstChildBody")}><Button title={t("release.firstChildAction")} onPress={() => router.push("/parent/menu")} /></EmptyCard> : null}
-        {familyDay.map(({ child, due, done, stars: childStars }) => (
-          <Pressable
-            key={child.id}
-            accessibilityRole="button"
-            accessibilityLabel={`${child.name}, ${t("parent.tasksOf", { done, total: due })}, ${t("room.starCount", { count: childStars })}`}
-            onPress={() => router.push("/parent/tasks")}
-            className="min-h-16 flex-row items-center gap-2 rounded-2xl border border-mist bg-white px-2 py-2 active:bg-cream"
-          >
-            <Avatar slug={child.avatar} size={44} />
-            <View style={{ flex: 1, minWidth: 0, gap: 4 }}>
-              <View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 4 }}>
-                <Text style={{ flexShrink: 1 }} className="font-display-semi text-lg text-ink">{child.name}</Text>
-                <View className="flex-row items-center gap-1"><Collectible slug="star-filled" size={20} /><Text className="font-body-bold text-sm text-ink">{t("room.starCount", { count: childStars })}</Text></View>
-              </View>
-              <Text className="font-body text-sm text-ink">{t("parent.tasksOf", { done, total: due })}</Text>
-              <View className="h-2.5 overflow-hidden rounded-full bg-mist">
-                <View className="h-2.5 rounded-full bg-teal" style={{ width: due > 0 ? `${Math.min(100, Math.round((done / due) * 100))}%` : "0%" }} />
-              </View>
-            </View>
-            <Text className="font-display text-xl text-ink/60">›</Text>
-          </Pressable>
-        ))}
-      </NineSlice>
-
-      <NineSlice skin="parent-approval-card" contentStyle={{ gap: 10 }}>
-        <View className="flex-row items-center justify-between">
-          <Text accessibilityRole="header" className="flex-1 font-display text-[26px] leading-9 text-ink">
-            {t("parent.waitingApproval")}
-          </Text>
-          <View className="h-10 min-w-10 items-center justify-center rounded-full bg-star px-2">
-            <Text className="font-display text-lg text-white">{pendingApprovals.length}</Text>
-          </View>
-        </View>
-        {pendingApprovals.length === 0 ? <Text className="font-body text-gray-600">{t("parent.noApprovals")}</Text> : null}
-        {pendingApprovals.map(item => <View key={item.id} className="gap-3 rounded-2xl bg-white p-3">
-          <View className="flex-row items-center gap-3">
-            <TaskIcon slug={item.task_templates?.icon} size={56} variant="illustrated" />
-            <View className="flex-1 gap-1"><Text className="font-body-bold text-lg text-ink">{item.task_templates?.title}</Text>
-            <Text className="font-body text-sm text-gray-600">{item.children?.name} · {t("room.plusStars", { count: item.task_templates?.stars ?? 0 })}</Text></View>
-          </View>
-          <View className="flex-row gap-2"><View className="flex-1"><Button variant="ghost" title={t("parent.return")} disabled={review.isPending} onPress={() => review.mutate({ id: item.id, approve: false })} /></View>
-          <View className="flex-1"><Button title={t("parent.approve")} loading={review.isPending && review.variables?.id === item.id} disabled={review.isPending} onPress={() => review.mutate({ id: item.id, approve: true })} /></View></View>
-        </View>)}
-      </NineSlice>
-
-      <NineSlice skin="parent-card" contentStyle={{ gap: 10 }}>
-        <View className="flex-row items-center justify-between">
-          <Text accessibilityRole="header" className="flex-1 font-display text-[26px] leading-9 text-ink">
-            {t("parent.todaysPlan")}
-          </Text>
-          <Pressable accessibilityRole="link" onPress={() => router.push("/parent/calendar")} hitSlop={8} className="min-h-12 justify-center">
-            <Text className="font-body-bold text-base text-teal-dark">{t("parent.openCalendar")} ›</Text>
-          </Pressable>
-        </View>
-        {todaysPlan.length === 0 ? <Text className="font-body text-gray-500">{t("calendar.noEvents")}</Text> : null}
-        <DayTimeline occurrences={todaysPlan} timeZone={timeZone} whoOf={whoOf} />
-      </NineSlice>
-
-      {/* Approved insight skin, with native copy and the actual weekly highlight. */}
-      <SkinPressable skin="parent-insight-card"
-        accessibilityRole="link"
-        onPress={() => router.push("/parent/prova/progress")}
-        contentClassName="flex-row items-center gap-3"
-      >
-        {highlightTemplate ? (
-          <TaskIcon slug={highlightTemplate.icon} size={56} variant="illustrated" />
-        ) : (
-          <Collectible slug="display-bookworm" size={64} />
-        )}
-        <View className="flex-1">
-          <Text className="font-display text-base leading-6 text-ink">{t("parent.insightTitle")}</Text>
-          <Text className="font-body text-sm text-gray-700">
-            {highlight && highlightTemplate && highlightChild
-              ? t("parent.insightHighlight", { child: highlightChild.name, count: highlight.days, task: highlightTemplate.title })
-              : t("parent.insightWeek", { count: weekApproved })}
-          </Text>
-        </View>
-        <Text className="font-body-bold text-sm text-teal-dark">{t("parent.seeProgress")} ›</Text>
-      </SkinPressable>
-
-      <SkinPressable skin="parent-card" onPress={() => router.push("/parent/prova")} contentClassName="flex-row items-center gap-3">
-        <Collectible slug="display-bookworm" size={56} />
-        <View className="flex-1">
-          <Text className="font-display text-xl text-ink">{t("prova.title")}</Text>
-          <Text className="font-body text-sm text-gray-700">{t("prova.parentCard")}</Text>
-        </View>
-        <Text className="font-display text-xl text-teal-dark">›</Text>
-      </SkinPressable>
-
-      <SkinPressable skin="button-outline" pressedSkin="button-outline-pressed" onPress={() => router.push("/parent/tasks")}
-        contentClassName="items-center justify-center">
-        <Text className="font-body-bold text-lg text-teal-dark">{t("parent.addTaskTogether")}</Text>
-      </SkinPressable>
-      <View className="flex-row flex-wrap gap-2">
-        <View className="min-w-[45%] flex-1">
-          <Button variant="secondary" title={t("parent.rewards")} onPress={() => router.push("/parent/rewards")} />
-        </View>
-        <View className="min-w-[45%] flex-1">
-          <Button variant="secondary" title={t("parent.notes")} onPress={() => router.push("/parent/notes")} />
-        </View>
-        <View className="w-full">
-          <Button variant="secondary" title={t("parent.childMode")} onPress={() => router.push("/parent/child-mode")} />
-        </View>
+  const screenTitle = parentName ? t(`parent.greeting.${greeting}`, { name: parentName }) : t(`parent.greeting.${greeting}NoName`);
+  return <Screen home title={screenTitle} subtitle={dateFormat.format(new Date(`${today}T12:00:00Z`))}
+    loading={children.isLoading || templates.isLoading || approvals.isLoading}
+    error={children.error ?? templates.error ?? completions.error ?? approvals.error ?? events.error ?? me.error}
+    onRetry={() => { void children.refetch(); void templates.refetch(); void approvals.refetch(); void completions.refetch(); void events.refetch(); void me.refetch(); }}>
+    {children.data?.length === 0 ? <>
+      <View style={homeStyles.welcome}>
+        <View style={{flexDirection:"row",alignItems:"center",gap:16}}><Avatar slug="avatar-reference-girl" size={76}/><Avatar slug="avatar-reference-boy" size={76}/></View>
+        <Text style={homeStyles.welcomeTitle}>{t("release.firstChildTitle")}</Text>
+        <Text style={homeStyles.copy}>{t("release.firstChildBody")}</Text>
+        <Button title={t("release.firstChildAction")} onPress={()=>router.push("/parent/menu")}/>
       </View>
-
-      <ErrorText error={review.error} />
-    </Screen>
-  );
+      <Text style={homeStyles.note}>{t("redesign.firstChildHint")}</Text>
+    </> : <>
+      <ChildPicker profiles={children.data ?? []} selected={childFilter} onSelect={setChildFilter} allLabel={t("parent.allChildren")} />
+      <View style={{gap:12}}>
+        <Text accessibilityRole="header" style={homeStyles.section}>{t("parent.familyDay")}</Text>
+        {familyDay.map(({child,due,done,stars:childStars})=><Pressable key={child.id} accessibilityRole="button"
+          accessibilityLabel={`${child.name}, ${t("parent.tasksOf", {done,total:due})}, ${t("room.starCount",{count:childStars})}`}
+          onPress={()=>router.push("/parent/tasks")} style={({pressed})=>[homeStyles.child,{opacity:pressed?.8:1}]}>
+          <Avatar slug={child.avatar} size={66}/>
+          <View style={{flex:1,gap:5}}><Text style={homeStyles.childName}>{child.name}</Text><Text style={homeStyles.note}>{t("parent.tasksOf",{done,total:due})}</Text>
+            <View style={{height:7,borderRadius:8,backgroundColor:"#D8E4DF",overflow:"hidden"}}><View style={{height:7,backgroundColor:"#0B7F7F",width:due?`${Math.min(100,done/due*100)}%`:"0%"}}/></View>
+          </View>
+          <View style={{alignItems:"center",gap:1}}><Collectible slug="star-filled" size={30}/><Text style={homeStyles.score}>{childStars}</Text></View>
+          <ChevronRight size={20} color="#527E72"/>
+        </Pressable>)}
+      </View>
+      <View style={homeStyles.quickActions}>
+        <Pressable accessibilityRole="button" onPress={()=>router.push("/parent/tasks")} style={homeStyles.quickAction}><Plus size={24} color="#0B7F7F"/><Text style={homeStyles.actionLabel}>{t("tasks.new")}</Text></Pressable>
+        <View style={{width:1,backgroundColor:"#C4DCD0",marginVertical:16}}/>
+        <Pressable accessibilityRole="button" onPress={()=>router.push("/parent/child-mode")} style={homeStyles.quickAction}><Play size={24} color="#0B7F7F"/><Text style={homeStyles.actionLabel}>{t("redesign.childSpace")}</Text></Pressable>
+      </View>
+      <View style={[homeStyles.sectionSurface,pendingApprovals.length>0?{backgroundColor:"#FFF2CC"}:undefined]}>
+        <View style={homeStyles.sectionHeading}><Text accessibilityRole="header" style={[homeStyles.section,{flex:1}]}>{t("parent.waitingApproval")}</Text>
+          <Text style={homeStyles.count}>{pendingApprovals.length}</Text></View>
+        {pendingApprovals.length===0?<Text style={homeStyles.note}>{t("parent.noApprovals")}</Text>:null}
+        {pendingApprovals.map(item=><View key={item.id} style={homeStyles.approval}>
+          <View style={{flexDirection:"row",alignItems:"center",gap:12}}><TaskIcon slug={item.task_templates?.icon} size={58} variant="illustrated"/><View style={{flex:1}}><Text style={homeStyles.itemTitle}>{item.task_templates?.title}</Text><Text style={homeStyles.note}>{item.children?.name} · {t("room.plusStars",{count:item.task_templates?.stars??0})}</Text></View></View>
+          <View style={{flexDirection:"row",gap:10}}><View style={{flex:1}}><Button variant="ghost" title={t("parent.return")} disabled={review.isPending} onPress={()=>review.mutate({id:item.id,approve:false})}/></View><View style={{flex:1}}><Button title={t("parent.approve")} disabled={review.isPending} loading={review.isPending&&review.variables?.id===item.id} onPress={()=>review.mutate({id:item.id,approve:true})}/></View></View>
+        </View>)}
+        <ErrorText error={review.error}/>
+      </View>
+      <View style={homeStyles.sectionSurface}>
+        <View style={homeStyles.sectionHeading}><Text accessibilityRole="header" style={[homeStyles.section,{flex:1}]}>{t("parent.todaysPlan")}</Text><Pressable accessibilityRole="link" accessibilityLabel={t("parent.openCalendar")} onPress={()=>router.push("/parent/calendar")} style={homeStyles.iconAction}><CalendarDays size={24} color="#0B7F7F"/></Pressable></View>
+        {todaysPlan.length===0?<Text style={homeStyles.note}>{t("calendar.noEvents")}</Text>:null}<DayTimeline occurrences={todaysPlan} timeZone={timeZone} whoOf={whoOf}/>
+      </View>
+      <Pressable accessibilityRole="button" onPress={()=>router.push("/parent/prova/progress")} style={homeStyles.insight}>
+        {highlightTemplate?<TaskIcon slug={highlightTemplate.icon} size={60} variant="illustrated"/>:<Collectible slug="display-bookworm" size={60}/>}
+        <View style={{flex:1,gap:4}}><Text style={homeStyles.itemTitle}>{t("parent.insightTitle")}</Text><Text style={homeStyles.note}>{highlight&&highlightTemplate&&highlightChild?t("parent.insightHighlight",{child:highlightChild.name,count:highlight.days,task:highlightTemplate.title}):t("parent.insightWeek",{count:weekApproved})}</Text></View><ChevronRight size={22} color="#0B7F7F"/>
+      </Pressable>
+      <View style={homeStyles.sectionSurface}>
+        {([['/parent/prova','prova.title','display-bookworm'],['/parent/rewards','parent.rewards','star-filled'],['/parent/notes','parent.notes','display-first-task']] as const).map(([href,label,slug],i)=><Pressable accessibilityRole="button" key={href} onPress={()=>router.push(href)} style={[homeStyles.destination,i>0?{borderTopWidth:1,borderTopColor:"#E4DAC8"}:undefined]}><Collectible slug={slug} size={44}/><Text style={[homeStyles.itemTitle,{flex:1}]}>{t(label)}</Text><ChevronRight size={22} color="#527E72"/></Pressable>)}
+      </View>
+    </>}
+  </Screen>;
 }
+const homeStyles=StyleSheet.create({
+  section:{fontFamily:"Baloo2_700Bold",fontSize:26,lineHeight:33,color:"#284E4B"},
+  sectionHeading:{flexDirection:"row",alignItems:"center",gap:12},
+  sectionSurface:{backgroundColor:"#FFFCF6",borderRadius:24,padding:20,gap:14},
+  child:{backgroundColor:"#FFFCF6",borderRadius:24,padding:16,flexDirection:"row",alignItems:"center",gap:14,borderWidth:1,borderColor:"#E4DAC8"},
+  childName:{fontFamily:"Baloo2_700Bold",fontSize:24,lineHeight:30,color:"#284E4B"},
+  score:{fontFamily:"Nunito_700Bold",fontSize:18,color:"#284E4B"},
+  note:{fontFamily:"Nunito_400Regular",fontSize:15,lineHeight:22,color:"#425E58"},
+  copy:{fontFamily:"Nunito_400Regular",fontSize:18,lineHeight:27,color:"#425E58"},
+  quickActions:{flexDirection:"row",backgroundColor:"#E1F2EB",borderRadius:22},
+  quickAction:{flex:1,minHeight:76,alignItems:"center",justifyContent:"center",gap:7,padding:12},
+  actionLabel:{fontFamily:"Nunito_700Bold",fontSize:16,color:"#284E4B",textAlign:"center"},
+  count:{fontFamily:"Nunito_700Bold",fontSize:18,color:"#284E4B",backgroundColor:"#FFD979",borderRadius:18,paddingHorizontal:14,paddingVertical:8},
+  approval:{padding:14,gap:12,backgroundColor:"#FFFCF6",borderRadius:20},
+  itemTitle:{fontFamily:"Nunito_700Bold",fontSize:18,lineHeight:25,color:"#284E4B"},
+  iconAction:{width:48,height:48,alignItems:"center",justifyContent:"center",backgroundColor:"#E1F2EB",borderRadius:16},
+  insight:{flexDirection:"row",alignItems:"center",gap:12,backgroundColor:"#E1F2EB",padding:18,borderRadius:24},
+  destination:{flexDirection:"row",alignItems:"center",gap:14,minHeight:76},
+  welcome:{gap:20,backgroundColor:"#E1F2EB",borderRadius:28,padding:24},
+  welcomeTitle:{fontFamily:"Baloo2_700Bold",fontSize:32,lineHeight:39,color:"#284E4B"},
+});
