@@ -1,0 +1,9 @@
+{
+  "approval": "User approved the mint mascot, violet gina wordmark and plush reading companion on 2026-10-31. This supersedes the earlier palette and brand only for the new parent home; other screens are unchanged.",
+  "scope": "parent-home",
+  "generator": "built-in image_gen",
+  "assets": [
+    {"slug":"growing-friend-logo","file":"logo.png","width":2048,"height":768,"alpha":true,"supersedes":"brand/yan-yana/logo-wordmark.svg","prompt":"Extract the approved central mint mascot and violet gina wordmark from the user-approved brand board on transparent background; preserve letter contours, silhouette and colors."},
+    {"slug":"growing-friend-reading","file":"reading.png","width":1536,"height":1024,"alpha":true,"prompt":"Extract the approved mint plush with violet leaves and open book from the user-approved reference on transparent background; preserve character and material; remove all other objects."}
+  ]
+}
