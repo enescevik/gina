@@ -2,16 +2,9 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export type Database = {
-  
+
   "public": {
           Tables: {
-            family_room_settings: {
-              Row: { family_id: string; city_id: string | null; sound_enabled: boolean; motion_enabled: boolean; updated_at: string };
-              Insert: { family_id: string; city_id?: string | null; sound_enabled?: boolean; motion_enabled?: boolean; updated_at?: string };
-              Update: { city_id?: string | null; sound_enabled?: boolean; motion_enabled?: boolean; updated_at?: string };
-              Relationships: [];
-            };
-
             "admins": {
                   Row: {
                     "created_at": string,"user_id": string
@@ -24,7 +17,7 @@ export type Database = {
                     "created_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-                    
+
                   ]
                 },"ai_models": {
                   Row: {
@@ -38,7 +31,7 @@ export type Database = {
                     "active"?: boolean,"created_at"?: string,"display_name"?: string,"id"?: string,"input_usd_per_mtok"?: number | null,"notes"?: string | null,"output_usd_per_mtok"?: number | null,"provider"?: string,"updated_at"?: string
                   }
                   Relationships: [
-                    
+
                   ]
                 },"ai_settings": {
                   Row: {
@@ -98,7 +91,7 @@ isOneToOne: false
                     "key"?: string,"updated_at"?: string,"value"?: NonNullable<Json>
                   }
                   Relationships: [
-                    
+
                   ]
                 },"audit_log": {
                   Row: {
@@ -346,7 +339,7 @@ isOneToOne: false
                     "auth_user_id"?: string,"code"?: string,"consumed_at"?: string | null,"device_name"?: string,"expires_at"?: string
                   }
                   Relationships: [
-                    
+
                   ]
                 },"devices": {
                   Row: {
@@ -416,14 +409,14 @@ isOneToOne: false
                   ]
                 },"events": {
                   Row: {
-                    "all_day": boolean,"child_id": string | null,"created_at": string,"created_by": string | null,"ends_at": string | null,"family_id": string,"id": string,"location": string | null,"notes": string | null,"rrule": string | null,"starts_at": string,"title": string,"type": Database["public"]['Enums']["event_type"],"updated_at": string,"visible_to_child": boolean
+                    "all_day": boolean,"child_id": string | null,"created_at": string,"created_by": string | null,"ends_at": string | null,"family_id": string,"id": string,"location": string | null,"notes": string | null,"rrule": string | null,"starts_at": string,"timetable_entry_key": string | null,"title": string,"type": Database["public"]['Enums']["event_type"],"updated_at": string,"visible_to_child": boolean
                   }
                   ComputedFields: never
                   Insert: {
-                    "all_day"?: boolean,"child_id"?: string | null,"created_at"?: string,"created_by"?: string | null,"ends_at"?: string | null,"family_id": string,"id"?: string,"location"?: string | null,"notes"?: string | null,"rrule"?: string | null,"starts_at": string,"title": string,"type"?: Database["public"]['Enums']["event_type"],"updated_at"?: string,"visible_to_child"?: boolean
+                    "all_day"?: boolean,"child_id"?: string | null,"created_at"?: string,"created_by"?: string | null,"ends_at"?: string | null,"family_id": string,"id"?: string,"location"?: string | null,"notes"?: string | null,"rrule"?: string | null,"starts_at": string,"timetable_entry_key"?: string | null,"title": string,"type"?: Database["public"]['Enums']["event_type"],"updated_at"?: string,"visible_to_child"?: boolean
                   }
                   Update: {
-                    "all_day"?: boolean,"child_id"?: string | null,"created_at"?: string,"created_by"?: string | null,"ends_at"?: string | null,"family_id"?: string,"id"?: string,"location"?: string | null,"notes"?: string | null,"rrule"?: string | null,"starts_at"?: string,"title"?: string,"type"?: Database["public"]['Enums']["event_type"],"updated_at"?: string,"visible_to_child"?: boolean
+                    "all_day"?: boolean,"child_id"?: string | null,"created_at"?: string,"created_by"?: string | null,"ends_at"?: string | null,"family_id"?: string,"id"?: string,"location"?: string | null,"notes"?: string | null,"rrule"?: string | null,"starts_at"?: string,"timetable_entry_key"?: string | null,"title"?: string,"type"?: Database["public"]['Enums']["event_type"],"updated_at"?: string,"visible_to_child"?: boolean
                   }
                   Relationships: [
                     {
@@ -562,7 +555,7 @@ isOneToOne: false
                     "created_at"?: string,"created_by"?: string,"id"?: string,"invite_code"?: string,"locale"?: string,"name"?: string,"timezone"?: string
                   }
                   Relationships: [
-                    
+
                   ]
                 },"family_members": {
                   Row: {
@@ -600,6 +593,32 @@ isOneToOne: false
       foreignKeyName: "family_rewards_family_id_fkey"
       columns: ["family_id"]
 isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"family_room_settings": {
+                  Row: {
+                    "city_id": string | null,"family_id": string,"motion_enabled": boolean,"sound_enabled": boolean,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "city_id"?: string | null,"family_id": string,"motion_enabled"?: boolean,"sound_enabled"?: boolean,"updated_at"?: string
+                  }
+                  Update: {
+                    "city_id"?: string | null,"family_id"?: string,"motion_enabled"?: boolean,"sound_enabled"?: boolean,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "family_room_settings_city_id_fkey"
+      columns: ["city_id"]
+isOneToOne: false
+      referencedRelation: "weather_cities"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "family_room_settings_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: true
       referencedRelation: "families"
       referencedColumns: ["id"]
     }
@@ -642,7 +661,7 @@ isOneToOne: false
                     "country"?: string,"ends_on"?: string,"id"?: string,"kind"?: string,"name"?: NonNullable<Json>,"school_year"?: string | null,"starts_on"?: string
                   }
                   Relationships: [
-                    
+
                   ]
                 },"notes": {
                   Row: {
@@ -728,7 +747,7 @@ isOneToOne: false
                     "ai_model"?: string | null,"ai_weekly"?: boolean,"code"?: Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"max_active_tasks_per_child"?: number | null,"max_children"?: number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n"?: NonNullable<Json>,"prova_ai_generate_monthly"?: number,"prova_ai_grading"?: boolean,"prova_booklet"?: boolean,"prova_monthly_exams"?: number | null,"prova_scenarios"?: boolean,"prova_study_plan"?: boolean,"sort_order"?: number
                   }
                   Relationships: [
-                    
+
                   ]
                 },"prova_ai_usage": {
                   Row: {
@@ -880,6 +899,52 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"room_weather_cache": {
+                  Row: {
+                    "city_id": string,"expires_at": string,"forecast": Json | null,"last_modified": string | null,"refresh_after": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "city_id": string,"expires_at"?: string,"forecast"?: Json | null,"last_modified"?: string | null,"refresh_after"?: string
+                  }
+                  Update: {
+                    "city_id"?: string,"expires_at"?: string,"forecast"?: Json | null,"last_modified"?: string | null,"refresh_after"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "room_weather_cache_city_id_fkey"
+      columns: ["city_id"]
+isOneToOne: true
+      referencedRelation: "weather_cities"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"school_timetables": {
+                  Row: {
+                    "child_id": string,"family_id": string,"lessons": NonNullable<Json>,"revision": number,"settings": NonNullable<Json>,"updated_at": string,"updated_by": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "child_id": string,"family_id": string,"lessons"?: NonNullable<Json>,"revision"?: number,"settings"?: NonNullable<Json>,"updated_at"?: string,"updated_by"?: string | null
+                  }
+                  Update: {
+                    "child_id"?: string,"family_id"?: string,"lessons"?: NonNullable<Json>,"revision"?: number,"settings"?: NonNullable<Json>,"updated_at"?: string,"updated_by"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "school_timetables_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: true
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "school_timetables_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"star_events": {
                   Row: {
                     "child_id": string,"completion_id": string | null,"created_at": string,"created_by": string | null,"delta": number,"family_id": string,"id": number,"reason": string,"refund_request_id": string | null,"reward_request_id": string | null
@@ -936,7 +1001,7 @@ isOneToOne: false
                     "error"?: string | null,"event_key"?: string,"event_type"?: string | null,"id"?: string,"payload"?: NonNullable<Json>,"platform"?: Database["public"]['Enums']["store_platform"],"processed_at"?: string | null,"received_at"?: string,"store_key"?: string | null
                   }
                   Relationships: [
-                    
+
                   ]
                 },"store_subscriptions": {
                   Row: {
@@ -1048,6 +1113,20 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"weather_cities": {
+                  Row: {
+                    "country": string,"id": string,"latitude": number,"longitude": number,"name": string,"timezone": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "country": string,"id": string,"latitude": number,"longitude": number,"name": string,"timezone": string
+                  }
+                  Update: {
+                    "country"?: string,"id"?: string,"latitude"?: number,"longitude"?: number,"name"?: string,"timezone"?: string
+                  }
+                  Relationships: [
+
+                  ]
                 }
           }
           Views: {
@@ -1140,6 +1219,9 @@ isOneToOne: false
 { Args: { "p_child_id": string }; Returns: {
               "accuracy": number,"correct": number,"grade": number,"last_at": string,"level_total": number,"pending": number,"score": number,"subject": string,"topic": string,"total": number
             }[]
+                           },
+"claim_room_weather_refresh":
+{ Args: { "p_city_id": string }; Returns: boolean
                            },
 "complete_task":
 { Args: { "p_acting_child_id"?: string,"p_client_id": string,"p_due_date": string,"p_template_id": string }; Returns: {
@@ -1263,8 +1345,6 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
-"get_saved_exam_answers":
-{ Args: { "p_attempt_id": string }; Returns: { "question_id": string; "answer_key": string | null; "answer_text": string | null }[] },
 "get_attempt_questions":
 { Args: { "p_exam_id": string }; Returns: {
               "choices": Json,"difficulty": Database["public"]['Enums']["question_difficulty"],"id": string,"kind": Database["public"]['Enums']["question_kind"],"ord": number,"stem": string
@@ -1282,6 +1362,11 @@ isOneToOne: false
                            },
 "get_prova_entitlement":
 { Args: { "p_family_id"?: string }; Returns: Json
+                           },
+"get_saved_exam_answers":
+{ Args: { "p_attempt_id": string }; Returns: {
+              "answer_key": string,"answer_text": string,"question_id": string
+            }[]
                            },
 "get_shared_child_view":
 { Args: { "p_token": string }; Returns: Json
@@ -1387,6 +1472,9 @@ isOneToOne: false
                            },
 "revoke_device":
 { Args: { "p_device_id": string }; Returns: undefined
+                           },
+"save_school_timetable":
+{ Args: { "p_child_id": string,"p_lessons": Json,"p_revision": number,"p_settings": Json }; Returns: number
                            },
 "score_open_answer":
 { Args: { "p_attempt_id": string,"p_feedback"?: string,"p_question_id": string,"p_score": number }; Returns: {

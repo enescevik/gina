@@ -7,3 +7,5 @@ export * from "./locale";
 export * from "./form-validation";
 export * from "./room-atmosphere";
 export * from "./weather-cities";
+
+export * from "./timetable";
