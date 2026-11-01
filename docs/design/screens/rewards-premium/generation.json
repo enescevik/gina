@@ -1,12 +1,12 @@
 {
-  "status": "proposal-awaiting-user-approval",
+  "status": "approved-by-user",
   "tool": "built-in image_gen",
   "reference": "../tasks-premium/proposal-v1.png",
   "output": "proposal-v1.png",
   "prompt": "Use case: ui-mockup. Create a polished GINA parent Rewards design proposal as a presentation board with TWO complete portrait phone screens side by side, large enough for legible Turkish typography. Reference image is the APPROVED Tasks visual language; preserve the SAME cream canvas, deep violet rounded typography, satin purple primary buttons, pastel mint/lilac/peach cards, fine borders, soft shadows, restrained premium family feeling and SAME mint plush mascot with purple leaves and open book, no new mascot or logo. This is the next sibling screen, not a new visual identity. Use the small existing gina wordmark top left, tasteful small plush upper right. No giant decorative headings outside phones.\nLEFT screen title \"Ödüller\", subtitle \"Birlikte seçin, birlikte kutlayın.\" Segmented control \"Talepler 2\" selected purple, \"Katalog\" inactive. First substantial card: small Ece portrait, \"Ece\", warm amber small badge \"Onay bekliyor\", illustrated cinema ticket tile, \"Ailece sinema\", star icon \"20 yıldız\", purple clear button \"Onayla\" and quiet secondary \"Reddet\". Second card: small Can portrait, \"Can\", mint badge \"Onaylandı\", book tile, \"Yeni kitap\", star icon \"30 yıldız\", purple button \"Teslim edildi\" and secondary small \"İptal ve iade\". Small restrained encouragement strip, anchored purple \"+ Yeni ödül\" button, full bottom nav \"Bugün\", \"Takvim\", \"Prova\", \"Diğer\". Each card makes request state and next action unmistakable.\nRIGHT screen same header and subtitle; \"Talepler 2\" inactive, \"Katalog\" selected. Three clean catalog cards for shared family rewards: \"Ailece sinema\" 20 yıldız cinema icon, \"Yeni kitap\" 30 yıldız book icon, \"Birlikte oyun\" 10 yıldız board-game icon. Each has clear state \"Aktif\" and quiet \"Duraklat\" action. No purchase prices, no leaderboard, no coins, no child balance. Bottom \"+ Yeni ödül\" same place and bottom nav same. Include breathing space, consistent large readable type and touch targets, sophisticated dimensional satin button rather than excessive glass/gloss. All text exactly Turkish. Mockup only; do not imply these are screenshots.",
   "notes": [
-    "Design proposal only; no rewards application code changed.",
-    "Active is informational status, not a second primary action; use a quiet mint status badge when implementing.",
+    "User approved this reference. Implementation and verification details are in IMPLEMENTATION.md.",
+    "Active is informational status; implemented as a quiet mint badge.",
     "Existing catalog is shared by the family. Requested and approved reward requests retain their existing actions.",
     "Generated icons and lettering are visual references; implementation will retain the approved logo asset and native translated text."
   ]
