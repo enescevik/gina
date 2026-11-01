@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 
 import type { Enums } from "@gina/core";
 
@@ -88,7 +89,7 @@ export default function GenerateQuestionsScreen() {
 
   const ent = entitlement.data;
   const remaining = ent ? Math.max(0, ent.ai_generate_limit - ent.ai_generate_used) : null;
-  const chip = (active: boolean) => `min-h-12 min-w-12 items-center justify-center rounded-full border px-4 py-2 ${active ? "bg-teal-dark border-teal-dark" : "bg-[#FFFCF6] border-[#D7CDBB]"}`;
+  const chip = (active: boolean) => `min-h-12 min-w-12 items-center justify-center rounded-full border px-4 py-2 ${active ? "bg-teal-dark border-teal-dark" : "bg-[#FFFFFF] border-[#D9D3E6]"}`;
   const chipText = (active: boolean) => (active ? "font-body-bold text-white" : "font-body text-ink");
 
   if (result) {

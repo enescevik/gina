@@ -82,7 +82,7 @@ export default function ChildWeekScreen() {
                   <TaskIcon slug={task.icon} size={56} variant="illustrated" />
                   <View style={{ flex: 1, minWidth: 0, gap: 8 }}>
                     <Text style={[childStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{task.title}</Text>
-                    <Text style={{ alignSelf: "flex-start", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3, backgroundColor: status === "approved" ? "#E6F7EF" : "#FFF1D4", color: "#425E58", fontFamily: "Nunito_700Bold", fontSize: 13 }}>{status === "approved" ? t("child.approved") : status === "done" ? t("child.waitingApproval") : t("childV5.notCompleted")}</Text>
+                    <Text style={{ alignSelf: "flex-start", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3, backgroundColor: status === "approved" ? "#E6F7EF" : "#FFF1D4", color: "#625C85", fontFamily: "Nunito_700Bold", fontSize: 13 }}>{status === "approved" ? t("child.approved") : status === "done" ? t("child.waitingApproval") : t("childV5.notCompleted")}</Text>
                   </View>
                 </View>
               );

@@ -5,7 +5,8 @@ import { AtmosphereControls } from "./atmosphere-controls";
 import { useRoomAtmosphere } from "@/lib/use-room-atmosphere";
 import { AtmosphereBackdrop } from "./atmosphere-backdrop";
 import type { ReactNode } from "react";
-import { Image, Pressable, View, useWindowDimensions, type ImageSourcePropType } from "react-native";
+import { Image, View, useWindowDimensions, type ImageSourcePropType } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import roomsManifest from "../../../../../packages/assets/rooms/v2/manifest.json";
@@ -105,7 +106,7 @@ export function RoomScene({ character, pet, children }: RoomSceneProps) {
       style={{ flex: 1, paddingTop: insets.top, paddingLeft: insets.left, paddingRight: insets.right, paddingBottom: insets.bottom }}
     >
       <View style={{ flex: 1 }}>
-        <AtmosphereBackdrop frame={frame} atmosphere={atmosphere} />
+        <AtmosphereBackdrop frame={compact ? {left:0,top:containerHeight-containerWidth*992/1586,width:containerWidth,height:containerWidth*992/1586} : frame} atmosphere={atmosphere} />
         {petImage ? <PetMotion pet={pet as Exclude<PetKey, "none">} centerX={compact ? containerWidth * .49 : frame.left + PET_PLACEMENT.centerX * frame.width} floor={frame.top + PET_PLACEMENT.footY * frame.height} restHeight={petSize} atmosphere={atmosphere} /> : null}
         <Image
           source={CHARACTERS[character]}

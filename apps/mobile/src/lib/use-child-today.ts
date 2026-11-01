@@ -26,6 +26,7 @@ export interface ChildTodayData {
   todayStarsEarned: number;
   loading: boolean;
   error: unknown;
+  completionError: unknown;
   complete: (templateId: string) => void;
   completing: boolean;
 }
@@ -98,7 +99,7 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
       });
       if (error) throw error;
     },
-    onSettled: () => void queryClient.invalidateQueries({ queryKey: ["task_completions_week", childId, from] }),
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["task_completions_week", childId, from] }),
   });
 
   const byTemplateToday = new Map(
@@ -137,7 +138,8 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
     todayDone: due.filter((t) => t.status === "done" || t.status === "approved").length,
     todayStarsEarned,
     loading: templates.isPending || completions.isPending,
-    error: templates.error ?? completions.error ?? starEvents.error ?? complete.error,
+    error: templates.error ?? completions.error ?? starEvents.error,
+    completionError: complete.error,
     complete: (templateId) => complete.mutate(templateId),
     completing: complete.isPending,
   };

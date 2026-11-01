@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
@@ -132,7 +133,7 @@ export default function AttemptReviewScreen() {
   return (
     <Screen title={a?.exams?.title ?? t("prova.ai.reviewTitle")} loading={attempt.isLoading || questions.isLoading || answers.isLoading || plans.isLoading || entitlement.isLoading} error={attempt.error ?? questions.error ?? answers.error ?? plans.error ?? entitlement.error} onRetry={() => { void attempt.refetch(); if (questionIds.length) void questions.refetch(); void answers.refetch(); void plans.refetch(); void entitlement.refetch(); }}>
       {a ? (
-        <View className="gap-1 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
+        <View className="gap-1 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
           <Text className="font-body text-sm text-gray-600">
             {a.children?.name} · {a.exams?.subject} {a.exams?.grade}. {t("prova.gradeWord")}
           </Text>
@@ -185,7 +186,7 @@ export default function AttemptReviewScreen() {
       ))}
 
       {finished ? (
-        <View className="gap-2 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
+        <View className="gap-2 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
           <Text className="font-display text-xl text-ink">{t("prova.ai.studyPlans")}</Text>
           {plans.data?.map((p) => (
             <Pressable key={p.id} accessibilityRole="button" style={{ minHeight: 48, justifyContent: "center" }} onPress={() => router.push(`/parent/prova/plan/${p.id}`)}>
@@ -273,7 +274,7 @@ function AnswerCard({
   const answered = isMc ? !!answer?.answer_key : !!answer?.answer_text?.trim();
 
   return (
-    <View className="gap-2 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
+    <View className="gap-2 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
       <Text className="font-body text-xs text-gray-500">
         {t("prova.ai.questionN", { n: index })} · {q.topic} · {t(`prova.kind.${q.kind}`)}
       </Text>

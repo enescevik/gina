@@ -53,7 +53,7 @@ export default function StudyPlanScreen() {
     <Screen title={t("prova.ai.planTitle")} loading={plan.isLoading} error={plan.error} onRetry={() => { void plan.refetch(); }}>
       {p ? (
         <>
-          <View className="gap-1 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
+          <View className="gap-1 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
             <Text className="font-body text-sm text-gray-600">
               {p.children?.name} · {p.subject} {p.grade}. {t("prova.gradeWord")} · {t(`prova.ai.planStatus.${p.status}`)}
             </Text>
@@ -72,7 +72,7 @@ export default function StudyPlanScreen() {
             </View>
           ) : null}
 
-          <View className="gap-2 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
+          <View className="gap-2 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
             <Text className="font-display text-xl text-ink">{t("prova.ai.planDays")}</Text>
             {body.gunler?.map((g) => (
               <View key={g.gun} className="gap-0.5 rounded-parent border border-mist p-3">
@@ -87,7 +87,7 @@ export default function StudyPlanScreen() {
           </View>
 
           {body.gorev_onerileri?.length ? (
-            <View className="gap-1 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
+            <View className="gap-1 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
               <Text className="font-display text-xl text-ink">{t("prova.ai.taskIdeas")}</Text>
               {body.gorev_onerileri.map((g) => (
                 <Text key={g} className="font-body text-base text-ink">

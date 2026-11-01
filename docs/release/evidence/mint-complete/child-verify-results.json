@@ -1,0 +1,98 @@
+{
+  "checks": [
+    {
+      "name": "tablet-overflow",
+      "passed": true
+    },
+    {
+      "name": "start-opens-without-completing",
+      "passed": true
+    },
+    {
+      "name": "completion-error",
+      "passed": true
+    },
+    {
+      "name": "completion-error-can-reopen",
+      "passed": true
+    },
+    {
+      "name": "completion-updates-pending",
+      "passed": true
+    },
+    {
+      "name": "parent-pin-required",
+      "passed": true
+    },
+    {
+      "name": "invalid-pin-stays-locked",
+      "passed": true
+    },
+    {
+      "name": "320px-no-overflow",
+      "passed": true
+    },
+    {
+      "name": "navigation-prova",
+      "passed": true
+    },
+    {
+      "name": "navigation-collection",
+      "passed": true
+    },
+    {
+      "name": "navigation-room-preview",
+      "passed": true
+    },
+    {
+      "name": "navigation-week",
+      "passed": true
+    },
+    {
+      "name": "navigation-calendar",
+      "passed": true
+    },
+    {
+      "name": "error-retry",
+      "passed": true
+    },
+    {
+      "name": "landscape-phone-overflow",
+      "passed": true
+    },
+    {
+      "name": "paired-child-route",
+      "passed": true
+    },
+    {
+      "name": "paired-child-completion",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "smallTargets": [],
+  "missingImages": 0,
+  "rpcCalls": [
+    {
+      "p_template_id": "task-2",
+      "p_due_date": "2026-11-01",
+      "p_client_id": "48348ad1-333d-406a-9440-4fcc896a88c5",
+      "p_acting_child_id": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "p_template_id": "task-2",
+      "p_due_date": "2026-11-01",
+      "p_client_id": "3a90c014-3875-4432-9549-50077824a999",
+      "p_acting_child_id": "11111111-1111-4111-8111-111111111111"
+    },
+    {
+      "p_pin": "0000"
+    },
+    {
+      "p_template_id": "task-2",
+      "p_due_date": "2026-11-01",
+      "p_client_id": "9e1ba419-88bc-482c-b61a-517cb26511f2"
+    }
+  ],
+  "backend": "isolated HTTP and websocket fixtures; no database writes"
+}

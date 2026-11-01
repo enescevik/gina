@@ -1,6 +1,8 @@
 # Gina · yayın denetimi ve TestFlight durumu
 
-**31 Ekim 2026: henüz yayına hazır değil.** Apple Developer üyeliği aktif; üretim Supabase, Expo/EAS projesi ve App Store Connect uygulama kaydı yok. İmzalı IPA, gerçek cihaz ve mağaza kabulü yapılmadı. [Enes için adım adım kurulum rehberi](YAYIN-KURULUM-REHBERI.md): şimdi yalnız ilk üç bölüm.
+**Güncel beta kaydı:** [1 Kasım 2026 mint ana ekranlar ve yeni ikon teslimi](TESTFLIGHT-MINT-2026-11-01.md). EAS ve App Store Connect artık bağlıdır.
+
+Aşağıdaki bölümler 31 Ekim 2026 tarihli ilk, kurulum öncesi denetimin tarihsel kaydıdır. Hesapların eksik olduğu ifadeleri güncel kurulum durumunu yansıtmaz. Mağaza yayını için açık işler ayrıca güncel beta kaydından kontrol edilmelidir.
 
 ## Kod ve tasarımda tamamlananlar
 

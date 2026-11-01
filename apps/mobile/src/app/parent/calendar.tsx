@@ -1,8 +1,10 @@
+import { WeekStrip } from "@/components/room/week-strip";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 
 import {
   eventTypeSchema,
@@ -21,7 +23,7 @@ import { WeekList } from "@/components/calendar/week-list";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
-import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
+import { ParentScreen as Screen, FormSection } from "@/components/ui/parent-screen";
 import { useFamilyTimezone } from "@/lib/family";
 import { useFamilyEvents } from "@/lib/use-family-events";
 import { useSession } from "@/lib/session";
@@ -37,7 +39,7 @@ function shiftWeek(date: string, weeks: number): string {
 
 /** Veli takvimi: haftalık liste + etkinlik/ders programı ekleme (haftalık tekrar). */
 export default function ParentCalendarScreen() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { claims } = useSession();
   const familyId = claims?.family_id ?? "";
   const timeZone = useFamilyTimezone();
@@ -45,9 +47,12 @@ export default function ParentCalendarScreen() {
   const queryClient = useQueryClient();
 
   const [anchor, setAnchor] = useState(today);
+  const [selectedDate,setSelectedDate] = useState(today);
   const week = weekDatesOf(anchor);
   const from = week[0] ?? anchor;
   const to = week[6] ?? anchor;
+  const visibleDate=week.includes(selectedDate)?selectedDate:from;
+  const monthFormat=new Intl.DateTimeFormat(i18n.language,{month:"long",year:"numeric",timeZone:"UTC"});
 
   const [title, setTitle] = useState("");
   const [type, setType] = useState<EventType>("activity");
@@ -100,18 +105,18 @@ export default function ParentCalendarScreen() {
     <Screen title={t("parent.calendar")} subtitle={t("parentV5.calendarSubtitle")} loading={children.isLoading || events.isLoading || exceptions.isLoading} error={children.error ?? events.error ?? exceptions.error} onRetry={() => { void children.refetch(); void events.refetch(); void exceptions.refetch(); }}>
       <View className="flex-row items-center justify-between">
         <Button variant="ghost" title="‹" accessibilityLabel={t("calendar.previousWeek")} onPress={() => setAnchor(shiftWeek(anchor, -1))} />
-        <Pressable accessibilityRole="button" accessibilityLabel={t("calendar.thisWeek")} style={{ minHeight: 48, flex: 1, alignItems: "center", justifyContent: "center" }} onPress={() => setAnchor(today)}>
+        <Pressable accessibilityRole="button" accessibilityLabel={t("calendar.thisWeek")} style={{ minHeight: 48, flex: 1, alignItems: "center", justifyContent: "center" }} onPress={() => { setAnchor(today); setSelectedDate(today); }}>
           <Text className="text-base font-body-bold text-ink">
-            {from} – {to}
+            {monthFormat.format(new Date(`${visibleDate}T12:00:00Z`))}
           </Text>
         </Pressable>
         <Button variant="ghost" title="›" accessibilityLabel={t("calendar.nextWeek")} onPress={() => setAnchor(shiftWeek(anchor, 1))} />
       </View>
 
-      <WeekList week={week} occurrences={occurrences} today={today} timeZone={timeZone} />
+      <WeekStrip week={week} selected={visibleDate} onSelect={setSelectedDate}/>
+      <WeekList week={[visibleDate]} occurrences={occurrences} today={today} timeZone={timeZone} />
 
-      <View style={parentStyles.form}>
-        <Text className="text-lg font-body-bold text-ink">{t("calendar.newEvent")}</Text>
+      <FormSection title={t("calendar.newEvent")}>
         <Field label={t("calendar.title")} value={title} onChangeText={setTitle} />
         <View className="flex-row flex-wrap gap-2">
           {eventTypeSchema.options.map((option) => (
@@ -120,14 +125,14 @@ export default function ParentCalendarScreen() {
               accessibilityRole="button"
               accessibilityState={{ selected: type === option }}
               onPress={() => setType(option)}
-              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${type === option ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}
+              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${type === option ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#A89BD4]"}`}
             >
               <Text className={type === option ? "font-body-bold text-white" : "font-body text-ink"}>{t(`event.type.${option}`)}</Text>
             </Pressable>
           ))}
         </View>
         <View className="flex-row flex-wrap gap-2">
-          <Pressable accessibilityRole="button" onPress={() => setChildId(null)} className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${childId === null ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}>
+          <Pressable accessibilityRole="button" onPress={() => setChildId(null)} className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${childId === null ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#A89BD4]"}`}>
             <Text className={childId === null ? "font-body-bold text-white" : "font-body text-ink"}>{t("calendar.allFamily")}</Text>
           </Pressable>
           {children.data?.map((child) => (
@@ -136,7 +141,7 @@ export default function ParentCalendarScreen() {
               accessibilityRole="button"
               accessibilityState={{ selected: childId === child.id }}
               onPress={() => setChildId(child.id)}
-              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${childId === child.id ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}
+              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${childId === child.id ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#A89BD4]"}`}
             >
               <Text className={childId === child.id ? "font-body-bold text-white" : "font-body text-ink"}>{child.name}</Text>
             </Pressable>
@@ -159,7 +164,7 @@ export default function ParentCalendarScreen() {
               accessibilityRole="button"
               accessibilityState={{ selected: repeatDays.includes(day) }}
               onPress={() => setRepeatDays((prev) => (prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day].sort()))}
-              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${repeatDays.includes(day) ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}
+              className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${repeatDays.includes(day) ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#A89BD4]"}`}
             >
               <Text className={repeatDays.includes(day) ? "font-body-bold text-white" : "font-body text-ink"}>{t(`weekday.${day}`)}</Text>
             </Pressable>
@@ -167,7 +172,7 @@ export default function ParentCalendarScreen() {
         </View>
         {formError ? <Text className="font-body text-sm text-danger">{formError}</Text> : null}
         <Button title={t("common.save")} loading={addEvent.isPending} disabled={!title.trim()} onPress={() => addEvent.mutate()} />
-      </View>
+      </FormSection>
 
       <ErrorText error={events.error ?? exceptions.error ?? children.error} />
       <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />

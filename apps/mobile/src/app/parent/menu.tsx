@@ -2,16 +2,16 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 
 import { Avatar, CHILD_AVATAR_SLUGS } from "@/components/avatar";
 import { ConfirmAction } from "@/components/ui/confirm-action";
-import { AtmosphereSettings } from "@/components/room/atmosphere-settings";
 import { AccountDeletion } from "@/components/account-deletion";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
-import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
+import { ParentScreen as Screen, parentStyles, FormSection } from "@/components/ui/parent-screen";
 import { useSession } from "@/lib/session";
 import { unregisterPush } from "@/lib/push";
 import { supabase } from "@/lib/supabase";
@@ -21,6 +21,7 @@ function ChildRow({ id, name, grade, avatar }: { id: string; name: string; grade
   const { t } = useTranslation();
   const cache = useQueryClient();
   const [pin, setPin] = useState("");
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const setChildPin = useMutation({
     mutationFn: async () => {
       const { error } = await supabase.rpc("set_child_pin", { p_child_id: id, p_pin: pin });
@@ -35,10 +36,11 @@ function ChildRow({ id, name, grade, avatar }: { id: string; name: string; grade
   }, onSuccess: () => cache.invalidateQueries() });
   return <View style={parentStyles.card}>
     <View style={parentStyles.row}><Avatar slug={avatar} size={56} /><View className="flex-1 gap-1"><Text style={[parentStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{name}</Text>{grade !== null ? <Text style={parentStyles.muted}>{t("parent.gradeShort", { grade })}</Text> : null}</View></View>
-    <Field label={t("parentV5.childPinLabel", { name })} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} />
+    <Button variant="secondary" title={t("mintRelease.childSettings")} accessibilityState={{expanded:settingsOpen}} onPress={() => setSettingsOpen(!settingsOpen)} />
+    {settingsOpen ? <View style={{gap:12}}><Field label={t("parentV5.childPinLabel", { name })} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} />
     <Button variant="secondary" title={t("parent.savePin")} loading={setChildPin.isPending} disabled={pin.length !== 4 || remove.isPending} onPress={() => setChildPin.mutate()} />
     <ErrorText error={setChildPin.error ?? remove.error} />
-    <ConfirmAction title={t("releaseReview.deleteChild", { name })} message={t("releaseReview.deleteChildBody", { name })} busy={remove.isPending || setChildPin.isPending} onConfirm={() => remove.mutate()} />
+    <ConfirmAction title={t("releaseReview.deleteChild", { name })} message={t("releaseReview.deleteChildBody", { name })} busy={remove.isPending || setChildPin.isPending} onConfirm={() => remove.mutate()} /></View> : null}
   </View>;
 }
 
@@ -142,11 +144,8 @@ export default function ParentMenuScreen() {
         <Text className="font-body mt-1 text-xs text-gray-700">{t("parent.inviteHelp")}</Text>
       </View>
 
-      <View style={parentStyles.card}>
-        <Text className="text-lg font-body-bold text-ink">{t("parent.children")}</Text>
-        {children.data?.map((child) => (
-          <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} avatar={child.avatar} />
-        ))}
+      <FormSection title={t("parent.addChild")} initiallyOpen={!children.data?.length}>
+        <Text style={parentStyles.muted}>{t("release.firstChildBody")}</Text>
         <Field label={t("parent.addChild")} value={childName} onChangeText={setChildName} placeholder={t("parent.childNamePlaceholder")} />
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View className="flex-row gap-2">
@@ -162,7 +161,16 @@ export default function ParentMenuScreen() {
             ))}
           </View>
         </ScrollView>
-        <Button variant="secondary" title={t("common.add")} loading={addChild.isPending} disabled={!childName.trim()} onPress={() => addChild.mutate(childName.trim())} />
+        <Button title={t("parent.addChild")} loading={addChild.isPending} disabled={!childName.trim()} onPress={() => addChild.mutate(childName.trim())} />
+        <ErrorText error={addChild.error} />
+      </FormSection>
+
+      <View style={{gap:12}}>
+        <Text style={parentStyles.title}>{t("parent.children")}</Text>
+        {children.data?.map((child) => (
+          <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} avatar={child.avatar} />
+        ))}
+
       </View>
 
       <View style={parentStyles.card}>
@@ -177,7 +185,7 @@ export default function ParentMenuScreen() {
         <Button variant="secondary" title={t("parent.pairDevice")} loading={pairDevice.isPending} disabled={pairCode.length !== 6} onPress={() => pairDevice.mutate(pairCode)} />
       </View>
 
-      <AtmosphereSettings />
+      <View style={parentStyles.card}><Text style={parentStyles.title}>{t("mintRelease.fixedRoomTitle")}</Text><Text style={parentStyles.copy}>{t("mintRelease.fixedRoomBody")}</Text></View>
       <ParentPinRow />
       <Button variant="secondary" title={t("prova.title")} onPress={() => router.push("/parent/prova")} />
       <Button variant="secondary" title={t("push.menu")} onPress={() => router.push("/parent/notifications")} />

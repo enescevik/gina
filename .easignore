@@ -58,3 +58,12 @@ apps/mobile/GoogleService-Info.plist
 docs/
 *.pem
 .metro-health-check*
+
+# Delivery references are retained in git; runtime icons are under apps/mobile/assets.
+packages/assets/brand/apple-mint-delivery/
+
+# Rejected layer candidates stay local; only the explicitly approved board is used.
+packages/assets/rooms/mint-home/layered-v1/*
+!packages/assets/rooms/mint-home/layered-v1/approved-original.png
+packages/assets/rooms/mint-home/gina-first-control-v1-NOT-APPROVED.zip
+packages/assets/rooms/mint-home/source-audit.json

@@ -1,0 +1,35 @@
+{
+  "source": "https://chatgpt.com/share/6ae626eb-3f48-83ed-a90f-1e0eb0508c0e",
+  "approval": "User confirmed the original ZIP board with \"evet bu\" on 2026-11-01; application integration and all screens authorized subsequently.",
+  "assets": [
+    {
+      "file": "approved-board.png",
+      "width": 1536,
+      "height": 1024,
+      "illustrationViewport": {
+        "x": 48,
+        "y": 194,
+        "width": 726,
+        "height": 638
+      },
+      "note": "Earlier corner-correction candidate; not the canonical source used by the application.",
+      "status": "superseded"
+    },
+    {
+      "file": "layered-v1/approved-original.png",
+      "width": 1536,
+      "height": 1024,
+      "sha256": "dd0ac7c3f8fc56ea3da328325c1ddebf1cc7c34573583d1c3748e564d960610f",
+      "supersedes": "approved-board.png",
+      "source": "GINA-mevcut-ozgun-kaynaklar.zip, user-confirmed original",
+      "illustrationViewport": {
+        "x": 46,
+        "y": 193,
+        "width": 729,
+        "height": 641
+      },
+      "status": "production-static-room",
+      "note": "Unchanged original raster. Runtime crop excludes reference UI/device frame. No independently movable objects, no time/weather variants, no upscaling represented as original detail."
+    }
+  ]
+}

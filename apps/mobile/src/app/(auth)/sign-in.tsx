@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
-import Wordmark from "../../../../../packages/assets/brand/yan-yana/logo-wordmark.svg";
+
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ParentScreen, parentStyles } from "@/components/ui/parent-screen";
@@ -44,18 +44,18 @@ export default function SignInScreen() {
   }
   function change(next: typeof mode) { setMode(next); setError(null); setNotice(null); setPassword(""); }
   return <ParentScreen navigation={false} title={t(mode === "reset" ? "accountV5.resetTitle" : mode === "up" ? "auth.signUp" : "accountV5.welcome")} subtitle={t("accountV5.welcomeBody")}>
-    <Wordmark width={112} height={46} accessibilityLabel={t("app.name")} />
+
     <View style={{ gap: 14 }}>
       <Field label={t("auth.email")} autoCapitalize="none" autoComplete="email" keyboardType="email-address" value={email} onChangeText={setEmail} editable={!busy} />
       {mode !== "reset" ? <Field label={t("auth.password")} secureTextEntry autoComplete={mode === "in" ? "current-password" : "new-password"} value={password} onChangeText={setPassword} editable={!busy} /> : null}
       {mode === "up" ? <><Text style={parentStyles.muted}>{t("accountV5.passwordHint")}</Text><Toggle label={t("accountV5.adult")} value={adult} onChange={setAdult} disabled={busy} /></> : null}
       <ErrorText error={error} />
-      {notice ? <Text accessibilityLiveRegion="polite" style={[parentStyles.copy, { backgroundColor: "#E6F3ED", padding: 16, borderRadius: 12 }]}>{notice}</Text> : null}
+      {notice ? <Text accessibilityLiveRegion="polite" style={[parentStyles.copy, { backgroundColor: "#F1EDFD", padding: 16, borderRadius: 12 }]}>{notice}</Text> : null}
       <Button title={t(mode === "reset" ? "accountV5.sendReset" : mode === "in" ? "auth.signIn" : "auth.signUp")} loading={busy} disabled={!valid} onPress={submit} />
       {mode === "in" ? <Button variant="ghost" title={t("accountV5.forgot")} disabled={busy} onPress={() => change("reset")} /> : null}
       <Button variant="secondary" title={t(mode === "in" ? "auth.signUp" : "auth.signIn")} disabled={busy} onPress={() => change(mode === "in" ? "up" : "in")} />
     </View>
-    <View style={{ borderTopWidth: 1, borderColor: "#E4DAC8", paddingTop: 16, marginTop: 8 }}>
+    <View style={{ borderTopWidth: 1, borderColor: "#EAE5EE", paddingTop: 16, marginTop: 8 }}>
       <Button variant="ghost" title={t("auth.thisIsChildTablet")} disabled={busy} onPress={() => router.push("/device/pair")} />
     </View>
   </ParentScreen>;

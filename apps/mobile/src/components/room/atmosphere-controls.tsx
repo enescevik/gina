@@ -1,6 +1,7 @@
 import { Volume2, VolumeX } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 import type { RoomAtmosphere } from "@/lib/use-room-atmosphere";
 import type { RoomAudio } from "@/lib/use-room-audio";
 import { AtmosphereStatus } from "./atmosphere-status";

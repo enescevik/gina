@@ -1,349 +1,107 @@
-import { Button } from "@/components/ui/button";
-import { router } from "expo-router";
-import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import { ActivityIndicator, Image, Pressable, ScrollView, Text, View, useWindowDimensions, type ImageSourcePropType } from "react-native";
+import { useQueryClient } from '@tanstack/react-query';
+import { router } from 'expo-router';
+import { CalendarDays, Check, ChevronRight, Circle, ClipboardCheck, Clock3, GraduationCap, House, LockKeyhole, Pencil, Play, Star, Trophy, X } from 'lucide-react-native';
+import { useCallback, useRef, useState, type ComponentRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, Image, Modal, ScrollView, Text, View, useWindowDimensions } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import Wordmark from "../../../../../packages/assets/brand/yan-yana/logo-wordmark.svg";
-
-import { Collectible } from "@/components/collectible";
-import { BoardProgress } from "@/components/room/board-progress";
-import { ZONES, roomSkinScale } from "@/components/room/layout";
-import { NineSlice, SkinIcon, SkinPressable, SkinProgress } from "@/components/room/nine-slice";
-import { rewardTicketArt, shelfDisplayArt } from "@/components/room/room-art";
-import { RoomScene, type CharacterKey } from "@/components/room/scene";
-import { SkinTaskCard, sortForBoard } from "@/components/room/skin-task-card";
-import { ErrorText } from "@/components/ui/screen";
-import { useChildBadges } from "@/lib/use-child-badges";
-import { useChildExamCount } from "@/lib/use-child-exam-count";
-import { useChildGoal } from "@/lib/use-child-goal";
-import { useChildRoomPrefs } from "@/lib/use-child-room-prefs";
-import { childPath } from "@/lib/active-child";
-import { useChildToday } from "@/lib/use-child-today";
-
-/** Panoda görünür alana sığan görev kâğıdı sayısı (onaylı referans: iki büyük kâğıt; kalanı pano içinde kayar). */
-const BOARD_VISIBLE_CARDS = 2;
-
-/** Raftaki nesne: Codex display-* sergi görseli teslim edince otomatik kullanılır; yoksa madalya (BRIEF 13 / D.2). */
-function ShelfObject({ badge, s }: { badge: { slug: string; icon: string }; s: number }) {
-  const display = shelfDisplayArt(badge);
-  if (!display) return <Collectible slug={badge.icon} size={Math.max(48, 64 * s)} style={{ marginTop: -34 * s }} />;
-  const size = Math.max(56, 84 * s);
-  return (
-    <Image
-      source={display}
-      resizeMode="contain"
-      accessible={false}
-      importantForAccessibility="no-hide-descendants"
-      style={{ width: size, height: size, marginTop: -50 * s }}
-    />
-  );
-}
-
-/** Bilet yanındaki ödül görseli yuvası; görsel yoksa yer kaplamaz. */
-function TicketArt({ source, size }: { source: ImageSourcePropType | null; size: number }) {
-  if (!source) return null;
-  return (
-    <Image
-      source={source}
-      resizeMode="contain"
-      accessible={false}
-      importantForAccessibility="no-hide-descendants"
-      style={{ width: size, height: size }}
-    />
-  );
-}
+import { ApprovedScene } from '@/components/child-home/approved-scene';
+import { c, s } from '@/components/child-home/theme';
+import { Collectible } from '@/components/collectible';
+import { rewardTicketArt } from './room-art';
+import { TaskIcon } from '@/components/task-icon';
+import { ErrorText } from '@/components/ui/screen';
+import { childPath } from '@/lib/active-child';
+import { useChildExamCount } from '@/lib/use-child-exam-count';
+import { useChildGoal } from '@/lib/use-child-goal';
+import { useChildToday } from '@/lib/use-child-today';
+import type { CharacterKey } from './scene';
 
 export interface RoomChildHomeProps {
-  childId: string;
-  childName: string;
-  character?: CharacterKey;
-  actingAsParent?: boolean;
-  onParentExit: () => void;
-  exitBusy?: boolean;
-  actionError?: unknown;
+  childId: string; childName: string; character?: CharacterKey; actingAsParent?: boolean;
+  onParentExit: () => void; exitBusy?: boolean; actionError?: unknown;
 }
 
-/** Onaylı tasarımın (child-home-approved.png) gerçek verili hâli: pano, hedef bileti, Haftam, raf ve Başardıklarım. */
-export function RoomChildHome({ childId, childName, character: providedCharacter, actingAsParent = false, onParentExit, exitBusy, actionError }: RoomChildHomeProps) {
-  const { t, i18n } = useTranslation();
+/** Approved mint room, shared by paired child devices and PIN-locked parent mode. */
+export function RoomChildHome({ childId, childName, actingAsParent = false, onParentExit, exitBusy, actionError }: RoomChildHomeProps) {
+  const { t } = useTranslation();
   const data = useChildToday(childId, actingAsParent);
-  const badges = useChildBadges(childId, i18n.language);
-  const shelf = (badges.data ?? []).filter((b) => b.earned).slice(0, 3);
-  const earnedCount = (badges.data ?? []).filter((b) => b.earned).length;
-  const assignedExams = useChildExamCount(childId);
   const goal = useChildGoal(childId);
-  const weekday = new Intl.DateTimeFormat(i18n.language, { weekday: "short", timeZone: "UTC" });
-  // Satır yoksa sütun varsayılanı ('cat') geçerlidir.
-  const prefs = useChildRoomPrefs(childId);
-  const pet = prefs.data?.petKey ?? "cat";
-  const character = providedCharacter ?? (prefs.data?.characterKey === "girl" || prefs.data?.characterKey === "boy" ? prefs.data.characterKey : "unspecified");
-  // Pano kaydırma alanının yüksekliği: iki kâğıt tam sığacak şekilde kart yüksekliği buradan hesaplanır.
-  const [listHeight, setListHeight] = useState(0);
-  const { height } = useWindowDimensions();
-  if (height < 600) return <RoomScene character={character} pet={pet}>
-    {() => <>
-      <View style={{position:"absolute",left:12,right:12,top:6,flexDirection:"row",alignItems:"center",justifyContent:"space-between",gap:12}}>
-        <Text style={{fontFamily:"Baloo2_700Bold",fontSize:23,color:"#284E4B",backgroundColor:"#FFF8EF",paddingHorizontal:12,borderRadius:12}}>{t("child.hello",{name:childName})} · {t("room.starCount",{count:data.stars})}</Text>
-        <Button title={t("room.parentExit")} variant="secondary" onPress={onParentExit} loading={exitBusy}/>
+  const exams = useChildExamCount(childId);
+  const client = useQueryClient();
+  const { width, height, fontScale } = useWindowDimensions();
+  const wide = width >= 760 && width > height && fontScale <= 1.25;
+  const [taskSheet, setTaskSheet] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
+  const returnToRoom = useCallback(() => scroll.current?.scrollTo({ y: 0, animated: false }), []);
+  const next = data.due.find(x => x.status === 'returned') ?? data.due.find(x => x.status === null);
+  const selected = data.due.find(x => x.id === selectedId);
+  const approved = data.due.filter(x => x.status === 'approved').length;
+  const waiting = data.due.filter(x => x.status === 'done').length;
+  const todo = data.due.length - approved - waiting;
+  const go = (page: Parameters<typeof childPath>[0]) => router.push(childPath(page, actingAsParent));
+  const openTasks = () => { setSelectedId(null); setTaskSheet(true); };
+  const openTask = (id: string) => { setSelectedId(id); setTaskSheet(true); };
+  const retry = () => {
+    for (const key of ['task_templates', 'task_completions_week', 'star_events', 'child_goal']) void client.refetchQueries({ queryKey: [key, childId] });
+  };
+  const error = data.error ?? actionError;
+  const statusText = (status: string | null) => status === 'done' ? t('child.waitingApproval') : status === 'approved' ? t('child.approved') : status === 'returned' ? t('child.returnedTryAgain') : t('childMint.ready');
+  const primary = (label: string, run: () => void, busy = false) => <Pressable accessibilityRole="button" accessibilityState={{ disabled: busy, busy }} disabled={busy} onPress={run} style={({ pressed }) => [s.button, (pressed || busy) && s.pressed]}>{busy ? <ActivityIndicator color={c.white} /> : <Play size={20} fill={c.white} color={c.white} />}<Text style={s.buttonText}>{label}</Text></Pressable>;
+  const panel = <View style={[s.panelContent, !wide && s.panelContentPhone]}>
+    <View style={[s.section, !wide && { gap: 8 }]}>
+      <Text accessibilityRole="header" style={s.heading}>{t('childMint.next')}</Text>
+      {error ? <View style={s.card}><ErrorText error={error} />{primary(t('common.retry'), retry)}</View> : data.loading ? <View style={s.state}><ActivityIndicator color={c.purple} /><Text style={s.text}>{t('childMint.loading')}</Text></View> : next ? <View style={[s.card, !wide && { padding: 10, gap: 8 }]}>
+        <View style={s.row}><View style={s.taskArt}><TaskIcon slug={next.icon} size={wide ? 76 : 60} variant="illustrated" /></View><View style={{ flex: 1, gap: 4 }}><Text style={[s.heading, { fontSize: 19 }]}>{next.title}</Text><Text style={s.text}>{t('room.plusStars', { count: next.stars })}</Text>{next.status === 'returned' && <Text style={[s.small, { color: c.amber }]}>{t('child.returnedTryAgain')}</Text>}</View></View>
+        {primary(t('childMint.start'), () => openTask(next.id))}
+      </View> : <View style={s.card}><Text style={s.heading}>{t(waiting ? 'childMint.waitingTitle' : data.due.length ? 'childMint.allDone' : 'childMint.emptyTitle')}</Text><Text style={s.text}>{t(waiting ? 'childMint.waitingBody' : data.due.length ? 'childMint.allDoneBody' : 'childMint.emptyBody')}</Text></View>}
+    </View>
+    <View style={[s.section, s.divider, !wide && { gap: 8, paddingTop: 12 }]}>
+      <Text accessibilityRole="header" style={s.heading}>{t('childMint.steps')}</Text>
+      <View style={[s.row, { gap: 7, alignItems: 'stretch' }]}>
+        {([{ count: approved, key: 'finished', Icon: Check, color: '#128772' }, { count: waiting, key: 'waiting', Icon: Clock3, color: c.amber }, { count: todo, key: 'todo', Icon: Circle, color: c.muted }] as const).map(({ count, key, Icon, color }) => <View key={key} style={[s.status, !wide && s.statusPhone]} accessible accessibilityLabel={t(`childMint.${key}`, { count })}><Icon size={wide ? 24 : 20} color={color} strokeWidth={2.3} /><Text style={[s.small, { color, textAlign: 'center', fontSize: wide ? 12 : 13 }]}>{data.loading || data.error ? '—' : t(`childMint.${key}`, { count })}</Text></View>)}
       </View>
-      <NineSlice skin="child-board-v5" scale={.6} style={{position:"absolute",left:8,top:62,bottom:8,width:"43%"}} contentStyle={{flex:1}}>
-        <Text style={{fontFamily:"Baloo2_700Bold",fontSize:22,color:"#284E4B"}}>{t("child.today")}</Text>
-        <ScrollView contentContainerStyle={{gap:10,paddingBottom:8}}>
-          <ErrorText error={actionError ?? data.error}/>
-          {data.loading ? <ActivityIndicator color="#0B7F7F"/> : null}
-          {!data.loading && !data.error && !data.due.length ? <Text style={{fontFamily:"Nunito_700Bold",fontSize:17,color:"#284E4B"}}>{t("child.allDone")}</Text> : null}
-          {sortForBoard(data.due).map(task=><SkinTaskCard key={task.id} task={task} s={1} stacked isNext={false} completing={data.completing} onComplete={()=>data.complete(task.id)}/>)}
+    </View>
+    <View style={[s.section, s.divider, !wide && { gap: 8, paddingTop: 12 }]}>
+      <Text accessibilityRole="header" style={s.heading}>{t('childMint.goal')}</Text>
+      {goal.error ? <View style={s.card}><ErrorText error={goal.error} /><Pressable accessibilityRole="button" onPress={() => void goal.refetch()} style={s.chip}><Text style={s.text}>{t('common.retry')}</Text></Pressable></View> : goal.isLoading ? <ActivityIndicator color={c.purple} /> : <Pressable accessibilityRole="button" accessibilityLabel={t('room.myGoal')} onPress={() => go('goal')} style={({ pressed }) => [s.card, s.row, pressed && s.pressed]}>
+        {rewardTicketArt(goal.data?.rewardIcon).left ? <Image source={rewardTicketArt(goal.data?.rewardIcon).left!} resizeMode="contain" style={{ width: wide ? 84 : 64, height: wide ? 84 : 64 }} /> : <Collectible slug="star-filled" size={wide ? 84 : 64} />}
+        <View style={{ flex: 1, gap: 3 }}><Text style={[s.text, s.bold]}>{goal.data?.rewardTitle ?? t('goal.pickCta')}</Text>{goal.data && <><Text style={s.small}>{t('room.goalProgress', { stars: Math.min(data.stars, goal.data.cost), cost: goal.data.cost })}</Text><View accessible accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: Math.max(1, goal.data.cost), now: Math.min(data.stars, goal.data.cost) }} style={s.track}><View style={[s.fill, { width: `${Math.min(100, Math.max(0, data.stars / Math.max(1, goal.data.cost) * 100))}%` }]} /></View><Text style={s.small}>{data.stars >= goal.data.cost ? t('goal.reached') : t('room.starsLeft', { count: goal.data.cost - data.stars })}</Text></>}</View><ChevronRight size={21} color={c.purple} />
+      </Pressable>}
+    </View>
+    <Pressable accessibilityRole="button" onPress={() => go('week')} style={({ pressed }) => [s.link, pressed && s.pressed]}><CalendarDays size={25} color={c.purple} /><Text style={[s.text, { flex: 1, color: c.ink }]}>{t('childMint.week')}</Text><ChevronRight size={21} color={c.purple} /></Pressable>
+    <Pressable accessibilityRole="button" onPress={() => go('calendar')} style={({ pressed }) => [s.link, pressed && s.pressed]}><CalendarDays size={22} color={c.muted} /><Text style={[s.small, { flex: 1 }]}>{t('child.calendar')}</Text><ChevronRight size={19} color={c.muted} /></Pressable>
+  </View>;
+  const panelWidth = Math.max(320, Math.min(400, width * .31));
+  const scene = <ApprovedScene style={wide ? { flex: 1, marginRight: -26 } : { width: '100%', height: width * 641 / 729 }} onTasks={openTasks} onProva={() => go('prova')} onCollection={() => go('collection')} />;
+  return <SafeAreaView edges={['top', 'left', 'right', 'bottom']} style={s.root}>
+    <View style={[s.header, !wide && s.headerPhone]}>
+      <Image source={require('../../../../../packages/assets/brand/growing-friend/logo.png')} accessible accessibilityLabel="Gina" resizeMode="contain" style={[s.logo, !wide && s.logoPhone]} />
+      {wide && <Text accessibilityRole="header" style={s.greeting}>{t('child.hello', { name: childName })}</Text>}
+      {!wide && <View style={{ flex: 1 }} />}
+      <View style={[s.chip, !wide && { paddingHorizontal: 8 }]} accessible accessibilityLabel={t('room.starCount', { count: data.stars })}><Star size={24} color="#EBA12D" fill="#FFD06A" /><Text style={[s.text, s.bold]}>{data.loading || data.error ? '—' : data.stars}</Text></View>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('childV5.customize')} onPress={() => go('room-preview')} style={({ pressed }) => [s.chip, !wide && { paddingHorizontal: 8 }, pressed && s.pressed]}><Pencil size={21} color={c.purple} />{(wide || width >= 390) && <Text style={[s.small, { color: c.purple }]}>{t(wide ? 'childV5.customize' : 'childMint.room')}</Text>}</Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel={t('room.parentExit')} accessibilityState={{ disabled: !!exitBusy }} disabled={exitBusy} onPress={onParentExit} style={({ pressed }) => [s.chip, !wide && { paddingHorizontal: 8 }, pressed && s.pressed]}>{exitBusy ? <ActivityIndicator color={c.purple} /> : <LockKeyhole size={21} color={c.muted} />}{wide && <Text style={s.small}>{t('room.parentExit')}</Text>}</Pressable>
+    </View>
+    {wide ? <View style={s.body}>{scene}<ScrollView style={[s.panel, { width: panelWidth, flexGrow: 0, flexShrink: 0 }]}>{panel}</ScrollView></View> : <ScrollView ref={scroll} style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 8 }}><Text accessibilityRole="header" style={[s.greetingPhone, { color: c.ink }]}>{t('child.hello', { name: childName })}</Text>{scene}<View style={[s.panel, s.panelPhone]}>{panel}</View></ScrollView>}
+    <View style={s.nav}>
+      {([{ key: 'world', Icon: House, run: () => {}, label: t('childMint.world') }, { key: 'tasks', Icon: ClipboardCheck, run: openTasks, label: t('childMint.tasks') }, { key: 'prova', Icon: GraduationCap, run: () => go('prova'), label: (exams.data ?? 0) > 0 ? `${t('prova.title')} (${exams.data})` : t('prova.title') }, { key: 'collection', Icon: Trophy, run: () => go('collection'), label: t('childMint.collection') }]).map(({ key, Icon, run, label }) => <Pressable key={key} accessibilityRole="button" accessibilityState={{ selected: key === 'world' }} onPress={key === 'world' ? returnToRoom : run} style={({ pressed }) => [s.navItem, pressed && s.pressed]}><Icon size={wide ? 28 : 25} color={key === 'world' ? c.purple : c.muted} fill={key === 'world' ? c.purple : 'none'} /><Text style={[s.small, { color: key === 'world' ? c.purple : c.muted }]}>{label}</Text>{key === 'world' && <View style={s.navLine} />}</Pressable>)}
+    </View>
+    <Modal visible={taskSheet} transparent animationType="none" onRequestClose={() => setTaskSheet(false)} supportedOrientations={['portrait', 'landscape']}>
+      <SafeAreaView style={s.overlay}><View style={s.modal} accessibilityViewIsModal>
+        <View style={s.row}><Text accessibilityRole="header" style={[s.heading, { flex: 1 }]}>{selected ? selected.title : t('room.todayTasks')}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('childMint.close')} onPress={() => setTaskSheet(false)} style={s.chip}><X size={22} color={c.ink} /></Pressable></View>
+        <ScrollView contentContainerStyle={{ gap: 12, paddingBottom: 8 }}>
+          <ErrorText error={data.completionError ?? data.error} />
+          {data.loading ? <ActivityIndicator color={c.purple} /> : (selected ? [selected] : data.due).map(task => <View key={task.id} style={s.card}>
+            <View style={s.row}><TaskIcon slug={task.icon} size={72} variant="illustrated" /><View style={{ flex: 1 }}><Text style={[s.text, s.bold]}>{task.title}</Text><Text style={s.small}>{t('room.plusStars', { count: task.stars })}</Text><Text accessibilityLiveRegion="polite" style={[s.small, { color: task.status === 'done' || task.status === 'returned' ? c.amber : c.muted }]}>{statusText(task.status)}</Text></View></View>
+            {(task.status === null || task.status === 'returned') && primary(t('child.markDone'), () => data.complete(task.id), data.completing)}
+          </View>)}
+          {!data.loading && !data.error && !data.due.length && <Text style={s.text}>{t('childMint.emptyBody')}</Text>}
         </ScrollView>
-      </NineSlice>
-      <ScrollView style={{position:"absolute",right:10,top:66,bottom:12,width:"28%"}} contentContainerStyle={{gap:8}}>
-        <View style={{backgroundColor:"#FFF2CC",borderWidth:2,borderColor:"#B77B39",borderRadius:16,padding:12,gap:6}}>
-          <Text style={{fontFamily:"Baloo2_700Bold",fontSize:18,color:"#284E4B"}}>{goal.data?.rewardTitle ?? t("room.myGoal")}</Text>
-          {goal.data ? <><Text style={{fontFamily:"Nunito_700Bold",fontSize:16,color:"#425E58"}}>{data.stars} / {goal.data.cost}</Text><BoardProgress done={data.stars} total={goal.data.cost} s={.65}/></> : null}
-        </View>
-        <View style={{flexDirection:"row",flexWrap:"wrap",gap:8}}>
-
-        {([['goal','room.myGoal'],['week','child.week'],['calendar','child.calendar'],['collection','room.myCollection'],['prova','prova.title'],['room-preview','childV5.customize']] as const).map(([page,label])=><View key={page} style={{width:"47%"}}><Button title={t(label)} variant="secondary" onPress={()=>router.push(childPath(page,actingAsParent))}/></View>)}
-        </View>
-      </ScrollView>
-    </>}
-  </RoomScene>;
-
-  return (
-    <RoomScene character={character} pet={pet}>
-      {({ rect, frame, night }) => {
-        const s = roomSkinScale(frame.width);
-        const fs = (n: number) => Math.round(n * s);
-        const header = rect(ZONES.header);
-        const board = rect(ZONES.taskBoard);
-        const column = rect(ZONES.rightColumn);
-        const goalRect = rect(ZONES.goal);
-        const week = rect(ZONES.week);
-        const shelfZone = rect(ZONES.shelf);
-        const shelfRect = rect(ZONES.bookshelf);
-        const doneCount = data.due.filter((d) => d.status === "done" || d.status === "approved").length;
-        const nextTaskId = data.due.find((d) => d.status === null || d.status === "returned")?.id;
-        const goalData = goal.data;
-        const remaining = goalData ? Math.max(0, goalData.cost - data.stars) : 0;
-        const ticketArt = rewardTicketArt(goalData?.rewardIcon);
-        const ticketArtSize = Math.round(68 * s);
-        const boardTasks = sortForBoard(data.due);
-        const cardGap = 10 * s;
-        // Kâğıdın minimum yüksekliği (task-card minimumLogicalSize ~57 dp) altına inilmez; çok kısa sahnede kart içerik kadar olur.
-        const cardHeight = listHeight > 0 ? Math.max(96 * s, (listHeight - cardGap * (BOARD_VISIBLE_CARDS - 1) - 4) / BOARD_VISIBLE_CARDS) : undefined;
-
-        return (
-          <>
-            {/* Üst çubuk: logo + selamlama solda; yıldız ve Ebeveyn hapları sağda */}
-            <View style={{ position: "absolute", ...header }} className="flex-row items-center justify-between">
-              <View className="flex-row items-center" style={{ gap: 16 * s, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 16, backgroundColor: night ? "#FFF8EF" : undefined }}>
-                <Wordmark width={110 * s} height={48 * s} accessibilityLabel="Gina" />
-                <View className="bg-ink/15" style={{ width: 2, height: 44 * s }} />
-                {/* Onaylı referansta selamlamanın altında vurgu çizgisi yok (header-greeting-underline kullanılmıyor). */}
-                <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(30), lineHeight: fs(38) }}>
-                  {t("child.hello", { name: childName })}
-                </Text>
-              </View>
-              <View className="flex-row items-center" style={{ gap: 12 * s }}>
-                <View accessible accessibilityLabel={t("room.starCount", { count: data.stars })}>
-                  <NineSlice skin="pill-star" scale={s} contentClassName="justify-center">
-                    <Text className="font-body-bold text-ink" style={{ fontSize: fs(17) }}>
-                      {t("room.starCount", { count: data.stars })}
-                    </Text>
-                  </NineSlice>
-                </View>
-                <SkinPressable
-                  skin="pill-parent"
-                  pressedSkin="pill-parent-pressed"
-                  scale={s}
-                  onPress={onParentExit} disabled={exitBusy}
-                  accessibilityLabel={t("room.parentExit")}
-                  contentClassName="justify-center"
-                  hitSlop={6}
-                >
-                  <Text className="font-body-bold text-ink" style={{ fontSize: fs(17) }}>
-                    {t("room.parentExit")}
-                  </Text>
-                </SkinPressable>
-              </View>
-            </View>
-
-            {/* Görev panosu: board-frame + ayrı task-card kâğıtları */}
-            <NineSlice
-              skin="board-frame"
-              scale={s}
-              style={{ position: "absolute", ...board }}
-              contentStyle={{ flex: 1, flexGrow: 1, paddingTop: 28 * s }}
-            >
-              <View style={{ height: 115 * s }}>
-              <Text accessibilityRole="header" className="font-display text-ink" style={{ fontSize: fs(28), lineHeight: fs(36) }}>
-                {t("room.todayTasks")}
-              </Text>
-              <Text className="font-body text-ink/80" style={{ fontSize: fs(17) }}>
-                {t("room.completedOf", { done: doneCount, total: data.due.length })}
-              </Text>
-              <View style={{ marginTop: 6 * s, marginBottom: 10 * s }}>
-                <BoardProgress
-                  done={doneCount}
-                  total={data.due.length}
-                  s={s}
-                  statuses={data.due.map((task) => task.status === "done" || task.status === "approved")}
-                />
-              </View>
-              </View>
-              <ErrorText error={actionError ?? data.error ?? goal.error ?? badges.error ?? assignedExams.error} />
-              <ScrollView
-                style={{ flex: 1 }}
-                onLayout={(e) => setListHeight(e.nativeEvent.layout.height)}
-                contentContainerStyle={{ gap: cardGap, paddingBottom: 4 }}
-                snapToInterval={cardHeight ? cardHeight + cardGap : undefined}
-                decelerationRate="fast"
-                showsVerticalScrollIndicator={boardTasks.length > BOARD_VISIBLE_CARDS}
-              >
-                {data.loading ? <ActivityIndicator color="#0B7F7F" /> : null}
-                {data.due.length === 0 && !data.loading && !data.error ? (
-                  <Text className="font-body text-ink" style={{ fontSize: fs(18) }}>
-                    {t("child.allDone")}
-                  </Text>
-                ) : null}
-                {boardTasks.map((task) => (
-                  <SkinTaskCard
-                    key={task.id}
-                    task={task}
-                    s={s}
-                    large
-                    height={cardHeight}
-                    isNext={task.id === nextTaskId}
-                    completing={data.completing}
-                    onComplete={() => data.complete(task.id)}
-                  />
-                ))}
-              </ScrollView>
-            </NineSlice>
-
-            {/* Sağ sütun: hedef bileti → Haftam → sergi rafı → Başardıklarım çekmecesi */}
-            <View
-              style={{ position: "absolute", left: column.left, top: column.top, width: column.width, height: column.height, gap: 6 * s }}
-              className="items-center"
-            >
-              <SkinPressable
-                skin={goalData ? "ticket-goal" : "ticket-goal-empty"}
-                scale={s}
-                onPress={() => router.push(childPath("goal", actingAsParent))}
-                accessibilityLabel={
-                  goalData
-                    ? `${t("room.myGoal")}: ${goalData.rewardTitle}, ${t("room.goalProgress", { stars: Math.min(data.stars, goalData.cost), cost: goalData.cost })}`
-                    : `${t("room.myGoal")}: ${t("goal.pickCta")}`
-                }
-                style={{ width: goalRect.width, flexGrow: 272, flexBasis: 0 }}
-                contentClassName="items-center justify-center"
-                contentStyle={{ paddingTop: 24 * s, paddingBottom: 22 * s, paddingHorizontal: 22 * s, gap: 4 * s }}
-              >
-                {/* Sol/sağ ödül görseli yuvaları (BRIEF 13 / D.1): görsel yoksa hiç çizilmez, metin ortada kalır. */}
-                <View pointerEvents="none" style={{ position: "absolute", left: 20 * s, bottom: 28 * s }}><TicketArt source={goalData ? ticketArt.left : null} size={ticketArtSize * .8} /></View>
-                <View className="items-center justify-center" style={{ width: "100%", gap: 2 * s }}>
-                <Text className="font-display text-ink" style={{ fontSize: fs(24), lineHeight: fs(28) }}>
-                  {t("room.myGoal")}
-                </Text>
-                {goal.isLoading ? <ActivityIndicator color="#0B7F7F" /> : null}
-                {goalData ? (
-                  <>
-                    <Text numberOfLines={1} adjustsFontSizeToFit className="font-display text-ink" style={{ fontSize: fs(25), lineHeight: fs(31) }}>
-                      {goalData.rewardTitle}
-                    </Text>
-                    <Text className="font-body-bold text-ink" style={{ fontSize: fs(17) }}>
-                      {t("room.goalProgress", { stars: Math.min(data.stars, goalData.cost), cost: goalData.cost })}
-                    </Text>
-                    <SkinProgress value={data.stars / goalData.cost} scale={s} style={{ width: "60%", marginVertical: 4 * s }} />
-                    <Text className="font-display text-ink" style={{ fontSize: fs(20), lineHeight: fs(26) }}>
-                      {remaining === 0 ? t("goal.reached") : t("room.starsLeft", { count: remaining })}
-                    </Text>
-                  </>
-                ) : !goal.isLoading ? (
-                  <Text className="font-body-bold text-teal-dark" style={{ fontSize: fs(18) }}>
-                    {t("goal.pickCta")}
-                  </Text>
-                ) : null}
-                </View>
-                <View pointerEvents="none" style={{ position: "absolute", right: 20 * s, bottom: 28 * s }}><TicketArt source={goalData ? ticketArt.right : null} size={ticketArtSize * .8} /></View>
-              </SkinPressable>
-
-              {/* Haftam duvar takvimi: week-frame; gün hücreleri native, durumlar kaplama */}
-              <NineSlice
-                skin="week-frame"
-                scale={s}
-                style={{ width: week.width, flexGrow: 186, flexBasis: 0, minHeight: 118 * s }}
-                contentClassName="justify-center"
-              >
-                <Text accessibilityRole="header" className="text-center font-display text-ink" style={{ fontSize: fs(22), lineHeight: fs(26) }}>
-                  {t("room.myWeek")}
-                </Text>
-                <View className="flex-row justify-between" style={{ marginTop: 2 * s }}>
-                  {data.weekSummary.map((day) => {
-                    const label = weekday.format(new Date(`${day.date}T12:00:00Z`));
-                    const skin = day.due > 0 && day.done >= day.due ? "week-check" : day.done > 0 ? "week-partial" : "week-empty";
-                    return (
-                      <View
-                        key={day.date}
-                        accessible
-                        accessibilityLabel={`${label}: ${t("room.weekProgress", { done: day.done, total: day.due })}`}
-                        className="items-center"
-                        style={{ flex: 1, gap: 2 * s, opacity: day.due === 0 ? 0.45 : 1 }}
-                      >
-                        <Text numberOfLines={1} className="font-body text-ink/80" style={{ fontSize: fs(12) }}>
-                          {label}
-                        </Text>
-                        <SkinIcon skin={skin} size={Math.min(26 * s, week.width / 9)} />
-                      </View>
-                    );
-                  })}
-                </View>
-              </NineSlice>
-
-              <NineSlice skin="cabinet-display" scale={s} style={{ width: shelfZone.width, height: 220 * s }}
-                contentClassName="flex-row items-end" contentStyle={{ gap: 4 * s, paddingBottom: 110 * s }}>
-                {[0, 1, 2].map(i => <Pressable key={i} accessibilityRole="button" onPress={() => router.push(childPath("collection", actingAsParent))}
-                  accessibilityLabel={shelf[i]?.title ?? t("room.displaySlot")} style={{ flex: 1, minHeight: 72 * s, alignItems: "center", justifyContent: "flex-end" }}>
-                  {shelf[i] ? <>
-                    <ShelfObject badge={shelf[i]} s={s} />
-                    <Text numberOfLines={1} className="font-body-bold text-ink" style={{ fontSize: fs(12), paddingHorizontal: 4, backgroundColor: "#FFF1D4", borderRadius: 4 }}>{shelf[i].title}</Text>
-                  </> : null}
-                </Pressable>)}
-                <Pressable accessibilityRole="button" accessibilityLabel={t("room.myCollection")} onPress={() => router.push(childPath("collection", actingAsParent))}
-                  style={{ position: "absolute", left: 75 * s, right: 35 * s, bottom: 43 * s, minHeight: 50 * s, justifyContent: "center" }}>
-                  <Text numberOfLines={1} className="font-display text-ink" style={{ fontSize: fs(22), lineHeight: fs(27) }}>{t("room.myWins")}</Text>
-                  <Text className="font-body text-ink" style={{ fontSize: fs(13) }}>{t("collection.badgeCount", { count: earnedCount })}</Text>
-                </Pressable>
-              </NineSlice>
-            </View>
-
-            <View style={{ position: "absolute", left: frame.left + frame.width * .42, bottom: 10 }}><Button variant="secondary" title={t("childV5.customize")} onPress={() => router.push(childPath("room-preview", actingAsParent))}/></View>
-            {/* Kitaplık: Prova kapısı; atanmış deneme varsa işaret */}
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={
-                (assignedExams.data ?? 0) > 0
-                  ? `${t("prova.title")}, ${t("prova.waitingCount", { count: assignedExams.data ?? 0 })}`
-                  : t("prova.title")
-              }
-              onPress={() => router.push(actingAsParent ? "/parent/child-mode/prova" : "/child/prova")}
-              style={{ position: "absolute", ...shelfRect }}
-              className="items-center justify-start"
-            >
-              <View className="mt-1 flex-row items-center gap-1 rounded-full bg-white/90 px-3 py-1">
-                <Text className="font-display text-ink" style={{ fontSize: fs(16) }}>
-                  {t("prova.title")}
-                </Text>
-                {(assignedExams.data ?? 0) > 0 ? (
-                  <View className="h-5 min-w-5 items-center justify-center rounded-full bg-coral px-1">
-                    <Text className="text-xs font-body-bold text-white">{assignedExams.data}</Text>
-                  </View>
-                ) : null}
-              </View>
-            </Pressable>
-          </>
-        );
-      }}
-    </RoomScene>
-  );
+      </View></SafeAreaView>
+    </Modal>
+  </SafeAreaView>;
 }

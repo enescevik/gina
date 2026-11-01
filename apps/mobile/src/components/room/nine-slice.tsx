@@ -1,14 +1,6 @@
 import type { ReactNode } from "react";
-import {
-  Image,
-  PixelRatio,
-  Pressable,
-  View,
-  type DimensionValue,
-  type PressableProps,
-  type StyleProp,
-  type ViewStyle,
-} from "react-native";
+import { Image, PixelRatio, View, type DimensionValue, type PressableProps, type StyleProp, type ViewStyle } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 
 import { SkinBackground, skinPx as px } from "./skin-background";
 import { skinSpec, type SkinSlug } from "./skins";

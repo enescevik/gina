@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text } from "react-native";
+import { Text } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 
 import { Collectible } from "@/components/collectible";
 import { Button } from "@/components/ui/button";
