@@ -1,6 +1,6 @@
 # Gina · yayın denetimi ve TestFlight durumu
 
-**Güncel beta kaydı:** [1 Kasım 2026 mint ana ekranlar ve yeni ikon teslimi](TESTFLIGHT-MINT-2026-11-01.md). EAS ve App Store Connect artık bağlıdır.
+**Güncel beta kaydı:** [0.1.0 (11) — takvim, haftalık ders programı, görevler ve ödüller](TESTFLIGHT-11-2026-11-01.md). Apple tarafından işlendi ve iç TestFlight testine açıldı. EAS ve App Store Connect bağlıdır.
 
 Aşağıdaki bölümler 31 Ekim 2026 tarihli ilk, kurulum öncesi denetimin tarihsel kaydıdır. Hesapların eksik olduğu ifadeleri güncel kurulum durumunu yansıtmaz. Mağaza yayını için açık işler ayrıca güncel beta kaydından kontrol edilmelidir.
 

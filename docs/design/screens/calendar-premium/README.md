@@ -21,9 +21,10 @@ Kullanıcının bu sohbette onayladığı takvim/program görseli `approved-refe
 - Görsel ve istemci akış testleri yakalanmış HTTP/WebSocket yanıtlarıyla, native testler ayrı yerel örnek veri sunucusuyla yapıldı. Sunucu yetki ve atomiklik kontrolleri gerçek yerel Postgres pgTAP testlerinde doğrulandı; tüm test kayıtları işlem sonunda geri alındı. Gerçek aile/demo kayıtları değişmedi.
 
 ## Yayın durumu
-Bu çalışma mevcut TestFlight 0.1.0 (10)'a gönderilmedi. Yeni uygulama paketi yayınlanmadan **önce** `20261101170000_school_timetables.sql` üretime uygulanmalı: etkinlik sorgusu yeni `timetable_entry_key` sütununu kullanıyor. Migration geriye uyumlu eklemeler içerir; mevcut sürümün etkinliklerini değiştirmez.
 
-Bu oturumda Supabase CLI üretim bağlantısı ve erişim oturumu bulunamadı (`ProjectRefNotLinkedError`, `AccessTokenRequiredError`). Üretime migration uygulanmadı. Yetkili oturumda `pnpm exec supabase login`, doğru proje için `pnpm exec supabase link --project-ref <GINA_PROJE_REF>`, ardından `pnpm exec supabase db push --dry-run` ile bekleyen migration listesi incelenmeli. Yalnız doğrulanan GINA migration'ları uygulanıp gerçek veli/çocuk oturumunda kontrol edildikten sonra TestFlight paketi hazırlanmalı. Anahtarları sohbetle paylaşmayın; yerel DB reset veya demo verisi taşıma gerekmiyor.
+**1 Kasım 2026 yayın güncellemesi:** `20261101170000_school_timetables.sql` doğru üretim projesine uygulandı. Tablo/sütun, RLS, RPC yetkileri ve realtime salt okunur sorguyla doğrulandı; gerçek aile kayıtları değiştirilmedi. Bu çalışma TestFlight **0.1.0 (11)** paketine dahil edildi. Güncel derleme ve Apple durumu: [yayın kaydı](../../../release/TESTFLIGHT-11-2026-11-01.md).
 
-## Sonraki tasarım
+İlk uygulama tesliminde Supabase oturumu bulunmadığı için migration bekliyordu ve 0.1.0 (10) takvim/program değişikliklerini içermiyordu. Bu bağlantı engeli giderildi. Üretimde gerçek veli/çocuk oturumuyla kayıt kabulü ayrıca cihaz testinde yapılmalı; yerel pgTAP ve izole istemci testleri bunun yerine sunulmaz.
+
+## İlk teslimde önerilen sonraki tasarım (tarihsel)
 `../tasks-premium/proposal-v1.png` onay bekleyen Görevler / Yeni görev görselidir. Görev listesi ve ekleme formu ayrılır; çocuk seçimi, simge, yıldız, tekrar günleri ve duraklat/devam işlevleri korunur. Görselde üç yıldız gösterimi örnek veridir, yeni bir üst sınır önermez. Tüm mevcut ikon seçenekleri uygulamada erişilebilir kalacak; makette yalnız ilk beşi gösterilir. Ardından Ödüller, Aile/çocuk yönetimi ve Prova ekranları aynı dilde tek tek ele alınacak. Takvim dışındaki ekranların kodu bu teslimde değiştirilmedi.
