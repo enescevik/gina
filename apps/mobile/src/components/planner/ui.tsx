@@ -68,7 +68,7 @@ export function SatinButton({
             <Defs>
               <LinearGradient id={id} x1="0" y1="0" x2="0" y2="1">
                 <Stop offset="0" stopColor="#8A64FF" />
-                <Stop offset=".3" stopColor="#7147ED" />
+                <Stop offset="30%" stopColor="#7147ED" />
                 <Stop offset="1" stopColor="#5132BD" />
               </LinearGradient>
             </Defs>

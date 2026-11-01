@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const families = ["Baloo2_600SemiBold", "Baloo2_700Bold", "Baloo2_800ExtraBold", "Nunito_400Regular", "Nunito_600SemiBold", "Nunito_700Bold"];
+const families = ["Baloo2_600SemiBold", "Baloo2_700Bold", "Baloo2_800ExtraBold", "Nunito_400Regular", "Nunito_600SemiBold", "Nunito_700Bold", "Nunito_800ExtraBold"];
 
 /** Static HTML declares font faces before their files are decoded. Avoid a serif first paint. */
 export function useWebFontsReady(loaded: boolean, failed: boolean) {

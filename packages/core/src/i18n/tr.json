@@ -1111,5 +1111,26 @@
     },
     "insufficientStars": "Bu ödülü onaylamak için çocuğun yıldızı yeterli değil.",
     "requestChanged": "Bu talep başka bir işlemle değişti. Liste güncellendi; son durumunu kontrol et."
+  },
+  "parentPremium": {
+    "greeting": "Merhaba, {{name}}",
+    "plan": "Günün planı",
+    "progress": "Çocukların ilerlemesi",
+    "goals": "Hedefler",
+    "stars": "{{count}} yıldız",
+    "taskProgress": "{{name}} görev ilerlemesi",
+    "task": "Görev",
+    "reward": "Ödül",
+    "childMode": "Çocuk modu",
+    "showLess": "Daha az göster",
+    "showApprovals": "Tüm onayları göster ({{count}})",
+    "hideWeek": "Haftayı gizle",
+    "noPlan": "Seçili gün için plan yok.",
+    "welcome": "Ailenin hikâyesi burada başlıyor.",
+    "firstChild": "İlk çocuğunu ekle",
+    "firstChildBody": "Görevleri, ders programını ve hedefleri çocuğuna özel hazırlayalım.",
+    "addChild": "Çocuk ekle",
+    "firstChildHint": "Adı ve avatarıyla başlayabilirsin.",
+    "separateSpace": "Her çocuk için ayrı bir alan."
   }
 }

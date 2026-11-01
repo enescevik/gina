@@ -1,0 +1,131 @@
+{
+  "basic": {
+    "checks": [
+      {
+        "name": "tablet",
+        "overflow": false
+      },
+      {
+        "name": "progress uses separate child counts",
+        "passed": true
+      },
+      {
+        "name": "child-filter",
+        "passed": true
+      },
+      {
+        "name": "review-error-visible",
+        "passed": true
+      },
+      {
+        "name": "approve-refresh",
+        "passed": true
+      },
+      {
+        "name": "return-refresh",
+        "passed": true
+      },
+      {
+        "name": "first child action opens family",
+        "passed": true
+      },
+      {
+        "name": "error-retry",
+        "passed": true
+      },
+      {
+        "name": "320px",
+        "overflow": false
+      },
+      {
+        "name": "navigation /parent/tasks",
+        "passed": true
+      },
+      {
+        "name": "navigation /parent/prova/exam",
+        "passed": true
+      },
+      {
+        "name": "navigation /parent/rewards",
+        "passed": true
+      },
+      {
+        "name": "navigation /parent/calendar",
+        "passed": true
+      },
+      {
+        "name": "navigation /parent/notifications",
+        "passed": true
+      },
+      {
+        "name": "navigation /parent/child-mode",
+        "passed": true
+      }
+    ],
+    "errors": [],
+    "smallTargets": [],
+    "missingImages": 0,
+    "rpcCalls": [
+      {
+        "p_completion_id": "completion-2",
+        "p_approve": true
+      },
+      {
+        "p_completion_id": "completion-2",
+        "p_approve": true
+      },
+      {
+        "p_completion_id": "completion-2",
+        "p_approve": false
+      }
+    ],
+    "backend": "all HTTP and realtime isolated; no database writes"
+  },
+  "states": {
+    "checks": [
+      {
+        "name": "approval expansion preserves access to every item",
+        "passed": true
+      },
+      {
+        "name": "week selection and return to today",
+        "passed": true
+      },
+      {
+        "name": "goal error and retry",
+        "passed": true
+      },
+      {
+        "name": "long names and task/event titles at 320px",
+        "passed": true
+      },
+      {
+        "name": "empty day, no approvals and no tasks",
+        "passed": true
+      }
+    ],
+    "errors": [],
+    "allBackendTrafficMocked": true
+  },
+  "staticChecks": {
+    "typecheck": "passed",
+    "expoLint": "passed",
+    "turboTasks": "7/7",
+    "coreTests": "22/22",
+    "webExport": "passed"
+  },
+  "native": {
+    "device": "iPhone 17 Pro / iOS 26.5 simulator",
+    "backend": "isolated localhost fixture server; no database",
+    "verified": [
+      "screen rendering",
+      "task approval clears waiting item and updates task status"
+    ],
+    "screenshot": "native-phone.png",
+    "limitations": [
+      "Simulator window chrome and development tools overlay are present.",
+      "iPad screenshot is the actual app web build at 1280×800, not native iPad.",
+      "No physical device, Android native or production-account acceptance in this turn."
+    ]
+  }
+}
