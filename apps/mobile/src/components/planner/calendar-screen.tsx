@@ -280,6 +280,7 @@ export function PlannerCalendar({
     <SafeAreaView style={u.root}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={u.content}
       >
         <View style={u.topbar}>

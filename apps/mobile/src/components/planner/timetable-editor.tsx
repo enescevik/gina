@@ -291,7 +291,8 @@ function LoadedEditor({
       >
         <ScrollView
           keyboardShouldPersistTaps="handled"
-          contentContainerStyle={u.content}
+          showsVerticalScrollIndicator={false}
+        contentContainerStyle={u.content}
         >
           <View style={u.topbar}>
             <IconButton
