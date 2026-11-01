@@ -1,6 +1,8 @@
 # GINA — özgün mint tasarımının uygulama kontrolü
 
-Tarih: 1 Kasım 2026. Uygulama kaynak commit’i: `8bd785e`.
+Tarih: 1 Kasım 2026. Uygulama değişikliği: `8bd785e`; EAS kaynak commit’i (kontrol belgeleri dahil): `f3a96d7`.
+
+**TestFlight 0.1.0 (10) yayında:** Apple `VALID`, iç test `IN_BETA_TESTING`, 1 Kasım 2026 19:34 TRT’de doğrulandı. [Doğrulanan sürüm kaydı](testflight-mint-10-status.json). Bu, iç beta dağıtımıdır; herkese açık App Store yayını yapılmadı.
 
 ## Uygulanan tasarım
 

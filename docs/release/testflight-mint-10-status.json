@@ -1,0 +1,15 @@
+{
+  "appVersion": "0.1.0",
+  "buildNumber": "10",
+  "processingState": "VALID",
+  "internalState": "IN_BETA_TESTING",
+  "externalState": "READY_FOR_BETA_SUBMISSION",
+  "uploadedDate": "2026-11-01T08:32:04-08:00",
+  "expired": false,
+  "easSubmissionId": "978803c9-ec69-4d46-9231-b4d347ec2862",
+  "easBuildId": "4790f817-681f-464c-b932-7060937bccda",
+  "ascAppIdentifier": "6829083239",
+  "sourceCommit": "f3a96d743dc631b5a52632563d831c269836e8b5",
+  "implementationCommit": "8bd785e",
+  "verifiedAt": "2026-11-01T16:34:14Z"
+}
