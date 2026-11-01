@@ -24,6 +24,7 @@ export default function RootLayout() {
   useEffect(() => { colorScheme.set("light"); }, []);
   // Onaylı tasarım tipografisi: çocuk başlıkları Baloo 2, gövde Nunito (yüklenene dek sistem fontu).
   const [fontsLoaded, fontError] = useFonts({
+    GoogleSans_Medium: require("../../../../packages/assets/auth/google/GoogleSans-Medium.ttf"),
     Baloo2_600SemiBold,
     Baloo2_700Bold,
     Baloo2_800ExtraBold,

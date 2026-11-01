@@ -74,3 +74,5 @@ Yerel görsel kontroller tüm sunucu çağrıları taklit edilerek yapılır; ge
 - Telefon/tablet: 14 ekran durumu ve 10 etkileşim; taşma, bozuk görsel veya tarayıcı hatası yok. Şifresiz hesap doğrulamasında ek 5 kontrol geçti. Bunlar taklit sunucu yanıtlarıyla sınandı.
 - iPhone simülatöründe Prova adımları ve cihaz erişimi açıldı; ekran görüntüleri galeride. Canlı Apple/Google/AI ve gerçek e-posta teslimatı bu kontrollerin kapsamında değildir.
 - [Görüntü galerisi](evidence/family-experience/index.html), [telefon/tablet sonuçları](evidence/family-experience/validation.json), [veritabanı sonuçları](evidence/family-experience/database-tests.json), [şifresiz hesap kontrolleri](evidence/family-experience/social-validation.json).
+
+Google giriş düğmesinde resmî renkli simge ve Google Sans Medium kullanılır; yalnız sağlayıcı düğmesine aittir, GINA’nın yazı tipini değiştirmez. Kaynak/lisans kayıtları `packages/assets/auth/google/manifest.json`, `OFL.txt` ve `TRADEMARKS.md` içindedir. [Google giriş düğmesi kuralları](https://developers.google.com/identity/branding-guidelines).
