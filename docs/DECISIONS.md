@@ -1,6 +1,21 @@
 # Gina — ürün ve teknik kararlar
 
-Son güncelleme: 2026-10-30. Kaynak: proje dokümanı (Claude Docs) ve 29-30 Ekim 2026 araştırma akışları (kaynaklarla doğrulandı). Bu dosya kodu yazan herkesin (Claude, Codex, Enes) uyacağı kararları tek yerde tutar.
+Son güncelleme: 2026-11-01. Kaynak: proje dokümanı (Claude Docs), 29-30 Ekim 2026 araştırma akışları ve aşağıda tarihli kullanıcı kararları. Bu dosya kodu yazan herkesin (Claude, Codex, Enes) uyacağı kararları tek yerde tutar.
+
+## İlk sürümde oda ışığı (1 Kasım 2026; kullanıcının açık kararı)
+
+- Öncelik uygulamanın ilk sürümünü tamamlamak. Gün doğumu, gündüz, gün batımı ve gece arasında otomatik geçiş ile bunlar için ayrı ışık varyantları ilk sürüm kapsamından çıkarıldı; sonraki sürümde yeniden değerlendirilecek. Şimdi bu üretim yapılmayacak.
+- İlk sürümde onaylı odanın mevcut sabit gün batımı atmosferi kullanılabilir. Nesnelerin resme işlenmiş sıcak ışığı, parlak kenarları ve gölgeleri farklı saatlere yalnız karartılarak doğru taşınamaz. Bu teknik sınırlama açık kalır; çözülmüş sayılmaz.
+- İleride değişken atmosfer ele alındığında nötr ışıklı ana varlıklar, ayrı temas gölgeleri/ışık etkileri ve gerekirse aynı geometride ışık varyantları birlikte değerlendirilecek. Gerçek 3B yaklaşımı ayrıca değerlendirilir; katmanlı PNG teslimi gerçek 3B diye adlandırılmaz.
+- Kesin ana referans, ZIP'ten alınarak kullanıcıya gösterilen ve “evet bu” ile onaylanan `packages/assets/rooms/mint-home/layered-v1/approved-original.png` dosyasıdır. Sonradan üretilmiş köşe düzeltmesi bu kaynağın yerine geçmez.
+- `layered-v1` içindeki üretken parça adayları ve montaj kontrolü geçmedi. Gün geçişlerinin ertelenmesi bu adayları onaylanmış veya üretime hazır yapmaz.
+- Bu karar kaydı uygulama kodunu değiştirmez. Ekranları tek tek değerlendirme ve tasarım onayı ile uygulama onayını ayrı tutma çalışma biçimi sürer.
+
+## Mint tasarımının ilk sürüme uygulanması (1 Kasım 2026)
+
+- Kullanıcı, çocuk ana ekranını onaylı özgün görselle tamamlamayı, diğer tüm ekranları aynı tasarım diline taşımayı ve kontrollerin ardından TestFlight’a göndermeyi açıkça onayladı. Bu kapsamda önceki ekran başına ayrıca bekleme kuralı yerine toplu uygulama yetkisi geçerlidir.
+- Oda sabit resimdir; yeni generatif oda veya maskot kullanılmaz. Mevcut karakter/pet tercihleri korunur ancak sabit sahneyi değiştirmedikleri arayüzde belirtilir. Atmosfer ayarları v1’de sunulmaz; kayıtlar silinmez.
+- Telefon dikey/yatay ve tablet yatay desteklenir. Ekran metinleri, görevler, butonlar ve ilerleme gerçek verilerle native çizilir.
 
 ## Ürün
 

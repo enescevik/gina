@@ -3,7 +3,8 @@ import { router } from 'expo-router';
 import { CalendarDays, Check, ChevronRight, Circle, ClipboardCheck, Clock3, GraduationCap, House, LockKeyhole, Pencil, Play, Star, Trophy, X } from 'lucide-react-native';
 import { useCallback, useRef, useState, type ComponentRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Image, Modal, Pressable, ScrollView, Text, View, useWindowDimensions } from 'react-native';
+import { ActivityIndicator, Image, Modal, ScrollView, Text, View, useWindowDimensions } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ApprovedScene } from '@/components/child-home/approved-scene';
@@ -75,7 +76,7 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
     <Pressable accessibilityRole="button" onPress={() => go('calendar')} style={({ pressed }) => [s.link, pressed && s.pressed]}><CalendarDays size={22} color={c.muted} /><Text style={[s.small, { flex: 1 }]}>{t('child.calendar')}</Text><ChevronRight size={19} color={c.muted} /></Pressable>
   </View>;
   const panelWidth = Math.max(320, Math.min(400, width * .31));
-  const scene = <ApprovedScene style={wide ? { flex: 1, marginRight: -26 } : { width: '100%', height: Math.max(260, Math.min(width * .74, height * .34)) }} onTasks={openTasks} onProva={() => go('prova')} onCollection={() => go('collection')} />;
+  const scene = <ApprovedScene style={wide ? { flex: 1, marginRight: -26 } : { width: '100%', height: width * 641 / 729 }} onTasks={openTasks} onProva={() => go('prova')} onCollection={() => go('collection')} />;
   return <SafeAreaView edges={['top', 'left', 'right', 'bottom']} style={s.root}>
     <View style={[s.header, !wide && s.headerPhone]}>
       <Image source={require('../../../../../packages/assets/brand/growing-friend/logo.png')} accessible accessibilityLabel="Gina" resizeMode="contain" style={[s.logo, !wide && s.logoPhone]} />

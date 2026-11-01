@@ -32,7 +32,7 @@ export default function RootLayout() {
     Nunito_700Bold,
   });
   const webFontsReady = useWebFontsReady(fontsLoaded, !!fontError);
-  if ((!fontsLoaded && !fontError) || !webFontsReady) return <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#FFF8EF" }}><ActivityIndicator color="#0B7F7F" /></View>;
+  if ((!fontsLoaded && !fontError) || !webFontsReady) return <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#FCFAF6" }}><ActivityIndicator color="#6042DE" /></View>;
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
@@ -50,10 +50,10 @@ function AppRoutes() {
   const { claims, error: sessionError, loading: sessionLoading, retry: retrySession } = useSession();
   const { actingChild, loading, error, retry } = useChildMode();
   if (sessionError || sessionLoading) return <View className="flex-1 items-center justify-center gap-4 bg-cream p-6">
-    {sessionError ? <><Text className="font-body text-base text-ink">{t("accountV5.sessionError")}</Text><Button title={t("common.retry")} onPress={retrySession} /></> : <ActivityIndicator color="#0B7F7F" />}
+    {sessionError ? <><Text className="font-body text-base text-ink">{t("accountV5.sessionError")}</Text><Button title={t("common.retry")} onPress={retrySession} /></> : <ActivityIndicator color="#6042DE" />}
   </View>;
   if (loading) return <View className="flex-1 items-center justify-center gap-4 bg-cream p-6">
-    {error ? <><Text className="font-body text-base text-ink">{t("release.lockRestoreError")}</Text><Button title={t("common.retry")} onPress={retry} /></> : <ActivityIndicator color="#0B7F7F" />}
+    {error ? <><Text className="font-body text-base text-ink">{t("release.lockRestoreError")}</Text><Button title={t("common.retry")} onPress={retry} /></> : <ActivityIndicator color="#6042DE" />}
   </View>;
   return <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
     <Stack.Protected guard={claims?.role === "parent"}><Stack.Screen name="parent" /></Stack.Protected>
@@ -67,9 +67,9 @@ function AppRoutes() {
 /** Keep unexpected route failures recoverable without exposing internal error details. */
 export function ErrorBoundary({ retry }: ErrorBoundaryProps) {
   const { t } = useTranslation();
-  return <View style={{flex:1,backgroundColor:"#FFF8EF",justifyContent:"center",padding:28,gap:20}}>
-    <Text accessibilityRole="header" style={{fontSize:26,fontWeight:"700",color:"#284E4B"}}>{t("release.loadError")}</Text>
-    <Text style={{fontSize:18,lineHeight:27,color:"#425E58"}}>{t("release.screenRetry")}</Text>
+  return <View style={{flex:1,backgroundColor:"#FCFAF6",justifyContent:"center",padding:28,gap:20}}>
+    <Text accessibilityRole="header" style={{fontSize:26,fontWeight:"700",color:"#201951"}}>{t("release.loadError")}</Text>
+    <Text style={{fontSize:18,lineHeight:27,color:"#625C85"}}>{t("release.screenRetry")}</Text>
     <Button title={t("common.retry")} onPress={()=>void retry()}/>
   </View>;
 }

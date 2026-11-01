@@ -91,7 +91,7 @@ export default function ProvaProgressScreen() {
       <ChildPicker profiles={children.data ?? []} selected={activeChildId} onSelect={id => { if (id) setChildId(id); }} />
 
       {mastery.data && mastery.data.length === 0 ? (
-        <View className="gap-2 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
+        <View className="gap-2 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
           <Text className="font-body text-gray-500">{t("prova.progress.empty")}</Text>
           <Button variant="secondary" title={t("prova.level.title")} onPress={() => router.push("/parent/prova/level")} />
         </View>
@@ -110,7 +110,7 @@ export default function ProvaProgressScreen() {
       ) : null}
 
       {subjects.map(({ subject, rows, avg }) => (
-        <View key={subject} className="gap-3 rounded-2xl border border-[#E4DAC8] bg-[#FFFCF6] p-4">
+        <View key={subject} className="gap-3 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
           <View className="flex-row items-center justify-between">
             <Text className="font-display text-xl text-ink">{subject}</Text>
             {avg !== null ? <Text className="font-body text-sm text-gray-500">{t("prova.progress.average", { score: avg })}</Text> : null}

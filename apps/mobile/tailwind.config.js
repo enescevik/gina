@@ -8,16 +8,16 @@ module.exports = {
     extend: {
       // Gina paleti (tasarım brief'i ile aynı)
       colors: {
-        teal: { DEFAULT: "#0FA3A3", dark: "#0B7F7F", light: "#D9F4F2" },
+        teal: { DEFAULT: "#6042DE", dark: "#4D32BB", light: "#EEEAFE" },
         star: "#F5B301",
         coral: { DEFAULT: "#FF6B6B", light: "#FFE9E9" },
         blue: { DEFAULT: "#4D7CFE", light: "#E3EAFF" },
         green: { DEFAULT: "#2FB47C", light: "#E6F7EF" },
-        purple: { DEFAULT: "#8B5CF6", light: "#EFE9FE" },
+        purple: { DEFAULT: "#6042DE", light: "#EFE9FE" },
         orange: { DEFAULT: "#FF9F43", light: "#FFF1E3" },
         sky: { DEFAULT: "#38BDF8", light: "#E4F5FE" },
-        cream: "#FFF8EF",
-        ink: "#1F2937",
+        cream: "#FCFAF6",
+        ink: "#201951",
         mist: "#E5E7EB",
         night: { DEFAULT: "#0F172A", surface: "#1E293B", text: "#F1F5F9" },
         danger: "#E5484D",
@@ -28,8 +28,8 @@ module.exports = {
         button: "14px",
       },
       fontFamily: {
-        display: ["Baloo2_700Bold"],
-        "display-semi": ["Baloo2_600SemiBold"],
+        display: ["Nunito_700Bold"],
+        "display-semi": ["Nunito_600SemiBold"],
         body: ["Nunito_600SemiBold"],
         "body-bold": ["Nunito_700Bold"],
       },

@@ -1,19 +1,13 @@
-import { PetMotion } from "./pet-motion";
-import { router, usePathname } from "expo-router";
+import { router } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
-
-import { useRoomAudio } from "@/lib/use-room-audio";
-import { AtmosphereControls } from "./atmosphere-controls";
-import { useRoomAtmosphere, type RoomAtmosphere } from "@/lib/use-room-atmosphere";
-import { AtmosphereBackdrop } from "./atmosphere-backdrop";
-import manifest from "../../../../../packages/assets/rooms/v2/manifest.json";
+import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Pressable } from "@/components/ui/pressable";
+import { ApprovedScene } from "@/components/child-home/approved-scene";
+import { c } from "@/components/child-home/theme";
 import { useActiveChild } from "@/lib/active-child";
-import { useChildRoomPrefs } from "@/lib/use-child-room-prefs";
-import { NineSlice } from "./nine-slice";
 import type { CharacterKey, PetKey } from "./scene";
 
 export const V5_CHARACTERS = {
@@ -29,117 +23,56 @@ export const V5_PETS = {
 };
 
 
-// All sprites align their visible content, not transparent square canvases, to one floor line.
-function spriteRect(slug: string, centerX: number, floor: number, fitWidth: number, fitHeight: number) {
-  const asset = manifest.find((item) => item.slug === slug)!;
-  const { width = 1, height = 1, contentBounds = [0, 0, width, height] } = asset;
-  const [x0 = 0, y0 = 0, x1 = width, y1 = height] = contentBounds;
-  const scale = Math.min(fitWidth / (x1 - x0), fitHeight / (y1 - y0));
-  return { left: centerX - (x0 + x1) / 2 * scale, top: floor - y1 * scale, width: width * scale, height: height * scale };
-}
-
-function RoomArt({ width, height, character, pet, atmosphere, quiet }: { width: number; height: number; character: CharacterKey; pet: PetKey; atmosphere: RoomAtmosphere; quiet: boolean }) {
-  const w = Math.max(width, height * 1586 / 992);
-  const h = w * 992 / 1586;
-  return <View pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" style={StyleSheet.absoluteFill}>
-    <AtmosphereBackdrop frame={{left:width-w,top:height-h,width:w,height:h}} mode="study" atmosphere={atmosphere} quiet={quiet} />
-    <Image source={V5_CHARACTERS[character]} style={{ position: "absolute", ...spriteRect(`character-${character}-v5`, width * .82, height * .92, width * .27, height * .53) }} resizeMode="contain" />
-    {pet !== "none" ? <PetMotion pet={pet} centerX={width * .79} floor={height * .93} restHeight={height * .13} atmosphere={atmosphere} quiet={quiet} /> : null}
-  </View>;
-}
-
 export interface ChildScreenProps {
-  title?: string;
-  subtitle?: string;
-  children: ReactNode;
-  tone?: "child";
-  scroll?: boolean;
-  loading?: boolean;
-  character?: CharacterKey;
-  pet?: PetKey;
-  surface?: "board" | "desk" | "collection";
+  title?: string; subtitle?: string; children: ReactNode; tone?: "child"; scroll?: boolean;
+  loading?: boolean; character?: CharacterKey; pet?: PetKey; surface?: "board" | "desk" | "collection";
 }
 
-/** Shared child surface; explicit preview props override the saved room preferences. */
-export function ChildScreen({ title, subtitle, children, loading = false, character: previewCharacter, pet: previewPet, surface = "board" }: ChildScreenProps) {
+/** Fixed approved scene; no old room, pet or atmosphere is substituted on subpages. */
+export function ChildScreen({ title, subtitle, children, loading = false, surface = "board" }: ChildScreenProps) {
   const { t } = useTranslation();
-  const { childId, path } = useActiveChild();
-  const pathname = usePathname();
-  const prefs = useChildRoomPrefs(childId);
-  const atmosphere = useRoomAtmosphere();
-  const audio = useRoomAudio(atmosphere, surface === "desk");
-  const character = previewCharacter ?? (prefs.data?.characterKey === "girl" || prefs.data?.characterKey === "boy" ? prefs.data.characterKey : "unspecified");
-  const pet = previewPet ?? (prefs.data?.petKey as PetKey | undefined) ?? "cat";
-  const window = useWindowDimensions();
-  const insets = useSafeAreaInsets();
-  const width = window.width - insets.left - insets.right;
-  const height = window.height - insets.top - insets.bottom;
-  const fontScale = window.fontScale;
-  const wide = width >= 600 && width > height && fontScale <= 1.2;
-  const skin = surface === "desk" ? "child-notebook-v5" : surface === "collection" ? "child-cabinet-v5" : "child-board-v5";
-  const petTouch = (w: number, h: number) => pet === "cat" && audio.listening ? <Pressable accessibilityRole="button" accessibilityLabel={t("atmosphere.petCat")} accessibilityHint={t("atmosphere.petCatHint")} onPress={audio.petCat} style={{position:"absolute",left:w*.665-Math.max(48,w*.15)/2,top:h*.93-Math.max(48,h*.13),width:Math.max(48,w*.15),height:Math.max(48,h*.13)}}/> : null;
-  const header = <View style={styles.heading}>
-    <View style={{flexDirection:"row",alignItems:"center",gap:10}}>
-      {!pathname.endsWith("/today") ? <Pressable accessibilityRole="button" accessibilityLabel={t("child.today")} onPress={()=>router.navigate(path("today"))} style={{minWidth:48,minHeight:48,borderRadius:16,borderWidth:2,borderColor:"#527E72",backgroundColor:"#E1F2EB",alignItems:"center",justifyContent:"center"}}><ArrowLeft size={24} color="#284E4B"/></Pressable> : null}
-      <Text accessibilityRole="header" style={[styles.title,{flex:1,fontSize:height<600?24:30}]}>{title}</Text>
-    </View>
-    {surface !== "collection" ? <Text style={styles.subtitle}>{subtitle ?? t(surface === "desk" ? "childV5.deskSubtitle" : "childV5.subtitle")}</Text> : null}
+  const { path } = useActiveChild();
+  const { width, height, fontScale } = useWindowDimensions();
+  const wide = width >= 1000 && width > height && fontScale < 1.4;
+  const heading = <View style={styles.heading}>
+    <Pressable accessibilityRole="button" accessibilityLabel={t("child.today")} onPress={() => router.navigate(path("today"))} style={styles.back}><ArrowLeft size={24} color={c.purple} /></Pressable>
+    <View style={{flex:1,gap:4}}><Text accessibilityRole="header" style={styles.title}>{title}</Text>{subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}</View>
+    <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} accessible={false} style={{width:80,height:36}} resizeMode="contain" />
   </View>;
-  const body = loading ? <View style={styles.loading} accessibilityLiveRegion="polite">
-    <ActivityIndicator color="#0B7F7F" size="large" /><Text style={styles.subtitle}>{t("childV5.loading")}</Text>
-  </View> : children;
   return <SafeAreaView style={styles.root}><KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === "ios" ? "padding" : undefined}>
-    {wide ? <View style={styles.fill}>
-      <RoomArt width={width} height={height} character={character} pet={pet} atmosphere={atmosphere} quiet={surface === "desk"} />
-      {petTouch(width,height)}
-      <View style={{position:"absolute",right:16,bottom:16,maxWidth:width*.31}}><AtmosphereControls atmosphere={atmosphere} audio={audio}/></View>
-      {surface === "collection" ? <View style={[styles.board, { top: "2%", height: "96%" }]}>
-        {header}
-        <ScrollView style={styles.fill} contentContainerStyle={styles.content}>{body}</ScrollView>
-      </View> : <NineSlice skin={skin} style={styles.board} contentStyle={styles.fill}>
-        {header}
+    <View style={[styles.fill,{flexDirection:'row'}]}>
+      {wide && surface !== "desk" ? <ApprovedScene style={{width:Math.min(360,width*.28)}} /> : null}
+      <View style={[styles.fill,wide && surface !== "desk" && {marginLeft:-22,borderTopLeftRadius:28,borderBottomLeftRadius:28,backgroundColor:c.cream,overflow:'hidden'}]}>
+        {heading}
         <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.content}>
-          {body}
+          {loading ? <View style={styles.loading} accessibilityLiveRegion="polite"><ActivityIndicator size="large" color={c.purple}/><Text style={styles.subtitle}>{t("childV5.loading")}</Text></View> : children}
         </ScrollView>
-      </NineSlice>}
-    </View> : <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={{ paddingBottom: 24 }}>
-      <View style={{ height: Math.max(226 * fontScale, width * .59), overflow: "hidden" }}>
-        <RoomArt width={width} height={Math.max(226 * fontScale, width * .59)} character={character} pet={pet} atmosphere={atmosphere} quiet={surface === "desk"} />
-        {petTouch(width,Math.max(226 * fontScale,width*.59))}
-        <NineSlice skin="child-board-v5" scale={.55} style={{ position: "absolute", left: 6, top: 4, width: width * .65, bottom: 58 }} contentStyle={{ justifyContent: "center" }}>{header}</NineSlice>
       </View>
-      <View style={{paddingHorizontal:12,paddingVertical:4}}><AtmosphereControls atmosphere={atmosphere} audio={audio}/></View>
-      {surface === "board" ? <View style={styles.content}>{body}</View> :
-        <NineSlice skin={skin} scale={.6} style={{ marginHorizontal: 6 }} contentStyle={{ minWidth: 0 }}>
-          <View style={styles.content}>{body}</View>
-        </NineSlice>}
-    </ScrollView>}
+    </View>
   </KeyboardAvoidingView></SafeAreaView>;
 }
 
 export const childStyles = StyleSheet.create({
-  card: { backgroundColor: "#FFFCF5", borderColor: "#E2CFB2", borderWidth: 1, borderRadius: 16, padding: 16, gap: 10 },
+  card: { backgroundColor: c.white, borderColor: c.line, borderWidth: 1, borderRadius: 20, padding: 18, gap: 12 },
   row: { minHeight: 72, flexDirection: "row", alignItems: "center", gap: 12 },
-  title: { fontFamily: "Baloo2_700Bold", fontSize: 22, lineHeight: 29, color: "#284E4B" },
-  copy: { fontFamily: "Nunito_600SemiBold", fontSize: 16, lineHeight: 24, color: "#425E58" },
-  shelf: { borderBottomWidth: 9, borderBottomColor: "#B77B39", backgroundColor: "#EED1A1", borderRadius: 8, padding: 16, alignItems: "center", gap: 8, flexGrow: 1, flexBasis: 180 },
+  title: { fontFamily: "Nunito_700Bold", fontSize: 22, lineHeight: 29, color: c.ink },
+  copy: { fontFamily: "Nunito_600SemiBold", fontSize: 16, lineHeight: 24, color: c.muted },
+  shelf: { borderWidth: 1, borderColor:c.line, backgroundColor:c.white, borderRadius:20, padding:16, alignItems:"center", gap:8, flexGrow:1, flexBasis:180 },
 });
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#FFF8EF" }, fill: { flex: 1, minHeight: 0 },
-  board: { position: "absolute", left: "1.5%", top: "5%", width: "64%", height: "90%", borderRadius: 20, overflow: "hidden" },
-  heading: { gap: 2, paddingHorizontal: 8, paddingVertical: 8 },
-  title: { fontFamily: "Baloo2_700Bold", color: "#284E4B", fontSize: 30, lineHeight: 38 },
-  subtitle: { fontFamily: "Nunito_600SemiBold", color: "#52685D", fontSize: 15, lineHeight: 22 },
-  content: { gap: 16, padding: 12 },
-  loading: { alignItems: "center", justifyContent: "center", minHeight: 180, gap: 18 },
+  root: {flex:1,backgroundColor:c.cream}, fill:{flex:1,minHeight:0,minWidth:0},
+  heading:{flexDirection:'row',alignItems:'center',gap:12,padding:18,borderBottomWidth:1,borderColor:c.line},
+  back:{width:48,height:48,alignItems:'center',justifyContent:'center',backgroundColor:'#EEEAFE',borderRadius:16},
+  title:{fontFamily:'Nunito_700Bold',fontSize:26,lineHeight:33,color:c.ink},
+  subtitle:{fontFamily:'Nunito_400Regular',fontSize:16,lineHeight:23,color:c.muted},
+  content:{width:'100%',maxWidth:1000,alignSelf:'center',padding:18,paddingBottom:32,gap:16,flexGrow:1},
+  loading:{minHeight:220,alignItems:'center',justifyContent:'center',gap:16},
 });
 
-/** Calendar rail beside the content on landscape tablets; the same nodes reflow on phones. */
-export function ChildColumns({ rail, children }: { rail: ReactNode; children: ReactNode }) {
-  const { width, height, fontScale } = useWindowDimensions();
-  const sideBySide = width >= 1200 && height >= 600 && fontScale <= 1.2;
-  return <View style={{ flexDirection: sideBySide ? "row" : "column", alignItems: "stretch", gap: 16 }}>
-    <View style={sideBySide ? { width: 360 } : undefined}>{rail}</View>
-    <View style={{ flex: 1, minWidth: 0, gap: 12 }}>{children}</View>
+export function ChildColumns({rail,children}:{rail:ReactNode;children:ReactNode}) {
+  const {width,height,fontScale}=useWindowDimensions();
+  const wide=width>=1280 && height>=600 && fontScale<1.3;
+  return <View style={{flexDirection:wide?'row':'column',gap:16,alignItems:'stretch'}}>
+    <View style={wide?{width:280}:undefined}>{rail}</View><View style={{flex:1,minWidth:0,gap:12}}>{children}</View>
   </View>;
 }

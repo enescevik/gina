@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 
 import { localDateOf, taskTemplateInputSchema, type IsoWeekday } from "@gina/core";
 
@@ -130,7 +131,7 @@ export default function ParentTasksScreen() {
                 key={w.day}
                 accessibilityRole="button" accessibilityState={{ selected: days.includes(w.day) }} aria-pressed={days.includes(w.day)}
                 onPress={() => toggleDay(w.day)}
-                className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${days.includes(w.day) ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#527E72]"}`}
+                className={`min-h-12 min-w-12 items-center justify-center rounded-full px-3 py-2 ${days.includes(w.day) ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#A89BD4]"}`}
               >
                 <Text className={days.includes(w.day) ? "font-body-bold text-white" : "font-body text-ink"}>{t(`weekday.${w.day}`)}</Text>
               </Pressable>

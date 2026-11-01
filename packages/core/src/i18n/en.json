@@ -960,5 +960,11 @@
     "emptyTitle": "No tasks for today yet",
     "emptyBody": "When your parent adds a task, you will see it here.",
     "close": "Close"
+  },
+  "mintRelease": {
+    "childSettings": "PIN and profile settings",
+    "fixedRoomTitle": "Gina’s cozy room",
+    "fixedRoomBody": "This version uses our approved, fixed room scene. Time of day and weather changes will come in a later version.",
+    "preferencesNote": "Gina is the mascot in this version of the room. Your character and pet preferences are saved, but do not change the home scene yet."
   }
 }

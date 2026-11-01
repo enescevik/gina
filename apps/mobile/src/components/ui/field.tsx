@@ -9,12 +9,12 @@ export interface FieldProps extends TextInputProps {
 export function Field({ label, error, labelStyle, className, ...rest }: FieldProps) {
   return (
     <View className="gap-1">
-      <Text style={[{ color: "#294A48" }, labelStyle]} className="text-base font-body-bold text-ink">{label}</Text>
+      <Text style={[{ color: "#201951" }, labelStyle]} className="text-base font-body-bold text-ink">{label}</Text>
       <TextInput
         accessibilityLabel={label}
-        placeholderTextColor="#7B827A"
+        placeholderTextColor="#77718D"
         style={{ fontFamily: "Nunito_400Regular", minHeight: 52, paddingVertical: 12 }}
-        className={`min-h-12 rounded-parent border border-[#D7CDBB] bg-[#FFFCF6] px-3 text-lg text-ink ${className ?? ""}`}
+        className={`min-h-12 rounded-parent border border-[#D9D3E6] bg-[#FFFFFF] px-3 text-lg text-ink ${className ?? ""}`}
         {...rest}
       />
       {error ? <Text className="font-body text-sm text-danger">{error}</Text> : null}

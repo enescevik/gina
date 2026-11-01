@@ -960,5 +960,11 @@
     "emptyTitle": "Bugün için henüz görev yok",
     "emptyBody": "Ebeveynin bir görev eklediğinde burada göreceksin.",
     "close": "Kapat"
+  },
+  "mintRelease": {
+    "childSettings": "PIN ve profil ayarları",
+    "fixedRoomTitle": "Gina’nın sıcak odası",
+    "fixedRoomBody": "Bu sürümde odamız, onaylanan sabit görünümüyle seni karşılıyor. Gün ve hava değişimleri sonraki sürümlerde gelecek.",
+    "preferencesNote": "Bu sürümde odada Gina maskotu yer alıyor. Karakter ve evcil hayvan tercihlerin saklanır; şimdilik ana ekranın görünümünü değiştirmez."
   }
 }

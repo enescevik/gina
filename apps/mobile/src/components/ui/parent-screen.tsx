@@ -1,9 +1,9 @@
-import Wordmark from "../../../../../packages/assets/brand/yan-yana/logo-wordmark.svg";
 import { useState, type ReactNode } from "react";
-import { router } from "expo-router";
-import { ArrowLeft, Menu, Plus, ChevronDown, ChevronUp } from "lucide-react-native";
+import { router, usePathname } from "expo-router";
+import { ArrowLeft, Menu, Home, Plus, ChevronDown, ChevronUp } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Avatar } from "@/components/avatar";
@@ -22,18 +22,21 @@ export interface ParentScreenProps {
   error?: unknown;
   onRetry?: () => void;
 }
-/** Approved v5 paper surface. Text stays native; only the window vignette is raster art. */
+/** Shared approved mint surface. Text stays native; only the window vignette is raster art. */
 export function ParentScreen({ title, subtitle, children, home = false, navigation = true, loading, error, onRetry }: ParentScreenProps) {
   const { t } = useTranslation();
+  const inMenu = usePathname() === "/parent/menu";
+  const MenuIcon = inMenu ? Home : Menu;
   return <SafeAreaView style={styles.root}>
     <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.page}>
         <View style={styles.topbar}>
-          {navigation && !home ? <Pressable accessibilityRole="button" accessibilityLabel={t("common.back")} onPress={() => router.canGoBack() ? router.back() : router.replace("/parent")} style={styles.back}><ArrowLeft size={24} color="#284E4B" /></Pressable> : <Wordmark width={112} height={48} accessibilityLabel={t("app.name")} />}
-          {navigation ? <Pressable accessibilityRole="button" accessibilityLabel={t("parent.menu")} onPress={() => router.push("/parent/menu")} style={styles.menu}><Menu size={22} color="#284E4B"/><Text style={styles.menuLabel}>{t("parent.menu")}</Text></Pressable> : null}
+          {navigation && !home ? <Pressable accessibilityRole="button" accessibilityLabel={t("common.back")} onPress={() => router.canGoBack() ? router.back() : router.replace("/parent")} style={styles.back}><ArrowLeft size={24} color="#201951" /></Pressable> : <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} style={{width:124,height:48}} resizeMode="contain" accessibilityLabel={t("app.name")} />}
+          {navigation && !home ? <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} style={{width:96,height:40}} resizeMode="contain" accessibilityLabel={t("app.name")} /> : null}
+          {navigation ? <Pressable accessibilityRole="button" accessibilityLabel={t(inMenu ? "parent.home" : "parent.menu")} onPress={() => router.push(inMenu ? "/parent" : "/parent/menu")} style={styles.menu}><MenuIcon size={22} color="#201951"/><Text style={styles.menuLabel}>{t(inMenu ? "parent.home" : "parent.menu")}</Text></Pressable> : null}
         </View>
         <View style={[styles.header, home && styles.homeHeader]}>
-          {home ? <Image source={require("../../../../../packages/assets/rooms/v2/parent-header-v5.webp")} accessible={false} pointerEvents="none" resizeMode="contain" style={styles.art} /> : null}
+          {home ? <Image source={require("../../../../../packages/assets/brand/growing-friend/reading.png")} accessible={false} pointerEvents="none" resizeMode="contain" style={styles.art} /> : null}
           <Text accessibilityRole="header" style={[styles.title, home && {maxWidth:"70%"}]}>{title}</Text>
           {subtitle ? <Text style={[styles.subtitle, home && {maxWidth:"64%"}]}>{subtitle}</Text> : null}
         </View>
@@ -61,19 +64,19 @@ export function ChildPicker({ profiles, selected, onSelect, allLabel }: {
   return <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
     {options.map(child => <Pressable key={child.id ?? "all"} accessibilityRole="button" accessibilityState={{ selected: selected === child.id }} aria-pressed={selected === child.id}
       onPress={() => onSelect(child.id)} style={({ pressed }) => ({ minHeight: 52, paddingLeft: child.id ? 4 : 16, paddingRight: 16, paddingVertical: 4, borderRadius: 28, borderWidth: 1,
-        borderColor: selected === child.id ? "#0B7F7F" : "#D7CDBB", backgroundColor: selected === child.id ? "#0B7F7F" : "#FFFCF6", flexDirection: "row", alignItems: "center", gap: 8, opacity: pressed ? .8 : 1 })}>
-      {child.id ? <Avatar slug={child.avatar} size={40} /> : null}<Text style={{ fontFamily: "Nunito_700Bold", fontSize: 17, color: selected === child.id ? "#FFFFFF" : "#294A48" }}>{child.name}</Text>
+        borderColor: selected === child.id ? "#6042DE" : "#D9D3E6", backgroundColor: selected === child.id ? "#6042DE" : "#FFFFFF", flexDirection: "row", alignItems: "center", gap: 8, opacity: pressed ? .8 : 1 })}>
+      {child.id ? <Avatar slug={child.avatar} size={40} /> : null}<Text style={{ fontFamily: "Nunito_700Bold", fontSize: 17, color: selected === child.id ? "#FFFFFF" : "#201951" }}>{child.name}</Text>
     </Pressable>)}
   </View>;
 }
 
 export const parentStyles = StyleSheet.create({
-  card: { backgroundColor: "#FFFCF6", borderColor: "#E4DAC8", borderWidth: 1, borderRadius: 22, padding: 20, gap: 16 },
-  form: { backgroundColor: "#E6F3ED", borderColor: "#C4DCD0", borderWidth: 1, borderRadius: 22, padding: 18, gap: 14 },
+  card: { backgroundColor: "#FFFFFF", borderColor: "#EAE5EE", borderWidth: 1, borderRadius: 22, padding: 18, gap: 16 },
+  form: { backgroundColor: "#F1EDFD", borderColor: "#DDD5F4", borderWidth: 1, borderRadius: 22, padding: 18, gap: 14 },
   row: { flexDirection: "row", alignItems: "center", gap: 12, minHeight: 56 },
-  title: { fontFamily: "Baloo2_700Bold", fontSize: 24, lineHeight: 30, color: "#294A48" },
-  copy: { fontFamily: "Nunito_400Regular", fontSize: 17, lineHeight: 25, color: "#294A48" },
-  muted: { fontFamily: "Nunito_400Regular", fontSize: 15, lineHeight: 22, color: "#63736B" },
+  title: { fontFamily: "Nunito_700Bold", fontSize: 24, lineHeight: 30, color: "#201951" },
+  copy: { fontFamily: "Nunito_400Regular", fontSize: 17, lineHeight: 25, color: "#201951" },
+  muted: { fontFamily: "Nunito_400Regular", fontSize: 15, lineHeight: 22, color: "#625C85" },
 });
 /** Forms stay one deliberate action away; draft state belongs to the screen. */
 export function FormSection({title,children,initiallyOpen=false}: {title:string;children:ReactNode;initiallyOpen?:boolean}) {
@@ -81,26 +84,26 @@ export function FormSection({title,children,initiallyOpen=false}: {title:string;
   const Icon=open?ChevronUp:ChevronDown;
   return <View style={parentStyles.form}>
     <Pressable accessibilityRole="button" accessibilityState={{expanded:open}} onPress={()=>setOpen(!open)} style={{minHeight:52,flexDirection:"row",alignItems:"center",gap:12}}>
-      <View style={{width:40,height:40,borderRadius:14,backgroundColor:"#0B7F7F",alignItems:"center",justifyContent:"center"}}><Plus size={23} color="#FFFFFF"/></View>
-      <Text style={[parentStyles.title,{flex:1,fontSize:21}]}>{title}</Text><Icon size={22} color="#284E4B"/>
+      <View style={{width:40,height:40,borderRadius:14,backgroundColor:"#6042DE",alignItems:"center",justifyContent:"center"}}><Plus size={23} color="#FFFFFF"/></View>
+      <Text style={[parentStyles.title,{flex:1,fontSize:21}]}>{title}</Text><Icon size={22} color="#201951"/>
     </Pressable>
-    {open?<View style={{gap:18,paddingTop:12,borderTopWidth:1,borderTopColor:"#C4DCD0"}}>{children}</View>:null}
+    {open?<View style={{gap:18,paddingTop:12,borderTopWidth:1,borderTopColor:"#DDD5F4"}}>{children}</View>:null}
   </View>;
 }
 const styles = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#FFF8EF" }, fill: { flex: 1 },
-  page: { width: "100%", maxWidth: 780, alignSelf: "center", paddingBottom: 36 },
-  topbar: {flexDirection:"row",alignItems:"center",justifyContent:"space-between",paddingHorizontal:22,paddingTop:8,paddingBottom:8},
+  root: { flex: 1, backgroundColor: "#FCFAF6" }, fill: { flex: 1 },
+  page: { width: "100%", maxWidth: 1000, alignSelf: "center", paddingBottom: 36 },
+  topbar: {flexDirection:"row",alignItems:"center",justifyContent:"space-between",paddingHorizontal:16,paddingTop:8,paddingBottom:8},
   header: {paddingHorizontal:24,paddingTop:8,paddingBottom:24,gap:8},
   homeHeader:{minHeight:138,justifyContent:"center",overflow:"hidden"},
   art: {position:"absolute",width:240,height:162,right:-62,bottom:0},
-  back:{width:48,height:48,alignItems:"center",justifyContent:"center",borderRadius:16,backgroundColor:"#E1F2EB"},
-  menu:{minHeight:48,flexDirection:"row",alignItems:"center",gap:8,paddingHorizontal:14,borderRadius:18,backgroundColor:"#E1F2EB"},
-  menuLabel:{fontFamily:"Nunito_700Bold",fontSize:16,color:"#284E4B"},
-  title:{fontFamily:"Baloo2_700Bold",fontSize:34,lineHeight:42,color:"#284E4B"},
-  subtitle:{fontFamily:"Nunito_400Regular",fontSize:17,lineHeight:25,color:"#425E58"},
+  back:{width:48,height:48,alignItems:"center",justifyContent:"center",borderRadius:16,backgroundColor:"#EEEAFE"},
+  menu:{minHeight:48,flexDirection:"row",alignItems:"center",gap:8,paddingHorizontal:14,borderRadius:18,backgroundColor:"#EEEAFE"},
+  menuLabel:{fontFamily:"Nunito_700Bold",fontSize:16,color:"#201951"},
+  title:{fontFamily:"Nunito_700Bold",fontSize:30,lineHeight:38,color:"#201951"},
+  subtitle:{fontFamily:"Nunito_400Regular",fontSize:17,lineHeight:25,color:"#625C85"},
   body:{paddingHorizontal:20,gap:22},
-  state:{alignItems:"center",gap:12,borderRadius:24,backgroundColor:"#FFFCF6",padding:24},
-  sectionTitle:{fontFamily:"Baloo2_700Bold",fontSize:24,lineHeight:31,color:"#284E4B",textAlign:"center"},
-  copy:{fontFamily:"Nunito_400Regular",fontSize:17,lineHeight:25,color:"#425E58"},
+  state:{alignItems:"center",gap:12,borderRadius:24,backgroundColor:"#FFFFFF",padding:24},
+  sectionTitle:{fontFamily:"Nunito_700Bold",fontSize:24,lineHeight:31,color:"#201951",textAlign:"center"},
+  copy:{fontFamily:"Nunito_400Regular",fontSize:17,lineHeight:25,color:"#625C85"},
 });

@@ -5,7 +5,8 @@ import { AtmosphereControls } from "./atmosphere-controls";
 import { useRoomAtmosphere } from "@/lib/use-room-atmosphere";
 import { AtmosphereBackdrop } from "./atmosphere-backdrop";
 import type { ReactNode } from "react";
-import { Image, Pressable, View, useWindowDimensions, type ImageSourcePropType } from "react-native";
+import { Image, View, useWindowDimensions, type ImageSourcePropType } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import roomsManifest from "../../../../../packages/assets/rooms/v2/manifest.json";

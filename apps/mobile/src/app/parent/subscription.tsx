@@ -2,7 +2,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Linking, Platform, Pressable, Text, View } from "react-native";
+import { Linking, Platform, Text, View } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 
 import type { Enums, Json } from "@gina/core";
 
@@ -226,7 +227,7 @@ export default function SubscriptionScreen() {
         return (
           <View
             key={plan.code}
-            style={[parentStyles.card, isCurrent ? { backgroundColor: "#E6F3ED", borderColor: "#0B7F7F" } : null]}
+            style={[parentStyles.card, isCurrent ? { backgroundColor: "#F1EDFD", borderColor: "#6042DE" } : null]}
           >
             <View className="flex-row items-center justify-between">
               <Text style={parentStyles.title}>{i18nText(plan.name_i18n, i18n.language)}</Text>

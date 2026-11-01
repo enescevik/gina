@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const c = { ink: '#201951', muted: '#625C85', purple: '#6042DE', mint: '#33BFA5', cream: '#FCFAF6', white: '#FFFFFF', line: '#EAE5EE', amber: '#A85413' };
 export const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: c.cream },
-  header: { paddingHorizontal: 22, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', gap: 16, backgroundColor: c.white },
+  header: { paddingHorizontal: 22, paddingVertical: 12, flexDirection: 'row', alignItems: 'center', gap: 16, backgroundColor: c.cream },
   headerPhone: { paddingHorizontal: 16, paddingVertical: 6, gap: 8, flexWrap: 'wrap' },
   logo: { width: 146, height: 54 },
   logoPhone: { width: 104, height: 44 },
@@ -33,7 +33,7 @@ export const s = StyleSheet.create({
   fill: { height: 9, borderRadius: 9, backgroundColor: c.mint },
   link: { minHeight: 52, backgroundColor: c.white, borderRadius: 14, flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: '#F0EBF0' },
   nav: { backgroundColor: c.white, flexDirection: 'row', justifyContent: 'center', borderTopWidth: 1, borderColor: c.line, paddingHorizontal: 12, paddingTop: 5 },
-  navItem: { flex: 1, maxWidth: 210, minHeight: 65, alignItems: 'center', justifyContent: 'center', gap: 3, paddingVertical: 6 },
+  navItem: { flex: 1, minHeight: 65, alignItems: 'center', justifyContent: 'center', gap: 3, paddingVertical: 6 },
   navLine: { position: 'absolute', bottom: 0, width: 56, height: 3, borderRadius: 3, backgroundColor: c.purple },
   state: { alignItems: 'center', paddingVertical: 14, gap: 12 },
   overlay: { flex: 1, backgroundColor: '#20195180', padding: 20, justifyContent: 'center', alignItems: 'center' },

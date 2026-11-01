@@ -1,8 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 
+import { ApprovedScene } from "@/components/child-home/approved-scene";
 import { ChildScreen, V5_CHARACTERS, V5_PETS, childStyles } from "@/components/room/child-screen";
 import { useActiveChild } from "@/lib/active-child";
 import { useChildRoomPrefs } from "@/lib/use-child-room-prefs";
@@ -36,28 +38,29 @@ export default function RoomPreviewScreen() {
   });
   const dirty = tab === "pet" ? pet !== (prefs.data?.petKey ?? "cat") : character !== (prefs.data?.characterKey ?? "unspecified");
   return <ChildScreen loading={prefs.isLoading} title={t("childV5.customize")} character={character} pet={pet}>
+    <View style={childStyles.card}><Text style={childStyles.title}>{t("mintRelease.fixedRoomTitle")}</Text><Text style={childStyles.copy}>{t("mintRelease.preferencesNote")}</Text></View>
     <View accessibilityRole="tablist" className="flex-row flex-wrap gap-2">
       {(["character", "room", "pet"] as const).map(key => <Pressable key={key} accessibilityRole="tab" accessibilityState={{ selected: key === tab }} aria-selected={key === tab}
-        disabled={save.isPending} onPress={() => { setTab(key); setSaved(false); }} style={[childStyles.card, { minHeight: 48, paddingVertical: 10, backgroundColor: key === tab ? "#D9F4F2" : "#FFFCF5" }]}>
+        disabled={save.isPending} onPress={() => { setTab(key); setSaved(false); }} style={[childStyles.card, { minHeight: 48, paddingVertical: 10, backgroundColor: key === tab ? "#D9F4F2" : "#FFFFFF" }]}>
         <Text style={childStyles.copy}>{t(`childV5.tab.${key}`)}</Text>
       </Pressable>)}
     </View>
     {tab === "character" ? <View accessibilityRole="radiogroup" accessibilityLabel={t("childV5.tab.character")} className="flex-row flex-wrap gap-3">
       {(["unspecified", "girl", "boy"] as const).map(key => <Pressable key={key} accessibilityRole="radio" accessibilityState={{ checked: character === key }} aria-checked={character === key}
         accessibilityLabel={t(`room.character.${key}`)} disabled={save.isPending || !prefs.isSuccess} onPress={() => { setCharacter(key); setSaved(false); }}
-        style={[childStyles.card, { flexBasis: 140, flexGrow: 1, alignItems: "center", borderWidth: 2, borderColor: key === character ? "#0B7F7F" : "#E2CFB2", backgroundColor: key === character ? "#E6F7EF" : "#FFFCF5" }]}>
+        style={[childStyles.card, { flexBasis: 140, flexGrow: 1, alignItems: "center", borderWidth: 2, borderColor: key === character ? "#6042DE" : "#EAE5EE", backgroundColor: key === character ? "#E6F7EF" : "#FFFFFF" }]}>
         <Image source={V5_CHARACTERS[key]} style={{ width: 100, height: 120 }} resizeMode="contain" accessible={false} />
         <Text style={childStyles.copy}>{t(`room.character.${key}`)}</Text>
       </Pressable>)}
     </View> : tab === "pet" ? <View accessibilityRole="radiogroup" accessibilityLabel={t("childV5.tab.pet")} className="flex-row flex-wrap gap-3">
       {(["cat", "dog", "monkey", "lion", "none"] as const).map(key => <Pressable key={key} accessibilityRole="radio" accessibilityState={{ checked: pet === key }} aria-checked={pet === key}
         accessibilityLabel={t(`childV5.pet.${key}`)} disabled={save.isPending || !prefs.isSuccess} onPress={() => { setPet(key); setSaved(false); }}
-        style={[childStyles.card, { flexBasis: 140, flexGrow: 1, alignItems: "center", borderWidth: 2, borderColor: key === pet ? "#0B7F7F" : "#E2CFB2" }]}>
+        style={[childStyles.card, { flexBasis: 140, flexGrow: 1, alignItems: "center", borderWidth: 2, borderColor: key === pet ? "#6042DE" : "#EAE5EE" }]}>
         {key !== "none" ? <Image source={V5_PETS[key]} style={{ width: 100, height: 80 }} resizeMode="contain" accessible={false} /> : null}
         <Text style={childStyles.copy}>{t(`childV5.pet.${key}`)}</Text>
       </Pressable>)}
     </View> : <View style={childStyles.card}>
-      <Image source={require("../../../../../packages/assets/rooms/v2/room-study-v5.webp")} style={{ width: "100%", aspectRatio: 1586 / 992, borderRadius: 12 }} resizeMode="contain" accessible={false} />
+      <ApprovedScene style={{width:"100%",aspectRatio:729/641,borderRadius:16}} />
       <Text style={childStyles.title}>{t("childV5.currentRoom")}</Text>
       <Text style={childStyles.copy}>{t("childV5.roomThemesNote")}</Text>
     </View>}

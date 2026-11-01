@@ -3,14 +3,13 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Text, View, useWindowDimensions } from "react-native";
 
-import { NineSlice } from "@/components/room/nine-slice";
 import { shelfDisplayArt } from "@/components/room/room-art";
 import { ILLUSTRATED_GAMIFICATION } from "@/generated/illustrated/gamification";
 import { Collectible } from "@/components/collectible";
 import { CelebrationBurst } from "@/components/collectible-motion";
 import { Button } from "@/components/ui/button";
 import { ErrorText } from "@/components/ui/screen";
-import { ChildScreen as Screen } from "@/components/room/child-screen";
+import { ChildScreen as Screen, childStyles } from "@/components/room/child-screen";
 import { useActiveChild } from "@/lib/active-child";
 import { useChildBadges } from "@/lib/use-child-badges";
 
@@ -44,11 +43,11 @@ export default function ChildCollectionScreen() {
         {badges.data?.map((badge) => (
           <View
             key={badge.slug}
-            style={{ width: singleColumn ? "100%" : "50%", marginBottom: -8 }}
+            style={{ width: singleColumn ? "100%" : "50%", padding: 5 }}
             accessible
             accessibilityLabel={`${badge.title}: ${badge.earned ? t("collection.earned") : t("collection.locked")}`}
           >
-            <NineSlice skin="child-cabinet-cell-v5" scale={width >= 900 ? .55 : .3} contentStyle={{ alignItems: "center", gap: 6 }}>
+            <View style={[childStyles.card,{alignItems:"center",gap:10,minHeight:width >= 900 ? 240 : 210}]}>
             <View className="items-center justify-center">
               {shelfDisplayArt(badge) || !badge.earned ? <Image source={badge.earned ? shelfDisplayArt(badge)! : ILLUSTRATED_GAMIFICATION["display-locked"]} resizeMode="contain" accessible={false} style={{ width: collectibleSize, height: collectibleSize, opacity: badge.earned ? 1 : .5 }} /> : <Collectible slug={badge.icon} size={collectibleSize} />}
               {celebrating === badge.slug ? (
@@ -63,9 +62,9 @@ export default function ChildCollectionScreen() {
                 </View>
               ) : null}
             </View>
-            <Text style={{ backgroundColor: "#FFD59A", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4, fontFamily: "Baloo2_700Bold", color: "#65421E", textAlign: "center", fontSize: 16 }}>{badge.title}</Text>
+            <Text style={{ backgroundColor: "#EEEAFE", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4, fontFamily: "Nunito_700Bold", color: "#201951", textAlign: "center", fontSize: 16 }}>{badge.title}</Text>
             <Text className="font-body text-xs text-gray-600">{badge.earned ? t("collection.earned") : t("collection.locked")}</Text>
-            </NineSlice>
+            </View>
           </View>
         ))}
       </View>

@@ -61,7 +61,7 @@ export default function PairScreen() {
   }
   return <ParentScreen navigation={false} title={t("device.pairTitle")} subtitle={t("device.pairHelp")}>
     {pairing ? <View style={[parentStyles.card, { alignItems: "center", paddingVertical: 32 }]}>
-      <Text selectable style={{ fontFamily: "Baloo2_700Bold", fontSize: 44, letterSpacing: 5, color: remaining ? "#0B7F7F" : "#63736B" }}>{pairing.code}</Text>
+      <Text selectable style={{ fontFamily: "Nunito_700Bold", fontSize: 44, letterSpacing: 5, color: remaining ? "#6042DE" : "#625C85" }}>{pairing.code}</Text>
       <Text style={[parentStyles.copy, { textAlign: "center" }]}>{t(remaining ? "device.waiting" : "accountV5.codeExpired")}</Text>
       {remaining ? <Text style={parentStyles.muted}>{t("accountV5.codeRemaining", { time: `${Math.floor(remaining / 60)}:${String(remaining % 60).padStart(2, "0")}` })}</Text> : null}
     </View> : null}

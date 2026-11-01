@@ -2,7 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { Pressable } from "@/components/ui/pressable";
 
 import { Collectible } from "@/components/collectible";
 import { Button } from "@/components/ui/button";
@@ -136,7 +137,7 @@ export default function ParentRewardsScreen() {
         <View className="flex-row flex-wrap gap-2">
           {["reward-movie-night", "reward-book", "reward-toy", "reward-bike-ride", "reward-park", "reward-ice-cream", "reward-game-with-parent", "reward-mystery-box"].map(slug => <Pressable key={slug}
             accessibilityRole="button" accessibilityLabel={t(`rewardIcon.${slug}`)} accessibilityState={{ selected: icon === slug }}
-            onPress={() => setIcon(slug)} style={{ padding: 5, borderRadius: 14, borderWidth: 2, borderColor: icon === slug ? "#0B7F7F" : "#E4DAC8", backgroundColor: icon === slug ? "#E1F2EB" : "#FFFCF6" }}>
+            onPress={() => setIcon(slug)} style={{ padding: 5, borderRadius: 14, borderWidth: 2, borderColor: icon === slug ? "#6042DE" : "#EAE5EE", backgroundColor: icon === slug ? "#EEEAFE" : "#FFFFFF" }}>
             <Collectible slug={slug} size={48} />
           </Pressable>)}
         </View>
