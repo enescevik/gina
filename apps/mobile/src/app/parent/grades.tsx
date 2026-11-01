@@ -90,7 +90,7 @@ export default function ParentGradesScreen() {
   const numberFormat = new Intl.NumberFormat(i18n.language, { maximumFractionDigits: 1 });
 
   return (
-    <Screen title={t("parent.grades")} subtitle={t("parentV5.gradesSubtitle")} loading={children.isLoading || grades.isLoading} error={children.error ?? grades.error} onRetry={() => { void children.refetch(); if (selectedChild) void grades.refetch(); }}>
+    <Screen title={t("parent.grades")} subtitle={t("unified.gradesHelp")} loading={children.isLoading || grades.isLoading} error={children.error ?? grades.error} onRetry={() => { void children.refetch(); if (selectedChild) void grades.refetch(); }}>
       <ChildPicker profiles={children.data ?? []} selected={selectedChild} onSelect={setChildId} />
 
       {selectedChild ? (
@@ -117,12 +117,12 @@ export default function ParentGradesScreen() {
               <Field label={t("grades.maxScore")} keyboardType="decimal-pad" value={maxScore} onChangeText={setMaxScore} />
             </View>
           </View>
-          <Field label={t("calendar.date")} value={gradedOn} onChangeText={setGradedOn} autoCapitalize="none" />
+          <Field label={t("calendar.date")} hint={t("unified.dateHint")} value={gradedOn} onChangeText={setGradedOn} autoCapitalize="none" />
           {formError ? <Text className="font-body text-sm text-danger">{formError}</Text> : null}
           <Button title={t("common.save")} loading={addGrade.isPending} disabled={!subject.trim() || !score.trim()} onPress={() => addGrade.mutate()} />
         </FormSection>
       ) : (
-        <Text className="font-body text-gray-500">{t("tasks.addChildFirst")}</Text>
+        <EmptyCard title={t("unified.chooseChild")} body={t("unified.noChildHelp")}><Button title={t("unified.createFirstChild")} onPress={()=>router.push("/parent/menu")}/></EmptyCard>
       )}
 
       {grades.data?.length === 0 ? <EmptyCard title={t("grades.none")} slug="display-bookworm" /> : null}

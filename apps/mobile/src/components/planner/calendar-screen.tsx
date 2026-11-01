@@ -314,7 +314,6 @@ export function PlannerCalendar({
           }
         >
           <View style={wide ? { flex: 1 } : undefined}>
-            {" "}
             <PlannerHero
               title={t(childMode ? "child.calendar" : "planner.title")}
               subtitle={t("planner.subtitle")}
@@ -346,7 +345,7 @@ export function PlannerCalendar({
                   {t("planner.program")}
                 </Text>
               </Pressable>
-            </View>{" "}
+            </View>
             {!childMode ? (
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={u.row}>

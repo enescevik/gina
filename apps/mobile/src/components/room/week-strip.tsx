@@ -10,9 +10,9 @@ export function WeekStrip({ week, selected, onSelect }: { week: string[]; select
   return <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0 }} contentContainerStyle={{ gap: 4, paddingVertical: 8, alignItems: "flex-start" }}>
     {week.map(date => <Pressable key={date} accessibilityRole="button" accessibilityLabel={dateLabel.format(new Date(`${date}T12:00:00Z`))}
       accessibilityState={{ selected: date === selected }} aria-pressed={date === selected} onPress={() => onSelect(date)}
-      style={{ minWidth: 48, minHeight: 64, padding: 6, borderWidth: 1, borderColor: "#EAE5EE", borderRadius: 10, alignItems: "center", justifyContent: "center", backgroundColor: date === selected ? "#6042DE" : "#FFFFFF" }}>
-      <Text style={{ fontFamily: "Nunito_600SemiBold", fontSize: 13, color: date === selected ? "white" : "#201951" }}>{weekday.format(new Date(`${date}T12:00:00Z`))}</Text>
-      <Text style={{ fontFamily: "Nunito_700Bold", fontSize: 23, color: date === selected ? "white" : "#201951" }}>{Number(date.slice(-2))}</Text>
+      style={{ minWidth: 48, minHeight: 64, padding: 6, borderWidth: 1, borderColor: date === selected ? "#78C7AE" : "#EAE5EE", borderRadius: 18, alignItems: "center", justifyContent: "center", backgroundColor: date === selected ? "#DDF5EB" : "#FFFFFF" }}>
+      <Text style={{ fontFamily: "Nunito_600SemiBold", fontSize: 13, color: "#201951" }}>{weekday.format(new Date(`${date}T12:00:00Z`))}</Text>
+      <Text style={{ fontFamily: "Nunito_700Bold", fontSize: 23, color: "#201951" }}>{Number(date.slice(-2))}</Text>
     </Pressable>)}
     <View style={{ width: 1 }} />
   </ScrollView>;

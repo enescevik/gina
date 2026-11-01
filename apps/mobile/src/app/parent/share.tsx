@@ -8,7 +8,7 @@ import { Pressable } from "@/components/ui/pressable";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
-import { ParentScreen as Screen, ChildPicker, parentStyles } from "@/components/ui/parent-screen";
+import { ParentScreen as Screen, ChildPicker, parentStyles, EmptyCard } from "@/components/ui/parent-screen";
 import { ConfirmAction } from "@/components/ui/confirm-action";
 import { supabase } from "@/lib/supabase";
 
@@ -135,7 +135,7 @@ export default function ParentShareScreen() {
   const now = shares.dataUpdatedAt;
 
   return (
-    <Screen title={t("share.title")} subtitle={t("share.intro")} loading={children.isLoading || (!!selectedChild && shares.isLoading)} error={children.error ?? shares.error} onRetry={() => { void children.refetch(); if (selectedChild) void shares.refetch(); }}>
+    <Screen title={t("share.title")} subtitle={t("unified.shareHelp")} loading={children.isLoading || (!!selectedChild && shares.isLoading)} error={children.error ?? shares.error} onRetry={() => { void children.refetch(); if (selectedChild) void shares.refetch(); }}>
       <ChildPicker profiles={children.data ?? []} selected={selectedChild} onSelect={id => { if (!createShare.isPending) { setChildId(id); setCreatedLink(null); setActionError(null); } }} />
       {!baseUrl ? <Text style={parentStyles.copy}>{t("share.noWebUrl")}</Text> : null}
       {createdLink ? (
@@ -225,7 +225,7 @@ export default function ParentShareScreen() {
           />
         </View>
       ) : (
-        <Text className="font-body text-gray-500">{t("tasks.addChildFirst")}</Text>
+        <EmptyCard title={t("unified.chooseChild")} body={t("unified.noChildHelp")}><Button title={t("unified.createFirstChild")} onPress={()=>router.push("/parent/menu")}/></EmptyCard>
       )}
 
       <ErrorText error={actionError} />

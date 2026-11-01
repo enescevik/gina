@@ -2,8 +2,9 @@ import { router, useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AppState, Text, View } from "react-native";
+import { Field } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
-import { ParentScreen, parentStyles } from "@/components/ui/parent-screen";
+import { ParentScreen, parentStyles, InfoCard } from "@/components/ui/parent-screen";
 import { ErrorText } from "@/components/ui/screen";
 import { refreshClaims, useSession } from "@/lib/session";
 import { unregisterPush } from "@/lib/push";
@@ -12,6 +13,7 @@ import { supabase } from "@/lib/supabase";
 export default function PairScreen() {
   const { t } = useTranslation();
   const { session, claims, loading, isAnonymous } = useSession();
+  const [deviceName,setDeviceName] = useState(t("unified.defaultDeviceName"));
   const [pairing, setPairing] = useState<{ code: string; expires: number } | null>(null);
   const [remaining, setRemaining] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -49,7 +51,7 @@ export default function PairScreen() {
     setBusy(true); setError(null);
     try {
       const started = Date.now();
-      const { data, error } = await supabase.rpc("request_pairing", { p_device_name: "Tablet" });
+      const { data, error } = await supabase.rpc("request_pairing", { p_device_name: deviceName.trim() || t("unified.defaultDeviceName") });
       if (error) throw error;
       setPairing({ code: data, expires: started + 10 * 60_000 }); setRemaining(600);
     } catch (e) { setError(e); } finally { setBusy(false); }
@@ -59,13 +61,15 @@ export default function PairScreen() {
     try { await unregisterPush(); const { error } = await supabase.auth.signOut(); if (error) throw error; router.replace("/(auth)/sign-in"); }
     catch (e) { leaving.current = false; setError(e); } finally { setBusy(false); }
   }
-  return <ParentScreen navigation={false} title={t("device.pairTitle")} subtitle={t("device.pairHelp")}>
+  return <ParentScreen navigation={false} title={t("unified.pairTitle")} subtitle={t("unified.pairBody")}>
+    <InfoCard title={t("unified.pairChildHelp")} steps={[t("unified.pairChildStep1"),t("unified.pairChildStep2"),t("unified.pairChildStep3")]} />
+    {!pairing ? <Field label={t("unified.deviceName")} hint={t("unified.deviceNameHint")} value={deviceName} onChangeText={setDeviceName} maxLength={60} editable={!busy}/> : null}
     {pairing ? <View style={[parentStyles.card, { alignItems: "center", paddingVertical: 32 }]}>
       <Text selectable style={{ fontFamily: "Nunito_700Bold", fontSize: 44, letterSpacing: 5, color: remaining ? "#6042DE" : "#625C85" }}>{pairing.code}</Text>
       <Text style={[parentStyles.copy, { textAlign: "center" }]}>{t(remaining ? "device.waiting" : "accountV5.codeExpired")}</Text>
       {remaining ? <Text style={parentStyles.muted}>{t("accountV5.codeRemaining", { time: `${Math.floor(remaining / 60)}:${String(remaining % 60).padStart(2, "0")}` })}</Text> : null}
     </View> : null}
-    {!pairing || !remaining ? <Button title={t(pairing ? "accountV5.newCode" : "device.getCode")} disabled={!isAnonymous} loading={busy} onPress={requestCode} /> : null}
+    {!pairing || !remaining ? <Button title={t(pairing ? "accountV5.newCode" : "unified.pairCodeAction")} disabled={!isAnonymous} loading={busy} onPress={requestCode} /> : null}
     {!session && error ? <Button title={t("common.retry")} onPress={authenticate} loading={busy} /> : null}
     <ErrorText error={error} />
     <Button variant="ghost" title={t("device.thisIsParentPhone")} disabled={busy} onPress={exit} />

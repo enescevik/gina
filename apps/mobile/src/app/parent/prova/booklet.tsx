@@ -164,7 +164,7 @@ export default function ProvaBookletScreen() {
   }
 
   return (
-    <Screen title={t("prova.booklet.title")} loading={subjects.isLoading || exams.isLoading} error={subjects.error ?? exams.error} onRetry={() => { void subjects.refetch(); void exams.refetch(); }}>
+    <Screen title={t("prova.booklet.title")} subtitle={t("unified.bookletHelp")} loading={subjects.isLoading || exams.isLoading} error={subjects.error ?? exams.error} onRetry={() => { void subjects.refetch(); void exams.refetch(); }}>
       <View style={parentStyles.card}>
       <Text className="font-body text-base text-gray-600">{t("prova.booklet.intro")}</Text>
 

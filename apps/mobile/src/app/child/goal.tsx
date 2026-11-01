@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { Text } from "react-native";
+import { Star } from "lucide-react-native";
+import { Text, View } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
 
 import { Collectible } from "@/components/collectible";
@@ -54,7 +55,7 @@ export default function ChildGoalScreen() {
         >
           <Collectible slug={reward.icon} size={64} />
           <Text className="flex-1 font-body-bold text-lg text-ink">{reward.title}</Text>
-          <Text className="font-display text-base text-ink">⭐ {reward.cost_stars}</Text>
+          <View style={{flexDirection:"row",alignItems:"center",gap:4}}><Star size={18} color="#AA7623" fill="#F7D38D"/><Text className="font-display text-base text-ink">{reward.cost_stars}</Text></View>
         </Pressable>
       ))}
       <ErrorText error={rewards.error ?? choose.error} />

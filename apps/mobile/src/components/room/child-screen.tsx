@@ -53,7 +53,7 @@ export function ChildScreen({ title, subtitle, children, loading = false, surfac
 }
 
 export const childStyles = StyleSheet.create({
-  card: { backgroundColor: c.white, borderColor: c.line, borderWidth: 1, borderRadius: 20, padding: 18, gap: 12 },
+  card: { backgroundColor: c.white, borderColor: c.line, borderWidth: 1, borderRadius: 24, padding: 20, gap: 12 },
   row: { minHeight: 72, flexDirection: "row", alignItems: "center", gap: 12 },
   title: { fontFamily: "Nunito_700Bold", fontSize: 22, lineHeight: 29, color: c.ink },
   copy: { fontFamily: "Nunito_600SemiBold", fontSize: 16, lineHeight: 24, color: c.muted },
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   root: {flex:1,backgroundColor:c.cream}, fill:{flex:1,minHeight:0,minWidth:0},
   heading:{flexDirection:'row',alignItems:'center',gap:12,padding:18,borderBottomWidth:1,borderColor:c.line},
   back:{width:48,height:48,alignItems:'center',justifyContent:'center',backgroundColor:'#EEEAFE',borderRadius:16},
-  title:{fontFamily:'Nunito_700Bold',fontSize:26,lineHeight:33,color:c.ink},
+  title:{fontFamily:'Nunito_800ExtraBold',fontSize:26,lineHeight:33,color:c.ink},
   subtitle:{fontFamily:'Nunito_400Regular',fontSize:16,lineHeight:23,color:c.muted},
   content:{width:'100%',maxWidth:1000,alignSelf:'center',padding:18,paddingBottom:32,gap:16,flexGrow:1},
   loading:{minHeight:220,alignItems:'center',justifyContent:'center',gap:16},

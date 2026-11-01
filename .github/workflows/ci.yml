@@ -22,7 +22,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm turbo run lint typecheck test
-      - run: node --test scripts/check-testflight.test.mjs
+      - run: node --test scripts/check-testflight.test.mjs scripts/check-native-text.test.mjs
 
   edge:
     name: Edge auth, account deletion + weather

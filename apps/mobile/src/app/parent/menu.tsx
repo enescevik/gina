@@ -1,17 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, Text, View } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
 
+import { Users, Tablet, ShieldCheck, UserRound, Bell, Share2, Crown, NotebookPen, GraduationCap } from "lucide-react-native";
 import { Avatar, CHILD_AVATAR_SLUGS } from "@/components/avatar";
 import { ConfirmAction } from "@/components/ui/confirm-action";
 import { AccountDeletion } from "@/components/account-deletion";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
-import { ParentScreen as Screen, parentStyles, FormSection } from "@/components/ui/parent-screen";
+import { ParentScreen as Screen, parentStyles, FormSection, InfoCard, NavigationCard } from "@/components/ui/parent-screen";
 import { useSession } from "@/lib/session";
 import { unregisterPush } from "@/lib/push";
 import { supabase } from "@/lib/supabase";
@@ -37,8 +38,9 @@ function ChildRow({ id, name, grade, avatar }: { id: string; name: string; grade
   return <View style={parentStyles.card}>
     <View style={parentStyles.row}><Avatar slug={avatar} size={56} /><View className="flex-1 gap-1"><Text style={[parentStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{name}</Text>{grade !== null ? <Text style={parentStyles.muted}>{t("parent.gradeShort", { grade })}</Text> : null}</View></View>
     <Button variant="secondary" title={t("mintRelease.childSettings")} accessibilityState={{expanded:settingsOpen}} onPress={() => setSettingsOpen(!settingsOpen)} />
-    {settingsOpen ? <View style={{gap:12}}><Field label={t("parentV5.childPinLabel", { name })} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} />
+    {settingsOpen ? <View style={{gap:12}}><Text style={parentStyles.muted}>{t("unified.childPinHelp")}</Text><Field label={t("parentV5.childPinLabel", { name })} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} />
     <Button variant="secondary" title={t("parent.savePin")} loading={setChildPin.isPending} disabled={pin.length !== 4 || remove.isPending} onPress={() => setChildPin.mutate()} />
+    {setChildPin.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.muted}>{t("unified.pinSaved")}</Text> : null}
     <ErrorText error={setChildPin.error ?? remove.error} />
     <ConfirmAction title={t("releaseReview.deleteChild", { name })} message={t("releaseReview.deleteChildBody", { name })} busy={remove.isPending || setChildPin.isPending} onConfirm={() => remove.mutate()} /></View> : null}
   </View>;
@@ -58,8 +60,10 @@ function ParentPinRow() {
   });
   return <View style={parentStyles.card}>
     <Text style={parentStyles.title}>{t("parent.parentPin")}</Text>
+    <Text style={parentStyles.copy}>{t("unified.parentPinHelp")}</Text>
     <Field label={t("parentV5.newParentPin")} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} />
     <Button variant="secondary" title={t("parent.savePin")} loading={savePin.isPending} disabled={pin.length !== 4} onPress={() => savePin.mutate()} />
+    {savePin.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.muted}>{t("unified.pinSaved")}</Text> : null}
     <ErrorText error={savePin.error} />
   </View>;
 }
@@ -70,6 +74,8 @@ export default function ParentMenuScreen() {
   const { claims } = useSession();
   const familyId = claims?.family_id ?? "";
   const queryClient = useQueryClient();
+  const params = useLocalSearchParams<{section?:string}>();
+  const [section,setSection] = useState(["family","devices","security","account"].includes(params.section ?? "") ? params.section! : "family");
   const [childName, setChildName] = useState("");
   const [childAvatar, setChildAvatar] = useState<string>(CHILD_AVATAR_SLUGS[0] ?? "avatar-default");
   const [pairCode, setPairCode] = useState("");
@@ -137,16 +143,17 @@ export default function ParentMenuScreen() {
   });
 
   return (
-    <Screen title={family.data?.name ?? t("parent.menu")} subtitle={t("parentV5.menuSubtitle")} loading={family.isLoading || children.isLoading || devices.isLoading} error={family.error ?? children.error ?? devices.error} onRetry={() => { void family.refetch(); void children.refetch(); void devices.refetch(); }}>
-      <View className="rounded-parent bg-teal-light p-4">
-        <Text className="font-body text-sm text-ink">{t("parent.inviteCode")}</Text>
-        <Text className="text-2xl font-body-bold tracking-widest text-teal-dark">{family.data?.invite_code ?? "…"}</Text>
-        <Text className="font-body mt-1 text-xs text-gray-700">{t("parent.inviteHelp")}</Text>
-      </View>
-
+    <Screen title={t("unified.settingsTitle")} subtitle={family.data?.name ? `${family.data.name} · ${t("unified.settingsBody")}` : t("unified.settingsBody")} loading={family.isLoading || children.isLoading || devices.isLoading} error={family.error ?? children.error ?? devices.error} onRetry={() => { void family.refetch(); void children.refetch(); void devices.refetch(); }}>
+      <View style={{flexDirection:"row",flexWrap:"wrap",gap:8}}>{([
+        ["family","familyTab",Users],["devices","devicesTab",Tablet],["security","securityTab",ShieldCheck],["account","accountTab",UserRound],
+      ] as const).map(([key,label,Icon])=><Pressable key={key} accessibilityRole="tab" accessibilityState={{selected:section===key}} onPress={()=>setSection(key)} style={{flexBasis:"46%",flexGrow:1,minHeight:60,padding:12,borderRadius:19,borderWidth:1,borderColor:section===key?"#78C7AE":"#E5DEED",backgroundColor:section===key?"#DDF5EB":"#FFF",flexDirection:"row",alignItems:"center",gap:10}}><Icon size={22} color="#6042DE"/><Text style={[parentStyles.copy,{fontFamily:"Nunito_800ExtraBold",flex:1}]}>{t(`unified.${label}`)}</Text></Pressable>)}</View>
+      {section === "family" ? <>
+      <InfoCard title={t("unified.inviteTitle")} body={t("unified.inviteHelp")}>
+        <Text selectable accessibilityLabel={t("parent.inviteCode")} style={{fontFamily:"Nunito_800ExtraBold",fontSize:26,letterSpacing:3,color:"#201951"}}>{family.data?.invite_code ?? "…"}</Text>
+      </InfoCard>
       <FormSection title={t("parent.addChild")} initiallyOpen={!children.data?.length}>
         <Text style={parentStyles.muted}>{t("release.firstChildBody")}</Text>
-        <Field label={t("parent.addChild")} value={childName} onChangeText={setChildName} placeholder={t("parent.childNamePlaceholder")} />
+        <Field label={t("parent.childNamePlaceholder")} maxLength={80} value={childName} onChangeText={setChildName} placeholder={t("parent.childNamePlaceholder")} />
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View className="flex-row gap-2">
             {CHILD_AVATAR_SLUGS.map((slug) => (
@@ -162,40 +169,47 @@ export default function ParentMenuScreen() {
           </View>
         </ScrollView>
         <Button title={t("parent.addChild")} loading={addChild.isPending} disabled={!childName.trim()} onPress={() => addChild.mutate(childName.trim())} />
+        {addChild.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.copy}>{t("unified.childAdded")}</Text> : null}
         <ErrorText error={addChild.error} />
       </FormSection>
 
       <View style={{gap:12}}>
-        <Text style={parentStyles.title}>{t("parent.children")}</Text>
+        <Text style={parentStyles.title}>{t("parent.children")}</Text><Text style={parentStyles.muted}>{t("unified.childrenHelp")}</Text>
         {children.data?.map((child) => (
           <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} avatar={child.avatar} />
         ))}
 
       </View>
 
+      <NavigationCard title={t("parent.grades")} body={t("unified.gradesHelp")} icon={<GraduationCap size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/grades")}/>
+      <NavigationCard title={t("parent.notes")} body={t("unified.notesHelp")} icon={<NotebookPen size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/notes")}/>
+      </> : null}
+      {section === "devices" ? <>
+      <InfoCard title={t("parent.pairDevice")} body={t("unified.pairIntro")} steps={[t("unified.pairStep1"),t("unified.pairStep2"),t("unified.pairStep3")]} />
       <View style={parentStyles.card}>
-        <Text className="text-lg font-body-bold text-ink">{t("parent.pairDevice")}</Text>
-        {devices.data?.map((device) => (
-          <View key={device.id} className="flex-row items-center gap-2">
-            <Text className="font-body flex-1 text-base text-ink">• {device.name}</Text>
-            <ConfirmAction title={t("parent.removeDevice")} busy={revokeDevice.isPending} onConfirm={() => revokeDevice.mutate(device.id)} />
-          </View>
-        ))}
-        <Field label={t("parent.pairCodeLabel")} keyboardType="number-pad" maxLength={6} value={pairCode} onChangeText={setPairCode} />
-        <Button variant="secondary" title={t("parent.pairDevice")} loading={pairDevice.isPending} disabled={pairCode.length !== 6} onPress={() => pairDevice.mutate(pairCode)} />
+        <Field label={t("unified.pairCode")} keyboardType="number-pad" maxLength={6} value={pairCode} onChangeText={value=>{setPairCode(value.replace(/\D/g,""));pairDevice.reset();}} />
+        <Button title={t("parent.pairDevice")} loading={pairDevice.isPending} disabled={pairCode.length !== 6} onPress={() => pairDevice.mutate(pairCode)} />
+        {pairDevice.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.copy}>{t("unified.pairSaved")}</Text> : null}
+        <ErrorText error={pairDevice.error}/>
       </View>
-
-      <View style={parentStyles.card}><Text style={parentStyles.title}>{t("mintRelease.fixedRoomTitle")}</Text><Text style={parentStyles.copy}>{t("mintRelease.fixedRoomBody")}</Text></View>
-      <ParentPinRow />
-      <Button variant="secondary" title={t("prova.title")} onPress={() => router.push("/parent/prova")} />
-      <Button variant="secondary" title={t("push.menu")} onPress={() => router.push("/parent/notifications")} />
-      <Button variant="secondary" title={t("share.title")} onPress={() => router.push("/parent/share")} />
-      <Button variant="secondary" title={t("parent.rewards")} onPress={() => router.push("/parent/rewards")} />
-      <Button variant="secondary" title={t("parent.subscription")} onPress={() => router.push("/parent/subscription")} />
-      <ErrorText error={family.error ?? children.error ?? devices.error ?? addChild.error ?? pairDevice.error ?? revokeDevice.error ?? signOut.error} />
+      <View style={parentStyles.card}><Text style={parentStyles.title}>{t("unified.connectedDevices")}</Text>
+        {devices.data?.length ? <Text style={parentStyles.muted}>{t("unified.deviceRemoveHelp")}</Text> : <Text style={parentStyles.copy}>{t("unified.noDevices")}</Text>}
+        {devices.data?.map(device=><View key={device.id} style={{gap:10,borderTopWidth:1,borderColor:"#EEE8EF",paddingTop:14}}><Text style={parentStyles.copy}>{device.name}</Text><ConfirmAction title={t("parent.removeDevice")} message={t("unified.deviceRemoveHelp")} busy={revokeDevice.isPending} onConfirm={()=>revokeDevice.mutate(device.id)}/></View>)}
+        {revokeDevice.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.muted}>{t("unified.deviceRemoved")}</Text> : null}
+      </View>
+      <InfoCard title={t("unified.samePhone")} body={t("unified.samePhoneBody")}><Button variant="secondary" title={t("unified.childModeAction")} onPress={()=>router.push("/parent/child-mode")}/></InfoCard>
+      </> : null}
+      {section === "security" ? <><ParentPinRow/><InfoCard title={t("unified.samePhone")} body={t("unified.samePhoneBody")}><Button title={t("unified.childModeAction")} onPress={()=>router.push("/parent/child-mode")}/></InfoCard></> : null}
+      {section === "account" ? <>
+      <Text style={parentStyles.copy}>{t("unified.accountHelp")}</Text>
+      <NavigationCard title={t("push.menu")} body={t("accountV5.notificationsBody")} icon={<Bell size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/notifications")}/>
+      <NavigationCard title={t("share.title")} body={t("unified.shareHelp")} icon={<Share2 size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/share")}/>
+      <NavigationCard title={t("parent.subscription")} icon={<Crown size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/subscription")}/>
       <AccountDeletion />
       <Button variant="ghost" title={t("auth.signOut")} loading={signOut.isPending} onPress={() => signOut.mutate()} />
-      <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />
+      </> : null}
+      <ErrorText error={family.error ?? children.error ?? devices.error ?? addChild.error ?? revokeDevice.error ?? signOut.error} />
+
     </Screen>
   );
 }

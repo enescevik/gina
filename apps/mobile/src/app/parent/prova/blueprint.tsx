@@ -59,7 +59,7 @@ export default function BlueprintScreen() {
   });
 
   return (
-    <Screen title={t("prova.newBlueprint")}>
+    <Screen title={t("prova.newBlueprint")} subtitle={t("unified.blueprintHelp")}>
       <View style={parentStyles.card}>
       <Field label={t("grades.subject")} value={subject} onChangeText={setSubject} placeholder={t("provaV5.subjectExample")} />
       <Field label={t("prova.grade")} keyboardType="number-pad" maxLength={2} value={grade} onChangeText={setGrade} />

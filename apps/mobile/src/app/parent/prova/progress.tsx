@@ -6,7 +6,7 @@ import { Text, View } from "react-native";
 
 import { Button } from "@/components/ui/button";
 import { ErrorText } from "@/components/ui/screen";
-import { ChildPicker, ParentScreen as Screen } from "@/components/ui/parent-screen";
+import { ChildPicker, ParentScreen as Screen, EmptyCard } from "@/components/ui/parent-screen";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -85,8 +85,10 @@ export default function ProvaProgressScreen() {
   );
 
 
+  if (children.isSuccess && children.data.length === 0) return <Screen title={t("prova.progress.title")}><EmptyCard title={t("unified.chooseChild")} body={t("unified.noChildHelp")}><Button title={t("unified.createFirstChild")} onPress={()=>router.push("/parent/menu")}/></EmptyCard></Screen>;
+
   return (
-    <Screen title={t("prova.progress.title")} loading={children.isLoading || mastery.isLoading} error={children.error ?? mastery.error} onRetry={() => { void children.refetch(); if (activeChildId) void mastery.refetch(); }}>
+    <Screen title={t("prova.progress.title")} subtitle={t("unified.progressHelp")} loading={children.isLoading || mastery.isLoading} error={children.error ?? mastery.error} onRetry={() => { void children.refetch(); if (activeChildId) void mastery.refetch(); }}>
       <Text className="font-body text-base text-gray-600">{t("prova.progress.intro")}</Text>
       <ChildPicker profiles={children.data ?? []} selected={activeChildId} onSelect={id => { if (id) setChildId(id); }} />
 
