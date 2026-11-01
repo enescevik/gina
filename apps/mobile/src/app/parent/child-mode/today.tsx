@@ -1,3 +1,4 @@
+import {EmailVerification} from "@/components/email-verification";
 import { Redirect, router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,6 +18,7 @@ import { supabase } from "@/lib/supabase";
 export default function ChildModeTodayScreen() {
   const { t } = useTranslation();
   const { session } = useSession();
+  const socialOnly=!!session?.user.identities?.length&&!session.user.identities.some(i=>i.provider==='email');
   const [password,setPassword] = useState("");
   const { actingChild, exit } = useChildMode();
   const [asking, setAsking] = useState(false);
@@ -64,6 +66,7 @@ export default function ChildModeTodayScreen() {
           <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => { setAsking(false); setPin(""); setError(null);setForgot(false);setPassword(""); }} />
           <Button variant="ghost" title={t("unified.forgotParentPin")} disabled={busy} onPress={()=>setForgot(!forgot)}/>
           {forgot ? <InfoCard title={t("unified.forgotParentPin")} body={t("unified.forgotParentPinHelp")}>
+            {socialOnly ? <EmailVerification onVerified={async()=>{await exit();router.replace('/parent/menu?section=security');}}/> : <>
             <Field label={t("auth.password")} secureTextEntry autoComplete="current-password" value={password} onChangeText={setPassword} editable={!busy}/>
             <Button variant="secondary" title={t("unified.verifyParentPassword")} disabled={!password || !session?.user.email} loading={busy} onPress={async()=>{
               if(busy || !session?.user.email || !password)return;
@@ -74,7 +77,7 @@ export default function ChildModeTodayScreen() {
                 if(data.user?.id !== session.user.id)throw new Error("unauthenticated");
                 await exit();setPassword("");router.replace({pathname:"/parent/menu",params:{section:"security"}});
               }catch(e){setError(e);}finally{setBusy(false);}
-            }}/>
+            }}/></>}
           </InfoCard>:null}
         </View>
       ) : (

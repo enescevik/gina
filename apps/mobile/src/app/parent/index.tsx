@@ -137,11 +137,11 @@ export default function ParentHomeScreen() {
   // Selamdaki ad: family_members.display_name (oturumdaki veli).
   const userId = session?.user.id ?? "";
   const me = useQuery({
-    queryKey: ["family_member_me", userId],
-    enabled: !!userId,
+    queryKey: ["family_member_me", userId, familyId],
+    enabled: !!userId && !!familyId,
     staleTime: 10 * 60 * 1000,
     queryFn: async () => {
-      const { data, error } = await supabase.from("family_members").select("display_name").eq("user_id", userId).maybeSingle();
+      const { data, error } = await supabase.from("family_members").select("display_name").eq("user_id", userId).eq("family_id", familyId).maybeSingle();
       if (error) throw error;
       return data?.display_name?.trim() || null;
     },

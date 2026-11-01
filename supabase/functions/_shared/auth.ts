@@ -17,6 +17,9 @@ export async function readParent(req: Request, db: SupabaseClient = serviceClien
     const { data: member, error: memberError } = await db.from("family_members").select("family_id")
       .eq("user_id", data.user.id).eq("family_id", payload.gina.family_id).maybeSingle();
     if (memberError || !member) return null;
+    const { data: active, error: activeError } = await db.from("active_families").select("family_id")
+      .eq("user_id", data.user.id).maybeSingle();
+    if (activeError || (active && active.family_id !== member.family_id)) return null;
     return { familyId: member.family_id, userId: data.user.id };
   } catch { return null; }
 }

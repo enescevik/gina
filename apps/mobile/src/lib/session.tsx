@@ -55,8 +55,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     const apply = (next: Session | null) => {
       if (!live) return;
       // Clear before exposing another identity; query keys are shared across accounts.
-      if (account.current !== (next?.user.id ?? null)) queryClient.clear();
-      account.current = next?.user.id ?? null;
+      const scope=decodeClaims(next?.access_token);
+      const identity=next ? [next.user.id,scope?.role,scope?.family_id,scope?.child_id].join(':') : null;
+      if (account.current !== identity) queryClient.clear();
+      account.current = identity;
       setRecovering(recoveryPending);
       setSession(next);
       setError(null);

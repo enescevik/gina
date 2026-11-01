@@ -1,3 +1,4 @@
+import { SocialSignIn } from "@/components/social-sign-in";
 import { router, useLocalSearchParams } from "expo-router";
 import * as Linking from "expo-linking";
 import { useState } from "react";
@@ -49,6 +50,7 @@ export default function SignInScreen() {
 
     <View style={parentStyles.card}>
       <Text style={parentStyles.title}>{t(mode === "in" ? "unified.parentLogin" : mode === "up" ? "auth.signUp" : "accountV5.sendReset")}</Text>
+      {mode !== "reset" ? <SocialSignIn disabled={busy} onBusy={setBusy}/> : null}
       <Field label={t("auth.email")} autoCapitalize="none" autoComplete="email" keyboardType="email-address" value={email} onChangeText={setEmail} editable={!busy} />
       {mode !== "reset" ? <Field label={t("auth.password")} secureTextEntry={!showPassword} autoComplete={mode === "in" ? "current-password" : "new-password"} value={password} onChangeText={setPassword} editable={!busy} /> : null}
       {mode !== "reset" ? <Toggle label={t(showPassword ? "unified.hidePassword" : "unified.showPassword")} value={showPassword} onChange={setShowPassword} disabled={busy}/> : null}
@@ -57,7 +59,7 @@ export default function SignInScreen() {
       {notice ? <Text accessibilityLiveRegion="polite" style={[parentStyles.copy, { backgroundColor: "#F1EDFD", padding: 16, borderRadius: 12 }]}>{notice}</Text> : null}
       <Button title={t(mode === "reset" ? "accountV5.sendReset" : mode === "in" ? "auth.signIn" : "auth.signUp")} loading={busy} disabled={!valid} onPress={submit} />
       {mode === "in" ? <Button variant="ghost" title={t("accountV5.forgot")} disabled={busy} onPress={() => change("reset")} /> : null}
-      <Button variant="secondary" title={t(mode === "in" ? "auth.signUp" : "auth.signIn")} disabled={busy} onPress={() => change(mode === "in" ? "up" : "in")} />
+      <Button variant="ghost" title={t(mode === "in" ? "auth.signUp" : "auth.signIn")} disabled={busy} onPress={() => change(mode === "in" ? "up" : "in")} />
     </View>
     {mode === "in" ? <InfoCard title={t("unified.childDeviceTitle")} body={t("unified.childDeviceBody")}>
       <Button variant="secondary" title={t("unified.connectDevice")} disabled={busy} onPress={() => router.push("/device/pair")} />

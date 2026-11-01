@@ -1,0 +1,116 @@
+{
+  "rows": [
+    {
+      "slug": "login",
+      "size": "phone",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "device",
+      "size": "phone",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "families",
+      "size": "phone",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "ai",
+      "size": "phone",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "pair",
+      "size": "phone",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "profiles",
+      "size": "phone",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "pin",
+      "size": "phone",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "login",
+      "size": "tablet",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "device",
+      "size": "tablet",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "families",
+      "size": "tablet",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "ai",
+      "size": "tablet",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "pair",
+      "size": "tablet",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "profiles",
+      "size": "tablet",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    },
+    {
+      "slug": "pin",
+      "size": "tablet",
+      "narrowOptions": [],
+      "overflow": false,
+      "broken": 0
+    }
+  ],
+  "errors": [],
+  "flows": [
+    "phone: personal device, explicit PIN-free persisted",
+    "phone: family preview does not join before confirmation",
+    "phone: guided generation, review gate, complete exam assigned",
+    "phone: animated pairing state",
+    "phone: wrong PIN clears secret input",
+    "tablet: personal device, explicit PIN-free persisted",
+    "tablet: family preview does not join before confirmation",
+    "tablet: guided generation, review gate, complete exam assigned",
+    "tablet: animated pairing state",
+    "tablet: wrong PIN clears secret input"
+  ],
+  "backend": "fully mocked"
+}

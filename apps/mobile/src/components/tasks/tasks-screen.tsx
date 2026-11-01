@@ -195,7 +195,7 @@ export function TasksScreen() {
               <View accessible={false} pointerEvents="none" style={u.heroArt}>
                 <View style={u.blob} />
                 <Image
-                  source={require("../../../../../packages/assets/brand/growing-friend/reading.png")}
+                  source={require("../../../../../packages/assets/brand/growing-friend/contextual/planner.png")}
                   style={{ width: "100%", height: "100%" }}
                   resizeMode="contain"
                 />

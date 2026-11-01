@@ -17,7 +17,7 @@ import { useChildGoal } from '@/lib/use-child-goal';
 import { colors as c, styles as s } from './theme';
 
 const logo = require('../../../../../packages/assets/brand/growing-friend/logo.png');
-const mascot = require('../../../../../packages/assets/brand/growing-friend/reading.png');
+const mascot = require('../../../../../packages/assets/brand/growing-friend/contextual/family.png');
 type Child = { id: string; name: string; grade: number | null; avatar: string | null };
 type Approval = { id: string; child_id: string; task_templates: { title: string; icon: string; stars: number } | null; children: { name: string } | null };
 export interface HomeViewProps {

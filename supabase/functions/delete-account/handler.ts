@@ -15,15 +15,24 @@ export async function deleteAccount(req: Request, dependencies?: { db: SupabaseC
     if (raw.length > 8192) return json({ error: "invalid_input" }, 400);
     let input;
     try { input = JSON.parse(raw); } catch { return json({ error: "invalid_input" }, 400); }
-    if (input?.confirm !== true || typeof input.password !== "string" || !input.password || input.password.length > 1024) return json({ error: "invalid_input" }, 400);
-    const auth = dependencies?.reauth ?? createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
-    const verified = await auth.auth.signInWithPassword({ email: user.email, password: input.password });
-    if (verified.error || verified.data.user?.id !== user.id) return json({ error: "reauthentication_failed" }, 403);
+    if (input?.confirm !== true) return json({ error: "invalid_input" }, 400);
+    let auth: SupabaseClient | undefined;
+    if(input.reauthentication==='email_otp'){
+      // getUser(token) above verifies the JWT. Token issue time is NOT fresh authentication.
+      let claims;try{claims=JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));}catch{return json({error:'reauthentication_failed'},403);}
+      const now=Math.floor(Date.now()/1000);
+      if(claims.sub!==user.id||!Array.isArray(claims.amr)||!claims.amr.some((a:{method?:string;timestamp?:number})=>a.method==='otp'&&typeof a.timestamp==='number'&&a.timestamp<=now&&now-a.timestamp<=300))return json({error:'reauthentication_failed'},403);
+    }else{
+      if(typeof input.password !== "string" || !input.password || input.password.length > 1024) return json({ error: "invalid_input" }, 400);
+      auth = dependencies?.reauth ?? createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!, {
+        auth: { persistSession: false, autoRefreshToken: false },
+      });
+      const verified = await auth.auth.signInWithPassword({ email: user.email, password: input.password });
+      if (verified.error || verified.data.user?.id !== user.id) return json({ error: "reauthentication_failed" }, 403);
+    }
     // The auth.users trigger transfers shared ownership or cascades the last parent's family, atomically.
     const { error } = await db.auth.admin.deleteUser(user.id, false);
-    if (error) { await auth.auth.signOut({ scope: "local" }); return json({ error: "deletion_failed" }, 500); }
+    if (error) { await auth?.auth.signOut({ scope: "local" }); return json({ error: "deletion_failed" }, 500); }
     return json({ ok: true });
   } catch { return json({ error: "deletion_failed" }, 500); }
 }

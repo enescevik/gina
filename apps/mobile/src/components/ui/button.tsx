@@ -7,7 +7,7 @@ type Variant = "primary" | "secondary" | "ghost" | "danger";
 const colors = {
   primary: { backgroundColor: "#6042DE", borderColor: "#4D32BB", color: "#FFFFFF" },
   secondary: { backgroundColor: "#EEEAFE", borderColor: "#A89BD4", color: "#201951" },
-  ghost: { backgroundColor: "#FFFFFF", borderColor: "#A89BD4", color: "#201951" },
+  ghost: { backgroundColor: "transparent", borderColor: "transparent", color: "#6042DE" },
   danger: { backgroundColor: "#FFE9E9", borderColor: "#E4B4AF", color: "#A43135" },
 };
 export interface ButtonProps extends Omit<PressableProps, "children"> {
@@ -19,7 +19,7 @@ export function Button({ title, variant = "primary", loading = false, size = "de
   const palette = isDisabled ? { backgroundColor: "#E7E2EF", borderColor: "#C7BED7", color: "#625C85" } : colors[variant];
   return <Pressable {...rest} accessibilityRole="button" accessibilityLabel={rest.accessibilityLabel ?? title}
     accessibilityState={{ ...accessibilityState, disabled: isDisabled, busy: loading }} disabled={isDisabled} className={className}
-    style={state => [{ minWidth: 48, minHeight: size === "child" ? 60 : 52, borderRadius: 19, borderWidth: 1,
+    style={state => [{ alignSelf: variant === "ghost" ? "center" : "stretch", minWidth: 48, minHeight: size === "child" ? 60 : 52, borderRadius: 19, borderWidth: 1,
       paddingVertical: 13, paddingHorizontal: 16, flexDirection: "row", gap: 8, alignItems: "center", justifyContent: "center",
       backgroundColor: palette.backgroundColor, borderColor: palette.borderColor,
       overflow: "hidden", boxShadow: variant === "primary" && !isDisabled && !state.pressed ? "0 4px 10px #38216B20" : "none",

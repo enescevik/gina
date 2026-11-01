@@ -1133,6 +1133,12 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
+      configure_child_device: { Args: {p_device_id:string;p_name:string;p_child_ids:string[];p_pin_required:boolean}; Returns:undefined }
+      get_child_device_access: { Args: {p_device_id?:string}; Returns:Json }
+      list_my_families: { Args: Record<PropertyKey, never>; Returns:Json }
+      select_family: { Args: {p_family_id:string}; Returns:undefined }
+      preview_family_invite: { Args: {p_invite_code:string}; Returns:Json }
+
             "admin_dashboard":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
@@ -1382,6 +1388,8 @@ isOneToOne: false
 "join_family":
 { Args: { "p_display_name"?: string,"p_invite_code": string }; Returns: string
                            },
+"pair_child_device":
+{ Args: { "p_code": string }; Returns: string },
 "pair_device":
 { Args: { "p_code": string }; Returns: string
                            },
