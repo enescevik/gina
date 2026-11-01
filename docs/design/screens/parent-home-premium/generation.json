@@ -1,5 +1,5 @@
 {
-  "status": "awaiting-user-design-approval",
+  "status": "approved-by-user",
   "tool": "built-in image_gen",
   "scope": "parent home design only; no app changes",
   "references": [
@@ -19,5 +19,6 @@
     "Logo, mascot, fonts and icons are generated approximations in previews; implementation must use existing original assets and native text.",
     "Phone first viewport omits lower continuation sections; README preserves their scope.",
     "Loading and error states specified in README, not yet visually rendered."
-  ]
+  ],
+  "implementation": "IMPLEMENTATION.md"
 }

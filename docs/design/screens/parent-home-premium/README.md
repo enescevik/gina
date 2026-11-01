@@ -1,6 +1,6 @@
 # Veli ana ekranı — tasarım önerisi, 1 Kasım 2026
 
-Durum: **onay bekliyor**. Bunlar image_gen ile üretilmiş tasarım maketleridir; uygulama ekran görüntüsü değildir. Bu aşamada uygulama kodu, veri tabanı veya TestFlight değiştirilmedi.
+Durum: **tasarım onaylandı; uygulama yetkisi verildi** ("devam"). Bu klasördeki `*-proposal-v1.png` dosyaları image_gen maketleridir. Gerçek uygulama görüntüleri ve doğrulama: [uygulama teslimi](IMPLEMENTATION.md), [yan yana galeri](index.html). TestFlight bu uygulama tesliminde güncellenmedi.
 
 ## Görseller
 

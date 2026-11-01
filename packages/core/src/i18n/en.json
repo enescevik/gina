@@ -1111,5 +1111,26 @@
     },
     "insufficientStars": "Your child does not have enough stars to approve this reward.",
     "requestChanged": "This request changed in another action. The list has refreshed; check its current status."
+  },
+  "parentPremium": {
+    "greeting": "Hello, {{name}}",
+    "plan": "Today’s plan",
+    "progress": "Children’s progress",
+    "goals": "Goals",
+    "stars": "{{count}} stars",
+    "taskProgress": "{{name}} task progress",
+    "task": "Task",
+    "reward": "Reward",
+    "childMode": "Child mode",
+    "showLess": "Show less",
+    "showApprovals": "Show all approvals ({{count}})",
+    "hideWeek": "Hide week",
+    "noPlan": "No plans for this day.",
+    "welcome": "Your family’s story starts here.",
+    "firstChild": "Add your first child",
+    "firstChildBody": "Make tasks, the school timetable and goals personal to your child.",
+    "addChild": "Add child",
+    "firstChildHint": "Start with their name and avatar.",
+    "separateSpace": "A separate space for each child."
   }
 }
