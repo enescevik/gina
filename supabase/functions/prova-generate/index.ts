@@ -11,7 +11,6 @@ import {
   callClaude,
   DIFFICULTIES,
   type Difficulty,
-  logUsage,
   officialUrls,
   provaEntitlement,
   readParent,
@@ -25,6 +24,7 @@ const MAX_TOTAL = 30;
 type KindMode = "multiple_choice" | "open_ended" | "mixed";
 
 interface GenerateBody {
+  request_id?: string;
   subject?: string;
   grade?: number;
   topic?: string;
@@ -128,7 +128,10 @@ Deno.serve(async (req) => {
   } catch {
     return json({ error: "bad_request" }, 400);
   }
-  const subject = body.subject?.trim() ?? "";
+  if (!body || typeof body !== "object") return json({error:"bad_request"},400);
+  const requestId = body.request_id ?? crypto.randomUUID();
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(requestId)) return json({error:"bad_request"},400);
+  const subject = typeof body.subject === 'string' ? body.subject.trim().slice(0,80) : '';
   const grade = clampInt(body.grade, 1, 12, 0);
   const kind: KindMode = body.kind === "multiple_choice" || body.kind === "open_ended" ? body.kind : "mixed";
   const difficulty: Difficulty = DIFFICULTIES.includes(body.difficulty as Difficulty) ? (body.difficulty as Difficulty) : "orta_ustu";
@@ -165,15 +168,14 @@ Deno.serve(async (req) => {
       .filter((r) => typeof r.topic === "string" && r.topic.trim())
       .map((r) => ({ topic: r.topic!.trim(), count: clampInt(r.count, 1, MAX_TOTAL, count) }));
   } else {
-    const topic = body.topic?.trim() ?? "";
+    const topic = typeof body.topic === 'string' ? body.topic.trim().slice(0,200) : '';
     if (!topic) return json({ error: "topic_required" }, 400);
     topics = [{ topic, count }];
   }
   const total = topics.reduce((s, t) => s + t.count, 0);
   if (!topics.length || total < 1) return json({ error: "topic_required" }, 400);
   if (total > MAX_TOTAL) return json({ error: "too_many_questions", max: MAX_TOTAL }, 400);
-  const remaining = ent.ai_generate_limit - ent.ai_generate_used;
-  if (total > remaining) return json({ error: "ai_quota_exceeded", remaining: Math.max(0, remaining) }, 402);
+
 
   const ai = await resolveAi(db, ent.plan, 16000);
   if (ai instanceof Response) return ai;
@@ -192,10 +194,16 @@ Deno.serve(async (req) => {
   const userPrompt = JSON.stringify(request);
   const promptHash = await sha256(`${PROMPT_VERSION}\n${SYSTEM_PROMPT}\n${userPrompt}`);
 
+  const {data: reservation,error: reservationError}=await db.rpc('reserve_prova_generation',{p_id:requestId,p_family_id:parent.familyId,p_user_id:parent.userId,p_hash:promptHash,p_items:total});
+  if(reservationError) return json({error:'save_failed'},500);
+  if(reservation?.cached) return json(reservation.cached);
+  if(reservation?.error) return json({error:reservation.error},reservation.error==='ai_quota_exceeded'?402:409);
+  async function failJob(){await db.from('prova_generation_jobs').update({status:'failed',updated_at:new Date().toISOString()}).eq('id',requestId).eq('status','working');}
   let result;
   try {
     result = await callClaude<{ questions: GeneratedQuestion[] }>(apiKey, ai, SYSTEM_PROMPT, userPrompt, SCHEMA);
   } catch (e) {
+    await failJob();
     console.error("prova-generate", String(e));
     return json({ error: "generation_failed" }, 502);
   }
@@ -208,13 +216,13 @@ Deno.serve(async (req) => {
     .map((q) => {
       const isMc = q.kind === "multiple_choice";
       const choices = isMc ? (q.choices ?? []).slice(0, 4) : null;
-      const validMc = isMc && choices?.length === 4 && choices.some((c) => c.key === q.correct_key);
+      const validMc = isMc && choices?.length === 4 && new Set(choices.map(c=>c.key)).size===4 && choices.every(c=>["A","B","C","D"].includes(c.key)&&c.text?.trim()) && choices.some((c) => c.key === q.correct_key);
       const notes = isMc && q.distractor_notes?.length
         ? `\n\n${locale === "tr" ? "Çeldiriciler" : "Distractors"}: ${q.distractor_notes.map((d) => `${d.key}) ${d.why}`).join(" ")}`
         : "";
       const sources = officialUrls([...(q.source_urls ?? []), ...(blueprintSource ? [blueprintSource] : [])]);
       return {
-        valid: !isMc || validMc,
+        valid: !!q.expected_answer?.trim() && !!q.solution?.trim() && (isMc ? validMc : q.kind === "open_ended"),
         row: {
           family_id: parent.familyId,
           grade,
@@ -247,32 +255,11 @@ Deno.serve(async (req) => {
     .filter((x) => x.valid)
     .map((x) => x.row);
 
-  if (!rows.length) return json({ error: "generation_empty" }, 502);
-
-  const { data: inserted, error: insertError } = await db
-    .from("question_bank")
-    .insert(rows)
-    .select("id, topic, kind, difficulty, stem, choices, correct_key, expected_answer, solution, explanation, source_urls");
-  if (insertError) {
-    console.error("prova-generate insert", insertError.message);
-    return json({ error: "save_failed" }, 500);
-  }
-
-  await logUsage(db, {
-    family_id: parent.familyId,
-    action: "generate",
-    model: ai.model,
-    items: inserted.length,
-    input_tokens: result.inputTokens,
-    output_tokens: result.outputTokens,
-    requested_by: parent.userId,
+  if (rows.length !== total) { await failJob(); return json({ error: "generation_empty" }, 502); }
+  const {data: completed,error: saveError}=await db.rpc('complete_prova_generation',{
+    p_id:requestId,p_rows:rows,p_model:ai.model,p_prompt_version:PROMPT_VERSION,p_input:result.inputTokens,p_output:result.outputTokens,
   });
-
-  return json({
-    ok: true,
-    model: ai.model,
-    prompt_version: PROMPT_VERSION,
-    remaining: Math.max(0, remaining - inserted.length),
-    questions: inserted,
-  });
+  // A transport failure may follow a successful commit: keep the job for a same-ID retry.
+  if(saveError) return json({error:'save_failed'},500);
+  return json(completed);
 });

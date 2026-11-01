@@ -31,3 +31,19 @@ Deno.test("delete: confirmation required and token required",async()=>{
 });
 Deno.test("delete: database failure never returns success",async()=>{const f=fixture({deleteFail:true});equal((await deleteAccount(request({confirm:true,password:"correct"}),f)).status,500);});
 Deno.test("delete: CORS preflight does not authenticate or delete",async()=>{const f=fixture();const res=await deleteAccount(new Request("https://local",{method:"OPTIONS"}),f);equal(res.status,204);equal(res.headers.get("access-control-allow-origin"),"*");equal(f.calls,[]);});
+
+Deno.test('delete: social account accepts only fresh verified OTP authentication',async()=>{
+ const now=Math.floor(Date.now()/1000);
+ for(const [name,claims,status] of [
+  ['fresh',{sub:id,amr:[{method:'otp',timestamp:now-20}]},200],
+  ['old',{sub:id,iat:now,amr:[{method:'otp',timestamp:now-600}]},403],
+  ['future',{sub:id,amr:[{method:'otp',timestamp:now+100}]},403],
+  ['refresh',{sub:id,iat:now,amr:[{method:'token_refresh',timestamp:now}]},403],
+  ['wrong identity',{sub:'another',amr:[{method:'otp',timestamp:now}]},403],
+  ['missing',{sub:id},403],
+ ] as const){
+  const f=fixture();const token='header.'+btoa(JSON.stringify(claims))+'.signature';
+  const req=new Request('https://local/delete-account',{method:'POST',headers:{authorization:'Bearer '+token},body:JSON.stringify({confirm:true,reauthentication:'email_otp'})});
+  const res=await deleteAccount(req,f);if(res.status!==status)throw new Error(name+': wrong status '+res.status);equal(f.calls,status===200?[`${id}:false`]:[]);
+ }
+});

@@ -249,7 +249,7 @@ export function TaskForm({
                     </View>
                     <Image
                       accessible={false}
-                      source={require("../../../../../packages/assets/brand/growing-friend/reading.png")}
+                      source={require("../../../../../packages/assets/brand/growing-friend/contextual/planner.png")}
                       style={{ height: 100, width: 145 }}
                       resizeMode="contain"
                     />

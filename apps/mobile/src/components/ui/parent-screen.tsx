@@ -27,7 +27,13 @@ export function ParentScreen({ title, subtitle, children, home = false, navigati
   const { t } = useTranslation();
   const { width, fontScale } = useWindowDimensions();
   const spacious = width >= 800 && fontScale < 1.4;
-  const inMenu = usePathname() === "/parent/menu";
+  const path = usePathname();
+  const inMenu = path === "/parent/menu";
+  const art = path.includes('prova') ? require('../../../../../packages/assets/brand/growing-friend/reading.png')
+    : /device|pin|reset-password/.test(path) ? require('../../../../../packages/assets/brand/growing-friend/contextual/device.png')
+    : /reward|goal|collection|subscription/.test(path) ? require('../../../../../packages/assets/brand/growing-friend/contextual/reward.png')
+    : /calendar|task|approval|plan|notification/.test(path) ? require('../../../../../packages/assets/brand/growing-friend/contextual/planner.png')
+    : /famil|sign-in|menu|share/.test(path) ? require('../../../../../packages/assets/brand/growing-friend/contextual/family.png') : null;
   const MenuIcon = inMenu ? Home : Menu;
   return <SafeAreaView style={styles.root}>
     <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === "ios" ? "padding" : undefined}>
@@ -40,7 +46,7 @@ export function ParentScreen({ title, subtitle, children, home = false, navigati
         <View style={styles.header}>
           <View style={{flexDirection:"row",alignItems:"center",gap:12}}>
             <Text accessibilityRole="header" style={[styles.title,{flex:1}]}>{title}</Text>
-            <Image source={require("../../../../../packages/assets/brand/growing-friend/reading.png")} accessible={false} pointerEvents="none" resizeMode="contain" style={{width:spacious?144:96,height:spacious?104:76}} />
+            {art ? <Image source={art} accessible={false} pointerEvents="none" resizeMode="contain" style={{width:spacious?144:96,height:spacious?132:88}} /> : null}
           </View>
           {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
         </View>

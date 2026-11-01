@@ -1,3 +1,4 @@
+import {ConnectionMoment} from "@/components/ui/quiet-motion";
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -62,6 +63,7 @@ export default function PairScreen() {
     catch (e) { leaving.current = false; setError(e); } finally { setBusy(false); }
   }
   return <ParentScreen navigation={false} title={t("unified.pairTitle")} subtitle={t("unified.pairBody")}>
+    <ConnectionMoment status={pairing && remaining ? "waiting" : "idle"}/>
     <InfoCard title={t("unified.pairChildHelp")} steps={[t("unified.pairChildStep1"),t("unified.pairChildStep2"),t("unified.pairChildStep3")]} />
     {!pairing ? <Field label={t("unified.deviceName")} hint={t("unified.deviceNameHint")} value={deviceName} onChangeText={setDeviceName} maxLength={60} editable={!busy}/> : null}
     {pairing ? <View style={[parentStyles.card, { alignItems: "center", paddingVertical: 32 }]}>

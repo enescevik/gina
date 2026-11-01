@@ -121,10 +121,12 @@ export default function ParentMenuScreen() {
 
   const pairDevice = useMutation({
     mutationFn: async (code: string) => {
-      const { error } = await supabase.rpc("pair_device", { p_code: code });
+      const { data, error } = await supabase.rpc("pair_child_device", { p_code: code });
       if (error) throw error;
+      return data;
     },
-    onSuccess: () => {
+    onSuccess: (deviceId) => {
+      if(deviceId) router.push({pathname:"/parent/device-access",params:{deviceId}});
       setPairCode("");
       void queryClient.invalidateQueries({ queryKey: ["devices"] });
     },
@@ -148,6 +150,7 @@ export default function ParentMenuScreen() {
         ["family","familyTab",Users],["devices","devicesTab",Tablet],["security","securityTab",ShieldCheck],["account","accountTab",UserRound],
       ] as const).map(([key,label,Icon])=><Pressable key={key} accessibilityRole="tab" accessibilityState={{selected:section===key}} onPress={()=>setSection(key)} style={{flexBasis:"46%",flexGrow:1,minHeight:60,padding:12,borderRadius:19,borderWidth:1,borderColor:section===key?"#78C7AE":"#E5DEED",backgroundColor:section===key?"#DDF5EB":"#FFF",flexDirection:"row",alignItems:"center",gap:10}}><Icon size={22} color="#6042DE"/><Text style={[parentStyles.copy,{fontFamily:"Nunito_800ExtraBold",flex:1}]}>{t(`unified.${label}`)}</Text></Pressable>)}</View>
       {section === "family" ? <>
+      <NavigationCard title={t("experience.family.title")} body={t("experience.family.short")} onPress={()=>router.push("/parent/families")}/>
       <InfoCard title={t("unified.inviteTitle")} body={t("unified.inviteHelp")}>
         <Text selectable accessibilityLabel={t("parent.inviteCode")} style={{fontFamily:"Nunito_800ExtraBold",fontSize:26,letterSpacing:3,color:"#201951"}}>{family.data?.invite_code ?? "…"}</Text>
       </InfoCard>
@@ -194,7 +197,7 @@ export default function ParentMenuScreen() {
       </View>
       <View style={parentStyles.card}><Text style={parentStyles.title}>{t("unified.connectedDevices")}</Text>
         {devices.data?.length ? <Text style={parentStyles.muted}>{t("unified.deviceRemoveHelp")}</Text> : <Text style={parentStyles.copy}>{t("unified.noDevices")}</Text>}
-        {devices.data?.map(device=><View key={device.id} style={{gap:10,borderTopWidth:1,borderColor:"#EEE8EF",paddingTop:14}}><Text style={parentStyles.copy}>{device.name}</Text><ConfirmAction title={t("parent.removeDevice")} message={t("unified.deviceRemoveHelp")} busy={revokeDevice.isPending} onConfirm={()=>revokeDevice.mutate(device.id)}/></View>)}
+        {devices.data?.map(device=><View key={device.id} style={{gap:10,borderTopWidth:1,borderColor:"#EEE8EF",paddingTop:14}}><NavigationCard title={device.name} body={t("experience.device.manage")} onPress={()=>router.push({pathname:"/parent/device-access",params:{deviceId:device.id}})}/><ConfirmAction title={t("parent.removeDevice")} message={t("unified.deviceRemoveHelp")} busy={revokeDevice.isPending} onConfirm={()=>revokeDevice.mutate(device.id)}/></View>)}
         {revokeDevice.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.muted}>{t("unified.deviceRemoved")}</Text> : null}
       </View>
       <InfoCard title={t("unified.samePhone")} body={t("unified.samePhoneBody")}><Button variant="secondary" title={t("unified.childModeAction")} onPress={()=>router.push("/parent/child-mode")}/></InfoCard>

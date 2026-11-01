@@ -1,0 +1,51 @@
+{
+  "assets": [
+    {
+      "file": "family.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alpha": true,
+      "source": "imagegen; identity reference ../reading.png",
+      "purpose": "family",
+      "status": "generated; visual identity reviewed; not animation"
+    },
+    {
+      "file": "planner.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alpha": true,
+      "source": "imagegen; identity reference ../reading.png",
+      "purpose": "planner",
+      "status": "generated; visual identity reviewed; not animation"
+    },
+    {
+      "file": "device.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alpha": true,
+      "source": "imagegen; identity reference ../reading.png",
+      "purpose": "device",
+      "status": "generated; visual identity reviewed; not animation"
+    },
+    {
+      "file": "reward.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "alpha": true,
+      "source": "imagegen; identity reference ../reading.png",
+      "purpose": "reward",
+      "status": "generated; visual identity reviewed; not animation"
+    }
+  ],
+  "identity": "Same mint plush with two purple leaves and one mint leaf.",
+  "generation": "Built-in imagegen; one transparent raster per context.",
+  "motion": "Static art. UI motion is separate, focused, and reduced-motion-aware."
+}

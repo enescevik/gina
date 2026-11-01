@@ -95,7 +95,7 @@ export function RewardsScreen() {
           <View style={u.row}><IconButton label={t("common.back")} onPress={() => router.canGoBack() ? router.back() : router.replace("/parent")}><ArrowLeft color={p.purple} /></IconButton><Text accessibilityRole="header" style={[u.title, { flexShrink: 1 }]}>{t("rewards.title")}</Text></View>
           <Text style={[u.copy, { marginTop: 8 }]}>{t("rewardPremium.subtitle")}</Text>
         </View>
-        <View accessible={false} pointerEvents="none" style={u.heroArt}><View style={u.blob} /><Image source={require("../../../../../packages/assets/brand/growing-friend/reading.png")} resizeMode="contain" style={{ width: "100%", height: "100%" }} /></View>
+        <View accessible={false} pointerEvents="none" style={u.heroArt}><View style={u.blob} /><Image source={require("../../../../../packages/assets/brand/growing-friend/contextual/reward.png")} resizeMode="contain" style={{ width: "100%", height: "100%" }} /></View>
       </View>
       <View style={[u.segment, { maxWidth: 560 }]}>
         {[false, true].map(value => {

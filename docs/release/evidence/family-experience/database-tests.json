@@ -1,0 +1,122 @@
+[
+  {
+    "file": "001_schema.test.sql",
+    "exit": 0,
+    "passed": 20,
+    "failures": []
+  },
+  {
+    "file": "002_rls.test.sql",
+    "exit": 0,
+    "passed": 14,
+    "failures": []
+  },
+  {
+    "file": "003_entitlements.test.sql",
+    "exit": 0,
+    "passed": 11,
+    "failures": []
+  },
+  {
+    "file": "004_ai_summary_data.test.sql",
+    "exit": 0,
+    "passed": 6,
+    "failures": []
+  },
+  {
+    "file": "005_prova.test.sql",
+    "exit": 0,
+    "passed": 17,
+    "failures": []
+  },
+  {
+    "file": "006_resubmit.test.sql",
+    "exit": 0,
+    "passed": 8,
+    "failures": []
+  },
+  {
+    "file": "007_rewards.test.sql",
+    "exit": 0,
+    "passed": 14,
+    "failures": []
+  },
+  {
+    "file": "008_prova_ai.test.sql",
+    "exit": 0,
+    "passed": 25,
+    "failures": []
+  },
+  {
+    "file": "009_prova_level.test.sql",
+    "exit": 0,
+    "passed": 16,
+    "failures": []
+  },
+  {
+    "file": "010_iap.test.sql",
+    "exit": 0,
+    "passed": 10,
+    "failures": []
+  },
+  {
+    "file": "011_push.test.sql",
+    "exit": 0,
+    "passed": 24,
+    "failures": []
+  },
+  {
+    "file": "012_backoffice.test.sql",
+    "exit": 0,
+    "passed": 26,
+    "failures": []
+  },
+  {
+    "file": "013_teacher_share.test.sql",
+    "exit": 0,
+    "passed": 22,
+    "failures": []
+  },
+  {
+    "file": "014_room_pet.test.sql",
+    "exit": 0,
+    "passed": 7,
+    "failures": []
+  },
+  {
+    "file": "015_account_lifecycle.test.sql",
+    "exit": 0,
+    "passed": 16,
+    "failures": []
+  },
+  {
+    "file": "016_child_deletion.test.sql",
+    "exit": 0,
+    "passed": 5,
+    "failures": []
+  },
+  {
+    "file": "017_room_atmosphere.test.sql",
+    "exit": 0,
+    "passed": 18,
+    "failures": []
+  },
+  {
+    "file": "018_school_timetables.test.sql",
+    "exit": 0,
+    "passed": 17,
+    "failures": []
+  },
+  {
+    "file": "019_device_family_access.test.sql",
+    "exit": 0,
+    "passed": 29,
+    "failures": []
+  },
+  {
+    "file": "020_prova_jobs.test.sql",
+    "exit": 0,
+    "passed": 10,
+    "failures": []
+  }
+]

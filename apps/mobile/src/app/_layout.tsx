@@ -24,6 +24,7 @@ export default function RootLayout() {
   useEffect(() => { colorScheme.set("light"); }, []);
   // Onaylı tasarım tipografisi: çocuk başlıkları Baloo 2, gövde Nunito (yüklenene dek sistem fontu).
   const [fontsLoaded, fontError] = useFonts({
+    GoogleSans_Medium: require("../../../../packages/assets/auth/google/GoogleSans-Medium.ttf"),
     Baloo2_600SemiBold,
     Baloo2_700Bold,
     Baloo2_800ExtraBold,
@@ -60,7 +61,7 @@ function AppRoutes() {
     <Stack.Protected guard={claims?.role === "parent"}><Stack.Screen name="parent" /></Stack.Protected>
     <Stack.Protected guard={!actingChild}>
       <Stack.Screen name="index" /><Stack.Screen name="(auth)" /><Stack.Screen name="child" />
-      <Stack.Screen name="reset-password" /><Stack.Screen name="device" /><Stack.Screen name="s/[token]" />
+      <Stack.Screen name="auth-callback" /><Stack.Screen name="reset-password" /><Stack.Screen name="device" /><Stack.Screen name="s/[token]" />
     </Stack.Protected>
   </Stack>;
 }

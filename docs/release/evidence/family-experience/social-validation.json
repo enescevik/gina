@@ -1,0 +1,11 @@
+{
+  "errors": [],
+  "passed": [
+    "delete disabled before reauthentication",
+    "OTP uses current account only",
+    "method remains stable after identity update",
+    "explicit deletion acknowledgement required",
+    "mock deletion signs out"
+  ],
+  "backend": "fully mocked; no email sent or real account removed"
+}

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
+import { FamilyChoicePanel } from "@/components/family-choice";
 import { AccountDeletion } from "@/components/account-deletion";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
@@ -17,19 +18,15 @@ export default function FamilyScreen() {
   const { t } = useTranslation();
   const [mode,setMode] = useState<"create"|"join">("create");
   const [familyName, setFamilyName] = useState("");
-  const [inviteCode, setInviteCode] = useState("");
   const [busy, setBusy] = useState<"create" | "join" | "out" | null>(null);
   const [error, setError] = useState<unknown>(null);
 
-  async function run(kind: "create" | "join") {
+  async function createFamily() {
     if (busy) return;
-    setBusy(kind);
+    setBusy("create");
     setError(null);
     try {
-      const { error: rpcError } =
-        kind === "create"
-          ? await supabase.rpc("create_family", { p_name: familyName.trim() })
-          : await supabase.rpc("join_family", { p_invite_code: inviteCode.trim() });
+      const { error: rpcError } = await supabase.rpc("create_family", { p_name: familyName.trim() });
       if (rpcError) throw rpcError;
       await refreshClaims();
       router.replace("/");
@@ -47,19 +44,8 @@ export default function FamilyScreen() {
         <Text style={parentStyles.copy}>{t("unified.familyCreateHelp")}</Text>
         <Text className="text-lg font-body-bold text-ink">{t("auth.createFamily")}</Text>
         <Field label={t("family.name")} maxLength={80} value={familyName} onChangeText={setFamilyName} placeholder={t("family.namePlaceholder")} />
-        <Button title={t("auth.createFamily")} loading={busy === "create"} disabled={!!busy || !familyName.trim()} onPress={() => run("create")} />
-      </View> : <View style={parentStyles.card}>
-        <Text style={parentStyles.copy}>{t("unified.familyJoinHelp")}</Text>
-        <Text className="text-lg font-body-bold text-ink">{t("auth.joinFamily")}</Text>
-        <Field
-          label={t("parent.inviteCode")}
-          autoCapitalize="characters"
-          value={inviteCode}
-          maxLength={8} onChangeText={value => setInviteCode(value.replace(/[^a-f0-9]/gi, "").toUpperCase())}
-          placeholder={t("family.invitePlaceholder")}
-        />
-        <Button variant="secondary" title={t("auth.joinFamily")} loading={busy === "join"} disabled={!!busy || !/^[A-F0-9]{8}$/i.test(inviteCode.trim())} onPress={() => run("join")} />
-      </View>}
+        <Button title={t("auth.createFamily")} loading={busy === "create"} disabled={!!busy || !familyName.trim()} onPress={() => void createFamily()} />
+      </View> : <FamilyChoicePanel/>}
       <ErrorText error={error} />
       <AccountDeletion />
       <Button variant="ghost" title={t("auth.signOut")} loading={busy === "out"} disabled={!!busy} onPress={async () => {

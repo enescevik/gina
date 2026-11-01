@@ -70,7 +70,7 @@ export default function ParentProvaScreen() {
       <View style={{flexDirection:"row",flexWrap:"wrap",gap:12}}>
         {([
           ["prova.newQuestion", "questionHelp", "/parent/prova/question", PenLine],
-          ["prova.ai.generateTitle", "generateHelp", "/parent/prova/generate", Sparkles],
+          ["experience.ai.entry", "generateHelp", "/parent/prova/generate", Sparkles],
           ["prova.level.title", "levelHelp", "/parent/prova/level", Compass],
           ["prova.progress.title", "progressHelp", "/parent/prova/progress", ChartNoAxesCombined],
           ["prova.booklet.title", "bookletHelp", "/parent/prova/booklet", Printer],
