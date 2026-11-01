@@ -1,6 +1,6 @@
 -- Weekly timetable authorization, validation, atomicity and calendar projection.
 begin;
-select plan(16);
+select plan(17);
 
 insert into auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at)
 values
@@ -45,6 +45,8 @@ set local role authenticated;
 select set_config('request.jwt.claims','{"sub":"00000000-0000-0000-0000-00000000e1d1","role":"authenticated","gina":{"family_id":"10000000-0000-0000-0000-0000000000e1","role":"device","device_id":"30000000-0000-0000-0000-00000000e1c1","child_id":"20000000-0000-0000-0000-00000000e1c1"}}',true);
 select throws_ok($$ select public.save_school_timetable('20000000-0000-0000-0000-00000000e1c1',2,'[]','{"start":"09:00","duration":40,"break":10}') $$,'P0001','timetable_forbidden','revoked device cannot save');
 select is((select count(*)::int from public.school_timetables),0,'revoked device cannot read');
+select set_config('request.jwt.claims','{"sub":"00000000-0000-0000-0000-00000000e101","role":"authenticated","gina":{"family_id":"10000000-0000-0000-0000-0000000000e1"}}',true);
+select throws_ok($$ select public.save_school_timetable('20000000-0000-0000-0000-00000000e1c1',2,'[]','{"start":"09:00","duration":40,"break":10}') $$,'P0001','timetable_forbidden','missing role fails closed');
 reset role;
 select * from finish();
 rollback;

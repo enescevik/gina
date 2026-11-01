@@ -15,7 +15,7 @@ Kullanıcının bu sohbette onayladığı takvim/program görseli `approved-refe
 `index.html` görsel galeridir. `../../../release/evidence/planner/` test betikleri ve ekran görüntülerini içerir.
 
 - TypeScript, Expo lint ve web export başarılı.
-- Core: 22/22 test. Yerel veritabanı: 275/275 pgTAP, yeni program kapsamı 16 test.
+- Core: 22/22 test. Yerel veritabanı: 276/276 pgTAP, yeni program kapsamı 17 test.
 - Web: kayıt, saat çakışması, ağ hatası, revizyon çakışması, gün kopyalama, taslak koruması, çocuk kapsamı, boş gün, hata/yeniden deneme, çocuk olmayan aile. 320 px yatay taşma yok. Kontrol edilen düğmelerde 48 dp altı hedef yok.
 - iOS 26.5 iPhone 17 Pro ve iPad Pro 11 M5 simülatörlerinde ders düzenleme/kaydetme ve görünüm kontrol edildi. iOS SVG buton yüzeyinin eksik kaplama sorunu giderildi. Fiziksel cihaz veya Android native kabul testi yapılmadı.
 - Görsel ve istemci akış testleri yakalanmış HTTP/WebSocket yanıtlarıyla, native testler ayrı yerel örnek veri sunucusuyla yapıldı. Sunucu yetki ve atomiklik kontrolleri gerçek yerel Postgres pgTAP testlerinde doğrulandı; tüm test kayıtları işlem sonunda geri alındı. Gerçek aile/demo kayıtları değişmedi.

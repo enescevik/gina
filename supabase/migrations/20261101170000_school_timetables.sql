@@ -24,7 +24,7 @@ declare
  f uuid; tz text; current_revision integer; entry jsonb; dow integer;
  start_time time; end_time time; monday date; keys text[] := '{}';
 begin
- if auth.uid() is null or not (gina.is_parent() or (gina.is_device() and p_child_id=gina.child_id())) then
+ if auth.uid() is null or (gina.is_parent() or (gina.is_device() and p_child_id=gina.child_id())) is not true then
   raise exception 'timetable_forbidden';
  end if;
  -- Serializes initial creation as well as concurrent edits, including child deletion.
