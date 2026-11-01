@@ -16,7 +16,7 @@ export const DEFAULT_LESSON_SETTINGS: LessonSettings = {
   break: 10,
 };
 export function clockMinutes(clock: string): number {
-  const [h, m] = clock.split(":").map(Number);
+  const [h = Number.NaN, m = Number.NaN] = clock.split(":").map(Number);
   return h * 60 + m;
 }
 export function minutesClock(minutes: number): string {
