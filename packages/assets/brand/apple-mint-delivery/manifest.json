@@ -1,0 +1,123 @@
+{
+  "date": "2026-11-01",
+  "status": "Delivered raster production candidates; not a pixel-exact source export",
+  "source": {
+    "approved_board": "references/approved-board.png",
+    "approved_icon_crop": "references/approved-icon-crop.png",
+    "generated_master": "references/imagegen-master.png",
+    "generated_master_dimensions": [
+      1254,
+      1254
+    ],
+    "vector_available": false
+  },
+  "palette": {
+    "background": "#6650CD",
+    "mint": "#4CC0AB",
+    "cream": "#F9F9EF",
+    "face": "#2C264A",
+    "dark_background": "#211B38"
+  },
+  "assets": [
+    {
+      "file": "app-icon.png",
+      "width": 1024,
+      "height": 1024,
+      "alpha": false,
+      "color_space": "srgb",
+      "icc_profile": true,
+      "purpose": "iOS light / App Store base icon",
+      "sha256": "acc6c7794464f765a8f08eb216ce10d9312bf21f92f097a8197d9c11f18798e1",
+      "source_reference": "references/approved-board.png: bottom-left app icon",
+      "production_method": "Built-in image_gen reference edit, then deterministic palette/mask/resize/export using build.cjs"
+    },
+    {
+      "file": "app-icon-dark.png",
+      "width": 1024,
+      "height": 1024,
+      "alpha": false,
+      "color_space": "srgb",
+      "icc_profile": true,
+      "purpose": "iOS dark technical derivative",
+      "sha256": "d62c9eac5be11e7008f168404adf6b356a09cecc3daa34c70968f23c82a772b0",
+      "source_reference": "references/approved-board.png: bottom-left app icon",
+      "production_method": "Built-in image_gen reference edit, then deterministic palette/mask/resize/export using build.cjs"
+    },
+    {
+      "file": "app-icon-tinted.png",
+      "width": 1024,
+      "height": 1024,
+      "alpha": false,
+      "color_space": "srgb",
+      "icc_profile": true,
+      "purpose": "iOS tinted grayscale technical derivative",
+      "sha256": "ff7e5be47c09a5e95d30dd4e2ebdac1ef16367a2f20cb0dbb74a606527b4286a",
+      "source_reference": "references/approved-board.png: bottom-left app icon",
+      "production_method": "Built-in image_gen reference edit, then deterministic palette/mask/resize/export using build.cjs"
+    },
+    {
+      "file": "mascot-mark.png",
+      "width": 2048,
+      "height": 2048,
+      "alpha": true,
+      "color_space": "srgb",
+      "icc_profile": true,
+      "purpose": "standalone flat mascot with alpha",
+      "sha256": "0410ce7a2503f45dedbdbc9ed3dd7f535fb648b23a5a9573e70f13a8fe6f3fb1",
+      "source_reference": "references/approved-board.png: bottom-left app icon",
+      "production_method": "Built-in image_gen reference edit, then deterministic palette/mask/resize/export using build.cjs"
+    },
+    {
+      "file": "mascot-mark-mono.png",
+      "width": 2048,
+      "height": 2048,
+      "alpha": true,
+      "color_space": "srgb",
+      "icc_profile": true,
+      "purpose": "single-color outer silhouette, no facial detail",
+      "sha256": "16942803c8ada0e23a42101f5547aad52d226757a717ce7c3a8781d990cfd0d9",
+      "source_reference": "references/approved-board.png: bottom-left app icon",
+      "production_method": "Built-in image_gen reference edit, then deterministic palette/mask/resize/export using build.cjs"
+    },
+    {
+      "file": "contact-sheet.png",
+      "width": 1540,
+      "height": 1220,
+      "alpha": true,
+      "color_space": "srgb",
+      "icc_profile": true,
+      "purpose": "review only; not an app asset",
+      "sha256": "06d4d8042cb613c2adb75f6ac798d3c7f14455afd2bf911bd69a930326267e0f",
+      "source_reference": "references/approved-board.png: bottom-left app icon",
+      "production_method": "Built-in image_gen reference edit, then deterministic palette/mask/resize/export using build.cjs"
+    }
+  ],
+  "limitations": [
+    "Generative redraw retains small differences in leaf curves, body/foot gap, facial proportions and placement.",
+    "2048 assets are resampled from 1254 raster master.",
+    "No real vector source found; no embedded-raster SVG supplied.",
+    "Mono is an outer silhouette without facial cutouts.",
+    "No device, build or TestFlight validation.",
+    "No layered Icon Composer or custom clear appearance."
+  ],
+  "configuration_review": {
+    "expo": "~58.0.21",
+    "ios_icon_fields": [
+      "light",
+      "dark",
+      "tinted"
+    ],
+    "files_read": [
+      "apps/mobile/app.json",
+      "apps/mobile/app.config.js",
+      "apps/mobile/package.json"
+    ],
+    "modified": false
+  },
+  "official_sources": [
+    "https://developer.apple.com/design/human-interface-guidelines/app-icons",
+    "https://docs.expo.dev/develop/user-interface/splash-screen-and-app-icon/",
+    "https://docs.expo.dev/versions/latest/config/app/"
+  ],
+  "prompt": "Production app icon edit. Use ONLY the bottom-left small approved purple app icon in the board. Output ONLY that icon at 1024x1024 pixels, full-bleed opaque purple square, no rounded corners. Preserve the exact same mascot from that small icon: mint asymmetric body, two cream white leaves (not purple), cream oval eyes dark pupils looking upper-right, dark small curved smile, two small feet. Preserve shape and placement of every feature exactly. Icon mascot occupies ~65% width and ~74% height, centered with breathing room. Background is uniform purple #6650CD covering the entire square to all edges. Flat crisp graphic, no texture no gradients no shine no glow no shadows. No text, no border, no inset tile, no rounded corners, no frame. Do not use the big central horizontal logo mascot as the source."
+}

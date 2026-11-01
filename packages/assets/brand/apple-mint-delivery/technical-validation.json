@@ -1,0 +1,50 @@
+[
+  {
+    "file": "app-icon.png",
+    "width": 1024,
+    "height": 1024,
+    "alpha": false,
+    "color_space": "srgb",
+    "icc_profile": true
+  },
+  {
+    "file": "app-icon-dark.png",
+    "width": 1024,
+    "height": 1024,
+    "alpha": false,
+    "color_space": "srgb",
+    "icc_profile": true
+  },
+  {
+    "file": "app-icon-tinted.png",
+    "width": 1024,
+    "height": 1024,
+    "alpha": false,
+    "color_space": "srgb",
+    "icc_profile": true
+  },
+  {
+    "file": "mascot-mark.png",
+    "width": 2048,
+    "height": 2048,
+    "alpha": true,
+    "color_space": "srgb",
+    "icc_profile": true
+  },
+  {
+    "file": "mascot-mark-mono.png",
+    "width": 2048,
+    "height": 2048,
+    "alpha": true,
+    "color_space": "srgb",
+    "icc_profile": true
+  },
+  {
+    "file": "contact-sheet.png",
+    "width": 1540,
+    "height": 1220,
+    "alpha": true,
+    "color_space": "srgb",
+    "icc_profile": true
+  }
+]

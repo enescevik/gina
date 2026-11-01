@@ -58,3 +58,6 @@ apps/mobile/GoogleService-Info.plist
 docs/
 *.pem
 .metro-health-check*
+
+# Delivery references are retained in git; runtime icons are under apps/mobile/assets.
+packages/assets/brand/apple-mint-delivery/
