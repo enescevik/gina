@@ -1,0 +1,74 @@
+{
+  "checks": [
+    {
+      "name": "tablet",
+      "overflow": false
+    },
+    {
+      "name": "child-filter",
+      "passed": true
+    },
+    {
+      "name": "review-error-visible",
+      "passed": true
+    },
+    {
+      "name": "approve-refresh",
+      "passed": true
+    },
+    {
+      "name": "return-refresh",
+      "passed": true
+    },
+    {
+      "name": "error-retry",
+      "passed": true
+    },
+    {
+      "name": "320px",
+      "overflow": false
+    },
+    {
+      "name": "navigation /parent/tasks",
+      "passed": true
+    },
+    {
+      "name": "navigation /parent/prova/exam",
+      "passed": true
+    },
+    {
+      "name": "navigation /parent/rewards",
+      "passed": true
+    },
+    {
+      "name": "navigation /parent/calendar",
+      "passed": true
+    },
+    {
+      "name": "navigation /parent/notifications",
+      "passed": true
+    },
+    {
+      "name": "navigation /parent/child-mode",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "smallTargets": [],
+  "missingImages": 0,
+  "rpcCalls": [
+    {
+      "p_completion_id": "completion-2",
+      "p_approve": true
+    },
+    {
+      "p_completion_id": "completion-2",
+      "p_approve": true
+    },
+    {
+      "p_completion_id": "completion-2",
+      "p_approve": false
+    }
+  ],
+  "backend": "all HTTP and realtime isolated; no database writes"
+}
