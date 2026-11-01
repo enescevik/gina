@@ -27,9 +27,11 @@ export function SatinButton({
   busy = false,
   icon,
   style,
+  selected,
 }: {
   title: string;
   onPress: () => void;
+  selected?: boolean;
   secondary?: boolean;
   disabled?: boolean;
   busy?: boolean;
@@ -41,7 +43,7 @@ export function SatinButton({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={title}
-      accessibilityState={{ disabled: disabled || busy, busy }}
+      accessibilityState={{ disabled: disabled || busy, busy, selected }}
       disabled={disabled || busy}
       onPress={onPress}
       style={({ pressed }) => [
@@ -74,11 +76,15 @@ export function SatinButton({
           </Svg>
         </View>
       ) : null}
-      {busy ? (
-        <ActivityIndicator color={secondary ? p.purple : "#fff"} />
-      ) : (
-        icon
-      )}
+      {busy || icon ? (
+        <View style={{ position: "relative", zIndex: 1 }}>
+          {busy ? (
+            <ActivityIndicator color={secondary ? p.purple : "#fff"} />
+          ) : (
+            icon
+          )}
+        </View>
+      ) : null}
       <Text
         style={[
           u.bold,
