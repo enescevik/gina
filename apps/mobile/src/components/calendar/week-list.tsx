@@ -16,6 +16,7 @@ export interface WeekEvent {
   rrule: string | null;
   location: string | null;
   childName?: string | null;
+  timetable_entry_key?: string | null;
 }
 
 const TYPE_TONE: Record<EventType, string> = {
