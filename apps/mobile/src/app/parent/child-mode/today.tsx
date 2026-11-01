@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 import { RoomChildHome } from "@/components/room/child-home";
-import { TodayView } from "@/components/today-view";
+import { InfoCard, parentStyles } from "@/components/ui/parent-screen";
+import { useSession } from "@/lib/session";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ChildScreen as Screen } from "@/components/room/child-screen";
@@ -15,8 +16,11 @@ import { supabase } from "@/lib/supabase";
 /** Veli telefonunda kilitli çocuk görünümü; çıkış veli PIN'i ister. */
 export default function ChildModeTodayScreen() {
   const { t } = useTranslation();
+  const { session } = useSession();
+  const [password,setPassword] = useState("");
   const { actingChild, exit } = useChildMode();
   const [asking, setAsking] = useState(false);
+  const [forgot,setForgot] = useState(false);
   const [pin, setPin] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -51,20 +55,27 @@ export default function ChildModeTodayScreen() {
 
   return (
     <Screen tone="child" title={t("child.hello", { name: actingChild.name })}>
-      {!asking ? <>
-        <TodayView childId={actingChild.id} actingAsParent />
-        <Button variant="secondary" title={t("child.week")} onPress={() => router.push("/parent/child-mode/week")} />
-        <Button variant="secondary" title={t("child.calendar")} onPress={() => router.push("/parent/child-mode/calendar")} />
-        <Button variant="secondary" title={t("room.myCollection")} onPress={() => router.push("/parent/child-mode/collection")} />
-        <Button variant="secondary" title={t("childV5.customize")} onPress={() => router.push("/parent/child-mode/room-preview")} />
-      </> : null}
       {asking ? (
-        <View className="gap-3 rounded-child bg-white p-4 dark:bg-night-surface">
-          <Text className="text-base font-body-bold text-ink dark:text-night-text">{t("childMode.parentPin")}</Text>
+        <View style={parentStyles.card}>
+          <Text style={parentStyles.title}>{t("childMode.parentPin")}</Text><Text style={parentStyles.copy}>{t("unified.parentExitHelp")}</Text>
           <Field label={t("childMode.parentPin")} keyboardType="number-pad" secureTextEntry maxLength={4} editable={!busy} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} className="text-center text-2xl tracking-widest" />
           <ErrorText error={error} />
           <Button title={t("childMode.exit")} loading={busy} disabled={pin.length !== 4} onPress={confirmExit} />
-          <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => { setAsking(false); setPin(""); setError(null); }} />
+          <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => { setAsking(false); setPin(""); setError(null);setForgot(false);setPassword(""); }} />
+          <Button variant="ghost" title={t("unified.forgotParentPin")} disabled={busy} onPress={()=>setForgot(!forgot)}/>
+          {forgot ? <InfoCard title={t("unified.forgotParentPin")} body={t("unified.forgotParentPinHelp")}>
+            <Field label={t("auth.password")} secureTextEntry autoComplete="current-password" value={password} onChangeText={setPassword} editable={!busy}/>
+            <Button variant="secondary" title={t("unified.verifyParentPassword")} disabled={!password || !session?.user.email} loading={busy} onPress={async()=>{
+              if(busy || !session?.user.email || !password)return;
+              setBusy(true);setError(null);
+              try {
+                const {data,error:authError}=await supabase.auth.signInWithPassword({email:session.user.email,password});
+                if(authError)throw authError;
+                if(data.user?.id !== session.user.id)throw new Error("unauthenticated");
+                await exit();setPassword("");router.replace({pathname:"/parent/menu",params:{section:"security"}});
+              }catch(e){setError(e);}finally{setBusy(false);}
+            }}/>
+          </InfoCard>:null}
         </View>
       ) : (
         <Button variant="ghost" title={t("childMode.exit")} onPress={() => setAsking(true)} />

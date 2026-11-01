@@ -9,7 +9,7 @@ import { Avatar } from "@/components/avatar";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
-import { ParentScreen as Screen, EmptyCard, parentStyles } from "@/components/ui/parent-screen";
+import { ParentScreen as Screen, EmptyCard, parentStyles, InfoCard } from "@/components/ui/parent-screen";
 import { useChildMode } from "@/lib/child-mode";
 import { supabase } from "@/lib/supabase";
 
@@ -41,7 +41,7 @@ export default function ChildModeEntryScreen() {
   });
 
   async function submit() {
-    if (!selected) return;
+    if (busy || !selected || !/^\d{4}$/.test(pin)) return;
     setBusy(true);
     setError(null);
     try {
@@ -64,8 +64,7 @@ export default function ChildModeEntryScreen() {
   if (parentPinSet.isSuccess && !parentPinSet.data) {
     return (
       <Screen title={t("parent.childMode")}>
-        <Text className="font-body text-base text-ink">{t("childMode.setParentPinFirst")}</Text>
-        <Button variant="secondary" title={t("parent.menu")} onPress={() => router.push("/parent/menu")} />
+        <InfoCard title={t("unified.parentPinFirstTitle")} body={t("unified.parentPinFirstBody")}/><Button title={t("unified.setParentPin")} onPress={() => router.push({pathname:"/parent/menu",params:{section:"security"}})} />
       </Screen>
     );
   }
@@ -92,9 +91,9 @@ export default function ChildModeEntryScreen() {
         </View>
       ) : (
         <>
-          <Text className="font-body text-base text-ink">{t("child.enterPin")}</Text>
-          <Field label="PIN" keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} className="text-center text-3xl tracking-widest" />
-          <Button size="child" title={t("common.ok")} loading={busy} disabled={pin.length !== 4} onPress={submit} />
+          <InfoCard title={t("unified.pinHelpTitle")} body={t("unified.childPinInstruction")}/>
+          <Field label={t("childV5.pinLabel")} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} className="text-center text-3xl tracking-widest" />
+          <Button size="child" title={t("unified.enterMyWorld")} loading={busy} disabled={pin.length !== 4} onPress={submit} />
           <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => { setSelected(null); setPin(""); setError(null); }} />
         </>
       )}

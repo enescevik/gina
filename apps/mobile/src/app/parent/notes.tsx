@@ -87,7 +87,7 @@ export default function ParentNotesScreen() {
   const dateFormat = new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "short" });
 
   return (
-    <Screen title={t("parent.notes")} subtitle={t("parentV5.notesSubtitle")} loading={children.isLoading || notes.isLoading} error={children.error ?? notes.error} onRetry={() => { void children.refetch(); void notes.refetch(); }}>
+    <Screen title={t("parent.notes")} subtitle={t("unified.notesHelp")} loading={children.isLoading || notes.isLoading} error={children.error ?? notes.error} onRetry={() => { void children.refetch(); void notes.refetch(); }}>
       <ChildPicker profiles={children.data ?? []} selected={childId} onSelect={setChildId} allLabel={t("calendar.allFamily")} />
 
       <FormSection title={t("notes.new")}>
@@ -99,7 +99,7 @@ export default function ParentNotesScreen() {
             <Pressable
               key={option}
               accessibilityRole="button"
-              onPress={() => setVisibility(option)}
+              accessibilityState={{selected:visibility===option}} onPress={() => setVisibility(option)}
               className={`min-h-12 items-center justify-center rounded-full px-3 py-2 ${visibility === option ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#A89BD4]"}`}
             >
               <Text className={visibility === option ? "font-body-bold text-white" : "font-body text-ink"}>{t(`note.visibility.${option}`)}</Text>

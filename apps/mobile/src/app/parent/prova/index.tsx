@@ -3,11 +3,12 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
+import { PenLine, Sparkles, ChartNoAxesCombined, Printer, Compass } from "lucide-react-native";
 import { Avatar } from "@/components/avatar";
 import { Collectible } from "@/components/collectible";
 import { SubjectIcon } from "@/components/subject-icon";
 import { Button } from "@/components/ui/button";
-import { ParentScreen as Screen, parentStyles, EmptyCard } from "@/components/ui/parent-screen";
+import { ParentScreen as Screen, parentStyles, EmptyCard, NavigationCard } from "@/components/ui/parent-screen";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -54,25 +55,26 @@ export default function ParentProvaScreen() {
   useRealtimeInvalidate("exam_attempts", familyId ? `family_id=eq.${familyId}` : null, [["exams", familyId]]);
 
   return (
-    <Screen title={t("prova.title")} subtitle={t("prova.subtitle")}
+    <Screen title={t("prova.title")} subtitle={t("unified.provaBody")}
       loading={blueprints.isLoading || bankCount.isLoading || exams.isLoading}
       error={blueprints.error ?? bankCount.error ?? exams.error}
       onRetry={() => { void blueprints.refetch(); void bankCount.refetch(); void exams.refetch(); }}>
       <View style={parentStyles.form}>
         <View style={parentStyles.row}><Collectible slug="display-bookworm" size={64} /><View className="flex-1 gap-1">
-          <Text style={[parentStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{t("provaV5.library")}</Text>
+          <Text style={[parentStyles.title]}>{t("unified.provaStart")}</Text>
           <Text style={parentStyles.muted}>{t("prova.bankCount", { count: bankCount.data ?? 0 })} · {t("provaV5.scenarios", { count: blueprints.data?.length ?? 0 })}</Text>
         </View></View>
+        <Text style={parentStyles.copy}>{t("unified.provaStartBody")}</Text>
         <Button title={t("prova.newExam")} onPress={() => router.push("/parent/prova/exam")} />
       </View>
-      <View className="flex-row flex-wrap gap-2">
+      <View style={{flexDirection:"row",flexWrap:"wrap",gap:12}}>
         {([
-          ["prova.newQuestion", "/parent/prova/question"], ["prova.ai.generateTitle", "/parent/prova/generate"],
-          ["prova.level.title", "/parent/prova/level"], ["prova.progress.title", "/parent/prova/progress"],
-          ["prova.booklet.title", "/parent/prova/booklet"],
-        ] as const).map(([label, path], index) => <View key={path} style={{ width: index === 4 ? "100%" : "48.5%", flexGrow: 1 }}>
-          <Button variant="ghost" title={t(label)} onPress={() => router.push(path)} />
-        </View>)}
+          ["prova.newQuestion", "questionHelp", "/parent/prova/question", PenLine],
+          ["prova.ai.generateTitle", "generateHelp", "/parent/prova/generate", Sparkles],
+          ["prova.level.title", "levelHelp", "/parent/prova/level", Compass],
+          ["prova.progress.title", "progressHelp", "/parent/prova/progress", ChartNoAxesCombined],
+          ["prova.booklet.title", "bookletHelp", "/parent/prova/booklet", Printer],
+        ] as const).map(([label,hint,path,Icon])=><View key={path} style={{flexGrow:1,flexBasis:300}}><NavigationCard title={t(label)} body={t(`unified.${hint}`)} icon={<Icon size={22} color="#6042DE"/>} onPress={()=>router.push(path)}/></View>)}
       </View>
       <Text accessibilityRole="header" style={parentStyles.title}>{t("prova.exams")}</Text>
       {exams.data?.length === 0 ? <EmptyCard title={t("prova.noExams")} slug="display-bookworm" /> : null}

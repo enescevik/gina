@@ -18,7 +18,7 @@ export default function RoomPreviewScreen() {
   const { t } = useTranslation();
   const [draftCharacter, setCharacter] = useState<CharacterKey>();
   const [draftPet, setPet] = useState<PetKey>();
-  const [tab, setTab] = useState<"character" | "room" | "pet">("character");
+  const [tab, setTab] = useState<"character" | "room" | "pet">("room");
   const { childId, actingAsParent } = useActiveChild();
   const prefs = useChildRoomPrefs(childId);
   const queryClient = useQueryClient();

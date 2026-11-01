@@ -1,7 +1,7 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text } from "react-native";
+import { InfoCard } from "@/components/ui/parent-screen";
 
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
@@ -40,7 +40,7 @@ export default function ChildPinScreen() {
 
   return (
     <Screen tone="child" title={name ? t("child.hello", { name }) : t("child.enterPin")}>
-      <Text className="font-body text-base text-ink">{t("child.enterPin")}</Text>
+      <InfoCard title={t("unified.pinHelpTitle")} body={t("unified.childPinInstruction")}/>
       <Field
         label={t("childV5.pinLabel")}
         labelStyle={{ color: "#201951" }}
@@ -52,7 +52,7 @@ export default function ChildPinScreen() {
         className="text-center text-3xl tracking-widest"
       />
       <ErrorText error={error} />
-      <Button size="child" title={t("common.ok")} loading={busy} disabled={!childId || pin.length !== 4} onPress={submit} />
+      <Button size="child" title={t("unified.enterMyWorld")} loading={busy} disabled={!childId || pin.length !== 4} onPress={submit} />
       <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => router.back()} />
     </Screen>
   );

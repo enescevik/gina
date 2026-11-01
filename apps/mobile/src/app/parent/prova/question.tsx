@@ -82,7 +82,7 @@ export default function QuestionScreen() {
   const chipText = (active: boolean) => (active ? "font-body-bold text-white" : "font-body text-ink");
 
   return (
-    <Screen title={t("prova.newQuestion")}>
+    <Screen title={t("prova.newQuestion")} subtitle={t("unified.questionHelp")}>
       <View style={parentStyles.card}>
       <View className="flex-row gap-2">
         <View className="flex-[2]">

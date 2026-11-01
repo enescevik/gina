@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
-import { ChildPicker, ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
+import { ChildPicker, ParentScreen as Screen, EmptyCard, parentStyles } from "@/components/ui/parent-screen";
 import { provaErrorMessage } from "@/lib/prova-ai";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -130,8 +130,10 @@ export default function ExamCreateScreen() {
   const chip = (active: boolean) => `min-h-12 min-w-12 items-center justify-center rounded-full border px-4 py-2 ${active ? "bg-teal-dark border-teal-dark" : "bg-[#FFFFFF] border-[#D9D3E6]"}`;
   const chipText = (active: boolean) => (active ? "font-body-bold text-white" : "font-body text-ink");
 
+  if (children.isSuccess && children.data.length === 0) return <Screen title={t("prova.newExam")}><EmptyCard title={t("unified.chooseChild")} body={t("unified.noChildHelp")}><Button title={t("unified.createFirstChild")} onPress={()=>router.push("/parent/menu")}/></EmptyCard></Screen>;
+
   return (
-    <Screen title={t("prova.newExam")} loading={children.isLoading || blueprints.isLoading} error={children.error ?? blueprints.error} onRetry={() => { void children.refetch(); void blueprints.refetch(); }}>
+    <Screen title={t("prova.newExam")} subtitle={t("unified.examHelp")} loading={children.isLoading || blueprints.isLoading} error={children.error ?? blueprints.error} onRetry={() => { void children.refetch(); void blueprints.refetch(); }}>
       <View style={parentStyles.card}>
       <Text className="font-body-bold text-sm text-ink">{t("prova.forChild")}</Text>
       <ChildPicker profiles={children.data ?? []} selected={childId} onSelect={id => { if (id) setChildId(id); }} />

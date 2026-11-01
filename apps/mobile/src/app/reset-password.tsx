@@ -36,9 +36,9 @@ export default function ResetPasswordScreen() {
     {done ? <><Text style={parentStyles.copy}>{t("accountV5.passwordChanged")}</Text><Button title={t("common.continue")} onPress={() => router.replace("/")} /></> : session && recovering ? <>
       <Text style={parentStyles.copy}>{t("accountV5.passwordHint")}</Text>
       <Field label={t("auth.password")} secureTextEntry autoComplete="new-password" value={password} onChangeText={setPassword} editable={!busy} />
-      <Field label={t("accountV5.confirmPassword")} secureTextEntry autoComplete="new-password" value={confirm} onChangeText={setConfirm} editable={!busy} />
+      <Field label={t("accountV5.confirmPassword")} secureTextEntry autoComplete="new-password" value={confirm} onChangeText={setConfirm} editable={!busy} error={confirm.length > 0 && password !== confirm ? t("unified.passwordMismatch") : undefined} />
       <Button title={t("common.save")} disabled={password.length < 8 || password !== confirm} loading={busy} onPress={save} />
-    </> : <><Text style={parentStyles.copy}>{t("accountV5.resetExpired")}</Text><Button title={t("auth.signIn")} onPress={() => router.replace("/(auth)/sign-in")} /></>}
+    </> : <><Text style={parentStyles.copy}>{t("accountV5.resetExpired")}</Text><Button title={t("accountV5.sendReset")} onPress={() => router.replace({pathname:"/(auth)/sign-in",params:{mode:"reset"}})} /></>}
     <ErrorText error={error} />
   </ParentScreen>;
 }

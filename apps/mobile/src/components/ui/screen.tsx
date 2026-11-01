@@ -33,7 +33,14 @@ export function ErrorText({ error }: { error: unknown }) {
   if (i18n.exists(`prova.ai.errors.${detail.code ?? message}`)) copy = t(`prova.ai.errors.${detail.code ?? message}`);
   else if (/network|fetch|connection|timeout/i.test(message)) copy = t("release.networkError");
   else if (/invalid.login.credentials|invalid_credentials/i.test(message + detail.code)) copy = t("auth.invalidLogin");
-  else if (/locked|rate.limit|too.many/i.test(message)) copy = t("release.pinLocked");
+  else if (/pin_locked/.test(message)) copy = t("release.pinLocked");
+  else if (/rate.limit|too.many|over_email_send_rate_limit/i.test(message + detail.code)) copy = t("unified.errorRate");
+  else if (/email_not_confirmed/i.test(message + detail.code)) copy = t("unified.errorEmail");
+  else if (/weak_password|same_password/i.test(message + detail.code)) copy = t("unified.errorPassword");
+  else if (/invalid_invite_code|invalid_or_expired_code|invalid_code|code_expired|pairing_not_found/i.test(message)) copy = t("unified.errorCode");
+  else if (/invalid_pin/i.test(message)) copy = t("unified.errorPin");
+  else if (/already_paired/i.test(message)) copy = t("unified.deviceAlreadyPaired");
+  else if (/already_in_family|already_member/i.test(message)) copy = t("unified.familyAlreadyJoined");
   else if (detail.code === "42501" || detail.status === 403) copy = t("release.accessError");
   else if (detail.code?.startsWith("23") || detail.status === 400) copy = t("release.invalidForm");
   else if ((error instanceof Error || typeof error === "string") && !detail.code && !detail.status && /\s/.test(message) && !/^(TypeError|SyntaxError|JSON|Cannot|Unexpected)/.test(message)) copy = message;

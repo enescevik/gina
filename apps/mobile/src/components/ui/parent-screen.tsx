@@ -1,8 +1,8 @@
 import { useState, type ReactNode } from "react";
 import { router, usePathname } from "expo-router";
-import { ArrowLeft, Menu, Home, Plus, ChevronDown, ChevronUp } from "lucide-react-native";
+import { ArrowLeft, Menu, Home, Plus, ChevronDown, ChevronUp, ChevronRight, Info } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
-import { Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -25,20 +25,24 @@ export interface ParentScreenProps {
 /** Shared approved mint surface. Text stays native; only the window vignette is raster art. */
 export function ParentScreen({ title, subtitle, children, home = false, navigation = true, loading, error, onRetry }: ParentScreenProps) {
   const { t } = useTranslation();
+  const { width, fontScale } = useWindowDimensions();
+  const spacious = width >= 800 && fontScale < 1.4;
   const inMenu = usePathname() === "/parent/menu";
   const MenuIcon = inMenu ? Home : Menu;
   return <SafeAreaView style={styles.root}>
     <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === "ios" ? "padding" : undefined}>
-      <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.page}>
+      <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.page, !navigation && {maxWidth:680}]}>
         <View style={styles.topbar}>
           {navigation && !home ? <Pressable accessibilityRole="button" accessibilityLabel={t("common.back")} onPress={() => router.canGoBack() ? router.back() : router.replace("/parent")} style={styles.back}><ArrowLeft size={24} color="#201951" /></Pressable> : <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} style={{width:124,height:48}} resizeMode="contain" accessibilityLabel={t("app.name")} />}
           {navigation && !home ? <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} style={{width:96,height:40}} resizeMode="contain" accessibilityLabel={t("app.name")} /> : null}
           {navigation ? <Pressable accessibilityRole="button" accessibilityLabel={t(inMenu ? "parent.home" : "parent.menu")} onPress={() => router.push(inMenu ? "/parent" : "/parent/menu")} style={styles.menu}><MenuIcon size={22} color="#201951"/><Text style={styles.menuLabel}>{t(inMenu ? "parent.home" : "parent.menu")}</Text></Pressable> : null}
         </View>
-        <View style={[styles.header, home && styles.homeHeader]}>
-          {home ? <Image source={require("../../../../../packages/assets/brand/growing-friend/reading.png")} accessible={false} pointerEvents="none" resizeMode="contain" style={styles.art} /> : null}
-          <Text accessibilityRole="header" style={[styles.title, home && {maxWidth:"70%"}]}>{title}</Text>
-          {subtitle ? <Text style={[styles.subtitle, home && {maxWidth:"64%"}]}>{subtitle}</Text> : null}
+        <View style={styles.header}>
+          <View style={{flexDirection:"row",alignItems:"center",gap:12}}>
+            <Text accessibilityRole="header" style={[styles.title,{flex:1}]}>{title}</Text>
+            <Image source={require("../../../../../packages/assets/brand/growing-friend/reading.png")} accessible={false} pointerEvents="none" resizeMode="contain" style={{width:spacious?144:96,height:spacious?104:76}} />
+          </View>
+          {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
         </View>
         <View style={styles.body}>
           {loading ? <View style={styles.state} accessibilityLiveRegion="polite"><LoadingStar size={64} accessibilityLabel={t("release.loading")} /><Text style={styles.copy}>{t("release.loading")}</Text></View>
@@ -64,17 +68,17 @@ export function ChildPicker({ profiles, selected, onSelect, allLabel }: {
   return <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
     {options.map(child => <Pressable key={child.id ?? "all"} accessibilityRole="button" accessibilityState={{ selected: selected === child.id }} aria-pressed={selected === child.id}
       onPress={() => onSelect(child.id)} style={({ pressed }) => ({ minHeight: 52, paddingLeft: child.id ? 4 : 16, paddingRight: 16, paddingVertical: 4, borderRadius: 28, borderWidth: 1,
-        borderColor: selected === child.id ? "#6042DE" : "#D9D3E6", backgroundColor: selected === child.id ? "#6042DE" : "#FFFFFF", flexDirection: "row", alignItems: "center", gap: 8, opacity: pressed ? .8 : 1 })}>
-      {child.id ? <Avatar slug={child.avatar} size={40} /> : null}<Text style={{ fontFamily: "Nunito_700Bold", fontSize: 17, color: selected === child.id ? "#FFFFFF" : "#201951" }}>{child.name}</Text>
+        borderColor: selected === child.id ? "#78C7AE" : "#E5DEED", backgroundColor: selected === child.id ? "#DDF5EB" : "#FFFFFF", flexDirection: "row", alignItems: "center", gap: 8, opacity: pressed ? .8 : 1 })}>
+      {child.id ? <Avatar slug={child.avatar} size={40} /> : null}<Text style={{ fontFamily: "Nunito_700Bold", fontSize: 17, color: "#201951" }}>{child.name}</Text>
     </Pressable>)}
   </View>;
 }
 
 export const parentStyles = StyleSheet.create({
-  card: { backgroundColor: "#FFFFFF", borderColor: "#EAE5EE", borderWidth: 1, borderRadius: 22, padding: 18, gap: 16 },
-  form: { backgroundColor: "#F1EDFD", borderColor: "#DDD5F4", borderWidth: 1, borderRadius: 22, padding: 18, gap: 14 },
+  card: { backgroundColor: "#FFFFFF", borderColor: "#EAE5EE", borderWidth: 1, borderRadius: 26, padding: 22, gap: 16, boxShadow: "0 4px 16px #35255706" },
+  form: { backgroundColor: "#F5F1FC", borderColor: "#E4DCF1", borderWidth: 1, borderRadius: 26, padding: 22, gap: 14 },
   row: { flexDirection: "row", alignItems: "center", gap: 12, minHeight: 56 },
-  title: { fontFamily: "Nunito_700Bold", fontSize: 24, lineHeight: 30, color: "#201951" },
+  title: { fontFamily: "Nunito_800ExtraBold", fontSize: 24, lineHeight: 30, color: "#201951" },
   copy: { fontFamily: "Nunito_400Regular", fontSize: 17, lineHeight: 25, color: "#201951" },
   muted: { fontFamily: "Nunito_400Regular", fontSize: 15, lineHeight: 22, color: "#625C85" },
 });
@@ -94,16 +98,31 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: "#FCFAF6" }, fill: { flex: 1 },
   page: { width: "100%", maxWidth: 1000, alignSelf: "center", paddingBottom: 36 },
   topbar: {flexDirection:"row",alignItems:"center",justifyContent:"space-between",paddingHorizontal:16,paddingTop:8,paddingBottom:8},
-  header: {paddingHorizontal:24,paddingTop:8,paddingBottom:24,gap:8},
+  header: {marginHorizontal:24,marginTop:4,marginBottom:24,gap:8},
   homeHeader:{minHeight:138,justifyContent:"center",overflow:"hidden"},
-  art: {position:"absolute",width:240,height:162,right:-62,bottom:0},
+  art: {position:"absolute",width:180,height:150,right:2,bottom:0},
   back:{width:48,height:48,alignItems:"center",justifyContent:"center",borderRadius:16,backgroundColor:"#EEEAFE"},
   menu:{minHeight:48,flexDirection:"row",alignItems:"center",gap:8,paddingHorizontal:14,borderRadius:18,backgroundColor:"#EEEAFE"},
   menuLabel:{fontFamily:"Nunito_700Bold",fontSize:16,color:"#201951"},
-  title:{fontFamily:"Nunito_700Bold",fontSize:30,lineHeight:38,color:"#201951"},
+  title:{fontFamily:"Nunito_800ExtraBold",fontSize:30,lineHeight:38,color:"#201951"},
   subtitle:{fontFamily:"Nunito_400Regular",fontSize:17,lineHeight:25,color:"#625C85"},
   body:{paddingHorizontal:20,gap:22},
   state:{alignItems:"center",gap:12,borderRadius:24,backgroundColor:"#FFFFFF",padding:24},
   sectionTitle:{fontFamily:"Nunito_700Bold",fontSize:24,lineHeight:31,color:"#201951",textAlign:"center"},
   copy:{fontFamily:"Nunito_400Regular",fontSize:17,lineHeight:25,color:"#625C85"},
 });
+
+export function InfoCard({title,body,steps,children}:{title:string;body?:string;steps?:string[];children?:ReactNode}) {
+  return <View style={{backgroundColor:"#EDF7F1",borderColor:"#D4E9DD",borderWidth:1,borderRadius:24,padding:20,gap:12}}>
+    <View style={{flexDirection:"row",alignItems:"center",gap:10}}><Info size={21} color="#287460"/><Text accessibilityRole="header" style={[parentStyles.copy,{flex:1,fontFamily:"Nunito_800ExtraBold"}]}>{title}</Text></View>
+    {body ? <Text style={parentStyles.muted}>{body}</Text> : null}
+    {steps?.map((step,index)=><View key={step} style={{flexDirection:"row",gap:10,alignItems:"flex-start"}}><View style={{width:26,height:26,borderRadius:13,backgroundColor:"#D0EBDC",alignItems:"center",justifyContent:"center"}}><Text style={{fontFamily:"Nunito_800ExtraBold",color:"#275D4E"}}>{index+1}</Text></View><Text style={[parentStyles.muted,{flex:1}]}>{step}</Text></View>)}
+    {children}
+  </View>;
+}
+export function NavigationCard({title,body,icon,onPress}:{title:string;body?:string;icon?:ReactNode;onPress:()=>void}) {
+  return <Pressable accessibilityRole="button" onPress={onPress} style={({pressed})=>[parentStyles.card,{minHeight:82,flexDirection:"row",alignItems:"center",gap:14,backgroundColor:pressed?"#F1ECFA":"#FFFFFF"}]}>
+    {icon ? <View style={{width:44,height:44,borderRadius:15,backgroundColor:"#EEE8FA",alignItems:"center",justifyContent:"center"}}>{icon}</View>:null}
+    <View style={{flex:1,gap:4}}><Text style={[parentStyles.copy,{fontFamily:"Nunito_800ExtraBold"}]}>{title}</Text>{body?<Text style={parentStyles.muted}>{body}</Text>:null}</View><ChevronRight size={20} color="#756397"/>
+  </Pressable>;
+}

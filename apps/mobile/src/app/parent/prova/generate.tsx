@@ -109,7 +109,7 @@ export default function GenerateQuestionsScreen() {
   }
 
   return (
-    <Screen title={t("prova.ai.generateTitle")} loading={entitlement.isLoading || blueprints.isLoading} error={entitlement.error ?? blueprints.error} onRetry={() => { void entitlement.refetch(); void blueprints.refetch(); }}>
+    <Screen title={t("prova.ai.generateTitle")} subtitle={t("unified.generateHelp")} loading={entitlement.isLoading || blueprints.isLoading} error={entitlement.error ?? blueprints.error} onRetry={() => { void entitlement.refetch(); void blueprints.refetch(); }}>
       <View style={parentStyles.card}>
       <Text className="font-body text-base text-gray-600">{t("prova.ai.generateIntro")}</Text>
       {ent && ent.ai_generate_limit <= 0 ? (

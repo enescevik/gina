@@ -49,7 +49,7 @@ export function ChildModeProvider({ children }: { children: ReactNode }) {
     },
     exit: async () => {
       if (!userId) throw new Error("unauthenticated");
-      // Keep the lock if durable storage fails. Call only after verify_parent_pin succeeds.
+      // Keep the lock if durable storage fails. Call only after verify_parent_pin or same-account password reauthentication succeeds.
       await childModeStorage.remove(childModeKey(userId));
       setState({ userId, child: null });
     },

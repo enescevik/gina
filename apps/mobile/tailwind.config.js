@@ -18,14 +18,14 @@ module.exports = {
         sky: { DEFAULT: "#38BDF8", light: "#E4F5FE" },
         cream: "#FCFAF6",
         ink: "#201951",
-        mist: "#E5E7EB",
+        mist: "#EEE8EF",
         night: { DEFAULT: "#0F172A", surface: "#1E293B", text: "#F1F5F9" },
         danger: "#E5484D",
       },
       borderRadius: {
         child: "24px",
-        parent: "12px",
-        button: "14px",
+        parent: "22px",
+        button: "18px",
       },
       fontFamily: {
         display: ["Nunito_700Bold"],

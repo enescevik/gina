@@ -15,6 +15,7 @@ import { supabase } from "@/lib/supabase";
 /** Giriş yapmış ama henüz bir ailesi olmayan veli: aile kurar ya da davet koduyla katılır. */
 export default function FamilyScreen() {
   const { t } = useTranslation();
+  const [mode,setMode] = useState<"create"|"join">("create");
   const [familyName, setFamilyName] = useState("");
   const [inviteCode, setInviteCode] = useState("");
   const [busy, setBusy] = useState<"create" | "join" | "out" | null>(null);
@@ -41,12 +42,14 @@ export default function FamilyScreen() {
 
   return (
     <Screen navigation={false} title={t("accountV5.familyTitle")} subtitle={t("accountV5.familyBody")}>
-      <View style={parentStyles.form}>
+      <View style={{flexDirection:"row",gap:8}}>{(["create","join"] as const).map(option=><View key={option} style={{flex:1}}><Button title={t(option === "create" ? "auth.createFamily" : "auth.joinFamily")} variant={mode === option ? "primary" : "secondary"} disabled={!!busy} onPress={()=>{setMode(option);setError(null);}} /></View>)}</View>
+      {mode === "create" ? <View style={parentStyles.form}>
+        <Text style={parentStyles.copy}>{t("unified.familyCreateHelp")}</Text>
         <Text className="text-lg font-body-bold text-ink">{t("auth.createFamily")}</Text>
         <Field label={t("family.name")} maxLength={80} value={familyName} onChangeText={setFamilyName} placeholder={t("family.namePlaceholder")} />
         <Button title={t("auth.createFamily")} loading={busy === "create"} disabled={!!busy || !familyName.trim()} onPress={() => run("create")} />
-      </View>
-      <View style={parentStyles.card}>
+      </View> : <View style={parentStyles.card}>
+        <Text style={parentStyles.copy}>{t("unified.familyJoinHelp")}</Text>
         <Text className="text-lg font-body-bold text-ink">{t("auth.joinFamily")}</Text>
         <Field
           label={t("parent.inviteCode")}
@@ -56,7 +59,7 @@ export default function FamilyScreen() {
           placeholder={t("family.invitePlaceholder")}
         />
         <Button variant="secondary" title={t("auth.joinFamily")} loading={busy === "join"} disabled={!!busy || !/^[A-F0-9]{8}$/i.test(inviteCode.trim())} onPress={() => run("join")} />
-      </View>
+      </View>}
       <ErrorText error={error} />
       <AccountDeletion />
       <Button variant="ghost" title={t("auth.signOut")} loading={busy === "out"} disabled={!!busy} onPress={async () => {

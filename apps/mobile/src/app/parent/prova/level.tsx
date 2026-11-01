@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
-import { ChildPicker, ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
+import { ChildPicker, ParentScreen as Screen, EmptyCard, parentStyles } from "@/components/ui/parent-screen";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -147,8 +147,10 @@ export default function LevelTestScreen() {
   const chipText = (active: boolean) => (active ? "font-body-bold text-white" : "font-body text-ink");
   const blueprintsForSubject = blueprints.data ?? [];
 
+  if (children.isSuccess && children.data.length === 0) return <Screen title={t("prova.level.title")}><EmptyCard title={t("unified.chooseChild")} body={t("unified.noChildHelp")}><Button title={t("unified.createFirstChild")} onPress={()=>router.push("/parent/menu")}/></EmptyCard></Screen>;
+
   return (
-    <Screen title={t("prova.level.title")} loading={children.isLoading || blueprints.isLoading || subjects.isLoading} error={children.error ?? blueprints.error ?? subjects.error} onRetry={() => { void children.refetch(); void blueprints.refetch(); void subjects.refetch(); }}>
+    <Screen title={t("prova.level.title")} subtitle={t("unified.levelHelp")} loading={children.isLoading || blueprints.isLoading || subjects.isLoading} error={children.error ?? blueprints.error ?? subjects.error} onRetry={() => { void children.refetch(); void blueprints.refetch(); void subjects.refetch(); }}>
       <View style={parentStyles.card}>
       <Text className="font-body text-base text-gray-600">{t("prova.level.intro")}</Text>
 

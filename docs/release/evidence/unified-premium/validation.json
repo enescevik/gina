@@ -1,0 +1,613 @@
+{
+  "capturedAt": "2026-11-01T20:58:40.618Z",
+  "scope": "Expo web with isolated fixtures; native iPhone Simulator checks noted separately",
+  "groups": {
+    "account": {
+      "results": [
+        {
+          "slug": "sign-in",
+          "device": "phone",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "family",
+          "device": "phone",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "pair",
+          "device": "phone",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "notifications",
+          "device": "phone",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "share",
+          "device": "phone",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "subscription",
+          "device": "phone",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "teacher-report",
+          "device": "phone",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "reset-password",
+          "device": "phone",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "delete-account",
+          "device": "phone",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "sign-in",
+          "device": "tablet",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "family",
+          "device": "tablet",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "pair",
+          "device": "tablet",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "notifications",
+          "device": "tablet",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "share",
+          "device": "tablet",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "subscription",
+          "device": "tablet",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "teacher-report",
+          "device": "tablet",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "reset-password",
+          "device": "tablet",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "delete-account",
+          "device": "tablet",
+          "smallTargets": [],
+          "missingImages": 0,
+          "horizontalOverflow": false
+        }
+      ],
+      "errors": [],
+      "allBackendTrafficMocked": true
+    },
+    "parent": {
+      "results": [
+        {
+          "slug": "index",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "tasks",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "rewards",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "calendar",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "grades",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "notes",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "menu",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "child-mode",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "index",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "tasks",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "rewards",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "calendar",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "grades",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "notes",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "menu",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "child-mode",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        }
+      ],
+      "errors": [],
+      "interceptedRequests": 60,
+      "allBackendTrafficMocked": true
+    },
+    "prova": {
+      "results": [
+        {
+          "slug": "index",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "exam",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "question",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "blueprint",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "generate",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "level",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "progress",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "booklet",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "attempt",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "plan",
+          "device": "phone",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "index",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "exam",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "question",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "blueprint",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "generate",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "level",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "progress",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "booklet",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "attempt",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "plan",
+          "device": "tablet",
+          "missingImages": 0,
+          "smallTargets": [],
+          "horizontalOverflow": false
+        }
+      ],
+      "errors": [],
+      "interceptedRequests": 44,
+      "allBackendTrafficMocked": true
+    },
+    "child": {
+      "results": [
+        {
+          "slug": "room-preview",
+          "device": "tablet",
+          "missingImages": 0,
+          "body": "Odamı düzenle\nGina’nın sıcak odası\nBu sürümde odada Gina maskotu yer alıyor. Karakter ve evcil hayvan tercihlerin saklanır; şimdilik ana ekranın görünümünü deği",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "room-preview",
+          "device": "phone",
+          "missingImages": 0,
+          "body": "Odamı düzenle\nGina’nın sıcak odası\nBu sürümde odada Gina maskotu yer alıyor. Karakter ve evcil hayvan tercihlerin saklanır; şimdilik ana ekranın görünümünü deği",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "week",
+          "device": "tablet",
+          "missingImages": 0,
+          "body": "Haftam\nPzt\n26\nSal\n27\nÇar\n28\nPer\n29\nCum\n30\nCmt\n31\nPaz\n1\n1 Kasım Pazar · Bugün\nDişlerini fırçala\nOnaylandı\n20 dakika kitap oku\nSırada\nOdanı düzenle\nSırada\nBugün",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "week",
+          "device": "phone",
+          "missingImages": 0,
+          "body": "Haftam\nPzt\n26\nSal\n27\nÇar\n28\nPer\n29\nCum\n30\nCmt\n31\nPaz\n1\n1 Kasım Pazar · Bugün\nDişlerini fırçala\nOnaylandı\n20 dakika kitap oku\nSırada\nOdanı düzenle\nSırada\nBugün",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "calendar",
+          "device": "tablet",
+          "missingImages": 0,
+          "body": "Takvimim\nKüçük adımlar, güzel bir hafta.\nTakvim\nDers programı\nKasım 2026\nBugün\nPzt\n26\nSal\n27\nÇar\n28\nPer\n29\nCum\n30\nCmt\n31\nPaz\n1\n1 Kasım Pazar\n0 ders · 1 etkinlik",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "calendar",
+          "device": "phone",
+          "missingImages": 0,
+          "body": "Takvimim\nKüçük adımlar, güzel bir hafta.\nTakvim\nDers programı\nKasım 2026\nBugün\nPzt\n26\nSal\n27\nÇar\n28\nPer\n29\nCum\n30\nCmt\n31\nPaz\n1\n1 Kasım Pazar\n0 ders · 1 etkinlik",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "goal",
+          "device": "tablet",
+          "missingImages": 0,
+          "body": "Hedefini seç\nAilece sinema\n20\nBirlikte oyun\n15\nVazgeç",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "goal",
+          "device": "phone",
+          "missingImages": 0,
+          "body": "Hedefini seç\nAilece sinema\n20\nBirlikte oyun\n15\nVazgeç",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "collection",
+          "device": "tablet",
+          "missingImages": 0,
+          "body": "Koleksiyonum\n3 / 4 rozet kazandın\nDiş Parlatan\nKazanıldı\nKitap Kurdu\nKazanıldı\nİlk Adım\nKazanıldı\n25 Görev\nKilitli\nBugün",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "collection",
+          "device": "phone",
+          "missingImages": 0,
+          "body": "Koleksiyonum\n3 / 4 rozet kazandın\nDiş Parlatan\nKazanıldı\nKitap Kurdu\nKazanıldı\nİlk Adım\nKazanıldı\n25 Görev\nKilitli\nBugün",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "index",
+          "device": "tablet",
+          "missingImages": 0,
+          "body": "Kim giriyor?\nEce\nCan",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "index",
+          "device": "phone",
+          "missingImages": 0,
+          "body": "Kim giriyor?\nEce\nCan",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "pin",
+          "device": "tablet",
+          "missingImages": 0,
+          "body": "Merhaba Ece!\nHangi kodu girmeliyim?\nEbeveyninin senin için belirlediği 4 haneli çocuk PIN’ini yaz. Hatırlamıyorsan ondan yardım iste; Ayarlar → Ailem → Profil a",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "pin",
+          "device": "phone",
+          "missingImages": 0,
+          "body": "Merhaba Ece!\nHangi kodu girmeliyim?\nEbeveyninin senin için belirlediği 4 haneli çocuk PIN’ini yaz. Hatırlamıyorsan ondan yardım iste; Ayarlar → Ailem → Profil a",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "prova-index",
+          "device": "tablet",
+          "missingImages": 0,
+          "body": "Prova\nSeni bekleyen denemeler\nMatematik provası\n2 soru · süresiz\nBaşla\nTamamlananlar\nHayat Bilgisi\nÇoktan seçmeli: 3 / 4 doğru\nBugün",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "prova-index",
+          "device": "phone",
+          "missingImages": 0,
+          "body": "Prova\nSeni bekleyen denemeler\nMatematik provası\n2 soru · süresiz\nBaşla\nTamamlananlar\nHayat Bilgisi\nÇoktan seçmeli: 3 / 4 doğru\nBugün",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "prova-exam",
+          "device": "tablet",
+          "missingImages": 0,
+          "body": "Soru 1 / 2\nEce’nin 12 kalemi vardı. 4 kalemini arkadaşına verdi. Kaç kalemi kaldı?\nA\n6\nB\n8\nC\n10\nD\n16\nCevapların kaydedildi.\nSonraki\nProva'ya dön",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "prova-exam",
+          "device": "phone",
+          "missingImages": 0,
+          "body": "Soru 1 / 2\nEce’nin 12 kalemi vardı. 4 kalemini arkadaşına verdi. Kaç kalemi kaldı?\nA\n6\nB\n8\nC\n10\nD\n16\nCevapların kaydedildi.\nSonraki\nProva'ya dön",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "today",
+          "device": "tablet",
+          "missingImages": 0,
+          "body": "Merhaba Ece!\n12\nOdamı düzenle\nEbeveyn\nSıradaki adımım\n20 dakika kitap oku\n+2 yıldız\nBaşla\nBugünkü adımlarım\n1 tamamlandı\n0 onayda\n2 sırada\nBirlikte hedefimiz\nAi",
+          "horizontalOverflow": false
+        },
+        {
+          "slug": "today",
+          "device": "phone",
+          "missingImages": 0,
+          "body": "12\nOdam\nMerhaba Ece!\nSıradaki adımım\n20 dakika kitap oku\n+2 yıldız\nBaşla\nBugünkü adımlarım\n1 tamamlandı\n0 onayda\n2 sırada\nBirlikte hedefimiz\nAilece sinema\n12 / ",
+          "horizontalOverflow": false
+        }
+      ],
+      "errors": [],
+      "interceptedRequests": 46,
+      "allBackendTrafficMocked": true
+    },
+    "flows": {
+      "checks": [
+        {
+          "name": "password reset request with non-enumerating confirmation",
+          "passed": true
+        },
+        {
+          "name": "pair input strips non-digits",
+          "passed": true
+        },
+        {
+          "name": "incomplete pairing disabled",
+          "passed": true
+        },
+        {
+          "name": "expired pairing code explains recovery",
+          "passed": true
+        },
+        {
+          "name": "pairing success visible",
+          "passed": true
+        },
+        {
+          "name": "parent PIN saves and confirms",
+          "passed": true
+        },
+        {
+          "name": "child device generates a separate code and retains device name",
+          "passed": true
+        },
+        {
+          "name": "missing parent PIN routes directly to Security",
+          "passed": true
+        },
+        {
+          "name": "wrong child PIN stays outside child mode",
+          "passed": true
+        },
+        {
+          "name": "correct child PIN opens locked child mode",
+          "passed": true
+        },
+        {
+          "name": "wrong password preserves child-mode lock",
+          "passed": true
+        },
+        {
+          "name": "verified same-account password clears lock and opens PIN settings",
+          "passed": true
+        },
+        {
+          "name": "first child form expanded automatically",
+          "passed": true
+        },
+        {
+          "name": "settings fits smallest phone",
+          "passed": true
+        }
+      ],
+      "errors": [],
+      "backend": "All network mocked; no records changed, no email sent."
+    }
+  }
+}

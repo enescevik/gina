@@ -60,7 +60,7 @@ export default function NotificationsScreen() {
   const settings = useMutation({ mutationFn: () => Linking.openSettings() });
 
   return (
-    <Screen title={t("push.title")} subtitle={t("accountV5.notificationsBody")} loading={prefs.isLoading || permission.isLoading} error={prefs.error ?? permission.error} onRetry={() => { void prefs.refetch(); void permission.refetch(); }}>
+    <Screen title={t("push.title")} subtitle={t("unified.notificationsHelp")} loading={prefs.isLoading || permission.isLoading} error={prefs.error ?? permission.error} onRetry={() => { void prefs.refetch(); void permission.refetch(); }}>
       {Platform.OS === "web" || permission.data === "unsupported" ? (
         <Text className="font-body text-sm text-gray-600">{t("push.webNote")}</Text>
       ) : permission.data === "undetermined" ? (
@@ -82,7 +82,8 @@ export default function NotificationsScreen() {
         </View>
       ))}
 
-      <Text className="font-body text-xs text-gray-600">{t("push.privacyNote")}</Text>
+      {save.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.muted}>{t("unified.saved")}</Text> : null}
+      <Text className="font-body text-sm text-gray-600">{t("push.privacyNote")}</Text>
       <ErrorText error={save.error ?? allow.error ?? settings.error} />
     </Screen>
   );
