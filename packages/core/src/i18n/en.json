@@ -937,5 +937,28 @@
     "openProva": "Open practice",
     "provaHint": "Review assigned practice and study results.",
     "loadHint": "Information could not be loaded. Check your connection and try again."
+  },
+  "childMint": {
+    "next": "My next step",
+    "start": "Start",
+    "steps": "My steps today",
+    "goal": "Our goal together",
+    "week": "My week and calendar",
+    "room": "My room",
+    "world": "My world",
+    "tasks": "Tasks",
+    "collection": "Collection",
+    "finished": "{{count}} complete",
+    "waiting": "{{count}} in review",
+    "todo": "{{count}} to go",
+    "ready": "Start when you are ready.",
+    "loading": "Getting your day ready…",
+    "waitingTitle": "Your steps are awaiting review",
+    "waitingBody": "Your work is ready! Check back after your parent reviews it.",
+    "allDone": "Today’s steps are complete!",
+    "allDoneBody": "Enjoy what you have achieved. Tomorrow is a new day.",
+    "emptyTitle": "No tasks for today yet",
+    "emptyBody": "When your parent adds a task, you will see it here.",
+    "close": "Close"
   }
 }

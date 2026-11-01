@@ -1,10 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { View, useWindowDimensions } from "react-native";
+import { View } from "react-native";
 
 import { RoomChildHome } from "@/components/room/child-home";
-import { WIDE_LAYOUT_MIN_DP } from "@/components/room/layout";
 import { TodayView } from "@/components/today-view";
 import { ErrorText } from "@/components/ui/screen";
 import { Button } from "@/components/ui/button";
@@ -18,8 +17,6 @@ export default function TodayScreen() {
   const { claims } = useSession();
   const childId = claims?.child_id ?? "";
   const queryClient = useQueryClient();
-  const { width, height, fontScale } = useWindowDimensions();
-  const wide = (width >= WIDE_LAYOUT_MIN_DP || (width >= 600 && width > height)) && fontScale <= 1.2;
 
   const child = useQuery({
     queryKey: ["child_profile", childId],
@@ -39,7 +36,7 @@ export default function TodayScreen() {
     router.replace("/child");
   } });
 
-  if (childId && wide) {
+  if (childId) {
     return <RoomChildHome childId={childId} childName={child.data?.name ?? ""} onParentExit={() => logout.mutate()} exitBusy={logout.isPending} actionError={logout.error ?? child.error} />;
   }
 

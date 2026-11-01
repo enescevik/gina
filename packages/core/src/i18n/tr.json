@@ -937,5 +937,28 @@
     "openProva": "Provaya git",
     "provaHint": "Atanan provaları ve çalışma sonuçlarını incele.",
     "loadHint": "Bilgiler yüklenemedi. Bağlantını kontrol ederek yeniden deneyebilirsin."
+  },
+  "childMint": {
+    "next": "Sıradaki adımım",
+    "start": "Başla",
+    "steps": "Bugünkü adımlarım",
+    "goal": "Birlikte hedefimiz",
+    "week": "Haftam ve takvimim",
+    "room": "Odam",
+    "world": "Dünyam",
+    "tasks": "Görevler",
+    "collection": "Koleksiyon",
+    "finished": "{{count}} tamamlandı",
+    "waiting": "{{count}} onayda",
+    "todo": "{{count}} sırada",
+    "ready": "Hazır olduğunda başlayabilirsin.",
+    "loading": "Günün hazırlanıyor…",
+    "waitingTitle": "Adımların onay bekliyor",
+    "waitingBody": "Emeğin hazır! Ebeveynin incelediğinde burada görebilirsin.",
+    "allDone": "Bugünkü adımların tamam!",
+    "allDoneBody": "Emeğinin tadını çıkar. Yarın yeni bir gün.",
+    "emptyTitle": "Bugün için henüz görev yok",
+    "emptyBody": "Ebeveynin bir görev eklediğinde burada göreceksin.",
+    "close": "Kapat"
   }
 }

@@ -1,0 +1,18 @@
+{
+  "source": "https://chatgpt.com/share/6ae626eb-3f48-83ed-a90f-1e0eb0508c0e",
+  "approval": "Latest approved Tablet corner seam correction board; image-based implementation explicitly authorized 2026-11-01.",
+  "assets": [
+    {
+      "file": "approved-board.png",
+      "width": 1536,
+      "height": 1024,
+      "illustrationViewport": {
+        "x": 48,
+        "y": 194,
+        "width": 726,
+        "height": 638
+      },
+      "note": "Original unchanged board; runtime viewport excludes reference UI and device frames. Static mascot; no separately movable objects."
+    }
+  ]
+}
