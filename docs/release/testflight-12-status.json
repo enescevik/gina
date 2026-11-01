@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0",
+  "buildNumber": "12",
+  "sourceCommit": "2ab2c40bd44fa26676eddd6c7d63cdaf1ce08eaa",
+  "build": {
+    "id": "d6d52ec1-7644-4bbd-9807-d62e008fb8eb",
+    "status": "FINISHED"
+  },
+  "submission": {
+    "id": "9ef18ea9-db96-4ec4-b070-55d942a9b389",
+    "status": "FINISHED"
+  },
+  "apple": {
+    "processingState": "VALID",
+    "internalState": "IN_BETA_TESTING",
+    "expired": false
+  },
+  "checkedAt": "2026-11-01T21:19:40.248Z"
+}
