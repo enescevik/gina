@@ -485,7 +485,7 @@ function LoadedEditor({
               {error}
             </Text>
           ) : null}
-          {conflict ? (
+          {conflict || (query.data && query.data.revision !== draft?.revision) ? (
             <SatinButton
               secondary
               title={t("planner.reload")}
