@@ -36,7 +36,7 @@ Ortak yüzeyler krem, koyu mor metin, mor ana eylem ve mint başarı vurguların
 - Core testleri: 4 dosyada 18/18 başarılı.
 - Çocuk ana ekranı: 17 akış kontrolü; veli ana ekranı: 13 kontrol; ek kritik akışlar: 10/10 başarılı. Sonuç JSON dosyaları galerinin klasöründedir.
 - Telefon 320/390 ve tablet 1280 × 800 ölçülerinde ekranlar; çocuk ana ekranında ayrıca 4:3 tablet ve yatay telefon. Kontrol edilen ekranlarda yatay taşma ve eksik görsel yok. Ölçülen etkileşim alanlarında 48 dp altı hedef bulunmadı.
-- iPhone 17 Pro / iOS 26.5 simülatöründe native uygulama derlendi: giriş, veli ana ekranı, takvim açma/hafta değiştirme/etkinlik formu, çocuk seçimi/PIN, çocuk ana ekranı, görev penceresi, koleksiyon ve veliye dönüş gözlendi. Native görüntüler `native/` klasöründedir. Bu, kullanıcının fiziksel iPhone 14 Pro Max’inde yapılmış test değildir.
+- iPhone 17 Pro / iOS 26.5 simülatöründe native uygulama derlendi: giriş, veli ana ekranı, takvim açma/hafta değiştirme/etkinlik formu, çocuk seçimi/PIN, çocuk ana ekranı, görev penceresi, koleksiyon ve veliye dönüş gözlendi. Native görüntüler `native/` klasöründedir. Ayrıca iPad Pro 11 (M5) / iOS 26.5 simülatöründe veli ve çocuk yatay ana ekranları, çocuk seçimi ve PIN girişi doğrulandı (sistem dili İngilizce). Bu, kullanıcının fiziksel iPhone 14 Pro Max’inde yapılmış test değildir.
 - Akışlar izole HTTP/WebSocket test verileriyle çalıştırıldı. Mevcut yerel veya üretim aile kayıtları değiştirilmedi. Üretim auth sağlık yanıtı HTTP 200.
 - Statik web test sunucusunda bazı ilk açılışlar boş yükleme görünümünde kalabildi; sayfa yenilemesiyle açıldı. Ekran kanıtları veri ve fontlar yüklenince alındı. Bu kontrol, canlı web dağıtımını doğruladığımız anlamına gelmez.
 
