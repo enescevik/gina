@@ -17,7 +17,8 @@ export default function ChildPickerScreen() {
   const { t } = useTranslation();
   const children = useQuery({
     queryKey: ["child_device_profiles"],
-    refetchInterval: query=>query.state.data?.children.length===0?5000:false,
+    // Parent can change the allowlist/PIN policy while this screen is already open.
+    refetchInterval: query=>query.state.data?.children.length===0?5000:30000,
     refetchIntervalInBackground:false,
     queryFn: () => deviceAccess(),
   });
@@ -25,7 +26,7 @@ export default function ChildPickerScreen() {
     const {data,error}=await supabase.rpc('child_pin_login',{p_child_id:id,p_pin:''});
     if(error)throw error;if(!data)throw new Error(t('child.wrongPin'));
     await refreshClaims();router.replace('/child/today');
-  }});
+  },onError:()=>{void children.refetch();}});
 
   return (
     <Screen tone="child" loading={children.isLoading} title={t("child.pickProfile")}>

@@ -1,6 +1,6 @@
 # Aile deneyimi — yayın hazırlığı
 
-Bu paket TestFlight 12’den sonraki çalışmadır. **Henüz yeni TestFlight yayını değildir.** Canlı Apple/Google girişi ve AI üretimi doğrulanmadan bu özellikler tamamlandı olarak işaretlenmez.
+Bu paket TestFlight 12’den sonraki çalışmadır. PR #42 (`91ea2c5`) main’e alındı. 2 Kasım 2026 tarihinde iki migration ve `prova-generate`, `prova-grade`, `prova-plan`, `ai-weekly-summary`, `iap-verify`, `delete-account` üretime dağıtıldı. **Henüz yeni TestFlight yayını değildir.** Canlı Apple/Google girişi ve AI üretimi doğrulanmadan bu özellikler tamamlandı olarak işaretlenmez.
 
 ## Değişen akışlar
 
@@ -76,3 +76,5 @@ Yerel görsel kontroller tüm sunucu çağrıları taklit edilerek yapılır; ge
 - [Görüntü galerisi](evidence/family-experience/index.html), [telefon/tablet sonuçları](evidence/family-experience/validation.json), [veritabanı sonuçları](evidence/family-experience/database-tests.json), [şifresiz hesap kontrolleri](evidence/family-experience/social-validation.json).
 
 Google giriş düğmesinde resmî renkli simge ve Google Sans Medium kullanılır; yalnız sağlayıcı düğmesine aittir, GINA’nın yazı tipini değiştirmez. Kaynak/lisans kayıtları `packages/assets/auth/google/manifest.json`, `OFL.txt` ve `TRADEMARKS.md` içindedir. [Google giriş düğmesi kuralları](https://developers.google.com/identity/branding-guidelines).
+
+Çocuk profil seçicisi, izin/PIN değişikliklerini ekran açıkken 30 saniyede bir kontrol eder; ilk profil yapılandırması bekleniyorsa süre 5 saniyedir. Arka planda periyodik kontrol yapmaz. Giriş reddedilirse profil bilgisi hemen yenilenir; sunucu izni her girişte kontrol eder.

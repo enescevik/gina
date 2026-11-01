@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-11-01T22:32:04.724Z",
+  "scope": "Unauthenticated rejection only. No live AI, OAuth or user data write was tested.",
+  "results": [
+    {
+      "name": "prova-generate",
+      "status": 403,
+      "unauthenticatedRejected": true
+    },
+    {
+      "name": "prova-grade",
+      "status": 403,
+      "unauthenticatedRejected": true
+    },
+    {
+      "name": "prova-plan",
+      "status": 403,
+      "unauthenticatedRejected": true
+    },
+    {
+      "name": "ai-weekly-summary",
+      "status": 403,
+      "unauthenticatedRejected": true
+    },
+    {
+      "name": "iap-verify",
+      "status": 403,
+      "unauthenticatedRejected": true
+    },
+    {
+      "name": "delete-account",
+      "status": 403,
+      "unauthenticatedRejected": true
+    }
+  ]
+}
