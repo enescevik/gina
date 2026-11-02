@@ -68,3 +68,45 @@ describe("answer receipts", () => {
     expect(ids).toBe(1);
   });
 });
+
+it("freezes an uncertain drawing and replays it before the newer drawing", async () => {
+  let id = 0, revision = 0, fail = true;
+  const calls: AnswerReceipt[] = [];
+  const writer = new AnswerReceipts(
+    async (_q, r) => {
+      calls.push(r);
+      if (fail) {
+        fail = false;
+        throw Error("timeout");
+      }
+      return r.revision + 1;
+    },
+    (_q, _a, r) => {
+      revision = r;
+    },
+    () => revision,
+    () => String(++id),
+  );
+  const document = {
+    version: 1 as const,
+    width: 1000 as const,
+    height: 1400 as const,
+    elements: [{
+      id: "10000000-0000-4000-8000-000000000001",
+      type: "stroke" as const,
+      color: "#201951" as const,
+      size: 4,
+      points: [[10, 20] as [number, number]],
+    }],
+  };
+  await expect(writer.write("q", { document })).rejects.toThrow("timeout");
+  document.elements[0]!.points.push([30, 40]);
+  await writer.write("q", { document });
+  expect(calls.map((r) => r.id)).toEqual(["1", "1", "2"]);
+  expect(calls[0]!.answer.document!.elements[0]).toMatchObject({
+    points: [[10, 20]],
+  });
+  expect(calls[2]!.answer.document!.elements[0]).toMatchObject({
+    points: [[10, 20], [30, 40]],
+  });
+});

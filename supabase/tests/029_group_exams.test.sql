@@ -86,10 +86,12 @@ select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-00000000
 select set_config('test.short_exam',public.enroll_group_exam('60000000-0000-4000-8000-000000002902','20000000-0000-4000-8000-000000002902',false,true)::text,true);
 select set_config('test.short_attempt',(public.start_exam_attempt(current_setting('test.short_exam')::uuid)).id::text,true);
 select is((select deadline_at from public.exam_attempts where id=current_setting('test.short_attempt')::uuid),now()+interval '5 minutes','personal timer clamps to common end');
+select public.submit_exam_answer(current_setting('test.short_attempt')::uuid,(select question_ids[1] from public.exams where id=current_setting('test.short_exam')::uuid),'A');
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000002903","role":"authenticated","gina":{"role":"none","admin":true}}',true);
 select lives_ok($$select public.admin_cancel_group_exam('60000000-0000-4000-8000-000000002902','İçerik kontrolü için iptal')$$,'admin cancellation succeeds');
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000002902","role":"authenticated","gina":{"family_id":"10000000-0000-4000-8000-000000002902","role":"parent"}}',true);
-select throws_ok($$select public.submit_exam_answer(current_setting('test.short_attempt')::uuid,(select question_ids[1] from public.exams where id=current_setting('test.short_exam')::uuid),'A')$$,'P0001','group_answer_closed','cancellation immediately stops new answers');
+select throws_ok($$select public.submit_exam_answer(current_setting('test.short_attempt')::uuid,(select question_ids[1] from public.exams where id=current_setting('test.short_exam')::uuid),'B')$$,'P0001','group_answer_closed','cancellation immediately stops new answers');
+select throws_ok($$select public.submit_exam_answer_v3('90000000-0000-4000-8000-000000002901',current_setting('test.short_attempt')::uuid,(select question_ids[1] from public.exams where id=current_setting('test.short_exam')::uuid),1,'A',null,'{"version":1,"width":1000,"height":1400,"elements":[]}')$$,'P0001','group_answer_closed','notebook-only writes also stop immediately on cancellation');
 select is((public.get_group_exams()->>'used')::int,1,'cancelled participation restores allowance');
 reset role;
 select is(public.settle_group_attempts(),1,'cancelled in-progress attempt settled');

@@ -1,3 +1,4 @@
+import { needsNotebookReview } from "../_shared/answer-notebook.ts";
 import { questionImages } from "../_shared/question-images.ts";
 import { runAiOperation } from "../_shared/ai-operation.ts";
 import { GRADE_SCHEMA, GRADE_SYSTEM, validateGradeReport } from "../_shared/grade-report.ts";
@@ -57,12 +58,16 @@ Deno.serve(async (req) => {
   const questionIds: string[] = exam?.question_ids ?? [];
   const [questionResult, answerResult, childResult] = await Promise.all([
     db.from("question_bank").select("id, topic, kind, stem, choices, correct_key, expected_answer, solution").in("id", questionIds).or(`family_id.eq.${parent.familyId},family_id.is.null`),
-    db.from("exam_answers").select("question_id, answer_key, answer_text, is_correct, score, graded_by").eq("attempt_id", attemptId),
+    db.from("exam_answers").select("question_id, answer_key, answer_text, answer_document, is_correct, score, graded_by").eq("attempt_id", attemptId),
     db.from("children").select("name").eq("id", attempt.child_id).maybeSingle(),
   ]);
 
   if (questionResult.error || answerResult.error || childResult.error) return json({ error: "data_failed" }, 500);
   const questions = questionResult.data; const answers = answerResult.data; const child = childResult.data;
+  // Never grade a typed fragment as the whole answer while ignoring the student's ink.
+  // Notebook image evaluation is a separate consented pipeline, not implemented here.
+  const hasNotebook = needsNotebookReview(answerResult.data ?? []);
+  if (hasNotebook) return json({ error: "notebook_review_required" }, 409);
   if (!questions?.length || questions.length !== questionIds.length) return json({ error: "data_failed" }, 500);
   // Mask the known child name. Free text may still contain other personal details.
   const nameParts = (child?.name ?? "").split(/\s+/).filter((p: string) => p.length >= 2);

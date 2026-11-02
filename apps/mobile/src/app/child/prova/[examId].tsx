@@ -1,6 +1,8 @@
 import { randomUUID } from "expo-crypto";
 import { QuestionMedia } from "@/components/learning/question-media";
-import { AnswerReceipts, SerialWrites } from "@gina/core";
+import { NotebookWorkspace } from "@/components/learning/notebook-workspace";
+import { SatinButton } from "@/components/planner/ui";
+import { AnswerReceipts, SerialWrites, readNotebook, notebookHasAnswer, type NotebookDocument } from "@gina/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams, useFocusEffect, usePreventRemove } from "expo-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -15,7 +17,7 @@ import { ChildScreen as Screen } from "@/components/room/child-screen";
 import { useChildMode } from "@/lib/child-mode";
 import { supabase } from "@/lib/supabase";
 
-type Answer = { key?: string; text?: string; revision?: number };
+type Answer = { key?: string; text?: string; revision?: number; document?: NotebookDocument };
 
 interface Choice {
   key: string;
@@ -23,8 +25,8 @@ interface Choice {
 }
 
 /** Cevap verilmiş mi: şık seçilmiş ya da boş olmayan metin yazılmış. */
-function isAnswered(answer: { key?: string; text?: string } | undefined): boolean {
-  return !!answer?.key || !!answer?.text?.trim();
+function isAnswered(answer: Answer | undefined): boolean {
+  return !!answer?.key || !!answer?.text?.trim() || notebookHasAnswer(answer?.document);
 }
 
 function formatRemaining(ms: number): string {
@@ -66,9 +68,13 @@ export default function TakeExamScreen() {
     queryKey: ["attempt_saved_answers", attempt.data?.id],
     enabled: !!attempt.data?.id,
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_saved_exam_answers_v2", { p_attempt_id: attempt.data?.id ?? "" });
+      const { data, error } = await supabase.rpc("get_saved_exam_answers_v3", { p_attempt_id: attempt.data?.id ?? "" });
       if (error) throw error;
-      return Object.fromEntries(data.map(row => [row.question_id, { key: row.answer_key ?? undefined, text: row.answer_text ?? undefined, revision: row.revision }])) as Record<string, Answer>;
+      return Object.fromEntries(data.map(row => {
+        const document = readNotebook(row.answer_document);
+        if (row.answer_document !== null && !document) throw new Error("notebook_version_unsupported");
+        return [row.question_id, { key: row.answer_key ?? undefined, text: row.answer_text ?? undefined, revision: row.revision, document: document ?? undefined }];
+      })) as Record<string, Answer>;
     },
   });
   const answers: Record<string, Answer> = { ...savedAnswers.data, ...drafts };
@@ -109,10 +115,10 @@ export default function TakeExamScreen() {
       const abort = new AbortController();
       const timer = setTimeout(() => abort.abort(), 20_000);
       try {
-        const { data, error } = await supabase.rpc("submit_exam_answer_once", {
+        const { data, error } = await supabase.rpc("submit_exam_answer_v3", {
           p_request_id: receipt.id, p_attempt_id: attemptId, p_question_id: questionId,
           p_expected_revision: receipt.revision,
-          p_answer_key: receipt.answer.key, p_answer_text: receipt.answer.text,
+          p_answer_key: receipt.answer.key, p_answer_text: receipt.answer.text, p_answer_document: receipt.answer.document,
         }).abortSignal(abort.signal);
         if (error) throw error;
         return data;
@@ -156,9 +162,11 @@ export default function TakeExamScreen() {
   const choices = (q?.choices as Choice[] | null) ?? [];
   const unanswered = list.filter(item => !isAnswered(answers[item.id]));
   const result = finish.data ?? (attempt.data?.status !== "in_progress" ? attempt.data : null);
-  const dirty = !!draft && (draft.key !== saved?.key || draft.text !== saved?.text);
+  const differs = (a: Answer | undefined, b: Answer | undefined) => a?.key !== b?.key || a?.text !== b?.text || JSON.stringify(a?.document) !== JSON.stringify(b?.document);
+  const dirty = !!draft && differs(draft, saved);
+  const anyDirty = Object.entries(drafts).some(([id, value]) => differs(value, savedAnswers.data?.[id]));
 
-  usePreventRemove(!allowExit && !result && (dirty || saving), ({ repeat }) => setLeaveAction(() => repeat));
+  usePreventRemove(!allowExit && !result && (anyDirty || saving), ({ repeat }) => setLeaveAction(() => repeat));
 
   useEffect(() => {
     if (!timeUp || finish.isPending || result || !attempt.data || autoFinishAttempt.current === attempt.data.id) return;
@@ -198,6 +206,25 @@ export default function TakeExamScreen() {
   function goTo(nextIndex: number) {
     setConfirmFinish(false);
     setIndex(nextIndex);
+  }
+
+  if (q?.kind === "open_ended" && savedAnswers.isSuccess) {
+    return <NotebookWorkspace key={q.id} title={t("prova.questionOf", { n: index + 1, total: list.length })}
+      questionId={q.id} stem={q.stem} document={current?.document} text={current?.text ?? ""}
+      onChange={document => editAnswer({ ...current, document })} onTextChange={text => editAnswer({ ...current, text })}
+      disabled={timeUp || finish.isPending} onExit={() => router.replace(actingChild ? "/parent/child-mode/prova" : "/child/prova")}
+      status={(deadline ? t("prova.timeLeft", {time: formatRemaining(deadline - now)}) + " · " : "") + (timeUp ? t("provaV5.timeEnded") : writes.error ? t("provaV5.saveFailed") : dirty || saving ? t("provaV5.savingAnswer") : t("provaV5.answerSaved"))}
+      alerts={<>
+        <ErrorText error={writes.error ?? finish.error}/>
+        {writes.error && !timeUp ? <Button title={t("common.retry")} onPress={() => { void writes.retry().catch(() => undefined); }}/> : null}
+        {leaveAction ? <View><Text>{t("provaV5.unsaved")}</Text><Button title={t("provaV5.keepWorking")} onPress={() => setLeaveAction(null)}/><Button variant="ghost" title={t("provaV5.discard")} onPress={() => { writes.cancelPending(); setAllowExit(true); leaveAction(); }}/></View> : null}
+        {confirmFinish && unanswered.length > 0 ? <View><Text>{t("prova.unansweredConfirm", {count:unanswered.length})}</Text><Button title={t("prova.goToUnanswered")} onPress={() => goTo(list.findIndex(item => item.id === unanswered[0]?.id))}/><Button title={t("prova.finishAnyway")} disabled={saving||timeUp} loading={finish.isPending} onPress={() => finish.mutate()}/></View> : null}
+        {timeUp && finish.error ? <Button title={t("common.retry")} onPress={() => finish.mutate()}/> : null}
+      </>}
+      footer={<View style={{flexDirection:"row",gap:12,justifyContent:"flex-end"}}>
+        {index>0 ? <SatinButton secondary title={t("prova.prev")} disabled={finish.isPending||timeUp} onPress={() => saveAndGo(index-1)} style={{flex:1}}/> : null}
+        <SatinButton title={t(index+1>=list.length?"prova.finish":"prova.next")} disabled={timeUp} busy={finish.isPending} onPress={() => saveAndGo(index+1)} style={{flex:1}}/>
+      </View>}/>;
   }
 
   return (

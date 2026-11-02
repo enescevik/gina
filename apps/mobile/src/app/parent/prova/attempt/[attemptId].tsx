@@ -1,3 +1,5 @@
+import { readNotebook, notebookHasAnswer } from "@gina/core";
+import { NotebookPage } from "@/components/learning/notebook-page";
 import { Toggle } from "@/components/ui/toggle";
 import { QuestionMedia, type QuestionMediaItem } from "@/components/learning/question-media";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -87,7 +89,7 @@ export default function AttemptReviewScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("exam_answers")
-        .select("question_id, answer_key, answer_text, is_correct, score, feedback, graded_by, ai_score, ai_details")
+        .select("question_id, answer_key, answer_text, answer_document, is_correct, score, feedback, graded_by, ai_score, ai_details")
         .eq("attempt_id", attemptId);
       if (error) throw error;
       return new Map(data.map((a) => [a.question_id, a]));
@@ -138,6 +140,7 @@ export default function AttemptReviewScreen() {
   const a = attempt.data;
   const summary = (a?.ai_feedback ?? null) as AiSummary | null;
   const finished = a && a.status !== "in_progress";
+  const notebookNeedsReview = Array.from(answers.data?.values() ?? []).some(answer => answer.graded_by !== "parent" && (readNotebook(answer.answer_document)?.elements.length ?? 0) > 0);
   const hasOpen = (a?.open_total ?? 0) > 0;
   const ent = entitlement.data;
 
@@ -200,11 +203,12 @@ export default function AttemptReviewScreen() {
       </View> : null}
       {finished ? (
         ent?.ai_grading ? (
-          <View style={{gap:12}}>{media.data?.length ? <Toggle label={t("sources.aiConsent")} value={imageAiConsent} onChange={setImageAiConsent} disabled={aiGrade.isPending}/> : null}<Button title={t("prova.ai.gradeWithAi")} loading={aiGrade.isPending} onPress={() => aiGrade.mutate()} /></View>
+          <View style={{gap:12}}>{media.data?.length ? <Toggle label={t("sources.aiConsent")} value={imageAiConsent} onChange={setImageAiConsent} disabled={aiGrade.isPending}/> : null}<Button title={t("prova.ai.gradeWithAi")} disabled={notebookNeedsReview} loading={aiGrade.isPending} onPress={() => aiGrade.mutate()} /></View>
         ) : (
           <Text className="font-body text-sm text-gray-500">{t("prova.ai.needsProGrading")}</Text>
         )
       ) : null}
+      {notebookNeedsReview ? <Text className="font-body text-base text-gray-600">{t("notebook.manualReview")}</Text> : null}
       <ErrorText error={aiGrade.error} />
 
       {questions.data?.map((q, i) => (
@@ -259,6 +263,7 @@ interface ReviewQuestion {
 interface ReviewAnswer {
   answer_key: string | null;
   answer_text: string | null;
+  answer_document?: unknown;
   is_correct: boolean | null;
   score: number | null;
   feedback: string | null;
@@ -306,7 +311,9 @@ function AnswerCard({
 
   const details = (answer?.ai_details ?? null) as AiDetails | null;
   const isMc = q.kind === "multiple_choice";
-  const answered = isMc ? !!answer?.answer_key : !!answer?.answer_text?.trim();
+  const notebook = readNotebook(answer?.answer_document);
+  const [pageWidth, setPageWidth] = useState(300);
+  const answered = isMc ? !!answer?.answer_key : !!answer?.answer_text?.trim() || notebookHasAnswer(notebook);
 
   return (
     <View className="gap-2 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
@@ -339,8 +346,9 @@ function AnswerCard({
         <View className="gap-2">
           <View className="rounded-parent bg-cream p-3">
             <Text className="font-body text-xs text-gray-500">{t("prova.ai.childAnswer")}</Text>
-            <Text className="font-body text-base text-ink">{answered ? answer?.answer_text : t("prova.ai.unanswered")}</Text>
+            <Text className="font-body text-base text-ink">{answer?.answer_text || (notebookHasAnswer(notebook) ? t("notebook.writtenAnswer") : t("prova.ai.unanswered"))}</Text>
           </View>
+          {notebook ? <View onLayout={e => setPageWidth(Math.min(650,e.nativeEvent.layout.width))} style={{width:"100%",maxWidth:650,alignSelf:"center"}}><NotebookPage document={notebook} width={pageWidth}/><Text className="font-body text-sm text-gray-600">{t("notebook.manualReview")}</Text></View> : null}
           <Pressable accessibilityRole="button" style={{ minHeight: 48, justifyContent: "center" }} accessibilityState={{ expanded: showKey }} onPress={() => setShowKey((v) => !v)}>
             <Text className="font-body-bold text-teal-dark">{showKey ? t("prova.ai.hideExpected") : t("prova.ai.showExpected")}</Text>
           </Pressable>

@@ -1,6 +1,6 @@
 # GINA öğrenme platformu — geliştirme durumu
 
-2 Kasım 2026. Kullanıcı tüm kapsamın geliştirilmesini onayladı. Bu liste tamamlanma beyanı değil, devam eden işin kaydıdır. Üretim verisi değişmedi; yeni TestFlight yayımlanmadı.
+2 Kasım 2026. Kullanıcı tüm kapsamın geliştirilmesini onayladı. Bu liste tamamlanma beyanı değil, devam eden işin kaydıdır. İlk bölümler tarihî geliştirme kaydıdır. Güncel dağıtım ve gerçek hizmet doğrulaması en alttaki “Canlı hizmet doğrulaması” bölümündedir; yeni TestFlight henüz yayımlanmadı.
 
 ## Bu dalda yapılan, doğrulaması süren
 
@@ -104,3 +104,37 @@ Son kontrol: 28 SQL dosyasında 504 kontrol, 46 Edge testi ve 25 core testi geç
 - OYSS, özgün soru kütüphanesi, ortak kaynaklı sorular, çözüm defteri ve gelişim raporu araştırması `reports/GINA soru ve defter deneyimi.md` içinde. 77 ilk kapsam hücresi × 20 = 1.540 aday hedefi `research_notes/GINA soru ve defter deneyimi/coverage-candidates.json` içinde; üretilen/onaylanan/yayımlanan soru 0. Bu liste bütün seçmeli/alan/sanat/spor derslerini kapsamaz.
 - Yerelde tanımlı Anthropic anahtarının salt okunur model listesi kontrolü 401 authentication_error verdi. Anahtar yazdırılmadı; ücretli toplu üretim başlatılmadı. Üretimdeki bağlantının aynı anahtar olduğu varsayılmadı.
 - Düzenlenebilir çocuk defteri, kaynak bölgesini kopyalama, sürümlü ortak soru seti, veli çizim/not katmanları ve yeni gelişim raporu bu teslimde uygulanmadı. Araştırma ve öneri, tamamlanmış özellik değildir.
+
+
+## Canlı hizmet doğrulaması — 2 Kasım, sonraki aşama
+
+- Yerel Anthropic anahtarı 401 döndürürken üretim anahtarı farklıdır. Üretim anahtarı değiştirilmeden sunucuda bağlantı ve sabit yapılandırılmış çıktı testi geçti: claude-sonnet-5-5, 227 giriş/9 çıkış tokeni. Bağımsız sentetik ders programı görsel testi 492/182 tokenle geçti; eksik bitiş saati null kaldı.
+- `ai-preflight` yalnız geçici operatör anahtarı + platform JWT kontrolüyle çalışır; anahtar en çok 15 dakikalık kontrol için açılır ve betik sonunda silinir. Genel kullanıcıya veya anonim çağrıya açık değildir. Anahtarlar/belge metinleri/gizli hata gövdeleri yanıta verilmez. Kontrol betiği `scripts/check-ai-connection.py`; 6 olumsuz/olumlu yetki ve çıktı testi var.
+- 20261102120000–20261102150000 arası 11 migration üretime uygulandı. prova-generate, prova-grade, prova-plan, setup-suggestions, learning-source, source-cleanup, timetable-import ve delete-account güncel sürümleri dağıtıldı. Mevcut aile kayıtlarına elle müdahale/reset/reseed yapılmadı.
+- Private bucket, saatlik source-cleanup ve beş dakikalık settle-group-attempts görevleri doğrulandı. Eksik source_cleanup_secret Vault/Edge eşleştirmesi tamamlandı; gerçek temizleyici çağrısı 200, failed=0 döndürdü. sources.enabled ve cohorts.enabled testlerin sonunda kapalı.
+- Gerçek Storage yükleme/indirme byte eşleşmesi ve anonim/public erişim engeli doğrulandı. Silme sonrası önbellekli aynı URL eski cevabı döndürebildi; storage.objects kaydı ayrıca sorgulandı ve test nesnesi kalmadığı doğrulandı. Bu nedenle anlık önbellek temizliği iddia edilmez.
+- Gerçek DB üzerinde geçici transaction fixture’ıyla üç görev, makbuz tekrarı, aile sınırı, hak/politika/grup okuma testleri geçti; tamamı rollback edildi. `scripts/learning-production-smoke.sql` mevcut aile/planları güncellemez.
+- `scripts/learning-service-smoke.mjs` ile gerçek HTTP/Auth/Storage/AI/DB zinciri ayrıca test edildi: ayrı sentetik hesap ve aile → çocuk → üç görev/makbuz → imzalı görsel yükleme ve doğrulama → AI ders programı → veli düzeltmesini temsil eden eksik saat tamamlama → takvim ve kaynak bağlantısı → yeniden gönderme → özgün belge indirme → normal hesap silme. 9 kontrol geçti. Aynı import iki kez istendi; yalnız bir AI kullanım satırı oluştu (506 giriş/196 çıkış tokeni). Test hesabı/aile/kaynak/nesne silindi, geçici kaynak özelliği eski kapalı konumuna döndü.
+- Bunlar gerçek hizmet/API kontrolleridir, telefon/tablet ekran etkileşimi veya native kalem gecikmesi testi değildir. TestFlight gönderilmedi. Şema kopyası alma ilk denemesi CLI geçici oturum çakışmasıyla başarısız oldu; bu girişim dağıtım öncesi yedek alınmış gibi sunulmaz.
+- Çocuk çözüm defterinin telefon/tablet görsel yönü kullanıcı tarafından onaylandı: `docs/design/screens/prova-notebook/phone-tablet-approved-v1.png`. Bu görsel bir tasarım maketidir; çalışan defter/kalem veya ortak kaynak özelliği değildir. Uygulama çalışması sıradaki aşamadır.
+
+
+## Çözüm defteri — tasarım onayı sonrası, 2 Kasım
+
+Kullanıcı `docs/design/screens/prova-notebook/phone-tablet-approved-v1.png` taslağını onayladı. Açık uçlu sorular bu yönde uygulandı: tablette soru/defter yan yana, telefonda Soru/Defter sekmeleri; mevcut mint maskot, krem sayfa, mor kontroller. Gerçek uygulama bileşeninin 390×844 ve 1280×800 web görüntüleri aynı klasörde `*-implemented-web.png` dosyalarıdır; fiziksel iOS ekran görüntüsü değildir.
+
+- Kalem/parmak çizgileri, çizgi silgisi, kutuyla seçme/taşıma, metni düzenleme, matematik işaretleri, geri alma/yineleme, sayfa kaydırma ve %100/%150/%200 yakınlaştırma var. Tek metin/görsel parçası oranını koruyarak büyütülüp küçültülebilir. Kopyalanan parça çözümün üzerine düşmek yerine uygun boş alana yerleşir.
+- `answer_document` sürüm 1; sabit 1000×1400 mantıksal sayfada ham çizgi noktaları, metin nesneleri, kaynak kimliği ve normalize kırpma alanı saklanır. İmzalı URL/HTML/SVG belgeye kaydedilmez. Veli incelemesi aynı renderer ile çocuğun defterini gösterir.
+- `submit_exam_answer_v3` ve `get_saved_exam_answers_v3`: revizyon, tekrar makbuzu, aile/çocuk/soru sınırı ve süre/bitirme kontrolü. Belirsiz isteğin çizim verisi derin kopyalanır; yeni düzenlemeden önce aynı makbuz uzlaştırılır. Eski istemcilerin cevap uçları korunur. İptal edilmiş ortak provada yalnız defteri değiştiren yazma da reddedilir.
+- Kırpma yalnız o soruya bağlı, aileye ait hazır özel kaynağa başvurabilir. Sayfa ve nesne sınırları, boyut, renk, alanlar ve kimlikler sunucuda doğrulanır. Bilinmeyen defter sürümü eski istemcide sessizce boş cevap olarak açılmaz.
+- İzole audit veritabanına bağlı gerçek PostgREST ile uygulama ekranında çizim/yazı/görsel kaydı, sayfayı yeniden açma, sorular arası geçiş, kısmi görsel kırpma, silgi, geri alma, yakınlaştırma, taşıma ve boyut değiştirme denendi. Yalnız sentetik QA hesabı/soruları kullanıldı; Auth oturumu yerel test imzası ve görsel sunumu yerel sentetik dosyadır. Bu bir üretim Auth/Storage veya fiziksel kalem testi değildir.
+- Kontroller: 32 SQL dosyasında 594 kontrol (grup sınırı son testi dahil), 38 core testi, 56 Edge testi; workspace tip/lint ve iOS JavaScript/Hermes dışa aktarımı geçti. iOS export bir TestFlight derlemesi ya da cihaz testi değildir.
+- Üretimde `20261102160000_answer_notebooks` ve `20261102160500_group_notebook_guard` uygulandı; `prova-grade` yeniden dağıtıldı. Bu artımda gerçek aile kayıtları değiştirilmedi. Mobil istemci henüz TestFlight'a gönderilmedi.
+
+### Bu artımın açık sınırları
+
+- Bir kaynağı birden fazla soruya sürümlü bağlama henüz tamamlanmadı; bu artım mevcut tek sorunun görsel/metin parçalarını deftere alır.
+- Defter için yerel kalıcı çevrimdışı kuyruk yok. Sunucuya kaydedilmiş çalışma yeniden açılır; bağlantı hatasında kayıt bekler ve çıkış uyarılır. Uygulama zorla kapatılırsa gönderilmemiş yerel düzenleme korunmuş sayılmaz.
+- Gerçek Apple Pencil basınç/eğim/avuç içi reddi, Android kalem ve fiziksel cihaz gecikmesi doğrulanmadı. Mevcut çizgiler sabit kalınlıktadır; bu API yüzeyi tam yerel kalem motoru diye sunulmaz.
+- Çizimli defter henüz AI'a görüntü olarak aktarılmaz. Veli puanlayabilir; AI, defterin içeriğini görmeden yalnız metin kırıntısını tam cevap gibi değerlendirmesin diye bu cevaplar için otomatik değerlendirme bloke edilir. Ayrı veli not/çizim katmanı ve onaylı AI görsel değerlendirmesi sonraki artımdır.
+- Soru havuzunda yeni üretim hâlâ 0. Üretim AI bağlantısı çalışıyor; 20 soru/hücre üretimi müfredat/kaynak sözleşmesi ve inceleme akışından sonra yapılacak.
