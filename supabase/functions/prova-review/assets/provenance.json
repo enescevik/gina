@@ -1,0 +1,18 @@
+{
+  "resvg": {
+    "version": "2.6.2",
+    "source": "https://registry.npmjs.org/@resvg/resvg-wasm/-/resvg-wasm-2.6.2.tgz",
+    "source_code": "https://github.com/thx/resvg-js/tree/v2.6.2",
+    "license": "MPL-2.0",
+    "modified": false
+  },
+  "font": {
+    "source": "@expo-google-fonts/nunito/600SemiBold/Nunito_600SemiBold.ttf (existing application font)",
+    "license": "OFL-1.1",
+    "modified": false
+  },
+  "checksums": {
+    "resvg-2.6.2.wasm": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70",
+    "Nunito-SemiBold.ttf": "c7fd194467c320db02afd5ebf09262ff900ab6065c61fc2eaa300f0236a48a74"
+  }
+}

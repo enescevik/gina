@@ -84,12 +84,18 @@ export function NotebookEditor({
   disabled = false,
   insertion,
   onInserted,
+  underlay,
+  annotation = false,
+  showInk = true,
 }: {
   document: NotebookDocument;
   onChange: (doc: NotebookDocument) => void;
   disabled?: boolean;
   insertion?: NotebookInsertion | null;
   onInserted?: () => void;
+  underlay?: NotebookDocument;
+  annotation?: boolean;
+  showInk?: boolean;
 }) {
   const { t } = useTranslation();
   const { animation } = useRouteMotion();
@@ -100,7 +106,7 @@ export function NotebookEditor({
   const [penSize, setPenSize] = useState(4);
   const [tool, setTool] = useState<Tool>("pen");
   const [color, setColor] = useState<typeof NOTEBOOK_COLORS[number]>(
-    NOTEBOOK_COLORS[0],
+    annotation ? NOTEBOOK_COLORS[2] : NOTEBOOK_COLORS[0],
   );
   const [viewportWidth, setViewportWidth] = useState(320);
   const roomy = viewportWidth >= 600;
@@ -356,7 +362,7 @@ export function NotebookEditor({
           </ToolButton>
         ))}
         <ToolButton
-          label={t("notebook.text")}
+          label={t(annotation ? "parentReview.note" : "notebook.text")}
           disabled={disabled}
           onPress={() =>
             setTextEditor({
@@ -365,9 +371,9 @@ export function NotebookEditor({
             })}
         >
           <Type size={22} color={p.ink} />
-          {roomy && <Text style={s.toolLabel}>{t("notebook.textShort")}</Text>}
+          {roomy && <Text style={s.toolLabel}>{t(annotation ? "parentReview.note" : "notebook.textShort")}</Text>}
         </ToolButton>
-        {screenWidth >= 360 && (
+        {!annotation && screenWidth >= 360 && (
           <>
             <ToolButton
               label={t("notebook.symbols")}
@@ -672,7 +678,8 @@ export function NotebookEditor({
               onResponderRelease={finish}
               onResponderTerminate={() => finish()}
             >
-              <NotebookPage document={shown} width={width} />
+              {underlay ? <View style={StyleSheet.absoluteFill}><NotebookPage document={underlay} width={width} /></View> : null}
+              <NotebookPage document={showInk ? shown : { ...shown, elements: [] }} width={width} grid={!underlay} transparent={!!underlay} />
               <Svg
                 pointerEvents="none"
                 width={width}

@@ -1,3 +1,4 @@
+import { ChildReviewFeedback } from "@/components/learning/child-review-feedback";
 import { ContextualQuestion } from "@/components/learning/question-context";
 import { ArrowLeft, ArrowRight } from "lucide-react-native";
 import { randomUUID } from "expo-crypto";
@@ -192,6 +193,7 @@ export default function TakeExamScreen() {
         <Text className="font-display text-2xl text-ink">{t("prova.resultMc", { correct: result.mc_correct ?? 0, total: result.mc_total ?? 0 })}</Text>
         <Text className="font-body text-center text-base text-gray-600">{t("prova.openEndedNote")}</Text>
       </View>
+      <ChildReviewFeedback attemptId={result.id} />
       {unsavedAtDeadline ? <Text accessibilityRole="alert" className="font-body text-base text-danger">{t("learningReport.unsavedDeadline")}</Text> : null}
       <Button size="child" title={t("prova.backToList")} onPress={() => router.replace(actingChild ? "/parent/child-mode/prova" : "/child/prova")} />
     </Screen>;

@@ -1,0 +1,862 @@
+import { useEffect, useRef, useState } from "react";
+import {
+  Image,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { usePreventRemove } from "expo-router";
+import { randomUUID } from "expo-crypto";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
+import {
+  ArrowLeft,
+  ArrowRight,
+  ChartNoAxesCombined,
+  ChevronDown,
+  Eye,
+  EyeOff,
+  Maximize2,
+  Minimize2,
+  Sparkles,
+} from "lucide-react-native";
+import { emptyNotebook, readNotebook } from "@gina/core";
+import { IconButton, p, SatinButton } from "@/components/planner/ui";
+import { Field } from "@/components/ui/field";
+import { Toggle } from "@/components/ui/toggle";
+import { Pressable } from "@/components/ui/pressable";
+import { supabase } from "@/lib/supabase";
+import { invokeProvaAi, provaErrorMessage } from "@/lib/prova-ai";
+import { NotebookEditor } from "./notebook-editor";
+import { useQuestionContext } from "./question-context";
+import { QuestionMedia } from "./question-media";
+
+export interface ReviewQuestion {
+  id: string;
+  stem: string;
+  kind: string;
+  expected_answer: string | null;
+  solution: string | null;
+  choices: unknown;
+  correct_key: string | null;
+}
+export interface ReviewAnswer {
+  answer_document: unknown;
+  answer_text: string | null;
+  answer_key: string | null;
+  is_correct: boolean | null;
+}
+export interface ReviewState {
+  score: number | null;
+  feedback: string | null;
+  document: unknown;
+  revision: number;
+  answer_hash: string;
+}
+export interface ReviewSuggestion {
+  id: string;
+  result: {
+    score: number | null;
+    readable: boolean;
+    feedback: string;
+    evidence: string[];
+    next_step: string;
+    limitation: string;
+  };
+}
+export function ParentReviewWorkspace(
+  {
+    attemptId,
+    childName,
+    question,
+    answer,
+    review,
+    index,
+    count,
+    finished,
+    onNavigate,
+    aiRemaining,
+    questionStates,
+  }: {
+    attemptId: string;
+    childName: string;
+    question: ReviewQuestion;
+    answer?: ReviewAnswer;
+    review: ReviewState;
+    index: number;
+    count: number;
+    finished: boolean;
+    onNavigate: (index: number) => void;
+    aiRemaining: number | null;
+    questionStates: ("empty" | "reviewed" | "waiting")[];
+  },
+) {
+  const { t } = useTranslation();
+  const cache = useQueryClient();
+  const { width, height, fontScale } = useWindowDimensions();
+  const wide = width >= 900 && height >= 540 && fontScale < 1.4;
+  const [picker, setPicker] = useState(false);
+  const [tab, setTab] = useState<"solution" | "assessment">("solution");
+  const [expanded, setExpanded] = useState(false),
+    [sourceOpen, setSourceOpen] = useState(false),
+    [keyOpen, setKeyOpen] = useState(false);
+  const [showNotes, setShowNotes] = useState(true),
+    [document, setDocument] = useState(
+      readNotebook(review.document) ?? emptyNotebook(),
+    );
+  const [score, setScore] = useState(
+      review.score === null ? "" : String(review.score),
+    ),
+    [feedback, setFeedback] = useState(review.feedback ?? "");
+  const [exit, setExit] = useState<(() => void) | null>(null);
+  const [dirty, setDirty] = useState(false),
+    [uncertain, setUncertain] = useState(false),
+    [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null),
+    [leave, setLeave] = useState<(() => void) | null>(null);
+  const [aiOpen, setAiOpen] = useState(false),
+    [consent, setConsent] = useState(false),
+    [suggestion, setSuggestion] = useState<ReviewSuggestion | null>(null),
+    [appliedAi, setAppliedAi] = useState<string | null>(null);
+  const request = useRef<string | null>(null);
+  const original = readNotebook(answer?.answer_document);
+  const invalidDocument = answer?.answer_document != null && !original;
+  const context = useQuestionContext(question.id);
+  const [commonOpen, setCommonOpen] = useState(false);
+  const isOpen = question.kind === "open_ended";
+  const choices = Array.isArray(question.choices)
+    ? question.choices.filter(
+      (item): item is { key: string; text: string } =>
+        !!item && typeof item === "object" && typeof item.key === "string" &&
+        typeof item.text === "string",
+    )
+    : [];
+  const save = useMutation({
+    mutationFn: async () => {
+      if (
+        isOpen &&
+        (!score.trim() || !Number.isInteger(Number(score)) ||
+          Number(score) < 0 || Number(score) > 100)
+      ) throw new Error("invalid_score");
+      request.current ??= randomUUID();
+      const { data, error } = await supabase.rpc("save_answer_review", {
+        p_request_id: request.current,
+        p_attempt_id: attemptId,
+        p_question_id: question.id,
+        p_revision: review.revision,
+        p_answer_hash: review.answer_hash,
+        p_score: isOpen ? Number(score) : null,
+        p_feedback: feedback.trim(),
+        p_document: document,
+        ...(appliedAi ? { p_ai_id: appliedAi } : {}),
+      }).abortSignal(AbortSignal.timeout(20_000));
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      setDirty(false);
+      setUncertain(false);
+      setSaved(true);
+      void cache.invalidateQueries({
+        queryKey: ["answer_review"],
+        refetchType: "none",
+      });
+      void cache.invalidateQueries({ queryKey: ["attempt_review", attemptId] });
+      void cache.invalidateQueries({
+        queryKey: ["attempt_review_answers", attemptId],
+      });
+      void cache.invalidateQueries({ queryKey: ["child_answer_reviews"] });
+      void cache.invalidateQueries({ queryKey: ["exams"] });
+      void cache.invalidateQueries({ queryKey: ["review_workspace"] });
+    },
+    onError: (e) => {
+      const definitive = e.message === "invalid_score" ||
+        /^(P0001|42501|22\w+|23\w+)$/.test((e as { code?: string }).code ?? "");
+      setUncertain(!definitive);
+      if (definitive) request.current = null;
+    },
+  });
+  const ai = useMutation({
+    mutationFn: () =>
+      invokeProvaAi<ReviewSuggestion>("prova-review", {
+        attempt_id: attemptId,
+        question_id: question.id,
+        answer_hash: review.answer_hash,
+        consent,
+      }),
+    onSuccess: (data) => {
+      setSuggestion(data);
+      setAiOpen(false);
+      void cache.invalidateQueries({ queryKey: ["review_ai_policy"] });
+    },
+  });
+  const locked = save.isPending || uncertain || saved || !finished ||
+    invalidDocument;
+  usePreventRemove(
+    (dirty || save.isPending || uncertain) && !saved && !exit,
+    ({ repeat }) => {
+      if (uncertain || save.isPending) setError(t("parentReview.uncertain"));
+      else setLeave(() => repeat);
+    },
+  );
+  useEffect(() => {
+    if (Platform.OS !== "web" || !dirty || saved) return;
+    const warn = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty, saved]);
+  useEffect(() => {
+    exit?.();
+  }, [exit]);
+  useEffect(() => {
+    if (saved) onNavigate(index + 1);
+  }, [saved, index, onNavigate]);
+  function change(fn: () => void) {
+    if (locked) return;
+    fn();
+    setDirty(true);
+    setError(null);
+    save.reset();
+  }
+  function navigate(next: number) {
+    if (save.isPending || uncertain) {
+      return setError(t("parentReview.uncertain"));
+    }
+    if (dirty) setLeave(() => () => onNavigate(next));
+    else onNavigate(next);
+  }
+  const source = (
+    <View style={{ gap: 12 }}>
+      <QuestionMedia questionId={question.id} notebook maxImageHeight={130} />
+      {context.data
+        ? (
+          <>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ expanded: commonOpen }}
+              onPress={() => setCommonOpen(!commonOpen)}
+              style={s.key}
+            >
+              <Text style={[s.bold, { flex: 1 }]}>{context.data.title}</Text>
+              <ChevronDown size={18} color={p.purple} />
+            </Pressable>
+            {commonOpen && <Text style={s.copy}>{context.data.body}</Text>}
+          </>
+        )
+        : null}
+      <Text selectable style={s.bold}>
+        {context.data?.prompt ?? question.stem}
+      </Text>
+      {!isOpen &&
+        choices.map((choice) => (
+          <View
+            key={choice.key}
+            style={[s.row, {
+              padding: 10,
+              borderRadius: 16,
+              backgroundColor: choice.key === answer?.answer_key
+                ? p.lilac
+                : "transparent",
+            }]}
+          >
+            <Text style={s.bold}>{choice.key}</Text>
+            <Text style={[s.copy, { flex: 1 }]}>{choice.text}</Text>
+          </View>
+        ))}
+      <Pressable
+        accessibilityRole="button"
+        accessibilityState={{ expanded: keyOpen }}
+        onPress={() => setKeyOpen(!keyOpen)}
+        style={s.key}
+      >
+        <ChevronDown size={18} color={p.purple} />
+        <Text style={s.bold}>{t("parentReview.key")}</Text>
+      </Pressable>
+      {keyOpen
+        ? (
+          <View style={s.hint}>
+            <Text selectable style={s.copy}>
+              {question.expected_answer ??
+                choices.find((choice) => choice.key === question.correct_key)
+                  ?.text ??
+                question.correct_key}
+            </Text>
+            <Text selectable style={s.copy}>{question.solution}</Text>
+          </View>
+        )
+        : null}
+    </View>
+  );
+  const assessment = (
+    <View style={{ gap: 14 }}>
+      <Text style={s.heading}>{t("parentReview.assessment")}</Text>
+      {isOpen
+        ? (
+          <View style={s.row}>
+            <View style={{ flex: 1 }}>
+              <Field
+                label={t("parentReview.score")}
+                value={score}
+                onChangeText={(v) => change(() => setScore(v))}
+                keyboardType="number-pad"
+                maxLength={3}
+                editable={!locked}
+                placeholder="0–100"
+              />
+            </View>
+            <Text style={s.heading}>/ 100</Text>
+          </View>
+        )
+        : (
+          <Text style={s.copy}>
+            {t(
+              answer?.answer_key
+                ? answer.is_correct ? "prova.ai.correct" : "prova.ai.incorrect"
+                : "prova.ai.unanswered",
+            )}
+            {answer?.answer_key ? ` · ${answer.answer_key}` : ""}
+          </Text>
+        )}
+      <Field
+        label={t("parentReview.feedback")}
+        value={feedback}
+        onChangeText={(v) => change(() => setFeedback(v))}
+        editable={!locked}
+        maxLength={4000}
+        multiline
+        style={{ minHeight: 90 }}
+      />
+      <Text style={s.small}>{t("parentReview.visibleToChild")}</Text>
+      {isOpen
+        ? (
+          <>
+            <SatinButton
+              title={t("parentReview.askAi")}
+              secondary
+              disabled={locked || aiRemaining === null || aiRemaining <= 0 ||
+                ai.isPending}
+              onPress={() => setAiOpen(true)}
+              icon={<Sparkles size={20} color={p.purple} />}
+            />
+            <Text style={s.small}>
+              {aiRemaining === null
+                ? t("parentReview.aiUnavailable")
+                : t("parentReview.aiRemaining", { count: aiRemaining })}
+            </Text>
+          </>
+        )
+        : null}
+      {suggestion
+        ? (
+          <View style={s.hint}>
+            <Text style={s.bold}>{t("parentReview.aiProposal")}</Text>
+            <Text style={s.copy}>
+              {suggestion.result.score === null
+                ? t("parentReview.unscored")
+                : t("parentReview.aiScore", { score: suggestion.result.score })}
+            </Text>
+            <Text style={s.copy}>{suggestion.result.feedback}</Text>
+            {suggestion.result.evidence.map((e, i) => (
+              <Text style={s.copy} key={i}>• {e}</Text>
+            ))}
+            <Text style={s.copy}>{suggestion.result.next_step}</Text>
+            {!!suggestion.result.limitation && (
+              <Text style={s.small}>{suggestion.result.limitation}</Text>
+            )}
+            <SatinButton
+              title={t("parentReview.takeDraft")}
+              secondary
+              disabled={locked || !suggestion.result.readable ||
+                suggestion.result.score === null}
+              onPress={() =>
+                change(() => {
+                  setScore(String(suggestion.result.score));
+                  setFeedback(suggestion.result.feedback);
+                  setAppliedAi(suggestion.id);
+                })}
+            />
+          </View>
+        )
+        : null}
+    </View>
+  );
+  return (
+    <SafeAreaView style={s.safe} edges={["top", "bottom", "left", "right"]}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <View style={s.header}>
+          <IconButton
+            label={t("common.back")}
+            onPress={() =>
+              navigate(-1)}
+          >
+            <ArrowLeft color={p.ink} size={22} />
+          </IconButton>
+          <Image
+            source={require(
+              "../../../../../packages/assets/brand/growing-friend/logo.png",
+            )}
+            style={{ width: 110, height: 42, resizeMode: "contain" }}
+          />
+          {wide && (
+            <Text style={[s.heading, { flex: 1 }]}>
+              {t("parentReview.title", { name: childName })}
+            </Text>
+          )}
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t("parentReview.pickQuestion")}
+            onPress={() =>
+              setPicker(true)}
+            style={!wide ? { marginLeft: "auto" } : undefined}
+          >
+            <Text style={s.tag}>{index + 1} / {count}</Text>
+          </Pressable>
+          {wide && (
+            <SatinButton
+              title={t("parentReview.summary")}
+              secondary
+              onPress={() => navigate(-1)}
+              icon={<ChartNoAxesCombined size={20} color={p.ink} />}
+            />
+          )}
+        </View>
+        {!wide && (
+          <>
+            <Text style={[s.heading, { paddingHorizontal: 20 }]}>
+              {t("parentReview.title", { name: childName })}
+            </Text>
+            <View style={s.tabs}>
+              {(["solution", "assessment"] as const).map((key) => (
+                <Pressable
+                  key={key}
+                  accessibilityRole="tab"
+                  accessibilityState={{ selected: tab === key }}
+                  onPress={() => setTab(key)}
+                  style={[s.tab, tab === key && { backgroundColor: p.purple }]}
+                >
+                  <Text
+                    style={[s.bold, { color: tab === key ? "white" : p.ink }]}
+                  >
+                    {t(
+                      key === "assessment"
+                        ? "parentReview.assessmentTab"
+                        : "parentReview.solution",
+                    )}
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          </>
+        )}
+        {!finished && (
+          <Text style={s.notice}>{t("parentReview.inProgress")}</Text>
+        )}
+        <View style={[s.body, { flexDirection: wide ? "row" : "column" }]}>
+          {wide && !expanded
+            ? (
+              <ScrollView
+                style={s.sidebar}
+                contentContainerStyle={{ padding: 16, gap: 14 }}
+                keyboardShouldPersistTaps="handled"
+              >
+                {source}
+                {assessment}
+              </ScrollView>
+            )
+            : null}
+          {!wide && tab === "assessment"
+            ? (
+              <ScrollView
+                style={s.panel}
+                contentContainerStyle={{ padding: 16, gap: 20 }}
+                keyboardShouldPersistTaps="handled"
+              >
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityState={{ expanded: sourceOpen }}
+                  style={s.key}
+                  onPress={() => setSourceOpen(!sourceOpen)}
+                >
+                  <Text style={[s.bold, { flex: 1 }]}>
+                    {t("notebook.showQuestion")}
+                  </Text>
+                  <ChevronDown size={20} color={p.purple} />
+                </Pressable>
+                {sourceOpen && source}
+                {assessment}
+              </ScrollView>
+            )
+            : null}
+          <View
+            style={[s.panel, {
+              flex: 1,
+              display: !wide && tab !== "solution" ? "none" : "flex",
+            }]}
+          >
+            {wide
+              ? (
+                <View style={s.panelHead}>
+                  <Text style={[s.heading, { flex: 1 }]}>
+                    {t("parentReview.notebook", { name: childName })}
+                  </Text>
+                  <Toggle
+                    label={t("parentReview.myNotes")}
+                    value={showNotes}
+                    onChange={setShowNotes}
+                  />
+                  <IconButton
+                    label={t(expanded ? "notebook.restore" : "notebook.expand")}
+                    onPress={() => setExpanded(!expanded)}
+                  >
+                    {expanded
+                      ? <Minimize2 size={22} color={p.purple} />
+                      : <Maximize2 size={22} color={p.purple} />}
+                  </IconButton>
+                </View>
+              )
+              : (
+                <View style={{ padding: 10, gap: 8 }}>
+                  <View style={s.row}>
+                    <View style={{ width: 56 }}>
+                      <QuestionMedia
+                        questionId={question.id}
+                        compact
+                        maxImageHeight={48}
+                      />
+                    </View>
+                    <Pressable
+                      accessibilityRole="button"
+                      accessibilityState={{ expanded: sourceOpen }}
+                      style={[s.key, { flex: 1 }]}
+                      onPress={() => setSourceOpen(!sourceOpen)}
+                    >
+                      <Text style={[s.bold, { flex: 1, fontSize: 14 }]}>
+                        {t("notebook.showQuestion")}
+                      </Text>
+                      <ChevronDown size={18} color={p.purple} />
+                    </Pressable>
+                    <IconButton
+                      label={t(
+                        showNotes
+                          ? "parentReview.hideNotes"
+                          : "parentReview.showNotes",
+                      )}
+                      onPress={() => setShowNotes(!showNotes)}
+                    >
+                      {showNotes
+                        ? <Eye size={20} color={p.purple} />
+                        : <EyeOff size={20} color={p.muted} />}
+                    </IconButton>
+                  </View>
+                  {sourceOpen && (
+                    <ScrollView style={{ maxHeight: 180 }}>{source}</ScrollView>
+                  )}
+                </View>
+              )}
+            {!!answer?.answer_text && (
+              <ScrollView style={{ maxHeight: 150, margin: 12 }}>
+                <Text selectable style={s.copy}>{answer.answer_text}</Text>
+              </ScrollView>
+            )}
+            {!answer?.answer_text && !original?.elements.length && (
+              <Text style={s.notice}>{t("parentReview.noAnswer")}</Text>
+            )}
+            {invalidDocument
+              ? (
+                <Text accessibilityRole="alert" style={s.notice}>
+                  {t("parentReview.unknownDocument")}
+                </Text>
+              )
+              : (
+                <NotebookEditor
+                  document={document}
+                  underlay={original ?? emptyNotebook()}
+                  annotation
+                  showInk={showNotes}
+                  disabled={locked || !showNotes}
+                  onChange={(doc) => change(() => setDocument(doc))}
+                />
+              )}
+          </View>
+        </View>
+        {(error || save.error || uncertain) && (
+          <Text accessibilityRole="alert" style={s.error}>
+            {uncertain
+              ? t("parentReview.uncertain")
+              : error ?? provaErrorMessage(save.error)}
+          </Text>
+        )}
+        <View style={s.footer}>
+          <Text style={s.small}>
+            {t(
+              save.isPending
+                ? "parentReview.saving"
+                : (dirty || uncertain)
+                ? "parentReview.unsaved"
+                : review.revision > 0
+                ? "parentReview.saved"
+                : "parentReview.pending",
+            )}
+          </Text>
+          <View style={{ flex: 1 }} />
+          {wide && index > 0 && (
+            <IconButton
+              label={t("parentReview.previous")}
+              onPress={() => navigate(index - 1)}
+            >
+              <ArrowLeft color={p.purple} size={20} />
+            </IconButton>
+          )}
+          <SatinButton
+            title={t(
+              !wide && tab === "solution"
+                ? "parentReview.toAssessment"
+                : uncertain
+                ? "common.retry"
+                : !finished
+                ? "parentReview.next"
+                : index + 1 === count
+                ? "parentReview.saveFinish"
+                : "parentReview.saveNext",
+            )}
+            busy={save.isPending}
+            disabled={invalidDocument}
+            onPress={() => {
+              if (!wide && tab === "solution") setTab("assessment");
+              else if (!finished) navigate(index + 1);
+              else save.mutate();
+            }}
+            icon={<ArrowRight color="white" size={20} />}
+          />
+        </View>
+        <Modal
+          visible={picker}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setPicker(false)}
+        >
+          <View style={s.shade}>
+            <View style={s.dialog}>
+              <Text style={s.heading}>{t("parentReview.pickQuestion")}</Text>
+              <ScrollView contentContainerStyle={{ gap: 8 }}>
+                {Array.from(
+                  { length: count },
+                  (_, i) => (
+                    <SatinButton
+                      key={i}
+                      title={`${t("prova.ai.questionN", { n: i + 1 })} · ${
+                        t(`parentReview.state.${questionStates[i]}`)
+                      }`}
+                      secondary
+                      selected={i === index}
+                      onPress={() => {
+                        setPicker(false);
+                        if (i !== index) navigate(i);
+                      }}
+                    />
+                  ),
+                )}
+              </ScrollView>
+              <SatinButton
+                title={t("common.cancel")}
+                secondary
+                onPress={() => setPicker(false)}
+              />
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          visible={!!leave}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setLeave(null)}
+        >
+          <View style={s.shade}>
+            <View style={s.dialog}>
+              <Text style={s.heading}>{t("parentReview.leaveTitle")}</Text>
+              <Text style={s.copy}>{t("parentReview.leaveBody")}</Text>
+              <SatinButton
+                title={t("parentReview.stay")}
+                onPress={() => setLeave(null)}
+              />
+              <SatinButton
+                title={t("parentReview.discard")}
+                secondary
+                onPress={() => {
+                  setExit(() => leave);
+                  setLeave(null);
+                }}
+              />
+            </View>
+          </View>
+        </Modal>
+        <Modal
+          visible={aiOpen}
+          transparent
+          animationType="fade"
+          onRequestClose={() => {
+            if (!ai.isPending) setAiOpen(false);
+          }}
+        >
+          <View style={s.shade}>
+            <ScrollView
+              style={{
+                width: "100%",
+                maxWidth: 520,
+                maxHeight: "90%",
+                borderRadius: 26,
+                backgroundColor: p.cream,
+              }}
+              contentContainerStyle={{ padding: 24, gap: 16 }}
+            >
+              <Text style={s.heading}>{t("parentReview.askAi")}</Text>
+              <Text style={s.copy}>{t("parentReview.aiConsentBody")}</Text>
+              <Toggle
+                label={t("parentReview.aiConsent")}
+                value={consent}
+                onChange={setConsent}
+                disabled={ai.isPending}
+              />
+              <Text style={s.small}>
+                {t("parentReview.aiRemaining", { count: aiRemaining ?? 0 })}
+              </Text>
+              {ai.error && (
+                <Text style={s.error}>{provaErrorMessage(ai.error)}</Text>
+              )}
+              <SatinButton
+                title={t("parentReview.analyze")}
+                disabled={!consent}
+                busy={ai.isPending}
+                onPress={() => ai.mutate()}
+              />
+              <SatinButton
+                title={t("common.cancel")}
+                secondary
+                disabled={ai.isPending}
+                onPress={() => setAiOpen(false)}
+              />
+            </ScrollView>
+          </View>
+        </Modal>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
+}
+const s = StyleSheet.create({
+  safe: { flex: 1, backgroundColor: p.cream },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 18,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  heading: { fontFamily: "Nunito_800ExtraBold", fontSize: 25, color: p.ink },
+  bold: { fontFamily: "Nunito_700Bold", fontSize: 17, color: p.ink },
+  copy: {
+    fontFamily: "Nunito_600SemiBold",
+    fontSize: 17,
+    lineHeight: 25,
+    color: p.ink,
+  },
+  small: {
+    fontFamily: "Nunito_600SemiBold",
+    fontSize: 13,
+    lineHeight: 19,
+    color: p.muted,
+  },
+  row: { flexDirection: "row", alignItems: "center", gap: 12 },
+  tag: {
+    backgroundColor: p.lilac,
+    borderRadius: 22,
+    padding: 12,
+    fontFamily: "Nunito_700Bold",
+    color: p.ink,
+  },
+  tabs: {
+    margin: 16,
+    padding: 4,
+    backgroundColor: p.lilac,
+    borderRadius: 28,
+    flexDirection: "row",
+  },
+  tab: {
+    flex: 1,
+    minHeight: 48,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 24,
+  },
+  body: { flex: 1, minHeight: 0, gap: 12, paddingHorizontal: 12 },
+  sidebar: {
+    width: "32%",
+    flexBasis: "32%",
+    flexGrow: 0,
+    flexShrink: 0,
+    borderRadius: 26,
+    borderWidth: 1,
+    borderColor: p.line,
+  },
+  panel: {
+    minHeight: 0,
+    minWidth: 0,
+    borderRadius: 26,
+    borderWidth: 1,
+    borderColor: p.line,
+    overflow: "hidden",
+  },
+  panelHead: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    padding: 16,
+  },
+  key: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    minHeight: 48,
+    padding: 12,
+    backgroundColor: p.lilac,
+    borderRadius: 20,
+  },
+  hint: { backgroundColor: "#E7F5EE", borderRadius: 20, padding: 16, gap: 10 },
+  footer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    padding: 14,
+    borderTopWidth: 1,
+    borderColor: p.line,
+  },
+  notice: { fontFamily: "Nunito_600SemiBold", color: p.muted, padding: 12 },
+  error: { fontFamily: "Nunito_600SemiBold", color: "#9C3832", padding: 10 },
+  shade: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 24,
+    backgroundColor: "#20195170",
+  },
+  dialog: {
+    width: "100%",
+    maxWidth: 520,
+    maxHeight: "90%",
+    backgroundColor: p.cream,
+    borderRadius: 26,
+    padding: 24,
+    gap: 16,
+  },
+});

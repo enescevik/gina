@@ -106,10 +106,11 @@ const Ink = memo(
 /** The same renderer is used for writing, resuming and parent review. No executable markup. */
 export const NotebookPage = memo(
   function NotebookPage(
-    { document, width, grid = true }: {
+    { document, width, grid = true, transparent = false }: {
       document: NotebookDocument;
       width: number;
       grid?: boolean;
+      transparent?: boolean;
     },
   ) {
     const scale = width / 1000;
@@ -119,7 +120,7 @@ export const NotebookPage = memo(
         style={{
           width,
           height: width * 1.4,
-          backgroundColor: "#FFFEFA",
+          backgroundColor: transparent ? "transparent" : "#FFFEFA",
           overflow: "hidden",
         }}
       >
