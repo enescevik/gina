@@ -1,0 +1,25 @@
+{
+  "version": "0.1.0",
+  "buildNumber": "13",
+  "sourceCommit": "39ce6a33071e55e96d190f49e2c0896055795af4",
+  "build": {
+    "id": "a7a556b5-b20b-4b4d-b51b-87ad704e2875",
+    "status": "FINISHED"
+  },
+  "submission": {
+    "id": "a2489a2c-4f64-48f2-a167-a8eafd9b621a",
+    "status": "FINISHED"
+  },
+  "checkedAt": "2026-11-02T05:35:43.686850+00:00",
+  "apple": {
+    "processingState": "VALID",
+    "internalState": "IN_BETA_TESTING",
+    "expired": false
+  },
+  "betaNotesLanguage": "tr",
+  "knownLimitations": [
+    "SMTP and email OTP delivery not configured",
+    "AI live generation not verified",
+    "Google OAuth remains in Testing status"
+  ]
+}

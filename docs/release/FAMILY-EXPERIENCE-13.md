@@ -1,6 +1,6 @@
 # Aile deneyimi — yayın hazırlığı
 
-Bu paket TestFlight 12’den sonraki çalışmadır. PR #42 (`91ea2c5`) main’e alındı. 2 Kasım 2026 tarihinde iki migration ve `prova-generate`, `prova-grade`, `prova-plan`, `ai-weekly-summary`, `iap-verify`, `delete-account` üretime dağıtıldı. **Henüz yeni TestFlight yayını değildir.** Canlı Apple/Google girişi ve AI üretimi doğrulanmadan bu özellikler tamamlandı olarak işaretlenmez.
+Bu paket TestFlight 12’den sonraki çalışmadır. PR #42 (`91ea2c5`) main’e alındı. 2 Kasım 2026 tarihinde iki migration ve `prova-generate`, `prova-grade`, `prova-plan`, `ai-weekly-summary`, `iap-verify`, `delete-account` üretime dağıtıldı. **2 Kasım 2026: 0.1.0 (13) TestFlight’a yüklendi; Apple durumu VALID / IN_BETA_TESTING ve Team (Expo) grubunda 2 test kullanıcıya açık.** Canlı Apple/Google girişi ve AI üretimi doğrulanmadan bu özellikler tamamlandı olarak işaretlenmez.
 
 ## Değişen akışlar
 
@@ -20,7 +20,7 @@ Bu paket TestFlight 12’den sonraki çalışmadır. PR #42 (`91ea2c5`) main’e
 - Google Cloud projesi `gina-aile-enescevik` oluşturuldu. Google Auth Platform uygulama kaydı **GINA Aile**, dış kullanıcı ve test aşaması olarak kaydedildi; Google API Services User Data Policy kullanıcı onayıyla kabul edildi. `GINA Aile Supabase` adlı Web OAuth istemcisi oluşturuldu ve gizli değeri yalnız Supabase Google sağlayıcısına kaydedildi. Sağlayıcı etkin; test kullanıcı listesinde `enescevik@gmail.com` var. Google hâlâ Testing durumunda; genel yayın ve marka doğrulaması tamamlanmış değildir.
 - Supabase dönüş listesine `gina://auth-callback` ve `https://gina-aile-enescevik.expo.app/auth-callback` eklendi ve kaydedildi. Mevcut iki şifre sıfırlama adresi korundu.
 - Apple kişisel ekibi `689ZS375S5` altında `com.enescevik.gina` uygulamasında Sign in with Apple yeteneğinin zaten açık olduğu doğrulandı. `com.enescevik.gina.web` Services ID, Supabase alan adı/dönüş adresiyle kaydedildi. Yalnız Sign in with Apple yetkili `GINA Sign In` anahtarı oluşturuldu; anahtar kimliği `3SQWKXHAUJ`. Supabase sağlayıcısı etkin, Client IDs sırası `com.enescevik.gina.web,com.enescevik.gina`. Özel `.p8` dosyası repo dışında `/Users/enes/.config/gina/auth/AuthKey_3SQWKXHAUJ.p8` konumunda, dosya izni `0600`. Sunucu gizlisinin imzası yerelde doğrulandı; son geçerlilik tarihi **1 Mayıs 2027 04:24:42 UTC**. Bu tarihten önce aynı özel anahtarla yeni sunucu gizlisi üretilip Supabase’e kaydedilmeli; otomatik yenileme kurulmadı.
-- Canlı sağlayıcı kayıtları kaydedildi ve panelde ikisi de Enabled olarak doğrulandı. Supabase başlangıç adresinden Google hesap seçiciye ve Apple’ın “GINA Aile Web” giriş ekranına yönlendirme başarılı. Bu kontrol kullanıcı onayını, token değişimini, yeni hesap açılmasını veya uygulamaya dönüşü sınamaz; gerçek iPhone testi henüz yapılmadı. Canlı Expo web adresi hâlâ eski giriş ekranını gösteriyor; yeni web dağıtımı ve TestFlight derlemesi başlatılmadı.
+- Canlı sağlayıcı kayıtları kaydedildi ve panelde ikisi de Enabled olarak doğrulandı. Supabase başlangıç adresinden Google hesap seçiciye ve Apple’ın “GINA Aile Web” giriş ekranına yönlendirme başarılı. Bu kontrol kullanıcı onayını, token değişimini, yeni hesap açılmasını veya uygulamaya dönüşü sınamaz; gerçek iPhone testi henüz yapılmadı. Canlı Expo web adresi hâlâ eski giriş ekranını gösteriyor; yeni web dağıtımı yapılmadı. iOS 0.1.0 (13) TestFlight’a dağıtıldı; gerçek cihazda OAuth uçtan uca testi hâlâ bekliyor.
 - Kullanıcı GINA alan adı ve e-posta gönderim hizmetinin olmadığını bildirdi. Supabase FREE projesinde özel SMTP kapalı. Mevcut panel, e-posta şablonunu düzenlemek için özel SMTP veya ücretli plan istiyor; varsayılan Magic Link şablonu kod değil bağlantı gösteriyor. SMTP/gönderici kurulmadan kodla yeniden doğrulama tamamlandı sayılamaz. Bu çalışma ücretli abonelik veya alan adı satın almadı.
 
 ### 1. AI anahtarı
@@ -86,3 +86,9 @@ Yerel görsel kontroller tüm sunucu çağrıları taklit edilerek yapılır; ge
 Google giriş düğmesinde resmî renkli simge ve Google Sans Medium kullanılır; yalnız sağlayıcı düğmesine aittir, GINA’nın yazı tipini değiştirmez. Kaynak/lisans kayıtları `packages/assets/auth/google/manifest.json`, `OFL.txt` ve `TRADEMARKS.md` içindedir. [Google giriş düğmesi kuralları](https://developers.google.com/identity/branding-guidelines).
 
 Çocuk profil seçicisi, izin/PIN değişikliklerini ekran açıkken 30 saniyede bir kontrol eder; ilk profil yapılandırması bekleniyorsa süre 5 saniyedir. Arka planda periyodik kontrol yapmaz. Giriş reddedilirse profil bilgisi hemen yenilenir; sunucu izni her girişte kontrol eder.
+
+## TestFlight 13 yayın kaydı
+
+Kaynak commit: `39ce6a33071e55e96d190f49e2c0896055795af4`. Temiz, ayrı bir checkout üzerinden production profiliyle derlendi; çalışma klasöründeki yerel taslaklar korunup yüklemeye dahil edilmedi. EAS derleme ve gönderim FINISHED; Apple işleme VALID, iç test durumu IN_BETA_TESTING. Türkçe test notlarına SMTP/OTP ve canlı AI doğrulaması eksikleri eklendi. App Store genel yayını başlatılmadı.
+
+[TestFlight durum kaydı](testflight-13-status.json), [yapılandırma kontrolü](testflight-13-preflight.json).
