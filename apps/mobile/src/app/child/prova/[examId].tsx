@@ -1,6 +1,7 @@
+import { SerialWrites } from "@gina/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams, useFocusEffect, usePreventRemove } from "expo-router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AccessibilityInfo, AppState, Text, TextInput, View } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
@@ -41,6 +42,7 @@ export default function TakeExamScreen() {
   const [drafts, setDrafts] = useState<Record<string, Answer>>({});
   const [leaveAction, setLeaveAction] = useState<(() => void) | null>(null);
   const [allowExit, setAllowExit] = useState(false);
+  const [unsavedAtDeadline, setUnsavedAtDeadline] = useState(false);
   const autoFinishAttempt = useRef<string | null>(null);
   const [now, setNow] = useState(() => Date.now());
   // Boş soru varken "Bitir"e basılınca satır içi onay gösterilir (web'de Alert yok).
@@ -97,22 +99,27 @@ export default function TakeExamScreen() {
     AccessibilityInfo.announceForAccessibility(t("prova.minutesLeft", { count: minutesLeft }));
   }, [minutesLeft, t]);
 
-  const submit = useMutation({
-    mutationFn: async ({ questionId, key, text }: { questionId: string; key?: string; text?: string }) => {
-      const { error } = await supabase.rpc("submit_exam_answer", {
-        p_attempt_id: attempt.data?.id ?? "",
-        p_question_id: questionId,
-        p_answer_key: key ?? undefined,
-        p_answer_text: text ?? undefined,
-      });
-      if (error) throw error;
-      return { questionId, key, text };
-    },
-    onSuccess: saved => queryClient.setQueryData<Record<string, Answer>>(["attempt_saved_answers", attempt.data?.id], previous => ({ ...previous, [saved.questionId]: { key: saved.key, text: saved.text } })),
-  });
+  const [, renderWrites] = useState(0);
+  const attemptId = attempt.data?.id;
+  const writes = useMemo(() => new SerialWrites<string, Answer>(async (questionId, answer) => {
+    if (!attemptId) throw new Error("attempt_not_found");
+    const { error } = await supabase.rpc("submit_exam_answer", {
+      p_attempt_id: attemptId, p_question_id: questionId,
+      p_answer_key: answer.key ?? undefined, p_answer_text: answer.text ?? undefined,
+    });
+    if (error) throw error;
+    queryClient.setQueryData<Record<string, Answer>>(["attempt_saved_answers", attemptId],
+      previous => ({ ...previous, [questionId]: answer }));
+  }, () => renderWrites(n => n + 1)), [attemptId, queryClient]);
+  const saving = writes.busy;
 
   const finish = useMutation({
     mutationFn: async () => {
+      try { await writes.flush(); }
+      catch (error) {
+        if (!deadline || Date.now() < deadline) throw error;
+        setUnsavedAtDeadline(true);
+      }
       const { data, error } = await supabase.rpc("finish_exam_attempt", { p_attempt_id: attempt.data?.id ?? "" });
       if (error) throw error;
       return data;
@@ -131,21 +138,13 @@ export default function TakeExamScreen() {
   const saved = q ? savedAnswers.data?.[q.id] : undefined;
   const choices = (q?.choices as Choice[] | null) ?? [];
   const unanswered = list.filter(item => !isAnswered(answers[item.id]));
-  const { mutate: saveAnswer, isPending: saving, isError: saveFailed } = submit;
   const result = finish.data ?? (attempt.data?.status !== "in_progress" ? attempt.data : null);
   const dirty = !!draft && (draft.key !== saved?.key || draft.text !== saved?.text);
 
   usePreventRemove(!allowExit && !result && (dirty || saving), ({ repeat }) => setLeaveAction(() => repeat));
 
-  // Save the latest draft after typing settles. One request at a time; errors need explicit retry/edit.
   useEffect(() => {
-    if (!q || !draft || !dirty || saving || saveFailed || timeUp || result) return;
-    const timer = setTimeout(() => saveAnswer({ questionId: q.id, ...draft }), 450);
-    return () => clearTimeout(timer);
-  }, [q, draft, dirty, saving, saveFailed, timeUp, result, saveAnswer]);
-
-  useEffect(() => {
-    if (!timeUp || saving || finish.isPending || result || !attempt.data || autoFinishAttempt.current === attempt.data.id) return;
+    if (!timeUp || finish.isPending || result || !attempt.data || autoFinishAttempt.current === attempt.data.id) return;
     autoFinishAttempt.current = attempt.data.id;
     finish.mutate();
   }, [timeUp, saving, finish, result, attempt.data]);
@@ -153,8 +152,8 @@ export default function TakeExamScreen() {
   function editAnswer(answer: Answer) {
     if (!q || timeUp || result) return;
     setConfirmFinish(false);
-    if (submit.isError) submit.reset();
     setDrafts(previous => ({ ...previous, [q.id]: answer }));
+    writes.enqueue(q.id, answer);
   }
 
   if (result) {
@@ -164,14 +163,12 @@ export default function TakeExamScreen() {
         <Text className="font-display text-2xl text-ink">{t("prova.resultMc", { correct: result.mc_correct ?? 0, total: result.mc_total ?? 0 })}</Text>
         <Text className="font-body text-center text-base text-gray-600">{t("prova.openEndedNote")}</Text>
       </View>
+      {unsavedAtDeadline ? <Text accessibilityRole="alert" className="font-body text-base text-danger">{t("learningReport.unsavedDeadline")}</Text> : null}
       <Button size="child" title={t("prova.backToList")} onPress={() => router.replace(actingChild ? "/parent/child-mode/prova" : "/child/prova")} />
     </Screen>;
   }
 
-  async function saveAndGo(nextIndex: number) {
-    try {
-      if (q && current && dirty) await submit.mutateAsync({ questionId: q.id, key: current.key, text: current.text });
-    } catch { return; } // Error stays visible; keep the draft and current question.
+  function saveAndGo(nextIndex: number) {
     if (timeUp) return;
     if (nextIndex >= list.length) {
       if (unanswered.length > 0) {
@@ -248,32 +245,32 @@ export default function TakeExamScreen() {
               />
             </View>
             <View className="flex-1">
-              <Button size="child" title={t("prova.finishAnyway")} disabled={submit.isPending || timeUp} loading={finish.isPending} onPress={() => finish.mutate()} />
+              <Button size="child" title={t("prova.finishAnyway")} disabled={saving || timeUp} loading={finish.isPending} onPress={() => finish.mutate()} />
             </View>
           </View>
         </View>
       ) : null}
-      <Text accessibilityLiveRegion="polite" className="font-body text-sm text-gray-600">{timeUp ? t("provaV5.timeEnded") : submit.error ? t("provaV5.saveFailed") : dirty || saving ? t("provaV5.savingAnswer") : t("provaV5.answerSaved")}</Text>
-      <ErrorText error={attempt.error ?? questions.error ?? savedAnswers.error ?? submit.error ?? finish.error} />
+      <Text accessibilityLiveRegion="polite" className="font-body text-sm text-gray-600">{timeUp ? t("provaV5.timeEnded") : writes.error ? t("provaV5.saveFailed") : dirty || saving ? t("provaV5.savingAnswer") : t("provaV5.answerSaved")}</Text>
+      <ErrorText error={attempt.error ?? questions.error ?? savedAnswers.error ?? writes.error ?? finish.error} />
       {attempt.error || questions.error || savedAnswers.error ? <Button title={t("common.retry")} onPress={() => { void attempt.refetch(); if (attempt.data) { void questions.refetch(); void savedAnswers.refetch(); } }} /> : null}
-      {submit.error && !timeUp && q && current ? <Button title={t("common.retry")} loading={submit.isPending} onPress={() => submit.mutate({ questionId: q.id, ...current })} /> : null}
+      {writes.error && !timeUp && q && current ? <Button title={t("common.retry")} onPress={() => { void writes.retry().catch(() => undefined); }} /> : null}
       {leaveAction ? <View className="gap-3 rounded-child bg-coral-light p-4">
         <Text className="font-body-bold text-base text-ink">{t("provaV5.unsaved")}</Text>
         <Button title={t("provaV5.keepWorking")} onPress={() => setLeaveAction(null)} />
-        <Button variant="ghost" title={t("provaV5.discard")} disabled={saving} onPress={() => { setAllowExit(true); leaveAction(); }} />
+        <Button variant="ghost" title={t("provaV5.discard")} onPress={() => { setAllowExit(true); leaveAction(); }} />
       </View> : null}
       {timeUp && finish.error ? <Button title={t("common.retry")} loading={finish.isPending} onPress={() => finish.mutate()} /> : null}
       <View className="flex-row gap-2">
         {index > 0 ? (
           <View className="flex-1">
-            <Button variant="secondary" size="child" title={t("prova.prev")} disabled={submit.isPending || finish.isPending || timeUp} onPress={() => void saveAndGo(index - 1)} />
+            <Button variant="secondary" size="child" title={t("prova.prev")} disabled={finish.isPending || timeUp} onPress={() => void saveAndGo(index - 1)} />
           </View>
         ) : null}
         <View className="flex-1">
           <Button
             size="child"
             title={index + 1 >= list.length ? t("prova.finish") : t("prova.next")}
-            loading={submit.isPending || finish.isPending}
+            loading={finish.isPending}
             disabled={!q || timeUp || !!savedAnswers.error}
             onPress={() => void saveAndGo(index + 1)}
           />

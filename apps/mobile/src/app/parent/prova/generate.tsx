@@ -19,10 +19,11 @@ import {supabase} from '@/lib/supabase';
 
 type Kind='mixed'|'multiple_choice'|'open_ended';
 type Difficulty='kolay'|'orta'|'orta_ustu'|'zor';
-interface Entitlement{scenarios:boolean;ai_generate_limit:number;ai_generate_used:number}
+interface Entitlement{scenarios:boolean;ai_generate_limit:number;ai_generate_used:number;ai_generate_remaining?:number}
 export default function GenerateQuestionsScreen(){
  const {t,i18n}=useTranslation();const {claims,session}=useSession();const qc=useQueryClient();const familyId=claims?.family_id??'';
  const [step,setStep]=useState(0);const [quick,setQuick]=useState(false);const interacted=useRef(false);
+ const [assessment,setAssessment]=useState<'practice'|'written'|'context'>('context');
  const [purpose,setPurpose]=useState<'bank'|'exam'>('exam');const [child,setChild]=useState<string|null>(null);
  const [subject,setSubject]=useState('');const [grade,setGrade]=useState('5');const [topic,setTopic]=useState('');
  const [blueprint,setBlueprint]=useState<string|null>(null);const [count,setCount]=useState('5');const [kind,setKind]=useState<Kind>('mixed');const [difficulty,setDifficulty]=useState<Difficulty>('orta_ustu');
@@ -36,14 +37,14 @@ export default function GenerateQuestionsScreen(){
  const ent=useQuery({queryKey:['prova_entitlement',familyId],queryFn:async()=>{const{data,error}=await supabase.rpc('get_prova_entitlement');if(error)throw error;return data as unknown as Entitlement;}});
  const blueprints=useQuery({queryKey:['blueprints',familyId],queryFn:async()=>{const{data,error}=await supabase.from('exam_blueprints').select('id,name,subject,grade,rows').order('created_at',{ascending:false});if(error)throw error;return data;}});
  const bp=blueprints.data?.find(b=>b.id===blueprint);
- const remaining=ent.data?Math.max(0,ent.data.ai_generate_limit-ent.data.ai_generate_used):0;
+ const remaining=ent.data?(ent.data.ai_generate_remaining??Math.max(0,ent.data.ai_generate_limit-ent.data.ai_generate_used)):0;
  const validPurpose=purpose==='bank'||!!child;
  const validTopic=!!bp||!!subject.trim()&&!!topic.trim()&&Number.isInteger(+grade)&&+grade>=1&&+grade<=12;
  const validCount=Number.isInteger(+count)&&+count>=1&&+count<=30;
  const validTime=!timed||Number.isInteger(+minutes)&&+minutes>=1&&+minutes<=180;
  const generate=useMutation({mutationFn:async()=>{
   if(!validPurpose||!validTopic||!validCount||!validTime)throw new Error(t('release.invalidForm'));
-  const body={subject:bp?.subject??subject.trim(),grade:bp?.grade??+grade,topic:topic.trim(),blueprint_id:bp?.id??null,count:+count,kind,difficulty,locale:i18n.language.startsWith('en')?'en':'tr'};
+  const body={subject:bp?.subject??subject.trim(),grade:bp?.grade??+grade,topic:topic.trim(),blueprint_id:bp?.id??null,count:+count,kind:assessment==='written'?'open_ended':kind,assessment,difficulty,locale:i18n.language.startsWith('en')?'en':'tr'};
   const key=JSON.stringify(body);if(generationRequest.current?.body!==key)generationRequest.current={body:key,id:Crypto.randomUUID()};
   return invokeProvaAi<GenerateResponse>('prova-generate',{...body,request_id:generationRequest.current.id});
  },onSuccess:data=>{setResult(data.questions);setSelected(data.questions.map(q=>q.id));setReviewed(false);examId.current=Crypto.randomUUID();void preferences.set(preference,'quick').catch(()=>{});void qc.invalidateQueries({predicate:q=>['prova_entitlement','question_bank','question_bank_count','booklet_library'].includes(String(q.queryKey[0]))});}});
@@ -87,7 +88,11 @@ export default function GenerateQuestionsScreen(){
    {!bp?<><View style={{flexDirection:'row',gap:12}}><View style={{flex:2}}><Field label={t('grades.subject')} value={subject} onChangeText={setSubject} maxLength={80} editable={!generate.isPending}/></View><View style={{flex:1}}><Field label={t('prova.grade')} value={grade} onChangeText={setGrade} keyboardType="number-pad" maxLength={2} editable={!generate.isPending}/></View></View><Field label={t('prova.topic')} value={topic} onChangeText={setTopic} maxLength={200} editable={!generate.isPending}/></>:null}
    <Field label={t('prova.ai.count')} value={count} onChangeText={setCount} keyboardType="number-pad" maxLength={2} editable={!generate.isPending}/>
    {bp?<Text style={parentStyles.muted}>{t('prova.ai.blueprintCountHint')}</Text>:null}
-   {choice<Kind>(['mixed','multiple_choice','open_ended'],kind,setKind,v=>t(v==='mixed'?'prova.ai.kindMixed':`prova.kind.${v}`))}
+   <Text style={parentStyles.title}>{t('assessment.title')}</Text>
+   {choice<'practice'|'written'|'context'>(['practice','written','context'],assessment,setAssessment,v=>t(`assessment.${v}`))}
+   <Text style={parentStyles.muted}>{t(`assessment.${assessment}Help`)}</Text>
+   <Text style={parentStyles.muted}>{t('assessment.disclaimer')}</Text>
+   {assessment!=='written'?choice<Kind>(['mixed','multiple_choice','open_ended'],kind,setKind,v=>t(v==='mixed'?'prova.ai.kindMixed':`prova.kind.${v}`)):null}
    {choice<Difficulty>(['kolay','orta','orta_ustu','zor'],difficulty,setDifficulty,v=>t(`prova.difficulty.${v}`))}
   </View>:null}
   {quick||step===2?<InfoCard title={t('experience.ai.review')} body={t('experience.ai.reviewBody')}><Text style={parentStyles.copy}>{[purpose==='exam'?children.data?.find(c=>c.id===child)?.name:t('experience.ai.bank'),bp?.subject??subject,bp?.name??topic,t(`prova.difficulty.${difficulty}`)].filter(Boolean).join(' · ')}</Text></InfoCard>:null}

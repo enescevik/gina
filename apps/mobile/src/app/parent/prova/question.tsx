@@ -1,6 +1,8 @@
+import * as Crypto from "expo-crypto";
+import { Toggle } from "@/components/ui/toggle";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
@@ -19,13 +21,17 @@ type Difficulty = Enums<"question_difficulty">;
 const DIFFICULTIES: Difficulty[] = ["kolay", "orta", "orta_ustu", "zor"];
 const KEYS = ["A", "B", "C", "D"] as const;
 
-/** Kütüphaneye elle soru ekleme (AI üretimi anahtar tanımlanınca ayrıca gelir). */
+/** Parent-owned question; optional contribution is a separate consented snapshot. */
 export default function QuestionScreen() {
   const { t } = useTranslation();
   const { claims, session } = useSession();
   const familyId = claims?.family_id ?? "";
   const queryClient = useQueryClient();
 
+  const request = useRef<{body:string;id:string;shareId:string}|null>(null);
+  const [share,setShare] = useState(false);
+  const [rights,setRights] = useState(false);
+  const [noPersonal,setNoPersonal] = useState(false);
   const [subject, setSubject] = useState("");
   const [grade, setGrade] = useState("5");
   const [topic, setTopic] = useState("");
@@ -43,7 +49,9 @@ export default function QuestionScreen() {
     mutationFn: async (andNew: boolean) => {
       if (!subject.trim() || !topic.trim() || !stem.trim() || !Number.isInteger(Number(grade)) || Number(grade) < 1 || Number(grade) > 12) throw new Error(t("prova.questionInvalid"));
       if (kind === "multiple_choice" && KEYS.some((k) => !choices[k]?.trim())) throw new Error(t("prova.choicesInvalid"));
-      const { error } = await supabase.from("question_bank").insert({
+      if (share && (!solution.trim() || (kind === "open_ended" && !expected.trim()))) throw new Error(t("library.answerRequired"));
+      if (share && (!rights || !noPersonal)) throw new Error(t("library.consentRequired"));
+      const body = {
         family_id: familyId,
         grade: Number(grade),
         subject: subject.trim(),
@@ -59,14 +67,22 @@ export default function QuestionScreen() {
         explanation: explanation.trim() || null,
         provenance: { generator: "parent", requested_by: session?.user.id ?? null },
         created_by: session?.user.id ?? null,
-      });
+      };
+      const fingerprint = JSON.stringify(body);
+      if (!request.current || request.current.body !== fingerprint) request.current = {body:fingerprint,id:Crypto.randomUUID(),shareId:Crypto.randomUUID()};
+      const {error} = await supabase.from("question_bank").upsert({...body,id:request.current.id},{onConflict:"id",ignoreDuplicates:true});
       if (error) throw error;
+      if (share) {
+        const {error:shareError}=await supabase.rpc("submit_question_contribution",{p_request_id:request.current.shareId,p_question_id:request.current.id,p_rights_confirmed:rights,p_no_personal_data:noPersonal});
+        if(shareError)throw shareError;
+      }
       return andNew;
     },
     onSuccess: (andNew) => {
       void queryClient.invalidateQueries({ queryKey: ["question_bank_count", familyId] });
       void queryClient.invalidateQueries({ predicate: query => ["question_bank", "question_bank_subjects", "booklet_library", "level_preview"].includes(String(query.queryKey[0])) });
       if (andNew) {
+        request.current=null;setShare(false);setRights(false);setNoPersonal(false);
         setStem("");
         setChoices({ A: "", B: "", C: "", D: "" });
         setExpected("");
@@ -84,16 +100,17 @@ export default function QuestionScreen() {
   return (
     <Screen title={t("prova.newQuestion")} subtitle={t("unified.questionHelp")}>
       <View style={parentStyles.card}>
+      <View pointerEvents={save.isPending ? "none" : "auto"} accessibilityElementsHidden={save.isPending}>
       <View className="flex-row gap-2">
         <View className="flex-[2]">
-          <Field label={t("grades.subject")} value={subject} onChangeText={setSubject} placeholder={t("grades.subjectPlaceholder")} />
+          <Field editable={!save.isPending} label={t("grades.subject")} value={subject} onChangeText={setSubject} placeholder={t("grades.subjectPlaceholder")} />
         </View>
         <View className="flex-1">
-          <Field label={t("prova.grade")} keyboardType="number-pad" maxLength={2} value={grade} onChangeText={setGrade} />
+          <Field editable={!save.isPending} label={t("prova.grade")} keyboardType="number-pad" maxLength={2} value={grade} onChangeText={setGrade} />
         </View>
       </View>
-      <Field label={t("prova.topic")} value={topic} onChangeText={setTopic} placeholder={t("provaV5.topicExample")} />
-      <Field label={t("prova.scenario")} value={scenario} onChangeText={setScenario} placeholder={t("provaV5.scenarioExample")} />
+      <Field editable={!save.isPending} label={t("prova.topic")} value={topic} onChangeText={setTopic} placeholder={t("provaV5.topicExample")} />
+      <Field editable={!save.isPending} label={t("prova.scenario")} value={scenario} onChangeText={setScenario} placeholder={t("provaV5.scenarioExample")} />
       <View className="flex-row flex-wrap gap-2">
         {(["multiple_choice", "open_ended"] as Kind[]).map((k) => (
           <Pressable key={k} accessibilityRole="button" onPress={() => setKind(k)} accessibilityState={{ selected: kind === k }} className={chip(kind === k)}>
@@ -108,7 +125,7 @@ export default function QuestionScreen() {
           </Pressable>
         ))}
       </View>
-      <Field label={t("prova.stem")} value={stem} onChangeText={setStem} multiline className="min-h-24" />
+      <Field editable={!save.isPending} label={t("prova.stem")} value={stem} onChangeText={setStem} multiline className="min-h-24" />
       {kind === "multiple_choice" ? (
         <View className="gap-2">
           {KEYS.map((k) => (
@@ -117,21 +134,29 @@ export default function QuestionScreen() {
                 <Text className={correct === k ? "font-body-bold text-white" : "font-body text-ink"}>{k}</Text>
               </Pressable>
               <View className="flex-1">
-                <Field label={t("provaV5.choice", { key: k })} value={choices[k] ?? ""} onChangeText={(v) => setChoices((c) => ({ ...c, [k]: v }))} />
+                <Field editable={!save.isPending} label={t("provaV5.choice", { key: k })} value={choices[k] ?? ""} onChangeText={(v) => setChoices((c) => ({ ...c, [k]: v }))} />
               </View>
             </View>
           ))}
           <Text className="font-body text-xs text-gray-500">{t("prova.correctHint")}</Text>
         </View>
       ) : (
-        <Field label={t("prova.expected")} value={expected} onChangeText={setExpected} multiline className="min-h-20" />
+        <Field editable={!save.isPending} label={t("prova.expected")} value={expected} onChangeText={setExpected} multiline className="min-h-20" />
       )}
-      <Field label={t("prova.solution")} value={solution} onChangeText={setSolution} multiline className="min-h-20" />
-      <Field label={t("prova.explanation")} value={explanation} onChangeText={setExplanation} multiline className="min-h-16" />
+      <Field editable={!save.isPending} label={t("prova.solution")} value={solution} onChangeText={setSolution} multiline className="min-h-20" />
+      <Field editable={!save.isPending} label={t("prova.explanation")} value={explanation} onChangeText={setExplanation} multiline className="min-h-16" />
+      <View style={parentStyles.card}>
+        <Toggle label={t("library.share")} value={share} onChange={setShare} disabled={save.isPending}/>
+        {share?<><Text style={parentStyles.muted}>{t("library.shareHelp")}</Text>
+          <Toggle label={t("library.rights")} value={rights} onChange={setRights} disabled={save.isPending}/>
+          <Toggle label={t("library.noPersonal")} value={noPersonal} onChange={setNoPersonal} disabled={save.isPending}/>
+        </>:null}
+      </View>
+      </View>
       <ErrorText error={save.error} />
       <Button title={t("prova.saveAndNew")} loading={save.isPending} onPress={() => save.mutate(true)} />
       <Button variant="secondary" title={t("common.save")} disabled={save.isPending} onPress={() => save.mutate(false)} />
-      <Button variant="ghost" title={t("common.cancel")} onPress={() => router.back()} />
+      <Button variant="ghost" title={t("common.cancel")} disabled={save.isPending} onPress={() => router.back()} />
     </View>
     </Screen>
   );

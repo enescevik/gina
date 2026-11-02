@@ -21,6 +21,8 @@ export interface ProvaEntitlement {
   scenarios: boolean;
   ai_generate_limit: number;
   ai_generate_used: number;
+  ai_generate_bonus?: number;
+  ai_generate_remaining?: number;
   ai_grading: boolean;
   study_plan: boolean;
   booklet: boolean;
@@ -35,6 +37,7 @@ export async function provaEntitlement(db: SupabaseClient, familyId: string): Pr
 export interface AiConfig {
   model: string;
   maxOutputTokens: number;
+  maxInputTokens?: number;
   promptVersion: string;
 }
 
@@ -43,21 +46,25 @@ export interface AiConfig {
  * Sıra: app_settings 'ai.enabled' (global) → ai_settings (paket başına) → plans.ai_model (yedek).
  */
 export async function resolveAi(db: SupabaseClient, plan: string, minOutputTokens: number): Promise<AiConfig | Response> {
-  const { data: global } = await db.from("app_settings").select("value").eq("key", "ai.enabled").maybeSingle();
+  const { data: global, error: globalError } = await db.from("app_settings").select("value").eq("key", "ai.enabled").maybeSingle();
+  if (globalError) return json({ error: "ai_configuration_unavailable" }, 503);
   if (global && global.value === false) return json({ error: "ai_disabled" }, 503);
 
   let model: string | null = null;
   let maxOutputTokens = 0;
   let promptVersion = "v1";
+  let maxInputTokens = 8000;
   const { data: setting, error: settingError } = await db
     .from("ai_settings")
-    .select("model_id, max_output_tokens, prompt_version, enabled")
+    .select("model_id, max_input_tokens, max_output_tokens, prompt_version, enabled")
     .eq("plan_code", plan)
     .maybeSingle();
-  if (!settingError && setting) {
+  if (settingError) return json({ error: "ai_configuration_unavailable" }, 503);
+  if (setting) {
     if (setting.enabled === false) return json({ error: "ai_disabled" }, 503);
     model = setting.model_id ?? null;
     maxOutputTokens = setting.max_output_tokens ?? 0;
+    maxInputTokens = setting.max_input_tokens ?? 8000;
     promptVersion = setting.prompt_version ?? "v1";
   }
   if (!model) {
@@ -65,7 +72,10 @@ export async function resolveAi(db: SupabaseClient, plan: string, minOutputToken
     model = planRow?.ai_model ?? null;
   }
   if (!model) return json({ error: "plan_has_no_ai", plan }, 402);
-  return { model, maxOutputTokens: Math.max(maxOutputTokens, minOutputTokens), promptVersion };
+  const { data: registered, error: modelError } = await db.from("ai_models").select("active,provider").eq("id", model).maybeSingle();
+  if (modelError) return json({ error: "ai_configuration_unavailable" }, 503);
+  if (!registered?.active || registered.provider !== "anthropic") return json({ error: "ai_model_unavailable" }, 503);
+  return { model, maxOutputTokens: maxOutputTokens || minOutputTokens, maxInputTokens, promptVersion };
 }
 
 export function apiKeyOrResponse(): string | Response {
@@ -91,6 +101,17 @@ export async function callClaude<T>(
   user: string,
   schema: Record<string, unknown>,
 ): Promise<AiResult<T>> {
+  // Check the configured input cap with the provider's tokenizer, not a character estimate.
+  // No retry here: uncertain network outcomes may already have incurred cost.
+  const headers = { "x-api-key": apiKey, "anthropic-version": "2023-06-01", "content-type": "application/json" };
+  if (new TextEncoder().encode(system + user).length > 1_000_000) throw new Error("ai_input_too_large");
+  const count = await fetch("https://api.anthropic.com/v1/messages/count_tokens", {
+    method: "POST", signal: AbortSignal.timeout(15_000), headers,
+    body: JSON.stringify({ model: cfg.model, system, messages: [{ role: "user", content: user }] }),
+  });
+  if (!count.ok) throw new Error(`anthropic_${count.status}`);
+  const tokens = (await count.json()).input_tokens;
+  if (!Number.isInteger(tokens) || tokens > (cfg.maxInputTokens ?? 8000)) throw new Error("ai_input_too_large");
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     signal: AbortSignal.timeout(115_000),
@@ -130,9 +151,13 @@ export async function logUsage(
     input_tokens: number | null;
     output_tokens: number | null;
     requested_by: string | null;
+    operation_id?: string;
   },
 ): Promise<void> {
-  await db.from("prova_ai_usage").insert(row);
+  const { error } = row.operation_id
+    ? await db.from("prova_ai_usage").upsert(row, { onConflict: "operation_id", ignoreDuplicates: true })
+    : await db.from("prova_ai_usage").insert(row);
+  if (error) throw new Error("usage_save_failed");
 }
 
 /** Yalnız resmî kaynak alan adları kalır (MEB / EBA); diğerleri atılır. */
@@ -142,7 +167,9 @@ export function officialUrls(urls: unknown): string[] {
     .filter((u): u is string => typeof u === "string")
     .filter((u) => {
       try {
-        const host = new URL(u).hostname.toLowerCase();
+        const url = new URL(u);
+        if (url.protocol !== "https:" || url.username || url.password) return false;
+        const host = url.hostname.toLowerCase();
         return host === "meb.gov.tr" || host.endsWith(".meb.gov.tr") || host === "eba.gov.tr" || host.endsWith(".eba.gov.tr");
       } catch {
         return false;

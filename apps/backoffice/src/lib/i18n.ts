@@ -19,7 +19,7 @@ export const tr = {
   nav: {
     dashboard: "Panel",
     ai: "AI ayarları",
-    overrides: "Komp'lar",
+    overrides: "Erişim hakları",
     questions: "Soru bankası",
     families: "Aileler",
     signOut: "Çıkış yap",

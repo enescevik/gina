@@ -22,6 +22,9 @@ interface AiSummary {
   guclu_konular?: string[];
   zayif_konular?: string[];
   genel_oneri?: string;
+  konu_analizi?: {konu:string;kanitlar:string[];gozlem:string;sonraki_adim:string}[];
+  calisma_adimlari?: {konu:string;etkinlik:string;sure_dk:number;basari_olcutu:string}[];
+  veli_destegi?:string[]; sinirlar?:string[];
 }
 
 interface AiDetails {
@@ -164,7 +167,29 @@ export default function AttemptReviewScreen() {
         </View>
       ) : null}
 
-      {finished && hasOpen ? (
+      {summary?.konu_analizi?.map((item, n) => <View key={`topic-${n}`} className="gap-3 rounded-parent border border-mist bg-white p-5">
+        <Text className="font-display text-xl text-ink">{item.konu}</Text>
+        <Text className="font-body text-base text-ink">{item.gozlem}</Text>
+        <Text className="font-body text-sm text-gray-600">{t("learningReport.evidence")}: {item.kanitlar.map(ref => ref.replace(/^M/, "")).join(", ")}</Text>
+        <Text className="font-body-bold text-base text-teal-dark">{item.sonraki_adim}</Text>
+      </View>)}
+      {summary?.calisma_adimlari?.length ? <View className="gap-4 rounded-parent bg-teal-light p-5">
+        <Text className="font-display text-xl text-ink">{t("learningReport.nextSteps")}</Text>
+        {summary.calisma_adimlari.map((step,n)=><View key={n} className="gap-1">
+          <Text className="font-body-bold text-base text-ink">{step.konu} · {step.sure_dk} {t("prova.min")}</Text>
+          <Text className="font-body text-base text-ink">{step.etkinlik}</Text>
+          <Text className="font-body text-sm text-teal-dark">{t("learningReport.check")}: {step.basari_olcutu}</Text>
+        </View>)}
+      </View> : null}
+      {summary?.veli_destegi?.length ? <View className="gap-2 rounded-parent bg-white p-5">
+        <Text className="font-display text-xl text-ink">{t("learningReport.parentHelp")}</Text>
+        {summary.veli_destegi.map((tip,n)=><Text key={n} className="font-body text-base text-ink">{tip}</Text>)}
+      </View> : null}
+      {summary?.sinirlar?.length ? <View className="gap-2 rounded-parent border border-mist p-4">
+        <Text className="font-body-bold text-base text-ink">{t("learningReport.limits")}</Text>
+        {summary.sinirlar.map((limit,n)=><Text key={n} className="font-body text-sm text-gray-600">{limit}</Text>)}
+      </View> : null}
+      {finished ? (
         ent?.ai_grading ? (
           <Button title={t("prova.ai.gradeWithAi")} loading={aiGrade.isPending} onPress={() => aiGrade.mutate()} />
         ) : (

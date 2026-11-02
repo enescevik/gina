@@ -69,6 +69,7 @@ export default function ParentProvaScreen() {
       </View>
       <View style={{flexDirection:"row",flexWrap:"wrap",gap:12}}>
         {([
+          ["library.title", "libraryHelp", "/parent/prova/library", Printer],
           ["prova.newQuestion", "questionHelp", "/parent/prova/question", PenLine],
           ["experience.ai.entry", "generateHelp", "/parent/prova/generate", Sparkles],
           ["prova.level.title", "levelHelp", "/parent/prova/level", Compass],

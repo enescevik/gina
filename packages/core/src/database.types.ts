@@ -1133,6 +1133,22 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
+            get_learning_library: {Args: Record<PropertyKey,never>; Returns:Json};
+            get_library_items: {Args:{p_collection_id:string}; Returns:Json};
+            redeem_library_item: {Args:{p_item_id:string}; Returns:string};
+            submit_question_contribution: {Args:{p_request_id:string;p_question_id:string;p_rights_confirmed:boolean;p_no_personal_data:boolean};Returns:string};
+            admin_learning_library: {Args:Record<PropertyKey,never>;Returns:Json};
+            admin_publish_library_item: {Args:{p_id:string;p_published:boolean};Returns:undefined};
+            admin_add_library_item: {Args:{p_collection_id:string;p_content:Json;p_publish?:boolean};Returns:string};
+            admin_review_contribution: {Args:{p_id:string;p_approve:boolean;p_collection_id:string;p_note:string};Returns:Json};
+            admin_save_library_collection: {Args:{p_id:string;p_title:string;p_description:string;p_grade:number;p_subject:string;p_curriculum:string;p_plans:Database["public"]["Enums"]["plan_code"][];p_status:string};Returns:string};
+            admin_set_ai_operation_policy: {Args:{p_action:string;p_plan:Database["public"]["Enums"]["plan_code"];p_enabled:boolean;p_monthly:number;p_per_minute:number;p_concurrent:number};Returns:undefined};
+            admin_retry_prova_generation: { Args: { p_id: string; p_reason: string }; Returns: undefined };
+            admin_save_contribution_reward: { Args: { p_id: string; p_title: string; p_threshold: number; p_kind: string; p_amount: number; p_plan: Database["public"]["Enums"]["plan_code"] | null; p_days: number; p_enabled: boolean }; Returns: string };
+            admin_set_library_quota: { Args: { p_plan: Database["public"]["Enums"]["plan_code"]; p_monthly: number }; Returns: undefined };
+            admin_ai_operations: { Args: Record<PropertyKey, never>; Returns: Json };
+            admin_retry_ai_operation: { Args: {p_id:string;p_reason:string}; Returns:undefined };
+            review_task_once: { Args: { p_request_id: string; p_completion_id: string; p_approve: boolean; p_expected_completed_at: string }; Returns: Json };
             get_setup_ai_entitlement: { Args: { p_family_id?: string }; Returns: Json };
 
             save_child_setup: { Args: { p_request_id: string; p_profile: Json; p_tasks?: Json; p_child_id?: string }; Returns: string };

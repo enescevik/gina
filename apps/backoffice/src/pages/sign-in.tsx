@@ -34,9 +34,10 @@ export default function SignIn() {
       <Head>
         <title>{`${t.signIn.title} · ${t.appName}`}</title>
       </Head>
-      <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-        <form onSubmit={onSubmit} className="w-full max-w-sm rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <h1 className="mb-1 text-lg font-semibold text-brand-dark">{t.appName}</h1>
+      <div className="flex min-h-screen items-center justify-center bg-[#FCFAF6] px-4">
+        <form onSubmit={onSubmit} className="w-full max-w-md rounded-3xl border border-purple-100 bg-white p-8 shadow-sm">
+          <div className="mb-6 rounded-2xl bg-[#E8F4EF] p-6">{/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/logo.png" alt="gina" width="154" height="64" className="mb-4 h-16 w-auto object-contain"/><h1 className="text-2xl font-bold text-brand-dark">Yönetim alanına hoş geldiniz</h1></div>
           <p className="mb-4 text-sm text-slate-500">{t.signIn.title}</p>
           {!isConfigured ? <Notice tone="error">{t.common.notConfigured}</Notice> : null}
           {error ? <Notice tone="error">{error}</Notice> : null}

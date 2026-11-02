@@ -1,30 +1,42 @@
-import { useQueryClient, type QueryKey } from "@tanstack/react-query";
-import { useEffect } from "react";
-
+import { focusManager, useQueryClient, type QueryKey } from "@tanstack/react-query";
+import { useFocusEffect } from "expo-router";
+import { useCallback } from "react";
 import { supabase } from "./supabase";
 
-// Each effect owns a distinct channel, including StrictMode remounts and stacked screens.
 let subscriptionId = 0;
 
-/**
- * Bir tablodaki değişiklikte verilen sorguları geçersiz kılar (Realtime yalnız sinyal taşır, veri taşımaz).
- * `filter` PostgREST biçimindedir: "child_id=eq.<uuid>".
- */
+/** A socket is a hint, not a delivery guarantee. Reconcile on route focus and
+ * subscription/reconnection; coalesce bursts and stop listening on hidden routes. */
 export function useRealtimeInvalidate(table: string, filter: string | null, queryKeys: QueryKey[]) {
-  const queryClient = useQueryClient();
+  const client = useQueryClient();
   const keysJson = JSON.stringify(queryKeys);
-
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     if (!filter) return;
+    let alive = true;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let connected = false;
     const keys = JSON.parse(keysJson) as QueryKey[];
-    const channel = supabase
-      .channel(`rt:${table}:${filter}:${++subscriptionId}`)
-      .on("postgres_changes", { event: "*", schema: "public", table, filter }, () => {
-        for (const key of keys) void queryClient.invalidateQueries({ queryKey: key });
-      })
-      .subscribe();
-    return () => {
-      void supabase.removeChannel(channel);
+    const refresh = () => {
+      if (!alive || !focusManager.isFocused()) return;
+      for (const key of keys) void client.invalidateQueries({ queryKey: key });
     };
-  }, [table, filter, keysJson, queryClient]);
+    const schedule = () => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(refresh, 120);
+    };
+    refresh();
+    const channel = supabase.channel(`rt:${table}:${filter}:${++subscriptionId}`)
+      .on("postgres_changes", { event: "*", schema: "public", table, filter }, schedule)
+      .subscribe(status => {
+        connected = status === "SUBSCRIBED";
+        if (connected) schedule();
+      });
+    const resume = focusManager.subscribe(focused => { if (focused) schedule(); });
+    // Only fall back while realtime is unavailable; never poll in the background.
+    const fallback = setInterval(() => { if (!connected) refresh(); }, 30_000);
+    return () => {
+      alive = false; if (timer) clearTimeout(timer);
+      clearInterval(fallback); resume(); void supabase.removeChannel(channel);
+    };
+  }, [table, filter, keysJson, client]));
 }
