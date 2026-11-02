@@ -909,6 +909,110 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"group_exam_entries": {
+                  Row: {
+                    "alias": string,"child_id": string,"consent_version": string,"created_at": string,"enrolled_by": string | null,"exam_id": string,"family_id": string,"group_id": string,"id": string,"ranking_consent": boolean
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "alias": string,"child_id": string,"consent_version": string,"created_at"?: string,"enrolled_by"?: string | null,"exam_id": string,"family_id": string,"group_id": string,"id"?: string,"ranking_consent"?: boolean
+                  }
+                  Update: {
+                    "alias"?: string,"child_id"?: string,"consent_version"?: string,"created_at"?: string,"enrolled_by"?: string | null,"exam_id"?: string,"family_id"?: string,"group_id"?: string,"id"?: string,"ranking_consent"?: boolean
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "group_exam_entries_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "group_exam_entries_exam_id_fkey"
+      columns: ["exam_id"]
+isOneToOne: true
+      referencedRelation: "exams"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "group_exam_entries_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "group_exam_entries_group_id_fkey"
+      columns: ["group_id"]
+isOneToOne: false
+      referencedRelation: "group_exams"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"group_exam_entry_questions": {
+                  Row: {
+                    "entry_id": string,"ord": number,"question_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "entry_id": string,"ord": number,"question_id": string
+                  }
+                  Update: {
+                    "entry_id"?: string,"ord"?: number,"question_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "group_exam_entry_questions_entry_id_fkey"
+      columns: ["entry_id"]
+isOneToOne: false
+      referencedRelation: "group_exam_entries"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "group_exam_entry_questions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: true
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"group_exam_questions": {
+                  Row: {
+                    "content": NonNullable<Json>,"group_id": string,"ord": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "content": NonNullable<Json>,"group_id": string,"ord": number
+                  }
+                  Update: {
+                    "content"?: NonNullable<Json>,"group_id"?: string,"ord"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "group_exam_questions_group_id_fkey"
+      columns: ["group_id"]
+isOneToOne: false
+      referencedRelation: "group_exams"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"group_exams": {
+                  Row: {
+                    "collection_id": string,"created_at": string,"created_by": string | null,"creation_intent": NonNullable<Json>,"curriculum_version": string,"duration_minutes": number,"ends_at": string,"grade": number,"id": string,"plans": (Database["public"]['Enums']["plan_code"])[],"starts_at": string,"status": string,"subject": string,"title": string,"version_hash": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "collection_id": string,"created_at"?: string,"created_by"?: string | null,"creation_intent": NonNullable<Json>,"curriculum_version": string,"duration_minutes": number,"ends_at": string,"grade": number,"id": string,"plans": (Database["public"]['Enums']["plan_code"])[],"starts_at": string,"status"?: string,"subject": string,"title": string,"version_hash": string
+                  }
+                  Update: {
+                    "collection_id"?: string,"created_at"?: string,"created_by"?: string | null,"creation_intent"?: NonNullable<Json>,"curriculum_version"?: string,"duration_minutes"?: number,"ends_at"?: string,"grade"?: number,"id"?: string,"plans"?: (Database["public"]['Enums']["plan_code"])[],"starts_at"?: string,"status"?: string,"subject"?: string,"title"?: string,"version_hash"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "group_exams_collection_id_fkey"
+      columns: ["collection_id"]
+isOneToOne: false
+      referencedRelation: "library_collections"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"holidays": {
                   Row: {
                     "country": string,"ends_on": string,"id": string,"kind": string,"name": NonNullable<Json>,"school_year": string | null,"starts_on": string
@@ -1211,14 +1315,14 @@ isOneToOne: false
                   ]
                 },"plans": {
                   Row: {
-                    "ai_model": string | null,"ai_weekly": boolean,"code": Database["public"]['Enums']["plan_code"],"history_days": number | null,"library_monthly": number,"max_active_tasks_per_child": number | null,"max_children": number,"max_devices": number | null,"max_notes": number | null,"name_i18n": NonNullable<Json>,"prova_ai_generate_monthly": number,"prova_ai_grading": boolean,"prova_booklet": boolean,"prova_monthly_exams": number | null,"prova_scenarios": boolean,"prova_study_plan": boolean,"setup_ai_monthly": number,"sort_order": number
+                    "ai_model": string | null,"ai_weekly": boolean,"code": Database["public"]['Enums']["plan_code"],"cohort_monthly": number,"history_days": number | null,"library_monthly": number,"max_active_tasks_per_child": number | null,"max_children": number,"max_devices": number | null,"max_notes": number | null,"name_i18n": NonNullable<Json>,"prova_ai_generate_monthly": number,"prova_ai_grading": boolean,"prova_booklet": boolean,"prova_monthly_exams": number | null,"prova_scenarios": boolean,"prova_study_plan": boolean,"setup_ai_monthly": number,"sort_order": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code": Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"library_monthly"?: number,"max_active_tasks_per_child"?: number | null,"max_children": number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n": NonNullable<Json>,"prova_ai_generate_monthly"?: number,"prova_ai_grading"?: boolean,"prova_booklet"?: boolean,"prova_monthly_exams"?: number | null,"prova_scenarios"?: boolean,"prova_study_plan"?: boolean,"setup_ai_monthly"?: number,"sort_order"?: number
+                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code": Database["public"]['Enums']["plan_code"],"cohort_monthly"?: number,"history_days"?: number | null,"library_monthly"?: number,"max_active_tasks_per_child"?: number | null,"max_children": number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n": NonNullable<Json>,"prova_ai_generate_monthly"?: number,"prova_ai_grading"?: boolean,"prova_booklet"?: boolean,"prova_monthly_exams"?: number | null,"prova_scenarios"?: boolean,"prova_study_plan"?: boolean,"setup_ai_monthly"?: number,"sort_order"?: number
                   }
                   Update: {
-                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code"?: Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"library_monthly"?: number,"max_active_tasks_per_child"?: number | null,"max_children"?: number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n"?: NonNullable<Json>,"prova_ai_generate_monthly"?: number,"prova_ai_grading"?: boolean,"prova_booklet"?: boolean,"prova_monthly_exams"?: number | null,"prova_scenarios"?: boolean,"prova_study_plan"?: boolean,"setup_ai_monthly"?: number,"sort_order"?: number
+                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code"?: Database["public"]['Enums']["plan_code"],"cohort_monthly"?: number,"history_days"?: number | null,"library_monthly"?: number,"max_active_tasks_per_child"?: number | null,"max_children"?: number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n"?: NonNullable<Json>,"prova_ai_generate_monthly"?: number,"prova_ai_grading"?: boolean,"prova_booklet"?: boolean,"prova_monthly_exams"?: number | null,"prova_scenarios"?: boolean,"prova_study_plan"?: boolean,"setup_ai_monthly"?: number,"sort_order"?: number
                   }
                   Relationships: [
 
@@ -1749,6 +1853,12 @@ isOneToOne: false
 "admin_ai_operations":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"admin_cancel_group_exam":
+{ Args: { "p_id": string,"p_reason": string }; Returns: undefined
+                           },
+"admin_create_group_exam":
+{ Args: { "p_collection": string,"p_end": string,"p_id": string,"p_items": (string)[],"p_minutes": number,"p_plans": (Database["public"]['Enums']["plan_code"])[],"p_start": string,"p_title": string }; Returns: string
+                           },
 "admin_dashboard":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
@@ -1760,6 +1870,12 @@ isOneToOne: false
                            },
 "admin_grant_override":
 { Args: { "p_ends_at": string,"p_family_id": string,"p_plan": Database["public"]['Enums']["plan_code"],"p_reason": string,"p_starts_at"?: string }; Returns: string
+                           },
+"admin_group_exams":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"admin_group_policy":
+{ Args: { "p_enabled": boolean,"p_limits": Json }; Returns: undefined
                            },
 "admin_learning_library":
 { Args: Record<PropertyKey, never>; Returns: Json
@@ -1981,6 +2097,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"enroll_group_exam":
+{ Args: { "p_child": string,"p_consent": boolean,"p_group": string,"p_ranking": boolean }; Returns: string
+                           },
 "expire_unlinked_learning_sources":
 { Args: Record<PropertyKey, never>; Returns: number
                            },
@@ -2037,6 +2156,12 @@ isOneToOne: false
 { Args: { "p_family_id"?: string }; Returns: {
               "expires_at": string,"plan": Database["public"]['Enums']["plan_code"],"source": string
             }[]
+                           },
+"get_group_exams":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"get_group_result":
+{ Args: { "p_child": string,"p_group": string }; Returns: Json
                            },
 "get_learning_library":
 { Args: Record<PropertyKey, never>; Returns: Json
@@ -2271,6 +2396,9 @@ isOneToOne: false
 "set_child_pin":
 { Args: { "p_child_id": string,"p_pin": string }; Returns: undefined
                            },
+"set_group_ranking_consent":
+{ Args: { "p_child": string,"p_enabled": boolean,"p_group": string }; Returns: undefined
+                           },
 "set_parent_pin":
 { Args: { "p_pin": string }; Returns: undefined
                            },
@@ -2305,6 +2433,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"settle_group_attempts":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
 "start_exam_attempt":
 { Args: { "p_exam_id": string }; Returns: {
               "ai_feedback": Json | null,

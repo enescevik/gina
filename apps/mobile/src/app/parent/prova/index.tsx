@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
-import { PenLine, Sparkles, ChartNoAxesCombined, Printer, Compass } from "lucide-react-native";
+import { PenLine, Sparkles, ChartNoAxesCombined, Printer, Compass, Users } from "lucide-react-native";
 import { Avatar } from "@/components/avatar";
 import { Collectible } from "@/components/collectible";
 import { SubjectIcon } from "@/components/subject-icon";
@@ -70,6 +70,7 @@ export default function ParentProvaScreen() {
       <View style={{flexDirection:"row",flexWrap:"wrap",gap:12}}>
         {([
           ["library.title", "libraryHelp", "/parent/prova/library", Printer],
+          ["group.title", "groupHelp", "/parent/prova/groups", Users],
           ["prova.newQuestion", "questionHelp", "/parent/prova/question", PenLine],
           ["experience.ai.entry", "generateHelp", "/parent/prova/generate", Sparkles],
           ["prova.level.title", "levelHelp", "/parent/prova/level", Compass],

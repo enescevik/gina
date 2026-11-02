@@ -14,6 +14,7 @@ const NAV = [
   { href: "/overrides", label: t.nav.overrides },
   { href: "/questions", label: t.nav.questions },
   { href: "/library", label: "GINA kütüphanesi" },
+  { href: "/groups", label: "Birlikte Prova" },
   { href: "/families", label: t.nav.families },
 ];
 

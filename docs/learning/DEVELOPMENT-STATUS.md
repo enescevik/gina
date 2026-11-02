@@ -70,3 +70,14 @@
 - Şema türleri izole, tüm migration’ların uygulanmış olduğu veritabanından yenilendi. SQL NULL kabul eden ödül-paketi parametresi için generator’ın gösteremediği null türü korundu.
 
 Son kontrol: 28 SQL dosyasında 504 kontrol, 46 Edge testi ve 25 core testi geçti. Mobil/backoffice lint ve tip denetimi, 11 Edge giriş noktasının tip denetimi ve backoffice üretim derlemesi geçti. Toplu prova, çok sağlayıcılı AI, destek/SSS ve diğer planlanan iş paketleri henüz tamamlanmadı.
+
+
+## Birlikte Prova — ilk uygulama
+
+- Yönetici yayımlanmış kütüphaneden aynı sınıf/müfredat sürümüne ait 3–50 çoktan seçmeli soruyla sabit bir ortak prova oluşturabilir. İlk sürüm görselsizdir; gözetimli veya resmî sınav iddiası yoktur. Başlangıç/bitiş, 5–120 dakika, dahil paketler ve aile başına aylık haklar yönetilir. Genel katılım varsayılan kapalıdır.
+- Veli katılımı onaylar; takma adla sıralama ayrı, varsayılan seçilmemiş tercihtir. Sonradan açılırken paylaşım tekrar açıklanır; kapatma hemen diğer ailelerin listesinden çıkarır, değişiklik denetim izine yazılır.
+- Aynı katılımın tekrarı ikinci deneme veya kota tüketmez. Aile kotası ve 1.000 katılımcı üst sınırı kilit altında kontrol edilir. Atanmış soru/cevap anahtarı/süre sabittir; aile hesabı silme akışı korunur.
+- Çocuk mevcut Prova ekranında çözer. Kişisel süre ortak bitişi aşamaz. İptal yeni cevapları durdurur ve katılım hakkını geri açar. Süresi dolan/iptal edilen açık denemeler 5 dakikalık görevle kapanır; tekrar kapanış ikinci sonuç üretmez. Üretimde bu zamanlanmış görevin kurulumu doğrulanmalıdır.
+- Sıralama ortak pencere sonunda açılır; doğru sayısı eşitse aynı sıradır, hız avantajı yoktur. İlk 50 ve ailenin kendi sonucu görünür. Gerçek ad/çocuk kimliği paylaşılmaz. Konu düzeyindeki doğru/boş bilgisi yalnız ilgili veliye açılır; birkaç sorudan genel yeterlilik sonucu çıkarılmaz. Ayrıntılı soru/AI incelemesine geçiş vardır.
+- Mobil katılım 390×844, sonuç 1280×800 ve backoffice hak formu sentetik web verileriyle incelendi. Önizlemeler `previews/group-*-fixture.png`; gerçek cihaz, gerçek sınav/AI sağlayıcısı ve bildirim teslimi testi değildir.
+- Son doğrulama: 29 SQL dosyasında 552 kontrol; mobil/backoffice lint ve tip denetimi, backoffice üretim derlemesi geçti. Üretime dağıtılmadı. Önceki bölümdeki toplu prova “henüz tamamlanmadı” ifadesi bu eklemeyle ilk uygulama düzeyinde ilerledi; üretim kabulü henüz yapılmadı.
