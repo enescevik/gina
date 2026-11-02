@@ -1,3 +1,4 @@
+import { NOTEBOOK_MODAL_PROPS } from "./notebook-layout";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Image,
@@ -740,6 +741,7 @@ export function ParentReviewWorkspace(
           />
         </View>
         <Modal
+          {...NOTEBOOK_MODAL_PROPS}
           visible={picker}
           transparent
           animationType="fade"
@@ -776,6 +778,7 @@ export function ParentReviewWorkspace(
           </View>
         </Modal>
         <Modal
+          {...NOTEBOOK_MODAL_PROPS}
           visible={!!leave}
           transparent
           animationType="fade"
@@ -801,6 +804,7 @@ export function ParentReviewWorkspace(
           </View>
         </Modal>
         <Modal
+          {...NOTEBOOK_MODAL_PROPS}
           visible={aiOpen}
           transparent
           animationType="fade"

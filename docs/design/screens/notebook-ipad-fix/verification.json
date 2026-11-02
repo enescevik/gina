@@ -1,0 +1,62 @@
+{
+  "source": "actual NotebookWorkspace and NotebookEditor; local QA fixture; no database writes",
+  "screenshots": "Expo web, not physical iPad screenshots",
+  "viewports": [
+    [
+      834,
+      1194
+    ],
+    [
+      1194,
+      834
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "checksPassed": [
+    "portrait tablet shows question and notebook together",
+    "landscape split view preserved",
+    "stroke, text and symbol survive portrait-landscape resizing",
+    "text draft survives resizing while dialog open",
+    "more tools to symbols uses one modal host",
+    "phone canvas remains visible after shrinking a drawing session",
+    "phone document has no horizontal overflow",
+    "generated iOS plist supports all four orientations"
+  ],
+  "iosInfoPlist": {
+    "UIRequiresFullScreen": false,
+    "UISupportedInterfaceOrientations": [
+      "UIInterfaceOrientationPortrait",
+      "UIInterfaceOrientationPortraitUpsideDown",
+      "UIInterfaceOrientationLandscapeLeft",
+      "UIInterfaceOrientationLandscapeRight"
+    ],
+    "UISupportedInterfaceOrientations~ipad": [
+      "UIInterfaceOrientationPortrait",
+      "UIInterfaceOrientationPortraitUpsideDown",
+      "UIInterfaceOrientationLandscapeLeft",
+      "UIInterfaceOrientationLandscapeRight"
+    ]
+  },
+  "nativeValidation": {
+    "status": "blocked on existing development binary",
+    "environment": "iPad Pro 11-inch M5 simulator, iOS 26.5",
+    "reason": "installed older development client lacks ExpoDocumentPicker; not counted as passing iOS QA",
+    "required": "fresh iOS binary; rotate with text/symbol/more menu open; verify window resize/full-screen on physical iPad"
+  },
+  "release": "not published in this change; native app configuration requires a new binary",
+  "manualChecks": [
+    "portrait question and drawing visible without switching tabs",
+    "open text, symbols and more repeatedly in landscape; no unsolicited rotation",
+    "rotate while typing; keep text and strokes",
+    "draw with finger and Pencil; page does not scroll while drawing",
+    "maximize iPad window using system window controls; content fills available bounds"
+  ],
+  "references": [
+    "https://reactnative.dev/docs/modal",
+    "https://docs.expo.dev/versions/v58.0.0/config/app/",
+    "https://developer.apple.com/documentation/technotes/tn3192-migrating-your-app-from-the-deprecated-uirequiresfullscreen-key"
+  ]
+}

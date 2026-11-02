@@ -22,7 +22,7 @@
       "infoPlist": {
         "CFBundleAllowMixedLocalizations": true
       },
-      "requireFullScreen": true,
+      "requireFullScreen": false,
       "usesAppleSignIn": true
     },
     "android": {

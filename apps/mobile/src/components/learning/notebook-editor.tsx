@@ -1,8 +1,12 @@
+import { SafeAreaView } from "react-native-safe-area-context";
+import { NOTEBOOK_MODAL_PROPS } from "./notebook-layout";
 import { useRouteMotion } from "@/lib/use-route-motion";
 import { useEffect, useRef, useState } from "react";
 import {
   type GestureResponderEvent,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -371,7 +375,11 @@ export function NotebookEditor({
             })}
         >
           <Type size={22} color={p.ink} />
-          {roomy && <Text style={s.toolLabel}>{t(annotation ? "parentReview.note" : "notebook.textShort")}</Text>}
+          {roomy && (
+            <Text style={s.toolLabel}>
+              {t(annotation ? "parentReview.note" : "notebook.textShort")}
+            </Text>
+          )}
         </ToolButton>
         {!annotation && screenWidth >= 360 && (
           <>
@@ -543,86 +551,171 @@ export function NotebookEditor({
         <Text style={s.hint} accessibilityLiveRegion="polite">{message}</Text>
       )}
       <Modal
-        visible={optionsOpen}
+        {...NOTEBOOK_MODAL_PROPS}
+        visible={optionsOpen || !!textEditor}
         transparent
         animationType={animation}
-        onRequestClose={() => setOptionsOpen(false)}
+        onRequestClose={() => {
+          setOptionsOpen(false);
+          setTextEditor(null);
+        }}
       >
-        <View style={s.scrim}>
-          <View style={[s.modal, { alignSelf: "center", marginTop: 80 }]}>
-            <View style={s.modalHeading}>
-              <Text style={s.title}>{t("notebook.moreTools")}</Text>
-              <ToolButton
-                label={t("notebook.close")}
-                onPress={() => setOptionsOpen(false)}
-              >
-                <X size={22} color={p.ink} />
-              </ToolButton>
-            </View>
-            <View style={[s.options, { flexWrap: "wrap" }]}>
-              <ToolButton
-                label={t("notebook.undo")}
-                disabled={disabled || !past.length}
-                onPress={() => {
-                  setFuture((f) => [document, ...f].slice(0, 25));
-                  onChange(past.at(-1)!);
-                  setPast((p) => p.slice(0, -1));
-                  setSelected([]);
-                }}
-              >
-                <Undo2 size={22} color={p.muted} />
-              </ToolButton>
-              <ToolButton
-                label={t("notebook.redo")}
-                disabled={disabled || !future.length}
-                onPress={() => {
-                  setPast((p) => [...p, document]);
-                  onChange(future[0]!);
-                  setFuture((f) => f.slice(1));
-                  setSelected([]);
-                }}
-              >
-                <Redo2 size={22} color={p.muted} />
-              </ToolButton>
-
-              <ToolButton
-                label={t("notebook.hand")}
-                active={tool === "hand"}
-                onPress={() => {
-                  finish();
-                  setTool("hand");
-                  setOptionsOpen(false);
-                }}
-              >
-                <Hand size={22} color={tool === "hand" ? "#fff" : p.ink} />
-              </ToolButton>
-              <ToolButton
-                label={t("notebook.zoom", { percent: zoom * 100 })}
-                onPress={() => {
-                  finish();
-                  setZoom((z) => z === 2 ? 1 : z + .5);
-                  setTool("hand");
-                  setOptionsOpen(false);
-                }}
-              >
-                <ZoomIn size={22} color={p.purple} />
-                <Text style={s.toolLabel}>{zoom * 100}%</Text>
-              </ToolButton>
-            </View>
-            <ToolButton
-              label={t("notebook.symbols")}
-              disabled={disabled}
-              onPress={() => {
-                setOptionsOpen(false);
-                setTextEditor({ text: "" });
-              }}
+        <KeyboardAvoidingView
+          style={s.scrim}
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+        >
+          <SafeAreaView style={{ flex: 1 }}>
+            <ScrollView
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={s.modalScroll}
             >
-              <Sigma size={22} color={p.ink} />
-              <Text style={s.toolLabel}>{t("notebook.symbolsShort")}</Text>
-            </ToolButton>
-            <Text style={s.hint}>{t(`notebook.hint.${tool}`)}</Text>
-          </View>
-        </View>
+              {textEditor
+                ? (
+                  <View style={s.modal}>
+                    <View style={s.modalHeading}>
+                      <Text style={s.title}>{t("notebook.addText")}</Text>
+                      <ToolButton
+                        label={t("common.cancel")}
+                        onPress={() => setTextEditor(null)}
+                      >
+                        <X size={24} color={p.ink} />
+                      </ToolButton>
+                    </View>
+                    <TextInput
+                      autoFocus
+                      multiline
+                      maxLength={200}
+                      value={textEditor?.text ?? ""}
+                      onChangeText={(text) =>
+                        setTextEditor((v) => v ? { ...v, text } : v)}
+                      accessibilityLabel={t("notebook.addText")}
+                      placeholder={t("notebook.textPlaceholder")}
+                      style={s.input}
+                    />
+                    <View style={s.symbols}>
+                      {symbols.map((symbol) => (
+                        <Pressable
+                          key={symbol}
+                          accessibilityRole="button"
+                          accessibilityLabel={t("notebook.insertSymbol", {
+                            symbol,
+                          })}
+                          onPress={() =>
+                            setTextEditor((v) =>
+                              v
+                                ? {
+                                  ...v,
+                                  text: (v.text + symbol).slice(0, 200),
+                                }
+                                : v
+                            )}
+                          style={s.symbol}
+                        >
+                          <Text style={s.symbolText}>{symbol}</Text>
+                        </Pressable>
+                      ))}
+                    </View>
+                    {message
+                      ? (
+                        <Text
+                          accessibilityRole="alert"
+                          style={{ color: "#BA5348", fontSize: 16 }}
+                        >
+                          {message}
+                        </Text>
+                      )
+                      : null}
+                    <SatinButton
+                      title={t("notebook.addToPage")}
+                      disabled={!textEditor?.text.trim()}
+                      onPress={saveText}
+                      icon={<Check size={21} color="#fff" />}
+                    />
+                  </View>
+                )
+                : (
+                  <View style={s.modal}>
+                    <View style={s.modalHeading}>
+                      <Text style={s.title}>{t("notebook.moreTools")}</Text>
+                      <ToolButton
+                        label={t("notebook.close")}
+                        onPress={() => setOptionsOpen(false)}
+                      >
+                        <X size={22} color={p.ink} />
+                      </ToolButton>
+                    </View>
+                    <View style={[s.options, { flexWrap: "wrap" }]}>
+                      <ToolButton
+                        label={t("notebook.undo")}
+                        disabled={disabled || !past.length}
+                        onPress={() => {
+                          setFuture((f) => [document, ...f].slice(0, 25));
+                          onChange(past.at(-1)!);
+                          setPast((p) => p.slice(0, -1));
+                          setSelected([]);
+                        }}
+                      >
+                        <Undo2 size={22} color={p.muted} />
+                      </ToolButton>
+                      <ToolButton
+                        label={t("notebook.redo")}
+                        disabled={disabled || !future.length}
+                        onPress={() => {
+                          setPast((p) => [...p, document]);
+                          onChange(future[0]!);
+                          setFuture((f) => f.slice(1));
+                          setSelected([]);
+                        }}
+                      >
+                        <Redo2 size={22} color={p.muted} />
+                      </ToolButton>
+
+                      <ToolButton
+                        label={t("notebook.hand")}
+                        active={tool === "hand"}
+                        onPress={() => {
+                          finish();
+                          setTool("hand");
+                          setOptionsOpen(false);
+                        }}
+                      >
+                        <Hand
+                          size={22}
+                          color={tool === "hand" ? "#fff" : p.ink}
+                        />
+                      </ToolButton>
+                      <ToolButton
+                        label={t("notebook.zoom", { percent: zoom * 100 })}
+                        onPress={() => {
+                          finish();
+                          setZoom((z) => z === 2 ? 1 : z + .5);
+                          setTool("hand");
+                          setOptionsOpen(false);
+                        }}
+                      >
+                        <ZoomIn size={22} color={p.purple} />
+                        <Text style={s.toolLabel}>{zoom * 100}%</Text>
+                      </ToolButton>
+                    </View>
+                    <ToolButton
+                      label={t("notebook.symbols")}
+                      disabled={disabled}
+                      onPress={() => {
+                        setOptionsOpen(false);
+                        setTextEditor({ text: "" });
+                      }}
+                    >
+                      <Sigma size={22} color={p.ink} />
+                      <Text style={s.toolLabel}>
+                        {t("notebook.symbolsShort")}
+                      </Text>
+                    </ToolButton>
+                    <Text style={s.hint}>{t(`notebook.hint.${tool}`)}</Text>
+                  </View>
+                )}
+            </ScrollView>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
       </Modal>
       <View
         onLayout={(e) => setViewportWidth(e.nativeEvent.layout.width)}
@@ -678,8 +771,19 @@ export function NotebookEditor({
               onResponderRelease={finish}
               onResponderTerminate={() => finish()}
             >
-              {underlay ? <View style={StyleSheet.absoluteFill}><NotebookPage document={underlay} width={width} /></View> : null}
-              <NotebookPage document={showInk ? shown : { ...shown, elements: [] }} width={width} grid={!underlay} transparent={!!underlay} />
+              {underlay
+                ? (
+                  <View style={StyleSheet.absoluteFill}>
+                    <NotebookPage document={underlay} width={width} />
+                  </View>
+                )
+                : null}
+              <NotebookPage
+                document={showInk ? shown : { ...shown, elements: [] }}
+                width={width}
+                grid={!underlay}
+                transparent={!!underlay}
+              />
               <Svg
                 pointerEvents="none"
                 width={width}
@@ -732,74 +836,6 @@ export function NotebookEditor({
           </ScrollView>
         </ScrollView>
       </View>
-      <Modal
-        visible={!!textEditor}
-        transparent
-        animationType={animation}
-        onRequestClose={() => setTextEditor(null)}
-      >
-        <View style={s.scrim}>
-          <ScrollView
-            keyboardShouldPersistTaps="handled"
-            contentContainerStyle={s.modalScroll}
-          >
-            <View style={s.modal}>
-              <View style={s.modalHeading}>
-                <Text style={s.title}>{t("notebook.addText")}</Text>
-                <ToolButton
-                  label={t("common.cancel")}
-                  onPress={() => setTextEditor(null)}
-                >
-                  <X size={24} color={p.ink} />
-                </ToolButton>
-              </View>
-              <TextInput
-                autoFocus
-                multiline
-                maxLength={200}
-                value={textEditor?.text ?? ""}
-                onChangeText={(text) =>
-                  setTextEditor((v) => v ? { ...v, text } : v)}
-                accessibilityLabel={t("notebook.addText")}
-                placeholder={t("notebook.textPlaceholder")}
-                style={s.input}
-              />
-              <View style={s.symbols}>
-                {symbols.map((symbol) => (
-                  <Pressable
-                    key={symbol}
-                    accessibilityRole="button"
-                    accessibilityLabel={t("notebook.insertSymbol", { symbol })}
-                    onPress={() =>
-                      setTextEditor((v) =>
-                        v ? { ...v, text: (v.text + symbol).slice(0, 200) } : v
-                      )}
-                    style={s.symbol}
-                  >
-                    <Text style={s.symbolText}>{symbol}</Text>
-                  </Pressable>
-                ))}
-              </View>
-              {message
-                ? (
-                  <Text
-                    accessibilityRole="alert"
-                    style={{ color: "#BA5348", fontSize: 16 }}
-                  >
-                    {message}
-                  </Text>
-                )
-                : null}
-              <SatinButton
-                title={t("notebook.addToPage")}
-                disabled={!textEditor?.text.trim()}
-                onPress={saveText}
-                icon={<Check size={21} color="#fff" />}
-              />
-            </View>
-          </ScrollView>
-        </View>
-      </Modal>
     </View>
   );
 }

@@ -1,3 +1,4 @@
+import { NOTEBOOK_MODAL_PROPS } from "./notebook-layout";
 import { useCallback, useRef, useState } from "react";
 import {
   type GestureResponderEvent,
@@ -76,6 +77,7 @@ export function DrawingPad(
   }
   return (
     <Modal
+      {...NOTEBOOK_MODAL_PROPS}
       visible
       animationType="none"
       onRequestClose={() => {
