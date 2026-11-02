@@ -1,0 +1,37 @@
+{
+  "environment": "Expo web; isolated gina_release13_audit; synthetic Auth/Storage proxy; real PostgREST writes",
+  "viewports": [
+    [
+      320,
+      568
+    ],
+    [
+      390,
+      844
+    ],
+    [
+      1280,
+      800
+    ]
+  ],
+  "checks": {
+    "parent_ink_separate": true,
+    "visibility_preserves_child": true,
+    "eraser_undo_redo": true,
+    "save_reload": true,
+    "discard_stay": true,
+    "lost_http_response_same_receipt": true,
+    "uncertain_save_locks_edits": true,
+    "invalid_101_rejected": true,
+    "child_published_feedback_visible": true,
+    "question_picker_states": true,
+    "phone_no_horizontal_overflow": true,
+    "ai_explicit_consent": true,
+    "ai_suggestion_does_not_change_score_before_take": true,
+    "ai_take_only_changes_draft": true
+  },
+  "ai_ui_test": "mocked suggestion; real production pipeline recorded separately",
+  "native_interaction_tested": false,
+  "ios_hermes_export": "passed",
+  "cleanup": "synthetic account removed; source tombstone removed in isolated DB only; flags restored"
+}

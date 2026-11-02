@@ -15,11 +15,12 @@ export interface QuestionMediaItem {
   height: number;
 }
 export function QuestionMedia(
-  { questionId, items, compact = false, notebook = false }: {
+  { questionId, items, compact = false, notebook = false, maxImageHeight }: {
     questionId: string;
     items?: QuestionMediaItem[];
     compact?: boolean;
     notebook?: boolean;
+    maxImageHeight?: number;
   },
 ) {
   const { claims } = useSession();
@@ -64,16 +65,18 @@ export function QuestionMedia(
             media={m}
             compact={compact}
             notebook={notebook}
+            maxImageHeight={maxImageHeight}
           />
         ))}
     </View>
   );
 }
 function SourceImage(
-  { media: m, compact, notebook }: {
+  { media: m, compact, notebook, maxImageHeight }: {
     media: QuestionMediaItem;
     compact: boolean;
     notebook?: boolean;
+    maxImageHeight?: number;
   },
 ) {
   const { t } = useTranslation();
@@ -107,7 +110,7 @@ function SourceImage(
             style={{
               width: "100%",
               aspectRatio: Math.max(.3, Math.min(4, m.width / m.height)),
-              maxHeight: compact ? 78 : notebook ? 190 : 420,
+              maxHeight: maxImageHeight ?? (compact ? 78 : notebook ? 190 : 420),
               backgroundColor: "transparent",
               borderRadius: 16,
             }}

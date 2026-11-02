@@ -1,4 +1,3 @@
-// Generated from the migrated audit database. admin_save_contribution_reward.p_plan accepts SQL NULL for non-plan rewards.
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
@@ -171,6 +170,100 @@ isOneToOne: true
       columns: ["family_id"]
 isOneToOne: false
       referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"answer_review_consents": {
+                  Row: {
+                    "actor_id": string | null,"answer_hash": string,"attempt_id": string,"created_at": string,"family_id": string,"id": string,"question_id": string,"version": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "actor_id"?: string | null,"answer_hash": string,"attempt_id": string,"created_at"?: string,"family_id": string,"id"?: string,"question_id": string,"version": string
+                  }
+                  Update: {
+                    "actor_id"?: string | null,"answer_hash"?: string,"attempt_id"?: string,"created_at"?: string,"family_id"?: string,"id"?: string,"question_id"?: string,"version"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "answer_review_consents_attempt_id_fkey"
+      columns: ["attempt_id"]
+isOneToOne: false
+      referencedRelation: "exam_attempts"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "answer_review_consents_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "answer_review_consents_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "answer_review_consents_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "answer_review_consents_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "standalone_question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"answer_review_suggestions": {
+                  Row: {
+                    "actor_id": string | null,"answer_hash": string,"attempt_id": string,"consent_version": string,"created_at": string,"family_id": string,"id": string,"image_hash": string | null,"job_id": string,"question_id": string,"result": NonNullable<Json>
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "actor_id"?: string | null,"answer_hash": string,"attempt_id": string,"consent_version": string,"created_at"?: string,"family_id": string,"id"?: string,"image_hash"?: string | null,"job_id": string,"question_id": string,"result": NonNullable<Json>
+                  }
+                  Update: {
+                    "actor_id"?: string | null,"answer_hash"?: string,"attempt_id"?: string,"consent_version"?: string,"created_at"?: string,"family_id"?: string,"id"?: string,"image_hash"?: string | null,"job_id"?: string,"question_id"?: string,"result"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "answer_review_suggestions_attempt_id_fkey"
+      columns: ["attempt_id"]
+isOneToOne: false
+      referencedRelation: "exam_attempts"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "answer_review_suggestions_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "answer_review_suggestions_job_id_fkey"
+      columns: ["job_id"]
+isOneToOne: false
+      referencedRelation: "ai_operation_jobs"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "answer_review_suggestions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "answer_review_suggestions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "answer_review_suggestions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "standalone_question_bank"
       referencedColumns: ["id"]
     }
                   ]
@@ -656,14 +749,14 @@ isOneToOne: false
                   ]
                 },"exam_answers": {
                   Row: {
-                    "ai_details": Json | null,"ai_feedback": string | null,"ai_score": number | null,"answer_document": Json | null,"answer_key": string | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"edit_revision": number,"feedback": string | null,"graded_at": string | null,"graded_by": string | null,"is_correct": boolean | null,"question_id": string,"score": number | null
+                    "ai_details": Json | null,"ai_feedback": string | null,"ai_score": number | null,"answer_document": Json | null,"answer_key": string | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"edit_revision": number,"feedback": string | null,"graded_at": string | null,"graded_by": string | null,"is_correct": boolean | null,"question_id": string,"review_ai_id": string | null,"review_document": Json | null,"review_revision": number,"score": number | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id": string,"score"?: number | null
+                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id": string,"review_ai_id"?: string | null,"review_document"?: Json | null,"review_revision"?: number,"score"?: number | null
                   }
                   Update: {
-                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id"?: string,"score"?: number | null
+                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id"?: string,"review_ai_id"?: string | null,"review_document"?: Json | null,"review_revision"?: number,"score"?: number | null
                   }
                   Relationships: [
                     {
@@ -689,6 +782,12 @@ isOneToOne: false
       columns: ["question_id"]
 isOneToOne: false
       referencedRelation: "standalone_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "review_ai_reference"
+      columns: ["review_ai_id"]
+isOneToOne: false
+      referencedRelation: "answer_review_suggestions"
       referencedColumns: ["id"]
     }
                   ]
@@ -2297,6 +2396,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"get_answer_review":
+{ Args: { "p_attempt_id": string,"p_question_id": string }; Returns: Json
+                           },
 "get_attempt_questions":
 { Args: { "p_exam_id": string }; Returns: {
               "choices": Json,"difficulty": Database["public"]['Enums']["question_difficulty"],"id": string,"kind": Database["public"]['Enums']["question_kind"],"ord": number,"stem": string
@@ -2311,6 +2413,9 @@ isOneToOne: false
 { Args: Record<PropertyKey, never>; Returns: {
               "expires_at": string,"selected_plan": Database["public"]['Enums']["plan_code"]
             }[]
+                           },
+"get_child_answer_reviews":
+{ Args: { "p_attempt_id": string }; Returns: Json
                            },
 "get_child_device_access":
 { Args: { "p_device_id"?: string }; Returns: Json
@@ -2349,6 +2454,9 @@ isOneToOne: false
                            },
 "get_question_media":
 { Args: { "p_question_ids": (string)[] }; Returns: Json
+                           },
+"get_review_ai_policy":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "get_saved_exam_answers":
 { Args: { "p_attempt_id": string }; Returns: {
@@ -2483,6 +2591,9 @@ isOneToOne: false
 "reserve_setup_ai":
 { Args: { "p_family_id": string,"p_hash": string,"p_id": string,"p_user_id": string }; Returns: Json
                            },
+"review_answer_fingerprint":
+{ Args: { "p_attempt_id": string,"p_question_id": string }; Returns: string
+                           },
 "review_task":
 { Args: { "p_approve": boolean,"p_completion_id": string }; Returns: {
               "child_id": string,
@@ -2512,6 +2623,9 @@ isOneToOne: false
 "revoke_device":
 { Args: { "p_device_id": string }; Returns: undefined
                            },
+"save_answer_review":
+{ Args: { "p_ai_id"?: string,"p_answer_hash": string,"p_attempt_id": string,"p_document": Json,"p_feedback": string,"p_question_id": string,"p_request_id": string,"p_revision": number,"p_score": number | null }; Returns: number
+                           },
 "save_child_setup":
 { Args: { "p_child_id"?: string,"p_profile": Json,"p_request_id": string,"p_tasks"?: Json }; Returns: string
                            },
@@ -2531,7 +2645,7 @@ isOneToOne: false
 { Args: { "p_child_id"?: string,"p_items": Json,"p_kind": string,"p_request_id": string }; Returns: Json
                            },
 "score_open_answer":
-{ Args: { "p_attempt_id": string,"p_feedback"?: string,"p_question_id": string,"p_score": number }; Returns: {
+{ Args: { "p_attempt_id": string,"p_feedback"?: string,"p_question_id": string,"p_score": number | null }; Returns: {
               "ai_feedback": Json | null,
 "child_id": string,
 "created_at": string,
