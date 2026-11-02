@@ -1,0 +1,34 @@
+{
+  "version": "0.1.0",
+  "buildNumber": "14",
+  "sourceCommit": "a8f53f26d2c1dfdfe9fe5b399b6572fd6f458d96",
+  "build": {
+    "id": "c31d8553-ac2b-486c-91be-ac630e67f0ed",
+    "status": "FINISHED"
+  },
+  "submission": {
+    "id": "5bae0467-d7c7-45fc-a70e-c2954cb45e91",
+    "status": "FINISHED"
+  },
+  "checkedAt": "2026-11-02T07:47:14.317138+00:00",
+  "apple": {
+    "processingState": "VALID",
+    "internalState": "IN_BETA_TESTING",
+    "expired": false
+  },
+  "backendMigrations": [
+    "20261102040000",
+    "20261102050000",
+    "20261102060000",
+    "20261102070000",
+    "20261102080000"
+  ],
+  "betaAccessExpires": "2026-12-02",
+  "knownLimitations": [
+    "ANTHROPIC_API_KEY not configured; live AI generation unverified",
+    "Physical iPhone 14 Pro Max and Android device verification pending",
+    "SMTP and email OTP delivery not configured",
+    "Google OAuth remains in Testing status",
+    "Legal publishing URL not configured; store purchase remains gated"
+  ]
+}
