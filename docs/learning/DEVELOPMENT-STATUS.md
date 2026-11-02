@@ -92,3 +92,15 @@ Son kontrol: 28 SQL dosyasında 504 kontrol, 46 Edge testi ve 25 core testi geç
 - Dekoratif SVG düğme zeminindeki `accessible=false` web DOM uyarısı giderildi; native erişilebilirlik ve web `aria-hidden` ayrı ele alındı.
 - Veritabanı lintindeki rastgele soru seçimi `STABLE` işaretlemesi `VOLATILE` düzeltildi; program/toplu prova boş dizi ilklemeleri açık türle tanımlandı. İzole DB public şema lintinde hata/uyarı kalmadı.
 - 30 SQL dosyasında 567 kontrol, 30 core testi geçti; mobil lint/tip denetimi geçti. Bağımlılık taramasındaki önceden kayıtlı Expo CLI Zod/deepmerge/minimatch/glob bulguları sürüyor. Gerçek cihaz/üretim ve diğer açık iş paketleri tamamlanmış sayılmıyor.
+
+
+## AI önerilerini birlikte kullanma ve soru araştırması
+
+- Görev, ödül ve çocuk kurulumunda üretilen üç fikrin biri, birkaçı veya tamamı seçilebilir. Seçilen görev/ödüllerin adı, yıldız değeri ve görev günleri ayrı düzenlenir; onayda toplam kayıt sayısı görünür. Seçim yeni AI üretimi değildir. Yeni fikir istemenin ayrı hak kullandığı açıklanır.
+- `save_setup_batch` veli/aile kontrolü, istek makbuzu, 1–3 öğe doğrulaması ve tek veritabanı işlemi kullanır. Aynı isteği tekrar göndermek ikinci kayıt oluşturmaz. Son öğe geçersizse veya paket görev sınırına takılırsa önceki öğeler de kaydedilmez. Çocuk kurulumunda mevcut atomik kayıt sürer.
+- Üretilen fikirler uygulama oturumunun sorgu önbelleğinde tutulur; sihirbazda geri dönmek otomatik olarak yeni AI çağrısı yapmaz. Bu kalıcı öneri geçmişi değildir; uygulama kapanıp açılmasına dayanıklı geçmiş henüz yok.
+- 390×844 telefon ve 1280×800 tablet web önizlemesinde üç öneri seçildi, birinin adı/yıldızı değiştirildi, üçü birlikte onay ekranında görüldü. Geri dönüşte düzenlemeler korundu; seçim ekranında önceki üretim yeniden gösterildi. `previews/ai-suggestions-{phone,tablet}-fixture.png` sentetik API ve İngilizce tarayıcı dilidir; Türkçe metinler i18n içinde. Gerçek veri kaydı, fiziksel cihaz ve sağlayıcı üretimi uçtan uca denenmedi.
+- 31 SQL dosyasında 579 kontrol, mobil tür/lint denetimi ve public şema lint geçti. Değişiklik üretime veya TestFlight’a dağıtılmadı.
+- OYSS, özgün soru kütüphanesi, ortak kaynaklı sorular, çözüm defteri ve gelişim raporu araştırması `reports/GINA soru ve defter deneyimi.md` içinde. 77 ilk kapsam hücresi × 20 = 1.540 aday hedefi `research_notes/GINA soru ve defter deneyimi/coverage-candidates.json` içinde; üretilen/onaylanan/yayımlanan soru 0. Bu liste bütün seçmeli/alan/sanat/spor derslerini kapsamaz.
+- Yerelde tanımlı Anthropic anahtarının salt okunur model listesi kontrolü 401 authentication_error verdi. Anahtar yazdırılmadı; ücretli toplu üretim başlatılmadı. Üretimdeki bağlantının aynı anahtar olduğu varsayılmadı.
+- Düzenlenebilir çocuk defteri, kaynak bölgesini kopyalama, sürümlü ortak soru seti, veli çizim/not katmanları ve yeni gelişim raporu bu teslimde uygulanmadı. Araştırma ve öneri, tamamlanmış özellik değildir.

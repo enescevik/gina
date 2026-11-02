@@ -422,21 +422,18 @@ export function ChildSetup({
             age={currentYear - Number(year)}
             grade={grade}
             interests={interests}
-            onChoose={(item) => {
-              setTasks((prev) => {
-                const without = prev.filter((task) => task.id !== "ai");
-                return [
-                  ...without,
-                  {
-                    id: "ai",
-                    title: item.title,
-                    icon: item.icon,
-                    stars: item.stars,
-                    days: [1, 2, 3, 4, 5],
-                    selected: true,
-                  },
-                ];
-              });
+            onChoose={(items) => {
+              setTasks((prev) => [
+                ...prev.filter((task) => !task.id.startsWith("ai-")),
+                ...items.map((item, index) => ({
+                  id: `ai-${index}`,
+                  title: item.title,
+                  icon: item.icon,
+                  stars: item.stars,
+                  days: [1, 2, 3, 4, 5],
+                  selected: true,
+                })),
+              ]);
             }}
           />
         </>

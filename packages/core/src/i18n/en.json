@@ -1421,11 +1421,11 @@
     "readTogether": "We read a picture book together",
     "aiIdeas": "A few ideas from AI",
     "aiPrivacy": "Only age band, grade and selected interests are used. Names, school names and birth year are never sent.",
-    "aiRemaining": "{{count}} suggestions remaining this month.",
+    "aiRemaining": "{{count}} idea generations remaining this month.",
     "aiPlan": "AI ideas are available with Plus and Pro. Beta testers can try them in Plans.",
     "aiPreparing": "Preparing ideas…",
     "aiGenerate": "Suggest three ideas",
-    "aiDraftOnly": "These are drafts. Select one and edit it; nothing is saved until the final confirmation.",
+    "aiDraftOnly": "These are drafts. Select the ideas you want and edit them; nothing is saved until the final confirmation.",
     "weekProgress": "My weekly progress",
     "childWeekEmpty": "There is no task planned for this day. You can choose a small habit together with your parent.",
     "childStudyEmpty": "A new discovery is on its way. A practice assigned by your parent will appear here.",
@@ -1613,5 +1613,11 @@
   "prova.ai.errors.group_answer_closed": "This group practice has ended or was cancelled. New answers cannot be saved.",
   "prova.ai.errors.answer_changed": "This answer changed on another screen. Keep a copy of your unsaved text, leave and reopen the practice to review the current answer. The older write did not overwrite it.",
   "prova.ai.errors.attempt_closed": "This practice is already complete. Return to the list to view the result.",
-  "prova.ai.errors.time_up": "Time is up. Answers saved within the time limit will be reviewed."
+  "prova.ai.errors.time_up": "Time is up. Answers saved within the time limit will be reviewed.",
+  "suggestions.multiHelp": "One generation covers all these ideas. Select one, several or all. Choosing and editing uses no extra AI allowance; generating new ideas does.",
+  "suggestions.useSelected": "Edit {{count}} selected ideas",
+  "suggestions.batchTitle": "{{count}} ideas ready together",
+  "suggestions.editHelp": "Edit each idea’s name, stars and applicable days separately. Nothing has been created yet.",
+  "suggestions.reviewHelp": "All selected ideas will be saved together. Tasks remain independent; rewards are not automatically earned.",
+  "suggestions.saveSelected": "Save {{count}} selected ideas"
 }

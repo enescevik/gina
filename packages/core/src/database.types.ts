@@ -2351,6 +2351,9 @@ isOneToOne: false
 "save_school_timetable":
 { Args: { "p_child_id": string,"p_lessons": Json,"p_revision": number,"p_settings": Json }; Returns: number
                            },
+"save_setup_batch":
+{ Args: { "p_child_id"?: string,"p_items": Json,"p_kind": string,"p_request_id": string }; Returns: Json
+                           },
 "score_open_answer":
 { Args: { "p_attempt_id": string,"p_feedback"?: string,"p_question_id": string,"p_score": number }; Returns: {
               "ai_feedback": Json | null,

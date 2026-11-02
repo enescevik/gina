@@ -1,13 +1,18 @@
+import { randomUUID } from "expo-crypto";
+import {
+  SuggestionBatch,
+  type SuggestionDraft,
+} from "@/components/setup/suggestion-batch";
 import { AiSuggestions } from "@/components/setup/ai-suggestions";
 import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Minus, Plus, Pencil } from "lucide-react-native";
+import { Minus, Pencil, Plus } from "lucide-react-native";
 import {
+  type IsoWeekday,
   localDateOf,
   taskTemplateInputSchema,
-  type IsoWeekday,
 } from "@gina/core";
 import { Avatar } from "@/components/avatar";
 import { TASK_ICON_SLUGS } from "@/components/task-icon";
@@ -16,9 +21,9 @@ import { Pressable } from "@/components/ui/pressable";
 import { IconButton, p, u } from "@/components/planner/ui";
 import type { PlannerChild } from "@/components/planner/timetable-editor";
 import { supabase } from "@/lib/supabase";
-import { SetupWizard, ChoiceCard } from "@/components/setup/wizard";
+import { ChoiceCard, SetupWizard } from "@/components/setup/wizard";
 import { TASK_STARTERS } from "@/components/setup/templates";
-import { TaskTile, StarReward } from "./task-visuals";
+import { StarReward, TaskTile } from "./task-visuals";
 const DAYS: IsoWeekday[] = [1, 2, 3, 4, 5, 6, 7];
 export function TaskForm({
   child,
@@ -43,8 +48,38 @@ export function TaskForm({
   const [choice, setChoice] = useState<string | null>(null);
   const [allIcons, setAllIcons] = useState(false);
   const saving = useRef(false);
+  const batchRequest = useRef({ payload: "", id: randomUUID() });
+  const [aiDrafts, setAiDrafts] = useState<SuggestionDraft[]>([]);
+  const validBatch = aiDrafts.length > 0 &&
+    aiDrafts.every((item) =>
+      item.title.trim().length > 0 && item.title.trim().length <= 80 &&
+      item.days.length > 0
+    );
   const add = useMutation({
     mutationFn: async () => {
+      if (choice === "ai") {
+        if (!validBatch) throw Error("invalid");
+        const items = aiDrafts.map(({ title, icon, stars, days }) => ({
+          title: title.trim(),
+          icon,
+          stars,
+          days,
+        }));
+        const payload = JSON.stringify(items);
+        if (
+          batchRequest.current.payload &&
+          batchRequest.current.payload !== payload
+        ) batchRequest.current.id = randomUUID();
+        batchRequest.current.payload = payload;
+        const { error } = await supabase.rpc("save_setup_batch", {
+          p_request_id: batchRequest.current.id,
+          p_kind: "task",
+          p_items: items,
+          p_child_id: child.id,
+        });
+        if (error) throw error;
+        return;
+      }
       const parsed = taskTemplateInputSchema.safeParse({
         child_id: child.id,
         title,
@@ -73,14 +108,14 @@ export function TaskForm({
       saving.current = false;
     },
   });
-  const summary =
-    days.length === 7
-      ? t("redesign.everyDay")
-      : days.map((d) => t(`weekday.${d}`)).join(" · ");
-  const valid =
-    step === 0
-      ? choice !== null
-      : !!title.trim() && title.trim().length <= 80 && days.length > 0;
+  const summary = days.length === 7
+    ? t("redesign.everyDay")
+    : days.map((d) => t(`weekday.${d}`)).join(" · ");
+  const valid = step === 0
+    ? choice !== null
+    : choice === "ai"
+    ? validBatch
+    : !!title.trim() && title.trim().length <= 80 && days.length > 0;
   return (
     <SetupWizard
       title={t("tasks.new")}
@@ -91,23 +126,23 @@ export function TaskForm({
       busy={add.isPending}
       valid={valid}
       onClose={onClose}
-      saveLabel={t("taskPremium.save")}
+      saveLabel={choice === "ai"
+        ? t("suggestions.saveSelected", { count: aiDrafts.length })
+        : t("taskPremium.save")}
       onSave={() => {
         if (saving.current) return;
         saving.current = true;
         add.mutate();
       }}
-      error={
-        add.error
-          ? t(
-              add.error.message === "invalid"
-                ? "taskPremium.invalid"
-                : add.error.message.includes("plan_limit")
-                  ? "betaUx.planLimit"
-                  : "taskPremium.saveError",
-            )
-          : null
-      }
+      error={add.error
+        ? t(
+          add.error.message === "invalid"
+            ? "taskPremium.invalid"
+            : add.error.message.includes("plan_limit")
+            ? "betaUx.planLimit"
+            : "taskPremium.saveError",
+        )
+        : null}
     >
       <View style={u.row}>
         <Avatar slug={child.avatar} size={44} />
@@ -146,16 +181,17 @@ export function TaskForm({
           <AiSuggestions
             kind="task"
             grade={child.grade}
-            onChoose={(item) => {
+            onChoose={(items) => {
               setChoice("ai");
-              setTitle(item.title);
-              setStars(item.stars);
-              setIcon(item.icon);
+              setAiDrafts(
+                items.map((item) => ({ ...item, days: [1, 2, 3, 4, 5] })),
+              );
+              setStep(1);
             }}
           />
         </>
       )}
-      {step === 1 && (
+      {step === 1 && choice !== "ai" && (
         <>
           <Field
             label={t("taskPremium.title")}
@@ -166,16 +202,13 @@ export function TaskForm({
           />
           <Text style={u.bold}>{t("taskPremium.icon")}</Text>
           <View style={[u.row, { flexWrap: "wrap" }]}>
-            {(allIcons
-              ? TASK_ICON_SLUGS
-              : [
-                  "brush-teeth",
-                  "read-book",
-                  "tidy-room",
-                  "pack-school-bag",
-                  "task-custom",
-                ]
-            ).map((slug) => (
+            {(allIcons ? TASK_ICON_SLUGS : [
+              "brush-teeth",
+              "read-book",
+              "tidy-room",
+              "pack-school-bag",
+              "task-custom",
+            ]).map((slug) => (
               <Pressable
                 key={slug}
                 accessibilityRole="button"
@@ -236,8 +269,7 @@ export function TaskForm({
                     days.includes(day)
                       ? days.filter((d) => d !== day)
                       : [...days, day].sort(),
-                  )
-                }
+                  )}
                 style={{
                   minWidth: 48,
                   minHeight: 48,
@@ -267,7 +299,7 @@ export function TaskForm({
           )}
         </>
       )}
-      {step === 2 && (
+      {step === 2 && choice !== "ai" && (
         <>
           <Text style={u.heading}>{t("betaUx.readyTask")}</Text>
           <Text style={u.copy}>{t("betaUx.taskReviewBody")}</Text>
@@ -284,6 +316,16 @@ export function TaskForm({
           <Text style={u.small}>{t("betaUx.taskApproval")}</Text>
         </>
       )}
+      {step > 0 && choice === "ai"
+        ? (
+          <SuggestionBatch
+            kind="task"
+            items={aiDrafts}
+            onChange={setAiDrafts}
+            review={step === 2}
+          />
+        )
+        : null}
     </SetupWizard>
   );
 }

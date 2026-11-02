@@ -1,0 +1,3432 @@
+{
+  "schema_version": "gina.coverage-candidates.v1",
+  "created_date": "2026-11-02",
+  "artifact_kind": "research_planning_manifest_not_question_bank",
+  "academic_year": "2026-2027",
+  "user_confirmed_candidates_per_grade_subject": 20,
+  "user_target": "MEB OYSS; primary school exception explicitly retained",
+  "scope_tr": "1–8 genel ilköğretim + 9–12 hazırlıksız Anadolu Lisesi ortak derslerinin yazılı soru pilotu. Tam resmî ders envanteri değildir; sanat/spor/rehberlik ve seçmeliler açıkça ertelenmiştir.",
+  "cloud_mutations_performed": false,
+  "paid_generation_performed": false,
+  "source_question_copying_authorized": false,
+  "generate_original_questions_only": true,
+  "all_classes_same_curriculum": false,
+  "entries": [
+    {
+      "id": "tr-2026-2027-g01-tr",
+      "grade": 1,
+      "subject_key": "tr",
+      "subject_label_tr": "Türkçe",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g01-mat",
+      "grade": 1,
+      "subject_key": "mat",
+      "subject_label_tr": "Matematik",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g01-hayat",
+      "grade": 1,
+      "subject_key": "hayat",
+      "subject_label_tr": "Hayat Bilgisi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g02-tr",
+      "grade": 2,
+      "subject_key": "tr",
+      "subject_label_tr": "Türkçe",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g02-mat",
+      "grade": 2,
+      "subject_key": "mat",
+      "subject_label_tr": "Matematik",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g02-hayat",
+      "grade": 2,
+      "subject_key": "hayat",
+      "subject_label_tr": "Hayat Bilgisi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g02-foreign",
+      "grade": 2,
+      "subject_key": "foreign",
+      "subject_label_tr": "Yabancı Dil",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": {
+        "language_code": null,
+        "requires_language_selection": true
+      },
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g03-tr",
+      "grade": 3,
+      "subject_key": "tr",
+      "subject_label_tr": "Türkçe",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g03-mat",
+      "grade": 3,
+      "subject_key": "mat",
+      "subject_label_tr": "Matematik",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g03-hayat",
+      "grade": 3,
+      "subject_key": "hayat",
+      "subject_label_tr": "Hayat Bilgisi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g03-fen",
+      "grade": 3,
+      "subject_key": "fen",
+      "subject_label_tr": "Fen Bilimleri",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g03-foreign",
+      "grade": 3,
+      "subject_key": "foreign",
+      "subject_label_tr": "Yabancı Dil",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": {
+        "language_code": null,
+        "requires_language_selection": true
+      },
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g04-tr",
+      "grade": 4,
+      "subject_key": "tr",
+      "subject_label_tr": "Türkçe",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g04-mat",
+      "grade": 4,
+      "subject_key": "mat",
+      "subject_label_tr": "Matematik",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g04-fen",
+      "grade": 4,
+      "subject_key": "fen",
+      "subject_label_tr": "Fen Bilimleri",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g04-sosyal",
+      "grade": 4,
+      "subject_key": "sosyal",
+      "subject_label_tr": "Sosyal Bilgiler",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g04-foreign",
+      "grade": 4,
+      "subject_key": "foreign",
+      "subject_label_tr": "Yabancı Dil",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": {
+        "language_code": null,
+        "requires_language_selection": true
+      },
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g04-religion",
+      "grade": 4,
+      "subject_key": "religion",
+      "subject_label_tr": "Din Kültürü ve Ahlak Bilgisi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g04-rights",
+      "grade": 4,
+      "subject_key": "rights",
+      "subject_label_tr": "İnsan Hakları, Vatandaşlık ve Demokrasi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g04-traffic",
+      "grade": 4,
+      "subject_key": "traffic",
+      "subject_label_tr": "Trafik Güvenliği",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "age_appropriate_learning_practice",
+        "formal_oyss_applicable": false,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "1–4. sınıfta resmî OYSS sınavı iddiası yok; yaşa uygun öğrenme etkinliği."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g05-tr",
+      "grade": 5,
+      "subject_key": "tr",
+      "subject_label_tr": "Türkçe",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g05-mat",
+      "grade": 5,
+      "subject_key": "mat",
+      "subject_label_tr": "Matematik",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g05-fen",
+      "grade": 5,
+      "subject_key": "fen",
+      "subject_label_tr": "Fen Bilimleri",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g05-sosyal",
+      "grade": 5,
+      "subject_key": "sosyal",
+      "subject_label_tr": "Sosyal Bilgiler",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g05-foreign",
+      "grade": 5,
+      "subject_key": "foreign",
+      "subject_label_tr": "Yabancı Dil",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": {
+        "language_code": null,
+        "requires_language_selection": true
+      },
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g05-religion",
+      "grade": 5,
+      "subject_key": "religion",
+      "subject_label_tr": "Din Kültürü ve Ahlak Bilgisi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g05-ict",
+      "grade": 5,
+      "subject_key": "ict",
+      "subject_label_tr": "Bilişim Teknolojileri ve Yazılım",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g06-tr",
+      "grade": 6,
+      "subject_key": "tr",
+      "subject_label_tr": "Türkçe",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g06-mat",
+      "grade": 6,
+      "subject_key": "mat",
+      "subject_label_tr": "Matematik",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g06-fen",
+      "grade": 6,
+      "subject_key": "fen",
+      "subject_label_tr": "Fen Bilimleri",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g06-sosyal",
+      "grade": 6,
+      "subject_key": "sosyal",
+      "subject_label_tr": "Sosyal Bilgiler",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g06-foreign",
+      "grade": 6,
+      "subject_key": "foreign",
+      "subject_label_tr": "Yabancı Dil",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": {
+        "language_code": null,
+        "requires_language_selection": true
+      },
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g06-religion",
+      "grade": 6,
+      "subject_key": "religion",
+      "subject_label_tr": "Din Kültürü ve Ahlak Bilgisi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g06-ict",
+      "grade": 6,
+      "subject_key": "ict",
+      "subject_label_tr": "Bilişim Teknolojileri ve Yazılım",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g07-tr",
+      "grade": 7,
+      "subject_key": "tr",
+      "subject_label_tr": "Türkçe",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g07-mat",
+      "grade": 7,
+      "subject_key": "mat",
+      "subject_label_tr": "Matematik",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g07-fen",
+      "grade": 7,
+      "subject_key": "fen",
+      "subject_label_tr": "Fen Bilimleri",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g07-sosyal",
+      "grade": 7,
+      "subject_key": "sosyal",
+      "subject_label_tr": "Sosyal Bilgiler",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g07-foreign",
+      "grade": 7,
+      "subject_key": "foreign",
+      "subject_label_tr": "Yabancı Dil",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": {
+        "language_code": null,
+        "requires_language_selection": true
+      },
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g07-religion",
+      "grade": 7,
+      "subject_key": "religion",
+      "subject_label_tr": "Din Kültürü ve Ahlak Bilgisi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g07-technology",
+      "grade": 7,
+      "subject_key": "technology",
+      "subject_label_tr": "Teknoloji ve Tasarım",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g08-tr",
+      "grade": 8,
+      "subject_key": "tr",
+      "subject_label_tr": "Türkçe",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g08-mat",
+      "grade": 8,
+      "subject_key": "mat",
+      "subject_label_tr": "Matematik",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g08-fen",
+      "grade": 8,
+      "subject_key": "fen",
+      "subject_label_tr": "Fen Bilimleri",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g08-inkilap",
+      "grade": 8,
+      "subject_key": "inkilap",
+      "subject_label_tr": "T.C. İnkılap Tarihi ve Atatürkçülük",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g08-foreign",
+      "grade": 8,
+      "subject_key": "foreign",
+      "subject_label_tr": "Yabancı Dil",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": {
+        "language_code": null,
+        "requires_language_selection": true
+      },
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g08-religion",
+      "grade": 8,
+      "subject_key": "religion",
+      "subject_label_tr": "Din Kültürü ve Ahlak Bilgisi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g08-technology",
+      "grade": 8,
+      "subject_key": "technology",
+      "subject_label_tr": "Teknoloji ve Tasarım",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "general_primary_lower_secondary",
+      "course_classification": "compulsory_in_cited_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "04",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g09-literature",
+      "grade": 9,
+      "subject_key": "literature",
+      "subject_label_tr": "Türk Dili ve Edebiyatı",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g09-religion",
+      "grade": 9,
+      "subject_key": "religion",
+      "subject_label_tr": "Din Kültürü ve Ahlak Bilgisi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g09-history",
+      "grade": 9,
+      "subject_key": "history",
+      "subject_label_tr": "Tarih",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g09-geography",
+      "grade": 9,
+      "subject_key": "geography",
+      "subject_label_tr": "Coğrafya",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g09-mat",
+      "grade": 9,
+      "subject_key": "mat",
+      "subject_label_tr": "Matematik",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g09-physics",
+      "grade": 9,
+      "subject_key": "physics",
+      "subject_label_tr": "Fizik",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g09-chemistry",
+      "grade": 9,
+      "subject_key": "chemistry",
+      "subject_label_tr": "Kimya",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g09-biology",
+      "grade": 9,
+      "subject_key": "biology",
+      "subject_label_tr": "Biyoloji",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g09-foreign_first",
+      "grade": 9,
+      "subject_key": "foreign_first",
+      "subject_label_tr": "Birinci Yabancı Dil",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": {
+        "language_code": null,
+        "requires_language_selection": true
+      },
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g09-health_traffic",
+      "grade": 9,
+      "subject_key": "health_traffic",
+      "subject_label_tr": "Sağlık Bilgisi ve Trafik Kültürü",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g10-literature",
+      "grade": 10,
+      "subject_key": "literature",
+      "subject_label_tr": "Türk Dili ve Edebiyatı",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g10-religion",
+      "grade": 10,
+      "subject_key": "religion",
+      "subject_label_tr": "Din Kültürü ve Ahlak Bilgisi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g10-history",
+      "grade": 10,
+      "subject_key": "history",
+      "subject_label_tr": "Tarih",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g10-geography",
+      "grade": 10,
+      "subject_key": "geography",
+      "subject_label_tr": "Coğrafya",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g10-mat",
+      "grade": 10,
+      "subject_key": "mat",
+      "subject_label_tr": "Matematik",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g10-physics",
+      "grade": 10,
+      "subject_key": "physics",
+      "subject_label_tr": "Fizik",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g10-chemistry",
+      "grade": 10,
+      "subject_key": "chemistry",
+      "subject_label_tr": "Kimya",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g10-biology",
+      "grade": 10,
+      "subject_key": "biology",
+      "subject_label_tr": "Biyoloji",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g10-philosophy",
+      "grade": 10,
+      "subject_key": "philosophy",
+      "subject_label_tr": "Felsefe",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g10-foreign_first",
+      "grade": 10,
+      "subject_key": "foreign_first",
+      "subject_label_tr": "Birinci Yabancı Dil",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": {
+        "language_code": null,
+        "requires_language_selection": true
+      },
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g11-literature",
+      "grade": 11,
+      "subject_key": "literature",
+      "subject_label_tr": "Türk Dili ve Edebiyatı",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g11-religion",
+      "grade": 11,
+      "subject_key": "religion",
+      "subject_label_tr": "Din Kültürü ve Ahlak Bilgisi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g11-history",
+      "grade": 11,
+      "subject_key": "history",
+      "subject_label_tr": "Tarih",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g11-philosophy",
+      "grade": 11,
+      "subject_key": "philosophy",
+      "subject_label_tr": "Felsefe",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g11-foreign_first",
+      "grade": 11,
+      "subject_key": "foreign_first",
+      "subject_label_tr": "Birinci Yabancı Dil",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "TYMM_grade_rollout",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": {
+        "language_code": null,
+        "requires_language_selection": true
+      },
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g12-literature",
+      "grade": 12,
+      "subject_key": "literature",
+      "subject_label_tr": "Türk Dili ve Edebiyatı",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g12-religion",
+      "grade": 12,
+      "subject_key": "religion",
+      "subject_label_tr": "Din Kültürü ve Ahlak Bilgisi",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g12-inkilap",
+      "grade": 12,
+      "subject_key": "inkilap",
+      "subject_label_tr": "T.C. İnkılap Tarihi ve Atatürkçülük",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": null,
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    },
+    {
+      "id": "tr-2026-2027-g12-foreign_first",
+      "grade": 12,
+      "subject_key": "foreign_first",
+      "subject_label_tr": "Birinci Yabancı Dil",
+      "candidate_question_count": 20,
+      "generated_question_count": 0,
+      "approved_question_count": 0,
+      "published_question_count": 0,
+      "school_scope": "anadolu_lisesi_without_preparatory_year",
+      "course_classification": "common_in_cited_anadolu_schedule",
+      "is_elective": false,
+      "school_track_boundary": true,
+      "course_schedule_verification": {
+        "status": "presence_verified_in_2025_04_or_05_official_schedule; later_superseding_decision_not_exhaustively_checked",
+        "decision_date": "2025-05-09",
+        "decision_number": "05",
+        "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+        "pdf_page_one_based": 2
+      },
+      "curriculum_verification": {
+        "status": "grade_rollout_direction_checked; exact_subject_program_version_and_outcomes_pending",
+        "curriculum_version": null,
+        "outcome_codes": [],
+        "grade_rollout_direction": "preceding_programs_grade_requires_subject_confirmation",
+        "source_url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+        "do_not_assume_every_course_has_same_revision": true
+      },
+      "assessment_profile": {
+        "target": "meb_oyss_informed_school_written_practice",
+        "formal_oyss_applicable": null,
+        "official_exam_blueprint_verified": false,
+        "official_exam_claim_allowed": false,
+        "note_tr": "Okul/sınıf/ders/dönem senaryosu ve soru dağılımı ayrıca doğrulanmadan resmî OYSS sınavı olarak sunulmaz."
+      },
+      "foreign_language": {
+        "language_code": null,
+        "requires_language_selection": true
+      },
+      "generation_status": "planned_blocked_on_curriculum_mapping",
+      "publishable": false,
+      "review_status": "not_generated",
+      "requires_editorial_review": true
+    }
+  ],
+  "deferred_or_out_of_scope": [
+    {
+      "grades": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "subjects": [
+        "Görsel Sanatlar",
+        "Müzik"
+      ],
+      "reason": "Compulsory courses are present in the cited schedule but excluded from this written-question pilot. Need practical/performance task schemas and subject curricula; not silently counted as completed.",
+      "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf"
+    },
+    {
+      "grades": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "subjects": [
+        "Beden Eğitimi ve Oyun"
+      ],
+      "reason": "Performance/activity content needs a separate safe rubric-based model, not forced into ordinary written questions.",
+      "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf"
+    },
+    {
+      "grades": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "subjects": [
+        "Beden Eğitimi ve Spor",
+        "Rehberlik ve Yönlendirme"
+      ],
+      "reason": "Present compulsory non-core subjects, deferred to activity/guidance models; no scored psychological profiling.",
+      "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf"
+    },
+    {
+      "grades": [
+        9,
+        10,
+        11
+      ],
+      "subjects": [
+        "Beden Eğitimi ve Spor",
+        "Görsel Sanatlar/Müzik"
+      ],
+      "reason": "Common schedule includes these; combined visual arts/music row needs actual course choice and performance schema. Not two mandatory courses.",
+      "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf"
+    },
+    {
+      "grades": [
+        12
+      ],
+      "subjects": [
+        "Beden Eğitimi ve Spor/Görsel Sanatlar/Müzik"
+      ],
+      "reason": "Alternative common-course block requires course selection and performance schema; not three separate mandatory courses.",
+      "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf"
+    },
+    {
+      "grades": [
+        9,
+        10,
+        11,
+        12
+      ],
+      "subjects": [
+        "Rehberlik ve Yönlendirme"
+      ],
+      "reason": "Guidance schedule block deferred to non-test content, no achievement test assumed.",
+      "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf"
+    },
+    {
+      "grades": [
+        11,
+        12
+      ],
+      "subjects": [
+        "Seçmeli Matematik",
+        "Seçmeli Fizik",
+        "Seçmeli Kimya",
+        "Seçmeli Biyoloji",
+        "Seçmeli Coğrafya",
+        "Seçmeli Türk Dili ve Edebiyatı",
+        "Seçmeli Tarih"
+      ],
+      "reason": "Examples of elective/track courses in Anadolu schedule, not an exhaustive elective list. Must separately approve course-track scope before adding candidate counts; science high-school compulsory scope differs.",
+      "source_url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf"
+    },
+    {
+      "grades": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "subjects": [],
+      "reason": "Other school types, special education/adaptations, imam-hatip, vocational programs, preparatory years, bilingual/multilingual curricula and all elective catalogs are not included. Do not claim national exhaustive coverage.",
+      "source_url": null
+    }
+  ],
+  "summary": {
+    "grade_subject_cells": 77,
+    "candidate_questions": 1540,
+    "generated_questions": 0,
+    "approved_questions": 0,
+    "published_questions": 0,
+    "by_grade": [
+      {
+        "grade": 1,
+        "subjects": 3,
+        "candidate_questions": 60
+      },
+      {
+        "grade": 2,
+        "subjects": 4,
+        "candidate_questions": 80
+      },
+      {
+        "grade": 3,
+        "subjects": 5,
+        "candidate_questions": 100
+      },
+      {
+        "grade": 4,
+        "subjects": 8,
+        "candidate_questions": 160
+      },
+      {
+        "grade": 5,
+        "subjects": 7,
+        "candidate_questions": 140
+      },
+      {
+        "grade": 6,
+        "subjects": 7,
+        "candidate_questions": 140
+      },
+      {
+        "grade": 7,
+        "subjects": 7,
+        "candidate_questions": 140
+      },
+      {
+        "grade": 8,
+        "subjects": 7,
+        "candidate_questions": 140
+      },
+      {
+        "grade": 9,
+        "subjects": 10,
+        "candidate_questions": 200
+      },
+      {
+        "grade": 10,
+        "subjects": 10,
+        "candidate_questions": 200
+      },
+      {
+        "grade": 11,
+        "subjects": 5,
+        "candidate_questions": 100
+      },
+      {
+        "grade": 12,
+        "subjects": 4,
+        "candidate_questions": 80
+      }
+    ]
+  },
+  "quality_gates": [
+    "Verify current exact subject curriculum and outcome IDs, including superseding course-schedule decisions.",
+    "Select foreign language before foreign-language generation.",
+    "Bind MEB OYSS profile to relevant class/subject/term and actual published distribution scenario; do not claim universal official-exam coverage.",
+    "Generate original candidates, validate answer correctness and stimulus consistency, then educator/editor approval.",
+    "Keep generated, validated, approved, and published counts separate.",
+    "No claim of full subject coverage or calibrated difficulty from twenty candidate questions."
+  ],
+  "sources": [
+    {
+      "url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/16094742_4nolukararilkogretimkurumlariilkokulveortaokulhaftalikderscizelgesi.pdf",
+      "kind": "official_schedule",
+      "read_pages": [
+        1,
+        2,
+        3
+      ],
+      "decision": "2025-05-09/04"
+    },
+    {
+      "url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf",
+      "kind": "official_schedule",
+      "read_pages": [
+        1,
+        2
+      ],
+      "decision": "2025-05-09/05",
+      "scope": "Anadolu Lisesi no preparatory year only; other pages not used to generalize"
+    },
+    {
+      "url": "https://tymm.meb.gov.tr/taslak-cerceve-planlari/temel-egitim",
+      "kind": "official_grade_rollout_notice"
+    },
+    {
+      "url": "https://ogm.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-turkiye-yuzyili-maarif-modeli-taslak-cerceve-planlar-yayimlandi/icerik/2633/tr",
+      "kind": "official_grade_rollout_notice"
+    }
+  ]
+}

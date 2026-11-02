@@ -1,3 +1,8 @@
+import { randomUUID } from "expo-crypto";
+import {
+  SuggestionBatch,
+  type SuggestionDraft,
+} from "@/components/setup/suggestion-batch";
 import { AiSuggestions } from "@/components/setup/ai-suggestions";
 import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -8,7 +13,7 @@ import { Field } from "@/components/ui/field";
 import { Pressable } from "@/components/ui/pressable";
 import { p, u } from "@/components/planner/ui";
 import { supabase } from "@/lib/supabase";
-import { SetupWizard, ChoiceCard } from "@/components/setup/wizard";
+import { ChoiceCard, SetupWizard } from "@/components/setup/wizard";
 import { REWARD_STARTERS } from "@/components/setup/templates";
 import { REWARD_ICONS, RewardCost, RewardTile } from "./reward-visuals";
 export function RewardForm({
@@ -28,11 +33,42 @@ export function RewardForm({
   const [cost, setCost] = useState("10");
   const [icon, setIcon] = useState("reward-mystery-box");
   const saving = useRef(false);
+  const batchRequest = useRef({ payload: "", id: randomUUID() });
+  const [aiDrafts, setAiDrafts] = useState<SuggestionDraft[]>([]);
+  const validBatch = aiDrafts.length > 0 &&
+    aiDrafts.every((item) =>
+      item.title.trim().length > 0 && item.title.trim().length <= 80
+    );
   const validCost = /^\d{1,3}$/.test(cost) && Number(cost) >= 1;
   const add = useMutation({
     mutationFn: async () => {
-      if (!title.trim() || title.trim().length > 80 || !validCost || !familyId)
+      if (choice === "ai") {
+        if (!validBatch) throw Error("invalid");
+        const items = aiDrafts.map(({ title, icon, stars, days }) => ({
+          title: title.trim(),
+          icon,
+          stars,
+          days,
+        }));
+        const payload = JSON.stringify(items);
+        if (
+          batchRequest.current.payload &&
+          batchRequest.current.payload !== payload
+        ) batchRequest.current.id = randomUUID();
+        batchRequest.current.payload = payload;
+        const { error } = await supabase.rpc("save_setup_batch", {
+          p_request_id: batchRequest.current.id,
+          p_kind: "reward",
+          p_items: items,
+        });
+        if (error) throw error;
+        return;
+      }
+      if (
+        !title.trim() || title.trim().length > 80 || !validCost || !familyId
+      ) {
         throw Error("invalid");
+      }
       const { error } = await supabase.from("family_rewards").insert({
         family_id: familyId,
         title: title.trim(),
@@ -64,23 +100,27 @@ export function RewardForm({
       setStep={setStep}
       dirty={choice !== null}
       busy={add.isPending}
-      valid={step === 0 ? choice !== null : !!title.trim() && validCost}
+      valid={step === 0
+        ? choice !== null
+        : choice === "ai"
+        ? validBatch
+        : !!title.trim() && validCost}
       onClose={onClose}
-      saveLabel={t("rewardPremium.save")}
+      saveLabel={choice === "ai"
+        ? t("suggestions.saveSelected", { count: aiDrafts.length })
+        : t("rewardPremium.save")}
       onSave={() => {
         if (saving.current) return;
         saving.current = true;
         add.mutate();
       }}
-      error={
-        add.error
-          ? t(
-              add.error.message === "invalid"
-                ? "rewards.invalid"
-                : "rewardPremium.saveError",
-            )
-          : null
-      }
+      error={add.error
+        ? t(
+          add.error.message === "invalid"
+            ? "rewards.invalid"
+            : "rewardPremium.saveError",
+        )
+        : null}
     >
       {step === 0 && (
         <>
@@ -113,16 +153,17 @@ export function RewardForm({
           />
           <AiSuggestions
             kind="reward"
-            onChoose={(item) => {
+            onChoose={(items) => {
               setChoice("ai");
-              setTitle(item.title);
-              setCost(String(item.stars));
-              setIcon(item.icon);
+              setAiDrafts(
+                items.map((item) => ({ ...item, days: [1, 2, 3, 4, 5] })),
+              );
+              setStep(1);
             }}
           />
         </>
       )}
-      {step === 1 && (
+      {step === 1 && choice !== "ai" && (
         <>
           <Field
             label={t("rewardPremium.name")}
@@ -164,7 +205,7 @@ export function RewardForm({
           )}
         </>
       )}
-      {step === 2 && (
+      {step === 2 && choice !== "ai" && (
         <>
           <Text style={u.heading}>{t("betaUx.readyReward")}</Text>
           <View style={[u.card, { backgroundColor: p.lilac }]}>
@@ -182,6 +223,16 @@ export function RewardForm({
           </Text>
         </>
       )}
+      {step > 0 && choice === "ai"
+        ? (
+          <SuggestionBatch
+            kind="reward"
+            items={aiDrafts}
+            onChange={setAiDrafts}
+            review={step === 2}
+          />
+        )
+        : null}
     </SetupWizard>
   );
 }

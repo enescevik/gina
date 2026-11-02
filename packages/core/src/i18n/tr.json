@@ -1421,11 +1421,11 @@
     "readTogether": "Birlikte resimli kitap okuruz",
     "aiIdeas": "AI ile birkaç fikir",
     "aiPrivacy": "Yalnız yaş aralığı, sınıf ve seçili ilgi alanları kullanılır. Ad, okul adı ve doğum yılı gönderilmez.",
-    "aiRemaining": "Bu ay {{count}} öneri hakkı kaldı.",
+    "aiRemaining": "Bu ay {{count}} fikir üretme hakkı kaldı.",
     "aiPlan": "AI önerileri Plus ve Pro paketlerinde. Beta hesabınızda Paketler bölümünden deneyebilirsiniz.",
     "aiPreparing": "Fikirler hazırlanıyor…",
     "aiGenerate": "Bana üç fikir öner",
-    "aiDraftOnly": "Bunlar taslaktır. Birini seçip düzenleyin; son adımda onaylamadan kaydedilmez.",
+    "aiDraftOnly": "Bunlar taslaktır. İstediklerinizi seçip düzenleyin; son adımda onaylamadan kaydedilmez.",
     "weekProgress": "Haftalık ilerlemem",
     "childWeekEmpty": "Bu gün için bir görev planlanmamış. Ebeveyninle birlikte küçük bir alışkanlık seçebilirsiniz.",
     "childStudyEmpty": "Yeni bir keşif hazırlanıyor. Ebeveynin sana bir Prova atadığında burada görünecek.",
@@ -1613,5 +1613,11 @@
   "prova.ai.errors.group_answer_closed": "Bu ortak prova sona ermiş veya iptal edilmiş. Yeni cevap kaydedilemiyor.",
   "prova.ai.errors.answer_changed": "Bu cevap başka bir ekranda değişmiş. Kaydedilmemiş metnini not alıp denemeden çık; yeniden açarak güncel cevabı kontrol et. Eski kayıt yeni cevabın üzerine yazılmadı.",
   "prova.ai.errors.attempt_closed": "Bu prova tamamlanmış. Prova listesine dönerek sonucunu görebilirsin.",
-  "prova.ai.errors.time_up": "Süre bitti. Süre içinde kaydedilen cevaplar değerlendirilecek."
+  "prova.ai.errors.time_up": "Süre bitti. Süre içinde kaydedilen cevaplar değerlendirilecek.",
+  "suggestions.multiHelp": "Bir üretim hakkı, bu önerilerin tamamını kapsar. Birini, birkaçını veya hepsini seçebilirsin. Seçmek ve düzenlemek ek AI hakkı kullanmaz; yeni öneri üretmek kullanır.",
+  "suggestions.useSelected": "Seçilen {{count}} öneriyi düzenle",
+  "suggestions.batchTitle": "{{count}} önerin birlikte hazır",
+  "suggestions.editHelp": "Her önerinin adını, yıldızını ve varsa günlerini ayrı ayrı düzenle. Henüz hiçbir kayıt oluşturulmadı.",
+  "suggestions.reviewHelp": "Seçtiklerinin tamamı tek işlemde kaydedilecek. Görevler birbirinden bağımsızdır; ödüller otomatik kazanılmaz.",
+  "suggestions.saveSelected": "Seçilen {{count}} öneriyi kaydet"
 }
