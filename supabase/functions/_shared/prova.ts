@@ -217,7 +217,7 @@ export async function logUsage(
   db: SupabaseClient,
   row: {
     family_id: string;
-    action: "generate" | "grade" | "plan";
+    action: "generate" | "grade" | "plan" | "import";
     model: string;
     items: number;
     input_tokens: number | null;

@@ -73,6 +73,16 @@ export default function LibraryPage() {
     answer: "",
     solution: "",
   });
+  const [kind, setKind] = useState<"open_ended" | "multiple_choice">(
+    "open_ended",
+  );
+  const [choices, setChoices] = useState(["", "", "", ""]);
+  const [correct, setCorrect] = useState("A");
+  const complete = !!question.topic.trim() &&
+    question.stem.trim().length >= 5 && !!question.solution.trim() &&
+    (kind === "open_ended"
+      ? !!question.answer.trim()
+      : choices.every((c) => !!c.trim()));
   const collection = data?.collections.find((c) => c.id === selected);
   async function run(operation: () => Promise<unknown>) {
     if (busy) return;
@@ -309,18 +319,30 @@ export default function LibraryPage() {
                 {collection
                   ? (
                     <>
-                      <Card title={`${collection.title} · Yeni açık uçlu soru`}>
+                      <Card title={`${collection.title} · Yeni soru`}>
                         <p className="mb-4 text-sm text-slate-500">
                           Soru taslak olarak kaydedilir. Beklenen cevap ve
                           çözümü inceleyip ardından yayımlayın.
                         </p>
+                        <label className="label mb-4">
+                          Soru türü<select
+                            className="input"
+                            value={kind}
+                            onChange={(e) =>
+                              setKind(e.target.value as typeof kind)}
+                          >
+                            <option value="open_ended">Açık uçlu</option>
+                            <option value="multiple_choice">
+                              Çoktan seçmeli
+                            </option>
+                          </select>
+                        </label>
                         {([["topic", "Konu"], ["stem", "Soru"], [
                           "answer",
                           "Beklenen cevap",
-                        ], [
-                          "solution",
-                          "Çözüm ve puanlama gerekçesi",
-                        ]] as const).map(([key, label]) => (
+                        ]] as const).filter(([key]) =>
+                          key !== "answer" || kind === "open_ended"
+                        ).map(([key, label]) => (
                           <label key={key} className="label mb-4">
                             {label}
                             <textarea
@@ -334,10 +356,57 @@ export default function LibraryPage() {
                             />
                           </label>
                         ))}
+                        {kind === "multiple_choice"
+                          ? (
+                            <fieldset className="mb-5 grid gap-3 md:grid-cols-2">
+                              <legend className="label">
+                                Seçenekler ve doğru cevap
+                              </legend>
+                              {choices.map((choice, index) => (
+                                <label key={index} className="label">
+                                  {"ABCD"[index]}
+                                  <input
+                                    className="input"
+                                    maxLength={5000}
+                                    value={choice}
+                                    onChange={(e) =>
+                                      setChoices((values) =>
+                                        values.map((v, i) =>
+                                          i === index ? e.target.value : v
+                                        )
+                                      )}
+                                  />
+                                </label>
+                              ))}
+                              <label className="label">
+                                Doğru seçenek<select
+                                  className="input"
+                                  value={correct}
+                                  onChange={(e) => setCorrect(e.target.value)}
+                                >
+                                  {["A", "B", "C", "D"].map((k) => (
+                                    <option key={k}>{k}</option>
+                                  ))}
+                                </select>
+                              </label>
+                            </fieldset>
+                          )
+                          : null}
+                        <label className="label mb-4">
+                          Çözüm ve puanlama gerekçesi<textarea
+                            className="input"
+                            value={question.solution}
+                            maxLength={10000}
+                            onChange={(e) =>
+                              setQuestion({
+                                ...question,
+                                solution: e.target.value,
+                              })}
+                          />
+                        </label>
                         <button
                           className="btn"
-                          disabled={busy ||
-                            Object.values(question).some((x) => !x.trim())}
+                          disabled={busy || !complete}
                           onClick={() =>
                             void run(async () => {
                               unwrap(
@@ -347,16 +416,27 @@ export default function LibraryPage() {
                                     grade: collection.grade,
                                     subject: collection.subject,
                                     topic: question.topic,
-                                    kind: "open_ended",
+                                    kind,
                                     difficulty: "orta",
                                     stem: question.stem,
-                                    expected_answer: question.answer,
+                                    expected_answer: kind === "open_ended"
+                                      ? question.answer
+                                      : null,
                                     solution: question.solution,
-                                    choices: null,
-                                    correct_key: null,
+                                    choices: kind === "multiple_choice"
+                                      ? choices.map((text, i) => ({
+                                        key: "ABCD"[i],
+                                        text,
+                                      }))
+                                      : null,
+                                    correct_key: kind === "multiple_choice"
+                                      ? correct
+                                      : null,
                                   } as Json,
                                 }),
                               );
+                              setChoices(["", "", "", ""]);
+                              setCorrect("A");
                               setQuestion({
                                 topic: "",
                                 stem: "",

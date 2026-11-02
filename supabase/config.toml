@@ -441,3 +441,6 @@ verify_jwt = true
 
 [functions.source-cleanup]
 verify_jwt = false
+
+[functions.timetable-import]
+verify_jwt = true

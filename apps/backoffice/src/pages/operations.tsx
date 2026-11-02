@@ -34,6 +34,7 @@ interface Operations {
 }
 const names: Record<string, string> = {
   generate: "Soru üretimi",
+  import: "Belgeden ders programı",
   grade: "Deneme değerlendirmesi",
   plan: "Çalışma planı",
   working: "İşleniyor",

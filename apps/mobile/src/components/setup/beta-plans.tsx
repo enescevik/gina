@@ -25,7 +25,7 @@ export function BetaPlans() {
   const change = useMutation({
     mutationFn: async (plan: Enums<"plan_code"> | null) => {
       const { error } = await supabase.rpc("set_beta_test_plan", {
-        p_plan: plan,
+        p_plan: plan ?? undefined,
       });
       if (error) throw error;
     },

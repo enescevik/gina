@@ -7,7 +7,7 @@ import { json } from "./supabase.ts";
 export async function runAiOperation<T>(
   db: SupabaseClient,
   parent: { familyId: string; userId: string },
-  action: "grade" | "plan",
+  action: "grade" | "plan" | "import",
   scope: string,
   apiKey: string,
   config: AiConfig,

@@ -49,7 +49,7 @@
 - Silinen kaynakların nesne temizliği kalıcı kuyruk + saatlik görevle yapılır. İki saat geçerli yükleme bağlantıları için silme kaydı üç saat tutulup tekrar temizlenir. Bağlantısız taslaklar 24 saat sonra temizlenir.
 - `sources.enabled` varsayılan kapalıdır. Yayında açmadan önce private bucket, iki Edge function, SOURCE_CLEANUP_SECRET + aynı Vault değeri, Vault project_url ve saatlik temizleme görevi doğrulanmalıdır. Bu değişiklikler henüz üretime uygulanmadı.
 - Telefon 390×844 ve tablet 1280×800 web önizlemesi sentetik API ile incelendi. Çizim → PNG → soru önizlemesi ve geri alma denendi. İlk çizgideki web modal odak kaybı, tuvalin odak almasıyla giderildi. Bunlar fiziksel iPhone/iPad veya gerçek Storage uçtan uca testi değildir. Kanıtlar `previews/question-image-phone-fixture.png`, `previews/question-drawing-tablet-fixture.png`; tarayıcı dili İngilizce, Türkçe metinler i18n içinde.
-- Görselli kütüphane katkısının bağımsız medya kopyası ve moderasyonu henüz tamamlanmadığı için sunucu bu katkıyı açık hata ile engeller; metni görselsiz kabul edip yayınlamaz. Fotoğraf/PDF'den program taslağı çıkarma akışı henüz yok; dosya seçici hazır olması bu özelliğin tamamlandığı anlamına gelmez.
+- Görselli kütüphane katkısının bağımsız medya kopyası ve moderasyonu henüz tamamlanmadığı için sunucu bu katkıyı açık hata ile engeller; metni görselsiz kabul edip yayınlamaz. Fotoğraf/PDF’den program çıkarma eklemesinin durumu aşağıdaki bölümde ayrıca kaydedildi.
 
 ## Deneme veri sınırı düzeltmesi
 
@@ -57,3 +57,16 @@
 - Eski hatalı satırlar için de çocuk soru okuma, görsel okuma, deneme başlatma ve AI soru çekiminde ayrı korumalar var.
 - Başlamış denemenin soru listesi, çocuğu ve temel koşulları; kullanılmış sorunun metni/cevabı değiştirilemez. Atanmış soruyu silerek sonuçları bozmak engellenir; aile hesabının silinmesi korunur.
 - Bu, veri sızıntısı yaşandığı iddiası değil; izole testlerle doğrulanan bir yetkilendirme eksikliğinin düzeltmesidir. Üretim incelemesi ve dağıtım henüz yapılmadı.
+
+## Belgeden ders programı — aynı gün eklemesi
+
+- Fotoğraf/PDF → ayrı saklama ve AI paylaşım onayları → özel kaynak doğrulaması → kalıcı AI işi → düzenlenebilir taslak → veli kontrolü → atomik program/kaynak/takvim kaydı uygulandı.
+- Gün ve saat okunamıyorsa null kalır. Sayfa numarası doğrulanır; eksik/çakışan saatle kayıt olmaz. Mevcut dersleri koruma varsayılandır; değiştirme etkisi açıkça gösterilir. AI işlemi kendi başına programı değiştirmez.
+- İşlem makbuzu kayıp yanıtta aynı revizyonu döndürür. Aynı taslağın ikinci kez uygulanması engellenir. İki düzenleme çakışırsa eski revizyon yeni programı ezmez.
+- İlk çıkarım taslakları 7 gün saklanır; ekrandaki kaydedilmemiş düzeltmeler kapanınca kaybolur ve kapanışta açıklanır. Kaydedilen programdan özgün dosya açılabilir; veli dosyayı silerse dersler korunur. Belgesiz yetim yüklemeler için 24 saatlik temizlik sürer.
+- `import` ayrı AI işlem politikasıdır: öneri varsayılanı Plus 5/ay, Pro 20/ay, Free kapalı; backoffice’ten ayarlanır. Kaynak genel anahtarı hâlâ kapalı. Üretim dağıtımı/gerçek dosya–Storage–AI uçtan uca testi yapılmadı.
+- Önizleme 390×844 ve 1280×800’de sentetik kayıtlı taslakla incelendi: eksik saat tamamlandı, veli kontrol kutusu seçildikten sonra kayıt açıldı. Web checkbox durumunun ekran okuyucuya aktarılması düzeltildi. Kanıtlar `previews/timetable-import-phone-fixture.png` ve `previews/timetable-import-tablet-fixture.png`; fiziksel cihaz testi değildir, tarayıcı dili İngilizcedir.
+- Kütüphanenin yönetici soru yazarı açık uçlu ve dört seçenekli soruları destekler; doğru seçenek ve açıklama zorunludur. Sorular önce taslak, incelemeden sonra yayın akışındadır.
+- Şema türleri izole, tüm migration’ların uygulanmış olduğu veritabanından yenilendi. SQL NULL kabul eden ödül-paketi parametresi için generator’ın gösteremediği null türü korundu.
+
+Son kontrol: 28 SQL dosyasında 504 kontrol, 46 Edge testi ve 25 core testi geçti. Mobil/backoffice lint ve tip denetimi, 11 Edge giriş noktasının tip denetimi ve backoffice üretim derlemesi geçti. Toplu prova, çok sağlayıcılı AI, destek/SSS ve diğer planlanan iş paketleri henüz tamamlanmadı.

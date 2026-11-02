@@ -1,11 +1,31 @@
-
+// Generated from the migrated audit database. admin_save_contribution_reward.p_plan accepts SQL NULL for non-plan rewards.
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export type Database = {
 
   "public": {
           Tables: {
-            "admins": {
+            "active_families": {
+                  Row: {
+                    "family_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "family_id": string,"user_id": string
+                  }
+                  Update: {
+                    "family_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "active_families_family_id_user_id_fkey"
+      columns: ["family_id","user_id"]
+isOneToOne: false
+      referencedRelation: "family_members"
+      referencedColumns: ["family_id","user_id"]
+    }
+                  ]
+                },"admins": {
                   Row: {
                     "created_at": string,"user_id": string
                   }
@@ -32,6 +52,80 @@ export type Database = {
                   }
                   Relationships: [
 
+                  ]
+                },"ai_operation_jobs": {
+                  Row: {
+                    "action": string,"created_at": string,"error_code": string | null,"family_id": string,"id": string,"input_hash": string,"lease": string,"requested_by": string | null,"result": Json | null,"status": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "action": string,"created_at"?: string,"error_code"?: string | null,"family_id": string,"id"?: string,"input_hash": string,"lease": string,"requested_by"?: string | null,"result"?: Json | null,"status": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "action"?: string,"created_at"?: string,"error_code"?: string | null,"family_id"?: string,"id"?: string,"input_hash"?: string,"lease"?: string,"requested_by"?: string | null,"result"?: Json | null,"status"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ai_operation_jobs_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"ai_operation_policies": {
+                  Row: {
+                    "action": string,"enabled": boolean,"max_concurrent": number,"monthly_limit": number,"per_minute": number,"plan_code": Database["public"]['Enums']["plan_code"]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "action": string,"enabled"?: boolean,"max_concurrent"?: number,"monthly_limit": number,"per_minute"?: number,"plan_code": Database["public"]['Enums']["plan_code"]
+                  }
+                  Update: {
+                    "action"?: string,"enabled"?: boolean,"max_concurrent"?: number,"monthly_limit"?: number,"per_minute"?: number,"plan_code"?: Database["public"]['Enums']["plan_code"]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ai_operation_policies_plan_code_fkey"
+      columns: ["plan_code"]
+isOneToOne: false
+      referencedRelation: "plans"
+      referencedColumns: ["code"]
+    }
+                  ]
+                },"ai_provider_health": {
+                  Row: {
+                    "failures": number,"open_until": string | null,"provider": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "failures"?: number,"open_until"?: string | null,"provider": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "failures"?: number,"open_until"?: string | null,"provider"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"ai_request_attempts": {
+                  Row: {
+                    "action": string,"created_at": string,"family_id": string,"id": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "action": string,"created_at"?: string,"family_id": string,"id"?: never
+                  }
+                  Update: {
+                    "action"?: string,"created_at"?: string,"family_id"?: string,"id"?: never
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ai_request_attempts_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"ai_settings": {
                   Row: {
@@ -127,6 +221,66 @@ isOneToOne: false
                   Relationships: [
                     {
       foreignKeyName: "badge_definitions_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"beta_plan_events": {
+                  Row: {
+                    "created_at": string,"family_id": string | null,"id": number,"plan": Database["public"]['Enums']["plan_code"] | null,"user_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"family_id"?: string | null,"id"?: never,"plan"?: Database["public"]['Enums']["plan_code"] | null,"user_id"?: string | null
+                  }
+                  Update: {
+                    "created_at"?: string,"family_id"?: string | null,"id"?: never,"plan"?: Database["public"]['Enums']["plan_code"] | null,"user_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "beta_plan_events_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"beta_plan_selections": {
+                  Row: {
+                    "family_id": string,"plan": Database["public"]['Enums']["plan_code"],"selected_by": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "family_id": string,"plan": Database["public"]['Enums']["plan_code"],"selected_by": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "family_id"?: string,"plan"?: Database["public"]['Enums']["plan_code"],"selected_by"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "beta_plan_selections_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: true
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"beta_test_access": {
+                  Row: {
+                    "expires_at": string,"family_id": string,"reason": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "expires_at": string,"family_id": string,"reason": string,"user_id": string
+                  }
+                  Update: {
+                    "expires_at"?: string,"family_id"?: string,"reason"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "beta_test_access_family_id_fkey"
       columns: ["family_id"]
 isOneToOne: false
       referencedRelation: "families"
@@ -281,6 +435,32 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"child_setup_requests": {
+                  Row: {
+                    "child_id": string,"created_at": string,"family_id": string,"id": string,"payload": NonNullable<Json>,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "child_id": string,"created_at"?: string,"family_id": string,"id": string,"payload": NonNullable<Json>,"user_id": string
+                  }
+                  Update: {
+                    "child_id"?: string,"created_at"?: string,"family_id"?: string,"id"?: string,"payload"?: NonNullable<Json>,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "child_setup_requests_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "child_setup_requests_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"child_shares": {
                   Row: {
                     "child_id": string,"created_at": string,"created_by": string | null,"expires_at": string,"family_id": string,"id": string,"label": string,"last_viewed_at": string | null,"revoked_at": string | null,"scopes": (string)[],"token_hash": string,"view_count": number
@@ -308,15 +488,15 @@ isOneToOne: false
     }
                   ]
                 },"children": {
-                  Row: { birth_year: number | null; gender: string; interests: string[];
-                    "avatar": string,"birth_date": string | null,"created_at": string,"family_id": string,"grade": number | null,"id": string,"name": string,"sort_order": number
+                  Row: {
+                    "avatar": string,"birth_date": string | null,"birth_year": number | null,"created_at": string,"family_id": string,"gender": string,"grade": number | null,"id": string,"interests": (string)[],"name": string,"sort_order": number
                   }
                   ComputedFields: never
-                  Insert: { birth_year?: number | null; gender?: string; interests?: string[];
-                    "avatar"?: string,"birth_date"?: string | null,"created_at"?: string,"family_id": string,"grade"?: number | null,"id"?: string,"name": string,"sort_order"?: number
+                  Insert: {
+                    "avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"family_id": string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name": string,"sort_order"?: number
                   }
-                  Update: { birth_year?: number | null; gender?: string; interests?: string[];
-                    "avatar"?: string,"birth_date"?: string | null,"created_at"?: string,"family_id"?: string,"grade"?: number | null,"id"?: string,"name"?: string,"sort_order"?: number
+                  Update: {
+                    "avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"family_id"?: string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name"?: string,"sort_order"?: number
                   }
                   Relationships: [
                     {
@@ -324,6 +504,46 @@ isOneToOne: false
       columns: ["family_id"]
 isOneToOne: false
       referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"contribution_rewards": {
+                  Row: {
+                    "amount": number,"enabled": boolean,"id": string,"kind": string,"plan": Database["public"]['Enums']["plan_code"] | null,"threshold": number,"title": string,"valid_days": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount": number,"enabled"?: boolean,"id"?: string,"kind": string,"plan"?: Database["public"]['Enums']["plan_code"] | null,"threshold": number,"title": string,"valid_days": number
+                  }
+                  Update: {
+                    "amount"?: number,"enabled"?: boolean,"id"?: string,"kind"?: string,"plan"?: Database["public"]['Enums']["plan_code"] | null,"threshold"?: number,"title"?: string,"valid_days"?: number
+                  }
+                  Relationships: [
+
+                  ]
+                },"device_children": {
+                  Row: {
+                    "child_id": string,"device_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "child_id": string,"device_id": string
+                  }
+                  Update: {
+                    "child_id"?: string,"device_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "device_children_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "device_children_device_id_fkey"
+      columns: ["device_id"]
+isOneToOne: false
+      referencedRelation: "devices"
       referencedColumns: ["id"]
     }
                   ]
@@ -343,14 +563,14 @@ isOneToOne: false
                   ]
                 },"devices": {
                   Row: {
-                    "active_child_id": string | null,"auth_user_id": string,"family_id": string,"id": string,"last_seen_at": string | null,"name": string,"paired_at": string,"revoked_at": string | null
+                    "access_mode": string,"active_child_id": string | null,"auth_user_id": string,"family_id": string,"id": string,"last_seen_at": string | null,"name": string,"paired_at": string,"pin_policy": string,"revoked_at": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "active_child_id"?: string | null,"auth_user_id": string,"family_id": string,"id"?: string,"last_seen_at"?: string | null,"name"?: string,"paired_at"?: string,"revoked_at"?: string | null
+                    "access_mode"?: string,"active_child_id"?: string | null,"auth_user_id": string,"family_id": string,"id"?: string,"last_seen_at"?: string | null,"name"?: string,"paired_at"?: string,"pin_policy"?: string,"revoked_at"?: string | null
                   }
                   Update: {
-                    "active_child_id"?: string | null,"auth_user_id"?: string,"family_id"?: string,"id"?: string,"last_seen_at"?: string | null,"name"?: string,"paired_at"?: string,"revoked_at"?: string | null
+                    "access_mode"?: string,"active_child_id"?: string | null,"auth_user_id"?: string,"family_id"?: string,"id"?: string,"last_seen_at"?: string | null,"name"?: string,"paired_at"?: string,"pin_policy"?: string,"revoked_at"?: string | null
                   }
                   Relationships: [
                     {
@@ -557,6 +777,20 @@ isOneToOne: false
                   Relationships: [
 
                   ]
+                },"family_invite_attempts": {
+                  Row: {
+                    "tried_at": string,"user_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "tried_at"?: string,"user_id"?: string | null
+                  }
+                  Update: {
+                    "tried_at"?: string,"user_id"?: string | null
+                  }
+                  Relationships: [
+
+                  ]
                 },"family_members": {
                   Row: {
                     "created_at": string,"display_name": string | null,"family_id": string,"role": Database["public"]['Enums']["member_role"],"user_id": string
@@ -623,6 +857,32 @@ isOneToOne: true
       referencedColumns: ["id"]
     }
                   ]
+                },"generation_credit_allocations": {
+                  Row: {
+                    "consumed": number,"grant_id": string | null,"id": string,"job_id": string,"units": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "consumed"?: number,"grant_id"?: string | null,"id"?: string,"job_id": string,"units": number
+                  }
+                  Update: {
+                    "consumed"?: number,"grant_id"?: string | null,"id"?: string,"job_id"?: string,"units"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "generation_credit_allocations_grant_id_fkey"
+      columns: ["grant_id"]
+isOneToOne: false
+      referencedRelation: "learning_credit_grants"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "generation_credit_allocations_job_id_fkey"
+      columns: ["job_id"]
+isOneToOne: false
+      referencedRelation: "prova_generation_jobs"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"grades": {
                   Row: {
                     "child_id": string,"created_at": string,"family_id": string,"graded_on": string,"id": string,"kind": Database["public"]['Enums']["grade_kind"],"max_score": number,"note": string | null,"score": number,"subject": string
@@ -662,6 +922,220 @@ isOneToOne: false
                   }
                   Relationships: [
 
+                  ]
+                },"learning_credit_grants": {
+                  Row: {
+                    "amount": number,"ends_at": string,"family_id": string,"id": string,"kind": string,"milestone": number | null,"policy_id": string | null,"reason": string,"starts_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "amount": number,"ends_at": string,"family_id": string,"id"?: string,"kind": string,"milestone"?: number | null,"policy_id"?: string | null,"reason": string,"starts_at"?: string
+                  }
+                  Update: {
+                    "amount"?: number,"ends_at"?: string,"family_id"?: string,"id"?: string,"kind"?: string,"milestone"?: number | null,"policy_id"?: string | null,"reason"?: string,"starts_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "learning_credit_grants_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "learning_credit_grants_policy_id_fkey"
+      columns: ["policy_id"]
+isOneToOne: false
+      referencedRelation: "contribution_rewards"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"learning_source_ai_consents": {
+                  Row: {
+                    "actor_id": string,"created_at": string,"family_id": string,"purpose": string,"scope_id": string,"source_id": string,"version": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "actor_id": string,"created_at"?: string,"family_id": string,"purpose": string,"scope_id": string,"source_id": string,"version": string
+                  }
+                  Update: {
+                    "actor_id"?: string,"created_at"?: string,"family_id"?: string,"purpose"?: string,"scope_id"?: string,"source_id"?: string,"version"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "learning_source_ai_consents_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "learning_source_ai_consents_source_id_fkey"
+      columns: ["source_id"]
+isOneToOne: false
+      referencedRelation: "learning_sources"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"learning_source_links": {
+                  Row: {
+                    "alt": string,"created_at": string,"goal_id": string | null,"id": string,"question_id": string | null,"reward_id": string | null,"source_id": string,"task_id": string | null,"timetable_child_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "alt"?: string,"created_at"?: string,"goal_id"?: string | null,"id"?: string,"question_id"?: string | null,"reward_id"?: string | null,"source_id": string,"task_id"?: string | null,"timetable_child_id"?: string | null
+                  }
+                  Update: {
+                    "alt"?: string,"created_at"?: string,"goal_id"?: string | null,"id"?: string,"question_id"?: string | null,"reward_id"?: string | null,"source_id"?: string,"task_id"?: string | null,"timetable_child_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "learning_source_links_goal_id_fkey"
+      columns: ["goal_id"]
+isOneToOne: false
+      referencedRelation: "child_goals"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "learning_source_links_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "learning_source_links_reward_id_fkey"
+      columns: ["reward_id"]
+isOneToOne: false
+      referencedRelation: "family_rewards"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "learning_source_links_source_id_fkey"
+      columns: ["source_id"]
+isOneToOne: false
+      referencedRelation: "learning_sources"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "learning_source_links_task_id_fkey"
+      columns: ["task_id"]
+isOneToOne: false
+      referencedRelation: "task_templates"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "learning_source_links_timetable_child_id_fkey"
+      columns: ["timetable_child_id"]
+isOneToOne: false
+      referencedRelation: "school_timetables"
+      referencedColumns: ["child_id"]
+    }
+                  ]
+                },"learning_sources": {
+                  Row: {
+                    "bytes": number,"created_at": string,"family_id": string,"height": number | null,"id": string,"kind": string,"mime": string,"name": string,"object_path": string,"pages": number | null,"sha256": string,"status": string,"storage_consent": string,"uploaded_by": string | null,"verified_at": string | null,"width": number | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "bytes": number,"created_at"?: string,"family_id": string,"height"?: number | null,"id": string,"kind": string,"mime": string,"name": string,"object_path": string,"pages"?: number | null,"sha256": string,"status"?: string,"storage_consent": string,"uploaded_by"?: string | null,"verified_at"?: string | null,"width"?: number | null
+                  }
+                  Update: {
+                    "bytes"?: number,"created_at"?: string,"family_id"?: string,"height"?: number | null,"id"?: string,"kind"?: string,"mime"?: string,"name"?: string,"object_path"?: string,"pages"?: number | null,"sha256"?: string,"status"?: string,"storage_consent"?: string,"uploaded_by"?: string | null,"verified_at"?: string | null,"width"?: number | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "learning_sources_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"library_collections": {
+                  Row: {
+                    "created_at": string,"curriculum_version": string,"description": string,"grade": number,"id": string,"plans": (Database["public"]['Enums']["plan_code"])[],"status": string,"subject": string,"title": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"curriculum_version"?: string,"description"?: string,"grade": number,"id"?: string,"plans"?: (Database["public"]['Enums']["plan_code"])[],"status"?: string,"subject": string,"title": string
+                  }
+                  Update: {
+                    "created_at"?: string,"curriculum_version"?: string,"description"?: string,"grade"?: number,"id"?: string,"plans"?: (Database["public"]['Enums']["plan_code"])[],"status"?: string,"subject"?: string,"title"?: string
+                  }
+                  Relationships: [
+
+                  ]
+                },"library_items": {
+                  Row: {
+                    "collection_id": string,"content": NonNullable<Json>,"content_hash": string,"created_at": string,"id": string,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "collection_id": string,"content": NonNullable<Json>,"content_hash": string,"created_at"?: string,"id"?: string,"status"?: string
+                  }
+                  Update: {
+                    "collection_id"?: string,"content"?: NonNullable<Json>,"content_hash"?: string,"created_at"?: string,"id"?: string,"status"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "library_items_collection_id_fkey"
+      columns: ["collection_id"]
+isOneToOne: false
+      referencedRelation: "library_collections"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"library_redemptions": {
+                  Row: {
+                    "created_at": string,"credit_grant_id": string | null,"family_id": string,"item_id": string,"question_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"credit_grant_id"?: string | null,"family_id": string,"item_id": string,"question_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"credit_grant_id"?: string | null,"family_id"?: string,"item_id"?: string,"question_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "library_redemptions_credit_grant_id_fkey"
+      columns: ["credit_grant_id"]
+isOneToOne: false
+      referencedRelation: "learning_credit_grants"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "library_redemptions_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "library_redemptions_item_id_fkey"
+      columns: ["item_id"]
+isOneToOne: false
+      referencedRelation: "library_items"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "library_redemptions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"mutation_receipts": {
+                  Row: {
+                    "actor_id": string,"created_at": string,"family_id": string,"operation": string,"payload": NonNullable<Json>,"request_id": string,"result": NonNullable<Json>
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "actor_id": string,"created_at"?: string,"family_id": string,"operation": string,"payload": NonNullable<Json>,"request_id": string,"result": NonNullable<Json>
+                  }
+                  Update: {
+                    "actor_id"?: string,"created_at"?: string,"family_id"?: string,"operation"?: string,"payload"?: NonNullable<Json>,"request_id"?: string,"result"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "mutation_receipts_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"notes": {
                   Row: {
@@ -737,32 +1211,58 @@ isOneToOne: false
                   ]
                 },"plans": {
                   Row: {
-                    "ai_model": string | null,"ai_weekly": boolean,"code": Database["public"]['Enums']["plan_code"],"history_days": number | null,"max_active_tasks_per_child": number | null,"max_children": number,"max_devices": number | null,"max_notes": number | null,"name_i18n": NonNullable<Json>,"prova_ai_generate_monthly": number,"prova_ai_grading": boolean,"prova_booklet": boolean,"prova_monthly_exams": number | null,"prova_scenarios": boolean,"prova_study_plan": boolean,"sort_order": number
+                    "ai_model": string | null,"ai_weekly": boolean,"code": Database["public"]['Enums']["plan_code"],"history_days": number | null,"library_monthly": number,"max_active_tasks_per_child": number | null,"max_children": number,"max_devices": number | null,"max_notes": number | null,"name_i18n": NonNullable<Json>,"prova_ai_generate_monthly": number,"prova_ai_grading": boolean,"prova_booklet": boolean,"prova_monthly_exams": number | null,"prova_scenarios": boolean,"prova_study_plan": boolean,"setup_ai_monthly": number,"sort_order": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code": Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"max_active_tasks_per_child"?: number | null,"max_children": number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n": NonNullable<Json>,"prova_ai_generate_monthly"?: number,"prova_ai_grading"?: boolean,"prova_booklet"?: boolean,"prova_monthly_exams"?: number | null,"prova_scenarios"?: boolean,"prova_study_plan"?: boolean,"sort_order"?: number
+                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code": Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"library_monthly"?: number,"max_active_tasks_per_child"?: number | null,"max_children": number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n": NonNullable<Json>,"prova_ai_generate_monthly"?: number,"prova_ai_grading"?: boolean,"prova_booklet"?: boolean,"prova_monthly_exams"?: number | null,"prova_scenarios"?: boolean,"prova_study_plan"?: boolean,"setup_ai_monthly"?: number,"sort_order"?: number
                   }
                   Update: {
-                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code"?: Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"max_active_tasks_per_child"?: number | null,"max_children"?: number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n"?: NonNullable<Json>,"prova_ai_generate_monthly"?: number,"prova_ai_grading"?: boolean,"prova_booklet"?: boolean,"prova_monthly_exams"?: number | null,"prova_scenarios"?: boolean,"prova_study_plan"?: boolean,"sort_order"?: number
+                    "ai_model"?: string | null,"ai_weekly"?: boolean,"code"?: Database["public"]['Enums']["plan_code"],"history_days"?: number | null,"library_monthly"?: number,"max_active_tasks_per_child"?: number | null,"max_children"?: number,"max_devices"?: number | null,"max_notes"?: number | null,"name_i18n"?: NonNullable<Json>,"prova_ai_generate_monthly"?: number,"prova_ai_grading"?: boolean,"prova_booklet"?: boolean,"prova_monthly_exams"?: number | null,"prova_scenarios"?: boolean,"prova_study_plan"?: boolean,"setup_ai_monthly"?: number,"sort_order"?: number
                   }
                   Relationships: [
 
                   ]
                 },"prova_ai_usage": {
                   Row: {
-                    "action": string,"created_at": string,"family_id": string,"id": string,"input_tokens": number | null,"items": number,"model": string | null,"output_tokens": number | null,"requested_by": string | null
+                    "action": string,"created_at": string,"family_id": string,"id": string,"input_tokens": number | null,"items": number,"model": string | null,"operation_id": string | null,"output_tokens": number | null,"requested_by": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "action": string,"created_at"?: string,"family_id": string,"id"?: string,"input_tokens"?: number | null,"items"?: number,"model"?: string | null,"output_tokens"?: number | null,"requested_by"?: string | null
+                    "action": string,"created_at"?: string,"family_id": string,"id"?: string,"input_tokens"?: number | null,"items"?: number,"model"?: string | null,"operation_id"?: string | null,"output_tokens"?: number | null,"requested_by"?: string | null
                   }
                   Update: {
-                    "action"?: string,"created_at"?: string,"family_id"?: string,"id"?: string,"input_tokens"?: number | null,"items"?: number,"model"?: string | null,"output_tokens"?: number | null,"requested_by"?: string | null
+                    "action"?: string,"created_at"?: string,"family_id"?: string,"id"?: string,"input_tokens"?: number | null,"items"?: number,"model"?: string | null,"operation_id"?: string | null,"output_tokens"?: number | null,"requested_by"?: string | null
                   }
                   Relationships: [
                     {
       foreignKeyName: "prova_ai_usage_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "prova_ai_usage_operation_id_fkey"
+      columns: ["operation_id"]
+isOneToOne: true
+      referencedRelation: "ai_operation_jobs"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"prova_generation_jobs": {
+                  Row: {
+                    "created_at": string,"error_code": string | null,"family_id": string,"id": string,"items": number,"lease": string | null,"prompt_hash": string,"provider_result": Json | null,"requested_by": string | null,"result": Json | null,"status": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"error_code"?: string | null,"family_id": string,"id": string,"items": number,"lease"?: string | null,"prompt_hash": string,"provider_result"?: Json | null,"requested_by"?: string | null,"result"?: Json | null,"status": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"error_code"?: string | null,"family_id"?: string,"id"?: string,"items"?: number,"lease"?: string | null,"prompt_hash"?: string,"provider_result"?: Json | null,"requested_by"?: string | null,"result"?: Json | null,"status"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "prova_generation_jobs_family_id_fkey"
       columns: ["family_id"]
 isOneToOne: false
       referencedRelation: "families"
@@ -861,6 +1361,38 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"question_contributions": {
+                  Row: {
+                    "consent_version": string,"content": NonNullable<Json>,"content_hash": string,"created_at": string,"family_id": string,"id": string,"library_item_id": string | null,"review_note": string | null,"reviewed_at": string | null,"reviewed_by": string | null,"source_question_id": string | null,"status": string,"submitted_by": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "consent_version": string,"content": NonNullable<Json>,"content_hash": string,"created_at"?: string,"family_id": string,"id": string,"library_item_id"?: string | null,"review_note"?: string | null,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"source_question_id"?: string | null,"status"?: string,"submitted_by"?: string | null
+                  }
+                  Update: {
+                    "consent_version"?: string,"content"?: NonNullable<Json>,"content_hash"?: string,"created_at"?: string,"family_id"?: string,"id"?: string,"library_item_id"?: string | null,"review_note"?: string | null,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"source_question_id"?: string | null,"status"?: string,"submitted_by"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "question_contributions_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_contributions_library_item_id_fkey"
+      columns: ["library_item_id"]
+isOneToOne: false
+      referencedRelation: "library_items"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_contributions_source_question_id_fkey"
+      columns: ["source_question_id"]
+isOneToOne: false
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"reward_requests": {
                   Row: {
                     "child_id": string,"cost_snapshot": number,"decided_at": string | null,"decided_by": string | null,"delivered_at": string | null,"family_id": string,"goal_id": string | null,"id": string,"idempotency_key": string,"requested_at": string,"reward_id": string,"status": Database["public"]['Enums']["reward_request_status"]
@@ -945,6 +1477,40 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"setup_ai_jobs": {
+                  Row: {
+                    "created_at": string,"family_id": string,"id": string,"prompt_hash": string,"result": Json | null,"status": string,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"family_id": string,"id": string,"prompt_hash": string,"result"?: Json | null,"status": string,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"family_id"?: string,"id"?: string,"prompt_hash"?: string,"result"?: Json | null,"status"?: string,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "setup_ai_jobs_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"source_deletion_queue": {
+                  Row: {
+                    "attempts": number,"created_at": string,"last_attempt_at": string | null,"last_error": string | null,"object_path": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempts"?: number,"created_at"?: string,"last_attempt_at"?: string | null,"last_error"?: string | null,"object_path": string
+                  }
+                  Update: {
+                    "attempts"?: number,"created_at"?: string,"last_attempt_at"?: string | null,"last_error"?: string | null,"object_path"?: string
+                  }
+                  Relationships: [
+
+                  ]
                 },"star_events": {
                   Row: {
                     "child_id": string,"completion_id": string | null,"created_at": string,"created_by": string | null,"delta": number,"family_id": string,"id": number,"reason": string,"refund_request_id": string | null,"reward_request_id": string | null
@@ -1025,17 +1591,23 @@ isOneToOne: false
                   ]
                 },"study_plans": {
                   Row: {
-                    "attempt_id": string | null,"child_id": string,"created_at": string,"created_by": string | null,"family_id": string,"grade": number,"id": string,"input_hash": string | null,"model": string | null,"plan": NonNullable<Json>,"prompt_version": string | null,"status": string,"subject": string,"updated_at": string,"weak_topics": NonNullable<Json>
+                    "ai_job_id": string | null,"attempt_id": string | null,"child_id": string,"created_at": string,"created_by": string | null,"family_id": string,"grade": number,"id": string,"input_hash": string | null,"model": string | null,"plan": NonNullable<Json>,"prompt_version": string | null,"status": string,"subject": string,"updated_at": string,"weak_topics": NonNullable<Json>
                   }
                   ComputedFields: never
                   Insert: {
-                    "attempt_id"?: string | null,"child_id": string,"created_at"?: string,"created_by"?: string | null,"family_id": string,"grade": number,"id"?: string,"input_hash"?: string | null,"model"?: string | null,"plan"?: NonNullable<Json>,"prompt_version"?: string | null,"status"?: string,"subject": string,"updated_at"?: string,"weak_topics"?: NonNullable<Json>
+                    "ai_job_id"?: string | null,"attempt_id"?: string | null,"child_id": string,"created_at"?: string,"created_by"?: string | null,"family_id": string,"grade": number,"id"?: string,"input_hash"?: string | null,"model"?: string | null,"plan"?: NonNullable<Json>,"prompt_version"?: string | null,"status"?: string,"subject": string,"updated_at"?: string,"weak_topics"?: NonNullable<Json>
                   }
                   Update: {
-                    "attempt_id"?: string | null,"child_id"?: string,"created_at"?: string,"created_by"?: string | null,"family_id"?: string,"grade"?: number,"id"?: string,"input_hash"?: string | null,"model"?: string | null,"plan"?: NonNullable<Json>,"prompt_version"?: string | null,"status"?: string,"subject"?: string,"updated_at"?: string,"weak_topics"?: NonNullable<Json>
+                    "ai_job_id"?: string | null,"attempt_id"?: string | null,"child_id"?: string,"created_at"?: string,"created_by"?: string | null,"family_id"?: string,"grade"?: number,"id"?: string,"input_hash"?: string | null,"model"?: string | null,"plan"?: NonNullable<Json>,"prompt_version"?: string | null,"status"?: string,"subject"?: string,"updated_at"?: string,"weak_topics"?: NonNullable<Json>
                   }
                   Relationships: [
                     {
+      foreignKeyName: "study_plans_ai_job_id_fkey"
+      columns: ["ai_job_id"]
+isOneToOne: true
+      referencedRelation: "ai_operation_jobs"
+      referencedColumns: ["id"]
+    },{
       foreignKeyName: "study_plans_attempt_id_fkey"
       columns: ["attempt_id"]
 isOneToOne: false
@@ -1113,6 +1685,44 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"timetable_imports": {
+                  Row: {
+                    "applied_revision": number | null,"child_id": string,"created_at": string,"draft": NonNullable<Json>,"family_id": string,"id": string,"source_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "applied_revision"?: number | null,"child_id": string,"created_at"?: string,"draft": NonNullable<Json>,"family_id": string,"id": string,"source_id": string
+                  }
+                  Update: {
+                    "applied_revision"?: number | null,"child_id"?: string,"created_at"?: string,"draft"?: NonNullable<Json>,"family_id"?: string,"id"?: string,"source_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "timetable_imports_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "timetable_imports_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "timetable_imports_id_fkey"
+      columns: ["id"]
+isOneToOne: true
+      referencedRelation: "ai_operation_jobs"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "timetable_imports_source_id_fkey"
+      columns: ["source_id"]
+isOneToOne: false
+      referencedRelation: "learning_sources"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"weather_cities": {
                   Row: {
                     "country": string,"id": string,"latitude": number,"longitude": number,"name": string,"timezone": string
@@ -1133,40 +1743,13 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            get_learning_library: {Args: Record<PropertyKey,never>; Returns:Json};
-            get_library_items: {Args:{p_collection_id:string}; Returns:Json};
-            redeem_library_item: {Args:{p_item_id:string}; Returns:string};
-            submit_question_contribution: {Args:{p_request_id:string;p_question_id:string;p_rights_confirmed:boolean;p_no_personal_data:boolean};Returns:string};
-            admin_learning_library: {Args:Record<PropertyKey,never>;Returns:Json};
-            admin_publish_library_item: {Args:{p_id:string;p_published:boolean};Returns:undefined};
-            admin_add_library_item: {Args:{p_collection_id:string;p_content:Json;p_publish?:boolean};Returns:string};
-            admin_review_contribution: {Args:{p_id:string;p_approve:boolean;p_collection_id:string;p_note:string};Returns:Json};
-            admin_save_library_collection: {Args:{p_id:string;p_title:string;p_description:string;p_grade:number;p_subject:string;p_curriculum:string;p_plans:Database["public"]["Enums"]["plan_code"][];p_status:string};Returns:string};
-            admin_set_ai_operation_policy: {Args:{p_action:string;p_plan:Database["public"]["Enums"]["plan_code"];p_enabled:boolean;p_monthly:number;p_per_minute:number;p_concurrent:number};Returns:undefined};
-            admin_retry_prova_generation: { Args: { p_id: string; p_reason: string }; Returns: undefined };
-            admin_save_contribution_reward: { Args: { p_id: string; p_title: string; p_threshold: number; p_kind: string; p_amount: number; p_plan: Database["public"]["Enums"]["plan_code"] | null; p_days: number; p_enabled: boolean }; Returns: string };
-            admin_set_library_quota: { Args: { p_plan: Database["public"]["Enums"]["plan_code"]; p_monthly: number }; Returns: undefined };
-            get_learning_source_policy: { Args: Record<PropertyKey, never>; Returns: Json };
-      save_question_with_sources: { Args: { p_request_id: string; p_question: Json; p_images?: Json }; Returns: string };
-            get_question_media: { Args: { p_question_ids: string[] }; Returns: Json };
-            attach_question_source: { Args: { p_question_id: string; p_source_id: string; p_alt: string }; Returns: undefined };
-            admin_ai_operations: { Args: Record<PropertyKey, never>; Returns: Json };
-            admin_retry_ai_operation: { Args: {p_id:string;p_reason:string}; Returns:undefined };
-            review_task_once: { Args: { p_request_id: string; p_completion_id: string; p_approve: boolean; p_expected_completed_at: string }; Returns: Json };
-            get_setup_ai_entitlement: { Args: { p_family_id?: string }; Returns: Json };
-
-            save_child_setup: { Args: { p_request_id: string; p_profile: Json; p_tasks?: Json; p_child_id?: string }; Returns: string };
-
-            get_beta_test_access: { Args: Record<PropertyKey, never>; Returns: { expires_at: string; selected_plan: Database["public"]["Enums"]["plan_code"] | null }[] };
-            set_beta_test_plan: { Args: { p_plan?: Database["public"]["Enums"]["plan_code"] | null }; Returns: undefined };
-
-      configure_child_device: { Args: {p_device_id:string;p_name:string;p_child_ids:string[];p_pin_required:boolean}; Returns:undefined }
-      get_child_device_access: { Args: {p_device_id?:string}; Returns:Json }
-      list_my_families: { Args: Record<PropertyKey, never>; Returns:Json }
-      select_family: { Args: {p_family_id:string}; Returns:undefined }
-      preview_family_invite: { Args: {p_invite_code:string}; Returns:Json }
-
-            "admin_dashboard":
+            "admin_add_library_item":
+{ Args: { "p_collection_id": string,"p_content": Json,"p_publish"?: boolean }; Returns: string
+                           },
+"admin_ai_operations":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"admin_dashboard":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "admin_delete_global_question":
@@ -1178,15 +1761,36 @@ isOneToOne: false
 "admin_grant_override":
 { Args: { "p_ends_at": string,"p_family_id": string,"p_plan": Database["public"]['Enums']["plan_code"],"p_reason": string,"p_starts_at"?: string }; Returns: string
                            },
+"admin_learning_library":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "admin_list_overrides":
 { Args: { "p_family_id"?: string,"p_include_inactive"?: boolean }; Returns: {
               "created_at": string,"ends_at": string,"family_id": string,"family_name": string,"granted_by": string,"id": string,"is_active": boolean,"plan": Database["public"]['Enums']["plan_code"],"reason": string,"revoked_at": string,"starts_at": string
             }[]
                            },
+"admin_publish_library_item":
+{ Args: { "p_id": string,"p_published": boolean }; Returns: undefined
+                           },
 "admin_question_facets":
 { Args: Record<PropertyKey, never>; Returns: {
               "grade": number,"question_count": number,"subject": string,"times_asked_total": number,"topic": string
             }[]
+                           },
+"admin_retry_ai_operation":
+{ Args: { "p_id": string,"p_reason": string }; Returns: undefined
+                           },
+"admin_retry_prova_generation":
+{ Args: { "p_id": string,"p_reason": string }; Returns: undefined
+                           },
+"admin_review_contribution":
+{ Args: { "p_approve": boolean,"p_collection_id": string,"p_id": string,"p_note": string }; Returns: Json
+                           },
+"admin_save_contribution_reward":
+{ Args: { "p_amount": number,"p_days": number,"p_enabled": boolean,"p_id": string,"p_kind": string,"p_plan": Database["public"]['Enums']["plan_code"] | null,"p_threshold": number,"p_title": string }; Returns: string
+                           },
+"admin_save_library_collection":
+{ Args: { "p_curriculum": string,"p_description": string,"p_grade": number,"p_id": string,"p_plans": (Database["public"]['Enums']["plan_code"])[],"p_status": string,"p_subject": string,"p_title": string }; Returns: string
                            },
 "admin_search_families":
 { Args: { "p_limit"?: number,"p_query"?: string }; Returns: {
@@ -1195,6 +1799,12 @@ isOneToOne: false
                            },
 "admin_set_ai_enabled":
 { Args: { "p_enabled": boolean }; Returns: undefined
+                           },
+"admin_set_ai_operation_policy":
+{ Args: { "p_action": string,"p_concurrent": number,"p_enabled": boolean,"p_monthly": number,"p_per_minute": number,"p_plan": Database["public"]['Enums']["plan_code"] }; Returns: undefined
+                           },
+"admin_set_library_quota":
+{ Args: { "p_monthly": number,"p_plan": Database["public"]['Enums']["plan_code"] }; Returns: undefined
                            },
 "apply_ai_grades":
 { Args: { "p_attempt_id": string,"p_grades": Json,"p_summary"?: Json }; Returns: {
@@ -1221,6 +1831,12 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"apply_timetable_import":
+{ Args: { "p_import_id": string,"p_lessons": Json,"p_request_id": string,"p_revision": number,"p_settings": Json }; Returns: number
+                           },
+"attach_question_source":
+{ Args: { "p_alt": string,"p_question_id": string,"p_source_id": string }; Returns: undefined
+                           },
 "cancel_reward_request":
 { Args: { "p_request_id": string }; Returns: {
               "child_id": string,
@@ -1256,6 +1872,12 @@ isOneToOne: false
 "claim_room_weather_refresh":
 { Args: { "p_city_id": string }; Returns: boolean
                            },
+"complete_prova_generation":
+{ Args: { "p_id": string,"p_input": number,"p_model": string,"p_output": number,"p_prompt_version": string,"p_rows": Json }; Returns: Json
+                           },
+"complete_prova_generation_v2":
+{ Args: { "p_id": string,"p_input": number,"p_lease": string,"p_model": string,"p_output": number,"p_prompt_version": string,"p_rows": Json }; Returns: Json
+                           },
 "complete_task":
 { Args: { "p_acting_child_id"?: string,"p_client_id": string,"p_due_date": string,"p_template_id": string }; Returns: {
               "child_id": string,
@@ -1276,6 +1898,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"configure_child_device":
+{ Args: { "p_child_ids": (string)[],"p_device_id": string,"p_name": string,"p_pin_required": boolean }; Returns: undefined
+                           },
 "create_child_share":
 { Args: { "p_child_id": string,"p_expires_in_days"?: number,"p_label": string,"p_scopes": (string)[] }; Returns: {
               "expires_at": string,"id": string,"token": string
@@ -1332,6 +1957,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"delete_learning_source":
+{ Args: { "p_source_id": string }; Returns: undefined
+                           },
 "deliver_reward_request":
 { Args: { "p_request_id": string }; Returns: {
               "child_id": string,
@@ -1353,6 +1981,15 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"expire_unlinked_learning_sources":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
+"fail_prova_generation_v2":
+{ Args: { "p_code": string,"p_id": string,"p_lease": string,"p_uncertain": boolean }; Returns: undefined
+                           },
+"finish_ai_operation":
+{ Args: { "p_error"?: string,"p_id": string,"p_lease": string,"p_result": Json,"p_uncertain"?: boolean }; Returns: undefined
+                           },
 "finish_exam_attempt":
 { Args: { "p_attempt_id": string }; Returns: {
               "ai_feedback": Json | null,
@@ -1388,21 +2025,50 @@ isOneToOne: false
               "pct": number,"pending": number,"topic": string,"total": number
             }[]
                            },
+"get_beta_test_access":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "expires_at": string,"selected_plan": Database["public"]['Enums']["plan_code"]
+            }[]
+                           },
+"get_child_device_access":
+{ Args: { "p_device_id"?: string }; Returns: Json
+                           },
 "get_family_entitlement":
 { Args: { "p_family_id"?: string }; Returns: {
               "expires_at": string,"plan": Database["public"]['Enums']["plan_code"],"source": string
             }[]
                            },
+"get_learning_library":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"get_learning_source_access":
+{ Args: { "p_question_id"?: string,"p_source_id": string }; Returns: Json
+                           },
+"get_learning_source_policy":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"get_library_items":
+{ Args: { "p_collection_id": string }; Returns: Json
+                           },
 "get_prova_entitlement":
 { Args: { "p_family_id"?: string }; Returns: Json
+                           },
+"get_question_media":
+{ Args: { "p_question_ids": (string)[] }; Returns: Json
                            },
 "get_saved_exam_answers":
 { Args: { "p_attempt_id": string }; Returns: {
               "answer_key": string,"answer_text": string,"question_id": string
             }[]
                            },
+"get_setup_ai_entitlement":
+{ Args: { "p_family_id"?: string }; Returns: Json
+                           },
 "get_shared_child_view":
 { Args: { "p_token": string }; Returns: Json
+                           },
+"get_timetable_sources":
+{ Args: { "p_child_id": string }; Returns: Json
                            },
 "get_weekly_summary_data":
 { Args: { "p_family_id": string,"p_week_start": string }; Returns: Json
@@ -1415,8 +2081,12 @@ isOneToOne: false
 "join_family":
 { Args: { "p_display_name"?: string,"p_invite_code": string }; Returns: string
                            },
+"list_my_families":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "pair_child_device":
-{ Args: { "p_code": string }; Returns: string },
+{ Args: { "p_code": string }; Returns: string
+                           },
 "pair_device":
 { Args: { "p_code": string }; Returns: string
                            },
@@ -1427,6 +2097,9 @@ isOneToOne: false
 { Args: { "p_blueprint_id"?: string,"p_grade": number,"p_max_questions"?: number,"p_per_topic"?: number,"p_subject": string }; Returns: {
               "difficulty": Database["public"]['Enums']["question_difficulty"],"ord": number,"question_id": string,"topic": string
             }[]
+                           },
+"preview_family_invite":
+{ Args: { "p_invite_code": string }; Returns: Json
                            },
 "push_claim_batch":
 { Args: { "p_limit"?: number }; Returns: {
@@ -1455,8 +2128,17 @@ isOneToOne: false
               "locale": string,"platform": string,"token": string,"token_id": string,"token_type": string
             }[]
                            },
+"record_source_cleanup":
+{ Args: { "p_path": string,"p_success": boolean }; Returns: undefined
+                           },
+"redeem_library_item":
+{ Args: { "p_item_id": string }; Returns: string
+                           },
 "register_push_token":
 { Args: { "p_locale"?: string,"p_platform": string,"p_token": string }; Returns: undefined
+                           },
+"register_timetable_import":
+{ Args: { "p_child": string,"p_job": string,"p_source": string }; Returns: Json
                            },
 "request_pairing":
 { Args: { "p_device_name"?: string }; Returns: string
@@ -1482,6 +2164,21 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"reserve_ai_operation":
+{ Args: { "p_action": string,"p_family_id": string,"p_hash": string,"p_lease": string,"p_user_id": string }; Returns: Json
+                           },
+"reserve_learning_source":
+{ Args: { "p_bytes": number,"p_consent": boolean,"p_id": string,"p_kind": string,"p_mime": string,"p_name": string,"p_sha256": string }; Returns: Json
+                           },
+"reserve_prova_generation":
+{ Args: { "p_family_id": string,"p_hash": string,"p_id": string,"p_items": number,"p_user_id": string }; Returns: Json
+                           },
+"reserve_prova_generation_v2":
+{ Args: { "p_family_id": string,"p_hash": string,"p_id": string,"p_items": number,"p_user_id": string }; Returns: Json
+                           },
+"reserve_setup_ai":
+{ Args: { "p_family_id": string,"p_hash": string,"p_id": string,"p_user_id": string }; Returns: Json
+                           },
 "review_task":
 { Args: { "p_approve": boolean,"p_completion_id": string }; Returns: {
               "child_id": string,
@@ -1502,11 +2199,23 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"review_task_once":
+{ Args: { "p_approve": boolean,"p_completion_id": string,"p_expected_completed_at": string,"p_request_id": string }; Returns: Json
+                           },
 "revoke_child_share":
 { Args: { "p_share_id": string }; Returns: undefined
                            },
 "revoke_device":
 { Args: { "p_device_id": string }; Returns: undefined
+                           },
+"save_child_setup":
+{ Args: { "p_child_id"?: string,"p_profile": Json,"p_request_id": string,"p_tasks"?: Json }; Returns: string
+                           },
+"save_prova_provider_result":
+{ Args: { "p_id": string,"p_lease": string,"p_result": Json }; Returns: undefined
+                           },
+"save_question_with_sources":
+{ Args: { "p_images"?: Json,"p_question": Json,"p_request_id": string }; Returns: string
                            },
 "save_school_timetable":
 { Args: { "p_child_id": string,"p_lessons": Json,"p_revision": number,"p_settings": Json }; Returns: number
@@ -1536,6 +2245,12 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"select_family":
+{ Args: { "p_family_id": string }; Returns: undefined
+                           },
+"set_beta_test_plan":
+{ Args: { "p_plan"?: Database["public"]['Enums']["plan_code"] }; Returns: undefined
+                           },
 "set_child_goal":
 { Args: { "p_acting_child_id"?: string,"p_reward_id": string }; Returns: {
               "child_id": string,
@@ -1567,7 +2282,8 @@ isOneToOne: false
                            },
 "set_study_plan_status":
 { Args: { "p_plan_id": string,"p_status": string }; Returns: {
-              "attempt_id": string | null,
+              "ai_job_id": string | null,
+"attempt_id": string | null,
 "child_id": string,
 "created_at": string,
 "created_by": string | null,
@@ -1616,6 +2332,9 @@ isOneToOne: false
       } },
 "submit_exam_answer":
 { Args: { "p_answer_key"?: string,"p_answer_text"?: string,"p_attempt_id": string,"p_question_id": string }; Returns: undefined
+                           },
+"submit_question_contribution":
+{ Args: { "p_no_personal_data": boolean,"p_question_id": string,"p_request_id": string,"p_rights_confirmed": boolean }; Returns: string
                            },
 "undo_complete":
 { Args: { "p_completion_id": string }; Returns: undefined
