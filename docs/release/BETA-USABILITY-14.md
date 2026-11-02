@@ -1,6 +1,6 @@
 # Beta kullanım düzenlemeleri — TestFlight 14 hazırlığı
 
-2 Kasım 2026. Kaynak: `codex/beta-usability-refresh`. Bu belge önceki sürümün yerine yeni bir tasarım yönü tanımlamaz; onaylı mint maskot, mor/krem arayüz ve özgün oda resmi korunur.
+2 Kasım 2026. PR #46 main’e alındı (`a8f53f2`). 0.1.0 (14) EAS derlemesi başlatıldı; Apple yüklemesi henüz tamamlanmadı. Bu belge önceki sürümün yerine yeni bir tasarım yönü tanımlamaz; onaylı mint maskot, mor/krem arayüz ve özgün oda resmi korunur.
 
 ## Değişen deneyim
 
@@ -29,7 +29,7 @@ Kurulum AI önerileri için ayrı aylık sınır: Free 0, Plus 10, Pro 30 üreti
 
 - Tüm çalışma alanı lint/typecheck/test: geçti; core 22 test.
 - Statik native metin ve yayın kontrolleri: 7 test geçti.
-- İzole veritabanı: 22 dosyada 358 pgTAP kontrolü geçti. Mevcut yerel demo veritabanı sıfırlanmadı, yeniden tohumlanmadı.
+- İzole veritabanı: 22 dosyada 360 pgTAP kontrolü geçti. Mevcut yerel demo veritabanı sıfırlanmadı, yeniden tohumlanmadı.
 - Edge: 24 test geçti; yeni fonksiyonun Deno kontrolü geçti.
 - Elle: tek çocuk seçimi, boş/dolu ana ekran, görev oluşturma/düzenleme/önizleme, kaydetmeden çıkış uyarısı, çocuk kurulumunda geçersiz yıl, örnek AI taslağı seçimi, ödül kaydı, hedef kaydı, Free/Pro değişimi, çocuk PIN girişi ve ebeveyn PIN çıkışı.
 - Telefon: 390×844; tablet: 1280×800; yatay telefon: 844×390. Native simülatörde ana ekran, görev sihirbazı ve çocuk odası dikey/yatay açıldı. Gerçek iPhone 14 Pro Max ve Android cihaz kontrolü henüz yapılmadı.
@@ -38,4 +38,4 @@ Kurulum AI önerileri için ayrı aylık sınır: Free 0, Plus 10, Pro 30 üreti
 
 ## Dağıtım
 
-Dört ek migration: beta erişimi, çocuk kurulumu, hedef yetki kontrolü, AI taslak kotası. Yeni Edge Function: `setup-suggestions`. Mevcut mağaza ürünleri, demo verileri ve onaylı sanat dosyaları değiştirilmez. TestFlight dağıtım kimlikleri tamamlandığında ayrıca kaydedilecektir.
+Beş ek migration: beta erişimi, çocuk kurulumu, hedef yetki kontrolü, AI taslak kotası ve aylar arası tekrar kotası. Yeni Edge Function: `setup-suggestions`. Mevcut mağaza ürünleri, demo verileri ve onaylı sanat dosyaları değiştirilmez. 2 Kasım 2026: ilk dört migration üretime uygulandı ve `setup-suggestions` dağıtıldı. İstekte bulunan Enes veli hesabına Çevik Ailesi için 2 Aralık 2026’ya kadar beta erişimi verildi; başlangıçta herhangi bir test paketi seçilmedi. EAS build: `c31d8553-ac2b-486c-91be-ac630e67f0ed`, kaynak `a8f53f26d2c1dfdfe9fe5b399b6572fd6f458d96`. Ay değişiminden sonra yeniden denenen başarısız AI isteğinin yeni ayın kotasına sayılması ek testle düzeltildi; son migration dağıtımı ve Apple sonucu ayrıca kaydedilecektir.
