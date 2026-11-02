@@ -15,8 +15,8 @@
   "preflight": {
     "production_configuration": "required static checks passed",
     "legal_page_warning": "existing legal URL is not configured; not resolved by this design task",
-    "build_started": false,
-    "testflight_submitted": false
+    "build_started": true,
+    "testflight_submitted": true
   },
   "approval": "2026-11-02: Evet, bu maketi uygula"
 }

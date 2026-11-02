@@ -27,5 +27,16 @@
     "Native handwriting AI evaluation and parent annotation layer remain future work.",
     "No durable offline notebook queue."
   ],
-  "release": "Build pending"
+  "release": {
+    "version": "0.1.0",
+    "build": "15",
+    "build_id": "07aabe77-73fc-480d-8886-76dc5813ab93",
+    "source_commit": "dab1f66dc7d311de8329e454e6b66ee0a5f6549b",
+    "upload": "Apple altool upload succeeded",
+    "delivery_id": "5830915d-b38a-4789-81c0-bd2449c08274",
+    "apple_processing": "VALID",
+    "internal_state": "IN_BETA_TESTING",
+    "expired": false,
+    "verified_at": "2026-11-02T17:31:49.937977+00:00"
+  }
 }

@@ -142,3 +142,7 @@ Kullanıcı `docs/design/screens/prova-notebook/phone-tablet-approved-v1.png` ta
 ## 2026-11-02 — Onaylı çözüm defteri düzenine dönüş
 
 Kullanıcının ikinci maket onayı uygulandı. Tablet 35/65 soru/defter ve genişletme, telefon görsel önizlemesi ve Soru/Defter sekmeleri, tek sıra lila araç çubuğu, isteğe bağlı kalem ayarları, Verilenler ekleme düğmeleri ve sabit tablet maskotu tamamlandı. Mevcut revizyon/idempotency ve kayıt korumaları korundu. Gerçek ekranlar ve doğrulama sınırları `docs/design/screens/prova-notebook/refined-v2-review.json` içindedir. Native simülatör bağlantısı bu turda doğrulanamadı; web kontrolleri ve iOS paketleme geçti. TestFlight yükleme durumu ayrıca kaydedilecek.
+
+### TestFlight 15 yayımlandı
+
+`0.1.0 (15)` Apple tarafında `VALID / IN_BETA_TESTING` olarak doğrulandı. Onaylı defter v2 düzeni dahil kaynak commit `dab1f66`. Expo gönderim kuyruğu uzadığından bekleyen gönderim iptali doğrulandı; aynı imzalı IPA Apple altool ile hatasız yüklendi. Yeni anahtar üretilmedi; geçici özel anahtar dosyası silindi. Ayrıntılar ve gerçek cihaz test adımları: `docs/release/NOTEBOOK-15.md`. Bu sürüm yeni ortak kaynak/soru grupları, veli çizim notları veya yeni kütüphane soruları tamamlandı anlamına gelmez. Sonraki artım ortak kaynağın sürümlenmesi ve sınava atanmış içeriğin korunmasıdır.
