@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.canvas },
   fill: { flex: 1, minWidth: 0 },
   page: { width: '100%', maxWidth: 1320, alignSelf: 'center', padding: 24, paddingBottom: 32, gap: 12 },
-  phonePage: { padding: 18, paddingTop: 8, gap: 8, paddingBottom: 24 },
+  phonePage: { padding: 18, paddingTop: 8, gap: 20, paddingBottom: 24 },
   row: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   wrap: { flexWrap: 'wrap' },
   between: { justifyContent: 'space-between' },

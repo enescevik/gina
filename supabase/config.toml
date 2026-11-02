@@ -432,3 +432,6 @@ verify_jwt = true
 
 [functions.room-weather]
 verify_jwt = true
+
+[functions.setup-suggestions]
+verify_jwt = true

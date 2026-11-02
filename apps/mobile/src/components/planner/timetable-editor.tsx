@@ -40,6 +40,7 @@ import { supabase } from "@/lib/supabase";
 import { useSchoolTimetable } from "@/lib/school-timetable";
 import { IconButton, PlannerHero, SatinButton, Tag, p, u } from "./ui";
 export interface PlannerChild {
+  grade?: number | null;
   id: string;
   name: string;
   avatar: string | null;

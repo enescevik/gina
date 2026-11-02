@@ -23,7 +23,7 @@ export function TaskTile({ slug, size = 56 }: { slug: string; size?: number }) {
         justifyContent: "center",
       }}
     >
-      <TaskIcon slug={slug} size={size * 0.62} variant="svg" />
+      <TaskIcon slug={slug} size={size * 0.88} variant="illustrated" />
     </View>
   );
 }

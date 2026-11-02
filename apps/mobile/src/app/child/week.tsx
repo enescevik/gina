@@ -1,16 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { WeekStrip } from "@/components/room/week-strip";
-import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 import { localDateOf, templatesDueOn, weekDatesOf } from "@gina/core";
 
 import { TaskIcon } from "@/components/task-icon";
-import { Button } from "@/components/ui/button";
 import { ErrorText } from "@/components/ui/screen";
-import { ChildScreen as Screen, ChildColumns, childStyles } from "@/components/room/child-screen";
+import { ChildScreen as Screen, ChildColumns, ChildEmptyState, childStyles } from "@/components/room/child-screen";
 import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useActiveChild } from "@/lib/active-child";
@@ -19,7 +17,7 @@ import { supabase } from "@/lib/supabase";
 /** Çocuğun «Haftam» ekranı: haftanın günleri, o gün düşen görevler ve durumları. */
 export default function ChildWeekScreen() {
   const { t, i18n } = useTranslation();
-  const { childId, path } = useActiveChild();
+  const { childId } = useActiveChild();
   const timeZone = useFamilyTimezone();
   const today = localDateOf(new Date(), timeZone);
   const week = weekDatesOf(today);
@@ -74,7 +72,7 @@ export default function ChildWeekScreen() {
               {dayFormat.format(new Date(`${date}T00:00:00Z`))}
               {isToday ? ` · ${t("calendar.today")}` : ""}
             </Text>
-            {due.length === 0 && !templates.error ? <Text style={childStyles.copy}>{t("child.noTasks")}</Text> : null}
+            {due.length === 0 && !templates.error ? <ChildEmptyState title={t("child.noTasks")} body={t("betaUx.childWeekEmpty")}/> : null}
             {due.map((task) => {
               const status = byKey.get(`${task.id}:${date}`);
               return (
@@ -91,7 +89,6 @@ export default function ChildWeekScreen() {
         );
       })}
       </ChildColumns>
-      <Button variant="ghost" title={t("child.today")} onPress={() => router.replace(path("today"))} />
     </Screen>
   );
 }

@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { router, usePathname } from "expo-router";
 import { ArrowLeft, Menu, Home, Plus, ChevronDown, ChevronUp, ChevronRight, Info } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
@@ -70,6 +70,9 @@ export function ChildPicker({ profiles, selected, onSelect, allLabel }: {
   onSelect: (id: string | null) => void;
   allLabel?: string;
 }) {
+  const soleId = profiles.length === 1 && !allLabel ? profiles[0].id : null;
+  useEffect(() => { if (soleId && selected !== soleId) onSelect(soleId); }, [soleId, selected, onSelect]);
+  if (soleId) return <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}><Avatar slug={profiles[0].avatar} size={40}/><Text style={parentStyles.copy}>{profiles[0].name}</Text></View>;
   const options = allLabel ? [{ id: null, name: allLabel, avatar: null }, ...profiles] : profiles;
   return <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
     {options.map(child => <Pressable key={child.id ?? "all"} accessibilityRole="button" accessibilityState={{ selected: selected === child.id }} aria-pressed={selected === child.id}

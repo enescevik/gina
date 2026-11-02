@@ -1,4 +1,3 @@
-import { router } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Image, Text, View, useWindowDimensions } from "react-native";
@@ -7,9 +6,8 @@ import { shelfDisplayArt } from "@/components/room/room-art";
 import { ILLUSTRATED_GAMIFICATION } from "@/generated/illustrated/gamification";
 import { Collectible } from "@/components/collectible";
 import { CelebrationBurst } from "@/components/collectible-motion";
-import { Button } from "@/components/ui/button";
 import { ErrorText } from "@/components/ui/screen";
-import { ChildScreen as Screen, childStyles } from "@/components/room/child-screen";
+import { ChildScreen as Screen, ChildEmptyState, childStyles } from "@/components/room/child-screen";
 import { useActiveChild } from "@/lib/active-child";
 import { useChildBadges } from "@/lib/use-child-badges";
 
@@ -36,9 +34,10 @@ export default function ChildCollectionScreen() {
 
   return (
     <Screen tone="child" surface="collection" loading={badges.isLoading} title={t("room.myCollection")}>
-      <Text className="font-body text-base text-ink">
+      {(badges.data?.length ?? 0) > 0 && <Text className="font-body text-base text-ink">
         {t("collection.summary", { earned: earnedCount, total: badges.data?.length ?? 0 })}
-      </Text>
+      </Text>}
+      {!badges.error && earnedCount === 0 && <ChildEmptyState kind="collection" title={t("betaUx.collectionStart")} body={t("betaUx.collectionStartBody")}/>}
       <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
         {badges.data?.map((badge) => (
           <View
@@ -69,7 +68,6 @@ export default function ChildCollectionScreen() {
         ))}
       </View>
       <ErrorText error={badges.error} />
-      <Button variant="ghost" title={t("child.today")} onPress={() => router.back()} />
     </Screen>
   );
 }

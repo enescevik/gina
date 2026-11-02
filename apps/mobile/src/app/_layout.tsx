@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { StatusBar } from "expo-status-bar";
 
 import { ChildModeProvider, useChildMode } from "@/lib/child-mode";
+import { useRouteMotion } from "@/lib/use-route-motion";
 import { useAppLifecycle } from "@/lib/app-lifecycle";
 import { useWebFontsReady } from "@/lib/web-fonts-ready";
 import { queryClient } from "@/lib/query";
@@ -48,6 +49,7 @@ export default function RootLayout() {
 }
 
 function AppRoutes() {
+  const motion = useRouteMotion();
   const { t } = useTranslation();
   const { claims, error: sessionError, loading: sessionLoading, retry: retrySession } = useSession();
   const { actingChild, loading, error, retry } = useChildMode();
@@ -57,7 +59,7 @@ function AppRoutes() {
   if (loading) return <View className="flex-1 items-center justify-center gap-4 bg-cream p-6">
     {error ? <><Text className="font-body text-base text-ink">{t("release.lockRestoreError")}</Text><Button title={t("common.retry")} onPress={retry} /></> : <ActivityIndicator color="#6042DE" />}
   </View>;
-  return <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
+  return <Stack screenOptions={{ headerShown: false, gestureEnabled: false, ...motion }}>
     <Stack.Protected guard={claims?.role === "parent"}><Stack.Screen name="parent" /></Stack.Protected>
     <Stack.Protected guard={!actingChild}>
       <Stack.Screen name="index" /><Stack.Screen name="(auth)" /><Stack.Screen name="child" />

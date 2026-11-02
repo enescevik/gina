@@ -10,7 +10,7 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   ArrowLeft,
   Bell,
@@ -52,6 +52,7 @@ export function PlannerCalendar({
   childMode?: boolean;
 }) {
   const { t, i18n } = useTranslation();
+  const insets = useSafeAreaInsets();
   const { claims } = useSession();
   const active = useActiveChild();
   const timeZone = useFamilyTimezone();
@@ -277,7 +278,7 @@ export function PlannerCalendar({
         },
       ];
   return (
-    <SafeAreaView style={u.root}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={u.root}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
@@ -346,7 +347,7 @@ export function PlannerCalendar({
                 </Text>
               </Pressable>
             </View>
-            {!childMode ? (
+            {!childMode && profiles.length > 1 ? (
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={u.row}>
                   <Tag
@@ -582,7 +583,8 @@ export function PlannerCalendar({
       <View
         style={[
           u.footer,
-          { justifyContent: "space-around", paddingVertical: 6 },
+          { paddingBottom: Math.max(insets.bottom, 6) },
+          { justifyContent: "space-around", paddingTop: 6 },
         ]}
       >
         {nav.map(({ title, Icon, run }, i) => (

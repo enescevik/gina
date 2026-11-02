@@ -1,3 +1,4 @@
+import { useRouteMotion } from "@/lib/use-route-motion";
 import {useQuery} from "@tanstack/react-query";
 import {supabase} from "@/lib/supabase";
 import { Redirect, Stack, usePathname } from "expo-router";
@@ -6,6 +7,7 @@ import { useSession, refreshClaims } from "@/lib/session";
 import { usePush } from "@/lib/push";
 
 export default function ChildLayout() {
+  const motion = useRouteMotion();
   // Push: eşleşmiş tablette izin + token kaydı, bildirime dokununca yönlendirme (web'de no-op).
   usePush("device");
   const { claims } = useSession();
@@ -20,5 +22,5 @@ export default function ChildLayout() {
   });
   if (claims?.role !== "device") return <Redirect href="/" />;
   if (!claims.child_id && path !== "/child" && path !== "/child/pin") return <Redirect href="/child" />;
-  return <Stack screenOptions={{ headerShown: false, gestureEnabled: false, orientation: "default" }} />;
+  return <Stack screenOptions={{ ...motion, headerShown: false, gestureEnabled: false, orientation: "default" }} />;
 }

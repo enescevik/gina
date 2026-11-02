@@ -1,5 +1,7 @@
+import { useRouteMotion } from "@/lib/use-route-motion";
 import { Stack } from "expo-router";
 
 export default function DeviceLayout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+  const motion = useRouteMotion();
+  return <Stack screenOptions={{ ...motion, headerShown: false }} />;
 }
