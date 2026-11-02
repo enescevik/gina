@@ -1,3 +1,4 @@
+import { ContextualQuestion } from "@/components/learning/question-context";
 import { readNotebook, notebookHasAnswer } from "@gina/core";
 import { NotebookPage } from "@/components/learning/notebook-page";
 import { Toggle } from "@/components/ui/toggle";
@@ -320,7 +321,7 @@ function AnswerCard({
       <Text className="font-body text-xs text-gray-500">
         {t("prova.ai.questionN", { n: index })} · {q.topic} · {t(`prova.kind.${q.kind}`)}
       </Text>
-      <Text className="font-body-bold text-base text-ink">{q.stem}</Text>
+      <ContextualQuestion questionId={q.id} stem={q.stem}/>
           <QuestionMedia questionId={q.id} items={q.media}/>
 
       {isMc ? (

@@ -39,11 +39,14 @@ export async function invokeProvaAi<T>(name: ProvaAiFunction, body: Record<strin
 /** DB RPC hata kodlarını (plan_limit_prova_* vb.) aynı çeviriye bağlar. */
 export function provaErrorMessage(error: unknown): string | null {
   if (!error) return null;
-  if (error instanceof Error && !(error instanceof ProvaAiError)) {
-    const key = `prova.ai.errors.${error.message}`;
+  const message = error instanceof Error ? error.message
+    : typeof error === "object" && error !== null && "message" in error && typeof error.message === "string"
+    ? error.message : null;
+  if (message && !(error instanceof ProvaAiError)) {
+    const key = `prova.ai.errors.${message}`;
     if (i18n.exists(key)) return i18n.t(key);
   }
-  return error instanceof Error ? error.message : String(error);
+  return message ?? i18n.t("sharedQuestions.saveFailed");
 }
 
 export interface GeneratedQuestion {

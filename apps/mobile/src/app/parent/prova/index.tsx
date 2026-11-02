@@ -29,11 +29,13 @@ export default function ParentProvaScreen() {
     },
   });
 
+  const sharedPolicy = useQuery({ queryKey: ["question_group_policy", familyId], queryFn: async () => { const { data } = await supabase.rpc("get_question_group_policy"); return data === true; } });
+
   const bankCount = useQuery({
     queryKey: ["question_bank_count", familyId],
     enabled: !!familyId,
     queryFn: async () => {
-      const { count, error } = await supabase.from("question_bank").select("id", { count: "exact", head: true });
+      const { count, error } = await supabase.from("current_question_bank").select("id", { count: "exact", head: true });
       if (error) throw error;
       return count ?? 0;
     },
@@ -67,6 +69,7 @@ export default function ParentProvaScreen() {
         <Text style={parentStyles.copy}>{t("unified.provaStartBody")}</Text>
         <Button title={t("prova.newExam")} onPress={() => router.push("/parent/prova/exam")} />
       </View>
+      {sharedPolicy.data ? <NavigationCard title={t("sharedQuestions.title")} body={t("sharedQuestions.intro")} icon={<PenLine size={22} color="#6042DE"/>} onPress={() => router.push("/parent/prova/shared-source")} /> : null}
       <View style={{flexDirection:"row",flexWrap:"wrap",gap:12}}>
         {([
           ["library.title", "libraryHelp", "/parent/prova/library", Printer],

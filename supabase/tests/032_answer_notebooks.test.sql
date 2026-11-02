@@ -14,8 +14,9 @@ insert into public.learning_sources(id,family_id,uploaded_by,kind,name,mime,byte
 set local role authenticated;
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000003001","role":"authenticated","gina":{"family_id":"10000000-0000-4000-8000-000000003001","role":"parent"}}',true);
 
-insert into public.exams(id,family_id,child_id,title,subject,grade,question_ids,status) values('50000000-0000-4000-8000-000000003001','10000000-0000-4000-8000-000000003001','20000000-0000-4000-8000-000000003001','Receipt practice','Fen',5,array['30000000-0000-4000-8000-000000003001']::uuid[],'assigned');
+-- Finish authoring before assignment freezes the question and its images.
 select public.attach_question_source('30000000-0000-4000-8000-000000003001','80000000-0000-4000-8000-000000000002','ABC triangle');
+insert into public.exams(id,family_id,child_id,title,subject,grade,question_ids,status) values('50000000-0000-4000-8000-000000003001','10000000-0000-4000-8000-000000003001','20000000-0000-4000-8000-000000003001','Receipt practice','Fen',5,array['30000000-0000-4000-8000-000000003001']::uuid[],'assigned');
 select set_config('test.answer_attempt',(public.start_exam_attempt('50000000-0000-4000-8000-000000003001')).id::text,true);
 
 select set_config('test.doc','{"version":1,"width":1000,"height":1400,"elements":[{"id":"70000000-0000-4000-8000-000000000001","type":"stroke","color":"#201951","size":4,"points":[[20,30],[80,90]]}]}',true);

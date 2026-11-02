@@ -17,10 +17,11 @@ export interface QuestionImageDraft {
   alt: string;
 }
 export function QuestionImageEditor(
-  { images, onChange, disabled }: {
+  { images, onChange, disabled, maxImages = 3 }: {
     images: QuestionImageDraft[];
     onChange: (images: QuestionImageDraft[]) => void;
     disabled: boolean;
+    maxImages?: number;
   },
 ) {
   const { t } = useTranslation();
@@ -118,13 +119,13 @@ export function QuestionImageEditor(
           variant="secondary"
           title={t("sources.photo")}
           loading={picking}
-          disabled={disabled || !enabled || images.length >= 3}
+          disabled={disabled || !enabled || images.length >= maxImages}
           onPress={() => void pick()}
         />
         <Button
           variant="secondary"
           title={t("sources.draw")}
-          disabled={disabled || !enabled || picking || images.length >= 3}
+          disabled={disabled || !enabled || picking || images.length >= maxImages}
           onPress={() => setDrawing(true)}
         />
       </View>

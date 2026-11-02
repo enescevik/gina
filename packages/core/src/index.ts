@@ -15,3 +15,5 @@ export { SerialWrites } from "./serial-writes";
 export { AnswerReceipts } from "./answer-receipts";
 
 export * from "./notebook";
+export * from "./notebook-tokens";
+export * from "./prova-booklet";

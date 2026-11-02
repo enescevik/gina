@@ -1,6 +1,6 @@
 # GINA öğrenme platformu — geliştirme durumu
 
-2 Kasım 2026. Kullanıcı tüm kapsamın geliştirilmesini onayladı. Bu liste tamamlanma beyanı değil, devam eden işin kaydıdır. İlk bölümler tarihî geliştirme kaydıdır. Güncel dağıtım ve gerçek hizmet doğrulaması en alttaki “Canlı hizmet doğrulaması” bölümündedir; yeni TestFlight henüz yayımlanmadı.
+2 Kasım 2026. Kullanıcı tüm kapsamın geliştirilmesini onayladı. Bu liste tamamlanma beyanı değil, devam eden işin kaydıdır. İlk bölümler tarihî geliştirme kaydıdır. Güncel durum belgenin sonundaki tarihli eklemelerdedir. TestFlight 0.1.0 (15) yayımlandı; sonraki ortak soru grubu artımı henüz dağıtılmadı.
 
 ## Bu dalda yapılan, doğrulaması süren
 
@@ -146,3 +146,15 @@ Kullanıcının ikinci maket onayı uygulandı. Tablet 35/65 soru/defter ve geni
 ### TestFlight 15 yayımlandı
 
 `0.1.0 (15)` Apple tarafında `VALID / IN_BETA_TESTING` olarak doğrulandı. Onaylı defter v2 düzeni dahil kaynak commit `dab1f66`. Expo gönderim kuyruğu uzadığından bekleyen gönderim iptali doğrulandı; aynı imzalı IPA Apple altool ile hatasız yüklendi. Yeni anahtar üretilmedi; geçici özel anahtar dosyası silindi. Ayrıntılar ve gerçek cihaz test adımları: `docs/release/NOTEBOOK-15.md`. Bu sürüm yeni ortak kaynak/soru grupları, veli çizim notları veya yeni kütüphane soruları tamamlandı anlamına gelmez. Sonraki artım ortak kaynağın sürümlenmesi ve sınava atanmış içeriğin korunmasıdır.
+
+
+## 2026-11-02 — Onaylı ortak içerikli soru hazırlama
+
+Kullanıcının telefon/tablet maket onayı uygulandı: Ortak içerik → Sorular → Önizleme. Aynı metin ve en fazla üç özel görselle 2–12 açık uçlu/çoktan seçmeli soru hazırlanabilir. Tablet iki sütun; telefonda açılıp kapanan ortak kaynak. Kaynak çizimi mevcut çizim bileşeniyle eklenir. Aynı sürümden Prova hazırlanabilir; düzenleme yeni soru kimlikleriyle yeni sürüm oluşturur.
+
+- Atama anında soru/cevap/koşul ve görsel bağları kilitlenir; atama ile düzenleme yarışları satır kilitleriyle sıralanır. Atanmış Prova sonraki düzenlemeden etkilenmez. Kayıt ve atama makbuzları tekrar gönderimde ikinci işlem oluşturmaz.
+- Çocuk çözümü, çözüm defteri ve veli incelemesi ortak kaynağı ayrı gösterir. Eski okuyucular için tam bağlam soru metninde de korunur. PDF’de ardışık grup sorularının kaynağı bir kez; AI görsel girişinde aynı resim bütün ilgili soru numaralarıyla bir kez gönderilir. Bu, AI çizimli cevap değerlendirmesi değildir.
+- 651 SQL testi, dört gerçek eşzamanlı atama/düzenleme/görsel yarışı, 44 core testi, dokuz soru-görseli Edge testi, yedi yayın/metin testi geçti. Workspace lint/tip kontrolü ve iOS JS/Hermes dışa aktarımı geçti. Gerçek PostgREST + izole audit DB ile sürüm kaydı, atama, kayıp cevap/aynı istek tekrarı ve eski Prova içeriği kontrol edildi.
+- Web kanıtı ve onaylı tasarım: `docs/design/screens/prova-shared-source/index.html`. Auth ve görsel sunumu sentetik yerel proxy; fiziksel iOS/Android/kalem testi yapılmadı. Test hesabı temizlendi, yalnız bu işin sunucuları durduruldu.
+- Üretim migration/Edge dağıtımı yapılmadı; `question_groups.enabled` varsayılan kapalı. TestFlight hâlâ 0.1.0 (15). Dağıtım sırası ve kapsam: `SHARED-QUESTION-SOURCES.md`.
+- Kayıtsız taslak kalıcı çevrimdışı saklanmaz; çıkış uyarısı vardır. Ortak/görselli kütüphane katkısı tam bağlamlı moderasyon hazır olana kadar engelli. Yeni kütüphane soru üretimi hâlâ 0. Sıradaki ayrı ekran işi veli inceleme/not katmanı ve çizimli cevabın rızalı AI değerlendirmesidir; önce tasarım onayı gerekir.
