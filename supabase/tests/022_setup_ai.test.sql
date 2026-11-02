@@ -24,6 +24,10 @@ select ok(public.reserve_setup_ai('40000000-0000-4000-8000-000000001601','100000
 select is(public.reserve_setup_ai('40000000-0000-4000-8000-000000001601','10000000-0000-4000-8000-000000001601','00000000-0000-4000-8000-000000001601','changed')->>'error','request_conflict','request id cannot change payload');
 update public.setup_ai_jobs set status='failed' where id='40000000-0000-4000-8000-000000001602';
 select is((public.get_setup_ai_entitlement('10000000-0000-4000-8000-000000001601')->>'remaining')::int,1,'failed request does not consume allowance');
+update public.setup_ai_jobs set updated_at=now()-interval '25 seconds' where family_id='10000000-0000-4000-8000-000000001601';
+update public.setup_ai_jobs set created_at=now()-interval '40 days' where id='40000000-0000-4000-8000-000000001602';
+select is(public.reserve_setup_ai('40000000-0000-4000-8000-000000001602','10000000-0000-4000-8000-000000001601','00000000-0000-4000-8000-000000001601','hash2')->>'ok','true','failed prior-month request may be retried');
+select is((public.get_setup_ai_entitlement('10000000-0000-4000-8000-000000001601')->>'remaining')::int,0,'retried request consumes current month allowance');
 reset role;
 select * from finish();
 rollback;

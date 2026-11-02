@@ -127,7 +127,7 @@
   },
   {
     "file": "022_setup_ai.test.sql",
-    "count": 11,
+    "count": 13,
     "passed": true,
     "errors": []
   }
