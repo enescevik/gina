@@ -1,6 +1,6 @@
 # Prova: tek çalışma, tek hazırlama akışı
 
-Durum: **tasarım önerisi; ana ekran ve birleşik oluşturucu henüz onaylanmadı / uygulanmadı.** 3 Kasım 2026. Bu turdaki kod düzeltmeleri yalnız sorunun görünürlüğü, yanıt türüne uygun inceleme ve çizim sırasında kaydırma içindir. TestFlight 16 bu düzeltmeleri içermez.
+Durum: **3 Kasım 2026’da kullanıcı ana ekranı ve birleşik hazırlama yönünü onayladı.** Bu onay, “Önceki ekran bazında onay düzenimizi koruyarak, bu ana ekranı ve birleşik hazırlama akışını bu yönde ilerletelim mi?” sorusuna verilen “buna evet diyorum” yanıtıdır. Ana ekran ve birleşik oluşturucunun uygulama kodu henüz tamamlanmadı. Oluşturucunun ayrıntılı dört ekranı `builder/` altında yeni tasarım incelemesine hazırdır; bu yeni ekranlar henüz ayrıca onaylanmış sayılmaz. Bu turdaki kod düzeltmeleri yalnız sorunun görünürlüğü, yanıt türüne uygun inceleme ve çizim sırasında kaydırma içindir. TestFlight 16 bu düzeltmeleri içermez.
 
 ## İncelenen kanıt ve dürüst değerlendirme
 
@@ -85,7 +85,7 @@ Eylemler: ana eylem dolu mor, ikincil düzenleme satır/ikon+etiket, yardımcı 
 
 - `proposal-v1.html`, `proposal-phone-v1.png`, `proposal-tablet-v1.png`: **yeni Prova ana ekranı önerisi**, örnek veriler. Etkileşimsiz maket; gerçek yeni oluşturucu değildir. Tablette sağdaki taslak içeriği aynı sette tekil ve ortak kaynaklı soruları gösterir.
 - `review-*-phone.png`, `review-mc-tablet.png`: hata düzeltmelerinden sonraki **gerçek bileşenler**, sentetik veriler. Maketle karıştırılmamalı.
-- Sıra: ana ekran tasarım onayı → birleşik oluşturucunun kapsam ve soru listesi ekranlarını tasarla/onaylat → backend+UI uygulaması → soru türlerine göre çözme/inceleme → diğer ekran aileleri → fiziksel cihaz kontrolü ve yeni TestFlight.
+- Sıra: ana ekran tasarım onayı **alındı** → birleşik oluşturucunun ayrıntılı ekranları `builder/` altında **hazırlandı, inceleme bekliyor** → backend+UI uygulaması → soru türlerine göre çözme/inceleme → diğer ekran aileleri → fiziksel cihaz kontrolü ve yeni TestFlight.
 
 ## Kabul ölçütleri
 
