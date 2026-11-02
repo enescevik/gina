@@ -15,7 +15,7 @@
 3. **Çözüm** sekmesinde kalem veya Not ile işaret ekle. Göz simgesi yalnız senin notlarını gizlemeli; çocuğun cevabı değişmemeli. Silgi, geri al/yinele işlemlerini dene.
 4. **Değerlendirme** sekmesinde 0–100 puan ve geri bildirim gir. **Kaydet ve sonraki** ile ilerle; soru numarasından geri dönüp kaydı kontrol et. Çoktan seçmeli cevabın otomatik doğru/yanlış sonucu korunur.
 5. Paketinde AI değerlendirmesi varsa **AI önerisi al** seçeneğini aç. Paylaşım onayını kendin işaretle. Sonuç geldiğinde mevcut puan değişmemeli. **Taslağa al** öneriyi düzenlenebilir alanlara taşır; ancak **Kaydet** ile çocuğa yayımlanır.
-6. Çocuk modunda aynı Prova sonucuna dön; **Geri bildirimi göster** ile kaydedilmiş veli notlarını ve mesajını aç. Açık ekranda yeni geri bildirim en geç sonraki 30 saniyelik yenilemede alınır; ağı kesikse bu süre garanti değildir.
+6. Çocuk modunda aynı Prova sonucuna dön; **Geri bildirimi göster** ile kaydedilmiş veli notlarını ve mesajını aç. Açık ekranda geri bildirim yaklaşık 30 saniyede bir yenilenir; bağlantı yokken güncel sonuç alınamaz.
 
 ## Tablette deneme
 
