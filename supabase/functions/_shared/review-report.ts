@@ -6,6 +6,8 @@ export interface ReviewReport {
   next_step: string;
   limitation: string;
 }
+// Provider grammar supports types; numeric/length bounds remain enforced below.
+// https://platform.claude.com/docs/en/build-with-claude/structured-outputs
 export const REVIEW_SCHEMA = {
   type: "object",
   additionalProperties: false,
@@ -19,9 +21,9 @@ export const REVIEW_SCHEMA = {
   ],
   properties: {
     readable: { type: "boolean" },
-    score: { type: ["integer", "null"], minimum: 0, maximum: 100 },
+    score: { type: ["integer", "null"], description: "Integer 0–100, or null when unreadable." },
     feedback: { type: "string" },
-    evidence: { type: "array", items: { type: "string" }, maxItems: 6 },
+    evidence: { type: "array", items: { type: "string" }, description: "At most 6 short observed steps." },
     next_step: { type: "string" },
     limitation: { type: "string" },
   },

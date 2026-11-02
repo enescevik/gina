@@ -1,4 +1,4 @@
-import { validateReviewReport } from "./review-report.ts";
+import { REVIEW_SCHEMA, validateReviewReport } from "./review-report.ts";
 const valid = {
   readable: true,
   score: 80,
@@ -38,4 +38,9 @@ Deno.test("review: rejects injected fields and unbounded advice", () => {
   rejects({ ...valid, feedback: "x".repeat(2001) });
   rejects({ ...valid, evidence: [42] });
   rejects({ ...valid, readable: "true" });
+});
+
+Deno.test("review: provider schema uses supported grammar; bounds stay in validator", () => {
+  const serialized = JSON.stringify(REVIEW_SCHEMA);
+  if (/"(minimum|maximum|minLength|maxLength|maxItems)":/.test(serialized)) throw new Error("unsupported provider constraint");
 });
