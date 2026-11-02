@@ -25,6 +25,12 @@ const text = {
   text: "6 + 8 + 10 = 24 cm",
 };
 const unused = () => Promise.reject(new Error("unexpected source"));
+async function digest(bytes: Uint8Array) {
+  return Array.from(
+    new Uint8Array(await crypto.subtle.digest("SHA-256", bytes.slice())),
+  )
+    .map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
 async function rejects(fn: () => Promise<unknown>) {
   try {
     await fn();
@@ -47,6 +53,47 @@ Deno.test("review renderer: original curved strokes and typed Turkish text becom
   if (
     png[0] !== 137 || view.getUint32(16) !== 1000 || view.getUint32(20) !== 1400
   ) throw new Error("bad PNG");
+});
+Deno.test("review renderer: every notebook math symbol renders distinct visible ink", async () => {
+  const seen = new Set([
+    await digest(await renderSvg(await notebookSvg(doc([]), unused))),
+  ]);
+  for (const symbol of "+−×÷=≠≈<>≤≥°∠∥⊥√π²³½¼→Δ") {
+    const png = await renderSvg(
+      await notebookSvg(doc([{ ...text, text: symbol }]), unused),
+    );
+    const hash = await digest(png);
+    if (seen.has(hash)) throw new Error(`missing/duplicate glyph: ${symbol}`);
+    seen.add(hash);
+  }
+});
+Deno.test("review renderer: unsupported glyphs fail closed and bundled font coverage is pinned", async () => {
+  try {
+    await notebookSvg(doc([{ ...text, text: "2 🦄 + 3" }]), unused);
+    throw new Error("unsupported glyph accepted");
+  } catch (error) {
+    if (
+      !(error instanceof Error) || error.message !== "notebook_render_failed"
+    ) {
+      throw error;
+    }
+  }
+  const root = new URL("../prova-review/assets/", import.meta.url);
+  const provenance = JSON.parse(
+    await Deno.readTextFile(new URL("provenance.json", root)),
+  );
+  for (
+    const name of [
+      "Nunito-SemiBold.ttf",
+      "NotoSansMath-Regular.ttf",
+      "font-coverage.json",
+    ]
+  ) {
+    if (
+      await digest(await Deno.readFile(new URL(name, root))) !==
+        provenance.checksums[name]
+    ) throw new Error(`font coverage provenance changed: ${name}`);
+  }
 });
 Deno.test("review renderer: source crop uses immutable question reference and fixed frame", async () => {
   let asked = "";

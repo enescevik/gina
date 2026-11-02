@@ -3,15 +3,20 @@ import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { inspectSource } from "./source-file.ts";
 
 let ready: Promise<void> | undefined;
-let font: Uint8Array;
+let fonts: Uint8Array[];
+let fontCoverage: [number, number][];
+const fontFamily = "Nunito, Noto Sans Math";
 async function initialize() {
   ready ??= (async () => {
     const root = new URL("../prova-review/assets/", import.meta.url);
-    const [wasm, buffer] = await Promise.all([
+    const [wasm, buffer, math, coverage] = await Promise.all([
       Deno.readFile(new URL("resvg-2.6.2.wasm", root)),
       Deno.readFile(new URL("Nunito-SemiBold.ttf", root)),
+      Deno.readFile(new URL("NotoSansMath-Regular.ttf", root)),
+      Deno.readTextFile(new URL("font-coverage.json", root)),
     ]);
-    font = buffer;
+    fonts = [buffer, math];
+    fontCoverage = JSON.parse(coverage);
     await initWasm(wasm);
   })();
   await ready;
@@ -40,7 +45,7 @@ function text(v: unknown, max: number): string {
   return v;
 }
 const options = () => ({
-  font: { fontBuffers: [font], defaultFontFamily: "Nunito" },
+  font: { fontBuffers: fonts, defaultFontFamily: "Nunito" },
   background: "#FFFEFA",
 });
 const shell = (content: string) =>
@@ -69,7 +74,7 @@ export async function notebookSvg(
     if (++measureCount > 2000) throw new Error("notebook_render_failed");
     const r = new Resvg(
       shell(
-        `<text x="0" y="100" font-family="Nunito" font-size="${size}">${
+        `<text x="0" y="100" font-family="${fontFamily}" font-size="${size}">${
           escape(value)
         }</text>`,
       ),
@@ -150,6 +155,15 @@ export async function notebookSvg(
       );
     } else if (e.type === "text") {
       const size = number(e.size, 16, 64), content = text(e.text, 2000);
+      // A missing glyph could change the meaning of an answer sent to AI.
+      // Fail before provider use instead of rendering tofu or dropping a symbol.
+      for (const character of content) {
+        const code = character.codePointAt(0)!;
+        if (
+          !/[\n\r\t]/.test(character) &&
+          !fontCoverage.some(([start, end]) => code >= start && code <= end)
+        ) throw new Error("notebook_render_failed");
+      }
       const lines: string[] = [];
       for (const paragraph of content.split("\n")) {
         let line = "";
@@ -175,7 +189,7 @@ export async function notebookSvg(
         throw new Error("notebook_render_failed");
       }
       pieces.push(
-        `${clip}<text font-family="Nunito" font-size="${size}" fill="${e.color}" clip-path="url(#piece${index})">${
+        `${clip}<text font-family="${fontFamily}" font-size="${size}" fill="${e.color}" clip-path="url(#piece${index})">${
           lines.map((line, i) =>
             `<tspan x="${x}" y="${y + size + i * size * 1.4}">${
               escape(line)

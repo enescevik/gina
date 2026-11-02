@@ -4,7 +4,7 @@
 
 - Mobil kaynak: `86c819dccdd2cd23db713163805d97defe8ff49f` (PR #51).
 - EAS build: `43136ef5-bb94-4097-9a04-0f9624373dbe`.
-- Sonraki değişiklikler yalnız sunucuda: sağlayıcı şema uyumluluğu (#52), boş geri bildirim/defter görünürlüğü (#53). Mobil paketle uyumludur.
+- Sonraki değişiklikler yalnız sunucuda: sağlayıcı şema uyumluluğu (#52), boş geri bildirim/defter görünürlüğü ve matematik sembollerinin PNG içinde korunması (#53). Mobil paketle uyumludur.
 - Üretim migration'ları `20261102203000_review_feedback_visibility` dahil uygulandı. `prova-review` WASM/font dosyalarıyla Docker üzerinden dağıtıldı; `prova-grade` güncellendi.
 - `sources.enabled`, `question_groups.enabled`, `review_ai.enabled` başarılı canlı kontrol sonrası beta için açıldı. `cohorts.enabled` değiştirilmedi.
 
@@ -28,9 +28,10 @@ Bu sürüm önceki ortak kaynaklı soru hazırlama akışını da içerir: tek m
 - [Tablet](../design/screens/prova-parent-review/tablet-implemented-web.png), [telefon çözüm](../design/screens/prova-parent-review/phone-solution-web.png), [telefon değerlendirme](../design/screens/prova-parent-review/phone-assessment-web.png).
 - [UI kontrol kaydı](../design/screens/prova-parent-review/implementation-review.json).
 - [Gerçek AI hizmet kontrolü](../design/screens/prova-parent-review/production-service-check.json): sentetik yanlış cevap görselinden 35 puan önerisi, değişmeyen veli puanı/orijinal cevap, tek ücretli iş ve tekrar kullanım doğrulandı. Test hesabı/aile/dosya kaldırıldı; gerçek aile içeriği bu kontrolde paylaşılmadı.
-- Workspace lint/typecheck/test (44 core testi), 7 yayın/native metin testi, 69 Edge testi ve CI pgTAP kontrolleri başarılı. İlk bütün DB koşusunda 684, son iki görünürlük kontrolüyle toplam 686 test bulunur.
+- Workspace lint/typecheck/test (44 core testi), 7 yayın/native metin testi, 71 Edge testi ve CI pgTAP kontrolleri başarılı. İlk bütün DB koşusunda 684, son iki görünürlük kontrolüyle toplam 686 test bulunur.
 - Görüntüler çalışan Expo web arayüzünden ve sentetik veriden alındı; fiziksel iPhone/iPad ekran görüntüsü değildir. iOS Hermes export, EAS derlemesi ve Apple paket doğrulaması geçti. Gerçek cihaz kalem gecikmesi, basınç/eğim/avuç içi reddi ayrıca denenmeli.
 - Kalıcı çevrimdışı taslak yoktur. Kaydedilmemiş düzenlemede uygulamayı zorla kapatmak notu kaybettirebilir. Belirsiz kayıt yanıtında aynı isteği yeniden deneme gerekir; ekrandaki uyarı bu adımı gösterir.
+- Sunucudaki PNG dönüşümü defterdeki açı, diklik, paralellik ve diğer matematik sembollerini de korur. Desteklenmeyen bir karakter varsa eksik görseli AI’ya göndermek yerine işlem durdurulur; elle değerlendirme kullanılabilir.
 - AI sonucu veliye öneridir; okunamayan/boş cevap için tahminî sıfır yazılmaz. Mevcut toplu AI yolu çizimli cevapları otomatik puanlamaz; yeni inceleme ekranından ilerlenir.
 
 Mağaza yayını bu teslimin sonucu değildir. Bu kayıt yalnız belirtilen TestFlight sürümü ve inceleme akışının doğrulamalarını kapsar.
