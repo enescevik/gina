@@ -1784,5 +1784,15 @@
   "prova.ai.errors.invalid_notebook": "Çözüm defteri eksiksiz görsele dönüştürülemedi. Bu cevabı elle değerlendirebilirsin.",
   "parentReview.state.empty": "Cevap yok",
   "parentReview.state.reviewed": "Değerlendirildi",
-  "parentReview.state.waiting": "İnceleme bekliyor"
+  "parentReview.state.waiting": "İnceleme bekliyor",
+  "parentReview.selectedChoice": "Çocuğun seçtiği cevap",
+  "parentReview.correctChoice": "Doğru cevap",
+  "parentReview.childAnswer": "Çocuğun yanıtı",
+  "parentReview.addDrawingNote": "Çizimli not ekle",
+  "parentReview.openDrawingNotes": "Çizimli notları aç",
+  "parentReview.backToAnswer": "Soru ve cevaba dön",
+  "parentReview.explanation": "Çözüm açıklaması",
+  "parentReview.collapseQuestion": "Soru alanını küçült",
+  "parentReview.aiNeedsAnswer": "AI önerisi için önce kaydedilmiş bir çocuk yanıtı gerekir.",
+  "parentReview.autoChecked": "Otomatik kontrol edildi"
 }

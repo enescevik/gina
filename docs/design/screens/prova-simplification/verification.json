@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-02T21:29:16.000366+00:00",
+  "scope": "Real mobile components in Expo web with synthetic props and mocked read endpoints; no production/local family writes",
+  "review": {
+    "phone": [
+      390,
+      844
+    ],
+    "small_phone": [
+      320,
+      568
+    ],
+    "tablet": [
+      1280,
+      800
+    ],
+    "states_checked": [
+      "multiple_choice_wrong",
+      "unanswered_open",
+      "text_answer",
+      "ink_answer"
+    ],
+    "question_initially_visible": true,
+    "multiple_choice_not_marked_unanswered": true,
+    "correct_and_selected_labels": true,
+    "optional_note_round_trip": true,
+    "horizontal_overflow": false
+  },
+  "drawing": {
+    "viewport": [
+      390,
+      568
+    ],
+    "method": "Chromium CDP touch events",
+    "scroll_locked_while_drawing": true,
+    "scroll_position_unchanged": true,
+    "unlocked_on_release": true,
+    "unlocked_on_touch_cancel": true
+  },
+  "limitations": [
+    "Physical iOS/Apple Pencil not tested",
+    "Save/AI backend unchanged; not re-exercised in these UI fixtures",
+    "New Prova hub is an unapproved static mockup, not implemented app behavior"
+  ],
+  "testflight": "These fixes are not in TestFlight 16; no new binary submitted in this task"
+}
