@@ -23,6 +23,13 @@
       "channel": "production",
       "autoIncrement": true,
       "environment": "production"
+    },
+    "tablet": {
+      "extends": "production",
+      "distribution": "internal",
+      "autoIncrement": false,
+      "environment": "production",
+      "channel": "production"
     }
   },
   "submit": {

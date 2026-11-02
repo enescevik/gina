@@ -1,0 +1,21 @@
+{
+  "version": "0.1.0",
+  "build": "16",
+  "sourceCommit": "86c819dccdd2cd23db713163805d97defe8ff49f",
+  "easBuildId": "43136ef5-bb94-4097-9a04-0f9624373dbe",
+  "easStatus": "FINISHED",
+  "apple": {
+    "processingState": "VALID",
+    "internalState": "IN_BETA_TESTING",
+    "expired": false
+  },
+  "deliveryId": "dc7eea10-2c51-41c2-b4f2-b1a946bc31bf",
+  "upload": "Apple altool: validation=0, upload=0",
+  "temporaryUploadKeyRemoved": true,
+  "verifiedAt": "2026-11-02T20:44:24.505941+00:00",
+  "serverPrs": [
+    51,
+    52,
+    53
+  ]
+}
