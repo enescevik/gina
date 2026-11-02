@@ -1,5 +1,8 @@
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
+import { supabase } from "./supabase";
+import { sourceAction } from "./learning-files";
+import i18n from "./i18n";
 import { Platform } from "react-native";
 
 /** Kitapçık (PDF) için HTML üretir ve yazdırır/paylaşır. Tüm metinler kaçışlanır; sayfa A4. */
@@ -19,6 +22,7 @@ export interface BookletQuestion {
   correct_key: string | null;
   expected_answer: string | null;
   solution: string | null;
+  images?: {dataUri:string;alt:string}[];
 }
 
 /** Arayüz metinleri çağıran ekrandan (i18n) gelir; kütüphane dilden bağımsızdır. */
@@ -70,6 +74,9 @@ h1, h2, h3 { font-family: "Baloo 2", "Nunito", -apple-system, "Segoe UI", Roboto
 .cover .fields { margin-top: 18mm; width: 120mm; text-align: left; }
 .cover .fields div { border-bottom: 1px solid #9AA8B5; padding: 3mm 0 1mm; margin-bottom: 5mm; color: #4A5A6A; }
 .q { break-inside: avoid; page-break-inside: avoid; margin-bottom: 7mm; }
+.q figure { margin: 3mm 0 3mm 11mm; }
+.q figure img { display: block; max-width: 145mm; max-height: 90mm; object-fit: contain; }
+.q figcaption { font-size: 9pt; color: #625C85; }
 .q .head { display: flex; gap: 3mm; align-items: baseline; }
 .q .num { font-family: "Baloo 2", "Nunito", Arial, sans-serif; font-weight: 700; color: #0B7F7F; min-width: 8mm; }
 .q .tag { font-size: 8.5pt; color: #6B7B8B; margin-left: 11mm; margin-bottom: 1.5mm; }
@@ -107,6 +114,7 @@ export function buildBookletHtml({ title, subtitle, questions, labels, includeSo
 <div class="q">
   <div class="tag">${escapeHtml(q.topic)} · ${escapeHtml(labels.difficulty(q.difficulty))}</div>
   <div class="head"><span class="num">${i + 1}.</span><span>${multiline(q.stem)}</span></div>
+  ${(q.images ?? []).map(image => { if (!/^data:image\/(png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(image.dataUri)) throw new Error("invalid_booklet_image"); return `<figure><img src="${image.dataUri}" alt="${escapeHtml(image.alt)}"/><figcaption>${escapeHtml(image.alt)}</figcaption></figure>`; }).join("")}
   ${choices}
 </div>`;
     })
@@ -151,7 +159,8 @@ export async function printBooklet(html: string, dialogTitle: string): Promise<v
     win.document.open();
     win.document.write(html);
     win.document.close();
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await Promise.all(Array.from(win.document.images).map(image => image.decode()));
+    await win.document.fonts.ready;
     win.focus();
     win.print();
     setTimeout(() => frame.remove(), 1000);
@@ -164,4 +173,24 @@ export async function printBooklet(html: string, dialogTitle: string): Promise<v
   } else {
     await Print.printAsync({ uri });
   }
+}
+
+/** Embed bytes, not short-lived URLs: exported PDFs remain self-contained. */
+export async function attachBookletImages(questions:BookletQuestion[]):Promise<BookletQuestion[]> {
+ const {data,error}=await supabase.rpc("get_question_media",{p_question_ids:questions.map(q=>q.id)});
+ if(error)throw error;
+ const media=data as unknown as {question_id:string;source_id:string;alt:string}[];
+ const result=questions.map(q=>({...q,images:[] as {dataUri:string;alt:string}[]}));
+ let total=0;
+ for(const m of media){
+  const signed=await sourceAction<{url:string;mime:string}>({action:'view',id:m.source_id,question_id:m.question_id});
+  const response=await fetch(signed.url,{signal:AbortSignal.timeout(15000)});
+  if(!response.ok)throw new Error(i18n.t('sources.imageFailed'));
+  const bytes=new Uint8Array(await response.arrayBuffer());total+=bytes.length;
+  if(total>12*1024*1024)throw new Error(i18n.t('sources.bookletTooLarge'));
+  if(!['image/png','image/jpeg'].includes(signed.mime))throw new Error(i18n.t('sources.imageFailed'));
+  let binary='';for(let at=0;at<bytes.length;at+=8192)binary+=String.fromCharCode(...bytes.subarray(at,at+8192));
+  result.find(q=>q.id===m.question_id)?.images.push({dataUri:`data:${signed.mime};base64,${btoa(binary)}`,alt:m.alt});
+ }
+ return result;
 }

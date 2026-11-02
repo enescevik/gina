@@ -1,3 +1,4 @@
+import { TimetableImportEntry, TimetableSourceLinks } from "./timetable-import";
 import { useEffect, useState } from "react";
 import { usePreventRemove } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
@@ -368,7 +369,27 @@ function LoadedEditor({
           ) : null}
           {draft ? (
             <View pointerEvents={busy ? "none" : "auto"} style={{ gap: 18 }}>
-              {!wide ? (
+              <TimetableImportEntry
+                  childId={child.id}
+                  initial={draft}
+                  disabled={dirty || busy}
+                  onSaved={(next) => {
+                    setDraft(next);
+                    setBaseline(JSON.stringify(next));
+                    setSaved(true);
+                    setWeekend(next.lessons.some((l) => l.day > 5));
+                    cache.setQueryData(["school_timetable", child.id], next);
+                    void cache.invalidateQueries({ queryKey: ["events"] });
+                    void cache.invalidateQueries({
+                      queryKey: ["child_events"],
+                    });
+                    void cache.invalidateQueries({
+                      queryKey: ["timetable_sources", child.id],
+                    });
+                  }}
+                />
+                <TimetableSourceLinks childId={child.id} />
+                {!wide ? (
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   <View style={u.row}>
                     {days.map((d) => (

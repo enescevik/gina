@@ -1,3 +1,4 @@
+import { cleanupSources } from "../_shared/source-cleanup.ts";
 import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { json, preflight, serviceClient } from "../_shared/supabase.ts";
 
@@ -33,6 +34,7 @@ export async function deleteAccount(req: Request, dependencies?: { db: SupabaseC
     // The auth.users trigger transfers shared ownership or cascades the last parent's family, atomically.
     const { error } = await db.auth.admin.deleteUser(user.id, false);
     if (error) { await auth?.auth.signOut({ scope: "local" }); return json({ error: "deletion_failed" }, 500); }
+    try { await cleanupSources(db); } catch { /* Durable queue is retried by the scheduled worker. */ }
     return json({ ok: true });
   } catch { return json({ error: "deletion_failed" }, 500); }
 }

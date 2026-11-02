@@ -83,7 +83,7 @@ Deno.serve(async (req) => {
   try {
     const result = await callClaude<{ suggestions: unknown }>(
       key,
-      { ...ai, maxOutputTokens: 2048 },
+      ai,
       system,
       prompt,
       schema,

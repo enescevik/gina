@@ -1,0 +1,53 @@
+{
+  "approved_design": "phone-tablet-approved-v1.png",
+  "implementation_captures": [
+    {
+      "file": "phone-question-implemented-web.png",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "file": "phone-notebook-implemented-web.png",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "file": "tablet-implemented-web.png",
+      "viewport": [
+        1280,
+        800
+      ]
+    }
+  ],
+  "capture_kind": "Real Expo web exam component with synthetic isolated-database fixtures; not native iOS screenshots",
+  "verified": [
+    "editable stroke/text/source persistence through real PostgREST",
+    "reload and question navigation preserve answer",
+    "source crop coordinates persisted",
+    "undo, eraser, move, proportional resize",
+    "phone zoom 100/150/200 percent",
+    "family boundary and stale revision rejection",
+    "cohort cancellation rejects notebook-only writes"
+  ],
+  "checks": {
+    "sql_assertions": 594,
+    "sql_files": 32,
+    "core_tests": 38,
+    "edge_tests": 56,
+    "workspace_typecheck_and_lint": "passed",
+    "ios_hermes_export": "passed"
+  },
+  "test_data_cleanup": "Synthetic audit family/user/source removed; QA gateway and PostgREST container stopped; temporary preview route removed",
+  "not_yet_verified": [
+    "physical Apple Pencil/Android stylus and palm rejection",
+    "native input latency",
+    "persistent offline drafts",
+    "AI image grading of notebook",
+    "versioned shared source across questions"
+  ],
+  "release": "Backend migrations deployed; no new TestFlight build"
+}

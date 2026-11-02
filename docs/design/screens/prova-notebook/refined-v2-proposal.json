@@ -1,0 +1,22 @@
+{
+  "status": "approved-and-implemented",
+  "reference": "phone-tablet-approved-v1.png",
+  "output": "phone-tablet-refined-v2-proposal.png",
+  "generator": "built-in image_gen",
+  "prompt_summary": "Edit the approved GINA phone/tablet notebook reference with high fidelity. Preserve original mint plush mascot and gina logo, cream grid paper, purple controls, typography and warm soft borders. Tablet question panel approximately 35%, notebook 65%; retain question image first, given-value add chips, large reading mascot with speech bubble, compact single-row lilac toolbar, saved badge and small navigation. Add a discreet expand control. Phone retains deep-purple selected notebook tab, compact question thumbnail with collapse control, single-row toolbar, large notebook and small saved/next controls. No permanent color row or helper-text row; no new branding or art direction. Triangle AB=6, BC=8, AC=10 and handwritten 6+8+10=24 cm are illustrative sample content, not a production asset.",
+  "implementation_rules": [
+    "Toolbar colors and stroke controls open on demand.",
+    "All touch targets remain at least 48 dp; compact visuals do not reduce hit areas.",
+    "Shared-source label appears only if real shared-question data exists.",
+    "Handwriting shown is example student content, never a fixed answer image in the shipped UI.",
+    "Keep existing editable ink and answer revision protections.",
+    "After visual approval: implement, capture phone/tablet, validate and submit TestFlight; continue backlog afterward."
+  ],
+  "preflight": {
+    "production_configuration": "required static checks passed",
+    "legal_page_warning": "existing legal URL is not configured; not resolved by this design task",
+    "build_started": true,
+    "testflight_submitted": true
+  },
+  "approval": "2026-11-02: Evet, bu maketi uygula"
+}

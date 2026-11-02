@@ -1,0 +1,42 @@
+{
+  "reference": "phone-tablet-refined-v2-proposal.png",
+  "approved": true,
+  "date": "2026-11-02",
+  "implementation": "React Native NotebookWorkspace / NotebookEditor used by the real exam route",
+  "screenshots": {
+    "phone": "phone-refined-v2-web.png",
+    "tablet": "tablet-refined-v2-web.png"
+  },
+  "evidence_environment": "Expo web connected through local auth/source proxy to real PostgREST on isolated gina_release13_audit. Synthetic questions only. No production family writes. Screenshots include actual editable student test content, not a baked answer.",
+  "checks": [
+    "320x740 / 390x844 phone and 1280x800 tablet layouts",
+    "Question image thumbnail, collapse/restore, tabs",
+    "Tablet 35/65 split and expand/restore",
+    "Given-value chip inserts editable text",
+    "Source image transfer, stroke draw, thickness, erase, undo/redo",
+    "Save, next/previous navigation and reload preserve notebook",
+    "All toolbar touch targets >=48px; phone overflow tools",
+    "Workspace lint/typecheck/test: 7 tasks passed; 38 core tests",
+    "iOS production JS/Hermes export passed",
+    "TestFlight production configurationReady=true"
+  ],
+  "limits": [
+    "Native simulator could not load the existing development app because its Metro URL returned HTML; native UI not verified in this run.",
+    "Physical Apple Pencil pressure/tilt/palm rejection not verified.",
+    "Shared question-group versioning not implemented; no invented shared-source labels.",
+    "Native handwriting AI evaluation and parent annotation layer remain future work.",
+    "No durable offline notebook queue."
+  ],
+  "release": {
+    "version": "0.1.0",
+    "build": "15",
+    "build_id": "07aabe77-73fc-480d-8886-76dc5813ab93",
+    "source_commit": "dab1f66dc7d311de8329e454e6b66ee0a5f6549b",
+    "upload": "Apple altool upload succeeded",
+    "delivery_id": "5830915d-b38a-4789-81c0-bd2449c08274",
+    "apple_processing": "VALID",
+    "internal_state": "IN_BETA_TESTING",
+    "expired": false,
+    "verified_at": "2026-11-02T17:31:49.937977+00:00"
+  }
+}

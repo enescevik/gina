@@ -228,17 +228,20 @@ export function ChoiceCard({
   art,
   selected,
   onPress,
+  multiple = false,
 }: {
   title: string;
   body?: string;
   art?: ReactNode;
   selected: boolean;
   onPress: () => void;
+  multiple?: boolean;
 }) {
   return (
     <Pressable
-      accessibilityRole="button"
-      accessibilityState={{ selected }}
+      accessibilityRole={multiple ? "checkbox" : "button"}
+      accessibilityState={multiple ? { checked: selected } : { selected }}
+      aria-checked={multiple ? selected : undefined}
       onPress={onPress}
       style={({ pressed }) => ({
         minHeight: 64,

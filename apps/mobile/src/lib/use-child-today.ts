@@ -1,3 +1,5 @@
+import { useRef } from "react";
+import { invalidateTaskState } from "./task-cache";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Crypto from "expo-crypto";
 
@@ -89,17 +91,23 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
   useRealtimeInvalidate("star_events", childId ? `child_id=eq.${childId}` : null, [["star_events", childId]]);
   useRealtimeInvalidate("task_templates", childId ? `child_id=eq.${childId}` : null, [["task_templates", childId]]);
 
+  const requestIds = useRef(new Map<string, string>());
+  const completingRef = useRef(false);
   const complete = useMutation({
     mutationFn: async (templateId: string) => {
+      const requestKey = `${childId}:${templateId}:${today}`;
+      let requestId = requestIds.current.get(requestKey);
+      if (!requestId) { requestId = Crypto.randomUUID(); requestIds.current.set(requestKey, requestId); }
       const { error } = await supabase.rpc("complete_task", {
         p_template_id: templateId,
         p_due_date: today,
-        p_client_id: Crypto.randomUUID(),
+        p_client_id: requestId,
         ...(actingAsParent ? { p_acting_child_id: childId } : {}),
       });
       if (error) throw error;
+      requestIds.current.delete(requestKey);
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["task_completions_week", childId, from] }),
+    onSettled: async () => { completingRef.current = false; await invalidateTaskState(queryClient); },
   });
 
   const byTemplateToday = new Map(
@@ -140,7 +148,7 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
     loading: templates.isPending || completions.isPending,
     error: templates.error ?? completions.error ?? starEvents.error,
     completionError: complete.error,
-    complete: (templateId) => complete.mutate(templateId),
+    complete: (templateId) => { if (completingRef.current) return; completingRef.current = true; complete.mutate(templateId); },
     completing: complete.isPending,
   };
 }

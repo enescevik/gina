@@ -1,3 +1,4 @@
+import { runAiOperation } from "../_shared/ai-operation.ts";
 // Prova çalışma planı: bir denemenin zayıf konularından tekrar planı üretir (study_plans, status 'draft').
 // Deploy: `supabase functions deploy prova-plan` (verify_jwt açık kalır). Çocuk asla çağırmaz.
 // Kurallar: yalnız parent; paket prova_study_plan (Pro) sunucuda; model ai_settings'ten;
@@ -114,13 +115,16 @@ Deno.serve(async (req) => {
   };
   const userPrompt = JSON.stringify(payload);
 
-  let result;
-  try {
-    result = await callClaude<PlanOutput>(apiKey, ai, SYSTEM_PROMPT, userPrompt, SCHEMA);
-  } catch (e) {
-    console.error("prova-plan", String(e));
-    return json({ error: "plan_failed" }, 502);
-  }
+  const result = await runAiOperation<PlanOutput>(db, parent, "plan", attemptId, apiKey, ai,
+    SYSTEM_PROMPT, userPrompt, SCHEMA, value => {
+      const v = value as PlanOutput;
+      if (!v || typeof v.ozet !== "string" || !Array.isArray(v.gunler) || v.gunler.length !== days ||
+        v.gunler.some(g => !g || typeof g.konu !== "string" || !scored.some(s => s.topic === g.konu) ||
+          typeof g.etkinlik !== "string" || !g.etkinlik.trim() || !Number.isFinite(g.sure_dk)) ||
+        !Array.isArray(v.gorev_onerileri) || v.gorev_onerileri.some(g => typeof g !== "string")) throw Error("ai_result_invalid");
+      return v;
+    });
+  if (result instanceof Response) return result;
 
   const plan = {
     ozet: result.output.ozet ?? "",
@@ -133,9 +137,10 @@ Deno.serve(async (req) => {
     gorev_onerileri: (result.output.gorev_onerileri ?? []).slice(0, 5),
   };
 
-  const { data: row, error: insertError } = await db
+  const { error: insertError } = await db
     .from("study_plans")
-    .insert({
+    .upsert({
+      ai_job_id: result.jobId,
       family_id: parent.familyId,
       child_id: attempt.child_id,
       attempt_id: attemptId,
@@ -147,11 +152,10 @@ Deno.serve(async (req) => {
       prompt_version: PROMPT_VERSION,
       input_hash: await sha256(`${PROMPT_VERSION}\n${userPrompt}\n${ai.model}`),
       created_by: parent.userId,
-    })
-    .select("id")
-    .single();
-  if (insertError || !row) {
-    console.error("prova-plan insert", insertError?.message);
+    }, { onConflict: "ai_job_id", ignoreDuplicates: true });
+  const { data: row, error: readError } = await db.from("study_plans").select("id,plan").eq("ai_job_id", result.jobId).single();
+  if (insertError || readError || !row) {
+    console.error("prova-plan insert", insertError?.code ?? readError?.code);
     return json({ error: "save_failed" }, 500);
   }
 
@@ -163,7 +167,8 @@ Deno.serve(async (req) => {
     input_tokens: result.inputTokens,
     output_tokens: result.outputTokens,
     requested_by: parent.userId,
+    operation_id: result.jobId,
   });
 
-  return json({ ok: true, plan_id: row.id, plan });
+  return json({ ok: true, plan_id: row.id, plan: row.plan });
 });

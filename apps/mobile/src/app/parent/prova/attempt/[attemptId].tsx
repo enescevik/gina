@@ -1,3 +1,7 @@
+import { readNotebook, notebookHasAnswer } from "@gina/core";
+import { NotebookPage } from "@/components/learning/notebook-page";
+import { Toggle } from "@/components/ui/toggle";
+import { QuestionMedia, type QuestionMediaItem } from "@/components/learning/question-media";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
@@ -19,9 +23,13 @@ interface Choice {
 }
 
 interface AiSummary {
+  unscored?: {ref:string;reason:string}[];
   guclu_konular?: string[];
   zayif_konular?: string[];
   genel_oneri?: string;
+  konu_analizi?: {konu:string;kanitlar:string[];gozlem:string;sonraki_adim:string}[];
+  calisma_adimlari?: {konu:string;etkinlik:string;sure_dk:number;basari_olcutu:string}[];
+  veli_destegi?:string[]; sinirlar?:string[];
 }
 
 interface AiDetails {
@@ -57,6 +65,10 @@ export default function AttemptReviewScreen() {
   });
 
   const questionIds = attempt.data?.exams?.question_ids ?? [];
+  const media = useQuery({
+    queryKey:["attempt_question_media",familyId,attemptId],enabled:questionIds.length>0,
+    queryFn:async()=>{const {data,error}=await supabase.rpc("get_question_media",{p_question_ids:questionIds});if(error)throw error;return data as unknown as QuestionMediaItem[];},
+  });
   const questions = useQuery({
     queryKey: ["attempt_review_questions", attemptId],
     enabled: questionIds.length > 0,
@@ -77,7 +89,7 @@ export default function AttemptReviewScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("exam_answers")
-        .select("question_id, answer_key, answer_text, is_correct, score, feedback, graded_by, ai_score, ai_details")
+        .select("question_id, answer_key, answer_text, answer_document, is_correct, score, feedback, graded_by, ai_score, ai_details")
         .eq("attempt_id", attemptId);
       if (error) throw error;
       return new Map(data.map((a) => [a.question_id, a]));
@@ -110,8 +122,9 @@ export default function AttemptReviewScreen() {
     void queryClient.invalidateQueries({ queryKey: ["exams", familyId] });
   };
 
+  const [imageAiConsent,setImageAiConsent] = useState(false);
   const aiGrade = useMutation({
-    mutationFn: () => invokeProvaAi<GradeResponse>("prova-grade", { attempt_id: attemptId }),
+    mutationFn: () => invokeProvaAi<GradeResponse>("prova-grade", { attempt_id: attemptId, image_consent: imageAiConsent }),
     onSuccess: refresh,
   });
 
@@ -127,11 +140,12 @@ export default function AttemptReviewScreen() {
   const a = attempt.data;
   const summary = (a?.ai_feedback ?? null) as AiSummary | null;
   const finished = a && a.status !== "in_progress";
+  const notebookNeedsReview = Array.from(answers.data?.values() ?? []).some(answer => answer.graded_by !== "parent" && (readNotebook(answer.answer_document)?.elements.length ?? 0) > 0);
   const hasOpen = (a?.open_total ?? 0) > 0;
   const ent = entitlement.data;
 
   return (
-    <Screen title={a?.exams?.title ?? t("prova.ai.reviewTitle")} loading={attempt.isLoading || questions.isLoading || answers.isLoading || plans.isLoading || entitlement.isLoading} error={attempt.error ?? questions.error ?? answers.error ?? plans.error ?? entitlement.error} onRetry={() => { void attempt.refetch(); if (questionIds.length) void questions.refetch(); void answers.refetch(); void plans.refetch(); void entitlement.refetch(); }}>
+    <Screen title={a?.exams?.title ?? t("prova.ai.reviewTitle")} loading={attempt.isLoading || media.isLoading || questions.isLoading || answers.isLoading || plans.isLoading || entitlement.isLoading} error={attempt.error ?? media.error ?? questions.error ?? answers.error ?? plans.error ?? entitlement.error} onRetry={() => { void attempt.refetch(); void media.refetch(); if (questionIds.length) void questions.refetch(); void answers.refetch(); void plans.refetch(); void entitlement.refetch(); }}>
       {a ? (
         <View className="gap-1 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
           <Text className="font-body text-sm text-gray-600">
@@ -164,13 +178,37 @@ export default function AttemptReviewScreen() {
         </View>
       ) : null}
 
-      {finished && hasOpen ? (
+      {summary?.konu_analizi?.map((item, n) => <View key={`topic-${n}`} className="gap-3 rounded-parent border border-mist bg-white p-5">
+        <Text className="font-display text-xl text-ink">{item.konu}</Text>
+        <Text className="font-body text-base text-ink">{item.gozlem}</Text>
+        <Text className="font-body text-sm text-gray-600">{t("learningReport.evidence")}: {item.kanitlar.map(ref => ref.replace(/^M/, "")).join(", ")}</Text>
+        <Text className="font-body-bold text-base text-teal-dark">{item.sonraki_adim}</Text>
+      </View>)}
+      {summary?.calisma_adimlari?.length ? <View className="gap-4 rounded-parent bg-teal-light p-5">
+        <Text className="font-display text-xl text-ink">{t("learningReport.nextSteps")}</Text>
+        {summary.calisma_adimlari.map((step,n)=><View key={n} className="gap-1">
+          <Text className="font-body-bold text-base text-ink">{step.konu} · {step.sure_dk} {t("prova.min")}</Text>
+          <Text className="font-body text-base text-ink">{step.etkinlik}</Text>
+          <Text className="font-body text-sm text-teal-dark">{t("learningReport.check")}: {step.basari_olcutu}</Text>
+        </View>)}
+      </View> : null}
+      {summary?.veli_destegi?.length ? <View className="gap-2 rounded-parent bg-white p-5">
+        <Text className="font-display text-xl text-ink">{t("learningReport.parentHelp")}</Text>
+        {summary.veli_destegi.map((tip,n)=><Text key={n} className="font-body text-base text-ink">{tip}</Text>)}
+      </View> : null}
+      {summary?.unscored?.map(item=><View key={item.ref} className="gap-2 rounded-parent border border-mist p-4"><Text className="font-body-bold text-base text-ink">{t("prova.ai.questionN",{n:item.ref.replace(/^M/,"")})}</Text><Text className="font-body text-base text-ink">{item.reason}</Text></View>)}
+      {summary?.sinirlar?.length ? <View className="gap-2 rounded-parent border border-mist p-4">
+        <Text className="font-body-bold text-base text-ink">{t("learningReport.limits")}</Text>
+        {summary.sinirlar.map((limit,n)=><Text key={n} className="font-body text-sm text-gray-600">{limit}</Text>)}
+      </View> : null}
+      {finished ? (
         ent?.ai_grading ? (
-          <Button title={t("prova.ai.gradeWithAi")} loading={aiGrade.isPending} onPress={() => aiGrade.mutate()} />
+          <View style={{gap:12}}>{media.data?.length ? <Toggle label={t("sources.aiConsent")} value={imageAiConsent} onChange={setImageAiConsent} disabled={aiGrade.isPending}/> : null}<Button title={t("prova.ai.gradeWithAi")} disabled={notebookNeedsReview} loading={aiGrade.isPending} onPress={() => aiGrade.mutate()} /></View>
         ) : (
           <Text className="font-body text-sm text-gray-500">{t("prova.ai.needsProGrading")}</Text>
         )
       ) : null}
+      {notebookNeedsReview ? <Text className="font-body text-base text-gray-600">{t("notebook.manualReview")}</Text> : null}
       <ErrorText error={aiGrade.error} />
 
       {questions.data?.map((q, i) => (
@@ -179,7 +217,7 @@ export default function AttemptReviewScreen() {
           index={i + 1}
           attemptId={attemptId}
           editable={!!finished}
-          question={{ ...q, choices: (q.choices ?? null) as Choice[] | null }}
+          question={{ ...q, media:media.data?.filter(item=>item.question_id===q.id)??[], choices: (q.choices ?? null) as Choice[] | null }}
           answer={answers.data?.get(q.id)}
           onSaved={refresh}
         />
@@ -204,13 +242,14 @@ export default function AttemptReviewScreen() {
         </View>
       ) : null}
 
-      <ErrorText error={attempt.error ?? questions.error ?? answers.error ?? plans.error} />
+      <ErrorText error={attempt.error ?? media.error ?? questions.error ?? answers.error ?? plans.error} />
       <Button variant="ghost" title={t("prova.backToList")} onPress={() => router.back()} />
     </Screen>
   );
 }
 
 interface ReviewQuestion {
+  media: QuestionMediaItem[];
   id: string;
   topic: string;
   kind: "multiple_choice" | "open_ended";
@@ -224,6 +263,7 @@ interface ReviewQuestion {
 interface ReviewAnswer {
   answer_key: string | null;
   answer_text: string | null;
+  answer_document?: unknown;
   is_correct: boolean | null;
   score: number | null;
   feedback: string | null;
@@ -271,7 +311,9 @@ function AnswerCard({
 
   const details = (answer?.ai_details ?? null) as AiDetails | null;
   const isMc = q.kind === "multiple_choice";
-  const answered = isMc ? !!answer?.answer_key : !!answer?.answer_text?.trim();
+  const notebook = readNotebook(answer?.answer_document);
+  const [pageWidth, setPageWidth] = useState(300);
+  const answered = isMc ? !!answer?.answer_key : !!answer?.answer_text?.trim() || notebookHasAnswer(notebook);
 
   return (
     <View className="gap-2 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
@@ -279,6 +321,7 @@ function AnswerCard({
         {t("prova.ai.questionN", { n: index })} · {q.topic} · {t(`prova.kind.${q.kind}`)}
       </Text>
       <Text className="font-body-bold text-base text-ink">{q.stem}</Text>
+          <QuestionMedia questionId={q.id} items={q.media}/>
 
       {isMc ? (
         <View className="gap-1">
@@ -303,8 +346,9 @@ function AnswerCard({
         <View className="gap-2">
           <View className="rounded-parent bg-cream p-3">
             <Text className="font-body text-xs text-gray-500">{t("prova.ai.childAnswer")}</Text>
-            <Text className="font-body text-base text-ink">{answered ? answer?.answer_text : t("prova.ai.unanswered")}</Text>
+            <Text className="font-body text-base text-ink">{answer?.answer_text || (notebookHasAnswer(notebook) ? t("notebook.writtenAnswer") : t("prova.ai.unanswered"))}</Text>
           </View>
+          {notebook ? <View onLayout={e => setPageWidth(Math.min(650,e.nativeEvent.layout.width))} style={{width:"100%",maxWidth:650,alignSelf:"center"}}><NotebookPage document={notebook} width={pageWidth}/><Text className="font-body text-sm text-gray-600">{t("notebook.manualReview")}</Text></View> : null}
           <Pressable accessibilityRole="button" style={{ minHeight: 48, justifyContent: "center" }} accessibilityState={{ expanded: showKey }} onPress={() => setShowKey((v) => !v)}>
             <Text className="font-body-bold text-teal-dark">{showKey ? t("prova.ai.hideExpected") : t("prova.ai.showExpected")}</Text>
           </Pressable>

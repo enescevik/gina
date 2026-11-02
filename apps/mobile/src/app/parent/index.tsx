@@ -1,5 +1,7 @@
+import * as Crypto from "expo-crypto";
+import { invalidateTaskState } from "@/lib/task-cache";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { localDateOf, occurrencesBetween, templatesDueOn, weekDatesOf } from '@gina/core';
 import { ParentHomeView } from '@/components/parent-home/home-view';
@@ -123,7 +125,7 @@ export default function ParentHomeScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_completions")
-        .select("id, due_date, child_id, task_templates(title, icon, stars), children!task_completions_child_id_fkey(name)")
+        .select("id, completed_at, due_date, child_id, task_templates(title, icon, stars), children!task_completions_child_id_fkey(name)")
         .eq("family_id", familyId)
         .eq("status", "done")
         .order("completed_at");
@@ -154,17 +156,20 @@ export default function ParentHomeScreen() {
 
   useRealtimeInvalidate("star_events", familyId ? `family_id=eq.${familyId}` : null, [["family_star_totals", familyId]]);
 
+  const reviewRequests = useRef(new Map<string, string>());
   const review = useMutation({
     mutationFn: async ({ id, approve }: { id: string; approve: boolean }) => {
-      const { error } = await supabase.rpc("review_task", { p_completion_id: id, p_approve: approve });
+      const row = approvals.data?.find(item => item.id === id);
+      if (!row) throw new Error("submission_changed");
+      const key = `${id}:${row.completed_at}:${approve}`;
+      let requestId = reviewRequests.current.get(key);
+      if (!requestId) { requestId = Crypto.randomUUID(); reviewRequests.current.set(key, requestId); }
+      const { error } = await supabase.rpc("review_task_once", {
+        p_request_id: requestId, p_completion_id: id, p_approve: approve, p_expected_completed_at: row.completed_at,
+      });
       if (error) throw error;
     },
-    onSettled: () =>
-      void Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["approvals", familyId] }),
-        queryClient.invalidateQueries({ queryKey: ["family_star_totals", familyId] }),
-        queryClient.invalidateQueries({ queryKey: ["family_completions", familyId, today] }),
-      ]),
+    onSettled: () => invalidateTaskState(queryClient),
   });
 
   const parentName = me.data;

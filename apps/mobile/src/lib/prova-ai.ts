@@ -4,7 +4,7 @@ import i18n from "./i18n";
 import { supabase } from "./supabase";
 
 /** Prova AI Edge Function'ları (yalnız veli alanı; çocuk ekranları çağırmaz). */
-export type ProvaAiFunction = "prova-generate" | "prova-grade" | "prova-plan" | "setup-suggestions";
+export type ProvaAiFunction = "prova-generate" | "prova-grade" | "prova-plan" | "setup-suggestions" | "timetable-import";
 
 /** Sunucunun döndürdüğü hata kodu taşıyan hata; mesajı prova.ai.errors.* çevirisidir. */
 export class ProvaAiError extends Error {

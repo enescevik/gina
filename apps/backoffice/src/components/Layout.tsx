@@ -10,8 +10,11 @@ import { isConfigured, supabase } from "@/lib/supabase";
 const NAV = [
   { href: "/dashboard", label: t.nav.dashboard },
   { href: "/ai", label: t.nav.ai },
+  { href: "/operations", label: "AI işlemleri" },
   { href: "/overrides", label: t.nav.overrides },
   { href: "/questions", label: t.nav.questions },
+  { href: "/library", label: "GINA kütüphanesi" },
+  { href: "/groups", label: "Birlikte Prova" },
   { href: "/families", label: t.nav.families },
 ];
 
@@ -47,39 +50,20 @@ export function Layout({ title, children }: { title: string; children: ReactNode
       <Head>
         <title>{`${title} · ${t.appName}`}</title>
       </Head>
-      <div className="min-h-screen bg-slate-50 text-slate-900">
-        <header className="border-b border-slate-200 bg-white">
-          <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-4 px-4 py-3">
-            <span className="font-semibold text-brand-dark">{t.appName}</span>
-            {session && isAdmin ? (
-              <nav className="flex flex-wrap gap-1">
-                {NAV.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`rounded px-3 py-1.5 text-sm ${
-                      router.pathname === item.href ? "bg-brand-light text-brand-dark" : "text-slate-600 hover:bg-slate-100"
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </nav>
-            ) : null}
-            {session ? (
-              <div className="ml-auto flex items-center gap-3 text-sm text-slate-500">
-                <span>{session.user.email}</span>
-                <button className="btn-secondary" onClick={() => void signOut()}>
-                  {t.nav.signOut}
-                </button>
-              </div>
-            ) : null}
-          </div>
-        </header>
-        <main className="mx-auto max-w-6xl px-4 py-6">
-          <h1 className="mb-4 text-xl font-semibold">{title}</h1>
-          {body}
-        </main>
+      <div className="admin-shell">
+        <aside className="admin-sidebar">
+          <Link href="/dashboard" className="admin-brand" aria-label="GINA yönetim ana sayfa">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/logo.png" width="132" height="56" alt="gina" />
+            <span>Yönetim alanı</span>
+          </Link>
+          {session && isAdmin ? <nav aria-label="Yönetim bölümleri">
+            {NAV.map(item=><Link key={item.href} href={item.href} aria-current={router.pathname===item.href?'page':undefined}
+              className={router.pathname===item.href?'admin-nav active':'admin-nav'}>{item.label}</Link>)}
+          </nav>:null}
+          {session?<div className="admin-account"><span>{session.user.email}</span><button className="btn-secondary" onClick={()=>void signOut()}>{t.nav.signOut}</button></div>:null}
+        </aside>
+        <main className="admin-main"><header className="admin-page-heading"><h1>{title}</h1><span className="admin-badge">GINA Aile</span></header>{body}</main>
       </div>
     </>
   );
@@ -97,8 +81,8 @@ export function Notice({ children, tone = "warn" }: { children: ReactNode; tone?
 
 export function Card({ title, children }: { title?: string; children: ReactNode }) {
   return (
-    <section className="mb-6 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      {title ? <h2 className="mb-3 font-medium text-slate-700">{title}</h2> : null}
+    <section className="admin-card">
+      {title ? <h2 className="mb-4 text-lg font-bold text-slate-800">{title}</h2> : null}
       {children}
     </section>
   );
