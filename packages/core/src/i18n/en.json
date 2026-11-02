@@ -1784,5 +1784,15 @@
   "prova.ai.errors.invalid_notebook": "The full notebook could not be rendered. You can review this answer manually.",
   "parentReview.state.empty": "No answer",
   "parentReview.state.reviewed": "Reviewed",
-  "parentReview.state.waiting": "Awaiting review"
+  "parentReview.state.waiting": "Awaiting review",
+  "parentReview.selectedChoice": "Child’s selected answer",
+  "parentReview.correctChoice": "Correct answer",
+  "parentReview.childAnswer": "Child’s answer",
+  "parentReview.addDrawingNote": "Add a drawing note",
+  "parentReview.openDrawingNotes": "Open drawing notes",
+  "parentReview.backToAnswer": "Back to question and answer",
+  "parentReview.explanation": "Solution explanation",
+  "parentReview.collapseQuestion": "Collapse question area",
+  "parentReview.aiNeedsAnswer": "An AI suggestion needs a saved child answer first.",
+  "parentReview.autoChecked": "Automatically checked"
 }

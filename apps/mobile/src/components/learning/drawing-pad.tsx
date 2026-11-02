@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import {
   type GestureResponderEvent,
   Modal,
+  Platform,
   ScrollView,
   Text,
   useWindowDimensions,
@@ -34,6 +35,7 @@ export function DrawingPad(
   const [color, setColor] = useState(COLORS[0]);
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [drawing, setDrawing] = useState(false);
   const point = useCallback((e: GestureResponderEvent) =>
     `${
       Math.max(
@@ -82,6 +84,8 @@ export function DrawingPad(
     >
       <SafeAreaView style={{ flex: 1, backgroundColor: "#FFFBF5" }}>
         <ScrollView
+          scrollEnabled={!drawing}
+          bounces={!drawing}
           contentContainerStyle={{
             padding: 24,
             gap: 18,
@@ -142,7 +146,7 @@ export function DrawingPad(
               title={t("sources.undo")}
               variant="ghost"
               disabled={busy || !strokes.length}
-              onPress={() => setStrokes(s=>s.slice(0,-1))}
+              onPress={() => setStrokes((s) => s.slice(0, -1))}
             />
           </View>
           <View
@@ -163,22 +167,44 @@ export function DrawingPad(
               borderRadius: 16,
               overflow: "hidden",
               backgroundColor: "#FFFFFF",
+              ...(Platform.OS === "web" ? { touchAction: "none" } : {}),
             }}
             onStartShouldSetResponder={() => !busy && strokes.length < 200}
-            onResponderGrant={e => {
-              pointCount.current=1;
-              setStrokes(s=>[...s,{path:`M${point(e)} l0.1 0.1`,color}]);
+            onResponderGrant={(e) => {
+              setDrawing(true);
+              pointCount.current = 1;
+              setStrokes(
+                (s) => [...s, { path: `M${point(e)} l0.1 0.1`, color }],
+              );
             }}
-            onResponderMove={e => {
-              if(e.nativeEvent.touches.length>1||++pointCount.current>1000)return;
-              const p=point(e);
-              setStrokes(s=>s.length ? [...s.slice(0,-1),{...s[s.length-1],path:`${s[s.length-1].path} L${p}`}] : s);
+            onResponderMove={(e) => {
+              if (
+                e.nativeEvent.touches.length > 1 || ++pointCount.current > 1000
+              ) return;
+              const p = point(e);
+              setStrokes((s) =>
+                s.length
+                  ? [...s.slice(0, -1), {
+                    ...s[s.length - 1],
+                    path: `${s[s.length - 1].path} L${p}`,
+                  }]
+                  : s
+              );
             }}
-            onResponderRelease={e => {
-              const p=point(e);
-              setStrokes(s=>s.length ? [...s.slice(0,-1),{...s[s.length-1],path:`${s[s.length-1].path} L${p}`}] : s);
+            onResponderRelease={(e) => {
+              setDrawing(false);
+              const p = point(e);
+              setStrokes((s) =>
+                s.length
+                  ? [...s.slice(0, -1), {
+                    ...s[s.length - 1],
+                    path: `${s[s.length - 1].path} L${p}`,
+                  }]
+                  : s
+              );
             }}
-            onResponderTerminationRequest={()=>false}
+            onResponderTerminationRequest={() => false}
+            onResponderTerminate={() => setDrawing(false)}
           >
             <Svg
               pointerEvents="none"

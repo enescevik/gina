@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Image,
   KeyboardAvoidingView,
@@ -101,10 +101,11 @@ export function ParentReviewWorkspace(
   const cache = useQueryClient();
   const { width, height, fontScale } = useWindowDimensions();
   const wide = width >= 900 && height >= 540 && fontScale < 1.4;
+  const stackedFooter = width < 380 || fontScale >= 1.4;
   const [picker, setPicker] = useState(false);
   const [tab, setTab] = useState<"solution" | "assessment">("solution");
   const [expanded, setExpanded] = useState(false),
-    [sourceOpen, setSourceOpen] = useState(false),
+    [sourceOpen, setSourceOpen] = useState(true),
     [keyOpen, setKeyOpen] = useState(false);
   const [showNotes, setShowNotes] = useState(true),
     [document, setDocument] = useState(
@@ -125,11 +126,20 @@ export function ParentReviewWorkspace(
     [suggestion, setSuggestion] = useState<ReviewSuggestion | null>(null),
     [appliedAi, setAppliedAi] = useState<string | null>(null);
   const request = useRef<string | null>(null);
-  const original = readNotebook(answer?.answer_document);
+  const original = useMemo(() => readNotebook(answer?.answer_document), [
+    answer?.answer_document,
+  ]);
+  const [notesOpen, setNotesOpen] = useState(() =>
+    question.kind === "open_ended" &&
+    !!readNotebook(review.document)?.elements.length
+  );
   const invalidDocument = answer?.answer_document != null && !original;
   const context = useQuestionContext(question.id);
-  const [commonOpen, setCommonOpen] = useState(false);
+  const [commonOpen, setCommonOpen] = useState(true);
   const isOpen = question.kind === "open_ended";
+  const hasAnswer = !!answer?.answer_key || !!answer?.answer_text?.trim() ||
+    !!original?.elements.length || invalidDocument;
+  const showNotebook = notesOpen || (isOpen && !!original?.elements.length);
   const choices = Array.isArray(question.choices)
     ? question.choices.filter(
       (item): item is { key: string; text: string } =>
@@ -263,13 +273,23 @@ export function ParentReviewWorkspace(
             style={[s.row, {
               padding: 10,
               borderRadius: 16,
-              backgroundColor: choice.key === answer?.answer_key
+              backgroundColor: choice.key === question.correct_key
+                ? "#E7F5EE"
+                : choice.key === answer?.answer_key
                 ? p.lilac
                 : "transparent",
             }]}
           >
             <Text style={s.bold}>{choice.key}</Text>
-            <Text style={[s.copy, { flex: 1 }]}>{choice.text}</Text>
+            <View style={{ flex: 1, gap: 4 }}>
+              <Text style={s.copy}>{choice.text}</Text>
+              {choice.key === answer?.answer_key && (
+                <Text style={s.small}>{t("parentReview.selectedChoice")}</Text>
+              )}
+              {choice.key === question.correct_key && (
+                <Text style={s.small}>{t("parentReview.correctChoice")}</Text>
+              )}
+            </View>
           </View>
         ))}
       <Pressable
@@ -279,7 +299,9 @@ export function ParentReviewWorkspace(
         style={s.key}
       >
         <ChevronDown size={18} color={p.purple} />
-        <Text style={s.bold}>{t("parentReview.key")}</Text>
+        <Text style={s.bold}>
+          {t(isOpen ? "parentReview.key" : "parentReview.explanation")}
+        </Text>
       </Pressable>
       {keyOpen
         ? (
@@ -342,13 +364,16 @@ export function ParentReviewWorkspace(
             <SatinButton
               title={t("parentReview.askAi")}
               secondary
-              disabled={locked || aiRemaining === null || aiRemaining <= 0 ||
+              disabled={locked || !hasAnswer || aiRemaining === null ||
+                aiRemaining <= 0 ||
                 ai.isPending}
               onPress={() => setAiOpen(true)}
               icon={<Sparkles size={20} color={p.purple} />}
             />
             <Text style={s.small}>
-              {aiRemaining === null
+              {!hasAnswer
+                ? t("parentReview.aiNeedsAnswer")
+                : aiRemaining === null
                 ? t("parentReview.aiUnavailable")
                 : t("parentReview.aiRemaining", { count: aiRemaining })}
             </Text>
@@ -464,7 +489,7 @@ export function ParentReviewWorkspace(
           <Text style={s.notice}>{t("parentReview.inProgress")}</Text>
         )}
         <View style={[s.body, { flexDirection: wide ? "row" : "column" }]}>
-          {wide && !expanded
+          {wide && showNotebook && !expanded
             ? (
               <ScrollView
                 style={s.sidebar}
@@ -490,7 +515,11 @@ export function ParentReviewWorkspace(
                   onPress={() => setSourceOpen(!sourceOpen)}
                 >
                   <Text style={[s.bold, { flex: 1 }]}>
-                    {t("notebook.showQuestion")}
+                    {t(
+                      sourceOpen
+                        ? "parentReview.collapseQuestion"
+                        : "notebook.showQuestion",
+                    )}
                   </Text>
                   <ChevronDown size={20} color={p.purple} />
                 </Pressable>
@@ -499,97 +528,159 @@ export function ParentReviewWorkspace(
               </ScrollView>
             )
             : null}
-          <View
-            style={[s.panel, {
-              flex: 1,
-              display: !wide && tab !== "solution" ? "none" : "flex",
-            }]}
-          >
-            {wide
-              ? (
-                <View style={s.panelHead}>
-                  <Text style={[s.heading, { flex: 1 }]}>
-                    {t("parentReview.notebook", { name: childName })}
+          {!showNotebook && (wide || tab === "solution") && (
+            <ScrollView
+              style={[s.panel, { flex: 1 }]}
+              contentContainerStyle={{
+                padding: 16,
+                gap: 24,
+                flexDirection: wide ? "row" : "column",
+              }}
+              keyboardShouldPersistTaps="handled"
+            >
+              <View style={{ width: wide ? "58%" : "100%", gap: 20 }}>
+                {source}
+                {!!answer?.answer_text?.trim() && (
+                  <View style={s.hint}>
+                    <Text style={s.bold}>{t("parentReview.childAnswer")}</Text>
+                    <Text selectable style={s.copy}>{answer.answer_text}</Text>
+                  </View>
+                )}
+                {!hasAnswer && (
+                  <Text style={s.notice}>{t("parentReview.noAnswer")}</Text>
+                )}
+                {invalidDocument && (
+                  <Text accessibilityRole="alert" style={s.notice}>
+                    {t("parentReview.unknownDocument")}
                   </Text>
-                  <Toggle
-                    label={t("parentReview.myNotes")}
-                    value={showNotes}
-                    onChange={setShowNotes}
-                  />
-                  <IconButton
-                    label={t(expanded ? "notebook.restore" : "notebook.expand")}
-                    onPress={() => setExpanded(!expanded)}
-                  >
-                    {expanded
-                      ? <Minimize2 size={22} color={p.purple} />
-                      : <Maximize2 size={22} color={p.purple} />}
-                  </IconButton>
-                </View>
-              )
-              : (
-                <View style={{ padding: 10, gap: 8 }}>
-                  <View style={s.row}>
-                    <View style={{ width: 56 }}>
-                      <QuestionMedia
-                        questionId={question.id}
-                        compact
-                        maxImageHeight={48}
-                      />
-                    </View>
-                    <Pressable
-                      accessibilityRole="button"
-                      accessibilityState={{ expanded: sourceOpen }}
-                      style={[s.key, { flex: 1 }]}
-                      onPress={() => setSourceOpen(!sourceOpen)}
-                    >
-                      <Text style={[s.bold, { flex: 1, fontSize: 14 }]}>
-                        {t("notebook.showQuestion")}
-                      </Text>
-                      <ChevronDown size={18} color={p.purple} />
-                    </Pressable>
+                )}
+                <Pressable
+                  accessibilityRole="button"
+                  style={[s.key, { backgroundColor: "transparent" }]}
+                  onPress={() => setNotesOpen(true)}
+                >
+                  <Text style={s.bold}>
+                    {t(
+                      document.elements.length
+                        ? "parentReview.openDrawingNotes"
+                        : "parentReview.addDrawingNote",
+                    )}
+                  </Text>
+                </Pressable>
+              </View>
+              {wide && <View style={{ flex: 1 }}>{assessment}</View>}
+            </ScrollView>
+          )}
+          {showNotebook && (
+            <View
+              style={[s.panel, {
+                flex: 1,
+                display: !showNotebook || (!wide && tab !== "solution")
+                  ? "none"
+                  : "flex",
+              }]}
+            >
+              {wide
+                ? (
+                  <View style={s.panelHead}>
+                    <Text style={[s.heading, { flex: 1 }]}>
+                      {t("parentReview.notebook", { name: childName })}
+                    </Text>
+                    <Toggle
+                      label={t("parentReview.myNotes")}
+                      value={showNotes}
+                      onChange={setShowNotes}
+                    />
                     <IconButton
                       label={t(
-                        showNotes
-                          ? "parentReview.hideNotes"
-                          : "parentReview.showNotes",
+                        expanded ? "notebook.restore" : "notebook.expand",
                       )}
-                      onPress={() => setShowNotes(!showNotes)}
+                      onPress={() => setExpanded(!expanded)}
                     >
-                      {showNotes
-                        ? <Eye size={20} color={p.purple} />
-                        : <EyeOff size={20} color={p.muted} />}
+                      {expanded
+                        ? <Minimize2 size={22} color={p.purple} />
+                        : <Maximize2 size={22} color={p.purple} />}
                     </IconButton>
                   </View>
-                  {sourceOpen && (
-                    <ScrollView style={{ maxHeight: 180 }}>{source}</ScrollView>
-                  )}
-                </View>
+                )
+                : (
+                  <View style={{ padding: 10, gap: 8 }}>
+                    <View style={s.row}>
+                      <Pressable
+                        accessibilityRole="button"
+                        accessibilityState={{ expanded: sourceOpen }}
+                        style={[s.key, { flex: 1 }]}
+                        onPress={() => setSourceOpen(!sourceOpen)}
+                      >
+                        <Text style={[s.bold, { flex: 1, fontSize: 14 }]}>
+                          {t(
+                            sourceOpen
+                              ? "parentReview.collapseQuestion"
+                              : "notebook.showQuestion",
+                          )}
+                        </Text>
+                        <ChevronDown size={18} color={p.purple} />
+                      </Pressable>
+                      <IconButton
+                        label={t(
+                          showNotes
+                            ? "parentReview.hideNotes"
+                            : "parentReview.showNotes",
+                        )}
+                        onPress={() => setShowNotes(!showNotes)}
+                      >
+                        {showNotes
+                          ? <Eye size={20} color={p.purple} />
+                          : <EyeOff size={20} color={p.muted} />}
+                      </IconButton>
+                    </View>
+                    {!sourceOpen && (
+                      <Text style={s.bold} numberOfLines={2}>
+                        {context.data?.prompt ?? question.stem}
+                      </Text>
+                    )}
+                    {sourceOpen && (
+                      <ScrollView style={{ maxHeight: 180 }}>
+                        {source}
+                      </ScrollView>
+                    )}
+                  </View>
+                )}
+              {!!answer?.answer_text && (
+                <ScrollView style={{ maxHeight: 150, margin: 12 }}>
+                  <Text selectable style={s.copy}>{answer.answer_text}</Text>
+                </ScrollView>
               )}
-            {!!answer?.answer_text && (
-              <ScrollView style={{ maxHeight: 150, margin: 12 }}>
-                <Text selectable style={s.copy}>{answer.answer_text}</Text>
-              </ScrollView>
-            )}
-            {!answer?.answer_text && !original?.elements.length && (
-              <Text style={s.notice}>{t("parentReview.noAnswer")}</Text>
-            )}
-            {invalidDocument
-              ? (
-                <Text accessibilityRole="alert" style={s.notice}>
-                  {t("parentReview.unknownDocument")}
-                </Text>
-              )
-              : (
-                <NotebookEditor
-                  document={document}
-                  underlay={original ?? emptyNotebook()}
-                  annotation
-                  showInk={showNotes}
-                  disabled={locked || !showNotes}
-                  onChange={(doc) => change(() => setDocument(doc))}
-                />
+              {notesOpen && !(isOpen && original?.elements.length) && (
+                <Pressable
+                  accessibilityRole="button"
+                  style={s.key}
+                  onPress={() => setNotesOpen(false)}
+                >
+                  <Text style={s.bold}>{t("parentReview.backToAnswer")}</Text>
+                </Pressable>
               )}
-          </View>
+              {!hasAnswer && (
+                <Text style={s.notice}>{t("parentReview.noAnswer")}</Text>
+              )}
+              {invalidDocument
+                ? (
+                  <Text accessibilityRole="alert" style={s.notice}>
+                    {t("parentReview.unknownDocument")}
+                  </Text>
+                )
+                : (
+                  <NotebookEditor
+                    document={document}
+                    underlay={original ?? emptyNotebook()}
+                    annotation
+                    showInk={showNotes}
+                    disabled={locked || !showNotes}
+                    onChange={(doc) => change(() => setDocument(doc))}
+                  />
+                )}
+            </View>
+          )}
         </View>
         {(error || save.error || uncertain) && (
           <Text accessibilityRole="alert" style={s.error}>
@@ -598,7 +689,12 @@ export function ParentReviewWorkspace(
               : error ?? provaErrorMessage(save.error)}
           </Text>
         )}
-        <View style={s.footer}>
+        <View
+          style={[
+            s.footer,
+            stackedFooter && { flexDirection: "column", alignItems: "stretch" },
+          ]}
+        >
           <Text style={s.small}>
             {t(
               save.isPending
@@ -607,10 +703,12 @@ export function ParentReviewWorkspace(
                 ? "parentReview.unsaved"
                 : review.revision > 0
                 ? "parentReview.saved"
+                : !isOpen && answer?.answer_key
+                ? "parentReview.autoChecked"
                 : "parentReview.pending",
             )}
           </Text>
-          <View style={{ flex: 1 }} />
+          {!stackedFooter && <View style={{ flex: 1 }} />}
           {wide && index > 0 && (
             <IconButton
               label={t("parentReview.previous")}
