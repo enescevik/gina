@@ -130,3 +130,43 @@ Deno.test("question images: total image budget checked before downloads", async 
   );
   assert(!f.calls.some((c) => c.startsWith("download")));
 });
+
+Deno.test("shared image: sent once with all question references, not repeatedly charged", async () => {
+  const ids = Array.from({ length: 20 }, (_, i) => `q${i + 1}`);
+  const f = fixture({
+    links: ids.map((question_id) => ({
+      question_id,
+      source_id: "s1",
+      alt: "private caption",
+    })),
+  });
+  const blocks = await questionImages(
+    f.db,
+    "family",
+    "actor",
+    "attempt",
+    ids,
+    true,
+  );
+  assert(blocks.length === 2);
+  assert(
+    blocks[0].type === "text" && blocks[0].text.includes("M1, M2") &&
+      blocks[0].text.includes("M20"),
+  );
+  assert(f.calls.filter((c) => c.startsWith("download")).length === 1);
+  assert(!JSON.stringify(blocks).includes("private caption"));
+});
+
+Deno.test("shared image: unique image limit still enforced", async () => {
+  const f = fixture({
+    links: Array.from(
+      { length: 13 },
+      (_, i) => ({ question_id: "q1", source_id: `s${i}` }),
+    ),
+  });
+  await rejects(
+    () => questionImages(f.db, "family", "actor", "attempt", ["q1"], true),
+    "source_ai_limit",
+  );
+  assert(!f.calls.some((c) => c.startsWith("download")));
+});

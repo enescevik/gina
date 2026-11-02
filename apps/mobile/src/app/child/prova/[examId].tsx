@@ -1,3 +1,4 @@
+import { ContextualQuestion } from "@/components/learning/question-context";
 import { ArrowLeft, ArrowRight } from "lucide-react-native";
 import { randomUUID } from "expo-crypto";
 import { QuestionMedia } from "@/components/learning/question-media";
@@ -242,7 +243,7 @@ export default function TakeExamScreen() {
       ) : null}
       {q ? (
         <View className="gap-4 rounded-child bg-cream p-5">
-          <Text accessibilityRole="header" className="font-body-bold text-xl leading-7 text-ink">{q.stem}</Text>
+          <ContextualQuestion questionId={q.id} stem={q.stem}/>
           <QuestionMedia questionId={q.id}/>
           {q.kind === "multiple_choice" ? (
             <View accessibilityRole="radiogroup" accessibilityLabel={t("prova.choicesLabel")} className="gap-2">

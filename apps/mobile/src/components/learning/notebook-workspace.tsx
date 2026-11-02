@@ -1,3 +1,4 @@
+import { SharedContext, useQuestionContext } from "./question-context";
 import { randomUUID } from "expo-crypto";
 import { notebookTokens } from "./notebook-tokens";
 import { type ReactNode, useState } from "react";
@@ -71,7 +72,9 @@ export function NotebookWorkspace({
   const [expanded, setExpanded] = useState(false);
   const [contextOpen, setContextOpen] = useState(true);
   const [answerOpen, setAnswerOpen] = useState(!!text);
-  const tokens = notebookTokens(stem);
+  const shared = useQuestionContext(questionId);
+  const prompt = shared.data?.prompt ?? stem;
+  const tokens = notebookTokens(shared.data ? `${shared.data.body}\n${prompt}` : stem);
   const [sourceOpen, setSourceOpen] = useState(false),
     [insertion, setInsertion] = useState<NotebookInsertion | null>(null);
   const [page] = useState(emptyNotebook);
@@ -139,7 +142,8 @@ export function NotebookWorkspace({
           <Text style={s.takeText}>{t("notebook.takeFromQuestion")}</Text>
         </Pressable>
       </View>
-      <Text selectable style={s.stem}>{stem}</Text>
+      {shared.data ? <SharedContext context={shared.data} /> : null}
+      <Text selectable style={s.stem}>{prompt}</Text>
       {tokens.length > 0 && (
         <View style={{ gap: 6 }}>
           <Text style={s.sectionTitle}>{t("notebook.givens")}</Text>
@@ -268,7 +272,7 @@ export function NotebookWorkspace({
                   }}
                 >
                   {contextOpen && (
-                    <Text numberOfLines={2} style={s.contextText}>{stem}</Text>
+                    <Text numberOfLines={2} style={s.contextText}>{shared.data ? shared.data.title : stem}</Text>
                   )}
                   <Text style={s.takeText}>{t("notebook.showQuestion")}</Text>
                 </Pressable>

@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-02",
+  "approved_reference": "parent-phone-tablet-proposal-v1.png",
+  "implementation": "Real React Native SharedQuestionWizard and existing child NotebookWorkspace, Expo web",
+  "screenshots": {
+    "phone_editor": {
+      "file": "phone-editor-web.png",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    "tablet_editor": {
+      "file": "tablet-editor-web.png",
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    "phone_preview": {
+      "file": "phone-preview-web.png",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    "child_context": {
+      "file": "tablet-child-context-web.png",
+      "viewport": [
+        1280,
+        800
+      ],
+      "note": "Earlier integration check, before metre token extraction enhancement"
+    }
+  },
+  "environment": "Isolated gina_release13_audit database, real PostgREST, synthetic family/questions. Local synthetic auth and source-image proxy; not production Auth/Storage or native screenshots.",
+  "checks": [
+    "Phone 320×568 and 390×844; tablet 1280×800; source collapse and expansion",
+    "Open-ended and multiple-choice authoring, source preview, no answers in child preview",
+    "New group revision, actual assignment, child context, previous assigned revision retained after later edit",
+    "Response deliberately dropped after successful database save; retry used same receipt and created no duplicate group/questions",
+    "Unsaved leave modal preserves edits when canceled; validation visible above footer at 320×568",
+    "651 pgTAP assertions in 33 SQL files",
+    "4 actual two-session assignment/edit/media race scenarios",
+    "44 core tests, including 3 booklet and 3 measurement token tests",
+    "9 question-image Edge tests",
+    "7 release/native-text script tests",
+    "Workspace lint/typecheck/test: 7 tasks passed",
+    "iOS JavaScript/Hermes export passed with local QA configuration"
+  ],
+  "limits": [
+    "Not a TestFlight build; current TestFlight remains 0.1.0 (15)",
+    "No production migrations, flags or Edge deployment in this increment",
+    "No physical iPhone/iPad, Pencil, Android or native keyboard QA",
+    "Unsaved author drafts are in memory only, with exit warning",
+    "Grouped/global visual library contributions deliberately blocked until moderation/copy supports complete context",
+    "Handwritten answer AI and parent annotation layer remain separate work",
+    "No new library questions or paid AI generation in this increment"
+  ],
+  "cleanup": "Synthetic QA family deleted after checks; source flags restored to false; only task-owned QA servers stopped."
+}

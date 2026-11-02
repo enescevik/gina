@@ -1,6 +1,7 @@
+import { randomUUID } from "expo-crypto";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { router } from "expo-router";
-import { useMemo, useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, TextInput, View } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
@@ -28,15 +29,25 @@ export default function ExamCreateScreen() {
   const { claims, session } = useSession();
   const familyId = claims?.family_id ?? "";
   const queryClient = useQueryClient();
+  const { groupId } = useLocalSearchParams<{ groupId?: string }>();
+  const assignmentRequest = useRef<string | null>(null);
+  const sharedGroup = useQuery({ queryKey: ["question_group_assignment", familyId, groupId], enabled: !!groupId, queryFn: async () => {
+    const { data, error } = await supabase.from("question_source_groups").select("id,title,grade,subject,version,question_source_members(question_id,position)").eq("id", groupId!).single();
+    if (error) throw error; return data;
+  } });
 
   const [childId, setChildId] = useState<string | null>(null);
   const [blueprintId, setBlueprintId] = useState<string | null>(null);
-  const [subject, setSubject] = useState("");
-  const [grade, setGrade] = useState("5");
+  const [subjectDraft, setSubject] = useState("");
+  const [gradeDraft, setGrade] = useState("5");
   const [rows, setRows] = useState<Row[]>([]);
-  const [title, setTitle] = useState("");
+  const [titleDraft, setTitle] = useState<string | null>(null);
   const [timed, setTimed] = useState(true);
   const [minutes, setMinutes] = useState("20");
+
+  const subject = sharedGroup.data?.subject ?? subjectDraft;
+  const grade = sharedGroup.data ? String(sharedGroup.data.grade) : gradeDraft;
+  const title = titleDraft ?? sharedGroup.data?.title ?? "";
 
   const children = useQuery({
     queryKey: ["children"],
@@ -59,10 +70,10 @@ export default function ExamCreateScreen() {
 
   const bank = useQuery({
     queryKey: ["question_bank_for", subject, grade],
-    enabled: !!subject.trim(),
+    enabled: !groupId && !!subject.trim(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("question_bank")
+        .from("standalone_question_bank")
         .select("id, topic, times_asked")
         .eq("subject", subject.trim())
         .eq("grade", Number(grade) || 5)
@@ -91,6 +102,7 @@ export default function ExamCreateScreen() {
   }, [bank.data]);
 
   const selectedIds = useMemo(() => {
+    if (groupId) return [...(sharedGroup.data?.question_source_members ?? [])].sort((a, b) => a.position - b.position).map(m => m.question_id);
     const ids: string[] = [];
     const pool = bank.data ?? [];
     if (rows.length === 0) return pool.slice(0, 10).map((q) => q.id);
@@ -99,13 +111,19 @@ export default function ExamCreateScreen() {
       ids.push(...matches.slice(0, row.count).map((q) => q.id));
     }
     return [...new Set(ids)];
-  }, [bank.data, rows]);
+  }, [bank.data, rows, groupId, sharedGroup.data]);
 
   const create = useMutation({
     mutationFn: async () => {
       if (!subject.trim() || !Number.isInteger(Number(grade)) || Number(grade) < 1 || Number(grade) > 12 || (timed && (!Number.isInteger(Number(minutes)) || Number(minutes) < 1 || Number(minutes) > 180))) throw new Error(t("release.invalidForm"));
       if (!childId) throw new Error(t("prova.pickChild"));
       if (selectedIds.length === 0) throw new Error(t("prova.noQuestionsForExam"));
+      if (groupId) {
+        assignmentRequest.current ??= randomUUID();
+        const { error } = await supabase.rpc("assign_question_source_group", { p_request_id: assignmentRequest.current, p_group_id: groupId, p_child_id: childId, p_title: title.trim() || subject.trim(), p_timed: timed, ...(timed ? { p_minutes: Number(minutes) } : {}) });
+        if (error) throw error;
+        return;
+      }
       const { error } = await supabase.from("exams").insert({
         family_id: familyId,
         child_id: childId,
@@ -123,7 +141,7 @@ export default function ExamCreateScreen() {
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["exams", familyId] });
-      router.back();
+      if (groupId) router.replace("/parent/prova"); else router.back();
     },
   });
 
@@ -133,11 +151,12 @@ export default function ExamCreateScreen() {
   if (children.isSuccess && children.data.length === 0) return <Screen title={t("prova.newExam")}><EmptyCard title={t("unified.chooseChild")} body={t("unified.noChildHelp")}><Button title={t("unified.createFirstChild")} onPress={()=>router.push("/parent/menu")}/></EmptyCard></Screen>;
 
   return (
-    <Screen title={t("prova.newExam")} subtitle={t("unified.examHelp")} loading={children.isLoading || blueprints.isLoading} error={children.error ?? blueprints.error} onRetry={() => { void children.refetch(); void blueprints.refetch(); }}>
+    <Screen title={t("prova.newExam")} subtitle={t("unified.examHelp")} loading={children.isLoading || blueprints.isLoading || (!!groupId && sharedGroup.isPending)} error={children.error ?? blueprints.error ?? sharedGroup.error} onRetry={() => { void children.refetch(); void blueprints.refetch(); }}>
       <View style={parentStyles.card}>
       <Text className="font-body-bold text-sm text-ink">{t("prova.forChild")}</Text>
       <ChildPicker profiles={children.data ?? []} selected={childId} onSelect={id => { if (id) setChildId(id); }} />
 
+      {groupId ? <Text style={parentStyles.copy}>{t("sharedQuestions.assignVersion", { title: sharedGroup.data?.title, n: sharedGroup.data?.version })}</Text> : <>
       <Text className="font-body-bold text-sm text-ink">{t("prova.fromBlueprint")}</Text>
       <View className="flex-row flex-wrap gap-2">
         <Pressable accessibilityRole="button" onPress={() => pickBlueprint(null)} accessibilityState={{ selected: blueprintId === null }} className={chip(blueprintId === null)}>
@@ -185,6 +204,7 @@ export default function ExamCreateScreen() {
         </View>
       ) : null}
 
+      </>}
       <Text className="font-body text-sm text-gray-600">{t("prova.selectedCount", { count: selectedIds.length })}</Text>
       <Field label={t("calendar.title")} value={title} onChangeText={setTitle} />
       <View className="flex-row items-center gap-3">

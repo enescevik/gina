@@ -656,14 +656,14 @@ isOneToOne: false
                   ]
                 },"exam_answers": {
                   Row: {
-                    "ai_details": Json | null,"ai_feedback": string | null,"ai_score": number | null,"answer_key": string | null,"answer_document": Json | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"edit_revision": number,"feedback": string | null,"graded_at": string | null,"graded_by": string | null,"is_correct": boolean | null,"question_id": string,"score": number | null
+                    "ai_details": Json | null,"ai_feedback": string | null,"ai_score": number | null,"answer_document": Json | null,"answer_key": string | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"edit_revision": number,"feedback": string | null,"graded_at": string | null,"graded_by": string | null,"is_correct": boolean | null,"question_id": string,"score": number | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_key"?: string | null,"answer_document"?: Json | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id": string,"score"?: number | null
+                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id": string,"score"?: number | null
                   }
                   Update: {
-                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_key"?: string | null,"answer_document"?: Json | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id"?: string,"score"?: number | null
+                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id"?: string,"score"?: number | null
                   }
                   Relationships: [
                     {
@@ -676,7 +676,19 @@ isOneToOne: false
       foreignKeyName: "exam_answers_question_id_fkey"
       columns: ["question_id"]
 isOneToOne: false
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "exam_answers_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
       referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "exam_answers_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "standalone_question_bank"
       referencedColumns: ["id"]
     }
                   ]
@@ -734,14 +746,14 @@ isOneToOne: false
                   ]
                 },"exams": {
                   Row: {
-                    "blueprint_id": string | null,"child_id": string,"created_at": string,"created_by": string | null,"duration_minutes": number | null,"family_id": string,"grade": number,"id": string,"kind": string,"question_ids": (string)[],"status": Database["public"]['Enums']["exam_status"],"subject": string,"timed": boolean,"title": string,"updated_at": string
+                    "blueprint_id": string | null,"child_id": string,"content_locked_at": string | null,"created_at": string,"created_by": string | null,"duration_minutes": number | null,"family_id": string,"grade": number,"id": string,"kind": string,"question_ids": (string)[],"status": Database["public"]['Enums']["exam_status"],"subject": string,"timed": boolean,"title": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "blueprint_id"?: string | null,"child_id": string,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"family_id": string,"grade": number,"id"?: string,"kind"?: string,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject": string,"timed"?: boolean,"title": string,"updated_at"?: string
+                    "blueprint_id"?: string | null,"child_id": string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"family_id": string,"grade": number,"id"?: string,"kind"?: string,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject": string,"timed"?: boolean,"title": string,"updated_at"?: string
                   }
                   Update: {
-                    "blueprint_id"?: string | null,"child_id"?: string,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"family_id"?: string,"grade"?: number,"id"?: string,"kind"?: string,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject"?: string,"timed"?: boolean,"title"?: string,"updated_at"?: string
+                    "blueprint_id"?: string | null,"child_id"?: string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"family_id"?: string,"grade"?: number,"id"?: string,"kind"?: string,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject"?: string,"timed"?: boolean,"title"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -970,7 +982,19 @@ isOneToOne: false
       foreignKeyName: "group_exam_entry_questions_question_id_fkey"
       columns: ["question_id"]
 isOneToOne: true
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "group_exam_entry_questions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: true
       referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "group_exam_entry_questions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: true
+      referencedRelation: "standalone_question_bank"
       referencedColumns: ["id"]
     }
                   ]
@@ -1102,7 +1126,19 @@ isOneToOne: false
       foreignKeyName: "learning_source_links_question_id_fkey"
       columns: ["question_id"]
 isOneToOne: false
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "learning_source_links_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
       referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "learning_source_links_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "standalone_question_bank"
       referencedColumns: ["id"]
     },{
       foreignKeyName: "learning_source_links_reward_id_fkey"
@@ -1218,7 +1254,19 @@ isOneToOne: false
       foreignKeyName: "library_redemptions_question_id_fkey"
       columns: ["question_id"]
 isOneToOne: false
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "library_redemptions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
       referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "library_redemptions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "standalone_question_bank"
       referencedColumns: ["id"]
     }
                   ]
@@ -1494,7 +1542,77 @@ isOneToOne: false
       foreignKeyName: "question_contributions_source_question_id_fkey"
       columns: ["source_question_id"]
 isOneToOne: false
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_contributions_source_question_id_fkey"
+      columns: ["source_question_id"]
+isOneToOne: false
       referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_contributions_source_question_id_fkey"
+      columns: ["source_question_id"]
+isOneToOne: false
+      referencedRelation: "standalone_question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"question_source_groups": {
+                  Row: {
+                    "body": string,"created_at": string,"family_id": string,"finalized_at": string | null,"grade": number,"id": string,"previous_id": string | null,"series_id": string,"subject": string,"title": string,"version": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "body"?: string,"created_at"?: string,"family_id": string,"finalized_at"?: string | null,"grade": number,"id": string,"previous_id"?: string | null,"series_id": string,"subject": string,"title": string,"version": number
+                  }
+                  Update: {
+                    "body"?: string,"created_at"?: string,"family_id"?: string,"finalized_at"?: string | null,"grade"?: number,"id"?: string,"previous_id"?: string | null,"series_id"?: string,"subject"?: string,"title"?: string,"version"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "question_source_groups_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"question_source_members": {
+                  Row: {
+                    "group_id": string,"position": number,"prompt": string,"question_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "group_id": string,"position": number,"prompt": string,"question_id": string
+                  }
+                  Update: {
+                    "group_id"?: string,"position"?: number,"prompt"?: string,"question_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "question_source_members_group_id_fkey"
+      columns: ["group_id"]
+isOneToOne: false
+      referencedRelation: "question_source_groups"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_source_members_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: true
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_source_members_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: true
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_source_members_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: true
+      referencedRelation: "standalone_question_bank"
       referencedColumns: ["id"]
     }
                   ]
@@ -1845,7 +1963,47 @@ isOneToOne: false
                 }
           }
           Views: {
-            [_ in never]: never
+            "current_question_bank": {
+                  Row: {
+                    "choices": Json | null,"correct_key": string | null,"created_at": string,"created_by": string | null,"difficulty": Database["public"]['Enums']["question_difficulty"],"expected_answer": string | null,"explanation": string | null,"family_id": string | null,"grade": number,"id": string,"kind": Database["public"]['Enums']["question_kind"],"provenance": NonNullable<Json>,"scenario_code": string | null,"solution": string | null,"source_urls": (string)[],"stem": string,"subject": string,"times_asked": number,"topic": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                           "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string | null,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"] | null,"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number | null,"id"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"] | null,"provenance"?: Json | null,"scenario_code"?: string | null,"solution"?: string | null,"source_urls"?: (string)[] | null,"stem"?: string | null,"subject"?: string | null,"times_asked"?: number | null,"topic"?: string | null,"updated_at"?: string | null
+                         }
+                        Update: {
+                           "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string | null,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"] | null,"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number | null,"id"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"] | null,"provenance"?: Json | null,"scenario_code"?: string | null,"solution"?: string | null,"source_urls"?: (string)[] | null,"stem"?: string | null,"subject"?: string | null,"times_asked"?: number | null,"topic"?: string | null,"updated_at"?: string | null
+                         }
+                        Relationships: [
+                    {
+      foreignKeyName: "question_bank_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"standalone_question_bank": {
+                  Row: {
+                    "choices": Json | null,"correct_key": string | null,"created_at": string,"created_by": string | null,"difficulty": Database["public"]['Enums']["question_difficulty"],"expected_answer": string | null,"explanation": string | null,"family_id": string | null,"grade": number,"id": string,"kind": Database["public"]['Enums']["question_kind"],"provenance": NonNullable<Json>,"scenario_code": string | null,"solution": string | null,"source_urls": (string)[],"stem": string,"subject": string,"times_asked": number,"topic": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                           "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string | null,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"] | null,"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number | null,"id"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"] | null,"provenance"?: Json | null,"scenario_code"?: string | null,"solution"?: string | null,"source_urls"?: (string)[] | null,"stem"?: string | null,"subject"?: string | null,"times_asked"?: number | null,"topic"?: string | null,"updated_at"?: string | null
+                         }
+                        Update: {
+                           "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string | null,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"] | null,"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number | null,"id"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"] | null,"provenance"?: Json | null,"scenario_code"?: string | null,"solution"?: string | null,"source_urls"?: (string)[] | null,"stem"?: string | null,"subject"?: string | null,"times_asked"?: number | null,"topic"?: string | null,"updated_at"?: string | null
+                         }
+                        Relationships: [
+                    {
+      foreignKeyName: "question_bank_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                }
           }
           Functions: {
             "admin_add_library_item":
@@ -1951,6 +2109,9 @@ isOneToOne: false
 "apply_timetable_import":
 { Args: { "p_import_id": string,"p_lessons": Json,"p_request_id": string,"p_revision": number,"p_settings": Json }; Returns: number
                            },
+"assign_question_source_group":
+{ Args: { "p_child_id": string,"p_group_id": string,"p_minutes"?: number,"p_request_id": string,"p_timed"?: boolean,"p_title": string }; Returns: string
+                           },
 "attach_question_source":
 { Args: { "p_alt": string,"p_question_id": string,"p_source_id": string }; Returns: undefined
                            },
@@ -2030,6 +2191,7 @@ isOneToOne: false
 { Args: { "p_blueprint_id"?: string,"p_child_id": string,"p_duration_minutes"?: number,"p_grade": number,"p_max_questions"?: number,"p_per_topic"?: number,"p_subject": string,"p_timed"?: boolean,"p_title"?: string }; Returns: {
               "blueprint_id": string | null,
 "child_id": string,
+"content_locked_at": string | null,
 "created_at": string,
 "created_by": string | null,
 "duration_minutes": number | null,
@@ -2179,6 +2341,12 @@ isOneToOne: false
 "get_prova_entitlement":
 { Args: { "p_family_id"?: string }; Returns: Json
                            },
+"get_question_context":
+{ Args: { "p_question_ids": (string)[] }; Returns: Json
+                           },
+"get_question_group_policy":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
 "get_question_media":
 { Args: { "p_question_ids": (string)[] }; Returns: Json
                            },
@@ -2187,11 +2355,14 @@ isOneToOne: false
               "answer_key": string,"answer_text": string,"question_id": string
             }[]
                            },
-"get_saved_exam_answers_v3":
-{ Args: { "p_attempt_id": string }; Returns: { "answer_key": string | null,"answer_text": string | null,"answer_document": Json | null,"question_id": string,"revision": number }[] },
 "get_saved_exam_answers_v2":
 { Args: { "p_attempt_id": string }; Returns: {
               "answer_key": string,"answer_text": string,"question_id": string,"revision": number
+            }[]
+                           },
+"get_saved_exam_answers_v3":
+{ Args: { "p_attempt_id": string }; Returns: {
+              "answer_document": Json,"answer_key": string,"answer_text": string,"question_id": string,"revision": number
             }[]
                            },
 "get_setup_ai_entitlement":
@@ -2347,6 +2518,9 @@ isOneToOne: false
 "save_prova_provider_result":
 { Args: { "p_id": string,"p_lease": string,"p_result": Json }; Returns: undefined
                            },
+"save_question_source_group":
+{ Args: { "p_group": Json,"p_images"?: Json,"p_previous_id"?: string,"p_questions": Json,"p_request_id": string }; Returns: Json
+                           },
 "save_question_with_sources":
 { Args: { "p_images"?: Json,"p_question": Json,"p_request_id": string }; Returns: string
                            },
@@ -2475,10 +2649,11 @@ isOneToOne: false
 "submit_exam_answer":
 { Args: { "p_answer_key"?: string,"p_answer_text"?: string,"p_attempt_id": string,"p_question_id": string }; Returns: undefined
                            },
-"submit_exam_answer_v3":
-{ Args: { "p_answer_document"?: Json,"p_answer_key"?: string,"p_answer_text"?: string,"p_attempt_id": string,"p_expected_revision": number,"p_question_id": string,"p_request_id": string }; Returns: number },
 "submit_exam_answer_once":
 { Args: { "p_answer_key"?: string,"p_answer_text"?: string,"p_attempt_id": string,"p_expected_revision": number,"p_question_id": string,"p_request_id": string }; Returns: number
+                           },
+"submit_exam_answer_v3":
+{ Args: { "p_answer_document"?: Json,"p_answer_key"?: string,"p_answer_text"?: string,"p_attempt_id": string,"p_expected_revision": number,"p_question_id": string,"p_request_id": string }; Returns: number
                            },
 "submit_question_contribution":
 { Args: { "p_no_personal_data": boolean,"p_question_id": string,"p_request_id": string,"p_rights_confirmed": boolean }; Returns: string

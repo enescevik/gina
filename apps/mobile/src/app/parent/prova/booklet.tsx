@@ -62,7 +62,7 @@ export default function ProvaBookletScreen() {
     queryKey: ["question_bank_subjects", familyId],
     enabled: !!familyId,
     queryFn: async () => {
-      const { data, error } = await supabase.from("question_bank").select("subject, grade");
+      const { data, error } = await supabase.from("current_question_bank").select("subject, grade");
       if (error) throw error;
       const seen = new Map<string, { subject: string; grade: number }>();
       for (const row of data) seen.set(`${row.subject}|${row.grade}`, row);
@@ -75,7 +75,7 @@ export default function ProvaBookletScreen() {
     enabled: source === "library" && !!familyId && !!subject.trim(),
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("question_bank")
+        .from("current_question_bank")
         .select(QUESTION_COLUMNS)
         .eq("subject", subject.trim())
         .eq("grade", gradeNum)
