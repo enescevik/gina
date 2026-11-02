@@ -10,7 +10,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
 import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
-import { buildBookletHtml, printBooklet, type BookletChoice, type BookletQuestion } from "@/lib/prova-booklet";
+import { attachBookletImages, buildBookletHtml, printBooklet, type BookletChoice, type BookletQuestion } from "@/lib/prova-booklet";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -139,7 +139,7 @@ export default function ProvaBookletScreen() {
       const html = buildBookletHtml({
         title: title.trim() || defaultTitle || t("prova.booklet.title"),
         subtitle: source === "exam" && selectedExam ? `${selectedExam.subject} · ${selectedExam.grade}. ${t("prova.gradeWord")}` : undefined,
-        questions: questions.map(toBooklet),
+        questions: await attachBookletImages(questions.map(toBooklet)),
         includeSolutions,
         labels: {
           answerKey: t("prova.booklet.answerKey"),

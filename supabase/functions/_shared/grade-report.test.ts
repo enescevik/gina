@@ -76,3 +76,17 @@ Deno.test("rejects excessive session duration and missing limitations", () => {
   s.ozet.sinirlar = [];
   rejects(s);
 });
+
+Deno.test("grade: unreadable material can remain explicitly ungraded", () => {
+  const report: unknown = {
+    ...sample(),
+    degerlendirmeler: [{
+      ...sample().degerlendirmeler[0],
+      puan: null,
+      kisa_geri_bildirim: "M1 görseli okunamıyor; veli kontrolü gerekiyor.",
+    }],
+  };
+  if (validateGradeReport(report, refs).degerlendirmeler[0].puan !== null) {
+    throw Error("must not invent zero score");
+  }
+});

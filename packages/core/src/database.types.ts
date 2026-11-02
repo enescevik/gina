@@ -1146,6 +1146,10 @@ isOneToOne: false
             admin_retry_prova_generation: { Args: { p_id: string; p_reason: string }; Returns: undefined };
             admin_save_contribution_reward: { Args: { p_id: string; p_title: string; p_threshold: number; p_kind: string; p_amount: number; p_plan: Database["public"]["Enums"]["plan_code"] | null; p_days: number; p_enabled: boolean }; Returns: string };
             admin_set_library_quota: { Args: { p_plan: Database["public"]["Enums"]["plan_code"]; p_monthly: number }; Returns: undefined };
+            get_learning_source_policy: { Args: Record<PropertyKey, never>; Returns: Json };
+      save_question_with_sources: { Args: { p_request_id: string; p_question: Json; p_images?: Json }; Returns: string };
+            get_question_media: { Args: { p_question_ids: string[] }; Returns: Json };
+            attach_question_source: { Args: { p_question_id: string; p_source_id: string; p_alt: string }; Returns: undefined };
             admin_ai_operations: { Args: Record<PropertyKey, never>; Returns: Json };
             admin_retry_ai_operation: { Args: {p_id:string;p_reason:string}; Returns:undefined };
             review_task_once: { Args: { p_request_id: string; p_completion_id: string; p_approve: boolean; p_expected_completed_at: string }; Returns: Json };

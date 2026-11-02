@@ -1,3 +1,5 @@
+import { Toggle } from "@/components/ui/toggle";
+import { QuestionMedia, type QuestionMediaItem } from "@/components/learning/question-media";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
@@ -19,6 +21,7 @@ interface Choice {
 }
 
 interface AiSummary {
+  unscored?: {ref:string;reason:string}[];
   guclu_konular?: string[];
   zayif_konular?: string[];
   genel_oneri?: string;
@@ -60,6 +63,10 @@ export default function AttemptReviewScreen() {
   });
 
   const questionIds = attempt.data?.exams?.question_ids ?? [];
+  const media = useQuery({
+    queryKey:["attempt_question_media",familyId,attemptId],enabled:questionIds.length>0,
+    queryFn:async()=>{const {data,error}=await supabase.rpc("get_question_media",{p_question_ids:questionIds});if(error)throw error;return data as unknown as QuestionMediaItem[];},
+  });
   const questions = useQuery({
     queryKey: ["attempt_review_questions", attemptId],
     enabled: questionIds.length > 0,
@@ -113,8 +120,9 @@ export default function AttemptReviewScreen() {
     void queryClient.invalidateQueries({ queryKey: ["exams", familyId] });
   };
 
+  const [imageAiConsent,setImageAiConsent] = useState(false);
   const aiGrade = useMutation({
-    mutationFn: () => invokeProvaAi<GradeResponse>("prova-grade", { attempt_id: attemptId }),
+    mutationFn: () => invokeProvaAi<GradeResponse>("prova-grade", { attempt_id: attemptId, image_consent: imageAiConsent }),
     onSuccess: refresh,
   });
 
@@ -134,7 +142,7 @@ export default function AttemptReviewScreen() {
   const ent = entitlement.data;
 
   return (
-    <Screen title={a?.exams?.title ?? t("prova.ai.reviewTitle")} loading={attempt.isLoading || questions.isLoading || answers.isLoading || plans.isLoading || entitlement.isLoading} error={attempt.error ?? questions.error ?? answers.error ?? plans.error ?? entitlement.error} onRetry={() => { void attempt.refetch(); if (questionIds.length) void questions.refetch(); void answers.refetch(); void plans.refetch(); void entitlement.refetch(); }}>
+    <Screen title={a?.exams?.title ?? t("prova.ai.reviewTitle")} loading={attempt.isLoading || media.isLoading || questions.isLoading || answers.isLoading || plans.isLoading || entitlement.isLoading} error={attempt.error ?? media.error ?? questions.error ?? answers.error ?? plans.error ?? entitlement.error} onRetry={() => { void attempt.refetch(); void media.refetch(); if (questionIds.length) void questions.refetch(); void answers.refetch(); void plans.refetch(); void entitlement.refetch(); }}>
       {a ? (
         <View className="gap-1 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
           <Text className="font-body text-sm text-gray-600">
@@ -185,13 +193,14 @@ export default function AttemptReviewScreen() {
         <Text className="font-display text-xl text-ink">{t("learningReport.parentHelp")}</Text>
         {summary.veli_destegi.map((tip,n)=><Text key={n} className="font-body text-base text-ink">{tip}</Text>)}
       </View> : null}
+      {summary?.unscored?.map(item=><View key={item.ref} className="gap-2 rounded-parent border border-mist p-4"><Text className="font-body-bold text-base text-ink">{t("prova.ai.questionN",{n:item.ref.replace(/^M/,"")})}</Text><Text className="font-body text-base text-ink">{item.reason}</Text></View>)}
       {summary?.sinirlar?.length ? <View className="gap-2 rounded-parent border border-mist p-4">
         <Text className="font-body-bold text-base text-ink">{t("learningReport.limits")}</Text>
         {summary.sinirlar.map((limit,n)=><Text key={n} className="font-body text-sm text-gray-600">{limit}</Text>)}
       </View> : null}
       {finished ? (
         ent?.ai_grading ? (
-          <Button title={t("prova.ai.gradeWithAi")} loading={aiGrade.isPending} onPress={() => aiGrade.mutate()} />
+          <View style={{gap:12}}>{media.data?.length ? <Toggle label={t("sources.aiConsent")} value={imageAiConsent} onChange={setImageAiConsent} disabled={aiGrade.isPending}/> : null}<Button title={t("prova.ai.gradeWithAi")} loading={aiGrade.isPending} onPress={() => aiGrade.mutate()} /></View>
         ) : (
           <Text className="font-body text-sm text-gray-500">{t("prova.ai.needsProGrading")}</Text>
         )
@@ -204,7 +213,7 @@ export default function AttemptReviewScreen() {
           index={i + 1}
           attemptId={attemptId}
           editable={!!finished}
-          question={{ ...q, choices: (q.choices ?? null) as Choice[] | null }}
+          question={{ ...q, media:media.data?.filter(item=>item.question_id===q.id)??[], choices: (q.choices ?? null) as Choice[] | null }}
           answer={answers.data?.get(q.id)}
           onSaved={refresh}
         />
@@ -229,13 +238,14 @@ export default function AttemptReviewScreen() {
         </View>
       ) : null}
 
-      <ErrorText error={attempt.error ?? questions.error ?? answers.error ?? plans.error} />
+      <ErrorText error={attempt.error ?? media.error ?? questions.error ?? answers.error ?? plans.error} />
       <Button variant="ghost" title={t("prova.backToList")} onPress={() => router.back()} />
     </Screen>
   );
 }
 
 interface ReviewQuestion {
+  media: QuestionMediaItem[];
   id: string;
   topic: string;
   kind: "multiple_choice" | "open_ended";
@@ -304,6 +314,7 @@ function AnswerCard({
         {t("prova.ai.questionN", { n: index })} · {q.topic} · {t(`prova.kind.${q.kind}`)}
       </Text>
       <Text className="font-body-bold text-base text-ink">{q.stem}</Text>
+          <QuestionMedia questionId={q.id} items={q.media}/>
 
       {isMc ? (
         <View className="gap-1">

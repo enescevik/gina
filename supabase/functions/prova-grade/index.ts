@@ -1,10 +1,11 @@
+import { questionImages } from "../_shared/question-images.ts";
 import { runAiOperation } from "../_shared/ai-operation.ts";
 import { GRADE_SCHEMA, GRADE_SYSTEM, validateGradeReport } from "../_shared/grade-report.ts";
 // Prova açık uçlu cevap değerlendirmesi (AI). Veli deneme inceleme ekranından çağırır; çocuk asla çağırmaz.
 // Deploy: `supabase functions deploy prova-grade` (verify_jwt açık kalır).
 // Kurallar: yalnız parent; paket prova_ai_grading (Pro) sunucuda; model ai_settings'ten;
-// ANTHROPIC_API_KEY yoksa 503 ai_not_configured. Modele YALNIZ soru metni + beklenen cevap + çözüm + cevap metni
-// (ve konu adı) gider; çocuk adı, aile, kimlik gönderilmez — cevap metnindeki çocuk adı da maskelenir.
+// ANTHROPIC_API_KEY yoksa 503 ai_not_configured. Metindeki bilinen çocuk adı maskelenir.
+// Görseller yalnız açık, bu değerlendirmeye ait veli onayıyla gönderilir; görseldeki PII otomatik maskelenmez.
 // Veli puanı varsa AI onu ezmez (apply_ai_grades).
 
 import { json, preflight, serviceClient } from "../_shared/supabase.ts";
@@ -23,9 +24,11 @@ Deno.serve(async (req) => {
   if (!parent) return json({ error: "forbidden" }, 403);
 
   let attemptId: string;
+  let imageConsent = false;
   try {
     const body = await req.json();
     attemptId = body.attempt_id;
+    imageConsent = body.image_consent === true;
     if (typeof attemptId !== "string" || !/^[0-9a-f-]{36}$/i.test(attemptId)) throw new Error("bad");
   } catch {
     return json({ error: "attempt_id_required" }, 400);
@@ -53,7 +56,7 @@ Deno.serve(async (req) => {
   const { data: exam } = await db.from("exams").select("question_ids").eq("id", attempt.exam_id).single();
   const questionIds: string[] = exam?.question_ids ?? [];
   const [questionResult, answerResult, childResult] = await Promise.all([
-    db.from("question_bank").select("id, topic, kind, stem, choices, correct_key, expected_answer, solution").in("id", questionIds),
+    db.from("question_bank").select("id, topic, kind, stem, choices, correct_key, expected_answer, solution").in("id", questionIds).or(`family_id.eq.${parent.familyId},family_id.is.null`),
     db.from("exam_answers").select("question_id, answer_key, answer_text, is_correct, score, graded_by").eq("attempt_id", attemptId),
     db.from("children").select("name").eq("id", attempt.child_id).maybeSingle(),
   ]);
@@ -89,12 +92,15 @@ Deno.serve(async (req) => {
         ogrenci_cevabi: mask((a?.answer_text ?? "").slice(0, 4000)) };
     }),
   };
+  let images;
+  try { images = await questionImages(db,parent.familyId,parent.userId,attemptId,questionIds,imageConsent); }
+  catch (e) { return json({error:e instanceof Error ? e.message : "data_failed"},400); }
   const result = await runAiOperation(db, parent, "grade", attemptId, apiKey, ai,
-    GRADE_SYSTEM, JSON.stringify(payload), GRADE_SCHEMA, value => validateGradeReport(value, refs));
+    GRADE_SYSTEM, images.length ? [{type:"text",text:JSON.stringify(payload)},...images] : JSON.stringify(payload), GRADE_SCHEMA, value => validateGradeReport(value, refs));
   if (result instanceof Response) return result;
 
   const grades = (result.output.degerlendirmeler ?? [])
-    .filter((g) => refToQuestion.has(g.ref))
+    .filter((g) => refToQuestion.has(g.ref) && g.puan !== null)
     .map((g) => ({
       question_id: refToQuestion.get(g.ref),
       score: Math.max(0, Math.min(100, Math.round(Number(g.puan) || 0))),
@@ -108,6 +114,7 @@ Deno.serve(async (req) => {
     prompt_version: PROMPT_VERSION,
     graded_at: new Date().toISOString(),
     evidence: Object.fromEntries(refToQuestion),
+    unscored: result.output.degerlendirmeler.filter(g=>g.puan===null).map(g=>({ref:g.ref,reason:g.kisa_geri_bildirim})),
   };
 
   const { data: row, error: applyError } = await db.rpc("apply_ai_grades", {

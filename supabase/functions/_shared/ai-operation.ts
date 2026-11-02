@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
-import { type AiConfig, type AiResult, callClaude, sha256 } from "./prova.ts";
+import { type AiConfig, type AiUserContent, type AiResult, callClaude, sha256 } from "./prova.ts";
 import { json } from "./supabase.ts";
 
 /** Cache paid generation before applying it. Identical input shares a job; uncertain
@@ -12,7 +12,7 @@ export async function runAiOperation<T>(
   apiKey: string,
   config: AiConfig,
   system: string,
-  user: string,
+  user: AiUserContent,
   schema: Record<string, unknown>,
   validate: (value: unknown) => T,
 ): Promise<(AiResult<T> & { jobId: string }) | Response> {

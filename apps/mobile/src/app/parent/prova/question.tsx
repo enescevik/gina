@@ -7,6 +7,9 @@ import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
 
+import { QuestionImageEditor, type QuestionImageDraft } from "@/components/learning/question-image-editor";
+import { uploadLearningFile } from "@/lib/learning-files";
+
 import type { Enums } from "@gina/core";
 
 import { Button } from "@/components/ui/button";
@@ -24,11 +27,13 @@ const KEYS = ["A", "B", "C", "D"] as const;
 /** Parent-owned question; optional contribution is a separate consented snapshot. */
 export default function QuestionScreen() {
   const { t } = useTranslation();
-  const { claims, session } = useSession();
+  const { claims } = useSession();
   const familyId = claims?.family_id ?? "";
   const queryClient = useQueryClient();
 
   const request = useRef<{body:string;id:string;shareId:string}|null>(null);
+  const [images,setImages] = useState<QuestionImageDraft[]>([]);
+  const [storageConsent,setStorageConsent] = useState(false);
   const [share,setShare] = useState(false);
   const [rights,setRights] = useState(false);
   const [noPersonal,setNoPersonal] = useState(false);
@@ -49,10 +54,12 @@ export default function QuestionScreen() {
     mutationFn: async (andNew: boolean) => {
       if (!subject.trim() || !topic.trim() || !stem.trim() || !Number.isInteger(Number(grade)) || Number(grade) < 1 || Number(grade) > 12) throw new Error(t("prova.questionInvalid"));
       if (kind === "multiple_choice" && KEYS.some((k) => !choices[k]?.trim())) throw new Error(t("prova.choicesInvalid"));
+      if (images.some(image => image.alt.trim().length < 3)) throw new Error(t("sources.altRequired"));
+      if (images.length && !storageConsent) throw new Error(t("sources.consentRequired"));
+      if (images.length && share) throw new Error(t("sources.sharingPending"));
       if (share && (!solution.trim() || (kind === "open_ended" && !expected.trim()))) throw new Error(t("library.answerRequired"));
       if (share && (!rights || !noPersonal)) throw new Error(t("library.consentRequired"));
       const body = {
-        family_id: familyId,
         grade: Number(grade),
         subject: subject.trim(),
         topic: topic.trim(),
@@ -65,12 +72,12 @@ export default function QuestionScreen() {
         expected_answer: kind === "open_ended" ? expected.trim() || null : null,
         solution: solution.trim() || null,
         explanation: explanation.trim() || null,
-        provenance: { generator: "parent", requested_by: session?.user.id ?? null },
-        created_by: session?.user.id ?? null,
       };
-      const fingerprint = JSON.stringify(body);
+      const attachments=images.map(image=>({source_id:image.file.id,alt:image.alt.trim()}));
+      const fingerprint = JSON.stringify({body,attachments});
       if (!request.current || request.current.body !== fingerprint) request.current = {body:fingerprint,id:Crypto.randomUUID(),shareId:Crypto.randomUUID()};
-      const {error} = await supabase.from("question_bank").upsert({...body,id:request.current.id},{onConflict:"id",ignoreDuplicates:true});
+      for (const image of images) await uploadLearningFile(image.file,"question_image");
+      const {error} = await supabase.rpc("save_question_with_sources",{p_request_id:request.current.id,p_question:body,p_images:attachments});
       if (error) throw error;
       if (share) {
         const {error:shareError}=await supabase.rpc("submit_question_contribution",{p_request_id:request.current.shareId,p_question_id:request.current.id,p_rights_confirmed:rights,p_no_personal_data:noPersonal});
@@ -82,7 +89,7 @@ export default function QuestionScreen() {
       void queryClient.invalidateQueries({ queryKey: ["question_bank_count", familyId] });
       void queryClient.invalidateQueries({ predicate: query => ["question_bank", "question_bank_subjects", "booklet_library", "level_preview"].includes(String(query.queryKey[0])) });
       if (andNew) {
-        request.current=null;setShare(false);setRights(false);setNoPersonal(false);
+        request.current=null;setImages([]);setStorageConsent(false);setShare(false);setRights(false);setNoPersonal(false);
         setStem("");
         setChoices({ A: "", B: "", C: "", D: "" });
         setExpected("");
@@ -100,7 +107,7 @@ export default function QuestionScreen() {
   return (
     <Screen title={t("prova.newQuestion")} subtitle={t("unified.questionHelp")}>
       <View style={parentStyles.card}>
-      <View pointerEvents={save.isPending ? "none" : "auto"} accessibilityElementsHidden={save.isPending}>
+      <View style={{gap:20}} pointerEvents={save.isPending ? "none" : "auto"} accessibilityElementsHidden={save.isPending}>
       <View className="flex-row gap-2">
         <View className="flex-[2]">
           <Field editable={!save.isPending} label={t("grades.subject")} value={subject} onChangeText={setSubject} placeholder={t("grades.subjectPlaceholder")} />
@@ -126,6 +133,8 @@ export default function QuestionScreen() {
         ))}
       </View>
       <Field editable={!save.isPending} label={t("prova.stem")} value={stem} onChangeText={setStem} multiline className="min-h-24" />
+      <QuestionImageEditor images={images} onChange={next=>{setImages(next);setStorageConsent(false);if(next.length)setShare(false);}} disabled={save.isPending}/>
+      {images.length ? <Toggle label={t("sources.storageConsent")} value={storageConsent} onChange={setStorageConsent} disabled={save.isPending}/> : null}
       {kind === "multiple_choice" ? (
         <View className="gap-2">
           {KEYS.map((k) => (
@@ -146,7 +155,8 @@ export default function QuestionScreen() {
       <Field editable={!save.isPending} label={t("prova.solution")} value={solution} onChangeText={setSolution} multiline className="min-h-20" />
       <Field editable={!save.isPending} label={t("prova.explanation")} value={explanation} onChangeText={setExplanation} multiline className="min-h-16" />
       <View style={parentStyles.card}>
-        <Toggle label={t("library.share")} value={share} onChange={setShare} disabled={save.isPending}/>
+        <Toggle label={t("library.share")} value={share} onChange={setShare} disabled={save.isPending||images.length>0}/>
+        {images.length ? <Text style={parentStyles.muted}>{t("sources.sharingPending")}</Text> : null}
         {share?<><Text style={parentStyles.muted}>{t("library.shareHelp")}</Text>
           <Toggle label={t("library.rights")} value={rights} onChange={setRights} disabled={save.isPending}/>
           <Toggle label={t("library.noPersonal")} value={noPersonal} onChange={setNoPersonal} disabled={save.isPending}/>

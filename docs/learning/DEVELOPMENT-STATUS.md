@@ -39,3 +39,21 @@
 - Core: 25 test; mobil/backoffice tip kontrolü ve lint geçti. Backoffice statik üretim derlemesi geçti.
 - Kütüphane yönetim ekranı gerçek uygulama kodundan, yalnız sentetik verili yerel önizlemede incelendi. Bu, üretim yetkilendirmesi veya iPhone performans ölçümü değildir.
 - Soru üretiminde sağlayıcı sonucu kayıt öncesi saklanır; lease, kalıcı kota tahsisi ve belirsiz sonuç uzlaştırması eklendi.
+
+## Görselli soru ve özel kaynak eklemesi
+
+- Fotoğraf seçimi ve çizim → yerel önizleme → açıklama ve ayrı saklama onayı → doğrulanan özel kaynak → soru ile tek işlemde kayıt eklendi. Aynı istek makbuzu tekrarında ikinci soru oluşmaz.
+- En fazla üç soru görseli; görüntüler yerelde 1600 px sınırında hazırlanır, fotoğraf metadata'sı işlem kopyasına taşınmaz. JPG/PNG 4 MB, PDF 10 MB ve en fazla beş sayfa. Sunucu tür/ölçü/sayfa/hash kontrolü yapar; bu bir antivirüs veya tam görüntü decoder taraması değildir.
+- Çocuk soru ekranı, veli incelemesi ve PDF kitapçıkta görsel desteği eklendi. Veli incelemesindeki medya listesi tek istekte alınır. PDF, süreli bağlantıya bağlı kalmadan resim bytes'larını içerir.
+- AI'a görsel gönderimi özel depolama onayından ayrı tutulur. Her kaynak/veli/değerlendirme için onay kaydı vardır. Okunamayan görsel puan=0'a çevrilmez; açık gerekçeyle puanlanmadan bırakılabilir.
+- Silinen kaynakların nesne temizliği kalıcı kuyruk + saatlik görevle yapılır. İki saat geçerli yükleme bağlantıları için silme kaydı üç saat tutulup tekrar temizlenir. Bağlantısız taslaklar 24 saat sonra temizlenir.
+- `sources.enabled` varsayılan kapalıdır. Yayında açmadan önce private bucket, iki Edge function, SOURCE_CLEANUP_SECRET + aynı Vault değeri, Vault project_url ve saatlik temizleme görevi doğrulanmalıdır. Bu değişiklikler henüz üretime uygulanmadı.
+- Telefon 390×844 ve tablet 1280×800 web önizlemesi sentetik API ile incelendi. Çizim → PNG → soru önizlemesi ve geri alma denendi. İlk çizgideki web modal odak kaybı, tuvalin odak almasıyla giderildi. Bunlar fiziksel iPhone/iPad veya gerçek Storage uçtan uca testi değildir. Kanıtlar `previews/question-image-phone-fixture.png`, `previews/question-drawing-tablet-fixture.png`; tarayıcı dili İngilizce, Türkçe metinler i18n içinde.
+- Görselli kütüphane katkısının bağımsız medya kopyası ve moderasyonu henüz tamamlanmadığı için sunucu bu katkıyı açık hata ile engeller; metni görselsiz kabul edip yayınlamaz. Fotoğraf/PDF'den program taslağı çıkarma akışı henüz yok; dosya seçici hazır olması bu özelliğin tamamlandığı anlamına gelmez.
+
+## Deneme veri sınırı düzeltmesi
+
+- Aileye ait deneme satırı tek başına yeterli yetki kontrolü değildi: question_ids dizisi başka ailenin soru kimliklerini taşıyabiliyordu. Deneme/çocuk/senaryo/soru bağları artık sunucuda doğrulanıyor. Tekrarlı soru kimliği engellenir.
+- Eski hatalı satırlar için de çocuk soru okuma, görsel okuma, deneme başlatma ve AI soru çekiminde ayrı korumalar var.
+- Başlamış denemenin soru listesi, çocuğu ve temel koşulları; kullanılmış sorunun metni/cevabı değiştirilemez. Atanmış soruyu silerek sonuçları bozmak engellenir; aile hesabının silinmesi korunur.
+- Bu, veri sızıntısı yaşandığı iddiası değil; izole testlerle doğrulanan bir yetkilendirme eksikliğinin düzeltmesidir. Üretim incelemesi ve dağıtım henüz yapılmadı.

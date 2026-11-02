@@ -1,3 +1,4 @@
+import { QuestionMedia } from "@/components/learning/question-media";
 import { SerialWrites } from "@gina/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams, useFocusEffect, usePreventRemove } from "expo-router";
@@ -195,6 +196,7 @@ export default function TakeExamScreen() {
       {q ? (
         <View className="gap-4 rounded-child bg-cream p-5">
           <Text accessibilityRole="header" className="font-body-bold text-xl leading-7 text-ink">{q.stem}</Text>
+          <QuestionMedia questionId={q.id}/>
           {q.kind === "multiple_choice" ? (
             <View accessibilityRole="radiogroup" accessibilityLabel={t("prova.choicesLabel")} className="gap-2">
               {choices.map((choice) => {

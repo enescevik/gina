@@ -1,4 +1,4 @@
 {
   "nodeModulesDir": "none",
-  "lock": false
+  "lock": "./deno.lock"
 }
