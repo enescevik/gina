@@ -1,7 +1,8 @@
+import { ArrowLeft, ArrowRight } from "lucide-react-native";
 import { randomUUID } from "expo-crypto";
 import { QuestionMedia } from "@/components/learning/question-media";
 import { NotebookWorkspace } from "@/components/learning/notebook-workspace";
-import { SatinButton } from "@/components/planner/ui";
+import { p, SatinButton } from "@/components/planner/ui";
 import { AnswerReceipts, SerialWrites, readNotebook, notebookHasAnswer, type NotebookDocument } from "@gina/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams, useFocusEffect, usePreventRemove } from "expo-router";
@@ -63,6 +64,8 @@ export default function TakeExamScreen() {
     },
     staleTime: Infinity,
   });
+
+  const examInfo = useQuery({queryKey:["notebook_exam_title",examId],enabled:!!attempt.data,queryFn:async()=>{const {data,error}=await supabase.from("exams").select("title").eq("id",examId).single();if(error) throw error;return data;}});
 
   const savedAnswers = useQuery({
     queryKey: ["attempt_saved_answers", attempt.data?.id],
@@ -209,11 +212,12 @@ export default function TakeExamScreen() {
   }
 
   if (q?.kind === "open_ended" && savedAnswers.isSuccess) {
-    return <NotebookWorkspace key={q.id} title={t("prova.questionOf", { n: index + 1, total: list.length })}
+    return <NotebookWorkspace key={q.id} title={examInfo.data?.title ?? t("prova.title")} progress={`${index+1} / ${list.length}`}
       questionId={q.id} stem={q.stem} document={current?.document} text={current?.text ?? ""}
       onChange={document => editAnswer({ ...current, document })} onTextChange={text => editAnswer({ ...current, text })}
       disabled={timeUp || finish.isPending} onExit={() => router.replace(actingChild ? "/parent/child-mode/prova" : "/child/prova")}
-      status={(deadline ? t("prova.timeLeft", {time: formatRemaining(deadline - now)}) + " · " : "") + (timeUp ? t("provaV5.timeEnded") : writes.error ? t("provaV5.saveFailed") : dirty || saving ? t("provaV5.savingAnswer") : t("provaV5.answerSaved"))}
+      saved={!timeUp && !writes.error && !dirty && !saving}
+      status={(deadline ? t("prova.timeLeft", {time: formatRemaining(deadline - now)}) + " · " : "") + (timeUp ? t("provaV5.timeEnded") : writes.error ? t("provaV5.saveFailed") : dirty || saving ? t("provaV5.savingAnswer") : t("notebook.saved"))}
       alerts={<>
         <ErrorText error={writes.error ?? finish.error}/>
         {writes.error && !timeUp ? <Button title={t("common.retry")} onPress={() => { void writes.retry().catch(() => undefined); }}/> : null}
@@ -222,8 +226,8 @@ export default function TakeExamScreen() {
         {timeUp && finish.error ? <Button title={t("common.retry")} onPress={() => finish.mutate()}/> : null}
       </>}
       footer={<View style={{flexDirection:"row",gap:12,justifyContent:"flex-end"}}>
-        {index>0 ? <SatinButton secondary title={t("prova.prev")} disabled={finish.isPending||timeUp} onPress={() => saveAndGo(index-1)} style={{flex:1}}/> : null}
-        <SatinButton title={t(index+1>=list.length?"prova.finish":"prova.next")} disabled={timeUp} busy={finish.isPending} onPress={() => saveAndGo(index+1)} style={{flex:1}}/>
+        {index>0 ? <Pressable accessibilityRole="button" accessibilityLabel={t("prova.prev")} disabled={finish.isPending||timeUp} onPress={() => saveAndGo(index-1)} style={{width:48,height:48,borderRadius:24,alignItems:"center",justifyContent:"center",backgroundColor:p.lilac}}><ArrowLeft size={22} color={p.purple}/></Pressable> : null}
+        <SatinButton title={t(index+1>=list.length?"prova.finish":"notebook.nextQuestion")} disabled={timeUp} busy={finish.isPending} onPress={() => saveAndGo(index+1)} icon={<ArrowRight size={20} color="#fff"/>} style={{minHeight:48,borderRadius:28,paddingVertical:10,paddingHorizontal:18}}/>
       </View>}/>;
   }
 

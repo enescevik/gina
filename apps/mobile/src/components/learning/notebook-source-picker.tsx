@@ -1,3 +1,4 @@
+import { notebookTokens } from "./notebook-tokens";
 import { useRouteMotion } from "@/lib/use-route-motion";
 import { useState } from "react";
 import { Modal, ScrollView, Text, TextInput, View } from "react-native";
@@ -41,13 +42,7 @@ export function NotebookSourcePicker(
       return data as unknown as QuestionMediaItem[];
     },
   });
-  const tokens = Array.from(
-    new Set(
-      stem.match(
-        /\|[^|\n]{1,16}\|(?:\s*=\s*\d+(?:[.,]\d+)?(?:\s*(?:cm|mm|m|km))?)?|\d+(?:[.,]\d+)?\s*(?:°|derece|cm|mm|km|kg|m²|cm²)|[∠Δ√π][A-Z\d]*/g,
-      ) ?? [],
-    ),
-  ).slice(0, 16);
+  const tokens = notebookTokens(stem);
   function insertText(value: string) {
     onInsert({
       id: randomUUID(),

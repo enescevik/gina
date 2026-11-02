@@ -1,3 +1,5 @@
+import { randomUUID } from "expo-crypto";
+import { notebookTokens } from "./notebook-tokens";
 import { type ReactNode, useState } from "react";
 import {
   Image,
@@ -12,7 +14,18 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, BookOpen, Copy } from "lucide-react-native";
+import {
+  ArrowLeft,
+  BookOpen,
+  ChevronDown,
+  ChevronUp,
+  Coffee,
+  Copy,
+  Maximize2,
+  Minimize2,
+  Plus,
+  Type,
+} from "lucide-react-native";
 import { emptyNotebook, type NotebookDocument } from "@gina/core";
 import { Pressable } from "@/components/ui/pressable";
 import { p } from "@/components/planner/ui";
@@ -22,6 +35,7 @@ import { NotebookSourcePicker } from "./notebook-source-picker";
 
 export function NotebookWorkspace({
   title,
+  progress,
   questionId,
   stem,
   document,
@@ -29,12 +43,14 @@ export function NotebookWorkspace({
   onChange,
   onTextChange,
   status,
+  saved,
   disabled,
   onExit,
   footer,
   alerts,
 }: {
   title: string;
+  progress?: string;
   questionId: string;
   stem: string;
   document?: NotebookDocument;
@@ -42,6 +58,7 @@ export function NotebookWorkspace({
   onChange: (d: NotebookDocument) => void;
   onTextChange: (text: string) => void;
   status: string;
+  saved?: boolean;
   disabled: boolean;
   onExit: () => void;
   footer: ReactNode;
@@ -51,53 +68,112 @@ export function NotebookWorkspace({
   const { width, height, fontScale } = useWindowDimensions();
   const wide = width >= 850 && width > height && fontScale < 1.4;
   const [tab, setTab] = useState<"question" | "notebook">("question");
+  const [expanded, setExpanded] = useState(false);
+  const [contextOpen, setContextOpen] = useState(true);
+  const [answerOpen, setAnswerOpen] = useState(!!text);
+  const tokens = notebookTokens(stem);
   const [sourceOpen, setSourceOpen] = useState(false),
     [insertion, setInsertion] = useState<NotebookInsertion | null>(null);
   const [page] = useState(emptyNotebook);
+  const encouragement = (
+    <View style={s.encouragement}>
+      <Image
+        source={require(
+          "../../../../../packages/assets/brand/growing-friend/reading.png",
+        )}
+        style={{ width: wide ? 150 : 135, height: wide ? 120 : 110 }}
+        resizeMode="contain"
+        accessible={false}
+      />
+      <View style={s.bubble}>
+        <Text style={[s.soft, { color: p.ink }]}>
+          {t("notebook.encouragement")}
+        </Text>
+      </View>
+    </View>
+  );
   const question = (
     <ScrollView
+      style={{ flex: 1, minHeight: 0 }}
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={s.questionContent}
     >
       <View style={s.sourceHeading}>
         <BookOpen size={22} color={p.purple} />
         <Text style={s.sectionTitle}>{t("notebook.question")}</Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={t("notebook.keyboardAnswer")}
+          accessibilityState={{ expanded: answerOpen }}
+          onPress={() => setAnswerOpen(!answerOpen)}
+          style={[s.smallButton, { marginLeft: "auto" }]}
+        >
+          <Type size={21} color={p.purple} />
+        </Pressable>
+      </View>
+      {answerOpen && (
+        <>
+          <Text style={s.soft}>{t("notebook.answerTextHint")}</Text>
+          <TextInput
+            multiline
+            accessibilityLabel={t("prova.answerLabel")}
+            value={text}
+            editable={!disabled}
+            maxLength={20000}
+            onChangeText={onTextChange}
+            placeholder={t("prova.writeAnswer")}
+            placeholderTextColor={p.muted}
+            style={s.answer}
+          />
+        </>
+      )}
+      <View style={s.diagram}>
+        <QuestionMedia questionId={questionId} notebook />
+        <Pressable
+          accessibilityRole="button"
+          disabled={disabled}
+          onPress={() => setSourceOpen(true)}
+          style={s.take}
+        >
+          <Copy size={20} color={p.purple} />
+          <Text style={s.takeText}>{t("notebook.takeFromQuestion")}</Text>
+        </Pressable>
       </View>
       <Text selectable style={s.stem}>{stem}</Text>
-      <QuestionMedia questionId={questionId} />
-      <Pressable
-        accessibilityRole="button"
-        disabled={disabled}
-        onPress={() => setSourceOpen(true)}
-        style={s.take}
-      >
-        <Copy size={20} color={p.purple} />
-        <Text style={s.takeText}>{t("notebook.takeFromQuestion")}</Text>
-      </Pressable>
-      <View style={s.encouragement}>
-        <Image
-          source={require(
-            "../../../../../packages/assets/brand/growing-friend/reading.png",
-          )}
-          style={{ width: 112, height: 90 }}
-          resizeMode="contain"
-          accessible={false}
-        />
-        <Text style={s.soft}>{t("notebook.encouragement")}</Text>
-      </View>
-      <Text style={s.sectionTitle}>{t("prova.answerLabel")}</Text>
-      <Text style={s.soft}>{t("notebook.answerTextHint")}</Text>
-      <TextInput
-        multiline
-        accessibilityLabel={t("prova.answerLabel")}
-        value={text}
-        editable={!disabled}
-        maxLength={20000}
-        onChangeText={onTextChange}
-        placeholder={t("prova.writeAnswer")}
-        placeholderTextColor={p.muted}
-        style={s.answer}
-      />
+      {tokens.length > 0 && (
+        <View style={{ gap: 6 }}>
+          <Text style={s.sectionTitle}>{t("notebook.givens")}</Text>
+          <View style={s.chips}>
+            {tokens.map((value) => (
+              <Pressable
+                key={value}
+                accessibilityRole="button"
+                accessibilityLabel={t("notebook.addGiven", { value })}
+                disabled={disabled}
+                style={s.chip}
+                onPress={() => {
+                  setInsertion({
+                    id: randomUUID(),
+                    type: "text",
+                    text: value,
+                    x: 90,
+                    y: 120,
+                    width: 700,
+                    height: 100,
+                    size: 48,
+                    color: "#201951",
+                  });
+                  setTab("notebook");
+                }}
+              >
+                <Text style={s.takeText}>{value}</Text>
+                <Plus size={19} color={p.purple} />
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      )}
+      {!wide && encouragement}
     </ScrollView>
   );
   return (
@@ -123,7 +199,22 @@ export function NotebookWorkspace({
             resizeMode="contain"
             accessible={false}
           />
-          <Text accessibilityRole="header" style={s.title}>{title}</Text>
+          {wide && (
+            <Text numberOfLines={1} accessibilityRole="header" style={s.title}>
+              {title}
+            </Text>
+          )}
+          <Text style={s.progress}>{progress ?? title}</Text>
+          {wide && (
+            <Pressable
+              accessibilityRole="button"
+              onPress={onExit}
+              style={s.take}
+            >
+              <Coffee size={20} color={p.ink} />
+              <Text style={s.takeText}>{t("notebook.pause")}</Text>
+            </Pressable>
+          )}
         </View>
         {!wide
           ? (
@@ -134,9 +225,9 @@ export function NotebookWorkspace({
                   accessibilityRole="tab"
                   accessibilityState={{ selected: tab === key }}
                   onPress={() => setTab(key)}
-                  style={[s.tab, tab === key && { backgroundColor: p.lilac }]}
+                  style={[s.tab, tab === key && { backgroundColor: p.purple }]}
                 >
-                  <Text style={[s.tabText, tab === key && { color: p.purple }]}>
+                  <Text style={[s.tabText, tab === key && { color: "#fff" }]}>
                     {t(`notebook.${key}`)}
                   </Text>
                 </Pressable>
@@ -145,8 +236,13 @@ export function NotebookWorkspace({
           )
           : null}
         <View style={[s.body, { flexDirection: wide ? "row" : "column" }]}>
-          {wide || tab === "question"
-            ? <View style={wide ? s.questionRail : s.fill}>{question}</View>
+          {(wide && !expanded) || (!wide && tab === "question")
+            ? (
+              <View style={wide ? s.questionRail : s.fill}>
+                {question}
+                {wide && encouragement}
+              </View>
+            )
             : null}
           <View
             style={[
@@ -154,23 +250,68 @@ export function NotebookWorkspace({
               !wide && tab !== "notebook" && { display: "none" },
             ]}
           >
-            {!wide
-              ? (
+            {!wide && (
+              <View style={s.context}>
+                {contextOpen && (
+                  <View style={{ width: 100 }}>
+                    <QuestionMedia questionId={questionId} compact />
+                  </View>
+                )}
                 <Pressable
                   accessibilityRole="button"
                   onPress={() => setTab("question")}
-                  style={s.context}
+                  style={{
+                    flex: 1,
+                    minHeight: 48,
+                    justifyContent: "center",
+                    gap: 4,
+                  }}
                 >
-                  <BookOpen size={18} color={p.purple} />
-                  <Text numberOfLines={2} style={s.contextText}>{stem}</Text>
+                  {contextOpen && (
+                    <Text numberOfLines={2} style={s.contextText}>{stem}</Text>
+                  )}
                   <Text style={s.takeText}>{t("notebook.showQuestion")}</Text>
                 </Pressable>
-              )
-              : null}
-            <View style={s.paperHeading}>
-              <Text style={s.sectionTitle}>{t("notebook.title")}</Text>
-              <BookOpen size={19} color={p.purple} />
-            </View>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={t(
+                    contextOpen
+                      ? "notebook.hidePreview"
+                      : "notebook.showPreview",
+                  )}
+                  accessibilityState={{ expanded: contextOpen }}
+                  style={s.smallButton}
+                  onPress={() => setContextOpen(!contextOpen)}
+                >
+                  {contextOpen
+                    ? <ChevronUp size={19} color={p.ink} />
+                    : <ChevronDown size={19} color={p.ink} />}
+                </Pressable>
+              </View>
+            )}
+            {wide && (
+              <View style={s.paperHeading}>
+                <Text style={s.sectionTitle}>{t("notebook.title")}</Text>
+                <Text
+                  accessibilityLiveRegion="polite"
+                  style={[s.status, !saved && { backgroundColor: p.lilac }]}
+                >
+                  {status}
+                </Text>
+                <Pressable
+                  accessibilityRole="button"
+                  style={s.take}
+                  onPress={() => setExpanded(!expanded)}
+                >
+                  {expanded
+                    ? <Minimize2 size={18} color={p.purple} />
+                    : <Maximize2 size={18} color={p.purple} />}
+                  <Text style={s.takeText}>
+                    {t(expanded ? "notebook.restore" : "notebook.expand")}
+                  </Text>
+                </Pressable>
+              </View>
+            )}
             <NotebookEditor
               document={document ?? page}
               onChange={onChange}
@@ -180,20 +321,22 @@ export function NotebookWorkspace({
             />
           </View>
         </View>
-        <View
-          style={[
-            s.footer,
-            wide && { flexDirection: "row", alignItems: "center", gap: 20 },
-          ]}
-        >
-          <View style={{ flex: 1 }}>
-            <Text accessibilityLiveRegion="polite" style={s.status}>
+        <View style={s.footer}>
+          {!wide && (
+            <Text
+              accessibilityLiveRegion="polite"
+              style={[
+                s.status,
+                { flexShrink: 1 },
+                !saved && { backgroundColor: p.lilac },
+              ]}
+            >
               {status}
             </Text>
-            {alerts}
-          </View>
-          <View style={wide ? { width: 360 } : undefined}>{footer}</View>
+          )}
+          <View style={{ flex: 1, alignItems: "flex-end" }}>{footer}</View>
         </View>
+        <View style={{ paddingHorizontal: 16 }}>{alerts}</View>
         <NotebookSourcePicker
           questionId={questionId}
           stem={stem}
@@ -233,7 +376,7 @@ const s = StyleSheet.create({
     fontSize: 20,
     color: p.ink,
     flex: 1,
-    textAlign: "right",
+    textAlign: "left",
   },
   tabs: { flexDirection: "row", padding: 8, gap: 8 },
   tab: {
@@ -247,18 +390,26 @@ const s = StyleSheet.create({
   body: {
     flex: 1,
     minHeight: 0,
-    gap: 16,
-    paddingHorizontal: 16,
+    gap: 0,
+    paddingHorizontal: 12,
     paddingTop: 12,
   },
-  questionRail: { width: "38%", maxWidth: 470, minWidth: 280 },
-  questionContent: { padding: 14, gap: 16 },
-  sourceHeading: { flexDirection: "row", gap: 10, alignItems: "center" },
+  questionRail: { width: "35%", maxWidth: 470, minWidth: 280, minHeight: 0 },
+  questionContent: { padding: 14, gap: 10 },
+  sourceHeading: {
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+    backgroundColor: p.lilac,
+    borderRadius: 16,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+  },
   sectionTitle: { fontFamily: "Nunito_700Bold", fontSize: 20, color: p.ink },
   stem: {
     fontFamily: "Nunito_600SemiBold",
     fontSize: 21,
-    lineHeight: 31,
+    lineHeight: 28,
     color: p.ink,
   },
   take: {
@@ -276,7 +427,8 @@ const s = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-    paddingVertical: 8,
+    paddingVertical: 0,
+    paddingHorizontal: 12,
   },
   soft: {
     fontFamily: "Nunito_400Regular",
@@ -304,9 +456,9 @@ const s = StyleSheet.create({
     minHeight: 0,
     borderWidth: 1,
     borderColor: "#E5DDED",
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    backgroundColor: "#FFF",
+    borderRadius: 24,
+    padding: 12,
+    backgroundColor: p.cream,
     overflow: "hidden",
     boxShadow: "0 3px 14px #20195108",
   },
@@ -314,9 +466,9 @@ const s = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
+    paddingHorizontal: 4,
+    paddingBottom: 10,
+    gap: 8,
     borderColor: p.line,
   },
   context: {
@@ -325,6 +477,8 @@ const s = StyleSheet.create({
     alignItems: "center",
     padding: 12,
     backgroundColor: "#F4F0FA",
+    borderRadius: 18,
+    marginBottom: 10,
   },
   contextText: {
     flex: 1,
@@ -333,6 +487,8 @@ const s = StyleSheet.create({
     color: p.muted,
   },
   footer: {
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 20,
     paddingBottom: 10,
     paddingTop: 8,
@@ -341,5 +497,52 @@ const s = StyleSheet.create({
     borderColor: p.line,
     backgroundColor: p.cream,
   },
-  status: { fontFamily: "Nunito_400Regular", fontSize: 13, color: p.muted },
+  status: {
+    fontFamily: "Nunito_700Bold",
+    fontSize: 12,
+    color: p.muted,
+    backgroundColor: "#E5F5EB",
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  diagram: {
+    borderWidth: 1,
+    borderColor: "#DBCCF4",
+    borderRadius: 20,
+    padding: 10,
+    gap: 6,
+  },
+  chips: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
+  chip: {
+    minHeight: 48,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingHorizontal: 10,
+    borderRadius: 24,
+    backgroundColor: p.lilac,
+  },
+  bubble: {
+    flex: 1,
+    backgroundColor: "#E1F4EA",
+    borderRadius: 22,
+    padding: 14,
+  },
+  progress: {
+    fontFamily: "Nunito_800ExtraBold",
+    fontSize: 16,
+    color: p.ink,
+    backgroundColor: p.lilac,
+    borderRadius: 22,
+    paddingHorizontal: 18,
+    paddingVertical: 8,
+    marginLeft: "auto",
+  },
+  smallButton: {
+    width: 48,
+    height: 48,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

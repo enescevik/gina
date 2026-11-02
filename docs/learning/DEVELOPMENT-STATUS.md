@@ -138,3 +138,7 @@ Kullanıcı `docs/design/screens/prova-notebook/phone-tablet-approved-v1.png` ta
 - Gerçek Apple Pencil basınç/eğim/avuç içi reddi, Android kalem ve fiziksel cihaz gecikmesi doğrulanmadı. Mevcut çizgiler sabit kalınlıktadır; bu API yüzeyi tam yerel kalem motoru diye sunulmaz.
 - Çizimli defter henüz AI'a görüntü olarak aktarılmaz. Veli puanlayabilir; AI, defterin içeriğini görmeden yalnız metin kırıntısını tam cevap gibi değerlendirmesin diye bu cevaplar için otomatik değerlendirme bloke edilir. Ayrı veli not/çizim katmanı ve onaylı AI görsel değerlendirmesi sonraki artımdır.
 - Soru havuzunda yeni üretim hâlâ 0. Üretim AI bağlantısı çalışıyor; 20 soru/hücre üretimi müfredat/kaynak sözleşmesi ve inceleme akışından sonra yapılacak.
+
+## 2026-11-02 — Onaylı çözüm defteri düzenine dönüş
+
+Kullanıcının ikinci maket onayı uygulandı. Tablet 35/65 soru/defter ve genişletme, telefon görsel önizlemesi ve Soru/Defter sekmeleri, tek sıra lila araç çubuğu, isteğe bağlı kalem ayarları, Verilenler ekleme düğmeleri ve sabit tablet maskotu tamamlandı. Mevcut revizyon/idempotency ve kayıt korumaları korundu. Gerçek ekranlar ve doğrulama sınırları `docs/design/screens/prova-notebook/refined-v2-review.json` içindedir. Native simülatör bağlantısı bu turda doğrulanamadı; web kontrolleri ve iOS paketleme geçti. TestFlight yükleme durumu ayrıca kaydedilecek.

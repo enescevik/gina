@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  useWindowDimensions,
   View,
 } from "react-native";
 import { randomUUID } from "expo-crypto";
@@ -15,6 +16,7 @@ import {
   Eraser,
   Hand,
   Minus,
+  MoreHorizontal,
   Pencil,
   Plus,
   Redo2,
@@ -91,11 +93,17 @@ export function NotebookEditor({
 }) {
   const { t } = useTranslation();
   const { animation } = useRouteMotion();
+  const { width: screenWidth } = useWindowDimensions();
+
+  const [optionsOpen, setOptionsOpen] = useState(false);
+  const [penOptions, setPenOptions] = useState(false);
+  const [penSize, setPenSize] = useState(4);
   const [tool, setTool] = useState<Tool>("pen");
   const [color, setColor] = useState<typeof NOTEBOOK_COLORS[number]>(
     NOTEBOOK_COLORS[0],
   );
   const [viewportWidth, setViewportWidth] = useState(320);
+  const roomy = viewportWidth >= 600;
   const [zoom, setZoom] = useState(1);
   const width = viewportWidth * zoom;
   const [selected, setSelected] = useState<string[]>([]);
@@ -235,7 +243,7 @@ export function NotebookEditor({
           id: randomUUID(),
           type: "stroke",
           color,
-          size: 4,
+          size: penSize,
           points: g.points,
         }],
       });
@@ -329,7 +337,7 @@ export function NotebookEditor({
         {([{ key: "pen", Icon: Pencil }, { key: "eraser", Icon: Eraser }, {
           key: "select",
           Icon: Scan,
-        }, { key: "hand", Icon: Hand }] as const).map(({ key, Icon }) => (
+        }] as const).map(({ key, Icon }) => (
           <ToolButton
             key={key}
             label={t(`notebook.${key}`)}
@@ -337,11 +345,14 @@ export function NotebookEditor({
             disabled={disabled}
             onPress={() => {
               finish();
+              setPenOptions(
+                key === "pen" && tool === "pen" ? !penOptions : false,
+              );
               setTool(key);
               if (key !== "select") setSelected([]);
             }}
           >
-            <Icon size={22} color={tool === key ? p.purple : p.muted} />
+            <Icon size={22} color={tool === key ? "#fff" : p.ink} />
           </ToolButton>
         ))}
         <ToolButton
@@ -353,156 +364,270 @@ export function NotebookEditor({
               id: selectedText?.id,
             })}
         >
-          <Type size={22} color={p.muted} />
+          <Type size={22} color={p.ink} />
+          {roomy && <Text style={s.toolLabel}>{t("notebook.textShort")}</Text>}
         </ToolButton>
+        {screenWidth >= 360 && (
+          <>
+            <ToolButton
+              label={t("notebook.symbols")}
+              disabled={disabled}
+              onPress={() => setTextEditor({ text: "" })}
+            >
+              <Sigma size={22} color={p.ink} />
+              {roomy && (
+                <Text style={s.toolLabel}>{t("notebook.symbolsShort")}</Text>
+              )}
+            </ToolButton>
+          </>
+        )}
+        <View style={{ flex: 1 }} />
+        {roomy && (
+          <>
+            <ToolButton
+              label={t("notebook.undo")}
+              disabled={disabled || !past.length}
+              onPress={() => {
+                setFuture((f) => [document, ...f].slice(0, 25));
+                onChange(past.at(-1)!);
+                setPast((p) => p.slice(0, -1));
+                setSelected([]);
+              }}
+            >
+              <Undo2 size={22} color={p.muted} />
+            </ToolButton>
+            <ToolButton
+              label={t("notebook.redo")}
+              disabled={disabled || !future.length}
+              onPress={() => {
+                setPast((p) => [...p, document]);
+                onChange(future[0]!);
+                setFuture((f) => f.slice(1));
+                setSelected([]);
+              }}
+            >
+              <Redo2 size={22} color={p.muted} />
+            </ToolButton>
+          </>
+        )}
         <ToolButton
-          label={t("notebook.undo")}
-          disabled={disabled || !past.length}
-          onPress={() => {
-            setFuture((f) => [document, ...f].slice(0, 25));
-            onChange(past.at(-1)!);
-            setPast((p) => p.slice(0, -1));
-            setSelected([]);
-          }}
+          label={t("notebook.moreTools")}
+          onPress={() => setOptionsOpen(true)}
         >
-          <Undo2 size={22} color={p.muted} />
-        </ToolButton>
-        <ToolButton
-          label={t("notebook.redo")}
-          disabled={disabled || !future.length}
-          onPress={() => {
-            setPast((p) => [...p, document]);
-            onChange(future[0]!);
-            setFuture((f) => f.slice(1));
-            setSelected([]);
-          }}
-        >
-          <Redo2 size={22} color={p.muted} />
+          <MoreHorizontal size={22} color={p.ink} />
         </ToolButton>
       </View>
-      <View style={s.options}>
-        {tool === "pen"
-          ? (
-            <>
-              {NOTEBOOK_COLORS.map((c, i) => (
-                <Pressable
-                  key={c}
-                  accessibilityRole="button"
-                  accessibilityLabel={t(`notebook.color${i}`)}
-                  accessibilityState={{ selected: color === c, disabled }}
-                  disabled={disabled}
-                  onPress={() => setColor(c)}
-                  style={s.colorTouch}
+      {(penOptions || selected.length > 0) && (
+        <View style={s.options}>
+          {penOptions && tool === "pen"
+            ? (
+              <>
+                {NOTEBOOK_COLORS.map((c, i) => (
+                  <Pressable
+                    key={c}
+                    accessibilityRole="button"
+                    accessibilityLabel={t(`notebook.color${i}`)}
+                    accessibilityState={{ selected: color === c, disabled }}
+                    disabled={disabled}
+                    onPress={() => setColor(c)}
+                    style={s.colorTouch}
+                  >
+                    <View
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: 11,
+                        backgroundColor: c,
+                        outlineWidth: color === c ? 2 : 0,
+                        outlineColor: c,
+                        outlineOffset: 3,
+                      }}
+                    />
+                  </Pressable>
+                ))}
+                <ToolButton
+                  label={t("notebook.thickness", { size: penSize })}
+                  onPress={() =>
+                    setPenSize((v) => v === 8 ? 2 : v === 2 ? 4 : 8)}
                 >
                   <View
                     style={{
                       width: 22,
-                      height: 22,
-                      borderRadius: 11,
-                      backgroundColor: c,
-                      outlineWidth: color === c ? 2 : 0,
-                      outlineColor: c,
-                      outlineOffset: 3,
+                      height: penSize,
+                      borderRadius: 4,
+                      backgroundColor: color,
                     }}
                   />
-                </Pressable>
-              ))}
-            </>
-          )
-          : (
-            <Text
-              style={{
-                flex: 1,
-                paddingLeft: 8,
-                fontFamily: "Nunito_600SemiBold",
-                color: p.muted,
-              }}
-            >
-              {t(`notebook.${tool}`)}
-            </Text>
-          )}
-        <View style={{ flex: 1 }} />
-        {selected.length === 1 &&
-            shown.elements.find((e) => e.id === selected[0])?.type !== "stroke"
-          ? (
-            <>
-              <ToolButton
-                label={t("notebook.smaller")}
-                disabled={disabled ||
-                  !resizeNotebookItem(document, selected[0]!, 0.85)}
-                onPress={() => {
-                  const next = resizeNotebookItem(document, selected[0]!, 0.85);
-                  if (next) commit(next);
+                </ToolButton>
+              </>
+            )
+            : (
+              <Text
+                style={{
+                  flex: 1,
+                  paddingLeft: 8,
+                  fontFamily: "Nunito_600SemiBold",
+                  color: p.muted,
                 }}
               >
-                <Minus size={22} color={p.purple} />
-              </ToolButton>
+                {t(`notebook.${tool}`)}
+              </Text>
+            )}
+          <View style={{ flex: 1 }} />
+          {selected.length === 1 &&
+              shown.elements.find((e) => e.id === selected[0])?.type !==
+                "stroke"
+            ? (
+              <>
+                <ToolButton
+                  label={t("notebook.smaller")}
+                  disabled={disabled ||
+                    !resizeNotebookItem(document, selected[0]!, 0.85)}
+                  onPress={() => {
+                    const next = resizeNotebookItem(
+                      document,
+                      selected[0]!,
+                      0.85,
+                    );
+                    if (next) commit(next);
+                  }}
+                >
+                  <Minus size={22} color={p.purple} />
+                </ToolButton>
+                <ToolButton
+                  label={t("notebook.larger")}
+                  disabled={disabled ||
+                    !resizeNotebookItem(document, selected[0]!, 1.15)}
+                  onPress={() => {
+                    const next = resizeNotebookItem(
+                      document,
+                      selected[0]!,
+                      1.15,
+                    );
+                    if (next) commit(next);
+                  }}
+                >
+                  <Plus size={22} color={p.purple} />
+                </ToolButton>
+              </>
+            )
+            : null}
+          {selected.length > 0
+            ? (
               <ToolButton
-                label={t("notebook.larger")}
-                disabled={disabled ||
-                  !resizeNotebookItem(document, selected[0]!, 1.15)}
+                label={t("notebook.deleteSelection")}
+                disabled={disabled}
                 onPress={() => {
-                  const next = resizeNotebookItem(document, selected[0]!, 1.15);
-                  if (next) commit(next);
+                  commit({
+                    ...document,
+                    elements: document.elements.filter((e) =>
+                      !selected.includes(e.id)
+                    ),
+                  });
+                  setSelected([]);
                 }}
               >
-                <Plus size={22} color={p.purple} />
+                <Trash2 size={21} color="#BA5348" />
               </ToolButton>
-            </>
-          )
-          : null}
-        {selected.length > 0
-          ? (
+            )
+            : null}
+        </View>
+      )}
+      {!!message && (
+        <Text style={s.hint} accessibilityLiveRegion="polite">{message}</Text>
+      )}
+      <Modal
+        visible={optionsOpen}
+        transparent
+        animationType={animation}
+        onRequestClose={() => setOptionsOpen(false)}
+      >
+        <View style={s.scrim}>
+          <View style={[s.modal, { alignSelf: "center", marginTop: 80 }]}>
+            <View style={s.modalHeading}>
+              <Text style={s.title}>{t("notebook.moreTools")}</Text>
+              <ToolButton
+                label={t("notebook.close")}
+                onPress={() => setOptionsOpen(false)}
+              >
+                <X size={22} color={p.ink} />
+              </ToolButton>
+            </View>
+            <View style={[s.options, { flexWrap: "wrap" }]}>
+              <ToolButton
+                label={t("notebook.undo")}
+                disabled={disabled || !past.length}
+                onPress={() => {
+                  setFuture((f) => [document, ...f].slice(0, 25));
+                  onChange(past.at(-1)!);
+                  setPast((p) => p.slice(0, -1));
+                  setSelected([]);
+                }}
+              >
+                <Undo2 size={22} color={p.muted} />
+              </ToolButton>
+              <ToolButton
+                label={t("notebook.redo")}
+                disabled={disabled || !future.length}
+                onPress={() => {
+                  setPast((p) => [...p, document]);
+                  onChange(future[0]!);
+                  setFuture((f) => f.slice(1));
+                  setSelected([]);
+                }}
+              >
+                <Redo2 size={22} color={p.muted} />
+              </ToolButton>
+
+              <ToolButton
+                label={t("notebook.hand")}
+                active={tool === "hand"}
+                onPress={() => {
+                  finish();
+                  setTool("hand");
+                  setOptionsOpen(false);
+                }}
+              >
+                <Hand size={22} color={tool === "hand" ? "#fff" : p.ink} />
+              </ToolButton>
+              <ToolButton
+                label={t("notebook.zoom", { percent: zoom * 100 })}
+                onPress={() => {
+                  finish();
+                  setZoom((z) => z === 2 ? 1 : z + .5);
+                  setTool("hand");
+                  setOptionsOpen(false);
+                }}
+              >
+                <ZoomIn size={22} color={p.purple} />
+                <Text style={s.toolLabel}>{zoom * 100}%</Text>
+              </ToolButton>
+            </View>
             <ToolButton
-              label={t("notebook.deleteSelection")}
+              label={t("notebook.symbols")}
               disabled={disabled}
               onPress={() => {
-                commit({
-                  ...document,
-                  elements: document.elements.filter((e) =>
-                    !selected.includes(e.id)
-                  ),
-                });
-                setSelected([]);
+                setOptionsOpen(false);
+                setTextEditor({ text: "" });
               }}
             >
-              <Trash2 size={21} color="#BA5348" />
+              <Sigma size={22} color={p.ink} />
+              <Text style={s.toolLabel}>{t("notebook.symbolsShort")}</Text>
             </ToolButton>
-          )
-          : null}
-        <ToolButton
-          label={t("notebook.symbols")}
-          disabled={disabled}
-          onPress={() => setTextEditor({ text: "" })}
-        >
-          <Sigma size={22} color={p.purple} />
-        </ToolButton>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          backgroundColor: "#FFF",
-        }}
-      >
-        <Text style={[s.hint, { flex: 1 }]} accessibilityLiveRegion="polite">
-          {message || t(`notebook.hint.${tool}`)}
-        </Text>
-        <ToolButton
-          label={t("notebook.zoom", { percent: zoom * 100 })}
-          onPress={() => {
-            finish();
-            setZoom((z) => z === 2 ? 1 : z + .5);
-            setTool("hand");
-          }}
-        >
-          <ZoomIn size={20} color={p.purple} />
-          <Text style={{ fontSize: 11, color: p.muted }}>{zoom * 100}%</Text>
-        </ToolButton>
-      </View>
+            <Text style={s.hint}>{t(`notebook.hint.${tool}`)}</Text>
+          </View>
+        </View>
+      </Modal>
       <View
         onLayout={(e) => setViewportWidth(e.nativeEvent.layout.width)}
-        style={{ flex: 1, minHeight: 0 }}
+        style={{
+          flex: 1,
+          minHeight: 0,
+          borderRadius: 18,
+          overflow: "hidden",
+          borderWidth: 1,
+          borderColor: p.line,
+        }}
       >
         <ScrollView
           nestedScrollEnabled
@@ -519,8 +644,7 @@ export function NotebookEditor({
             <View
               accessibilityLabel={t("notebook.page")}
               style={{ width, height: width * 1.4 }}
-              onStartShouldSetResponder={(e) =>
-                !disabled && tool !== "hand" &&
+              onStartShouldSetResponder={(e) => !disabled && tool !== "hand" &&
                 e.nativeEvent.touches.length <= 1}
               onMoveShouldSetResponder={() => !disabled && tool !== "hand"}
               onResponderTerminationRequest={() => false}
@@ -561,7 +685,7 @@ export function NotebookEditor({
                     <Path
                       d={strokePath(live)}
                       stroke={color}
-                      strokeWidth={4}
+                      strokeWidth={penSize}
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       fill="none"
@@ -689,7 +813,7 @@ function ToolButton(
       disabled={disabled}
       onPress={onPress}
       style={[s.tool, {
-        backgroundColor: active ? p.lilac : "transparent",
+        backgroundColor: active ? p.purple : "transparent",
         opacity: disabled ? .35 : 1,
       }]}
     >
@@ -700,14 +824,20 @@ function ToolButton(
 const s = StyleSheet.create({
   toolbar: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    paddingHorizontal: 8,
-    paddingVertical: 6,
+    alignItems: "center",
+    borderRadius: 22,
+    marginBottom: 12,
+    paddingHorizontal: 4,
+    paddingVertical: 4,
     borderBottomWidth: 1,
     borderColor: p.line,
-    backgroundColor: "#FFF",
+    backgroundColor: p.lilac,
   },
+  toolLabel: { fontFamily: "Nunito_700Bold", fontSize: 14, color: p.ink },
   tool: {
+    flexDirection: "row",
+    gap: 6,
+    paddingHorizontal: 8,
     minWidth: 48,
     minHeight: 48,
     alignItems: "center",

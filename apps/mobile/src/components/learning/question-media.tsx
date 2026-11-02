@@ -15,7 +15,12 @@ export interface QuestionMediaItem {
   height: number;
 }
 export function QuestionMedia(
-  { questionId, items }: { questionId: string; items?: QuestionMediaItem[] },
+  { questionId, items, compact = false, notebook = false }: {
+    questionId: string;
+    items?: QuestionMediaItem[];
+    compact?: boolean;
+    notebook?: boolean;
+  },
 ) {
   const { claims } = useSession();
   const media = useQuery({
@@ -52,13 +57,25 @@ export function QuestionMedia(
   }
   return (
     <View style={{ gap: 12 }}>
-      {(items ?? media.data)?.map((m) => (
-        <SourceImage key={m.source_id} media={m} />
-      ))}
+      {(compact ? (items ?? media.data)?.slice(0, 1) : (items ?? media.data))
+        ?.map((m) => (
+          <SourceImage
+            key={m.source_id}
+            media={m}
+            compact={compact}
+            notebook={notebook}
+          />
+        ))}
     </View>
   );
 }
-function SourceImage({ media: m }: { media: QuestionMediaItem }) {
+function SourceImage(
+  { media: m, compact, notebook }: {
+    media: QuestionMediaItem;
+    compact: boolean;
+    notebook?: boolean;
+  },
+) {
   const { t } = useTranslation();
   const { claims } = useSession();
   const [failed, setFailed] = useState(false);
@@ -90,8 +107,8 @@ function SourceImage({ media: m }: { media: QuestionMediaItem }) {
             style={{
               width: "100%",
               aspectRatio: Math.max(.3, Math.min(4, m.width / m.height)),
-              maxHeight: 420,
-              backgroundColor: "#FFF",
+              maxHeight: compact ? 78 : notebook ? 190 : 420,
+              backgroundColor: "transparent",
               borderRadius: 16,
             }}
             onError={() => setFailed(true)}
@@ -117,15 +134,17 @@ function SourceImage({ media: m }: { media: QuestionMediaItem }) {
           />
         )
         : null}
-      <Text
-        style={{
-          fontFamily: "Nunito_400Regular",
-          fontSize: 14,
-          color: "#625C85",
-        }}
-      >
-        {m.alt}
-      </Text>
+      {!compact && !notebook && (
+        <Text
+          style={{
+            fontFamily: "Nunito_400Regular",
+            fontSize: 14,
+            color: "#625C85",
+          }}
+        >
+          {m.alt}
+        </Text>
+      )}
     </View>
   );
 }
