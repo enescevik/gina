@@ -1,3 +1,4 @@
+import { notebookLayout } from "./notebook-layout";
 import { SharedContext, useQuestionContext } from "./question-context";
 import { randomUUID } from "expo-crypto";
 import { notebookTokens } from "./notebook-tokens";
@@ -67,14 +68,19 @@ export function NotebookWorkspace({
 }) {
   const { t } = useTranslation();
   const { width, height, fontScale } = useWindowDimensions();
-  const wide = width >= 850 && width > height && fontScale < 1.4;
+  const layout = notebookLayout(width, height, fontScale);
+  const wide = layout === "side-by-side";
+  const stacked = layout === "stacked";
+  const tabbed = layout === "tabs";
   const [tab, setTab] = useState<"question" | "notebook">("question");
   const [expanded, setExpanded] = useState(false);
   const [contextOpen, setContextOpen] = useState(true);
   const [answerOpen, setAnswerOpen] = useState(!!text);
   const shared = useQuestionContext(questionId);
   const prompt = shared.data?.prompt ?? stem;
-  const tokens = notebookTokens(shared.data ? `${shared.data.body}\n${prompt}` : stem);
+  const tokens = notebookTokens(
+    shared.data ? `${shared.data.body}\n${prompt}` : stem,
+  );
   const [sourceOpen, setSourceOpen] = useState(false),
     [insertion, setInsertion] = useState<NotebookInsertion | null>(null);
   const [page] = useState(emptyNotebook);
@@ -130,8 +136,18 @@ export function NotebookWorkspace({
           />
         </>
       )}
+      {stacked && (
+        <>
+          {shared.data ? <SharedContext context={shared.data} /> : null}
+          <Text selectable style={s.stem}>{prompt}</Text>
+        </>
+      )}
       <View style={s.diagram}>
-        <QuestionMedia questionId={questionId} notebook />
+        <QuestionMedia
+          questionId={questionId}
+          notebook
+          maxImageHeight={stacked ? 120 : undefined}
+        />
         <Pressable
           accessibilityRole="button"
           disabled={disabled}
@@ -142,8 +158,12 @@ export function NotebookWorkspace({
           <Text style={s.takeText}>{t("notebook.takeFromQuestion")}</Text>
         </Pressable>
       </View>
-      {shared.data ? <SharedContext context={shared.data} /> : null}
-      <Text selectable style={s.stem}>{prompt}</Text>
+      {!stacked && (
+        <>
+          {shared.data ? <SharedContext context={shared.data} /> : null}
+          <Text selectable style={s.stem}>{prompt}</Text>
+        </>
+      )}
       {tokens.length > 0 && (
         <View style={{ gap: 6 }}>
           <Text style={s.sectionTitle}>{t("notebook.givens")}</Text>
@@ -177,7 +197,7 @@ export function NotebookWorkspace({
           </View>
         </View>
       )}
-      {!wide && encouragement}
+      {tabbed && encouragement}
     </ScrollView>
   );
   return (
@@ -220,7 +240,7 @@ export function NotebookWorkspace({
             </Pressable>
           )}
         </View>
-        {!wide
+        {tabbed
           ? (
             <View style={s.tabs}>
               {(["question", "notebook"] as const).map((key) => (
@@ -240,21 +260,29 @@ export function NotebookWorkspace({
           )
           : null}
         <View style={[s.body, { flexDirection: wide ? "row" : "column" }]}>
-          {(wide && !expanded) || (!wide && tab === "question")
+          {((wide || stacked) && !expanded) || (tabbed && tab === "question")
             ? (
-              <View style={wide ? s.questionRail : s.fill}>
+              <View
+                key="question"
+                style={wide
+                  ? s.questionRail
+                  : stacked
+                  ? s.questionStack
+                  : s.fill}
+              >
                 {question}
                 {wide && encouragement}
               </View>
             )
             : null}
           <View
+            key="notebook"
             style={[
               s.paperShell,
-              !wide && tab !== "notebook" && { display: "none" },
+              tabbed && tab !== "notebook" && { display: "none" },
             ]}
           >
-            {!wide && (
+            {tabbed && (
               <View style={s.context}>
                 {contextOpen && (
                   <View style={{ width: 100 }}>
@@ -272,7 +300,9 @@ export function NotebookWorkspace({
                   }}
                 >
                   {contextOpen && (
-                    <Text numberOfLines={2} style={s.contextText}>{shared.data ? shared.data.title : stem}</Text>
+                    <Text numberOfLines={2} style={s.contextText}>
+                      {shared.data ? shared.data.title : stem}
+                    </Text>
                   )}
                   <Text style={s.takeText}>{t("notebook.showQuestion")}</Text>
                 </Pressable>
@@ -293,7 +323,7 @@ export function NotebookWorkspace({
                 </Pressable>
               </View>
             )}
-            {wide && (
+            {(wide || stacked) && (
               <View style={s.paperHeading}>
                 <Text style={s.sectionTitle}>{t("notebook.title")}</Text>
                 <Text
@@ -318,7 +348,10 @@ export function NotebookWorkspace({
             )}
             <NotebookEditor
               document={document ?? page}
-              onChange={onChange}
+              onChange={(next) => {
+                setTab("notebook");
+                onChange(next);
+              }}
               disabled={disabled}
               insertion={insertion}
               onInserted={() => setInsertion(null)}
@@ -326,7 +359,7 @@ export function NotebookWorkspace({
           </View>
         </View>
         <View style={s.footer}>
-          {!wide && (
+          {tabbed && (
             <Text
               accessibilityLiveRegion="polite"
               style={[
@@ -397,6 +430,12 @@ const s = StyleSheet.create({
     gap: 0,
     paddingHorizontal: 12,
     paddingTop: 12,
+  },
+  questionStack: {
+    height: "30%",
+    minHeight: 160,
+    maxHeight: 300,
+    marginBottom: 10,
   },
   questionRail: { width: "35%", maxWidth: 470, minWidth: 280, minHeight: 0 },
   questionContent: { padding: 14, gap: 10 },

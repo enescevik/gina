@@ -1,3 +1,4 @@
+import { NOTEBOOK_MODAL_PROPS } from "./notebook-layout";
 import { notebookTokens } from "./notebook-tokens";
 import { useRouteMotion } from "@/lib/use-route-motion";
 import { useState } from "react";
@@ -68,6 +69,7 @@ export function NotebookSourcePicker(
   }
   return (
     <Modal
+      {...NOTEBOOK_MODAL_PROPS}
       visible={visible}
       transparent
       animationType={animation}
