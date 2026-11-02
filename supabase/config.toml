@@ -444,3 +444,6 @@ verify_jwt = false
 
 [functions.timetable-import]
 verify_jwt = true
+
+[functions.ai-preflight]
+verify_jwt = true
