@@ -37,6 +37,8 @@ Mağaza yayını bu teslimin sonucu değildir. Bu kayıt yalnız belirtilen Test
 
 ## Çocuk iPad’i için kablosuz kurulum
 
-TestFlight kullanamayan kayıtlı çocuk iPad’i için ayrı dağıtım sohbeti, aynı `86c819d` kaynağından INTERNAL build `1aca834a-742c-472f-9928-0e00b4f04455` hazırlıyor. Bu sohbet ikinci bir tablet derlemesi başlatmadı. Kurulum bağlantısının yayını ve cihaz imza doğrulaması o sohbet tarafından tamamlanacak; bu kayıt iPad kurulumunun tamamlandığını iddia etmez.
+Kayıtlı çocuk iPad’i için aynı **0.1.0 (16)** ve `86c819d` kaynağından INTERNAL paket hazır: [iPad kablosuz kurulum sayfası](https://gina-aile-enescevik--tablet.expo.app). iPad’de Safari ile aç → **Yükle / Güncelle** → Expo sayfasında **Install**. Mevcut Gina’yı silmeden güncelleyebilirsin; son yükleme onayı cihazda verilir.
+
+Tablet build `1aca834a-742c-472f-9928-0e00b4f04455`, ayrı deploy sohbeti tarafından üretildi; ikinci derleme başlatılmadı. İmza ve kayıtlı cihaz kontrolü o sohbette tamamlandı. Bu sohbette canlı `release.json` ve sayfanın aynı Store build/sürüm/commit'e yönlendirdiği ayrıca doğrulandı. Cihazdaki kablosuz kurulumun son adımı henüz denenmiş sayılmaz.
 
 Sonraki sürümler için [kablosuz dağıtım akışı](TABLET-KABLOSUZ-DAGITIM.md), `tablet` EAS profili ve `prepare-tablet-install.mjs` aynı repoya alındı. Sayfa üreticisi farklı commit/sürüm, eski build, yanlış uygulama ve simulator paketini reddeder. Ana web yayınına `--prod` ile dokunulmaz.
