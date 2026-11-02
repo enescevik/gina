@@ -15,6 +15,14 @@ Bu paket TestFlight 12’den sonraki çalışmadır. PR #42 (`91ea2c5`) main’e
 
 ## Dış hesaplarda tamamlanması gerekenler
 
+### 2 Kasım canlı kurulum durumu
+
+- Google Cloud projesi `gina-aile-enescevik` oluşturuldu. Google Auth Platform uygulama kaydı **GINA Aile**, dış kullanıcı ve test aşaması olarak kaydedildi; Google API Services User Data Policy kullanıcı onayıyla kabul edildi. `GINA Aile Supabase` adlı Web OAuth istemcisi oluşturuldu ve gizli değeri yalnız Supabase Google sağlayıcısına kaydedildi. Sağlayıcı etkin; test kullanıcı listesinde `enescevik@gmail.com` var. Google hâlâ Testing durumunda; genel yayın ve marka doğrulaması tamamlanmış değildir.
+- Supabase dönüş listesine `gina://auth-callback` ve `https://gina-aile-enescevik.expo.app/auth-callback` eklendi ve kaydedildi. Mevcut iki şifre sıfırlama adresi korundu.
+- Apple kişisel ekibi `689ZS375S5` altında `com.enescevik.gina` uygulamasında Sign in with Apple yeteneğinin zaten açık olduğu doğrulandı. `com.enescevik.gina.web` Services ID, Supabase alan adı/dönüş adresiyle kaydedildi. Yalnız Sign in with Apple yetkili `GINA Sign In` anahtarı oluşturuldu; anahtar kimliği `3SQWKXHAUJ`. Supabase sağlayıcısı etkin, Client IDs sırası `com.enescevik.gina.web,com.enescevik.gina`. Özel `.p8` dosyası repo dışında `/Users/enes/.config/gina/auth/AuthKey_3SQWKXHAUJ.p8` konumunda, dosya izni `0600`. Sunucu gizlisinin imzası yerelde doğrulandı; son geçerlilik tarihi **1 Mayıs 2027 04:24:42 UTC**. Bu tarihten önce aynı özel anahtarla yeni sunucu gizlisi üretilip Supabase’e kaydedilmeli; otomatik yenileme kurulmadı.
+- Canlı sağlayıcı kayıtları kaydedildi ve panelde ikisi de Enabled olarak doğrulandı. Supabase başlangıç adresinden Google hesap seçiciye ve Apple’ın “GINA Aile Web” giriş ekranına yönlendirme başarılı. Bu kontrol kullanıcı onayını, token değişimini, yeni hesap açılmasını veya uygulamaya dönüşü sınamaz; gerçek iPhone testi henüz yapılmadı. Canlı Expo web adresi hâlâ eski giriş ekranını gösteriyor; yeni web dağıtımı ve TestFlight derlemesi başlatılmadı.
+- Kullanıcı GINA alan adı ve e-posta gönderim hizmetinin olmadığını bildirdi. Supabase FREE projesinde özel SMTP kapalı. Mevcut panel, e-posta şablonunu düzenlemek için özel SMTP veya ücretli plan istiyor; varsayılan Magic Link şablonu kod değil bağlantı gösteriyor. SMTP/gönderici kurulmadan kodla yeniden doğrulama tamamlandı sayılamaz. Bu çalışma ücretli abonelik veya alan adı satın almadı.
+
 ### 1. AI anahtarı
 
 1. Anthropic Console’da sohbette paylaşılan anahtarı iptal edip yeni bir **API** anahtarı oluşturun. Claude sohbet aboneliği ile API kullanım bakiyesi ayrıdır.
@@ -39,7 +47,7 @@ Bu paket TestFlight 12’den sonraki çalışmadır. PR #42 (`91ea2c5`) main’e
 ### 3. Apple ile giriş
 
 1. Apple Developer → Identifiers → `com.enescevik.gina`: **Sign in with Apple** yeteneğini etkinleştirin. Uygulama yapılandırması bu yeteneği talep ediyor; yeni imzalı derleme gerekli.
-2. Web/Android tarayıcı girişi için uygulamaya bağlı bir Services ID oluşturun. Önerilen kimlik: `com.enescevik.gina.web` (henüz oluşturulmuş olduğu varsayılmıyor).
+2. Web/Android tarayıcı girişi için oluşturulan `com.enescevik.gina.web` Services ID kaydını kullanın; aynı kimliği yeniden oluşturmayın.
 3. Services ID için alan adı `wixjxlxgyhgdacadsawo.supabase.co`, dönüş adresi `https://wixjxlxgyhgdacadsawo.supabase.co/auth/v1/callback`.
 4. Sign in with Apple yetkili anahtarı güvenle saklayın; Supabase Apple sağlayıcısının istediği sunucu gizlisini bu anahtarla oluşturup doğrudan Supabase’e kaydedin. App Store Connect yükleme anahtarıyla karıştırmayın.
 5. Client IDs listesinde **Services ID önce**, `com.enescevik.gina` sonra yer almalı. Web akışı ilk kimliği kullanır; yerel iOS akışı bundle kimliğini kabul eder.
