@@ -1609,6 +1609,9 @@
   "group.errors.group_full": "This practice is at participant capacity.",
   "group.errors.plan_limit_prova_exams": "Your monthly exam allowance is used up.",
   "unified.groupHelp": "Shared questions at the same level, parent-controlled entries and private topic reviews.",
-  "prova.ai.errors.group_not_open": "This group practice is not open.",
-  "prova.ai.errors.group_answer_closed": "The response window has ended."
+  "prova.ai.errors.group_not_open": "This group practice has not started or has ended. You can return to the practice list.",
+  "prova.ai.errors.group_answer_closed": "This group practice has ended or was cancelled. New answers cannot be saved.",
+  "prova.ai.errors.answer_changed": "This answer changed on another screen. Keep a copy of your unsaved text, leave and reopen the practice to review the current answer. The older write did not overwrite it.",
+  "prova.ai.errors.attempt_closed": "This practice is already complete. Return to the list to view the result.",
+  "prova.ai.errors.time_up": "Time is up. Answers saved within the time limit will be reviewed."
 }

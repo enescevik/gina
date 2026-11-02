@@ -81,3 +81,14 @@ Son kontrol: 28 SQL dosyasında 504 kontrol, 46 Edge testi ve 25 core testi geç
 - Sıralama ortak pencere sonunda açılır; doğru sayısı eşitse aynı sıradır, hız avantajı yoktur. İlk 50 ve ailenin kendi sonucu görünür. Gerçek ad/çocuk kimliği paylaşılmaz. Konu düzeyindeki doğru/boş bilgisi yalnız ilgili veliye açılır; birkaç sorudan genel yeterlilik sonucu çıkarılmaz. Ayrıntılı soru/AI incelemesine geçiş vardır.
 - Mobil katılım 390×844, sonuç 1280×800 ve backoffice hak formu sentetik web verileriyle incelendi. Önizlemeler `previews/group-*-fixture.png`; gerçek cihaz, gerçek sınav/AI sağlayıcısı ve bildirim teslimi testi değildir.
 - Son doğrulama: 29 SQL dosyasında 552 kontrol; mobil/backoffice lint ve tip denetimi, backoffice üretim derlemesi geçti. Üretime dağıtılmadı. Önceki bölümdeki toplu prova “henüz tamamlanmadı” ifadesi bu eklemeyle ilk uygulama düzeyinde ilerledi; üretim kabulü henüz yapılmadı.
+
+
+## Cevap gecikmesi ve kayıt güvenliği — ikinci kontrol
+
+- Cevap yazımı sunucuda revizyon + istek makbuzu kullanıyor. Kayıp yanıt yeniden denenirken aynı istek önce uzlaştırılır; geç gelen eski yanıt yeni cevabı ezemez. Başka ekrandan değişmiş cevaba eski istemci yazısı açık `answer_changed` hatası verir. Eski uygulamanın yazıları da revizyonu artırır.
+- Cevap isteğinde 20 saniyelik ulaşım sınırı var; bu, sunucudaki işlemin geri alındığı varsayımı değildir. Tekrar, aynı makbuzla yapılır. Süreç belirsizken yeni yerel cevap eski isteği atlayamaz.
+- Açık uçlu yanıt yazarken 400 ms düzenleme toplama, bitirirken hemen boşaltma; çıkışta kuyruktaki gönderilmemiş cevapları bırakma eklendi. Devam eden ağ isteğinin geri alınacağı vaat edilmez. Kayıt hatası başka sorudayken de yeniden deneme görünür.
+- 5 saniyelik sentetik kayıt gecikmesinde seçim + sonraki soru + ekran gözlemi 321 ms içinde tamamlandı; ekranda ikinci soru ve “kaydediliyor” birlikte görüldü. Yazılı cevap sonunda “kaydedildi” durumuna geçti. Bu araçla ölçülen web akışı süresidir, fiziksel iPhone gecikme ölçümü veya üretim performans iddiası değildir. Kanıt: `previews/answer-next-slow-network-phone-fixture.png`.
+- Dekoratif SVG düğme zeminindeki `accessible=false` web DOM uyarısı giderildi; native erişilebilirlik ve web `aria-hidden` ayrı ele alındı.
+- Veritabanı lintindeki rastgele soru seçimi `STABLE` işaretlemesi `VOLATILE` düzeltildi; program/toplu prova boş dizi ilklemeleri açık türle tanımlandı. İzole DB public şema lintinde hata/uyarı kalmadı.
+- 30 SQL dosyasında 567 kontrol, 30 core testi geçti; mobil lint/tip denetimi geçti. Bağımlılık taramasındaki önceden kayıtlı Expo CLI Zod/deepmerge/minimatch/glob bulguları sürüyor. Gerçek cihaz/üretim ve diğer açık iş paketleri tamamlanmış sayılmıyor.

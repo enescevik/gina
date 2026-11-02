@@ -1609,6 +1609,9 @@
   "group.errors.group_full": "Bu provanın katılımcı kapasitesi doldu.",
   "group.errors.plan_limit_prova_exams": "Bu ayki deneme hakkın doldu.",
   "unified.groupHelp": "Aynı düzeyde ortak sorular, veli kontrollü katılım ve özel konu değerlendirmesi.",
-  "prova.ai.errors.group_not_open": "Bu ortak provanın katılım süresi açık değil.",
-  "prova.ai.errors.group_answer_closed": "Bu provanın yanıt süresi sona erdi."
+  "prova.ai.errors.group_not_open": "Bu ortak provanın katılım zamanı sona ermiş veya henüz başlamamış. Prova listesine dönebilirsin.",
+  "prova.ai.errors.group_answer_closed": "Bu ortak prova sona ermiş veya iptal edilmiş. Yeni cevap kaydedilemiyor.",
+  "prova.ai.errors.answer_changed": "Bu cevap başka bir ekranda değişmiş. Kaydedilmemiş metnini not alıp denemeden çık; yeniden açarak güncel cevabı kontrol et. Eski kayıt yeni cevabın üzerine yazılmadı.",
+  "prova.ai.errors.attempt_closed": "Bu prova tamamlanmış. Prova listesine dönerek sonucunu görebilirsin.",
+  "prova.ai.errors.time_up": "Süre bitti. Süre içinde kaydedilen cevaplar değerlendirilecek."
 }

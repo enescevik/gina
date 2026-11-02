@@ -1,4 +1,5 @@
 // Generated from the migrated audit database. admin_save_contribution_reward.p_plan accepts SQL NULL for non-plan rewards.
+
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export type Database = {
@@ -655,14 +656,14 @@ isOneToOne: false
                   ]
                 },"exam_answers": {
                   Row: {
-                    "ai_details": Json | null,"ai_feedback": string | null,"ai_score": number | null,"answer_key": string | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"feedback": string | null,"graded_at": string | null,"graded_by": string | null,"is_correct": boolean | null,"question_id": string,"score": number | null
+                    "ai_details": Json | null,"ai_feedback": string | null,"ai_score": number | null,"answer_key": string | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"edit_revision": number,"feedback": string | null,"graded_at": string | null,"graded_by": string | null,"is_correct": boolean | null,"question_id": string,"score": number | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id": string,"score"?: number | null
+                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id": string,"score"?: number | null
                   }
                   Update: {
-                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id"?: string,"score"?: number | null
+                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id"?: string,"score"?: number | null
                   }
                   Relationships: [
                     {
@@ -2186,6 +2187,11 @@ isOneToOne: false
               "answer_key": string,"answer_text": string,"question_id": string
             }[]
                            },
+"get_saved_exam_answers_v2":
+{ Args: { "p_attempt_id": string }; Returns: {
+              "answer_key": string,"answer_text": string,"question_id": string,"revision": number
+            }[]
+                           },
 "get_setup_ai_entitlement":
 { Args: { "p_family_id"?: string }; Returns: Json
                            },
@@ -2463,6 +2469,9 @@ isOneToOne: false
       } },
 "submit_exam_answer":
 { Args: { "p_answer_key"?: string,"p_answer_text"?: string,"p_attempt_id": string,"p_question_id": string }; Returns: undefined
+                           },
+"submit_exam_answer_once":
+{ Args: { "p_answer_key"?: string,"p_answer_text"?: string,"p_attempt_id": string,"p_expected_revision": number,"p_question_id": string,"p_request_id": string }; Returns: number
                            },
 "submit_question_contribution":
 { Args: { "p_no_personal_data": boolean,"p_question_id": string,"p_request_id": string,"p_rights_confirmed": boolean }; Returns: string

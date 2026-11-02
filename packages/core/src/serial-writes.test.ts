@@ -62,3 +62,32 @@ describe("SerialWrites", () => {
     expect(calls).toBe(1);
   });
 });
+
+it("flush saves debounced text immediately and cancels the scheduled send", async () => {
+  const saved: string[] = [], scheduled: { task: () => void; cancelled: boolean }[] = [];
+  const queue = new SerialWrites<string, string>(async (_, v) => { saved.push(v); }, () => {}, task => {
+    const job = { task, cancelled: false }; scheduled.push(job); return () => { job.cancelled = true; };
+  });
+  queue.enqueue("q", "a", 400); queue.enqueue("q", "abc", 400);
+  expect(saved).toEqual([]); expect(scheduled[0]?.cancelled).toBe(true);
+  await queue.flush(); expect(saved).toEqual(["abc"]);
+  expect(scheduled.every(job => job.cancelled)).toBe(true);
+});
+it("discard clears queued work even if an in-flight request later fails", async () => {
+  const gate = deferred();
+  const saved: string[] = [];
+  const queue = new SerialWrites<string, string>(async (_, v) => {
+    saved.push(v);
+    await gate.promise;
+    throw Error("offline");
+  });
+  queue.enqueue("q", "a");
+  await Promise.resolve();
+  queue.enqueue("q", "b");
+  queue.cancelPending();
+  gate.resolve();
+  await queue.flush();
+  expect(queue.busy).toBe(false);
+  expect(queue.error).toBe(null);
+  expect(saved).toEqual(["a"]);
+});

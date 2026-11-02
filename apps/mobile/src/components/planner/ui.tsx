@@ -1,6 +1,7 @@
 import { useId, type ReactNode } from "react";
 import {
   ActivityIndicator,
+  Platform,
   Image,
   StyleSheet,
   Text,
@@ -64,7 +65,7 @@ export function SatinButton({
     >
       {!secondary && !disabled ? (
         <View pointerEvents="none" style={StyleSheet.absoluteFill}>
-          <Svg accessible={false} width="100%" height="100%">
+          <Svg accessible={Platform.OS === "web" ? undefined : false} aria-hidden width="100%" height="100%">
             <Defs>
               <LinearGradient id={id} x1="0" y1="0" x2="0" y2="1">
                 <Stop offset="0" stopColor="#8A64FF" />

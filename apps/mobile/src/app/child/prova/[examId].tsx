@@ -1,5 +1,6 @@
+import { randomUUID } from "expo-crypto";
 import { QuestionMedia } from "@/components/learning/question-media";
-import { SerialWrites } from "@gina/core";
+import { AnswerReceipts, SerialWrites } from "@gina/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams, useFocusEffect, usePreventRemove } from "expo-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -14,7 +15,7 @@ import { ChildScreen as Screen } from "@/components/room/child-screen";
 import { useChildMode } from "@/lib/child-mode";
 import { supabase } from "@/lib/supabase";
 
-type Answer = { key?: string; text?: string };
+type Answer = { key?: string; text?: string; revision?: number };
 
 interface Choice {
   key: string;
@@ -65,9 +66,9 @@ export default function TakeExamScreen() {
     queryKey: ["attempt_saved_answers", attempt.data?.id],
     enabled: !!attempt.data?.id,
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_saved_exam_answers", { p_attempt_id: attempt.data?.id ?? "" });
+      const { data, error } = await supabase.rpc("get_saved_exam_answers_v2", { p_attempt_id: attempt.data?.id ?? "" });
       if (error) throw error;
-      return Object.fromEntries(data.map(row => [row.question_id, { key: row.answer_key ?? undefined, text: row.answer_text ?? undefined }])) as Record<string, Answer>;
+      return Object.fromEntries(data.map(row => [row.question_id, { key: row.answer_key ?? undefined, text: row.answer_text ?? undefined, revision: row.revision }])) as Record<string, Answer>;
     },
   });
   const answers: Record<string, Answer> = { ...savedAnswers.data, ...drafts };
@@ -102,16 +103,31 @@ export default function TakeExamScreen() {
 
   const [, renderWrites] = useState(0);
   const attemptId = attempt.data?.id;
-  const writes = useMemo(() => new SerialWrites<string, Answer>(async (questionId, answer) => {
-    if (!attemptId) throw new Error("attempt_not_found");
-    const { error } = await supabase.rpc("submit_exam_answer", {
-      p_attempt_id: attemptId, p_question_id: questionId,
-      p_answer_key: answer.key ?? undefined, p_answer_text: answer.text ?? undefined,
-    });
-    if (error) throw error;
-    queryClient.setQueryData<Record<string, Answer>>(["attempt_saved_answers", attemptId],
-      previous => ({ ...previous, [questionId]: answer }));
-  }, () => renderWrites(n => n + 1)), [attemptId, queryClient]);
+  const writes = useMemo(() => {
+    const receipts = new AnswerReceipts(async (questionId, receipt) => {
+      if (!attemptId) throw new Error("attempt_not_found");
+      const abort = new AbortController();
+      const timer = setTimeout(() => abort.abort(), 20_000);
+      try {
+        const { data, error } = await supabase.rpc("submit_exam_answer_once", {
+          p_request_id: receipt.id, p_attempt_id: attemptId, p_question_id: questionId,
+          p_expected_revision: receipt.revision,
+          p_answer_key: receipt.answer.key, p_answer_text: receipt.answer.text,
+        }).abortSignal(abort.signal);
+        if (error) throw error;
+        return data;
+      } finally { clearTimeout(timer); }
+    }, (questionId, answer, revision) => {
+      queryClient.setQueryData<Record<string, Answer>>(["attempt_saved_answers", attemptId],
+        previous => ({ ...previous, [questionId]: { ...answer, revision } }));
+    }, questionId => queryClient.getQueryData<Record<string, Answer>>(["attempt_saved_answers", attemptId])?.[questionId]?.revision ?? 0, randomUUID);
+    return new SerialWrites<string, Answer>((questionId, answer) => receipts.write(questionId, answer),
+      () => {}, (task, delay) => { const timer = setTimeout(task, delay); return () => clearTimeout(timer); });
+  }, [attemptId, queryClient]);
+  useEffect(() => {
+    const unsubscribe = writes.observe(() => renderWrites(n => n + 1));
+    return () => { unsubscribe(); writes.cancelPending(); };
+  }, [writes]);
   const saving = writes.busy;
 
   const finish = useMutation({
@@ -151,10 +167,10 @@ export default function TakeExamScreen() {
   }, [timeUp, saving, finish, result, attempt.data]);
 
   function editAnswer(answer: Answer) {
-    if (!q || timeUp || result) return;
+    if (!q || timeUp || result || !savedAnswers.isSuccess) return;
     setConfirmFinish(false);
     setDrafts(previous => ({ ...previous, [q.id]: answer }));
-    writes.enqueue(q.id, answer);
+    writes.enqueue(q.id, answer, q.kind === "multiple_choice" ? 0 : 400);
   }
 
   if (result) {
@@ -208,7 +224,7 @@ export default function TakeExamScreen() {
                     accessibilityLabel={`${choice.key}, ${choice.text}`}
                     accessibilityState={{ checked: selected, selected }}
                     aria-checked={selected}
-                    disabled={timeUp || finish.isPending}
+                    disabled={timeUp || finish.isPending || !savedAnswers.isSuccess}
                     onPress={() => editAnswer({ key: choice.key })}
                     className={`min-h-14 flex-row items-center gap-3 rounded-child border-2 px-4 py-3 ${selected ? "border-teal-dark bg-teal-dark" : "border-mist bg-white"}`}
                   >
@@ -224,7 +240,7 @@ export default function TakeExamScreen() {
               multiline
               accessibilityLabel={t("prova.answerLabel")}
               value={current?.text ?? ""}
-              editable={!timeUp && !finish.isPending}
+              editable={!timeUp && !finish.isPending && savedAnswers.isSuccess}
               onChangeText={text => editAnswer({ text })}
               placeholder={t("prova.writeAnswer")}
               placeholderTextColor="#9CA3AF"
@@ -243,7 +259,7 @@ export default function TakeExamScreen() {
                 variant="secondary"
                 size="child"
                 title={t("prova.goToUnanswered")}
-                disabled={timeUp || finish.isPending} onPress={() => goTo(list.findIndex((item) => item.id === unanswered[0]?.id))}
+                disabled={timeUp || finish.isPending || !savedAnswers.isSuccess} onPress={() => goTo(list.findIndex((item) => item.id === unanswered[0]?.id))}
               />
             </View>
             <View className="flex-1">
@@ -255,11 +271,11 @@ export default function TakeExamScreen() {
       <Text accessibilityLiveRegion="polite" className="font-body text-sm text-gray-600">{timeUp ? t("provaV5.timeEnded") : writes.error ? t("provaV5.saveFailed") : dirty || saving ? t("provaV5.savingAnswer") : t("provaV5.answerSaved")}</Text>
       <ErrorText error={attempt.error ?? questions.error ?? savedAnswers.error ?? writes.error ?? finish.error} />
       {attempt.error || questions.error || savedAnswers.error ? <Button title={t("common.retry")} onPress={() => { void attempt.refetch(); if (attempt.data) { void questions.refetch(); void savedAnswers.refetch(); } }} /> : null}
-      {writes.error && !timeUp && q && current ? <Button title={t("common.retry")} onPress={() => { void writes.retry().catch(() => undefined); }} /> : null}
+      {writes.error && !timeUp ? <Button title={t("common.retry")} onPress={() => { void writes.retry().catch(() => undefined); }} /> : null}
       {leaveAction ? <View className="gap-3 rounded-child bg-coral-light p-4">
         <Text className="font-body-bold text-base text-ink">{t("provaV5.unsaved")}</Text>
         <Button title={t("provaV5.keepWorking")} onPress={() => setLeaveAction(null)} />
-        <Button variant="ghost" title={t("provaV5.discard")} onPress={() => { setAllowExit(true); leaveAction(); }} />
+        <Button variant="ghost" title={t("provaV5.discard")} onPress={() => { writes.cancelPending(); setAllowExit(true); leaveAction(); }} />
       </View> : null}
       {timeUp && finish.error ? <Button title={t("common.retry")} loading={finish.isPending} onPress={() => finish.mutate()} /> : null}
       <View className="flex-row gap-2">

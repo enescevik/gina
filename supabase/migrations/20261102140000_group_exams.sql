@@ -81,7 +81,7 @@ begin perform gina.assert_admin();if length(trim(coalesce(p_reason,'')))<10 then
 end;$$;
 create function public.enroll_group_exam(p_group uuid,p_child uuid,p_ranking boolean,p_consent boolean)
 returns uuid language plpgsql security definer set search_path='' as $$
-declare f uuid:=gina.family_id();g public.group_exams;e public.group_exam_entries;pl public.plans;ids uuid[]:='{}';qid uuid;x record;eid uuid:=gen_random_uuid();entry_id uuid:=gen_random_uuid();
+declare f uuid:=gina.family_id();g public.group_exams;e public.group_exam_entries;pl public.plans;ids uuid[]:=array[]::uuid[];qid uuid;x record;eid uuid:=gen_random_uuid();entry_id uuid:=gen_random_uuid();
 begin
  if not gina.is_parent() or f is null then raise exception 'forbidden' using errcode='42501';end if;
  if p_consent is distinct from true or p_ranking is null then raise exception 'group_consent_required';end if;
@@ -238,4 +238,3 @@ grant execute on function public.settle_group_attempts() to service_role;
 revoke all on function public.admin_create_group_exam(uuid,uuid,text,uuid[],timestamptz,timestamptz,int,public.plan_code[]),public.admin_group_exams(),public.admin_group_policy(boolean,jsonb),public.admin_cancel_group_exam(uuid,text),public.enroll_group_exam(uuid,uuid,boolean,boolean),public.set_group_ranking_consent(uuid,uuid,boolean),public.get_group_exams(),public.get_group_result(uuid,uuid) from public,anon;
 grant execute on function public.admin_create_group_exam(uuid,uuid,text,uuid[],timestamptz,timestamptz,int,public.plan_code[]),public.admin_group_exams(),public.admin_group_policy(boolean,jsonb),public.admin_cancel_group_exam(uuid,text),public.enroll_group_exam(uuid,uuid,boolean,boolean),public.set_group_ranking_consent(uuid,uuid,boolean),public.get_group_exams(),public.get_group_result(uuid,uuid) to authenticated;
 do $$begin perform cron.schedule('settle-group-attempts','*/5 * * * *','select public.settle_group_attempts()');exception when invalid_schema_name or undefined_function then raise notice 'group settlement cron must be provisioned';end;$$;
-

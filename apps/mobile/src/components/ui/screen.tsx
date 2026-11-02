@@ -31,7 +31,8 @@ export function ErrorText({ error }: { error: unknown }) {
   const message = detail.message ?? String(error);
   let copy: string;
   if (i18n.exists(`prova.ai.errors.${detail.code ?? message}`)) copy = t(`prova.ai.errors.${detail.code ?? message}`);
-  else if (/network|fetch|connection|timeout/i.test(message)) copy = t("release.networkError");
+  else if (i18n.exists(`prova.ai.errors.${message}`)) copy = t(`prova.ai.errors.${message}`);
+  else if (/network|fetch|connection|timeout|abort/i.test(message)) copy = t("release.networkError");
   else if (/invalid.login.credentials|invalid_credentials/i.test(message + detail.code)) copy = t("auth.invalidLogin");
   else if (/pin_locked/.test(message)) copy = t("release.pinLocked");
   else if (/rate.limit|too.many|over_email_send_rate_limit/i.test(message + detail.code)) copy = t("unified.errorRate");
