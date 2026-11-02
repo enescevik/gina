@@ -77,6 +77,10 @@ select is((select coalesce(score::text,'null') from public.exam_answers where at
 select is((select answer_key from public.exam_answers where attempt_id=current_setting('test.mc_attempt')::uuid),'A','MC answer remains unchanged');
 select is(jsonb_array_length(public.get_child_answer_reviews(current_setting('test.mc_attempt')::uuid)),1,'MC published feedback visible');
 select ok(not has_table_privilege('authenticated','public.answer_review_consents','INSERT'),'client cannot forge durable AI consent');
+select public.save_answer_review(gen_random_uuid(),current_setting('test.mc_attempt')::uuid,'30000000-0000-4000-8000-000000003005',(public.get_answer_review(current_setting('test.mc_attempt')::uuid,'30000000-0000-4000-8000-000000003005')->>'revision')::int,current_setting('test.mc_hash'),null,'Feedback without ink','{"version":1,"width":1000,"height":1400,"elements":[]}');
+select is(public.get_child_answer_reviews(current_setting('test.mc_attempt')::uuid)->0->'document','null'::jsonb,'text-only feedback never renders an empty notebook');
+select public.save_answer_review(gen_random_uuid(),current_setting('test.mc_attempt')::uuid,'30000000-0000-4000-8000-000000003005',(public.get_answer_review(current_setting('test.mc_attempt')::uuid,'30000000-0000-4000-8000-000000003005')->>'revision')::int,current_setting('test.mc_hash'),null,'','{"version":1,"width":1000,"height":1400,"elements":[]}');
+select is(public.get_child_answer_reviews(current_setting('test.mc_attempt')::uuid),'[]'::jsonb,'empty review never shows a blank feedback card');
 reset role;
 insert into public.library_collections(id,title,grade,subject,curriculum_version,status) values('40000000-0000-4000-8000-000000003006','Review embargo test',5,'Fen','test','published');
 insert into public.group_exams(id,title,collection_id,grade,subject,curriculum_version,creation_intent,version_hash,starts_at,ends_at,duration_minutes,plans) values('60000000-0000-4000-8000-000000003006','Review embargo test','40000000-0000-4000-8000-000000003006',5,'Fen','test','{}','test',now()-interval '1 hour',now()+interval '1 hour',30,array['free']::public.plan_code[]);
