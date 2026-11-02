@@ -13,6 +13,18 @@
   },
   "checksums": {
     "resvg-2.6.2.wasm": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70",
-    "Nunito-SemiBold.ttf": "c7fd194467c320db02afd5ebf09262ff900ab6065c61fc2eaa300f0236a48a74"
+    "Nunito-SemiBold.ttf": "c7fd194467c320db02afd5ebf09262ff900ab6065c61fc2eaa300f0236a48a74",
+    "NotoSansMath-Regular.ttf": "3f495fe933c06786e4d5f6d86b8ee70b6753a68ee3b9d87528726de0f6e2c47d",
+    "NotoSansMath-OFL.txt": "403a95275b469061b7d4371c328e0ada3bc7d63328abe2e88aad5cd243b2fe21",
+    "font-coverage.json": "2d6a9d9979d9413e4e7dfb49cca2cbb31899d0876396dc40396e1c2b706ac94a"
+  },
+  "math_font": {
+    "source": "https://raw.githubusercontent.com/google/fonts/823468bd7825152bce2b8fd2cf740432ad2fce8d/ofl/notosansmath/NotoSansMath-Regular.ttf",
+    "license": "OFL-1.1",
+    "modified": false
+  },
+  "font_coverage": {
+    "source": "Union of bundled fonts Unicode cmap entries, generated with fontTools",
+    "purpose": "Reject unsupported characters instead of silently omitting them in AI input"
   }
 }

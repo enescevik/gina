@@ -1,0 +1,52 @@
+{
+  "checks": {
+    "live_png_ai_readable": true,
+    "ai_notices_wrong_sum": true,
+    "same_suggestion_no_second_charge": true,
+    "ai_does_not_write_parent_score": true,
+    "original_and_parent_layer_preserved": true,
+    "rendered_png_hash_persisted": true,
+    "one_paid_job": true,
+    "consent_persisted": true,
+    "save_retry_same_revision": true,
+    "published_feedback": true
+  },
+  "cleanup": {
+    "storage_removed": true,
+    "user_removed": true,
+    "family_removed": true,
+    "sources.enabled": true,
+    "question_groups.enabled": true,
+    "review_ai.enabled": true,
+    "flag_values_restored_after_test": true
+  },
+  "suggestionScore": 35,
+  "time": "2026-11-02T20:23:00.758Z",
+  "scope": "One synthetic family, question image and intentionally incorrect notebook; real deployed Edge/Storage/Anthropic. No existing family content sent.",
+  "later_rollout": "sources.enabled, question_groups.enabled and review_ai.enabled enabled after successful check",
+  "math_font_deployment_check": {
+    "checks": {
+      "live_png_ai_readable": true,
+      "ai_notices_wrong_sum": true,
+      "same_suggestion_no_second_charge": true,
+      "ai_does_not_write_parent_score": true,
+      "original_and_parent_layer_preserved": true,
+      "rendered_png_hash_persisted": true,
+      "one_paid_job": true,
+      "consent_persisted": true,
+      "save_retry_same_revision": true,
+      "published_feedback": true
+    },
+    "cleanup": {
+      "storage_removed": true,
+      "user_removed": true,
+      "family_removed": true,
+      "sources.enabled": true,
+      "question_groups.enabled": true,
+      "review_ai.enabled": true
+    },
+    "suggestionScore": 30,
+    "time": "2026-11-02T20:58:13.796Z",
+    "scope": "Server math-font deployment: synthetic notebook includes ∠ABC = 90° and AB ⊥ BC. All ten real Edge/Storage/AI checks passed; test-only data removed and original flags restored."
+  }
+}

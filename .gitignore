@@ -51,3 +51,8 @@ coverage/
 # Firebase/FCM istemci dosyası EAS secret olarak verilir, repoya girmez
 apps/mobile/google-services.json
 apps/mobile/GoogleService-Info.plist
+
+# Local signing credentials and device installation artifacts
+.codex-setup/
+apps/mobile/credentials.json
+apps/mobile/credentials/

@@ -67,3 +67,8 @@ packages/assets/rooms/mint-home/layered-v1/*
 !packages/assets/rooms/mint-home/layered-v1/approved-original.png
 packages/assets/rooms/mint-home/gina-first-control-v1-NOT-APPROVED.zip
 packages/assets/rooms/mint-home/source-audit.json
+
+# Local signing credentials and device installation artifacts
+.codex-setup/
+apps/mobile/credentials.json
+apps/mobile/credentials/
