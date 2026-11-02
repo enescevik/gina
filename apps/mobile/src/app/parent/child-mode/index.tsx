@@ -17,7 +17,7 @@ import { supabase } from "@/lib/supabase";
 export default function ChildModeEntryScreen() {
   const { t } = useTranslation();
   const { enter } = useChildMode();
-  const [selected, setSelected] = useState<{ id: string; name: string } | null>(null);
+  const [chosen, setSelected] = useState<{ id: string; name: string } | null>(null);
   const [pin, setPin] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -39,6 +39,8 @@ export default function ChildModeEntryScreen() {
       return data;
     },
   });
+
+  const selected = chosen ?? (children.data?.length === 1 ? children.data[0] : null);
 
   async function submit() {
     if (busy || !selected || !/^\d{4}$/.test(pin)) return;
@@ -94,7 +96,7 @@ export default function ChildModeEntryScreen() {
           <InfoCard title={t("unified.pinHelpTitle")} body={t("unified.childPinInstruction")}/>
           <Field label={t("childV5.pinLabel")} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} className="text-center text-3xl tracking-widest" />
           <Button size="child" title={t("unified.enterMyWorld")} loading={busy} disabled={pin.length !== 4} onPress={submit} />
-          <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => { setSelected(null); setPin(""); setError(null); }} />
+          <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => { if (children.data?.length === 1) router.back(); else setSelected(null); setPin(""); setError(null); }} />
         </>
       )}
       <ErrorText error={error ?? children.error ?? parentPinSet.error} />

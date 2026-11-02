@@ -1,3 +1,4 @@
+import { BetaPlans } from "@/components/setup/beta-plans";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -166,6 +167,7 @@ export default function SubscriptionScreen() {
 
   return (
     <Screen title={t("subscription.title")} subtitle={t("accountV5.subscriptionBody")} loading={plans.isLoading || entitlement.isLoading || storeSub.isLoading} error={plans.error ?? entitlement.error ?? storeSub.error ?? planProducts.error} onRetry={() => { void plans.refetch(); void entitlement.refetch(); void storeSub.refetch(); void planProducts.refetch(); }}>
+      <BetaPlans/>
       {canManage && !LEGAL_BASE_URL ? <Text style={parentStyles.copy}>{t("accountV5.purchaseNotReady")}</Text> : null}
       {entitlement.data?.source === "comp" ? (
         <Text className="font-body rounded-parent bg-star/20 p-3 text-base text-ink">{t("subscription.compNote")}</Text>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -10,7 +10,7 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   ArrowLeft,
   Bell,
@@ -35,13 +35,16 @@ import { TaskForm } from "./task-form";
 import { TaskTile, StarReward } from "./task-visuals";
 export function TasksScreen() {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const wide = width >= 900;
   const { claims } = useSession();
   const familyId = claims?.family_id ?? "";
   const timeZone = useFamilyTimezone();
   const cache = useQueryClient();
-  const [childId, setChildId] = useState<string | null>(null);
+  const params = useLocalSearchParams<{ childId?: string; create?: string }>();
+  const [childId, setChildId] = useState<string | null>(params.childId ?? null);
+  const [initialCreate, setInitialCreate] = useState(params.create === "1");
   const [paused, setPaused] = useState(false);
   const [creating, setCreating] = useState<PlannerChild | null>(null);
   const [notice, setNotice] = useState("");
@@ -141,7 +144,7 @@ export function TasksScreen() {
     },
   ];
   return (
-    <SafeAreaView style={u.root}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={u.root}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
@@ -202,7 +205,7 @@ export function TasksScreen() {
               </View>
             </View>
           </View>
-          <View style={wide ? { width: 340 } : {}}>
+          {(children.data?.length ?? 0) > 1 && <View style={wide ? { width: 340 } : {}}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={u.row}>
                 {children.data?.map((c) => (
@@ -221,7 +224,7 @@ export function TasksScreen() {
                 ))}
               </View>
             </ScrollView>
-          </View>
+          </View>}
         </View>
         {busy ? (
           <ActivityIndicator
@@ -453,7 +456,8 @@ export function TasksScreen() {
       <View
         style={[
           u.footer,
-          { paddingVertical: 6, justifyContent: "space-around" },
+          { paddingBottom: Math.max(insets.bottom, 6) },
+          { paddingTop: 6, justifyContent: "space-around" },
         ]}
       >
         {nav.map(({ title, Icon, path }) => (
@@ -461,7 +465,7 @@ export function TasksScreen() {
             key={path}
             accessibilityRole="button"
             accessibilityLabel={title}
-            onPress={() => router.push(path)}
+            onPress={() => router.navigate(path)}
             style={{
               flex: 1,
               minHeight: 58,
@@ -475,14 +479,14 @@ export function TasksScreen() {
           </Pressable>
         ))}
       </View>
-      {creating ? (
+      {creating || (initialCreate && selected) ? (
         <TaskForm
-          child={creating}
+          child={creating ?? selected!}
           familyId={familyId}
           timeZone={timeZone}
-          onClose={() => setCreating(null)}
+          onClose={() => { setCreating(null); setInitialCreate(false); }}
           onCreated={() => {
-            setCreating(null);
+            setCreating(null); setInitialCreate(false);
             setPaused(false);
             setNotice(t("taskPremium.created"));
           }}

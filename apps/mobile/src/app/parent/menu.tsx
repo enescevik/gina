@@ -1,12 +1,14 @@
+import { IconButton } from "@/components/planner/ui";
+import { ChildSetup, type SetupChild } from "@/components/setup/child-setup";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
 
-import { Users, Tablet, ShieldCheck, UserRound, Bell, Share2, Crown, NotebookPen, GraduationCap } from "lucide-react-native";
-import { Avatar, CHILD_AVATAR_SLUGS } from "@/components/avatar";
+import { Users, Tablet, ShieldCheck, UserRound, Settings2, Pencil, Bell, Share2, Crown, NotebookPen, GraduationCap } from "lucide-react-native";
+import { Avatar } from "@/components/avatar";
 import { ConfirmAction } from "@/components/ui/confirm-action";
 import { AccountDeletion } from "@/components/account-deletion";
 import { Button } from "@/components/ui/button";
@@ -18,7 +20,7 @@ import { unregisterPush } from "@/lib/push";
 import { supabase } from "@/lib/supabase";
 
 /** Çocuk satırı: ad, sınıf ve 4 haneli PIN belirleme (set_child_pin RPC). */
-function ChildRow({ id, name, grade, avatar }: { id: string; name: string; grade: number | null; avatar: string | null }) {
+function ChildRow({ id, name, grade, avatar, onEdit }: { id: string; name: string; grade: number | null; avatar: string | null; onEdit: () => void }) {
   const { t } = useTranslation();
   const cache = useQueryClient();
   const [pin, setPin] = useState("");
@@ -36,8 +38,7 @@ function ChildRow({ id, name, grade, avatar }: { id: string; name: string; grade
     if (!data?.length) throw new Error(t("release.genericError"));
   }, onSuccess: () => cache.invalidateQueries() });
   return <View style={parentStyles.card}>
-    <View style={parentStyles.row}><Avatar slug={avatar} size={56} /><View className="flex-1 gap-1"><Text style={[parentStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{name}</Text>{grade !== null ? <Text style={parentStyles.muted}>{t("parent.gradeShort", { grade })}</Text> : null}</View></View>
-    <Button variant="secondary" title={t("mintRelease.childSettings")} accessibilityState={{expanded:settingsOpen}} onPress={() => setSettingsOpen(!settingsOpen)} />
+    <View style={parentStyles.row}><Pressable accessibilityRole="button" accessibilityLabel={t("betaUx.editChild")} onPress={onEdit} style={[parentStyles.row, {flex:1}]}><Avatar slug={avatar} size={56}/><View style={{flex:1,gap:3}}><Text style={[parentStyles.copy,{fontFamily:"Nunito_700Bold"}]}>{name}</Text>{grade !== null && <Text style={parentStyles.muted}>{t("parent.gradeShort",{grade})}</Text>}</View><Pencil size={18} color="#6042DE"/></Pressable><IconButton label={t("mintRelease.childSettings")} onPress={() => setSettingsOpen(!settingsOpen)}><Settings2 size={23} color="#6042DE"/></IconButton></View>
     {settingsOpen ? <View style={{gap:12}}><Text style={parentStyles.muted}>{t("unified.childPinHelp")}</Text><Field label={t("parentV5.childPinLabel", { name })} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} />
     <Button variant="secondary" title={t("parent.savePin")} loading={setChildPin.isPending} disabled={pin.length !== 4 || remove.isPending} onPress={() => setChildPin.mutate()} />
     {setChildPin.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.muted}>{t("unified.pinSaved")}</Text> : null}
@@ -76,8 +77,7 @@ export default function ParentMenuScreen() {
   const queryClient = useQueryClient();
   const params = useLocalSearchParams<{section?:string}>();
   const [section,setSection] = useState(["family","devices","security","account"].includes(params.section ?? "") ? params.section! : "family");
-  const [childName, setChildName] = useState("");
-  const [childAvatar, setChildAvatar] = useState<string>(CHILD_AVATAR_SLUGS[0] ?? "avatar-default");
+  const [setup, setSetup] = useState<SetupChild | "new" | null>(null);
   const [pairCode, setPairCode] = useState("");
 
   const family = useQuery({
@@ -91,9 +91,9 @@ export default function ParentMenuScreen() {
   });
 
   const children = useQuery({
-    queryKey: ["children"],
+    queryKey: ["children_setup", familyId],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name, grade, avatar").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, grade, avatar, birth_year, gender, interests").order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -108,16 +108,6 @@ export default function ParentMenuScreen() {
     },
   });
 
-  const addChild = useMutation({
-    mutationFn: async (name: string) => {
-      const { error } = await supabase.from("children").insert({ family_id: familyId, name, avatar: childAvatar });
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      setChildName("");
-      void queryClient.invalidateQueries({ queryKey: ["children"] });
-    },
-  });
 
   const pairDevice = useMutation({
     mutationFn: async (code: string) => {
@@ -150,40 +140,19 @@ export default function ParentMenuScreen() {
         ["family","familyTab",Users],["devices","devicesTab",Tablet],["security","securityTab",ShieldCheck],["account","accountTab",UserRound],
       ] as const).map(([key,label,Icon])=><Pressable key={key} accessibilityRole="tab" accessibilityState={{selected:section===key}} onPress={()=>setSection(key)} style={{flexBasis:"46%",flexGrow:1,minHeight:60,padding:12,borderRadius:19,borderWidth:1,borderColor:section===key?"#78C7AE":"#E5DEED",backgroundColor:section===key?"#DDF5EB":"#FFF",flexDirection:"row",alignItems:"center",gap:10}}><Icon size={22} color="#6042DE"/><Text style={[parentStyles.copy,{fontFamily:"Nunito_800ExtraBold",flex:1}]}>{t(`unified.${label}`)}</Text></Pressable>)}</View>
       {section === "family" ? <>
-      <NavigationCard title={t("experience.family.title")} body={t("experience.family.short")} onPress={()=>router.push("/parent/families")}/>
-      <InfoCard title={t("unified.inviteTitle")} body={t("unified.inviteHelp")}>
-        <Text selectable accessibilityLabel={t("parent.inviteCode")} style={{fontFamily:"Nunito_800ExtraBold",fontSize:26,letterSpacing:3,color:"#201951"}}>{family.data?.invite_code ?? "…"}</Text>
-      </InfoCard>
-      <FormSection title={t("parent.addChild")} initiallyOpen={!children.data?.length}>
-        <Text style={parentStyles.muted}>{t("release.firstChildBody")}</Text>
-        <Field label={t("parent.childNamePlaceholder")} maxLength={80} value={childName} onChangeText={setChildName} placeholder={t("parent.childNamePlaceholder")} />
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View className="flex-row gap-2">
-            {CHILD_AVATAR_SLUGS.map((slug) => (
-              <Pressable
-                key={slug}
-                accessibilityRole="button" accessibilityLabel={t("parentV5.avatarLabel", { number: CHILD_AVATAR_SLUGS.indexOf(slug) + 1 })} accessibilityState={{ selected: childAvatar === slug }} aria-pressed={childAvatar === slug}
-                onPress={() => setChildAvatar(slug)}
-                className={`min-h-12 items-center justify-center rounded-full border-2 p-0.5 ${childAvatar === slug ? "border-teal" : "border-transparent"}`}
-              >
-                <Avatar slug={slug} size={44} />
-              </Pressable>
-            ))}
-          </View>
-        </ScrollView>
-        <Button title={t("parent.addChild")} loading={addChild.isPending} disabled={!childName.trim()} onPress={() => addChild.mutate(childName.trim())} />
-        {addChild.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.copy}>{t("unified.childAdded")}</Text> : null}
-        <ErrorText error={addChild.error} />
-      </FormSection>
+      <NavigationCard title={t("parent.addChild")} body={t("betaUx.addChildBody")} icon={<Users size={24} color="#6042DE"/>} onPress={() => setSetup("new")}/>
+      {setup && <ChildSetup child={setup === "new" ? undefined : setup} onClose={() => setSetup(null)} onSaved={() => setSetup(null)}/>}
+
 
       <View style={{gap:12}}>
         <Text style={parentStyles.title}>{t("parent.children")}</Text><Text style={parentStyles.muted}>{t("unified.childrenHelp")}</Text>
         {children.data?.map((child) => (
-          <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} avatar={child.avatar} />
+          <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} avatar={child.avatar} onEdit={() => setSetup(child)} />
         ))}
 
       </View>
 
+      <FormSection title={t("unified.inviteTitle")}><Text style={parentStyles.muted}>{t("unified.inviteHelp")}</Text><Text selectable accessibilityLabel={t("parent.inviteCode")} style={{fontFamily:"Nunito_800ExtraBold",fontSize:26,letterSpacing:3,color:"#201951"}}>{family.data?.invite_code ?? "…"}</Text><NavigationCard title={t("experience.family.title")} body={t("experience.family.short")} onPress={()=>router.push("/parent/families")}/></FormSection>
       <NavigationCard title={t("parent.grades")} body={t("unified.gradesHelp")} icon={<GraduationCap size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/grades")}/>
       <NavigationCard title={t("parent.notes")} body={t("unified.notesHelp")} icon={<NotebookPen size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/notes")}/>
       </> : null}
@@ -211,7 +180,7 @@ export default function ParentMenuScreen() {
       <AccountDeletion />
       <Button variant="ghost" title={t("auth.signOut")} loading={signOut.isPending} onPress={() => signOut.mutate()} />
       </> : null}
-      <ErrorText error={family.error ?? children.error ?? devices.error ?? addChild.error ?? revokeDevice.error ?? signOut.error} />
+      <ErrorText error={family.error ?? children.error ?? devices.error ?? revokeDevice.error ?? signOut.error} />
 
     </Screen>
   );

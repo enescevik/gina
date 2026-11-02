@@ -5,9 +5,8 @@ import { Text, View } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
 
 import { SubjectIcon } from "@/components/subject-icon";
-import { Button } from "@/components/ui/button";
 import { ErrorText } from "@/components/ui/screen";
-import { ChildScreen as Screen, ChildColumns, childStyles } from "@/components/room/child-screen";
+import { ChildScreen as Screen, ChildColumns, ChildEmptyState, childStyles } from "@/components/room/child-screen";
 import { useChildMode } from "@/lib/child-mode";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
@@ -42,7 +41,7 @@ export default function ChildProvaScreen() {
     <Screen tone="child" surface="desk" loading={exams.isLoading} title={t("prova.title")}>
       <ChildColumns rail={<View style={{ gap: 12 }}>
       <Text accessibilityRole="header" className="font-display text-lg text-ink">{t("prova.toDo")}</Text>
-      {open.length === 0 ? <Text className="font-body text-base text-gray-600">{t("prova.nothingAssigned")}</Text> : null}
+      {open.length === 0 && !exams.error ? <ChildEmptyState kind="study" title={t("prova.nothingAssigned")} body={t("betaUx.childStudyEmpty")}/> : null}
       {open.map((exam) => {
         const resuming = exam.exam_attempts?.some((a) => a.status === "in_progress") ?? false;
         const meta = `${t("prova.questionCount", { count: exam.question_ids.length })}, ${exam.timed ? `${exam.duration_minutes} ${t("prova.min")}` : t("prova.untimed")}`;
@@ -66,7 +65,7 @@ export default function ChildProvaScreen() {
               {exam.timed ? ` · ${exam.duration_minutes} ${t("prova.min")}` : ` · ${t("prova.untimed")}`}
             </Text>
           </View>
-          <View className="rounded-button bg-teal px-4 py-2">
+          <View style={{borderRadius:16, backgroundColor:"#6042DE", paddingHorizontal:16, paddingVertical:12}}>
             <Text className="font-body-bold text-white">{resuming ? t("prova.continue") : t("room.start")}</Text>
           </View>
         </Pressable>
@@ -95,7 +94,6 @@ export default function ChildProvaScreen() {
       })}
       </ChildColumns>
       <ErrorText error={exams.error} />
-      <Button variant="ghost" title={t("child.today")} onPress={() => router.back()} />
     </Screen>
   );
 }

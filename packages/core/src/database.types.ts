@@ -308,14 +308,14 @@ isOneToOne: false
     }
                   ]
                 },"children": {
-                  Row: {
+                  Row: { birth_year: number | null; gender: string; interests: string[];
                     "avatar": string,"birth_date": string | null,"created_at": string,"family_id": string,"grade": number | null,"id": string,"name": string,"sort_order": number
                   }
                   ComputedFields: never
-                  Insert: {
+                  Insert: { birth_year?: number | null; gender?: string; interests?: string[];
                     "avatar"?: string,"birth_date"?: string | null,"created_at"?: string,"family_id": string,"grade"?: number | null,"id"?: string,"name": string,"sort_order"?: number
                   }
-                  Update: {
+                  Update: { birth_year?: number | null; gender?: string; interests?: string[];
                     "avatar"?: string,"birth_date"?: string | null,"created_at"?: string,"family_id"?: string,"grade"?: number | null,"id"?: string,"name"?: string,"sort_order"?: number
                   }
                   Relationships: [
@@ -1133,6 +1133,13 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
+            get_setup_ai_entitlement: { Args: { p_family_id?: string }; Returns: Json };
+
+            save_child_setup: { Args: { p_request_id: string; p_profile: Json; p_tasks?: Json; p_child_id?: string }; Returns: string };
+
+            get_beta_test_access: { Args: Record<PropertyKey, never>; Returns: { expires_at: string; selected_plan: Database["public"]["Enums"]["plan_code"] | null }[] };
+            set_beta_test_plan: { Args: { p_plan?: Database["public"]["Enums"]["plan_code"] | null }; Returns: undefined };
+
       configure_child_device: { Args: {p_device_id:string;p_name:string;p_child_ids:string[];p_pin_required:boolean}; Returns:undefined }
       get_child_device_access: { Args: {p_device_id?:string}; Returns:Json }
       list_my_families: { Args: Record<PropertyKey, never>; Returns:Json }

@@ -1,19 +1,9 @@
-import { useEffect, useRef, useState, type ComponentRef } from "react";
-import { usePreventRemove } from "expo-router";
+import { AiSuggestions } from "@/components/setup/ai-suggestions";
+import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import {
-  Image,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  ScrollView,
-  Text,
-  View,
-  useWindowDimensions,
-} from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Minus, Plus, X } from "lucide-react-native";
+import { Minus, Plus, Pencil } from "lucide-react-native";
 import {
   localDateOf,
   taskTemplateInputSchema,
@@ -23,18 +13,13 @@ import { Avatar } from "@/components/avatar";
 import { TASK_ICON_SLUGS } from "@/components/task-icon";
 import { Field } from "@/components/ui/field";
 import { Pressable } from "@/components/ui/pressable";
-import { IconButton, SatinButton, p, u } from "@/components/planner/ui";
+import { IconButton, p, u } from "@/components/planner/ui";
 import type { PlannerChild } from "@/components/planner/timetable-editor";
 import { supabase } from "@/lib/supabase";
+import { SetupWizard, ChoiceCard } from "@/components/setup/wizard";
+import { TASK_STARTERS } from "@/components/setup/templates";
 import { TaskTile, StarReward } from "./task-visuals";
 const DAYS: IsoWeekday[] = [1, 2, 3, 4, 5, 6, 7];
-const FAVORITES = [
-  "brush-teeth",
-  "read-book",
-  "tidy-room",
-  "get-dressed",
-  "water-plants",
-];
 export function TaskForm({
   child,
   familyId,
@@ -49,23 +34,15 @@ export function TaskForm({
   onCreated: () => void;
 }) {
   const { t } = useTranslation();
-  const { width, height } = useWindowDimensions();
-  const wide = width >= 700;
   const cache = useQueryClient();
+  const [step, setStep] = useState(0);
   const [title, setTitle] = useState("");
   const [stars, setStars] = useState(1);
   const [days, setDays] = useState<IsoWeekday[]>([1, 2, 3, 4, 5]);
   const [icon, setIcon] = useState("task-custom");
+  const [choice, setChoice] = useState<string | null>(null);
   const [allIcons, setAllIcons] = useState(false);
-  const [error, setError] = useState("");
-  const [leave, setLeave] = useState<(() => void) | null>(null);
   const saving = useRef(false);
-  const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
-  const dirty =
-    title !== "" ||
-    stars !== 1 ||
-    icon !== "task-custom" ||
-    days.join(",") !== "1,2,3,4,5";
   const add = useMutation({
     mutationFn: async () => {
       const parsed = taskTemplateInputSchema.safeParse({
@@ -83,346 +60,230 @@ export function TaskForm({
       if (error) throw error;
     },
     onSuccess: async () => {
-      await Promise.all([
-        cache.invalidateQueries({
-          queryKey: ["parent_task_templates", familyId, child.id],
-        }),
-        cache.invalidateQueries({ queryKey: ["task_templates", child.id] }),
-        cache.invalidateQueries({
-          queryKey: ["family_task_templates", familyId],
-        }),
-      ]);
+      await Promise.all(
+        [
+          ["parent_task_templates", familyId, child.id],
+          ["task_templates", child.id],
+          ["family_task_templates", familyId],
+        ].map((queryKey) => cache.invalidateQueries({ queryKey })),
+      );
       onCreated();
     },
-    onError: (e) =>
-      setError(
-        t(
-          e.message === "invalid"
-            ? "taskPremium.invalid"
-            : "taskPremium.saveError",
-        ),
-      ),
     onSettled: () => {
       saving.current = false;
     },
   });
-  const busy = add.isPending;
-  usePreventRemove(dirty || busy, ({ repeat }) => {
-    if (!busy) {
-      setLeave(() => repeat);
-      scroll.current?.scrollTo({ y: 0, animated: false });
-    }
-  });
-  useEffect(() => {
-    if (Platform.OS !== "web" || !dirty) return;
-    const fn = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = "";
-    };
-    window.addEventListener("beforeunload", fn);
-    return () => window.removeEventListener("beforeunload", fn);
-  }, [dirty]);
-  function close() {
-    if (busy) return;
-    if (dirty) {
-      setLeave(() => onClose);
-      scroll.current?.scrollTo({ y: 0, animated: false });
-    } else onClose();
-  }
-  function save() {
-    if (saving.current) return;
-    saving.current = true;
-    setError("");
-    add.mutate();
-  }
   const summary =
     days.length === 7
       ? t("redesign.everyDay")
       : days.map((d) => t(`weekday.${d}`)).join(" · ");
-  function iconChoice(slug: string) {
-    return (
-      <Pressable
-        key={slug}
-        accessibilityRole="button"
-        accessibilityLabel={t(`taskIcon.${slug}`)}
-        accessibilityState={{ selected: icon === slug }}
-        onPress={() => setIcon(slug)}
-        style={{
-          padding: 3,
-          borderRadius: 21,
-          borderWidth: 2,
-          borderColor: icon === slug ? p.purple : "transparent",
-        }}
-      >
-        <TaskTile slug={slug} size={52} />
-      </Pressable>
-    );
-  }
+  const valid =
+    step === 0
+      ? choice !== null
+      : !!title.trim() && title.trim().length <= 80 && days.length > 0;
   return (
-    <Modal
-      transparent
-      animationType="none"
-      onRequestClose={close}
-      supportedOrientations={["portrait", "landscape"]}
+    <SetupWizard
+      title={t("tasks.new")}
+      steps={[t("betaUx.choose"), t("betaUx.details"), t("betaUx.review")]}
+      step={step}
+      setStep={setStep}
+      dirty={choice !== null}
+      busy={add.isPending}
+      valid={valid}
+      onClose={onClose}
+      saveLabel={t("taskPremium.save")}
+      onSave={() => {
+        if (saving.current) return;
+        saving.current = true;
+        add.mutate();
+      }}
+      error={
+        add.error
+          ? t(
+              add.error.message === "invalid"
+                ? "taskPremium.invalid"
+                : add.error.message.includes("plan_limit")
+                  ? "betaUx.planLimit"
+                  : "taskPremium.saveError",
+            )
+          : null
+      }
     >
-      <SafeAreaProvider>
-        <SafeAreaView
-          style={{
-            flex: 1,
-            backgroundColor: "#20195166",
-            justifyContent: "center",
-            padding: wide ? 24 : 0,
-          }}
-        >
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : undefined}
-            style={{
-              width: "100%",
-              maxWidth: 620,
-              alignSelf: "center",
-              maxHeight: "100%",
-              height: wide ? Math.min(height - 96, 860) : undefined,
-              flex: wide ? undefined : 1,
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: p.cream,
-                borderRadius: wide ? 30 : 24,
-                overflow: "hidden",
-                flexShrink: 1,
-                flex: 1,
+      <View style={u.row}>
+        <Avatar slug={child.avatar} size={44} />
+        <Text style={u.bold}>{child.name}</Text>
+      </View>
+      {step === 0 && (
+        <>
+          <Text style={u.heading}>{t("betaUx.taskChoose")}</Text>
+          <Text style={u.copy}>{t("betaUx.taskChooseBody")}</Text>
+          {TASK_STARTERS.map((item) => (
+            <ChoiceCard
+              key={item.id}
+              title={t(`betaUx.taskTemplates.${item.id}`)}
+              body={t("room.starCount", { count: item.stars })}
+              art={<TaskTile slug={item.icon} size={52} />}
+              selected={choice === item.id}
+              onPress={() => {
+                setChoice(item.id);
+                setTitle(t(`betaUx.taskTemplates.${item.id}`));
+                setIcon(item.icon);
+                setStars(item.stars);
+                setDays([...item.days]);
               }}
-            >
-              <ScrollView
-                ref={scroll}
-                keyboardShouldPersistTaps="handled"
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ padding: 20, gap: 14 }}
+            />
+          ))}
+          <ChoiceCard
+            title={t("betaUx.customTask")}
+            art={<Pencil color={p.purple} />}
+            selected={choice === "custom"}
+            onPress={() => {
+              setChoice("custom");
+              setTitle("");
+              setIcon("task-custom");
+            }}
+          />
+          <AiSuggestions
+            kind="task"
+            grade={child.grade}
+            onChoose={(item) => {
+              setChoice("ai");
+              setTitle(item.title);
+              setStars(item.stars);
+              setIcon(item.icon);
+            }}
+          />
+        </>
+      )}
+      {step === 1 && (
+        <>
+          <Field
+            label={t("taskPremium.title")}
+            value={title}
+            onChangeText={setTitle}
+            maxLength={80}
+            placeholder={t("tasks.titlePlaceholder")}
+          />
+          <Text style={u.bold}>{t("taskPremium.icon")}</Text>
+          <View style={[u.row, { flexWrap: "wrap" }]}>
+            {(allIcons
+              ? TASK_ICON_SLUGS
+              : [
+                  "brush-teeth",
+                  "read-book",
+                  "tidy-room",
+                  "pack-school-bag",
+                  "task-custom",
+                ]
+            ).map((slug) => (
+              <Pressable
+                key={slug}
+                accessibilityRole="button"
+                accessibilityLabel={t(`taskIcon.${slug}`)}
+                accessibilityState={{ selected: icon === slug }}
+                onPress={() => setIcon(slug)}
+                style={{
+                  padding: 3,
+                  borderWidth: 2,
+                  borderRadius: 20,
+                  borderColor: icon === slug ? p.purple : "transparent",
+                }}
               >
-                <View style={u.row}>
-                  <Text accessibilityRole="header" style={[u.title, u.fill]}>
-                    {t("tasks.new")}
-                  </Text>
-                  <IconButton
-                    label={t("common.cancel")}
-                    disabled={busy}
-                    onPress={close}
-                  >
-                    <X color={p.ink} />
-                  </IconButton>
-                </View>
-                {leave ? (
-                  <View style={u.card}>
-                    <Text style={u.heading}>{t("planner.discardTitle")}</Text>
-                    <Text style={u.copy}>{t("planner.discardBody")}</Text>
-                    <SatinButton
-                      title={t("planner.keepEditing")}
-                      onPress={() => setLeave(null)}
-                    />
-                    <SatinButton
-                      secondary
-                      title={t("planner.discard")}
-                      onPress={() => {
-                        const action = leave;
-                        setLeave(null);
-                        action();
-                      }}
-                    />
-                  </View>
-                ) : null}
-                <View
-                  pointerEvents={busy || leave ? "none" : "auto"}
-                  style={{ gap: 18, opacity: leave ? 0.45 : 1 }}
-                >
-                  <View
-                    style={[
-                      u.row,
-                      { justifyContent: "space-between", height: 84 },
-                    ]}
-                  >
-                    <View style={[u.tag, { backgroundColor: p.mint }]}>
-                      <Avatar slug={child.avatar} size={30} />
-                      <Text style={u.bold}>
-                        {t("taskPremium.forChild", { name: child.name })}
-                      </Text>
-                    </View>
-                    <Image
-                      accessible={false}
-                      source={require("../../../../../packages/assets/brand/growing-friend/contextual/planner.png")}
-                      style={{ height: 100, width: 145 }}
-                      resizeMode="contain"
-                    />
-                  </View>
-                  <Field
-                    label={t("taskPremium.title")}
-                    placeholder={t("tasks.titlePlaceholder")}
-                    value={title}
-                    onChangeText={setTitle}
-                    maxLength={80}
-                  />
-                  <View style={{ gap: 8 }}>
-                    <Text style={u.bold}>{t("taskPremium.icon")}</Text>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                      <View style={[u.row, { gap: 5 }]}>
-                        {FAVORITES.map(iconChoice)}
-                      </View>
-                    </ScrollView>
-                    <Pressable
-                      accessibilityRole="button"
-                      accessibilityState={{ expanded: allIcons }}
-                      onPress={() => setAllIcons(!allIcons)}
-                      style={u.link}
-                    >
-                      <Text style={u.linkText}>
-                        {t(
-                          allIcons
-                            ? "taskPremium.fewerIcons"
-                            : "taskPremium.allIcons",
-                        )}
-                      </Text>
-                    </Pressable>
-                    {allIcons ? (
-                      <View style={[u.row, { flexWrap: "wrap", gap: 5 }]}>
-                        {TASK_ICON_SLUGS.filter(
-                          (s) => !FAVORITES.includes(s),
-                        ).map(iconChoice)}
-                      </View>
-                    ) : null}
-                  </View>
-                  <View style={{ gap: 8 }}>
-                    <Text style={u.bold}>{t("taskPremium.stars")}</Text>
-                    <View
-                      style={[
-                        u.row,
-                        {
-                          justifyContent: "space-between",
-                          backgroundColor: "#F0EBF8",
-                          borderRadius: 20,
-                          padding: 8,
-                        },
-                      ]}
-                    >
-                      <IconButton
-                        label={t("taskPremium.lessStars")}
-                        disabled={stars === 0}
-                        onPress={() => setStars((v) => Math.max(0, v - 1))}
-                      >
-                        <Minus color={p.purple} />
-                      </IconButton>
-                      <Text
-                        accessibilityLiveRegion="polite"
-                        accessibilityLabel={t("room.starCount", { count: stars })}
-                        style={u.title}
-                      >
-                        {stars}
-                      </Text>
-                      <IconButton
-                        label={t("taskPremium.moreStars")}
-                        disabled={stars === 10}
-                        onPress={() => setStars((v) => Math.min(10, v + 1))}
-                      >
-                        <Plus color={p.purple} />
-                      </IconButton>
-                    </View>
-                  </View>
-                  <View style={{ gap: 10 }}>
-                    <Text style={u.bold}>{t("taskPremium.whichDays")}</Text>
-                    <View style={[u.row, { flexWrap: "wrap", gap: 2 }]}>
-                      {DAYS.map((d) => (
-                        <Pressable
-                          key={d}
-                          accessibilityRole="button"
-                          accessibilityLabel={t(`planner.day${d}`)}
-                          accessibilityState={{ selected: days.includes(d) }}
-                          onPress={() =>
-                            setDays((prev) =>
-                              prev.includes(d)
-                                ? prev.filter((v) => v !== d)
-                                : [...prev, d].sort(),
-                            )
-                          }
-                          style={{
-                            minWidth: 48,
-                            minHeight: 48,
-                            borderRadius: 16,
-                            padding: 8,
-                            backgroundColor: days.includes(d)
-                              ? p.purple
-                              : "#F2EEF6",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <Text
-                            style={[
-                              u.bold,
-                              {
-                                color: days.includes(d) ? "#fff" : p.ink,
-                                fontSize: 14,
-                              },
-                            ]}
-                          >
-                            {t(`weekday.${d}`)}
-                          </Text>
-                        </Pressable>
-                      ))}
-                    </View>
-                    {!days.length ? (
-                      <Text style={u.error}>{t("taskPremium.selectDay")}</Text>
-                    ) : null}
-                  </View>
-                  <View
-                    style={[
-                      u.card,
-                      { backgroundColor: "#F0EAFB", boxShadow: "none" },
-                    ]}
-                  >
-                    <Text style={u.bold}>
-                      {t("taskPremium.preview", { name: child.name })}
-                    </Text>
-                    <View style={u.row}>
-                      <TaskTile slug={icon} />
-                      <View style={[u.fill, { gap: 5 }]}>
-                        <Text style={u.bold}>
-                          {title.trim() || t("tasks.titlePlaceholder")}
-                        </Text>
-                        <Text style={u.small}>
-                          {summary} · {t("room.starCount", { count: stars })}
-                        </Text>
-                        <StarReward count={stars} />
-                      </View>
-                    </View>
-                  </View>
-                </View>
-              </ScrollView>
-              {error ? (
+                <TaskTile slug={slug} size={52} />
+              </Pressable>
+            ))}
+          </View>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => setAllIcons(!allIcons)}
+            style={{ minHeight: 48, justifyContent: "center" }}
+          >
+            <Text style={[u.bold, { color: p.purple }]}>
+              {t(allIcons ? "parentPremium.showLess" : "betaUx.allIcons")}
+            </Text>
+          </Pressable>
+          <View style={[u.row, { justifyContent: "space-between" }]}>
+            <View style={u.fill}>
+              <Text style={u.bold}>{t("betaUx.taskStars")}</Text>
+              <Text style={u.small}>{t("betaUx.taskStarsBody")}</Text>
+            </View>
+            <IconButton
+              label={t("taskPremium.lessStars")}
+              disabled={stars === 0}
+              onPress={() => setStars(stars - 1)}
+            >
+              <Minus color={p.purple} />
+            </IconButton>
+            <Text style={u.heading}>{stars}</Text>
+            <IconButton
+              label={t("taskPremium.moreStars")}
+              disabled={stars === 10}
+              onPress={() => setStars(stars + 1)}
+            >
+              <Plus color={p.purple} />
+            </IconButton>
+          </View>
+          <Text style={u.bold}>{t("taskPremium.whichDays")}</Text>
+          <View style={[u.row, { flexWrap: "wrap", gap: 4 }]}>
+            {DAYS.map((day) => (
+              <Pressable
+                key={day}
+                accessibilityRole="button"
+                accessibilityLabel={t(`planner.day${day}`)}
+                accessibilityState={{ selected: days.includes(day) }}
+                onPress={() =>
+                  setDays(
+                    days.includes(day)
+                      ? days.filter((d) => d !== day)
+                      : [...days, day].sort(),
+                  )
+                }
+                style={{
+                  minWidth: 48,
+                  minHeight: 48,
+                  padding: 8,
+                  borderRadius: 16,
+                  backgroundColor: days.includes(day) ? p.purple : p.lilac,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <Text
-                  accessibilityRole="alert"
-                  style={[u.error, { paddingHorizontal: 20, paddingVertical: 8 }]}
+                  style={[
+                    u.bold,
+                    {
+                      color: days.includes(day) ? "#fff" : p.ink,
+                      fontSize: 14,
+                    },
+                  ]}
                 >
-                  {error}
+                  {t(`weekday.${day}`)}
                 </Text>
-              ) : null}
-              <View style={u.footer}>
-                <SatinButton
-                  secondary
-                  title={t("common.cancel")}
-                  disabled={busy}
-                  onPress={close}
-                />
-                <SatinButton
-                  title={t("taskPremium.save")}
-                  busy={busy}
-                  disabled={busy || !title.trim() || !days.length || !!leave}
-                  onPress={save}
-                  style={u.fill}
-                />
+              </Pressable>
+            ))}
+          </View>
+          {!days.length && (
+            <Text style={u.error}>{t("taskPremium.selectDay")}</Text>
+          )}
+        </>
+      )}
+      {step === 2 && (
+        <>
+          <Text style={u.heading}>{t("betaUx.readyTask")}</Text>
+          <Text style={u.copy}>{t("betaUx.taskReviewBody")}</Text>
+          <View style={[u.card, { backgroundColor: p.lilac }]}>
+            <View style={u.row}>
+              <TaskTile slug={icon} size={80} />
+              <View style={u.fill}>
+                <Text style={u.heading}>{title}</Text>
+                <Text style={u.copy}>{summary}</Text>
+                <StarReward count={stars} />
               </View>
             </View>
-          </KeyboardAvoidingView>
-        </SafeAreaView>
-      </SafeAreaProvider>
-    </Modal>
+          </View>
+          <Text style={u.small}>{t("betaUx.taskApproval")}</Text>
+        </>
+      )}
+    </SetupWizard>
   );
 }

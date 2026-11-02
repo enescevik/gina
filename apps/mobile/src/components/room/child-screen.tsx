@@ -6,6 +6,7 @@ import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, ScrollView, S
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Pressable } from "@/components/ui/pressable";
 import { ApprovedScene } from "@/components/child-home/approved-scene";
+import { Collectible } from "@/components/collectible";
 import { c } from "@/components/child-home/theme";
 import { useActiveChild } from "@/lib/active-child";
 import type { CharacterKey, PetKey } from "./scene";
@@ -34,15 +35,15 @@ export function ChildScreen({ title, subtitle, children, loading = false, surfac
   const { path } = useActiveChild();
   const { width, height, fontScale } = useWindowDimensions();
   const wide = width >= 1000 && width > height && fontScale < 1.4;
-  const heading = <View style={styles.heading}>
-    <Pressable accessibilityRole="button" accessibilityLabel={t("child.today")} onPress={() => router.navigate(path("today"))} style={styles.back}><ArrowLeft size={24} color={c.purple} /></Pressable>
+  const heading = <View style={[styles.heading, height < 520 && {paddingVertical: 6}]}>
+    <Pressable accessibilityRole="button" accessibilityLabel={t("childMint.world")} onPress={() => router.navigate(path("today"))} style={styles.back}><ArrowLeft size={24} color={c.purple} /></Pressable>
     <View style={{flex:1,gap:4}}><Text accessibilityRole="header" style={styles.title}>{title}</Text>{subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}</View>
     <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} accessible={false} style={{width:80,height:36}} resizeMode="contain" />
   </View>;
   return <SafeAreaView style={styles.root}><KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === "ios" ? "padding" : undefined}>
     <View style={[styles.fill,{flexDirection:'row'}]}>
       {wide && surface !== "desk" ? <ApprovedScene style={{width:Math.min(360,width*.28)}} /> : null}
-      <View style={[styles.fill,wide && surface !== "desk" && {marginLeft:-22,borderTopLeftRadius:28,borderBottomLeftRadius:28,backgroundColor:c.cream,overflow:'hidden'}]}>
+      <View style={[styles.fill,wide && surface !== "desk" && {borderTopLeftRadius:28,borderBottomLeftRadius:28,backgroundColor:c.cream,overflow:'hidden'}]}>
         {heading}
         <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={styles.content}>
           {loading ? <View style={styles.loading} accessibilityLiveRegion="polite"><ActivityIndicator size="large" color={c.purple}/><Text style={styles.subtitle}>{t("childV5.loading")}</Text></View> : children}
@@ -74,5 +75,14 @@ export function ChildColumns({rail,children}:{rail:ReactNode;children:ReactNode}
   const wide=width>=1280 && height>=600 && fontScale<1.3;
   return <View style={{flexDirection:wide?'row':'column',gap:16,alignItems:'stretch'}}>
     <View style={wide?{width:280}:undefined}>{rail}</View><View style={{flex:1,minWidth:0,gap:12}}>{children}</View>
+  </View>;
+}
+
+/** Clear next-step context without turning an empty state into another navigation menu. */
+export function ChildEmptyState({title, body, kind = "task"}: {title: string; body: string; kind?: "task" | "study" | "collection"}) {
+  return <View style={[childStyles.card, {alignItems: "center", paddingVertical: 24}]}>
+    <Collectible slug={kind === "study" ? "reward-book" : kind === "collection" ? "display-first-task" : "star-jar"} size={96}/>
+    <Text style={[childStyles.title, {textAlign: "center"}]}>{title}</Text>
+    <Text style={[childStyles.copy, {textAlign: "center", maxWidth: 420}]}>{body}</Text>
   </View>;
 }

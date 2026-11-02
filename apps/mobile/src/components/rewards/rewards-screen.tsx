@@ -1,9 +1,10 @@
+import { GoalSetup } from "@/components/setup/goal-setup";
 import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Image, ScrollView, Text, View, useWindowDimensions } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { ArrowLeft, Bell, CalendarDays, CheckCircle2, Clock3, GraduationCap, Heart, House, MoreHorizontal, Pause, Play, Plus } from "lucide-react-native";
 import { Avatar } from "@/components/avatar";
 import { Pressable } from "@/components/ui/pressable";
@@ -16,11 +17,14 @@ import { RewardForm } from "./reward-form";
 type Action = "approve" | "decline" | "deliver" | "cancel";
 export function RewardsScreen() {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const wide = width >= 900;
   const { claims } = useSession();
   const familyId = claims?.family_id ?? "";
   const cache = useQueryClient();
+  const params = useLocalSearchParams<{ goal?: string; childId?: string }>();
+  const [choosingGoal, setChoosingGoal] = useState(params.goal === "1");
   const [catalog, setCatalog] = useState(false);
   const [creating, setCreating] = useState(false);
   const [notice, setNotice] = useState("");
@@ -84,7 +88,7 @@ export function RewardsScreen() {
     { label: t("prova.title"), Icon: GraduationCap, path: "/parent/prova" as const },
     { label: t("planner.more"), Icon: MoreHorizontal, path: "/parent/menu" as const },
   ];
-  return <SafeAreaView style={u.root}>
+  return <SafeAreaView edges={['top', 'left', 'right']} style={u.root}>
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[u.content, { maxWidth: 1060, gap: 10, paddingTop: 4 }]}>
       <View style={u.topbar}>
         <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} style={u.logo} accessibilityLabel="Gina" resizeMode="contain" />
@@ -103,6 +107,7 @@ export function RewardsScreen() {
           return <View key={String(value)} style={u.fill}>{catalog === value ? <SatinButton selected title={label} onPress={() => {}} style={{ minHeight: 48, paddingHorizontal: 8 }} /> : <Pressable accessibilityRole="button" accessibilityState={{ selected: false }} onPress={() => { setCatalog(value); setNotice(""); }} style={{ minHeight: 54, alignItems: "center", justifyContent: "center", paddingHorizontal: 8 }}><Text style={u.bold}>{label}</Text></Pressable>}</View>;
         })}
       </View>
+      <Pressable accessibilityRole="button" onPress={() => setChoosingGoal(true)} style={{ minHeight: 48, flexDirection: "row", alignItems: "center", gap: 8 }}><Heart size={22} color={p.purple}/><Text style={[u.bold, { color: p.purple }]}>{t("betaUx.chooseGoal")}</Text></Pressable>
       {notice ? <Text accessibilityLiveRegion="polite" style={u.small}>{notice}</Text> : null}
       {query.isLoading ? <ActivityIndicator accessibilityLabel={t("rewardPremium.loading")} color={p.purple} /> : null}
       {query.error ? <View style={u.card}><Text accessibilityRole="alert" style={u.error}>{t("rewardPremium.loadError")}</Text><SatinButton title={t("common.retry")} onPress={() => { void query.refetch(); }} /></View> : null}
@@ -141,7 +146,8 @@ export function RewardsScreen() {
       {!query.error && !query.isLoading ? <View style={[u.row, { backgroundColor: "#F0EBFA", padding: 16, borderRadius: 22, justifyContent: "center" }]}><Heart size={23} color={p.purple} /><Text style={[u.copy, { flexShrink: 1 }]}>{t(catalog ? "rewardPremium.catalogHint" : "rewardPremium.requestHint")}</Text></View> : null}
     </ScrollView>
     <View style={{ paddingHorizontal: 18, paddingVertical: 8 }}><SatinButton title={t("rewardPremium.new")} disabled={!familyId} icon={<Plus size={24} color="#fff" />} onPress={() => { setNotice(""); setCreating(true); }} style={{ width: "100%", maxWidth: 560, alignSelf: "center" }} /></View>
-    <View style={[u.footer, { paddingVertical: 6, justifyContent: "space-around" }]}>{nav.map(({ label, Icon, path }) => <Pressable key={path} accessibilityRole="button" accessibilityLabel={label} onPress={() => router.push(path)} style={{ flex: 1, minHeight: 58, alignItems: "center", justifyContent: "center", gap: 3 }}><Icon size={23} color={p.muted} /><Text style={u.small}>{label}</Text></Pressable>)}</View>
+    <View style={[u.footer, { paddingTop: 6, paddingBottom: Math.max(insets.bottom, 6), justifyContent: "space-around" }]}>{nav.map(({ label, Icon, path }) => <Pressable key={path} accessibilityRole="button" accessibilityLabel={label} onPress={() => router.navigate(path)} style={{ flex: 1, minHeight: 58, alignItems: "center", justifyContent: "center", gap: 3 }}><Icon size={23} color={p.muted} /><Text style={u.small}>{label}</Text></Pressable>)}</View>
+    {choosingGoal && <GoalSetup onCreateReward={() => { setChoosingGoal(false); setCreating(true); }} initialChild={params.childId} onClose={() => setChoosingGoal(false)} onSaved={() => { setChoosingGoal(false); setNotice(t("betaUx.goalSaved")); }}/>}
     {creating ? <RewardForm familyId={familyId} onClose={() => setCreating(false)} onCreated={() => { setCreating(false); setCatalog(true); setNotice(t("rewardPremium.created")); }} /> : null}
   </SafeAreaView>;
 }

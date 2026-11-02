@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -17,6 +18,7 @@ export default function ChildGoalScreen() {
   const { t } = useTranslation();
   const { childId, actingAsParent } = useActiveChild();
   const queryClient = useQueryClient();
+  const [selected, setSelected] = useState<string | null>(null);
 
   const rewards = useQuery({
     queryKey: ["family_rewards"],
@@ -44,20 +46,23 @@ export default function ChildGoalScreen() {
 
   return (
     <Screen tone="child" loading={rewards.isLoading} title={t("goal.pick")}>
-      {rewards.data?.length === 0 ? <Text className="font-body text-base text-gray-600">{t("goal.noRewards")}</Text> : null}
+      <Text style={childStyles.copy}>{t("betaUx.childGoalHint")}</Text>
+      {rewards.data?.length === 0 ? <View style={[childStyles.card, { alignItems: "center" }]}><Collectible slug="reward-mystery-box" size={110}/><Text style={childStyles.copy}>{t("goal.noRewards")}</Text></View> : null}
       {rewards.data?.map((reward) => (
         <Pressable
           key={reward.id}
           accessibilityRole="button"
           disabled={choose.isPending}
-          onPress={() => choose.mutate(reward.id)}
-          style={[childStyles.card, childStyles.row]}
+          accessibilityState={{ selected: selected === reward.id, disabled: choose.isPending }}
+          onPress={() => setSelected(reward.id)}
+          style={[childStyles.card, childStyles.row, selected === reward.id && { borderColor: "#6042DE", backgroundColor: "#F0ECFC" }]}
         >
           <Collectible slug={reward.icon} size={64} />
           <Text className="flex-1 font-body-bold text-lg text-ink">{reward.title}</Text>
           <View style={{flexDirection:"row",alignItems:"center",gap:4}}><Star size={18} color="#AA7623" fill="#F7D38D"/><Text className="font-display text-base text-ink">{reward.cost_stars}</Text></View>
         </Pressable>
       ))}
+      {selected && <Button title={t("betaUx.childGoalReview")} loading={choose.isPending} onPress={() => choose.mutate(selected)}/>}
       <ErrorText error={rewards.error ?? choose.error} />
       <Button variant="ghost" title={t("common.cancel")} onPress={() => router.back()} />
     </Screen>
