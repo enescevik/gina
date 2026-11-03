@@ -27,7 +27,10 @@
     "Evidence opens the specific question (5 of 24), not question 1",
     "Round trip from report to review and back",
     "Empty, loading, HTTP 503 error and explicit retry recovery",
-    "27 SQL report assertions and 63 core tests; workspace lint/typecheck"
+    "27 SQL report assertions and 63 core tests; workspace lint/typecheck",
+    "Fresh independent browser context: initial load, question round trip and reload passed",
+    "All measured interactive targets at least 48 CSS pixels in phone layout",
+    "No page horizontal overflow at tested sizes"
   ],
   "limitations": [
     "No physical iPad/Pencil or iPhone run in this increment",
@@ -42,6 +45,7 @@
     "tablet-portrait-web.png",
     "empty-phone-web.png",
     "loading-phone-web.png",
-    "error-phone-web.png"
+    "error-phone-web.png",
+    "tablet-topics-web.png"
   ]
 }
