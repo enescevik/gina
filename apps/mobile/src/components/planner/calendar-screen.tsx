@@ -235,6 +235,7 @@ export function PlannerCalendar({
                 ? ` · ${profiles.find((c) => c.id === o.event.child_id)?.name ?? t("calendar.allFamily")}`
                 : ""}
             </Text>
+            {!compact && o.event.notes ? <Text numberOfLines={2} style={[u.copy, {marginTop: 8}]}>{o.event.notes}</Text> : null}
             {o.event.location ? (
               <Text style={u.small}>{o.event.location}</Text>
             ) : null}
@@ -556,6 +557,7 @@ export function PlannerCalendar({
         {detail ? (
           <View style={u.card}>
             <Text style={u.heading}>{detail.title}</Text>
+            {detail.notes ? <Text style={u.copy}>{detail.notes}</Text> : null}
             <Text style={u.copy}>
               {detail.location ?? t(`event.type.${detail.type}`)}
             </Text>

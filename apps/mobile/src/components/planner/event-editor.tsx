@@ -295,6 +295,21 @@ export function EventEditor({
               : null}
             {!pending && !recovery.error && (
               <View pointerEvents={busy ? "none" : "auto"} style={{ gap: 16 }}>
+                {event?.notes
+                  ? (
+                    <View
+                      style={{
+                        gap: 6,
+                        padding: 14,
+                        borderRadius: 18,
+                        backgroundColor: p.lilac,
+                      }}
+                    >
+                      <Text style={u.bold}>{t("planCalendar.notes")}</Text>
+                      <Text style={u.copy}>{event.notes}</Text>
+                    </View>
+                  )
+                  : null}
                 <Field
                   label={t("calendar.title")}
                   value={title}

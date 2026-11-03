@@ -2054,7 +2054,12 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"study_plans": {
+                },"study_plan_calendar_items": {
+ Row: {plan_id:string; day:number; family_id:string; event_id:string|null; created_at:string};
+ Insert: {plan_id:string; day:number; family_id:string; event_id?:string|null; created_at?:string};
+ Update: {event_id?:string|null};
+ Relationships: [{foreignKeyName:"study_plan_calendar_items_event_id_fkey"; columns:["event_id"]; isOneToOne:true; referencedRelation:"events"; referencedColumns:["id"]}];
+ },"study_plans": {
                   Row: {
                     "ai_job_id": string | null,"attempt_id": string | null,"child_id": string,"created_at": string,"created_by": string | null,"family_id": string,"grade": number,"id": string,"input_hash": string | null,"model": string | null,"plan": NonNullable<Json>,"prompt_version": string | null,"status": string,"subject": string,"updated_at": string,"weak_topics": NonNullable<Json>
                   }
@@ -2248,6 +2253,7 @@ isOneToOne: false
                 }
           }
           Functions: {
+      apply_study_plan_calendar: {Args:{p_request_id:string;p_plan_id:string;p_updated_at:string;p_items:Json};Returns:Json};
       save_calendar_event: { Args: { p_request_id:string; p_event_id:string; p_revision:number; p_values:Json | null }; Returns:Json };
       get_repeat_candidates: { Args: { p_draft_id: string }; Returns: Json };
 "acquire_library_units":

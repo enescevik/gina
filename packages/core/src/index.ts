@@ -27,3 +27,5 @@ export * from './library-review';
 
 export * from "./library-publication";
 export * from './focus-timer';
+
+export * from "./study-plan";

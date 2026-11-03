@@ -23,7 +23,7 @@ export function useFamilyEvents(childId?: string | null) {
       let request = supabase
         .from("events")
         .select(
-          "id, edit_revision, title, type, child_id, starts_at, ends_at, all_day, rrule, location, timetable_entry_key, children(name)",
+          "id, edit_revision, title, type, child_id, starts_at, ends_at, all_day, rrule, location, notes, timetable_entry_key, children(name)",
         )
         .order("starts_at");
       if (childId)
