@@ -1,5 +1,11 @@
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
-import { type AiConfig, type AiUserContent, type AiResult, callClaude, sha256 } from "./prova.ts";
+import {
+  type AiConfig,
+  type AiResult,
+  type AiUserContent,
+  callClaude,
+  sha256,
+} from "./prova.ts";
 import { json } from "./supabase.ts";
 
 /** Cache paid generation before applying it. Identical input shares a job; uncertain
@@ -64,9 +70,10 @@ export async function runAiOperation<T>(
   } catch (e) {
     const message = e instanceof Error ? e.message : "generation_failed";
     const code =
-      /^(anthropic_[a-z0-9_]+|ai_input_too_large|ai_result_invalid)$/.test(
-          message,
-        )
+      /^(anthropic_[a-z0-9_]+|ai_input_too_large|ai_token_count_invalid|ai_result_invalid)$/
+          .test(
+            message,
+          )
         ? message
         : "provider_outcome_unknown";
     const uncertain = code === "provider_outcome_unknown" ||
