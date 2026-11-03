@@ -313,3 +313,11 @@ Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli
 - Görev/ödül elle veya çoklu AI seçimi aynı kalıcı kayıt yoluna alındı. Kayıp yanıt sonrası yeniden açılış, özgün komutu tekrarlar; belirsiz işlem çözülmeden seçim değiştirilmez. Hatalı yerel kayıt sessizce silinmez. Sıfır yıldızlı görev ve özgün başlangıç tarihi korunur; ödül en az bir yıldız ister.
 - 064000, 12 ek SQL kontrolü (toplam 1.135), 9 yeni çekirdek testi (toplam 109), üç gerçek veritabanı yarışı, telefon/tablet web kabulü ve mobil typecheck/lint geçti. Kanıt: `docs/design/screens/setup-save-recovery/`.
 - Üretim/TestFlight değişmedi. Fiziksel cihaz kabulü ve belge kaynaklı görev/ödül/hedef akışları hâlâ açık. Bu maddeler tamamlanan iş olarak sayılmadı.
+
+
+## 4 Kasım 2026 — toplu Prova ve sürümlü/görselli kütüphane
+
+- 065000: yeni paket kataloğu, yayın sürümü ve inceleme kontrolü, ortak kaynakları bölmeden seçme, medya ve cevap anahtarıyla sabit sürüm oluşturma. Kaynak paketin erişim planı aşılamaz; geri çekilen/incelemesi değişen kaynak yeni katılımı durdurur. Atanmış içerik korunur.
+- Aile katılımı aynı görseli bir kez kopyalar; ortak metin/soru sırası korunur. Kütüphane kotası ikinci kez düşülmez. Açık uçlu sorular otomatik sıralamaya sokulmaz; bu ayrı puanlama politikası açık kalır.
+- Yönetimde yayın isteği cihazda kalıcı; kayıp yanıt ve tam yeniden açılış aynı işlemle kurtarıldı. Ortak kaynağa bağlı üç soru + bağımsız soru = dört soru, açık uçlu ve izinsiz paket seçenekleri pasif. Kanıtlar: docs/design/screens/group-library-integration/.
+- 42 yeni SQL kontrolü ve iki gerçek katılım/yayından kaldırma yarışı geçti; yönetim typecheck/lint/üretim derlemesi geçti. Üretime dağıtılmadı, özellik kapısı açılmadı, gerçek cihaz kabulü açık.

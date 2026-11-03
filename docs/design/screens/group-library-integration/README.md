@@ -14,7 +14,7 @@
 
 ## Kabul kanıtı
 
-- 42 yeni SQL kontrolü: paket sürümü/erişimi, ortak kaynağı bölmeyi reddetme, açık uçlu soruyu sıralamaya almama, yayın/katılım tekrarları, kaynak/görsel/anahtar bütünlüğü, kapalı medya özelliğinde atomik geri alma, çocuk görünümü ve cevaplama, özel cevapların erişim sınırı, inceleme/arsiv geri çekme ve aile silme temizliği.
+- 47 dosyada 1.177 SQL kontrolü geçti; bu artımda 42 yeni kontrol: paket sürümü/erişimi, ortak kaynağı bölmeyi reddetme, açık uçlu soruyu sıralamaya almama, yayın/katılım tekrarları, kaynak/görsel/anahtar bütünlüğü, kapalı medya özelliğinde atomik geri alma, çocuk görünümü ve cevaplama, özel cevapların erişim sınırı, inceleme/arsiv geri çekme ve aile silme temizliği.
 - 2 gerçek eşzamanlı veritabanı testi: aynı çocuk iki katılım isteğinde tek sınav/tek görsel/dört soru; katılım ile kaynak yayından kaldırma yarışı tutarlı. Yalnız atılabilir denetim kopyaları kullanılır (`scripts/test-group-package-races.py`).
 - Gerçek Next.js ekranında sentetik ağ fixture: ortak grup + bağımsız soru = 4; açık uçlu birim pasif; izinsiz paket pasif; yayın yanıtı kesildi, sayfa yeniden açıldı, aynı gövde/kimlikle iki istek yalnız bir Prova oluşturdu. Bekleyen işlem varken yeni yayın formu kilitli.
 - `desktop.png`: seçim ekranı. `recovery-tablet.png`: kalıcı yayın isteği kurtarma. Gerçek cihaz veya gerçek aile kayıtları değildir.
