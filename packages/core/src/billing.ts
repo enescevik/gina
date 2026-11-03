@@ -24,3 +24,9 @@ export const overrideCommandSchema = z.object({request:z.string().uuid(),payload
 export const overrideReceiptSchema = z.object({request_id:z.string().uuid(),action:z.enum(["grant","expire"]),override_id:z.string().uuid(),family_id:z.string().uuid()});
 export type OverrideCommand = z.infer<typeof overrideCommandSchema>;
 export type OverridePayload = z.infer<typeof overridePayloadSchema>;
+
+export const reconcileCommandSchema=z.object({request:z.string().uuid(),family:z.string().uuid(),subscription:z.string().uuid(),reason:z.string().trim().min(3).max(1000)}).strict();
+export const reconcileJobSchema=z.object({id:z.string().uuid(),family_id:z.string().uuid(),subscription_id:z.string().uuid(),reason:z.string(),status:z.enum(['queued','processing','succeeded','unchanged','failed']),code:z.string().nullable(),attempts:z.number().int().nonnegative(),created_at:z.string(),completed_at:z.string().nullable(),retry_after:z.string().nullable()});
+export const reconcileJobsSchema=z.array(reconcileJobSchema);
+export type ReconcileCommand=z.infer<typeof reconcileCommandSchema>;
+export type ReconcileJob=z.infer<typeof reconcileJobSchema>;

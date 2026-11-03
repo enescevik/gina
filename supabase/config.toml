@@ -454,3 +454,7 @@ static_files = ["./functions/prova-review/assets/*"]
 
 [functions.library-media]
 verify_jwt = true
+
+# Bearer JWT is verified by PostgREST + the live finance-role RPC before service access.
+[functions.iap-operator-reconcile]
+verify_jwt = false

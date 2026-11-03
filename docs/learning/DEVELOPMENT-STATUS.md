@@ -359,3 +359,11 @@ Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli
 - Backoffice belirsiz gönderimi yeniden açılışta bulur; kesin ret dışındaki ağ/yanıt hatasında silmez. Sonlandırma gerekçesi ve mağaza aboneliğinden farkı açık formda. Tablet geniş tablo/tarih alanı kesilmesi giderildi; teknik “komp” metinleri sadeleştirildi.
 - 23 yeni SQL, üç gerçek eşzamanlı DB yarışı, toplam 1291 SQL kontrolü ve gerçek Next sentetik kayıp yanıt/yeniden açılış kabulü geçti. Kanıt: docs/design/screens/override-recovery/README.md.
 - Eski dağıtılmış istemcinin RPC'leri uyum için kalır; yeni arayüzün güvenli kayıt uç noktasını kullanması gerekir. Para iadesi, mağaza iptali veya canlı dağıtım yapılmadı.
+
+## 4 Kasım 2026 — yönetimden mağaza durumu doğrulama
+
+- Geçici hak güvenliği PR #92 tüm CI kontrolleriyle main’e birleşti.
+- 074000 + `iap-operator-reconcile`: canlı finans rolü, gerekçeli/kalıcı istek, saatlik sınır, iki dakikalık iş sahipliği ve atomik durum/sonuç kaydı. Tamamlanmış isteğin tekrarı mağazayı tekrar sorgulamaz; süresi dolmuş eski işleyici yazamaz. Eski bitmemiş işi başka yetkili kişi yeniden kontrol edebilir.
+- `/billing` seçilen abonelikte mağazadan kontrol ve geçmiş görünümü eklendi. Başarılı/güncel/değişmedi/başarısız durumlar ayrıdır; eksik mağaza ayarı başarı sayılmaz. Gerçek UI sentetik kayıp yanıt, yeniden açılış, hata ve rol iptali kabulü geçti.
+- 31 yeni SQL + dört gerçek DB yarışı + 18 Edge testi; toplam 52 dosya/1322 SQL kontrolü. Backoffice tip/lint/üretim derlemesi ve 109 çekirdek testi geçti. Görseller: docs/design/screens/operator-reconciliation/.
+- Bu mevcut bir aboneliğin kontrolüdür; gerçek iade/iptal, henüz bağlanmamış mağaza kaydını keşfetme veya bildirim geçmişini kurtarma değildir. Migration/Edge/UI henüz üretimde değil; TestFlight 17 değişmedi.
