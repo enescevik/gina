@@ -295,7 +295,10 @@ function Workspace({ user }: { user: string }) {
   return (
     <div className="article-center">
       <div className="article-intro">
-        <p>Ailelere açık, güncel ve anlaşılır yanıtlar.</p>
+        <div>
+          <h1>Yardım yazıları</h1>
+          <p>Ailelere açık, güncel ve anlaşılır yanıtlar.</p>
+        </div>
         <button
           className="btn-secondary"
           onClick={newArticle}

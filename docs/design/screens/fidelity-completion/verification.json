@@ -1,0 +1,297 @@
+{
+  "date": "2026-11-03",
+  "base": "04da9d6",
+  "scope": "Onaylı ekran referanslarına görsel sadakat düzeltmeleri; mevcut iş kuralları korunur.",
+  "releaseReady": false,
+  "pixelIdenticalClaim": false,
+  "entries": [
+    {
+      "id": "parent-home",
+      "title": "Veli ana ekranı",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../parent-home-premium/phone-proposal-v1.png",
+        "../parent-home-premium/tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "../home-fidelity-restoration/current/parent-phone.png",
+        "../home-fidelity-restoration/current/parent-tablet.png"
+      ],
+      "note": "PR #75 ile ana ekran düzeni düzeltildi."
+    },
+    {
+      "id": "child-home",
+      "title": "Çocuk ana ekranı · Dünyam",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../../../../packages/assets/rooms/mint-home/layered-v1/approved-original.png"
+      ],
+      "shots": [
+        "current/child-home-phone.png",
+        "current/child-home-tablet.png",
+        "current/child-home-landscape-phone.png"
+      ],
+      "note": "Oda ve panel birleşimi, mor ana eylem ve birleşik hafta/takvim satırı düzeltildi. Odanın tamamı korunur. Geniş ekran oranına göre panel genişliği uyarlanır; 1280×800 ile özgün pano aynı en-boy oranında değildir."
+    },
+    {
+      "id": "calendar",
+      "title": "Aile takvimi",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../calendar-premium/approved-reference.png"
+      ],
+      "shots": [
+        "current/calendar-phone.png",
+        "current/calendar-tablet.png"
+      ],
+      "note": "Aynı dört etkinlikle kontrol. Satır boşluğu ve üç temel dersin onaylı sade simgeleri eşleştirildi. Tarih, kullanıcı içeriği ve sonradan istenen bağlamsal maskot korunur."
+    },
+    {
+      "id": "timetable",
+      "title": "Haftalık ders programı",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../calendar-premium/approved-reference.png"
+      ],
+      "shots": [
+        "current/timetable-phone.png",
+        "current/timetable-tablet.png"
+      ],
+      "note": "Ders simgelerinin renkli yüzeyleri ve tam genişlikte gün seçimi düzeltildi. Kayıt durumu gerçeğe bağlıdır. Ayrı onaylı tablet programı yok; tablet görüntüsü uyarlamadır."
+    },
+    {
+      "id": "tasks",
+      "title": "Görevler",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../tasks-premium/proposal-v1.png"
+      ],
+      "shots": [
+        "current/tasks-phone.png",
+        "current/tasks-tablet.png"
+      ],
+      "note": "Ayrı sayaç rozetleri, satır içi büyük resimli ikonlar, başlık ağırlığı ve hafif kart gölgeleri. Yeni görev sihirbazı korunur."
+    },
+    {
+      "id": "rewards",
+      "title": "Ödüller",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../rewards-premium/proposal-v1.png"
+      ],
+      "shots": [
+        "current/rewards-phone.png",
+        "current/rewards-catalog-phone.png",
+        "current/rewards-tablet.png"
+      ],
+      "note": "Ödül görselleri büyütüldü; talep sayacı ve aktif durumu ayrı rozet. Hedef sihirbazı korunur."
+    },
+    {
+      "id": "prova",
+      "title": "Prova ana ekranı",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../prova-simplification/proposal-phone-v1.png",
+        "../prova-simplification/proposal-tablet-v1.png"
+      ],
+      "shots": [
+        "../home-fidelity-restoration/current/prova-phone.png",
+        "../home-fidelity-restoration/current/prova-tablet.png"
+      ],
+      "note": "PR #75 ile ana ekran düzeni düzeltildi."
+    },
+    {
+      "id": "builder",
+      "title": "Birleşik Prova hazırlama",
+      "reference_status": "missing-final-approval",
+      "status": "awaiting-reference-direction",
+      "refs": [],
+      "shots": [],
+      "note": "Ayrı son onaylı maket bulunamadı. Önceki işlevler korunuyor; bu ekran birebir onaylı eşleşme olarak sunulmuyor."
+    },
+    {
+      "id": "shared",
+      "title": "Ortak metin/görselle soru hazırlama",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../prova-shared-source/parent-phone-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "current/shared-phone.png",
+        "current/shared-tablet.png",
+        "current/shared-small.png"
+      ],
+      "note": "Numaralı adımlar, ortak içerik başlık bandı, kullanım sayacı ve maskot ölçeği. Bu fixture metin kaynağı kullanır; maketteki bahçe çizimiyle aynı içerik değildir."
+    },
+    {
+      "id": "notebook",
+      "title": "Çocuk çözüm defteri",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../prova-notebook/phone-tablet-refined-v2-proposal.png"
+      ],
+      "shots": [
+        "current/notebook-phone.png",
+        "current/notebook-tablet.png",
+        "current/notebook-portrait.png"
+      ],
+      "note": "Etiketli telefon araçları, daha dengeli soru/defter alanı ve küçük kaynak görseli. Uzun soruda verilenler artık sabit maskotun altında kalmaz. iOS simülatöründe yazı, kaynak kopyalama, çizim, genişletme ve modal açıkken dönüş kontrol edildi."
+    },
+    {
+      "id": "review",
+      "title": "Veli çözüm inceleme",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../prova-parent-review/parent-phone-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "current/review-phone.png",
+        "current/review-tablet.png",
+        "current/review-question-phone.png",
+        "current/review-choice-phone.png",
+        "current/review-empty-phone.png"
+      ],
+      "note": "Telefon kaynak önizlemesi ve tam soru penceresi, tablet not anahtarı ve puan alanı. Çoktan seçmeli ve yanıtsız durumlar ayrı kontrol edildi; boş defter çoktan seçmeli cevabın yerine kullanılmaz."
+    },
+    {
+      "id": "progress",
+      "title": "Gelişim",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../learning-progress/phone-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "current/progress-phone.png",
+        "current/progress-tablet.png"
+      ],
+      "note": "Tablet ders filtresi sınırlandı; grafik açıklamaları sağa alındı. Telefon açıklaması altta kalır; gerçek ölçüm anlamları değiştirilmedi."
+    },
+    {
+      "id": "help",
+      "title": "Yardım · SSS ve talepler",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../help/phone-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "current/help-phone.png",
+        "current/help-thread-phone.png",
+        "current/help-tablet.png"
+      ],
+      "note": "Arama sekmelerin üstüne alındı. Taleplerde gereksiz genel başlık kaldırıldı; karşılıklı mesajlar, tek satır gönderim ve tablet başlığında kapatma eylemi."
+    },
+    {
+      "id": "support",
+      "title": "Yönetim · Destek merkezi",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../support-operator/desktop-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "current/support-desktop.png",
+        "current/support-tablet.png"
+      ],
+      "note": "İkonlu menü, dengeli panel yüksekliği, karşılıklı mesajlar ve alt yanıt alanı. Aile yanıtı ile özel ekip notu ayrımı korunur."
+    },
+    {
+      "id": "articles",
+      "title": "Yönetim · Yardım yazıları",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../help-article-editor/desktop-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "current/articles-desktop.png",
+        "current/articles-tablet.png"
+      ],
+      "note": "Başlık ve Yeni yazı aynı hizada; form ve yayın bandı aralıkları düzeltildi. Kaydetme, inceleme ve yayın ayrı işlemlerdir."
+    },
+    {
+      "id": "library",
+      "title": "Yönetim · Kütüphane taslak inceleme",
+      "reference_status": "available",
+      "status": "implemented-and-compared",
+      "refs": [
+        "../library-review/desktop-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "current/library-review-desktop.png",
+        "current/library-review-tablet.png"
+      ],
+      "note": "Yükleme üst başlığa taşındı; paket bilgisi ve yayın bağlantısı bir araya alındı; soru listesi iki satırlı özet kullanır. Tam soru sağda erişilebilir; 20 soru gizlenmez."
+    },
+    {
+      "id": "wizards",
+      "title": "Görev ve ödül sihirbazları",
+      "reference_status": "missing-final-approval",
+      "status": "awaiting-reference-direction",
+      "refs": [],
+      "shots": [],
+      "note": "Ayrı son onaylı maket bulunamadı. Önceki işlevler korunuyor; bu ekran birebir onaylı eşleşme olarak sunulmuyor."
+    },
+    {
+      "id": "account",
+      "title": "Giriş, eşleştirme, aile ve ayarlar",
+      "reference_status": "missing-final-approval",
+      "status": "awaiting-reference-direction",
+      "refs": [],
+      "shots": [],
+      "note": "Ayrı son onaylı maket bulunamadı. Önceki işlevler korunuyor; bu ekran birebir onaylı eşleşme olarak sunulmuyor."
+    },
+    {
+      "id": "child-other",
+      "title": "Çocuk alt ekranları",
+      "reference_status": "missing-final-approval",
+      "status": "awaiting-reference-direction",
+      "refs": [],
+      "shots": [],
+      "note": "Ayrı son onaylı maket bulunamadı. Önceki işlevler korunuyor; bu ekran birebir onaylı eşleşme olarak sunulmuyor."
+    },
+    {
+      "id": "prova-other",
+      "title": "Prova yardımcı ekranları",
+      "reference_status": "missing-final-approval",
+      "status": "awaiting-reference-direction",
+      "refs": [],
+      "shots": [
+        "current/family-library-phone.png",
+        "current/family-library-tablet.png",
+        "current/family-groups-phone.png",
+        "current/family-groups-tablet.png"
+      ],
+      "note": "Ayrı son onaylı maket bulunamadı. Önceki işlevler korunuyor; bu ekran birebir onaylı eşleşme olarak sunulmuyor."
+    }
+  ],
+  "checks": [
+    "Mobil tsc ve Expo lint geçti.",
+    "Backoffice ESLint ve tsc geçti.",
+    "81 core testi geçti.",
+    "9 native metin / defter yerleşimi testi geçti.",
+    "Son kodla iOS Hermes export geçti (sentetik yapılandırma; dağıtım değil).",
+    "iPad Air M4 iOS 26.5 simülatör: dikey/yatay, kaynak kopyalama, yazı, çizgi, genişletme; sembol ve araç penceresi açıkken dönüşte döngü görülmedi.",
+    "iPhone 17 Pro iOS 26.5 simülatör: kaynak kopyalama, yazı ekleme, telefon defteri.",
+    "Aile kütüphanesi ve birlikte Prova dolu görünümleri sentetik sözleşmelerle açıldı; hata yok."
+  ],
+  "limits": [
+    "Ekran görüntülerinde yalnız sentetik veri kullanıldı; gerçek aile/demo/üretim kayıtları değiştirilmedi.",
+    "Fiziksel cihaz, Pencil, VoiceOver, Android, gerçek hesap/satın alma/AI kabulü bu tur tamamlanmadı.",
+    "Pano görüntüleri cihaz çerçevesi ve farklı örnek içerik içerir; otomatik piksel eşitliği yüzdesi verilmedi.",
+    "Kaynağı olmayan beş ekran grubu için kullanıcıya yön soruldu; bu gruplar tamamlandı sayılmıyor.",
+    "Yeni TestFlight veya üretim dağıtımı yapılmadı.",
+    "Geçici qa-notebook rotası iOS export öncesinde kaldırıldı."
+  ]
+}

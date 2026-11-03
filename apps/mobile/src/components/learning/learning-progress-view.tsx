@@ -138,7 +138,8 @@ export function ProgressSummary({ report }: { report: LearningProgress }) {
   );
 }
 function Counts(
-  { value }: {
+  { value, vertical = false }: {
+    vertical?: boolean;
     value:
       | LearningProgress["summary"]
       | LearningProgress["weeks"][number]
@@ -147,7 +148,7 @@ function Counts(
 ) {
   const { t } = useTranslation();
   return (
-    <View style={s.legend}>
+    <View style={[s.legend, vertical && { flexDirection: "column", alignItems: "flex-start", gap: 18 }]}>
       {states.map((key) => (
         <View key={key} style={s.legendItem}>
           <View style={[s.dot, { backgroundColor: progressColors[key] }]} />
@@ -165,7 +166,9 @@ export function ProgressChart({ report }: { report: LearningProgress }) {
     [width, setWidth] = useState(300);
   const max = Math.max(4, ...report.weeks.map((w) => w.total - w.pending));
   const tick = Math.ceil(max / 4), ceiling = tick * 4, plot = 168;
-  const chartWidth = Math.max(width - 34, report.weeks.length * 52);
+  const sideLegend = width >= 580 && fontScale < 1.4;
+  const plotWidth = width - (sideLegend ? 160 : 0);
+  const chartWidth = Math.max(plotWidth - 34, report.weeks.length * 52);
   const chosen = report.weeks.find((w) => w.week_start === selected);
   const language = i18n.resolvedLanguage ?? "tr";
   return (
@@ -176,7 +179,8 @@ export function ProgressChart({ report }: { report: LearningProgress }) {
       <Text accessibilityRole="header" style={b.h2}>
         {t("learningProgress.chartTitle")}
       </Text>
-      <View style={{ flexDirection: "row", paddingTop: 6 }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: sideLegend ? 20 : 0 }}>
+      <View style={{ flex: 1, minWidth: 0, flexDirection: "row", paddingTop: 6 }}>
         <View accessible={false} style={{ width: 34, height: plot }}>
           {[4, 3, 2, 1, 0].map((n) => (
             <Text
@@ -194,7 +198,7 @@ export function ProgressChart({ report }: { report: LearningProgress }) {
         </View>
         <ScrollView
           horizontal
-          showsHorizontalScrollIndicator={report.weeks.length * 52 > width - 34}
+          showsHorizontalScrollIndicator={report.weeks.length * 52 > plotWidth - 34}
           style={{ flex: 1 }}
         >
           <View style={{ width: chartWidth }}>
@@ -288,7 +292,9 @@ export function ProgressChart({ report }: { report: LearningProgress }) {
           </View>
         </ScrollView>
       </View>
-      <Counts value={report.summary} />
+      {sideLegend && <View style={{ width: 140 }}><Counts value={report.summary} vertical /></View>}
+      </View>
+      {!sideLegend && <Counts value={report.summary} />}
       {chosen
         ? (
           <View accessibilityLiveRegion="polite" style={s.chartDetail}>
@@ -302,7 +308,7 @@ export function ProgressChart({ report }: { report: LearningProgress }) {
           </View>
         )
         : null}
-      {report.weeks.length * 52 > width - 34
+      {report.weeks.length * 52 > plotWidth - 34
         ? <Text style={s.small}>{t("learningProgress.chartScroll")}</Text>
         : null}
       <Text style={s.note}>{t("learningProgress.chartNote")}</Text>

@@ -1040,6 +1040,8 @@
   },
   "taskPremium": {
     "subtitle": "Little habits, meaningful steps.",
+    "activeLabel": "Active",
+    "pausedLabel": "Paused",
     "activeCount": "Active {{count}}",
     "pausedCount": "Paused {{count}}",
     "encouragement": "Every child grows at their own pace.",

@@ -11,6 +11,7 @@ import { ApprovedScene } from '@/components/child-home/approved-scene';
 import { c, s } from '@/components/child-home/theme';
 import { Collectible } from '@/components/collectible';
 import { rewardTicketArt } from './room-art';
+import { SatinButton } from '@/components/planner/ui';
 import { TaskIcon } from '@/components/task-icon';
 import { ErrorText } from '@/components/ui/screen';
 import { childPath } from '@/lib/active-child';
@@ -36,6 +37,7 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
   const shortLandscape = width > height && height < 520 && fontScale <= 1.25;
   const wide = width >= 640 && width > height && fontScale <= 1.25;
   const [taskSheet, setTaskSheet] = useState(false);
+  const [bodyHeight, setBodyHeight] = useState(Math.max(1, height - 150));
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
   const returnToRoom = useCallback(() => scroll.current?.scrollTo({ y: 0, animated: false }), []);
@@ -52,8 +54,8 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
   };
   const error = data.error ?? actionError;
   const statusText = (status: string | null) => status === 'done' ? t('child.waitingApproval') : status === 'approved' ? t('child.approved') : status === 'returned' ? t('child.returnedTryAgain') : t('childMint.ready');
-  const primary = (label: string, run: () => void, busy = false) => <Pressable accessibilityRole="button" accessibilityState={{ disabled: busy, busy }} disabled={busy} onPress={run} style={({ pressed }) => [s.button, (pressed || busy) && s.pressed]}>{busy ? <ActivityIndicator color={c.white} /> : <Play size={20} fill={c.white} color={c.white} />}<Text style={s.buttonText}>{label}</Text></Pressable>;
-  const panel = <View style={[s.panelContent, !wide && s.panelContentPhone, shortLandscape && { padding: 12, gap: 10 }]}>
+  const primary = (label: string, run: () => void, busy = false) => <SatinButton title={label} onPress={run} busy={busy} icon={<Play size={20} fill={c.white} color={c.white}/>} style={{ borderRadius: 18, minHeight: 50 }}/>;
+  const panel = <View style={[s.panelContent, wide && { paddingLeft: 22 }, !wide && s.panelContentPhone, shortLandscape && { padding: 12, gap: 10 }]}>
     <View style={[s.section, !wide && { gap: 8 }]}>
       <Text accessibilityRole="header" style={s.heading}>{t('childMint.next')}</Text>
       {error ? <View style={s.card}><ErrorText error={error} />{primary(t('common.retry'), retry)}</View> : data.loading ? <View style={s.state}><ActivityIndicator color={c.purple} /><Text style={s.text}>{t('childMint.loading')}</Text></View> : next ? <View style={[s.card, !wide && { padding: 10, gap: 8 }]}>
@@ -74,10 +76,10 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
         <View style={{ flex: 1, gap: 3 }}><Text style={[s.text, s.bold]}>{goal.data?.rewardTitle ?? t('goal.pickCta')}</Text>{goal.data && <><Text style={s.small}>{t('room.goalProgress', { stars: Math.min(data.stars, goal.data.cost), cost: goal.data.cost })}</Text><View accessible accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: Math.max(1, goal.data.cost), now: Math.min(data.stars, goal.data.cost) }} style={s.track}><View style={[s.fill, { width: `${Math.min(100, Math.max(0, data.stars / Math.max(1, goal.data.cost) * 100))}%` }]} /></View><Text style={s.small}>{data.stars >= goal.data.cost ? t('goal.reached') : t('room.starsLeft', { count: goal.data.cost - data.stars })}</Text></>}</View><ChevronRight size={21} color={c.purple} />
       </Pressable>}
     </View>
-    <Pressable accessibilityRole="button" onPress={() => go('week')} style={({ pressed }) => [s.link, pressed && s.pressed]}><CalendarDays size={25} color={c.purple} /><Text style={[s.text, { flex: 1, color: c.ink }]}>{t('betaUx.weekProgress')}</Text><ChevronRight size={21} color={c.purple} /></Pressable>
-    <Pressable accessibilityRole="button" onPress={() => go('calendar')} style={({ pressed }) => [s.link, pressed && s.pressed]}><CalendarDays size={22} color={c.muted} /><Text style={[s.small, { flex: 1 }]}>{t('child.calendar')}</Text><ChevronRight size={19} color={c.muted} /></Pressable>
+    <View style={[s.link, { paddingHorizontal: 8, paddingVertical: 0, gap: 0 }]}><Pressable accessibilityRole="button" onPress={() => go('week')} style={({ pressed }) => [s.row, { flex: 1, minHeight: 52, paddingHorizontal: 6 }, pressed && s.pressed]}><CalendarDays size={24} color={c.purple}/><Text style={[s.small, { color: c.ink, flex: 1 }]}>{t('betaUx.weekProgress')}</Text><ChevronRight size={18} color={c.purple}/></Pressable><Pressable accessibilityRole="button" onPress={() => go('calendar')} style={({ pressed }) => [s.row, { minHeight: 52, paddingHorizontal: 10, borderLeftWidth: 1, borderLeftColor: c.line }, pressed && s.pressed]}><Text style={[s.small, { color: c.purple }]}>{t('child.calendar')}</Text></Pressable></View>
   </View>;
-  const panelWidth = Math.max(300, Math.min(shortLandscape ? 380 : 420, (width - insets.left - insets.right) * .46));
+  const availableWidth = width - insets.left - insets.right;
+  const panelWidth = Math.max(300, Math.min(availableWidth * .58, availableWidth - bodyHeight * 729 / 641 + 28));
   const scene = <ApprovedScene style={wide ? { flex: 1 } : { width: '100%', height: width * 641 / 729 }} onTasks={openTasks} onProva={() => go('prova')} onCollection={() => go('collection')} />;
   return <SafeAreaView edges={['top', 'left', 'right']} style={s.root}>
     <View style={[s.header, !wide && s.headerPhone, shortLandscape && { paddingVertical: 2, paddingHorizontal: 12, gap: 8 }]}>
@@ -88,7 +90,7 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
       <Pressable accessibilityRole="button" accessibilityLabel={t('childV5.customize')} onPress={() => go('room-preview')} style={({ pressed }) => [s.chip, !wide && { paddingHorizontal: 8 }, pressed && s.pressed]}><Pencil size={21} color={c.purple} />{(wide || width >= 390) && <Text style={[s.small, { color: c.purple }]}>{t(wide && !shortLandscape ? 'childV5.customize' : 'childMint.room')}</Text>}</Pressable>
       <Pressable accessibilityRole="button" accessibilityLabel={t('room.parentExit')} accessibilityState={{ disabled: !!exitBusy }} disabled={exitBusy} onPress={onParentExit} style={({ pressed }) => [s.chip, !wide && { paddingHorizontal: 8 }, pressed && s.pressed]}>{exitBusy ? <ActivityIndicator color={c.purple} /> : <LockKeyhole size={21} color={c.muted} />}{wide && <Text style={s.small}>{t('room.parentExit')}</Text>}</Pressable>
     </View>
-    {wide ? <View style={s.body}>{scene}<ScrollView style={[s.panel, { width: panelWidth, flexGrow: 0, flexShrink: 0 }]}>{panel}</ScrollView></View> : <ScrollView ref={scroll} style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 8 }}><Text accessibilityRole="header" style={[s.greetingPhone, { color: c.ink }]}>{t('child.hello', { name: childName })}</Text>{scene}<View style={[s.panel, s.panelPhone]}>{panel}</View></ScrollView>}
+    {wide ? <View style={s.body} onLayout={e => setBodyHeight(e.nativeEvent.layout.height)}>{scene}<ScrollView style={[s.panel, { width: panelWidth, marginLeft: -28, flexGrow: 0, flexShrink: 0 }]}>{panel}</ScrollView></View> : <ScrollView ref={scroll} style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 8 }}><Text accessibilityRole="header" style={[s.greetingPhone, { color: c.ink }]}>{t('child.hello', { name: childName })}</Text>{scene}<View style={[s.panel, s.panelPhone]}>{panel}</View></ScrollView>}
     <View style={[s.nav, { paddingBottom: insets.bottom }, shortLandscape && { paddingTop: 0 }]}>
       {([{ key: 'world', Icon: House, run: () => {}, label: t('childMint.world') }, { key: 'tasks', Icon: ClipboardCheck, run: openTasks, label: t('childMint.tasks') }, { key: 'prova', Icon: GraduationCap, run: () => go('prova'), label: (exams.data ?? 0) > 0 ? `${t('prova.title')} (${exams.data})` : t('prova.title') }, { key: 'collection', Icon: Trophy, run: () => go('collection'), label: t('childMint.collection') }]).map(({ key, Icon, run, label }) => <Pressable key={key} accessibilityRole="button" accessibilityState={{ selected: key === 'world' }} onPress={key === 'world' ? returnToRoom : run} style={({ pressed }) => [s.navItem, shortLandscape && { minHeight: 48, flexDirection: 'row', gap: 8 }, pressed && s.pressed]}><Icon size={wide && !shortLandscape ? 28 : 23} color={key === 'world' ? c.purple : c.muted} fill={key === 'world' ? c.purple : 'none'} /><Text style={[s.small, { color: key === 'world' ? c.purple : c.muted }]}>{label}</Text>{key === 'world' && <View style={s.navLine} />}</Pressable>)}
     </View>

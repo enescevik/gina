@@ -36,6 +36,10 @@
 .library-intro > p {
   color: #625c85;
 }
+.library-intro.in-header { margin: 0; }
+.library-intro.in-header > p { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.admin-page-actions:has(.library-header-upload) > .admin-badge { display: none; }
+.library-question-summary { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .library-navigation {
   width: fit-content;
   max-width: 100%;
@@ -176,6 +180,7 @@
 .library-package-heading p {
   margin-top: 4px;
 }
+.library-package-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
 .library-status {
   display: flex;
   align-items: center;
@@ -189,7 +194,7 @@
 }
 .library-columns {
   display: grid;
-  grid-template-columns: 245px minmax(0, 1fr);
+  grid-template-columns: 220px minmax(0, 1fr);
   gap: 18px;
 }
 .library-questions,
@@ -218,7 +223,7 @@
 }
 .library-question-list button {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   text-align: left;
   width: 100%;
@@ -470,7 +475,7 @@
   }
   .library-package-heading {
     align-items: flex-start;
-    flex-direction: column;
+    flex-wrap: wrap;
   }
   .library-questions {
     padding: 12px;
@@ -615,11 +620,11 @@
 }
 .library-steps {
   margin: 12px 0 18px;
-  padding-top: 16px;
+  padding-top: 10px;
 }
 .library-package-heading {
-  padding-bottom: 16px;
-  margin-bottom: 18px;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
 }
 .library-package-heading h2 {
   font-size: 30px;
@@ -637,7 +642,8 @@
 }
 .library-question-list button {
   font-size: 13px;
-  padding: 10px 8px;
+  padding: 8px;
+  margin-bottom: 6px;
 }
 .library-source {
   padding: 14px;

@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 import { Star } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Collectible } from "@/components/collectible";
@@ -10,5 +10,5 @@ export function RewardTile({ slug, size = 84 }: { slug: string | null; size?: nu
 }
 export function RewardCost({ count }: { count: number }) {
   const { t } = useTranslation();
-  return <View style={[u.row, { gap: 6 }]}><Star accessible={false} size={22} color="#C88B27" fill="#F7BC50" /><Text style={[u.copy, { flexShrink: 1 }]}>{t("room.starCount", { count })}</Text></View>;
+  return <View style={[u.row, { gap: 6 }]}><Star accessible={Platform.OS === "web" ? undefined : false} aria-hidden size={22} color="#C88B27" fill="#F7BC50" /><Text style={[u.copy, { flexShrink: 1 }]}>{t("room.starCount", { count })}</Text></View>;
 }

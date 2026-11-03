@@ -198,7 +198,7 @@ export function PlannerCalendar({
             {
               flex: 1,
               minHeight: 64,
-              padding: compact ? 8 : 12,
+              padding: 8,
               gap: 10,
               borderRadius: 20,
               backgroundColor: pressed ? "#EEE8FA" : "#FAF7F7",
@@ -219,7 +219,7 @@ export function PlannerCalendar({
               }}
             >
               {o.event.type === "school" ? (
-                <SubjectIcon subject={o.event.title} size={30} variant="svg" />
+                <SubjectIcon subject={o.event.title} size={30} variant="svg" appearance="planner" />
               ) : (
                 <EventIcon type={o.event.type} size={30} variant="svg" />
               )}
