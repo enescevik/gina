@@ -7,7 +7,7 @@ Yeni ekranlarda ekran bazında tasarım onayı korunur. Gelişim ekranı maketi 
 | İş | Güncel durum / kapanış koşulu |
 |---|---|
 | Birleşik Prova | PR #57 main'de. Canlı migration/Edge ve yeni mobil paket dağıtılmadı. |
-| Defter/iPad hataları | Önceki PR #54/#55 kod düzeltmeleri var. Yeni native paketle gerçek cihaz yön/klavye/kalem/tam alan kontrolleri açık. |
+| Defter/iPad hataları | PR #54/#55 ve #66 düzeltmeleri var. Dikey soru başlığı kesilmesi ve defter devamının belirsizliği giderildi; iPad simülatörü/dört web ölçüsü kanıtı notebook-visible-content klasöründe. Fiziksel cihaz yön/klavye/kalem/tam alan kontrolleri açık. |
 | Kalıcı cevap kurtarma | Bu artım: cihazda son cevap + belirsiz istek saklanır; yeniden açılış ve çakışma kontrolleri. Salt çevrimdışı sınav açma/soru indirme değildir. Native cihaz kontrolü açık. |
 | Gelişim raporu | Bu artım: aile/sınıf/program ayrı hesap, bekleyen/boş/kısmi ayrımı, kanıt soruları. Onaylı ekran uygulandı: 7/30/90 gün, sınıf/ders filtresi, soruya doğrudan geçiş, az gözlem ayrımı. Telefon/tablet web kabulü geçti; native kabul açık. |
 | MEB/müfredat | 16 resmî 2026–2027/1 tablo ve 648 senaryo adayı; 17 senaryoda açık kaynak yorumu gereği. Tam 1–12 program/çıktı kataloğu değildir. Kaynak incelemesi, okul senaryosu seçimi, katalog/API/AI ve sınav atama bağı açık. |
