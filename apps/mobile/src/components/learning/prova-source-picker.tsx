@@ -28,7 +28,19 @@ import { b, BuilderChoice, BuilderQuestionPreview } from "./prova-builder-ui";
 import type { BuilderQuestion } from "./prova-builder-data";
 
 type Mode = "sources" | "library" | "ai" | "manual" | "document" | "repeat";
-type RepeatUnit = { kind: "question" | "group"; id: string; title: string; subject: string; affected: number; question_count: number; evidence: {attempt_id:string; question_id:string; state:"wrong"|"partial"}[] };
+type RepeatUnit = {
+  kind: "question" | "group";
+  id: string;
+  title: string;
+  subject: string;
+  affected: number;
+  question_count: number;
+  evidence: {
+    attempt_id: string;
+    question_id: string;
+    state: "wrong" | "partial";
+  }[];
+};
 export function ProvaSourcePicker(
   { visible, draft, draftId, onClose, onAdd }: {
     visible: boolean;
@@ -95,7 +107,7 @@ export function ProvaSourcePicker(
     enabled: visible && !!subject && !!draft.grade,
     queryFn: async () => {
       const { data, error } = await supabase.from("exam_blueprints").select(
-        "id,name,subject,grade,rows",
+        "id,name,subject,grade,rows,source_context",
       ).eq("grade", draft.grade!).eq("subject", subject).order("created_at", {
         ascending: false,
       });
@@ -157,10 +169,19 @@ export function ProvaSourcePicker(
     },
   });
   const repeats = useQuery({
-    queryKey: ["repeat_candidates", familyId, draftId, draft.childId, draft.grade, draft.subjects],
+    queryKey: [
+      "repeat_candidates",
+      familyId,
+      draftId,
+      draft.childId,
+      draft.grade,
+      draft.subjects,
+    ],
     enabled: visible && mode === "repeat" && !!draft.childId,
     queryFn: async () => {
-      const {data,error} = await supabase.rpc("get_repeat_candidates", {p_draft_id:draftId});
+      const { data, error } = await supabase.rpc("get_repeat_candidates", {
+        p_draft_id: draftId,
+      });
       if (error) throw error;
       return data as unknown as RepeatUnit[];
     },
@@ -179,15 +200,14 @@ export function ProvaSourcePicker(
         await uploadLearningFile(file, "document");
       }
       const payload = {
+        draft_id: draftId,
         subject,
         grade: draft.grade,
         topic_plan: plan,
         blueprint_id: blueprint?.id ?? null,
         count: aiCount,
         kind: draft.kind,
-        assessment: draft.kind === "open_ended" && draft.purpose === "written"
-          ? "written"
-          : "practice",
+        assessment: draft.purpose === "written" ? "written" : "practice",
         difficulty: draft.difficulty,
         note: draft.note,
         locale: i18n.language.startsWith("en") ? "en" : "tr",
@@ -242,7 +262,12 @@ export function ProvaSourcePicker(
     setPreview(null);
     setLocalError(null);
   }
-  const error = localError ?? (mode === "library" ? bank.error : mode === "repeat" ? repeats.error : null);
+  const error = localError ??
+    (mode === "library"
+      ? bank.error
+      : mode === "repeat"
+      ? repeats.error
+      : null);
   return (
     <Modal
       visible={visible}
@@ -276,7 +301,22 @@ export function ProvaSourcePicker(
           >
             {mode !== "sources"
               ? (
-                <Pressable accessibilityRole="button" accessibilityLabel={t("provaBuilder.back")} disabled={busy} onPress={() => switchMode("sources")} style={[b.row,{minHeight:48,alignSelf:'flex-start',paddingRight:16}]}><ArrowLeft size={20} color={p.purple}/><Text style={[b.bold,{color:p.purple}]}>{t("provaBuilder.back")}</Text></Pressable>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={t("provaBuilder.back")}
+                  disabled={busy}
+                  onPress={() => switchMode("sources")}
+                  style={[b.row, {
+                    minHeight: 48,
+                    alignSelf: "flex-start",
+                    paddingRight: 16,
+                  }]}
+                >
+                  <ArrowLeft size={20} color={p.purple} />
+                  <Text style={[b.bold, { color: p.purple }]}>
+                    {t("provaBuilder.back")}
+                  </Text>
+                </Pressable>
               )
               : <Text style={b.copy}>{t("provaBuilder.sourceHelp")}</Text>}
             {error
@@ -351,8 +391,15 @@ export function ProvaSourcePicker(
                       });
                     }}
                   />
-                  <SatinButton secondary title={t("provaBuilder.repeat")} disabled={!draft.childId} onPress={() => switchMode("repeat")} />
-                  {!draft.childId && <Text style={b.muted}>{t("provaBuilder.repeatChild")}</Text>}
+                  <SatinButton
+                    secondary
+                    title={t("provaBuilder.repeat")}
+                    disabled={!draft.childId}
+                    onPress={() => switchMode("repeat")}
+                  />
+                  {!draft.childId && (
+                    <Text style={b.muted}>{t("provaBuilder.repeatChild")}</Text>
+                  )}
                   <Field
                     label={t("provaBuilder.search")}
                     value={search}
@@ -453,28 +500,103 @@ export function ProvaSourcePicker(
                 </>
               )
               : null}
-            {mode === "repeat" && <>
-              <Text style={b.copy}>{t("provaBuilder.repeatIntro")}</Text>
-              <Pressable accessibilityRole="button" accessibilityState={{expanded:repeatDetails}} onPress={()=>setRepeatDetails(!repeatDetails)} style={{minHeight:48,justifyContent:'center'}}><Text style={[b.bold,{color:p.purple}]}>{t("provaBuilder.repeatRules")}</Text></Pressable>
-              {repeatDetails && <Text style={b.muted}>{t("provaBuilder.repeatHelp")}</Text>}
-              {repeats.isPending && <Text style={b.copy}>{t("common.loading")}</Text>}
-              {repeats.error && <SatinButton secondary title={t("common.retry")} onPress={() => void repeats.refetch()} />}
-              {repeats.isSuccess && !repeats.data.length && <Text style={b.hint}>{t("provaBuilder.repeatEmpty")}</Text>}
-              {repeats.data?.map(unit => {
-                const already=draft.blocks.some(block=>block.id===unit.id);
-                return <View key={unit.id} style={b.block}>
-                  <BuilderChoice label={unit.title} selected={already || selected.some(block=>block.id===unit.id)} disabled={already || busy || (unit.kind==='group' && !policy.data)} onPress={()=>choose({kind:unit.kind,id:unit.id,source:'library'})}/>
-                  <Text style={b.muted}>{unit.subject} · {t('provaBuilder.repeatCount',{affected:unit.affected,total:unit.question_count})}</Text>
-                  {unit.kind==='group' && <Text style={b.copy}>{t('provaBuilder.repeatShared')}</Text>}
-                  {unit.kind==='group' && !policy.data && <Text style={b.muted}>{t('provaBuilder.sourceDisabled')}</Text>}
-                  {already && <Text style={b.muted}>{t('provaBuilder.repeatAlready')}</Text>}
-                  <Pressable accessibilityRole="button" accessibilityLabel={t('provaBuilder.repeatEvidence')} disabled={busy} style={[b.row,{minHeight:48}]} onPress={()=>{
-                    const first=unit.evidence[0]; if(!first)return;
-                    onClose();router.push({pathname:'/parent/prova/review/[attemptId]',params:{attemptId:first.attempt_id,questionId:first.question_id}});
-                  }}><Text style={[b.bold,{color:p.purple}]}>{t('provaBuilder.repeatEvidence')}</Text><ArrowRight size={18} color={p.purple}/></Pressable>
-                </View>;
-              })}
-            </>}
+            {mode === "repeat" && (
+              <>
+                <Text style={b.copy}>{t("provaBuilder.repeatIntro")}</Text>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityState={{ expanded: repeatDetails }}
+                  onPress={() => setRepeatDetails(!repeatDetails)}
+                  style={{ minHeight: 48, justifyContent: "center" }}
+                >
+                  <Text style={[b.bold, { color: p.purple }]}>
+                    {t("provaBuilder.repeatRules")}
+                  </Text>
+                </Pressable>
+                {repeatDetails && (
+                  <Text style={b.muted}>{t("provaBuilder.repeatHelp")}</Text>
+                )}
+                {repeats.isPending && (
+                  <Text style={b.copy}>{t("common.loading")}</Text>
+                )}
+                {repeats.error && (
+                  <SatinButton
+                    secondary
+                    title={t("common.retry")}
+                    onPress={() => void repeats.refetch()}
+                  />
+                )}
+                {repeats.isSuccess && !repeats.data.length && (
+                  <Text style={b.hint}>{t("provaBuilder.repeatEmpty")}</Text>
+                )}
+                {repeats.data?.map((unit) => {
+                  const already = draft.blocks.some((block) =>
+                    block.id === unit.id
+                  );
+                  return (
+                    <View key={unit.id} style={b.block}>
+                      <BuilderChoice
+                        label={unit.title}
+                        selected={already ||
+                          selected.some((block) => block.id === unit.id)}
+                        disabled={already || busy ||
+                          (unit.kind === "group" && !policy.data)}
+                        onPress={() =>
+                          choose({
+                            kind: unit.kind,
+                            id: unit.id,
+                            source: "library",
+                          })}
+                      />
+                      <Text style={b.muted}>
+                        {unit.subject} · {t("provaBuilder.repeatCount", {
+                          affected: unit.affected,
+                          total: unit.question_count,
+                        })}
+                      </Text>
+                      {unit.kind === "group" && (
+                        <Text style={b.copy}>
+                          {t("provaBuilder.repeatShared")}
+                        </Text>
+                      )}
+                      {unit.kind === "group" && !policy.data && (
+                        <Text style={b.muted}>
+                          {t("provaBuilder.sourceDisabled")}
+                        </Text>
+                      )}
+                      {already && (
+                        <Text style={b.muted}>
+                          {t("provaBuilder.repeatAlready")}
+                        </Text>
+                      )}
+                      <Pressable
+                        accessibilityRole="button"
+                        accessibilityLabel={t("provaBuilder.repeatEvidence")}
+                        disabled={busy}
+                        style={[b.row, { minHeight: 48 }]}
+                        onPress={() => {
+                          const first = unit.evidence[0];
+                          if (!first) return;
+                          onClose();
+                          router.push({
+                            pathname: "/parent/prova/review/[attemptId]",
+                            params: {
+                              attemptId: first.attempt_id,
+                              questionId: first.question_id,
+                            },
+                          });
+                        }}
+                      >
+                        <Text style={[b.bold, { color: p.purple }]}>
+                          {t("provaBuilder.repeatEvidence")}
+                        </Text>
+                        <ArrowRight size={18} color={p.purple} />
+                      </Pressable>
+                    </View>
+                  );
+                })}
+              </>
+            )}
             {mode === "ai" || mode === "document"
               ? (
                 <>
@@ -518,13 +640,41 @@ export function ProvaSourcePicker(
                             {blueprints.data.map((bp) => (
                               <BuilderChoice
                                 key={bp.id}
-                                label={bp.name}
+                                label={[
+                                  bp.name,
+                                  typeof bp.source_context === "object" &&
+                                    bp.source_context &&
+                                    !Array.isArray(bp.source_context) &&
+                                    typeof bp.source_context.academic_year ===
+                                      "string"
+                                    ? bp.source_context.academic_year
+                                    : "",
+                                ].filter(Boolean).join(" · ")}
                                 selected={blueprintId === bp.id}
                                 onPress={() => setBlueprintId(bp.id)}
                               />
                             ))}
                           </View>
                         </View>
+                      )
+                      : null}
+                    {entitlement.data?.scenarios
+                      ? (
+                        <SatinButton
+                          secondary
+                          title={t("prova.newBlueprint")}
+                          onPress={() => {
+                            onClose();
+                            router.push("/parent/prova/blueprint");
+                          }}
+                        />
+                      )
+                      : null}
+                    {blueprint
+                      ? (
+                        <Text style={b.hint}>
+                          {t("blueprintFlow.manualNotice")}
+                        </Text>
                       )
                       : null}
                     {!blueprint
