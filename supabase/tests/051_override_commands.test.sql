@@ -1,0 +1,45 @@
+begin;
+select no_plan();
+insert into auth.users(id,email) values
+ ('00000000-0000-4000-8000-000000005101','admin-one@test.invalid'),
+ ('00000000-0000-4000-8000-000000005102','admin-two@test.invalid'),
+ ('00000000-0000-4000-8000-000000005103','parent@test.invalid');
+insert into public.admins(user_id) values('00000000-0000-4000-8000-000000005101'),('00000000-0000-4000-8000-000000005102');
+insert into public.families(id,name,created_by) values('10000000-0000-4000-8000-000000005101','Deneme Ailesi','00000000-0000-4000-8000-000000005103');
+insert into public.family_members(family_id,user_id) values('10000000-0000-4000-8000-000000005101','00000000-0000-4000-8000-000000005103');
+select set_config('test.override',jsonb_build_object('action','grant','family_id','10000000-0000-4000-8000-000000005101','plan','pro','reason','Destek telafisi','starts_at',now(),'ends_at',now()+interval '30 days')::text,true);
+select ok(not has_function_privilege('anon','public.admin_save_override(uuid,jsonb)','execute'),'anonymous cannot write');
+select ok(not has_table_privilege('authenticated','gina.override_commands','select'),'private receipts unavailable to families');
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000005103","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000005101"}}',true);
+select throws_ok($$select public.admin_save_override('30000000-0000-4000-8000-000000005101',current_setting('test.override')::jsonb)$$,'42501','forbidden','parent cannot grant');
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000005101","role":"authenticated","gina":{"role":"none","admin":true}}',true);
+select set_config('test.receipt',public.admin_save_override('30000000-0000-4000-8000-000000005101',current_setting('test.override')::jsonb)::text,true);
+select is(public.admin_save_override('30000000-0000-4000-8000-000000005101',current_setting('test.override')::jsonb),current_setting('test.receipt')::jsonb,'lost response replay returns exact receipt');
+select is((select count(*)::int from public.entitlement_overrides),1,'one grant after replay');
+select is((select count(*)::int from public.audit_log where target_table='entitlement_overrides'),1,'one audit after replay');
+select is(current_setting('test.receipt')::jsonb->>'family_id','10000000-0000-4000-8000-000000005101','receipt identifies family');
+select throws_ok($$select public.admin_save_override('30000000-0000-4000-8000-000000005101',current_setting('test.override')::jsonb||'{"plan":"plus"}')$$,'P0001','request_conflict','same ID cannot change plan');
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000005102","role":"authenticated","gina":{"role":"none","admin":true}}',true);
+select throws_ok($$select public.admin_save_override('30000000-0000-4000-8000-000000005101',current_setting('test.override')::jsonb)$$,'P0001','request_conflict','another admin cannot replay receipt');
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000005101","role":"authenticated","gina":{"role":"none","admin":true}}',true);
+select throws_ok($$select public.admin_save_override(gen_random_uuid(),current_setting('test.override')::jsonb||'{"reason":"x"}')$$,'P0001','override_reason_required','reason required');
+select throws_ok($$select public.admin_save_override(gen_random_uuid(),current_setting('test.override')::jsonb||jsonb_build_object('reason',repeat('x',1001)))$$,'P0001','override_reason_required','reason bounded');
+select throws_ok($$select public.admin_save_override(gen_random_uuid(),current_setting('test.override')::jsonb||'{"plan":"free"}')$$,'22023','invalid_input','free grant rejected');
+select throws_ok($$select public.admin_save_override(gen_random_uuid(),current_setting('test.override')::jsonb||'{"ends_at":"infinity"}')$$,'P0001','override_ends_at_invalid','infinite expiry rejected');
+select throws_ok($$select public.admin_save_override(gen_random_uuid(),current_setting('test.override')::jsonb||'{"extra":"ignored?"}')$$,'22023','invalid_input','unknown fields not silently dropped');
+select throws_ok($$select public.admin_save_override(null,current_setting('test.override')::jsonb)$$,'22023','invalid_input','request required');
+select throws_ok($$select public.admin_save_override(gen_random_uuid(),current_setting('test.override')::jsonb||jsonb_build_object('ends_at',now()+interval '3 years'))$$,'P0001','override_too_long','existing duration cap retained');
+select set_config('test.expire',jsonb_build_object('action','expire','override_id',current_setting('test.receipt')::jsonb->>'override_id','reason','Telafi süresi sonlandırıldı')::text,true);
+select set_config('test.expired',public.admin_save_override('30000000-0000-4000-8000-000000005102',current_setting('test.expire')::jsonb)::text,true);
+select is(public.admin_save_override('30000000-0000-4000-8000-000000005102',current_setting('test.expire')::jsonb),current_setting('test.expired')::jsonb,'expiration replay succeeds');
+select is((select count(*)::int from public.audit_log where action='entitlement_overrides.expire'),1,'one expiration reason audit');
+select throws_ok($$select public.admin_save_override('30000000-0000-4000-8000-000000005103',current_setting('test.expire')::jsonb)$$,'P0001','override_not_found_or_revoked','different command does not revoke twice');
+select is(public.admin_save_override('30000000-0000-4000-8000-000000005101',current_setting('test.override')::jsonb),current_setting('test.receipt')::jsonb,'grant replay after revoke does not recreate right');
+select is((select count(*)::int from public.entitlement_overrides where revoked_at is null),0,'no reactivation');
+reset role;
+select is((select count(*)::int from gina.override_commands),2,'failed commands leave no receipts');
+delete from public.admins where user_id='00000000-0000-4000-8000-000000005101';
+set local role authenticated;
+select throws_ok($$select public.admin_save_override('30000000-0000-4000-8000-000000005101',current_setting('test.override')::jsonb)$$,'42501','forbidden','revoked admin cannot replay with stale token');
+select * from finish();rollback;

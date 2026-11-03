@@ -2294,6 +2294,7 @@ isOneToOne: false
 "admin_delete_global_question":
 { Args: { "p_question_id": string }; Returns: undefined
                            },
+"admin_save_override": { Args: { p_request_id: string; p_command: Json }; Returns: Json },
 "admin_expire_override":
 { Args: { "p_override_id": string,"p_reason": string }; Returns: undefined
                            },
