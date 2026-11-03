@@ -173,7 +173,10 @@ export async function callClaude<T>(
   );
   if (!count.ok) throw new Error(`anthropic_${count.status}`);
   const tokens = (await count.json()).input_tokens;
-  if (!Number.isInteger(tokens) || tokens > (cfg.maxInputTokens ?? 8000)) {
+  if (!Number.isInteger(tokens) || tokens < 0) {
+    throw new Error("ai_token_count_invalid");
+  }
+  if (tokens > (cfg.maxInputTokens ?? 8000)) {
     throw new Error("ai_input_too_large");
   }
   const res = await fetch("https://api.anthropic.com/v1/messages", {
@@ -202,12 +205,20 @@ export async function callClaude<T>(
   if (data.stop_reason === "max_tokens") {
     throw new Error("anthropic_max_tokens");
   }
-  const block = (data.content ?? []).find((b: { type: string }) =>
-    b.type === "text"
-  );
-  const text: string = block?.text ?? "{}";
+  const block = (Array.isArray(data.content) ? data.content : []).find((
+    b: { type: string },
+  ) => b?.type === "text");
+  if (typeof block?.text !== "string" || !block.text.trim()) {
+    throw new Error("ai_result_invalid");
+  }
+  let output: T;
+  try {
+    output = JSON.parse(block.text.replace(/^```json\s*|```\s*$/g, "")) as T;
+  } catch {
+    throw new Error("ai_result_invalid");
+  }
   return {
-    output: JSON.parse(text.replace(/^```json\s*|```\s*$/g, "")) as T,
+    output,
     inputTokens: data.usage?.input_tokens ?? null,
     outputTokens: data.usage?.output_tokens ?? null,
   };
