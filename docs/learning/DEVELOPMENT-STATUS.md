@@ -367,3 +367,11 @@ Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli
 - `/billing` seçilen abonelikte mağazadan kontrol ve geçmiş görünümü eklendi. Başarılı/güncel/değişmedi/başarısız durumlar ayrıdır; eksik mağaza ayarı başarı sayılmaz. Gerçek UI sentetik kayıp yanıt, yeniden açılış, hata ve rol iptali kabulü geçti.
 - 31 yeni SQL + dört gerçek DB yarışı + 18 Edge testi; toplam 52 dosya/1322 SQL kontrolü. Backoffice tip/lint/üretim derlemesi ve 109 çekirdek testi geçti. Görseller: docs/design/screens/operator-reconciliation/.
 - Bu mevcut bir aboneliğin kontrolüdür; gerçek iade/iptal, henüz bağlanmamış mağaza kaydını keşfetme veya bildirim geçmişini kurtarma değildir. Migration/Edge/UI henüz üretimde değil; TestFlight 17 değişmedi.
+
+## 4 Kasım — belgeden görev/ödül taslakları ve kaynak bağı (075000)
+
+- Görev ve ödül sihirbazları fotoğraf/PDF’den en fazla üç öneri alır; ayrı depolama/AI izinleri, düzenleme, çoklu seçim ve son veli onayı korunur. Hedef seçilen ödülün belgesini gösterir.
+- Belge kaydı ve görev/ödül aynı işlemde bağlanır. Aile/durum kontrolü, kilit, tekrar makbuzu ve çocuk belge erişim yasağı test edildi.
+- AI isteği gönderilmeden önce cihazda saklanır; sonuç kaybolursa aynı istek geri alınır. Ücretli çalışmanın lease’i bittiğinde yeniden üretim otomatik başlamaz; geç sonuç önceki durumu ezmez.
+- 53 SQL dosyasında 1.355 kontrol, dört gerçek eşzamanlılık senaryosu, 116 core ve 23 ilgili Edge kontrolü geçti. Mobil lint/typecheck geçti. Telefon/tablet sentetik uygulama kanıtları: `docs/design/screens/document-setup/`.
+- Gerçek belge/model doğruluğu ve fiziksel cihaz kabulü açık; birleşik ödev/ders/kurs planı bu artım değildir. 075000 üretimde yok; TestFlight 17 değişmedi.

@@ -105,3 +105,7 @@ Deno.test("prova document: verified content keeps origin and records distinct ge
     ),
   );
 });
+Deno.test('setup document records separate purpose consent',async()=>{
+ const f=await fixture();const r=await provaDocument(f.db,'family','parent',id,id,true,'setup');assert(!(r instanceof Response));
+ assert(f.calls.some(c=>c.table==='learning_source_ai_consents'&&(c.value as {purpose?:string})?.purpose==='setup'));
+});

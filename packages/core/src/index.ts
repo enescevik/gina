@@ -34,3 +34,5 @@ export * from "./setup-command";
 export * from "./group-command";
 
 export * from "./billing";
+
+export * from "./setup-ai-journal";

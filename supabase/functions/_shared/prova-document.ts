@@ -8,6 +8,7 @@ export async function provaDocument(
   requestId: string,
   sourceId: unknown,
   consent: unknown,
+  purpose: "generate" | "setup" = "generate",
 ): Promise<
   | { media: Exclude<AiUserContent, string>; id: string; sha256: string }
   | Response
@@ -43,7 +44,7 @@ export async function provaDocument(
     family_id: familyId,
     actor_id: userId,
     scope_id: requestId,
-    purpose: "generate",
+    purpose,
     version: "source-ai-v1",
   }, {
     onConflict: "source_id,actor_id,scope_id,purpose",

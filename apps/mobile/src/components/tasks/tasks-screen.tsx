@@ -1,3 +1,4 @@
+import { useSetupSources, SetupSourceLinks, SourceLoadError } from "@/components/setup/source-links";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
@@ -143,6 +144,7 @@ export function TasksScreen() {
       path: "/parent/menu" as const,
     },
   ];
+  const sources = useSetupSources("task", (templates.data ?? []).map(item=>item.id));
   return (
     <SafeAreaView edges={['top', 'left', 'right']} style={u.root}>
       <ScrollView
@@ -305,6 +307,7 @@ export function TasksScreen() {
                 {t("taskPremium.toggleError")}
               </Text>
             ) : null}
+            <SourceLoadError error={sources.error} retry={()=>void sources.refetch()}/>
             {!busy && visible.length === 0 ? (
               <View style={u.card}>
                 <Text style={u.heading}>
@@ -333,12 +336,13 @@ export function TasksScreen() {
                       width: wide ? "48.5%" : "100%",
                       padding: 14,
                       borderRadius: 24,
-                      flexDirection: "row",
-                      alignItems: "center",
+                      flexDirection: "column",
+                      alignItems: "stretch",
                       gap: 12,
                     },
                   ]}
                 >
+                  <View style={{flexDirection:"row",alignItems:"center",gap:12}}>
                   <TaskTile slug={task.icon} size={wide ? 72 : 64} />
                   <View style={[u.fill, { gap: 5 }]}>
                     <Text style={u.bold}>{task.title}</Text>
@@ -398,6 +402,8 @@ export function TasksScreen() {
                       )}
                     </Text>
                   </Pressable>
+                  </View>
+                  <SetupSourceLinks sources={(sources.data??[]).filter(s=>s.item_id===task.id)}/>
                 </View>
               ))}
             </View>

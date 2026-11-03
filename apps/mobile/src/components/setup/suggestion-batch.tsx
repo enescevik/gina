@@ -45,6 +45,7 @@ export function SuggestionBatch({ kind, items, onChange, review = false }: {
                 : <RewardCost count={item.stars} />
               : null}
           </View>
+          {item.source_id?<Text style={u.small}>{t(kind === "task" ? "setupDocument.linked" : "setupDocument.linkedReward")}</Text>:null}
           {!review
             ? (
               <>
@@ -64,7 +65,7 @@ export function SuggestionBatch({ kind, items, onChange, review = false }: {
                   </Text>
                   <IconButton
                     label={t("taskPremium.lessStars")}
-                    disabled={item.stars <= 1}
+                    disabled={item.stars <= (kind === "task" ? 0 : 1)}
                     onPress={() => patch(index, { stars: item.stars - 1 })}
                   >
                     <Minus color={p.purple} />

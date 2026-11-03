@@ -83,3 +83,7 @@ describe("durable setup save", () => {
     expect(f.open().prepare([task]).p_items[0]?.stars).toBe(0);
   });
 });
+it('preserves document provenance during save replay and rejects invalid identities',()=>{
+ const f=fixture(),j=f.open();const c=j.prepare([{...task,source_id:uuid(8)}]);expect(f.open().read()?.p_items[0]?.source_id).toBe(uuid(8));expect(c.p_items[0]?.source_id).toBe(uuid(8));
+ const other=fixture();expect(()=>other.open().prepare([{...task,source_id:'not-an-id'}])).toThrow();
+});

@@ -60,7 +60,7 @@ export function TaskForm({
       const starts_on = localDateOf(new Date(), timeZone);
       if (choice === "ai") {
         if (!validBatch) throw Error("invalid");
-        return aiDrafts.map(({ title, icon, stars, days }) => ({ title: title.trim(), icon, stars, days, starts_on }));
+        return aiDrafts.map(({ title, icon, stars, days, source_id }) => ({ title: title.trim(), icon, stars, days, starts_on, ...(source_id ? {source_id} : {}) }));
       }
       const parsed = taskTemplateInputSchema.safeParse({ child_id: child.id, title, icon, stars, days_of_week: days, starts_on });
       if (!parsed.success) throw Error("invalid");
@@ -95,6 +95,7 @@ export function TaskForm({
       step={pending || blocked ? 0 : step}
       setStep={setStep}
       dirty={!pending && !blocked && choice !== null}
+      hideContinue={step === 0 && choice === null && !pending && !blocked}
       busy={add.isPending}
       valid={!blocked && (!!pending || valid)}
       onClose={onClose}
@@ -152,12 +153,15 @@ export function TaskForm({
             }}
           />
           <AiSuggestions
+            contextId={child.id}
+            onPrepare={()=>setChoice(null)}
+            allowDocument
             kind="task"
             grade={child.grade}
             onChoose={(items) => {
               setChoice("ai");
               setAiDrafts(
-                items.map((item) => ({ ...item, days: [1, 2, 3, 4, 5] })),
+                items.map((item) => ({ ...item, days: item.source_id ? [] : [1, 2, 3, 4, 5] })),
               );
               setStep(1);
             }}

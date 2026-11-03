@@ -1,3 +1,4 @@
+import { RewardSourceLinks } from "./source-links";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Text, View, ActivityIndicator } from "react-native";
@@ -96,6 +97,7 @@ export function GoalSetup({
           />
         </View>
       )}
+      {reward?<RewardSourceLinks id={reward.id}/>:null}
       {step === 0 && (
         <>
           <Text style={u.heading}>{t("betaUx.goalChoose")}</Text>

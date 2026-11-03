@@ -44,7 +44,7 @@ export function RewardForm({
     items: () => {
       if (choice === "ai") {
         if (!validBatch) throw Error("invalid");
-        return aiDrafts.map(({ title, icon, stars }) => ({ title: title.trim(), icon, stars, days: [] }));
+        return aiDrafts.map(({ title, icon, stars, source_id }) => ({ title: title.trim(), icon, stars, days: [], ...(source_id ? {source_id} : {}) }));
       }
       if (!title.trim() || title.trim().length > 80 || !validCost || !familyId) throw Error("invalid");
       return [{ title: title.trim(), icon, stars: Number(cost), days: [] }];
@@ -70,6 +70,7 @@ export function RewardForm({
       step={pending || blocked ? 0 : step}
       setStep={setStep}
       dirty={!pending && !blocked && choice !== null}
+      hideContinue={step === 0 && choice === null && !pending && !blocked}
       busy={add.isPending}
       valid={!blocked && (!!pending || (step === 0
         ? choice !== null
@@ -124,6 +125,9 @@ export function RewardForm({
             }}
           />
           <AiSuggestions
+            contextId={familyId}
+            onPrepare={()=>setChoice(null)}
+            allowDocument
             kind="reward"
             onChoose={(items) => {
               setChoice("ai");
