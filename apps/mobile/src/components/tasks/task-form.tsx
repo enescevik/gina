@@ -157,7 +157,7 @@ export function TaskForm({
               key={item.id}
               title={t(`betaUx.taskTemplates.${item.id}`)}
               body={t("room.starCount", { count: item.stars })}
-              art={<TaskTile slug={item.icon} size={52} />}
+              art={<TaskTile slug={item.icon} size={56} />}
               selected={choice === item.id}
               onPress={() => {
                 setChoice(item.id);
@@ -201,7 +201,7 @@ export function TaskForm({
             placeholder={t("tasks.titlePlaceholder")}
           />
           <Text style={u.bold}>{t("taskPremium.icon")}</Text>
-          <View style={[u.row, { flexWrap: "wrap" }]}>
+          <View style={[u.row, { flexWrap: "wrap", gap:6 }]}>
             {(allIcons ? TASK_ICON_SLUGS : [
               "brush-teeth",
               "read-book",
@@ -222,7 +222,7 @@ export function TaskForm({
                   borderColor: icon === slug ? p.purple : "transparent",
                 }}
               >
-                <TaskTile slug={slug} size={52} />
+                <TaskTile slug={slug} size={56} />
               </Pressable>
             ))}
           </View>

@@ -49,7 +49,7 @@ export default function SignInScreen() {
   return <ParentScreen navigation={false} title={t(mode === "reset" ? "accountV5.resetTitle" : mode === "up" ? "auth.signUp" : "unified.loginTitle")} subtitle={t(mode === "reset" ? "unified.resetBody" : mode === "up" ? "unified.signupBody" : "unified.loginBody")}>
 
     <View style={parentStyles.card}>
-      <Text style={parentStyles.title}>{t(mode === "in" ? "unified.parentLogin" : mode === "up" ? "auth.signUp" : "accountV5.sendReset")}</Text>
+      {mode === "in" ? <Text style={parentStyles.title}>{t("unified.parentLogin")}</Text> : null}
       {mode !== "reset" ? <SocialSignIn disabled={busy} onBusy={setBusy}/> : null}
       <Field label={t("auth.email")} autoCapitalize="none" autoComplete="email" keyboardType="email-address" value={email} onChangeText={setEmail} editable={!busy} />
       {mode !== "reset" ? <Field label={t("auth.password")} secureTextEntry={!showPassword} autoComplete={mode === "in" ? "current-password" : "new-password"} value={password} onChangeText={setPassword} editable={!busy} /> : null}
@@ -58,8 +58,10 @@ export default function SignInScreen() {
       <ErrorText error={error} />
       {notice ? <Text accessibilityLiveRegion="polite" style={[parentStyles.copy, { backgroundColor: "#F1EDFD", padding: 16, borderRadius: 12 }]}>{notice}</Text> : null}
       <Button title={t(mode === "reset" ? "accountV5.sendReset" : mode === "in" ? "auth.signIn" : "auth.signUp")} loading={busy} disabled={!valid} onPress={submit} />
+      <View style={{flexDirection:"row",flexWrap:"wrap",justifyContent:"space-between",gap:8}}>
       {mode === "in" ? <Button variant="ghost" title={t("accountV5.forgot")} disabled={busy} onPress={() => change("reset")} /> : null}
       <Button variant="ghost" title={t(mode === "in" ? "auth.signUp" : "auth.signIn")} disabled={busy} onPress={() => change(mode === "in" ? "up" : "in")} />
+      </View>
     </View>
     {mode === "in" ? <InfoCard title={t("unified.childDeviceTitle")} body={t("unified.childDeviceBody")}>
       <Button variant="secondary" title={t("unified.connectDevice")} disabled={busy} onPress={() => router.push("/device/pair")} />

@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import {Image,Text,View} from "react-native";
+import {Text,View} from "react-native";
 import { useTranslation } from "react-i18next";
 import { InfoCard } from "@/components/ui/parent-screen";
 
@@ -41,9 +41,8 @@ export default function ChildPinScreen() {
   }
 
   return (
-    <Screen tone="child" title={name ? t("child.hello", { name }) : t("child.enterPin")}>
+    <Screen tone="child" surface="access" title={name ? t("child.hello", { name }) : t("child.enterPin")}>
       <View style={{alignItems:"center",gap:12}}>
-        <Image accessible={false} source={require('../../../../../packages/assets/brand/growing-friend/contextual/device.png')} resizeMode="contain" style={{width:156,height:156}}/>
         <Text style={{fontFamily:"Nunito_600SemiBold",fontSize:17,color:"#625C85",textAlign:"center"}}>{t('experience.pin.prompt')}</Text>
       </View>
       <PinEntry label={t("childV5.pinLabel")} value={pin} onChange={setPin} disabled={busy} onSubmit={()=>void submit()}/>

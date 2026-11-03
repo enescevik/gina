@@ -64,3 +64,9 @@ Sınav hazırlığı + kendini deneme + öğrenme modülünün adı **Prova**; i
 - **Android:** Play kapalı testi (12 Google hesabı × 14 gün) ticari katman haftalarında paralel başlar; Play lansmanı iOS'tan 2-3 hafta sonra; hedef kitle beyanı «18+ ebeveyn».
 - **Boy/kilo:** v1'de yok; gelişim takibi kilometre taşlarıyla.
 - **Avukat:** `docs/legal` yayına girmeden önce avukat incelemesinden geçer; belgelerdeki [AVUKAT] işaretli sorular o görüşmeye taşınır.
+
+## Ayrı maketi olmayan ekranların ortak tasarıma uyarlanması (3 Kasım 2026)
+
+- Kullanıcı açıkça **“Onaylı ekranların ortak tasarımını bu ekranlara uyarla”** dedi. Giriş/eşleştirme/ayarlar, çocuk alt ekranları, görev–ödül–çocuk–hedef sihirbazları, birleşik Prova hazırlama ve yardımcı Prova ekranları bu kapsamda uygulanabilir; yeniden ekran bazında maket onayı beklenmez.
+- Özgün logo, bağlama uygun mint maskot, krem zemin, mor ana eylem ve onaylı ortak tipografi/kart düzeni korunur. Ayrı maketi olmayan bu ekranlar “onaylı maketle piksel olarak birebir” diye sunulmaz.
+- Uyarlama kaydı ve sentetik verili telefon/tablet görüntüleri: [Ortak tasarım uyarlaması](design/screens/shared-design-adaptation/index.html). Mevcut iş kuralları, yetkiler ve kayıt akışları korunur; görsel kontrol, gerçek cihaz/hesap/yayın kabulünün yerine geçmez.

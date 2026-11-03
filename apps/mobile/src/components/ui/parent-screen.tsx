@@ -22,7 +22,7 @@ export interface ParentScreenProps {
   error?: unknown;
   onRetry?: () => void;
 }
-/** Shared approved mint surface. Text stays native; only the window vignette is raster art. */
+/** Shared cream, mint and purple shell; actions and form state stay with each screen. */
 export function ParentScreen({ title, subtitle, children, home = false, navigation = true, loading, error, onRetry }: ParentScreenProps) {
   const { t } = useTranslation();
   const { width, fontScale } = useWindowDimensions();
@@ -35,20 +35,23 @@ export function ParentScreen({ title, subtitle, children, home = false, navigati
     : /calendar|task|approval|plan|notification/.test(path) ? require('../../../../../packages/assets/brand/growing-friend/contextual/planner.png')
     : /famil|sign-in|menu|share/.test(path) ? require('../../../../../packages/assets/brand/growing-friend/contextual/family.png') : null;
   const MenuIcon = inMenu ? Home : Menu;
+  const pageWidth = !navigation ? 680 : /famil|pin|notification|share|subscription|room-credits|notes|grades/.test(path) ? 820 : 1000;
   return <SafeAreaView style={styles.root}>
     <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === "ios" ? "padding" : undefined}>
-      <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.page, !navigation && {maxWidth:680}]}>
-        <View style={styles.topbar}>
+      <View style={[styles.topbar, {maxWidth:pageWidth}]}>
+        <View style={styles.brand}>
           {navigation && !home ? <Pressable accessibilityRole="button" accessibilityLabel={t("common.back")} onPress={() => router.canGoBack() ? router.back() : router.replace("/parent")} style={styles.back}><ArrowLeft size={24} color="#201951" /></Pressable> : <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} style={{width:124,height:48}} resizeMode="contain" accessibilityLabel={t("app.name")} />}
           {navigation && !home ? <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} style={{width:96,height:40}} resizeMode="contain" accessibilityLabel={t("app.name")} /> : null}
+        </View>
           {navigation ? <Pressable accessibilityRole="button" accessibilityLabel={t(inMenu ? "parent.home" : "parent.menu")} onPress={() => router.push(inMenu ? "/parent" : "/parent/menu")} style={styles.menu}><MenuIcon size={22} color="#201951"/><Text style={styles.menuLabel}>{t(inMenu ? "parent.home" : "parent.menu")}</Text></Pressable> : null}
         </View>
+      <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.page, {maxWidth:pageWidth}]}>
         <View style={styles.header}>
-          <View style={{flexDirection:"row",alignItems:"center",gap:12}}>
-            <Text accessibilityRole="header" style={[styles.title,{flex:1}]}>{title}</Text>
-            {art ? <Image source={art} accessible={false} pointerEvents="none" resizeMode="contain" style={{width:spacious?144:96,height:spacious?132:88}} /> : null}
+          <View style={{flex:1,gap:8,minWidth:0}}>
+            <Text accessibilityRole="header" style={styles.title}>{title}</Text>
+            {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
           </View>
-          {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+          {art && fontScale < 1.4 ? <Image source={art} accessible={false} pointerEvents="none" resizeMode="contain" style={{width:spacious?132:88,height:spacious?120:84}} /> : null}
         </View>
         <View style={styles.body}>
           {loading ? <View style={styles.state} accessibilityLiveRegion="polite"><LoadingStar size={64} accessibilityLabel={t("release.loading")} /><Text style={styles.copy}>{t("release.loading")}</Text></View>
@@ -106,13 +109,12 @@ export function FormSection({title,children,initiallyOpen=false}: {title:string;
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: "#FCFAF6" }, fill: { flex: 1 },
   page: { width: "100%", maxWidth: 1000, alignSelf: "center", paddingBottom: 36 },
-  topbar: {flexDirection:"row",alignItems:"center",justifyContent:"space-between",paddingHorizontal:16,paddingTop:8,paddingBottom:8},
-  header: {marginHorizontal:24,marginTop:4,marginBottom:24,gap:8},
-  homeHeader:{minHeight:138,justifyContent:"center",overflow:"hidden"},
-  art: {position:"absolute",width:180,height:150,right:2,bottom:0},
-  back:{width:48,height:48,alignItems:"center",justifyContent:"center",borderRadius:16,backgroundColor:"#EEEAFE"},
-  menu:{minHeight:48,flexDirection:"row",alignItems:"center",gap:8,paddingHorizontal:14,borderRadius:18,backgroundColor:"#EEEAFE"},
-  menuLabel:{fontFamily:"Nunito_700Bold",fontSize:16,color:"#201951"},
+  topbar: {width:"100%",alignSelf:"center",flexDirection:"row",alignItems:"center",justifyContent:"space-between",gap:12,paddingHorizontal:20,paddingVertical:10},
+  brand: {flexDirection:"row",alignItems:"center",gap:12,flexShrink:1},
+  header: {marginHorizontal:20,marginTop:12,marginBottom:24,gap:12,flexDirection:"row",alignItems:"center"},
+  back:{width:48,height:48,alignItems:"center",justifyContent:"center",borderRadius:24,backgroundColor:"#EEEAFE"},
+  menu:{flexShrink:1,minHeight:48,flexDirection:"row",alignItems:"center",gap:8,paddingHorizontal:14,borderRadius:18,backgroundColor:"#EEEAFE"},
+  menuLabel:{flexShrink:1,fontFamily:"Nunito_700Bold",fontSize:16,color:"#201951"},
   title:{fontFamily:"Nunito_800ExtraBold",fontSize:30,lineHeight:38,color:"#201951"},
   subtitle:{fontFamily:"Nunito_400Regular",fontSize:17,lineHeight:25,color:"#625C85"},
   body:{paddingHorizontal:20,gap:22},
