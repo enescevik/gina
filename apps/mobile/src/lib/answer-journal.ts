@@ -4,7 +4,7 @@ import {
   answerJournalScope,
 } from "@gina/core";
 import { randomUUID } from "expo-crypto";
-import { answerJournalStorage as store } from "./answer-journal-storage";
+import { deviceRecordStorage as store } from "./device-record-storage";
 
 let generation = 0;
 export function clearAnswerJournals() {

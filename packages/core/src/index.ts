@@ -20,3 +20,4 @@ export * from "./notebook";
 export * from "./notebook-tokens";
 export * from "./prova-booklet";
 export * from './prova-draft';
+export * from "./help";

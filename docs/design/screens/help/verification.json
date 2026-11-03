@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-03",
+  "implementation": "parent Help UI, approved design",
+  "environment": "Expo web at localhost:8096, synthetic intercepted API only; no production family writes",
+  "sizes": [
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 834,
+      "height": 1194
+    },
+    {
+      "width": 1280,
+      "height": 800
+    }
+  ],
+  "passed": [
+    "Published FAQ search and accordion",
+    "Support and idea creation forms",
+    "Phone sequential and tablet master/detail layout",
+    "No horizontal overflow; all measured visible controls at least 48 CSS px",
+    "Draft leave warning and keep-writing action",
+    "Server committed but response lost: reload restores exact request UUID and payload; retry yields one new ticket, not two",
+    "Reply, close with confirmation and explicit reopen",
+    "Empty, loading and API-failure states",
+    "No console/page errors during clean interaction run; deliberate lost-response test has expected network error",
+    "pnpm turbo run lint typecheck test: 7 tasks, 67 core tests"
+  ],
+  "not_verified": [
+    "Physical iOS/Android keyboard, native secure storage and accessibility readers",
+    "Production Help RPC deployment, operator response workflow and notifications",
+    "No FAQ articles were published; QA FAQ text is synthetic"
+  ],
+  "screenshots": [
+    "phone-faq-web.png",
+    "phone-compose-web.png",
+    "phone-thread-web.png",
+    "tablet-thread-web.png",
+    "tablet-portrait-web.png",
+    "empty-phone-web.png",
+    "loading-phone-web.png",
+    "error-phone-web.png"
+  ]
+}

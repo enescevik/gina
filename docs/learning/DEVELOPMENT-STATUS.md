@@ -175,3 +175,12 @@ Kullanıcının telefon/tablet maket onayı uygulandı: Ortak içerik → Sorula
 - Konu açılınca en fazla beş kanıt yanıtı görünür; bağlantı doğru deneme ve soruyu açar. Veli notu/puanı veya toplu değerlendirme kaydedilince rapor önbelleği geçersizlenir.
 - 390×844, 1280×800 ve 834×1194 gerçek Expo web bileşenlerinde sentetik veriyle görüntü alındı; filtreler, 90 günlük yatay grafik, yanıt bağlantısı, geri dönüş, boş/yükleniyor/503 ve yeniden deneme doğrulandı. Temiz tarayıcı oturumunda açılış/geri dönüş/yenileme geçti. Ölçülen düğmeler en az 48 CSS px; sayfada yatay taşma yok.
 - 27 SQL rapor kontrolü, 63 core testi, workspace lint/typecheck geçti. `docs/design/screens/learning-progress/verification.json` sınırları açıklar. Web görüntüsü fiziksel iPad/Pencil, Dynamic Type veya VoiceOver kabulü değildir. Canlı hizmet ve TestFlight dağıtımı yapılmadı.
+
+## 2026-11-03 — onaylı veli Yardım ekranı
+
+- `parent/help`: Türkçe/İngilizce SSS arama, yayımlanmış yazı açılımı, özel aile destek/fikir görüşmeleri; telefon sıralı, tablet yan yana. Menüde Hesap bölümünde tek giriş.
+- Yeni talep, yanıt, kapatma/onay ve açık yeniden açma; destek/ebeveyn ve bekleyen taraf ayrımı. Aile görünürlüğü metni, iç notların istemcide de filtrelenmesi. Ek yükleme/otomatik AI yanıtı/yanıt süresi vaadi yok.
+- Gönderim önce kullanıcı+aile kapsamlı cihaz deposuna yazılır; ağ sonucu belirsizse yeniden açılışta aynı UUID ve içerikle açık tekrar. SQL reddi kesin başarısızlık sayılır, metin korunur. Çıkışta yerel gönderimler temizlenir, eski nesne geç yazma yapamaz.
+- Görünür ekranda 30 sn sorgu yenileme, odak ve ön plana dönüşte tazeleme; yayınlanmamış realtime kanalına güvenilmiyor.
+- `docs/design/screens/help/verification.json`: üç ekran boyutu, boş/yükleme/hata, mesaj/yanıt/kapat/aç, kayıp cevap sonrası tek talep, taslak koruma; 67 core testi + tüm tip/lint kontrolleri geçti. Gerçek iOS/Android klavye/ekran okuyucu doğrulaması açık.
+- Sentetik SSS/görüşme yalnız QA'da. Üretim SSS yayımlanmadı; operatör ekranı ve destek operasyonu ayrıca tamamlanmalı. Üretim/TestFlight yayını yapılmadı.
