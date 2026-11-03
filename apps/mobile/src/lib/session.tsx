@@ -7,6 +7,7 @@ import { supabase } from "./supabase";
 import { queryClient } from "./query";
 import { clearAnswerJournals } from "./answer-journal";
 import { clearLibraryCommands } from "./library-acquisition";
+import { clearSetupCommands } from "./setup-command";
 import { clearStudyPlanCommands } from "./study-plan-command";
 import { clearCalendarCommands } from "./calendar-command";
 import { clearFocusTimers } from "./focus-storage";
@@ -74,7 +75,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       if (_event === "INITIAL_SESSION") return; // getSession below owns initial read errors.
       changed = true;
       if (_event === "SIGNED_OUT") {
-        for (const clear of [clearAnswerJournals, clearHelpCommands, clearLibraryCommands, clearFocusTimers, clearCalendarCommands, clearStudyPlanCommands]) {
+        for (const clear of [clearAnswerJournals, clearHelpCommands, clearLibraryCommands, clearFocusTimers, clearCalendarCommands, clearStudyPlanCommands, clearSetupCommands]) {
           try { clear(); }
           catch { /* Scoped drafts remain inaccessible to another identity. */ }
         }

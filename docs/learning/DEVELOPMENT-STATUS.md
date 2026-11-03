@@ -305,3 +305,11 @@ Katılım hatası açık pencerenin arkasında kalıyordu; görünür alana taş
 Bildirim kontrolünde farklı Provaların bekleyen atama/bitiş bildirimleri tek tür altında bastırılıyordu. 063000 aynı bekleyen olayı birleştirip farklı Provaları korur. Görev/haftalık birleştirme kuralı değişmedi. Beş ek bildirim SQL kontrolüyle toplam 46 dosyada 1.123 kontrol geçti. Üç katılım/kota/iptal ve iki bildirim yarışı ayrı geçici DB’lerde geçti. Gerçek web ekranı telefon/tablet kabulü, iki kapalı onay, hata, kayıp yanıt, tek kayıt ve açık sonuç yenilemesini doğruladı.
 
 Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli koleksiyonları kullanıyor; yeni sürümlü/görselli/ortak kaynaklı paketlerden grup oluşturma bağlantısı yok. Fiziksel cihaz/push teslimi, yeni kütüphane bağı ve içerik kabulü bitmeden genel katılım açılmayacak. Üretim anahtarları değiştirilmedi; migration ve uygulama yayımlanmadı. Kanıt: `docs/design/screens/group-practice-acceptance/README.md`.
+
+
+## 4 Kasım 2026 — görev/ödül kayıt kurtarma ve AI arıza kabulü
+
+- PR #84 ana dala birleşti: grup katılımı ve ayrı Prova bildirimlerinin kaybı düzeltildi. PR #85 ana dala birleşti: geçersiz token sayısı ve boş/metinsiz sağlayıcı yanıtı reddedilir; 11 yeni arıza testi, toplam 101 Edge testi geçti. Gerçek sağlayıcı arızası veya yeni sağlayıcı adaptörü testi değildir.
+- Görev/ödül elle veya çoklu AI seçimi aynı kalıcı kayıt yoluna alındı. Kayıp yanıt sonrası yeniden açılış, özgün komutu tekrarlar; belirsiz işlem çözülmeden seçim değiştirilmez. Hatalı yerel kayıt sessizce silinmez. Sıfır yıldızlı görev ve özgün başlangıç tarihi korunur; ödül en az bir yıldız ister.
+- 064000, 12 ek SQL kontrolü (toplam 1.135), 9 yeni çekirdek testi (toplam 109), üç gerçek veritabanı yarışı, telefon/tablet web kabulü ve mobil typecheck/lint geçti. Kanıt: `docs/design/screens/setup-save-recovery/`.
+- Üretim/TestFlight değişmedi. Fiziksel cihaz kabulü ve belge kaynaklı görev/ödül/hedef akışları hâlâ açık. Bu maddeler tamamlanan iş olarak sayılmadı.

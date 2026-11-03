@@ -135,6 +135,7 @@ export function SetupWizard({
                   </IconButton>
                 </View>
                 <Text accessibilityRole="header" style={u.heading}>{title}</Text>
+                {steps.length > 1 && <>
                 <Text accessibilityLiveRegion="polite" style={u.small}>
                   {t("betaUx.step", { current: step + 1, total: steps.length })}{" "}
                   · {steps[step]}
@@ -147,6 +148,7 @@ export function SetupWizard({
                     {wide?<Text style={[u.small,{textAlign:"center",color:i===step?p.purple:p.muted,fontFamily:i===step?"Nunito_800ExtraBold":"Nunito_600SemiBold"}]}>{label}</Text>:null}
                   </View>)}
                 </View>
+                </>}
               </View>
               <ScrollView
                 ref={scroll}

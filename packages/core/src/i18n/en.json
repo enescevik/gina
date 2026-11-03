@@ -2210,5 +2210,13 @@
   "planCalendar.adjust": "Edit date, time and activity",
   "planCalendar.collapse": "Close editing",
   "group.familyTime": "Family time zone: {{zone}}",
-  "group.retryCheck": "The result could not be confirmed. We are refreshing participation; retrying for the same child does not create a second entry."
+  "group.retryCheck": "The result could not be confirmed. We are refreshing participation; retrying for the same child does not create a second entry.",
+  "setupRecovery.check": "Check save",
+  "setupRecovery.title": "Let’s check your save",
+  "setupRecovery.body": "The connection may have been interrupted. Your selections are saved on this device. We will check the same operation without creating duplicates. Selections cannot change until the result is confirmed.",
+  "setupRecovery.retry": "Check save",
+  "setupRecovery.blockedTitle": "Save details unavailable",
+  "setupRecovery.blockedBody": "We could not read this device’s pending save, so we did not start a new one. Close and reopen this window. If the problem continues, contact us through Help.",
+  "setupRecovery.starts": "Starts: {{date}}",
+  "setupRecovery.count": "Saves to check: {{count}}"
 }

@@ -2205,5 +2205,13 @@
   "planCalendar.adjust": "Tarih, saat ve içeriği düzenle",
   "planCalendar.collapse": "Düzenlemeyi kapat",
   "group.familyTime": "Ailenizin saat dilimi: {{zone}}",
-  "group.retryCheck": "İşlemin sonucu doğrulanamadı. Katılım listesini yeniliyoruz; aynı çocukla tekrar denemek ikinci katılım oluşturmaz."
+  "group.retryCheck": "İşlemin sonucu doğrulanamadı. Katılım listesini yeniliyoruz; aynı çocukla tekrar denemek ikinci katılım oluşturmaz.",
+  "setupRecovery.check": "Kayıt kontrolü",
+  "setupRecovery.title": "Kaydın sonucunu kontrol edelim",
+  "setupRecovery.body": "Bağlantı kesilmiş olabilir. Seçimlerin cihazında saklandı. Aynı işlemi yeniden kontrol edeceğiz; ikinci kayıt oluşturmayacağız. Sonuç netleşene kadar seçimler değiştirilemez.",
+  "setupRecovery.retry": "Kaydı kontrol et",
+  "setupRecovery.blockedTitle": "Kayıt bilgisine ulaşamadık",
+  "setupRecovery.blockedBody": "Bu cihazdaki bekleyen kayıt okunamadığı için yeni kayıt başlatmadık. Pencereyi kapatıp yeniden aç. Sorun sürerse Yardım bölümünden bize ulaş.",
+  "setupRecovery.starts": "Başlangıç: {{date}}",
+  "setupRecovery.count": "Kontrol edilecek kayıt: {{count}}"
 }

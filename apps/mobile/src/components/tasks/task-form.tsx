@@ -1,11 +1,10 @@
-import { randomUUID } from "expo-crypto";
 import {
   SuggestionBatch,
   type SuggestionDraft,
 } from "@/components/setup/suggestion-batch";
 import { AiSuggestions } from "@/components/setup/ai-suggestions";
 import { useRef, useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Minus, Pencil, Plus } from "lucide-react-native";
@@ -20,7 +19,8 @@ import { Field } from "@/components/ui/field";
 import { Pressable } from "@/components/ui/pressable";
 import { IconButton, p, u } from "@/components/planner/ui";
 import type { PlannerChild } from "@/components/planner/timetable-editor";
-import { supabase } from "@/lib/supabase";
+import { useSetupSave } from "@/components/setup/use-setup-save";
+import { SetupSaveRecovery } from "@/components/setup/save-recovery";
 import { ChoiceCard, SetupWizard } from "@/components/setup/wizard";
 import { TASK_STARTERS } from "@/components/setup/templates";
 import { StarReward, TaskTile } from "./task-visuals";
@@ -48,51 +48,23 @@ export function TaskForm({
   const [choice, setChoice] = useState<string | null>(null);
   const [allIcons, setAllIcons] = useState(false);
   const saving = useRef(false);
-  const batchRequest = useRef({ payload: "", id: randomUUID() });
   const [aiDrafts, setAiDrafts] = useState<SuggestionDraft[]>([]);
   const validBatch = aiDrafts.length > 0 &&
     aiDrafts.every((item) =>
       item.title.trim().length > 0 && item.title.trim().length <= 80 &&
       item.days.length > 0
     );
-  const add = useMutation({
-    mutationFn: async () => {
+  const { add, pending, blocked } = useSetupSave({
+    familyId, kind: "task", childId: child.id,
+    items: () => {
+      const starts_on = localDateOf(new Date(), timeZone);
       if (choice === "ai") {
         if (!validBatch) throw Error("invalid");
-        const items = aiDrafts.map(({ title, icon, stars, days }) => ({
-          title: title.trim(),
-          icon,
-          stars,
-          days,
-        }));
-        const payload = JSON.stringify(items);
-        if (
-          batchRequest.current.payload &&
-          batchRequest.current.payload !== payload
-        ) batchRequest.current.id = randomUUID();
-        batchRequest.current.payload = payload;
-        const { error } = await supabase.rpc("save_setup_batch", {
-          p_request_id: batchRequest.current.id,
-          p_kind: "task",
-          p_items: items,
-          p_child_id: child.id,
-        });
-        if (error) throw error;
-        return;
+        return aiDrafts.map(({ title, icon, stars, days }) => ({ title: title.trim(), icon, stars, days, starts_on }));
       }
-      const parsed = taskTemplateInputSchema.safeParse({
-        child_id: child.id,
-        title,
-        icon,
-        stars,
-        days_of_week: days,
-        starts_on: localDateOf(new Date(), timeZone),
-      });
+      const parsed = taskTemplateInputSchema.safeParse({ child_id: child.id, title, icon, stars, days_of_week: days, starts_on });
       if (!parsed.success) throw Error("invalid");
-      const { error } = await supabase
-        .from("task_templates")
-        .insert({ ...parsed.data, family_id: familyId });
-      if (error) throw error;
+      return [{ title: parsed.data.title, icon, stars, days, starts_on }];
     },
     onSuccess: async () => {
       await Promise.all(
@@ -119,14 +91,14 @@ export function TaskForm({
   return (
     <SetupWizard
       title={t("tasks.new")}
-      steps={[t("betaUx.choose"), t("betaUx.details"), t("betaUx.review")]}
-      step={step}
+      steps={pending || blocked ? [t("setupRecovery.check")] : [t("betaUx.choose"), t("betaUx.details"), t("betaUx.review")]}
+      step={pending || blocked ? 0 : step}
       setStep={setStep}
-      dirty={choice !== null}
+      dirty={!pending && !blocked && choice !== null}
       busy={add.isPending}
-      valid={valid}
+      valid={!blocked && (!!pending || valid)}
       onClose={onClose}
-      saveLabel={choice === "ai"
+      saveLabel={pending || blocked ? t("setupRecovery.retry") : choice === "ai"
         ? t("suggestions.saveSelected", { count: aiDrafts.length })
         : t("taskPremium.save")}
       onSave={() => {
@@ -144,6 +116,7 @@ export function TaskForm({
         )
         : null}
     >
+      {pending || blocked ? <SetupSaveRecovery pending={pending} blocked={blocked}/> : <>
       <View style={u.row}>
         <Avatar slug={child.avatar} size={44} />
         <Text style={u.bold}>{child.name}</Text>
@@ -326,6 +299,7 @@ export function TaskForm({
           />
         )
         : null}
+      </>}
     </SetupWizard>
   );
 }
