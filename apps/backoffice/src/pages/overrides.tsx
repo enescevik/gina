@@ -1,5 +1,8 @@
 import { useRouter } from "next/router";
-import { useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { overrideCommandSchema, type OverrideCommand, type OverridePayload } from "@gina/core";
+import { useAuth } from "@/lib/auth";
+import { overrideQueue, sendOverride } from "@/lib/override-command";
 
 import { Card, Layout, Notice } from "@/components/Layout";
 import { fmtDateTime, inputDaysFromNow, localInputToIso } from "@/lib/format";
@@ -17,40 +20,43 @@ function statusOf(o: { revoked_at: string | null; starts_at: string; ends_at: st
   return { label: t.overrides.statusActive, cls: "bg-emerald-100 text-emerald-800", expirable: true };
 }
 
-function GrantForm({ initialFamily, onDone }: { initialFamily: string; onDone: (err?: unknown) => void }) {
+function GrantForm({ initialFamily, locked, onSave }: { initialFamily: string; locked: boolean; onSave: (payload: OverridePayload) => Promise<boolean> }) {
   const [familyId, setFamilyId] = useState(initialFamily);
   const [familyQuery, setFamilyQuery] = useState("");
   const [matches, setMatches] = useState<{ id: string; name: string }[]>([]);
   const [plan, setPlan] = useState<PaidPlan>("plus");
   const [reason, setReason] = useState("");
   const [endsAt, setEndsAt] = useState(inputDaysFromNow(90));
-  const [busy, setBusy] = useState(false);
+  const [searchError, setSearchError] = useState("");
 
   async function findFamily() {
-    const { data } = await supabase().rpc("admin_search_families", { p_query: familyQuery.trim(), p_limit: 10 });
-    setMatches((data ?? []).map((f) => ({ id: f.id, name: f.name })));
+    setSearchError("");
+    try {
+      const { data, error } = await supabase().rpc("admin_search_families", { p_query: familyQuery.trim(), p_limit: 10 }).abortSignal(AbortSignal.timeout(15000));
+      if (error) throw error;
+      setMatches((data ?? []).map((f) => ({ id: f.id, name: f.name })));
+      if (!data?.length) setSearchError("Bu aramayla eşleşen aile bulunamadı.");
+    } catch { setSearchError("Aileler yüklenemedi. Aramayı yeniden deneyin."); }
   }
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    setBusy(true);
-    const { error } = await supabase().rpc("admin_grant_override", {
-      p_family_id: familyId.trim(),
-      p_plan: plan,
-      p_reason: reason.trim(),
-      p_ends_at: localInputToIso(endsAt),
-    });
-    setBusy(false);
-    if (!error) setReason("");
-    onDone(error ?? undefined);
+    if (locked) return;
+    try {
+      const saved = await onSave({action:"grant",family_id:familyId.trim(),plan,reason:reason.trim(),starts_at:new Date().toISOString(),ends_at:localInputToIso(endsAt)});
+      if (saved) setReason("");
+    } catch { setSearchError("Bitiş tarihini kontrol edin."); }
   }
 
   return (
     <Card title={t.overrides.grant}>
+      <p className="mb-4 text-slate-600">Aileye süreli Plus veya Pro erişimi verin. Bu işlem mağaza aboneliği oluşturmaz ve ücret tahsil etmez.</p>
+      {searchError ? <Notice>{searchError}</Notice> : null}
+      <fieldset disabled={locked} className="min-w-0 border-0 p-0">
       <div className="mb-3 flex flex-wrap items-end gap-2">
         <div className="min-w-64 flex-1">
-          <label className="label">{t.overrides.family}</label>
-          <input className="input" value={familyQuery} onChange={(e) => setFamilyQuery(e.target.value)} placeholder={t.families.placeholder} />
+          <label className="label" htmlFor="family-search">{t.overrides.family}</label>
+          <input id="family-search" className="input" value={familyQuery} onChange={(e) => setFamilyQuery(e.target.value)} placeholder={t.families.placeholder} />
         </div>
         <button className="btn-secondary" type="button" onClick={() => void findFamily()}>
           {t.common.search}
@@ -67,38 +73,44 @@ function GrantForm({ initialFamily, onDone }: { initialFamily: string; onDone: (
           ))}
         </ul>
       ) : null}
-      <form onSubmit={onSubmit} className="grid gap-3 md:grid-cols-4">
+      <form onSubmit={onSubmit} className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         <div className="md:col-span-2">
-          <label className="label">{t.overrides.familyId}</label>
-          <input className="input font-mono" required value={familyId} onChange={(e) => setFamilyId(e.target.value)} />
+          <label className="label" htmlFor="family-id">{t.overrides.familyId}</label>
+          <input id="family-id" className="input font-mono" required value={familyId} onChange={(e) => setFamilyId(e.target.value)} />
           {!familyId ? <p className="mt-1 text-xs text-slate-500">{t.overrides.pickFamily}</p> : null}
         </div>
         <div>
-          <label className="label">{t.overrides.plan}</label>
-          <select className="input" value={plan} onChange={(e) => setPlan(e.target.value as PaidPlan)}>
+          <label className="label" htmlFor="override-plan">{t.overrides.plan}</label>
+          <select id="override-plan" className="input" value={plan} onChange={(e) => setPlan(e.target.value as PaidPlan)}>
             <option value="plus">{t.plans.plus}</option>
             <option value="pro">{t.plans.pro}</option>
           </select>
         </div>
         <div>
-          <label className="label">{t.overrides.endsAt}</label>
-          <input type="datetime-local" className="input" required value={endsAt} onChange={(e) => setEndsAt(e.target.value)} />
+          <label className="label" htmlFor="override-end">{t.overrides.endsAt}</label>
+          <input id="override-end" type="datetime-local" className="input" required value={endsAt} onChange={(e) => setEndsAt(e.target.value)} />
         </div>
-        <div className="md:col-span-3">
-          <label className="label">{t.overrides.reason}</label>
-          <input className="input" required minLength={3} value={reason} onChange={(e) => setReason(e.target.value)} placeholder={t.overrides.reasonPlaceholder} />
+        <div className="md:col-span-2 xl:col-span-3">
+          <label className="label" htmlFor="override-reason">{t.overrides.reason}</label>
+          <input id="override-reason" className="input" required minLength={3} maxLength={1000} value={reason} onChange={(e) => setReason(e.target.value)} placeholder={t.overrides.reasonPlaceholder} />
         </div>
         <div className="flex items-end">
-          <button className="btn w-full" type="submit" disabled={busy}>
+          <button className="btn w-full" type="submit" disabled={locked}>
             {t.overrides.grant}
           </button>
         </div>
       </form>
+      </fieldset>
     </Card>
   );
 }
 
 export default function OverridesPage() {
+  const { session } = useAuth();
+  const user = session?.user.id ?? "";
+  return <OverridesEditor key={user} user={user} />;
+}
+function OverridesEditor({ user }: { user:string }) {
   const router = useRouter();
   const initialFamily = typeof router.query.family === "string" ? router.query.family : "";
   const [showInactive, setShowInactive] = useState(true);
@@ -119,24 +131,76 @@ export default function OverridesPage() {
     ),
   );
 
-  const done = (err: unknown, okText: string) => {
-    setMsg(err ? { text: errorMessage(err, t.errors), tone: "error" } : { text: okText, tone: "ok" });
-    list.reload();
-    audit.reload();
-  };
-
-  async function expire(id: string) {
-    const reason = window.prompt(t.overrides.expireReason);
-    if (reason == null) return;
-    const { error } = await supabase().rpc("admin_expire_override", { p_override_id: id, p_reason: reason });
-    done(error, t.common.saved);
+  const queue = useMemo(() => overrideQueue(user), [user]);
+  const [pending,setPending] = useState<OverrideCommand|null>(null);
+  const [restoring,setRestoring] = useState(true);
+  const [storageError,setStorageError] = useState(false);
+  const [busy,setBusy] = useState(false);
+  const [revoking,setRevoking] = useState<{id:string;family:string;plan:string}|null>(null);
+  const [revokeReason,setRevokeReason] = useState("");
+  const gate=useRef(false);
+  useEffect(()=>{
+    if (!user) return;
+    let live=true;
+    void queue.restore().then(c=>{if(live)setPending(c);}).catch(()=>{if(live)setStorageError(true);}).finally(()=>{if(live)setRestoring(false);});
+    return ()=>{live=false;};
+  },[queue,user]);
+  const locked = busy || restoring || storageError || !!pending;
+  async function save(payload?:OverridePayload):Promise<boolean> {
+    if(gate.current || restoring || storageError || !user) return false;
+    gate.current=true;setBusy(true);setMsg(null);
+    let command=pending;
+    try {
+      if(!command) {
+        command=overrideCommandSchema.parse({request:crypto.randomUUID(),payload});
+        await queue.prepare(command);
+        setPending(command);
+      }
+      await sendOverride(command);
+      await queue.acknowledge(command.request);
+      setPending(null);setRevoking(null);setRevokeReason("");
+      setMsg({tone:"ok",text:command.payload.action==="grant" ? "Paket hakkı kaydedildi." : "Geçici paket hakkı sonlandırıldı. Mağaza aboneliği değiştirilmedi."});
+      list.reload();audit.reload();return true;
+    } catch(error) {
+      const e=error as {code?:string;message?:string};
+      // Only a definitive SQL rejection can discard a persisted command.
+      // Timeouts, transport failures and malformed receipts remain retryable.
+      if(command && /^(P0001|42501|22\w{3}|23\w{3})$/.test(e.code??"")) {
+        try {await queue.acknowledge(command.request);setPending(null);}
+        catch {setStorageError(true);}
+        setMsg({tone:"error",text:e.message==="request_conflict" ? "Bu işlem kimliği başka bir kayıtla eşleşiyor. Güncel kayıtları kontrol edin." : e.message==="override_not_found_or_revoked" ? "Bu hak başka bir yönetici tarafından sonlandırılmış veya kaldırılmış. Liste yenilendi." : errorMessage(error,t.errors)});
+        list.reload();audit.reload();
+      } else if(e.message?.startsWith("library_")) {
+        setStorageError(true);setMsg({tone:"error",text:"İşlem cihazda güvenli biçimde saklanamadı. Sayfayı yenileyip bekleyen kaydı kontrol edin."});
+      } else {
+        setMsg({tone:"error",text:command ? "Kayıt sonucu henüz doğrulanamadı. Aşağıdaki aynı işlemi yeniden kontrol edin; ikinci bir hak oluşturulmaz." : "Aile, gerekçe ve bitiş tarihini kontrol edin."});
+      }
+      return false;
+    } finally {gate.current=false;setBusy(false);}
   }
 
   return (
     <Layout title={t.overrides.title}>
       <p className="mb-4 text-sm text-slate-500">{t.overrides.help}</p>
       {msg ? <Notice tone={msg.tone}>{msg.text}</Notice> : null}
-      <GrantForm key={initialFamily} initialFamily={initialFamily} onDone={(err) => done(err, t.overrides.created)} />
+      {restoring ? <Notice>Bekleyen işlemler kontrol ediliyor…</Notice> : null}
+      {storageError ? <Notice tone="error">Güvenli kayıt alanına erişilemiyor. İşlem yapmadan önce sayfayı yenileyin. <button className="btn-secondary" onClick={()=>router.reload()}>Sayfayı yenile</button></Notice> : null}
+      {pending ? <Card title="Sonucu doğrulanacak işlem">
+        <p className="mb-2">{pending.payload.action==="grant" ? `${t.plans[pending.payload.plan]} paket hakkı · Bitiş: ${fmtDateTime(pending.payload.ends_at)}` : "Geçici paket hakkını sonlandırma"}</p>
+        <p className="mb-2 break-all text-sm text-slate-500">{pending.payload.action==="grant" ? `Aile: ${pending.payload.family_id}` : `Hak: ${pending.payload.override_id}`}</p>
+        <p className="mb-4">Gerekçe: {pending.payload.reason}</p>
+        <p className="mb-4 text-slate-600">Bağlantı kesilmiş olsa da kaydınız korunur. Bu işlem doğrulanmadan yeni hak verilmez.</p>
+        <button className="btn" disabled={busy || storageError} onClick={()=>void save()}>{busy ? "Kontrol ediliyor…" : "Aynı işlemi kontrol et"}</button>
+      </Card> : null}
+      {!revoking ? <GrantForm key={initialFamily} initialFamily={initialFamily} locked={locked} onSave={save} /> : null}
+      {revoking ? <Card title="Geçici hakkı sonlandır">
+        <p className="mb-3">{revoking.family} ailesinin {revoking.plan} hakkı sonlandırılacak. Bu işlem para iadesi yapmaz ve mağaza aboneliğini iptal etmez.</p>
+        <form onSubmit={e=>{e.preventDefault();void save({action:"expire",override_id:revoking.id,reason:revokeReason.trim()});}}>
+          <label className="label" htmlFor="expire-reason">Sonlandırma gerekçesi</label>
+          <input id="expire-reason" className="input" autoFocus required minLength={3} maxLength={1000} disabled={locked} value={revokeReason} onChange={e=>setRevokeReason(e.target.value)} />
+          <div className="mt-4 flex flex-wrap gap-3"><button type="submit" className="btn-danger" disabled={locked}>Geçici hakkı sonlandır</button><button type="button" className="btn-secondary" disabled={locked} onClick={()=>{setRevoking(null);setRevokeReason("");}}>Vazgeç</button></div>
+        </form>
+      </Card> : null}
 
       <Card>
         <label className="mb-3 flex items-center gap-2 text-sm">
@@ -149,7 +213,16 @@ export default function OverridesPage() {
         ) : list.data.length === 0 ? (
           <p className="text-sm text-slate-500">{t.overrides.empty}</p>
         ) : (
-          <div className="overflow-x-auto">
+          <>
+          <div className="space-y-3 xl:hidden">
+            {list.data.map(o=>{const status=statusOf(o);return <article key={o.id} className="rounded-2xl border border-violet-100 bg-white p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3"><h3 className="font-bold">{o.family_name} · {t.plans[o.plan]}</h3><span className={`rounded-full px-3 py-1 text-sm ${status.cls}`}>{status.label}</span></div>
+              <p className="my-3 text-slate-600">{o.reason}</p>
+              <dl className="grid grid-cols-2 gap-3 text-sm"><div><dt className="text-slate-500">Başlangıç</dt><dd>{fmtDateTime(o.starts_at)}</dd></div><div><dt className="text-slate-500">Bitiş</dt><dd>{fmtDateTime(o.ends_at)}</dd></div></dl>
+              {status.expirable ? <button className="btn-danger mt-4" disabled={locked} onClick={()=>{setMsg(null);setRevoking({id:o.id,family:o.family_name,plan:t.plans[o.plan]??o.plan});setRevokeReason("");}}>Sonlandır</button> : null}
+            </article>;})}
+          </div>
+          <div className="hidden overflow-x-auto xl:block">
             <table className="table">
               <thead>
                 <tr>
@@ -180,7 +253,7 @@ export default function OverridesPage() {
                       </td>
                       <td>
                         {s.expirable ? (
-                          <button className="btn-danger" onClick={() => void expire(o.id)}>
+                          <button className="btn-danger" disabled={locked} onClick={() => {setMsg(null);setRevoking({id:o.id,family:o.family_name,plan:t.plans[o.plan] ?? o.plan});setRevokeReason("");}}>
                             {t.overrides.expire}
                           </button>
                         ) : null}
@@ -191,10 +264,12 @@ export default function OverridesPage() {
               </tbody>
             </table>
           </div>
+          </>
         )}
       </Card>
 
       <Card title={t.overrides.auditTitle}>
+        {audit.error ? <Notice tone="error">İşlem geçmişi yüklenemedi.</Notice> : null}
         {!audit.data ? (
           <p className="text-slate-500">{t.common.loading}</p>
         ) : audit.data.length === 0 ? (
@@ -213,7 +288,7 @@ export default function OverridesPage() {
               {audit.data.map((a) => (
                 <tr key={a.id}>
                   <td className="whitespace-nowrap">{fmtDateTime(a.created_at)}</td>
-                  <td className="font-mono text-xs">{a.action}</td>
+                  <td className="font-mono text-xs">{a.action === "entitlement_overrides.insert" ? "Hak verildi" : a.action === "entitlement_overrides.expire" ? "Hak sonlandırıldı" : a.action === "entitlement_overrides.update" ? "Hak güncellendi" : a.action}</td>
                   <td>{a.reason ?? t.common.none}</td>
                   <td className="font-mono text-xs text-slate-500">{a.actor_id ?? "service_role"}</td>
                 </tr>

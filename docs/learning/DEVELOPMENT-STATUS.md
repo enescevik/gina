@@ -351,3 +351,11 @@ Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli
 - Expo 58.0.23 ve uyumlu mevcut modül sürümlerine geçildi; CLI 58.1.19 eski Zod 3 bağımlılığını kaldırıyor. Yüksek önem dereceli bulgu kalmadığı doğrulandı ve süreli istisna CI'dan çıkarıldı.
 - iOS/Android/web paket dışa aktarımları, SDK uyumu, mobil/backoffice tip/lint ve 109 çekirdek testi geçti. Yeni yetenek paketi eklenmedi; var olan Metro runtime SDK sürümüne açıkça sabitlendi.
 - Kalan orta/düşük araç zinciri bulguları ve native kabul sınırı docs/security/2026-11-04-audit.md içinde. Bu değişiklik yeni imzalı binary gerektirir; TestFlight/üretim dağıtılmadı.
+
+## 4 Kasım 2026 — geçici paket hakkı kayıt kurtarma
+
+- Expo güvenlik PR #91 bütün CI kontrolleriyle main’e birleşti; yüksek önem istisnası kaldırıldı. Üretim değişmedi.
+- 073000: yönetici hak verme/sonlandırma aynı kalıcı işlem kimliğiyle tekrar edilebilir. İstek/yük/yönetici eşleşmesi ve canlı yönetici yetkisi denetlenir. Kayıtlar özel şemada; aileler operatör gerekçelerine bu kanaldan erişemez.
+- Backoffice belirsiz gönderimi yeniden açılışta bulur; kesin ret dışındaki ağ/yanıt hatasında silmez. Sonlandırma gerekçesi ve mağaza aboneliğinden farkı açık formda. Tablet geniş tablo/tarih alanı kesilmesi giderildi; teknik “komp” metinleri sadeleştirildi.
+- 23 yeni SQL, üç gerçek eşzamanlı DB yarışı, toplam 1291 SQL kontrolü ve gerçek Next sentetik kayıp yanıt/yeniden açılış kabulü geçti. Kanıt: docs/design/screens/override-recovery/README.md.
+- Eski dağıtılmış istemcinin RPC'leri uyum için kalır; yeni arayüzün güvenli kayıt uç noktasını kullanması gerekir. Para iadesi, mağaza iptali veya canlı dağıtım yapılmadı.

@@ -14,3 +14,13 @@ export const financeWorkspaceSchema = z.object({
   summary:z.object({unprocessed:z.number().int().nonnegative(),active_store_families:z.number().int().nonnegative(),active_overrides:z.number().int().nonnegative(),as_of:z.string()}),
 });
 export type FinanceWorkspace = z.infer<typeof financeWorkspaceSchema>;
+
+const overrideReason = z.string().trim().min(3).max(1000);
+export const overridePayloadSchema = z.discriminatedUnion("action", [
+  z.object({ action:z.literal("grant"),family_id:z.string().uuid(),plan:z.enum(["plus","pro"]),reason:overrideReason,starts_at:z.string().datetime(),ends_at:z.string().datetime() }).strict(),
+  z.object({ action:z.literal("expire"),override_id:z.string().uuid(),reason:overrideReason }).strict(),
+]);
+export const overrideCommandSchema = z.object({request:z.string().uuid(),payload:overridePayloadSchema}).strict();
+export const overrideReceiptSchema = z.object({request_id:z.string().uuid(),action:z.enum(["grant","expire"]),override_id:z.string().uuid(),family_id:z.string().uuid()});
+export type OverrideCommand = z.infer<typeof overrideCommandSchema>;
+export type OverridePayload = z.infer<typeof overridePayloadSchema>;
