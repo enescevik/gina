@@ -2167,5 +2167,11 @@
   "focus.focusTask": "Focus on this task",
   "focus.activeHelp": "Focus on one step. Pause or take a break whenever you need.",
   "provaBuilder.repeatIntro": "Choose questions your child can practise again. They join this Prova for your review before you send it.",
-  "provaBuilder.repeatRules": "How are these questions selected?"
+  "provaBuilder.repeatRules": "How are these questions selected?",
+  "calendarRecovery.pending": "Check the previous calendar request",
+  "calendarRecovery.delete": "Event deletion request",
+  "calendarRecovery.help": "The connection may have been interrupted. We will check the same request without creating another event. It stays on this device if you close this window.",
+  "calendarRecovery.retry": "Check the saved result",
+  "calendarRecovery.changed": "This event changed elsewhere. Close this window and reopen the updated event from your calendar.",
+  "calendarRecovery.storage": "The pending calendar record on this device could not be read. Check your calendar before creating another event and contact us through Help."
 }
