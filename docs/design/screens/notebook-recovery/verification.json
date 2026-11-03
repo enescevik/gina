@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-03",
+  "kind": "actual Expo web component with synthetic intercepted API, not native iPad",
+  "viewports": [
+    [
+      834,
+      1194
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "passed": [
+    "draw while submit returns 503",
+    "durable local record contains last drawing and exact uncertain request",
+    "browser reload restores drawing",
+    "same request ID after reload",
+    "retry sends one confirmed answer and clears local journal",
+    "revision conflict requires explicit confirmation before dropping only local conflicting answer",
+    "phone has no horizontal overflow"
+  ],
+  "not_verified": [
+    "physical iOS/Android OS kill and disk-full behavior",
+    "Apple Pencil latency, pressure, tilt, palm rejection",
+    "cold opening an exam with no network (not implemented)",
+    "production deployment"
+  ],
+  "storage": "native existing Expo SQLite KV / web localStorage; per user/family/child/attempt; sign-out invalidates active journal and clears local records",
+  "limits": [
+    "Unfinished stroke before pen-up is not yet an answer document",
+    "Saved local drafts are not proof of server submission",
+    "Closed/timed-out exams retain visible local copies but do not accept late submissions",
+    "Unknown future local draft schema is not deleted automatically"
+  ]
+}

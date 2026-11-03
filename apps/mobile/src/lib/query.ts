@@ -3,7 +3,7 @@ import { QueryClient } from "@tanstack/react-query";
 /** Tek QueryClient; çevrimdışı önbellek (persist) 2. haftada eklenir. */
 export const queryClient = new QueryClient({
   defaultOptions: {
-    // No durable offline outbox: saves fail visibly instead of being silently queued across accounts.
+    // Mutations fail visibly. Only exam answers have a separate identity-scoped durable journal.
     mutations: { networkMode: "always" },
     queries: {
       staleTime: 30_000,

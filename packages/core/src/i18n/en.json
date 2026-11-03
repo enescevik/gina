@@ -1611,7 +1611,7 @@
   "unified.groupHelp": "Shared questions at the same level, parent-controlled entries and private topic reviews.",
   "prova.ai.errors.group_not_open": "This group practice has not started or has ended. You can return to the practice list.",
   "prova.ai.errors.group_answer_closed": "This group practice has ended or was cancelled. New answers cannot be saved.",
-  "prova.ai.errors.answer_changed": "This answer changed on another screen. Your work has not overwritten it. Leave and reopen the practice to see the latest saved answer; unsaved changes will be lost.",
+  "prova.ai.errors.answer_changed": "This answer changed on another screen. Your local solution is retained; choose which answer to use.",
   "prova.ai.errors.attempt_closed": "This practice is already complete. Return to the list to view the result.",
   "prova.ai.errors.time_up": "Time is up. Answers saved within the time limit will be reviewed.",
   "suggestions.multiHelp": "One generation covers all these ideas. Select one, several or all. Choosing and editing uses no extra AI allowance; generating new ideas does.",
@@ -1942,5 +1942,17 @@
   "provaBuilder.sendShort": "Send",
   "provaBuilder.ginaLibrary": "Browse GINA library",
   "provaBuilder.addToPractice": "Add to practice",
-  "common.close": "Close"
+  "common.close": "Close",
+  "notebook.localRecovered_one": "{{count}} answer recovered from this device.",
+  "notebook.localRecovered_other": "{{count}} answers recovered from this device.",
+  "notebook.localPending": "On this device · Upload pending",
+  "notebook.localFailed": "The device could not save your answer. Retry before closing the app.",
+  "notebook.conflictHelp": "This answer changed on another screen. Your local solution is retained; it will not overwrite the server answer automatically.",
+  "notebook.useServer": "Use the server answer",
+  "notebook.useServerConfirm": "Only the unsent local solution for the conflicting question will be removed. The server answer will remain. Continue?",
+  "notebook.finishedLocal": "Some local answers did not reach the result calculation. You can inspect their copies; they will not be submitted to a finished practice.",
+  "notebook.showLocal": "Show local copies",
+  "notebook.hideLocal": "Hide copies",
+  "notebook.leaveStored": "Keep on device and leave",
+  "notebook.leaveStoredHelp": "Your answer has not reached the server. It stays on this device and retries when you reopen this practice. Signing out removes local copies."
 }

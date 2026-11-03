@@ -2259,6 +2259,8 @@ isOneToOne: false
               "accuracy": number,"correct": number,"grade": number,"last_at": string,"level_total": number,"pending": number,"score": number,"subject": string,"topic": string,"total": number
             }[]
                            },
+"learning_progress":
+{ Args: { "p_child_id": string,"p_days"?: number,"p_subject"?: string,"p_grade"?: number }; Returns: Json },
 "claim_room_weather_refresh":
 { Args: { "p_city_id": string }; Returns: boolean
                            },

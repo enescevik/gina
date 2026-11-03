@@ -1611,7 +1611,7 @@
   "unified.groupHelp": "Aynı düzeyde ortak sorular, veli kontrollü katılım ve özel konu değerlendirmesi.",
   "prova.ai.errors.group_not_open": "Bu ortak provanın katılım zamanı sona ermiş veya henüz başlamamış. Prova listesine dönebilirsin.",
   "prova.ai.errors.group_answer_closed": "Bu ortak prova sona ermiş veya iptal edilmiş. Yeni cevap kaydedilemiyor.",
-  "prova.ai.errors.answer_changed": "Bu cevap başka bir ekranda değişmiş. Buradaki çözümünün üzerine yazılmadı. Son kaydı görmek için provadan çıkıp yeniden aç; kaydedilmemiş değişikliklerin silineceğini unutma.",
+  "prova.ai.errors.answer_changed": "Bu cevap başka bir ekranda değişmiş. Cihazındaki çözüm korunuyor; hangi cevabı kullanacağını seçmelisin.",
   "prova.ai.errors.attempt_closed": "Bu prova tamamlanmış. Prova listesine dönerek sonucunu görebilirsin.",
   "prova.ai.errors.time_up": "Süre bitti. Süre içinde kaydedilen cevaplar değerlendirilecek.",
   "suggestions.multiHelp": "Bir üretim hakkı, bu önerilerin tamamını kapsar. Birini, birkaçını veya hepsini seçebilirsin. Seçmek ve düzenlemek ek AI hakkı kullanmaz; yeni öneri üretmek kullanır.",
@@ -1942,5 +1942,17 @@
   "provaBuilder.sendShort": "Gönder",
   "provaBuilder.ginaLibrary": "GINA kütüphanesinden al",
   "provaBuilder.addToPractice": "Prova’ya ekle",
-  "common.close": "Kapat"
+  "common.close": "Kapat",
+  "notebook.localRecovered_one": "Cihazdaki {{count}} cevap geri getirildi.",
+  "notebook.localRecovered_other": "Cihazdaki {{count}} cevap geri getirildi.",
+  "notebook.localPending": "Cihazda saklı · Gönderim bekliyor",
+  "notebook.localFailed": "Cihazdaki kayıt tamamlanamadı. Uygulamayı kapatmadan yeniden dene.",
+  "notebook.conflictHelp": "Bu sorunun sunucudaki cevabı başka bir ekranda değişti. Cihazındaki çözüm korunuyor; otomatik olarak üzerine yazmıyoruz.",
+  "notebook.useServer": "Sunucudaki cevabı kullan",
+  "notebook.useServerConfirm": "Yalnız çakışan sorunun bu cihazdaki gönderilmemiş çözümü silinecek. Sunucudaki cevap korunacak. Devam edilsin mi?",
+  "notebook.finishedLocal": "Bu cihazdaki bazı cevaplar sonuç hesabına ulaşmadı. Kopyalarını inceleyebilirsin; bitmiş Prova’ya sonradan gönderilmez.",
+  "notebook.showLocal": "Cihazdaki kopyaları göster",
+  "notebook.hideLocal": "Kopyaları gizle",
+  "notebook.leaveStored": "Cihazda saklayıp çık",
+  "notebook.leaveStoredHelp": "Cevabın henüz sunucuya ulaşmadı. Bu cihazda saklanır; Prova’ya tekrar girdiğinde gönderim denenir. Hesaptan çıkış yapmak cihazdaki kopyaları siler."
 }

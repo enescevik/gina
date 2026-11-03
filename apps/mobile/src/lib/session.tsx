@@ -5,6 +5,7 @@ import { ginaClaimsSchema, type GinaClaims } from "@gina/core";
 
 import { supabase } from "./supabase";
 import { queryClient } from "./query";
+import { clearAnswerJournals } from "./answer-journal";
 
 export interface SessionState {
   session: Session | null;
@@ -67,6 +68,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     const { data: subscription } = supabase.auth.onAuthStateChange((_event, next) => {
       if (_event === "INITIAL_SESSION") return; // getSession below owns initial read errors.
       changed = true;
+      if (_event === "SIGNED_OUT") {
+        try { clearAnswerJournals(); }
+        catch { /* An unavailable device store cannot expose another identity's scoped drafts. */ }
+      }
       setRecovering(recoveryPending);
       apply(next);
     });

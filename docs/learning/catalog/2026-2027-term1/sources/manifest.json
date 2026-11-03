@@ -1,0 +1,130 @@
+[
+  {
+    "label": "Türkçe",
+    "url": "https://meb.ai/ankmeb4",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx",
+    "file": "turkce2.xlsx",
+    "sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+    "bytes": 31410
+  },
+  {
+    "label": "İlköğretim Matematik",
+    "url": "https://meb.ai/ankmeb3",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+    "file": "ilkmat2.xlsx",
+    "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+    "bytes": 23454
+  },
+  {
+    "label": "Fen Bilimleri",
+    "url": "https://meb.ai/ankmeb2",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/fen3_2.xlsx",
+    "file": "fen3_2.xlsx",
+    "sha256": "f01e0f96328e6c766776cd1e4dad760923a31331e701ce906b59eef359b75a3c",
+    "bytes": 25158
+  },
+  {
+    "label": "Sosyal Bilgiler",
+    "url": "https://meb.ai/ankmeb5",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/sosyal2.xlsx",
+    "file": "sosyal2.xlsx",
+    "sha256": "88cfc517cf1e0ea26c43486ccf1849bdea48c39161efa25c6a366c7d5084580e",
+    "bytes": 21606
+  },
+  {
+    "label": "Din Kültürü ve Ahlak Bilgisi",
+    "url": "https://meb.ai/ankmeb1",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/dkab_orta3.xlsx",
+    "file": "dkab_orta3.xlsx",
+    "sha256": "fe8d19c05d4ba5d261c5b48dbbc08edf3c618f2b13771177efe0a79816bd030d",
+    "bytes": 21046
+  },
+  {
+    "label": "İngilizce",
+    "url": "https://meb.ai/ankmeb6",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ingilizce_orta2.xlsx",
+    "file": "ingilizce_orta2.xlsx",
+    "sha256": "7517a025357dd00a2f02c2975875dfa6737a48247f756d3db27bf0f8213a9f85",
+    "bytes": 19838
+  },
+  {
+    "label": "Türk Dili ve Edebiyatı",
+    "url": "https://meb.ai/ankmeb7",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/edebiyat2.xlsx",
+    "file": "edebiyat2.xlsx",
+    "sha256": "88a8557041a258b8de9a597f1dd94b145aea6c5cf4eda16d79cd2d7b21803045",
+    "bytes": 27890
+  },
+  {
+    "label": "Matematik",
+    "url": "https://meb.ai/ankmeb8",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/matematik2.xlsx",
+    "file": "matematik2.xlsx",
+    "sha256": "44cbf606f95ff3303a2cbad859951c7031f4f5ff350b4b594fa6331d1a660429",
+    "bytes": 21076
+  },
+  {
+    "label": "Fizik",
+    "url": "https://meb.ai/ankmeb9",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/fizik2.xlsx",
+    "file": "fizik2.xlsx",
+    "sha256": "6efb716bcbd758c211402c862ae3ddddb722d497677d905942e8d2aab16ab538",
+    "bytes": 20782
+  },
+  {
+    "label": "Kimya",
+    "url": "https://meb.ai/ankmeb10",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/kimya4.xlsx",
+    "file": "kimya4.xlsx",
+    "sha256": "4fe5addba86363b8421cfce11cd7b8bbaf256d3028114852fa9e41b7532b3e6e",
+    "bytes": 22642
+  },
+  {
+    "label": "Biyoloji",
+    "url": "https://meb.ai/ankmeb11",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/biyoloji3_4.xlsx",
+    "file": "biyoloji3_4.xlsx",
+    "sha256": "c74a0e1d7a6ec5eba607945e614adf6d9093fa2542a203f8c0c76c62b6051ede",
+    "bytes": 20439
+  },
+  {
+    "label": "Tarih",
+    "url": "https://meb.ai/ankmeb13",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/tarih3.xlsx",
+    "file": "tarih3.xlsx",
+    "sha256": "ad0a0f238f731525971966812037b9a6546d2d795d060b57d1606b11e7e86d27",
+    "bytes": 18026
+  },
+  {
+    "label": "Coğrafya",
+    "url": "https://meb.ai/ankmeb12",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/cografya4.xlsx",
+    "file": "cografya4.xlsx",
+    "sha256": "ff06c7da9644c56fa3c7f3957241c247576fd5763ca187dfc74c1532ef98be36",
+    "bytes": 26969
+  },
+  {
+    "label": "Felsefe",
+    "url": "https://meb.ai/ankmeb14",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/felsefe3.xlsx",
+    "file": "felsefe3.xlsx",
+    "sha256": "a72e8e297a9c44ae39c9efe80d1344f4477b78aac5b28a96455d151863939cb6",
+    "bytes": 14039
+  },
+  {
+    "label": "Din Kültürü ve Ahlak Bilgisi",
+    "url": "https://meb.ai/ankmeb15",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/dkab_lise2.xlsx",
+    "file": "dkab_lise2.xlsx",
+    "sha256": "d5c5dbf295cbc009b3654960ae5612d9b9267e54bbf802c05120f8377f5273bb",
+    "bytes": 19431
+  },
+  {
+    "label": "İngilizce",
+    "url": "https://meb.ai/ankmeb16",
+    "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ingilizce_lise2.xlsx",
+    "file": "ingilizce_lise2.xlsx",
+    "sha256": "006b7e8e1ff066c5869195b2e5f89bfa0f6de5e04b00568b5a01a7f3f30911dd",
+    "bytes": 23857
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "sources": 16,
+  "scenario_candidates": 648,
+  "scenarios_with_warnings": 17,
+  "grade_subject_pairs": 62,
+  "source_issue_count": 1,
+  "published_scenarios": 0,
+  "generated_questions": 0,
+  "review_required": true,
+  "limitations": [
+    "Only term 1 common written-exam distribution tables; not a complete year curriculum",
+    "No automatic school-specific scenario selection",
+    "Grades 1–4 require age-appropriate practice content, not this written-exam catalogue",
+    "Uncoded outcome instructions retained with cell evidence, not fabricated codes",
+    "High-school school-track applicability still needs mapping"
+  ]
+}

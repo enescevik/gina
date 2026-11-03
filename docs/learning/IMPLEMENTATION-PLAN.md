@@ -1,3 +1,28 @@
+# 3 Kasım 2026 — yayından önce kapsamı tamamlama kararı
+
+Kullanıcı: **“Hepsini bitirelim sonra yayına alırız.”** Önceki TestFlight dağıtım önceliği ertelendi. Aşağıdaki işler bitmeden yeni TestFlight/mağaza/kablosuz iPad yayını yapılmayacak. Bir PR'ın birleşmesi yayın anlamına gelmez. Yerel geliştirme ve izole testler sürer. Gerçek aile kayıtları reset/reseed edilmez. Önceden ertelenmiş gün/gece/hava ve geniş maskot animasyonları ilk sürüm dışında kalır.
+
+Yeni ekranlarda ekran bazında tasarım onayı korunur. Gelişim ekranı maketi `docs/design/screens/learning-progress/phone-tablet-proposal-v1.png`: **onay bekliyor**, uygulama ekranı değildir. Onay beklenirken bağımsız altyapı ve kaynak doğrulama işleri sürdürülür.
+
+| İş | Güncel durum / kapanış koşulu |
+|---|---|
+| Birleşik Prova | PR #57 main'de. Canlı migration/Edge ve yeni mobil paket dağıtılmadı. |
+| Defter/iPad hataları | Önceki PR #54/#55 kod düzeltmeleri var. Yeni native paketle gerçek cihaz yön/klavye/kalem/tam alan kontrolleri açık. |
+| Kalıcı cevap kurtarma | Bu artım: cihazda son cevap + belirsiz istek saklanır; yeniden açılış ve çakışma kontrolleri. Salt çevrimdışı sınav açma/soru indirme değildir. Native cihaz kontrolü açık. |
+| Gelişim raporu | Bu artım: aile/sınıf/program ayrı hesap, bekleyen/boş/kısmi ayrımı, kanıt soruları. Yeni ekran onayı ve uygulaması açık. |
+| MEB/müfredat | 16 resmî 2026–2027/1 tablo ve 648 senaryo adayı; 17 senaryoda açık kaynak yorumu gereği. Tam 1–12 program/çıktı kataloğu değildir. Kaynak incelemesi, okul senaryosu seçimi, katalog/API/AI ve sınav atama bağı açık. |
+| 20 soru / sınıf–ders | İlk matris 77 hücre / 1.540 aday hedefi. Bu havuzda üretim, cevap/görsel denetimi ve editoryal yayın açık; senaryo adayları soru sayılmaz. |
+| Görselli/ortak kaynak katkısı | Bağımsız medya kopyası, tam bağlamlı moderasyon, ödül politikası ve uçtan uca test açık. Mevcut engel erken kaldırılmaz. |
+| Toplu Prova | İlk uygulama var. Gerçek katılım/zaman/sıralama/iptal/bildirim/paket testleri ve kontrollü açılış açık. |
+| Backoffice | Mevcut aile/kütüphane/AI ekranları var. İşlem yetkileri, destek/fikir/SSS, satın alma–iade–erişim ayrımı ve tasarım kabulü açık. |
+| AI sağlayıcıları | Anthropic mevcut. Doğrulanmış başka adapterler, model/iş politikaları ve sağlayıcı arıza testleri açık. Desteklenmeyen sağlayıcı kaydı etkinleştirilemez. |
+| Öğrenme yardımcıları | Odak sayacı, tekrar defteri, ödev/ders/kurs ortak planı, veli plan asistanı; belge → görev/ödül/hedef akışları açık. |
+| Yayın kabulü | Canlı hizmet kontrolleri, güvenlik/performance tekrar denetimi, gerçek telefon/tablet testleri, aynı commit'ten iki dağıtım; **en son**. |
+
+Maliyet veya işlem kotasının varlığı, kaynağı doğrulanmamış içerikleri yayımlama gerekçesi değildir. Görseller/raporlar kişilik, zekâ, teşhis veya resmî yeterlilik iddiası taşımaz.
+
+---
+
 # GINA belge, öğrenme ve yönetim uygulama planı
 
 Durum: **kapsam onaylandı; uygulama sürüyor. Güncel kanıt ve eksikler DEVELOPMENT-STATUS.md dosyasında.** Tarih: 2 Kasım 2026. Bu dosya araştırma raporunu uygulanabilir işlere böler. Yeni ekranların veya sunucu işlevlerinin tamamlandığını, üretime alındığını ya da TestFlight’a gönderildiğini göstermez.

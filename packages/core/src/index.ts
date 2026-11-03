@@ -13,6 +13,8 @@ export * from "./timetable";
 export { SerialWrites } from "./serial-writes";
 
 export { AnswerReceipts } from "./answer-receipts";
+export * from "./answer-journal";
+export * from "./learning-progress";
 
 export * from "./notebook";
 export * from "./notebook-tokens";
