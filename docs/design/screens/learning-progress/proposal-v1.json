@@ -1,0 +1,21 @@
+{
+  "status": "awaiting_user_design_approval",
+  "generator": "built-in image_gen",
+  "reference": "../prova-simplification/implementation/questions-tablet.png",
+  "output": "phone-tablet-proposal-v1.png",
+  "purpose": "parent learning summary; one existing progress route, not a new parallel analytics menu",
+  "implementation_contract": [
+    "7/30/90 family-local days, subject and grade scope",
+    "single child does not require All picker",
+    "unique questions, repeats and pending separate",
+    "pending excluded from incorrect; source-only notebook not a response",
+    "no proficiency trend from different question sets",
+    "evidence links to existing parent review",
+    "font and touch targets from approved GINA system",
+    "chart has accessible text counts",
+    "small samples get limited observation text",
+    "no UI implementation before design approval"
+  ],
+  "mock_data_warning": "Image is illustrative; numeric example bars are not data evidence. Application chart/counts must reconcile from the same validated payload.",
+  "prompt": "Use case: ui-mockup. Create a high fidelity GINA parent learning progress screen concept, one landscape tablet and one portrait phone side by side, large readable Turkish UI. Reference image is the approved existing GINA app UI styling: faithfully keep warm cream, deep plum text, restrained purple and mint, softly rounded Baloo-like headings and readable Nunito-like body, slim pale lilac separators, clean premium satin purple button. Preserve the reference tiny mint mascot + purple gina logo as brand, no newly designed logo, no giant mascot or decoration. This is a design mockup ONLY with clearly synthetic example data, not a working screen. Header back circle, tiny logo, 'Gelişim'. Main title 'Emre’nin öğrenme özeti', subtitle 'Bu çalışmalarda neler gördük?'. Single child is a static chip 'Emre · 5. sınıf', not All selector. Segmented time control '7 gün' '30 gün' selected '90 gün', subject control 'Matematik'. Three compact numeric summary tiles '24 farklı soru', '3 tekrar', '4 değerlendirme bekliyor'. Main large card 'Çalışmaların görünümü' with tasteful discrete stacked columns for 4 weekly periods, categories 'Doğru', 'Kısmi', 'Yanlış', 'Boş'; pending is a separate count not an incorrect grade. No upward-line ability claim, no ability percentage. Under chart small footnote 'Farklı sorular doğrudan karşılaştırılmaz.' Tablet right column elegant small card 'Birlikte sonraki adım', body 'Kesirleri karşılaştırma üzerine 3 soruya yeniden bakalım.', one strong satin purple button 'Soruları incele'. Bottom or lower main content 'Konuya yakından bak' with two spacious rows: 'Kesirleri karşılaştırma' subtitle '6 soru · 2 yanıt bekliyor' link 'İncele'; 'Geometrik şekiller' subtitle '3 soru · Henüz az gözlem' link 'İncele'. No labels weak/bad/intelligence/diagnosis, no leaderboards. Show phone adapting same data: title and controls then three summary tiles then chart then next step, natural scroll not cramped. Tablet has all sections visible. No crowded bottom navigation; existing Prova back destination via header. Compose on quiet pale ivory backdrop with subtle thin device outlines, no photo shadows, no extra decorative text outside screens. Exact Turkish characters, uncluttered hierarchy, generous touch targets."
+}
