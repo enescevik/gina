@@ -184,6 +184,7 @@ export function ParentReviewWorkspace(
       });
       void cache.invalidateQueries({ queryKey: ["child_answer_reviews"] });
       void cache.invalidateQueries({ queryKey: ["exams"] });
+      void cache.invalidateQueries({ queryKey: ["learning_progress"] });
       void cache.invalidateQueries({ queryKey: ["review_workspace"] });
     },
     onError: (e) => {

@@ -11,10 +11,14 @@ import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
 export default function ParentReviewScreen() {
-  const { attemptId } = useLocalSearchParams<{ attemptId: string }>();
+  const { attemptId, questionId } = useLocalSearchParams<
+    { attemptId: string; questionId?: string }
+  >();
   const { claims } = useSession();
   const { t } = useTranslation();
-  const [index, setIndex] = useState(0);
+  const [position, setPosition] = useState<
+    { attempt: string; question: string | undefined; index: number } | null
+  >(null);
   const family = claims?.family_id;
   const attempt = useQuery({
     queryKey: ["review_workspace", family, attemptId],
@@ -43,6 +47,14 @@ export default function ParentReviewScreen() {
       };
     },
   });
+  const requestedIndex = Math.max(
+    0,
+    attempt.data?.questions.findIndex((q) => q.id === questionId) ?? 0,
+  );
+  const index =
+    position?.attempt === attemptId && position.question === questionId
+      ? position.index
+      : requestedIndex;
   const q = attempt.data?.questions[index];
   const review = useQuery({
     queryKey: ["answer_review", family, attemptId, q?.id],
@@ -70,8 +82,12 @@ export default function ParentReviewScreen() {
   const navigate = useCallback((next: number) => {
     if (next < 0 || next >= count) {
       router.replace(`/parent/prova/attempt/${attemptId}`);
-    } else setIndex(next);
-  }, [attemptId, count]);
+    } else {setPosition({
+        attempt: attemptId,
+        question: questionId,
+        index: next,
+      });}
+  }, [attemptId, questionId, count]);
   if (
     !attempt.data || !review.data || review.isFetching || !q || attempt.error ||
     review.error

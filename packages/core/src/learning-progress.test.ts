@@ -43,6 +43,17 @@ it("rejects a chart that excludes pending responses from its total", () => {
 it("does not convert pending work into weakness advice", () => {
   expect(progressNextStep(report()).kind).toBe("review");
 });
+it("rejects a reconciled total with a contradictory pending/correct breakdown", () => {
+  const r = report();
+  r.weeks[0]!.pending = 0;
+  r.weeks[0]!.correct = 1;
+  expect(learningProgressSchema.safeParse(r).success).toBe(false);
+});
+it("rejects malformed evidence dates before the screen formats them", () => {
+  const r = report();
+  r.topics[0]!.last_at = "not a date";
+  expect(learningProgressSchema.safeParse(r).success).toBe(false);
+});
 it("keeps grade and program in every topic identity", () => {
   const a = report().topics[0]!;
   expect(progressTopicKey(a)).not.toBe(progressTopicKey({ ...a, grade: 6 }));

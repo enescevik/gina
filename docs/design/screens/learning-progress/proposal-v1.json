@@ -1,5 +1,5 @@
 {
-  "status": "awaiting_user_design_approval",
+  "status": "approved_by_user_implemented_not_deployed",
   "generator": "built-in image_gen",
   "reference": "../prova-simplification/implementation/questions-tablet.png",
   "output": "phone-tablet-proposal-v1.png",

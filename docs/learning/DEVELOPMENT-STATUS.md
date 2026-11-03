@@ -166,3 +166,12 @@ Kullanıcının telefon/tablet maket onayı uygulandı: Ortak içerik → Sorula
 - `operations_members` süreli ve geri alınabilir dar roller getirir. Destek rolü AI, paket/para veya SSS yayın yetkisi kazanmaz. İçerik rolü destek yazışmalarını okuyamaz. Finans/yayın rol kayıtları henüz finans/yayın eylemlerini açmaz; mevcut genel yönetici API'leri değiştirilmedi. Backoffice giriş/menü entegrasyonu açık.
 - SSS taslağı ayrı sürümdür: düzenleme yayımlanmış yanıtı değiştirmez. Aynı sürüm için inceleme → yayın gerekir; yeni taslak eski incelemeyi devralmaz. Metin düz yazı sözleşmesidir, HTML olarak çalıştırılmayacak. Dil/platform alanları ve arşivleme vardır. Özel destek mesajından kendiliğinden SSS üretilmez.
 - 70 yeni pgTAP kontrolü; toplam 37 izole SQL dosyasında 821 kontrol geçti. Tüm workspace tür denetimleri geçti. Ekranlar, ek dosya yükleme, gerçek destek operasyonu ve mağaza iade entegrasyonu tamamlanmış değildir. Canlı migration/TestFlight yapılmadı.
+
+
+## 3 Kasım — onaylı Gelişim ekranı
+
+- Mevcut Prova/Gelişim yolu onaylı krem/mor/mint makete taşındı. Yeni paralel rapor menüsü eklenmedi. 7/30/90 günlük, çocuğa ait sınıf/ders kapsamı; tek çocukta gereksiz Tümü seçimi yok.
+- Farklı soru, tekrar ve bekleyen değerlendirme ayrı. Doğru/kısmi/yanlış/boş sütunları gerçek sayılardan çizilir. Bekleyen yanıtlar yanlış sayılmaz. Konular sınıf/program sürümüyle ayrılır; aynı sorunun tekrarı bağımsız gözlem sayılmaz. Eski “zayıf konu” ortalaması bu ekrandan kaldırıldı.
+- Konu açılınca en fazla beş kanıt yanıtı görünür; bağlantı doğru deneme ve soruyu açar. Veli notu/puanı veya toplu değerlendirme kaydedilince rapor önbelleği geçersizlenir.
+- 390×844, 1280×800 ve 834×1194 gerçek Expo web bileşenlerinde sentetik veriyle görüntü alındı; filtreler, 90 günlük yatay grafik, yanıt bağlantısı, geri dönüş, boş/yükleniyor/503 ve yeniden deneme doğrulandı. Temiz tarayıcı oturumunda açılış/geri dönüş/yenileme geçti. Ölçülen düğmeler en az 48 CSS px; sayfada yatay taşma yok.
+- 27 SQL rapor kontrolü, 63 core testi, workspace lint/typecheck geçti. `docs/design/screens/learning-progress/verification.json` sınırları açıklar. Web görüntüsü fiziksel iPad/Pencil, Dynamic Type veya VoiceOver kabulü değildir. Canlı hizmet ve TestFlight dağıtımı yapılmadı.
