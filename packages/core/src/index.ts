@@ -21,3 +21,4 @@ export * from "./notebook-tokens";
 export * from "./prova-booklet";
 export * from './prova-draft';
 export * from "./help";
+export * from './operator-help';

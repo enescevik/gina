@@ -9,7 +9,7 @@ import { isConfigured, supabase } from "@/lib/supabase";
 
 export default function SignIn() {
   const router = useRouter();
-  const { session, isAdmin } = useAuth();
+  const { session, isAdmin, roles, rolesReady } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -17,7 +17,8 @@ export default function SignIn() {
 
   useEffect(() => {
     if (session && isAdmin) void router.replace("/dashboard");
-  }, [session, isAdmin, router]);
+    else if (session && rolesReady && roles.includes("support")) void router.replace("/support");
+  }, [session, isAdmin, roles, rolesReady, router]);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -26,7 +27,7 @@ export default function SignIn() {
     const { data, error: err } = await supabase().auth.signInWithPassword({ email: email.trim(), password });
     setBusy(false);
     if (err) setError(t.signIn.failed);
-    else if (data.session) void router.replace("/dashboard");
+    else if (data.session) void router.replace("/");
   }
 
   return (
@@ -41,7 +42,7 @@ export default function SignIn() {
           <p className="mb-4 text-sm text-slate-500">{t.signIn.title}</p>
           {!isConfigured ? <Notice tone="error">{t.common.notConfigured}</Notice> : null}
           {error ? <Notice tone="error">{error}</Notice> : null}
-          {session && !isAdmin ? <Notice>{t.signIn.notAdmin}</Notice> : null}
+          {session && !isAdmin && rolesReady && !roles.includes("support") ? <Notice>{t.signIn.notAdmin}</Notice> : null}
           <label className="label" htmlFor="email">
             {t.signIn.email}
           </label>
