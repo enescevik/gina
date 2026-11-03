@@ -99,6 +99,13 @@ select is(public.settle_group_attempts(),0,'settlement retry does not repeat com
 select is((select status::text from public.exam_attempts where id=current_setting('test.short_attempt')::uuid),'graded','multiple-choice attempt closes and existing grading trigger completes it');
 select is((select count(*)::int from public.audit_log where action='group_ranking_consent' and target_id in(select id::text from public.group_exam_entries where child_id='20000000-0000-4000-8000-000000002902')),1,'ranking withdrawal recorded once');
 reset role;
+select gina.enqueue_push('10000000-0000-4000-8000-000000002902','parents','exam_finished',jsonb_build_object('exam_id',current_setting('test.short_exam')::uuid,'attempt_id',current_setting('test.short_attempt')::uuid));
+-- Completion retries must not create duplicate or content-bearing notifications.
+select is((select count(*)::int from public.push_outbox where kind='exam_assigned' and payload->>'exam_id'=current_setting('test.group_exam')),1,'enrollment replay creates one assignment notification');
+select is((select count(*)::int from public.push_outbox where kind='exam_finished' and payload->>'attempt_id'=current_setting('test.short_attempt')),1,'settlement retry creates one completion notification');
+select is((select audience from public.push_outbox where kind='exam_finished' and payload->>'attempt_id'=current_setting('test.short_attempt')),'parents','completion notification targets parents');
+select is((select family_id::text from public.push_outbox where kind='exam_finished' and payload->>'attempt_id'=current_setting('test.short_attempt')),'10000000-0000-4000-8000-000000002902','notification belongs to the participating family');
+select is((select payload-array['exam_id','attempt_id'] from public.push_outbox where kind='exam_finished' and payload->>'attempt_id'=current_setting('test.short_attempt')),'{}'::jsonb,'no name, score, topic or answer in notification payload');
 select lives_ok($$delete from public.families where id='10000000-0000-4000-8000-000000002901'$$,'family deletion cascades frozen practice');
 select is((select count(*)::int from public.group_exam_entries),2,'deleted family is removed from ranking data');
 select * from finish();rollback;

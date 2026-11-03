@@ -2208,5 +2208,7 @@
   "planCalendar.suggestion": "AI study suggestion",
   "planCalendar.leavePending": "This request is saved on your device. Return to this plan to check it. Signing out removes the local copy.",
   "planCalendar.adjust": "Edit date, time and activity",
-  "planCalendar.collapse": "Close editing"
+  "planCalendar.collapse": "Close editing",
+  "group.familyTime": "Family time zone: {{zone}}",
+  "group.retryCheck": "The result could not be confirmed. We are refreshing participation; retrying for the same child does not create a second entry."
 }

@@ -2203,5 +2203,7 @@
   "planCalendar.suggestion": "AI çalışma önerisi",
   "planCalendar.leavePending": "Bu istek cihazında saklanır. Bu plana döndüğünde kontrol edebilirsin; hesaptan çıkış cihazdaki kopyayı siler.",
   "planCalendar.adjust": "Tarih, saat ve içeriği düzenle",
-  "planCalendar.collapse": "Düzenlemeyi kapat"
+  "planCalendar.collapse": "Düzenlemeyi kapat",
+  "group.familyTime": "Ailenizin saat dilimi: {{zone}}",
+  "group.retryCheck": "İşlemin sonucu doğrulanamadı. Katılım listesini yeniliyoruz; aynı çocukla tekrar denemek ikinci katılım oluşturmaz."
 }

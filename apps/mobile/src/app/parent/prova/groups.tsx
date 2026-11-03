@@ -13,6 +13,7 @@ import {
 import { Pressable } from "@/components/ui/pressable";
 import { p, SatinButton, Tag, u } from "@/components/planner/ui";
 import { supabase } from "@/lib/supabase";
+import { useFamilyTimezone } from "@/lib/family";
 import { useSession } from "@/lib/session";
 interface Group {
   id: string;
@@ -65,16 +66,18 @@ interface Report {
   }[];
 }
 function Choice(
-  { title, checked, onPress }: {
+  { title, checked, onPress, disabled = false }: {
     title: string;
     checked: boolean;
     onPress: () => void;
+    disabled?: boolean;
   },
 ) {
   return (
     <Pressable
       accessibilityRole="checkbox"
-      accessibilityState={{ checked }}
+      accessibilityState={{ checked, disabled }}
+      disabled={disabled}
       aria-checked={checked}
       onPress={onPress}
       style={[u.row, {
@@ -107,6 +110,7 @@ export default function GroupExams() {
   const { t, i18n } = useTranslation();
   const { claims } = useSession();
   const cache = useQueryClient();
+  const timeZone = useFamilyTimezone();
   const gate = useRef(false);
   const [joining, setJoining] = useState<Group | null>(null);
   const [child, setChild] = useState("");
@@ -149,6 +153,7 @@ export default function GroupExams() {
       selected?.child_id,
     ],
     enabled: !!selected,
+    refetchInterval: selected ? 15_000 : false,
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_group_result", {
         p_group: selected!.group_id,
@@ -160,6 +165,7 @@ export default function GroupExams() {
   });
   const date = (s: string) =>
     new Date(s).toLocaleString(i18n.language, {
+      timeZone,
       day: "numeric",
       month: "short",
       hour: "2-digit",
@@ -177,7 +183,20 @@ export default function GroupExams() {
       await action();
     } catch (e) {
       const key = `group.errors.${(e as Error).message}`;
-      setError(i18n.exists(key) ? t(key) : t("group.failed"));
+      setError(i18n.exists(key) ? t(key) : t("group.retryCheck"));
+      const refreshed = await catalog.refetch();
+      if (
+        joining &&
+        refreshed.data?.entries.some((e) =>
+          e.group_id === joining.id && e.child_id === child
+        )
+      ) {
+        setJoining(null);
+        setError("");
+        setNotice(t("group.enrolled", { name: childName(child) }));
+      }
+      void cache.invalidateQueries({ queryKey: ["exams"] });
+      void cache.invalidateQueries({ queryKey: ["child_exams"] });
     } finally {
       gate.current = false;
       setBusy(false);
@@ -186,12 +205,16 @@ export default function GroupExams() {
   async function enroll() {
     if (!joining || !child || !consent) return;
     await perform(async () => {
-      const { error } = await supabase.rpc("enroll_group_exam", {
-        p_group: joining.id,
-        p_child: child,
-        p_ranking: ranking,
-        p_consent: consent,
-      });
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 20_000);
+      const { error } = await Promise.resolve(
+        supabase.rpc("enroll_group_exam", {
+          p_group: joining.id,
+          p_child: child,
+          p_ranking: ranking,
+          p_consent: consent,
+        }).abortSignal(controller.signal),
+      ).finally(() => clearTimeout(timer));
       if (error) throw error;
       setNotice(t("group.enrolled", { name: childName(child) }));
       setJoining(null);
@@ -204,11 +227,15 @@ export default function GroupExams() {
   }
   async function changeRanking(entry: Entry) {
     await perform(async () => {
-      const { error } = await supabase.rpc("set_group_ranking_consent", {
-        p_group: entry.group_id,
-        p_child: entry.child_id,
-        p_enabled: !entry.ranking,
-      });
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 20_000);
+      const { error } = await Promise.resolve(
+        supabase.rpc("set_group_ranking_consent", {
+          p_group: entry.group_id,
+          p_child: entry.child_id,
+          p_enabled: !entry.ranking,
+        }).abortSignal(controller.signal),
+      ).finally(() => clearTimeout(timer));
       if (error) throw error;
       setRankingRequest(null);
       await catalog.refetch();
@@ -256,6 +283,7 @@ export default function GroupExams() {
             onRequestClose={() => {
               if (!gate.current) setRankingRequest(null);
             }}
+            supportedOrientations={["portrait", "landscape"]}
           >
             <SafeAreaView style={u.root}>
               <ScrollView
@@ -319,11 +347,23 @@ export default function GroupExams() {
               >
                 <View style={[parentStyles.card, { borderColor: p.purple }]}>
                   <Text style={u.heading}>{joining.title}</Text>
+                  {error
+                    ? (
+                      <Text accessibilityRole="alert" style={u.error}>
+                        {error}
+                      </Text>
+                    )
+                    : null}
                   <Text style={u.small}>
                     {t("group.chooseChild", { grade: joining.grade })}
                   </Text>
                   <View style={[u.row, { flexWrap: "wrap" }]}>
-                    {children.data?.filter((c) => c.grade === joining.grade)
+                    {children.data?.filter((c) =>
+                      c.grade === joining.grade &&
+                      !catalog.data?.entries.some((e) =>
+                        e.group_id === joining.id && e.child_id === c.id
+                      )
+                    )
                       .map((c) => (
                         <Tag
                           key={c.id}
@@ -343,11 +383,13 @@ export default function GroupExams() {
                   <Choice
                     title={t("group.participation")}
                     checked={consent}
+                    disabled={busy}
                     onPress={() => setConsent((v) => !v)}
                   />
                   <Choice
                     title={t("group.rankingConsent")}
                     checked={ranking}
+                    disabled={busy}
                     onPress={() => setRanking((v) => !v)}
                   />
                   <SatinButton
@@ -373,6 +415,9 @@ export default function GroupExams() {
         : null}
       {catalog.data?.groups.map((g) => {
         const entries = catalog.data.entries.filter((e) => e.group_id === g.id);
+        const eligible = (children.data ?? []).filter((c) =>
+          c.grade === g.grade && !entries.some((e) => e.child_id === c.id)
+        );
         const open = g.status === "published" &&
           now >= Date.parse(g.starts_at) && now < Date.parse(g.ends_at);
         return (
@@ -385,6 +430,9 @@ export default function GroupExams() {
               {t("prova.min")}
             </Text>
             <Text style={u.small}>{date(g.starts_at)} – {date(g.ends_at)}</Text>
+            <Text style={u.small}>
+              {t("group.familyTime", { zone: timeZone })}
+            </Text>
             <Text style={u.small}>
               {g.curriculum} · {t("group.version", { version: g.version })}
             </Text>
@@ -423,7 +471,7 @@ export default function GroupExams() {
                 </View>
               </View>
             ))}
-            {open
+            {open && eligible.length > 0
               ? (
                 <SatinButton
                   title={t(g.included ? "group.join" : "group.needsPlan")}
@@ -431,14 +479,17 @@ export default function GroupExams() {
                     (catalog.data.used >= catalog.data.monthly)}
                   onPress={() => {
                     setJoining(g);
-                    setChild("");
+                    setChild(eligible.length === 1 ? eligible[0].id : "");
+                    setError("");
                     setConsent(false);
                     setRanking(false);
                     setSelected(null);
                   }}
                 />
               )
-              : g.status === "published"
+              : open && !eligible.length && !entries.length
+              ? <Text style={u.small}>{t("group.noMatchingChild")}</Text>
+              : g.status === "published" && !open
               ? (
                 <Text style={u.small}>
                   {t(
