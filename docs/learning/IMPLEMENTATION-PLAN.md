@@ -14,7 +14,7 @@ Yeni ekranlarda ekran bazında tasarım onayı korunur. Gelişim ekranı maketi 
 | 20 soru / sınıf–ders | İlk matris 77 hücre / 1.540 aday hedefi. Bu havuzda üretim, cevap/görsel denetimi ve editoryal yayın açık; senaryo adayları soru sayılmaz. |
 | Görselli/ortak kaynak katkısı | Bağımsız medya kopyası, tam bağlamlı moderasyon, ödül politikası ve uçtan uca test açık. Mevcut engel erken kaldırılmaz. |
 | Toplu Prova | İlk uygulama var. Gerçek katılım/zaman/sıralama/iptal/bildirim/paket testleri ve kontrollü açılış açık. |
-| Backoffice | Destek/fikir ve sürümlü SSS sunucu sözleşmesi, süreli dar operatör rolleri, 70 SQL kontrolü eklendi; ekran entegrasyonu açık. Mevcut aile/kütüphane/AI ekranları var. İşlem yetkileri, destek/fikir/SSS, satın alma–iade–erişim ayrımı ve tasarım kabulü açık. |
+| Backoffice | Destek/fikir ve sürümlü SSS sunucu sözleşmesi, süreli dar operatör rolleri, 70 SQL kontrolü eklendi; ekran entegrasyonu açık. Veli Yardım ekranı PR #61 ile main’de; destek/fikir/SSS arama ve güvenli gönderim web kontrolü geçti. Operatör destek ekranı maketi `docs/design/screens/support-operator/desktop-tablet-proposal-v1.png` tasarım onayı bekliyor. Mevcut aile/kütüphane/AI ekranları var. Operatör/SSS editörü, satın alma–iade–erişim ayrımı ve native kabul açık. |
 | AI sağlayıcıları | Anthropic mevcut. Doğrulanmış başka adapterler, model/iş politikaları ve sağlayıcı arıza testleri açık. Desteklenmeyen sağlayıcı kaydı etkinleştirilemez. |
 | Öğrenme yardımcıları | Odak sayacı, tekrar defteri, ödev/ders/kurs ortak planı, veli plan asistanı; belge → görev/ödül/hedef akışları açık. |
 | Yayın kabulü | Canlı hizmet kontrolleri, güvenlik/performance tekrar denetimi, gerçek telefon/tablet testleri, aynı commit'ten iki dağıtım; **en son**. |
