@@ -6,6 +6,7 @@ import { ginaClaimsSchema, type GinaClaims } from "@gina/core";
 import { supabase } from "./supabase";
 import { queryClient } from "./query";
 import { clearAnswerJournals } from "./answer-journal";
+import { clearHelpCommands } from "./help";
 
 export interface SessionState {
   session: Session | null;
@@ -69,8 +70,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       if (_event === "INITIAL_SESSION") return; // getSession below owns initial read errors.
       changed = true;
       if (_event === "SIGNED_OUT") {
-        try { clearAnswerJournals(); }
-        catch { /* An unavailable device store cannot expose another identity's scoped drafts. */ }
+        for (const clear of [clearAnswerJournals, clearHelpCommands]) {
+          try { clear(); }
+          catch { /* Scoped drafts remain inaccessible to another identity. */ }
+        }
       }
       setRecovering(recoveryPending);
       apply(next);

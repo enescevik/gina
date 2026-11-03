@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
 
-import { Users, Tablet, ShieldCheck, UserRound, Settings2, Pencil, Bell, Share2, Crown, NotebookPen, GraduationCap } from "lucide-react-native";
+import { CircleHelp, Users, Tablet, ShieldCheck, UserRound, Settings2, Pencil, Bell, Share2, Crown, NotebookPen, GraduationCap } from "lucide-react-native";
 import { Avatar } from "@/components/avatar";
 import { ConfirmAction } from "@/components/ui/confirm-action";
 import { AccountDeletion } from "@/components/account-deletion";
@@ -174,6 +174,7 @@ export default function ParentMenuScreen() {
       {section === "security" ? <><ParentPinRow/><InfoCard title={t("unified.samePhone")} body={t("unified.samePhoneBody")}><Button title={t("unified.childModeAction")} onPress={()=>router.push("/parent/child-mode")}/></InfoCard></> : null}
       {section === "account" ? <>
       <Text style={parentStyles.copy}>{t("unified.accountHelp")}</Text>
+      <NavigationCard title={t("help.title")} body={t("help.subtitle")} icon={<CircleHelp size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/help")}/>
       <NavigationCard title={t("push.menu")} body={t("accountV5.notificationsBody")} icon={<Bell size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/notifications")}/>
       <NavigationCard title={t("share.title")} body={t("unified.shareHelp")} icon={<Share2 size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/share")}/>
       <NavigationCard title={t("parent.subscription")} icon={<Crown size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/subscription")}/>
