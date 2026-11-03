@@ -2294,6 +2294,8 @@ isOneToOne: false
 "admin_delete_global_question":
 { Args: { "p_question_id": string }; Returns: undefined
                            },
+"finance_request_reconcile": { Args: { p_id: string; p_family_id: string; p_subscription_id: string; p_reason: string }; Returns: Json },
+"finance_reconcile_jobs": { Args: { p_family_id: string }; Returns: Json },
 "admin_save_override": { Args: { p_request_id: string; p_command: Json }; Returns: Json },
 "admin_expire_override":
 { Args: { "p_override_id": string,"p_reason": string }; Returns: undefined

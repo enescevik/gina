@@ -106,3 +106,13 @@ Google plan değişiminde eski tokenın kapanması ile yeni hakkın kaydı birli
 Dağıtım: 071000 önce; ardından `iap-verify`, `iap-reconcile`, `apple-notifications`, `google-rtdn` aynı kaynaktan güncellenmeli. Eski çalışan kodun yeni sürümü ezmesini engelleyen veritabanı kontrolü vardır. Geçmiş Google plan geçişleri için eski token eşlemelerini mağazadan uzlaştırmak ayrı operasyon işidir.
 
 Kanıt: 10 Edge durum testi, 43 SQL kontrolü; gerçek eşzamanlı DB testlerinde eski/yeni sürüm yarışı, iki ailenin ilk eşleştirmesi ve plan değişimiyle eski tokenın eşzamanlı dönüşü. Sentetik izole veriler; kullanıcı hesabında ödeme yapılmadı.
+
+## Gerekçeli operatör kontrolü (074000, henüz canlı değil)
+
+`/billing` içinde mevcut bir aile aboneliğinde **Mağazadan kontrol et** kullanılır. `iap-operator-reconcile`, gelen bearer tokenı PostgREST'e iletir; `finance_request_reconcile` canlı finans rolünü denetlemeden servis anahtarlı işlem başlamaz. Doğrulanan mağaza durumu ve işin tamamlanması aynı veritabanı işlemindedir. Eski işleyicinin iki dakikalık sahipliği bittiyse yazamaz. Yanıt kaybolursa aynı kalıcı istek sonucu bulunur; üç kesinti sonrası başarısız kapanır. Operatör başına 20/saat, abonelik başına 5/saat yeni istek sınırı vardır.
+
+Kaynak `fetchAppleState` / Google `fetchGoogleSubscription` + `googleState` ortak istemcileridir; Google acknowledge/iade/iptal çağrısı yapılmaz. Mağazada kayıt bulunmaması mevcut aboneliği iptal etmez. Bilinmeyen hatalar/özel tokenlar ekrana çıkmaz. Geçmişin başarılı olması iade yapıldığı anlamına gelmez; bekleyen mağaza bildirimi ayrıca incelenir.
+
+Dağıtım sırası: 074000 (071000 bağımlılığıyla) → `iap-operator-reconcile` → backoffice. İşlev gateway JWT kontrolünü kendi PostgREST canlı rol kontrolüyle tamamladığından config'te `verify_jwt=false`; kimliksiz işlem yoktur. Anahtarlar mevcut sunucu IAP ayarlarıdır, istemciye verilmez. Mevcut altı saatlik otomatik uzlaştırma değiştirilmedi; bu operatör akışı onun yerine geçmez. Canlı mağaza/gerçek cihaz kabulü ve geçmiş bildirim kurtarma açık.
+
+Kanıt: `docs/design/screens/operator-reconciliation/README.md`; SQL 052, `scripts/test-operator-reconcile-races.py`, `iap-operator-reconcile/handler.test.ts`.
