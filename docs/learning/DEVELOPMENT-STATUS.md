@@ -216,3 +216,7 @@ Kopyalama eylemi sabit başlığa taşındı; soru özeti ve tam soru görünüm
 ## 3 Kasım — öğrenme çıktısı aday dizini
 
 Sıradaki müfredat/kütüphane işine geçildi. 648 senaryo 62 sınıf–ders grubu ve 708 çıktı aday kaydına kaynak hücreleri korunarak bağlandı. Dört kodsuz yönerge ve altı bağlama göre değişen metin kaydı incelemeye ayrıldı; mevcut 17 senaryo uyarısı korunuyor. Dokuz doğrulama kontrolü ve CI adımı eklendi. [Dizin ve açık işler](catalog/2026-2027-term1/OUTCOME-INDEX.md). Bu bir soru üretimi/yayın veya tam müfredat kabulü değildir. İlk 20 soruluk içerik pilotu, program sürümü incelemesiyle 5. sınıf Matematik geometri üzerinden ilerleyecek. Canlı katalog/API/AI entegrasyonu açık.
+
+## 3 Kasım — ilk 20 soruluk geometri içerik pilotu
+
+5. sınıf Matematik için 20 özgün açık uçlu taslak, yedi çıktı adayı, sekiz SVG/PNG diyagramı, çözüm ve kısmi puan ölçütleri hazırlandı. Öğrenci projeksiyonu cevap anahtarından ayrıldı; 18 teknik kontrol CI’ye eklendi. Yerel içerik görüntüleyicisi üç web ölçüsünde kontrol edildi. [Paket ve kabul sınırları](library-pilot/grade-5-math/README.md). İnsan editoryal onayı, okul/program sürümü, ortak kaynakları koruyan kütüphane aktarımı ve uygulama testi açık. Üretilen 20 taslak yayımlanmadı; 1.540 hedefinin tamamı değildir. Canlı veritabanı/AI/TestFlight değişikliği yok.
