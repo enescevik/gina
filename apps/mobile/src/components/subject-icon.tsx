@@ -1,4 +1,5 @@
 import { View } from "react-native";
+import { BookOpen, Calculator, FileText } from "lucide-react-native";
 
 import { ILLUSTRATED_SUBJECTS, isIllustratedSubjectsSlug, type IllustratedSubjectsSlug } from "@/generated/illustrated/subjects";
 
@@ -126,12 +127,26 @@ export interface SubjectIconProps {
   size?: number;
   /** auto: ≥64 dp resimli WebP; svg: native; illustrated: ≥48 dp resim (altında SVG). */
   variant?: IconVariant;
+  /** Onaylı takvimdeki sade, ders rengiyle çizilmiş küçük simgeler. */
+  appearance?: "default" | "planner";
   accessibilityLabel?: string;
 }
 
 /** Ders ikonu: bilinmeyen ders genel ödev simgesine (native SVG) düşer. */
-export function SubjectIcon({ subject, size = 40, variant = "auto", accessibilityLabel }: SubjectIconProps) {
+export function SubjectIcon({ subject, size = 40, variant = "auto", appearance = "default", accessibilityLabel }: SubjectIconProps) {
   const slug = resolveSubjectSlug(subject);
+  const planner = slug === "math"
+    ? { Icon: Calculator, color: "#6042DE" }
+    : slug === "turkish"
+    ? { Icon: FileText, color: "#278B76" }
+    : slug === "life-science"
+    ? { Icon: BookOpen, color: "#B87827" }
+    : null;
+  if (appearance === "planner" && planner) {
+    return <View style={{ width: size, height: size }} accessible={!!accessibilityLabel} accessibilityLabel={accessibilityLabel} importantForAccessibility={accessibilityLabel ? "auto" : "no-hide-descendants"}>
+      <planner.Icon size={size} color={planner.color} strokeWidth={2.2} />
+    </View>;
+  }
   if (slug && shouldUseIllustrated(variant, size, true)) {
     return <IllustratedImage source={ILLUSTRATED_SUBJECTS[slug]} size={size} accessibilityLabel={accessibilityLabel} />;
   }

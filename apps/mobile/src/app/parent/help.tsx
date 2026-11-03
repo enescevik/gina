@@ -15,6 +15,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -311,7 +312,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
     </View>
   );
   const conversation = (
-    <View style={[s.card, { flex: 1 }, wide && { gap: 12, padding: 16 }]}>
+    <View style={[s.card, { flex: 1 }, wide && { gap: 16, padding: 24, minHeight: 620 }]}>
       {thread.isPending
         ? loading
         : thread.isError
@@ -328,14 +329,14 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
                 </Text>
                 {status(current.status)}
               </View>
-              <IconButton
+              {wide && current.status !== "closed" ? textAction(t("help.close"), () => setCloseConfirm(true), locked) : <IconButton
                 label={t("help.options")}
                 onPress={() => setOverflow(!overflow)}
               >
                 <MoreHorizontal color={p.purple} />
-              </IconButton>
+              </IconButton>}
             </View>
-            {overflow && current.status !== "closed" &&
+            {overflow && !wide && current.status !== "closed" &&
               textAction(t("help.close"), () => setCloseConfirm(true), locked)}
             <View style={s.disclosure}>
               <Text style={s.small}>{t("help.familyPrivacy")}</Text>
@@ -418,16 +419,16 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
                 </View>
               )
               : (
-                <View style={{ gap: 12 }}>
-                  <Field
-                    label={t("help.reply")}
+                <View style={[s.composer, { flexDirection: wide || fontScale < 1.3 ? "row" : "column" }]}>
+                  <TextInput
+                    accessibilityLabel={t("help.reply")}
                     placeholder={t("help.replyPlaceholder")}
                     value={reply}
                     onChangeText={setReply}
                     multiline
                     maxLength={6000}
                     editable={!locked}
-                    style={{ minHeight: 76, textAlignVertical: "top" }}
+                    style={[b.copy, s.reply, !wide && fontScale >= 1.3 && { flex: 0, alignSelf: "stretch" }]}
                   />
                   <SatinButton
                     title={t("help.send")}
@@ -449,7 +450,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
     </View>
   );
   const list = (
-    <View style={[s.card, wide && { width: 340 }]}>
+    <View style={[s.card, wide && { width: 320, minHeight: 620 }]}>
       <View style={s.row}>
         <Text accessibilityRole="header" style={[b.h2, { flex: 1 }]}>
           {t("help.tickets")}
@@ -519,7 +520,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
               accessibilityLabel={t("app.name")}
               style={{ width: 96, height: 40 }}
             />
-            <Text style={b.bold}>{t("help.title")}</Text>
+            <Text style={b.bold}>{t(ticket ? "help.tickets" : "help.title")}</Text>
           </View>
           {leave && (
             <View style={s.callout}>
@@ -626,14 +627,27 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
             )
             : (
               <>
-                {(!ticket || wide) && (
+                {!ticket && (
                   <>
                     <View style={{ gap: 4 }}>
                       <Text accessibilityRole="header" style={b.h1}>
-                        {t("help.heading")}
+                        {t(tab === "faq" ? "help.heading" : "help.tickets")}
                       </Text>
-                      <Text style={b.copy}>{t("help.subtitle")}</Text>
+                      {tab === "faq" && <Text style={b.copy}>{t("help.subtitle")}</Text>}
                     </View>
+                    {tab === "faq" && (
+                      <View style={s.search}>
+                        <Search color={p.muted} size={22} />
+                        <TextInput
+                          accessibilityLabel={t("help.search")}
+                          placeholder={t("help.search")}
+                          placeholderTextColor={p.muted}
+                          value={search}
+                          onChangeText={setSearch}
+                          style={[b.copy, { flex: 1, minWidth: 0, minHeight: 48 }]}
+                        />
+                      </View>
+                    )}
                     <View style={s.tabs}>
                       {(["faq", "tickets"] as const).map((value) => (
                         <Pressable
@@ -666,22 +680,13 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
                 {tab === "faq"
                   ? (
                     <View
-                      style={[s.card, {
+                      style={{
                         maxWidth: 860,
                         width: "100%",
-                        alignSelf: "center",
-                      }]}
+                        gap: 20,
+                      }}
                     >
-                      <View style={s.row}>
-                        <Search color={p.purple} size={23} />
-                        <View style={{ flex: 1 }}>
-                          <Field
-                            label={t("help.search")}
-                            value={search}
-                            onChangeText={setSearch}
-                          />
-                        </View>
-                      </View>
+                      <View style={s.card}>
                       {articles.isPending
                         ? loading
                         : articles.isError
@@ -726,6 +731,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
                               </Text>
                             );
                         })()}
+                      </View>
                       <View style={s.callout}>
                         <Text style={b.h2}>{t("help.notFound")}</Text>
                         <SatinButton
@@ -832,7 +838,18 @@ const s = StyleSheet.create({
     borderRadius: 22,
     gap: 12,
   },
-  disclosure: { backgroundColor: "#F5F1FB", padding: 14, borderRadius: 16 },
+  disclosure: { paddingVertical: 4 },
+  search: {
+    flexDirection: "row", alignItems: "center", gap: 12,
+    minHeight: 58, paddingHorizontal: 16, borderRadius: 20,
+    borderWidth: 1, borderColor: p.line, backgroundColor: "#FFFEFB", maxWidth: 860,
+  },
+  composer: { alignItems: "flex-end", gap: 10, marginTop: "auto", paddingTop: 16 },
+  reply: {
+    flex: 1, minWidth: 0, minHeight: 56, maxHeight: 160, textAlignVertical: "top",
+    padding: 14, borderRadius: 20, borderWidth: 1, borderColor: p.line,
+    backgroundColor: "#FFFEFB",
+  },
   small: {
     fontFamily: "Nunito_600SemiBold",
     fontSize: 14,
@@ -863,12 +880,14 @@ const s = StyleSheet.create({
     gap: 8,
   },
   bubble: {
+    alignSelf: "flex-end",
+    maxWidth: "88%",
     backgroundColor: "#F5F2ED",
     borderRadius: 20,
     padding: 14,
     gap: 8,
   },
-  support: { backgroundColor: "#F0E9FD", marginLeft: 16 },
+  support: { backgroundColor: "#F0E9FD", alignSelf: "flex-start" },
   error: {
     fontFamily: "Nunito_700Bold",
     fontSize: 16,

@@ -9,8 +9,14 @@ export type PublicationIconName =
   | "eye"
   | "info"
   | "family"
+  | "chat"
+  | "idea"
+  | "grid"
   | "back";
 const paths: Record<PublicationIconName, ReactNode> = {
+  chat: <path d="M21 11a8 8 0 0 1-8 8H6l-4 3V7a5 5 0 0 1 5-5h6a8 8 0 0 1 8 9ZM7 8h9M7 12h6" />,
+  idea: <><path d="M9 18v-2a6 6 0 1 1 6 0v2M9 18h6M10 22h4M12 1V0M3 4 1 2M21 4l2-2" /></>,
+  grid: <><rect x="3" y="3" width="7" height="7" rx="2" /><rect x="14" y="3" width="7" height="7" rx="2" /><rect x="3" y="14" width="7" height="7" rx="2" /><rect x="14" y="14" width="7" height="7" rx="2" /></>,
   document: (
     <>
       <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z" />

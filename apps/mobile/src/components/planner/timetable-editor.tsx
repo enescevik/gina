@@ -34,7 +34,7 @@ import {
   type Json,
 } from "@gina/core";
 import { Avatar } from "@/components/avatar";
-import { SubjectIcon } from "@/components/subject-icon";
+import { SubjectIcon, resolveSubjectSlug } from "@/components/subject-icon";
 import { Field } from "@/components/ui/field";
 import { Pressable } from "@/components/ui/pressable";
 import { supabase } from "@/lib/supabase";
@@ -252,7 +252,9 @@ function LoadedEditor({
                 <Text style={[u.bold, { color: p.purple }]}>{i + 1}</Text>
               </View>
               {!wide ? (
-                <SubjectIcon subject={l.title} size={34} variant="svg" />
+                <View style={{ width: 44, height: 48, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: resolveSubjectSlug(l.title) === "turkish" ? "#DDF5EB" : resolveSubjectSlug(l.title) === "life-science" ? "#FCEBCF" : p.lilac }}>
+                  <SubjectIcon subject={l.title} size={32} variant="svg" appearance="planner" />
+                </View>
               ) : null}
               <View style={u.fill}>
                 <Text style={u.bold}>{l.title}</Text>
@@ -390,8 +392,8 @@ function LoadedEditor({
                 />
                 <TimetableSourceLinks childId={child.id} />
                 {!wide ? (
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  <View style={u.row}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
+                  <View style={[u.row, { flex: 1, gap: 4 }]}>
                     {days.map((d) => (
                       <Pressable
                         key={d}
@@ -400,6 +402,7 @@ function LoadedEditor({
                         onPress={() => setDay(d)}
                         style={{
                           minWidth: 52,
+                          flex: 1,
                           minHeight: 50,
                           backgroundColor: d === day ? p.purple : "#F1EDF5",
                           borderRadius: 17,

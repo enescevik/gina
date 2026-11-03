@@ -8,6 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -26,6 +27,8 @@ import {
   Maximize2,
   Minimize2,
   Sparkles,
+  Check,
+  X,
 } from "lucide-react-native";
 import { emptyNotebook, readNotebook } from "@gina/core";
 import { IconButton, p, SatinButton } from "@/components/planner/ui";
@@ -104,6 +107,7 @@ export function ParentReviewWorkspace(
   const wide = width >= 900 && height >= 540 && fontScale < 1.4;
   const stackedFooter = width < 380 || fontScale >= 1.4;
   const [picker, setPicker] = useState(false);
+  const [questionPreview, setQuestionPreview] = useState(false);
   const [tab, setTab] = useState<"solution" | "assessment">("solution");
   const [expanded, setExpanded] = useState(false),
     [sourceOpen, setSourceOpen] = useState(true),
@@ -248,7 +252,7 @@ export function ParentReviewWorkspace(
   }
   const source = (
     <View style={{ gap: 12 }}>
-      <QuestionMedia questionId={question.id} notebook maxImageHeight={130} />
+      <QuestionMedia questionId={question.id} notebook maxImageHeight={wide ? 200 : 170} />
       {context.data
         ? (
           <>
@@ -326,18 +330,9 @@ export function ParentReviewWorkspace(
       {isOpen
         ? (
           <View style={s.row}>
-            <View style={{ flex: 1 }}>
-              <Field
-                label={t("parentReview.score")}
-                value={score}
-                onChangeText={(v) => change(() => setScore(v))}
-                keyboardType="number-pad"
-                maxLength={3}
-                editable={!locked}
-                placeholder="0–100"
-              />
-            </View>
-            <Text style={s.heading}>/ 100</Text>
+            <View style={[s.row, { flex: 1, borderWidth: 1, borderColor: '#D8CBF3', borderRadius: 16, paddingHorizontal: 14 }]}>
+              <TextInput accessibilityLabel={t("parentReview.score")} value={score} onChangeText={v => change(() => setScore(v))} keyboardType="number-pad" maxLength={3} editable={!locked} placeholder="0" style={{ flex: 1, minHeight: 48, color: p.purple, fontFamily: 'Nunito_800ExtraBold', fontSize: 24 }}/><Text style={[s.heading, { color: p.purple }]}>/ 100</Text>
+            </View><Text style={[s.tag, { paddingVertical: 7 }]}>{t("parentReview.score")}</Text>
           </View>
         )
         : (
@@ -588,11 +583,7 @@ export function ParentReviewWorkspace(
                     <Text style={[s.heading, { flex: 1 }]}>
                       {t("parentReview.notebook", { name: childName })}
                     </Text>
-                    <Toggle
-                      label={t("parentReview.myNotes")}
-                      value={showNotes}
-                      onChange={setShowNotes}
-                    />
+                    <Pressable accessibilityRole="switch" accessibilityLabel={t("parentReview.myNotes")} accessibilityState={{ checked: showNotes }} onPress={() => setShowNotes(!showNotes)} style={[s.key, { backgroundColor: showNotes ? '#E5F5EB' : p.lilac, paddingVertical: 6 }]}>{showNotes ? <Check size={18} color="#087F70"/> : <EyeOff size={18} color={p.muted}/>}<Text style={s.small}>{t("parentReview.myNotes")}</Text></Pressable>
                     <IconButton
                       label={t(
                         expanded ? "notebook.restore" : "notebook.expand",
@@ -606,46 +597,15 @@ export function ParentReviewWorkspace(
                   </View>
                 )
                 : (
-                  <View style={{ padding: 10, gap: 8 }}>
-                    <View style={s.row}>
-                      <Pressable
-                        accessibilityRole="button"
-                        accessibilityState={{ expanded: sourceOpen }}
-                        style={[s.key, { flex: 1 }]}
-                        onPress={() => setSourceOpen(!sourceOpen)}
-                      >
-                        <Text style={[s.bold, { flex: 1, fontSize: 14 }]}>
-                          {t(
-                            sourceOpen
-                              ? "parentReview.collapseQuestion"
-                              : "notebook.showQuestion",
-                          )}
-                        </Text>
-                        <ChevronDown size={18} color={p.purple} />
+                  <View style={{ padding: 12, gap: 8 }}>
+                    <View style={[s.row, { backgroundColor: '#F4F0FA', borderRadius: 18, padding: 8 }]}>
+                      <View style={{ width: 94 }}><QuestionMedia questionId={question.id} compact/></View>
+                      <Pressable accessibilityRole="button" accessibilityLabel={t("notebook.showQuestion")} onPress={() => setQuestionPreview(true)} style={{ flex: 1, minHeight: 74, justifyContent: 'center', gap: 6 }}>
+                        <Text style={[s.small, { color: p.ink }]} numberOfLines={2}>{context.data?.prompt ?? question.stem}</Text>
+                        <View style={[s.row, { gap: 6 }]}><Eye size={18} color={p.purple}/><Text style={[s.small, { color: p.purple }]}>{t("notebook.showQuestion")}</Text></View>
                       </Pressable>
-                      <IconButton
-                        label={t(
-                          showNotes
-                            ? "parentReview.hideNotes"
-                            : "parentReview.showNotes",
-                        )}
-                        onPress={() => setShowNotes(!showNotes)}
-                      >
-                        {showNotes
-                          ? <Eye size={20} color={p.purple} />
-                          : <EyeOff size={20} color={p.muted} />}
-                      </IconButton>
+                      <IconButton label={t(showNotes ? "parentReview.hideNotes" : "parentReview.showNotes")} onPress={() => setShowNotes(!showNotes)}>{showNotes ? <Eye size={20} color={p.purple}/> : <EyeOff size={20} color={p.muted}/>}</IconButton>
                     </View>
-                    {!sourceOpen && (
-                      <Text style={s.bold} numberOfLines={2}>
-                        {context.data?.prompt ?? question.stem}
-                      </Text>
-                    )}
-                    {sourceOpen && (
-                      <ScrollView style={{ maxHeight: 180 }}>
-                        {source}
-                      </ScrollView>
-                    )}
                   </View>
                 )}
               {!!answer?.answer_text && (
@@ -853,6 +813,9 @@ export function ParentReviewWorkspace(
             </ScrollView>
           </View>
         </Modal>
+        <Modal {...NOTEBOOK_MODAL_PROPS} visible={questionPreview} transparent animationType="fade" onRequestClose={() => setQuestionPreview(false)}>
+          <View style={s.shade}><View style={s.dialog}><View style={s.row}><Text style={[s.heading, { flex: 1 }]}>{t("notebook.question")}</Text><IconButton label={t("notebook.close")} onPress={() => setQuestionPreview(false)}><X size={22} color={p.ink}/></IconButton></View><ScrollView contentContainerStyle={{ paddingBottom: 16 }}>{source}</ScrollView></View></View>
+        </Modal>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -902,10 +865,10 @@ const s = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 24,
   },
-  body: { flex: 1, minHeight: 0, gap: 12, paddingHorizontal: 12 },
+  body: { flex: 1, minHeight: 0, gap: 0, paddingHorizontal: 12 },
   sidebar: {
-    width: "32%",
-    flexBasis: "32%",
+    width: "35%",
+    flexBasis: "35%",
     flexGrow: 0,
     flexShrink: 0,
     borderRadius: 26,
@@ -924,7 +887,7 @@ const s = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    padding: 16,
+    padding: 12,
   },
   key: {
     flexDirection: "row",

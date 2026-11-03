@@ -395,7 +395,7 @@ export function NotebookEditor({
         {([{ key: "pen", Icon: Pencil }, { key: "eraser", Icon: Eraser }, {
           key: "select",
           Icon: Scan,
-        }] as const).map(({ key, Icon }) => (
+        }] as const).filter(({ key }) => roomy || key !== "select").map(({ key, Icon }) => (
           <ToolButton
             key={key}
             label={t(`notebook.${key}`)}
@@ -424,7 +424,7 @@ export function NotebookEditor({
             })}
         >
           <Type size={22} color={p.ink} />
-          {roomy && (
+          {(roomy || screenWidth >= 320) && (
             <Text style={s.toolLabel}>
               {t(annotation ? "parentReview.note" : "notebook.textShort")}
             </Text>
@@ -438,7 +438,7 @@ export function NotebookEditor({
               onPress={() => setTextEditor({ text: "" })}
             >
               <Sigma size={22} color={p.ink} />
-              {roomy && (
+              {(roomy || screenWidth >= 360) && (
                 <Text style={s.toolLabel}>{t("notebook.symbolsShort")}</Text>
               )}
             </ToolButton>
@@ -473,6 +473,7 @@ export function NotebookEditor({
             </ToolButton>
           </>
         )}
+        {annotation && roomy && [2, 1].map(i => <Pressable key={i} accessibilityRole="button" accessibilityLabel={t(`notebook.color${i}`)} accessibilityState={{ selected: color === NOTEBOOK_COLORS[i], disabled }} disabled={disabled} style={s.colorTouch} onPress={() => { finish(); setColor(NOTEBOOK_COLORS[i]); setTool("pen"); }}><View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: NOTEBOOK_COLORS[i], borderWidth: color === NOTEBOOK_COLORS[i] ? 3 : 0, borderColor: "#fff", outlineWidth: color === NOTEBOOK_COLORS[i] ? 1 : 0, outlineColor: p.purple }}/></Pressable>)}
         <ToolButton
           label={t("notebook.moreTools")}
           onPress={() => setOptionsOpen(true)}
@@ -694,6 +695,7 @@ export function NotebookEditor({
                       </ToolButton>
                     </View>
                     <View style={[s.options, { flexWrap: "wrap" }]}>
+                      <ToolButton label={t("notebook.select")} active={tool === "select"} disabled={disabled} onPress={() => { finish(); setTool("select"); setPenOptions(false); setOptionsOpen(false); }}><Scan size={22} color={tool === "select" ? "#fff" : p.ink}/><Text style={[s.toolLabel, tool === "select" && { color: "#fff" }]}>{t("notebook.select")}</Text></ToolButton>
                       <ToolButton
                         label={t("notebook.undo")}
                         disabled={disabled || !past.length}
@@ -961,6 +963,7 @@ const s = StyleSheet.create({
   },
   toolbar: {
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "center",
     borderRadius: 22,
     marginBottom: 12,

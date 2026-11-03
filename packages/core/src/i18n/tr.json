@@ -1040,6 +1040,8 @@
   },
   "taskPremium": {
     "subtitle": "Küçük alışkanlıklar, büyük adımlar.",
+    "activeLabel": "Aktif",
+    "pausedLabel": "Duraklatılan",
     "activeCount": "Aktif {{count}}",
     "pausedCount": "Duraklatılan {{count}}",
     "encouragement": "Her çocuk kendi hızında ilerler.",

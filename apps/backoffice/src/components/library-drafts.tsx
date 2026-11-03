@@ -1,5 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import { createPortal } from "react-dom";
+import { HeaderActionContext } from "./Layout";
 import {
   definitiveHelpFailure,
   libraryDetailSchema,
@@ -72,6 +74,7 @@ function Workspace({ user, initialId }: {
   initialId: string | null;
 }) {
   const router = useRouter();
+  const headerTarget = useContext(HeaderActionContext);
   const [outbox, setOutbox] = useState(() => createLibraryOutbox(user));
   const [pending, setPending] = useState<LibraryPending | null>(null),
     [storageError, setStorageError] = useState(false),
@@ -519,6 +522,7 @@ function Workspace({ user, initialId }: {
   const programmeUrl = sourceUrl(
     record(provenance.curriculum_reference).programme_url,
   );
+  const uploadAction = <button className="btn-secondary library-header-upload" disabled={locked || access !== "allowed"} onClick={() => navigate(() => input.current?.click())}>↑ Paket yükle</button>;
 
   return (
     <section
@@ -549,15 +553,9 @@ function Workspace({ user, initialId }: {
         </div>
       )}
       <div hidden={access !== "allowed"}>
-        <header className="library-intro">
+        <header className={"library-intro" + (headerTarget ? " in-header" : "")}>
           <p>Ortak kaynakları, soruları ve puan ölçütlerini birlikte incele.</p>
-          <button
-            className="btn-secondary"
-            disabled={locked}
-            onClick={() => navigate(() => input.current?.click())}
-          >
-            ↑ Paket yükle
-          </button>
+          {headerTarget ? createPortal(uploadAction, headerTarget) : uploadAction}
           <input
             ref={input}
             type="file"
@@ -695,13 +693,11 @@ function Workspace({ user, initialId }: {
                     <h2>{detail.title}</h2>
                     <p>
                       {detail.grade}. sınıf · {detail.subject} · Sürüm{" "}
-                      {detail.revision}
-                    </p>
-                    <p>
-                      {detail.questions.length} soru · {detail.sources.length}{" "}
+                      {detail.revision} · {detail.questions.length} soru · {detail.sources.length}{" "}
                       ortak kaynak
                     </p>
                   </div>
+                  <div className="library-package-actions">
                   <span className="library-status">
                     <svg
                       width="18"
@@ -719,10 +715,9 @@ function Workspace({ user, initialId }: {
                       ? "Yerel önizleme · Henüz kaydedilmedi"
                       : "Özgün taslak · Yayın ayrı yönetilir"}
                   </span>
-                </header>
                 {selected && !file && (
                   <button
-                    className="btn-secondary"
+                    className="library-link"
                     disabled={locked}
                     onClick={() => navigate(() => {
                       void router.push({
@@ -734,6 +729,8 @@ function Workspace({ user, initialId }: {
                     Yayın ayarlarını aç
                   </button>
                 )}
+                  </div>
+                </header>
                 <div className="library-columns">
                   <aside className="library-questions">
                     <h3>Sorular</h3>
@@ -765,8 +762,7 @@ function Workspace({ user, initialId }: {
                         >
                           <span>{String(i + 1).padStart(2, "0")}</span>
                           <span>
-                            {item.student.stem.slice(0, 80)}
-                            {item.student.stem.length > 80 ? "…" : ""}
+                            <span className="library-question-summary" title={item.student.stem}>{item.student.stem}</span>
                             <small>
                               {
                                 outcomes[

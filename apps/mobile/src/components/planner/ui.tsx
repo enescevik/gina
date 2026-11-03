@@ -29,10 +29,12 @@ export function SatinButton({
   icon,
   style,
   selected,
+  badge,
 }: {
   title: string;
   onPress: () => void;
   selected?: boolean;
+  badge?: number;
   secondary?: boolean;
   disabled?: boolean;
   busy?: boolean;
@@ -43,7 +45,7 @@ export function SatinButton({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={title}
+      accessibilityLabel={badge === undefined ? title : `${title}: ${badge}`}
       accessibilityState={{ disabled: disabled || busy, busy, selected }}
       disabled={disabled || busy}
       onPress={onPress}
@@ -98,8 +100,12 @@ export function SatinButton({
       >
         {title}
       </Text>
+      {badge !== undefined && <CountBadge count={badge} />}
     </Pressable>
   );
+}
+export function CountBadge({ count }: { count: number }) {
+  return <View style={{ minWidth: 28, minHeight: 28, borderRadius: 14, paddingHorizontal: 7, alignItems: "center", justifyContent: "center", backgroundColor: "#EEE8FA", borderWidth: 1, borderColor: "#DFD4F7" }}><Text style={[u.bold, { color: p.purple, fontSize: 15 }]}>{count}</Text></View>;
 }
 export function IconButton({
   label,
@@ -222,7 +228,7 @@ export const u = StyleSheet.create({
     transform: [{ rotate: "-8deg" }],
   },
   title: {
-    fontFamily: "Nunito_700Bold",
+    fontFamily: "Nunito_800ExtraBold",
     fontSize: 30,
     lineHeight: 36,
     color: p.ink,
@@ -254,7 +260,7 @@ export const u = StyleSheet.create({
     borderRadius: 24,
     padding: 16,
     gap: 14,
-    boxShadow: "0 4px 16px #442F7020",
+    boxShadow: "0 3px 12px #442F700B",
   },
   button: {
     minHeight: 54,

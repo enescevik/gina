@@ -233,7 +233,7 @@ export default function ProvaProgressScreen() {
                     </Pressable>
                   ))}
                 </View>
-                <View style={wide ? { flex: 1, minWidth: 180 } : undefined}>
+                <View style={wide ? { width: 240, marginLeft: "auto" } : undefined}>
                   <ReportPicker
                     key={`${child.id}:${grade}`}
                     label={t("learningProgress.subject")}

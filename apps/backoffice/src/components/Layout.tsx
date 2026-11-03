@@ -1,8 +1,8 @@
 import Head from "next/head";
-import { PublicationIcon } from "./library-publication-icon";
+import { PublicationIcon, type PublicationIconName } from "./library-publication-icon";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { type ReactNode, useEffect, useState } from "react";
+import { createContext, type ReactNode, useEffect, useState } from "react";
 
 import { useAuth } from "@/lib/auth";
 import { t } from "@/lib/i18n";
@@ -18,6 +18,12 @@ const NAV = [
   { href: "/groups", label: "Birlikte Prova" },
   { href: "/families", label: t.nav.families },
 ];
+export const HeaderActionContext = createContext<HTMLElement | null>(null);
+const navIcons: Record<string, PublicationIconName> = {
+  "/dashboard": "grid", "/ai": "idea", "/operations": "check",
+  "/overrides": "lock", "/questions": "document", "/library": "layers",
+  "/groups": "school", "/families": "family",
+};
 
 export async function signOut(confirmed = false) {
   if (
@@ -44,6 +50,7 @@ export function Layout(
 ) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [headerTarget, setHeaderTarget] = useState<HTMLDivElement | null>(null);
   const publication = router.pathname === "/library-publication";
   const activePath = router.pathname === "/library-publication"
     ? "/library"
@@ -181,7 +188,7 @@ export function Layout(
                       ? "admin-nav active"
                       : "admin-nav"}
                   >
-                    {item.label}
+                    <PublicationIcon name={navIcons[item.href] ?? "document"} />{item.label}
                   </Link>
                 ))}
                 {roles.includes("support")
@@ -196,7 +203,7 @@ export function Layout(
                           ? "page"
                           : undefined}
                       >
-                        Destek
+                        <PublicationIcon name="chat" />Destek
                       </Link>
                       <Link
                         href="/ideas"
@@ -207,7 +214,7 @@ export function Layout(
                           ? "page"
                           : undefined}
                       >
-                        Fikirler
+                        <PublicationIcon name="idea" />Fikirler
                       </Link>
                     </>
                   )
@@ -223,7 +230,7 @@ export function Layout(
                         ? "page"
                         : undefined}
                     >
-                      Yardım yazıları
+                      <PublicationIcon name="document" />Yardım yazıları
                     </Link>
                   )
                   : null}
@@ -257,10 +264,10 @@ export function Layout(
           {publication && allowed ? null : (
             <header className="admin-page-heading">
               <h1>{title}</h1>
-              <span className="admin-badge">GINA Aile</span>
+              <div className="admin-page-actions"><span className="admin-badge">GINA Aile</span><div ref={setHeaderTarget} /></div>
             </header>
           )}
-          {body}
+          <HeaderActionContext.Provider value={headerTarget}>{body}</HeaderActionContext.Provider>
         </main>
       </div>
     </>

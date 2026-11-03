@@ -8,6 +8,7 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
+  Layers,
   Pencil,
   Plus,
   Trash2,
@@ -290,9 +291,12 @@ export function SharedQuestionWizard(
         />
       ))}
       {draft.body ? <Text selectable style={s.copy}>{draft.body}</Text> : null}
-      <Text style={s.tag}>
-        {t("sharedQuestions.usedIn", { count: draft.questions.length })}
-      </Text>
+      <View style={[s.row, s.sourceUsage]}>
+        <Layers size={20} color={p.purple} />
+        <Text style={[s.small, { color: p.ink, flexShrink: 1 }]}>
+          {t("sharedQuestions.usedIn", { count: draft.questions.length })}
+        </Text>
+      </View>
     </View>
   );
   const editor = (
@@ -558,15 +562,18 @@ export function SharedQuestionWizard(
               }}
               disabled={i > step || locked}
               onPress={() => move(i)}
-              style={[s.step, step === i && { backgroundColor: p.purple }]}
+              style={[s.step, step === i && { backgroundColor: p.purple }, { paddingHorizontal: wide ? 16 : 8, gap: wide ? 8 : 4 }]}
             >
+              <View style={{ width: wide ? 28 : 20, height: wide ? 28 : 20, borderRadius: 14, backgroundColor: step === i ? "#FFFFFF22" : "#FFFFFF80", borderWidth: 1, borderColor: "#D9CCF3", alignItems: "center", justifyContent: "center" }}>
+                <Text style={[s.small, { color: step === i ? "#FFFFFF" : p.ink, fontSize: wide ? 17 : 13 }]}>{i + 1}</Text>
+              </View>
               <Text
                 style={[s.small, {
                   color: step === i ? "#fff" : p.ink,
                   fontSize: wide ? 16 : 13,
                 }]}
               >
-                {i + 1} {t(`sharedQuestions.${key}`)}
+                {t(`sharedQuestions.${key}`)}
               </Text>
             </Pressable>
           ))}
@@ -602,7 +609,7 @@ export function SharedQuestionWizard(
                     source={require(
                       "../../../../../packages/assets/brand/growing-friend/reading.png",
                     )}
-                    style={{ width: 125, height: 115, resizeMode: "contain" }}
+                    style={{ width: 150, height: 130, resizeMode: "contain" }}
                     accessible={false}
                   />
                   <Text style={[s.copy, s.bubble]}>
@@ -977,6 +984,8 @@ const s = StyleSheet.create({
     paddingVertical: 16,
   },
   step: {
+    flexDirection: "row",
+    alignItems: "center",
     minHeight: 48,
     justifyContent: "center",
     paddingHorizontal: 12,
@@ -1013,7 +1022,16 @@ const s = StyleSheet.create({
     fontFamily: "Nunito_800ExtraBold",
     fontSize: 25,
     color: p.ink,
+    backgroundColor: p.lilac,
+    marginHorizontal: -18,
+    marginTop: -18,
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    overflow: "hidden",
   },
+  sourceUsage: { backgroundColor: p.lilac, borderRadius: 18, paddingHorizontal: 12, paddingVertical: 8 },
   tag: {
     fontFamily: "Nunito_600SemiBold",
     color: p.ink,

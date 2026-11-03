@@ -93,7 +93,7 @@ export function NotebookWorkspace({
         source={require(
           "../../../../../packages/assets/brand/growing-friend/reading.png",
         )}
-        style={{ width: wide ? 150 : 135, height: wide ? 120 : 110 }}
+        style={{ width: wide ? 150 : 135, height: wide ? 100 : 110 }}
         resizeMode="contain"
         accessible={false}
       />
@@ -117,7 +117,7 @@ export function NotebookWorkspace({
           style={[s.take, { marginLeft: "auto" }]}
         >
           <Copy size={20} color={p.purple} />
-          {stacked && <Text style={s.takeText}>{t("notebook.copyShort")}</Text>}
+          {(wide || stacked) && <Text style={s.takeText}>{t("notebook.copyShort")}</Text>}
         </Pressable>
         {stacked && (
           <Pressable
@@ -144,7 +144,7 @@ export function NotebookWorkspace({
       <ScrollView
         style={s.fill}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={s.questionContent}
+        contentContainerStyle={[s.questionContent, wide && { flexGrow: 1 }]}
       >
         {answerOpen && (
           <>
@@ -168,7 +168,7 @@ export function NotebookWorkspace({
             <QuestionMedia
               questionId={questionId}
               notebook
-              maxImageHeight={compactSummary ? 120 : undefined}
+              maxImageHeight={compactSummary ? 120 : wide ? 160 : undefined}
             />
           </View>
           <Text selectable style={[s.stem, compactSummary && { flex: 1 }]}>{prompt}</Text>
@@ -176,7 +176,7 @@ export function NotebookWorkspace({
         {tokens.length > 0 && (
           <View style={{ gap: 6 }}>
             <Text style={s.sectionTitle}>{t("notebook.givens")}</Text>
-            <View style={s.chips}>
+            <View style={[s.chips, wide && { flexDirection: "column", alignItems: "flex-start" }]}>
               {tokens.map((value) => (
                 <Pressable
                   key={value}
@@ -207,7 +207,7 @@ export function NotebookWorkspace({
             </View>
           </View>
         )}
-        {tabbed && encouragement}
+        {(tabbed || wide) && <View style={wide ? { marginTop: "auto" } : undefined}>{encouragement}</View>}
       </ScrollView>
     </View>
   );
@@ -284,7 +284,6 @@ export function NotebookWorkspace({
                   : s.fill}
               >
                 {question}
-                {wide && encouragement}
               </View>
             )
             : null}
@@ -430,7 +429,7 @@ const s = StyleSheet.create({
     flex: 1,
     textAlign: "left",
   },
-  tabs: { flexDirection: "row", padding: 8, gap: 8 },
+  tabs: { flexDirection: "row", padding: 4, marginHorizontal: 16, marginTop: 8, gap: 4, borderRadius: 22, backgroundColor: p.lilac },
   tab: {
     flex: 1,
     minHeight: 48,
@@ -466,7 +465,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 6,
   },
-  sectionTitle: { fontFamily: "Nunito_700Bold", fontSize: 20, color: p.ink },
+  sectionTitle: { fontFamily: "Nunito_800ExtraBold", fontSize: 22, color: p.ink },
   stem: {
     fontFamily: "Nunito_600SemiBold",
     fontSize: 21,

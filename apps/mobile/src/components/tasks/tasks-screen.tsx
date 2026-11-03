@@ -25,7 +25,7 @@ import {
 } from "lucide-react-native";
 import { Avatar } from "@/components/avatar";
 import { Pressable } from "@/components/ui/pressable";
-import { IconButton, SatinButton, Tag, p, u } from "@/components/planner/ui";
+import { CountBadge, IconButton, SatinButton, Tag, p, u } from "@/components/planner/ui";
 import type { PlannerChild } from "@/components/planner/timetable-editor";
 import { useSession } from "@/lib/session";
 import { useFamilyTimezone } from "@/lib/family";
@@ -263,14 +263,8 @@ export function TasksScreen() {
                 <View key={String(value)} style={u.fill}>
                   {paused === value ? (
                     <SatinButton
-                      title={t(
-                        value
-                          ? "taskPremium.pausedCount"
-                          : "taskPremium.activeCount",
-                        {
-                          count: rows.filter((r) => r.active !== value).length,
-                        },
-                      )}
+                      title={t(value ? "taskPremium.pausedLabel" : "taskPremium.activeLabel")}
+                      badge={rows.filter((r) => r.active !== value).length}
                       onPress={() => {}}
                       selected
                       style={{ minHeight: 48, paddingHorizontal: 12 }}
@@ -288,19 +282,14 @@ export function TasksScreen() {
                         alignItems: "center",
                         justifyContent: "center",
                         paddingHorizontal: 10,
+                        flexDirection: "row",
+                        gap: 8,
                       }}
                     >
                       <Text style={u.bold}>
-                        {t(
-                          value
-                            ? "taskPremium.pausedCount"
-                            : "taskPremium.activeCount",
-                          {
-                            count: rows.filter((r) => r.active !== value)
-                              .length,
-                          },
-                        )}
+                        {t(value ? "taskPremium.pausedLabel" : "taskPremium.activeLabel")}
                       </Text>
+                      <CountBadge count={rows.filter((r) => r.active !== value).length} />
                     </Pressable>
                   )}
                 </View>
@@ -350,7 +339,7 @@ export function TasksScreen() {
                     },
                   ]}
                 >
-                  <TaskTile slug={task.icon} size={wide ? 64 : 52} />
+                  <TaskTile slug={task.icon} size={wide ? 72 : 64} />
                   <View style={[u.fill, { gap: 5 }]}>
                     <Text style={u.bold}>{task.title}</Text>
                     <Text style={u.small}>

@@ -8,7 +8,7 @@ import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { ArrowLeft, Bell, CalendarDays, CheckCircle2, Clock3, GraduationCap, Heart, House, MoreHorizontal, Pause, Play, Plus } from "lucide-react-native";
 import { Avatar } from "@/components/avatar";
 import { Pressable } from "@/components/ui/pressable";
-import { IconButton, SatinButton, p, u } from "@/components/planner/ui";
+import { CountBadge, IconButton, SatinButton, p, u } from "@/components/planner/ui";
 import { useSession } from "@/lib/session";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { supabase } from "@/lib/supabase";
@@ -103,8 +103,9 @@ export function RewardsScreen() {
       </View>
       <View style={[u.segment, { maxWidth: 560 }]}>
         {[false, true].map(value => {
-          const label = value ? t("rewardPremium.catalog") : requests.data ? t("rewardPremium.requestsCount", { count: requests.data.length }) : t("rewardPremium.requests");
-          return <View key={String(value)} style={u.fill}>{catalog === value ? <SatinButton selected title={label} onPress={() => {}} style={{ minHeight: 48, paddingHorizontal: 8 }} /> : <Pressable accessibilityRole="button" accessibilityState={{ selected: false }} onPress={() => { setCatalog(value); setNotice(""); }} style={{ minHeight: 54, alignItems: "center", justifyContent: "center", paddingHorizontal: 8 }}><Text style={u.bold}>{label}</Text></Pressable>}</View>;
+          const label = t(value ? "rewardPremium.catalog" : "rewardPremium.requests");
+          const count = value ? undefined : requests.data?.length;
+          return <View key={String(value)} style={u.fill}>{catalog === value ? <SatinButton selected badge={count} title={label} onPress={() => {}} style={{ minHeight: 48, paddingHorizontal: 8 }} /> : <Pressable accessibilityRole="button" accessibilityState={{ selected: false }} onPress={() => { setCatalog(value); setNotice(""); }} style={{ minHeight: 54, flexDirection: "row", gap: 8, alignItems: "center", justifyContent: "center", paddingHorizontal: 8 }}><Text style={u.bold}>{label}</Text>{count !== undefined && <CountBadge count={count} />}</Pressable>}</View>;
         })}
       </View>
       <Pressable accessibilityRole="button" onPress={() => setChoosingGoal(true)} style={{ minHeight: 48, flexDirection: "row", alignItems: "center", gap: 8 }}><Heart size={22} color={p.purple}/><Text style={[u.bold, { color: p.purple }]}>{t("betaUx.chooseGoal")}</Text></Pressable>
@@ -125,7 +126,7 @@ export function RewardsScreen() {
               <View style={[u.row, { flexShrink: 1 }]}><Avatar slug={request.children?.avatar} size={36} /><Text style={[u.bold, { flexShrink: 1 }]}>{request.children?.name ?? t("rewardPremium.childFallback")}</Text></View>
               <View style={[u.row, { gap: 5, backgroundColor: pending ? "#FFF0CE" : p.mint, borderRadius: 18, paddingHorizontal: 10, paddingVertical: 7 }]}><StatusIcon size={16} color={statusColor} /><Text style={[u.small, { color: statusColor }]}>{t(pending ? "rewardPremium.pending" : "rewardPremium.approved")}</Text></View>
             </View>
-            <View style={u.row}><RewardTile slug={request.family_rewards?.icon ?? null} size={68} /><View style={[u.fill, { gap: 5 }]}><Text style={[u.bold, { fontSize: 19 }]}>{request.family_rewards?.title ?? t("rewards.title")}</Text><RewardCost count={request.cost_snapshot} /></View></View>
+            <View style={u.row}><RewardTile slug={request.family_rewards?.icon ?? null} size={96} /><View style={[u.fill, { gap: 5 }]}><Text style={[u.bold, { fontSize: 19 }]}>{request.family_rewards?.title ?? t("rewards.title")}</Text><RewardCost count={request.cost_snapshot} /></View></View>
             {act.error && act.variables?.id === request.id ? <Text accessibilityRole="alert" style={u.error}>{t(act.error.message.includes("insufficient_stars") ? "rewardPremium.insufficientStars" : act.error.message === "request_changed" ? "rewardPremium.requestChanged" : "rewardPremium.actionError")}</Text> : null}
             <View style={[u.row, { alignItems: "stretch", flexDirection: width < 360 ? "column" : "row" }]}>
               <SatinButton style={width < 360 ? undefined : { flex: 1.15, paddingHorizontal: 10 }} title={t(pending ? "parent.approve" : "rewards.deliver")} busy={acting && act.variables?.action === primary} disabled={act.isPending} onPress={() => takeAction(request.id, primary)} />
@@ -134,8 +135,8 @@ export function RewardsScreen() {
           </View>;
         }) : null}
         {catalog && !rewards.error ? rewards.data?.map(reward => <View key={reward.id} testID={`reward-${reward.id}`} style={[u.card, { width: wide ? "48.5%" : "100%", padding: 14 }]}>
-          <View style={u.row}><RewardTile slug={reward.icon} /><View style={[u.fill, { gap: 6 }]}><Text style={[u.bold, { fontSize: 19 }]}>{reward.title}</Text><RewardCost count={reward.cost_stars} /><View style={[u.row, { justifyContent: "space-between", flexWrap: "wrap", gap: 4 }]}>
-            <Text style={[u.small, { backgroundColor: reward.active ? p.mint : p.lilac, color: reward.active ? "#246455" : p.muted, borderRadius: 12, paddingHorizontal: 9, paddingVertical: 5 }]}>{t(reward.active ? "rewardPremium.active" : "rewardPremium.inactive")}</Text>
+          <View style={u.row}><RewardTile slug={reward.icon} size={96} /><View style={[u.fill, { gap: 6 }]}><Text style={[u.bold, { fontSize: 19 }]}>{reward.title}</Text><RewardCost count={reward.cost_stars} /><View style={[u.row, { justifyContent: "space-between", flexWrap: "wrap", gap: 4 }]}>
+            <Text style={[u.small, { backgroundColor: reward.active ? p.purple : p.lilac, color: reward.active ? "#FFFFFF" : p.muted, borderRadius: 22, minWidth: 74, textAlign: "center", paddingHorizontal: 12, paddingVertical: 10 }]}>{t(reward.active ? "rewardPremium.active" : "rewardPremium.inactive")}</Text>
             <Pressable accessibilityRole="button" accessibilityLabel={t(reward.active ? "rewardPremium.pauseNamed" : "rewardPremium.resumeNamed", { title: reward.title })} accessibilityState={{ disabled: toggle.isPending, busy: toggle.isPending && toggle.variables?.id === reward.id }} disabled={toggle.isPending} onPress={() => { if (toggleLock.current) return; toggleLock.current = true; setNotice(""); toggle.mutate({ id: reward.id, active: !reward.active }); }} style={({ pressed }) => ({ minHeight: 48, paddingHorizontal: 10, borderRadius: 24, backgroundColor: p.lilac, opacity: pressed ? .65 : 1, flexDirection: "row", alignItems: "center", gap: 5 })}>
               {toggle.isPending && toggle.variables?.id === reward.id ? <ActivityIndicator color={p.purple} /> : reward.active ? <Pause size={16} color={p.purple} /> : <Play size={16} color={p.purple} />}<Text style={[u.bold, { fontSize: 14, color: p.purple }]}>{t(reward.active ? "taskPremium.pause" : "taskPremium.resume")}</Text>
             </Pressable>
