@@ -828,14 +828,14 @@ isOneToOne: false
                   ]
                 },"exam_blueprints": {
                   Row: {
-                    "created_at": string,"created_by": string | null,"family_id": string,"grade": number,"id": string,"name": string,"rows": NonNullable<Json>,"source_url": string | null,"subject": string
+                    "created_at": string,"created_by": string | null,"family_id": string,"grade": number,"id": string,"name": string,"rows": NonNullable<Json>,"source_context": Json,"source_url": string | null,"subject": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"created_by"?: string | null,"family_id": string,"grade": number,"id"?: string,"name": string,"rows"?: NonNullable<Json>,"source_url"?: string | null,"subject": string
+                    "created_at"?: string,"created_by"?: string | null,"family_id": string,"grade": number,"id"?: string,"name": string,"rows"?: NonNullable<Json>,"source_context"?: Json,"source_url"?: string | null,"subject": string
                   }
                   Update: {
-                    "created_at"?: string,"created_by"?: string | null,"family_id"?: string,"grade"?: number,"id"?: string,"name"?: string,"rows"?: NonNullable<Json>,"source_url"?: string | null,"subject"?: string
+                    "created_at"?: string,"created_by"?: string | null,"family_id"?: string,"grade"?: number,"id"?: string,"name"?: string,"rows"?: NonNullable<Json>,"source_context"?: Json,"source_url"?: string | null,"subject"?: string
                   }
                   Relationships: [
                     {
@@ -2253,6 +2253,8 @@ isOneToOne: false
                 }
           }
           Functions: {
+      "save_family_blueprint": {Args:{p_request_id:string;p_input:Json};Returns:string}
+
       finance_workspace: {Args:{p_query?:string;p_family_id?:string};Returns:Json};
       apply_study_plan_calendar: {Args:{p_request_id:string;p_plan_id:string;p_updated_at:string;p_items:Json};Returns:Json};
       save_calendar_event: { Args: { p_request_id:string; p_event_id:string; p_revision:number; p_values:Json | null }; Returns:Json };

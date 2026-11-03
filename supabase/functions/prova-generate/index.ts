@@ -1,3 +1,5 @@
+import { blueprintPlan } from "../_shared/blueprint-plan.ts";
+import { generationDraftScope } from "../_shared/prova-generation-scope.ts";
 // Prova AI soru üretimi. Veli uygulamadan çağırır (JWT ile); çocuk asla çağırmaz.
 // Deploy: `supabase functions deploy prova-generate` (verify_jwt açık kalır).
 // Kurallar: yalnız parent; paket AI üretim kotası (plans.prova_ai_generate_monthly) sunucuda;
@@ -21,12 +23,13 @@ import {
   sha256,
 } from "../_shared/prova.ts";
 
-const PROMPT_VERSION = "prova-generate/v3-builder";
+const PROMPT_VERSION = "prova-generate/v4-scenario-scope";
 const MAX_TOTAL = 30;
 
 type KindMode = "multiple_choice" | "open_ended" | "mixed";
 
 interface GenerateBody {
+  draft_id?: string;
   request_id?: string;
   note?: string;
   source_id?: string;
@@ -194,6 +197,17 @@ Deno.serve(async (req) => {
   }
 
   const db = serviceClient();
+  const draftScope = await generationDraftScope(
+    db,
+    parent.familyId,
+    body.draft_id,
+    grade,
+    subject,
+  );
+  if (draftScope instanceof Response) return draftScope;
+  if (draftScope?.purpose === "written" && assessment !== "written") {
+    return json({ error: "prova_draft_changed" }, 409);
+  }
   let ent;
   try {
     ent = await provaEntitlement(db, parent.familyId);
@@ -208,31 +222,29 @@ Deno.serve(async (req) => {
   let topics: { topic: string; count: number }[] = [];
   let scenarioCode: string | null = null;
   let blueprintSource: string | null = null;
+  let blueprintSnapshot: Record<string, unknown> | null = null;
   if (body.blueprint_id) {
     if (!ent.scenarios) {
       return json({ error: "plan_limit_prova_scenarios", plan: ent.plan }, 402);
     }
     const { data: bp } = await db
       .from("exam_blueprints")
-      .select("name, subject, grade, rows, source_url")
+      .select("id, name, subject, grade, rows, source_url, source_context")
       .eq("id", body.blueprint_id)
       .eq("family_id", parent.familyId)
       .maybeSingle();
     if (!bp) return json({ error: "blueprint_not_found" }, 404);
-    if (bp.grade !== grade || bp.subject !== subject) {
-      return json({ error: "blueprint_mismatch" }, 400);
+    try {
+      const parsed = blueprintPlan(bp, grade, subject);
+      scenarioCode = parsed.name;
+      blueprintSource = bp.source_url;
+      topics = parsed.topics;
+      blueprintSnapshot = { id: bp.id, ...parsed.context, rows: parsed.topics };
+    } catch (e) {
+      return json({
+        error: e instanceof Error ? e.message : "blueprint_invalid",
+      }, 400);
     }
-    scenarioCode = bp.name;
-    blueprintSource = bp.source_url;
-    const rows = Array.isArray(bp.rows)
-      ? (bp.rows as { topic?: string; count?: number }[])
-      : [];
-    topics = rows
-      .filter((r) => typeof r.topic === "string" && r.topic.trim())
-      .map((r) => ({
-        topic: r.topic!.trim(),
-        count: clampInt(r.count, 1, MAX_TOTAL, count),
-      }));
   } else if (body.topic_plan !== undefined) {
     if (
       !Array.isArray(body.topic_plan) || body.topic_plan.length < 1 ||
@@ -279,6 +291,7 @@ Deno.serve(async (req) => {
     ders: subject,
     sinif: grade,
     senaryo: scenarioCode,
+    senaryo_kapsami: blueprintSnapshot,
     konular: topics.map((t) => ({ konu: t.topic, soru_sayisi: t.count })),
     tur: kind === "mixed"
       ? "karışık (şıklı ve açık uçlu, yaklaşık yarı yarıya)"
@@ -310,7 +323,9 @@ Deno.serve(async (req) => {
     ? [{ type: "text", text: userPrompt }, ...document.media]
     : userPrompt;
   const promptHash = await sha256(
-    `${PROMPT_VERSION}\n${JSON.stringify(ai)}\n${SYSTEM_PROMPT}\n${userPrompt}`,
+    `${PROMPT_VERSION}\n${JSON.stringify(ai)}\n${
+      JSON.stringify(draftScope)
+    }\n${SYSTEM_PROMPT}\n${userPrompt}`,
   );
 
   const { data: reservation, error: reservationError } = await db.rpc(
@@ -458,6 +473,10 @@ Deno.serve(async (req) => {
           source_urls: [...new Set(sources)],
           provenance: {
             generator: "ai",
+            ...(blueprintSnapshot ? { blueprint: blueprintSnapshot } : {}),
+            ...(draftScope
+              ? { draft_id: draftScope.id, draft_version: draftScope.version }
+              : {}),
             ...(document
               ? {
                 document_source_id: document.id,

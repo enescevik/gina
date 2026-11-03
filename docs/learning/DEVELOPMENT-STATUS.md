@@ -375,3 +375,12 @@ Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli
 - AI isteği gönderilmeden önce cihazda saklanır; sonuç kaybolursa aynı istek geri alınır. Ücretli çalışmanın lease’i bittiğinde yeniden üretim otomatik başlamaz; geç sonuç önceki durumu ezmez.
 - 53 SQL dosyasında 1.355 kontrol, dört gerçek eşzamanlılık senaryosu, 116 core ve 23 ilgili Edge kontrolü geçti. Mobil lint/typecheck geçti. Telefon/tablet sentetik uygulama kanıtları: `docs/design/screens/document-setup/`.
 - Gerçek belge/model doğruluğu ve fiziksel cihaz kabulü açık; birleşik ödev/ders/kurs planı bu artım değildir. 075000 üretimde yok; TestFlight 17 değişmedi.
+
+
+## 4 Kasım — okul senaryosu hazırlama ve üretim kapsamı (076000)
+
+- Belge akışı PR #94 CI kontrolleriyle ana dala birleşti; üretim değişmedi.
+- Teknik konu/sayı metni, ortak tasarımlı üç adımlı çocuk/ders → dağılım → okul duyurusu kontrolüne dönüştü. Bilinen çocuk sınıfı korunur; yıl/dönem/yazılı kaydedilir. Veli girdisi resmî onay olarak etiketlenmez.
+- Kalıcı kayıt komutu kayıp yanıt ve yeniden açılışta aynı kimlikle tekrar edilir. 27 SQL + üç gerçek DB yarışı; toplam 54 dosya/1382 kontrol. 122 core, 11 ilgili Edge, mobil lint/typecheck geçti.
+- Birleşik Prova üretimi kaydedilmiş aile taslağına ve güncel çocuk sınıfına bağlanır. Senaryo satırları sessizce kırpılmaz; kapsam soru kökeninde korunur. Telefon/tablet gerçek web kanıtı: docs/design/screens/scenario-preparation/.
+- Resmî katalog/alan editörü incelemesi, gerçek AI ve fiziksel cihaz kabulü açık. 076000 henüz dağıtılmadı; TestFlight 17 değişmedi.

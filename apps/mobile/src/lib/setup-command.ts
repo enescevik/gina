@@ -1,29 +1,97 @@
 import { randomUUID } from "expo-crypto";
-import { createSetupJournal, createSetupAiJournal, SETUP_AI_PREFIX, SETUP_COMMAND_PREFIX } from "@gina/core";
+import {
+  BLUEPRINT_PREFIX,
+  createBlueprintJournal,
+  createSetupAiJournal,
+  createSetupJournal,
+  SETUP_AI_PREFIX,
+  SETUP_COMMAND_PREFIX,
+} from "@gina/core";
 import { deviceRecordStorage as store } from "./device-record-storage";
 import { supabase } from "./supabase";
 
 let generation = 0;
 export function clearSetupCommands() {
   generation++;
-  for (const key of store.keys().filter(k => k.startsWith(SETUP_COMMAND_PREFIX) || k.startsWith(SETUP_AI_PREFIX))) store.remove(key);
+  for (
+    const key of store.keys().filter((k) =>
+      k.startsWith(SETUP_COMMAND_PREFIX) || k.startsWith(SETUP_AI_PREFIX) ||
+      k.startsWith(BLUEPRINT_PREFIX)
+    )
+  ) store.remove(key);
 }
-export function setupJournal(user: string, family: string, kind: "task" | "reward", child: string | null) {
+export function setupJournal(
+  user: string,
+  family: string,
+  kind: "task" | "reward",
+  child: string | null,
+) {
   const active = generation;
   return createSetupJournal({
-    store, user, family, kind, child, id: randomUUID,
-    guard() { if (generation !== active) throw Error("setup_session_changed"); },
+    store,
+    user,
+    family,
+    kind,
+    child,
+    id: randomUUID,
+    guard() {
+      if (generation !== active) throw Error("setup_session_changed");
+    },
     async send(command) {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 20000);
       try {
-        return await supabase.rpc("save_setup_batch", { ...command, p_child_id: command.p_child_id ?? undefined }).abortSignal(controller.signal);
-      } finally { clearTimeout(timer); }
+        return await supabase.rpc("save_setup_batch", {
+          ...command,
+          p_child_id: command.p_child_id ?? undefined,
+        }).abortSignal(controller.signal);
+      } finally {
+        clearTimeout(timer);
+      }
     },
   });
 }
 
-export function setupAiJournal(user:string,family:string,kind:"task"|"reward",context:string){
-  const active=generation;
-  return createSetupAiJournal({store,user,family,kind,context,id:randomUUID,guard(){if(generation!==active)throw Error("setup_session_changed");}});
+export function setupAiJournal(
+  user: string,
+  family: string,
+  kind: "task" | "reward",
+  context: string,
+) {
+  const active = generation;
+  return createSetupAiJournal({
+    store,
+    user,
+    family,
+    kind,
+    context,
+    id: randomUUID,
+    guard() {
+      if (generation !== active) throw Error("setup_session_changed");
+    },
+  });
+}
+
+export function blueprintJournal(user: string, family: string) {
+  const active = generation;
+  return createBlueprintJournal({
+    store,
+    user,
+    family,
+    id: randomUUID,
+    guard() {
+      if (active !== generation) throw Error("setup_session_changed");
+    },
+    async send(command) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 20000);
+      try {
+        return await supabase.rpc("save_family_blueprint", command).abortSignal(
+          controller.signal,
+        );
+      } finally {
+        clearTimeout(timer);
+      }
+    },
+  });
 }
