@@ -16,6 +16,7 @@ export interface WeekEvent {
   all_day: boolean;
   rrule: string | null;
   location: string | null;
+  notes?: string | null;
   childName?: string | null;
   timetable_entry_key?: string | null;
 }

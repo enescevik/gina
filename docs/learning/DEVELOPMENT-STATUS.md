@@ -289,3 +289,11 @@ Hazırlayıcı artık kayıtlı Fen taslak profilini ve görselsiz ortak metni k
 - Etkinlikte başka aileye ait çocuk seçilmesine ilişkin RLS açığı giderildi; RPC de ayrı doğrular. Ders programı yansımaları manuel RPC'den korunur.
 - 24 yeni pgTAP, tüm 45 dosyada 1.093 doğrulama; dört gerçek eşzamanlı oturum yarışı. Web'de sunucu kaydından sonra yanıt kaybı + tam yeniden açılış: 2 aynı istek, 1 etkinlik, bekleyen komut temizlendi. Kanıt docs/design/screens/calendar-recovery/.
 - 061000 ve yeni uygulama henüz dağıtılmadı. Sonraki plan asistanı → takvim işi bu güvenli yazma temelinden ilerlemeli; toplu plan uygulaması henüz yapılmadı.
+
+## 3 Kasım — çalışma planından takvime açık veli onayı
+
+Çalışma planının önceki “Onayla” düğmesi takvim kaydı üretmiyordu. Mevcut ekran artık önerilen günleri seçme/düzenleme → eklenecekleri ve çakışmaları görme → tek atomik işlemle takvime ekleme akışına sahip. Gözlem ile AI önerisi ayrıldı; onaylı ortak GINA görünümü kullanıldı. Kaynak plan ve gün bağlantısı korunur. Görev, yıldız ve önceki takvim kayıtları değişmez. Takvimde etkinlik açıklaması görünür.
+
+062000 migration: veli/aile/çocuk sınırı, gün tekilliği, plan güncellik kontrolü, arşiv engeli, seçili kayıtların atomik eklenmesi ve aynı istekle kurtarma. 25 yeni SQL kontrolü, 46 dosyada toplam 1.118 kontrol; 100 çekirdek testi; üç gerçek paralel yarış; mobil typecheck/lint geçti. Telefon/tablet web görselleri ve açık sınırlar `docs/design/screens/study-plan-calendar/README.md` içinde. Kayıp yanıt + yeniden açılış kontrolünde aynı iki isteğin sonunda yalnız iki etkinlik var.
+
+**Yayımlanmadı.** Fiziksel cihaz kontrolleri açık. Gün/gece/hava çalışması ertelenmiş kalır. Belge → görev/ödül/hedef, kütüphanenin kalan 1.500 taslağı ve alan incelemesi, müfredat bağlama, toplu Prova kabulü, sağlayıcı/operasyon ve son yayın kontrolleri bu çalışmayla tamamlanmış sayılmaz.
