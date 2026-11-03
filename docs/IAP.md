@@ -1,6 +1,6 @@
 # Uygulama içi satın alma — Enes'in yapacağı kurulum
 
-Kod hazır (istemci `apps/mobile/src/lib/iap.ts`, sunucu `supabase/functions/iap-verify`, `iap-reconcile`, `apple-notifications`, `google-rtdn`, ortak kod `_shared/iap.ts`, şema `20261030100000_iap.sql`). Mağaza hesapları ve anahtarlar açılınca aşağıdakiler yapılır. Kurallar [DECISIONS.md](./DECISIONS.md)'de: yalnız Apple IAP + Google Play Billing, uygulama içinde kendi kupon girişimiz yok, yetki ailenin, tek kaynak Supabase, webde satış yok.
+Satın alma temeli mevcut; canlı mağaza ve cihaz kabulü aşağıdaki açık kontroller tamamlanmadan bitmiş sayılmaz (istemci `apps/mobile/src/lib/iap.ts`, sunucu `supabase/functions/iap-verify`, `iap-reconcile`, `apple-notifications`, `google-rtdn`, ortak kod `_shared/iap.ts`, şema `20261030100000_iap.sql`). Mağaza hesapları ve anahtarlar açılınca aşağıdakiler yapılır. Kurallar [DECISIONS.md](./DECISIONS.md)'de: yalnız Apple IAP + Google Play Billing, uygulama içinde kendi kupon girişimiz yok, yetki ailenin, tek kaynak Supabase, webde satış yok.
 
 ## Nasıl çalışır (kısaca)
 
@@ -58,7 +58,7 @@ Secrets (`supabase secrets set …`; yalnız adlar, değerleri sen girersin):
 | `GOOGLE_PLAY_SA_KEY` | Play service account JSON'unun tamamı |
 | `GOOGLE_PLAY_PACKAGE_NAME` | isteğe bağlı; varsayılan `com.enescevik.gina` |
 | `GOOGLE_RTDN_AUDIENCE` | Pub/Sub push aboneliğinin audience değeri (endpoint URL'si) |
-| `GOOGLE_RTDN_SA_EMAIL` | isteğe bağlı; push aboneliğinde seçilen service account e-postası |
+| `GOOGLE_RTDN_SA_EMAIL` | zorunlu; push aboneliğinde seçilen service account e-postası |
 | `IAP_CRON_SECRET` | rastgele uzun bir dize; pg_cron `iap-reconcile`'ı bununla çağırır |
 
 pg_cron için Vault'a iki kayıt (SQL editor):
@@ -74,7 +74,11 @@ select vault.create_secret('<IAP_CRON_SECRET ile aynı değer>', 'iap_cron_secre
 
 - iOS: JWS zinciri gömülü Apple Root CA G3'e karşı çevrimdışı doğrulandığı için anahtarsız da yetki yazılır; `APPLE_IAP_KEY_*` gelince durum ayrıca App Store Server API'den tazelenir ve `iap-reconcile` Apple aboneliklerini de yeniler.
 - Android: `GOOGLE_PLAY_SA_KEY` yoksa `iap-verify` girdiyi doğrulayıp `503 {"error":"store_not_configured"}` döner; uygulama işlemi bitirmez (kullanıcı sonra «Satın alımları geri yükle» der). Google 3 gün içinde onaylanmayan satın almayı iade eder; bu yüzden Android satışı service account hazır olmadan açılmamalı.
-- Bildirimler her durumda `store_notifications`'a yazılır; işlenemeyenler `error` sütunuyla kalır.
+- Yalnız kimliği doğrulanmış bildirimler `store_notifications`'a yazılır. Apple doğrulanmamış JWS kimliğini kaydetmez. Google audience ve gönderici e-postası eksikse 503, doğrulama başarısızsa 401 verir.
+- `20261103070000_store_notification_recovery.sql` önce uygulanır, sonra iki alıcı birlikte dağıtılır. Olay kimliği `(platform,event_key)` olur; eski kimlikler değişmez. Yeni Edge eski şemada başarı vermez.
+- Beş dakikalık işlem sahipliği aynı olayın eşzamanlı çalışmasını sınırlar. Kesinti sonrası süre dolunca tekrar alınır; eski işleyici yeni sahibin tamamlanma kaydını değiştiremez. Hata/yoğunluk/kayıt belirsizliğinde 503 döner. Başarı yalnız kalıcı tamamlanma kaydından sonra verilir.
+- Eski doğrulanmamış günlük satırı doğrulanmış teslimatı engellemez. Bu değişiklik geçmişte yanlış verilmiş bir hakkı kendiliğinden düzeltmez; geçmiş şüpheli satırlar mağazadan ayrıca uzlaştırılmalıdır.
+- Mağaza yeniden denemelerinin bir sınırı vardır. Bildirim geçmişinden kurtarma ve operasyon izleme ayrı kabul işidir; beş dakikalık sahiplik tam olarak bir kez yan etki garantisi değildir. Abonelik durumunun farklı olaylar/istemci/uzlaştırma arasında atomik sıralaması ayrıca denetlenmelidir.
 
 ## Kontrol listesi (ilk satıştan önce)
 
@@ -84,3 +88,9 @@ select vault.create_secret('<IAP_CRON_SECRET ile aynı değer>', 'iap_cron_secre
 - [ ] RTDN test bildirimi `store_notifications`'ta `test` türüyle görünüyor.
 - [ ] `select * from cron.job where jobname = 'iap-reconcile'` bir satır; `net._http_response`'ta 200.
 - [ ] Hukuki sayfalar yayında; `EXPO_PUBLIC_LEGAL_BASE_URL` build ortamına girildi (abonelik ekranındaki Abonelik Koşulları / Gizlilik bağlantıları).
+
+## Bildirim kurtarma kabulü — 4 Kasım 2026
+
+Yerel izole veritabanı + taklit sağlayıcı testleri: 29 Edge testi, 26 SQL kontrolü; gerçek eşzamanlı iki teslim, süre dolmuş sahipliği alma, eski işleyiciyi reddetme ve tamamlanmış olayı yeniden gönderme. Gerçek ödeme/iade yapılmadı; üretim dağıtımı yapılmadı. Yönetim ekranı, mağaza iadesi ve GINA içindeki telafi hakkı farklı işlemlerdir; bu değişiklik bir iade ekranı değildir.
+
+Kaynaklar: [Google imzalı push kimliği ve beklenen gönderici](https://docs.cloud.google.com/pubsub/docs/authenticate-push-subscriptions), [Apple başarı/hata yanıtı ve bildirim tekrarları](https://developer.apple.com/documentation/appstoreservernotifications/responding-to-app-store-server-notifications).
