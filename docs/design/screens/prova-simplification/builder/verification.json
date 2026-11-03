@@ -1,0 +1,27 @@
+{
+  "type": "interactive design prototype, not production UI",
+  "approval": {
+    "parentHubAndUnifiedDirection": "approved by user, 2026-11-03",
+    "detailedBuilderScreens": "new proposal, awaiting screen-level review"
+  },
+  "data": "synthetic; no authentication, database writes, upload or AI requests",
+  "state": "sample choices saved in this browser tab only",
+  "captures": "390px phone / 1280px tablet width; full-scroll pages, footer moved to document end for capture only",
+  "tested": [
+    "all four steps at both widths without horizontal overflow",
+    "multiple subject selection remains in draft between steps",
+    "unverified MEB scenario blocks progression",
+    "all three AI sample suggestions can be selected together",
+    "selected suggestions return to same draft",
+    "incomplete question count blocks submission",
+    "Escape dismisses source dialog"
+  ],
+  "notImplemented": [
+    "durable server drafts and concurrency",
+    "real unified question selection, replacement, ordering and preview",
+    "verified curriculum and scenario catalog",
+    "real AI preflight, costs, generation and document import",
+    "question editing, group ordering and selective sharing",
+    "native implementation and physical device testing"
+  ]
+}
