@@ -103,11 +103,23 @@ export async function attachBookletImages(
         id: m.source_id,
         question_id: m.question_id,
       });
-      const response = await fetch(signed.url, {
-        signal: AbortSignal.timeout(15000),
-      });
-      if (!response.ok) throw new Error(i18n.t("sources.imageFailed"));
-      const bytes = new Uint8Array(await response.arrayBuffer());
+      let bytes: Uint8Array;
+      if (signed.url.startsWith("data:image/png;base64,")) {
+        // Library images are already authenticated bytes, not a native fetch URL.
+        if (signed.url.length > 750000) {
+          throw new Error(i18n.t("sources.imageFailed"));
+        }
+        bytes = Uint8Array.from(
+          atob(signed.url.slice(22)),
+          (c) => c.charCodeAt(0),
+        );
+      } else {
+        const response = await fetch(signed.url, {
+          signal: AbortSignal.timeout(15000),
+        });
+        if (!response.ok) throw new Error(i18n.t("sources.imageFailed"));
+        bytes = new Uint8Array(await response.arrayBuffer());
+      }
       total += bytes.length;
       if (total > 12 * 1024 * 1024) {
         throw new Error(i18n.t("sources.bookletTooLarge"));

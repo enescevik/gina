@@ -2099,5 +2099,35 @@
   "provaHub.questionUnit_one": "question",
   "provaHub.questionUnit_other": "questions",
   "provaHub.topicUnit_one": "topic",
-  "provaHub.topicUnit_other": "topics"
+  "provaHub.topicUnit_other": "topics",
+  "libraryPackages": {
+    "title": "Ready-to-use practice",
+    "body": "Reviewed question packages matching your practice grade and subjects.",
+    "start": "Prepare practice for your child",
+    "scopeHelp": "Choose the child, grade and subjects first. Then add questions from the library.",
+    "groupHelp": "Questions sharing a passage or image are selected together. Reusing acquired questions does not spend credits.",
+    "empty": "No packages for this scope yet",
+    "emptyHelp": "Add questions manually, with AI or from your existing question library.",
+    "cost": "{{count}} questions selected · {{cost}} credits will be used",
+    "remaining": "Available credits: {{count}}",
+    "quota": "Not enough credits for this selection. Select fewer questions.",
+    "owned": "Already in your family library",
+    "add": "Add selected questions to practice",
+    "done": "Questions added to the practice draft with their shared text and images.",
+    "pending": "The previous result could not be confirmed. Check the same operation to continue; credits will not be charged again.",
+    "retrySame": "Check previous operation",
+    "storage": "The operation could not be safely stored on this device. Reopen the page and try again.",
+    "failed": "Could not load the package. Check your connection and try again.",
+    "errors": {
+      "library_quota_exceeded": "Not enough library credits remain. Refresh and select fewer questions.",
+      "library_publication_changed": "The publication changed. Refresh and select again.",
+      "library_unavailable": "This package is not currently available. You can refresh the page.",
+      "library_plan_required": "This package is not included in your current plan.",
+      "library_unit_unavailable": "This question group cannot be added right now. Choose a different group.",
+      "prova_question_scope": "The package does not match the practice grade or subjects.",
+      "prova_draft_submitted": "This practice has already been assigned. Prepare a new one.",
+      "prova_draft_not_found": "The practice draft was not found. Return to the practice list and reopen it.",
+      "prova_child_grade_changed": "The child’s grade has changed. Return to the draft and update its scope."
+    }
+  }
 }

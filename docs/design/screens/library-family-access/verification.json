@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-03",
+  "sql": {
+    "files": 43,
+    "assertions": 1042,
+    "newAssertions": 36,
+    "isolatedDatabase": true
+  },
+  "races": [
+    {
+      "scenario": "same_request",
+      "successfulRequests": 2,
+      "questionCredits": 2,
+      "passed": true
+    },
+    {
+      "scenario": "different_requests",
+      "successfulRequests": 2,
+      "questionCredits": 2,
+      "passed": true
+    },
+    {
+      "scenario": "legacy_quota",
+      "successfulRequests": 1,
+      "questionCredits": 1,
+      "passed": true
+    }
+  ],
+  "coreTests": 81,
+  "mediaRenderTests": 17,
+  "browserChecks": 10,
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1280,
+      800
+    ],
+    [
+      834,
+      1194
+    ]
+  ],
+  "browserData": "synthetic",
+  "physicalDeviceAcceptance": false,
+  "deployed": false
+}

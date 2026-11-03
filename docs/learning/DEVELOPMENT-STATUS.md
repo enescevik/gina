@@ -1,6 +1,6 @@
 # GINA öğrenme platformu — geliştirme durumu
 
-2 Kasım 2026. Kullanıcı tüm kapsamın geliştirilmesini onayladı. Bu liste tamamlanma beyanı değil, devam eden işin kaydıdır. İlk bölümler tarihî geliştirme kaydıdır. Güncel durum belgenin sonundaki tarihli eklemelerdedir. TestFlight 0.1.0 (15) yayımlandı; sonraki ortak soru grubu artımı henüz dağıtılmadı.
+2 Kasım 2026. Kullanıcı tüm kapsamın geliştirilmesini onayladı. Bu liste tamamlanma beyanı değil, devam eden işin kaydıdır. İlk bölümler tarihî geliştirme kaydıdır. Güncel durum belgenin sonundaki tarihli eklemelerdedir. TestFlight 0.1.0 (17) yayımlandı; ayrıntılar `docs/release/SHARED-DESIGN-17.md`. Aşağıdaki eski “dağıtılmadı” notları kendi tarihindeki durumu gösterir; güncel yeni artım kaydı belgenin sonundadır.
 
 ## Bu dalda yapılan, doğrulaması süren
 
@@ -249,3 +249,12 @@ Yeni paketlerin aile erişimi varsayılan kapalıdır. Aile edinimi, aylık kota
 ## 3 Kasım — yayın ekranının görsel sadakat düzeltmesi
 
 Kullanıcı uyarısıyla ilk yayın ekranının onaylı makete birebir uymadığı kabul edildi. Başlık sırası, ikonlar, çerçeveli kontrol satırları, kart/form boşlukları, tablet başlığı ve mor eylem düğmesi referansa göre düzeltildi. Eski/güncel görüntüler karşılaştırmada saklanır. Açık yayın onayı ve kapalı erişim bilgisi korunur; sunucu/veri işleyişi değişmedi. 22 yayın akışı kontrolü, dört boyut ve referansa yakın masaüstü ölçüsü kontrol edildi. Görsel eşleşme ile işlev kabulü ayrı; piksel eşitliği iddiası yok. Yayın/TestFlight yapılmadı.
+
+
+## 3 Kasım — aile paket edinimi ve Prova taslağı
+
+İncelenmiş/yayımlanmış paketlerin sınıf ve ders kapsamına göre seçilmesi, ortak kaynakların grup olarak korunması, aileye değişmez kopya, aylık/ek hak tüketimi ve mevcut Prova taslağına atomik ekleme tamamlandı. Çoklu seçim desteklenir. Tekrar edinim ücretsiz; kayıp yanıt cihazda saklanan aynı işlem kimliğiyle kurtarılır. Eski katalogla ortak kota kilidi ve öğretmen/çocuk veri ayrımı korunur. Paket görselleri mevcut soru/defter/kitapçık/AI erişim yollarına bağlandı; AI paylaşım rızası atlanmaz.
+
+[Görüntüler, kapsam ve açık kabul işleri](../design/screens/library-family-access/README.md). Yeni migration ve uygulama değişikliği henüz üretime/TestFlight'a gönderilmedi. Kütüphane genel açılış anahtarı kapalı; 20 soruluk pilot gerçek alan editörü onayı bekliyor, kalan 1520 taslak ve üretim uçtan uca/gerçek cihaz kabulü açık. Web/backoffice Cloudflare yayını için bağlantı bilgileri hâlâ eksik. Bu artım, önceki “aile edinimi tamamlanmadı” kaydını geliştirme düzeyinde ilerletir; canlı içerik kabulünü tamamlanmış saymaz.
+
+Doğrulama: 43 SQL dosyasında 1042 kontrol (36 yeni), üç eşzamanlı edinim/kota yarışı, 81 core testi, 17 medya/render testi ve workspace tip/lint geçti. Telefon ve iki tablet boyutunda 10 sentetik tarayıcı kontrolü geçti.
