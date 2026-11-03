@@ -74,6 +74,9 @@ export function NotebookWorkspace({
   const tabbed = layout === "tabs";
   const [tab, setTab] = useState<"question" | "notebook">("question");
   const [expanded, setExpanded] = useState(false);
+  const [questionExpanded, setQuestionExpanded] = useState(false);
+  const questionFocused = stacked && questionExpanded;
+  const compactSummary = stacked && !questionFocused && fontScale < 1.4;
   const [contextOpen, setContextOpen] = useState(true);
   const [answerOpen, setAnswerOpen] = useState(!!text);
   const shared = useQuestionContext(questionId);
@@ -102,103 +105,111 @@ export function NotebookWorkspace({
     </View>
   );
   const question = (
-    <ScrollView
-      style={{ flex: 1, minHeight: 0 }}
-      keyboardShouldPersistTaps="handled"
-      contentContainerStyle={s.questionContent}
-    >
+    <View style={s.fill}>
       <View style={s.sourceHeading}>
         <BookOpen size={22} color={p.purple} />
         <Text style={s.sectionTitle}>{t("notebook.question")}</Text>
         <Pressable
           accessibilityRole="button"
+          accessibilityLabel={t("notebook.takeFromQuestion")}
+          disabled={disabled}
+          onPress={() => setSourceOpen(true)}
+          style={[s.take, { marginLeft: "auto" }]}
+        >
+          <Copy size={20} color={p.purple} />
+          {stacked && <Text style={s.takeText}>{t("notebook.copyShort")}</Text>}
+        </Pressable>
+        {stacked && (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t(questionFocused ? "notebook.backToNotebook" : "notebook.fullQuestion")}
+            accessibilityState={{ expanded: questionFocused }}
+            onPress={() => setQuestionExpanded(!questionExpanded)}
+            style={s.take}
+          >
+            {questionFocused ? <Minimize2 size={20} color={p.purple} /> : <Maximize2 size={20} color={p.purple} />}
+            <Text style={s.takeText}>{t(questionFocused ? "notebook.backToNotebook" : "notebook.fullQuestion")}</Text>
+          </Pressable>
+        )}
+        <Pressable
+          accessibilityRole="button"
           accessibilityLabel={t("notebook.keyboardAnswer")}
           accessibilityState={{ expanded: answerOpen }}
           onPress={() => setAnswerOpen(!answerOpen)}
-          style={[s.smallButton, { marginLeft: "auto" }]}
+          style={s.smallButton}
         >
           <Type size={21} color={p.purple} />
         </Pressable>
       </View>
-      {answerOpen && (
-        <>
-          <Text style={s.soft}>{t("notebook.answerTextHint")}</Text>
-          <TextInput
-            multiline
-            accessibilityLabel={t("prova.answerLabel")}
-            value={text}
-            editable={!disabled}
-            maxLength={20000}
-            onChangeText={onTextChange}
-            placeholder={t("prova.writeAnswer")}
-            placeholderTextColor={p.muted}
-            style={s.answer}
-          />
-        </>
-      )}
-      {stacked && (
-        <>
-          {shared.data ? <SharedContext context={shared.data} /> : null}
-          <Text selectable style={s.stem}>{prompt}</Text>
-        </>
-      )}
-      <View style={s.diagram}>
-        <QuestionMedia
-          questionId={questionId}
-          notebook
-          maxImageHeight={stacked ? 120 : undefined}
-        />
-        <Pressable
-          accessibilityRole="button"
-          disabled={disabled}
-          onPress={() => setSourceOpen(true)}
-          style={s.take}
-        >
-          <Copy size={20} color={p.purple} />
-          <Text style={s.takeText}>{t("notebook.takeFromQuestion")}</Text>
-        </Pressable>
-      </View>
-      {!stacked && (
-        <>
-          {shared.data ? <SharedContext context={shared.data} /> : null}
-          <Text selectable style={s.stem}>{prompt}</Text>
-        </>
-      )}
-      {tokens.length > 0 && (
-        <View style={{ gap: 6 }}>
-          <Text style={s.sectionTitle}>{t("notebook.givens")}</Text>
-          <View style={s.chips}>
-            {tokens.map((value) => (
-              <Pressable
-                key={value}
-                accessibilityRole="button"
-                accessibilityLabel={t("notebook.addGiven", { value })}
-                disabled={disabled}
-                style={s.chip}
-                onPress={() => {
-                  setInsertion({
-                    id: randomUUID(),
-                    type: "text",
-                    text: value,
-                    x: 90,
-                    y: 120,
-                    width: 700,
-                    height: 100,
-                    size: 48,
-                    color: "#201951",
-                  });
-                  setTab("notebook");
-                }}
-              >
-                <Text style={s.takeText}>{value}</Text>
-                <Plus size={19} color={p.purple} />
-              </Pressable>
-            ))}
+      <ScrollView
+        style={s.fill}
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={s.questionContent}
+      >
+        {answerOpen && (
+          <>
+            <Text style={s.soft}>{t("notebook.answerTextHint")}</Text>
+            <TextInput
+              multiline
+              accessibilityLabel={t("prova.answerLabel")}
+              value={text}
+              editable={!disabled}
+              maxLength={20000}
+              onChangeText={onTextChange}
+              placeholder={t("prova.writeAnswer")}
+              placeholderTextColor={p.muted}
+              style={s.answer}
+            />
+          </>
+        )}
+        {shared.data ? <SharedContext context={shared.data} /> : null}
+        <View style={compactSummary ? s.questionSummary : { gap: 10 }}>
+          <View style={[s.diagram, compactSummary && s.summaryImage]}>
+            <QuestionMedia
+              questionId={questionId}
+              notebook
+              maxImageHeight={compactSummary ? 120 : undefined}
+            />
           </View>
+          <Text selectable style={[s.stem, compactSummary && { flex: 1 }]}>{prompt}</Text>
         </View>
-      )}
-      {tabbed && encouragement}
-    </ScrollView>
+        {tokens.length > 0 && (
+          <View style={{ gap: 6 }}>
+            <Text style={s.sectionTitle}>{t("notebook.givens")}</Text>
+            <View style={s.chips}>
+              {tokens.map((value) => (
+                <Pressable
+                  key={value}
+                  accessibilityRole="button"
+                  accessibilityLabel={t("notebook.addGiven", { value })}
+                  disabled={disabled}
+                  style={s.chip}
+                  onPress={() => {
+                    setInsertion({
+                      id: randomUUID(),
+                      type: "text",
+                      text: value,
+                      x: 90,
+                      y: 120,
+                      width: 700,
+                      height: 100,
+                      size: 48,
+                      color: "#201951",
+                    });
+                    setQuestionExpanded(false);
+                    setTab("notebook");
+                  }}
+                >
+                  <Text style={s.takeText}>{value}</Text>
+                  <Plus size={19} color={p.purple} />
+                </Pressable>
+              ))}
+            </View>
+          </View>
+        )}
+        {tabbed && encouragement}
+      </ScrollView>
+    </View>
   );
   return (
     <SafeAreaView style={s.root}>
@@ -264,7 +275,9 @@ export function NotebookWorkspace({
             ? (
               <View
                 key="question"
-                style={wide
+                style={questionFocused
+                  ? s.fill
+                  : wide
                   ? s.questionRail
                   : stacked
                   ? s.questionStack
@@ -279,6 +292,7 @@ export function NotebookWorkspace({
             key="notebook"
             style={[
               s.paperShell,
+              questionFocused && { display: "none" },
               tabbed && tab !== "notebook" && { display: "none" },
             ]}
           >
@@ -381,6 +395,7 @@ export function NotebookWorkspace({
           onClose={() => setSourceOpen(false)}
           onInsert={(e) => {
             setInsertion(e);
+            setQuestionExpanded(false);
             setTab("notebook");
           }}
         />
@@ -432,16 +447,19 @@ const s = StyleSheet.create({
     paddingTop: 12,
   },
   questionStack: {
-    height: "30%",
-    minHeight: 160,
-    maxHeight: 300,
+    height: "34%",
+    minHeight: 280,
+    maxHeight: 360,
     marginBottom: 10,
   },
   questionRail: { width: "35%", maxWidth: 470, minWidth: 280, minHeight: 0 },
-  questionContent: { padding: 14, gap: 10 },
+  questionContent: { padding: 12, gap: 10 },
+  questionSummary: { flexDirection: "row", gap: 16, alignItems: "flex-start" },
+  summaryImage: { width: "32%", maxWidth: 220 },
   sourceHeading: {
     flexDirection: "row",
-    gap: 10,
+    flexWrap: "wrap",
+    gap: 6,
     alignItems: "center",
     backgroundColor: p.lilac,
     borderRadius: 16,

@@ -1,7 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NOTEBOOK_MODAL_PROPS, notebookRevealOffset } from "./notebook-layout";
 import { useRouteMotion } from "@/lib/use-route-motion";
-import { type ComponentRef, useEffect, useRef, useState } from "react";
+import { type ComponentRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   type GestureResponderEvent,
   KeyboardAvoidingView,
@@ -17,6 +17,8 @@ import {
 import { randomUUID } from "expo-crypto";
 import {
   Check,
+  ChevronDown,
+  ChevronUp,
   Eraser,
   Hand,
   Minus,
@@ -117,6 +119,7 @@ export function NotebookEditor({
   const verticalScroll = useRef<ComponentRef<typeof ScrollView>>(null);
   const horizontalScroll = useRef<ComponentRef<typeof ScrollView>>(null);
   const scrollOffset = useRef({ x: 0, y: 0 });
+  const [visibleY, setVisibleY] = useState(0);
   const [revealId, setRevealId] = useState<string | null>(null);
   const roomy = viewportWidth >= 600;
   const [zoom, setZoom] = useState(1);
@@ -134,7 +137,7 @@ export function NotebookEditor({
   const [past, setPast] = useState<NotebookDocument[]>([]),
     [future, setFuture] = useState<NotebookDocument[]>([]);
   const current = useRef(document);
-  current.current = document;
+  useLayoutEffect(() => { current.current = document; }, [document]);
   const gesture = useRef<
     {
       start: NotebookPoint;
@@ -148,6 +151,18 @@ export function NotebookEditor({
   const frame = useRef<ReturnType<typeof requestAnimationFrame> | null>(null);
   const consumed = useRef<string | null>(null);
   const scale = width / 1000;
+  const maxScrollY = Math.max(0, width * 1.4 - viewportHeight);
+  const canPageUp = visibleY > 2;
+  const canPageDown = visibleY < maxScrollY - 2;
+  function pageBy(direction: -1 | 1) {
+    finish();
+    setRevealId(null);
+    const y = Math.max(0, Math.min(maxScrollY,
+      scrollOffset.current.y + direction * viewportHeight * .8));
+    verticalScroll.current?.scrollTo({ y, animated: false });
+    scrollOffset.current.y = y;
+    setVisibleY(y);
+  }
   const commit = (next: NotebookDocument) => {
     if (disabled || JSON.stringify(next) === JSON.stringify(current.current)) {
       return;
@@ -770,6 +785,7 @@ export function NotebookEditor({
           onScrollBeginDrag={() => setRevealId(null)}
           onScroll={(e) => {
             scrollOffset.current.y = e.nativeEvent.contentOffset.y;
+            setVisibleY(e.nativeEvent.contentOffset.y);
           }}
           scrollEventThrottle={16}
           nestedScrollEnabled
@@ -886,6 +902,21 @@ export function NotebookEditor({
           </ScrollView>
         </ScrollView>
       </View>
+      {viewportHeight > 0 && maxScrollY > 2 && (
+        <View style={s.pageNavigation}>
+          <ToolButton label={t("notebook.pageUp")} disabled={!canPageUp}
+            onPress={() => pageBy(-1)}>
+            <ChevronUp size={22} color={p.purple} />
+          </ToolButton>
+          <Text style={s.pageNavigationText}>
+            {t(canPageDown ? "notebook.moreBelow" : "notebook.pageEnd")}
+          </Text>
+          <ToolButton label={t("notebook.pageDown")} disabled={!canPageDown}
+            onPress={() => pageBy(1)}>
+            <ChevronDown size={22} color={p.purple} />
+          </ToolButton>
+        </View>
+      )}
     </View>
   );
 }
@@ -915,6 +946,19 @@ function ToolButton(
   );
 }
 const s = StyleSheet.create({
+  pageNavigation: {
+    minHeight: 48,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  pageNavigationText: {
+    flex: 1,
+    textAlign: "center",
+    fontFamily: "Nunito_600SemiBold",
+    fontSize: 14,
+    color: p.muted,
+  },
   toolbar: {
     flexDirection: "row",
     alignItems: "center",

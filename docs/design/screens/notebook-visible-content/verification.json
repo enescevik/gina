@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-03",
+  "baseCommit": "92607f2750d6db96ec761b5ed9640660d8649e05",
+  "scope": "Synthetic local NotebookWorkspace/NotebookEditor fixture; no real exam persistence",
+  "webViewports": [
+    [
+      820,
+      1180
+    ],
+    [
+      600,
+      900
+    ],
+    [
+      1280,
+      800
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "webPassed": [
+    "Copy action within all clipping ancestors and at least 48px high",
+    "No horizontal page overflow",
+    "Full question roundtrip preserves copied element",
+    "Source copy succeeds",
+    "Page controls reach bottom and return up"
+  ],
+  "nativeDevice": "iPad Air M4 simulator, iOS 26.5",
+  "nativePassed": [
+    "Fixed copy action visible",
+    "Full question and return",
+    "Source copy into notebook",
+    "Page down reaches end and disables down",
+    "Page up reaches top and disables up",
+    "Pen selection preserves image"
+  ],
+  "open": [
+    "Physical iPad/Pencil",
+    "Android native",
+    "VoiceOver and large system text",
+    "Real exam persistence/offline retry"
+  ],
+  "release": "Not deployed"
+}

@@ -208,3 +208,7 @@ Kullanıcının telefon/tablet maket onayı uygulandı: Ortak içerik → Sorula
 - Kontrolde eklenen yazı/görselin aşağıda kalabildiği bulundu ve düzeltildi: yalnız ekleme sonrası nesne görünür alana getirilir; seçim çubuğunun yerleşimine uyar. Kalem/seçim veya elle kaydırma bunu sonlandırır; çizim sırasında sayfa kaydırılmaz. Nesne koordinatları değişmez.
 - 8 yerleşim/modal/görünürlük testi, mobil tip ve lint denetimi geçti. Web'de 4 farklı boyut, 15 araç aç/kapat döngüsü, görünürlük sınırı ve çizim sırasında kaydırma sabitliği doğrulandı. Görüntüler ve kapsam: `docs/design/screens/notebook-device-acceptance/`.
 - Bu, gerçek hesap/cevap kaydı/çevrimdışı ağ veya fiziksel Pencil testi değildir. Fiziksel iPad hâlâ 0.1.0 (16); yeni sürüm kurulmadı. Geçici QA rotası dağıtımdan çıkarıldı. Üretim/TestFlight yayımlanmadı. Sonraki ana iş müfredat/kütüphane kapsamı; gerçek cihaz ve yayın kabulü açık kalıyor.
+
+## 3 Kasım — dikey tablette soru kesilmesi
+
+Kopyalama eylemi sabit başlığa taşındı; soru özeti ve tam soru görünümü ayrıldı. Defterin devamı açık yazı ve yukarı/aşağı kontrolleriyle erişilebilir. iPad simülatöründe ve dört web ölçüsünde kontrol edildi. Kanıt ve sınırlar: [görünür içerik kontrolü](../design/screens/notebook-visible-content/README.md). Fiziksel cihaz ve kalıcı cevap kabulü açık; yeni dağıtım yapılmadı.

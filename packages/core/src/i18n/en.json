@@ -1678,7 +1678,14 @@
     "textShort": "Text",
     "symbolsShort": "Symbols",
     "saved": "Saved",
-    "close": "Close"
+    "close": "Close",
+    "copyShort": "Copy to notebook",
+    "fullQuestion": "Full question",
+    "backToNotebook": "Back to notebook",
+    "pageUp": "Move up the notebook",
+    "pageDown": "Move down the notebook",
+    "moreBelow": "More of the page below",
+    "pageEnd": "End of page"
   },
   "common.loading": "Loading…",
   "prova.ai.errors.notebook_review_required": "You can review and score this drawn solution. AI does not evaluate drawings yet.",

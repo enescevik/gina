@@ -1678,7 +1678,14 @@
     "textShort": "Yazı",
     "symbolsShort": "Semboller",
     "saved": "Kaydedildi",
-    "close": "Kapat"
+    "close": "Kapat",
+    "copyShort": "Deftere al",
+    "fullQuestion": "Sorunun tamamı",
+    "backToNotebook": "Deftere dön",
+    "pageUp": "Defterde yukarı ilerle",
+    "pageDown": "Defterde aşağı ilerle",
+    "moreBelow": "Sayfanın devamı aşağıda",
+    "pageEnd": "Sayfanın sonu"
   },
   "common.loading": "Yükleniyor…",
   "prova.ai.errors.notebook_review_required": "Bu defterdeki çizimli çözümü sen inceleyip puanlayabilirsin. AI, çizimleri henüz değerlendirmiyor.",
