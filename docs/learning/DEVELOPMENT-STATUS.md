@@ -336,3 +336,11 @@ Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli
 - Apple imzalı durum tarihi kullanılır; Google API isteği başlangıcı yerel sıralama sağlar (resmî mağaza sürümü değildir). Gecikmiş Google iptal ipucu etkin API durumunu tek başına iptal edemez.
 - Google plan değişiminde eski hakkı kapatma ve yeni hakkı açma atomiktir; eski token tekrar geldiğinde canlandırılmaz. Eski token kapatma hatası tüm işlemi geri alır.
 - 10 Edge durum testi, 43 SQL kontrolü ve üç gerçek DB yarışı geçti. Canlı mağaza kurulumu, tarihî token uzlaştırması, iade operasyon ekranı, native kabul ve yayın açık.
+
+## 4 Kasım 2026 — finans inceleme görünümü
+
+- PR #89 tüm CI kontrolleriyle main’e birleşti; abonelik yazımları atomik. Henüz üretim/TestFlight dağıtımı yapılmadı.
+- 072000 + `/billing`: canlı finans rolüyle aile paketi, mağaza aboneliği, beta/geçici hak kaynağı ve işlenemeyen bildirimler ayrı gösterilir. Aileler ekranındaki paket bağlantısı bu incelemeyi açar; yönetici mevcut geçici hak yönetimine geçebilir.
+- Finans rolü tek başına destek/içerik/yönetici yetkisi almaz. Ham makbuz, satın alma tokenı, özel bildirim payload'ı ve ham hata iletilmez. Aile adı/kimliğiyle sınırlı arama; eşleşmeyen bildirimler genel kuyrukta.
+- 22 SQL yetki/mahremiyet kontrolü; gerçek yerel Next ekranında masaüstü/tablet, arama/boş sonuç, ağ hatası ve oturum değişmeden yetki iptali kontrolü geçti. Kanıt: docs/design/screens/billing-operations.
+- Bu teslim salt okunur incelemedir. Gerçek mağaza iadesi, geçmiş bildirim kurtarma, operatör uzlaştırma eylemi ve canlı kabul hâlâ açık.

@@ -17,7 +17,7 @@ export default function Home() {
           ? "/support"
           : roles.includes("content")
           ? "/help-articles"
-          : "/sign-in",
+          : roles.includes("finance") ? "/billing" : "/sign-in",
       );
     }
   }, [ready, session, isAdmin, rolesReady, roles, router]);

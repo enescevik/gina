@@ -3,7 +3,7 @@ import { useAuth } from "./auth";
 export function useSupportQuery<T>(
   load: () => Promise<T>,
   key: string,
-  role: "support" | "content" = "support",
+  role: "support" | "content" | "finance" = "support",
 ) {
   const { session, roles, roleError } = useAuth(),
     enabled = roles.includes(role) && !roleError;
