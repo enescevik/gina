@@ -328,3 +328,11 @@ Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli
 - Apple doğrulanmamış bildirim kimliğinin gerçek olayı engellemesi ve Google audience tanımsızken kimliksiz isteğin işlenmesi kapatıldı. Google’da audience + beklenen servis hesabı e-postası zorunlu.
 - 070000 migration: platform bazlı olay kimliği, beş dakikalık sahiplik, kesinti/hata sonrası yeniden alma ve eski işleyiciyi dışlayan tamamlanma. Günlük yazma hatası artık başarı sayılmaz; gerçek işlemi yeniden denemesi için sağlayıcıya hata döner.
 - 29 taklit sağlayıcı Edge testi, 26 SQL kontrolü ve gerçek DB eşzamanlı teslim/süre dolumu testleri geçti. Gerçek mağaza/sandbox ödeme, canlı operasyon ve cihaz kabulü yapılmadı. Ayrı mağaza olayları ile istemci/uzlaştırmanın abonelik yazım sırası ayrıca ele alınacak; bu teslim tam ödeme sistemi kabulü değildir.
+
+## 4 Kasım 2026 — atomik mağaza aboneliği ve aile eşlemesi
+
+- Bildirim güvenliği PR #88 tüm CI kontrolleriyle main’e birleşti. Üretim/TestFlight değişmedi.
+- 071000: satın alma doğrulama, bildirim ve uzlaştırma ortak tek yazma işlemine geçti. Aile sahipliği, canlı üyelik, ürün ve durum sürümü tek kilit altında kontrol edilir; iki aile aynı makbuzu yarışla alamaz.
+- Apple imzalı durum tarihi kullanılır; Google API isteği başlangıcı yerel sıralama sağlar (resmî mağaza sürümü değildir). Gecikmiş Google iptal ipucu etkin API durumunu tek başına iptal edemez.
+- Google plan değişiminde eski hakkı kapatma ve yeni hakkı açma atomiktir; eski token tekrar geldiğinde canlandırılmaz. Eski token kapatma hatası tüm işlemi geri alır.
+- 10 Edge durum testi, 43 SQL kontrolü ve üç gerçek DB yarışı geçti. Canlı mağaza kurulumu, tarihî token uzlaştırması, iade operasyon ekranı, native kabul ve yayın açık.

@@ -9,7 +9,7 @@
 // Google: purchaseToken yalnız Play Developer API'den (subscriptionsv2.get) okunan durumla işlenir.
 
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
-import { planForProduct, upsertSubscription, type SubscriptionUpsert } from "./entitlement.ts";
+import type { SubscriptionUpsert } from "./entitlement.ts";
 
 export type SubStatus = SubscriptionUpsert["status"];
 
@@ -388,7 +388,7 @@ export function appleState(
     expiresAt: new Date(expires).toISOString(),
     autoRenewing: renewal ? renewal.autoRenewStatus === 1 : status === "active",
     accountToken: tx.appAccountToken ? tx.appAccountToken.toLowerCase() : null,
-    version: tx.purchaseDate ?? tx.signedDate,
+    version: Math.max(tx.signedDate ?? tx.purchaseDate ?? 0, renewal?.signedDate ?? 0),
     raw: { transaction: tx, renewal, apiStatus },
   };
 }
@@ -573,7 +573,7 @@ export const GOOGLE_PENDING_STATES = new Set(["SUBSCRIPTION_STATE_PENDING", "SUB
 
 /**
  * subscriptionsv2 yanıtını duruma çevirir. Bekleyen (PENDING) ödemede null döner: yetki verilmez.
- * `revoked`: RTDN SUBSCRIPTION_REVOKED (12) geldiğinde zorlanır.
+ * `revoked`: doğrulanmış RTDN ipucu; yalnız API de sona erdiğini doğrularsa iade olarak işaretlenir.
  */
 export async function googleState(
   db: SupabaseClient,
@@ -599,7 +599,8 @@ export async function googleState(
     platform: "google",
     storeKey: purchaseToken,
     productId,
-    status: opts.revoked ? "revoked" : (map[state] ?? "expired"),
+    // A delayed RTDN revocation must not override a currently active API response.
+    status: opts.revoked && state === "SUBSCRIPTION_STATE_EXPIRED" ? "revoked" : (map[state] ?? "expired"),
     expiresAt: new Date(expiresMs).toISOString(),
     autoRenewing: item.autoRenewingPlan?.autoRenewEnabled === true,
     accountToken: sub.externalAccountIdentifiers?.obfuscatedExternalAccountId?.toLowerCase() ?? null,
@@ -614,8 +615,11 @@ export async function refreshGoogle(
   purchaseToken: string,
   opts: { revoked?: boolean } = {},
 ): Promise<StoreState | null> {
+  // Local observation ordering, not a Google event revision. Captured before the network call.
+  const observedAt = Date.now();
   const sub = await fetchGoogleSubscription(purchaseToken);
   const state = await googleState(db, purchaseToken, sub, opts);
+  if (state) state.version = observedAt;
   const item = sub.lineItems?.[0];
   if (
     state &&
@@ -666,8 +670,6 @@ export async function verifyGoogleOidc(authHeader: string | null, audience: stri
 // Tek yazma yolu
 // ---------------------------------------------------------------------------------------------
 
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
-
 export interface ApplyContext {
   /** iap-verify: çağıran velinin ailesi. Bildirim/uzlaştırmada verilmez. */
   callerFamilyId?: string;
@@ -680,7 +682,7 @@ export interface ApplyResult {
   plan: string;
   status: SubStatus;
   expiresAt: string;
-  skipped?: "stale";
+  skipped?: "stale" | "replaced";
 }
 
 /**
@@ -690,63 +692,20 @@ export interface ApplyResult {
  * Başka aileye bağlı bir işlem başka bir aileye taşınamaz (409 account_mismatch).
  */
 export async function applyStoreState(db: SupabaseClient, state: StoreState, ctx: ApplyContext = {}): Promise<ApplyResult> {
-  const plan = await planForProduct(db, state.productId).catch(() => {
-    throw new IapError(`unknown_product:${state.productId}`, 422);
+  const { data, error } = await db.rpc("apply_verified_store_state", {
+    p_state: state,
+    p_caller_family_id: ctx.callerFamilyId ?? null,
+    p_purchaser_user_id: ctx.purchaserUserId ?? null,
   });
-
-  const { data: existing, error: exErr } = await db
-    .from("store_subscriptions")
-    .select("family_id, purchaser_user_id, raw, status, expires_at, product_id")
-    .eq("store_key", state.storeKey)
-    .maybeSingle();
-  if (exErr) throw exErr;
-
-  const token = state.accountToken && UUID_RE.test(state.accountToken) ? state.accountToken : null;
-  let familyId: string | null;
-  if (ctx.callerFamilyId) {
-    if (token && token !== ctx.callerFamilyId) throw new IapError("account_mismatch", 409);
-    if (existing && existing.family_id !== ctx.callerFamilyId) throw new IapError("account_mismatch", 409);
-    familyId = ctx.callerFamilyId;
-  } else if (existing) {
-    familyId = existing.family_id as string;
-  } else if (token) {
-    const { data: fam } = await db.from("families").select("id").eq("id", token).maybeSingle();
-    familyId = (fam?.id as string | undefined) ?? null;
-  } else familyId = null;
-  if (!familyId) throw new IapError("family_not_found", 404);
-
-  const prevVersion = (existing?.raw as { version?: number } | null)?.version;
-  if (prevVersion && state.version && state.version < prevVersion) {
-    return {
-      familyId,
-      productId: existing!.product_id as string,
-      plan: await planForProduct(db, existing!.product_id as string),
-      status: existing!.status as SubStatus,
-      expiresAt: existing!.expires_at as string,
-      skipped: "stale",
-    };
+  if (error) {
+    const statuses: Record<string, number> = {account_mismatch: 409, family_not_found: 404,
+      forbidden: 403, unknown_product: 422, invalid_store_state: 422};
+    const status = statuses[error.message];
+    if (status) throw new IapError(error.message, status);
+    throw new IapError("store_state_write_failed", 503);
   }
-
-  await upsertSubscription(db, {
-    familyId,
-    purchaserUserId: ctx.purchaserUserId ?? (existing?.purchaser_user_id as string | null) ?? null,
-    platform: state.platform,
-    productId: state.productId,
-    storeKey: state.storeKey,
-    status: state.status,
-    expiresAt: state.expiresAt,
-    autoRenewing: state.autoRenewing,
-    raw: { version: state.version ?? null, ...(state.raw as object) },
-  });
-
-  // Android plan değişimi: eski token artık yetki vermez.
-  if (state.replacesStoreKey) {
-    await db
-      .from("store_subscriptions")
-      .update({ status: "expired", auto_renewing: false })
-      .eq("store_key", state.replacesStoreKey)
-      .eq("family_id", familyId);
+  if (!data || typeof data.familyId !== "string" || typeof data.plan !== "string") {
+    throw new IapError("store_state_write_failed", 503);
   }
-
-  return { familyId, productId: state.productId, plan, status: state.status, expiresAt: state.expiresAt };
+  return data as ApplyResult;
 }

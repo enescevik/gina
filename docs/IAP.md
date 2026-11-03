@@ -78,7 +78,7 @@ select vault.create_secret('<IAP_CRON_SECRET ile aynı değer>', 'iap_cron_secre
 - `20261103070000_store_notification_recovery.sql` önce uygulanır, sonra iki alıcı birlikte dağıtılır. Olay kimliği `(platform,event_key)` olur; eski kimlikler değişmez. Yeni Edge eski şemada başarı vermez.
 - Beş dakikalık işlem sahipliği aynı olayın eşzamanlı çalışmasını sınırlar. Kesinti sonrası süre dolunca tekrar alınır; eski işleyici yeni sahibin tamamlanma kaydını değiştiremez. Hata/yoğunluk/kayıt belirsizliğinde 503 döner. Başarı yalnız kalıcı tamamlanma kaydından sonra verilir.
 - Eski doğrulanmamış günlük satırı doğrulanmış teslimatı engellemez. Bu değişiklik geçmişte yanlış verilmiş bir hakkı kendiliğinden düzeltmez; geçmiş şüpheli satırlar mağazadan ayrıca uzlaştırılmalıdır.
-- Mağaza yeniden denemelerinin bir sınırı vardır. Bildirim geçmişinden kurtarma ve operasyon izleme ayrı kabul işidir; beş dakikalık sahiplik tam olarak bir kez yan etki garantisi değildir. Abonelik durumunun farklı olaylar/istemci/uzlaştırma arasında atomik sıralaması ayrıca denetlenmelidir.
+- Mağaza yeniden denemelerinin bir sınırı vardır. Bildirim geçmişinden kurtarma ve operasyon izleme ayrı kabul işidir; beş dakikalık sahiplik tam olarak bir kez yan etki garantisi değildir. 071000 ile abonelik yazımı da tek veritabanı işlemine taşındı; canlı mağaza kabulü hâlâ ayrıdır.
 
 ## Kontrol listesi (ilk satıştan önce)
 
@@ -94,3 +94,15 @@ select vault.create_secret('<IAP_CRON_SECRET ile aynı değer>', 'iap_cron_secre
 Yerel izole veritabanı + taklit sağlayıcı testleri: 29 Edge testi, 26 SQL kontrolü; gerçek eşzamanlı iki teslim, süre dolmuş sahipliği alma, eski işleyiciyi reddetme ve tamamlanmış olayı yeniden gönderme. Gerçek ödeme/iade yapılmadı; üretim dağıtımı yapılmadı. Yönetim ekranı, mağaza iadesi ve GINA içindeki telafi hakkı farklı işlemlerdir; bu değişiklik bir iade ekranı değildir.
 
 Kaynaklar: [Google imzalı push kimliği ve beklenen gönderici](https://docs.cloud.google.com/pubsub/docs/authenticate-push-subscriptions), [Apple başarı/hata yanıtı ve bildirim tekrarları](https://developer.apple.com/documentation/appstoreservernotifications/responding-to-app-store-server-notifications).
+
+## Atomik abonelik kaydı — 4 Kasım 2026
+
+071000 migration ve ortak `applyStoreState` artık aile eşlemesi, ürün/paket kontrolü, sürüm karşılaştırması ve Google eski token kapatmasını tek işlemde yapar. İlk kayıtta bile aynı mağaza anahtarı kilitlenir: iki aile aynı eski makbuzu eşzamanlı yüklediğinde yalnız biri eşleşebilir. Aile, mağaza ve işlem kimliği sonradan değiştirilemez. Aktif aile üyeliği kayıt sırasında yeniden kontrol edilir.
+
+Apple sırası satın alma tarihinden değil imzalı durumun tarihinden hesaplanır. Aynı/eski sürüm yeni durumu değiştirmez. Google'da API isteğinin başlangıç zamanı yalnız yerel gözlem sırasıdır; Google'ın resmî olay sürümü olduğu iddia edilmez. Gecikmiş iptal bildirimi, API'nin hâlen etkin gördüğü aboneliği tek başına iptal edemez. Saat kayması ve sağlayıcı gecikmesi gerçek mağaza kabulünde kontrol edilmelidir.
+
+Google plan değişiminde eski tokenın kapanması ile yeni hakkın kaydı birlikte gerçekleşir. Eski tokenın sonradan gelmesi yeni bir hak yaratmaz; bunun için aileye bağlı özel bir değiştirme kaydı tutulur. Eski tokenı kapatırken hata olursa yeni kayıt da geri alınır. Henüz farklı sağlayıcı/gerçek iade/mağaza hesabı kabulü yapılmadı.
+
+Dağıtım: 071000 önce; ardından `iap-verify`, `iap-reconcile`, `apple-notifications`, `google-rtdn` aynı kaynaktan güncellenmeli. Eski çalışan kodun yeni sürümü ezmesini engelleyen veritabanı kontrolü vardır. Geçmiş Google plan geçişleri için eski token eşlemelerini mağazadan uzlaştırmak ayrı operasyon işidir.
+
+Kanıt: 10 Edge durum testi, 43 SQL kontrolü; gerçek eşzamanlı DB testlerinde eski/yeni sürüm yarışı, iki ailenin ilk eşleştirmesi ve plan değişimiyle eski tokenın eşzamanlı dönüşü. Sentetik izole veriler; kullanıcı hesabında ödeme yapılmadı.
