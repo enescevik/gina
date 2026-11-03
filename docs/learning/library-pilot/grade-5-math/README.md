@@ -53,7 +53,7 @@ python3 scripts/test-learning-pilot.py
 ## Entegrasyondan önce kalanlar
 
 1. Matematik alan editörü: soru/çıktı eşlemesi, Türkçe, kısmi puan ve görsel yeterliliği. `human_editorial_approval` boş kalır; teknik test sonucu onaya çevrilmez.
-2. Ortak kaynakları ve görselleri bütünlük içinde taslak kütüphaneye aktarma. Mevcut tekil `library_question` normalleştirmesi bu ilişkileri taşımaz; ona doğrudan beslenmez.
+2. [Atomik taslak kabul sözleşmesi](../../LIBRARY-BUNDLE-IMPORT.md) eklendi; bu pilot yalnız izole testte aktarılıp geri alındı. Yönetim dosya seçme/önizleme/inceleme ekranı ve üretim aktarımı açık. Mevcut tekil `library_question` normalleştirmesine doğrudan beslenmez.
 3. Erişim/paket hakları, kaynak silinmesi, sabit soru sürümleri ve tekrar güvenli aktarım; öğrenciye yalnız öğrenci projeksiyonu.
 4. Gerçek Prova, çözüm defteri, inceleme ve AI değerlendirme akışlarında telefon/tablet testi. Sonra insan onaylı yayın; TestFlight en son.
 
