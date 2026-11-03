@@ -344,3 +344,10 @@ Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli
 - Finans rolü tek başına destek/içerik/yönetici yetkisi almaz. Ham makbuz, satın alma tokenı, özel bildirim payload'ı ve ham hata iletilmez. Aile adı/kimliğiyle sınırlı arama; eşleşmeyen bildirimler genel kuyrukta.
 - 22 SQL yetki/mahremiyet kontrolü; gerçek yerel Next ekranında masaüstü/tablet, arama/boş sonuç, ağ hatası ve oturum değişmeden yetki iptali kontrolü geçti. Kanıt: docs/design/screens/billing-operations.
 - Bu teslim salt okunur incelemedir. Gerçek mağaza iadesi, geçmiş bildirim kurtarma, operatör uzlaştırma eylemi ve canlı kabul hâlâ açık.
+
+## 4 Kasım 2026 — Expo güvenlik istisnasının kaldırılması
+
+- Finans inceleme PR #90 tüm CI kontrolleriyle main’e birleşti.
+- Expo 58.0.23 ve uyumlu mevcut modül sürümlerine geçildi; CLI 58.1.19 eski Zod 3 bağımlılığını kaldırıyor. Yüksek önem dereceli bulgu kalmadığı doğrulandı ve süreli istisna CI'dan çıkarıldı.
+- iOS/Android/web paket dışa aktarımları, SDK uyumu, mobil/backoffice tip/lint ve 109 çekirdek testi geçti. Yeni yetenek paketi eklenmedi; var olan Metro runtime SDK sürümüne açıkça sabitlendi.
+- Kalan orta/düşük araç zinciri bulguları ve native kabul sınırı docs/security/2026-11-04-audit.md içinde. Bu değişiklik yeni imzalı binary gerektirir; TestFlight/üretim dağıtılmadı.

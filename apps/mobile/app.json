@@ -59,6 +59,7 @@
       ],
       "expo-iap",
       "expo-sharing",
+      "expo-sqlite",
       [
         "expo-notifications",
         {

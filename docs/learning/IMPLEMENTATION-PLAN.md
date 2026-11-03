@@ -19,7 +19,7 @@ Onaylı maketi bulunan ekranlarda o maket korunur. Ayrı maketi olmayan ekranlar
 | Öğrenme yardımcıları | Göreve bağlı cihazda kalıcı odak sayacı uygulandı; telefon/tablet web ve çekirdek kontrolleri geçti, native kabul açık. İncelenmiş yanlış/kısmi yanıtlardan tekrar seçimi birleşik Prova’ya bağlandı (060000, henüz dağıtılmadı); aralıklı tekrar takvimi yok. Veli plan asistanında seçilen günler → düzenleme → önizleme → atomik takvim kaydı tamamlandı (062000, henüz dağıtılmadı); fiziksel kabul açık. Belge → görev/ödül/hedef ve ödev/ders/kurs ortak planının kalan akışları açık. |
 | Görev/ödül kayıt güvenliği | 064000: elle veya seçilen üç AI önerisinin kalıcı tekil kaydı; kayıp yanıt/yeniden açılış ve kota yarışı kabulü geçti. Telefon/tablet web kanıtı setup-save-recovery klasöründe; üretim ve fiziksel cihaz kabulü açık. |
 | Takvim kayıt güvenliği | 061000: kayıp yanıt kurtarma, revizyon çakışması, aile–çocuk RLS sınırı; 24 SQL + dört gerçek yarış + telefon/tablet web kabulü. PR #82 main’de, henüz dağıtılmadı. 062000 plan asistanının seçilen günlerini toplu uygular. |
-| Yayın kabulü | Canlı hizmet kontrolleri, güvenlik/performance tekrar denetimi, gerçek telefon/tablet testleri, aynı commit'ten iki dağıtım; **en son**. |
+| Yayın kabulü | Expo 58.0.23 uyumu ve üç platform JS paket kabulü geçti; CLI Zod yüksek önem istisnası kaldırıldı. Orta/düşük araç zinciri bulguları kayıtlı. Canlı hizmet, native binary/gerçek cihaz, güvenlik/performance ve aynı commit'ten iki dağıtım; **en son**. |
 
 Maliyet veya işlem kotasının varlığı, kaynağı doğrulanmamış içerikleri yayımlama gerekçesi değildir. Görseller/raporlar kişilik, zekâ, teşhis veya resmî yeterlilik iddiası taşımaz.
 
