@@ -297,3 +297,11 @@ Hazırlayıcı artık kayıtlı Fen taslak profilini ve görselsiz ortak metni k
 062000 migration: veli/aile/çocuk sınırı, gün tekilliği, plan güncellik kontrolü, arşiv engeli, seçili kayıtların atomik eklenmesi ve aynı istekle kurtarma. 25 yeni SQL kontrolü, 46 dosyada toplam 1.118 kontrol; 100 çekirdek testi; üç gerçek paralel yarış; mobil typecheck/lint geçti. Telefon/tablet web görselleri ve açık sınırlar `docs/design/screens/study-plan-calendar/README.md` içinde. Kayıp yanıt + yeniden açılış kontrolünde aynı iki isteğin sonunda yalnız iki etkinlik var.
 
 **Yayımlanmadı.** Fiziksel cihaz kontrolleri açık. Gün/gece/hava çalışması ertelenmiş kalır. Belge → görev/ödül/hedef, kütüphanenin kalan 1.500 taslağı ve alan incelemesi, müfredat bağlama, toplu Prova kabulü, sağlayıcı/operasyon ve son yayın kontrolleri bu çalışmayla tamamlanmış sayılmaz.
+
+## 3 Kasım — Birlikte Prova kabulünde bulunan düzeltmeler
+
+Katılım hatası açık pencerenin arkasında kalıyordu; görünür alana taşındı. Tek uygun çocuk seçili gelir, iki onay varsayılan kapalı kalır. Zaten katılan çocuğa tekrar katıl düğmesi kaldırıldı. Saatler aile saat diliminde; açık sonuç penceresi yenilenir. Kayıp katılım yanıtında sunucudaki katılım bulunur; sınırsız bekleme yerine 20 saniyelik sonuç kontrolü var.
+
+Bildirim kontrolünde farklı Provaların bekleyen atama/bitiş bildirimleri tek tür altında bastırılıyordu. 063000 aynı bekleyen olayı birleştirip farklı Provaları korur. Görev/haftalık birleştirme kuralı değişmedi. Beş ek bildirim SQL kontrolüyle toplam 46 dosyada 1.123 kontrol geçti. Üç katılım/kota/iptal ve iki bildirim yarışı ayrı geçici DB’lerde geçti. Gerçek web ekranı telefon/tablet kabulü, iki kapalı onay, hata, kayıp yanıt, tek kayıt ve açık sonuç yenilemesini doğruladı.
+
+Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli koleksiyonları kullanıyor; yeni sürümlü/görselli/ortak kaynaklı paketlerden grup oluşturma bağlantısı yok. Fiziksel cihaz/push teslimi, yeni kütüphane bağı ve içerik kabulü bitmeden genel katılım açılmayacak. Üretim anahtarları değiştirilmedi; migration ve uygulama yayımlanmadı. Kanıt: `docs/design/screens/group-practice-acceptance/README.md`.
