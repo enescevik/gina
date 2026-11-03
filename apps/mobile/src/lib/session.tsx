@@ -7,6 +7,7 @@ import { supabase } from "./supabase";
 import { queryClient } from "./query";
 import { clearAnswerJournals } from "./answer-journal";
 import { clearLibraryCommands } from "./library-acquisition";
+import { clearFocusTimers } from "./focus-storage";
 import { clearHelpCommands } from "./help";
 
 export interface SessionState {
@@ -71,7 +72,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       if (_event === "INITIAL_SESSION") return; // getSession below owns initial read errors.
       changed = true;
       if (_event === "SIGNED_OUT") {
-        for (const clear of [clearAnswerJournals, clearHelpCommands, clearLibraryCommands]) {
+        for (const clear of [clearAnswerJournals, clearHelpCommands, clearLibraryCommands, clearFocusTimers]) {
           try { clear(); }
           catch { /* Scoped drafts remain inaccessible to another identity. */ }
         }

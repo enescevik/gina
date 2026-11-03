@@ -2245,6 +2245,7 @@ isOneToOne: false
                 }
           }
           Functions: {
+      get_repeat_candidates: { Args: { p_draft_id: string }; Returns: Json };
 "acquire_library_units":
 { Args: { "p_draft_id"?: string,"p_package_id": string,"p_publication_version": number,"p_request_id": string,"p_unit_keys": (string)[] }; Returns: Json
                            },
