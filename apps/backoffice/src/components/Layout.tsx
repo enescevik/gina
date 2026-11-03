@@ -40,11 +40,12 @@ export async function signOut(confirmed = false) {
 
 /** Admin sayfa çerçevesi: oturum yoksa girişe yönlendirir, admin claim'i yoksa uyarı gösterir. */
 export function Layout(
-  { title, children, support = false, content = false, compact = false }: {
+  { title, children, support = false, content = false, finance = false, compact = false }: {
     title: string;
     children: ReactNode;
     support?: boolean;
     content?: boolean;
+    finance?: boolean;
     compact?: boolean;
   },
 ) {
@@ -64,8 +65,8 @@ export function Layout(
     roleError,
     refreshRoles,
   } = useAuth();
-  const requiredRole = content ? "content" : "support";
-  const operation = support || content;
+  const requiredRole = finance ? "finance" : content ? "content" : "support";
+  const operation = support || content || finance;
   const allowed = operation
     ? rolesReady && roles.includes(requiredRole)
     : isAdmin;
@@ -97,7 +98,7 @@ export function Layout(
           : !allowed
           ? (
             <Notice>
-              {content
+              {finance ? "Bu bölümü açmak için etkin finans yetkisi gerekiyor." : content
                 ? "Bu bölümü açmak için etkin içerik yetkisi gerekiyor."
                 : "Bu bölümü açmak için etkin destek yetkisi gerekiyor."}{" "}
               <button className="btn-secondary" onClick={() => void signOut()}>
@@ -144,7 +145,7 @@ export function Layout(
               ? "/dashboard"
               : roles.includes("support")
               ? "/support"
-              : "/help-articles"}
+              : roles.includes("content") ? "/help-articles" : "/billing"}
             className="admin-brand"
             aria-label="GINA yönetim ana sayfa"
           >
@@ -154,7 +155,7 @@ export function Layout(
           </Link>
           {session &&
               (isAdmin || roles.includes("support") ||
-                roles.includes("content"))
+                roles.includes("content") || roles.includes("finance"))
             ? (
               <nav aria-label="Yönetim bölümleri">
                 {publication && isAdmin ? (
@@ -219,6 +220,7 @@ export function Layout(
                     </>
                   )
                   : null}
+                {roles.includes("finance") ? <Link href="/billing" className={router.pathname === "/billing" ? "admin-nav active" : "admin-nav"} aria-current={router.pathname === "/billing" ? "page" : undefined}><PublicationIcon name="lock" />Paketler ve ödemeler</Link> : null}
                 {roles.includes("content")
                   ? (
                     <Link
@@ -247,7 +249,7 @@ export function Layout(
                     ? "Destek ekibi"
                     : roles.includes("content")
                     ? "İçerik ekibi"
-                    : "Yetkili oturumu"}
+                    : roles.includes("finance") ? "Finans ekibi" : "Yetkili oturumu"}
                 </span>
                 <span>{session.user.email}</span>
                 <button

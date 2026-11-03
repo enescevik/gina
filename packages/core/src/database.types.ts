@@ -2253,6 +2253,7 @@ isOneToOne: false
                 }
           }
           Functions: {
+      finance_workspace: {Args:{p_query?:string;p_family_id?:string};Returns:Json};
       apply_study_plan_calendar: {Args:{p_request_id:string;p_plan_id:string;p_updated_at:string;p_items:Json};Returns:Json};
       save_calendar_event: { Args: { p_request_id:string; p_event_id:string; p_revision:number; p_values:Json | null }; Returns:Json };
       get_repeat_candidates: { Args: { p_draft_id: string }; Returns: Json };

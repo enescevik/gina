@@ -66,8 +66,8 @@ export default function FamiliesPage() {
                     <td>{t.families.sources[f.plan_source] ?? f.plan_source}</td>
                     <td>{fmtDate(f.plan_expires_at)}</td>
                     <td>
-                      <Link className="btn-secondary whitespace-nowrap" href={{ pathname: "/overrides", query: { family: f.id } }}>
-                        {t.families.giveComp}
+                      <Link className="btn-secondary whitespace-nowrap" href={{ pathname: "/billing", query: { family: f.id } }}>
+                        Paket ve ödeme
                       </Link>
                     </td>
                   </tr>
