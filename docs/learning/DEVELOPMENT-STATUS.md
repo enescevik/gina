@@ -212,3 +212,7 @@ Kullanıcının telefon/tablet maket onayı uygulandı: Ortak içerik → Sorula
 ## 3 Kasım — dikey tablette soru kesilmesi
 
 Kopyalama eylemi sabit başlığa taşındı; soru özeti ve tam soru görünümü ayrıldı. Defterin devamı açık yazı ve yukarı/aşağı kontrolleriyle erişilebilir. iPad simülatöründe ve dört web ölçüsünde kontrol edildi. Kanıt ve sınırlar: [görünür içerik kontrolü](../design/screens/notebook-visible-content/README.md). Fiziksel cihaz ve kalıcı cevap kabulü açık; yeni dağıtım yapılmadı.
+
+## 3 Kasım — öğrenme çıktısı aday dizini
+
+Sıradaki müfredat/kütüphane işine geçildi. 648 senaryo 62 sınıf–ders grubu ve 708 çıktı aday kaydına kaynak hücreleri korunarak bağlandı. Dört kodsuz yönerge ve altı bağlama göre değişen metin kaydı incelemeye ayrıldı; mevcut 17 senaryo uyarısı korunuyor. Dokuz doğrulama kontrolü ve CI adımı eklendi. [Dizin ve açık işler](catalog/2026-2027-term1/OUTCOME-INDEX.md). Bu bir soru üretimi/yayın veya tam müfredat kabulü değildir. İlk 20 soruluk içerik pilotu, program sürümü incelemesiyle 5. sınıf Matematik geometri üzerinden ilerleyecek. Canlı katalog/API/AI entegrasyonu açık.
