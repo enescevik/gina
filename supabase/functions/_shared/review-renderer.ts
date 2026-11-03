@@ -1,3 +1,4 @@
+import { readSourceBlob } from "./library-source.ts";
 import { initWasm, Resvg } from "npm:@resvg/resvg-wasm@2.6.2";
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { inspectSource } from "./source-file.ts";
@@ -245,13 +246,9 @@ export async function renderReviewNotebook(
     if (total > 12 * 1024 * 1024 || s.width * s.height > 4_000_000) {
       throw new Error("source_ai_limit");
     }
-    const download = await db.storage.from("gina-private-sources").download(
-      s.object_path,
-    );
-    if (download.error || !download.data || download.data.size !== s.bytes) {
-      throw new Error("source_not_ready");
-    }
-    const bytes = new Uint8Array(await download.data.arrayBuffer());
+    const blob = await readSourceBlob(db, id, s.object_path);
+    if (blob.size !== s.bytes) throw new Error("source_not_ready");
+    const bytes = new Uint8Array(await blob.arrayBuffer());
     const info = await inspectSource(bytes, s.mime);
     if (
       info.hash !== s.sha256 || info.width !== s.width ||

@@ -2094,5 +2094,35 @@
   "provaHub.mix.document": "{{count}} belgeden",
   "provaHub.gradeContext": "{{grade}}. sınıf için hazırladığın çalışma",
   "provaHub.questionUnit": "soru",
-  "provaHub.topicUnit": "konu"
+  "provaHub.topicUnit": "konu",
+  "libraryPackages": {
+    "title": "Hazır çalışmalar",
+    "body": "Provanın sınıfına ve derslerine uygun, incelenmiş soru paketleri.",
+    "start": "Çocuğuna uygun bir Prova hazırla",
+    "scopeHelp": "Önce çocuğu, sınıfı ve dersleri seç. Ardından kütüphaneden soruları ekleyebilirsin.",
+    "groupHelp": "Aynı metin veya görsele bağlı sorular birlikte seçilir. Aldığın soruları tekrar kullanmak hak tüketmez.",
+    "empty": "Bu kapsamda henüz paket yok",
+    "emptyHelp": "Sorularını elle, AI ile veya mevcut soru kütüphanenden ekleyebilirsin.",
+    "cost": "{{count}} soru seçildi · {{cost}} hak kullanılacak",
+    "remaining": "Kullanılabilir hak: {{count}}",
+    "quota": "Bu seçim için yeterli hakkın yok. Daha az soru seçebilirsin.",
+    "owned": "Ailende mevcut",
+    "add": "Seçilenleri Prova’ya ekle",
+    "done": "Sorular Prova taslağına eklendi. Ortak metin ve görselleri birlikte korundu.",
+    "pending": "Önceki eklemenin sonucu doğrulanamadı. Aynı işlemi kontrol ederek devam et; yeniden hak alınmaz.",
+    "retrySame": "Önceki işlemi kontrol et",
+    "storage": "İşlem bu cihazda güvenle saklanamadı. Sayfayı yeniden açıp tekrar dene.",
+    "failed": "Paket bilgisi alınamadı. Bağlantını kontrol edip yeniden dene.",
+    "errors": {
+      "library_quota_exceeded": "Yeterli kütüphane hakkın kalmadı. Sayfayı yenileyip daha az soru seç.",
+      "library_publication_changed": "Bu paketin yayın bilgisi değişti. Sayfayı yenileyip seçimini yeniden yap.",
+      "library_unavailable": "Bu paket şu anda kullanıma açık değil. Sayfayı yenileyebilirsin.",
+      "library_plan_required": "Bu paket mevcut aboneliğine dahil değil.",
+      "library_unit_unavailable": "Bu soru grubu şu anda eklenemiyor. Farklı bir grup seç.",
+      "prova_question_scope": "Bu paket Prova’nın sınıf veya ders kapsamıyla eşleşmiyor.",
+      "prova_draft_submitted": "Bu Prova zaten atandı. Yeni bir Prova hazırlayabilirsin.",
+      "prova_draft_not_found": "Prova taslağı bulunamadı. Prova listesine dönüp yeniden aç.",
+      "prova_child_grade_changed": "Çocuğun sınıf bilgisi değişti. Prova taslağına dönüp kapsamı güncelle."
+    }
+  }
 }

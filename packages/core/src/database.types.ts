@@ -2245,6 +2245,15 @@ isOneToOne: false
                 }
           }
           Functions: {
+"acquire_library_units":
+{ Args: { "p_draft_id"?: string,"p_package_id": string,"p_publication_version": number,"p_request_id": string,"p_unit_keys": (string)[] }; Returns: Json
+                           },
+"get_library_package_units":
+{ Args: { "p_package_id": string }; Returns: Json
+                           },
+"read_library_source_bytes":
+{ Args: { "p_source_id": string }; Returns: Json
+                           },
             "admin_review_library_question": { Args: { p_request_id: string; p_package_id: string; p_question_key: string; p_question_revision: number; p_expected_review_revision: number; p_outcome: string; p_note: string }; Returns: Json },
             admin_library_publication: { Args: { p_package_id: string }; Returns: Json };
             admin_set_library_publication: { Args: { p_request_id: string; p_package_id: string; p_expected_version: number; p_review_fingerprint: string; p_title: string; p_description: string; p_plans: ("free" | "plus" | "pro")[]; p_curriculum_label: string; p_confirmed: boolean; p_status: string; p_reason?: string }; Returns: Json };

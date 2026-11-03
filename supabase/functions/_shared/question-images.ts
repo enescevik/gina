@@ -1,3 +1,4 @@
+import { readSourceBlob } from "./library-source.ts";
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import type { AiUserContent } from "./prova.ts";
 /** Only immutable verified family images; no client-supplied URL is fetched. */
@@ -54,12 +55,8 @@ export async function questionImages(
     { mime: "image/png" | "image/jpeg"; data: string }
   >();
   for (const s of sources) {
-    const { data: blob, error: downloadError } = await db.storage.from(
-      "gina-private-sources",
-    ).download(s.object_path);
-    if (downloadError || !blob || blob.size !== s.bytes) {
-      throw new Error("data_failed");
-    }
+    const blob = await readSourceBlob(db, s.id, s.object_path);
+    if (blob.size !== s.bytes) throw new Error("data_failed");
     const bytes = new Uint8Array(await blob.arrayBuffer());
     let binary = "";
     for (let at = 0; at < bytes.length; at += 8192) {

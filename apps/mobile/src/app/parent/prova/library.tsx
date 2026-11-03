@@ -1,3 +1,4 @@
+import { LibraryPackages } from "@/components/learning/library-packages";
 import { router, useLocalSearchParams } from "expo-router";
 import { addToProvaDraft, fetchProvaDrafts } from "@/lib/prova-draft";
 import { useState } from "react";
@@ -49,7 +50,7 @@ interface Item {
 }
 export default function LearningLibrary() {
   const { t } = useTranslation();
-  const { claims } = useSession();
+  const { claims, session } = useSession();
   const cache = useQueryClient();
   const { draftId } = useLocalSearchParams<{ draftId?: string }>();
   const draft = useQuery({
@@ -129,28 +130,44 @@ export default function LearningLibrary() {
         if (draftId) void draft.refetch();
       }}
     >
-      {draftId
-        ? (
-          <Button
-            variant="secondary"
-            title={t("provaBuilder.resume")}
-            onPress={() =>
-              router.replace({
-                pathname: "/parent/prova/builder",
-                params: { draftId },
-              })}
-          />
-        )
-        : null}
-      <View style={parentStyles.card}>
-        <Text style={parentStyles.title}>
-          {t("library.allowance", {
-            count: (catalog.data?.remaining ?? 0) + (catalog.data?.bonus ?? 0),
-          })}
-        </Text>
-        <Text style={parentStyles.muted}>{t("library.allowanceHelp")}</Text>
+      <View
+        style={[parentStyles.form, {
+          padding: 16,
+          flexDirection: "row",
+          alignItems: "center",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+        }]}
+      >
+        <View style={{ flex: 1, minWidth: 180, gap: 6 }}>
+          <Text style={[parentStyles.title, { fontSize: 20 }]}>
+            {t("library.allowance", {
+              count: (catalog.data?.remaining ?? 0) +
+                (catalog.data?.bonus ?? 0),
+            })}
+          </Text>
+          <Text style={parentStyles.muted}>{t("library.allowanceHelp")}</Text>
+        </View>
+        {draftId
+          ? (
+            <Button
+              variant="ghost"
+              title={t("provaBuilder.resume")}
+              onPress={() =>
+                router.replace({
+                  pathname: "/parent/prova/builder",
+                  params: { draftId },
+                })}
+            />
+          )
+          : null}
       </View>
-      {!collections.length
+      <LibraryPackages
+        key={`${session?.user.id}:${claims?.family_id}:${draftId ?? "catalog"}`}
+        draft={draft.data ?? undefined}
+        allowance={(catalog.data?.remaining ?? 0) + (catalog.data?.bonus ?? 0)}
+      />
+      {!draftId && !collections.length
         ? <EmptyCard title={t("library.empty")} slug="display-bookworm" />
         : null}
       {collections.map((c) => (

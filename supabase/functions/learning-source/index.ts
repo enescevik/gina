@@ -1,3 +1,4 @@
+import { libraryDataUri } from "../_shared/library-source.ts";
 import { cleanupSources } from "../_shared/source-cleanup.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { readParent } from "../_shared/auth.ts";
@@ -40,6 +41,14 @@ Deno.serve(async (req) => {
         { p_source_id: input.id, p_question_id: input.question_id ?? null },
       );
       if (error || !source) return json({ error: "source_not_available" }, 403);
+      if (source.object_path.startsWith("library/")) {
+        return json({
+          url: await libraryDataUri(db, source.id, source.object_path),
+          mime: source.mime,
+          name: source.name,
+          expires_in: 120,
+        });
+      }
       const { data, error: signedError } = await db.storage.from(BUCKET)
         .createSignedUrl(source.object_path, 120);
       if (signedError || !data) {
