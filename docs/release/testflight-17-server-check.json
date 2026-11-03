@@ -1,0 +1,92 @@
+{
+  "sourceCommit": "3a67eb6098fea052cd8a67be36e5da700a1c8288",
+  "checkedAt": "2026-11-03T17:46:10.407Z",
+  "migrationThrough": "20261103040000",
+  "pendingMigrations": 0,
+  "fixtures": "transaction rollback; no existing family records modified",
+  "checks": {
+    "draft_save_read_and_idempotency": true,
+    "existing_batch_and_idempotency": true,
+    "fixtures_rolled_back": true,
+    "help_articles_read": true,
+    "help_ticket_read_and_idempotency": true,
+    "parent_operator_access_denied": true,
+    "progress_empty_read": true
+  },
+  "edgeSmoke": [
+    {
+      "name": "prova-generate",
+      "http": 405,
+      "body": {
+        "error": "method_not_allowed"
+      }
+    },
+    {
+      "name": "library-media",
+      "http": 405,
+      "body": {
+        "error": "method_not_allowed"
+      }
+    },
+    {
+      "name": "prova-review",
+      "http": 405,
+      "body": {
+        "error": "method_not_allowed"
+      }
+    }
+  ],
+  "functions": [
+    {
+      "slug": "prova-generate",
+      "version": 12,
+      "status": "ACTIVE",
+      "verifyJwt": true
+    },
+    {
+      "slug": "prova-grade",
+      "version": 13,
+      "status": "ACTIVE",
+      "verifyJwt": true
+    },
+    {
+      "slug": "prova-review",
+      "version": 3,
+      "status": "ACTIVE",
+      "verifyJwt": true
+    },
+    {
+      "slug": "library-media",
+      "version": 1,
+      "status": "ACTIVE",
+      "verifyJwt": true
+    }
+  ],
+  "featureFlags": [
+    {
+      "key": "cohorts.enabled",
+      "value": false
+    },
+    {
+      "key": "library_packages.enabled",
+      "value": false
+    },
+    {
+      "key": "question_groups.enabled",
+      "value": true
+    },
+    {
+      "key": "review_ai.enabled",
+      "value": true
+    },
+    {
+      "key": "sources.enabled",
+      "value": true
+    }
+  ],
+  "limitations": [
+    "Edge smoke validates cold start and method rejection, not a new paid AI request.",
+    "No real device user flow or physical stylus acceptance performed during deployment.",
+    "Web and backoffice Cloudflare jobs skipped due to missing deployment credentials."
+  ]
+}

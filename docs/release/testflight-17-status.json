@@ -1,0 +1,45 @@
+{
+  "version": "0.1.0",
+  "build": "17",
+  "sourceCommit": "3a67eb6098fea052cd8a67be36e5da700a1c8288",
+  "easBuildId": "ab540cdf-5c2f-44bf-b858-9a77f5a057cf",
+  "easStatus": "FINISHED",
+  "apple": {
+    "processingState": "VALID",
+    "internalState": "IN_BETA_TESTING",
+    "expired": false
+  },
+  "deliveryId": "5e4e6f84-286a-4c2e-ad71-32d2a626dd70",
+  "upload": "Apple altool: validation=0, upload=0",
+  "temporaryUploadKeyRemoved": true,
+  "verifiedAt": "2026-11-03T18:05:48.587Z",
+  "server": {
+    "migrationThrough": "20261103040000",
+    "functionsUpdated": [
+      "prova-generate",
+      "library-media"
+    ],
+    "functionsVerifiedUnchanged": [
+      "prova-review",
+      "prova-grade"
+    ],
+    "check": "testflight-17-server-check.json"
+  },
+  "tablet": {
+    "version": "0.1.0",
+    "build": "17",
+    "sourceCommit": "3a67eb6098fea052cd8a67be36e5da700a1c8288",
+    "storeBuildId": "ab540cdf-5c2f-44bf-b858-9a77f5a057cf",
+    "tabletBuildId": "8bcb5345-75db-442b-bd9b-1b426fc1921f",
+    "installUrl": "https://expo.dev/accounts/enescevik/projects/gina-aile/builds/8bcb5345-75db-442b-bd9b-1b426fc1921f",
+    "url": "https://gina-aile-enescevik--tablet.expo.app",
+    "pageVerifiedAt": "2026-11-03T18:03:22.346Z",
+    "signatureVerified": true,
+    "deviceInstallationTested": false
+  },
+  "webAndBackoffice": {
+    "deployed": false,
+    "reason": "Cloudflare deployment workflows skipped: deployment credentials not configured."
+  },
+  "publicAppStoreSubmission": false
+}

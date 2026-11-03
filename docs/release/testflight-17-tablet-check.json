@@ -1,0 +1,11 @@
+{
+  "build": "17",
+  "version": "0.1.0",
+  "bundle": "com.enescevik.gina",
+  "sourceCommit": "3a67eb6098fea052cd8a67be36e5da700a1c8288",
+  "signatureVerified": true,
+  "registeredDeviceCount": 1,
+  "profileExpiresAt": "2027-10-31T01:05:56",
+  "developmentDebuggingEnabled": false,
+  "deviceInstallationTested": false
+}
