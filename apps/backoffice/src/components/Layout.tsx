@@ -33,11 +33,12 @@ export async function signOut(confirmed = false) {
 
 /** Admin sayfa çerçevesi: oturum yoksa girişe yönlendirir, admin claim'i yoksa uyarı gösterir. */
 export function Layout(
-  { title, children, support = false, content = false }: {
+  { title, children, support = false, content = false, compact = false }: {
     title: string;
     children: ReactNode;
     support?: boolean;
     content?: boolean;
+    compact?: boolean;
   },
 ) {
   const router = useRouter();
@@ -112,9 +113,9 @@ export function Layout(
       <Head>
         <title>{`${title} · ${t.appName}`}</title>
       </Head>
-      <div className={"admin-shell" + (operation ? " support-shell" : "")}>
+      <div className={"admin-shell" + (operation || compact ? " support-shell" : "")}>
         <aside className={"admin-sidebar" + (menuOpen ? " menu-open" : "")}>
-          {operation
+          {operation || compact
             ? (
               <button
                 className="admin-nav-toggle"

@@ -226,3 +226,12 @@ Sıradaki müfredat/kütüphane işine geçildi. 648 senaryo 62 sınıf–ders g
 20 soruluk pilot için çevrimdışı istek hazırlayıcı ve yöneticiye özel atomik aktarım/okuma RPC'leri eklendi. Ortak metin/PNG kaynağı, ayrı öğretmen cevabı/rubriği ve değiştirilemez sürümler birlikte korunur. Tekrar gönderim, aynı anda gelen istekler ve eski sürüme dayalı değişiklik kontrol edildi. 67 SQL kontrolü, üç hazırlayıcı testi, üç gerçek eşzamanlı yarış ve gerçek pilotun geri okuma karşılaştırması geçti. Mobil tip/lint ve 73 core testi geçti. [Sözleşme ve sınırlar](LIBRARY-BUNDLE-IMPORT.md).
 
 Bu, yeni bir yönetim ekranı veya yayın değildir. Taslak seçme/önizleme/inceleme arayüzü, alan editörü onayı, aile paket hakları ve ortak kaynaklı Prova seçimi hâlâ açık. PNG kontrolü yapısaldır; piksel/CRC doğrulaması iddia edilmez. Normal/demo kayıtları değiştirilmedi; gerçek pilot testi geri alındı. Üretim migration, hosting ve TestFlight yayımlanmadı.
+
+
+## 3 Kasım — onaylı kütüphane taslak inceleme ekranı
+
+Mevcut Kütüphane içine Taslak paketler sekmesi eklendi; koleksiyonlar, aile katkıları ve haklar korundu. Dosya seçimi otomatik yüklemez; doğrulanan ortak metin/PNG, öğrenci görünümü ve ayrı cevap/puanlama önizlenir. Her soru için sürüme bağlı editör sonucu/notu kaydedilir. Düzeltme gerekçesi zorunlu; yeni paket eski onayı devralmaz; inceleme yayın yapmaz.
+
+Bekleyen gönderim kullanıcıya özel IndexedDB'de önce saklanır. Ağ sonucu belirsizse aynı kimlikle tekrar; iki editör çakışırsa yerel not ve güncel kayıt birlikte gösterilir. Yetki 30 sn/odakla yenilenir; her RPC tekrar doğrular. Çıkış/iptalde özel kuyruk temizlenir. Görseller dosya seçimi sırasında tarayıcıda açılarak ve SHA-256/ölçüyle kontrol edilir; bu sunucuda yeniden kodlama hattı değildir.
+
+36 yeni SQL kontrolü, iki yeni gerçek eşzamanlı editör yarışı (toplam beş aktarım/inceleme yarışı), altı yeni core testi (toplam 79), workspace lint/typecheck/test ve 15 rotalı statik build geçti. Dört boyutta 25 tarayıcı kontrolü ve görüntüler: [kütüphane karşılaştırması](../design/screens/library-review/comparison.html). Tarayıcı yanıtları sentetiktir; SQL ayrı izole DB'de denenmiştir. Fiziksel Safari/erişilebilirlik/üretim bağlantısı kabulü, gerçek alan editörü incelemesi, yayın–aile hakkı–Prova seçimi açık. Üretim, hosting ve TestFlight dağıtılmadı.

@@ -1,3 +1,4 @@
+import { LibraryDrafts } from "@/components/library-drafts";
 import { LibraryPolicy, type RewardPolicy } from "@/components/LibraryPolicy";
 import { useState } from "react";
 import type { Json } from "@gina/core";
@@ -60,7 +61,7 @@ export default function LibraryPage() {
   const { data, error, reload } = useAdminQuery(async () =>
     unwrap(await supabase().rpc("admin_learning_library")) as unknown as Library
   );
-  const [tab, setTab] = useState<"content" | "review" | "policy">("content");
+  const [tab, setTab] = useState<"content" | "drafts" | "review" | "policy">("content");
   const [editing, setEditing] = useState<Collection | null>(null);
   const [selected, setSelected] = useState("");
   const [review, setReview] = useState<Contribution | null>(null);
@@ -105,22 +106,22 @@ export default function LibraryPage() {
     }
   }
   return (
-    <Layout title="GINA kütüphanesi">
-      <p className="mb-6 max-w-3xl text-slate-600">
+    <Layout title="GINA kütüphanesi" compact={tab === "drafts"}>
+      <p hidden={tab === "drafts"} className="mb-6 max-w-3xl text-slate-600">
         Koleksiyonları hazırlayın, soruları inceleyin ve paketlere açın. Bir
         koleksiyonun görünmesi için hem koleksiyonun hem içindeki soruların
         yayımlanmış olması gerekir.
       </p>
-      {error || message
+      {tab !== "drafts" && (error || message)
         ? <Notice tone="error">{message || "Kütüphane yüklenemedi."}</Notice>
         : null}
       <nav
         aria-label="Kütüphane işlemleri"
-        className="mb-6 flex flex-wrap gap-2 rounded-2xl bg-brand-light p-2"
+        className={"mb-6 flex flex-wrap gap-2 rounded-2xl bg-brand-light p-2" + (tab === "drafts" ? " library-navigation" : "")}
       >
-        {([["content", "Koleksiyonlar"], [
+        {([["content", "Koleksiyonlar"], ["drafts", "Taslak paketler"], [
           "review",
-          `İnceleme${
+          `Katkılar${
             data?.submissions.filter((s) => s.status === "pending").length
               ? ` (${
                 data.submissions.filter((s) => s.status === "pending").length
@@ -132,12 +133,17 @@ export default function LibraryPage() {
             key={value}
             aria-current={tab === value ? "page" : undefined}
             className={tab === value ? "btn" : "btn-secondary"}
-            onClick={() => setTab(value)}
+            onClick={() => {
+              if (value === tab) return;
+              const go = () => setTab(value);
+              if (window.dispatchEvent(new CustomEvent("gina:library-leave", { cancelable: true, detail: go }))) go();
+            }}
           >
             {label}
           </button>
         ))}
       </nav>
+      {tab === "drafts" ? <LibraryDrafts /> : null}
       {tab === "content"
         ? (
           <>

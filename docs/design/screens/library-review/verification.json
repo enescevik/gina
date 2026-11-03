@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-03",
+  "status": "passed_local_checks",
+  "proposal": "desktop-tablet-proposal-v1.png",
+  "source": "Real Next/React components at localhost:3102; browser context routes synthetic Supabase replies. SQL tested separately against isolated audit DB.",
+  "screens": {
+    "desktop": "desktop-implementation.png",
+    "tablet_portrait": "tablet-implementation.png",
+    "tablet_landscape": "tablet-landscape-implementation.png",
+    "phone": "phone-implementation.png",
+    "empty": "empty.png",
+    "error": "error.png",
+    "loading": "loading.png"
+  },
+  "viewport_sizes": [
+    [
+      1440,
+      1100
+    ],
+    [
+      834,
+      1194
+    ],
+    [
+      1280,
+      800
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "browser_checks": [
+    "student answer DOM exclusion",
+    "explicit student RPC projection",
+    "correction note required",
+    "note survives question preview",
+    "dirty navigation confirmation",
+    "lost review response persisted",
+    "review retry after reload with same request",
+    "conflict preserves draft",
+    "stale save blocked",
+    "explicit conflict resolution",
+    "tablet portrait no overflow",
+    "phone no overflow",
+    "image zoom Escape",
+    "tablet landscape no overflow",
+    "file selection does not import",
+    "PNG bundle retry after reload",
+    "malformed file error",
+    "empty/error recovery",
+    "live revocation hides data",
+    "protractor reading width and aspect ratio",
+    "pending non-first question restored",
+    "curriculum evidence inspectable",
+    "visible controls at least 48 CSS px",
+    "temporary service failure restores pinned version",
+    "explicit sign-out clears private pending queue"
+  ],
+  "tests": {
+    "new_pgTAP": 36,
+    "core_total": 79,
+    "new_core": 6,
+    "real_db_concurrent_cases": 5,
+    "workspace_lint_typecheck_tests": "passed",
+    "mobile_tsc_expo_lint": "passed",
+    "backoffice_static_build": "passed, 15 routes"
+  },
+  "limits": [
+    "No real administrator account, production write or publication. Browser network is a fixture; SQL authorization/atomicity checked separately.",
+    "Physical Safari/iPad, screen reader and production PostgREST integration not exercised.",
+    "Review history retained server-side; UI shows latest outcome per question, no history timeline yet.",
+    "New version file preparation still external to this screen; immutable question contents cannot be edited inline.",
+    "Unsaved notes remain only in memory with leave warning. Only attempted sends are durable, user-scoped IndexedDB commands; browser storage eviction is not guaranteed against.",
+    "Source raw programme-version text is shown as provided for editorial review; its official applicability is not certified by this screen.",
+    "Publication, family entitlements and Prova selection remain separate; these drafts are not available to children.",
+    "No hosting, migration deployment, device installation or TestFlight submission."
+  ]
+}

@@ -94,10 +94,43 @@ def main():
             expected_receipts = 1 if same_request or conflict else 2
             assert counts == f'1|{expected_receipts}|1', counts
             print(f'PASS {name}: one package, {expected_receipts} receipt(s), one audit event')
+            return pid
 
-        run_pair('different-requests')
+        review_package = run_pair('different-requests')
         run_pair('same-request', same_request=True)
         run_pair('conflicting-content', conflict=True)
+        def review_race(same_request):
+            ids = [str(uuid.uuid4()), str(uuid.uuid4())]
+            if same_request:
+                ids[1] = ids[0]
+            question = bundle['questions'][1 if same_request else 0]['key']
+            barrier = threading.Barrier(2)
+            claims = json.dumps({'sub': actor, 'gina': {'admin': True}})
+            def send(index):
+                statement = f"""BEGIN;
+                    SET LOCAL statement_timeout='20s'; SET LOCAL lock_timeout='10s';
+                    SET LOCAL ROLE authenticated; SET LOCAL request.jwt.claims='{claims}';
+                    SELECT pg_sleep(0.1);
+                    SELECT public.admin_review_library_question('{ids[index]}','{review_package}',
+                        '{question}',1,0,'suitable','Concurrent review');
+                    SELECT pg_sleep(0.3); COMMIT;"""
+                barrier.wait(timeout=10)
+                return sql(database, statement, check=False)
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results = list(pool.map(send, (0, 1)))
+            successes = [json.loads(next(line for line in r.stdout.splitlines() if line.startswith('{')))
+                         for r in results if r.returncode == 0]
+            if same_request:
+                assert len(successes) == 2 and successes[0] == successes[1], results
+            else:
+                assert len(successes) == 1, results
+                assert 'library_review_changed' in next(r.stderr for r in results if r.returncode)
+            count = sql(database, f"SELECT count(*) FROM gina.library_editorial_reviews WHERE package_id='{review_package}' AND question_key='{question}';").stdout.strip()
+            assert count == '1', count
+            print('PASS editorial race: ' + ('same request replays one decision' if same_request else 'stale editor cannot overwrite winner'))
+        review_race(False)
+        review_race(True)
+
     finally:
         # Exact generated name only; do not force-drop or touch the template.
         sql('postgres', f'DROP DATABASE {database};')
