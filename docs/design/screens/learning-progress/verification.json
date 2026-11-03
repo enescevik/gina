@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-03",
+  "approval": "User approved proposal-v1 and implementation",
+  "status": "implemented_not_deployed",
+  "environment": "Actual Expo web components with synthetic API; not native iOS/Android or live data",
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "width": 834,
+      "height": 1194
+    }
+  ],
+  "checks": [
+    "7/30/90 day request scope",
+    "Subject and grade filters; changing grade clears subject",
+    "Single child does not get an All-child toggle",
+    "90-day chart scrolls horizontally without page overflow",
+    "Correct/partial/wrong/blank counts match report; pending excluded from bars",
+    "Topic expands to at most five evidence links",
+    "Evidence opens the specific question (5 of 24), not question 1",
+    "Round trip from report to review and back",
+    "Empty, loading, HTTP 503 error and explicit retry recovery",
+    "27 SQL report assertions and 63 core tests; workspace lint/typecheck"
+  ],
+  "limitations": [
+    "No physical iPad/Pencil or iPhone run in this increment",
+    "Native Dynamic Type and VoiceOver/TalkBack still require acceptance testing",
+    "Synthetic dates and counts are QA data, not child assessment",
+    "Metro hot reload of shared core produced a SessionProvider dev context error once; a fresh reload and normal navigation round trip passed",
+    "Fake realtime host DNS failures are expected in this API fixture; not a live socket test"
+  ],
+  "files": [
+    "phone-web.png",
+    "tablet-web.png",
+    "tablet-portrait-web.png",
+    "empty-phone-web.png",
+    "loading-phone-web.png",
+    "error-phone-web.png"
+  ]
+}

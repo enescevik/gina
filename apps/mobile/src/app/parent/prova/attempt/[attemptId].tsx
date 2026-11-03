@@ -108,6 +108,7 @@ export default function AttemptReviewScreen() {
     void queryClient.invalidateQueries({ queryKey: ["attempt_review", attemptId] });
     void queryClient.invalidateQueries({ queryKey: ["attempt_review_answers", attemptId] });
     void queryClient.invalidateQueries({ queryKey: ["exams", familyId] });
+    void queryClient.invalidateQueries({ queryKey: ["learning_progress", familyId] });
   };
 
   const [imageAiConsent,setImageAiConsent] = useState(false);

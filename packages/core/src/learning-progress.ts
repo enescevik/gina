@@ -22,7 +22,7 @@ const evidence = z.object({
   attempt_id: z.uuid(),
   question_id: z.uuid(),
   state: z.enum(["correct", "partial", "wrong", "blank", "pending"]),
-  finished_at: z.string(),
+  finished_at: z.iso.datetime({ offset: true }),
 });
 export const learningProgressSchema = z.object({
   version: z.literal(1),
@@ -46,15 +46,17 @@ export const learningProgressSchema = z.object({
       topic: z.string(),
       curriculum: z.string().nullable(),
       unique_questions: count,
-      last_at: z.string(),
+      last_at: z.iso.datetime({ offset: true }),
       limited_observation: z.boolean(),
       evidence: z.array(evidence).max(5),
-    }).refine(reconciles),
+    }).refine((v) => reconciles(v) && v.unique_questions <= v.total),
   ),
 }).refine(
   (v) =>
-    v.weeks.reduce((sum, w) => sum + w.total, 0) === v.summary.total &&
-    v.topics.reduce((sum, t) => sum + t.total, 0) === v.summary.total,
+    (Object.keys(counts) as (keyof typeof counts)[]).every((key) =>
+      v.weeks.reduce((sum, w) => sum + w[key], 0) === v.summary[key] &&
+      v.topics.reduce((sum, t) => sum + t[key], 0) === v.summary[key]
+    ),
   "report_counts_disagree",
 );
 export type LearningProgress = z.infer<typeof learningProgressSchema>;

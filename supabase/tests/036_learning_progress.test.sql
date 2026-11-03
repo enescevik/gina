@@ -45,6 +45,7 @@ select is((pg_temp.report()->'summary'->>'correct')::int,5,'correct is evidence 
 select is((pg_temp.report()->'summary'->>'partial')::int,1,'partial is evidence based');
 select is((pg_temp.report()->'summary'->>'wrong')::int,1,'wrong is evidence based');
 select is((pg_temp.report()->'summary'->>'blank')::int,1,'blank is evidence based');
+select ok((select (t->>'limited_observation')::boolean from jsonb_array_elements(pg_temp.report()->'topics') t where t->>'grade'='5' and t->>'curriculum'='v1'),'repeating one of four assessed questions does not pass the five-question observation threshold');
 select is(jsonb_array_length(pg_temp.report()->'topics'),4,'same topic stays separate by grade and program including unknown program');
 select is((pg_temp.report(30,6)->'summary'->>'total')::int,1,'grade filter is exact');
 select is((public.learning_progress('00000000-0000-4000-8000-000000003621',30,'Fen')->'summary'->>'total')::int,0,'empty subject does not borrow other subjects');
