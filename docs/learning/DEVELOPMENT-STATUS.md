@@ -266,3 +266,18 @@ Doğrulama: 43 SQL dosyasında 1042 kontrol (36 yeni), üç eşzamanlı edinim/k
 Hazırlayıcı artık kayıtlı Fen taslak profilini ve görselsiz ortak metni koruyor. Matematik pilotunun özel geometrik kontrolleri korunuyor. 20 yeni teknik test, 18 Matematik regresyon testi ve üç hazırlayıcı testi geçti. Tam Fen paketi ayrı geçici veritabanına aktarılıp tüm soru/cevap/meta veri ve PNG baytları birebir geri okundu; aynı istek tekrarında ikinci paket oluşmadı. İşlem geri alındı, test veritabanı silindi. Normal/demo/üretim verisi değişmedi.
 
 [Kapsam kaydı](library-pilot/coverage.json) gerçek pilot dosyalarından hesaplanır: **40 taslak, 0 alan editörü onaylı, 0 yayımlanmış; hedefe göre 1500 taslak açık**. Önceki 20/1520 kayıtları tarihîdir. Soru sayısı yıllık ders kapsamı veya resmî senaryo kabulü değildir. [Fen paketi, kaynaklar ve açık kabul işleri](library-pilot/grade-5-science/README.md). TestFlight 17 değişmedi; içerik yayımlanmadı.
+
+## Göreve bağlı odak sayacı — 3 Kasım, kapsam tamamlama
+
+- Mevcut çocuk görev ayrıntısında isteğe bağlı 5/10/15/25 dakika; duraklat/devam, 5 dakika mola, erken bitirme onayı.
+- Cihazda hesap/aile/çocuk/gün kapsamında tek sayaç. Yeniden açılış, arka plan zamanı, eski yazıcı/çakışma ve kayıt hatası koruması. Süre dolması görev, yıldız veya gelişim kaydı yazmaz.
+- 11 yeni çekirdek kontrolü; toplam 92 test, mobil typecheck/lint; telefon/tablet gerçek web bileşeni kontrolleri. Kanıt: docs/design/screens/task-focus/.
+- Native arka plan/ekran okuyucu kabulü açık; cihazlar arası süre eşitlemesi yok; henüz dağıtılmadı.
+- Üst planın eski yayın/kütüphane satırları düzeltildi: TestFlight 17; PR79 aile edinimi hazır fakat 050000 canlıda değil; PR80 sonrası 40 taslak, 1.500 eksik, editör onaylı/yayımlı 0. Sonraki açık işler planın tablosunda.
+
+## İncelenmiş yanıtlardan tekrar — 3 Kasım
+
+- Birleşik Prova'nın Kütüphane seçimine tekrar önerileri eklendi. Sunucuda taslak/aile/çocuk/sınıf/ders sınırı; son 90 gün, son yanıt. Yanlış şıklı ve veli puanlı eksik/kısmi açık uçlular; AI-only ve bekleyenler hariç.
+- Ortak kaynak bütünlüğü, etkilenen/eklenen soru sayısı ayrımı, önceki yanıta geçiş ve mevcut sürümlü taslağa ekleme. Otomatik atama veya gelişim/başarı iddiası yok. En güncel 50 birim; aralıklı tekrar takvimi henüz yok.
+- 27 yeni SQL kontrolü; izole veritabanında 44 dosya / 1.069 doğrulama. Gerçek web bileşeninde telefon/tablet seçme-kayıt ve yeniden seçme engeli kontrol edildi. Önceden eklenmiş seçeneklerin düşük kontrastı giderildi.
+- Migration 060000 ve mobil değişiklikler henüz canlıda değil. Görseller ve akış sınırları: docs/design/screens/repeat-practice/.

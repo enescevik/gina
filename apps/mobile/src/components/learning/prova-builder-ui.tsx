@@ -24,7 +24,7 @@ export function BuilderChoice(
       accessibilityState={{ selected, disabled }}
       disabled={disabled}
       onPress={onPress}
-      style={[b.choice, selected && b.selected, disabled && { opacity: .45 }]}
+      style={[b.choice, selected && b.selected, disabled && !selected && { backgroundColor: "#F0EDF4", borderColor: "#D8D0E4" }]}
     >
       <Text
         style={[

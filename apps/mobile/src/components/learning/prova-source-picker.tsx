@@ -5,7 +5,7 @@ import { router } from "expo-router";
 import { Modal, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
-import { X } from "lucide-react-native";
+import { ArrowLeft, ArrowRight, X } from "lucide-react-native";
 import type { ProvaBlock, ProvaDraft } from "@gina/core";
 import { IconButton, p, SatinButton } from "@/components/planner/ui";
 import { Field } from "@/components/ui/field";
@@ -27,7 +27,8 @@ import { NOTEBOOK_MODAL_PROPS } from "./notebook-layout";
 import { b, BuilderChoice, BuilderQuestionPreview } from "./prova-builder-ui";
 import type { BuilderQuestion } from "./prova-builder-data";
 
-type Mode = "sources" | "library" | "ai" | "manual" | "document";
+type Mode = "sources" | "library" | "ai" | "manual" | "document" | "repeat";
+type RepeatUnit = { kind: "question" | "group"; id: string; title: string; subject: string; affected: number; question_count: number; evidence: {attempt_id:string; question_id:string; state:"wrong"|"partial"}[] };
 export function ProvaSourcePicker(
   { visible, draft, draftId, onClose, onAdd }: {
     visible: boolean;
@@ -40,6 +41,7 @@ export function ProvaSourcePicker(
   const { t, i18n } = useTranslation(),
     { claims } = useSession(),
     familyId = claims?.family_id ?? "";
+  const [repeatDetails, setRepeatDetails] = useState(false);
   const [mode, setMode] = useState<Mode>("sources"),
     [selected, setSelected] = useState<ProvaBlock[]>([]),
     [search, setSearch] = useState(""),
@@ -154,6 +156,15 @@ export function ProvaSourcePicker(
       };
     },
   });
+  const repeats = useQuery({
+    queryKey: ["repeat_candidates", familyId, draftId, draft.childId, draft.grade, draft.subjects],
+    enabled: visible && mode === "repeat" && !!draft.childId,
+    queryFn: async () => {
+      const {data,error} = await supabase.rpc("get_repeat_candidates", {p_draft_id:draftId});
+      if (error) throw error;
+      return data as unknown as RepeatUnit[];
+    },
+  });
   const remaining = entitlement.data?.ai_generate_remaining;
   const generation = useMutation({
     mutationFn: async () => {
@@ -231,7 +242,7 @@ export function ProvaSourcePicker(
     setPreview(null);
     setLocalError(null);
   }
-  const error = localError ?? (mode === "library" ? bank.error : null);
+  const error = localError ?? (mode === "library" ? bank.error : mode === "repeat" ? repeats.error : null);
   return (
     <Modal
       visible={visible}
@@ -265,12 +276,7 @@ export function ProvaSourcePicker(
           >
             {mode !== "sources"
               ? (
-                <SatinButton
-                  secondary
-                  disabled={busy}
-                  title={t("provaBuilder.back")}
-                  onPress={() => switchMode("sources")}
-                />
+                <Pressable accessibilityRole="button" accessibilityLabel={t("provaBuilder.back")} disabled={busy} onPress={() => switchMode("sources")} style={[b.row,{minHeight:48,alignSelf:'flex-start',paddingRight:16}]}><ArrowLeft size={20} color={p.purple}/><Text style={[b.bold,{color:p.purple}]}>{t("provaBuilder.back")}</Text></Pressable>
               )
               : <Text style={b.copy}>{t("provaBuilder.sourceHelp")}</Text>}
             {error
@@ -345,6 +351,8 @@ export function ProvaSourcePicker(
                       });
                     }}
                   />
+                  <SatinButton secondary title={t("provaBuilder.repeat")} disabled={!draft.childId} onPress={() => switchMode("repeat")} />
+                  {!draft.childId && <Text style={b.muted}>{t("provaBuilder.repeatChild")}</Text>}
                   <Field
                     label={t("provaBuilder.search")}
                     value={search}
@@ -445,6 +453,28 @@ export function ProvaSourcePicker(
                 </>
               )
               : null}
+            {mode === "repeat" && <>
+              <Text style={b.copy}>{t("provaBuilder.repeatIntro")}</Text>
+              <Pressable accessibilityRole="button" accessibilityState={{expanded:repeatDetails}} onPress={()=>setRepeatDetails(!repeatDetails)} style={{minHeight:48,justifyContent:'center'}}><Text style={[b.bold,{color:p.purple}]}>{t("provaBuilder.repeatRules")}</Text></Pressable>
+              {repeatDetails && <Text style={b.muted}>{t("provaBuilder.repeatHelp")}</Text>}
+              {repeats.isPending && <Text style={b.copy}>{t("common.loading")}</Text>}
+              {repeats.error && <SatinButton secondary title={t("common.retry")} onPress={() => void repeats.refetch()} />}
+              {repeats.isSuccess && !repeats.data.length && <Text style={b.hint}>{t("provaBuilder.repeatEmpty")}</Text>}
+              {repeats.data?.map(unit => {
+                const already=draft.blocks.some(block=>block.id===unit.id);
+                return <View key={unit.id} style={b.block}>
+                  <BuilderChoice label={unit.title} selected={already || selected.some(block=>block.id===unit.id)} disabled={already || busy || (unit.kind==='group' && !policy.data)} onPress={()=>choose({kind:unit.kind,id:unit.id,source:'library'})}/>
+                  <Text style={b.muted}>{unit.subject} · {t('provaBuilder.repeatCount',{affected:unit.affected,total:unit.question_count})}</Text>
+                  {unit.kind==='group' && <Text style={b.copy}>{t('provaBuilder.repeatShared')}</Text>}
+                  {unit.kind==='group' && !policy.data && <Text style={b.muted}>{t('provaBuilder.sourceDisabled')}</Text>}
+                  {already && <Text style={b.muted}>{t('provaBuilder.repeatAlready')}</Text>}
+                  <Pressable accessibilityRole="button" accessibilityLabel={t('provaBuilder.repeatEvidence')} disabled={busy} style={[b.row,{minHeight:48}]} onPress={()=>{
+                    const first=unit.evidence[0]; if(!first)return;
+                    onClose();router.push({pathname:'/parent/prova/review/[attemptId]',params:{attemptId:first.attempt_id,questionId:first.question_id}});
+                  }}><Text style={[b.bold,{color:p.purple}]}>{t('provaBuilder.repeatEvidence')}</Text><ArrowRight size={18} color={p.purple}/></Pressable>
+                </View>;
+              })}
+            </>}
             {mode === "ai" || mode === "document"
               ? (
                 <>

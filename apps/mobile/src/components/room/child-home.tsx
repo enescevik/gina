@@ -12,6 +12,8 @@ import { c, s } from '@/components/child-home/theme';
 import { Collectible } from '@/components/collectible';
 import { rewardTicketArt } from './room-art';
 import { SatinButton } from '@/components/planner/ui';
+import { Button } from '@/components/ui/button';
+import { TaskFocus } from '@/components/tasks/task-focus';
 import { TaskIcon } from '@/components/task-icon';
 import { ErrorText } from '@/components/ui/screen';
 import { childPath } from '@/lib/active-child';
@@ -99,9 +101,10 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
         <View style={s.row}><Text accessibilityRole="header" style={[s.heading, { flex: 1 }]}>{selected ? selected.title : t('room.todayTasks')}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('childMint.close')} onPress={() => setTaskSheet(false)} style={s.chip}><X size={22} color={c.ink} /></Pressable></View>
         <ScrollView contentContainerStyle={{ gap: 12, paddingBottom: 8 }}>
           <ErrorText error={data.completionError ?? data.error} />
+          {taskSheet && !data.loading && !data.error && <TaskFocus childId={childId} day={data.today} tasks={data.due} selectedId={selectedId} onSelect={setSelectedId} />}
           {data.loading ? <ActivityIndicator color={c.purple} /> : (selected ? [selected] : data.due).map(task => <View key={task.id} style={s.card}>
             <View style={s.row}><TaskIcon slug={task.icon} size={72} variant="illustrated" /><View style={{ flex: 1 }}><Text style={[s.text, s.bold]}>{task.title}</Text><Text style={s.small}>{t('room.plusStars', { count: task.stars })}</Text><Text accessibilityLiveRegion="polite" style={[s.small, { color: task.status === 'done' || task.status === 'returned' ? c.amber : c.muted }]}>{statusText(task.status)}</Text></View></View>
-            {(task.status === null || task.status === 'returned') && primary(t('child.markDone'), () => data.complete(task.id), data.completing)}
+            {(task.status === null || task.status === 'returned') && <>{primary(t('child.markDone'), () => data.complete(task.id), data.completing)}{!selected && <Button variant="ghost" title={t('focus.focusTask')} onPress={() => setSelectedId(task.id)} />}</>}
           </View>)}
           {!data.loading && !data.error && !data.due.length && <Text style={s.text}>{t('childMint.emptyBody')}</Text>}
         </ScrollView>
