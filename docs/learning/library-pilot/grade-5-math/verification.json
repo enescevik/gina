@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-03",
+  "questions": 20,
+  "original_diagrams": 8,
+  "candidate_outcomes": 7,
+  "technical_tests_passed": 18,
+  "browser_viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      820,
+      1180
+    ],
+    [
+      1280,
+      800
+    ]
+  ],
+  "browser_checks": [
+    "20 articles",
+    "all images loaded",
+    "no page-level horizontal overflow",
+    "no teacher answer sections in student page",
+    "protractor pans horizontally at phone size"
+  ],
+  "manual_review": "All original prompts, answers and rubrics read for mathematical consistency; all eight diagrams visually inspected. Not independent human editorial approval.",
+  "human_editorial_approval": false,
+  "published_questions": 0,
+  "application_integration": false,
+  "production_changes": false,
+  "open": [
+    "Subject expert/editorial approval",
+    "Programme/school applicability",
+    "Atomic shared-source library import",
+    "App reading-size/zoom and physical device acceptance"
+  ]
+}

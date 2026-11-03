@@ -1,0 +1,196 @@
+{
+  "id": "gina-g5-math-geometry-v1",
+  "title": "Geometri atölyesi · 20 soru taslağı",
+  "status": "draft",
+  "publishable": false,
+  "grade": 5,
+  "subject": "Matematik",
+  "sources": [
+    {
+      "id": "segments",
+      "title": "İki çizim",
+      "body": "A ve B arasında iki ucu noktayla gösterilmiş bir çizim; C noktasından başlayıp D üzerinden sağa doğru devam eden, ucunda ok bulunan başka bir çizim var.",
+      "image": "assets/segments.png",
+      "alt": "AB çiziminde iki uç nokta var. CD çiziminde başlangıç C; D üzerinden sağa uzanan ok var.",
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "protractor",
+      "title": "Açıölçer atölyesi",
+      "body": "Açıölçerin merkezi O noktasında. OA ışını sağa doğru uzanıyor. İkinci ışın OB. İki sayı dizisini ve başlangıç yönünü dikkatle incele.",
+      "image": "assets/protractor.png",
+      "alt": "OA sağa, OB sağ üst yöne uzanır. OA üzerindeki iç dizi 0, dış dizi 180 ile başlar. OB, iç dizide 50 ve dış dizide 130 çizgilerinden geçer.",
+      "minimum_reading_width": 640
+    },
+    {
+      "id": "crossing",
+      "title": "Kesişen iki doğru",
+      "body": "A, O, B aynı doğru üzerinde; C, O, D başka bir doğru üzerinde. O iki doğrunun kesişimidir. AOC açısı 50° olarak verilmiştir. Şekli cetvelle ölçmek gerekmez.",
+      "image": "assets/crossing.png",
+      "alt": "A solda, B sağda, C sol üstte, D sağ alttadır. AOC açısı 50 derecedir.",
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "polygons",
+      "title": "Şekil atölyesi",
+      "body": "Atölyedeki dört çizim A, B, C ve D harfleriyle gösteriliyor. Her çizimin sınırlarını incele.",
+      "image": "assets/polygons.png",
+      "alt": "A üç doğru parçasından oluşan, sol alt ve sağ alt uçları açık bir yol. B kapalı üçgen. C çember. D kapalı, dış bükey beşgen.",
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "rectangles",
+      "title": "İki pencere modeli",
+      "body": "ABCD bir kare: bütün kenarları 4 birim. EFGH bir dikdörtgen: uzun kenarları 7, kısa kenarları 4 birim. Her iki modelde bütün iç açılar 90°. Uzunluklar etiketteki değerlerdir; ekrandan ölçülmez.",
+      "image": "assets/rectangles.png",
+      "alt": "Kare ABCD ve yatay dikdörtgen EFGH. Köşeler her şeklin sol üstünden başlayarak saat yönünde sıralı. Karede tüm kenarlar 4; dikdörtgende EF ve GH 7, FG ve HE 4 birim.",
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "circles",
+      "title": "Çemberlerden üçgene",
+      "body": "A ve B merkezli iki çemberin yarıçapları 5 birimdir. Merkezler arasındaki uzaklık 6 birim. Çemberler üstte C, altta D noktalarında kesişiyor. AC, BC ve AB birleştirilmiş. Şekil üzerindeki uzunluklar ekrandan ölçülmez.",
+      "image": "assets/circles.png",
+      "alt": "A merkezi solda, B merkezi sağda; AB 6 birim. Her iki çemberin yarıçapı 5 birim. C üst, D alt kesişim noktası. ABC üçgeni çizili.",
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "circles-equal",
+      "title": "Eşit uzaklık denemesi",
+      "body": "A merkezli çemberin yarıçapı 5, B merkezlinin yarıçapı 5 birim; merkezler arası uzaklık 5 birim. Çemberler C ve D noktalarında kesişiyor. Şekil bu denemeye aittir; uzunlukları ekrandan ölçmek gerekmez.",
+      "image": "assets/circles-equal.png",
+      "alt": "A soldaki, B sağdaki merkez. AB 5 birim; A çemberinin yarıçapı 5, B çemberinin yarıçapı 5. Üst kesişim C, alt kesişim D. ABC üçgeni çizili.",
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "circles-unequal",
+      "title": "Farklı yarıçap denemesi",
+      "body": "A merkezli çemberin yarıçapı 4, B merkezlinin yarıçapı 6 birim; merkezler arası uzaklık 5 birim. Çemberler C ve D noktalarında kesişiyor. Şekil bu denemeye aittir; uzunlukları ekrandan ölçmek gerekmez.",
+      "image": "assets/circles-unequal.png",
+      "alt": "A soldaki, B sağdaki merkez. AB 5 birim; A çemberinin yarıçapı 4, B çemberinin yarıçapı 6. Üst kesişim C, alt kesişim D. ABC üçgeni çizili.",
+      "minimum_reading_width": 0
+    }
+  ],
+  "questions": [
+    {
+      "id": "gina-g5-math-geometry-01",
+      "stem": "AB ve CD çizimlerinin geometrik adlarını yaz. Uç noktaları ve devam yönleri bakımından aralarındaki farkı açıkla.",
+      "source_id": "segments",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-02",
+      "stem": "Defterinde E ve F adlı iki farklı nokta göster. E’den başlayıp F yönünde devam eden bir ışını şematik çiz veya nasıl çizileceğini tarif et. Düz çizgiyi oluşturmak için hangi aracı seçerdin? Neden?",
+      "source_id": null,
+      "response_mode": "drawing_or_description"
+    },
+    {
+      "id": "gina-g5-math-geometry-03",
+      "stem": "Bir d doğrusunun dışında P noktası var. P’den d’ye dik bir doğru parçası çizmek için hangi aracı seçersin? Aracı nasıl yerleştireceğini ve oluşacak açıyı yazıyla ya da şemayla anlat.",
+      "source_id": null,
+      "response_mode": "drawing_or_description"
+    },
+    {
+      "id": "gina-g5-math-geometry-04",
+      "stem": "AOB açısını açıölçerden oku. Ölçüsünü yaz ve hangi sayı dizisini neden kullandığını açıkla.",
+      "source_id": "protractor",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-05",
+      "stem": "Bir öğrenci AOB açısının 130° olduğunu söylüyor. Açıölçerin yerleşimini değiştirmeden bu okumayı nasıl kontrol edersin? Hatanın nedenini açıkla.",
+      "source_id": "protractor",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-06",
+      "stem": "Aynı açıdaki OB kolu yönü değişmeden daha uzun çizilirse açı ölçüsü değişir mi? Nedenini açıkla.",
+      "source_id": "protractor",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-07",
+      "stem": "BOD açısının ölçüsü kaç derecedir? AOC ile ilişkisini kullanarak açıkla.",
+      "source_id": "crossing",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-08",
+      "stem": "COB açısının ölçüsü kaç derecedir? İşlemini ve AOB doğrusu ile ilişkisini göster.",
+      "source_id": "crossing",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-09",
+      "stem": "Ayrı bir çizimde iki doğru dik kesişsin. Dört açının ölçülerini yaz. Bu örnek “kesişen her iki doğru iki dar ve iki geniş açı oluşturur” iddiasını destekler mi? Açıkla.",
+      "source_id": null,
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-10",
+      "stem": "A, B, C ve D çizimlerinden hangileri çokgendir? Seçtiğin her çizim için nedenini, diğerleri için neden olmadığını yaz.",
+      "source_id": "polygons",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-11",
+      "stem": "A çizimine yalnız bir doğru parçası ekleyerek bir çokgen oluştur. Eklediğin parçayı çiz veya hangi iki ucu birleştirdiğini tarif et. Oluşan çokgenin adını ve kenar sayısını yaz.",
+      "source_id": "polygons",
+      "response_mode": "drawing_or_description"
+    },
+    {
+      "id": "gina-g5-math-geometry-12",
+      "stem": "Bir öğrenci dört düz çubuğu uç uca birleştirip kapatınca beşgen yaptığını söylüyor. Çubuklar bükülmüyor, kesilmiyor ve üst üste binmiyor. Bu iddia mümkün mü? Kenar sayısıyla açıkla.",
+      "source_id": null,
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-13",
+      "stem": "Bu iki pencere modelinden hangisi düzgün çokgendir? Kenar ve açı bilgilerini birlikte kullanarak diğer modelin neden düzgün olmadığını açıkla.",
+      "source_id": "rectangles",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-14",
+      "stem": "ABCD karesinde A köşesinden bir köşegen çiz veya tarif et. Hangi köşeye ulaştığını yaz. AB’nin neden köşegen olmadığını açıkla.",
+      "source_id": "rectangles",
+      "response_mode": "drawing_or_description"
+    },
+    {
+      "id": "gina-g5-math-geometry-15",
+      "stem": "Bir üçgenin iki iç açısı 40° ve 70°. Üçüncü iç açıyı bul; sonra üçgeni açılarına göre adlandır. Gerekçeni yaz.",
+      "source_id": null,
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-16",
+      "stem": "Bir üçgenin iki iç açısının da 90° olması mümkün mü? Üçüncü açı için ne kalacağını hesaplayarak açıkla.",
+      "source_id": null,
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-17",
+      "stem": "AC ve BC uzunluklarını bul. ABC üçgenini kenarlarına göre adlandır ve çember bilgisiyle gerekçelendir.",
+      "source_id": "circles",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-18",
+      "stem": "Yeni bir denemede her iki yarıçap yine 5 birim; bu kez merkezler arası uzaklık da 5 birim olsun. Üst kesişim noktasıyla kurulan üçgenin üç kenarı ne olur? Kenarlarına göre adlandır.",
+      "source_id": "circles-equal",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-19",
+      "stem": "İlk şekle dön: yarıçaplar 5, merkezler arası uzaklık 6 birim. C yerine alttaki D kesişimini A ve B ile birleştir. ABD üçgeninin kenar uzunlukları ve kenarlarına göre türü değişir mi? Neden?",
+      "source_id": "circles",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-math-geometry-20",
+      "stem": "Başka bir denemede A merkezli çemberin yarıçapı 4, B merkezlinin yarıçapı 6 birim; merkezler arası uzaklık 5 birim. Çemberler iki noktada kesişiyor. Merkezlerle bir kesişim noktasının oluşturduğu üçgenin kenarlarını yaz ve türünü açıkla.",
+      "source_id": "circles-unequal",
+      "response_mode": "text_or_drawing"
+    }
+  ]
+}

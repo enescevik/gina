@@ -1,0 +1,152 @@
+[
+  {
+    "id": "segments",
+    "svg": "assets/segments.svg",
+    "png": "assets/segments.png",
+    "width": 1200,
+    "height": 430,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "7b5ad7c705a747d237431bce308a8fda658a2e8510804252dcfa07a50ea0ea99",
+    "svg_sha256": "a7465f14b876c2ac11a84384c0082f5d16d5fee29cd75b927b8b3c2a1882709b",
+    "origin": "original_gina_mathematical_diagram",
+    "geometry": {
+      "type": "segments"
+    },
+    "review_status": "technical_checks_passed_editorial_pending"
+  },
+  {
+    "id": "protractor",
+    "svg": "assets/protractor.svg",
+    "png": "assets/protractor.png",
+    "width": 1200,
+    "height": 720,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 640,
+    "sha256": "71f9fd64849f484c248095eb8c0977d3f9ab10f4bc3651432d500bad5dbb1345",
+    "svg_sha256": "781058e1ec42fa2173c581455ab60b7faf1570a3fed45a4cc7a1862ccb3b44d8",
+    "origin": "original_gina_mathematical_diagram",
+    "geometry": {
+      "type": "protractor",
+      "angle": 50
+    },
+    "review_status": "technical_checks_passed_editorial_pending"
+  },
+  {
+    "id": "crossing",
+    "svg": "assets/crossing.svg",
+    "png": "assets/crossing.png",
+    "width": 1200,
+    "height": 720,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "1135cd03898a7dc6317a7a70e5962bf312fa7577e8f5ae3de365ba32daa5077d",
+    "svg_sha256": "924aa88928f83ecb3d8180561da2e584a04df858aaaeb14c8b070996317d4288",
+    "origin": "original_gina_mathematical_diagram",
+    "geometry": {
+      "type": "crossing",
+      "angle": 50
+    },
+    "review_status": "technical_checks_passed_editorial_pending"
+  },
+  {
+    "id": "polygons",
+    "svg": "assets/polygons.svg",
+    "png": "assets/polygons.png",
+    "width": 1200,
+    "height": 800,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "30053fdfa545aeccd6ccbc8cb3870ac0debd8d3665aba2b2196b16ad573521b1",
+    "svg_sha256": "09604389841e0098ecf26ba1e9471bdf611e59e33537665941c68159baa24c03",
+    "origin": "original_gina_mathematical_diagram",
+    "geometry": {
+      "type": "polygons"
+    },
+    "review_status": "technical_checks_passed_editorial_pending"
+  },
+  {
+    "id": "rectangles",
+    "svg": "assets/rectangles.svg",
+    "png": "assets/rectangles.png",
+    "width": 1200,
+    "height": 720,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "12891f278f664cb6dc6c83dccca3e436a6cff21e0e478e941b394a6f4c898c7d",
+    "svg_sha256": "b43eb7ed219b582b6118f8f8a0e57be350c6121f51dc8f6c589f7d77dd93590f",
+    "origin": "original_gina_mathematical_diagram",
+    "geometry": {
+      "type": "rectangles",
+      "square_side": 4,
+      "rectangle_width": 7,
+      "rectangle_height": 4
+    },
+    "review_status": "technical_checks_passed_editorial_pending"
+  },
+  {
+    "id": "circles",
+    "svg": "assets/circles.svg",
+    "png": "assets/circles.png",
+    "width": 1200,
+    "height": 820,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "7e8ed248cc3b044bc909ebdc1be72dfb9bd4d53b187a85d99e67484af540603b",
+    "svg_sha256": "8a3248894fc2c18cd80be3c8f53996327db75de2b3c32518b662aa20b1663ee1",
+    "origin": "original_gina_mathematical_diagram",
+    "geometry": {
+      "type": "circles",
+      "radius_a": 5,
+      "radius_b": 5,
+      "distance": 6
+    },
+    "review_status": "technical_checks_passed_editorial_pending"
+  },
+  {
+    "id": "circles-equal",
+    "svg": "assets/circles-equal.svg",
+    "png": "assets/circles-equal.png",
+    "width": 1200,
+    "height": 820,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "89eef9c9bb1d5013bc618855a53c4f0e6ef8f3af2c397f26e0810f6123ff53ef",
+    "svg_sha256": "4f32282bbf932290b99ccadbe29ed540c7054d9e6fd2c24eed7b4d7be0d626ef",
+    "origin": "original_gina_mathematical_diagram",
+    "geometry": {
+      "type": "circles",
+      "radius_a": 5,
+      "radius_b": 5,
+      "distance": 5
+    },
+    "review_status": "technical_checks_passed_editorial_pending"
+  },
+  {
+    "id": "circles-unequal",
+    "svg": "assets/circles-unequal.svg",
+    "png": "assets/circles-unequal.png",
+    "width": 1200,
+    "height": 820,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "18a53654d3841b8eb096ae819384ffc84446c025f4662b81ded49a234ecfc49d",
+    "svg_sha256": "c71d1b9d3252e7d3e110c7178dc8a9ba56da0ed8d5d73fd62a4e68c40d737bcc",
+    "origin": "original_gina_mathematical_diagram",
+    "geometry": {
+      "type": "circles",
+      "radius_a": 4,
+      "radius_b": 6,
+      "distance": 5
+    },
+    "review_status": "technical_checks_passed_editorial_pending"
+  }
+]
