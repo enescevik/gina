@@ -1,0 +1,19 @@
+{
+  "version": "0.1.0",
+  "build": "17",
+  "bundleId": "com.enescevik.gina",
+  "supportsIPhoneAndIPad": true,
+  "productionSupabaseHostEmbedded": true,
+  "phoneOrientations": [
+    "UIInterfaceOrientationPortrait",
+    "UIInterfaceOrientationPortraitUpsideDown",
+    "UIInterfaceOrientationLandscapeLeft",
+    "UIInterfaceOrientationLandscapeRight"
+  ],
+  "tabletOrientations": [
+    "UIInterfaceOrientationPortrait",
+    "UIInterfaceOrientationPortraitUpsideDown",
+    "UIInterfaceOrientationLandscapeLeft",
+    "UIInterfaceOrientationLandscapeRight"
+  ]
+}
