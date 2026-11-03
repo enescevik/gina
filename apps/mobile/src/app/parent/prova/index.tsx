@@ -17,6 +17,8 @@ import {
   Home,
   MoreHorizontal,
   Plus,
+  ClipboardCheck,
+  ChevronRight,
 } from "lucide-react-native";
 import { Avatar } from "@/components/avatar";
 import { p, SatinButton } from "@/components/planner/ui";
@@ -26,6 +28,7 @@ import { b, BuilderCard } from "@/components/learning/prova-builder-ui";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
+import { DraftOverview } from "@/components/learning/prova-draft-overview";
 import { fetchProvaDrafts } from "@/lib/prova-draft";
 import { provaErrorMessage } from "@/lib/prova-ai";
 
@@ -105,97 +108,43 @@ export default function ParentProvaScreen() {
       <Text style={[b.muted, { flex: 1 }]}>{title}</Text>
     </View>
   );
-  const draftsAndPending = (
-    <View style={{ gap: 20 }}>
-      {activeDrafts.length
-        ? (
-          <>
-            <Text style={b.h2}>{t("provaBuilder.drafts")}</Text>
-            {activeDrafts.map((d) => (
-              <View key={d.id} style={b.card}>
-                <View style={b.row}>
-                  <Text style={[b.bold, { flex: 1, color: "#287969" }]}>
-                    {d.content.subjects.join(" · ") ||
-                      t("provaBuilder.untitled")}
-                  </Text>
-                  <Text
-                    style={[b.muted, {
-                      padding: 8,
-                      backgroundColor: p.lilac,
-                      borderRadius: 12,
-                    }]}
-                  >
-                    {t(`provaBuilder.step${d.content.step}`)}
-                  </Text>
-                </View>
-                <Text style={b.h2}>
-                  {d.content.title || t(`provaBuilder.${d.content.purpose}`)}
-                </Text>
-                <Text style={b.copy}>
-                  {t("prova.questionCount", { count: d.content.target })} ·{" "}
-                  {d.content.minutes
-                    ? `${d.content.minutes} ${t("prova.min")}`
-                    : t("provaBuilder.untimed")}
-                </Text>
-                <SatinButton
-                  secondary
-                  title={t("provaBuilder.resume")}
-                  icon={<ArrowRight color={p.purple} size={18} />}
-                  onPress={() =>
-                    router.push({
-                      pathname: "/parent/prova/builder",
-                      params: { draftId: d.id },
-                    })}
-                />
-              </View>
-            ))}
-          </>
-        )
-        : null}
-      {pending.length
-        ? (
-          <>
-            <Text style={b.h2}>{t("provaBuilder.reviewPending")}</Text>
-            {pending.slice(0, 3).map(({ exam, attempt }) => (
-              <NavigationCard
-                key={attempt.id}
-                title={exam.children?.name ?? exam.title}
-                body={exam.title}
-                onPress={() =>
-                  router.push({
-                    pathname: "/parent/prova/attempt/[attemptId]",
-                    params: { attemptId: attempt.id },
-                  })}
-              />
-            ))}
-          </>
-        )
-        : null}
-    </View>
-  );
+  const pendingSection = pending.length ? <View style={{ gap: 12 }}>
+    <Text style={b.h2}>{t("provaBuilder.reviewPending")}</Text>
+    {pending.slice(0, 3).map(({ exam, attempt }) => <Pressable key={attempt.id} accessibilityRole="button"
+      onPress={() => router.push({ pathname: "/parent/prova/attempt/[attemptId]", params: { attemptId: attempt.id } })}
+      style={{ minHeight: 72, flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: p.line }}>
+      <View style={{ width: 45, height: 45, backgroundColor: '#E5F3ED', borderRadius: 14, alignItems: 'center', justifyContent: 'center' }}><ClipboardCheck size={23} color="#227D73"/></View>
+      <View style={{ flex: 1, gap: 4 }}><Text style={b.bold}>{exam.title}</Text><Text style={b.muted}>{exam.children?.name} · {t('provaBuilder.reviewPending')}</Text></View><ChevronRight size={19} color={p.purple}/>
+    </Pressable>)}
+  </View> : null;
+  const createButton = <SatinButton title={t("provaBuilder.title")} icon={<Plus size={20} color="#fff"/>}
+    style={wide ? { minWidth: 185, alignSelf: 'center' } : undefined}
+    onPress={() => router.push({ pathname: "/parent/prova/builder", params: childId ? { childId } : {} })}/>;
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: p.cream }}>
-      <ScrollView contentContainerStyle={b.page}>
+      <ScrollView contentContainerStyle={[b.page, { maxWidth: 1280, paddingHorizontal: wide ? 40 : 22, paddingTop: wide ? 24 : 14, gap: wide ? 18 : 18 }]}>
         <View style={b.row}>
           <Image
             source={require(
               "../../../../../../packages/assets/brand/growing-friend/logo.png",
             )}
             resizeMode="contain"
-            style={{ width: 110, height: 48 }}
+            style={{ width: wide ? 110 : 99, height: wide ? 48 : 42 }}
           />
           <View style={{ flex: 1 }} />
           {children.data?.length === 1
             ? (
               <View style={b.row}>
-                <Avatar slug={children.data[0].avatar} size={36} />
-                <Text style={b.bold}>{children.data[0].name}</Text>
+                <Avatar slug={children.data[0].avatar} size={wide ? 42 : 34} />
+                <View><Text style={[b.bold, { fontSize: 15, lineHeight: 21 }]}>{children.data[0].name}</Text>{children.data[0].grade && <Text style={[b.muted, { fontSize: 14, lineHeight: 21 }]}>{t("provaHub.grade", { grade: children.data[0].grade })}</Text>}</View>
               </View>
             )
             : null}
         </View>
-        <Text style={b.h1}>{t("prova.title")}</Text>
-        <Text style={b.copy}>{t("provaBuilder.hubBody")}</Text>
+        <View style={{ flexDirection: wide ? 'row' : 'column', justifyContent: 'space-between', gap: 18 }}>
+          <View style={{ gap: 7, flex: wide ? 1 : undefined }}><Text style={[b.h1, wide && { fontSize: 38 }]}>{t("prova.title")}</Text><Text style={[b.copy, { color: p.muted }]}>{t("provaBuilder.hubBody")}</Text></View>
+          {createButton}
+        </View>
         {children.data && children.data.length > 1
           ? (
             <ChildPicker
@@ -206,19 +155,11 @@ export default function ParentProvaScreen() {
             />
           )
           : null}
-        <SatinButton
-          title={t("provaBuilder.title")}
-          icon={<Plus size={20} color="#fff" />}
-          style={wide ? { alignSelf: "flex-start", minWidth: 300 } : undefined}
-          onPress={() =>
-            router.push({
-              pathname: "/parent/prova/builder",
-              params: childId ? { childId } : {},
-            })}
-        />
         <View
           style={{
             flexDirection: "row",
+            gap: wide ? 32 : 16,
+            justifyContent: wide ? 'flex-start' : 'space-between',
             borderBottomWidth: 1,
             borderBottomColor: p.line,
           }}
@@ -230,8 +171,10 @@ export default function ParentProvaScreen() {
               accessibilityState={{ selected: tab === v }}
               onPress={() => setTab(v)}
               style={{
-                flex: 1,
-                minHeight: 58,
+                flexShrink: 1,
+                flexDirection: 'row',
+                gap: 6,
+                minHeight: 48,
                 alignItems: "center",
                 justifyContent: "center",
                 borderBottomWidth: 3,
@@ -245,7 +188,7 @@ export default function ParentProvaScreen() {
                 }]}
               >
                 {t(`provaBuilder.${v}`)}
-              </Text>
+              </Text>{v === 'results' && attempts.length > 0 && <Text style={{ backgroundColor: p.lilac, borderRadius: 12, minWidth: 23, textAlign: 'center', color: p.muted, fontFamily: 'Nunito_800ExtraBold', fontSize: 13, padding: 3 }}>{attempts.length}</Text>}
             </Pressable>
           ))}
         </View>
@@ -274,9 +217,9 @@ export default function ParentProvaScreen() {
           : null}
         {tab === "hub"
           ? (
-            <View style={[b.columns, wide && { flexDirection: "row" }]}>
-              <View style={{ flex: 1, gap: 22 }}>
-                {!wide ? draftsAndPending : null}
+            <View style={{ gap: 26 }}>
+              {activeDrafts.length > 0 ? <DraftOverview drafts={activeDrafts} familyId={familyId} wide={wide}>{pendingSection}</DraftOverview> : pendingSection}
+              <View style={{ gap: 22, width: '100%', maxWidth: wide && activeDrafts.length > 0 ? 607 : undefined }}>
                 <Text style={b.h2}>{t("provaBuilder.assigned")}</Text>
                 {!visibleExams.length
                   ? empty(t("provaBuilder.noAssigned"))
@@ -330,9 +273,6 @@ export default function ParentProvaScreen() {
                   );
                 })}
               </View>
-              {wide && (activeDrafts.length > 0 || pending.length > 0)
-                ? <View style={b.sidebar}>{draftsAndPending}</View>
-                : null}
             </View>
           )
           : null}

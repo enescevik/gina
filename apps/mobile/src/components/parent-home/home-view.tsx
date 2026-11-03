@@ -3,7 +3,7 @@ import { router, type Href } from 'expo-router';
 import { ActivityIndicator, Image, ScrollView, Text, View, useWindowDimensions } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { Bell, BookOpen, CalendarDays, Check, ChevronRight, Circle, Clock3,  GraduationCap, Home, LockKeyhole, MoreHorizontal, Plus, Star, Users, CircleAlert } from 'lucide-react-native';
+import { Bell, BookOpen, CalendarDays, Check, ChevronRight, Circle, Clock3,  GraduationCap, Home, LockKeyhole, MoreHorizontal, Plus, Star, Users, CircleAlert, Gift, FileText } from 'lucide-react-native';
 import type { Occurrence } from '@gina/core';
 import type { WeekEvent } from '@/components/calendar/week-list';
 import { Pressable } from '@/components/ui/pressable';
@@ -43,7 +43,8 @@ function Label({ children, small = false }: { children: ReactNode; small?: boole
   return <Text style={small ? s.small : s.text}>{children}</Text>;
 }
 function Heading({ children }: { children: ReactNode }) {
-  return <Text accessibilityRole="header" style={s.sectionTitle}>{children}</Text>;
+  const { width, fontScale } = useWindowDimensions();
+  return <Text accessibilityRole="header" style={[s.sectionTitle, width >= 1000 && fontScale < 1.4 && { fontSize: 28, lineHeight: 34 }]}>{children}</Text>;
 }
 function TextLink({ label, href }: { label: string; href: Href }) {
   return <Pressable accessibilityRole="link" onPress={() => go(href)} style={s.link}>
@@ -58,8 +59,8 @@ function Progress({ value, max, label }: { value: number; max: number; label: st
   </View>;
 }
 function Mascot({ large = false, wide = false }: { large?: boolean; wide?: boolean }) {
-  return <View accessible={false} pointerEvents="none" style={large ? s.emptyArt : [s.heroArt, wide && { height: 100, width: 300 }]}>
-    <View style={[s.blob, wide && { height: 152, top: 0 }]}/><Image source={mascot} style={[s.mascot, wide && { position: 'absolute', height: 178, top: -8 }]} resizeMode="contain"/>
+  return <View accessible={false} pointerEvents="none" style={large ? s.emptyArt : [s.heroArt, wide && { height: 108, width: 410, maxWidth: 440 }]}>
+    <View style={[s.blob, wide && { height: 160, top: -38 }]}/><Image source={mascot} style={[s.mascot, wide && { position: 'absolute', height: 214, top: -50 }]} resizeMode="contain"/>
   </View>;
 }
 function GoalRow({ child, balance, wide }: { child: Child; balance: number; wide: boolean }) {
@@ -71,7 +72,7 @@ function GoalRow({ child, balance, wide }: { child: Child; balance: number; wide
   if (!goal.data) return <View style={[s.goalRow, s.row]}><Collectible slug="reward-mystery-box" size={72}/><View style={s.fill}><Text style={[s.text, s.bold]}>{t('betaUx.goalTitle', { name: child.name })}</Text><Label small>{t('betaUx.goalBody')}</Label><TextLink label={t('betaUx.chooseGoal')} href={{ pathname: "/parent/rewards", params: { goal: "1", childId: child.id } }}/></View></View>;
   return <Pressable accessibilityRole="button" accessibilityLabel={t('parentHome.goalTitle', { name: child.name })}
     onPress={() => go('/parent/rewards')} style={[s.goalRow, s.row]}>
-    <Collectible slug={goal.data.rewardIcon} size={52}/>
+    <Collectible slug={goal.data.rewardIcon} size={44}/>
     <View style={[s.fill, { gap: 5 }]}>
       <Text style={[s.text, s.bold]}>{child.name} · {goal.data.rewardTitle}</Text>
       <Label small>{t('parentHome.starProgress', { count: balance, total: goal.data.cost })}</Label>
@@ -98,11 +99,11 @@ export function ParentHomeView(p: HomeViewProps) {
   const dayEvents = p.occurrences.filter(o => o.date === selectedDate);
   const greeting = p.parentName ? t('parentPremium.greeting', { name: p.parentName }) : t('parentHome.familyToday');
 
-  const approvals = !p.approvals.length ? null : <View testID="home-approvals" style={p.approvals.length ? [s.card, s.approvalCard] : [s.row, s.summary]}>
+  const approvals = !p.approvals.length ? null : <View testID="home-approvals" style={p.approvals.length ? [s.card, s.approvalCard, !wide && { padding: 10, gap: 8 }] : [s.row, s.summary]}>
     {!p.approvals.length ? <><Check size={22} color={c.green}/><Label>{t('parent.noApprovals')}</Label></> : <>
-      <View style={s.row}><View style={s.fill}><Heading>{t('parent.waitingApproval')}</Heading></View><Text style={s.badge}>{p.approvals.length}</Text></View>
+      <View style={s.row}><Heading>{t('parent.waitingApproval')}</Heading><Text style={s.badge}>{p.approvals.length}</Text></View>
       {(allApprovals ? p.approvals : p.approvals.slice(0, 2)).map((item, i) => <View key={item.id} style={[s.approvalItem, i > 0 && s.divider]}>
-        <View style={[s.row, s.approvalDetail]}>
+        <View style={[s.row, s.approvalDetail, !wide && { minHeight: 56 }]}>
           <View style={[s.iconTile, { backgroundColor: c.apricot }]}><TaskIcon slug={item.task_templates?.icon} size={48} variant="illustrated"/></View>
           <View style={s.fill}><Text style={[s.text, s.bold]}>{item.task_templates?.title}</Text><Label small>{item.children?.name} · {t('room.plusStars', { count: item.task_templates?.stars ?? 0 })}</Label></View>
         </View>
@@ -122,7 +123,7 @@ export function ParentHomeView(p: HomeViewProps) {
   const plan = <View testID="home-plan" style={s.stack}>
     <View style={[s.row, s.between, s.wrap]}><Heading>{selectedDate === p.today ? t('parentPremium.plan') : dateFormat.format(new Date(selectedDate + 'T12:00:00Z'))}</Heading>{dayEvents.length > 0 && <TextLink label={t('parentHome.openCalendar')} href="/parent/calendar"/>}</View>
     <View style={[s.card, { paddingVertical: 4, gap: 0 }]}>
-      {dayEvents.length ? dayEvents.map((o, i) => <Pressable key={`${o.event.id}-${o.date}`} accessibilityRole="button" onPress={() => go('/parent/calendar')} style={s.eventRow}>
+      {dayEvents.length ? dayEvents.map((o, i) => <Pressable key={`${o.event.id}-${o.date}`} accessibilityRole="button" onPress={() => go('/parent/calendar')} style={[s.eventRow, wide && { minHeight: 78 }]}>
         <Text style={s.eventTime}>{o.event.all_day ? t('calendar.allDay') : clock.format(o.startsAt)}</Text>
         <View style={s.timeline}><View style={[s.timelineLine, i === 0 && { top: '50%' }, i === dayEvents.length - 1 && { bottom: '50%' }]}/><View style={[s.dot, { backgroundColor: i % 2 ? '#CB4A81' : c.purple }]}/></View>
         <View style={[s.iconTile, { backgroundColor: i % 2 ? '#FCE6EF' : c.lavender }]}>
@@ -175,6 +176,15 @@ export function ParentHomeView(p: HomeViewProps) {
       <Label small>{weekday.format(new Date(date + 'T12:00:00Z'))}</Label><Label>{Number(date.slice(-2))}</Label>
     </Pressable>)}</ScrollView> : null}
   </View>;
+  const quickActions = <View testID="home-quick-actions" style={s.quickStrip}>
+    {([
+      ['parentHome.tasks', { pathname: '/parent/tasks', params: { create: '1', ...(selectedChild ? { childId: selectedChild.id } : {}) } }, Plus],
+      ['parentHome.prova', { pathname: '/parent/prova/builder', params: selectedChild ? { childId: selectedChild.id } : {} }, FileText],
+      ['parentHome.rewards', '/parent/rewards', Gift],
+    ] as const).map(([label, href, Icon]) => <Pressable key={label} accessibilityRole="button" onPress={() => go(href)} style={s.quick}>
+      <View style={s.quickIcon}><Icon size={19} color="#fff"/></View><Text style={s.linkText}>{t(label)}</Text>
+    </Pressable>)}
+  </View>;
   const empty = !p.loading && !p.error && !p.profiles.length;
   return <SafeAreaView edges={['top', 'left', 'right']} style={s.root}>
     <ScrollView testID="home-scroll" contentContainerStyle={[s.page, !wide && s.phonePage]} keyboardShouldPersistTaps="handled">
@@ -195,20 +205,22 @@ export function ParentHomeView(p: HomeViewProps) {
           <Text style={[s.small, s.stateCopy]}>{t('parentPremium.firstChildHint')}</Text><View style={[s.row, s.summary]}><Users size={28} color={c.green}/><Label>{t('parentPremium.separateSpace')}</Label></View>
         </View>
       </> : <>
-        <View style={[s.hero, wide && { minHeight: 100 }, compact && { flexDirection: 'column', alignItems: 'stretch' }]}>
-          <View style={s.heroCopy}><Text accessibilityRole="header" style={[s.title, !wide && s.phoneTitle]}>{greeting}</Text><Label>{dateFormat.format(new Date(p.today + 'T12:00:00Z'))}</Label></View>
+        <View style={[s.hero, wide && { minHeight: 108 }, compact && { flexDirection: 'column', alignItems: 'stretch' }]}>
+          <View style={s.heroCopy}><Text accessibilityRole="header" style={[s.title, !wide && s.phoneTitle]}>{greeting}</Text><Text style={[s.text, wide && { fontSize: 23, lineHeight: 30, color: c.muted }]}>{dateFormat.format(new Date(p.today + 'T12:00:00Z'))}</Text></View>
           <Mascot wide={wide}/>
         </View>
-        {p.profiles.length > 1 && <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.filters}>
+        {p.profiles.length > 1 && <ScrollView horizontal showsHorizontalScrollIndicator={false} style={wide ? { maxWidth: '55%' } : undefined} contentContainerStyle={s.filters}>
           <Pressable accessibilityRole="button" accessibilityState={{ selected: !p.selected }} onPress={() => p.select(null)} style={[s.chip, !p.selected && s.selectedChip]}><Text style={[s.text, s.bold]}>{t('parentHome.all')}</Text></Pressable>
           {p.profiles.map(child => <Pressable key={child.id} accessibilityRole="button" accessibilityLabel={t('parentHome.selectChild', { name: child.name })} accessibilityState={{ selected: p.selected === child.id }}
             onPress={() => p.select(child.id)} style={[s.chip, p.selected === child.id && s.selectedChip]}><Avatar slug={child.avatar} size={30}/><Text style={[s.text, s.bold]}>{child.name}</Text></Pressable>)}
         </ScrollView>}
-        {approvals}
-        {wide ? <View style={s.columns}>
-          <View style={[s.column, { flex: 1.15 }]}>{tasks}{plan}{weekControl}{prova}</View>
-          <View style={s.column}>{progress}{goals}</View>
-        </View> : <>{tasks}{plan}{weekControl}{goals}{p.familyDay.some(d => d.due > 0 || d.stars > 0) && progress}{prova}</>}
+        {wide ? <>
+          <View style={s.columns}>
+            <View style={[s.column, { flex: 1.15 }]}>{approvals}{plan}</View>
+            <View style={s.column}>{progress}{goals}{quickActions}</View>
+          </View>
+          <View style={s.columns}><View style={[s.column, { flex: 1.15 }]}>{weekControl}{tasks}</View><View style={s.column}>{prova}</View></View>
+        </> : <>{approvals}{plan}{progress}{quickActions}{goals}{weekControl}{tasks}{prova}</>}
         {p.weeklyCount > 0 && <View style={s.summary}><Heading>{t('parentHome.smallSteps')}</Heading><Label>{t(selectedChild ? 'parentHome.childWeek' : 'parentHome.familyWeek', { name: selectedChild?.name, count: p.weeklyCount })}</Label>
           <Pressable accessibilityRole="button" onPress={() => go('/parent/prova/progress')} style={s.link}><BookOpen size={22} color={c.green}/><View style={s.fill}><Label small>{p.summary}</Label></View><ChevronRight size={18} color={c.muted}/></Pressable>
         </View>}
@@ -216,7 +228,7 @@ export function ParentHomeView(p: HomeViewProps) {
     </ScrollView>
     <View style={[s.bottomNav, { paddingBottom: insets.bottom }]}>{destinations.map(({ key, href, Icon }) => <Pressable key={key} accessibilityRole="button" accessibilityLabel={t(`parentHome.${key}`)} accessibilityState={{ selected: key === 'today' }} onPress={() => key !== 'today' && router.navigate(href)} style={[s.bottomItem, wide && s.row]}>
       <Icon size={25} color={key === 'today' ? c.purple : c.muted} fill={key === 'today' ? c.purple : 'none'}/>
-      <Text style={[s.small, { textAlign: 'center' }, key === 'today' && s.purple, key === 'today' && s.bold]}>{t(`parentHome.${key}`)}</Text>{key === 'today' ? <View style={s.navIndicator}/> : null}
+      <Text style={[s.small, { textAlign: 'center' }, wide && { fontSize: 18, lineHeight: 25 }, key === 'today' && s.purple, key === 'today' && s.bold]}>{t(`parentHome.${key}`)}</Text>{key === 'today' ? <View style={s.navIndicator}/> : null}
     </Pressable>)}</View>
   </SafeAreaView>;
 }
