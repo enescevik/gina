@@ -1,7 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { NOTEBOOK_MODAL_PROPS } from "./notebook-layout";
+import { NOTEBOOK_MODAL_PROPS, notebookRevealOffset } from "./notebook-layout";
 import { useRouteMotion } from "@/lib/use-route-motion";
-import { useEffect, useRef, useState } from "react";
+import { type ComponentRef, useEffect, useRef, useState } from "react";
 import {
   type GestureResponderEvent,
   KeyboardAvoidingView,
@@ -113,6 +113,11 @@ export function NotebookEditor({
     annotation ? NOTEBOOK_COLORS[2] : NOTEBOOK_COLORS[0],
   );
   const [viewportWidth, setViewportWidth] = useState(320);
+  const [viewportHeight, setViewportHeight] = useState(0);
+  const verticalScroll = useRef<ComponentRef<typeof ScrollView>>(null);
+  const horizontalScroll = useRef<ComponentRef<typeof ScrollView>>(null);
+  const scrollOffset = useRef({ x: 0, y: 0 });
+  const [revealId, setRevealId] = useState<string | null>(null);
   const roomy = viewportWidth >= 600;
   const [zoom, setZoom] = useState(1);
   const width = viewportWidth * zoom;
@@ -169,9 +174,36 @@ export function NotebookEditor({
       onChange(next);
       setSelected([insertion.id]);
       setTool("select");
+      setRevealId(insertion.id);
     } else setMessage(t("notebook.full"));
     onInserted?.();
   }, [insertion, disabled, onChange, onInserted, t]);
+  useEffect(() => {
+    if (!revealId || viewportHeight <= 0 || textEditor || optionsOpen) return;
+    const element = document.elements.find((item) => item.id === revealId);
+    if (!element) return;
+    const bounds = elementBounds(element);
+    const pending = requestAnimationFrame(() => {
+      if (gesture.current) return;
+      const x = notebookRevealOffset(
+        bounds.x * scale, bounds.width * scale, viewportWidth,
+        width, scrollOffset.current.x,
+      );
+      const y = notebookRevealOffset(
+        bounds.y * scale, bounds.height * scale, viewportHeight,
+        width * 1.4, scrollOffset.current.y,
+      );
+      horizontalScroll.current?.scrollTo({ x, animated: false });
+      verticalScroll.current?.scrollTo({ y, animated: false });
+      scrollOffset.current = { x, y };
+      // Keep the target through the selection toolbar's next layout pass.
+      // A new pen/selection gesture or manual scroll ends this reveal intent.
+    });
+    return () => cancelAnimationFrame(pending);
+  }, [
+    revealId, document, viewportHeight, viewportWidth,
+    width, scale, textEditor, optionsOpen,
+  ]);
   function point(e: GestureResponderEvent): NotebookPoint {
     return [
       Math.round(
@@ -336,6 +368,7 @@ export function NotebookEditor({
     setTextEditor(null);
     setSelected([next.id]);
     setTool("select");
+    setRevealId(next.id);
   }
   const shown = preview ?? document;
   const selectedText = document.elements.find((e) =>
@@ -355,6 +388,7 @@ export function NotebookEditor({
             disabled={disabled}
             onPress={() => {
               finish();
+              setRevealId(null);
               setPenOptions(
                 key === "pen" && tool === "pen" ? !penOptions : false,
               );
@@ -718,7 +752,9 @@ export function NotebookEditor({
         </KeyboardAvoidingView>
       </Modal>
       <View
-        onLayout={(e) => setViewportWidth(e.nativeEvent.layout.width)}
+        onLayout={(e) => {
+          setViewportWidth(e.nativeEvent.layout.width);
+        }}
         style={{
           flex: 1,
           minHeight: 0,
@@ -729,12 +765,25 @@ export function NotebookEditor({
         }}
       >
         <ScrollView
+          ref={verticalScroll}
+          onLayout={(e) => setViewportHeight(e.nativeEvent.layout.height)}
+          onScrollBeginDrag={() => setRevealId(null)}
+          onScroll={(e) => {
+            scrollOffset.current.y = e.nativeEvent.contentOffset.y;
+          }}
+          scrollEventThrottle={16}
           nestedScrollEnabled
           scrollEnabled={tool === "hand" || disabled}
           keyboardShouldPersistTaps="handled"
           style={{ flex: 1, minHeight: 0 }}
         >
           <ScrollView
+            ref={horizontalScroll}
+            onScrollBeginDrag={() => setRevealId(null)}
+            onScroll={(e) => {
+              scrollOffset.current.x = e.nativeEvent.contentOffset.x;
+            }}
+            scrollEventThrottle={16}
             horizontal
             nestedScrollEnabled
             scrollEnabled={tool === "hand" || disabled}
@@ -748,6 +797,7 @@ export function NotebookEditor({
               onMoveShouldSetResponder={() => !disabled && tool !== "hand"}
               onResponderTerminationRequest={() => false}
               onResponderGrant={(e) => {
+                setRevealId(null);
                 const xy = point(e);
                 const moving = selected.some((id) => {
                   const el = document.elements.find((el) => el.id === id);

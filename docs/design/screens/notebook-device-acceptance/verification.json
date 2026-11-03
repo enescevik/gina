@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-03",
+  "baseCommit": "0ddeee177d7dab5ae295154ac5d33a19d9a4a844",
+  "scope": "Production NotebookWorkspace/NotebookEditor, temporary synthetic QA route; no real answer persistence or authenticated exam flow.",
+  "native": {
+    "build": "Local unsigned Debug iOS simulator build; Expo 58 / React Native 0.88.1 / iOS 26.5",
+    "devices": [
+      "iPad Air 11-inch M4 simulator (820x1180 / 1180x820)",
+      "iPhone 17 Pro simulator (402x874)"
+    ],
+    "checksPassed": [
+      "Portrait iPad shows question and notebook simultaneously",
+      "Pen stroke remains when rotated",
+      "Text 35 degrees and copied source remain when rotated",
+      "Text/symbols/more tools open without automatic orientation changes",
+      "Rotate with symbols modal open; close and return",
+      "More tools -> symbols uses one native modal host",
+      "Source image can be copied into notebook",
+      "Inserted text below viewport is brought into view",
+      "Expand/restore portrait notebook keeps five elements",
+      "Phone source copy -> notebook; text insertion; pen stroke"
+    ],
+    "fixtureWarning": "Unsigned simulator emitted expo-notifications keychain entitlement warning; inspected and dismissed. Push/auth/keychain acceptance not claimed.",
+    "screenshots": [
+      "ipad-landscape-native.png",
+      "ipad-portrait-native.png",
+      "ipad-expanded-native.png",
+      "phone-native.png"
+    ]
+  },
+  "web": {
+    "sizes": [
+      [
+        834,
+        1194
+      ],
+      [
+        1194,
+        834
+      ],
+      [
+        600,
+        900
+      ],
+      [
+        390,
+        844
+      ]
+    ],
+    "checksPassed": [
+      "15 toolbar modal open/close cycles across five size transitions",
+      "Ink survives all size transitions",
+      "No horizontal page overflow",
+      "New text below viewport is fully inside clipping containers",
+      "Pen gesture after reveal leaves canvas scroll offset unchanged"
+    ],
+    "insertionProof": {
+      "viewport": [
+        390,
+        844
+      ],
+      "textBounds": {
+        "y": 693.1953125,
+        "height": 47.59375
+      },
+      "canvasClip": {
+        "top": 366,
+        "bottom": 757
+      },
+      "scrollTop": 40,
+      "elementCountAfterDrawing": 3
+    }
+  },
+  "open": [
+    "Physical iPad/Pencil pressure/palm rejection and OS window resizing",
+    "Android native, VoiceOver and larger system text",
+    "Real exam answer persistence/offline retry and authenticated private media",
+    "Physical iPad still reports 0.1.0 (16); current work not installed there"
+  ],
+  "production": "No migration, Edge deployment, hosting, physical device install or TestFlight release."
+}
