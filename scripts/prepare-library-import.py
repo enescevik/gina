@@ -18,18 +18,24 @@ spec.loader.exec_module(pilot)
 
 def prepare(folder):
     data=json.loads((folder/'pilot.json').read_text())
-    pilot.validate(data,folder)
+    if data.get('technical_profile')=='science_sky_v1':
+        draft_spec=importlib.util.spec_from_file_location('draft',Path(__file__).with_name('validate-library-draft.py'))
+        draft=importlib.util.module_from_spec(draft_spec);draft_spec.loader.exec_module(draft)
+        draft.validate(data,folder)
+    else:
+        pilot.validate(data,folder)
     manifest={m['id']:m for m in json.loads((folder/'assets/manifest.json').read_text())}
     assets=[]
     sources=[]
     for s in data['sources']:
-        m=manifest[s['id']]
-        raw=pilot.safe_file(folder,s['image']).read_bytes()
-        assets.append({'key':s['id'],'mime':'image/png','sha256':hashlib.sha256(raw).hexdigest(),
-            'width':m['width'],'height':m['height'],'base64':base64.b64encode(raw).decode('ascii')})
+        m=manifest.get(s['id'])
+        if s['image']:
+            raw=pilot.safe_file(folder,s['image']).read_bytes()
+            assets.append({'key':s['id'],'mime':'image/png','sha256':hashlib.sha256(raw).hexdigest(),
+                'width':m['width'],'height':m['height'],'base64':base64.b64encode(raw).decode('ascii')})
         sources.append({'key':s['id'],'title':s['title'],'body':s['body'],'alt':s['alt'],
-            'asset_key':s['id'],'minimum_reading_width':s['minimum_reading_width'],
-            'provenance':{'origin':s['origin'],'svg_sha256':m['svg_sha256'],'color_space':m['color_space']}})
+            'asset_key':s['id'] if s['image'] else None,'minimum_reading_width':s['minimum_reading_width'],
+            'provenance':{'origin':s['origin'],**({'svg_sha256':m['svg_sha256'],'color_space':m['color_space']} if m else {})}})
     questions=[]
     for q in data['questions']:
         questions.append({'key':q['id'],'revision':q['revision'],'source_key':q['source_id'],
@@ -42,7 +48,7 @@ def prepare(folder):
         raise ValueError('first_revision_preparer_only')
     return {'schema':'gina.library-import.v1','package_key':data['id'],'revision':1,'previous_hash':None,
         'title':data['title'],'grade':data['grade'],'subject':data['subject'],
-        'provenance':{k:data[k] for k in ('locale','curriculum_reference','programme_version','school_track_applicability','assessment_notes')},
+        'provenance':{**{k:data[k] for k in ('locale','curriculum_reference','programme_version','school_track_applicability','assessment_notes')},**({'fact_references':data['fact_references']} if 'fact_references' in data else {})},
         'assets':assets,'sources':sources,'questions':questions}
 
 

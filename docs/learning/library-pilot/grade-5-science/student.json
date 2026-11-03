@@ -1,0 +1,180 @@
+{
+  "id": "gina-g5-science-sky-v1",
+  "title": "Gökyüzü atölyesi · 20 soru taslağı",
+  "status": "draft",
+  "publishable": false,
+  "grade": 5,
+  "subject": "Fen Bilimleri",
+  "sources": [
+    {
+      "id": "same-face",
+      "title": "İşaretli küre modeli",
+      "body": "Dünya ortadadır. Ay modeli sırasıyla 1, 2, 3 ve 4 konumlarından geçip 1’e döner. Mor nokta kürenin yüzeyine sabittir. Şema hareketi anlatır; boyut ve uzaklıklar ölçekli değildir.",
+      "image": "assets/same-face.png",
+      "alt": "Dünya çevresinde dört Ay modeli var. Her konumda yüzeydeki mor nokta Dünya’ya dönük. Nokta 1’de aşağıya, 2’de sağa, 3’te yukarıya, 4’te sola yöneliyor.",
+      "minimum_reading_width": 520
+    },
+    {
+      "id": "periods",
+      "title": "İki farklı süre",
+      "body": "Bilgi kartında Ay’ın kendi ekseni çevresinde bir turu ve uzak yıldızlara göre Dünya çevresinde bir dolanımı yaklaşık 27,3 gün; bir yeni aydan sonraki yeni aya geçen süre ise yaklaşık 29,5 gün olarak verilmiştir. Bu iki ölçümün başlangıç ve bitiş koşulları aynı değildir.",
+      "image": null,
+      "alt": "",
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "cloud-log",
+      "title": "Eksik gözlem kaydı",
+      "body": "Bir gözlem defterinde şu kayıtlar var: 1. gözlemde Ay diskinin yaklaşık yarısı aydınlık görüldü. İkinci gözlemde hava kapalıydı; Ay görülemedi. Üçüncü gözlemde diskin yarısından fazlası aydınlık görüldü. Bunlar soru için hazırlanmış örnek kayıtlardır; gerçek bir tarih veya konuma ait değildir.",
+      "image": null,
+      "alt": "",
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "phase-cards",
+      "title": "Dört ana evre kartı",
+      "body": "Kartlar kuzey yarımküredeki görünüm için şematiktir; yönleri sabittir. A, B, C ve D bir döngü içinde bu sırayla, aralarında yaklaşık birer hafta olacak şekilde seçilmiştir. Koyu disk, görünmeyen kısmı göstermek için çizilmiştir; fotoğraf değildir. Ara evreler kartlarda yer almıyor.",
+      "image": "assets/phase-cards.png",
+      "alt": "A diski bütünüyle koyu. B diskinin sağ yarısı aydınlık. C diskinin tamamı aydınlık. D diskinin sol yarısı aydınlık.",
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "lighting",
+      "title": "Yukarıdan bakılan ışık modeli",
+      "body": "Güneş soldadır; ışık okları sağa yönelir. Dünya ortada, Ay modelleri K, L, M ve N konumlarındadır. Her Ay modelinin Güneş’e bakan yarısı aydınlık gösterilir. Şema ölçekli değildir; yörünge eğimi gösterilmez. Bu nedenle hizalanmayı her ay tutulma olur biçiminde yorumlama.",
+      "image": "assets/lighting.png",
+      "alt": "Solda Güneş, ortada Dünya var. K Dünya’nın solunda, L altında, M sağında, N üstündedir. Dört Ay modelinin sol yarısı aydınlıktır.",
+      "minimum_reading_width": 520
+    },
+    {
+      "id": "sizes",
+      "title": "Üç küre seçimi",
+      "body": "A en büyük, B orta, C en küçük küredir. Bunlar yalnız göreli büyüklük sırasını temsil eder. Gerçek çap oranları ve cisimler arasındaki uzaklıklar bu modelde gösterilmez.",
+      "image": "assets/sizes.png",
+      "alt": "A büyük sarı, B orta boy mint, C küçük mor bir küre olarak çizilmiş; her kürenin altında harfi var.",
+      "minimum_reading_width": 520
+    }
+  ],
+  "questions": [
+    {
+      "id": "gina-g5-science-sky-01",
+      "stem": "Mor noktanın yönünü 1’den 4’e izle. Küre tekrar 1’e geldiğinde kendi çevresinde kaç tur dönmüş olur? Noktanın Dünya’ya dönük kalmasıyla bu dönme arasındaki ilişkiyi açıkla.",
+      "source_id": "same-face",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-02",
+      "stem": "Bir öğrenci 1’den başlayarak Ay modelini Dünya’nın çevresinde dolaştırıyor ama mor noktanın yönünü hep sayfanın altına doğru tutuyor. Bu gösterim resimdeki modelle aynı sonucu verir mi? 3. konumu kullanarak hatayı ve düzeltmeni anlat.",
+      "source_id": "same-face",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-03",
+      "stem": "Ay’ın kendi ekseni çevresinde dönme süresiyle hangi süreyi karşılaştırırsan yaklaşık eşitlik bulursun? Neden karttaki 29,5 günü bu eşitliğin yerine kullanmamalısın?",
+      "source_id": "periods",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-04",
+      "stem": "Duru, “Dünya’dan çoğunlukla Ay’ın aynı yüzünü görüyoruz; öyleyse diğer yüzü her zaman karanlıktır” diyor. İddianın hangi kısmı gözlemle uyumlu, hangi çıkarımı yanlıştır? Gerekçeni yaz.",
+      "source_id": null,
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-05",
+      "stem": "İkinci gözleme “yeni ay” yazmak doğru olur mu? Bu kaydı nasıl düzeltirsin? Elindeki bilginin neyi gösterdiğini ve neyi göstermediğini açıkla.",
+      "source_id": "cloud-log",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-06",
+      "stem": "Bu defteri devam ettirecek olsan hangi bilgileri her gözlemde kaydedersin? En az üç bilgi seç ve kapalı havada ne yapacağını açıkla. Gözlem için gece dışarı çıkman gerekmiyor; burada yalnız planını yaz.",
+      "source_id": "cloud-log",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-07",
+      "stem": "A, B, C ve D kartlarının temsil ettiği ana evreleri adlandır. B ve D’yi ayırırken resimde hangi bilgiyi kullandığını söyle.",
+      "source_id": "phase-cards",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-08",
+      "stem": "B’den C’ye giderken aradaki günler için yeni bir kart tasarla veya tarif et. Görünen aydınlık alan B’ye ve C’ye göre nasıl olmalı? Ay’ın gerçek biçimi bu sırada değişir mi?",
+      "source_id": "phase-cards",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-09",
+      "stem": "D’den yaklaşık bir hafta sonraki ana evre kartı hangisine benzer? Ardından döngünün nasıl devam edeceğini iki adımla göster. “Yaklaşık” dememiz neden önemlidir?",
+      "source_id": "phase-cards",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-10",
+      "stem": "A kartını gören biri “Ay parçalanıp yok olmuş, C’de yeniden birleşmiş” diyor. Bu kartların neyi gösterdiğini açıklayarak iddiayı düzelt.",
+      "source_id": "phase-cards",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-11",
+      "stem": "Bir evre modeli kurarken ışık kaynağı, beyaz küre ve gözlemci kullanacaksın. Bunlar hangi gök cismi ya da bakış noktasını temsil eder? İki farklı görünüm elde etmek için hangi yerleşimi değiştirirsin?",
+      "source_id": null,
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-12",
+      "stem": "Ece evre modelinde ışığı kürenin içine koyuyor. Böylece küre her yönden parlıyor. Ay’ı doğru temsil etmek için bu modelin hangi iki yönünü değiştirirsin? Değişikliklerin nedenini açıkla.",
+      "source_id": null,
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-13",
+      "stem": "Dünya’daki gözlemci için K ve M konumlarındaki ana evreleri karşılaştır. Her konumda Ay’ın bize bakan tarafının aydınlık olup olmadığını kullanarak gerekçeni açıkla.",
+      "source_id": "lighting",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-14",
+      "stem": "Bir öğrenci L’de Ay’ın alt yarısını, N’de üst yarısını aydınlık boyamak istiyor. Işık oklarına göre bu öneriyi düzelt. Aydınlık tarafı neye bakarak seçmeliyiz?",
+      "source_id": "lighting",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-15",
+      "stem": "Dünya’nın gölgesinin Ay’a düşmesi Ay tutulması olarak adlandırılır. Kerem, “Ay’ın bütün evreleri bu gölge yüzünden oluşur” diyor. Her ay gördüğümüz evreleri açıklayan daha doğru bir model öner. Gölge olayını da bu modelden ayrı belirt.",
+      "source_id": null,
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-16",
+      "stem": "Bu üç küreyi Güneş, Dünya ve Ay için eşleştir. İki büyüklük karşılaştırmasıyla seçimini açıkla. Bu resimden gerçek çap oranlarını bulabilir miyiz?",
+      "source_id": "sizes",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-17",
+      "stem": "B küresini A’nın çevresinde dolaştıran bir modelde C masada sabit kalıyor. Modelin Dünya ve Ay’ın dolanma ilişkisini göstermesi için C’ye nasıl hareket vermelisin? B hareket ederken C’nin durumunu da anlat.",
+      "source_id": "sizes",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-18",
+      "stem": "Arda, “Kürelerin büyüklük sırası doğruysa aralarındaki uzaklıkları da doğru göstermiş olurum” diyor. Bu çıkarımı değerlendir. Uzaklıkları da ölçekli göstermek için modele hangi ek bilgi gerekir?",
+      "source_id": "sizes",
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-19",
+      "stem": "Güneş, Dünya ve Ay modeline dönme ve dolanma okları ekleyeceksin. Dünya için bir dönme oku ile bir dolanma okunun neyi göstermesi gerektiğini anlat. Aynı ayrımı Ay için de yap.",
+      "source_id": null,
+      "response_mode": "text_or_drawing"
+    },
+    {
+      "id": "gina-g5-science-sky-20",
+      "stem": "İki taslağı karşılaştır: P’de üç küre eşit büyüklükte ama Ay Dünya’nın, Dünya Güneş’in çevresinde dolanıyor. R’de büyüklük sırası Güneş > Dünya > Ay, fakat Dünya Ay’ın çevresinde dolandırılıyor. İkisinden yararlanarak daha iyi bir model öner; hangi özellikleri koruyup hangilerini düzelttiğini açıkla.",
+      "source_id": null,
+      "response_mode": "text_or_drawing"
+    }
+  ]
+}

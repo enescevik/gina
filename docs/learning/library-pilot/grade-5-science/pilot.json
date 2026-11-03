@@ -1,0 +1,1623 @@
+{
+  "schema": "gina.learning-library-pilot.v1",
+  "id": "gina-g5-science-sky-v1",
+  "revision": 1,
+  "locale": "tr",
+  "grade": 5,
+  "subject": "Fen Bilimleri",
+  "title": "Gökyüzü atölyesi · 20 soru taslağı",
+  "intended_use": "review_only_practice_pool_not_a_fixed_exam",
+  "status": "draft",
+  "publishable": false,
+  "human_editorial_approval": null,
+  "school_scenario_selection": null,
+  "school_track_applicability": "pending_review",
+  "programme_version": "TYMM live programme checked 2026-11-03; school applicability pending review",
+  "curriculum_reference": {
+    "programme_url": "https://tymm.meb.gov.tr/fen-bilimleri-dersi/unite/367",
+    "programme_page_updated": null,
+    "checked_on": "2026-11-03",
+    "distribution_index": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+    "candidate_scenario_id": "tr-2026-2027-t1-fen3_2-g5-e6",
+    "candidate_source_sha256": "f01e0f96328e6c766776cd1e4dad760923a31331e701ce906b59eef359b75a3c",
+    "mapping_status": "proposed_pending_subject_review"
+  },
+  "delivery": {
+    "automatic_import": false,
+    "reason": "Unpublished editorial pool; portable import preserves common sources and teacher-only fields.",
+    "student_projection_excludes": [
+      "expected_answer",
+      "solution",
+      "explanation",
+      "rubric",
+      "common_misconception",
+      "next_step",
+      "verification"
+    ]
+  },
+  "technical_profile": "science_sky_v1",
+  "assessment_notes": [
+    "Bu 20 soru yalnız ilk ünitenin üç çıktı adayına bağlı bir çalışma havuzudur; yılın tüm Fen Bilimleri kapsamı değildir.",
+    "Okulun senaryo tercihi yoktur. Yedi soruluk senaryo adayının 20 soruluk bir sınava dönüştürüldüğü iddia edilmez.",
+    "Çizim veya yazılı model açıklaması kabul edilir; gerçek model kurma ve uzun süreli gözlem becerilerinin tamamı ölçülmüş sayılmaz.",
+    "Ortak kaynağı kullanan yakın maddeler bağımsız öğrenme kanıtları sayılmaz. Sorular önceki cevaba bağımlı değildir.",
+    "Boş cevap eksik öğrenme tanısı değildir; el yazısı, çizgi düzgünlüğü, hız veya çocuğun kişiliği puanlanmaz.",
+    "Zorluklar editoryal tahmindir. İnsan alan/dil ve erişilebilirlik incelemesi beklenir."
+  ],
+  "fact_references": [
+    {
+      "url": "https://science.nasa.gov/moon/moon-phases/",
+      "checked_on": "2026-11-03",
+      "purpose": "Reflected light, phase cycle and synchronous rotation; no source question or image copied."
+    },
+    {
+      "url": "https://science.nasa.gov/moon/facts/",
+      "checked_on": "2026-11-03",
+      "purpose": "Qualitative Earth/Moon comparison; no source image copied."
+    }
+  ],
+  "sources": [
+    {
+      "id": "same-face",
+      "title": "İşaretli küre modeli",
+      "body": "Dünya ortadadır. Ay modeli sırasıyla 1, 2, 3 ve 4 konumlarından geçip 1’e döner. Mor nokta kürenin yüzeyine sabittir. Şema hareketi anlatır; boyut ve uzaklıklar ölçekli değildir.",
+      "image": "assets/same-face.png",
+      "svg": "assets/same-face.svg",
+      "alt": "Dünya çevresinde dört Ay modeli var. Her konumda yüzeydeki mor nokta Dünya’ya dönük. Nokta 1’de aşağıya, 2’de sağa, 3’te yukarıya, 4’te sola yöneliyor.",
+      "origin": "original_gina_science_diagram",
+      "diagram": {
+        "type": "same_face",
+        "positions": [
+          [
+            600,
+            130
+          ],
+          [
+            360,
+            370
+          ],
+          [
+            600,
+            610
+          ],
+          [
+            840,
+            370
+          ]
+        ],
+        "center": [
+          600,
+          370
+        ],
+        "marker_offset": 28
+      },
+      "minimum_reading_width": 520
+    },
+    {
+      "id": "periods",
+      "title": "İki farklı süre",
+      "body": "Bilgi kartında Ay’ın kendi ekseni çevresinde bir turu ve uzak yıldızlara göre Dünya çevresinde bir dolanımı yaklaşık 27,3 gün; bir yeni aydan sonraki yeni aya geçen süre ise yaklaşık 29,5 gün olarak verilmiştir. Bu iki ölçümün başlangıç ve bitiş koşulları aynı değildir.",
+      "image": null,
+      "svg": null,
+      "alt": "",
+      "origin": "original_gina_hypothetical_observation",
+      "diagram": null,
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "cloud-log",
+      "title": "Eksik gözlem kaydı",
+      "body": "Bir gözlem defterinde şu kayıtlar var: 1. gözlemde Ay diskinin yaklaşık yarısı aydınlık görüldü. İkinci gözlemde hava kapalıydı; Ay görülemedi. Üçüncü gözlemde diskin yarısından fazlası aydınlık görüldü. Bunlar soru için hazırlanmış örnek kayıtlardır; gerçek bir tarih veya konuma ait değildir.",
+      "image": null,
+      "svg": null,
+      "alt": "",
+      "origin": "original_gina_hypothetical_observation",
+      "diagram": null,
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "phase-cards",
+      "title": "Dört ana evre kartı",
+      "body": "Kartlar kuzey yarımküredeki görünüm için şematiktir; yönleri sabittir. A, B, C ve D bir döngü içinde bu sırayla, aralarında yaklaşık birer hafta olacak şekilde seçilmiştir. Koyu disk, görünmeyen kısmı göstermek için çizilmiştir; fotoğraf değildir. Ara evreler kartlarda yer almıyor.",
+      "image": "assets/phase-cards.png",
+      "svg": "assets/phase-cards.svg",
+      "alt": "A diski bütünüyle koyu. B diskinin sağ yarısı aydınlık. C diskinin tamamı aydınlık. D diskinin sol yarısı aydınlık.",
+      "origin": "original_gina_science_diagram",
+      "diagram": {
+        "type": "phase_cards",
+        "cards": [
+          "new",
+          "first",
+          "full",
+          "last"
+        ],
+        "layout": "two_rows"
+      },
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "lighting",
+      "title": "Yukarıdan bakılan ışık modeli",
+      "body": "Güneş soldadır; ışık okları sağa yönelir. Dünya ortada, Ay modelleri K, L, M ve N konumlarındadır. Her Ay modelinin Güneş’e bakan yarısı aydınlık gösterilir. Şema ölçekli değildir; yörünge eğimi gösterilmez. Bu nedenle hizalanmayı her ay tutulma olur biçiminde yorumlama.",
+      "image": "assets/lighting.png",
+      "svg": "assets/lighting.svg",
+      "alt": "Solda Güneş, ortada Dünya var. K Dünya’nın solunda, L altında, M sağında, N üstündedir. Dört Ay modelinin sol yarısı aydınlıktır.",
+      "origin": "original_gina_science_diagram",
+      "diagram": {
+        "type": "lighting",
+        "center": [
+          700,
+          350
+        ],
+        "sun": [
+          120,
+          350
+        ],
+        "positions": {
+          "K": [
+            510,
+            350
+          ],
+          "L": [
+            700,
+            540
+          ],
+          "M": [
+            890,
+            350
+          ],
+          "N": [
+            700,
+            160
+          ]
+        },
+        "illuminated_side": "left"
+      },
+      "minimum_reading_width": 520
+    },
+    {
+      "id": "sizes",
+      "title": "Üç küre seçimi",
+      "body": "A en büyük, B orta, C en küçük küredir. Bunlar yalnız göreli büyüklük sırasını temsil eder. Gerçek çap oranları ve cisimler arasındaki uzaklıklar bu modelde gösterilmez.",
+      "image": "assets/sizes.png",
+      "svg": "assets/sizes.svg",
+      "alt": "A büyük sarı, B orta boy mint, C küçük mor bir küre olarak çizilmiş; her kürenin altında harfi var.",
+      "origin": "original_gina_science_diagram",
+      "diagram": {
+        "type": "sizes",
+        "radii": [
+          115,
+          60,
+          35
+        ]
+      },
+      "minimum_reading_width": 520
+    }
+  ],
+  "questions": [
+    {
+      "id": "gina-g5-science-sky-01",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Mor noktanın yönünü 1’den 4’e izle. Küre tekrar 1’e geldiğinde kendi çevresinde kaç tur dönmüş olur? Noktanın Dünya’ya dönük kalmasıyla bu dönme arasındaki ilişkiyi açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Küre kendi çevresinde bir tam tur döner. Dünya çevresindeki bir dolanımı sırasında yüzeydeki işaretin yönü de bir tur değişir; böylece aynı yüz Dünya’ya dönük kalabilir.",
+      "solution": "Nokta aşağı, sağ, yukarı, sol yönlerini izleyip başlangıca döner. Dört çeyrek dönüş bir tam turdur. Dolanım ve dönme birlikte gerçekleşir.",
+      "explanation": "Kürenin bir yüzünü işaretleyip her konumda hangi yöne baktığını karşılaştır.",
+      "source_id": "same-face",
+      "curriculum": {
+        "candidate_code": "FB.5.1.2",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Bir tam dönme olduğunu belirtir."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Noktanın en az iki konumdaki farklı yönünü kanıt olarak kullanır."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Bir tam dolanım olduğunu belirtir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Aynı yüzün Dünya’ya dönük kalmasını eşleşen dönme ve dolanmayla ilişkilendirir."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Aynı yüz görünüyorsa Ay hiç dönmüyordur.",
+      "next_step": "Kürenin bir yüzünü işaretleyip her konumda hangi yöne baktığını karşılaştır.",
+      "evidence_unit": "same-face",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "synchronous_rotation",
+        "turns_per_orbit": 1
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-02",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bir öğrenci 1’den başlayarak Ay modelini Dünya’nın çevresinde dolaştırıyor ama mor noktanın yönünü hep sayfanın altına doğru tutuyor. Bu gösterim resimdeki modelle aynı sonucu verir mi? 3. konumu kullanarak hatayı ve düzeltmeni anlat.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Aynı sonucu vermez. 3. konumda Dünya Ay modelinin üstünde kalır; nokta aşağıya bakıyorsa Dünya’ya dönük değildir. Küre dolanırken kendi çevresinde de dönmeli, 3’te nokta yukarı yönelmelidir.",
+      "solution": "Sabit yön ile sabit yüzün Dünya’ya bakması farklıdır. 3. konumdaki Dünya yönü belirlenip nokta o yöne çevrilir.",
+      "explanation": "Önce her konumdan Dünya’ya doğru bir ok çiz; işaretin yönüyle karşılaştır.",
+      "source_id": "same-face",
+      "curriculum": {
+        "candidate_code": "FB.5.1.2",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Aynı sonucu vermediğini belirtir."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "3. konumda Dünya’nın üst tarafta olduğunu fark eder."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Noktanın bu konumda yukarı bakması gerektiğini söyler veya çizer."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Dolanmaya eşlik eden dönme hareketini düzeltme olarak açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Küreyi yer değiştirmek dönme hareketini de otomatik gösterir.",
+      "next_step": "Önce her konumdan Dünya’ya doğru bir ok çiz; işaretin yönüyle karşılaştır.",
+      "evidence_unit": "same-face",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-03",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Ay’ın kendi ekseni çevresinde dönme süresiyle hangi süreyi karşılaştırırsan yaklaşık eşitlik bulursun? Neden karttaki 29,5 günü bu eşitliğin yerine kullanmamalısın?",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Dönme süresi, uzak yıldızlara göre Dünya çevresinde bir dolanım süresiyle karşılaştırılır; ikisi yaklaşık 27,3 gündür. 29,5 gün yeni aydan yeni aya evre döngüsüdür ve farklı bir ölçümü anlatır.",
+      "solution": "Karttaki her sayının hangi olayın süresi olduğu ayrılır. Aynı birimde olmak, ölçülen olayların aynı olması demek değildir.",
+      "explanation": "Her sürenin yanına ölçümün başlangıç ve bitiş olayını yaz.",
+      "source_id": "periods",
+      "curriculum": {
+        "candidate_code": "FB.5.1.2",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Dünya çevresindeki dolanım süresini seçer."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "İki sürenin yaklaşık 27,3 gün olduğunu belirtir."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "29,5 günün yeni aydan yeni aya süre olduğunu belirtir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Dönme/dolanım ile evre döngüsünün farklı başlangıç-bitiş koşulları olduğunu açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Ay’la ilgili bütün süreler tam 28 gündür.",
+      "next_step": "Her sürenin yanına ölçümün başlangıç ve bitiş olayını yaz.",
+      "evidence_unit": "periods",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "period_comparison",
+        "rotation_days": 27.3,
+        "orbit_days": 27.3,
+        "phase_days": 29.5
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-04",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Duru, “Dünya’dan çoğunlukla Ay’ın aynı yüzünü görüyoruz; öyleyse diğer yüzü her zaman karanlıktır” diyor. İddianın hangi kısmı gözlemle uyumlu, hangi çıkarımı yanlıştır? Gerekçeni yaz.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Ay’ın çoğunlukla aynı yüzünü görmemiz doğrudur. Diğer yüzünün sürekli karanlık olması sonucu yanlıştır. Dünya’ya bakmayan yüz de Ay dönerken Güneş ışığı alır; görünen yüz ve aydınlanan yüz aynı kavram değildir.",
+      "solution": "Dünya’ya göre bakış yönü ile Güneş’e göre aydınlanma ayrı düşünülür. Aynı yüzü görmek, öbür yüzün ışık almasını engellemez.",
+      "explanation": "Bir kürede Dünya’ya bakan yüzü ve Güneş’e bakan yüzü ayrı işaretle.",
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "FB.5.1.2",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Aynı yüzün çoğunlukla görüldüğünü kabul eder."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Sürekli karanlık çıkarımını reddeder."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Diğer yüzün de Güneş ışığı alabileceğini belirtir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Görülme yönüyle aydınlanmayı birbirinden ayırır."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Uzak yüz ile karanlık yüz aynı şeydir.",
+      "next_step": "Bir kürede Dünya’ya bakan yüzü ve Güneş’e bakan yüzü ayrı işaretle.",
+      "evidence_unit": "question-04",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-05",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "kolay",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "İkinci gözleme “yeni ay” yazmak doğru olur mu? Bu kaydı nasıl düzeltirsin? Elindeki bilginin neyi gösterdiğini ve neyi göstermediğini açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Doğru olmaz. “Bulut nedeniyle gözlenemedi; evre belirlenemedi” yazılmalıdır. Kayıt bulutluluğu gösterir; Ay’ın o anda yeni ay olduğunu göstermez.",
+      "solution": "Gözlem yapılamaması ile karanlık görünen bir evrenin kanıtı aynı değildir. Eksik veri bir evre adıyla doldurulmaz.",
+      "explanation": "Gözleneni, tahmin edileni ve bilinmeyeni üç ayrı sütuna yaz.",
+      "source_id": "cloud-log",
+      "curriculum": {
+        "candidate_code": "FB.5.1.2",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Yeni ay sonucunun desteklenmediğini söyler."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Bulutluluğu gözlem engeli olarak belirtir."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Kaydı gözlenemedi/evre bilinmiyor biçiminde düzeltir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Görülmemeyi Ay’ın yokluğu veya belirli bir evre olarak yorumlamaz."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Ay görülmezse kesin yeni aydır.",
+      "next_step": "Gözleneni, tahmin edileni ve bilinmeyeni üç ayrı sütuna yaz.",
+      "evidence_unit": "cloud-log",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-06",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bu defteri devam ettirecek olsan hangi bilgileri her gözlemde kaydedersin? En az üç bilgi seç ve kapalı havada ne yapacağını açıkla. Gözlem için gece dışarı çıkman gerekmiyor; burada yalnız planını yaz.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Tarih/saat, görünür aydınlık şekil ve hava-görüş koşulları kaydedilebilir; yön/konum da eklenebilir. Kapalı havada evre uydurulmaz, gözlenemedi notu düşülür.",
+      "solution": "Kayıtlar sonradan karşılaştırılabilir olmalıdır. Gözlem eksikliği görünür tutulur; güvenli gözlem koşulları yetişkinle planlanır.",
+      "explanation": "Bir örnek kayıt satırında gözlem ile tahmini farklı işaretle.",
+      "source_id": "cloud-log",
+      "curriculum": {
+        "candidate_code": "FB.5.1.2",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Tarih veya saati kaydetmeyi önerir."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Ay’ın görünen aydınlık şeklini kaydetmeyi önerir."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Hava/görüş koşullarını veya karşılaştırmayı destekleyen konum bilgisini önerir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Kapalı havada gözlenemedi yazacağını, şekil uydurmayacağını açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Eksik bir gözlem mutlaka tahmini resimle tamamlanmalıdır.",
+      "next_step": "Bir örnek kayıt satırında gözlem ile tahmini farklı işaretle.",
+      "evidence_unit": "cloud-log",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-07",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "kolay",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "A, B, C ve D kartlarının temsil ettiği ana evreleri adlandır. B ve D’yi ayırırken resimde hangi bilgiyi kullandığını söyle.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "A yeni ay, B ilk dördün, C dolunay, D son dördündür. Sabit yönlü bu kuzey yarımküre şemasında B’nin sağ, D’nin sol yarısı aydınlıktır.",
+      "solution": "Önce tamamen koyu ve tamamen aydınlık kartlar ayrılır. Yarım görünen iki kartta aydınlık taraf ve verilen sıra birlikte kullanılır.",
+      "explanation": "Yarım aydınlık iki kartı sıradaki komşularıyla karşılaştır.",
+      "source_id": "phase-cards",
+      "curriculum": {
+        "candidate_code": "FB.5.1.3",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "A’yı yeni ay olarak adlandırır."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "C’yi dolunay olarak adlandırır."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "B ilk dördün, D son dördün eşlemesini doğru yapar."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "B ve D ayrımında aydınlık tarafı veya verilen döngü sırasını açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Yarım görünen iki evre aynı evredir.",
+      "next_step": "Yarım aydınlık iki kartı sıradaki komşularıyla karşılaştır.",
+      "evidence_unit": "phase-cards",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "phase_order",
+        "expected": [
+          "new",
+          "first",
+          "full",
+          "last"
+        ]
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-08",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "B’den C’ye giderken aradaki günler için yeni bir kart tasarla veya tarif et. Görünen aydınlık alan B’ye ve C’ye göre nasıl olmalı? Ay’ın gerçek biçimi bu sırada değişir mi?",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Aradaki kartın yarısından fazlası aydınlık olur, ancak tamamı aydınlık olmaz. Görünen aydınlık alan B’den büyük, C’den küçüktür. Ay’ın gerçek küresel biçimi değişmez.",
+      "solution": "Kartlar B’de yarım, C’de tam görünen aydınlık diski gösterir. Ara kart bu iki görünüm arasındadır; model görünen ışıklı kısmı anlatır.",
+      "explanation": "Modelde Ay’ın dış sınırını sabit tutup yalnız görünen aydınlık alanı değiştir.",
+      "source_id": "phase-cards",
+      "curriculum": {
+        "candidate_code": "FB.5.1.3",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Yarıdan fazla aydınlık alan önerir."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Tam aydınlık olmayan bir ara görünüm önerir."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "B’den C’ye görünür aydınlık alanın arttığını belirtir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Gerçek Ay biçiminin değişmediğini söyler."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Evre değişirken Ay büyüyüp küçülür.",
+      "next_step": "Modelde Ay’ın dış sınırını sabit tutup yalnız görünen aydınlık alanı değiştir.",
+      "evidence_unit": "phase-cards",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-09",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "D’den yaklaşık bir hafta sonraki ana evre kartı hangisine benzer? Ardından döngünün nasıl devam edeceğini iki adımla göster. “Yaklaşık” dememiz neden önemlidir?",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "A’ya, yani yeni aya benzer; sonraki ana evreler B ve C yönünde devam eder. Süreler tam yedi gün olarak alınmaz; kartlar döngüyü basitleştiren yaklaşık bir modeldir.",
+      "solution": "Sıra D’de bitmez; döngü başa döner. Modelde yalnız ana evreler gösterildiği için aradaki görünümler ve kesin zamanlar verilmez.",
+      "explanation": "Kartları düz sıra yerine bir çember üzerinde yerleştir.",
+      "source_id": "phase-cards",
+      "curriculum": {
+        "candidate_code": "FB.5.1.3",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "A/yeni ay seçimini yapar."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Ardından B/ilk dördünü gösterir."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Sonraki ana adımda C/dolunayı gösterir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Yaklaşık süreyi kesin takvim günü olarak yorumlamaz."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Evreler D’de biter veya her ay aynı tarihte oluşur.",
+      "next_step": "Kartları düz sıra yerine bir çember üzerinde yerleştir.",
+      "evidence_unit": "phase-cards",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "cycle_prediction",
+        "after": "last",
+        "next": [
+          "new",
+          "first",
+          "full"
+        ]
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-10",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "kolay",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "A kartını gören biri “Ay parçalanıp yok olmuş, C’de yeniden birleşmiş” diyor. Bu kartların neyi gösterdiğini açıklayarak iddiayı düzelt.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Kartlar Ay’ın parçalarını değil, Dünya’dan görünen aydınlık kısmını temsil eder. Ay varlığını ve küresel biçimini korur. Görünüm, Güneş ışığının aydınlattığı kısmın bize nasıl göründüğüne bağlıdır.",
+      "solution": "Modelin koyu rengi boşluk veya yokluk anlamına gelmez. Görünen aydınlık alan ile cismin kendisi ayrılır.",
+      "explanation": "Karton bir diskin dış çizgisini silmeden farklı aydınlık görünümler işaretle.",
+      "source_id": "phase-cards",
+      "curriculum": {
+        "candidate_code": "FB.5.1.3",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Parçalanma/yok olma iddiasını reddeder."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Kartların görünen aydınlık alanı gösterdiğini belirtir."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Ay’ın cisminin/biçiminin korunduğunu belirtir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Aydınlanmanın Güneş ışığıyla ilişkisini kurar."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Koyu çizilen alan uzayda yoktur.",
+      "next_step": "Karton bir diskin dış çizgisini silmeden farklı aydınlık görünümler işaretle.",
+      "evidence_unit": "phase-cards",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-11",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bir evre modeli kurarken ışık kaynağı, beyaz küre ve gözlemci kullanacaksın. Bunlar hangi gök cismi ya da bakış noktasını temsil eder? İki farklı görünüm elde etmek için hangi yerleşimi değiştirirsin?",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Işık kaynağı Güneş’i, küre Ay’ı, gözlemcinin bakış noktası Dünya’dan bakışı temsil eder. Işık sabit tutulurken kürenin gözlemciye göre konumu değiştirilir; aydınlık yarının görünen kısmı değişir.",
+      "solution": "Modelde ışığı üreten, yansıtan ve gözleyen roller ayrılır. Kürenin farklı konumları aynı dış biçimle farklı aydınlık görünümler oluşturabilir.",
+      "explanation": "Model çiziminde ışık yönünü ve gözlemcinin yerini önce sabitle.",
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "FB.5.1.3",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Işık kaynağını Güneş ile eşler."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Küreyi Ay ile eşler."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Gözlemciyi Dünya’dan bakışla eşler."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Konumu değiştirerek görünen aydınlık kısmın değişmesini açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Evre göstermek için her seferinde kürenin boyunu değiştirmek gerekir.",
+      "next_step": "Model çiziminde ışık yönünü ve gözlemcinin yerini önce sabitle.",
+      "evidence_unit": "question-11",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-12",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Ece evre modelinde ışığı kürenin içine koyuyor. Böylece küre her yönden parlıyor. Ay’ı doğru temsil etmek için bu modelin hangi iki yönünü değiştirirsin? Değişikliklerin nedenini açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Işık kürenin dışına, Güneş’i temsil eden ayrı bir yere alınır. Ay küresi kendi ışığını üretmez; dışarıdan gelen ışığı yansıtır. Işığın aydınlattığı yarının gözlemciye görünen kısmı için küre-gözlemci konumu düzenlenir.",
+      "solution": "İçten ışıklı küre Ay’ı ışık kaynağı gibi gösterir. Dış ışık ve uygun gözlem konumu aydınlanma ile görünümü ayırır.",
+      "explanation": "Modelde ışığı üreten ve yansıtan nesneleri farklı rollerle etiketle.",
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "FB.5.1.3",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "İçteki ışığı ayrı dış kaynağa taşır."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Ay’ın kendi görünür ışığını üretmediğini belirtir."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Ay’ın Güneş ışığını yansıttığını açıklar."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Farklı görünüm için küre/gözlemci yerleşimini düzenler."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Ay kendi ışığını üretir.",
+      "next_step": "Modelde ışığı üreten ve yansıtan nesneleri farklı rollerle etiketle.",
+      "evidence_unit": "question-12",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-13",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Dünya’daki gözlemci için K ve M konumlarındaki ana evreleri karşılaştır. Her konumda Ay’ın bize bakan tarafının aydınlık olup olmadığını kullanarak gerekçeni açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "K yeni ayı, M dolunayı temsil eder. K’de aydınlık taraf Dünya’dan uzağa, M’de Dünya’ya dönüktür. Bu çizim her hizalanmanın tutulma olduğu anlamına gelmez.",
+      "solution": "Işık soldan gelir. K’de Dünya sağda kaldığından bize karanlık taraf; M’de Dünya solda kaldığından bize aydınlık taraf dönüktür.",
+      "explanation": "Her konumda önce Güneş’e, sonra Dünya’ya bakan tarafı işaretle.",
+      "source_id": "lighting",
+      "curriculum": {
+        "candidate_code": "FB.5.1.3",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "K’yi yeni ay ile eşler."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "M’yi dolunay ile eşler."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "K’nin Dünya’ya dönük tarafının aydınlık olmadığını açıklar."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "M’nin Dünya’ya dönük tarafının aydınlık olduğunu açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Güneş’e yakın çizilen konum mutlaka dolunaydır.",
+      "next_step": "Her konumda önce Güneş’e, sonra Dünya’ya bakan tarafı işaretle.",
+      "evidence_unit": "lighting",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "position_phase",
+        "new": "K",
+        "full": "M"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-14",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bir öğrenci L’de Ay’ın alt yarısını, N’de üst yarısını aydınlık boyamak istiyor. Işık oklarına göre bu öneriyi düzelt. Aydınlık tarafı neye bakarak seçmeliyiz?",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "İkisinde de sol yarı aydınlık olmalıdır. Taraf, sayfanın üstü-altına veya Dünya’nın yerine göre değil Güneş’ten gelen ışık yönüne göre belirlenir.",
+      "solution": "Işık soldan geldiğinden Güneş’e bakan yüz soldadır. Dünya’dan görünen miktar başka bir sorudur; uzaydan çizimde aydınlık yüz ışık yönüyle bulunur.",
+      "explanation": "Her Ay modelinin Güneş’e dönük yarısını aynı ışık oku yardımıyla bul.",
+      "source_id": "lighting",
+      "curriculum": {
+        "candidate_code": "FB.5.1.3",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "L için sol yarıyı seçer."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "N için sol yarıyı seçer."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Işık oklarının soldan sağa olduğunu kullanır."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Aydınlanan taraf ile Dünya’dan görünen kısmı ayırır."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Ay’ın Dünya’ya bakan yarısı her zaman aydınlıktır.",
+      "next_step": "Her Ay modelinin Güneş’e dönük yarısını aynı ışık oku yardımıyla bul.",
+      "evidence_unit": "lighting",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "lighting_side",
+        "expected": "left"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-15",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Dünya’nın gölgesinin Ay’a düşmesi Ay tutulması olarak adlandırılır. Kerem, “Ay’ın bütün evreleri bu gölge yüzünden oluşur” diyor. Her ay gördüğümüz evreleri açıklayan daha doğru bir model öner. Gölge olayını da bu modelden ayrı belirt.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Normal evreler, Ay Dünya çevresinde dolanırken Güneş’in aydınlattığı yarının Dünya’dan görünen bölümünün değişmesiyle açıklanır. Dünya’nın gölgesinin Ay’a düşmesi Ay tutulmasıyla ilgilidir; bütün evrelerin nedeni değildir.",
+      "solution": "Evre için Ay-Güneş-Dünya bakış ilişkisi; tutulma için gölgenin Ay’a düşmesi ayrı olaylardır. Model bunları aynı mekanizma gibi göstermemelidir.",
+      "explanation": "Modelde gölge ile gözlemcinin gördüğü aydınlık kısmı ayrı göster.",
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "FB.5.1.3",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Bütün evrelerin gölgeyle oluştuğu iddiasını reddeder."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Güneş’in Ay’ı aydınlattığını belirtir."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Dolanım sırasında görünen aydınlık bölümün değişmesini açıklar."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Dünya gölgesini Ay tutulmasıyla ilişkilendirir."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Her yeni ay veya her yarım görünüm bir Ay tutulmasıdır.",
+      "next_step": "Modelde gölge ile gözlemcinin gördüğü aydınlık kısmı ayrı göster.",
+      "evidence_unit": "question-15",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-16",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "kolay",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bu üç küreyi Güneş, Dünya ve Ay için eşleştir. İki büyüklük karşılaştırmasıyla seçimini açıkla. Bu resimden gerçek çap oranlarını bulabilir miyiz?",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "A Güneş, B Dünya, C Ay olur. Güneş Dünya’dan, Dünya Ay’dan büyüktür. Şema gerçek çap oranlarını vermediği için piksel veya cetvel ölçümüyle gerçek oran bulunamaz.",
+      "solution": "Sıralama modeli nicel ölçek modeli değildir. Doğru büyük-orta-küçük seçimi gerçek çap veya uzaklık sayısı sağlamaz.",
+      "explanation": "Büyüklük sırası ile sayısal ölçeği ayrı model özellikleri olarak yaz.",
+      "source_id": "sizes",
+      "curriculum": {
+        "candidate_code": "FB.5.1.4",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "A-Güneş eşlemesini yapar."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "B-Dünya ve C-Ay eşlemesini yapar."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Güneş > Dünya > Ay karşılaştırmasını açıklar."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Gerçek oranların bu şemadan hesaplanamayacağını belirtir."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Resimde iki kat büyük çizilen cisim gerçekte de tam iki kat büyüktür.",
+      "next_step": "Büyüklük sırası ile sayısal ölçeği ayrı model özellikleri olarak yaz.",
+      "evidence_unit": "sizes",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "size_order",
+        "expected": [
+          "Sun",
+          "Earth",
+          "Moon"
+        ]
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-17",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "B küresini A’nın çevresinde dolaştıran bir modelde C masada sabit kalıyor. Modelin Dünya ve Ay’ın dolanma ilişkisini göstermesi için C’ye nasıl hareket vermelisin? B hareket ederken C’nin durumunu da anlat.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "C, B’nin çevresinde dolanmalı; B, A’nın çevresinde ilerlerken C de B ile birlikte bu harekete katılmalıdır. Böylece Ay’ın Dünya çevresindeki hareketi ve Dünya-Ay sisteminin Güneş çevresindeki hareketi birlikte gösterilir.",
+      "solution": "Kürelerin görevleri A Güneş, B Dünya, C Ay olarak kullanılır. Ay’ı masada bırakmak Dünya’yla ilişkisini koparır.",
+      "explanation": "Modeli iki bağlı hareket olarak çiz: Ay-Dünya, ardından Dünya-Ay sistemi ve Güneş.",
+      "source_id": "sizes",
+      "curriculum": {
+        "candidate_code": "FB.5.1.4",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "C’nin B çevresinde dolanmasını önerir."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "B’nin A çevresindeki hareketini korur."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "B ilerlerken C’nin onunla birlikte taşınmasını belirtir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Ay-Dünya ve Dünya-Güneş dolanımlarını doğru cisimlerle eşler."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Ay Dünya hareket ederken uzayda aynı yerde bekler.",
+      "next_step": "Modeli iki bağlı hareket olarak çiz: Ay-Dünya, ardından Dünya-Ay sistemi ve Güneş.",
+      "evidence_unit": "sizes",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-18",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Arda, “Kürelerin büyüklük sırası doğruysa aralarındaki uzaklıkları da doğru göstermiş olurum” diyor. Bu çıkarımı değerlendir. Uzaklıkları da ölçekli göstermek için modele hangi ek bilgi gerekir?",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Çıkarım doğru değildir. Boyut sırası, aradaki uzaklıkların oranını vermez. Uzaklıkları göstermek için gerçek uzaklık bilgileri ve bunları model uzunluklarına dönüştüren açık bir ölçek gerekir.",
+      "solution": "Aynı büyüklükteki küreler masada çok farklı aralıklarla yerleştirilebilir. Büyüklük ve uzaklık ayrı model kararlarıdır.",
+      "explanation": "Model açıklamasına hangi özelliğin ölçekli, hangisinin yalnız şematik olduğunu ekle.",
+      "source_id": "sizes",
+      "curriculum": {
+        "candidate_code": "FB.5.1.4",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Çıkarımı reddeder."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Büyüklük ile uzaklığı ayrı özellikler olarak tanımlar."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Uzaklık bilgisine ihtiyaç olduğunu belirtir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Açık bir uzaklık ölçeği kullanmayı önerir."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Boyut sırası tek başına doğru uzaklığı da belirler.",
+      "next_step": "Model açıklamasına hangi özelliğin ölçekli, hangisinin yalnız şematik olduğunu ekle.",
+      "evidence_unit": "sizes",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-19",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Güneş, Dünya ve Ay modeline dönme ve dolanma okları ekleyeceksin. Dünya için bir dönme oku ile bir dolanma okunun neyi göstermesi gerektiğini anlat. Aynı ayrımı Ay için de yap.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Dünya’nın dönme oku kendi ekseni çevresini, dolanma oku Güneş çevresindeki hareketini gösterir. Ay’ın dönme oku kendi ekseni çevresini, dolanma oku Dünya çevresindeki hareketini gösterir.",
+      "solution": "Okun nesnenin kendi ekseni etrafında mı başka bir cismin çevresinde mi olduğu ayırt edilir. Ay da Dünya da hem döner hem dolanır.",
+      "explanation": "Her okun yanına “hangi eksen/neyin çevresi?” sorusunun cevabını yaz.",
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "FB.5.1.4",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Dünya’nın kendi ekseni çevresinde dönmesini açıklar."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Dünya’nın Güneş çevresinde dolanmasını açıklar."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Ay’ın kendi ekseni çevresinde dönmesini açıklar."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Ay’ın Dünya çevresinde dolanmasını açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Dönme ve dolanma aynı hareketin iki adıdır.",
+      "next_step": "Her okun yanına “hangi eksen/neyin çevresi?” sorusunun cevabını yaz.",
+      "evidence_unit": "question-19",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    },
+    {
+      "id": "gina-g5-science-sky-20",
+      "revision": 1,
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "topic": "Gökyüzündeki komşularımız",
+      "kind": "open_ended",
+      "difficulty": "orta_ustu",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "İki taslağı karşılaştır: P’de üç küre eşit büyüklükte ama Ay Dünya’nın, Dünya Güneş’in çevresinde dolanıyor. R’de büyüklük sırası Güneş > Dünya > Ay, fakat Dünya Ay’ın çevresinde dolandırılıyor. İkisinden yararlanarak daha iyi bir model öner; hangi özellikleri koruyup hangilerini düzelttiğini açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "P’nin dolanma ilişkileri, R’nin büyüklük sırası korunur. P’nin eşit küreleri büyük-orta-küçük olarak değiştirilir; R’de Dünya’nın Ay çevresinde dolanması yerine Ay Dünya çevresinde, Dünya Güneş çevresinde hareket ettirilir. Bu da gerçek çap/uzaklık oranlarını otomatik sağlamaz.",
+      "solution": "Bir modelin tek doğru özelliği bütün modeli doğru yapmaz. İki taslaktaki büyüklük ve hareket özellikleri ayrı değerlendirilip birleştirilir.",
+      "explanation": "Büyüklük ve hareket için iki ayrı kontrol satırı hazırlayıp modelini gözden geçir.",
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "FB.5.1.4",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "reasoning_and_model_description_not_full_performance"
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yazarak veya etiketli bir çizimle açıklayabilirsin. Eşdeğer bilimsel açıklamalar kabul edilir; düzgün çizgi veya güzel el yazısı puanlanmaz."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Bir ölçütün yanlış olması diğer doğru ölçütlerin puanını götürmez. Eşdeğer açıklama, model ve gösterimler kabul edilir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "P’nin dolanma ilişkilerini korur."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "P’nin eşit büyüklüklerini düzeltir."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "R’nin Güneş > Dünya > Ay büyüklük sırasını korur."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "R’nin yanlış dolanımını Ay-Dünya ve Dünya-Güneş ilişkisiyle düzeltir."
+          }
+        ],
+        "missing_answer": "not_answered; boş cevaptan genel yeterlilik sonucu çıkarma",
+        "review_required": true
+      },
+      "common_misconception": "Bir modelin bir yönü doğruysa bütün yönleri doğrudur.",
+      "next_step": "Büyüklük ve hareket için iki ayrı kontrol satırı hazırlayıp modelini gözden geçir.",
+      "evidence_unit": "question-20",
+      "depends_on_question_ids": [],
+      "provenance": {
+        "authoring": "Codex-authored original draft; not copied from an exam",
+        "created_on": "2026-11-03",
+        "paid_provider_call": false
+      },
+      "verification": {
+        "type": "editorial_reasoning"
+      },
+      "publishable": false,
+      "review_status": "pending_editorial_review"
+    }
+  ]
+}

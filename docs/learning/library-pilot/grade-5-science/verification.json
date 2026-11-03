@@ -1,0 +1,21 @@
+{
+  "questions": 20,
+  "sources": 6,
+  "pngs": 4,
+  "exact_field_and_byte_comparison": true,
+  "same_request_replay": true,
+  "published": false,
+  "editorial_review_performed": false,
+  "transaction_rolled_back": true,
+  "date": "2026-11-03",
+  "technical_test_cases": 20,
+  "existing_pilot_regression_cases": 18,
+  "import_preparer_regression_cases": 3,
+  "visual_review": {
+    "phone_width": 390,
+    "review_width": 1280,
+    "four_phase_cards_visible_on_phone": true,
+    "physical_device": false
+  },
+  "content_review": "author_self_check_only_not_independent_editorial_approval"
+}

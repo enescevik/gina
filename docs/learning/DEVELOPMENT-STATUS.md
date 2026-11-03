@@ -258,3 +258,11 @@ Kullanıcı uyarısıyla ilk yayın ekranının onaylı makete birebir uymadığ
 [Görüntüler, kapsam ve açık kabul işleri](../design/screens/library-family-access/README.md). Yeni migration ve uygulama değişikliği henüz üretime/TestFlight'a gönderilmedi. Kütüphane genel açılış anahtarı kapalı; 20 soruluk pilot gerçek alan editörü onayı bekliyor, kalan 1520 taslak ve üretim uçtan uca/gerçek cihaz kabulü açık. Web/backoffice Cloudflare yayını için bağlantı bilgileri hâlâ eksik. Bu artım, önceki “aile edinimi tamamlanmadı” kaydını geliştirme düzeyinde ilerletir; canlı içerik kabulünü tamamlanmış saymaz.
 
 Doğrulama: 43 SQL dosyasında 1042 kontrol (36 yeni), üç eşzamanlı edinim/kota yarışı, 81 core testi, 17 medya/render testi ve workspace tip/lint geçti. Telefon ve iki tablet boyutunda 10 sentetik tarayıcı kontrolü geçti.
+
+## 3 Kasım — Fen Bilimleri havuzu ve gerçek dosya kapsamı
+
+5. sınıf Fen Bilimleri için ilk ünitenin üç güncel çıktı adayına bağlı 20 özgün açık uçlu taslak, dört özgün şema ve iki ortak metin kaynağı hazırlandı. Cevap, çözüm, kısmi puan, olası yanılgı ve sonraki adım öğretmen projeksiyonunda; öğrenci çıktısı ayrıdır. Dört evre kartı telefon için iki satır düzenlendi. Bu bir yeni uygulama ekranı değildir.
+
+Hazırlayıcı artık kayıtlı Fen taslak profilini ve görselsiz ortak metni koruyor. Matematik pilotunun özel geometrik kontrolleri korunuyor. 20 yeni teknik test, 18 Matematik regresyon testi ve üç hazırlayıcı testi geçti. Tam Fen paketi ayrı geçici veritabanına aktarılıp tüm soru/cevap/meta veri ve PNG baytları birebir geri okundu; aynı istek tekrarında ikinci paket oluşmadı. İşlem geri alındı, test veritabanı silindi. Normal/demo/üretim verisi değişmedi.
+
+[Kapsam kaydı](library-pilot/coverage.json) gerçek pilot dosyalarından hesaplanır: **40 taslak, 0 alan editörü onaylı, 0 yayımlanmış; hedefe göre 1500 taslak açık**. Önceki 20/1520 kayıtları tarihîdir. Soru sayısı yıllık ders kapsamı veya resmî senaryo kabulü değildir. [Fen paketi, kaynaklar ve açık kabul işleri](library-pilot/grade-5-science/README.md). TestFlight 17 değişmedi; içerik yayımlanmadı.

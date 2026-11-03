@@ -56,3 +56,7 @@ Mevcut yönetim kütüphanesinde paket seçme → öğrenci/öğretmen önizleme
 ## 3 Kasım eklemesi — ayrı yayın kararı ve teslim görselleri
 
 `20261103040000_library_publication.sql` ve `library-media` ile taslak değişmeden sürümlü yayın kararı ve yeniden kodlanmış teslim PNG'leri eklendi. İlk aktarımın yalnız yapısal PNG kabulü yukarıdaki gibi kalır; yayın öncesinde CRC/piksel/boyut/sRGB doğrulaması ayrıca zorunludur. Yeni katalog kapısı `library_packages.enabled=false`; aileye cevap veya ham kaynak sunmaz. Aylık hak tüketimi/edinim/Prova seçimi sonraki aşamadır. Sözleşme, renk profili sınırı ve test kaydı: [yayın kabulü](../design/screens/library-publication/README.md).
+
+## 3 Kasım eklemesi — ikinci içerik profili
+
+Hazırlayıcı, `--folder docs/learning/library-pilot/grade-5-science` ile kayıtlı Fen taslak profilini de doğrular; kaynak bilgi bağlantıları ve iki görselsiz metin kaynağı kaybolmadan taşınır. Bilinmeyen profil otomatik onaylanmaz. Mevcut Matematik profili ve özel geometri kontrolleri korunur. `test-library-draft-roundtrip.py` açıkça verilen izole audit şablonundan geçici kopyada tam paketi aktarır/okur, alanları ve PNG baytlarını karşılaştırır; inceleme veya yayın yapmaz. Dosya hazırlamak gerçek editör onayı değildir. Aile edinimi kodu PR #79 ile eklendi; bu dokümandaki eski “sonraki aşama” ifadeleri tarihîdir, üretim açılışını ifade etmez.
