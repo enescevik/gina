@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { PublicationIcon } from "./library-publication-icon";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { type ReactNode, useEffect, useState } from "react";
@@ -43,6 +44,7 @@ export function Layout(
 ) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const publication = router.pathname === "/library-publication";
   const activePath = router.pathname === "/library-publication"
     ? "/library"
     : router.pathname;
@@ -148,7 +150,27 @@ export function Layout(
                 roles.includes("content"))
             ? (
               <nav aria-label="Yönetim bölümleri">
-                {(isAdmin ? NAV : []).map((item) => (
+                {publication && isAdmin ? (
+                  <Link
+                    href="/library"
+                    aria-current="page"
+                    className="admin-nav active publication-library-nav"
+                  >
+                    <PublicationIcon name="layers" /> Kütüphane
+                  </Link>
+                ) : null}
+                {publication ? (
+                  <details className="publication-other-nav">
+                    <summary>Diğer bölümler</summary>
+                    {(isAdmin ? NAV.filter(item => item.href !== "/library") : [])
+                      .map(item => (
+                        <Link key={item.href} href={item.href} className="admin-nav">
+                          {item.label}
+                        </Link>
+                      ))}
+                  </details>
+                ) : null}
+                {(isAdmin && !publication ? NAV : []).map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
@@ -232,10 +254,12 @@ export function Layout(
             : null}
         </aside>
         <main className="admin-main">
-          <header className="admin-page-heading">
-            <h1>{title}</h1>
-            <span className="admin-badge">GINA Aile</span>
-          </header>
+          {publication && allowed ? null : (
+            <header className="admin-page-heading">
+              <h1>{title}</h1>
+              <span className="admin-badge">GINA Aile</span>
+            </header>
+          )}
           {body}
         </main>
       </div>
