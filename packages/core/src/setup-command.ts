@@ -7,6 +7,7 @@ const item = z.object({
   icon: z.string().min(1).max(80),
   stars: z.number().int().min(0).max(999),
   days: z.array(z.number().int().min(1).max(7)).max(7),
+  source_id: z.uuid().optional(),
   starts_on: z.string().refine(isCalendarDate).optional(),
 }).strict();
 export const setupCommandSchema = z.object({

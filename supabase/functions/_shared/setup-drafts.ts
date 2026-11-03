@@ -23,27 +23,32 @@ export const rewardIcons = [
 ];
 /** Explicit allowlist: never forward names, birthdays, gender, school names or arbitrary prompts. */
 export function setupInput(raw: Record<string, unknown>) {
-  if (!["task", "reward"].includes(String(raw.kind)))
+  if (!["task", "reward"].includes(String(raw.kind))) {
     throw Error("invalid_input");
-  const grade =
-    raw.grade === null || raw.grade === undefined ? null : raw.grade;
+  }
+  const grade = raw.grade === null || raw.grade === undefined
+    ? null
+    : raw.grade;
   if (
     grade !== null &&
     (!Number.isInteger(grade) || Number(grade) < 0 || Number(grade) > 12)
-  )
+  ) {
     throw Error("invalid_input");
+  }
   const ageBand = raw.age_band ?? null;
   if (
     ageBand !== null &&
     !["2-5", "6-9", "10-13", "14-18"].includes(String(ageBand))
-  )
+  ) {
     throw Error("invalid_input");
+  }
   const selected = Array.isArray(raw.interests) ? raw.interests : [];
   if (
     selected.length > 6 ||
     selected.some((i) => !interests.includes(String(i)))
-  )
+  ) {
     throw Error("invalid_input");
+  }
   return {
     kind: raw.kind as "task" | "reward",
     grade,
@@ -52,9 +57,16 @@ export function setupInput(raw: Record<string, unknown>) {
     locale: raw.locale === "en" ? "en" : "tr",
   };
 }
-export function validateDrafts(raw: unknown, kind: "task" | "reward") {
-  if (!Array.isArray(raw) || raw.length < 1 || raw.length > 3)
+export function validateDrafts(
+  raw: unknown,
+  kind: "task" | "reward",
+  allowEmpty = false,
+) {
+  if (
+    !Array.isArray(raw) || raw.length < (allowEmpty ? 0 : 1) || raw.length > 3
+  ) {
     throw Error("invalid_output");
+  }
   return raw.map((item) => {
     if (
       !item ||
@@ -67,8 +79,9 @@ export function validateDrafts(raw: unknown, kind: "task" | "reward") {
       item.stars < 1 ||
       item.stars > (kind === "task" ? 5 : 100) ||
       !(kind === "task" ? taskIcons : rewardIcons).includes(item.icon)
-    )
+    ) {
       throw Error("invalid_output");
+    }
     return {
       title: item.title.trim(),
       reason: item.reason,
@@ -76,4 +89,21 @@ export function validateDrafts(raw: unknown, kind: "task" | "reward") {
       icon: item.icon as string,
     };
   });
+}
+
+/** Source identity is assigned by the verified server path, never by the model. */
+export function setupDocumentResult(
+  raw: { suggestions?: unknown; document_notes?: unknown },
+  kind: "task" | "reward",
+  sourceId?: string,
+) {
+  const suggestions = validateDrafts(raw.suggestions, kind, !!sourceId);
+  if (!sourceId) return { suggestions };
+  if (
+    typeof raw.document_notes !== "string" || raw.document_notes.length > 500
+  ) throw Error("invalid_output");
+  return {
+    suggestions: suggestions.map((s) => ({ ...s, source_id: sourceId })),
+    document_notes: raw.document_notes.trim(),
+  };
 }

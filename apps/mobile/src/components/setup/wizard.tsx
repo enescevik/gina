@@ -36,6 +36,7 @@ export function SetupWizard({
   error,
   children,
   saveLabel,
+  hideContinue = false,
 }: {
   title: string;
   steps: string[];
@@ -49,6 +50,7 @@ export function SetupWizard({
   error?: string | null;
   children: ReactNode;
   saveLabel?: string;
+  hideContinue?: boolean;
 }) {
   const { t } = useTranslation();
   const { width, height, fontScale } = useWindowDimensions();
@@ -188,7 +190,7 @@ export function SetupWizard({
                   </Text>
                 )}
               </ScrollView>
-              <View style={[u.footer, { gap: 12 }]}>
+              {!hideContinue && <View style={[u.footer, { gap: 12 }]}>
                 {step > 0 && (
                   <IconButton
                     label={t("common.back")}
@@ -213,7 +215,7 @@ export function SetupWizard({
                     else move(step + 1);
                   }}
                 />
-              </View>
+              </View>}
             </View>
           </KeyboardAvoidingView>
         </SafeAreaView>

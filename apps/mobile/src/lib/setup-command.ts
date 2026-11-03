@@ -1,12 +1,12 @@
 import { randomUUID } from "expo-crypto";
-import { createSetupJournal, SETUP_COMMAND_PREFIX } from "@gina/core";
+import { createSetupJournal, createSetupAiJournal, SETUP_AI_PREFIX, SETUP_COMMAND_PREFIX } from "@gina/core";
 import { deviceRecordStorage as store } from "./device-record-storage";
 import { supabase } from "./supabase";
 
 let generation = 0;
 export function clearSetupCommands() {
   generation++;
-  for (const key of store.keys().filter(k => k.startsWith(SETUP_COMMAND_PREFIX))) store.remove(key);
+  for (const key of store.keys().filter(k => k.startsWith(SETUP_COMMAND_PREFIX) || k.startsWith(SETUP_AI_PREFIX))) store.remove(key);
 }
 export function setupJournal(user: string, family: string, kind: "task" | "reward", child: string | null) {
   const active = generation;
@@ -21,4 +21,9 @@ export function setupJournal(user: string, family: string, kind: "task" | "rewar
       } finally { clearTimeout(timer); }
     },
   });
+}
+
+export function setupAiJournal(user:string,family:string,kind:"task"|"reward",context:string){
+  const active=generation;
+  return createSetupAiJournal({store,user,family,kind,context,id:randomUUID,guard(){if(generation!==active)throw Error("setup_session_changed");}});
 }

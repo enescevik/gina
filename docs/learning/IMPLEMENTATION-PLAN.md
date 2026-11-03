@@ -135,3 +135,7 @@ Aile arama, aktif cihaz/PIN/üyelik sorunları, aile geçişi ve hesap silme tal
 ## Yayın kapısı
 
 Bu planın ilk uygulaması ayrı incelenebilir PR’larla ilerler. Mobil değişikliklerde mevcut Expo 58 yönergeleri ve izin açıklamaları uygulanır; resmî paket eklenirse yeni native derleme gerekir. Tip kontrolü, lint, yetki/atomiklik/kota testleri, telefon/tablet görüntüleri ve seçilmiş gerçek cihaz akışları tamamlanmadan “hazır” denmez. Raporun tamamlanması, yeni özelliklerin TestFlight’ta bulunduğu anlamına gelmez.
+
+### 4 Kasım artımı: belge → görev/ödül
+
+Kod ve sentetik kabul tamamlandı: belge izinleri, kaynakla ilişkili düzenlenebilir taslaklar, çoklu kayıt, ödül üzerinden hedef kaynağı, kayıp yanıt kurtarma ve AI lease koruması. Kanıt: `docs/design/screens/document-setup/README.md`. 075000 + Edge henüz dağıtılmadı. Tam ödev/ders/kurs planı, gerçek sağlayıcı/cihaz kabulü ve diğer açık maddeler kapanmış sayılmaz.

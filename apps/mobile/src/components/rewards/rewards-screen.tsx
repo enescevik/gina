@@ -1,3 +1,4 @@
+import { useSetupSources, SetupSourceLinks, SourceLoadError } from "@/components/setup/source-links";
 import { GoalSetup } from "@/components/setup/goal-setup";
 import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -88,6 +89,7 @@ export function RewardsScreen() {
     { label: t("prova.title"), Icon: GraduationCap, path: "/parent/prova" as const },
     { label: t("planner.more"), Icon: MoreHorizontal, path: "/parent/menu" as const },
   ];
+  const sources = useSetupSources("reward", (rewards.data ?? []).map(item=>item.id));
   return <SafeAreaView edges={['top', 'left', 'right']} style={u.root}>
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[u.content, { maxWidth: 1060, gap: 10, paddingTop: 4 }]}>
       <View style={u.topbar}>
@@ -109,6 +111,7 @@ export function RewardsScreen() {
         })}
       </View>
       <Pressable accessibilityRole="button" onPress={() => setChoosingGoal(true)} style={{ minHeight: 48, flexDirection: "row", alignItems: "center", gap: 8 }}><Heart size={22} color={p.purple}/><Text style={[u.bold, { color: p.purple }]}>{t("betaUx.chooseGoal")}</Text></Pressable>
+      <SourceLoadError error={sources.error} retry={()=>void sources.refetch()}/>
       {notice ? <Text accessibilityLiveRegion="polite" style={u.small}>{notice}</Text> : null}
       {query.isLoading ? <ActivityIndicator accessibilityLabel={t("rewardPremium.loading")} color={p.purple} /> : null}
       {query.error ? <View style={u.card}><Text accessibilityRole="alert" style={u.error}>{t("rewardPremium.loadError")}</Text><SatinButton title={t("common.retry")} onPress={() => { void query.refetch(); }} /></View> : null}
@@ -141,6 +144,7 @@ export function RewardsScreen() {
               {toggle.isPending && toggle.variables?.id === reward.id ? <ActivityIndicator color={p.purple} /> : reward.active ? <Pause size={16} color={p.purple} /> : <Play size={16} color={p.purple} />}<Text style={[u.bold, { fontSize: 14, color: p.purple }]}>{t(reward.active ? "taskPremium.pause" : "taskPremium.resume")}</Text>
             </Pressable>
           </View></View></View>
+          <SetupSourceLinks sources={(sources.data??[]).filter(s=>s.item_id===reward.id)}/>
           {toggle.error && toggle.variables?.id === reward.id ? <Text accessibilityRole="alert" style={u.error}>{t("rewardPremium.toggleError")}</Text> : null}
         </View>) : null}
       </View>

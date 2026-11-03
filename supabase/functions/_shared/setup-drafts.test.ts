@@ -32,13 +32,13 @@ Deno.test("setup rejects excessive stars and invented asset paths", () => {
     validateDrafts(
       [{ title: "Task", reason: "Reason", icon: "task-custom", stars: 99 }],
       "task",
-    ),
+    )
   );
   assertThrows(() =>
     validateDrafts(
       [{ title: "Task", reason: "Reason", icon: "https://remote", stars: 1 }],
       "task",
-    ),
+    )
   );
   assertEquals(
     validateDrafts(
@@ -46,5 +46,49 @@ Deno.test("setup rejects excessive stars and invented asset paths", () => {
       "task",
     )[0].title,
     "Read",
+  );
+});
+Deno.test("document drafts allow empty output instead of invented suggestions", async () => {
+  const { setupDocumentResult } = await import("./setup-drafts.ts");
+  assertEquals(
+    setupDocumentResult(
+      { suggestions: [], document_notes: "Belgede uygun bir görev yok." },
+      "task",
+      "trusted-source",
+    ),
+    { suggestions: [], document_notes: "Belgede uygun bir görev yok." },
+  );
+  assertThrows(() => setupDocumentResult({ suggestions: [] }, "task"));
+});
+Deno.test("model cannot pick document identity or inject extra source fields", async () => {
+  const { setupDocumentResult } = await import("./setup-drafts.ts");
+  const r = setupDocumentResult(
+    {
+      suggestions: [{
+        title: "Oku",
+        reason: "Belgedeki okuma etkinliği",
+        icon: "read-book",
+        stars: 1,
+        source_id: "another-family",
+        url: "private",
+      }],
+      document_notes: "Kaynak okunabildi.",
+    },
+    "task",
+    "trusted-source",
+  );
+  assertEquals(r.suggestions[0], {
+    title: "Oku",
+    reason: "Belgedeki okuma etkinliği",
+    icon: "read-book",
+    stars: 1,
+    source_id: "trusted-source",
+  });
+  assertThrows(() =>
+    setupDocumentResult(
+      { suggestions: [], document_notes: "x".repeat(501) },
+      "task",
+      "trusted-source",
+    )
   );
 });
