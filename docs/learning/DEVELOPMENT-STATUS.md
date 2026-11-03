@@ -220,3 +220,9 @@ Sıradaki müfredat/kütüphane işine geçildi. 648 senaryo 62 sınıf–ders g
 ## 3 Kasım — ilk 20 soruluk geometri içerik pilotu
 
 5. sınıf Matematik için 20 özgün açık uçlu taslak, yedi çıktı adayı, sekiz SVG/PNG diyagramı, çözüm ve kısmi puan ölçütleri hazırlandı. Öğrenci projeksiyonu cevap anahtarından ayrıldı; 18 teknik kontrol CI’ye eklendi. Yerel içerik görüntüleyicisi üç web ölçüsünde kontrol edildi. [Paket ve kabul sınırları](library-pilot/grade-5-math/README.md). İnsan editoryal onayı, okul/program sürümü, ortak kaynakları koruyan kütüphane aktarımı ve uygulama testi açık. Üretilen 20 taslak yayımlanmadı; 1.540 hedefinin tamamı değildir. Canlı veritabanı/AI/TestFlight değişikliği yok.
+
+## 3 Kasım — taslak kütüphane paketi kabul sözleşmesi
+
+20 soruluk pilot için çevrimdışı istek hazırlayıcı ve yöneticiye özel atomik aktarım/okuma RPC'leri eklendi. Ortak metin/PNG kaynağı, ayrı öğretmen cevabı/rubriği ve değiştirilemez sürümler birlikte korunur. Tekrar gönderim, aynı anda gelen istekler ve eski sürüme dayalı değişiklik kontrol edildi. 67 SQL kontrolü, üç hazırlayıcı testi, üç gerçek eşzamanlı yarış ve gerçek pilotun geri okuma karşılaştırması geçti. Mobil tip/lint ve 73 core testi geçti. [Sözleşme ve sınırlar](LIBRARY-BUNDLE-IMPORT.md).
+
+Bu, yeni bir yönetim ekranı veya yayın değildir. Taslak seçme/önizleme/inceleme arayüzü, alan editörü onayı, aile paket hakları ve ortak kaynaklı Prova seçimi hâlâ açık. PNG kontrolü yapısaldır; piksel/CRC doğrulaması iddia edilmez. Normal/demo kayıtları değiştirilmedi; gerçek pilot testi geri alındı. Üretim migration, hosting ve TestFlight yayımlanmadı.

@@ -2245,6 +2245,9 @@ isOneToOne: false
                 }
           }
           Functions: {
+            "admin_import_library_bundle": { Args: { "p_request_id": string; "p_bundle": Json }; Returns: Json },
+            "admin_list_library_imports": { Args: { "p_limit"?: number }; Returns: Json },
+            "admin_get_library_import": { Args: { "p_id": string; "p_include_answers"?: boolean }; Returns: Json },
             "admin_add_library_item":
 { Args: { "p_collection_id": string,"p_content": Json,"p_publish"?: boolean }; Returns: string
                            },
