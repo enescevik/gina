@@ -52,5 +52,33 @@
     "Only bounded static RGB/RGBA 8-bit PNG with supported sRGB metadata; not a general PNG/ICC converter.",
     "Unsaved forms only in memory; attempted commands durable in browser storage until ack or access loss.",
     "No migration, hosting, Edge or TestFlight deployment."
-  ]
+  ],
+  "visual_fidelity_revision": {
+    "reason": "User flagged mismatch: previous screen was not an exact implementation of the approved reference.",
+    "before": [
+      "desktop-before-fidelity.png",
+      "tablet-before-fidelity.png"
+    ],
+    "additional_reference_viewport": [
+      1036,
+      882
+    ],
+    "changed": [
+      "back link before title",
+      "reference-style framed status rows and SVG icons",
+      "compact forms and paired columns",
+      "purple primary action and plan controls",
+      "tablet header and controls"
+    ],
+    "retained_functional_differences": [
+      "explicit review confirmation checkbox",
+      "truthful closed family-access message",
+      "account and other navigation access"
+    ],
+    "pixel_identical_claim": false,
+    "browser_regression": 22,
+    "other_navigation_and_dirty_guard": "passed",
+    "description_visible_without_internal_scroll_at_four_viewports": "passed",
+    "build_lint_typecheck": "passed"
+  }
 }

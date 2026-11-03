@@ -27,3 +27,10 @@ Gerçek pilotun sekiz PNG'si bu hattan geçirildi; bağımsız Pillow çözümle
 38 SQL testi, 11 Edge testi, sekiz gerçek eşzamanlı veritabanı yarışı; 81 core testi, workspace kontrolleri ve 16 rotalı üretim derlemesi geçti. 22 yayın ekranı kontrolü, 19 eski inceleme ekranı regresyonu, iki ekran arasındaki aynı paketle dönüş ayrıca doğrulandı. Dört boyutta yatay taşma yok; ölçülen görünür buton/link/özet kontrolleri en az 48 CSS px.
 
 Bu kabul fiziksel iPad/Safari veya gerçek üretim PostgREST/Edge uçtan uca kabulü değildir. Ailenin paketi edinmesi, kalan aylık hakkın atomik tüketimi, ortak kaynağı koruyarak Prova'ya seçmesi ve mevcut atamalardaki sürümün korunması **sonraki iş**. Gerçek alan editörü incelemesi ve kalan 1.520 taslak açık. Canlı migration, Edge, hosting ve TestFlight yayını yapılmadı.
+
+
+## Görsel sadakat düzeltmesi
+
+Kullanıcının birebir eşleşme uyarısından sonra ilk uygulama yeniden incelendi: ilk teslim, maketin görsel kabulünü karşılamıyordu. Başlık/geri düğmesi sırası, kontrol satırlarının çerçeveleri ve ikonları, sütun/form boşlukları, paket seçimleri ve birincil düğme görünümü düzeltildi. Eski görüntüler `desktop-before-fidelity.png` ve `tablet-before-fidelity.png` olarak saklandı. Güncel uygulama görüntüleri aynı klasörde yenilendi; ayrıca 1036×882 masaüstü ölçüsünde kontrol yapıldı.
+
+Görsel eşleşme, işlev testlerinin geçmesinden ayrı kabul edilir. Yeni tasarım alternatifi üretilmedi. Onaylı logo ve mevcut Baloo/Nunito dosyaları kullanıldı; raster maketten birebir font dosyası elde edilmiş gibi bir iddia yoktur. Açık inceleme onayı, gerçek kapalı erişim bilgisi, oturum bilgileri ve diğer yönetim bölümlerine erişim korunur. Maketin dış sunum çerçevesi ve “tasarım önerisi / örnek veri” etiketi uygulama kontrolü değildir. Bu farklılıklar ekran görüntülerinde gizlenmez. Tüm iş akışındaki 22 kontrol tekrar geçti; dört ölçüde görünür kontroller en az 48 CSS px ve taşma yok. Diğer bölümlere erişim ve kirli form ayrılma uyarısı da tekrar doğrulandı.

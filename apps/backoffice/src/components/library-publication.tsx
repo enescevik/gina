@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { PublicationIcon } from "./library-publication-icon";
 import {
   definitiveHelpFailure,
   libraryReadinessSchema,
@@ -367,8 +368,9 @@ export function LibraryPublicationWorkspace({
         className="btn-secondary publication-back"
         href={{ pathname: "/library", query: { packageId: id } }}
       >
-        ← İncelemeye dön
+        <PublicationIcon name="back" /> İncelemeye dön
       </Link>
+      <h1 className="publication-title">Yayına hazırla</h1>
       {access !== "allowed" ? (
         <div className="publication-notice" role="status">
           <h2>
@@ -437,6 +439,7 @@ export function LibraryPublicationWorkspace({
                 </p>
               </div>
               <span className="publication-badge">
+                <PublicationIcon name="lock" />
                 {data.publication?.status === "published"
                   ? data.review_current
                     ? "Yayın kaydı var"
@@ -446,13 +449,6 @@ export function LibraryPublicationWorkspace({
                     : "Henüz yayımlanmadı"}
               </span>
             </header>
-            {!data.delivery_enabled && (
-              <p className="publication-notice">
-                Aile erişimi henüz kapalı. Buradaki yayın kaydı, Prova’ya seçim
-                bağlantısı ve yayın kontrolleri tamamlanana kadar ailelere
-                gösterilmez.
-              </p>
-            )}
             {stale && !pending && (
               <div className="publication-conflict" role="alert">
                 <h3>Güncel kayıt değişti</h3>
@@ -502,18 +498,35 @@ export function LibraryPublicationWorkspace({
                 <section className="publication-panel">
                   <h3>Yayın kontrolleri</h3>
                   <div className="publication-check">
-                    <span>▤ Sorular</span>
+                    <span className="publication-check-label">
+                      <span className="publication-icon-tile">
+                        <PublicationIcon name="document" />
+                      </span>
+                      Sorular
+                    </span>
                     <strong>
+                      {data.checks.suitable_count ===
+                        data.checks.question_count && (
+                        <PublicationIcon name="check" />
+                      )}
                       {data.checks.suitable_count} /{" "}
                       {data.checks.question_count} uygun
                     </strong>
                   </div>
                   <div className="publication-check">
-                    <span>◇ Ortak kaynaklar</span>
+                    <span className="publication-check-label">
+                      <span className="publication-icon-tile">
+                        <PublicationIcon name="layers" />
+                      </span>
+                      Ortak kaynaklar
+                    </span>
                     <strong>
+                      {!data.checks.missing_media && (
+                        <PublicationIcon name="check" />
+                      )}
                       {data.checks.missing_media
                         ? `${data.checks.missing_media} görsel doğrulanmalı`
-                        : `${data.checks.source_count} kaynak hazır`}
+                        : `${data.checks.source_count} kaynak kontrol edildi`}
                     </strong>
                   </div>
                   {data.checks.missing_media > 0 && (
@@ -525,8 +538,25 @@ export function LibraryPublicationWorkspace({
                       {busy ? "Doğrulanıyor…" : "Görselleri doğrula"}
                     </button>
                   )}
-                  <details open>
-                    <summary>Program ve kullanım kapsamı</summary>
+                  <details className="publication-scope">
+                    <summary className="publication-check">
+                      <span className="publication-check-label">
+                        <span className="publication-icon-tile">
+                          <PublicationIcon name="school" />
+                        </span>
+                        Program ve kullanım kapsamı
+                      </span>
+                      <strong>
+                        {form.curriculum_label.trim() && (
+                          <PublicationIcon name="check" />
+                        )}
+                        <span>
+                          {form.curriculum_label.trim()
+                            ? `${data.grade}. sınıf ${data.subject} · Konu pratiği`
+                            : "Kapsamı belirt"}
+                        </span>
+                      </strong>
+                    </summary>
                     <p>
                       Bu paket konu pratiği olarak sunulur. Resmî MEB sınavı
                       veya okulun seçtiği senaryo olarak etiketlenmez.
@@ -563,6 +593,7 @@ export function LibraryPublicationWorkspace({
                   <label>
                     Kısa açıklama
                     <textarea
+                      rows={1}
                       value={form.description}
                       maxLength={1000}
                       disabled={locked}
@@ -573,7 +604,7 @@ export function LibraryPublicationWorkspace({
                     className="publication-link"
                     onClick={() => setPreview(true)}
                   >
-                    ◉ Aile önizlemesini aç
+                    <PublicationIcon name="eye" /> Aile önizlemesini aç
                   </button>
                 </section>
               </div>
@@ -610,16 +641,19 @@ export function LibraryPublicationWorkspace({
                 <p>Ailenin kalan kütüphane hakkı ayrıca kontrol edilir.</p>
                 <hr />
                 <h3>Yayın özeti</h3>
-                <p>
+                <p className="publication-summary-line">
+                  <PublicationIcon name="document" />
                   {data.checks.question_count} soru · {data.checks.source_count}{" "}
                   ortak kaynak
                 </p>
-                <p>
+                <p className="publication-summary-line">
+                  <PublicationIcon name="family" />
                   {form.plans.length
                     ? form.plans.map((p) => names[p]).join(" ve ") + " aileleri"
                     : "En az bir erişim paketi seç."}
                 </p>
-                <p className="publication-notice">
+                <p className="publication-notice publication-summary-line">
+                  <PublicationIcon name="info" />
                   Yayınlama tek başına kullanım hakkı harcamaz.
                 </p>
                 <label className="publication-confirm">
@@ -629,9 +663,10 @@ export function LibraryPublicationWorkspace({
                     disabled={locked || stale}
                     onChange={(e) => setConfirmed(e.target.checked)}
                   />
-                  Soruların, görsellerin ve program kapsamının incelemesini
-                  tamamladım; bu sürümün seçili paketlere açılmasını
-                  onaylıyorum.
+                  <span>
+                    Soruların, görsellerin ve program kapsamının incelemesini
+                    tamamladım.
+                  </span>
                 </label>
                 <button
                   className="btn publication-primary"
@@ -674,7 +709,7 @@ export function LibraryPublicationWorkspace({
                 <p className="publication-help">
                   {data.delivery_enabled
                     ? "Onayladığında bu sürüm aile kütüphanesinde görünür."
-                    : "Yayın kaydı saklanır; aile erişimi kapalı kalır."}
+                    : "Aile erişimi henüz kapalı. Yayın kaydı saklanır; Prova’ya seçim bağlantısı tamamlanmadan ailelere gösterilmez."}
                 </p>
               </aside>
             </div>

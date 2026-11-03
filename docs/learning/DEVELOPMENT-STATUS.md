@@ -244,3 +244,8 @@ Taslak paketten ayrı yayın ayarları, Ücretsiz/Plus/Pro kapsamı, aile katalo
 38 SQL kontrolü, 11 Edge testi, toplam sekiz gerçek eşzamanlı yarış; 81 core testi, workspace ve 16 rotalı build geçti. Dört boyutta 22 yayın akışı kontrolü ve eski inceleme ekranında 19 regresyon kontrolü geçti. Gerçek pilotun sekiz görseli yeniden kodlandı; tüm RGBA pikselleri ve ölçüleri bağımsız karşılaştırmada aynı kaldı. [Karşılaştırma ve kabul](../design/screens/library-publication/comparison.html).
 
 Yeni paketlerin aile erişimi varsayılan kapalıdır. Aile edinimi, aylık kota tüketimi ve ortak kaynakları koruyan Prova seçimi tamamlanmadı. Pilot gerçek editörce incelenmedi/yayımlanmadı; kalan 1.520 taslak açık. Ekran testleri sentetik API yanıtlarıdır; üretim uçtan uca ve fiziksel Safari/iPad kabulü açık. Normal/demo kayıtları, üretim migration/hosting/Edge/TestFlight değişmedi.
+
+
+## 3 Kasım — yayın ekranının görsel sadakat düzeltmesi
+
+Kullanıcı uyarısıyla ilk yayın ekranının onaylı makete birebir uymadığı kabul edildi. Başlık sırası, ikonlar, çerçeveli kontrol satırları, kart/form boşlukları, tablet başlığı ve mor eylem düğmesi referansa göre düzeltildi. Eski/güncel görüntüler karşılaştırmada saklanır. Açık yayın onayı ve kapalı erişim bilgisi korunur; sunucu/veri işleyişi değişmedi. 22 yayın akışı kontrolü, dört boyut ve referansa yakın masaüstü ölçüsü kontrol edildi. Görsel eşleşme ile işlev kabulü ayrı; piksel eşitliği iddiası yok. Yayın/TestFlight yapılmadı.
