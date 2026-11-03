@@ -7,6 +7,7 @@ import {
 } from "react";
 import { usePreventRemove } from "expo-router";
 import {
+  Image,
   Keyboard,
   KeyboardAvoidingView,
   Modal,
@@ -50,8 +51,8 @@ export function SetupWizard({
   saveLabel?: string;
 }) {
   const { t } = useTranslation();
-  const { width, height } = useWindowDimensions();
-  const wide = width >= 700 && height >= 600;
+  const { width, height, fontScale } = useWindowDimensions();
+  const wide = width >= 700 && height >= 600 && fontScale < 1.4;
   const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
   const [leave, setLeave] = useState<(() => void) | null>(null);
   const askLeave = (action: () => void) => {
@@ -122,9 +123,9 @@ export function SetupWizard({
                 }}
               >
                 <View style={u.row}>
-                  <Text accessibilityRole="header" style={[u.heading, u.fill]}>
-                    {title}
-                  </Text>
+                  <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} accessibilityLabel={t("app.name")} resizeMode="contain" style={{width:96,height:40}}/>
+                  <View style={u.fill}/>
+
                   <IconButton
                     label={t("common.cancel")}
                     disabled={busy}
@@ -133,26 +134,23 @@ export function SetupWizard({
                     <X color={p.ink} />
                   </IconButton>
                 </View>
+                <Text accessibilityRole="header" style={u.heading}>{title}</Text>
                 <Text accessibilityLiveRegion="polite" style={u.small}>
                   {t("betaUx.step", { current: step + 1, total: steps.length })}{" "}
                   · {steps[step]}
                 </Text>
-                <View style={[u.row, { gap: 6 }]}>
-                  {steps.map((label, i) => (
-                    <View
-                      key={label}
-                      style={{
-                        flex: 1,
-                        height: 4,
-                        borderRadius: 4,
-                        backgroundColor: i <= step ? p.purple : "#E5DEEF",
-                      }}
-                    />
-                  ))}
+                <View style={{flexDirection:"row",gap:6}}>
+                  {steps.map((label,i) => <View key={label} accessibilityLabel={`${i+1}. ${label}`} accessibilityState={{selected:i===step}} style={{flex:1,minWidth:0,gap:6,paddingVertical:10,paddingHorizontal:4,alignItems:"center",borderRadius:18,backgroundColor:i===step?p.lilac:"transparent"}}>
+                    <View style={{width:28,height:28,borderRadius:14,alignItems:"center",justifyContent:"center",backgroundColor:i===step?p.purple:i<step?"#DDF3E9":"#EEE9F5"}}>
+                      {i<step?<Check size={16} color="#287460"/>:<Text style={{fontFamily:"Nunito_800ExtraBold",color:i===step?"#FFFFFF":p.muted}}>{i+1}</Text>}
+                    </View>
+                    {wide?<Text style={[u.small,{textAlign:"center",color:i===step?p.purple:p.muted,fontFamily:i===step?"Nunito_800ExtraBold":"Nunito_600SemiBold"}]}>{label}</Text>:null}
+                  </View>)}
                 </View>
               </View>
               <ScrollView
                 ref={scroll}
+                style={{flex:1}}
                 keyboardShouldPersistTaps="handled"
                 contentContainerStyle={{ padding: 20, gap: 18, flexGrow: 1 }}
               >

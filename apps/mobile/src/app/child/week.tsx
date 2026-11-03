@@ -8,7 +8,7 @@ import { localDateOf, templatesDueOn, weekDatesOf } from "@gina/core";
 
 import { TaskIcon } from "@/components/task-icon";
 import { ErrorText } from "@/components/ui/screen";
-import { ChildScreen as Screen, ChildColumns, ChildEmptyState, childStyles } from "@/components/room/child-screen";
+import { ChildScreen as Screen, ChildEmptyState, childStyles } from "@/components/room/child-screen";
 import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useActiveChild } from "@/lib/active-child";
@@ -62,7 +62,7 @@ export default function ChildWeekScreen() {
   return (
     <Screen tone="child" loading={templates.isLoading || completions.isLoading} title={t("child.week")}>
       <ErrorText error={templates.error ?? completions.error} />
-      <ChildColumns rail={<WeekStrip week={week} selected={selected} onSelect={setSelected} />}>
+      <WeekStrip week={week} selected={selected} onSelect={setSelected} />
       {[selected].map((date) => {
         const due = templatesDueOn(templates.data ?? [], date);
         const isToday = date === today;
@@ -88,7 +88,6 @@ export default function ChildWeekScreen() {
           </View>
         );
       })}
-      </ChildColumns>
     </Screen>
   );
 }

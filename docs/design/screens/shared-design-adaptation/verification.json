@@ -1,0 +1,799 @@
+{
+  "date": "2026-11-03",
+  "base": "d6c4e1ab237f252e350c5416cc87ee495e0422e4",
+  "authorization": "Onaylı ekranların ortak tasarımını bu ekranlara uyarla",
+  "status": "implemented-and-web-reviewed",
+  "exactReferenceMatch": false,
+  "testFlightPublished": false,
+  "scope": [
+    "account",
+    "child-other",
+    "wizards",
+    "builder",
+    "prova-other"
+  ],
+  "entries": [
+    {
+      "group": "account",
+      "id": "sign-in",
+      "title": "Ebeveyn girişi",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/sign-in-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/sign-in-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "register",
+      "title": "Kayıt",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/register-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/register-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "forgot",
+      "title": "Şifremi unuttum",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/forgot-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/forgot-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "reset-expired",
+      "title": "Süresi dolan yenileme bağlantısı",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/reset-expired-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/reset-expired-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "family-create",
+      "title": "Aile oluşturma",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/family-create-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/family-create-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "families",
+      "title": "Aile seçimi / eş daveti",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/families-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/families-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "pair",
+      "title": "Cihaz eşleştirme başlangıcı",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/pair-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/pair-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "pair-code",
+      "title": "Eşleştirme kodu",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/pair-code-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/pair-code-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "settings",
+      "title": "Aile ayarları",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/settings-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/settings-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "settings-devices",
+      "title": "Cihaz ayarları",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/settings-devices-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/settings-devices-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "settings-security",
+      "title": "PIN / güvenlik",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/settings-security-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/settings-security-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "settings-account",
+      "title": "Hesap ayarları",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/settings-account-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/settings-account-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "device",
+      "title": "Cihaz erişim tercihleri",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/device-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/device-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "notifications",
+      "title": "Bildirimler",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/notifications-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/notifications-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "notes",
+      "title": "Notlar",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/notes-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/notes-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "grades",
+      "title": "Okul puanları",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/grades-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/grades-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "share",
+      "title": "Öğretmenle paylaş",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/share-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/share-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "subscription",
+      "title": "Paketler",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/subscription-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/subscription-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "account",
+      "id": "credits",
+      "title": "Ses kayıtlarının kaynakları",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/credits-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/credits-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "child-other",
+      "id": "profiles",
+      "title": "Profil seçimi",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/profiles-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/profiles-tablet.png"
+        },
+        {
+          "device": "small",
+          "file": "current/profiles-small.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "child-other",
+      "id": "pin",
+      "title": "Çocuk PIN’i",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/pin-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/pin-tablet.png"
+        },
+        {
+          "device": "small",
+          "file": "current/pin-small.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "child-other",
+      "id": "child-week",
+      "title": "Haftam",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/child-week-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/child-week-tablet.png"
+        },
+        {
+          "device": "small",
+          "file": "current/child-week-small.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "child-other",
+      "id": "child-collection",
+      "title": "Koleksiyonum",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/child-collection-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/child-collection-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "child-other",
+      "id": "child-goal",
+      "title": "Hedef seçimi",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/child-goal-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/child-goal-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "child-other",
+      "id": "child-room",
+      "title": "Odamı düzenle",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/child-room-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/child-room-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "child-other",
+      "id": "child-prova",
+      "title": "Çocuk Prova listesi",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/child-prova-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/child-prova-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "wizards",
+      "id": "child-wizard-0",
+      "title": "Çocuk ekleme · 1. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/child-wizard-0-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/child-wizard-0-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "wizards",
+      "id": "child-wizard-1",
+      "title": "Çocuk ekleme · 2. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/child-wizard-1-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/child-wizard-1-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "wizards",
+      "id": "child-wizard-2",
+      "title": "Çocuk ekleme · 3. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/child-wizard-2-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/child-wizard-2-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "wizards",
+      "id": "child-wizard-3",
+      "title": "Çocuk ekleme · 4. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/child-wizard-3-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/child-wizard-3-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "wizards",
+      "id": "task-wizard-0",
+      "title": "Görev · 1. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/task-wizard-0-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/task-wizard-0-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "wizards",
+      "id": "task-wizard-1",
+      "title": "Görev · 2. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/task-wizard-1-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/task-wizard-1-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "wizards",
+      "id": "task-wizard-2",
+      "title": "Görev · 3. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/task-wizard-2-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/task-wizard-2-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "wizards",
+      "id": "reward-wizard-0",
+      "title": "Ödül · 1. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/reward-wizard-0-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/reward-wizard-0-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "wizards",
+      "id": "reward-wizard-1",
+      "title": "Ödül · 2. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/reward-wizard-1-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/reward-wizard-1-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "wizards",
+      "id": "reward-wizard-2",
+      "title": "Ödül · 3. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/reward-wizard-2-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/reward-wizard-2-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "wizards",
+      "id": "goal-wizard",
+      "title": "Hedef belirle",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/goal-wizard-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/goal-wizard-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "builder",
+      "id": "builder-0",
+      "title": "Prova hazırlama · 1. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/builder-0-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/builder-0-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "builder",
+      "id": "builder-1",
+      "title": "Prova hazırlama · 2. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/builder-1-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/builder-1-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "builder",
+      "id": "builder-2",
+      "title": "Prova hazırlama · 3. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/builder-2-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/builder-2-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "builder",
+      "id": "builder-3",
+      "title": "Prova hazırlama · 4. adım",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/builder-3-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/builder-3-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "prova-other",
+      "id": "question",
+      "title": "Elle soru ekleme",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/question-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/question-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "prova-other",
+      "id": "blueprint",
+      "title": "Senaryo ekleme",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/blueprint-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/blueprint-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "prova-other",
+      "id": "booklet",
+      "title": "Kitapçık",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/booklet-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/booklet-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "prova-other",
+      "id": "level",
+      "title": "Seviye tespiti",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/level-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/level-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "prova-other",
+      "id": "library",
+      "title": "Aile kütüphanesi",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/library-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/library-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    },
+    {
+      "group": "prova-other",
+      "id": "groups",
+      "title": "Birlikte Prova",
+      "shots": [
+        {
+          "device": "phone",
+          "file": "current/groups-phone.png"
+        },
+        {
+          "device": "tablet",
+          "file": "current/groups-tablet.png"
+        }
+      ],
+      "source": "Expo web uygulama görüntüsü; yerel olarak karşılanan sentetik API yanıtları"
+    }
+  ],
+  "checks": [
+    "Mobil TypeScript ve Expo lint geçti.",
+    "81 core testi geçti.",
+    "9 native metin / defter yerleşimi testi geçti.",
+    "Son kodun iOS Hermes export çıktısı başarıyla üretildi; TestFlight derlemesi değildir.",
+    "Çocuk / görev / ödül sihirbazları tüm adımlarda açıldı; seçimler kontrol edildi, kayıt gönderilmedi.",
+    "Prova hazırlamanın dört adımı; birleşik sınav içindeki ortak kaynaklı soru grubu korundu.",
+    "Eşleştirme kodu üretimi ve bekleme görünümü sentetik yanıtlarla kontrol edildi.",
+    "Profil / PIN / hafta 320×740, standart telefon 390×844 ve tablet 1280×800 genişliklerinde görüntülendi."
+  ],
+  "limits": [
+    "Ayrı onaylı maketi olmayan ekranlar için kullanıcının izin verdiği ortak dil uyarlamasıdır; piksel eşitliği iddiası yoktur.",
+    "Görseller web renderıdır; bu tur fiziksel iPhone/iPad, Android, ekran okuyucu ve gerçek OAuth/satın alma kabul testi yapılmadı.",
+    "Gerçek aile/demo/üretim verileri değiştirilmedi. AI çağrısı, abonelik satın alma veya hesap silme yapılmadı.",
+    "Kitapçık ve seviye ekranları boş soru kütüphanesiyle, Birlikte Prova boş yayımlanmış listeyle doğrulandı.",
+    "Şifre yenilemede bu tur süresi dolmuş bağlantı görünümü incelendi; gerçek e-posta ile kurtarma yapılmadı.",
+    "Bu kayıt tasarım uyarlamasını kapsar; daha önceki ürün/yayın açıklarını tamamlanmış saymaz."
+  ]
+}

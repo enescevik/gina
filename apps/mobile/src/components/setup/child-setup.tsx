@@ -304,7 +304,7 @@ export function ChildSetup({
                       : task.title
                   }
                   body={t("room.starCount", { count: task.stars })}
-                  art={<TaskTile slug={task.icon} size={52} />}
+                  art={<TaskTile slug={task.icon} size={56} />}
                   selected={task.selected}
                   onPress={() =>
                     setTasks(
@@ -471,7 +471,7 @@ export function ChildSetup({
           )}
           {selectedTasks.map((task) => (
             <View key={task.id} style={u.row}>
-              <TaskTile slug={task.icon} size={48} />
+              <TaskTile slug={task.icon} size={56} />
               <View style={u.fill}>
                 <Text style={u.bold}>{task.title}</Text>
                 <Text style={u.small}>

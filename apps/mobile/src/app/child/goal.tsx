@@ -45,7 +45,7 @@ export default function ChildGoalScreen() {
   });
 
   return (
-    <Screen tone="child" loading={rewards.isLoading} title={t("goal.pick")}>
+    <Screen tone="child" surface="collection" loading={rewards.isLoading} title={t("goal.pick")}>
       <Text style={childStyles.copy}>{t("betaUx.childGoalHint")}</Text>
       {rewards.data?.length === 0 ? <View style={[childStyles.card, { alignItems: "center" }]}><Collectible slug="reward-mystery-box" size={110}/><Text style={childStyles.copy}>{t("goal.noRewards")}</Text></View> : null}
       {rewards.data?.map((reward) => (
@@ -59,7 +59,7 @@ export default function ChildGoalScreen() {
         >
           <Collectible slug={reward.icon} size={64} />
           <Text className="flex-1 font-body-bold text-lg text-ink">{reward.title}</Text>
-          <View style={{flexDirection:"row",alignItems:"center",gap:4}}><Star size={18} color="#AA7623" fill="#F7D38D"/><Text className="font-display text-base text-ink">{reward.cost_stars}</Text></View>
+          <View style={{flexDirection:"row",alignItems:"center",gap:4}}><Star size={18} color="#AA7623" fill="#F7D38D"/><Text className="font-body-bold text-base text-ink">{reward.cost_stars}</Text></View>
         </Pressable>
       ))}
       {selected && <Button title={t("betaUx.childGoalReview")} loading={choose.isPending} onPress={() => choose.mutate(selected)}/>}

@@ -437,13 +437,13 @@ export default function ProvaBuilder() {
                       onPress={() => void navigateStep(step)}
                       style={[
                         b.step,
-                        draft.step === step && { borderBottomColor: p.purple },
+                        draft.step === step && { backgroundColor: "#FFFFFF" },
                       ]}
                     >
                       <Text
                         style={[
                           b.bold,
-                          draft.step === step && { color: p.purple },
+                          {width:28,height:28,lineHeight:28,textAlign:"center",borderRadius:14,overflow:"hidden",backgroundColor:draft.step===step?p.purple:step<draft.step?"#DDF3E9":"#E4DDF2",color:draft.step===step?"#FFFFFF":step<draft.step?"#287460":p.muted},
                         ]}
                       >
                         {step < draft.step ? "✓" : step + 1}

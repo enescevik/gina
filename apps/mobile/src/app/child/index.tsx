@@ -29,7 +29,7 @@ export default function ChildPickerScreen() {
   },onError:()=>{void children.refetch();}});
 
   return (
-    <Screen tone="child" loading={children.isLoading} title={t("child.pickProfile")}>
+    <Screen tone="child" surface="access" loading={children.isLoading} title={t("child.pickProfile")}>
       <ErrorText error={children.error ?? enter.error} />
       {children.error ? <Button title={t("common.retry")} onPress={() => void children.refetch()} /> : null}
       <View className="flex-row flex-wrap gap-4">

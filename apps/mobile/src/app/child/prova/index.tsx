@@ -40,7 +40,7 @@ export default function ChildProvaScreen() {
   return (
     <Screen tone="child" surface="desk" loading={exams.isLoading} title={t("prova.title")}>
       <ChildColumns rail={<View style={{ gap: 12 }}>
-      <Text accessibilityRole="header" className="font-display text-lg text-ink">{t("prova.toDo")}</Text>
+      <Text accessibilityRole="header" className="font-body-bold text-lg text-ink">{t("prova.toDo")}</Text>
       {open.length === 0 && !exams.error ? <ChildEmptyState kind="study" title={t("prova.nothingAssigned")} body={t("betaUx.childStudyEmpty")}/> : null}
       {open.map((exam) => {
         const resuming = exam.exam_attempts?.some((a) => a.status === "in_progress") ?? false;
@@ -59,7 +59,7 @@ export default function ChildProvaScreen() {
         >
           <SubjectIcon subject={exam.title} size={56} variant="illustrated" />
           <View className="flex-1">
-            <Text className="font-display text-lg text-ink">{exam.title}</Text>
+            <Text className="font-body-bold text-lg text-ink">{exam.title}</Text>
             <Text className="font-body text-sm text-gray-600">
               {t("prova.questionCount", { count: exam.question_ids.length })}
               {exam.timed ? ` · ${exam.duration_minutes} ${t("prova.min")}` : ` · ${t("prova.untimed")}`}
@@ -72,7 +72,7 @@ export default function ChildProvaScreen() {
         );
       })}
       </View>}>
-      {done.length > 0 ? <Text accessibilityRole="header" className="mt-2 font-display text-lg text-ink">{t("prova.done")}</Text> : null}
+      {done.length > 0 ? <Text accessibilityRole="header" className="mt-2 font-body-bold text-lg text-ink">{t("prova.done")}</Text> : null}
       {done.map((exam) => {
         const attempt = exam.exam_attempts?.[0];
         return (

@@ -110,11 +110,14 @@
     {
       "id": "builder",
       "title": "Birleşik Prova hazırlama",
-      "reference_status": "missing-final-approval",
-      "status": "awaiting-reference-direction",
+      "reference_status": "shared-design-authorized",
+      "status": "adapted-and-web-reviewed",
       "refs": [],
-      "shots": [],
-      "note": "Ayrı son onaylı maket bulunamadı. Önceki işlevler korunuyor; bu ekran birebir onaylı eşleşme olarak sunulmuyor."
+      "shots": [
+        "../shared-design-adaptation/current/builder-0-phone.png",
+        "../shared-design-adaptation/current/builder-0-tablet.png"
+      ],
+      "note": "Kullanıcının 3 Kasım onayı: ortak onaylı tasarım dilini bu ekranlara uyarla. Uyarlama ve telefon/tablet kontrolleri shared-design-adaptation/index.html içinde; ayrı makete piksel eşitliği iddiası yok."
     },
     {
       "id": "shared",
@@ -237,43 +240,50 @@
     {
       "id": "wizards",
       "title": "Görev ve ödül sihirbazları",
-      "reference_status": "missing-final-approval",
-      "status": "awaiting-reference-direction",
+      "reference_status": "shared-design-authorized",
+      "status": "adapted-and-web-reviewed",
       "refs": [],
-      "shots": [],
-      "note": "Ayrı son onaylı maket bulunamadı. Önceki işlevler korunuyor; bu ekran birebir onaylı eşleşme olarak sunulmuyor."
+      "shots": [
+        "../shared-design-adaptation/current/child-wizard-0-phone.png",
+        "../shared-design-adaptation/current/child-wizard-0-tablet.png"
+      ],
+      "note": "Kullanıcının 3 Kasım onayı: ortak onaylı tasarım dilini bu ekranlara uyarla. Uyarlama ve telefon/tablet kontrolleri shared-design-adaptation/index.html içinde; ayrı makete piksel eşitliği iddiası yok."
     },
     {
       "id": "account",
       "title": "Giriş, eşleştirme, aile ve ayarlar",
-      "reference_status": "missing-final-approval",
-      "status": "awaiting-reference-direction",
+      "reference_status": "shared-design-authorized",
+      "status": "adapted-and-web-reviewed",
       "refs": [],
-      "shots": [],
-      "note": "Ayrı son onaylı maket bulunamadı. Önceki işlevler korunuyor; bu ekran birebir onaylı eşleşme olarak sunulmuyor."
+      "shots": [
+        "../shared-design-adaptation/current/sign-in-phone.png",
+        "../shared-design-adaptation/current/sign-in-tablet.png"
+      ],
+      "note": "Kullanıcının 3 Kasım onayı: ortak onaylı tasarım dilini bu ekranlara uyarla. Uyarlama ve telefon/tablet kontrolleri shared-design-adaptation/index.html içinde; ayrı makete piksel eşitliği iddiası yok."
     },
     {
       "id": "child-other",
       "title": "Çocuk alt ekranları",
-      "reference_status": "missing-final-approval",
-      "status": "awaiting-reference-direction",
+      "reference_status": "shared-design-authorized",
+      "status": "adapted-and-web-reviewed",
       "refs": [],
-      "shots": [],
-      "note": "Ayrı son onaylı maket bulunamadı. Önceki işlevler korunuyor; bu ekran birebir onaylı eşleşme olarak sunulmuyor."
+      "shots": [
+        "../shared-design-adaptation/current/profiles-phone.png",
+        "../shared-design-adaptation/current/profiles-tablet.png"
+      ],
+      "note": "Kullanıcının 3 Kasım onayı: ortak onaylı tasarım dilini bu ekranlara uyarla. Uyarlama ve telefon/tablet kontrolleri shared-design-adaptation/index.html içinde; ayrı makete piksel eşitliği iddiası yok."
     },
     {
       "id": "prova-other",
       "title": "Prova yardımcı ekranları",
-      "reference_status": "missing-final-approval",
-      "status": "awaiting-reference-direction",
+      "reference_status": "shared-design-authorized",
+      "status": "adapted-and-web-reviewed",
       "refs": [],
       "shots": [
-        "current/family-library-phone.png",
-        "current/family-library-tablet.png",
-        "current/family-groups-phone.png",
-        "current/family-groups-tablet.png"
+        "../shared-design-adaptation/current/question-phone.png",
+        "../shared-design-adaptation/current/question-tablet.png"
       ],
-      "note": "Ayrı son onaylı maket bulunamadı. Önceki işlevler korunuyor; bu ekran birebir onaylı eşleşme olarak sunulmuyor."
+      "note": "Kullanıcının 3 Kasım onayı: ortak onaylı tasarım dilini bu ekranlara uyarla. Uyarlama ve telefon/tablet kontrolleri shared-design-adaptation/index.html içinde; ayrı makete piksel eşitliği iddiası yok."
     }
   ],
   "checks": [
@@ -290,8 +300,8 @@
     "Ekran görüntülerinde yalnız sentetik veri kullanıldı; gerçek aile/demo/üretim kayıtları değiştirilmedi.",
     "Fiziksel cihaz, Pencil, VoiceOver, Android, gerçek hesap/satın alma/AI kabulü bu tur tamamlanmadı.",
     "Pano görüntüleri cihaz çerçevesi ve farklı örnek içerik içerir; otomatik piksel eşitliği yüzdesi verilmedi.",
-    "Kaynağı olmayan beş ekran grubu için kullanıcıya yön soruldu; bu gruplar tamamlandı sayılmıyor.",
     "Yeni TestFlight veya üretim dağıtımı yapılmadı.",
-    "Geçici qa-notebook rotası iOS export öncesinde kaldırıldı."
+    "Geçici qa-notebook rotası iOS export öncesinde kaldırıldı.",
+    "Ayrı maketi olmayan beş grup kullanıcı onayıyla ortak tasarıma uyarlandı; yeni kontrol kaydı ../shared-design-adaptation/verification.json."
   ]
 }

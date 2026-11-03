@@ -64,7 +64,6 @@ export default function PairScreen() {
   }
   return <ParentScreen navigation={false} title={t("unified.pairTitle")} subtitle={t("unified.pairBody")}>
     <ConnectionMoment status={pairing && remaining ? "waiting" : "idle"}/>
-    <InfoCard title={t("unified.pairChildHelp")} steps={[t("unified.pairChildStep1"),t("unified.pairChildStep2"),t("unified.pairChildStep3")]} />
     {!pairing ? <Field label={t("unified.deviceName")} hint={t("unified.deviceNameHint")} value={deviceName} onChangeText={setDeviceName} maxLength={60} editable={!busy}/> : null}
     {pairing ? <View style={[parentStyles.card, { alignItems: "center", paddingVertical: 32 }]}>
       <Text selectable style={{ fontFamily: "Nunito_700Bold", fontSize: 44, letterSpacing: 5, color: remaining ? "#6042DE" : "#625C85" }}>{pairing.code}</Text>
@@ -74,6 +73,7 @@ export default function PairScreen() {
     {!pairing || !remaining ? <Button title={t(pairing ? "accountV5.newCode" : "unified.pairCodeAction")} disabled={!isAnonymous} loading={busy} onPress={requestCode} /> : null}
     {!session && error ? <Button title={t("common.retry")} onPress={authenticate} loading={busy} /> : null}
     <ErrorText error={error} />
+    <InfoCard title={t("unified.pairChildHelp")} steps={[t("unified.pairChildStep1"),t("unified.pairChildStep2"),t("unified.pairChildStep3")]} />
     <Button variant="ghost" title={t("device.thisIsParentPhone")} disabled={busy} onPress={exit} />
   </ParentScreen>;
 }
