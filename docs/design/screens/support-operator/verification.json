@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-03",
+  "environment": "Next.js application localhost:3102; synthetic intercepted Supabase responses only",
+  "sizes": [
+    {
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "width": 834,
+      "height": 1194
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "passed": [
+    "Workspace lint/typecheck; 70 core tests including 3 new operator outbox tests",
+    "18 isolated pgTAP tests: private role access, category before pagination, timestamp/id cursor, completed/all statuses, live expiry/revocation",
+    "Next static production build exports support and ideas",
+    "No horizontal overflow; measured visible controls at least 48 CSS px at four sizes",
+    "Separate public/internal drafts survive tab switches; arrow keys change tabs",
+    "Lost response then reload reuses same request ID and internal visibility; only one new note and input cleared after receipt",
+    "Concurrent new message disables stale draft send until explicit latest-review acknowledgement",
+    "Selected conversation stays visible after status change removes it from queue",
+    "Support sign-in routes to support; direct AI management route denied",
+    "Dirty draft leave/stay flow; support/idea navigation; resolve and explicit reopen reason",
+    "Live role revocation removes private conversation",
+    "Empty, loading and error states; clean interaction run has no page/console errors",
+    "Temporary role-check outage hides and blocks workspace, then restores the unsent draft after successful retry"
+  ],
+  "limits": [
+    "QA browser uses synthetic data, not live production backend",
+    "No production migration, message, role assignment, email/push or release",
+    "FAQ content editor and publishing UI not included",
+    "Unsaved editor text is session memory; attempted uncertain send is durable local storage until verified/logout/revocation",
+    "Physical iPad/Safari and screen-reader checks remain open"
+  ],
+  "screenshots": [
+    "desktop-web.png",
+    "tablet-landscape-web.png",
+    "tablet-web.png",
+    "phone-web.png",
+    "empty-web.png",
+    "loading-web.png",
+    "error-web.png"
+  ]
+}

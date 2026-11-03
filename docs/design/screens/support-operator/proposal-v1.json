@@ -1,6 +1,6 @@
 {
   "date": "2026-11-03",
-  "status": "awaiting_user_design_approval",
+  "status": "approved_by_user_implemented_web_verified",
   "generator": "built-in image_gen",
   "prompt": "Use case: ui-mockup. Create a polished high-fidelity Turkish GINA backoffice support workspace DESIGN PROPOSAL, not production data. Use the supplied approved GINA Help image as the visual identity reference only: exact small mint mascot/purple gina logo, warm ivory, deep aubergine readable type, subtle lavender surfaces, mint status, restrained satin purple primary actions, rounded friendly headings and clear sans body. Professional calm operational screen, not a children's game, no giant mascot, no invented ornaments, no payment or AI controls.\n\nOne wide landscape presentation image with a dominant desktop browser viewport and a smaller tablet viewport below/right, both fully readable. No heavy physical device frames. Desktop layout at 1440x1000 logical proportion: narrow left nav with original logo and 'Yönetim alanı', only 'Destek' selected and 'Fikirler', small bottom role 'Destek ekibi'. Main header 'Destek merkezi', subtitle 'Görüşmeleri takip et, ailelere yardımcı ol.' Top modest status filters 'Açık', 'İnceleniyor', 'Veli yanıtı', 'Tamamlanan'. Below two-column workspace, compact left list about 30%, spacious right conversation 70%. List header 'Destek talepleri', simple category filter 'Tüm konular'. Two rows 'Tableti eşleştiremiyorum' tagged 'Açık', and 'Prova sonucunu göremiyorum' tagged 'İnceleniyor', small dates. No fabricated large metrics, no email, child names, family search, or assignment controls.\nSelected conversation right: heading 'Tableti eşleştiremiyorum', small topic 'Cihaz ve PIN', overflow menu. Subtle disclosure 'Yanıtlar ailedeki ebeveynlere görünür.' Parent bubble 'Tablette kod açıldı. Telefonumda nereye yazmalıyım?' label 'Ebeveyn · 10.20'. Support bubble 'Diğer bölümünden Cihazlar’a girip altı haneli kodu yazabilirsin.' label 'Destek · 10.25'. A visually distinct pale amber internal note with lock icon, label 'Ekip notu · Aileye görünmez', text 'Eşleştirme adımı kontrol edilecek.' This is an operator-only internal note, unmistakably different from parent-visible reply.\nComposer has exactly two tabs 'Aileye yanıt' selected, 'Ekip notu' unselected. Large textarea placeholder 'Yanıtını yaz…', modest status select label 'Gönderim sonrası' value 'Veli yanıtı bekleniyor', one primary satin purple 'Yanıtı gönder'. No send promises or automatic AI buttons.\nSmaller tablet shows same brand and selected conversation, collapsed menu, back-to-list 'Talepler', same family-visible versus internal note tabs, one send action. All key touch targets generous. Exact Turkish spelling. Keep restrained spacing, clear hierarchy, no crowded dashboards. Small presentation label 'TASARIM ÖNERİSİ · ÖRNEK VERİ'.",
   "reference": "../help/phone-tablet-proposal-v1.png",
@@ -11,9 +11,9 @@
     "Desktop master-detail and narrow sequential view"
   ],
   "notIncluded": [
-    "FAQ editor, finance, AI provider administration and release controls require separate implementation/review",
-    "No operator UI code changed",
-    "No live message sent or production role assigned"
+    "FAQ editor, finance, AI provider administration and release controls remain separate work",
+    "No live support message sent or production role assigned",
+    "Physical tablet browser acceptance remains open"
   ],
   "implementationNotes": [
     "Queue category filters must cover all server results, not just the first loaded page.",

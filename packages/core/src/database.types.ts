@@ -2655,6 +2655,9 @@ isOneToOne: false
 "list_my_families":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"list_operator_help_tickets":
+{ Args: { "p_before_id"?: string,"p_before_time"?: string,"p_category"?: string,"p_kind"?: string,"p_status"?: string }; Returns: Json
+                           },
 "my_operation_roles":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },

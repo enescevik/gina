@@ -184,3 +184,11 @@ Kullanıcının telefon/tablet maket onayı uygulandı: Ortak içerik → Sorula
 - Görünür ekranda 30 sn sorgu yenileme, odak ve ön plana dönüşte tazeleme; yayınlanmamış realtime kanalına güvenilmiyor.
 - `docs/design/screens/help/verification.json`: üç ekran boyutu, boş/yükleme/hata, mesaj/yanıt/kapat/aç, kayıp cevap sonrası tek talep, taslak koruma; 67 core testi + tüm tip/lint kontrolleri geçti. Gerçek iOS/Android klavye/ekran okuyucu doğrulaması açık.
 - Sentetik SSS/görüşme yalnız QA'da. Üretim SSS yayımlanmadı; operatör ekranı ve destek operasyonu ayrıca tamamlanmalı. Üretim/TestFlight yayını yapılmadı.
+
+## 2026-11-03 — onaylı yönetim Destek merkezi
+
+- `/support` ve `/ideas`: durum/kategori süzme, imleçli 50'li kuyruk, özel görüşme, bağımsız aile yanıtı/ekip notu taslakları, açık gerekçeli yeniden açma. Durumu değişen seçili görüşme kaybolmaz; güncellenen görüşmede eski taslak açık onay olmadan gönderilmez.
+- Sınırlı destek rolü kendi başlangıç sayfası ve menüsüne girer. AI/finans/genel admin ekranlarına ayrıcalık kazanmaz. Canlı rol kontrolü 30 sn/odakla yenilenir; her RPC sunucuda tekrar doğrular. Süre/geri alma kontrolleri JWT yenilemeden etkilidir. Başarısız yetki yenilemesi erişimi kapalı tutar.
+- Belirsiz gönderim kullanıcı kapsamlı yerel depoda UUID + içerik + görünürlükle korunur; tekrar/güncel sayfa açma aynı makbuzu sorgular. İç not aile yanıtına çevrilemez. Çıkış/rolün kaldırılması yerel özel gönderimi temizler. Henüz gönderilmemiş metin kalıcı taslak değildir; ayrılma uyarısı var. Yetki yenilemesinin geçici ağ hatasında ekran/işlemler gizlenir; kontrol başarıyla yenilenince gönderilmemiş metin korunur. Gerçek yetki iptalinde çalışma alanı kaldırılır.
+- 18 yeni SQL kontrolü ve 3 yeni core kontrolü; toplam 70 core testi, workspace lint/typecheck ve Next statik build geçti. Dört ekran boyutu, ayrı taslaklar, klavye sekmeleri, tekrar gönderim, çakışma, durum değişimi, yetki geri alma, boş/hata/yükleme web fixture'ında denendi. Kaynak: `docs/design/screens/support-operator/verification.json`.
+- Örnek verili tarayıcı kontrolüdür; fiziksel iPad/Safari ve ekran okuyucu kontrolü açık. Üretim rolü atanmadı, destek mesajı/e-posta gönderilmedi, migration/hosting/TestFlight yayımlanmadı. SSS düzenleme/inceleme/yayın ekranı, finans ve diğer kapsam açık.

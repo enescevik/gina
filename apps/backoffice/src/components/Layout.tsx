@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 import { useAuth } from "@/lib/auth";
 import { t } from "@/lib/i18n";
@@ -18,14 +18,39 @@ const NAV = [
   { href: "/families", label: t.nav.families },
 ];
 
-export async function signOut() {
+export async function signOut(confirmed = false) {
+  if (
+    !confirmed &&
+    !window.dispatchEvent(
+      new CustomEvent("gina:signout", {
+        cancelable: true,
+        detail: () => void signOut(true),
+      }),
+    )
+  ) return;
   await supabase().auth.signOut();
 }
 
 /** Admin sayfa çerçevesi: oturum yoksa girişe yönlendirir, admin claim'i yoksa uyarı gösterir. */
-export function Layout({ title, children }: { title: string; children: ReactNode }) {
+export function Layout(
+  { title, children, support = false }: {
+    title: string;
+    children: ReactNode;
+    support?: boolean;
+  },
+) {
   const router = useRouter();
-  const { ready, session, isAdmin } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const {
+    ready,
+    session,
+    isAdmin,
+    roles,
+    rolesReady,
+    roleError,
+    refreshRoles,
+  } = useAuth();
+  const allowed = support ? rolesReady && roles.includes("support") : isAdmin;
 
   useEffect(() => {
     if (ready && isConfigured && !session) void router.replace("/sign-in");
@@ -33,56 +58,185 @@ export function Layout({ title, children }: { title: string; children: ReactNode
 
   let body: ReactNode;
   if (!isConfigured) body = <Notice>{t.common.notConfigured}</Notice>;
-  else if (!ready || !session) body = <p className="text-slate-500">{t.common.loading}</p>;
-  else if (!isAdmin)
+  else if (!ready || !session) {
+    body = <p className="text-slate-500">{t.common.loading}</p>;
+  } else if (support) {
+    // A temporary role-check failure blocks reads/actions without destroying
+    // the operator's unsent in-memory draft. Confirmed revocation unmounts it.
+    body = (
+      <>
+        {!rolesReady
+          ? <p>Yetkiniz kontrol ediliyor…</p>
+          : roleError
+          ? (
+            <Notice tone="error">
+              Yetki kontrolü tamamlanamadı.{" "}
+              <button className="btn-secondary" onClick={refreshRoles}>
+                Yeniden dene
+              </button>
+            </Notice>
+          )
+          : !allowed
+          ? (
+            <Notice>
+              Bu bölümü açmak için etkin destek yetkisi gerekiyor.{" "}
+              <button className="btn-secondary" onClick={() => void signOut()}>
+                Çıkış yap
+              </button>
+            </Notice>
+          )
+          : null}
+        <div hidden={roleError || !allowed}>{allowed ? children : null}</div>
+      </>
+    );
+  } else if (!allowed) {
     body = (
       <Notice>
-        {t.signIn.notAdmin}{" "}
+        {support
+          ? "Bu bölümü açmak için etkin destek yetkisi gerekiyor."
+          : t.signIn.notAdmin}{" "}
         <button className="btn-secondary ml-2" onClick={() => void signOut()}>
           {t.nav.signOut}
         </button>
       </Notice>
     );
-  else body = children;
+  } else body = children;
 
   return (
     <>
       <Head>
         <title>{`${title} · ${t.appName}`}</title>
       </Head>
-      <div className="admin-shell">
-        <aside className="admin-sidebar">
-          <Link href="/dashboard" className="admin-brand" aria-label="GINA yönetim ana sayfa">
+      <div className={"admin-shell" + (support ? " support-shell" : "")}>
+        <aside className={"admin-sidebar" + (menuOpen ? " menu-open" : "")}>
+          {support
+            ? (
+              <button
+                className="admin-nav-toggle"
+                aria-label="Yönetim menüsü"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen(!menuOpen)}
+              >
+                ☰ Menü
+              </button>
+            )
+            : null}
+          <Link
+            href={isAdmin ? "/dashboard" : "/support"}
+            className="admin-brand"
+            aria-label="GINA yönetim ana sayfa"
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/brand/logo.png" width="132" height="56" alt="gina" />
             <span>Yönetim alanı</span>
           </Link>
-          {session && isAdmin ? <nav aria-label="Yönetim bölümleri">
-            {NAV.map(item=><Link key={item.href} href={item.href} aria-current={router.pathname===item.href?'page':undefined}
-              className={router.pathname===item.href?'admin-nav active':'admin-nav'}>{item.label}</Link>)}
-          </nav>:null}
-          {session?<div className="admin-account"><span>{session.user.email}</span><button className="btn-secondary" onClick={()=>void signOut()}>{t.nav.signOut}</button></div>:null}
+          {session && (isAdmin || roles.includes("support"))
+            ? (
+              <nav aria-label="Yönetim bölümleri">
+                {(isAdmin ? NAV : []).map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={router.pathname === item.href
+                      ? "page"
+                      : undefined}
+                    className={router.pathname === item.href
+                      ? "admin-nav active"
+                      : "admin-nav"}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+                {roles.includes("support")
+                  ? (
+                    <>
+                      <Link
+                        href="/support"
+                        className={router.pathname === "/support"
+                          ? "admin-nav active"
+                          : "admin-nav"}
+                        aria-current={router.pathname === "/support"
+                          ? "page"
+                          : undefined}
+                      >
+                        Destek
+                      </Link>
+                      <Link
+                        href="/ideas"
+                        className={router.pathname === "/ideas"
+                          ? "admin-nav active"
+                          : "admin-nav"}
+                        aria-current={router.pathname === "/ideas"
+                          ? "page"
+                          : undefined}
+                      >
+                        Fikirler
+                      </Link>
+                    </>
+                  )
+                  : null}
+              </nav>
+            )
+            : null}
+          {session
+            ? (
+              <div className="admin-account">
+                <span>
+                  {isAdmin
+                    ? "Yönetici"
+                    : roles.includes("support")
+                    ? "Destek ekibi"
+                    : "Yetkili oturumu"}
+                </span>
+                <span>{session.user.email}</span>
+                <button
+                  className="btn-secondary"
+                  onClick={() => void signOut()}
+                >
+                  {t.nav.signOut}
+                </button>
+              </div>
+            )
+            : null}
         </aside>
-        <main className="admin-main"><header className="admin-page-heading"><h1>{title}</h1><span className="admin-badge">GINA Aile</span></header>{body}</main>
+        <main className="admin-main">
+          <header className="admin-page-heading">
+            <h1>{title}</h1>
+            <span className="admin-badge">GINA Aile</span>
+          </header>
+          {body}
+        </main>
       </div>
     </>
   );
 }
 
-export function Notice({ children, tone = "warn" }: { children: ReactNode; tone?: "warn" | "error" | "ok" }) {
-  const cls =
-    tone === "error"
-      ? "border-red-200 bg-red-50 text-red-800"
-      : tone === "ok"
-        ? "border-emerald-200 bg-emerald-50 text-emerald-800"
-        : "border-amber-200 bg-amber-50 text-amber-900";
-  return <div className={`mb-4 rounded border px-3 py-2 text-sm ${cls}`}>{children}</div>;
+export function Notice(
+  { children, tone = "warn" }: {
+    children: ReactNode;
+    tone?: "warn" | "error" | "ok";
+  },
+) {
+  const cls = tone === "error"
+    ? "border-red-200 bg-red-50 text-red-800"
+    : tone === "ok"
+    ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+    : "border-amber-200 bg-amber-50 text-amber-900";
+  return (
+    <div className={`mb-4 rounded border px-3 py-2 text-sm ${cls}`}>
+      {children}
+    </div>
+  );
 }
 
-export function Card({ title, children }: { title?: string; children: ReactNode }) {
+export function Card(
+  { title, children }: { title?: string; children: ReactNode },
+) {
   return (
     <section className="admin-card">
-      {title ? <h2 className="mb-4 text-lg font-bold text-slate-800">{title}</h2> : null}
+      {title
+        ? <h2 className="mb-4 text-lg font-bold text-slate-800">{title}</h2>
+        : null}
       {children}
     </section>
   );
