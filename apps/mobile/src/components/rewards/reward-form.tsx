@@ -1,18 +1,18 @@
-import { randomUUID } from "expo-crypto";
 import {
   SuggestionBatch,
   type SuggestionDraft,
 } from "@/components/setup/suggestion-batch";
 import { AiSuggestions } from "@/components/setup/ai-suggestions";
 import { useRef, useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { Pencil } from "lucide-react-native";
 import { Field } from "@/components/ui/field";
 import { Pressable } from "@/components/ui/pressable";
 import { p, u } from "@/components/planner/ui";
-import { supabase } from "@/lib/supabase";
+import { useSetupSave } from "@/components/setup/use-setup-save";
+import { SetupSaveRecovery } from "@/components/setup/save-recovery";
 import { ChoiceCard, SetupWizard } from "@/components/setup/wizard";
 import { REWARD_STARTERS } from "@/components/setup/templates";
 import { REWARD_ICONS, RewardCost, RewardTile } from "./reward-visuals";
@@ -33,50 +33,21 @@ export function RewardForm({
   const [cost, setCost] = useState("10");
   const [icon, setIcon] = useState("reward-mystery-box");
   const saving = useRef(false);
-  const batchRequest = useRef({ payload: "", id: randomUUID() });
   const [aiDrafts, setAiDrafts] = useState<SuggestionDraft[]>([]);
   const validBatch = aiDrafts.length > 0 &&
     aiDrafts.every((item) =>
       item.title.trim().length > 0 && item.title.trim().length <= 80
     );
   const validCost = /^\d{1,3}$/.test(cost) && Number(cost) >= 1;
-  const add = useMutation({
-    mutationFn: async () => {
+  const { add, pending, blocked } = useSetupSave({
+    familyId, kind: "reward",
+    items: () => {
       if (choice === "ai") {
         if (!validBatch) throw Error("invalid");
-        const items = aiDrafts.map(({ title, icon, stars, days }) => ({
-          title: title.trim(),
-          icon,
-          stars,
-          days,
-        }));
-        const payload = JSON.stringify(items);
-        if (
-          batchRequest.current.payload &&
-          batchRequest.current.payload !== payload
-        ) batchRequest.current.id = randomUUID();
-        batchRequest.current.payload = payload;
-        const { error } = await supabase.rpc("save_setup_batch", {
-          p_request_id: batchRequest.current.id,
-          p_kind: "reward",
-          p_items: items,
-        });
-        if (error) throw error;
-        return;
+        return aiDrafts.map(({ title, icon, stars }) => ({ title: title.trim(), icon, stars, days: [] }));
       }
-      if (
-        !title.trim() || title.trim().length > 80 || !validCost || !familyId
-      ) {
-        throw Error("invalid");
-      }
-      const { error } = await supabase.from("family_rewards").insert({
-        family_id: familyId,
-        title: title.trim(),
-        icon,
-        cost_stars: Number(cost),
-        created_by: null,
-      });
-      if (error) throw error;
+      if (!title.trim() || title.trim().length > 80 || !validCost || !familyId) throw Error("invalid");
+      return [{ title: title.trim(), icon, stars: Number(cost), days: [] }];
     },
     onSuccess: async () => {
       await Promise.all(
@@ -95,18 +66,18 @@ export function RewardForm({
   return (
     <SetupWizard
       title={t("rewardPremium.new")}
-      steps={[t("betaUx.choose"), t("betaUx.details"), t("betaUx.review")]}
-      step={step}
+      steps={pending || blocked ? [t("setupRecovery.check")] : [t("betaUx.choose"), t("betaUx.details"), t("betaUx.review")]}
+      step={pending || blocked ? 0 : step}
       setStep={setStep}
-      dirty={choice !== null}
+      dirty={!pending && !blocked && choice !== null}
       busy={add.isPending}
-      valid={step === 0
+      valid={!blocked && (!!pending || (step === 0
         ? choice !== null
         : choice === "ai"
         ? validBatch
-        : !!title.trim() && validCost}
+        : !!title.trim() && validCost))}
       onClose={onClose}
-      saveLabel={choice === "ai"
+      saveLabel={pending || blocked ? t("setupRecovery.retry") : choice === "ai"
         ? t("suggestions.saveSelected", { count: aiDrafts.length })
         : t("rewardPremium.save")}
       onSave={() => {
@@ -122,6 +93,7 @@ export function RewardForm({
         )
         : null}
     >
+      {pending || blocked ? <SetupSaveRecovery pending={pending} blocked={blocked}/> : <>
       {step === 0 && (
         <>
           <Text style={u.heading}>{t("betaUx.rewardChoose")}</Text>
@@ -233,6 +205,7 @@ export function RewardForm({
           />
         )
         : null}
+      </>}
     </SetupWizard>
   );
 }
