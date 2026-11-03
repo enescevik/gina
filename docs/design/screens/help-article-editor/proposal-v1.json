@@ -1,6 +1,6 @@
 {
   "date": "2026-11-03",
-  "status": "awaiting_user_design_approval",
+  "status": "user_approved_implemented",
   "generator": "built-in image_gen",
   "prompt": "Use case: ui-mockup. Create a high-fidelity GINA backoffice FAQ editorial workspace design proposal, matching the provided approved operator workspace reference: original small mint mascot and purple gina logo, warm ivory, deep aubergine readable type, Nunito-like clear text with characterful rounded headings, subtle lavender borders, mint publication status, restrained satin purple main action. Same product, no redesigned brand, no extra mascot or decorative imagery. One landscape presentation board with desktop dominant and a smaller tablet portrait view, no large device frame.\n\nDesktop at 1440x1000 logical proportion. Narrow left rail, original logo, 'Yönetim alanı', only 'Yardım yazıları' selected, bottom 'İçerik ekibi'. Main title 'Yardım yazıları', subtitle 'Ailelere açık, güncel ve anlaşılır yanıtlar.' A modest 'Yeni yazı' outlined button. Compact article list on left 25%, editor/preview on right 75%. List has 'Türkçe' language filter and 'Tüm platformlar' selection. First selected row 'Çocuk PIN’i ne işe yarar?' with mint 'Yayında · sürüm 1' and lilac 'Taslak · sürüm 2'. Second row 'Cihazı nasıl eşleştiririm?' with 'Yayında'. Third 'AI haklarımı nerede görürüm?' with 'Taslak'. No invented metrics, email, AI-generated article button, support conversations or private family data.\n\nRight workspace has clearly separated top tabs 'Düzenle' selected and 'Önizleme'. Compact mint note: 'Aileler sürüm 1’i görüyor. Taslak değişiklikler henüz yayında değil.' Form: title input label 'Soru başlığı' value 'Çocuk PIN’i ne işe yarar?'. Short inline readonly identity fields 'Dil: Türkçe' and 'Platform: Tümü'. Large comfortable textarea labeled 'Yanıt', value 'Çocuk PIN’i, çocuğun kendi profilini açması içindir. Cihaz eşleştirme kodu ise ayrı bir telefonu veya tableti aileye bağlar. Bu iki kod aynı değildir.' This text is only example editorial content. Small line 'Son kayıt: sürüm 2 · İnceleme bekliyor'. ONE dominant purple 'Taslağı kaydet' button and a quieter outlined 'İncele' next to it. Separate understated publication bar below showing 'Yayımlama' and disabled pale button 'Yayımla' with legible muted dark text and explanation 'Önce kayıtlı sürümü inceleyin.' Put archive action in a small overflow, not a prominent destructive button. No implication that save publishes.\n\nSmaller tablet view must show same content in Preview tab: collapsed header menu, 'Yazılara dön', 'Önizleme' selected, the FAQ question and example answer in a clean app-like cream card, a small 'Taslak · Ailelere görünmez' status, and 'Düzenlemeye dön' action. Tablet is a responsive editor preview, not a different application. Exact Turkish spelling, generous controls, calm spacing, no dense grid or garish shadows. Presentation footer 'TASARIM ÖNERİSİ · ÖRNEK İÇERİK'.",
   "reference": "../support-operator/desktop-tablet-proposal-v1.png",
@@ -18,9 +18,9 @@
     "The same content operator may review/publish per current server contract; no two-person approval claimed."
   ],
   "notIncluded": [
-    "No FAQ editor code implemented",
     "No real FAQ article published",
     "No production role or service changed"
   ],
-  "sampleContent": "Illustrative only; actual help copy will be checked against current device/PIN flows before review."
+  "sampleContent": "Illustrative only; actual help copy will be checked against current device/PIN flows before review.",
+  "implementation": "verification.md"
 }

@@ -2578,6 +2578,9 @@ isOneToOne: false
 "get_help_articles":
 { Args: { "p_editor"?: boolean,"p_locale"?: string,"p_platform"?: string }; Returns: Json
                            },
+"get_help_editor_article":
+{ Args: { "p_id": string }; Returns: Json
+                           },
 "get_help_ticket":
 { Args: { "p_before"?: number,"p_ticket_id": string }; Returns: Json
                            },
@@ -2648,6 +2651,9 @@ isOneToOne: false
                            },
 "learning_progress":
 { Args: { "p_child_id": string,"p_days"?: number,"p_grade"?: number,"p_subject"?: string }; Returns: Json
+                           },
+"list_help_editor_articles":
+{ Args: { "p_after_id"?: string,"p_after_slug"?: string,"p_locale"?: string,"p_platform"?: string }; Returns: Json
                            },
 "list_help_tickets":
 { Args: { "p_kind"?: string,"p_offset"?: number,"p_operator"?: boolean,"p_status"?: string }; Returns: Json

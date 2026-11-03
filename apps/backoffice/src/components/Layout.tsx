@@ -33,10 +33,11 @@ export async function signOut(confirmed = false) {
 
 /** Admin sayfa çerçevesi: oturum yoksa girişe yönlendirir, admin claim'i yoksa uyarı gösterir. */
 export function Layout(
-  { title, children, support = false }: {
+  { title, children, support = false, content = false }: {
     title: string;
     children: ReactNode;
     support?: boolean;
+    content?: boolean;
   },
 ) {
   const router = useRouter();
@@ -50,7 +51,11 @@ export function Layout(
     roleError,
     refreshRoles,
   } = useAuth();
-  const allowed = support ? rolesReady && roles.includes("support") : isAdmin;
+  const requiredRole = content ? "content" : "support";
+  const operation = support || content;
+  const allowed = operation
+    ? rolesReady && roles.includes(requiredRole)
+    : isAdmin;
 
   useEffect(() => {
     if (ready && isConfigured && !session) void router.replace("/sign-in");
@@ -60,7 +65,7 @@ export function Layout(
   if (!isConfigured) body = <Notice>{t.common.notConfigured}</Notice>;
   else if (!ready || !session) {
     body = <p className="text-slate-500">{t.common.loading}</p>;
-  } else if (support) {
+  } else if (operation) {
     // A temporary role-check failure blocks reads/actions without destroying
     // the operator's unsent in-memory draft. Confirmed revocation unmounts it.
     body = (
@@ -79,7 +84,9 @@ export function Layout(
           : !allowed
           ? (
             <Notice>
-              Bu bölümü açmak için etkin destek yetkisi gerekiyor.{" "}
+              {content
+                ? "Bu bölümü açmak için etkin içerik yetkisi gerekiyor."
+                : "Bu bölümü açmak için etkin destek yetkisi gerekiyor."}{" "}
               <button className="btn-secondary" onClick={() => void signOut()}>
                 Çıkış yap
               </button>
@@ -92,9 +99,7 @@ export function Layout(
   } else if (!allowed) {
     body = (
       <Notice>
-        {support
-          ? "Bu bölümü açmak için etkin destek yetkisi gerekiyor."
-          : t.signIn.notAdmin}{" "}
+        {t.signIn.notAdmin}{" "}
         <button className="btn-secondary ml-2" onClick={() => void signOut()}>
           {t.nav.signOut}
         </button>
@@ -107,9 +112,9 @@ export function Layout(
       <Head>
         <title>{`${title} · ${t.appName}`}</title>
       </Head>
-      <div className={"admin-shell" + (support ? " support-shell" : "")}>
+      <div className={"admin-shell" + (operation ? " support-shell" : "")}>
         <aside className={"admin-sidebar" + (menuOpen ? " menu-open" : "")}>
-          {support
+          {operation
             ? (
               <button
                 className="admin-nav-toggle"
@@ -122,7 +127,11 @@ export function Layout(
             )
             : null}
           <Link
-            href={isAdmin ? "/dashboard" : "/support"}
+            href={isAdmin
+              ? "/dashboard"
+              : roles.includes("support")
+              ? "/support"
+              : "/help-articles"}
             className="admin-brand"
             aria-label="GINA yönetim ana sayfa"
           >
@@ -130,7 +139,9 @@ export function Layout(
             <img src="/brand/logo.png" width="132" height="56" alt="gina" />
             <span>Yönetim alanı</span>
           </Link>
-          {session && (isAdmin || roles.includes("support"))
+          {session &&
+              (isAdmin || roles.includes("support") ||
+                roles.includes("content"))
             ? (
               <nav aria-label="Yönetim bölümleri">
                 {(isAdmin ? NAV : []).map((item) => (
@@ -175,6 +186,21 @@ export function Layout(
                     </>
                   )
                   : null}
+                {roles.includes("content")
+                  ? (
+                    <Link
+                      href="/help-articles"
+                      className={router.pathname === "/help-articles"
+                        ? "admin-nav active"
+                        : "admin-nav"}
+                      aria-current={router.pathname === "/help-articles"
+                        ? "page"
+                        : undefined}
+                    >
+                      Yardım yazıları
+                    </Link>
+                  )
+                  : null}
               </nav>
             )
             : null}
@@ -186,6 +212,8 @@ export function Layout(
                     ? "Yönetici"
                     : roles.includes("support")
                     ? "Destek ekibi"
+                    : roles.includes("content")
+                    ? "İçerik ekibi"
                     : "Yetkili oturumu"}
                 </span>
                 <span>{session.user.email}</span>

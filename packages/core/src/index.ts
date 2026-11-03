@@ -22,3 +22,4 @@ export * from "./prova-booklet";
 export * from './prova-draft';
 export * from "./help";
 export * from './operator-help';
+export * from './help-articles';

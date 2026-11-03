@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { isConfigured, readGinaClaim, supabase } from "./supabase";
+import { clearArticleCommands } from "./help-articles";
 import { clearOperatorHelp } from "./operator-help";
 interface AuthState {
   ready: boolean;
@@ -64,6 +65,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
           clearOperatorHelp();
         } catch { /* scope guard invalidated first */ }
+        try {
+          clearArticleCommands();
+        } catch { /* same identity boundary */ }
       }
       apply(session);
     });
@@ -92,6 +96,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             try {
               clearOperatorHelp();
             } catch { /* access stays denied */ }
+          }
+          if (!data.includes("content")) {
+            try {
+              clearArticleCommands();
+            } catch { /* access remains denied */ }
           }
           setRoleState({ user, roles: data as string[], error: false });
         }
