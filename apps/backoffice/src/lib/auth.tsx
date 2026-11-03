@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { isConfigured, readGinaClaim, supabase } from "./supabase";
+import { clearLibraryCommands } from "./library-review";
 import { clearArticleCommands } from "./help-articles";
 import { clearOperatorHelp } from "./operator-help";
 interface AuthState {
@@ -45,7 +46,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isConfigured) return;
     let live = true, changed = false;
+    let libraryUser: string | null | undefined;
     const apply = (session: Session | null) => {
+      const nextUser = session?.user.id ?? null;
+      if (libraryUser !== undefined && libraryUser !== nextUser) void clearLibraryCommands().catch(() => {});
+      libraryUser = nextUser;
       if (live) {
         setState({
           ready: true,

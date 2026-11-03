@@ -2245,6 +2245,9 @@ isOneToOne: false
                 }
           }
           Functions: {
+            "admin_review_library_question": { Args: { p_request_id: string; p_package_id: string; p_question_key: string; p_question_revision: number; p_expected_review_revision: number; p_outcome: string; p_note: string }; Returns: Json },
+            "admin_get_library_reviews": { Args: { p_package_id: string }; Returns: Json },
+            "admin_list_library_draft_packages": { Args: { p_before_created_at?: string; p_before_id?: string; p_limit?: number }; Returns: Json },
             "admin_import_library_bundle": { Args: { "p_request_id": string; "p_bundle": Json }; Returns: Json },
             "admin_list_library_imports": { Args: { "p_limit"?: number }; Returns: Json },
             "admin_get_library_import": { Args: { "p_id": string; "p_include_answers"?: boolean }; Returns: Json },

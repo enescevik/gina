@@ -1,6 +1,6 @@
 # Kütüphane taslak paketi — tasarım önerisi
 
-Durum: **kullanıcı tasarım onayı bekleniyor**. 3 Kasım 2026.
+Durum: **kullanıcı onayıyla uygulandı**. 3 Kasım 2026.
 
 ![Masaüstü ve tablet önerisi](desktop-tablet-proposal-v1.png)
 
@@ -18,9 +18,9 @@ Masaüstünde liste ve içerik yan yana; dar görünümde liste → içerik geç
 
 “İncelemeyi kaydet” yalnız editoryal sonucu kaydeder. Koleksiyon yayını, aile paket hakları veya Prova ataması oluşturmaz. Mevcut Koleksiyonlar ve Haklar özellikleri korunur; ailelerden gelen soru incelemesi “Katkılar” adıyla yeni paket incelemesinden ayrılır. Genel yöneticinin yetkisi içerik/destek rollerine kendiliğinden verilmez.
 
-Aktarım/okuma sunucusu [PR #70](https://github.com/enescevik/gina/pull/70) ile hazır; soru bazında inceleme kaydı, ekran ve güvenilir yeniden gönderim arayüzü henüz uygulanmadı. [Sunucu sözleşmesi](../../../learning/LIBRARY-BUNDLE-IMPORT.md).
+Aktarım/okuma sunucusu [PR #70](https://github.com/enescevik/gina/pull/70) ile hazır. Onaylanan taslak sekmesi, soru bazında inceleme, sürüm çakışması ve güvenli yeniden gönderim arayüzü uygulandı. [Gerçek ekranlar ve kontrol sınırları](verification.json); [yan yana karşılaştırma](comparison.html). [Sunucu sözleşmesi](../../../learning/LIBRARY-BUNDLE-IMPORT.md).
 
-## Onay sonrası kabul
+## Uygulama kabul kapsamı
 
 - Boş liste, dosya okuma/yükleme, geçersiz/eksik görsel, yetki iptali, eski inceleme, ağ sonucu belirsiz gönderim ve güvenli tekrar durumları.
 - Soru/ortak kaynak/cevap/puan ölçütü eşleşmesi; öğrenci görünümünde öğretmen içeriğinin görünmemesi.
@@ -28,4 +28,4 @@ Aktarım/okuma sunucusu [PR #70](https://github.com/enescevik/gina/pull/70) ile 
 - 48 px kontroller, klavye odağı, doğru Türkçe, büyütülebilir görseller; dar tablet ve masaüstü karşılaştırması.
 - Uygulama sırasında tek büyük maket görseli arayüz olarak kullanılmayacak; metin ve kontroller gerçek bileşenler olacak.
 
-Bu aşamada uygulama kodu, canlı veritabanı, hosting ve TestFlight değiştirilmedi. Onay gelmeden ekran uygulamasına geçilmeyecek.
+Uygulama kodu ve sunucu inceleme sözleşmesi eklendi. Canlı veritabanı, hosting ve TestFlight değiştirilmedi. Gerçek ekran görüntüleri sentetik yönetici/veri yanıtlarıyla alındı; fiziksel iPad veya üretim kabulü sayılmaz.
