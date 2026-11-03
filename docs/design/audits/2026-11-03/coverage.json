@@ -1,0 +1,416 @@
+[
+  {
+    "source": "apps/mobile/src/app/(auth)/family.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "account-family",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/(auth)/sign-in.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "account-sign-in",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/auth-callback.tsx",
+    "state": "Bu tur ayrı görsel doğrulama yok",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/child/calendar.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "child-calendar",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/child/collection.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "child-collection",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/child/goal.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "child-goal",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/child/index.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "child-profiles",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/child/pin.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "child-pin",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/child/prova/[examId].tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "notebook",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/child/prova/index.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "child-prova",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/child/room-preview.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "child-room",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/child/today.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "child-today",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/child/week.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "child-week",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/device/pair.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "account-pair",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/index.tsx",
+    "state": "Bu tur ayrı görsel doğrulama yok",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/calendar.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "calendar",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/child-mode/calendar.tsx",
+    "state": "Ortak çocuk bileşeni; bu giriş yolu ayrıca çekilmedi",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/child-mode/collection.tsx",
+    "state": "Ortak çocuk bileşeni; bu giriş yolu ayrıca çekilmedi",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/child-mode/goal.tsx",
+    "state": "Ortak çocuk bileşeni; bu giriş yolu ayrıca çekilmedi",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/child-mode/index.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "parent-child-mode",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/child-mode/prova/[examId].tsx",
+    "state": "Ortak çocuk bileşeni; bu giriş yolu ayrıca çekilmedi",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/child-mode/prova/index.tsx",
+    "state": "Ortak çocuk bileşeni; bu giriş yolu ayrıca çekilmedi",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/child-mode/room-preview.tsx",
+    "state": "Ortak çocuk bileşeni; bu giriş yolu ayrıca çekilmedi",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/child-mode/today.tsx",
+    "state": "Ortak çocuk bileşeni; bu giriş yolu ayrıca çekilmedi",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/child-mode/week.tsx",
+    "state": "Ortak çocuk bileşeni; bu giriş yolu ayrıca çekilmedi",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/device-access.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "parent-device-access",
+    "note": "Cihaz kimliği olmadan yalnız giriş başlığı; cihaz ayarı doğrulanmadı."
+  },
+  {
+    "source": "apps/mobile/src/app/parent/families.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "parent-families",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/grades.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "parent-grades",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/help.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "help",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/index.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "parent-index",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/menu.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "parent-menu",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/notes.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "parent-notes",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/notifications.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "parent-notifications",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/attempt/[attemptId].tsx",
+    "state": "Bu tur ayrı görsel doğrulama yok",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/blueprint.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "prova-blueprint",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/booklet.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "prova-booklet",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/builder.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "prova",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/exam.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "prova-exam",
+    "note": "Birleşik hazırlama ekranına yönlendi."
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/generate.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "prova-generate",
+    "note": "Birleşik hazırlama ekranına yönlendi."
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/groups.tsx",
+    "state": "Test verisi eksik: dolu görünüm doğrulanmadı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/index.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "prova-hub",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/level.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "prova-level",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/library.tsx",
+    "state": "Test verisi eksik: dolu görünüm doğrulanmadı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/plan/[planId].tsx",
+    "state": "Bu tur ayrı görsel doğrulama yok",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/progress.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "progress",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/question.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "prova-question",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/review/[attemptId].tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "review",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/prova/shared-source.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "shared",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/rewards.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "parent-rewards",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/room-credits.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "room-credits",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/share.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "parent-share",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/parent/subscription.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "parent-subscription",
+    "note": "Web görünümü; App Store ödeme sayfası değil."
+  },
+  {
+    "source": "apps/mobile/src/app/parent/tasks.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "parent-tasks",
+    "note": ""
+  },
+  {
+    "source": "apps/mobile/src/app/reset-password.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "account-reset-password",
+    "note": "Yalnız geçersiz bağlantı durumu."
+  },
+  {
+    "source": "apps/mobile/src/app/s/[token].tsx",
+    "state": "Bu tur ayrı görsel doğrulama yok",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/ai.tsx",
+    "state": "Ayrı onaylı son maket bulunmadı; bu tur açılmadı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/dashboard.tsx",
+    "state": "Ayrı onaylı son maket bulunmadı; bu tur açılmadı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/families.tsx",
+    "state": "Ayrı onaylı son maket bulunmadı; bu tur açılmadı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/groups.tsx",
+    "state": "Ayrı onaylı son maket bulunmadı; bu tur açılmadı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/help-articles.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "articles",
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/ideas.tsx",
+    "state": "Ayrı onaylı son maket bulunmadı; bu tur açılmadı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/index.tsx",
+    "state": "Ayrı onaylı son maket bulunmadı; bu tur açılmadı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/library-publication.tsx",
+    "state": "Önceki tur #74 karşılaştırması; bu tur kapsam dışı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/library.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "library",
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/operations.tsx",
+    "state": "Ayrı onaylı son maket bulunmadı; bu tur açılmadı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/overrides.tsx",
+    "state": "Ayrı onaylı son maket bulunmadı; bu tur açılmadı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/questions.tsx",
+    "state": "Ayrı onaylı son maket bulunmadı; bu tur açılmadı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/sign-in.tsx",
+    "state": "Ayrı onaylı son maket bulunmadı; bu tur açılmadı",
+    "capture_prefix": null,
+    "note": ""
+  },
+  {
+    "source": "apps/backoffice/src/pages/support.tsx",
+    "state": "Güncel web görünümü alındı",
+    "capture_prefix": "support",
+    "note": ""
+  }
+]

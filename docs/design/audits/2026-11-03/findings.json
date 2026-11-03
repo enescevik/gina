@@ -1,0 +1,421 @@
+{
+  "date": "2026-11-03",
+  "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685",
+  "branch": "codex/design-fidelity-audit",
+  "scope": "Onaylı referans ile güncel uygulama görünümünü karşılaştırma. Uygulama kodu, gerçek veri ve yayın değiştirilmedi.",
+  "method": [
+    "Güncel main kodu, izole sentetik aile/veri yanıtlarıyla tarayıcıda açıldı.",
+    "Telefon 390×844; tablet 1280×800; defter ayrıca 834×1194; yönetim ayrıca 1440×1080 ve 834×1194.",
+    "Maketler özgün raster panolardır; cihaz çerçeveleri ve içerik farklılıkları nedeniyle otomatik piksel benzerlik yüzdesi verilmedi.",
+    "Bu görüntüler TestFlight, fiziksel iPhone/iPad, kalem, gerçek kayıt veya AI hizmeti testi değildir.",
+    "Mobil geliştirme sunucusunun eşzamansız rota önizlemesi bellek hatası verdi. Eski denetim sekmeleri kapatıldı; geçici tarayıcı kabuğunda eager client bundle ile güncel bileşenler açıldı. Kaynak kod değiştirilmedi. SSR/release build sonucu bu tur doğrulanmadı.",
+    "Hata veren eksik test verili ilk profil seçici çekimi ürün kusuru sayılmadı; sözleşmeye uygun sentetik yanıtla yeniden çekildi.",
+    "Önceki turda karşılaştırılıp düzeltilen Yayına hazırla ekranı bu diğer ekranlar listesinin dışında."
+  ],
+  "definitions": {
+    "major": "Belirgin yerleşim / bilgi hiyerarşisi sapması",
+    "partial": "Ana yapı yakın; birebir değil",
+    "changed": "Sonraki istek akışı değiştirmiş; ayrı son maket kesin değil",
+    "no-reference": "Güncel ekran görüldü; ayrı son onaylı referans belirlenemedi"
+  },
+  "entries": [
+    {
+      "id": "parent-home",
+      "title": "Veli ana ekranı",
+      "status": "major",
+      "refs": [
+        "docs/design/screens/parent-home-premium/phone-proposal-v1.png",
+        "docs/design/screens/parent-home-premium/tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/parent-index-phone.png",
+        "docs/design/audits/2026-11-03/current/parent-index-tablet.png"
+      ],
+      "finding": [
+        "Tablette onay kartı bütün genişliğe yayılmış. Referansta onay ve günün planı solda; çocuk ilerlemesi ve hedefler sağda birlikte görünür.",
+        "Telefonda onaydan hemen sonra büyük Bugünün görevleri kartı geliyor. Onaylı ilk görünümde Günün planı ve çocuk ilerlemesi öne çıkıyordu.",
+        "Referanstaki büyük maskot/selamlama dengesi, kart içi görsel boyutu, yazı ağırlığı ve gezinme ikonları aynı değil."
+      ],
+      "keep": "Konuya uygun maskot pozları ve tek çocukta gereksiz Tümü filtresini kaldırma sonraki taleplerin. Bunlar geri alınmamalı. İki çocuklu örnekte filtre görünmesi hata değil.",
+      "next": "Onay/plan/ilerleme sütunlarını geri kur; görevlerin ve alt bağlantıların işlevini koruyarak ilk görünümün önceliğini düzelt."
+    },
+    {
+      "id": "child-home",
+      "title": "Çocuk ana ekranı · Dünyam",
+      "status": "partial",
+      "refs": [
+        "packages/assets/rooms/mint-home/layered-v1/approved-original.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/child-today-phone.png",
+        "docs/design/audits/2026-11-03/current/child-today-tablet.png"
+      ],
+      "finding": [
+        "Oda, mint maskot, mor kapı ve temel iki alan korunmuş; bu ekran tamamen başka bir konsept değil.",
+        "Tablette sahne ile panel arasında geniş boşluk var; panelin yalnız sahneye bakan köşeleriyle birleştiği görünüm sağlanmıyor.",
+        "Hedef kartı, Başla butonu ve durum ikonlarının biçimi farklı. Haftalık ilerleme ve Takvimim ayrı satırlara dönüşmüş; referansta tek birleşik giriş var."
+      ],
+      "keep": "İlk sürüm sabit resim ve sabit ışık. Canlı atmosfer/3B/maskot animasyonunu geri eklemek bu karşılaştırmanın işi değil. Referanstaki adım göstergesi ile mevcut yıldız bakiyesi farklı iş kuralları; sırf görünüm için veri anlamı değiştirilemez.",
+      "next": "Sahne–panel birleşimini, oranlarını, köşeleri ve kartları eşleştir; hedef metriği kararını ayrı tut."
+    },
+    {
+      "id": "calendar",
+      "title": "Aile takvimi",
+      "status": "partial",
+      "refs": [
+        "docs/design/screens/calendar-premium/approved-reference.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/calendar-phone.png",
+        "docs/design/audits/2026-11-03/current/calendar-tablet.png"
+      ],
+      "finding": [
+        "Haftalık tarih şeridi, çocuk filtresi, Takvim/Ders programı geçişi ve zaman çizelgesi aynı ana düzeni taşıyor.",
+        "Başlık/filtre aralıkları, gün hücreleri, etkinlik kartı boyutları ve ikonların çizim dili birebir değil.",
+        "Etkinlik ekle ve alt gezinme mevcut; az verili durumun boşluğu ile tasarım sapması birbirine karıştırılmadı."
+      ],
+      "keep": "Ekrana özgü maskot sonradan istendi. Veri örneğindeki gün ve etkinlik farkları tasarım hatası sayılmadı.",
+      "next": "Aynı dört etkinlikle referans ölçüsünde boşluk/ikon/kart ayarı yap."
+    },
+    {
+      "id": "timetable",
+      "title": "Haftalık ders programı",
+      "status": "partial",
+      "refs": [
+        "docs/design/screens/calendar-premium/approved-reference.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/timetable-phone.png",
+        "docs/design/audits/2026-11-03/current/timetable-tablet.png"
+      ],
+      "finding": [
+        "Gün seçimi, sıralı dersler, gün kopyalama, ders ekleme ve alt kayıt alanı referansa yakın.",
+        "Ders ikonları ve seçili günlerin yüzeyi farklı; üstteki Her hafta durumu referanstaki Düzenleniyor etiketiyle aynı değil.",
+        "Tablet haftaya bakış uyarlaması var; onaylı panoda tablet programı ayrı çizilmediği için bu uyarlamaya piksel eşitliği denemez."
+      ],
+      "keep": "Kaydet butonunun değişiklik yokken pasif olması işlevsel durum; renk sapması olarak sayılmadı. Veli ve çocuk düzenleme yetkisi korunmalı.",
+      "next": "Telefon düzenini ince ayarla; tablet düzeni için onaylı ayrı görsel olmadan birebir etiketi verme."
+    },
+    {
+      "id": "tasks",
+      "title": "Görevler",
+      "status": "partial",
+      "refs": [
+        "docs/design/screens/tasks-premium/proposal-v1.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/parent-tasks-phone.png",
+        "docs/design/audits/2026-11-03/current/parent-tasks-tablet.png"
+      ],
+      "finding": [
+        "Çocuk seçici, Aktif/Duraklatılan sekmesi, görev satırları ve Yeni görev konumu korunmuş.",
+        "İkonlar referansın renkli, hafif hacimli biçimi yerine sert koyu konturlu görünüyor. Başlık ve satır içi ölçekler farklı.",
+        "Sekme sayaçları ayrı rozetler yerine metne birleşmiş; kart gölgesi ve satır yüksekliği aynı değil."
+      ],
+      "keep": "Maskotun görev bağlamında değişmesi istendi. Yeni görev akışı sonradan istenen üç adımlı sihirbazdır; eski tek formu aynen geri getirmek doğru olmaz.",
+      "next": "Liste ekranının görsel dilini eşleştir; yeni sihirbazı ayrı güncel referansla sabitle."
+    },
+    {
+      "id": "rewards",
+      "title": "Ödüller",
+      "status": "partial",
+      "refs": [
+        "docs/design/screens/rewards-premium/proposal-v1.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/parent-rewards-phone.png",
+        "docs/design/audits/2026-11-03/current/reward-catalog-phone.png",
+        "docs/design/audits/2026-11-03/current/reward-catalog-tablet.png"
+      ],
+      "finding": [
+        "Talepler/Katalog ayrımı ve ödül kartının temel işlemleri korunmuş.",
+        "Görseller referanstaki büyük nesne alanından daha küçük; kart içi ağırlık ve aktif durum göstergesi farklı.",
+        "Hedef belirle bağlantısı eklenmiş. Tek kartlı durumda alt butona kadar büyük boşluk oluşuyor; bu durum çok kartlı maketle tek başına hata diye eşitlenmedi."
+      ],
+      "keep": "Yeni ödül ve hedef sihirbazı sonraki talebin; işlev kaldırılmamalı. Bazı sentetik profil kayıtlarında avatar alanı yok; siluet veri farkı, kayıp ürün görseli kanıtı değil. Kayıtta görünen kırmızı uyarı geliştirme katmanıdır.",
+      "next": "Kart görsellerini ve işlem ağırlığını referansa yaklaştır; yeni Hedef belirle girişini hiyerarşiye yerleştir."
+    },
+    {
+      "id": "prova",
+      "title": "Prova ana ekranı",
+      "status": "major",
+      "refs": [
+        "docs/design/screens/prova-simplification/proposal-phone-v1.png",
+        "docs/design/screens/prova-simplification/proposal-tablet-v1.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/prova-hub-phone.png",
+        "docs/design/audits/2026-11-03/current/prova-hub-tablet.png"
+      ],
+      "finding": [
+        "Onaylı tabletteki Taslağın içi alanı güncel ekranda yok. Ortak kaynak blokları, soru aralıkları ve kaynak dağılımı bu görünümde gösterilmiyor.",
+        "Kaldığın yerden alanı sağa alınmış; solda çocuğa gönderilenler var. Onaylı taslak önceliği değişmiş.",
+        "Prova hazırla butonu üst sağ yerine başlığın altında; sekmeler tüm genişliğe dağıtılmış. Bu veri farkı değil, yerleşim kararı."
+      ],
+      "keep": "Tek Prova içinde kütüphane/AI/elle sorular ve ortak kaynak grupları doğru ürün yönü. Bu birleşik akış korunmalı.",
+      "next": "Önce onaylı ana ekran iskeletini ve taslak içerik özetini geri getir; aynı taslağı eşit verilerle yeniden karşılaştır."
+    },
+    {
+      "id": "builder",
+      "title": "Birleşik Prova hazırlama",
+      "status": "changed",
+      "refs": [],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/prova-phone.png",
+        "docs/design/audits/2026-11-03/current/prova-tablet.png",
+        "docs/design/audits/2026-11-03/current/prova-builder-questions-phone.png",
+        "docs/design/audits/2026-11-03/current/prova-builder-questions-tablet.png"
+      ],
+      "finding": [
+        "Dört adım ve tek sınava farklı kaynak ekleme akışı güncel uygulamada var; ortak içerik iki soruluk blok olarak aynı Prova içinde görünüyor.",
+        "Ana yön kullanıcı tarafından onaylandı. Ayrıntılı builder/ maketlerinin tek tek onaylı olduğunu kanıtlayamadım; eski plan belgesi bunları ayrı onay bekliyor diye tanımlıyor.",
+        "Bu nedenle mevcut dört adımı ayrı, kesin onaylı maketmiş gibi eşleştirmedim."
+      ],
+      "keep": "Sorular kaynaklarına göre ayrı sınavlara bölünmemeli. Kalıcı taslak, sıra ve mevcut atamaları koruma kuralları korunmalı.",
+      "next": "Son geçerli hazırlama maketini açıkça sabitle; bu sırada Prova ana ekranındaki kanıtlı farkları düzelt."
+    },
+    {
+      "id": "shared",
+      "title": "Ortak metin/görselle soru hazırlama",
+      "status": "partial",
+      "refs": [
+        "docs/design/screens/prova-shared-source/parent-phone-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/shared-phone.png",
+        "docs/design/audits/2026-11-03/current/shared-tablet.png"
+      ],
+      "finding": [
+        "Ortak içerik solda, soru editörü sağda ve üç aşamalı akış korunmuş.",
+        "Adım göstergeleri, içerik başlık bandı, kullanılan soru sayısı etiketi, maskot balonu ve alt işlem satırı birebir değil.",
+        "Güncel denetimde iki sorulu metin örneği kullanıldı; maketteki bahçe resminin görünmemesi eksik özellik kanıtı değildir. Eski görselli teslim de ayrıca incelendi."
+      ],
+      "keep": "Sonraki onay, ortak içeriğin tek Prova içinde grup olarak kullanılmasını istiyor. Bağımsız ürün bölümü haline geri dönülmemeli.",
+      "next": "Görselli aynı kaynakla editörün oranlarını ve alt kontrol satırını eşleştir."
+    },
+    {
+      "id": "notebook",
+      "title": "Çocuk çözüm defteri",
+      "status": "partial",
+      "refs": [
+        "docs/design/screens/prova-notebook/phone-tablet-refined-v2-proposal.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/notebook-phone-editor.png",
+        "docs/design/audits/2026-11-03/current/notebook-tablet.png",
+        "docs/design/audits/2026-11-03/current/notebook-portrait.png"
+      ],
+      "finding": [
+        "Tablet iki sütun, telefon Soru/Defter ve kareli sayfa korunmuş. Güncel kodda örnek üçgen ve yazılı çözüm yeniden gösterildi.",
+        "Telefonda Yazı ve Semboller etiketleri yalnız ikon olarak görünüyor; onaylı çizimde etiketli. Sekme yüzeyi, üst kaynak özeti ve araç çubuğu aralıkları farklı.",
+        "Tablette verilenler yatay sıraya dönmüş; kaynak kopyalama üst başlığa taşınmış; maskot/balon ölçeği ve alt işlem yerleşimi farklı."
+      ],
+      "keep": "Kopyalamayı görünür başlığa alma, dikey tablette soru/defter alanı ve sayfa devamı kontrolleri sonradan istediğin hata düzeltmeleri. Bunları kaldırarak eski makete dönülmez. Örnek yazının el yazısı olmaması test içeriği farkıdır.",
+      "next": "Son hata düzeltmelerini koruyarak v2 görsel oranlarını ve açıklamalı araçları geri kur; fiziksel iPad yön/kalem kontrolünü ayrıca yap."
+    },
+    {
+      "id": "review",
+      "title": "Veli çözüm inceleme",
+      "status": "major",
+      "refs": [
+        "docs/design/screens/prova-parent-review/parent-phone-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/review-phone.png",
+        "docs/design/audits/2026-11-03/current/review-tablet.png"
+      ],
+      "finding": [
+        "Temel çözüm/değerlendirme ayrımı ve tablette değerlendirme yanında defter var.",
+        "Telefonda açık soru alanı defter yüksekliğini belirgin azaltıyor; mevcut örnekte soru metni ve çözümün devamı kaydırma gerektiriyor. Referanstaki kompakt kaynak/rahat defter oranı yok.",
+        "Tablette not renkleri araç çubuğunda açık görünmüyor; Notlarım anahtarı, cevap anahtarı satırı, puan alanı ve butonlar farklı yerleşmiş."
+      ],
+      "keep": "Soruyu varsayılan görünür yapma ve şıklı/yazılı/boş cevapta gereksiz boş defter açmama sonraki talebin. Bu tur ayrıntılı karşılaştırma çizimli yanıtta yapıldı; tüm soru türleri yeniden işlevsel test edilmedi.",
+      "next": "Soruyu erişilebilir tutarak kompakt özet/defter dengesini düzelt; çizimli ve şıklı incelemeyi ayrı kabul görüntüleriyle doğrula."
+    },
+    {
+      "id": "progress",
+      "title": "Gelişim",
+      "status": "partial",
+      "refs": [
+        "docs/design/screens/learning-progress/phone-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/progress-phone.png",
+        "docs/design/audits/2026-11-03/current/progress-tablet.png"
+      ],
+      "finding": [
+        "Filtreler, üç özet kartı, grafik, sonraki adım ve konu listesi mevcut.",
+        "Tablette ders filtresi gereğinden fazla geniş; grafiğin açıklaması altta, referansta sağda. Grafik/üst alan yüksekliği konu listesini ilk görünümün dışına itiyor.",
+        "Seçili dönem ve kart yüzeyleri, yazı ölçeği ve grafik oranı birebir değil."
+      ],
+      "keep": "Veri değerleri, gün aralığı ve sonraki adımın metni örnek çalışmalara bağlı. Bunlar rastgele sabitlenmemeli.",
+      "next": "Grafik ve filtre oranlarını eşleştir; aynı dönem/aynı veride ilk konu satırlarının görünürlüğünü kontrol et."
+    },
+    {
+      "id": "help",
+      "title": "Yardım · SSS ve talepler",
+      "status": "major",
+      "refs": [
+        "docs/design/screens/help/phone-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/help-phone.png",
+        "docs/design/audits/2026-11-03/current/help-thread-tablet.png",
+        "docs/design/audits/2026-11-03/current/help-thread-phone.png"
+      ],
+      "finding": [
+        "Telefonda arama referansta sekmelerden önce; uygulamada sekmelerden sonra büyük bir kartın içinde. Dikey akış değişmiş.",
+        "Tablette Taleplerim başlığı yerine genel Birlikte çözelim başlığı/alt metni/sekmesi devam ediyor; konuşma alanı aşağı itiliyor.",
+        "Mesajlar karşılıklı hizalı balon yerine tam genişlik kart; yazma alanı ve Gönder ayrı satırlarda. Talebi kapat görünür buton yerine menüde."
+      ],
+      "keep": "SSS, aileye özel destek ve fikir paylaşımı birbirinden ayrılmaya devam etmeli. Mahremiyet açıklaması kaldırılmamalı.",
+      "next": "Arama sırası, talep görünümü başlığı, mesaj hizaları ve tek satır gönderim alanını referansa getir."
+    },
+    {
+      "id": "support",
+      "title": "Yönetim · Destek merkezi",
+      "status": "major",
+      "refs": [
+        "docs/design/screens/support-operator/desktop-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/support-desktop.png",
+        "docs/design/audits/2026-11-03/current/support-phone.png"
+      ],
+      "finding": [
+        "Liste/konuşma ve aile yanıtı/ekip notu ayrımı korunmuş.",
+        "Menü ikonları yok; metin ve aktif menü yüzeyi referansla aynı değil. Mesajlar karşılıklı kısa balon yerine geniş kart.",
+        "Liste paneli içerik kadar kısalıyor; referanstaki uzun iki panel dengesi yok. Gönderim alanı/etiketler daha yüksek yer kaplıyor."
+      ],
+      "keep": "Aileye görünmeyen ekip notu ve gönderim sonrası durum seçimi korunmalı. Gönder butonu boş mesajda pasif; bu renk farkı tasarım hatası değildir.",
+      "next": "İki panelin yüksekliğini, konuşma balonlarını, menü ikonlarını ve alt yanıt bloğunu eşleştir."
+    },
+    {
+      "id": "articles",
+      "title": "Yönetim · Yardım yazıları",
+      "status": "partial",
+      "refs": [
+        "docs/design/screens/help-article-editor/desktop-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/articles-desktop.png",
+        "docs/design/audits/2026-11-03/current/articles-phone.png"
+      ],
+      "finding": [
+        "Liste/editör ve düzenle/önizleme ayrımı ile taslak–yayın farkı korunmuş.",
+        "Yeni yazı butonu başlık hizasında değil; sol menünün ikonları ve alt ekip kartı referanstan farklı.",
+        "Editör yazı boyutları, form yüksekliği ve yayımlama bandı farklı. Telefonda geniş düzenlemenin ilk görünümü kaydırma gerektiriyor."
+      ],
+      "keep": "Kaydetmenin canlı yazıyı değiştirmemesi, inceleme ve açık yayın işleminin ayrı kalması şart. Pasif butonlar aynı durumda kıyaslanmalı.",
+      "next": "Başlık/eylem hizasını, alan oranlarını ve yayın alt bandını eşleştir; telefon Önizleme durumunu aynı durumla ayrıca karşılaştır."
+    },
+    {
+      "id": "library",
+      "title": "Yönetim · Kütüphane taslak inceleme",
+      "status": "major",
+      "refs": [
+        "docs/design/screens/library-review/desktop-tablet-proposal-v1.png"
+      ],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/library-desktop.png",
+        "docs/design/audits/2026-11-03/current/library-tablet-review.png"
+      ],
+      "finding": [
+        "Dosya/önizleme/inceleme, öğrenci ve öğretmen görünümü, soru listesi korunmuş.",
+        "Başlık, sekme açıklaması, geri bağlantısı ve yayın ayarı ayrı satırlar kaplıyor. Soru içeriği referansa göre çok aşağıda başlıyor.",
+        "Masaüstü soru listesi büyük metin kartlarına dönüşmüş; kaynak başlığı, açıklama ve ek bilgi bantları daha fazla alan tüketiyor. Tablette inceleme kontrolleri ilk görünümün altına taşıyor."
+      ],
+      "keep": "20 sorunun tamamı erişilebilir olmalı; makette üç satır gösterilmesi kalan soruları gizleme yetkisi değil. Referans kaynak çizimi ile test paketinin çizimi farklı içerik, yerleşim hatası diye sayılmadı.",
+      "next": "Üst alanı sıkıştır; paket bilgisini ve yayın erişimini tek hiyerarşide topla; soru/inceleme alanına daha çok yükseklik ver."
+    },
+    {
+      "id": "wizards",
+      "title": "Görev ve ödül sihirbazları",
+      "status": "changed",
+      "refs": [],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/task-create-phone.png",
+        "docs/design/audits/2026-11-03/current/reward-create-phone.png",
+        "docs/design/audits/2026-11-03/current/task-create-tablet.png",
+        "docs/design/audits/2026-11-03/current/reward-create-tablet.png"
+      ],
+      "finding": [
+        "Sonraki isteğin üzerine tek form yerine üç adımlı şablon/AI başlangıcı var.",
+        "Bu sihirbazların tamamı için ayrı, son onaylı ekran görseli belirleyemedim; eski Görevler panosundaki tek formu bugünkü hedef diye göstermiyorum.",
+        "Telefonda alt seçenekler kaydırmayla erişiliyor; özellikle AI alanı ilk görünümün dışında. Bu kullanım ve görsel yoğunluk ayrıca ele alınmalı."
+      ],
+      "keep": "Şablon seçimi, düzenleme ve birden çok AI önerisini kullanabilme korunmalı.",
+      "next": "Güncel sihirbaz referansını sabitle; ana eylem ve ikincil seçenekleri aynı sistemde düzenle."
+    },
+    {
+      "id": "account",
+      "title": "Giriş, eşleştirme, aile ve ayarlar",
+      "status": "no-reference",
+      "refs": [],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/account-sign-in-phone.png",
+        "docs/design/audits/2026-11-03/current/account-pair-phone.png",
+        "docs/design/audits/2026-11-03/current/child-pin-phone.png",
+        "docs/design/audits/2026-11-03/current/parent-menu-tablet.png",
+        "docs/design/audits/2026-11-03/current/parent-notifications-phone.png",
+        "docs/design/audits/2026-11-03/current/parent-share-phone.png",
+        "docs/design/audits/2026-11-03/current/parent-families-phone.png"
+      ],
+      "finding": [
+        "Güncel giriş, geçersiz şifre yenileme bağlantısı, aile açılışı, cihaz eşleştirme başlangıcı, çocuk PIN’i, aile ayarları, bildirim, paylaşım ve paketlerin web görünümleri açıldı.",
+        "Bu grubun yeni konseptte her ekranı için ayrı onaylı maket bulamadım. Eski V5 HTML sayfalarını son onay yerine kullanmadım.",
+        "Uzun açıklamalar ve büyük kartlar bazı temel işlemleri aşağı itiyor. Başlık/logo/geri/ayarlar konumu diğer yeni ekranlarla tek sistem oluşturmuyor."
+      ],
+      "keep": "Açıklayıcı Türkçe ve PIN/eşleştirme ayrımı talebin korunmalı. Web ödeme/bildirim açıklaması iOS görünümü diye yorumlanmamalı.",
+      "next": "Son onaylı ortak üst alan ve form bileşenlerini tanımla; ayrı maketi olmayan ekranlara birebir etiketi verme."
+    },
+    {
+      "id": "child-other",
+      "title": "Çocuk alt ekranları",
+      "status": "no-reference",
+      "refs": [],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/child-week-phone.png",
+        "docs/design/audits/2026-11-03/current/child-collection-phone.png",
+        "docs/design/audits/2026-11-03/current/child-goal-phone.png",
+        "docs/design/audits/2026-11-03/current/child-room-tablet.png",
+        "docs/design/audits/2026-11-03/current/child-prova-phone.png",
+        "docs/design/audits/2026-11-03/current/child-profiles-phone.png"
+      ],
+      "finding": [
+        "Haftam, koleksiyon, hedef seçimi, oda düzenleme, Prova listesi ve profil seçimi güncel koddan açıldı.",
+        "Mint oda ana ekranına göre başlık/geri/logo düzeni farklı; kartlar daha genel liste görünümünde. Odamı düzenle tablette aynı oda resmini hem yan sahnede hem büyük kartta yineliyor.",
+        "Yeni mint konseptinde bu alt ekranların tek tek onaylı son maketini belirleyemedim. Eski V5 onayını yeni mint ekranına otomatik aktarmadım."
+      ],
+      "keep": "Şimdilik statik oda kullanma kararın gereği eski pet/oda seçimleri yeni sahneyi değiştirmiyor; bu görsel denetimle yeniden etkinleştirilmedi.",
+      "next": "Önce ortak çocuk ekran kabuğunu ana ekranla tutarlı hale getirilecek hedef olarak netleştir."
+    },
+    {
+      "id": "prova-other",
+      "title": "Prova yardımcı ekranları",
+      "status": "no-reference",
+      "refs": [],
+      "shots": [
+        "docs/design/audits/2026-11-03/current/prova-question-phone.png",
+        "docs/design/audits/2026-11-03/current/prova-blueprint-phone.png",
+        "docs/design/audits/2026-11-03/current/prova-booklet-phone.png",
+        "docs/design/audits/2026-11-03/current/prova-level-phone.png"
+      ],
+      "finding": [
+        "Soru ekle, senaryo, kitapçık ve seviye tespiti güncel koddan açıldı. Eski generate/exam adresleri birleşik hazırlama ekranına yönleniyor.",
+        "Bu yardımcı formlar hâlâ büyük başlık, uzun açıklama ve ayrı alanlarla genel form düzeninde; birleşik hazırlama akışıyla aynı kontrol yoğunluğunda değiller.",
+        "Ayrı yeni konsept onaylı maket bulunmadığından birebir kıyas hükmü verilmedi. Kütüphane ve toplu Prova, eksik sentetik veri sözleşmesiyle hata görünümüne düştü; gerçek ürün hatası sayılmadı, bu iki ekranın güncel dolu görünümü doğrulanamadı."
+      ],
+      "keep": "Eski bağlantıları kaldırmadan, birleşik Prova içindeki erişim ve işlevler korunmalı.",
+      "next": "Referansı olmayan yardımcı ekranların hedefini ortak bileşenlerle sabitle; aile kütüphanesi ve toplu Prova için uygun salt okunur örnek verilerle denetimi tamamla."
+    }
+  ],
+  "openChecks": [
+    "Fiziksel iPhone/iPad ve TestFlight karşılaştırması bu denetimde yapılmadı.",
+    "Tüm ekranların boş/yükleniyor/hata, büyük yazı, klavye ve tüm açılır pencere durumları yeniden test edilmedi. Görsel uyum kabulü ile işlevsel kabul ayrı.",
+    "Aile kütüphanesi ve toplu Prova dolu ekranları: sentetik veri sözleşmesi tamamlanmadığı için güncel görünüm doğrulanamadı.",
+    "Geçerli şifre yenileme bağlantısı, sosyal giriş sonrası dönüş, gerçek PIN doğrulama, AI üretme ve satın alma süreçleri bu tur çalıştırılmadı.",
+    "Yönetimde AI ayarları, aileler, paket/haklar gibi ayrı onaylı maketi bulunmayan eski ekranlar bu görsel eşleştirme turunda yeniden açılmadı.",
+    "Gelişim, Yardım, destek, editör, inceleme ve ana ekranlardaki belirlenen sapmalar açık. Bu rapor yayın hazır kararı değildir."
+  ]
+}

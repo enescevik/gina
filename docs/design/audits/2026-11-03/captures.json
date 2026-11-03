@@ -1,0 +1,965 @@
+[
+  {
+    "path": "docs/design/audits/2026-11-03/current/account-account-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "e44aa58577da4c3f82f9a7a4270afda75b60317be2ab633934558b12b74aa694",
+    "captured_at": "2026-11-03T14:03:55.442966+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/account-account-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "77672407252d03d6deeab04c302ab11b65d3b3a9e2141e619e5d817bdc1eb7bb",
+    "captured_at": "2026-11-03T14:04:02.811316+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/account-family-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "e034ca9ec1a189e34190d95fdf87f25052375f1b6d906d25325aaebe0fa4ad34",
+    "captured_at": "2026-11-03T14:03:51.250519+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/account-family-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "0ecbda315113c58ec07b1abcd36e856c8bfd4bd64535478b64309f2239c92a35",
+    "captured_at": "2026-11-03T14:03:58.298651+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/account-pair-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "b8e999b9ef445ba63d41636bec28d1a9736e858e98dac5b80180175b872e9c90",
+    "captured_at": "2026-11-03T14:03:52.675453+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/account-pair-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "443db023811984a04f4627c771cfb5c4281889748cf3c3d89e5c4aed5ea2fdae",
+    "captured_at": "2026-11-03T14:03:59.696519+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/account-reset-password-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "91c7e91334bd49e7c0bdb8c43fe60e11f57e611c0c86db9bdccad90a6fa83f8a",
+    "captured_at": "2026-11-03T14:03:54.055805+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/account-reset-password-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "881b53edf92981f87e87dc4b5ec5d73bf2f2e888aec794b5012e04fd3c22fb33",
+    "captured_at": "2026-11-03T14:04:01.173438+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/account-sign-in-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "7451e9d324fa62dcd73fdc6d89850b815e1d585b891f87303ba4985e0e336b6e",
+    "captured_at": "2026-11-03T14:03:49.865529+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/account-sign-in-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "8259b7e022e6b30f1934139780edba7508a2b843db48cb19a3d69c2869440ec5",
+    "captured_at": "2026-11-03T14:03:56.817387+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/articles-desktop.png",
+    "width": 1440,
+    "height": 1080,
+    "sha256": "b6856c56f539344a6e65a73dde6877bcff0d3a6eb82e25f493639d6622bc7191",
+    "captured_at": "2026-11-03T14:18:25.149035+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/articles-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "62dfb55f04874ea43bf59fabbff4d99f2e8fe0501ac7dcfc281246121028ed87",
+    "captured_at": "2026-11-03T13:48:35.736712+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/articles-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "1d939bb6a950cbfcdd00bd19810c32096e24c47130782d63321f62c7bb727eb0",
+    "captured_at": "2026-11-03T13:48:36.535718+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/calendar-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "999b36480aadd2d1c84c3e47315750be4a72a47c12350427e35427a39506e830",
+    "captured_at": "2026-11-03T14:01:25.984004+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/calendar-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "3f98526a5432a24accb884fdc3174ae94e7e19bd01ccb4273492a3c363886539",
+    "captured_at": "2026-11-03T14:01:26.291128+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-calendar-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "367534020b4fab4aafa4f2358c6ca4c6e0dd09aa9734464a2937d6a77e85efcd",
+    "captured_at": "2026-11-03T14:00:55.545024+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-calendar-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "5ac3689b4f516a0bd4c180516ce4acc94a9ebd2cf6372f4b350f8ac08b50391b",
+    "captured_at": "2026-11-03T14:00:55.856344+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-collection-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "49c0ebb7b9bc80f5e43ef2e5b3dbb9af81c181613815081dd77dc674898d5154",
+    "captured_at": "2026-11-03T14:00:51.066028+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-collection-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "21d1d7e4f268490fb78f30c2ed752218b63f898d1299748c886508c25366e476",
+    "captured_at": "2026-11-03T14:00:51.394043+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-goal-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "97a2563bbf82f47cd640aece86ccaee7665be0abd770889ec7c5bc12f3a2e8d8",
+    "captured_at": "2026-11-03T14:00:49.591301+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-goal-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "e1ff88cfdef617b11ca3459d715d12ef5d05f683bfd0e015983d39b3e6166bc2",
+    "captured_at": "2026-11-03T14:00:49.916519+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-pin-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "8aece9d4f27c6671f1296e3f937b0ab3c9e7f378bd17ffad7dc75d82b21c844a",
+    "captured_at": "2026-11-03T14:21:47.268566+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-pin-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "b9fe7ce5ad957a4451f8f58e77f657d4db042d2487742bfed12cc00cb3935a3b",
+    "captured_at": "2026-11-03T14:21:47.540706+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-profiles-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "64916364d8a0d8eeab046f66adbb4f4c8acb64aa7d655c56d304fa74e3b9f6ae",
+    "captured_at": "2026-11-03T14:21:45.954833+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-profiles-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "9b8e1917a7a02a2a24065bd742b43c477d8a786deb3f37abf71f47ce8ba35555",
+    "captured_at": "2026-11-03T14:21:46.231237+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-prova-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "d38c058a22c11d0c7fa509b2ecf878abb28c65fa5b963577eeed23207957a742",
+    "captured_at": "2026-11-03T14:00:54.064072+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-prova-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "04d18dd3189eabfda4fc102ab0dd7b13c9247a8af25f779f8a21f0b797e4d856",
+    "captured_at": "2026-11-03T14:00:54.364992+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-room-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "f120875adb0ebce0284bbfa079c2565f0f4b35c26251d76c0a8e3f5d45d2cb91",
+    "captured_at": "2026-11-03T14:00:52.530363+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-room-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "979ed4a8c4d87d6e8602188bd432fdbb12b44fcf783e95384c4201059e4b4af6",
+    "captured_at": "2026-11-03T14:00:52.947142+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-today-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "c42f943e3628f6f310466748b70434cb51b0b03c4dffad293956610ddc79d969",
+    "captured_at": "2026-11-03T14:00:46.623024+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-today-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "e0c6c7d9d608ed0b91bd2dc9d98a36c2265311f4aad26eb092a1d167c4e0ccc6",
+    "captured_at": "2026-11-03T14:00:47.053073+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-week-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "492bee24e6707f268e8e56128bc8065a142dfe454b762fa0b5be7e9ca696ff0a",
+    "captured_at": "2026-11-03T14:00:48.165669+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/child-week-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "d3fb28bb2cadf66a668f1725c66bbb93632299f17ad16b8e6c7c968be3523b85",
+    "captured_at": "2026-11-03T14:00:48.486667+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/help-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "45d16c32464f470b0dc966b8ae9857e0f96693ea28a37724e8985d67871f0b77",
+    "captured_at": "2026-11-03T13:55:26.784120+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/help-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "30cb88859e2f15d7349530268f9ec4507c82e862e03158b21981dfe1c3e910f3",
+    "captured_at": "2026-11-03T13:55:27.251422+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/help-thread-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "0a4ee94570757f2457b2eff46572777404f12a03bcc7e6662f455db9677fa724",
+    "captured_at": "2026-11-03T14:14:59.545923+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/help-thread-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "7c32e0ea7bc5845ed99bdaa2eb39a5644b94b3b9c0fd5fed988afed65618d761",
+    "captured_at": "2026-11-03T14:14:59.871326+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/library-desktop.png",
+    "width": 1440,
+    "height": 1000,
+    "sha256": "bb1222aef3304f945b3279fdd80d0661d3facbd405c043a0b0f7a427cc8e0999",
+    "captured_at": "2026-11-03T14:06:12.082355+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/library-tablet-review.png",
+    "width": 834,
+    "height": 1194,
+    "sha256": "789a762545622ee6c388f987d4719c9ab3686d6220baaeed20319f4f5aa22637",
+    "captured_at": "2026-11-03T14:21:48.559165+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/library-tablet.png",
+    "width": 834,
+    "height": 1194,
+    "sha256": "f7600c634a552c70948ba2580df7cde07a38591e7d41c076b574e3b20a927365",
+    "captured_at": "2026-11-03T14:06:12.359649+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/notebook-phone-editor.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "f16c8458c57312f95f10e3686f5552ed7d2348e00ae70ed51581a220af8c68be",
+    "captured_at": "2026-11-03T14:16:32.811398+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/notebook-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "c3bd3448533329990cd3b0fb37d06762e197610a9bc18c1886bd0d76614e2efb",
+    "captured_at": "2026-11-03T14:16:32.466175+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/notebook-portrait.png",
+    "width": 834,
+    "height": 1194,
+    "sha256": "83a6f6a8c90e79ac5fa4d4e6f285d446e875437ebd466a4e622d1bf65afe0f22",
+    "captured_at": "2026-11-03T14:16:32.080577+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/notebook-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "22d744804df2c06c3de28754e9ef5e36cc4c288483f42f96cdfa59a07ccc0d91",
+    "captured_at": "2026-11-03T14:16:31.682801+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-calendar-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "7e60b11293f6601288f25f3efc299f41dc7f3a4d3ae6ed19f3264c4dabdeaa18",
+    "captured_at": "2026-11-03T13:59:32.187333+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-calendar-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "e8e6acbc31c8bff7e7f4cf096f574aca09587aa4350ed99d2937a5def0e8c589",
+    "captured_at": "2026-11-03T13:59:32.499096+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-child-mode-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "bf49e899d53a9d4658fc3b9f18986e9ef64994380963a88030fd1b5554359522",
+    "captured_at": "2026-11-03T13:59:38.265696+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-child-mode-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "57ff62ac984dbb50fbae9d76183b077bfb004d5e38d97cb8c0323c12505cab13",
+    "captured_at": "2026-11-03T13:59:38.569697+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-device-access-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "3e2d30f2d0152fbc11c38d2448cdff75aa314822d24952b3d7da4d93024921dd",
+    "captured_at": "2026-11-03T13:59:41.280350+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-device-access-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "49322c8fd29f83eb81b3f7d3690d818c14b68b587affa8ca285fb113ee446c67",
+    "captured_at": "2026-11-03T13:59:41.580212+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-families-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "ebc089ac22d3afa85c6a32b3e1db606efcee23da27bbdbcc99057921a79b4766",
+    "captured_at": "2026-11-03T13:59:39.780339+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-families-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "f1c700481dc067075828b34822cb9e146aa356b4b0e8e55155cdb2738684644e",
+    "captured_at": "2026-11-03T13:59:40.094646+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-grades-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "e2c3bff0309e5e227ac68359786b289eda6f9bc6f8176e75c34bb45ae8c52e0c",
+    "captured_at": "2026-11-03T13:59:33.708525+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-grades-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "54d7a81bb35b0859e11cd7757f0a7c270971d776f6919bc443a64e876a0fcae0",
+    "captured_at": "2026-11-03T13:59:33.998049+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-index-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "39182ef0b5aeaec7754a6e948e8599104f75e6906ae9a882695a6dafec0b921e",
+    "captured_at": "2026-11-03T13:59:27.571649+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-index-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "fb0c3bbfe62d399601c2ec39e48fcc24fd8fbbf91fa367dca8acbbe1542a9278",
+    "captured_at": "2026-11-03T13:59:27.904995+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-menu-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "98fd06d437941b0f65e9c427610b336d1fbdb6e582ab744ed0556e847e1437a7",
+    "captured_at": "2026-11-03T13:59:36.747492+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-menu-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "af7faa96ef0ca3d2f22f0fe6c008b2261ac84aef51570cb810b8f9189f3f0231",
+    "captured_at": "2026-11-03T13:59:37.062409+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-notes-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "a4b5f14c61fb6197d54794fa2c9547604921e6d81b8f27c01f0a2196738733f7",
+    "captured_at": "2026-11-03T13:59:35.208097+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-notes-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "d670ac27fc334e35b10bb2f1dddb0c74a5b394bc31b8412f285c3fc93d0b4818",
+    "captured_at": "2026-11-03T13:59:35.508804+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-notifications-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "199ca15ddcc09486511ae7cc92d11a708444da33322d2bdae4837ea93bf58543",
+    "captured_at": "2026-11-03T13:59:42.800563+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-notifications-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "38a103585e1f9e597d4625b4a4da4e18cbcca6536b7c23b3ce1c40a0934ffda8",
+    "captured_at": "2026-11-03T13:59:43.103974+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-rewards-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "3e8c60d984c4ee13a97cd92785087c37826cdf53cd328c7ee4b6b501471c778f",
+    "captured_at": "2026-11-03T13:59:30.654170+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-rewards-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "5e175dbb8b1e9145bc54441a377f07c4b68b5ee00890f923b106440094e5c5cd",
+    "captured_at": "2026-11-03T13:59:30.975899+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-share-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "b67e903ccea74e93731bb2bf0807e5258098e3245258ed0c91d735065e1335f2",
+    "captured_at": "2026-11-03T13:59:44.270740+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-share-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "25d111de209c730f26cf7a7a9338a292e68358d2ac630c0235aff0eaeb53255f",
+    "captured_at": "2026-11-03T13:59:44.579735+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-subscription-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "021aab434452030baaa34c3ee025a9a0a21f45e262d8d157e716164a6a009741",
+    "captured_at": "2026-11-03T13:59:45.741979+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-subscription-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "72ac06c3eb4ba3422b3b605d7823c16acfc83bae6742c66724d23929d1044b0d",
+    "captured_at": "2026-11-03T13:59:46.063364+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-tasks-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "c6123e891dc72fb30ac6a05543136b620aecbd3794a56951a5e6a102043be13e",
+    "captured_at": "2026-11-03T13:59:29.148538+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/parent-tasks-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "489aeb4b28e7474f845cb1f980c1f6d123e015dc4804bdecd0da2b0d4e306f6c",
+    "captured_at": "2026-11-03T13:59:29.460372+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/progress-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "1abf90b9ed1b52323e8430bf02201eb12258967ebcea51a86e68dd66f4e21da7",
+    "captured_at": "2026-11-03T13:55:28.983848+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/progress-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "454bee1adc0d81c5a4dfd47aaa9ab0b6b005da2806e3817ea99ec9e297af68a7",
+    "captured_at": "2026-11-03T13:55:29.532469+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-blueprint-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "c5f55902a7328ceb7bdbf54c55c3a339a01cf65d7e0d681c10bdaff17a9705dd",
+    "captured_at": "2026-11-03T14:26:24.693471+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-blueprint-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "1c8c8901398e49f37e72bcc7f57959e322bfcbe7f5e87ffa57cacdc0824f6769",
+    "captured_at": "2026-11-03T14:26:24.895739+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-booklet-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "109cb72ebccae5738466d0792c116a12e7b898012da9a848a61a14ac4dfb9133",
+    "captured_at": "2026-11-03T14:26:25.823950+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-booklet-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "51141e11ab1eb3fe75fb47775d34d756d8ca9dae7128d290f7287638aa00058d",
+    "captured_at": "2026-11-03T14:26:26.036201+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-builder-questions-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "b35806351dccd31facd3f847fddfe44318da95ab6c890274c4be4bb179776b25",
+    "captured_at": "2026-11-03T14:09:42.480269+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-builder-questions-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "8d515cd9804309346fcb99adb6fa9d261e9b2cd31a6bcb832ac0e20637864af8",
+    "captured_at": "2026-11-03T14:09:42.785245+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-exam-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "bc8b16b1ff82926663e11e939d3a0f0be8c8581675f5f18465ffe330893f56ba",
+    "captured_at": "2026-11-03T14:26:23.538780+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-exam-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "659fd62b9d234612f71dc97f3bb8ecb112de0d2137f88c5adca9e27ff7809f06",
+    "captured_at": "2026-11-03T14:26:23.745572+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-generate-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "bc8b16b1ff82926663e11e939d3a0f0be8c8581675f5f18465ffe330893f56ba",
+    "captured_at": "2026-11-03T14:26:20.024037+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-generate-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "659fd62b9d234612f71dc97f3bb8ecb112de0d2137f88c5adca9e27ff7809f06",
+    "captured_at": "2026-11-03T14:26:20.235347+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-hub-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "0f30ae5d2dfb4e166ba0379b0988c7ad80640d91a680c4e9e47edfc8b0521099",
+    "captured_at": "2026-11-03T14:09:41.315901+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-hub-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "11e880ad74d76a1f3899548467b1bbbb0192a3edcdbc8c15c47e87ae694b2201",
+    "captured_at": "2026-11-03T14:09:41.605500+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-level-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "e45a221209b418eef576a8fffbd479ca0238e652815349931b179f58dc72c778",
+    "captured_at": "2026-11-03T14:26:26.986196+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-level-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "b0f8b7984873c9ea3f9cc80a8299491b1da6d1832d03a4e74492f92b2bffa737",
+    "captured_at": "2026-11-03T14:26:27.177912+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "4081d4fc73bece5179c0b4f590eee21ce846cca0bb77cec93d8215b86b483679",
+    "captured_at": "2026-11-03T13:55:31.195113+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-question-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "eb736880ed5749877d12a902afc6c24b0787f15c53edc239c87be0abec9301cf",
+    "captured_at": "2026-11-03T14:26:22.355363+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-question-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "c81ba94664cb8cb128546dbc0ab4da442a55af04011b1ef8efa106b14fc4d02a",
+    "captured_at": "2026-11-03T14:26:22.554454+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/prova-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "308894d4a99a5ae9fa5812ac2a0a087ce80c0b062e98fb3291fec1bf7e5254b9",
+    "captured_at": "2026-11-03T13:55:31.659464+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/review-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "7f15b9e4c3da17462519b597225b8c782581816413e2c98ad578858f22066bb9",
+    "captured_at": "2026-11-03T14:11:01.525747+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/review-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "a3694c1582e90a75423bab1b43f922038bf888e67845953b79d718c641765322",
+    "captured_at": "2026-11-03T14:11:01.176769+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/reward-catalog-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "359ab5aac5306675945ab18b197f9ab4af19fbfc4415043cd453c8122c2c7001",
+    "captured_at": "2026-11-03T14:12:28.602562+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/reward-catalog-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "ce76e1488044ddf6948cb0f8842e5c93932d085af8ca6c53a0c6f4a3406a17fd",
+    "captured_at": "2026-11-03T14:12:28.876661+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/reward-create-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "03a115057bd337c4b16e9f566afa33958ad54965ec9cba375b5f7a7486358f65",
+    "captured_at": "2026-11-03T14:12:29.454566+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/reward-create-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "dab8169bc4f021eef843d0e5a3dddee2f105fb65b2affff097c7c4958f8f1260",
+    "captured_at": "2026-11-03T14:12:29.711295+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/room-credits-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "67cf58d2556bfa0721a2bff5c5a83c76c93661bfba0df6ee5305648d59fd7af3",
+    "captured_at": "2026-11-03T14:26:29.305292+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/room-credits-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "9329cf747a6d68c2ffb6e21cf82a944ca80ef0cbe3f5f451ed63f9ec58155743",
+    "captured_at": "2026-11-03T14:26:29.505023+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/shared-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "02ace69bfc19133e410084c50a97b3e0a5fde0f33a582bac572f4a92eb91b6f8",
+    "captured_at": "2026-11-03T14:18:25.745337+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/shared-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "d12c5229d0e693ac2a3f579eb575b687fdbb3ce9aa44b24f6ac06b56d50fb12f",
+    "captured_at": "2026-11-03T14:18:26.007953+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/support-desktop.png",
+    "width": 1440,
+    "height": 1080,
+    "sha256": "6e6d5477e8b73d482b6e08d617c3f3edb9a0c277840cc53debf0aa3faabfb2b4",
+    "captured_at": "2026-11-03T14:18:24.747720+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/support-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "e458ea0c298b468852abf53f3d9120ff578aaa62bff8f4d318341b9471c33f88",
+    "captured_at": "2026-11-03T13:48:32.965741+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/support-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "e12ecd8a5ee6f4d1bd96fbf5e3c10c7f2d7d1eb139a1e771ebde1301ace76cdf",
+    "captured_at": "2026-11-03T13:48:33.756851+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/task-create-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "9bf12a5224587e669e6f9b09f9558209b81cdc97acdd2079c0034f4ea9bbc6fd",
+    "captured_at": "2026-11-03T14:12:27.224250+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/task-create-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "88cf66e55dee00091571daa9f4b74438ee159a5b2207f7dc38638a087e7cd519",
+    "captured_at": "2026-11-03T14:12:27.487092+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/timetable-phone.png",
+    "width": 390,
+    "height": 844,
+    "sha256": "88fc2a8a1ff5a210c4f54d465a33703e6f296f9683acdf56a9116461e1eafb84",
+    "captured_at": "2026-11-03T14:01:26.672093+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  },
+  {
+    "path": "docs/design/audits/2026-11-03/current/timetable-tablet.png",
+    "width": 1280,
+    "height": 800,
+    "sha256": "d2768f3a8083d23d641327fcf1842cc081c6c9844a4adb4ee0cfe75b79419b47",
+    "captured_at": "2026-11-03T14:01:26.973216+00:00",
+    "evidence": "current-main-web-synthetic",
+    "baseline": "b4ae8341a5afe6f636a0cd89823e321b31ff9685"
+  }
+]
