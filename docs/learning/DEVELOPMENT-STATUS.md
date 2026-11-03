@@ -192,3 +192,12 @@ Kullanıcının telefon/tablet maket onayı uygulandı: Ortak içerik → Sorula
 - Belirsiz gönderim kullanıcı kapsamlı yerel depoda UUID + içerik + görünürlükle korunur; tekrar/güncel sayfa açma aynı makbuzu sorgular. İç not aile yanıtına çevrilemez. Çıkış/rolün kaldırılması yerel özel gönderimi temizler. Henüz gönderilmemiş metin kalıcı taslak değildir; ayrılma uyarısı var. Yetki yenilemesinin geçici ağ hatasında ekran/işlemler gizlenir; kontrol başarıyla yenilenince gönderilmemiş metin korunur. Gerçek yetki iptalinde çalışma alanı kaldırılır.
 - 18 yeni SQL kontrolü ve 3 yeni core kontrolü; toplam 70 core testi, workspace lint/typecheck ve Next statik build geçti. Dört ekran boyutu, ayrı taslaklar, klavye sekmeleri, tekrar gönderim, çakışma, durum değişimi, yetki geri alma, boş/hata/yükleme web fixture'ında denendi. Kaynak: `docs/design/screens/support-operator/verification.json`.
 - Örnek verili tarayıcı kontrolüdür; fiziksel iPad/Safari ve ekran okuyucu kontrolü açık. Üretim rolü atanmadı, destek mesajı/e-posta gönderilmedi, migration/hosting/TestFlight yayımlanmadı. SSS düzenleme/inceleme/yayın ekranı, finans ve diğer kapsam açık.
+
+
+## 2026-11-03 — onaylı Yardım yazıları editörü
+
+- `/help-articles`: content rolüne özel liste, dil/platform filtreleri ve imleçli sayfalama; yeni yazı ve sabit kimlik, düz metin düzenleyici/önizleme. Onaylı GINA maketiyle masaüstü ve tablet düzeni uygulandı.
+- Taslak ve gerçekten yayımlanan sürüm ayrı okunur. Kaydetme yayını değiştirmez; inceleme, yayımlama, arşiv ayrı gerekçeli adımlardır. Yeni sürüm önceki incelemeyi devralmaz. Aynı operatör inceleyip yayımlayabilir; iki kişili onay iddiası yok.
+- Kalıcı ve kullanıcıya özel komut kaydı, aynı istekle belirsiz yayın kurtarma, güncel sürüm/rol kontrolü, taslak ayrılma uyarısı. Sunucu rol iptali UI yetkisinden bağımsızdır.
+- 25 yeni SQL kontrolü izole veritabanında geçti; toplam core 73 test, workspace lint/typecheck ve 15 rotalı backoffice üretim derlemesi geçti. Ayrı Chromium bağlamında 17 akış kontrolü; telefon/tablet/masaüstü ve boş/yükleniyor/hata görüntüleri `docs/design/screens/help-article-editor/` altında.
+- Sentetik içerik yalnız QA; gerçek yardım yazısı yayımlanmadı, üretim rolü atanmadı, production migration/hosting/TestFlight dağıtımı yapılmadı. Gerçek cihaz ve ekran okuyucu kabulü, gerçek yardım metinlerinin ürün doğruluğu incelemesi ve operasyon kurulumu açık.

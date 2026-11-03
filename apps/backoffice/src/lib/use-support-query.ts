@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "./auth";
-export function useSupportQuery<T>(load: () => Promise<T>, key: string) {
+export function useSupportQuery<T>(
+  load: () => Promise<T>,
+  key: string,
+  role: "support" | "content" = "support",
+) {
   const { session, roles, roleError } = useAuth(),
-    enabled = roles.includes("support") && !roleError;
-  const identity = (session?.user.id ?? "") + ":" + key;
+    enabled = roles.includes(role) && !roleError;
+  const identity = (session?.user.id ?? "") + ":" + role + ":" + key;
   const loader = useRef(load);
   useEffect(() => {
     loader.current = load;
