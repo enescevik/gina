@@ -56,11 +56,21 @@ const emptyForm = (): Form => ({
 });
 export function LibraryDrafts() {
   const { session } = useAuth();
-  return session ? (
-    <Workspace key={session.user.id} user={session.user.id} />
+  const router = useRouter();
+  const initialId =
+    typeof router.query.packageId === "string" ? router.query.packageId : null;
+  return session && router.isReady ? (
+    <Workspace
+      key={session.user.id + initialId}
+      user={session.user.id}
+      initialId={initialId}
+    />
   ) : null;
 }
-function Workspace({ user }: { user: string }) {
+function Workspace({ user, initialId }: {
+  user: string;
+  initialId: string | null;
+}) {
   const router = useRouter();
   const [outbox, setOutbox] = useState(() => createLibraryOutbox(user));
   const [pending, setPending] = useState<LibraryPending | null>(null),
@@ -73,7 +83,7 @@ function Workspace({ user }: { user: string }) {
     [cursor, setCursor] = useState<LibraryPackageRow | null>(null),
     [listBusy, setListBusy] = useState(false);
   const [tick, setTick] = useState(0),
-    [selected, setSelected] = useState<string | null>(null),
+    [selected, setSelected] = useState<string | null>(initialId),
     [file, setFile] = useState<LibraryFile | null>(null);
   const [detail, setDetail] = useState<LibraryDetail | null>(null),
     [detailBusy, setDetailBusy] = useState(false),
@@ -707,9 +717,23 @@ function Workspace({ user }: { user: string }) {
                     </svg>
                     {file
                       ? "Yerel önizleme · Henüz kaydedilmedi"
-                      : "Taslak · Ailelere görünmez"}
+                      : "Özgün taslak · Yayın ayrı yönetilir"}
                   </span>
                 </header>
+                {selected && !file && (
+                  <button
+                    className="btn-secondary"
+                    disabled={locked}
+                    onClick={() => navigate(() => {
+                      void router.push({
+                        pathname: "/library-publication",
+                        query: { packageId: selected },
+                      });
+                    })}
+                  >
+                    Yayın ayarlarını aç
+                  </button>
+                )}
                 <div className="library-columns">
                   <aside className="library-questions">
                     <h3>Sorular</h3>

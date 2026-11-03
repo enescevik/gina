@@ -38,13 +38,18 @@ export function clearLibraryCommands() {
     });
   return clearing;
 }
-export function createLibraryOutbox(user: string) {
+export function createLibraryQueue<T extends { request: string }>(
+  user: string,
+  scope: string,
+  parse: (value: unknown) => T,
+) {
+  const key = scope === "review" ? user : user + ":" + scope;
   const active = generation;
   async function operate(
     mode: "read" | "prepare" | "ack",
-    next?: LibraryPending,
+    next?: T,
     id?: string,
-  ): Promise<LibraryPending | null> {
+  ): Promise<T | null> {
     await clearing;
     if (active !== generation) throw Error("library_session_changed");
     const db = await openStore();
@@ -55,23 +60,20 @@ export function createLibraryOutbox(user: string) {
             mode === "read" ? "readonly" : "readwrite",
           ),
           store = tx.objectStore("pending");
-        let result: LibraryPending | null = null,
+        let result: T | null = null,
           failure: unknown;
-        const get = store.get(user);
+        const get = store.get(key);
         get.onsuccess = () => {
           try {
             if (active !== generation) throw Error("library_session_changed");
-            result =
-              get.result == null
-                ? null
-                : libraryPendingSchema.parse(get.result);
+            result = get.result == null ? null : parse(get.result);
             if (mode === "prepare") {
               if (result && JSON.stringify(result) !== JSON.stringify(next))
                 throw Error("library_pending_exists");
-              result = result ?? libraryPendingSchema.parse(next);
-              store.put(result, user);
+              result = result ?? parse(next);
+              store.put(result, key);
             } else if (mode === "ack" && result?.request === id) {
-              store.delete(user);
+              store.delete(key);
               result = null;
             }
           } catch (e) {
@@ -92,9 +94,18 @@ export function createLibraryOutbox(user: string) {
   }
   return {
     restore: () => operate("read"),
+    prepare: (next: T) => operate("prepare", next),
+    acknowledge: (request: string) => operate("ack", undefined, request),
+  };
+}
+export function createLibraryOutbox(user: string) {
+  const queue = createLibraryQueue<LibraryPending>(user, "review", (v) =>
+    libraryPendingSchema.parse(v),
+  );
+  return {
+    ...queue,
     prepare: (payload: LibraryCommand) =>
-      operate(
-        "prepare",
+      queue.prepare(
         libraryPendingSchema.parse({
           request:
             payload.action === "import"
@@ -103,7 +114,6 @@ export function createLibraryOutbox(user: string) {
           payload,
         }),
       ),
-    acknowledge: (request: string) => operate("ack", undefined, request),
   };
 }
 export async function readLibraryFile(file: File) {

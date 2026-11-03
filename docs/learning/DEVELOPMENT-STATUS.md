@@ -235,3 +235,12 @@ Mevcut Kütüphane içine Taslak paketler sekmesi eklendi; koleksiyonlar, aile k
 Bekleyen gönderim kullanıcıya özel IndexedDB'de önce saklanır. Ağ sonucu belirsizse aynı kimlikle tekrar; iki editör çakışırsa yerel not ve güncel kayıt birlikte gösterilir. Yetki 30 sn/odakla yenilenir; her RPC tekrar doğrular. Çıkış/iptalde özel kuyruk temizlenir. Görseller dosya seçimi sırasında tarayıcıda açılarak ve SHA-256/ölçüyle kontrol edilir; bu sunucuda yeniden kodlama hattı değildir.
 
 36 yeni SQL kontrolü, iki yeni gerçek eşzamanlı editör yarışı (toplam beş aktarım/inceleme yarışı), altı yeni core testi (toplam 79), workspace lint/typecheck/test ve 15 rotalı statik build geçti. Dört boyutta 25 tarayıcı kontrolü ve görüntüler: [kütüphane karşılaştırması](../design/screens/library-review/comparison.html). Tarayıcı yanıtları sentetiktir; SQL ayrı izole DB'de denenmiştir. Fiziksel Safari/erişilebilirlik/üretim bağlantısı kabulü, gerçek alan editörü incelemesi, yayın–aile hakkı–Prova seçimi açık. Üretim, hosting ve TestFlight dağıtılmadı.
+
+
+## 3 Kasım — onaylı kütüphane yayın ekranı
+
+Taslak paketten ayrı yayın ayarları, Ücretsiz/Plus/Pro kapsamı, aile katalog kartı önizlemesi ve açık onay uygulandı. Bütün soruların güncel uygun incelemesi ve sunucuda doğrulanan PNG kaynakları zorunlu. İnceleme/sürüm değişikliği eski yayını geçersizleştirir; kayıp cevap aynı işlem kimliğiyle kurtarılır. Gerekçeli arşiv ve yetki iptalinde özel verilerin temizlenmesi var.
+
+38 SQL kontrolü, 11 Edge testi, toplam sekiz gerçek eşzamanlı yarış; 81 core testi, workspace ve 16 rotalı build geçti. Dört boyutta 22 yayın akışı kontrolü ve eski inceleme ekranında 19 regresyon kontrolü geçti. Gerçek pilotun sekiz görseli yeniden kodlandı; tüm RGBA pikselleri ve ölçüleri bağımsız karşılaştırmada aynı kaldı. [Karşılaştırma ve kabul](../design/screens/library-publication/comparison.html).
+
+Yeni paketlerin aile erişimi varsayılan kapalıdır. Aile edinimi, aylık kota tüketimi ve ortak kaynakları koruyan Prova seçimi tamamlanmadı. Pilot gerçek editörce incelenmedi/yayımlanmadı; kalan 1.520 taslak açık. Ekran testleri sentetik API yanıtlarıdır; üretim uçtan uca ve fiziksel Safari/iPad kabulü açık. Normal/demo kayıtları, üretim migration/hosting/Edge/TestFlight değişmedi.

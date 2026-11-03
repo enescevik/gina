@@ -51,3 +51,8 @@ Mevcut hazırlayıcı yalnız ilk sürümü üretir. Güncelleme aracı/UI henü
 ## Sıradaki iş
 
 Mevcut yönetim kütüphanesinde paket seçme → öğrenci/öğretmen önizlemesi → inceleme akışı tasarlanmalı. Kayıt ve yayın açıkça ayrı kalmalı. Alan editörü kabulü, paket erişimleri, Prova'ya ortak kaynaklı soru seçimi, gerçek telefon/tablet/AI testi ve yayın entegrasyonu tamamlanmadan bu taslaklar ailelere açılmamalı. İlk pilot hâlâ 20 taslak; kalan 1.520 soru bu aktarım işiyle üretilmiş olmadı.
+
+
+## 3 Kasım eklemesi — ayrı yayın kararı ve teslim görselleri
+
+`20261103040000_library_publication.sql` ve `library-media` ile taslak değişmeden sürümlü yayın kararı ve yeniden kodlanmış teslim PNG'leri eklendi. İlk aktarımın yalnız yapısal PNG kabulü yukarıdaki gibi kalır; yayın öncesinde CRC/piksel/boyut/sRGB doğrulaması ayrıca zorunludur. Yeni katalog kapısı `library_packages.enabled=false`; aileye cevap veya ham kaynak sunmaz. Aylık hak tüketimi/edinim/Prova seçimi sonraki aşamadır. Sözleşme, renk profili sınırı ve test kaydı: [yayın kabulü](../design/screens/library-publication/README.md).

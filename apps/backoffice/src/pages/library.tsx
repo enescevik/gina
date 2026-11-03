@@ -1,6 +1,7 @@
 import { LibraryDrafts } from "@/components/library-drafts";
 import { LibraryPolicy, type RewardPolicy } from "@/components/LibraryPolicy";
 import { useState } from "react";
+import { useRouter } from "next/router";
 import type { Json } from "@gina/core";
 import { Card, Layout, Notice } from "@/components/Layout";
 import { supabase } from "@/lib/supabase";
@@ -61,7 +62,13 @@ export default function LibraryPage() {
   const { data, error, reload } = useAdminQuery(async () =>
     unwrap(await supabase().rpc("admin_learning_library")) as unknown as Library
   );
-  const [tab, setTab] = useState<"content" | "drafts" | "review" | "policy">("content");
+  const router = useRouter();
+  const [tabChoice, setTab] = useState<
+    "content" | "drafts" | "review" | "policy" | null
+  >(null);
+  const tab = tabChoice ?? (
+    router.query.packageId || router.query.tab === "drafts" ? "drafts" : "content"
+  );
   const [editing, setEditing] = useState<Collection | null>(null);
   const [selected, setSelected] = useState("");
   const [review, setReview] = useState<Contribution | null>(null);

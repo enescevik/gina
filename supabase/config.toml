@@ -451,3 +451,6 @@ verify_jwt = true
 [functions.prova-review]
 verify_jwt = true
 static_files = ["./functions/prova-review/assets/*"]
+
+[functions.library-media]
+verify_jwt = true

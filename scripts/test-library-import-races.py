@@ -131,6 +131,42 @@ def main():
         review_race(False)
         review_race(True)
 
+        # Media bytes are trusted fixtures here; decoder tests cover actual bytes.
+        media = [{'source_hash': a['sha256'], 'base64': a['base64']} for a in bundle['assets']]
+        sql(database, f"SET request.jwt.claims='{{\"role\":\"service_role\"}}'; SELECT public.prepare_library_delivery_media('{actor}','{review_package}',$media${json.dumps(media)}$media$::jsonb);")
+        claims = json.dumps({'sub': actor, 'gina': {'admin': True}})
+        def publication_race(same_request, version, review_conflict=False):
+            fp = sql(database, f"SELECT gina.library_review_fingerprint('{review_package}');").stdout.strip()
+            requests = [str(uuid.uuid4()), str(uuid.uuid4())]
+            if same_request: requests[1] = requests[0]
+            barrier = threading.Barrier(2)
+            def send(index):
+                operation = f"SELECT public.admin_set_library_publication('{requests[index]}','{review_package}',{version},'{fp}','Race publication','Description',array['plus','pro']::public.plan_code[],'Test programme',true,'published');"
+                if review_conflict and index == 1:
+                    operation = f"SELECT public.admin_review_library_question('{requests[index]}','{review_package}','{bundle['questions'][0]['key']}',1,1,'changes_requested','Recheck source');"
+                statement = f"BEGIN; SET LOCAL statement_timeout='20s'; SET LOCAL lock_timeout='10s'; SET LOCAL ROLE authenticated; SET LOCAL request.jwt.claims='{claims}'; SELECT pg_sleep(0.1); {operation} SELECT pg_sleep(0.3); COMMIT;"
+                barrier.wait(timeout=10)
+                return sql(database, statement, check=False)
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                results = list(pool.map(send, (0, 1)))
+            successes = [json.loads(next(line for line in r.stdout.splitlines() if line.startswith('{'))) for r in results if r.returncode == 0]
+            if review_conflict:
+                assert results[1].returncode == 0, results
+                if results[0].returncode: assert 'library_publication_review_changed' in results[0].stderr, results
+                stale = sql(database, f"SELECT review_fingerprint<>gina.library_review_fingerprint(package_id) FROM gina.library_publications WHERE package_id='{review_package}';").stdout.strip()
+                assert stale == 't', stale
+                print('PASS publication/review race: changed review cannot leave an effective release')
+            elif same_request:
+                assert len(successes) == 2 and successes[0] == successes[1], results
+                print('PASS publication replay race: one exact receipt')
+            else:
+                assert len(successes) == 1, results
+                assert 'library_publication_changed' in next(r.stderr for r in results if r.returncode)
+                print('PASS publication version race: one winner')
+        publication_race(False, 0)
+        publication_race(True, 1)
+        publication_race(False, 2, review_conflict=True)
+
     finally:
         # Exact generated name only; do not force-drop or touch the template.
         sql('postgres', f'DROP DATABASE {database};')
