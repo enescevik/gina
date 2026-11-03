@@ -43,6 +43,9 @@ export function Layout(
 ) {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const activePath = router.pathname === "/library-publication"
+    ? "/library"
+    : router.pathname;
   const {
     ready,
     session,
@@ -149,10 +152,10 @@ export function Layout(
                   <Link
                     key={item.href}
                     href={item.href}
-                    aria-current={router.pathname === item.href
+                    aria-current={activePath === item.href
                       ? "page"
                       : undefined}
-                    className={router.pathname === item.href
+                    className={activePath === item.href
                       ? "admin-nav active"
                       : "admin-nav"}
                   >
