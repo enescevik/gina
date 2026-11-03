@@ -44,31 +44,3 @@ export async function upsertSubscription(db: SupabaseClient, sub: SubscriptionUp
   );
   if (error) throw error;
 }
-
-/** Bildirimi günlüğe yazar; aynı event_key ikinci kez gelirse false döner (idempotency). */
-export async function logNotification(
-  db: SupabaseClient,
-  platform: "apple" | "google",
-  eventKey: string,
-  eventType: string | null,
-  payload: unknown,
-): Promise<boolean> {
-  const { error } = await db.from("store_notifications").insert({
-    platform,
-    event_key: eventKey,
-    event_type: eventType,
-    payload,
-  });
-  if (error) {
-    if (error.code === "23505") return false; // zaten işlendi
-    throw error;
-  }
-  return true;
-}
-
-export async function markProcessed(db: SupabaseClient, eventKey: string, err?: string): Promise<void> {
-  await db
-    .from("store_notifications")
-    .update({ processed_at: new Date().toISOString(), error: err ?? null })
-    .eq("event_key", eventKey);
-}

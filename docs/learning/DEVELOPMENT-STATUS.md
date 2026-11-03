@@ -321,3 +321,10 @@ Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli
 - Aile katılımı aynı görseli bir kez kopyalar; ortak metin/soru sırası korunur. Kütüphane kotası ikinci kez düşülmez. Açık uçlu sorular otomatik sıralamaya sokulmaz; bu ayrı puanlama politikası açık kalır.
 - Yönetimde yayın isteği cihazda kalıcı; kayıp yanıt ve tam yeniden açılış aynı işlemle kurtarıldı. Ortak kaynağa bağlı üç soru + bağımsız soru = dört soru, açık uçlu ve izinsiz paket seçenekleri pasif. Kanıtlar: docs/design/screens/group-library-integration/.
 - 42 yeni SQL kontrolü ve iki gerçek katılım/yayından kaldırma yarışı geçti; yönetim typecheck/lint/üretim derlemesi geçti. Üretime dağıtılmadı, özellik kapısı açılmadı, gerçek cihaz kabulü açık.
+
+## 4 Kasım 2026 — mağaza bildiriminde doğrulama ve kesinti kurtarma
+
+- PR #87 tüm CI kontrolleriyle main’e birleşti: görselli/ortak kaynaklı kütüphaneden çoktan seçmeli toplu Prova bağlantısı. Üretim hâlâ 17; bu birleşme dağıtım değildir.
+- Apple doğrulanmamış bildirim kimliğinin gerçek olayı engellemesi ve Google audience tanımsızken kimliksiz isteğin işlenmesi kapatıldı. Google’da audience + beklenen servis hesabı e-postası zorunlu.
+- 070000 migration: platform bazlı olay kimliği, beş dakikalık sahiplik, kesinti/hata sonrası yeniden alma ve eski işleyiciyi dışlayan tamamlanma. Günlük yazma hatası artık başarı sayılmaz; gerçek işlemi yeniden denemesi için sağlayıcıya hata döner.
+- 29 taklit sağlayıcı Edge testi, 26 SQL kontrolü ve gerçek DB eşzamanlı teslim/süre dolumu testleri geçti. Gerçek mağaza/sandbox ödeme, canlı operasyon ve cihaz kabulü yapılmadı. Ayrı mağaza olayları ile istemci/uzlaştırmanın abonelik yazım sırası ayrıca ele alınacak; bu teslim tam ödeme sistemi kabulü değildir.
