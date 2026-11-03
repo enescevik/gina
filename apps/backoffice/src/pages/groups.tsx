@@ -1,4 +1,7 @@
-import { useRef, useState } from "react";
+import { groupCreateCommandSchema, type GroupCreateCommand } from "@gina/core";
+import { useAuth } from "@/lib/auth";
+import { groupCreateQueue, sendGroupCreate } from "@/lib/group-command";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Card, Layout, Notice } from "@/components/Layout";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
 import { supabase } from "@/lib/supabase";
@@ -38,7 +41,24 @@ type Library = {
     content: { stem: string; kind: string; topic: string };
   }[];
 };
+type Package = { id: string; title: string; grade: number; subject: string; version: number; curriculum: string; plans: Plan[]; units: { key: string; title: string; count: number; eligible: boolean; has_media: boolean }[] };
 export default function Groups() {
+  const { session } = useAuth();
+  const user = session?.user.id ?? "";
+  return <GroupsEditor key={user} user={user}/>;
+}
+function GroupsEditor({ user }: { user: string }) {
+  const queue = useMemo(() => groupCreateQueue(user), [user]);
+  const [pending, setPending] = useState<GroupCreateCommand | null>(null);
+  const [restoring, setRestoring] = useState(true);
+  const [storageError, setStorageError] = useState(false);
+  useEffect(() => {
+    if (!user) return;
+    let active = true;
+    void queue.restore().then(c => { if (active) setPending(c); }).catch(() => { if (active) setStorageError(true); }).finally(() => { if (active) setRestoring(false); });
+    return () => { active = false; };
+  }, [user, queue]);
+  const packages = useAdminQuery(async () => unwrap(await supabase().rpc("admin_group_package_catalog")) as unknown as Package[], [user]);
   const query = useAdminQuery(async () =>
     unwrap(await supabase().rpc("admin_group_exams")) as unknown as Operations
   );
@@ -63,15 +83,14 @@ export default function Groups() {
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState("");
   const gate = useRef(false);
-  const intent = useRef({ hash: "", id: "" });
-  const collection = library.data?.collections.find((c) =>
-    c.id === form.collection
-  );
-  const items =
-    library.data?.items.filter((i) =>
-      i.collection_id === form.collection && i.status === "published" &&
-      i.content.kind === "multiple_choice"
-    ) ?? [];
+
+  const packageSource = packages.data?.find(p => "package:" + p.id === form.collection);
+  const legacy = library.data?.collections.find(c => c.id === form.collection);
+  const collection = packageSource ? { ...packageSource, curriculum_version: packageSource.curriculum } : legacy;
+  const items = packageSource ? packageSource.units.map(unit => ({ id: unit.key, count: unit.count, eligible: unit.eligible, content: { topic: unit.title, stem: `${unit.count} soru${unit.has_media ? " · Görselli" : ""}${unit.key.startsWith("source:") ? " · Ortak kaynakla birlikte" : ""}${!unit.eligible ? " · Açık uçlu soru içerdiği için toplu sıralamaya uygun değil" : ""}` } })) :
+    (library.data?.items.filter(i => i.collection_id === form.collection && i.status === "published" && i.content.kind === "multiple_choice") ?? []).map(i => ({ ...i, count: 1, eligible: true }));
+  const questionCount = items.filter(i => form.items.includes(i.id)).reduce((n,i) => n+i.count, 0);
+  const creationLocked = busy || restoring || storageError || !!pending;
   async function run(action: () => Promise<void>) {
     if (gate.current) return;
     gate.current = true;
@@ -84,7 +103,10 @@ export default function Groups() {
     } catch (e) {
       const code = (e as Error).message;
       setMessage(
-        code === "request_conflict"
+        code === "library_publication_changed" || code === "group_package_unavailable"
+          ? "Kaynak paketin yayını veya incelemesi değişti. Listeyi yenileyip uygun bir kaynak seçin."
+          : code === "group_package_plans" ? "Seçtiğiniz erişim paketleri, kaynak kütüphanenin izin verdiği paketlerle sınırlı olmalı."
+          : code === "request_conflict"
           ? "Aynı kayıt kimliğiyle farklı içerik gönderilemez. Bilgileri kontrol edin."
           : code === "group_questions_required"
           ? "En az 3, en fazla 50 yayımlanmış çoktan seçmeli soru seçin."
@@ -97,28 +119,25 @@ export default function Groups() {
   }
   async function create() {
     await run(async () => {
-      const payload = {
-        p_collection: form.collection,
-        p_title: form.title.trim(),
-        p_items: form.items,
-        p_start: new Date(form.start).toISOString(),
-        p_end: new Date(form.end).toISOString(),
-        p_minutes: form.minutes,
-        p_plans: form.plans,
-      };
-      const hash = JSON.stringify(payload);
-      if (intent.current.hash !== hash) {
-        intent.current = { hash, id: crypto.randomUUID() };
+      let command = pending;
+      if (!command) {
+        if (restoring || storageError) throw Error("storage_unavailable");
+        command = groupCreateCommandSchema.parse({ request: crypto.randomUUID(), source: packageSource ? "package" : "legacy", sourceId: packageSource?.id ?? form.collection, version: packageSource?.version ?? null, title: form.title.trim(), items: form.items, start: new Date(form.start).toISOString(), end: new Date(form.end).toISOString(), minutes: form.minutes, plans: form.plans });
+        await queue.prepare(command);
+        setPending(command);
       }
-      unwrap(
-        await supabase().rpc("admin_create_group_exam", {
-          p_id: intent.current.id,
-          ...payload,
-        }),
-      );
-      setSuccess(
-        "Prova yayımlandı. Soru sürümü ve katılım koşulları sabitlendi.",
-      );
+      try {
+        await sendGroupCreate(command);
+        await queue.acknowledge(command.request);
+        setPending(null);
+      } catch (e) {
+        if (/^(P0001|42501|22\w{3}|23\w{3})$/.test((e as {code?:string}).code ?? "")) {
+          await queue.acknowledge(command.request); setPending(null);
+          library.reload(); packages.reload();
+        }
+        throw e;
+      }
+      setSuccess("Prova yayımlandı. Soru sürümü ve katılım koşulları sabitlendi.");
       setForm({ ...form, title: "", items: [] });
     });
   }
@@ -130,9 +149,10 @@ export default function Groups() {
         sıralama ayrı veli tercihleridir. Eşit doğru sayısı eşit sıradır; hız
         puanı yoktur.
       </p>
-      {query.error || library.error || message
+      {query.error || library.error || packages.error || message
         ? <Notice tone="error">{message || "Veriler yüklenemedi."}</Notice>
         : null}
+      {query.error || library.error || packages.error ? <button className="btn-secondary mb-4" disabled={busy} onClick={() => { query.reload(); library.reload(); packages.reload(); }}>Listeleri yeniden yükle</button> : null}
       {success ? <Notice tone="ok">{success}</Notice> : null}
       <Card title="Yayın ve paket hakları">
         <p className="text-slate-600">
@@ -217,10 +237,15 @@ export default function Groups() {
             </div>
           )}
       </Card>
+      {storageError ? <Notice tone="error">Bekleyen yayın kaydı okunamadı. Yeni yayın başlatılmadı; sayfayı yeniden açın.</Notice> : null}
+      {pending ? <Card title="Bekleyen yayını kontrol et">
+        <p><strong>{pending.title}</strong> için yayın isteği bu tarayıcıda saklandı. Aynı istek kontrol edilir; ikinci Prova oluşturulmaz.</p>
+        <button className="btn mt-4" disabled={busy || restoring || storageError} onClick={() => void create()}>Yayın sonucunu kontrol et</button>
+      </Card> : null}
       <Card title="Yeni ortak prova">
+       <fieldset disabled={creationLocked}>
         <p className="mb-4 text-slate-600">
-          Yayımlanmış bir koleksiyondan 3–50 çoktan seçmeli soru seçin. İlk
-          sürümde görselsiz sorular desteklenir. Yayımlandıktan sonra içerik ve
+          İncelenmiş ve yayımlanmış bir paketten 3–50 çoktan seçmeli soru seçin. Ortak metin veya görsele bağlı sorular bir bütün olarak eklenir. Açık uçlu soru içeren gruplar otomatik sıralamaya alınmaz. Yayımlandıktan sonra içerik ve
           süre değişmez; düzeltmek için iptal edip yeni sürüm oluşturun. En
           fazla 1.000 katılımcı.
         </p>
@@ -234,13 +259,17 @@ export default function Groups() {
             />
           </label>
           <label className="label">
-            Koleksiyon<select
+            Kaynak<select
               className="input"
               value={form.collection}
               onChange={(e) =>
-                setForm({ ...form, collection: e.target.value, items: [] })}
+                setForm({ ...form, collection: e.target.value, items: [], plans: packages.data?.find(p => "package:"+p.id === e.target.value)?.plans ?? ["plus", "pro"] })}
             >
-              <option value="">Koleksiyon seçin</option>
+              <option value="">Yayımlanmış kaynak seçin</option>
+              <optgroup label="İncelenmiş kütüphane paketleri">
+                {packages.data?.map(p => <option key={p.id} value={"package:"+p.id}>{p.title} · {p.grade}. sınıf · sürüm {p.version}</option>)}
+              </optgroup>
+              <optgroup label="Önceki metin koleksiyonları">
               {library.data?.collections.filter((c) =>
                 c.status === "published" && c.curriculum_version.trim()
               ).map((c) => (
@@ -248,6 +277,7 @@ export default function Groups() {
                   {c.title} · {c.grade}. sınıf
                 </option>
               ))}
+              </optgroup>
             </select>
           </label>
           <label className="label">
@@ -289,6 +319,7 @@ export default function Groups() {
                   <input
                     type="checkbox"
                     checked={form.plans.includes(plan)}
+                    disabled={!!packageSource && !packageSource.plans.includes(plan)}
                     onChange={(e) =>
                       setForm({
                         ...form,
@@ -310,8 +341,9 @@ export default function Groups() {
             <div className="mt-5 rounded-2xl bg-brand-light p-4">
               <p className="mb-3 font-bold">
                 {collection.subject} · {collection.curriculum_version} ·{" "}
-                {form.items.length} soru seçili
+                {questionCount} soru seçili
               </p>
+              {packageSource ? <a className="mb-4 inline-flex min-h-12 items-center font-bold text-purple-700 underline" href={`/library?packageId=${packageSource.id}`} target="_blank" rel="noopener noreferrer">Paketin soru ve görsellerini incele ↗</a> : null}
               {items.length
                 ? items.map((i) => (
                   <label
@@ -321,6 +353,7 @@ export default function Groups() {
                     <input
                       type="checkbox"
                       checked={form.items.includes(i.id)}
+                      disabled={!i.eligible}
                       onChange={(e) =>
                         setForm({
                           ...form,
@@ -343,11 +376,12 @@ export default function Groups() {
           className="btn mt-5"
           disabled={busy || form.title.trim().length < 3 || !form.collection ||
             !form.start || !form.end || !form.plans.length ||
-            form.items.length < 3 || form.items.length > 50}
+            questionCount < 3 || questionCount > 50 || !!packages.error || !!library.error}
           onClick={() => void create()}
         >
           Sürümü sabitle ve yayımla
         </button>
+       </fieldset>
       </Card>
       <Card title="Yayımlanan provalar">
         {!query.data?.groups.length

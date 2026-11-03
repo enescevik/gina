@@ -1122,14 +1122,14 @@ isOneToOne: false
                   ]
                 },"group_exams": {
                   Row: {
-                    "collection_id": string,"created_at": string,"created_by": string | null,"creation_intent": NonNullable<Json>,"curriculum_version": string,"duration_minutes": number,"ends_at": string,"grade": number,"id": string,"plans": (Database["public"]['Enums']["plan_code"])[],"starts_at": string,"status": string,"subject": string,"title": string,"version_hash": string
+                    "collection_id": string | null,"package_id": string | null,"created_at": string,"created_by": string | null,"creation_intent": NonNullable<Json>,"curriculum_version": string,"duration_minutes": number,"ends_at": string,"grade": number,"id": string,"plans": (Database["public"]['Enums']["plan_code"])[],"starts_at": string,"status": string,"subject": string,"title": string,"version_hash": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "collection_id": string,"created_at"?: string,"created_by"?: string | null,"creation_intent": NonNullable<Json>,"curriculum_version": string,"duration_minutes": number,"ends_at": string,"grade": number,"id": string,"plans": (Database["public"]['Enums']["plan_code"])[],"starts_at": string,"status"?: string,"subject": string,"title": string,"version_hash": string
+                    "collection_id"?: string | null,"package_id"?: string | null,"created_at"?: string,"created_by"?: string | null,"creation_intent": NonNullable<Json>,"curriculum_version": string,"duration_minutes": number,"ends_at": string,"grade": number,"id": string,"plans": (Database["public"]['Enums']["plan_code"])[],"starts_at": string,"status"?: string,"subject": string,"title": string,"version_hash": string
                   }
                   Update: {
-                    "collection_id"?: string,"created_at"?: string,"created_by"?: string | null,"creation_intent"?: NonNullable<Json>,"curriculum_version"?: string,"duration_minutes"?: number,"ends_at"?: string,"grade"?: number,"id"?: string,"plans"?: (Database["public"]['Enums']["plan_code"])[],"starts_at"?: string,"status"?: string,"subject"?: string,"title"?: string,"version_hash"?: string
+                    "collection_id"?: string | null,"package_id"?: string | null,"created_at"?: string,"created_by"?: string | null,"creation_intent"?: NonNullable<Json>,"curriculum_version"?: string,"duration_minutes"?: number,"ends_at"?: string,"grade"?: number,"id"?: string,"plans"?: (Database["public"]['Enums']["plan_code"])[],"starts_at"?: string,"status"?: string,"subject"?: string,"title"?: string,"version_hash"?: string
                   }
                   Relationships: [
                     {
@@ -2299,6 +2299,8 @@ isOneToOne: false
 "admin_grant_override":
 { Args: { "p_ends_at": string,"p_family_id": string,"p_plan": Database["public"]['Enums']["plan_code"],"p_reason": string,"p_starts_at"?: string }; Returns: string
                            },
+"admin_group_package_catalog": { Args: Record<PropertyKey, never>; Returns: Json },
+"admin_create_package_group_exam": { Args: { p_id: string; p_package_id: string; p_publication_version: number; p_title: string; p_units: string[]; p_start: string; p_end: string; p_minutes: number; p_plans: Database["public"]["Enums"]["plan_code"][] }; Returns: string },
 "admin_group_exams":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
