@@ -17,3 +17,4 @@ export { AnswerReceipts } from "./answer-receipts";
 export * from "./notebook";
 export * from "./notebook-tokens";
 export * from "./prova-booklet";
+export * from './prova-draft';

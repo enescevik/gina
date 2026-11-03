@@ -24,6 +24,7 @@ select lives_ok($$select public.fail_prova_generation_v2('20000000-0000-4000-800
 select is(public.reserve_prova_generation_v2('20000000-0000-4000-8000-000000002502','10000000-0000-4000-8000-000000002501','00000000-0000-4000-8000-000000002501',repeat('b',64),1)->>'error','ai_result_uncertain','uncertain result is not silently charged again');
 select is((public.get_prova_entitlement('10000000-0000-4000-8000-000000002501')->>'ai_generate_remaining')::int,0,'uncertain charge stays reserved');
 reset role;
+select throws_ok($$delete from public.learning_credit_grants where family_id='10000000-0000-4000-8000-000000002501';set constraints all immediate;$$,'23503',null,'cannot erase a used grant while spending allocations survive');
 select lives_ok($$delete from auth.users where id='00000000-0000-4000-8000-000000002501';set constraints all immediate;$$,'credit allocation does not block account deletion');
 select * from finish();
 rollback;

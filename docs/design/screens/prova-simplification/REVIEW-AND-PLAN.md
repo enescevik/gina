@@ -85,7 +85,7 @@ Eylemler: ana eylem dolu mor, ikincil düzenleme satır/ikon+etiket, yardımcı 
 
 - `proposal-v1.html`, `proposal-phone-v1.png`, `proposal-tablet-v1.png`: **yeni Prova ana ekranı önerisi**, örnek veriler. Etkileşimsiz maket; gerçek yeni oluşturucu değildir. Tablette sağdaki taslak içeriği aynı sette tekil ve ortak kaynaklı soruları gösterir.
 - `review-*-phone.png`, `review-mc-tablet.png`: hata düzeltmelerinden sonraki **gerçek bileşenler**, sentetik veriler. Maketle karıştırılmamalı.
-- Sıra: ana ekran tasarım onayı **alındı** → birleşik oluşturucunun ayrıntılı ekranları `builder/` altında **hazırlandı, inceleme bekliyor** → backend+UI uygulaması → soru türlerine göre çözme/inceleme → diğer ekran aileleri → fiziksel cihaz kontrolü ve yeni TestFlight.
+- Sıra: ana ekran tasarım onayı **alındı** → birleşik oluşturucunun ayrıntılı ekranları `builder/` altında **onaylandı; uygulaması tamamlandı** → backend+UI uygulaması → soru türlerine göre çözme/inceleme → diğer ekran aileleri → fiziksel cihaz kontrolü ve yeni TestFlight.
 
 ## Kabul ölçütleri
 
@@ -101,3 +101,21 @@ Soru ilk açılışta okunur; görselsiz/boş/şıklı/çizimli/uzun ortak kayna
 ## Bu tur tamamlanan kontroller
 
 Mobil TypeScript ve Expo lint geçti; 44 core testi geçti. 390×844 telefon, 320×568 küçük telefon ve 1280×800 tablette sentetik inceleme durumları kontrol edildi. Çizim dokunma testinde kilit, kaydırma konumunun korunması, bırakma ve iptal sonrası kilidin açılması doğrulandı. `verification.json` kapsamı ve sınırları kaydeder. `qa-fixture.tsx` yalnız QA için geçici Expo rotası olarak kullanıldı; uygulama rotası/kimlik doğrulama düzenlemesi teslimde yoktur.
+
+
+## Birleşik Prova uygulaması — 3 Kasım 2026
+
+Kullanıcının ayrıntılı dört adım maketine verdiği “evet” onayıyla uygulandı. `implementation/` altındaki görüntüler gerçek Expo Web bileşenlerinin sentetik API verileriyle çekimleridir; fiziksel cihaz veya canlı AI testi olarak sunulmaz.
+
+- Ana ekran: tek hazırlama eylemi, Provalar / Sonuçlar / Kütüphane, çocuk filtresi yalnız birden fazla çocukta, taslağa devam, inceleme bekleyen sonuçlar. Önceki seviye tespiti, grup sınavı, kitapçık ve senaryo araçları Kütüphane → Diğer araçlar altında korunur.
+- Oluşturma: Başlangıç → Kapsam → Sorular → Kontrol. Çocuğun mevcut sınıfı kullanılır, eksikse açıkça sorulur. Kütüphane, AI, elle hazırlama ve özel belgeden AI üretimi aynı Prova taslağına eklenir. Ortak kaynak grubu bütün hâlinde sıralanır. Eski `/exam` ve `/generate` girişleri birleşik oluşturucuya gider.
+- AI: konu başına dağılım ve toplam kullanım önceden görünür; paket uygunsa veliye ait senaryo seçilebilir. Çoklu öneri seçimi yeni kota tüketmez. Belge için ayrıca saklama/AI onayı gerekir; aile sahipliği ve dosya hash’i doğrulanır, kaynak kimliği sorunun kökeninde saklanır. Veli cevap kontrolünde özgün belgeye erişebilir; belge çocuk önizlemesine otomatik eklenmez.
+- Kayıt: aileye bağlı, sürümlü taslak; aynı istek için aynı makbuz; eşzamanlı kayıt çatışması; atomik ve tekil atama; atanmış sorular/ortak kaynak ve hazırlama metaverisi korunur. Yeni testler yalnız `gina_prova_builder_audit` adlı ayrı veritabanında çalıştı.
+- Resmî MEB kataloğu henüz bağlı olmadığı için arayüz bunu açıklayıp bu etiketle göndermeyi engeller. “Okul çalışması” ve veli senaryosu kullanılabilir; bunlar resmî uyum sertifikası değildir.
+
+Doğrulama: 48 core testi, 38 yeni veritabanı kontrolü, 57 mevcut ortak-kaynak regresyon kontrolü, gerçek iki oturumlu kayıt/gönderim yarışı ve 5 belge güvenlik testi geçti. Mobil tür kontrolü, Expo lint ve Edge Function Deno kontrolü geçti. Ayrıntılı kapsam ve sınırlar `implementation/verification.json` içindedir.
+
+Yayın öncesi sıra: yeni migration → `prova-generate` dağıtımı → canlı belge/kota tekrar denemesi → aynı commit’ten TestFlight ve kablosuz iPad paketi → fiziksel iPad’de dikey/yatay defter ve araç açılış kontrolü. Bu teslimde yeni TestFlight veya kablosuz iPad paketi yayımlanmadı.
+
+
+Ek regresyon: merkezi GINA kütüphanesinden alınan sorunun da taslağa bağlanması, sınıf/ders filtresi ve mevcut hakkın korunması eklendi. 30 kütüphane ve 19 üretim kotası kontrolü geçti. Kota testinde bulunan önceki hesap silme engeli `20261103011000_credit_deletion_order.sql` ile düzeltildi: kullanılan katkı hakkını tek başına silmek hâlâ yasak; aile silinirken birbirini izleyen temizleme adımları işlem sonunda doğrulanır.

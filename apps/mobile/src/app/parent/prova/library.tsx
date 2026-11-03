@@ -1,3 +1,5 @@
+import { router, useLocalSearchParams } from "expo-router";
+import { addToProvaDraft, fetchProvaDrafts } from "@/lib/prova-draft";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -49,6 +51,12 @@ export default function LearningLibrary() {
   const { t } = useTranslation();
   const { claims } = useSession();
   const cache = useQueryClient();
+  const { draftId } = useLocalSearchParams<{ draftId?: string }>();
+  const draft = useQuery({
+    queryKey: ["library_draft", draftId],
+    enabled: !!draftId,
+    queryFn: async () => (await fetchProvaDrafts(draftId))[0] ?? null,
+  });
   const [selected, setSelected] = useState<Collection | null>(null);
   useRealtimeInvalidate(
     "question_contributions",
@@ -80,10 +88,21 @@ export default function LearningLibrary() {
         p_item_id: id,
       });
       if (error) throw error;
+      if (draftId) {
+        await addToProvaDraft(draftId, [{
+          kind: "question",
+          id: data,
+          source: "library",
+        }]);
+      }
       return data;
     },
     onSuccess: async () => {
       await Promise.all([
+        cache.invalidateQueries({ queryKey: ["library_draft", draftId] }),
+        cache.invalidateQueries({
+          queryKey: ["prova_drafts", claims?.family_id],
+        }),
         cache.invalidateQueries({ queryKey: ["learning_library"] }),
         cache.invalidateQueries({ queryKey: ["library_items"] }),
         cache.invalidateQueries({
@@ -94,14 +113,35 @@ export default function LearningLibrary() {
       ]);
     },
   });
+  const collections = (catalog.data?.collections ?? []).filter((c) =>
+    !draftId ||
+    (draft.data && c.grade === draft.data.content.grade &&
+      draft.data.content.subjects.includes(c.subject))
+  );
   return (
     <ParentScreen
       title={t("library.title")}
       subtitle={t("library.body")}
-      loading={catalog.isLoading}
-      error={catalog.error}
-      onRetry={() => void catalog.refetch()}
+      loading={catalog.isLoading || (!!draftId && draft.isPending)}
+      error={catalog.error ?? draft.error}
+      onRetry={() => {
+        void catalog.refetch();
+        if (draftId) void draft.refetch();
+      }}
     >
+      {draftId
+        ? (
+          <Button
+            variant="secondary"
+            title={t("provaBuilder.resume")}
+            onPress={() =>
+              router.replace({
+                pathname: "/parent/prova/builder",
+                params: { draftId },
+              })}
+          />
+        )
+        : null}
       <View style={parentStyles.card}>
         <Text style={parentStyles.title}>
           {t("library.allowance", {
@@ -110,10 +150,10 @@ export default function LearningLibrary() {
         </Text>
         <Text style={parentStyles.muted}>{t("library.allowanceHelp")}</Text>
       </View>
-      {!catalog.data?.collections.length
+      {!collections.length
         ? <EmptyCard title={t("library.empty")} slug="display-bookworm" />
         : null}
-      {catalog.data?.collections.map((c) => (
+      {collections.map((c) => (
         <NavigationCard
           key={c.id}
           title={c.title}
@@ -185,10 +225,21 @@ export default function LearningLibrary() {
                     {t(`prova.difficulty.${item.difficulty}`)}
                   </Text>
                   <Button
-                    title={t(item.owned ? "library.owned" : "library.add")}
-                    disabled={!!item.owned || redeem.isPending ||
-                      !(catalog.data &&
-                        (catalog.data.remaining + catalog.data.bonus) > 0)}
+                    title={t(
+                      draftId
+                        ? "provaBuilder.addToPractice"
+                        : item.owned
+                        ? "library.owned"
+                        : "library.add",
+                    )}
+                    disabled={redeem.isPending || (!draftId && !!item.owned) ||
+                      (!!draftId && !!item.owned &&
+                        draft.data?.content.blocks.some((b) =>
+                          b.id === item.owned
+                        )) ||
+                      (!item.owned &&
+                        !(catalog.data &&
+                          (catalog.data.remaining + catalog.data.bonus) > 0))}
                     loading={redeem.isPending && redeem.variables === item.id}
                     onPress={() =>
                       redeem.mutate(item.id)}

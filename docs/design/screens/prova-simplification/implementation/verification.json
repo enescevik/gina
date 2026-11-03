@@ -1,0 +1,68 @@
+{
+  "date": "2026-11-03",
+  "kind": "Actual Expo Web components with synthetic, intercepted API responses; not physical iPhone/iPad captures",
+  "approved_designs": [
+    "../proposal-v1.html",
+    "../builder/index.html"
+  ],
+  "viewport_checks": {
+    "phone": [
+      390,
+      844
+    ],
+    "small_phone": [
+      320,
+      568
+    ],
+    "tablet_landscape": [
+      1280,
+      800
+    ],
+    "tablet_portrait": [
+      768,
+      1024
+    ]
+  },
+  "passed": [
+    "Sole child auto-selection and grade from profile",
+    "Mixed subject selection",
+    "Library ordinary questions plus complete shared-source block",
+    "Multi-select AI suggestions without replacing selected questions",
+    "Saved draft reload via persistent draftId URL",
+    "Whole-group reorder",
+    "Conflict leaves current text intact",
+    "Child preview hides answer until parent explicitly reveals it",
+    "One confirmed publish call",
+    "Manual editor receives draft ID, grade and subject",
+    "No horizontal document overflow at tested widths",
+    "Core 48 tests",
+    "Mobile tsc --noEmit",
+    "Expo lint",
+    "Deno check prova-generate",
+    "38 new database checks",
+    "57 existing shared-question integrity checks",
+    "Two-session save race rejects stale version",
+    "Two-session submit race creates one exam",
+    "5 document consent/ownership/hash tests",
+    "Central GINA library filters by draft grade/subjects and attaches redeemed question to same draft",
+    "30 existing library entitlement/contribution checks",
+    "19 generation credit checks, including family deletion and surviving-allocation protection"
+  ],
+  "not_verified": [
+    "Physical iPad/iPhone native presentation and keyboard",
+    "Live paid AI PDF/photo generation through production provider",
+    "Production migration, Edge deployment and TestFlight distribution"
+  ],
+  "remaining_constraints": [
+    "Verified current MEB scenario catalog is not connected; official MEB publication is blocked with explanation",
+    "Catalog suggestions come from existing question library and parent-owned blueprints; they do not certify curriculum alignment",
+    "Shared-source/image contribution moderation restrictions are unchanged",
+    "Browser fixture warnings: deliberately unreachable synthetic realtime host, injected conflict HTTP 409, old browser locale-init warning; no production credentials or demo database writes used"
+  ],
+  "deployment_order": [
+    "Apply 20261103010000_prova_drafts.sql and 20261103011000_credit_deletion_order.sql",
+    "Deploy prova-generate with _shared/prova-document.ts",
+    "Smoke-test authenticated private document flow and quota replay",
+    "Ship the same commit in TestFlight and the wireless iPad build; perform physical device acceptance"
+  ]
+}

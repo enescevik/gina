@@ -13,7 +13,9 @@ import { supabase } from "@/lib/supabase";
 export default function SharedQuestionScreen() {
   const { t } = useTranslation();
   const { claims } = useSession();
-  const { groupId } = useLocalSearchParams<{ groupId?: string }>();
+  const { groupId, draftId, grade, subject } = useLocalSearchParams<
+    { groupId?: string; draftId?: string; grade?: string; subject?: string }
+  >();
   const familyId = claims?.family_id ?? "";
   const policy = useQuery({
     queryKey: ["question_group_policy", familyId],
@@ -110,6 +112,10 @@ export default function SharedQuestionScreen() {
     <SharedQuestionWizard
       key={`${familyId}:${groupId ?? "new"}`}
       familyId={familyId}
+      draftId={draftId}
+      scope={draftId
+        ? { grade: grade ?? "", subject: subject ?? "" }
+        : undefined}
       enabled={policy.data === true}
       initial={initial.data}
       catalog={groups.data}
