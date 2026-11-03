@@ -7,6 +7,7 @@ import { EventIcon } from "@/components/event-icon";
 
 export interface WeekEvent {
   id: string;
+  edit_revision?: number;
   title: string;
   type: EventType;
   child_id: string | null;

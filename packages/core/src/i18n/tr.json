@@ -2162,5 +2162,11 @@
   "focus.focusTask": "Bu göreve odaklan",
   "focus.activeHelp": "Tek bir adıma odaklan. İhtiyaç duyduğunda duraklatabilir veya mola verebilirsin.",
   "provaBuilder.repeatIntro": "Çocuğunun yeniden çalışabileceği soruları seç. Seçtiklerin bu Prova’ya eklenecek; çocuğuna göndermeden önce birlikte kontrol edeceğiz.",
-  "provaBuilder.repeatRules": "Bu sorular nasıl seçiliyor?"
+  "provaBuilder.repeatRules": "Bu sorular nasıl seçiliyor?",
+  "calendarRecovery.pending": "Önceki takvim işlemini kontrol edelim",
+  "calendarRecovery.delete": "Etkinlik silme isteği",
+  "calendarRecovery.help": "Bağlantı kesilmiş olabilir. Aynı isteği kontrol ederek devam edeceğiz; ikinci bir etkinlik oluşturulmayacak. Bu pencereyi kapatsan da istek bu cihazda saklanır.",
+  "calendarRecovery.retry": "Kaydın sonucunu kontrol et",
+  "calendarRecovery.changed": "Bu etkinlik başka bir yerde değişti. Pencereyi kapatıp takvimden güncel etkinliği yeniden aç.",
+  "calendarRecovery.storage": "Bu cihazdaki bekleyen takvim kaydı okunamadı. Yeni kayıt oluşturmadan önce takvimini kontrol et ve Yardım bölümünden bize ulaş."
 }

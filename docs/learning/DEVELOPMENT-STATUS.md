@@ -281,3 +281,11 @@ Hazırlayıcı artık kayıtlı Fen taslak profilini ve görselsiz ortak metni k
 - Ortak kaynak bütünlüğü, etkilenen/eklenen soru sayısı ayrımı, önceki yanıta geçiş ve mevcut sürümlü taslağa ekleme. Otomatik atama veya gelişim/başarı iddiası yok. En güncel 50 birim; aralıklı tekrar takvimi henüz yok.
 - 27 yeni SQL kontrolü; izole veritabanında 44 dosya / 1.069 doğrulama. Gerçek web bileşeninde telefon/tablet seçme-kayıt ve yeniden seçme engeli kontrol edildi. Önceden eklenmiş seçeneklerin düşük kontrastı giderildi.
 - Migration 060000 ve mobil değişiklikler henüz canlıda değil. Görseller ve akış sınırları: docs/design/screens/repeat-practice/.
+
+## Takvimde kayıp yanıt, eşzamanlı düzenleme ve aile sınırı
+
+- Odak/tekrar çalışması PR #81 dört CI kontrolü geçerek main'e birleşti (9964cdd); dağıtım değildir.
+- Manuel takvim oluşturma/düzenleme/silme tek makbuzlu RPC'ye taşındı. Kayıp cevap cihazda saklanıp aynı anahtarla çözülür; revizyon eski ekranın yeni değişikliği ezmesini önler. Eski doğrudan düzenlemeler de revizyon artırır.
+- Etkinlikte başka aileye ait çocuk seçilmesine ilişkin RLS açığı giderildi; RPC de ayrı doğrular. Ders programı yansımaları manuel RPC'den korunur.
+- 24 yeni pgTAP, tüm 45 dosyada 1.093 doğrulama; dört gerçek eşzamanlı oturum yarışı. Web'de sunucu kaydından sonra yanıt kaybı + tam yeniden açılış: 2 aynı istek, 1 etkinlik, bekleyen komut temizlendi. Kanıt docs/design/screens/calendar-recovery/.
+- 061000 ve yeni uygulama henüz dağıtılmadı. Sonraki plan asistanı → takvim işi bu güvenli yazma temelinden ilerlemeli; toplu plan uygulaması henüz yapılmadı.
