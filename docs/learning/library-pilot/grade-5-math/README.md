@@ -58,3 +58,7 @@ python3 scripts/test-learning-pilot.py
 4. Gerçek Prova, çözüm defteri, inceleme ve AI değerlendirme akışlarında telefon/tablet testi. Sonra insan onaylı yayın; TestFlight en son.
 
 77 sınıf–ders hücresinde 1.540 soru hedefinin yalnız ilk 20 taslağı hazırlandı. Diğer 1.520 soru ve tüm sınıfların okul/program eşlemesi tamamlanmadı.
+
+## 3 Kasım kapsam güncellemesi
+
+Yukarıdaki entegrasyon maddeleri ilk pilotun tarihî durumudur. Yönetici inceleme/yayın ekranları ve aileye ortak kaynaklı Prova edinimi artık kodda bulunur; [aile edinimi kabul kaydı](../../../design/screens/library-family-access/README.md). Bu Matematik pilotunun bağımsız alan editörü onayı ve üretim yayını hâlâ yoktur. Fen Bilimleri için ikinci 20 taslak eklendi; [güncel kapsam kaydı](../coverage.json) 40 taslak ve 1500 kalan hedef gösterir.

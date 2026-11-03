@@ -1,0 +1,132 @@
+[
+  {
+    "id": "same-face",
+    "svg": "assets/same-face.svg",
+    "png": "assets/same-face.png",
+    "width": 1200,
+    "height": 780,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 520,
+    "sha256": "5b57ec9dc00a0b5609660a6bbe8f9c0ea3fee39df51ee71a1349b6d1842e43c1",
+    "svg_sha256": "884b3c77d1639b57f47bcb8d36afa5fe271375221da77aad5d1341c288bd6b62",
+    "origin": "original_gina_science_diagram",
+    "geometry": {
+      "type": "same_face",
+      "positions": [
+        [
+          600,
+          130
+        ],
+        [
+          360,
+          370
+        ],
+        [
+          600,
+          610
+        ],
+        [
+          840,
+          370
+        ]
+      ],
+      "center": [
+        600,
+        370
+      ],
+      "marker_offset": 28
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  },
+  {
+    "id": "phase-cards",
+    "svg": "assets/phase-cards.svg",
+    "png": "assets/phase-cards.png",
+    "width": 800,
+    "height": 600,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "1796d998eb5af166deebf07082ec90c232c7266eafe7609c233b986a67b55d45",
+    "svg_sha256": "86f8321658dbe59d529806654060ea594ae9f091e0b3c7b73bd726f370b62059",
+    "origin": "original_gina_science_diagram",
+    "geometry": {
+      "type": "phase_cards",
+      "cards": [
+        "new",
+        "first",
+        "full",
+        "last"
+      ],
+      "layout": "two_rows"
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  },
+  {
+    "id": "lighting",
+    "svg": "assets/lighting.svg",
+    "png": "assets/lighting.png",
+    "width": 1200,
+    "height": 730,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 520,
+    "sha256": "31351a46f4a0a2b396ee262c2d20061412286d4e7dd292fd804fb1d2bc13a583",
+    "svg_sha256": "5b93e70aeac77cb70541a1bb85351f06b480314b66009a3c5faff505d5cf7c8f",
+    "origin": "original_gina_science_diagram",
+    "geometry": {
+      "type": "lighting",
+      "center": [
+        700,
+        350
+      ],
+      "sun": [
+        120,
+        350
+      ],
+      "positions": {
+        "K": [
+          510,
+          350
+        ],
+        "L": [
+          700,
+          540
+        ],
+        "M": [
+          890,
+          350
+        ],
+        "N": [
+          700,
+          160
+        ]
+      },
+      "illuminated_side": "left"
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  },
+  {
+    "id": "sizes",
+    "svg": "assets/sizes.svg",
+    "png": "assets/sizes.png",
+    "width": 1200,
+    "height": 430,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 520,
+    "sha256": "62d063f6e734d6c262e076599001e55128f1e515f0ab4c64b32c3a3ceab614de",
+    "svg_sha256": "73429158cc1aacc5c4e8b7be933d596adc3f376688cfde3fb1a86f6b4306ed43",
+    "origin": "original_gina_science_diagram",
+    "geometry": {
+      "type": "sizes",
+      "radii": [
+        115,
+        60,
+        35
+      ]
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  }
+]
