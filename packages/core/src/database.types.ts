@@ -845,13 +845,16 @@ isOneToOne: false
                   ]
                 },"exams": {
                   Row: {
+                    "preparation": Json | null,
                     "blueprint_id": string | null,"child_id": string,"content_locked_at": string | null,"created_at": string,"created_by": string | null,"duration_minutes": number | null,"family_id": string,"grade": number,"id": string,"kind": string,"question_ids": (string)[],"status": Database["public"]['Enums']["exam_status"],"subject": string,"timed": boolean,"title": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
+                    "preparation"?: Json | null,
                     "blueprint_id"?: string | null,"child_id": string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"family_id": string,"grade": number,"id"?: string,"kind"?: string,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject": string,"timed"?: boolean,"title": string,"updated_at"?: string
                   }
                   Update: {
+                    "preparation"?: Json | null,
                     "blueprint_id"?: string | null,"child_id"?: string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"family_id"?: string,"grade"?: number,"id"?: string,"kind"?: string,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject"?: string,"timed"?: boolean,"title"?: string,"updated_at"?: string
                   }
                   Relationships: [
@@ -1501,6 +1504,12 @@ isOneToOne: true
       referencedColumns: ["id"]
     }
                   ]
+                },"prova_drafts": {
+                  Row: {id:string;family_id:string;created_by:string|null;version:number;content:Json;exam_id:string|null;submitted_at:string|null;created_at:string;updated_at:string}
+                  Insert: {id:string;family_id:string;created_by?:string|null;version?:number;content:Json;exam_id?:string|null;submitted_at?:string|null;created_at?:string;updated_at?:string}
+                  Update: {id?:string;family_id?:string;created_by?:string|null;version?:number;content?:Json;exam_id?:string|null;submitted_at?:string|null;created_at?:string;updated_at?:string}
+                  ComputedFields: never
+                  Relationships: [{foreignKeyName:"prova_drafts_family_id_fkey";columns:["family_id"];isOneToOne:false;referencedRelation:"families";referencedColumns:["id"]},{foreignKeyName:"prova_drafts_exam_id_fkey";columns:["exam_id"];isOneToOne:false;referencedRelation:"exams";referencedColumns:["id"]}]
                 },"prova_generation_jobs": {
                   Row: {
                     "created_at": string,"error_code": string | null,"family_id": string,"id": string,"items": number,"lease": string | null,"prompt_hash": string,"provider_result": Json | null,"requested_by": string | null,"result": Json | null,"status": string,"updated_at": string
@@ -2105,6 +2114,10 @@ isOneToOne: false
                 }
           }
           Functions: {
+ save_prova_draft: { Args: { p_request_id:string; p_id:string; p_version:number; p_content:Json }; Returns:Json };
+ submit_prova_draft: { Args: { p_request_id:string; p_id:string; p_version:number }; Returns:string };
+ get_prova_drafts: { Args: { p_id?:string }; Returns:Json };
+
             "admin_add_library_item":
 { Args: { "p_collection_id": string,"p_content": Json,"p_publish"?: boolean }; Returns: string
                            },

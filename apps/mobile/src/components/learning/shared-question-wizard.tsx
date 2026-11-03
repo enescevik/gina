@@ -36,6 +36,7 @@ import {
 } from "./question-image-editor";
 import { QuestionMedia, type QuestionMediaItem } from "./question-media";
 import { uploadLearningFile } from "@/lib/learning-files";
+import { addToProvaDraft } from "@/lib/prova-draft";
 import { supabase } from "@/lib/supabase";
 
 export interface SharedQuestionDraft {
@@ -76,17 +77,23 @@ const blankGroup = (): SharedGroupDraft => ({
   existingImages: [],
 });
 
-export function SharedQuestionWizard({ initial, enabled, familyId, catalog }: {
-  initial?: SharedGroupDraft;
-  enabled: boolean;
-  familyId: string;
-  catalog?: { id: string; title: string; version: number }[];
-}) {
+export function SharedQuestionWizard(
+  { initial, enabled, familyId, catalog, draftId, scope }: {
+    draftId?: string;
+    scope?: { grade: string; subject: string };
+    initial?: SharedGroupDraft;
+    enabled: boolean;
+    familyId: string;
+    catalog?: { id: string; title: string; version: number }[];
+  },
+) {
   const { t } = useTranslation();
   const cache = useQueryClient();
   const { width, height, fontScale } = useWindowDimensions();
   const wide = width >= 900 && height >= 540 && fontScale < 1.4;
-  const [draft, setDraft] = useState<SharedGroupDraft>(initial ?? blankGroup);
+  const [draft, setDraft] = useState<SharedGroupDraft>(() =>
+    initial ?? { ...blankGroup(), ...scope }
+  );
   const [step, setStep] = useState(0),
     [active, setActive] = useState(0),
     [expanded, setExpanded] = useState(false),
@@ -164,7 +171,34 @@ export function SharedQuestionWizard({ initial, enabled, familyId, catalog }: {
       if (rolledBack) request.current = null;
     },
   });
-  const locked = save.isPending || uncertain || !!saved;
+  const attach = useMutation({
+    mutationFn: async (groupId: string) => {
+      if (draftId) {
+        await addToProvaDraft(draftId, [{
+          kind: "group",
+          id: groupId,
+          source: "manual",
+        }]);
+      }
+      return groupId;
+    },
+    onSuccess: (groupId) => {
+      if (draftId) {
+        router.replace({
+          pathname: "/parent/prova/builder",
+          params: { draftId },
+        });
+      } else {router.replace({
+          pathname: "/parent/prova/exam",
+          params: { groupId },
+        });}
+    },
+    onError: (e) =>
+      setValidation(
+        e instanceof Error ? e.message : t("sharedQuestions.saveFailed"),
+      ),
+  });
+  const locked = save.isPending || attach.isPending || uncertain || !!saved;
   const reusable = step === 2 && !dirty && !!draft.previousId;
   usePreventRemove(
     (dirty || save.isPending || uncertain) && !saved,
@@ -697,7 +731,11 @@ export function SharedQuestionWizard({ initial, enabled, familyId, catalog }: {
                               onPress={() =>
                                 router.replace({
                                   pathname: "/parent/prova/shared-source",
-                                  params: { groupId: g.id },
+                                  params: {
+                                    groupId: g.id,
+                                    ...(draftId ? { draftId } : {}),
+                                    ...scope,
+                                  },
                                 })}
                             >
                               <Text style={[s.copy, { flex: 1 }]}>
@@ -851,14 +889,11 @@ export function SharedQuestionWizard({ initial, enabled, familyId, catalog }: {
                     : "sharedQuestions.save",
                 )}
                 busy={save.isPending}
-                disabled={step === 2 && !enabled}
+                disabled={attach.isPending || (step === 2 && !enabled)}
                 icon={<ArrowRight color="#fff" size={20} />}
                 onPress={() =>
                   saved || reusable
-                    ? router.replace({
-                      pathname: "/parent/prova/exam",
-                      params: { groupId: saved?.id ?? draft.previousId! },
-                    })
+                    ? attach.mutate(saved?.id ?? draft.previousId!)
                     : next()}
               />
             </View>
