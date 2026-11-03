@@ -31,3 +31,4 @@ export * from './focus-timer';
 export * from "./study-plan";
 
 export * from "./setup-command";
+export * from "./group-command";
