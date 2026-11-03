@@ -5,7 +5,18 @@ import ts from 'typescript';
 const root = new URL('../', import.meta.url);
 const source = readFileSync(new URL('apps/mobile/src/components/learning/notebook-layout.ts', root), 'utf8');
 const compiled = ts.transpileModule(source, {compilerOptions: {module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022}}).outputText;
-const {notebookLayout, NOTEBOOK_MODAL_PROPS} = await import(`data:text/javascript;base64,${Buffer.from(compiled).toString('base64')}`);
+const {notebookLayout, notebookRevealOffset, NOTEBOOK_MODAL_PROPS} = await import(`data:text/javascript;base64,${Buffer.from(compiled).toString('base64')}`);
+
+test('newly inserted material is visible without moving an already visible item', () => {
+  assert.equal(notebookRevealOffset(360, 180, 400, 1000, 0), 156);
+  assert.equal(notebookRevealOffset(80, 100, 400, 1000, 300), 64);
+  assert.equal(notebookRevealOffset(160, 100, 400, 1000, 100), 100);
+});
+test('oversize insertions reveal their top and stay inside the scrollable page', () => {
+  assert.equal(notebookRevealOffset(600, 500, 300, 1400, 0), 584);
+  assert.equal(notebookRevealOffset(1200, 200, 400, 1400, 0), 1000);
+  assert.equal(notebookRevealOffset(5, 100, 400, 300, 0), 0);
+});
 
 test('portrait tablets and resized iPad windows show both question and notebook', () => {
   for (const [w,h] of [[834,1194],[768,1024],[744,1133],[600,900],[820,700]]) {

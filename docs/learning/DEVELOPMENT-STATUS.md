@@ -201,3 +201,10 @@ Kullanıcının telefon/tablet maket onayı uygulandı: Ortak içerik → Sorula
 - Kalıcı ve kullanıcıya özel komut kaydı, aynı istekle belirsiz yayın kurtarma, güncel sürüm/rol kontrolü, taslak ayrılma uyarısı. Sunucu rol iptali UI yetkisinden bağımsızdır.
 - 25 yeni SQL kontrolü izole veritabanında geçti; toplam core 73 test, workspace lint/typecheck ve 15 rotalı backoffice üretim derlemesi geçti. Ayrı Chromium bağlamında 17 akış kontrolü; telefon/tablet/masaüstü ve boş/yükleniyor/hata görüntüleri `docs/design/screens/help-article-editor/` altında.
 - Sentetik içerik yalnız QA; gerçek yardım yazısı yayımlanmadı, üretim rolü atanmadı, production migration/hosting/TestFlight dağıtımı yapılmadı. Gerçek cihaz ve ekran okuyucu kabulü, gerçek yardım metinlerinin ürün doğruluğu incelemesi ve operasyon kurulumu açık.
+
+## 2026-11-03 — çözüm defteri iOS simülatör kabulü
+
+- Güncel kodla yerel iOS Debug simülatör derlemesi üretildi. iPad Air M4 ve iPhone 17 Pro'da gerçek NotebookWorkspace/NotebookEditor, sentetik soru ile açıldı. Dikey iPad'de soru ve defter birlikte; yazı/sembol/araç menüleri ve açık pencereyle dönüşte otomatik yön döngüsü görülmedi. Çizgi, metin ve kaynak görseli dönüş/genişletmede korundu.
+- Kontrolde eklenen yazı/görselin aşağıda kalabildiği bulundu ve düzeltildi: yalnız ekleme sonrası nesne görünür alana getirilir; seçim çubuğunun yerleşimine uyar. Kalem/seçim veya elle kaydırma bunu sonlandırır; çizim sırasında sayfa kaydırılmaz. Nesne koordinatları değişmez.
+- 8 yerleşim/modal/görünürlük testi, mobil tip ve lint denetimi geçti. Web'de 4 farklı boyut, 15 araç aç/kapat döngüsü, görünürlük sınırı ve çizim sırasında kaydırma sabitliği doğrulandı. Görüntüler ve kapsam: `docs/design/screens/notebook-device-acceptance/`.
+- Bu, gerçek hesap/cevap kaydı/çevrimdışı ağ veya fiziksel Pencil testi değildir. Fiziksel iPad hâlâ 0.1.0 (16); yeni sürüm kurulmadı. Geçici QA rotası dağıtımdan çıkarıldı. Üretim/TestFlight yayımlanmadı. Sonraki ana iş müfredat/kütüphane kapsamı; gerçek cihaz ve yayın kabulü açık kalıyor.
