@@ -1,13 +1,18 @@
+import { provaGenerationJournal } from "@/lib/setup-command";
 import { canonicalSubject, catalogBlueprintFits } from "@gina/core";
-import { useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { randomUUID } from "expo-crypto";
 import { router } from "expo-router";
 import { Modal, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import { ArrowLeft, ArrowRight, X } from "lucide-react-native";
-import type { ProvaBlock, ProvaDraft } from "@gina/core";
+import type {
+  ProvaBlock,
+  ProvaDraft,
+  ProvaGenerationPayload,
+  ProvaGenerationRecord,
+} from "@gina/core";
 import { IconButton, p, SatinButton } from "@/components/planner/ui";
 import { Field } from "@/components/ui/field";
 import { Toggle } from "@/components/ui/toggle";
@@ -22,6 +27,7 @@ import {
 import {
   type GenerateResponse,
   invokeProvaAi,
+  ProvaAiError,
   provaErrorMessage,
 } from "@/lib/prova-ai";
 import { NOTEBOOK_MODAL_PROPS } from "./notebook-layout";
@@ -52,7 +58,7 @@ export function ProvaSourcePicker(
   },
 ) {
   const { t, i18n } = useTranslation(),
-    { claims } = useSession(),
+    { claims, session } = useSession(),
     familyId = claims?.family_id ?? "";
   const [repeatDetails, setRepeatDetails] = useState(false);
   const [mode, setMode] = useState<Mode>("sources"),
@@ -66,13 +72,42 @@ export function ProvaSourcePicker(
     [localError, setLocalError] = useState<unknown>(null);
   const [topics, setTopics] = useState<string[]>([]),
     [blueprintId, setBlueprintId] = useState<string | null>(null);
-  const request = useRef<{ id: string; body: string } | null>(null),
-    [preview, setPreview] = useState<BuilderQuestion | null>(null),
+  const [preview, setPreview] = useState<BuilderQuestion | null>(null),
     [aiRows, setAiRows] = useState<BuilderQuestion[]>([]);
-  const [wasVisible, setWasVisible] = useState(false);
-  if (visible !== wasVisible) {
-    setWasVisible(visible);
+  const journal = useMemo(
+    () => provaGenerationJournal(session?.user.id ?? "", familyId, draftId),
+    [session?.user.id, familyId, draftId],
+  );
+  const [generationRecord, setGenerationRecord] = useState<
+      ProvaGenerationRecord | null
+    >(null),
+    [storageBlocked, setStorageBlocked] = useState(false);
+  const recoveredFits = !generationRecord ||
+    (generationRecord.payload.grade === draft.grade &&
+      draft.subjects.includes(generationRecord.payload.subject));
+  const [view, setView] = useState({ visible: false, journal });
+  if (visible !== view.visible || journal !== view.journal) {
+    setView({ visible, journal });
     if (visible) {
+      try {
+        const r = journal.read();
+        setGenerationRecord(r);
+        setStorageBlocked(false);
+        setAiRows(
+          r?.result?.questions.map(
+            (q) => ({
+              ...q,
+              grade: r.payload.grade,
+              subject: r.payload.subject,
+            } as BuilderQuestion),
+          ) ?? [],
+        );
+      } catch {
+        setStorageBlocked(true);
+        setGenerationRecord(null);
+        setAiRows([]);
+      }
+
       setMode("sources");
       setTopics(draft.subjects.length === 1 ? draft.topics : []);
       setBlueprintId(null);
@@ -204,45 +239,63 @@ export function ProvaSourcePicker(
   const remaining = entitlement.data?.ai_generate_remaining;
   const generation = useMutation({
     mutationFn: async () => {
-      if (!subject) throw new Error(t("provaBuilder.subjectRequired"));
-      if (!planValid) {
-        throw new Error(t("provaBuilder.topicRequired"));
+      if (storageBlocked) throw Error(t("generationRecovery.blocked"));
+      let record = journal.read();
+      const recovering = !!record;
+      if (record?.result) return record;
+      if (record?.safeFailure) throw Error(t("generationRecovery.failed"));
+      if (!record) {
+        if (!subject) throw new Error(t("provaBuilder.subjectRequired"));
+        if (!planValid) throw new Error(t("provaBuilder.topicRequired"));
+        if (mode === "document" && (!file || !consent)) {
+          throw new Error(t("provaBuilder.consent"));
+        }
+        if (mode === "document" && file) {
+          await uploadLearningFile(file, "document");
+        }
+        const payload: ProvaGenerationPayload = {
+          draft_id: draftId,
+          subject,
+          grade: draft.grade!,
+          topic_plan: plan,
+          blueprint_id: blueprint?.id ?? null,
+          count: aiCount,
+          kind: draft.kind,
+          assessment: draft.purpose === "written" ? "written" : "practice",
+          difficulty: draft.difficulty,
+          note: draft.note,
+          locale: i18n.language.startsWith("en") ? "en" : "tr",
+          ...(mode === "document" && file
+            ? { source_id: file.id, ai_consent: true as const }
+            : {}),
+        };
+        record = journal.prepare(payload);
+        setGenerationRecord(record);
       }
-      if (mode === "document" && (!file || !consent)) {
-        throw new Error(t("provaBuilder.consent"));
+      try {
+        const data = await invokeProvaAi<GenerateResponse>("prova-generate", {
+          ...record.payload,
+          request_id: record.request_id,
+          ...(recovering ? { recover_only: true } : {}),
+        });
+        return journal.complete(record, data);
+      } catch (error) {
+        if (
+          error instanceof ProvaAiError &&
+          error.code === "generation_failed_safe"
+        ) setGenerationRecord(journal.failed(record));
+        throw error;
       }
-      if (mode === "document" && file) {
-        await uploadLearningFile(file, "document");
-      }
-      const payload = {
-        draft_id: draftId,
-        subject,
-        grade: draft.grade,
-        topic_plan: plan,
-        blueprint_id: blueprint?.id ?? null,
-        count: aiCount,
-        kind: draft.kind,
-        assessment: draft.purpose === "written" ? "written" : "practice",
-        difficulty: draft.difficulty,
-        note: draft.note,
-        locale: i18n.language.startsWith("en") ? "en" : "tr",
-        ...(mode === "document" && file
-          ? { source_id: file.id, ai_consent: consent }
-          : {}),
-      };
-      const body = JSON.stringify(payload);
-      if (!request.current || request.current.body !== body) {
-        request.current = { id: randomUUID(), body };
-      }
-      return invokeProvaAi<GenerateResponse>("prova-generate", {
-        ...payload,
-        request_id: request.current.id,
-      });
     },
-    onSuccess: (data) => {
+    onSuccess: (record) => {
+      setGenerationRecord(record);
       setAiRows(
-        data.questions.map(
-          (q) => ({ ...q, grade: draft.grade!, subject } as BuilderQuestion),
+        record.result!.questions.map(
+          (q) => ({
+            ...q,
+            grade: record.payload.grade,
+            subject: record.payload.subject,
+          } as BuilderQuestion),
         ),
       );
       setSelected([]);
@@ -250,11 +303,37 @@ export function ProvaSourcePicker(
     },
     onError: setLocalError,
   });
+  const cancelGeneration = useMutation({
+    mutationFn: async () => {
+      const record = journal.read();
+      if (!record) return;
+      if (record.result) {
+        journal.release();
+        return;
+      }
+      const { data, error } = await supabase.rpc(
+        "cancel_unstarted_generation",
+        { p_id: record.request_id, p_intent: record.payload },
+      );
+      if (error) throw error;
+      journal.cancel(record, data);
+    },
+    onSuccess: () => {
+      setGenerationRecord(null);
+      setAiRows([]);
+      setSelected([]);
+      setLocalError(null);
+      generation.reset();
+    },
+    onError: setLocalError,
+  });
+  const releaseGeneration = () => cancelGeneration.mutate();
   const add = useMutation({
     mutationFn: () => onAdd(selected),
     onError: setLocalError,
   });
-  const busy = generation.isPending || add.isPending;
+  const busy = generation.isPending || add.isPending ||
+    cancelGeneration.isPending;
   function choose(block: ProvaBlock) {
     setSelected((v) =>
       v.some((b) => b.id === block.id)
@@ -344,6 +423,37 @@ export function ProvaSourcePicker(
             {mode === "sources"
               ? (
                 <>
+                  {generationRecord
+                    ? (
+                      <View style={b.hint}>
+                        <Text style={b.bold}>
+                          {t(
+                            generationRecord.result
+                              ? "generationRecovery.ready"
+                              : "generationRecovery.pending",
+                          )}
+                        </Text>
+                        <Text style={b.copy}>
+                          {generationRecord.payload.subject} ·{" "}
+                          {t("parent.gradeShort", {
+                            grade: generationRecord.payload.grade,
+                          })} · {t("catalogFlow.count", {
+                            n: generationRecord.payload.count,
+                          })}
+                        </Text>
+                        <SatinButton
+                          secondary
+                          title={t("generationRecovery.open")}
+                          onPress={() =>
+                            switchMode(
+                              generationRecord.payload.source_id
+                                ? "document"
+                                : "ai",
+                            )}
+                        />
+                      </View>
+                    )
+                    : null}
                   {(["library", "ai", "manual", "document"] as const).map(
                     (m) => (
                       <SatinButton
@@ -615,223 +725,331 @@ export function ProvaSourcePicker(
             {mode === "ai" || mode === "document"
               ? (
                 <>
-                  <Text style={b.copy}>
-                    {t(
-                      mode === "document"
-                        ? "provaBuilder.documentHelp"
-                        : "provaBuilder.aiHelp",
-                    )}
-                  </Text>
-                  <View
-                    pointerEvents={busy ? "none" : "auto"}
-                    style={{ gap: 14 }}
-                  >
-                    <View style={b.wrap}>
-                      {draft.subjects.map((s) => (
-                        <BuilderChoice
-                          key={s}
-                          selected={subject === s}
-                          label={s}
-                          onPress={() => {
-                            setSubject(s);
-                            setTopics([]);
-                            setBlueprintId(null);
-                            setAiRows([]);
-                            setSelected([]);
-                          }}
-                        />
-                      ))}
-                    </View>
-                    {entitlement.data?.scenarios && blueprints.data?.length
-                      ? (
-                        <View style={{ gap: 10 }}>
-                          <Text style={b.bold}>{t("prova.fromBlueprint")}</Text>
-                          <View style={b.wrap}>
-                            <BuilderChoice
-                              label={t("prova.noBlueprint")}
-                              selected={!blueprintId}
-                              onPress={() => setBlueprintId(null)}
-                            />
-                            {blueprints.data.map((bp) => (
-                              <BuilderChoice
-                                key={bp.id}
-                                label={[
-                                  bp.name,
-                                  typeof bp.source_context === "object" &&
-                                    bp.source_context &&
-                                    !Array.isArray(bp.source_context) &&
-                                    typeof bp.source_context.academic_year ===
-                                      "string"
-                                    ? bp.source_context.academic_year
-                                    : "",
-                                ].filter(Boolean).join(" · ")}
-                                selected={blueprintId === bp.id}
-                                onPress={() => setBlueprintId(bp.id)}
-                              />
-                            ))}
-                          </View>
-                        </View>
-                      )
-                      : null}
-                    {entitlement.data?.scenarios
-                      ? (
-                        <SatinButton
-                          secondary
-                          title={t("prova.newBlueprint")}
-                          onPress={() => {
-                            onClose();
-                            router.push("/parent/prova/blueprint");
-                          }}
-                        />
-                      )
-                      : null}
-                    {blueprint
-                      ? (
-                        <Text style={b.hint}>
+                  {generationRecord
+                    ? (
+                      <View style={b.hint}>
+                        <Text style={b.bold}>
                           {t(
-                            blueprint.source_context &&
-                              typeof blueprint.source_context === "object" &&
-                              !Array.isArray(blueprint.source_context) &&
-                              blueprint.source_context.origin ===
-                                "reviewed_catalogue"
-                              ? "catalogFlow.notice"
-                              : "blueprintFlow.manualNotice",
+                            generationRecord.result
+                              ? "generationRecovery.ready"
+                              : generationRecord.safeFailure
+                              ? "generationRecovery.failedTitle"
+                              : "generationRecovery.pending",
                           )}
                         </Text>
-                      )
-                      : null}
-                    {!blueprint
-                      ? (
-                        <>
-                          <Text style={b.muted}>
-                            {t("provaBuilder.aiTopics")}
-                          </Text>
+                        <Text style={b.copy}>
+                          {generationRecord.payload.subject} ·{" "}
+                          {t("parent.gradeShort", {
+                            grade: generationRecord.payload.grade,
+                          })} · {t("catalogFlow.count", {
+                            n: generationRecord.payload.count,
+                          })}
+                        </Text>
+                        <Text style={b.copy}>
+                          {t(
+                            generationRecord.result
+                              ? "generationRecovery.readyHelp"
+                              : generationRecord.safeFailure
+                              ? "generationRecovery.failed"
+                              : "generationRecovery.pendingHelp",
+                          )}
+                        </Text>
+                        {!recoveredFits
+                          ? (
+                            <Text style={b.error}>
+                              {t("generationRecovery.scopeChanged")}
+                            </Text>
+                          )
+                          : null}
+                        {generationRecord.safeFailure
+                          ? (
+                            <SatinButton
+                              secondary
+                              disabled={busy}
+                              title={t("generationRecovery.edit")}
+                              onPress={releaseGeneration}
+                            />
+                          )
+                          : generationRecord.result
+                          ? null
+                          : (
+                            <SatinButton
+                              busy={generation.isPending}
+                              disabled={add.isPending || storageBlocked}
+                              title={t("generationRecovery.check")}
+                              onPress={() => {
+                                setLocalError(null);
+                                generation.mutate();
+                              }}
+                            />
+                          )}
+                      </View>
+                    )
+                    : null}
+                  {generationRecord && !generationRecord.result &&
+                      !generationRecord.safeFailure
+                    ? (
+                      <Pressable
+                        accessibilityRole="button"
+                        disabled={busy}
+                        onPress={releaseGeneration}
+                        style={{ minHeight: 48, justifyContent: "center" }}
+                      >
+                        <Text style={[b.bold, { color: p.purple }]}>
+                          {t("generationRecovery.cancel")}
+                        </Text>
+                      </Pressable>
+                    )
+                    : null}
+                  {storageBlocked
+                    ? (
+                      <Text accessibilityRole="alert" style={b.error}>
+                        {t("generationRecovery.blocked")}
+                      </Text>
+                    )
+                    : null}
+                  {!generationRecord
+                    ? (
+                      <>
+                        <Text style={b.copy}>
+                          {t(
+                            mode === "document"
+                              ? "provaBuilder.documentHelp"
+                              : "provaBuilder.aiHelp",
+                          )}
+                        </Text>
+                        <View
+                          pointerEvents={busy ? "none" : "auto"}
+                          style={{ gap: 14 }}
+                        >
                           <View style={b.wrap}>
-                            {draft.topics.map((topic) => (
+                            {draft.subjects.map((s) => (
                               <BuilderChoice
-                                key={topic}
-                                label={topic}
-                                selected={topics.includes(topic)}
-                                onPress={() =>
-                                  setTopics((v) =>
-                                    v.includes(topic)
-                                      ? v.filter((t) => t !== topic)
-                                      : [...v, topic]
-                                  )}
+                                key={s}
+                                selected={subject === s}
+                                label={s}
+                                onPress={() => {
+                                  setSubject(s);
+                                  setTopics([]);
+                                  setBlueprintId(null);
+                                  setAiRows([]);
+                                  setSelected([]);
+                                }}
                               />
                             ))}
                           </View>
-                          <Field
-                            label={t("provaBuilder.target")}
-                            keyboardType="number-pad"
-                            value={String(count)}
-                            maxLength={2}
-                            onChangeText={(v) =>
-                              setCount(
-                                Math.min(30, Math.max(1, Number(v) || 1)),
-                              )}
-                          />
-                        </>
-                      )
-                      : null}
-                    {plan.map((row) => (
-                      <Text key={row.topic} style={b.muted}>
-                        {row.topic} · {row.count}
-                      </Text>
-                    ))}
-                    {!planValid
-                      ? (
-                        <Text style={b.muted}>
-                          {t("provaBuilder.aiPlanRequired")}
-                        </Text>
-                      )
-                      : null}
-                    {mode === "document"
-                      ? (
-                        <>
-                          <SatinButton
-                            secondary
-                            title={t("provaBuilder.pickDocument")}
-                            onPress={() =>
-                              void chooseLearningDocument().then((f) => {
-                                if (f) {
-                                  setFile(f);
-                                  setConsent(false);
-                                  setAiRows([]);
-                                  setSelected([]);
-                                }
-                              }).catch(setLocalError)}
-                          />
-                          {file
-                            ? <Text style={b.muted}>{file.name}</Text>
+                          {entitlement.data?.scenarios &&
+                              blueprints.data?.length
+                            ? (
+                              <View style={{ gap: 10 }}>
+                                <Text style={b.bold}>
+                                  {t("prova.fromBlueprint")}
+                                </Text>
+                                <View style={b.wrap}>
+                                  <BuilderChoice
+                                    label={t("prova.noBlueprint")}
+                                    selected={!blueprintId}
+                                    onPress={() => setBlueprintId(null)}
+                                  />
+                                  {blueprints.data.map((bp) => (
+                                    <BuilderChoice
+                                      key={bp.id}
+                                      label={[
+                                        bp.name,
+                                        typeof bp.source_context === "object" &&
+                                          bp.source_context &&
+                                          !Array.isArray(bp.source_context) &&
+                                          typeof bp.source_context
+                                              .academic_year ===
+                                            "string"
+                                          ? bp.source_context.academic_year
+                                          : "",
+                                      ].filter(Boolean).join(" · ")}
+                                      selected={blueprintId === bp.id}
+                                      onPress={() => setBlueprintId(bp.id)}
+                                    />
+                                  ))}
+                                </View>
+                              </View>
+                            )
                             : null}
-                          <Toggle
-                            label={t("provaBuilder.consent")}
-                            value={consent}
-                            onChange={setConsent}
-                          />
-                        </>
-                      )
-                      : null}
-                  </View>
-                  <View style={b.hint}>
-                    <Text style={b.bold}>
-                      {typeof remaining === "number"
-                        ? t("provaBuilder.aiQuota", { count: remaining })
-                        : t("provaBuilder.quotaUnavailable")}
-                    </Text>
-                    <Text style={b.muted}>
-                      {t("provaBuilder.aiCost", { count: aiCount })}
-                    </Text>
-                  </View>
-                  <SatinButton
-                    busy={generation.isPending}
-                    disabled={add.isPending || typeof remaining !== "number" ||
-                      remaining < aiCount || !planValid || !subject ||
-                      (mode === "document" && (!file || !consent))}
-                    title={t(
-                      generation.isError
-                        ? "provaBuilder.aiRetry"
-                        : "provaBuilder.generate",
-                    )}
-                    onPress={() => {
-                      setLocalError(null);
-                      if (generation.isSuccess) request.current = null;
-                      generation.mutate();
-                    }}
-                  />
-                  {entitlement.error
-                    ? (
-                      <SatinButton
-                        secondary
-                        title={t("common.retry")}
-                        onPress={() => void entitlement.refetch()}
-                      />
+                          {entitlement.data?.scenarios
+                            ? (
+                              <SatinButton
+                                secondary
+                                title={t("prova.newBlueprint")}
+                                onPress={() => {
+                                  onClose();
+                                  router.push("/parent/prova/blueprint");
+                                }}
+                              />
+                            )
+                            : null}
+                          {blueprint
+                            ? (
+                              <Text style={b.hint}>
+                                {t(
+                                  blueprint.source_context &&
+                                    typeof blueprint.source_context ===
+                                      "object" &&
+                                    !Array.isArray(blueprint.source_context) &&
+                                    blueprint.source_context.origin ===
+                                      "reviewed_catalogue"
+                                    ? "catalogFlow.notice"
+                                    : "blueprintFlow.manualNotice",
+                                )}
+                              </Text>
+                            )
+                            : null}
+                          {!blueprint
+                            ? (
+                              <>
+                                <Text style={b.muted}>
+                                  {t("provaBuilder.aiTopics")}
+                                </Text>
+                                <View style={b.wrap}>
+                                  {draft.topics.map((topic) => (
+                                    <BuilderChoice
+                                      key={topic}
+                                      label={topic}
+                                      selected={topics.includes(topic)}
+                                      onPress={() =>
+                                        setTopics((v) =>
+                                          v.includes(topic)
+                                            ? v.filter((t) => t !== topic)
+                                            : [...v, topic]
+                                        )}
+                                    />
+                                  ))}
+                                </View>
+                                <Field
+                                  label={t("provaBuilder.target")}
+                                  keyboardType="number-pad"
+                                  value={String(count)}
+                                  maxLength={2}
+                                  onChangeText={(v) =>
+                                    setCount(
+                                      Math.min(30, Math.max(1, Number(v) || 1)),
+                                    )}
+                                />
+                              </>
+                            )
+                            : null}
+                          {plan.map((row) => (
+                            <Text key={row.topic} style={b.muted}>
+                              {row.topic} · {row.count}
+                            </Text>
+                          ))}
+                          {!planValid
+                            ? (
+                              <Text style={b.muted}>
+                                {t("provaBuilder.aiPlanRequired")}
+                              </Text>
+                            )
+                            : null}
+                          {mode === "document"
+                            ? (
+                              <>
+                                <SatinButton
+                                  secondary
+                                  title={t("provaBuilder.pickDocument")}
+                                  onPress={() =>
+                                    void chooseLearningDocument().then((f) => {
+                                      if (f) {
+                                        setFile(f);
+                                        setConsent(false);
+                                        setAiRows([]);
+                                        setSelected([]);
+                                      }
+                                    }).catch(setLocalError)}
+                                />
+                                {file
+                                  ? <Text style={b.muted}>{file.name}</Text>
+                                  : null}
+                                <Toggle
+                                  label={t("provaBuilder.consent")}
+                                  value={consent}
+                                  onChange={setConsent}
+                                />
+                              </>
+                            )
+                            : null}
+                        </View>
+                        <View style={b.hint}>
+                          <Text style={b.bold}>
+                            {typeof remaining === "number"
+                              ? t("provaBuilder.aiQuota", { count: remaining })
+                              : t("provaBuilder.quotaUnavailable")}
+                          </Text>
+                          <Text style={b.muted}>
+                            {t("provaBuilder.aiCost", { count: aiCount })}
+                          </Text>
+                        </View>
+                        <SatinButton
+                          busy={generation.isPending}
+                          disabled={storageBlocked || add.isPending ||
+                            typeof remaining !== "number" ||
+                            remaining < aiCount || !planValid || !subject ||
+                            (mode === "document" && (!file || !consent))}
+                          title={t(
+                            generation.isError
+                              ? "provaBuilder.aiRetry"
+                              : "provaBuilder.generate",
+                          )}
+                          onPress={() => {
+                            setLocalError(null);
+                            generation.mutate();
+                          }}
+                        />
+                        {entitlement.error
+                          ? (
+                            <SatinButton
+                              secondary
+                              title={t("common.retry")}
+                              onPress={() => void entitlement.refetch()}
+                            />
+                          )
+                          : null}
+                      </>
                     )
                     : null}
                   {aiRows.length
                     ? <Text style={b.bold}>{t("provaBuilder.aiCheck")}</Text>
                     : null}
-                  {aiRows.map((q) => {
+                  {aiRows.map((q, index) => {
                     const already = draft.blocks.some((b) => b.id === q.id);
                     return (
                       <View key={q.id} style={b.card}>
                         <BuilderChoice
-                          label={q.stem}
+                          label={t("generationRecovery.question", {
+                            n: index + 1,
+                          })}
                           selected={already ||
                             selected.some((b) => b.id === q.id)}
-                          disabled={already || busy}
+                          disabled={already || busy || !recoveredFits}
                           onPress={() =>
                             choose({
                               kind: "question",
                               id: q.id,
-                              source: mode === "document" ? "document" : "ai",
+                              source: generationRecord?.payload.source_id
+                                ? "document"
+                                : "ai",
                             })}
                         />
                         <BuilderQuestionPreview q={q} showAnswer />
                       </View>
                     );
                   })}
+                  {generationRecord?.result
+                    ? (
+                      <SatinButton
+                        secondary
+                        disabled={busy}
+                        title={t("generationRecovery.new")}
+                        onPress={releaseGeneration}
+                      />
+                    )
+                    : null}
                 </>
               )
               : null}

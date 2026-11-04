@@ -6,8 +6,10 @@ import {
   createBlueprintJournal,
   createCatalogBlueprintJournal,
   createContributionJournal,
+  createProvaGenerationJournal,
   createSetupAiJournal,
   createSetupJournal,
+  PROVA_GENERATION_PREFIX,
   SETUP_AI_PREFIX,
   SETUP_COMMAND_PREFIX,
 } from "@gina/core";
@@ -20,7 +22,7 @@ export function clearSetupCommands() {
   for (
     const key of store.keys().filter((k) =>
       k.startsWith(SETUP_COMMAND_PREFIX) || k.startsWith(SETUP_AI_PREFIX) ||
-      k.startsWith(BLUEPRINT_PREFIX) ||
+      k.startsWith(PROVA_GENERATION_PREFIX) || k.startsWith(BLUEPRINT_PREFIX) ||
       k.startsWith(CATALOG_BLUEPRINT_PREFIX) ||
       k.startsWith(CONTRIBUTION_PREFIX)
     )
@@ -151,6 +153,24 @@ export function catalogBlueprintJournal(user: string, family: string) {
       } finally {
         clearTimeout(timer);
       }
+    },
+  });
+}
+
+export function provaGenerationJournal(
+  user: string,
+  family: string,
+  draft: string,
+) {
+  const active = generation;
+  return createProvaGenerationJournal({
+    store,
+    user,
+    family,
+    draft,
+    id: randomUUID,
+    guard() {
+      if (active !== generation) throw Error("setup_session_changed");
     },
   });
 }
