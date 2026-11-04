@@ -65,6 +65,7 @@ export default function SignIn() {
             </h1>
           </div>
           <p className="mb-4 text-sm text-slate-500">{t.signIn.title}</p>
+          <p className="mb-4 text-sm leading-6 text-slate-600">{t.signIn.accountHelp}</p>
           {!isConfigured
             ? <Notice tone="error">{t.common.notConfigured}</Notice>
             : null}
@@ -104,6 +105,15 @@ export default function SignIn() {
           >
             {t.signIn.submit}
           </button>
+          <a
+            href="https://gina-web.pages.dev/sign-in?mode=reset"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 flex min-h-12 items-center justify-center rounded-xl font-semibold text-brand-dark underline decoration-purple-200 underline-offset-4 hover:bg-purple-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-purple-600"
+          >
+            {t.signIn.forgot}
+          </a>
+          <p className="mt-2 text-sm leading-6 text-slate-500">{t.signIn.resetHelp}</p>
         </form>
       </div>
     </>
