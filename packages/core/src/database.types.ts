@@ -1672,13 +1672,16 @@ isOneToOne: false
                   ]
                 },"push_outbox": {
                   Row: {
+                    "lease_id": string | null,"next_attempt_at": string,
                     "attempts": number,"audience": string,"claimed_at": string | null,"created_at": string,"exclude_user_id": string | null,"family_id": string,"id": number,"kind": string,"last_error": string | null,"payload": NonNullable<Json>,"sent_at": string | null,"status": string,"target_child_id": string | null
                   }
                   ComputedFields: never
                   Insert: {
+                    "lease_id"?: string | null,"next_attempt_at"?: string,
                     "attempts"?: number,"audience": string,"claimed_at"?: string | null,"created_at"?: string,"exclude_user_id"?: string | null,"family_id": string,"id"?: never,"kind": string,"last_error"?: string | null,"payload"?: NonNullable<Json>,"sent_at"?: string | null,"status"?: string,"target_child_id"?: string | null
                   }
                   Update: {
+                    "lease_id"?: string | null,"next_attempt_at"?: string,
                     "attempts"?: number,"audience"?: string,"claimed_at"?: string | null,"created_at"?: string,"exclude_user_id"?: string | null,"family_id"?: string,"id"?: never,"kind"?: string,"last_error"?: string | null,"payload"?: NonNullable<Json>,"sent_at"?: string | null,"status"?: string,"target_child_id"?: string | null
                   }
                   Relationships: [
@@ -2755,6 +2758,10 @@ isOneToOne: false
 "preview_family_invite":
 { Args: { "p_invite_code": string }; Returns: Json
                            },
+"push_claim_v2": { Args:{p_limit?:number};Returns:Database["public"]["Tables"]["push_outbox"]["Row"][] },
+"push_delivery_targets": { Args:{p_outbox_id:number;p_lease:string};Returns:{token_id:string;token:string;token_type:string;platform:string;locale:string;token_hash:string}[] },
+"push_record_delivery": { Args:{p_outbox_id:number;p_lease:string;p_token_id:string;p_token_hash:string;p_status:string;p_error?:string|null;p_retry_after?:number|null};Returns:boolean },
+"push_finish_delivery": { Args:{p_outbox_id:number;p_lease:string};Returns:string },
 "push_claim_batch":
 { Args: { "p_limit"?: number }; Returns: {
               "attempts": number,

@@ -1,6 +1,7 @@
 import type { PushMessage } from "./providers.ts";
 type Locale = "tr" | "en";
 interface MessageRow {
+  id?: number;
   kind: string;
   payload: Record<string, unknown>;
 }
@@ -49,6 +50,9 @@ export function messageFor(row: MessageRow, locale: Locale): PushMessage {
     ) data[key] = value;
   }
   return {
+    eventId: Number.isSafeInteger(row.id) && row.id! > 0
+      ? `gina-${row.id}`
+      : undefined,
     title: "Gina",
     body: TEXTS[row.kind]?.[locale] ?? TEXTS[row.kind]?.tr ?? "Gina",
     kind: row.kind,
