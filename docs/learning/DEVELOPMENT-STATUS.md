@@ -636,3 +636,13 @@ kaldırıldı. Canlı dağıtım/TestFlight17, fiziksel kabul ve diğer açık i
 Veli webi `https://gina-web.pages.dev` üzerinde 491 dosyayla yayımlandı. Kullanıcı onayıyla iki kesin giriş/şifre dönüş adresi eklendi, mevcut mobil/Expo adresleri korundu. Sentetik aileyle gerçek parola girişi, etkinlik kaydı/yeniden yükleme, çocuk PIN girişi, ebeveyn PIN çıkışı, görev gönderme/onay ve yenilemeden yıldız/ilerleme, hedef seçimi geçti. Telefon/tablet kanıtı `docs/release/cloudflare-web-2026-11-04/README.md`.
 
 Doğrudan cihaz ayarı adresindeki boş durum, ortak tasarımlı yönlendirmeyle düzeltildi. Yönetim paneli için Zero Trust Free hesap sahibi ödeme/fatura adımı açık; backoffice korumasız yayımlanmadı. GitHub otomatik yayın sırları, gerçek OAuth/e-posta, mağaza/bildirim ve fiziksel cihaz kabulü açık. TestFlight17 değişmedi.
+
+## 4 Kasım — eşgüdümlü web ve TestFlight18
+
+#132 dört CI kontrolü sonrası birleşti. Kaynak `533ffb1`, web dağıtımı `18072856`,
+TestFlight **0.1.0 (18), VALID / IN_BETA_TESTING**. Web dönüş adresleri onayla
+eklenip mevcut dört mobil/Expo adresi korundu. Canlı sentetik UI ailesi temizlendi.
+Yeni paket taslak kurtarma, senkron, belgeden plan ve önceki istemci geliştirmelerini
+içerir. Fiziksel cihaz, satın alma ve bildirim kabulü tamamlanmış sayılmaz.
+Backoffice Zero Trust hesap aktivasyonu bekliyor; ek AI sağlayıcıları ve son sıradaki
+kütüphane hâlâ açık. [Güncel yayın kaydı](../release/CLIENT-18-2026-11-04.md).

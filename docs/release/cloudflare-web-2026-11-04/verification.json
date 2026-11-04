@@ -64,5 +64,32 @@
     "Cloudflare Zero Trust checkout requires account-owner billing setup; backoffice not deployed.",
     "GitHub automatic deployment credentials are not configured.",
     "Missing device-ID blank state found in hosted review; corrected in this PR, not in the first deployment."
-  ]
+  ],
+  "syntheticCleanup": {
+    "authUserRemoved": true,
+    "familyRemoved": true,
+    "privateCredentialFileRemoved": true,
+    "existingFamiliesModified": false
+  },
+  "updatedDeployment": {
+    "id": "18072856-298d-490a-ba32-0ad2f77eabfd",
+    "sourceCommit": "533ffb19e6f872825a144f65bf25cce89682387e",
+    "archiveSha256": "0f8ca26b8cec39d24d7812600c998dfd8acba3f7af0b4034f349595e108ac03b",
+    "files": 491,
+    "deviceFallbackPresentInPublishedBundle": true,
+    "invalidTeacherShareTokenRejectedWithExplanation": true
+  },
+  "isolatedDeviceFallback": {
+    "phone": [
+      390,
+      844
+    ],
+    "tablet": [
+      1280,
+      800
+    ],
+    "backToDevices": true,
+    "invalidDeviceLookupPrevented": true,
+    "boundary": "Local production bundle; all Supabase HTTP/Realtime mocked; no backend writes"
+  }
 }

@@ -13,7 +13,11 @@ Bu, backoffice veya yeni TestFlight yayını değildir.
 - Çocuk modu ebeveyn PIN'i yokken koruma kurulmasını istedi. Deneme PIN'i API fixture'ında tanımlandı; UI üzerinden çocuk girişi ve ebeveyn PIN'iyle çıkış denendi.
 - Çocuk görev gönderdi → veli onayladı → çocuk alanına dönüşte **yenilemeden** tamamlandı/2 yıldız göründü. Hedef seçimi oda kartına yansıdı. Bu aynı tarayıcıdaki çocuk modudur; iki fiziksel cihazlı Realtime kabulü değildir.
 - Telefon/tablette ekranlar ve taşma kontrol edildi. `verification.json` içindeki diğer sayfalar ziyaret edildi; her kontrolünün kullanıldığı iddia edilmez. Prova'nın kaydedilmemiş taslak uyarısı beklenen şekilde çıktı.
-- Cihaz kimliği olmadan doğrudan açılan cihaz ayarı boş kalıyordu. Bu PR mevcut ortak görsel dille açıklama ve bağlı cihazlara dönüş ekler; geçersiz kimlik sorgulanmaz. İlk yayımlanmış pakette bu düzeltme henüz yoktur.
+- Cihaz kimliği olmadan doğrudan açılan cihaz ayarı boş kalıyordu. #132 mevcut ortak görsel dille açıklama ve bağlı cihazlara dönüş ekler; geçersiz kimlik sorgulanmaz. Düzeltme aşağıdaki ikinci dağıtıma dahildir.
+
+Deneme sonunda sentetik Auth hesabı ve aile normal hesap silme akışıyla kaldırıldı;
+ikisinin de silindiği doğrulandı ve yerel geçici kimlik dosyası temizlendi. Mevcut
+aile/demo kayıtları değiştirilmedi.
 
 Görseller yalnız sentetik aileye aittir. Navigasyon sonrası ilk çocuk ekranı görüntüsü
 geçiş sırasında boştu; gerçek başlık ve görev durumu beklendikten sonra tekrar alındı
@@ -25,8 +29,22 @@ Cloudflare hesabı açık ve alan adı listesi boş olarak görüldü. Backoffic
 Zero Trust Free seçildi; **$0/ay, 50 kullanıcı** ekranı hesap sahibi ödeme yöntemi ve
 fatura bilgisi istiyor. Bu işlem tamamlanmadı; yönetim paneli korumasız yayımlanmadı.
 GitHub CI yayın sırları eklenmedi; mevcut web yüklemesi otomatik CI yayını değildir.
-Son TestFlight hâlâ **0.1.0 (17)**.
+Web kabulü sırasında TestFlight17 yayındaydı; aynı gün [TestFlight18](../CLIENT-18-2026-11-04.md) ayrıca yayımlandı.
 
 Google/Apple tam hesap dönüşü, e-posta teslimi, gerçek mağaza ve fiziksel bildirim
 kabulü ayrıca yapılmalıdır. Kaynakların tamamlanma kaydı
 [ana rehberde](../RELEASE-COMPLETION-2026-11-04.md) tutulur.
+
+## Aynı gün ikinci dağıtım
+
+Kaynak `533ffb19e6f872825a144f65bf25cce89682387e`, dağıtım
+`18072856-298d-490a-ba32-0ad2f77eabfd`. Dört CI kontrolü geçen #132 sonrası
+491 dosya yeniden yüklendi. Yayındaki JS paketinde cihaz boş-durum düzeltmesi
+doğrulandı; geçersiz `/s/...` öğretmen raporu bağlantısı açıklamayla reddedildi.
+HTTP/CSP/nosniff tekrar geçti. EAS üretim `EXPO_PUBLIC_WEB_URL` değeri de yeni
+web adresine güncellendi. Yeni OAuth hesabı veya yetki oluşturulmadı.
+
+Cihaz boş-durum ekranı ayrıca aynı üretim paketinde telefon/tablet boyutlarında
+görüldü; bağlı cihazlara dönüş çalıştı ve geçersiz kimlikle sorgu gönderilmedi.
+Bu iki görüntü yerel statik pakette, Supabase HTTP/Realtime yanıtları tamamen
+yalıtılarak alındı; canlı cihaz yetki testinin yerine geçmez.
