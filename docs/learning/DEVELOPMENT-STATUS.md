@@ -454,3 +454,9 @@ Kalıcı kayıt, kaynak imzası, tek plan sınırı, seçilen özgün soru numar
 Güncel MEB sayılar/istatistik sayfaları ile saklı 2026–2027 kaynak sürümüne bağlı 20 özgün açık uçlu taslak eklendi. Üç özgün şema, bir metin kaynağı, bağımsız cevap/ölçüt/yanılgı/sonraki adım ve öğrenciden gizli cevap alanları vardır. Eski kaynaklarda ters olan 6.1.7/6.1.8 eşlemesi güncel kaynak sırasıyla sabitlendi; okul senaryosu seçilmedi.
 
 22 yeni teknik test, 20 Fen +18 Matematik +3 aktarım regresyonu; gerçek 20 sorunun geçici DB'ye eksiksiz alan/bayt aktarımı ve aynı istekte tek paket kontrolü geçti. Telefon tablo kırpılması giderildi; soru ve cevaplı editör önizlemesi görsel olarak incelendi. Kanıt: `library-pilot/grade-6-math/README.md`. Havuz 60 taslak oldu; 1480 henüz yazılmadı, 0 bağımsız onay/yayın. Gerçek aile verisi, ücretli sağlayıcı ve TestFlight değişmedi. Bu, yıllık müfredat veya fiziksel cihaz kabulü değildir.
+
+## 4 Kasım — elle ders programında kayıp yanıt kurtarma (086000)
+
+Elle kaydın sunucuya ulaşıp yanıtının kaybolması durumunda oluşan belirsiz revizyon çakışması düzeltildi. Veli/aktif çocuk için cihazda kapsamlı kalıcı istek ve sunucuda aynı işlem makbuzu vardır; tekrar kayıt dersleri çoğaltmaz. Yeni program eski makbuzla ezilmez; kullanıcıya güncel sürüm gösterilir. Çocuk takvimindeki üçüncü program eylemi ve çocuğun yapamayacağı etkinlik ekleme yönlendirmesi kaldırıldı. Mevcut onaylı tasarım korundu.
+
+33 yeni SQL (64 dosya/1758), dört gerçek yarış ve 169 core testi; mobil/core tip ve mobil lint kontrolleri geçti. Telefon/tablet gerçek Expo bileşenlerinde sentetik kayıp yanıt, yeniden açılış, daha yeni sürüm ve kesin çakışma kontrolleri tamamlandı. Kanıt: `docs/design/screens/timetable-save-recovery/README.md`. Native/üretim kabulü açık; TestFlight 17 değişmedi. Bu artım tam ödev/ders/kurs planını tamamlamış sayılmaz.
