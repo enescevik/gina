@@ -1,0 +1,87 @@
+{
+  "source": "3afaa847aea3020aba8ed551f8fae3e910eb586e",
+  "deployment": "https://2e866601.gina-web.pages.dev",
+  "checkedAt": "2026-11-04T19:47:20.770Z",
+  "routes": [
+    {
+      "route": "/",
+      "status": 200,
+      "csp": true,
+      "nosniff": true
+    },
+    {
+      "route": "/sign-in",
+      "status": 200,
+      "csp": true,
+      "nosniff": true
+    },
+    {
+      "route": "/parent",
+      "status": 200,
+      "csp": true,
+      "nosniff": true
+    },
+    {
+      "route": "/parent/prova",
+      "status": 200,
+      "csp": true,
+      "nosniff": true
+    },
+    {
+      "route": "/auth-callback",
+      "status": 200,
+      "csp": true,
+      "nosniff": true
+    }
+  ],
+  "assets": [
+    {
+      "name": "[attemptId]-43b9b90b8bcf68cbf85b47ed380e27f6.js",
+      "sha256": "d01931516a5e9a265b246edc167596f096b367929912953dbc444e70a20b4888"
+    },
+    {
+      "name": "[attemptId]-a3e660e38595fb121a5fe0da207980ee.js",
+      "sha256": "595848035cd088869c7cc57c3c9041337791bfed72dee3ce3a966eceb86e2d6e"
+    },
+    {
+      "name": "[attemptId]-e5b6a7319d6b19b2c2933433ce8158ed.js",
+      "sha256": "92c6fd5552fb84be0ac83c55c2b0fb06c55610936461eb6d6e47e4b43e08bd54"
+    },
+    {
+      "name": "[examId]-4f358873785bd57c6a76dacb29aa3bfa.js",
+      "sha256": "2ba75385cfbcb3c05f152f90b02f3be6b433c5862e11b43b7c224fb45d8da93c"
+    },
+    {
+      "name": "__common-98715f9a9b57b73c7eefbbe3e0f9dd99.js",
+      "sha256": "56e74d265250f564633aa3ff0aa18dfa8083a54c0ff0d08ae3a531f9bf4f9a47"
+    },
+    {
+      "name": "builder-6b4dd05c6a6debad903562a955ac2ef6.js",
+      "sha256": "01f1170474d3a3962ad22561f61ba11519a6306acfe55c596a667aa7ecddc9f6"
+    },
+    {
+      "name": "index-276591b798134ae399b08483d8e1ffdf.js",
+      "sha256": "080b6deeb02b9b4da1e2804a6452700f1c71b7639bdb3e88f038a49b1042f98b"
+    },
+    {
+      "name": "index-41d4b501d91ee67ea501a5ba50cb690f.js",
+      "sha256": "cfb17005d058626788352edfafd44a173f25b294bb05cc8976157aefbb07f32e"
+    },
+    {
+      "name": "index-754b20fac8707f5e7db94d6c6eb6659f.js",
+      "sha256": "31fd05a50bba4933e98f1b43b16fdafe16d7c37a11b14f0f21ce4d65dce67228"
+    },
+    {
+      "name": "index-778138d7e4d5e317204fe9f4c5a00a2e.js",
+      "sha256": "315ca9a180096a6736539103340bd2ea2145c9b0d435f4d2c2267316ded46d54"
+    },
+    {
+      "name": "index-eda68a59e154a4d5348c8bfb7414fc0e.js",
+      "sha256": "97748f1155c3dc545e1d0ad4ab4eb393187e46bcd2150c3195c308d3ec4f4ed8"
+    },
+    {
+      "name": "index-fc64fb9384e63ce984885327347de771.js",
+      "sha256": "4406da9c90eded1ded24021a47f7d0cd54ceb41a5365eabf1133b210d6969bd8"
+    }
+  ]
+}

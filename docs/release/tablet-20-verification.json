@@ -1,0 +1,20 @@
+{
+  "build": "20",
+  "version": "0.1.0",
+  "sourceCommit": "3afaa847aea3020aba8ed551f8fae3e910eb586e",
+  "origin": "local-eas-build",
+  "bundle": "com.enescevik.gina",
+  "sha256": "02fdee897d54ff0188008eabfaaa1e88ce4cb9118b0332c1c6d3a5ebe80e4316",
+  "bytes": 60931771,
+  "signatureVerified": true,
+  "registeredDeviceCount": 1,
+  "productionEndpointsVerified": true,
+  "sameJavaScriptBundleAsStore": false,
+  "deviceInstallationTested": false,
+  "profileExpiresAt": "2027-10-31T01:05:56",
+  "releaseStringsVerified": {
+    "writtenKindHelp": true,
+    "pendingReview": true,
+    "mcTotal": true
+  }
+}
