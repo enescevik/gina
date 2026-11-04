@@ -4,6 +4,8 @@ Kullanıcı: **“Hepsini bitirelim sonra yayına alırız.”** Önceki TestFli
 
 **4 Kasım öncelik güncellemesi:** Kullanıcı kütüphane sorularını en sona aldı. Mevcut 100 taslak korunur; yeni soru üretimi bekler. Önce Prova/görev akışları, cihaz kabulü, canlı bağlantılar ve son tasarım denetimi tamamlanır.
 
+**4 Kasım hizmet kabulü:** Gerçek yerel Auth/REST/Storage/Edge zincirinde 123 kontrol geçti. Mevcut canlı sürümde geçici test ailesiyle belge→AI→düzenleme→program/takvim→hesap silme için 10 kontrol geçti; tek ücretli üretim yapıldı. Kanıt/sınırlar: `isolated-service-acceptance/README.md`. Yayımlanmamış Edge sürümleri, fiziksel cihaz ve Realtime kabulü açık.
+
 Onaylı maketi bulunan ekranlarda o maket korunur. Ayrı maketi olmayan ekranlar için kullanıcının sonraki kararı geçerlidir: “Onaylı ekranların ortak tasarımını bu ekranlara uyarla”. Gelişim ekranı maketi `docs/design/screens/learning-progress/phone-tablet-proposal-v1.png`: **onaylandı ve uygulandı**. Gerçek web bileşeni telefon/tablet önizlemeleri aynı klasörde; native cihaz ve yayın kabulü sürer.
 
 | İş | Güncel durum / kapanış koşulu |

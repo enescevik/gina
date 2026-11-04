@@ -1,7 +1,8 @@
 // Explicit operator test against a real Supabase project; never run in CI automatically.
 // Creates one synthetic account/family, performs one paid document extraction, then deletes
 // only that account through the normal deletion flow (admin cleanup on failure).
-// sources.enabled is temporarily opened and restored; existing family records are untouched.
+// Requires sources.enabled already open; never changes a global rollout flag.
+// Existing family records are untouched.
 import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
@@ -23,10 +24,11 @@ const parent = createClient(url,anonKey,options);
 const report = {project,checks:{},cleanup:{}};
 const must = (result,label) => { if(result.error) throw Error(label); return result.data; };
 const check = (name,condition) => {report.checks[name]=!!condition;if(!condition)throw Error(name);};
-let userId, familyId, sourcePath, sourceId, opened=false, deleted=false;
+let userId, familyId, sourcePath, sourceId, deleted=false;
 try {
   const setting = must(await admin.from('app_settings').select('value').eq('key','sources.enabled').single(),'read_source_flag');
-  if(setting.value !== false) throw Error('Source feature is already open; do not change another rollout');
+  if(setting.value !== true) throw Error('source_feature_not_enabled');
+  report.checks.global_source_flag_already_enabled=true;
   const password = randomBytes(32).toString('base64url');
   const email = `gina-service-check-${randomUUID()}@example.invalid`;
   const created = must(await admin.auth.admin.createUser({email,password,email_confirm:true}),'create_synthetic_user');
@@ -44,9 +46,6 @@ try {
   const saved=must(await parent.rpc('save_setup_batch',batch),'save_three_tasks');
   const replay=must(await parent.rpc('save_setup_batch',batch),'replay_three_tasks');
   check('batch_receipt_over_http',saved.length===3&&JSON.stringify(saved)===JSON.stringify(replay));
-  // Restore even if the update succeeds but its response is lost.
-  opened=true;
-  must(await admin.from('app_settings').update({value:true}).eq('key','sources.enabled').eq('value',false),'open_source_test');
   const fixture=readFileSync(new URL('../supabase/functions/ai-preflight/fixture.ts',import.meta.url),'utf8').match(/"([A-Za-z0-9+/=]{100,})"/)[1];
   const bytes=Buffer.from(fixture,'base64');sourceId=randomUUID();
   const reserved=must(await parent.functions.invoke('learning-source',{body:{action:'reserve',id:sourceId,kind:'document',name:'synthetic-timetable.png',mime:'image/png',bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex'),consent:true}}),'reserve_source');
@@ -81,7 +80,6 @@ try {
   report.error=error instanceof Error && /^[a-z_]{1,100}$/.test(error.message) ? error.message : 'service_check_failed';
   process.exitCode=1;
 } finally {
-  if(opened){const restored=await admin.from('app_settings').update({value:false}).eq('key','sources.enabled');report.cleanup.source_flag_restored=!restored.error;}
   if(userId&&!deleted){const cleanup=await admin.auth.admin.deleteUser(userId,false);report.cleanup.admin_account_cleanup=!cleanup.error;}
   if(sourcePath){const cleanup=await admin.storage.from('gina-private-sources').remove([sourcePath]);report.cleanup.test_object_removed=!cleanup.error;}
   if(familyId){const remaining=await admin.from('families').select('id').eq('id',familyId);report.cleanup.family_absent=!remaining.error&&remaining.data.length===0;}
