@@ -164,4 +164,3 @@ begin
   delete from public.task_completions where id = p_completion_id;
 end;
 $$;
-
