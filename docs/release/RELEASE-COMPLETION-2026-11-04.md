@@ -20,8 +20,8 @@ anlamına gelmez.
 | Web, mobil ve yönetim panelinin ortak veri akışı | İzole gerçek Auth/REST/Realtime/Storage/Edge koşumunda 254 kontrol geçti. Görev, Prova, cihaz iptali, aile ayrımı, destek ve SSS dahil. Canlı AI/kayıt zincirinde ayrıca 29 kontrol geçti; ekran/cihaz kabulü ayrı. |
 | Yeni AI özellikleri | Haftalık özet, belgeden ödev/kurs, görev ve ödül gerçek sağlayıcıyla geçti. Yeni ürün uç noktalarının kayıt/kota/yeniden açılışı yerel gerçek hizmetler ve deterministik sağlayıcı sınırıyla geçti. Canlı ürün uçlarında da 29 kontrol ve 6 temizleme doğrulaması geçti; beş gerçek ücretli üretim yapıldı. |
 | Native taslak güvenliği | iPhone/iPad simülatörleri ve Android API33 emülatöründe gerçek SQLite ve süreç kapanışı geçti. Fiziksel kalem/klavye ve Android görsel kabulü ayrıca yapılacak. |
-| Eşgüdümlü yayın | Üretim DB 20261103094000'a güncellendi (32 migration), 19 Edge function dağıtıldı. public/gina yerel yedeği alındı; Auth/Storage tam yedeği veya geri dönüş tatbikatı değildir. Web ve TestFlight20 yayımlandı; korumalı backoffice yayını bekliyor. |
-| Web ve backoffice hosting | İki üretim derlemesi ve gerçek yayın başlıklarıyla telefon/tablet giriş ekranları geçti. Veli webi https://gina-web.pages.dev üzerinde yayımlandı ve gerçek sentetik aileyle görev/onay/hedef/etkinlik akışları geçti. Backoffice Access kurulumu hesap sahibi adımını bekliyor. Yeşil ama atlanmış Actions işi yayın kanıtı değildir. |
+| Eşgüdümlü yayın | Üretim DB 20261103094000'a güncellendi (32 migration), 19 Edge function dağıtıldı. public/gina yerel yedeği alındı; Auth/Storage tam yedeği veya geri dönüş tatbikatı değildir. Web ve TestFlight20 yayımlandı; korumalı backoffice 5 Kasım’da yayımlandı. Canlı yönetici girişi ve 15 sayfanın okuma/boş durum kontrolü geçti; yazma işlemleri ayrıca izlenir. |
+| Web ve backoffice hosting | İki üretim derlemesi ve gerçek yayın başlıklarıyla telefon/tablet giriş ekranları geçti. Veli webi https://gina-web.pages.dev üzerinde yayımlandı ve gerçek sentetik aileyle görev/onay/hedef/etkinlik akışları geçti. Backoffice 5 Kasım’da Access korumasıyla yayımlandı; aktivasyon beklemiyor. Yeşil ama atlanmış Actions işi yayın kanıtı değildir. |
 | Mağaza ve bildirim | Sunucu kontrolleri mevcut; gerçek satın alma/yenileme/iade ve APNs/FCM teslimi için mağaza/cihaz kabulü gerekiyor. |
 | Ek AI sağlayıcıları | Mevcut çalışan sağlayıcı Anthropic. Diğer sağlayıcılar yalnız modele ad yazarak etkinleşmez; adapter, doğrulama ve ayrı anahtar gerekir. |
 | Kütüphane | Kullanıcı kararıyla en son. 100 taslak korunuyor; 1.540 ilk havuz hedefinde 1.440 taslak eksik. Bağımsız onay/yayın: 0. Teknik doğrulama editör onayı değildir. |
@@ -32,29 +32,35 @@ Apple/Google mağazasında, kazanılan erişim aileye bağlı ve web'de görün�
 
 ## Senden gerekebilecekler — sırayla
 
-### 1. Yönetim paneli için Cloudflare Zero Trust Free kurulumunu tamamla
+### 1. Yönetim paneli — Cloudflare aktivasyonu tamamlandı
 
-Cloudflare oturumun artık açık; veli webi yayımlandı. Yeni hesap açmana gerek yok.
+**5 Kasım 2026 güncellemesi:** Zero Trust Free hesap sahibi tarafından etkinleştirildi;
+ekip alanı `gina-family.cloudflareaccess.com`. Bu adımı yeniden yapma.
 
-1. Chrome'da açık bıraktığım **Activate Zero Trust Free** sekmesini aç. Sipariş
-   özetinde **Free, $0/month, 50 users** yazdığını kontrol et; ücretli plan seçme.
-2. Cloudflare ücretsiz plan için de ödeme yöntemi/fatura bilgisi istiyor. Kendi
-   bilgilerini burada tamamla; şifre, kart bilgisi veya kodu sohbete gönderme.
-3. Koşulları okuyup hesap sahibi olarak ücretsiz planı etkinleştir. Ek ücretli
-   seçenek sunulursa ekleme. Bittiğinde haber ver; yönetim panelinin koruma
-   politikası, yayın ve erişim testi teknik iş olarak bende.
-4. Yönetim paneline girecek ekip varsa yalnız onların e-posta adreslerini belirle.
-   Destek ve içerik personeline tam yönetici yetkisi vermeyeceğiz.
+[Yönetim panelini aç](https://gina-backoffice.pages.dev).
 
-Cloudflare'ın ödeme/hesap sahibi adımı nedeniyle backoffice henüz yayımlanmadı.
-Veli webinin gerçek hesap girişleri için iki yeni kesin dönüş adresi, onayınla
-Supabase'e kaydedildi. Mobil/Expo girişleri korundu.
+1. Cloudflare girişinde `enescevik@gmail.com` adresini kullan; e-postana gelen tek
+   kullanımlık kodu Cloudflare sayfasına gir.
+2. Ardından GINA'nın **Yönetici girişi** ekranında aynı e-posta ve mevcut GINA
+   şifrenle giriş yap. Hatırlamıyorsan **Şifremi unuttum** bağlantısını kullan;
+   açılan GINA web sayfasında sıfırlama e-postası iste ve bağlantıyı aynı tarayıcıda aç.
+   Yeni şifreyi belirledikten sonra yönetim paneline dön.
+   Cloudflare kodu, GINA şifresi değildir. Şifreni veya kodunu
+   sohbete gönderme.
+3. Mevcut GINA hesabına, 5 Kasım'daki açık onayınla tam yönetici yetkisi verildi;
+   işlem denetim kaydına yazıldı. Eski GINA oturumu açıksa çıkıp yeniden giriş yap.
+4. Başka ekip üyesi eklenecekse hem Cloudflare izin listesi hem GINA'daki uygun
+   görev yetkisi ayrıca tanımlanacak. Destek/içerik personeline tam yönetici
+   yetkisi varsayılan olarak verilmeyecek.
 
-Başarı ölçütü: veli webi açılır; yönetim paneli üretim/önizleme/özel alan adlarının
-tamamında yetkisiz kişiyi durdurur. Access kapısından geçmek uygulamada yönetici
-yetkisi kazandırmaz. Cloudflare'ın yalnız önizlemeyi koruyan ayarı üretimi otomatik
-korumaz; [Pages Access kapsamı](https://developers.cloudflare.com/pages/configuration/preview-deployments/)
-ayrıca doğrulanacak.
+Ana adres ve `*.gina-backoffice.pages.dev` aynı Access uygulamasıyla korunuyor;
+yalnız hesap sahibinin kesin e-posta adresine izin veriliyor. WARP gerekmiyor.
+Üretim ve gerçek dağıtım adresindeki 12 oturumsuz kontrol Access girişine yönlendi.
+Özel alan adı henüz yok; eklendiğinde ayrı koruma doğrulanmadan açılmayacak.
+Sonraki otomatik yayın akışına yükleme öncesi/sonrası Access kontrolü eklendi;
+GitHub yayın anahtarı henüz kurulmadığı için mevcut yayın Wrangler ile yapıldı.
+
+[Yayın kanıtları ve kalan kabul sınırı](backoffice-2026-11-05/README.md).
 
 ### 2. Alan adı ve e-posta gönderimini kesinleştir
 

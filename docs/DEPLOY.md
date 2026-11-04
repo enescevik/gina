@@ -8,7 +8,8 @@ Veli webi (Expo web export) ve backoffice (statik Next.js) Cloudflare Pages'te b
 2. **Workers & Pages → Create → Pages → Direct Upload** ile iki proje oluştur (Git bağlantısı gerekmez, yüklemeyi Actions yapar):
    - `gina-web` (veli webi)
    - `gina-backoffice` (admin)
-   İlk yükleme için boş bir klasör yüklemen istenirse herhangi bir `index.html` yükle; sonrasını Actions yapar.
+   GINA projeleri artık mevcut; yeniden oluşturma. Yönetim paneline ilk gerçek
+   dosyaları yüklemeden önce aşağıdaki Access korumasını kur ve doğrula.
    Farklı ad kullanırsan GitHub'da **Variables** altına `CF_PAGES_WEB_PROJECT` / `CF_PAGES_BACKOFFICE_PROJECT` ekle.
 3. **Account ID**: Workers & Pages sayfasının sağ panelinde (ya da adres çubuğundaki hesap kimliği).
 
@@ -40,6 +41,29 @@ Elle tetiklemek için: Actions → *Deploy web* / *Deploy backoffice* → **Run 
 ## 4. Backoffice'i Cloudflare Access ile kapat
 
 Zero Trust → **Access → Applications → Add → Self-hosted**: alan `gina-backoffice.pages.dev` (ve sonra özel alan adı), politika **Allow → Emails → enescevik@gmail.com** (+ ekip), giriş yöntemi **One-time PIN** (e-posta OTP). Önizleme dağıtımları (`*.gina-backoffice.pages.dev`) için de aynı uygulamaya joker alan ekle. Access ek bir kapıdır; asıl yetki veritabanındadır (RLS + `admin_*` RPC'leri `gina.admin` claim'i ve `admins` tablosunu birlikte kontrol eder).
+
+**5 Kasım 2026:** `gina-family` ekibinde ana adres ve önizlemeler tek Access
+uygulamasının iki hedefi olarak korundu; yalnız hesap sahibinin kesin e-postası
+izinli. Pages ayarındaki **Restrict previews** tek başına ana adresi korumaz.
+İlk yüklemeden önce ve her yüklemeden sonra şu kontrol geçmelidir:
+
+```bash
+CF_PAGES_PROJECT=gina-backoffice CF_ACCESS_TEAM=gina-family node scripts/check-backoffice-access.mjs
+```
+
+Gerçek dağıtımı ayrıca kontrol etmek için `CF_PREVIEW_ORIGIN` değerini Wrangler'ın
+verdiği `https://<deployment>.gina-backoffice.pages.dev` adresine ayarla. Kontrol
+oturum kullanmaz, yönlendirmeyi takip etmez, uygulama ve görsel yollarının **tam
+olarak doğru ekip girişine** gönderilmesini bekler. 200, ilgisiz yönlendirme,
+yalnız 403 veya ağ hatası geçerli koruma kanıtı değildir. İzin listesi ve başarılı
+yetkili giriş ayrıca kontrol edilir; bu HTTP kontrolü bunların yerine geçmez.
+GitHub workflow'u aynı kontrolü yüklemeden önce ve sonra çalıştırır. GitHub
+yayın anahtarı henüz eklenmediğinden mevcut yayın, onaylı yerel Wrangler
+oturumuyla yapılmıştır; otomatik yayın kurulduğu iddia edilmez.
+
+Yönetim girişindeki **Şifremi unuttum**, kayıtlı GINA web sıfırlama ekranını yeni
+sekmede açar. Şifre GINA web'de yenilenir; sonra yönetim sekmesine dönülür.
+Özel web alan adına geçilirse bu bağlantı da güncellenmelidir.
 
 ## 5. Supabase tarafı
 

@@ -17,6 +17,7 @@ on:
       - scripts/cf-pages-finalize.mjs
       - scripts/public-build-env.mjs
       - scripts/deploy-preflight.mjs
+      - scripts/check-backoffice-access.mjs
       - .node-version
       - package.json
       - pnpm-lock.yaml
@@ -36,6 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CF_PAGES_PROJECT: ${{ vars.CF_PAGES_BACKOFFICE_PROJECT || 'gina-backoffice' }}
+      CF_ACCESS_TEAM: ${{ vars.CF_ACCESS_TEAM || 'gina-family' }}
     steps:
       - uses: actions/checkout@v4
       - name: Secret kontrolü
@@ -66,6 +68,9 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         run: node scripts/build-backoffice.mjs
+      - name: Üretim ve önizleme Access kapısını doğrula
+        if: steps.secrets.outputs.ready == 'true'
+        run: node scripts/check-backoffice-access.mjs
       - name: Cloudflare Pages'e yükle
         if: steps.secrets.outputs.ready == 'true'
         uses: cloudflare/wrangler-action@v3
@@ -77,3 +82,6 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy apps/backoffice/out --project-name=${{ env.CF_PAGES_PROJECT }} --branch=main --commit-dirty=true
+      - name: Yayın sonrası Access kapısını doğrula
+        if: steps.secrets.outputs.ready == 'true'
+        run: node scripts/check-backoffice-access.mjs

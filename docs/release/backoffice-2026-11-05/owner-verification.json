@@ -1,0 +1,9 @@
+{
+  "ownerAccountExists": true,
+  "ownerConfirmed": true,
+  "ownerIsAdmin": true,
+  "alreadyAdmin": false,
+  "roleGrantAudited": true,
+  "checkedAt": "2026-11-04T21:12:55.708Z",
+  "requiresFreshLogin": true
+}

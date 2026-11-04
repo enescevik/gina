@@ -1,0 +1,18 @@
+{
+  "sourceCommit": "feecfd5be827f35c163cd9658b475763a421fc3b",
+  "deploymentId": "8b9132a2-ba72-4469-a2a9-248231515537",
+  "url": "https://gina-backoffice.pages.dev",
+  "deploymentUrl": "https://8b9132a2.gina-backoffice.pages.dev",
+  "teamDomain": "gina-family.cloudflareaccess.com",
+  "accessApplicationId": "2e09e94f-c4a8-4244-b0c9-33b053ba53e6",
+  "published": true,
+  "accessGateVerified": true,
+  "liveRecoveryLinkVerified": true,
+  "authenticatedAdminWorkflowVerified": false,
+  "authenticatedAdminSignInVerified": true,
+  "readOnlyPagesChecked": 15,
+  "readOnlyDataPagesLoaded": 13,
+  "selectionRequiredPages": 2,
+  "browserErrorCount": 0,
+  "realFamilyMutationsPerformed": false
+}
