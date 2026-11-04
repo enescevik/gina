@@ -542,3 +542,10 @@ Veli puanı, geri bildirimi, ayrı çizim katmanı ve uygulanmış AI kimliği c
 ## 4 Kasım — native klavye ve büyük yazı denetimi
 
 Defterde yatay iPad klavyesinin ekleme düğmesini gizlediği bulundu ve düzeltildi: başlık/kapatma ve ekleme sabit, metin/semboller kaydırılabilir. Büyük yazıda çizim alanının aşırı daralması, 1,4+ ölçek için soru/defter sekmeleriyle giderildi. iPad simülatöründe klavye+sembol girişi, modal açıkken yön geçişleri, diğer araçlardan sembole geçiş ve dikey çizim geçti. Kanıt: `docs/design/screens/notebook-keyboard-acceptance/README.md`. Telefonun sekme/sembol denemesi geçti, simülatör klavye menüsü devre dışı olduğundan telefon klavye kabulü açık. Fiziksel cihaz/Pencil, Android, VoiceOver ve canlı hizmet kabulü kapatılmadı. TestFlight değişmedi.
+
+
+## 4 Kasım — gerçek yerel Auth/PostgREST kabulü ve cevap makbuzu
+
+Boş audit kopyasında gerçek giriş, token hook, anonim cihaz eşleştirme/PIN, tek çocuğa erişim, karma Prova/ortak kaynak, çizimli cevap, veli incelemesi, gelişim raporu, görev onayı ve tekil yıldız akışı geçti. Başka aile erişimi ve iptal edilmiş cihazın eski JWT erişimi reddedildi. Geçici hizmetler/kopya kaldırıldı. Kanıt ve kapsam: `isolated-service-acceptance/README.md`. Fiziksel cihaz, Realtime, Storage/AI ve mağaza kabulü değildir.
+
+Cevap kaydında geçersiz/eski sunucu revizyonunun yerel taslağı temizlemesi engellendi; özgün işlem kimliği tekrar için korunur. 11 yeni test ile core230, mobil/core tip ve mobil lint geçti. Üretim/TestFlight17 değişmedi; kütüphane en sonda bekliyor.

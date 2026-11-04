@@ -111,6 +111,33 @@ describe("durable answer journal", () => {
     }, () => {});
     expect(f.open().restore()).toEqual({});
   });
+  it.each([null, undefined, "4", NaN, Infinity, 0, -1, 2, 3.5, Number.MAX_SAFE_INTEGER + 1])(
+    "retains the edit and original receipt after invalid acknowledgement %s",
+    async (response) => {
+      const f = fixture(), j = f.open();
+      j.edit(uid(5), { text: "Çözümüm" }, 3);
+      let receipt = "", saved = false;
+      await expect(j.send(uid(5), async (r) => {
+        receipt = r.id;
+        return response as number;
+      }, () => { saved = true; })).rejects.toThrow("answer_ack_invalid");
+      expect(saved).toBe(false);
+      expect(f.open().restore()[uid(5)]).toEqual({ text: "Çözümüm" });
+      await f.open().send(uid(5), async (r) => {
+        expect(r.id).toBe(receipt);
+        expect(r.revision).toBe(3);
+        return 4;
+      }, () => { saved = true; });
+      expect(saved).toBe(true);
+      expect(f.open().restore()).toEqual({});
+    },
+  );
+  it("accepts an unchanged revision for a confirmed identical answer", async () => {
+    const f = fixture(), j = f.open();
+    j.edit(uid(5), { key: "A" }, 3);
+    await j.send(uid(5), async () => 3, () => {});
+    expect(j.restore()).toEqual({});
+  });
   it("isolates user, family, child and attempt scopes", () => {
     const f = fixture();
     f.open().edit(uid(5), { key: "A" }, 0);
