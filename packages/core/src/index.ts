@@ -59,3 +59,4 @@ export * from "./family-week";
 export * from "./learning-plan";
 
 export * from "./learning-plan-import";
+export * from "./weekly-review";

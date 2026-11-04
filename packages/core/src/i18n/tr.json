@@ -2599,5 +2599,61 @@
   "prova.ai.errors.plan_import_invalid": "Seçilen işleri kontrol edin.",
   "prova.ai.errors.plan_date": "Çalışma günü son 30 gün veya gelecek bir yıl içinde olmalı; teslim gelecek bir yılı aşmamalı.",
   "prova.ai.errors.plan_limit": "100 açık çalışma var. Önce bitenleri tamamlayın veya arşivleyin.",
-  "prova.ai.errors.plan_import_forbidden": "Bu çocuğun belge taslağını yalnız ailesindeki veli açabilir."
+  "prova.ai.errors.plan_import_forbidden": "Bu çocuğun belge taslağını yalnız ailesindeki veli açabilir.",
+  "weeklyReview": {
+    "open": "Tamamlanan haftaların AI özeti",
+    "family": "Ailece, adım adım",
+    "title": "Haftaya birlikte bakalım",
+    "subtitle": "Tamamlanan haftanın kayıtları ve birlikte deneyebileceğiniz küçük adımlar.",
+    "loading": "Hafta yükleniyor",
+    "loadFailed": "Haftanın kayıtları yüklenemedi. Bağlantını kontrol edip yeniden deneyebilirsin.",
+    "refresh": "Durumu kontrol et",
+    "previous": "Önceki hafta",
+    "next": "Sonraki hafta",
+    "facts": "Haftanın kayıtları",
+    "frozen": "Özet hazırlanırken kaydedilen bilgiler. Sonraki değişiklikler bu özeti değiştirmez.",
+    "live": "Ailenin saat dilimine göre tamamlanmış hafta.",
+    "noChildren": "Henüz çocuk profili yok. Bir profil ekledikten sonra haftalık kayıtları burada görebilirsin.",
+    "stars": "Onaylı görevlerden {{count}} yıldız",
+    "task": {
+      "approved": "{{count}} görev onaylandı",
+      "done": "{{count}} görev onay bekliyor",
+      "returned": "{{count}} görev yeniden ele alınacak"
+    },
+    "noRecords": "Bu hafta görev kaydı yok. Bu, çaba gösterilmediği anlamına gelmez.",
+    "recordedOnly": "Bu sayımlar yalnız kayıtlı görev durumlarını gösterir; tüm planlanan görevlerin tamamlanma oranı değildir. Yıldızlar yetenek ölçüsü değildir.",
+    "snapshot": "Kayıt anı: {{date}}",
+    "aiTitle": "AI ile küçük bir bakış",
+    "state": {
+      "empty": "Bu hafta için henüz AI özeti hazırlanmadı.",
+      "failed": "Önceki deneme tamamlanamadı. İstersen yeniden başlatabilirsin.",
+      "working": "Özet hazırlanıyor. Bu ekrandan ayrılabilirsin; döndüğünde durumunu kontrol et.",
+      "uncertain": "İşlemin sonucu henüz doğrulanamadı. Yeniden hak harcamamak için yeni üretim başlatmıyoruz. Daha sonra durumunu kontrol edebilir veya Yardım bölümünden bize ulaşabilirsin."
+    },
+    "privacy": "Hazırlamayı seçersen sınıf, takma adlı görev sayımları ve kazanılan yıldızlar Anthropic’e gönderilir. Çocuk adı, okul, görev metni ve bu haftayı konuşurken söyledikleriniz gönderilmez.",
+    "usage": "Bu ay {{count}} özet hakkın var. İlk hazırlama bir hak kullanır; kayıtlı özeti açmak yeniden hak kullanmaz.",
+    "consent": "Bu bilgilerle AI özeti hazırlanmasını istiyorum",
+    "generate": "Haftanın özetini hazırla",
+    "access": {
+      "no_children": "Özet hazırlamak için önce bir çocuk profili eklemelisin.",
+      "disabled": "Paketinde haftalık AI özeti açık değil veya AI hizmeti şu anda kapalı. Haftanın kayıtlarını yine inceleyebilirsin.",
+      "quota": "Bu ayın özet hakkı doldu. Kayıtlı özetlerini açmak için yeni hak gerekmez.",
+      "available": "Hazır olduğunda özet isteyebilirsin."
+    },
+    "disclaimer": "AI metni bir öneridir; hata içerebilir. Çocuğunun çabasını, ruh hâlini veya başarısını ölçmez. Öneriler otomatik olarak göreve dönüşmez.",
+    "plan": "Birlikte bir adım planla",
+    "positives": "Kayıtlarda öne çıkanlar",
+    "revisit": "Birlikte yeniden bakılabilecekler",
+    "smallStep": "İsterseniz deneyin",
+    "together": "Birlikte konuşmak için",
+    "errors": {
+      "unknown": "Sonucu şu anda doğrulayamadık. Yeni bir üretim başlatmadan önce “Durumu kontrol et” ile kayıtlı sonucu arayabilirsin.",
+      "ai_quota_exceeded": "Bu ayın haftalık özet hakkı doldu.",
+      "ai_rate_limited": "Kısa süre içinde çok istek oldu. Biraz sonra tekrar deneyebilirsin.",
+      "ai_disabled": "AI özeti şu anda kullanılamıyor. Haftanın kayıtları erişilebilir durumda.",
+      "plan_has_no_ai": "Paketinde haftalık AI özeti bulunmuyor.",
+      "weekly_date": "Bu hafta artık seçilebilir aralıkta değil. Ekranı yeniden açıp son sekiz haftadan birini seç.",
+      "ai_temporarily_unavailable": "AI hizmetine şu anda ulaşılamıyor. Daha sonra yeniden deneyebilirsin."
+    }
+  }
 }

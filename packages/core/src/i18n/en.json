@@ -2604,5 +2604,61 @@
   "prova.ai.errors.plan_import_invalid": "Check the selected items.",
   "prova.ai.errors.plan_date": "Study day must be within the last 30 days or next year; due date cannot exceed next year.",
   "prova.ai.errors.plan_limit": "There are 100 open items. Complete or archive some first.",
-  "prova.ai.errors.plan_import_forbidden": "Only this child’s parent can open the document draft."
+  "prova.ai.errors.plan_import_forbidden": "Only this child’s parent can open the document draft.",
+  "weeklyReview": {
+    "open": "AI summaries of completed weeks",
+    "family": "Together, step by step",
+    "title": "Look back together",
+    "subtitle": "A completed week’s records and small steps you can try together.",
+    "loading": "Loading week",
+    "loadFailed": "The week could not be loaded. Check your connection and try again.",
+    "refresh": "Check status",
+    "previous": "Previous week",
+    "next": "Next week",
+    "facts": "This week’s records",
+    "frozen": "Records captured when the summary was prepared. Later changes do not change this summary.",
+    "live": "A completed week in your family’s time zone.",
+    "noChildren": "There is no child profile yet. Add one to see weekly records here.",
+    "stars": "{{count}} stars from approved tasks",
+    "task": {
+      "approved": "{{count}} tasks approved",
+      "done": "{{count}} tasks awaiting approval",
+      "returned": "{{count}} tasks to revisit"
+    },
+    "noRecords": "No tasks were recorded this week. This does not mean no effort was made.",
+    "recordedOnly": "These counts describe recorded task statuses, not the completion rate of all planned tasks. Stars do not measure ability.",
+    "snapshot": "Captured: {{date}}",
+    "aiTitle": "A little perspective with AI",
+    "state": {
+      "empty": "No AI summary has been prepared for this week.",
+      "failed": "The previous attempt did not complete. You can choose to try again.",
+      "working": "Your summary is being prepared. You can leave this screen and check its status when you return.",
+      "uncertain": "The outcome has not been confirmed. We will not start another generation or charge another use automatically. Check again later or contact us through Help."
+    },
+    "privacy": "If you choose to prepare a summary, grade, task counts under aliases and earned stars are sent to Anthropic. Child names, schools, task text and your conversation are not sent.",
+    "usage": "You have {{count}} summaries left this month. Preparing one uses one allowance; reopening a saved summary uses none.",
+    "consent": "I want an AI summary using this information",
+    "generate": "Prepare this week’s summary",
+    "access": {
+      "no_children": "Add a child profile before preparing a summary.",
+      "disabled": "Weekly AI summaries are unavailable in your plan or AI is currently paused. You can still read your records.",
+      "quota": "Your monthly summary allowance has been used. Saved summaries need no additional allowance.",
+      "available": "Request a summary when you are ready."
+    },
+    "disclaimer": "AI text is a suggestion and may contain errors. It does not measure your child’s effort, mood or achievement. Suggestions never become tasks automatically.",
+    "plan": "Plan a small step together",
+    "positives": "Highlights in the records",
+    "revisit": "Things to revisit together",
+    "smallStep": "Something you could try",
+    "together": "To talk about together",
+    "errors": {
+      "unknown": "We could not confirm the outcome. Use “Check status” to look for a saved result before starting another generation.",
+      "ai_quota_exceeded": "Your monthly summary allowance has been used.",
+      "ai_rate_limited": "There have been too many recent requests. Please try again shortly.",
+      "ai_disabled": "AI summaries are currently unavailable. Your records are still accessible.",
+      "plan_has_no_ai": "Weekly AI summaries are not included in your plan.",
+      "weekly_date": "This week is no longer available. Reopen the screen to choose one of the last eight weeks.",
+      "ai_temporarily_unavailable": "The AI service is currently unavailable. Please try again later."
+    }
+  }
 }

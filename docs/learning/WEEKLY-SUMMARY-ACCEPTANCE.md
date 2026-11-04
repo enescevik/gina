@@ -33,3 +33,9 @@ Gerçek sağlayıcı çağrısı veya aile kaydı kullanılmadı. JSON/etiket ko
 Üretim/TestFlight 17 değişmedi. Yayın zamanı yeni Edge önce dağıtılır: 088000 yoksa yeni RPC bulunamayacağı için güvenli biçimde başarısız olur; ücretli çağrı başlamaz. Ardından 088000 uygulanır ve sentetik kapalı haftayla kontrollü kabul yapılır. Edge ve migration tek yayın değişikliği olarak izlenir. Eski doğrudan yazıcı geri açılmaz.
 
 Yerel audit DB'de `pg_cron` bulunmadığından 12 aylık bağlam/iş temizliği zamanlanamadı. Üretimde cron görevinin varlığı dağıtım kabulünde ayrıca kontrol edilmelidir. Özet tablosunun mevcut 12 aylık temizliği korunur. Haftalık ortak aile değerlendirmesi ekranı ayrı açık kapsamdır.
+
+## 092000 — veli okuyucusu
+
+Veli ekranı artık `get_family_weekly_review` ile güvenli salt okuma yapar. Tamamlanmış AI işinin son `ai_summaries` kaydı/yanıtı kaybolsa da sonuç okunur; yeni sağlayıcı çağrısı veya hak rezervasyonu yapılmaz. Yeni bağlamlara özel çocuk/takma ad haritası eklenir, eski `context` JSON/hash alanları ve eski bağlamlar değiştirilmez. Harita ile girdi tek SQL görüntüsünde yakalanır; çocuk yeniden sıralama yarışı test edildi. Eski haritasız bağlamlarda bugünkü çocuk sırasına dayanarak ad atanmaz.
+
+34 yeni SQL, beş haftalık DB yarışı, core206 ve ilgili Edge18 geçti. Gerçek Expo telefon/tablet kanıtı: `docs/design/screens/weekly-summary/README.md`. Ortak aile konuşması alanından açılır; konuşmanın kendisi kaydedilmez. Üretim/TestFlight değişmedi.
