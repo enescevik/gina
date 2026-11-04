@@ -458,3 +458,7 @@ verify_jwt = true
 # Bearer JWT is verified by PostgREST + the live finance-role RPC before service access.
 [functions.iap-operator-reconcile]
 verify_jwt = false
+
+[functions.contribution-submit]
+verify_jwt = true
+static_files = ["./functions/prova-review/assets/*"]

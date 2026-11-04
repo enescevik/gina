@@ -1,7 +1,9 @@
 import { randomUUID } from "expo-crypto";
 import {
   BLUEPRINT_PREFIX,
+  CONTRIBUTION_PREFIX,
   createBlueprintJournal,
+  createContributionJournal,
   createSetupAiJournal,
   createSetupJournal,
   SETUP_AI_PREFIX,
@@ -16,7 +18,7 @@ export function clearSetupCommands() {
   for (
     const key of store.keys().filter((k) =>
       k.startsWith(SETUP_COMMAND_PREFIX) || k.startsWith(SETUP_AI_PREFIX) ||
-      k.startsWith(BLUEPRINT_PREFIX)
+      k.startsWith(BLUEPRINT_PREFIX) || k.startsWith(CONTRIBUTION_PREFIX)
     )
   ) store.remove(key);
 }
@@ -92,6 +94,34 @@ export function blueprintJournal(user: string, family: string) {
       } finally {
         clearTimeout(timer);
       }
+    },
+  });
+}
+
+export function contributionJournal(user: string, family: string) {
+  const active = generation;
+  return createContributionJournal({
+    store,
+    user,
+    family,
+    id: randomUUID,
+    guard() {
+      if (active !== generation) throw Error("setup_session_changed");
+    },
+    async send(command) {
+      const { data, error } = await supabase.functions.invoke(
+        "contribution-submit",
+        { body: command, timeout: 30000 },
+      );
+      if (error) {
+        let code = "contribution_failed";
+        try {
+          code = (await error.context?.json())?.error ?? code;
+        } catch {}
+        throw Error(code);
+      }
+      if (data?.error) throw Error(data.error);
+      return data;
     },
   });
 }

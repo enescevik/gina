@@ -36,10 +36,25 @@
 .library-intro > p {
   color: #625c85;
 }
-.library-intro.in-header { margin: 0; }
-.library-intro.in-header > p { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.admin-page-actions:has(.library-header-upload) > .admin-badge { display: none; }
-.library-question-summary { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.library-intro.in-header {
+  margin: 0;
+}
+.library-intro.in-header > p {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.admin-page-actions:has(.library-header-upload) > .admin-badge {
+  display: none;
+}
+.library-question-summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .library-navigation {
   width: fit-content;
   max-width: 100%;
@@ -180,7 +195,13 @@
 .library-package-heading p {
   margin-top: 4px;
 }
-.library-package-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+.library-package-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
 .library-status {
   display: flex;
   align-items: center;
@@ -723,4 +744,33 @@
   border-color: #d9cce6;
   opacity: 1;
   box-shadow: none;
+}
+
+/* A contribution is read alongside its common source, using the approved review language. */
+@media (min-width:1100px) {
+  .contribution-review .contribution-detail {
+    display: grid;
+    grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr);
+    gap: 20px;
+    align-items: start;
+  }
+  .contribution-review .contribution-detail > section {
+    margin: 0;
+    min-width: 0;
+  }
+  .contribution-review .contribution-detail > section:first-child {
+    position: sticky;
+    top: 20px;
+  }
+  .contribution-review .contribution-detail > section:nth-child(3) {
+    grid-column: 1/-1;
+  }
+  .contribution-review .contribution-detail h2,
+  .contribution-review .contribution-detail h3 {
+    font-size: 24px;
+    line-height: 1.3;
+  }
+  .contribution-review .contribution-detail > section {
+    padding: 20px;
+  }
 }

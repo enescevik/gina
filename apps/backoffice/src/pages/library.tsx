@@ -1,3 +1,4 @@
+import { ContributionSets } from "@/components/contribution-sets";
 import { LibraryDrafts } from "@/components/library-drafts";
 import { LibraryPolicy, type RewardPolicy } from "@/components/LibraryPolicy";
 import { useState } from "react";
@@ -67,7 +68,7 @@ export default function LibraryPage() {
     "content" | "drafts" | "review" | "policy" | null
   >(null);
   const tab = tabChoice ?? (
-    router.query.packageId || router.query.tab === "drafts" ? "drafts" : "content"
+    router.query.packageId || router.query.tab === "drafts" ? "drafts" : router.query.tab === "review" ? "review" : router.query.tab === "policy" ? "policy" : "content"
   );
   const [editing, setEditing] = useState<Collection | null>(null);
   const [selected, setSelected] = useState("");
@@ -142,7 +143,10 @@ export default function LibraryPage() {
             className={tab === value ? "btn" : "btn-secondary"}
             onClick={() => {
               if (value === tab) return;
-              const go = () => setTab(value);
+              const go = () => {
+                setTab(value);
+                void router.replace({ pathname: "/library", query: { tab: value, ...(value === "drafts" && router.query.packageId ? { packageId: router.query.packageId } : {}) } }, undefined, { shallow: true });
+              };
               if (window.dispatchEvent(new CustomEvent("gina:library-leave", { cancelable: true, detail: go }))) go();
             }}
           >
@@ -512,7 +516,8 @@ export default function LibraryPage() {
       {tab === "review"
         ? (
           <>
-            <Card title="Velilerden gelen katkılar">
+            <ContributionSets />
+            {data?.submissions.some(s => s.status === "pending") ? <Card title="Önceki metin katkıları">
               <p className="mb-4 text-slate-600">
                 Yalnız açık paylaşım onayı verilmiş soru kopyaları burada
                 görünür. Telif, kişisel bilgi, doğru cevap ve öğrenme düzeyini
@@ -547,7 +552,7 @@ export default function LibraryPage() {
               {data && !data.submissions.some((s) => s.status === "pending")
                 ? <p className="py-4">İnceleme bekleyen katkı yok.</p>
                 : null}
-            </Card>
+            </Card> : null}
             {review
               ? (
                 <Card title="Katkıyı değerlendir">
