@@ -488,3 +488,10 @@ Core 179 (beş yeni sayım testi), mobil/core tip ve mobil lint; gerçek Expo bi
 Takvimde seçili çocuk için üç adımlı veli planı ve çocuğun küçük adımları işaretlemesi eklendi. Tekil çalışma, günlük tekrar görevlerinden ayrıdır; kendiliğinden onay/yıldız/etkinlik üretmez. Teslimi geçen açık iş korunur, eski işin yeni tamamlanması/arşivi güncel geçmişte bulunur. Kayıtlı özel belge bağlantısı ve kaynak silinince planı koruma vardır. AI ile yapılandırılmış ödev çıkarımı henüz bağlı değildir.
 
 58 yeni SQL (önceki 1851 + 58 = 1909), dört gerçek yarış, core188, mobil/core tip ve mobil lint geçti. Gerçek Expo bileşenlerinde telefon/tablet, kayıp yanıt/yeniden açılış, tekil kayıt, uzak sürüm/taslak koruma ve yön değişimi kabulü tamamlandı. Kanıt: `docs/design/screens/learning-plan/README.md`. Gerçek aile/demo verisi ve TestFlight17 değişmedi; fiziksel kabul/dağıtım ve kalan kapsam açık.
+
+
+## 4 Kasım — görev gönderiminde kapsam ve eski istek koruması (090000)
+
+İşlem kimliğiyle başka aile satırını döndüren eski kısa yol izole testte doğrulandı ve kapatıldı. Aile/çocuk/görev/gün bağı, yeniden gönderimden sonra da korunan makbuzlar, geri alınmış kaydı geri oluşturmayan tekrar ve onay/geri alma satır kilidi eklendi. Planlanmamış hafta günü sunucuda da reddedilir. Migration eski sürümün önceden kaybettiği işlem kimliklerini yeniden oluşturamaz; eldeki son kimlikleri içeri alır.
+
+27 yeni SQL, toplam 68 dosya/1936 kontrol; altı gerçek eşzamanlılık senaryosu geçti. Kanıt: `TASK-SUBMISSION-ACCEPTANCE.md`. Mobil tasarım, gerçek aile/demo kayıtları ve TestFlight17 değişmedi. Güvenlik düzeltmesi henüz üretimde değildir; yayın ve kalan kapsam kabulü açık.
