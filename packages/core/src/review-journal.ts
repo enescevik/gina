@@ -77,7 +77,7 @@ export class ReviewJournal {
   acknowledge(request: string, revision: unknown) {
     this.guard();
     if (this.record?.pending !== request) throw Error("review_local_changed");
-    if (typeof revision !== "number" || !Number.isInteger(revision) || revision < this.record.base.revision) {
+    if (typeof revision !== "number" || !Number.isSafeInteger(revision) || revision < 1 || revision < this.record.base.revision) {
       throw Error("review_receipt_invalid");
     }
     this.remove();

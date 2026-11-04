@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-04",
+  "scope": "Actual mobile journal wrappers and expo-sqlite KV, synthetic scope, OS process termination",
+  "devices": [
+    {"name": "iPad Air 11-inch (M4)", "os": "iOS 26.5", "environment": "simulator", "result": "passed"},
+    {"name": "iPhone 17 Pro", "os": "iOS 26.5", "environment": "simulator", "result": "passed"}
+  ],
+  "checks": ["fresh_process", "child_unsent_draft", "child_pending_receipt", "child_later_edit", "parent_unsent_draft", "parent_pending_receipt", "parent_ink_score_feedback_ai_id", "invalid_ack_keeps_draft", "ack_cleans_only_its_record", "synthetic_records_cleaned"],
+  "observations": {"accessibility_result_both_devices": "GEÇTİ", "ipad_cua_screenshot_reviewed": true, "new_png_saved": false, "save_screen_menu": "disabled", "unsigned_simulator_notification_keychain_warning": true},
+  "regression": {"new_cases": 8, "failed_before_fix": 2, "core_passed": 238, "mobile_typecheck": "passed", "mobile_lint": "passed", "core_typecheck": "passed"},
+  "not_verified": ["physical_device", "Pencil", "palm_rejection", "Android", "memory_pressure_kill", "disk_fault", "real_network_in_this_fixture", "push", "real_session", "reinstall"],
+  "production_changed": false,
+  "testflight_changed": false
+}
