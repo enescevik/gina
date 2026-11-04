@@ -1,5 +1,6 @@
 // Temporary simulator-only acceptance route; never include in an app release.
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useLocalSearchParams } from "expo-router";
 import { Text, View, ScrollView, Pressable, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { randomUUID } from "expo-crypto";
@@ -25,10 +26,12 @@ const draft=()=>({score:"85",feedback:"Sonucu birimiyle yazdın.",document:paren
 function same(a:unknown,b:unknown,label:string) {if(JSON.stringify(a)!==JSON.stringify(b))throw Error(label);}
 export default function JournalAcceptance(){
   const {width}=useWindowDimensions();
+  const { phase }=useLocalSearchParams<{phase?:string}>();
+  const started=useRef(false);
   const[message,setMessage]=useState(store.get(witnessKey)?"Önceki süreçten test kaydı bulundu.":"Henüz test kaydı yok.");
   const[preview,setPreview]=useState<NotebookDocument|null>(null);
   const[busy,setBusy]=useState(false);
-  const run=(fn:()=>Promise<void>)=>{setBusy(true);void fn().catch(e=>setMessage(`BAŞARISIZ: ${e.message}`)).finally(()=>setBusy(false));};
+  const run=(fn:()=>Promise<void>)=>{setBusy(true);void fn().catch(e=>{console.info("NATIVE_JOURNAL_RECOVERY_FAIL",String(e.message));setMessage(`BAŞARISIZ: ${e.message}`);}).finally(()=>setBusy(false));};
   const prepare=async()=>{
     if(store.get(witnessKey))throw Error("Önce mevcut test kaydını doğrula.");
     const a=answer();if(Object.keys(a.restore()).length)throw Error("Test kapsamı boş değil.");
@@ -42,6 +45,7 @@ export default function JournalAcceptance(){
     const base={revision:0,answerHash:"qa-only-answer-hash",openEnded:true};
     r.edit(base,draft());const pending=r.prepare();unsent.edit(base,draft());
     store.set(witnessKey,JSON.stringify({processNonce,receipt,later,value,pending,unsent:unsent.restore()}));
+    console.info("NATIVE_JOURNAL_RECOVERY_READY", JSON.stringify({childPending:true,parentPending:true,unsentDrafts:2}));
     setPreview(document());setMessage("HAZIR: Çocuk çizimi/yazısı ve veli puanı/notu ayrı ayrı saklandı. İki belirsiz kayıt isteği ve iki gönderilmemiş taslak var. Şimdi uygulama sürecini kapatıp yeniden aç.");
   };
   const recover=async()=>{
@@ -60,6 +64,13 @@ export default function JournalAcceptance(){
     console.info("NATIVE_JOURNAL_RECOVERY_PASS",JSON.stringify({freshProcess:true,childPendingSame:true,parentPendingSame:true,unsentPreserved:true,laterEditPreserved:true,invalidReceiptRetained:true,syntheticCleanup:true}));
     setMessage("GEÇTİ: Yeni uygulama sürecinde çocuk çizimi/yazısı, veli puanı/notu ve AI kimliği aynen okundu. İstek kimlikleri değişmedi. Sonraki düzenleme korundu. Hatalı yanıt taslağı silmedi. Yalnız bu testin kayıtları temizlendi.");
   };
+  // Explicit QA-only deep link allows the same storage contract on headless emulators.
+  // No production route imports this file. Each process performs only the requested phase.
+  useEffect(()=>{
+    if(started.current || (phase!=="prepare" && phase!=="recover"))return;
+    started.current=true;
+    run(phase==="prepare"?prepare:recover);
+  },[phase,prepare,recover,run]);
   return <SafeAreaView style={{flex:1,backgroundColor:"#FCFAF6"}}><ScrollView contentContainerStyle={{padding:24,gap:16}}>
     <Text style={{fontSize:26,color:"#201951",fontWeight:"700"}}>Cihazda taslak kurtarma denetimi</Text>
     <Text style={{fontSize:17,color:"#201951"}}>Sentetik test · Gerçek aile kaydı ve ağ gönderimi yok</Text>

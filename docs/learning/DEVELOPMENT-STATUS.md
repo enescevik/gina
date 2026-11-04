@@ -592,3 +592,19 @@ Ayrı gerçek destek/içerik girişleriyle talep, özel ekip notu, aileye yanıt
 
 Yönetim kütüphane dosyasındaki PNG doğrulamasını bozan CSP blob engeli gerçek tarayıcıda bulundu ve yalnız görsel izniyle düzeltildi. Web/backoffice derleyicileri public değişkenlere sunucu/oturum anahtarı ve yerel/geçersiz endpoint girmesini reddeder; sekiz kontrol geçti. İki gerçek public yapılandırmalı statik üretim derlemesi ve yayın başlıklarıyla Türkçe telefon/tablet giriş ekranı kontrolü geçti. Kanıt: `docs/release/browser-readiness/README.md`. Cloudflare yayını, oturumlu bütün ekranlar ve gerçek OAuth/e-posta teslimi bu kabulde tamamlanmış sayılmaz.
 
+
+
+## 4 Kasım — Android native taslak kabulü ve yayın hazırlığı
+
+Ayrı Expo Debug QA uygulaması Pixel 6 Pro/API33 emülatöründe derlendi. Gerçek SQLite
+ile çocuk ve veli taslakları hazırlandı, işletim sistemi süreci kapatıldı ve yeni
+süreçte aynı içerik/işlem kimlikleriyle kurtarıldı. Sonraki düzenleme sırası, hatalı
+makbuzda koruma ve yalnız sentetik kayıt temizliği geçti. Ekransız emülatör nedeniyle
+görsel, kalem, fiziksel cihaz veya mağaza kabulü değildir. Kanıt:
+`docs/design/screens/native-journal-recovery/android-verification.json`.
+
+Üretim migration envanteri tekrar okundu: 040000 sonrasında 32 güncelleme bekliyor;
+094000'a kadar dry-run geçti, hiçbir migration uygulanmadı. Yayın otomasyonunda
+eksik ayarla elle yayın/kısmi kurulum artık hata verir; 12 kontrol ve dört CI geçti.
+Güncel kullanıcı adımları `docs/release/RELEASE-COMPLETION-2026-11-04.md` içinde;
+eski hesap açma rehberi tarihî olarak işaretlendi. TestFlight17 değişmedi.
