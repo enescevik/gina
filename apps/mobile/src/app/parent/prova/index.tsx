@@ -247,7 +247,9 @@ export default function ParentProvaScreen() {
                         {latest?.status === "submitted"
                           ? t("provaBuilder.reviewPending")
                           : latest?.status === "graded"
-                          ? t("prova.resultMc", {
+                          ? (latest.mc_total ?? 0) === 0
+                            ? t("prova.ai.attemptStatus.graded")
+                            : t("prova.resultMc", {
                             correct: latest.mc_correct ?? 0,
                             total: latest.mc_total ?? 0,
                           })
@@ -291,6 +293,8 @@ export default function ParentProvaScreen() {
                   title={`${exam.children?.name} · ${exam.title}`}
                   body={attempt.status === "submitted"
                     ? t("provaBuilder.reviewPending")
+                    : (attempt.mc_total ?? 0) === 0
+                    ? t("prova.ai.attemptStatus.graded")
                     : t("prova.resultMc", {
                       correct: attempt.mc_correct ?? 0,
                       total: attempt.mc_total ?? 0,

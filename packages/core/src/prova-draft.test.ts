@@ -3,6 +3,7 @@ import {
   appendProvaBlocks,
   moveProvaBlock,
   newProvaDraft,
+  provaGenerationKind,
   type ProvaBlock,
   provaDraftSchema,
 } from "./prova-draft";
@@ -12,6 +13,14 @@ const q = (n: number, kind: "group" | "question" = "question"): ProvaBlock => ({
   source: "library",
 });
 describe("one Prova from multiple sources", () => {
+  it("keeps written AI generation consistent for new and previously saved mixed drafts", () => {
+    expect(newProvaDraft().kind).toBe("open_ended");
+    const saved = { ...newProvaDraft(), kind: "mixed" as const };
+    expect(provaGenerationKind(saved)).toBe("open_ended");
+    expect(saved.kind).toBe("mixed");
+    expect(provaGenerationKind({ purpose: "practice", kind: "multiple_choice" })).toBe("multiple_choice");
+    expect(provaGenerationKind({ purpose: "trial", kind: "mixed" })).toBe("mixed");
+  });
   it("appending returned selections preserves previous blocks and deduplicates retries", () => {
     const d = { ...newProvaDraft(), blocks: [q(1), q(2, "group")] };
     expect(appendProvaBlocks(d, [q(1), q(3), q(3)]).blocks).toEqual([

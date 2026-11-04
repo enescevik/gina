@@ -8,6 +8,7 @@ import { NotebookPage } from "@/components/learning/notebook-page";
 import { p, SatinButton } from "@/components/planner/ui";
 import {
   type AnswerJournal,
+  attemptSummary,
   AnswerJournalConflict,
   notebookHasAnswer,
   readNotebook,
@@ -512,6 +513,7 @@ export default function TakeExamScreen() {
   );
 
   if (result) {
+    const summary = attemptSummary(result, list);
     return (
       <Screen
         tone="child"
@@ -521,13 +523,13 @@ export default function TakeExamScreen() {
       >
         <View className="items-center gap-3 rounded-child bg-white p-8">
           <Collectible slug="display-first-task" size={96} />
-          <Text className="font-display text-2xl text-ink">
+          {summary.mcTotal > 0 && <Text className="font-display text-2xl text-ink">
             {t("prova.resultMc", {
-              correct: result.mc_correct ?? 0,
-              total: result.mc_total ?? 0,
+              correct: summary.mcCorrect,
+              total: summary.mcTotal,
             })}
-          </Text>
-          {(result.open_graded ?? 0) < (result.open_total ?? 0) && (
+          </Text>}
+          {summary.pendingReview && (
             <Text className="font-body text-center text-base text-gray-600">
               {t("prova.openEndedNote")}
             </Text>

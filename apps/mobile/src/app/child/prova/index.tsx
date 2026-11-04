@@ -77,6 +77,9 @@ export default function ChildProvaScreen() {
       {done.length > 0 ? <Text accessibilityRole="header" className="mt-2 font-body-bold text-lg text-ink">{t("prova.done")}</Text> : null}
       {done.map((exam) => {
         const attempt = exam.exam_attempts?.[0];
+        const resultLabel = (attempt?.mc_total ?? 0) > 0
+          ? t("prova.resultMc", { correct: attempt?.mc_correct ?? 0, total: attempt?.mc_total ?? 0 })
+          : t(attempt?.status === "submitted" ? "prova.openEndedNote" : "prova.status.completed");
         return (
           <Pressable
             key={exam.id}
@@ -89,14 +92,14 @@ export default function ChildProvaScreen() {
                 params: { examId: exam.id },
               });
             }}
-            accessibilityLabel={`${exam.title}, ${t("prova.status.completed")}, ${t("prova.resultMc", { correct: attempt?.mc_correct ?? 0, total: attempt?.mc_total ?? 0 })}`}
+            accessibilityLabel={`${exam.title}, ${t("prova.status.completed")}, ${resultLabel}`}
             className="flex-row items-center gap-3 rounded-child bg-green-light p-4"
           >
             <SubjectIcon subject={exam.title} size={48} variant="illustrated" />
             <View className="flex-1">
               <Text className="font-body-bold text-base text-ink">{exam.title}</Text>
               <Text className="font-body text-sm text-gray-700">
-                {t("prova.resultMc", { correct: attempt?.mc_correct ?? 0, total: attempt?.mc_total ?? 0 })}
+                {resultLabel}
               </Text>
               <Text className="mt-2 font-body-bold text-purple">{t("prova.viewResult")}</Text>
             </View>

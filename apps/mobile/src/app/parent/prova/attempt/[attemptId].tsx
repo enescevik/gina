@@ -143,7 +143,7 @@ export default function AttemptReviewScreen() {
           <Text className="font-display text-xl text-ink">
             {a.score_pct !== null ? t("prova.ai.scorePct", { pct: a.score_pct }) : t(`prova.ai.attemptStatus.${a.status}`)}
           </Text>
-          <Text className="font-body text-sm text-teal-dark">{t("prova.resultMc", { correct: a.mc_correct ?? 0, total: a.mc_total ?? 0 })}</Text>
+          {(a.mc_total ?? 0) > 0 ? <Text className="font-body text-sm text-teal-dark">{t("prova.resultMc", { correct: a.mc_correct ?? 0, total: a.mc_total ?? 0 })}</Text> : null}
           {hasOpen ? (
             <Text className="font-body text-sm text-teal-dark">{t("prova.ai.openGraded", { graded: a.open_graded ?? 0, total: a.open_total ?? 0 })}</Text>
           ) : null}
