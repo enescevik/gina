@@ -6,10 +6,14 @@ import { isDeepStrictEqual } from 'node:util';
 import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import { testSources } from './isolated-source-contract.mjs';
+import { observeRealtime } from './isolated-realtime-contract.mjs';
 const require = createRequire(new URL('../apps/mobile/package.json', import.meta.url));
 const { createClient } = require('@supabase/supabase-js');
 const authPort = Number(process.env.GINA_QA_AUTH_PORT), restPort = Number(process.env.GINA_QA_REST_PORT);
 const storagePort=Number(process.env.GINA_QA_STORAGE_PORT||0);
+const realtimePort=Number(process.env.GINA_QA_REALTIME_PORT||0);
+const clients=[], sockets=new Set();
+let live;
 let edge,edgePort=0,pdf;
 if (![authPort, restPort].every(v => Number.isInteger(v) && v > 1024 && v < 65536) || !process.env.GINA_QA_SERVICE) throw Error('isolated_runner_required');
 const checks = {};
@@ -24,9 +28,25 @@ const proxy = http.createServer((req, res) => {
   upstream.on('error',()=>{res.writeHead(502);res.end();});req.pipe(upstream);
 });
 await new Promise(resolve => proxy.listen(0,'127.0.0.1',resolve));
+// Match the official gateway's /realtime/v1 -> /socket rewrite. Forward only
+// this local test route; the service still validates the real user JWT and RLS.
+proxy.on('upgrade',(req,socket,head)=>{
+  if(!realtimePort||!req.url.startsWith('/realtime/v1/websocket?')){socket.destroy();return;}
+  sockets.add(socket);socket.once('close',()=>sockets.delete(socket));
+  const upstream=http.request({hostname:'127.0.0.1',port:realtimePort,path:'/socket'+req.url.slice('/realtime/v1'.length),method:req.method,headers:{...req.headers,host:'realtime-dev.localhost'},agent:false});
+  upstream.once('upgrade',(response,peer,initial)=>{
+    sockets.add(peer);peer.once('close',()=>sockets.delete(peer));
+    socket.write(`HTTP/1.1 ${response.statusCode} ${response.statusMessage}\r\n`+response.rawHeaders.reduce((s,v,i,a)=>i%2?s:s+a[i]+': '+a[i+1]+'\r\n','')+'\r\n');
+    if(initial.length)socket.write(initial);if(head.length)peer.write(head);
+    socket.on('error',()=>peer.destroy());peer.on('error',()=>socket.destroy());
+    socket.once('close',()=>peer.destroy());peer.once('close',()=>socket.destroy());
+    socket.pipe(peer);peer.pipe(socket);
+  });
+  upstream.once('response',()=>socket.destroy());upstream.once('error',()=>socket.destroy());upstream.end();
+});
 const base = `http://127.0.0.1:${proxy.address().port}`;
 const options = {auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}};
-const client = () => createClient(base,process.env.GINA_QA_ANON,options);
+const client = () => {const c=createClient(base,process.env.GINA_QA_ANON,options);clients.push(c);return c;};
 const admin = createClient(base,process.env.GINA_QA_SERVICE,options);
 const rpc = (c,name,args) => must(c.rpc(name,args),name);
 const claims = session => JSON.parse(Buffer.from(session.access_token.split('.')[1],'base64url').toString());
@@ -72,6 +92,7 @@ try {
   const denied=await device.rpc('child_pin_login',{p_child_id:sibling,p_pin:'1234'});
   assert('unassigned_sibling_denied',!!denied.error);
   assert('foreign_family_children_hidden',(await must(b.c.from('children').select('id'),'read_foreign_children')).length===0);
+  if(realtimePort) live=await observeRealtime({parent:a.c,other:b.c,child:device,assert});
   // Paid capabilities are explicit synthetic entitlements in the disposable DB only.
   await must(admin.from('entitlement_overrides').insert({family_id:a.family,plan:'pro',reason:'Isolated local service acceptance',ends_at:new Date(Date.now()+3600000).toISOString()}),'synthetic_entitlement');
   await must(admin.from('app_settings').update({value:true}).eq('key','question_groups.enabled'),'local_group_feature');
@@ -85,6 +106,7 @@ try {
   assert('draft_replay_same_version',JSON.stringify(saved)===JSON.stringify(await rpc(a.c,'save_prova_draft',draftArgs)));
   const assignment={p_request_id:randomUUID(),p_id:draftId,p_version:1};
   await rpc(a.c,'submit_prova_draft',assignment);await rpc(a.c,'submit_prova_draft',assignment);
+  if(live) await live.expect('child','exams',row=>row.id===draftId,'realtime_child_sees_assignment');
   const exam=await must(device.from('exams').select('id,question_ids').eq('id',draftId).single(),'child_reads_assignment');
   assert('mixed_exam_contains_whole_shared_group',exam.question_ids.length===3&&exam.question_ids[0]===q);
   const childQuestions=await rpc(device,'get_attempt_questions',{p_exam_id:draftId});
@@ -98,6 +120,7 @@ try {
   await rpc(device,'submit_exam_answer_v3',{p_request_id:randomUUID(),p_attempt_id:attempt,p_question_id:q,p_expected_revision:0,p_answer_key:'A'});
   await rpc(device,'submit_exam_answer_v3',{p_request_id:randomUUID(),p_attempt_id:attempt,p_question_id:exam.question_ids[2],p_expected_revision:0,p_answer_text:'48 metrekare'});
   await rpc(device,'finish_exam_attempt',{p_attempt_id:attempt});
+  if(live) await live.expect('parent','exam_attempts',row=>row.id===attempt&&!!row.finished_at,'realtime_parent_sees_finished_attempt');
   const review=await rpc(a.c,'get_answer_review',{p_attempt_id:attempt,p_question_id:exam.question_ids[1]});
   const marking={p_request_id:randomUUID(),p_attempt_id:attempt,p_question_id:exam.question_ids[1],p_revision:0,p_answer_hash:review.answer_hash,p_score:90,p_feedback:'İşlemin doğru; birimini de belirttin.',p_document:{...doc,elements:[]}};
   const revision=await rpc(a.c,'save_answer_review',marking);
@@ -126,6 +149,11 @@ try {
   const completionArgs={p_template_id:task,p_due_date:today,p_client_id:randomUUID()};
   const completion=await rpc(device,'complete_task',completionArgs),completed=Array.isArray(completion)?completion[0]:completion;
   await rpc(a.c,'review_task',{p_completion_id:completed.id,p_approve:true});
+  if(live) {
+    await live.expect('child','task_completions',row=>row.id===completed.id&&row.status==='approved','realtime_child_sees_approval');
+    await live.expect('child','star_events',row=>row.child_id===child&&row.delta===2,'realtime_child_sees_stars');
+    live.assertForeignEmpty();
+  }
   const retried=await rpc(device,'complete_task',completionArgs);
   assert('child_replay_sees_approved_task',(Array.isArray(retried)?retried[0]:retried).status==='approved');
   const duplicateApproval=await a.c.rpc('review_task',{p_completion_id:completed.id,p_approve:true});
@@ -138,10 +166,18 @@ try {
   assert('revoked_device_old_token_cannot_read_children',(await must(device.from('children').select('id'),'revoked_device_read')).length===0);
   const revokedWrite=await device.rpc('complete_task',completionArgs);
   assert('revoked_device_old_token_cannot_replay_write',!!revokedWrite.error);
+  if(live) {
+    live.mark();
+    await must(a.c.from('task_templates').update({title:'Synthetic updated after revocation'}).eq('id',task),'update_task_after_revocation');
+    await live.expect('parent','task_templates',row=>row.id===task&&row.title==='Synthetic updated after revocation','realtime_parent_still_receives_after_revoke');
+    await live.assertRevokedSilent();
+  }
 } catch(error) {
   const label=error instanceof Error && /^[a-z_]+$/.test(error.message)?error.message:'service_contract_failed';
   checks[label]=false;process.exitCode=1;
 } finally {
+  await Promise.all(clients.map(c=>c.removeAllChannels()));
+  for(const socket of sockets)socket.destroy();
   if(edge && edge.exitCode===null) {
     edge.kill('SIGTERM');
     await new Promise(resolve=>{const timer=setTimeout(()=>{edge.kill('SIGKILL');resolve();},2000);edge.once('exit',()=>{clearTimeout(timer);resolve();});});

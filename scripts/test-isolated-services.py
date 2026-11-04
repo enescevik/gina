@@ -18,8 +18,10 @@ import urllib.parse
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
-WITH_STORAGE = sys.argv[1:] == ['--run-local', '--with-storage']
-if sys.argv[1:] != ['--run-local'] and not WITH_STORAGE:
+flags = set(sys.argv[1:])
+WITH_STORAGE = '--with-storage' in flags
+WITH_REALTIME = '--with-realtime' in flags
+if '--run-local' not in flags or flags - {'--run-local', '--with-storage', '--with-realtime'}:
     raise SystemExit('Explicit --run-local required')
 DB = 'gina_http_' + secrets.token_hex(8) + '_audit'
 NAMES = [DB + '_auth', DB + '_rest']
@@ -167,6 +169,32 @@ try:
     healthy(rest_port, '/')
     env = {**os.environ, 'GINA_QA_AUTH_PORT': str(auth_port), 'GINA_QA_REST_PORT': str(rest_port),
            'GINA_QA_ANON': jwt('anon', secret), 'GINA_QA_SERVICE': jwt('service_role', secret)}
+    if WITH_REALTIME:
+        realtime_image, realtime_base = inspect('supabase_realtime_gina')
+        if realtime_base['DB_HOST'] != 'supabase_db_gina':
+            raise RuntimeError('unexpected_realtime_database_host')
+        sql(DB, 'create schema _realtime authorization supabase_admin;', owner=True)
+        realtime_port = start(DB + '_realtime', realtime_image, {
+            'DB_HOST': 'supabase_db_gina', 'DB_PORT': realtime_base['DB_PORT'],
+            'DB_USER': realtime_base['DB_USER'], 'DB_PASSWORD': realtime_base['DB_PASSWORD'], 'DB_NAME': DB,
+            'DB_AFTER_CONNECT_QUERY': 'SET search_path TO _realtime',
+            'DB_ENC_KEY': secrets.token_hex(8), 'SECRET_KEY_BASE': secrets.token_hex(32),
+            'API_JWT_SECRET': secret, 'METRICS_JWT_SECRET': secrets.token_urlsafe(48),
+            'PORT': '4000', 'SEED_SELF_HOST': 'true', 'SELF_HOST_TENANT_NAME': 'realtime-dev',
+            'RUN_JANITOR': 'false', 'APP_NAME': 'realtime', 'ERL_AFLAGS': '-proto_dist inet_tcp',
+            'DNS_NODES': "''", 'SLOT_NAME_SUFFIX': secrets.token_hex(8),
+        }, 4000)
+        # The image's seed command briefly starts an HTTP endpoint and then
+        # exits before the real server starts. A 200 during seeding is not ready.
+        for _ in range(60):
+            if 'Starting Realtime\n' in command(['docker', 'logs', DB + '_realtime']):
+                break
+            time.sleep(0.5)
+        else:
+            raise RuntimeError('realtime_server_start_missing')
+        healthy(realtime_port, '/healthcheck')
+        env['GINA_QA_REALTIME_PORT'] = str(realtime_port)
+        report['environment'] += '-realtime'
     if WITH_STORAGE:
         storage_image, storage_base = inspect('supabase_storage_gina')
         storage_port = start(DB + '_storage', storage_image, {
@@ -182,7 +210,7 @@ try:
         }, 5000, temporary_storage=True)
         healthy(storage_port, '/status')
         env['GINA_QA_STORAGE_PORT'] = str(storage_port)
-        report['environment'] = 'disposable-local-auth-postgrest-storage-edge'
+        report['environment'] += '-storage-edge'
     process = subprocess.Popen(['node', 'scripts/test-isolated-services.mjs'], cwd=ROOT, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
     try:
         stdout, _ = process.communicate(timeout=180)

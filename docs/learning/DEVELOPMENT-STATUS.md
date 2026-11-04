@@ -569,3 +569,10 @@ Dondurulmuş bağımlılık kurulumu, 230 core testi, yedi workspace tip/lint/te
 Gerçek mobil journal sarmalayıcıları ve SQLite depolamayla iPad Air M4 ve iPhone17Pro simülatörlerinde uygulama süreci tamamen kapatılıp yeniden açıldı. Çocuk çizim/yazısı, veli puan/not/ayrı çizim/AI kimliği, gönderilmemiş taslaklar ve belirsiz işlemlerin özgün kimlikleri korundu. Bekleyen çocuk isteğinden sonraki düzenleme doğru revizyon sırasıyla işlendi. Yalnız sentetik test kayıtları temizlendi. Kanıt/sınırlar: `docs/design/screens/native-journal-recovery/README.md`.
 
 Veli makbuzunda sıfır ve güvenli tam sayı sınırı dışı revizyonun taslağı silmesi kapatıldı; önce iki hata veren sekiz yeni kontrol ve toplam238 core testi, mobil/core tip ve mobil lint geçti. Ağ yanıtları bu native testte sentetiktir; gerçek hizmet kabulü ayrı rapordadır. Fiziksel Pencil/avuç teması, Android ve gerçek işletim sistemi disk/bellek baskısı kabulü açık; üretim/TestFlight17 değişmedi. Kütüphane en sonda bekliyor.
+
+
+## 4 Kasım — gerçek canlı yenileme kabulü (094000)
+
+Realtime iç içe null kimliklerin UUID dönüşümünde bütün değişiklik grubunu durdurduğu gerçek hizmetlerle yeniden üretildi ve merkezi claim okumasında düzeltildi. Geçerli kimlik/rol, aile sınırı ve cihaz iptali korundu. Mobil abonelik, socket katılımı yerine veritabanı hazır olayını izler; aradaki kayıtları yeniden okur ve hata halinde yedek yenilemeyi sürdürür.
+
+Auth/REST/Realtime/Storage/Edge birleşik koşumunda 134 kontrol; 72 SQL dosyasında 2035 kontrol; beş hook testi ve mobil tip/lint geçti. Başka aile ve iptal edilmiş cihazın açık bağlantısına satır gitmedi. Kanıt: `isolated-service-acceptance/realtime-verification.json`. Üretim ve TestFlight17 değişmedi; fiziksel cihaz/push/mağaza/diğer AI kabulü açık.
