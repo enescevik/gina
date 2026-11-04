@@ -3,18 +3,24 @@ import http from 'node:http';
 import { randomUUID, randomBytes } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { isDeepStrictEqual } from 'node:util';
+import { spawn } from 'node:child_process';
+import { createInterface } from 'node:readline';
+import { testSources } from './isolated-source-contract.mjs';
 const require = createRequire(new URL('../apps/mobile/package.json', import.meta.url));
 const { createClient } = require('@supabase/supabase-js');
 const authPort = Number(process.env.GINA_QA_AUTH_PORT), restPort = Number(process.env.GINA_QA_REST_PORT);
+const storagePort=Number(process.env.GINA_QA_STORAGE_PORT||0);
+let edge,edgePort=0,pdf;
 if (![authPort, restPort].every(v => Number.isInteger(v) && v > 1024 && v < 65536) || !process.env.GINA_QA_SERVICE) throw Error('isolated_runner_required');
 const checks = {};
 const assert = (label, pass) => { checks[label] = !!pass; if (!pass) throw Error(label); };
 const must = async (operation, label) => { const r = await operation; assert(label, !r.error); return r.data; };
 const proxy = http.createServer((req, res) => {
-  const auth = req.url.startsWith('/auth/v1/'), rest = req.url.startsWith('/rest/v1/');
-  if (!auth && !rest) {res.writeHead(404);res.end();return;}
-  const prefix = auth ? '/auth/v1' : '/rest/v1';
-  const upstream = http.request({hostname:'127.0.0.1',port:auth?authPort:restPort,path:req.url.slice(prefix.length),method:req.method,headers:req.headers}, r => {res.writeHead(r.statusCode,r.headers);r.pipe(res);});
+  const routes=[['/auth/v1',authPort],['/rest/v1',restPort],['/storage/v1',storagePort],['/functions/v1/learning-source',edgePort]];
+  const route=routes.find(([prefix,port])=>port&&(req.url===prefix||req.url.startsWith(prefix+'/')));
+  if (!route) {res.writeHead(404);res.end();return;}
+  const [prefix,port]=route;
+  const upstream = http.request({hostname:'127.0.0.1',port,path:req.url.slice(prefix.length)||'/',method:req.method,headers:req.headers}, r => {res.writeHead(r.statusCode,r.headers);r.pipe(res);});
   upstream.on('error',()=>{res.writeHead(502);res.end();});req.pipe(upstream);
 });
 await new Promise(resolve => proxy.listen(0,'127.0.0.1',resolve));
@@ -26,6 +32,17 @@ const rpc = (c,name,args) => must(c.rpc(name,args),name);
 const claims = session => JSON.parse(Buffer.from(session.access_token.split('.')[1],'base64url').toString());
 const refresh = async c => (await must(c.auth.refreshSession(),'refresh_session')).session;
 try {
+  if(storagePort) {
+    edge=spawn(process.env.GINA_QA_DENO_PATH||'deno',['run','--cached-only','--frozen','--config','supabase/functions/deno.json','--allow-net=127.0.0.1','--allow-env=GINA_QA_ISOLATED,SUPABASE_URL,SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY,SOURCE_CLEANUP_SECRET','scripts/isolated-source-edge.ts'],{stdio:['ignore','pipe','ignore'],env:{...process.env,GINA_QA_ISOLATED:'1',SUPABASE_URL:base,SUPABASE_ANON_KEY:process.env.GINA_QA_ANON,SUPABASE_SERVICE_ROLE_KEY:process.env.GINA_QA_SERVICE,SOURCE_CLEANUP_SECRET:randomBytes(24).toString('hex')}});
+    const ready=await new Promise((resolve,reject)=>{
+      const timer=setTimeout(()=>reject(Error('source_edge_start_timeout')),15000);
+      const lines=createInterface({input:edge.stdout});
+      const fail=()=>{clearTimeout(timer);lines.close();reject(Error('source_edge_start_failed'));};
+      edge.once('error',fail);edge.once('exit',fail);
+      lines.on('line',line=>{try {const value=JSON.parse(line);if(Number.isInteger(value.port)&&value.port>1024&&typeof value.pdf==='string'){clearTimeout(timer);lines.close();resolve(value);}}catch{}});
+    });
+    edgePort=ready.port;pdf=ready.pdf;
+  }
   async function parent(name) {
     const c=client(),password=randomBytes(24).toString('base64url'),email=`gina-${randomUUID()}@example.invalid`;
     await must(admin.auth.admin.createUser({email,password,email_confirm:true}),'create_synthetic_auth_user');
@@ -115,6 +132,7 @@ try {
   assert('duplicate_approval_rejected',duplicateApproval.error?.message==='already_reviewed');
   const ledger=await must(device.from('star_events').select('delta').eq('child_id',child),'child_reads_star_events');
   assert('duplicate_approval_awards_stars_once',ledger.reduce((n,r)=>n+r.delta,0)===2);
+  if(storagePort) await testSources({parent:a.c,other:b.c,child:device,childId:child,admin,base,pdf,must,assert});
   await rpc(a.c,'revoke_device',{p_device_id:deviceId});
   // Deliberately retain the old JWT: revocation must take effect before refresh.
   assert('revoked_device_old_token_cannot_read_children',(await must(device.from('children').select('id'),'revoked_device_read')).length===0);
@@ -124,6 +142,10 @@ try {
   const label=error instanceof Error && /^[a-z_]+$/.test(error.message)?error.message:'service_contract_failed';
   checks[label]=false;process.exitCode=1;
 } finally {
+  if(edge && edge.exitCode===null) {
+    edge.kill('SIGTERM');
+    await new Promise(resolve=>{const timer=setTimeout(()=>{edge.kill('SIGKILL');resolve();},2000);edge.once('exit',()=>{clearTimeout(timer);resolve();});});
+  }
   await new Promise(resolve=>proxy.close(resolve));
   console.log(JSON.stringify({checks}));
 }

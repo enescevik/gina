@@ -549,3 +549,10 @@ Defterde yatay iPad klavyesinin ekleme düğmesini gizlediği bulundu ve düzelt
 Boş audit kopyasında gerçek giriş, token hook, anonim cihaz eşleştirme/PIN, tek çocuğa erişim, karma Prova/ortak kaynak, çizimli cevap, veli incelemesi, gelişim raporu, görev onayı ve tekil yıldız akışı geçti. Başka aile erişimi ve iptal edilmiş cihazın eski JWT erişimi reddedildi. Geçici hizmetler/kopya kaldırıldı. Kanıt ve kapsam: `isolated-service-acceptance/README.md`. Fiziksel cihaz, Realtime, Storage/AI ve mağaza kabulü değildir.
 
 Cevap kaydında geçersiz/eski sunucu revizyonunun yerel taslağı temizlemesi engellendi; özgün işlem kimliği tekrar için korunur. 11 yeni test ile core230, mobil/core tip ve mobil lint geçti. Üretim/TestFlight17 değişmedi; kütüphane en sonda bekliyor.
+
+
+## 4 Kasım — gerçek dosya hizmeti ve canlı belge/AI kabulü
+
+Ayrı bellek dosya sistemli Storage, gerçek Auth/REST ve değişmemiş learning-source Edge ile PNG/PDF özel yükleme, doğrulama, tekrar, erişim sınırları, silme/temizleme ve atanmış soru görseli zinciri geçti. Bozuk hash kabul edilmedi; çocuğa yalnız atanmış sorunun görseli açıldı. Genişletilmiş rapor: `isolated-service-acceptance/storage-verification.json`. Geçici hizmetler/veritabanı kaldırıldı.
+
+Mevcut canlı sürümde yalnız geçici test ailesiyle gerçek PNG→AI→veli düzeltmesi→ders programı/takvim→özgün belge→normal hesap silme geçti. Tek kullanım (506 girdi/157 çıktı token); tekrar ikinci kullanım oluşturmadı, eksik saat uydurulmadı. Test kayıtlarının ve dosyasının kaldırıldığı doğrulandı. Genel özellik anahtarı artık test tarafından değiştirilmez. Kanıt: `isolated-service-acceptance/hosted-import-verification.json`. Bu, henüz yayımlanmamış çalışma planı/haftalık özet Edge sürümleri veya fiziksel cihaz kabulü değildir. TestFlight17/üretim kodu değişmedi; kütüphane sonda bekliyor.

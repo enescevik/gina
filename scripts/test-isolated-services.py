@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path
 import secrets
+import signal
 import subprocess
 import sys
 import tempfile
@@ -17,7 +18,8 @@ import urllib.parse
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
-if sys.argv[1:] != ['--run-local']:
+WITH_STORAGE = sys.argv[1:] == ['--run-local', '--with-storage']
+if sys.argv[1:] != ['--run-local'] and not WITH_STORAGE:
     raise SystemExit('Explicit --run-local required')
 DB = 'gina_http_' + secrets.token_hex(8) + '_audit'
 NAMES = [DB + '_auth', DB + '_rest']
@@ -54,7 +56,7 @@ def jwt(role, secret):
     body = encode({'alg': 'HS256', 'typ': 'JWT'}) + '.' + encode({'role': role, 'iss': 'supabase', 'iat': int(time.time()), 'exp': int(time.time()) + 3600})
     return body + '.' + base64.urlsafe_b64encode(hmac.new(secret.encode(), body.encode(), hashlib.sha256).digest()).decode().rstrip('=')
 
-def start(name, image, env, container_port):
+def start(name, image, env, container_port, temporary_storage=False):
     with tempfile.NamedTemporaryFile(mode='w', prefix='gina-http-env-') as file:
         os.chmod(file.name, 0o600)
         for key, value in env.items():
@@ -64,7 +66,8 @@ def start(name, image, env, container_port):
         file.flush()
         # Register ownership before invoking Docker, even if the response is lost.
         containers.append(name)
-        command(['docker', 'run', '-d', '--name', name, '--network', 'supabase_network_gina', '-p', f'127.0.0.1::{container_port}', '--env-file', file.name, image])
+        command(['docker', 'run', '-d', '--name', name, '--network', 'supabase_network_gina', '-p', f'127.0.0.1::{container_port}', '--env-file', file.name,
+                 *(['--tmpfs', '/mnt:rw,size=64m,mode=1777'] if temporary_storage else []), image])
     binding = json.loads(command(['docker', 'inspect', name]))[0]['NetworkSettings']['Ports'][f'{container_port}/tcp'][0]
     return int(binding['HostPort'])
 
@@ -112,6 +115,27 @@ try:
       end loop;
     end $$;
     create publication supabase_realtime;""", owner=True)
+    if WITH_STORAGE:
+        if sql(DB, 'select count(*) from storage.objects;').strip() != '0':
+            raise RuntimeError('storage_template_is_not_empty')
+        storage_columns = auth_columns.replace("table_schema='auth'", "table_schema='storage'")
+        if sql('postgres', storage_columns) != sql(DB, storage_columns):
+            raise RuntimeError('storage_template_schema_mismatch')
+        # Storage migration metadata only; no objects or bucket/user records.
+        metadata = sql('postgres', 'select coalesce(jsonb_agg(to_jsonb(m)),\'[]\') from storage.migrations m;').strip()
+        sql(DB, "insert into storage.migrations select * from jsonb_populate_recordset(null::storage.migrations, '" + metadata.replace("'", "''") + "'::jsonb) on conflict do nothing;")
+        sql(DB, """alter schema storage owner to supabase_storage_admin;
+        do $$ declare r record; begin
+          for r in select tablename from pg_tables where schemaname='storage' loop
+            execute format('alter table storage.%I owner to supabase_storage_admin', r.tablename);
+          end loop;
+          for r in select c.relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='storage' and c.relkind='S' loop
+            execute format('alter sequence storage.%I owner to supabase_storage_admin', r.relname);
+          end loop;
+          for r in select p.oid::regprocedure as signature from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='storage' loop
+            execute format('alter function %s owner to supabase_storage_admin', r.signature);
+          end loop;
+        end $$;""", owner=True)
     for migration in sorted((ROOT / 'supabase/migrations').glob('*.sql')):
         if migration.name < '20261103093000':
             for line in migration.read_text().splitlines():
@@ -143,12 +167,41 @@ try:
     healthy(rest_port, '/')
     env = {**os.environ, 'GINA_QA_AUTH_PORT': str(auth_port), 'GINA_QA_REST_PORT': str(rest_port),
            'GINA_QA_ANON': jwt('anon', secret), 'GINA_QA_SERVICE': jwt('service_role', secret)}
-    result = subprocess.run(['node', 'scripts/test-isolated-services.mjs'], cwd=ROOT, env=env, capture_output=True, text=True, timeout=180)
+    if WITH_STORAGE:
+        storage_image, storage_base = inspect('supabase_storage_gina')
+        storage_port = start(DB + '_storage', storage_image, {
+            'DATABASE_URL': database_url(storage_base['DATABASE_URL']),
+            'ANON_KEY': env['GINA_QA_ANON'], 'SERVICE_KEY': env['GINA_QA_SERVICE'],
+            'AUTH_JWT_SECRET': secret, 'STORAGE_BACKEND': 'file',
+            'FILE_STORAGE_BACKEND_PATH': '/mnt', 'TENANT_ID': DB,
+            'GLOBAL_S3_BUCKET': DB, 'STORAGE_S3_REGION': 'local',
+            'ENABLE_IMAGE_TRANSFORMATION': 'false', 'IMAGE_TRANSFORMATION_ENABLED': 'false',
+            'VECTOR_ENABLED': 'false', 'VECTOR_STORE_MIGRATIONS_ENABLED': 'false',
+            'S3_PROTOCOL_ENABLED': 'false', 'FILE_SIZE_LIMIT': '10485760',
+            'SIGNED_UPLOAD_URL_EXPIRATION_TIME': '120',
+        }, 5000, temporary_storage=True)
+        healthy(storage_port, '/status')
+        env['GINA_QA_STORAGE_PORT'] = str(storage_port)
+        report['environment'] = 'disposable-local-auth-postgrest-storage-edge'
+    process = subprocess.Popen(['node', 'scripts/test-isolated-services.mjs'], cwd=ROOT, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
     try:
-        report['checks'] = json.loads(result.stdout)['checks']
+        stdout, _ = process.communicate(timeout=180)
+    finally:
+        # Include the optional Deno child if Node exits or times out unexpectedly.
+        try:
+            os.killpg(process.pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            os.killpg(process.pid, signal.SIGKILL)
+            process.wait(timeout=5)
+    try:
+        report['checks'] = json.loads(stdout)['checks']
     except Exception:
         raise RuntimeError('service_contract_report_missing')
-    if result.returncode:
+    if process.returncode:
         raise RuntimeError('service_contract_failed')
 except Exception as error:
     report['error'] = str(error) if isinstance(error, RuntimeError) else 'isolated_service_setup_failed'
