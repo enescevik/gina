@@ -162,11 +162,13 @@ export function PlannerHero({
 export function Tag({
   label,
   selected,
+  disabled = false,
   onPress,
   children,
 }: {
   label: string;
   selected?: boolean;
+  disabled?: boolean;
   onPress: () => void;
   children?: ReactNode;
 }) {
@@ -174,13 +176,14 @@ export function Tag({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
-      accessibilityState={{ selected }}
+      accessibilityState={{ selected, disabled }}
+      disabled={disabled}
       onPress={onPress}
       style={({ pressed }) => [
         u.tag,
         {
           backgroundColor: selected ? p.mint : "#F3EFF5",
-          opacity: pressed ? 0.7 : 1,
+          opacity: disabled ? 0.5 : pressed ? 0.7 : 1,
         },
       ]}
     >

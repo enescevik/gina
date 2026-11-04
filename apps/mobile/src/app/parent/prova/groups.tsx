@@ -15,6 +15,10 @@ import { p, SatinButton, Tag, u } from "@/components/planner/ui";
 import { supabase } from "@/lib/supabase";
 import { useFamilyTimezone } from "@/lib/family";
 import { useSession } from "@/lib/session";
+import {
+  type CohortReviewRow,
+  CohortWrittenReport,
+} from "@/components/learning/cohort-written-report";
 interface Group {
   id: string;
   title: string;
@@ -27,6 +31,8 @@ interface Group {
   minutes: number;
   questions: number;
   included: boolean;
+  requires_review?: boolean;
+  max_points?: number;
   status: string;
 }
 interface Entry {
@@ -44,6 +50,11 @@ interface Catalog {
   entries: Entry[];
 }
 interface Report {
+  requires_review?: boolean;
+  published?: boolean;
+  points?: number | null;
+  maximum?: number;
+  reviews?: CohortReviewRow[];
   ready: boolean;
   participated: boolean;
   cancelled: boolean;
@@ -59,6 +70,8 @@ interface Report {
   }[];
   ranking: {
     alias: string;
+    points?: number;
+    maximum?: number;
     correct: number;
     total: number;
     rank: number;
@@ -115,6 +128,7 @@ export default function GroupExams() {
   const [joining, setJoining] = useState<Group | null>(null);
   const [child, setChild] = useState("");
   const [consent, setConsent] = useState(false);
+  const [reviewConsent, setReviewConsent] = useState(false);
   const [ranking, setRanking] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -203,12 +217,16 @@ export default function GroupExams() {
     }
   }
   async function enroll() {
-    if (!joining || !child || !consent) return;
+    if (
+      !joining || !child || !consent ||
+      (joining.requires_review && !reviewConsent)
+    ) return;
     await perform(async () => {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 20_000);
       const { error } = await Promise.resolve(
-        supabase.rpc("enroll_group_exam", {
+        supabase.rpc("enroll_reviewed_group_exam", {
+          p_review_consent: reviewConsent,
           p_group: joining.id,
           p_child: child,
           p_ranking: ranking,
@@ -372,6 +390,7 @@ export default function GroupExams() {
                           onPress={() => {
                             setChild(c.id);
                             setConsent(false);
+                            setReviewConsent(false);
                             setRanking(false);
                           }}
                         />
@@ -379,6 +398,24 @@ export default function GroupExams() {
                   </View>
                   {!children.data?.some((c) => c.grade === joining.grade)
                     ? <Text style={u.small}>{t("group.noMatchingChild")}</Text>
+                    : null}
+                  {joining.requires_review
+                    ? (
+                      <>
+                        <Text style={u.bold}>
+                          {t("cohort.joinTitle", {
+                            points: joining.max_points,
+                          })}
+                        </Text>
+                        <Text style={u.small}>{t("cohort.joinHelp")}</Text>
+                        <Choice
+                          title={t("cohort.reviewConsent")}
+                          checked={reviewConsent}
+                          disabled={busy}
+                          onPress={() => setReviewConsent((v) => !v)}
+                        />
+                      </>
+                    )
                     : null}
                   <Choice
                     title={t("group.participation")}
@@ -395,7 +432,8 @@ export default function GroupExams() {
                   <SatinButton
                     title={t("group.enroll")}
                     busy={busy}
-                    disabled={!child || !consent || busy}
+                    disabled={!child || !consent || busy ||
+                      (!!joining.requires_review && !reviewConsent)}
                     onPress={() => void enroll()}
                   />
                   <SatinButton
@@ -482,6 +520,7 @@ export default function GroupExams() {
                     setChild(eligible.length === 1 ? eligible[0].id : "");
                     setError("");
                     setConsent(false);
+                    setReviewConsent(false);
                     setRanking(false);
                     setSelected(null);
                   }}
@@ -568,12 +607,27 @@ export default function GroupExams() {
                               </Text>
                             )
                             : null}
-                          <Text style={u.heading}>
-                            {t("prova.resultMc", {
-                              correct: report.data.correct,
-                              total: report.data.total,
-                            })}
-                          </Text>
+                          {report.data.requires_review
+                            ? (
+                              <CohortWrittenReport
+                                group={selected.group_id}
+                                child={selected.child_id}
+                                published={!!report.data.published}
+                                points={report.data.points ?? null}
+                                maximum={report.data.maximum ?? 0}
+                                rows={report.data.reviews ?? []}
+                                cancelled={!!report.data.cancelled}
+                                onSaved={() => void report.refetch()}
+                              />
+                            )
+                            : (
+                              <Text style={u.heading}>
+                                {t("prova.resultMc", {
+                                  correct: report.data.correct,
+                                  total: report.data.total,
+                                })}
+                              </Text>
+                            )}
                           <Text style={u.small}>{t("group.limits")}</Text>
                           {report.data.topics.map((topic) => (
                             <View
@@ -618,7 +672,7 @@ export default function GroupExams() {
                                   {t("group.rankingTitle")}
                                 </Text>
                                 <Text style={u.small}>
-                                  {t("group.rankingHelp")}
+                                  {t(report.data.requires_review ? "cohort.rankingHelp" : "group.rankingHelp")}
                                 </Text>
                                 {report.data.ranking.map((r) => (
                                   <View
@@ -637,7 +691,9 @@ export default function GroupExams() {
                                       {r.mine ? ` · ${t("group.you")}` : ""}
                                     </Text>
                                     <Text style={u.bold}>
-                                      {r.correct}/{r.total}
+                                      {report.data?.requires_review
+                                        ? `${r.points} / ${r.maximum}`
+                                        : `${r.correct} / ${r.total}`}
                                     </Text>
                                   </View>
                                 ))}

@@ -1026,13 +1026,16 @@ isOneToOne: false
                   ]
                 },"group_exam_entries": {
                   Row: {
+                    "review_consent_at": string | null,
                     "alias": string,"child_id": string,"consent_version": string,"created_at": string,"enrolled_by": string | null,"exam_id": string,"family_id": string,"group_id": string,"id": string,"ranking_consent": boolean
                   }
                   ComputedFields: never
                   Insert: {
+                    "review_consent_at"?: string | null,
                     "alias": string,"child_id": string,"consent_version": string,"created_at"?: string,"enrolled_by"?: string | null,"exam_id": string,"family_id": string,"group_id": string,"id"?: string,"ranking_consent"?: boolean
                   }
                   Update: {
+                    "review_consent_at"?: string | null,
                     "alias"?: string,"child_id"?: string,"consent_version"?: string,"created_at"?: string,"enrolled_by"?: string | null,"exam_id"?: string,"family_id"?: string,"group_id"?: string,"id"?: string,"ranking_consent"?: boolean
                   }
                   Relationships: [
@@ -1122,13 +1125,16 @@ isOneToOne: false
                   ]
                 },"group_exams": {
                   Row: {
+                    "requires_review": boolean,
                     "collection_id": string | null,"package_id": string | null,"created_at": string,"created_by": string | null,"creation_intent": NonNullable<Json>,"curriculum_version": string,"duration_minutes": number,"ends_at": string,"grade": number,"id": string,"plans": (Database["public"]['Enums']["plan_code"])[],"starts_at": string,"status": string,"subject": string,"title": string,"version_hash": string
                   }
                   ComputedFields: never
                   Insert: {
+                    "requires_review"?: boolean,
                     "collection_id"?: string | null,"package_id"?: string | null,"created_at"?: string,"created_by"?: string | null,"creation_intent": NonNullable<Json>,"curriculum_version": string,"duration_minutes": number,"ends_at": string,"grade": number,"id": string,"plans": (Database["public"]['Enums']["plan_code"])[],"starts_at": string,"status"?: string,"subject": string,"title": string,"version_hash": string
                   }
                   Update: {
+                    "requires_review"?: boolean,
                     "collection_id"?: string | null,"package_id"?: string | null,"created_at"?: string,"created_by"?: string | null,"creation_intent"?: NonNullable<Json>,"curriculum_version"?: string,"duration_minutes"?: number,"ends_at"?: string,"grade"?: number,"id"?: string,"plans"?: (Database["public"]['Enums']["plan_code"])[],"starts_at"?: string,"status"?: string,"subject"?: string,"title"?: string,"version_hash"?: string
                   }
                   Relationships: [
@@ -2325,6 +2331,13 @@ isOneToOne: false
 "admin_grant_override":
 { Args: { "p_ends_at": string,"p_family_id": string,"p_plan": Database["public"]['Enums']["plan_code"],"p_reason": string,"p_starts_at"?: string }; Returns: string
                            },
+"admin_create_reviewed_group_exam": { Args: { p_id: string; p_package_id: string; p_publication_version: number; p_title: string; p_units: string[]; p_start: string; p_end: string; p_minutes: number; p_plans: Database["public"]["Enums"]["plan_code"][]; p_review:boolean }; Returns:string },
+"enroll_reviewed_group_exam": { Args:{p_group:string;p_child:string;p_ranking:boolean;p_consent:boolean;p_review_consent:boolean};Returns:string },
+"admin_cohort_review_queue": { Args:{p_group:string};Returns:Json },
+"admin_cohort_review_detail": { Args:{p_entry:string};Returns:Json },
+"admin_save_cohort_review": { Args:{p_request:string;p_entry:string;p_ord:number;p_revision:number;p_answer_hash:string;p_points:Json;p_outcome:string;p_feedback:string;p_appeal_revision?:number;p_response?:string};Returns:Json },
+"admin_publish_cohort_results": { Args:{p_request:string;p_group:string;p_fingerprint:string;p_version:number};Returns:Json },
+"appeal_cohort_review": { Args:{p_request:string;p_group:string;p_child:string;p_ord:number;p_review_revision:number;p_reason:string};Returns:Json },
 "admin_group_package_catalog": { Args: Record<PropertyKey, never>; Returns: Json },
 "admin_create_package_group_exam": { Args: { p_id: string; p_package_id: string; p_publication_version: number; p_title: string; p_units: string[]; p_start: string; p_end: string; p_minutes: number; p_plans: Database["public"]["Enums"]["plan_code"][] }; Returns: string },
 "admin_group_exams":

@@ -2,9 +2,11 @@ import { randomUUID } from "expo-crypto";
 import {
   BLUEPRINT_PREFIX,
   CATALOG_BLUEPRINT_PREFIX,
+  COHORT_APPEAL_PREFIX,
   CONTRIBUTION_PREFIX,
   createBlueprintJournal,
   createCatalogBlueprintJournal,
+  createCohortAppealJournal,
   createContributionJournal,
   createProvaGenerationJournal,
   createSetupAiJournal,
@@ -24,7 +26,7 @@ export function clearSetupCommands() {
       k.startsWith(SETUP_COMMAND_PREFIX) || k.startsWith(SETUP_AI_PREFIX) ||
       k.startsWith(PROVA_GENERATION_PREFIX) || k.startsWith(BLUEPRINT_PREFIX) ||
       k.startsWith(CATALOG_BLUEPRINT_PREFIX) ||
-      k.startsWith(CONTRIBUTION_PREFIX)
+      k.startsWith(CONTRIBUTION_PREFIX) || k.startsWith(COHORT_APPEAL_PREFIX)
     )
   ) store.remove(key);
 }
@@ -171,6 +173,29 @@ export function provaGenerationJournal(
     id: randomUUID,
     guard() {
       if (active !== generation) throw Error("setup_session_changed");
+    },
+  });
+}
+
+export function cohortAppealJournal(user: string, family: string) {
+  const active = generation;
+  return createCohortAppealJournal({
+    store,
+    user,
+    family,
+    guard() {
+      if (active !== generation) throw Error("setup_session_changed");
+    },
+    async send(c) {
+      const controller = new AbortController(),
+        timer = setTimeout(() => controller.abort(), 20000);
+      try {
+        return await supabase.rpc("appeal_cohort_review", c).abortSignal(
+          controller.signal,
+        );
+      } finally {
+        clearTimeout(timer);
+      }
     },
   });
 }
