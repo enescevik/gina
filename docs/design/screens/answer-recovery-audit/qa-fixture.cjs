@@ -3,7 +3,7 @@ module.exports=async page=>{
  const id=n=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
  const [user,family,child,device,exam,attempt,q1,q2]=[9501,9502,9503,9504,9505,9506,9507,9508].map(id);
  const questions=[{id:q1,kind:'multiple_choice',stem:'6 + 8 + 10 işleminin sonucu kaçtır?',choices:[{key:'A',text:'24'},{key:'B',text:'26'}],correct_key:'A',expected_answer:null,solution:null},{id:q2,kind:'open_ended',stem:'Üçgenin çevresini nasıl bulduğunu anlat.',choices:null,correct_key:null,expected_answer:'Üç kenarın uzunlukları toplanır.',solution:'6 + 8 + 10 = 24 cm'}];
- const state={exam,attempt,q1,q2,answers:{},receipts:{},calls:[],errors:[],fail:false,loseReply:false,finished:false,reviewRevision:0,reviewFeedback:'',reviewReceipts:{}};
+ const state={exam,attempt,q1,q2,answers:{},receipts:{},calls:[],errors:[],fail:false,loseReply:false,finished:false,reviewRevision:0,reviewScore:null,reviewFeedback:'',reviewReceipts:{}};
  page.on('pageerror',e=>state.errors.push(e.message));
  await page.routeWebSocket('wss://ginaqa.supabase.co/**',()=>{});
  await page.route('https://ginaqa.supabase.co/**',async route=>{
@@ -24,12 +24,12 @@ module.exports=async page=>{
   else if(name==='exam_attempts')data={...row,children:{name:'Ece'},exams:{question_ids:[q1,q2]}};
   else if(name==='question_bank')data=questions;
   else if(name==='exam_answers')data=Object.values(state.answers);
-  else if(name==='get_answer_review')data={score:null,feedback:state.reviewFeedback,document:null,revision:state.reviewRevision,answer_hash:'synthetic-answer-hash'};
+  else if(name==='get_answer_review')data={score:state.reviewScore,feedback:state.reviewFeedback,document:null,revision:state.reviewRevision,answer_hash:'synthetic-answer-hash'};
   else if(name==='get_review_ai_policy')data={enabled:false,remaining:0};
   else if(name==='save_answer_review'){
    if(state.reviewReceipts[body.p_request_id])data=state.reviewReceipts[body.p_request_id];
    else if(body.p_revision!==state.reviewRevision){status=409;data={message:'review_changed',code:'P0001'};}
-   else{state.reviewRevision++;state.reviewFeedback=body.p_feedback;data=state.reviewReceipts[body.p_request_id]={revision:state.reviewRevision};}
+   else{state.reviewRevision++;state.reviewFeedback=body.p_feedback;state.reviewScore=body.p_score;data=state.reviewReceipts[body.p_request_id]=state.reviewRevision;}
   }
   else if(name==='get_child_answer_reviews')data=state.reviewRevision?[{question_id:q2,position:2,feedback:state.reviewFeedback,score:90,document:null,answer_document:null,answer_text:state.answers[q2]?.answer_text}]:[];
   else if(name==='devices')data={id:device,active_child_id:child,revoked_at:null};
