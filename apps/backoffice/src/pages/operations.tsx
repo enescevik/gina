@@ -37,6 +37,7 @@ const names: Record<string, string> = {
   import: "Belgeden ders programı",
   grade: "Deneme değerlendirmesi",
   plan: "Çalışma planı",
+  weekly: "Haftalık aile özeti",
   working: "İşleniyor",
   done: "Hazır",
   failed: "Başarısız",

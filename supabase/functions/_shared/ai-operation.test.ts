@@ -296,3 +296,47 @@ Deno.test("negative tokenizer count is malformed and never starts generation", a
     assert(rejected && requests.length === 1, "invalid token count accepted");
   });
 });
+
+Deno.test("weekly reservation binds the frozen context and reuses its paid result", async () => {
+  const calls: { name: string; args: Record<string, unknown> }[] = [];
+  const db = {
+    rpc: async (name: string, args: Record<string, unknown>) => {
+      calls.push({ name, args });
+      return {
+        data: {
+          id: "job",
+          cached: {
+            output: { summary: "Cached" },
+            inputTokens: 1,
+            outputTokens: 1,
+          },
+        },
+        error: null,
+      };
+    },
+  } as unknown as SupabaseClient;
+  await withFetch([], async () => {
+    const result = await runAiOperation(
+      db,
+      parent,
+      "weekly",
+      "context-id",
+      "synthetic-key",
+      config,
+      "system",
+      "input",
+      schema,
+      validate,
+    );
+    assert(!(result instanceof Response), "cached result returns");
+    assert(
+      calls.length === 1 && calls[0].name === "reserve_weekly_summary",
+      "dedicated reservation",
+    );
+    assert(
+      calls[0].args.p_context === "context-id" &&
+        calls[0].args.p_family === parent.familyId,
+      "family and context are bound",
+    );
+  });
+});

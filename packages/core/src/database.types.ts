@@ -2723,6 +2723,9 @@ isOneToOne: false
 "get_timetable_sources":
 { Args: { "p_child_id": string }; Returns: Json
                            },
+"prepare_weekly_summary": { Args: { p_family: string; p_user: string; p_week: string; p_context: Json }; Returns: Json },
+"reserve_weekly_summary": { Args: { p_family: string; p_user: string; p_context: string; p_lease: string }; Returns: Json },
+"store_weekly_summary": { Args: { p_family: string; p_user: string; p_context: string; p_job: string }; Returns: Json },
 "get_weekly_summary_data":
 { Args: { "p_family_id": string,"p_week_start": string }; Returns: Json
                            },
