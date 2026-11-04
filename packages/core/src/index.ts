@@ -40,3 +40,5 @@ export * from "./setup-ai-journal";
 export * from "./blueprint";
 
 export * from "./contribution";
+
+export * from "./curriculum-review";

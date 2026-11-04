@@ -2257,6 +2257,11 @@ isOneToOne: false
       begin_question_contribution: {Args:{p_id:string;p_question_id:string;p_rights:boolean;p_no_personal_data:boolean};Returns:Json};
       list_question_contributions: {Args:Record<PropertyKey,never>;Returns:Json};
       withdraw_question_contribution: {Args:{p_id:string};Returns:undefined};
+      admin_import_curriculum_candidates: { Args: { p_request_id: string; p_bundle: Json }; Returns: Json };
+      admin_list_curriculum_candidates: { Args: Record<PropertyKey, never>; Returns: Json };
+      admin_get_curriculum_candidate: { Args: { p_id: string }; Returns: Json };
+      admin_change_curriculum_candidate: { Args: { p_request_id: string; p_id: string; p_revision: number; p_action: string; p_review: Json; p_note: string; p_confirmed: boolean }; Returns: Json };
+      get_curriculum_scenarios: { Args: { p_child_id: string; p_year: string; p_term: number; p_exam: number; p_subject: string }; Returns: Json };
       admin_list_contribution_sets: {Args:Record<PropertyKey,never>;Returns:Json};
       admin_get_contribution_set: {Args:{p_id:string};Returns:Json};
       admin_decide_contribution_set: {Args:{p_request_id:string;p_id:string;p_approve:boolean;p_note:string;p_teachers:Json;p_confirmed:boolean};Returns:Json};
