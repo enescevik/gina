@@ -223,7 +223,7 @@ function OverridesEditor({ user }: { user:string }) {
             </article>;})}
           </div>
           <div className="hidden overflow-x-auto xl:block">
-            <table className="table">
+            <div className="overflow-x-auto"><table className="table">
               <thead>
                 <tr>
                   <th>{t.overrides.family}</th>
@@ -262,7 +262,7 @@ function OverridesEditor({ user }: { user:string }) {
                   );
                 })}
               </tbody>
-            </table>
+            </table></div>
           </div>
           </>
         )}
@@ -275,7 +275,7 @@ function OverridesEditor({ user }: { user:string }) {
         ) : audit.data.length === 0 ? (
           <p className="text-sm text-slate-500">{t.overrides.empty}</p>
         ) : (
-          <table className="table">
+          <div className="overflow-x-auto"><table className="table">
             <thead>
               <tr>
                 <th>{t.overrides.when}</th>
@@ -294,7 +294,7 @@ function OverridesEditor({ user }: { user:string }) {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         )}
       </Card>
     </Layout>

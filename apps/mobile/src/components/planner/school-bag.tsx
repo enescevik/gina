@@ -1,3 +1,4 @@
+import { GuidedField } from "@/components/ui/guided-field";
 import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
@@ -28,7 +29,6 @@ import {
 import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
 import { schoolBagJournal } from "@/lib/school-bag-command";
-import { Field } from "@/components/ui/field";
 import { Toggle } from "@/components/ui/toggle";
 import { SubjectIcon } from "@/components/subject-icon";
 import { IconButton, p, SatinButton, u } from "./ui";
@@ -113,6 +113,7 @@ function BagEditor(
   const [source, setSource] = useState(initial),
     [items, setItems] = useState(recovery.command?.p_items ?? initial.items),
     [label, setLabel] = useState("");
+  const [catalogId,setCatalogId]=useState<string|null>(null);
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [saved, setSaved] = useState(false),
@@ -161,8 +162,9 @@ function BagEditor(
       setError(t("schoolBag.invalidItem"));
       return;
     }
-    change([...items, { id: randomUUID(), label: clean, checked: false }]);
+    change([...items, { id: randomUUID(), label: clean, checked: false, catalog_id: clean===label.trim()?catalogId:null }]);
     setLabel("");
+    setCatalogId(null);
   }
   async function reload() {
     const fresh = await query.refetch();
@@ -334,14 +336,7 @@ function BagEditor(
           <>
             <View style={[u.row, { alignItems: "flex-end" }]}>
               <View style={u.fill}>
-                <Field
-                  label={t("schoolBag.itemLabel")}
-                  value={label}
-                  maxLength={80}
-                  onChangeText={setLabel}
-                  placeholder={t("schoolBag.placeholder")}
-                  onSubmitEditing={() => add(label)}
-                />
+                <GuidedField childId={child.id} kind="bag" label={t("schoolBag.itemLabel")} value={label} onChange={(v,id)=>{setLabel(v);setCatalogId(id);}} />
               </View>
               <IconButton
                 label={t("schoolBag.add")}

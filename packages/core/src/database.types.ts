@@ -5,6 +5,8 @@ export type Database = {
 
   "public": {
           Tables: {
+guided_input_options: { Row: {id:string;kind:string;label_tr:string;label_en:string;subject:string;min_grade:number;max_grade:number;position:number;active:boolean;revision:number;updated_at:string}; Insert: {id:string;kind:string;label_tr:string;label_en:string;subject?:string;min_grade?:number;max_grade?:number;position?:number;active?:boolean;revision?:number;updated_at?:string}; Update: {label_tr?:string;label_en?:string;subject?:string;min_grade?:number;max_grade?:number;position?:number;active?:boolean}; Relationships: [] },
+
             "active_families": {
                   Row: {
                     "family_id": string,"user_id": string
@@ -1374,6 +1376,32 @@ isOneToOne: false
       referencedColumns: ["child_id"]
     }
                   ]
+                },"learning_source_sets": {
+                  Row: {
+                    "anchor_id": string,"created_at": string,"family_id": string,"pages": number,"source_ids": (string)[]
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "anchor_id": string,"created_at"?: string,"family_id": string,"pages": number,"source_ids": (string)[]
+                  }
+                  Update: {
+                    "anchor_id"?: string,"created_at"?: string,"family_id"?: string,"pages"?: number,"source_ids"?: (string)[]
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "learning_source_sets_anchor_id_fkey"
+      columns: ["anchor_id"]
+isOneToOne: true
+      referencedRelation: "learning_sources"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "learning_source_sets_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"learning_sources": {
                   Row: {
                     "bytes": number,"created_at": string,"family_id": string,"height": number | null,"id": string,"kind": string,"mime": string,"name": string,"object_path": string,"pages": number | null,"sha256": string,"status": string,"storage_consent": string,"uploaded_by": string | null,"verified_at": string | null,"width": number | null
@@ -2265,6 +2293,16 @@ isOneToOne: false
                 }
           }
           Functions: {
+get_guided_input_options: { Args: { p_child: string; p_kind: string }; Returns: Json },
+admin_save_guided_input: { Args: { p_id: string; p_revision: number; p_value: Json }; Returns: number },
+
+get_learning_source_set: { Args: { p_source: string }; Returns: Json },
+"register_learning_source_set":
+{ Args: { "p_ids": (string)[] }; Returns: string
+                           },
+"admin_source_file_limit":
+{ Args: { "p_max_files": number }; Returns: undefined
+                           },
       get_learning_plan_item: { Args: { p_child_id: string; p_id: string }; Returns: Json };
       get_learning_plan: { Args: { p_child_id: string; p_from: string; p_to: string }; Returns: Json };
       get_learning_plan_import: { Args: { p_child_id: string; p_source_id: string; p_locale: string }; Returns: Json };

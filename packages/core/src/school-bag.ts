@@ -9,6 +9,7 @@ const items = z.array(
       v.trim() === v && v.length > 0
     ),
     checked: z.boolean(),
+    catalog_id: z.string().regex(/^[a-z][a-z0-9_-]{2,79}$/).nullable().optional(),
   }).strict(),
 ).max(30).refine((a) =>
   new Set(a.map((x) => x.id)).size === a.length &&

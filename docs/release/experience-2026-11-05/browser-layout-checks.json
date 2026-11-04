@@ -1,0 +1,841 @@
+[
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent",
+    "overflow": false,
+    "textLength": 770,
+    "redirect": "/parent"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/calendar",
+    "overflow": false,
+    "textLength": 603,
+    "redirect": "/parent/calendar"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/tasks",
+    "overflow": false,
+    "textLength": 422,
+    "redirect": "/parent/tasks"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/rewards",
+    "overflow": false,
+    "textLength": 231,
+    "redirect": "/parent/rewards"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova",
+    "overflow": false,
+    "textLength": 399,
+    "redirect": "/parent/prova"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/menu",
+    "overflow": false,
+    "textLength": 604,
+    "redirect": "/parent/menu"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/families",
+    "overflow": false,
+    "textLength": 0,
+    "redirect": "/parent/families"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/help",
+    "overflow": false,
+    "textLength": 221,
+    "redirect": "/parent/help"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/subscription",
+    "overflow": false,
+    "textLength": 653,
+    "redirect": "/parent/subscription"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/device-access",
+    "overflow": false,
+    "textLength": 306,
+    "redirect": "/parent/device-access"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/notifications",
+    "overflow": false,
+    "textLength": 467,
+    "redirect": "/parent/notifications"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/weekly-review",
+    "overflow": false,
+    "textLength": 1100,
+    "redirect": "/parent/weekly-review"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/progress",
+    "overflow": false,
+    "textLength": 707,
+    "redirect": "/parent/prova/progress"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/groups",
+    "overflow": false,
+    "textLength": 445,
+    "redirect": "/parent/prova/groups"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/builder",
+    "overflow": false,
+    "textLength": 356,
+    "redirect": "/parent/prova/builder"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/catalog",
+    "overflow": false,
+    "textLength": 431,
+    "redirect": "/parent/prova/catalog"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/library",
+    "overflow": false,
+    "textLength": 577,
+    "redirect": "/parent/prova/library"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/question",
+    "overflow": false,
+    "textLength": 546,
+    "redirect": "/parent/prova/question"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/blueprint",
+    "overflow": false,
+    "textLength": 335,
+    "redirect": "/parent/prova/blueprint"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/shared-source",
+    "overflow": false,
+    "textLength": 493,
+    "redirect": "/parent/prova/shared-source"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/attempt/a68c4026-b541-4828-8829-c540fa7cef55",
+    "overflow": false,
+    "textLength": 353,
+    "redirect": "/parent/prova/attempt/a68c4026-b541-4828-8829-c540fa7cef55"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/review/a68c4026-b541-4828-8829-c540fa7cef55",
+    "overflow": false,
+    "textLength": 191,
+    "redirect": "/parent/prova/review/a68c4026-b541-4828-8829-c540fa7cef55"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/repeat/a68c4026-b541-4828-8829-c540fa7cef55",
+    "overflow": false,
+    "textLength": 834,
+    "redirect": "/parent/prova/repeat/a68c4026-b541-4828-8829-c540fa7cef55"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/level",
+    "overflow": false,
+    "textLength": 387,
+    "redirect": "/parent/prova/level"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/exam",
+    "overflow": false,
+    "textLength": 356,
+    "redirect": "/parent/prova/builder"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/booklet",
+    "overflow": false,
+    "textLength": 328,
+    "redirect": "/parent/prova/booklet"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/prova/share",
+    "overflow": false,
+    "textLength": 105,
+    "redirect": "/parent/prova/share"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent",
+    "overflow": false,
+    "textLength": 770
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/calendar",
+    "overflow": false,
+    "textLength": 1021
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/tasks",
+    "overflow": false,
+    "textLength": 422
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/rewards",
+    "overflow": false,
+    "textLength": 231
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/prova",
+    "overflow": false,
+    "textLength": 403
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/menu",
+    "overflow": false,
+    "textLength": 604
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/families",
+    "overflow": false,
+    "textLength": 495
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/help",
+    "overflow": false,
+    "textLength": 221
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/subscription",
+    "overflow": false,
+    "textLength": 653
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/device-access",
+    "overflow": false,
+    "textLength": 306
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/notifications",
+    "overflow": false,
+    "textLength": 467
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/weekly-review",
+    "overflow": false,
+    "textLength": 1113
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/grades",
+    "overflow": false,
+    "textLength": 183
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/notes",
+    "overflow": false,
+    "textLength": 186
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/share",
+    "overflow": false,
+    "textLength": 513
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/prova/progress",
+    "overflow": false,
+    "textLength": 707
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/prova/builder",
+    "overflow": false,
+    "textLength": 610
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/child-mode/today",
+    "overflow": false,
+    "textLength": 260,
+    "redirect": "/parent/child-mode/today"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/child-mode/week",
+    "overflow": false,
+    "textLength": 118,
+    "redirect": "/parent/child-mode/week"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/child-mode/calendar",
+    "overflow": false,
+    "textLength": 507,
+    "redirect": "/parent/child-mode/calendar"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/child-mode/prova",
+    "overflow": false,
+    "textLength": 167,
+    "redirect": "/parent/child-mode/prova"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/child-mode/goal",
+    "overflow": false,
+    "textLength": 140,
+    "redirect": "/parent/child-mode/goal"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/child-mode/collection",
+    "overflow": false,
+    "textLength": 121,
+    "redirect": "/parent/child-mode/collection"
+  },
+  {
+    "surface": "mobile",
+    "size": "phone",
+    "path": "/parent/child-mode/room-preview",
+    "overflow": false,
+    "textLength": 253,
+    "redirect": "/parent/child-mode/room-preview"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/child-mode/today",
+    "overflow": false,
+    "textLength": 277,
+    "redirect": "/parent/child-mode/today"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/child-mode/week",
+    "overflow": false,
+    "textLength": 118,
+    "redirect": "/parent/child-mode/week"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/child-mode/calendar",
+    "overflow": false,
+    "textLength": 925,
+    "redirect": "/parent/child-mode/calendar"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/child-mode/prova",
+    "overflow": false,
+    "textLength": 167,
+    "redirect": "/parent/child-mode/prova"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/child-mode/goal",
+    "overflow": false,
+    "textLength": 140,
+    "redirect": "/parent/child-mode/goal"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/child-mode/collection",
+    "overflow": false,
+    "textLength": 121,
+    "redirect": "/parent/child-mode/collection"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet",
+    "path": "/parent/child-mode/room-preview",
+    "overflow": false,
+    "textLength": 253,
+    "redirect": "/parent/child-mode/room-preview"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet-portrait",
+    "path": "/parent/child-mode/today",
+    "overflow": false,
+    "textLength": 260,
+    "redirect": "/parent/child-mode/today"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet-portrait",
+    "path": "/parent/child-mode/week",
+    "overflow": false,
+    "textLength": 118,
+    "redirect": "/parent/child-mode/week"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet-portrait",
+    "path": "/parent/child-mode/calendar",
+    "overflow": false,
+    "textLength": 507,
+    "redirect": "/parent/child-mode/calendar"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet-portrait",
+    "path": "/parent/child-mode/prova",
+    "overflow": false,
+    "textLength": 167,
+    "redirect": "/parent/child-mode/prova"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet-portrait",
+    "path": "/parent/child-mode/goal",
+    "overflow": false,
+    "textLength": 140,
+    "redirect": "/parent/child-mode/goal"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet-portrait",
+    "path": "/parent/child-mode/collection",
+    "overflow": false,
+    "textLength": 121,
+    "redirect": "/parent/child-mode/collection"
+  },
+  {
+    "surface": "mobile",
+    "size": "tablet-portrait",
+    "path": "/parent/child-mode/room-preview",
+    "overflow": false,
+    "textLength": 253,
+    "redirect": "/parent/child-mode/room-preview"
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/dashboard",
+    "overflow": false,
+    "textLength": 344
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/ai",
+    "overflow": false,
+    "textLength": 1310
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/input-catalog",
+    "overflow": false,
+    "textLength": 1017
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/operations",
+    "overflow": false,
+    "textLength": 1077
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/families",
+    "overflow": false,
+    "textLength": 430
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/billing",
+    "overflow": false,
+    "textLength": 639
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/overrides",
+    "overflow": false,
+    "textLength": 618
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/questions",
+    "overflow": false,
+    "textLength": 187
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/library",
+    "overflow": false,
+    "textLength": 397
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/groups",
+    "overflow": false,
+    "textLength": 1079
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/cohort-review",
+    "overflow": false,
+    "textLength": 56
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/support",
+    "overflow": false,
+    "textLength": 258
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/ideas",
+    "overflow": false,
+    "textLength": 317
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/notifications",
+    "overflow": false,
+    "textLength": 581
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/help-articles",
+    "overflow": false,
+    "textLength": 274
+  },
+  {
+    "surface": "backoffice",
+    "size": "phone",
+    "path": "/library-publication",
+    "overflow": false,
+    "textLength": 56
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/dashboard",
+    "overflow": false,
+    "textLength": 610
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/ai",
+    "overflow": false,
+    "textLength": 1576
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/input-catalog",
+    "overflow": false,
+    "textLength": 1283
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/operations",
+    "overflow": false,
+    "textLength": 1343
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/families",
+    "overflow": false,
+    "textLength": 696
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/billing",
+    "overflow": false,
+    "textLength": 905
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/overrides",
+    "overflow": false,
+    "textLength": 884
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/questions",
+    "overflow": false,
+    "textLength": 453
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/library",
+    "overflow": false,
+    "textLength": 663
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/groups",
+    "overflow": false,
+    "textLength": 1345
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/cohort-review",
+    "overflow": false,
+    "textLength": 322
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/support",
+    "overflow": false,
+    "textLength": 601
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/ideas",
+    "overflow": false,
+    "textLength": 660
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/notifications",
+    "overflow": false,
+    "textLength": 847
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/help-articles",
+    "overflow": false,
+    "textLength": 676
+  },
+  {
+    "surface": "backoffice",
+    "size": "tablet",
+    "path": "/library-publication",
+    "overflow": false,
+    "textLength": 221
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/dashboard",
+    "overflow": false,
+    "textLength": 610
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/ai",
+    "overflow": false,
+    "textLength": 1576
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/input-catalog",
+    "overflow": false,
+    "textLength": 1283
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/operations",
+    "overflow": false,
+    "textLength": 1343
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/families",
+    "overflow": false,
+    "textLength": 696
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/billing",
+    "overflow": false,
+    "textLength": 905
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/overrides",
+    "overflow": false,
+    "textLength": 884
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/questions",
+    "overflow": false,
+    "textLength": 453
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/library",
+    "overflow": false,
+    "textLength": 663
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/groups",
+    "overflow": false,
+    "textLength": 1345
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/cohort-review",
+    "overflow": false,
+    "textLength": 322
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/support",
+    "overflow": false,
+    "textLength": 601
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/ideas",
+    "overflow": false,
+    "textLength": 660
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/notifications",
+    "overflow": false,
+    "textLength": 847
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/help-articles",
+    "overflow": false,
+    "textLength": 676
+  },
+  {
+    "surface": "backoffice",
+    "size": "wide",
+    "path": "/library-publication",
+    "overflow": false,
+    "textLength": 221
+  }
+]

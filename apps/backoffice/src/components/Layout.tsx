@@ -11,6 +11,7 @@ import { isConfigured, supabase } from "@/lib/supabase";
 const NAV = [
   { href: "/dashboard", label: t.nav.dashboard },
   { href: "/ai", label: t.nav.ai },
+  { href: "/input-catalog", label: "Hazır seçenekler" },
   { href: "/operations", label: "AI işlemleri" },
   { href: "/overrides", label: t.nav.overrides },
   { href: "/questions", label: t.nav.questions },
@@ -22,6 +23,7 @@ export const HeaderActionContext = createContext<HTMLElement | null>(null);
 const navIcons: Record<string, PublicationIconName> = {
   "/dashboard": "grid", "/ai": "idea", "/operations": "check",
   "/overrides": "lock", "/questions": "document", "/library": "layers",
+  "/input-catalog": "document",
   "/groups": "school", "/families": "family",
 };
 
@@ -51,6 +53,7 @@ export function Layout(
   },
 ) {
   const router = useRouter();
+  void compact;
   const [menuOpen, setMenuOpen] = useState(false);
   const [headerTarget, setHeaderTarget] = useState<HTMLDivElement | null>(null);
   const publication = router.pathname === "/library-publication";
@@ -127,20 +130,16 @@ export function Layout(
       <Head>
         <title>{`${title} · ${t.appName}`}</title>
       </Head>
-      <div className={"admin-shell" + (operation || compact ? " support-shell" : "")}>
+      <div className="admin-shell support-shell">
         <aside className={"admin-sidebar" + (menuOpen ? " menu-open" : "")}>
-          {operation || compact
-            ? (
-              <button
+          <button
                 className="admin-nav-toggle"
                 aria-label="Yönetim menüsü"
                 aria-expanded={menuOpen}
                 onClick={() => setMenuOpen(!menuOpen)}
               >
                 ☰ Menü
-              </button>
-            )
-            : null}
+          </button>
           <Link
             href={isAdmin
               ? "/dashboard"
@@ -158,7 +157,7 @@ export function Layout(
               (isAdmin || roles.includes("support") ||
                 roles.includes("content") || roles.includes("finance") || roles.includes("release"))
             ? (
-              <nav aria-label="Yönetim bölümleri">
+              <nav aria-label="Yönetim bölümleri" onClick={event=>{if((event.target as Element).closest("a"))setMenuOpen(false);}}>
                 {publication && isAdmin ? (
                   <Link
                     href="/library"

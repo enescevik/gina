@@ -1,3 +1,5 @@
+import { NumberChoice } from "@/components/ui/number-choice";
+import { SourceFilesPicker } from "@/components/learning/source-files-picker";
 import { provaGenerationJournal } from "@/lib/setup-command";
 import { canonicalSubject, catalogBlueprintFits, provaGenerationKind } from "@gina/core";
 import { useMemo, useState } from "react";
@@ -20,7 +22,6 @@ import { Pressable } from "@/components/ui/pressable";
 import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
 import {
-  chooseLearningDocument,
   type LocalLearningFile,
   uploadLearningFile,
 } from "@/lib/learning-files";
@@ -61,6 +62,7 @@ export function ProvaSourcePicker(
     { claims, session } = useSession(),
     familyId = claims?.family_id ?? "";
   const [repeatDetails, setRepeatDetails] = useState(false);
+  const [picking, setPicking] = useState(false);
   const [mode, setMode] = useState<Mode>("sources"),
     [selected, setSelected] = useState<ProvaBlock[]>([]),
     [search, setSearch] = useState(""),
@@ -332,7 +334,7 @@ export function ProvaSourcePicker(
     mutationFn: () => onAdd(selected),
     onError: setLocalError,
   });
-  const busy = generation.isPending || add.isPending ||
+  const busy = picking || generation.isPending || add.isPending ||
     cancelGeneration.isPending;
   function choose(block: ProvaBlock) {
     setSelected((v) =>
@@ -922,16 +924,7 @@ export function ProvaSourcePicker(
                                     />
                                   ))}
                                 </View>
-                                <Field
-                                  label={t("provaBuilder.target")}
-                                  keyboardType="number-pad"
-                                  value={String(count)}
-                                  maxLength={2}
-                                  onChangeText={(v) =>
-                                    setCount(
-                                      Math.min(30, Math.max(1, Number(v) || 1)),
-                                    )}
-                                />
+                                <NumberChoice label={t("provaBuilder.target")} value={count} min={1} max={30} step={1} presets={[3,5,10,20,30]} disabled={busy} onChange={setCount}/>
                               </>
                             )
                             : null}
@@ -950,22 +943,7 @@ export function ProvaSourcePicker(
                           {mode === "document"
                             ? (
                               <>
-                                <SatinButton
-                                  secondary
-                                  title={t("provaBuilder.pickDocument")}
-                                  onPress={() =>
-                                    void chooseLearningDocument().then((f) => {
-                                      if (f) {
-                                        setFile(f);
-                                        setConsent(false);
-                                        setAiRows([]);
-                                        setSelected([]);
-                                      }
-                                    }).catch(setLocalError)}
-                                />
-                                {file
-                                  ? <Text style={b.muted}>{file.name}</Text>
-                                  : null}
+                                <SourceFilesPicker value={file} onBusyChange={setPicking} disabled={busy || !!generationRecord} onChange={(f)=>{setFile(f);setConsent(false);setAiRows([]);setSelected([]);}} />
                                 <Toggle
                                   label={t("provaBuilder.consent")}
                                   value={consent}
@@ -987,7 +965,7 @@ export function ProvaSourcePicker(
                         </View>
                         <SatinButton
                           busy={generation.isPending}
-                          disabled={storageBlocked || add.isPending ||
+                          disabled={picking || storageBlocked || add.isPending ||
                             typeof remaining !== "number" ||
                             remaining < aiCount || !planValid || !subject ||
                             (mode === "document" && (!file || !consent))}

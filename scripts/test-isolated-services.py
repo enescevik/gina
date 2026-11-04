@@ -19,9 +19,10 @@ import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 flags = set(sys.argv[1:])
+UI_HOLD = '--ui-hold' in flags
 WITH_STORAGE = '--with-storage' in flags
 WITH_REALTIME = '--with-realtime' in flags
-if '--run-local' not in flags or flags - {'--run-local', '--with-storage', '--with-realtime'}:
+if '--run-local' not in flags or flags - {'--run-local', '--with-storage', '--with-realtime', '--ui-hold'}:
     raise SystemExit('Explicit --run-local required')
 DB = 'gina_http_' + secrets.token_hex(8) + '_audit'
 NAMES = [DB + '_auth', DB + '_rest']
@@ -167,7 +168,7 @@ try:
     }, 3000)
     healthy(auth_port, '/health')
     healthy(rest_port, '/')
-    env = {**os.environ, 'GINA_QA_AUTH_PORT': str(auth_port), 'GINA_QA_REST_PORT': str(rest_port),
+    env = {**os.environ, 'GINA_QA_UI_HOLD': '1' if UI_HOLD else '0', 'GINA_QA_AUTH_PORT': str(auth_port), 'GINA_QA_REST_PORT': str(rest_port),
            'GINA_QA_ANON': jwt('anon', secret), 'GINA_QA_SERVICE': jwt('service_role', secret)}
     if WITH_REALTIME:
         realtime_image, realtime_base = inspect('supabase_realtime_gina')
@@ -213,7 +214,7 @@ try:
         report['environment'] += '-storage-edge'
     process = subprocess.Popen(['node', 'scripts/test-isolated-services.mjs'], cwd=ROOT, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
     try:
-        stdout, _ = process.communicate(timeout=180)
+        stdout, _ = process.communicate(timeout=3000 if UI_HOLD else 180)
     finally:
         # Include the optional Deno child if Node exits or times out unexpectedly.
         try:

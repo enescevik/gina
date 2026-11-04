@@ -1,3 +1,4 @@
+import {writeFileSync,unlinkSync} from 'node:fs';
 // Invoked only by test-isolated-services.py with ephemeral, loopback-only services.
 import http from 'node:http';
 import { randomUUID, randomBytes } from 'node:crypto';
@@ -72,7 +73,7 @@ try {
     const family=await rpc(c,'create_family',{p_name:name,p_display_name:'Synthetic parent'});
     const session=await refresh(c);
     assert('auth_hook_issues_parent_family',claims(session).gina.family_id===family&&claims(session).gina.role==='parent');
-    return {c,family};
+    return {c,family,email,password};
   }
   const a=await parent('Synthetic family A'),b=await parent('Synthetic family B');
   const setup={p_request_id:randomUUID(),p_profile:{name:'Synthetic child',birth_year:2015,grade:5,gender:'unspecified',avatar:'avatar-default',interests:[]},p_tasks:[]};
@@ -176,6 +177,17 @@ try {
     await live.expect('parent','task_templates',row=>row.id===task&&row.title==='Synthetic updated after revocation','realtime_parent_still_receives_after_revoke');
     await live.assertRevokedSilent();
   }
+  if(process.env.GINA_QA_UI_HOLD==='1') {
+    const user=(await a.c.auth.getUser()).data.user.id;
+    await must(admin.from('admins').upsert({user_id:user}),'ui_admin');
+    await refresh(a.c);
+    await rpc(a.c,'set_parent_pin',{p_pin:'5678'});
+    await rpc(a.c,'set_child_pin',{p_child_id:child,p_pin:'1234'});
+    const file='/tmp/gina-experience-ui-private.json';
+    writeFileSync(file,JSON.stringify({url:base,anon:process.env.GINA_QA_ANON,email:a.email,password:a.password,userId:user,familyId:a.family,childId:child,examId:exam.id,attemptId:attempt}),{mode:0o600});
+    try {await new Promise(resolve=>setTimeout(resolve,2700000));} finally {unlinkSync(file);}
+  }
+
 } catch(error) {
   const label=error instanceof Error && /^[a-z_]+$/.test(error.message)?error.message:'service_contract_failed';
   checks[label]=false;process.exitCode=1;

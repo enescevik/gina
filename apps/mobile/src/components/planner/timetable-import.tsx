@@ -1,3 +1,4 @@
+import { SourceFilesPicker } from "@/components/learning/source-files-picker";
 import { useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
@@ -32,7 +33,6 @@ import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import { invokeProvaAi, ProvaAiError } from "@/lib/prova-ai";
 import {
-  chooseLearningDocument,
   type LocalLearningFile,
   sourceAction,
   uploadLearningFile,
@@ -174,6 +174,7 @@ function ImportModal(
   const [merge, setMerge] = useState(true);
   const [reviewed, setReviewed] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [picking, setPicking] = useState(false);
   const [phase, setPhase] = useState("");
   const [error, setError] = useState("");
   const [leaving, setLeaving] = useState(false);
@@ -209,25 +210,6 @@ function ImportModal(
     setRows((r) => r.map((l) => l.id === id ? { ...l, ...patch } : l));
     setReviewed(false);
     setError("");
-  }
-  async function pick() {
-    if (gate.current) return;
-    gate.current = true;
-    setBusy(true);
-    setError("");
-    try {
-      const f = await chooseLearningDocument();
-      if (f) {
-        setFile(f);
-        setStorage(false);
-        setConsent(false);
-      }
-    } catch {
-      setError(t("import.pickFailed"));
-    } finally {
-      gate.current = false;
-      setBusy(false);
-    }
   }
   async function extract() {
     if (gate.current || !file || !storage || !consent) return;
@@ -339,7 +321,7 @@ function ImportModal(
     }
   }
   function close() {
-    if (gate.current) return;
+    if (gate.current || picking) return;
     if (selected) setLeaving(true);
     else onClose();
   }
@@ -351,7 +333,7 @@ function ImportModal(
           {file?.name ?? t("import.source")}
         </Text>
       </View>
-      {file && file.mime !== "application/pdf"
+      {selected && file && file.mime !== "application/pdf"
         ? (
           <Image
             source={{ uri: file.uri }}
@@ -379,13 +361,7 @@ function ImportModal(
           />
         )
         : (
-          <SatinButton
-            secondary
-            title={t(file ? "import.changeFile" : "import.selectFile")}
-            busy={busy && !phase}
-            disabled={busy}
-            onPress={() => void pick()}
-          />
+          <SourceFilesPicker value={file} onBusyChange={setPicking} disabled={busy} onChange={(f)=>{setFile(f);setStorage(false);setConsent(false);}} />
         )}
     </View>
   );
@@ -472,7 +448,7 @@ function ImportModal(
                       <SatinButton
                         title={phase || t("import.extract")}
                         busy={busy && !!phase}
-                        disabled={!file || !storage || !consent || busy}
+                        disabled={!file || !storage || !consent || busy || picking}
                         onPress={() => void extract()}
                       />
                     </View>

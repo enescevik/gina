@@ -1,9 +1,10 @@
+import { NumberChoice } from "@/components/ui/number-choice";
 import { invalidateProvaLists } from "@/lib/prova-cache";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, TextInput, View } from "react-native";
+import { Text, View } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
 
 import { Button } from "@/components/ui/button";
@@ -242,17 +243,9 @@ export default function LevelTestScreen() {
         </View>
       ) : null}
 
-      <View className="flex-row items-center gap-3">
+      <View style={{gap:14}}>
         <Toggle value={timed} onChange={setTimed} label={t("prova.timed")} />
-        {timed ? (
-          <TextInput
-            keyboardType="number-pad"
-            value={minutes}
-            onChangeText={setMinutes}
-            className="font-body min-h-12 w-16 rounded-parent border border-mist bg-white px-2 py-1 text-center text-ink"
-          />
-        ) : null}
-        {timed ? <Text className="font-body text-ink">{t("prova.min")}</Text> : null}
+        {timed?<NumberChoice label={t("provaBuilder.minutes")} unit={t("prova.min")} value={Number(minutes)||40} onChange={v=>setMinutes(String(v))}/>:null}
       </View>
 
       <ErrorText error={friendlyError(create.error ?? preview.error ?? children.error ?? blueprints.error ?? subjects.error, t)} />

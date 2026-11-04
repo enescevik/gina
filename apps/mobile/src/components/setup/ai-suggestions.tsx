@@ -1,9 +1,10 @@
+import { SourceFilesPicker } from "@/components/learning/source-files-picker";
 import { type ComponentProps, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { SetupAiRecord } from "@gina/core";
 import { setupAiJournal } from "@/lib/setup-command";
 import { Text, View } from "react-native";
-import { FileText, Sparkles } from "lucide-react-native";
+import { Sparkles } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
@@ -12,7 +13,6 @@ import { p, SatinButton, u } from "@/components/planner/ui";
 import { ChoiceCard } from "./wizard";
 import { Toggle } from "@/components/ui/toggle";
 import {
-  chooseLearningDocument,
   type LocalLearningFile,
   uploadLearningFile,
 } from "@/lib/learning-files";
@@ -71,8 +71,7 @@ function ScopedAiSuggestions({
   const [file, setFile] = useState<LocalLearningFile | null>(null);
   const [storageConsent, setStorageConsent] = useState(false),
     [aiConsent, setAiConsent] = useState(false);
-  const [picking, setPicking] = useState(false),
-    [fileError, setFileError] = useState(false);
+  const [picking, setPicking] = useState(false);
   const documentMode = allowDocument && mode === "document";
   const ideaKey = [
     "setup_ideas",
@@ -127,6 +126,7 @@ function ScopedAiSuggestions({
         if (documentMode && (!file || !storageConsent || !aiConsent)) {
           throw Error(t("setupDocument.consentRequired"));
         }
+        if(documentMode && file) await uploadLearningFile(file, "document");
         command = journal.prepare({
           ...body,
           ...(documentMode
@@ -136,10 +136,6 @@ function ScopedAiSuggestions({
         setRecord(command);
       }
       if (command.result) return command.result;
-      // Upload is itself idempotent; a restored request already references a private source.
-      if (file && command.payload.source_id === file.id) {
-        await uploadLearningFile(file, "document");
-      }
       const response = await invokeProvaAi<
         { suggestions: SetupSuggestion[]; document_notes?: string }
       >("setup-suggestions", {
@@ -216,40 +212,7 @@ function ScopedAiSuggestions({
                 </Text>
               )
               : null}
-            <SatinButton
-              secondary
-              icon={<FileText size={20} color={p.purple} />}
-              title={t(
-                record?.name || file
-                  ? "setupDocument.change"
-                  : "setupDocument.choose",
-              )}
-              busy={picking}
-              disabled={picking || generate.isPending || pending || blocked}
-              onPress={() => {
-                setPicking(true);
-                setFileError(false);
-                void chooseLearningDocument().then((next) => {
-                  if (next) {
-                    discard();
-                    setFile(next);
-                    setStorageConsent(false);
-                    setAiConsent(false);
-                    generate.reset();
-                    setSelected([]);
-                  }
-                }).catch(() => setFileError(true)).finally(() =>
-                  setPicking(false)
-                );
-              }}
-            />
-            {fileError
-              ? (
-                <Text accessibilityRole="alert" style={u.error}>
-                  {t("sources.sourceFailed")}
-                </Text>
-              )
-              : null}
+            <SourceFilesPicker value={file} disabled={generate.isPending || pending || blocked} onBusyChange={setPicking} onChange={(next)=>{discard();setFile(next);setStorageConsent(false);setAiConsent(false);generate.reset();setSelected([]);}} />
             {file && !pending && !ideas
               ? (
                 <>

@@ -6,6 +6,8 @@ const day = z.string().refine(isCalendarDate);
 const clean = (max: number, min = 0) =>
   z.string().min(min).max(max).refine((s) => s.trim() === s);
 export const learningPlanContentSchema = z.object({
+  catalog_id: z.string().regex(/^[a-z][a-z0-9_-]{2,79}$/).nullable().optional(),
+  subject_id: z.string().regex(/^[a-z][a-z0-9_-]{2,79}$/).nullable().optional(),
   kind: z.enum(["homework", "study", "course"]),
   title: clean(120, 1),
   subject: clean(80),

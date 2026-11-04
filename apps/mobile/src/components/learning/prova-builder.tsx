@@ -1,3 +1,4 @@
+import { NumberChoice, PromptExamples } from "@/components/ui/number-choice";
 import { invalidateProvaLists } from "@/lib/prova-cache";
 import {
   type ComponentRef,
@@ -699,30 +700,8 @@ export default function ProvaBuilder() {
                               }}
                             />
                           </BuilderCard>
-                          <BuilderCard title={t("provaBuilder.target")}>
-                            <View style={b.wrap}>
-                              {[5, 10, 15, 20].map((n) => (
-                                <BuilderChoice
-                                  key={n}
-                                  label={String(n)}
-                                  selected={draft.target === n}
-                                  onPress={() => update({ target: n })}
-                                />
-                              ))}
-                            </View>
-                            <Field
-                              label={t("provaBuilder.target")}
-                              keyboardType="number-pad"
-                              value={String(draft.target)}
-                              maxLength={3}
-                              onChangeText={(v) =>
-                                update({
-                                  target: Math.min(
-                                    100,
-                                    Math.max(1, Number(v) || 1),
-                                  ),
-                                })}
-                            />
+                          <BuilderCard>
+                            <NumberChoice label={t("provaBuilder.target")} value={draft.target} min={1} max={100} step={1} presets={[5,10,15,20]} onChange={target=>update({target})}/>
                             <View style={b.wrap}>
                               <BuilderChoice
                                 label={t("provaBuilder.untimed")}
@@ -737,19 +716,7 @@ export default function ProvaBuilder() {
                             </View>
                             {draft.minutes !== null
                               ? (
-                                <Field
-                                  label={t("provaBuilder.minutes")}
-                                  value={String(draft.minutes)}
-                                  keyboardType="number-pad"
-                                  maxLength={3}
-                                  onChangeText={(v) =>
-                                    update({
-                                      minutes: Math.min(
-                                        180,
-                                        Math.max(1, Number(v) || 1),
-                                      ),
-                                    })}
-                                />
+                                <NumberChoice label={t("provaBuilder.minutes")} value={draft.minutes} unit={t("prova.min")} onChange={minutes=>update({minutes})} />
                               )
                               : null}
                           </BuilderCard>
@@ -791,6 +758,7 @@ export default function ProvaBuilder() {
                               maxLength={1500}
                               hint={t("provaBuilder.noteHelp")}
                             />
+                            <PromptExamples value={draft.note} onChange={note=>update({note})} examples={[t("guidedInput.prompt1"),t("guidedInput.prompt2"),t("guidedInput.prompt3")]}/>
                           </BuilderCard>
                         </>
                       )

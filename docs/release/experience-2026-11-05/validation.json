@@ -1,0 +1,20 @@
+{
+  "sqlTests": 2071,
+  "coreTests": 243,
+  "isolatedServiceChecks": 254,
+  "browserLayoutChecks": 113,
+  "browserOverflowFailures": 0,
+  "physicalDeviceTested": false,
+  "nativeCameraTested": false,
+  "securityAudit": {
+    "high": 0,
+    "critical": 0,
+    "upstreamVersionWarnings": [
+      "deepmerge low",
+      "glob moderate",
+      "minimatch moderate"
+    ],
+    "existingBackportBehaviorTests": "passed"
+  },
+  "livePaymentMutationTested": false
+}

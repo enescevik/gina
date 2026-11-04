@@ -156,7 +156,7 @@ export async function callClaude<T>(
   if (
     new TextEncoder().encode(
       system + (typeof user === "string" ? user : JSON.stringify(user)),
-    ).length > (typeof user === "string" ? 1_000_000 : 24_000_000)
+    ).length > (typeof user === "string" ? 1_000_000 : 32_000_000)
   ) throw new Error("ai_input_too_large");
   const count = await fetch(
     "https://api.anthropic.com/v1/messages/count_tokens",
