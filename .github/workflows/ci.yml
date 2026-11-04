@@ -26,7 +26,7 @@ jobs:
         env:
           EXPO_NO_DOTENV: "1"
       - run: pnpm turbo run lint typecheck test
-      - run: node --test scripts/check-testflight.test.mjs scripts/check-native-text.test.mjs scripts/prepare-tablet-install.test.mjs scripts/check-notebook-layout.test.mjs scripts/check-projection-refresh.test.mjs
+      - run: node --test scripts/check-testflight.test.mjs scripts/check-native-text.test.mjs scripts/prepare-tablet-install.test.mjs scripts/check-notebook-layout.test.mjs scripts/check-projection-refresh.test.mjs scripts/check-answer-recovery.test.mjs
       - run: python3 scripts/test-meb-scenarios.py
       - run: python3 scripts/test-curriculum-candidates.py
       - run: python3 scripts/test-curriculum-review.py
