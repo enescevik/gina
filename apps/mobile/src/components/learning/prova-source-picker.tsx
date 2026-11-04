@@ -1,5 +1,5 @@
 import { provaGenerationJournal } from "@/lib/setup-command";
-import { canonicalSubject, catalogBlueprintFits } from "@gina/core";
+import { canonicalSubject, catalogBlueprintFits, provaGenerationKind } from "@gina/core";
 import { useMemo, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -260,7 +260,7 @@ export function ProvaSourcePicker(
           topic_plan: plan,
           blueprint_id: blueprint?.id ?? null,
           count: aiCount,
-          kind: draft.kind,
+          kind: provaGenerationKind(draft),
           assessment: draft.purpose === "written" ? "written" : "practice",
           difficulty: draft.difficulty,
           note: draft.note,

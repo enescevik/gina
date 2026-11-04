@@ -38,6 +38,7 @@ import {
   appendProvaBlocks,
   moveProvaBlock,
   newProvaDraft,
+  provaGenerationKind,
   type ProvaBlock,
   type ProvaDraft,
 } from "@gina/core";
@@ -754,19 +755,20 @@ export default function ProvaBuilder() {
                           </BuilderCard>
                           <BuilderCard title={t("provaBuilder.kind")}>
                             <View style={b.wrap}>
-                              {([
-                                "mixed",
-                                "multiple_choice",
-                                "open_ended",
-                              ] as const).map((v) => (
+                              {(draft.purpose === "written"
+                                ? ["open_ended"] as const
+                                : ["mixed", "multiple_choice", "open_ended"] as const).map((v) => (
                                 <BuilderChoice
                                   key={v}
                                   label={t(`provaBuilder.${v}`)}
-                                  selected={draft.kind === v}
+                                  selected={provaGenerationKind(draft) === v}
                                   onPress={() => update({ kind: v })}
                                 />
                               ))}
                             </View>
+                            {draft.purpose === "written"
+                              ? <Text style={b.muted}>{t("provaBuilder.writtenKindHelp")}</Text>
+                              : null}
                             <Text style={b.bold}>
                               {t("provaBuilder.difficulty")}
                             </Text>

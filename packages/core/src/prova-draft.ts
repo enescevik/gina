@@ -36,11 +36,18 @@ export const newProvaDraft = (): ProvaDraft => ({
   target: 10,
   minutes: null,
   difficulty: "orta",
-  kind: "mixed",
+  kind: "open_ended",
   note: "",
   step: 0,
   blocks: [],
 });
+// Written preparation follows the server's open-ended generation contract,
+// including drafts saved before that constraint was reflected in the controls.
+export function provaGenerationKind(
+  draft: Pick<ProvaDraft, "purpose" | "kind">,
+): ProvaDraft["kind"] {
+  return draft.purpose === "written" ? "open_ended" : draft.kind;
+}
 export function appendProvaBlocks(
   draft: ProvaDraft,
   blocks: ProvaBlock[],
