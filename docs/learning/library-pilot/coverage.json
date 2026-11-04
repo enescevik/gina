@@ -5,10 +5,10 @@
   "totals": {
     "grade_subject_pairs": 77,
     "target": 1540,
-    "authored_drafts": 80,
+    "authored_drafts": 100,
     "approved": 0,
     "published": 0,
-    "remaining_drafts": 1460
+    "remaining_drafts": 1440
   },
   "entries": [
     {
@@ -276,13 +276,26 @@
       "grade": 5,
       "subject": "Türkçe",
       "target": 20,
-      "authored_drafts": 0,
+      "authored_drafts": 20,
       "approved": 0,
       "published": 0,
-      "remaining_drafts": 20,
-      "status": "not_authored",
+      "remaining_drafts": 0,
+      "status": "editorial_review_pending",
       "annual_curriculum_complete": false,
-      "packages": []
+      "packages": [
+        {
+          "id": "gina-g5-turkish-play-language-v1",
+          "path": "docs/learning/library-pilot/grade-5-turkish/pilot.json",
+          "questions": 20,
+          "outcome_candidates": [
+            "T.O.5.20",
+            "T.O.5.6",
+            "T.O.5.7",
+            "T.Y.5.13",
+            "T.Y.5.16"
+          ]
+        }
+      ]
     },
     {
       "id": "tr-2026-2027-g05-mat",

@@ -1,0 +1,27 @@
+{
+  "questions": 20,
+  "sources": 5,
+  "pngs": 2,
+  "exact_field_and_byte_comparison": true,
+  "same_request_replay": true,
+  "published": false,
+  "editorial_review_performed": false,
+  "transaction_rolled_back": true,
+  "date": "2026-11-04",
+  "candidate_outcomes": 5,
+  "technical_test_cases": 28,
+  "regression_test_cases": 90,
+  "disposable_database_removed": true,
+  "paid_provider_call": false,
+  "mobile_typecheck": true,
+  "mobile_lint": true,
+  "visual_review": {
+    "phone_width": 390,
+    "review_width": 1280,
+    "diagram_content_width": 277,
+    "horizontal_overflow": false,
+    "images_loaded": true,
+    "physical_device": false
+  },
+  "content_review": "author_self_check_only_not_independent_editorial_approval"
+}
