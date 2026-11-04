@@ -1,3 +1,4 @@
+import { RepeatCalendarOrigin } from "@/components/learning/repeat-calendar-origin";
 import { randomUUID } from "expo-crypto";
 import { type CalendarCommand, calendarJournal } from "@/lib/calendar-command";
 import { useSession } from "@/lib/session";
@@ -310,6 +311,7 @@ export function EventEditor({
                     </View>
                   )
                   : null}
+                {event ? <RepeatCalendarOrigin eventId={event.id} onOpen={onClose} disabled={busy || signature !== initial || !!pending} /> : null}
                 <Field
                   label={t("calendar.title")}
                   value={title}
