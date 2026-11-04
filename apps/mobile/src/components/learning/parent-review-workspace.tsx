@@ -1,3 +1,4 @@
+import { invalidateProvaLists } from "@/lib/prova-cache";
 import { NOTEBOOK_MODAL_PROPS } from "./notebook-layout";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -187,7 +188,7 @@ export function ParentReviewWorkspace(
         queryKey: ["attempt_review_answers", attemptId],
       });
       void cache.invalidateQueries({ queryKey: ["child_answer_reviews"] });
-      void cache.invalidateQueries({ queryKey: ["exams"] });
+      void invalidateProvaLists(cache);
       void cache.invalidateQueries({ queryKey: ["learning_progress"] });
       void cache.invalidateQueries({ queryKey: ["review_workspace"] });
     },

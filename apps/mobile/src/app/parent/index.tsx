@@ -103,6 +103,8 @@ export default function ParentHomeScreen() {
     },
   });
 
+  useRealtimeInvalidate("task_templates", familyId ? `family_id=eq.${familyId}` : null, [["family_task_templates", familyId]]);
+
   useRealtimeInvalidate("task_completions", familyId ? `family_id=eq.${familyId}` : null, [
     ["approvals", familyId],
     ["family_completions", familyId, today],

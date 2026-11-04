@@ -1,3 +1,4 @@
+import { invalidateProvaLists } from "@/lib/prova-cache";
 import { ChildReviewFeedback } from "@/components/learning/child-review-feedback";
 import { ContextualQuestion } from "@/components/learning/question-context";
 import { ArrowLeft, ArrowRight } from "lucide-react-native";
@@ -359,7 +360,7 @@ export default function TakeExamScreen() {
     },
     onSuccess: (result) => {
       queryClient.setQueryData(["attempt", examId], result);
-      void queryClient.invalidateQueries({ queryKey: ["child_exams"] });
+      void invalidateProvaLists(queryClient);
     },
   });
 

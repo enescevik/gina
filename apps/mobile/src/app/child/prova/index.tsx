@@ -32,6 +32,7 @@ export default function ChildProvaScreen() {
       return data;
     },
   });
+  useRealtimeInvalidate("exams", childId ? `child_id=eq.${childId}` : null, [["child_exams", childId]]);
   useRealtimeInvalidate("exam_attempts", childId ? `child_id=eq.${childId}` : null, [["child_exams", childId]]);
 
   const open = (exams.data ?? []).filter((e) => e.status === "assigned");

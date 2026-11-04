@@ -1,3 +1,4 @@
+import { invalidateProvaLists } from "@/lib/prova-cache";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
@@ -138,7 +139,7 @@ export default function LevelTestScreen() {
       if (error) throw error;
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ["exams", familyId] });
+      void invalidateProvaLists(queryClient);
       router.back();
     },
   });

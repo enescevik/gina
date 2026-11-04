@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { useRealtimeInvalidate } from "./realtime";
+
 import { supabase } from "./supabase";
 
 /** Çocuğa atanmış (status 'assigned') deneme sayısı; kitaplık ve dar akıştaki Prova kartı rozeti. */
 export function useChildExamCount(childId: string) {
+  useRealtimeInvalidate("exams", childId ? `child_id=eq.${childId}` : null, [["child_exam_count", childId]]);
   return useQuery({
     queryKey: ["child_exam_count", childId],
     enabled: !!childId,
