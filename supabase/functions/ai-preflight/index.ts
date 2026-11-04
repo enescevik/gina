@@ -1,3 +1,8 @@
+import {
+  type FeatureMode,
+  featureModes,
+  featureSmoke,
+} from "./feature-smoke.ts";
 import { TIMETABLE_PNG } from "./fixture.ts";
 import {
   TIMETABLE_SCHEMA,
@@ -18,6 +23,13 @@ Deno.serve((req) =>
       const config = await resolveAi(serviceClient(), "pro", 256);
       if (config instanceof Response) {
         throw new Error("configuration_unavailable");
+      }
+      if (featureModes.includes(mode as FeatureMode)) {
+        return featureSmoke(
+          mode as FeatureMode,
+          Deno.env.get("ANTHROPIC_API_KEY")!,
+          config,
+        );
       }
       if (mode === "document-smoke") {
         const result = await callClaude<unknown>(

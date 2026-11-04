@@ -29,6 +29,7 @@ def main():
     parser.add_argument("--project-ref", required=True)
     parser.add_argument("--smoke", action="store_true")
     parser.add_argument("--document-smoke", action="store_true")
+    parser.add_argument("--feature-smoke", action="store_true", help="Four bounded paid calls: weekly summary, learning document, task and reward")
     args = parser.parse_args()
     if len(args.project_ref) != 20 or not args.project_ref.isalpha() or not args.project_ref.islower():
         raise RuntimeError("invalid_project_ref")
@@ -49,7 +50,7 @@ def main():
             env.write(f"GINA_PREFLIGHT_TOKEN={token}\nGINA_PREFLIGHT_EXPIRES_AT={expires}\n")
             env.flush()
             cli("secrets", "set", "--project-ref", args.project_ref, "--env-file", env.name)
-        for mode in ["connection"] + (["smoke"] if args.smoke else []) + (["document-smoke"] if args.document_smoke else []):
+        for mode in ["connection"] + (["smoke"] if args.smoke else []) + (["document-smoke"] if args.document_smoke else []) + (["weekly-smoke", "learning-smoke", "task-smoke", "reward-smoke"] if args.feature_smoke else []):
             request = urllib.request.Request(
                 f"https://{args.project_ref}.supabase.co/functions/v1/ai-preflight",
                 data=json.dumps({"mode": mode}).encode(),
@@ -61,7 +62,7 @@ def main():
                     status, body = response.status, json.load(response)
             except urllib.error.HTTPError as error:
                 status, body = error.code, json.load(error)
-            allowed = {"check", "connected", "visible_models", "valid", "model", "inputTokens", "outputTokens", "error", "provider_status"}
+            allowed = {"check", "connected", "visible_models", "valid", "model", "inputTokens", "outputTokens", "error", "provider_status", "sample"}
             report["checks"].append({"mode": mode, "status": status, **{k: v for k, v in body.items() if k in allowed}})
             if status != 200:
                 break  # No automatic retries of a potentially paid generation.
