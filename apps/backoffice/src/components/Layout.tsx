@@ -40,12 +40,13 @@ export async function signOut(confirmed = false) {
 
 /** Admin sayfa çerçevesi: oturum yoksa girişe yönlendirir, admin claim'i yoksa uyarı gösterir. */
 export function Layout(
-  { title, children, support = false, content = false, finance = false, compact = false }: {
+  { title, children, support = false, content = false, finance = false, release = false, compact = false }: {
     title: string;
     children: ReactNode;
     support?: boolean;
     content?: boolean;
     finance?: boolean;
+    release?: boolean;
     compact?: boolean;
   },
 ) {
@@ -65,8 +66,8 @@ export function Layout(
     roleError,
     refreshRoles,
   } = useAuth();
-  const requiredRole = finance ? "finance" : content ? "content" : "support";
-  const operation = support || content || finance;
+  const requiredRole = release ? "release" : finance ? "finance" : content ? "content" : "support";
+  const operation = support || content || finance || release;
   const allowed = operation
     ? rolesReady && roles.includes(requiredRole)
     : isAdmin;
@@ -98,7 +99,7 @@ export function Layout(
           : !allowed
           ? (
             <Notice>
-              {finance ? "Bu bölümü açmak için etkin finans yetkisi gerekiyor." : content
+              {release ? "Bu bölümü açmak için etkin yayın operasyonu yetkisi gerekiyor." : finance ? "Bu bölümü açmak için etkin finans yetkisi gerekiyor." : content
                 ? "Bu bölümü açmak için etkin içerik yetkisi gerekiyor."
                 : "Bu bölümü açmak için etkin destek yetkisi gerekiyor."}{" "}
               <button className="btn-secondary" onClick={() => void signOut()}>
@@ -145,7 +146,7 @@ export function Layout(
               ? "/dashboard"
               : roles.includes("support")
               ? "/support"
-              : roles.includes("content") ? "/help-articles" : "/billing"}
+              : roles.includes("content") ? "/help-articles" : roles.includes("finance") ? "/billing" : "/notifications"}
             className="admin-brand"
             aria-label="GINA yönetim ana sayfa"
           >
@@ -155,7 +156,7 @@ export function Layout(
           </Link>
           {session &&
               (isAdmin || roles.includes("support") ||
-                roles.includes("content") || roles.includes("finance"))
+                roles.includes("content") || roles.includes("finance") || roles.includes("release"))
             ? (
               <nav aria-label="Yönetim bölümleri">
                 {publication && isAdmin ? (
@@ -220,6 +221,7 @@ export function Layout(
                     </>
                   )
                   : null}
+                {roles.includes("release") ? <Link href="/notifications" className={router.pathname === "/notifications" ? "admin-nav active" : "admin-nav"} aria-current={router.pathname === "/notifications" ? "page" : undefined}><PublicationIcon name="check" />Bildirim teslimi</Link> : null}
                 {roles.includes("finance") ? <Link href="/billing" className={router.pathname === "/billing" ? "admin-nav active" : "admin-nav"} aria-current={router.pathname === "/billing" ? "page" : undefined}><PublicationIcon name="lock" />Paketler ve ödemeler</Link> : null}
                 {roles.includes("content")
                   ? (
@@ -249,7 +251,7 @@ export function Layout(
                     ? "Destek ekibi"
                     : roles.includes("content")
                     ? "İçerik ekibi"
-                    : roles.includes("finance") ? "Finans ekibi" : "Yetkili oturumu"}
+                    : roles.includes("finance") ? "Finans ekibi" : roles.includes("release") ? "Yayın operasyonu" : "Yetkili oturumu"}
                 </span>
                 <span>{session.user.email}</span>
                 <button

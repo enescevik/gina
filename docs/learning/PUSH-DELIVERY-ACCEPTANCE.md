@@ -36,3 +36,10 @@ APNs birleştirme kimliği olay kimliğine bağlandı: farklı Provalar sırf ay
 6. Zamanlayıcıyı yeniden etkinleştir; bekleyen/süresi dolmuş/kalıcı başarısız kayıtları kontrol et. İnceleme tamamlanmadan gerçek kullanıcıya toplu geçmiş bildirim gönderme.
 
 Kaynaklar: [Apple bildirim istekleri](https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns), [Apple hata yanıtları](https://developer.apple.com/documentation/usernotifications/handling-notification-responses-from-apns), [Firebase hata kodları](https://firebase.google.com/docs/cloud-messaging/error-codes).
+
+
+## 084000 operatör kurtarması
+
+`/notifications` canlı yayın rolüyle açılır. Eksik hizmet ayarı düzeltildikten sonra, son 24 saatin başarısız/ayar eksik kayıtları gerekçe ve açık onayla yeniden sıraya alınabilir. Başarılı cihaz makbuzları korunur; güncel izin ve hedefler tekrar sorgulanır. Kayıt başına iki, operatör başına saatte 20 kurtarma sınırı vardır. Belirsiz yanıt aynı kalıcı istekle sorgulanır. Önceki sonuç sayıları özel geçmişte saklanır; cihaz anahtarları gösterilmez. Aile silme geçmişi temizler.
+
+Bu ekran bütün geçmişi tekrar göndermez ve sağlayıcı kabulünü fiziksel teslim olarak göstermez. Gerçek APNs/FCM ayarları ile fiziksel cihaz kabulü hâlâ yapılmalıdır. Görsel/izole kabul: `../design/screens/push-operations/README.md`.
