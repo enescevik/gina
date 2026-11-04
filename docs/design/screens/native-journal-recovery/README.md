@@ -8,6 +8,7 @@ geçici kabul rotasıdır. Gerçek aile/demo kaydı kullanılmadı.
 
 - iPad Air 11-inch M4 / iOS 26.5 simülatörü: geçti.
 - iPhone 17 Pro / iOS 26.5 simülatörü: geçti.
+- Pixel 6 Pro / Android API 33 arm64 ekransız emülatörü: geçti (aşağıdaki ek kabul).
 - Her cihazda çocuk için biri gönderilmemiş, diğeri yanıtı kaybolmuş iki kayıt;
   veli için aynı iki durum ayrı ayrı saklandı.
 - Geliştirme uygulamasının işletim sistemi süreci `simctl terminate` ile kapatıldı.
@@ -49,5 +50,31 @@ tekrar kabul edilir. 238 core testi, mobil/core tip ve mobil lint geçti.
 
 Ağ yanıtları test callback'leridir; gerçek sunucu kabulünün yerine geçmez. Gerçek
 Auth/REST/Storage kanıtı `docs/learning/isolated-service-acceptance/` altındadır.
-Fiziksel iPad/Pencil, avuç teması, Android, işletim sistemi bellek baskısı/disk
+Fiziksel iPad/Pencil, avuç teması, Android görsel/kalem kabulü, işletim sistemi bellek baskısı/disk
 arızası ve kaldırıp yeniden kurma bu testte doğrulanmadı. Taslak bulut yedeği değildir.
+
+## Android ek kabulü
+
+Aynı üretim journal/SQLite modülleri ayrı geçici worktree'de **com.enescevik.gina.qa**
+kimlikli Expo Debug derlemesiyle sınandı. Ürün kimliği, uygulama kodu ve mevcut
+uygulama verileri değiştirilmedi. İlk derleme 17 dakika 28 saniyede geçti; yeni
+bağımlılık eklenmedi. Expo'nun ürettiği Android kaynakları elle değiştirilmedi.
+
+Emülatör ekransız olduğundan ekran görüntüsü veya kullanıcı etkileşimi kabulü
+iddia edilmez. Kabul rotasının açık `phase=prepare` / `phase=recover` parametreleri
+gerçek journal işlemlerini başlattı. İlk süreç 6685, `am force-stop` sonrasında
+yeni süreç 7004 idi. Ayrı süreç nonce kontrolü de geçti. Logcat yalnız QA uygulama
+sürecine filtrelendi; uygulama depolaması temizlenerek test kolaylaştırılmadı.
+
+`android-verification.json`, başarılı yedi kontrolü ve yalnız sentetik kayıt
+temizliğini içerir. Çocuk isteğinin makbuzu korunarak 3, ardından sonraki düzenleme
+4 revizyonuyla işlendi; geçersiz veli makbuzu taslağı korudu. Gerçek ağ/oturum
+kabulü ayrı hizmet raporundadır. Debug APK bir mağaza yayını değildir.
+
+Yeniden çalıştırmak için geçici kopyada QA package/scheme kullan; Metro'nun boş
+bir portunu seç (bu çalışmada 8099). Yalnız bu testin portlarını emülatöre yönlendir.
+Geliştirme istemcisini Metro'ya bağladıktan sonra `gina-qa://qa-journal?phase=prepare`
+aç; `NATIVE_JOURNAL_RECOVERY_READY` kaydını bekle. QA sürecini kapat, yeniden Metro'ya
+bağla, `gina-qa://qa-journal?phase=recover` aç ve `NATIVE_JOURNAL_RECOVERY_PASS`
+kaydını doğrula. Aynı işlem sırasında uygulamayı yeniden kurma veya verilerini silme.
+QA rotası, bu parametreler ve sentetik anahtar ürün derlemesine girmemelidir.

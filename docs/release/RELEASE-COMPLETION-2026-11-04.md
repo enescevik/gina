@@ -18,7 +18,7 @@ anlamına gelmez.
 |---|---|
 | Web, mobil ve yönetim panelinin ortak veri akışı | İzole gerçek Auth/REST/Realtime/Storage/Edge koşumunda 192 kontrol geçti. Görev, Prova, cihaz iptali, aile ayrımı, destek ve SSS dahil. Canlı sürüm kabulü ayrı yapılacak. |
 | Yeni AI özellikleri | Haftalık özet, belgeden ödev/kurs, görev ve ödül gerçek sağlayıcıyla geçti. Yeni ürün uç noktalarının kayıt/kota/yeniden açılış kabulü tamamlanacak. |
-| Native taslak güvenliği | iPhone/iPad simülatörlerinde gerçek SQLite ve süreç kapanışı geçti. Android ve fiziksel kalem/klavye kabulü ayrıca kaydedilecek. |
+| Native taslak güvenliği | iPhone/iPad simülatörleri ve Android API33 emülatöründe gerçek SQLite ve süreç kapanışı geçti. Fiziksel kalem/klavye ve Android görsel kabulü ayrıca yapılacak. |
 | Eşgüdümlü yayın | Üretim DB kaydı 20261103040000'a kadar; 20261103094000 dahil sonraki migration'lar, ilgili Edge sürümleri ve istemciler birlikte yayımlanacak. Yedek/geri dönüş ve yetki kontrolleri atlanmayacak. |
 | Web ve backoffice hosting | İki üretim derlemesi ve gerçek yayın başlıklarıyla telefon/tablet giriş ekranları geçti. Cloudflare yüklemesi ve Access koruması henüz kabul edilmedi. Yeşil ama atlanmış Actions işi yayın kanıtı değildir. |
 | Mağaza ve bildirim | Sunucu kontrolleri mevcut; gerçek satın alma/yenileme/iade ve APNs/FCM teslimi için mağaza/cihaz kabulü gerekiyor. |

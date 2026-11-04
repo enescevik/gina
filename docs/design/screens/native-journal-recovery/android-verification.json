@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "device": "Pixel 6 Pro API 33 arm64 emulator",
+  "applicationId": "com.enescevik.gina.qa",
+  "baseCommit": "517bb02",
+  "initialPid": 6685,
+  "reopenedPid": 7004,
+  "processKilled": true,
+  "output": [
+    "11-04 17:07:30.766  7004  7082 I ReactNativeJS: 'NATIVE_JOURNAL_RECOVERY_PASS', '{\"freshProcess\":true,\"childPendingSame\":true,\"parentPendingSame\":true,\"unsentPreserved\":true,\"laterEditPreserved\":true,\"invalidReceiptRetained\":true,\"syntheticCleanup\":true}'"
+  ],
+  "productionDataTouched": false,
+  "visualAcceptance": false,
+  "date": "2026-11-04",
+  "build": {
+    "type": "debug QA only",
+    "expoNativeGeneration": true,
+    "newDependencies": false,
+    "duration": "17m28s",
+    "apkSha256": "9fd1c737019df88a43c6f4961598b10e24ff37674339b5a8a52c2c6395bb56c3"
+  },
+  "limitations": [
+    "headless emulator; no visual UI acceptance",
+    "synthetic network acknowledgements",
+    "not a release APK or Play Store billing/push test",
+    "no physical stylus/palm or storage pressure test"
+  ],
+  "cleanup": {
+    "qaAppUninstalled": true,
+    "ownedPortForwardingRemoved": true,
+    "ownedServersStopped": true,
+    "existingEmulatorKept": true
+  }
+}
