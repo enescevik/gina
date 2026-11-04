@@ -1,0 +1,24 @@
+{
+  "version": "0.1.0",
+  "build": "22",
+  "source": "1d530627f672dd2f5ca49f01b61b99ae66dc1837",
+  "mergedSource": "47a10666bb700a61fdf198e4d553cbaa7818828b",
+  "bundleId": "com.enescevik.gina",
+  "signatureVerified": true,
+  "deviceFamilies": [
+    1,
+    2
+  ],
+  "iPadOrientations": [
+    "UIInterfaceOrientationPortrait",
+    "UIInterfaceOrientationPortraitUpsideDown",
+    "UIInterfaceOrientationLandscapeLeft",
+    "UIInterfaceOrientationLandscapeRight"
+  ],
+  "cameraPermissionPresent": true,
+  "productionEndpointsVerified": true,
+  "physicalDeviceTested": false,
+  "distribution": "app-store",
+  "buildMethod": "EAS local; cloud free-plan quota exhausted",
+  "ipaSha256": "085c790bbcba6e9f5445ce6c0c65a76271f57df15feb6a2b3c4b580d6cab0fe3"
+}
