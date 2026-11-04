@@ -29,7 +29,7 @@ test('reproduces automatic reconnect refetch for the old review query policy', a
 });
 const source=readFileSync(new URL('../apps/mobile/src/lib/answer-state.ts',import.meta.url),'utf8');
 const code=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
-const {mergeAnswerSnapshot,acknowledgeAnswerDraft,REVIEW_SNAPSHOT_OPTIONS}=await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+const {sameAnswer,mergeAnswerSnapshot,acknowledgeAnswerDraft,REVIEW_SNAPSHOT_OPTIONS}=await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
 
 test('late or missing server rows cannot roll back an acknowledged answer; newer remote answers still arrive', async () => {
   const cache=client(),key=['attempt_saved_answers','attempt'];let resolve;
@@ -69,4 +69,23 @@ test('review snapshot survives reconnect/focus and reads fresh when reopened', a
   stop();const reopened=new QueryObserver(cache,options);stop=reopened.subscribe(()=>{});await tick();
   assert.equal(calls,2);assert.equal(reopened.getCurrentResult().data.revision,2);
   stop();cache.unmount();cache.clear();focusManager.setFocused(undefined);
+});
+
+// NotebookEditor creates text fields in a different order than the durable
+// journal schema. PostgreSQL jsonb can reorder them again on a later read.
+test('saved notebook text releases its draft regardless of object key order', () => {
+  const e={id:'10000000-0000-4000-8000-000000000001',type:'text',x:90,y:80,width:800,height:68,size:48,color:'#201951',text:'2 × (8 + 6) = 28 metre'};
+  const document={version:1,width:1000,height:1400,elements:[e]};
+  const saved={height:1400,elements:[{text:e.text,color:e.color,size:e.size,height:e.height,width:e.width,y:e.y,x:e.x,type:e.type,id:e.id}],width:1000,version:1};
+  assert.equal(sameAnswer({document},{document:saved}),true);
+  assert.deepEqual(acknowledgeAnswerDraft({q:{document,revision:0}},'q',{document:saved},1),{});
+  const edited={...saved,elements:[{...saved.elements[0],text:'29 metre'}]};
+  assert.equal(sameAnswer({document},{document:edited}),false);
+  assert.equal(acknowledgeAnswerDraft({q:{document:edited,revision:0}},'q',{document:saved},1).q.document,edited);
+});
+test('notebook comparison preserves element and point ordering', () => {
+  const a={version:1,width:1000,height:1400,elements:[{id:'a',points:[[1,2],[3,4]]},{id:'b',text:'x'}]};
+  assert.equal(sameAnswer({document:a},{document:{...a,elements:[...a.elements].reverse()}}),false);
+  assert.equal(sameAnswer({document:a},{document:{...a,elements:[{...a.elements[0],points:[[3,4],[1,2]]},a.elements[1]]}}),false);
+  assert.equal(sameAnswer({}, {document:a}),false);
 });

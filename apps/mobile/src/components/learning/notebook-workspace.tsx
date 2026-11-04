@@ -164,13 +164,12 @@ export function NotebookWorkspace({
         )}
         {shared.data ? <SharedContext context={shared.data} /> : null}
         <View style={compactSummary ? s.questionSummary : { gap: 10 }}>
-          <View style={[s.diagram, compactSummary && s.summaryImage]}>
-            <QuestionMedia
-              questionId={questionId}
-              notebook
-              maxImageHeight={compactSummary ? 120 : wide ? 160 : undefined}
-            />
-          </View>
+          <QuestionMedia
+            style={[s.diagram, compactSummary && s.summaryImage]}
+            questionId={questionId}
+            notebook
+            maxImageHeight={compactSummary ? 120 : wide ? 160 : undefined}
+          />
           <Text selectable style={[s.stem, compactSummary && { flex: 1 }]}>{prompt}</Text>
         </View>
         {tokens.length > 0 && (

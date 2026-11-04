@@ -9,9 +9,27 @@ interface AnswerValue {
 export type SavedAnswer = AnswerValue & { revision?: number };
 export type SavedAnswers = Record<string, SavedAnswer>;
 
+// Journal validation and jsonb reads may change object key order. Compare
+// notebook content, while preserving array order (layers and stroke points).
+function sameContent(a: unknown, b: unknown): boolean {
+  if (a === b) return true;
+  if (a === null || b === null || typeof a !== "object" || typeof b !== "object") {
+    return false;
+  }
+  if (Array.isArray(a) || Array.isArray(b)) {
+    return Array.isArray(a) && Array.isArray(b) && a.length === b.length &&
+      a.every((value, index) => sameContent(value, b[index]));
+  }
+  const left = a as Record<string, unknown>, right = b as Record<string, unknown>;
+  const keys = Object.keys(left);
+  return keys.length === Object.keys(right).length && keys.every((key) =>
+    Object.prototype.hasOwnProperty.call(right, key) && sameContent(left[key], right[key])
+  );
+}
+
 export function sameAnswer(a: SavedAnswer | undefined, b: SavedAnswer | undefined) {
   return a?.key === b?.key && a?.text === b?.text &&
-    JSON.stringify(a?.document) === JSON.stringify(b?.document);
+    sameContent(a?.document, b?.document);
 }
 
 /** A read begun before an acknowledgement must not roll that answer back.

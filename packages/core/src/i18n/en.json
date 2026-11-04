@@ -226,6 +226,7 @@
   "prova.untimed": "untimed",
   "prova.inProgress": "In progress…",
   "prova.resultMc": "Multiple choice: {{correct}} / {{total}} correct",
+  "prova.viewResult": "View result and feedback",
   "prova.status.draft": "Draft",
   "prova.status.ready": "Ready",
   "prova.status.assigned": "Assigned",

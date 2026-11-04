@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
@@ -15,6 +15,7 @@ import { supabase } from "@/lib/supabase";
 /** Çocuk Prova: atanmış denemeler ve tamamlananların sonucu (kitaplıktan açılır; tablette ve telefonda çocuk modunda). */
 export default function ChildProvaScreen() {
   const { t } = useTranslation();
+  const cache = useQueryClient();
   const { claims } = useSession();
   const { actingChild } = useChildMode();
   const childId = claims?.child_id ?? actingChild?.id ?? "";
@@ -77,9 +78,17 @@ export default function ChildProvaScreen() {
       {done.map((exam) => {
         const attempt = exam.exam_attempts?.[0];
         return (
-          <View
+          <Pressable
             key={exam.id}
-            accessible
+            accessibilityRole="button"
+            accessibilityHint={t("prova.viewResult")}
+            onPress={() => {
+              void cache.invalidateQueries({ queryKey: ["attempt", exam.id], exact: true });
+              router.push({
+                pathname: actingChild ? "/parent/child-mode/prova/[examId]" : "/child/prova/[examId]",
+                params: { examId: exam.id },
+              });
+            }}
             accessibilityLabel={`${exam.title}, ${t("prova.status.completed")}, ${t("prova.resultMc", { correct: attempt?.mc_correct ?? 0, total: attempt?.mc_total ?? 0 })}`}
             className="flex-row items-center gap-3 rounded-child bg-green-light p-4"
           >
@@ -89,8 +98,9 @@ export default function ChildProvaScreen() {
               <Text className="font-body text-sm text-gray-700">
                 {t("prova.resultMc", { correct: attempt?.mc_correct ?? 0, total: attempt?.mc_total ?? 0 })}
               </Text>
+              <Text className="mt-2 font-body-bold text-purple">{t("prova.viewResult")}</Text>
             </View>
-          </View>
+          </Pressable>
         );
       })}
       </ChildColumns>

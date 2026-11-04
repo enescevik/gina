@@ -66,12 +66,24 @@ export async function prepareLearningImage(
   const rendered = await image.saveAsync({
     format: png ? SaveFormat.PNG : SaveFormat.JPEG,
     compress: 0.9,
+    base64: Platform.OS === "web",
   });
+  // Read the processed image directly. Fetching its browser blob URL is a
+  // network API and is blocked by our production connect-src policy.
+  let bytes: ArrayBuffer;
+  if (Platform.OS === "web") {
+    if (!rendered.base64 || rendered.base64.length > 4 * Math.ceil(4 * 1024 * 1024 / 3)) {
+      throw new Error("source_size_or_type");
+    }
+    bytes = Uint8Array.from(atob(rendered.base64), (c) => c.charCodeAt(0)).buffer;
+  } else {
+    bytes = await bytesOf(rendered.uri);
+  }
   return packed(
     name,
     png ? "image/png" : "image/jpeg",
     rendered.uri,
-    await bytesOf(rendered.uri),
+    bytes,
     { width: rendered.width, height: rendered.height },
   );
 }
