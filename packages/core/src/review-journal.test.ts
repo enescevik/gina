@@ -77,3 +77,15 @@ it("retains a definitively rejected request if clearing its pending flag fails, 
   f.store.set=()=>{throw Error("disk_full");};expect(()=>j.reject(a.pending!)).toThrow("disk_full");
   expect(j.prepare()).toEqual(a);f.store.set=set;j.reject(a.pending!);expect(f.open().restore()?.pending).toBeNull();
 });
+it.each([0, -1, Number.MAX_SAFE_INTEGER + 1, Infinity, NaN, 1.5, "1", null])(
+  "keeps the first review and its original request on invalid acknowledgement %s",
+  revision => {
+    const f=fixture(),j=f.open();j.restore();
+    j.edit({...base,revision:0},draft);const command=j.prepare();
+    expect(()=>j.acknowledge(command.pending!,revision)).toThrow("review_receipt_invalid");
+    const reopened=f.open();expect(reopened.restore()).toEqual(command);
+    expect(reopened.prepare()).toEqual(command);
+    reopened.acknowledge(command.pending!,1);
+    expect(f.open().restore()).toBeNull();
+  },
+);
