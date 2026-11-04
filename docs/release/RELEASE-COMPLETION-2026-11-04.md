@@ -16,8 +16,8 @@ anlamına gelmez.
 
 | İş | Şu anki kanıt / kalan sınır |
 |---|---|
-| Web, mobil ve yönetim panelinin ortak veri akışı | İzole gerçek Auth/REST/Realtime/Storage/Edge koşumunda 192 kontrol geçti. Görev, Prova, cihaz iptali, aile ayrımı, destek ve SSS dahil. Canlı sürüm kabulü ayrı yapılacak. |
-| Yeni AI özellikleri | Haftalık özet, belgeden ödev/kurs, görev ve ödül gerçek sağlayıcıyla geçti. Yeni ürün uç noktalarının kayıt/kota/yeniden açılış kabulü tamamlanacak. |
+| Web, mobil ve yönetim panelinin ortak veri akışı | İzole gerçek Auth/REST/Realtime/Storage/Edge koşumunda 254 kontrol geçti. Görev, Prova, cihaz iptali, aile ayrımı, destek ve SSS dahil. Canlı sürüm kabulü ayrı yapılacak. |
+| Yeni AI özellikleri | Haftalık özet, belgeden ödev/kurs, görev ve ödül gerçek sağlayıcıyla geçti. Yeni ürün uç noktalarının kayıt/kota/yeniden açılışı yerel gerçek hizmetler ve deterministik sağlayıcı sınırıyla geçti. Aynı zincirin canlı dağıtım sonrası kabulü ayrıca yapılacak. |
 | Native taslak güvenliği | iPhone/iPad simülatörleri ve Android API33 emülatöründe gerçek SQLite ve süreç kapanışı geçti. Fiziksel kalem/klavye ve Android görsel kabulü ayrıca yapılacak. |
 | Eşgüdümlü yayın | Üretim DB kaydı 20261103040000'a kadar; 20261103094000 dahil sonraki migration'lar, ilgili Edge sürümleri ve istemciler birlikte yayımlanacak. Yedek/geri dönüş ve yetki kontrolleri atlanmayacak. |
 | Web ve backoffice hosting | İki üretim derlemesi ve gerçek yayın başlıklarıyla telefon/tablet giriş ekranları geçti. Cloudflare yüklemesi ve Access koruması henüz kabul edilmedi. Yeşil ama atlanmış Actions işi yayın kanıtı değildir. |
@@ -127,7 +127,7 @@ Sorun bildirirken ekran adı, sürüm, cihaz ve yaptığın son adım yeterli; g
 ## Kanıtlar ve yayın sırası
 
 1. [Birleşik hizmet kabulü](../learning/isolated-service-acceptance/README.md)
-   ve `backoffice-verification.json`: 192 kontrol.
+   ve `ai-pipeline-verification.json`: 254 kontrol.
 2. [Gerçek AI içerik kabulü](../learning/ai-feature-acceptance/README.md).
 3. [Tarayıcı yayın kabulü](browser-readiness/README.md): üretim başlıkları, telefon/tablet.
 4. [Native taslak kabulü](../design/screens/native-journal-recovery/README.md).
