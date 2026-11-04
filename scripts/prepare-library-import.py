@@ -18,7 +18,7 @@ spec.loader.exec_module(pilot)
 
 def prepare(folder):
     data=json.loads((folder/'pilot.json').read_text())
-    if data.get('technical_profile')=='science_sky_v1':
+    if data.get('technical_profile') is not None:
         draft_spec=importlib.util.spec_from_file_location('draft',Path(__file__).with_name('validate-library-draft.py'))
         draft=importlib.util.module_from_spec(draft_spec);draft_spec.loader.exec_module(draft)
         draft.validate(data,folder)

@@ -447,3 +447,10 @@ Canlı yayın rolüne özel bildirim kuyruğu, gerekçeli yeniden sıraya alma, 
 Prova incelemesindeki mevcut çalışma planı alanından açılan soru seçimi → gün/saat/süre → önizleme → takvime ekleme tamamlandı. Güncel sınıf, son 90 gün, veli incelemesi ve daha yeni gözlem sınırı uygulanır. AI-only/boş cevap tekrar gereksinimi sayılmaz. Değiştirilebilir 1/3/7 gün önerisi hiçbir günü kendiliğinden seçmez. Yeni Prova veya puan oluşturulmaz.
 
 Kalıcı kayıt, kaynak imzası, tek plan sınırı, seçilen özgün soru numaraları ve takvimden kaynağa dönüş vardır. Çocuk silme hatırlatmayı aile geneline dönüştürmez; başka çocuğa yeniden atanan etkinlik eski kaynaktan ayrılır. 40 yeni SQL ile 63 dosyada 1.725 kontrol, dört gerçek DB yarışı ve 164 core testi; mobil lint/tip ve core tip kabulü geçti. Gerçek Expo bileşeni telefon/tablet, kayıp yanıt/yeniden açılış, tarih/süre önizleme ve kaynak değişimi kontrolleri: `docs/design/screens/repeat-calendar/README.md`. Üretim/TestFlight değişmedi; fiziksel kabul ve diğer kapsam maddeleri açık.
+
+
+## 4 Kasım — 6. sınıf Matematik ilk havuzu
+
+Güncel MEB sayılar/istatistik sayfaları ile saklı 2026–2027 kaynak sürümüne bağlı 20 özgün açık uçlu taslak eklendi. Üç özgün şema, bir metin kaynağı, bağımsız cevap/ölçüt/yanılgı/sonraki adım ve öğrenciden gizli cevap alanları vardır. Eski kaynaklarda ters olan 6.1.7/6.1.8 eşlemesi güncel kaynak sırasıyla sabitlendi; okul senaryosu seçilmedi.
+
+22 yeni teknik test, 20 Fen +18 Matematik +3 aktarım regresyonu; gerçek 20 sorunun geçici DB'ye eksiksiz alan/bayt aktarımı ve aynı istekte tek paket kontrolü geçti. Telefon tablo kırpılması giderildi; soru ve cevaplı editör önizlemesi görsel olarak incelendi. Kanıt: `library-pilot/grade-6-math/README.md`. Havuz 60 taslak oldu; 1480 henüz yazılmadı, 0 bağımsız onay/yayın. Gerçek aile verisi, ücretli sağlayıcı ve TestFlight değişmedi. Bu, yıllık müfredat veya fiziksel cihaz kabulü değildir.

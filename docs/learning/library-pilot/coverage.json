@@ -5,10 +5,10 @@
   "totals": {
     "grade_subject_pairs": 77,
     "target": 1540,
-    "authored_drafts": 40,
+    "authored_drafts": 60,
     "approved": 0,
     "published": 0,
-    "remaining_drafts": 1500
+    "remaining_drafts": 1480
   },
   "entries": [
     {
@@ -406,13 +406,26 @@
       "grade": 6,
       "subject": "Matematik",
       "target": 20,
-      "authored_drafts": 0,
+      "authored_drafts": 20,
       "approved": 0,
       "published": 0,
-      "remaining_drafts": 20,
-      "status": "not_authored",
+      "remaining_drafts": 0,
+      "status": "editorial_review_pending",
       "annual_curriculum_complete": false,
-      "packages": []
+      "packages": [
+        {
+          "id": "gina-g6-math-numbers-data-v1",
+          "path": "docs/learning/library-pilot/grade-6-math/pilot.json",
+          "questions": 20,
+          "outcome_candidates": [
+            "MAT.6.1.5",
+            "MAT.6.1.6",
+            "MAT.6.1.7",
+            "MAT.6.1.8",
+            "MAT.6.5.1"
+          ]
+        }
+      ]
     },
     {
       "id": "tr-2026-2027-g06-fen",

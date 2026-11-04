@@ -1,0 +1,1737 @@
+{
+  "schema": "gina.learning-library-pilot.v1",
+  "id": "gina-g6-math-numbers-data-v1",
+  "revision": 1,
+  "locale": "tr",
+  "grade": 6,
+  "subject": "Matematik",
+  "title": "Sayılarla ve verilerle düşünelim · 20 soru taslağı",
+  "intended_use": "review_only_practice_pool_not_a_fixed_exam",
+  "status": "draft",
+  "publishable": false,
+  "human_editorial_approval": null,
+  "school_scenario_selection": null,
+  "school_track_applicability": "pending_review",
+  "programme_version": "TYMM live programme checked 2026-11-04; school applicability pending review",
+  "curriculum_reference": {
+    "programme_url": "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+    "programme_page_updated": null,
+    "checked_on": "2026-11-04",
+    "distribution_index": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+    "candidate_scenario_id": "tr-2026-2027-t1-ilkmat2-g6-i6",
+    "candidate_source_sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+    "mapping_status": "proposed_pending_subject_review",
+    "programme_urls": [
+      "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+      "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+    ]
+  },
+  "delivery": {
+    "automatic_import": false,
+    "reason": "Unpublished editorial pool; portable import preserves common sources and teacher-only fields.",
+    "student_projection_excludes": [
+      "expected_answer",
+      "solution",
+      "explanation",
+      "rubric",
+      "common_misconception",
+      "next_step",
+      "verification"
+    ]
+  },
+  "technical_profile": "math_numbers_data_v1",
+  "assessment_notes": [
+    "20 soru beş çıktı adayına bağlı bir çalışma havuzudur; yıllık ders kapsamı veya okulun seçtiği yazılı değildir.",
+    "Ortak kaynaklı sorular önceki cevabı gerektirmez; yakın maddeler ipucu verebileceği için bağımsız sınav kanıtı sayılmaz.",
+    "Sayısal hesaplar kesir aritmetiğiyle denetlenir; bu, Türkçe/alan/erişilebilirlik için bağımsız eğitimci incelemesi değildir.",
+    "Güncel sayfada MAT.6.1.7 problem çözme, MAT.6.1.8 uzunluktur; eski belgelerdeki ters sıralama otomatik eşlenmez.",
+    "İstatistik verileri kurgusaldır. Çocuklar kitap sayısıyla sıralanmaz; sayı, okuduğunu anlamanın veya kişiliğin ölçüsü değildir.",
+    "Yazı güzelliği, çizgi hassasiyeti ve hız puanlanmaz. Boş cevap öğrenememe tanısı değildir.",
+    "Tam araştırma yürütme ve gerçek araçla ölçme becerileri bu yazılı temsillerle bütünüyle ölçülmez."
+  ],
+  "sources": [
+    {
+      "id": "scale-readings",
+      "title": "Atölyedeki ölçümler",
+      "body": "Üç numunenin terazide görünen kütleleri tabloda verilmiştir. Birim kilogramdır. Virgülden sonraki her basamak bir öncekinin onda biridir.",
+      "image": "assets/scale-readings.png",
+      "svg": "assets/scale-readings.svg",
+      "alt": "A numunesi 4,086 kilogram; B numunesi 1,205 kilogram; C numunesi 1,250 kilogram.",
+      "origin": "original_gina_mathematical_diagram",
+      "diagram": {
+        "type": "value_table",
+        "headers": [
+          "Numune",
+          "Kütle (kg)"
+        ],
+        "rows": [
+          [
+            "A",
+            "4,086"
+          ],
+          [
+            "B",
+            "1,205"
+          ],
+          [
+            "C",
+            "1,250"
+          ]
+        ]
+      },
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "route",
+      "title": "İki yürüyüş rotası",
+      "body": "Bir parkta başlangıçtan bitişe iki rota vardır. Mor rota başlangıçtan köprüye, sonra bitişe gider; mint rota doğrudan bitişe gider. Harita ölçekli değildir; yol çizgilerini ekrandan ölçme.",
+      "image": "assets/route.png",
+      "svg": "assets/route.svg",
+      "alt": "Mor rotanın başlangıç-köprü bölümü 1,2 kilometre, köprü-bitiş bölümü 350 metredir. Mint rotanın toplamı 1,6 kilometredir.",
+      "origin": "original_gina_mathematical_diagram",
+      "diagram": {
+        "type": "route_lengths",
+        "first_km": "1.2",
+        "second_m": "350",
+        "direct_km": "1.6"
+      },
+      "minimum_reading_width": 520
+    },
+    {
+      "id": "reading-data",
+      "title": "Kurgusal okuma kaydı",
+      "body": "Bir atölyede 10 gönüllü katılımcıya aynı son yedi günde bitirdikleri kitap sayısı sorulmuştur. Her nokta bir kişiyi gösterir. Veriler bu soru için uydurulmuştur; gerçek çocuklara ait değildir.",
+      "image": "assets/reading-data.png",
+      "svg": "assets/reading-data.svg",
+      "alt": "Sıfır kitap bitiren 1 kişi, bir kitap bitiren 3 kişi, iki kitap bitiren 4 kişi, üç kitap bitiren 2 kişi vardır.",
+      "origin": "original_gina_mathematical_diagram",
+      "diagram": {
+        "type": "frequency_dots",
+        "values": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "frequencies": [
+          1,
+          3,
+          4,
+          2
+        ],
+        "x_label": "Bitirilen kitap sayısı"
+      },
+      "minimum_reading_width": 0
+    },
+    {
+      "id": "club-data",
+      "title": "Atölye tercihi",
+      "body": "Kurgusal bir gruptaki 12 kişi, bir sonraki etkinlik için yalnız bir tercih yapmıştır: kâğıt katlama 6 kişi, çizim 4 kişi, yapboz 2 kişi. Bu sayılar yalnız bu grubun tercihini anlatır. Her tercih için malzeme hazırlamak mümkündür; bu kez ilk açılacak atölyeye karar verilecektir.",
+      "image": null,
+      "svg": null,
+      "alt": "",
+      "origin": "original_gina_context",
+      "diagram": null,
+      "minimum_reading_width": 0
+    }
+  ],
+  "questions": [
+    {
+      "id": "g6-math-01",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Ondalık basamaklar",
+      "kind": "open_ended",
+      "difficulty": "kolay",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "A numunesinin 4,086 kg değerini tam kısım ile paydaları 10, 100 ve 1000 olan kesirlerin toplamı olarak yaz. 8 rakamının değerini ve virgülden sonraki sıfırın görevini açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "4 + 0/10 + 8/100 + 6/1000 kg. 8 rakamı 8/100 kg değerindedir; sıfır onda birler basamağında hiç onda bir olmadığını gösterir.",
+      "solution": "4 tamın ardından 0 onda bir, 8 yüzde bir ve 6 binde bir gelir. Sıfırı kaldırıp 4,86 yazmak sayıyı değiştirir.",
+      "explanation": "4 tamın ardından 0 onda bir, 8 yüzde bir ve 6 binde bir gelir. Sıfırı kaldırıp 4,86 yazmak sayıyı değiştirir.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": "scale-readings",
+      "curriculum": {
+        "candidate_code": "MAT.6.1.5",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Tam kısmı 4 olarak gösterir."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Kesirli kısmı 0/10 + 8/100 + 6/1000 biçiminde veya eşdeğer olarak çözümler."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "8 rakamının basamak değerini 8/100 olarak belirtir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Sıfırın onda birler yerini tuttuğunu, kaldırılınca değerin değişeceğini açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "Virgülden sonraki sıfırı gereksiz sanmak.",
+      "next_step": "4,086 ve 4,86 sayılarını basamak tablosunda yan yana yaz.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "scale-readings",
+      "verification": {
+        "type": "math6_case",
+        "case": 1,
+        "result": {
+          "value": "2043/500",
+          "eight_place": "2/25"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-02",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Ondalıkları karşılaştırma",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bir robotun iki adımı 0,708 m ve 0,78 m olarak kaydediliyor. Ada, “708, 78’den büyük; ilk adım daha uzun.” diyor. İki değeri binde birler cinsinden yazıp Ada’nın gerekçesini değerlendir.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "0,708 = 708/1000 ve 0,78 = 780/1000. İkinci adım daha uzundur; fark 72/1000 m, yani 0,072 m olur.",
+      "solution": "Paydalar eşitlenince 708 < 780 görülür. Virgülden sonraki rakamları basamaklarından bağımsız doğal sayılar gibi karşılaştıramayız.",
+      "explanation": "Paydalar eşitlenince 708 < 780 görülür. Virgülden sonraki rakamları basamaklarından bağımsız doğal sayılar gibi karşılaştıramayız.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.1.5",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "İlk değeri 708/1000 olarak yazar."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "İkinci değeri 780/1000 olarak yazar."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "İkinci adımın daha uzun olduğunu seçer."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Basamak değerine veya eş paydalara dayanarak hatayı açıklar; farkı bulmak zorunlu değildir."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "Daha çok ondalık rakamı olan sayıyı daha büyük sanmak.",
+      "next_step": "0,7, 0,70 ve 0,700 için aynı uzunluğu gösteren bir model çiz.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-02",
+      "verification": {
+        "type": "math6_case",
+        "case": 2,
+        "result": {
+          "first": "177/250",
+          "second": "39/50",
+          "difference": "9/125"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-03",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Basamak ve fark",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Tablodaki B ve C numunelerinin kütlelerini binde birler cinsinden ifade et. Hangisi ağırdır ve aradaki fark kaç binde bir kilogramdır? C değerinin sonundaki sıfırın kaldırılmasının sonucu değiştirip değiştirmediğini açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "B: 1205/1000 kg; C: 1250/1000 kg. C ağırdır, fark 45 binde bir kg olur. 1,250 ile 1,25 aynı değerdir.",
+      "solution": "C’de son basamak 0 binde birdir. 1250 − 1205 = 45; virgülün hemen sonundaki yer tutucu sıfırla sondaki sıfırın etkisi karıştırılmamalıdır.",
+      "explanation": "C’de son basamak 0 binde birdir. 1250 − 1205 = 45; virgülün hemen sonundaki yer tutucu sıfırla sondaki sıfırın etkisi karıştırılmamalıdır.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": "scale-readings",
+      "curriculum": {
+        "candidate_code": "MAT.6.1.5",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "B ve C’yi eş paydalı kesirlerle ifade eder."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "C’nin daha ağır olduğunu belirler."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Farkı 45 binde bir kg olarak hesaplar."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "1,250 = 1,25 eşitliğini basamak değeriyle açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "1,205 ile 1,25 arasındaki sıfırları aynı biçimde silmek.",
+      "next_step": "1,205 ile 1,250 sayılarını tam, onda bir, yüzde bir, binde bir sütunlarına yerleştir.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "scale-readings",
+      "verification": {
+        "type": "math6_case",
+        "case": 3,
+        "result": {
+          "difference": "9/200",
+          "b": "241/200",
+          "c": "5/4"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-04",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Sayıyı yeniden kurma",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bir ölçüm 2 tam, 3 onda bir ve 5 binde bir metreden oluşuyor; yüzde birler basamağında 0 var. Bu ölçümü ondalık gösterimle ve kesirlerin toplamıyla yaz. 2,35 m yazılması neden aynı ölçümü vermez?",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "2,305 m = 2 + 3/10 + 0/100 + 5/1000 m. 2,35’te 5 rakamı yüzde birler basamağındadır; değer 2,305’ten 0,045 m büyüktür.",
+      "solution": "Basamakları yerlerine koyunca 2,305 elde edilir. Yüzde birlerdeki sıfırı atlamak, binde birleri yüzde birlere taşır.",
+      "explanation": "Basamakları yerlerine koyunca 2,305 elde edilir. Yüzde birlerdeki sıfırı atlamak, binde birleri yüzde birlere taşır.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.1.5",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Ondalık gösterimi 2,305 olarak yazar."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Kesir toplamını doğru kurar."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "2,35’teki 5’in yüzde birleri gösterdiğini belirtir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "İki sayının farklılığını basamakla açıklar; fark hesabı şart değildir."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "Eksik basamağı sıfırla göstermek yerine atlamak.",
+      "next_step": "2,305’i bir basamak tablosuna yerleştir; 5’in yerini değiştirince ne olduğunu açıkla.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-04",
+      "verification": {
+        "type": "math6_case",
+        "case": 4,
+        "result": {
+          "value": "461/200",
+          "wrong_value": "47/20"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-05",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Kesir ve bölme",
+      "kind": "open_ended",
+      "difficulty": "kolay",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "5 metre kurdele 4 çocuğa eşit paylaştırılıyor. Her payı hem kesir hem ondalık gösterimle yaz. Bu paylaşımı bir şerit çizimiyle ya da “tamlar ve kalan parça” açıklamasıyla göster.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Her çocuk 5/4 m = 1,25 m alır. Her birine 1 m verildikten sonra kalan 1 m dört eş parçaya ayrılır; kişi başına 1/4 m daha düşer.",
+      "solution": "5 ÷ 4 = 1 kalan 1; kalan metrenin dörtte biri 0,25 m’dir. Dört eş payın toplamı 5 m olur.",
+      "explanation": "5 ÷ 4 = 1 kalan 1; kalan metrenin dörtte biri 0,25 m’dir. Dört eş payın toplamı 5 m olur.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.1.6",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Payı 5/4 m olarak kurar."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Ondalık değeri 1,25 m bulur."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Kalan 1 metrenin dört eş parçaya ayrıldığını gösterir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Dört payın toplamının 5 m olduğuyla eşit paylaşımı kontrol eder."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "5/4’ü 0,54 gibi rakam yan yana getirme sanmak.",
+      "next_step": "3 metreyi 4 eş paya ayırarak kesir çizgisi ile bölme arasındaki bağı yeniden göster.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-05",
+      "verification": {
+        "type": "math6_case",
+        "case": 5,
+        "result": {
+          "share": "5/4",
+          "total": "5"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-06",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Sonlu ve devirli gösterim",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "2 litre su 3 eş kaba paylaştırılacak. Efe her kaba tam 0,66 litre koymanın eşit ve eksiksiz paylaşım olduğunu söylüyor. Çarpma veya bölme ile kontrol et; kişi başına düşen kesin miktarı kesirle yaz. Ondalık gösterimde neyin tekrar ettiğini açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Kesin pay 2/3 L’dir. 3 × 0,66 = 1,98 L olduğundan 0,02 L artar. Kesin ondalık 0,666… biçimindedir; 6 sürekli tekrar eder.",
+      "solution": "2 ÷ 3 işleminde aynı kalan tekrarlandığı için basamaklar bitmez. 0,66 yaklaşık bir değerdir; 2/3’ün tam karşılığı değildir.",
+      "explanation": "2 ÷ 3 işleminde aynı kalan tekrarlandığı için basamaklar bitmez. 0,66 yaklaşık bir değerdir; 2/3’ün tam karşılığı değildir.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.1.6",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Kesin payı 2/3 L olarak yazar."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "0,66’lık üç payın 1,98 L olduğunu kontrol eder."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Artan 0,02 L’yi veya eksiksiz paylaşılamadığını gerekçelendirir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Tekrar eden 6’yı ve 0,66’nın yaklaşık oluşunu açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "İki ondalık basamağa kesmeyi kesin eşitlik sanmak.",
+      "next_step": "1 litreyi 3’e bölerken kalanların nasıl tekrar ettiğini izle.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-06",
+      "verification": {
+        "type": "math6_case",
+        "case": 6,
+        "result": {
+          "share": "2/3",
+          "used": "99/50",
+          "left": "1/50"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-07",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Paylaşım örüntüsü",
+      "kind": "open_ended",
+      "difficulty": "orta_ustu",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bir metrelik şerit sırasıyla 2, 4 ve 8 eş parçaya bölündüğünde bir parçanın uzunlukları 1/2 m, 1/4 m ve 1/8 m oluyor. Bunların ondalık gösterimlerini bul. Parça sayısı her defasında iki katına çıktığında bir parçanın uzunluğuna ne olur? 16 eş parça için tahminini kontrol et.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "1/2 = 0,5; 1/4 = 0,25; 1/8 = 0,125. Parça sayısı iki katına çıkınca uzunluk yarıya iner. 1/16 = 0,0625 m.",
+      "solution": "Aynı bütün daha çok eş parçaya ayrılır. Bir önceki uzunluk 2’ye bölünür; 16 × 0,0625 = 1 kontrolü yapılabilir.",
+      "explanation": "Aynı bütün daha çok eş parçaya ayrılır. Bir önceki uzunluk 2’ye bölünür; 16 × 0,0625 = 1 kontrolü yapılabilir.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.1.6",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "İlk üç kesrin ondalıklarını doğru yazar."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Parça sayısı iki katına çıkınca payın yarıya indiğini açıklar."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "16 parça için 0,0625 m bulur."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "16 payı toplama/çarpma veya bölme yoluyla sonucu kontrol eder."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "Payda büyüyünce bir payın da büyüdüğünü düşünmek.",
+      "next_step": "Bir şeridin yarısını tekrar ikiye bölerek 1/2 ile 1/4’ü karşılaştır.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-07",
+      "verification": {
+        "type": "math6_case",
+        "case": 7,
+        "result": {
+          "halves": "1/2",
+          "quarters": "1/4",
+          "eighths": "1/8",
+          "sixteenths": "1/16"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-08",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Ölçme anlamıyla bölme",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bir atölyede 3,6 litre boya var. Her küçük kutuya 0,45 litre boya konulacak; dökülme olmayacak. Kaç kutu tam dolar? Bölme işlemini yaz ve çarparak kontrol et.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "8 kutu dolar. 3,6 ÷ 0,45 = 8 ve 8 × 0,45 = 3,6.",
+      "solution": "Toplam miktarın içine 0,45 litrelik kaç eş grup sığdığı bulunur. İki sayıyı da 100 ile çarparak 360 ÷ 45 işlemi kullanılabilir.",
+      "explanation": "Toplam miktarın içine 0,45 litrelik kaç eş grup sığdığı bulunur. İki sayıyı da 100 ile çarparak 360 ÷ 45 işlemi kullanılabilir.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.1.7",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Toplam miktarı bir kutunun miktarına bölmeyi seçer."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Ondalık bölmeyi doğru kurar."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "8 tam kutu sonucunu verir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "8 × 0,45 = 3,6 ile miktarı kontrol eder."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "Bölmenin her zaman sayıyı küçülteceğini varsaymak.",
+      "next_step": "1 litreyi 0,25 litrelik kaplara ayırarak bölmenin grup sayısını bulduğunu göster.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-08",
+      "verification": {
+        "type": "math6_case",
+        "case": 8,
+        "result": {
+          "boxes": "8"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-09",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Yüzde ve bütçe",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bir etkinlik için fiyatı 120 TL olan malzeme setine %25 indirim uygulanıyor. 100 TL bütçe var. Önce yaklaşık bir değerlendirme yap; sonra indirimli tutarı ve bütçeden kalanı hesaplayarak setin alınabilip alınamayacağını açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "İndirim 30 TL, ödenecek tutar 90 TL, kalan 10 TL’dir. Bütçe yeter. %25, dörtte bir olduğundan indirim 20 TL’den fazladır; tutar 100 TL’nin altına iner.",
+      "solution": "120 × 25/100 = 30; 120 − 30 = 90; 100 − 90 = 10. İndirim ile ödenecek tutar ayrı niceliklerdir.",
+      "explanation": "120 × 25/100 = 30; 120 − 30 = 90; 100 − 90 = 10. İndirim ile ödenecek tutar ayrı niceliklerdir.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.1.7",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Makul bir ön değerlendirme veya tahmin sunar."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "İndirimi 30 TL hesaplar."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Ödenecek tutarı 90 TL bulur."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Bütçenin yettiğini ve 10 TL kaldığını belirtir."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "%25 indirimi doğrudan 25 TL çıkarmak.",
+      "next_step": "80 TL’nin %25’i ile 120 TL’nin %25’ini karşılaştır.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-09",
+      "verification": {
+        "type": "math6_case",
+        "case": 9,
+        "result": {
+          "discount": "30",
+          "pay": "90",
+          "left": "10"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-10",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Farklı gösterimlerle işlem",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bir etkinliğe 2,5 litrelik 3 sürahi içecek hazırlanıyor. Her biri 3/4 litre alan 6 şişe dolduruluyor. Sürahilerde toplam kaç litre içecek kalır? Kullandığın işlemlerin her birinin neyi bulduğunu yaz.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Başlangıçta 7,5 L vardır; şişelere 4,5 L konur ve 3 L kalır.",
+      "solution": "3 × 2,5 toplamı; 6 × 3/4 doldurulanı; 7,5 − 4,5 kalan miktarı verir. Kesir veya ondalıkla çözüm eşdeğerdir.",
+      "explanation": "3 × 2,5 toplamı; 6 × 3/4 doldurulanı; 7,5 − 4,5 kalan miktarı verir. Kesir veya ondalıkla çözüm eşdeğerdir.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.1.7",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Başlangıç miktarı için 3 × 2,5 işlemini kurar."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Şişelere konan miktar için 6 × 3/4 işlemini kurar."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Kalanı bulmak için bu iki toplamı çıkarır."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "3 L sonucunu doğru birimle verir."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "3/4 litreyi 3,4 litre sanmak.",
+      "next_step": "3/4 litreyi 0,75 litreyle eşleştir ve dört çeyrekle bir bütünü göster.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-10",
+      "verification": {
+        "type": "math6_case",
+        "case": 10,
+        "result": {
+          "initial": "15/2",
+          "used": "9/2",
+          "left": "3"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-11",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Çok adımlı stok",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bir sınıf atölyesinde 72 kalem var. Bunların 5/8’i kullanıma dağıtılıyor; ardından depoya 9 yeni kalem geliyor. Depoda kaç kalem olur? “72’den önce 9 çıkarırım.” önerisinin neden duruma uymadığını açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "45 kalem dağıtılır, 27 kalem kalır; 9 yeni kalemle depoda 36 kalem olur. Yeni gelen 9 kalem eklenmelidir.",
+      "solution": "72 × 5/8 = 45; 72 − 45 = 27; 27 + 9 = 36. Olayların yönü, işlemin toplama mı çıkarma mı olduğunu belirler.",
+      "explanation": "72 × 5/8 = 45; 72 − 45 = 27; 27 + 9 = 36. Olayların yönü, işlemin toplama mı çıkarma mı olduğunu belirler.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.1.7",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Dağıtılan 45 kalemi bulur."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Dağıtımdan sonra 27 kalem kaldığını bulur."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Yeni gelenleri ekleyerek 36 sonucuna ulaşır."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "9’u çıkarmanın geliş olayına ters olduğunu açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "Kesir kadarını bütünden çıkarmadan doğrudan kalan sanmak.",
+      "next_step": "8 eş grubun 5’i dağıtıldığında kaç grubun kaldığını çiz.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-11",
+      "verification": {
+        "type": "math6_case",
+        "case": 11,
+        "result": {
+          "distributed": "45",
+          "remaining": "27",
+          "final": "36"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-12",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Tarifi ölçekleme",
+      "kind": "open_ended",
+      "difficulty": "orta_ustu",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bir atölye tarifinde 4 eş porsiyon için toplam 3/5 litre süt kullanılıyor. Aynı büyüklükte 6 porsiyon yapılacak. 1 litre süt yeter mi? Porsiyon başına miktarı kullanarak gerekçelendir.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Bir porsiyon 3/20 L, 6 porsiyon 9/10 L süt ister. 1 litre yeter; 1/10 L kalır.",
+      "solution": "(3/5) ÷ 4 = 3/20; (3/20) × 6 = 18/20 = 9/10. Porsiyon büyüklüğü değişmez; yalnız sayısı artar.",
+      "explanation": "(3/5) ÷ 4 = 3/20; (3/20) × 6 = 18/20 = 9/10. Porsiyon büyüklüğü değişmez; yalnız sayısı artar.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.1.7",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Bir porsiyon için 3/5’i 4’e böler."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Bir porsiyonu 3/20 L bulur."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Altı porsiyonu 9/10 L bulur."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "1 L ile karşılaştırıp 1/10 L kalacağını belirtir."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "4’ten 6’ya çıkarken litreye de doğrudan 2 eklemek.",
+      "next_step": "İki porsiyonluk miktarı bulup altı porsiyonu üç eş grup olarak kontrol et.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-12",
+      "verification": {
+        "type": "math6_case",
+        "case": 12,
+        "result": {
+          "portion": "3/20",
+          "needed": "9/10",
+          "left": "1/10"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-13",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Uzunlukları ortak birimde karşılaştırma",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Haritadaki iki rotayı metre cinsinden karşılaştır. Hangisi daha kısa ve fark kaç metredir? Çizimde daha kısa görünen yolu seçmenin neden güvenilir olmadığını açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Mor rota 1550 m, mint rota 1600 m’dir. Mor rota 50 m daha kısadır. Harita ölçekli olmadığı için etiketlerdeki uzunluklar kullanılmalıdır.",
+      "solution": "1,2 km = 1200 m; 1200 + 350 = 1550 m. 1,6 km = 1600 m. 1600 − 1550 = 50 m.",
+      "explanation": "1,2 km = 1200 m; 1200 + 350 = 1550 m. 1,6 km = 1600 m. 1600 − 1550 = 50 m.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": "route",
+      "curriculum": {
+        "candidate_code": "MAT.6.1.8",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Kilometreleri doğru biçimde metreye dönüştürür."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "İki parçalı mor rotayı 1550 m bulur."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Mor rotanın 50 m kısa olduğunu belirler."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Ölçeksiz çizim yerine verilen ölçüleri kullanma nedenini açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "1,2 km ile 350 m’yi birimleri eşitlemeden toplamak.",
+      "next_step": "1 km’nin 1000 m oluşunu kullanarak her rotayı tek birimle yaz.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "route",
+      "verification": {
+        "type": "math6_case",
+        "case": 13,
+        "result": {
+          "via": "1550",
+          "direct": "1600",
+          "difference": "50"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-14",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Ölçme başlangıcı",
+      "kind": "open_ended",
+      "difficulty": "kolay",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Kırık sıfır ucu olan bir cetvelde bir kalem şeridinin başlangıcı 23 mm, sonu 88 mm çizgisine denk geliyor. Şeridin uzunluğunu mm ve cm olarak bul. Neden doğrudan 88 mm demediğini açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Uzunluk 65 mm = 6,5 cm’dir. Ölçüm sıfırdan başlamadığı için 88 − 23 alınır.",
+      "solution": "İki konum arasındaki uzaklık bulunur; cetveldeki son okuma tek başına uzunluk değildir. Her 10 mm bir cm’dir.",
+      "explanation": "İki konum arasındaki uzaklık bulunur; cetveldeki son okuma tek başına uzunluk değildir. Her 10 mm bir cm’dir.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.1.8",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "İki konum arasındaki farkı almayı seçer."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "65 mm sonucunu bulur."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "6,5 cm dönüşümünü yapar."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Başlangıcın sıfır olmamasını gerekçe gösterir."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "Cetveldeki bitiş sayısını her zaman uzunluk sanmak.",
+      "next_step": "Aynı 65 mm’lik şeridi başlangıcı 10 mm olacak biçimde düşün; bitişi kaç olur?",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-14",
+      "verification": {
+        "type": "math6_case",
+        "case": 14,
+        "result": {
+          "mm": "65",
+          "cm": "13/2"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-15",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Malzeme uzunluğu",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Bir panonun kenarı için 2 m 35 cm uzunluğunda şerit gerekiyor. Eldeki şerit 2300 mm. Kesim kaybı yoksa yeterli mi? Gereken ve eldeki uzunluğu aynı birime çevir; eksik veya fazla miktarı hem mm hem cm ile belirt.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Gereken 2350 mm, eldeki 2300 mm’dir. Yetmez; 50 mm, yani 5 cm eksiktir.",
+      "solution": "2 m = 2000 mm ve 35 cm = 350 mm. Toplam 2350 mm ile 2300 mm karşılaştırılır.",
+      "explanation": "2 m = 2000 mm ve 35 cm = 350 mm. Toplam 2350 mm ile 2300 mm karşılaştırılır.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.1.8",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Gereken uzunluğu 2350 mm’ye çevirir."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Eldeki uzunluğu aynı birimde kullanır veya ikisini cm’ye çevirir."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Şeridin yetersiz olduğunu ve 50 mm eksikliği bulur."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Eksikliği 5 cm olarak da ifade eder."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "Metre, santimetre ve milimetrede aynı rakamların aynı uzunluk olduğu yanılgısı.",
+      "next_step": "2 m 30 cm ile 2300 mm eşitliğini birim basamaklarıyla göster.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-15",
+      "verification": {
+        "type": "math6_case",
+        "case": 15,
+        "result": {
+          "required_mm": "2350",
+          "available_mm": "2300",
+          "missing_mm": "50",
+          "missing_cm": "5"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-16",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Veri ve ortalama",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Kurgusal okuma kaydında toplam kaç kitap bitirilmiştir? Kişi başına aritmetik ortalamayı bul. Ortalama 1 ile 2 arasında çıkarsa herkesin kesirli sayıda kitap bitirdiği anlamına gelir mi? Açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Toplam 17 kitap; ortalama 17/10 = 1,7 kitaptır. Bu, grup toplamının kişi sayısına bölünmesidir; herkes 1,7 kitap bitirdi demek değildir.",
+      "solution": "0×1 + 1×3 + 2×4 + 3×2 = 17; 1+3+4+2 = 10. Ortalama verileri özetler, her kişiyi aynen tarif etmez.",
+      "explanation": "0×1 + 1×3 + 2×4 + 3×2 = 17; 1+3+4+2 = 10. Ortalama verileri özetler, her kişiyi aynen tarif etmez.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": "reading-data",
+      "curriculum": {
+        "candidate_code": "MAT.6.5.1",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Her kitap sayısını o sayıya sahip kişi sayısıyla ilişkilendirir."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Toplamı 17 olarak bulur."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "10 kişiye bölüp 1,7 ortalamayı bulur."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Ortalamanın bireysel gözlemlerin her biri olmak zorunda olmadığını açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "Sütunların kitap sayısını sıklığı dikkate almadan toplamak.",
+      "next_step": "Noktaları tek tek kişilere dönüştürerek on sayılık bir liste yaz.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "reading-data",
+      "verification": {
+        "type": "math6_case",
+        "case": 16,
+        "result": {
+          "total": "17",
+          "people": "10",
+          "mean": "17/10"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-17",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Veriyi sıralama ve özetleme",
+      "kind": "open_ended",
+      "difficulty": "orta_ustu",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Kurgusal okuma kaydını küçükten büyüğe bir veri listesi olarak yaz. Ortancayı, tepe değeri ve açıklığı bul. Ortancayı belirlerken hangi konumları kullandığını göster.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Liste: 0, 1, 1, 1, 2, 2, 2, 2, 3, 3. Ortanca 2, tepe değer 2, açıklık 3’tür. On veride ortadaki 5. ve 6. değerler kullanılır.",
+      "solution": "5. ve 6. değerlerin ortalaması (2+2)/2 = 2’dir. En sık değer 2; en büyük ile en küçük arasındaki fark 3−0 = 3’tür.",
+      "explanation": "5. ve 6. değerlerin ortalaması (2+2)/2 = 2’dir. En sık değer 2; en büyük ile en küçük arasındaki fark 3−0 = 3’tür.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": "reading-data",
+      "curriculum": {
+        "candidate_code": "MAT.6.5.1",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "On gözlemi doğru sıklıklarla sıralar."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "5. ve 6. konumu kullanarak ortancayı 2 bulur."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Tepe değeri 2 bulur."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Açıklığı 3 bulur."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "Ortancayı farklı değerlerin ortasından seçip tekrarları yok saymak.",
+      "next_step": "Frekans tablosu yerine her gözlemi ayrı kart olarak sırala.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "reading-data",
+      "verification": {
+        "type": "math6_case",
+        "case": 17,
+        "result": {
+          "median": "2",
+          "mode": "2",
+          "range": "3"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-18",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Veriye dayalı karar",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Kurgusal okuma kaydında en az 2 kitap bitirenlere bir paylaşım kartı hazırlanacak; bu bir başarı ödülü değildir. Kaç kart gerekir? Bu kişiler grubun yüzde kaçıdır? “En az 2” ifadesini grafikte nasıl kullandığını açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "6 kart gerekir; 6/10 = %60. İki kitap bitiren 4 kişi ile üç kitap bitiren 2 kişi birlikte sayılır.",
+      "solution": "“En az” alt sınırı da içerir. 4 + 2 = 6; 6/10 × 100 = 60. Bu yalnız bu on kişilik gruba ait bir orandır.",
+      "explanation": "“En az” alt sınırı da içerir. 4 + 2 = 6; 6/10 × 100 = 60. Bu yalnız bu on kişilik gruba ait bir orandır.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": "reading-data",
+      "curriculum": {
+        "candidate_code": "MAT.6.5.1",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "İki ve üç kitap gruplarını birlikte seçer."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "6 kişi/kart sonucunu bulur."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Paydanın 10 kişi olduğunu kullanır."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Oranı %60 olarak ifade eder."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "En az 2’yi 2’den büyük sanıp iki kitap grubunu dışarıda bırakmak.",
+      "next_step": "“En az 2” ile “2’den çok” için ayrı kişi sayılarını bul.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "reading-data",
+      "verification": {
+        "type": "math6_case",
+        "case": 18,
+        "result": {
+          "cards": "6",
+          "percent": "60"
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-19",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Araştırmayı planlama",
+      "kind": "open_ended",
+      "difficulty": "orta_ustu",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Sınıfın gelecek haftaki ortak okuma etkinliği için kitap türü tercihlerini öğrenmek istiyorsun. Yanıtı kişiden kişiye değişebilen bir araştırma sorusu yaz. Kimlerden ve nasıl veri toplayacağını, ad-soyad istemeden nasıl kaydedeceğini ve sonucu hangi gösterimle sunacağını açıkla.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Örnek: “Bu sınıftaki öğrenciler gelecek haftaki etkinlik için hangi kitap türünü tercih ediyor?” Her sınıf üyesine aynı tek seçimli soru ve bir “başka tür” seçeneği sunulur. İsim yerine tercih sayıları tutulur; kategoriler sıklık tablosu veya sütun grafiğiyle gösterilir.",
+      "solution": "Amaç bu sınıfın tercihini belirlemektir. Aynı sorunun herkese sorulması karşılaştırmayı sağlar; özel kimlik bilgisi gerekli değildir. Kategori sayıları için sıklık tablosu veya sütun grafiği uygundur.",
+      "explanation": "Amaç bu sınıfın tercihini belirlemektir. Aynı sorunun herkese sorulması karşılaştırmayı sağlar; özel kimlik bilgisi gerekli değildir. Kategori sayıları için sıklık tablosu veya sütun grafiği uygundur.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": null,
+      "curriculum": {
+        "candidate_code": "MAT.6.5.1",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Araştırma planının yazılı gerekçesi; gerçek veri toplama yapılmaz."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Sınıfı ve zamanı belli, tercih çeşitliliğine açık bir soru yazar."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Soruyu sınıftaki herkese aynı biçimde yöneltmeyi planlar."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "İsim gibi gereksiz kişisel bilgi toplamadan sayım yapmayı açıklar."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Kategorilere uygun bir gösterim seçip gerekçelendirir."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "Sadece kendi arkadaşlarına sorup tüm sınıfın tercihini öğrendiğini düşünmek.",
+      "next_step": "“Ben hangi kitabı severim?” ile sınıfın tercihlerini araştıran sorunun farkını söyle.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "question-19",
+      "verification": {
+        "type": "math6_case",
+        "case": 19,
+        "result": {
+          "editorial_reasoning": true
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    },
+    {
+      "id": "g6-math-20",
+      "revision": 1,
+      "grade": 6,
+      "subject": "Matematik",
+      "topic": "Kategorik veriden karar",
+      "kind": "open_ended",
+      "difficulty": "orta",
+      "difficulty_calibration": "editorial_estimate_not_empirical",
+      "stem": "Atölye tercihi verileriyle bir sıklık tablosu oluştur. İlk açılacak atölyeyi yalnız en çok tercih edilme ölçütüne göre seç ve sayı ile gerekçelendir. Diğer tercihleri hangi şekilde koruyabileceğine dair bir öneri ekle; bu verinin okulun tamamını temsil edip etmediğini belirt.",
+      "choices": [],
+      "correct_key": null,
+      "expected_answer": "Tablo: kâğıt katlama 6, çizim 4, yapboz 2. Bu ölçüte göre kâğıt katlama ilk açılır. Diğer atölyeler sonraki etkinliklerde veya ayrı masalarda sunulabilir. Bu 12 kişinin yanıtı okulun tamamının tercihini göstermez.",
+      "solution": "En büyük sıklık 6’dır. Karar kullanılan ölçüte bağlıdır; az tercih edilen etkinlikler değersiz sayılmaz. Veri yalnız sorulan gruba aittir.",
+      "explanation": "En büyük sıklık 6’dır. Karar kullanılan ölçüte bağlıdır; az tercih edilen etkinlikler değersiz sayılmaz. Veri yalnız sorulan gruba aittir.",
+      "source_urls": [
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/457",
+        "https://tymm.meb.gov.tr/ortaokul-matematik-dersi/unite/461"
+      ],
+      "source_id": "club-data",
+      "curriculum": {
+        "candidate_code": "MAT.6.5.1",
+        "mapping_status": "proposed_pending_subject_review",
+        "evidence_scope": "Yazılı gerekçe ve temsil; gerçek uygulama becerisinin tamamı ölçülmez."
+      },
+      "response": {
+        "mode": "text_or_drawing",
+        "precise_screen_measurement_required": false,
+        "required_tools": [],
+        "accommodation": "Yanıt yazı, işlem veya etiketli çizimle verilebilir. Çizgi düzgünlüğü ve yazı güzelliği puanlanmaz; eşdeğer doğru yöntemler kabul edilir."
+      },
+      "rubric": {
+        "max_points": 4,
+        "scoring": "Her ölçüt ayrı 1 puandır. Aynı bilgi iki kez puanlanmaz. Önceki işlemdeki tek bir hesap hatası doğru yöntemi kendiliğinden sıfırlamaz; tutarlı devam ayrıca incelenir.",
+        "criteria": [
+          {
+            "id": "c1",
+            "points": 1,
+            "criterion": "Üç kategori ve sıklığını doğru tabloya aktarır."
+          },
+          {
+            "id": "c2",
+            "points": 1,
+            "criterion": "Kâğıt katlamayı 6 tercih ile gerekçeli seçer."
+          },
+          {
+            "id": "c3",
+            "points": 1,
+            "criterion": "Diğer tercihleri yok saymayan uygulanabilir bir öneri verir."
+          },
+          {
+            "id": "c4",
+            "points": 1,
+            "criterion": "Sonucun yalnız bu grubu anlattığını, okul geneline doğrudan genellenemeyeceğini açıklar."
+          }
+        ],
+        "missing_answer": "not_answered; no mastery inference",
+        "review_required": true
+      },
+      "common_misconception": "Çoğunluğun tercihini herkesin tercihi gibi anlatmak.",
+      "next_step": "Tüm okul için karar gerekse kimlerden yeni veri toplayacağını planla.",
+      "depends_on_question_ids": [],
+      "evidence_unit": "club-data",
+      "verification": {
+        "type": "math6_case",
+        "case": 20,
+        "result": {
+          "frequencies": [
+            6,
+            4,
+            2
+          ],
+          "maximum": "6",
+          "editorial_reasoning": true
+        }
+      },
+      "provenance": {
+        "authoring": "Codex-authored original draft; no external question or illustration copied.",
+        "created_on": "2026-11-04",
+        "paid_provider_call": false
+      },
+      "review_status": "pending_editorial_review",
+      "publishable": false
+    }
+  ]
+}
