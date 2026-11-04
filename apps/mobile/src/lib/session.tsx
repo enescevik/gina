@@ -8,6 +8,7 @@ import { queryClient } from "./query";
 import { clearAnswerJournals } from "./answer-journal";
 import { clearLibraryCommands } from "./library-acquisition";
 import { clearSetupCommands } from "./setup-command";
+import { clearLearningPlanCommands } from "./learning-plan-command";
 import { clearSchoolBagCommands } from "./school-bag-command";
 import { clearTimetableCommands } from "./timetable-command";
 import { clearRepeatCalendarCommands } from "./repeat-calendar-command";
@@ -78,7 +79,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       if (_event === "INITIAL_SESSION") return; // getSession below owns initial read errors.
       changed = true;
       if (_event === "SIGNED_OUT") {
-        for (const clear of [clearAnswerJournals, clearHelpCommands, clearLibraryCommands, clearFocusTimers, clearCalendarCommands, clearStudyPlanCommands, clearRepeatCalendarCommands, clearTimetableCommands, clearSchoolBagCommands, clearSetupCommands]) {
+        for (const clear of [clearAnswerJournals, clearHelpCommands, clearLibraryCommands, clearFocusTimers, clearCalendarCommands, clearStudyPlanCommands, clearRepeatCalendarCommands, clearTimetableCommands, clearSchoolBagCommands, clearLearningPlanCommands, clearSetupCommands]) {
           try { clear(); }
           catch { /* Scoped drafts remain inaccessible to another identity. */ }
         }
