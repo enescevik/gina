@@ -1,0 +1,68 @@
+{
+  "date": "2026-11-04",
+  "url": "https://gina-web.pages.dev",
+  "deployment": "f84ba5b6-d0d4-4bcb-a88e-3afbd5d69e59",
+  "productSource": "3b661c8",
+  "files": 491,
+  "archiveSha256": "04c8b2ef59b77d65103454f553246efa9bd5ac69b03628bc72b1486689c0abdc",
+  "httpPaths200": [
+    "/",
+    "/sign-in",
+    "/parent",
+    "/auth-callback",
+    "/reset-password"
+  ],
+  "cspAndNosniff": true,
+  "redirectsAdded": [
+    "https://gina-web.pages.dev/auth-callback",
+    "https://gina-web.pages.dev/reset-password"
+  ],
+  "existingRedirectsPreserved": 4,
+  "browser": "Chromium isolated context; navigator language tr-TR; synthetic account",
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1280,
+      800
+    ]
+  ],
+  "checks": {
+    "parentPasswordLogin": true,
+    "singleChildNoAllFilter": true,
+    "eventSaveThenBrowserReload": true,
+    "parentPinRequiredBeforeChildMode": true,
+    "childPinEntry": true,
+    "childTaskSubmission": true,
+    "parentPinExit": true,
+    "parentTaskApproval": true,
+    "childRefreshWithoutReload": true,
+    "childEarnedTwoStars": true,
+    "childGoalSelection": true
+  },
+  "visitOnlyRoutes": [
+    "calendar",
+    "tasks",
+    "rewards",
+    "prova",
+    "prova/builder",
+    "prova/progress",
+    "help",
+    "families",
+    "device-access",
+    "subscription",
+    "notifications",
+    "share",
+    "menu"
+  ],
+  "limitations": [
+    "Route visits are not every control/function acceptance.",
+    "Physical mobile/pencil/payment/push were not tested.",
+    "Google/Apple sign-in redirects saved; full provider sign-in and mailbox delivery were not performed.",
+    "Cloudflare Zero Trust checkout requires account-owner billing setup; backoffice not deployed.",
+    "GitHub automatic deployment credentials are not configured.",
+    "Missing device-ID blank state found in hosted review; corrected in this PR, not in the first deployment."
+  ]
+}

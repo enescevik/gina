@@ -15,10 +15,11 @@ import {deviceAccess,type DeviceAccess} from '@/lib/family-experience';
 import {supabase} from '@/lib/supabase';
 
 export default function DeviceAccessScreen(){
- const {t}=useTranslation();const {deviceId}=useLocalSearchParams<{deviceId:string}>();
+ const {t}=useTranslation();const {deviceId:requestedDevice}=useLocalSearchParams<{deviceId?:string}>();
+ const deviceId=typeof requestedDevice==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestedDevice)?requestedDevice:undefined;
  const data=useQuery({queryKey:['device_access',deviceId],enabled:!!deviceId,queryFn:()=>deviceAccess(deviceId)});
  return <ParentScreen title={t('experience.device.title')} subtitle={t('experience.device.body')} loading={data.isLoading} error={data.error} onRetry={()=>void data.refetch()}>
-  {data.data?<DeviceForm key={data.data.id} data={data.data}/>:null}
+  {data.data?<DeviceForm key={data.data.id} data={data.data}/>:<InfoCard title={t('experience.device.chooseFirst')} body={t('experience.device.chooseFirstBody')}><Button title={t('experience.device.openDevices')} onPress={()=>router.replace('/parent/menu?section=devices')}/></InfoCard>}
  </ParentScreen>;
 }
 function DeviceForm({data}:{data:DeviceAccess}){
