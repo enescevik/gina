@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-04",
+  "scope": "build-toolchain-backports",
+  "baseline": {
+    "tests": 7,
+    "passed": 1,
+    "failed": 6
+  },
+  "patched": {
+    "tests": 8,
+    "passed": 8,
+    "coreTests": 230,
+    "workspaceChecks": "7/7",
+    "frozenInstall": true,
+    "expoCompatibility": true,
+    "expoExportPlatforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "backofficeProductionBuild": true
+  },
+  "auditVersionCounts": {
+    "info": 0,
+    "low": 1,
+    "moderate": 3,
+    "high": 0,
+    "critical": 0
+  },
+  "notes": [
+    "No package version added or upgraded.",
+    "Version-only audit still reports low/moderate advisories; none suppressed.",
+    "Initial export with EXPO_NO_DOTENV lacked public configuration and failed; rerun with synthetic loopback public configuration passed.",
+    "No production migration, application deployment or TestFlight update."
+  ]
+}
