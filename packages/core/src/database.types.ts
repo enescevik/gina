@@ -1672,15 +1672,18 @@ isOneToOne: false
                   ]
                 },"push_outbox": {
                   Row: {
+                    "recovery_revision": number,
                     "lease_id": string | null,"next_attempt_at": string,
                     "attempts": number,"audience": string,"claimed_at": string | null,"created_at": string,"exclude_user_id": string | null,"family_id": string,"id": number,"kind": string,"last_error": string | null,"payload": NonNullable<Json>,"sent_at": string | null,"status": string,"target_child_id": string | null
                   }
                   ComputedFields: never
                   Insert: {
+                    "recovery_revision"?: number,
                     "lease_id"?: string | null,"next_attempt_at"?: string,
                     "attempts"?: number,"audience": string,"claimed_at"?: string | null,"created_at"?: string,"exclude_user_id"?: string | null,"family_id": string,"id"?: never,"kind": string,"last_error"?: string | null,"payload"?: NonNullable<Json>,"sent_at"?: string | null,"status"?: string,"target_child_id"?: string | null
                   }
                   Update: {
+                    "recovery_revision"?: number,
                     "lease_id"?: string | null,"next_attempt_at"?: string,
                     "attempts"?: number,"audience"?: string,"claimed_at"?: string | null,"created_at"?: string,"exclude_user_id"?: string | null,"family_id"?: string,"id"?: never,"kind"?: string,"last_error"?: string | null,"payload"?: NonNullable<Json>,"sent_at"?: string | null,"status"?: string,"target_child_id"?: string | null
                   }
@@ -2262,6 +2265,8 @@ isOneToOne: false
                 }
           }
           Functions: {
+"release_push_operations": { Args:{p_status?:string;p_before?:number;p_limit?:number};Returns:Json },
+"release_retry_push": { Args:{p_request:string;p_outbox_id:number;p_revision:number;p_reason:string;p_confirmed:boolean};Returns:Json },
       preview_question_contribution: {Args:{p_question_id:string};Returns:Json};
       begin_question_contribution: {Args:{p_id:string;p_question_id:string;p_rights:boolean;p_no_personal_data:boolean};Returns:Json};
       list_question_contributions: {Args:Record<PropertyKey,never>;Returns:Json};

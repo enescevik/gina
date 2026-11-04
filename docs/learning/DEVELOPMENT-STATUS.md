@@ -433,3 +433,10 @@ Yeni paketli ortak Provalar şıklı/açık uçlu soruları birlikte taşıyabil
 Kısmi başarı diğer cihazın geçici hatasını artık kapatmaz. Her cihaz makbuzu, süreli işlem kimliği, eski yanıt reddi, gecikmeli/en fazla beş tekrar, Retry-After ve yarıda kalmış işi uyandıran zamanlayıcı eklendi. Yeni cihaz anahtarı eski anahtarın hatasıyla silinmez; olay kimliği APNs birleştirmesi ve Android etiketi için kullanılır. Ağ istisnasında ham cihaz adresi/anahtarı kaydedilmez. Eski sahipliksiz göndericinin API/yazma yetkileri kapatıldı; migration ile Edge birlikte yayımlanmalıdır.
 
 31 SQL kontrolü (61 dosya/1.657), üç gerçek DB yarışı ve 20 Edge testi geçti; Edge/core tip kontrolleri tamamlandı. Fiziksel teslim ve sağlayıcı kurulumu, operatörün gerekçeli başarısız gönderim kurtarma ekranı açık. Üretim/TestFlight değişmedi. Yayın sırası ve teslim sınırları: `docs/learning/PUSH-DELIVERY-ACCEPTANCE.md`.
+
+
+## 4 Kasım — bildirim operasyonu (084000)
+
+Canlı yayın rolüne özel bildirim kuyruğu, gerekçeli yeniden sıraya alma, kayıp yanıt/yeniden açılış kurtarması ve kabul edilmiş cihaz makbuzlarını koruyan işlem tamamlandı. Son 24 saat, kayıt başına iki kurtarma ve operatör başına saatte 20 işlem sınırları sunucudadır. Özel geçmişte önceki sonuç sayıları korunur; cihaz anahtarı ve aile/çocuk kimliği arayüze çıkmaz. Yayın rolü tek başına yönetim girişinde desteklenir.
+
+28 yeni SQL ile 62 dosyada 1.685 kontrol, üç gerçek DB yarışı, 160 core testi, backoffice tip/lint ve 19 sayfalık üretim derlemesi geçti. Masaüstü/tablet/telefon sentetik ekran, kayıp yanıt ve rol iptali kanıtı: `docs/design/screens/push-operations/README.md`. Gerçek mesaj gönderimi, fiziksel teslim veya dağıtım yapılmadı; TestFlight 17 değişmedi.

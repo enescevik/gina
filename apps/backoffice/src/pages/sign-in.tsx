@@ -23,6 +23,8 @@ export default function SignIn() {
       void router.replace("/help-articles");
     } else if (session && rolesReady && roles.includes("finance")) {
       void router.replace("/billing");
+    } else if (session && rolesReady && roles.includes("release")) {
+      void router.replace("/notifications");
     }
   }, [session, isAdmin, roles, rolesReady, router]);
 
@@ -68,7 +70,7 @@ export default function SignIn() {
             : null}
           {error ? <Notice tone="error">{error}</Notice> : null}
           {session && !isAdmin && rolesReady && !roles.includes("support") &&
-              !roles.includes("content") && !roles.includes("finance")
+              !roles.includes("content") && !roles.includes("finance") && !roles.includes("release")
             ? <Notice>{t.signIn.notAdmin}</Notice>
             : null}
           <label className="label" htmlFor="email">
