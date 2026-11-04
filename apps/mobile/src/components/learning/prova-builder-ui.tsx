@@ -24,7 +24,12 @@ export function BuilderChoice(
       accessibilityState={{ selected, disabled }}
       disabled={disabled}
       onPress={onPress}
-      style={[b.choice, selected && b.selected, disabled && !selected && { backgroundColor: "#F0EDF4", borderColor: "#D8D0E4" }]}
+      style={[
+        b.choice,
+        selected && b.selected,
+        disabled && !selected &&
+        { backgroundColor: "#F0EDF4", borderColor: "#D8D0E4" },
+      ]}
     >
       <Text
         style={[
@@ -76,7 +81,11 @@ export function BuilderQuestionPreview(
             <Text style={b.copy}>
               {q.kind === "multiple_choice" ? q.correct_key : q.expected_answer}
             </Text>
-            {q.solution ? <Text style={b.muted}>{q.solution}</Text> : null}
+            {q.solution &&
+                (q.kind === "multiple_choice" ||
+                  q.solution.trim() !== q.expected_answer?.trim())
+              ? <Text style={b.muted}>{q.solution}</Text>
+              : null}
             <DocumentOrigin question={q} />
           </View>
         )

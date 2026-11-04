@@ -1,3 +1,10 @@
+import {
+  finishGeneration,
+  type GeneratedQuestion,
+  type GenerationContext,
+  recoverGeneration,
+  validateGenerationResult,
+} from "../_shared/generation-result.ts";
 import { cataloguePlan } from "../_shared/catalogue-plan.ts";
 import { blueprintPlan } from "../_shared/blueprint-plan.ts";
 import { generationDraftScope } from "../_shared/prova-generation-scope.ts";
@@ -17,7 +24,6 @@ import {
   callClaude,
   DIFFICULTIES,
   type Difficulty,
-  officialUrls,
   provaEntitlement,
   readParent,
   resolveAi,
@@ -30,6 +36,7 @@ const MAX_TOTAL = 30;
 type KindMode = "multiple_choice" | "open_ended" | "mixed";
 
 interface GenerateBody {
+  recover_only?: boolean;
   draft_id?: string;
   request_id?: string;
   note?: string;
@@ -45,20 +52,6 @@ interface GenerateBody {
   assessment?: "practice" | "written" | "context";
   difficulty?: Difficulty;
   locale?: "tr" | "en";
-}
-
-interface GeneratedQuestion {
-  topic: string;
-  kind: "multiple_choice" | "open_ended";
-  difficulty: Difficulty;
-  stem: string;
-  choices: { key: string; text: string }[];
-  correct_key: string;
-  distractor_notes: { key: string; why: string }[];
-  expected_answer: string;
-  solution: string;
-  explanation: string;
-  source_urls: string[];
 }
 
 // Enes'in eşinin ChatGPT promptundan uyarlanan şablon (docs/PROVA.md «AI soru üretimi»).
@@ -198,6 +191,21 @@ Deno.serve(async (req) => {
   }
 
   const db = serviceClient();
+  const { request_id: _requestId, recover_only: recoverOnly, ...intent } = body;
+  if (JSON.stringify(intent).length > 50000) {
+    return json({ error: "invalid_input" }, 400);
+  }
+  const recovered = await recoverGeneration(
+    db,
+    parent,
+    requestId,
+    intent,
+    recoverOnly === true,
+  );
+  if (recovered) return recovered;
+  if (recoverOnly === true) {
+    return json({ error: "generation_not_started" }, 409);
+  }
   const draftScope = await generationDraftScope(
     db,
     parent.familyId,
@@ -347,33 +355,72 @@ Deno.serve(async (req) => {
     }\n${SYSTEM_PROMPT}\n${userPrompt}`,
   );
 
+  const context: GenerationContext = {
+    schema: "gina.generation-context.v1",
+    subject,
+    grade,
+    total,
+    topics,
+    kind,
+    difficulty,
+    locale,
+    scenarioCode,
+    blueprintSource,
+    blueprintSnapshot,
+    draftScope,
+    document: document ? { id: document.id, sha256: document.sha256 } : null,
+    ai,
+    promptVersion: PROMPT_VERSION,
+    promptHash,
+    systemPrompt: SYSTEM_PROMPT,
+    userPrompt,
+    catalogueBound,
+  };
   const { data: reservation, error: reservationError } = await db.rpc(
-    catalogueBound
-      ? "reserve_catalog_prova_generation"
-      : "reserve_prova_generation_v2",
+    "reserve_prova_generation_v3",
     {
       p_id: requestId,
       p_family_id: parent.familyId,
       p_user_id: parent.userId,
       p_hash: promptHash,
       p_items: total,
-      ...(catalogueBound
-        ? { p_blueprint_id: body.blueprint_id!, p_draft_id: body.draft_id! }
-        : {}),
+      p_intent: intent,
+      p_context: context,
     },
   );
   if (reservationError) {
-    return json({
-      error: reservationError.message === "curriculum_scope_mismatch"
-        ? "curriculum_scope_mismatch"
-        : "save_failed",
-    }, reservationError.message === "curriculum_scope_mismatch" ? 409 : 500);
+    return json(
+      {
+        error: ["curriculum_scope_mismatch", "prova_draft_changed"].includes(
+            reservationError.message,
+          )
+          ? reservationError.message
+          : "save_failed",
+      },
+      ["curriculum_scope_mismatch", "prova_draft_changed"].includes(
+          reservationError.message,
+        )
+        ? 409
+        : 500,
+    );
   }
   if (reservation?.cached) return json(reservation.cached);
   if (reservation?.error) {
     return json(
       { error: reservation.error },
       reservation.error === "ai_quota_exceeded" ? 402 : 409,
+    );
+  }
+  if (
+    reservation?.context && reservation?.provider_result && reservation?.lease
+  ) {
+    return finishGeneration(
+      db,
+      parent,
+      requestId,
+      reservation.lease,
+      reservation.context,
+      reservation.provider_result,
     );
   }
   const lease = reservation?.lease;
@@ -396,39 +443,7 @@ Deno.serve(async (req) => {
         userContent,
         SCHEMA,
       );
-    const questions = result?.output?.questions;
-    if (
-      !Array.isArray(questions) || questions.length !== total ||
-      questions.some((q) =>
-        !q || typeof q.stem !== "string" || !q.stem.trim() ||
-        q.stem.length > 10000 ||
-        typeof q.expected_answer !== "string" || !q.expected_answer.trim() ||
-        typeof q.solution !== "string" || !q.solution.trim() ||
-        typeof q.topic !== "string" || !topics.some((t) =>
-          t.topic === q.topic
-        ) ||
-        !["multiple_choice", "open_ended"].includes(q.kind) ||
-        (kind !== "mixed" && q.kind !== kind) ||
-        (q.kind === "multiple_choice" &&
-          (!Array.isArray(q.choices) || q.choices.length !== 4 ||
-            new Set(q.choices.map((c) => c?.key)).size !== 4 ||
-            q.choices.some((c) =>
-              !c || !["A", "B", "C", "D"].includes(c.key) ||
-              typeof c.text !== "string" || !c.text.trim()
-            ) ||
-            !q.choices.some((c) => c.key === q.correct_key))) ||
-        (q.explanation !== undefined && typeof q.explanation !== "string") ||
-        (q.distractor_notes !== undefined &&
-          (!Array.isArray(q.distractor_notes) ||
-            q.distractor_notes.some((n) =>
-              !n || typeof n.key !== "string" || typeof n.why !== "string"
-            )))
-      ) || topics.some((t) =>
-        questions.filter((q) =>
-          q.topic === t.topic
-        ).length !== t.count
-      )
-    ) throw new Error("ai_result_invalid");
+    validateGenerationResult(result, context);
     if (!reservation.provider_result) {
       const { error } = await db.rpc("save_prova_provider_result", {
         p_id: requestId,
@@ -461,87 +476,5 @@ Deno.serve(async (req) => {
     }, 502);
   }
 
-  const createdAt = new Date().toISOString();
-  const rows = (result.output.questions ?? [])
-    .slice(0, total)
-    .filter((q) => q.stem?.trim())
-    .filter((q) => kind === "mixed" || q.kind === kind)
-    .map((q) => {
-      const isMc = q.kind === "multiple_choice";
-      const choices = isMc ? (q.choices ?? []).slice(0, 4) : null;
-      const validMc = isMc && choices?.length === 4 &&
-        new Set(choices.map((c) => c.key)).size === 4 && choices.every((c) =>
-          ["A", "B", "C", "D"].includes(c.key) && c.text?.trim()
-        ) && choices.some((c) =>
-          c.key === q.correct_key
-        );
-      const notes = isMc && q.distractor_notes?.length
-        ? `\n\n${locale === "tr" ? "Çeldiriciler" : "Distractors"}: ${
-          q.distractor_notes.map((d) => `${d.key}) ${d.why}`).join(" ")
-        }`
-        : "";
-      const sources = officialUrls(blueprintSource ? [blueprintSource] : []);
-      return {
-        valid: !!q.expected_answer?.trim() && !!q.solution?.trim() &&
-          (isMc ? validMc : q.kind === "open_ended"),
-        row: {
-          family_id: parent.familyId,
-          grade,
-          subject,
-          topic: q.topic?.trim() || topics[0].topic,
-          scenario_code: scenarioCode,
-          kind: q.kind,
-          difficulty: DIFFICULTIES.includes(q.difficulty)
-            ? q.difficulty
-            : difficulty,
-          stem: q.stem.trim(),
-          choices,
-          correct_key: isMc ? q.correct_key : null,
-          expected_answer: q.expected_answer?.trim() || null,
-          solution: q.solution?.trim() || null,
-          explanation: ((q.explanation?.trim() ?? "") + notes).trim() || null,
-          source_urls: [...new Set(sources)],
-          provenance: {
-            generator: "ai",
-            ...(blueprintSnapshot ? { blueprint: blueprintSnapshot } : {}),
-            ...(draftScope
-              ? { draft_id: draftScope.id, draft_version: draftScope.version }
-              : {}),
-            ...(document
-              ? {
-                document_source_id: document.id,
-                document_sha256: document.sha256,
-              }
-              : {}),
-            model: ai.model,
-            prompt_version: PROMPT_VERSION,
-            settings_prompt_version: ai.promptVersion,
-            prompt_hash: promptHash,
-            prompt: { system: SYSTEM_PROMPT, user: JSON.parse(userPrompt) },
-            requested_by: parent.userId,
-            created_at: createdAt,
-          },
-          created_by: parent.userId,
-        },
-      };
-    })
-    .filter((x) => x.valid)
-    .map((x) => x.row);
-
-  if (rows.length !== total) return json({ error: "generation_empty" }, 502);
-  const { data: completed, error: saveError } = await db.rpc(
-    "complete_prova_generation_v2",
-    {
-      p_id: requestId,
-      p_lease: lease,
-      p_rows: rows,
-      p_model: ai.model,
-      p_prompt_version: PROMPT_VERSION,
-      p_input: result.inputTokens,
-      p_output: result.outputTokens,
-    },
-  );
-  // A transport failure may follow a successful commit: keep the job for a same-ID retry.
-  if (saveError) return json({ error: "save_failed" }, 500);
-  return json(completed);
+  return finishGeneration(db, parent, requestId, lease, context, result);
 });
