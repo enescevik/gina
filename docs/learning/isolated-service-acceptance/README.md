@@ -52,3 +52,14 @@ Yanlış hash ile yüklenen dosya `invalid` kaldı ve temizlik kuyruğuna girdi.
 Denetim, Realtime içindeki iç içe null kimliklerin `"null"` metnine dönüşerek UUID dönüşümünü ve bütün bildirim grubunu durdurduğunu yeniden üretti. 094000 yalnız üç isteğe bağlı GINA kimliğinin null/boş gösterimini normalleştirir; rol, geçerli kimlikler, aile üyeliği ve cihaz iptal kontrolleri korunur. 18 yeni SQL kontrolü ile toplam 72 dosya/2035 kontrol geçti. Mobil bağlantı artık socket katılımını veritabanı hazır olayıyla karıştırmaz; hazır olunca tekrar okur, veritabanı aboneliği başarısızsa yedek yenileme sürer. Gerçek hook için beş test ile mobil tip/lint geçti.
 
 Bu kanıt yerel gerçek hizmet kabulüdür; üretim dağıtımı, fiziksel cihaz veya push teslimi değildir. Kaynaklar: [Supabase protokolü](https://supabase.com/docs/guides/realtime/protocol), [Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes).
+
+
+## 4 Kasım — aile, yönetim ve canlı dosya/bildirim zinciri
+
+Aynı gerçek yerel hizmet koşumuna ayrı support/content operatörleri eklendi. `backoffice-verification.json` 192 başarılı kontrol içerir; önceki 134 kontrol de bu koşumda yeniden geçti. Yeni kullanıcılar ve bir saatlik dar roller yalnız boş test kopyasında oluşturuldu; gerçek yöneticilerin yetkileri değiştirilmedi.
+
+Veli talebi → operatör kuyruğu → özel ekip notu → aileye yanıt → veli takip mesajı geçti. Başka aile, çocuk cihazı ve içerik operatörü özel desteğe erişemedi. Veliye yalnız aile görünürlüklü iki mesaj döndü; not yalnız destek operatörüne açıldı. Tekrarlı oluşturma/yanıt ikinci kayıt üretmedi, eski revizyonla yazma reddedildi.
+
+SSS taslağı → inceleme zorunluluğu → yayın → iOS/Android/web hedefleri → yeni taslağın eski yayını koruması → arşiv zinciri geçti. Destek operatörü ve veli içerik düzenleyemedi. Rol iptali/süresi dolması mevcut token ile erişimi hemen kapattı.
+
+Bu gerçek Auth/REST/RLS ve eşleşen ürün RPC kabulüdür; Cloudflare Access kurulumu, gerçek tarayıcı ekranı, Apple/Google ödeme-iade veya fiziksel bildirim teslimi değildir. Bütün geçici hizmetler ve veritabanı kaldırıldı.

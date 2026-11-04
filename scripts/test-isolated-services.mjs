@@ -6,6 +6,7 @@ import { isDeepStrictEqual } from 'node:util';
 import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import { testSources } from './isolated-source-contract.mjs';
+import { testBackoffice } from './isolated-backoffice-contract.mjs';
 import { observeRealtime } from './isolated-realtime-contract.mjs';
 const require = createRequire(new URL('../apps/mobile/package.json', import.meta.url));
 const { createClient } = require('@supabase/supabase-js');
@@ -161,6 +162,7 @@ try {
   const ledger=await must(device.from('star_events').select('delta').eq('child_id',child),'child_reads_star_events');
   assert('duplicate_approval_awards_stars_once',ledger.reduce((n,r)=>n+r.delta,0)===2);
   if(storagePort) await testSources({parent:a.c,other:b.c,child:device,childId:child,admin,base,pdf,must,assert});
+  await testBackoffice({admin,client,parent:a.c,other:b.c,child:device,must,assert});
   await rpc(a.c,'revoke_device',{p_device_id:deviceId});
   // Deliberately retain the old JWT: revocation must take effect before refresh.
   assert('revoked_device_old_token_cannot_read_children',(await must(device.from('children').select('id'),'revoked_device_read')).length===0);
