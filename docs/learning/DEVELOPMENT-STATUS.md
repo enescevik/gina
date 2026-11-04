@@ -390,3 +390,9 @@ Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli
 077000 + contribution-submit ile ayrı paylaşım kopyası, bütün grup aktarımı, açık kullanım/mahremiyet onayı, kalıcı gönderim ve yönetici karar kurtarma, soru bazında öğretmen alanları, bağımsız taslak ve ortak/tekil ödül eşikleri uygulandı. Eski görselsiz katkı akışı korundu. Kabul yayın değildir; özellik varsayılan kapalıdır.
 
 Doğrulama: 55 SQL dosyasında 1.435 kontrol (53 yeni), dört gerçek DB yarış senaryosu, core 128 + katkı Edge 8 test; mobil/backoffice lint/tip kontrolü ve backoffice statik derleme geçti. Gerçek bileşenlerle telefon/tablet web kabulü ve kayıp yanıt/yenileme/geri çekme/ret/yetki kaybı kontrolleri `docs/design/screens/contribution-review/README.md` içinde. Bunlar fiziksel cihaz veya üretim kabulü değildir. Migration/Edge/istemciler henüz dağıtılmadı; TestFlight 17 değişmedi. Büyük birleşik fotoğraflar 512 KiB sınırında açıkça reddedilir; otomatik bulanıklaştırma yapılmaz.
+
+## 4 Kasım — senaryo kaynağı inceleme ve katalog yayını
+
+078000 ile 648 kaynak adayının kayıpsız içe alınması, gerekçeli program/okul kapsamı incelemesi, ayrı yayın/geri çekme ve aile çocuğunun sınıfına bağlı salt okuma API’si eklendi. Yeni kütüphane sekmesi onaylı ortak tasarımda; kalıcı karar kurtarma, çakışma uyarısı ve kaynak hücreleri vardır. Genel özellik varsayılan kapalı; hiçbir gerçek aday otomatik onaylanmadı veya yayımlanmadı. Aile seçim ekranı ve AI kapsam bağı sonraki artımdır.
+
+56 SQL dosyasında 1.472 kontrol (37 yeni), üç DB yarışı, 135 core testi, dört hazırlama testi; mobil/backoffice lint/tip ve backoffice üretim derlemesi geçti. 648 taslak izole DB işleminde doğrulandı ve geri alındı. Gerçek bileşenlerle masaüstü/tablet, kayıt/yayın/geri çekme, kayıp yanıt ve eski sürüm/yetki kaybı kabulü: `docs/design/screens/curriculum-review/README.md`. TestFlight/üretim değişmedi; kaynak onayı veya fiziksel cihaz kabulü iddiası yok.

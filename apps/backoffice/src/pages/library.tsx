@@ -1,3 +1,4 @@
+import { CurriculumReviewPanel } from "@/components/curriculum-review";
 import { ContributionSets } from "@/components/contribution-sets";
 import { LibraryDrafts } from "@/components/library-drafts";
 import { LibraryPolicy, type RewardPolicy } from "@/components/LibraryPolicy";
@@ -65,10 +66,10 @@ export default function LibraryPage() {
   );
   const router = useRouter();
   const [tabChoice, setTab] = useState<
-    "content" | "drafts" | "review" | "policy" | null
+    "content" | "drafts" | "review" | "policy" | "curriculum" | null
   >(null);
   const tab = tabChoice ?? (
-    router.query.packageId || router.query.tab === "drafts" ? "drafts" : router.query.tab === "review" ? "review" : router.query.tab === "policy" ? "policy" : "content"
+    router.query.packageId || router.query.tab === "drafts" ? "drafts" : router.query.tab === "curriculum" ? "curriculum" : router.query.tab === "review" ? "review" : router.query.tab === "policy" ? "policy" : "content"
   );
   const [editing, setEditing] = useState<Collection | null>(null);
   const [selected, setSelected] = useState("");
@@ -136,7 +137,7 @@ export default function LibraryPage() {
               })`
               : ""
           }`,
-        ], ["policy", "Haklar ve ödüller"]] as const).map(([value, label]) => (
+        ], ["policy", "Haklar ve ödüller"], ["curriculum", "Senaryo kaynakları"]] as const).map(([value, label]) => (
           <button
             key={value}
             aria-current={tab === value ? "page" : undefined}
@@ -155,6 +156,7 @@ export default function LibraryPage() {
         ))}
       </nav>
       {tab === "drafts" ? <LibraryDrafts /> : null}
+      {tab === "curriculum" ? <CurriculumReviewPanel /> : null}
       {tab === "content"
         ? (
           <>

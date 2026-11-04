@@ -29,6 +29,7 @@ jobs:
       - run: node --test scripts/check-testflight.test.mjs scripts/check-native-text.test.mjs scripts/prepare-tablet-install.test.mjs scripts/check-notebook-layout.test.mjs
       - run: python3 scripts/test-meb-scenarios.py
       - run: python3 scripts/test-curriculum-candidates.py
+      - run: python3 scripts/test-curriculum-review.py
       - run: python3 scripts/test-learning-pilot.py
       - run: python3 scripts/test-library-import-preparer.py
       - run: python3 scripts/test-library-draft.py
