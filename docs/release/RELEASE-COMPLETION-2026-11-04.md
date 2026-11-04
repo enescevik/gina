@@ -1,8 +1,9 @@
 # GINA — yayını tamamlama ve kullanıcı adımları
 
 4 Kasım 2026. Bu belge bir tamamlanma ilanı değildir. Hazır kod, doğrulanmış hizmet
-ve yayımlanmış sürüm ayrı izlenir. Son doğrulanmış TestFlight sürümü **0.1.0 (18)**;
+ve yayımlanmış sürüm ayrı izlenir. Son doğrulanmış TestFlight sürümü **0.1.0 (20)**;
 bu sürümden sonraki değişiklikler ayrı kabul ve yayın kaydı gerektirir.
+[Güncel sürüm ve gerçek AI arayüz kabulü](CLIENT-20-2026-11-04.md).
 
 ## Yeniden kurmayacağın şeyler
 
@@ -19,7 +20,7 @@ anlamına gelmez.
 | Web, mobil ve yönetim panelinin ortak veri akışı | İzole gerçek Auth/REST/Realtime/Storage/Edge koşumunda 254 kontrol geçti. Görev, Prova, cihaz iptali, aile ayrımı, destek ve SSS dahil. Canlı AI/kayıt zincirinde ayrıca 29 kontrol geçti; ekran/cihaz kabulü ayrı. |
 | Yeni AI özellikleri | Haftalık özet, belgeden ödev/kurs, görev ve ödül gerçek sağlayıcıyla geçti. Yeni ürün uç noktalarının kayıt/kota/yeniden açılışı yerel gerçek hizmetler ve deterministik sağlayıcı sınırıyla geçti. Canlı ürün uçlarında da 29 kontrol ve 6 temizleme doğrulaması geçti; beş gerçek ücretli üretim yapıldı. |
 | Native taslak güvenliği | iPhone/iPad simülatörleri ve Android API33 emülatöründe gerçek SQLite ve süreç kapanışı geçti. Fiziksel kalem/klavye ve Android görsel kabulü ayrıca yapılacak. |
-| Eşgüdümlü yayın | Üretim DB 20261103094000'a güncellendi (32 migration), 19 Edge function dağıtıldı. public/gina yerel yedeği alındı; Auth/Storage tam yedeği veya geri dönüş tatbikatı değildir. Web ve TestFlight18 yayımlandı; korumalı backoffice yayını bekliyor. |
+| Eşgüdümlü yayın | Üretim DB 20261103094000'a güncellendi (32 migration), 19 Edge function dağıtıldı. public/gina yerel yedeği alındı; Auth/Storage tam yedeği veya geri dönüş tatbikatı değildir. Web ve TestFlight20 yayımlandı; korumalı backoffice yayını bekliyor. |
 | Web ve backoffice hosting | İki üretim derlemesi ve gerçek yayın başlıklarıyla telefon/tablet giriş ekranları geçti. Veli webi https://gina-web.pages.dev üzerinde yayımlandı ve gerçek sentetik aileyle görev/onay/hedef/etkinlik akışları geçti. Backoffice Access kurulumu hesap sahibi adımını bekliyor. Yeşil ama atlanmış Actions işi yayın kanıtı değildir. |
 | Mağaza ve bildirim | Sunucu kontrolleri mevcut; gerçek satın alma/yenileme/iade ve APNs/FCM teslimi için mağaza/cihaz kabulü gerekiyor. |
 | Ek AI sağlayıcıları | Mevcut çalışan sağlayıcı Anthropic. Diğer sağlayıcılar yalnız modele ad yazarak etkinleşmez; adapter, doğrulama ve ayrı anahtar gerekir. |
@@ -96,7 +97,7 @@ Satın alma denemesi: [Google Play lisans testleri](https://developer.android.co
 
 ### 4. Gerçek cihazda birlikte kısa kabul turu yap
 
-TestFlight’ta **0.1.0 (18)** seçip güncelle. Eski 17 numaralı derleme ile yeni kodu
+TestFlight’ta **0.1.0 (20)** seçip güncelle. Eski 18 numaralı derleme ile yeni kodu
 karşılaştırma. Uygulamayı silmeden güncelle; çizim/cevap taslaklarını koruyalım.
 
 1. iPhone ve iPad'de giriş yap; tek çocukta gereksiz çocuk seçici çıkmadığını kontrol et.
@@ -132,7 +133,7 @@ Sorun bildirirken ekran adı, sürüm, cihaz ve yaptığın son adım yeterli; g
 - Onaylanan metinleri `/legal/gizlilik-politikasi` ve
   `/legal/abonelik-kosullari` adreslerine yayımlayıp mobilin
   `EXPO_PUBLIC_LEGAL_BASE_URL` ayarını bağlamak teknik iş olarak bende.
-  **Bu ayar yokken gerçek satın alma düğmesi bilerek kapalıdır.** TestFlight 18 için
+  **Bu ayar yokken gerçek satın alma düğmesi bilerek kapalıdır.** TestFlight 20 için
   de hazır ödeme/mağaza kabulü iddia edilmeyecek; paket deneme hakları gerçek satın
   alma testinin yerine geçmez. App Store ürün/fiyatları ayrıca eşleştirilmeli.
 - Kütüphane taslaklarını bağımsız alan/dil incelemesinden geçirecek kişiyi belirle.
@@ -156,3 +157,12 @@ Sorun bildirirken ekran adı, sürüm, cihaz ve yaptığın son adım yeterli; g
 
 Her basamakta açık kalan iş ayrıca yazılacak. "Derlendi", "test geçti" ve
 "kullanıcılara yayımlandı" aynı durum değildir.
+
+## EAS derleme kotası
+
+Bu tur ücretsiz aylık iOS bulut derleme kotası doldu. TestFlight20 önceden
+tamamlanan imzalı paketle yayımlandı. Yeni ücretli plan satın alınmadı. Mac
+üzerinde EAS yerel derlemeyle kayıtlı iPad’in 20 paketi de üretildi ve mevcut
+kurulum bağlantısında yayımlandı. Bulutta daha
+hızlı/ek derleme istersen plan kararı sana ait. Bu, Anthropic AI bakiyenden ayrı
+bir hizmet kotasıdır.

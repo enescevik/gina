@@ -1,0 +1,29 @@
+{
+  "version": "0.1.0",
+  "build": "20",
+  "source": "3afaa847aea3020aba8ed551f8fae3e910eb586e",
+  "bundleId": "com.enescevik.gina",
+  "signatureVerified": true,
+  "deviceFamilies": [
+    1,
+    2
+  ],
+  "iPadOrientations": [
+    "UIInterfaceOrientationPortrait",
+    "UIInterfaceOrientationPortraitUpsideDown",
+    "UIInterfaceOrientationLandscapeLeft",
+    "UIInterfaceOrientationLandscapeRight"
+  ],
+  "productionEndpointsVerified": true,
+  "physicalDeviceTested": false,
+  "easBuildId": "9f8026b5-5eac-4bfe-babd-71abc15aa03f",
+  "processingState": "VALID",
+  "internalState": "IN_BETA_TESTING",
+  "expired": false,
+  "appleBuildId": "040de21b-860b-4eff-8ea3-885eee6f1843",
+  "validationExit": 0,
+  "uploadExit": 0,
+  "submittedWith": "Apple altool; EAS queue submission canceled before direct upload",
+  "checkedAt": "2026-11-04T20:28:50.429Z",
+  "turkishTestNotesVerified": true
+}

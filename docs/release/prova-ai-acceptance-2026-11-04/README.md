@@ -72,4 +72,5 @@ AI soru üretimi ve bir inceleme doğrulandı; bu üç sorunun resmî müfredata
 editör onayını aldığı veya kütüphanenin tamamlandığı iddia edilmez.
 
 TestFlight 19, bu ek düzeltmelerden önce hazırlanmış olduğundan gönderilmedi.
-20'nin Apple durumu ve ayrı iPad dağıtımı sürüm kaydında ayrıca doğrulanacak.
+20 Apple'da VALID / IN_BETA_TESTING olarak doğrulandı. Ayrı iPad dağıtımı ve
+[TestFlight yayın kaydı](../CLIENT-20-2026-11-04.md) ayrıca izlenir.
