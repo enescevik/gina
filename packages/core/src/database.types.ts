@@ -2265,6 +2265,10 @@ isOneToOne: false
                 }
           }
           Functions: {
+      get_learning_plan_item: { Args: { p_child_id: string; p_id: string }; Returns: Json };
+      get_learning_plan: { Args: { p_child_id: string; p_from: string; p_to: string }; Returns: Json };
+      save_learning_plan: { Args: { p_request_id: string; p_child_id: string; p_id: string; p_revision: number; p_content: Json }; Returns: Json };
+
             get_repeat_calendar_event: { Args: { p_event_id: string }; Returns: Json };
             get_repeat_calendar: { Args: { p_attempt_id: string }; Returns: Json };
             get_school_bag: { Args: { p_child_id: string; p_day: string }; Returns: Json };

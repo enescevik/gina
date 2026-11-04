@@ -56,3 +56,4 @@ export * from "./timetable-command";
 export * from "./school-bag";
 
 export * from "./family-week";
+export * from "./learning-plan";

@@ -23,6 +23,7 @@ import {
   Plus,
 } from "lucide-react-native";
 import {
+  learningPlanForDay,
   localDateOf,
   schoolBagDayAvailable,
   occurrencesBetween,
@@ -41,6 +42,7 @@ import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import { IconButton, PlannerHero, SatinButton, Tag, p, u } from "./ui";
 import { TimetableEditor, type PlannerChild } from "./timetable-editor";
+import { LearningPlanSection, useLearningPlan } from "./learning-plan";
 import { SchoolBag } from "./school-bag";
 import { EventEditor } from "./event-editor";
 function shift(date: string, days: number) {
@@ -98,6 +100,8 @@ export function PlannerCalendar({
   const selectedChild =
     profiles.find((c) => c.id === (childMode ? active.childId : filter)) ??
     profiles[0];
+  const learning = useLearningPlan(selectedChild?.id, week[0], week[6]);
+  const learningCount = (day: string) => learningPlanForDay(learning.data?.items ?? [], day).filter(r => !r.content.done).length;
   const occurrences = occurrencesBetween(
     events.data ?? [],
     week[0],
@@ -493,16 +497,9 @@ export function PlannerCalendar({
         </ScrollView>
         {!busy && !failed ? (
           <>
-            {wide ? (
-              <View
-                style={{
-                  flexDirection: "row",
-                  gap: 20,
-                  alignItems: "flex-start",
-                }}
-              >
-                <View style={{ flex: 1.2, gap: 16 }}>{agenda()}</View>
-                <View style={[u.card, { flex: 1 }]}>
+              <View style={{flexDirection: wide ? "row" : "column", gap:20, alignItems:"stretch"}}>
+                <View style={{ flex: wide ? 1.2 : undefined, gap:16 }}>{agenda()}</View>
+                {wide ? <View style={[u.card, { flex: 1 }]}>
                   <Text style={u.heading}>{t("planner.weekOverview")}</Text>
                   {week.map((d) => {
                     const list = occurrences.filter((o) => o.date === d);
@@ -545,17 +542,15 @@ export function PlannerCalendar({
                                   (o) => o.event.type !== "school",
                                 ).length,
                               })
-                            : t("planner.freeDay")}
+                            : t("learningPlan.noEvents")}
+                          {learningCount(d) ? ` · ${t("learningPlan.dayCount",{count:learningCount(d),name:selectedChild?.name})}` : ""}
                         </Text>
                         <ChevronRight color={p.muted} size={16} />
                       </Pressable>
                     );
                   })}
-                </View>
+                </View> : null}
               </View>
-            ) : (
-              agenda()
-            )}
           </>
         ) : null}
         {detail ? (
@@ -655,7 +650,7 @@ export function PlannerCalendar({
           items.map((o) => item(o))
         ) : (
           <View style={{ paddingVertical: 28, gap: 12 }}>
-            <Text style={u.heading}>{t("planner.emptyTitle")}</Text>
+            <Text style={u.heading}>{t(learningCount(date) ? "learningPlan.noEvents" : "planner.emptyTitle")}</Text>
             <Text style={u.copy}>{t(childMode ? "planner.childEmptyBody" : "planner.emptyBody")}</Text>
             {selectedChild ? (
               <SatinButton
@@ -666,6 +661,7 @@ export function PlannerCalendar({
             ) : null}
           </View>
         )}
+        {selectedChild ? <LearningPlanSection child={selectedChild} date={date} from={week[0]} to={week[6]} childMode={childMode}/> : null}
       </View>
     );
   }
