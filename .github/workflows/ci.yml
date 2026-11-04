@@ -34,6 +34,7 @@ jobs:
       - run: python3 scripts/test-library-import-preparer.py
       - run: python3 scripts/test-library-draft.py
       - run: python3 scripts/test-library-math6.py
+      - run: python3 scripts/test-library-science6.py
       - run: python3 scripts/build-library-coverage.py --check
 
   edge:

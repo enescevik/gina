@@ -4,6 +4,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import sharp from 'sharp';
 import {drawMath6} from './render-math6-diagrams.mjs';
+import {drawScience6} from './render-science6-diagrams.mjs';
 const folder=path.resolve(process.argv[2]??'docs/learning/library-pilot/grade-5-science');
 const data=JSON.parse(await fs.readFile(path.join(folder,'pilot.json'),'utf8'));
 const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
@@ -12,6 +13,7 @@ const text=(x,y,s,size=36)=>`<text x="${x}" y="${y}" text-anchor="middle" fill="
 const circle=(x,y,r,fill,extra='')=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" ${extra}/>`;
 const half=(x,y,r,side)=>`<path d="M ${x} ${y-r} A ${r} ${r} 0 0 ${side==='right'?1:0} ${x} ${y+r} Z" fill="#FFF6C9"/>`;
 function draw(d){
+ const science6=drawScience6(d,{text,ink,purple,mint,circle});if(science6)return science6;
  const math6=drawMath6(d,{text,ink,purple,mint,circle});if(math6)return math6;
  if(d.type==='phase_cards'){
   const body=d.cards.map((phase,i)=>{const x=230+(i%2)*340,y=140+Math.floor(i/2)*280,r=75;return circle(x,y,r,ink,`data-phase="${phase}"`)+(phase==='full'?circle(x,y,r,'#FFF6C9'):phase==='first'?half(x,y,r,'right'):phase==='last'?half(x,y,r,'left'):'')+circle(x,y,r,'none',`stroke="${purple}" stroke-width="3"`)+text(x,y+120,'ABCD'[i],48);}).join('');
