@@ -4,7 +4,13 @@ Adres: https://gina-backoffice.pages.dev
 
 İlk yayın: `6d4f8d7e-b0ce-4deb-b5eb-81ca840bdf1e`, kaynak
 `abb47e1a581ab790d6622773eb695f71607f6418`. 76 dosya, üretim dalı `main`.
-Sonradan eklenen şifre kurtarma bağlantısının yayını ayrıca kaydedilecek.
+Şifre kurtarma bağlantısını içeren son yayın: `8b9132a2-ba72-4469-a2a9-248231515537`, kaynak
+`feecfd5be827f35c163cd9658b475763a421fc3b`. Bu kodun dört CI kontrolü aynı commit'te
+başarılı olduktan sonra yayımlandı. [Son yayın kaydı](release.json).
+Sonraki kayıt commit'i yalnız kanıt ve doküman ekler.
+
+Canlı Chrome oturumunda yeni açıklamalar ve **Şifremi unuttum** bağlantısı görüldü.
+![Canlı giriş ekranı](live-sign-in.png)
 
 ## Koruma ve yetki
 
@@ -16,7 +22,9 @@ Sonradan eklenen şifre kurtarma bağlantısının yayını ayrıca kaydedilecek
   One-time PIN seçili; WARP ile otomatik giriş kapalı; oturum 24 saat.
 - Uygulama yüklenmeden önce iki adres de Access'e yönlendi. Yüklemeden sonra
   ana adres ve gerçek dağıtım adresinde kök, giriş, panel, destek, kütüphane yayın
-  ekranı ve logo dahil 12 istek doğru ekip girişine 302 döndü.
+  ekranı ve logo dahil 12 istek doğru ekip girişine 302 döndü. İlk dağıtımda ayrıca
+  154 dosya/yol kontrolü geçti; [ayrıntılı tarama](all-asset-paths-verification.json).
+  Son dağıtımın 12 kontrolü de tekrar geçti.
   [Oturumsuz doğrulama](access-verification.json).
 - Kullanıcı Chrome'da Cloudflare kodunu girerek **canlı GINA yönetici girişine**
   ulaştı. Bu, izinli Cloudflare girişinin çalıştığını gösterir; uygulama içi giriş

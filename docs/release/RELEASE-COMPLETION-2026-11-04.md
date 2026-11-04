@@ -42,7 +42,10 @@ ekip alanı `gina-family.cloudflareaccess.com`. Bu adımı yeniden yapma.
 1. Cloudflare girişinde `enescevik@gmail.com` adresini kullan; e-postana gelen tek
    kullanımlık kodu Cloudflare sayfasına gir.
 2. Ardından GINA'nın **Yönetici girişi** ekranında aynı e-posta ve mevcut GINA
-   şifrenle giriş yap. Cloudflare kodu, GINA şifresi değildir. Şifreni veya kodunu
+   şifrenle giriş yap. Hatırlamıyorsan **Şifremi unuttum** bağlantısını kullan;
+   açılan GINA web sayfasında sıfırlama e-postası iste ve bağlantıyı aynı tarayıcıda aç.
+   Yeni şifreyi belirledikten sonra yönetim paneline dön.
+   Cloudflare kodu, GINA şifresi değildir. Şifreni veya kodunu
    sohbete gönderme.
 3. Mevcut GINA hesabına, 5 Kasım'daki açık onayınla tam yönetici yetkisi verildi;
    işlem denetim kaydına yazıldı. Eski GINA oturumu açıksa çıkıp yeniden giriş yap.
