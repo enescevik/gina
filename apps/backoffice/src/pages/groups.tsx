@@ -1,4 +1,4 @@
-import { groupCreateCommandSchema, type GroupCreateCommand } from "@gina/core";
+import { type GroupCreateCommand, groupCreateCommandSchema } from "@gina/core";
 import { useAuth } from "@/lib/auth";
 import { groupCreateQueue, sendGroupCreate } from "@/lib/group-command";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -19,6 +19,7 @@ type Group = {
   status: string;
   version_hash: string;
   participants: number;
+  requires_review?: boolean;
 };
 type Operations = {
   enabled: boolean;
@@ -41,11 +42,28 @@ type Library = {
     content: { stem: string; kind: string; topic: string };
   }[];
 };
-type Package = { id: string; title: string; grade: number; subject: string; version: number; curriculum: string; plans: Plan[]; units: { key: string; title: string; count: number; eligible: boolean; has_media: boolean }[] };
+type Package = {
+  id: string;
+  title: string;
+  grade: number;
+  subject: string;
+  version: number;
+  curriculum: string;
+  plans: Plan[];
+  units: {
+    key: string;
+    title: string;
+    count: number;
+    eligible: boolean;
+    review_eligible?: boolean;
+    max_points?: number;
+    has_media: boolean;
+  }[];
+};
 export default function Groups() {
   const { session } = useAuth();
   const user = session?.user.id ?? "";
-  return <GroupsEditor key={user} user={user}/>;
+  return <GroupsEditor key={user} user={user} />;
 }
 function GroupsEditor({ user }: { user: string }) {
   const queue = useMemo(() => groupCreateQueue(user), [user]);
@@ -55,10 +73,24 @@ function GroupsEditor({ user }: { user: string }) {
   useEffect(() => {
     if (!user) return;
     let active = true;
-    void queue.restore().then(c => { if (active) setPending(c); }).catch(() => { if (active) setStorageError(true); }).finally(() => { if (active) setRestoring(false); });
-    return () => { active = false; };
+    void queue.restore().then((c) => {
+      if (active) setPending(c);
+    }).catch(() => {
+      if (active) setStorageError(true);
+    }).finally(() => {
+      if (active) setRestoring(false);
+    });
+    return () => {
+      active = false;
+    };
   }, [user, queue]);
-  const packages = useAdminQuery(async () => unwrap(await supabase().rpc("admin_group_package_catalog")) as unknown as Package[], [user]);
+  const packages = useAdminQuery(
+    async () =>
+      unwrap(
+        await supabase().rpc("admin_group_package_catalog"),
+      ) as unknown as Package[],
+    [user],
+  );
   const query = useAdminQuery(async () =>
     unwrap(await supabase().rpc("admin_group_exams")) as unknown as Operations
   );
@@ -73,6 +105,7 @@ function GroupsEditor({ user }: { user: string }) {
     minutes: 30,
     plans: ["plus", "pro"] as Plan[],
     items: [] as string[],
+    review: false,
   });
   const [policy, setPolicy] = useState<
     { enabled: boolean; limits: Record<Plan, number> } | null
@@ -84,12 +117,35 @@ function GroupsEditor({ user }: { user: string }) {
   const [success, setSuccess] = useState("");
   const gate = useRef(false);
 
-  const packageSource = packages.data?.find(p => "package:" + p.id === form.collection);
-  const legacy = library.data?.collections.find(c => c.id === form.collection);
-  const collection = packageSource ? { ...packageSource, curriculum_version: packageSource.curriculum } : legacy;
-  const items = packageSource ? packageSource.units.map(unit => ({ id: unit.key, count: unit.count, eligible: unit.eligible, content: { topic: unit.title, stem: `${unit.count} soru${unit.has_media ? " · Görselli" : ""}${unit.key.startsWith("source:") ? " · Ortak kaynakla birlikte" : ""}${!unit.eligible ? " · Açık uçlu soru içerdiği için toplu sıralamaya uygun değil" : ""}` } })) :
-    (library.data?.items.filter(i => i.collection_id === form.collection && i.status === "published" && i.content.kind === "multiple_choice") ?? []).map(i => ({ ...i, count: 1, eligible: true }));
-  const questionCount = items.filter(i => form.items.includes(i.id)).reduce((n,i) => n+i.count, 0);
+  const packageSource = packages.data?.find((p) =>
+    "package:" + p.id === form.collection
+  );
+  const legacy = library.data?.collections.find((c) =>
+    c.id === form.collection
+  );
+  const collection = packageSource
+    ? { ...packageSource, curriculum_version: packageSource.curriculum }
+    : legacy;
+  const items = packageSource
+    ? packageSource.units.map((unit) => ({
+      id: unit.key,
+      count: unit.count,
+      eligible: form.review ? !!unit.review_eligible : unit.eligible,
+      content: {
+        topic: unit.title,
+        stem: `${unit.count} soru${unit.has_media ? " · Görselli" : ""}${
+          unit.key.startsWith("source:") ? " · Ortak kaynakla birlikte" : ""
+        }${!unit.eligible ? " · Ölçütlü inceleme gerekir" : ""}`,
+      },
+    }))
+    : (library.data?.items.filter((i) =>
+      i.collection_id === form.collection && i.status === "published" &&
+      i.content.kind === "multiple_choice"
+    ) ?? []).map((i) => ({ ...i, count: 1, eligible: true }));
+  const questionCount = items.filter((i) => form.items.includes(i.id)).reduce(
+    (n, i) => n + i.count,
+    0,
+  );
   const creationLocked = busy || restoring || storageError || !!pending;
   async function run(action: () => Promise<void>) {
     if (gate.current) return;
@@ -103,13 +159,15 @@ function GroupsEditor({ user }: { user: string }) {
     } catch (e) {
       const code = (e as Error).message;
       setMessage(
-        code === "library_publication_changed" || code === "group_package_unavailable"
+        code === "library_publication_changed" ||
+          code === "group_package_unavailable"
           ? "Kaynak paketin yayını veya incelemesi değişti. Listeyi yenileyip uygun bir kaynak seçin."
-          : code === "group_package_plans" ? "Seçtiğiniz erişim paketleri, kaynak kütüphanenin izin verdiği paketlerle sınırlı olmalı."
+          : code === "group_package_plans"
+          ? "Seçtiğiniz erişim paketleri, kaynak kütüphanenin izin verdiği paketlerle sınırlı olmalı."
           : code === "request_conflict"
           ? "Aynı kayıt kimliğiyle farklı içerik gönderilemez. Bilgileri kontrol edin."
           : code === "group_questions_required"
-          ? "En az 3, en fazla 50 yayımlanmış çoktan seçmeli soru seçin."
+          ? "En az 3, en fazla 50 yayımlanmış ve seçilen inceleme türüne uygun soru seçin."
           : "İşlem kaydedilemedi. Alanları ve güncel durumu kontrol edin.",
       );
     } finally {
@@ -122,7 +180,19 @@ function GroupsEditor({ user }: { user: string }) {
       let command = pending;
       if (!command) {
         if (restoring || storageError) throw Error("storage_unavailable");
-        command = groupCreateCommandSchema.parse({ request: crypto.randomUUID(), source: packageSource ? "package" : "legacy", sourceId: packageSource?.id ?? form.collection, version: packageSource?.version ?? null, title: form.title.trim(), items: form.items, start: new Date(form.start).toISOString(), end: new Date(form.end).toISOString(), minutes: form.minutes, plans: form.plans });
+        command = groupCreateCommandSchema.parse({
+          request: crypto.randomUUID(),
+          review: !!packageSource && form.review,
+          source: packageSource ? "package" : "legacy",
+          sourceId: packageSource?.id ?? form.collection,
+          version: packageSource?.version ?? null,
+          title: form.title.trim(),
+          items: form.items,
+          start: new Date(form.start).toISOString(),
+          end: new Date(form.end).toISOString(),
+          minutes: form.minutes,
+          plans: form.plans,
+        });
         await queue.prepare(command);
         setPending(command);
       }
@@ -131,13 +201,21 @@ function GroupsEditor({ user }: { user: string }) {
         await queue.acknowledge(command.request);
         setPending(null);
       } catch (e) {
-        if (/^(P0001|42501|22\w{3}|23\w{3})$/.test((e as {code?:string}).code ?? "")) {
-          await queue.acknowledge(command.request); setPending(null);
-          library.reload(); packages.reload();
+        if (
+          /^(P0001|42501|22\w{3}|23\w{3})$/.test(
+            (e as { code?: string }).code ?? "",
+          )
+        ) {
+          await queue.acknowledge(command.request);
+          setPending(null);
+          library.reload();
+          packages.reload();
         }
         throw e;
       }
-      setSuccess("Prova yayımlandı. Soru sürümü ve katılım koşulları sabitlendi.");
+      setSuccess(
+        "Prova yayımlandı. Soru sürümü ve katılım koşulları sabitlendi.",
+      );
       setForm({ ...form, title: "", items: [] });
     });
   }
@@ -146,13 +224,27 @@ function GroupsEditor({ user }: { user: string }) {
       <p className="mb-6 max-w-3xl text-slate-600">
         Aynı sınıf düzeyine aynı soru sürümünü verin. Bu evde yapılan bir
         çalışma; gözetimli veya resmî sınav değildir. Katılım ve takma adla
-        sıralama ayrı veli tercihleridir. Eşit doğru sayısı eşit sıradır; hız
-        puanı yoktur.
+        sıralama ayrı veli tercihleridir. Eşit puan eşit sıradır; hız puanı
+        yoktur.
       </p>
       {query.error || library.error || packages.error || message
         ? <Notice tone="error">{message || "Veriler yüklenemedi."}</Notice>
         : null}
-      {query.error || library.error || packages.error ? <button className="btn-secondary mb-4" disabled={busy} onClick={() => { query.reload(); library.reload(); packages.reload(); }}>Listeleri yeniden yükle</button> : null}
+      {query.error || library.error || packages.error
+        ? (
+          <button
+            className="btn-secondary mb-4"
+            disabled={busy}
+            onClick={() => {
+              query.reload();
+              library.reload();
+              packages.reload();
+            }}
+          >
+            Listeleri yeniden yükle
+          </button>
+        )
+        : null}
       {success ? <Notice tone="ok">{success}</Notice> : null}
       <Card title="Yayın ve paket hakları">
         <p className="text-slate-600">
@@ -237,151 +329,233 @@ function GroupsEditor({ user }: { user: string }) {
             </div>
           )}
       </Card>
-      {storageError ? <Notice tone="error">Bekleyen yayın kaydı okunamadı. Yeni yayın başlatılmadı; sayfayı yeniden açın.</Notice> : null}
-      {pending ? <Card title="Bekleyen yayını kontrol et">
-        <p><strong>{pending.title}</strong> için yayın isteği bu tarayıcıda saklandı. Aynı istek kontrol edilir; ikinci Prova oluşturulmaz.</p>
-        <button className="btn mt-4" disabled={busy || restoring || storageError} onClick={() => void create()}>Yayın sonucunu kontrol et</button>
-      </Card> : null}
-      <Card title="Yeni ortak prova">
-       <fieldset disabled={creationLocked}>
-        <p className="mb-4 text-slate-600">
-          İncelenmiş ve yayımlanmış bir paketten 3–50 çoktan seçmeli soru seçin. Ortak metin veya görsele bağlı sorular bir bütün olarak eklenir. Açık uçlu soru içeren gruplar otomatik sıralamaya alınmaz. Yayımlandıktan sonra içerik ve
-          süre değişmez; düzeltmek için iptal edip yeni sürüm oluşturun. En
-          fazla 1.000 katılımcı.
-        </p>
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="label">
-            Başlık<input
-              className="input"
-              value={form.title}
-              maxLength={160}
-              onChange={(e) => setForm({ ...form, title: e.target.value })}
-            />
-          </label>
-          <label className="label">
-            Kaynak<select
-              className="input"
-              value={form.collection}
-              onChange={(e) =>
-                setForm({ ...form, collection: e.target.value, items: [], plans: packages.data?.find(p => "package:"+p.id === e.target.value)?.plans ?? ["plus", "pro"] })}
+      {storageError
+        ? (
+          <Notice tone="error">
+            Bekleyen yayın kaydı okunamadı. Yeni yayın başlatılmadı; sayfayı
+            yeniden açın.
+          </Notice>
+        )
+        : null}
+      {pending
+        ? (
+          <Card title="Bekleyen yayını kontrol et">
+            <p>
+              <strong>{pending.title}</strong>{" "}
+              için yayın isteği bu tarayıcıda saklandı. Aynı istek kontrol
+              edilir; ikinci Prova oluşturulmaz.
+            </p>
+            <button
+              className="btn mt-4"
+              disabled={busy || restoring || storageError}
+              onClick={() => void create()}
             >
-              <option value="">Yayımlanmış kaynak seçin</option>
-              <optgroup label="İncelenmiş kütüphane paketleri">
-                {packages.data?.map(p => <option key={p.id} value={"package:"+p.id}>{p.title} · {p.grade}. sınıf · sürüm {p.version}</option>)}
-              </optgroup>
-              <optgroup label="Önceki metin koleksiyonları">
-              {library.data?.collections.filter((c) =>
-                c.status === "published" && c.curriculum_version.trim()
-              ).map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.title} · {c.grade}. sınıf
-                </option>
-              ))}
-              </optgroup>
-            </select>
-          </label>
-          <label className="label">
-            Katılım başlangıcı<input
-              className="input"
-              type="datetime-local"
-              value={form.start}
-              onChange={(e) => setForm({ ...form, start: e.target.value })}
-            />
-          </label>
-          <label className="label">
-            Katılım bitişi<input
-              className="input"
-              type="datetime-local"
-              value={form.end}
-              onChange={(e) => setForm({ ...form, end: e.target.value })}
-            />
-          </label>
-          <p className="text-sm text-slate-500 md:col-span-2">
-            Saatler bu cihazın saat dilimindedir. Pencere en fazla 31 gün.
-            Çocuğun süresi başladığı anda işler; ortak bitiş daha erkense orada
-            durur.
+              Yayın sonucunu kontrol et
+            </button>
+          </Card>
+        )
+        : null}
+      <Card title="Yeni ortak prova">
+        <fieldset disabled={creationLocked}>
+          <p className="mb-4 text-slate-600">
+            İncelenmiş ve yayımlanmış bir paketten 3–50 soru
+            seçin. Ortak metin veya görsele bağlı sorular bir bütün olarak
+            eklenir. Açık uçlu soru içeren gruplar otomatik sıralamaya alınmaz.
+            Yayımlandıktan sonra içerik ve süre değişmez; düzeltmek için iptal
+            edip yeni sürüm oluşturun. En fazla 1.000 katılımcı.
           </p>
-          <label className="label">
-            Çözme süresi (dakika)<input
-              className="input"
-              type="number"
-              min={5}
-              max={120}
-              value={form.minutes}
-              onChange={(e) => setForm({ ...form, minutes: +e.target.value })}
-            />
-          </label>
-          <fieldset>
-            <legend className="label">Dahil paketler</legend>
-            <div className="flex gap-4">
-              {(["free", "plus", "pro"] as const).map((plan) => (
-                <label key={plan} className="flex min-h-12 items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={form.plans.includes(plan)}
-                    disabled={!!packageSource && !packageSource.plans.includes(plan)}
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        plans: e.target.checked
-                          ? [...form.plans, plan]
-                          : form.plans.filter((p) =>
-                            p !== plan
-                          ),
-                      })}
-                  />
-                  {plan}
-                </label>
-              ))}
-            </div>
-          </fieldset>
-        </div>
-        {collection
-          ? (
-            <div className="mt-5 rounded-2xl bg-brand-light p-4">
-              <p className="mb-3 font-bold">
-                {collection.subject} · {collection.curriculum_version} ·{" "}
-                {questionCount} soru seçili
-              </p>
-              {packageSource ? <a className="mb-4 inline-flex min-h-12 items-center font-bold text-purple-700 underline" href={`/library?packageId=${packageSource.id}`} target="_blank" rel="noopener noreferrer">Paketin soru ve görsellerini incele ↗</a> : null}
-              {items.length
-                ? items.map((i) => (
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="label">
+              Başlık<input
+                className="input"
+                value={form.title}
+                maxLength={160}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+              />
+            </label>
+            <label className="label">
+              Kaynak<select
+                className="input"
+                value={form.collection}
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    collection: e.target.value,
+                    items: [],
+                    review: false,
+                    plans: packages.data?.find((p) =>
+                      "package:" + p.id === e.target.value
+                    )?.plans ?? ["plus", "pro"],
+                  })}
+              >
+                <option value="">Yayımlanmış kaynak seçin</option>
+                <optgroup label="İncelenmiş kütüphane paketleri">
+                  {packages.data?.map((p) => (
+                    <option key={p.id} value={"package:" + p.id}>
+                      {p.title} · {p.grade}. sınıf · sürüm {p.version}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="Önceki metin koleksiyonları">
+                  {library.data?.collections.filter((c) =>
+                    c.status === "published" && c.curriculum_version.trim()
+                  ).map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.title} · {c.grade}. sınıf
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+            </label>
+            <label className="label">
+              Katılım başlangıcı<input
+                className="input"
+                type="datetime-local"
+                value={form.start}
+                onChange={(e) => setForm({ ...form, start: e.target.value })}
+              />
+            </label>
+            <label className="label">
+              Katılım bitişi<input
+                className="input"
+                type="datetime-local"
+                value={form.end}
+                onChange={(e) => setForm({ ...form, end: e.target.value })}
+              />
+            </label>
+            <p className="text-sm text-slate-500 md:col-span-2">
+              Saatler bu cihazın saat dilimindedir. Pencere en fazla 31 gün.
+              Çocuğun süresi başladığı anda işler; ortak bitiş daha erkense
+              orada durur.
+            </p>
+            <label className="label">
+              Çözme süresi (dakika)<input
+                className="input"
+                type="number"
+                min={5}
+                max={120}
+                value={form.minutes}
+                onChange={(e) => setForm({ ...form, minutes: +e.target.value })}
+              />
+            </label>
+            <fieldset>
+              <legend className="label">Dahil paketler</legend>
+              <div className="flex gap-4">
+                {(["free", "plus", "pro"] as const).map((plan) => (
                   <label
-                    key={i.id}
-                    className="flex min-h-12 gap-3 border-b border-purple-100 py-3"
+                    key={plan}
+                    className="flex min-h-12 items-center gap-2"
                   >
                     <input
                       type="checkbox"
-                      checked={form.items.includes(i.id)}
-                      disabled={!i.eligible}
+                      checked={form.plans.includes(plan)}
+                      disabled={!!packageSource &&
+                        !packageSource.plans.includes(plan)}
                       onChange={(e) =>
                         setForm({
                           ...form,
-                          items: e.target.checked
-                            ? [...form.items, i.id]
-                            : form.items.filter((id) => id !== i.id),
+                          plans: e.target.checked
+                            ? [...form.plans, plan]
+                            : form.plans.filter((p) => p !== plan),
                         })}
                     />
-                    <span>
-                      <strong>{i.content.topic}</strong>
-                      <span className="mt-1 block">{i.content.stem}</span>
-                    </span>
+                    {plan}
                   </label>
-                ))
-                : <p>Bu koleksiyonda uygun yayımlanmış soru yok.</p>}
-            </div>
-          )
-          : null}
-        <button
-          className="btn mt-5"
-          disabled={busy || form.title.trim().length < 3 || !form.collection ||
-            !form.start || !form.end || !form.plans.length ||
-            questionCount < 3 || questionCount > 50 || !!packages.error || !!library.error}
-          onClick={() => void create()}
-        >
-          Sürümü sabitle ve yayımla
-        </button>
-       </fieldset>
+                ))}
+              </div>
+            </fieldset>
+          </div>
+          {packageSource
+            ? (
+              <div className="my-4 rounded-2xl bg-purple-50 p-4">
+                <label className="flex min-h-12 items-center gap-3 font-bold">
+                  <input
+                    type="checkbox"
+                    checked={form.review}
+                    onChange={(e) =>
+                      setForm({ ...form, review: e.target.checked, items: [] })}
+                  />{" "}
+                  Açık uçlu sorularla ölçütlü inceleme
+                </label>
+                <p>
+                  Çizimli ve yazılı cevaplar GINA incelemesinden geçer. Sonuç ve
+                  sıralama ayrı yayımlanır; açık itiraz varken kesin sıralama
+                  gösterilmez. Katılımda veli bu erişimi ayrıca onaylar. Şıklı
+                  soru 1 puan, açık uçlu soru kendi sabit ölçüt toplamı
+                  kadardır.
+                </p>
+              </div>
+            )
+            : null}
+          {collection
+            ? (
+              <div className="mt-5 rounded-2xl bg-brand-light p-4">
+                <p className="mb-3 font-bold">
+                  {collection.subject} · {collection.curriculum_version} ·{" "}
+                  {questionCount} soru seçili
+                </p>
+                {packageSource && form.review
+                  ? (
+                    <p className="mb-3 font-bold">
+                      Seçili soruların toplamı:{" "}
+                      {packageSource.units.filter((u) =>
+                        form.items.includes(u.key)
+                      ).reduce((n, u) => n + (u.max_points ?? u.count), 0)} puan
+                    </p>
+                  )
+                  : null}
+                {packageSource
+                  ? (
+                    <a
+                      className="mb-4 inline-flex min-h-12 items-center font-bold text-purple-700 underline"
+                      href={`/library?packageId=${packageSource.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Paketin soru ve görsellerini incele ↗
+                    </a>
+                  )
+                  : null}
+                {items.length
+                  ? items.map((i) => (
+                    <label
+                      key={i.id}
+                      className="flex min-h-12 gap-3 border-b border-purple-100 py-3"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={form.items.includes(i.id)}
+                        disabled={!i.eligible}
+                        onChange={(e) =>
+                          setForm({
+                            ...form,
+                            items: e.target.checked
+                              ? [...form.items, i.id]
+                              : form.items.filter((id) => id !== i.id),
+                          })}
+                      />
+                      <span>
+                        <strong>{i.content.topic}</strong>
+                        <span className="mt-1 block">{i.content.stem}</span>
+                      </span>
+                    </label>
+                  ))
+                  : <p>Bu koleksiyonda uygun yayımlanmış soru yok.</p>}
+              </div>
+            )
+            : null}
+          <button
+            className="btn mt-5"
+            disabled={busy || form.title.trim().length < 3 ||
+              !form.collection ||
+              !form.start || !form.end || !form.plans.length ||
+              questionCount < 3 || questionCount > 50 || !!packages.error ||
+              !!library.error}
+            onClick={() => void create()}
+          >
+            Sürümü sabitle ve yayımla
+          </button>
+        </fieldset>
       </Card>
       <Card title="Yayımlanan provalar">
         {!query.data?.groups.length
@@ -395,6 +569,16 @@ function GroupsEditor({ user }: { user: string }) {
               {fmtDateTime(g.starts_at)} – {fmtDateTime(g.ends_at)} ·{" "}
               {g.duration_minutes} dakika · sürüm {g.version_hash.slice(0, 10)}
             </p>
+            {g.requires_review
+              ? (
+                <a
+                  className="btn-secondary mt-3 mr-3 inline-flex"
+                  href={`/cohort-review?group=${g.id}`}
+                >
+                  Cevapları ve itirazları incele
+                </a>
+              )
+              : null}
             {g.status === "cancelled"
               ? <p className="mt-2 text-amber-800">İptal edildi</p>
               : (

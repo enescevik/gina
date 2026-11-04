@@ -46,3 +46,5 @@ export * from "./curriculum-review";
 export * from "./catalog-blueprint";
 
 export * from "./prova-generation-journal";
+
+export * from "./cohort-review";
