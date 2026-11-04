@@ -20,7 +20,7 @@ anlamına gelmez.
 | Yeni AI özellikleri | Haftalık özet, belgeden ödev/kurs, görev ve ödül gerçek sağlayıcıyla geçti. Yeni ürün uç noktalarının kayıt/kota/yeniden açılışı yerel gerçek hizmetler ve deterministik sağlayıcı sınırıyla geçti. Canlı ürün uçlarında da 29 kontrol ve 6 temizleme doğrulaması geçti; beş gerçek ücretli üretim yapıldı. |
 | Native taslak güvenliği | iPhone/iPad simülatörleri ve Android API33 emülatöründe gerçek SQLite ve süreç kapanışı geçti. Fiziksel kalem/klavye ve Android görsel kabulü ayrıca yapılacak. |
 | Eşgüdümlü yayın | Üretim DB 20261103094000'a güncellendi (32 migration), 19 Edge function dağıtıldı. public/gina yerel yedeği alındı; Auth/Storage tam yedeği veya geri dönüş tatbikatı değildir. İstemci yayınları henüz tamamlanmadı. |
-| Web ve backoffice hosting | İki üretim derlemesi ve gerçek yayın başlıklarıyla telefon/tablet giriş ekranları geçti. Cloudflare yüklemesi ve Access koruması henüz kabul edilmedi. Yeşil ama atlanmış Actions işi yayın kanıtı değildir. |
+| Web ve backoffice hosting | İki üretim derlemesi ve gerçek yayın başlıklarıyla telefon/tablet giriş ekranları geçti. Veli webi https://gina-web.pages.dev üzerinde yayımlandı ve gerçek sentetik aileyle görev/onay/hedef/etkinlik akışları geçti. Backoffice Access kurulumu hesap sahibi adımını bekliyor. Yeşil ama atlanmış Actions işi yayın kanıtı değildir. |
 | Mağaza ve bildirim | Sunucu kontrolleri mevcut; gerçek satın alma/yenileme/iade ve APNs/FCM teslimi için mağaza/cihaz kabulü gerekiyor. |
 | Ek AI sağlayıcıları | Mevcut çalışan sağlayıcı Anthropic. Diğer sağlayıcılar yalnız modele ad yazarak etkinleşmez; adapter, doğrulama ve ayrı anahtar gerekir. |
 | Kütüphane | Kullanıcı kararıyla en son. 100 taslak korunuyor; 1.540 ilk havuz hedefinde 1.440 taslak eksik. Bağımsız onay/yayın: 0. Teknik doğrulama editör onayı değildir. |
@@ -31,17 +31,23 @@ Apple/Google mağazasında, kazanılan erişim aileye bağlı ve web'de görün�
 
 ## Senden gerekebilecekler — sırayla
 
-### 1. Cloudflare oturumunu hazır tut
+### 1. Yönetim paneli için Cloudflare Zero Trust Free kurulumunu tamamla
 
-Bu adımı sonraya bırakmıştın; **4 Kasım saat 17.00 İstanbul** için hatırlatıcı mevcut.
-Yeni hesap açmana gerek yok.
+Cloudflare oturumun artık açık; veli webi yayımlandı. Yeni hesap açmana gerek yok.
 
-1. [Cloudflare](https://dash.cloudflare.com/) içinde GINA'yı barındıracak hesabı aç.
-2. Giriş veya iki aşamalı doğrulama isteniyorsa kendin tamamla.
-3. Hesap açık olduğunda haber vermen yeterli; Pages projeleri, yükleme, alan adı
-   eşlemesi ve yönetim panelinin Access politikası teknik iş olarak bende.
+1. Chrome'da açık bıraktığım **Activate Zero Trust Free** sekmesini aç. Sipariş
+   özetinde **Free, $0/month, 50 users** yazdığını kontrol et; ücretli plan seçme.
+2. Cloudflare ücretsiz plan için de ödeme yöntemi/fatura bilgisi istiyor. Kendi
+   bilgilerini burada tamamla; şifre, kart bilgisi veya kodu sohbete gönderme.
+3. Koşulları okuyup hesap sahibi olarak ücretsiz planı etkinleştir. Ek ücretli
+   seçenek sunulursa ekleme. Bittiğinde haber ver; yönetim panelinin koruma
+   politikası, yayın ve erişim testi teknik iş olarak bende.
 4. Yönetim paneline girecek ekip varsa yalnız onların e-posta adreslerini belirle.
    Destek ve içerik personeline tam yönetici yetkisi vermeyeceğiz.
+
+Cloudflare'ın ödeme/hesap sahibi adımı nedeniyle backoffice henüz yayımlanmadı.
+Veli webinin gerçek hesap girişleri için iki yeni kesin dönüş adresi, onayınla
+Supabase'e kaydedildi. Mobil/Expo girişleri korundu.
 
 Başarı ölçütü: veli webi açılır; yönetim paneli üretim/önizleme/özel alan adlarının
 tamamında yetkisiz kişiyi durdurur. Access kapısından geçmek uygulamada yönetici
@@ -132,7 +138,8 @@ Sorun bildirirken ekran adı, sürüm, cihaz ve yaptığın son adım yeterli; g
    ve `ai-pipeline-verification.json`: 254 kontrol.
 2. [Canlı sunucu dağıtımı ve 29 kontrol](hosted-services-2026-11-04/README.md).
    [Gerçek AI içerik kabulü](../learning/ai-feature-acceptance/README.md).
-3. [Tarayıcı yayın kabulü](browser-readiness/README.md): üretim başlıkları, telefon/tablet.
+3. [Canlı Cloudflare web kabulü](cloudflare-web-2026-11-04/README.md).
+   [Tarayıcı yayın kabulü](browser-readiness/README.md): üretim başlıkları, telefon/tablet.
 4. [Native taslak kabulü](../design/screens/native-journal-recovery/README.md).
 5. DB/Edge yayını → web/backoffice yüklemesi ve erişim kontrolü → gerçek hesapla
    birleşik kabul → imzalı mobil derleme → TestFlight → fiziksel cihaz kabulü.

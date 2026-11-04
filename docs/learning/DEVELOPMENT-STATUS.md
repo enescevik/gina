@@ -629,3 +629,10 @@ kaldırıldı. Canlı dağıtım/TestFlight17, fiziksel kabul ve diğer açık i
 - Gerçek Auth/Storage/Anthropic/ürün RPC zincirinde 29 kontrol geçti: ders programı, haftalık özet, belgeden ödev/kurs, görev/ödül çoklu seçim, makbuz ve tek kota. Beş ücretli üretim; altı sentetik veri temizleme doğrulaması geçti.
 - Anonim boş isteklerde 18 uç 4xx reddetti. `google-rtdn` eksik audience/gönderici yapılandırması nedeniyle 503 ile kapalı; Google Play tamamlanmış sayılmıyor.
 - Ayrıntı: `docs/release/hosted-services-2026-11-04/README.md`. Yeni istemci/TestFlight yayını bu backend kaydından çıkarılamaz; son TestFlight hâlâ 0.1.0 (17). Kütüphane en son, 100 taslak/0 bağımsız onay/0 yayın.
+
+
+## Cloudflare veli webi ve gerçek arayüz akışı — 4 Kasım
+
+Veli webi `https://gina-web.pages.dev` üzerinde 491 dosyayla yayımlandı. Kullanıcı onayıyla iki kesin giriş/şifre dönüş adresi eklendi, mevcut mobil/Expo adresleri korundu. Sentetik aileyle gerçek parola girişi, etkinlik kaydı/yeniden yükleme, çocuk PIN girişi, ebeveyn PIN çıkışı, görev gönderme/onay ve yenilemeden yıldız/ilerleme, hedef seçimi geçti. Telefon/tablet kanıtı `docs/release/cloudflare-web-2026-11-04/README.md`.
+
+Doğrudan cihaz ayarı adresindeki boş durum, ortak tasarımlı yönlendirmeyle düzeltildi. Yönetim paneli için Zero Trust Free hesap sahibi ödeme/fatura adımı açık; backoffice korumasız yayımlanmadı. GitHub otomatik yayın sırları, gerçek OAuth/e-posta, mağaza/bildirim ve fiziksel cihaz kabulü açık. TestFlight17 değişmedi.
