@@ -1773,9 +1773,9 @@
   "parentReview.saveFinish": "Kaydet ve özete dön",
   "parentReview.next": "Sonraki soru",
   "parentReview.leaveTitle": "Kaydedilmemiş notların var",
-  "parentReview.leaveBody": "Çıkarsan bu sorudaki son puan, not ve işaretlerin kaybolur.",
+  "parentReview.leaveBody": "Puan, not ve çizimlerini bu cihazda saklayıp daha sonra devam edebilirsin. Henüz çocuğunla paylaşılmayacak.",
   "parentReview.stay": "Burada kal",
-  "parentReview.discard": "Kaydetmeden çık",
+  "parentReview.discard": "Taslağı sil ve çık",
   "parentReview.aiConsentBody": "Soru, cevap anahtarı ve çocuğunun özgün çözümü AI hizmetine gönderilecek. Senin işaretlerin gönderilmez. Öneri puanı kendiliğinden kaydetmez; sonucu kontrol edip düzenleyebilirsin.",
   "parentReview.aiConsent": "Bu inceleme için paylaşmayı onaylıyorum.",
   "parentReview.analyze": "Çözümü incele",
@@ -2655,5 +2655,13 @@
       "weekly_date": "Bu hafta artık seçilebilir aralıkta değil. Ekranı yeniden açıp son sekiz haftadan birini seç.",
       "ai_temporarily_unavailable": "AI hizmetine şu anda ulaşılamıyor. Daha sonra yeniden deneyebilirsin."
     }
-  }
+  },
+  "parentReview.localFailed": "Taslak bu cihaza kaydedilemedi. Yazdıkların ekranda duruyor; devam etmeden önce yeniden dene.",
+  "parentReview.localStale": "Bu taslak eski bir değerlendirmeye ait. Güncel kaydı değiştirmedik. Notlarını inceleyebilir veya taslağı kaldırıp güncel değerlendirmeyi açabilirsin.",
+  "parentReview.localRestored": "Bu cihazdaki taslağın geri getirildi. Henüz çocuğunla paylaşılmadı.",
+  "parentReview.localStored": "Taslak bu cihazda saklı. Kaydettiğinde çocuğunla paylaşılır.",
+  "parentReview.resetLocal": "Güncel değerlendirmeyi aç",
+  "parentReview.resetConfirm": "Bu cihazdaki taslak silinecek. Puan, not ve çizimlerini korumak istiyorsan önce incele. Güncel değerlendirme değişmeyecek.",
+  "parentReview.localPending": "Kayıt isteğin bu cihazda saklı. Sonucu doğrulamak için yeniden dene.",
+  "parentReview.keepLocal": "Taslağı sakla ve çık"
 }

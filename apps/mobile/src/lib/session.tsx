@@ -5,6 +5,7 @@ import { ginaClaimsSchema, type GinaClaims } from "@gina/core";
 
 import { supabase } from "./supabase";
 import { queryClient } from "./query";
+import { clearReviewJournals } from "./review-journal";
 import { clearAnswerJournals } from "./answer-journal";
 import { clearLibraryCommands } from "./library-acquisition";
 import { clearSetupCommands } from "./setup-command";
@@ -79,7 +80,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       if (_event === "INITIAL_SESSION") return; // getSession below owns initial read errors.
       changed = true;
       if (_event === "SIGNED_OUT") {
-        for (const clear of [clearAnswerJournals, clearHelpCommands, clearLibraryCommands, clearFocusTimers, clearCalendarCommands, clearStudyPlanCommands, clearRepeatCalendarCommands, clearTimetableCommands, clearSchoolBagCommands, clearLearningPlanCommands, clearSetupCommands]) {
+        for (const clear of [clearReviewJournals, clearAnswerJournals, clearHelpCommands, clearLibraryCommands, clearFocusTimers, clearCalendarCommands, clearStudyPlanCommands, clearRepeatCalendarCommands, clearTimetableCommands, clearSchoolBagCommands, clearLearningPlanCommands, clearSetupCommands]) {
           try { clear(); }
           catch { /* Scoped drafts remain inaccessible to another identity. */ }
         }

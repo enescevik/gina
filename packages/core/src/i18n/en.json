@@ -1773,9 +1773,9 @@
   "parentReview.saveFinish": "Save and return",
   "parentReview.next": "Next question",
   "parentReview.leaveTitle": "You have unsaved notes",
-  "parentReview.leaveBody": "Leaving discards your latest score, feedback and marks for this question.",
+  "parentReview.leaveBody": "Keep your score, notes and drawings on this device to continue later. They will not be shared with your child yet.",
   "parentReview.stay": "Stay here",
-  "parentReview.discard": "Leave without saving",
+  "parentReview.discard": "Delete draft and leave",
   "parentReview.aiConsentBody": "The question, answer key and your child’s original solution will be sent to the AI service. Your marks are excluded. The suggestion does not save a score automatically; check and edit it first.",
   "parentReview.aiConsent": "I consent to sharing for this review.",
   "parentReview.analyze": "Review solution",
@@ -2660,5 +2660,13 @@
       "weekly_date": "This week is no longer available. Reopen the screen to choose one of the last eight weeks.",
       "ai_temporarily_unavailable": "The AI service is currently unavailable. Please try again later."
     }
-  }
+  },
+  "parentReview.localFailed": "Could not save this draft on this device. Your edits are still on screen; retry before continuing.",
+  "parentReview.localStale": "This draft belongs to an older review. The current review has not changed. Review your notes or discard this draft to open the current review.",
+  "parentReview.localRestored": "Your draft on this device was restored. It has not been shared with your child.",
+  "parentReview.localStored": "Draft stored on this device. Saving will share it with your child.",
+  "parentReview.resetLocal": "Open current review",
+  "parentReview.resetConfirm": "The draft on this device will be deleted. Check any score, notes and drawings you want to keep first. The current review will not change.",
+  "parentReview.localPending": "The save request is stored on this device. Retry to confirm its result.",
+  "parentReview.keepLocal": "Keep draft and leave"
 }

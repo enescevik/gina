@@ -60,3 +60,4 @@ export * from "./learning-plan";
 
 export * from "./learning-plan-import";
 export * from "./weekly-review";
+export * from "./review-journal";
