@@ -1,3 +1,4 @@
+import { cataloguePlan } from "../_shared/catalogue-plan.ts";
 import { blueprintPlan } from "../_shared/blueprint-plan.ts";
 import { generationDraftScope } from "../_shared/prova-generation-scope.ts";
 // Prova AI soru üretimi. Veli uygulamadan çağırır (JWT ile); çocuk asla çağırmaz.
@@ -222,6 +223,7 @@ Deno.serve(async (req) => {
   let topics: { topic: string; count: number }[] = [];
   let scenarioCode: string | null = null;
   let blueprintSource: string | null = null;
+  let catalogueBound = false;
   let blueprintSnapshot: Record<string, unknown> | null = null;
   if (body.blueprint_id) {
     if (!ent.scenarios) {
@@ -240,6 +242,23 @@ Deno.serve(async (req) => {
       blueprintSource = bp.source_url;
       topics = parsed.topics;
       blueprintSnapshot = { id: bp.id, ...parsed.context, rows: parsed.topics };
+      const { data: catalogue, error: catalogueError } = await db.rpc(
+        "get_catalog_blueprint_context",
+        { p_family_id: parent.familyId, p_blueprint_id: bp.id },
+      );
+      if (catalogueError) return json({ error: "data_failed" }, 503);
+      if (catalogue) {
+        if (
+          !draftScope || draftScope.purpose !== "written" ||
+          assessment !== "written"
+        ) return json({ error: "curriculum_scope_mismatch" }, 409);
+        blueprintSnapshot = {
+          id: bp.id,
+          ...cataloguePlan(catalogue, grade, subject, topics),
+          rows: topics,
+        };
+        catalogueBound = true;
+      }
     } catch (e) {
       return json({
         error: e instanceof Error ? e.message : "blueprint_invalid",
@@ -329,16 +348,27 @@ Deno.serve(async (req) => {
   );
 
   const { data: reservation, error: reservationError } = await db.rpc(
-    "reserve_prova_generation_v2",
+    catalogueBound
+      ? "reserve_catalog_prova_generation"
+      : "reserve_prova_generation_v2",
     {
       p_id: requestId,
       p_family_id: parent.familyId,
       p_user_id: parent.userId,
       p_hash: promptHash,
       p_items: total,
+      ...(catalogueBound
+        ? { p_blueprint_id: body.blueprint_id!, p_draft_id: body.draft_id! }
+        : {}),
     },
   );
-  if (reservationError) return json({ error: "save_failed" }, 500);
+  if (reservationError) {
+    return json({
+      error: reservationError.message === "curriculum_scope_mismatch"
+        ? "curriculum_scope_mismatch"
+        : "save_failed",
+    }, reservationError.message === "curriculum_scope_mismatch" ? 409 : 500);
+  }
   if (reservation?.cached) return json(reservation.cached);
   if (reservation?.error) {
     return json(

@@ -1,3 +1,10 @@
+export function canonicalSubject(value: unknown) {
+  return value === "İlköğretim Matematik"
+    ? "Matematik"
+    : value === "Fen"
+    ? "Fen Bilimleri"
+    : value;
+}
 /** Parent input is a distribution, never evidence that an official source was verified. */
 export function blueprintPlan(
   raw: {
@@ -11,7 +18,10 @@ export function blueprintPlan(
   grade: number,
   subject: string,
 ) {
-  if (raw.grade !== grade || raw.subject !== subject) {
+  if (
+    raw.grade !== grade ||
+    canonicalSubject(raw.subject) !== canonicalSubject(subject)
+  ) {
     throw Error("blueprint_mismatch");
   }
   if (

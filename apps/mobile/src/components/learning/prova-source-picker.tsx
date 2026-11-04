@@ -1,3 +1,4 @@
+import { canonicalSubject, catalogBlueprintFits } from "@gina/core";
 import { useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { randomUUID } from "expo-crypto";
@@ -103,16 +104,30 @@ export function ProvaSourcePicker(
     },
   });
   const blueprints = useQuery({
-    queryKey: ["builder_blueprints", familyId, draft.grade, subject],
+    queryKey: [
+      "builder_blueprints",
+      familyId,
+      draft.grade,
+      subject,
+      draft.childId,
+      draft.purpose,
+    ],
     enabled: visible && !!subject && !!draft.grade,
     queryFn: async () => {
       const { data, error } = await supabase.from("exam_blueprints").select(
         "id,name,subject,grade,rows,source_context",
-      ).eq("grade", draft.grade!).eq("subject", subject).order("created_at", {
+      ).eq("grade", draft.grade!).order("created_at", {
         ascending: false,
       });
       if (error) throw error;
-      return data;
+      return data.filter((bp) =>
+        canonicalSubject(bp.subject) === canonicalSubject(subject) &&
+        catalogBlueprintFits(
+          bp.source_context,
+          draft.childId ?? "",
+          draft.purpose,
+        )
+      );
     },
   });
   const blueprint = blueprints.data?.find((v) => v.id === blueprintId);
@@ -673,7 +688,15 @@ export function ProvaSourcePicker(
                     {blueprint
                       ? (
                         <Text style={b.hint}>
-                          {t("blueprintFlow.manualNotice")}
+                          {t(
+                            blueprint.source_context &&
+                              typeof blueprint.source_context === "object" &&
+                              !Array.isArray(blueprint.source_context) &&
+                              blueprint.source_context.origin ===
+                                "reviewed_catalogue"
+                              ? "catalogFlow.notice"
+                              : "blueprintFlow.manualNotice",
+                          )}
                         </Text>
                       )
                       : null}

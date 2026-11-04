@@ -42,3 +42,5 @@ export * from "./blueprint";
 export * from "./contribution";
 
 export * from "./curriculum-review";
+
+export * from "./catalog-blueprint";

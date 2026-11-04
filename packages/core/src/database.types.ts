@@ -2266,6 +2266,9 @@ isOneToOne: false
       admin_get_contribution_set: {Args:{p_id:string};Returns:Json};
       admin_decide_contribution_set: {Args:{p_request_id:string;p_id:string;p_approve:boolean;p_note:string;p_teachers:Json;p_confirmed:boolean};Returns:Json};
 
+      save_catalog_blueprint: { Args: { p_request_id: string; p_input: Json }; Returns: string };
+      get_catalog_blueprint_context: { Args: { p_family_id: string; p_blueprint_id: string }; Returns: Json };
+      reserve_catalog_prova_generation: { Args: { p_id: string; p_family_id: string; p_user_id: string; p_hash: string; p_items: number; p_blueprint_id: string; p_draft_id: string }; Returns: Json };
       "save_family_blueprint": {Args:{p_request_id:string;p_input:Json};Returns:string}
 
       finance_workspace: {Args:{p_query?:string;p_family_id?:string};Returns:Json};
