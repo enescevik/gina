@@ -1,8 +1,10 @@
 import { randomUUID } from "expo-crypto";
 import {
   BLUEPRINT_PREFIX,
+  CATALOG_BLUEPRINT_PREFIX,
   CONTRIBUTION_PREFIX,
   createBlueprintJournal,
+  createCatalogBlueprintJournal,
   createContributionJournal,
   createSetupAiJournal,
   createSetupJournal,
@@ -18,7 +20,9 @@ export function clearSetupCommands() {
   for (
     const key of store.keys().filter((k) =>
       k.startsWith(SETUP_COMMAND_PREFIX) || k.startsWith(SETUP_AI_PREFIX) ||
-      k.startsWith(BLUEPRINT_PREFIX) || k.startsWith(CONTRIBUTION_PREFIX)
+      k.startsWith(BLUEPRINT_PREFIX) ||
+      k.startsWith(CATALOG_BLUEPRINT_PREFIX) ||
+      k.startsWith(CONTRIBUTION_PREFIX)
     )
   ) store.remove(key);
 }
@@ -122,6 +126,31 @@ export function contributionJournal(user: string, family: string) {
       }
       if (data?.error) throw Error(data.error);
       return data;
+    },
+  });
+}
+
+export function catalogBlueprintJournal(user: string, family: string) {
+  const active = generation;
+  return createCatalogBlueprintJournal({
+    store,
+    user,
+    family,
+    id: randomUUID,
+    guard() {
+      if (active !== generation) throw Error("setup_session_changed");
+    },
+    async send(command) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 20000);
+      try {
+        return await supabase.rpc("save_catalog_blueprint", command)
+          .abortSignal(
+            controller.signal,
+          );
+      } finally {
+        clearTimeout(timer);
+      }
     },
   });
 }

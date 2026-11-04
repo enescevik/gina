@@ -210,6 +210,8 @@ export default function BlueprintScreen() {
               ? (
                 <>
                   <Text style={u.copy}>{t("blueprintFlow.intro")}</Text>
+                  <SatinButton secondary title={t("catalogFlow.open")} onPress={()=>router.push("/parent/prova/catalog")}/>
+
                   {children.data?.map((c) => (
                     <ChoiceCard
                       key={c.id}

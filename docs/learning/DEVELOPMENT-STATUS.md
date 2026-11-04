@@ -396,3 +396,12 @@ Doğrulama: 55 SQL dosyasında 1.435 kontrol (53 yeni), dört gerçek DB yarış
 078000 ile 648 kaynak adayının kayıpsız içe alınması, gerekçeli program/okul kapsamı incelemesi, ayrı yayın/geri çekme ve aile çocuğunun sınıfına bağlı salt okuma API’si eklendi. Yeni kütüphane sekmesi onaylı ortak tasarımda; kalıcı karar kurtarma, çakışma uyarısı ve kaynak hücreleri vardır. Genel özellik varsayılan kapalı; hiçbir gerçek aday otomatik onaylanmadı veya yayımlanmadı. Aile seçim ekranı ve AI kapsam bağı sonraki artımdır.
 
 56 SQL dosyasında 1.472 kontrol (37 yeni), üç DB yarışı, 135 core testi, dört hazırlama testi; mobil/backoffice lint/tip ve backoffice üretim derlemesi geçti. 648 taslak izole DB işleminde doğrulandı ve geri alındı. Gerçek bileşenlerle masaüstü/tablet, kayıt/yayın/geri çekme, kayıp yanıt ve eski sürüm/yetki kaybı kabulü: `docs/design/screens/curriculum-review/README.md`. TestFlight/üretim değişmedi; kaynak onayı veya fiziksel cihaz kabulü iddiası yok.
+
+
+## 4 Kasım — aile katalog seçimi ve AI kaynak sürümü (079000)
+
+İncelenmiş/yayımlanmış kaynaklar çocuk sınıfı, ders, yıl, dönem ve yazılıyla seçilir; veli okul duyurusuyla kapsamı açıkça doğrular. Her çocuk/kaynak sürümü için değiştirilemeyen aile kopyası ve özel sunucu bağı vardır. Genel JSON'a onay bilgisi yazmak kaynak doğrulaması sağlamaz. Bilinen ders adı eşdeğerleri aynı kapsamı bulur; başka ders/sınıf önerilmez.
+
+AI'ya uzun öğrenme çıktıları eksiksiz ve ortak blok soru sayılarıyla gider. Yeni ücretli çağrıdan hemen önce yayımlanmış sürüm, çocuk/sınıf, yazılı taslağı, ders ve sayı kilit altında kontrol edilir. Geri çekme yeni çağrıyı engeller; zaten başlamış/sonucu kaydedilmiş işin kurtarılması ve eski Prova geçmişi korunur. Katalog seçimi tek başına AI hakkı harcamaz.
+
+43 yeni SQL kontrolü (önceki 56 dosya/1472 ile toplam 57 dosya/1515), dört gerçek yarış, 142 core +15 ilgili Edge testi, mobil tip/lint kontrolleri geçti. Gerçek Expo web bileşeni telefon/tablet, kayıp yanıt/yeniden açılış ve kaynak geri çekme kanıtları: `docs/design/screens/catalogue-selection/README.md`. Gerçek kaynaklara editör onayı verilmedi; katalog özelliği kapalı, üretim/TestFlight değişmedi. Gerçek sağlayıcı ve fiziksel cihaz kabulü açık.
