@@ -1,6 +1,6 @@
 # Yayına alma (Cloudflare Pages) — Enes'in yapacakları
 
-Veli webi (Expo web export) ve backoffice (statik Next.js) Cloudflare Pages'te barınır; GitHub Actions `main`'e her push'ta derleyip yükler. Secret'lar eksikse iş **hata vermeden atlanır** (Actions'ta sarı uyarı görünür). `service_role` anahtarı hiçbir istemciye ve hiçbir GitHub secret'ına girmez; iki uygulama da yalnız **anon (public)** anahtarı kullanır.
+Veli webi (Expo web export) ve backoffice (statik Next.js) Cloudflare Pages'te barınır; GitHub Actions `main`'e her push'ta derleyip yükler. Hiçbir yayın ayarı yokken otomatik push yayını açık uyarıyla atlanır; bu bir yayın başarısı değildir. **Run workflow ile elle yayın** ve **kısmen kurulmuş ayarlar** eksikse iş hata verir. Güncel kullanıcı adımları: [yayın tamamlama rehberi](release/RELEASE-COMPLETION-2026-11-04.md). `service_role` anahtarı hiçbir istemciye ve hiçbir GitHub secret'ına girmez; iki uygulama da yalnız **anon (public)** anahtarı kullanır.
 
 ## 1. Cloudflare hesabı ve Pages projeleri
 

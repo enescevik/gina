@@ -1,4 +1,6 @@
-# Gina · TestFlight’tan mağazaya kurulum rehberi
+# Gina · İlk kurulum rehberi — tarihî kayıt
+
+> **4 Kasım güncellemesi:** Bu belgenin ilk hesap açma adımları artık güncel değildir. Supabase, Expo ve Apple kaydı mevcut; yeniden oluşturmayın. Güncel kalan işler ve kullanıcı adımları: [Yayın tamamlama rehberi](RELEASE-COMPLETION-2026-11-04.md). Aşağıdaki metin 31 Ekim tarihli kayıttır.
 
 31 Ekim 2026. İlk hedef iPhone/iPad TestFlight betası, ardından mağaza. Apple Developer üyeliğin aktif. Supabase, Expo/EAS ve App Store Connect uygulama kaydı henüz kurulmadı. Aşağıdaki hesap açma adımlarını sen, kod/şema/ortam bağlantısı ve derleme doğrulamasını ben tamamlayacağım.
 
