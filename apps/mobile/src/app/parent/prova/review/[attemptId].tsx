@@ -132,6 +132,7 @@ export default function ParentReviewScreen() {
       })}
       finished={attempt.data.status !== "in_progress"}
       onNavigate={navigate}
+      onReload={() => { void review.refetch(); void attempt.refetch(); }}
       aiRemaining={policy.data?.enabled ? policy.data.remaining : null}
     />
   );

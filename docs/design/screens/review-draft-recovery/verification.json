@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-04",
+  "environment": "Expo web, synthetic REST only",
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 1280,
+      "height": 800
+    }
+  ],
+  "checks": {
+    "scoreFeedbackRestored": true,
+    "drawnParentInkRestored": true,
+    "freshPageRestoredScore": 95,
+    "lostReplyReplaySameFullPayload": true,
+    "receiptCountForLostReply": 1,
+    "pendingRecordsAfterSuccess": 0,
+    "staleDraftBlocked": true,
+    "explicitResetExtraWrites": 0,
+    "diskFailureRetainsVisibleDraft": true,
+    "diskRetryStoresSameDraft": true,
+    "pageErrors": [],
+    "keepAndLeaveRestores": true,
+    "explicitDiscardRemoves": true,
+    "rejectedRequestCleanupFailureRetryEnabled": true
+  },
+  "physicalDeviceVerified": false,
+  "productionChanged": false,
+  "testFlightChanged": false,
+  "coreTests": 219,
+  "relatedNodeTests": 19
+}
