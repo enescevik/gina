@@ -28,7 +28,10 @@ Sonradan eklenen şifre kurtarma bağlantısının yayını ayrıca kaydedilecek
 
 ## Doğrulama ve devam eden işler
 
-- Backoffice typecheck/lint ve üretim derlemesi geçti.
+- Backoffice typecheck/lint ve üretim derlemesi geçti. Şifre kurtarma bağlantılı
+  giriş ekranı yerel üretim paketinde 390×844 ve 1280×800 boyutlarında görüldü;
+  yatay taşma yok, kurtarma bağlantısı 48 px dokunma alanına sahip.
+  [Telefon](sign-in-phone.png) · [Tablet](sign-in-tablet.png).
 - Yayın koruması + public ortam + deploy önkontrol testleri: **22/22**.
 - `check-backoffice-access.mjs`, doğru ekip dışına yönlendirme, açık üretim
   sayfası/statik dosya, ağ hatası ve yalnız 403 durumlarında başarısız olur.
