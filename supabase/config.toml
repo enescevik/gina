@@ -462,3 +462,6 @@ verify_jwt = false
 [functions.contribution-submit]
 verify_jwt = true
 static_files = ["./functions/prova-review/assets/*"]
+
+[functions.learning-plan-import]
+verify_jwt = true

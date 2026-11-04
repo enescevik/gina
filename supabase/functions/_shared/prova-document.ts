@@ -8,7 +8,7 @@ export async function provaDocument(
   requestId: string,
   sourceId: unknown,
   consent: unknown,
-  purpose: "generate" | "setup" = "generate",
+  purpose: "generate" | "setup" | "import" = "generate",
 ): Promise<
   | { media: Exclude<AiUserContent, string>; id: string; sha256: string }
   | Response

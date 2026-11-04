@@ -139,3 +139,7 @@ Bu planın ilk uygulaması ayrı incelenebilir PR’larla ilerler. Mobil değiş
 ### 4 Kasım artımı: belge → görev/ödül
 
 Kod ve sentetik kabul tamamlandı: belge izinleri, kaynakla ilişkili düzenlenebilir taslaklar, çoklu kayıt, ödül üzerinden hedef kaynağı, kayıp yanıt kurtarma ve AI lease koruması. Kanıt: `docs/design/screens/document-setup/README.md`. 075000 + Edge henüz dağıtılmadı. Tam ödev/ders/kurs planı, gerçek sağlayıcı/cihaz kabulü ve diğer açık maddeler kapanmış sayılmaz.
+
+### 4 Kasım artımı: tekil çalışma + belgeden çıkarım
+
+089000 ve 091000 ile ödev/ders çalışma/tekil kurs planı, çocuk küçük-adım takibi, kaynak bağlantısı, belgeden düzenlenebilir çoklu taslak ve atomik kayıt tamamlandı. Plan tekrarlayan görev, öğretmen değerlendirmesi veya haftalık ders programı değildir. Kayıp ücretli sonuç ve kayıt cevabı kurtarılır; bilinmeyen tarihler uydurulmaz. Kanıt: `docs/design/screens/learning-plan-import/README.md`. Gerçek sağlayıcı/dosya/cihaz kabulü ve dağıtım hâlâ açık.
