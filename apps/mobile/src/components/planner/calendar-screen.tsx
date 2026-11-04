@@ -574,13 +574,7 @@ export function PlannerCalendar({
             icon={<Plus size={23} color="#fff" />}
             onPress={() => setEvent(null)}
           />
-        ) : (
-          <SatinButton
-            title={t("planner.program")}
-            disabled={!selectedChild}
-            onPress={() => openPlan()}
-          />
-        )}
+        ) : null}
       </ScrollView>
       <View
         style={[
@@ -654,7 +648,7 @@ export function PlannerCalendar({
         ) : (
           <View style={{ paddingVertical: 28, gap: 12 }}>
             <Text style={u.heading}>{t("planner.emptyTitle")}</Text>
-            <Text style={u.copy}>{t("planner.emptyBody")}</Text>
+            <Text style={u.copy}>{t(childMode ? "planner.childEmptyBody" : "planner.emptyBody")}</Text>
             {selectedChild ? (
               <SatinButton
                 secondary

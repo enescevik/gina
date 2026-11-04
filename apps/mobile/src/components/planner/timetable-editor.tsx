@@ -1,5 +1,5 @@
 import { TimetableImportEntry, TimetableSourceLinks } from "./timetable-import";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePreventRemove } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -31,13 +31,14 @@ import {
   validLessonSettings,
   type Lesson,
   type LessonSettings,
-  type Json,
+  type TimetableCommand,
 } from "@gina/core";
 import { Avatar } from "@/components/avatar";
 import { SubjectIcon, resolveSubjectSlug } from "@/components/subject-icon";
 import { Field } from "@/components/ui/field";
 import { Pressable } from "@/components/ui/pressable";
-import { supabase } from "@/lib/supabase";
+import { timetableJournal } from "@/lib/timetable-command";
+import { useSession } from "@/lib/session";
 import { useSchoolTimetable } from "@/lib/school-timetable";
 import { IconButton, PlannerHero, SatinButton, Tag, p, u } from "./ui";
 export interface PlannerChild {
@@ -60,6 +61,7 @@ type EditorProps = {
   onSwitch: (c: PlannerChild) => void;
 };
 export function TimetableEditor(props: EditorProps) {
+  const { session, claims } = useSession();
   const query = useSchoolTimetable(props.child.id);
   const { t } = useTranslation();
   if (!query.data)
@@ -88,7 +90,7 @@ export function TimetableEditor(props: EditorProps) {
         </View>
       </SafeAreaView>
     );
-  return <LoadedEditor {...props} query={query} initial={query.data} />;
+  return <LoadedEditor key={`${session?.user.id}:${claims?.family_id}:${props.child.id}`} {...props} query={query} initial={query.data} />;
 }
 function LoadedEditor({
   child,
@@ -105,14 +107,23 @@ function LoadedEditor({
   const { width } = useWindowDimensions();
   const wide = width >= 1000;
   const cache = useQueryClient();
-  const [draft, setDraft] = useState<Draft | null>(initial);
+  const { session, claims } = useSession();
+  const journal = useMemo(() => timetableJournal(session?.user.id ?? "", claims?.family_id ?? "", child.id), [session?.user.id, claims?.family_id, child.id]);
+  const [recovery] = useState(() => {
+    try { return { command: journal.read(), error: false }; }
+    catch { return { command: null, error: true }; }
+  });
+  const [pending, setPending] = useState<TimetableCommand | null>(recovery.command);
+  const recovered = recovery.command ? { revision: recovery.command.p_revision, lessons: recovery.command.p_lessons, settings: recovery.command.p_settings } : initial;
+  const [draft, setDraft] = useState<Draft | null>(recovered);
   const [baseline, setBaseline] = useState(JSON.stringify(initial));
   const [day, setDay] = useState(1);
   const [weekend, setWeekend] = useState(
-    initial.lessons.some((l) => l.day > 5),
+    recovered.lessons.some((l) => l.day > 5),
   );
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [newer, setNewer] = useState(false);
   const [error, setError] = useState("");
   const [conflict, setConflict] = useState(false);
   const [lesson, setLesson] = useState<Lesson | null>(null);
@@ -122,73 +133,80 @@ function LoadedEditor({
   const [sheetError, setSheetError] = useState("");
   const [leave, setLeave] = useState<(() => void) | null>(null);
   const dirty = !!draft && JSON.stringify(draft) !== baseline;
-  usePreventRemove(dirty || busy, ({ repeat }) => {
+  const locked = busy || !!pending || recovery.error;
+  usePreventRemove((dirty && !pending && !recovery.error) || busy, ({ repeat }) => {
     if (!busy) setLeave(() => repeat);
   });
   useEffect(() => {
-    if (Platform.OS !== "web" || !dirty) return;
+    if (Platform.OS !== "web" || !dirty || pending || recovery.error) return;
     const fn = (e: BeforeUnloadEvent) => {
       e.preventDefault();
       e.returnValue = "";
     };
     window.addEventListener("beforeunload", fn);
     return () => window.removeEventListener("beforeunload", fn);
-  }, [dirty]);
+  }, [dirty, pending, recovery.error]);
   function requestLeave(action: () => void) {
     if (busy) return;
-    if (dirty) setLeave(() => action);
+    if (dirty && !pending && !recovery.error) setLeave(() => action);
     else action();
   }
   function change(next: Draft) {
+    if (locked) return;
     setDraft(next);
     setSaved(false);
+    setNewer(false);
     setError("");
   }
   async function save() {
-    if (!draft) return;
-    const validation = validateLessons(draft.lessons);
-    if (validation || !validLessonSettings(draft.settings)) {
-      setError(t(`planner.${validation ?? "invalid"}`));
-      return;
+    if (!draft || busy || recovery.error) return;
+    if (!pending) {
+      const validation = validateLessons(draft.lessons);
+      if (validation || !validLessonSettings(draft.settings)) {
+        setError(t(`planner.${validation ?? "invalid"}`));
+        return;
+      }
     }
     setBusy(true);
     setError("");
     setConflict(false);
     try {
-      const { data, error: err } = await supabase.rpc("save_school_timetable", {
-        p_child_id: child.id,
-        p_revision: draft.revision,
-        p_lessons: draft.lessons as unknown as Json,
-        p_settings: draft.settings as unknown as Json,
+      const command = pending ?? journal.prepare({
+        p_child_id: child.id, p_revision: draft.revision,
+        p_lessons: draft.lessons, p_settings: draft.settings,
       });
-      if (err) throw err;
-      const next = { ...draft, revision: data };
+      setPending(command);
+      const receipt = await journal.send(command);
+      setPending(null);
+      const acknowledged = { lessons: command.p_lessons, settings: command.p_settings, revision: receipt.revision };
+      const fresh = await query.refetch();
+      // An old successful receipt must not replace a newer parent's/child's edit.
+      const current = fresh.data ?? cache.getQueryData<Draft>(["school_timetable", child.id]);
+      const next = current && current.revision >= receipt.revision ? current : acknowledged;
+      setNewer(!!current && current.revision > receipt.revision);
       setDraft(next);
       setBaseline(JSON.stringify(next));
+      setWeekend(next.lessons.some((l) => l.day > 5));
       setSaved(true);
       cache.setQueryData(["school_timetable", child.id], next);
+      if (fresh.error) setError(t("timetableRecovery.refresh"));
       await Promise.all([
         cache.invalidateQueries({ queryKey: ["events"] }),
         cache.invalidateQueries({ queryKey: ["child_events"] }),
       ]);
     } catch (e) {
+      let stored = false;
+      try { const command = journal.read(); setPending(command); stored = !!command; }
+      catch { setError(t("timetableRecovery.storage")); return; }
       const msg = (e as Error).message;
       setConflict(msg.includes("timetable_conflict"));
-      setError(
-        t(
-          msg.includes("timetable_conflict")
-            ? "planner.conflict"
-            : msg.includes("timetable_overlap")
-              ? "planner.overlap"
-              : "planner.saveError",
-        ),
-      );
+      setError(t(stored ? "timetableRecovery.pendingBody" : msg.includes("timetable_conflict") ? "planner.conflict" : msg.includes("timetable_overlap") ? "planner.overlap" : "planner.saveError"));
     } finally {
       setBusy(false);
     }
   }
   function add(d = day) {
-    if (!draft) return;
+    if (!draft || locked) return;
     const times = nextLessonTimes(draft.lessons, d, draft.settings);
     if (!times) {
       setError(t("planner.dayFull"));
@@ -198,7 +216,7 @@ function LoadedEditor({
     setLesson({ id: newKey(), day: d, title: "", ...times });
   }
   function keepLesson() {
-    if (!draft || !lesson) return;
+    if (!draft || !lesson || locked) return;
     const next = [
       ...draft.lessons.filter((l) => l.id !== lesson.id),
       { ...lesson, title: lesson.title.trim() },
@@ -264,6 +282,7 @@ function LoadedEditor({
               </View>
               <IconButton
                 label={t("planner.editLesson", { title: l.title })}
+                disabled={locked}
                 onPress={() => {
                   setLesson({ ...l });
                   setSheetError("");
@@ -281,6 +300,7 @@ function LoadedEditor({
         <SatinButton
           secondary
           title={t("planner.addLesson")}
+          disabled={locked}
           icon={<Plus size={19} color={p.purple} />}
           onPress={() => add(d)}
         />
@@ -347,8 +367,12 @@ function LoadedEditor({
               )}
               <Text style={u.small}>
                 {t(
-                  saved
-                    ? "planner.saved"
+                  busy
+                    ? "timetableRecovery.saving"
+                    : pending
+                      ? "timetableRecovery.waiting"
+                      : saved
+                        ? "planner.saved"
                     : dirty
                       ? "planner.editing"
                       : "planner.weekly",
@@ -369,12 +393,21 @@ function LoadedEditor({
               />
             </View>
           ) : null}
+          {(pending && !busy) || recovery.error ? (
+            <View style={[u.card, { backgroundColor: p.lilac }]}>
+              <Text style={u.bold}>{t(recovery.error ? "timetableRecovery.storageTitle" : "timetableRecovery.pendingTitle")}</Text>
+              <Text style={u.copy}>{t(recovery.error ? "timetableRecovery.storage" : "timetableRecovery.pendingBody")}</Text>
+            </View>
+          ) : null}
+          {newer ? (
+            <Text style={u.copy}>{t("timetableRecovery.newer")}</Text>
+          ) : null}
           {draft ? (
-            <View pointerEvents={busy ? "none" : "auto"} style={{ gap: 18 }}>
+            <View pointerEvents={locked ? "none" : "auto"} style={{ gap: 18 }}>
               <TimetableImportEntry
                   childId={child.id}
                   initial={draft}
-                  disabled={dirty || busy}
+                  disabled={dirty || locked}
                   onSaved={(next) => {
                     setDraft(next);
                     setBaseline(JSON.stringify(next));
@@ -397,7 +430,8 @@ function LoadedEditor({
                     {days.map((d) => (
                       <Pressable
                         key={d}
-                        accessibilityRole="button"
+                        disabled={locked}
+                  accessibilityRole="button"
                         accessibilityState={{ selected: d === day }}
                         onPress={() => setDay(d)}
                         style={{
@@ -434,6 +468,7 @@ function LoadedEditor({
                   {wide ? t("planner.weekOverview") : t(`planner.day${day}`)}
                 </Text>
                 <Pressable
+                  disabled={locked}
                   accessibilityRole="button"
                   onPress={() => {
                     setCopy(true);
@@ -454,7 +489,8 @@ function LoadedEditor({
                     {days.map((d) => (
                       <View key={d} style={{ width: 202, gap: 12 }}>
                         <Pressable
-                          accessibilityRole="button"
+                          disabled={locked}
+                  accessibilityRole="button"
                           accessibilityState={{ selected: day === d }}
                           onPress={() => setDay(d)}
                           style={[
@@ -475,6 +511,7 @@ function LoadedEditor({
                 renderRows(day)
               )}
               <Pressable
+                disabled={locked}
                 accessibilityRole="button"
                 style={[u.row, u.card, { padding: 12 }]}
                 onPress={() => {
@@ -487,6 +524,7 @@ function LoadedEditor({
                 <ChevronRight size={20} color={p.purple} />
               </Pressable>
               <Pressable
+                disabled={locked}
                 accessibilityRole="button"
                 accessibilityState={{ expanded: weekend }}
                 style={u.link}
@@ -500,17 +538,17 @@ function LoadedEditor({
                 </Text>
               </Pressable>
               <Text style={u.small}>{t("planner.sharedHelp")}</Text>
-              {query.data && query.data.revision !== draft.revision ? (
+              {!pending && query.data && query.data.revision !== draft.revision ? (
                 <Text style={u.error}>{t("planner.remoteChange")}</Text>
               ) : null}
             </View>
           ) : null}
-          {error ? (
+          {error && !pending ? (
             <Text accessibilityRole="alert" style={u.error}>
               {error}
             </Text>
           ) : null}
-          {conflict || (query.data && query.data.revision !== draft?.revision) ? (
+          {!pending && !recovery.error && (conflict || (query.data && query.data.revision !== draft?.revision)) ? (
             <SatinButton
               secondary
               title={t("planner.reload")}
@@ -532,13 +570,13 @@ function LoadedEditor({
         <View style={[u.footer, { justifyContent: "center" }]}>
           <SatinButton
             secondary
-            title={t("common.cancel")}
+            title={t(pending || recovery.error ? "common.back" : "common.cancel")}
             disabled={busy}
             onPress={() => requestLeave(onClose)}
           />
           <SatinButton
-            title={t("planner.save")}
-            disabled={!dirty || !!query.error}
+            title={t(pending ? "timetableRecovery.retry" : "planner.save")}
+            disabled={recovery.error || (!pending && (!dirty || !!query.error))}
             busy={busy}
             onPress={() => {
               void save();

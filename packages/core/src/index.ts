@@ -52,3 +52,4 @@ export * from "./cohort-review";
 export * from "./push-recovery";
 
 export * from "./repeat-calendar";
+export * from "./timetable-command";

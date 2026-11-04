@@ -2267,6 +2267,7 @@ isOneToOne: false
           Functions: {
             get_repeat_calendar_event: { Args: { p_event_id: string }; Returns: Json };
             get_repeat_calendar: { Args: { p_attempt_id: string }; Returns: Json };
+            save_school_timetable_request: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_lessons: Json; p_settings: Json }; Returns: Json };
             apply_repeat_calendar: { Args: { p_request_id: string; p_attempt_id: string; p_source_hash: string; p_question_ids: string[]; p_items: Json }; Returns: Json };
 "release_push_operations": { Args:{p_status?:string;p_before?:number;p_limit?:number};Returns:Json },
 "release_retry_push": { Args:{p_request:string;p_outbox_id:number;p_revision:number;p_reason:string;p_confirmed:boolean};Returns:Json },

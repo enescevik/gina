@@ -1036,7 +1036,8 @@
     "emptyTitle": "Room in your day",
     "emptyBody": "Set up your school timetable or add an event to the day.",
     "addChildHelp": "Add your child to start their weekly school timetable.",
-    "more": "More"
+    "more": "More",
+    "childEmptyBody": "Check your timetable or edit your lessons."
   },
   "taskPremium": {
     "subtitle": "Little habits, meaningful steps.",
@@ -2430,5 +2431,16 @@
   "repeatCalendar.emptyBody": "Correct, blank, AI-only and unreviewed answers are not added to this list. Your child’s current grade and the last 90 days of observations are used.",
   "repeatCalendar.origin": "This session is linked to reviewed Prova questions. Assigning the event to someone else removes this source link.",
   "repeatCalendar.originError": "The source link could not be checked. You can still edit the calendar event.",
-  "repeatCalendar.savedQuestions": "Source questions for this plan"
+  "repeatCalendar.savedQuestions": "Source questions for this plan",
+  "timetableRecovery": {
+    "pendingTitle": "Check the timetable save",
+    "pendingBody": "The last save did not return a reply. Your changes are stored on this device. Checking the same save will not add lessons twice. Editing is paused until the check finishes; you can leave and return later.",
+    "retry": "Check save",
+    "storageTitle": "Save could not be restored safely",
+    "storage": "The pending save on this device could not be read. Reopen the app and try again without clearing its data.",
+    "refresh": "Your save was acknowledged, but the latest timetable could not be loaded. Reload to check it.",
+    "saving": "Saving",
+    "waiting": "Save check pending",
+    "newer": "Your save had already been received. The timetable changed afterwards; the latest version is shown below."
+  }
 }

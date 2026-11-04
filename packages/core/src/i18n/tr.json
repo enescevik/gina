@@ -1036,7 +1036,8 @@
     "emptyTitle": "Bugün için alan var",
     "emptyBody": "Ders programını hazırlayabilir veya gününe bir etkinlik ekleyebilirsin.",
     "addChildHelp": "Çocuğunu ekledikten sonra ona özel haftalık ders programını hazırlayabilirsin.",
-    "more": "Diğer"
+    "more": "Diğer",
+    "childEmptyBody": "Ders programına bakabilir, derslerini düzenleyebilirsin."
   },
   "taskPremium": {
     "subtitle": "Küçük alışkanlıklar, büyük adımlar.",
@@ -2425,5 +2426,16 @@
   "repeatCalendar.emptyBody": "Doğru yanıtlar, boş yanıtlar, yalnız AI önerisiyle puanlanan veya henüz incelenmemiş cevaplar tekrar listesine alınmaz. Çocuğun güncel sınıfı ve son 90 günlük gözlemler kullanılır.",
   "repeatCalendar.origin": "Bu buluşma incelenmiş Prova sorularına bağlıdır. Çocuğu değiştirirseniz bu kaynak bağlantısı kaldırılır.",
   "repeatCalendar.originError": "Kaynak bağlantısı kontrol edilemedi. Takvim kaydını düzenleyebilirsiniz.",
-  "repeatCalendar.savedQuestions": "Bu planın kaynak soruları"
+  "repeatCalendar.savedQuestions": "Bu planın kaynak soruları",
+  "timetableRecovery": {
+    "pendingTitle": "Ders programı kaydını kontrol edelim",
+    "pendingBody": "Son kaydın yanıtı alınamadı. Değişikliklerin bu cihazda saklı. Aynı kaydı kontrol ettiğimizde dersler ikinci kez eklenmez. Kontrol bitene kadar düzenleme kapalıdır; buradan ayrılıp sonra dönebilirsin.",
+    "retry": "Kaydı kontrol et",
+    "storageTitle": "Kayıt güvenle saklanamadı",
+    "storage": "Bu cihazdaki bekleyen kayıt okunamadı. Veriyi silmeden uygulamayı yeniden açıp tekrar dene.",
+    "refresh": "Kaydın alındı, ancak programın en güncel hâli getirilemedi. Tekrar yükleyerek kontrol et.",
+    "saving": "Kaydediliyor",
+    "waiting": "Kayıt kontrolü bekliyor",
+    "newer": "Kaydın daha önce alınmış. Bu sırada program güncellenmiş; aşağıda en güncel hâlini görüyorsun."
+  }
 }
