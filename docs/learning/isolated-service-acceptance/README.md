@@ -41,3 +41,14 @@ Yanlış hash ile yüklenen dosya `invalid` kaldı ve temizlik kuyruğuna girdi.
 `hosted-import-verification.json`: `gina-prod` üzerinde yalnız bu test için oluşturulan geçici veli/aile/çocukla gerçek özel PNG yükleme → AI çıkarımı → veli düzeltmesi → program/takvim kaydı → özgün belgeyi açma → normal hesap silme akışı geçti. 506 girdi / 157 çıktı token'lı tek kullanım kaydı oluştu. Aynı belge isteğinin tekrarı aynı sonucu kullandı; ikinci kullanım oluşturmadı. Belgedeki bilinmeyen bitiş saati boş bırakıldı, testin veli düzenleme adımında tamamlandı. Program, takvim ve özgün belge bağı aynı anda doğrulandı.
 
 `learning-service-smoke.mjs` artık global kaynak anahtarını açıp kapatmaz; önceden açık olmasını şart koşar. Mevcut aileler ve global yayın ayarları değiştirilmedi. Test hesabı normal silme akışıyla kaldırıldı; kullanıcı, aile, kaynak ve yüklenen nesnenin kalmadığı doğrulandı. Bu kabul mevcut dağıtılmış sürüme aittir: henüz dağıtılmamış çalışma planı/haftalık özet/görselli katkı Edge sürümlerini doğrulamaz. Yeni migration, Edge veya TestFlight yayını yapılmadı.
+
+
+## 4 Kasım — gerçek Realtime ile birleşik kabul
+
+`python3 scripts/test-isolated-services.py --run-local --with-storage --with-realtime`: gerçek Auth, REST, Realtime WebSocket, Storage ve kaynak Edge birlikte 134 kontrolü geçti. Sonuç `realtime-verification.json` içinde; bütün geçici hizmetler ve veritabanı kaldırıldı. Realtime görüntüsü mevcut yerel `supabase_realtime_gina` konteynerinden alınır, ayrı şema ve rastgele anahtarlarla yalnız boş kopyaya bağlanır. Yerel geçit resmi `/realtime/v1` → `/socket` eşlemesini kullanır; Node WebSocket ve mevcut Supabase SDK dışında paket eklenmedi.
+
+Çocuk yeni Prova atamasını, veli bitirilen denemeyi, çocuk görev onayını ve yıldız değişimini gerçek bildirimle aldı. Diğer aile hiçbir satır almadı. İptal edilen cihazın açık bağlantısı/eski tokeni yeni satır alamazken veli aynı değişimi aldı.
+
+Denetim, Realtime içindeki iç içe null kimliklerin `"null"` metnine dönüşerek UUID dönüşümünü ve bütün bildirim grubunu durdurduğunu yeniden üretti. 094000 yalnız üç isteğe bağlı GINA kimliğinin null/boş gösterimini normalleştirir; rol, geçerli kimlikler, aile üyeliği ve cihaz iptal kontrolleri korunur. 18 yeni SQL kontrolü ile toplam 72 dosya/2035 kontrol geçti. Mobil bağlantı artık socket katılımını veritabanı hazır olayıyla karıştırmaz; hazır olunca tekrar okur, veritabanı aboneliği başarısızsa yedek yenileme sürer. Gerçek hook için beş test ile mobil tip/lint geçti.
+
+Bu kanıt yerel gerçek hizmet kabulüdür; üretim dağıtımı, fiziksel cihaz veya push teslimi değildir. Kaynaklar: [Supabase protokolü](https://supabase.com/docs/guides/realtime/protocol), [Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes).

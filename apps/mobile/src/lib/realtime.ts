@@ -25,11 +25,20 @@ export function useRealtimeInvalidate(table: string, filter: string | null, quer
       timer = setTimeout(refresh, 120);
     };
     refresh();
-    const channel = supabase.channel(`rt:${table}:${filter}:${++subscriptionId}`)
+    const channel = supabase.channel(`rt:${table}:${filter}:${++subscriptionId}`, {
+      config: { postgres_changes_options: { wait: true } },
+    })
       .on("postgres_changes", { event: "*", schema: "public", table, filter }, schedule)
-      .subscribe(status => {
-        connected = status === "SUBSCRIBED";
+      .on("system", {}, message => {
+        // A joined socket may precede CDC readiness. Reconcile that gap and
+        // retain fallback polling if only the database subscription fails.
+        if (!alive || message.extension !== "postgres_changes") return;
+        connected = message.status === "ok";
         if (connected) schedule();
+      })
+      .subscribe(status => {
+        if (status === "SUBSCRIBED") schedule();
+        else connected = false;
       });
     const resume = focusManager.subscribe(focused => { if (focused) schedule(); });
     // Only fall back while realtime is unavailable; never poll in the background.
