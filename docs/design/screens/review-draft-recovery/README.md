@@ -10,7 +10,7 @@ Eski taslak görünür ancak kayıt engellenir. “Güncel değerlendirmeyi aç�
 
 ## Doğrulama
 
-- 218 çekirdek testi (12 yeni), 19 ilgili Node kontrolü, mobil/core tip ve mobil lint geçti.
+- 219 çekirdek testi (13 yeni), 19 ilgili Node kontrolü, mobil/core tip ve mobil lint geçti.
 - Çekirdek: yeniden açılış, aynı makbuz, eski revizyonu koruma, kesin hata sonrası yeni istek, depolama hatası, onay temizliği hatası, eski sekme/geç yanıt koruması, dört ayrı kapsam, bozuk sürüm, eksik/geçersiz puan, şıklı soru, geçersiz makbuz ve belirsiz isteği silmeme testleri.
 - Gerçek Expo web bileşenleri, sentetik ağ: telefon 390×844 ve tablet 1280×800.
 - Puan 90 ve yazılı geri bildirim yeniden yüklemede geri geldi. Veli kalemiyle çizilen not da geri geldi.
@@ -18,6 +18,7 @@ Eski taslak görünür ancak kayıt engellenir. “Güncel değerlendirmeyi aç�
 - Ayrı bir senaryoda eski sekme tamamen kapatılıp aynı tarayıcı bağlamında yeni sekme açıldı: 95 puan ve not geri geldi. Önceki uygulama belleği kullanılmadı.
 - Başka veli revizyonu taklit edildi: eski not korundu, kayıt engellendi; iki adımlı vazgeçme güncel notu açtı, ek kayıt isteği göndermedi.
 - Cihaz deposu hata verdiğinde not ekranda kaldı, sunucuya gönderme kapandı; depolama düzelince yeniden deneme aynı notu cihazda sakladı.
+- Sunucunun kesin reddi sırasında cihaz temizliği hata verdiğinde aynı isteği yeniden deneme açık kaldı; depolama düzelince eski taslak korundu ve çakışma gösterildi.
 - “Taslağı sakla ve çık” sonrası aynı not geri geldi; “Taslağı sil ve çık” sonrası yerel kayıt temizlendi.
 - Tarayıcı çalışma zamanı hatası görülmedi. Yerel geliştirme sunucusunun yeniden derlemesinde zaman aşımı olan gezinmeler tekrarlanarak kontrol edildi; bunlar başarılı kabul sayılmadı.
 

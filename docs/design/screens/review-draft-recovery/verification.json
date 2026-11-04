@@ -24,11 +24,12 @@
     "diskRetryStoresSameDraft": true,
     "pageErrors": [],
     "keepAndLeaveRestores": true,
-    "explicitDiscardRemoves": true
+    "explicitDiscardRemoves": true,
+    "rejectedRequestCleanupFailureRetryEnabled": true
   },
   "physicalDeviceVerified": false,
   "productionChanged": false,
   "testFlightChanged": false,
-  "coreTests": 218,
+  "coreTests": 219,
   "relatedNodeTests": 19
 }

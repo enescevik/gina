@@ -72,3 +72,8 @@ it("keeps multiple-choice feedback without requiring a manual score",()=>{
   const f=fixture(),j=f.open();j.restore();j.edit({...base,openEnded:false},{...draft,score:""});
   expect(j.prepare().base.openEnded).toBe(false);
 });
+it("retains a definitively rejected request if clearing its pending flag fails, then retries cleanup",()=>{
+  const f=fixture(),j=f.open();j.restore();j.edit(base,draft);const a=j.prepare(),set=f.store.set;
+  f.store.set=()=>{throw Error("disk_full");};expect(()=>j.reject(a.pending!)).toThrow("disk_full");
+  expect(j.prepare()).toEqual(a);f.store.set=set;j.reject(a.pending!);expect(f.open().restore()?.pending).toBeNull();
+});

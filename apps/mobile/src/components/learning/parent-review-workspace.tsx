@@ -193,7 +193,7 @@ export function ParentReviewWorkspace(
     : [];
   const save = useMutation({
     mutationFn: async () => {
-      if (!journal || !localReady || localError || (staleDraft && !uncertain)) {
+      if (!journal || !localReady || (localError && !request.current) || (staleDraft && !uncertain)) {
         throw Error("review_local_not_ready");
       }
       // Store the exact request before I/O; reopen/retry uses its original base.
@@ -224,6 +224,7 @@ export function ParentReviewWorkspace(
     },
     onSuccess: () => {
       setDirty(false);
+      setLocalError(false);
       setUncertain(false);
       setSaved(true);
       void cache.invalidateQueries({
@@ -243,7 +244,7 @@ export function ParentReviewWorkspace(
       const definitive = ["invalid_score", "forbidden", "review_local_not_ready"].includes(e.message) ||
         /^(P0001|42501|22\w+|23\w+)$/.test((e as { code?: string }).code ?? "");
       if (definitive && request.current) {
-        try { journal?.reject(request.current); request.current = null; }
+        try { journal?.reject(request.current); request.current = null; setLocalError(false); }
         catch { setLocalError(true); setUncertain(true); return; }
       }
       setUncertain(!definitive && !!request.current);
@@ -765,7 +766,7 @@ export function ParentReviewWorkspace(
                 : "parentReview.saveNext",
             )}
             busy={save.isPending}
-            disabled={invalidDocument || !localReady || localError || (staleDraft && !uncertain)}
+            disabled={invalidDocument || !localReady || (localError && !uncertain) || (staleDraft && !uncertain)}
             onPress={() => {
               if (!wide && tab === "solution") setTab("assessment");
               else if (!finished) navigate(index + 1);
