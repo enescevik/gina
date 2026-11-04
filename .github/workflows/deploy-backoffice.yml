@@ -1,7 +1,7 @@
 # Backoffice (statik Next.js admin) → Cloudflare Pages (Cloudflare Access arkasında).
 # Gerekli GitHub secret'ları: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID,
 # NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY (bkz. docs/DEPLOY.md).
-# Secret'lar eksikse iş hata vermeden atlanır (uyarı yazar).
+# Hiç kurulmamış push yayını atlanır; elle yayın veya kısmi yapılandırma hata verir.
 name: Deploy backoffice
 
 on:
@@ -15,6 +15,10 @@ on:
       - deploy/backoffice/**
       - scripts/build-backoffice.mjs
       - scripts/cf-pages-finalize.mjs
+      - scripts/public-build-env.mjs
+      - scripts/deploy-preflight.mjs
+      - .node-version
+      - package.json
       - pnpm-lock.yaml
       - .github/workflows/deploy-backoffice.yml
   workflow_dispatch:
@@ -33,6 +37,7 @@ jobs:
     env:
       CF_PAGES_PROJECT: ${{ vars.CF_PAGES_BACKOFFICE_PROJECT || 'gina-backoffice' }}
     steps:
+      - uses: actions/checkout@v4
       - name: Secret kontrolü
         id: secrets
         env:
@@ -40,20 +45,8 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-        run: |
-          missing=""
-          for name in CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY; do
-            if [ -z "${!name}" ]; then missing="$missing $name"; fi
-          done
-          if [ -n "$missing" ]; then
-            echo "::warning title=Deploy backoffice atlandı::Eksik secret'lar:$missing (docs/DEPLOY.md)"
-            echo "ready=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "ready=true" >> "$GITHUB_OUTPUT"
-          fi
+        run: node scripts/deploy-preflight.mjs backoffice
 
-      - uses: actions/checkout@v4
-        if: steps.secrets.outputs.ready == 'true'
       - uses: pnpm/action-setup@v4
         if: steps.secrets.outputs.ready == 'true'
       - uses: actions/setup-node@v4
