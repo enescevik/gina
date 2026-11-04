@@ -1,0 +1,181 @@
+[
+  {
+    "id": "planet-cards",
+    "svg": "assets/planet-cards.svg",
+    "png": "assets/planet-cards.png",
+    "width": 640,
+    "height": 665,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "27d0cb3655d5dd688013f9cc7aca11858528c29149d04cc2c0d8ef68db4461b6",
+    "svg_sha256": "d03035f8191ce0e4e462cd5fd11007e5851abdcbac4b9c0938c8d136cfb7ae71",
+    "origin": "original_gina_science_diagram",
+    "geometry": {
+      "type": "science6_planets",
+      "rows": [
+        [
+          "Merkür",
+          "K",
+          "Yok"
+        ],
+        [
+          "Venüs",
+          "K",
+          "Yok"
+        ],
+        [
+          "Dünya",
+          "K",
+          "Yok"
+        ],
+        [
+          "Mars",
+          "K",
+          "Yok"
+        ],
+        [
+          "Jüpiter",
+          "G",
+          "Var"
+        ],
+        [
+          "Satürn",
+          "G",
+          "Var"
+        ],
+        [
+          "Uranüs",
+          "B",
+          "Var"
+        ],
+        [
+          "Neptün",
+          "B",
+          "Var"
+        ]
+      ]
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  },
+  {
+    "id": "eclipse-models",
+    "svg": "assets/eclipse-models.svg",
+    "png": "assets/eclipse-models.png",
+    "width": 920,
+    "height": 700,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 520,
+    "sha256": "a2df28bff904c915ceb6f3a55e06a45865951448ebccf9ee696b49f11dee02ff",
+    "svg_sha256": "6e628e03b927713aa1fee06dc45f7f865e5705a09913b79f01de3fd4de743bbf",
+    "origin": "original_gina_science_diagram",
+    "geometry": {
+      "type": "science6_eclipses",
+      "rows": [
+        [
+          "Güneş",
+          "Ay",
+          "Dünya"
+        ],
+        [
+          "Güneş",
+          "Dünya",
+          "Ay"
+        ]
+      ],
+      "labels": [
+        "K",
+        "L"
+      ]
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  },
+  {
+    "id": "force-cards",
+    "svg": "assets/force-cards.svg",
+    "png": "assets/force-cards.png",
+    "width": 900,
+    "height": 700,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 520,
+    "sha256": "d98d13e27dea35e95b43b570d7cd087de45022d6f80526638f4404cb3e5ba611",
+    "svg_sha256": "c15c708b0edbb7e2b596572c2d03b98240245256b0dae996768e5c2b0c8533df",
+    "origin": "original_gina_science_diagram",
+    "geometry": {
+      "type": "science6_forces",
+      "rows": [
+        {
+          "label": "K",
+          "forces": [
+            7,
+            -3
+          ]
+        },
+        {
+          "label": "L",
+          "forces": [
+            5,
+            -5
+          ]
+        },
+        {
+          "label": "M",
+          "forces": [
+            2,
+            6
+          ]
+        }
+      ]
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  },
+  {
+    "id": "two-routes",
+    "svg": "assets/two-routes.svg",
+    "png": "assets/two-routes.png",
+    "width": 860,
+    "height": 530,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 520,
+    "sha256": "3777d473ddd7d68c665f810b9e7d734ecaa82af45dc4f5d680e983fbefc4f43a",
+    "svg_sha256": "de4e4ce70e5079314a638b31fb00810acea4db41982088deb57252ea2619d59c",
+    "origin": "original_gina_science_diagram",
+    "geometry": {
+      "type": "science6_routes",
+      "points": {
+        "A": [
+          140,
+          400
+        ],
+        "B": [
+          720,
+          400
+        ],
+        "C": [
+          140,
+          130
+        ],
+        "D": [
+          720,
+          130
+        ]
+      },
+      "paths": [
+        [
+          "A",
+          "B"
+        ],
+        [
+          "A",
+          "C",
+          "D",
+          "B"
+        ]
+      ]
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  }
+]

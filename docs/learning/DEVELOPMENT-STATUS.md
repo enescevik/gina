@@ -507,3 +507,9 @@ Fotoğraf/PDF veya kayıtlı özel belge → ayrı AI onayı → kaynak sayfası
 Ana ekrandaki “Birlikte bakalım” alanına son sekiz tamamlanmış haftanın AI özeti bağlandı. Kayıtlı sayımlar/AI yorumları ayrılır; açık veli onayıyla ilk üretim, sonraki açılışlarda salt okuma vardır. Çocuk eşlemesi özel ve sabittir; sıra değişimi yorumu yanlış çocuğa bağlamaz, eski eşlemesiz kayıtlar için ad tahmin edilmez. Paket kapanınca veya son özet kaydı yanıtı kaybolunca hazır iş okunabilir; okuma hak kullanmaz.
 
 34 yeni SQL, toplam 70 dosya/2012; beş gerçek yarış, core206, ilgili Edge18, mobil/core tip, mobil lint ve native metin kontrolü geçti. Telefon/tablet, kayıp yanıt, yeniden açılma, kapalı paket, belirsiz iş ve bağlantı hatası sentetik kabulü: `docs/design/screens/weekly-summary/README.md`. Gerçek AI/içerik/fiziksel cihaz kabulü ve dağıtım açık; TestFlight17 değişmedi. Kütüphane/müfredat, canlı mağaza/push/Storage ve diğer açık kabul işleri kapanmış sayılmaz.
+
+## 4 Kasım — 6. sınıf Fen Bilimleri taslak havuzu
+
+20 özgün açık uçlu soru, beş ortak kaynak, dört özgün SVG/sRGB PNG ve ayrı öğrenci/editör önizlemeleri eklendi. Gezegen sınıflama, tutulma, bileşke kuvvet, deney planı ve nitel sürat/hız karşılaştırması beş resmî çıktı adayına bağlandı. Güncel programın FB.6.2.3 hesabı/grafiği dışarıda bırakan sınırı korundu. Yazılı deney planı gerçek deney performansı sayılmadı.
+
+27 yeni teknik test ile mevcut 22+20+18+3 içerik/aktarım testi, mobil tip/lint ve geçici DB’de tam alan/görsel karşılaştırması geçti. Aynı aktarım tek paket olarak kaldı; test işlemi geri alındı ve klon kaldırıldı. Telefon/doküman önizlemesi `docs/learning/library-pilot/grade-6-science/README.md`. Teknik test alan onayı değildir; fiziksel uygulama ve editör incelemesi açık. Güncel havuz 80 taslak/1460 yazılmamış/0 bağımsız onay/0 yayın. Üretim ve TestFlight17 değişmedi.

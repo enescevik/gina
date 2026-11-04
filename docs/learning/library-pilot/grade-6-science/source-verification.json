@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-04",
+  "programme_pages": [
+    {
+      "url": "https://tymm.meb.gov.tr/fen-bilimleri-dersi/unite/409",
+      "retrieved_on": "2026-11-04",
+      "retrieved_html_sha256": "811251eaf297db8594d8297d1e931e68aaedf6937a8b6138a29de1278b1b2a91",
+      "grade": 6,
+      "role": "programme_scope_not_question_source"
+    },
+    {
+      "url": "https://tymm.meb.gov.tr/fen-bilimleri-dersi/unite/410",
+      "retrieved_on": "2026-11-04",
+      "retrieved_html_sha256": "b48f8ef9fd1fc770a486451a3ee09887dc854e812a67d0c84b9afc84099f196a",
+      "grade": 6,
+      "role": "programme_scope_not_question_source"
+    }
+  ],
+  "distribution_candidate_id": "tr-2026-2027-t1-fen3_2-g6-g6",
+  "distribution_file_sha256": "f01e0f96328e6c766776cd1e4dad760923a31331e701ce906b59eef359b75a3c",
+  "distribution_header_cell": "G6",
+  "distribution_outcome_cells": [
+    "C7",
+    "C9",
+    "C11",
+    "C12",
+    "C13"
+  ],
+  "school_scenario_selected": false,
+  "verified_constraints": [
+    "No moon counts for planet classification.",
+    "FB.6.2.3: qualitative comparison; no graph reading, mathematical calculation or unit conversion.",
+    "Written planning/given evidence does not demonstrate experimental performance."
+  ],
+  "source_approval": "author_checked_pending_independent_subject_review"
+}

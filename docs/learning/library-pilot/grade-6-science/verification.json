@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-04",
+  "questions": 20,
+  "sources": 5,
+  "pngs": 4,
+  "candidate_outcomes": 5,
+  "technical_test_cases": 27,
+  "math6_regression_cases": 22,
+  "science5_regression_cases": 20,
+  "math5_regression_cases": 18,
+  "preparer_regression_cases": 3,
+  "exact_field_and_byte_comparison": true,
+  "same_request_replay": true,
+  "transaction_rolled_back": true,
+  "disposable_database_removed": true,
+  "published": false,
+  "editorial_review_performed": false,
+  "paid_provider_call": false,
+  "visual_review": {
+    "phone_width": 390,
+    "review_width": 1280,
+    "planet_table_fits_phone": true,
+    "other_diagram_minimum_reading_width": 520,
+    "diagram_scroll_verified": true,
+    "document_horizontal_overflow": false,
+    "physical_device": false
+  },
+  "content_review": "author_self_check_only_not_independent_editorial_approval"
+}
