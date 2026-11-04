@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 import { isDeepStrictEqual } from 'node:util';
 import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
+import { testAiServices } from './isolated-ai-contract.mjs';
 import { testSources } from './isolated-source-contract.mjs';
 import { testBackoffice } from './isolated-backoffice-contract.mjs';
 import { observeRealtime } from './isolated-realtime-contract.mjs';
@@ -21,7 +22,7 @@ const checks = {};
 const assert = (label, pass) => { checks[label] = !!pass; if (!pass) throw Error(label); };
 const must = async (operation, label) => { const r = await operation; assert(label, !r.error); return r.data; };
 const proxy = http.createServer((req, res) => {
-  const routes=[['/auth/v1',authPort],['/rest/v1',restPort],['/storage/v1',storagePort],['/functions/v1/learning-source',edgePort]];
+  const routes=[['/auth/v1',authPort],['/rest/v1',restPort],['/storage/v1',storagePort],['/functions/v1',edgePort]];
   const route=routes.find(([prefix,port])=>port&&(req.url===prefix||req.url.startsWith(prefix+'/')));
   if (!route) {res.writeHead(404);res.end();return;}
   const [prefix,port]=route;
@@ -54,7 +55,7 @@ const claims = session => JSON.parse(Buffer.from(session.access_token.split('.')
 const refresh = async c => (await must(c.auth.refreshSession(),'refresh_session')).session;
 try {
   if(storagePort) {
-    edge=spawn(process.env.GINA_QA_DENO_PATH||'deno',['run','--cached-only','--frozen','--config','supabase/functions/deno.json','--allow-net=127.0.0.1','--allow-env=GINA_QA_ISOLATED,SUPABASE_URL,SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY,SOURCE_CLEANUP_SECRET','scripts/isolated-source-edge.ts'],{stdio:['ignore','pipe','ignore'],env:{...process.env,GINA_QA_ISOLATED:'1',SUPABASE_URL:base,SUPABASE_ANON_KEY:process.env.GINA_QA_ANON,SUPABASE_SERVICE_ROLE_KEY:process.env.GINA_QA_SERVICE,SOURCE_CLEANUP_SECRET:randomBytes(24).toString('hex')}});
+    edge=spawn(process.env.GINA_QA_DENO_PATH||'deno',['run','--cached-only','--frozen','--config','supabase/functions/deno.json','--allow-net=127.0.0.1','--allow-env=GINA_QA_ISOLATED,SUPABASE_URL,SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY,SOURCE_CLEANUP_SECRET,ANTHROPIC_API_KEY','scripts/isolated-source-edge.ts'],{stdio:['ignore','pipe','ignore'],env:{...process.env,GINA_QA_ISOLATED:'1',ANTHROPIC_API_KEY:'synthetic-local-only',SUPABASE_URL:base,SUPABASE_ANON_KEY:process.env.GINA_QA_ANON,SUPABASE_SERVICE_ROLE_KEY:process.env.GINA_QA_SERVICE,SOURCE_CLEANUP_SECRET:randomBytes(24).toString('hex')}});
     const ready=await new Promise((resolve,reject)=>{
       const timer=setTimeout(()=>reject(Error('source_edge_start_timeout')),15000);
       const lines=createInterface({input:edge.stdout});
@@ -162,6 +163,7 @@ try {
   const ledger=await must(device.from('star_events').select('delta').eq('child_id',child),'child_reads_star_events');
   assert('duplicate_approval_awards_stars_once',ledger.reduce((n,r)=>n+r.delta,0)===2);
   if(storagePort) await testSources({parent:a.c,other:b.c,child:device,childId:child,admin,base,pdf,must,assert});
+  if(storagePort) await testAiServices({parent:a.c,other:b.c,child:device,childId:child,admin,base,must,assert});
   await testBackoffice({admin,client,parent:a.c,other:b.c,child:device,must,assert});
   await rpc(a.c,'revoke_device',{p_device_id:deviceId});
   // Deliberately retain the old JWT: revocation must take effect before refresh.

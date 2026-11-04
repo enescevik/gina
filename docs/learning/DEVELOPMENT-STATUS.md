@@ -608,3 +608,15 @@ görsel, kalem, fiziksel cihaz veya mağaza kabulü değildir. Kanıt:
 eksik ayarla elle yayın/kısmi kurulum artık hata verir; 12 kontrol ve dört CI geçti.
 Güncel kullanıcı adımları `docs/release/RELEASE-COMPLETION-2026-11-04.md` içinde;
 eski hesap açma rehberi tarihî olarak işaretlendi. TestFlight17 değişmedi.
+
+
+## 4 Kasım — AI sonucu ile aile kaydının birlikte kabulü
+
+Gerçek yerel Auth/REST/Realtime/Storage ve değişmemiş ürün Edge işleyicileriyle
+haftalık özet, belgeden çalışma planı, görev ve ödül kayıt zinciri tamamlandı.
+Tek kota/tek makbuz, yeniden açılış, çoklu seçim, kaynak ilişkisi, çocuk/aile sınırı,
+20 saniyelik üretim sınırı ve paket kapanınca hazır özeti okuma dahil toplam
+254 kontrol geçti. Sağlayıcı sınırı deterministiktir: dört çağrı, dış bağlantı veya
+ücret yok. Gerçek AI içerik kabulü ayrı rapordadır. Kanıt:
+`isolated-service-acceptance/ai-pipeline-verification.json`. Tüm geçici kaynaklar
+kaldırıldı. Canlı dağıtım/TestFlight17, fiziksel kabul ve diğer açık işler değişmedi.

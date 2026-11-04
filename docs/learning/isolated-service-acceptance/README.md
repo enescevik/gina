@@ -63,3 +63,30 @@ Veli talebi → operatör kuyruğu → özel ekip notu → aileye yanıt → vel
 SSS taslağı → inceleme zorunluluğu → yayın → iOS/Android/web hedefleri → yeni taslağın eski yayını koruması → arşiv zinciri geçti. Destek operatörü ve veli içerik düzenleyemedi. Rol iptali/süresi dolması mevcut token ile erişimi hemen kapattı.
 
 Bu gerçek Auth/REST/RLS ve eşleşen ürün RPC kabulüdür; Cloudflare Access kurulumu, gerçek tarayıcı ekranı, Apple/Google ödeme-iade veya fiziksel bildirim teslimi değildir. Bütün geçici hizmetler ve veritabanı kaldırıldı.
+
+## AI ürün uç noktaları ve kalıcı kayıt — 4 Kasım
+
+Aynı birleşik koşum **254 kontrol** ile geçti. Gerçek yerel Auth, PostgREST,
+Realtime, Storage ve değişmemiş üretim Edge işleyicileri kullanıldı. Yalnız Anthropic
+sınırı deterministik sentetik yanıt döndürür; Deno ağ yetkisi 127.0.0.1 ile sınırlıdır.
+Bu koşumda ücretli veya dış AI çağrısı yoktur. Gerçek sağlayıcı/içerik kabulü ayrı
+`../ai-feature-acceptance/` raporundadır; iki kanıt tek bir canlı uçtan uca test olarak
+sunulmaz.
+
+- Haftalık özet → tek kota → aynı sonuçla tekrar → veritabanından yeniden açma;
+  başka aile/çocuk erişiminin reddi ve paket kapanınca hazır sonucu okuyabilme.
+- Gerçek özel PNG yükleme/doğrulama → ayrı AI onayı → belgeden ödev/kurs taslağı;
+  eksik tarihin null kalması ve otomatik atama olmaması.
+- Veli tarih düzeltmesi ve iki seçim → atomik kayıt → aynı makbuzla aynı kimlikler;
+  yeniden seçimin reddi, çocuğun onaylanmış planı okuması, özel kaynak bilgisinin
+  çocuğa açılmaması.
+- Belgeden görev ve ödül önerisi → sunucunun doğruladığı kaynak kimliği → birden
+  fazla seçim → yalnız iki kayıt ve özgün belge ilişkileri.
+- Hızlı ikinci üretimin 20 saniyelik sınırda sağlayıcı çağırmadan reddi, süre
+  dolduktan sonra devam. Dört ayrı üretim ve dört tokenizer çağrısı; tekrar/okuma
+  ek çağrı yapmadı. İlk koşum bu bekleme kuralına takıldı; son koşum kuralı
+  kaldırmadan hem reddi hem sonrasındaki başarıyı doğruladı.
+
+Kanıt: `ai-pipeline-verification.json`. Geçici hizmetler/veritabanı kaldırıldı.
+Gerçek aile/demo kayıtları ve üretim sürümü değiştirilmedi. TestFlight, fiziksel
+UI, canlı quota/Edge kaydı ve üretim mağaza/push kabulü hâlâ ayrı adımlardır.
