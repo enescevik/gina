@@ -467,3 +467,10 @@ Elle kaydın sunucuya ulaşıp yanıtının kaybolması durumunda oluşan belirs
 Veli ve aktif çocuk cihazı için çocuk/gün bazında liste eklendi. Program değişince yeniden kontrol, geçmiş günlerde saklı ders görüntüsü, kalıcı kayıt komutu ve aynı istek makbuzu vardır. Telefonda liste önce, tablette ders bağlamı yanında; başka cihazdaki değişiklik taslağı sessizce ezmez. Görev/yıldız/etkinlik oluşturulmaz.
 
 47 yeni SQL (65 dosyada 1805), dört gerçek yarış, 174 core testi; mobil/core tip ve mobil lint kabulü geçti. Gerçek Expo bileşenleriyle sentetik telefon/tablet, kayıp yanıt/yeniden açılış/program değişimi/çakışma/veli kaldırma kontrolleri: `docs/design/screens/school-bag/README.md`. Gerçek aile verisi ve TestFlight 17 değişmedi. Haftalık aile değerlendirmesi, tam ödev/ders/kurs planı ve fiziksel kabul açık.
+
+
+## 4 Kasım — haftalık AI özetinde aile sınırı ve ücretli işlem kurtarma (088000)
+
+Eksik aile claim'ini hizmet hesabı sayan eski veri yolu kapatıldı; çocuk/başka aile/ayrılmış veli erişimi reddedilir. Model girdisi serbest görev metni/ad/doğum tarihi taşımayan durum sayımlarına indirildi. Aile saat diliminde tamamlanmış son sekiz hafta, sabit girdi/model/istem, ortak kota/işlem sahipliği, kesin sonuçtan tek özet ve belirsiz yanıt kurtarması vardır. Çocuk silme türetilmiş içeriği temizler; geç sonuç geri getiremez ve harcanmış kullanım sıfırlanmaz.
+
+46 yeni SQL ile 66 dosya/1851; dört gerçek yarış ve 17 ilgili Edge testi, Edge/core/backoffice tip ve backoffice lint geçti. Kanıt/sınırlar/yayın sırası: `WEEKLY-SUMMARY-ACCEPTANCE.md`. Gerçek sağlayıcı/cihaz kullanılmadı. Güvenlik düzeltmesi dahil 088000/Edge henüz canlıda değil; TestFlight 17 değişmedi. Haftalık birlikte değerlendirme ekranı ve diğer kapsam açık.

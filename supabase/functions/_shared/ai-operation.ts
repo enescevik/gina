@@ -13,7 +13,7 @@ import { json } from "./supabase.ts";
 export async function runAiOperation<T>(
   db: SupabaseClient,
   parent: { familyId: string; userId: string },
-  action: "grade" | "plan" | "import",
+  action: "grade" | "plan" | "import" | "weekly",
   scope: string,
   apiKey: string,
   config: AiConfig,
@@ -26,13 +26,20 @@ export async function runAiOperation<T>(
     JSON.stringify({ scope, config, system, user, schema }),
   );
   const lease = crypto.randomUUID();
-  const { data: job, error } = await db.rpc("reserve_ai_operation", {
-    p_family_id: parent.familyId,
-    p_user_id: parent.userId,
-    p_action: action,
-    p_hash: hash,
-    p_lease: lease,
-  });
+  const { data: job, error } = action === "weekly"
+    ? await db.rpc("reserve_weekly_summary", {
+      p_family: parent.familyId,
+      p_user: parent.userId,
+      p_context: scope,
+      p_lease: lease,
+    })
+    : await db.rpc("reserve_ai_operation", {
+      p_family_id: parent.familyId,
+      p_user_id: parent.userId,
+      p_action: action,
+      p_hash: hash,
+      p_lease: lease,
+    });
   if (error || !job) {
     return json({ error: "ai_configuration_unavailable" }, 503);
   }
