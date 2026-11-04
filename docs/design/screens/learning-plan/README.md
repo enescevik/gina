@@ -33,3 +33,5 @@ Gerçek Expo bileşenleri, yalnız sentetik API yanıtları; hiçbir aile kaydı
 58 yeni SQL; daha önceki 66 dosyadaki 1851 kontrol ile toplam **1909**. Dört gerçek eşzamanlılık testi: aynı istek, veli/çocuk, iki çocuğun aynı kayıt kimliğini kullanması, çocuk silme. Core **188** test (9 yeni); mobil/core tip, mobil lint ve ham native metin kontrolü geçti.
 
 Yalnız `gina_completion_audit` ve silinen geçici klonlar kullanıldı. Gerçek aile ve demo kayıtlarına dokunulmadı. Üretim/Edge/TestFlight değişmedi. Fiziksel iPhone/iPad/Android, ekran okuyucu/klavye ve canlı kaynak kabulü açıktır. Belgeden AI çıkarımı, kütüphane kapsamı ve diğer yayın maddeleri devam eder.
+
+Son kaynakla iOS/Android/web paket dışa aktarımı başarılı (`/tmp/gina-learning-plan-export`). Bu kontrol imzalı binary veya fiziksel cihaz kabulü değildir.
