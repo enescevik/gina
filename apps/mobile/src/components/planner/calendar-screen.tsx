@@ -24,6 +24,7 @@ import {
 } from "lucide-react-native";
 import {
   localDateOf,
+  schoolBagDayAvailable,
   occurrencesBetween,
   weekDatesOf,
   type Occurrence,
@@ -40,6 +41,7 @@ import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import { IconButton, PlannerHero, SatinButton, Tag, p, u } from "./ui";
 import { TimetableEditor, type PlannerChild } from "./timetable-editor";
+import { SchoolBag } from "./school-bag";
 import { EventEditor } from "./event-editor";
 function shift(date: string, days: number) {
   const d = new Date(`${date}T12:00:00Z`);
@@ -62,6 +64,7 @@ export function PlannerCalendar({
   const [anchor, setAnchor] = useState(today);
   const [selected, setSelected] = useState(today);
   const [filter, setFilter] = useState<string | null>(null);
+  const [bag, setBag] = useState<{ child: PlannerChild; day: string } | null>(null);
   const [editing, setEditing] = useState<PlannerChild | null>(null);
   const [event, setEvent] = useState<WeekEvent | null | undefined>(undefined);
   const [detail, setDetail] = useState<WeekEvent | null>(null);
@@ -122,6 +125,7 @@ export function PlannerCalendar({
     } else if (childMode) setDetail(detail?.id === e.id ? null : e);
     else setEvent(e);
   }
+  if (bag) return <SchoolBag child={bag.child} day={bag.day} onClose={() => setBag(null)} />;
   if (editing)
     return (
       <TimetableEditor
@@ -643,6 +647,10 @@ export function PlannerCalendar({
             })}
           </Text>
         </View>
+        {selectedChild && schoolBagDayAvailable(date, today) ? (
+          <SatinButton secondary title={t("schoolBag.entry", { name: selectedChild.name })}
+            onPress={() => setBag({ child: selectedChild, day: date })} />
+        ) : null}
         {items.length ? (
           items.map((o) => item(o))
         ) : (

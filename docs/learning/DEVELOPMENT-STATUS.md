@@ -460,3 +460,10 @@ Güncel MEB sayılar/istatistik sayfaları ile saklı 2026–2027 kaynak sürüm
 Elle kaydın sunucuya ulaşıp yanıtının kaybolması durumunda oluşan belirsiz revizyon çakışması düzeltildi. Veli/aktif çocuk için cihazda kapsamlı kalıcı istek ve sunucuda aynı işlem makbuzu vardır; tekrar kayıt dersleri çoğaltmaz. Yeni program eski makbuzla ezilmez; kullanıcıya güncel sürüm gösterilir. Çocuk takvimindeki üçüncü program eylemi ve çocuğun yapamayacağı etkinlik ekleme yönlendirmesi kaldırıldı. Mevcut onaylı tasarım korundu.
 
 33 yeni SQL (64 dosya/1758), dört gerçek yarış ve 169 core testi; mobil/core tip ve mobil lint kontrolleri geçti. Telefon/tablet gerçek Expo bileşenlerinde sentetik kayıp yanıt, yeniden açılış, daha yeni sürüm ve kesin çakışma kontrolleri tamamlandı. Kanıt: `docs/design/screens/timetable-save-recovery/README.md`. Native/üretim kabulü açık; TestFlight 17 değişmedi. Bu artım tam ödev/ders/kurs planını tamamlamış sayılmaz.
+
+
+## 4 Kasım — takvimde ortak çanta listesi (087000)
+
+Veli ve aktif çocuk cihazı için çocuk/gün bazında liste eklendi. Program değişince yeniden kontrol, geçmiş günlerde saklı ders görüntüsü, kalıcı kayıt komutu ve aynı istek makbuzu vardır. Telefonda liste önce, tablette ders bağlamı yanında; başka cihazdaki değişiklik taslağı sessizce ezmez. Görev/yıldız/etkinlik oluşturulmaz.
+
+47 yeni SQL (65 dosyada 1805), dört gerçek yarış, 174 core testi; mobil/core tip ve mobil lint kabulü geçti. Gerçek Expo bileşenleriyle sentetik telefon/tablet, kayıp yanıt/yeniden açılış/program değişimi/çakışma/veli kaldırma kontrolleri: `docs/design/screens/school-bag/README.md`. Gerçek aile verisi ve TestFlight 17 değişmedi. Haftalık aile değerlendirmesi, tam ödev/ders/kurs planı ve fiziksel kabul açık.
