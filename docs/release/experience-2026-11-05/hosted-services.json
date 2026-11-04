@@ -1,0 +1,68 @@
+{
+  "project": "wixjxlxgyhgdacadsawo",
+  "checks": {
+    "global_source_flag_already_enabled": true,
+    "batch_receipt_over_http": true,
+    "signed_upload_and_validation": true,
+    "ordered_originals_preserved": true,
+    "import_reuses_paid_result": true,
+    "document_extraction_preserves_unknown_time": true,
+    "second_image_analyzed": true,
+    "program_receipt_over_http": true,
+    "program_calendar_original_link": true,
+    "single_paid_import_record": true,
+    "original_download": true,
+    "live_weekly_replay_and_reopen": true,
+    "live_weekly_single_quota": true,
+    "live_weekly_no_unsupported_difficulty": true,
+    "learning_png_verified": true,
+    "live_plan_import_replay_and_reopen": true,
+    "live_plan_document_dates": true,
+    "live_plan_apply_receipt": true,
+    "live_plan_two_items_and_private_source": true,
+    "setup_png_verified": true,
+    "live_task_paid_result_reused": true,
+    "live_task_verified_source": true,
+    "live_task_multi_select_single_receipt": true,
+    "live_task_saved_source_links": true,
+    "live_reward_paid_result_reused": true,
+    "live_reward_verified_source": true,
+    "live_reward_multi_select_single_receipt": true,
+    "live_reward_saved_source_links": true,
+    "live_ai_operations_completed_once": true,
+    "live_setup_operations_completed_once": true,
+    "normal_account_deletion": true
+  },
+  "cleanup": {
+    "test_object_removed": true,
+    "family_absent": true,
+    "source_absent": true,
+    "feature_objects_removed": true,
+    "feature_sources_absent": true,
+    "user_absent": true
+  },
+  "synthetic_import_usage": {
+    "input_tokens": 1260,
+    "output_tokens": 193
+  },
+  "featureUsage": {
+    "operations": [
+      {
+        "action": "import",
+        "inputTokens": 925,
+        "outputTokens": 391
+      },
+      {
+        "action": "import",
+        "inputTokens": 1260,
+        "outputTokens": 193
+      },
+      {
+        "action": "weekly",
+        "inputTokens": 90,
+        "outputTokens": 448
+      }
+    ],
+    "setupOperations": 2
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "project": "wixjxlxgyhgdacadsawo",
+  "checks": {
+    "global_source_flag_already_enabled": true,
+    "batch_receipt_over_http": true,
+    "signed_upload_and_validation": true,
+    "ordered_originals_preserved": true,
+    "import_reuses_paid_result": true,
+    "document_extraction_preserves_unknown_time": true,
+    "second_image_analyzed": true,
+    "program_receipt_over_http": true,
+    "program_calendar_original_link": true,
+    "single_paid_import_record": true,
+    "original_download": true,
+    "live_weekly_replay_and_reopen": true,
+    "live_weekly_single_quota": true,
+    "live_weekly_no_unsupported_difficulty": true,
+    "learning_png_verified": true
+  },
+  "cleanup": {
+    "admin_account_cleanup": true,
+    "test_object_removed": true,
+    "family_absent": true,
+    "source_absent": true,
+    "feature_objects_removed": true,
+    "feature_sources_absent": true,
+    "user_absent": true
+  },
+  "synthetic_import_usage": {
+    "input_tokens": 1260,
+    "output_tokens": 201
+  },
+  "featureFailure": {
+    "operation": "learning-plan-import",
+    "status": 502,
+    "code": "ai_result_uncertain"
+  },
+  "syntheticFailureJobs": [
+    {
+      "action": "import",
+      "status": "done",
+      "code": null
+    },
+    {
+      "action": "weekly",
+      "status": "done",
+      "code": null
+    },
+    {
+      "action": "import",
+      "status": "uncertain",
+      "code": "ai_result_invalid_title"
+    }
+  ],
+  "error": "service_check_failed"
+}

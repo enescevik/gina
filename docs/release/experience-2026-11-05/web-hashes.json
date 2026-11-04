@@ -1,0 +1,28 @@
+[
+  {
+    "route": "/",
+    "status": 200,
+    "hashMatches": true,
+    "csp": true,
+    "nosniff": true
+  },
+  {
+    "route": "/sign-in",
+    "status": 200,
+    "hashMatches": true,
+    "csp": true,
+    "nosniff": true
+  },
+  {
+    "route": "/family",
+    "status": 200,
+    "hashMatches": true,
+    "csp": true,
+    "nosniff": true
+  },
+  {
+    "route": "/_expo/static/js/web/entry-da74f494a56b8d07d7beba198af32527.js",
+    "status": 200,
+    "hashMatches": true
+  }
+]

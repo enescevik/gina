@@ -1,0 +1,120 @@
+{
+  "project": "wixjxlxgyhgdacadsawo",
+  "checks": [
+    {
+      "name": "ai-weekly-summary",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "apple-notifications",
+      "status": 400,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "delete-account",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "google-rtdn",
+      "status": 503,
+      "denied": false,
+      "configurationMissing": true
+    },
+    {
+      "name": "iap-reconcile",
+      "status": 401,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "iap-verify",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "iap-operator-reconcile",
+      "status": 400,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "prova-generate",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "prova-grade",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "prova-plan",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "push-send",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "setup-suggestions",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "learning-source",
+      "status": 400,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "source-cleanup",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "timetable-import",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "learning-plan-import",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "prova-review",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "library-media",
+      "status": 400,
+      "denied": true,
+      "configurationMissing": false
+    },
+    {
+      "name": "contribution-submit",
+      "status": 403,
+      "denied": true,
+      "configurationMissing": false
+    }
+  ],
+  "noAuthorizedBusinessOperation": true
+}

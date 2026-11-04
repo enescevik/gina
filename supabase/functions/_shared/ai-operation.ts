@@ -92,11 +92,17 @@ export async function runAiOperation<T>(
     const uncertain = code === "provider_outcome_unknown" ||
       code === "ai_result_invalid" || code === "anthropic_max_tokens" ||
       code === "anthropic_refusal" || /^anthropic_5[0-9][0-9]$/.test(code);
+    const detail = e && typeof e === "object" && "validationCode" in e &&
+        typeof e.validationCode === "string" &&
+        /^(envelope|item|fields|title|subject|topic|date|time|page|note|steps_or_kind)$/
+          .test(e.validationCode)
+      ? `${code}_${e.validationCode}`
+      : code;
     await db.rpc("finish_ai_operation", {
       p_id: job.id,
       p_lease: lease,
       p_result: null,
-      p_error: code,
+      p_error: detail,
       p_uncertain: uncertain,
     });
     return json({

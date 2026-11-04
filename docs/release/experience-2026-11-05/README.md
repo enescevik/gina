@@ -38,3 +38,16 @@ Yerel tarayıcı denemeleri gerçek izole servislerle çalıştı; yalnız bu ye
 4. Gerçek mağaza satın alma/iade, APNs/FCM teslimi ve üretim Google/Apple kullanıcı etkileşimi bu değişiklik kapsamında bütün kombinasyonlarıyla yeniden çalıştırılmadı. Önceki kabul kayıtları korunur.
 
 Yayın kimlikleri ve canlı kontroller tamamlanınca bu klasöre ayrıca kaydedilecektir. Bu belge tek başına yayın kanıtı değildir.
+
+
+## Canlı kabul ve düzeltme
+
+İlk geniş canlı denemede öğrenme planı üretimi `ai_result_invalid_title` ile durdu. Model ödev açıklamasını kısa başlığa koyuyordu. Alan sınırlarını ve başlık/adım ayrımını istemde ve şema açıklamalarında belirginleştirdik. Sunucu doğrulaması, ücretli tekrar deneme koruması ve içerik sınırları gevşetilmedi. Hata teşhisinde yalnız sabit alan adı saklanır; belge içeriği saklanmaz. Ek iki regresyon kontrolüyle ilgili 28 test geçti.
+
+Son canlı kabulde çoklu görsel ders programı, öğrenme planı, haftalık özet, görev ve ödül AI önerileri, çoklu seçim/kaydetme, özgün belge bağlantıları ve tekrar çağrıda tek hak tüketimi geçti. Sentetik aile normal hesap silme akışıyla kaldırıldı. Önceki başarısız denemeler ve temizlikleri gizlenmeden ayrı kanıtta tutulur.
+
+Web ana HTML/giriş/aile ekranı ve giriş JS dosyası üretim derlemesiyle birebir hash eşleşti. Telefon/tablette canlı giriş ve aile oluşturma yönlendirmesi görüldü. Yönetimin ana ve gerçek önizleme adreslerinde 12/12 Access kontrolü geçti. Yetkili yönetim içeriği bu tur canlı kullanıcı hesabıyla yeniden açılmadı; yerel gerçek servis UI kabulü ve önceki canlı oturum kanıtı ayrı tutulur.
+
+19 sunucu sınır kontrolünün 18'i yetkisiz isteği 4xx ile reddetti. `google-rtdn` önceki eksik Google bildirim yapılandırması nedeniyle 503 ve `push_auth_not_configured` verdi; bunu başarılı entegrasyon saymıyoruz. Android mağaza hazırlığı ayrı açık iştir.
+
+Kaynaklar: [Anthropic yapılandırılmış çıktı sınırları](https://platform.claude.com/docs/en/build-with-claude/structured-outputs). Sağlayıcı `maxLength` kabul etmediği için açıklama + bağımsız sunucu doğrulaması kullanılır.
