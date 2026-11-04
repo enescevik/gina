@@ -583,6 +583,12 @@ Auth/REST/Realtime/Storage/Edge birleşik koşumunda 134 kontrol; 72 SQL dosyas�
 Haftalık özet, PNG’den ödev/kurs, belgeden görev ve ödül için dört sabit sentetik gerçek üretim geçti; yanlış tarih ve kanıtsız çocuk zorluğu üretilmedi, belge kapsamı korundu. Üretim aile verisine dokunulmadı. Yalnız dar operatör preflight güncellendi; süreli erişim sonunda kaldırıldı. Kanıt/gerçek çıktılar: `ai-feature-acceptance/verification.json`. 34 ilgili Edge ve yedi workspace işi geçti. Yeni ürün uç noktalarının canlı kayıt/kota/yeniden açılışı, fiziksel cihaz ve koordineli yayın açık; TestFlight17 değişmedi.
 
 
+
 ## 4 Kasım — yönetim ve aile hizmetlerinin birlikte kabulü
 
 Ayrı gerçek destek/içerik girişleriyle talep, özel ekip notu, aileye yanıt, takip, sürümlü SSS taslağı/inceleme/yayın/arşiv ve açık oturumda rol iptali/süre dolması doğrulandı. Önceki Prova/görev/Realtime/Storage zinciri ile tek koşumda toplam192 kontrol geçti. Kanıt: `isolated-service-acceptance/backoffice-verification.json`. Yalnız boş kopyada sentetik kullanıcı/roller; tüm geçici kaynaklar kaldırıldı. Cloudflare, canlı operasyon rolleri, mağaza/push ve fiziksel UI kabulü açık; ürün dağıtımı/TestFlight17 değişmedi.
+
+## 4 Kasım — tarayıcı yayın başlıkları ve yapılandırma
+
+Yönetim kütüphane dosyasındaki PNG doğrulamasını bozan CSP blob engeli gerçek tarayıcıda bulundu ve yalnız görsel izniyle düzeltildi. Web/backoffice derleyicileri public değişkenlere sunucu/oturum anahtarı ve yerel/geçersiz endpoint girmesini reddeder; sekiz kontrol geçti. İki gerçek public yapılandırmalı statik üretim derlemesi ve yayın başlıklarıyla Türkçe telefon/tablet giriş ekranı kontrolü geçti. Kanıt: `docs/release/browser-readiness/README.md`. Cloudflare yayını, oturumlu bütün ekranlar ve gerçek OAuth/e-posta teslimi bu kabulde tamamlanmış sayılmaz.
+

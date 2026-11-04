@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-04",
+  "scope": "local-static-production-build-and-CSP",
+  "web_build": true,
+  "backoffice_build": true,
+  "public_environment_tests": 8,
+  "blob_image_baseline": {
+    "decoded": false,
+    "violation": "img-src blob"
+  },
+  "blob_image_fixed": {
+    "decoded": true,
+    "violations": []
+  },
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 1280,
+      "height": 800
+    }
+  ],
+  "sign_in_checks": {
+    "web_fonts_images": true,
+    "backoffice_fonts_images": true,
+    "horizontal_overflow": false,
+    "browser_errors": 0,
+    "web_forgot_password_navigation": true,
+    "google_apple_provider_settings": true
+  },
+  "production_auth_mutations": false,
+  "cloudflare_deployed": false,
+  "authenticated_ui_all_screens_verified": false
+}
