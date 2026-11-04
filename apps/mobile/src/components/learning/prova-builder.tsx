@@ -258,7 +258,7 @@ export default function ProvaBuilder() {
   const child = children.data?.find((c) => c.id === draft.childId),
     mat = material.data ?? { questions: [], groups: [] };
   const flat = draft.blocks.flatMap((block) => questionsOf(block, mat));
-  const missing = draft.blocks.some((block) =>
+  const missing = material.isSuccess && draft.blocks.some((block) =>
     questionsOf(block, mat).length === 0
   );
   const mismatch = flat.some((q) =>
@@ -808,7 +808,7 @@ export default function ProvaBuilder() {
                             />
                           </View>
                           <Text style={b.muted}>
-                            {t("provaBuilder.count", {
+                            {material.isPending ? t("common.loading") : t("provaBuilder.count", {
                               count: flat.length,
                               target: draft.target,
                             })}
@@ -845,7 +845,7 @@ export default function ProvaBuilder() {
                                   <View style={{ flex: 1, gap: 5 }}>
                                     <Text style={b.bold} numberOfLines={2}>
                                       {group?.title ?? qs[0]?.stem ??
-                                        t("provaBuilder.unavailable")}
+                                        t(material.isPending ? "common.loading" : material.error ? "provaHub.loadError" : "provaBuilder.unavailable")}
                                     </Text>
                                     <Text style={b.muted}>
                                       {t(`provaBuilder.source_${block.source}`)}
@@ -965,7 +965,7 @@ export default function ProvaBuilder() {
                                 </Text>
                               )
                               : null}
-                            {flat.length !== draft.target
+                            {material.isSuccess && flat.length !== draft.target
                               ? (
                                 <Text style={b.error}>
                                   {t("provaBuilder.missingCount")}

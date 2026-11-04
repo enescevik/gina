@@ -527,9 +527,11 @@ export default function TakeExamScreen() {
               total: result.mc_total ?? 0,
             })}
           </Text>
-          <Text className="font-body text-center text-base text-gray-600">
-            {t("prova.openEndedNote")}
-          </Text>
+          {(result.open_graded ?? 0) < (result.open_total ?? 0) && (
+            <Text className="font-body text-center text-base text-gray-600">
+              {t("prova.openEndedNote")}
+            </Text>
+          )}
         </View>
         <ChildReviewFeedback attemptId={result.id} />
         {localNotice}

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
-import { Text, View } from "react-native";
+import { Text, View, type StyleProp, type ViewStyle } from "react-native";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/lib/supabase";
 import { sourceAction } from "@/lib/learning-files";
@@ -15,12 +15,13 @@ export interface QuestionMediaItem {
   height: number;
 }
 export function QuestionMedia(
-  { questionId, items, compact = false, notebook = false, maxImageHeight }: {
+  { questionId, items, compact = false, notebook = false, maxImageHeight, style }: {
     questionId: string;
     items?: QuestionMediaItem[];
     compact?: boolean;
     notebook?: boolean;
     maxImageHeight?: number;
+    style?: StyleProp<ViewStyle>;
   },
 ) {
   const { claims } = useSession();
@@ -56,8 +57,9 @@ export function QuestionMedia(
       </View>
     );
   }
+  if (!(items ?? media.data)?.length) return null;
   return (
-    <View style={{ gap: 12 }}>
+    <View style={[{ gap: 12 }, style]}>
       {(compact ? (items ?? media.data)?.slice(0, 1) : (items ?? media.data))
         ?.map((m) => (
           <SourceImage

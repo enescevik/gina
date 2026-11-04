@@ -1,8 +1,8 @@
 # GINA — yayını tamamlama ve kullanıcı adımları
 
 4 Kasım 2026. Bu belge bir tamamlanma ilanı değildir. Hazır kod, doğrulanmış hizmet
-ve yayımlanmış sürüm ayrı izlenir. Son doğrulanmış TestFlight sürümü **0.1.0 (17)**;
-sonraki değişiklikler henüz o derlemede yoktur.
+ve yayımlanmış sürüm ayrı izlenir. Son doğrulanmış TestFlight sürümü **0.1.0 (18)**;
+bu sürümden sonraki değişiklikler ayrı kabul ve yayın kaydı gerektirir.
 
 ## Yeniden kurmayacağın şeyler
 

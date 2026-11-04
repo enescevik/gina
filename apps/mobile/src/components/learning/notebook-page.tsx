@@ -160,6 +160,7 @@ export const NotebookPage = memo(
             : (
               <Text
                 key={e.id}
+                selectable={false}
                 allowFontScaling={false}
                 style={{
                   position: "absolute",
