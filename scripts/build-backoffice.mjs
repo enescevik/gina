@@ -8,17 +8,13 @@
 import { execFileSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { assertPublicBuildEnvironment } from "./public-build-env.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-for (const name of ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY"]) {
-  if (!process.env[name]) {
-    console.error(`build-backoffice: ${name} tanımlı değil`);
-    process.exit(1);
-  }
-}
-if (Object.keys(process.env).some((k) => /SERVICE_ROLE/i.test(k) && k.startsWith("NEXT_PUBLIC_"))) {
-  console.error("build-backoffice: NEXT_PUBLIC_* altında service_role anahtarı olamaz");
+try { assertPublicBuildEnvironment(process.env, "NEXT_PUBLIC_"); }
+catch (error) {
+  console.error(`build-backoffice: ${error.message}`);
   process.exit(1);
 }
 

@@ -9,14 +9,14 @@
 import { execFileSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { assertPublicBuildEnvironment } from "./public-build-env.mjs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
-for (const name of ["EXPO_PUBLIC_SUPABASE_URL", "EXPO_PUBLIC_SUPABASE_ANON_KEY"]) {
-  if (!process.env[name]) {
-    console.error(`build-web: ${name} tanımlı değil`);
-    process.exit(1);
-  }
+try { assertPublicBuildEnvironment(process.env, "EXPO_PUBLIC_"); }
+catch (error) {
+  console.error(`build-web: ${error.message}`);
+  process.exit(1);
 }
 
 const run = (cmd, args) => execFileSync(cmd, args, { cwd: root, stdio: "inherit", env: process.env });
