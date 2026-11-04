@@ -139,6 +139,10 @@ export function FamilyWeekReview({ from, to, childName, counts }: Props) {
               </View>
             </View>
             <Text style={s.small}>{t("familyWeek.privacy")}</Text>
+            <Pressable accessibilityRole="button" onPress={() => router.push("/parent/weekly-review")} style={s.link}>
+              <Text style={s.linkText}>{t("weeklyReview.open")}</Text>
+              <ArrowRight size={20} color={c.purple} />
+            </Pressable>
           </View>
         )
         : null}
