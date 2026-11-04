@@ -426,3 +426,10 @@ Yeni paketli ortak Provalar şıklı/açık uçlu soruları birlikte taşıyabil
 081000 sonuç yayını aile başına tek veli bildirim olayına bağlandı. Bildirim puan/ad/cevap taşımaz; dokununca Birlikte Prova açılır. Prova tercihi ve aktif oturum denetlenir. Açık itiraz, iptal veya eski yayın sürümünün bekleyen bildirimi hedeflenmez. Aynı istek iki olay oluşturmaz; yeni yayın yeni olaydır.
 
 17 yeni SQL (60 dosyada 1.626), iki gerçek yayın yarışı, dört Edge mesaj/mahremiyet testi, Edge tip ve mobil tip/lint geçti. Gerçek APNs/FCM teslimi ve mevcut göndericide cihaz başına kısmi hata kurtarması açık. Migration/Edge/istemci dağıtılmadı; TestFlight 17 değişmedi.
+
+
+## 4 Kasım — cihaz bazında bildirim kurtarma (083000)
+
+Kısmi başarı diğer cihazın geçici hatasını artık kapatmaz. Her cihaz makbuzu, süreli işlem kimliği, eski yanıt reddi, gecikmeli/en fazla beş tekrar, Retry-After ve yarıda kalmış işi uyandıran zamanlayıcı eklendi. Yeni cihaz anahtarı eski anahtarın hatasıyla silinmez; olay kimliği APNs birleştirmesi ve Android etiketi için kullanılır. Ağ istisnasında ham cihaz adresi/anahtarı kaydedilmez. Eski sahipliksiz göndericinin API/yazma yetkileri kapatıldı; migration ile Edge birlikte yayımlanmalıdır.
+
+31 SQL kontrolü (61 dosya/1.657), üç gerçek DB yarışı ve 20 Edge testi geçti; Edge/core tip kontrolleri tamamlandı. Fiziksel teslim ve sağlayıcı kurulumu, operatörün gerekçeli başarısız gönderim kurtarma ekranı açık. Üretim/TestFlight değişmedi. Yayın sırası ve teslim sınırları: `docs/learning/PUSH-DELIVERY-ACCEPTANCE.md`.

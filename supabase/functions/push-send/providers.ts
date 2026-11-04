@@ -5,12 +5,18 @@ export interface PushMessage {
   title: string;
   body: string;
   kind: string;
+  eventId?: string; // Stable outbox event: retries share an alert identity.
   data: Record<string, string>; // yalnız kimlikler + kind
 }
 
 /** Gönderim sonucu: gone = token geçersiz (silinir), retry = geçici hata. */
-export type SendResult = { ok: true } | { ok: false; gone: boolean; retry: boolean; error: string };
+export type SendResult = { ok: true } | { ok: false; gone: boolean; retry: boolean; error: string; retryAfterSeconds?: number };
 
+export function retryAfterSeconds(response: Response): number | undefined {
+ const header=response.headers.get("retry-after");if(!header)return undefined;
+ const seconds=/^\d+$/.test(header)?Number(header):(Date.parse(header)-Date.now())/1000;
+ return Number.isFinite(seconds)?Math.max(1,Math.min(86400,Math.ceil(seconds))):undefined;
+}
 const enc = new TextEncoder();
 
 function b64url(input: ArrayBuffer | Uint8Array | string): string {
@@ -85,12 +91,13 @@ export async function sendApns(cfg: ApnsConfig, deviceToken: string, msg: PushMe
   try {
     const res = await fetch(`${host}/3/device/${deviceToken}`, {
       method: "POST",
+      signal: AbortSignal.timeout(15000),
       headers: {
         authorization: `bearer ${await apnsToken(cfg)}`,
         "apns-topic": cfg.bundleId,
         "apns-push-type": "alert",
         "apns-priority": "10",
-        "apns-collapse-id": msg.kind,
+        "apns-collapse-id": msg.eventId ?? msg.kind,
         "content-type": "application/json",
       },
       body: JSON.stringify({
@@ -100,11 +107,12 @@ export async function sendApns(cfg: ApnsConfig, deviceToken: string, msg: PushMe
     });
     if (res.ok) return { ok: true };
     const reason = ((await res.json().catch(() => ({}))) as { reason?: string }).reason ?? `http_${res.status}`;
-    const gone = res.status === 410 || reason === "Unregistered" || reason === "BadDeviceToken" || reason === "DeviceTokenNotForTopic";
+    const gone = res.status === 410 || reason === "Unregistered";
     if (reason === "ExpiredProviderToken" || reason === "InvalidProviderToken") apnsJwt = null;
-    return { ok: false, gone, retry: !gone && (res.status === 429 || res.status >= 500 || reason === "ExpiredProviderToken"), error: `apns:${reason}` };
-  } catch (e) {
-    return { ok: false, gone: false, retry: true, error: `apns:${(e as Error).message}` };
+    const delay = retryAfterSeconds(res);
+    return { ok: false, gone, retry: !gone && (res.status === 429 || res.status >= 500 || reason === "ExpiredProviderToken"), error: `apns:${reason}`, ...(delay ? { retryAfterSeconds: delay } : {}) };
+  } catch {
+    return { ok: false, gone: false, retry: true, error: "apns:network_or_config_error" };
   }
 }
 
@@ -148,6 +156,7 @@ async function fcmAccessToken(cfg: FcmConfig): Promise<string> {
   );
   const res = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",
+      signal: AbortSignal.timeout(15000),
     headers: { "content-type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({ grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer", assertion }),
   });
@@ -161,13 +170,14 @@ export async function sendFcm(cfg: FcmConfig, deviceToken: string, msg: PushMess
   try {
     const res = await fetch(`https://fcm.googleapis.com/v1/projects/${cfg.projectId}/messages:send`, {
       method: "POST",
+      signal: AbortSignal.timeout(15000),
       headers: { authorization: `Bearer ${await fcmAccessToken(cfg)}`, "content-type": "application/json" },
       body: JSON.stringify({
         message: {
           token: deviceToken,
           notification: { title: msg.title, body: msg.body },
           data: msg.data,
-          android: { priority: "high", collapse_key: msg.kind, notification: { channel_id: "default" } },
+          android: { priority: "high", collapse_key: msg.kind, notification: { channel_id: "default", tag: msg.eventId ?? msg.kind } },
         },
       }),
     });
@@ -177,9 +187,10 @@ export async function sendFcm(cfg: FcmConfig, deviceToken: string, msg: PushMess
     }).error;
     const code = err?.details?.find((d) => d.errorCode)?.errorCode ?? err?.status ?? `http_${res.status}`;
     if (res.status === 401) fcmAccess = null;
-    const gone = res.status === 404 || code === "UNREGISTERED";
-    return { ok: false, gone, retry: !gone && (res.status === 401 || res.status === 429 || res.status >= 500), error: `fcm:${code}` };
-  } catch (e) {
-    return { ok: false, gone: false, retry: true, error: `fcm:${(e as Error).message}` };
+    const gone = code === "UNREGISTERED";
+    const delay = retryAfterSeconds(res);
+    return { ok: false, gone, retry: !gone && (res.status === 401 || res.status === 429 || res.status >= 500), error: `fcm:${code}`, ...(delay ? { retryAfterSeconds: delay } : {}) };
+  } catch {
+    return { ok: false, gone: false, retry: true, error: "fcm:network_or_config_error" };
   }
 }

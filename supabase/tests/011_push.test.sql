@@ -159,7 +159,7 @@ select is(
 
 -- service_role claim'i
 set local role service_role;
-select is((select count(*)::int from public.push_claim_batch(10)), 1, 'service_role bekleyen satırı alır');
+select is((select count(*)::int from public.push_claim_v2(10)), 1, 'service_role bekleyen satırı alır');
 
 select * from finish();
 rollback;
