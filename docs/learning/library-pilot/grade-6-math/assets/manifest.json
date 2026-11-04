@@ -1,0 +1,87 @@
+[
+  {
+    "id": "scale-readings",
+    "svg": "assets/scale-readings.svg",
+    "png": "assets/scale-readings.png",
+    "width": 600,
+    "height": 470,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "9760475690a0eb6affc2783ad92cb8bb19cb56cd7a358e740fa7686b77ad7e03",
+    "svg_sha256": "25d4db3df3434a0328570a52e15b69cfb645e77851571c478967f2d1651fdef3",
+    "origin": "original_gina_mathematical_diagram",
+    "geometry": {
+      "type": "value_table",
+      "headers": [
+        "Numune",
+        "Kütle (kg)"
+      ],
+      "rows": [
+        [
+          "A",
+          "4,086"
+        ],
+        [
+          "B",
+          "1,205"
+        ],
+        [
+          "C",
+          "1,250"
+        ]
+      ]
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  },
+  {
+    "id": "route",
+    "svg": "assets/route.svg",
+    "png": "assets/route.png",
+    "width": 1000,
+    "height": 600,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 520,
+    "sha256": "30a9105b9210241a2166ee50d830641635ead25bff4011ad944996d35fde40a3",
+    "svg_sha256": "1626e93781939c11a18206babaa3a4400252742f02c8794e8ef4444bcff5f804",
+    "origin": "original_gina_mathematical_diagram",
+    "geometry": {
+      "type": "route_lengths",
+      "first_km": "1.2",
+      "second_m": "350",
+      "direct_km": "1.6"
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  },
+  {
+    "id": "reading-data",
+    "svg": "assets/reading-data.svg",
+    "png": "assets/reading-data.png",
+    "width": 700,
+    "height": 560,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "89191b5f52fd9d308447960755d96b5638a89fac668272ab05532c04faca57cc",
+    "svg_sha256": "d14a9f55a17c7c205ce527a891c4b256c0b903841ba4d7ed63306afd4dcf4977",
+    "origin": "original_gina_mathematical_diagram",
+    "geometry": {
+      "type": "frequency_dots",
+      "values": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "frequencies": [
+        1,
+        3,
+        4,
+        2
+      ],
+      "x_label": "Bitirilen kitap sayısı"
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  }
+]
