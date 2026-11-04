@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-04",
+  "environment": "iOS 26.5 iPad Air M4 simulator; isolated synthetic QA",
+  "passed": [
+    "iPad keyboard-visible insert action",
+    "iPad modal rotation without loop in tested transitions",
+    "other tools to symbols",
+    "keyboard letter plus symbol insertion",
+    "portrait ink without scroll",
+    "large text tabbed canvas"
+  ],
+  "partial": [
+    "iPhone tabs and symbol input; software keyboard unavailable in simulator menu"
+  ],
+  "open": [
+    "physical Pencil/palm",
+    "physical iPhone keyboard",
+    "Android",
+    "VoiceOver",
+    "native durable restart",
+    "live services"
+  ],
+  "releasePerformed": false
+}

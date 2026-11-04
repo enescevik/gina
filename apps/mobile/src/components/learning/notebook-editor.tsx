@@ -614,14 +614,10 @@ export function NotebookEditor({
           style={s.scrim}
           behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
-          <SafeAreaView style={{ flex: 1 }}>
-            <ScrollView
-              keyboardShouldPersistTaps="handled"
-              contentContainerStyle={s.modalScroll}
-            >
+          <SafeAreaView style={s.modalViewport}>
               {textEditor
                 ? (
-                  <View style={s.modal}>
+                  <View style={[s.modal, s.textModal]}>
                     <View style={s.modalHeading}>
                       <Text style={s.title}>{t("notebook.addText")}</Text>
                       <ToolButton
@@ -631,6 +627,12 @@ export function NotebookEditor({
                         <X size={24} color={p.ink} />
                       </ToolButton>
                     </View>
+                    <ScrollView
+                      style={s.textScroll}
+                      contentContainerStyle={s.textContent}
+                      keyboardShouldPersistTaps="handled"
+                      keyboardDismissMode="none"
+                    >
                     <TextInput
                       autoFocus
                       multiline
@@ -675,6 +677,7 @@ export function NotebookEditor({
                         </Text>
                       )
                       : null}
+                    </ScrollView>
                     <SatinButton
                       title={t("notebook.addToPage")}
                       disabled={!textEditor?.text.trim()}
@@ -684,6 +687,11 @@ export function NotebookEditor({
                   </View>
                 )
                 : (
+                  <ScrollView
+                    style={{ width: "100%" }}
+                    keyboardShouldPersistTaps="handled"
+                    contentContainerStyle={s.modalScroll}
+                  >
                   <View style={s.modal}>
                     <View style={s.modalHeading}>
                       <Text style={s.title}>{t("notebook.moreTools")}</Text>
@@ -763,8 +771,8 @@ export function NotebookEditor({
                     </ToolButton>
                     <Text style={s.hint}>{t(`notebook.hint.${tool}`)}</Text>
                   </View>
+                  </ScrollView>
                 )}
-            </ScrollView>
           </SafeAreaView>
         </KeyboardAvoidingView>
       </Modal>
@@ -1005,6 +1013,15 @@ const s = StyleSheet.create({
     backgroundColor: "#FFF",
   },
   scrim: { flex: 1, backgroundColor: "#20195180" },
+  modalViewport: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 16,
+  },
+  textModal: { maxHeight: "100%", flexShrink: 1 },
+  textScroll: { flexShrink: 1 },
+  textContent: { gap: 16 },
   modalScroll: {
     flexGrow: 1,
     justifyContent: "center",
@@ -1024,7 +1041,7 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  title: { fontFamily: "Nunito_700Bold", fontSize: 22, color: p.ink },
+  title: { flexShrink: 1, fontFamily: "Nunito_700Bold", fontSize: 22, color: p.ink },
   input: {
     fontFamily: "Nunito_400Regular",
     fontSize: 22,
