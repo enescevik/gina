@@ -1,3 +1,4 @@
+import { GuidedField } from "@/components/ui/guided-field";
 import { useMemo, useState } from "react";
 import {
   ActivityIndicator,
@@ -724,7 +725,7 @@ function PlanEditor(
                         <ChoiceCard
                           title={t(`learningPlan.kinds.${kind}`)}
                           selected={content.kind === kind}
-                          onPress={() => change({ kind })}
+                          onPress={() => change({ kind, title: content.catalog_id ? "" : content.title, catalog_id: null })}
                         />
                       </View>
                     ))}
@@ -736,27 +737,9 @@ function PlanEditor(
                         : "learningPlan.planHelp",
                     )}
                   </Text>
-                  <Field
-                    label={t("learningPlan.name")}
-                    value={content.title}
-                    maxLength={120}
-                    onChangeText={(title) => change({ title })}
-                    onBlur={() => change({ title: content.title.trim() })}
-                  />
-                  <Field
-                    label={t("learningPlan.subject")}
-                    value={content.subject}
-                    maxLength={80}
-                    onChangeText={(subject) => change({ subject })}
-                    onBlur={() => change({ subject: content.subject.trim() })}
-                  />
-                  <Field
-                    label={t("learningPlan.topic")}
-                    value={content.topic}
-                    maxLength={200}
-                    onChangeText={(topic) => change({ topic })}
-                    onBlur={() => change({ topic: content.topic.trim() })}
-                  />
+                  <GuidedField childId={child.id} kind={content.kind} label={t("learningPlan.name")} value={content.title} maxLength={120} disabled={locked} onChange={(title,id)=>change({ title, catalog_id:id })} />
+                  <GuidedField childId={child.id} kind={"subject"} label={t("learningPlan.subject")} value={content.subject} maxLength={80} disabled={locked} onChange={(subject,id)=>change({ subject, subject_id:id })} />
+                  <GuidedField childId={child.id} kind="topic" subject={content.subject_id ?? content.subject} label={t("learningPlan.topic")} value={content.topic} maxLength={200} disabled={locked} onChange={(topic)=>change({topic})} />
                   {!childMode
                     ? (
                       <>
@@ -881,12 +864,7 @@ function PlanEditor(
                   {content.steps.length < 12
                     ? (
                       <>
-                        <Field
-                          label={t("learningPlan.stepName")}
-                          value={label}
-                          maxLength={120}
-                          onChangeText={setLabel}
-                        />
+                        <GuidedField childId={child.id} kind="step" label={t("learningPlan.stepName")} value={label} maxLength={120} onChange={setLabel} />
                         <SatinButton
                           secondary
                           title={t("learningPlan.addStep")}

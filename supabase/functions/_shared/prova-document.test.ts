@@ -5,7 +5,14 @@ const assert = (v: unknown) => {
 };
 const id = "80000000-0000-4000-8000-000000003501";
 async function fixture(
-  options: { missing?: boolean; hash?: string; enabled?: boolean } = {},
+  options: {
+    missing?: boolean;
+    hash?: string;
+    enabled?: boolean;
+    group?: string[];
+    max?: number;
+    missingId?: string;
+  } = {},
 ) {
   const bytes = new TextEncoder().encode("synthetic verified file bytes");
   const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", bytes));
@@ -16,19 +23,30 @@ async function fixture(
   let downloads = 0;
   const db = {
     from: (table: string) => {
+      let selected = "", setting = "";
       const chain = {
         select: () => chain,
         eq: (key: string, value: unknown) => {
+          if (key === "id") selected = String(value);
+          if (key === "key") setting = String(value);
           calls.push({ table, key, value });
           return chain;
         },
         maybeSingle: async () => ({
-          data: table === "app_settings"
-            ? { value: options.enabled !== false }
-            : options.missing
+          data: table === "learning_source_sets"
+            ? (options.group
+              ? { source_ids: options.group, pages: options.group.length }
+              : null)
+            : table === "app_settings"
+            ? {
+              value: setting === "sources.max_files"
+                ? (options.max ?? 5)
+                : options.enabled !== false,
+            }
+            : options.missing || options.missingId === selected
             ? null
             : {
-              id,
+              id: selected,
               mime: "image/png",
               bytes: bytes.length,
               sha256: options.hash ?? hash,
@@ -105,7 +123,58 @@ Deno.test("prova document: verified content keeps origin and records distinct ge
     ),
   );
 });
-Deno.test('setup document records separate purpose consent',async()=>{
- const f=await fixture();const r=await provaDocument(f.db,'family','parent',id,id,true,'setup');assert(!(r instanceof Response));
- assert(f.calls.some(c=>c.table==='learning_source_ai_consents'&&(c.value as {purpose?:string})?.purpose==='setup'));
+Deno.test("setup document records separate purpose consent", async () => {
+  const f = await fixture();
+  const r = await provaDocument(
+    f.db,
+    "family",
+    "parent",
+    id,
+    id,
+    true,
+    "setup",
+  );
+  assert(!(r instanceof Response));
+  assert(
+    f.calls.some((c) =>
+      c.table === "learning_source_ai_consents" &&
+      (c.value as { purpose?: string })?.purpose === "setup"
+    ),
+  );
+});
+
+const second = "80000000-0000-4000-8000-000000003502";
+Deno.test("multi source: originals are ordered and combined into one request with page offsets", async () => {
+  const f = await fixture({ group: [id, second] });
+  const r = await provaDocument(f.db, "family", "parent", id, id, true);
+  assert(!(r instanceof Response));
+  if (r instanceof Response) return;
+  assert(
+    r.id === id && r.pages === 2 && f.downloads() === 2 &&
+      r.media.filter((x) => x.type === "image").length === 2,
+  );
+  assert(r.media[2].type === "text" && r.media[2].text.includes("2–2"));
+  assert(
+    f.calls.filter((c) =>
+      c.table === "learning_source_ai_consents" && c.value &&
+      typeof c.value === "object"
+    ).length === 2,
+  );
+});
+Deno.test("multi source: missing second original fails whole request", async () => {
+  const f = await fixture({ group: [id, second], missingId: second });
+  const r = await provaDocument(f.db, "family", "parent", id, id, true);
+  assert(r instanceof Response && r.status === 404);
+});
+Deno.test("multi source: lowered admin limit is enforced before downloads", async () => {
+  const f = await fixture({ group: [id, second], max: 1 });
+  const r = await provaDocument(f.db, "family", "parent", id, id, true);
+  assert(r instanceof Response && r.status === 400 && f.downloads() === 0);
+});
+Deno.test("multi source: invalid anchor and duplicate member fail closed", async () => {
+  for (const group of [[second, id], [id, id]]) {
+    const f = await fixture({ group });
+    const r = await provaDocument(f.db, "family", "parent", id, id, true);
+    assert(r instanceof Response && r.status === 400 && f.downloads() === 0);
+  }
 });

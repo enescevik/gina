@@ -85,7 +85,7 @@ export async function handleLearningPlanImport(
   const saved = prepared.data, c = saved.context;
   if (
     !uuid(saved.id) || !c || !Number.isInteger(c.pages) || c.pages < 1 ||
-    c.pages > 5 || !c.config || typeof c.system !== "string" || !c.schema ||
+    c.pages > 20 || !c.config || typeof c.system !== "string" || !c.schema ||
     !c.input || c.input.locale !== body.locale
   ) return json({ error: "plan_import_unavailable" }, 503);
   if (saved.view?.status === "done") {

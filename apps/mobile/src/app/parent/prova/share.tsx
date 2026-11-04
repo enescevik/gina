@@ -38,7 +38,7 @@ export default function ContributionScreen() {
     [status, setStatus] = useState("");
   const detail = useQuery({
     queryKey: ["contribution_preview", claims?.family_id, questionId, groupId],
-    enabled: !pending && !initial.blocked,
+    enabled: !pending && !initial.blocked && !!(questionId || groupId),
     queryFn: async () => {
       let id = questionId;
       if (!id && groupId) {
@@ -90,6 +90,20 @@ export default function ContributionScreen() {
     ? code
     : "contribution_failed";
   const snapshot = detail.data?.snapshot;
+  if (!questionId && !groupId && !pending && !initial.blocked) {
+    return (
+      <ParentScreen title={t("contribution.title")}>
+        <View style={u.card}>
+          <Text style={u.heading}>{t("contribution.chooseFirst")}</Text>
+          <Text style={u.copy}>{t("contribution.chooseFirstHelp")}</Text>
+          <SatinButton
+            title={t("prova.title")}
+            onPress={() => router.replace("/parent/prova")}
+          />
+        </View>
+      </ParentScreen>
+    );
+  }
   return (
     <ParentScreen
       wide

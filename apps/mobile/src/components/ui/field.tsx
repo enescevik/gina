@@ -16,7 +16,7 @@ export function Field({ label, error, labelStyle, className, hint, style, onFocu
       <TextInput
         accessibilityLabel={label}
         placeholderTextColor="#77718D"
-        style={[{ fontFamily: "Nunito_600SemiBold", minHeight: 54, paddingVertical: 13, paddingHorizontal:16, borderRadius:17, borderWidth:1.5, borderColor:error ? "#A43135" : focused ? "#6042DE" : "#DDD6E8", backgroundColor:rest.editable === false ? "#F2EFF6" : "#FFFFFF", color:"#201951", fontSize:17 }, style]}
+        style={[{ fontFamily: "Nunito_600SemiBold", minHeight: 54, paddingVertical: 13, paddingHorizontal:16, borderRadius:17, borderWidth:1.5, borderColor:error ? "#A43135" : focused ? "#6042DE" : "#DDD6E8", backgroundColor:rest.editable === false ? "#F2EFF6" : "#FFFFFF", color:"#201951", fontSize:17 }, rest.multiline ? { minHeight: 144, textAlignVertical: "top", lineHeight: 25 } : null, style]}
         className={`min-h-12 rounded-parent border border-[#D9D3E6] bg-[#FFFFFF] px-3 text-lg text-ink ${className ?? ""}`}
         {...rest}
         onFocus={event => {setFocused(true); onFocus?.(event);}}

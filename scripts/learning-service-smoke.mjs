@@ -28,6 +28,7 @@ const must = (result,label) => { if(result.error) throw Error(label); return res
 const check = (name,condition) => {report.checks[name]=!!condition;if(!condition)throw Error(name);};
 let userId, familyId, sourcePath, sourceId, deleted=false;
 const sourceIds=[],sourcePaths=[];
+const multiSource=process.argv.includes('--multi-source');
 try {
   const setting = must(await admin.from('app_settings').select('value').eq('key','sources.enabled').single(),'read_source_flag');
   if(setting.value !== true) throw Error('source_feature_not_enabled');
@@ -56,12 +57,25 @@ try {
   must(await parent.storage.from(reserved.bucket).uploadToSignedUrl(reserved.path,reserved.token,bytes,{contentType:'image/png',cacheControl:'0'}),'signed_upload');
   const finalized=must(await parent.functions.invoke('learning-source',{body:{action:'finalize',id:sourceId}}),'finalize_source');
   check('signed_upload_and_validation',finalized.ready===true);
+  if(multiSource){
+    const sharp=createRequire(new URL('../package.json',import.meta.url))('sharp');
+    const extra=await sharp(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400"><rect width="1200" height="400" fill="white"/><text x="50" y="80" font-size="32">SYNTHETIC TIMETABLE - CONTINUATION</text><text x="50" y="160" font-size="32">Wednesday 11:00 - 11:40 English</text></svg>')).png().toBuffer();
+    const id=randomUUID();sourceIds.push(id);
+    const r=must(await parent.functions.invoke('learning-source',{body:{action:'reserve',id,kind:'document',name:'synthetic-continuation.png',mime:'image/png',bytes:extra.length,sha256:createHash('sha256').update(extra).digest('hex'),consent:true}}),'reserve_second_source');
+    sourcePaths.push(r.path);
+    must(await parent.storage.from(r.bucket).uploadToSignedUrl(r.path,r.token,extra,{contentType:'image/png',cacheControl:'0'}),'upload_second_source');
+    must(await parent.functions.invoke('learning-source',{body:{action:'finalize',id}}),'finalize_second_source');
+    must(await parent.rpc('register_learning_source_set',{p_ids:[sourceId,id]}),'register_source_set');
+    const originals=must(await parent.rpc('get_learning_source_set',{p_source:sourceId}),'read_source_set');
+    check('ordered_originals_preserved',originals.length===2&&originals[0].id===sourceId&&originals[1].id===id);
+  }
   const input={source_id:sourceId,child_id:childId,locale:'tr',ai_consent:true};
   const imported=must(await parent.functions.invoke('timetable-import',{body:input}),'extract_timetable');
   const repeated=must(await parent.functions.invoke('timetable-import',{body:input}),'replay_timetable');
   check('import_reuses_paid_result',imported.id===repeated.id);
   const monday=imported.draft.lessons.find(l=>l.day===1),tuesday=imported.draft.lessons.find(l=>l.day===2);
-  check('document_extraction_preserves_unknown_time',imported.draft.lessons.length===2&&monday?.start==='09:00'&&monday.end==='09:40'&&tuesday?.start==='10:00'&&tuesday.end===null);
+  check('document_extraction_preserves_unknown_time',imported.draft.lessons.length===(multiSource?3:2)&&monday?.start==='09:00'&&monday.end==='09:40'&&tuesday?.start==='10:00'&&tuesday.end===null);
+  if(multiSource)check('second_image_analyzed',imported.draft.lessons.some(l=>l.day===3&&l.start==='11:00'&&l.end==='11:40'));
   const lessons=imported.draft.lessons.map(l=>({id:randomUUID(),day:l.day,title:l.title,start:l.start,end:l.end??'10:40'}));
   const apply={p_request_id:randomUUID(),p_import_id:imported.id,p_revision:0,p_lessons:lessons,p_settings:{start:'09:00',duration:40,break:10}};
   const revision=must(await parent.rpc('apply_timetable_import',apply),'apply_reviewed_timetable');
@@ -69,7 +83,7 @@ try {
   const program=must(await admin.from('school_timetables').select('lessons,revision').eq('child_id',childId).single(),'read_program');
   const events=must(await admin.from('events').select('id').eq('child_id',childId).not('timetable_entry_key','is',null),'read_calendar');
   const links=must(await parent.rpc('get_timetable_sources',{p_child_id:childId}),'read_original_link');
-  check('program_calendar_original_link',program.lessons.length===2&&events.length===2&&links.some(l=>l.source_id===sourceId));
+  check('program_calendar_original_link',program.lessons.length===(multiSource?3:2)&&events.length===(multiSource?3:2)&&links.some(l=>l.source_id===sourceId)&&(!multiSource||links.some(l=>l.source_id===sourceIds[0])));
   const usage=must(await admin.from('prova_ai_usage').select('input_tokens,output_tokens').eq('family_id',familyId).eq('action','import'),'read_synthetic_usage');
   check('single_paid_import_record',usage.length===1);
   report.synthetic_import_usage=usage[0];

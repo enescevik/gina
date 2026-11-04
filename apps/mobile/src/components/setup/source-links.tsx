@@ -47,10 +47,16 @@ export function SetupSourceLinks({ sources }: { sources: SourceLink[] }) {
   const { t } = useTranslation();
   const [busy, setBusy] = useState<string | null>(null),
     [failed, setFailed] = useState(false);
+  const {claims,session}=useSession();
+  const expanded=useQuery({queryKey:["source_set_links",session?.user.id,claims?.family_id,sources.map(s=>s.source_id).sort()],enabled:claims?.role==="parent"&&sources.length>0,queryFn:async()=>{
+    const result:SourceLink[]=[];
+    for(const s of sources){const r=await supabase.rpc("get_learning_source_set",{p_source:s.source_id});if(r.error)throw r.error;for(const m of r.data as unknown as {id:string;name:string;mime:string}[]){if(!result.some(v=>v.source_id===m.id))result.push({item_id:s.item_id,source_id:m.id,name:m.name,mime:m.mime});}}
+    return result;
+  }});
   if (!sources.length) return null;
   return (
     <View style={{ gap: 6 }}>
-      {sources.map((s) => (
+      {(expanded.data??sources).map((s) => (
         <Pressable
           key={s.source_id}
           accessibilityRole="button"
@@ -89,6 +95,7 @@ export function SetupSourceLinks({ sources }: { sources: SourceLink[] }) {
           </Text>
         </Pressable>
       ))}
+      {expanded.error?<Text style={u.error}>{t("setupDocument.loadError")}</Text>:null}
       {failed
         ? (
           <Text accessibilityRole="alert" style={u.error}>

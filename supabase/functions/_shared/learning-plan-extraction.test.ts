@@ -38,7 +38,9 @@ Deno.test("learning extraction: all items and pages are bounded", () => {
     items: [{ ...item(), steps: Array(13).fill("Read") }],
     warnings: [],
   });
-  rejects({ items: [item()], warnings: [] }, 6);
+  rejects({ items: [item()], warnings: [] }, 21);
+  const combined = parse({ items: [{ ...item(), page: 20 }], warnings: [] }, 20);
+  if (combined.items[0].page !== 20) throw Error("combined source page lost");
 });
 Deno.test("learning extraction: rewards, unknown keys and fabricated source IDs are rejected", () => {
   for (

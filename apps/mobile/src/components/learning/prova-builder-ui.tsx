@@ -1,9 +1,6 @@
-import { type ReactNode, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
-import { sourceAction } from "@/lib/learning-files";
-import { provaErrorMessage } from "@/lib/prova-ai";
-import { Linking, StyleSheet, Text, View } from "react-native";
+import { SetupSourceLinks } from "@/components/setup/source-links";
+import { type ReactNode } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { Check } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { p } from "@/components/planner/ui";
@@ -95,56 +92,19 @@ export function BuilderQuestionPreview(
 }
 function DocumentOrigin({ question }: { question: BuilderQuestion }) {
   const { t } = useTranslation();
-  const [error, setError] = useState<unknown>(null);
   const provenance = question.provenance;
   const sourceId = provenance && typeof provenance === "object" &&
       !Array.isArray(provenance) &&
       typeof provenance.document_source_id === "string"
     ? provenance.document_source_id
     : null;
-  const source = useQuery({
-    queryKey: ["builder_document_origin", question.id, sourceId],
-    enabled: !!sourceId,
-    queryFn: async () => {
-      const { data, error } = await supabase.from("learning_sources").select(
-        "name",
-      ).eq("id", sourceId!).maybeSingle();
-      if (error) throw error;
-      return data;
-    },
-  });
   if (!sourceId) return null;
-  return (
-    <View style={{ gap: 8 }}>
-      <Text style={b.muted}>
-        {t("provaBuilder.documentOrigin")}:{" "}
-        {source.data?.name ?? t("sources.unavailable")}
-      </Text>
-      {source.data
-        ? (
-          <Pressable
-            accessibilityRole="button"
-            style={b.choice}
-            onPress={() =>
-              void sourceAction<{ url: string }>({
-                action: "view",
-                id: sourceId,
-              }).then((result) => Linking.openURL(result.url)).catch(setError)}
-          >
-            <Text style={b.bold}>{t("provaBuilder.openOriginal")}</Text>
-          </Pressable>
-        )
-        : null}
-      {error || source.error
-        ? (
-          <Text style={b.error}>
-            {provaErrorMessage(error ?? source.error)}
-          </Text>
-        )
-        : null}
-    </View>
-  );
+  return <View style={{gap:8}}>
+    <Text style={b.muted}>{t("provaBuilder.documentOrigin")}</Text>
+    <SetupSourceLinks sources={[{item_id:question.id,source_id:sourceId,name:t("planImport.document"),mime:""}]}/>
+  </View>;
 }
+
 export const b = StyleSheet.create({
   top: {
     width: "100%",

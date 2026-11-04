@@ -18,7 +18,7 @@ Ders adı belirsizse gördüğün kısmı koru ve note alanında belirt. Okunur 
 Aynı hücre birden fazla güne yayılıyorsa yalnız açıkça görülen günleri ayrı satırlara aç.
 Teneffüs, öğle arası ve başlıkları ders olarak ekleme. Birkaç farklı program varsa hepsini karıştırma; lessons=[] ile kullanıcıdan tek programın görüntüsünü iste.
 Ad, okul, sınıf şubesi, telefon, adres gibi kişisel bilgileri çıktıya alma. Belgedeki çocuk hakkında çıkarım yapma.
-page: kaynağın 1 tabanlı sayfası, resimde 1. note ve warnings istenen dilde kısa, somut kontrol uyarıları; ham belge metnini tekrarlama.
+page: tek kaynağın 1 tabanlı sayfası, tek resimde 1. Birden çok kaynak varsa her kaynak öncesinde belirtilen birleşik sayfa aralığını kullan; numarayı yeniden 1 yapma. Çelişkili dersleri tahminle birleştirme, warnings alanında belirt. note ve warnings istenen dilde kısa, somut kontrol uyarıları; ham belge metnini tekrarlama.
 Programı düzeltmeye veya tamamlamaya çalışma. Bu taslak veli tarafından kontrol edilecek. En fazla 112 ders, 10 uyarı. Yalnız verilen JSON şeması.`;
 export const TIMETABLE_SCHEMA = {
   type: "object",

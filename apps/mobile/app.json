@@ -80,7 +80,7 @@
         "expo-image-picker",
         {
           "photosPermission": "Sorularınıza ve ders programınıza seçtiğiniz görseli eklemek için fotoğraf erişimi kullanılır.",
-          "cameraPermission": false,
+          "cameraPermission": "Ders programı, ödev ve diğer kaynakları fotoğraf çekerek eklemek için kameranızı kullanırız.",
           "microphonePermission": false
         }
       ]

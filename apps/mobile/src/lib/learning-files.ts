@@ -16,6 +16,7 @@ export interface LocalLearningFile {
   sha256: string;
   width?: number;
   height?: number;
+  members?: LocalLearningFile[];
 }
 async function bytesOf(uri: string, webFile?: Blob): Promise<ArrayBuffer> {
   if (Platform.OS === "web") {
@@ -72,10 +73,14 @@ export async function prepareLearningImage(
   // network API and is blocked by our production connect-src policy.
   let bytes: ArrayBuffer;
   if (Platform.OS === "web") {
-    if (!rendered.base64 || rendered.base64.length > 4 * Math.ceil(4 * 1024 * 1024 / 3)) {
+    if (
+      !rendered.base64 ||
+      rendered.base64.length > 4 * Math.ceil(4 * 1024 * 1024 / 3)
+    ) {
       throw new Error("source_size_or_type");
     }
-    bytes = Uint8Array.from(atob(rendered.base64), (c) => c.charCodeAt(0)).buffer;
+    bytes = Uint8Array.from(atob(rendered.base64), (c) =>
+      c.charCodeAt(0)).buffer;
   } else {
     bytes = await bytesOf(rendered.uri);
   }
@@ -168,6 +173,14 @@ export async function uploadLearningFile(
   file: LocalLearningFile,
   kind: "document" | "question_image",
 ) {
+  if (kind === "document" && file.members) {
+    for (const member of file.members) await uploadLearningFile(member, kind);
+    const { error } = await supabase.rpc("register_learning_source_set", {
+      p_ids: file.members.map((f) => f.id),
+    });
+    if (error) throw error;
+    return file.id;
+  }
   const reserved = await sourceAction<
     { id: string; ready?: boolean; bucket: string; path: string; token: string }
   >({
@@ -198,4 +211,83 @@ export async function uploadLearningFile(
     }
   }
   return file.id;
+}
+
+export type LearningPickSource = "files" | "gallery" | "camera";
+export async function chooseLearningFiles(
+  source: LearningPickSource,
+  remaining: number,
+): Promise<LocalLearningFile[]> {
+  if (remaining < 1) throw Error("source_file_limit");
+  if (source === "files") {
+    const r = await DocumentPicker.getDocumentAsync({
+      type: ["image/jpeg", "image/png", "application/pdf"],
+      copyToCacheDirectory: true,
+      multiple: true,
+      base64: false,
+    });
+    if (r.canceled) return [];
+    if (r.assets.length > remaining) throw Error("source_file_limit");
+    const files: LocalLearningFile[] = [];
+    for (const a of r.assets) {
+      if (a.mimeType === "image/png" || a.mimeType === "image/jpeg") {
+        files.push(
+          await prepareLearningImage(a.uri, a.name, a.mimeType === "image/png"),
+        );
+      } else if (
+        a.mimeType === "application/pdf" && (!a.size || a.size <= 10485760)
+      ) {
+        files.push(
+          await packed(
+            a.name,
+            "application/pdf",
+            a.uri,
+            await bytesOf(a.uri, a.file),
+          ),
+        );
+      } else throw Error("source_size_or_type");
+    }
+    return files;
+  }
+  if (source === "camera" && Platform.OS !== "web") {
+    const p = await ImagePicker.requestCameraPermissionsAsync();
+    if (!p.granted) throw Error("source_camera_permission");
+  }
+  const r = source === "camera"
+    ? await ImagePicker.launchCameraAsync({
+      mediaTypes: ["images"],
+      allowsEditing: false,
+      exif: false,
+      quality: 1,
+    })
+    : await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsMultipleSelection: true,
+      selectionLimit: remaining,
+      orderedSelection: true,
+      allowsEditing: false,
+      exif: false,
+      quality: 1,
+    });
+  if (r.canceled) return [];
+  if (r.assets.length > remaining) throw Error("source_file_limit");
+  const files: LocalLearningFile[] = [];
+  for (const a of r.assets) {
+    files.push(
+      await prepareLearningImage(a.uri, a.fileName ?? "photo.jpg", false),
+    );
+  }
+  return files;
+}
+/** A changed selection has a new immutable identity; failed upload retries reuse it. */
+export function learningFileSet(
+  files: LocalLearningFile[],
+): LocalLearningFile | null {
+  if (!files.length) return null;
+  const members = files.map((f) => ({
+    ...f,
+    id: Crypto.randomUUID(),
+    members: undefined,
+  }));
+  return { ...members[0], members };
 }

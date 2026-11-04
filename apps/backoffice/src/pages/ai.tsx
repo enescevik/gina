@@ -1,3 +1,4 @@
+import { SourcePolicy } from "@/components/source-policy";
 import type { Tables } from "@gina/core";
 import { useState, type FormEvent } from "react";
 
@@ -157,6 +158,7 @@ export default function AiPage() {
             <p className="mt-2 text-xs text-slate-500">{t.ai.killSwitchHelp}</p>
           </Card>
 
+          <SourcePolicy />
           <Card title={t.ai.perPlan}>
             <div className="overflow-x-auto">
               <table className="table">
@@ -182,6 +184,7 @@ export default function AiPage() {
           </Card>
 
           <Card title={t.ai.models}>
+            <div className="overflow-x-auto">
             <table className="table">
               <thead>
                 <tr>
@@ -210,6 +213,7 @@ export default function AiPage() {
                 ))}
               </tbody>
             </table>
+            </div>
             <ModelForm onSaved={onSaved} />
           </Card>
         </>

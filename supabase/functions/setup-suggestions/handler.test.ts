@@ -171,6 +171,7 @@ Deno.test("source identity participates in stable request hash", async () => {
     id: id(8),
     sha256: "b".repeat(64),
     media: [],
+    pages: 1,
   });
   await setupSuggestions(request(), a.deps);
   await setupSuggestions(request(), b.deps);

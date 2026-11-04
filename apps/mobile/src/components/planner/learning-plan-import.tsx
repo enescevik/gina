@@ -1,3 +1,5 @@
+import { GuidedField } from "@/components/ui/guided-field";
+import { SourceFilesPicker } from "@/components/learning/source-files-picker";
 import { useMemo, useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 import { useQuery } from "@tanstack/react-query";
@@ -15,7 +17,6 @@ import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import { learningPlanImportJournal } from "@/lib/learning-plan-command";
 import {
-  chooseLearningDocument,
   type LocalLearningFile,
   uploadLearningFile,
 } from "@/lib/learning-files";
@@ -98,7 +99,8 @@ export function LearningPlanImport(
       return r.data;
     },
   });
-  const locked = busy || !!pending || recovery.blocked;
+  const [picking, setPicking] = useState(false);
+  const locked = busy || picking || !!pending || recovery.blocked;
   const normalize = (r: Row): Row => ({
     ...r,
     content: {
@@ -161,25 +163,6 @@ export function LearningPlanImport(
       });
       if (r.error) throw r.error;
       if (r.data) accept(r.data);
-    } catch (e) {
-      setError(errorText(e));
-    } finally {
-      setBusy(false);
-    }
-  }
-  async function choose() {
-    if (locked) return;
-    setBusy(true);
-    setError("");
-    try {
-      const f = await chooseLearningDocument();
-      if (f) {
-        setFile(f);
-        setSource(null);
-        setResult(null);
-        setStorageConsent(false);
-        setAiConsent(false);
-      }
     } catch (e) {
       setError(errorText(e));
     } finally {
@@ -339,12 +322,7 @@ export function LearningPlanImport(
               <Text style={u.heading}>{t("planImport.intro")}</Text>
               <Text style={u.copy}>{t("planImport.boundary")}</Text>
             </View>
-            <SatinButton
-              secondary
-              title={t("planImport.pick")}
-              disabled={locked}
-              onPress={() => void choose()}
-            />
+            <SourceFilesPicker value={file} onBusyChange={setPicking} disabled={locked} onChange={(f)=>{setFile(f);setSource(null);setResult(null);setStorageConsent(false);setAiConsent(false);}} />
             {file
               ? (
                 <>
@@ -553,12 +531,7 @@ export function LearningPlanImport(
               maxLength={120}
               onChangeText={(v) => change({ title: v.trimStart() })}
             />
-            <Field
-              label={t("learningPlan.subject")}
-              value={editing.content.subject}
-              maxLength={80}
-              onChangeText={(v) => change({ subject: v.trimStart() })}
-            />
+            <GuidedField childId={child.id} kind="subject" label={t("learningPlan.subject")} value={editing.content.subject} onChange={(subject,id)=>change({subject,subject_id:id})} />
             <Field
               label={t("learningPlan.topic")}
               value={editing.content.topic}
