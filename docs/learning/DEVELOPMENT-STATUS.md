@@ -513,3 +513,9 @@ Ana ekrandaki “Birlikte bakalım” alanına son sekiz tamamlanmış haftanın
 20 özgün açık uçlu soru, beş ortak kaynak, dört özgün SVG/sRGB PNG ve ayrı öğrenci/editör önizlemeleri eklendi. Gezegen sınıflama, tutulma, bileşke kuvvet, deney planı ve nitel sürat/hız karşılaştırması beş resmî çıktı adayına bağlandı. Güncel programın FB.6.2.3 hesabı/grafiği dışarıda bırakan sınırı korundu. Yazılı deney planı gerçek deney performansı sayılmadı.
 
 27 yeni teknik test ile mevcut 22+20+18+3 içerik/aktarım testi, mobil tip/lint ve geçici DB’de tam alan/görsel karşılaştırması geçti. Aynı aktarım tek paket olarak kaldı; test işlemi geri alındı ve klon kaldırıldı. Telefon/doküman önizlemesi `docs/learning/library-pilot/grade-6-science/README.md`. Teknik test alan onayı değildir; fiziksel uygulama ve editör incelemesi açık. Güncel havuz 80 taslak/1460 yazılmamış/0 bağımsız onay/0 yayın. Üretim ve TestFlight17 değişmedi.
+
+## 4 Kasım — 5. sınıf Türkçe taslak havuzu
+
+20 özgün açık uçlu soru, üç kısa metin ve iki özgün SVG/sRGB PNG eklendi. İlk temanın beş çıktı adayına bağlı okuma, görsel yorumlama, söz varlığı, yazma ve noktalama/hece çalışmalarıdır. Aynı kaynaktan sorular birlikte tutulur; alternatif doğru anlatımlara açık puanlama ve yazılı/görsel kanıt sınırları kayıtlıdır. Resmî sınav veya yıllık ders kapsamı değildir.
+
+28 yeni ve 90 mevcut içerik/aktarım kontrolü, mobil tip/lint ve geçici DB’de tam alan/görsel karşılaştırması geçti. İlk aktarımda yakalanan tanınmayan rubric alanları mevcut sözleşmeye uyarlandı; dosya doğrulayıcı aynı hatayı önceden yakalar. Tekrarlanan istek tek paket olarak kaldı; klon temizlendi, onay/yayın oluşturulmadı. Telefon/doküman önizlemeleri: `docs/learning/library-pilot/grade-5-turkish/README.md`. Bağımsız alan/dil ve fiziksel cihaz kabulü açık. Toplam 100 taslak/1440 yazılmamış/0 bağımsız onay/0 yayın. Üretim ve TestFlight17 değişmedi.

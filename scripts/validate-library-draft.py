@@ -8,12 +8,19 @@ import re
 from collections import Counter
 import library_math6_checks as math6
 import library_science6_checks as science6
+import library_turkish5_checks as turkish5
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
 FOLDER=ROOT/'docs/learning/library-pilot/grade-5-science'
 NS={'s':'http://www.w3.org/2000/svg'}
+PROFILES={
+    'science_sky_v1':(5,'Fen Bilimleri',{'FB.5.1.2','FB.5.1.3','FB.5.1.4'}),
+    'math_numbers_data_v1':(6,'Matematik',math6.CODES),
+    'science_space_motion_v1':(6,'Fen Bilimleri',science6.CODES),
+    'turkish_reading_writing_v1':(5,'Türkçe',turkish5.CODES),
+}
 
 def require(ok,reason):
     if not ok: raise ValueError(reason)
@@ -27,10 +34,11 @@ def safe_file(root,relative):
 def validate(data,folder=FOLDER):
     require(data['schema']=='gina.learning-library-pilot.v1','schema')
     profile=data.get('technical_profile')
-    require(profile in ('science_sky_v1','math_numbers_data_v1','science_space_motion_v1'),'unregistered_profile')
+    require(profile in PROFILES,'unregistered_profile')
     require(data['status']=='draft' and data['publishable'] is False and data['human_editorial_approval'] is None,'draft_gate')
     require(data['school_scenario_selection'] is None and data['delivery']['automatic_import'] is False,'import_gate')
-    scope=(5,'Fen Bilimleri') if profile=='science_sky_v1' else (6,'Fen Bilimleri') if profile=='science_space_motion_v1' else (6,'Matematik')
+    grade,subject,profile_codes=PROFILES[profile]
+    scope=(grade,subject)
     require((data['grade'],data['subject'])==scope,'scope')
     ref=data['curriculum_reference']
     scenarios=json.loads((ROOT/'docs/learning/catalog/2026-2027-term1/scenario-candidates.json').read_text())
@@ -39,7 +47,7 @@ def validate(data,folder=FOLDER):
     candidate_subject='Matematik' if candidate['subject']=='İlköğretim Matematik' else candidate['subject']
     require((candidate['grade'],candidate_subject)==(data['grade'],data['subject']),'curriculum_scope')
     codes={o['code'] for b in candidate['blocks'] for o in b['outcomes']}
-    require(codes==({'FB.5.1.2','FB.5.1.3','FB.5.1.4'} if profile=='science_sky_v1' else science6.CODES if profile=='science_space_motion_v1' else math6.CODES),'profile_scope')
+    require(codes==profile_codes,'profile_scope')
     questions=data['questions'];sources={s['id']:s for s in data['sources']}
     require(len(questions)==20 and len({q['id'] for q in questions})==20,'question_count_or_duplicate')
     require(len({q['stem'].strip() for q in questions})==20,'duplicate_prompt')
@@ -62,11 +70,13 @@ def validate(data,folder=FOLDER):
         for field,limit in [('stem',3500),('expected_answer',10000),('solution',10000),('explanation',4000),('common_misconception',2000),('next_step',2000)]:
             require(isinstance(q[field],str) and 1<=len(q[field].strip())<=limit,'missing_or_long_'+field)
         rubric=q['rubric'];criteria=rubric['criteria']
+        require(set(rubric)=={'max_points','scoring','criteria','missing_answer','review_required'} and all(set(c)=={'id','points','criterion'} for c in criteria),'rubric_shape')
         require(len(criteria)==len({c['id'] for c in criteria})==4,'rubric_ids')
         require(all(type(c['points']) is int and c['points']==1 and c['criterion'].strip() for c in criteria),'rubric_criterion')
         require(sum(c['points'] for c in criteria)==rubric['max_points']==4 and rubric['review_required'] is True,'rubric_total')
         v=q['verification'];kind=v['type']
-        if profile=='science_space_motion_v1':science6.check_question(q,sources)
+        if profile=='turkish_reading_writing_v1':turkish5.check_question(q,sources)
+        elif profile=='science_space_motion_v1':science6.check_question(q,sources)
         elif profile=='math_numbers_data_v1':math6.check_question(q,sources)
         elif kind=='synchronous_rotation':require(v['turns_per_orbit']==1,'rotation_answer')
         elif kind=='period_comparison':require(v['rotation_days']==v['orbit_days']==27.3 and v['phase_days']==29.5,'period_answer')
@@ -97,7 +107,8 @@ def validate(data,folder=FOLDER):
         require(svg.find('s:desc',NS).text==s['alt'] and s['alt'].strip(),'alt_text')
         require(not any(e.tag.split('}')[-1] in ('script','foreignObject','image','use') for e in svg.iter()),'svg_external_content')
         require(not any(k.lower().startswith('on') or k.split('}')[-1]=='href' for e in svg.iter() for k in e.attrib),'svg_active_content')
-        if profile=='science_space_motion_v1':science6.check_diagram(d,svg,NS)
+        if profile=='turkish_reading_writing_v1':turkish5.check_diagram(d,svg,NS)
+        elif profile=='science_space_motion_v1':science6.check_diagram(d,svg,NS)
         elif profile=='math_numbers_data_v1':math6.check_diagram(d,svg,NS)
         elif d['type']=='same_face':
             center=d['center'];directions=[]

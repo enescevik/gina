@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-04",
+  "programme_pages": [
+    {
+      "url": "https://tymm.meb.gov.tr/ortaokul-turkce-dersi/unite/54",
+      "retrieved_on": "2026-11-04",
+      "retrieved_html_sha256": "3589d3dddd0bce70d3c54c784aa2abc0b599dd23bf05e0fd24378554b6fc3fd1",
+      "grade": 5,
+      "role": "programme_scope_not_question_source"
+    }
+  ],
+  "distribution_candidate_id": "tr-2026-2027-t1-turkce2-g5-c6",
+  "distribution_file_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+  "distribution_header_cell": "C6",
+  "distribution_outcome_cells": [
+    "B12",
+    "B13",
+    "B21",
+    "B30",
+    "B32"
+  ],
+  "school_scenario_selected": false,
+  "verified_constraints": [
+    "First theme vocabulary: synonyms, antonyms, homonyms in context.",
+    "First theme writing conventions: period, syllable structure and end-of-line hyphen.",
+    "Original reading passages and graphics, not excerpts from a published test."
+  ],
+  "source_approval": "author_checked_pending_independent_subject_review"
+}

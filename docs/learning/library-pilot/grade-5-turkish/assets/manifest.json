@@ -1,0 +1,74 @@
+[
+  {
+    "id": "play-poster",
+    "svg": "assets/play-poster.svg",
+    "png": "assets/play-poster.png",
+    "width": 600,
+    "height": 750,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "90f8672ee194e4a09d6ecebf054397f0a84fcfb3e0d35f9aa6ced64336daa38f",
+    "svg_sha256": "a6229d5fc903ac6d8bf14171dd0d578846771fbea6d719082bfece021b16e598",
+    "origin": "original_gina_fiction_and_vector_art",
+    "geometry": {
+      "type": "turkish5_poster",
+      "title": "BİRLİKTE OYNAYALIM",
+      "day": "Cumartesi",
+      "time": "14.30",
+      "place": "Okul bahçesi",
+      "message": "Bir oyun öner, birlikte dene.",
+      "symbols": [
+        "dice",
+        "puzzle"
+      ]
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  },
+  {
+    "id": "box-sequence",
+    "svg": "assets/box-sequence.svg",
+    "png": "assets/box-sequence.png",
+    "width": 600,
+    "height": 1040,
+    "color_space": "sRGB",
+    "alpha": false,
+    "minimum_reading_width": 0,
+    "sha256": "cfe3031c26c74ac53e38b626a389a703e7a6d004f14f84465624c87a06b312ab",
+    "svg_sha256": "48b9b064db28261ddd06b58ba19186ffa8e52104a21406c7aea37f44909ee593",
+    "origin": "original_gina_fiction_and_vector_art",
+    "geometry": {
+      "type": "turkish5_sequence",
+      "panels": [
+        {
+          "label": "K",
+          "lid": "open",
+          "inside": [
+            "square",
+            "triangle"
+          ],
+          "outside": [
+            "circle"
+          ]
+        },
+        {
+          "label": "L",
+          "lid": "open",
+          "inside": [
+            "square",
+            "triangle",
+            "circle"
+          ],
+          "outside": []
+        },
+        {
+          "label": "M",
+          "lid": "closed",
+          "inside_visible": false,
+          "outside": []
+        }
+      ]
+    },
+    "review_status": "technical_checks_pending_editorial_pending"
+  }
+]
