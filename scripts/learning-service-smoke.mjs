@@ -1,5 +1,6 @@
 // Explicit operator test against a real Supabase project; never run in CI automatically.
-// Creates one synthetic account/family, performs one paid document extraction, then deletes
+// Creates one synthetic account/family, performs one paid document extraction (up to five
+// operations with explicit --features), then deletes
 // only that account through the normal deletion flow (admin cleanup on failure).
 // Requires sources.enabled already open; never changes a global rollout flag.
 // Existing family records are untouched.
@@ -7,6 +8,7 @@ import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { randomBytes, randomUUID, createHash } from 'node:crypto';
+import { checkHostedFeatures } from './learning-service-features.mjs';
 const require = createRequire(new URL('../apps/mobile/package.json', import.meta.url));
 const { createClient } = require('@supabase/supabase-js');
 const project = process.argv.find(v => v.startsWith('--project-ref='))?.split('=')[1];
@@ -25,6 +27,7 @@ const report = {project,checks:{},cleanup:{}};
 const must = (result,label) => { if(result.error) throw Error(label); return result.data; };
 const check = (name,condition) => {report.checks[name]=!!condition;if(!condition)throw Error(name);};
 let userId, familyId, sourcePath, sourceId, deleted=false;
+const sourceIds=[],sourcePaths=[];
 try {
   const setting = must(await admin.from('app_settings').select('value').eq('key','sources.enabled').single(),'read_source_flag');
   if(setting.value !== true) throw Error('source_feature_not_enabled');
@@ -73,6 +76,7 @@ try {
   const view=must(await parent.functions.invoke('learning-source',{body:{action:'view',id:sourceId}}),'view_original');
   const parsed=new URL(view.url);if(parsed.origin!==url)throw Error('Unexpected source URL');
   const original=await fetch(view.url);check('original_download',original.ok&&createHash('sha256').update(Buffer.from(await original.arrayBuffer())).digest('hex')===createHash('sha256').update(bytes).digest('hex'));
+  if(process.argv.includes('--features'))await checkHostedFeatures({parent,admin,familyId,childId,sourceIds,sourcePaths,must,check,report});
   const deletion=must(await parent.functions.invoke('delete-account',{body:{confirm:true,password}}),'delete_synthetic_account');
   deleted=deletion.ok===true;check('normal_account_deletion',deleted);
 } catch(error) {
@@ -84,6 +88,8 @@ try {
   if(sourcePath){const cleanup=await admin.storage.from('gina-private-sources').remove([sourcePath]);report.cleanup.test_object_removed=!cleanup.error;}
   if(familyId){const remaining=await admin.from('families').select('id').eq('id',familyId);report.cleanup.family_absent=!remaining.error&&remaining.data.length===0;}
   if(sourceId){const remaining=await admin.from('learning_sources').select('id').eq('id',sourceId);report.cleanup.source_absent=!remaining.error&&remaining.data.length===0;}
+  if(sourcePaths.length){const cleanup=await admin.storage.from('gina-private-sources').remove(sourcePaths);report.cleanup.feature_objects_removed=!cleanup.error;}
+  if(sourceIds.length){const remaining=await admin.from('learning_sources').select('id').in('id',sourceIds);report.cleanup.feature_sources_absent=!remaining.error&&remaining.data.length===0;}
   if(userId){const remaining=await admin.auth.admin.getUserById(userId);report.cleanup.user_absent=remaining.error?.status===404;}
   if(Object.values(report.cleanup).some(v=>v!==true))process.exitCode=1;
   console.log(JSON.stringify(report,null,2));
