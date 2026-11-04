@@ -16,10 +16,10 @@ anlamına gelmez.
 
 | İş | Şu anki kanıt / kalan sınır |
 |---|---|
-| Web, mobil ve yönetim panelinin ortak veri akışı | İzole gerçek Auth/REST/Realtime/Storage/Edge koşumunda 254 kontrol geçti. Görev, Prova, cihaz iptali, aile ayrımı, destek ve SSS dahil. Canlı sürüm kabulü ayrı yapılacak. |
-| Yeni AI özellikleri | Haftalık özet, belgeden ödev/kurs, görev ve ödül gerçek sağlayıcıyla geçti. Yeni ürün uç noktalarının kayıt/kota/yeniden açılışı yerel gerçek hizmetler ve deterministik sağlayıcı sınırıyla geçti. Aynı zincirin canlı dağıtım sonrası kabulü ayrıca yapılacak. |
+| Web, mobil ve yönetim panelinin ortak veri akışı | İzole gerçek Auth/REST/Realtime/Storage/Edge koşumunda 254 kontrol geçti. Görev, Prova, cihaz iptali, aile ayrımı, destek ve SSS dahil. Canlı AI/kayıt zincirinde ayrıca 29 kontrol geçti; ekran/cihaz kabulü ayrı. |
+| Yeni AI özellikleri | Haftalık özet, belgeden ödev/kurs, görev ve ödül gerçek sağlayıcıyla geçti. Yeni ürün uç noktalarının kayıt/kota/yeniden açılışı yerel gerçek hizmetler ve deterministik sağlayıcı sınırıyla geçti. Canlı ürün uçlarında da 29 kontrol ve 6 temizleme doğrulaması geçti; beş gerçek ücretli üretim yapıldı. |
 | Native taslak güvenliği | iPhone/iPad simülatörleri ve Android API33 emülatöründe gerçek SQLite ve süreç kapanışı geçti. Fiziksel kalem/klavye ve Android görsel kabulü ayrıca yapılacak. |
-| Eşgüdümlü yayın | Üretim DB kaydı 20261103040000'a kadar; 20261103094000 dahil sonraki migration'lar, ilgili Edge sürümleri ve istemciler birlikte yayımlanacak. Yedek/geri dönüş ve yetki kontrolleri atlanmayacak. |
+| Eşgüdümlü yayın | Üretim DB 20261103094000'a güncellendi (32 migration), 19 Edge function dağıtıldı. public/gina yerel yedeği alındı; Auth/Storage tam yedeği veya geri dönüş tatbikatı değildir. İstemci yayınları henüz tamamlanmadı. |
 | Web ve backoffice hosting | İki üretim derlemesi ve gerçek yayın başlıklarıyla telefon/tablet giriş ekranları geçti. Cloudflare yüklemesi ve Access koruması henüz kabul edilmedi. Yeşil ama atlanmış Actions işi yayın kanıtı değildir. |
 | Mağaza ve bildirim | Sunucu kontrolleri mevcut; gerçek satın alma/yenileme/iade ve APNs/FCM teslimi için mağaza/cihaz kabulü gerekiyor. |
 | Ek AI sağlayıcıları | Mevcut çalışan sağlayıcı Anthropic. Diğer sağlayıcılar yalnız modele ad yazarak etkinleşmez; adapter, doğrulama ve ayrı anahtar gerekir. |
@@ -79,6 +79,8 @@ Bu, Google hesabının veya Play Console hesabının kesinlikle olmadığı anla
    hesabı kurulacak. Özel anahtarı sohbet veya Git'e koymayacağız.
 3. Play Console'da GINA kaydı ve iç test erişimini hazırla. Satın alma ürünleri,
    mağaza bildirimleri ve sunucu hesabının dar yetkileri teknik kurulumda eşleştirilecek.
+   Canlı bildirim alıcısı şu anda güvenli biçimde 503 dönüyor: Pub/Sub push hedefi
+   `GOOGLE_RTDN_AUDIENCE` ve doğrulanacak gönderici `GOOGLE_RTDN_SA_EMAIL` eksik.
 4. Deneme yapacağın Google hesabını **lisans test kullanıcısı** olarak ekle; yalnız
    iç test grubuna girmek ücretsiz deneme satın alması garantisi değildir.
 
@@ -128,7 +130,8 @@ Sorun bildirirken ekran adı, sürüm, cihaz ve yaptığın son adım yeterli; g
 
 1. [Birleşik hizmet kabulü](../learning/isolated-service-acceptance/README.md)
    ve `ai-pipeline-verification.json`: 254 kontrol.
-2. [Gerçek AI içerik kabulü](../learning/ai-feature-acceptance/README.md).
+2. [Canlı sunucu dağıtımı ve 29 kontrol](hosted-services-2026-11-04/README.md).
+   [Gerçek AI içerik kabulü](../learning/ai-feature-acceptance/README.md).
 3. [Tarayıcı yayın kabulü](browser-readiness/README.md): üretim başlıkları, telefon/tablet.
 4. [Native taslak kabulü](../design/screens/native-journal-recovery/README.md).
 5. DB/Edge yayını → web/backoffice yüklemesi ve erişim kontrolü → gerçek hesapla

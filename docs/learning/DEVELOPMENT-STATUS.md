@@ -620,3 +620,12 @@ Tek kota/tek makbuz, yeniden açılış, çoklu seçim, kaynak ilişkisi, çocuk
 ücret yok. Gerçek AI içerik kabulü ayrı rapordadır. Kanıt:
 `isolated-service-acceptance/ai-pipeline-verification.json`. Tüm geçici kaynaklar
 kaldırıldı. Canlı dağıtım/TestFlight17, fiziksel kabul ve diğer açık işler değişmedi.
+
+
+## Canlı backend yayını ve beş gerçek AI işlemi — 4 Kasım
+
+- PR #130 sonrası main kaynağından üretime 32 migration uygulandı; üretim artık `20261103094000` seviyesinde, son dry-run boş. public/gina yerel özel yedeği alındı; tam Auth/Storage yedeği değildir. Mevcut aile kayıtları sıfırlanmadı.
+- 19 Edge function güncellendi; üç yeni uç dahil tüm sürümler ACTIVE. WASM/font paketleri dahil edildi.
+- Gerçek Auth/Storage/Anthropic/ürün RPC zincirinde 29 kontrol geçti: ders programı, haftalık özet, belgeden ödev/kurs, görev/ödül çoklu seçim, makbuz ve tek kota. Beş ücretli üretim; altı sentetik veri temizleme doğrulaması geçti.
+- Anonim boş isteklerde 18 uç 4xx reddetti. `google-rtdn` eksik audience/gönderici yapılandırması nedeniyle 503 ile kapalı; Google Play tamamlanmış sayılmıyor.
+- Ayrıntı: `docs/release/hosted-services-2026-11-04/README.md`. Yeni istemci/TestFlight yayını bu backend kaydından çıkarılamaz; son TestFlight hâlâ 0.1.0 (17). Kütüphane en son, 100 taslak/0 bağımsız onay/0 yayın.

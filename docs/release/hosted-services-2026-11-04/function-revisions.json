@@ -1,0 +1,135 @@
+[
+  {
+    "name": "ai-weekly-summary",
+    "before": 12,
+    "after": 13,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  {
+    "name": "apple-notifications",
+    "before": 11,
+    "after": 12,
+    "status": "ACTIVE",
+    "verify_jwt": false
+  },
+  {
+    "name": "delete-account",
+    "before": 13,
+    "after": 14,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  {
+    "name": "google-rtdn",
+    "before": 11,
+    "after": 12,
+    "status": "ACTIVE",
+    "verify_jwt": false
+  },
+  {
+    "name": "iap-reconcile",
+    "before": 11,
+    "after": 12,
+    "status": "ACTIVE",
+    "verify_jwt": false
+  },
+  {
+    "name": "iap-verify",
+    "before": 12,
+    "after": 13,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  {
+    "name": "iap-operator-reconcile",
+    "before": null,
+    "after": 1,
+    "status": "ACTIVE",
+    "verify_jwt": false
+  },
+  {
+    "name": "prova-generate",
+    "before": 14,
+    "after": 15,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  {
+    "name": "prova-grade",
+    "before": 15,
+    "after": 16,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  {
+    "name": "prova-plan",
+    "before": 13,
+    "after": 14,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  {
+    "name": "push-send",
+    "before": 11,
+    "after": 12,
+    "status": "ACTIVE",
+    "verify_jwt": false
+  },
+  {
+    "name": "setup-suggestions",
+    "before": 10,
+    "after": 11,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  {
+    "name": "learning-source",
+    "before": 6,
+    "after": 7,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  {
+    "name": "source-cleanup",
+    "before": 6,
+    "after": 7,
+    "status": "ACTIVE",
+    "verify_jwt": false
+  },
+  {
+    "name": "timetable-import",
+    "before": 6,
+    "after": 7,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  {
+    "name": "learning-plan-import",
+    "before": null,
+    "after": 1,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  {
+    "name": "prova-review",
+    "before": 5,
+    "after": 6,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  {
+    "name": "library-media",
+    "before": 3,
+    "after": 4,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  },
+  {
+    "name": "contribution-submit",
+    "before": null,
+    "after": 1,
+    "status": "ACTIVE",
+    "verify_jwt": true
+  }
+]
