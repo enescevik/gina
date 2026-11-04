@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-04",
+  "migration": "20261103093000",
+  "sql": {
+    "files": 71,
+    "checks": 2017,
+    "new": {
+      "file": "071_exam_list_realtime.test.sql",
+      "checks": 5
+    },
+    "passed": true
+  },
+  "node_tests": 13,
+  "mobile_typecheck": true,
+  "mobile_lint": true,
+  "exports": [
+    "ios",
+    "android",
+    "web"
+  ],
+  "export_configuration": "synthetic_not_for_deployment",
+  "web_acceptance": {
+    "viewports": [
+      [
+        390,
+        844
+      ],
+      [
+        1280,
+        800
+      ]
+    ],
+    "assignment_appears_without_navigation": true,
+    "counter_sequence": [
+      1,
+      0,
+      1
+    ],
+    "approval_updates_status_and_stars": true,
+    "page_errors": 0,
+    "real_mutations": 0,
+    "transport": "synthetic_rest_and_websocket"
+  },
+  "physical_device": false,
+  "live_service_acceptance": false,
+  "production_changed": false,
+  "testflight": "0.1.0 (17)"
+}

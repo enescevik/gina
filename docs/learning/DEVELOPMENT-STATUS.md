@@ -519,3 +519,9 @@ Ana ekrandaki “Birlikte bakalım” alanına son sekiz tamamlanmış haftanın
 20 özgün açık uçlu soru, üç kısa metin ve iki özgün SVG/sRGB PNG eklendi. İlk temanın beş çıktı adayına bağlı okuma, görsel yorumlama, söz varlığı, yazma ve noktalama/hece çalışmalarıdır. Aynı kaynaktan sorular birlikte tutulur; alternatif doğru anlatımlara açık puanlama ve yazılı/görsel kanıt sınırları kayıtlıdır. Resmî sınav veya yıllık ders kapsamı değildir.
 
 28 yeni ve 90 mevcut içerik/aktarım kontrolü, mobil tip/lint ve geçici DB’de tam alan/görsel karşılaştırması geçti. İlk aktarımda yakalanan tanınmayan rubric alanları mevcut sözleşmeye uyarlandı; dosya doğrulayıcı aynı hatayı önceden yakalar. Tekrarlanan istek tek paket olarak kaldı; klon temizlendi, onay/yayın oluşturulmadı. Telefon/doküman önizlemeleri: `docs/learning/library-pilot/grade-5-turkish/README.md`. Bağımsız alan/dil ve fiziksel cihaz kabulü açık. Toplam 100 taslak/1440 yazılmamış/0 bağımsız onay/0 yayın. Üretim ve TestFlight17 değişmedi.
+
+## 4 Kasım — kütüphaneyi sona alma ve Prova/görev yenilenmesi (093000)
+
+Kullanıcı yeni kütüphane sorularını en sona aldı; 100 mevcut taslak korunuyor. Çocuk Prova listesi/sayacı yeni atama ve bitirme bildirimlerine bağlandı; mevcut RLS korumalı exams tablosu canlı yayın listesine eklendi. Aynı cihazdaki veli–çocuk liste geçişleri, günlük görev ve yıldız bakiyesi yenilemesi tamamlandı; açık cevap/değerlendirme taslağı ve başlatma RPC’si yenileme dışında tutuldu. Veli ana ekranı görev şablonu değişikliklerini dinler.
+
+Dört gerçek QueryClient testi, izole klonda 71 SQL dosyası/2017 kontrol, mobil tip/lint ve telefon/tablet gerçek Expo bileşenlerinde sentetik WebSocket kabulü geçti. Yeni atama görünmesi, sayaç 1→0→1, görev onayı ve yıldız 0→2 doğrulandı. Kanıt: `docs/design/screens/projection-refresh/README.md`. Canlı bağlantı, fiziksel cihaz, tüm Prova uçtan uca akışları ve diğer yayın işleri açık; üretim/TestFlight17 değişmedi.

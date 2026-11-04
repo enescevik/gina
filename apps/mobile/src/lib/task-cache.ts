@@ -4,7 +4,7 @@ import type { QueryClient } from "@tanstack/react-query";
 // Inactive queries must also become stale before switching role on the same phone.
 const TASK_PROJECTIONS = [
   "approvals", "family_completions", "family_star_totals",
-  "task_completions_week", "star_events", "child_badges", "child_goal",
+  "task_completions", "task_completions_week", "star_balance", "star_events", "child_badges", "child_goal",
 ];
 export function invalidateTaskState(client: QueryClient) {
   return client.invalidateQueries({

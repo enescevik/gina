@@ -1,3 +1,4 @@
+import { invalidateProvaLists } from "@/lib/prova-cache";
 import { useEffect, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -209,8 +210,7 @@ export default function GroupExams() {
         setError("");
         setNotice(t("group.enrolled", { name: childName(child) }));
       }
-      void cache.invalidateQueries({ queryKey: ["exams"] });
-      void cache.invalidateQueries({ queryKey: ["child_exams"] });
+      void invalidateProvaLists(cache);
     } finally {
       gate.current = false;
       setBusy(false);
@@ -238,8 +238,7 @@ export default function GroupExams() {
       setJoining(null);
       await Promise.all([
         catalog.refetch(),
-        cache.invalidateQueries({ queryKey: ["exams"] }),
-        cache.invalidateQueries({ queryKey: ["child_exams"] }),
+        invalidateProvaLists(cache),
       ]);
     });
   }

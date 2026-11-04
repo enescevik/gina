@@ -1,3 +1,4 @@
+import { invalidateTaskState } from "@/lib/task-cache";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Crypto from "expo-crypto";
 import { childPath } from "@/lib/active-child";
@@ -86,7 +87,7 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
       });
       if (error) throw error;
     },
-    onSettled: () => void queryClient.invalidateQueries({ queryKey: ["task_completions", childId, today] }),
+    onSettled: () => invalidateTaskState(queryClient),
   });
 
   // Prova kartı: dar akışta kitaplığın karşılığı; atanmış deneme sayısı rozet olarak.

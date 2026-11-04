@@ -2,11 +2,13 @@
 
 Kullanıcı: **“Hepsini bitirelim sonra yayına alırız.”** Önceki TestFlight dağıtım önceliği ertelendi. Aşağıdaki işler bitmeden yeni TestFlight/mağaza/kablosuz iPad yayını yapılmayacak. Bir PR'ın birleşmesi yayın anlamına gelmez. Yerel geliştirme ve izole testler sürer. Gerçek aile kayıtları reset/reseed edilmez. Önceden ertelenmiş gün/gece/hava ve geniş maskot animasyonları ilk sürüm dışında kalır.
 
+**4 Kasım öncelik güncellemesi:** Kullanıcı kütüphane sorularını en sona aldı. Mevcut 100 taslak korunur; yeni soru üretimi bekler. Önce Prova/görev akışları, cihaz kabulü, canlı bağlantılar ve son tasarım denetimi tamamlanır.
+
 Onaylı maketi bulunan ekranlarda o maket korunur. Ayrı maketi olmayan ekranlar için kullanıcının sonraki kararı geçerlidir: “Onaylı ekranların ortak tasarımını bu ekranlara uyarla”. Gelişim ekranı maketi `docs/design/screens/learning-progress/phone-tablet-proposal-v1.png`: **onaylandı ve uygulandı**. Gerçek web bileşeni telefon/tablet önizlemeleri aynı klasörde; native cihaz ve yayın kabulü sürer.
 
 | İş | Güncel durum / kapanış koşulu |
 |---|---|
-| Birleşik Prova | PR #57 main’de; sonraki yayın kaydı SHARED-DESIGN-17.md: TestFlight 17 ve sunucu 040000’e kadar dağıtıldı. Kütüphane edinimi 050000 ve bu artım henüz dağıtılmadı. |
+| Birleşik Prova | 093000 ile yeni atamanın canlı bildirimi, çocuk listesi/sayaç ve veli–çocuk önbellek yenilemesi tamamlandı. Telefon/tablet sentetik WebSocket kabulü geçti; gerçek bağlantı/cihaz ve tam akış kabulü açık. Kanıt: projection-refresh/README.md. PR #57 main’de; sonraki yayın kaydı SHARED-DESIGN-17.md: TestFlight 17 ve sunucu 040000’e kadar dağıtıldı. Kütüphane edinimi 050000 ve bu artım henüz dağıtılmadı. |
 | Defter/iPad hataları | PR #54/#55 ve #66 düzeltmeleri var. Dikey soru başlığı kesilmesi ve defter devamının belirsizliği giderildi; iPad simülatörü/dört web ölçüsü kanıtı notebook-visible-content klasöründe. Fiziksel cihaz yön/klavye/kalem/tam alan kontrolleri açık. |
 | Kalıcı cevap kurtarma | Bu artım: cihazda son cevap + belirsiz istek saklanır; yeniden açılış ve çakışma kontrolleri. Salt çevrimdışı sınav açma/soru indirme değildir. Native cihaz kontrolü açık. |
 | Gelişim raporu | Bu artım: aile/sınıf/program ayrı hesap, bekleyen/boş/kısmi ayrımı, kanıt soruları. Onaylı ekran uygulandı: 7/30/90 gün, sınıf/ders filtresi, soruya doğrudan geçiş, az gözlem ayrımı. Telefon/tablet web kabulü geçti; native kabul açık. |

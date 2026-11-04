@@ -1,3 +1,4 @@
+import { invalidateProvaLists } from "@/lib/prova-cache";
 import {
   type ComponentRef,
   useCallback,
@@ -231,7 +232,7 @@ export default function ProvaBuilder() {
     },
     onSuccess: () => {
       setAllowLeave(true);
-      void cache.invalidateQueries({ queryKey: ["exams", familyId] });
+      void invalidateProvaLists(cache);
       void cache.invalidateQueries({ queryKey: ["prova_drafts", familyId] });
       router.replace("/parent/prova");
     },
