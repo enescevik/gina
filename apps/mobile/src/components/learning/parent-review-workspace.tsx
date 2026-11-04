@@ -332,7 +332,7 @@ export function ParentReviewWorkspace(
         ? (
           <View style={s.row}>
             <View style={[s.row, { flex: 1, borderWidth: 1, borderColor: '#D8CBF3', borderRadius: 16, paddingHorizontal: 14 }]}>
-              <TextInput accessibilityLabel={t("parentReview.score")} value={score} onChangeText={v => change(() => setScore(v))} keyboardType="number-pad" maxLength={3} editable={!locked} placeholder="0" style={{ flex: 1, minHeight: 48, color: p.purple, fontFamily: 'Nunito_800ExtraBold', fontSize: 24 }}/><Text style={[s.heading, { color: p.purple }]}>/ 100</Text>
+              <TextInput accessibilityLabel={t("parentReview.score")} value={score} onChangeText={v => change(() => setScore(v))} keyboardType="number-pad" maxLength={3} editable={!locked} placeholder="0" style={{ flex: 1, minWidth: 0, minHeight: 48, color: p.purple, fontFamily: 'Nunito_800ExtraBold', fontSize: 24 }}/><Text style={[s.heading, { color: p.purple, flexShrink: 0 }]}>/ 100</Text>
             </View><Text style={[s.tag, { paddingVertical: 7 }]}>{t("parentReview.score")}</Text>
           </View>
         )

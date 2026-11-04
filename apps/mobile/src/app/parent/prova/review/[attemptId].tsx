@@ -7,6 +7,7 @@ import {
   ParentReviewWorkspace,
   type ReviewState,
 } from "@/components/learning/parent-review-workspace";
+import { REVIEW_SNAPSHOT_OPTIONS } from "@/lib/answer-state";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -22,6 +23,7 @@ export default function ParentReviewScreen() {
   const family = claims?.family_id;
   const attempt = useQuery({
     queryKey: ["review_workspace", family, attemptId],
+    ...REVIEW_SNAPSHOT_OPTIONS,
     queryFn: async () => {
       const { data, error } = await supabase.from("exam_attempts").select(
         "id,status,children(name),exams(question_ids)",
@@ -59,8 +61,7 @@ export default function ParentReviewScreen() {
   const review = useQuery({
     queryKey: ["answer_review", family, attemptId, q?.id],
     enabled: !!q,
-    staleTime: 0,
-    refetchOnWindowFocus: false,
+    ...REVIEW_SNAPSHOT_OPTIONS,
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_answer_review", {
         p_attempt_id: attemptId,

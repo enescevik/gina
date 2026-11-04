@@ -9,7 +9,6 @@ import { p, SatinButton } from "@/components/planner/ui";
 import {
   type AnswerJournal,
   AnswerJournalConflict,
-  type NotebookDocument,
   notebookHasAnswer,
   readNotebook,
   SerialWrites,
@@ -47,12 +46,12 @@ import { supabase } from "@/lib/supabase";
 import { decodeClaims, useSession } from "@/lib/session";
 import { createAnswerJournal } from "@/lib/answer-journal";
 
-type Answer = {
-  key?: string;
-  text?: string;
-  revision?: number;
-  document?: NotebookDocument;
-};
+import {
+  acknowledgeAnswerDraft,
+  mergeAnswerSnapshot,
+  sameAnswer,
+  type SavedAnswer as Answer,
+} from "@/lib/answer-state";
 
 interface Choice {
   key: string;
@@ -125,6 +124,7 @@ export default function TakeExamScreen() {
 
   const savedAnswers = useQuery({
     queryKey: ["attempt_saved_answers", attempt.data?.id],
+    structuralSharing: mergeAnswerSnapshot,
     enabled: !!attempt.data?.id,
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_saved_exam_answers_v3", {
@@ -245,12 +245,7 @@ export default function TakeExamScreen() {
             }),
           );
           setDrafts((previous) =>
-            previous[questionId]
-              ? {
-                ...previous,
-                [questionId]: { ...previous[questionId], revision },
-              }
-              : previous
+            acknowledgeAnswerDraft(previous, questionId, answer, revision)
           );
         });
       },
@@ -375,8 +370,7 @@ export default function TakeExamScreen() {
   const result = finish.data ??
     (attempt.data?.status !== "in_progress" ? attempt.data : null);
   const differs = (a: Answer | undefined, b: Answer | undefined) =>
-    a?.key !== b?.key || a?.text !== b?.text ||
-    JSON.stringify(a?.document) !== JSON.stringify(b?.document);
+    !sameAnswer(a, b);
   const dirty = !!draft && differs(draft, saved);
   const anyDirty = Object.entries(drafts).some(([id, value]) =>
     differs(value, savedAnswers.data?.[id])

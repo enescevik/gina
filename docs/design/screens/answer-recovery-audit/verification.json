@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-04",
+  "environment": "Expo web with synthetic REST, no real family records",
+  "viewports": [{"width":390,"height":844},{"width":1280,"height":800}],
+  "checks": {
+    "lostReplyReceiptReused": true,
+    "restoredLocalAnswers": 2,
+    "storedAnswerRevisions": [1,1],
+    "pendingJournalEntriesAfterRecovery": 0,
+    "finishAndParentRead": true,
+    "reviewSnapshotReadsBeforeReconnect": 2,
+    "reviewSnapshotReadsAfterReconnect": 2,
+    "reviewDraftRetainedOnReconnect": true,
+    "reviewConflictRetainsDraft": true,
+    "childFeedbackVisible": true,
+    "scoreSuffixFitsPhone": true,
+    "pageErrors": []
+  },
+  "physicalDeviceVerified": false,
+  "productionChanged": false,
+  "testFlightChanged": false
+}
