@@ -8,5 +8,11 @@
   "published": true,
   "accessGateVerified": true,
   "liveRecoveryLinkVerified": true,
-  "authenticatedAdminWorkflowVerified": false
+  "authenticatedAdminWorkflowVerified": false,
+  "authenticatedAdminSignInVerified": true,
+  "readOnlyPagesChecked": 15,
+  "readOnlyDataPagesLoaded": 13,
+  "selectionRequiredPages": 2,
+  "browserErrorCount": 0,
+  "realFamilyMutationsPerformed": false
 }

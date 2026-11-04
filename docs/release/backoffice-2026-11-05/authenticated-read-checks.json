@@ -1,0 +1,137 @@
+{
+  "checkedAt": "2026-11-04T21:35:20.563Z",
+  "readOnly": true,
+  "mutationsTested": false,
+  "pages": [
+    {
+      "route": "ai",
+      "headings": [
+        "  - heading \"AI ayarları\" [level=1]",
+        "  - heading \"Genel AI anahtarı\" [level=2]",
+        "  - heading \"Paket bazlı ayarlar\" [level=2]",
+        "  - heading \"Modeller\" [level=2]"
+      ],
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "operations",
+      "headings": [
+        "  - heading \"AI işlem merkezi\" [level=1]",
+        "  - heading \"Paketlere göre işlem sınırları\" [level=2]",
+        "  - heading \"Son 100 işlem\" [level=2]"
+      ],
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "overrides",
+      "headings": [
+        "  - heading \"Geçici haklar\" [level=1]",
+        "  - heading \"Paket hakkı ver\" [level=2]",
+        "  - heading \"Son denetim kayıtları\" [level=2]"
+      ],
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "questions",
+      "headings": [
+        "  - heading \"Global soru bankası\" [level=1]",
+        "  - heading \"0 soru\" [level=2]"
+      ],
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "library",
+      "headings": [
+        "  - heading \"GINA kütüphanesi\" [level=1]",
+        "    - heading \"Koleksiyonlar\" [level=2]"
+      ],
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "groups",
+      "headings": [
+        "  - heading \"Birlikte Prova\" [level=1]",
+        "  - heading \"Yayın ve paket hakları\" [level=2]",
+        "  - heading \"Yeni ortak prova\" [level=2]",
+        "  - heading \"Yayımlanan provalar\" [level=2]"
+      ],
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "families",
+      "headings": [
+        "  - heading \"Aileler\" [level=1]"
+      ],
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "notifications",
+      "headings": [
+        "  - heading \"Bildirim teslimi\" [level=1]"
+      ],
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "billing",
+      "headings": [
+        "  - heading \"Paketler ve ödemeler\" [level=1]"
+      ],
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "support",
+      "headings": [
+        "  - heading \"Destek merkezi\" [level=1]",
+        "    - heading \"Destek talepleri\" [level=2]",
+        "    - heading \"Bu görünümde talep yok\" [level=3]",
+        "  - heading \"Bir görüşme seçin\" [level=2]"
+      ],
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "ideas",
+      "headings": [
+        "  - heading \"Fikirler\" [level=1]"
+      ],
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "help-articles",
+      "headings": [
+        "  - heading \"Yardım yazıları\" [level=1]"
+      ],
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "library-publication",
+      "state": "requires-library-draft-selection",
+      "loading": false,
+      "errors": [],
+      "detail": "Kütüphaneden bir taslak paket seç."
+    },
+    {
+      "route": "cohort-review",
+      "state": "requires-prova-selection",
+      "loading": false,
+      "errors": []
+    },
+    {
+      "route": "dashboard",
+      "state": "authenticated-admin-data-loaded",
+      "loading": false,
+      "errors": []
+    }
+  ]
+}

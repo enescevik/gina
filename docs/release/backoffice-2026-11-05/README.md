@@ -27,8 +27,11 @@ Canlı Chrome oturumunda yeni açıklamalar ve **Şifremi unuttum** bağlantıs�
   Son dağıtımın 12 kontrolü de tekrar geçti.
   [Oturumsuz doğrulama](access-verification.json).
 - Kullanıcı Chrome'da Cloudflare kodunu girerek **canlı GINA yönetici girişine**
-  ulaştı. Bu, izinli Cloudflare girişinin çalıştığını gösterir; uygulama içi giriş
-  ve tüm yönetim işlemlerinin canlı kabulü değildir.
+  ulaştı. Ardından GINA yönetici girişi de başarıyla tamamlandı.
+  13 bölümün verileri yüklendi; kütüphane yayını ve toplu Prova incelemesi,
+  seçim yapılmadığında doğru yönlendirmeyi gösterdi.
+  [Canlı okuma kontrolleri](authenticated-read-checks.json). Tarayıcı hata kaydı yok.
+  Bu, bütün yazma/ödeme/bildirim işlemlerinin canlı kabulü değildir.
 - Kullanıcının ayrı açık onayı sonrası mevcut doğrulanmış GINA hesabına tam admin
   yetkisi eklendi. Öncesinde `admins.grant_requested`, sonrasında
   `admins.grant_completed` denetim kayıtları yazıldı. Mevcut veli verisi ve şifre
@@ -48,8 +51,9 @@ Canlı Chrome oturumunda yeni açıklamalar ve **Şifremi unuttum** bağlantıs�
   yenileme izinlerine sahip. Yeni token veya ücretli plan oluşturulmadı.
 - GitHub Actions yayın secret'ları yok. Bu yayın yerelden yapıldı; CI'nın boş
   yapılandırmayla atlaması başarı kanıtı sayılmaz.
-- Kullanıcı mevcut GINA şifresini hatırlamadığı için uygulama içi canlı yönetici
-  turu henüz tamamlanmadı. Sıfırlama ekranı açıldı; şifreyi kullanıcı belirleyecek.
+- Başlangıçtaki şifre engeli giderildi; mevcut hesapla canlı yönetici oturumu
+  doğrulandı. Şifre, giriş kodu veya oturum anahtarı bu pakete kaydedilmedi.
+  Gerçek aile, ödeme ve içerik kayıtları üzerinde yazma testi yapılmadı.
 - Üretim paketinin manifesti [build-manifest.json](build-manifest.json) içinde.
   Oturumsuz HTTP kontrolü dosya içeriğini doğrulamaz; yetkili indirme/hash kontrolü
   ayrıca izlenecek.
@@ -63,3 +67,5 @@ Canlı Chrome oturumunda yeni açıklamalar ve **Şifremi unuttum** bağlantıs�
 Gerçek satın alma, fiziksel bildirim/kalem kabulü, alan adı/SMTP, Android hesapları,
 tam Auth/Storage geri dönüş tatbikatı ve ek AI sağlayıcıları tamamlandı sayılmaz.
 Kütüphane üretimi kullanıcının kararıyla en sonda kalır.
+
+![Canlı yönetici paneli](live-dashboard.png)
