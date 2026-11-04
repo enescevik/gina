@@ -474,3 +474,10 @@ Veli ve aktif çocuk cihazı için çocuk/gün bazında liste eklendi. Program d
 Eksik aile claim'ini hizmet hesabı sayan eski veri yolu kapatıldı; çocuk/başka aile/ayrılmış veli erişimi reddedilir. Model girdisi serbest görev metni/ad/doğum tarihi taşımayan durum sayımlarına indirildi. Aile saat diliminde tamamlanmış son sekiz hafta, sabit girdi/model/istem, ortak kota/işlem sahipliği, kesin sonuçtan tek özet ve belirsiz yanıt kurtarması vardır. Çocuk silme türetilmiş içeriği temizler; geç sonuç geri getiremez ve harcanmış kullanım sıfırlanmaz.
 
 46 yeni SQL ile 66 dosya/1851; dört gerçek yarış ve 17 ilgili Edge testi, Edge/core/backoffice tip ve backoffice lint geçti. Kanıt/sınırlar/yayın sırası: `WEEKLY-SUMMARY-ACCEPTANCE.md`. Gerçek sağlayıcı/cihaz kullanılmadı. Güvenlik düzeltmesi dahil 088000/Edge henüz canlıda değil; TestFlight 17 değişmedi. Haftalık birlikte değerlendirme ekranı ve diğer kapsam açık.
+
+
+## 4 Kasım — haftalık “Birlikte bakalım”
+
+Veli ana ekranının mevcut özet alanına üç adımlı ortak konuşma akışı eklendi. Onay bekleyen görevler onaylananlardan ayrılır; en çok görev gününü yapan çocuğu seçen örtük sıralama kaldırıldı. Mevcut çocuk filtresi izlenir, sıfır kayıt başarısızlık sayılmaz. Son adım yalnız takvimi açar; otomatik yazma veya AI çağrısı yoktur. Konuşma kaydedilmez.
+
+Core 179 (beş yeni sayım testi), mobil/core tip ve mobil lint; gerçek Expo bileşenlerinde sentetik telefon/tablet, çocuk filtresi/tek çocuk/boş kayıt/adımlar/takvim geçişi ve 48 dp kabulü geçti. Kanıt: `docs/design/screens/family-week-review/README.md`. Onaylı ana ekranın diğer alanları ve maskotu korundu. Native kabul/üretim/TestFlight değişmedi; bu haftalık AI özeti istemcisi veya tüm açık işlerin tamamlanması değildir.

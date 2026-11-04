@@ -3,7 +3,7 @@ import { router, type Href } from 'expo-router';
 import { ActivityIndicator, Image, ScrollView, Text, View, useWindowDimensions } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { Bell, BookOpen, CalendarDays, Check, ChevronRight, Circle, Clock3,  GraduationCap, Home, LockKeyhole, MoreHorizontal, Plus, Star, Users, CircleAlert, Gift, FileText } from 'lucide-react-native';
+import { Bell, CalendarDays, Check, ChevronRight, Circle, Clock3,  GraduationCap, Home, LockKeyhole, MoreHorizontal, Plus, Star, Users, CircleAlert, Gift, FileText } from 'lucide-react-native';
 import type { Occurrence } from '@gina/core';
 import type { WeekEvent } from '@/components/calendar/week-list';
 import { Pressable } from '@/components/ui/pressable';
@@ -15,6 +15,7 @@ import { Collectible } from '@/components/collectible';
 import { SatinButton, IconButton } from '@/components/planner/ui';
 import { useChildGoal } from '@/lib/use-child-goal';
 import { colors as c, styles as s } from './theme';
+import { FamilyWeekReview } from './family-week-review';
 
 const logo = require('../../../../../packages/assets/brand/growing-friend/logo.png');
 const mascot = require('../../../../../packages/assets/brand/growing-friend/contextual/family.png');
@@ -23,7 +24,7 @@ type Approval = { id: string; child_id: string; task_templates: { title: string;
 export interface HomeViewProps {
   profiles: Child[]; selected: string | null; select: (id: string | null) => void;
   today: string; week: string[]; parentName: string | null | undefined; timeZone: string;
-  summary: string; weeklyCount: number;
+  weeklyCounts: { approved: number; pending: number; returned: number };
   familyDay: { child: Child; due: number; done: number; stars: number }[];
   tasks: { id: string; title: string; icon: string; childName: string; status: string }[];
   approvals: Approval[]; review: (id: string, approve: boolean) => void;
@@ -221,9 +222,8 @@ export function ParentHomeView(p: HomeViewProps) {
           </View>
           <View style={s.columns}><View style={[s.column, { flex: 1.15 }]}>{weekControl}{tasks}</View><View style={s.column}>{prova}</View></View>
         </> : <>{approvals}{plan}{progress}{quickActions}{goals}{weekControl}{tasks}{prova}</>}
-        {p.weeklyCount > 0 && <View style={s.summary}><Heading>{t('parentHome.smallSteps')}</Heading><Label>{t(selectedChild ? 'parentHome.childWeek' : 'parentHome.familyWeek', { name: selectedChild?.name, count: p.weeklyCount })}</Label>
-          <Pressable accessibilityRole="button" onPress={() => go('/parent/prova/progress')} style={s.link}><BookOpen size={22} color={c.green}/><View style={s.fill}><Label small>{p.summary}</Label></View><ChevronRight size={18} color={c.muted}/></Pressable>
-        </View>}
+        <FamilyWeekReview key={`${p.week[0]}:${p.selected ?? 'family'}`} from={p.week[0] ?? p.today} to={p.today} childName={selectedChild?.name} counts={p.weeklyCounts}/>
+
       </>}
     </ScrollView>
     <View style={[s.bottomNav, { paddingBottom: insets.bottom }]}>{destinations.map(({ key, href, Icon }) => <Pressable key={key} accessibilityRole="button" accessibilityLabel={t(`parentHome.${key}`)} accessibilityState={{ selected: key === 'today' }} onPress={() => key !== 'today' && router.navigate(href)} style={[s.bottomItem, wide && s.row]}>

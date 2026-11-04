@@ -2478,5 +2478,26 @@
     "reload": "Load latest checklist",
     "refresh": "Your save was acknowledged, but the latest checklist could not be loaded. Reload to check it.",
     "readonly": "Past checklists are view-only."
+  },
+  "familyWeek": {
+    "title": "Let’s look together",
+    "family": "Talk about this week together.",
+    "child": "Talk about this week with {{name}}.",
+    "approved": "{{count}} tasks approved",
+    "pending": "{{count}} tasks awaiting approval",
+    "returned": "{{count}} tasks to revisit",
+    "recordedOnly": "These are only tasks recorded in the app. Leave room to talk about your child’s effort and the things you did together.",
+    "empty": "There are no task records this week yet. You do not need records to have a conversation.",
+    "step": "Conversation {{current}} / {{total}}",
+    "question0": "What did you enjoy most this week?",
+    "hint0": "Listen to your child first. It can be a small enjoyable moment, rather than a major achievement.",
+    "question1": "What could we make easier together?",
+    "hint1": "If something was difficult, ask what support would help. You can skip this question if your child does not want to answer.",
+    "question2": "What small step shall we try next week?",
+    "hint2": "Choose one manageable step together. You can add it to the calendar; this conversation does not automatically create tasks.",
+    "previous": "Previous conversation question",
+    "next": "Next question",
+    "plan": "Plan together in the calendar",
+    "privacy": "This conversation is not recorded or sent to AI. Use your own words for the questions and stop whenever you like."
   }
 }
