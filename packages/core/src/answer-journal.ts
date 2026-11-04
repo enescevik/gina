@@ -106,6 +106,13 @@ export class AnswerJournal {
       let revision: number;
       try {
         revision = await transmit(receipt);
+        // A successful HTTP status alone does not acknowledge the saved answer.
+        // Keep the exact pending request on malformed or older responses so a
+        // retry can reconcile its server receipt without losing the local work.
+        if (
+          !Number.isSafeInteger(revision) || revision < 1 ||
+          revision < receipt.revision
+        ) throw new Error("answer_ack_invalid");
       } catch (error) {
         if (
           error && typeof error === "object" && "message" in error &&
