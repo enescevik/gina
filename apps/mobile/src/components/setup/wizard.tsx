@@ -56,6 +56,8 @@ export function SetupWizard({
   const { width, height, fontScale } = useWindowDimensions();
   const wide = width >= 700 && height >= 600 && fontScale < 1.4;
   const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
+  // A completed import can advance the step without pressing Continue.
+  useEffect(() => { scroll.current?.scrollTo({ y: 0, animated: false }); }, [step]);
   const [leave, setLeave] = useState<(() => void) | null>(null);
   const askLeave = (action: () => void) => {
     if (!busy) {

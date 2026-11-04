@@ -495,3 +495,9 @@ Takvimde seçili çocuk için üç adımlı veli planı ve çocuğun küçük ad
 İşlem kimliğiyle başka aile satırını döndüren eski kısa yol izole testte doğrulandı ve kapatıldı. Aile/çocuk/görev/gün bağı, yeniden gönderimden sonra da korunan makbuzlar, geri alınmış kaydı geri oluşturmayan tekrar ve onay/geri alma satır kilidi eklendi. Planlanmamış hafta günü sunucuda da reddedilir. Migration eski sürümün önceden kaybettiği işlem kimliklerini yeniden oluşturamaz; eldeki son kimlikleri içeri alır.
 
 27 yeni SQL, toplam 68 dosya/1936 kontrol; altı gerçek eşzamanlılık senaryosu geçti. Kanıt: `TASK-SUBMISSION-ACCEPTANCE.md`. Mobil tasarım, gerçek aile/demo kayıtları ve TestFlight17 değişmedi. Güvenlik düzeltmesi henüz üretimde değildir; yayın ve kalan kapsam kabulü açık.
+
+## 4 Kasım — belgeden tekil çalışma planı (091000)
+
+Fotoğraf/PDF veya kayıtlı özel belge → ayrı AI onayı → kaynak sayfası/uyarı → çoklu seçim → her işi düzenleme → veli kontrolü → atomik kayıt eklendi. Tam olmayan tarihler tamamlanmaz; AI önerisi kendiliğinden ödeve dönüşmez. Sunucudaki sınıf ve değişmez kaynak/model/istem bağlamı kullanılır. Aynı kayıtlı belge/çocuk/dil için ücretli sonuç tekrar kullanılır; seçilmiş madde ikinci kez eklenmez. Kaynak temizliği, ödeve bağlı dosyaları artık korur. Kaynak/çocuk silme geç sonucu engeller; onaylı plan kaynak silinse de kalır.
+
+42 yeni SQL ile 69 dosya/1978 kontrol; beş gerçek DB yarışı, core195, ilgili Edge32, mobil/core tip ve mobil lint geçti. Telefon/tablet, çoklu seçim, yön değiştirme, kayıp yanıt/yeniden açılış ve kesin hata sonrasında taslak koruma kanıtı: `docs/design/screens/learning-plan-import/README.md`. Gerçek sağlayıcı/Storage/cihaz kabulü ve dağıtım açık; TestFlight17 değişmedi. Kütüphane 60 taslak/1480 yazılmamış/0 bağımsız onay/0 yayın; diğer kapsam kapanmış sayılmaz.

@@ -37,6 +37,7 @@ import { SetupSourceLinks } from "@/components/setup/source-links";
 import { SubjectIcon } from "@/components/subject-icon";
 import { IconButton, p, SatinButton, u } from "./ui";
 import type { PlannerChild } from "./timetable-editor";
+import { LearningPlanImport } from "./learning-plan-import";
 type Props = {
   child: PlannerChild;
   date: string;
@@ -105,6 +106,7 @@ function PlanSection({ child, date, from, to, childMode }: Props) {
   const [editing, setEditing] = useState<LearningPlanRow | null | undefined>(
     undefined,
   );
+  const [importing, setImporting] = useState(false);
   const [history, setHistory] = useState(false),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false);
@@ -167,6 +169,7 @@ function PlanSection({ child, date, from, to, childMode }: Props) {
           )
           : null}
       </View>
+      {!childMode && !pending && !recovery.blocked ? <Pressable accessibilityRole="button" onPress={() => setImporting(true)} style={{minHeight:48,justifyContent:"center"}}><Text style={[u.copy,{color:p.purple}]}>{t("planImport.open")}</Text></Pressable> : null}
       {pending || recovery.blocked
         ? (
           <View style={u.card}>
@@ -313,6 +316,7 @@ function PlanSection({ child, date, from, to, childMode }: Props) {
       {error
         ? <Text accessibilityRole="alert" style={u.error}>{error}</Text>
         : null}
+      {importing ? <LearningPlanImport child={child} date={date} onClose={() => setImporting(false)} onSaved={async () => {setImporting(false);await query.refetch();}}/> : null}
       {editing !== undefined
         ? (
           <PlanEditor

@@ -340,3 +340,47 @@ Deno.test("weekly reservation binds the frozen context and reuses its paid resul
     );
   });
 });
+
+Deno.test("learning import reservation binds immutable document context without provider replay", async () => {
+  const calls: string[] = [];
+  const db = {
+    rpc: async (name: string, args: Record<string, unknown>) => {
+      calls.push(name);
+      assert(args.p_context === "doc-context", "context reference");
+      return {
+        data: {
+          id: "job",
+          cached: {
+            output: { summary: "Cached" },
+            inputTokens: 1,
+            outputTokens: 1,
+          },
+        },
+        error: null,
+      };
+    },
+  } as unknown as SupabaseClient;
+  await withFetch([], async (requests) => {
+    const r = await runAiOperation(
+      db,
+      parent,
+      "learning_import",
+      "doc-context",
+      "synthetic-key",
+      config,
+      "system",
+      "input",
+      schema,
+      validate,
+    );
+    assert(
+      !(r instanceof Response) && r.output.summary === "Cached",
+      "cached extraction",
+    );
+    assert(requests.length === 0, "no paid request");
+  });
+  assert(
+    calls.join() === "reserve_learning_plan_import",
+    "specialized scope gate",
+  );
+});

@@ -2267,6 +2267,8 @@ isOneToOne: false
           Functions: {
       get_learning_plan_item: { Args: { p_child_id: string; p_id: string }; Returns: Json };
       get_learning_plan: { Args: { p_child_id: string; p_from: string; p_to: string }; Returns: Json };
+      get_learning_plan_import: { Args: { p_child_id: string; p_source_id: string; p_locale: string }; Returns: Json };
+      apply_learning_plan_import: { Args: { p_request_id: string; p_child_id: string; p_import_id: string; p_items: Json }; Returns: Json };
       save_learning_plan: { Args: { p_request_id: string; p_child_id: string; p_id: string; p_revision: number; p_content: Json }; Returns: Json };
 
             get_repeat_calendar_event: { Args: { p_event_id: string }; Returns: Json };
