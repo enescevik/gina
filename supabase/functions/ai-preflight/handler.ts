@@ -1,15 +1,18 @@
+import { type FeatureMode, featureModes } from "./feature-smoke.ts";
+export type SmokeMode = "smoke" | "document-smoke" | FeatureMode;
 /** Operator-only checks. No customer data, key material, or provider error bodies leave this endpoint. */
 export interface PreflightDependencies {
   operatorKey: string | undefined;
   expiresAt: string | undefined;
   providerKey: string | undefined;
   fetch: typeof fetch;
-  smoke: (mode: "smoke" | "document-smoke") => Promise<
+  smoke: (mode: SmokeMode) => Promise<
     {
       valid: boolean;
       model: string;
       inputTokens: number | null;
       outputTokens: number | null;
+      sample?: unknown;
     }
   >;
 }
@@ -57,20 +60,25 @@ export async function handlePreflight(
   } catch {
     return reply({ error: "invalid_input" }, 400);
   }
-  if (mode !== "connection" && mode !== "smoke" && mode !== "document-smoke") {
+  if (
+    mode !== "connection" && mode !== "smoke" && mode !== "document-smoke" &&
+    !featureModes.includes(mode as FeatureMode)
+  ) {
     return reply({ error: "invalid_input" }, 400);
   }
   if (!deps.providerKey) {
     return reply({ error: "provider_not_configured" }, 503);
   }
   try {
-    if (mode === "smoke" || mode === "document-smoke") {
-      const result = await deps.smoke(mode);
+    if (mode !== "connection") {
+      const result = await deps.smoke(mode as SmokeMode);
       return reply(
         {
           check: mode === "document-smoke"
             ? "synthetic_document_extraction"
-            : "synthetic_structured_output",
+            : mode === "smoke"
+            ? "synthetic_structured_output"
+            : "synthetic_" + String(mode).replace("-smoke", ""),
           ...result,
         },
         result.valid ? 200 : 502,

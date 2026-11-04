@@ -106,3 +106,52 @@ Deno.test("expired or malformed operator access is rejected", async () => {
     assert((await handlePreflight(request(), d)).status === 403);
   }
 });
+
+Deno.test("feature probes require operator access and dispatch exactly one fixed mode", async () => {
+  for (
+    const mode of [
+      "weekly-smoke",
+      "learning-smoke",
+      "task-smoke",
+      "reward-smoke",
+    ]
+  ) {
+    const d = deps();
+    const received: string[] = [];
+    d.smoke = async (selected) => {
+      received.push(selected);
+      return {
+        valid: true,
+        model: "model",
+        inputTokens: 5,
+        outputTokens: 10,
+        sample: { synthetic: true },
+      };
+    };
+    assert((await handlePreflight(request(mode, "wrong"), d)).status === 403);
+    assert(received.length === 0);
+    const response = await handlePreflight(request(mode), d);
+    assert(
+      response.status === 200 && received.length === 1 && received[0] === mode,
+    );
+    assert((await response.json()).sample.synthetic === true);
+  }
+});
+Deno.test("invalid feature output is failed and uncertain provider call is never retried", async () => {
+  const d = deps();
+  let calls = 0;
+  d.smoke = async () => {
+    calls++;
+    throw Error("private upstream details");
+  };
+  const response = await handlePreflight(request("weekly-smoke"), d);
+  assert(response.status === 502 && calls === 1);
+  assert(!(await response.text()).includes("private upstream details"));
+  d.smoke = async () => ({
+    valid: false,
+    model: "model",
+    inputTokens: 5,
+    outputTokens: 10,
+  });
+  assert((await handlePreflight(request("learning-smoke"), d)).status === 502);
+});

@@ -576,3 +576,8 @@ Veli makbuzunda sıfır ve güvenli tam sayı sınırı dışı revizyonun tasla
 Realtime iç içe null kimliklerin UUID dönüşümünde bütün değişiklik grubunu durdurduğu gerçek hizmetlerle yeniden üretildi ve merkezi claim okumasında düzeltildi. Geçerli kimlik/rol, aile sınırı ve cihaz iptali korundu. Mobil abonelik, socket katılımı yerine veritabanı hazır olayını izler; aradaki kayıtları yeniden okur ve hata halinde yedek yenilemeyi sürdürür.
 
 Auth/REST/Realtime/Storage/Edge birleşik koşumunda 134 kontrol; 72 SQL dosyasında 2035 kontrol; beş hook testi ve mobil tip/lint geçti. Başka aile ve iptal edilmiş cihazın açık bağlantısına satır gitmedi. Kanıt: `isolated-service-acceptance/realtime-verification.json`. Üretim ve TestFlight17 değişmedi; fiziksel cihaz/push/mağaza/diğer AI kabulü açık.
+
+
+## 4 Kasım — yeni AI özelliklerinde gerçek sağlayıcı kabulü
+
+Haftalık özet, PNG’den ödev/kurs, belgeden görev ve ödül için dört sabit sentetik gerçek üretim geçti; yanlış tarih ve kanıtsız çocuk zorluğu üretilmedi, belge kapsamı korundu. Üretim aile verisine dokunulmadı. Yalnız dar operatör preflight güncellendi; süreli erişim sonunda kaldırıldı. Kanıt/gerçek çıktılar: `ai-feature-acceptance/verification.json`. 34 ilgili Edge ve yedi workspace işi geçti. Yeni ürün uç noktalarının canlı kayıt/kota/yeniden açılışı, fiziksel cihaz ve koordineli yayın açık; TestFlight17 değişmedi.
