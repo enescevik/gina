@@ -2253,6 +2253,14 @@ isOneToOne: false
                 }
           }
           Functions: {
+      preview_question_contribution: {Args:{p_question_id:string};Returns:Json};
+      begin_question_contribution: {Args:{p_id:string;p_question_id:string;p_rights:boolean;p_no_personal_data:boolean};Returns:Json};
+      list_question_contributions: {Args:Record<PropertyKey,never>;Returns:Json};
+      withdraw_question_contribution: {Args:{p_id:string};Returns:undefined};
+      admin_list_contribution_sets: {Args:Record<PropertyKey,never>;Returns:Json};
+      admin_get_contribution_set: {Args:{p_id:string};Returns:Json};
+      admin_decide_contribution_set: {Args:{p_request_id:string;p_id:string;p_approve:boolean;p_note:string;p_teachers:Json;p_confirmed:boolean};Returns:Json};
+
       "save_family_blueprint": {Args:{p_request_id:string;p_input:Json};Returns:string}
 
       finance_workspace: {Args:{p_query?:string;p_family_id?:string};Returns:Json};

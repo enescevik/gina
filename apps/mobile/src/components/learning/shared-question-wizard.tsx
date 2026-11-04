@@ -821,6 +821,7 @@ export function SharedQuestionWizard(
                         <Text style={s.copy}>
                           {t("sharedQuestions.previewHelp")}
                         </Text>
+                        {saved || reusable ? <SatinButton secondary title={t("contribution.reviewShare")} onPress={()=>router.push({pathname:"/parent/prova/share",params:{groupId:saved?.id??draft.previousId!}})}/> : null}
                         {draft.questions.map((item, i) => (
                           <View key={i} style={s.editorCard}>
                             <Text style={s.small}>

@@ -1,0 +1,12 @@
+import {describe,it,expect} from 'vitest';
+import {createContributionJournal} from './contribution';
+const id=(n:number)=>`00000000-0000-4000-8000-${String(n).padStart(12,'0')}`;
+function fixture(){const rows=new Map<string,string>();let active=true,reply:unknown={id:id(9),status:'pending'};let failure:Error|null=null;const open=(user=id(1))=>createContributionJournal({store:{get:k=>rows.get(k)??null,set:(k,v)=>{rows.set(k,v);},remove:k=>{rows.delete(k);},keys:()=>[...rows.keys()]},user,family:id(2),id:()=>id(9),guard(){if(!active)throw Error('logout');},async send(){if(failure)throw failure;return reply;}});return{rows,open,setReply:(v:unknown)=>{reply=v;},fail:()=>{failure=Error('network');},recover:()=>{failure=null;},logout:()=>{active=false;rows.clear();}};}
+describe('consented sharing recovery',()=>{
+ it('stores before sending and reopens exactly the same consented command',async()=>{const f=fixture(),j=f.open(),c=j.prepare(id(3));f.fail();await expect(j.send(c)).rejects.toThrow('network');expect(f.open().read()).toEqual(c);expect(f.open().prepare(id(3))).toEqual(c);f.recover();await f.open().send(c);expect(f.open().read()).toBeNull();});
+ it('cannot change question while a submission is unresolved',()=>{const f=fixture(),j=f.open();j.prepare(id(3));expect(()=>j.prepare(id(4))).toThrow('contribution_pending');expect(f.open(id(8)).read()).toBeNull();});
+ it('retains preparing or malformed replies, clears final acknowledgement',async()=>{for(const reply of [{id:id(9),status:'preparing'},null,{id:id(9),status:'nonsense'},{id:id(9),status:'withdrawn'}]){const f=fixture(),j=f.open(),c=j.prepare(id(3));f.setReply(reply);try{await j.send(c);}catch{}expect(j.read()===null).toBe(reply?.status==='withdrawn');}});
+ it('changed command and unconfirmed data never send',async()=>{const f=fixture(),j=f.open(),c=j.prepare(id(3));await expect(j.send({...c,question_id:id(4)})).rejects.toThrow('contribution_changed');expect(()=>j.prepare('not-an-id')).toThrow();});
+ it('corrupt local state fails closed and remains available for recovery',()=>{const f=fixture(),j=f.open();j.prepare(id(3));const key=[...f.rows.keys()][0]!;f.rows.set(key,'broken');expect(()=>f.open().read()).toThrow();expect(f.rows.get(key)).toBe('broken');});
+ it('logout blocks stale commands',async()=>{const f=fixture(),j=f.open(),c=j.prepare(id(3));f.logout();await expect(j.send(c)).rejects.toThrow('logout');expect(f.rows.size).toBe(0);});
+});

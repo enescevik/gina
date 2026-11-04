@@ -384,3 +384,9 @@ Açık nokta netleştirildi: toplu Prova hâlâ eski görselsiz çoktan seçmeli
 - Kalıcı kayıt komutu kayıp yanıt ve yeniden açılışta aynı kimlikle tekrar edilir. 27 SQL + üç gerçek DB yarışı; toplam 54 dosya/1382 kontrol. 122 core, 11 ilgili Edge, mobil lint/typecheck geçti.
 - Birleşik Prova üretimi kaydedilmiş aile taslağına ve güncel çocuk sınıfına bağlanır. Senaryo satırları sessizce kırpılmaz; kapsam soru kökeninde korunur. Telefon/tablet gerçek web kanıtı: docs/design/screens/scenario-preparation/.
 - Resmî katalog/alan editörü incelemesi, gerçek AI ve fiziksel cihaz kabulü açık. 076000 henüz dağıtılmadı; TestFlight 17 değişmedi.
+
+## 4 Kasım — görselli/ortak kaynak katkısı
+
+077000 + contribution-submit ile ayrı paylaşım kopyası, bütün grup aktarımı, açık kullanım/mahremiyet onayı, kalıcı gönderim ve yönetici karar kurtarma, soru bazında öğretmen alanları, bağımsız taslak ve ortak/tekil ödül eşikleri uygulandı. Eski görselsiz katkı akışı korundu. Kabul yayın değildir; özellik varsayılan kapalıdır.
+
+Doğrulama: 55 SQL dosyasında 1.435 kontrol (53 yeni), dört gerçek DB yarış senaryosu, core 128 + katkı Edge 8 test; mobil/backoffice lint/tip kontrolü ve backoffice statik derleme geçti. Gerçek bileşenlerle telefon/tablet web kabulü ve kayıp yanıt/yenileme/geri çekme/ret/yetki kaybı kontrolleri `docs/design/screens/contribution-review/README.md` içinde. Bunlar fiziksel cihaz veya üretim kabulü değildir. Migration/Edge/istemciler henüz dağıtılmadı; TestFlight 17 değişmedi. Büyük birleşik fotoğraflar 512 KiB sınırında açıkça reddedilir; otomatik bulanıklaştırma yapılmaz.

@@ -17,13 +17,14 @@ export interface ParentScreenProps {
   subtitle?: string;
   children: ReactNode;
   home?: boolean;
+  wide?: boolean;
   navigation?: boolean;
   loading?: boolean;
   error?: unknown;
   onRetry?: () => void;
 }
 /** Shared cream, mint and purple shell; actions and form state stay with each screen. */
-export function ParentScreen({ title, subtitle, children, home = false, navigation = true, loading, error, onRetry }: ParentScreenProps) {
+export function ParentScreen({ title, subtitle, children, home = false, wide = false, navigation = true, loading, error, onRetry }: ParentScreenProps) {
   const { t } = useTranslation();
   const { width, fontScale } = useWindowDimensions();
   const spacious = width >= 800 && fontScale < 1.4;
@@ -35,7 +36,7 @@ export function ParentScreen({ title, subtitle, children, home = false, navigati
     : /calendar|task|approval|plan|notification/.test(path) ? require('../../../../../packages/assets/brand/growing-friend/contextual/planner.png')
     : /famil|sign-in|menu|share/.test(path) ? require('../../../../../packages/assets/brand/growing-friend/contextual/family.png') : null;
   const MenuIcon = inMenu ? Home : Menu;
-  const pageWidth = !navigation ? 680 : /famil|pin|notification|share|subscription|room-credits|notes|grades/.test(path) ? 820 : 1000;
+  const pageWidth = wide ? 1180 : !navigation ? 680 : /famil|pin|notification|share|subscription|room-credits|notes|grades/.test(path) ? 820 : 1000;
   return <SafeAreaView style={styles.root}>
     <KeyboardAvoidingView style={styles.fill} behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <View style={[styles.topbar, {maxWidth:pageWidth}]}>

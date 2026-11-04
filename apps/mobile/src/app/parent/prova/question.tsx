@@ -83,7 +83,7 @@ export default function QuestionScreen() {
       if (images.length && !storageConsent) {
         throw new Error(t("sources.consentRequired"));
       }
-      if (images.length && share) throw new Error(t("sources.sharingPending"));
+
       if (
         share &&
         (!solution.trim() || (kind === "open_ended" && !expected.trim()))
@@ -128,18 +128,6 @@ export default function QuestionScreen() {
         p_images: attachments,
       });
       if (error) throw error;
-      if (share) {
-        const { error: shareError } = await supabase.rpc(
-          "submit_question_contribution",
-          {
-            p_request_id: request.current.shareId,
-            p_question_id: request.current.id,
-            p_rights_confirmed: rights,
-            p_no_personal_data: noPersonal,
-          },
-        );
-        if (shareError) throw shareError;
-      }
       if (params.draftId) {
         await addToProvaDraft(params.draftId, [{
           kind: "question",
@@ -162,6 +150,7 @@ export default function QuestionScreen() {
             "level_preview",
           ].includes(String(query.queryKey[0])),
       });
+      if(share&&request.current){router.push({pathname:"/parent/prova/share",params:{questionId:request.current.id}});return;}
       if (andNew) {
         request.current = null;
         setImages([]);
@@ -367,15 +356,8 @@ export default function QuestionScreen() {
               label={t("library.share")}
               value={share}
               onChange={setShare}
-              disabled={save.isPending || images.length > 0}
+              disabled={save.isPending}
             />
-            {images.length
-              ? (
-                <Text style={parentStyles.muted}>
-                  {t("sources.sharingPending")}
-                </Text>
-              )
-              : null}
             {share
               ? (
                 <>

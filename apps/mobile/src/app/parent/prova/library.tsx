@@ -1,3 +1,4 @@
+import {ContributionHistory} from "@/components/learning/contribution-history";
 import { LibraryPackages } from "@/components/learning/library-packages";
 import { router, useLocalSearchParams } from "expo-router";
 import { addToProvaDraft, fetchProvaDrafts } from "@/lib/prova-draft";
@@ -199,6 +200,7 @@ export default function LearningLibrary() {
           </View>
         )
         : null}
+      <ContributionHistory />
       {catalog.data?.contributions.length
         ? (
           <View style={parentStyles.card}>
