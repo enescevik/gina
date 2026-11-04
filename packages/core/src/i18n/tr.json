@@ -474,7 +474,7 @@
   "push.pref.approvals": "Onay bekleyen görevler",
   "push.pref.approvalsHint": "Çocuk bir görevi bitirdiğinde haber ver.",
   "push.pref.exams": "Denemeler",
-  "push.pref.examsHint": "Bir deneme tamamlandığında haber ver.",
+  "push.pref.examsHint": "Bir Prova tamamlandığında veya Birlikte Prova sonuçları güncellendiğinde haber ver.",
   "push.pref.weekly_summary": "Haftalık özet",
   "push.pref.weekly_summaryHint": "Haftalık özet hazır olduğunda haber ver.",
   "push.privacyNote": "Bildirimlerde çocuk adı, not ya da puan yer almaz.",

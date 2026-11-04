@@ -34,4 +34,13 @@
 
 ## Açık sınırlar
 
-081000 migration, istemciler ve bu özellik üretime dağıtılmadı; TestFlight 17 değişmedi. Gerçek soru paketleri editör onayı almadan bu test onaylarıyla yayımlanmaz. Fiziksel iPhone/iPad/Android, ekran okuyucu, gerçek push teslimi ve merkez inceleme operasyon kapasitesi kabulü açık. Bu artım sonuç yayınına yeni push bildirimi bağlamaz; ayrı takip işidir. Ailelerin kişisel değerlendirmesi merkezi puanlama yerine geçmez.
+081000 migration, istemciler ve bu özellik üretime dağıtılmadı; TestFlight 17 değişmedi. Gerçek soru paketleri editör onayı almadan bu test onaylarıyla yayımlanmaz. Fiziksel iPhone/iPad/Android, ekran okuyucu, gerçek push teslimi ve merkez inceleme operasyon kapasitesi kabulü açık. 081000 tek başına sonuç bildirimi eklemez. Sonraki 082000 artımı yayın olayını veli bildirim kuyruğuna bağlar; kabul ve sınırlar aşağıdadır. Ailelerin kişisel değerlendirmesi merkezi puanlama yerine geçmez.
+
+
+## Sonuç bildirimi — 082000
+
+- Ayrı sonuç yayınında katılan aile başına tek kuyruk olayı. Aynı yayın isteğinin tekrarı ikinci olay oluşturmaz; yeni sonuç sürümü ayrı olaydır.
+- Bildirim metni genel; çocuk adı, cevap, puan, itiraz veya aile bilgisi yok. İstemcinin veri alanlarına yalnız doğrulanan UUID kimlikleri geçer. Bildirime dokunmak mevcut Birlikte Prova alanını açar; içerik yeniden aile yetkisiyle sorgulanır.
+- Velinin Prova bildirim tercihi ve canlı oturumu kontrol edilir. Çocuk cihazı ve başka aile hedeflenmez. Açık itiraz, iptal edilmiş Prova veya eski yayın sürümü varsa henüz gönderilmemiş olayın hedefleri boşaltılır. Gönderilmiş bildirimi uzaktan geri çekme iddiası yoktur.
+- 17 ek SQL kontrolü (60 dosyada 1.626), iki gerçek yayın yarışı, dört Edge mesaj/mahremiyet testi, Edge tip kontrolü ve mobil tip/lint geçti. Gerçek sağlayıcıya mesaj gönderilmedi.
+- Fiziksel APNs/FCM teslimi, sağlayıcı kurulumu ve eski göndericide cihaz başına kısmi hata kurtarması hâlâ ayrı kabul işidir. Bildirim teslimi sonuç verisinin kaynağı değildir; güncel sonuç uygulamada sunucudan okunur. Üretime dağıtılmadı.

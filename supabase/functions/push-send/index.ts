@@ -5,13 +5,13 @@
 // Kurallar: bildirim metni geneldir, kişisel veri (çocuk adı, not, puan) taşımaz; data yalnız kimlik.
 // Anahtar yoksa satırlar 'skipped_unconfigured' olur ve 200 döner.
 
+import { messageFor } from "./messages.ts";
 import { json, serviceClient } from "../_shared/supabase.ts";
 import {
   apnsConfigFromEnv,
   fcmConfigFromEnv,
   sendApns,
   sendFcm,
-  type PushMessage,
   type SendResult,
 } from "./providers.ts";
 
@@ -32,26 +32,6 @@ interface Target {
 }
 
 const MAX_ATTEMPTS = 5;
-
-// Genel, kişisel veri içermeyen metinler (tür → dil).
-const TEXTS: Record<string, Record<Locale, string>> = {
-  task_awaiting_approval: { tr: "Onay bekleyen bir görev var", en: "A task is waiting for your approval" },
-  task_approved: { tr: "Bir görevin onaylandı", en: "One of your tasks was approved" },
-  task_returned: { tr: "Bir görevin geri gönderildi, tekrar bakabilirsin", en: "A task was sent back, take another look" },
-  exam_assigned: { tr: "Yeni bir deneme seni bekliyor", en: "A new practice test is waiting for you" },
-  exam_finished: { tr: "Bir deneme tamamlandı", en: "A practice test was finished" },
-  weekly_summary: { tr: "Haftalık özet hazır", en: "Your weekly summary is ready" },
-};
-
-function messageFor(row: OutboxRow, locale: Locale): PushMessage {
-  const data: Record<string, string> = { kind: row.kind };
-  // Yalnız bilinen kimlik alanları geçer (savunma: payload'a başka alan yazılsa bile sızmaz).
-  for (const key of ["completion_id", "exam_id", "attempt_id"]) {
-    const value = row.payload?.[key];
-    if (typeof value === "string") data[key] = value;
-  }
-  return { title: "Gina", body: TEXTS[row.kind]?.[locale] ?? TEXTS[row.kind]?.tr ?? "Gina", kind: row.kind, data };
-}
 
 function authorized(req: Request): boolean {
   const bearer = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ?? "";

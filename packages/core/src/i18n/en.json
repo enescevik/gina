@@ -474,7 +474,7 @@
   "push.pref.approvals": "Tasks awaiting approval",
   "push.pref.approvalsHint": "Let me know when a child finishes a task.",
   "push.pref.exams": "Practice tests",
-  "push.pref.examsHint": "Let me know when a practice test is finished.",
+  "push.pref.examsHint": "Notify me when a practice test is completed or group practice results are updated.",
   "push.pref.weekly_summary": "Weekly summary",
   "push.pref.weekly_summaryHint": "Let me know when the weekly summary is ready.",
   "push.privacyNote": "Notifications never include a child's name, notes or scores.",
