@@ -37,7 +37,7 @@ Yerel tarayıcı denemeleri gerçek izole servislerle çalıştı; yalnız bu ye
 3. iPad'de defterde Apple Pencil ile çizin; dik/yatay ve metin/sembol pencerelerini deneyin. Tarayıcıdaki pointer denemesi fiziksel Pencil kabulü değildir.
 4. Gerçek mağaza satın alma/iade, APNs/FCM teslimi ve üretim Google/Apple kullanıcı etkileşimi bu değişiklik kapsamında bütün kombinasyonlarıyla yeniden çalıştırılmadı. Önceki kabul kayıtları korunur.
 
-Yayın kimlikleri ve canlı kontroller tamamlanınca bu klasöre ayrıca kaydedilecektir. Bu belge tek başına yayın kanıtı değildir.
+Yayın tamamlandı: web `https://gina-web.pages.dev`, korumalı yönetim `https://gina-backoffice.pages.dev`, TestFlight **0.1.0 (22)**. Apple işlem durumu `VALID`, iç test durumu `IN_BETA_TESTING`. Kaynak commitleri, dağıtım adresleri ve imzalı paket özeti `release.json`, `testflight-22-package.json` ve `../testflight-22-status.json` dosyalarında kayıtlıdır. Bu, genel App Store yayını değildir.
 
 
 ## Canlı kabul ve düzeltme
@@ -51,3 +51,22 @@ Web ana HTML/giriş/aile ekranı ve giriş JS dosyası üretim derlemesiyle bire
 19 sunucu sınır kontrolünün 18'i yetkisiz isteği 4xx ile reddetti. `google-rtdn` önceki eksik Google bildirim yapılandırması nedeniyle 503 ve `push_auth_not_configured` verdi; bunu başarılı entegrasyon saymıyoruz. Android mağaza hazırlığı ayrı açık iştir.
 
 Kaynaklar: [Anthropic yapılandırılmış çıktı sınırları](https://platform.claude.com/docs/en/build-with-claude/structured-outputs). Sağlayıcı `maxLength` kabul etmediği için açıklama + bağımsız sunucu doğrulaması kullanılır.
+
+
+## Yönetim ve cihaz kullanımı
+
+- Dosya sınırı: yönetim paneli → AI → Dosya, galeri ve kamera kaynakları. 1–10 arasında seçim yapıp kaydedin; başlangıç değeri 5.
+- Hazır seçenekler: yönetim → Hazır seçenekler → tür seçin → Seçenek ekle. Türkçe/İngilizce ad ve sınıf aralığını girin; konulara ders ilişkisi verilebilir. Güncelleme geçmişte kaydedilmiş etiketi değiştirmez. Artık önerilmeyecek seçeneği pasifleştirin.
+- Belgeler: ilgili oluşturma/içe aktarma ekranında Dosyalar, Galeri veya Fotoğraf çek. Her çekim mevcut listeye eklenir. Sıralamayı kontrol edip saklama/AI onaylarını verdikten sonra analiz edin; sonucu gözden geçirerek kaydedin.
+- Süre/sayı: hazır değere dokunun veya artır/azalt kullanın. Ortadaki değere dokununca özel sayı girişi açılır. AI örneklerine dokunmak mevcut notu silmeden ekleme yapar.
+
+## Yayın dışındaki açık gereksinimler
+
+Bu güncelleme web, yönetim, sunucu ve TestFlight içindir; genel App Store yayını değildir. Önceki işletme gereksinimleri kapanmış sayılmadı:
+
+1. Gerçek işletme/iletişim bilgileriyle hukuk ve gizlilik metinlerinin onayı. Ardından metin adresleri ve satın alma ayarı bağlanabilir. Hukuk metni hazır olmadığı için gerçek satın alma mevcut davranış gereği kapalıdır; test paket haklarıyla AI denenebilir.
+2. Özel alan adı ve e-posta/SMTP kurulumu; varsayılan e-posta hizmetinin kısıtları sürer. Alan adı satın alma ve işletme bilgisi kullanıcı kararıdır.
+3. Android mağaza hesabı, ürünler ve Google bildirim kimliği. `google-rtdn` eksik yapılandırmayla güvenli biçimde kapalı; Android ticari yayın tamamlandı denemez.
+4. Kamera izinleri, fiziksel Pencil ve gerçek bildirim/mağaza kabulü için cihaz denemesi. Yukarıdaki adımlar bu denemeyi kısa tutmak içindir.
+
+Kütüphane soru üretimi önceki karar gereği en son kalır. Bu çalışma yeni soru havuzu yayımlamadı.

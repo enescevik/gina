@@ -1,0 +1,51 @@
+{
+  "appSource": "1d530627f672dd2f5ca49f01b61b99ae66dc1837",
+  "mergedSource": "47a10666bb700a61fdf198e4d553cbaa7818828b",
+  "web": {
+    "url": "https://gina-web.pages.dev",
+    "deployment": "https://e57a0458.gina-web.pages.dev",
+    "hashesVerified": true
+  },
+  "backoffice": {
+    "url": "https://gina-backoffice.pages.dev",
+    "deployment": "https://deda9c21.gina-backoffice.pages.dev",
+    "accessTeam": "gina-family",
+    "unauthenticatedGateChecks": 12,
+    "authenticatedLiveUiRetested": false
+  },
+  "migrations": [
+    "20261105010000",
+    "20261105011000",
+    "20261105012000"
+  ],
+  "edgeFunctions": [
+    "learning-plan-import",
+    "ai-preflight",
+    "ai-weekly-summary",
+    "prova-grade",
+    "prova-plan",
+    "timetable-import",
+    "prova-review",
+    "setup-suggestions",
+    "prova-generate"
+  ],
+  "hostedServiceChecks": 31,
+  "testflight": {
+    "version": "0.1.0",
+    "build": "22",
+    "state": "IN_BETA_TESTING",
+    "deliveryId": "9018ef0d-1019-4870-8ec9-591429f7a261",
+    "validationExit": 0,
+    "processingState": "VALID",
+    "expired": false,
+    "uploadExit": 0,
+    "appleBuildId": "9018ef0d-1019-4870-8ec9-591429f7a261",
+    "notesLocales": [
+      "tr",
+      "en-US"
+    ],
+    "notesVerified": true,
+    "checkedAt": "2026-11-04T23:27:16.711Z"
+  },
+  "edgeSource": "ec1048fc6d45bf3e7d40a7e4955c11e8cbe84a4e"
+}

@@ -17,4 +17,4 @@ Yetki: kullanıcı tüm aşamaları mevcut onaylı tasarıma uyarak otonom tamam
 - Kütüphane soru üretimi kullanıcının önceki kararıyla en sonda; bu çalışma onu öne almaz.
 
 ## Durum
-İlk dört aşama tamamlandı; web, yönetim ve sunucu yayımlandı. iOS yerel imzalı derlemesi sürüyor. Fiziksel cihaz ve mağaza işletme gereksinimleri README içinde ayrı gösterilir.
+Beş aşamanın uygulanabilen kapsamı tamamlandı; web, yönetim ve sunucu yayımlandı. iOS 0.1.0 (22) imzalı paket Apple tarafından işlendi ve iç TestFlight testine açıldı. Fiziksel cihaz ve mağaza işletme gereksinimleri README içinde ayrı gösterilir.

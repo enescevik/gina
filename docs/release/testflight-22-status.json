@@ -1,0 +1,34 @@
+{
+  "version": "0.1.0",
+  "build": "22",
+  "source": "1d530627f672dd2f5ca49f01b61b99ae66dc1837",
+  "mergedSource": "47a10666bb700a61fdf198e4d553cbaa7818828b",
+  "bundleId": "com.enescevik.gina",
+  "signatureVerified": true,
+  "deviceFamilies": [
+    1,
+    2
+  ],
+  "iPadOrientations": [
+    "UIInterfaceOrientationPortrait",
+    "UIInterfaceOrientationPortraitUpsideDown",
+    "UIInterfaceOrientationLandscapeLeft",
+    "UIInterfaceOrientationLandscapeRight"
+  ],
+  "cameraPermissionPresent": true,
+  "productionEndpointsVerified": true,
+  "physicalDeviceTested": false,
+  "distribution": "app-store",
+  "buildMethod": "EAS local; cloud free-plan quota exhausted",
+  "ipaSha256": "085c790bbcba6e9f5445ce6c0c65a76271f57df15feb6a2b3c4b580d6cab0fe3",
+  "processingState": "VALID",
+  "internalState": "IN_BETA_TESTING",
+  "expired": false,
+  "appleBuildId": "9018ef0d-1019-4870-8ec9-591429f7a261",
+  "validationExit": 0,
+  "uploadExit": 0,
+  "submittedWith": "Apple altool; existing App Store Connect credential",
+  "checkedAt": "2026-11-04T23:27:16.711Z",
+  "turkishTestNotesVerified": true,
+  "englishTestNotesVerified": true
+}
