@@ -50,3 +50,5 @@ export * from "./prova-generation-journal";
 export * from "./cohort-review";
 
 export * from "./push-recovery";
+
+export * from "./repeat-calendar";

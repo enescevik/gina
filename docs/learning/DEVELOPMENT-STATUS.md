@@ -440,3 +440,10 @@ Kısmi başarı diğer cihazın geçici hatasını artık kapatmaz. Her cihaz ma
 Canlı yayın rolüne özel bildirim kuyruğu, gerekçeli yeniden sıraya alma, kayıp yanıt/yeniden açılış kurtarması ve kabul edilmiş cihaz makbuzlarını koruyan işlem tamamlandı. Son 24 saat, kayıt başına iki kurtarma ve operatör başına saatte 20 işlem sınırları sunucudadır. Özel geçmişte önceki sonuç sayıları korunur; cihaz anahtarı ve aile/çocuk kimliği arayüze çıkmaz. Yayın rolü tek başına yönetim girişinde desteklenir.
 
 28 yeni SQL ile 62 dosyada 1.685 kontrol, üç gerçek DB yarışı, 160 core testi, backoffice tip/lint ve 19 sayfalık üretim derlemesi geçti. Masaüstü/tablet/telefon sentetik ekran, kayıp yanıt ve rol iptali kanıtı: `docs/design/screens/push-operations/README.md`. Gerçek mesaj gönderimi, fiziksel teslim veya dağıtım yapılmadı; TestFlight 17 değişmedi.
+
+
+## 4 Kasım — incelenmiş sorulardan tekrar günleri (085000)
+
+Prova incelemesindeki mevcut çalışma planı alanından açılan soru seçimi → gün/saat/süre → önizleme → takvime ekleme tamamlandı. Güncel sınıf, son 90 gün, veli incelemesi ve daha yeni gözlem sınırı uygulanır. AI-only/boş cevap tekrar gereksinimi sayılmaz. Değiştirilebilir 1/3/7 gün önerisi hiçbir günü kendiliğinden seçmez. Yeni Prova veya puan oluşturulmaz.
+
+Kalıcı kayıt, kaynak imzası, tek plan sınırı, seçilen özgün soru numaraları ve takvimden kaynağa dönüş vardır. Çocuk silme hatırlatmayı aile geneline dönüştürmez; başka çocuğa yeniden atanan etkinlik eski kaynaktan ayrılır. 40 yeni SQL ile 63 dosyada 1.725 kontrol, dört gerçek DB yarışı ve 164 core testi; mobil lint/tip ve core tip kabulü geçti. Gerçek Expo bileşeni telefon/tablet, kayıp yanıt/yeniden açılış, tarih/süre önizleme ve kaynak değişimi kontrolleri: `docs/design/screens/repeat-calendar/README.md`. Üretim/TestFlight değişmedi; fiziksel kabul ve diğer kapsam maddeleri açık.

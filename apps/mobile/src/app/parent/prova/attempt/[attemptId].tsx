@@ -205,6 +205,7 @@ export default function AttemptReviewScreen() {
       {finished ? (
         <View className="gap-2 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
           <Text className="font-display text-xl text-ink">{t("prova.ai.studyPlans")}</Text>
+          <Button variant="secondary" title={t("repeatCalendar.entry")} onPress={() => router.push(`/parent/prova/repeat/${attemptId}`)} />
           {plans.data?.map((p) => (
             <Pressable key={p.id} accessibilityRole="button" style={{ minHeight: 48, justifyContent: "center" }} onPress={() => router.push(`/parent/prova/plan/${p.id}`)}>
               <Text className="font-body-bold text-teal-dark">
