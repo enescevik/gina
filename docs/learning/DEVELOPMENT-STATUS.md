@@ -419,3 +419,10 @@ AI'ya uzun öğrenme çıktıları eksiksiz ve ortak blok soru sayılarıyla gid
 Yeni paketli ortak Provalar şıklı/açık uçlu soruları birlikte taşıyabilir. Puanlama ağırlıkları ve ayrı cevap inceleme onayı katılım öncesinde görünür. Sabit ölçütler, özgün cevap izi ve canlı yönetici yetkisiyle inceleme; büyütülebilen çözüm defteri; soru bazında özel veli itirazı; değiştirilemeyen inceleme olay geçmişi ve ayrı sonuç yayını uygulandı. Veli kişisel puanı/AI önerisi ortak sıralamayı değiştirmez. Okunamayan cevap puansız bekler; açık itiraz/eksik inceleme kesin sıralamayı durdurur. Eşit toplam puan eşit sıradır.
 
 59 SQL dosyasında 1.609 kontrol (58 yeni), dört gerçek DB yarışı, core 157 test; mobil/backoffice tip/lint ve backoffice üretim derlemesi geçti. Telefon/tablet sentetik UI; kayıp inceleme/itiraz yanıtı, yeniden açılış, ayrı yayın, onay ve çizim büyütme kanıtları `docs/design/screens/cohort-written-review/README.md`. Gerçek aile verisi değiştirilmedi. Özellik/istemciler/migration henüz dağıtılmadı; TestFlight 17 aynı. Sonuç yayını push bağlantısı, gerçek editör/cihaz kabulü ve kontrollü açılış açık.
+
+
+## 4 Kasım — ortak sonuç yayın bildirimi (082000)
+
+081000 sonuç yayını aile başına tek veli bildirim olayına bağlandı. Bildirim puan/ad/cevap taşımaz; dokununca Birlikte Prova açılır. Prova tercihi ve aktif oturum denetlenir. Açık itiraz, iptal veya eski yayın sürümünün bekleyen bildirimi hedeflenmez. Aynı istek iki olay oluşturmaz; yeni yayın yeni olaydır.
+
+17 yeni SQL (60 dosyada 1.626), iki gerçek yayın yarışı, dört Edge mesaj/mahremiyet testi, Edge tip ve mobil tip/lint geçti. Gerçek APNs/FCM teslimi ve mevcut göndericide cihaz başına kısmi hata kurtarması açık. Migration/Edge/istemci dağıtılmadı; TestFlight 17 değişmedi.
