@@ -103,7 +103,7 @@ Dosya özel aile depolamasındadır. Ham belge, base64, imzalı URL, gizli anaht
 | P2 | Tekrar defteri ve analizden eylem | Yanlış/boş soru, kaynak ve konu ile bağlanıyor; gerekçeli tekrar adımı veli kontrolüyle ekleniyor; toplam netten konu uydurulmuyor. |
 | P2 | Veli plan asistanı | Gözlemi, öneriyi ve takvime uygulanacak değişikliği ayrı gösteriyor; otomatik çocuk AI sohbeti veya onaysız plan değişikliği yok. |
 | P3 | Müfredat pilotu | Bir sınıf/ders; kaynak sürümü ve yürürlük yılı doğrulanmış, insan incelemesi tamamlanmış; sürüm değişiminde geçmiş korunuyor. |
-| P3 | Çantam hazır mı / Birlikte bakalım | 087000: takvimde çocuk/gün bazında veli/aktif çocuk malzeme listesi, ders sürümü kontrolü, tarihsel ders görüntüsü ve kayıp yanıt kurtarma uygulandı. Telefon/tablet web ve izole DB kabulü geçti; fiziksel kabul/dağıtım açık. Haftalık aile değerlendirmesi hâlâ açık. Yeni ana menü yok. |
+| P3 | Çantam hazır mı / Birlikte bakalım | 087000: takvimde çocuk/gün bazında veli/aktif çocuk malzeme listesi, ders sürümü kontrolü, tarihsel ders görüntüsü ve kayıp yanıt kurtarma uygulandı. Telefon/tablet web ve izole DB kabulü geçti; fiziksel kabul/dağıtım açık. Haftalık “Birlikte bakalım” ana ekrandaki ortak tasarımlı özet alanında üç konuşma sorusu ve isteğe bağlı takvim geçişiyle uygulandı; kayıtlar onay/bekleyen/geri dönen ayrımıyla, çocuklar arası sıralama olmadan gösterilir. Konuşma kaydedilmez/AI’a gönderilmez. Telefon/tablet sentetik kabul geçti; fiziksel kabul açık. Yeni ana menü yok. |
 
 ## Backoffice operasyon kapsamı
 

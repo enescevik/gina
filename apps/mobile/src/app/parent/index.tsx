@@ -2,8 +2,7 @@ import * as Crypto from "expo-crypto";
 import { invalidateTaskState } from "@/lib/task-cache";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { localDateOf, occurrencesBetween, templatesDueOn, weekDatesOf } from '@gina/core';
+import { localDateOf, occurrencesBetween, templatesDueOn, weekDatesOf, recordedWeek } from '@gina/core';
 import { ParentHomeView } from '@/components/parent-home/home-view';
 import { useFamilyTimezone } from '@/lib/family';
 import { useRealtimeInvalidate } from '@/lib/realtime';
@@ -11,53 +10,8 @@ import { useSession } from '@/lib/session';
 import { supabase } from '@/lib/supabase';
 import { useFamilyEvents } from '@/lib/use-family-events';
 
-interface WeeklyHighlight {
-  childId: string;
-  templateId: string;
-  days: number;
-}
-
-/**
- * «Küçük adımlar birikiyor» içgörüsü (yapay zekâ yok, deterministik): bu hafta aynı görevi en çok farklı günde
- * tamamlayan (yapıldı/onaylandı) çocuk + görev. Eşitlikte çocuk ve görev sırası (sort_order) belirler.
- * En az 2 gün yoksa null (genel haftalık sayı gösterilir).
- */
-function weeklyHighlight(
-  completions: readonly { child_id: string; template_id: string; due_date: string; status: string }[],
-  childOrder: readonly string[],
-  templateOrder: ReadonlyMap<string, number>,
-): WeeklyHighlight | null {
-  const days = new Map<string, Set<string>>();
-  for (const c of completions) {
-    if (c.status !== "done" && c.status !== "approved") continue;
-    const key = `${c.child_id}|${c.template_id}`;
-    const set = days.get(key) ?? new Set<string>();
-    set.add(c.due_date);
-    days.set(key, set);
-  }
-  let best: WeeklyHighlight | null = null;
-  const rank = (h: WeeklyHighlight) => [-h.days, childOrder.indexOf(h.childId), templateOrder.get(h.templateId) ?? 0, h.templateId] as const;
-  for (const [key, set] of days) {
-    const [childId = "", templateId = ""] = key.split("|");
-    const candidate = { childId, templateId, days: set.size };
-    if (!best) {
-      best = candidate;
-      continue;
-    }
-    const a = rank(candidate);
-    const b = rank(best);
-    for (let i = 0; i < a.length; i++) {
-      if (a[i] === b[i]) continue;
-      if ((a[i] as number | string) < (b[i] as number | string)) best = candidate;
-      break;
-    }
-  }
-  return best && best.days >= 2 ? best : null;
-}
-
 /** Approved mint/violet parent home; existing queries and review RPC remain authoritative. */
 export default function ParentHomeScreen() {
-  const { t } = useTranslation();
   const { claims, session } = useSession();
   const familyId = claims?.family_id ?? "";
   const timeZone = useFamilyTimezone();
@@ -191,17 +145,7 @@ export default function ParentHomeScreen() {
     .filter(o => o.event.type === 'exam' && (!childFilter || o.event.child_id === null || o.event.child_id === childFilter) && (o.endsAt ?? o.startsAt).getTime() >= now)
     .sort((a,b) => a.startsAt.getTime()-b.startsAt.getTime())[0];
 
-  // İçgörü: bu haftanın gerçek tamamlamalarından deterministik öne çıkan (filtreye uyar); yoksa haftalık onay sayısı.
-  const weekCompletions = (completions.data ?? []).filter((c) => !childFilter || c.child_id === childFilter);
-  const weekApproved = weekCompletions.filter((c) => c.status === "approved").length;
-  const templateById = new Map((templates.data ?? []).map((tt) => [tt.id, tt]));
-  const highlight = weeklyHighlight(
-    weekCompletions,
-    (children.data ?? []).map((c) => c.id),
-    new Map((templates.data ?? []).map((tt) => [tt.id, tt.sort_order])),
-  );
-  const highlightTemplate = highlight ? templateById.get(highlight.templateId) : undefined;
-  const highlightChild = highlight ? children.data?.find((c) => c.id === highlight.childId) : undefined;
+  const weeklyCounts = recordedWeek(completions.data ?? [], visibleChildren.map(c => c.id), from, today);
 
   const pendingApprovals = (approvals.data ?? []).filter((a) => !childFilter || a.child_id === childFilter);
 
@@ -212,8 +156,7 @@ export default function ParentHomeScreen() {
   return <ParentHomeView
     profiles={children.data ?? []} selected={childFilter} select={setChildFilter}
     today={today} week={week} parentName={parentName} timeZone={timeZone}
-    summary={highlight && highlightTemplate && highlightChild ? t('parent.insightHighlight',{child:highlightChild.name,count:highlight.days,task:highlightTemplate.title}) : t('parent.insightWeek',{count:weekApproved})}
-    weeklyCount={weekCompletions.filter(c=>c.status==='done'||c.status==='approved').length}
+    weeklyCounts={weeklyCounts}
     familyDay={familyDay} tasks={dailyTasks} approvals={pendingApprovals}
     review={(id,approve)=>review.mutate({id,approve})} reviewing={review.isPending} reviewingId={review.variables?.id} reviewError={review.error}
     occurrences={occurrences} upcoming={upcoming}

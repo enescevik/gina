@@ -2473,5 +2473,26 @@
     "reload": "Güncel listeyi yükle",
     "refresh": "Kaydın alındı ancak en güncel liste getirilemedi. Yeniden yükleyerek kontrol et.",
     "readonly": "Geçmiş günün listesi yalnız görüntülenebilir."
+  },
+  "familyWeek": {
+    "title": "Birlikte bakalım",
+    "family": "Bu haftayı birlikte konuşalım.",
+    "child": "{{name}} ile bu haftayı konuşalım.",
+    "approved": "{{count}} görev onaylandı",
+    "pending": "{{count}} görev onay bekliyor",
+    "returned": "{{count}} görev yeniden ele alınacak",
+    "recordedOnly": "Bunlar yalnız uygulamada kayıtlı görevlerdir. Çocuğun çabasını ve birlikte yaptıklarınızı konuşmaya da yer ayırın.",
+    "empty": "Bu hafta henüz görev kaydı yok. Birlikte konuşmak için kayıt olması gerekmiyor.",
+    "step": "Sohbet {{current}} / {{total}}",
+    "question0": "Bu hafta en çok ne hoşuna gitti?",
+    "hint0": "Önce çocuğunu dinle. Büyük bir başarı olması gerekmiyor; keyif aldığı küçük bir an da olabilir.",
+    "question1": "Birlikte neyi kolaylaştırabiliriz?",
+    "hint1": "Zor gelen bir şey varsa nasıl destek istediğini sor. Yanıtlamak istemezse bu soruyu geçebilirsiniz.",
+    "question2": "Gelecek hafta hangi küçük adımı deneyelim?",
+    "hint2": "Birlikte tek, yapılabilir adım seçin. İsterseniz takvime ekleyin; bu konuşma kendiliğinden görev oluşturmaz.",
+    "previous": "Önceki sohbet sorusu",
+    "next": "Sonraki soru",
+    "plan": "Takvimde birlikte planla",
+    "privacy": "Bu sohbet kaydedilmez ve AI’ya gönderilmez. Soruları kendi sözlerinizle değiştirebilir, istediğiniz zaman durabilirsiniz."
   }
 }
