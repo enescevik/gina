@@ -1,0 +1,102 @@
+{
+  "version": "0.1.0",
+  "build": "18",
+  "sourceCommit": "533ffb19e6f872825a144f65bf25cce89682387e",
+  "easBuildId": "520d308c-027a-4bfc-ad67-2a389d83121f",
+  "easStatus": "FINISHED",
+  "apple": {
+    "processingState": "VALID",
+    "internalState": "IN_BETA_TESTING",
+    "expired": false
+  },
+  "deliveryId": "1ccdd360-88cd-4568-9bde-f047018fff8e",
+  "upload": {
+    "validationExit": 0,
+    "uploadExit": 0,
+    "build": "18",
+    "sourceCommit": "533ffb19e6f872825a144f65bf25cce89682387e",
+    "endedAt": "2026-11-04T15:48:35.699Z"
+  },
+  "temporaryUploadKeyRemoved": true,
+  "archive": {
+    "version": "0.1.0",
+    "build": "18",
+    "bundle": "com.enescevik.gina",
+    "deviceFamilies": [
+      1,
+      2
+    ],
+    "tabletOrientations": [
+      "UIInterfaceOrientationPortrait",
+      "UIInterfaceOrientationPortraitUpsideDown",
+      "UIInterfaceOrientationLandscapeLeft",
+      "UIInterfaceOrientationLandscapeRight"
+    ],
+    "newWebUrlInBundle": true,
+    "productionProjectInBundle": true
+  },
+  "verifiedAt": "2026-11-04T15:50:04.290130+00:00",
+  "web": {
+    "url": "https://gina-web.pages.dev",
+    "deployment": "18072856-298d-490a-ba32-0ad2f77eabfd"
+  },
+  "server": {
+    "migrationThrough": "20261103094000",
+    "functionRevisions": "hosted-services-2026-11-04/function-revisions.json"
+  },
+  "rollout": {
+    "checkedAt": "2026-11-04T15:34:53.278Z",
+    "flags": [
+      {
+        "key": "sources.enabled",
+        "value": true
+      },
+      {
+        "key": "cohorts.enabled",
+        "value": false
+      },
+      {
+        "key": "question_groups.enabled",
+        "value": true
+      },
+      {
+        "key": "review_ai.enabled",
+        "value": true
+      },
+      {
+        "key": "library_packages.enabled",
+        "value": false
+      }
+    ]
+  },
+  "limitations": [
+    "Backoffice Zero Trust activation pending",
+    "Real purchases disabled until approved legal pages are published",
+    "Physical device/Pencil/push/payment acceptance pending",
+    "Library and cohort delivery disabled pending editorial review",
+    "Only Anthropic provider is implemented"
+  ],
+  "tablet": {
+    "version": "0.1.0",
+    "build": "18",
+    "sourceCommit": "533ffb19e6f872825a144f65bf25cce89682387e",
+    "storeBuildId": "520d308c-027a-4bfc-ad67-2a389d83121f",
+    "tabletBuildId": "3443ec46-c7d8-46b4-9350-dd695b154c0f",
+    "installUrl": "https://expo.dev/accounts/enescevik/projects/gina-aile/builds/3443ec46-c7d8-46b4-9350-dd695b154c0f",
+    "url": "https://gina-aile-enescevik--tablet.expo.app",
+    "pageVerifiedAt": "2026-11-04T15:50:03.017Z",
+    "signatureVerified": true,
+    "deviceInstallationTested": false,
+    "archiveVerification": {
+      "build": "18",
+      "version": "0.1.0",
+      "bundle": "com.enescevik.gina",
+      "sourceCommit": "533ffb19e6f872825a144f65bf25cce89682387e",
+      "signatureVerified": true,
+      "registeredDeviceCount": 1,
+      "profileExpiresAt": "2027-10-31T01:05:56",
+      "developmentDebuggingEnabled": false,
+      "deviceInstallationTested": false
+    }
+  }
+}

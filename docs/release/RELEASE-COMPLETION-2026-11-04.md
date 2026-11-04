@@ -19,7 +19,7 @@ anlamına gelmez.
 | Web, mobil ve yönetim panelinin ortak veri akışı | İzole gerçek Auth/REST/Realtime/Storage/Edge koşumunda 254 kontrol geçti. Görev, Prova, cihaz iptali, aile ayrımı, destek ve SSS dahil. Canlı AI/kayıt zincirinde ayrıca 29 kontrol geçti; ekran/cihaz kabulü ayrı. |
 | Yeni AI özellikleri | Haftalık özet, belgeden ödev/kurs, görev ve ödül gerçek sağlayıcıyla geçti. Yeni ürün uç noktalarının kayıt/kota/yeniden açılışı yerel gerçek hizmetler ve deterministik sağlayıcı sınırıyla geçti. Canlı ürün uçlarında da 29 kontrol ve 6 temizleme doğrulaması geçti; beş gerçek ücretli üretim yapıldı. |
 | Native taslak güvenliği | iPhone/iPad simülatörleri ve Android API33 emülatöründe gerçek SQLite ve süreç kapanışı geçti. Fiziksel kalem/klavye ve Android görsel kabulü ayrıca yapılacak. |
-| Eşgüdümlü yayın | Üretim DB 20261103094000'a güncellendi (32 migration), 19 Edge function dağıtıldı. public/gina yerel yedeği alındı; Auth/Storage tam yedeği veya geri dönüş tatbikatı değildir. İstemci yayınları henüz tamamlanmadı. |
+| Eşgüdümlü yayın | Üretim DB 20261103094000'a güncellendi (32 migration), 19 Edge function dağıtıldı. public/gina yerel yedeği alındı; Auth/Storage tam yedeği veya geri dönüş tatbikatı değildir. Web ve TestFlight18 yayımlandı; korumalı backoffice yayını bekliyor. |
 | Web ve backoffice hosting | İki üretim derlemesi ve gerçek yayın başlıklarıyla telefon/tablet giriş ekranları geçti. Veli webi https://gina-web.pages.dev üzerinde yayımlandı ve gerçek sentetik aileyle görev/onay/hedef/etkinlik akışları geçti. Backoffice Access kurulumu hesap sahibi adımını bekliyor. Yeşil ama atlanmış Actions işi yayın kanıtı değildir. |
 | Mağaza ve bildirim | Sunucu kontrolleri mevcut; gerçek satın alma/yenileme/iade ve APNs/FCM teslimi için mağaza/cihaz kabulü gerekiyor. |
 | Ek AI sağlayıcıları | Mevcut çalışan sağlayıcı Anthropic. Diğer sağlayıcılar yalnız modele ad yazarak etkinleşmez; adapter, doğrulama ve ayrı anahtar gerekir. |
@@ -96,15 +96,17 @@ Satın alma denemesi: [Google Play lisans testleri](https://developer.android.co
 
 ### 4. Gerçek cihazda birlikte kısa kabul turu yap
 
-Yeni derleme yayımlandığında sürüm numarasını önce eşleştireceğiz. Eski 17 numaralı
-derleme ile yeni kodu karşılaştırmayacağız.
+TestFlight’ta **0.1.0 (18)** seçip güncelle. Eski 17 numaralı derleme ile yeni kodu
+karşılaştırma. Uygulamayı silmeden güncelle; çizim/cevap taslaklarını koruyalım.
 
 1. iPhone ve iPad'de giriş yap; tek çocukta gereksiz çocuk seçici çıkmadığını kontrol et.
 2. Tableti eşleştir; izinli çocuğu seç, PIN tercihini ve veliye dönüşü dene.
 3. Çocuk bir görev göndersin, veli onaylasın; ikinci cihazda görev ve yıldız
    uygulamayı kapatmadan yenilensin.
 4. Prova'da seçenekli ve açık uçlu birer soru çöz. Dikey/yatay geçişte soru ve çizim
-   korunsun; yazı/sembol menüsü dönüş döngüsüne girmesin.
+   korunsun; yazı/sembol menüsü dönüş döngüsüne girmesin. iPad pencere modundaysa
+   işletim sisteminin pencere kontrolünden büyüt; uygulama kullanılabilir alanı
+   doldurmalı. Pencereyi zorla büyüten bir sistem yetkisi varmış gibi sunulmuyor.
 5. Pencil varsa avuç içi ekrandayken çiz; kalem gecikmesini ve sayfa kaymasını dene.
    Bu fiziksel deneyi tarayıcı/simülatör testinden çıkaramayız.
 6. Cevap yazarken uygulamayı kapatıp aç; taslak geri gelsin. Veli değerlendirmesinde
@@ -123,8 +125,16 @@ Sorun bildirirken ekran adı, sürüm, cihaz ve yaptığın son adım yeterli; g
 - Mağaza hesabında bekleyen sözleşme/kimlik/ödeme bilgisi görünürse hesap sahibi
   olarak tamamla. Bu alanların güncel durumu burada doğrulanmadı; eksik oldukları
   varsayılmıyor. Teknik yayın kurulumu hesabı yeniden açmanı gerektirmez.
-- Hukuk ve gizlilik taslaklarının işletme bilgileri/uzman incelemesi tamamlanmalı.
-  Geliştirme testi, hukuki veya pedagojik onay yerine geçmez.
+- Hukuk ve gizlilik taslaklarında sağlayıcı unvanı/adı, iş adresi, destek e-postası,
+  varsa MERSİS/vergi bilgisi ve yürürlük tarihi henüz yer tutucudur. Bunları işletmenin
+  gerçek bilgileriyle tamamlayıp uzman incelemesinden geçir. Eski taslakların AI
+  özellikleri ve veri işleme açıklamaları da bugünkü ürünle eşleştirilmeli.
+- Onaylanan metinleri `/legal/gizlilik-politikasi` ve
+  `/legal/abonelik-kosullari` adreslerine yayımlayıp mobilin
+  `EXPO_PUBLIC_LEGAL_BASE_URL` ayarını bağlamak teknik iş olarak bende.
+  **Bu ayar yokken gerçek satın alma düğmesi bilerek kapalıdır.** TestFlight 18 için
+  de hazır ödeme/mağaza kabulü iddia edilmeyecek; paket deneme hakları gerçek satın
+  alma testinin yerine geçmez. App Store ürün/fiyatları ayrıca eşleştirilmeli.
 - Kütüphane taslaklarını bağımsız alan/dil incelemesinden geçirecek kişiyi belirle.
   Yönetim panelinde öğrenci görünümü, cevap/rubrik ve ortak kaynak birlikte
   incelenir; gerekçeli onaydan sonra ayrı yayın işlemi yapılır.
