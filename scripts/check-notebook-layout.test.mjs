@@ -23,10 +23,12 @@ test('portrait tablets and resized iPad windows show both question and notebook'
     assert.equal(notebookLayout(w,h), 'stacked', `${w}x${h}`);
   }
 });
-test('landscape tablet uses split view; larger accessibility text stacks instead', () => {
+test('landscape tablet uses split view; accessibility text keeps a full tabbed canvas', () => {
   assert.equal(notebookLayout(1194,834), 'side-by-side');
   assert.equal(notebookLayout(1024,768), 'side-by-side');
-  assert.equal(notebookLayout(1194,834,1.4), 'stacked');
+  for (const [width,height] of [[1194,834],[834,1194],[600,900],[700,500]]) {
+    for (const scale of [1.4,1.8,2.5]) assert.equal(notebookLayout(width,height,scale), 'tabs');
+  }
 });
 test('phone and short windows keep usable tabbed canvas', () => {
   for (const [w,h] of [[390,844],[430,932],[599,900],[700,500]]) assert.equal(notebookLayout(w,h), 'tabs');

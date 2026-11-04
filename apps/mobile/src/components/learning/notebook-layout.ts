@@ -2,7 +2,10 @@ import type { ModalProps } from "react-native";
 
 /** The notebook follows the available window, never requests device rotation. */
 export function notebookLayout(width: number, height: number, fontScale = 1) {
-  if (width >= 850 && width > height && fontScale < 1.4) return "side-by-side";
+  // Stacking two toolbars and a question above the canvas leaves no writing room
+  // at accessibility text sizes. Tabs preserve a full pane for each activity.
+  if (fontScale >= 1.4) return "tabs";
+  if (width >= 850 && width > height) return "side-by-side";
   if (width >= 600 && height >= 650) return "stacked";
   return "tabs";
 }
