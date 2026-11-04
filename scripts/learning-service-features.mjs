@@ -6,7 +6,17 @@ import { isDeepStrictEqual } from 'node:util';
 
 export async function checkHostedFeatures({parent,admin,familyId,childId,sourceIds,sourcePaths,must,check,report}) {
   const rpc=async(name,args)=>must(await parent.rpc(name,args),name);
-  const invoke=async(name,body)=>must(await parent.functions.invoke(name,{body}),name);
+  const invoke=async(name,body)=>{
+    const result=await parent.functions.invoke(name,{body});
+    if(result.error){
+      const response=result.error.context;
+      let code;try{const value=await response?.clone().json();if(/^[a-z_]{1,80}$/.test(value?.error??''))code=value.error;}catch{}
+      report.featureFailure={operation:name,status:response?.status??null,code:code??'unavailable'};
+      const jobs=await admin.from('ai_operation_jobs').select('action,status,error_code').eq('family_id',familyId);
+      report.syntheticFailureJobs=(jobs.data??[]).map(j=>({action:j.action,status:j.status,code:/^[a-z0-9_]{1,80}$/.test(j.error_code??'')?j.error_code:null}));
+    }
+    return must(result,name);
+  };
   const initial=await rpc('get_family_weekly_review',{});
   const summary=await invoke('ai-weekly-summary',{week_start:initial.week_start});
   const repeated=await invoke('ai-weekly-summary',{week_start:initial.week_start});

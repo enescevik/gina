@@ -384,3 +384,38 @@ Deno.test("learning import reservation binds immutable document context without 
     "specialized scope gate",
   );
 });
+
+Deno.test("validation diagnostics retain only approved field names, never document values", async () => {
+  for (const field of ["title", "private document text"]) {
+    const f = fixture();
+    await withFetch([json({ input_tokens: 20 }), success()], async () => {
+      const r = await runAiOperation(
+        f.db,
+        parent,
+        "import",
+        "source",
+        "synthetic",
+        config,
+        "system",
+        "input",
+        schema,
+        () => {
+          throw Object.assign(Error("ai_result_invalid"), {
+            validationCode: field,
+          });
+        },
+      );
+      assert(
+        r instanceof Response && r.status === 502,
+        "invalid output remains blocked",
+      );
+    });
+    const saved = f.calls.find((c) => c.name === "finish_ai_operation")?.args;
+    assert(saved?.p_uncertain === true, "no automatic paid retry");
+    assert(
+      saved?.p_error ===
+        (field === "title" ? "ai_result_invalid_title" : "ai_result_invalid"),
+      "safe diagnostic only",
+    );
+  }
+});

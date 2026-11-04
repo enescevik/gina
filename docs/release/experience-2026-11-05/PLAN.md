@@ -17,4 +17,4 @@ Yetki: kullanıcı tüm aşamaları mevcut onaylı tasarıma uyarak otonom tamam
 - Kütüphane soru üretimi kullanıcının önceki kararıyla en sonda; bu çalışma onu öne almaz.
 
 ## Durum
-İnceleme ve ilk aşama uygulaması sürüyor. Henüz yayın yapılmadı.
+İlk dört aşama tamamlandı; web, yönetim ve sunucu yayımlandı. iOS yerel imzalı derlemesi sürüyor. Fiziksel cihaz ve mağaza işletme gereksinimleri README içinde ayrı gösterilir.

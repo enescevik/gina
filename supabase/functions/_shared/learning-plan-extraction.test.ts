@@ -19,6 +19,19 @@ const rejects = (value: unknown, pages = 1) => {
   }
   if (!failed) throw Error("accepted invalid extraction");
 };
+Deno.test("learning extraction rejects a paragraph title without logging or silently truncating it", () => {
+  const privateTitle = "Özel belge başlığı ".repeat(12);
+  try {
+    parse({ items: [{ ...item(), title: privateTitle }], warnings: [] }, 1);
+    throw Error("accepted long title");
+  } catch (e) {
+    if (
+      !(e instanceof Error) || e.message !== "ai_result_invalid" ||
+      !("validationCode" in e) || e.validationCode !== "title" ||
+      JSON.stringify(e).includes(privateTitle)
+    ) throw e;
+  }
+});
 Deno.test("learning extraction: missing dates stay null and source uncertainty survives", () => {
   const r = parse({ items: [item()], warnings: [] }, 1);
   if (
@@ -39,7 +52,10 @@ Deno.test("learning extraction: all items and pages are bounded", () => {
     warnings: [],
   });
   rejects({ items: [item()], warnings: [] }, 21);
-  const combined = parse({ items: [{ ...item(), page: 20 }], warnings: [] }, 20);
+  const combined = parse(
+    { items: [{ ...item(), page: 20 }], warnings: [] },
+    20,
+  );
   if (combined.items[0].page !== 20) throw Error("combined source page lost");
 });
 Deno.test("learning extraction: rewards, unknown keys and fabricated source IDs are rejected", () => {
