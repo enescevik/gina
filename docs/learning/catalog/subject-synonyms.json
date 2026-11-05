@@ -1,0 +1,238 @@
+{
+  "schema": "gina.subject-synonyms.v1",
+  "country": "TR",
+  "checked_at": "2026-11-05",
+  "status": "proposal_not_imported",
+  "purpose": "Veli/çocuk ders programı girişinde (timetable import, ödev, not, Prova kapsamı) geçen kısaltma ve adları kanonik ders kimliğine bağlamak. Eşleme öneri amaçlıdır; hangi eşanlamlının otomatik, hangisinin onayla bağlanacağı ürün kararıdır (bkz. matching_policy).",
+  "canonical_id_convention": "Mevcut `public.guided_input_options` (kind='subject') kimlikleri korunur: `subject-<slug>`; yenileri aynı kalıpla ÖNERİdir ve `proposed: true` ile işaretlidir. Mevcut katalogdaki `subject` etiket metni (`Fen Bilimleri`, `Matematik` …) `label_tr` ile birebir aynı tutulur; gina.curriculum_subject() normalizasyonu ('İlköğretim Matematik'→'Matematik', 'Fen'→'Fen Bilimleri') ile uyumludur. `coverage_key` library-pilot/coverage.json kimlik son ekidir; `icon_key` packages/core i18n `icon.subject.*` anahtarıdır.",
+  "grade_scope_source": "İlkokul/ortaokul: TTKB 09/05/2025 Sayı 04 İlköğretim Kurumları Haftalık Ders Çizelgesi (2025-2026'dan itibaren). Lise: TTKB 09/05/2025 Sayı 05 Anadolu Lisesi Haftalık Ders Çizelgesi (2025-2026'dan itibaren tüm sınıflarda). Diğer lise türleri (Fen, Sosyal Bilimler, MTAL, AİHL) için saatler/sınıflar farklı olabilir; yalnız Anadolu Lisesi ortak dersleri esas alındı. Çoklu Yabancı Dil Modeli ortaokulları için ayrı çizelge (TTKB 2025 Sayı 03) kapsam dışı.",
+  "matching_policy": {
+    "exact_or_alias_match": "Normalize et (küçük harf, Türkçe karakter katlama İ→i/ı→i, nokta ve boşluk sil, 'dersi' ekini at) → alias tablosuna bak. Tek sonuç → öneri olarak göster, veli onaylar (sessiz otomatik bağlama yok, çünkü 'Sosyal' hem Sosyal Bilgiler hem Sosyal Bilim Çalışmaları olabilir).",
+    "ambiguous": "Birden fazla aday (ör. 'Din', 'Sosyal', 'Dil', 'Türk') → sınıf kapsamıyla daralt; hâlâ çok adaysa seçtir. Yanlış bağlamaktan iyidir.",
+    "unknown": "Eşleşme yoksa veli etiketi olduğu gibi saklanır (mevcut davranış: 'label snapshot' + isteğe bağlı id). Yeni kanonik ders eklemek yönetim işidir, veli etiketi katalog olmaz.",
+    "grade_scope": "Çocuğun sınıfı dersin `grades` dışındaysa eşleme yine önerilir ama 'bu ders genelde X. sınıflarda' notu düşer; engellenmez (okullar farklı seçmeli/sınıf uygulayabilir).",
+    "no_auto_promotion": "Ders kapsamı sınıfla değişir diye çocuğun sınıfı otomatik güncellenmez; ürün kuralı."
+  },
+  "subjects": [
+    {
+      "id": "subject-turkish", "proposed": false, "label_tr": "Türkçe", "label_en": "Turkish",
+      "grades": [1, 2, 3, 4, 5, 6, 7, 8], "coverage_key": "tr", "icon_key": "icon.subject.turkish",
+      "aliases": ["Türkçe", "TÜR", "TRK", "Tür.", "Türkçe Dersi", "Turkish", "Okuma Yazma", "İlk Okuma Yazma"],
+      "notes": "Lisede 'Türk Dili ve Edebiyatı' ayrı kimliktir (subject-literature). 1. sınıf 'İlk okuma yazma' Türkçe içinde."
+    },
+    {
+      "id": "subject-math", "proposed": false, "label_tr": "Matematik", "label_en": "Mathematics",
+      "grades": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": "mat", "icon_key": "icon.subject.math",
+      "aliases": ["Matematik", "MAT", "Mat.", "Mtm", "Math", "Maths", "Mathematics", "İlköğretim Matematik", "Temel Matematik", "Seçmeli Matematik", "Matematik Uygulamaları"],
+      "notes": "ÖDSGM tablolarında 5–8 için 'İlköğretim Matematik' adı geçer; gina.curriculum_subject() bunu 'Matematik'e katlar. Lise 11–12'de ortak Matematik yoktur; 'Seçmeli Matematik' (6 saat) ve 'Temel Matematik' (2 saat) seçmelidir; ikisi de bu kimliğe bağlanır, ayrım gerekiyorsa `variant` alanı ileride eklenir."
+    },
+    {
+      "id": "subject-life", "proposed": false, "label_tr": "Hayat Bilgisi", "label_en": "Life Studies",
+      "grades": [1, 2, 3], "coverage_key": "hayat", "icon_key": "icon.subject.life-science",
+      "aliases": ["Hayat Bilgisi", "HB", "Hay. Bil.", "Hayat Bil.", "Life Studies", "Life Science"],
+      "notes": "i18n anahtarı 'life-science' adlıdır ama ders Hayat Bilgisi'dir; anahtar yeniden adlandırılmaz."
+    },
+    {
+      "id": "subject-science", "proposed": false, "label_tr": "Fen Bilimleri", "label_en": "Science",
+      "grades": [3, 4, 5, 6, 7, 8], "coverage_key": "fen", "icon_key": "icon.subject.science",
+      "aliases": ["Fen Bilimleri", "Fen", "FEN", "Fen Bil.", "Fen B.", "Fen ve Teknoloji", "Science", "Fen Bilgisi", "Fen Bilimleri Uygulamaları"],
+      "notes": "Lisede Fizik/Kimya/Biyoloji ayrı kimliklerdir; 'Fen' etiketi 9+ sınıfta belirsiz sayılır ve seçtirilir."
+    },
+    {
+      "id": "subject-social", "proposed": false, "label_tr": "Sosyal Bilgiler", "label_en": "Social Studies",
+      "grades": [4, 5, 6, 7], "coverage_key": "sosyal", "icon_key": "icon.subject.social-studies",
+      "aliases": ["Sosyal Bilgiler", "Sosyal", "SOS", "SB", "Sos. Bil.", "Sosyal Bil.", "Social Studies"],
+      "notes": "8. sınıfta yerini T.C. İnkılap Tarihi ve Atatürkçülük alır. Lisedeki 'Sosyal Bilim Çalışmaları' seçmelisi farklı derstir (subject-social-science-studies)."
+    },
+    {
+      "id": "subject-english", "proposed": false, "label_tr": "İngilizce", "label_en": "English",
+      "grades": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": "foreign", "icon_key": "icon.subject.english",
+      "aliases": ["İngilizce", "Ingilizce", "İNG", "ING", "İng.", "ENG", "English", "Yabancı Dil", "Yab. Dil", "YD", "1. Yabancı Dil", "Birinci Yabancı Dil", "Foreign Language"],
+      "notes": "Çizelgede ders adı 'Yabancı Dil' / 'Birinci Yabancı Dil'dir; Türkiye'de ezici çoğunlukta İngilizce'dir. Almanca/Fransızca birinci dil okullarında bu kimlik yanlış olur → 'Yabancı Dil' etiketi tek başına geldiğinde seçtir (İngilizce / Almanca / Fransızca / diğer). coverage.json'da 'foreign' ve 'foreign_first' anahtarları bu kimliğe karşılık gelir."
+    },
+    {
+      "id": "subject-german", "proposed": true, "label_tr": "Almanca", "label_en": "German",
+      "grades": [5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": null, "icon_key": null,
+      "aliases": ["Almanca", "ALM", "Alm.", "German", "Deutsch", "2. Yabancı Dil (Almanca)", "İkinci Yabancı Dil"],
+      "notes": "Ortaokulda seçmeli 'Yabancı Dil (4)'; lisede 'Seçmeli İkinci Yabancı Dil'. 'İkinci Yabancı Dil' etiketi dil belirtmezse seçtir."
+    },
+    {
+      "id": "subject-french", "proposed": true, "label_tr": "Fransızca", "label_en": "French",
+      "grades": [5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": null, "icon_key": null,
+      "aliases": ["Fransızca", "FRA", "Fr.", "French", "Français"],
+      "notes": "Almanca ile aynı kapsam."
+    },
+    {
+      "id": "subject-religion", "proposed": true, "label_tr": "Din Kültürü ve Ahlak Bilgisi", "label_en": "Religious Culture and Ethics",
+      "grades": [4, 5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": "religion", "icon_key": "icon.subject.religion-ethics",
+      "aliases": ["Din Kültürü ve Ahlak Bilgisi", "DKAB", "Din K.", "Din Kül.", "Din Kültürü", "Din", "DİN", "Din Kültürü ve Ahlâk Bilgisi", "Religious Culture"],
+      "notes": "ÖDSGM senaryo kataloğunda zaten 'Din Kültürü ve Ahlak Bilgisi' etiketiyle 5–12 var; guided_input_options'ta kimlik yok → eklenmesi önerilir. 'Din' tek başına Kur'an-ı Kerim / Peygamberimizin Hayatı / Temel Dinî Bilgiler seçmelileriyle karışır; seçtir."
+    },
+    {
+      "id": "subject-inkilap", "proposed": true, "label_tr": "T.C. İnkılap Tarihi ve Atatürkçülük", "label_en": "History of the Turkish Revolution and Kemalism",
+      "grades": [8, 12], "coverage_key": "inkilap", "icon_key": null,
+      "aliases": ["T.C. İnkılap Tarihi ve Atatürkçülük", "İnkılap", "İnkılap Tarihi", "İnk. Tar.", "TC İnkılap", "T.C. İnk.", "İTA", "Atatürkçülük", "İnkilap"],
+      "notes": "8. sınıf (2 saat) ve lise 12 (2 saat). Lisede ayrıca 'Tarih' (9–11) vardır; 'İnkılap' 9–11'de gelirse 'Tarih' önerilir."
+    },
+    {
+      "id": "subject-pe", "proposed": true, "label_tr": "Beden Eğitimi", "label_en": "Physical Education",
+      "grades": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": null, "icon_key": "icon.subject.physical-education",
+      "aliases": ["Beden Eğitimi", "Beden", "BED", "Bed. Eğt.", "Beden Eğitimi ve Oyun", "Beden Eğitimi ve Spor", "BEO", "BES", "Oyun ve Fiziki Etkinlikler", "PE", "Physical Education", "Spor", "Spor ve Fizikî Etkinlikler", "Spor Eğitimi"],
+      "notes": "Resmî ad ilkokul 1–4'te 'Beden Eğitimi ve Oyun', 5–12'de 'Beden Eğitimi ve Spor'. i18n'de 'play-physical' (Oyun ve Fiziki Etkinlikler) eski program adıdır; aynı kimliğe katlanır. 12. sınıfta 'Beden Eğitimi ve Spor/Görsel Sanatlar/Müzik' tek seçimdir."
+    },
+    {
+      "id": "subject-visual-arts", "proposed": true, "label_tr": "Görsel Sanatlar", "label_en": "Visual Arts",
+      "grades": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": null, "icon_key": "icon.subject.visual-arts",
+      "aliases": ["Görsel Sanatlar", "Görsel S.", "Gör. San.", "GS", "GÖR", "Resim", "Resim-İş", "Sanat", "Art", "Visual Arts", "Sanat Eğitimi", "Dijital Sanatlar"],
+      "notes": "i18n Prova sözlüğünde 'subject_art: Görsel Sanatlar' zaten var. Lise 9–11 'Görsel Sanatlar/Müzik' seçimidir."
+    },
+    {
+      "id": "subject-music", "proposed": true, "label_tr": "Müzik", "label_en": "Music",
+      "grades": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": null, "icon_key": "icon.subject.music",
+      "aliases": ["Müzik", "MÜZ", "Müz.", "Music"],
+      "notes": "Zorunlu 1–8 (1 saat), lise 'Görsel Sanatlar/Müzik' seçimi; ortaokulda ayrıca seçmeli 'Müzik (4)'. Aynı kimlik."
+    },
+    {
+      "id": "subject-ict", "proposed": true, "label_tr": "Bilişim Teknolojileri ve Yazılım", "label_en": "ICT and Software",
+      "grades": [5, 6, 9, 10, 11, 12], "coverage_key": "ict", "icon_key": "icon.subject.ict",
+      "aliases": ["Bilişim Teknolojileri ve Yazılım", "Bilişim", "Bilişim Tek.", "BTY", "BT", "Bil. Tek.", "Bilgisayar", "ICT", "Computer", "Yazılım", "Kodlama", "Robotik Kodlama", "Yapay Zekâ Uygulamaları"],
+      "notes": "Zorunlu 5–6 (2 saat); 7–8'de yalnız seçmeli 'Robotik Kodlama'/'Yapay Zeka Uygulamaları'; lisede seçmeli (4). 7–8 için eşleme önerilir ama 'okulunda seçmeli olarak var mı' notu düşer. Robotik/yapay zekâ ayrı kimlik istenirse `subject-coding` açılır (karar)."
+    },
+    {
+      "id": "subject-technology-design", "proposed": true, "label_tr": "Teknoloji ve Tasarım", "label_en": "Technology and Design",
+      "grades": [7, 8], "coverage_key": "technology", "icon_key": "icon.subject.technology-design",
+      "aliases": ["Teknoloji ve Tasarım", "Teknoloji Tasarım", "Tek. Tas.", "TT", "TekTas", "Technology and Design", "Tasarım"]
+    },
+    {
+      "id": "subject-traffic", "proposed": true, "label_tr": "Trafik Güvenliği", "label_en": "Traffic Safety",
+      "grades": [4], "coverage_key": "traffic", "icon_key": "icon.subject.traffic-safety",
+      "aliases": ["Trafik Güvenliği", "Trafik", "Trf. Güv.", "Traffic Safety"],
+      "notes": "Yalnız 4. sınıf (1 saat). Lise 9 'Sağlık Bilgisi ve Trafik Kültürü' ayrı kimliktir."
+    },
+    {
+      "id": "subject-health-traffic", "proposed": true, "label_tr": "Sağlık Bilgisi ve Trafik Kültürü", "label_en": "Health and Traffic Culture",
+      "grades": [9], "coverage_key": "health_traffic", "icon_key": null,
+      "aliases": ["Sağlık Bilgisi ve Trafik Kültürü", "Sağlık Bilgisi", "SBTK", "Sağ. Bil.", "Trafik Kültürü"]
+    },
+    {
+      "id": "subject-rights", "proposed": true, "label_tr": "İnsan Hakları, Vatandaşlık ve Demokrasi", "label_en": "Human Rights, Citizenship and Democracy",
+      "grades": [4], "coverage_key": "rights", "icon_key": "icon.subject.citizenship",
+      "aliases": ["İnsan Hakları, Vatandaşlık ve Demokrasi", "İnsan Hakları", "Vatandaşlık", "İHVD", "Vatandaşlık ve Demokrasi", "Demokrasi ve İnsan Hakları"],
+      "notes": "4. sınıf zorunlu (2 saat). Lisede 'Demokrasi ve İnsan Hakları' seçmelidir; 9+ gelirse bu kimlikle eşlenir, kapsam notu düşer."
+    },
+    {
+      "id": "subject-guidance", "proposed": true, "label_tr": "Rehberlik ve Yönlendirme", "label_en": "Guidance",
+      "grades": [5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": null, "icon_key": null,
+      "aliases": ["Rehberlik ve Yönlendirme", "Rehberlik", "REH", "Reh.", "Rehberlik ve Kariyer Planlama", "Guidance", "Sınıf Rehberliği"],
+      "notes": "Ortaokul 5–8 ve lise 9–12'de 1 saat. Ödev/not üretmez; programda görünür. Prova kapsamına alınmaz."
+    },
+    {
+      "id": "subject-free-activities", "proposed": true, "label_tr": "Serbest Etkinlikler", "label_en": "Free Activities",
+      "grades": [1, 2, 3], "coverage_key": null, "icon_key": null,
+      "aliases": ["Serbest Etkinlikler", "Serbest Etk.", "SE", "Serbest Zaman", "Etkinlik"],
+      "notes": "İlkokul 1 (4 saat), 2–3 (2 saat); veli isteğine bağlı, zorunlu değil. Prova kapsamı dışı."
+    },
+    {
+      "id": "subject-literature", "proposed": false, "label_tr": "Türk Dili ve Edebiyatı", "label_en": "Turkish Language and Literature",
+      "grades": [9, 10, 11, 12], "coverage_key": "literature", "icon_key": null,
+      "aliases": ["Türk Dili ve Edebiyatı", "TDE", "Edebiyat", "EDB", "Edb.", "Türk Dili", "Dil ve Anlatım", "Türk Edebiyatı", "Literature", "Seçmeli Türk Dili ve Edebiyatı", "Metin Tahlilleri"],
+      "notes": "Hazırlık sınıfında 'Hazırlık Sınıfı Türk Dili ve Edebiyatı' aynı kimlik. 'Dil ve Anlatım'/'Türk Edebiyatı' eski program adlarıdır."
+    },
+    {
+      "id": "subject-physics", "proposed": false, "label_tr": "Fizik", "label_en": "Physics",
+      "grades": [9, 10, 11, 12], "coverage_key": "physics", "icon_key": null,
+      "aliases": ["Fizik", "FİZ", "FIZ", "Fiz.", "Physics", "Seçmeli Fizik"],
+      "notes": "Ortak 9–10 (2 saat); 11–12 yalnız seçmeli (4 saat)."
+    },
+    {
+      "id": "subject-chemistry", "proposed": false, "label_tr": "Kimya", "label_en": "Chemistry",
+      "grades": [9, 10, 11, 12], "coverage_key": "chemistry", "icon_key": null,
+      "aliases": ["Kimya", "KİM", "KIM", "Kim.", "Chemistry", "Seçmeli Kimya"],
+      "notes": "Ortak 9–10; 11–12 seçmeli."
+    },
+    {
+      "id": "subject-biology", "proposed": false, "label_tr": "Biyoloji", "label_en": "Biology",
+      "grades": [9, 10, 11, 12], "coverage_key": "biology", "icon_key": null,
+      "aliases": ["Biyoloji", "BİY", "BIY", "Biy.", "Bio", "Biology", "Seçmeli Biyoloji"],
+      "notes": "Ortak 9–10; 11–12 seçmeli."
+    },
+    {
+      "id": "subject-history", "proposed": false, "label_tr": "Tarih", "label_en": "History",
+      "grades": [9, 10, 11, 12], "coverage_key": "history", "icon_key": null,
+      "aliases": ["Tarih", "TAR", "Tar.", "History", "Seçmeli Tarih", "Çağdaş Türk ve Dünya Tarihi", "ÇTDT", "Ortak Türk Tarihi"],
+      "notes": "Ortak 9–11 (2 saat); 12'de 'Çağdaş Türk ve Dünya Tarihi' seçmeli (2) ve T.C. İnkılap Tarihi zorunlu (ayrı kimlik)."
+    },
+    {
+      "id": "subject-geography", "proposed": false, "label_tr": "Coğrafya", "label_en": "Geography",
+      "grades": [9, 10, 11, 12], "coverage_key": "geography", "icon_key": null,
+      "aliases": ["Coğrafya", "COĞ", "COG", "Coğ.", "Geography", "Seçmeli Coğrafya", "Türk Dünyası Coğrafyası"],
+      "notes": "Ortak 9–10 (2 saat); 11–12 seçmeli."
+    },
+    {
+      "id": "subject-philosophy", "proposed": true, "label_tr": "Felsefe", "label_en": "Philosophy",
+      "grades": [10, 11, 12], "coverage_key": "philosophy", "icon_key": null,
+      "aliases": ["Felsefe", "FEL", "Fel.", "Philosophy", "Mantık", "Psikoloji", "Sosyoloji", "Felsefe Grubu"],
+      "notes": "Ortak 10–11 (2 saat). 'Mantık/Psikoloji/Sosyoloji' 11–12 seçmelileridir; coverage.json'da 'philosophy' tek anahtar. Ayrı kimlik istenirse `subject-psychology` vb. açılır (karar)."
+    },
+    {
+      "id": "subject-social-science-studies", "proposed": true, "label_tr": "Sosyal Bilim Çalışmaları", "label_en": "Social Science Studies",
+      "grades": [9, 10, 11, 12], "coverage_key": null, "icon_key": null,
+      "aliases": ["Sosyal Bilim Çalışmaları", "SBÇ", "Sosyal Bilimler"],
+      "notes": "Lise seçmelisi; ortaokul 'Sosyal Bilgiler' ile karıştırılmasın. 'Sosyal' tek başına 9+ sınıfta buraya düşer, 4–7'de Sosyal Bilgiler'e."
+    },
+    {
+      "id": "subject-quran", "proposed": true, "label_tr": "Kur'an-ı Kerim", "label_en": "Quran",
+      "grades": [5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": null, "icon_key": null,
+      "aliases": ["Kur'an-ı Kerim", "Kuran", "Kur'an", "KK", "Kuran-ı Kerim"],
+      "notes": "Seçmeli (4); imam hatip okullarında zorunlu/meslek dersi (çizelge farklı, kapsam dışı)."
+    },
+    {
+      "id": "subject-prophet-life", "proposed": true, "label_tr": "Peygamberimizin Hayatı", "label_en": "Life of the Prophet",
+      "grades": [5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": null, "icon_key": null,
+      "aliases": ["Peygamberimizin Hayatı", "Siyer", "PH", "Peyg. Hay."]
+    },
+    {
+      "id": "subject-basic-religious", "proposed": true, "label_tr": "Temel Dinî Bilgiler", "label_en": "Basic Religious Knowledge",
+      "grades": [5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": null, "icon_key": null,
+      "aliases": ["Temel Dinî Bilgiler", "Temel Dini Bilgiler", "TDB"]
+    },
+    {
+      "id": "subject-elective-other", "proposed": true, "label_tr": "Seçmeli ders (diğer)", "label_en": "Elective (other)",
+      "grades": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "coverage_key": null, "icon_key": null,
+      "aliases": ["Seçmeli", "Seç.", "SEÇ", "Seçmeli Ders", "Elective", "Okuma Becerileri", "Yazarlık ve Yazma Becerileri", "Matematik ve Bilim Uygulamaları", "Çevre Eğitimi ve İklim Değişikliği", "Şehrimiz", "Hukuk ve Adalet", "Düşünme Eğitimi", "Proje Tasarımı ve Uygulamaları", "Okul Temelli Sosyal Sorumluluk Çalışmaları", "Medya Okuryazarlığı", "Afet Bilinci", "Temel Yaşam Becerileri", "Türk Sosyal Hayatında Aile", "Kültür ve Medeniyetimize Yön Verenler", "Ahlak ve Vatandaşlık Eğitimi", "Görgü Kuralları ve Nezaket", "Oyun ve Oyun Etkinlikleri", "Masal ve Destanlarımız", "Geleneksel Sanatlar", "Halk Oyunları", "Yaşayan Diller ve Lehçeler", "Astronomi ve Uzay Bilimleri", "Girişimcilik", "Osmanlı Türkçesi", "Hedef Temelli Destek Eğitimi", "HTDE"],
+      "notes": "Konu dersi içermeyen veya tek kimlik hak etmeyen seçmeliler için toplayıcı; veli etiketi saklanır. Genelge 2026/70 m.32'de sayılan 26 seçmeli dersin adları alias olarak eklendi. Prova soru havuzu üretmez; yalnız program/ödev girişi için. 'Hedef Temelli Destek Eğitimi' 12. sınıf destek dersidir; ders konusu (mat/fen vb.) ayrı belirtilirse o derse bağlanır."
+    }
+  ],
+  "normalization_examples": [
+    { "input": "MAT", "grade": 6, "result": "subject-math", "confidence": "single" },
+    { "input": "Fen Bil.", "grade": 5, "result": "subject-science", "confidence": "single" },
+    { "input": "Fen", "grade": 10, "result": null, "candidates": ["subject-physics", "subject-chemistry", "subject-biology"], "confidence": "ask" },
+    { "input": "Sosyal", "grade": 5, "result": "subject-social", "confidence": "single" },
+    { "input": "Sosyal", "grade": 11, "result": "subject-social-science-studies", "confidence": "single_with_note" },
+    { "input": "Din K.", "grade": 7, "result": "subject-religion", "confidence": "single" },
+    { "input": "Din", "grade": 7, "result": null, "candidates": ["subject-religion", "subject-quran", "subject-prophet-life", "subject-basic-religious"], "confidence": "ask" },
+    { "input": "Yabancı Dil", "grade": 4, "result": null, "candidates": ["subject-english", "subject-german", "subject-french"], "confidence": "ask", "note": "Varsayılan öneri İngilizce, ama tek tıkla değiştirilebilir." },
+    { "input": "İnkılap", "grade": 8, "result": "subject-inkilap", "confidence": "single" },
+    { "input": "Beden", "grade": 2, "result": "subject-pe", "confidence": "single", "note": "Resmî ad 'Beden Eğitimi ve Oyun'." },
+    { "input": "Görsel S.", "grade": 6, "result": "subject-visual-arts", "confidence": "single" },
+    { "input": "Bilişim", "grade": 8, "result": "subject-ict", "confidence": "single_with_note", "note": "8. sınıfta zorunlu değil; seçmeli robotik/yapay zekâ olabilir." },
+    { "input": "Teknoloji Tasarım", "grade": 7, "result": "subject-technology-design", "confidence": "single" },
+    { "input": "Rehberlik", "grade": 9, "result": "subject-guidance", "confidence": "single" },
+    { "input": "Edebiyat", "grade": 10, "result": "subject-literature", "confidence": "single" },
+    { "input": "Trafik", "grade": 9, "result": "subject-health-traffic", "confidence": "single_with_note" },
+    { "input": "Halk Oyunları", "grade": 6, "result": "subject-elective-other", "confidence": "single" }
+  ],
+  "sources": [
+    { "id": "src-tegm-2025-04", "title": "TTKB 09/05/2025 Sayı 04 — İlköğretim Kurumları (İlkokul ve Ortaokul) Haftalık Ders Çizelgesi", "url": "https://tegm.meb.gov.tr/meb_iys_dosyalar/2025_07/29103516_ilkogretim_kurumlari_ilkokul_ve_ortaokul_hdckurul_karari1.pdf", "announcement_url": "https://tegm.meb.gov.tr/www/ilkogretim-kurumlari-ilkokul-ve-ortaokul-haftalik-ders-cizelgesinde-degisiklik-yapildi/icerik/1150", "published_at": "2025-07-29", "accessed_at": "2026-11-05", "used_for": "1–8 zorunlu ders adları ve sınıf kapsamı; seçmeli grupları (İnsan-Toplum-Bilim, Din-Ahlak-Değer, Kültür-Sanat-Spor); serbest etkinlikler" },
+    { "id": "src-ttkb-2025-05", "title": "TTKB 09/05/2025 Sayı 05 — Anadolu/Fen/Sosyal Bilimler Lisesi Haftalık Ders Çizelgeleri", "url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf", "published_at": "2025-05-09", "accessed_at": "2026-11-05", "used_for": "9–12 ortak dersler ve saatleri, seçmeli ders adları (Anadolu Lisesi tablosu okundu; Fen/SBL tabloları okunmadı)" },
+    { "id": "src-meb-genelge-2026-70", "title": "MEB Genelge 2026/70 m.32–33 — 2026-2027'de okutulacak seçmeli dersler ve HTDE seçimi", "url": "https://www.meb.gov.tr/meb_iys_dosyalar/2026_08/6a856d6ec086f824926482_2026-2027_Egitim_ve_Ogretim_Y%C4%B1l%C4%B1na_IliskinIs_ve_Islemler.pdf", "published_at": "2026-08-19", "accessed_at": "2026-11-05" },
+    { "id": "src-odsgm-term1", "title": "ÖDSGM 2026-2027 1. dönem konu soru dağılım tabloları — mevcut katalogdaki ders adları (docs/learning/catalog/2026-2027-term1/outcome-index.json)", "url": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724", "accessed_at": "2026-11-03", "used_for": "'İlköğretim Matematik', 'Din Kültürü ve Ahlak Bilgisi', 'Türk Dili ve Edebiyatı' gibi katalog etiketlerinin birebir korunması" },
+    { "id": "src-repo-guided-input", "title": "supabase/migrations/20261105011000_guided_input_catalog.sql — mevcut subject-* kimlikleri ve sınıf aralıkları", "url": "repo", "accessed_at": "2026-11-05", "note": "Mevcut aralıklar: science 3–8, social 4–7, life 1–3, turkish 1–8, english 2–12, lise dersleri 9–12. Bu dosya onlarla uyumludur; farklılık yok." }
+  ],
+  "open_questions_for_enes": [
+    "Yeni kimliklerin (religion, inkilap, pe, visual-arts, music, ict, technology-design, traffic, health-traffic, rights, guidance, philosophy, german/french, dinî seçmeliler, elective-other) guided_input_options'a migration ile eklenmesi — onay gerekir; bu dosya eklemez.",
+    "Eşleştirme sessiz mi (tek aday → otomatik id yaz) yoksa her zaman onaylı mı? Öneri: onaylı, çünkü veli etiketi zaten saklanıyor ve yanlış id Prova kapsamını yanlış yönlendirir.",
+    "Hazırlık sınıfı için ayrı 'grade' (0.5/13?) açılacak mı? Şema 1–12 ile sınırlı; öneri: 9 + okul notu, karar bekler.",
+    "Prova/kütüphane 'subject' metin alanı kanonik id'ye bağlanacak mı yoksa curriculum_subject() metin katlaması yeterli mi? (S04 ↔ P02 kesişimi)"
+  ]
+}
