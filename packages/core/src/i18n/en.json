@@ -940,6 +940,10 @@
     "loadHint": "Information could not be loaded. Check your connection and try again."
   },
   "childMint": {
+    "provaWaitingTitle_one": "{{count}} Prova is waiting for you",
+    "provaWaitingTitle_other": "{{count}} Provas are waiting for you",
+    "provaWaitingBody": "Your tasks are done. Move on to your Prova whenever you are ready; no rush.",
+    "provaWaitingAction": "Go to Prova",
     "next": "My next step",
     "start": "Start",
     "steps": "My steps today",

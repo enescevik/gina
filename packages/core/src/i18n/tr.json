@@ -940,6 +940,10 @@
     "loadHint": "Bilgiler yüklenemedi. Bağlantını kontrol ederek yeniden deneyebilirsin."
   },
   "childMint": {
+    "provaWaitingTitle_one": "Seni bekleyen {{count}} Prova var",
+    "provaWaitingTitle_other": "Seni bekleyen {{count}} Prova var",
+    "provaWaitingBody": "Görevlerin tamam. Hazır olduğunda Prova’na geçebilirsin; acele etmene gerek yok.",
+    "provaWaitingAction": "Prova’ya git",
     "next": "Sıradaki adımım",
     "start": "Başla",
     "steps": "Bugünkü adımlarım",
