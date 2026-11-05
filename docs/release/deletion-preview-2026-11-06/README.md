@@ -93,3 +93,43 @@ Yapılmayan: mobil/backoffice derleme-lint (dokunulmadı), gerçek Edge/Auth ser
 - Hesap önizlemesinde `transfer` modundaki çocuklar için sayım verilmez (`counts:null`), çünkü silinmezler. Çocuk düzeyinde dosya yoktur; dosyalar aile düzeyindedir ve korunur.
 - Edge tarafı belirteci tüketmez; tüketim yalnız kullanıcı silinince cascade ile olur. Önizleme oranı saatte 30; UI yenilemeyi buna göre sınırlamalı.
 - Üretim migration'ı uygulanmadı; `docs/CLAUDE-REMAINING-WORK.md` L03 kutusu kapatılmadı (UI ve kabul ekranları açık).
+
+## UI bağlama (6 Kasım gece, mobil)
+
+Dal: `worktree-agent-a379749b164a620aa` (main'e push edilmedi). Migration eklenmedi; üretime ve yerel demo DB'ye dokunulmadı.
+
+**Değişen dosyalar:** `apps/mobile/src/app/parent/menu.tsx`, `apps/mobile/src/components/account-deletion.tsx`, yeni `apps/mobile/src/components/deletion-preview-sheet.tsx`, `packages/core/src/i18n/{tr,en}.json` (yalnız `deletionPreview.*` altına yeni anahtar; mevcut değer değişmedi), yeni test `scripts/test-deletion-preview-ui.cjs`.
+
+**Davranış**
+
+- **Q00-A1-10 kapandı:** çocuk ayarları (PIN) kartındaki doğrudan `from("children").delete()` + `ConfirmAction` kaldırıldı. Kalıcı silme, menü › Ailem sekmesinin sonunda ayrı **"Tehlikeli işlemler"** kartında, çocuk başına "… profilini kalıcı sil" düğmesiyle açılır. Hesap silme de Hesap sekmesinde aynı kartın içindedir.
+- **Önizleme sheet'i (`DeletionPreviewSheet`, mevcut `DecisionSheet` üstünde):** `deletion_preview` sonucu zod ile doğrulanır; silinecek sayılar (`childDeletionCountLines`), korunacaklar, sıralı uyarılar, abonelik notu (silme iptal etmez, mağazadan yönetilir → "Aboneliği mağazada yönet" `/parent/subscription`), kalan süre (dakika). Önizleme `useQuery` değil mutation ile alınır; böylece global `invalidateQueries`/realtime sessizce yeni belirteç üretmez (saatte 30 sınırı).
+- **Önce arşiv:** `archive_available` ise yeşil kartta ayrı "Bunun yerine arşivle" eylemi; sheet kapanır ve mevcut önizlemeli arşiv ekranı `/parent/profile-archive?childId=…` açılır. Arşiv yolu hiçbir şey silmez.
+- **Güçlü onay:** çocuk adını aynen yazma (Türkçe yerel ayarla büyük/küçük harf duyarsız); eşleşmeden, önizleme süresi 30 sn emniyet payıyla geçerli değilken veya istek sürerken "Kalıcı olarak sil" pasif. Hesapta mevcut yeniden doğrulama (şifre veya e-posta OTP) + "geri alınamaz" anahtarı sheet içinde.
+- **İdempotent istek:** istek kimliği önizleme belirtecine bağlı (`randomUUID`, aynı belirteç → aynı kimlik); senkron `sending` kilidi çift dokunmayı tek isteğe indirir; kayıp yanıtta tekrar aynı kimlikle gider ve sunucu makbuzu döner.
+- **Eski önizleme:** `deletion_preview_stale/expired/used/not_found` → hata metni + önizleme otomatik yenilenir ("Önizleme güncellendi…"); değişen ad yazılı onayı geçersiz kılar. Süre dolunca "Önizlemeyi yenile".
+- **Hesap:** `delete-account` gövdesine `preview_token` eklenir; Edge hata gövdesindeki kod okunur (409 → önizleme yenilenir; `reauthentication_failed` → mevcut `accountV5.deleteFailed`). Aile kurulmadan önce (`(auth)/family.tsx`, `family_id` yok) önizleme RPC'si `forbidden` döneceği için eski belirteçsiz akış aynen kalır.
+
+**Test (gerçekten çalıştı)**
+
+- `pnpm --filter @gina/mobile exec tsc --noEmit` → çıkış 0; `pnpm --filter @gina/mobile exec expo lint` → çıkış 0, uyarı yok; `pnpm --filter @gina/core test` → 50 dosya / 356 test geçti (i18n eşliği dahil).
+- `expo export -p web` → başarılı (yer tutucu kaynak `http://127.0.0.1:65431`; Playwright istekleri fixture'ın loopback proxy'sine iletir, yer tutucu anon anahtarını fixture anahtarıyla değiştirir).
+- İzole servis: `GINA_QA_UI_FIXTURE=<scratchpad>/l03/fixture.json scripts/test-isolated-services.py --run-local --ui-hold` → **137/137 servis kontrolü**; UI bitince `SIGUSR2` ile bırakıldı; geçici DB ve iki container kaldırıldı ([ui/service-checks.json](ui/service-checks.json)). Başka ajanların `gina_http_*` container'larına dokunulmadı.
+- Playwright (Chrome, `tr-TR`, 390×844 ve 1280×800), `scripts/test-deletion-preview-ui.cjs` → **8/8** ([ui/ui-checks.json](ui/ui-checks.json)):
+  1. PIN kartında kalıcı silme yok, "Tehlikeli işlemler" ayrı;
+  2. önizleme → "Bunun yerine arşivle" → arşiv ekranı, çocuk duruyor, `confirm_child_deletion` çağrısı 0;
+  3. önizleme → ad yazma (yanlış ad pasif, küçük harf kabul) → **çift tıklama** → tek `confirm_child_deletion` isteği, çocuk silindi; aynı gövde REST ile tekrar → makbuz (`deleted:true`), ikinci silme yok;
+  4. **eski önizleme:** önizlemeden sonra ad REST ile değişti → `deletion_preview_stale` metni, önizleme yeniden alındı, yeni ad gösterildi, eski yazılı ad onayı pasif, çocuk silinmedi;
+  5. **kayıp yanıt:** sunucu silmeyi uyguladı ama istemciye 503 döndü → genel hata; tekrar → aynı `p_request_id`/belirteç, başarı, tek silme;
+  6. vazgeç → çocuk duruyor (masaüstü);
+  7. hesap: önizleme (aile `cascade`, sayımlar, abonelik notu), yeniden doğrulamasız onay pasif; şifre + anahtar → `delete-account` gövdesinde `preview_token` ve `confirm:true` doğrulandı; **Edge yanıtı taklit (409 `deletion_preview_stale`)** → hata metni ve önizleme yenilendi; hesap silinmedi;
+  8. yatay taşma ve çalışma zamanı hatası yok.
+- Görüntüler: [ui/](ui/) — `menu-danger-zone-phone`, `preview-archive-offer-phone`, `archive-path-phone`, `preview-delete-ready-phone`, `delete-done-phone`, `stale-refreshed-phone`, `lost-response-phone`, `preview-child-desktop`, `preview-account-desktop`, `preview-account-phone`, `account-stale-phone`.
+
+**Kalan sınır**
+
+- `delete-account` Edge fonksiyonu bu koşuda çalıştırılmadı (izole koşucu `--with-storage` olmadan Edge başlatmaz); UI'nin gönderdiği gövde gerçek, 409 yanıtı taklit. Gerçek hesap silme uçtan uca (şifre/OTP + belirteç + `auth.admin.deleteUser`) ve `expired` durumunun 15 dk beklemeli gerçek kontrolü yapılmadı (UI aynı yenileme yolunu kullanır; sunucu tarafı pgTAP ile test edildi).
+- Gerçek cihaz (iOS/Android native Modal, klavye, büyük yazı) denenmedi; yalnız web exportu.
+- Arşivli çocuklar menü listesinde olmadığı için "Tehlikeli işlemler"de görünmez (eski davranışla aynı); arşivden kalıcı silme girişi eklenmedi.
+- `packages/core/src/database.types.ts` yeni RPC'leri içermiyor; çağrılar tek yerde türsüz `rpc` ile yapılıyor. Türler yeniden üretilince kaldırılmalı.
+- `docs/CLAUDE-REMAINING-WORK.md` L03 kutusu kapatılmadı (sahiplik dışı; gerçek Edge ve cihaz kabulü açık).
