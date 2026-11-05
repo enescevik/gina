@@ -83,6 +83,7 @@ Bunlar JSON'a yazılmaz, uygulama davranışıdır ve çoğu mevcut şemada zate
 ## Yayımlanmadı / yönetim onayı gerekir
 
 - Bu dosyadaki hiçbir takvim üretim `education_calendars` tablosuna girilmedi, yayımlanmadı.
-- `guided_input_options`'a yeni ders kimliği eklenmedi (migration yok).
+- ~~`guided_input_options`'a yeni ders kimliği eklenmedi (migration yok).~~ 6 Kasım S04 uygulaması: `20261106180000_subject_catalog_and_calendar_seed.sql` 20 kimliği ve eşanlamlı tablosunu ekler; eşleşme `suggest_subject` ile her zaman veli onaylı. Rapor: [s04-catalog-2026-11-06](../../../release/s04-catalog-2026-11-06/README.md).
+- İthal artık tek adımlı: yönetim `education-calendars` → "Taslak içe aktar (kaynaklı)" (veya `scripts/import-education-calendar-draft.mjs`) bu dosyadan yalnız **taslak** üretir; Düzce atlanır, yeni il yerleri gizli açılır, yayın yine ayrı işlemdir.
 - İthal akışı: yönetici `education-calendars` sayfasında ülke yerini seçer, kademe/yıl girer, `calendar_value` alanlarını aktarır, **kaydeder**, önizlemeden sonra ayrı işlemle **yayımlar**. Dört kademe için dört ayrı kayıt gerekir (şema `unique(place_id,stage,academic_year)`).
 - Yeniden kontrol tarihi: Ocak 2027 (yarıyıl öncesi) ve Resmî Gazete'de idari izin kararı çıkınca.
