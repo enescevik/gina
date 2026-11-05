@@ -1,0 +1,23 @@
+{
+  "environment": "empty-disposable-database",
+  "results": [
+    {
+      "check": "same_key_concurrent_apply_single_run_identical_result",
+      "passed": true
+    },
+    {
+      "check": "competing_restores_one_winner_other_not_archived_or_changed",
+      "passed": true
+    },
+    {
+      "check": "archive_vs_child_request_never_both",
+      "passed": true,
+      "order": "request_first"
+    },
+    {
+      "check": "bulk_archive_vs_single_edit_same_revision_one_commit",
+      "passed": true,
+      "order": "edit_first"
+    }
+  ]
+}
