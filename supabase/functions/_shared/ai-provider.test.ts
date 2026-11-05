@@ -1,4 +1,5 @@
 // S06 adapter sözleşme testleri: sahte sunucu, gerçek sağlayıcı yok, ücretli çağrı yok.
+import { isContractBody } from "./error-contract.ts";
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { adapterFor, adapterKey, classifyAiError, registeredAdapterIds } from "./ai-adapters.ts";
 import { openAiAdapter, toOpenAiContent } from "./ai-adapter-openai.ts";
@@ -283,6 +284,8 @@ Deno.test("resolveAi refuses a name-only model with reasons and affected feature
   const body = await refused.json();
   assert(body.error === "ai_model_unsupported" && body.reasons.includes("adapter_missing") && body.reasons.includes("provider_unconfigured"), "reasons");
   assert(body.unsupported_features.some((f: { feature: string }) => f.feature === "weekly_summary"), "features listed");
+  // U08: eski alanlar korunur, sözleşme alanları eklenir.
+  assert(isContractBody(body) && body.category === "service_unavailable" && body.retryable === false, "contract body");
 
   const inactive = await resolveAi(configDb({ app_settings: null, ai_settings: settings, ai_models: { ...supportedModel, active: false }, ai_providers: anthropic }), "plus", 100);
   assert(inactive instanceof Response && (await inactive.json()).error === "ai_model_unavailable", "inactive model");

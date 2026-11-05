@@ -3,7 +3,7 @@ import { invalidateTaskState } from "./task-cache";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Crypto from "expo-crypto";
 
-import { localDateOf, starBalance, tasksWithRecordedWork, weekDatesOf, type CompletionStatus } from "@gina/core";
+import { readChildStarBalance, tasksWithRecordedWork, weekDatesOf, localDateOf, type CompletionStatus } from "@gina/core";
 
 import { useFamilyTimezone } from "./family";
 import { useRealtimeInvalidate } from "./realtime";
@@ -75,16 +75,15 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
     },
   });
 
+  // Q02-3: bakiye ve bugünkü hareket sunucuda toplanır (tüm defter çekilmez). Anahtar "star_events" ile
+  // başlar: mevcut realtime/yenileme anahtarları (["star_events", childId]) önek eşleşmesiyle geçerli kalır.
   const starEvents = useQuery({
-    queryKey: ["star_events", childId],
+    queryKey: ["star_events", childId, today],
     enabled: !!childId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("star_events")
-        .select("delta, created_at")
-        .eq("child_id", childId);
+      const { data, error } = await supabase.rpc("child_star_balance", { p_child_id: childId, p_day: today });
       if (error) throw error;
-      return data;
+      return readChildStarBalance(data);
     },
   });
 
@@ -136,16 +135,14 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
     return { date, due: dueCount, done: doneCount };
   });
 
-  const todayStarsEarned = (starEvents.data ?? [])
-    .filter((e) => localDateOf(new Date(e.created_at), timeZone) === today)
-    .reduce((sum, e) => sum + e.delta, 0);
+  const todayStarsEarned = starEvents.data?.todayDelta ?? 0;
 
   return {
     today,
     week,
     due,
     weekSummary,
-    stars: starBalance(starEvents.data ?? []),
+    stars: starEvents.data?.balance ?? 0,
     todayDone: due.filter((t) => t.status === "done" || t.status === "approved").length,
     todayStarsEarned,
     loading: templates.isPending || completions.isPending,

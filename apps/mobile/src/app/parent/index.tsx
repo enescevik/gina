@@ -2,7 +2,7 @@ import * as Crypto from "expo-crypto";
 import { invalidateTaskState } from "@/lib/task-cache";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
-import { localDateOf, occurrencesBetween, tasksWithRecordedWork, taskSnapshot, weekDatesOf, recordedWeek } from '@gina/core';
+import { localDateOf, occurrencesBetween, tasksWithRecordedWork, taskSnapshot, weekDatesOf, recordedWeek, starTotalsByChild } from '@gina/core';
 import { ParentHomeView } from '@/components/parent-home/home-view';
 import { useFamilyTimezone } from '@/lib/family';
 import { useRealtimeInvalidate } from '@/lib/realtime';
@@ -65,11 +65,10 @@ export default function ParentHomeScreen() {
     queryKey: ["family_star_totals", familyId],
     enabled: !!familyId,
     queryFn: async () => {
-      const { data, error } = await supabase.from("star_events").select("child_id, delta").eq("family_id", familyId);
+      // Q02-3: çocuk başına bakiye sunucuda toplanır; tüm aile defteri çekilmez. Görünüm aynı (yok → 0).
+      const { data, error } = await supabase.rpc("family_star_balances");
       if (error) throw error;
-      const totals = new Map<string, number>();
-      for (const e of data) totals.set(e.child_id, (totals.get(e.child_id) ?? 0) + e.delta);
-      return totals;
+      return starTotalsByChild(data);
     },
   });
 

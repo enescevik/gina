@@ -214,6 +214,16 @@ try {
   check('two_parents_approve_once', [r1, r2].filter(r => !r.error).length === 1 && [r1, r2].some(r => r.error?.message === 'already_reviewed'), JSON.stringify([r1.error?.message, r2.error?.message]));
   const starsC1 = (await must(a1.c.from('star_events').select('delta').eq('child_id', c1), 'stars_c1')).reduce((n, r) => n + r.delta, 0);
   check('stars_awarded_once', starsC1 === 2, starsC1);
+  // Q02-3: sunucu tarafı bakiye defter toplamıyla aynı; veli, o çocuğun cihazı okur; yabancı aile/cihaz okuyamaz.
+  const serverC1 = await rpc(a1.c, 'child_star_balance', { p_child_id: c1 }, 'server_balance_c1');
+  check('server_child_balance_matches_ledger', serverC1.balance === starsC1, JSON.stringify(serverC1));
+  const deviceC1 = await rpc(devA.c, 'child_star_balance', { p_child_id: c1 }, 'device_balance_c1');
+  check('device_child_balance_matches_ledger', deviceC1.balance === starsC1, JSON.stringify(deviceC1));
+  const familyTotals = await rpc(a1.c, 'family_star_balances', {}, 'family_star_balances');
+  check('family_star_balances_match_ledger', familyTotals.find(r => r.child_id === c1)?.balance === starsC1, JSON.stringify(familyTotals));
+  await denied(b1.c.rpc('child_star_balance', { p_child_id: c1 }), 'foreign_parent_balance_denied');
+  await denied(devB.c.rpc('child_star_balance', { p_child_id: c1 }), 'foreign_device_balance_denied');
+  await denied(devA.c.rpc('family_star_balances'), 'device_family_balances_denied');
   const c2Comp = retriedRow;
   await rpc(a2.c, 'review_task', { p_completion_id: c2Comp.id, p_approve: true }, 'approve_c2');
 
@@ -234,6 +244,7 @@ try {
   check('parallel_decide_both_return_approved', !d1.error && !d2.error && d1.data.status === 'approved' && d2.data.status === 'approved', JSON.stringify([d1.error?.message, d2.error?.message]));
   const starsAfter = (await must(a1.c.from('star_events').select('delta').eq('child_id', c1), 'stars_after_reward')).reduce((n, r) => n + r.delta, 0);
   check('reward_debited_once', starsAfter === 0, starsAfter);
+  check('server_balance_after_reward', (await rpc(a1.c, 'child_star_balance', { p_child_id: c1 }, 'server_balance_after_reward')).balance === starsAfter);
   await denied(devA.c.rpc('request_reward', { p_reward_id: reward.id, p_idempotency_key: randomUUID() }), 'insufficient_stars_rejected', /insufficient_stars/);
   await denied(b1.c.rpc('reward_history', { p_id: reward.id }), 'foreign_reward_history_denied');
 
@@ -439,13 +450,22 @@ try {
   // ---------------------------------------------------------------- 15. child delete, account delete
   const foreignDelete = await b1.c.from('children').delete().eq('id', c2).select();
   check('foreign_child_delete_no_rows', !!foreignDelete.error || foreignDelete.data.length === 0, JSON.stringify(foreignDelete.data));
+  // Q02-6: veli REST ile çocuğu doğrudan silemez; silme önizleme + confirm_child_deletion (makbuzlu) ile.
   const deleteC2 = await a1.c.from('children').delete().eq('id', c2).select();
   notes.push({ observation: 'parent_direct_child_delete', error: deleteC2.error?.message ?? null, rows: deleteC2.data?.length ?? null });
-  check('parent_child_delete_outcome_recorded', true);
-  if (!deleteC2.error && deleteC2.data.length === 1) {
-    check('deleted_child_tasks_gone', (await must(a1.c.from('task_templates').select('id').eq('child_id', c2), 'c2_tasks')).length === 0);
-    check('deleted_child_completions_gone', (await must(a1.c.from('task_completions').select('id').eq('child_id', c2), 'c2_completions')).length === 0);
-  }
+  check('parent_direct_child_delete_refused', !!deleteC2.error || deleteC2.data.length === 0, JSON.stringify(deleteC2.data));
+  check('child_still_present_after_refused_delete', (await must(admin.from('children').select('id').eq('id', c2), 'c2_after_refused')).length === 1);
+  await denied(b1.c.rpc('deletion_preview', { p_target: { kind: 'child', child_id: c2 } }), 'foreign_child_deletion_preview_denied');
+  const childPreview = await rpc(a1.c, 'deletion_preview', { p_target: { kind: 'child', child_id: c2 } }, 'child_deletion_preview');
+  await denied(b1.c.rpc('confirm_child_deletion', { p_request_id: randomUUID(), p_child_id: c2, p_preview_token: childPreview.preview_token }), 'foreign_confirm_child_deletion_denied');
+  const deleteReq = { p_request_id: randomUUID(), p_child_id: c2, p_preview_token: childPreview.preview_token };
+  const confirmed = await rpc(a1.c, 'confirm_child_deletion', deleteReq, 'confirm_child_deletion');
+  check('confirm_child_deletion_deleted', confirmed.deleted === true, JSON.stringify(confirmed));
+  const replay = await rpc(a1.c, 'confirm_child_deletion', deleteReq, 'confirm_child_deletion_replay');
+  check('confirm_child_deletion_replay_same', JSON.stringify(replay) === JSON.stringify(confirmed));
+  check('deleted_child_row_gone', (await must(admin.from('children').select('id').eq('id', c2), 'c2_after_delete')).length === 0);
+  check('deleted_child_tasks_gone', (await must(a1.c.from('task_templates').select('id').eq('child_id', c2), 'c2_tasks')).length === 0);
+  check('deleted_child_completions_gone', (await must(a1.c.from('task_completions').select('id').eq('child_id', c2), 'c2_completions')).length === 0);
   // co-parent account deletion: family survives with successor; old token loses access
   const a2OldToken = await token(a2.c);
   await must(admin.auth.admin.deleteUser(a2.user, false), 'delete_account_a2');

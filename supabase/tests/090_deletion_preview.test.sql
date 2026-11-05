@@ -163,10 +163,13 @@ select ok((pg_temp.get('single')->'warnings') ? 'subscription_not_cancelled','st
 select is(pg_temp.get('single')#>>'{alternatives,archivable_children}','1','archive offered for active children');
 select pg_temp.actor('00000000-0000-4000-8000-000000009001');
 select lives_ok($$select public.set_child_archived(gen_random_uuid(),pg_temp.can(),0,true)$$,'archive sibling first');
-select lives_ok($$delete from public.children where id=pg_temp.can()$$,'legacy direct deletion of archived child still works');
+-- Q02-6 (20261106170000): eski doğrudan REST silme yolu kapandı; arşivli kardeş de RPC ile silinir.
+select throws_ok($$delete from public.children where id=pg_temp.can()$$,'42501',null,'legacy direct deletion is refused');
+select lives_ok($$select public.confirm_child_deletion(gen_random_uuid(),pg_temp.can(),
+  (public.deletion_preview(jsonb_build_object('kind','child','child_id',pg_temp.can()))->>'preview_token')::uuid)$$,'archived sibling deleted through confirm_child_deletion');
 reset role;
-select is((select child_id from public.notes where id='30000000-0000-4000-8000-000000009005'),null,'legacy path also detaches co-parent personal note');
-select is((select count(*)::int from public.notes where id='30000000-0000-4000-8000-000000009005'),1,'legacy path keeps the note');
+select is((select child_id from public.notes where id='30000000-0000-4000-8000-000000009005'),null,'RPC path also detaches co-parent personal note');
+select is((select count(*)::int from public.notes where id='30000000-0000-4000-8000-000000009005'),1,'RPC path keeps the note');
 select ok(not has_function_privilege('anon','public.deletion_preview(jsonb)','execute'),'anonymous preview denied');
 select ok(not has_function_privilege('authenticated','public.check_deletion_preview(uuid,uuid)','execute'),'client service-check denied');
 select ok(not has_table_privilege('authenticated','gina.deletion_previews','select'),'preview table private');

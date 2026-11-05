@@ -1,9 +1,10 @@
 import { setupPrompt } from "../_shared/setup-prompt.ts";
 import { json, preflight, serviceClient } from "../_shared/supabase.ts";
+import { fail } from "../_shared/error-contract.ts";
+import { parentOrResponse } from "../_shared/auth.ts";
 import {
   apiKeyOrResponse,
   callClaude,
-  readParent,
   resolveAi,
   sha256,
 } from "../_shared/prova.ts";
@@ -11,7 +12,7 @@ import { setupDocumentResult, setupInput } from "../_shared/setup-drafts.ts";
 import { provaDocument } from "../_shared/prova-document.ts";
 export const defaults = {
   serviceClient,
-  readParent,
+  parentOrResponse,
   resolveAi,
   apiKeyOrResponse,
   callClaude,
@@ -22,10 +23,10 @@ export async function setupSuggestions(
   deps = defaults,
 ): Promise<Response> {
   if (req.method === "OPTIONS") return preflight();
-  if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
+  if (req.method !== "POST") return fail("method_not_allowed", 405);
   const db = deps.serviceClient();
-  const parent = await deps.readParent(req, db);
-  if (!parent) return json({ error: "forbidden" }, 403);
+  const parent = await deps.parentOrResponse(req, db);
+  if (parent instanceof Response) return parent;
   let body, input;
   try {
     body = await req.json();
@@ -38,13 +39,13 @@ export async function setupSuggestions(
       throw Error();
     }
   } catch {
-    return json({ error: "invalid_input" }, 400);
+    return fail("invalid_input", 400);
   }
   const { data: ent, error } = await db.rpc("get_setup_ai_entitlement", {
     p_family_id: parent.familyId,
   });
-  if (error || !ent) return json({ error: "entitlement_failed" }, 500);
-  if (!ent.limit) return json({ error: "plan_has_no_ai" }, 402);
+  if (error || !ent) return fail("entitlement_failed", 500);
+  if (!ent.limit) return fail("plan_has_no_ai", 402);
   const ai = await deps.resolveAi(db, ent.plan, body.source_id ? 3072 : 2048);
   if (ai instanceof Response) return ai;
   const key = deps.apiKeyOrResponse();
@@ -80,11 +81,11 @@ export async function setupSuggestions(
       p_lease: lease,
     },
   );
-  if (reserveError || !job) return json({ error: "save_failed" }, 500);
+  if (reserveError || !job) return fail("save_failed", 500);
   if (job.cached) return json(job.cached);
   if (job.error) {
-    return json(
-      { error: job.error },
+    return fail(
+      String(job.error),
       job.error === "ai_quota_exceeded" ? 402 : 409,
     );
   }
@@ -113,7 +114,7 @@ export async function setupSuggestions(
     } catch {
       /* Leave the lease fenced until expiry; never rerun implicitly. */
     }
-    return json({ error: "ai_result_uncertain" }, 502);
+    return fail("ai_result_uncertain", 502);
   }
   try {
     const saved = await db.rpc("finish_setup_generation", {
@@ -123,10 +124,10 @@ export async function setupSuggestions(
       p_unknown: false,
     });
     if (saved.error || saved.data !== true) {
-      return json({ error: "ai_result_uncertain" }, 503);
+      return fail("ai_result_uncertain", 503);
     }
     return json(response);
   } catch {
-    return json({ error: "ai_result_uncertain" }, 503);
+    return fail("ai_result_uncertain", 503);
   }
 }

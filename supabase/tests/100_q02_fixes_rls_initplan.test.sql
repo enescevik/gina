@@ -33,7 +33,9 @@ select set_eq($$select tablename::text,policyname::text,cmd::text,permissive::te
  ('child_shares','child_shares_parent_delete','DELETE','PERMISSIVE'),
  ('child_shares','child_shares_parent_select','SELECT','PERMISSIVE'),
  ('children','children_device_select','SELECT','PERMISSIVE'),
- ('children','children_parent_all','ALL','PERMISSIVE'),
+ ('children','children_parent_insert','INSERT','PERMISSIVE'),
+ ('children','children_parent_select','SELECT','PERMISSIVE'),
+ ('children','children_parent_update','UPDATE','PERMISSIVE'),
  ('contribution_rewards','rewards_admin','ALL','PERMISSIVE'),
  ('devices','devices_parent_select','SELECT','PERMISSIVE'),
  ('devices','devices_parent_update','UPDATE','PERMISSIVE'),
@@ -112,7 +114,8 @@ select set_eq($$select tablename::text,policyname::text,cmd::text,permissive::te
  ('timetable_imports','timetable_import_parent','SELECT','PERMISSIVE')$$,'rewritten policy inventory unchanged (table, name, command, permissive/restrictive)');
 select is((select count(*)::int from pg_policies where schemaname='public' and roles<>'{authenticated}'
  and (coalesce(qual,'')||' '||coalesce(with_check,'')) ~ '(gina\.(is_parent|is_device|family_id|child_id|is_admin|is_admin_strict|is_service|role|claims)\(\)|auth\.uid\(\))'),0,'helper-based policies still target authenticated only');
-select is((select count(*)::int from pg_policies where schemaname='public'),110,'public policy count unchanged (110)');
+-- 20261106170000 (Q02-6): children_parent_all → select/insert/update (DELETE yok): 110 → 112.
+select is((select count(*)::int from pg_policies where schemaname='public'),112,'public policy count (110 + Q02-6 split = 112)');
 
 -- 2. Satır başına değerlendirme kalmadı: her yardımcı çağrı `( SELECT f() AS ...)` skaler alt sorgu (InitPlan) içinde.
 create function pg_temp.bare_calls() returns int language sql as $$

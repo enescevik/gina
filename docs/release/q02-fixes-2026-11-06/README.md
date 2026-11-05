@@ -243,4 +243,37 @@ CI (`.github/workflows/ci.yml` db işi) bu dalda GitHub'da **çalıştırılmad�
 - `auth.uid()` çağrıları da sarıldı (Supabase'in resmi önerisi); `gina.device_allows(uuid,uuid)` satıra bağlı olduğu için sarılmadı.
 - Gelecek migration'lar yeni politika yazarken `(select gina.is_parent())` desenini kullanmalı; pgTAP 100 "çıplak çağrı = 0" assertion'ı bunu bekçi olarak tutar (yeni politika çıplak yazılırsa CI düşer).
 - Q02-10: üretim DB UTC kalır; yalnız test DB/oturumları hizalandı. Fonksiyonların oturum saat dilimine bağımlı olmadığı ayrıca denetlenmedi (Q03/Q04 adayı: `current_date`/`now()::date` kullanan fonksiyon taraması).
-- Çalışılmayan Q02 bulguları: Q02-3 (istemci tarafı yıldız toplamı), Q02-4 (çizim belgeleri tek yanıtta), Q02-6 (`children` doğrudan DELETE), Q02-7 (kaynak seçici limit 30), Q02-9 — bu gecenin kapsamı dışında, açık.
+- Çalışılmayan Q02 bulguları: Q02-4 (çizim belgeleri tek yanıtta), Q02-7 (kaynak seçici limit 30), Q02-9 — açık. Q02-3 ve Q02-6 ikinci turda yapıldı (§8).
+
+## 8. Q02-3 ve Q02-6 (ikinci tur)
+
+**Durum: KOD HAZIR, İZOLE TEST EDİLDİ, ÜRETİME UYGULANMADI.** Dal `worktree-agent-af50f629d5929ec48` (main `eeb57af` üzerinde, push yok). Migration `supabase/migrations/20261106170000_star_balance_and_child_delete.sql`, pgTAP `supabase/tests/103_star_balance_and_child_delete.test.sql` (47 assertion).
+
+### Q02-3 — sunucu tarafı yıldız bakiyesi
+
+- `public.child_star_balance(p_child_id uuid, p_day date default null) → {child_id, balance, today, today_delta}`: SECURITY DEFINER, stable. Yetki: aynı ailenin velisi **veya** o çocuğa atanmış cihaz (`gina.is_device()` ve `child_id = gina.child_id()` — `star_events_device_select` ile aynı kural; claim tek başına yetmez). Yabancı/olmayan/null çocuk → 42501 `forbidden` (varlık sızmaz). `today_delta`: ailenin saat diliminde `p_day` (verilmezse ailenin bugünü) günündeki hareketlerin toplamı — istemcinin eski `localDateOf(created_at, tz) === today` toplamıyla aynı.
+- `public.family_star_balances() → table(child_id, balance)`: yalnız veli; hareketi olmayan çocuk satır döndürmez (istemcide eskisi gibi 0).
+- Mobil: `apps/mobile/src/lib/use-child-today.ts` `child_star_balance(childId, today)` okur (sorgu anahtarı `["star_events", childId, today]`: mevcut realtime/yenileme anahtarları önek eşleşmesiyle geçerli); `apps/mobile/src/app/parent/index.tsx` `family_star_balances` okur ve aynı `Map<child_id, toplam>` şeklini üretir (core `starTotalsByChild`). Görünüm aynı; artık tüm defter aktarılmıyor. Core: `readChildStarBalance`, `starTotalsByChild` (+ `stars.test.ts`), `database.types.ts`'e iki RPC.
+- Performans ölçümü bu turda yeniden yapılmadı (yalnız aktarılan satır sayısı defter boyundan çocuk sayısına indi).
+
+### Q02-6 — `children` doğrudan DELETE kapatıldı
+
+- `children_parent_all for all` → `children_parent_select` / `children_parent_insert` / `children_parent_update` (aynı InitPlan koşulu); **DELETE politikası yok**, ayrıca `revoke delete on public.children from anon, authenticated` (REST silmesi 0 satır yerine açık 42501). Kalıcı silme yalnız `deletion_preview` + `confirm_child_deletion` (makbuz, önizleme parmak izi) ve hesap/aile cascade'i ile. Politika sayısı 110 → 112 (pgTAP 100 güncellendi).
+- Ön kontrol (grep, `apps/`, `packages/`, `scripts/`, `supabase/functions`): istemcide doğrudan `children` silmesi **yalnız** `apps/mobile/src/app/parent/menu.tsx:36` (`supabase.from("children").delete()`); başka kullanım yok. Bu dosyaya dokunulmadı (menü UI'si başka ajanda `confirm_child_deletion`'a taşınıyor).
+- **BAĞIMLILIK — yayın sırası:** bu migration, `menu.tsx` çocuk silme akışı `confirm_child_deletion`'a taşınan sürüm mağazalarda/OTA ile yayımlanmadan **uygulanmamalı**. Aksi hâlde eski istemcide çocuk silme 42501 hatası verir (veri kaybı yok, ama özellik çalışmaz).
+- Test güncellemeleri: 016/079/090 doğrudan silmenin reddini assert eder, silmeyi `confirm_child_deletion` ile yapar (cascade/not ayırma kontrolleri aynı kaldı). `scripts/test-e2e-family-chain.mjs` §15: doğrudan silme reddi, satır yerinde, yabancı önizleme/onay reddi, önizleme + onay, aynı istek tekrarı aynı sonuç, görev/tamamlama cascade.
+
+### Testler (gerçek koşular)
+
+```
+python3 scripts/test-q02-sql.py --run-local (Europe/Istanbul)  → 103 dosya, 3813 assertion, 0 hata (2. koşu)
+python3 scripts/test-q02-sql.py --run-local --timezone UTC      → 103 dosya, 3813 assertion, 0 hata
+pgTAP 103 tek başına                                           → 47/47
+pgTAP 103, --skip-migration 20261106170000 (A/B)               → düşer (child_star_balance yok)
+scripts/test-e2e-family-chain.py --run-local                    → 317/317 (chain-details-q02-3-6.json)
+pnpm --filter @gina/core test                                   → 51 dosya, 359 test geçti
+pnpm --filter @gina/mobile typecheck / lint (expo lint)         → temiz / temiz
+pnpm --filter @gina/core typecheck                              → temiz
+```
+
+Not: İstanbul saatindeki **ilk** tam koşuda `095_notification_channels` 3 assertion düştü ("tampered signature rejected" ve ona bağlı iki denetim kaydı). Test, imzanın son karakterini `'0'` ile değiştiriyor; imza zaten `0` ile bitiyorsa belirteç değişmiyor → bu işle ilgisiz, önceden var olan olasılıksal flake. 095 tek başına 3 kez ve tam koşu tekrarında geçti. Öneri: testte son karakteri farklı bir karakterle değiştirmek (ör. `0`→`1`).

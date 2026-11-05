@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { runAiOperation } from "./ai-operation.ts";
 import { callClaude } from "./prova.ts";
+import { expectContract } from "./contract-fixtures.ts";
 const config = {
   model: "synthetic-model",
   promptVersion: "test",
@@ -431,4 +432,91 @@ Deno.test("Archived child uses scoped reservation and rejects before quota/provi
     assert(calls[0].args.p_child_id==="synthetic-child","child identity passed");
     assert(requests.length===0,"no provider calls");
   });
+});
+
+Deno.test("U08 contract: reservation and provider failures use the shared error body", async () => {
+  for (
+    const [reservation, status, code, category] of [
+      [{ error: "ai_quota_exceeded" }, 402, "ai_quota_exceeded", "rate_limited"],
+      [{ error: "ai_rate_limited" }, 429, "ai_rate_limited", "rate_limited"],
+      [{ error: "generation_in_progress" }, 409, "generation_in_progress", "conflict"],
+      [{ error: "ai_result_uncertain" }, 409, "ai_result_uncertain", "service_unavailable"],
+      // Ham/bilinmeyen rezervasyon metni istemciye sızmaz.
+      [{ error: "ERROR: duplicate key 8f1c" }, 409, "server_error", "service_unavailable"],
+    ] as const
+  ) {
+    const f = fixture(reservation);
+    await withFetch([], async (requests) => {
+      const result = await run(f.db);
+      assert(result instanceof Response, "expected response");
+      const body = await expectContract(result, status, code, category);
+      if (code === "ai_rate_limited") assert(body.retry_after_s === 60 && body.retryable === true, "no retry hint");
+      if (code === "generation_in_progress") assert(body.retry_after_s === 20, "no retry hint");
+      assert(requests.length === 0, "gate called provider");
+    });
+  }
+  const outage = fixture(null, true);
+  await withFetch([], async () => {
+    await expectContract(await run(outage.db) as Response, 503, "ai_configuration_unavailable", "service_unavailable");
+  });
+  const uncertain = fixture();
+  await withFetch([Error("network lost")], async () => {
+    await expectContract(await run(uncertain.db) as Response, 502, "ai_result_uncertain", "service_unavailable");
+  });
+});
+Deno.test("U08 single charge: same request repeated (and raced) yields one paid provider job", async () => {
+  // Durumlu rezervasyon: aynı hash ilk çağrıda iş açar, işlem sürerken `generation_in_progress`,
+  // bittikten sonra aynı iş kimliğiyle `cached` döner (DB'deki reserve_ai_operation sözleşmesi).
+  const jobs = new Map<string, { id: string; done: boolean; result?: unknown }>();
+  let reservations = 0;
+  const db = {
+    rpc: (name: string, args: Record<string, unknown>) => {
+      if (name === "reserve_ai_operation") {
+        reservations++;
+        const hash = String(args.p_hash), job = jobs.get(hash);
+        if (!job) {
+          jobs.set(hash, { id: "job-1", done: false });
+          return Promise.resolve({ data: { id: "job-1" }, error: null });
+        }
+        return Promise.resolve({
+          data: job.done ? { id: job.id, cached: job.result } : { error: "generation_in_progress" },
+          error: null,
+        });
+      }
+      if (name === "finish_ai_operation") {
+        for (const job of jobs.values()) {
+          if (job.id === args.p_id) Object.assign(job, { done: true, result: args.p_result });
+        }
+        return Promise.resolve({ data: true, error: null });
+      }
+      return Promise.resolve({ data: null, error: null });
+    },
+  } as unknown as SupabaseClient;
+  // Sağlayıcı yanıtı kapı açılana kadar bekler: ilk iş kesin olarak "sürüyor" durumundayken ikinci istek gelir.
+  const original = globalThis.fetch, requests: string[] = [];
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => release = resolve);
+  globalThis.fetch = async (input) => {
+    requests.push(String(input));
+    if (String(input).includes("count_tokens")) return json({ input_tokens: 50 });
+    await gate;
+    return success();
+  };
+  try {
+    const first = run(db);
+    while (requests.length < 2) await new Promise((r) => setTimeout(r, 1));
+    const raced = await run(db);
+    assert(raced instanceof Response, "race started a second job");
+    await expectContract(raced, 409, "generation_in_progress", "conflict");
+    release();
+    const done = await first;
+    assert(!(done instanceof Response) && done.jobId === "job-1", "first call failed");
+    const again = await run(db);
+    assert(!(again instanceof Response) && again.jobId === "job-1", "retry did not reuse the job");
+    assert(!(again instanceof Response) && again.output.summary === "Small next step", "cache lost output");
+    assert(requests.length === 2, `paid provider called ${requests.length / 2} times`);
+    assert(reservations === 3 && jobs.size === 1, "more than one job reserved");
+  } finally {
+    globalThis.fetch = original;
+  }
 });

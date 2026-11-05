@@ -23,6 +23,9 @@ export type { ErrorCategory, ErrorClassification, ServerErrorBody } from "../../
 export interface FailOptions {
   details?: Record<string, unknown>;
   retry_after_s?: number;
+  /** Eski gövdede üst düzeyde taşınan, sunucunun kendi tanımladığı sabit alanlar (ör. `plan`, `reasons`).
+   * Yalnız mevcut istemci/test uyumu için; sözleşme alanlarını ezemez, kullanıcı/DB ham metni konmaz. */
+  legacy?: Record<string, unknown>;
 }
 
 /** Sözleşmeye uyan hata yanıtı. Durum verilmezse kategoriden türetilir. */
@@ -39,7 +42,10 @@ export function fail(code: string, status?: number, options: FailOptions = {}): 
     "content-type": "application/json; charset=utf-8",
   };
   if (body.retry_after_s !== undefined) headers["retry-after"] = String(body.retry_after_s);
-  return new Response(JSON.stringify(body), { status: httpStatus, headers });
+  const legacy = Object.fromEntries(
+    Object.entries(options.legacy ?? {}).filter(([key]) => SAFE_ERROR_CODE.test(key) && !(key in body)),
+  );
+  return new Response(JSON.stringify({ ...legacy, ...body }), { status: httpStatus, headers });
 }
 
 /** RPC/Storage hata mesajını yalnız izin verilen desenle geçirir; aksi hâlde verilen yedek kodu kullanır. */

@@ -70,7 +70,10 @@ select ok(not has_function_privilege('anon','public.set_child_archived(uuid,uuid
 select ok(not has_function_privilege('authenticated','public.reserve_child_ai_operation(uuid,uuid,text,text,uuid,uuid)','execute'),'client cannot reserve provider operation');
 select ok(not has_table_privilege('authenticated','gina.child_archive_state','update'),'client cannot bypass private state');
 select lives_ok($$select public.set_child_archived(gen_random_uuid(),'20000000-0000-4000-8000-000000007901',4,true)$$,'archive for deletion test');
-select lives_ok($$delete from public.children where id='20000000-0000-4000-8000-000000007901'$$,'explicit permanent child deletion still cascades');
+-- Q02-6: kalıcı silme yalnız önizleme + confirm_child_deletion ile (doğrudan REST DELETE kapalı).
+select throws_ok($$delete from public.children where id='20000000-0000-4000-8000-000000007901'$$,'42501',null,'direct REST delete refused');
+select lives_ok($$select public.confirm_child_deletion(gen_random_uuid(),'20000000-0000-4000-8000-000000007901',
+  (public.deletion_preview('{"kind":"child","child_id":"20000000-0000-4000-8000-000000007901"}')->>'preview_token')::uuid)$$,'explicit permanent child deletion still cascades');
 reset role;
 select is((select count(*)::int from public.exams where child_id='20000000-0000-4000-8000-000000007901'),0,'permanent deletion removes historical exam');
 select is((select count(*)::int from gina.child_archive_state where child_id='20000000-0000-4000-8000-000000007901'),0,'archive metadata follows deletion');

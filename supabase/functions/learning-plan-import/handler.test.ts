@@ -1,3 +1,6 @@
+import { parentOrResponse } from "../_shared/auth.ts";
+import { fail } from "../_shared/error-contract.ts";
+import { authCases, expectContract } from "../_shared/contract-fixtures.ts";
 import { handleLearningPlanImport } from "./handler.ts";
 const id = "00000000-0000-4000-8000-000000009101",
   child = "00000000-0000-4000-8000-000000009102",
@@ -147,4 +150,53 @@ Deno.test("learning import: deletion during paid response cannot resurrect draft
   const f = fixture({ deleted: true });
   const r = await handleLearningPlanImport(f.request(), f.deps);
   if (r.status !== 409) throw Error();
+});
+Deno.test("U08 learning import: session_expired, unauthorized and forbidden stay distinct", async () => {
+  for (const c of authCases()) {
+    const f = fixture();
+    f.deps.parent = (r: Request) => parentOrResponse(r, c.db);
+    const headers: Record<string, string> = c.authorization ? { authorization: c.authorization } : {};
+    const r = await handleLearningPlanImport(
+      new Request("https://local.invalid", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ child_id: child, source_id: source, locale: "tr", ai_consent: true }),
+      }),
+      f.deps,
+    );
+    await expectContract(r, c.status, c.code, c.category);
+    if (f.args.length || Object.values(f.count()).some(Boolean)) throw Error(`${c.name} reached data`);
+  }
+});
+Deno.test("U08 learning import: legacy null parent and errors keep the contract body", async () => {
+  await expectContract(
+    await handleLearningPlanImport(fixture({ parent: false }).request(), fixture({ parent: false }).deps),
+    403,
+    "forbidden",
+    "permission_denied",
+  );
+  const f = fixture();
+  await expectContract(await handleLearningPlanImport(f.request({ ai_consent: false }), f.deps), 400, "source_ai_consent_required");
+  await expectContract(await handleLearningPlanImport(f.request({ grade: 9 }), f.deps), 400, "invalid_input");
+  const changed = fixture({ hash: "b".repeat(64) });
+  await expectContract(await handleLearningPlanImport(changed.request(), changed.deps), 409, "source_not_ready", "conflict");
+});
+Deno.test("U08 learning import: shared source limit rejection passes through before the paid call", async () => {
+  const f = fixture();
+  f.deps.document = (async () =>
+    fail("source_file_limit", 400, {
+      details: { max_files: 3, selected: 4, remaining: 0 },
+    })) as unknown as typeof f.deps.document;
+  const r = await handleLearningPlanImport(f.request(), f.deps);
+  const body = await expectContract(r, 400, "source_file_limit", "validation");
+  const details = body.details as Record<string, number>;
+  if (details.remaining !== 0 || details.max_files !== 3 || f.count().calls) throw Error();
+});
+Deno.test("U08 learning import: same request twice runs one paid job", async () => {
+  const f = fixture();
+  const first = await handleLearningPlanImport(f.request(), f.deps);
+  const second = await handleLearningPlanImport(f.request(), f.deps);
+  if (first.status !== 200 || second.status !== 200) throw Error();
+  if (JSON.stringify(await first.json()) !== JSON.stringify(await second.json())) throw Error("different result");
+  if (f.count().calls !== 1 || f.count().documents !== 1) throw Error(`paid ${f.count().calls}`);
 });

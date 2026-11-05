@@ -5,7 +5,7 @@
 
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 
-import { json } from "./supabase.ts";
+import { fail } from "./error-contract.ts";
 import {
   type AiAdapterId,
   type AiModelRecord,
@@ -14,7 +14,7 @@ import {
   modelSupport,
 } from "../../../packages/core/src/ai-capabilities.ts";
 
-export { readParent } from "./auth.ts";
+export { parentOrResponse, readParent } from "./auth.ts";
 
 export async function sha256(text: string): Promise<string> {
   const buf = await crypto.subtle.digest(
@@ -74,9 +74,9 @@ export async function resolveAi(
 ): Promise<AiConfig | Response> {
   const { data: global, error: globalError } = await db.from("app_settings")
     .select("value").eq("key", "ai.enabled").maybeSingle();
-  if (globalError) return json({ error: "ai_configuration_unavailable" }, 503);
+  if (globalError) return fail("ai_configuration_unavailable", 503);
   if (global && global.value === false) {
-    return json({ error: "ai_disabled" }, 503);
+    return fail("ai_disabled", 503);
   }
 
   let model: string | null = null;
@@ -90,9 +90,9 @@ export async function resolveAi(
     )
     .eq("plan_code", plan)
     .maybeSingle();
-  if (settingError) return json({ error: "ai_configuration_unavailable" }, 503);
+  if (settingError) return fail("ai_configuration_unavailable", 503);
   if (setting) {
-    if (setting.enabled === false) return json({ error: "ai_disabled" }, 503);
+    if (setting.enabled === false) return fail("ai_disabled", 503);
     model = setting.model_id ?? null;
     maxOutputTokens = setting.max_output_tokens ?? 0;
     maxInputTokens = setting.max_input_tokens ?? 8000;
@@ -105,18 +105,18 @@ export async function resolveAi(
     ).maybeSingle();
     model = planRow?.ai_model ?? null;
   }
-  if (!model) return json({ error: "plan_has_no_ai", plan }, 402);
+  if (!model) return fail("plan_has_no_ai", 402, { details: { plan }, legacy: { plan } });
   const { data: registered, error: modelError } = await db.from("ai_models")
     .select(
       "active,provider,adapter,contract_version,supports_vision,supports_pdf,supports_json_schema,context_tokens,tokenizer",
     ).eq("id", model).maybeSingle();
-  if (modelError) return json({ error: "ai_configuration_unavailable" }, 503);
-  if (!registered?.active) return json({ error: "ai_model_unavailable" }, 503);
+  if (modelError) return fail("ai_configuration_unavailable", 503);
+  if (!registered?.active) return fail("ai_model_unavailable", 503);
   // S06: model yalnız adıyla etkin olmaz — adapter + yetenek beyanı + sözleşme sürümü + sağlayıcı kaydı gerekir.
   const { data: providerRow, error: providerError } = await db.from("ai_providers")
     .select("id,adapter,key_secret_name,data_region,cross_border,cost_class,status")
     .eq("id", registered.provider).maybeSingle();
-  if (providerError) return json({ error: "ai_configuration_unavailable" }, 503);
+  if (providerError) return fail("ai_configuration_unavailable", 503);
   const record: AiModelRecord = {
     id: model,
     provider: registered.provider,
@@ -143,11 +143,10 @@ export async function resolveAi(
     : [];
   const support = modelSupport(record, providers);
   if (!support.supported) {
-    return json({
-      error: "ai_model_unsupported",
-      reasons: support.reasons,
-      unsupported_features: support.unsupportedFeatures,
-    }, 503);
+    // Dizi alanları `details`'e sığmaz; sabit nedenler/özellikler eski üst düzey alanlarda kalır.
+    return fail("ai_model_unsupported", 503, {
+      legacy: { reasons: support.reasons, unsupported_features: support.unsupportedFeatures },
+    });
   }
   return {
     model,
@@ -172,12 +171,12 @@ export function apiKeyOrResponse(config?: Pick<AiConfig, "adapter">): string | R
   const adapter = config?.adapter ?? "anthropic-messages";
   if (adapter === "anthropic-messages") {
     const key = Deno.env.get("ANTHROPIC_API_KEY");
-    if (!key) return json({ error: "ai_not_configured" }, 503);
+    if (!key) return fail("ai_not_configured", 503);
     return key;
   }
   const secretName = adapter === "openai-chat" ? "OPENAI_API_KEY" : adapter === "gemini-generate" ? "GEMINI_API_KEY" : null;
   const key = secretName ? Deno.env.get(secretName) : undefined;
-  if (!key) return json({ error: "provider_unconfigured", provider: adapter }, 503);
+  if (!key) return fail("provider_unconfigured", 503, { details: { provider: adapter }, legacy: { provider: adapter } });
   return key;
 }
 

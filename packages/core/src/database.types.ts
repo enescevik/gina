@@ -2785,6 +2785,14 @@ get_learning_source_set: { Args: { p_source: string }; Returns: Json },
 "get_learning_source_policy":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"child_star_balance":
+{ Args: { "p_child_id": string,"p_day"?: string }; Returns: Json
+                           },
+"family_star_balances":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "balance": number,"child_id": string
+            }[]
+                           },
 "get_library_items":
 { Args: { "p_collection_id": string }; Returns: Json
                            },
