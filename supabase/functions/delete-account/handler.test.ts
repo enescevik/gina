@@ -2,9 +2,13 @@ import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { deleteAccount } from "./handler.ts";
 
 const id = "owner-account";
-function fixture({ anonymous = false, authFail = false, passwordFail = false, otherUser = false, deleteFail = false } = {}) {
+function fixture({ anonymous = false, authFail = false, passwordFail = false, otherUser = false, deleteFail = false, previewStatus = "ok", previewFail = false } = {}) {
   const calls: string[] = [];
-  const db = { auth: {
+  const rpcCalls: unknown[] = [];
+  const db = { rpc: (name: string, args: unknown) => {
+    if (name !== "check_deletion_preview") return { data: null, error: {} }; // source cleanup is best-effort here
+    rpcCalls.push([name, args]); return previewFail ? { data: null, error: {} } : { data: { status: previewStatus }, error: null };
+  }, auth: {
     getUser: () => ({ data: { user: authFail ? null : { id, email: "owner@test.local", is_anonymous: anonymous } }, error: authFail ? {} : null }),
     admin: { deleteUser: (userId: string, soft: boolean) => { calls.push(`${userId}:${soft}`); return { error: deleteFail ? {} : null }; } },
   } } as unknown as SupabaseClient;
@@ -12,7 +16,7 @@ function fixture({ anonymous = false, authFail = false, passwordFail = false, ot
     signInWithPassword: ({ password }: { password: string }) => ({ data: { user: { id: otherUser ? "attacker" : id } }, error: passwordFail || password !== "correct" ? {} : null }),
     signOut: () => ({ error: null }),
   } } as unknown as SupabaseClient;
-  return { db, reauth, calls };
+  return { db, reauth, calls, rpcCalls };
 }
 const request = (body: unknown, token = true) => new Request("https://local/delete-account", {
   method: "POST", headers: token ? { authorization: "Bearer fixture" } : {}, body: JSON.stringify(body),
@@ -46,4 +50,33 @@ Deno.test('delete: social account accepts only fresh verified OTP authentication
   const req=new Request('https://local/delete-account',{method:'POST',headers:{authorization:'Bearer '+token},body:JSON.stringify({confirm:true,reauthentication:'email_otp'})});
   const res=await deleteAccount(req,f);if(res.status!==status)throw new Error(name+': wrong status '+res.status);equal(f.calls,status===200?[`${id}:false`]:[]);
  }
+});
+
+const token = "6f1c2b1a-9c1e-4e5d-8a3b-2d9f0c7e1a11";
+Deno.test("delete: without preview_token the existing flow is unchanged and no preview check runs", async () => {
+  const f = fixture(); const res = await deleteAccount(request({ confirm: true, password: "correct" }), f);
+  equal(res.status, 200); equal(f.calls, [`${id}:false`]); equal(f.rpcCalls, []);
+});
+Deno.test("delete: fresh preview token is checked for the verified user, then deletion proceeds", async () => {
+  const f = fixture(); const res = await deleteAccount(request({ confirm: true, password: "correct", preview_token: token }), f);
+  equal(res.status, 200); equal(f.calls, [`${id}:false`]);
+  equal(f.rpcCalls, [["check_deletion_preview", { p_token: token, p_user_id: id }]]);
+});
+for (const status of ["stale", "expired", "used", "not_found"]) {
+  Deno.test(`delete: ${status} preview is rejected with 409 and nothing is deleted`, async () => {
+    const f = fixture({ previewStatus: status }); const res = await deleteAccount(request({ confirm: true, password: "correct", preview_token: token }), f);
+    equal(res.status, 409); equal(await res.json(), { error: `deletion_preview_${status}` }); equal(f.calls, []);
+  });
+}
+Deno.test("delete: malformed preview token is invalid input before any deletion", async () => {
+  const f = fixture(); const res = await deleteAccount(request({ confirm: true, password: "correct", preview_token: "' or 1=1" }), f);
+  equal(res.status, 400); equal(f.calls, []); equal(f.rpcCalls, []);
+});
+Deno.test("delete: preview check failure never deletes and never returns success", async () => {
+  const f = fixture({ previewFail: true }); const res = await deleteAccount(request({ confirm: true, password: "correct", preview_token: token }), f);
+  equal(res.status, 500); equal(f.calls, []);
+});
+Deno.test("delete: preview check runs only after re-authentication succeeded", async () => {
+  const f = fixture({ passwordFail: true }); const res = await deleteAccount(request({ confirm: true, password: "correct", preview_token: token }), f);
+  equal(res.status, 403); equal(f.rpcCalls, []); equal(f.calls, []);
 });
