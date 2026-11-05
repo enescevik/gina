@@ -465,3 +465,6 @@ static_files = ["./functions/prova-review/assets/*"]
 
 [functions.learning-plan-import]
 verify_jwt = true
+
+[functions.curriculum-source-fetch]
+verify_jwt = true

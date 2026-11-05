@@ -10,6 +10,7 @@
 | `prova-plan` | Zayıf konulardan 7/14 günlük çalışma planı taslağı (Pro) | `supabase functions deploy prova-plan` |
 | `push-send` | `push_outbox` kuyruğunu boşaltır; APNs (token auth) ve FCM HTTP v1 ile kişisel veri içermeyen bildirim gönderir. Sırlar: `APNS_KEY_P8`, `APNS_KEY_ID`, `APNS_TEAM_ID`, `APNS_BUNDLE_ID`, `APNS_ENV`, `FCM_SERVICE_ACCOUNT_JSON`, `PUSH_SEND_SECRET`; Vault: `push_send_url`, `push_send_secret` (bkz. docs/PUSH.md) | `supabase functions deploy push-send --no-verify-jwt` |
 | `google-rtdn` | Google Play RTDN (Pub/Sub push) alıcısı; aynı akış | `supabase functions deploy google-rtdn --no-verify-jwt` |
+| `curriculum-source-fetch` | Yönetici (admin JWT) için sunucuda resmî ÖDSGM dizininden ders dosyasını indirir: host/IP doğrulamalı yönlendirme, 15 s / 5 MB, ZIP dizin denetimi, SHA-256 ve URL zinciri ile `record_curriculum_source_fetch` makbuzu. Aynı hash yeni iş açmaz; yeni hash fark incelemesi bekler. Katalog yayımlamaz, okul senaryosu seçmez (bkz. docs/learning/MEB-SCENARIO-PROTOCOL.md) | `supabase functions deploy curriculum-source-fetch` |
 
 Gerekli secrets (`supabase secrets set …`; değerleri yalnız Enes girer):
 
