@@ -206,7 +206,7 @@ function PeriodTransferWizard({
           decisions.plans.some((x) => x.action !== "archive"))
       }
       busy={save.isPending || preview.isLoading}
-      valid={step < 2 ? ready : valid}
+      valid={step < 2 ? ready && !empty && !data.archived : valid}
       onClose={onClose}
       saveLabel={t("periodTransfer.confirm")}
       onSave={() => {
