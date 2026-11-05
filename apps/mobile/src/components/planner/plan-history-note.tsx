@@ -1,5 +1,6 @@
-// Draft (L04). Not imported anywhere yet: the day/task/timetable screens are under Q00 review and
-// will adopt it when they switch to `plan_for_day`. It renders the honesty note for a day entry:
+// L04. Used by the calendar day view (`plan_for_day`) and the routine editor's effective-day label;
+// the task list and timetable screens adopt it when they switch to `plan_for_day`. It renders the
+// honesty note for a day entry:
 // known as of a day without a recorded start, unknown before the first recorded version, a closed
 // period's snapshot, or settings scheduled for a later day.
 import { StyleSheet, Text, View } from "react-native";

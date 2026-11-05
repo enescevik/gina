@@ -8,11 +8,17 @@ import {
 } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import {
+  effectiveFromArg,
+  effectiveFromProblem,
+  localDateOf,
   taskRoutineHistorySchema,
   type Database,
   type RoutineSummary,
 } from "@gina/core";
 import { SetupWizard } from "@/components/setup/wizard";
+import { DateChoice } from "@/components/ui/date-time-choice";
+import { effectiveFromLabel } from "@/components/planner/plan-history-note";
+import { useFamilyTimezone } from "@/lib/family";
 import { Field } from "@/components/ui/field";
 import { NumberChoice } from "@/components/ui/number-choice";
 import { FormSection } from "@/components/ui/parent-screen";
@@ -24,19 +30,31 @@ import { supabase } from "@/lib/supabase";
 import { invalidateTaskState } from "@/lib/task-cache";
 export type Routine = Database["public"]["Tables"]["task_templates"]["Row"];
 type Action = "save" | "pause" | "resume" | "archive" | "restore";
+/**
+ * L04: a later start day for an edit. The live `task_templates` row takes the new settings at once;
+ * only screens that read `plan_for_day` (the calendar) keep today on the old version. Task lists and
+ * the child's Today still read the live row, so the date picker stays closed until they switch too:
+ * callers pass `allowFutureEffective` only from a screen whose views all read the day plan.
+ */
 export function RoutineEditor({
   row,
   childName,
   familyId,
   onClose,
   onSaved,
+  allowFutureEffective = false,
 }: {
   row: Routine;
   childName: string;
   familyId: string;
   onClose: () => void;
   onSaved: (action: Action) => void;
+  allowFutureEffective?: boolean;
 }) {
+  const timeZone = useFamilyTimezone();
+  const today = localDateOf(new Date(), timeZone);
+  const [effectiveFrom, setEffectiveFrom] = useState(today);
+  const effectiveProblem = allowFutureEffective ? effectiveFromProblem(effectiveFrom, today) : null;
   const { width, fontScale } = useWindowDimensions();
   const wide = width >= 700 && fontScale < 1.4;
   const { t, i18n } = useTranslation(),
@@ -86,7 +104,8 @@ export function RoutineEditor({
         dirty &&
         !!title.trim() &&
         title.trim().length <= 80 &&
-        days.length > 0);
+        days.length > 0 &&
+        !effectiveProblem);
   const save = useMutation({
     mutationFn: async () => {
       const payload = {
@@ -94,6 +113,8 @@ export function RoutineEditor({
         p_revision: row.revision,
         p_action: action,
         p_value: action === "save" ? value : {},
+        // Omitted (not null) when the parent keeps today, so an older receipt still matches.
+        ...(action === "save" && allowFutureEffective ? effectiveFromArg(effectiveFrom, today) : {}),
       };
       const signature = JSON.stringify(payload);
       if (request.current?.signature !== signature)
@@ -117,6 +138,7 @@ export function RoutineEditor({
         cache.invalidateQueries({
           queryKey: ["task_routine_history", familyId, row.id],
         }),
+        cache.invalidateQueries({ queryKey: ["plan_for_day", familyId] }),
       ]);
       onSaved(action);
     },
@@ -191,6 +213,10 @@ export function RoutineEditor({
           ? t(
               save.error.message.includes("task_routine_changed")
                 ? "routine.changed"
+                : save.error.message.includes("plan_effective_past")
+                ? "planHistory.effectivePast"
+                : save.error.message.includes("plan_effective_invalid")
+                ? "planHistory.effectiveTooFar"
                 : save.error.message.includes("child_archived")
                   ? "childArchive.locked"
                   : "routine.failed",
@@ -267,6 +293,26 @@ export function RoutineEditor({
                   if (!save.isPending) setApproval(v === "on");
                 }}
               />
+              <Text style={u.bold}>{t("dayPlan.effectiveTitle")}</Text>
+              {allowFutureEffective ? (
+                <>
+                  <DateChoice
+                    label={t("planHistory.effectiveFrom")}
+                    value={effectiveFrom}
+                    today={today}
+                    disabled={save.isPending}
+                    hint={t("dayPlan.effectiveHelp")}
+                    onChange={setEffectiveFrom}
+                  />
+                  {effectiveProblem ? (
+                    <Text accessibilityRole="alert" style={u.error}>
+                      {t(effectiveProblem === "too_far" ? "planHistory.effectiveTooFar" : "planHistory.effectivePast")}
+                    </Text>
+                  ) : null}
+                </>
+              ) : (
+                <Text style={u.copy}>{t("dayPlan.effectiveTodayOnly")}</Text>
+              )}
             </>
           ) : (
             summary(row)
@@ -388,6 +434,18 @@ export function RoutineEditor({
           </View>
           {action === "save" && (
             <Text style={u.small}>{t("routine.onlyChanges")}</Text>
+          )}
+          {action === "save" && (
+            <Text style={u.bold}>
+              {t("dayPlan.effectiveReview", {
+                date: effectiveFromLabel(
+                  allowFutureEffective ? effectiveFrom : today,
+                  today,
+                  (key, options) => t(key, options),
+                  i18n.language,
+                ),
+              })}
+            </Text>
           )}
           <View style={[u.card, { backgroundColor: p.lilac }]}>
             <Text style={u.bold}>{t("routine.preserved")}</Text>

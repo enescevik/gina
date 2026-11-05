@@ -28,6 +28,7 @@ import {
   schoolBagDayAvailable,
   occurrencesBetween,
   isCalendarDate,
+  planHistoryNote,
   weekDatesOf,
   type Occurrence,
 } from "@gina/core";
@@ -35,6 +36,13 @@ import { Avatar } from "@/components/avatar";
 import { EventIcon } from "@/components/event-icon";
 import { SubjectIcon, resolveSubjectSlug } from "@/components/subject-icon";
 import type { WeekEvent } from "@/components/calendar/week-list";
+import {
+  DaySectionTitle,
+  RoutineRows,
+  isPlanRow,
+  planLessons,
+  useDayPlans,
+} from "@/components/calendar/day-plan";
 import { Pressable } from "@/components/ui/pressable";
 import { useActiveChild } from "@/lib/active-child";
 import { useFamilyTimezone } from "@/lib/family";
@@ -46,6 +54,7 @@ import { TimetableEditor, type PlannerChild } from "./timetable-editor";
 import { LearningPlanSection, useFamilyLearningPlans } from "./learning-plan";
 import { SchoolBag } from "./school-bag";
 import { EventEditor } from "./event-editor";
+import { PlanHistoryNote } from "./plan-history-note";
 function shift(date: string, days: number) {
   const d = new Date(`${date}T12:00:00Z`);
   d.setUTCDate(d.getUTCDate() + days);
@@ -114,6 +123,25 @@ export function PlannerCalendar({
     timeZone,
     exceptions.data ?? new Set(),
   ).filter((o) => !selectedChild || !o.event.child_id || o.event.child_id === selectedChild.id);
+  // L04: the selected day's plan per child in scope (routines always; timetable/bells for past days).
+  const past = date < today;
+  const dayPlans = useDayPlans(familyId, scopedProfiles.map((c) => c.id), date);
+  const dayItems = occurrences.filter((o) => o.date === date);
+  const lessons = (past
+    ? [
+        ...dayItems.filter((o) => o.event.type === "school" && !o.event.timetable_entry_key),
+        ...dayPlans.flatMap((q) => (q.data ? planLessons(q.data, timeZone) : [])),
+      ]
+    : dayItems.filter((o) => o.event.type === "school")
+  ).sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
+  const dayEvents = dayItems.filter((o) => o.event.type !== "school");
+  const routines = scopedProfiles.flatMap((c, i) =>
+    (dayPlans[i]?.data?.routines ?? []).map((routine) => ({ routine, childId: c.id })),
+  );
+  const plansBusy = dayPlans.some((q) => q.isLoading);
+  const plansFailed = dayPlans.some((q) => q.error);
+  const openLearning = (i: number) =>
+    learningPlanForDay(learning[i]?.data?.items ?? [], date).filter((r) => !r.content.done).length;
   const dateText = (value: string, format: Intl.DateTimeFormatOptions) =>
     new Intl.DateTimeFormat(i18n.language, {
       ...format,
@@ -204,7 +232,8 @@ export function PlannerCalendar({
           </View>
         ) : null}
         <Pressable
-          accessibilityRole="button"
+          accessibilityRole={isPlanRow(o.event) ? undefined : "button"}
+          disabled={isPlanRow(o.event)}
           accessibilityLabel={`${o.event.title}, ${o.event.all_day ? t("calendar.allDay") : timeText(o.startsAt)}`}
           onPress={() => openItem(o.event)}
           style={({ pressed }) => [
@@ -254,12 +283,11 @@ export function PlannerCalendar({
               <Text style={u.small}>{o.event.location}</Text>
             ) : null}
           </View>
-          {!compact ? <ChevronRight size={18} color={p.muted} /> : null}
+          {!compact && !isPlanRow(o.event) ? <ChevronRight size={18} color={p.muted} /> : null}
         </Pressable>
       </View>
     );
   }
-  const items = occurrences.filter((o) => o.date === date);
   const nav = childMode
     ? [
         {
@@ -644,19 +672,90 @@ export function PlannerCalendar({
         <View
           style={[u.row, { justifyContent: "space-between", flexWrap: "wrap" }]}
         >
-          <Text style={u.heading}>
-            {dateText(date, { day: "numeric", month: "long", weekday: "long" })}
-          </Text>
+          <View style={[u.row, { gap: 8, flexShrink: 1 }]}>
+            <Text style={u.heading}>
+              {dateText(date, { day: "numeric", month: "long", weekday: "long" })}
+            </Text>
+            <View
+              style={{
+                borderRadius: 10,
+                paddingHorizontal: 8,
+                paddingVertical: 2,
+                backgroundColor: date === today ? p.mint : p.lilac,
+              }}
+            >
+              <Text style={[u.small, { color: p.ink }]}>
+                {t(date === today ? "dayPlan.todayBadge" : past ? "dayPlan.pastBadge" : "dayPlan.selectedBadge")}
+              </Text>
+            </View>
+          </View>
           <Text style={u.small}>
-            {t("planner.daySummary", {
-              lessons: items.filter((o) => o.event.type === "school").length,
-              events: items.filter((o) => o.event.type !== "school").length,
+            {t("dayPlan.summary", {
+              lessons: lessons.length,
+              events: dayEvents.length,
+              tasks: routines.length,
             })}
           </Text>
         </View>
-        {items.length ? (
-          items.map((o) => item(o))
-        ) : (
+        {past ? <Text style={u.small}>{t("dayPlan.pastHelp")}</Text> : null}
+        {past
+          ? scopedProfiles.map((c, i) => {
+              const plan = dayPlans[i]?.data;
+              if (!plan) return null;
+              const note = planHistoryNote(plan.timetable, today);
+              if (plan.timetable.status === "none")
+                return selectedChild ? (
+                  <Text key={c.id} style={u.small}>{t("planHistory.noTimetable")}</Text>
+                ) : null;
+              return note === "none" ? null : (
+                <View key={c.id} style={{ gap: 4 }}>
+                  {!selectedChild ? <Text style={u.small}>{c.name} · {t("dayPlan.timetable")}</Text> : null}
+                  <PlanHistoryNote entry={plan.timetable} today={today} />
+                </View>
+              );
+            })
+          : null}
+        {lessons.length ? (
+          <>
+            <DaySectionTitle title={t("dayPlan.lessons")} count={lessons.length} />
+            {lessons.map((o) => item(o))}
+          </>
+        ) : null}
+        {dayEvents.length ? (
+          <>
+            <DaySectionTitle title={t("dayPlan.events")} count={dayEvents.length} />
+            {dayEvents.map((o) => item(o))}
+          </>
+        ) : null}
+        {routines.length ? (
+          <>
+            <DaySectionTitle title={t("dayPlan.tasks")} count={routines.length} />
+            <RoutineRows
+              routines={routines}
+              today={today}
+              day={date}
+              childName={
+                selectedChild
+                  ? undefined
+                  : (id) => profiles.find((c) => c.id === id)?.name ?? null
+              }
+            />
+          </>
+        ) : null}
+        {plansBusy ? <ActivityIndicator color={p.purple} /> : null}
+        {plansFailed ? (
+          <View style={{ gap: 8 }}>
+            <Text accessibilityRole="alert" style={u.error}>
+              {t("dayPlan.loadError")}
+            </Text>
+            <SatinButton
+              secondary
+              title={t("common.retry")}
+              onPress={() => dayPlans.forEach((q) => void q.refetch())}
+            />
+          </View>
+        ) : null}
+        {!lessons.length && !dayEvents.length && !routines.length && !plansBusy && !plansFailed ? (
           <View style={{ paddingVertical: 28, gap: 12 }}>
             <Text style={u.heading}>{t(learningCount(date) ? "learningPlan.noEvents" : "planner.emptyTitle")}</Text>
             <Text style={u.copy}>{t(childMode ? "planner.childEmptyBody" : "planner.emptyBody")}</Text>
@@ -668,12 +767,51 @@ export function PlannerCalendar({
               />
             ) : null}
           </View>
-        )}
-        {scopedProfiles.map(child => <View key={child.id} style={{ gap: 12, paddingTop: 12 }}>
-          {!selectedChild && <View style={u.row}><Avatar slug={child.avatar} size={32} /><Text style={u.heading}>{child.name}</Text></View>}
-          {schoolBagDayAvailable(date, today) && <SatinButton secondary title={t("schoolBag.entry", { name: child.name })} onPress={() => setBag({ child, day: date })} />}
-          <LearningPlanSection child={child} date={date} from={week[0]} to={week[6]} childMode={childMode}/>
-        </View>)}
+        ) : null}
+        {selectedChild ? (
+          <View style={{ gap: 12, paddingTop: 12 }}>
+            {schoolBagDayAvailable(date, today) && <SatinButton secondary title={t("schoolBag.entry", { name: selectedChild.name })} onPress={() => setBag({ child: selectedChild, day: date })} />}
+            <LearningPlanSection child={selectedChild} date={date} from={week[0]} to={week[6]} childMode={childMode}/>
+          </View>
+        ) : scopedProfiles.length > 1 ? (
+          // "Tümü": one summary row per child instead of repeating each child's bag and homework blocks
+          // (Q00-A1-15); choosing a child opens the full day for that child.
+          <View style={{ gap: 8, paddingTop: 12 }}>
+            <DaySectionTitle title={t("dayPlan.byChild")} />
+            {scopedProfiles.map((child, i) => (
+              <Pressable
+                key={child.id}
+                accessibilityRole="button"
+                accessibilityLabel={t("dayPlan.openChild", { name: child.name })}
+                onPress={() => setFilter(child.id)}
+                style={({ pressed }) => [
+                  u.row,
+                  {
+                    minHeight: 56,
+                    padding: 8,
+                    borderRadius: 18,
+                    borderWidth: 1,
+                    borderColor: p.line,
+                    backgroundColor: pressed ? p.lilac : "#FAF7F7",
+                  },
+                ]}
+              >
+                <Avatar slug={child.avatar} size={36} />
+                <View style={u.fill}>
+                  <Text style={u.bold}>{child.name}</Text>
+                  <Text style={u.small}>
+                    {t("dayPlan.childSummary", {
+                      lessons: lessons.filter((o) => o.event.child_id === child.id).length,
+                      tasks: routines.filter((r) => r.childId === child.id).length,
+                      plans: openLearning(i),
+                    })}
+                  </Text>
+                </View>
+                <ChevronRight size={18} color={p.muted} />
+              </Pressable>
+            ))}
+          </View>
+        ) : null}
       </View>
     );
   }
