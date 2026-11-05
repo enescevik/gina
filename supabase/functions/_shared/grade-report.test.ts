@@ -90,3 +90,12 @@ Deno.test("grade: unreadable material can remain explicitly ungraded", () => {
     throw Error("must not invent zero score");
   }
 });
+
+Deno.test("P04: an item not requested for grading (blank answer) cannot receive a score, not even 0", () => {
+  const r = sample();
+  r.degerlendirmeler.push({ ref: "M2", puan: 0, kisa_geri_bildirim: "Boş.", eksikler: [], iyilestirme_onerileri: [] });
+  rejects(r);
+  const z = sample();
+  z.degerlendirmeler = [{ ref: "M2", puan: 0, kisa_geri_bildirim: "Boş.", eksikler: [], iyilestirme_onerileri: [] }];
+  rejects(z);
+});

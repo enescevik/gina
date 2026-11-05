@@ -1,4 +1,4 @@
-import { needsNotebookReview } from "../_shared/answer-notebook.ts";
+import { aiGradableOpenAnswer, needsNotebookReview } from "../_shared/answer-notebook.ts";
 import { questionImages } from "../_shared/question-images.ts";
 import { runAiOperation } from "../_shared/ai-operation.ts";
 import { GRADE_SCHEMA, GRADE_SYSTEM, validateGradeReport } from "../_shared/grade-report.ts";
@@ -88,7 +88,8 @@ Deno.serve(async (req) => {
     maddeler: questionIds.map((id, i) => {
       const q = byId.get(id)!; const a = answerByQ.get(id);
       const ref = `M${i + 1}`; const topic = mask(q.topic);
-      const grade = q.kind === "open_ended" && !!a?.answer_text?.trim() && a.graded_by !== "parent";
+      // Boş cevap puanlama_gerekli=false: AI 0 uyduramaz; sunucu onu "cevap yok" (puan null) olarak tutar.
+      const grade = aiGradableOpenAnswer(q.kind, a);
       refToQuestion.set(ref, id); refs.set(ref, { topic, grade });
       return { ref, konu: topic, tur: q.kind, soru: mask(q.stem),
         beklenen_cevap: mask(q.expected_answer ?? ""), cozum_yolu: mask(q.solution ?? ""),
