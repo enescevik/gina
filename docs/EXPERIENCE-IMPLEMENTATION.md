@@ -23,6 +23,10 @@
 | 5 — Yönetim çalışma alanları | AI/katalog görünümü ve taslak koruması uygulandı; kalan kapsam açık. |
 | 6 — Cihaz, erişilebilirlik ve yayın | Açık. Web önizlemesi fiziksel cihaz kabulünün yerine geçmez. |
 
+## Gece devri ve MEB senaryo bağlantısı
+
+Önce [N00 gece/Fable hazırlığı](CLAUDE-NIGHT-RUN.md), ardından Q00 inceleme ve uygulama paketleri. Prova senaryo seçimi, AI üretimi ve OYSS kütüphane sorularında [M01 güncel kaynak sözleşmesi](learning/MEB-SCENARIO-PROTOCOL.md) zorunlu: gerçek indirme/revizyon, okul seçiminin ayrı doğrulanması ve soru–çıktı eşlemesi. Mevcut katalog/AI bağı yeniden kurulmaz. Bütün ekran incelemesi ve 3B en son kuralı korunur.
+
 ## Zorunlu inceleme yöntemi — Q00
 
 [Q00 çok yönlü ekran incelemesi](CLAUDE-REMAINING-WORK.md) bu tablodaki ve kaynak kodda sonradan bulunan **bütün ekranlar ve alt akışlar** için zorunludur. Psikoloji, pedagoji, eğitmen, UX/görsel tasarım, yazılım mimarisi/güvenlik ve erişilebilirlik açısından gerçek kullanım incelemesi yapılır; bulgular uygulanır ve aynı senaryolarla yeniden doğrulanır. Bu, yalnız görsel benzerlik kontrolü veya rapor hazırlama işi değildir. İnceleme matrisi ve önce/sonra kanıtı olmadan ekran tamamlandı sayılmaz. Daha önce uygulanmış ekran da inceleme kapsamındadır; sorun yoksa gerekçesi kaydedilir, gereksiz yeniden tasarlanmaz.
