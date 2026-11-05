@@ -256,8 +256,8 @@ export function BulkArchiveSheet({ visible, type, mode, preview, selected, resul
         )
         : (
           <View style={{ gap: 12 }}>
-            <Text style={u.copy}>{t(mode === "archive" ? "bulkArchive.effect.archive" : "bulkArchive.effect.restore")}</Text>
-            {mode === "restore" ? <Text style={u.bold}>{restoreNote}</Text> : null}
+            {/* Restore says what this list's records come back as (private / paused), not the generic all-types line. */}
+            <Text style={mode === "archive" ? u.copy : u.bold}>{mode === "archive" ? t("bulkArchive.effect.archive") : restoreNote}</Text>
             {preview
               ? (
                 <Text style={u.bold} accessibilityLiveRegion="polite">
@@ -302,18 +302,20 @@ function BulkRow({ row, mode, checked, locked, outcome, onToggle }: {
       ? reason ? t(bulkReasonKey(reason)) : t("bulkArchive.ui.rowNotSent")
       : reason ? t(bulkReasonKey(reason)) : null;
   const tone = outcome?.status === "ok" ? "#246455" : outcome || reason ? "#985212" : p.muted;
+  // After apply only records that actually changed stay ticked.
+  const on = checked && selectable && (outcome === undefined || outcome?.status === "ok");
   return (
     <Pressable
       accessibilityRole="checkbox"
-      accessibilityState={{ checked: checked && selectable, disabled }}
-      aria-checked={checked && selectable}
+      accessibilityState={{ checked: on, disabled }}
+      aria-checked={on}
       accessibilityLabel={status ? `${title}: ${status}` : title}
       disabled={disabled}
       onPress={() => onToggle(bulkPreviewRowKey(row))}
-      style={{ minHeight: 48, flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 14, backgroundColor: checked && selectable ? p.lilac : "#FFFFFF", borderWidth: 1, borderColor: p.line }}
+      style={{ minHeight: 48, flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 14, backgroundColor: on ? p.lilac : "#FFFFFF", borderWidth: 1, borderColor: p.line }}
     >
-      <View style={{ width: 22, height: 22, borderRadius: 7, borderWidth: 2, borderColor: selectable ? p.purple : p.line, backgroundColor: checked && selectable ? p.purple : "transparent", alignItems: "center", justifyContent: "center" }}>
-        {checked && selectable ? <Check size={14} color="#FFFFFF" /> : null}
+      <View style={{ width: 22, height: 22, borderRadius: 7, borderWidth: 2, borderColor: selectable ? p.purple : p.line, backgroundColor: on ? p.purple : "transparent", alignItems: "center", justifyContent: "center" }}>
+        {on ? <Check size={14} color="#FFFFFF" /> : null}
       </View>
       <View style={{ flex: 1, gap: 2 }}>
         <Text style={u.bold} numberOfLines={2}>{title}</Text>
