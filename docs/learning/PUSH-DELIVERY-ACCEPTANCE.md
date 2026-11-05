@@ -43,3 +43,8 @@ Kaynaklar: [Apple bildirim istekleri](https://developer.apple.com/documentation/
 `/notifications` canlı yayın rolüyle açılır. Eksik hizmet ayarı düzeltildikten sonra, son 24 saatin başarısız/ayar eksik kayıtları gerekçe ve açık onayla yeniden sıraya alınabilir. Başarılı cihaz makbuzları korunur; güncel izin ve hedefler tekrar sorgulanır. Kayıt başına iki, operatör başına saatte 20 kurtarma sınırı vardır. Belirsiz yanıt aynı kalıcı istekle sorgulanır. Önceki sonuç sayıları özel geçmişte saklanır; cihaz anahtarları gösterilmez. Aile silme geçmişi temizler.
 
 Bu ekran bütün geçmişi tekrar göndermez ve sağlayıcı kabulünü fiziksel teslim olarak göstermez. Gerçek APNs/FCM ayarları ile fiziksel cihaz kabulü hâlâ yapılmalıdır. Görsel/izole kabul: `../design/screens/push-operations/README.md`.
+
+
+## 080000 e-posta/SMS kanalları (S02)
+
+Kanal outbox'ı push ile aynı kabul ilkesini taşır: kiralı claim, cihaz yerine alıcı başına makbuz, `accepted` yapışkan, eski kira reddedilir, en fazla beş deneme ve `Retry-After`. Tercih kapalı / adres doğrulanmamış / oturum kapalı / duyuru geri çekilmiş satırlar nedenle atlanır. Sahte sunucuyla 16 Deno testi, pgTAP 095 (127 kontrol) ve beş gerçek eşzamanlı DB senaryosu koştu. Gerçek sağlayıcı, alan adı ve fiziksel teslim kabulü yapılmadı; UI bağlanmadı. Rapor: `../release/notification-channels-2026-11-06/README.md`.

@@ -1,0 +1,29 @@
+{
+  "environment": "empty-disposable-database",
+  "results": [
+    {
+      "check": "same_row_claimed_once",
+      "passed": true
+    },
+    {
+      "check": "duplicate_receipt_single_acceptance_no_resend",
+      "passed": true
+    },
+    {
+      "check": "stale_lease_fenced_out",
+      "passed": true
+    },
+    {
+      "check": "verification_rate_limit_serialized_single_live_secret",
+      "passed": true
+    },
+    {
+      "check": "unsubscribe_vs_publish_no_sendable_row",
+      "outcome": {
+        "preference_off": 1,
+        "address_unverified": 1
+      },
+      "passed": true
+    }
+  ]
+}
