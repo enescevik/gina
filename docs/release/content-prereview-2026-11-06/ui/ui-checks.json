@@ -1,0 +1,29 @@
+{
+  "environment": "disposable-local-auth-postgrest-no-edge",
+  "database": "gina_cqui_fc5554d4216c_audit",
+  "checks": {
+    "admin_login": true,
+    "prereview_badge_separate_from_admin_decision": true,
+    "ai_reject_suggestion_does_not_reject": true,
+    "gate_closed_explains_reason_and_disables_requests": true,
+    "rejection_correction_trail_visible": true,
+    "request_without_edge_shows_explicit_error_and_keeps_verdict": true,
+    "policy_preview_visible": true,
+    "source_revisions_hash_last_check_diff_and_stale_visible": true,
+    "official_index_check_without_edge_explicit_error": true,
+    "revision_approve_with_note_and_confirmation": true,
+    "ai_policy_matrix_read_only_table": true,
+    "model_disable_impact_preview": true,
+    "provider_change_impact_blocked_with_reasons": true,
+    "failure_queue_server_side_filter_and_pagination": true,
+    "no_page_exceptions_or_horizontal_overflow": true
+  },
+  "cleanup": {
+    "rest_removed": true,
+    "auth_removed": true,
+    "disposable_database_removed": true
+  },
+  "fixture": {
+    "prereviews_with_verdict": "3/4"
+  }
+}
