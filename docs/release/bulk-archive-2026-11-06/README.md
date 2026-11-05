@@ -98,3 +98,57 @@ Ekran görüntüsü yok: ekran bağlanmadı.
 - Tek kayıt `change_reward` arşivinde bekleyen istek engeli yoktur; bu kural yalnız toplu katmanda uygulanır. Tek kayıt tarafına taşınması ayrı karar.
 - `docs/CLAUDE-REMAINING-WORK.md` L02 kutusu işaretlenmedi (UI kabulü açık); ortak belgeye dokunulmadı, koordinatör güncellesin.
 - Yayın sırası: migration önce, istemci sonra. Üretimde deneme yapılmadı.
+
+## UI bağlama (6 Kasım 2026 gece, ikinci tur)
+
+Dal: `worktree-agent-a232bdac29a8d6c08` (main `eeb57af` üzerine). Migration eklenmedi; main'e push edilmedi; üretimde deneme yapılmadı. Yukarıdaki "UI bağlanmadı" notu **görev rutinleri, ödüller ve notlar** için artık geçerli değil; Prova, öğrenme planı, takvim ve çanta bu turda kapsam dışı.
+
+### Ne bağlandı
+
+| Dosya | Değişiklik |
+|---|---|
+| `apps/mobile/src/components/ui/bulk-archive-sheet.tsx` | `useBulkArchive` (seçim → `bulk_archive_preview` → onay → `bulk_archive_apply`/`bulk_restore_apply` → kayıt bazında sonuç → liste yenileme), `BulkSelectBar` ("Seç", sayaç, Tümünü seç, Etkiyi gör, Vazgeç), `BulkCheck`, `BulkArchiveSheet` |
+| `components/tasks/tasks-screen.tsx` (`/parent/tasks`) | Seçim modu girişi; düzenle düğmesi seçimde onay kutusuna döner. Kapsam: seçili çocuk + Aktif/Duraklatılan durum; "Arşiv" sekmesinde toplu geri alma |
+| `components/rewards/rewards-screen.tsx` (`/parent/rewards`) | Katalogda seçim modu; "Ayrıntı" düğmesi seçimde onay kutusuna döner. Ödüller aile düzeyinde olduğu için kapsam yalnız durum filtresi; "Arşiv" filtresinde toplu geri alma |
+| `app/parent/notes.tsx` | Seçim modunda kart onay kutusu olur. Yalnız kendi notların seçilebilir; eşin notu soluk ve "Bu not başka bir veliye ait" der. Çocuk filtresi kapsamı belirler; "Arşiv" sekmesinde toplu geri alma |
+| `packages/core/src/i18n/{tr,en}.json` | 31 yeni `bulkArchive.ui.*` anahtarı (mevcut anahtar değişmedi) |
+
+Davranış:
+- **Filtre korunur:** önizleme listenin o anki çocuk/durum filtresiyle çağrılır; sonuçtan sonra filtre ve sekme aynı kalır, yalnız liste yenilenir. Filtre değişince seçimler düşer (görünmeyen kayıt seçili kalmaz).
+- **Etki önizlemesi:** seçilen kayıtlar sunucunun önizlemesinden okunur; engellenen kayıt nedeniyle (`bulkArchive.reason.*`) listelenir ve gönderilmez. Önizlemede artık bulunmayan seçim "değişti" nedeniyle gösterilir, gönderilmez.
+- **Sabit idempotency anahtarı:** aynı kalem kümesi için anahtar denemeler arasında aynı kalır (kayıp yanıttan sonra tekrar → sunucudaki kayıtlı sonuç döner); kalemler değişirse yeni anahtar; başarıdan sonra sıfırlanır. Tutamak (`useRef`) çift dokunuşta ikinci isteği engeller.
+- **Kayıt bazında sonuç:** "N kayıt arşivlendi / M kayıt atlandı / Bir kısmı tamamlandı" ve her satırda "Arşivlendi", "Geri alındı · özel not", "Geri alındı · duraklatılmış" ya da atlanma nedeni.
+- **Geri alma metni:** not için "özel olarak geri döner", rutin/ödül için "duraklatılmış olarak geri döner" hem önizlemede hem sonuçta yazar.
+- Tek kayıt arşiv/geri alma akışları (`RoutineEditor`, `RewardEditor`, not düzenleyici) değiştirilmedi; seçim modu dışındayken ekranlar eskisi gibi.
+
+### Test çıktıları (gerçek koşular)
+
+- `apps/mobile`: `pnpm exec tsc --noEmit` → çıkış 0; `pnpm exec expo lint` → çıkış 0. `pnpm --filter @gina/core test` → 50 dosya / 356 test geçti.
+- **İzole servis:** `GINA_QA_UI_FIXTURE=<benzersiz yol> python3 scripts/test-isolated-services.py --run-local --ui-hold` — rastgele portlu geçici Auth/PostgREST + geçici veritabanı; **137/137 servis kontrolü** geçti; bitişte `rest_removed`, `auth_removed`, `disposable_database_removed` = true. [ui/service-checks.json](ui/service-checks.json)
+- **Web export** o fixture'a bağlı olarak `expo export -p web` ile yerel klasöre alındı, kendi portunda (8397) sunuldu.
+- **Playwright (Chrome, 390×844 ve 1280×800):** `scripts/test-bulk-archive-ui.cjs` — **8/8 kontrol** geçti ([ui/ui-checks.json](ui/ui-checks.json)):
+  1. ödül önizlemesi: aktif hedefli ödül "Aktif hedefi var" nedeniyle engelli, gönderilmiyor;
+  2. çift dokunuş tek `bulk_archive_apply` isteği;
+  3. önizlemeden sonra başka çocuk üçüncü ödülü hedef seçiyor → uygulama **kısmi başarı** (1 arşivlendi, 1 atlandı `reward_has_goals`); ilk yanıt yapay olarak kaybediliyor, tekrar aynı anahtar ve aynı kalemlerle gidiyor, `bulk_archive_history`'de **tek koşu**; veritabanında yalnız serbest ödül arşivli;
+  4. liste yenileniyor, "Aktif" filtresi korunuyor, seçim modu kapanıyor;
+  5–6. notlarda toplu arşiv, ardından "Arşiv" sekmesinde toplu geri alma: iki not `visibility='private'`, `archived_at=null`, ekranda "Notlar özel olarak geri döner";
+  7. rutinlerde çocuk filtresi korunuyor (başka çocuğun rutini listede ve kapsamda yok), 3 rutin arşiv → geri alma: `active=false`, `archived_at=null`, "Duraklatılan" sekmesinde görünüyor; diğer çocuğun rutini değişmedi;
+  8. iki boyutta yatay taşma yok, çevrilmemiş `bulkArchive.` metni yok, sayfa hatası yok.
+  Bu kontroller aynı fixture üzerinde iki kez arka arkaya geçti (ilk tam koşu düzeltmeden önceki derlemeyle de geçti). Üçüncü deneme, her koşu iki yeni çocuk eklediği için fixture'ın plan sınırına (`plan_limit_children`, 8) takıldı; uygulama hatası değil.
+- Test sırasında bulunan hata düzeltildi: sonuçtan sonra liste yenilenirken "Tamam" yok sayılıyordu (`2a508ef`).
+
+Görüntüler (yalnız bu test için oluşturulmuş yapay aile): [ui/](ui/) — `rewards-select-phone`, `rewards-preview-phone`, `rewards-lost-reply-phone`, `rewards-partial-result-phone`, `rewards-partial-result-tablet`, `notes-archive-preview-phone`, `notes-restore-preview-phone`, `notes-restore-result-phone`, `notes-restore-result-tablet`, `routines-restore-preview-phone`, `routines-restore-result-phone`, `routines-restore-result-tablet`, `routines-paused-after-restore-phone`.
+
+| Kısmi başarı (telefon) | Not geri alma (tablet) |
+|---|---|
+| ![Kısmi başarı](ui/rewards-partial-result-phone.png) | ![Not geri alma](ui/notes-restore-result-tablet.png) |
+
+### Kalan sınır (UI)
+
+- **Takvim, Prova taslağı, öğrenme planı, çanta** ekranlarına seçim modu bağlanmadı (başka ajanların dosyaları / bu turda kapsam dışı). Takvim veli RLS'i ve `archived_at` filtresi hâlâ açık (yukarıda).
+- Mevcut `bulkArchive.summary.*` anahtarları `{count}` tek süslü parantez kullanıyor; i18next `{{count}}` beklediği için bu anahtarlar ham `{count}` gösterir. UI yeni `bulkArchive.ui.*` anahtarlarını kullanıyor; eski anahtarlar silinmedi/düzeltilmedi (yalnız yeni anahtar kuralı) — ortak düzeltme ayrı iş.
+- L02 RPC'leri `packages/core/src/database.types.ts`'de yok; `bulk-archive-sheet.tsx` içinde yerel, dar bir tip dönüşümüyle çağrılıyor (yanıtlar zod ile doğrulanıyor). Tipler eklenince bu dönüşüm kaldırılmalı.
+- Önizleme tür başına 300 kayıtla kesilir: kesilen sınırın dışındaki seçim "değişti" olarak gösterilir, gönderilmez. Sonsuz kaydırmalı not listesinde 300'den eski notlar için filtre daraltılmalı.
+- Seçim yalnız ekranda yüklü satırlar arasındadır ("Tümünü seç" yüklü sayfayı seçer; notlarda "Daha fazla" ile açılmamış sayfalar dahil değildir).
+- Fiziksel iPhone/iPad, VoiceOver/TalkBack ve TestFlight kabulü yapılmadı; yalnız web export + Playwright.
+- `docs/CLAUDE-REMAINING-WORK.md` L02 kutusu işaretlenmedi; koordinatör güncellesin.
