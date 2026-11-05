@@ -1,0 +1,50 @@
+// Draft (L04). Not imported anywhere yet: the day/task/timetable screens are under Q00 review and
+// will adopt it when they switch to `plan_for_day`. It renders the honesty note for a day entry:
+// known as of a day without a recorded start, unknown before the first recorded version, a closed
+// period's snapshot, or settings scheduled for a later day.
+import { StyleSheet, Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { planHistoryNote, type PlanVersionStatus } from "@gina/core";
+import { p } from "./ui";
+
+export type PlanHistoryEntry = {
+  status: PlanVersionStatus;
+  effective_from: string | null;
+  known_since: string | null;
+  unknown_before: string | null;
+};
+
+export function PlanHistoryNote({ entry, today }: { entry: PlanHistoryEntry; today: string }) {
+  const { t, i18n } = useTranslation();
+  const note = planHistoryNote(entry, today);
+  if (note === "none") return null;
+  const day = (value: string | null) =>
+    value
+      ? new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "long" }).format(new Date(value + "T12:00:00Z"))
+      : "";
+  const text =
+    note === "scheduled" ? t("planHistory.scheduled", { date: day(entry.effective_from) })
+    : note === "legacy" ? t("planHistory.legacy", { date: day(entry.known_since) })
+    : note === "period_snapshot" ? t("planHistory.periodSnapshot", { date: day(entry.unknown_before) })
+    : t("planHistory.unknownBefore", { date: day(entry.unknown_before) });
+  return (
+    <View accessibilityRole="text" style={[s.box, note === "scheduled" ? s.scheduled : s.muted]}>
+      <Text style={s.text}>{text}</Text>
+    </View>
+  );
+}
+
+/** Label for the effective-day control in an editor: "from today" or "from <date>". */
+export function effectiveFromLabel(value: string | null, today: string, t: (key: string, options?: Record<string, string>) => string, locale: string) {
+  if (!value || value === today) return t("planHistory.effectiveToday");
+  return t("planHistory.effectiveFuture", {
+    date: new Intl.DateTimeFormat(locale, { day: "numeric", month: "long" }).format(new Date(value + "T12:00:00Z")),
+  });
+}
+
+const s = StyleSheet.create({
+  box: { borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, minHeight: 48, justifyContent: "center" },
+  muted: { backgroundColor: p.cream, borderColor: p.line },
+  scheduled: { backgroundColor: p.lilac, borderColor: "#E4DCF4" },
+  text: { color: p.muted, fontFamily: "Nunito_600SemiBold", fontSize: 14, lineHeight: 20 },
+});
