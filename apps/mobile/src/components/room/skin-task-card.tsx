@@ -5,7 +5,7 @@ import { TaskIcon } from "@/components/task-icon";
 import { NineSlice, SkinIcon, SkinPressable } from "@/components/room/nine-slice";
 import type { ChildTodayData } from "@/lib/use-child-today";
 
-type Task = Pick<ChildTodayData["due"][number], "id" | "title" | "icon" | "stars" | "status">;
+type Task = Pick<ChildTodayData["due"][number], "id" | "title" | "icon" | "stars" | "status"> & { available?: boolean };
 
 const STATUS_ORDER = { returned: 0, todo: 1, done: 2, approved: 3 } as const;
 
@@ -47,10 +47,10 @@ export function SkinTaskCard({
 }) {
   const { t } = useTranslation();
   const fs = (n: number) => Math.round(n * s);
-  const actionable = task.status === null || task.status === "returned";
+  const actionable = task.available !== false && (task.status === null || task.status === "returned");
   const status = statusSkin(task.status);
   const subtitle =
-    task.status === "approved"
+    task.available === false && task.status === "returned" ? t("routine.pausedWork") : task.status === "approved"
       ? t("child.approved")
       : task.status === "done"
         ? t("child.waitingApproval")

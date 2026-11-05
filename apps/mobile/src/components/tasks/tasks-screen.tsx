@@ -1,6 +1,10 @@
-import { useSetupSources, SetupSourceLinks, SourceLoadError } from "@/components/setup/source-links";
+import {
+  useSetupSources,
+  SetupSourceLinks,
+  SourceLoadError,
+} from "@/components/setup/source-links";
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
@@ -11,7 +15,10 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import {
   ArrowLeft,
   Bell,
@@ -20,18 +27,18 @@ import {
   Heart,
   House,
   MoreHorizontal,
-  Pause,
-  Play,
+  Pencil,
   Plus,
 } from "lucide-react-native";
 import { Avatar } from "@/components/avatar";
 import { Pressable } from "@/components/ui/pressable";
-import { CountBadge, IconButton, SatinButton, Tag, p, u } from "@/components/planner/ui";
+import { IconButton, SatinButton, Tag, p, u } from "@/components/planner/ui";
 import type { PlannerChild } from "@/components/planner/timetable-editor";
 import { useSession } from "@/lib/session";
 import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { supabase } from "@/lib/supabase";
+import { RoutineEditor, type Routine } from "./routine-editor";
 import { TaskForm } from "./task-form";
 import { TaskTile, StarReward } from "./task-visuals";
 export function TasksScreen() {
@@ -42,8 +49,15 @@ export function TasksScreen() {
   const { claims } = useSession();
   const familyId = claims?.family_id ?? "";
   const timeZone = useFamilyTimezone();
-  const cache = useQueryClient();
-  const params = useLocalSearchParams<{ childId?: string; create?: string; taskId?: string; paused?: string }>();
+  const [editing, setEditing] = useState<Routine | null>(null);
+  const [editingName, setEditingName] = useState("");
+  const [archived, setArchived] = useState(false);
+  const params = useLocalSearchParams<{
+    childId?: string;
+    create?: string;
+    taskId?: string;
+    paused?: string;
+  }>();
   const [childId, setChildId] = useState<string | null>(params.childId ?? null);
   const [initialCreate, setInitialCreate] = useState(params.create === "1");
   const [paused, setPaused] = useState(params.paused === "1");
@@ -55,7 +69,8 @@ export function TasksScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("children")
-        .select("id,name,grade,avatar").is("archived_at", null)
+        .select("id,name,grade,avatar")
+        .is("archived_at", null)
         .order("sort_order");
       if (error) throw error;
       return data;
@@ -70,7 +85,7 @@ export function TasksScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_templates")
-        .select("id,title,icon,stars,days_of_week,active")
+        .select("*")
         .eq("child_id", selected!.id)
         .order("sort_order");
       if (error) throw error;
@@ -83,43 +98,13 @@ export function TasksScreen() {
     [
       ["parent_task_templates", familyId],
       ["family_task_templates", familyId],
+      ["task_routine_history", familyId],
     ],
   );
-  const toggle = useMutation({
-    mutationFn: async ({
-      id,
-      active,
-      owner,
-    }: {
-      id: string;
-      active: boolean;
-      owner: string;
-    }) => {
-      const { error } = await supabase
-        .from("task_templates")
-        .update({ active })
-        .eq("id", id)
-        .eq("child_id", owner)
-        .eq("family_id", familyId)
-        .select("id")
-        .single();
-      if (error) throw error;
-    },
-    onSuccess: async (_, v) => {
-      await Promise.all([
-        cache.invalidateQueries({
-          queryKey: ["parent_task_templates", familyId, v.owner],
-        }),
-        cache.invalidateQueries({ queryKey: ["task_templates", v.owner] }),
-        cache.invalidateQueries({
-          queryKey: ["family_task_templates", familyId],
-        }),
-      ]);
-      setNotice(t(v.active ? "taskPremium.resumed" : "taskPremium.paused"));
-    },
-  });
   const rows = templates.data ?? [];
-  const visible = rows.filter((r) => r.active !== paused);
+  const visible = rows.filter((r) =>
+    archived ? !!r.archived_at : !r.archived_at && r.active !== paused,
+  );
   const busy = children.isLoading || (!!selected && templates.isLoading);
   const failed = children.error || templates.error;
   const daysText = (days: number[]) =>
@@ -144,9 +129,12 @@ export function TasksScreen() {
       path: "/parent/menu" as const,
     },
   ];
-  const sources = useSetupSources("task", (templates.data ?? []).map(item=>item.id));
+  const sources = useSetupSources(
+    "task",
+    (templates.data ?? []).map((item) => item.id),
+  );
   return (
-    <SafeAreaView edges={['top', 'left', 'right']} style={u.root}>
+    <SafeAreaView edges={["top", "left", "right"]} style={u.root}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
@@ -207,26 +195,28 @@ export function TasksScreen() {
               </View>
             </View>
           </View>
-          {(children.data?.length ?? 0) > 1 && <View style={wide ? { width: 340 } : {}}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <View style={u.row}>
-                {children.data?.map((c) => (
-                  <Tag
-                    key={c.id}
-                    label={c.name}
-                    selected={c.id === selected?.id}
-                    onPress={() => {
-                      setChildId(c.id);
-                      setNotice("");
-                      toggle.reset();
-                    }}
-                  >
-                    <Avatar slug={c.avatar} size={30} />
-                  </Tag>
-                ))}
-              </View>
-            </ScrollView>
-          </View>}
+          {(children.data?.length ?? 0) > 1 && (
+            <View style={wide ? { width: 340 } : {}}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                <View style={u.row}>
+                  {children.data?.map((c) => (
+                    <Tag
+                      key={c.id}
+                      label={c.name}
+                      selected={c.id === selected?.id}
+                      onPress={() => {
+                        setChildId(c.id);
+                        setNotice("");
+                        setArchived(false);
+                      }}
+                    >
+                      <Avatar slug={c.avatar} size={30} />
+                    </Tag>
+                  ))}
+                </View>
+              </ScrollView>
+            </View>
+          )}
         </View>
         {busy ? (
           <ActivityIndicator
@@ -260,41 +250,28 @@ export function TasksScreen() {
         ) : null}
         {selected && !failed ? (
           <>
-            <View style={[u.segment, { maxWidth: 560 }]}>
-              {[false, true].map((value) => (
-                <View key={String(value)} style={u.fill}>
-                  {paused === value ? (
-                    <SatinButton
-                      title={t(value ? "taskPremium.pausedLabel" : "taskPremium.activeLabel")}
-                      badge={rows.filter((r) => r.active !== value).length}
-                      onPress={() => {}}
-                      selected
-                      style={{ minHeight: 48, paddingHorizontal: 12 }}
-                    />
-                  ) : (
-                    <Pressable
-                      accessibilityRole="button"
-                      accessibilityState={{ selected: false }}
-                      onPress={() => {
-                        setPaused(value);
-                        setNotice("");
-                      }}
-                      style={{
-                        minHeight: 54,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        paddingHorizontal: 10,
-                        flexDirection: "row",
-                        gap: 8,
-                      }}
-                    >
-                      <Text style={u.bold}>
-                        {t(value ? "taskPremium.pausedLabel" : "taskPremium.activeLabel")}
-                      </Text>
-                      <CountBadge count={rows.filter((r) => r.active !== value).length} />
-                    </Pressable>
+            <View style={[u.row, { flexWrap: "wrap" }]}>
+              {["active", "paused", "archived"].map((tab) => (
+                <Tag
+                  key={tab}
+                  label={t(
+                    tab === "archived"
+                      ? "routine.archived"
+                      : tab === "active"
+                        ? "taskPremium.activeLabel"
+                        : "taskPremium.pausedLabel",
                   )}
-                </View>
+                  selected={
+                    tab === "archived"
+                      ? archived
+                      : !archived && paused === (tab === "paused")
+                  }
+                  onPress={() => {
+                    setArchived(tab === "archived");
+                    setPaused(tab === "paused");
+                    setNotice("");
+                  }}
+                />
               ))}
             </View>
             {notice ? (
@@ -302,20 +279,28 @@ export function TasksScreen() {
                 {notice}
               </Text>
             ) : null}
-            {toggle.error ? (
-              <Text accessibilityRole="alert" style={u.error}>
-                {t("taskPremium.toggleError")}
-              </Text>
-            ) : null}
-            <SourceLoadError error={sources.error} retry={()=>void sources.refetch()}/>
+            <SourceLoadError
+              error={sources.error}
+              retry={() => void sources.refetch()}
+            />
             {!busy && visible.length === 0 ? (
               <View style={u.card}>
                 <Text style={u.heading}>
-                  {t(paused ? "taskPremium.noPaused" : "tasks.none")}
+                  {t(
+                    archived
+                      ? "routine.noArchived"
+                      : paused
+                        ? "taskPremium.noPaused"
+                        : "tasks.none",
+                  )}
                 </Text>
                 <Text style={u.copy}>
                   {t(
-                    paused ? "taskPremium.noPausedBody" : "parentV5.firstTask",
+                    archived
+                      ? "routine.noArchivedHelp"
+                      : paused
+                        ? "taskPremium.noPausedBody"
+                        : "parentV5.firstTask",
                   )}
                 </Text>
               </View>
@@ -332,7 +317,10 @@ export function TasksScreen() {
                   key={task.id}
                   style={[
                     u.card,
-                    params.taskId === task.id && { borderColor: p.purple, borderWidth: 2 },
+                    params.taskId === task.id && {
+                      borderColor: p.purple,
+                      borderWidth: 2,
+                    },
                     {
                       width: wide ? "48.5%" : "100%",
                       padding: 14,
@@ -343,68 +331,38 @@ export function TasksScreen() {
                     },
                   ]}
                 >
-                  <View style={{flexDirection:"row",alignItems:"center",gap:12}}>
-                  <TaskTile slug={task.icon} size={wide ? 72 : 64} />
-                  <View style={[u.fill, { gap: 5 }]}>
-                    <Text style={u.bold}>{task.title}</Text>
-                    <Text style={u.small}>
-                      {daysText(task.days_of_week)} ·{" "}
-                      {t("room.starCount", { count: task.stars })}
-                    </Text>
-                    <StarReward count={task.stars} />
-                  </View>
-                  <Pressable
-                    accessibilityRole="button"
-                    accessibilityLabel={t(
-                      task.active
-                        ? "taskPremium.pauseNamed"
-                        : "taskPremium.resumeNamed",
-                      { title: task.title },
-                    )}
-                    accessibilityState={{
-                      disabled: toggle.isPending,
-                      busy:
-                        toggle.isPending && toggle.variables?.id === task.id,
-                    }}
-                    disabled={toggle.isPending}
-                    onPress={() => {
-                      setNotice("");
-                      toggle.mutate({
-                        id: task.id,
-                        active: !task.active,
-                        owner: selected.id,
-                      });
-                    }}
-                    style={({ pressed }) => ({
-                      minHeight: 48,
-                      minWidth: 76,
-                      paddingHorizontal: 10,
-                      borderRadius: 24,
-                      backgroundColor: p.lilac,
-                      opacity: pressed ? 0.65 : 1,
+                  <View
+                    style={{
                       flexDirection: "row",
-                      gap: 5,
                       alignItems: "center",
-                      justifyContent: "center",
-                    })}
+                      gap: 12,
+                    }}
                   >
-                    {toggle.isPending && toggle.variables?.id === task.id ? (
-                      <ActivityIndicator size="small" color={p.purple} />
-                    ) : task.active ? (
-                      <Pause size={15} color={p.purple} />
-                    ) : (
-                      <Play size={15} color={p.purple} />
-                    )}
-                    <Text style={[u.bold, { fontSize: 13, color: p.purple }]}>
-                      {t(
-                        task.active
-                          ? "taskPremium.pause"
-                          : "taskPremium.resume",
-                      )}
-                    </Text>
-                  </Pressable>
+                    <TaskTile slug={task.icon} size={wide ? 72 : 64} />
+                    <View style={[u.fill, { gap: 5 }]}>
+                      <Text style={u.bold}>{task.title}</Text>
+                      <Text style={u.small}>
+                        {daysText(task.days_of_week)} ·{" "}
+                        {t("room.starCount", { count: task.stars })}
+                      </Text>
+                      <StarReward count={task.stars} />
+                    </View>
+                    <IconButton
+                      label={t("routine.editNamed", { title: task.title })}
+                      onPress={() => {
+                        setNotice("");
+                        setEditingName(selected.name);
+                        setEditing(task);
+                      }}
+                    >
+                      <Pencil color={p.purple} size={20} />
+                    </IconButton>
                   </View>
-                  <SetupSourceLinks sources={(sources.data??[]).filter(s=>s.item_id===task.id)}/>
+                  <SetupSourceLinks
+                    sources={(sources.data ?? []).filter(
+                      (s) => s.item_id === task.id,
+                    )}
+                  />
                 </View>
               ))}
             </View>
@@ -475,14 +433,40 @@ export function TasksScreen() {
           </Pressable>
         ))}
       </View>
+      {editing && (
+        <RoutineEditor
+          key={`${editing.id}:${editing.revision}`}
+          row={editing}
+          childName={editingName}
+          familyId={familyId}
+          onClose={() => setEditing(null)}
+          onSaved={(action) => {
+            setEditing(null);
+            setNotice(t(`routine.saved.${action}`));
+            if (action === "archive") setArchived(true);
+            if (action === "restore" || action === "pause") {
+              setArchived(false);
+              setPaused(true);
+            }
+            if (action === "resume") {
+              setArchived(false);
+              setPaused(false);
+            }
+          }}
+        />
+      )}
       {creating || (initialCreate && selected) ? (
         <TaskForm
           child={creating ?? selected!}
           familyId={familyId}
           timeZone={timeZone}
-          onClose={() => { setCreating(null); setInitialCreate(false); }}
+          onClose={() => {
+            setCreating(null);
+            setInitialCreate(false);
+          }}
           onCreated={() => {
-            setCreating(null); setInitialCreate(false);
+            setCreating(null);
+            setInitialCreate(false);
             setPaused(false);
             setNotice(t("taskPremium.created"));
           }}

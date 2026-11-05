@@ -3,7 +3,7 @@ import { invalidateTaskState } from "./task-cache";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as Crypto from "expo-crypto";
 
-import { localDateOf, starBalance, templatesDueOn, weekDatesOf, type CompletionStatus } from "@gina/core";
+import { localDateOf, starBalance, tasksWithRecordedWork, weekDatesOf, type CompletionStatus } from "@gina/core";
 
 import { useFamilyTimezone } from "./family";
 import { useRealtimeInvalidate } from "./realtime";
@@ -20,6 +20,7 @@ export interface ChildTodayData {
     stars: number;
     status: CompletionStatus | null;
     completionId: string | null;
+    available: boolean;
   }[];
   /** Hafta günleri → o gün düşen görev sayısı ve biten (done+approved) sayısı. */
   weekSummary: { date: string; due: number; done: number }[];
@@ -65,7 +66,7 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_completions")
-        .select("id, template_id, due_date, status")
+        .select("id, template_id, due_date, status, task_snapshot")
         .eq("child_id", childId)
         .gte("due_date", from)
         .lte("due_date", to);
@@ -90,6 +91,7 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
   useRealtimeInvalidate("task_completions", childId ? `child_id=eq.${childId}` : null, [["task_completions_week", childId, from]]);
   useRealtimeInvalidate("star_events", childId ? `child_id=eq.${childId}` : null, [["star_events", childId]]);
   useRealtimeInvalidate("task_templates", childId ? `child_id=eq.${childId}` : null, [["task_templates", childId]]);
+  useRealtimeInvalidate("task_routine_sync", childId ? `child_id=eq.${childId}` : null, [["task_routine_sync", childId]]);
 
   const requestIds = useRef(new Map<string, string>());
   const completingRef = useRef(false);
@@ -113,10 +115,11 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
   const byTemplateToday = new Map(
     (completions.data ?? []).filter((c) => c.due_date === today).map((c) => [c.template_id, c]),
   );
-  const due = templatesDueOn(templates.data ?? [], today).map((t) => {
+  const due = tasksWithRecordedWork(templates.data ?? [], completions.data ?? [], today).map((t) => {
     const completion = byTemplateToday.get(t.id);
     return {
       id: t.id,
+      available: t.available,
       title: t.title,
       icon: t.icon,
       stars: t.stars,
@@ -126,7 +129,7 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
   });
 
   const weekSummary = week.map((date) => {
-    const dueCount = templatesDueOn(templates.data ?? [], date).length;
+    const dueCount = tasksWithRecordedWork(templates.data ?? [], completions.data ?? [], date).length;
     const doneCount = (completions.data ?? []).filter(
       (c) => c.due_date === date && (c.status === "done" || c.status === "approved"),
     ).length;

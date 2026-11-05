@@ -34,8 +34,8 @@ select throws_ok($$select public.configure_child_device('30000000-0000-4000-8000
 select throws_ok($$update public.children set name='Changed' where id='20000000-0000-4000-8000-000000007901'$$,'P0001','child_archived','archived profile cannot be edited');
 select throws_ok($$insert into public.task_templates(family_id,child_id,title) values('10000000-0000-4000-8000-000000007901','20000000-0000-4000-8000-000000007901','New')$$,'P0001','child_archived','new assignment denied');
 select throws_ok($$update public.task_templates set active=true where id='40000000-0000-4000-8000-000000007901'$$,'P0001','child_archived','cannot resume archived routine');
-select throws_ok($$update public.task_templates set child_id='20000000-0000-4000-8000-000000007902' where id='40000000-0000-4000-8000-000000007901'$$,'P0001','child_archived','cannot move archived history to sibling');
-select throws_ok($$delete from public.task_templates where id='40000000-0000-4000-8000-000000007901'$$,'P0001','child_archived','direct destructive history edit denied');
+select throws_ok($$update public.task_templates set child_id='20000000-0000-4000-8000-000000007902' where id='40000000-0000-4000-8000-000000007901'$$,'42501',null,'cannot move archived history to sibling');
+select throws_ok($$delete from public.task_templates where id='40000000-0000-4000-8000-000000007901'$$,'42501',null,'direct destructive history edit denied');
 select throws_ok($$select public.set_child_archived(gen_random_uuid(),'20000000-0000-4000-8000-000000007901',0,false)$$,'P0001','archive_changed','stale restore rejected');
 select set_config('request.jwt.claims','{"sub": "00000000-0000-4000-8000-000000007903", "role": "authenticated", "gina": {"family_id": "10000000-0000-4000-8000-000000007901", "role": "device", "device_id": "30000000-0000-4000-8000-000000007901", "child_id": "20000000-0000-4000-8000-000000007901"}}',true);
 select is(gina.is_device(),false,'stale child JWT immediately denied');

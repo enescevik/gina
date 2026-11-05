@@ -4,7 +4,7 @@
 
 ## 5 Kasım devam paketinin durumu
 
-Eğitim dönemi ve okul geçmişinin ilk uygulaması hazır: ilk kayıt, yeni eğitim yılı, okul değişikliği, ayrı bilgi düzeltme, sürümlü kayıt ve kapanan dönemin okunabilir program kopyası. [Uygulama ve test kanıtı](release/education-periods-2026-11-05/README.md). Profil arşivleme/geri alma da uygulandı: rutinler durur, cihaz erişimi ve bağlantılar kapatılır; geri alma bunları otomatik açmaz. [Arşiv kontrol raporu](release/child-archive-2026-11-05/README.md). Dönem rapor filtreleri ve okul puanının sürümlü düzeltme/kaldırma/geri alma akışı da uygulandı; [rapor ve kontroller](release/education-reports-2026-11-05/README.md). Seçerek rutin taşıma ve bütün içerik arşivi hâlâ açıktır. Üretim yayını yapılmadı.
+Eğitim dönemi ve okul geçmişinin ilk uygulaması hazır: ilk kayıt, yeni eğitim yılı, okul değişikliği, ayrı bilgi düzeltme, sürümlü kayıt ve kapanan dönemin okunabilir program kopyası. [Uygulama ve test kanıtı](release/education-periods-2026-11-05/README.md). Profil arşivleme/geri alma da uygulandı: rutinler durur, cihaz erişimi ve bağlantılar kapatılır; geri alma bunları otomatik açmaz. [Arşiv kontrol raporu](release/child-archive-2026-11-05/README.md). Dönem rapor filtreleri ve okul puanının sürümlü düzeltme/kaldırma/geri alma akışı da uygulandı; [rapor ve kontroller](release/education-reports-2026-11-05/README.md). Rutin ayrıntısı/düzenleme, gönderim bilgisini koruma ve tek rutin arşivi/geri alma da uygulandı; [görev paketi](release/task-routines-2026-11-05/README.md). Seçerek rutin taşıma ve bütün içerik arşivi hâlâ açıktır. Üretim yayını yapılmadı.
 
 ## Ana karar önerisi
 
@@ -34,7 +34,7 @@ Yıldız, rozet, maskot, oda ve kişisel başarılar profilde kalır. Ders progr
 | Aktarılan belge/görsel | Kaynak kaldırma mevcut | Kaynağı silmek ders/ödevleri silmez; ters işlem de kaynak dosyasını silmez. Ayrı sonuç açıklaması korunmalı. |
 | Ödev/çalışma | Tek kayıtta `archived` ve tamamlanma var | Tarih/kapsam seçerek toplu arşivleme, geri alma ve filtre **açık**. Tamamlanmışı başarısız sayma. |
 | Çanta listesi | Tek eşya çıkarılabiliyor | “İşaretleri sıfırla” ile “Bu günün listesini temizle” ayrı olmalı; başka günlere etki etmemeli. Toplu işlem **açık**. |
-| Görev rutinleri | Duraklat/devam et ve geçmiş gerçekleşmeler var | Duraklatma silme değildir. Seçili rutinleri arşivleme, eski onay/yıldız kayıtlarını koruyarak düzenleme **açık**. |
+| Görev rutinleri | Düzenleme, değişiklik geçmişi, duraklat/devam et, tek rutin arşivi/geri alma **eklendi** | Gönderilmiş görev adı/ikonu/yıldızı korunur. Eski özgün veri yoksa geçiş anında bilinen değer ayrıştırılır. Henüz gönderilmemiş görevler güncel plandan hesaplanır. Toplu seçim/aktarım **açık**. |
 | Ödüller | Duraklatma ve talep iptal/teslim durumları var | Yeni taleplere kapatma ile kazanılmış ödülü yok etme ayrılmalı. Aktif talepleri açıklayan arşiv akışı **açık**. |
 | Hedef | Hedef seçimi ödül talebinden ayrı | Hedefi bırakma/değiştirme birikmiş yıldızı silmemeli. Ayrı son kontrol ve geçmiş hedef görünümü **açık**. |
 | Okul puanı | Ekleme, düzeltme, geri alınabilir kaldırma ve geçmiş **eklendi** | Önce/sonra kontrolü, eşzamanlılık ve tekrar güvenliği; dönem filtresi/sayfalama; kaldırılan puan öğretmen görünümünden çıkar. Tarihi başka döneme taşıyan düzeltme ayrı karar gerektirir. |

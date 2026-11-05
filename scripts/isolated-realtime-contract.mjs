@@ -5,7 +5,7 @@ export async function observeRealtime({parent,other,child,assert}) {
   const marks={parent:0,other:0,child:0};
   for(const [name,client] of Object.entries({parent,other,child})) {
     const channel=client.channel('isolated-'+randomUUID(),{config:{postgres_changes_options:{wait:true}}});
-    for(const table of ['exams','exam_attempts','task_templates','task_completions','star_events']) {
+    for(const table of ['exams','exam_attempts','task_templates','task_routine_sync','task_completions','star_events']) {
       channel.on('postgres_changes',{event:'*',schema:'public',table},event=>events[name].push({table,row:event.new,type:event.eventType}));
     }
     await new Promise((resolve,reject)=>{

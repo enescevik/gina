@@ -34,7 +34,7 @@
 | Cihaz eşleme `/device/pair` | Açık / yeniden doğrulanacak | İki cihazda yapılacakları görsel adımlarla anlat; kodun nereye girileceğini göster; QR ayrı sonraki özellik önerisi — İlk kullanımda başka menü tahmin edilmez; süre dolunca yenilenir |
 | Bugün `/parent` | Kısmi: Çocuk/tarih/görev bağlamı ve bekleyen/onaylı ayrımı uygulandı. Ana iş önceliği ve tekrarların azaltılması açık. | Onay ve sıradaki iş öne; selamlama/maskot kompakt; aynı verinin tekrarı azaltılsın; bağlantılar bağlamı taşısın — İlk görünümde anlamlı bir sonraki iş; doğru çocuk/gün/kayıt açılır |
 | Takvim `/parent/calendar` | Kısmi: Tümü kapsamı ve etkinlikte tarih/saat kontrolü uygulandı. Günün birleşik bilgi hiyerarşisi açık. | Tümü kapsamını düzelt; etkinlik, ders ve ödevi aynı gün altında ayrı anlamlarla göster — İki çocuklu ailede hiçbir iş sessizce ilk çocuğa bağlanmaz |
-| Görevler `/parent/tasks` | Açık / yeniden doğrulanacak | Günlük gerçekleşme ile rutin ayarını ayır; ayrıntı ve güvenli düzenleme ekle — Ad/gün/yıldız düzeltmesi kopya görev veya geçmiş puan değişimi üretmez |
+| Görevler `/parent/tasks` | Rutin düzenleme, geçmiş, arşiv/geri alma ve gönderilmiş görev bilgisini koruma uygulandı. Telefon/tablet web ve cihaz yetki testleri geçti; fiziksel kabul açık. | Günlük gerçekleşme ile rutin ayarını ayır; ayrıntı ve güvenli düzenleme ekle — Ad/gün/yıldız düzeltmesi kopya görev veya geçmiş puan değişimi üretmez |
 | Ödüller `/parent/rewards` | Açık / yeniden doğrulanacak | Düzenleme, teslim geçmişi ve talep durumları; yanlış ret/iptali önleyen sonuç açıklaması — Bedel değişiminin önceki taleplere etkisi açık; teslim edilmiş ödül bulunur |
 | Diğer / ayarlar `/parent/menu` | Açık / yeniden doğrulanacak | Hesap, aile, cihazlar, öğrenme kayıtları ve yardım grupları; aynı düzeyde tutarlı gezinme — PIN, okul puanı ve destek beklenen kategoride bulunur |
 | Cihaz erişimi `/parent/device-access` | Kısmi: Taslak koruması, aynı ekranda doğrulamalı PIN ve erişim özeti uygulandı. Fiziksel cihaz kabulü açık. | Kullanıcı/PIN politikası taslağını koru; eksik PIN oluşturup aynı taslağa dön; kayıt özeti — Geri gitmek seçili çocukları sessizce kaybettirmez |
@@ -157,7 +157,7 @@ Her satırda kaynak değişikliği, beklenen davranış ve gerçek kontrol kanı
 
 Yeni ek öncelik: tarihli eğitim dönemi/okul kayıtları; ardından profil arşivi ve toplu içerik yaşam döngüsü. Sınıf değişimi kalıcı çocuk silmeyle yapılmayacak. Bu tasarım önerisi henüz uygulanmış değildir.
 
-1. Görev/ödül/notu geçmişi koruyarak düzenleme; okul puanı devam paketinde tamamlandı; ad/gün/yıldız/bedel değişiminin mevcut kayıtları geriye dönük değiştirmemesi.
+1. Ödül/notu geçmişi koruyarak düzenleme; okul puanı ve tek rutin düzenleme/arşivi tamamlandı; ad/gün/yıldız/bedel değişiminin mevcut kayıtları geriye dönük değiştirmemesi.
 2. Veli ana ekranında sıradaki iş ve doğru bağlam; cihaz/PIN ayarlarında taslağı koruyarak tamamlama.
 3. Hazırlayıcıda soru bankasından bağımsız ders/program kapsamı ve tek soru sırası; ardından kalan çocuk/inceleme akışları.
 4. Yönetim iş kuyrukları ve içerik yaşam döngüsü; fiziksel cihaz ve yayın kapısı.
@@ -189,3 +189,7 @@ Yeni kullanıcı önceliği: takvime göre eğitim geçişi, okul istisnaların�
 - 200 kayıt kesintisi yerine sıralı sayfalama; iki veli çakışma kontrolü ve kayıp yanıt sonrası tekrar güvenliği. İçerik taşımayan değişiklik sinyali diğer açık ekrandaki kaldırma/geri alma görünümünü yeniler.
 - Kanıt ve yayın sınırları: [kontrol raporu](release/education-reports-2026-11-05/README.md). Üretim/TestFlight yayını yapılmadı.
 - Sonraki: görev/ödül/not geçmişi; seçerek rutin/ödev aktarımı ve toplu arşivleme. Bu paket bu işleri tamamlanmış saymaz.
+
+## Görev rutinleri devam paketi — 5 Kasım
+
+[Değişiklikler, ekranlar ve test kanıtı](release/task-routines-2026-11-05/README.md). Rutin ayrıntısı, önce/sonra karşılaştırması, sürüm koruması, arşiv ve duraklatılmış geri alma; orijinal gönderim adı/ikonu/yıldızının korunması. Eski kayıtta özgün gönderim bilgisi yoksa geçiş anında bilinen değer olduğu açıkça ayrılır. Gerçek çocuk cihazının yetkisi ve diğer cihazda yenileme kontrol edildi. Ödül/not, toplu aktarım/arşiv, yeni görev sihirbazının kalan işleri ve fiziksel kabul bu pakette tamamlanmış sayılmaz. Üretim/TestFlight yayını yapılmadı.

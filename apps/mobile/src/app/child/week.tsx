@@ -4,7 +4,7 @@ import { WeekStrip } from "@/components/room/week-strip";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
-import { localDateOf, templatesDueOn, weekDatesOf } from "@gina/core";
+import { localDateOf, tasksWithRecordedWork, weekDatesOf } from "@gina/core";
 
 import { TaskIcon } from "@/components/task-icon";
 import { ErrorText } from "@/components/ui/screen";
@@ -45,7 +45,7 @@ export default function ChildWeekScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_completions")
-        .select("template_id, due_date, status")
+        .select("id, template_id, due_date, status, task_snapshot")
         .eq("child_id", childId)
         .gte("due_date", from)
         .lte("due_date", to);
@@ -56,6 +56,8 @@ export default function ChildWeekScreen() {
 
   useRealtimeInvalidate("task_completions", childId ? `child_id=eq.${childId}` : null, [["task_completions_week", childId, from]]);
 
+  useRealtimeInvalidate("task_templates", childId ? `child_id=eq.${childId}` : null, [["task_templates", childId]]);
+  useRealtimeInvalidate("task_routine_sync", childId ? `child_id=eq.${childId}` : null, [["task_routine_sync", childId]]);
   const byKey = new Map((completions.data ?? []).map((c) => [`${c.template_id}:${c.due_date}`, c.status]));
   const dayFormat = new Intl.DateTimeFormat(i18n.language, { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
 
@@ -64,7 +66,7 @@ export default function ChildWeekScreen() {
       <ErrorText error={templates.error ?? completions.error} />
       <WeekStrip week={week} selected={selected} onSelect={setSelected} />
       {[selected].map((date) => {
-        const due = templatesDueOn(templates.data ?? [], date);
+        const due = tasksWithRecordedWork(templates.data ?? [], completions.data ?? [], date);
         const isToday = date === today;
         return (
           <View key={date} style={{ gap: 12 }}>
@@ -80,7 +82,7 @@ export default function ChildWeekScreen() {
                   <TaskIcon slug={task.icon} size={56} variant="illustrated" />
                   <View style={{ flex: 1, minWidth: 0, gap: 8 }}>
                     <Text style={[childStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{task.title}</Text>
-                    <Text style={{ alignSelf: "flex-start", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3, backgroundColor: status === "approved" ? "#E6F7EF" : "#FFF1D4", color: "#625C85", fontFamily: "Nunito_700Bold", fontSize: 13 }}>{status === "approved" ? t("child.approved") : status === "done" ? t("child.waitingApproval") : t("childV5.notCompleted")}</Text>
+                    <Text style={{ alignSelf: "flex-start", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3, backgroundColor: status === "approved" ? "#E6F7EF" : "#FFF1D4", color: "#625C85", fontFamily: "Nunito_700Bold", fontSize: 13 }}>{status === "approved" ? t("child.approved") : status === "done" ? t("child.waitingApproval") : status === "returned" ? t(task.available ? "child.returnedTryAgain" : "routine.pausedWork") : t("childV5.notCompleted")}</Text>
                   </View>
                 </View>
               );

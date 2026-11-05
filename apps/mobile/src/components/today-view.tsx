@@ -6,7 +6,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Text, View, useWindowDimensions } from "react-native";
 
-import { localDateOf, starBalance, templatesDueOn, type CompletionStatus } from "@gina/core";
+import { localDateOf, starBalance, tasksWithRecordedWork, type CompletionStatus } from "@gina/core";
 
 import { LARGE_FONT_REFLOW_ABOVE } from "@/components/room/layout";
 import { NineSlice, SkinIcon, SkinPressable, SkinProgress } from "@/components/room/nine-slice";
@@ -54,7 +54,7 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_completions")
-        .select("id, template_id, status")
+        .select("id, template_id, due_date, status, task_snapshot")
         .eq("child_id", childId)
         .eq("due_date", today);
       if (error) throw error;
@@ -76,6 +76,7 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
   useRealtimeInvalidate("task_completions", `child_id=eq.${childId}`, [["task_completions", childId, today]]);
   useRealtimeInvalidate("star_events", `child_id=eq.${childId}`, [["star_balance", childId]]);
   useRealtimeInvalidate("task_templates", `child_id=eq.${childId}`, [["task_templates", childId]]);
+  useRealtimeInvalidate("task_routine_sync", `child_id=eq.${childId}`, [["task_routine_sync", childId]]);
 
   const complete = useMutation({
     mutationFn: async (templateId: string) => {
@@ -98,7 +99,7 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
   // Dar telefon/büyük yazı: görev kâğıdında çip metnin altına iner (minimumLogicalSize altına sıkıştırılmaz).
   const stacked = width < 600 || fontScale > LARGE_FONT_REFLOW_ABOVE;
 
-  const due = templatesDueOn(templates.data ?? [], today);
+  const due = tasksWithRecordedWork(templates.data ?? [], completions.data ?? [], today);
   const byTemplate = new Map((completions.data ?? []).map((c) => [c.template_id, c]));
   const statusOf = (id: string) => (byTemplate.get(id)?.status ?? null) as CompletionStatus | null;
   const doneCount = due.filter((task) => statusOf(task.id) === "done" || statusOf(task.id) === "approved").length;
@@ -175,7 +176,7 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
             s={1}
             stacked={stacked}
             isNext={task.id === nextTaskId}
-            completing={complete.isPending}
+            completing={complete.isPending || !task.available}
             onComplete={() => complete.mutate(task.id)}
           />
         ))}

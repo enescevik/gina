@@ -5,6 +5,8 @@ export type Database = {
 
   "public": {
           Tables: {
+      task_routine_sync: { Row: {child_id:string;family_id:string;revision:number}; Insert: {child_id:string;family_id:string;revision?:number}; Update:{child_id?:string;family_id?:string;revision?:number}; Relationships:[]; ComputedFields:never };
+
 school_grade_sync: { Row:{child_id:string;family_id:string;revision:number}; Insert:{child_id:string;family_id:string;revision?:number};Update:{revision?:number};Relationships:[] },
 guided_input_options: { Row: {id:string;kind:string;label_tr:string;label_en:string;subject:string;min_grade:number;max_grade:number;position:number;active:boolean;revision:number;updated_at:string}; Insert: {id:string;kind:string;label_tr:string;label_en:string;subject?:string;min_grade?:number;max_grade?:number;position?:number;active?:boolean;revision?:number;updated_at?:string}; Update: {label_tr?:string;label_en?:string;subject?:string;min_grade?:number;max_grade?:number;position?:number;active?:boolean}; Relationships: [] },
 
@@ -2140,13 +2142,16 @@ isOneToOne: false
                   ]
                 },"task_completions": {
                   Row: {
+                    task_snapshot: Json | null;
                     "child_id": string,"client_id": string,"completed_at": string,"completed_by": string | null,"due_date": string,"family_id": string,"id": string,"reviewed_at": string | null,"reviewed_by": string | null,"status": Database["public"]['Enums']["completion_status"],"template_id": string
                   }
                   ComputedFields: never
                   Insert: {
+                    task_snapshot?: Json | null;
                     "child_id": string,"client_id": string,"completed_at"?: string,"completed_by"?: string | null,"due_date": string,"family_id": string,"id"?: string,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"status"?: Database["public"]['Enums']["completion_status"],"template_id": string
                   }
                   Update: {
+                    task_snapshot?: Json | null;
                     "child_id"?: string,"client_id"?: string,"completed_at"?: string,"completed_by"?: string | null,"due_date"?: string,"family_id"?: string,"id"?: string,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"status"?: Database["public"]['Enums']["completion_status"],"template_id"?: string
                   }
                   Relationships: [
@@ -2172,13 +2177,19 @@ isOneToOne: false
                   ]
                 },"task_templates": {
                   Row: {
+                    revision: number;
+                    archived_at: string | null;
                     "active": boolean,"child_id": string,"created_at": string,"days_of_week": (number)[],"ends_on": string | null,"family_id": string,"icon": string,"id": string,"requires_approval": boolean,"sort_order": number,"stars": number,"starts_on": string,"time_of_day": Database["public"]['Enums']["time_of_day"],"title": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
+                    revision?: number;
+                    archived_at?: string | null;
                     "active"?: boolean,"child_id": string,"created_at"?: string,"days_of_week"?: (number)[],"ends_on"?: string | null,"family_id": string,"icon"?: string,"id"?: string,"requires_approval"?: boolean,"sort_order"?: number,"stars"?: number,"starts_on"?: string,"time_of_day"?: Database["public"]['Enums']["time_of_day"],"title": string,"updated_at"?: string
                   }
                   Update: {
+                    revision?: number;
+                    archived_at?: string | null;
                     "active"?: boolean,"child_id"?: string,"created_at"?: string,"days_of_week"?: (number)[],"ends_on"?: string | null,"family_id"?: string,"icon"?: string,"id"?: string,"requires_approval"?: boolean,"sort_order"?: number,"stars"?: number,"starts_on"?: string,"time_of_day"?: Database["public"]['Enums']["time_of_day"],"title"?: string,"updated_at"?: string
                   }
                   Relationships: [
@@ -2294,6 +2305,9 @@ isOneToOne: false
                 }
           }
           Functions: {
+      change_task_routine: { Args: { p_request_id: string; p_id: string; p_revision: number; p_action: string; p_value?: Json }; Returns: Json };
+      task_routine_history: { Args: { p_id: string; p_before_revision?: number }; Returns: Json };
+
 admin_announcements: { Args: { p_before?: string; p_before_id?: string }; Returns: Json },
 admin_save_announcement: { Args: { p_request: string; p_id: string; p_revision: number; p_value: Json }; Returns: Json },
 admin_preview_announcement: { Args: { p_id: string; p_revision: number }; Returns: Json },

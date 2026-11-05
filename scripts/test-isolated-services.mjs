@@ -163,6 +163,17 @@ try {
   assert('duplicate_approval_rejected',duplicateApproval.error?.message==='already_reviewed');
   const ledger=await must(device.from('star_events').select('delta').eq('child_id',child),'child_reads_star_events');
   assert('duplicate_approval_awards_stars_once',ledger.reduce((n,r)=>n+r.delta,0)===2);
+  if(live)live.mark();
+  await rpc(a.c,'change_task_routine',{p_request_id:randomUUID(),p_id:task,p_revision:1,p_action:'pause'});
+  const pausedForChild=await must(device.from('task_templates').select('id,active').eq('id',task),'child_reads_paused_recorded_routine');
+  assert('child_paused_recorded_routine_stays_readable',pausedForChild.length===1&&!pausedForChild[0].active);
+  if(live)await live.expect('child','task_routine_sync',row=>row.child_id===child,'realtime_child_receives_routine_pause_signal');
+  const hiddenRoutine=randomUUID();await must(a.c.from('task_templates').insert({id:hiddenRoutine,family_id:a.family,child_id:child,title:'Hidden unused routine',active:false}),'create_unused_paused_routine');
+  assert('child_cannot_read_unused_paused_routine',(await must(device.from('task_templates').select('id').eq('id',hiddenRoutine),'child_hidden_routine_read')).length===0);
+  assert('foreign_family_cannot_read_routine_sync',(await must(b.c.from('task_routine_sync').select('*'),'foreign_routine_sync_read')).length===0);
+  const sync=await must(device.from('task_routine_sync').select('*'),'child_routine_sync_read');assert('routine_sync_has_no_task_content',sync.length===1&&Object.keys(sync[0]).sort().join(',')==='child_id,family_id,revision');
+  const childEdit=await device.rpc('change_task_routine',{p_request_id:randomUUID(),p_id:task,p_revision:2,p_action:'resume'});assert('real_child_device_cannot_change_routine',!!childEdit.error);
+  await rpc(a.c,'change_task_routine',{p_request_id:randomUUID(),p_id:task,p_revision:2,p_action:'resume'});
   if(storagePort) await testSources({parent:a.c,other:b.c,child:device,childId:child,admin,base,pdf,must,assert});
   if(storagePort) await testAiServices({parent:a.c,other:b.c,child:device,childId:child,admin,base,must,assert});
   await testBackoffice({admin,client,parent:a.c,other:b.c,child:device,must,assert});
@@ -173,7 +184,8 @@ try {
   assert('revoked_device_old_token_cannot_replay_write',!!revokedWrite.error);
   if(live) {
     live.mark();
-    await must(a.c.from('task_templates').update({title:'Synthetic updated after revocation'}).eq('id',task),'update_task_after_revocation');
+    const routine=(await must(a.c.from('task_templates').select('*').eq('id',task).single(),'read_task_after_revocation'));
+    await rpc(a.c,'change_task_routine',{p_request_id:randomUUID(),p_id:task,p_revision:routine.revision,p_action:'save',p_value:{title:'Synthetic updated after revocation',icon:routine.icon,stars:routine.stars,days_of_week:routine.days_of_week,time_of_day:routine.time_of_day,requires_approval:routine.requires_approval}});
     await live.expect('parent','task_templates',row=>row.id===task&&row.title==='Synthetic updated after revocation','realtime_parent_still_receives_after_revoke');
     await live.assertRevokedSilent();
   }
