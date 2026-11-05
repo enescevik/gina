@@ -198,7 +198,8 @@ declare v text;token text;vid uuid;ttl interval;begin
  if (select count(*) from gina.contact_verifications where user_id=auth.uid() and kind=p_kind and created_at>now()-interval '1 hour')>=3 then raise exception 'verification_rate_limited';end if;
  update gina.contact_verifications set cancelled_at=now() where user_id=auth.uid() and kind=p_kind and consumed_at is null and cancelled_at is null;
  update gina.channel_outbox set status='skipped',skip_reason='verification_superseded',lease_id=null,payload=payload-'secret' where user_id=auth.uid() and kind='contact_verification' and channel=p_kind and status='pending';
- token:=case when p_kind='email' then encode(extensions.gen_random_bytes(24),'hex')
+ -- Email: 8 upper-case code typed or deep-linked (36^8 with 5 attempts); SMS: 6 digits for 15 minutes.
+ token:=case when p_kind='email' then upper(substr(translate(encode(extensions.gen_random_bytes(12),'base64'),'+/=','XYZ'),1,8))
   else lpad((((get_byte(extensions.gen_random_bytes(4),0)<<16)|(get_byte(extensions.gen_random_bytes(4),1)<<8)|get_byte(extensions.gen_random_bytes(4),2))%1000000)::text,6,'0') end;
  ttl:=case when p_kind='email' then interval '60 minutes' else interval '15 minutes' end;
  insert into gina.contact_verifications(user_id,kind,value,token_hash,expires_at) values(auth.uid(),p_kind,v,encode(extensions.digest(token,'sha256'),'hex'),now()+ttl) returning id into vid;
@@ -213,7 +214,7 @@ declare r gina.contact_verifications;begin
  if not gina.is_parent() then raise exception 'forbidden' using errcode='42501';end if;
  perform pg_advisory_xact_lock(hashtextextended('contact:'||auth.uid()::text,0));
  select * into r from gina.contact_verifications where user_id=auth.uid() and consumed_at is null and cancelled_at is null and expires_at>now()
-  and token_hash=encode(extensions.digest(coalesce(trim(p_token),''),'sha256'),'hex') order by created_at desc limit 1 for update;
+  and token_hash=encode(extensions.digest(upper(coalesce(trim(p_token),'')),'sha256'),'hex') order by created_at desc limit 1 for update;
  if not found then
   -- Counted, not raised: a raised error would roll the attempt counter back with it.
   update gina.contact_verifications set attempts=attempts+1,cancelled_at=case when attempts+1>=5 then now() end
