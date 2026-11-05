@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState, type FormEvent } from "react"
 import { Card, Layout, Notice } from "@/components/Layout";
 import { fmtDateTime } from "@/lib/format";
 import { t } from "@/lib/i18n";
-import { errorMessage, supabase } from "@/lib/supabase";
+import { errorMessage, isStaleError, supabase } from "@/lib/supabase";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
 
 type AiSetting = Tables<"ai_settings">;
@@ -121,7 +121,8 @@ export default function AiPage() {
 
   const onSaved = (text: string | null, err?: unknown) => {
     setMsg(err ? { text: errorMessage(err, t.errors), tone: "error" } : { text: text ?? "", tone: "ok" });
-    if (!err) reload();
+    // Eski sürüm çakışmasında (0 satır güncellendi) güncel kayıt yeniden yüklenir; yazılan değer sessizce üstüne yazmaz.
+    if (!err || isStaleError(err)) reload();
   };
 
   async function mutate(action: () => PromiseLike<{ error: unknown }>) {

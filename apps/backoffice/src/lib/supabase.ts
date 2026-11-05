@@ -40,11 +40,32 @@ export function readGinaClaim(accessToken: string | undefined): { admin?: boolea
   }
 }
 
-/** Postgres/RPC hata kodlarını Türkçe mesaja çevirir. */
+/** Eşlenmemiş sunucu hataları için operatöre gösterilen güvenli metinler. Ham sunucu metni ekrana yazılmaz. */
+const FALLBACK = {
+  forbidden: "Yetkisiz işlem (yönetici değil ya da yetki kaldırılmış).",
+  stale: "Bu kayıt bu arada başka bir sekme veya yönetici tarafından değiştirildi. Güncel kaydı yükleyip değişikliğini yeniden gir.",
+  duplicate: "Aynı kayıt zaten var. Listeyi yenileyip güncel durumu kontrol et.",
+  unavailable: "Hizmete şu anda ulaşılamıyor. Bağlantıyı kontrol edip yeniden dene.",
+  generic: "İşlem tamamlanamadı. Yeniden dene; sorun sürerse kaydın güncel durumunu kontrol et.",
+};
+/** Hatanın eski sürüm/çakışma (0 satır güncellendi) olup olmadığını söyler. */
+export function isStaleError(error: unknown): boolean {
+  const e = error as { code?: string; message?: string } | null;
+  return e?.code === "PGRST116" || e?.message === "stale_record";
+}
+/** Postgres/RPC hata kodlarını Türkçe mesaja çevirir; eşleşme yoksa ham metin yerine güvenli genel mesaj döner. */
 export function errorMessage(error: unknown, messages: Record<string, string>): string {
-  const e = error as { message?: string; code?: string } | null;
+  const e = error as { message?: string; code?: string; status?: number; name?: string } | null;
   const key = e?.message ?? "";
   if (messages[key]) return messages[key];
-  if (e?.code === "42501") return messages.forbidden ?? key;
-  return key || String(error);
+  if (e?.code === "42501" || key === "forbidden") return messages.forbidden ?? FALLBACK.forbidden;
+  if (isStaleError(error)) return messages.stale_record ?? FALLBACK.stale;
+  if (e?.code === "23505") return messages.duplicate_record ?? FALLBACK.duplicate;
+  const status = Number(e?.status ?? 0);
+  if (
+    status >= 500 || status === 0 && (e?.name === "TypeError" || e?.name === "AbortError" ||
+      e?.name === "TimeoutError" || /failed to fetch|network|timeout|aborted/i.test(key))
+  ) return messages.service_unavailable ?? FALLBACK.unavailable;
+  const code = typeof e?.code === "string" && /^[A-Z0-9]{5,8}$/.test(e.code) ? ` (kod ${e.code})` : "";
+  return (messages.generic_failure ?? FALLBACK.generic) + code;
 }

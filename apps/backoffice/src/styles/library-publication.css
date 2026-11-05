@@ -145,6 +145,11 @@
 .publication-check strong span {
   overflow-wrap: anywhere;
 }
+/* Tamamlanmamış kontrol yeşil "hazır" görünümünü almaz; bekleyen iş kehribar tonla ayrılır. */
+.publication-check strong.pending {
+  background: linear-gradient(110deg, #fff6e3, #ffe9c4);
+  color: #6b4a12;
+}
 .publication-scope summary {
   cursor: pointer;
   list-style: none;

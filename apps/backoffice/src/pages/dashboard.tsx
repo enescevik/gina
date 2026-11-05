@@ -45,13 +45,18 @@ function PlanTable({ title, values }: { title: string; values: Record<string, nu
 }
 
 export default function DashboardPage() {
-  const { data, error } = useAdminQuery(async () => unwrap(await supabase().rpc("admin_dashboard")) as unknown as Dashboard);
+  const { data, error, loading, reload } = useAdminQuery(async () => unwrap(await supabase().rpc("admin_dashboard")) as unknown as Dashboard);
 
   return (
     <Layout title={t.dashboard.title}>
-      {error ? <Notice tone="error">{errorMessage(error, t.errors)}</Notice> : null}
+      {error ? (
+        <Notice tone="error">
+          {errorMessage(error, t.errors)}{" "}
+          <button className="btn-secondary ml-2" disabled={loading} onClick={reload}>Yeniden dene</button>
+        </Notice>
+      ) : null}
       {!data ? (
-        <p className="text-slate-500">{t.common.loading}</p>
+        loading ? <p className="text-slate-500">{t.common.loading}</p> : null
       ) : (
         <>
           <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-5">

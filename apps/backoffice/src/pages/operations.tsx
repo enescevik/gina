@@ -48,6 +48,11 @@ export default function OperationsPage() {
     unwrap(await supabase().rpc("admin_ai_operations")) as unknown as Operations
   );
   const [selected, setSelected] = useState<Job | null>(null);
+  // Hata kuyruğu önce: varsayılan görünüm işlem gerekenleri gösterir; sınırlar ayrı bölümdedir.
+  const [filter, setFilter] = useState<"attention" | "all" | "failed" | "uncertain" | "working" | "done">("attention");
+  const jobs = (data?.jobs ?? []).filter((j) =>
+    filter === "all" ? true : filter === "attention" ? j.status === "failed" || j.status === "uncertain" || j.retryable : j.status === filter
+  );
   const [reason, setReason] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -105,33 +110,6 @@ export default function OperationsPage() {
           </span>
         ))}
       </div>
-      <Card title="Paketlere göre işlem sınırları">
-        <div className="overflow-x-auto">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>İşlem</th>
-                <th>Paket</th>
-                <th>Durum</th>
-                <th>Aylık</th>
-                <th>Dakikada</th>
-                <th>Aynı anda</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {data?.policies.map((p) => (
-                <PolicyRow
-                  key={JSON.stringify(p)}
-                  policy={p}
-                  saved={reload}
-                  failed={() => setMessage("İşlem sınırları kaydedilemedi.")}
-                />
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
       {selected
         ? (
           <Card title="Yeni bir denemeye izin ver">
@@ -177,7 +155,21 @@ export default function OperationsPage() {
           </Card>
         )
         : null}
-      <Card title="Son 100 işlem">
+      <Card title="İşlem kuyruğu · son 100 kayıt">
+        <div className="mb-4 flex flex-wrap items-end gap-3">
+          <label className="label mb-0">
+            Göster
+            <select className="input mt-2" value={filter} onChange={(e) => setFilter(e.target.value as typeof filter)}>
+              <option value="attention">İşlem gerekenler (başarısız, belirsiz, yeniden denenebilir)</option>
+              <option value="failed">Başarısız</option>
+              <option value="uncertain">Sonuç doğrulanamadı</option>
+              <option value="working">İşleniyor</option>
+              <option value="done">Hazır</option>
+              <option value="all">Tümü</option>
+            </select>
+          </label>
+          {data ? <p className="text-sm text-slate-600" role="status">{jobs.length} / {data.jobs.length} kayıt gösteriliyor. Daha eski kayıtlar bu ekranda listelenmez.</p> : null}
+        </div>
         <div className="overflow-x-auto">
           <table className="table">
             <thead>
@@ -190,7 +182,7 @@ export default function OperationsPage() {
               </tr>
             </thead>
             <tbody>
-              {data?.jobs.map((j) => (
+              {jobs.map((j) => (
                 <tr key={j.id}>
                   <td>{names[j.action]}</td>
                   <td>
@@ -228,7 +220,36 @@ export default function OperationsPage() {
         </div>
         {data && !data.jobs.length
           ? <p className="py-6 text-slate-500">Henüz AI işlemi yok.</p>
+          : data && !jobs.length
+          ? <p className="py-6 text-slate-500">Bu görünümde işlem gereken kayıt yok.</p>
           : null}
+      </Card>
+      <Card title="Paketlere göre işlem sınırları">
+        <div className="overflow-x-auto">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>İşlem</th>
+                <th>Paket</th>
+                <th>Durum</th>
+                <th>Aylık</th>
+                <th>Dakikada</th>
+                <th>Aynı anda</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {data?.policies.map((p) => (
+                <PolicyRow
+                  key={JSON.stringify(p)}
+                  policy={p}
+                  saved={reload}
+                  failed={() => setMessage("İşlem sınırları kaydedilemedi.")}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </Card>
     </Layout>
   );

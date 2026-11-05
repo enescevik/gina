@@ -2,10 +2,11 @@ import { CurriculumReviewPanel } from "@/components/curriculum-review";
 import { ContributionSets } from "@/components/contribution-sets";
 import { LibraryDrafts } from "@/components/library-drafts";
 import { LibraryPolicy, type RewardPolicy } from "@/components/LibraryPolicy";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import type { Json } from "@gina/core";
 import { Card, Layout, Notice } from "@/components/Layout";
+import { useUnsavedChanges } from "@/components/unsaved-changes";
 import { supabase } from "@/lib/supabase";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
 type Plan = "free" | "plus" | "pro";
@@ -72,6 +73,14 @@ export default function LibraryPage() {
     router.query.packageId || router.query.tab === "drafts" ? "drafts" : router.query.tab === "curriculum" ? "curriculum" : router.query.tab === "review" ? "review" : router.query.tab === "policy" ? "policy" : "content"
   );
   const [editing, setEditing] = useState<Collection | null>(null);
+  // Açılan koleksiyonun kayıtlı hâli: kaydedilmemiş değişiklik ve yayın durumu değişimi buna göre anlaşılır.
+  const [editingBase, setEditingBase] = useState<Collection | null>(null);
+  const [statusConfirmed, setStatusConfirmed] = useState(false);
+  const openEditor = (c: Collection) => {
+    setEditing({ ...c });
+    setEditingBase({ ...c });
+    setStatusConfirmed(false);
+  };
   const [selected, setSelected] = useState("");
   const [review, setReview] = useState<Contribution | null>(null);
   const [note, setNote] = useState("");
@@ -94,6 +103,31 @@ export default function LibraryPage() {
       ? !!question.answer.trim()
       : choices.every((c) => !!c.trim()));
   const collection = data?.collections.find((c) => c.id === selected);
+  const collectionDirty = !!editing && JSON.stringify(editing) !== JSON.stringify(editingBase);
+  const questionDirty = !!(question.topic || question.stem || question.answer || question.solution) || choices.some((c) => !!c);
+  const dirty = collectionDirty || questionDirty || (!!review && !!note);
+  const guard = useUnsavedChanges(dirty, busy);
+  // Sekme değişimi de aynı koruma dialogundan geçer (kütüphane sekmeleri özel olay kullanır).
+  const dirtyRef = useRef(dirty);
+  useEffect(() => {
+    dirtyRef.current = dirty;
+  }, [dirty]);
+  const requestRef = useRef(guard.request);
+  useEffect(() => {
+    requestRef.current = guard.request;
+  });
+  useEffect(() => {
+    const leave = (e: Event) => {
+      if (!dirtyRef.current) return;
+      e.preventDefault();
+      requestRef.current((e as CustomEvent<() => void>).detail);
+    };
+    window.addEventListener("gina:library-leave", leave);
+    return () => window.removeEventListener("gina:library-leave", leave);
+  }, []);
+  const statusChange = editing && editingBase && editing.status !== editingBase.status
+    ? editing.status === "published" ? "publish" : editingBase.status === "published" ? "unpublish" : "draft"
+    : null;
   async function run(operation: () => Promise<unknown>) {
     if (busy) return;
     setBusy(true);
@@ -116,6 +150,7 @@ export default function LibraryPage() {
   }
   return (
     <Layout title="GINA kütüphanesi" compact={tab === "drafts"}>
+      {guard.dialog}
       <p hidden={tab === "drafts"} className="mb-6 max-w-3xl text-slate-600">
         Koleksiyonları hazırlayın, soruları inceleyin ve paketlere açın. Bir
         koleksiyonun görünmesi için hem koleksiyonun hem içindeki soruların
@@ -161,7 +196,7 @@ export default function LibraryPage() {
         ? (
           <>
             <div className="mb-6 flex gap-3">
-              <button className="btn" onClick={() => setEditing(blank())}>
+              <button className="btn" onClick={() => openEditor(blank())}>
                 Koleksiyon oluştur
               </button>
               <button className="btn-secondary" onClick={reload}>Yenile</button>
@@ -258,11 +293,29 @@ export default function LibraryPage() {
                       </select>
                     </label>
                   </div>
+                  {statusChange === "publish" || statusChange === "unpublish"
+                    ? (
+                      <label className="mt-4 flex min-h-12 items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+                        <input
+                          type="checkbox"
+                          className="mt-1"
+                          checked={statusConfirmed}
+                          onChange={(e) => setStatusConfirmed(e.target.checked)}
+                        />
+                        <span>
+                          {statusChange === "publish"
+                            ? "Bu kayıt koleksiyonu seçili paketlerdeki ailelere açar; yayımlanmış soruları görünür kılar. Kaydetmek tek başına yayın yapmaz, bu onayı verdiğim için yayımlanır."
+                            : "Bu kayıt koleksiyonu yayından kaldırır. Ailelerin önceden aldığı sorular korunur."}
+                        </span>
+                      </label>
+                    )
+                    : null}
                   <div className="mt-4 flex gap-3">
                     <button
                       className="btn"
                       disabled={busy || !editing.title.trim() ||
-                        !editing.subject.trim() || !editing.plans.length}
+                        !editing.subject.trim() || !editing.plans.length ||
+                        ((statusChange === "publish" || statusChange === "unpublish") && !statusConfirmed)}
                       onClick={() =>
                         void run(async () => {
                           unwrap(
@@ -281,14 +334,16 @@ export default function LibraryPage() {
                             ),
                           );
                           setEditing(null);
+                          setEditingBase(null);
+                          setStatusConfirmed(false);
                         })}
                     >
-                      Kaydet
+                      {statusChange === "publish" ? "Kaydet ve yayımla" : statusChange === "unpublish" ? "Kaydet ve yayından kaldır" : "Kaydet"}
                     </button>
                     <button
                       className="btn-secondary"
                       disabled={busy}
-                      onClick={() => setEditing(null)}
+                      onClick={() => guard.request(() => { setEditing(null); setEditingBase(null); setStatusConfirmed(false); })}
                     >
                       Vazgeç
                     </button>
@@ -322,8 +377,8 @@ export default function LibraryPage() {
                           : "Taslak / arşiv"}
                       </p>
                       <button
-                        className="mt-2 text-sm text-brand"
-                        onClick={() => setEditing({ ...c })}
+                        className="mt-2 min-h-11 text-sm font-semibold text-brand underline underline-offset-4"
+                        onClick={() => guard.request(() => openEditor(c))}
                       >
                         Düzenle
                       </button>

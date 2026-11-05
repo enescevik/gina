@@ -504,7 +504,7 @@ export function LibraryPublicationWorkspace({
                       </span>
                       Sorular
                     </span>
-                    <strong>
+                    <strong className={data.checks.suitable_count === data.checks.question_count && data.checks.question_count > 0 ? "" : "pending"}>
                       {data.checks.suitable_count ===
                         data.checks.question_count && (
                         <PublicationIcon name="check" />
@@ -520,7 +520,7 @@ export function LibraryPublicationWorkspace({
                       </span>
                       Ortak kaynaklar
                     </span>
-                    <strong>
+                    <strong className={data.checks.missing_media ? "pending" : ""}>
                       {!data.checks.missing_media && (
                         <PublicationIcon name="check" />
                       )}
@@ -546,7 +546,7 @@ export function LibraryPublicationWorkspace({
                         </span>
                         Program ve kullanım kapsamı
                       </span>
-                      <strong>
+                      <strong className={form.curriculum_label.trim() ? "" : "pending"}>
                         {form.curriculum_label.trim() && (
                           <PublicationIcon name="check" />
                         )}
