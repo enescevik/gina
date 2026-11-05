@@ -124,3 +124,60 @@ kayıt üzerinde yeni veli puanı yeni kuralı uygular (bilinçli); veli `recomp
 - `database.types.ts` elle güncellenmedi (dosya `exam_attempts` tablosunu zaten içermiyor; mobil doğrudan tipliyor).
 - `@gina/core typecheck` içindeki 19 hata önceden vardı (`period-transfer.test.ts` vb.), bu işten bağımsız.
 - tr/en anahtar farkı (`provaHub.*_one/_other`) önceden vardı; dokunulmadı.
+
+## UI bağlama (6 Kasım gece, ayrı dal)
+
+Dal: `worktree-agent-a53271eafef6e64b4` (main'e push edilmedi; migration eklenmedi). Yukarıdaki "UI bağlanmadı" satırı bu dalda kapanıyor.
+
+### Ne değişti
+
+| Ekran | Önce | Sonra |
+|---|---|---|
+| `parent/prova/attempt/[attemptId]` (veli sonuç özeti) | "Puan: 0 / 100 · Açık uçlu: 2 / 2 puanlandı" | `get_attempt_summary`'den **önce inceleme durumu** ("1 açık uçlu cevap incelemeni bekliyor", "1 soru cevapsız"), **sonra puan**: `provisional` ise "Ara sonuç" etiketi + yalnız puanlı sorulardan puan (yoksa "Puan henüz yok") ve açıklama; kırılım "Açık uçlu: 0 puanlandı · 1 bekliyor · 1 cevap yok". Yeni "Açık uçlu cevaplar" listesi: soru başına "Puan bekliyor" (çizimse "çizimi incele" ipucu, İncele → ilgili soru) / "Cevap yok" (0 değil; "Cevap yok: 0 puan ver" ile veli açıkça `score_open_answer(…,0)`) / "N / 100". RPC yoksa ya da bozuk yanıt dönerse eski sütun yoluna düşer (ekran kilitlenmez). Legacy `graded` kayıtta sayaçlar saklı değerden gelir, 0 ver düğmesi görünmez. |
+| `parent/prova/review/[attemptId]` | soru durumu: boş defter belgesi "bekliyor", açıkça 0 verilen boş soru "cevap yok" | `openAnswerState` (sunucu kuralının birebir karşılığı): veli puanı (açık 0 dahil) → değerlendirildi; yalnız çizim/metin → inceleme bekliyor; ne metin ne çizim → cevap yok. |
+| `parent/prova/index` (Prova merkezi) | inceleme kartı yalnız "İncelemeni bekliyor" | kart, atanan sınav kartı ve Sonuçlar listesi: "1 açık uçlu cevap incelemeni bekliyor · 1 soru cevapsız" (sayaç yoksa eski genel etiket). |
+| `child/prova/index` (+ `parent/child-mode/prova` aynı bileşen) | karma sınavda yalnız "Çoktan seçmeli 1/1"; ilk deneme rastgele seçiliyordu | en son bitmiş deneme; `pending_review` iken "Ara sonuç" etiketi + "Çoktan seçmeli: 1 / 1 doğru" + "Açık uçlu cevaplarını ebeveynin inceleyecek; puanın şimdilik ara sonuç." Çocuğa puan, 0 ya da boş soru sayısı gösterilmez (utandırmayan dil); kapanınca etiket kalkar. |
+| `parent/prova/progress` | — | **Kod değişmedi.** Ekran `learning_progress_education` kullanıyor (`get_attempt_topic_stats` değil); bu RPC zaten çizimi `pending`, boşu `blank` sayıyor, `wrong`'a katmıyor. Gerçek veride doğrulandı (aşağıda). |
+| `components/prova-question-review.tsx` | — | Değişmedi (AI üretilen soru önizleme kartı; puan durumu yok). |
+
+i18n (yalnız eklendi, tr+en): `prova.ai.reviewWaiting_{one,other}`, `prova.ai.unansweredCount_{one,other}`, `prova.ai.openAnswersTitle`,
+`prova.ai.answerScore`, `prova.ai.giveZeroA11y`. Hazır anahtarlardan kullanılanlar: `prova.provisionalResult`, `prova.openEndedPending`,
+`prova.ai.{provisionalNote,noScoreYet,openBreakdown,answerState.*,unansweredHint,giveZero,drawingPendingHint}`.
+Kullanılmayan: `prova.openEndedUnanswered` ("…boş bıraktın; ebeveynin görecek") — çocuğa boş sayısını göstermek utandırıcı olabileceği için bilinçli olarak bağlanmadı.
+
+Yeni P04 sütunları üretilmiş `database.types.ts`'te olmadığı için (dosya sahiplik dışı) liste ekranlarında satır tipi elle tanımlandı,
+`get_attempt_summary` çağrısı tipsiz rpc + `parseAttemptSummary` (zod) ile yapıldı.
+
+### Testler (gerçekten çalıştırıldı)
+
+```
+apps/mobile npx tsc --noEmit                 → 0 hata (exit 0)
+apps/mobile npx expo lint                    → temiz (exit 0)
+pnpm --filter @gina/core test                → 50 dosya, 356 test geçti
+expo export -p web (static)                  → başarılı (yer tutucu loopback backend; Playwright fixture'a yönlendirdi)
+scripts/test-isolated-services.py --run-local --ui-hold (GINA_QA_UI_FIXTURE=benzersiz yol, web 127.0.0.1:8473)
+                                             → 137/137 servis kontrolü; container'lar ve geçici DB kaldırıldı (iki koşu)
+ui/ui-check.cjs (Playwright, Chrome headless, 390×844 · 768×1024 · 1280×800) → 9/9 geçti (temiz fixture'da ikinci koşu)
+```
+
+`ui/ui-checks.json` sonuçları:
+1. sunucu: yalnız çizim + boş → `submitted / pending_review`, 1 bekliyor, 1 cevap yok, `provisional`, 100 (yalnız şıklı).
+2. hub kartı "1 açık uçlu cevap incelemeni bekliyor · 1 soru cevapsız" — `hub-pending-{phone,tablet,desktop}.png`.
+3. veli özeti: durum puandan önce, "Ara sonuç 100 / 100", "2. soru · Puan bekliyor", "3. soru · Cevap yok"; "Puan: 0 / 100" ve "2 / 2 puanlandı" yok — `attempt-pending-*.png`.
+4. inceleme çalışma alanında boş soru "Bu soru için cevap gönderilmemiş" — `review-blank-question-{phone,desktop}.png`.
+5. gelişim: Işık `pending 1, wrong 0`, Gölge `blank 1, wrong 0` — `progress-pending-phone.png`.
+6. çocuk modu Provalarım: "Ara sonuç · Çoktan seçmeli 1/1 · ebeveynin inceleyecek; ara sonuç", 0/boş sayısı yok — `child-prova-pending-*.png`.
+7. velinin UI'dan "Cevap yok: 0 puan ver" → "3. soru · 0 / 100", hâlâ ara sonuç 50; RPC `open_graded 1, unanswered 0, provisional, 50` — `attempt-after-explicit-zero-phone.png`.
+8. çizime 80 puan → `graded`, `provisional=false`, 60, `graded_at` dolu; özet "Puan: 60 / 100", Ara sonuç/0 ver kalktı; hub kartı sonuç gösteriyor; çocuk kartında Ara sonuç yok — `attempt-graded-*.png`, `hub-graded-phone.png`, `child-prova-graded-*.png`.
+9. sayfa çalışma zamanı hatası yok; hiçbir ekranda yatay taşma yok; çevrilmemiş anahtar yok.
+
+Ücretli AI çağrısı yapılmadı. Yeniden çalıştırma: `ui/serve-export.cjs <export> <port>` + `ui/ui-check.cjs` (ortam değişkenleri dosya başında).
+
+### Kalan sınır
+
+- **8. adımda çizimin 80 puanı veli RPC'si `score_open_answer` ile verildi**, inceleme çalışma alanı (`parent-review-workspace.tsx`, sahiplik dışı) sürülmedi. Açık 0 ise UI düğmesiyle verildi.
+- İnceleme çalışma alanında soru-durum etiketlerini (`questionStates`) besleyen değişiklik yalnız tsc ile doğrulandı; telefon/masaüstü düzeninde bu etiketler metin olarak görünmedi (masaüstünde `desktopStateLabels: []`). Ayrıca çalışma alanı boş soruda alt şeritte "Değerlendirme bekliyor" yazıyor ve puan kutusunun yer tutucusu "0" — 0 verilmiş gibi okunabilir. İkisi de sahiplik dışı bileşende; P04 devamı için not.
+- **Legacy `graded` kayıt** UI'da görsel olarak denenmedi (geçici fixture yeni migration'la kuruluyor, eski kural kaydı üretilemedi); legacy yolu kodda sayaçlara güvenir, sunucu davranışı pgTAP 101'de.
+- Çocuk cihazı (device JWT) yerine veli telefonunda çocuk modu sürüldü; iki ekran aynı bileşen, sorgu RLS'i cihazda pgTAP'te.
+- `child/prova/[examId]` sonuç ekranı, backoffice ve `database.types.ts` sahiplik dışı; değişmedi.
+- Fiziksel cihaz/tablet denemesi yok; yalnız web export.

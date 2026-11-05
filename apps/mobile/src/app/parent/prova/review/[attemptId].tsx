@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { openAnswerState } from "@gina/core";
 import { useQuery } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -122,13 +123,17 @@ export default function ParentReviewScreen() {
         const answer = attempt.data.answers.find((item) =>
           item.question_id === question.id
         );
-        if (
-          !answer ||
-          (!answer.answer_key && !answer.answer_text && !answer.answer_document)
-        ) return "empty";
-        return question.kind === "multiple_choice" || answer.score !== null
+        if (question.kind === "multiple_choice") {
+          return answer?.answer_key ? "reviewed" : "empty";
+        }
+        // P04: sunucu kuralıyla aynı — veli puanı (açık 0 dahil) "değerlendirildi";
+        // yalnız çizim "inceleme bekliyor"; ne metin ne çizim "cevap yok" (0 değil).
+        const state = openAnswerState(answer ?? {});
+        return state === "graded"
           ? "reviewed"
-          : "waiting";
+          : state === "pending"
+          ? "waiting"
+          : "empty";
       })}
       finished={attempt.data.status !== "in_progress"}
       onNavigate={navigate}

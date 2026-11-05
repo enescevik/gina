@@ -1,0 +1,70 @@
+{
+  "environment": "disposable-local-real-auth-rest + expo web export",
+  "viewports": {
+    "phone": {
+      "width": 390,
+      "height": 844
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024
+    },
+    "desktop": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "results": [
+    {
+      "check": "server_drawing_only_pending_blank_unanswered_provisional_100",
+      "passed": true
+    },
+    {
+      "check": "hub_review_card_shows_waiting_and_unanswered_counts",
+      "passed": true
+    },
+    {
+      "check": "parent_summary_review_state_first_then_provisional_score_and_no_answer_not_zero",
+      "passed": true
+    },
+    {
+      "check": "review_workspace_blank_question_shows_no_answer",
+      "passed": true,
+      "detail": {
+        "desktopStateLabels": []
+      }
+    },
+    {
+      "check": "progress_counts_pending_and_blank_not_wrong",
+      "passed": true,
+      "detail": {
+        "isik": {
+          "pending": 1,
+          "wrong": 0,
+          "correct": 1
+        },
+        "golge": {
+          "pending": 0,
+          "wrong": 0,
+          "blank": 1
+        }
+      }
+    },
+    {
+      "check": "child_list_partial_result_consistent_with_parent_review",
+      "passed": true
+    },
+    {
+      "check": "explicit_zero_from_ui_is_graded_attempt_still_provisional_50",
+      "passed": true
+    },
+    {
+      "check": "parent_score_closes_attempt_graded_60_hub_and_child_consistent",
+      "passed": true
+    },
+    {
+      "check": "no_runtime_page_errors",
+      "passed": true
+    }
+  ]
+}

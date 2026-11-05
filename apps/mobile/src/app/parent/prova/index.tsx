@@ -33,6 +33,37 @@ import type { DraftRecord } from "@/lib/prova-draft";
 import { DraftOverview } from "@/components/learning/prova-draft-overview";
 import { fetchProvaDrafts } from "@/lib/prova-draft";
 import { provaErrorMessage } from "@/lib/prova-ai";
+import { attemptSummary } from "@gina/core";
+
+/** P04 sütunları (open_pending/open_unanswered/provisional) üretilmiş tiplerde henüz yok; satır elle tiplenir. */
+interface HubAttempt {
+  id: string;
+  status: "in_progress" | "submitted" | "graded";
+  mc_total: number | null;
+  mc_correct: number | null;
+  open_total: number | null;
+  open_graded: number | null;
+  open_pending: number | null;
+  open_unanswered: number | null;
+  provisional: boolean | null;
+  score_pct: number | null;
+  finished_at: string | null;
+  created_at: string;
+}
+interface HubExam {
+  id: string;
+  child_id: string;
+  title: string;
+  kind: string;
+  status: string;
+  timed: boolean;
+  duration_minutes: number | null;
+  question_ids: string[];
+  children: { name: string; avatar: string | null } | null;
+  exam_attempts: HubAttempt[];
+}
+const HUB_EXAM_SELECT: string =
+  "id,child_id,title,kind,status,timed,duration_minutes,question_ids,children(name,avatar),exam_attempts(id,status,mc_total,mc_correct,open_total,open_graded,open_pending,open_unanswered,provisional,score_pct,finished_at,created_at)";
 
 export default function ParentProvaScreen() {
   const { t } = useTranslation(),
@@ -67,10 +98,10 @@ export default function ParentProvaScreen() {
     enabled: !!familyId,
     queryFn: async () => {
       const { data, error } = await supabase.from("exams").select(
-        "id,child_id,title,kind,status,timed,duration_minutes,question_ids,children(name,avatar),exam_attempts(id,status,mc_total,mc_correct,finished_at,created_at)",
+        HUB_EXAM_SELECT,
       ).order("created_at", { ascending: false }).limit(100);
       if (error) throw error;
-      return data;
+      return data as unknown as HubExam[];
     },
   });
   const refetchDrafts = drafts.refetch, refetchExams = exams.refetch;
@@ -99,6 +130,15 @@ export default function ParentProvaScreen() {
     ).map((a) => ({ exam: e, attempt: a }))
   ).sort((a, b) => b.attempt.created_at.localeCompare(a.attempt.created_at));
   const pending = attempts.filter((a) => a.attempt.status === "submitted");
+  // İnceleme durumu: "2 açık uçlu cevap incelemeni bekliyor · 1 soru cevapsız". Eski kayıtta sayaç yoksa genel etiket.
+  const reviewLabel = (attempt: HubAttempt) => {
+    const s = attemptSummary(attempt, []);
+    const parts = [
+      s.pendingOpenCount > 0 ? t("prova.ai.reviewWaiting", { count: s.pendingOpenCount }) : null,
+      s.unansweredOpenCount > 0 ? t("prova.ai.unansweredCount", { count: s.unansweredOpenCount }) : null,
+    ].filter((x): x is string => !!x);
+    return parts.length ? parts.join(" · ") : t("provaBuilder.reviewPending");
+  };
   const empty = (title: string) => (
     <View style={[b.hint, { flexDirection: "row", alignItems: "center" }]}>
       <Image
@@ -117,7 +157,7 @@ export default function ParentProvaScreen() {
       onPress={() => router.push({ pathname: "/parent/prova/attempt/[attemptId]", params: { attemptId: attempt.id } })}
       style={{ minHeight: 72, flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: p.line }}>
       <View style={{ width: 45, height: 45, backgroundColor: '#E5F3ED', borderRadius: 14, alignItems: 'center', justifyContent: 'center' }}><ClipboardCheck size={23} color="#227D73"/></View>
-      <View style={{ flex: 1, gap: 4 }}><Text style={b.bold}>{exam.title}</Text><Text style={b.muted}>{exam.children?.name} · {t('provaBuilder.reviewPending')}</Text></View><ChevronRight size={19} color={p.purple}/>
+      <View style={{ flex: 1, gap: 4 }}><Text style={b.bold}>{exam.title}</Text><Text style={b.muted}>{exam.children?.name} · {reviewLabel(attempt)}</Text></View><ChevronRight size={19} color={p.purple}/>
     </Pressable>)}
   </View> : null;
   const createButton = <SatinButton title={t("provaBuilder.title")} icon={<Plus size={20} color="#fff"/>}
@@ -249,7 +289,7 @@ export default function ParentProvaScreen() {
                       </View>
                       <Text style={b.muted}>
                         {latest?.status === "submitted"
-                          ? t("provaBuilder.reviewPending")
+                          ? reviewLabel(latest)
                           : latest?.status === "graded"
                           ? (latest.mc_total ?? 0) === 0
                             ? t("prova.ai.attemptStatus.graded")
@@ -296,7 +336,7 @@ export default function ParentProvaScreen() {
                   key={attempt.id}
                   title={`${exam.children?.name} · ${exam.title}`}
                   body={attempt.status === "submitted"
-                    ? t("provaBuilder.reviewPending")
+                    ? reviewLabel(attempt)
                     : (attempt.mc_total ?? 0) === 0
                     ? t("prova.ai.attemptStatus.graded")
                     : t("prova.resultMc", {
