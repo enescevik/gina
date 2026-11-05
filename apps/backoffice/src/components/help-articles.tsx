@@ -14,6 +14,18 @@ import { useAuth } from "@/lib/auth";
 import { useSupportQuery } from "@/lib/use-support-query";
 import { supabase } from "@/lib/supabase";
 import { createArticleOutbox, sendArticleCommand } from "@/lib/help-articles";
+import {
+  type ArticleStructure,
+  fromFreeText,
+  parseArticle,
+  serializeArticle,
+  structureProblems,
+} from "@/lib/help-article-structure";
+import {
+  ArticleBody,
+  DeviceFrame,
+  useDevicePreview,
+} from "./help-article-preview";
 const platformNames = {
   all: "Tüm cihazlar için ortak",
   ios: "iOS",
@@ -281,6 +293,12 @@ function Workspace({ user }: { user: string }) {
   }
   function save() {
     if (!form) return;
+    const structure = parseArticle(form.body);
+    const problems = structure ? structureProblems(structure) : [];
+    if (problems.length) {
+      setNotice(`Taslak kaydedilmedi: ${problems.join("; ")}.`);
+      return;
+    }
     const parsed = articleCommandSchema.safeParse({ ...form, action: "save" });
     if (!parsed.success) {
       setNotice(
@@ -678,16 +696,13 @@ function Workspace({ user }: { user: string }) {
                             </span>
                           </div>
                         )}
-                      <label>
-                        Yanıt<textarea
-                          className="input"
-                          value={form.body}
-                          maxLength={20000}
-                          disabled={locked}
-                          onChange={(e) =>
-                            setForm({ ...form, body: e.target.value })}
-                        />
-                      </label>
+                      <AnswerEditor
+                        key={form.id}
+                        body={form.body}
+                        locale={form.locale}
+                        disabled={locked}
+                        onChange={(body) => setForm({ ...form, body })}
+                      />
                       <p className="article-save-state">
                         {form.revision
                           ? `Son kayıt: sürüm ${form.revision}`
@@ -719,34 +734,13 @@ function Workspace({ user }: { user: string }) {
                     </div>
                   )
                   : (
-                    <div className="article-preview" role="tabpanel">
-                      <span
-                        className={"article-chip" +
-                          (view === "published" ? " live" : "")}
-                      >
-                        {view === "published"
-                          ? `Yayında · sürüm ${
-                            current?.published?.revision ?? "—"
-                          }`
-                          : "Taslak · Ailelere görünmez"}
-                      </span>
-                      <h2>
-                        {view === "published"
-                          ? current?.published?.title
-                          : form.title || "Soru başlığı"}
-                      </h2>
-                      <p>
-                        {view === "published"
-                          ? current?.published?.body ?? "Bu yazı yayında değil."
-                          : form.body || "Yanıtın önizlemesi burada görünecek."}
-                      </p>
-                      <button
-                        className="btn-secondary"
-                        onClick={() => setView("edit")}
-                      >
-                        Düzenlemeye dön
-                      </button>
-                    </div>
+                    <PreviewPanel
+                      form={form}
+                      published={current?.published ?? null}
+                      focusLive={view === "published"}
+                      dirty={dirty}
+                      onBack={() => setView("edit")}
+                    />
                   )}
                 <div className="article-publish">
                   <strong>Yayımlama</strong>
@@ -850,6 +844,308 @@ function Workspace({ user }: { user: string }) {
             : null}
         </section>
       </div>
+    </div>
+  );
+}
+
+function AnswerEditor(
+  { body, locale, disabled, onChange }: {
+    body: string;
+    locale: "tr" | "en";
+    disabled: boolean;
+    onChange: (body: string) => void;
+  },
+) {
+  const parsed = parseArticle(body);
+  const [free, setFree] = useState(() => !!body.trim() && !parsed);
+  const s: ArticleStructure = parsed ?? fromFreeText(body);
+  const set = (next: ArticleStructure) =>
+    onChange(serializeArticle(next, locale));
+  if (free) {
+    return (
+      <div>
+        <label>
+          Yanıt (serbest metin)<textarea
+            className="input"
+            value={body}
+            maxLength={20000}
+            disabled={disabled}
+            onChange={(e) => onChange(e.target.value)}
+          />
+        </label>
+        <p className="mt-2 text-sm text-slate-600">
+          Bu yazı eski biçimde. Ailelere olduğu gibi gösterilir.
+        </p>
+        <button
+          type="button"
+          className="btn-secondary mt-2"
+          disabled={disabled}
+          onClick={() => {
+            set(parsed ?? fromFreeText(body));
+            setFree(false);
+          }}
+        >
+          Kısa cevap + adımlar biçimine çevir
+        </button>
+      </div>
+    );
+  }
+  const problems = structureProblems(s);
+  return (
+    <div className="mt-4 grid gap-4" data-testid="help-structured-editor">
+      <label className="block font-bold">
+        Kısa cevap
+        <small className="block font-normal text-slate-600">
+          Ailenin ilk okuyacağı bir-iki cümle.
+        </small>
+        <textarea
+          className="input mt-2 min-h-24 w-full"
+          value={s.short}
+          maxLength={400}
+          disabled={disabled}
+          onChange={(e) => set({ ...s, short: e.target.value })}
+        />
+      </label>
+      <fieldset>
+        <legend className="font-bold">Adımlar</legend>
+        <ol className="mt-2 grid gap-2">
+          {s.steps.map((step, i) => (
+            <li key={i} className="flex items-center gap-2">
+              <span className="w-6 text-right font-bold">{i + 1}.</span>
+              <input
+                className="input flex-1"
+                aria-label={`Adım ${i + 1}`}
+                value={step}
+                maxLength={500}
+                disabled={disabled}
+                onChange={(e) =>
+                  set({
+                    ...s,
+                    steps: s.steps.map((x, j) => j === i ? e.target.value : x),
+                  })}
+              />
+              <button
+                type="button"
+                className="support-link"
+                aria-label={`Adım ${i + 1} sil`}
+                disabled={disabled}
+                onClick={() =>
+                  set({ ...s, steps: s.steps.filter((_, j) => j !== i) })}
+              >
+                Sil
+              </button>
+            </li>
+          ))}
+        </ol>
+        <button
+          type="button"
+          className="btn-secondary mt-2"
+          disabled={disabled || s.steps.length >= 12}
+          onClick={() => set({ ...s, steps: [...s.steps, ""] })}
+        >
+          ＋ Adım ekle
+        </button>
+      </fieldset>
+      <fieldset>
+        <legend className="font-bold">Bağlantılar</legend>
+        <div className="mt-2 grid gap-2">
+          {s.links.map((l, i) => (
+            <div key={i} className="flex flex-wrap items-center gap-2">
+              <input
+                className="input min-w-40 flex-1"
+                aria-label={`Bağlantı ${i + 1} metni`}
+                placeholder="Görünen metin"
+                value={l.label}
+                maxLength={120}
+                disabled={disabled}
+                onChange={(e) =>
+                  set({
+                    ...s,
+                    links: s.links.map((x, j) =>
+                      j === i ? { ...x, label: e.target.value } : x
+                    ),
+                  })}
+              />
+              <input
+                className="input min-w-48 flex-1"
+                aria-label={`Bağlantı ${i + 1} adresi`}
+                placeholder="https://… veya gina://…"
+                value={l.url}
+                maxLength={300}
+                disabled={disabled}
+                onChange={(e) =>
+                  set({
+                    ...s,
+                    links: s.links.map((x, j) =>
+                      j === i ? { ...x, url: e.target.value } : x
+                    ),
+                  })}
+              />
+              <button
+                type="button"
+                className="support-link"
+                disabled={disabled}
+                onClick={() =>
+                  set({ ...s, links: s.links.filter((_, j) => j !== i) })}
+              >
+                Sil
+              </button>
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="btn-secondary mt-2"
+          disabled={disabled || s.links.length >= 6}
+          onClick={() =>
+            set({ ...s, links: [...s.links, { label: "", url: "" }] })}
+        >
+          ＋ Bağlantı ekle
+        </button>
+      </fieldset>
+      {problems.length && body.trim()
+        ? (
+          <ul className="list-disc pl-5 text-sm text-amber-900" role="status">
+            {problems.map((p) => <li key={p}>{p}</li>)}
+          </ul>
+        )
+        : null}
+    </div>
+  );
+}
+
+function PreviewPanel(
+  { form, published, focusLive, dirty, onBack }: {
+    form: Form;
+    published: { revision: number; title: string; body: string } | null;
+    focusLive: boolean;
+    dirty: boolean;
+    onBack: () => void;
+  },
+) {
+  const { device, os, visible, picker } = useDevicePreview(form.platform);
+  const other = form.locale === "tr" ? "en" : "tr";
+  const sibling = useSupportQuery(
+    async () => {
+      if (!form.slug) return null;
+      const { data, error } = await supabase().rpc("get_help_articles", {
+        p_locale: other,
+        p_platform: os,
+        p_editor: false,
+      });
+      if (error) throw error;
+      const rows = (Array.isArray(data) ? data : []) as {
+        slug?: string;
+        title?: string;
+        body?: string;
+        platform?: string;
+      }[];
+      return rows.find((r) => r.slug === form.slug) ?? null;
+    },
+    `sibling:${form.slug}:${other}:${os}`,
+    "content",
+  );
+  const [lang, setLang] = useState<"tr" | "en">(form.locale);
+  return (
+    <div className="article-preview" role="tabpanel">
+      <p className="article-live-note">
+        Taslak kaydı canlı cevabı değiştirmez. Aileler yalnız yayımlanan sürümü
+        görür{published ? ` (sürüm ${published.revision})` : ""}.
+        {dirty ? " Kaydedilmemiş değişiklikler de taslak önizlemesindedir." : ""}
+      </p>
+      <div className="flex flex-wrap items-end gap-3" data-testid="help-device-preview">
+        {picker}
+        <label className="text-sm font-bold">
+          Dil
+          <select
+            className="input mt-1"
+            value={lang}
+            onChange={(e) => setLang(e.target.value as "tr" | "en")}
+          >
+            <option value="tr">Türkçe</option>
+            <option value="en">English</option>
+          </select>
+        </label>
+      </div>
+      {!visible
+        ? (
+          <p className="mt-3 text-sm text-amber-900">
+            Bu yazı yalnız {form.platform === "ios"
+              ? "iOS"
+              : form.platform === "android"
+              ? "Android"
+              : "web"} için. Seçili platformda aileler bu yazıyı görmez.
+          </p>
+        )
+        : null}
+      {lang !== form.locale
+        ? (
+          <div className="mt-4" data-testid="help-language-preview">
+            <DeviceFrame device={device} platform={os} label="Diğer dil · yayında">
+              {sibling.loading
+                ? <p role="status">Okunuyor…</p>
+                : sibling.error
+                ? <p role="alert">Diğer dildeki yazı okunamadı.</p>
+                : sibling.data
+                ? (
+                  <ArticleBody
+                    title={sibling.data.title ?? ""}
+                    body={sibling.data.body ?? ""}
+                    locale={lang}
+                  />
+                )
+                : (
+                  <p>
+                    Bu yazının {lang === "en" ? "İngilizce" : "Türkçe"}{" "}
+                    yayımlanmış sürümü yok. Bu dildeki aileler yazıyı görmez.
+                  </p>
+                )}
+            </DeviceFrame>
+          </div>
+        )
+        : (
+          <div className="mt-4 grid gap-4 xl:grid-cols-2">
+            <section data-testid="help-article-draft" aria-label="Taslak">
+              <span className="article-chip">
+                Taslak · sürüm {form.revision || "yeni"} · ailelere görünmez
+              </span>
+              <div className="mt-2">
+                <DeviceFrame device={device} platform={os} label="Taslak">
+                  <ArticleBody
+                    title={form.title}
+                    body={form.body}
+                    locale={form.locale}
+                  />
+                </DeviceFrame>
+              </div>
+            </section>
+            <section
+              data-testid="help-article-live"
+              aria-label="Yayındaki yanıt"
+              className={focusLive ? "rounded-3xl ring-2 ring-emerald-300" : ""}
+            >
+              <span className="article-chip live">
+                {published ? `Yayında · sürüm ${published.revision}` : "Yayında değil"}
+              </span>
+              <div className="mt-2">
+                <DeviceFrame device={device} platform={os} label="Yayında">
+                  {published
+                    ? (
+                      <ArticleBody
+                        title={published.title}
+                        body={published.body}
+                        locale={form.locale}
+                      />
+                    )
+                    : <p>Bu yazı henüz yayında değil; aileler hiçbir yanıt görmez.</p>}
+                </DeviceFrame>
+              </div>
+            </section>
+          </div>
+        )}
+      <button className="btn-secondary" onClick={onBack}>
+        Düzenlemeye dön
+      </button>
     </div>
   );
 }
