@@ -339,9 +339,19 @@ export function providerChangeImpact(
   };
 }
 
+/** UTF-8 bayt uzunluğu; core saf TS olduğundan TextEncoder'a bağlı değildir. */
+export function utf8Length(text: string): number {
+  let bytes = 0;
+  for (const ch of text) {
+    const cp = ch.codePointAt(0) ?? 0;
+    bytes += cp < 0x80 ? 1 : cp < 0x800 ? 2 : cp < 0x10000 ? 3 : 4;
+  }
+  return bytes;
+}
+
 /** Sağlayıcı tokenizer'ı yokken kullanılan muhafazakâr tahmin (Türkçe için ~3 bayt/token). */
 export function estimateTokens(text: string): number {
-  return Math.ceil(new TextEncoder().encode(text).length / 3);
+  return Math.ceil(utf8Length(text) / 3);
 }
 
 export interface MediaCheck {

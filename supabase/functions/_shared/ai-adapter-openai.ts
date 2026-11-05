@@ -9,7 +9,12 @@ export const OPENAI_BASE_URL_ENV = "OPENAI_BASE_URL";
 const DEFAULT_BASE_URL = "https://api.openai.com/v1";
 
 function baseUrl(): string {
-  const configured = Deno.env.get(OPENAI_BASE_URL_ENV);
+  let configured: string | undefined;
+  try {
+    configured = Deno.env.get(OPENAI_BASE_URL_ENV);
+  } catch {
+    configured = undefined; // env izni yoksa (test) varsayılan uç
+  }
   return (configured && /^https:\/\//.test(configured) ? configured : DEFAULT_BASE_URL).replace(/\/$/, "");
 }
 
