@@ -6,6 +6,32 @@ import {
   type Difficulty,
   officialUrls,
 } from "./prova.ts";
+import type { ScenarioProvenance } from "./catalogue-plan.ts";
+export const QUESTION_TYPES = [
+  "coktan_secmeli",
+  "acik_uclu",
+  "kisa_cevap",
+  "dogru_yanlis",
+  "bosluk_doldurma",
+  "eslestirme",
+] as const;
+export const COGNITIVE_DEMANDS = [
+  "hatirlama",
+  "anlama",
+  "uygulama",
+  "analiz",
+  "degerlendirme",
+  "yaratma",
+] as const;
+export interface QuestionRubric {
+  criteria: { text: string; points: number }[];
+  alternative_answers?: string[];
+}
+export interface SharedSource {
+  id: string;
+  kind: "text" | "table" | "visual_description";
+  content: string;
+}
 export interface GeneratedQuestion {
   topic: string;
   kind: "multiple_choice" | "open_ended";
@@ -18,6 +44,19 @@ export interface GeneratedQuestion {
   solution: string;
   explanation: string;
   source_urls: string[];
+  /** Scenario provenance (optional, backward compatible; required when the job is catalogue-bound). */
+  block_id?: string | null;
+  outcome_ids?: string[] | null;
+  question_type?: string | null;
+  cognitive_demand?: string | null;
+  intended_difficulty?: string | null;
+  rubric?: QuestionRubric | null;
+  shared_source_id?: string | null;
+}
+export interface GeneratedOutput {
+  questions: GeneratedQuestion[];
+  /** One entry per shared passage/table/visual; linked questions reference it and are counted separately. */
+  shared_sources?: SharedSource[] | null;
 }
 
 export type GenerationContext = {
@@ -40,13 +79,92 @@ export type GenerationContext = {
   systemPrompt: string;
   userPrompt: string;
   catalogueBound: boolean;
+  /** Present only for catalogue-bound jobs; comes from the private server binding via cataloguePlan. */
+  scenario?: ScenarioProvenance | null;
 };
+const blank = (v: unknown) =>
+  v === undefined || v === null || v === "" ||
+  (Array.isArray(v) && v.length === 0);
+const isStringList = (v: unknown, max: number): v is string[] =>
+  Array.isArray(v) && v.length <= max &&
+  v.every((s) => typeof s === "string" && s.trim() && s.length <= 200);
+function rubricValid(r: unknown): r is QuestionRubric {
+  if (!r || typeof r !== "object") return false;
+  const v = r as QuestionRubric;
+  return Array.isArray(v.criteria) && v.criteria.length >= 1 &&
+    v.criteria.length <= 20 &&
+    v.criteria.every((c) =>
+      c && typeof c.text === "string" && c.text.trim() && c.text.length <= 1000 &&
+      typeof c.points === "number" && Number.isFinite(c.points) && c.points > 0 &&
+      c.points <= 100
+    ) &&
+    (blank(v.alternative_answers) || isStringList(v.alternative_answers, 10));
+}
+/** Per-question scenario trace: block membership, outcome subset, type/demand vocab, rubric and shared source. */
+export function validateQuestionProvenance(
+  q: GeneratedQuestion,
+  context: GenerationContext,
+  sharedIds: Set<string>,
+) {
+  const scenario = context.scenario ?? null;
+  const block = scenario?.blocks.find((b) => b.topic === q.topic) ?? null;
+  if (scenario && !block) return false;
+  if (!blank(q.block_id) && typeof q.block_id !== "string") return false;
+  if (block && q.block_id !== block.block_id) return false;
+  if (!blank(q.outcome_ids)) {
+    if (!isStringList(q.outcome_ids, 20)) return false;
+    if (new Set(q.outcome_ids!).size !== q.outcome_ids!.length) return false;
+    if (block && !q.outcome_ids!.every((id) => block.outcome_ids.includes(id))) {
+      return false;
+    }
+  } else if (block) return false;
+  if (!blank(q.question_type)) {
+    if (!QUESTION_TYPES.includes(q.question_type as never)) return false;
+    if ((q.question_type === "coktan_secmeli") !== (q.kind === "multiple_choice")) {
+      return false;
+    }
+  }
+  if (
+    !blank(q.cognitive_demand) &&
+    !COGNITIVE_DEMANDS.includes(q.cognitive_demand as never)
+  ) return false;
+  if (
+    !blank(q.intended_difficulty) &&
+    !DIFFICULTIES.includes(q.intended_difficulty as Difficulty)
+  ) return false;
+  // A rubric object with no criteria (schema placeholder) counts as absent.
+  const rubricBlank = blank(q.rubric) ||
+    (typeof q.rubric === "object" && Array.isArray(q.rubric!.criteria) &&
+      q.rubric!.criteria.length === 0);
+  if (!rubricBlank && !rubricValid(q.rubric)) return false;
+  if (block && q.kind === "open_ended" && rubricBlank) return false;
+  if (!blank(q.shared_source_id)) {
+    if (typeof q.shared_source_id !== "string" || !sharedIds.has(q.shared_source_id)) {
+      return false;
+    }
+  }
+  return true;
+}
 export function validateGenerationResult(
-  result: AiResult<{ questions: GeneratedQuestion[] }>,
+  result: AiResult<GeneratedOutput>,
   context: GenerationContext,
 ) {
   const { total, topics, kind } = context;
   const questions = result?.output?.questions;
+  const shared = result?.output?.shared_sources;
+  const sharedIds = new Set<string>();
+  if (!blank(shared)) {
+    if (
+      !Array.isArray(shared) || shared.length > 30 || shared.some((s) =>
+        !s || typeof s.id !== "string" || !s.id.trim() || s.id.length > 60 ||
+        !["text", "table", "visual_description"].includes(s.kind) ||
+        typeof s.content !== "string" || !s.content.trim() ||
+        s.content.length > 4000
+      )
+    ) throw new Error("ai_result_invalid");
+    for (const s of shared!) sharedIds.add(s.id);
+    if (sharedIds.size !== shared!.length) throw new Error("ai_result_invalid");
+  }
   if (
     !Array.isArray(questions) || questions.length !== total ||
     questions.some((q) =>
@@ -70,10 +188,15 @@ export function validateGenerationResult(
         (!Array.isArray(q.distractor_notes) ||
           q.distractor_notes.some((n) =>
             !n || typeof n.key !== "string" || typeof n.why !== "string"
-          )))
+          ))) ||
+      !validateQuestionProvenance(q, context, sharedIds)
     ) ||
     topics.some((t) =>
       questions.filter((q) => q.topic === t.topic).length !== t.count
+    ) ||
+    // Every shared passage must be used; a shared source is one identity, linked questions count separately.
+    [...sharedIds].some((id) =>
+      !questions.some((q) => q.shared_source_id === id)
     )
   ) throw new Error("ai_result_invalid");
 }
@@ -83,7 +206,7 @@ export async function finishGeneration(
   requestId: string,
   lease: string,
   context: GenerationContext,
-  result: AiResult<{ questions: GeneratedQuestion[] }>,
+  result: AiResult<GeneratedOutput>,
 ) {
   if (context.schema !== "gina.generation-context.v1") {
     return json({ error: "generation_context_unsupported" }, 409);
@@ -110,6 +233,10 @@ export async function finishGeneration(
     promptHash,
     userPrompt,
   } = context;
+  const scenario = context.scenario ?? null;
+  const sharedById = new Map(
+    (result.output.shared_sources ?? []).map((s) => [s.id, s] as const),
+  );
   const createdAt = new Date().toISOString();
   const rows = (result.output.questions ?? [])
     .slice(0, total)
@@ -130,6 +257,41 @@ export async function finishGeneration(
         }`
         : "";
       const sources = officialUrls(blueprintSource ? [blueprintSource] : []);
+      const block = scenario?.blocks.find((b) => b.topic === q.topic) ?? null;
+      const shared = q.shared_source_id
+        ? sharedById.get(q.shared_source_id) ?? null
+        : null;
+      const trace = {
+        ...(scenario
+          ? {
+            scenario_version: scenario.scenario_version,
+            catalogue_id: scenario.catalogue_id,
+            catalogue_revision: scenario.revision,
+            source_sha256: scenario.source.sha256,
+            source_sheet: scenario.source.sheet,
+          }
+          : {}),
+        ...(block || q.block_id
+          ? { block_id: block?.block_id ?? q.block_id ?? null }
+          : {}),
+        ...(block ? { source_cells: block.source_cells } : {}),
+        ...(Array.isArray(q.outcome_ids) && q.outcome_ids.length
+          ? { outcome_ids: q.outcome_ids }
+          : {}),
+        ...(q.question_type ? { question_type: q.question_type } : {}),
+        ...(q.cognitive_demand
+          ? { cognitive_demand: q.cognitive_demand }
+          : {}),
+        ...(q.intended_difficulty
+          ? { intended_difficulty: q.intended_difficulty }
+          : {}),
+        ...(q.rubric && q.rubric.criteria?.length ? { rubric: q.rubric } : {}),
+        // One shared passage keeps one identity; linked questions stay separate rows.
+        ...(shared
+          ? { shared_source_id: shared.id, shared_source: shared }
+          : {}),
+        ...(scenario ? { content_fit: "pending_human_review" } : {}),
+      };
       return {
         valid: !!q.expected_answer?.trim() && !!q.solution?.trim() &&
           (isMc ? validMc : q.kind === "open_ended"),
@@ -152,6 +314,7 @@ export async function finishGeneration(
           source_urls: [...new Set(sources)],
           provenance: {
             generator: "ai",
+            ...trace,
             ...(blueprintSnapshot ? { blueprint: blueprintSnapshot } : {}),
             ...(draftScope
               ? { draft_id: draftScope.id, draft_version: draftScope.version }
