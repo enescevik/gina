@@ -149,7 +149,8 @@ select is((select archived_at is not null from public.notes where id='32000000-0
 select is((select discarded_at is not null from public.prova_drafts where id='33000000-0000-4000-8000-000000008901'),true,'draft discarded');
 select is((select count(*)::int from public.exam_attempts),1,'answers preserved');
 select is((select (content->>'archived')::boolean from pg_temp.learning_plan where id='34000000-0000-4000-8000-000000008901'),true,'plan item archived');
-select is((select archived_at is not null from public.events where id='35000000-0000-4000-8000-000000008901'),true,'one-off archived');
+-- 20261106200000: veli okuması arşivli etkinliği artık görmez; arşiv sonucu 106'da sahip rolüyle doğrulanır.
+select is((select count(*)::int from public.events where id='35000000-0000-4000-8000-000000008901'),0,'one-off archived (hidden from parent read)');
 select is((select cancelled from public.event_exceptions where event_id='35000000-0000-4000-8000-000000008902' and occurrence_date=pg_temp.today()),true,'occurrence hidden through exception');
 select is((select archived_at from public.events where id='35000000-0000-4000-8000-000000008902'),null,'series itself stays');
 select is((select count(*)::int from jsonb_array_elements((select items from pg_temp.school_bags where child_id=pg_temp.ch() and day=pg_temp.today())) i where (i->>'checked')::boolean),0,'ticks reset');
