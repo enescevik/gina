@@ -1,0 +1,37 @@
+{
+  "environment": "empty-disposable-database",
+  "results": [
+    {
+      "check": "same_admin_same_key_concurrent_single_row_identical_receipt",
+      "passed": true
+    },
+    {
+      "check": "two_admins_same_family_same_plan_one_grant_other_blocked",
+      "passed": true,
+      "blocker": "plan_not_above_current"
+    },
+    {
+      "check": "replace_vs_grant_never_two_live_comps",
+      "passed": true,
+      "order": "plus_first_then_replaced"
+    },
+    {
+      "check": "foreign_admin_or_other_family_cannot_replay_key",
+      "passed": true
+    },
+    {
+      "check": "revoked_admin_refused_on_server_write",
+      "passed": true,
+      "order": "revoke_before_write"
+    },
+    {
+      "check": "keyset_pages_disjoint_complete_under_concurrent_insert",
+      "passed": true,
+      "pages": 3
+    },
+    {
+      "check": "forged_admin_claim_without_row_refused",
+      "passed": true
+    }
+  ]
+}
