@@ -1,0 +1,952 @@
+{
+  "environment": "disposable-local-auth-postgrest (loopback, Docker Desktop on this Mac; absolute numbers are not production latencies)",
+  "measured_at": "2026-11-05T21:05:29.609Z",
+  "seed": {
+    "task_templates": 250,
+    "task_completions": 300,
+    "star_events": 400,
+    "grades": 220,
+    "learning_sources": 50,
+    "exams": 27,
+    "drawn_answers": 20,
+    "drawn_answer_bytes_each": 16557,
+    "note": "grades/tasks/completions/stars/sources inserted with the service role in the disposable DB; Prova, answers and drafts through real RPCs",
+    "school_grade_page_size": 50,
+    "school_grade_has_more": true,
+    "experiment_note": "policy rewrites and indexes were applied only in the disposable DB, which is dropped by the runner",
+    "table_rows": [
+      {
+        "table": "exam_answers",
+        "rows": 20
+      },
+      {
+        "table": "exam_attempts",
+        "rows": 1
+      },
+      {
+        "table": "task_completions",
+        "rows": 300
+      },
+      {
+        "table": "exams",
+        "rows": 27
+      },
+      {
+        "table": "question_bank",
+        "rows": 20
+      },
+      {
+        "table": "grades",
+        "rows": 220
+      },
+      {
+        "table": "learning_sources",
+        "rows": 50
+      },
+      {
+        "table": "mutation_receipts",
+        "rows": 75
+      },
+      {
+        "table": "star_events",
+        "rows": 400
+      },
+      {
+        "table": "task_templates",
+        "rows": 250
+      },
+      {
+        "table": "help_receipts",
+        "rows": 0
+      }
+    ]
+  },
+  "measurements": [
+    {
+      "label": "rpc_submit_prova_draft_20q",
+      "reps": 25,
+      "p50_ms": 13.2,
+      "p95_ms": 23.9,
+      "min_ms": 9.9,
+      "max_ms": 24.9,
+      "rows": 1,
+      "bytes": 38
+    },
+    {
+      "label": "rpc_submit_exam_answer_v3_drawn_10_strokes",
+      "reps": 20,
+      "p50_ms": 16.7,
+      "p95_ms": 83.5,
+      "min_ms": 13.6,
+      "max_ms": 83.5,
+      "rows": 1,
+      "bytes": 1
+    },
+    {
+      "label": "home_task_templates_by_family",
+      "reps": 15,
+      "p50_ms": 49.4,
+      "p95_ms": 61.6,
+      "min_ms": 41.2,
+      "max_ms": 61.6,
+      "rows": 250,
+      "bytes": 64023
+    },
+    {
+      "label": "home_task_completions_week_by_family",
+      "reps": 15,
+      "p50_ms": 10.7,
+      "p95_ms": 16.6,
+      "min_ms": 8.7,
+      "max_ms": 16.6,
+      "rows": 28,
+      "bytes": 8168
+    },
+    {
+      "label": "home_star_events_by_family",
+      "reps": 15,
+      "p50_ms": 88.6,
+      "p95_ms": 152.1,
+      "min_ms": 64.5,
+      "max_ms": 152.1,
+      "rows": 400,
+      "bytes": 24846
+    },
+    {
+      "label": "home_approvals_done_by_family",
+      "reps": 15,
+      "p50_ms": 30,
+      "p95_ms": 90.3,
+      "min_ms": 25.7,
+      "max_ms": 90.3,
+      "rows": 43,
+      "bytes": 16663
+    },
+    {
+      "label": "tasks_screen_templates_by_child",
+      "reps": 15,
+      "p50_ms": 56.4,
+      "p95_ms": 114.6,
+      "min_ms": 43.7,
+      "max_ms": 114.6,
+      "rows": 220,
+      "bytes": 105703
+    },
+    {
+      "label": "child_today_templates_active",
+      "reps": 15,
+      "p50_ms": 199,
+      "p95_ms": 250.4,
+      "min_ms": 119.3,
+      "max_ms": 250.4,
+      "rows": 198,
+      "bytes": 43858
+    },
+    {
+      "label": "child_star_events_by_child",
+      "reps": 15,
+      "p50_ms": 242.3,
+      "p95_ms": 334.2,
+      "min_ms": 154.9,
+      "max_ms": 334.2,
+      "rows": 300,
+      "bytes": 3634
+    },
+    {
+      "label": "rpc_school_grade_records_all_page1",
+      "reps": 15,
+      "p50_ms": 17.6,
+      "p95_ms": 32.9,
+      "min_ms": 12.5,
+      "max_ms": 32.9,
+      "rows": 50,
+      "bytes": 10450
+    },
+    {
+      "label": "rpc_school_grade_records_all_page2",
+      "reps": 15,
+      "p50_ms": 15.5,
+      "p95_ms": 25.2,
+      "min_ms": 12,
+      "max_ms": 25.2,
+      "rows": 50,
+      "bytes": 10450
+    },
+    {
+      "label": "rpc_learning_progress_education_all_30d",
+      "reps": 15,
+      "p50_ms": 14.5,
+      "p95_ms": 28.2,
+      "min_ms": 8.4,
+      "max_ms": 28.2,
+      "rows": 1,
+      "bytes": 1843
+    },
+    {
+      "label": "rpc_learning_progress_30d",
+      "reps": 15,
+      "p50_ms": 14.9,
+      "p95_ms": 30.7,
+      "min_ms": 6.5,
+      "max_ms": 30.7,
+      "rows": 1,
+      "bytes": 1818
+    },
+    {
+      "label": "sources_ready_documents_limit30",
+      "reps": 15,
+      "p50_ms": 22.8,
+      "p95_ms": 37.4,
+      "min_ms": 15.7,
+      "max_ms": 37.4,
+      "rows": 30,
+      "bytes": 3111
+    },
+    {
+      "label": "sources_ready_documents_all",
+      "reps": 15,
+      "p50_ms": 25.1,
+      "p95_ms": 67.1,
+      "min_ms": 13.9,
+      "max_ms": 67.1,
+      "rows": 50,
+      "bytes": 8591
+    },
+    {
+      "label": "prova_list_exams_with_attempts_limit100",
+      "reps": 15,
+      "p50_ms": 43.7,
+      "p95_ms": 164.9,
+      "min_ms": 24.1,
+      "max_ms": 164.9,
+      "rows": 27,
+      "bytes": 14357
+    },
+    {
+      "label": "rpc_get_prova_drafts",
+      "reps": 15,
+      "p50_ms": 31.2,
+      "p95_ms": 63.2,
+      "min_ms": 7.8,
+      "max_ms": 63.2,
+      "rows": 0,
+      "bytes": 2
+    },
+    {
+      "label": "review_exam_answers_with_documents_by_attempt",
+      "reps": 15,
+      "p50_ms": 47,
+      "p95_ms": 115.7,
+      "min_ms": 26,
+      "max_ms": 115.7,
+      "rows": 20,
+      "bytes": 333754
+    },
+    {
+      "label": "rpc_get_saved_exam_answers_v3_device",
+      "reps": 15,
+      "p50_ms": 46.7,
+      "p95_ms": 109.9,
+      "min_ms": 27.7,
+      "max_ms": 109.9,
+      "rows": 20,
+      "bytes": 333394
+    },
+    {
+      "label": "rpc_get_attempt_questions_device",
+      "reps": 15,
+      "p50_ms": 13.5,
+      "p95_ms": 29.1,
+      "min_ms": 7,
+      "max_ms": 29.1,
+      "rows": 20,
+      "bytes": 2982
+    },
+    {
+      "label": "rpc_get_answer_review_single",
+      "reps": 15,
+      "p50_ms": 10.8,
+      "p95_ms": 14.6,
+      "min_ms": 6,
+      "max_ms": 14.6,
+      "rows": 1,
+      "bytes": 160
+    },
+    {
+      "label": "child_exam_count",
+      "reps": 15,
+      "p50_ms": 30.5,
+      "p95_ms": 68.3,
+      "min_ms": 23.8,
+      "max_ms": 68.3,
+      "rows": 0,
+      "bytes": 2
+    },
+    {
+      "label": "rpc_reward_balance_path_request_reward_denied",
+      "reps": 15,
+      "p50_ms": 17,
+      "p95_ms": 28.6,
+      "min_ms": 7.2,
+      "max_ms": 28.6,
+      "rows": 1,
+      "bytes": 28
+    },
+    {
+      "label": "child_star_events_by_child__rls_initplan",
+      "reps": 15,
+      "p50_ms": 17.8,
+      "p95_ms": 77.6,
+      "min_ms": 11.4,
+      "max_ms": 77.6,
+      "rows": 300,
+      "bytes": 3634
+    },
+    {
+      "label": "child_today_templates_active__rls_initplan",
+      "reps": 15,
+      "p50_ms": 19.1,
+      "p95_ms": 69.6,
+      "min_ms": 11.7,
+      "max_ms": 69.6,
+      "rows": 198,
+      "bytes": 43858
+    },
+    {
+      "label": "home_task_templates_by_family__rls_initplan",
+      "reps": 15,
+      "p50_ms": 16.8,
+      "p95_ms": 43.9,
+      "min_ms": 11.4,
+      "max_ms": 43.9,
+      "rows": 250,
+      "bytes": 64023
+    }
+  ],
+  "explains": [
+    {
+      "label": "home_task_templates_by_family",
+      "planning_ms": 4.3,
+      "execution_ms": 34,
+      "shared_hit_blocks": 893,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "task_templates",
+          "actual_rows": 250,
+          "removed_by_filter": 0,
+          "filter": "((family_id = 'e8c66366-8b6c-438f-a1cd-356052ef6f87'::uuid) AND (gina.is_parent() OR (gina.is_device() AND (child_id = (NULLIF((gina.claims() ->> 'child_id'::text), ''::text))::uuid) AND (active OR (ANY (id = (hashed SubPlan 2).col1))))))",
+          "loops": 1
+        }
+      ],
+      "index_scans": [
+        {
+          "index": "task_completions_child_date_idx",
+          "relation": "task_completions",
+          "actual_rows": 0,
+          "loops": 0
+        }
+      ]
+    },
+    {
+      "label": "home_task_completions_week_by_family",
+      "planning_ms": 2.87,
+      "execution_ms": 7.52,
+      "shared_hit_blocks": 226,
+      "shared_read_blocks": 0,
+      "seq_scans": [],
+      "index_scans": [
+        {
+          "index": "task_completions_child_date_idx",
+          "actual_rows": 28,
+          "loops": 1
+        }
+      ]
+    },
+    {
+      "label": "home_star_events_by_family",
+      "planning_ms": 1.84,
+      "execution_ms": 130.1,
+      "shared_hit_blocks": 1343,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "star_events",
+          "actual_rows": 400,
+          "removed_by_filter": 0,
+          "filter": "((family_id = 'e8c66366-8b6c-438f-a1cd-356052ef6f87'::uuid) AND (gina.is_parent() OR (gina.is_device() AND (child_id = (NULLIF((gina.claims() ->> 'child_id'::text), ''::text))::uuid))))",
+          "loops": 1
+        }
+      ],
+      "index_scans": []
+    },
+    {
+      "label": "home_approvals_done_by_family",
+      "planning_ms": 2.17,
+      "execution_ms": 24.63,
+      "shared_hit_blocks": 279,
+      "shared_read_blocks": 0,
+      "seq_scans": [],
+      "index_scans": [
+        {
+          "index": "task_completions_pending_idx",
+          "relation": "task_completions",
+          "actual_rows": 43,
+          "loops": 1
+        }
+      ]
+    },
+    {
+      "label": "tasks_screen_templates_by_child",
+      "planning_ms": 5.19,
+      "execution_ms": 179.31,
+      "shared_hit_blocks": 806,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "task_templates",
+          "actual_rows": 220,
+          "removed_by_filter": 30,
+          "filter": "((child_id = '9f0c4d02-3bf3-4589-865e-40838aadf177'::uuid) AND (family_id = (NULLIF((gina.claims() ->> 'family_id'::text), ''::text))::uuid) AND (gina.is_parent() OR (gina.is_device() AND (child_id = (NULLIF((gina.claims() ->> 'child_id'::text), ''::text))::uuid) AND (active OR (ANY (id = (hashed SubPlan 2).col1))))))",
+          "loops": 1
+        }
+      ],
+      "index_scans": [
+        {
+          "index": "task_completions_child_date_idx",
+          "relation": "task_completions",
+          "actual_rows": 0,
+          "loops": 0
+        }
+      ]
+    },
+    {
+      "label": "child_star_balance_sum",
+      "planning_ms": 3.81,
+      "execution_ms": 425.16,
+      "shared_hit_blocks": 2963,
+      "shared_read_blocks": 0,
+      "seq_scans": [],
+      "index_scans": [
+        {
+          "index": "star_events_child_idx",
+          "relation": "star_events",
+          "actual_rows": 300,
+          "loops": 1
+        }
+      ]
+    },
+    {
+      "label": "sources_ready_documents_limit30",
+      "planning_ms": 4.4,
+      "execution_ms": 19.23,
+      "shared_hit_blocks": 233,
+      "shared_read_blocks": 0,
+      "seq_scans": [],
+      "index_scans": [
+        {
+          "index": "learning_sources_family_id_created_at_idx",
+          "relation": "learning_sources",
+          "actual_rows": 30,
+          "loops": 1
+        }
+      ]
+    },
+    {
+      "label": "prova_list_exams_limit100",
+      "planning_ms": 4.09,
+      "execution_ms": 21.66,
+      "shared_hit_blocks": 229,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "exams",
+          "actual_rows": 27,
+          "removed_by_filter": 0,
+          "filter": "((family_id = (NULLIF((gina.claims() ->> 'family_id'::text), ''::text))::uuid) AND (gina.is_parent() OR (gina.is_device() AND (child_id = (NULLIF((gina.claims() ->> 'child_id'::text), ''::text))::uuid) AND (status = ANY ('{assigned,completed}'::exam_status[])))))",
+          "loops": 1
+        }
+      ],
+      "index_scans": []
+    },
+    {
+      "label": "prova_list_attempts_for_exams",
+      "planning_ms": 7.25,
+      "execution_ms": 19.73,
+      "shared_hit_blocks": 257,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "exams",
+          "actual_rows": 27,
+          "removed_by_filter": 0,
+          "filter": "((family_id = (NULLIF((gina.claims() ->> 'family_id'::text), ''::text))::uuid) AND (gina.is_parent() OR (gina.is_device() AND (child_id = (NULLIF((gina.claims() ->> 'child_id'::text), ''::text))::uuid) AND (status = ANY ('{assigned,completed}'::exam_status[])))))",
+          "loops": 1
+        }
+      ],
+      "index_scans": [
+        {
+          "index": "exam_attempts_exam_idx",
+          "relation": "exam_attempts",
+          "actual_rows": 0,
+          "loops": 27
+        }
+      ]
+    },
+    {
+      "label": "review_exam_answers_by_attempt",
+      "planning_ms": 6.57,
+      "execution_ms": 18.63,
+      "shared_hit_blocks": 299,
+      "shared_read_blocks": 0,
+      "seq_scans": [],
+      "index_scans": [
+        {
+          "index": "exam_answers_pkey",
+          "relation": "exam_answers",
+          "actual_rows": 20,
+          "loops": 1
+        },
+        {
+          "index": "exam_attempts_pkey",
+          "relation": "exam_attempts",
+          "actual_rows": 1,
+          "loops": 20
+        }
+      ]
+    },
+    {
+      "label": "rpc_school_grade_records_all_page1",
+      "planning_ms": 0.03,
+      "execution_ms": 16.36,
+      "shared_hit_blocks": 1148,
+      "shared_read_blocks": 0,
+      "seq_scans": [],
+      "index_scans": []
+    },
+    {
+      "label": "rpc_learning_progress_30d",
+      "planning_ms": 0.03,
+      "execution_ms": 19.44,
+      "shared_hit_blocks": 2528,
+      "shared_read_blocks": 0,
+      "seq_scans": [],
+      "index_scans": []
+    },
+    {
+      "label": "rpc_get_saved_exam_answers_v3_device",
+      "planning_ms": 0.03,
+      "execution_ms": 50.01,
+      "shared_hit_blocks": 1337,
+      "shared_read_blocks": 0,
+      "seq_scans": [],
+      "index_scans": []
+    },
+    {
+      "label": "grades_child_all_direct",
+      "planning_ms": 3.06,
+      "execution_ms": 46.95,
+      "shared_hit_blocks": 808,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "grades",
+          "actual_rows": 220,
+          "removed_by_filter": 0,
+          "filter": "((withdrawn_at IS NULL) AND (withdrawn_at IS NULL) AND (child_id = '9f0c4d02-3bf3-4589-865e-40838aadf177'::uuid) AND gina.is_parent() AND (family_id = (NULLIF((gina.claims() ->> 'family_id'::text), ''::text))::uuid))",
+          "loops": 1
+        }
+      ],
+      "index_scans": []
+    },
+    {
+      "label": "home_task_templates_by_family__rls_initplan",
+      "planning_ms": 2.42,
+      "execution_ms": 5.22,
+      "shared_hit_blocks": 241,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "task_templates",
+          "actual_rows": 250,
+          "removed_by_filter": 0,
+          "filter": "((family_id = 'e8c66366-8b6c-438f-a1cd-356052ef6f87'::uuid) AND ((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1) AND (active OR (ANY (id = (hashed SubPlan 16).col1))))))",
+          "loops": 1
+        }
+      ],
+      "index_scans": [
+        {
+          "index": "task_completions_child_date_idx",
+          "actual_rows": 0,
+          "loops": 0
+        }
+      ]
+    },
+    {
+      "label": "home_star_events_by_family__rls_initplan",
+      "planning_ms": 1.09,
+      "execution_ms": 2.63,
+      "shared_hit_blocks": 241,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "star_events",
+          "actual_rows": 400,
+          "removed_by_filter": 0,
+          "filter": "(((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1))) AND (family_id = 'e8c66366-8b6c-438f-a1cd-356052ef6f87'::uuid))",
+          "loops": 1
+        }
+      ],
+      "index_scans": []
+    },
+    {
+      "label": "tasks_screen_templates_by_child__rls_initplan",
+      "planning_ms": 3,
+      "execution_ms": 6.03,
+      "shared_hit_blocks": 244,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "task_templates",
+          "actual_rows": 220,
+          "removed_by_filter": 30,
+          "filter": "((family_id = (InitPlan 1).col1) AND (child_id = '9f0c4d02-3bf3-4589-865e-40838aadf177'::uuid) AND ((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1) AND (active OR (ANY (id = (hashed SubPlan 16).col1))))))",
+          "loops": 1
+        }
+      ],
+      "index_scans": [
+        {
+          "index": "task_completions_child_date_idx",
+          "actual_rows": 0,
+          "loops": 0
+        }
+      ]
+    },
+    {
+      "label": "child_star_balance_sum__rls_initplan",
+      "planning_ms": 0.84,
+      "execution_ms": 24.64,
+      "shared_hit_blocks": 663,
+      "shared_read_blocks": 0,
+      "seq_scans": [],
+      "index_scans": [
+        {
+          "index": "star_events_child_idx",
+          "relation": "star_events",
+          "actual_rows": 300,
+          "loops": 1
+        }
+      ]
+    },
+    {
+      "label": "prova_list_exams_limit100__rls_initplan",
+      "planning_ms": 1.18,
+      "execution_ms": 2.64,
+      "shared_hit_blocks": 246,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "exams",
+          "actual_rows": 27,
+          "removed_by_filter": 0,
+          "filter": "((family_id = (InitPlan 1).col1) AND ((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1) AND (status = ANY ('{assigned,completed}'::exam_status[])))))",
+          "loops": 1
+        }
+      ],
+      "index_scans": []
+    },
+    {
+      "label": "rpc_school_grade_records_all_page1__rls_initplan",
+      "planning_ms": 0.03,
+      "execution_ms": 23.4,
+      "shared_hit_blocks": 1122,
+      "shared_read_blocks": 0,
+      "seq_scans": [],
+      "index_scans": []
+    },
+    {
+      "label": "home_task_templates_by_family__indexed",
+      "planning_ms": 4.86,
+      "execution_ms": 5.76,
+      "shared_hit_blocks": 241,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "task_templates",
+          "actual_rows": 250,
+          "removed_by_filter": 0,
+          "filter": "((family_id = 'e8c66366-8b6c-438f-a1cd-356052ef6f87'::uuid) AND ((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1) AND (active OR (ANY (id = (hashed SubPlan 16).col1))))))",
+          "loops": 1
+        }
+      ],
+      "index_scans": [
+        {
+          "index": "task_completions_child_date_idx",
+          "actual_rows": 0,
+          "loops": 0
+        }
+      ]
+    },
+    {
+      "label": "home_star_events_by_family__indexed",
+      "planning_ms": 2.47,
+      "execution_ms": 4.02,
+      "shared_hit_blocks": 241,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "star_events",
+          "actual_rows": 400,
+          "removed_by_filter": 0,
+          "filter": "(((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1))) AND (family_id = 'e8c66366-8b6c-438f-a1cd-356052ef6f87'::uuid))",
+          "loops": 1
+        }
+      ],
+      "index_scans": []
+    },
+    {
+      "label": "tasks_screen_templates_by_child__indexed",
+      "planning_ms": 5.9,
+      "execution_ms": 6.49,
+      "shared_hit_blocks": 455,
+      "shared_read_blocks": 1,
+      "seq_scans": [],
+      "index_scans": [
+        {
+          "index": "q02_task_templates_child_sort",
+          "relation": "task_templates",
+          "actual_rows": 220,
+          "loops": 1
+        },
+        {
+          "index": "task_completions_child_date_idx",
+          "actual_rows": 0,
+          "loops": 0
+        }
+      ]
+    },
+    {
+      "label": "prova_list_exams_limit100__indexed",
+      "planning_ms": 1.52,
+      "execution_ms": 1.94,
+      "shared_hit_blocks": 246,
+      "shared_read_blocks": 0,
+      "seq_scans": [
+        {
+          "relation": "exams",
+          "actual_rows": 27,
+          "removed_by_filter": 0,
+          "filter": "((family_id = (InitPlan 1).col1) AND ((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1) AND (status = ANY ('{assigned,completed}'::exam_status[])))))",
+          "loops": 1
+        }
+      ],
+      "index_scans": []
+    }
+  ],
+  "index_candidates": [
+    {
+      "query": "home_task_templates_by_family",
+      "relation": "task_templates",
+      "scanned_rows": 250,
+      "kept_rows": 250,
+      "filter": "((family_id = 'e8c66366-8b6c-438f-a1cd-356052ef6f87'::uuid) AND (gina.is_parent() OR (gina.is_device() AND (child_id = (NULLIF((gina.claims() ->> 'child_id'::text), ''::text))::uuid) AND (active OR (ANY (id = (hashed SubPlan 2).col1))))))",
+      "execution_ms": 34
+    },
+    {
+      "query": "home_star_events_by_family",
+      "relation": "star_events",
+      "scanned_rows": 400,
+      "kept_rows": 400,
+      "filter": "((family_id = 'e8c66366-8b6c-438f-a1cd-356052ef6f87'::uuid) AND (gina.is_parent() OR (gina.is_device() AND (child_id = (NULLIF((gina.claims() ->> 'child_id'::text), ''::text))::uuid))))",
+      "execution_ms": 130.1
+    },
+    {
+      "query": "tasks_screen_templates_by_child",
+      "relation": "task_templates",
+      "scanned_rows": 250,
+      "kept_rows": 220,
+      "filter": "((child_id = '9f0c4d02-3bf3-4589-865e-40838aadf177'::uuid) AND (family_id = (NULLIF((gina.claims() ->> 'family_id'::text), ''::text))::uuid) AND (gina.is_parent() OR (gina.is_device() AND (child_id = (NULLIF((gina.claims() ->> 'child_id'::text), ''::text))::uuid) AND (active OR (ANY (id = (hashed SubPlan 2).col1))))))",
+      "execution_ms": 179.31
+    },
+    {
+      "query": "grades_child_all_direct",
+      "relation": "grades",
+      "scanned_rows": 220,
+      "kept_rows": 220,
+      "filter": "((withdrawn_at IS NULL) AND (withdrawn_at IS NULL) AND (child_id = '9f0c4d02-3bf3-4589-865e-40838aadf177'::uuid) AND gina.is_parent() AND (family_id = (NULLIF((gina.claims() ->> 'family_id'::text), ''::text))::uuid))",
+      "execution_ms": 46.95
+    },
+    {
+      "query": "home_task_templates_by_family__rls_initplan",
+      "relation": "task_templates",
+      "scanned_rows": 250,
+      "kept_rows": 250,
+      "filter": "((family_id = 'e8c66366-8b6c-438f-a1cd-356052ef6f87'::uuid) AND ((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1) AND (active OR (ANY (id = (hashed SubPlan 16).col1))))))",
+      "execution_ms": 5.22
+    },
+    {
+      "query": "home_star_events_by_family__rls_initplan",
+      "relation": "star_events",
+      "scanned_rows": 400,
+      "kept_rows": 400,
+      "filter": "(((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1))) AND (family_id = 'e8c66366-8b6c-438f-a1cd-356052ef6f87'::uuid))",
+      "execution_ms": 2.63
+    },
+    {
+      "query": "tasks_screen_templates_by_child__rls_initplan",
+      "relation": "task_templates",
+      "scanned_rows": 250,
+      "kept_rows": 220,
+      "filter": "((family_id = (InitPlan 1).col1) AND (child_id = '9f0c4d02-3bf3-4589-865e-40838aadf177'::uuid) AND ((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1) AND (active OR (ANY (id = (hashed SubPlan 16).col1))))))",
+      "execution_ms": 6.03
+    },
+    {
+      "query": "home_task_templates_by_family__indexed",
+      "relation": "task_templates",
+      "scanned_rows": 250,
+      "kept_rows": 250,
+      "filter": "((family_id = 'e8c66366-8b6c-438f-a1cd-356052ef6f87'::uuid) AND ((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1) AND (active OR (ANY (id = (hashed SubPlan 16).col1))))))",
+      "execution_ms": 5.76
+    },
+    {
+      "query": "home_star_events_by_family__indexed",
+      "relation": "star_events",
+      "scanned_rows": 400,
+      "kept_rows": 400,
+      "filter": "(((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1))) AND (family_id = 'e8c66366-8b6c-438f-a1cd-356052ef6f87'::uuid))",
+      "execution_ms": 4.02
+    }
+  ],
+  "experiment": {
+    "rls_initplan": {
+      "policies_rewritten": [
+        "exam_attempts.exam_attempts_device_select",
+        "exam_attempts.exam_attempts_parent_select",
+        "exams.exams_device_select",
+        "exams.exams_parent_all",
+        "grades.grades_parent_context",
+        "grades.grades_parent_read",
+        "learning_sources.source_parent_read",
+        "star_events.star_events_device_select",
+        "star_events.star_events_parent_select",
+        "task_completions.task_completions_device_select",
+        "task_completions.task_completions_parent_select",
+        "task_templates.task_templates_device_select",
+        "task_templates.task_templates_parent_all"
+      ],
+      "applied": true,
+      "error": null,
+      "queries": [
+        {
+          "query": "home_task_templates_by_family",
+          "before_ms": 34,
+          "after_ms": 5.22,
+          "seq_scans_after": [
+            "task_templates"
+          ]
+        },
+        {
+          "query": "home_star_events_by_family",
+          "before_ms": 130.1,
+          "after_ms": 2.63,
+          "seq_scans_after": [
+            "star_events"
+          ]
+        },
+        {
+          "query": "tasks_screen_templates_by_child",
+          "before_ms": 179.31,
+          "after_ms": 6.03,
+          "seq_scans_after": [
+            "task_templates"
+          ]
+        },
+        {
+          "query": "child_star_balance_sum",
+          "before_ms": 425.16,
+          "after_ms": 24.64,
+          "seq_scans_after": []
+        },
+        {
+          "query": "prova_list_exams_limit100",
+          "before_ms": 21.66,
+          "after_ms": 2.64,
+          "seq_scans_after": [
+            "exams"
+          ]
+        },
+        {
+          "query": "rpc_school_grade_records_all_page1",
+          "before_ms": 16.36,
+          "after_ms": 23.4,
+          "seq_scans_after": []
+        }
+      ],
+      "rest": [
+        {
+          "label": "child_star_events_by_child__rls_initplan",
+          "p50_ms": 17.8,
+          "p95_ms": 77.6,
+          "before_p50_ms": 242.3
+        },
+        {
+          "label": "child_today_templates_active__rls_initplan",
+          "p50_ms": 19.1,
+          "p95_ms": 69.6,
+          "before_p50_ms": 199
+        },
+        {
+          "label": "home_task_templates_by_family__rls_initplan",
+          "p50_ms": 16.8,
+          "p95_ms": 43.9,
+          "before_p50_ms": 49.4
+        }
+      ]
+    },
+    "indexes": {
+      "applied": true,
+      "error": null,
+      "queries": [
+        {
+          "query": "home_task_templates_by_family",
+          "execution_ms": 5.76,
+          "index_scans": [
+            "task_completions_child_date_idx"
+          ],
+          "seq_scans": [
+            "task_templates"
+          ],
+          "note": "planner choice at ~250-400 rows per table; a seq scan here does not predict production"
+        },
+        {
+          "query": "home_star_events_by_family",
+          "execution_ms": 4.02,
+          "index_scans": [],
+          "seq_scans": [
+            "star_events"
+          ],
+          "note": "planner choice at ~250-400 rows per table; a seq scan here does not predict production"
+        },
+        {
+          "query": "tasks_screen_templates_by_child",
+          "execution_ms": 6.49,
+          "index_scans": [
+            "q02_task_templates_child_sort",
+            "task_completions_child_date_idx"
+          ],
+          "seq_scans": [],
+          "note": "planner choice at ~250-400 rows per table; a seq scan here does not predict production"
+        },
+        {
+          "query": "prova_list_exams_limit100",
+          "execution_ms": 1.94,
+          "index_scans": [],
+          "seq_scans": [
+            "exams"
+          ],
+          "note": "planner choice at ~250-400 rows per table; a seq scan here does not predict production"
+        }
+      ]
+    }
+  }
+}

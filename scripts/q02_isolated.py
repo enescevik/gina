@@ -29,6 +29,8 @@ def launch(runner: str, prefix: str, timeout: int, argv: list[str]) -> None:
         # DELETE privilege it has in the real local stack, the template and hosted Supabase. The account
         # deletion trigger (SECURITY DEFINER, owner postgres) deletes anonymous device users; restore parity.
         ("    grant references on auth.users to postgres;", "    grant select, delete, references on auth.users to postgres;"),
+        ("    if process.returncode:\n        raise RuntimeError('service_contract_failed')",
+         "    if process.returncode:\n        print(runner_stderr[-4000:], file=sys.stderr)\n        raise RuntimeError('service_contract_failed')"),
         ("        report['checks'] = json.loads(stdout)['checks']\n    except Exception:\n",
          "        report['checks'] = json.loads(stdout)['checks']\n    except Exception:\n        print(runner_stderr[-4000:], file=sys.stderr)\n"),
     ]
