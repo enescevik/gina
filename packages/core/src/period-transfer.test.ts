@@ -28,28 +28,28 @@ describe("period transfer decisions", () => {
   it("defaults to pausing/archiving old records and never moves them into the past", () => {
     const d = defaultTransferDecisions(preview);
     expect(d.routines.map((r) => r.action)).toEqual(["pause", "pause"]);
-    expect(d.routines[0].starts_on).toBe("2026-11-05");
-    expect(d.plans[0].action).toBe("archive");
-    expect(d.plans[0].planned_on).toBe("2026-11-05");
-    expect(d.plans[0].due_on).toBeNull();
+    expect(d.routines[0]!.starts_on).toBe("2026-11-05");
+    expect(d.plans[0]!.action).toBe("archive");
+    expect(d.plans[0]!.planned_on).toBe("2026-11-05");
+    expect(d.plans[0]!.due_on).toBeNull();
     expect(transferDecisionsValid(d, preview)).toBe(true);
   });
   it("rejects a copy that starts before the new period, has no days, or misses a candidate", () => {
     const d = defaultTransferDecisions(preview);
-    d.routines[0].action = "copy";
-    d.routines[0].starts_on = "2026-11-04";
+    d.routines[0]!.action = "copy";
+    d.routines[0]!.starts_on = "2026-11-04";
     expect(transferDecisionsValid(d, preview)).toBe(false);
-    d.routines[0].starts_on = "2026-11-06";
-    d.routines[0].days_of_week = [];
+    d.routines[0]!.starts_on = "2026-11-06";
+    d.routines[0]!.days_of_week = [];
     expect(transferDecisionsValid(d, preview)).toBe(false);
-    d.routines[0].days_of_week = [1, 3];
+    d.routines[0]!.days_of_week = [1, 3];
     expect(transferDecisionsValid(d, preview)).toBe(true);
     expect(transferDecisionsValid({ ...d, plans: [] }, preview)).toBe(false);
   });
   it("summarizes before/after without touching earned evidence", () => {
     const d = defaultTransferDecisions(preview);
-    d.routines[0].action = "copy";
-    d.plans[0].action = "keep";
+    d.routines[0]!.action = "copy";
+    d.plans[0]!.action = "keep";
     const s = summarizePeriodTransfer(d, preview);
     expect(s.routines).toEqual({ total: 2, copy: 1, pause: 1, keep: 0 });
     expect(s.plans).toEqual({ total: 1, copy: 0, archive: 0, keep: 1 });
@@ -59,14 +59,14 @@ describe("period transfer decisions", () => {
   });
   it("sends only changed copy fields and keeps non-copy decisions minimal", () => {
     const d = defaultTransferDecisions(preview);
-    d.routines[0].action = "copy";
-    d.routines[0].days_of_week = [1, 3, 5];
-    d.plans[0].action = "copy";
-    d.plans[0].due_on = "2026-11-10";
+    d.routines[0]!.action = "copy";
+    d.routines[0]!.days_of_week = [1, 3, 5];
+    d.plans[0]!.action = "copy";
+    d.plans[0]!.due_on = "2026-11-10";
     const payload = transferItemsPayload(d, preview);
     expect(payload.routines[0]).toEqual({ id: preview.routines[0].id, revision: 3, action: "copy", days_of_week: [1, 3, 5], starts_on: "2026-11-05" });
     expect(payload.routines[1]).toEqual({ id: preview.routines[1].id, revision: 1, action: "pause" });
     expect(payload.plans[0]).toEqual({ id: preview.plans[0].id, revision: 4, action: "copy", planned_on: "2026-11-05", due_on: "2026-11-10" });
-    expect(routineCopyDiff(preview.routines[0], d.routines[0])).toEqual({ days: true, starts_on: true, ends_on: false });
+    expect(routineCopyDiff(preview.routines[0], d.routines[0]!)).toEqual({ days: true, starts_on: true, ends_on: false });
   });
 });
