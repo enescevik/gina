@@ -12,10 +12,14 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   Cross-Origin-Opener-Policy: same-origin
 
-/_expo/static/*
-  Cache-Control: public, max-age=31536000, immutable
+# Q03-HTTP-1: immutable önbellek yalnız derleme çıktısında gerçekten var olan hash'li dosyaların TAM yoluna yazılır
+# (scripts/cf-pages-headers.mjs üretir). "/_expo/static/*" gibi bir glob, var olmayan yola dönen SPA fallback HTML'ini de
+# bir yıl önbelleğe aldırırdı.
+{{STATIC_IMMUTABLE_RULES}}
 
-# Öğretmen paylaşım bağlantıları: arama motoruna girmez, yönlendiren adres sızmaz
+# Öğretmen paylaşım bağlantıları: arama motoruna girmez, yönlendiren adres sızmaz.
+# Q03-HTTP-2: Cloudflare aynı yola uyan blokları birleştirir (ezmez); genel değer önce kaldırılır, tek değer gönderilir.
 /s/*
   X-Robots-Tag: noindex, nofollow
+  ! Referrer-Policy
   Referrer-Policy: no-referrer
