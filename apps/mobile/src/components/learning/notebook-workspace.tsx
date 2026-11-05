@@ -221,7 +221,7 @@ export function NotebookWorkspace({
         style={s.fill}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <View style={s.header}>
+        <View style={[s.header, shortHeight && { paddingVertical: 2 }]}>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={exitLabel ?? t("notebook.pause")}
@@ -257,14 +257,14 @@ export function NotebookWorkspace({
         </View>
         {tabbed
           ? (
-            <View style={s.tabs}>
+            <View style={[s.tabs, shortHeight && { marginTop: 4, padding: 2 }]}>
               {(["question", "notebook"] as const).map((key) => (
                 <Pressable
                   key={key}
                   accessibilityRole="tab"
                   accessibilityState={{ selected: tab === key }}
                   onPress={() => setTab(key)}
-                  style={[s.tab, tab === key && { backgroundColor: p.purple }]}
+                  style={[s.tab, shortHeight && { minHeight: 40 }, tab === key && { backgroundColor: p.purple }]}
                 >
                   <Text style={[s.tabText, tab === key && { color: "#fff" }]}>
                     {t(`notebook.${key}`)}
@@ -274,7 +274,7 @@ export function NotebookWorkspace({
             </View>
           )
           : null}
-        <View style={[s.body, { flexDirection: wide ? "row" : "column" }]}>
+        <View style={[s.body, { flexDirection: wide ? "row" : "column" }, shortHeight && { paddingTop: 6 }]}>
           {((wide || stacked) && !expanded) || (tabbed && tab === "question")
             ? (
               <View
@@ -295,6 +295,7 @@ export function NotebookWorkspace({
             key="notebook"
             style={[
               s.paperShell,
+              shortHeight && { padding: 6 },
               questionFocused && { display: "none" },
               tabbed && tab !== "notebook" && { display: "none" },
             ]}
@@ -376,7 +377,7 @@ export function NotebookWorkspace({
             />
           </View>
         </View>
-        <View style={s.footer}>
+        <View style={[s.footer, shortHeight && { paddingTop: 4, paddingBottom: 4 }]}>
           {tabbed && (
             <Text
               accessibilityLiveRegion="polite"
