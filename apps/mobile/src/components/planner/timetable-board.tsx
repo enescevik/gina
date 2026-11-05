@@ -7,6 +7,7 @@ import {
 } from "react";
 import {
   PanResponder,
+  Platform,
   ScrollView,
   Text,
   useWindowDimensions,
@@ -280,7 +281,7 @@ function DragHandle(
         height: 48,
         alignItems: "center",
         justifyContent: "center",
-        touchAction: "none",
+        ...(Platform.OS === "web" ? { touchAction: "none" as const } : {}),
         opacity: disabled ? .3 : 1,
       }}
     >
