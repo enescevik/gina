@@ -54,3 +54,11 @@ Deno.test("parent notices keep school details off the lock screen", () => {
 Deno.test("calendar reminders have an English generic notification", () => {
   assertEquals(messageFor({ kind: "education_reminder", payload: {} }, "en").body, "You can review the school calendar");
 });
+
+Deno.test("content pre-review notice names no record content, only the target id", () => {
+  const id = "6d4399b9-46b1-47ba-bc6b-5558f48c4c7b";
+  const msg = messageFor({ id: 7, kind: "content_prereview_needs_admin", payload: { target_id: id, target_kind: "curriculum_candidate", prereview_status: "needs_admin", summary: "Leaked detail" } }, "tr");
+  assertEquals(msg.body, "İçerik ön incelemesi yönetici kararı bekliyor");
+  assertEquals(msg.data, { kind: "content_prereview_needs_admin", target_id: id });
+  assertEquals(messageFor({ kind: "content_prereview_needs_admin", payload: {} }, "en").body, "A content pre-review is waiting for an admin decision");
+});
