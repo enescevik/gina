@@ -51,7 +51,7 @@
   "testflight": {
     "version": "0.1.0",
     "build": "26",
-    "state": "READY_FOR_BETA_TESTING",
+    "state": "IN_BETA_TESTING",
     "physicalDeviceTested": false,
     "signatureVerified": true,
     "productionEndpointsVerified": true,
@@ -66,9 +66,10 @@
       "tr",
       "en-US"
     ],
-    "checkedAt": "2026-11-05T16:31:09.634Z",
-    "testerGroupAssignmentVerified": false,
-    "blocker": "Existing upload API key cannot read/manage beta groups (403); browser Apple session signed out. User sign-in requested for final group assignment."
+    "checkedAt": "2026-11-05T16:44:43.986756+00:00",
+    "testerGroupAssignmentVerified": true,
+    "group": "Team (Expo)",
+    "groupAssignment": "Automatic existing group; observed in App Store Connect after user sign-in, no new testers or permissions added"
   },
   "educationRemindersEnabled": false
 }

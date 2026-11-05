@@ -18,7 +18,9 @@ Kaynak `1f1b505b9b8e9d8491554f22c1ff194142956a32`, main birleştirmesi `17e10605
 4. PR main'e birleştirildi. Main CI ve güvenlik incelemesi başarılı. GitHub yayın işleri eksik yayın anahtarları nedeniyle **atlandı**; yayın başarısı sayılmadı. Gerçek web/yönetim yayını mevcut yetkili yerel Wrangler oturumuyla yapıldı.
 5. Web: https://gina-web.pages.dev — dağıtım https://e6f5362c.gina-web.pages.dev. Altı sayfa ve beş JavaScript dosyasının canlı içeriği üretilen dosyalarla hash düzeyinde aynı.
 6. Yönetim: https://gina-backoffice.pages.dev — dağıtım https://6a1b070c.gina-backoffice.pages.dev. Ana adres ve bu gerçek önizlemede toplam 12 yol doğru `gina-family` Access kapısına yönleniyor. Bu yayında yönetici olarak giriş/yazma akışı yeniden denenmedi.
-7. iOS **0.1.0 (26)**: derlendi; imza ve üretim adresleri doğrulandı; Apple ön doğrulama ve yüklemesi hatasız tamamlandı. Apple `VALID`, iç test durumu `READY_FOR_BETA_TESTING`. Türkçe/İngilizce test notları kaydedilip tekrar okunarak doğrulandı. **Test grubuna atanması henüz doğrulanmadı:** mevcut yükleme anahtarı grup yönetiminde 403 döndürüyor; Chrome Apple oturumu kapalı. Kullanıcıdan açılan App Store Connect sekmesinde giriş yapması istendi. `IN_BETA_TESTING` görülmeden test kullanıcılarına açıldı denmez.
+7. iOS **0.1.0 (26)**: derlendi; imza ve üretim adresleri doğrulandı; Apple ön doğrulama ve yüklemesi hatasız tamamlandı. Son durum **`VALID / IN_BETA_TESTING`**. Türkçe/İngilizce test notları kaydedilip tekrar okunarak doğrulandı. Mevcut `Team (Expo)` iç test grubuna otomatik dahil olduğu App Store Connect arayüzünde görüldü. Yeni test kullanıcısı/erişim izni eklenmedi.
+
+Apple durumunun ilk kontrolünde `READY_FOR_BETA_TESTING` görüldü. API anahtarı grup listesini okumada 403 verdi ve tarayıcı oturumu kapalıydı; kullanıcı giriş yaptı. Oturumdan sonra mevcut otomatik grup ataması ve test erişimi doğrulandı. Artık kullanıcıdan beklenen bir Apple giriş/grup adımı yok.
 
 ## Doğrulama ve sınırlar
 
