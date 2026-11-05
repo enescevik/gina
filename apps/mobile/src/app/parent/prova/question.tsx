@@ -62,7 +62,7 @@ export default function QuestionScreen() {
     C: "",
     D: "",
   });
-  const [correct, setCorrect] = useState<string>("A");
+  const [correct, setCorrect] = useState<string>("");
   const [expected, setExpected] = useState("");
   const [solution, setSolution] = useState("");
   const [explanation, setExplanation] = useState("");
@@ -74,7 +74,7 @@ export default function QuestionScreen() {
         !Number.isInteger(Number(grade)) || Number(grade) < 1 ||
         Number(grade) > 12
       ) throw new Error(t("prova.questionInvalid"));
-      if (kind === "multiple_choice" && KEYS.some((k) => !choices[k]?.trim())) {
+      if (kind === "multiple_choice" && (!KEYS.some(key => key === correct) || KEYS.some((k) => !choices[k]?.trim()))) {
         throw new Error(t("prova.choicesInvalid"));
       }
       if (images.some((image) => image.alt.trim().length < 3)) {
@@ -160,6 +160,7 @@ export default function QuestionScreen() {
         setNoPersonal(false);
         setStem("");
         setChoices({ A: "", B: "", C: "", D: "" });
+        setCorrect("");
         setExpected("");
         setSolution("");
         setExplanation("");
@@ -287,6 +288,7 @@ export default function QuestionScreen() {
           {kind === "multiple_choice"
             ? (
               <View className="gap-2">
+                <Text className="font-body-bold text-base text-ink">{t("experience.chooseCorrect")}</Text>
                 {KEYS.map((k) => (
                   <View key={k} className="flex-row items-center gap-2">
                     <Pressable

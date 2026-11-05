@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
-import { Text, View, type StyleProp, type ViewStyle } from "react-native";
+import { Modal, ScrollView, Text, View, useWindowDimensions, type StyleProp, type ViewStyle } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Pressable } from "@/components/ui/pressable";
+import { NOTEBOOK_MODAL_PROPS } from "./notebook-layout";
+import { p, u } from "@/components/planner/ui";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/lib/supabase";
 import { sourceAction } from "@/lib/learning-files";
@@ -84,6 +88,11 @@ function SourceImage(
   const { t } = useTranslation();
   const { claims } = useSession();
   const [failed, setFailed] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const { width, height } = useWindowDimensions();
+  const ratio = m.width > 0 && m.height > 0 ? m.width / m.height : 1;
+  const fitWidth = Math.min(Math.max(160, width - 48), Math.max(160, height - 240) * ratio);
   const signed = useQuery({
     queryKey: [
       "question_image_url",
@@ -103,8 +112,9 @@ function SourceImage(
   });
   return (
     <View style={{ gap: 6 }}>
-      {signed.data && !failed && !signed.isFetching
+      {signed.data && !failed
         ? (
+          <Pressable accessibilityRole="button" accessibilityLabel={t("experience.expandImage", { description: m.alt })} onPress={() => { setZoom(1); setExpanded(true); }}>
           <Image
             source={{ uri: signed.data.url }}
             accessibilityLabel={m.alt}
@@ -118,6 +128,8 @@ function SourceImage(
             }}
             onError={() => setFailed(true)}
           />
+          {!compact && <Text style={[u.small, { color: p.purple, textAlign: "right", paddingVertical: 6 }]}>{t("experience.tapToExpand")}</Text>}
+          </Pressable>
         )
         : (
           <Text>
@@ -150,6 +162,28 @@ function SourceImage(
           {m.alt}
         </Text>
       )}
+      <Modal {...NOTEBOOK_MODAL_PROPS} visible={expanded} animationType="fade" onRequestClose={() => setExpanded(false)}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: p.cream }}>
+          <View accessibilityViewIsModal style={{ flex: 1 }}>
+            <View style={{ padding: 16, gap: 8 }}>
+              <Text accessibilityRole="header" style={u.heading}>{t("experience.questionImage")}</Text>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
+                <Button variant="secondary" title="−" accessibilityLabel={t("experience.zoomOut")} disabled={zoom <= 1} onPress={() => setZoom(Math.max(1, zoom - 1))} />
+                <Text accessibilityLiveRegion="polite" style={u.copy}>{zoom * 100}%</Text>
+                <Button variant="secondary" title="+" accessibilityLabel={t("experience.zoomIn")} disabled={zoom >= 4} onPress={() => setZoom(Math.min(4, zoom + 1))} />
+                <Button variant="ghost" title={t("notebook.close")} onPress={() => setExpanded(false)} />
+              </View>
+              <Text style={u.small}>{t("experience.imagePanHint")}</Text>
+            </View>
+            <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+              <ScrollView horizontal contentContainerStyle={{ minWidth: "100%", justifyContent: "center", alignItems: "center", padding: 16 }}>
+                {signed.data && !failed ? <Image source={{ uri: signed.data.url }} accessibilityLabel={m.alt} contentFit="contain" style={{ width: fitWidth * zoom, height: fitWidth / ratio * zoom }} onError={() => setFailed(true)} /> : <Text style={u.copy}>{t("sources.imageFailed")}</Text>}
+              </ScrollView>
+            </ScrollView>
+            <Text selectable style={[u.small, { padding: 16 }]}>{m.alt}</Text>
+          </View>
+        </SafeAreaView>
+      </Modal>
     </View>
   );
 }

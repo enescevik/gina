@@ -1,0 +1,46 @@
+{
+  "environment": "isolated-local-real-services",
+  "results": [
+    {
+      "check": "all_children_learning",
+      "passed": true
+    },
+    {
+      "check": "program_requires_explicit_child",
+      "passed": true
+    },
+    {
+      "check": "selected_child_scope",
+      "passed": true
+    },
+    {
+      "check": "calendar_context_link",
+      "passed": true
+    },
+    {
+      "check": "unfinished_review_is_provisional",
+      "passed": true
+    },
+    {
+      "check": "catalog_preview_tracks_display_text",
+      "passed": true
+    },
+    {
+      "check": "draft_close_and_navigation_guard",
+      "passed": true
+    },
+    {
+      "check": "ai_model_and_save_readable_768",
+      "passed": true,
+      "width": 656
+    },
+    {
+      "check": "ai_draft_guard",
+      "passed": true
+    },
+    {
+      "check": "source_limit_draft_guard",
+      "passed": true
+    }
+  ]
+}

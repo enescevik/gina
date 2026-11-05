@@ -1,0 +1,21 @@
+{
+  "environment": "isolated-local-real-services",
+  "results": [
+    {
+      "check": "question_image_zoom_close_same_notebook",
+      "passed": true
+    },
+    {
+      "check": "all_answered_still_requires_submit_confirmation",
+      "passed": true
+    },
+    {
+      "check": "submit_check_phone_keeps_answer",
+      "passed": true
+    },
+    {
+      "check": "timed_exit_discloses_running_clock_even_without_dirty_answer",
+      "passed": true
+    }
+  ]
+}

@@ -1,4 +1,5 @@
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useState } from "react";
+import { useUnsavedChanges } from "@/components/unsaved-changes";
 import type { Tables } from "@gina/core";
 import { Card, Layout, Notice } from "@/components/Layout";
 import { supabase } from "@/lib/supabase";
@@ -15,7 +16,7 @@ const kinds = {
   step: "Çalışma adımları",
 };
 const empty = (): Option => ({
-  id: "",
+  id: `option-${crypto.randomUUID()}`,
   kind: "bag",
   label_tr: "",
   label_en: "",
@@ -43,14 +44,7 @@ export default function InputCatalog() {
     [error, setError] = useState(""),
     [message, setMessage] = useState("");
   const dirty = !!draft && JSON.stringify(draft) !== original;
-  useEffect(() => {
-    if (!dirty) return;
-    const warn = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-    };
-    window.addEventListener("beforeunload", warn);
-    return () => window.removeEventListener("beforeunload", warn);
-  }, [dirty]);
+  const guard = useUnsavedChanges(dirty, busy);
   function edit(o: Option) {
     setDraft({ ...o });
     setOriginal(JSON.stringify(o));
@@ -94,6 +88,7 @@ export default function InputCatalog() {
   );
   return (
     <Layout title="Hazır seçenekler">
+      {guard.dialog}
       <Card title="Yazmak yerine seçmek">
         <p>
           Çanta, ödev ve çalışma ekranlarında sunulan seçenekleri yönetin. Sınıf
@@ -111,20 +106,6 @@ export default function InputCatalog() {
               onSubmit={(e) => void save(e)}
               className="grid gap-4 sm:grid-cols-2"
             >
-              <label>
-                Sabit kimlik<input
-                  className="input mt-2 w-full"
-                  value={draft.id}
-                  required
-                  pattern="[a-z][a-z0-9_-]{2,79}"
-                  maxLength={80}
-                  disabled={busy || draft.revision > 0}
-                  onChange={(e) => setDraft({ ...draft, id: e.target.value })}
-                />
-                <span className="text-sm">
-                  Örnek: bag-pencil. Kaydettikten sonra değişmez.
-                </span>
-              </label>
               <label>
                 Tür<select
                   className="input mt-2 w-full"
@@ -238,6 +219,13 @@ export default function InputCatalog() {
                     setDraft({ ...draft, active: e.target.checked })}
                 />Kullanıcılara göster
               </label>
+              <section aria-label="Uygulama önizlemesi" className="rounded-3xl border border-violet-100 bg-[#FCFAF6] p-5 sm:col-span-2">
+                <h3 className="mb-3 font-bold">Uygulamada nasıl görünecek?</h3>
+                <p className="mb-3 text-sm">{draft.min_grade === draft.max_grade ? `${draft.min_grade}. sınıf` : `${draft.min_grade}–${draft.max_grade}. sınıflar`} · {draft.active ? "Seçim listelerinde görünür" : "Yeni seçimlerde gizli"}</p>
+                <div className="flex flex-wrap gap-3"><span className="rounded-2xl bg-[#EEE8FA] p-3 font-semibold text-[#6042DE]">{draft.label_tr || "Türkçe seçenek metni"}</span><span lang="en" className="rounded-2xl bg-[#EEE8FA] p-3 font-semibold text-[#6042DE]">{draft.label_en || "English option text"}</span></div>
+                <p className="mt-3 text-sm">Mevcut aile kayıtları değişmez; yeni seçimlerde bu ad ve sınıf kapsamı kullanılır.</p>
+              </section>
+              <details className="sm:col-span-2"><summary className="min-h-12 cursor-pointer py-3 text-sm">Sabit kayıt kimliği</summary><p className="break-all text-sm">{draft.id}</p><p className="mt-2 text-sm">Otomatik oluşturulur ve sonradan değişmez. Elle kod yazmanız gerekmez.</p></details>
               <div className="flex flex-wrap gap-3 sm:col-span-2">
                 <button className="btn" disabled={busy || !dirty}>
                   {busy ? "Kaydediliyor…" : "Kaydet"}
@@ -246,7 +234,7 @@ export default function InputCatalog() {
                   className="btn-secondary"
                   type="button"
                   disabled={busy}
-                  onClick={() => setDraft(null)}
+                  onClick={() => guard.request(() => setDraft(null))}
                 >
                   Taslağı kapat
                 </button>

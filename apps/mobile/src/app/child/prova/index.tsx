@@ -26,7 +26,7 @@ export default function ChildProvaScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("exams")
-        .select("id, title, status, timed, duration_minutes, question_ids, exam_attempts(status, mc_total, mc_correct)")
+        .select("id, title, status, timed, duration_minutes, question_ids, exam_attempts(status, mc_total, mc_correct, open_total, open_graded)")
         .eq("child_id", childId)
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -77,6 +77,7 @@ export default function ChildProvaScreen() {
       {done.length > 0 ? <Text accessibilityRole="header" className="mt-2 font-body-bold text-lg text-ink">{t("prova.done")}</Text> : null}
       {done.map((exam) => {
         const attempt = exam.exam_attempts?.[0];
+        const pendingReview = (attempt?.open_total ?? 0) > (attempt?.open_graded ?? 0) || (attempt?.open_total == null && attempt?.status === "submitted");
         const resultLabel = (attempt?.mc_total ?? 0) > 0
           ? t("prova.resultMc", { correct: attempt?.mc_correct ?? 0, total: attempt?.mc_total ?? 0 })
           : t(attempt?.status === "submitted" ? "prova.openEndedNote" : "prova.status.completed");
@@ -101,6 +102,7 @@ export default function ChildProvaScreen() {
               <Text className="font-body text-sm text-gray-700">
                 {resultLabel}
               </Text>
+              {pendingReview && (attempt?.mc_total ?? 0) > 0 && <Text className="font-body-bold text-purple">{t("prova.openEndedNote")}</Text>}
               <Text className="mt-2 font-body-bold text-purple">{t("prova.viewResult")}</Text>
             </View>
           </Pressable>

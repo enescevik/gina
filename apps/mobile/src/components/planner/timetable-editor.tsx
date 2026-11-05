@@ -1,3 +1,4 @@
+import { NOTEBOOK_MODAL_PROPS } from "@/components/learning/notebook-layout";
 import { TimeChoice, TimetableBoard } from "./timetable-board";
 import { TimetableImportEntry, TimetableSourceLinks } from "./timetable-import";
 import { type ComponentRef, useEffect, useMemo, useRef, useState } from "react";
@@ -517,11 +518,11 @@ function LoadedEditor({
         </View>
       </KeyboardAvoidingView>
       <Modal
+        {...NOTEBOOK_MODAL_PROPS}
         visible={sheetOpen}
         transparent
         animationType="none"
         onRequestClose={closeSheet}
-        supportedOrientations={["portrait", "landscape"]}
       >
         <View
           style={{

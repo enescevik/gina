@@ -9,7 +9,9 @@ import { isCalendarDate, localDateOf, type Enums } from "@gina/core";
 
 import { SubjectIcon } from "@/components/subject-icon";
 import { Button } from "@/components/ui/button";
-import { Field } from "@/components/ui/field";
+import { DateChoice } from "@/components/ui/date-time-choice";
+import { NumberChoice } from "@/components/ui/number-choice";
+import { GuidedField } from "@/components/ui/guided-field";
 import { ErrorText } from "@/components/ui/screen";
 import { ParentScreen as Screen, FormSection, ChildPicker, EmptyCard } from "@/components/ui/parent-screen";
 import { useFamilyTimezone } from "@/lib/family";
@@ -95,7 +97,7 @@ export default function ParentGradesScreen() {
 
       {selectedChild ? (
         <FormSection title={t("grades.new")}>
-          <Field label={t("grades.subject")} value={subject} onChangeText={setSubject} placeholder={t("grades.subjectPlaceholder")} />
+          <GuidedField childId={selectedChild} kind="subject" label={t("grades.subject")} value={subject} onChange={setSubject} disabled={addGrade.isPending} />
           <View className="flex-row flex-wrap gap-2">
             {KINDS.map((option) => (
               <Pressable
@@ -109,17 +111,12 @@ export default function ParentGradesScreen() {
               </Pressable>
             ))}
           </View>
-          <View className="flex-row gap-3">
-            <View className="flex-1">
-              <Field label={t("grades.score")} keyboardType="decimal-pad" value={score} onChangeText={setScore} />
-            </View>
-            <View className="flex-1">
-              <Field label={t("grades.maxScore")} keyboardType="decimal-pad" value={maxScore} onChangeText={setMaxScore} />
-            </View>
-          </View>
-          <Field label={t("calendar.date")} hint={t("unified.dateHint")} value={gradedOn} onChangeText={setGradedOn} autoCapitalize="none" />
+          <NumberChoice label={t("grades.score")} value={score === "" ? null : Number(score)} onChange={n => setScore(String(n))} min={0} max={Number(maxScore)} step={1} precision={2} presets={[0, 25, 50, 75, 85, 90, 100]} disabled={addGrade.isPending}/>
+          <NumberChoice label={t("grades.maxScore")} value={Number(maxScore)} onChange={n => setMaxScore(String(n))} min={1} max={9999} step={1} precision={2} presets={[5, 10, 20, 100]} disabled={addGrade.isPending}/>
+          {score !== "" && Number(score) > Number(maxScore) ? <Text accessibilityRole="alert" className="font-body text-danger">{t("grades.invalid")}</Text> : null}
+          <DateChoice label={t("experience.dateLabel")} value={gradedOn} onChange={setGradedOn} today={localDateOf(new Date(), timeZone)} disabled={addGrade.isPending}/>
           {formError ? <Text className="font-body text-sm text-danger">{formError}</Text> : null}
-          <Button title={t("common.save")} loading={addGrade.isPending} disabled={!subject.trim() || !score.trim()} onPress={() => addGrade.mutate()} />
+          <Button title={t("common.save")} loading={addGrade.isPending} disabled={!subject.trim() || !score.trim() || Number(score) > Number(maxScore)} onPress={() => addGrade.mutate()} />
         </FormSection>
       ) : (
         <EmptyCard title={t("unified.chooseChild")} body={t("unified.noChildHelp")}><Button title={t("unified.createFirstChild")} onPress={()=>router.push("/parent/menu")}/></EmptyCard>

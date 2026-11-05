@@ -1,0 +1,25 @@
+{
+  "environment": "isolated-local-real-services",
+  "results": [
+    {
+      "check": "date_month_grid_updates_form",
+      "passed": true
+    },
+    {
+      "check": "time_choice_and_exact_minute",
+      "passed": true
+    },
+    {
+      "check": "bell_editor_focused_phone_and_tablet",
+      "passed": true
+    },
+    {
+      "check": "bell_change_shifts_following_lessons_and_requires_program_save",
+      "passed": true
+    },
+    {
+      "check": "school_score_keeps_decimal_precision_and_explicit_choice",
+      "passed": true
+    }
+  ]
+}

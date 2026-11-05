@@ -43,7 +43,7 @@ export function TasksScreen() {
   const familyId = claims?.family_id ?? "";
   const timeZone = useFamilyTimezone();
   const cache = useQueryClient();
-  const params = useLocalSearchParams<{ childId?: string; create?: string }>();
+  const params = useLocalSearchParams<{ childId?: string; create?: string; taskId?: string }>();
   const [childId, setChildId] = useState<string | null>(params.childId ?? null);
   const [initialCreate, setInitialCreate] = useState(params.create === "1");
   const [paused, setPaused] = useState(false);
@@ -332,6 +332,7 @@ export function TasksScreen() {
                   key={task.id}
                   style={[
                     u.card,
+                    params.taskId === task.id && { borderColor: p.purple, borderWidth: 2 },
                     {
                       width: wide ? "48.5%" : "100%",
                       padding: 14,

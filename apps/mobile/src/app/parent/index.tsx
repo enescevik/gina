@@ -135,9 +135,10 @@ export default function ParentHomeScreen() {
     const dueIds = new Set(templatesDueOn((templates.data ?? []).filter((t2) => t2.child_id === child.id), today).map(task => task.id));
     const due = dueIds.size;
     const done = (completions.data ?? []).filter(
-      (c) => c.child_id === child.id && c.due_date === today && dueIds.has(c.template_id) && (c.status === "done" || c.status === "approved"),
+      (c) => c.child_id === child.id && c.due_date === today && dueIds.has(c.template_id) && c.status === "approved",
     ).length;
-    return { child, due, done, stars: stars.data?.get(child.id) ?? 0 };
+    const pending = (completions.data ?? []).filter(c => c.child_id === child.id && c.due_date === today && dueIds.has(c.template_id) && c.status === "done").length;
+    return { child, due, done, pending, stars: stars.data?.get(child.id) ?? 0 };
   });
 
   const occurrences = occurrencesBetween(events.data ?? [], from, to, timeZone, exceptions.data ?? new Set()).filter(
@@ -152,7 +153,7 @@ export default function ParentHomeScreen() {
   const pendingApprovals = (approvals.data ?? []).filter((a) => !childFilter || a.child_id === childFilter);
 
   const dailyTasks = visibleChildren.flatMap(child => templatesDueOn((templates.data ?? []).filter(template => template.child_id === child.id), today).map(task => ({
-    id: task.id, title: task.title, icon: task.icon, childName: child.name,
+    id: task.id, title: task.title, icon: task.icon, childId: child.id, childName: child.name,
     status: completions.data?.find(completion => completion.template_id === task.id && completion.child_id === child.id && completion.due_date === today)?.status ?? 'planned',
   })));
   return <ParentHomeView
@@ -163,7 +164,7 @@ export default function ParentHomeScreen() {
     review={(id,approve)=>review.mutate({id,approve})} reviewing={review.isPending} reviewingId={review.variables?.id} reviewError={review.error}
     occurrences={occurrences} upcoming={upcoming}
     loading={children.isLoading || templates.isLoading || approvals.isLoading || completions.isLoading || events.isLoading || exceptions.isLoading || stars.isLoading}
-    error={children.error ?? templates.error ?? completions.error ?? approvals.error ?? events.error ?? exceptions.error ?? stars.error ?? me.error}
+    error={children.error ?? templates.error ?? completions.error ?? approvals.error ?? events.error ?? exceptions.error ?? stars.error}
     retry={()=>{void children.refetch();void templates.refetch();void approvals.refetch();void completions.refetch();void events.refetch();void exceptions.refetch();void stars.refetch();void me.refetch();}}
   />;
 }

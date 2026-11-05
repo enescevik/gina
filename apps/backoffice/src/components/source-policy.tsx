@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, Notice } from "./Layout";
 import { supabase } from "@/lib/supabase";
 import { useAdminQuery } from "@/lib/use-async";
-export function SourcePolicy() {
+export function SourcePolicy({ onState }: { onState?: (id: string, dirty: boolean, busy: boolean) => void }) {
   const q = useAdminQuery(async () => {
     const r = await supabase().from("app_settings").select("value").eq(
       "key",
@@ -14,6 +14,11 @@ export function SourcePolicy() {
   const [draft, setDraft] = useState<number | null>(null),
     [busy, setBusy] = useState(false),
     [message, setMessage] = useState("");
+  const dirty = draft !== null && draft !== q.data;
+  useEffect(() => {
+    onState?.("source-policy", dirty, busy);
+    return () => onState?.("source-policy", false, false);
+  }, [dirty, busy, onState]);
   async function save() {
     if (busy || draft === null) return;
     setBusy(true);
@@ -62,7 +67,7 @@ export function SourcePolicy() {
       {message ? <p role="status" className="my-3">{message}</p> : null}
       <button
         className="btn"
-        disabled={busy || draft === null}
+        disabled={busy || !dirty}
         onClick={() => void save()}
       >
         {busy ? "Kaydediliyor…" : "Sınırı kaydet"}

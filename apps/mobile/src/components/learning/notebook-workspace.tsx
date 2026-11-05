@@ -48,6 +48,7 @@ export function NotebookWorkspace({
   saved,
   disabled,
   onExit,
+  exitLabel,
   footer,
   alerts,
 }: {
@@ -63,6 +64,7 @@ export function NotebookWorkspace({
   saved?: boolean;
   disabled: boolean;
   onExit: () => void;
+  exitLabel?: string;
   footer: ReactNode;
   alerts: ReactNode;
 }) {
@@ -219,7 +221,7 @@ export function NotebookWorkspace({
         <View style={s.header}>
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={t("notebook.pause")}
+            accessibilityLabel={exitLabel ?? t("notebook.pause")}
             onPress={onExit}
             style={s.back}
           >
@@ -246,7 +248,7 @@ export function NotebookWorkspace({
               style={s.take}
             >
               <Coffee size={20} color={p.ink} />
-              <Text style={s.takeText}>{t("notebook.pause")}</Text>
+              <Text style={s.takeText}>{exitLabel ?? t("notebook.pause")}</Text>
             </Pressable>
           )}
         </View>
