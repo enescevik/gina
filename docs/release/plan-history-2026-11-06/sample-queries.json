@@ -1,0 +1,532 @@
+{
+ "edit_today": {
+  "id": "30000000-0000-4000-8000-000000009801",
+  "active": true,
+  "revision": 2,
+  "archived_at": null,
+  "effective_from": "2026-11-06"
+ },
+ "edit_scheduled_plus7": {
+  "id": "30000000-0000-4000-8000-000000009801",
+  "active": true,
+  "revision": 3,
+  "archived_at": null,
+  "effective_from": "2026-11-13"
+ },
+ "timetable_today": {
+  "request": "04c74758-23bd-4ac3-b39b-12db07cceb66",
+  "child_id": "20000000-0000-4000-8000-000000009801",
+  "revision": 1,
+  "effective_from": "2026-11-06"
+ },
+ "timetable_scheduled_plus3": {
+  "request": "9a907fe2-2b15-4a13-b7af-04de2c3c989b",
+  "child_id": "20000000-0000-4000-8000-000000009801",
+  "revision": 2,
+  "effective_from": "2026-11-09"
+ },
+ "edit_past_rejected": "ERROR:  plan_effective_past",
+ "plan_for_day_yesterday": {
+  "day": "2026-11-05",
+  "plans": [],
+  "today": "2026-11-06",
+  "period": null,
+  "weekday": 4,
+  "child_id": "20000000-0000-4000-8000-000000009801",
+  "routines": [
+   {
+    "id": "30000000-0000-4000-8000-000000009801",
+    "icon": "read-book",
+    "stars": 2,
+    "title": "Kitap oku",
+    "status": "known",
+    "ends_on": null,
+    "revision": 1,
+    "starts_on": "2026-10-07",
+    "known_since": "2026-11-01",
+    "time_of_day": "any",
+    "days_of_week": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "effective_from": null,
+    "unknown_before": null,
+    "current_revision": 3,
+    "requires_approval": true,
+    "source_routine_id": null
+   }
+  ],
+  "timezone": "Europe/Istanbul",
+  "timetable": {
+   "source": "history",
+   "status": "unknown_before",
+   "lessons": [
+    {
+     "id": "l1",
+     "day": 5,
+     "end": "09:40",
+     "start": "09:00",
+     "title": "Matematik"
+    }
+   ],
+   "revision": 1,
+   "settings": {
+    "break": 10,
+    "start": "09:00",
+    "duration": 40
+   },
+   "period_id": null,
+   "day_lessons": [],
+   "known_since": "2026-11-06",
+   "effective_from": "2026-11-06",
+   "unknown_before": "2026-11-06"
+  }
+ },
+ "plan_for_day_day_minus_8_before_known": {
+  "day": "2026-10-29",
+  "plans": [],
+  "today": "2026-11-06",
+  "period": null,
+  "weekday": 4,
+  "child_id": "20000000-0000-4000-8000-000000009801",
+  "routines": [
+   {
+    "id": "30000000-0000-4000-8000-000000009801",
+    "icon": "read-book",
+    "stars": 2,
+    "title": "Kitap oku",
+    "status": "unknown_before",
+    "ends_on": null,
+    "revision": 1,
+    "starts_on": "2026-10-07",
+    "known_since": "2026-11-01",
+    "time_of_day": "any",
+    "days_of_week": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "effective_from": null,
+    "unknown_before": "2026-11-01",
+    "current_revision": 3,
+    "requires_approval": true,
+    "source_routine_id": null
+   }
+  ],
+  "timezone": "Europe/Istanbul",
+  "timetable": {
+   "source": "history",
+   "status": "unknown_before",
+   "lessons": [
+    {
+     "id": "l1",
+     "day": 5,
+     "end": "09:40",
+     "start": "09:00",
+     "title": "Matematik"
+    }
+   ],
+   "revision": 1,
+   "settings": {
+    "break": 10,
+    "start": "09:00",
+    "duration": 40
+   },
+   "period_id": null,
+   "day_lessons": [],
+   "known_since": "2026-11-06",
+   "effective_from": "2026-11-06",
+   "unknown_before": "2026-11-06"
+  }
+ },
+ "plan_for_day_today": {
+  "day": "2026-11-06",
+  "plans": [],
+  "today": "2026-11-06",
+  "period": null,
+  "weekday": 5,
+  "child_id": "20000000-0000-4000-8000-000000009801",
+  "routines": [
+   {
+    "id": "30000000-0000-4000-8000-000000009801",
+    "icon": "task-custom",
+    "stars": 5,
+    "title": "Birlikte kitap oku",
+    "status": "known",
+    "ends_on": null,
+    "revision": 2,
+    "starts_on": "2026-10-07",
+    "known_since": "2026-11-06",
+    "time_of_day": "evening",
+    "days_of_week": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "effective_from": "2026-11-06",
+    "unknown_before": null,
+    "current_revision": 3,
+    "requires_approval": true,
+    "source_routine_id": null
+   }
+  ],
+  "timezone": "Europe/Istanbul",
+  "timetable": {
+   "source": "history",
+   "status": "known",
+   "lessons": [
+    {
+     "id": "l1",
+     "day": 5,
+     "end": "09:40",
+     "start": "09:00",
+     "title": "Matematik"
+    }
+   ],
+   "revision": 1,
+   "settings": {
+    "break": 10,
+    "start": "09:00",
+    "duration": 40
+   },
+   "period_id": null,
+   "day_lessons": [
+    {
+     "id": "l1",
+     "day": 5,
+     "end": "09:40",
+     "start": "09:00",
+     "title": "Matematik"
+    }
+   ],
+   "known_since": "2026-11-06",
+   "effective_from": "2026-11-06",
+   "unknown_before": null
+  }
+ },
+ "plan_for_day_plus_3": {
+  "day": "2026-11-09",
+  "plans": [],
+  "today": "2026-11-06",
+  "period": null,
+  "weekday": 1,
+  "child_id": "20000000-0000-4000-8000-000000009801",
+  "routines": [
+   {
+    "id": "30000000-0000-4000-8000-000000009801",
+    "icon": "task-custom",
+    "stars": 5,
+    "title": "Birlikte kitap oku",
+    "status": "known",
+    "ends_on": null,
+    "revision": 2,
+    "starts_on": "2026-10-07",
+    "known_since": "2026-11-06",
+    "time_of_day": "evening",
+    "days_of_week": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "effective_from": "2026-11-06",
+    "unknown_before": null,
+    "current_revision": 3,
+    "requires_approval": true,
+    "source_routine_id": null
+   }
+  ],
+  "timezone": "Europe/Istanbul",
+  "timetable": {
+   "source": "history",
+   "status": "known",
+   "lessons": [
+    {
+     "id": "l1",
+     "day": 5,
+     "end": "09:40",
+     "start": "09:00",
+     "title": "Türkçe"
+    }
+   ],
+   "revision": 2,
+   "settings": {
+    "break": 15,
+    "start": "08:30",
+    "duration": 45
+   },
+   "period_id": null,
+   "day_lessons": [],
+   "known_since": "2026-11-06",
+   "effective_from": "2026-11-09",
+   "unknown_before": null
+  }
+ },
+ "plan_for_day_plus_7": {
+  "day": "2026-11-13",
+  "plans": [],
+  "today": "2026-11-06",
+  "period": null,
+  "weekday": 5,
+  "child_id": "20000000-0000-4000-8000-000000009801",
+  "routines": [
+   {
+    "id": "30000000-0000-4000-8000-000000009801",
+    "icon": "task-custom",
+    "stars": 9,
+    "title": "Birlikte kitap oku",
+    "status": "known",
+    "ends_on": null,
+    "revision": 3,
+    "starts_on": "2026-10-07",
+    "known_since": "2026-11-06",
+    "time_of_day": "evening",
+    "days_of_week": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "effective_from": "2026-11-13",
+    "unknown_before": null,
+    "current_revision": 3,
+    "requires_approval": true,
+    "source_routine_id": null
+   }
+  ],
+  "timezone": "Europe/Istanbul",
+  "timetable": {
+   "source": "history",
+   "status": "known",
+   "lessons": [
+    {
+     "id": "l1",
+     "day": 5,
+     "end": "09:40",
+     "start": "09:00",
+     "title": "Türkçe"
+    }
+   ],
+   "revision": 2,
+   "settings": {
+    "break": 15,
+    "start": "08:30",
+    "duration": 45
+   },
+   "period_id": null,
+   "day_lessons": [
+    {
+     "id": "l1",
+     "day": 5,
+     "end": "09:40",
+     "start": "09:00",
+     "title": "Türkçe"
+    }
+   ],
+   "known_since": "2026-11-06",
+   "effective_from": "2026-11-09",
+   "unknown_before": null
+  }
+ },
+ "history": [
+  {
+   "action": "save",
+   "revision": 3,
+   "created_at": "2026-11-05T21:31:38.528988+00:00",
+   "after_value": {
+    "id": "30000000-0000-4000-8000-000000009801",
+    "icon": "task-custom",
+    "stars": 9,
+    "title": "Birlikte kitap oku",
+    "active": true,
+    "ends_on": null,
+    "child_id": "20000000-0000-4000-8000-000000009801",
+    "revision": 3,
+    "family_id": "10000000-0000-4000-8000-000000009801",
+    "period_id": null,
+    "starts_on": "2026-10-07",
+    "created_at": "2026-11-05T21:31:37.752371+00:00",
+    "sort_order": 0,
+    "updated_at": "2026-11-05T21:31:38.528988+00:00",
+    "archived_at": null,
+    "time_of_day": "evening",
+    "days_of_week": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "effective_from": "2026-11-13",
+    "source_period_id": null,
+    "requires_approval": true,
+    "source_routine_id": null
+   },
+   "known_since": "2026-11-06",
+   "before_value": {
+    "id": "30000000-0000-4000-8000-000000009801",
+    "icon": "task-custom",
+    "stars": 5,
+    "title": "Birlikte kitap oku",
+    "active": true,
+    "ends_on": null,
+    "child_id": "20000000-0000-4000-8000-000000009801",
+    "revision": 2,
+    "family_id": "10000000-0000-4000-8000-000000009801",
+    "period_id": null,
+    "starts_on": "2026-10-07",
+    "created_at": "2026-11-05T21:31:37.752371+00:00",
+    "sort_order": 0,
+    "updated_at": "2026-11-05T21:31:38.276473+00:00",
+    "archived_at": null,
+    "time_of_day": "evening",
+    "days_of_week": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "effective_from": "2026-11-06",
+    "source_period_id": null,
+    "requires_approval": true,
+    "source_routine_id": null
+   },
+   "superseded_by": null,
+   "effective_from": "2026-11-13"
+  },
+  {
+   "action": "save",
+   "revision": 2,
+   "created_at": "2026-11-05T21:31:38.276473+00:00",
+   "after_value": {
+    "id": "30000000-0000-4000-8000-000000009801",
+    "icon": "task-custom",
+    "stars": 5,
+    "title": "Birlikte kitap oku",
+    "active": true,
+    "ends_on": null,
+    "child_id": "20000000-0000-4000-8000-000000009801",
+    "revision": 2,
+    "family_id": "10000000-0000-4000-8000-000000009801",
+    "period_id": null,
+    "starts_on": "2026-10-07",
+    "created_at": "2026-11-05T21:31:37.752371+00:00",
+    "sort_order": 0,
+    "updated_at": "2026-11-05T21:31:38.276473+00:00",
+    "archived_at": null,
+    "time_of_day": "evening",
+    "days_of_week": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "effective_from": "2026-11-06",
+    "source_period_id": null,
+    "requires_approval": true,
+    "source_routine_id": null
+   },
+   "known_since": "2026-11-06",
+   "before_value": {
+    "id": "30000000-0000-4000-8000-000000009801",
+    "icon": "read-book",
+    "stars": 2,
+    "title": "Kitap oku",
+    "active": true,
+    "ends_on": null,
+    "child_id": "20000000-0000-4000-8000-000000009801",
+    "revision": 1,
+    "family_id": "10000000-0000-4000-8000-000000009801",
+    "period_id": null,
+    "starts_on": "2026-10-07",
+    "created_at": "2026-11-05T21:31:37.752371+00:00",
+    "sort_order": 0,
+    "updated_at": "2026-11-05T21:31:37.752371+00:00",
+    "archived_at": null,
+    "time_of_day": "any",
+    "days_of_week": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "effective_from": null,
+    "source_period_id": null,
+    "requires_approval": true,
+    "source_routine_id": null
+   },
+   "superseded_by": null,
+   "effective_from": "2026-11-06"
+  },
+  {
+   "action": "create",
+   "revision": 1,
+   "created_at": "2026-11-05T21:31:37.752371+00:00",
+   "after_value": {
+    "id": "30000000-0000-4000-8000-000000009801",
+    "icon": "read-book",
+    "stars": 2,
+    "title": "Kitap oku",
+    "active": true,
+    "ends_on": null,
+    "child_id": "20000000-0000-4000-8000-000000009801",
+    "revision": 1,
+    "family_id": "10000000-0000-4000-8000-000000009801",
+    "period_id": null,
+    "starts_on": "2026-10-07",
+    "created_at": "2026-11-05T21:31:37.752371+00:00",
+    "sort_order": 0,
+    "updated_at": "2026-11-05T21:31:37.752371+00:00",
+    "archived_at": null,
+    "time_of_day": "any",
+    "days_of_week": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "effective_from": null,
+    "source_period_id": null,
+    "requires_approval": true,
+    "source_routine_id": null
+   },
+   "known_since": "2026-11-01",
+   "before_value": null,
+   "superseded_by": null,
+   "effective_from": null
+  }
+ ]
+}

@@ -80,3 +80,5 @@ export * from "./deletion-preview";
 export * from "./ai-capabilities";
 export * from "./shared-limits";
 export * from "./library-lifecycle";
+
+export * from "./plan-history";

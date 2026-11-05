@@ -3355,5 +3355,17 @@
   "bulkArchive.reason.plan_limit": "Açık plan sınırı dolu",
   "bulkArchive.reason.type_invalid": "Bu kayıt türü toplu işlem desteklemiyor",
   "bulkArchive.reason.item_invalid": "Kayıt bilgisi eksik",
-  "bulkArchive.reason.failed": "İşlenemedi; yeniden dene"
+  "bulkArchive.reason.failed": "İşlenemedi; yeniden dene",
+  "planHistory": {
+    "effectiveFrom": "Geçerlilik tarihi",
+    "effectiveToday": "Bugünden itibaren",
+    "effectiveFuture": "{{date}} tarihinden itibaren",
+    "effectivePast": "Geçmiş bir tarih seçilemez; gönderilmiş görevler ve kazanılan yıldızlar değişmez.",
+    "effectiveTooFar": "En fazla bir yıl ileriye planlanabilir.",
+    "scheduled": "{{date}} tarihinden itibaren geçerli olacak ayarlar. O güne kadar bugünkü ayarlar sürer.",
+    "legacy": "Bu ayarların başlangıç tarihi kayıtlı değil; {{date}} tarihinden beri bilinir.",
+    "unknownBefore": "Bu günün planı kayıtlarda yok. Gösterilen, {{date}} tarihinde bilinen en eski ayar.",
+    "periodSnapshot": "Kapanan dönemin {{date}} tarihinde saklanan programı. O günkü hücreler ayrıca kaydedilmemişti.",
+    "noTimetable": "Bu gün için kayıtlı ders programı yok."
+  }
 }

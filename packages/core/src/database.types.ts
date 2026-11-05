@@ -2325,7 +2325,8 @@ isOneToOne: false
       save_parent_note: { Args: { p_request_id: string; p_id?: string; p_revision?: number; p_action?: string; p_child_id?: string; p_value?: Json }; Returns: Json };
       note_history: { Args: { p_id: string; p_before_revision?: number }; Returns: Json };
       reward_history: { Args: { p_id: string; p_before_revision?: number }; Returns: Json };
-      change_task_routine: { Args: { p_request_id: string; p_id: string; p_revision: number; p_action: string; p_value?: Json }; Returns: Json };
+      change_task_routine: { Args: { p_request_id: string; p_id: string; p_revision: number; p_action: string; p_value?: Json; p_effective_from?: string }; Returns: Json };
+      plan_for_day: { Args: { p_child_id: string; p_day: string }; Returns: Json };
       task_routine_history: { Args: { p_id: string; p_before_revision?: number }; Returns: Json };
 
 admin_announcements: { Args: { p_before?: string; p_before_id?: string }; Returns: Json },
@@ -2371,7 +2372,7 @@ get_learning_source_set: { Args: { p_source: string }; Returns: Json },
             get_repeat_calendar: { Args: { p_attempt_id: string }; Returns: Json };
             get_school_bag: { Args: { p_child_id: string; p_day: string }; Returns: Json };
             save_school_bag: { Args: { p_request_id: string; p_child_id: string; p_day: string; p_revision: number; p_program_revision: number; p_items: Json }; Returns: Json };
-            save_school_timetable_request: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_lessons: Json; p_settings: Json }; Returns: Json };
+            save_school_timetable_request: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_lessons: Json; p_settings: Json; p_effective_from?: string }; Returns: Json };
             apply_repeat_calendar: { Args: { p_request_id: string; p_attempt_id: string; p_source_hash: string; p_question_ids: string[]; p_items: Json }; Returns: Json };
 "release_push_operations": { Args:{p_status?:string;p_before?:number;p_limit?:number};Returns:Json },
 "release_retry_push": { Args:{p_request:string;p_outbox_id:number;p_revision:number;p_reason:string;p_confirmed:boolean};Returns:Json },
