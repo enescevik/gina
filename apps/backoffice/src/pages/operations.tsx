@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, Layout, Notice } from "@/components/Layout";
 import { supabase } from "@/lib/supabase";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
-import { fmtDateTime } from "@/lib/format";
+import { AiFailureQueue, type QueueJob } from "@/components/ai-failure-queue";
 
 type Policy = {
   action: string;
@@ -12,16 +12,7 @@ type Policy = {
   per_minute: number;
   max_concurrent: number;
 };
-type Job = {
-  id: string;
-  family_id: string;
-  action: string;
-  status: string;
-  retryable: boolean;
-  error_code: string | null;
-  created_at: string;
-  updated_at: string;
-};
+type Job = QueueJob;
 interface Operations {
   policies: Policy[];
   health: {
@@ -30,7 +21,6 @@ interface Operations {
     open_until: string | null;
     paused: boolean;
   }[];
-  jobs: Job[];
 }
 const names: Record<string, string> = {
   generate: "Soru üretimi",
@@ -48,11 +38,8 @@ export default function OperationsPage() {
     unwrap(await supabase().rpc("admin_ai_operations")) as unknown as Operations
   );
   const [selected, setSelected] = useState<Job | null>(null);
-  // Hata kuyruğu önce: varsayılan görünüm işlem gerekenleri gösterir; sınırlar ayrı bölümdedir.
-  const [filter, setFilter] = useState<"attention" | "all" | "failed" | "uncertain" | "working" | "done">("attention");
-  const jobs = (data?.jobs ?? []).filter((j) =>
-    filter === "all" ? true : filter === "attention" ? j.status === "failed" || j.status === "uncertain" || j.retryable : j.status === filter
-  );
+  // Arıza kuyruğu sunucuda filtrelenir/sayfalanır (S06); bu sayaç yeniden yüklemeyi tetikler.
+  const [refreshKey, setRefreshKey] = useState(0);
   const [reason, setReason] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -73,6 +60,7 @@ export default function OperationsPage() {
       setReason("");
       setConfirmed(false);
       reload();
+      setRefreshKey((n) => n + 1);
     } catch {
       setMessage(
         "İşlem tamamlanamadı. Güncel durumu yenileyip yeniden kontrol edin.",
@@ -95,7 +83,7 @@ export default function OperationsPage() {
         )
         : null}
       <div className="mb-6 flex flex-wrap items-center gap-3">
-        <button className="btn-secondary" onClick={reload}>
+        <button className="btn-secondary" onClick={() => { reload(); setRefreshKey((n) => n + 1); }}>
           Durumu yenile
         </button>
         {data?.health.map((h) => (
@@ -155,75 +143,14 @@ export default function OperationsPage() {
           </Card>
         )
         : null}
-      <Card title="İşlem kuyruğu · son 100 kayıt">
-        <div className="mb-4 flex flex-wrap items-end gap-3">
-          <label className="label mb-0">
-            Göster
-            <select className="input mt-2" value={filter} onChange={(e) => setFilter(e.target.value as typeof filter)}>
-              <option value="attention">İşlem gerekenler (başarısız, belirsiz, yeniden denenebilir)</option>
-              <option value="failed">Başarısız</option>
-              <option value="uncertain">Sonuç doğrulanamadı</option>
-              <option value="working">İşleniyor</option>
-              <option value="done">Hazır</option>
-              <option value="all">Tümü</option>
-            </select>
-          </label>
-          {data ? <p className="text-sm text-slate-600" role="status">{jobs.length} / {data.jobs.length} kayıt gösteriliyor. Daha eski kayıtlar bu ekranda listelenmez.</p> : null}
-        </div>
-        <div className="overflow-x-auto">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>İşlem</th>
-                <th>Durum</th>
-                <th>Zaman</th>
-                <th>Kayıt</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {jobs.map((j) => (
-                <tr key={j.id}>
-                  <td>{names[j.action]}</td>
-                  <td>
-                    {names[j.status]}
-                    {j.error_code
-                      ? (
-                        <div className="mt-1 text-xs text-slate-500">
-                          {j.error_code}
-                        </div>
-                      )
-                      : null}
-                  </td>
-                  <td>{fmtDateTime(j.created_at)}</td>
-                  <td className="text-xs text-slate-500">{j.id}</td>
-                  <td>
-                    {j.retryable
-                      ? (
-                        <button
-                          className="btn-secondary"
-                          onClick={() => {
-                            setSelected(j);
-                            setReason("");
-                            setConfirmed(false);
-                          }}
-                        >
-                          İncele
-                        </button>
-                      )
-                      : null}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {data && !data.jobs.length
-          ? <p className="py-6 text-slate-500">Henüz AI işlemi yok.</p>
-          : data && !jobs.length
-          ? <p className="py-6 text-slate-500">Bu görünümde işlem gereken kayıt yok.</p>
-          : null}
-      </Card>
+      <AiFailureQueue
+        refreshKey={refreshKey}
+        onInspect={(j) => {
+          setSelected(j);
+          setReason("");
+          setConfirmed(false);
+        }}
+      />
       <Card title="Paketlere göre işlem sınırları">
         <div className="overflow-x-auto">
           <table className="table">
