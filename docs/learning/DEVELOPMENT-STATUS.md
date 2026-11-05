@@ -668,3 +668,10 @@ Not ekranı onaylı ortak sihirbaza taşındı: özel varsayılan, içerik/payla
 ## 5 Kasım — tüm ekranlarda çok yönlü incelemenin açık kabul kapısı
 
 Ana devir listesine Q00 eklendi. Mobil/web/çocuk modları/yönetim, tüm rotalar ve modal/sihirbaz/hata durumları psikoloji, pedagoji, eğitmen, UX/görsel tasarım, mimari/güvenlik ve erişilebilirlik ölçütleriyle incelenecek. Bulgu listesiyle yetinilmeyecek: düzeltme, aynı senaryoyla tekrar kontrol ve önce/sonra kanıtı zorunlu. Q00 ilk incelemesi ekran değişikliklerinden önce başlar; nihai kapanışı Q01/Q02 ile yapılır. Son yayın ve 3B kapısı bu işi de içerir. Bu kayıt yalnız devir gereksinimini netleştirir; incelemelerin tamamlandığı iddiası değildir.
+
+
+## 5 Kasım — güncel MEB senaryosu ve Claude gece devri
+
+Ana listeye N00 ve M01 eklendi. N00, Fable ön incelemesi, gerekli tek başlangıç soru paketi, gerçek model/kota/izin kontrolü, tarihli 07.00 hedefi, yararlı paralel alt ajanlar ve checkpoint/engel yönetimini tanımlar. Bu dokümantasyon sırasında Fable çalıştırılmadı veya gece otomasyonu kurulmadı.
+
+M01, mevcut katalog→aile blueprint→AI dağılım bağını koruyarak resmî dosyayı edinme/revizyon ve soru başına içerik uygunluğunu tamamlar. 648 senaryo/708 çıktı adayının teknik çıkarılması onay/yayın değildir. P02 ve K01 M01'e bağlandı; 20 soru havuz hedefi ile senaryo sınavının gerçek adedi ayrıldı. Kaynak ve kararlar: `reports/MEB senaryoları ve gece devri.md`; uygulama sözleşmeleri: `docs/learning/MEB-SCENARIO-PROTOCOL.md`, `docs/CLAUDE-NIGHT-RUN.md`. Bu değişiklik yalnız dokümantasyon; uygulama/üretim yayını yapılmadı.

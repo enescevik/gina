@@ -5,6 +5,8 @@ Bu dosya **kalan işlerin yürütme sırası ve kapanış ölçütleri için ana
 
 ## 1. Devralırken
 
+**Son ek talep:** Önce N00 kapsamında Fable ile proje incelemesi ve başlangıç soru paketi; ardından tarihli 07.00 hedefine kadar yararlı alt ajanlarla otonom ilerleme. OYSS için M01 güncel resmî kaynak edinme ve soru ilişkisi zorunludur. Ayrıntılar: [gece protokolü](CLAUDE-NIGHT-RUN.md), [MEB senaryo protokolü](learning/MEB-SCENARIO-PROTOCOL.md), [araştırma ve kaynaklar](../reports/MEB%20senaryoları%20ve%20gece%20devri.md).
+
 1. Güncel main'i getir; `git status` ve worktree'leri incele. Yerel değişiklikleri koru; reset/clean, demo DB sıfırlama veya yeniden tohumlama yapma. Bu devir hazırlanırken aktif repo `/Users/enes/.codex/worktrees/gina-library-access/gina` idi; yeni ortamda yol farklı olabilir.
 2. Önce bu belge, `docs/EXPERIENCE-IMPLEMENTATION.md`, `docs/DECISIONS.md`, `apps/mobile/AGENTS.md`, `apps/backoffice/AGENTS.md` ve aşağıdaki yayın raporlarını oku. Ürün kurallarındaki eski metinle son kullanıcı kararı çelişirse son karar geçerlidir; değişikliği karar kaydına işle.
 3. Kodda uygulanmış işleri yeniden kurma. Rota envanterindeki “yeniden doğrulanacak” ifadesi mevcut ekranın bozuk veya hiç yapılmamış olduğu anlamına gelmez. Önce gerçek davranışı dene, farkı kaydet, yalnız gereken kısmı değiştir.
@@ -27,6 +29,7 @@ Bu dosya **kalan işlerin yürütme sırası ve kapanış ölçütleri için ana
 | Özel not düzenleme/geçmiş/arşiv ve kişisel not RLS düzeltmesi | PR #147 main'de; henüz üretime dağıtılmadı. [Kanıt](release/note-history-2026-11-05/README.md). | R01 yayın. “Sadece ben” erişim düzeltmesi migration uygulanmadan canlıda etkin değil. |
 | Yönetilen eğitim takvimleri, okul istisna kuyruğu, uygulama içi duyurular | Altyapı 26'da; yıl sınırı hatırlatması varsayılan kapalı. | Gerçek takvimler, fiziksel push, e-posta/SMS kanalları. |
 | Defter, ortak kaynak, veli çizim katmanı, cevap/taslak kurtarma | Mevcut çalışan temel; web/native simülatör ve yerel servis kanıtları var. | Kullanım sadeleştirmeleri ve fiziksel Pencil/klavye kabulü; yeniden yazma gerekçesi değil. |
+| MEB senaryo bağı | Katalog inceleme/yayın, aile seçimi, sunucuda sabit senaryo ve AI toplam/blok sayısı kontrolü kodda mevcut. 648 senaryo/708 çıktı kaydı henüz inceleme bekleyen adaydır. | M01: güncel dosya edinme/revizyon, soru başına çıktı ve içerik uygunluğu; canlı veri/yayın durumunu devralırken doğrula. Eski OUTCOME-INDEX entegrasyon notunu kod yokluğu sayma. |
 | AI | Anthropic gerçek üretim/kayıt/kota akışında test edildi. | Ek sağlayıcı adapterleri, özellik/model yetenek matrisi ve yeni kullanım kontrolleri. |
 | Kütüphane | `docs/learning/library-pilot/coverage.json`: 77 sınıf/ders, hedef 1.540; 100 taslak, 1.440 eksik, 0 bağımsız onay, 0 yayın. | K01. Bu 77 hücre bütün seçmeli/alan derslerinin ve yıllık kazanımların tam kapsamı değildir. |
 
@@ -48,10 +51,17 @@ Mobil kaynaklarda `components/…` kısaltması `apps/mobile/src/components/…`
 
 ## 4. İş sırası ve durum yöntemi
 
-Sıra: **R01 → Q00 ilk inceleme → L01–L04 → U01–U09 → P01–P05 → B01–B04 → S01–S06 → Q01–Q04 → K01 → F01 → R02 → WORLD-01**.
-Bu, geliştirme önceliğidir; ileri aşamadaki servis/entegrasyon kabulü erken UI işini durdurmaz. Aşağıda “son kabul” olarak belirtilen bağlar geliştirmeye başlama koşulu değildir. Ortak sözleşmeyi mevcut koddan sabitle, iki tarafı ayrı uygula, birleşik testi sonra kapat. Bağımsız işler öne alınabilir; R01 gizlilik yayını diğer kapsam için bekletilmez. S01/S02/S03/S05 hesap sahibi veya uzman adımları erkenden başlatılır. Ara TestFlight yayınları yapılabilir. R02 tüm kapsamın son yayın/kabulü; 3B bundan sonradır. Q00 ilk incelemesi iyileştirmelerin öncesinde başlar, her pakette düzeltme sonrası tekrarlanır; yalnız en sondaki cihaz testine bırakılmaz.
+Sıra: **N00 → R01 → Q00 ilk inceleme → L01–L04 → U01–U09 → M01 → P01–P05 → B01–B04 → S01–S06 → Q01–Q04 → K01 → F01 → R02 → WORLD-01**.
+N00 başlangıç hazırlığıdır; R01 acil yayını geniş Fable/Q00 araştırmasının bütün ayrıntılarının kapanmasını beklemez. M01 bağımsız teknik hazırlığı öne alınabilir; toplu kütüphane üretimi K01 sırasını korur. Bu, geliştirme önceliğidir; ileri aşamadaki servis/entegrasyon kabulü erken UI işini durdurmaz. Aşağıda “son kabul” olarak belirtilen bağlar geliştirmeye başlama koşulu değildir. Ortak sözleşmeyi mevcut koddan sabitle, iki tarafı ayrı uygula, birleşik testi sonra kapat. Bağımsız işler öne alınabilir; R01 gizlilik yayını diğer kapsam için bekletilmez. S01/S02/S03/S05 hesap sahibi veya uzman adımları erkenden başlatılır. Ara TestFlight yayınları yapılabilir. R02 tüm kapsamın son yayın/kabulü; 3B bundan sonradır. Q00 ilk incelemesi iyileştirmelerin öncesinde başlar, her pakette düzeltme sonrası tekrarlanır; yalnız en sondaki cihaz testine bırakılmaz.
 
 Durumlar: `AÇIK`, `YAPILIYOR`, `KOD HAZIR`, `TEST EDİLDİ`, `YAYINLANDI`, `BEKLİYOR`. Kutucuk ancak işin kabul ölçütleri kapandığında işaretlenir. Her işte sonuç notu şu alanları taşımalı: **commit/PR; değişen dosyalar; test/ekran kanıtı; yayın sürümü veya yayımlanmadı; kalan sınır**. Başlangıçta aşağıdaki bütün kutular açıktır; “temeli var” yeniden geliştirme talimatı değildir.
+
+### N00 — önce Fable incelemesi, başlangıç soruları ve gece çalışma düzeni
+- [ ] **N00 / Gece devrini hazırla ve kanıtla.** Bağımlılık: çalışan Claude yüzeyi, gerçek model/kota/araç erişimi; kullanıcı ayrılmadan gerekli başlangıç cevapları.
+  - Kaynak: [Claude gece protokolü](CLAUDE-NIGHT-RUN.md), bu liste, Q00 ekran envanteri, M01 araştırması, mevcut kod/açık PR/yayın raporları.
+  - Yap: Fable erişimini doğrula ve projeyi önce onunla incele; gerçek model/commit, öneriler, kararlar ve bağımlılıkları kaydet. Önce kendin erişim kontrollerini yap, sonra yalnız mevcut kararlarda cevabı olmayan ürün/izin/hesap/süre sorularını tek başlangıç paketinde sor. Fable yoksa kullanıcı ayrılmadan izinli alternatifi netleştir; yapılmamış incelemeyi Fable raporu diye yazma.
+  - Çalışma: hedef tarih ve Europe/Istanbul 07.00 bitişi; 06.30 toparlama. Yararlı bağımsız işleri ortamın izin verdiği alt ajanlara dağıt; ayrı worktree/dosya sahipliği, tek migration/merge/yayın koordinatörü, bağımsız kontrol ve checkpoint. Aynı engelde üç anlamlı deneme veya 15 dakika etkin teşhis sonrası kaydet ve bağımsız işe geç. Rutin onayları tekrar isteme; yeni zorunlu onayı atlama.
+  - Kabul: `FABLE-PREFLIGHT.md` ve `PROGRESS.md` içinde gerçek model, başlangıç cevapları, iş/ajan dağılımı, test/PR/yayın ve sabah devam kaydı. Yüzde 55/07.00 kullanıcı beyanı doğrulanmadan gerçek kota sayılmaz; abonelik dışı yeni ücretli tüketim varsayılan 0. Bu belge oturum sürekliliği garantisi veya otomasyon kurulumu değildir; kütüphane ve 3B sırası korunur.
 
 ### R01 — hazır düzeltmelerin öncelikli yayını
 - [ ] **R01 / P0 / Kod hazır, yayın açık.** Bağımlılık: güncel canlı sürüm/env ve yetkili yayın oturumları.
@@ -137,14 +147,21 @@ Durumlar: `AÇIK`, `YAPILIYOR`, `KOD HAZIR`, `TEST EDİLDİ`, `YAYINLANDI`, `BEK
   - Yap: tamamlanan not/puan/ödül geçmişini koru; okul puanında metin araması; uzun listede doğru filtre/sayfalama; gerçek AI/belge/kütüphane kullanım hakları ve yenilenme zamanı. Deneme hakkı/operatör telafisi/mağaza aboneliğini açık ayır.
   - Kabul: geçmiş dönem ve 200+ kayıt, iki veli/kişisel not, arşivdeki kota; test paketini değiştirmek gerçek satın alma değildir. Çocuk için yeni not ekranı mevcut pakette yok; gerektiğinde ayrı kapsam kaydı olmadan varmış gibi anlatma.
 
+### M01 — güncel MEB senaryosunu edin, doğrula ve özgün sorulara bağla
+- [ ] **M01 / OYSS kaynak ve soru uygunluğu.** Bağımlılık: mevcut katalog/blueprint/AI bağı; güncel kamuya açık resmî kaynak. P02 ve K01'in senaryo kabulü M01'e bağlıdır; mevcut akış yeniden kurulmaz.
+  - Kaynak: [MEB uygulama sözleşmesi](learning/MEB-SCENARIO-PROTOCOL.md); `scripts/extract-meb-scenarios.py`, `packages/core/src/{curriculum-review,catalog-blueprint}.ts`, yönetim `components/curriculum-review.tsx`, mobil `parent/prova/{catalog,blueprint}.tsx`, `supabase/functions/_shared/{catalogue-plan,generation-result}.ts`; 078000/079000 katalog migration'ları.
+  - Yap: hedef yıl/dönem/yazılı/sınıf/ders/program için güncel resmî dizinden uygun dosyayı gerçekten indir; URL zinciri, tarih, hash ve kaynak hücrelerini tut. Aynı hash tekrar iş/kota doğurmasın; değişen kaynak yeni revizyon ve insan incelemesi açsın. Eski atanmış sınav sabit kalsın. Kaynak güvenliği, eksik/ağ/stale durumları ve güncel merkezî/yerel yetki kuralları protokoldeki gibi uygulanır.
+  - Yap: okulun seçtiği senaryo ile velinin çalışma tercihini ayır. Mevcut toplam/blok denetimini koruyup soru başına blok/çıktı/rubrik ve anlamsal uygunluk kanıtını tamamla. AI'ya yalnız URL değil gerçek normalize kaynak metni ver. Özgün soru üret; öğretmen EBA havuzu/gizli sınav sorularını kopyalama. Sırf senaryolu diye her soruya hikâye/görsel dayatma.
+  - Kabul: protokoldeki kaynak/revizyon/SSRF/tekrar/dağılım/rol ve telefon–tablet testleri; soru→çıktı→blok→kaynak sürümü izi. Eksik veya değiştirilmiş dağılım “tam senaryo uyumlu” sayılmaz. 20 soruluk havuzdan gerçek senaryo adediyle doğru seçme; okul tercihi bilinmiyor ve kapsam dışı sınıf açık. 648 adayın teknik importu editoryal yayın onayı değildir.
+
 ### P — birleşik Prova, çözüm ve değerlendirme
 - [ ] **P01 / Tek Prova merkezi ve hazırlayıcı.** Bağımlılık: U04/U05 ve mevcut eğitim kapsamı.
   - Kaynak: `/parent/prova`, `components/learning/prova-builder*.tsx`, `prova-builder-data.ts`, `prova-source-picker.tsx`; `/parent/prova/{builder,shared-source,exam,generate}`.
   - Yap: Hazırla/Gönderilenler/İncelenecekler ayrımı; tek taslak ve tek soru sırası içinde elle, AI, kütüphane ve ortak kaynak blokları. Ders listesini boş soru bankasına bağımlı bırakma. Çocuk/sınıf/okul/program/dönem değişince uygunsuz soruyu işaretle; kaynak grubunu bölmeden taşı. Eski giriş yolları doğru taslağa yönlensin.
   - Kabul: boş bankada ders seçilir; tek ders/karma, kısmen veya tamamen AI, aynı metin/görselden birden çok soru; taslak tekrar kaydı çoğalmaz, atanmış sınavın sabit sürümü değişmez.
-- [ ] **P02 / Soru editörü, senaryo ve kitapçık.** Bağımlılık: P01 ve mevcut kapsam kataloğu. Doğrulanmış katalog içeriğinin son kabulü S04 ile.
+- [ ] **P02 / Soru editörü, senaryo ve kitapçık.** Bağımlılık: P01 ve mevcut kapsam kataloğu. Güncel senaryo ve soru ilişkisi M01; doğrulanmış katalog içeriğinin son kabulü S04 ile.
   - Kaynak: `/parent/prova/{question,catalog,blueprint,level,booklet}`, öğrenme bileşenleri ve `docs/learning/catalog/`.
-  - Yap: soru/görsel → yanıt/ölçüt → öğrenci önizleme; doğru şık başlangıçta boş kalır. MEB Ortak Yazılı, LGS/diğer ve serbest çalışma ayrımı; yıl/sınıf/dönem/yazılı ve okulun seçtiği senaryo. Kazanım/sayı dağılımı şablonunu soru üretiminden ayır. Başlangıç çalışmasını standart tanı gibi etiketleme. Öğrenci kitapçığı ve cevap anahtarı ayrı.
+  - Yap: soru/görsel → yanıt/ölçüt → öğrenci önizleme; doğru şık başlangıçta boş kalır. MEB Ortak Yazılı, LGS/diğer ve serbest çalışma ayrımı; yıl/sınıf/dönem/yazılı ve okulun seçtiği senaryo. M01 protokolüyle güncel resmî dosyayı edinip okul seçimi/çalışma tercihini açık göster; mevcut kaynak bağını koru. Kazanım/sayı dağılımı şablonunu soru üretiminden ayır. Başlangıç çalışmasını standart tanı gibi etiketleme. Öğrenci kitapçığı ve cevap anahtarı ayrı.
   - Kabul: ortak kaynak/çizim/görsel, alternatif açık uçlu doğru cevaplar, okunur telefon/tablet ve çıktıda doğru sayfalama. Kaynak yoksa resmî müfredata uygunluk iddia edilmez; telifli sorular kopyalanmaz.
 - [ ] **P03 / Çözüm defteri ve soru türleri.** Bağımlılık: P01/P02. Fiziksel kabul kanıtı Q01 matrisine işlenir.
   - Kaynak: `components/learning/notebook-*.tsx`, `notebook-layout.ts`, child/child-mode Prova çözücüleri, `docs/design/screens/prova-notebook/`.
@@ -222,9 +239,9 @@ Durumlar: `AÇIK`, `YAPILIYOR`, `KOD HAZIR`, `TEST EDİLDİ`, `YAYINLANDI`, `BEK
   - Kabul: atlanan iş başarı sayılmaz; yanlış/yerel/sunucu anahtarlı public env reddedilir; yönetim ana/önizleme domaini korumalı; web/mobil/tablet aynı kaynak ve doğru manifest/IPA; otomatik yayın çalıştığı gerçek kanıtla gösterilir.
 
 ### K01 — kütüphane içerikleri: yazılım işlerinden sonra, 3B'den önce
-- [ ] **K01 / Özgün ilk soru havuzu ve yayın.** Bağımlılık: P02/P05/B02/B03/S04/Q02 ve X06 bağımsız eğitimci.
+- [ ] **K01 / Özgün ilk soru havuzu ve yayın.** Bağımlılık: M01/P02/P05/B02/B03/S04/Q02 ve X06 bağımsız eğitimci.
   - Kaynak: `docs/learning/library-pilot/coverage.json`, mevcut beş pilot paket; `scripts/{build-library-coverage,validate-library-draft,prepare-library-import}.py`, `docs/learning/catalog/`.
-  - Yap: 100 mevcut taslağı koru, 1.440 eksik taslağı sınıf/ders başına 20 hedefiyle sırala. Her pakette güncel program/yıl/kazanım, uygun soru türü, özgün görsel/metin, ortak kaynak grubu, cevap/açıklama/rubrik, öğrenci ve editör önizlemesi. Uygun resmî örnekleri araştır; MEB Ortak Yazılı ile LGS/diğer biçimleri karıştırma. Telifli soruları aynen çoğaltma.
+  - Yap: 100 mevcut taslağı koru, 1.440 eksik taslağı sınıf/ders başına 20 hedefiyle sırala. Her pakette güncel program/yıl/kazanım, uygun soru türü, özgün görsel/metin, ortak kaynak grubu, cevap/açıklama/rubrik, öğrenci ve editör önizlemesi. Uygun resmî örnekleri araştır; MEB Ortak Yazılı ile LGS/diğer biçimleri karıştırma. Telifli soruları aynen çoğaltma. OYSS alt havuzunu M01 ile edinilmiş güncel, incelenmiş senaryo/çıktı haritasına göre özgün üret; her soruyu uygun senaryo sürümlerine bağla. 20 havuz hedefidir, sınav soru sayısı değildir; eksik çıktı/adedi açık göster, OYSS dışı kapsamı bu etiketle yayımlama.
   - Kabul: otomatik şema/çözüm/tekrar/görsel/aktarım testleri; bağımsız alan ve dil incelemesi; yönetimde gerekçeli onay, ardından ayrı yayın; aynı import/edinim/onay tek hak. Sayacı gerçek dosyalardan güncelle. 20 soruluk ünite havuzunu tüm yıllık müfredat veya tüm dersler tamamlandı diye adlandırma; seçmeli/alan dersleri kapsam farkını raporla.
   - Dış engel: editör yoksa teknik olarak hazır taslak diye teslim et; onay/yayın sayılarını artırma, iş `BEKLİYOR` kalır.
 
@@ -234,7 +251,7 @@ Durumlar: `AÇIK`, `YAPILIYOR`, `KOD HAZIR`, `TEST EDİLDİ`, `YAYINLANDI`, `BEK
   - Kabul: neyin mevcut ürüne dahil/neye ayrıca karar gerektiği açık; tasarım/uygulama/yayın onayı varmış gibi davranılmaz. Bu işin mevcut kapanışı plan teslimi ve kullanıcı kararı kaydıdır. Kullanıcı kapsamı genişletirse yeni iş kimlikleri ekle; 3B bunların da arkasına gider.
 
 ### R02 — son bütünleşik yayın ve devir
-- [ ] **R02 / Tüm tamamlanan kapsamı yayımla ve raporla.** Bağımlılık: R01, Q00 düzeltme ve tekrar kontrolleri, L/U/P/B/S/Q/K ve F01 planı; gereken dış onaylar. Ara yayınlar bu kapının yerine geçmez.
+- [ ] **R02 / Tüm tamamlanan kapsamı yayımla ve raporla.** Bağımlılık: N00 çalışma kaydı, M01, R01, Q00 düzeltme ve tekrar kontrolleri, L/U/P/B/S/Q/K ve F01 planı; gereken dış onaylar. Ara yayınlar bu kapının yerine geçmez.
   - Yap: migration/Edge→web/yönetim→canlı kabul→imzalı mobil→TestFlight→kayıtlı tablet Ad Hoc→fiziksel kabul. Android hedefi için Play iç test; mağaza başvurusu yalnız ilgili işletme/hukuk/ödeme kapıları tamamlanınca. Gerçek aileleri testle değiştirme.
   - Kabul: kaynak commit, migration seviyesi, Edge ve hosting sürümü, Apple işleme/grup erişimi, tablet canlı manifest ve IPA hash, Android durumu, gerçek cihaz kanıtı. Kullanıcıya çalışan linkler, değişenler, açık sınırlamalar ve hesap sahibinin adım adım işleri verilir. “Her şey bitti” ancak bütün zorunlu işlerin kanıtı varsa söylenir.
 
@@ -275,4 +292,8 @@ Planlama tahmini: hazır yayın ½–1 iş günü; dönem/temizlik 3–5; mevcut
 
 ## 8. Claude'a verilecek başlangıç talimatı
 
-“GINA'da `docs/CLAUDE-REMAINING-WORK.md` dosyasını ana yürütme listesi, `docs/EXPERIENCE-IMPLEMENTATION.md` dosyasını ekran envanteri olarak oku. Güncel main'i yerel değişiklikleri koruyarak al. Önce mevcut yayın durumunu doğrula ve R01'den başla; tamamlanan işleri yeniden yapmadan sırayla ilerle. Onaylı tasarım/marka/maskotu koru. Q00 gereği bütün uygulamalardaki her ekran ve alt akışı psikoloji, pedagoji, eğitmen, UX/görsel tasarım, yazılım mimarisi/güvenlik ve erişilebilirlik bakışlarıyla gerçek kullanımda incele; bulguları yalnız raporlama, düzelt ve tekrar doğrula. Her işin kabul ölçütünü gerçek test ve telefon/tablet kanıtıyla kapat; kod, test ve yayını ayrı raporla. Hesap sahibi veya bağımsız editör gerektiren işleri açık tutup bağımsız işlere devam et. İşlerin tümü tamamlanıp R02 kapatılmadan 3B dünya/atmosfer üretimine başlama. Önceki talimatlarla çelişkide bu dosyadaki son kullanıcı kararını uygula.”
+“GINA'da güncel main'i yerel değişiklikleri koruyarak al. `docs/CLAUDE-REMAINING-WORK.md`, `docs/CLAUDE-NIGHT-RUN.md`, `docs/learning/MEB-SCENARIO-PROTOCOL.md` ve `docs/EXPERIENCE-IMPLEMENTATION.md` dosyalarını oku. Önce N00 gereği Fable ile projeyi ve kalan işleri incele; kullanılan gerçek modeli ve kaynak commit'i kaydet. Önerilerini, gerekçeli kararlarını ve bu geceki iş dağılımını çıkar. Kendin kontrol edebileceğin erişimleri kontrol et; benden gerçekten gereken soruları/işlemleri ben ayrılmadan tek başlangıç paketinde iste. Fable erişimin yoksa bunu başta belirt ve izinli alternatifi netleştir.
+
+Gerekli cevaplardan sonra belirlediğimiz tarihli 07.00 Europe/Istanbul hedefine kadar bağımsız işleri ortamın desteklediği kadar yararlı alt ajana bölerek otonom ilerle. Önce R01 acil yayını, sonra listedeki bağımlılıklar; tamamlanmış işleri yeniden yapma. Ortak dosya/migration/merge/yayını tek koordinatör yönetsin. Engellenen işi kanıtıyla açık bırakıp bağımsız işe geç; checkpoint tut, 06.30'da toparlan ve 07.00'de gerçek ilerleme raporu ver. Yüzde 55 hakkım/07.00 yenilenme beyanımı kullanım ekranından doğrula; sırf tüketim için iş üretme, abonelik dışında izinsiz ücretli API'ye geçme.
+
+Q00 gereği bütün uygulamalardaki her ekran ve alt akışı psikoloji, pedagoji, eğitmen, UX/görsel tasarım, mimari/güvenlik ve erişilebilirlik açısından gerçek kullanımda incele; yalnız raporlama, düzelt ve tekrar doğrula. M01 gereği OYSS için ilgili güncel resmî senaryoyu indir, okul seçimini varsayma, özgün soruları çıktı/blok/kaynak sürümüne bağla; K01 OYSS havuzunu da bu temelden üret. Onaylı tasarım/marka/maskotu koru. Her işte kod, test ve yayını ayrı raporla. Kütüphane toplu üretimi yazılım işlerinden sonra; bütün işler ve R02 tamamlanmadan 3B dünya/atmosfer üretimine başlama.”
