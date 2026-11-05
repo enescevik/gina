@@ -64,9 +64,9 @@ describe("period transfer decisions", () => {
     d.plans[0]!.action = "copy";
     d.plans[0]!.due_on = "2026-11-10";
     const payload = transferItemsPayload(d, preview);
-    expect(payload.routines[0]).toEqual({ id: preview.routines[0].id, revision: 3, action: "copy", days_of_week: [1, 3, 5], starts_on: "2026-11-05" });
-    expect(payload.routines[1]).toEqual({ id: preview.routines[1].id, revision: 1, action: "pause" });
-    expect(payload.plans[0]).toEqual({ id: preview.plans[0].id, revision: 4, action: "copy", planned_on: "2026-11-05", due_on: "2026-11-10" });
-    expect(routineCopyDiff(preview.routines[0], d.routines[0]!)).toEqual({ days: true, starts_on: true, ends_on: false });
+    expect(payload.routines[0]).toEqual({ id: preview.routines[0]!.id, revision: 3, action: "copy", days_of_week: [1, 3, 5], starts_on: "2026-11-05" });
+    expect(payload.routines[1]).toEqual({ id: preview.routines[1]!.id, revision: 1, action: "pause" });
+    expect(payload.plans[0]).toEqual({ id: preview.plans[0]!.id, revision: 4, action: "copy", planned_on: "2026-11-05", due_on: "2026-11-10" });
+    expect(routineCopyDiff(preview.routines[0]!, d.routines[0]!)).toEqual({ days: true, starts_on: true, ends_on: false });
   });
 });
