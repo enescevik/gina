@@ -102,6 +102,7 @@ export function useBulkArchive({ type, mode, scope, candidates, onFinished }: {
     lock.current = true;
     setBusy(true);
     setError(null);
+    let reply: BulkArchiveResult;
     try {
       const items = mode === "archive" ? bulkItemsFromPreview(preview, chosen) : bulkRestoreItemsFromPreview(preview, chosen);
       const signature = JSON.stringify(items);
@@ -110,15 +111,21 @@ export function useBulkArchive({ type, mode, scope, candidates, onFinished }: {
       const key = attempt.current.key;
       const { data, error: failure } = await bulkRpc.rpc(mode === "archive" ? "bulk_archive_apply" : "bulk_restore_apply", { p_items: items, p_idempotency_key: key });
       if (failure) throw failure;
-      const reply = readBulkResult(data, key, mode);
+      reply = readBulkResult(data, key, mode);
       attempt.current = null;
       setResult(reply);
-      await onFinished(reply);
     } catch {
       setError("apply");
+      return;
     } finally {
       lock.current = false;
       setBusy(false);
+    }
+    // The list refresh must not hold the sheet: "Tamam" works while it refetches.
+    try {
+      await onFinished(reply);
+    } catch {
+      // A failed refetch keeps the list's own error/retry state; the result is already shown.
     }
   }
 
