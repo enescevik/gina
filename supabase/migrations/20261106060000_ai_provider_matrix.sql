@@ -24,6 +24,7 @@ create trigger ai_providers_set_updated_at before update on public.ai_providers 
 alter table public.ai_providers enable row level security;
 revoke all on public.ai_providers from anon;
 grant select, update on public.ai_providers to authenticated;
+grant select on public.ai_providers to service_role; -- Edge resolveAi service_role ile okur
 create policy ai_providers_admin on public.ai_providers for all to authenticated
  using (gina.is_admin_strict()) with check (gina.is_admin_strict());
 create trigger audit_ai_providers after insert or update or delete on public.ai_providers
@@ -79,6 +80,7 @@ insert into public.ai_feature_requirements(feature,input_kind,action,requires_vi
 alter table public.ai_feature_requirements enable row level security;
 revoke all on public.ai_feature_requirements from anon;
 grant select on public.ai_feature_requirements to authenticated;
+grant select on public.ai_feature_requirements to service_role;
 create policy ai_feature_requirements_admin on public.ai_feature_requirements for select to authenticated using (gina.is_admin_strict());
 
 -- Paket bazlı medya sınırı aynı politika satırında (işlem/dakika/eşzamanlı ile tek yerde) --------
