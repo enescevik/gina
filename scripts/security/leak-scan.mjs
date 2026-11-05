@@ -30,9 +30,19 @@ const PATTERNS = [
 ];
 
 // İncelenmiş yanlış pozitifler: dosya + desen; gerekçe raporda (docs/release/q03-2026-11-06/README.md §5).
+// Q03 düzeltme turunda eklenenler: e-posta deseni için bilinçli belgeleme (Q03-LEAK-1) ve URL userinfo test vektörleri;
+// `assigned_secret_literal` için sır ADI (ortam değişkeni adı) yazan belge satırları. Değer hiçbirinde yok.
 const ALLOWLIST = new Map([
   ['scripts/check-testflight.test.mjs|supabase_secret_key', 'test yer tutucusu; önek adı literal, anahtar değil'],
   ['supabase/functions/push-send/providers.test.ts|private_key_block', 'test çalışma anında ürettiği geçici anahtarı sarar'],
+  ['docs/DEPLOY.md|email_non_placeholder', 'hesap sahibinin Access izin listesi e-postası; belgeleme amaçlı (Q03-LEAK-1), sır değil'],
+  ['docs/release/RELEASE-COMPLETION-2026-11-04.md|email_non_placeholder', 'aynı Access izin listesi e-postası (Q03-LEAK-1)'],
+  ['docs/release/FAMILY-EXPERIENCE-13.md|email_non_placeholder', 'aynı Access izin listesi e-postası (Q03-LEAK-1)'],
+  ['docs/IAP.md|email_non_placeholder', 'Google Play RTDN için Google\'un yayımladığı sistem servis hesabı adresi; kişisel değil'],
+  ['scripts/test-meb-scenarios.py|email_non_placeholder', 'URL userinfo reddi test vektörü (user@host), e-posta değil'],
+  ['supabase/functions/_shared/curriculum-source.test.ts|email_non_placeholder', 'URL userinfo reddi test vektörü (user:pw@host), e-posta değil'],
+  ['docs/release/content-prereview-2026-11-06/README.md|assigned_secret_literal', 'x-cron-secret başlığının SIR ADI (ortam değişkeni adı) belgelenir; değer yok'],
+  ['supabase/functions/README.md|assigned_secret_literal', 'aynı; sır adı belgelenir, değer yok'],
 ]);
 const findings = [];
 const allowlisted = [];
@@ -78,6 +88,16 @@ for (const f of findings) byPattern[f.pattern] = (byPattern[f.pattern] ?? 0) + 1
 const report = { scanned_files: scanned, secret_files_present_not_opened: secretFiles, by_severity: bySeverity, by_pattern: byPattern, allowlisted, findings };
 const jsonAt = process.argv.indexOf('--json');
 if (jsonAt > 0) writeFileSync(process.argv[jsonAt + 1], JSON.stringify(report, null, 1) + '\n');
+// --summary <dosya>: Markdown özet (CI'da $GITHUB_STEP_SUMMARY'ye eklenir). Değer yazılmaz; yalnız desen, dosya:satır.
+const summaryAt = process.argv.indexOf('--summary');
+if (summaryAt > 0) {
+  const lines = ['## Sızıntı taraması (bilgi amaçlı)', '', `Taranan dosya: ${scanned}; sır dosyası (açılmadı): ${secretFiles.length}; allowlist: ${allowlisted.length}`, '',
+    '| Önem | Desen | Dosya:satır |', '|---|---|---|',
+    ...findings.map(f => `| ${f.severity} | ${f.pattern} | \`${f.file}:${f.line}\` |`)];
+  if (!findings.length) lines.push('| — | — | bulgu yok |');
+  lines.push('', findings.some(f => f.severity === 'high') ? '**Yüksek önemli desen var: elle incele.**' : 'Yüksek önemli desen yok.');
+  writeFileSync(process.argv[summaryAt + 1], lines.join('\n') + '\n', { flag: 'a' });
+}
 console.log(JSON.stringify({ scanned_files: scanned, secret_files_present_not_opened: secretFiles.length, by_severity: bySeverity, by_pattern: byPattern }));
 for (const f of findings.filter(f => f.severity === 'high' || f.severity === 'medium')) console.log(`${f.severity} ${f.pattern} ${f.file}:${f.line}`);
 process.exitCode = findings.some(f => f.severity === 'high') ? 1 : 0;
