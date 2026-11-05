@@ -6,7 +6,11 @@ export const financeWorkspaceSchema = z.object({
   detail:z.object({id:z.string().uuid(),name:z.string(),effective,
     subscriptions:z.array(z.object({id:z.string().uuid(),platform:z.enum(["apple","google"]),plan,
       product_id:z.string(),status:z.enum(["active","grace","on_hold","expired","revoked"]),
-      expires_at:z.string(),auto_renewing:z.boolean(),updated_at:z.string()})),
+      expires_at:z.string(),auto_renewing:z.boolean(),updated_at:z.string(),
+      // S03: hangi doğrulanmış yol yazdı ve mağaza bunu bildirimle doğruladı mı. Eski satırlarda yok/null.
+      last_source:z.enum(["client_verify","notification","reconcile","operator"]).nullable().optional(),
+      notified_at:z.string().nullable().optional(),acknowledged_at:z.string().nullable().optional(),
+      verification:z.enum(["unacknowledged","store_notified","store_checked","client_only","legacy"]).optional()})),
     overrides:z.array(z.object({id:z.string().uuid(),plan,reason:z.string(),starts_at:z.string(),ends_at:z.string(),revoked_at:z.string().nullable()})),
   }).nullable(),
   notifications:z.array(z.object({id:z.string().uuid(),platform:z.enum(["apple","google"]),received_at:z.string(),attempts:z.number().int().nonnegative(),processed_at:z.string().nullable(),
@@ -26,7 +30,10 @@ export type OverrideCommand = z.infer<typeof overrideCommandSchema>;
 export type OverridePayload = z.infer<typeof overridePayloadSchema>;
 
 export const reconcileCommandSchema=z.object({request:z.string().uuid(),family:z.string().uuid(),subscription:z.string().uuid(),reason:z.string().trim().min(3).max(1000)}).strict();
-export const reconcileJobSchema=z.object({id:z.string().uuid(),family_id:z.string().uuid(),subscription_id:z.string().uuid(),reason:z.string(),status:z.enum(['queued','processing','succeeded','unchanged','failed']),code:z.string().nullable(),attempts:z.number().int().nonnegative(),created_at:z.string(),completed_at:z.string().nullable(),retry_after:z.string().nullable()});
+// result_kind: operatör kontrolü mağazadan okumadır; iade/iptal/telafi değildir.
+export const reconcileJobSchema=z.object({id:z.string().uuid(),family_id:z.string().uuid(),subscription_id:z.string().uuid(),reason:z.string(),status:z.enum(['queued','processing','succeeded','unchanged','failed']),code:z.string().nullable(),attempts:z.number().int().nonnegative(),created_at:z.string(),completed_at:z.string().nullable(),retry_after:z.string().nullable(),result_kind:z.literal('store_check').optional()});
+export const STORE_VERIFICATION_LABELS=["unacknowledged","store_notified","store_checked","client_only","legacy"] as const;
+export type StoreVerificationLabel=typeof STORE_VERIFICATION_LABELS[number];
 export const reconcileJobsSchema=z.array(reconcileJobSchema);
 export type ReconcileCommand=z.infer<typeof reconcileCommandSchema>;
 export type ReconcileJob=z.infer<typeof reconcileJobSchema>;
