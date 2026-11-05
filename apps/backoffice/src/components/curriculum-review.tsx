@@ -8,7 +8,6 @@ import {
   type CurriculumReview,
   curriculumReviewSchema,
   curriculumRowSchema,
-  curriculumSourceRowSchema,
   type Json,
 } from "@gina/core";
 import { useAuth } from "@/lib/auth";
@@ -16,6 +15,7 @@ import { supabase } from "@/lib/supabase";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
 import { createLibraryQueue } from "@/lib/library-review";
 import { Card, Notice } from "./Layout";
+import { CurriculumSources } from "./curriculum-sources";
 
 const statuses = {
   draft: "Kaynak incelemesi bekliyor",
@@ -126,12 +126,6 @@ function Workspace({ user }: { user: string }) {
   const list = useAdminQuery(async () =>
     curriculumRowSchema.array().parse(
       unwrap(await supabase().rpc("admin_list_curriculum_candidates")),
-    )
-  );
-  // Read-only acquisition queue: fetched revisions are evidence awaiting a human diff review, never approvals.
-  const sources = useAdminQuery(async () =>
-    curriculumSourceRowSchema.array().parse(
-      unwrap(await supabase().rpc("admin_list_curriculum_sources")),
     )
   );
   const detail = useAdminQuery(
@@ -459,90 +453,7 @@ function Workspace({ user }: { user: string }) {
           )
           : null}
       </details>
-      <details className="my-5 rounded-3xl border border-[#e5dcf3] bg-white p-5">
-        <summary className="cursor-pointer font-bold">
-          Kaynak güncelliği ve sürümleri
-          {(sources.data ?? []).some((s) =>
-              s.freshness === "diff_review_required"
-            )
-            ? " · fark incelemesi gerekli"
-            : (sources.data ?? []).some((s) => s.freshness === "unverified")
-            ? " · güncellik doğrulanamadı"
-            : ""}
-        </summary>
-        <p className="my-3">
-          Sunucudan indirilen resmî dosyaların URL zinciri, tarihleri ve
-          SHA-256 özeti. Aynı özet yeni iş açmaz; değişen dosya yalnız yeni bir
-          sürüm kaydıdır. Onay, yayın ve okul seçimi ayrı işlemlerdir.
-        </p>
-        {sources.error
-          ? <Notice tone="error">Kaynak sürümleri okunamadı.</Notice>
-          : (sources.data ?? []).length === 0
-          ? (
-            <p className="text-sm">
-              Henüz sunucu indirmesi yok. Depodaki manifest karşılaştırması
-              için <code>scripts/fetch-curriculum-sources.py</code> kullanılır.
-            </p>
-          )
-          : (
-            <ul className="grid gap-3">
-              {(sources.data ?? []).map((s) => (
-                <li
-                  key={s.id}
-                  className="rounded-2xl border border-[#eee7f7] p-3 text-sm"
-                >
-                  <p className="font-bold">
-                    {s.label} · {s.school_year} · {s.term}. dönem ·{" "}
-                    {{
-                      verified: "Güncel (onaylı kopya ile aynı)",
-                      unverified: "Güncellik doğrulanamadı",
-                      pending_review: "İlk sürüm inceleme bekliyor",
-                      diff_review_required: "Fark incelemesi gerekli",
-                      withdrawn: "Geri çekildi",
-                    }[s.freshness]}
-                  </p>
-                  <p>
-                    Son kontrol:{" "}
-                    {s.last_checked_at
-                      ? new Date(s.last_checked_at).toLocaleString("tr-TR")
-                      : "—"}
-                    {s.last_check_error ? ` · ${s.last_check_error}` : ""}
-                    {s.approved
-                      ? ` · onaylı kopya ${s.approved.sha256.slice(0, 12)} (${
-                        new Date(s.approved.retrieved_at).toLocaleDateString(
-                          "tr-TR",
-                        )
-                      })`
-                      : " · onaylı kopya yok"}
-                  </p>
-                  <ul className="mt-2 grid gap-1">
-                    {s.revisions.map((r) => (
-                      <li key={r.id}>
-                        <code>{r.sha256.slice(0, 12)}</code> · {r.bytes} bayt ·{" "}
-                        {new Date(r.retrieved_at).toLocaleDateString("tr-TR")} ·{" "}
-                        {r.status} · çıkarma: {r.extraction_status}
-                        {r.published_candidates
-                          ? ` · ${r.published_candidates} yayımlı senaryo`
-                          : ""}
-                        {(r.inspection as { flags?: string[] }).flags?.length
-                          ? ` · bayrak: ${
-                            (r.inspection as { flags: string[] }).flags.join(
-                              ", ",
-                            )
-                          }`
-                          : ""}
-                        {" · "}
-                        <a href={r.resolved_url} target="_blank" rel="noreferrer">
-                          resmî dosya
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          )}
-      </details>
+      <CurriculumSources />
       {list.error || detail.error
         ? (
           <Notice tone="error">
