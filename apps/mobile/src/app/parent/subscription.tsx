@@ -202,7 +202,7 @@ export default function SubscriptionScreen() {
             <Pressable
               key={p}
               accessibilityRole="tab"
-              accessibilityState={{ selected: period === p }}
+              accessibilityState={{ selected: period === p }} aria-selected={period === p}
               onPress={() => setPeriod(p)}
               style={{ minHeight: 48, justifyContent: "center" }} disabled={pending}
               className={`rounded-full px-4 py-2 ${period === p ? "bg-white" : ""}`}
@@ -298,7 +298,7 @@ export default function SubscriptionScreen() {
       </View>
 
       <ErrorText error={manage.error ?? redeem.error ?? openLink.error ?? offers.error} />
-      <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />
+      <Button variant="ghost" title={t("parent.home")} onPress={() => router.navigate("/parent")} />
     </Screen>
   );
 }

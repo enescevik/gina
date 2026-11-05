@@ -1264,6 +1264,7 @@
   "experience.family.noFamily": "Henüz bir aileye katılmadınız.",
   "experience.family.joinTitle": "Eşimin ailesine katıl",
   "experience.family.codeHelp": "Eşinizin Ayarlar → Aile bölümündeki 8 karakterli davet kodunu girin. Bu kod, çocuk cihazının 6 haneli eşleştirme kodundan farklıdır.",
+  "experience.family.codeHelpPath": "Eşinizin Ayarlar → Ailem → “Diğer ebeveyni davet edin” bölümündeki 8 karakterli davet kodunu girin. Bu kod, çocuk cihazının 6 haneli eşleştirme kodundan farklıdır.",
   "experience.family.preview": "Önce aileyi göster",
   "experience.family.preserve": "Bu aileyi açtığınızda önceki aileniz silinmez. Dilediğiniz zaman bu ekrandan geri dönebilirsiniz.",
   "experience.family.duplicatesTitle": "İkiniz de çocuk profili oluşturduysanız",

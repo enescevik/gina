@@ -173,7 +173,7 @@ export function ParentHomeView(p: HomeViewProps) {
       <CalendarDays size={20} color={c.purple}/><Text style={s.linkText}>{t(showWeek ? 'parentPremium.hideWeek' : 'planner.weekOverview')}</Text>
     </Pressable>
     {showWeek ? <ScrollView horizontal contentContainerStyle={{ gap: 8 }}>{p.week.map(date => <Pressable key={date} accessibilityRole="button"
-      accessibilityLabel={dateFormat.format(new Date(date + 'T12:00:00Z'))} accessibilityState={{ selected: date === selectedDate }}
+      accessibilityLabel={dateFormat.format(new Date(date + 'T12:00:00Z'))} accessibilityState={{ selected: date === selectedDate }} aria-pressed={date === selectedDate}
       onPress={() => setPlanDate(date)} style={[s.day, date === selectedDate && { backgroundColor: c.mint }]}>
       <Label small>{weekday.format(new Date(date + 'T12:00:00Z'))}</Label><Label>{Number(date.slice(-2))}</Label>
     </Pressable>)}</ScrollView> : null}
@@ -195,7 +195,7 @@ export function ParentHomeView(p: HomeViewProps) {
           {p.profiles.length ? <Pressable accessibilityRole="button" accessibilityLabel={t('parentHome.childSpace')} onPress={() => go('/parent/child-mode')} style={s.childMode}>
             <LockKeyhole size={18} color={c.purple}/><Text style={s.linkText}>{t('parentPremium.childMode')}</Text>
           </Pressable> : null}
-          <IconButton label={t('parentHome.notifications')} onPress={() => go('/parent/inbox')}><Bell size={23} color={c.muted}/></IconButton>
+          <IconButton label={t('inbox.title')} onPress={() => go('/parent/inbox')}><Bell size={23} color={c.muted}/></IconButton>
         </View>
       </View>
       {p.loading ? <View testID="home-loading" style={s.state} accessibilityLiveRegion="polite"><ActivityIndicator color={c.purple}/><Label>{t('release.loading')}</Label>
@@ -203,7 +203,7 @@ export function ParentHomeView(p: HomeViewProps) {
       </View> : p.error ? <View style={s.state}><CircleAlert size={40} color={c.orange}/><Heading>{t('release.loadError')}</Heading><Text style={[s.text, s.stateCopy]}>{t('parentHome.loadHint')}</Text><SatinButton title={t('common.retry')} onPress={p.retry}/></View> : empty ? <>
         <View style={s.heroCopy}><Text accessibilityRole="header" style={[s.title, !wide && s.phoneTitle]}>{greeting}</Text><Label>{t('parentPremium.welcome')}</Label></View>
         <View testID="home-empty" style={s.state}><Mascot large/><Text accessibilityRole="header" style={[s.title, s.stateCopy, { fontSize: 32, lineHeight: 40 }]}>{t('parentPremium.firstChild')}</Text>
-          <Text style={[s.text, s.stateCopy]}>{t('parentPremium.firstChildBody')}</Text><SatinButton title={t('parentPremium.addChild')} icon={<Plus size={22} color="#fff"/>} style={{ width: '100%', maxWidth: 440 }} onPress={() => go('/parent/menu')}/>
+          <Text style={[s.text, s.stateCopy]}>{t('parentPremium.firstChildBody')}</Text><SatinButton title={t('parentPremium.addChild')} icon={<Plus size={22} color="#fff"/>} style={{ width: '100%', maxWidth: 440 }} onPress={() => go({ pathname: '/parent/menu', params: { setup: 'new' } })}/>
           <Text style={[s.small, s.stateCopy]}>{t('parentPremium.firstChildHint')}</Text><View style={[s.row, s.summary]}><Users size={28} color={c.green}/><Label>{t('parentPremium.separateSpace')}</Label></View>
         </View>
       </> : <>
@@ -212,8 +212,8 @@ export function ParentHomeView(p: HomeViewProps) {
           <Mascot wide={wide}/>
         </View>
         {p.profiles.length > 1 && <ScrollView horizontal showsHorizontalScrollIndicator={false} style={wide ? { maxWidth: '55%' } : undefined} contentContainerStyle={s.filters}>
-          <Pressable accessibilityRole="button" accessibilityState={{ selected: !p.selected }} onPress={() => p.select(null)} style={[s.chip, !p.selected && s.selectedChip]}><Text style={[s.text, s.bold]}>{t('parentHome.all')}</Text></Pressable>
-          {p.profiles.map(child => <Pressable key={child.id} accessibilityRole="button" accessibilityLabel={t('parentHome.selectChild', { name: child.name })} accessibilityState={{ selected: p.selected === child.id }}
+          <Pressable accessibilityRole="button" accessibilityState={{ selected: !p.selected }} aria-pressed={!p.selected} onPress={() => p.select(null)} style={[s.chip, !p.selected && s.selectedChip]}><Text style={[s.text, s.bold]}>{t('parentHome.all')}</Text></Pressable>
+          {p.profiles.map(child => <Pressable key={child.id} accessibilityRole="button" accessibilityLabel={t('parentHome.selectChild', { name: child.name })} accessibilityState={{ selected: p.selected === child.id }} aria-pressed={p.selected === child.id}
             onPress={() => p.select(child.id)} style={[s.chip, p.selected === child.id && s.selectedChip]}><Avatar slug={child.avatar} size={30}/><Text style={[s.text, s.bold]}>{child.name}</Text></Pressable>)}
         </ScrollView>}
         {wide ? <>
@@ -227,7 +227,7 @@ export function ParentHomeView(p: HomeViewProps) {
 
       </>}
     </ScrollView>
-    <View style={[s.bottomNav, { paddingBottom: insets.bottom }]}>{destinations.map(({ key, href, Icon }) => <Pressable key={key} accessibilityRole="button" accessibilityLabel={t(`parentHome.${key}`)} accessibilityState={{ selected: key === 'today' }} onPress={() => key !== 'today' && router.navigate(href)} style={[s.bottomItem, wide && s.row]}>
+    <View style={[s.bottomNav, { paddingBottom: insets.bottom }]}>{destinations.map(({ key, href, Icon }) => <Pressable key={key} accessibilityRole="button" accessibilityLabel={t(`parentHome.${key}`)} accessibilityState={{ selected: key === 'today' }} aria-current={key === 'today' ? 'page' : undefined} onPress={() => key !== 'today' && router.navigate(href)} style={[s.bottomItem, wide && s.row]}>
       <Icon size={25} color={key === 'today' ? c.purple : c.muted} fill={key === 'today' ? c.purple : 'none'}/>
       <Text style={[s.small, { textAlign: 'center' }, wide && { fontSize: 18, lineHeight: 25 }, key === 'today' && s.purple, key === 'today' && s.bold]}>{t(`parentHome.${key}`)}</Text>{key === 'today' ? <View style={s.navIndicator}/> : null}
     </Pressable>)}</View>

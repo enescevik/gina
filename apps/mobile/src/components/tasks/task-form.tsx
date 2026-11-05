@@ -190,7 +190,7 @@ export function TaskForm({
                 key={slug}
                 accessibilityRole="button"
                 accessibilityLabel={t(`taskIcon.${slug}`)}
-                accessibilityState={{ selected: icon === slug }}
+                accessibilityState={{ selected: icon === slug }} aria-pressed={icon === slug}
                 onPress={() => setIcon(slug)}
                 style={{
                   padding: 3,
@@ -240,7 +240,7 @@ export function TaskForm({
                 key={day}
                 accessibilityRole="button"
                 accessibilityLabel={t(`planner.day${day}`)}
-                accessibilityState={{ selected: days.includes(day) }}
+                accessibilityState={{ selected: days.includes(day) }} aria-pressed={days.includes(day)}
                 onPress={() =>
                   setDays(
                     days.includes(day)

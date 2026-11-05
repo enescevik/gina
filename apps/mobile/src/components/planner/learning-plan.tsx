@@ -221,7 +221,7 @@ function PlanSection({ child, date, from, to, childMode }: Props) {
                 <Pressable
                   key={String(value)}
                   accessibilityRole="button"
-                  accessibilityState={{ selected: history === value }}
+                  accessibilityState={{ selected: history === value }} aria-pressed={history === value}
                   onPress={() => setHistory(value)}
                   style={{
                     minHeight: 48,

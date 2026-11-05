@@ -252,7 +252,7 @@ export default function ParentGradesScreen() {
               <Pressable
                 key={option}
                 accessibilityRole="button"
-                accessibilityState={{ selected: kind === option }}
+                accessibilityState={{ selected: kind === option }} aria-pressed={kind === option}
                 onPress={() => setKind(option)}
                 className={`min-h-12 items-center justify-center rounded-full px-3 py-2 ${kind === option ? "bg-teal-dark border border-teal-dark" : "bg-white border border-[#A89BD4]"}`}
               >
@@ -454,7 +454,7 @@ export default function ParentGradesScreen() {
       <Button
         variant="ghost"
         title={t("parent.home")}
-        onPress={() => router.back()}
+        onPress={() => router.navigate("/parent")}
       />
     </Screen>
   );

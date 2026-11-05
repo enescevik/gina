@@ -42,7 +42,7 @@ export function FamilyChoicePanel(){
   </View>
   <View style={parentStyles.form}>
    <Text style={parentStyles.title}>{t('experience.family.joinTitle')}</Text>
-   <Text style={parentStyles.muted}>{t('experience.family.codeHelp')}</Text>
+   <Text style={parentStyles.muted}>{t('experience.family.codeHelpPath')}</Text>
    <Field label={t('parent.inviteCode')} maxLength={8} autoCapitalize="characters" editable={!join.isPending&&!inspect.isPending} value={code} onChangeText={v=>{setCode(v.replace(/[^a-f0-9]/gi,'').toUpperCase());setPreview(null);setChoice(null);inspect.reset();join.reset();}}/>
    <Button title={t('experience.family.preview')} loading={inspect.isPending} disabled={code.length!==8||join.isPending} onPress={()=>inspect.mutate(code)}/>
    <ErrorText error={inspect.error}/>

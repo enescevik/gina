@@ -1,0 +1,65 @@
+{
+  "environment": "disposable-local-real-auth-rest-realtime",
+  "results": [
+    {
+      "check": "toggle_switch_not_in_tab_order",
+      "passed": true,
+      "detail": "E-posta → Şifre → Şifreyi göster → Şifremi unuttum → Kayıt ol → Çocuk cihazını bağla → Birlikte büyüyelim.Ebeve → E-posta"
+    },
+    {
+      "check": "enter_submits_sign_in",
+      "passed": true,
+      "detail": "http://127.0.0.1:8191/parent"
+    },
+    {
+      "check": "home_bell_labelled_as_inbox",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "grades_home_button_goes_home",
+      "passed": true,
+      "detail": "http://127.0.0.1:8191/parent"
+    },
+    {
+      "check": "families_invite_path_matches_menu",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "callback_error_title_not_opening",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "device_summary_no_child_sentence",
+      "passed": true,
+      "detail": "Henüz çocuk seçilmedi"
+    },
+    {
+      "check": "device_summary_with_child_sentence",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "empty_home_cta_opens_wizard_directly",
+      "passed": true,
+      "detail": "http://127.0.0.1:8191/parent/menu?setup=new"
+    },
+    {
+      "check": "child_saved_feedback_and_next_steps",
+      "passed": true,
+      "detail": "Profilini tanımlayın, yaşına uygun başlangıç görevlerini birlikte seçin. | Kaydedildi | Çocuk profili eklendi. Profil ayarlarından çocuk PIN’ini belirleyebilirsiniz. | Çocuk cihazları | Ana sayfa | Çocuklar"
+    },
+    {
+      "check": "saved_feedback_home_button",
+      "passed": true,
+      "detail": "http://127.0.0.1:8191/parent"
+    },
+    {
+      "check": "no_runtime_errors",
+      "passed": true,
+      "detail": ""
+    }
+  ]
+}

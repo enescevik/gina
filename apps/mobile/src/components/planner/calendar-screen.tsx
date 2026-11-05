@@ -470,7 +470,7 @@ export function PlannerCalendar({
                   day: "numeric",
                   month: "long",
                 })}
-                accessibilityState={{ selected: d === date }}
+                accessibilityState={{ selected: d === date }} aria-pressed={d === date}
                 onPress={() => setSelected(d)}
                 style={{
                   flex: 1,
@@ -518,7 +518,7 @@ export function PlannerCalendar({
                       <Pressable
                         key={d}
                         accessibilityRole="button"
-                        accessibilityState={{ selected: d === date }}
+                        accessibilityState={{ selected: d === date }} aria-pressed={d === date}
                         onPress={() => setSelected(d)}
                         style={[
                           u.row,
@@ -598,7 +598,7 @@ export function PlannerCalendar({
             key={i}
             accessibilityRole="button"
             accessibilityLabel={title}
-            accessibilityState={{ selected: i === 1 }}
+            accessibilityState={{ selected: i === 1 }} aria-pressed={i === 1}
             onPress={run}
             style={{
               flex: 1,
