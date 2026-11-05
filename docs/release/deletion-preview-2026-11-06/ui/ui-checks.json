@@ -1,0 +1,47 @@
+{
+  "environment": "disposable-local-real-auth-rest; delete-account edge response stubbed",
+  "viewports": [
+    "390x844",
+    "1280x800"
+  ],
+  "results": [
+    {
+      "check": "permanent_delete_separate_from_pin_card",
+      "passed": true
+    },
+    {
+      "check": "preview_then_archive_path_deletes_nothing",
+      "passed": true
+    },
+    {
+      "check": "preview_then_delete_double_tap_once_and_receipt_replay",
+      "passed": true,
+      "detail": {
+        "confirm_requests": 1
+      }
+    },
+    {
+      "check": "stale_preview_rejected_and_reloaded",
+      "passed": true
+    },
+    {
+      "check": "lost_response_retry_same_request_id_deletes_once",
+      "passed": true
+    },
+    {
+      "check": "cancel_keeps_child",
+      "passed": true
+    },
+    {
+      "check": "account_delete_sends_preview_token_and_reloads_on_stale",
+      "passed": true,
+      "detail": {
+        "edge_response": "stubbed_409"
+      }
+    },
+    {
+      "check": "no_runtime_errors_phone_and_desktop",
+      "passed": true
+    }
+  ]
+}
