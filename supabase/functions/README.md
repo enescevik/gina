@@ -10,6 +10,7 @@
 | `prova-plan` | Zayıf konulardan 7/14 günlük çalışma planı taslağı (Pro) | `supabase functions deploy prova-plan` |
 | `push-send` | `push_outbox` kuyruğunu boşaltır; APNs (token auth) ve FCM HTTP v1 ile kişisel veri içermeyen bildirim gönderir. Sırlar: `APNS_KEY_P8`, `APNS_KEY_ID`, `APNS_TEAM_ID`, `APNS_BUNDLE_ID`, `APNS_ENV`, `FCM_SERVICE_ACCOUNT_JSON`, `PUSH_SEND_SECRET`; Vault: `push_send_url`, `push_send_secret` (bkz. docs/PUSH.md) | `supabase functions deploy push-send --no-verify-jwt` |
 | `google-rtdn` | Google Play RTDN (Pub/Sub push) alıcısı; aynı akış | `supabase functions deploy google-rtdn --no-verify-jwt` |
+| `content-prereview` | E01: kütüphane taslağı / katkı kopyası / MEB senaryo adayı için AI ön inceleme. Yönetici JWT ile (`request_content_prereview` RPC yetkiyi kanıtlar ve kaydı kuyruğa alır) veya `x-cron-secret: CONTENT_PREREVIEW_SECRET` ile `{"drain":true}`. Normalize içerik modele gider; çıktı şemayla doğrulanır; güven ≥ 0,85 ve engelleyici bulgu yoksa `ai_approved` (yayın değil), aksi `needs_admin` + yönetici outbox bildirimi. Kapı: `app_settings content_prereview.enabled` (varsayılan kapalı), plan: `content_prereview.plan` (varsayılan `pro`); `ai.enabled`/`ai_settings`/`ai_models` kill switch'leri geçerli. Üretime dağıtılmadı. | `supabase functions deploy content-prereview --no-verify-jwt` |
 
 Gerekli secrets (`supabase secrets set …`; değerleri yalnız Enes girer):
 
