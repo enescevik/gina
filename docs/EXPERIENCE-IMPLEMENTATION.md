@@ -4,6 +4,10 @@
 
 İlk paket: [değişiklikler ve kontrol kanıtları](release/experience-foundation-2026-11-05/README.md). **Aşağıdaki açık işler tamamlanmış sayılmaz.**
 
+## Silme ve eğitim geçişleri — 5 Kasım ek kapsam
+
+[Kayıt yaşam döngüsü incelemesi ve kaynaklı öneri](CHILD-AND-CONTENT-LIFECYCLE.md): Prova taslak silme/geri alma ile programı tamamen temizleme eklendi. Eğitim dönemi/okul geçmişi, profil arşivi, içerikte toplu arşiv ve kalıcı silme etkisinin yeniden kurulması açık; bu ek işler eski takip kapsamını kaldırmaz. [Yeni paketin kontrol raporu](release/content-lifecycle-2026-11-05/README.md).
+
 ## Faz durumu
 
 | Faz | Durum |
@@ -150,6 +154,8 @@
 Her satırda kaynak değişikliği, beklenen davranış ve gerçek kontrol kanıtı bulunmadan “tamamlandı” yazılmayacak. Yeni bir veri kuralı gerekiyorsa migration, sunucu yetkisi, eşzamanlılık ve tekrar güvenliği ayrı test edilecek. Yayın durumu, kodun yazılmasıyla eş tutulmayacak.
 
 ## Sıradaki uygulama paketi
+
+Yeni ek öncelik: tarihli eğitim dönemi/okul kayıtları; ardından profil arşivi ve toplu içerik yaşam döngüsü. Sınıf değişimi kalıcı çocuk silmeyle yapılmayacak. Bu tasarım önerisi henüz uygulanmış değildir.
 
 1. Görev/ödül/not/okul puanını geçmişi koruyarak düzenleme; ad/gün/yıldız/bedel değişiminin mevcut kayıtları geriye dönük değiştirmemesi.
 2. Veli ana ekranında sıradaki iş ve doğru bağlam; cihaz/PIN ayarlarında taslağı koruyarak tamamlama.

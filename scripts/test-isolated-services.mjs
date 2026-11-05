@@ -184,8 +184,13 @@ try {
     await rpc(a.c,'set_parent_pin',{p_pin:'5678'});
     await rpc(a.c,'set_child_pin',{p_child_id:child,p_pin:'1234'});
     const file='/tmp/gina-experience-ui-private.json';
-    writeFileSync(file,JSON.stringify({url:base,anon:process.env.GINA_QA_ANON,email:a.email,password:a.password,userId:user,familyId:a.family,childId:child,examId:exam.id,attemptId:attempt}),{mode:0o600});
-    try {await new Promise(resolve=>setTimeout(resolve,2700000));} finally {unlinkSync(file);}
+    writeFileSync(file,JSON.stringify({pid:process.pid,url:base,anon:process.env.GINA_QA_ANON,email:a.email,password:a.password,userId:user,familyId:a.family,childId:child,examId:exam.id,attemptId:attempt}),{mode:0o600});
+    let timer, release;
+    try {await new Promise(resolve=>{
+      release=resolve; timer=setTimeout(resolve,2700000);
+      // A completed UI run can release this disposable fixture without killing cleanup.
+      process.once('SIGUSR2',release);
+    });} finally {clearTimeout(timer);process.off('SIGUSR2',release);unlinkSync(file);}
   }
 
 } catch(error) {

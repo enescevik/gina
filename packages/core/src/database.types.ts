@@ -1654,14 +1654,14 @@ isOneToOne: true
                   ]
                 },"prova_drafts": {
                   Row: {
-                    "content": NonNullable<Json>,"created_at": string,"created_by": string | null,"exam_id": string | null,"family_id": string,"id": string,"submitted_at": string | null,"updated_at": string,"version": number
+                    "discarded_at": string | null,"content": NonNullable<Json>,"created_at": string,"created_by": string | null,"exam_id": string | null,"family_id": string,"id": string,"submitted_at": string | null,"updated_at": string,"version": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "content": NonNullable<Json>,"created_at"?: string,"created_by"?: string | null,"exam_id"?: string | null,"family_id": string,"id": string,"submitted_at"?: string | null,"updated_at"?: string,"version"?: number
+                    "discarded_at"?: string | null,"content": NonNullable<Json>,"created_at"?: string,"created_by"?: string | null,"exam_id"?: string | null,"family_id": string,"id": string,"submitted_at"?: string | null,"updated_at"?: string,"version"?: number
                   }
                   Update: {
-                    "content"?: NonNullable<Json>,"created_at"?: string,"created_by"?: string | null,"exam_id"?: string | null,"family_id"?: string,"id"?: string,"submitted_at"?: string | null,"updated_at"?: string,"version"?: number
+                    "discarded_at"?: string | null,"content"?: NonNullable<Json>,"created_at"?: string,"created_by"?: string | null,"exam_id"?: string | null,"family_id"?: string,"id"?: string,"submitted_at"?: string | null,"updated_at"?: string,"version"?: number
                   }
                   Relationships: [
                     {
@@ -2726,6 +2726,8 @@ get_learning_source_set: { Args: { p_source: string }; Returns: Json },
 "get_library_items":
 { Args: { "p_collection_id": string }; Returns: Json
                            },
+"set_prova_draft_discarded": { Args: { p_request_id: string; p_id: string; p_version: number; p_discarded: boolean }; Returns: Json },
+"get_discarded_prova_drafts": { Args: { p_child_id?: string; p_before_updated?: string; p_before_id?: string }; Returns: Json },
 "get_prova_drafts":
 { Args: { "p_id"?: string }; Returns: Json
                            },

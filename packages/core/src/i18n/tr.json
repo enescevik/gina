@@ -2803,5 +2803,26 @@
     "keepEditing": "Düzenlemeye dön",
     "clearPin": "Yazdığım PIN’i temizle",
     "finishPinFirst": "Çocuk veya PIN kuralını değiştirmeden önce yazdığın PIN’i kaydet ya da temizle."
-  }
+  },
+  "lifecycle": {
+    "removeDraft": "Taslağı sil",
+    "removeDraftBody": "Bu taslak “Silinen taslaklar” bölümüne taşınır; oradan geri alabilirsin. İçindeki sorular, ortak kaynaklar ve çocuğa atanmış Provalar silinmez.",
+    "draftQuotaHelp": "Bu işlem başlamış AI üretimini iptal etmez ve kullanılmış AI/kütüphane hakkını geri yüklemez.",
+    "removedDrafts": "Silinen taslaklar",
+    "restoreHelp": "Geri alınan taslak yeniden düzenlenebilir. Atamadan önce çocuğun güncel sınıfını ve soru kapsamını kontrol et.",
+    "restoreDraft": "Taslağı geri al",
+    "draftRemoved": "Taslak silinenlere taşındı. İstersen geri alabilirsin.",
+    "draftRestored": "Taslak geri alındı. Kaldığın yerden devam edebilirsin.",
+    "noRemovedDrafts": "Bu kapsamda gösterilecek silinmiş taslak yok.",
+    "loadMore": "Daha fazlasını göster",
+    "draftChanged": "Taslağın durumu değişmiş. Pencereyi kapatıp güncel listeyi kontrol et; atanmış Prova bu yoldan silinmez.",
+    "draftActionError": "İşlemin sonucunu doğrulayamadık. Aynı işlemi güvenle yeniden deneyebilirsin.",
+    "clearTimetable": "Programı temizle",
+    "clearTimetableBody": "Bu çocuğun haftalık programındaki {{count}} ders taslaktan kaldırılacak. Diğer çocukların programları değişmeyecek.",
+    "clearTimetableHelp": "Ders saatleri ayarları, yüklenen kaynak dosyaları, ödevler ve Provalar korunur. Temizleme ancak “Programı kaydet” ile kalıcı olur.",
+    "clearDraft": "Dersleri taslaktan kaldır",
+    "clearedTimetable": "Dersler temizlendi. Bu ekrandan çıkmadan önceki programı taslağa geri alabilirsin. Her değişiklik için “Programı kaydet” gerekir.",
+    "undoTimetable": "Önceki programı taslağa geri al"
+  },
+  "prova.ai.errors.prova_draft_removed": "Bu taslak silinmiş. Prova merkezindeki Silinen taslaklar bölümünden geri alabilirsin."
 }

@@ -2808,5 +2808,26 @@
     "keepEditing": "Keep editing",
     "clearPin": "Clear the PIN I entered",
     "finishPinFirst": "Save or clear the PIN you entered before changing the children or PIN rule."
-  }
+  },
+  "lifecycle": {
+    "removeDraft": "Delete draft",
+    "removeDraftBody": "This draft moves to Deleted drafts, where you can restore it. Its questions, shared sources and assigned practices are not deleted.",
+    "draftQuotaHelp": "This does not cancel AI generation already in progress or refund used AI/library allowances.",
+    "removedDrafts": "Deleted drafts",
+    "restoreHelp": "A restored draft can be edited again. Check the child’s current grade and question scope before assigning it.",
+    "restoreDraft": "Restore draft",
+    "draftRemoved": "Draft moved to deleted drafts. You can restore it.",
+    "draftRestored": "Draft restored. You can continue editing.",
+    "noRemovedDrafts": "No deleted drafts to show in this scope.",
+    "loadMore": "Show more",
+    "draftChanged": "The draft has changed. Close this window and check the current list. Assigned practices cannot be deleted here.",
+    "draftActionError": "We could not confirm the result. You can safely retry the same action.",
+    "clearTimetable": "Clear timetable",
+    "clearTimetableBody": "The {{count}} lessons in this child’s weekly timetable will be removed from the draft. Other children’s timetables will stay unchanged.",
+    "clearTimetableHelp": "Bell settings, uploaded sources, homework and practices stay unchanged. Clearing becomes permanent only after Save timetable.",
+    "clearDraft": "Remove lessons from draft",
+    "clearedTimetable": "Lessons cleared. Before leaving this screen, you can restore the previous timetable to the draft. Every change still requires Save timetable.",
+    "undoTimetable": "Restore previous timetable to draft"
+  },
+  "prova.ai.errors.prova_draft_removed": "This draft was deleted. Restore it from Deleted drafts in the practice hub."
 }

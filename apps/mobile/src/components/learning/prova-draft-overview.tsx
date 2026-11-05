@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { router } from 'expo-router';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { ArrowRight, Image as ImageIcon } from 'lucide-react-native';
+import { ArrowRight, Trash2, Image as ImageIcon } from 'lucide-react-native';
 import type { ProvaBlock } from '@gina/core';
 import { Pressable } from '@/components/ui/pressable';
 import { p, SatinButton } from '@/components/planner/ui';
@@ -40,8 +40,8 @@ export function summarizeDraft(draft: DraftRecord, material: BuilderMaterial) {
   return { rows, counts, total: next - 1, incomplete };
 }
 
-export function DraftOverview({ drafts, familyId, wide, children }: {
-  drafts: DraftRecord[]; familyId: string; wide: boolean; children?: React.ReactNode;
+export function DraftOverview({ drafts, familyId, wide, children, onDiscard }: {
+  drafts: DraftRecord[]; familyId: string; wide: boolean; children?: React.ReactNode; onDiscard: (draft: DraftRecord) => void;
 }) {
   const { t } = useTranslation();
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -94,6 +94,7 @@ export function DraftOverview({ drafts, familyId, wide, children }: {
             </> : <Text style={s.small}>{t(material.error ? 'provaHub.loadError' : summary?.incomplete ? 'provaHub.incomplete' : 'common.loading')}</Text>}
             {(drafts.length > 1 && wide) && <Pressable accessibilityRole="button" accessibilityState={{ selected: d.id === selected.id }} style={s.inspect} onPress={() => setSelectedId(d.id)}><Text style={[b.bold, { color: p.purple }]}>{t('provaHub.inspect')}</Text><ArrowRight size={18} color={p.purple}/></Pressable>}
           </View>
+          <Pressable accessibilityRole="button" accessibilityLabel={`${t('lifecycle.removeDraft')} — ${d.content.title || t('provaBuilder.untitled')}`} onPress={() => onDiscard(d)} style={[s.inspect,{paddingHorizontal:20,justifyContent:'flex-start'}]}><Trash2 size={18} color={p.muted}/><Text style={s.small}>{t('lifecycle.removeDraft')}</Text></Pressable>
           <Pressable accessibilityRole="button" accessibilityLabel={`${d.content.title || t('provaBuilder.untitled')} — ${t('provaBuilder.resume')}`} style={s.resume} onPress={() => router.push({ pathname: '/parent/prova/builder', params: { draftId: d.id } })}><Text style={[b.bold, { color: p.purple }]}>{t('provaBuilder.resume')}</Text><ArrowRight size={20} color={p.purple}/></Pressable>
         </View>;
       })}

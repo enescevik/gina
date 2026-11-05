@@ -1,0 +1,33 @@
+{
+  "environment": "isolated-local-real-services",
+  "results": [
+    {
+      "check": "cancel_keeps_draft",
+      "passed": true
+    },
+    {
+      "check": "delete_hides_draft_and_keeps_recoverable_content",
+      "passed": true
+    },
+    {
+      "check": "restore_returns_same_draft_with_new_version",
+      "passed": true
+    },
+    {
+      "check": "clear_only_changes_local_draft_until_save",
+      "passed": true
+    },
+    {
+      "check": "undo_before_save_restores_original_clean_draft",
+      "passed": true
+    },
+    {
+      "check": "saved_clear_preserves_settings_and_other_child_program",
+      "passed": true
+    },
+    {
+      "check": "same_screen_restore_after_saved_clear_uses_new_revision",
+      "passed": true
+    }
+  ]
+}
