@@ -1,0 +1,22 @@
+{
+  "environment": "disposable-local-auth-postgrest",
+  "passed": 296,
+  "total": 296,
+  "failures": [],
+  "notes": [
+    {
+      "observation": "foreign_revoke_device_response",
+      "error": null,
+      "data": null
+    },
+    {
+      "observation": "parent_direct_child_delete",
+      "error": null,
+      "rows": 1
+    }
+  ],
+  "timing_ms": {
+    "slow_complete_task_roundtrip_ms": 1505,
+    "slow_save_prova_draft_ms": 1519
+  }
+}

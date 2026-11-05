@@ -1,0 +1,12 @@
+{
+  "environment": "empty-disposable-database",
+  "files": [
+    {
+      "file": "093_q02_cross_family_matrix.test.sql",
+      "passed": 47,
+      "failed": 0
+    }
+  ],
+  "failures": [],
+  "assertions": 47
+}
