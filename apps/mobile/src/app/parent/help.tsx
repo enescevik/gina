@@ -31,6 +31,8 @@ import {
 } from "lucide-react-native";
 import {
   definitiveHelpFailure,
+  HELP_OUTBOX_PREFIX,
+  type HelpArticle,
   helpArticleSchema,
   type HelpCommand,
   helpCommandSchema,
@@ -45,6 +47,7 @@ import { Field } from "@/components/ui/field";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import { createHelpOutbox, sendHelpCommand } from "@/lib/help";
+import { deviceRecordStorage } from "@/lib/device-record-storage";
 
 type Draft = {
   kind: "support" | "idea";
@@ -58,6 +61,69 @@ const fresh = (kind: Draft["kind"]): Draft => ({
   subject: "",
   body: "",
 });
+const CATEGORIES = ["account", "device", "learning", "billing", "other"] as const;
+/** Gönderilmemiş yeni talep taslağı: ebeveyn+aile kapsamlı, yalnız bu cihazda.
+ * Anahtar outbox önekini paylaşır; böylece çıkışta `clearHelpCommands` taslağı da siler. */
+const draftKey = (user: string, family: string) =>
+  `${HELP_OUTBOX_PREFIX}draft:${user}:${family}`;
+function readDraft(key: string): Draft | null {
+  try {
+    const raw = deviceRecordStorage.get(key);
+    if (!raw) return null;
+    const x = JSON.parse(raw) as Partial<Draft>;
+    if (
+      (x.kind !== "support" && x.kind !== "idea") ||
+      !CATEGORIES.includes(x.category as Draft["category"]) ||
+      typeof x.subject !== "string" || typeof x.body !== "string"
+    ) return null;
+    return {
+      kind: x.kind,
+      category: x.category as Draft["category"],
+      subject: x.subject.slice(0, 160),
+      body: x.body.slice(0, 6000),
+    };
+  } catch {
+    return null;
+  }
+}
+function writeDraft(key: string, draft: Draft | null) {
+  try {
+    if (draft && (draft.subject.trim() || draft.body.trim())) {
+      deviceRecordStorage.set(key, JSON.stringify(draft));
+    } else deviceRecordStorage.remove(key);
+    return true;
+  } catch {
+    return false;
+  }
+}
+const words = (text: string, locale: string) =>
+  [...new Set(
+    text.toLocaleLowerCase(locale).split(/[^\p{L}\p{N}]+/u).filter((w) =>
+      w.length >= 3
+    ),
+  )];
+/** Yazılan konu/başlık kelimeleriyle yayımlanmış yazıları puanlar (başlık eşleşmesi daha ağır). */
+function relatedArticles(
+  list: HelpArticle[] | undefined,
+  text: string,
+  locale: string,
+  limit = 3,
+) {
+  const terms = words(text, locale);
+  if (!list?.length || !terms.length) return [];
+  return list.map((a) => {
+    const title = a.title.toLocaleLowerCase(locale),
+      body = a.body.toLocaleLowerCase(locale);
+    const score = terms.reduce(
+      (sum, w) => sum + (title.includes(w) ? 3 : 0) + (body.includes(w) ? 1 : 0),
+      0,
+    );
+    return { a, score };
+  }).filter((x) => x.score > 0).sort((x, y) => y.score - x.score).slice(
+    0,
+    limit,
+  ).map((x) => x.a);
+}
 export default function HelpScreen() {
   const { session, claims } = useSession();
   if (!session || !claims?.family_id || claims.role !== "parent") return null;
@@ -82,6 +148,10 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
     }
   });
   const initialCommand = initial.pending?.payload;
+  const savedDraftKey = draftKey(user, family);
+  const [restoredDraft] = useState(() =>
+    initialCommand ? null : readDraft(savedDraftKey)
+  );
   const [tab, setTab] = useState<"faq" | "tickets">(
       initialCommand?.action === "reply" ? "tickets" : "faq",
     ),
@@ -89,7 +159,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
       initialCommand?.action === "reply" ? initialCommand.ticket : null,
     );
   const [draft, setDraft] = useState<Draft | null>(
-      initialCommand?.action === "create" ? initialCommand : null,
+      initialCommand?.action === "create" ? initialCommand : restoredDraft,
     ),
     [reply, setReply] = useState(
       initialCommand?.action === "reply" ? initialCommand.body : "",
@@ -110,22 +180,36 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
     [exit, setExit] = useState<(() => void) | null>(null);
   const [focused, setFocused] = useState(false),
     [foreground, setForeground] = useState(AppState.currentState === "active");
+  const [draftSaved, setDraftSaved] = useState<boolean | null>(
+      restoredDraft ? true : null,
+    ),
+    [openRelated, setOpenRelated] = useState<string | null>(null);
+  // Yeni talep taslağı her değişiklikte cihazda saklanır; gönderim/bilerek silme taslağı kaldırır.
+  const changeDraft = (next: Draft | null) => {
+    setDraft(next);
+    const ok = writeDraft(savedDraftKey, next);
+    setDraftSaved(
+      next && (next.subject.trim() || next.body.trim()) ? ok : null,
+    );
+  };
   const dirty = !!(draft?.subject || draft?.body || reply);
+  // Taslak cihazda saklıyken ekrandan çıkmak onu kaybettirmez; yalnız yanıt metni ve gönderim korunur.
+  const routeDirty = !!reply || (!!(draft?.subject || draft?.body) && draftSaved !== true);
   usePreventRemove(
-    (dirty || busy) && !exit,
+    (routeDirty || busy) && !exit,
     ({ repeat }) => setLeave({ action: repeat, route: true }),
   );
   useEffect(() => {
     exit?.();
   }, [exit]);
   useEffect(() => {
-    if (Platform.OS !== "web" || !dirty) return;
+    if (Platform.OS !== "web" || !routeDirty) return;
     const protect = (event: BeforeUnloadEvent) => {
       event.preventDefault();
     };
     window.addEventListener("beforeunload", protect);
     return () => window.removeEventListener("beforeunload", protect);
-  }, [dirty]);
+  }, [routeDirty]);
   const refresh = useCallback(() => {
     void cache.invalidateQueries({ queryKey: ["help", family] });
   }, [cache, family]);
@@ -208,17 +292,17 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
   };
   const select = (id: string) =>
     go(() => {
-      setDraft(null);
+      changeDraft(null);
       setReply("");
       setTicket(id);
       setOverflow(false);
       setCloseConfirm(false);
       setError("");
     });
-  const create = (kind: Draft["kind"]) => {
+  const create = (kind: Draft["kind"], subject = "") => {
     if (pending) return;
     go(() => {
-      setDraft(fresh(kind));
+      changeDraft({ ...fresh(kind), subject: subject.slice(0, 160) });
       setReply("");
       setError("");
     });
@@ -226,7 +310,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
   const back = () =>
     go(() => {
       if (draft) {
-        setDraft(null);
+        changeDraft(null);
         setError("");
       } else if (ticket) {
         setTicket(null);
@@ -247,7 +331,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
       const receipt = await sendHelpCommand(saved);
       outbox.acknowledge(saved.id);
       setPending(null);
-      setDraft(null);
+      changeDraft(null);
       setReply("");
       setTab("tickets");
       setTicket(receipt.id);
@@ -536,7 +620,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
               {textAction(t("help.leave"), () => {
                 const action = leave;
                 setLeave(null);
-                setDraft(null);
+                changeDraft(null);
                 setReply("");
                 if (action.route) setExit(() => action.action);
                 else action.action();
@@ -593,7 +677,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
                       label={t(`help.category.${category}`)}
                       selected={draft.category === category}
                       disabled={locked}
-                      onPress={() => setDraft({ ...draft, category })}
+                      onPress={() => changeDraft({ ...draft, category })}
                     />
                   ))}
                 </View>
@@ -601,7 +685,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
                   label={t("help.subject")}
                   hint={t("help.subjectHint")}
                   value={draft.subject}
-                  onChangeText={(subject) => setDraft({ ...draft, subject })}
+                  onChangeText={(subject) => changeDraft({ ...draft, subject })}
                   maxLength={160}
                   editable={!locked}
                 />
@@ -609,12 +693,62 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
                   label={t("help.body")}
                   hint={t("help.privateHint")}
                   value={draft.body}
-                  onChangeText={(body) => setDraft({ ...draft, body })}
+                  onChangeText={(body) => changeDraft({ ...draft, body })}
                   maxLength={6000}
                   multiline
                   editable={!locked}
                   style={{ minHeight: 180, textAlignVertical: "top" }}
                 />
+                {(() => {
+                  const related = relatedArticles(
+                    articles.data,
+                    `${draft.subject} ${draft.body.slice(0, 400)}`,
+                    i18n.language,
+                  );
+                  return related.length > 0 && (
+                    <View
+                      testID="help-related"
+                      style={[s.callout, { gap: 6 }]}
+                      accessibilityLiveRegion="polite"
+                    >
+                      <Text style={b.bold}>{t("help.relatedTitle")}</Text>
+                      <Text style={s.small}>{t("help.relatedBody")}</Text>
+                      {related.map((a) => (
+                        <View key={a.id} style={s.faq}>
+                          <Pressable
+                            accessibilityRole="button"
+                            accessibilityState={{ expanded: openRelated === a.id }}
+                            onPress={() =>
+                              setOpenRelated(openRelated === a.id ? null : a.id)}
+                            style={[s.row, { minHeight: 48 }]}
+                          >
+                            <Text style={[b.bold, { flex: 1 }]}>{a.title}</Text>
+                            {openRelated === a.id
+                              ? <ChevronDown color={p.purple} />
+                              : <ChevronRight color={p.purple} />}
+                          </Pressable>
+                          {openRelated === a.id && (
+                            <Text selectable style={b.copy}>{a.body}</Text>
+                          )}
+                        </View>
+                      ))}
+                    </View>
+                  );
+                })()}
+                {draftSaved !== null && !pending && (
+                  <Text
+                    testID="help-draft-status"
+                    accessibilityLiveRegion="polite"
+                    style={draftSaved ? s.small : s.error}
+                  >
+                    {t(draftSaved ? "help.draftSaved" : "help.draftNotSaved")}
+                  </Text>
+                )}
+                {draftSaved !== null && !pending && !locked &&
+                  textAction(t("help.discardDraft"), () => {
+                    changeDraft(null);
+                    setError("");
+                  })}
                 <SatinButton
                   title={t("help.submit")}
                   busy={busy}
@@ -692,11 +826,14 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
                         : articles.isError
                         ? failure(() => void articles.refetch())
                         : (() => {
-                          const found = articles.data?.filter((a) =>
-                            `${a.title} ${a.body}`.toLocaleLowerCase(
-                              i18n.language,
-                            ).includes(search.toLocaleLowerCase(i18n.language))
-                          ) ?? [];
+                          const terms = search.trim().toLocaleLowerCase(
+                            i18n.language,
+                          ).split(/\s+/).filter(Boolean);
+                          const found = articles.data?.filter((a) => {
+                            const text = `${a.title} ${a.body}`
+                              .toLocaleLowerCase(i18n.language);
+                            return terms.every((w) => text.includes(w));
+                          }) ?? [];
                           return found.length
                             ? found.map((a) => (
                               <View key={a.id} style={s.faq}>
@@ -724,11 +861,19 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
                               </View>
                             ))
                             : (
-                              <Text style={b.copy}>
-                                {t(
-                                  search ? "help.noResults" : "help.noArticles",
-                                )}
-                              </Text>
+                              <View style={{ gap: 10 }}>
+                                <Text style={b.copy}>
+                                  {t(
+                                    search ? "help.noResults" : "help.noArticles",
+                                  )}
+                                </Text>
+                                {!!search.trim() &&
+                                  textAction(
+                                    t("help.askAbout", { topic: search.trim().slice(0, 60) }),
+                                    () => create("support", search.trim()),
+                                    !!pending,
+                                  )}
+                              </View>
                             );
                         })()}
                       </View>

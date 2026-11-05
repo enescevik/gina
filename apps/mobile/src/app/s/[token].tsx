@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Platform, Text, View } from "react-native";
 
+import { Button } from "@/components/ui/button";
 import { ParentScreen as Screen } from "@/components/ui/parent-screen";
 import { supabase } from "@/lib/supabase";
 
@@ -25,6 +26,14 @@ interface SharedView {
     topics: { topic: string; correct: number; total: number }[];
   }[];
   tasks_summary?: { days: number; completed: number; approved: number; returned: number };
+}
+
+/** Sunucu yalnız `invalid_share` ile "bağlantı geçerli değil" der; iptal/süre/biçim bilinçli olarak ayrılmaz. */
+class InvalidShareError extends Error {}
+function isInvalidShare(error: unknown): boolean {
+  if (error instanceof InvalidShareError) return true;
+  const message = typeof error === "object" && error && "message" in error ? String((error as { message: unknown }).message) : "";
+  return message === "invalid_share";
 }
 
 /** Webde arama motorlarına kapalı: expo-router Head + yedek olarak doğrudan meta etiketi. */
@@ -49,7 +58,8 @@ function useNoIndex() {
 
 /**
  * Öğretmen görünümü: oturum gerektirmez (anon istemci), salt okunur.
- * Geçersiz, süresi dolmuş ve iptal edilmiş bağlantılar aynı mesajı gösterir.
+ * Geçersiz, süresi dolmuş ve iptal edilmiş bağlantılar aynı mesajı gösterir (sunucu ayırmaz).
+ * Geçici ağ/sunucu hatası ise ayrı gösterilir: bağlantı iptal edilmiş gibi sunulmaz, yeniden denenebilir.
  */
 export default function SharedChildViewScreen() {
   const { t, i18n } = useTranslation();
@@ -59,13 +69,15 @@ export default function SharedChildViewScreen() {
   const view = useQuery({
     queryKey: ["shared_child_view", token],
     enabled: !!token,
-    retry: false,
+    // Geçersiz bağlantı yeniden denenmez; geçici hatada iki kısa deneme yapılır.
+    retry: (count, error) => !isInvalidShare(error) && count < 2,
     staleTime: 0,
     refetchInterval: 60_000,
     refetchOnWindowFocus: true,
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_shared_child_view", { p_token: token ?? "" });
-      if (error) throw error;
+      if (error) throw isInvalidShare(error) ? new InvalidShareError("invalid_share") : error;
+      if (!data) throw new InvalidShareError("invalid_share");
       return data as unknown as SharedView;
     },
   });
@@ -73,7 +85,10 @@ export default function SharedChildViewScreen() {
   const dateFormat = new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
   const numberFormat = new Intl.NumberFormat(i18n.language, { maximumFractionDigits: 1 });
   const formatDay = (day: string) => dateFormat.format(new Date(`${day}T00:00:00Z`));
-  const data = view.isError ? undefined : view.data;
+  const invalid = view.isError && isInvalidShare(view.error);
+  const transient = view.isError && !invalid;
+  // Geçici hatada son başarılı görünüm korunur; iptal/süre dolumu ise hemen gizlenir.
+  const data = invalid ? undefined : view.data;
 
   return (
     <Screen navigation={false} title={t("share.viewer.pageTitle")}>
@@ -85,8 +100,16 @@ export default function SharedChildViewScreen() {
 
       {view.isLoading ? <ActivityIndicator /> : null}
 
-      {view.isError || (!view.isLoading && !data) ? (
-        <View className="gap-2 rounded-parent border border-mist p-4">
+      {transient ? (
+        <View accessibilityRole="alert" className="gap-2 rounded-parent border border-mist p-4" testID="share-view-network">
+          <Text className="text-2xl font-display text-ink">{t("share.viewer.networkTitle")}</Text>
+          <Text className="font-body text-sm text-gray-500">{t(data ? "share.viewer.networkStale" : "share.viewer.networkBody")}</Text>
+          <Button variant="secondary" title={t("common.retry")} loading={view.isFetching} onPress={() => void view.refetch()} />
+        </View>
+      ) : null}
+
+      {invalid || (!view.isLoading && !view.isError && !data) ? (
+        <View className="gap-2 rounded-parent border border-mist p-4" testID="share-view-invalid">
           <Text className="text-2xl font-display text-ink">{t("share.viewer.invalidTitle")}</Text>
           <Text className="font-body text-sm text-gray-500">{t("share.viewer.invalidBody")}</Text>
         </View>

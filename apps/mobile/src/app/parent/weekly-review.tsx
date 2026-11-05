@@ -2,8 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Image,
+  Platform,
   ScrollView,
+  Share,
   Text,
+  TextInput,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -18,6 +21,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock3,
+  Square,
+  SquareCheck,
   Sparkles,
   Star,
 } from "lucide-react-native";
@@ -206,6 +211,29 @@ function Review() {
                   <ChevronRight color={c.purple} size={23} />
                 </IconButton>
               </View>
+              <View
+                testID="weekly-scope"
+                style={[s.summary, { gap: 4 }]}
+                accessible
+              >
+                <Text style={[s.text, s.bold]}>
+                  {t("weeklyReview.scope.period", {
+                    range: range(data.week_start),
+                  })}
+                </Text>
+                <Text style={s.small}>
+                  {data.children.length
+                    ? t("weeklyReview.scope.children", {
+                      count: data.children.length,
+                      names: data.children.map((x) => x.name ?? x.alias).join(", "),
+                    })
+                    : t("weeklyReview.noChildren")}
+                </Text>
+                <Text style={s.small}>{t("weeklyReview.scope.counted")}</Text>
+                <Text style={s.small}>
+                  {t("weeklyReview.scope.timezone", { zone: data.timezone })}
+                </Text>
+              </View>
               <View style={wide ? s.columns : { gap: 22 }}>
                 <View style={[s.stack, wide && { width: "36%" }, { gap: 16 }]}>
                   <Text accessibilityRole="header" style={s.sectionTitle}>
@@ -345,15 +373,11 @@ function Review() {
                       </View>
                     )}
                   <Text style={s.small}>{t("weeklyReview.disclaimer")}</Text>
-                  {data.state === "ready" && (
-                    <Pressable
-                      accessibilityRole="button"
-                      style={s.link}
-                      onPress={() => router.push("/parent/calendar")}
-                    >
-                      <Text style={s.linkText}>{t("weeklyReview.plan")}</Text>
-                      <ArrowRight color={c.purple} size={20} />
-                    </Pressable>
+                  {data.state === "ready" && data.summary && (
+                    <StepPlanner
+                      key={data.week_start}
+                      data={data}
+                    />
                   )}
                 </View>
               </View>
@@ -410,6 +434,143 @@ function Summary({ data }: { data: WeeklyReview }) {
           ))}
         </View>
       )}
+    </View>
+  );
+}
+
+type Step = { id: string; who: string; text: string };
+/** AI önerileri yalnız öneridir: veli seçer, düzenler ve kendisi plana/göreve aktarır. Hiçbir şey otomatik atanmaz. */
+function StepPlanner({ data }: { data: WeeklyReview }) {
+  const { t } = useTranslation();
+  const steps: Step[] = [
+    ...(data.summary?.cocuk_basina ?? []).map((child) => ({
+      id: "child:" + child.etiket,
+      who: data.children.find((x) => x.alias === child.etiket)?.name ??
+        child.etiket,
+      text: child.oneri,
+    })),
+    ...(data.summary?.veliye_oneriler ?? []).map((line, i) => ({
+      id: "family:" + i,
+      who: t("weeklyReview.planner.family"),
+      text: line,
+    })),
+  ];
+  const [picked, setPicked] = useState<Record<string, string>>({});
+  const [notice, setNotice] = useState("");
+  const chosen = steps.filter((x) => picked[x.id] !== undefined).map((x) => ({
+    ...x,
+    text: picked[x.id]!.trim(),
+  })).filter((x) => x.text);
+  const toggle = (step: Step) => {
+    setNotice("");
+    setPicked((current) => {
+      const next = { ...current };
+      if (next[step.id] !== undefined) delete next[step.id];
+      else next[step.id] = step.text;
+      return next;
+    });
+  };
+  const planText = chosen.map((x) => "• " + x.who + ": " + x.text).join("\n");
+  const copy = async () => {
+    try {
+      if (
+        Platform.OS === "web" && typeof navigator !== "undefined" &&
+        navigator.clipboard
+      ) {
+        await navigator.clipboard.writeText(planText);
+        setNotice(t("weeklyReview.planner.copied"));
+      } else {
+        await Share.share({ message: planText });
+      }
+    } catch {
+      setNotice(t("weeklyReview.planner.copyFailed"));
+    }
+  };
+  if (!steps.length) return null;
+  return (
+    <View testID="weekly-planner" style={[s.card, { gap: 12 }]}>
+      <Text accessibilityRole="header" style={s.sectionTitle}>
+        {t("weeklyReview.plan")}
+      </Text>
+      <Text style={s.small}>{t("weeklyReview.planner.help")}</Text>
+      {steps.map((step) => {
+        const on = picked[step.id] !== undefined;
+        return (
+          <View key={step.id} style={[s.summary, { gap: 8, padding: 12 }]}>
+            <Pressable
+              accessibilityRole="checkbox"
+              accessibilityState={{ checked: on }}
+              aria-checked={on}
+              accessibilityLabel={step.who + ": " + step.text}
+              onPress={() => toggle(step)}
+              style={[s.row, { minHeight: 48, alignItems: "flex-start" }]}
+            >
+              {on
+                ? <SquareCheck color={c.purple} size={24} />
+                : <Square color={c.purple} size={24} />}
+              <View style={{ flex: 1, gap: 2 }}>
+                <Text style={[s.small, s.bold]}>{step.who}</Text>
+                {!on && <Text style={s.text}>{step.text}</Text>}
+              </View>
+            </Pressable>
+            {on && (
+              <TextInput
+                accessibilityLabel={t("weeklyReview.planner.editLabel", {
+                  who: step.who,
+                })}
+                multiline
+                maxLength={700}
+                value={picked[step.id]}
+                onChangeText={(value) =>
+                  setPicked((current) => ({ ...current, [step.id]: value }))}
+                style={[s.text, {
+                  minHeight: 72,
+                  borderWidth: 1,
+                  borderColor: c.purple,
+                  borderRadius: 14,
+                  padding: 10,
+                  textAlignVertical: "top",
+                  backgroundColor: c.white,
+                }]}
+              />
+            )}
+          </View>
+        );
+      })}
+      <Text accessibilityLiveRegion="polite" style={s.small}>
+        {chosen.length
+          ? t("weeklyReview.planner.selected", { count: chosen.length })
+          : t("weeklyReview.planner.none")}
+      </Text>
+      {chosen.length > 0 && (
+        <>
+          <SatinButton
+            secondary
+            title={t("weeklyReview.planner.copy")}
+            onPress={() => void copy()}
+          />
+          <Pressable
+            accessibilityRole="button"
+            style={s.link}
+            onPress={() => router.push("/parent/tasks?create=1")}
+          >
+            <Text style={s.linkText}>{t("weeklyReview.planner.toTask")}</Text>
+            <ArrowRight color={c.purple} size={20} />
+          </Pressable>
+          <Pressable
+            accessibilityRole="button"
+            style={s.link}
+            onPress={() => router.push("/parent/calendar")}
+          >
+            <Text style={s.linkText}>{t("weeklyReview.planner.toCalendar")}</Text>
+            <ArrowRight color={c.purple} size={20} />
+          </Pressable>
+        </>
+      )}
+      {notice
+        ? <Text accessibilityLiveRegion="polite" style={s.small}>{notice}</Text>
+        : null}
+      <Text style={s.small}>{t("weeklyReview.planner.noAuto")}</Text>
     </View>
   );
 }
