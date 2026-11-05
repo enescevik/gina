@@ -43,6 +43,8 @@ export * from "./contribution";
 
 export * from "./curriculum-review";
 
+export * from "./content-prereview";
+
 export * from "./catalog-blueprint";
 
 export * from "./prova-generation-journal";
