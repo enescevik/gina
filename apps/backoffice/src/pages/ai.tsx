@@ -1,5 +1,7 @@
 import { useUnsavedChanges } from "@/components/unsaved-changes";
 import { SourcePolicy } from "@/components/source-policy";
+import { AiPolicyMatrixCard, ModelDisablePreviewButton, ProviderChangeImpactCard, featureLabel, useAiPolicyMatrix } from "@/components/ai-policy";
+import { adminRpc } from "@/components/review-rpc";
 import type { Tables } from "@gina/core";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 
@@ -112,6 +114,7 @@ function ModelForm({ onSaved, onState }: { onSaved: (msg: string | null, err?: u
 
 export default function AiPage() {
   const { data, error, reload } = useAdminQuery(loadAll);
+  const matrix = useAiPolicyMatrix();
   const [msg, setMsg] = useState<{ text: string; tone: "ok" | "error" } | null>(null);
   const [edits, setEdits] = useState<Record<string, { dirty: boolean; busy: boolean }>>({});
   const [busy, setBusy] = useState(false);
@@ -122,7 +125,7 @@ export default function AiPage() {
   const onSaved = (text: string | null, err?: unknown) => {
     setMsg(err ? { text: errorMessage(err, t.errors), tone: "error" } : { text: text ?? "", tone: "ok" });
     // Eski sürüm çakışmasında (0 satır güncellendi) güncel kayıt yeniden yüklenir; yazılan değer sessizce üstüne yazmaz.
-    if (!err || isStaleError(err)) reload();
+    if (!err || isStaleError(err)) { reload(); matrix.reload(); }
   };
 
   async function mutate(action: () => PromiseLike<{ error: unknown }>) {
@@ -137,8 +140,17 @@ export default function AiPage() {
     await mutate(() => supabase().rpc("admin_set_ai_enabled", { p_enabled: enabled }));
   }
   async function toggleModel(m: AiModel) {
-    const affected = data?.settings.filter(s => s.model_id === m.id && s.enabled).map(s => t.plans[s.plan_code]) ?? [];
-    if (m.active && !window.confirm(`${m.display_name} pasifleştirilsin mi? Etkilenen paketler: ${affected.join(", ") || "Yok"}. Bu modelin kullanıldığı yeni işlemler çalışmayabilir.`)) return;
+    let affected = data?.settings.filter(s => s.model_id === m.id && s.enabled).map(s => t.plans[s.plan_code]) ?? [];
+    let features = "";
+    if (m.active) {
+      // Sunucu önizlemesi (S06): kapatmanın etkilediği paket ve özellikler; okunamazsa yerel paket listesine düşer.
+      try {
+        const preview = await adminRpc<{ affected_plans: string[]; affected_features: { feature: string }[]; alternatives: string[] }>("admin_model_disable_preview", { p_model_id: m.id });
+        affected = preview.affected_plans.map(p => t.plans[p] ?? p);
+        features = ` Etkilenen özellikler: ${preview.affected_features.map(f => featureLabel[f.feature] ?? f.feature).join(", ") || "Yok"}. Alternatif: ${preview.alternatives.join(", ") || "yok"}.`;
+      } catch { features = " (Sunucu etki önizlemesi okunamadı.)"; }
+    }
+    if (m.active && !window.confirm(`${m.display_name} pasifleştirilsin mi? Etkilenen paketler: ${affected.join(", ") || "Yok"}.${features} Bu modelin kullanıldığı yeni işlemler çalışmayabilir.`)) return;
     await mutate(() => supabase().from("ai_models").update({ active: !m.active }).eq("id", m.id));
   }
 
@@ -187,6 +199,7 @@ export default function AiPage() {
                   <th>{t.ai.priceIn}</th>
                   <th>{t.ai.priceOut}</th>
                   <th>{t.ai.active}</th>
+                  <th>Etki</th>
                 </tr>
               </thead>
               <tbody>
@@ -202,6 +215,7 @@ export default function AiPage() {
                         {m.active ? t.common.yes : t.common.no}
                       </button>
                     </td>
+                    <td className="min-w-[220px]"><ModelDisablePreviewButton modelId={m.id} /></td>
                   </tr>
                 ))}
               </tbody>
@@ -209,6 +223,8 @@ export default function AiPage() {
             </div>
             <ModelForm onSaved={onSaved} onState={onState} />
           </Card>
+          <AiPolicyMatrixCard matrix={matrix.data} error={matrix.error} />
+          {matrix.data ? <ProviderChangeImpactCard providers={matrix.data.providers} /> : null}
         </>
       )}
     </Layout>

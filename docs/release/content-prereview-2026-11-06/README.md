@@ -72,7 +72,7 @@ Anahtar = kayıt + normalize içerik hash'i + prompt sürümü. Aynı üçlü i�
 
 ## Yapılmayanlar / sınırlar
 
-- **UI bağlanmadı:** backoffice'te kuyruk, verdict ve «AI ile ön incele» düğmesi yok (B02/A3 kapsamı); mobil etkilenmez. Yönetici kuyruğu bugün yalnız `admin_content_prereviews` RPC'si ve push bildirimiyle görünür.
+- ~~**UI bağlanmadı:** backoffice'te kuyruk, verdict ve «AI ile ön incele» düğmesi yok (B02/A3 kapsamı); mobil etkilenmez.~~ [Güncelleme: backoffice bağlandı, aşağıdaki «UI bağlama» bölümü; mobil yine etkilenmez.]
 - **Yayımlanmadı:** migration üretime uygulanmadı, Edge fonksiyonu dağıtılmadı, `CONTENT_PREREVIEW_SECRET` ve `content_prereview.enabled=true` ayarlanmadı, pg_cron `drain` zamanlaması eklenmedi (mevcut `source-cleanup` örüntüsüyle eklenebilir).
 - **Gerçek sağlayıcı denenmedi:** bütün testler deterministik sahte sağlayıcıyla koştu. Eşik ve rubrik gerçek modelle sentetik pilotta gözden geçirilmelidir; `prereview-v1` değişirse `PREREVIEW_PROMPT_VERSION` yükseltilir ve kayıtlar kendiliğinden yeniden incelenir.
 - Aile üyesi olmayan yöneticiye push ulaşmaz; backoffice içi bildirim tablosu bu kapsamda kurulmadı («yeni kanal kurma» sınırı).
@@ -86,3 +86,40 @@ Anahtar = kayıt + normalize içerik hash'i + prompt sürümü. Aynı üçlü i�
 - `7abb8ab` feat(push): admin notice text for content pre-review queue (E01)
 - `59d9b89` feat(core): content pre-review types, verdict schema and status labels (E01)
 - docs commit: bu rapor, `docs/CLAUDE-REMAINING-WORK.md` E01 maddesi, `supabase/functions/README.md` satırı.
+
+## UI bağlama (backoffice, 6 Kasım 2026 gece)
+
+Dal: `worktree-agent-a7eca8d5ab9cbb879` (kaynak main `eeb57af`). **Main'e push edilmedi, migration eklenmedi, sunucu kodu değişmedi, gerçek ücretli AI çağrısı yapılmadı.** Yalnız `apps/backoffice` bağlandı; panel/aile/ödeme/geçici hak sayfalarına dokunulmadı; `lib/i18n.ts` değişmedi (yeni metinler bileşen dosyalarında, mevcut sayfa düzeniyle aynı).
+
+### Ne bağlandı
+
+| Yüz | Dosya | Sunucu | Davranış |
+|---|---|---|---|
+| Kütüphane → **Tüm içerik · AI ön inceleme** sekmesi (`/library?tab=items`) | `components/library-content-items.tsx`, `components/content-prereview.tsx` | `admin_library_content_items`, `admin_content_prereviews`, `request_content_prereview`, `enqueue_content_prereview`, Edge `content-prereview` | Tek liste; sunucu filtresi (yönetici durumu, tür) + AI durumu filtresi. **Yönetici kararı** sütunu (durum, editoryal karar, «Ailelere açık/değil») ile **AI ön inceleme (ayrı kayıt)** sütunu ayrı; rozet «AI ön inceleme · karar değildir», durum etiketi core `prereviewStatusLabel`, güven %, karar nedeni, bulgular (engelleyici/danışma). Tek kayıt «AI ön incelemesi iste» = önce `request_content_prereview` (kuyruk), sonra Edge; Edge yoksa «kuyruğa alındı ama hizmete ulaşılamadı» der. Toplu: seçilenler için kuyruk + «Karar bekleyen tümünü kuyruğa al» (`enqueue`, yeni/yeniden/değişmedi sayıları). Kapı kapalıysa (`content_prereview.enabled` ≠ true) veya genel AI anahtarı kapalıysa istek düğmeleri kapalı ve **neden açıkça yazılı**. |
+| Aynı sekme → iz | aynı | `contribution_review_trail`, `admin_library_package_trail` | Katkıda ret → düzeltme → yeniden inceleme zinciri (kopya sırası, karar, ret notu, güncel kopya, düzeltme bağı, ayrı AI durumu); pakette sürümler, canlılık, yayın sürümü, editör sonuçları. |
+| Kütüphane → Haklar ve ödüller | `components/library-policy-preview.tsx` | `library_policy_preview` | Kabul sayısına göre toplam hak, kural tablosu, sıradaki kilometre taşı, yığılma uyarısı. Hak vermez. |
+| Kütüphane → Senaryo kaynakları | `components/curriculum-sources.tsx` (eski salt-okunur panel yerine) | `admin_list_curriculum_sources`, `admin_review_curriculum_source_revision`, Edge `curriculum-source-fetch` | Kaynak başına sürüm tablosu (SHA-256, bayt, indirildi, son kontrol, durum, çıkarma, aday/yayımlı senaryo), «Yeni sürüm — fark incelemesi gerekli», **stale uyarısı** (son başarılı kontrol ≥ 7 gün veya `unverified`), onayla / reddet (kenara koy) / geri çek — not + «Resmî dosyayı ve özeti kontrol ettim» onayı + kalıcı `request_id`. «Resmî dizini kontrol et» Edge'i çağırır; belirsiz ders bağlantısında adayları gösterir (tahmin yok); Edge yoksa açık hata ve «kaynak kaydı değişmedi». |
+| AI ayarları | `components/ai-policy.tsx`, `pages/ai.tsx` | `admin_ai_policy_matrix`, `admin_model_disable_preview`, `admin_provider_change_impact` | Salt okunur politika matrisi (paket × işlem: aylık/dakika/eşzamanlı/medya; model/token/prompt; özellik → girdi → yetenek → paket → uç nokta; model desteği ve nedenleri). Model satırında «Kapatma etkisi»; pasifleştirme onayı da sunucu önizlemesini kullanır. Sağlayıcı değişim etkisi: engel nedenleri, etkilenen özellikler, boşluklar, yeni işleyen/izin/yurt dışı/bölge/maliyet, anahtar **adı**, aday modeller. |
+| AI işlemleri | `components/ai-failure-queue.tsx`, `pages/operations.tsx` | `admin_ai_failed_operations` | Arıza kuyruğu sunucuda filtrelenir (durum görünümü, işlem türü, gün aralığı) ve 25'lik sayfalanır, toplam sayı ile; «İncele → yeniden denemeye izin ver» akışı aynen kaldı. İstemci tarafı «son 100 kayıt» süzgeci kaldırıldı. |
+
+Ortak: `components/review-rpc.ts` — `database.types.ts`'e henüz girmemiş RPC'ler için ince çağrı (yetki DB'de) ve Edge hata sınıflandırması (ham gövde ekrana yazılmaz).
+
+### Testler (gerçekten çalıştırıldı)
+
+- `pnpm --filter @gina/backoffice typecheck` → çıkış 0 (`next typegen && tsc --noEmit`).
+- `pnpm --filter @gina/backoffice lint` → çıkış 0 (eslint, uyarı yok).
+- `pnpm --filter @gina/backoffice build` (yer tutucu `NEXT_PUBLIC_SUPABASE_URL=http://gina-cqui.invalid`) → çıkış 0, 22 statik sayfa.
+- **İzole servis + Playwright 1280×800**: `GINA_QA_PLAYWRIGHT_PATH=… python3 scripts/test-content-review-ui.py --run-local` → [ui/ui-checks.json](ui/ui-checks.json): **15/15 kontrol geçti**. Ortam: boş `gina_completion_audit` şablonundan klonlanan tek kullanımlık `gina_cqui_<hex>_audit` (≥ `20261103093000` migration'lar), kendi Auth + PostgREST konteynerleri, kendi fixture yolu (`/tmp/gina-cqui-<db>.json`, 0600, bitince silinir), sentetik `example.invalid` yönetici. **Edge çalışmıyor** (yerel ağ geçidi `/functions/v1` için 404): ekran bunu açık hata olarak gösteriyor. AI kararları sahte değil sunucunun kendi `content_prereview_claim/finish` RPC'leriyle (service_role) yazıldı; sağlayıcı çağrısı yok. Konteynerler ve DB silindi (`cleanup` hepsi `true`; sonradan `docker ps`/`pg_database` ile `gina_cqui_*` = 0 doğrulandı). Başka ajanların DB/konteynerlerine dokunulmadı.
+  - Kontroller: `prereview_badge_separate_from_admin_decision` (AI uygun paket: yönetici hücresi «Taslak · yönetici kararı bekliyor / Ailelere açık değil», AI kelimesi yok, rozet hücre dışında), `ai_reject_suggestion_does_not_reject`, `gate_closed_explains_reason_and_disables_requests`, `rejection_correction_trail_visible`, `request_without_edge_shows_explicit_error_and_keeps_verdict` (kapı geçici açıldı, Edge çağrısı 1 kez denendi, mevcut AI sonucu değişmedi, kapı geri kapatıldı), `policy_preview_visible`, `source_revisions_hash_last_check_diff_and_stale_visible`, `official_index_check_without_edge_explicit_error`, `revision_approve_with_note_and_confirmation` (fark sürümü onaylandı, eski onaylı kopya `superseded`, kaynak `verified`), `ai_policy_matrix_read_only_table`, `model_disable_impact_preview`, `provider_change_impact_blocked_with_reasons` (Gemini: «sağlayıcı yapılandırılmadı», `GEMINI_API_KEY`), `failure_queue_server_side_filter_and_pagination` (27 kayıt → 1–25, 26–27; `plan` 13; `done` 7), `no_page_exceptions_or_horizontal_overflow`.
+- Görüntüler `ui/01…12-*.png` (1280×800).
+- Deneme geçmişi: 1. koşu fixture yetki hatası (service_role `gina` tablosunu okuyamıyor → doğrulama tablosu sahiple kuruldu), 2. koşu select etiketi bulucusu (sarmalayan `label` erişilebilir adı seçili seçeneği içeriyor → testte `combobox` + ad deseni); ürün davranışı değiştirilmedi. 3. ve son koşu temiz.
+
+### Kalan sınır
+
+- Gerçek Edge (`content-prereview`, `curriculum-source-fetch`) ile uçtan uca **denenmedi**; yalnız «Edge yok» yolu doğrulandı. Edge dağıtılınca bir kez gerçek tıklama ile doğrulanmalı (ücretli çağrı olacağı için kapı ve sağlayıcı kararı yöneticide).
+- Senaryo adaylarının (curriculum_candidate) AI rozeti bu turda adaylar listesine eklenmedi; aday AI kaydı sunucuda var, «Karar bekleyen tümünü kuyruğa al» onları da kuyruğa alır.
+- Stale eşiği (7 gün) istemci sabitidir (`SOURCE_STALE_DAYS`); ürün kararı gerekirse değiştirilir. Yeni bir kaynak hedefi (yıl/dönem/ders) eklemek için form yok; mevcut kaynaklar yeniden kontrol edilebilir.
+- İçerik listesi tek istekte en çok 200 kayıt getirir (RPC `p_limit` ≤ 500, sayfalama yok); dolarsa ekran «ilk 200; filtreyi daraltın» der.
+- Model pasifleştirme onayı hâlâ `window.confirm` (A3 S06-a P2); önizleme metni artık sunucudan.
+- Senaryo kaynakları sekmesinde mevcut geniş çalışma alanı 1280'de kenar menüyü daraltıyor (yatay taşma yok; önceden var olan düzen).
+- `database.types.ts` yeniden üretilmedi (paket sahipliği dışında); RPC'ler `review-rpc.ts` üzerinden tipsiz çağrılıyor.
