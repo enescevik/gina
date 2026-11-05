@@ -104,6 +104,7 @@ Durumlar: `AÇIK`, `YAPILIYOR`, `KOD HAZIR`, `TEST EDİLDİ`, `YAYINLANDI`, `BEK
   - Kaynak: aile/hesap ekranları, `supabase/functions/delete-account/`, `20261031120000_account_lifecycle.sql`, `20261031130000_child_deletion.sql`.
   - Yap: silinecek çocuk/ad/kayıt türleri, paylaşımlar, dosyalar, korunması gereken geçmiş ve mağaza aboneliği etkisini göster; arşivi ayrı geri döndürülebilir seçenek olarak sun. Yeniden doğrulama, bekleme/başarısızlık ve güvenli tekrar açıklansın. Her içerik türüne sınırsız silme düğmesi ekleme; korunması gereken kaydı reddet.
   - Kabul: yanlış aile/çocuk, eski önizleme, işlem ortasında hata, hesap silme sonrası özel dosya/bağlantı erişimi. Üretimde gerçek aile üzerinde deneme yapma; abonelik iptalini veri silmeyle yapılmış gösterme.
+  - Durum 06.11 gece: sunucu/core/Edge kısmı main'e aday — `deletion_preview`, `confirm_child_deletion`, `check_deletion_preview`, delete-account `preview_token`, `packages/core/src/deletion-preview.ts`, i18n `deletionPreview.*`; pgTAP 090 + yarış betiği geçti. **UI bağlanmadı, yayımlanmadı.** [Rapor](release/deletion-preview-2026-11-06/README.md).
 - [ ] **L04 / Tarihli plan geçmişi.** Bağımlılık: L01–L02.
   - Kaynak: görev rutini geçmişi, ders programı kayıt/temizleme, eğitim dönemi program snapshot'ları ve dönem raporları.
   - Yap: ad/gün/saat/başlangıç-bitiş değişikliklerinin hangi tarihten itibaren geçerli olduğunu tut; geçmiş gün görünümü o günün planını kullansın. Kaynakta bulunmayan eski sürümleri “bilinmiyor/geçişte bilinen” ayır; geriye dönük uydurma yapma.
