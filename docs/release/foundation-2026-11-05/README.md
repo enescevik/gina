@@ -22,6 +22,10 @@ Kaynak `1f1b505b9b8e9d8491554f22c1ff194142956a32`, main birleştirmesi `17e10605
 
 Apple durumunun ilk kontrolünde `READY_FOR_BETA_TESTING` görüldü. API anahtarı grup listesini okumada 403 verdi ve tarayıcı oturumu kapalıydı; kullanıcı giriş yaptı. Oturumdan sonra mevcut otomatik grup ataması ve test erişimi doğrulandı. Artık kullanıcıdan beklenen bir Apple giriş/grup adımı yok.
 
+## Çocuk tableti ek yayını
+
+Çocuk iPad’inin ayrı kablosuz kurulum sayfasının 20’de kaldığı sonraki kontrolde görüldü; aynı kaynakla **26** Ad Hoc paketi yayımlandı. [Tablet yayın raporu ve kullanıcı adımı](../tablet-26-2026-11-05/README.md). TestFlight kurulumu bu ayrı dağıtımın yerine geçmez.
+
 ## Doğrulama ve sınırlar
 
 - Paket geliştirme kanıtı: 2.419 SQL kontrolü, 257 core testi, 149 Auth/REST/Realtime kontrolü, 4 yarış durumu, 9 telefon/tablet web akışı. Önceki alt paket kanıtları kendi raporlarında.
