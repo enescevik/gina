@@ -74,3 +74,5 @@ export * from "./reward-history";
 export * from "./note-history";
 
 export * from "./period-transfer";
+
+export * from "./plan-history";

@@ -3214,5 +3214,17 @@
     "reload": "Refresh list",
     "locked": "Period transfer is not available on an archived profile.",
     "previewError": "The transfer list could not be loaded."
+  },
+  "planHistory": {
+    "effectiveFrom": "Effective from",
+    "effectiveToday": "From today",
+    "effectiveFuture": "From {{date}}",
+    "effectivePast": "A past date cannot be chosen; submitted tasks and earned stars do not change.",
+    "effectiveTooFar": "Changes can be planned at most one year ahead.",
+    "scheduled": "Settings that take effect on {{date}}. Today's settings continue until then.",
+    "legacy": "The start date of these settings was not recorded; they are known since {{date}}.",
+    "unknownBefore": "No plan is recorded for this day. Shown are the oldest settings known as of {{date}}.",
+    "periodSnapshot": "The closed period's timetable as stored on {{date}}. That day's cells were not recorded separately.",
+    "noTimetable": "No timetable is recorded for this day."
   }
 }

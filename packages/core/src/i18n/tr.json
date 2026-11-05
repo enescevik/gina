@@ -3209,5 +3209,17 @@
     "reload": "Listeyi yenile",
     "locked": "Arşivli profilde dönem aktarımı yapılamaz.",
     "previewError": "Aktarım listesi yüklenemedi."
+  },
+  "planHistory": {
+    "effectiveFrom": "Geçerlilik tarihi",
+    "effectiveToday": "Bugünden itibaren",
+    "effectiveFuture": "{{date}} tarihinden itibaren",
+    "effectivePast": "Geçmiş bir tarih seçilemez; gönderilmiş görevler ve kazanılan yıldızlar değişmez.",
+    "effectiveTooFar": "En fazla bir yıl ileriye planlanabilir.",
+    "scheduled": "{{date}} tarihinden itibaren geçerli olacak ayarlar. O güne kadar bugünkü ayarlar sürer.",
+    "legacy": "Bu ayarların başlangıç tarihi kayıtlı değil; {{date}} tarihinden beri bilinir.",
+    "unknownBefore": "Bu günün planı kayıtlarda yok. Gösterilen, {{date}} tarihinde bilinen en eski ayar.",
+    "periodSnapshot": "Kapanan dönemin {{date}} tarihinde saklanan programı. O günkü hücreler ayrıca kaydedilmemişti.",
+    "noTimetable": "Bu gün için kayıtlı ders programı yok."
   }
 }
