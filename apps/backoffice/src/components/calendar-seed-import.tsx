@@ -231,8 +231,9 @@ export function CalendarSeedImport({ onDone }: { onDone: () => void }) {
                 >
                   <h4 className="font-bold">
                     {place}
-                    {rows[0]?.place_state === "create_inactive"
-                      ? " · yeni, gizli açılacak"
+                    {rows[0]?.place_state === "create_inactive" &&
+                        rows.some((r) => r.action === "create")
+                      ? done ? " · yeni, gizli açıldı" : " · yeni, gizli açılacak"
                       : rows[0]?.place_state === "existing_inactive"
                       ? " · gizli"
                       : ""}
