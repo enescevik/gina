@@ -2347,6 +2347,8 @@ change_child_education_with_calendar: { Args: { p_request_id: string; p_child_id
 get_child_archive_preview: { Args: { p_child_id: string }; Returns: Json },
 set_child_archived: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_archived: boolean }; Returns: Json },
 get_child_education: { Args: { p_child_id: string }; Returns: Json },
+preview_education_period_transfer: { Args: { p_child_id: string; p_from_period_id: string; p_to_period_id: string }; Returns: Json },
+transfer_education_period_items: { Args: { p_request_id: string; p_child_id: string; p_from_period_id: string; p_to_period_id: string; p_revision: number; p_items: Json }; Returns: Json },
 change_child_education: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_action: string; p_academic_year: number; p_grade: number | null; p_school: string | null; p_starts_on: string; p_timetable_revision: number; p_keep_timetable: boolean }; Returns: Json },
 get_guided_input_options: { Args: { p_child: string; p_kind: string }; Returns: Json },
 admin_save_guided_input: { Args: { p_id: string; p_revision: number; p_value: Json }; Returns: number },
