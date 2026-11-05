@@ -1,0 +1,37 @@
+# ÖNERİ (uygulanmadı) — Q03-HTTP-1 / Q03-HTTP-2, docs/release/q03-2026-11-06/README.md
+#
+# Gözlem (canlı, 6 Kasım 2026, oturumsuz GET): https://gina-web.pages.dev/_expo/static/<olmayan>.js
+# 200 + text/html (SPA fallback index.html) + "Cache-Control: public, max-age=31536000, immutable"
+# döndürür. Eksik/eski bir hash'li chunk isteği bir yıl boyunca HTML olarak önbelleğe alınabilir
+# (tarayıcı ve ara önbellek); yeni dağıtımda eski istemci bozuk kalabilir. Güvenlik etkisi düşüktür
+# (içerik 'self' kaynaklı, CSP korunur); kullanılabilirlik etkisi vardır.
+#
+# /s/* altında iki Referrer-Policy başlığı birlikte gider (strict-origin-when-cross-origin + no-referrer).
+# Tarayıcılar listede son geçerli değeri uygular (no-referrer); davranış bugün doğru, ama açık tek
+# değer daha güvenlidir. Cloudflare _headers dosyası başlıkları birleştirir, ezmez; bu yüzden /s/* için
+# genel kuralın değerini "! Referrer-Policy" ile kaldırıp tek değer vermek gerekir.
+#
+# Not: Cloudflare Pages'te yol bazlı 404 üretmek için `_redirects` değil, derleme sonunda
+# dist/_expo/static altında olmayan yolların fallback'e düşmesini engelleyen bir çözüm gerekir;
+# en küçük değişiklik immutable önbelleği yalnız gerçek dosya uzantılarına daraltmaktır.
+--- a/deploy/web/_headers
++++ b/deploy/web/_headers
+@@
+-/_expo/static/*
+-  Cache-Control: public, max-age=31536000, immutable
++# Yalnız hash'li gerçek varlıklar bir yıl önbelleğe alınır; HTML fallback cevabı bu kurala düşmez.
++/_expo/static/*.js
++  Cache-Control: public, max-age=31536000, immutable
++/_expo/static/*.css
++  Cache-Control: public, max-age=31536000, immutable
++/_expo/static/*.woff2
++  Cache-Control: public, max-age=31536000, immutable
++/_expo/static/*.ttf
++  Cache-Control: public, max-age=31536000, immutable
++/_expo/static/*.png
++  Cache-Control: public, max-age=31536000, immutable
+@@
+ /s/*
+   X-Robots-Tag: noindex, nofollow
++  ! Referrer-Policy
+   Referrer-Policy: no-referrer

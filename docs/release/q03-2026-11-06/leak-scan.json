@@ -1,0 +1,116 @@
+{
+ "scanned_files": 2031,
+ "secret_files_present_not_opened": [
+  "apps/backoffice/.env.example",
+  "apps/mobile/.env.example"
+ ],
+ "by_severity": {
+  "low": 10,
+  "info": 4
+ },
+ "by_pattern": {
+  "email_non_placeholder": 5,
+  "supabase_project_host": 4,
+  "hex64_possible_device_token": 5
+ },
+ "allowlisted": [
+  {
+   "pattern": "supabase_secret_key",
+   "file": "scripts/check-testflight.test.mjs",
+   "line": 24,
+   "reason": "test yer tutucusu; önek adı literal, anahtar değil"
+  },
+  {
+   "pattern": "private_key_block",
+   "file": "supabase/functions/push-send/providers.test.ts",
+   "line": 18,
+   "reason": "test çalışma anında ürettiği geçici anahtarı sarar"
+  }
+ ],
+ "findings": [
+  {
+   "pattern": "email_non_placeholder",
+   "severity": "low",
+   "file": "docs/DEPLOY.md",
+   "line": 43
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "severity": "low",
+   "file": "docs/DEPLOY.md",
+   "line": 76
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "severity": "low",
+   "file": "docs/IAP.md",
+   "line": 36
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "severity": "low",
+   "file": "docs/release/FAMILY-EXPERIENCE-13.md",
+   "line": 20
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "docs/release/FAMILY-EXPERIENCE-13.md",
+   "line": 40
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "docs/release/FAMILY-EXPERIENCE-13.md",
+   "line": 51
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "severity": "low",
+   "file": "docs/release/RELEASE-COMPLETION-2026-11-04.md",
+   "line": 46
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "docs/release/YAYIN-KURULUM-REHBERI.md",
+   "line": 49
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "docs/release/YAYIN-KURULUM-REHBERI.md",
+   "line": 85
+  },
+  {
+   "pattern": "hex64_possible_device_token",
+   "severity": "low",
+   "file": "supabase/functions/prova-review/assets/provenance.json",
+   "line": 15
+  },
+  {
+   "pattern": "hex64_possible_device_token",
+   "severity": "low",
+   "file": "supabase/functions/prova-review/assets/provenance.json",
+   "line": 16
+  },
+  {
+   "pattern": "hex64_possible_device_token",
+   "severity": "low",
+   "file": "supabase/functions/prova-review/assets/provenance.json",
+   "line": 17
+  },
+  {
+   "pattern": "hex64_possible_device_token",
+   "severity": "low",
+   "file": "supabase/functions/prova-review/assets/provenance.json",
+   "line": 18
+  },
+  {
+   "pattern": "hex64_possible_device_token",
+   "severity": "low",
+   "file": "supabase/functions/prova-review/assets/provenance.json",
+   "line": 19
+  }
+ ]
+}

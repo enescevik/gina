@@ -1,0 +1,310 @@
+{
+ "environment": "disposable-local-postgres-gotrue",
+ "variants": {
+  "A": {
+   "variant": "public+gina (yalnız veri) — mevcut yaklaşım",
+   "disable_triggers": false,
+   "counts_after_migrations_before_restore": {
+    "auth.users": "0",
+    "auth.identities": "0",
+    "public.families": "0",
+    "public.family_members": "0",
+    "public.children": "0",
+    "public.devices": "0",
+    "public.learning_sources": "0",
+    "storage.objects": "0",
+    "public.notes": "0",
+    "gina.note_changes": "0",
+    "public.audit_log": "37"
+   },
+   "restore_exit": 1,
+   "restore_errors": [
+    "A: insert or update on table \"families\" violates foreign key constraint \"families_created_by_fkey\""
+   ],
+   "counts": {
+    "auth.users": "0",
+    "auth.identities": "0",
+    "public.families": "0",
+    "public.family_members": "0",
+    "public.children": "0",
+    "public.devices": "0",
+    "public.learning_sources": "0",
+    "storage.objects": "0",
+    "public.notes": "0",
+    "gina.note_changes": "0",
+    "public.audit_log": "37"
+   },
+   "counts_match_source": false,
+   "relations": {
+    "auth_user_linked_to_family_member": "0",
+    "identity_linked_to_user": "0",
+    "device_user_linked": "0",
+    "storage_object_matches_learning_source": "0",
+    "note_history_rows_for_family": "0",
+    "orphan_family_members": "0"
+   },
+   "function_acl_parity": true,
+   "trigger_parity": true,
+   "triggers_disabled_left": "0"
+  },
+  "B": {
+   "variant": "auth+storage+public+gina (yalnız veri), tetikleyiciler açık",
+   "disable_triggers": false,
+   "counts_after_migrations_before_restore": {
+    "auth.users": "0",
+    "auth.identities": "0",
+    "public.families": "0",
+    "public.family_members": "0",
+    "public.children": "0",
+    "public.devices": "0",
+    "public.learning_sources": "0",
+    "storage.objects": "0",
+    "public.notes": "0",
+    "gina.note_changes": "0",
+    "public.audit_log": "37"
+   },
+   "app_tables_truncated_before_restore": true,
+   "restore_exit": 1,
+   "restore_errors": [
+    "B: duplicate key value violates unique constraint \"note_changes_note_id_revision_key\""
+   ],
+   "counts": {
+    "auth.users": "2",
+    "auth.identities": "1",
+    "public.families": "1",
+    "public.family_members": "0",
+    "public.children": "1",
+    "public.devices": "1",
+    "public.learning_sources": "1",
+    "storage.objects": "0",
+    "public.notes": "3",
+    "gina.note_changes": "3",
+    "public.audit_log": "1"
+   },
+   "counts_match_source": false,
+   "relations": {
+    "auth_user_linked_to_family_member": "0",
+    "identity_linked_to_user": "1",
+    "device_user_linked": "1",
+    "storage_object_matches_learning_source": "0",
+    "note_history_rows_for_family": "3",
+    "orphan_family_members": "0"
+   },
+   "function_acl_parity": true,
+   "trigger_parity": true,
+   "triggers_disabled_left": "0"
+  },
+  "C": {
+   "variant": "B ile aynı döküm, pg_restore --disable-triggers (süper kullanıcı)",
+   "disable_triggers": true,
+   "counts_after_migrations_before_restore": {
+    "auth.users": "0",
+    "auth.identities": "0",
+    "public.families": "0",
+    "public.family_members": "0",
+    "public.children": "0",
+    "public.devices": "0",
+    "public.learning_sources": "0",
+    "storage.objects": "0",
+    "public.notes": "0",
+    "gina.note_changes": "0",
+    "public.audit_log": "37"
+   },
+   "app_tables_truncated_before_restore": true,
+   "restore_exit": 0,
+   "restore_errors": [],
+   "method": "pg_restore -f - | psql (session_replication_role=replica)",
+   "counts": {
+    "auth.users": "2",
+    "auth.identities": "1",
+    "public.families": "1",
+    "public.family_members": "1",
+    "public.children": "1",
+    "public.devices": "1",
+    "public.learning_sources": "1",
+    "storage.objects": "1",
+    "public.notes": "3",
+    "gina.note_changes": "3",
+    "public.audit_log": "37"
+   },
+   "counts_match_source": true,
+   "relations": {
+    "auth_user_linked_to_family_member": "1",
+    "identity_linked_to_user": "1",
+    "device_user_linked": "1",
+    "storage_object_matches_learning_source": "1",
+    "note_history_rows_for_family": "3",
+    "orphan_family_members": "0"
+   },
+   "function_acl_parity": true,
+   "trigger_parity": true,
+   "triggers_disabled_left": "0",
+   "login_status": 200,
+   "jwt_gina_family_matches": true,
+   "jwt_sub_is_parent": true
+  },
+  "D": {
+   "variant": "public+gina şema+veri+ACL dökümü + auth/storage veri dökümü; hedefte public/gina sıfırdan",
+   "disable_triggers": false,
+   "counts_after_migrations_before_restore": {
+    "auth.users": "0",
+    "auth.identities": "0",
+    "public.families": "0",
+    "public.family_members": "0",
+    "public.children": "0",
+    "public.devices": "0",
+    "public.learning_sources": "0",
+    "storage.objects": "0",
+    "public.notes": "0",
+    "gina.note_changes": "0",
+    "public.audit_log": "37"
+   },
+   "public_gina_dropped_before_restore": true,
+   "restore_exit": 0,
+   "restore_errors": [],
+   "benign_errors": [
+    "D_schema: schema \"public\" already exists"
+   ],
+   "counts": {
+    "auth.users": "2",
+    "auth.identities": "1",
+    "public.families": "1",
+    "public.family_members": "1",
+    "public.children": "1",
+    "public.devices": "1",
+    "public.learning_sources": "1",
+    "storage.objects": "1",
+    "public.notes": "3",
+    "gina.note_changes": "3",
+    "public.audit_log": "37"
+   },
+   "counts_match_source": true,
+   "relations": {
+    "auth_user_linked_to_family_member": "1",
+    "identity_linked_to_user": "1",
+    "device_user_linked": "1",
+    "storage_object_matches_learning_source": "1",
+    "note_history_rows_for_family": "3",
+    "orphan_family_members": "0"
+   },
+   "function_acl_parity": false,
+   "trigger_parity": false,
+   "acl_diff": {
+    "only_in_source": [
+     "public.acquire_library_units(p_request_id uuid, p_package_id uuid, p_publication_version integer, p_unit_keys text[], p_draft_id uuid)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_add_library_item(p_collection_id uuid, p_content jsonb, p_publish boolean)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_ai_operations()={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_announcements(p_before timestamp with time zone, p_before_id uuid)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_cancel_group_exam(p_id uuid, p_reason text)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_change_curriculum_candidate(p_request_id uuid, p_id uuid, p_revision integer, p_action text, p_review jsonb, p_note text, p_confirmed boolean)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_cohort_review_detail(p_entry uuid)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_cohort_review_queue(p_group uuid)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_create_group_exam(p_id uuid, p_collection uuid, p_title text, p_items uuid[], p_start timestamp with time zone, p_end timestamp with time zone, p_minutes integer, p_plans plan_code[])={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_create_package_group_exam(p_id uuid, p_package_id uuid, p_publication_version integer, p_title text, p_units text[], p_start timestamp with time zone, p_end timestamp with time zone, p_minutes integer, p_plans plan_code[])={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_create_reviewed_group_exam(p_id uuid, p_package_id uuid, p_publication_version integer, p_title text, p_units text[], p_start timestamp with time zone, p_end timestamp with time zone, p_minutes integer, p_plans plan_code[], p_review boolean)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_dashboard()={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_decide_contribution_set(p_request_id uuid, p_id uuid, p_approve boolean, p_note text, p_teachers jsonb, p_confirmed boolean)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_delete_global_question(p_question_id uuid)={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_education_calendars()={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_education_reminder_settings(p_request uuid, p_revision integer, p_enabled boolean)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_expire_override(p_override_id uuid, p_reason text)={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_get_contribution_set(p_id uuid)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_get_curriculum_candidate(p_id uuid)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_get_library_import(p_id uuid, p_include_answers boolean)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_get_library_reviews(p_package_id uuid)={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_grant_override(p_family_id uuid, p_plan plan_code, p_reason text, p_ends_at timestamp with time zone, p_starts_at timestamp with time zone)={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_group_exams()={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_group_package_catalog()={postgres=X/postgres,authenticated=X/postgres}",
+     "public.admin_group_policy(p_enabled boolean, p_limits jsonb)={postgres=X/postgres,authenticated=X/postgres}"
+    ],
+    "only_in_target": [
+     "public.acquire_library_units(p_request_id uuid, p_package_id uuid, p_publication_version integer, p_unit_keys text[], p_draft_id uuid)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_add_library_item(p_collection_id uuid, p_content jsonb, p_publish boolean)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_ai_operations()={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_announcements(p_before timestamp with time zone, p_before_id uuid)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_cancel_group_exam(p_id uuid, p_reason text)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_change_curriculum_candidate(p_request_id uuid, p_id uuid, p_revision integer, p_action text, p_review jsonb, p_note text, p_confirmed boolean)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_cohort_review_detail(p_entry uuid)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_cohort_review_queue(p_group uuid)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_create_group_exam(p_id uuid, p_collection uuid, p_title text, p_items uuid[], p_start timestamp with time zone, p_end timestamp with time zone, p_minutes integer, p_plans plan_code[])={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_create_package_group_exam(p_id uuid, p_package_id uuid, p_publication_version integer, p_title text, p_units text[], p_start timestamp with time zone, p_end timestamp with time zone, p_minutes integer, p_plans plan_code[])={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_create_reviewed_group_exam(p_id uuid, p_package_id uuid, p_publication_version integer, p_title text, p_units text[], p_start timestamp with time zone, p_end timestamp with time zone, p_minutes integer, p_plans plan_code[], p_review boolean)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_dashboard()={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_decide_contribution_set(p_request_id uuid, p_id uuid, p_approve boolean, p_note text, p_teachers jsonb, p_confirmed boolean)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_delete_global_question(p_question_id uuid)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_education_calendars()={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_education_reminder_settings(p_request uuid, p_revision integer, p_enabled boolean)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_expire_override(p_override_id uuid, p_reason text)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_get_contribution_set(p_id uuid)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_get_curriculum_candidate(p_id uuid)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_get_library_import(p_id uuid, p_include_answers boolean)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_get_library_reviews(p_package_id uuid)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_grant_override(p_family_id uuid, p_plan plan_code, p_reason text, p_ends_at timestamp with time zone, p_starts_at timestamp with time zone)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_group_exams()={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_group_package_catalog()={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+     "public.admin_group_policy(p_enabled boolean, p_limits jsonb)={postgres=X/postgres,anon=X/postgres,authenticated=X/postgres,service_role=X/postgres}"
+    ],
+    "differing_total": 520
+   },
+   "trigger_diff": {
+    "only_in_source": [],
+    "only_in_target": [],
+    "differing_total": 0
+   },
+   "triggers_disabled_left": "0",
+   "login_status": 200,
+   "jwt_gina_family_matches": true,
+   "jwt_sub_is_parent": true
+  }
+ },
+ "cleanup": {
+  "src_db_removed": true,
+  "a_db_removed": true,
+  "b_db_removed": true,
+  "c_db_removed": true,
+  "d_db_removed": true
+ },
+ "source": {
+  "counts": {
+   "auth.users": "2",
+   "auth.identities": "1",
+   "public.families": "1",
+   "public.family_members": "1",
+   "public.children": "1",
+   "public.devices": "1",
+   "public.learning_sources": "1",
+   "storage.objects": "1",
+   "public.notes": "3",
+   "gina.note_changes": "3",
+   "public.audit_log": "37"
+  },
+  "relations": {
+   "auth_user_linked_to_family_member": "1",
+   "identity_linked_to_user": "1",
+   "device_user_linked": "1",
+   "storage_object_matches_learning_source": "1",
+   "note_history_rows_for_family": "3",
+   "orphan_family_members": "0"
+  }
+ },
+ "dump_bytes": {
+  "A": 55484,
+  "B": 69560,
+  "D_schema": 1421197,
+  "D_services": 15027
+ },
+ "dump_contents": {
+  "A": "public+gina (yalnız veri) — mevcut yaklaşım",
+  "B": "auth+storage+public+gina (yalnız veri), tetikleyiciler açık",
+  "C": "B ile aynı döküm, pg_restore --disable-triggers (süper kullanıcı)",
+  "D": "public+gina şema+veri+ACL dökümü + auth/storage veri dökümü; hedefte public/gina sıfırdan"
+ },
+ "conclusion": {
+  "public_gina_only_is_full_backup": false,
+  "variant_with_login_proof": [
+   "C",
+   "D"
+  ],
+  "storage_blob_bytes_included_in_db_dump": false
+ }
+}
