@@ -8,9 +8,11 @@ root = Path(__file__).resolve().parents[1]
 db = 'gina_b01_' + uuid.uuid4().hex[:10] + '_audit'
 created = False
 
+# Session TimeZone follows the synthetic families (Europe/Istanbul): 083/088 compare current_date with the
+# family-local day and fail between 21:00 and 24:00 UTC on a UTC session (pre-existing, not B01).
 def sql(database, body, owner=False, allow_error=False):
     role = 'supabase_admin' if owner or database != db else 'postgres'
-    result = subprocess.run(['docker','exec','-i','supabase_db_gina','psql','-X','-qAt','-U',role,'-d',database,'-v','ON_ERROR_STOP=1'], input=body,text=True,capture_output=True,timeout=300)
+    result = subprocess.run(['docker','exec','-i','-e','PGTZ=Europe/Istanbul','supabase_db_gina','psql','-X','-qAt','-U',role,'-d',database,'-v','ON_ERROR_STOP=1'], input=body,text=True,capture_output=True,timeout=300)
     if result.returncode:
         if allow_error: return 'ERROR:'+result.stderr.strip()
         raise RuntimeError(result.stderr[-1800:])

@@ -330,6 +330,10 @@
       "passed": 31
     },
     {
+      "file": "083_school_grade_lifecycle.test.sql",
+      "passed": 46
+    },
+    {
       "file": "084_task_routine_lifecycle.test.sql",
       "passed": 58
     },
@@ -340,6 +344,10 @@
     {
       "file": "086_note_history.test.sql",
       "passed": 43
+    },
+    {
+      "file": "088_period_transfer.test.sql",
+      "passed": 81
     },
     {
       "file": "089_bulk_archive.test.sql",
