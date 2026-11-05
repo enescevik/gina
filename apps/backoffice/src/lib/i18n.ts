@@ -165,6 +165,10 @@ export const tr = {
     family_not_found: "Aile bulunamadı.",
     question_not_found: "Soru bulunamadı.",
     question_in_use: "Bu soru denemelerde kullanılmış; silinemez (çocuk cevapları kaybolurdu). Düzenleyebilirsiniz.",
+    stale_record: "Bu kayıt bu arada başka bir sekme veya yönetici tarafından değiştirildi. Güncel kaydı yükleyip değişikliğini yeniden gir.",
+    duplicate_record: "Aynı kayıt zaten var. Listeyi yenileyip güncel durumu kontrol et.",
+    service_unavailable: "Hizmete şu anda ulaşılamıyor. Bağlantıyı kontrol edip yeniden dene.",
+    generic_failure: "İşlem tamamlanamadı. Yeniden dene; sorun sürerse kaydın güncel durumunu kontrol et.",
   } as Record<string, string>,
 };
 
