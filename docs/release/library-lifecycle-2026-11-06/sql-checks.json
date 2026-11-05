@@ -1,0 +1,494 @@
+{
+ "database": "gina_p05_pgtap_6d91f56c_audit",
+ "template": "gina_p05_credit_audit",
+ "files": 92,
+ "checks": 3037,
+ "failed_files": [
+  {
+   "file": "083_school_grade_lifecycle.test.sql",
+   "lines": [
+    "not ok 12 - future score rejected",
+    "not ok 13 - date cannot silently move evidence to another period",
+    "not ok 14 - forged context rejected",
+    "ERROR:  school_grade_changed",
+    "ERROR:  current transaction is aborted, commands ignored until end of transaction block",
+    "ERROR:  current transaction is aborted, commands ignored until end of transaction block",
+    "ERROR:  current transaction is aborted, commands ignored until end of transaction block",
+    "ERROR:  current transaction is aborted, commands ignored until end of transaction block",
+    "ERROR:  current transaction is aborted, commands ignored until end of transaction block",
+    "ERROR:  current transaction is aborted, commands ignored until end of transaction block"
+   ]
+  },
+  {
+   "file": "088_period_transfer.test.sql",
+   "lines": [
+    "not ok 35 - copy starts in the new period",
+    "not ok 36 - effective_from recorded for dated history",
+    "not ok 66 - new routine accepts submissions",
+    "# Looks like you failed 3 tests of 81"
+   ]
+  }
+ ],
+ "results": [
+  {
+   "file": "001_schema.test.sql",
+   "passed": 20,
+   "ok": true
+  },
+  {
+   "file": "002_rls.test.sql",
+   "passed": 14,
+   "ok": true
+  },
+  {
+   "file": "003_entitlements.test.sql",
+   "passed": 11,
+   "ok": true
+  },
+  {
+   "file": "004_ai_summary_data.test.sql",
+   "passed": 6,
+   "ok": true
+  },
+  {
+   "file": "005_prova.test.sql",
+   "passed": 17,
+   "ok": true
+  },
+  {
+   "file": "006_resubmit.test.sql",
+   "passed": 8,
+   "ok": true
+  },
+  {
+   "file": "007_rewards.test.sql",
+   "passed": 14,
+   "ok": true
+  },
+  {
+   "file": "008_prova_ai.test.sql",
+   "passed": 25,
+   "ok": true
+  },
+  {
+   "file": "009_prova_level.test.sql",
+   "passed": 16,
+   "ok": true
+  },
+  {
+   "file": "010_iap.test.sql",
+   "passed": 10,
+   "ok": true
+  },
+  {
+   "file": "011_push.test.sql",
+   "passed": 24,
+   "ok": true
+  },
+  {
+   "file": "012_backoffice.test.sql",
+   "passed": 26,
+   "ok": true
+  },
+  {
+   "file": "013_teacher_share.test.sql",
+   "passed": 22,
+   "ok": true
+  },
+  {
+   "file": "014_room_pet.test.sql",
+   "passed": 7,
+   "ok": true
+  },
+  {
+   "file": "015_account_lifecycle.test.sql",
+   "passed": 16,
+   "ok": true
+  },
+  {
+   "file": "016_child_deletion.test.sql",
+   "passed": 5,
+   "ok": true
+  },
+  {
+   "file": "017_room_atmosphere.test.sql",
+   "passed": 18,
+   "ok": true
+  },
+  {
+   "file": "018_school_timetables.test.sql",
+   "passed": 17,
+   "ok": true
+  },
+  {
+   "file": "019_device_family_access.test.sql",
+   "passed": 29,
+   "ok": true
+  },
+  {
+   "file": "020_prova_jobs.test.sql",
+   "passed": 10,
+   "ok": true
+  },
+  {
+   "file": "021_beta_setup.test.sql",
+   "passed": 32,
+   "ok": true
+  },
+  {
+   "file": "022_setup_ai.test.sql",
+   "passed": 13,
+   "ok": true
+  },
+  {
+   "file": "023_operation_safety.test.sql",
+   "passed": 15,
+   "ok": true
+  },
+  {
+   "file": "024_learning_library.test.sql",
+   "passed": 30,
+   "ok": true
+  },
+  {
+   "file": "025_generation_credits.test.sql",
+   "passed": 19,
+   "ok": true
+  },
+  {
+   "file": "026_learning_sources.test.sql",
+   "passed": 34,
+   "ok": true
+  },
+  {
+   "file": "027_exam_boundaries.test.sql",
+   "passed": 14,
+   "ok": true
+  },
+  {
+   "file": "028_timetable_import.test.sql",
+   "passed": 33,
+   "ok": true
+  },
+  {
+   "file": "029_group_exams.test.sql",
+   "passed": 54,
+   "ok": true
+  },
+  {
+   "file": "030_answer_receipts.test.sql",
+   "passed": 15,
+   "ok": true
+  },
+  {
+   "file": "031_setup_batch.test.sql",
+   "passed": 24,
+   "ok": true
+  },
+  {
+   "file": "032_answer_notebooks.test.sql",
+   "passed": 14,
+   "ok": true
+  },
+  {
+   "file": "033_shared_question_sources.test.sql",
+   "passed": 57,
+   "ok": true
+  },
+  {
+   "file": "034_parent_answer_reviews.test.sql",
+   "passed": 35,
+   "ok": true
+  },
+  {
+   "file": "035_prova_drafts.test.sql",
+   "passed": 38,
+   "ok": true
+  },
+  {
+   "file": "036_learning_progress.test.sql",
+   "passed": 27,
+   "ok": true
+  },
+  {
+   "file": "037_support_help.test.sql",
+   "passed": 70,
+   "ok": true
+  },
+  {
+   "file": "038_operator_help_queue.test.sql",
+   "passed": 18,
+   "ok": true
+  },
+  {
+   "file": "039_help_article_editor.test.sql",
+   "passed": 25,
+   "ok": true
+  },
+  {
+   "file": "040_library_import.test.sql",
+   "passed": 67,
+   "ok": true
+  },
+  {
+   "file": "041_library_editorial_review.test.sql",
+   "passed": 36,
+   "ok": true
+  },
+  {
+   "file": "042_library_publication.test.sql",
+   "passed": 38,
+   "ok": true
+  },
+  {
+   "file": "043_library_family_access.test.sql",
+   "passed": 36,
+   "ok": true
+  },
+  {
+   "file": "044_repeat_candidates.test.sql",
+   "passed": 27,
+   "ok": true
+  },
+  {
+   "file": "045_calendar_commands.test.sql",
+   "passed": 24,
+   "ok": true
+  },
+  {
+   "file": "046_study_plan_calendar.test.sql",
+   "passed": 25,
+   "ok": true
+  },
+  {
+   "file": "047_group_library_packages.test.sql",
+   "passed": 42,
+   "ok": true
+  },
+  {
+   "file": "048_store_notification_recovery.test.sql",
+   "passed": 26,
+   "ok": true
+  },
+  {
+   "file": "049_atomic_store_entitlements.test.sql",
+   "passed": 43,
+   "ok": true
+  },
+  {
+   "file": "050_billing_operations.test.sql",
+   "passed": 22,
+   "ok": true
+  },
+  {
+   "file": "051_override_commands.test.sql",
+   "passed": 23,
+   "ok": true
+  },
+  {
+   "file": "052_operator_reconciliation.test.sql",
+   "passed": 31,
+   "ok": true
+  },
+  {
+   "file": "053_document_setup.test.sql",
+   "passed": 33,
+   "ok": true
+  },
+  {
+   "file": "054_family_blueprint.test.sql",
+   "passed": 27,
+   "ok": true
+  },
+  {
+   "file": "055_contribution_sets.test.sql",
+   "passed": 53,
+   "ok": true
+  },
+  {
+   "file": "056_curriculum_source_review.test.sql",
+   "passed": 37,
+   "ok": true
+  },
+  {
+   "file": "057_catalogue_family_selection.test.sql",
+   "passed": 43,
+   "ok": true
+  },
+  {
+   "file": "058_generation_recovery.test.sql",
+   "passed": 36,
+   "ok": true
+  },
+  {
+   "file": "059_cohort_written_review.test.sql",
+   "passed": 58,
+   "ok": true
+  },
+  {
+   "file": "060_cohort_result_notifications.test.sql",
+   "passed": 20,
+   "ok": true
+  },
+  {
+   "file": "061_push_delivery_recovery.test.sql",
+   "passed": 31,
+   "ok": true
+  },
+  {
+   "file": "062_push_operations.test.sql",
+   "passed": 28,
+   "ok": true
+  },
+  {
+   "file": "063_repeat_calendar.test.sql",
+   "passed": 40,
+   "ok": true
+  },
+  {
+   "file": "064_timetable_save_receipts.test.sql",
+   "passed": 33,
+   "ok": true
+  },
+  {
+   "file": "065_school_bags.test.sql",
+   "passed": 47,
+   "ok": true
+  },
+  {
+   "file": "066_weekly_summary_safety.test.sql",
+   "passed": 46,
+   "ok": true
+  },
+  {
+   "file": "067_learning_plan.test.sql",
+   "passed": 58,
+   "ok": true
+  },
+  {
+   "file": "068_task_submission_receipts.test.sql",
+   "passed": 27,
+   "ok": true
+  },
+  {
+   "file": "069_learning_plan_import.test.sql",
+   "passed": 42,
+   "ok": true
+  },
+  {
+   "file": "070_weekly_summary_reader.test.sql",
+   "passed": 34,
+   "ok": true
+  },
+  {
+   "file": "071_exam_list_realtime.test.sql",
+   "passed": 5,
+   "ok": true
+  },
+  {
+   "file": "072_realtime_claim_nulls.test.sql",
+   "passed": 18,
+   "ok": true
+  },
+  {
+   "file": "073_learning_source_sets.test.sql",
+   "passed": 17,
+   "ok": true
+  },
+  {
+   "file": "074_guided_input_catalog.test.sql",
+   "passed": 13,
+   "ok": true
+  },
+  {
+   "file": "075_family_creation_identity.test.sql",
+   "passed": 6,
+   "ok": true
+  },
+  {
+   "file": "076_timetable_policy_read.test.sql",
+   "passed": 2,
+   "ok": true
+  },
+  {
+   "file": "077_prova_draft_lifecycle.test.sql",
+   "passed": 32,
+   "ok": true
+  },
+  {
+   "file": "078_child_education_periods.test.sql",
+   "passed": 43,
+   "ok": true
+  },
+  {
+   "file": "079_child_profile_archive.test.sql",
+   "passed": 57,
+   "ok": true
+  },
+  {
+   "file": "080_education_calendars.test.sql",
+   "passed": 35,
+   "ok": true
+  },
+  {
+   "file": "081_parent_announcements.test.sql",
+   "passed": 41,
+   "ok": true
+  },
+  {
+   "file": "082_education_reports.test.sql",
+   "passed": 31,
+   "ok": true
+  },
+  {
+   "file": "083_school_grade_lifecycle.test.sql",
+   "passed": 15,
+   "ok": false
+  },
+  {
+   "file": "084_task_routine_lifecycle.test.sql",
+   "passed": 58,
+   "ok": true
+  },
+  {
+   "file": "085_reward_history.test.sql",
+   "passed": 48,
+   "ok": true
+  },
+  {
+   "file": "086_note_history.test.sql",
+   "passed": 43,
+   "ok": true
+  },
+  {
+   "file": "088_period_transfer.test.sql",
+   "passed": 78,
+   "ok": false
+  },
+  {
+   "file": "089_bulk_archive.test.sql",
+   "passed": 101,
+   "ok": true
+  },
+  {
+   "file": "090_deletion_preview.test.sql",
+   "passed": 87,
+   "ok": true
+  },
+  {
+   "file": "091_content_prereview.test.sql",
+   "passed": 84,
+   "ok": true
+  },
+  {
+   "file": "092_ai_provider_matrix.test.sql",
+   "passed": 53,
+   "ok": true
+  },
+  {
+   "file": "098_library_credit_safety.test.sql",
+   "passed": 155,
+   "ok": true
+  }
+ ]
+}
