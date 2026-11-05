@@ -74,6 +74,6 @@ select lives_ok($$select public.set_child_archived(gen_random_uuid(),pg_temp.chi
 select throws_ok($$select public.change_task_routine(gen_random_uuid(),pg_temp.t(),10,'resume')$$,'P0001','child_archived','archived profile cannot resume routine');
 select lives_ok($$select public.task_routine_history(pg_temp.t())$$,'archived profile history readable');
 reset role;
-select ok(not has_function_privilege('anon','public.change_task_routine(uuid,uuid,integer,text,jsonb)','execute'),'anonymous mutation denied');
+select ok(not has_function_privilege('anon','public.change_task_routine(uuid,uuid,integer,text,jsonb,date)','execute'),'anonymous mutation denied');
 select ok(not has_function_privilege('authenticated','gina.task_completion_snapshot()','execute'),'snapshot trigger private');
 select * from finish();rollback;
