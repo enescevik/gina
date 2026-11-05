@@ -1,115 +1,156 @@
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { appendFamilyPage, familiesSearchSchema, normalizeFamilyQuery, type FamilySearchRow } from "@gina/core";
 
 import { Card, Layout, Notice } from "@/components/Layout";
-import { fmtDate, fmtNumber } from "@/lib/format";
+import { adminRpc, isForbidden } from "@/lib/admin-rpc";
+import { b01, planLabel } from "@/lib/admin-workqueue-text";
+import { useAuth } from "@/lib/auth";
+import { fmtDate, fmtDateTime, fmtNumber } from "@/lib/format";
 import { t } from "@/lib/i18n";
-import { errorMessage, supabase } from "@/lib/supabase";
-import { unwrap, useAdminQuery } from "@/lib/use-async";
+import { errorMessage } from "@/lib/supabase";
 
-const PAGE = 100;
+const PAGE = 50;
+type List = { query: string | null; rows: FamilySearchRow[]; cursor: string | null; hasMore: boolean };
 
 export default function FamiliesPage() {
+  const { session, isAdmin } = useAuth();
   const [input, setInput] = useState("");
-  const [query, setQuery] = useState("");
-  const [limit, setLimit] = useState(PAGE);
-  // Bir fazla kayıt istenir: "daha fazla var" bilgisi sunucudan gelir, ilk sayfa bütün kayıt gibi sunulmaz.
-  const { data, error, loading, reload } = useAdminQuery(
-    async () => {
-      const rows = unwrap(await supabase().rpc("admin_search_families", { p_query: query || undefined, p_limit: limit + 1 }));
-      return { rows: rows.slice(0, limit), more: rows.length > limit };
-    },
-    [query, limit],
-  );
+  const [query, setQuery] = useState<string | null>(null);
+  const [list, setList] = useState<List | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<unknown>(null);
+  const [pageError, setPageError] = useState(false);
+  const [revoked, setRevoked] = useState(false);
+  const [inputError, setInputError] = useState("");
+  const seq = useRef(0);
+
+  // İlk sayfa: önceki istek bekliyorsa sonucu yok sayılır (sıra numarası).
+  const loadFirst = useCallback(async (q: string | null) => {
+    const request = ++seq.current;
+    setLoading(true); setError(null); setPageError(false);
+    try {
+      const page = familiesSearchSchema.parse(await adminRpc("admin_families_search", { p_query: q, p_cursor: null, p_limit: PAGE }));
+      if (request !== seq.current) return;
+      const merged = appendFamilyPage([], page, null, null);
+      setList({ query: q, rows: merged.rows, cursor: merged.cursor, hasMore: merged.hasMore });
+    } catch (e) {
+      if (request !== seq.current) return;
+      if (isForbidden(e)) setRevoked(true);
+      setError(e);
+    } finally { if (request === seq.current) setLoading(false); }
+  }, []);
+
+  useEffect(() => {
+    if (!session || !isAdmin) return;
+    const timer = setTimeout(() => void loadFirst(query), 0);
+    return () => clearTimeout(timer);
+  }, [session, isAdmin, query, loadFirst]);
+
+  // Gerçek keyset: sunucunun verdiği cursor ile sonraki sayfa; gelen sayfa listeye eklenir, ilk sayfa yeniden istenmez.
+  async function loadMore() {
+    const current = list;
+    if (!current?.cursor || loading) return;
+    const request = ++seq.current, expected = current.cursor;
+    setLoading(true); setPageError(false);
+    try {
+      const page = familiesSearchSchema.parse(await adminRpc("admin_families_search", { p_query: current.query, p_cursor: expected, p_limit: PAGE }));
+      if (request !== seq.current) return;
+      const merged = appendFamilyPage(current.rows, page, expected, current.cursor);
+      setList({ ...current, rows: merged.rows, cursor: merged.cursor, hasMore: merged.hasMore });
+    } catch (e) {
+      if (request !== seq.current) return;
+      if (isForbidden(e)) { setRevoked(true); setError(e); } else setPageError(true);
+    } finally { if (request === seq.current) setLoading(false); }
+  }
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
-    setQuery(input.trim());
-    setLimit(PAGE);
+    try { setInputError(""); setQuery(normalizeFamilyQuery(input)); }
+    catch { setInputError(b01.families.tooLong); }
   }
-  const action = (id: string) => (
-    <Link className="btn-secondary inline-flex items-center whitespace-nowrap" href={{ pathname: "/billing", query: { family: id } }}>
-      Paket ve ödeme
-    </Link>
+
+  const actions = (id: string) => (
+    <div className="flex flex-wrap gap-2">
+      <Link className="btn-secondary inline-flex items-center whitespace-nowrap" href={{ pathname: "/billing", query: { family: id } }}>{b01.families.billing}</Link>
+      <Link className="btn-secondary inline-flex items-center whitespace-nowrap" href={{ pathname: "/overrides", query: { family: id } }}>{b01.families.grant}</Link>
+    </div>
   );
 
   return (
-    <Layout title={t.families.title}>
-      <p className="mb-4 text-sm text-slate-500">{t.families.help}</p>
-      <form onSubmit={onSubmit} className="mb-4 flex gap-2">
-        <label className="sr-only" htmlFor="family-query">{t.families.placeholder}</label>
-        <input id="family-query" className="input" placeholder={t.families.placeholder} value={input} onChange={(e) => setInput(e.target.value)} />
-        <button className="btn" type="submit" disabled={loading}>
-          {t.common.search}
-        </button>
-      </form>
-      {error ? (
-        <Notice tone="error">
-          {errorMessage(error, t.errors)}{" "}
-          <button className="btn-secondary ml-2" disabled={loading} onClick={reload}>Yeniden dene</button>
-        </Notice>
-      ) : null}
-      <Card>
-        {!data ? (
-          loading ? <p className="text-slate-500">{t.common.loading}</p> : null
-        ) : data.rows.length === 0 ? (
-          <p className="text-sm text-slate-500">{t.families.empty}</p>
-        ) : (
-          <>
-            <p className="mb-3 text-sm text-slate-600" role="status">
-              {data.more
-                ? `İlk ${fmtNumber(data.rows.length)} aile gösteriliyor; daha fazlası var. Aramayla daraltın veya daha fazla yükleyin.`
-                : `${fmtNumber(data.rows.length)} aile${query ? " bu aramayla eşleşti" : ""}.`}
-            </p>
-            <div className="overflow-x-auto">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>{t.families.name}</th>
-                    <th>{t.families.plan}</th>
-                    <th>{t.families.expires}</th>
-                    <th className="text-right">{t.families.children}</th>
-                    <th className="hidden text-right xl:table-cell">{t.families.members}</th>
-                    <th className="hidden text-right xl:table-cell">{t.families.devices}</th>
-                    <th className="hidden xl:table-cell">{t.families.createdAt}</th>
-                    <th className="hidden xl:table-cell" />
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.rows.map((f) => (
-                    <tr key={f.id}>
-                      <td>
-                        <div className="font-semibold">{f.name}</div>
+    <Layout title={b01.families.title}>
+      <p className="mb-4 max-w-3xl text-sm text-slate-600">{b01.families.help}</p>
+      {revoked ? <Notice tone="error"><strong>{b01.revoked.title}.</strong> {b01.revoked.body}</Notice> : (
+        <>
+          <form onSubmit={onSubmit} className="mb-4 flex gap-2" role="search">
+            <label className="sr-only" htmlFor="family-query">{b01.families.placeholder}</label>
+            <input id="family-query" className="input" maxLength={160} placeholder={b01.families.placeholder} value={input} onChange={(e) => setInput(e.target.value)} />
+            <button className="btn" type="submit" disabled={loading}>{t.common.search}</button>
+          </form>
+          {inputError ? <Notice tone="error">{inputError}</Notice> : null}
+          {error ? (
+            <Notice tone="error">
+              {errorMessage(error, t.errors)}{" "}
+              <button className="btn-secondary ml-2" disabled={loading} onClick={() => void loadFirst(query)}>Yeniden dene</button>
+            </Notice>
+          ) : null}
+          <Card>
+            {!list ? (
+              loading ? <p className="text-slate-500" role="status">{t.common.loading}</p> : null
+            ) : list.rows.length === 0 ? (
+              <p className="text-sm text-slate-500">{b01.families.empty}</p>
+            ) : (
+              <>
+                <p className="mb-3 text-sm text-slate-600" role="status" data-testid="families-status">
+                  {list.hasMore ? b01.families.shownMore(fmtNumber(list.rows.length)) : b01.families.shownAll(fmtNumber(list.rows.length), !!list.query)}
+                </p>
+                <ul className="divide-y divide-slate-100" aria-label="Aileler">
+                  {list.rows.map((f) => (
+                    <li key={f.id} className="grid gap-2 py-3 md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)_minmax(0,1fr)_auto] md:items-start" data-family-row>
+                      <div className="min-w-0">
+                        <div className="font-semibold text-slate-900">{f.name}</div>
+                        {list.query && f.matched_on.length ? (
+                          <div className="mt-1 flex flex-wrap gap-1" aria-label={b01.families.matched}>
+                            {f.matched_on.map((m) => (
+                              <span key={m} className="rounded-full bg-violet-100 px-2 py-0.5 text-xs text-violet-900">{b01.families.matched}: {b01.families.matchedOn[m] ?? m}</span>
+                            ))}
+                          </div>
+                        ) : null}
                         <details className="mt-1 text-xs text-slate-500">
-                          <summary className="cursor-pointer">Kimlik ve ayrıntı</summary>
+                          <summary className="cursor-pointer">{b01.families.details}</summary>
                           <code className="break-all">{f.id}</code>
-                          <div className="mt-1 xl:hidden">{t.families.members}: {fmtNumber(f.member_count)} · {t.families.devices}: {fmtNumber(f.device_count)} · {t.families.createdAt}: {fmtDate(f.created_at)}</div>
+                          <div className="mt-1">{b01.families.timezone}: {f.timezone} · {t.families.createdAt}: {fmtDate(f.created_at)}</div>
                         </details>
-                        <div className="mt-2 xl:hidden">{action(f.id)}</div>
-                      </td>
-                      <td>
-                        <div>{t.plans[f.plan] ?? f.plan}</div>
-                        <div className="text-xs text-slate-500">{t.families.sources[f.plan_source] ?? f.plan_source}</div>
-                      </td>
-                      <td className="whitespace-nowrap">{fmtDate(f.plan_expires_at)}</td>
-                      <td className="text-right">{fmtNumber(f.child_count)}</td>
-                      <td className="hidden text-right xl:table-cell">{fmtNumber(f.member_count)}</td>
-                      <td className="hidden text-right xl:table-cell">{fmtNumber(f.device_count)}</td>
-                      <td className="hidden whitespace-nowrap xl:table-cell">{fmtDate(f.created_at)}</td>
-                      <td className="hidden xl:table-cell">{action(f.id)}</td>
-                    </tr>
+                      </div>
+                      <div className="text-sm">
+                        <div className="font-medium">{planLabel(f.plan)}</div>
+                        <div className="text-xs text-slate-500">
+                          {b01.sources[f.plan_source] ?? f.plan_source}
+                          {f.plan_expires_at ? ` · ${fmtDate(f.plan_expires_at)} tarihine kadar` : ""}
+                        </div>
+                        {f.store_status ? <div className="text-xs text-slate-500">Mağaza: {b01.storeStatus[f.store_status]}</div> : null}
+                        {f.active_override_count ? <div className="text-xs text-slate-500">{b01.families.activeOverrides}: {fmtNumber(f.active_override_count)}</div> : null}
+                      </div>
+                      <div className="text-xs text-slate-600">
+                        <div>{t.families.children}: {fmtNumber(f.child_count)}{f.archived_child_count ? ` (+${fmtNumber(f.archived_child_count)} ${b01.families.archived})` : ""}</div>
+                        <div>{t.families.members}: {fmtNumber(f.member_count)} · {t.families.devices}: {fmtNumber(f.device_count)}</div>
+                        <div>{b01.families.lastActivity}: {fmtDateTime(f.last_activity_at)}</div>
+                      </div>
+                      {actions(f.id)}
+                    </li>
                   ))}
-                </tbody>
-              </table>
-            </div>
-            {data.more ? (
-              <button className="btn-secondary mt-4" disabled={loading} onClick={() => setLimit(limit + PAGE)}>
-                {loading ? t.common.loading : `Sonraki ${PAGE} aileyi de göster`}
-              </button>
-            ) : null}
-          </>
-        )}
-      </Card>
+                </ul>
+                {pageError ? <Notice tone="error">{b01.families.pageError}</Notice> : null}
+                {list.hasMore ? (
+                  <button className="btn-secondary mt-4" disabled={loading} onClick={() => void loadMore()}>
+                    {loading ? t.common.loading : b01.families.more}
+                  </button>
+                ) : null}
+              </>
+            )}
+          </Card>
+        </>
+      )}
     </Layout>
   );
 }
