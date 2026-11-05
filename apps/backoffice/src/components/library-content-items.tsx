@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { prereviewStatus, prereviewStatusLabel } from "@gina/core";
 import { useAdminQuery } from "@/lib/use-async";
 import { Notice } from "./Layout";
 import {
@@ -95,6 +96,11 @@ type PackageTrail = {
     questions: { key: string; outcome: string | null; note: string | null }[];
   }[];
 };
+
+function aiLabel(s: string | null) {
+  const parsed = prereviewStatus.safeParse(s);
+  return parsed.success ? prereviewStatusLabel(parsed.data, "tr") : "istenmedi";
+}
 
 const contributionStatus: Record<string, string> = {
   pending: "İnceleme bekliyor",
@@ -345,7 +351,7 @@ function TrailView({ trail }: { trail: { value: Trail | null; error: boolean } }
                 {s.review_note ? ` · not: “${s.review_note}”` : ""}
               </p>
               <p className="text-xs">
-                AI ön inceleme (ayrı): {s.prereview_status ?? "istenmedi"}
+                AI ön inceleme (ayrı): {aiLabel(s.prereview_status)}
                 {s.package_id ? ` · taslak paket: ${s.package_status ?? "?"}` : ""}
               </p>
             </li>
@@ -372,7 +378,7 @@ function TrailView({ trail }: { trail: { value: Trail | null; error: boolean } }
                 {changes.length ? ` · ${changes.length} düzeltme istendi` : ""}
               </p>
               {changes.map((q) => <p key={q.key} className="text-xs">• {q.key}: {q.note ?? "not yok"}</p>)}
-              <p className="text-xs">AI ön inceleme (ayrı): {r.prereview_status ?? "istenmedi"}</p>
+              <p className="text-xs">AI ön inceleme (ayrı): {aiLabel(r.prereview_status)}</p>
             </li>
           );
         })}
