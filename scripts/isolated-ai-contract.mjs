@@ -86,8 +86,32 @@ export async function testAiServices({parent,other,child,childId,admin,base,must
   const familyId=JSON.parse(Buffer.from(family.access_token.split('.')[1],'base64url')).gina.family_id;
   const jobs=await must(admin.from('ai_operation_jobs').select('action,status').eq('family_id',familyId),'local_ai_jobs');
   assert('weekly_and_import_jobs_done_once',jobs.length===2&&jobs.every(j=>j.status==='done'));
+  const timetableBody={...body,instructions:'MAT = Matematik. Tekrar eden saatleri ayrı tut.'};
+  assert('timetable_requires_consent',!!(await invoke(parent,'timetable-import',{...timetableBody,ai_consent:false})).error);
+  assert('timetable_child_analysis_denied',!!(await invoke(child,'timetable-import',timetableBody)).error);
+  assert('timetable_foreign_analysis_denied',!!(await invoke(other,'timetable-import',timetableBody)).error);
+  assert('timetable_oversized_notes_denied',!!(await invoke(parent,'timetable-import',{...timetableBody,instructions:'x'.repeat(1501)})).error);
+  const timetable=await must(invoke(parent,'timetable-import',timetableBody),'timetable_edge_generation');
+  assert('timetable_all_periods_retained',timetable.draft.lessons.length===40&&timetable.draft.lessons.every(l=>l.start===null&&l.end===null));
+  const timetableReplay=await must(invoke(parent,'timetable-import',timetableBody),'timetable_edge_replay');
+  assert('timetable_replay_same_draft',isDeepStrictEqual(timetable,timetableReplay));
+  assert('timetable_replay_no_second_provider_call',(await stats()).generations===5);
+  const changedNotes={...timetableBody,instructions:'İNG = İngilizce. Tablodaki sütunlar günlerdir.'};
+  let revisedResult=await invoke(parent,'timetable-import',changedNotes);
+  if(revisedResult.error){
+    const code=(await revisedResult.error.context.json()).error;
+    assert('timetable_burst_rate_limited_without_provider',code==='ai_rate_limited'&&(await stats()).generations===5);
+    // The setup cooldown above already waited 21 s. Let the first operations
+    // leave the minute window without modifying production limits or grants.
+    await new Promise(resolve=>setTimeout(resolve,42000));
+    revisedResult=await invoke(parent,'timetable-import',changedNotes);
+  }
+  const revised=await must(Promise.resolve(revisedResult),'timetable_changed_notes_generation');
+  assert('timetable_new_notes_have_separate_result',revised.id!==timetable.id&&(await stats()).generations===6);
+  const sourceLinks=await must(parent.from('timetable_imports').select('source_id').in('id',[timetable.id,revised.id]),'timetable_source_links');
+  assert('timetable_original_document_preserved',sourceLinks.length===2&&sourceLinks.every(i=>i.source_id===sourceId));
   await must(admin.from('entitlement_overrides').delete().eq('family_id',familyId),'local_remove_test_entitlement');
   const downgraded=await rpc(parent,'get_family_weekly_review',{p_week:week});
   assert('weekly_ready_result_readable_after_downgrade',downgraded.state==='ready'&&downgraded.access==='disabled'&&isDeepStrictEqual(downgraded.summary,summary.summary));
-  assert('quota_downgrade_read_has_no_provider_call',(await stats()).generations===4);
+  assert('quota_downgrade_read_has_no_provider_call',(await stats()).generations===6);
 }

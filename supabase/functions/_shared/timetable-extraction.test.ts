@@ -68,3 +68,12 @@ Deno.test("strips unexpected fields and preserves conflicting source times for r
     warnings: [],
   });
 });
+
+Deno.test("bounded optional timetable notes", async () => {
+  const { timetableInstructions } = await import("./timetable-extraction.ts");
+  if (timetableInstructions(undefined) !== "" || timetableInstructions("  MAT = Matematik  ") !== "MAT = Matematik") throw Error("normalization");
+  for (const value of [null, {}, 12, "x".repeat(1501)]) {
+    let rejected = false; try { timetableInstructions(value); } catch { rejected = true; }
+    if (!rejected) throw Error("invalid_notes_accepted");
+  }
+});
