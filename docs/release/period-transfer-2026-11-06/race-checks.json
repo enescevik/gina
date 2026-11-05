@@ -1,0 +1,17 @@
+{
+  "environment": "empty-disposable-database",
+  "results": [
+    {
+      "check": "same_request_twice_one_copy_one_result",
+      "passed": true
+    },
+    {
+      "check": "two_parents_same_revision_one_winner_other_sees_education_changed",
+      "passed": true
+    },
+    {
+      "check": "transfer_and_routine_edit_serialize_without_half_copy",
+      "passed": true
+    }
+  ]
+}
