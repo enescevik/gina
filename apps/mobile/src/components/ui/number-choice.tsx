@@ -18,6 +18,7 @@ export function NumberChoice({
   disabled = false,
   precision = 0,
   showHint = true,
+  useGrouping = true,
 }: {
   label: string;
   value: number | null;
@@ -30,6 +31,7 @@ export function NumberChoice({
   disabled?: boolean;
   precision?: 0 | 1 | 2;
   showHint?: boolean;
+  useGrouping?: boolean;
 }) {
   const { t, i18n } = useTranslation();
   const [editing, setEditing] = useState(false),
@@ -38,7 +40,7 @@ export function NumberChoice({
   const pattern = precision ? new RegExp(`^\\d+(?:\\.\\d{1,${precision}})?$`) : /^\d+$/;
   const valid = pattern.test(normalized) && Number(normalized) >= min && Number(normalized) <= max;
   const adjust = (delta: number) => onChange(Number(Math.max(min, Math.min(max, (value ?? min) + delta)).toFixed(precision)));
-  const displayed = value === null ? "—" : new Intl.NumberFormat(i18n.language, { maximumFractionDigits: precision }).format(value);
+  const displayed = value === null ? "—" : new Intl.NumberFormat(i18n.language, { maximumFractionDigits: precision, useGrouping }).format(value);
   return (
     <View style={{ gap: 12 }}>
       <Text style={u.bold}>{label}</Text>

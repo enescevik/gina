@@ -214,6 +214,7 @@ export function EducationPeriodWizard({
                 Number(initial.today.slice(0, 4)) + 1,
               ]}
               showHint={false}
+              useGrouping={false}
             />
           ) : null}
           <Text style={u.bold}>
