@@ -1,0 +1,401 @@
+{
+  "schema": "gina.education-calendar-seed.v1",
+  "country": "Türkiye",
+  "academic_year": 2026,
+  "academic_year_label": "2026-2027",
+  "checked_at": "2026-11-05",
+  "checked_by": "Claude Fable 5.1 (gece ajanı F01+S04), yalnız resmî kaynak metinleri okunarak",
+  "status": "draft_not_published",
+  "import_note": "Yalnız her kaydın `calendar_value` alanı gina.validate_education_calendar(jsonb) şemasına birebir uyar (title, source_url, verified_on, starts_on, ends_on, terms[{title,starts_on,ends_on}]). Diğer alanlar (breaks, holidays, local_days, sources, confidence, notes) yönetici için bağlamdır; RPC'ye gönderilmez. Yönetime girişte önce taslak kaydedilir, değişmemiş taslaktan ayrı işlemle yayımlanır. Bu dosya tek başına yayın değildir.",
+  "term_model_note": "Şemadaki `terms` sıralı ve çakışmasız olmak zorunda; ara tatiller bu yüzden dönem içinde değil, dönemler arası boşluk olarak modellendi (4 parça). Böylece preview_education_calendar ara tatildeki tarih için `outside_term`, yıl dışı için `outside_year` uyarısı üretir. Tek günlük resmî tatiller terms'e işlenmez; ürün kuralı gereği program silmez (bkz. README).",
+  "national_dates": {
+    "teacher_professional_work_start": "2026-09-01",
+    "orientation_preschool_grade1": { "starts_on": "2026-09-07", "ends_on": "2026-09-11" },
+    "first_day_of_classes": "2026-09-14",
+    "term1_break": { "starts_on": "2026-11-16", "ends_on": "2026-11-20" },
+    "term1_end": "2027-01-22",
+    "semester_break": { "starts_on": "2027-01-25", "ends_on": "2027-02-05" },
+    "term2_start": "2027-02-08",
+    "term2_break": { "starts_on": "2027-03-08", "ends_on": "2027-03-12" },
+    "last_day_of_classes": "2027-06-25",
+    "teacher_year_end_work": { "starts_on": "2027-06-28", "ends_on": "2027-06-30", "source": "il takvimleri (İstanbul, Ankara, Kastamonu, Düzce); MEB haberinde yok" },
+    "sources": ["src-meb-haber-41057", "src-meb-genelge-2026-70"]
+  },
+  "public_holidays": {
+    "legal_basis": "2429 sayılı Ulusal Bayram ve Genel Tatiller Hakkında Kanun (17.03.1981); dini bayram günleri Diyanet İşleri Başkanlığı 2027 dini günler listesi",
+    "sources": ["src-diyanet-2027-dini-gunler", "src-diyanet-2027-resmi-tatil", "src-ankara-mem-takvim-eylul"],
+    "note": "Hicri takvime bağlı bayram tarihleri Diyanet'in ilan ettiği takvimdir; Resmî Gazete ile ayrıca ilan edilen idari izin (köprü tatil) kararları bu dosyada yoktur, çıkınca eklenir. Yarım günler 13.00'te başlar. Okul takvimi bakımından hafta sonuna düşen tatiller ders günü kaybı doğurmaz.",
+    "items": [
+      { "id": "h-2026-10-29", "title": "Cumhuriyet Bayramı", "starts_on": "2026-10-28", "half_day_start": true, "ends_on": "2026-10-29", "weekday": "Çarşamba 13.00 – Perşembe", "school_days_lost": 1.5, "within_school_year": true },
+      { "id": "h-2027-01-01", "title": "Yılbaşı", "starts_on": "2027-01-01", "ends_on": "2027-01-01", "weekday": "Cuma", "school_days_lost": 1, "within_school_year": true },
+      { "id": "h-2027-ramazan", "title": "Ramazan Bayramı (arefe yarım gün dahil)", "starts_on": "2027-03-08", "half_day_start": true, "ends_on": "2027-03-11", "weekday": "Pazartesi 13.00 – Perşembe", "school_days_lost": 0, "within_school_year": true, "note": "2. dönem ara tatili (8–12 Mart 2027) içine düşer; ek ders günü kaybı yok." },
+      { "id": "h-2027-04-23", "title": "Ulusal Egemenlik ve Çocuk Bayramı", "starts_on": "2027-04-23", "ends_on": "2027-04-23", "weekday": "Cuma", "school_days_lost": 1, "within_school_year": true },
+      { "id": "h-2027-05-01", "title": "Emek ve Dayanışma Günü", "starts_on": "2027-05-01", "ends_on": "2027-05-01", "weekday": "Cumartesi", "school_days_lost": 0, "within_school_year": true },
+      { "id": "h-2027-kurban", "title": "Kurban Bayramı (arefe yarım gün dahil)", "starts_on": "2027-05-15", "half_day_start": true, "ends_on": "2027-05-19", "weekday": "Cumartesi 13.00 – Çarşamba", "school_days_lost": 3, "within_school_year": true, "note": "17–19 Mayıs Pazartesi–Çarşamba ders günü değil. 20–21 Mayıs için idari izin kararı yok; çıkarsa ayrı duyuru." },
+      { "id": "h-2027-05-19", "title": "Atatürk'ü Anma, Gençlik ve Spor Bayramı", "starts_on": "2027-05-19", "ends_on": "2027-05-19", "weekday": "Çarşamba", "school_days_lost": 0, "within_school_year": true, "note": "Kurban Bayramı 4. günü ile çakışır." },
+      { "id": "h-2027-07-15", "title": "Demokrasi ve Millî Birlik Günü", "starts_on": "2027-07-15", "ends_on": "2027-07-15", "weekday": "Perşembe", "school_days_lost": 0, "within_school_year": false },
+      { "id": "h-2027-08-30", "title": "Zafer Bayramı", "starts_on": "2027-08-30", "ends_on": "2027-08-30", "weekday": "Pazartesi", "school_days_lost": 0, "within_school_year": false }
+    ]
+  },
+  "stages": {
+    "note": "Kademeler ve sınıf→yaş eşlemesi. Yaşlar 'eylül ayı sonu itibarıyla ay' kuralından türetilmiş yaklaşık aralıklardır; ürün çocuğun sınıfını yaşından TAHMİN ETMEZ, veli seçer. Erken/ertelenmiş kayıt, sınıf tekrarı ve hazırlık sınıfı aralığı genişletir. Üniversite kademesi şemada vardır ama bu tohumda yoktur.",
+    "sources": ["src-yonetmelik-okul-oncesi-ilkogretim", "src-meb-genelge-2026-70", "src-ttkb-2025-05"],
+    "items": [
+      {
+        "stage": "preschool",
+        "label_tr": "Okul öncesi",
+        "grades": [0],
+        "rule": "Anaokulu/ana sınıfı/uygulama sınıfı: kayıt yılının eylül ayı sonu itibarıyla 57–68 aylık çocuklar; yer varsa anaokuluna 36–56 ay, ana sınıfına 45–56 ay da alınabilir. İlkokul kaydı ertelenen 69–71 aylıklara öncelik. (Yönetmelik m.11/5)",
+        "typical_age_years": "3–5 (ağırlıklı 5)",
+        "grade_age_map": [{ "grade": 0, "age_months_at_sept_end": "36–71", "approx_age_years": "3–5" }]
+      },
+      {
+        "stage": "primary",
+        "label_tr": "İlkokul",
+        "grades": [1, 2, 3, 4],
+        "rule": "1. sınıfa kayıt yılının eylül ayı sonu itibarıyla 69 ayını dolduranlar; 66–68 aylıklar velinin yazılı isteğiyle; 69–71 aylıklar velinin yazılı talebiyle bir yıl ertelenebilir/okul öncesine yönlendirilebilir. (Yönetmelik m.11/5-6; 2019 değişikliği)",
+        "grade_age_map": [
+          { "grade": 1, "age_months_at_sept_end": "66–83 (tipik 69–80)", "approx_age_years": "5,5–6,5" },
+          { "grade": 2, "approx_age_years": "6,5–7,5" },
+          { "grade": 3, "approx_age_years": "7,5–8,5" },
+          { "grade": 4, "approx_age_years": "8,5–9,5" }
+        ]
+      },
+      {
+        "stage": "middle",
+        "label_tr": "Ortaokul / imam hatip ortaokulu",
+        "grades": [5, 6, 7, 8],
+        "rule": "İlkokul 4'ü bitiren ortaokul 5'e geçer; 5. sınıf için 14–18 Eylül 2026 uyum/rehberlik haftası (Genelge 2026/70 m.27; Ankara ve Sivas il takvimleri).",
+        "grade_age_map": [
+          { "grade": 5, "approx_age_years": "9,5–10,5" },
+          { "grade": 6, "approx_age_years": "10,5–11,5" },
+          { "grade": 7, "approx_age_years": "11,5–12,5" },
+          { "grade": 8, "approx_age_years": "12,5–13,5", "note": "LGS yılı; Fen Bilimleri ve T.C. İnkılap Tarihi bu sınıfta." }
+        ]
+      },
+      {
+        "stage": "high",
+        "label_tr": "Lise (ortaöğretim)",
+        "grades": [9, 10, 11, 12],
+        "rule": "Hazırlık sınıfı bulunan okullarda 9'dan önce 1 yıl hazırlık vardır (TTKB 2025/05 çizelgeleri); ürün hazırlık sınıfını ayrı 'grade' olarak tutmaz, 9 seçilir ve okul notu yazılır — ürün kararı gerekir (bkz. F01 karar listesi).",
+        "grade_age_map": [
+          { "grade": 9, "approx_age_years": "13,5–14,5 (hazırlıkla +1)" },
+          { "grade": 10, "approx_age_years": "14,5–15,5" },
+          { "grade": 11, "approx_age_years": "15,5–16,5" },
+          { "grade": 12, "approx_age_years": "16,5–17,5", "note": "YKS yılı." }
+        ]
+      }
+    ]
+  },
+  "calendars": [
+    {
+      "id": "tr-2026-2027-country-primary",
+      "place": { "kind": "country", "name": "Türkiye", "existing_place_id": "ec000000-0000-4000-8000-000000000001" },
+      "stage": "primary",
+      "academic_year": 2026,
+      "confidence": "high",
+      "source_url": "https://www.meb.gov.tr/2026-2027-egitim-ogretim-yili-takvimi-aciklandi/haber/41057/tr",
+      "published_at": "2026-06-13",
+      "checked_at": "2026-11-05",
+      "sources": ["src-meb-haber-41057", "src-meb-genelge-2026-70"],
+      "calendar_value": {
+        "title": "Türkiye 2026-2027 ilkokul çalışma takvimi (MEB)",
+        "source_url": "https://www.meb.gov.tr/2026-2027-egitim-ogretim-yili-takvimi-aciklandi/haber/41057/tr",
+        "verified_on": "2026-11-05",
+        "starts_on": "2026-09-14",
+        "ends_on": "2027-06-25",
+        "terms": [
+          { "title": "1. dönem — ara tatile kadar", "starts_on": "2026-09-14", "ends_on": "2026-11-13" },
+          { "title": "1. dönem — ara tatil sonrası", "starts_on": "2026-11-23", "ends_on": "2027-01-22" },
+          { "title": "2. dönem — ara tatile kadar", "starts_on": "2027-02-08", "ends_on": "2027-03-05" },
+          { "title": "2. dönem — ara tatil sonrası", "starts_on": "2027-03-15", "ends_on": "2027-06-25" }
+        ]
+      },
+      "breaks": [
+        { "title": "1. dönem ara tatili", "starts_on": "2026-11-16", "ends_on": "2026-11-20" },
+        { "title": "Yarıyıl tatili", "starts_on": "2027-01-25", "ends_on": "2027-02-05" },
+        { "title": "2. dönem ara tatili", "starts_on": "2027-03-08", "ends_on": "2027-03-12" }
+      ],
+      "notes": ["1. sınıf uyum eğitimi 7–11 Eylül 2026 (ders yılı sayılmaz; terms'e alınmadı).", "Ders yılı yönetmelikte en az 180 iş günü; sayım yapılmadı."]
+    },
+    {
+      "id": "tr-2026-2027-country-preschool",
+      "place": { "kind": "country", "name": "Türkiye", "existing_place_id": "ec000000-0000-4000-8000-000000000001" },
+      "stage": "preschool",
+      "academic_year": 2026,
+      "confidence": "high",
+      "source_url": "https://www.meb.gov.tr/2026-2027-egitim-ogretim-yili-takvimi-aciklandi/haber/41057/tr",
+      "published_at": "2026-06-13",
+      "checked_at": "2026-11-05",
+      "sources": ["src-meb-haber-41057", "src-meb-genelge-2026-70"],
+      "calendar_value": {
+        "title": "Türkiye 2026-2027 okul öncesi çalışma takvimi (MEB)",
+        "source_url": "https://www.meb.gov.tr/2026-2027-egitim-ogretim-yili-takvimi-aciklandi/haber/41057/tr",
+        "verified_on": "2026-11-05",
+        "starts_on": "2026-09-14",
+        "ends_on": "2027-06-25",
+        "terms": [
+          { "title": "1. dönem — ara tatile kadar", "starts_on": "2026-09-14", "ends_on": "2026-11-13" },
+          { "title": "1. dönem — ara tatil sonrası", "starts_on": "2026-11-23", "ends_on": "2027-01-22" },
+          { "title": "2. dönem — ara tatile kadar", "starts_on": "2027-02-08", "ends_on": "2027-03-05" },
+          { "title": "2. dönem — ara tatil sonrası", "starts_on": "2027-03-15", "ends_on": "2027-06-25" }
+        ]
+      },
+      "breaks": [
+        { "title": "1. dönem ara tatili", "starts_on": "2026-11-16", "ends_on": "2026-11-20" },
+        { "title": "Yarıyıl tatili", "starts_on": "2027-01-25", "ends_on": "2027-02-05" },
+        { "title": "2. dönem ara tatili", "starts_on": "2027-03-08", "ends_on": "2027-03-12" }
+      ],
+      "notes": ["Okul öncesi uyum eğitimi 7–11 Eylül 2026.", "Bağımsız anaokulları ve özel kreşler farklı çalışabilir (yaz dönemi dâhil); o takvimler okul kapsamında ayrıca girilir."]
+    },
+    {
+      "id": "tr-2026-2027-country-middle",
+      "place": { "kind": "country", "name": "Türkiye", "existing_place_id": "ec000000-0000-4000-8000-000000000001" },
+      "stage": "middle",
+      "academic_year": 2026,
+      "confidence": "high",
+      "source_url": "https://www.meb.gov.tr/2026-2027-egitim-ogretim-yili-takvimi-aciklandi/haber/41057/tr",
+      "published_at": "2026-06-13",
+      "checked_at": "2026-11-05",
+      "sources": ["src-meb-haber-41057", "src-meb-genelge-2026-70"],
+      "calendar_value": {
+        "title": "Türkiye 2026-2027 ortaokul çalışma takvimi (MEB)",
+        "source_url": "https://www.meb.gov.tr/2026-2027-egitim-ogretim-yili-takvimi-aciklandi/haber/41057/tr",
+        "verified_on": "2026-11-05",
+        "starts_on": "2026-09-14",
+        "ends_on": "2027-06-25",
+        "terms": [
+          { "title": "1. dönem — ara tatile kadar", "starts_on": "2026-09-14", "ends_on": "2026-11-13" },
+          { "title": "1. dönem — ara tatil sonrası", "starts_on": "2026-11-23", "ends_on": "2027-01-22" },
+          { "title": "2. dönem — ara tatile kadar", "starts_on": "2027-02-08", "ends_on": "2027-03-05" },
+          { "title": "2. dönem — ara tatil sonrası", "starts_on": "2027-03-15", "ends_on": "2027-06-25" }
+        ]
+      },
+      "breaks": [
+        { "title": "1. dönem ara tatili", "starts_on": "2026-11-16", "ends_on": "2026-11-20" },
+        { "title": "Yarıyıl tatili", "starts_on": "2027-01-25", "ends_on": "2027-02-05" },
+        { "title": "2. dönem ara tatili", "starts_on": "2027-03-08", "ends_on": "2027-03-12" }
+      ],
+      "notes": ["5. sınıf uyum/rehberlik 14–18 Eylül 2026 ders yılı içinde (il takvimleri)."]
+    },
+    {
+      "id": "tr-2026-2027-country-high",
+      "place": { "kind": "country", "name": "Türkiye", "existing_place_id": "ec000000-0000-4000-8000-000000000001" },
+      "stage": "high",
+      "academic_year": 2026,
+      "confidence": "high",
+      "source_url": "https://www.meb.gov.tr/2026-2027-egitim-ogretim-yili-takvimi-aciklandi/haber/41057/tr",
+      "published_at": "2026-06-13",
+      "checked_at": "2026-11-05",
+      "sources": ["src-meb-haber-41057", "src-meb-genelge-2026-70"],
+      "calendar_value": {
+        "title": "Türkiye 2026-2027 lise çalışma takvimi (MEB)",
+        "source_url": "https://www.meb.gov.tr/2026-2027-egitim-ogretim-yili-takvimi-aciklandi/haber/41057/tr",
+        "verified_on": "2026-11-05",
+        "starts_on": "2026-09-14",
+        "ends_on": "2027-06-25",
+        "terms": [
+          { "title": "1. dönem — ara tatile kadar", "starts_on": "2026-09-14", "ends_on": "2026-11-13" },
+          { "title": "1. dönem — ara tatil sonrası", "starts_on": "2026-11-23", "ends_on": "2027-01-22" },
+          { "title": "2. dönem — ara tatile kadar", "starts_on": "2027-02-08", "ends_on": "2027-03-05" },
+          { "title": "2. dönem — ara tatil sonrası", "starts_on": "2027-03-15", "ends_on": "2027-06-25" }
+        ]
+      },
+      "breaks": [
+        { "title": "1. dönem ara tatili", "starts_on": "2026-11-16", "ends_on": "2026-11-20" },
+        { "title": "Yarıyıl tatili", "starts_on": "2027-01-25", "ends_on": "2027-02-05" },
+        { "title": "2. dönem ara tatili", "starts_on": "2027-03-08", "ends_on": "2027-03-12" }
+      ],
+      "notes": [
+        "Hazırlık/9. sınıf uyum-rehberlik 14–18 Eylül 2026.",
+        "Yoğunlaştırılmış eğitim veren mesleki ve teknik Anadolu liselerinin 11–12. sınıfları farklı başlar/biter (ör. Ankara 26 Ekim 2026 başlangıç, 9 Nisan 2027 teorik bitiş); bu okullar okul kapsamında ayrı takvim ister, ülke takvimine yazılmaz.",
+        "12. sınıf 'Hedef Temelli Destek Eğitimi' ders seçimi 14–18 Eylül 2026 (Genelge 2026/70 m.33)."
+      ]
+    },
+    {
+      "id": "tr-2026-2027-istanbul-all-stages",
+      "place": { "kind": "region", "name": "İstanbul", "parent": "Türkiye", "existing_place_id": null },
+      "stage": ["preschool", "primary", "middle", "high"],
+      "academic_year": 2026,
+      "confidence": "high",
+      "source_url": "https://istanbul.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-calisma-takvimi/icerik/6380",
+      "source_file": "https://istanbul.meb.gov.tr/meb_iys_dosyalar/2026_07/6a6c821c692a7368019891_2026-2027_%C3%87alisma_Takvimi.pdf",
+      "published_at": "2026-07-20",
+      "updated_at": "2026-07-31",
+      "checked_at": "2026-11-05",
+      "sources": ["src-istanbul-mem-takvim"],
+      "differs_from_national": false,
+      "calendar_value": {
+        "title": "İstanbul 2026-2027 çalışma takvimi (İstanbul Valiliği / İl MEM)",
+        "source_url": "https://istanbul.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-calisma-takvimi/icerik/6380",
+        "verified_on": "2026-11-05",
+        "starts_on": "2026-09-14",
+        "ends_on": "2027-06-25",
+        "terms": [
+          { "title": "1. dönem — ara tatile kadar", "starts_on": "2026-09-14", "ends_on": "2026-11-13" },
+          { "title": "1. dönem — ara tatil sonrası", "starts_on": "2026-11-23", "ends_on": "2027-01-22" },
+          { "title": "2. dönem — ara tatile kadar", "starts_on": "2027-02-08", "ends_on": "2027-03-05" },
+          { "title": "2. dönem — ara tatil sonrası", "starts_on": "2027-03-15", "ends_on": "2027-06-25" }
+        ]
+      },
+      "local_days": [
+        { "title": "İstanbul'un Kurtuluşu", "on": "2026-10-06", "weekday": "Salı", "kind": "il özel günü / tören", "school_closed": false, "note": "Takvimde tören günü olarak geçer; genel tatil değildir. Okullar kapanmaz; etkinlik olabilir." },
+        { "title": "Öğretmenlerin mesleki çalışmaları", "starts_on": "2026-09-01", "ends_on": "2026-09-11", "kind": "öğretmen", "school_closed": true },
+        { "title": "Yıl sonu mesleki çalışmalar", "starts_on": "2027-06-28", "ends_on": "2027-06-30", "kind": "öğretmen" }
+      ],
+      "notes": ["Ulusal tarihlerle birebir aynı; il takvimi ek olarak kurul/zümre/sınav/HEM satırları içerir (ürüne alınmadı).", "Valilik onay tarihi/sayısı PDF başlığında 'T.C. İstanbul Valiliği' olarak geçer; ayrı onay yazısı sayfada yok."],
+      "recommendation": "Ülke takvimiyle aynı olduğu için yönetimde ayrı bölge takvimi yayımlamak zorunlu değil; İstanbul yeri (region) açılır, takvim ancak fark çıkarsa yayımlanır."
+    },
+    {
+      "id": "tr-2026-2027-ankara-all-stages",
+      "place": { "kind": "region", "name": "Ankara", "parent": "Türkiye", "existing_place_id": null },
+      "stage": ["preschool", "primary", "middle", "high"],
+      "academic_year": 2026,
+      "confidence": "high",
+      "source_url": "https://ankara.meb.gov.tr/meb_iys_dosyalar/2026_09/6a97f7a690192123974077_2026-2027_E%C4%9Fitim_%C3%96%C4%9Fretim_Y%C4%B1l%C4%B1_%C3%87al%C4%B1%C5%9Fma_Takvimi.pdf",
+      "previous_version_url": "https://ankara.meb.gov.tr/meb_iys_dosyalar/2026_08/6a8c2b4c35e5d216652863_2026-2027_E%C4%9Fitim_%C3%96%C4%9Fretim_Y%C4%B1l%C4%B1_%C3%87al%C4%B1%C5%9Fma_Takvimi.pdf",
+      "published_at": "2026-09 (dosya yolu; sayfa tarihi görülmedi)",
+      "checked_at": "2026-11-05",
+      "sources": ["src-ankara-mem-takvim-eylul", "src-ankara-mem-takvim-agustos"],
+      "differs_from_national": false,
+      "calendar_value": {
+        "title": "Ankara 2026-2027 çalışma takvimi (Ankara İl MEM)",
+        "source_url": "https://ankara.meb.gov.tr/meb_iys_dosyalar/2026_09/6a97f7a690192123974077_2026-2027_E%C4%9Fitim_%C3%96%C4%9Fretim_Y%C4%B1l%C4%B1_%C3%87al%C4%B1%C5%9Fma_Takvimi.pdf",
+        "verified_on": "2026-11-05",
+        "starts_on": "2026-09-14",
+        "ends_on": "2027-06-25",
+        "terms": [
+          { "title": "1. dönem — ara tatile kadar", "starts_on": "2026-09-14", "ends_on": "2026-11-13" },
+          { "title": "1. dönem — ara tatil sonrası", "starts_on": "2026-11-23", "ends_on": "2027-01-22" },
+          { "title": "2. dönem — ara tatile kadar", "starts_on": "2027-02-08", "ends_on": "2027-03-05" },
+          { "title": "2. dönem — ara tatil sonrası", "starts_on": "2027-03-15", "ends_on": "2027-06-25" }
+        ]
+      },
+      "local_days": [
+        { "title": "Ankara'nın Başkent Oluşu", "on": "2026-10-13", "kind": "il özel günü / tören", "school_closed": false },
+        { "title": "Atatürk'ün Ankara'ya Gelişi", "on": "2026-12-27", "kind": "il özel günü / tören", "school_closed": false },
+        { "title": "Öğretmenlerin mesleki çalışmaları", "starts_on": "2026-09-01", "ends_on": "2026-09-11", "kind": "öğretmen" },
+        { "title": "Yıl sonu mesleki çalışmalar", "starts_on": "2027-06-28", "ends_on": "2027-06-30", "kind": "öğretmen" }
+      ],
+      "notes": [
+        "Ağustos ve Eylül sürümleri arasındaki tek fark ders yılı başı kurul/zümre toplantı günleri (1–4 Eylül → 7–10 Eylül); öğrenci tarihleri değişmedi. Revizyon örneği olarak kaydedildi: il takvimi yayımlandıktan sonra da değişebilir, yönetimde yeniden kontrol gerekir.",
+        "Cumhuriyet Bayramı satırı '28 Ekim 2026 Çarşamba 13.00 – 29 Ekim 2026 Perşembe 24.00' şeklinde; Ramazan Bayramı '8 Mart 13.00 – 11 Mart', Kurban Bayramı '15 Mayıs 13.00 – 19 Mayıs'.",
+        "Seçmeli ders belirleme 1 Aralık 2026 – 29 Ocak 2027 (veli bilgilendirmesi için faydalı; ürüne alınmadı)."
+      ],
+      "recommendation": "Ulusal takvimle aynı; ayrı yayın gerekmez."
+    },
+    {
+      "id": "tr-2026-2027-sivas-all-stages",
+      "place": { "kind": "region", "name": "Sivas", "parent": "Türkiye", "existing_place_id": null },
+      "stage": ["preschool", "primary", "middle", "high"],
+      "academic_year": 2026,
+      "confidence": "medium",
+      "source_url": "https://sivas.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-calisma-takvimi/icerik/7635/tr",
+      "source_file": "https://sivas.meb.gov.tr/meb_iys_dosyalar/2026_08/6a7f0e01996f0616928902_2026-2027_Egitim_Ogretim_Yili_%C3%87alisma_Takvimi.pdf",
+      "published_at": "2026-08-14",
+      "checked_at": "2026-11-05",
+      "sources": ["src-sivas-mem-takvim"],
+      "differs_from_national": false,
+      "calendar_value": {
+        "title": "Sivas 2026-2027 çalışma takvimi (Sivas İl MEM)",
+        "source_url": "https://sivas.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-calisma-takvimi/icerik/7635/tr",
+        "verified_on": "2026-11-05",
+        "starts_on": "2026-09-14",
+        "ends_on": "2027-06-25",
+        "terms": [
+          { "title": "1. dönem — ara tatile kadar", "starts_on": "2026-09-14", "ends_on": "2026-11-13" },
+          { "title": "1. dönem — ara tatil sonrası", "starts_on": "2026-11-23", "ends_on": "2027-01-22" },
+          { "title": "2. dönem — ara tatile kadar", "starts_on": "2027-02-08", "ends_on": "2027-03-05" },
+          { "title": "2. dönem — ara tatil sonrası", "starts_on": "2027-03-15", "ends_on": "2027-06-25" }
+        ]
+      },
+      "local_days": [
+        { "title": "4 Eylül Sivas Kongresi yıldönümü", "on": "2026-09-04", "kind": "il özel günü / tören", "school_closed": false, "note": "Ders yılı öncesine düşer." },
+        { "title": "Öğretmenlerin mesleki çalışmaları", "starts_on": "2026-09-01", "ends_on": "2026-09-11", "kind": "öğretmen" },
+        { "title": "Ara tatillerde öğretmen mesleki çalışmaları", "starts_on": "2026-11-16", "ends_on": "2026-11-20", "kind": "öğretmen" }
+      ],
+      "notes": [
+        "PDF metin katmanı tablo sütunlarını karıştırıyor; ara tatil/yarıyıl/ders kesimi satırları ulusal tarihlerle eşleşti ama ders yılı sonu satırı metinden tek başına doğrulanamadı (ulusal 25 Haziran 2027 varsayıldı). Yönetimde PDF görsel kontrolü gerekir → confidence medium.",
+        "Yoğunlaştırılmış meslek lisesi 11–12. sınıf başlangıcı 19 Ekim 2026 (il farkı; ülke takvimine yazılmaz)."
+      ],
+      "recommendation": "Görsel teyitten sonra ulusal takvimle aynıysa ayrı yayın gerekmez."
+    },
+    {
+      "id": "tr-2026-2027-kastamonu-all-stages",
+      "place": { "kind": "region", "name": "Kastamonu", "parent": "Türkiye", "existing_place_id": null },
+      "stage": ["preschool", "primary", "middle", "high"],
+      "academic_year": 2026,
+      "confidence": "high",
+      "source_url": "https://kastamonu.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-calisma-takvimi/icerik/6828",
+      "source_file": "https://kastamonu.meb.gov.tr/meb_iys_dosyalar/2026_09/6aa253fc36aea285450429_2026-2027_%C3%A7alisma_takvimi_08092026.pdf",
+      "published_at": "2026-09-10",
+      "checked_at": "2026-11-05",
+      "sources": ["src-kastamonu-mem-takvim"],
+      "differs_from_national": false,
+      "calendar_value": {
+        "title": "Kastamonu 2026-2027 çalışma takvimi (Kastamonu İl MEM)",
+        "source_url": "https://kastamonu.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-calisma-takvimi/icerik/6828",
+        "verified_on": "2026-11-05",
+        "starts_on": "2026-09-14",
+        "ends_on": "2027-06-25",
+        "terms": [
+          { "title": "1. dönem — ara tatile kadar", "starts_on": "2026-09-14", "ends_on": "2026-11-13" },
+          { "title": "1. dönem — ara tatil sonrası", "starts_on": "2026-11-23", "ends_on": "2027-01-22" },
+          { "title": "2. dönem — ara tatile kadar", "starts_on": "2027-02-08", "ends_on": "2027-03-05" },
+          { "title": "2. dönem — ara tatil sonrası", "starts_on": "2027-03-15", "ends_on": "2027-06-25" }
+        ]
+      },
+      "local_days": [
+        { "title": "Atatürk'ün Kastamonu'ya Gelişi (Şapka ve Kıyafet İnkılabı)", "on": "2026-08-23", "kind": "il özel günü / tören", "school_closed": false, "note": "Ders yılı dışında." },
+        { "title": "Öğretmenlerin mesleki çalışmaları", "starts_on": "2026-09-01", "ends_on": "2026-09-11", "kind": "öğretmen" },
+        { "title": "Yıl sonu mesleki çalışmalar", "starts_on": "2027-06-28", "ends_on": "2027-06-30", "kind": "öğretmen" }
+      ],
+      "notes": ["Ders yılı sonu '25 Haziran 2027 Cuma' metinde açık. '2. dönemin sona ermesi 16 Nisan 2027' satırı yalnız yoğunlaştırılmış meslek liseleri içindir, genel takvim değildir."],
+      "recommendation": "Ulusal takvimle aynı; ayrı yayın gerekmez."
+    },
+    {
+      "id": "tr-2026-2027-duzce-all-stages",
+      "place": { "kind": "region", "name": "Düzce", "parent": "Türkiye", "existing_place_id": null },
+      "stage": ["preschool", "primary", "middle", "high"],
+      "academic_year": 2026,
+      "confidence": "low",
+      "source_url": "https://duzce.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-calisma-takvimi/icerik/7382/tr",
+      "source_file": "https://duzce.meb.gov.tr/meb_iys_dosyalar/2026_08/6a9530d0cd1de779335679_D%C3%BCzce_MEM_2026-2027.docx",
+      "published_at": "2026-08-31",
+      "checked_at": "2026-11-05",
+      "sources": ["src-duzce-mem-takvim"],
+      "differs_from_national": "unverified_conflict",
+      "calendar_value": null,
+      "observed": {
+        "teacher_work": "01–04 Eylül 2026 (ve bir satırda '01 Eylül 2025 Salı')",
+        "first_day_of_classes": "07 Eylül 2026 Pazartesi",
+        "term1_end": "22 Ocak 2027 Cuma",
+        "semester_break": "25 Ocak – 05 Şubat 2027",
+        "term2_start": "08 Şubat 2027",
+        "term2_break": "08–12 Mart 2027",
+        "year_end_teacher_work": "28–30 Haziran 2027"
+      },
+      "notes": [
+        "Belgede ders yılı başlangıcı 7 Eylül 2026 ve mesleki çalışma 1–4 Eylül yazıyor; MEB genelgesi 14 Eylül / 1 Eylül diyor. Diğer bütün satırlar ulusal takvimle aynı. Metinde '01 Eylül 2025 Salı' kalıntısı var: büyük olasılıkla önceki yılın şablonundan kalan hata (2025-2026 ders yılı 8 Eylül 2025'te başlamıştı). Resmî yayın olduğu için 'hata' diye kesin yazılmaz; il MEM teyidi olmadan ürüne alınmaz.",
+        "Bu kayıt 'bölge takvimi ulusal ile çelişebilir' senaryosunun gerçek örneğidir: yönetim incelemesi ve gerekçeyle kapatma akışı (education_calendar_reports) için test verisi olarak kullanılabilir."
+      ],
+      "recommendation": "Yayımlanmaz. İl MEM'e tek soru: 'ders yılı başlangıcı 7 Eylül mü 14 Eylül mü?'. Yanıt gelmezse ülke takvimi Düzce için de geçerli kalır (fallback zaten şemada: en özel yayımlanmış takvim kazanır, yoksa ülke)."
+    }
+  ],
+  "sources": [
+    { "id": "src-meb-haber-41057", "title": "MEB — 2026-2027 Eğitim Öğretim Yılı Takvimi Açıklandı", "url": "https://www.meb.gov.tr/2026-2027-egitim-ogretim-yili-takvimi-aciklandi/haber/41057/tr", "publisher": "Millî Eğitim Bakanlığı", "published_at": "2026-06-13", "accessed_at": "2026-11-05", "type": "haber" },
+    { "id": "src-meb-genelge-2026-70", "title": "2026-2027 Eğitim ve Öğretim Yılına İlişkin İş ve İşlemler — Genelge 2026/70 (Sayı E-35427624-010.06-166588055)", "url": "https://www.meb.gov.tr/meb_iys_dosyalar/2026_08/6a856d6ec086f824926482_2026-2027_Egitim_ve_Ogretim_Y%C4%B1l%C4%B1na_IliskinIs_ve_Islemler.pdf", "publisher": "MEB Özel Kalem Müdürlüğü", "published_at": "2026-08-19", "accessed_at": "2026-11-05", "type": "genelge", "used_for": "14 Eylül başlangıç, uyum eğitimleri (okul öncesi/1/5. sınıf), 180 iş günü, seçmeli ders listesi, 12. sınıf HTDE seçimi 14–18 Eylül, e-Kayıt usulü (Yönetmelik m.11'e atıf)" },
+    { "id": "src-istanbul-mem-takvim", "title": "İstanbul İl MEM — 2026-2027 Eğitim-Öğretim Yılı Çalışma Takvimi (PDF, T.C. İstanbul Valiliği)", "url": "https://istanbul.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-calisma-takvimi/icerik/6380", "publisher": "İstanbul İl Millî Eğitim Müdürlüğü", "published_at": "2026-07-20", "accessed_at": "2026-11-05", "type": "il takvimi" },
+    { "id": "src-ankara-mem-takvim-eylul", "title": "Ankara İl MEM — 2026-2027 Eğitim ve Öğretim Yılı Çalışma Takvimi (Eylül 2026 sürümü)", "url": "https://ankara.meb.gov.tr/meb_iys_dosyalar/2026_09/6a97f7a690192123974077_2026-2027_E%C4%9Fitim_%C3%96%C4%9Fretim_Y%C4%B1l%C4%B1_%C3%87al%C4%B1%C5%9Fma_Takvimi.pdf", "publisher": "Ankara İl Millî Eğitim Müdürlüğü", "published_at": "2026-09", "accessed_at": "2026-11-05", "type": "il takvimi" },
+    { "id": "src-ankara-mem-takvim-agustos", "title": "Ankara İl MEM — aynı takvimin Ağustos 2026 sürümü", "url": "https://ankara.meb.gov.tr/meb_iys_dosyalar/2026_08/6a8c2b4c35e5d216652863_2026-2027_E%C4%9Fitim_%C3%96%C4%9Fretim_Y%C4%B1l%C4%B1_%C3%87al%C4%B1%C5%9Fma_Takvimi.pdf", "publisher": "Ankara İl Millî Eğitim Müdürlüğü", "published_at": "2026-08", "accessed_at": "2026-11-05", "type": "il takvimi (eski sürüm)" },
+    { "id": "src-sivas-mem-takvim", "title": "Sivas İl MEM — 2026-2027 Eğitim Öğretim Yılı Çalışma Takvimi", "url": "https://sivas.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-calisma-takvimi/icerik/7635/tr", "publisher": "Sivas İl Millî Eğitim Müdürlüğü", "published_at": "2026-08-14", "accessed_at": "2026-11-05", "type": "il takvimi" },
+    { "id": "src-kastamonu-mem-takvim", "title": "Kastamonu İl MEM — 2026-2027 Eğitim Öğretim Yılı Çalışma Takvimi", "url": "https://kastamonu.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-calisma-takvimi/icerik/6828", "publisher": "Kastamonu İl Millî Eğitim Müdürlüğü", "published_at": "2026-09-10", "accessed_at": "2026-11-05", "type": "il takvimi" },
+    { "id": "src-duzce-mem-takvim", "title": "Düzce İl MEM — 2026-2027 Eğitim Öğretim Yılı Çalışma Takvimi (DOCX)", "url": "https://duzce.meb.gov.tr/www/2026-2027-egitim-ogretim-yili-calisma-takvimi/icerik/7382/tr", "publisher": "Düzce İl Millî Eğitim Müdürlüğü", "published_at": "2026-08-31", "accessed_at": "2026-11-05", "type": "il takvimi", "issue": "ulusal takvimle çelişen başlangıç tarihi; teyit bekliyor" },
+    { "id": "src-diyanet-2027-dini-gunler", "title": "Diyanet İşleri Başkanlığı — 2027 Dini Günler Listesi", "url": "https://vakithesaplama.diyanet.gov.tr/icerik.php?icerik=154", "publisher": "Diyanet İşleri Başkanlığı", "accessed_at": "2026-11-05", "type": "resmî liste" },
+    { "id": "src-diyanet-2027-resmi-tatil", "title": "Diyanet İşleri Başkanlığı — Resmî Tatil Günleri (içerik 2027; sayfa başlığı '2023' yazıyor)", "url": "https://vakithesaplama.diyanet.gov.tr/icerik.php?icerik=159", "publisher": "Diyanet İşleri Başkanlığı", "accessed_at": "2026-11-05", "type": "resmî liste", "issue": "başlık/içerik yıl uyumsuzluğu; tarihler Ankara il takvimiyle çapraz doğrulandı" },
+    { "id": "src-2429-kanun", "title": "2429 sayılı Ulusal Bayram ve Genel Tatiller Hakkında Kanun", "url": "https://www.mevzuat.gov.tr/MevzuatMetin/1.5.2429.doc", "publisher": "Mevzuat Bilgi Sistemi", "accessed_at": "2026-11-05", "type": "kanun", "note": "Metin indirilmedi; Diyanet listesindeki atıf ve süreler (Ramazan 3,5 gün, Kurban 4,5 gün, arefe 13.00) kullanıldı." },
+    { "id": "src-yonetmelik-okul-oncesi-ilkogretim", "title": "MEB Okul Öncesi Eğitim ve İlköğretim Kurumları Yönetmeliği (RG 26.07.2014/29072; son değişiklik RG 17.01.2025/32785) — m.5 ders yılı ve il çalışma takvimi, m.11 kayıt yaşı", "url": "https://iegm.meb.gov.tr/meb_iys_dosyalar/2025_11/28152006_7.5.19942.pdf", "alt_url": "https://www.mevzuat.gov.tr/mevzuat?MevzuatNo=19942&MevzuatTur=7&MevzuatTertip=5", "publisher": "MEB (mevzuat kopyası)", "accessed_at": "2026-11-05", "type": "yönetmelik" },
+    { "id": "src-ttkb-2025-05", "title": "TTKB Kararı 09/05/2025 Sayı 05 — Anadolu/Fen/Sosyal Bilimler Lisesi (hazırlıklı dâhil) Haftalık Ders Çizelgeleri (2025-2026'dan itibaren tüm sınıflarda)", "url": "https://ttkb.meb.gov.tr/meb_iys_dosyalar/2025_05/20144001_202505.pdf", "publisher": "Talim ve Terbiye Kurulu Başkanlığı", "published_at": "2025-05-09", "accessed_at": "2026-11-05", "type": "kurul kararı" },
+    { "id": "src-tegm-2025-04", "title": "TTKB Kararı 09/05/2025 Sayı 04 — İlköğretim Kurumları (İlkokul ve Ortaokul) Haftalık Ders Çizelgesi (TEGM duyurusu 29.07.2025)", "url": "https://tegm.meb.gov.tr/www/ilkogretim-kurumlari-ilkokul-ve-ortaokul-haftalik-ders-cizelgesinde-degisiklik-yapildi/icerik/1150", "file_url": "https://tegm.meb.gov.tr/meb_iys_dosyalar/2025_07/29103516_ilkogretim_kurumlari_ilkokul_ve_ortaokul_hdckurul_karari1.pdf", "publisher": "Temel Eğitim Genel Müdürlüğü", "published_at": "2025-07-29", "accessed_at": "2026-11-05", "type": "kurul kararı" }
+  ]
+}
