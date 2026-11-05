@@ -646,3 +646,7 @@ Yeni paket taslak kurtarma, senkron, belgeden plan ve önceki istemci geliştirm
 içerir. Fiziksel cihaz, satın alma ve bildirim kabulü tamamlanmış sayılmaz.
 Backoffice Zero Trust hesap aktivasyonu bekliyor; ek AI sağlayıcıları ve son sıradaki
 kütüphane hâlâ açık. [Güncel yayın kaydı](../release/CLIENT-18-2026-11-04.md).
+
+## 5 Kasım — ödül düzenleme, geçmiş ve arşiv
+
+26 yayını sonrasında ödül kataloğu için revizyonlu düzenleme, önce/sonra, özel geçmiş, duraklatma, arşiv ve duraklatılmış geri alma eklendi. Aktif hedefi olan ödülün adı/bedeli ve arşivlenmesi korunur; önce hedef birlikte değiştirilmeli. Önceki istekler ad/ikon snapshot'ı ve eski bedelle korunur. Katalog canlı yenileme eksiği, aynı ödül isteğinin eşzamanlı tekrarı ve yabancı çocuk/işlem kimliği sınırı düzeltildi. Kanıt ve sınırlar: `docs/release/reward-history-2026-11-05/README.md`. Bu yeni paket henüz üretime veya TestFlight/Ad Hoc 26 üzerine dağıtılmadı. Özel not geçmişi, seçerek dönem aktarımı ve toplu arşiv sıradadır; kütüphane en sonda.

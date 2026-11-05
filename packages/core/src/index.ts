@@ -66,3 +66,5 @@ export * from "./timetable-review";
 export * from "./education-calendar";
 
 export * from "./task-history";
+
+export * from "./reward-history";

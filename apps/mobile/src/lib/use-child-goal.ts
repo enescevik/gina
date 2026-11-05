@@ -1,3 +1,4 @@
+import { useSession } from "@/lib/session";
 import { useQuery } from "@tanstack/react-query";
 
 import { useRealtimeInvalidate } from "./realtime";
@@ -12,6 +13,8 @@ export interface ChildGoal {
 
 /** Çocuğun aktif hedefi (ödül bilgisiyle); yoksa null. */
 export function useChildGoal(childId: string) {
+  const familyId = useSession().claims?.family_id;
+  useRealtimeInvalidate("reward_catalog_sync", familyId ? `family_id=eq.${familyId}` : null, [["family_rewards"], ["child_goal"]]);
   const query = useQuery({
     queryKey: ["child_goal", childId],
     enabled: !!childId,
