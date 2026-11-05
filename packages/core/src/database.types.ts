@@ -2384,6 +2384,10 @@ get_learning_source_set: { Args: { p_source: string }; Returns: Json },
       admin_get_curriculum_candidate: { Args: { p_id: string }; Returns: Json };
       admin_change_curriculum_candidate: { Args: { p_request_id: string; p_id: string; p_revision: number; p_action: string; p_review: Json; p_note: string; p_confirmed: boolean }; Returns: Json };
       get_curriculum_scenarios: { Args: { p_child_id: string; p_year: string; p_term: number; p_exam: number; p_subject: string }; Returns: Json };
+      record_curriculum_source_fetch: { Args: { p_request_id: string; p_actor_id: string; p_source: Json; p_revision: Json | null }; Returns: Json };
+      admin_list_curriculum_sources: { Args: Record<PropertyKey, never>; Returns: Json };
+      admin_review_curriculum_source_revision: { Args: { p_request_id: string; p_revision_id: string; p_action: string; p_note: string; p_confirmed: boolean }; Returns: Json };
+      get_curriculum_source_freshness: { Args: { p_year: string; p_term: number; p_subject: string }; Returns: Json };
       admin_list_contribution_sets: {Args:Record<PropertyKey,never>;Returns:Json};
       admin_get_contribution_set: {Args:{p_id:string};Returns:Json};
       admin_decide_contribution_set: {Args:{p_request_id:string;p_id:string;p_approve:boolean;p_note:string;p_teachers:Json;p_confirmed:boolean};Returns:Json};

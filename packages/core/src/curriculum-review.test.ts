@@ -128,3 +128,69 @@ describe("source review contract", () => {
       .toBe(false);
   });
 });
+
+import {
+  curriculumSourceFetchTargetSchema,
+  curriculumSourceFreshnessSchema,
+  curriculumSourceReviewCommandSchema,
+  curriculumSourceRowSchema,
+} from "./curriculum-review";
+describe("source acquisition contracts", () => {
+  const revision = {
+    id: "00000000-0000-4000-8000-000000000011",
+    sha256: "b".repeat(64),
+    bytes: 23454,
+    mime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    resolved_url: "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+    redirect_chain: [{ url: "https://meb.ai/ankmeb3", status: 302 }],
+    inspection: { entries: 12, flags: [] },
+    retrieved_at: "2026-11-05T20:26:33Z",
+    last_checked_at: "2026-11-05T20:26:33Z",
+    status: "diff_review_required",
+    extraction_status: "queued",
+    review_note: null,
+    reviewed_at: null,
+    candidates: 0,
+    published_candidates: 0,
+  };
+  const row = {
+    id: "00000000-0000-4000-8000-000000000010",
+    source_key: "oyss:2026-2027:1:matematik",
+    exam_family: "oyss",
+    school_year: "2026-2027",
+    term: 1,
+    label: "İlköğretim Matematik",
+    index_url: "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+    link_url: "https://meb.ai/ankmeb3",
+    freshness: "diff_review_required",
+    last_checked_at: "2026-11-05T20:26:33Z",
+    last_check_error: null,
+    index_published_on: "2026-09-07",
+    index_updated_on: "2026-09-10",
+    approved: { revision_id: "00000000-0000-4000-8000-000000000012", sha256: "a".repeat(64), retrieved_at: "2026-11-03T00:00:00Z", last_checked_at: "2026-11-05T20:26:33Z" },
+    revisions: [revision],
+  };
+  it("admin queue rows keep approved copy and pending revisions apart", () => {
+    const parsed = curriculumSourceRowSchema.parse(row);
+    expect(parsed.approved?.sha256).not.toBe(parsed.revisions[0]?.sha256);
+    expect(curriculumSourceRowSchema.safeParse({ ...row, freshness: "approved" }).success).toBe(false);
+    expect(curriculumSourceRowSchema.safeParse({ ...row, exam_family: "lgs" }).success).toBe(false);
+  });
+  it("parent freshness never claims official verification and names the fallback", () => {
+    expect(curriculumSourceFreshnessSchema.parse({ status: "unpublished", alternative: "free_study", officially_verified: false }).alternative).toBe("free_study");
+    expect(curriculumSourceFreshnessSchema.safeParse({ status: "verified", officially_verified: true }).success).toBe(false);
+    expect(curriculumSourceFreshnessSchema.safeParse({ status: "approved", officially_verified: false }).success).toBe(false);
+    expect(curriculumSourceFreshnessSchema.parse({ status: "unverified", last_approved_retrieved_at: "2026-11-03T00:00:00Z", last_approved_sha256: "a".repeat(64), alternative: null, officially_verified: false }).status).toBe("unverified");
+  });
+  it("source review needs an explicit confirmed note; fetch target cannot guess scope", () => {
+    const base = { request: "00000000-0000-4000-8000-000000000001", revision_id: "00000000-0000-4000-8000-000000000011", action: "approve", note: "Hash manifest ile aynı", confirmed: true };
+    expect(curriculumSourceReviewCommandSchema.safeParse(base).success).toBe(true);
+    expect(curriculumSourceReviewCommandSchema.safeParse({ ...base, confirmed: false }).success).toBe(false);
+    expect(curriculumSourceReviewCommandSchema.safeParse({ ...base, action: "publish" }).success).toBe(false);
+    const target = { exam_family: "oyss", school_year: "2026-2027", term: 1, subject: "Matematik", grade: 5 };
+    expect(curriculumSourceFetchTargetSchema.safeParse(target).success).toBe(true);
+    expect(curriculumSourceFetchTargetSchema.safeParse({ ...target, school_year: "2026-2028" }).success).toBe(false);
+    expect(curriculumSourceFetchTargetSchema.safeParse({ ...target, link_url: "http://meb.ai/x" }).success).toBe(false);
+    expect(curriculumSourceFetchTargetSchema.safeParse({ ...target, approved: true }).success).toBe(false);
+  });
+});

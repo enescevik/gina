@@ -13,5 +13,125 @@
     "Grades 1–4 require age-appropriate practice content, not this written-exam catalogue",
     "Uncoded outcome instructions retained with cell evidence, not fabricated codes",
     "High-school school-track applicability still needs mapping"
+  ],
+  "live_checks": [
+    {
+      "checked_at": "2026-11-05T20:26:33Z",
+      "index": {
+        "url": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+        "final_url": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+        "chain": [
+          {
+            "url": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+            "status": 200
+          }
+        ],
+        "links": 44,
+        "published": "2026-09-07",
+        "updated": "2026-09-10"
+      },
+      "unchanged": 16,
+      "new_revision": 0,
+      "known_revision": 0,
+      "unverified": 0,
+      "results": [
+        {
+          "file": "turkce2.xlsx",
+          "outcome": "unchanged",
+          "sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+          "bytes": 31410
+        },
+        {
+          "file": "ilkmat2.xlsx",
+          "outcome": "unchanged",
+          "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+          "bytes": 23454
+        },
+        {
+          "file": "fen3_2.xlsx",
+          "outcome": "unchanged",
+          "sha256": "f01e0f96328e6c766776cd1e4dad760923a31331e701ce906b59eef359b75a3c",
+          "bytes": 25158
+        },
+        {
+          "file": "sosyal2.xlsx",
+          "outcome": "unchanged",
+          "sha256": "88cfc517cf1e0ea26c43486ccf1849bdea48c39161efa25c6a366c7d5084580e",
+          "bytes": 21606
+        },
+        {
+          "file": "dkab_orta3.xlsx",
+          "outcome": "unchanged",
+          "sha256": "fe8d19c05d4ba5d261c5b48dbbc08edf3c618f2b13771177efe0a79816bd030d",
+          "bytes": 21046
+        },
+        {
+          "file": "ingilizce_orta2.xlsx",
+          "outcome": "unchanged",
+          "sha256": "7517a025357dd00a2f02c2975875dfa6737a48247f756d3db27bf0f8213a9f85",
+          "bytes": 19838
+        },
+        {
+          "file": "edebiyat2.xlsx",
+          "outcome": "unchanged",
+          "sha256": "88a8557041a258b8de9a597f1dd94b145aea6c5cf4eda16d79cd2d7b21803045",
+          "bytes": 27890
+        },
+        {
+          "file": "matematik2.xlsx",
+          "outcome": "unchanged",
+          "sha256": "44cbf606f95ff3303a2cbad859951c7031f4f5ff350b4b594fa6331d1a660429",
+          "bytes": 21076
+        },
+        {
+          "file": "fizik2.xlsx",
+          "outcome": "unchanged",
+          "sha256": "6efb716bcbd758c211402c862ae3ddddb722d497677d905942e8d2aab16ab538",
+          "bytes": 20782
+        },
+        {
+          "file": "kimya4.xlsx",
+          "outcome": "unchanged",
+          "sha256": "4fe5addba86363b8421cfce11cd7b8bbaf256d3028114852fa9e41b7532b3e6e",
+          "bytes": 22642
+        },
+        {
+          "file": "biyoloji3_4.xlsx",
+          "outcome": "unchanged",
+          "sha256": "c74a0e1d7a6ec5eba607945e614adf6d9093fa2542a203f8c0c76c62b6051ede",
+          "bytes": 20439
+        },
+        {
+          "file": "tarih3.xlsx",
+          "outcome": "unchanged",
+          "sha256": "ad0a0f238f731525971966812037b9a6546d2d795d060b57d1606b11e7e86d27",
+          "bytes": 18026
+        },
+        {
+          "file": "cografya4.xlsx",
+          "outcome": "unchanged",
+          "sha256": "ff06c7da9644c56fa3c7f3957241c247576fd5763ca187dfc74c1532ef98be36",
+          "bytes": 26969
+        },
+        {
+          "file": "felsefe3.xlsx",
+          "outcome": "unchanged",
+          "sha256": "a72e8e297a9c44ae39c9efe80d1344f4477b78aac5b28a96455d151863939cb6",
+          "bytes": 14039
+        },
+        {
+          "file": "dkab_lise2.xlsx",
+          "outcome": "unchanged",
+          "sha256": "d5c5dbf295cbc009b3654960ae5612d9b9267e54bbf802c05120f8377f5273bb",
+          "bytes": 19431
+        },
+        {
+          "file": "ingilizce_lise2.xlsx",
+          "outcome": "unchanged",
+          "sha256": "006b7e8e1ff066c5869195b2e5f89bfa0f6de5e04b00568b5a01a7f3f30911dd",
+          "bytes": 23857
+        }
+      ]
+    }
   ]
 }

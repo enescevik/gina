@@ -1,7 +1,9 @@
 import {
+  COGNITIVE_DEMANDS,
   finishGeneration,
-  type GeneratedQuestion,
+  type GeneratedOutput,
   type GenerationContext,
+  QUESTION_TYPES,
   recoverGeneration,
   validateGenerationResult,
 } from "../_shared/generation-result.ts";
@@ -30,7 +32,7 @@ import {
   sha256,
 } from "../_shared/prova.ts";
 
-const PROMPT_VERSION = "prova-generate/v4-scenario-scope";
+const PROMPT_VERSION = "prova-generate/v5-scenario-provenance";
 const MAX_TOTAL = 30;
 
 type KindMode = "multiple_choice" | "open_ended" | "mixed";
@@ -73,6 +75,10 @@ Kurallar:
 - Açık uçlu (open_ended) soruda choices ve distractor_notes boş liste, correct_key boş metin; expected_answer'a puanlamada kullanılacak tam beklenen cevabı (anahtar noktalarla) yaz.
 - Her soru için solution'a adım adım çözüm yolunu, explanation'a 2-4 cümlelik kısa konu anlatımını yaz.
 - source_urls: yalnız emin olduğun resmî kaynaklar (MEB ÖDSGM konu-soru dağılım tabloları, MEB ders kitapları, EBA). Emin değilsen boş liste bırak; adres uydurma.
+- Senaryo izi: senaryo_kapsami.learning_blocks verildiyse her soruda block_id'yi o bloğun block_id'si, outcome_ids'i gerçekten ölçtüğün çıktıların kimlikleri (o bloğun outcome_ids listesinden, en az bir tane) olarak yaz. Bir soru birden çok çıktıyı ölçebilir; blok için istenen soru sayısı çıktı sayısıyla çarpılmaz. Senaryo yoksa block_id ve outcome_ids boş bırak.
+- question_type: coktan_secmeli | acik_uclu | kisa_cevap | dogru_yanlis | bosluk_doldurma | eslestirme (şıklı soruda coktan_secmeli). cognitive_demand: hatirlama | anlama | uygulama | analiz | degerlendirme | yaratma. intended_difficulty: istenen zorluk; bu ölçülmüş güçlük değildir.
+- rubric: açık uçlu soruda puanlama ölçütleri (criteria: metin + puan) ve varsa alternatif doğru cevaplar. Şıklı soruda criteria tek ölçüt olabilir.
+- Ortak metin/tablo gerekirse shared_sources listesine bir kez yaz (id, kind, content) ve bağlı soruların shared_source_id alanına aynı id'yi koy; aynı metni soru gövdesinde tekrarlama. Gerekmiyorsa shared_sources boş liste, shared_source_id boş metin kalır.
 - Sorularda gerçek kişi adı, marka ya da hassas konu kullanma; çocuklara uygun, kapsayıcı bir dil kullan.
 - İstenen dilde yaz (tr = Türkçe, en = İngilizce).
 Yanıtı yalnız verilen JSON şemasıyla ver.`;
@@ -80,8 +86,24 @@ Yanıtı yalnız verilen JSON şemasıyla ver.`;
 const SCHEMA = {
   type: "object",
   additionalProperties: false,
-  required: ["questions"],
+  required: ["questions", "shared_sources"],
   properties: {
+    shared_sources: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["id", "kind", "content"],
+        properties: {
+          id: { type: "string" },
+          kind: {
+            type: "string",
+            enum: ["text", "table", "visual_description"],
+          },
+          content: { type: "string" },
+        },
+      },
+    },
     questions: {
       type: "array",
       items: {
@@ -99,8 +121,47 @@ const SCHEMA = {
           "solution",
           "explanation",
           "source_urls",
+          "block_id",
+          "outcome_ids",
+          "question_type",
+          "cognitive_demand",
+          "intended_difficulty",
+          "rubric",
+          "shared_source_id",
         ],
         properties: {
+          block_id: { type: "string" },
+          outcome_ids: { type: "array", items: { type: "string" } },
+          question_type: { type: "string", enum: ["", ...QUESTION_TYPES] },
+          cognitive_demand: {
+            type: "string",
+            enum: ["", ...COGNITIVE_DEMANDS],
+          },
+          intended_difficulty: {
+            type: "string",
+            enum: ["", ...DIFFICULTIES],
+          },
+          rubric: {
+            type: "object",
+            additionalProperties: false,
+            required: ["criteria", "alternative_answers"],
+            properties: {
+              criteria: {
+                type: "array",
+                items: {
+                  type: "object",
+                  additionalProperties: false,
+                  required: ["text", "points"],
+                  properties: {
+                    text: { type: "string" },
+                    points: { type: "number" },
+                  },
+                },
+              },
+              alternative_answers: { type: "array", items: { type: "string" } },
+            },
+          },
+          shared_source_id: { type: "string" },
           topic: { type: "string" },
           kind: { type: "string", enum: ["multiple_choice", "open_ended"] },
           difficulty: { type: "string", enum: [...DIFFICULTIES] },
@@ -233,6 +294,7 @@ Deno.serve(async (req) => {
   let blueprintSource: string | null = null;
   let catalogueBound = false;
   let blueprintSnapshot: Record<string, unknown> | null = null;
+  let scenario: GenerationContext["scenario"] = null;
   if (body.blueprint_id) {
     if (!ent.scenarios) {
       return json({ error: "plan_limit_prova_scenarios", plan: ent.plan }, 402);
@@ -260,11 +322,10 @@ Deno.serve(async (req) => {
           !draftScope || draftScope.purpose !== "written" ||
           assessment !== "written"
         ) return json({ error: "curriculum_scope_mismatch" }, 409);
-        blueprintSnapshot = {
-          id: bp.id,
-          ...cataloguePlan(catalogue, grade, subject, topics),
-          rows: topics,
-        };
+        const plan = cataloguePlan(catalogue, grade, subject, topics);
+        // The provider receives the normalized block/outcome wording (learning_blocks), never only a URL.
+        blueprintSnapshot = { id: bp.id, ...plan, rows: topics };
+        scenario = plan.scenario;
         catalogueBound = true;
       }
     } catch (e) {
@@ -375,6 +436,7 @@ Deno.serve(async (req) => {
     systemPrompt: SYSTEM_PROMPT,
     userPrompt,
     catalogueBound,
+    scenario,
   };
   const { data: reservation, error: reservationError } = await db.rpc(
     "reserve_prova_generation_v3",
@@ -433,10 +495,10 @@ Deno.serve(async (req) => {
       p_uncertain: uncertain,
     });
   }
-  let result: AiResult<{ questions: GeneratedQuestion[] }>;
+  let result: AiResult<GeneratedOutput>;
   try {
     result = reservation.provider_result ??
-      await callClaude<{ questions: GeneratedQuestion[] }>(
+      await callClaude<GeneratedOutput>(
         apiKey,
         ai,
         SYSTEM_PROMPT,
