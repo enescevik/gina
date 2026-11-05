@@ -2,15 +2,17 @@ import { IconButton } from "@/components/planner/ui";
 import { ChildSetup, type SetupChild } from "@/components/setup/child-setup";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View, useWindowDimensions } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
 
-import { CircleHelp, Users, Tablet, ShieldCheck, UserRound, Settings2, Pencil, Bell, Share2, Crown, NotebookPen, GraduationCap } from "lucide-react-native";
+import { CircleHelp, Users, Tablet, ShieldCheck, UserRound, Settings2, Pencil, Bell, Share2, Crown, NotebookPen, GraduationCap, TriangleAlert } from "lucide-react-native";
+import type { DeletionPreview } from "@gina/core";
 import { Avatar } from "@/components/avatar";
 import { ConfirmAction } from "@/components/ui/confirm-action";
 import { AccountDeletion } from "@/components/account-deletion";
+import { DeletionPreviewSheet } from "@/components/deletion-preview-sheet";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
@@ -22,7 +24,6 @@ import { supabase } from "@/lib/supabase";
 /** Çocuk satırı: ad, sınıf ve 4 haneli PIN belirleme (set_child_pin RPC). */
 function ChildRow({ id, name, grade, avatar, onEdit }: { id: string; name: string; grade: number | null; avatar: string | null; onEdit: () => void }) {
   const { t } = useTranslation();
-  const cache = useQueryClient();
   const [pin, setPin] = useState("");
   const [settingsOpen, setSettingsOpen] = useState(false);
   const setChildPin = useMutation({
@@ -32,20 +33,36 @@ function ChildRow({ id, name, grade, avatar, onEdit }: { id: string; name: strin
     },
     onSuccess: () => setPin(""),
   });
-  const remove = useMutation({ mutationFn: async () => {
-    const { data, error } = await supabase.from("children").delete().eq("id", id).select("id");
-    if (error) throw error;
-    if (!data?.length) throw new Error(t("release.genericError"));
-  }, onSuccess: () => cache.invalidateQueries() });
   return <View style={parentStyles.card}>
     <View style={parentStyles.row}><Pressable accessibilityRole="button" accessibilityLabel={t("betaUx.editChild")} onPress={onEdit} style={[parentStyles.row, {flex:1}]}><Avatar slug={avatar} size={56}/><View style={{flex:1,gap:3}}><Text style={[parentStyles.copy,{fontFamily:"Nunito_700Bold"}]}>{name}</Text>{grade !== null && <Text style={parentStyles.muted}>{t("parent.gradeShort",{grade})}</Text>}</View><Pencil size={18} color="#6042DE"/></Pressable><IconButton label={t("mintRelease.childSettings")} onPress={() => setSettingsOpen(!settingsOpen)}><Settings2 size={23} color="#6042DE"/></IconButton></View>
     <NavigationCard title={t("education.manage")} body={t("education.manageBody")} icon={<GraduationCap size={23} color="#6042DE"/>} onPress={()=>router.push({pathname:"/parent/education",params:{childId:id}})}/>
     {settingsOpen ? <View style={{gap:12}}><Text style={parentStyles.muted}>{t("unified.childPinHelp")}</Text><Field label={t("parentV5.childPinLabel", { name })} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} />
-    <Button variant="secondary" title={t("parent.savePin")} loading={setChildPin.isPending} disabled={pin.length !== 4 || remove.isPending} onPress={() => setChildPin.mutate()} />
+    <Button variant="secondary" title={t("parent.savePin")} loading={setChildPin.isPending} disabled={pin.length !== 4} onPress={() => setChildPin.mutate()} />
     {setChildPin.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.muted}>{t("unified.pinSaved")}</Text> : null}
-    <ErrorText error={setChildPin.error ?? remove.error} />
-    <ConfirmAction title={t("releaseReview.deleteChild", { name })} message={t("releaseReview.deleteChildBody", { name })} busy={remove.isPending || setChildPin.isPending} onConfirm={() => remove.mutate()} /></View> : null}
+    <ErrorText error={setChildPin.error} /></View> : null}
   </View>;
+}
+
+/** Kalıcı silme PIN/profil kartından ayrı durur; önce etki önizlemesi ve arşiv seçeneği gösterilir (L03). */
+function DangerZone({ children }: { children: ReactNode }) {
+  const { t } = useTranslation();
+  return <View style={{ backgroundColor: "#FFF6F4", borderColor: "#EBC9C3", borderWidth: 1, borderRadius: 26, padding: 22, gap: 12 }}>
+    <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}><TriangleAlert size={22} color="#A43135" /><Text accessibilityRole="header" style={[parentStyles.title, { flex: 1, fontSize: 21 }]}>{t("deletionPreview.dangerTitle")}</Text></View>
+    <Text style={parentStyles.muted}>{t("deletionPreview.dangerBody")}</Text>
+    {children}
+  </View>;
+}
+
+// The generated database types predate L03's RPCs.
+const rpc = supabase.rpc.bind(supabase) as unknown as (name: string, args: Record<string, unknown>) => PromiseLike<{ data: unknown; error: { message: string } | null }>;
+
+/** Server-side delete bound to the reviewed preview; the same request id replays the receipt. */
+async function confirmChildDeletion(preview: DeletionPreview, requestId: string) {
+  if (preview.kind !== "child") throw new Error("deletion_target_invalid");
+  const { data, error } = await rpc("confirm_child_deletion", { p_request_id: requestId, p_child_id: preview.child.id, p_preview_token: preview.preview_token });
+  if (error) throw new Error(error.message);
+  if ((data as { deleted?: boolean } | null)?.deleted !== true) throw new Error("deletion_failed");
+  return data;
 }
 
 /** Veli PIN'i: telefonda çocuk modundan çıkış için (set_parent_pin RPC). */
@@ -83,6 +100,8 @@ export default function ParentMenuScreen() {
   const [setup, setSetup] = useState<SetupChild | "new" | null>(params.setup === "new" ? "new" : null);
   const [savedChild, setSavedChild] = useState<"new" | "edit" | null>(null);
   const [pairCode, setPairCode] = useState("");
+  const [deleting, setDeleting] = useState<{ childId: string; name: string } | null>(null);
+  const [deletedName, setDeletedName] = useState<string | null>(null);
 
   const family = useQuery({
     queryKey: ["family", familyId],
@@ -164,6 +183,13 @@ export default function ParentMenuScreen() {
       <FormSection title={t("unified.inviteTitle")}><Text style={parentStyles.muted}>{t("unified.inviteHelp")}</Text><Text selectable accessibilityLabel={t("parent.inviteCode")} style={{fontFamily:"Nunito_800ExtraBold",fontSize:26,letterSpacing:3,color:"#201951"}}>{family.data?.invite_code ?? "…"}</Text><NavigationCard title={t("experience.family.title")} body={t("experience.family.short")} onPress={()=>router.push("/parent/families")}/></FormSection>
       <NavigationCard title={t("parent.grades")} body={t("unified.gradesHelp")} icon={<GraduationCap size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/grades")}/>
       <NavigationCard title={t("parent.notes")} body={t("unified.notesHelp")} icon={<NotebookPen size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/notes")}/>
+      <DangerZone>
+        {deletedName ? <Text accessibilityLiveRegion="polite" style={[parentStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{t("deletionPreview.done", { name: deletedName })}</Text> : null}
+        {children.data?.map((child) => <Button key={child.id} variant="danger" title={t("deletionPreview.open", { name: child.name })} onPress={() => { setDeletedName(null); setDeleting({ childId: child.id, name: child.name }); }} />)}
+      </DangerZone>
+      {deleting ? <DeletionPreviewSheet target={{ kind: "child", ...deleting }} perform={confirmChildDeletion}
+        onClose={() => setDeleting(null)}
+        onDone={(preview) => { setDeleting(null); setDeletedName(preview.kind === "child" ? preview.child.name : deleting.name); void queryClient.invalidateQueries(); }} /> : null}
       </> : null}
       {section === "devices" ? <>
       <InfoCard title={t("parent.pairDevice")} body={t("unified.pairIntro")} steps={[t("unified.pairStep1"),t("unified.pairStep2"),t("unified.pairStep3")]} />
@@ -187,7 +213,7 @@ export default function ParentMenuScreen() {
       <NavigationCard title={t("push.menu")} body={t("accountV5.notificationsBody")} icon={<Bell size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/notifications")}/>
       <NavigationCard title={t("share.title")} body={t("unified.shareHelp")} icon={<Share2 size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/share")}/>
       <NavigationCard title={t("parent.subscription")} icon={<Crown size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/subscription")}/>
-      <AccountDeletion />
+      <DangerZone><AccountDeletion /></DangerZone>
       <Button variant="ghost" title={t("auth.signOut")} loading={signOut.isPending} onPress={() => signOut.mutate()} />
       </> : null}
       <ErrorText error={family.error ?? children.error ?? devices.error ?? revokeDevice.error ?? signOut.error} />

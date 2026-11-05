@@ -3021,7 +3021,40 @@
       "invalid": "İstek geçersiz. Ekranı yenileyip yeniden dene.",
       "forbidden": "Bu işlem için yetkin yok.",
       "generic": "Silme tamamlanamadı. Bağlantını kontrol edip aynı isteği yeniden gönder; işlem iki kez yapılmaz."
-    }
+    },
+    "dangerTitle": "Tehlikeli işlemler",
+    "dangerBody": "Kalıcı silme geri alınamaz. Önce neyin silinip neyin korunacağını gösteririz; arşivlemek geri alınabilir bir seçenektir.",
+    "open": "{{name}} profilini kalıcı sil",
+    "loading": "Önizleme hazırlanıyor…",
+    "nothingExtra": "Bu profile bağlı ek kayıt yok; yalnız profil silinir.",
+    "typeName": "Onaylamak için profil adını aynen yaz: {{name}}",
+    "typeNameLabel": "Profil adı",
+    "refreshed": "Önizleme güncellendi. Değişiklikleri kontrol edip yeniden onayla.",
+    "expiresInMinutes": "Bu önizleme yaklaşık {{minutes}} dakika geçerli.",
+    "expiredNow": "Önizlemenin süresi doldu. Silmeden önce yenile.",
+    "reviewAccount": "Hesap silme etkisini gör",
+    "accountReauthHeading": "Yeniden doğrulama",
+    "familyTransfer": "{{name}}: ailede başka veli var. Yalnız senin kişisel kayıtların silinir; çocuklar ve aile içeriği kalan velide kalır.",
+    "familyCascade": "{{name}}: ailede başka veli yok. Aile, bütün çocuk profilleri ve aile içerikleri silinir.",
+    "account": {
+      "own_notes": "{{count}} kişisel not",
+      "own_shares": "{{count}} paylaşım bağlantısı",
+      "membership": "Bu ailedeki veli üyeliğin",
+      "children": "{{count}} çocuk profili",
+      "files": "{{count}} dosya ({{size}})",
+      "questions": "{{count}} aile sorusu",
+      "rewards": "{{count}} aile ödülü",
+      "notes": "{{count}} not",
+      "prova_drafts": "{{count}} Prova taslağı",
+      "devices": "{{count}} bağlı cihaz",
+      "shares_open": "{{count}} açık paylaşım bağlantısı"
+    },
+    "subscriptionLine": "{{platform}} aboneliği ({{plan}}, {{status}}): silmeyle iptal edilmez.",
+    "platform": {
+      "apple": "App Store",
+      "google": "Google Play"
+    },
+    "noFamily": "Henüz bir ailen yok; silinecek aile verisi bulunmuyor."
   },
   "prova.ai.errors.child_archived": "Bu profil arşivde. Yeni işlem yapmak için aile ayarlarından geri al.",
   "push.pref.announcements": "Okul ve GINA duyuruları",

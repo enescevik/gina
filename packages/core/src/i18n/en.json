@@ -3026,7 +3026,40 @@
       "invalid": "The request is invalid. Refresh the screen and try again.",
       "forbidden": "You are not allowed to do this.",
       "generic": "Deletion could not be completed. Check your connection and send the same request again; it is never done twice."
-    }
+    },
+    "dangerTitle": "Danger zone",
+    "dangerBody": "Permanent deletion cannot be undone. We first show what will be deleted and what is kept; archiving is a reversible option.",
+    "open": "Permanently delete {{name}}’s profile",
+    "loading": "Preparing the preview…",
+    "nothingExtra": "No other records are linked to this profile; only the profile is deleted.",
+    "typeName": "To confirm, type the profile name exactly: {{name}}",
+    "typeNameLabel": "Profile name",
+    "refreshed": "The preview was updated. Check the changes and confirm again.",
+    "expiresInMinutes": "This preview is valid for about {{minutes}} minutes.",
+    "expiredNow": "The preview expired. Refresh it before deleting.",
+    "reviewAccount": "See what account deletion does",
+    "accountReauthHeading": "Re-authentication",
+    "familyTransfer": "{{name}}: another parent is in the family. Only your personal records are deleted; children and family content stay with the remaining parent.",
+    "familyCascade": "{{name}}: no other parent in the family. The family, all child profiles and family content are deleted.",
+    "account": {
+      "own_notes": "{{count}} personal notes",
+      "own_shares": "{{count}} share links",
+      "membership": "Your parent membership in this family",
+      "children": "{{count}} child profiles",
+      "files": "{{count}} files ({{size}})",
+      "questions": "{{count}} family questions",
+      "rewards": "{{count}} family rewards",
+      "notes": "{{count}} notes",
+      "prova_drafts": "{{count}} Prova drafts",
+      "devices": "{{count}} connected devices",
+      "shares_open": "{{count}} open share links"
+    },
+    "subscriptionLine": "{{platform}} subscription ({{plan}}, {{status}}): not cancelled by deletion.",
+    "platform": {
+      "apple": "App Store",
+      "google": "Google Play"
+    },
+    "noFamily": "You do not have a family yet; there is no family data to delete."
   },
   "prova.ai.errors.child_archived": "This profile is archived. Restore it from family settings to make changes.",
   "push.pref.announcements": "School and GINA announcements",
