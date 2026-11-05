@@ -1,5 +1,8 @@
 begin;
 select no_plan();
+-- Q02-10: bu test `current_date` ile aile saat dilimindeki (Europe/Istanbul) fonksiyonlara 'bugün' verir;
+-- oturum UTC iken 21:00-24:00 UTC arasında gün kayar. Transaction süresince aile saat dilimi kullanılır.
+set local time zone 'Europe/Istanbul';
 insert into auth.users(id,email) values ('00000000-0000-4000-8000-000000008301','score-parent@example.invalid'),('00000000-0000-4000-8000-000000008302','score-other@example.invalid');
 insert into public.families(id,name,created_by) values('10000000-0000-4000-8000-000000008301','Synthetic','00000000-0000-4000-8000-000000008301'),('10000000-0000-4000-8000-000000008302','Other','00000000-0000-4000-8000-000000008302');
 insert into public.family_members(family_id,user_id) values('10000000-0000-4000-8000-000000008301','00000000-0000-4000-8000-000000008301'),('10000000-0000-4000-8000-000000008302','00000000-0000-4000-8000-000000008302');
