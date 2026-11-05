@@ -650,3 +650,7 @@ kütüphane hâlâ açık. [Güncel yayın kaydı](../release/CLIENT-18-2026-11-
 ## 5 Kasım — ödül düzenleme, geçmiş ve arşiv
 
 26 yayını sonrasında ödül kataloğu için revizyonlu düzenleme, önce/sonra, özel geçmiş, duraklatma, arşiv ve duraklatılmış geri alma eklendi. Aktif hedefi olan ödülün adı/bedeli ve arşivlenmesi korunur; önce hedef birlikte değiştirilmeli. Önceki istekler ad/ikon snapshot'ı ve eski bedelle korunur. Katalog canlı yenileme eksiği, aynı ödül isteğinin eşzamanlı tekrarı ve yabancı çocuk/işlem kimliği sınırı düzeltildi. Kanıt ve sınırlar: `docs/release/reward-history-2026-11-05/README.md`. Bu yeni paket henüz üretime veya TestFlight/Ad Hoc 26 üzerine dağıtılmadı. Özel not geçmişi, seçerek dönem aktarımı ve toplu arşiv sıradadır; kütüphane en sonda.
+
+## 5 Kasım 2026 — özel not geçmişi ve arşiv
+
+Not ekranı onaylı ortak sihirbaza taşındı: özel varsayılan, içerik/paylaşım önizlemesi, yalnız yazara açık sürümler, arşiv ve özel olarak geri alma. Önceki aile RLS kuralının kişisel notları diğer veliye de okutma eksiği düzeltildi; geçmiş paylaşılmaz. Kullanıcıya özel canlı sinyal açık okuyucudan paylaşımı kaldırır. Kayıp yanıt, yarışan düzenleme/arşiv ve son paket hakkı korunur. Kanıt: `docs/release/note-history-2026-11-05/README.md`. Üretim ve TestFlight/Ad Hoc 26 bu geliştirmeyle değişmedi; RLS düzeltmesi henüz üretime uygulanmadı. Sırada seçerek dönem aktarımı ve toplu arşiv var; kütüphane en sonda.
