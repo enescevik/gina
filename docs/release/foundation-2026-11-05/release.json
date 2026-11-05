@@ -1,0 +1,75 @@
+{
+  "source": "1f1b505b9b8e9d8491554f22c1ff194142956a32",
+  "mergedSource": "17e106050172a98f3fd897d156f01b48e8eb045e",
+  "pr": 143,
+  "web": {
+    "url": "https://gina-web.pages.dev",
+    "deployment": "https://e6f5362c.gina-web.pages.dev",
+    "hashesVerified": true,
+    "readOnlyBrowserChecks": 6
+  },
+  "backoffice": {
+    "url": "https://gina-backoffice.pages.dev",
+    "deployment": "https://6a1b070c.gina-backoffice.pages.dev",
+    "accessGateChecks": 12,
+    "authenticatedLiveUiRetested": false
+  },
+  "migrations": [
+    "20261105030000",
+    "20261105040000",
+    "20261105050000",
+    "20261105060000",
+    "20261105061000",
+    "20261105070000",
+    "20261105071000",
+    "20261105072000"
+  ],
+  "edgeFunctions": [
+    "prova-grade",
+    "prova-plan",
+    "prova-review",
+    "timetable-import",
+    "ai-weekly-summary",
+    "learning-plan-import",
+    "prova-generate",
+    "push-send"
+  ],
+  "productionDatabaseReadOnlyChecks": 10,
+  "edgeBoundaries": {
+    "checked": 19,
+    "denied4xx": 18,
+    "existingUnconfigured": [
+      "google-rtdn"
+    ]
+  },
+  "ci": {
+    "run": 42060063644,
+    "securityRun": 42060063568,
+    "allPassed": true
+  },
+  "webDeploymentMethod": "Local authorized Wrangler; GitHub deployments skipped due missing secrets",
+  "testflight": {
+    "version": "0.1.0",
+    "build": "26",
+    "state": "IN_BETA_TESTING",
+    "physicalDeviceTested": false,
+    "signatureVerified": true,
+    "productionEndpointsVerified": true,
+    "processingState": "VALID",
+    "expired": false,
+    "appleBuildId": "62ac18c3-c09c-4ab3-80a3-8c713bec7948",
+    "deliveryId": "62ac18c3-c09c-4ab3-80a3-8c713bec7948",
+    "validationExit": 0,
+    "uploadExit": 0,
+    "notesVerified": true,
+    "notesLocales": [
+      "tr",
+      "en-US"
+    ],
+    "checkedAt": "2026-11-05T16:44:43.986756+00:00",
+    "testerGroupAssignmentVerified": true,
+    "group": "Team (Expo)",
+    "groupAssignment": "Automatic existing group; observed in App Store Connect after user sign-in, no new testers or permissions added"
+  },
+  "educationRemindersEnabled": false
+}

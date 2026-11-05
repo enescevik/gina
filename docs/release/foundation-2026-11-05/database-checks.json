@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "check_name": "migrations_applied",
+      "passed": true
+    },
+    {
+      "check_name": "task_revision",
+      "passed": true
+    },
+    {
+      "check_name": "submission_snapshot",
+      "passed": true
+    },
+    {
+      "check_name": "routine_history_private",
+      "passed": true
+    },
+    {
+      "check_name": "routine_sync_rls",
+      "passed": true
+    },
+    {
+      "check_name": "routine_sync_realtime",
+      "passed": true
+    },
+    {
+      "check_name": "reminders_default_off",
+      "passed": true
+    },
+    {
+      "check_name": "routine_editor_rpc",
+      "passed": true
+    },
+    {
+      "check_name": "routine_no_direct_delete",
+      "passed": true
+    },
+    {
+      "check_name": "routine_no_direct_title_edit",
+      "passed": true
+    }
+  ],
+  "readOnly": true
+}

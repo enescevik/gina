@@ -1,0 +1,38 @@
+{
+  "checks": [
+    {
+      "name": "login-phone",
+      "url": "https://gina-web.pages.dev/sign-in",
+      "overflow": false,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "login-action-reachable-phone",
+      "passed": true
+    },
+    {
+      "name": "unauthenticated-parent-phone",
+      "url": "https://gina-web.pages.dev/sign-in",
+      "passed": true
+    },
+    {
+      "name": "login-tablet",
+      "url": "https://gina-web.pages.dev/sign-in",
+      "overflow": false,
+      "errors": [],
+      "passed": true
+    },
+    {
+      "name": "login-action-reachable-tablet",
+      "passed": true
+    },
+    {
+      "name": "unauthenticated-parent-tablet",
+      "url": "https://gina-web.pages.dev/sign-in",
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "realFamilyMutations": false
+}

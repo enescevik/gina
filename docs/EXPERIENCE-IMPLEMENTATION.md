@@ -4,6 +4,8 @@
 
 İlk paket: [değişiklikler ve kontrol kanıtları](release/experience-foundation-2026-11-05/README.md). **Aşağıdaki açık işler tamamlanmış sayılmaz.**
 
+**Yayın ara kaydı — 5 Kasım:** Buraya kadar tamamlanan kapsam [yayın raporunda](release/foundation-2026-11-05/README.md). Web/yönetim ve üretim servisleri yayımlandı. iOS **0.1.0 (26)** mevcut iç test grubunda `IN_BETA_TESTING` durumunda; Türkçe/İngilizce test notları eklendi. Açık geliştirmeler bu yayında tamamlanmış sayılmaz.
+
 ## Silme ve eğitim geçişleri — 5 Kasım ek kapsam
 
 [Kayıt yaşam döngüsü incelemesi ve kaynaklı öneri](CHILD-AND-CONTENT-LIFECYCLE.md): Prova taslak silme/geri alma ile programı tamamen temizleme eklendi. Eğitim dönemi/okul geçmişi ile profil arşivleme/geri alma uygulandı; [profil arşivi kanıtı](release/child-archive-2026-11-05/README.md). İçerikte toplu arşiv ve kalıcı silme etkisinin yeniden kurulması açık; bu ek işler eski takip kapsamını kaldırmaz. [Yeni paketin kontrol raporu](release/content-lifecycle-2026-11-05/README.md).

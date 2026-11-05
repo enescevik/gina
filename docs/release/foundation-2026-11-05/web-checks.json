@@ -1,0 +1,68 @@
+{
+  "origin": "https://gina-web.pages.dev",
+  "source": "1f1b505b9b8e9d8491554f22c1ff194142956a32",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "exactPublishedFile": true,
+      "csp": true
+    },
+    {
+      "path": "/sign-in",
+      "status": 200,
+      "exactPublishedFile": true,
+      "csp": true
+    },
+    {
+      "path": "/reset-password",
+      "status": 200,
+      "exactPublishedFile": true,
+      "csp": true
+    },
+    {
+      "path": "/auth-callback",
+      "status": 200,
+      "exactPublishedFile": true,
+      "csp": true
+    },
+    {
+      "path": "/parent/tasks",
+      "status": 200,
+      "exactPublishedFile": true,
+      "csp": true
+    },
+    {
+      "path": "/parent/inbox",
+      "status": 200,
+      "exactPublishedFile": true,
+      "csp": true
+    },
+    {
+      "path": "/_expo/static/js/web/__expo-metro-runtime-8c088df87a31e4e6accd81c554ec290d.js",
+      "status": 200,
+      "exactPublishedFile": true
+    },
+    {
+      "path": "/_expo/static/js/web/_layout-8975a7eb435e5d0500abf8050bf0afd4.js",
+      "status": 200,
+      "exactPublishedFile": true
+    },
+    {
+      "path": "/_expo/static/js/web/index-4a162a2e3a4bffb57dfdb4c289b22636.js",
+      "status": 200,
+      "exactPublishedFile": true
+    },
+    {
+      "path": "/_expo/static/js/web/__common-205e641ef2accc439c74e097f9975e51.js",
+      "status": 200,
+      "exactPublishedFile": true
+    },
+    {
+      "path": "/_expo/static/js/web/entry-81465d67623ca84ab52de79b5cd43fcf.js",
+      "status": 200,
+      "exactPublishedFile": true
+    }
+  ],
+  "pass": true
+}
