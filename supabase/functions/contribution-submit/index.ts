@@ -17,6 +17,8 @@ export interface ContributionInput {
   question_id: string;
   rights: true;
   no_personal_data: true;
+  /** Rejected/withdrawn copy this corrected copy replaces (optional; server links automatically otherwise). */
+  supersedes?: string;
 }
 export interface ContributionMedia {
   base64: string;
@@ -30,7 +32,13 @@ export interface ContributionDeps {
     req: Request,
     input: ContributionInput,
   ): Promise<
-    { id: string; status: string; snapshot: { images: ContributionImage[] } }
+    {
+      id: string;
+      status: string;
+      snapshot: { images: ContributionImage[] };
+      supersedes_id?: string | null;
+      chain_id?: string | null;
+    }
   >;
   image(parent: ParentContext, image: ContributionImage): Promise<Uint8Array>;
   render(svg: string): Promise<Uint8Array>;
@@ -72,15 +80,22 @@ export function createContributionHandler(deps: ContributionDeps) {
       const input = JSON.parse(raw);
       if (
         !input || Object.keys(input).some((k) =>
-          !["id", "question_id", "rights", "no_personal_data"].includes(k)
+          !["id", "question_id", "rights", "no_personal_data", "supersedes"]
+            .includes(k)
         ) || !uuid(input.id) || !uuid(input.question_id) ||
-        input.rights !== true || input.no_personal_data !== true
+        input.rights !== true || input.no_personal_data !== true ||
+        (input.supersedes !== undefined && !uuid(input.supersedes))
       ) {
         return json({ error: "consent_required" }, 400);
       }
       const saved = await deps.begin(req, input);
       if (saved.status !== "preparing") {
-        return json({ id: saved.id, status: saved.status });
+        return json({
+          id: saved.id,
+          status: saved.status,
+          supersedes_id: saved.supersedes_id ?? null,
+          chain_id: saved.chain_id ?? null,
+        });
       }
       const images = saved.snapshot.images;
       if (!Array.isArray(images) || images.length < 1 || images.length > 3) {
@@ -180,6 +195,7 @@ if (import.meta.main) {
         p_question_id: input.question_id,
         p_rights: input.rights,
         p_no_personal_data: input.no_personal_data,
+        p_supersedes: input.supersedes ?? null,
       });
       if (error) throw error;
       return data;

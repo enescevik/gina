@@ -1,0 +1,88 @@
+[
+ {
+  "scenario": "acquire_same_request",
+  "successfulRequests": 2,
+  "errors": [],
+  "questionCreditsUsed": 3,
+  "acquisitions": 1,
+  "charges": 3,
+  "contributionGrants": 0,
+  "creditedQuestions": 0,
+  "publications": "1:1",
+  "groupIntegrityIssues": 0,
+  "passed": true
+ },
+ {
+  "scenario": "acquire_other_request",
+  "successfulRequests": 2,
+  "errors": [],
+  "questionCreditsUsed": 3,
+  "acquisitions": 1,
+  "charges": 3,
+  "contributionGrants": 0,
+  "creditedQuestions": 0,
+  "publications": "1:1",
+  "groupIntegrityIssues": 0,
+  "passed": true
+ },
+ {
+  "scenario": "acquire_two_units_quota",
+  "successfulRequests": 1,
+  "errors": [
+   "library_quota_exceeded"
+  ],
+  "questionCreditsUsed": 3,
+  "acquisitions": 1,
+  "charges": 3,
+  "contributionGrants": 0,
+  "creditedQuestions": 0,
+  "publications": "1:1",
+  "groupIntegrityIssues": 0,
+  "passed": true
+ },
+ {
+  "scenario": "accept_twice",
+  "successfulRequests": 1,
+  "errors": [
+   "contribution_changed"
+  ],
+  "questionCreditsUsed": 0,
+  "acquisitions": 0,
+  "charges": 0,
+  "contributionGrants": 1,
+  "creditedQuestions": 1,
+  "publications": "1:1",
+  "groupIntegrityIssues": 0,
+  "passed": true
+ },
+ {
+  "scenario": "accept_and_publish",
+  "successfulRequests": 1,
+  "errors": [
+   "library_publication_input"
+  ],
+  "questionCreditsUsed": 0,
+  "acquisitions": 0,
+  "charges": 0,
+  "contributionGrants": 1,
+  "creditedQuestions": 1,
+  "publications": "1:1",
+  "groupIntegrityIssues": 0,
+  "passed": true
+ },
+ {
+  "scenario": "publish_same_version",
+  "successfulRequests": 1,
+  "errors": [
+   "library_publication_changed"
+  ],
+  "questionCreditsUsed": 0,
+  "acquisitions": 0,
+  "charges": 0,
+  "contributionGrants": 0,
+  "creditedQuestions": 0,
+  "publications": "1:2",
+  "groupIntegrityIssues": 0,
+  "passed": true
+ }
+]
