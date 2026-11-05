@@ -1,0 +1,169 @@
+{
+  "note": "Synthetic family in an empty disposable database; tokens are examples, not live values.",
+  "child": {
+    "kind": "child",
+    "child": {
+      "id": "20000000-0000-4000-8000-000000009901",
+      "name": "Ece",
+      "grade": 5,
+      "avatar": "avatar-default",
+      "archived": false,
+      "family_id": "10000000-0000-4000-8000-000000009901",
+      "archive_revision": 0
+    },
+    "deletes": {
+      "ai": {
+        "inbox": 0,
+        "answer_reviews": 0,
+        "timetable_imports": 0
+      },
+      "files": {
+        "bytes": 0,
+        "count": 0,
+        "linked_family_files": 0
+      },
+      "notes": {
+        "own": 1,
+        "shared": 0,
+        "child_authored": 0
+      },
+      "prova": {
+        "exams": 1,
+        "answers": 0,
+        "attempts": 1,
+        "in_progress": 1,
+        "study_plans": 0
+      },
+      "stars": {
+        "events": 1,
+        "balance": 10
+      },
+      "badges": 0,
+      "grades": 0,
+      "shares": {
+        "open": 1,
+        "total": 1
+      },
+      "devices": {
+        "allowed": 1,
+        "active_sessions": 1
+      },
+      "rewards": {
+        "goals": 0,
+        "pending": 0,
+        "requests": 0
+      },
+      "calendar": {
+        "events": 0,
+        "timetables": 0,
+        "education_periods": 0
+      },
+      "task_routines": 1,
+      "task_completions": 1,
+      "pending_task_reviews": 1
+    },
+    "warnings": [
+      "active_device_sessions",
+      "open_shares_revoked",
+      "in_progress_attempts",
+      "pending_task_reviews",
+      "co_parent_private_notes_kept"
+    ],
+    "preserved": {
+      "family_files": {
+        "bytes": 0,
+        "count": 0
+      },
+      "family_notes": 0,
+      "family_rewards": 0,
+      "other_children": 1,
+      "usage_receipts": true,
+      "family_questions": 0,
+      "co_parent_private_notes": 1,
+      "prova_drafts_referencing": 0
+    },
+    "expires_at": "2026-11-05T21:11:10.052934+00:00",
+    "ttl_seconds": 900,
+    "alternatives": {
+      "already_archived": false,
+      "archive_available": true
+    },
+    "generated_at": "2026-11-05T20:56:10.052934+00:00",
+    "subscription": {
+      "affected": false,
+      "managed_in_store": true,
+      "cancelled_by_deletion": false
+    },
+    "preview_token": "20829ff8-7661-4f7a-96bf-13da1e09cc9e",
+    "shares_active": 1
+  },
+  "account": {
+    "kind": "account",
+    "families": [
+      {
+        "id": "10000000-0000-4000-8000-000000009901",
+        "mode": "transfer",
+        "name": "Örnek aile",
+        "deletes": {
+          "own_notes": 1,
+          "membership": 1,
+          "own_shares": 1,
+          "push_tokens": 0
+        },
+        "children": [
+          {
+            "id": "20000000-0000-4000-8000-000000009902",
+            "name": "Can",
+            "counts": null,
+            "archived": false
+          },
+          {
+            "id": "20000000-0000-4000-8000-000000009901",
+            "name": "Ece",
+            "counts": null,
+            "archived": false
+          }
+        ],
+        "preserved": {
+          "children": 2,
+          "co_parent_data": true,
+          "family_content": true,
+          "ownership_transferred": true
+        },
+        "other_parents": 1
+      }
+    ],
+    "warnings": [
+      "ownership_transferred",
+      "subscription_not_cancelled"
+    ],
+    "expires_at": "2026-11-05T21:11:10.052934+00:00",
+    "ttl_seconds": 900,
+    "alternatives": {
+      "archive_available": false,
+      "archivable_children": 0
+    },
+    "generated_at": "2026-11-05T20:56:10.052934+00:00",
+    "subscription": {
+      "active": true,
+      "affected": false,
+      "managed_in_store": true,
+      "cancelled_by_deletion": false
+    },
+    "preview_token": "877b4606-f5fd-4b42-a1a0-c44d81bbae84",
+    "subscriptions": [
+      {
+        "id": "2160c0c9-b159-41d6-a444-36d6a0310490",
+        "plan": "plus",
+        "status": "active",
+        "platform": "apple",
+        "family_id": "10000000-0000-4000-8000-000000009901",
+        "expires_at": "2026-12-01T00:00:00+00:00",
+        "auto_renewing": true,
+        "purchased_by_me": true,
+        "managed_in_store": true,
+        "cancelled_by_deletion": false
+      }
+    ]
+  }
+}

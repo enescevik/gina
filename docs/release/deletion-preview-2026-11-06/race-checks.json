@@ -1,0 +1,39 @@
+{
+  "environment": "empty-disposable-database",
+  "results": [
+    {
+      "check": "same_request_concurrent_confirm_one_deletion_same_result",
+      "passed": true
+    },
+    {
+      "check": "replay_after_deletion_returns_receipt",
+      "passed": true
+    },
+    {
+      "check": "different_requests_same_token_single_use",
+      "passed": true
+    },
+    {
+      "check": "confirm_vs_rename_consistent",
+      "passed": true,
+      "outcome": "rename_won_confirm_stale"
+    },
+    {
+      "check": "preview_during_deletion_clean_outcome",
+      "passed": true,
+      "outcome": "preview_ok"
+    },
+    {
+      "check": "account_check_concurrent_idempotent",
+      "passed": true
+    },
+    {
+      "check": "account_check_detects_target_change",
+      "passed": true
+    },
+    {
+      "check": "co_parent_private_notes_all_preserved",
+      "passed": true
+    }
+  ]
+}

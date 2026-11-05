@@ -658,6 +658,10 @@ kütüphane hâlâ açık. [Güncel yayın kaydı](../release/CLIENT-18-2026-11-
 Not ekranı onaylı ortak sihirbaza taşındı: özel varsayılan, içerik/paylaşım önizlemesi, yalnız yazara açık sürümler, arşiv ve özel olarak geri alma. Önceki aile RLS kuralının kişisel notları diğer veliye de okutma eksiği düzeltildi; geçmiş paylaşılmaz. Kullanıcıya özel canlı sinyal açık okuyucudan paylaşımı kaldırır. Kayıp yanıt, yarışan düzenleme/arşiv ve son paket hakkı korunur. Kanıt: `docs/release/note-history-2026-11-05/README.md`. Üretim ve TestFlight/Ad Hoc 26 bu geliştirmeyle değişmedi; RLS düzeltmesi henüz üretime uygulanmadı. Sırada seçerek dönem aktarımı ve toplu arşiv var; kütüphane en sonda.
 
 
+## 6 Kasım gece — kalıcı silmenin etki önizlemesi (sunucu)
+
+Çocuk profili ve hesap silme için `deletion_preview(p_target)`: silinecek kayıt türleri/sayıları, korunan geçmiş (diğer velinin kişisel notu, aile içerikleri, dosyalar), açık paylaşım/cihaz uyarıları, arşiv alternatifi ve "mağaza aboneliği silinmez" bildirimi; 15 dakikalık parmak izli `preview_token`. `confirm_child_deletion` ve `delete-account{preview_token}` eski/süresi geçmiş/kullanılmış/yabancı önizlemeyi reddeder; aynı istek tekrarı güvenli. Çocuk silinirken diğer velinin kişisel notu aile düzeyine ayrılır, silinmez. Kanıt: `docs/release/deletion-preview-2026-11-06/README.md` (87 SQL dosyası/2.597 kontrol, 8 yarış, 18 Deno, 268 core testi; boş tek kullanımlık DB). Mobil/backoffice ekranı bağlanmadı; üretim migration'ı uygulanmadı.
+
 ## 5 Kasım — kalan işlerin Claude'a devri
 
 - Ana iş listesi tekilleştirildi: `docs/CLAUDE-REMAINING-WORK.md`. Her pakette mevcut temel, kaynak, yapılacak değişiklik, bağımlılık ve kabul ölçütü; dış taraf adımları X01–X06 ile ayrıldı.

@@ -1,0 +1,22 @@
+running 18 tests from ./supabase/functions/delete-account/handler.test.ts
+delete: verified current account only, injected user ID ignored, hard deletion ... ok (29ms)
+delete: revoked is rejected without deletion ... ok (249µs)
+delete: anonymous is rejected without deletion ... ok (134µs)
+delete: password is rejected without deletion ... ok (108µs)
+delete: mismatch is rejected without deletion ... ok (116µs)
+delete: confirmation required and token required ... ok (158µs)
+delete: database failure never returns success ... ok (140µs)
+delete: CORS preflight does not authenticate or delete ... ok (189µs)
+delete: social account accepts only fresh verified OTP authentication ... ok (777µs)
+delete: without preview_token the existing flow is unchanged and no preview check runs ... ok (109µs)
+delete: fresh preview token is checked for the verified user, then deletion proceeds ... ok (313µs)
+delete: stale preview is rejected with 409 and nothing is deleted ... ok (163µs)
+delete: expired preview is rejected with 409 and nothing is deleted ... ok (54µs)
+delete: used preview is rejected with 409 and nothing is deleted ... ok (44µs)
+delete: not_found preview is rejected with 409 and nothing is deleted ... ok (55µs)
+delete: malformed preview token is invalid input before any deletion ... ok (57µs)
+delete: preview check failure never deletes and never returns success ... ok (54µs)
+delete: preview check runs only after re-authentication succeeded ... ok (46µs)
+
+ok | 18 passed | 0 failed (36ms)
+

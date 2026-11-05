@@ -31,6 +31,19 @@ export async function deleteAccount(req: Request, dependencies?: { db: SupabaseC
       const verified = await auth.auth.signInWithPassword({ email: user.email, password: input.password });
       if (verified.error || verified.data.user?.id !== user.id) return json({ error: "reauthentication_failed" }, 403);
     }
+    // Optional L03 impact preview: a preview whose target changed, expired or was used never deletes.
+    if (input.preview_token !== undefined) {
+      if (typeof input.preview_token !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(input.preview_token)) {
+        await auth?.auth.signOut({ scope: "local" }); return json({ error: "invalid_input" }, 400);
+      }
+      const check = await db.rpc("check_deletion_preview", { p_token: input.preview_token, p_user_id: user.id });
+      const status = check.error ? "unavailable" : (check.data as { status?: string } | null)?.status;
+      if (status !== "ok") {
+        await auth?.auth.signOut({ scope: "local" });
+        if (status === "unavailable") return json({ error: "deletion_failed" }, 500);
+        return json({ error: `deletion_preview_${status ?? "not_found"}` }, 409);
+      }
+    }
     // The auth.users trigger transfers shared ownership or cascades the last parent's family, atomically.
     const { error } = await db.auth.admin.deleteUser(user.id, false);
     if (error) { await auth?.auth.signOut({ scope: "local" }); return json({ error: "deletion_failed" }, 500); }
