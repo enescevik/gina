@@ -1,0 +1,13 @@
+{
+ "auth.users": 2,
+ "auth.identities": 1,
+ "public.families": 1,
+ "public.family_members": 1,
+ "public.children": 1,
+ "public.devices": 1,
+ "public.learning_sources": 1,
+ "storage.objects": 1,
+ "public.notes": 3,
+ "gina.note_changes": 3,
+ "public.audit_log": 46
+}
