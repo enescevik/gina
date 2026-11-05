@@ -42,7 +42,13 @@ def command(args, **kwargs):
 def sql(database, body, owner=False):
     if owner and database != DB:
         raise RuntimeError('ownership_changes_require_disposable_database')
-    return command(['docker', 'exec', '-i', 'supabase_db_gina', 'psql', '-X', '-At', '-U', 'supabase_admin' if owner else 'postgres', '-d', database, '-v', 'ON_ERROR_STOP=1'], input=body)
+    # Auth owns its tables in newer local stacks. Read schema/emptiness using
+    # the local owner inside a read-only transaction; never alter the template.
+    source_read = database in ('postgres', 'gina_completion_audit') and body.lstrip().lower().startswith('select ')
+    if source_read:
+        body = 'begin read only;\n' + body + '\ncommit;'
+    output = command(['docker', 'exec', '-i', 'supabase_db_gina', 'psql', '-X', '-qAt', '-U', 'supabase_admin' if owner or source_read else 'postgres', '-d', database, '-v', 'ON_ERROR_STOP=1'], input=body)
+    return output
 
 def inspect(name):
     data = json.loads(command(['docker', 'inspect', name]))[0]
@@ -97,7 +103,7 @@ try:
     # Copy only migration VERSION metadata, after confirming the column schemas
     # match. Never copy users, sessions, identities, or application records.
     auth_columns = "select table_name,column_name,data_type,udt_name,is_nullable,column_default from information_schema.columns where table_schema='auth' order by table_name,ordinal_position;"
-    if sql('postgres', auth_columns) != sql(DB, auth_columns):
+    if sql('postgres', auth_columns) != sql(DB, auth_columns, owner=True):
         raise RuntimeError('auth_template_schema_mismatch')
     versions = sql('postgres', 'select version from auth.schema_migrations order by version;').splitlines()
     if not versions or not all(1 <= len(v) <= 14 and v.isdigit() for v in versions):
@@ -117,12 +123,13 @@ try:
         execute format('alter function %s owner to supabase_auth_admin', r.signature);
       end loop;
     end $$;
+    grant references on auth.users to postgres;
     create publication supabase_realtime;""", owner=True)
     if WITH_STORAGE:
         if sql(DB, 'select count(*) from storage.objects;').strip() != '0':
             raise RuntimeError('storage_template_is_not_empty')
         storage_columns = auth_columns.replace("table_schema='auth'", "table_schema='storage'")
-        if sql('postgres', storage_columns) != sql(DB, storage_columns):
+        if sql('postgres', storage_columns) != sql(DB, storage_columns, owner=True):
             raise RuntimeError('storage_template_schema_mismatch')
         # Storage migration metadata only; no objects or bucket/user records.
         metadata = sql('postgres', 'select coalesce(jsonb_agg(to_jsonb(m)),\'[]\') from storage.migrations m;').strip()

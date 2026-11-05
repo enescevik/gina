@@ -1,0 +1,29 @@
+{
+  "environment": "isolated-local-real-services",
+  "results": [
+    {
+      "check": "wizard_changes_stay_local_until_confirmation",
+      "passed": true
+    },
+    {
+      "check": "new_year_updates_grade_and_archives_program_before_clearing",
+      "passed": true
+    },
+    {
+      "check": "archived_program_readable_by_day_and_time_on_tablet",
+      "passed": true
+    },
+    {
+      "check": "correction_keeps_period_boundary_and_records_old_value",
+      "passed": true
+    },
+    {
+      "check": "invalid_transfer_blocked_and_cancel_does_not_save",
+      "passed": true
+    },
+    {
+      "check": "320px_page_and_wizard_have_no_document_horizontal_overflow",
+      "passed": true
+    }
+  ]
+}

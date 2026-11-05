@@ -161,3 +161,11 @@ Yeni ek öncelik: tarihli eğitim dönemi/okul kayıtları; ardından profil ar�
 2. Veli ana ekranında sıradaki iş ve doğru bağlam; cihaz/PIN ayarlarında taslağı koruyarak tamamlama.
 3. Hazırlayıcıda soru bankasından bağımsız ders/program kapsamı ve tek soru sırası; ardından kalan çocuk/inceleme akışları.
 4. Yönetim iş kuyrukları ve içerik yaşam döngüsü; fiziksel cihaz ve yayın kapısı.
+
+
+## 5 Kasım — eğitim dönemi devam paketi
+
+- Uygulandı: ilk dönem kaydı, yeni eğitim yılı, aynı yıl okul değişikliği, ayrı sınıf/okul düzeltmesi ve geçmişi; programı koruma/boş başlatma; kapanan dönemin okunabilir program kopyası.
+- Uygulandı: eğitim/program sürüm çakışması, aile/veli kontrolü, tekrar güvenliği; yönetilen sınıfın eski istemciden değiştirilmesini engelleme; yeni sınav/okul puanı için sabit eğitim bağlamı.
+- Doğrulama ve kapsam sınırları: [eğitim dönemi raporu](release/education-periods-2026-11-05/README.md).
+- Sonraki: profil arşivi/geri alma + cihaz/bildirim/atama sınırları; dönem rapor filtreleri ve toplu içerik işlemleri. Bu paket üretimde/TestFlight'ta değil.

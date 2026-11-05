@@ -2,6 +2,10 @@
 
 5 Kasım 2026. Bu belge kullanıcının yeni isteği üzerine yapılan kaynak kodu/veri ilişkisi incelemesini ve ürün önerisini kaydeder. “Mevcut” kodda bulunan işlemi, “eklendi” bu daldaki değişikliği, “öneri/açık” henüz uygulanmamış davranışı ifade eder. Üretim verisi değiştirilmedi.
 
+## 5 Kasım devam paketinin durumu
+
+Eğitim dönemi ve okul geçmişinin ilk uygulaması hazır: ilk kayıt, yeni eğitim yılı, okul değişikliği, ayrı bilgi düzeltme, sürümlü kayıt ve kapanan dönemin okunabilir program kopyası. [Uygulama ve test kanıtı](release/education-periods-2026-11-05/README.md). Aşağıdaki geniş önerideki profil arşivi, dönem rapor filtreleri, seçerek rutin taşıma ve bütün içerik arşivi hâlâ açıktır. Üretim yayını yapılmadı.
+
 ## Ana karar önerisi
 
 Çocuğun kimliği kalıcı; sınıfı, okulu ve öğretim yılı tarihli eğitim kayıtları olmalı. Veliye **“Yeni eğitim yılına geç”**, **“Okul değiştir”**, **“Bilgiyi düzelt”** ayrı eylemler sunulmalı. “Çocuğu sil” veya profil arşivi sınıf atlamanın yolu olmamalı.
@@ -26,7 +30,7 @@ Yıldız, rozet, maskot, oda ve kişisel başarılar profilde kalır. Ders progr
 | Atanmış Prova | Taslak ve atanmış sınav aynı şey değil | Taslak silme yolu atanmış Prova’ya kapalı. İptal/arşiv için katılım/cevap/inceleme durumuna göre ayrı akış açık. |
 | AI üretim taslağı/işi | Kullanım makbuzu ve geri kazanılabilir üretim işi var | Silme yeni ücretli üretime başlamayı engeller; başlamış işin sonucunu/harcanmış hakkını yok etmez. Kullanıcıya açıklanır. |
 | Haftalık ders programı | Tek ders kaldırma var; toplu temizleme yoktu | **Eklendi:** Seçili çocuğun bütün derslerini taslaktan kaldır, aynı ekranda geri al, ayrıca Programı kaydet. Saat ayarları ve kaynaklar korunur. |
-| Ders programının dönem arşivi | Tek güncel program var | Yeni dönem açılışında sürümün okunur arşivi ve seçerek kopyalama **açık**. Bu paketteki temizleme dönem arşivi değildir. |
+| Ders programının dönem arşivi | Tek güncel program var | Devam paketinde dönem kapanırken okunabilir program kopyası **eklendi**. Seçerek kopyalama/geri yükleme **açık**. Tek başına Programı temizle işlemi dönem arşivi oluşturmaz. |
 | Aktarılan belge/görsel | Kaynak kaldırma mevcut | Kaynağı silmek ders/ödevleri silmez; ters işlem de kaynak dosyasını silmez. Ayrı sonuç açıklaması korunmalı. |
 | Ödev/çalışma | Tek kayıtta `archived` ve tamamlanma var | Tarih/kapsam seçerek toplu arşivleme, geri alma ve filtre **açık**. Tamamlanmışı başarısız sayma. |
 | Çanta listesi | Tek eşya çıkarılabiliyor | “İşaretleri sıfırla” ile “Bu günün listesini temizle” ayrı olmalı; başka günlere etki etmemeli. Toplu işlem **açık**. |
@@ -45,7 +49,7 @@ Yıldız, rozet, maskot, oda ve kişisel başarılar profilde kalır. Ders progr
 
 İnceleme dayanakları: `prova-draft-overview.tsx`, `prova-draft.ts`, `timetable-editor.tsx`, `timetable-import.tsx`, `learning-plan.tsx`, `school-bag.tsx`, `tasks-screen.tsx`, `rewards-screen.tsx`, `parent/menu.tsx`, `parent/grades.tsx`, `parent/notes.tsx`, `event-editor.tsx`, yönetim soru/kütüphane sayfaları ve `children` tablosuna bağlı yabancı anahtarlar. Bu tablo her ekranda yeni bir fiziksel cihaz kabul testi yapıldığı anlamına gelmez.
 
-## Yeni eğitim yılı ve okul değişikliği akışı — henüz uygulanmadı
+## Yeni eğitim yılı ve okul değişikliği — geniş hedef akış
 
 1. **Niyet:** Yeni eğitim yılı / Okul değişikliği / Yanlış bilgiyi düzelt. Sınıf tekrarı ayrı damgalayıcı bir ekran yerine normal sınıf seçimiyle desteklenir.
 2. **Yeni bilgiler:** Öğretim yılı, sınıf, başlangıç tarihi, gerekiyorsa program/okul türü. Okulun tam adı isteğe bağlı; açık adres veya öğrenci numarası gerekli değil. Ülke/müfredat seçimi yalnız içerik eşleştirmeye hizmet eder.
@@ -73,4 +77,4 @@ Paket için öneri: aktif çocuk kapasitesi ile arşiv depolaması ayrı tanıml
 
 ## Bu paketin durumu
 
-Kodlandı: geri alınabilir Prova taslak silme ve programın tamamını taslakta temizleme/geri alma. Sınıf/okul geçmişi, profil arşivi, toplu içerik arşivi ve kalıcı silmenin yeniden kurulması bu belgede **öneri ve açık iş** olarak kalır; üretime teslim edilmiş sayılmaz. Bunlar uygulama takip listesine eklenmiştir.
+Kodlandı: geri alınabilir Prova taslak silme ve programın tamamını taslakta temizleme/geri alma. Sınıf/okul geçmişinin ilk sürümü sonraki devam paketinde uygulandı (üstteki durum notu). Profil arşivi, toplu içerik arşivi ve kalıcı silmenin yeniden kurulması **öneri ve açık iş** olarak kalır. Hiçbiri üretime teslim edilmiş sayılmaz.

@@ -849,14 +849,14 @@ isOneToOne: false
     }
                   ]
                 },"exams": {
-                  Row: {
+                  Row: { education_context: Json | null;
                     "blueprint_id": string | null,"child_id": string,"content_locked_at": string | null,"created_at": string,"created_by": string | null,"duration_minutes": number | null,"family_id": string,"grade": number,"id": string,"kind": string,"preparation": Json | null,"question_ids": (string)[],"status": Database["public"]['Enums']["exam_status"],"subject": string,"timed": boolean,"title": string,"updated_at": string
                   }
                   ComputedFields: never
-                  Insert: {
+                  Insert: { education_context?: Json | null;
                     "blueprint_id"?: string | null,"child_id": string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"family_id": string,"grade": number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject": string,"timed"?: boolean,"title": string,"updated_at"?: string
                   }
-                  Update: {
+                  Update: { education_context?: Json | null;
                     "blueprint_id"?: string | null,"child_id"?: string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"family_id"?: string,"grade"?: number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject"?: string,"timed"?: boolean,"title"?: string,"updated_at"?: string
                   }
                   Relationships: [
@@ -1001,14 +1001,14 @@ isOneToOne: false
     }
                   ]
                 },"grades": {
-                  Row: {
+                  Row: { education_context: Json | null;
                     "child_id": string,"created_at": string,"family_id": string,"graded_on": string,"id": string,"kind": Database["public"]['Enums']["grade_kind"],"max_score": number,"note": string | null,"score": number,"subject": string
                   }
                   ComputedFields: never
-                  Insert: {
+                  Insert: { education_context?: Json | null;
                     "child_id": string,"created_at"?: string,"family_id": string,"graded_on"?: string,"id"?: string,"kind"?: Database["public"]['Enums']["grade_kind"],"max_score"?: number,"note"?: string | null,"score": number,"subject": string
                   }
-                  Update: {
+                  Update: { education_context?: Json | null;
                     "child_id"?: string,"created_at"?: string,"family_id"?: string,"graded_on"?: string,"id"?: string,"kind"?: Database["public"]['Enums']["grade_kind"],"max_score"?: number,"note"?: string | null,"score"?: number,"subject"?: string
                   }
                   Relationships: [
@@ -2293,6 +2293,8 @@ isOneToOne: false
                 }
           }
           Functions: {
+get_child_education: { Args: { p_child_id: string }; Returns: Json },
+change_child_education: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_action: string; p_academic_year: number; p_grade: number | null; p_school: string | null; p_starts_on: string; p_timetable_revision: number; p_keep_timetable: boolean }; Returns: Json },
 get_guided_input_options: { Args: { p_child: string; p_kind: string }; Returns: Json },
 admin_save_guided_input: { Args: { p_id: string; p_revision: number; p_value: Json }; Returns: number },
 

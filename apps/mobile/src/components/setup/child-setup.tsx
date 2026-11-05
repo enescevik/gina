@@ -144,7 +144,9 @@ export function ChildSetup({
           ? t(
               save.error.message.includes("plan_limit")
                 ? "betaUx.planLimit"
-                : "betaUx.childSaveError",
+                : save.error.message.includes("education_use_transition")
+                  ? "education.profileGradeHelp"
+                  : "betaUx.childSaveError",
             )
           : null
       }
@@ -202,43 +204,56 @@ export function ChildSetup({
               })}
             </Text>
           )}
-          <Text style={u.bold}>{t("betaUx.grade")}</Text>
-          <View style={[u.row, { flexWrap: "wrap" }]}>
-            {[null, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((value) => (
-              <Pressable
-                key={String(value)}
-                accessibilityRole="button"
-                accessibilityState={{ selected: grade === value }}
-                onPress={() => {
-                  setGrade(value);
-                  if (!value)
-                    setTasks(
-                      tasks.map((item) =>
-                        item.id === "bag" ? { ...item, selected: false } : item,
-                      ),
-                    );
-                }}
-                style={{
-                  minHeight: 48,
-                  minWidth: 48,
-                  padding: 12,
-                  borderRadius: 16,
-                  justifyContent: "center",
-                  backgroundColor: grade === value ? p.purple : p.lilac,
-                }}
-              >
-                <Text
-                  style={[u.bold, { color: grade === value ? "#fff" : p.ink }]}
-                >
-                  {value === null
-                    ? t("betaUx.noSchool")
-                    : value === 0
-                      ? t("betaUx.preschool")
-                      : String(value)}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
+          {child ? (
+            <Text style={u.copy}>{t("education.profileGradeHelp")}</Text>
+          ) : (
+            <>
+              <Text style={u.bold}>{t("betaUx.grade")}</Text>
+              <View style={[u.row, { flexWrap: "wrap" }]}>
+                {[null, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(
+                  (value) => (
+                    <Pressable
+                      key={String(value)}
+                      accessibilityRole="button"
+                      accessibilityState={{ selected: grade === value }}
+                      onPress={() => {
+                        setGrade(value);
+                        if (!value)
+                          setTasks(
+                            tasks.map((item) =>
+                              item.id === "bag"
+                                ? { ...item, selected: false }
+                                : item,
+                            ),
+                          );
+                      }}
+                      style={{
+                        minHeight: 48,
+                        minWidth: 48,
+                        padding: 12,
+                        borderRadius: 16,
+                        justifyContent: "center",
+                        backgroundColor: grade === value ? p.purple : p.lilac,
+                      }}
+                    >
+                      <Text
+                        style={[
+                          u.bold,
+                          { color: grade === value ? "#fff" : p.ink },
+                        ]}
+                      >
+                        {value === null
+                          ? t("betaUx.noSchool")
+                          : value === 0
+                            ? t("betaUx.preschool")
+                            : String(value)}
+                      </Text>
+                    </Pressable>
+                  ),
+                )}
+              </View>
+            </>
+          )}
           <Text style={u.bold}>{t("betaUx.gender")}</Text>
           <View style={[u.row, { flexWrap: "wrap" }]}>
             {["unspecified", "girl", "boy"].map((value) => (
