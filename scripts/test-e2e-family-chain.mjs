@@ -296,6 +296,18 @@ try {
   const [as1, as2] = await Promise.all([a1.c.rpc('submit_prova_draft', assignment), a1.c.rpc('submit_prova_draft', assignment)]);
   check('double_tap_assignment_single', !as1.error && !as2.error, JSON.stringify([as1.error?.message, as2.error?.message]));
   const exams = await must(a1.c.from('exams').select('id,question_ids,child_id'), 'exams_a');
+  // Free-plan quota (1 Prova per month) consumed once under two simultaneous assignments in family B.
+  const qb = randomUUID();
+  await must(b1.c.from('question_bank').insert({ id: qb, family_id: b1.family, grade: 5, subject: 'Fen', topic: 'Işık', kind: 'multiple_choice', difficulty: 'orta', stem: 'B sorusu?', choices: [{ key: 'A', text: 'Evet' }, { key: 'B', text: 'Hayır' }], correct_key: 'A', solution: 'Evet.' }), 'create_question_b');
+  const bDraft = title => ({ childId: bc, grade: 5, title, purpose: 'written', format: 'school', subjects: ['Fen'], topics: ['Işık'], target: 1, minutes: null, difficulty: 'orta', kind: 'multiple_choice', note: '', step: 2, blocks: [{ kind: 'question', id: qb, source: 'manual' }] });
+  const bd1 = randomUUID(), bd2 = randomUUID();
+  await rpc(b1.c, 'save_prova_draft', { p_request_id: randomUUID(), p_id: bd1, p_version: 0, p_content: bDraft('B quota one') }, 'b_draft_one');
+  await rpc(b2.c, 'save_prova_draft', { p_request_id: randomUUID(), p_id: bd2, p_version: 0, p_content: bDraft('B quota two') }, 'b_draft_two');
+  const [bs1, bs2] = await Promise.all([b1.c.rpc('submit_prova_draft', { p_request_id: randomUUID(), p_id: bd1, p_version: 1 }), b2.c.rpc('submit_prova_draft', { p_request_id: randomUUID(), p_id: bd2, p_version: 1 })]);
+  check('free_plan_prova_quota_consumed_once_under_race', [bs1, bs2].filter(r => !r.error).length === 1 && [bs1, bs2].some(r => /plan_limit_prova_exams/.test(r.error?.message || '')), JSON.stringify([bs1.error?.message, bs2.error?.message]));
+  check('free_plan_single_exam_row', (await must(b1.c.from('exams').select('id'), 'exams_b')).length === 1);
+  const loserDraft = bs1.error ? bd1 : bd2;
+  check('quota_loser_draft_preserved', JSON.stringify(await rpc(b1.c, 'get_prova_drafts', {}, 'b_drafts_after_quota')).includes(loserDraft));
   check('assignment_created_one_exam', exams.filter(e => e.id === draftId).length === 1, exams.length);
   check('foreign_parent_cannot_read_exam', (await must(b1.c.from('exams').select('id').eq('id', draftId), 'b1_exam')).length === 0);
   check('tablet_c2_cannot_read_c1_exam', (await must(tabA.c.from('exams').select('id').eq('id', draftId), 'tabA_exam')).length === 0);
