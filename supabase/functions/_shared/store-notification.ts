@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { json } from "./supabase.ts";
+import { isPermanentIapError } from "./iap.ts";
 
 export type StorePlatform = "apple" | "google";
 export type NotificationResult = { storeKey?: string; ignored?: boolean };
@@ -29,7 +30,19 @@ export async function processStoreNotification(
       throw new Error("notification_claim_invalid");
     }
     token = claim.data.token;
-    const result = await process();
+    let result: NotificationResult;
+    try {
+      result = await process();
+    } catch (e) {
+      // A permanent rejection (wrong bundle, foreign family, unknown product...) is recorded with its
+      // code and acknowledged to the provider: resending the same event cannot change the outcome.
+      // The inbox row stays visible as failed for operators; a later delivery may still reclaim it.
+      if (isPermanentIapError(e)) {
+        await finish(e.code);
+        return json({ ok: false, rejected: e.code });
+      }
+      throw e;
+    }
     await finish(null, result.storeKey);
     return json({ ok: true, ...(result.ignored ? { ignored: true } : {}) });
   } catch {

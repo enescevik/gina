@@ -3,7 +3,9 @@ import { processStoreNotification } from "../_shared/store-notification.ts";
 import { applyStoreState, GOOGLE_PACKAGE_NAME, googleApiConfigured, refreshGoogle, verifyGoogleOidc } from "../_shared/iap.ts";
 interface PubSubEnvelope { message?: { data?: string; messageId?: string } }
 interface DeveloperNotification {
+  version?: string;
   packageName?: string;
+  eventTimeMillis?: string;
   subscriptionNotification?: { notificationType?: number; purchaseToken?: string };
   voidedPurchaseNotification?: { purchaseToken?: string; productType?: number };
   testNotification?: object;
@@ -29,6 +31,10 @@ export async function googleRtdn(req: Request, deps = defaults): Promise<Respons
   const eventKey = envelope?.message?.messageId;
   if (typeof eventKey !== "string" || !eventKey || eventKey.length > 256) return json({ error: "missing_notification_id" }, 400);
   if (notification.packageName !== deps.packageName()) return json({ error: "package_mismatch" }, 400);
+  // RTDN carries eventTimeMillis as a decimal string; an unparseable time is not a Play notification.
+  if (notification.eventTimeMillis !== undefined && !/^\d{1,16}$/.test(String(notification.eventTimeMillis))) {
+    return json({ error: "bad_notification" }, 400);
+  }
   const types = [notification.subscriptionNotification, notification.voidedPurchaseNotification, notification.testNotification].filter(Boolean);
   if (types.length !== 1) return json({ error: "bad_notification_type" }, 400);
   const purchaseToken = notification.subscriptionNotification?.purchaseToken ?? notification.voidedPurchaseNotification?.purchaseToken;
@@ -44,7 +50,10 @@ export async function googleRtdn(req: Request, deps = defaults): Promise<Respons
       if (!deps.googleApiConfigured()) throw new Error("store_not_configured");
       const revoked = notification.subscriptionNotification?.notificationType === 12 || !!notification.voidedPurchaseNotification;
       const state = await deps.refreshGoogle(db, purchaseToken!, { revoked });
-      if (state) await deps.applyStoreState(db, state);
+      if (state) {
+        state.source = "notification";
+        await deps.applyStoreState(db, state);
+      }
       return { storeKey: purchaseToken! };
     });
   } catch { return json({ error: "processing_failed" }, 503); }

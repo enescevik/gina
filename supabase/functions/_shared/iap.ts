@@ -345,6 +345,13 @@ export interface AppleRenewalInfo {
 /** App Store Server API abonelik durumu: 1 aktif, 2 bitmiş, 3 billing retry, 4 grace, 5 iptal. */
 export type AppleApiStatus = 1 | 2 | 3 | 4 | 5;
 
+/** Which verified path produced a state; stored as store_subscriptions.last_source. */
+export type StoreSource = "client_verify" | "notification" | "reconcile" | "operator";
+
+/** Codes that a retry cannot fix: the notification is recorded as rejected, the provider is not asked to resend. */
+export const PERMANENT_IAP_CODES = new Set(["account_mismatch", "bundle_mismatch", "not_a_subscription", "unknown_product", "invalid_purchase_token", "invalid_store_state", "invalid_jws"]);
+export const isPermanentIapError = (e: unknown): e is IapError => e instanceof IapError && PERMANENT_IAP_CODES.has(e.code);
+
 export interface StoreState {
   platform: "apple" | "google";
   storeKey: string; // Apple originalTransactionId / Google purchaseToken
@@ -358,6 +365,10 @@ export interface StoreState {
   version?: number;
   /** Android plan değişiminde yerini aldığı eski purchaseToken. */
   replacesStoreKey?: string | null;
+  /** Hangi doğrulanmış yol yazdı (client_verify / notification / reconcile / operator). */
+  source?: StoreSource;
+  /** Google: sunucu acknowledge'ı doğruladı ya da API zaten ACKNOWLEDGED dedi. Apple'da verilmez. */
+  acknowledged?: boolean;
   raw: unknown;
 }
 
@@ -543,7 +554,14 @@ export async function fetchGoogleSubscription(purchaseToken: string): Promise<Go
   return (await res.json()) as GoogleSubscriptionV2;
 }
 
-/** Aboneliği onaylar (acknowledge); 3 gün içinde onaylanmayan satın alma Google tarafından iade edilir. */
+export const GOOGLE_ACKNOWLEDGED = "ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED";
+export const GOOGLE_ACK_PENDING = "ACKNOWLEDGEMENT_STATE_PENDING";
+
+/**
+ * Aboneliği onaylar (acknowledge); 3 gün içinde onaylanmayan satın alma Google tarafından iade edilir.
+ * Tekrar güvenli: 409 ya da başka bir hatadan sonra abonelik yeniden okunur; Google zaten ACKNOWLEDGED
+ * diyorsa başarı sayılır, aksi hâlde 502 `google_ack_<status>` fırlatır (çağıran yeniden dener).
+ */
 export async function acknowledgeGoogle(subscriptionId: string, purchaseToken: string): Promise<void> {
   const res = await fetch(
     androidApi(`subscriptions/${encodeURIComponent(subscriptionId)}/tokens/${encodeURIComponent(purchaseToken)}:acknowledge`),
@@ -553,7 +571,15 @@ export async function acknowledgeGoogle(subscriptionId: string, purchaseToken: s
       body: "{}",
     },
   );
-  if (!res.ok && res.status !== 409) throw new IapError(`google_ack_${res.status}`, 502);
+  if (res.ok) return;
+  // Yanıt gövdesi günlüğe yazılmaz (token içerebilir). Durumu Google'dan yeniden oku.
+  let confirmed = false;
+  try {
+    confirmed = (await fetchGoogleSubscription(purchaseToken)).acknowledgementState === GOOGLE_ACKNOWLEDGED;
+  } catch {
+    // aşağıda asıl ack hatası raporlanır
+  }
+  if (!confirmed) throw new IapError(`google_ack_${res.status}`, 502);
 }
 
 /** Android (abonelik, base plan) çiftini kanonik plan_products.product_id'ye çevirir. */
@@ -605,8 +631,16 @@ export async function googleState(
     autoRenewing: item.autoRenewingPlan?.autoRenewEnabled === true,
     accountToken: sub.externalAccountIdentifiers?.obfuscatedExternalAccountId?.toLowerCase() ?? null,
     replacesStoreKey: sub.linkedPurchaseToken ?? null,
+    acknowledged: sub.acknowledgementState === GOOGLE_ACKNOWLEDGED,
     raw: { subscription: sub, androidProductId: item.productId },
   };
+}
+
+/** Acknowledge gerekiyor mu: Google PENDING diyor ve hak veren bir durum var. */
+export function googleNeedsAcknowledge(state: StoreState | null): boolean {
+  return !!state && state.platform === "google" && !state.acknowledged
+    && (state.raw as { subscription?: GoogleSubscriptionV2 })?.subscription?.acknowledgementState === GOOGLE_ACK_PENDING
+    && (state.status === "active" || state.status === "grace");
 }
 
 /** Google'dan okuyup gerekirse onaylar; tek çağrıda tam akış. */
@@ -621,13 +655,9 @@ export async function refreshGoogle(
   const state = await googleState(db, purchaseToken, sub, opts);
   if (state) state.version = observedAt;
   const item = sub.lineItems?.[0];
-  if (
-    state &&
-    item &&
-    sub.acknowledgementState === "ACKNOWLEDGEMENT_STATE_PENDING" &&
-    (state.status === "active" || state.status === "grace")
-  ) {
+  if (state && item && googleNeedsAcknowledge(state)) {
     await acknowledgeGoogle(item.productId, purchaseToken);
+    state.acknowledged = true;
   }
   return state;
 }
@@ -708,4 +738,24 @@ export async function applyStoreState(db: SupabaseClient, state: StoreState, ctx
     throw new IapError("store_state_write_failed", 503);
   }
   return data as ApplyResult;
+}
+
+/**
+ * Başka aileye bağlı bir makbuzun reddi denetim kaydına yazılır (audit_log, ham anahtar yok).
+ * Yazma hatası doğrulama yanıtını değiştirmez; çağıran 409'u yine döndürür.
+ */
+export async function recordStoreAccountConflict(
+  db: SupabaseClient,
+  state: Pick<StoreState, "platform" | "storeKey">,
+  ctx: { callerFamilyId: string; userId?: string | null; source?: StoreSource },
+): Promise<boolean> {
+  const { error } = await db.rpc("record_store_account_conflict", {
+    p_platform: state.platform,
+    p_store_key: state.storeKey,
+    p_caller_family_id: ctx.callerFamilyId,
+    p_user_id: ctx.userId ?? null,
+    p_source: ctx.source ?? "client_verify",
+  });
+  if (error) console.error("record_store_account_conflict", error.code ?? "error");
+  return !error;
 }

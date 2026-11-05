@@ -38,6 +38,7 @@ export async function appleNotifications(req: Request, deps = defaults): Promise
           ? await deps.verifyAppleJws<AppleRenewalInfo>(payload.data.signedRenewalInfo) : null;
         let state = deps.appleState(tx, renewal);
         if (deps.appleApiConfigured()) state = (await deps.fetchAppleState(tx.originalTransactionId, tx.environment)) ?? state;
+        state.source = "notification";
         await deps.applyStoreState(db, state);
         return { storeKey: state.storeKey };
       });
