@@ -1,0 +1,31 @@
+{
+  "environment": "empty-disposable-database",
+  "results": [
+    {
+      "check": "two_parents_same_revision_different_effective_days_one_version",
+      "passed": true
+    },
+    {
+      "check": "same_scheduled_request_twice_one_version_same_result",
+      "passed": true
+    },
+    {
+      "check": "submission_racing_scheduled_edit_freezes_todays_version",
+      "passed": true,
+      "snapshot_stars": "5",
+      "live_row_stars_at_submission": "7"
+    },
+    {
+      "check": "immediate_edit_supersedes_pending_schedules",
+      "passed": true
+    },
+    {
+      "check": "two_timetable_saves_same_revision_different_days_one_version",
+      "passed": true
+    },
+    {
+      "check": "no_star_event_created_or_changed_by_edits",
+      "passed": true
+    }
+  ]
+}
