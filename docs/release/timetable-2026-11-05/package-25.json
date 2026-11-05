@@ -1,0 +1,22 @@
+{
+  "version": "0.1.0",
+  "build": "25",
+  "source": "75129901be136f4bb2c7c4d758c8f843e65e69fa",
+  "bundleId": "com.enescevik.gina",
+  "signatureVerified": true,
+  "deviceFamilies": [
+    1,
+    2
+  ],
+  "iPadOrientations": [
+    "UIInterfaceOrientationPortrait",
+    "UIInterfaceOrientationPortraitUpsideDown",
+    "UIInterfaceOrientationLandscapeLeft",
+    "UIInterfaceOrientationLandscapeRight"
+  ],
+  "cameraPermissionPresent": true,
+  "productionEndpointsVerified": true,
+  "physicalDeviceTested": false,
+  "ipaSha256": "9ceaa353876b30e5950a470172f40e8d132a77376b93443dac5252acffb4e1e2",
+  "buildMethod": "EAS local"
+}

@@ -1,0 +1,67 @@
+{
+  "checkedAt": "2026-11-05T05:14:48.779Z",
+  "web": [
+    {
+      "path": "/index.html",
+      "status": 200,
+      "match": true,
+      "sha256": "254867e157f58d3a4b6030842c0f3e877e885c0b60ad4ceb9d4e10aac878b78f"
+    },
+    {
+      "path": "/sign-in.html",
+      "status": 200,
+      "match": true,
+      "sha256": "46f9815149ed88f5d41a18575d8c4e1b37f23064cf54659c121358e3d10f320e"
+    },
+    {
+      "path": "/parent/calendar.html",
+      "status": 200,
+      "match": true,
+      "sha256": "8481321e51702255d7a590f51115a829e410de2d713154f37783bb75808177a8"
+    },
+    {
+      "path": "/_expo/static/js/web/__expo-metro-runtime-8c088df87a31e4e6accd81c554ec290d.js",
+      "status": 200,
+      "match": true,
+      "sha256": "80e3ab02b3bac22608cdf29a2e3cc1270616a695bbe479f7f500941e8d2bbe41"
+    },
+    {
+      "path": "/_expo/static/js/web/_layout-4c93305e62621e52f87a7901f8cb732c.js",
+      "status": 200,
+      "match": true,
+      "sha256": "bf931d5e9dca1fb12401c2e504d5f641131830a8a3e5bb0357ecb7fe4450589b"
+    },
+    {
+      "path": "/_expo/static/js/web/index-f3d47022a4a707c9b0931e2dcf1a57c3.js",
+      "status": 200,
+      "match": true,
+      "sha256": "f160797a13f35dba2b58151827ef1a0d1c7d9ccb7afe2353173be93b844fcdf4"
+    },
+    {
+      "path": "/_expo/static/js/web/__common-d1eba92554e18c66bd149cbf8b3d62b9.js",
+      "status": 200,
+      "match": true,
+      "sha256": "dd6c9f2ee03c519d5bddece1f1f2e1169c90648a90ff5ccbd810c9e2ac227919"
+    },
+    {
+      "path": "/_expo/static/js/web/entry-67e7afb8893fc3354fc5d19b088a27fa.js",
+      "status": 200,
+      "match": true,
+      "sha256": "292d98c60849cbddda30534c7c0e005edf1a33251db23a6a2c4cca581c0a907e"
+    },
+    {
+      "path": "/_expo/static/js/web/_layout-fc99bfcc2d5ec11c108eb7f2f2a1c95a.js",
+      "status": 200,
+      "match": true,
+      "sha256": "08f2f943d0761cbb7e910cdf8f976717ac99c7b0221ccc9fa7f802f2b18137e8"
+    },
+    {
+      "path": "/_expo/static/js/web/calendar-d9131889b54217b22d2294180fe17743.js",
+      "status": 200,
+      "match": true,
+      "sha256": "e09f7ca07ca5a3665cf1a8147823548e9a59eb297820af42cd704f89728d59ae"
+    }
+  ],
+  "timetableAnonymousStatus": 403,
+  "authenticatedProductionFlowRetested": false
+}

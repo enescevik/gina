@@ -1,0 +1,54 @@
+{
+  "appSource": "75129901be136f4bb2c7c4d758c8f843e65e69fa",
+  "mergedSource": "391362f53ccc966e5988a6acd3d73f3a8d1dd2b9",
+  "pr": 141,
+  "web": {
+    "url": "https://gina-web.pages.dev",
+    "deployment": "https://a8d55e6f.gina-web.pages.dev",
+    "hashesVerified": true
+  },
+  "edgeFunctions": [
+    "timetable-import"
+  ],
+  "migrations": [
+    "20261105020000"
+  ],
+  "ci": {
+    "run": 41972167387,
+    "allPassed": true,
+    "databaseTests": 2073,
+    "coreTests": 251,
+    "isolatedServiceChecks": 257
+  },
+  "testflight": {
+    "version": "0.1.0",
+    "build": "25",
+    "state": "IN_BETA_TESTING",
+    "processingState": "VALID",
+    "expired": false,
+    "appleBuildId": "f38d8fdd-48cf-4da9-b6eb-a5efbcba9362",
+    "validationExit": 0,
+    "uploadExit": 0,
+    "notesVerified": true,
+    "notesLocales": [
+      "tr",
+      "en-US"
+    ],
+    "checkedAt": "2026-11-05T05:44:04.378Z"
+  },
+  "physicalDeviceAcceptance": false,
+  "allScreensFinal": false,
+  "withheldBuilds": [
+    {
+      "build": "23",
+      "reason": "Cancelled after CI found a web-only style type incompatibility",
+      "uploadedToApple": false
+    },
+    {
+      "build": "24",
+      "reason": "Package inspection found the previous web sharing URL; local build environment corrected",
+      "uploadedToApple": false
+    }
+  ],
+  "productionEasWebUrlVerified": true
+}
