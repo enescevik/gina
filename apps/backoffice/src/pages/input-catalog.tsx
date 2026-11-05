@@ -4,6 +4,11 @@ import type { Tables } from "@gina/core";
 import { Card, Layout, Notice } from "@/components/Layout";
 import { supabase } from "@/lib/supabase";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
+import {
+  SubjectMatchTester,
+  SynonymChips,
+  useSubjectSynonyms,
+} from "@/components/subject-synonyms";
 
 type Option = Tables<"guided_input_options">;
 const kinds = {
@@ -43,6 +48,7 @@ export default function InputCatalog() {
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [message, setMessage] = useState("");
+  const synonyms = useSubjectSynonyms(kind === "subject");
   const dirty = !!draft && JSON.stringify(draft) !== original;
   const guard = useUnsavedChanges(dirty, busy);
   function edit(o: Option) {
@@ -271,6 +277,17 @@ export default function InputCatalog() {
                 Seçenek ekle
               </button>
             </div>
+            {kind === "subject" ? <SubjectMatchTester /> : null}
+            {kind === "subject" && synonyms.error
+              ? (
+                <Notice tone="error">
+                  Eşanlamlılar yüklenemedi.{" "}
+                  <button className="btn-secondary" onClick={synonyms.reload}>
+                    Yeniden dene
+                  </button>
+                </Notice>
+              )
+              : null}
             {q.loading ? <p>Yükleniyor…</p> : q.error
               ? (
                 <Notice tone="error">
@@ -301,6 +318,18 @@ export default function InputCatalog() {
                         {o.min_grade}–{o.max_grade}. sınıf ·{" "}
                         {o.active ? "Gösteriliyor" : "Gizli"}
                       </p>
+                      {o.kind === "subject"
+                        ? (
+                          <>
+                            <p className="break-all text-xs text-slate-600">
+                              {o.id}
+                            </p>
+                            {synonyms.data
+                              ? <SynonymChips items={synonyms.data.get(o.id)} />
+                              : null}
+                          </>
+                        )
+                        : null}
                     </div>
                     <button
                       className="btn-secondary"
