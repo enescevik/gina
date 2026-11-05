@@ -41,6 +41,13 @@ pnpm release:check:ios --env-file /tam/yol/.env.production.local
 node --test scripts/check-testflight.test.mjs
 ```
 
+**6 Kasım 2026 (Q04):** iOS build/submit ve tablet yayını için tek yerel yol
+`scripts/release-local.mjs` (`ios:build`, `ios:submit`, `tablet:build`, `tablet:publish`,
+`verify --target ios|tablet`). Varsayılan dry-run; `--execute` temiz çalışma ağacı, public
+anahtar doğrulaması ve EAS uzaktaki build numarası ile `app.json` eşlemesini şart koşar.
+TestFlight durumu `check-testflight.mjs` (statik) + `eas submit:list` ile okunur; ASC'de
+«İşlendi» görülmeden sürüm yayımlandı denmez. Ayrıntı: [docs/DEPLOY.md §7–8](../DEPLOY.md).
+
 Kontrol build/submit yapmaz, anahtar değerlerini yazdırmaz. [JSON raporu](testflight-config-audit.json) EAS proje kimliği, Apple uygulama kimliği ve public Supabase adresinin eksik olduğunu gösterir. Web/legal adresleri de hazır değildir. Public anahtar biçiminin geçmesi proje bağlantısının doğrulandığı anlamına gelmez.
 
 ## Yetki ve çalışma sınırları
