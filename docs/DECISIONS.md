@@ -77,3 +77,14 @@ Sınav hazırlığı + kendini deneme + öğrenme modülünün adı **Prova**; i
 - **Özel fontlar:** `packages/assets/fonts/gina/` altındaki GinaBirlik/GinaKesif denemeleri beğenilmedi; koda bağlanmaz, repoya alınmaz. Onaylı tipografi Nunito/Baloo 2 korunur.
 - **Alan adı, SMTP, Android/Play:** canlıya alma zamanında hazırlanacak; ilgili işler `BEKLİYOR`, geliştirme durmaz.
 - **R01 yayını** ve gece boyunca ara yayınlar için izin teyit edildi; GINA üretim AI çağrıları doğrulama amaçlı ve sentetik veriyle sınırlı tutulur.
+
+## F01 ve S04 kararları (6 Kasım 2026, 01:30; Enes karar yetkisini koordinatöre bıraktı — "önerdiğin gibi ilerle")
+
+Kaynak öneriler: [F01](F01-SOCIAL-AND-NEXT-PROPOSALS.md) §9, [S04 takvim](learning/catalog/education-calendars/README.md), [ders eşanlamlıları](learning/catalog/subject-synonyms.json).
+
+- **Sosyal pilot (F01 1–7, 16):** ebeveyn konu odaları bu sürüme girmez; WORLD-01 (3B) sonrasında, avukatın 5651/rıza cevabı ve X01 (doğrulanmış e-posta) hazır olduğunda yeniden değerlendirilir. Açılırsa: yalnız doğrulanmış e-posta + aile üyeliği + 7 gün; paketten bağımsız; en az iki moderatör veya tek moderatör + 7 gün itiraz SLA'sı; hesap silinince topluluk içeriği tamamen silinir; üst gönderi silinince yanıtlar "silinmiş gönderi" altında kalır. Özel mesaj ve okul grupları 3B sonrası.
+- **Küçük ürün önerileri (F01 9–12):** QR eşleme onaylı (U02 kapsamında, kamera izni metniyle). Otomatik tatil **önerisi** onaylı (otomatik silme yok). Geleceğe planlı eğitim geçişi L04 üzerine onaylı, uygulandıktan sonra 14 gün geri alma. 5.000+ duyuru kuyruğu "3.000 aktif veli" tetiğine kadar ertelenir.
+- **Takvim modeli (F01 8, S04):** 4 parçalı dönem modeli (ara tatiller dönem dışı) tohum verisiyle korunur. Düşük güvenli il kayıtları (Düzce) yayımlanmaz.
+- **Okul listesi (F01 13):** MEB kurum listesi şimdilik edinilmez; "bölge + okul adı yaz" kalır.
+- **Ders kimlikleri (F01 14, S04):** 20 yeni `subject-*` kimliği migration ile eklenir; eşleşme her zaman veli onaylı (tek aday olsa da sessiz bağlama yok). Prova/kütüphane `subject` metni kanonik kimliğe P02 ile bağlanır.
+- **Hazırlık sınıfı (F01 15):** ayrı sınıf değeri açılmaz; "9 + okul notu".
