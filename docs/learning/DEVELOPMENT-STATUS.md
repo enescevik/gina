@@ -675,3 +675,8 @@ Ana devir listesine Q00 eklendi. Mobil/web/çocuk modları/yönetim, tüm rotala
 Ana listeye N00 ve M01 eklendi. N00, Fable ön incelemesi, gerekli tek başlangıç soru paketi, gerçek model/kota/izin kontrolü, tarihli 07.00 hedefi, yararlı paralel alt ajanlar ve checkpoint/engel yönetimini tanımlar. Bu dokümantasyon sırasında Fable çalıştırılmadı veya gece otomasyonu kurulmadı.
 
 M01, mevcut katalog→aile blueprint→AI dağılım bağını koruyarak resmî dosyayı edinme/revizyon ve soru başına içerik uygunluğunu tamamlar. 648 senaryo/708 çıktı adayının teknik çıkarılması onay/yayın değildir. P02 ve K01 M01'e bağlandı; 20 soru havuz hedefi ile senaryo sınavının gerçek adedi ayrıldı. Kaynak ve kararlar: `reports/MEB senaryoları ve gece devri.md`; uygulama sözleşmeleri: `docs/learning/MEB-SCENARIO-PROTOCOL.md`, `docs/CLAUDE-NIGHT-RUN.md`. Bu değişiklik yalnız dokümantasyon; uygulama/üretim yayını yapılmadı.
+
+
+## 6 Kasım — seçerek dönem aktarımı (L01) kod ve yerel kanıt
+
+L01 gece dalında uygulandı: kapanmış dönemden güncel döneme rutin ve bitmemiş plan kayıtlarını tek tek seçerek, tarih/gün düzeltmesi ve önce/sonra özetiyle aktaran tek RPC (`transfer_education_period_items`) ve ön izleme; kopyalar kaynağa bağlı yeni kayıttır, eski iş/yıldız/cevap taşınmaz, seçilmeyenler açık kararla duraklatılır/arşivlenir. Boş geçici DB’de 87 dosya / 2.591 pgTAP, 3 yarış, 137 yerel servis kontrolü ve 7 Playwright ekran kontrolü geçti. Üretim yayını yapılmadı; kalan sınır ve yayın sırası: [period-transfer-2026-11-06](../release/period-transfer-2026-11-06/README.md).

@@ -178,7 +178,7 @@ Her satırda kaynak değişikliği, beklenen davranış ve gerçek kontrol kanı
 ## Sıradaki uygulama paketleri
 
 1. **R01:** main'deki ödül/not düzeltmelerini, özellikle kişisel not erişim düzeltmesini güvenle yayımla ve doğrula.
-2. **L01–L04:** seçerek dönem aktarımı, toplu arşiv/geri alma, silme etki önizlemesi ve tarihli plan geçmişi. Eğitim dönemi/profil arşivini yeniden yazma; mevcut temeli kullan.
+2. **L01–L04:** seçerek dönem aktarımı, toplu arşiv/geri alma, silme etki önizlemesi ve tarihli plan geçmişi. Eğitim dönemi/profil arşivini yeniden yazma; mevcut temeli kullan. L01 kod ve yerel kanıtı 6 Kasım gece dalında: [period-transfer-2026-11-06](release/period-transfer-2026-11-06/README.md) (yayımlanmadı).
 3. **U / P / B / S:** veli–çocuk–Prova–yönetim deneyimleri; servis, katalog ve mağaza bağlantıları. Ayrıntı/bağımlılık/kabul [ana devir listesinde](CLAUDE-REMAINING-WORK.md).
 4. **Q → K01 → F01 → R02:** tüm cihaz/yetki/performans kabulü, kütüphane içerikleri ve bağımsız inceleme, sosyal alanın planı, son bütünleşik yayın.
 5. **WORLD-01:** yalnız diğer bütün işler ve R02 kapandıktan sonra gerçek 3B dünya. Beklenen bir dış işlem bu fazı öne alma gerekçesi değildir.

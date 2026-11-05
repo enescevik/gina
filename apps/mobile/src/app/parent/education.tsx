@@ -15,6 +15,7 @@ import {
   EducationPeriodWizard,
   type EducationState,
 } from "@/components/education/education-period";
+import { PeriodTransfer } from "@/components/education/period-transfer";
 
 export default function EducationScreen() {
   const { t, i18n } = useTranslation();
@@ -138,6 +139,7 @@ export default function EducationScreen() {
               {t("education.saved")}
             </Text>
           )}
+          <PeriodTransfer child={child} education={education.data} />
           <Text style={u.heading}>{t("education.history")}</Text>
           {!education.data.history.length && (
             <Text style={u.copy}>{t("education.noHistory")}</Text>

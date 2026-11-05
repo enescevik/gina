@@ -1,0 +1,33 @@
+{
+  "environment": "disposable-local-real-auth-rest",
+  "results": [
+    {
+      "check": "routine_selection_edit_days_and_unselected_fate_visible",
+      "passed": true
+    },
+    {
+      "check": "plan_selection_dates_and_unselected_fate_visible",
+      "passed": true
+    },
+    {
+      "check": "before_after_summary_counts_and_preserved_evidence",
+      "passed": true
+    },
+    {
+      "check": "lost_response_retry_applies_once_and_preserves_old_work",
+      "passed": true
+    },
+    {
+      "check": "second_run_has_no_candidates_and_cannot_continue",
+      "passed": true
+    },
+    {
+      "check": "task_list_shows_copy_active_and_old_routines_paused",
+      "passed": true
+    },
+    {
+      "check": "phone_tablet_layout_and_runtime",
+      "passed": true
+    }
+  ]
+}
