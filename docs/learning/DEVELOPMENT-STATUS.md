@@ -663,3 +663,8 @@ Not ekranı onaylı ortak sihirbaza taşındı: özel varsayılan, içerik/payla
 - Ana iş listesi tekilleştirildi: `docs/CLAUDE-REMAINING-WORK.md`. Her pakette mevcut temel, kaynak, yapılacak değişiklik, bağımlılık ve kabul ölçütü; dış taraf adımları X01–X06 ile ayrıldı.
 - R01 önceliği: ödül/not hazır kodunun üretim yayını. Sonra dönem/içerik yaşam döngüsü, veli/çocuk/Prova/yönetim, sağlayıcı/katalog, bütünleşik kabul; kütüphane ve sosyal alan planı; son yayın. WORLD-01 kesinlikle en son.
 - Bu değişiklik yalnız dokümantasyondur. Yeni uygulama kodu, migration veya yayın yapılmadı; açık işler tamamlandı olarak işaretlenmedi.
+
+
+## 5 Kasım — tüm ekranlarda çok yönlü incelemenin açık kabul kapısı
+
+Ana devir listesine Q00 eklendi. Mobil/web/çocuk modları/yönetim, tüm rotalar ve modal/sihirbaz/hata durumları psikoloji, pedagoji, eğitmen, UX/görsel tasarım, mimari/güvenlik ve erişilebilirlik ölçütleriyle incelenecek. Bulgu listesiyle yetinilmeyecek: düzeltme, aynı senaryoyla tekrar kontrol ve önce/sonra kanıtı zorunlu. Q00 ilk incelemesi ekran değişikliklerinden önce başlar; nihai kapanışı Q01/Q02 ile yapılır. Son yayın ve 3B kapısı bu işi de içerir. Bu kayıt yalnız devir gereksinimini netleştirir; incelemelerin tamamlandığı iddiası değildir.
