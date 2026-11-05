@@ -18,6 +18,8 @@ Yamalı kurulumda iptalden sonraki ilave dizin okumaları durur; önceki örnekt
 
 ## Denetim sınırı ve bakım
 
-Paket sürüm numaraları değiştirilmedi; sürüme bakan `pnpm audit` yamalanmış kodu ayrı değerlendirmeyebilir. Bulgular gizlenmedi veya genel istisnaya alınmadı. ESLint zincirindeki minimatch 3.1.5 de geniş `<11.0.1` aralığıyla raporlanıyor; bu eski sürümde ilgili `firstPhasePreProcess`/`optimizationLevel` uygulaması yok. Onu uyumsuz 11 sürümüne yükseltmedik. Bu, paket için genel güvenlik garantisi değildir.
+Paket sürüm numaraları değiştirilmedi; sürüme bakan `pnpm audit` yamalanmış kodu ayrı değerlendirmeyebilir. Bulgular gizlenmedi veya genel istisnaya alınmadı. ESLint zincirindeki minimatch 3.1.5, 6 Kasım 2026 Q03 taramasında artık duyuru aralığında (`>=7.0.0 <11.0.1`) görünmüyor; bu eski sürümde ilgili `firstPhasePreProcess`/`optimizationLevel` uygulaması zaten yok. Onu uyumsuz 11 sürümüne yükseltmedik. Bu, paket için genel güvenlik garantisi değildir.
+
+**Q03 (6 Kasım 2026) doğrulaması:** `pnpm install --frozen-lockfile --ignore-scripts` temiz bir worktree'de üç yamayı yeniden uyguladı (`pnpm-lock.yaml` `patchedDependencies` hash'leri değişmedi); `node --test scripts/check-toolchain-security.test.mjs` 8/8 geçti. `pnpm audit` (prod/dev ayrı) ve Trivy aynı üç paketi raporlamaya devam eder: bu beklenen durumdur, çünkü yama sürüm numarasını değiştirmez. Uyarı bastırılmadı. Ayrıntı: `docs/release/q03-2026-11-06/README.md`.
 
 Expo/fingerprint/lint araçları uyumlu resmî düzeltilmiş sürümlere geçtiğinde ilgili yama kaldırılmalı; aynı davranış kontrolleri ve iOS/Android/web dışa aktarma ile backoffice üretim derlemesi yeniden çalışmalıdır. Deepmerge için resmî düzeltme yayımlandığında proje yaması onunla karşılaştırılmalıdır.
