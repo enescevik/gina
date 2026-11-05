@@ -48,4 +48,14 @@ Ortak dosyalar (i18n `tr.json`/`en.json`, lockfile, migration numaraları, `data
 
 ## 5. Başlangıç soruları ve cevaplar
 
-(Thread'deki pakete verilen cevaplar buraya işlenecek.)
+Cevaplar 5 Kasım 23:06 Europe/Istanbul'da alındı.
+
+| # | Soru | Cevap | Uygulama |
+|---|---|---|---|
+| 1 | Bitiş 6 Kasım 07:00 / 06:30 toparlama | Evet | Çalışma penceresi sabit. |
+| 2 | Mac açık kalacak mı | Evet; yük yapan süreçleri Claude kapatabilir | Gereksiz süreçler koordinatörce kapatılır, kullanıcıdan adım istenmez. |
+| 3 | GINA Anthropic faturası üst sınırı | "Rahat olabilirsin, kota çok" | Yalnız sentetik veri ve doğrulama amaçlı çağrı; gereksiz tekrar yok. Abonelik dışı Claude kullanımı yine 0. |
+| 4 | R01 yayını | İtiraz yok | Migration → web/yönetim → iOS 27 TestFlight + tablet. |
+| 5 | GinaBirlik/GinaKesif fontları | Mevcut font beğeniliyor, yeni fontlar beğenilmedi | Fontlar repoya alınmaz, koda bağlanmaz; untracked dosyalara dokunulmaz. Nunito/Baloo 2 kalır. |
+| 6 | Editör onayı | AI içeriğe bakıp otomatik onay verebilir; karar veremezse BEKLİYOR + bildirim, yönetici onaylar | Yeni ürün kararı; DECISIONS.md'ye işlendi, yeni iş **E01** (AI ön inceleme ve yönetici kuyruğu) açıldı. K01 sırası değişmez. |
+| 7 | Alan adı / Android | Yok; canlıya alma zamanında hazırlanacak | S01/S02/X01/X02 BEKLİYOR; geliştirmeyi durdurmaz. |

@@ -70,3 +70,10 @@ Sınav hazırlığı + kendini deneme + öğrenme modülünün adı **Prova**; i
 - Kullanıcı açıkça **“Onaylı ekranların ortak tasarımını bu ekranlara uyarla”** dedi. Giriş/eşleştirme/ayarlar, çocuk alt ekranları, görev–ödül–çocuk–hedef sihirbazları, birleşik Prova hazırlama ve yardımcı Prova ekranları bu kapsamda uygulanabilir; yeniden ekran bazında maket onayı beklenmez.
 - Özgün logo, bağlama uygun mint maskot, krem zemin, mor ana eylem ve onaylı ortak tipografi/kart düzeni korunur. Ayrı maketi olmayan bu ekranlar “onaylı maketle piksel olarak birebir” diye sunulmaz.
 - Uyarlama kaydı ve sentetik verili telefon/tablet görüntüleri: [Ortak tasarım uyarlaması](design/screens/shared-design-adaptation/index.html). Mevcut iş kuralları, yetkiler ve kayıt akışları korunur; görsel kontrol, gerçek cihaz/hesap/yayın kabulünün yerine geçmez.
+
+## Gece devri başlangıç kararları (5 Kasım 2026, 23:06; Enes)
+
+- **AI ön inceleme ile içerik onayı:** Kütüphane taslakları ve MEB senaryo adayları için AI, içeriğe bakıp güvenle karar verebildiğinde otomatik onay verebilir. Karar veremediği kayıt `BEKLİYOR` kalır, yönetici kuyruğuna düşer ve bildirim üretir; son kararı yönetici verir. AI onayı ve yönetici onayı kayıtta ayrı tutulur; bağımsız eğitimci incelemesi (X06) hâlâ ayrı bir kalite kademesidir ve AI onayı onun yerine geçtiği iddia edilmez. İş kimliği: **E01**.
+- **Özel fontlar:** `packages/assets/fonts/gina/` altındaki GinaBirlik/GinaKesif denemeleri beğenilmedi; koda bağlanmaz, repoya alınmaz. Onaylı tipografi Nunito/Baloo 2 korunur.
+- **Alan adı, SMTP, Android/Play:** canlıya alma zamanında hazırlanacak; ilgili işler `BEKLİYOR`, geliştirme durmaz.
+- **R01 yayını** ve gece boyunca ara yayınlar için izin teyit edildi; GINA üretim AI çağrıları doğrulama amaçlı ve sentetik veriyle sınırlı tutulur.
