@@ -3,10 +3,10 @@ import {
   type AiConfig,
   type AiResult,
   type AiUserContent,
-  callClaude,
   sha256,
 } from "./prova.ts";
 import { json } from "./supabase.ts";
+import { adapterFor, classifyAiError } from "./ai-adapters.ts";
 
 /** Cache paid generation before applying it. Identical input shares a job; uncertain
  * provider responses never get automatic retries. Leases fence late completions. */
@@ -23,8 +23,13 @@ export async function runAiOperation<T>(
   validate: (value: unknown) => T,
   childId?: string,
 ): Promise<(AiResult<T> & { jobId: string }) | Response> {
+  // Adapter yoksa model yalnız adıyla kayıtlıdır: rezervasyon ve ücretli çağrı yapılmaz.
+  const adapter = adapterFor(config.adapter ?? "anthropic-messages");
+  if (!adapter) return json({ error: "ai_model_unsupported" }, 503);
+  // Hash yalnız eski alanları içerir; yetenek/adapter alanları aynı girdinin iş kimliğini değiştirmez.
+  const { adapter: _adapter, provider: _provider, capabilities: _capabilities, ...hashConfig } = config;
   const hash = await sha256(
-    JSON.stringify({ scope, config, system, user, schema }),
+    JSON.stringify({ scope, config: hashConfig, system, user, schema }),
   );
   const lease = crypto.randomUUID();
   const { data: job, error } =
@@ -75,7 +80,7 @@ export async function runAiOperation<T>(
   }
   let result: AiResult<T>;
   try {
-    const generated = await callClaude<unknown>(
+    const generated = await adapter.generate<unknown>(
       apiKey,
       config,
       system,
@@ -84,17 +89,9 @@ export async function runAiOperation<T>(
     );
     result = { ...generated, output: validate(generated.output) };
   } catch (e) {
-    const message = e instanceof Error ? e.message : "generation_failed";
-    const code =
-      /^(anthropic_[a-z0-9_]+|ai_input_too_large|ai_token_count_invalid|ai_result_invalid)$/
-          .test(
-            message,
-          )
-        ? message
-        : "provider_outcome_unknown";
-    const uncertain = code === "provider_outcome_unknown" ||
-      code === "ai_result_invalid" || code === "anthropic_max_tokens" ||
-      code === "anthropic_refusal" || /^anthropic_5[0-9][0-9]$/.test(code);
+    // Bilinen kodlar geçer; bilinmeyen, 5xx, zaman aşımı, ret, kesilme ve bozuk çıktı belirsizdir.
+    const failure = classifyAiError(e);
+    const { code, uncertain } = failure;
     const detail = e && typeof e === "object" && "validationCode" in e &&
         typeof e.validationCode === "string" &&
         /^(envelope|item|fields|title|subject|topic|date|time|page|note|steps_or_kind)$/
@@ -108,13 +105,7 @@ export async function runAiOperation<T>(
       p_error: detail,
       p_uncertain: uncertain,
     });
-    return json({
-      error: uncertain
-        ? "ai_result_uncertain"
-        : code === "ai_input_too_large"
-        ? code
-        : "generation_failed",
-    }, 502);
+    return json({ error: failure.publicError }, 502);
   }
   const { error: saveError } = await db.rpc("finish_ai_operation", {
     p_id: job.id,
