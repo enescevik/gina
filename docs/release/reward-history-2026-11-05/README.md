@@ -35,6 +35,7 @@ Eski isteklerin özgün adı ve ikonu daha önce kaydedilmemişti. Migration, ge
 - `sql-checks.json`: 85 dosyada 2.467 kontrol; aile/cihaz yetkileri, doğrudan yazma engeli, hedef koruması, snapshot, eski fiyat, tek debit, arşiv/geri alma ve geçmiş.
 - `race-checks.json`: dört yarış; aynı kayıt isteği, aynı ödül isteği, düzenleme/istek ve hedef/arşiv yarışları.
 - `ui-checks.json`: 10 akış; gerçek kayıt/yeniden açılış, kayıp yanıtın tekrarı, eski ad/bedelle onay, duraklatılmış geri alma, geçmiş, eski revizyon, aktif hedef, canlı yenileme, telefon/tablet taşma ve çalıştırma hatası kontrolü.
+- `service-checks.json`: 149 gerçek yerel Auth/REST/Realtime regresyon kontrolü; geçici servisler ve veritabanı kaldırıldı.
 - 257 core testi, mobil ve core tip kontrolü, Expo lint ve web export geçti. Bu kontroller bütün uygulamanın veya fiziksel cihazların eksiksiz kabulü anlamına gelmez.
 
 Yeniden çalıştırma: `python3 scripts/test-reward-history.py --run-local`. UI için `test-isolated-services.py --run-local --with-realtime --ui-hold`, sentetik servise bağlı web exportu (8189), sonra `test-reward-history-ui.cjs`. Gerçek aile veya demo verisi kullanılmaz/resetlenmez.
