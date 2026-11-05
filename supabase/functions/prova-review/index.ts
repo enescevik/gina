@@ -55,7 +55,7 @@ export function createReviewHandler(
       }
       const { data: attempt, error: attemptError } = await db.from(
         "exam_attempts",
-      ).select("id,status,exam_id").eq("id", body.attempt_id).eq(
+      ).select("id,status,exam_id,child_id").eq("id", body.attempt_id).eq(
         "family_id",
         parent.familyId,
       ).maybeSingle();
@@ -180,6 +180,7 @@ export function createReviewHandler(
         user,
         REVIEW_SCHEMA,
         validateReviewReport,
+        attempt.child_id,
       );
       if (output instanceof Response) return output;
       const current = await db.rpc("review_answer_fingerprint", {

@@ -4,7 +4,7 @@
 
 ## 5 Kasım devam paketinin durumu
 
-Eğitim dönemi ve okul geçmişinin ilk uygulaması hazır: ilk kayıt, yeni eğitim yılı, okul değişikliği, ayrı bilgi düzeltme, sürümlü kayıt ve kapanan dönemin okunabilir program kopyası. [Uygulama ve test kanıtı](release/education-periods-2026-11-05/README.md). Aşağıdaki geniş önerideki profil arşivi, dönem rapor filtreleri, seçerek rutin taşıma ve bütün içerik arşivi hâlâ açıktır. Üretim yayını yapılmadı.
+Eğitim dönemi ve okul geçmişinin ilk uygulaması hazır: ilk kayıt, yeni eğitim yılı, okul değişikliği, ayrı bilgi düzeltme, sürümlü kayıt ve kapanan dönemin okunabilir program kopyası. [Uygulama ve test kanıtı](release/education-periods-2026-11-05/README.md). Profil arşivleme/geri alma da uygulandı: rutinler durur, cihaz erişimi ve bağlantılar kapatılır; geri alma bunları otomatik açmaz. [Arşiv kontrol raporu](release/child-archive-2026-11-05/README.md). Dönem rapor filtreleri, seçerek rutin taşıma ve bütün içerik arşivi hâlâ açıktır. Üretim yayını yapılmadı.
 
 ## Ana karar önerisi
 
@@ -40,9 +40,9 @@ Yıldız, rozet, maskot, oda ve kişisel başarılar profilde kalır. Ders progr
 | Okul puanı | Ekleme var; düzeltme/silme yolu eksik | Önce sürümlü düzeltme ve yanlış kaydı rapordan çıkarma; değişiklik geçmişi **açık**. |
 | Not | Silme var | Görünürlük/hedef, düzenleme ve geri alınabilir kaldırma **açık**. |
 | Takvim etkinliği | Silme ve kayıt makbuzu var | Tek gün/tekrarlı seri kapsamını açıkça göster; toplu tarih aralığı temizliği **açık**. |
-| Çocuk profili | Ayarlar içinde kalıcı silme var; birçok bağlı kayıt zincirleme siliniyor | Silmeyi sınıf değişiminden uzaklaştır. Profil arşivi, veri etkisi önizlemesi ve kalıcı silme için ayrı güçlü onay **açık**. |
-| Bağlı cihaz | İptal etme var | Profil arşivi/kalıcı silme cihazdaki aktif oturumu ve izinli çocukları da güncellemeli. Arşiv entegrasyonu **açık**. |
-| Paylaşım bağlantıları | Çocuk bağlantıları ilişkisel olarak tutuluyor | Profil arşivinde devam etsin mi kapatılsın mı açık olmalı; önerilen varsayılan kapatma. Arşiv entegrasyonu **açık**. |
+| Çocuk profili | Ayarlar içinde kalıcı silme var; birçok bağlı kayıt zincirleme siliniyor | Silmeyi sınıf değişiminden uzaklaştır. Profil arşivi ve arşiv etkisi önizlemesi **eklendi**. Kalıcı silmenin kapsamlı önizlemesi ve ayrı güçlü onayı **açık**. |
+| Bağlı cihaz | İptal etme var | Profil arşivi/kalıcı silme cihazdaki aktif oturumu ve izinli çocukları da güncellemeli. Arşiv entegrasyonu **eklendi**; geri alma erişimi kendiliğinden açmaz. |
+| Paylaşım bağlantıları | Çocuk bağlantıları ilişkisel olarak tutuluyor | Profil arşivinde devam etsin mi kapatılsın mı açık olmalı; önerilen varsayılan kapatma. Arşiv entegrasyonu **eklendi**; geri alma erişimi kendiliğinden açmaz. |
 | Yönetim soru bankası | Silme var; kullanımda soru korumaları var | Kullanılan soruda sürüm/arşiv; kullanılmamışta güvenli kaldırma. İçerik yaşam döngüsünü tekleştirme **açık**. |
 | Yönetim yardım/kütüphane | Taslak/yayın/arşiv akışları mevcut | Taslak kaldırma ile yayımdan çekme ayrı. Eski erişim ve kullanılmış içerik etkisi görünür olmalı; bütün yolların ortaklaştırılması **açık**. |
 | Paket/ödeme/AI makbuzu | Muhasebe/kota ve tekrar güvenliği için kullanılıyor | Liste temizlemek üzere kayıt silinmez. Operatör filtresi, izinli saklama politikası ve anonimleştirme ayrı iş. |
@@ -58,9 +58,9 @@ Yıldız, rozet, maskot, oda ve kişisel başarılar profilde kalır. Ders progr
 5. **Son kontrol:** Önce/sonra dönem, tarih, taşınan rutin sayısı ve korunacak geçmiş. Sunucuda tek, sürümlü ve tekrar güvenli işlem.
 6. **Çocuk görünümü:** “Yeni dönem hazır. Önceki çalışmaların yerinde.” İsteğe bağlı kısa kutlama; sıfırlanmış puan veya zorunlu sıralama yok. Geçmiş çalışmalar erişilebilir.
 
-## Profil arşivi ile kalıcı silme — henüz uygulanmadı
+## Profil arşivi uygulandı; kalıcı silmenin yeni akışı açık
 
-Profil arşivi uygulamayı artık kullanmayan veya ara veren çocuk içindir. Geri alınabilir. Yeni görev/AI önerisi/Prova ataması ve o çocuğa yeni hatırlatmalar durur; eski cevap, veli geri bildirimi, yıldız hareketi, rozet ve oda tercihi okunabilir kalır. Mevcut cihaz oturumları sunucuda da engellenir; yalnız listeden gizlemek yeterli değildir. Geri alma otomatik olarak kaçırılmış işleri yeniden atamaz veya tüm cihaz izinlerini yeniden açmaz.
+Profil arşivi uygulamayı artık kullanmayan veya ara veren çocuk içindir. Geri alınabilir. Çocuğa bağlı yeni görev/AI işlemi/Prova ataması ve yeni bildirim hedeflemesi durur (başlamış sağlayıcı işi veya yola çıkmış bildirim geri çağrılamaz); eski cevap, veli geri bildirimi, yıldız hareketi, rozet ve oda tercihi okunabilir kalır. Mevcut cihaz oturumları sunucuda da engellenir; yalnız listeden gizlemek yeterli değildir. Geri alma otomatik olarak kaçırılmış işleri yeniden atamaz veya tüm cihaz izinlerini yeniden açmaz.
 
 Kalıcı silme ayrı ve açık bir işlem olmalı: çocuk adı, silinecek veri grupları, aileye ait ortak içeriklerin kapsam dışında kaldığı bilgisi ve yeniden doğrulama. Mevcut kodda birçok çocuk kaydı zincirleme silinir; fakat JSON içindeki çocuk başvuruları, aileye ait soru/kaynaklar ve kota makbuzları aynı anlama gelmez. “Her şey silinir” metni, bunların envanteri ve sunucu temizliği tamamlanmadan kullanılmamalı.
 
@@ -77,4 +77,4 @@ Paket için öneri: aktif çocuk kapasitesi ile arşiv depolaması ayrı tanıml
 
 ## Bu paketin durumu
 
-Kodlandı: geri alınabilir Prova taslak silme ve programın tamamını taslakta temizleme/geri alma. Sınıf/okul geçmişinin ilk sürümü sonraki devam paketinde uygulandı (üstteki durum notu). Profil arşivi, toplu içerik arşivi ve kalıcı silmenin yeniden kurulması **öneri ve açık iş** olarak kalır. Hiçbiri üretime teslim edilmiş sayılmaz.
+Kodlandı: geri alınabilir Prova taslak silme ve programın tamamını taslakta temizleme/geri alma. Sınıf/okul geçmişinin ilk sürümü sonraki devam paketinde uygulandı (üstteki durum notu). Profil arşivi/geri alma devam paketinde kodlandı ve yerel kontrolleri geçti. Toplu içerik arşivi ve kalıcı silmenin yeniden kurulması **öneri ve açık iş** olarak kalır. Hiçbiri üretime teslim edilmiş sayılmaz.

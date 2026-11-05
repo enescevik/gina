@@ -47,8 +47,9 @@ Deno.serve(async (req) => {
     return json({ error: "source_unavailable" }, 503);
   }
   const { data: child, error: childError } = await db.from("children").select(
-    "id",
+    "id,archived_at",
   ).eq("id", childId).eq("family_id", parent.familyId).maybeSingle();
+  if (child?.archived_at) return json({ error: "child_archived" }, 409);
   if (childError || !child) return json({ error: "forbidden" }, 403);
   let ent;
   try {
@@ -96,6 +97,7 @@ Deno.serve(async (req) => {
     content,
     TIMETABLE_SCHEMA,
     (v) => validateTimetableExtraction(v, document.pages),
+    childId,
   );
   if (result instanceof Response) return result;
   const { data: row, error: saveError } = await db.rpc(

@@ -27,7 +27,7 @@ export default function ParentHomeScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name, grade, avatar").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, grade, avatar").is("archived_at", null).order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -150,7 +150,7 @@ export default function ParentHomeScreen() {
 
   const weeklyCounts = recordedWeek(completions.data ?? [], visibleChildren.map(c => c.id), from, today);
 
-  const pendingApprovals = (approvals.data ?? []).filter((a) => !childFilter || a.child_id === childFilter);
+  const pendingApprovals = (approvals.data ?? []).filter((a) => visibleChildren.some(child => child.id === a.child_id));
 
   const dailyTasks = visibleChildren.flatMap(child => templatesDueOn((templates.data ?? []).filter(template => template.child_id === child.id), today).map(task => ({
     id: task.id, title: task.title, icon: task.icon, childId: child.id, childName: child.name,

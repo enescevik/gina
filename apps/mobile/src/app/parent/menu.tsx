@@ -96,7 +96,7 @@ export default function ParentMenuScreen() {
   const children = useQuery({
     queryKey: ["children_setup", familyId],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name, grade, avatar, birth_year, gender, interests").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, grade, avatar, birth_year, gender, interests").is("archived_at", null).order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -155,6 +155,7 @@ export default function ParentMenuScreen() {
 
       </View>
 
+      <NavigationCard title={t("childArchive.title")} body={t("childArchive.archiveMenuBody")} onPress={()=>router.push("/parent/profile-archive")}/>
       <FormSection title={t("unified.inviteTitle")}><Text style={parentStyles.muted}>{t("unified.inviteHelp")}</Text><Text selectable accessibilityLabel={t("parent.inviteCode")} style={{fontFamily:"Nunito_800ExtraBold",fontSize:26,letterSpacing:3,color:"#201951"}}>{family.data?.invite_code ?? "…"}</Text><NavigationCard title={t("experience.family.title")} body={t("experience.family.short")} onPress={()=>router.push("/parent/families")}/></FormSection>
       <NavigationCard title={t("parent.grades")} body={t("unified.gradesHelp")} icon={<GraduationCap size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/grades")}/>
       <NavigationCard title={t("parent.notes")} body={t("unified.notesHelp")} icon={<NotebookPen size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/notes")}/>

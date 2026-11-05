@@ -6,7 +6,7 @@
 
 ## Silme ve eğitim geçişleri — 5 Kasım ek kapsam
 
-[Kayıt yaşam döngüsü incelemesi ve kaynaklı öneri](CHILD-AND-CONTENT-LIFECYCLE.md): Prova taslak silme/geri alma ile programı tamamen temizleme eklendi. Eğitim dönemi/okul geçmişi, profil arşivi, içerikte toplu arşiv ve kalıcı silme etkisinin yeniden kurulması açık; bu ek işler eski takip kapsamını kaldırmaz. [Yeni paketin kontrol raporu](release/content-lifecycle-2026-11-05/README.md).
+[Kayıt yaşam döngüsü incelemesi ve kaynaklı öneri](CHILD-AND-CONTENT-LIFECYCLE.md): Prova taslak silme/geri alma ile programı tamamen temizleme eklendi. Eğitim dönemi/okul geçmişi ile profil arşivleme/geri alma uygulandı; [profil arşivi kanıtı](release/child-archive-2026-11-05/README.md). İçerikte toplu arşiv ve kalıcı silme etkisinin yeniden kurulması açık; bu ek işler eski takip kapsamını kaldırmaz. [Yeni paketin kontrol raporu](release/content-lifecycle-2026-11-05/README.md).
 
 ## Faz durumu
 

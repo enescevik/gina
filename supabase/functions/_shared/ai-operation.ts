@@ -21,6 +21,7 @@ export async function runAiOperation<T>(
   user: AiUserContent,
   schema: Record<string, unknown>,
   validate: (value: unknown) => T,
+  childId?: string,
 ): Promise<(AiResult<T> & { jobId: string }) | Response> {
   const hash = await sha256(
     JSON.stringify({ scope, config, system, user, schema }),
@@ -39,13 +40,15 @@ export async function runAiOperation<T>(
           p_lease: lease,
         },
       )
-      : await db.rpc("reserve_ai_operation", {
+      : await db.rpc(childId ? "reserve_child_ai_operation" : "reserve_ai_operation", {
+        ...(childId ? { p_child_id: childId } : {}),
         p_family_id: parent.familyId,
         p_user_id: parent.userId,
         p_action: action,
         p_hash: hash,
         p_lease: lease,
       });
+  if (error?.message?.includes("child_archived")) return json({ error: "child_archived" }, 409);
   if (error || !job) {
     return json({ error: "ai_configuration_unavailable" }, 503);
   }

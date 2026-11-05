@@ -29,7 +29,7 @@ export default function EducationScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("children")
-        .select("id,name,grade,avatar")
+        .select("id,name,grade,avatar,archived_at")
         .order("sort_order");
       if (error) throw error;
       return data;
@@ -119,12 +119,14 @@ export default function EducationScreen() {
             )}
             <SatinButton
               title={t(current ? "education.manage" : "education.initial")}
+              disabled={!!child.archived_at}
               onPress={() => {
                 setSaved(false);
                 setWizard(education.data!);
               }}
             />
           </View>
+          {child.archived_at && <Text style={u.copy}>{t("childArchive.locked")}</Text>}
           {saved && (
             <Text
               accessibilityLiveRegion="polite"

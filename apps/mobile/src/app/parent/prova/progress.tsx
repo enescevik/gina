@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
   Image,
@@ -36,15 +36,16 @@ export default function ProvaProgressScreen() {
     family = claims?.family_id ?? "";
   const { width, fontScale } = useWindowDimensions(),
     wide = width >= 950 && fontScale < 1.4;
-  const [selectedChild, setChild] = useState<string | null>(null),
+  const params = useLocalSearchParams<{childId?:string}>();
+  const [selectedChild, setChild] = useState<string | null>(params.childId ?? null),
     [days, setDays] = useState(30),
     [scope, setScope] = useState<Scope | null>(null);
   const children = useQuery({
-    queryKey: ["children", family],
+    queryKey: ["children_history", family],
     enabled: !!family,
     queryFn: async () => {
       const { data, error } = await supabase.from("children").select(
-        "id,name,grade,avatar",
+        "id,name,grade,avatar,archived_at",
       ).order("sort_order");
       if (error) throw error;
       return data;
@@ -152,6 +153,7 @@ export default function ProvaProgressScreen() {
               : t("learningProgress.title")}
           </Text>
           <Text style={b.copy}>{t("learningProgress.subtitle")}</Text>
+          {child?.archived_at && <Text style={b.copy}>{t("childArchive.historyBody")}</Text>}
         </View>
         {child
           ? (

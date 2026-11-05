@@ -59,10 +59,11 @@ Deno.serve(async (req) => {
   const [questionResult, answerResult, childResult] = await Promise.all([
     db.from("question_bank").select("id, topic, kind, stem, choices, correct_key, expected_answer, solution").in("id", questionIds).or(`family_id.eq.${parent.familyId},family_id.is.null`),
     db.from("exam_answers").select("question_id, answer_key, answer_text, answer_document, is_correct, score, graded_by").eq("attempt_id", attemptId),
-    db.from("children").select("name").eq("id", attempt.child_id).maybeSingle(),
+    db.from("children").select("name,archived_at").eq("id", attempt.child_id).maybeSingle(),
   ]);
 
   if (questionResult.error || answerResult.error || childResult.error) return json({ error: "data_failed" }, 500);
+  if (childResult.data?.archived_at) return json({ error: "child_archived" }, 409);
   const questions = questionResult.data; const answers = answerResult.data; const child = childResult.data;
   // Never grade a typed fragment as the whole answer while ignoring the student's ink.
   // Notebook image evaluation is a separate consented pipeline, not implemented here.
@@ -101,7 +102,7 @@ Deno.serve(async (req) => {
   try { images = await questionImages(db,parent.familyId,parent.userId,attemptId,questionIds,imageConsent); }
   catch (e) { return json({error:e instanceof Error ? e.message : "data_failed"},400); }
   const result = await runAiOperation(db, parent, "grade", attemptId, apiKey, ai,
-    GRADE_SYSTEM, images.length ? [{type:"text",text:JSON.stringify(payload)},...images] : JSON.stringify(payload), GRADE_SCHEMA, value => validateGradeReport(value, refs));
+    GRADE_SYSTEM, images.length ? [{type:"text",text:JSON.stringify(payload)},...images] : JSON.stringify(payload), GRADE_SCHEMA, value => validateGradeReport(value, refs), attempt.child_id);
   if (result instanceof Response) return result;
 
   const grades = (result.output.degerlendirmeler ?? [])

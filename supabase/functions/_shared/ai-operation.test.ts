@@ -419,3 +419,16 @@ Deno.test("validation diagnostics retain only approved field names, never docume
     );
   }
 });
+
+Deno.test("Archived child uses scoped reservation and rejects before quota/provider", async () => {
+  const calls: {name:string;args:Record<string,unknown>}[]=[];
+  const db={rpc:(name:string,args:Record<string,unknown>)=>{calls.push({name,args});return Promise.resolve({data:null,error:{message:"child_archived"}});}} as unknown as SupabaseClient;
+  await withFetch([],async requests=>{
+    const result=await runAiOperation(db,parent,"import","scope","synthetic-key",config,"system","input",schema,validate,"synthetic-child");
+    assert(result instanceof Response && result.status===409,"archive status");
+    assert((await result.json()).error==="child_archived","archive error");
+    assert(calls.length===1&&calls[0].name==="reserve_child_ai_operation","atomic child reservation required");
+    assert(calls[0].args.p_child_id==="synthetic-child","child identity passed");
+    assert(requests.length===0,"no provider calls");
+  });
+});

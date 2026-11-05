@@ -584,14 +584,14 @@ isOneToOne: false
     }
                   ]
                 },"children": {
-                  Row: {
+                  Row: { archived_at: string | null; archive_revision: number;
                     "avatar": string,"birth_date": string | null,"birth_year": number | null,"created_at": string,"family_id": string,"gender": string,"grade": number | null,"id": string,"interests": (string)[],"name": string,"sort_order": number
                   }
                   ComputedFields: never
-                  Insert: {
+                  Insert: { archived_at?: string | null; archive_revision?: number;
                     "avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"family_id": string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name": string,"sort_order"?: number
                   }
-                  Update: {
+                  Update: { archived_at?: string | null; archive_revision?: number;
                     "avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"family_id"?: string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name"?: string,"sort_order"?: number
                   }
                   Relationships: [
@@ -2293,6 +2293,8 @@ isOneToOne: false
                 }
           }
           Functions: {
+get_child_archive_preview: { Args: { p_child_id: string }; Returns: Json },
+set_child_archived: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_archived: boolean }; Returns: Json },
 get_child_education: { Args: { p_child_id: string }; Returns: Json },
 change_child_education: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_action: string; p_academic_year: number; p_grade: number | null; p_school: string | null; p_starts_on: string; p_timetable_revision: number; p_keep_timetable: boolean }; Returns: Json },
 get_guided_input_options: { Args: { p_child: string; p_kind: string }; Returns: Json },

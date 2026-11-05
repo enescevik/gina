@@ -88,7 +88,7 @@ export function PlannerCalendar({
     queryFn: async () => {
       let req = supabase
         .from("children")
-        .select("id,name,avatar")
+        .select("id,name,avatar").is("archived_at", null)
         .order("sort_order");
       if (childMode) req = req.eq("id", active.childId);
       const { data, error } = await req;

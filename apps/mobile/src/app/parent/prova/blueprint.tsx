@@ -68,7 +68,7 @@ export default function BlueprintScreen() {
     queryFn: async () => {
       const { data, error } = await supabase.from("children").select(
         "id,name,grade,avatar",
-      ).order("sort_order");
+      ).is("archived_at", null).order("sort_order");
       if (error) throw error;
       return data;
     },

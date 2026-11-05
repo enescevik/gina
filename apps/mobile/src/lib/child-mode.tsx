@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { childModeKey, childModeStorage } from "./child-mode-store";
+import { supabase } from "./supabase";
 import { useSession } from "./session";
 
 export interface ActingChild { id: string; name: string }
@@ -44,6 +45,8 @@ export function ChildModeProvider({ children }: { children: ReactNode }) {
     retry: () => { setError(null); setHydrated(undefined); setAttempt(n => n + 1); },
     enter: async child => {
       if (!userId) throw new Error("unauthenticated");
+      const {data,error}=await supabase.from("children").select("id").eq("id",child.id).is("archived_at",null).maybeSingle();
+      if(error||!data)throw new Error("child_archived");
       await childModeStorage.set(childModeKey(userId), JSON.stringify(child));
       setState({ userId, child });
     },

@@ -1,0 +1,397 @@
+[
+  {
+    "file": "001_schema.test.sql",
+    "assertions": 20,
+    "passed": true
+  },
+  {
+    "file": "002_rls.test.sql",
+    "assertions": 14,
+    "passed": true
+  },
+  {
+    "file": "003_entitlements.test.sql",
+    "assertions": 11,
+    "passed": true
+  },
+  {
+    "file": "004_ai_summary_data.test.sql",
+    "assertions": 6,
+    "passed": true
+  },
+  {
+    "file": "005_prova.test.sql",
+    "assertions": 17,
+    "passed": true
+  },
+  {
+    "file": "006_resubmit.test.sql",
+    "assertions": 8,
+    "passed": true
+  },
+  {
+    "file": "007_rewards.test.sql",
+    "assertions": 14,
+    "passed": true
+  },
+  {
+    "file": "008_prova_ai.test.sql",
+    "assertions": 25,
+    "passed": true
+  },
+  {
+    "file": "009_prova_level.test.sql",
+    "assertions": 16,
+    "passed": true
+  },
+  {
+    "file": "010_iap.test.sql",
+    "assertions": 10,
+    "passed": true
+  },
+  {
+    "file": "011_push.test.sql",
+    "assertions": 24,
+    "passed": true
+  },
+  {
+    "file": "012_backoffice.test.sql",
+    "assertions": 26,
+    "passed": true
+  },
+  {
+    "file": "013_teacher_share.test.sql",
+    "assertions": 22,
+    "passed": true
+  },
+  {
+    "file": "014_room_pet.test.sql",
+    "assertions": 7,
+    "passed": true
+  },
+  {
+    "file": "015_account_lifecycle.test.sql",
+    "assertions": 16,
+    "passed": true
+  },
+  {
+    "file": "016_child_deletion.test.sql",
+    "assertions": 5,
+    "passed": true
+  },
+  {
+    "file": "017_room_atmosphere.test.sql",
+    "assertions": 18,
+    "passed": true
+  },
+  {
+    "file": "018_school_timetables.test.sql",
+    "assertions": 17,
+    "passed": true
+  },
+  {
+    "file": "019_device_family_access.test.sql",
+    "assertions": 29,
+    "passed": true
+  },
+  {
+    "file": "020_prova_jobs.test.sql",
+    "assertions": 10,
+    "passed": true
+  },
+  {
+    "file": "021_beta_setup.test.sql",
+    "assertions": 32,
+    "passed": true
+  },
+  {
+    "file": "022_setup_ai.test.sql",
+    "assertions": 13,
+    "passed": true
+  },
+  {
+    "file": "023_operation_safety.test.sql",
+    "assertions": 15,
+    "passed": true
+  },
+  {
+    "file": "024_learning_library.test.sql",
+    "assertions": 30,
+    "passed": true
+  },
+  {
+    "file": "025_generation_credits.test.sql",
+    "assertions": 19,
+    "passed": true
+  },
+  {
+    "file": "026_learning_sources.test.sql",
+    "assertions": 34,
+    "passed": true
+  },
+  {
+    "file": "027_exam_boundaries.test.sql",
+    "assertions": 14,
+    "passed": true
+  },
+  {
+    "file": "028_timetable_import.test.sql",
+    "assertions": 33,
+    "passed": true
+  },
+  {
+    "file": "029_group_exams.test.sql",
+    "assertions": 54,
+    "passed": true
+  },
+  {
+    "file": "030_answer_receipts.test.sql",
+    "assertions": 15,
+    "passed": true
+  },
+  {
+    "file": "031_setup_batch.test.sql",
+    "assertions": 24,
+    "passed": true
+  },
+  {
+    "file": "032_answer_notebooks.test.sql",
+    "assertions": 14,
+    "passed": true
+  },
+  {
+    "file": "033_shared_question_sources.test.sql",
+    "assertions": 57,
+    "passed": true
+  },
+  {
+    "file": "034_parent_answer_reviews.test.sql",
+    "assertions": 35,
+    "passed": true
+  },
+  {
+    "file": "035_prova_drafts.test.sql",
+    "assertions": 38,
+    "passed": true
+  },
+  {
+    "file": "036_learning_progress.test.sql",
+    "assertions": 27,
+    "passed": true
+  },
+  {
+    "file": "037_support_help.test.sql",
+    "assertions": 70,
+    "passed": true
+  },
+  {
+    "file": "038_operator_help_queue.test.sql",
+    "assertions": 18,
+    "passed": true
+  },
+  {
+    "file": "039_help_article_editor.test.sql",
+    "assertions": 25,
+    "passed": true
+  },
+  {
+    "file": "040_library_import.test.sql",
+    "assertions": 67,
+    "passed": true
+  },
+  {
+    "file": "041_library_editorial_review.test.sql",
+    "assertions": 36,
+    "passed": true
+  },
+  {
+    "file": "042_library_publication.test.sql",
+    "assertions": 38,
+    "passed": true
+  },
+  {
+    "file": "043_library_family_access.test.sql",
+    "assertions": 36,
+    "passed": true
+  },
+  {
+    "file": "044_repeat_candidates.test.sql",
+    "assertions": 27,
+    "passed": true
+  },
+  {
+    "file": "045_calendar_commands.test.sql",
+    "assertions": 24,
+    "passed": true
+  },
+  {
+    "file": "046_study_plan_calendar.test.sql",
+    "assertions": 25,
+    "passed": true
+  },
+  {
+    "file": "047_group_library_packages.test.sql",
+    "assertions": 42,
+    "passed": true
+  },
+  {
+    "file": "048_store_notification_recovery.test.sql",
+    "assertions": 26,
+    "passed": true
+  },
+  {
+    "file": "049_atomic_store_entitlements.test.sql",
+    "assertions": 43,
+    "passed": true
+  },
+  {
+    "file": "050_billing_operations.test.sql",
+    "assertions": 22,
+    "passed": true
+  },
+  {
+    "file": "051_override_commands.test.sql",
+    "assertions": 23,
+    "passed": true
+  },
+  {
+    "file": "052_operator_reconciliation.test.sql",
+    "assertions": 31,
+    "passed": true
+  },
+  {
+    "file": "053_document_setup.test.sql",
+    "assertions": 33,
+    "passed": true
+  },
+  {
+    "file": "054_family_blueprint.test.sql",
+    "assertions": 27,
+    "passed": true
+  },
+  {
+    "file": "055_contribution_sets.test.sql",
+    "assertions": 53,
+    "passed": true
+  },
+  {
+    "file": "056_curriculum_source_review.test.sql",
+    "assertions": 37,
+    "passed": true
+  },
+  {
+    "file": "057_catalogue_family_selection.test.sql",
+    "assertions": 43,
+    "passed": true
+  },
+  {
+    "file": "058_generation_recovery.test.sql",
+    "assertions": 36,
+    "passed": true
+  },
+  {
+    "file": "059_cohort_written_review.test.sql",
+    "assertions": 58,
+    "passed": true
+  },
+  {
+    "file": "060_cohort_result_notifications.test.sql",
+    "assertions": 20,
+    "passed": true
+  },
+  {
+    "file": "061_push_delivery_recovery.test.sql",
+    "assertions": 31,
+    "passed": true
+  },
+  {
+    "file": "062_push_operations.test.sql",
+    "assertions": 28,
+    "passed": true
+  },
+  {
+    "file": "063_repeat_calendar.test.sql",
+    "assertions": 40,
+    "passed": true
+  },
+  {
+    "file": "064_timetable_save_receipts.test.sql",
+    "assertions": 33,
+    "passed": true
+  },
+  {
+    "file": "065_school_bags.test.sql",
+    "assertions": 47,
+    "passed": true
+  },
+  {
+    "file": "066_weekly_summary_safety.test.sql",
+    "assertions": 46,
+    "passed": true
+  },
+  {
+    "file": "067_learning_plan.test.sql",
+    "assertions": 58,
+    "passed": true
+  },
+  {
+    "file": "068_task_submission_receipts.test.sql",
+    "assertions": 27,
+    "passed": true
+  },
+  {
+    "file": "069_learning_plan_import.test.sql",
+    "assertions": 42,
+    "passed": true
+  },
+  {
+    "file": "070_weekly_summary_reader.test.sql",
+    "assertions": 34,
+    "passed": true
+  },
+  {
+    "file": "071_exam_list_realtime.test.sql",
+    "assertions": 5,
+    "passed": true
+  },
+  {
+    "file": "072_realtime_claim_nulls.test.sql",
+    "assertions": 18,
+    "passed": true
+  },
+  {
+    "file": "073_learning_source_sets.test.sql",
+    "assertions": 17,
+    "passed": true
+  },
+  {
+    "file": "074_guided_input_catalog.test.sql",
+    "assertions": 13,
+    "passed": true
+  },
+  {
+    "file": "075_family_creation_identity.test.sql",
+    "assertions": 6,
+    "passed": true
+  },
+  {
+    "file": "076_timetable_policy_read.test.sql",
+    "assertions": 2,
+    "passed": true
+  },
+  {
+    "file": "077_prova_draft_lifecycle.test.sql",
+    "assertions": 32,
+    "passed": true
+  },
+  {
+    "file": "078_child_education_periods.test.sql",
+    "assertions": 43,
+    "passed": true
+  },
+  {
+    "file": "079_child_profile_archive.test.sql",
+    "assertions": 57,
+    "passed": true
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "environment": "isolated-local-real-services",
+  "results": [
+    {
+      "check": "consequence_preview_does_not_mutate_profile",
+      "passed": true
+    },
+    {
+      "check": "archive_keeps_earned_evidence_and_single_revision",
+      "passed": true
+    },
+    {
+      "check": "education_history_readable_but_new_transition_disabled",
+      "passed": true
+    },
+    {
+      "check": "restore_does_not_resume_routines_or_device_permissions",
+      "passed": true
+    },
+    {
+      "check": "live_archive_stops_parent_child_mode_without_unlocking_parent_area",
+      "passed": true
+    },
+    {
+      "check": "verified_parent_pin_can_exit_archived_child_mode",
+      "passed": true
+    },
+    {
+      "check": "phone_tablet_no_horizontal_overflow_or_runtime_exception",
+      "passed": true
+    }
+  ]
+}

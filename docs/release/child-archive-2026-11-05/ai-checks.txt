@@ -1,0 +1,37 @@
+Check supabase/functions/prova-review/handler.test.ts
+Check supabase/functions/_shared/ai-operation.test.ts
+Check supabase/functions/_shared/prova-generation-scope.test.ts
+running 4 tests from ./supabase/functions/prova-review/handler.test.ts
+review handler: unauthenticated, disabled and foreign attempts never render/send ... ok (42ms)
+review handler: explicit consent required and consent failure blocks provider ... ok (753µs)
+review handler: stored original only, family scoped, suggestion only; no score write ... ok (6ms)
+review handler: same answer cache skips renderer/provider; uncertain result never publishes ... ok (669µs)
+running 15 tests from ./supabase/functions/_shared/ai-operation.test.ts
+AI reservation outage and quota rejection never call a provider ... ok (16ms)
+cached paid output is reused without a new provider request ... ok (202µs)
+invalid cached output does not regenerate or overwrite the paid job ... ok (292µs)
+valid output commits once and records validated content, not thinking ... ok (659µs)
+input cap blocks generation before the paid message request ... ok (543µs)
+429 is a known rejection and is never retried automatically ... ok (288µs)
+5xx, network loss, refusal and truncation remain uncertain without another paid request ... ok (1ms)
+malformed or schema-invalid output is never accepted or regenerated ... ok (405µs)
+lost commit response does not trigger a second provider call ... ok (116µs)
+provider output with no text block cannot silently become an empty object ... ok (111µs)
+negative tokenizer count is malformed and never starts generation ... ok (67µs)
+weekly reservation binds the frozen context and reuses its paid result ... ok (123µs)
+learning import reservation binds immutable document context without provider replay ... ok (102µs)
+validation diagnostics retain only approved field names, never document values ... ok (347µs)
+Archived child uses scoped reservation and rejects before quota/provider ... ok (129µs)
+running 9 tests from ./supabase/functions/_shared/prova-generation-scope.test.ts
+generation scope requires own family draft and child ... ok (11ms)
+generation stops before provider: missing ... ok (4ms)
+generation stops before provider: grade ... ok (109µs)
+generation stops before provider: subject ... ok (81µs)
+generation stops before provider: submitted ... ok (65µs)
+generation stops before provider: child grade changed ... ok (87µs)
+generation stops before provider: data failure ... ok (82µs)
+generation stops before provider: archived child ... ok (60µs)
+legacy standalone call has no draft, malformed identity rejected ... ok (75µs)
+
+ok | 28 passed | 0 failed (253ms)
+

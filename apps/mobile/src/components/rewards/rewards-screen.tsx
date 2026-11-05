@@ -42,9 +42,9 @@ export function RewardsScreen() {
   const requests = useQuery({
     queryKey: ["reward_requests", familyId], enabled: !!familyId,
     queryFn: async () => {
-      const { data, error } = await supabase.from("reward_requests").select("id,status,cost_snapshot,requested_at,family_rewards(title,icon),children(name,avatar)").eq("family_id", familyId).in("status", ["requested", "approved"]).order("requested_at");
+      const { data, error } = await supabase.from("reward_requests").select("id,status,cost_snapshot,requested_at,family_rewards(title,icon),children(name,avatar,archived_at)").eq("family_id", familyId).in("status", ["requested", "approved"]).order("requested_at");
       if (error) throw error;
-      return data;
+      return data.filter(row => row.children && !row.children.archived_at);
     },
   });
   const catalogKeys = [["family_rewards_all", familyId], ["family_rewards"], ["child_goal"]];

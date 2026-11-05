@@ -23,9 +23,10 @@ export async function generationDraftScope(
     !c || c.grade !== grade || !Array.isArray(c.subjects) ||
     !c.subjects.includes(subject) || !c.childId
   ) return json({ error: "prova_draft_changed" }, 409);
-  const { data: child, error: ce } = await db.from("children").select("grade")
+  const { data: child, error: ce } = await db.from("children").select("grade,archived_at")
     .eq("id", c.childId).eq("family_id", family).maybeSingle();
   if (ce) return json({ error: "data_failed" }, 503);
+  if (child?.archived_at) return json({ error: "child_archived" }, 409);
   if (!child || (child.grade >= 1 && child.grade !== grade)) {
     return json({ error: "prova_draft_changed" }, 409);
   }

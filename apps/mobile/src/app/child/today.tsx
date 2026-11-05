@@ -22,7 +22,7 @@ export default function TodayScreen() {
     queryKey: ["child_profile", childId],
     enabled: !!childId,
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("name, avatar").eq("id", childId).single();
+      const { data, error } = await supabase.from("children").select("name, avatar").is("archived_at", null).eq("id", childId).single();
       if (error) throw error;
       return data;
     },

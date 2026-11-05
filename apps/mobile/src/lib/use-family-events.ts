@@ -23,7 +23,7 @@ export function useFamilyEvents(childId?: string | null) {
       let request = supabase
         .from("events")
         .select(
-          "id, edit_revision, title, type, child_id, starts_at, ends_at, all_day, rrule, location, notes, timetable_entry_key, children(name)",
+          "id, edit_revision, title, type, child_id, starts_at, ends_at, all_day, rrule, location, notes, timetable_entry_key, children(name,archived_at)",
         )
         .order("starts_at");
       if (childId)
@@ -32,7 +32,7 @@ export function useFamilyEvents(childId?: string | null) {
           .or(`child_id.is.null,child_id.eq.${childId}`);
       const { data, error } = await request;
       if (error) throw error;
-      return data.map<WeekEvent>((e) => ({
+      return data.filter(e => !e.child_id || (e.children && !e.children.archived_at)).map<WeekEvent>((e) => ({
         ...e,
         childName: e.children?.name ?? null,
       }));
