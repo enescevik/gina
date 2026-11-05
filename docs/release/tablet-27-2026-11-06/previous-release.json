@@ -1,0 +1,10 @@
+{
+  "version": "0.1.0",
+  "build": "26",
+  "sourceCommit": "1f1b505b9b8e9d8491554f22c1ff194142956a32",
+  "storeAppleBuildId": "62ac18c3-c09c-4ab3-80a3-8c713bec7948",
+  "origin": "local-eas-build",
+  "installUrl": "itms-services://?action=download-manifest&url=https%3A%2F%2Fgina-aile-enescevik--tablet.expo.app%2Fmanifest-26.plist",
+  "sha256": "36edbde1f5b3e61e9bf4f51b19f0877c8000e9fc2829f153f84a45be2ddeaeb1",
+  "bytes": 61060459
+}

@@ -6,7 +6,9 @@ Bu akış çocuk hesabının kullanamadığı TestFlight yerine, geliştirici he
 
 https://gina-aile-enescevik--tablet.expo.app
 
-**5 Kasım 2026 güncel:** **0.1.0 (26)**, TestFlight 26 ile aynı `1f1b505b9b8e9d8491554f22c1ff194142956a32` kaynağından Ad Hoc paket. [Yayın ve imza/cihaz kontrolü](tablet-26-2026-11-05/README.md). Canlı dağıtım `sbfnt5ls4x`; fiziksel iPad kurulum onayı kullanıcıda.
+**6 Kasım 2026 güncel:** **0.1.0 (27)**, TestFlight 27 ile aynı uygulama kodundan Ad Hoc paket; [yayın raporu](tablet-27-2026-11-06/README.md), canlı dağıtım `7hteqzifmy`; fiziksel iPad kurulum onayı kullanıcıda.
+
+**5 Kasım 2026 (önceki):** **0.1.0 (26)**, TestFlight 26 ile aynı `1f1b505b9b8e9d8491554f22c1ff194142956a32` kaynağından Ad Hoc paket. [Yayın ve imza/cihaz kontrolü](tablet-26-2026-11-05/README.md). Canlı dağıtım `sbfnt5ls4x`; fiziksel iPad kurulum onayı kullanıcıda.
 
 İlk kayıt (tarihsel), 2 Kasım 2026: 0.1.0 (16), kaynak `86c819dccdd2cd23db713163805d97defe8ff49f`, internal build `1aca834a-742c-472f-9928-0e00b4f04455`, Hosting deployment `ni9xihgvnv`. İmza, kayıtlı iPad, sürüm ve canlı `release.json` doğrulandı. Kablosuz kurulumun cihazdaki son onayı henüz kullanıcı tarafından denenmedi.
 

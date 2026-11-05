@@ -1,0 +1,23 @@
+{
+  "build": "27",
+  "version": "0.1.0",
+  "sourceCommit": "7795445ad7372e9d406659d0e83853edf12f9539",
+  "origin": "local-eas-build",
+  "bundle": "com.enescevik.gina",
+  "sha256": "12cb54eedfe6e7b3a1d060a10078819ae8a0012367274946ea310fd381d0eeb0",
+  "bytes": 61077472,
+  "signatureVerified": true,
+  "registeredDeviceCount": 1,
+  "sameRegisteredDevicesAsPrevious": true,
+  "productionEndpointsVerified": true,
+  "sameSourceAsStore": true,
+  "deviceFamilies": [
+    1,
+    2
+  ],
+  "deviceInstallationTested": false,
+  "profileExpiresAt": "2027-10-31T01:05:56",
+  "deploymentId": "7hteqzifmy",
+  "previousDeploymentId": "sbfnt5ls4x",
+  "liveHashVerified": true
+}
