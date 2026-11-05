@@ -1,0 +1,22 @@
+{
+  "environment": "disposable-local-auth-postgrest",
+  "passed": 317,
+  "total": 317,
+  "failures": [],
+  "notes": [
+    {
+      "observation": "foreign_revoke_device_response",
+      "error": "device_not_found",
+      "data": null
+    },
+    {
+      "observation": "parent_direct_child_delete",
+      "error": "permission denied for table children",
+      "rows": null
+    }
+  ],
+  "timing_ms": {
+    "slow_complete_task_roundtrip_ms": 1534,
+    "slow_save_prova_draft_ms": 1529
+  }
+}

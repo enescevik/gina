@@ -7,6 +7,9 @@ export async function testSources({parent,other,child,childId,admin,base,pdf,mus
   const png=Buffer.from(fixture,'base64');
   const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
   const invoke=(c,body)=>c.functions.invoke('learning-source',{body});
+  // U08: hata gövdesi sözleşmesi — eski `error` alanı + code/category/retryable; ham mesaj yok.
+  const failure=async(c,body)=>{const r=await invoke(c,body);const res=r.error?.context;if(!res||typeof res.json!=='function')return {status:null,body:null};return {status:res.status,body:await res.json().catch(()=>null)};};
+  const contract=(f,status,code,category)=>!!f.body&&f.status===status&&f.body.error===f.body.code&&(code===null||f.body.code===code)&&f.body.category===category&&typeof f.body.retryable==='boolean';
   for (const [format,mime,bytes] of [['png','image/png',png],['pdf','application/pdf',Buffer.from(pdf,'base64')]]) {
     const id=randomUUID(),body={action:'reserve',id,kind:'document',name:`synthetic.${format}`,mime,bytes:bytes.length,sha256:hash(bytes),consent:true};
     const reserved=await must(invoke(parent,body),format+'_reserve');
@@ -22,6 +25,12 @@ export async function testSources({parent,other,child,childId,admin,base,pdf,mus
     const downloaded=await fetch(original.url);
     assert(format+'_original_bytes_preserved',downloaded.ok&&hash(Buffer.from(await downloaded.arrayBuffer()))===hash(bytes));
     assert(format+'_foreign_family_view_denied',!!(await invoke(other,{action:'view',id})).error);
+    if (format==='png') {
+      const foreign=await failure(other,{action:'view',id});
+      assert('u08_foreign_view_contract_body',contract(foreign,403,'source_not_available','permission_denied'),JSON.stringify(foreign));
+      const device=await failure(child,{action:'delete',id});
+      assert('u08_device_parent_action_forbidden',contract(device,403,'forbidden','permission_denied'),JSON.stringify(device));
+    }
     assert(format+'_unlinked_child_view_denied',!!(await invoke(child,{action:'view',id})).error);
     const publicUrl=parent.storage.from(reserved.bucket).getPublicUrl(reserved.path).data.publicUrl;
     assert(format+'_anonymous_public_download_denied',!(await fetch(publicUrl)).ok);
@@ -39,6 +48,8 @@ export async function testSources({parent,other,child,childId,admin,base,pdf,mus
   assert('invalid_upload_queued_for_cleanup',queue.length===1);
   const imageId=randomUUID(),imageBody={...body,id:imageId,kind:'question_image',name:'question.png',sha256:hash(png)};
   assert('source_storage_consent_required',!!(await invoke(parent,{...imageBody,consent:false})).error);
+  const consent=await failure(parent,{...imageBody,consent:false});
+  assert('u08_consent_contract_body',contract(consent,400,null,'validation')&&/^source_[a-z_]+$/.test(consent.body.code),JSON.stringify(consent));
   const image=await must(invoke(parent,imageBody),'question_image_reserve');
   await must(parent.storage.from(image.bucket).uploadToSignedUrl(image.path,image.token,png,{contentType:'image/png'}),'question_image_upload');
   await must(invoke(parent,{action:'finalize',id:imageId}),'question_image_finalize');
