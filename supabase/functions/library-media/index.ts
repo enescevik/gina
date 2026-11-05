@@ -1,5 +1,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { json, preflight, serviceClient } from "../_shared/supabase.ts";
+import { fail } from "../_shared/error-contract.ts";
+import { jwtExpired } from "../_shared/auth.ts";
 import { base64, canonicalLibraryPng } from "./png.ts";
 export interface MediaSource {
   sha256: string | null;
@@ -20,15 +22,17 @@ export function createMediaHandler(deps: MediaDependencies) {
   return async (req: Request) => {
     if (req.method === "OPTIONS") return preflight();
     if (req.method !== "POST") {
-      return json({ error: "method_not_allowed" }, 405);
+      return fail("method_not_allowed", 405);
     }
     try {
       const token =
         req.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ?? "";
-      if (!token) return json({ error: "forbidden" }, 403);
+      // U08: kimlik yok → unauthorized, süresi dolmuş → session_expired, yönetici değil → forbidden.
+      if (!token) return fail("unauthorized", 401);
+      if (jwtExpired(token)) return fail("session_expired", 401);
       // Read at most 1024 bytes; no arbitrary user-supplied media, URL or actor ID.
       const reader = req.body?.getReader();
-      if (!reader) return json({ error: "invalid_input" }, 400);
+      if (!reader) return fail("invalid_input", 400);
       const chunks: Uint8Array[] = [];
       let size = 0;
       try {
@@ -38,7 +42,7 @@ export function createMediaHandler(deps: MediaDependencies) {
           size += value.length;
           if (size > 1024) {
             await reader.cancel();
-            return json({ error: "invalid_input" }, 400);
+            return fail("invalid_input", 400);
           }
           chunks.push(value);
         }
@@ -56,9 +60,9 @@ export function createMediaHandler(deps: MediaDependencies) {
         !body || Object.keys(body).length !== 1 ||
         typeof body.package_id !== "string" ||
         !/^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(body.package_id)
-      ) return json({ error: "invalid_input" }, 400);
+      ) return fail("invalid_input", 400);
       const context = await deps.read(token, body.package_id);
-      if (!context) return json({ error: "forbidden" }, 403);
+      if (!context) return fail("forbidden", 403);
       const assets: { source_hash: string; base64: string }[] = [];
       const seen = new Set<string>();
       let total = 0;
@@ -90,11 +94,12 @@ export function createMediaHandler(deps: MediaDependencies) {
         validator: "png-rgb-v1",
       });
     } catch (e) {
-      return json({
-        error: e instanceof Error && e.message === "library_media_invalid"
+      return fail(
+        e instanceof Error && e.message === "library_media_invalid"
           ? "library_media_invalid"
           : "library_media_failed",
-      }, 400);
+        400,
+      );
     }
   };
 }

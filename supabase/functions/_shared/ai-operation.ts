@@ -5,7 +5,7 @@ import {
   type AiUserContent,
   sha256,
 } from "./prova.ts";
-import { json } from "./supabase.ts";
+import { fail } from "./error-contract.ts";
 import { adapterFor, classifyAiError } from "./ai-adapters.ts";
 
 /** Cache paid generation before applying it. Identical input shares a job; uncertain
@@ -25,7 +25,7 @@ export async function runAiOperation<T>(
 ): Promise<(AiResult<T> & { jobId: string }) | Response> {
   // Adapter yoksa model yalnız adıyla kayıtlıdır: rezervasyon ve ücretli çağrı yapılmaz.
   const adapter = adapterFor(config.adapter ?? "anthropic-messages");
-  if (!adapter) return json({ error: "ai_model_unsupported" }, 503);
+  if (!adapter) return fail("ai_model_unsupported", 503);
   // Hash yalnız eski alanları içerir; yetenek/adapter alanları aynı girdinin iş kimliğini değiştirmez.
   const { adapter: _adapter, provider: _provider, capabilities: _capabilities, ...hashConfig } = config;
   const hash = await sha256(
@@ -53,13 +53,14 @@ export async function runAiOperation<T>(
         p_hash: hash,
         p_lease: lease,
       });
-  if (error?.message?.includes("child_archived")) return json({ error: "child_archived" }, 409);
+  if (error?.message?.includes("child_archived")) return fail("child_archived", 409);
   if (error || !job) {
-    return json({ error: "ai_configuration_unavailable" }, 503);
+    return fail("ai_configuration_unavailable", 503);
   }
   if (job.error) {
-    return json(
-      { error: job.error },
+    // Rezervasyon kodu sözleşmeden geçer (bilinmeyen/ham metin `server_error` olur); durum kodları eskisiyle aynı.
+    return fail(
+      String(job.error),
       job.error === "ai_quota_exceeded"
         ? 402
         : job.error === "ai_rate_limited"
@@ -75,7 +76,7 @@ export async function runAiOperation<T>(
         jobId: job.id,
       };
     } catch {
-      return json({ error: "ai_result_invalid" }, 502);
+      return fail("ai_result_invalid", 502);
     }
   }
   let result: AiResult<T>;
@@ -105,13 +106,13 @@ export async function runAiOperation<T>(
       p_error: detail,
       p_uncertain: uncertain,
     });
-    return json({ error: failure.publicError }, 502);
+    return fail(failure.publicError, 502);
   }
   const { error: saveError } = await db.rpc("finish_ai_operation", {
     p_id: job.id,
     p_lease: lease,
     p_result: result,
   });
-  if (saveError) return json({ error: "ai_result_uncertain" }, 503);
+  if (saveError) return fail("ai_result_uncertain", 503);
   return { ...result, jobId: job.id };
 }

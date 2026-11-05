@@ -37,6 +37,12 @@ function decodePayload(token: string): Record<string, unknown> | null {
   } catch { return null; }
 }
 
+/** Yalnız `exp` okunur (imza Auth'ta doğrulanır): süresi dolmuş JWT'yi kimliksiz istekten ayırmak için. */
+export function jwtExpired(token: string): boolean {
+  const payload = decodePayload(token);
+  return !!payload && typeof payload.exp === "number" && payload.exp * 1000 <= Date.now();
+}
+
 /** Verify the JWT with Auth, then check live membership: deleted/revoked accounts cannot use stale claims. */
 export async function readParentAccess(req: Request, db: SupabaseClient = serviceClient()): Promise<ParentAccess> {
   const token = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ?? "";
