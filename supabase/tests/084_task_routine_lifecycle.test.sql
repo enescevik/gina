@@ -5,6 +5,9 @@ insert into public.families(id,name,created_by) values('10000000-0000-4000-8000-
 insert into public.family_members(family_id,user_id) values('10000000-0000-4000-8000-000000008401','00000000-0000-4000-8000-000000008401'),('10000000-0000-4000-8000-000000008402','00000000-0000-4000-8000-000000008402');
 insert into public.children(id,family_id,name,grade) values('20000000-0000-4000-8000-000000008401','10000000-0000-4000-8000-000000008401','Synthetic',5);
 insert into public.task_templates(id,child_id,family_id,title,stars,starts_on,icon) values('30000000-0000-4000-8000-000000008401','20000000-0000-4000-8000-000000008401','10000000-0000-4000-8000-000000008401','Kitap oku',2,current_date-7,'read-book');
+insert into public.children(id,family_id,name,grade) values('20000000-0000-4000-8000-000000008403','10000000-0000-4000-8000-000000008401','Auto approval',5);
+insert into public.task_templates(id,family_id,child_id,title,requires_approval) values('30000000-0000-4000-8000-000000008403','10000000-0000-4000-8000-000000008401','20000000-0000-4000-8000-000000008403','First automatic task',false);
+insert into public.badge_definitions(slug,family_id,title_i18n,icon,rule) values('routine-auto-first','10000000-0000-4000-8000-000000008401','{"tr":"İlk görev","en":"First task"}','badge-first-task','{"kind":"first_task"}');
 create function pg_temp.t() returns uuid language sql as $$select '30000000-0000-4000-8000-000000008401'::uuid$$;
 create function pg_temp.child() returns uuid language sql as $$select '20000000-0000-4000-8000-000000008401'::uuid$$;
 create function pg_temp.value(stars int default 5) returns jsonb language sql as $$select jsonb_build_object('title','Birlikte kitap oku','icon','task-custom','stars',stars,'days_of_week',jsonb_build_array(1,2,3,4,5,6,7),'time_of_day','evening','requires_approval',true)$$;
@@ -65,6 +68,8 @@ select is((select task_snapshot->>'stars' from public.task_completions where tem
 select lives_ok($$select public.change_task_routine(gen_random_uuid(),pg_temp.t(),8,'save',pg_temp.value(7)||'{"requires_approval":false}')$$,'future work may use automatic approval');
 select lives_ok($$select public.complete_task(pg_temp.t(),current_date+2,gen_random_uuid(),pg_temp.child())$$,'automatic approval submission succeeds');
 select is((select e.delta from public.star_events e join public.task_completions c on c.id=e.completion_id where c.template_id=pg_temp.t() and c.due_date=current_date+2),7,'automatic approval awards matching snapshot');
+select lives_ok($$select public.complete_task('30000000-0000-4000-8000-000000008403',current_date,gen_random_uuid(),'20000000-0000-4000-8000-000000008403')$$,'first automatic task approved without parent review');
+select is((select count(*)::int from public.child_badge_awards where child_id='20000000-0000-4000-8000-000000008403' and badge_slug='routine-auto-first'),1,'automatic approval immediately awards first task badge');
 select lives_ok($$select public.set_child_archived(gen_random_uuid(),pg_temp.child(),0,true)$$,'profile archive still works');
 select throws_ok($$select public.change_task_routine(gen_random_uuid(),pg_temp.t(),10,'resume')$$,'P0001','child_archived','archived profile cannot resume routine');
 select lives_ok($$select public.task_routine_history(pg_temp.t())$$,'archived profile history readable');

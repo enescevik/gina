@@ -47,7 +47,7 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
   const selected = data.due.find(x => x.id === selectedId);
   const approved = data.due.filter(x => x.status === 'approved').length;
   const waiting = data.due.filter(x => x.status === 'done').length;
-  const todo = data.due.length - approved - waiting;
+  const todo = data.due.filter(task=>task.available && (task.status===null || task.status==='returned')).length;
   const go = (page: Parameters<typeof childPath>[0]) => router.push(childPath(page, actingAsParent));
   const openTasks = () => { setSelectedId(null); setTaskSheet(true); };
   const openTask = (id: string) => { setSelectedId(id); setTaskSheet(true); };

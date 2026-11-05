@@ -238,6 +238,7 @@ begin
       values (v_row.family_id, v_row.child_id, (v_row.task_snapshot->>'stars')::int, 'task_approved', v_row.id, v_uid);
   end if;
 
+  if v_row.status='approved' then perform gina.award_badges_for_child(v_row.child_id,v_row.family_id);end if;
   return gina.remember_task_submission(p_client_id,v_row);
 end;
 $$;

@@ -4,7 +4,7 @@
 
 ## Değişen davranış
 
-Gönderilmiş bir görev, rutinin güncel yıldız değerinden onaylanıyordu. Rutini değiştirmek bekleyen işin karşılığını ve ekranda görünen adını da değiştirebiliyordu. Artık yeni gönderimler görev adı, ikon ve yıldızı sunucuda sabitler. Onay ve geri gönderilen çalışmanın tekrar gönderimi aynı bilgiyi kullanır. Rozet kategorisi de bu gönderim bilgisine dayanır.
+Gönderilmiş bir görev, rutinin güncel yıldız değerinden onaylanıyordu. Rutini değiştirmek bekleyen işin karşılığını ve ekranda görünen adını da değiştirebiliyordu. Artık yeni gönderimler görev adı, ikon ve yıldızı sunucuda sabitler. Onay ve geri gönderilen çalışmanın tekrar gönderimi aynı bilgiyi kullanır. Rozet kategorisi de bu gönderim bilgisine dayanır. Otomatik onaylanan görevlerde rozet kontrolü aynı işlemde yapılır; başka bir veli onayı beklenmez.
 
 - Görev kartındaki tek ayrıntı/düzenleme eylemi: ad, günler, yıldız, günün bölümü ve veli onayı. Kaydetmeden önce karşılaştırma; tablette yan yana, telefonda alt alta kısa kartlar. Değişmeyen ayrıntılar karşılaştırmayı doldurmaz. Mevcut ikon korunur; ikon değiştirme bu editörün kapsamında değildir.
 - Aktif / Duraklatılan / Arşiv listeleri. Duraklatma ve arşiv yeni gönderimleri durdurur; önceden gönderilmiş işleri silmez. Bekleyenler veli tarafından onaylanabilir. Geri gönderilen iş için rutin yeniden açılmalı ve günü uygun olmalıdır.
@@ -34,7 +34,7 @@ Bunlar 390×844 ve 1280×800 web uygulaması görüntüleridir; fiziksel iOS/And
 
 ## Kontrol kanıtları
 
-- [SQL](sql-checks.json): 84 dosyada **2.417 kontrol**. Orijinal yıldız, tekrar gönderim, otomatik onay, izin sınırı, sürüm, arşiv, geri alma, eski istemci duraklatması, profil arşivi ve geçmiş.
+- [SQL](sql-checks.json): 84 dosyada **2.419 kontrol**. Orijinal yıldız, tekrar gönderim, otomatik onay, izin sınırı, sürüm, arşiv, geri alma, eski istemci duraklatması, profil arşivi ve geçmiş.
 - [Eşzamanlılık](race-checks.json): **4 deneme** — aynı duraklatma isteği, devam et/arşiv yarışı, gönderim/arşiv yarışı ve gönderim/düzenleme yarışında tutarlı tek ayar kopyası.
 - [Gerçek yerel servisler](service-checks.json): **149 kontrol**. Auth/REST/Realtime; gerçek eşleştirilmiş cihazla kapanmış rutinin gönderilmiş işini okuma, kullanılmamış kapalı rutini görememe, içeriksiz yenileme sinyali, farklı aile ve iptal edilmiş cihaz sınırı. Geçici hesap, veritabanı ve hizmetler temizlendi. Bu çalıştırma Storage/Edge sağlayıcı testlerini içermez.
 - [Ekran akışları](ui-checks.json): **9 kontrol**. Kayıp yanıtı tekrar deneme, arşiv etkisi, eski ad/yıldız ile onay, duraklatılmış geri alma, geçmiş, başka velinin değişikliğine karşı koruma, diğer istemciden canlı yenileme, çocukta geçmişin görünmesi ve telefon/tablet taşma/çalışma hatası kontrolü.
