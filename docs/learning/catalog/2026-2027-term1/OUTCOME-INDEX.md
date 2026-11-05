@@ -21,6 +21,10 @@ Kimlikler akademik yıl, dönem, sınıf, ders ve koddan deterministik üretilir
 
 Eski [5. sınıf kaynak sayfası](https://odsgm.meb.gov.tr/www/5-sinif-matematik/icerik/1275) ile yeni program sayfasında tema sırası/çıktı ifadesi farkları görülebiliyor. Bu nedenle okulun uyguladığı program sürümü ve kaynak tarihi kesinleşmeden yalnız sınıf adına göre “resmî sınava tam uyumlu” etiketi verilmez.
 
+## Canlı kaynak kontrolü (M01)
+
+6 Kasım 2026 (UTC 2026-11-05T20:26Z): `scripts/fetch-curriculum-sources.py docs/learning/catalog/2026-2027-term1` resmî dizini okuyup 16 dosyayı meb.ai yönlendirmesi üzerinden yeniden indirdi; 16/16 SHA-256 depodaki manifest ile aynı. Dizin yayın 07.09.2026, güncelleme 10.09.2026. Sonuç `verification.json` → `live_checks` ve her manifest girdisindeki `last_checked_at` / `freshness` alanlarında. Aynı hash yeni iş açmaz; değişen dosya `revisions[]` altında `diff_review_required` olarak eklenir, onaylı dosya silinmez; `--extract-revisions` yalnız bu bekleyen sürümleri ayrı `scenario-candidates.<hash12>.json` dosyasına çıkarır. Bu kontrol içerik onayı veya yayın değildir.
+
 ## Tekrar üretme ve test
 
 ```sh

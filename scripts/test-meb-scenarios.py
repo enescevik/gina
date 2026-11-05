@@ -176,6 +176,25 @@ class SourceAcquisitionPolicy(unittest.TestCase):
         self.assertEqual(entry["freshness"], {"status": "unverified", "reason": "timed out", "last_approved_sha256": "f" * 64})
         self.assertEqual(entry["sha256"], "f" * 64)
 
+    def test_pending_revision_is_extracted_beside_not_over_the_approved_candidates(self):
+        with tempfile.TemporaryDirectory() as temp:
+            catalog = Path(temp); sources = catalog / "sources"; sources.mkdir()
+            approved = catalog / "scenario-candidates.json"; approved.write_text("approved")
+            fixture = WorkbookExtraction().fixture(sources)
+            (sources / "ilkmat2.a1b2c3d4e5f6.xlsx").write_bytes((sources / fixture["file"]).read_bytes())
+            manifest = [{"label": "Matematik", "url": "https://meb.ai/x", "resolved_url": "https://cdn.eba.gov.tr/ilkmat2.xlsx", "file": "ilkmat2.xlsx", "sha256": "0" * 64, "bytes": 1,
+                         "revisions": [{"file": "ilkmat2.a1b2c3d4e5f6.xlsx", "sha256": fixture["sha256"], "resolved_url": "https://cdn.eba.gov.tr/ilkmat2.xlsx", "status": "diff_review_required"},
+                                       {"file": "ignored.xlsx", "sha256": "1" * 64, "resolved_url": "https://cdn.eba.gov.tr/i.xlsx", "status": "superseded"}]}]
+            produced = fetcher.extract_pending_revisions(manifest, catalog)
+            self.assertEqual(produced, [{"file": "ilkmat2.a1b2c3d4e5f6.xlsx", "status": "done", "output": f"scenario-candidates.{fixture['sha256'][:12]}.json", "scenarios": 1, "issues": 0}])
+            out = json.loads((catalog / produced[0]["output"]).read_text())
+            self.assertFalse(out["publishable"]); self.assertEqual(out["review_status"], "diff_review_required")
+            self.assertEqual(out["scenarios"][0]["question_count"], 2); self.assertEqual(out["scenarios"][0]["source_sha256"], fixture["sha256"])
+            self.assertEqual(approved.read_text(), "approved", "approved candidates untouched")
+            self.assertEqual(fetcher.extract_pending_revisions(manifest, catalog), [], "already extracted revision is not re-run")
+            manifest[0]["revisions"][0]["sha256"] = "f" * 64; manifest[0]["revisions"][0].pop("extraction")
+            self.assertEqual(fetcher.extract_pending_revisions(manifest, catalog)[0]["status"], "failed", "hash mismatch blocks extraction")
+
     def test_unknown_term_has_no_guessed_index(self):
         self.assertIsNone(fetcher.INDEX_PAGES.get(("oyss", "2026-2027", 2)))
         self.assertIsNone(fetcher.INDEX_PAGES.get(("oyss", "2027-2028", 1)))

@@ -221,6 +221,30 @@ def apply(entry, outcome, body, directory):
     entry["freshness"] = {"status": "diff_review_required", "last_approved_sha256": entry["sha256"], "candidate_sha256": outcome["sha256"]}
 
 
+def extract_pending_revisions(manifest, catalog):
+    """Run the existing extractor on revisions awaiting diff review; output lands beside, never over, the approved candidates."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("extract", Path(__file__).with_name("extract-meb-scenarios.py"))
+    extractor = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(extractor)
+    produced = []
+    for entry in manifest:
+        for revision in entry.get("revisions", []):
+            if revision.get("status") != "diff_review_required" or revision.get("extraction") is not None:
+                continue
+            source = {"file": revision["file"], "sha256": revision["sha256"], "label": entry["label"], "resolved_url": revision["resolved_url"]}
+            target = catalog / f"scenario-candidates.{revision['sha256'][:12]}.json"
+            try:
+                scenarios, issues = extractor.extract(source, catalog / "sources")
+                target.write_text(json.dumps({"schema": "gina.meb-scenario-candidates.v1", "revision_of": entry["file"], "source": source, "issues": issues,
+                                              "scenarios": scenarios, "review_status": "diff_review_required", "publishable": False}, ensure_ascii=False, indent=2) + "\n")
+                revision["extraction"] = {"status": "done", "output": target.name, "scenarios": len(scenarios), "issues": len(issues)}
+            except (ValueError, KeyError, OSError) as e:
+                revision["extraction"] = {"status": "failed", "reason": str(e)}
+            produced.append({"file": revision["file"], **revision["extraction"]})
+    return produced
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("catalog", type=Path, help="e.g. docs/learning/catalog/2026-2027-term1")
@@ -228,6 +252,7 @@ def main():
     parser.add_argument("--year", default="2026-2027")
     parser.add_argument("--term", type=int, default=1)
     parser.add_argument("--dry-run", action="store_true", help="do not write manifest/verification")
+    parser.add_argument("--extract-revisions", action="store_true", help="run the extractor on revisions awaiting diff review (separate output file per hash)")
     args = parser.parse_args()
     index_url = INDEX_PAGES.get((args.family, args.year, args.term))
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
@@ -248,8 +273,9 @@ def main():
         outcome, body = check_source(entry, links, now=now)
         apply(entry, outcome, body, sources_dir)
         results.append(outcome)
+    extracted = extract_pending_revisions(manifest, args.catalog) if args.extract_revisions and not args.dry_run else []
     summary = {
-        "checked_at": now, "index": index_result,
+        "checked_at": now, "index": index_result, "extracted": extracted,
         "unchanged": sum(r["outcome"] == "unchanged" for r in results),
         "new_revision": sum(r["outcome"] == "new_revision" for r in results),
         "known_revision": sum(r["outcome"] == "known_revision" for r in results),
