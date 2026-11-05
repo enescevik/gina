@@ -931,15 +931,23 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"family_rewards": {
+                },"reward_catalog_sync": {
+ Row: { family_id: string; revision: number };
+ Insert: { family_id: string; revision?: number };
+ Update: { family_id?: string; revision?: number };
+ Relationships: [{ foreignKeyName: "reward_catalog_sync_family_id_fkey"; columns: ["family_id"]; isOneToOne: true; referencedRelation: "families"; referencedColumns: ["id"] }];
+},"family_rewards": {
                   Row: {
+                    "revision": number,"archived_at": string | null,
                     "active": boolean,"cost_stars": number,"created_at": string,"created_by": string | null,"family_id": string,"icon": string,"id": string,"title": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
+                    "revision"?: number,"archived_at"?: string | null,
                     "active"?: boolean,"cost_stars": number,"created_at"?: string,"created_by"?: string | null,"family_id": string,"icon"?: string,"id"?: string,"title": string,"updated_at"?: string
                   }
                   Update: {
+                    "revision"?: number,"archived_at"?: string | null,
                     "active"?: boolean,"cost_stars"?: number,"created_at"?: string,"created_by"?: string | null,"family_id"?: string,"icon"?: string,"id"?: string,"title"?: string,"updated_at"?: string
                   }
                   Relationships: [
@@ -1903,13 +1911,16 @@ isOneToOne: true
                   ]
                 },"reward_requests": {
                   Row: {
+                    "reward_snapshot": Json | null,
                     "child_id": string,"cost_snapshot": number,"decided_at": string | null,"decided_by": string | null,"delivered_at": string | null,"family_id": string,"goal_id": string | null,"id": string,"idempotency_key": string,"requested_at": string,"reward_id": string,"status": Database["public"]['Enums']["reward_request_status"]
                   }
                   ComputedFields: never
                   Insert: {
+                    "reward_snapshot"?: Json | null,
                     "child_id": string,"cost_snapshot": number,"decided_at"?: string | null,"decided_by"?: string | null,"delivered_at"?: string | null,"family_id": string,"goal_id"?: string | null,"id"?: string,"idempotency_key": string,"requested_at"?: string,"reward_id": string,"status"?: Database["public"]['Enums']["reward_request_status"]
                   }
                   Update: {
+                    "reward_snapshot"?: Json | null,
                     "child_id"?: string,"cost_snapshot"?: number,"decided_at"?: string | null,"decided_by"?: string | null,"delivered_at"?: string | null,"family_id"?: string,"goal_id"?: string | null,"id"?: string,"idempotency_key"?: string,"requested_at"?: string,"reward_id"?: string,"status"?: Database["public"]['Enums']["reward_request_status"]
                   }
                   Relationships: [
@@ -2305,6 +2316,8 @@ isOneToOne: false
                 }
           }
           Functions: {
+      change_reward: { Args: { p_request_id: string; p_id: string; p_revision: number; p_action: string; p_value?: Json }; Returns: Json };
+      reward_history: { Args: { p_id: string; p_before_revision?: number }; Returns: Json };
       change_task_routine: { Args: { p_request_id: string; p_id: string; p_revision: number; p_action: string; p_value?: Json }; Returns: Json };
       task_routine_history: { Args: { p_id: string; p_before_revision?: number }; Returns: Json };
 

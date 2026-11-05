@@ -1,0 +1,45 @@
+{
+  "environment": "disposable-local-real-auth-rest-realtime",
+  "results": [
+    {
+      "check": "lost_response_same_revision",
+      "passed": true
+    },
+    {
+      "check": "archive_impact_and_filter",
+      "passed": true
+    },
+    {
+      "check": "old_name_and_cost_preserved_through_approval",
+      "passed": true
+    },
+    {
+      "check": "restore_is_paused",
+      "passed": true
+    },
+    {
+      "check": "paged_private_history",
+      "passed": true
+    },
+    {
+      "check": "stale_edit_keeps_other_change",
+      "passed": true
+    },
+    {
+      "check": "active_goal_blocks_surprise_changes_and_lists_child",
+      "passed": true
+    },
+    {
+      "check": "pausing_keeps_goal",
+      "passed": true
+    },
+    {
+      "check": "live_catalogue_reconciles_without_reload",
+      "passed": true
+    },
+    {
+      "check": "phone_tablet_no_overflow_or_runtime_errors",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "environment": "empty-disposable-database",
+  "results": [
+    {
+      "check": "same_receipt_one_revision",
+      "passed": true
+    },
+    {
+      "check": "concurrent_request_one_result",
+      "passed": true
+    },
+    {
+      "check": "request_and_edit_one_consistent_snapshot",
+      "passed": true
+    },
+    {
+      "check": "goal_and_archive_do_not_leave_orphan_goal",
+      "passed": true
+    }
+  ]
+}

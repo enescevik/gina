@@ -1,0 +1,24 @@
+{
+  "environment": "local-source-and-isolated-services",
+  "coreTests": 257,
+  "coreTypecheck": true,
+  "mobileTypecheck": true,
+  "mobileLint": true,
+  "webExport": true,
+  "sqlAssertions": 2467,
+  "races": 4,
+  "uiFlows": 10,
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1280,
+      800
+    ]
+  ],
+  "physicalDeviceTested": false,
+  "productionDeployed": false,
+  "publishedMobileBuildUnchanged": "26"
+}

@@ -1,3 +1,5 @@
+import { useRealtimeInvalidate } from "@/lib/realtime";
+import { useSession } from "@/lib/session";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -18,6 +20,8 @@ export default function ChildGoalScreen() {
   const { t } = useTranslation();
   const { childId, actingAsParent } = useActiveChild();
   const queryClient = useQueryClient();
+  const familyId = useSession().claims?.family_id;
+  useRealtimeInvalidate("reward_catalog_sync", familyId ? `family_id=eq.${familyId}` : null, [["family_rewards"], ["child_goal"]]);
   const [selected, setSelected] = useState<string | null>(null);
 
   const rewards = useQuery({
