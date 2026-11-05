@@ -39,7 +39,7 @@
 | Diğer / ayarlar `/parent/menu` | Açık / yeniden doğrulanacak | Hesap, aile, cihazlar, öğrenme kayıtları ve yardım grupları; aynı düzeyde tutarlı gezinme — PIN, okul puanı ve destek beklenen kategoride bulunur |
 | Cihaz erişimi `/parent/device-access` | Kısmi: Taslak koruması, aynı ekranda doğrulamalı PIN ve erişim özeti uygulandı. Fiziksel cihaz kabulü açık. | Kullanıcı/PIN politikası taslağını koru; eksik PIN oluşturup aynı taslağa dön; kayıt özeti — Geri gitmek seçili çocukları sessizce kaybettirmez |
 | Aileler `/parent/families` | Açık / yeniden doğrulanacak | Etkin aile durumu; katılma ve değiştirmeyi ayır; çocuk sayısı ve sonuç özeti — Aile değiştirmek veri birleştirme sanılmaz |
-| Okul puanları `/parent/grades` | Kısmi: Ders kataloğu, tarih ve ondalıklı puan seçimi uygulandı. Düzenleme/geçmiş/arama/sayfalama açık. | Ders ve tarih seçimi, puan kontrolü, düzeltme/geçmiş, arama/sayfalama — Yanlış kayıt düzeltilir; 200 üzerindeki eski kayıt ulaşılabilir |
+| Okul puanları `/parent/grades` | Kısmi: Ders kataloğu, tarih ve ondalıklı puan seçimi uygulandı. Sürümlü düzeltme/geçmiş, kaldırma/geri alma, dönem filtresi ve sayfalama uygulandı. Metin araması ve fiziksel cihaz kabulü açık. | Ders ve tarih seçimi, puan kontrolü, düzeltme/geçmiş, arama/sayfalama — Yanlış kayıt düzeltilir; 200 üzerindeki eski kayıt ulaşılabilir |
 | Notlar `/parent/notes` | Açık / yeniden doğrulanacak | Liste filtresinden bağımsız not hedefi; kim görecek özeti; etiketler, düzenleme — Kaydetmeden çocuk ve izleyici açık; yanlışlık düzeltilebilir |
 | Bildirimler `/parent/notifications` | Açık / yeniden doğrulanacak | Zil yalnız tercih açıyor; giriş adını düzelt veya ayrı gelen bildirim merkezi oluştur — Zil beklentisi ile hedef aynı; merkez eklenmesi ayrı işlev kapsamıdır |
 | Paketler `/parent/subscription` | Açık / yeniden doğrulanacak | Gerçek AI, belge, kütüphane ve kullanım hakları; deneme hakkı ile mağaza aboneliğini ayır — Ekrandaki haklar sunucunun uyguladığı haklarla örtüşür |
@@ -101,7 +101,7 @@
 | Başlangıç çalışması `/parent/prova/level` | Açık / yeniden doğrulanacak | Standart ölçüm çağrıştıran “Seviye tespiti” dilini düzelt; çocuk sınıfı; üretimden sonra önizleme/atama — Tek örneklem tanı veya kesin yeterlilik sonucu gibi sunulmaz |
 | Kitapçık `/parent/prova/booklet` | Açık / yeniden doğrulanacak | Öğrenci nüshası ile cevap anahtarı ayrı; soru seçimi ve sayfa önizlemesi — Çocuğa verilen çıktıya yanlışlıkla çözüm eklenmez |
 | Birlikte Prova `/parent/prova/groups` | Açık / yeniden doğrulanacak | Amaç/uygunluk, katılım, sonuç aşamaları; sıralama ikincil ve isteğe bağlı — Sıralamaya katılmadan çalışma yapılır; bekleyen sonuç kesin görünmez |
-| Gelişim `/parent/prova/progress` | Açık / yeniden doğrulanacak | Grafiğin hangi sayıyı gösterdiği ve veri kapsamı; konu filtresi ve kanıt sorusuna erişim — Az gözlem aşırı yoruma dönüşmez; bekleyen cevap yanlış sayılmaz |
+| Gelişim `/parent/prova/progress` | Kısmi: Dönem ve tüm tarih kapsamı; bilinmeyen eski kayıtların ayrılması, telefon/tablet web kontrolü tamamlandı. Konu filtresi ve fiziksel cihaz kabulü açık. | Grafiğin hangi sayıyı gösterdiği ve veri kapsamı; konu filtresi ve kanıt sorusuna erişim — Az gözlem aşırı yoruma dönüşmez; bekleyen cevap yanlış sayılmaz |
 | Sonuç özeti `/parent/prova/attempt/[attemptId]` | Kısmi: Geçici puan etiketi uygulandı. İnceleme eylemlerinin birleştirilmesi açık. | Önce inceleme durumu, sonra puan; tek “İncelemeyi tamamla”; AI ilgili incelemenin içinde — Eksik puanlama varken sonuç geçici etiketlidir |
 | Cevap inceleme `/parent/prova/review/[attemptId]` | Açık / yeniden doğrulanacak | Soru/ortak kaynak/cevap birlikte; şıklı ve açık uçluya uygun alan; ölçüt ve somut geri bildirim — Çocuğun cevabı değişmez; veli hangi kanıta puan verdiğini görür |
 | Tekrar `/parent/prova/repeat/[attemptId]` | Açık / yeniden doğrulanacak | Sorular → gün/süre → son kontrol; ortak kaynak grubunu koru — Aynı tekrar iki kez oluşmaz; takvimde günlük yük görünür |
@@ -157,7 +157,7 @@ Her satırda kaynak değişikliği, beklenen davranış ve gerçek kontrol kanı
 
 Yeni ek öncelik: tarihli eğitim dönemi/okul kayıtları; ardından profil arşivi ve toplu içerik yaşam döngüsü. Sınıf değişimi kalıcı çocuk silmeyle yapılmayacak. Bu tasarım önerisi henüz uygulanmış değildir.
 
-1. Görev/ödül/not/okul puanını geçmişi koruyarak düzenleme; ad/gün/yıldız/bedel değişiminin mevcut kayıtları geriye dönük değiştirmemesi.
+1. Görev/ödül/notu geçmişi koruyarak düzenleme; okul puanı devam paketinde tamamlandı; ad/gün/yıldız/bedel değişiminin mevcut kayıtları geriye dönük değiştirmemesi.
 2. Veli ana ekranında sıradaki iş ve doğru bağlam; cihaz/PIN ayarlarında taslağı koruyarak tamamlama.
 3. Hazırlayıcıda soru bankasından bağımsız ders/program kapsamı ve tek soru sırası; ardından kalan çocuk/inceleme akışları.
 4. Yönetim iş kuyrukları ve içerik yaşam döngüsü; fiziksel cihaz ve yayın kapısı.
@@ -180,3 +180,12 @@ Yeni kullanıcı önceliği: takvime göre eğitim geçişi, okul istisnaların�
 - Açık: gerçek okul kaynaklarını doğrulayıp takvimleri girmek; üretim migration/zamanlayıcı, gerçek telefon push ve TestFlight kabulü. SMS/e-posta sağlayıcı/kanal izni kurulumu yok; uygulanmış gönderim olarak işaretlenmez.
 - TODO (ileride): gönüllü ebeveyn konu toplulukları; görünürlük, raporla/engelle, moderasyon ve silme kurallarıyla ayrı pilot. Tasarım/uygulama bu pakette yapılmadı.
 - Önceki kalan işler iptal edilmedi: dönem rapor filtreleri, geçmişi koruyan görev/ödül/not düzenleme ve toplu içerik temizliği; günlük veli akışı, cihaz/PIN ve kalan ekran/cihaz kabulü.
+
+
+## 5 Kasım — dönem raporları ve okul puanı geçmişi
+
+- Gelişim ve okul puanlarında ortak eğitim dönemi seçimi. Geçmiş dönem doğrudan açılır; tüm tarihler ve eski/bilinmeyen kayıtlar erişilebilir. Bugünkü sınıftan geçmiş bağlam üretilmez.
+- Okul puanında önce/sonra önizlemesiyle düzeltme, rapordan kaldırma ve geri alma. Önceki değer ve özel veli notu geçmişte kalır; öğretmen paylaşımı kaldırılmış puanı veya özel notu göstermez.
+- 200 kayıt kesintisi yerine sıralı sayfalama; iki veli çakışma kontrolü ve kayıp yanıt sonrası tekrar güvenliği. İçerik taşımayan değişiklik sinyali diğer açık ekrandaki kaldırma/geri alma görünümünü yeniler.
+- Kanıt ve yayın sınırları: [kontrol raporu](release/education-reports-2026-11-05/README.md). Üretim/TestFlight yayını yapılmadı.
+- Sonraki: görev/ödül/not geçmişi; seçerek rutin/ödev aktarımı ve toplu arşivleme. Bu paket bu işleri tamamlanmış saymaz.

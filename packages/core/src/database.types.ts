@@ -5,6 +5,7 @@ export type Database = {
 
   "public": {
           Tables: {
+school_grade_sync: { Row:{child_id:string;family_id:string;revision:number}; Insert:{child_id:string;family_id:string;revision?:number};Update:{revision?:number};Relationships:[] },
 guided_input_options: { Row: {id:string;kind:string;label_tr:string;label_en:string;subject:string;min_grade:number;max_grade:number;position:number;active:boolean;revision:number;updated_at:string}; Insert: {id:string;kind:string;label_tr:string;label_en:string;subject?:string;min_grade?:number;max_grade?:number;position?:number;active?:boolean;revision?:number;updated_at?:string}; Update: {label_tr?:string;label_en?:string;subject?:string;min_grade?:number;max_grade?:number;position?:number;active?:boolean}; Relationships: [] },
 
             "active_families": {
@@ -1001,14 +1002,14 @@ isOneToOne: false
     }
                   ]
                 },"grades": {
-                  Row: { education_context: Json | null;
+                  Row: { education_context: Json | null;revision:number;withdrawn_at:string|null;
                     "child_id": string,"created_at": string,"family_id": string,"graded_on": string,"id": string,"kind": Database["public"]['Enums']["grade_kind"],"max_score": number,"note": string | null,"score": number,"subject": string
                   }
                   ComputedFields: never
-                  Insert: { education_context?: Json | null;
+                  Insert: { education_context?: Json | null;revision?:number;withdrawn_at?:string|null;
                     "child_id": string,"created_at"?: string,"family_id": string,"graded_on"?: string,"id"?: string,"kind"?: Database["public"]['Enums']["grade_kind"],"max_score"?: number,"note"?: string | null,"score": number,"subject": string
                   }
-                  Update: { education_context?: Json | null;
+                  Update: { education_context?: Json | null;revision?:number;withdrawn_at?:string|null;
                     "child_id"?: string,"created_at"?: string,"family_id"?: string,"graded_on"?: string,"id"?: string,"kind"?: Database["public"]['Enums']["grade_kind"],"max_score"?: number,"note"?: string | null,"score"?: number,"subject"?: string
                   }
                   Relationships: [
@@ -2804,6 +2805,12 @@ get_learning_source_set: { Args: { p_source: string }; Returns: Json },
 "join_family":
 { Args: { "p_display_name"?: string,"p_invite_code": string }; Returns: string
                            },
+change_school_grade: { Args: { p_request_id:string; p_id:string; p_child_id:string; p_revision:number; p_action:string; p_value?:Json }; Returns:Json },
+school_grade_history: { Args: { p_id:string; p_before_revision?:number }; Returns:Json },
+school_grade_records: { Args: { p_child_id:string; p_period?:string; p_before_date?:string; p_before_id?:string; p_withdrawn?:boolean }; Returns:Json },
+education_report_periods: { Args: { p_child_id: string }; Returns: Json },
+learning_progress_education: { Args: { p_child_id: string; p_days?: number; p_grade?: number; p_subject?: string; p_period?: string }; Returns: Json },
+list_school_grades: { Args: { p_child_id: string; p_period?: string; p_before_date?: string; p_before_id?: string }; Returns: Json },
 "learning_progress":
 { Args: { "p_child_id": string,"p_days"?: number,"p_grade"?: number,"p_subject"?: string }; Returns: Json
                            },

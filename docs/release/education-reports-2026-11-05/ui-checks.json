@@ -1,0 +1,53 @@
+{
+  "environment": "disposable-local-real-auth-rest",
+  "results": [
+    {
+      "check": "historical_deep_link_loads_all_dates_including_150_day_old_attempt",
+      "passed": true
+    },
+    {
+      "check": "date_range_explicitly_filters_and_restores_history",
+      "passed": true
+    },
+    {
+      "check": "legacy_evidence_remains_reachable_in_unknown_context",
+      "passed": true
+    },
+    {
+      "check": "school_scores_use_frozen_period_and_cursor_reaches_remaining_same_day_rows",
+      "passed": true
+    },
+    {
+      "check": "switching_period_does_not_mix_old_scores_or_pagination",
+      "passed": true
+    },
+    {
+      "check": "score_correction_reviews_before_after_and_keeps_original",
+      "passed": true
+    },
+    {
+      "check": "withdraw_then_restore_keeps_corrected_score",
+      "passed": true
+    },
+    {
+      "check": "parent_can_inspect_correction_withdrawal_and_restore_history",
+      "passed": true
+    },
+    {
+      "check": "education_history_opens_exact_period_report",
+      "passed": true
+    },
+    {
+      "check": "new_score_lost_response_retry_does_not_create_a_duplicate",
+      "passed": true
+    },
+    {
+      "check": "other_device_withdraw_and_restore_refresh_visible_list_without_navigation",
+      "passed": true
+    },
+    {
+      "check": "phone_and_tablet_no_horizontal_overflow_missing_translations_or_runtime_errors",
+      "passed": true
+    }
+  ]
+}

@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Text, View } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { GraduationCap } from "lucide-react-native";
 import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
 import { ParentScreen, ChildPicker } from "@/components/ui/parent-screen";
+import { Pressable } from "@/components/ui/pressable";
 import { Avatar } from "@/components/avatar";
 import { p, u, SatinButton } from "@/components/planner/ui";
 import {
@@ -126,7 +127,9 @@ export default function EducationScreen() {
               }}
             />
           </View>
-          {child.archived_at && <Text style={u.copy}>{t("childArchive.locked")}</Text>}
+          {child.archived_at && (
+            <Text style={u.copy}>{t("childArchive.locked")}</Text>
+          )}
           {saved && (
             <Text
               accessibilityLiveRegion="polite"
@@ -163,6 +166,36 @@ export default function EducationScreen() {
                 })}
               </Text>
               <ArchivedProgram period={period} />
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 16 }}>
+                <Pressable
+                  accessibilityRole="button"
+                  style={{ minHeight: 48, justifyContent: "center" }}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/parent/prova/progress",
+                      params: { childId: child.id, period: period.id },
+                    })
+                  }
+                >
+                  <Text style={[u.bold, { color: p.purple }]}>
+                    {t("educationReports.viewProgress")}
+                  </Text>
+                </Pressable>
+                <Pressable
+                  accessibilityRole="button"
+                  style={{ minHeight: 48, justifyContent: "center" }}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/parent/grades",
+                      params: { childId: child.id, period: period.id },
+                    })
+                  }
+                >
+                  <Text style={[u.bold, { color: p.purple }]}>
+                    {t("educationReports.viewGrades")}
+                  </Text>
+                </Pressable>
+              </View>
             </View>
           ))}
           <Text style={u.small}>{t("education.unknown")}</Text>

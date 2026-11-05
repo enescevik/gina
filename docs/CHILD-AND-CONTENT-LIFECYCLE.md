@@ -4,7 +4,7 @@
 
 ## 5 Kasım devam paketinin durumu
 
-Eğitim dönemi ve okul geçmişinin ilk uygulaması hazır: ilk kayıt, yeni eğitim yılı, okul değişikliği, ayrı bilgi düzeltme, sürümlü kayıt ve kapanan dönemin okunabilir program kopyası. [Uygulama ve test kanıtı](release/education-periods-2026-11-05/README.md). Profil arşivleme/geri alma da uygulandı: rutinler durur, cihaz erişimi ve bağlantılar kapatılır; geri alma bunları otomatik açmaz. [Arşiv kontrol raporu](release/child-archive-2026-11-05/README.md). Dönem rapor filtreleri, seçerek rutin taşıma ve bütün içerik arşivi hâlâ açıktır. Üretim yayını yapılmadı.
+Eğitim dönemi ve okul geçmişinin ilk uygulaması hazır: ilk kayıt, yeni eğitim yılı, okul değişikliği, ayrı bilgi düzeltme, sürümlü kayıt ve kapanan dönemin okunabilir program kopyası. [Uygulama ve test kanıtı](release/education-periods-2026-11-05/README.md). Profil arşivleme/geri alma da uygulandı: rutinler durur, cihaz erişimi ve bağlantılar kapatılır; geri alma bunları otomatik açmaz. [Arşiv kontrol raporu](release/child-archive-2026-11-05/README.md). Dönem rapor filtreleri ve okul puanının sürümlü düzeltme/kaldırma/geri alma akışı da uygulandı; [rapor ve kontroller](release/education-reports-2026-11-05/README.md). Seçerek rutin taşıma ve bütün içerik arşivi hâlâ açıktır. Üretim yayını yapılmadı.
 
 ## Ana karar önerisi
 
@@ -37,7 +37,7 @@ Yıldız, rozet, maskot, oda ve kişisel başarılar profilde kalır. Ders progr
 | Görev rutinleri | Duraklat/devam et ve geçmiş gerçekleşmeler var | Duraklatma silme değildir. Seçili rutinleri arşivleme, eski onay/yıldız kayıtlarını koruyarak düzenleme **açık**. |
 | Ödüller | Duraklatma ve talep iptal/teslim durumları var | Yeni taleplere kapatma ile kazanılmış ödülü yok etme ayrılmalı. Aktif talepleri açıklayan arşiv akışı **açık**. |
 | Hedef | Hedef seçimi ödül talebinden ayrı | Hedefi bırakma/değiştirme birikmiş yıldızı silmemeli. Ayrı son kontrol ve geçmiş hedef görünümü **açık**. |
-| Okul puanı | Ekleme var; düzeltme/silme yolu eksik | Önce sürümlü düzeltme ve yanlış kaydı rapordan çıkarma; değişiklik geçmişi **açık**. |
+| Okul puanı | Ekleme, düzeltme, geri alınabilir kaldırma ve geçmiş **eklendi** | Önce/sonra kontrolü, eşzamanlılık ve tekrar güvenliği; dönem filtresi/sayfalama; kaldırılan puan öğretmen görünümünden çıkar. Tarihi başka döneme taşıyan düzeltme ayrı karar gerektirir. |
 | Not | Silme var | Görünürlük/hedef, düzenleme ve geri alınabilir kaldırma **açık**. |
 | Takvim etkinliği | Silme ve kayıt makbuzu var | Tek gün/tekrarlı seri kapsamını açıkça göster; toplu tarih aralığı temizliği **açık**. |
 | Çocuk profili | Ayarlar içinde kalıcı silme var; birçok bağlı kayıt zincirleme siliniyor | Silmeyi sınıf değişiminden uzaklaştır. Profil arşivi ve arşiv etkisi önizlemesi **eklendi**. Kalıcı silmenin kapsamlı önizlemesi ve ayrı güçlü onayı **açık**. |
