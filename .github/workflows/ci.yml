@@ -70,4 +70,8 @@ jobs:
       # Supabase CLI kök devDependency olarak sabitlenmiştir; GitHub API'ye "latest" sorgusu gerekmez.
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec supabase db start
+      # Q02-10: pgTAP dosyaları `current_date` ile aile saat dilimindeki (Europe/Istanbul) fonksiyonlara
+      # 'bugün' verir; yerel test DB'si UTC iken 21:00-24:00 UTC koşuları gün kaydırır. Yalnız CI'nin
+      # geçici yerel DB'si hizalanır (üretim/şema değişmez; config.toml [db.settings] timezone anahtarı tanımaz).
+      - run: psql postgresql://postgres:postgres@127.0.0.1:54322/postgres -X -v ON_ERROR_STOP=1 -c "alter database postgres set timezone to 'Europe/Istanbul';"
       - run: pnpm exec supabase test db

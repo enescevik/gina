@@ -1,5 +1,8 @@
 begin;
 select no_plan();
+-- Q02-10: bu test `current_date` ile aile saat dilimindeki (Europe/Istanbul) fonksiyonlara 'bugün' verir;
+-- oturum UTC iken 21:00-24:00 UTC arasında gün kayar. Transaction süresince aile saat dilimi kullanılır.
+set local time zone 'Europe/Istanbul';
 update public.plans set prova_monthly_exams=null;
 insert into auth.users(id,email) values
  ('00000000-0000-4000-8000-000000008801','transfer-parent@example.invalid'),
