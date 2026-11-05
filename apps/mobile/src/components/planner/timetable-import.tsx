@@ -1,5 +1,8 @@
+import { ReviewNotes } from "@/components/learning/review-notes";
+import { TimetableBoard } from "./timetable-board";
+import { PromptExamples } from "@/components/ui/number-choice";
 import { SourceFilesPicker } from "@/components/learning/source-files-picker";
-import { useRef, useState } from "react";
+import { type ComponentRef, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import * as Crypto from "expo-crypto";
@@ -14,9 +17,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import {
-  AlertCircle,
   Check,
-  ChevronDown,
   FileText,
   FileUp,
   Sparkles,
@@ -27,6 +28,7 @@ import {
   type Json,
   type Lesson,
   type LessonSettings,
+  normalizeLessonTitle,
   validateLessons,
 } from "@gina/core";
 import { useSession } from "@/lib/session";
@@ -99,7 +101,8 @@ function Consent(
   );
 }
 export function TimetableImportEntry(
-  { childId, initial, disabled, onSaved }: {
+  { childId, initial, disabled, onSaved, compact = false }: {
+    compact?: boolean;
     childId: string;
     initial: Timetable;
     disabled: boolean;
@@ -121,23 +124,30 @@ export function TimetableImportEntry(
   if (claims?.role !== "parent" || !policy.data?.enabled) return null;
   return (
     <>
-      <View style={[u.card, { backgroundColor: p.lilac, gap: 12 }]}>
-        <View style={u.row}>
-          <FileUp color={p.purple} />
-          <Text style={[u.bold, { fontSize: 19, flex: 1 }]}>
-            {t("import.title")}
-          </Text>
-        </View>
-        <Text style={u.small}>
-          {t(disabled ? "import.saveFirst" : "import.intro")}
-        </Text>
-        <SatinButton
-          secondary
-          title={t("import.open")}
-          disabled={disabled}
-          onPress={() => setOpen(true)}
-        />
-      </View>
+      {compact
+        ? (
+          <Tag
+            label={t("weekReview.photoImport")}
+            disabled={disabled}
+            onPress={() => setOpen(true)}
+          >
+            <FileUp size={18} color={p.purple} />
+          </Tag>
+        )
+        : (
+          <View style={{ gap: 8 }}>
+            <SatinButton
+              secondary
+              title={t("import.open")}
+              icon={<FileUp color={p.purple} size={21} />}
+              disabled={disabled}
+              onPress={() => setOpen(true)}
+            />
+            {disabled
+              ? <Text style={u.small}>{t("import.saveFirst")}</Text>
+              : null}
+          </View>
+        )}
       {open
         ? (
           <ImportModal
@@ -170,7 +180,12 @@ function ImportModal(
   const [consent, setConsent] = useState(false);
   const [selected, setSelected] = useState<ImportDraft | null>(null);
   const [rows, setRows] = useState<ReviewRow[]>([]);
-  const [expanded, setExpanded] = useState("");
+  const [instructions, setInstructions] = useState("");
+  const [showSource, setShowSource] = useState(false);
+  const [dragging, setDragging] = useState(false);
+  const scroll = useRef<ComponentRef<typeof ScrollView>>(null),
+    scrollY = useRef(0);
+  const [settings, setSettings] = useState(initial.settings);
   const [merge, setMerge] = useState(true);
   const [reviewed, setReviewed] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -198,16 +213,13 @@ function ImportModal(
     setRows(
       d.draft.lessons.map((l, i) => ({
         ...l,
+        title: normalizeLessonTitle(l.title).title,
+        originalTitle: l.title,
         id: `import_${d.id}_${i}`,
         included: true,
       })),
     );
-    setExpanded("");
-    setReviewed(false);
-    setError("");
-  }
-  function edit(id: string, patch: Partial<ReviewRow>) {
-    setRows((r) => r.map((l) => l.id === id ? { ...l, ...patch } : l));
+    setShowSource(false);
     setReviewed(false);
     setError("");
   }
@@ -231,6 +243,7 @@ function ImportModal(
         child_id: childId,
         ai_consent: true,
         locale: i18n.language,
+        instructions,
       });
       if (result.applied_revision !== null) {
         throw new Error("import_already_applied");
@@ -266,7 +279,7 @@ function ImportModal(
         id: selected.id,
         revision: initial.revision,
         lessons: combined,
-        settings: initial.settings,
+        settings,
       });
       if (receipt.current.fingerprint !== fingerprint) {
         receipt.current = { fingerprint, id: Crypto.randomUUID() };
@@ -276,12 +289,12 @@ function ImportModal(
         p_import_id: selected.id,
         p_revision: initial.revision,
         p_lessons: combined as unknown as Json,
-        p_settings: initial.settings as unknown as Json,
+        p_settings: settings as unknown as Json,
       });
       if (error) throw error;
       onSaved({
         lessons: combined,
-        settings: initial.settings,
+        settings,
         revision: data,
       });
     } catch (e) {
@@ -361,7 +374,16 @@ function ImportModal(
           />
         )
         : (
-          <SourceFilesPicker value={file} onBusyChange={setPicking} disabled={busy} onChange={(f)=>{setFile(f);setStorage(false);setConsent(false);}} />
+          <SourceFilesPicker
+            value={file}
+            onBusyChange={setPicking}
+            disabled={busy}
+            onChange={(f) => {
+              setFile(f);
+              setStorage(false);
+              setConsent(false);
+            }}
+          />
         )}
     </View>
   );
@@ -389,6 +411,12 @@ function ImportModal(
           </IconButton>
         </View>
         <ScrollView
+          ref={scroll}
+          onScroll={(e) => {
+            scrollY.current = e.nativeEvent.contentOffset.y;
+          }}
+          scrollEventThrottle={16}
+          scrollEnabled={!dragging}
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
             padding: wide ? 28 : 20,
@@ -414,14 +442,43 @@ function ImportModal(
             : null}
           <View
             style={{
-              flexDirection: wide ? "row" : "column",
+              flexDirection: wide && !selected ? "row" : "column",
               alignItems: "flex-start",
               gap: 24,
             }}
           >
-            <View style={{ width: wide ? 340 : "100%" }}>{preview}</View>
+            <View style={{ width: wide && !selected ? 340 : "100%", gap: 10 }}>
+              {selected
+                ? (
+                  <Pressable
+                    accessibilityRole="button"
+                    accessibilityState={{ expanded: showSource }}
+                    onPress={() => setShowSource(!showSource)}
+                    style={[u.row, { minHeight: 48 }]}
+                  >
+                    <FileText color={p.purple} />
+                    <Text style={u.linkText}>
+                      {t(
+                        showSource
+                          ? "weekReview.hideSource"
+                          : "weekReview.sourceNotes",
+                        { count: selected.draft.warnings.length },
+                      )}
+                    </Text>
+                  </Pressable>
+                )
+                : null}
+              {!selected || showSource ? preview : null}
+              {selected && showSource
+                ? <ReviewNotes notes={selected.draft.warnings} initiallyOpen />
+                : null}
+            </View>
             <View
-              style={{ flex: 1, width: wide ? undefined : "100%", gap: 18 }}
+              style={{
+                flex: selected ? undefined : 1,
+                width: wide && !selected ? undefined : "100%",
+                gap: 18,
+              }}
               pointerEvents={busy ? "none" : "auto"}
             >
               {!selected
@@ -434,6 +491,21 @@ function ImportModal(
                           {t("import.beforeReading")}
                         </Text>
                       </View>
+                      <Field
+                        label={t("weekReview.instructions")}
+                        value={instructions}
+                        onChangeText={setInstructions}
+                        multiline
+                        maxLength={1500}
+                        editable={!busy}
+                        placeholder={t("weekReview.promptPlaceholder")}
+                      />
+                      <PromptExamples
+                        value={instructions}
+                        onChange={setInstructions}
+                        examples={[t("weekReview.promptExample")]}
+                      />
+                      <Text style={u.small}>{t("weekReview.promptHelp")}</Text>
                       <Text style={u.small}>{t("import.privacy")}</Text>
                       <Consent
                         title={t("import.storageConsent")}
@@ -448,7 +520,8 @@ function ImportModal(
                       <SatinButton
                         title={phase || t("import.extract")}
                         busy={busy && !!phase}
-                        disabled={!file || !storage || !consent || busy || picking}
+                        disabled={!file || !storage || !consent || busy ||
+                          picking}
                         onPress={() => void extract()}
                       />
                     </View>
@@ -478,22 +551,27 @@ function ImportModal(
                 )
                 : (
                   <>
-                    {selected.draft.warnings.map((w, i) => (
-                      <View
-                        key={i}
-                        style={[u.row, {
-                          backgroundColor: "#FFF0DB",
-                          padding: 14,
-                          borderRadius: 18,
-                          alignItems: "flex-start",
-                        }]}
-                      >
-                        <AlertCircle size={20} color="#99521F" />
-                        <Text style={[u.small, { flex: 1, color: "#784019" }]}>
-                          {w}
-                        </Text>
-                      </View>
-                    ))}
+                    <TimetableBoard
+                      onReveal={(top) =>
+                        scroll.current?.scrollTo({
+                          y: Math.max(0, scrollY.current + top - 110),
+                          animated: false,
+                        })}
+                      rows={rows}
+                      settings={settings}
+                      onSettingsChange={(s) => {
+                        setSettings(s);
+                        setReviewed(false);
+                      }}
+                      onChange={(next) => {
+                        setRows(next);
+                        setReviewed(false);
+                        setError("");
+                      }}
+                      disabled={busy}
+                      onDragChange={setDragging}
+                      allowExclude
+                    />
                     {initial.lessons.length
                       ? (
                         <View style={[u.card, { gap: 12 }]}>
@@ -530,107 +608,6 @@ function ImportModal(
                         </View>
                       )
                       : null}
-                    {rows.map((row) => {
-                      const incomplete = row.included &&
-                        (!row.day || !row.start || !row.end ||
-                          !row.title.trim() || row.end <= row.start);
-                      return (
-                        <View
-                          key={row.id}
-                          style={[u.card, {
-                            gap: 12,
-                            borderColor: incomplete ? "#E4B679" : p.line,
-                            opacity: row.included ? 1 : .65,
-                          }]}
-                        >
-                          <Pressable
-                            accessibilityRole="button"
-                            accessibilityState={{
-                              expanded: expanded === row.id,
-                            }}
-                            onPress={() =>
-                              setExpanded(expanded === row.id ? "" : row.id)}
-                            style={[u.row, { minHeight: 56 }]}
-                          >
-                            <View style={{ flex: 1, gap: 5 }}>
-                              <Text style={[u.bold, { fontSize: 18 }]}>
-                                {row.title}
-                              </Text>
-                              <Text style={u.small}>
-                                {row.day
-                                  ? t(`planner.day${row.day}`)
-                                  : t("import.dayMissing")} ·{" "}
-                                {row.start || "—"}–{row.end || "—"}
-                              </Text>
-                              {incomplete
-                                ? (
-                                  <Text style={u.error}>
-                                    {t("import.completeRow")}
-                                  </Text>
-                                )
-                                : null}
-                            </View>
-                            <ChevronDown size={22} color={p.purple} />
-                          </Pressable>
-                          {expanded === row.id
-                            ? (
-                              <>
-                                <Text style={u.small}>
-                                  {t("import.page", { page: row.page })}
-                                  {row.note ? ` · ${row.note}` : ""}
-                                </Text>
-                                <Consent
-                                  title={t("import.includeLesson")}
-                                  value={row.included}
-                                  onChange={() =>
-                                    edit(row.id, { included: !row.included })}
-                                />
-                                <Field
-                                  label={t("planner.subject")}
-                                  value={row.title}
-                                  maxLength={120}
-                                  onChangeText={(title) =>
-                                    edit(row.id, { title })}
-                                />
-                                <Text style={u.bold}>{t("import.day")}</Text>
-                                <View style={[u.row, { flexWrap: "wrap" }]}>
-                                  {[1, 2, 3, 4, 5, 6, 7].map((day) => (
-                                    <Tag
-                                      key={day}
-                                      selected={day === row.day}
-                                      label={t(`weekday.${day}`)}
-                                      onPress={() => edit(row.id, { day })}
-                                    />
-                                  ))}
-                                </View>
-                                <View style={u.row}>
-                                  <View style={{ flex: 1 }}>
-                                    <Field
-                                      label={t("import.start")}
-                                      value={row.start ?? ""}
-                                      placeholder="09:00"
-                                      maxLength={5}
-                                      onChangeText={(start) =>
-                                        edit(row.id, { start })}
-                                    />
-                                  </View>
-                                  <View style={{ flex: 1 }}>
-                                    <Field
-                                      label={t("import.end")}
-                                      value={row.end ?? ""}
-                                      placeholder="09:40"
-                                      maxLength={5}
-                                      onChangeText={(end) =>
-                                        edit(row.id, { end })}
-                                    />
-                                  </View>
-                                </View>
-                              </>
-                            )
-                            : null}
-                        </View>
-                      );
-                    })}
                     {!rows.length
                       ? <Text style={u.error}>{t("import.noLessons")}</Text>
                       : null}

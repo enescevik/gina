@@ -27,13 +27,29 @@ export function installIsolatedProvider() {
     const body = JSON.parse(String(init.body));
     const props = body.output_config?.format?.schema?.properties;
     const content = body.messages[0].content;
-    const data = JSON.parse(
+    const data = props?.lessons ? {} : JSON.parse(
       typeof content === "string"
         ? content
         : content.find((p: { type: string }) => p.type === "text").text,
     );
     let output: unknown;
-    if (props?.haftanin_ozeti) {
+    if (props?.lessons) {
+      output = {
+        lessons: [1, 2, 3, 4, 5].flatMap((day) =>
+          ["MAT", "İNG", "FEN", "TÜRK", "SOS", "MAT", "MÜZ", "SPOR"].map(
+            (title) => ({
+              day,
+              title,
+              start: null,
+              end: null,
+              page: 1,
+              note: "",
+            }),
+          )
+        ),
+        warnings: ["Saatler fotoğrafta yok; zil düzenini belirleyin."],
+      };
+    } else if (props?.haftanin_ozeti) {
       stats.weekly++;
       output = {
         haftanin_ozeti: "Bu bir sentetik hizmet testi özetidir.",

@@ -1,3 +1,4 @@
+import { ReviewNotes } from "@/components/learning/review-notes";
 import { GuidedField } from "@/components/ui/guided-field";
 import { SourceFilesPicker } from "@/components/learning/source-files-picker";
 import { useMemo, useState } from "react";
@@ -401,9 +402,7 @@ export function LearningPlanImport(
           <>
             <Text style={u.heading}>{t("planImport.chooseHint")}</Text>
             <Text style={u.copy}>{t("planImport.multiHint")}</Text>
-            {result?.draft?.warnings.map((w, i) => (
-              <Text key={i} style={u.copy}>{w}</Text>
-            ))}
+            <ReviewNotes notes={result?.draft?.warnings??[]}/>
             {source
               ? (
                 <SetupSourceLinks
