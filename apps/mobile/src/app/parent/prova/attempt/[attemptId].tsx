@@ -1,4 +1,4 @@
-import { attemptSummary, readNotebook } from "@gina/core";
+import { attemptSummary, parseAttemptSummary, readNotebook, type AttemptSummaryRpc } from "@gina/core";
 import { Toggle } from "@/components/ui/toggle";
 import { type QuestionMediaItem } from "@/components/learning/question-media";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -23,6 +23,14 @@ interface AiSummary {
   konu_analizi?: {konu:string;kanitlar:string[];gozlem:string;sonraki_adim:string}[];
   calisma_adimlari?: {konu:string;etkinlik:string;sure_dk:number;basari_olcutu:string}[];
   veli_destegi?:string[]; sinirlar?:string[];
+}
+
+/** get_attempt_summary henüz üretilmiş tiplerde yok; yanıt zod ile doğrulanır, bozuksa eski sütun yoluna düşülür. */
+async function fetchAttemptSummary(attemptId: string): Promise<AttemptSummaryRpc | null> {
+  const rpc = supabase.rpc.bind(supabase) as unknown as (fn: string, args: Record<string, unknown>) => PromiseLike<{ data: unknown; error: Error | null }>;
+  const { data, error } = await rpc("get_attempt_summary", { p_attempt_id: attemptId });
+  if (error) throw error;
+  return parseAttemptSummary(data);
 }
 
 interface ProvaEntitlement {
@@ -50,6 +58,13 @@ export default function AttemptReviewScreen() {
       if (error) throw error;
       return data;
     },
+  });
+
+  // P04: inceleme durumu (bekleyen / cevapsız / ara sonuç) sunucu özetinden; eski kayıtta saklı sayaçlar aynen gelir.
+  const attemptState = useQuery({
+    queryKey: ["attempt_summary", attemptId],
+    enabled: !!attemptId,
+    queryFn: () => fetchAttemptSummary(attemptId),
   });
 
   const questionIds = attempt.data?.exams?.question_ids ?? [];
@@ -107,6 +122,7 @@ export default function AttemptReviewScreen() {
   const refresh = () => {
     void queryClient.invalidateQueries({ queryKey: ["attempt_review", attemptId] });
     void queryClient.invalidateQueries({ queryKey: ["attempt_review_answers", attemptId] });
+    void queryClient.invalidateQueries({ queryKey: ["attempt_summary", attemptId] });
     void queryClient.invalidateQueries({ queryKey: ["exams", familyId] });
     void queryClient.invalidateQueries({ queryKey: ["learning_progress", familyId] });
   };
@@ -114,6 +130,15 @@ export default function AttemptReviewScreen() {
   const [imageAiConsent,setImageAiConsent] = useState(false);
   const aiGrade = useMutation({
     mutationFn: () => invokeProvaAi<GradeResponse>("prova-grade", { attempt_id: attemptId, image_consent: imageAiConsent }),
+    onSuccess: refresh,
+  });
+
+  // "Cevap yok" otomatik 0 değildir; veli isterse bu soruya açıkça 0 verir.
+  const giveZero = useMutation({
+    mutationFn: async (questionId: string) => {
+      const { error } = await supabase.rpc("score_open_answer", { p_attempt_id: attemptId, p_question_id: questionId, p_score: 0 });
+      if (error) throw error;
+    },
     onSuccess: refresh,
   });
 
@@ -131,24 +156,85 @@ export default function AttemptReviewScreen() {
   const finished = a && a.status !== "in_progress";
   const notebookNeedsReview = Array.from(answers.data?.values() ?? []).some(answer => answer.graded_by !== "parent" && (readNotebook(answer.answer_document)?.elements.length ?? 0) > 0);
   const hasOpen = (a?.open_total ?? 0) > 0;
-  const pendingReview = a ? attemptSummary(a, questions.data ?? []).pendingReview : false;
+  const legacy = a ? attemptSummary(a, questions.data ?? []) : null;
+  const rpc = attemptState.data ?? null;
+  // RPC yoksa/hata verirse/bozuksa eski sütunlarla aynı davranış (legacy kayıt değişmez); ekranı kilitlemez.
+  const view = rpc
+    ? { pending: rpc.pending_open_count, unanswered: rpc.unanswered_open_count, provisional: rpc.provisional, scorePct: rpc.score_pct, reviewState: rpc.review_state }
+    : legacy
+    ? { pending: legacy.pendingOpenCount, unanswered: legacy.unansweredOpenCount, provisional: legacy.pendingReview, scorePct: a?.score_pct ?? null, reviewState: legacy.reviewState }
+    : null;
+  const openAnswers = [...(rpc?.open_answers ?? [])].sort((x, y) => x.position - y.position);
+  const attemptGraded = view?.reviewState === "graded";
   const ent = entitlement.data;
 
   return (
-    <Screen title={a?.exams?.title ?? t("prova.ai.reviewTitle")} loading={attempt.isLoading || media.isLoading || questions.isLoading || answers.isLoading || plans.isLoading || entitlement.isLoading} error={attempt.error ?? media.error ?? questions.error ?? answers.error ?? plans.error ?? entitlement.error} onRetry={() => { void attempt.refetch(); void media.refetch(); if (questionIds.length) void questions.refetch(); void answers.refetch(); void plans.refetch(); void entitlement.refetch(); }}>
-      {a ? (
-        <View className="gap-1 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
+    <Screen title={a?.exams?.title ?? t("prova.ai.reviewTitle")} loading={attempt.isLoading || attemptState.isLoading || media.isLoading || questions.isLoading || answers.isLoading || plans.isLoading || entitlement.isLoading} error={attempt.error ?? media.error ?? questions.error ?? answers.error ?? plans.error ?? entitlement.error} onRetry={() => { void attempt.refetch(); void attemptState.refetch(); void media.refetch(); if (questionIds.length) void questions.refetch(); void answers.refetch(); void plans.refetch(); void entitlement.refetch(); }}>
+      {a && view ? (
+        <View className="gap-2 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
           <Text className="font-body text-sm text-gray-600">
             {a.children?.name} · {a.exams?.subject} {a.exams?.grade}. {t("prova.gradeWord")}
           </Text>
-          <Text className="font-display text-xl text-ink">
-            {pendingReview ? t("experience.provisionalScore", { score: a.score_pct ?? "—" }) : a.score_pct !== null ? t("prova.ai.scorePct", { pct: a.score_pct }) : t(`prova.ai.attemptStatus.${a.status}`)}
-          </Text>
-          {pendingReview && <Text className="font-body text-base text-ink">{t("experience.reviewIncomplete")}</Text>}
+          {/* Önce inceleme durumu, sonra puan: eksik puan "ara sonuç"tur, sıfır değil. */}
+          {view.pending > 0 ? <Text accessibilityRole="alert" className="font-body-bold text-base text-ink">{t("prova.ai.reviewWaiting", { count: view.pending })}</Text> : null}
+          {view.unanswered > 0 ? <Text className="font-body-bold text-base text-ink">{t("prova.ai.unansweredCount", { count: view.unanswered })}</Text> : null}
+          {view.provisional ? (
+            <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+              <View style={{ borderRadius: 999, backgroundColor: "#FFF1D6", borderWidth: 1, borderColor: "#E9C77E", paddingHorizontal: 12, paddingVertical: 4 }}>
+                <Text className="font-body-bold text-sm text-ink">{t("prova.provisionalResult")}</Text>
+              </View>
+              <Text className="font-display text-xl text-ink">
+                {view.scorePct !== null ? t("prova.ai.answerScore", { score: view.scorePct }) : t("prova.ai.noScoreYet")}
+              </Text>
+            </View>
+          ) : (
+            <Text className="font-display text-xl text-ink">
+              {view.scorePct !== null ? t("prova.ai.scorePct", { pct: view.scorePct }) : t(`prova.ai.attemptStatus.${a.status}`)}
+            </Text>
+          )}
+          {view.provisional ? <Text className="font-body text-sm text-gray-600">{t("prova.ai.provisionalNote")}</Text> : null}
           {(a.mc_total ?? 0) > 0 ? <Text className="font-body text-sm text-teal-dark">{t("prova.resultMc", { correct: a.mc_correct ?? 0, total: a.mc_total ?? 0 })}</Text> : null}
           {hasOpen ? (
-            <Text className="font-body text-sm text-teal-dark">{t("prova.ai.openGraded", { graded: a.open_graded ?? 0, total: a.open_total ?? 0 })}</Text>
+            <Text className="font-body text-sm text-teal-dark">
+              {rpc && !attemptGraded
+                ? t("prova.ai.openBreakdown", { graded: rpc.open_graded ?? 0, pending: view.pending, unanswered: view.unanswered })
+                : t("prova.ai.openGraded", { graded: a.open_graded ?? 0, total: a.open_total ?? 0 })}
+            </Text>
           ) : null}
+        </View>
+      ) : null}
+
+      {finished && openAnswers.length > 0 ? (
+        <View className="gap-1 rounded-2xl border border-[#EAE5EE] bg-[#FFFFFF] p-4">
+          <Text accessibilityRole="header" className="font-body-bold text-base text-ink">{t("prova.ai.openAnswersTitle")}</Text>
+          {openAnswers.map((item) => {
+            const state = item.state;
+            return (
+              <View key={item.question_id} style={{ gap: 6, paddingVertical: 8, borderTopWidth: 1, borderTopColor: "#F0ECF4" }}>
+                <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+                  <Text className="font-body-bold text-base text-ink" style={{ flexGrow: 1 }}>
+                    {t("prova.ai.questionN", { n: item.position })} · {state === "graded" && item.score !== null ? t("prova.ai.answerScore", { score: item.score }) : t(`prova.ai.answerState.${state}`)}
+                  </Text>
+                  {state !== "unanswered" || attemptGraded ? (
+                    <Pressable accessibilityRole="button" style={{ minHeight: 48, justifyContent: "center", paddingHorizontal: 8 }}
+                      onPress={() => router.push({ pathname: "/parent/prova/review/[attemptId]", params: { attemptId, questionId: item.question_id } })}>
+                      <Text className="font-body-bold text-teal-dark">{t("prova.ai.review")}</Text>
+                    </Pressable>
+                  ) : null}
+                </View>
+                {state === "pending" && item.has_document && !item.has_text ? <Text className="font-body text-sm text-gray-600">{t("prova.ai.drawingPendingHint")}</Text> : null}
+                {state === "unanswered" && !attemptGraded ? (
+                  <>
+                    <Text className="font-body text-sm text-gray-600">{t("prova.ai.unansweredHint")}</Text>
+                    <Button variant="secondary" title={t("prova.ai.giveZero")} accessibilityLabel={t("prova.ai.giveZeroA11y", { n: item.position })}
+                      loading={giveZero.isPending && giveZero.variables === item.question_id} disabled={giveZero.isPending}
+                      onPress={() => giveZero.mutate(item.question_id)} />
+                  </>
+                ) : null}
+              </View>
+            );
+          })}
+          <ErrorText error={giveZero.error} />
         </View>
       ) : null}
 
