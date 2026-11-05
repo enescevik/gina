@@ -29,7 +29,7 @@ select is((select count(*)::int from pg_class c join pg_namespace n on n.oid=c.r
 select is((select coalesce(string_agg(n.nspname||'.'||p.proname, ',' order by 1),'') from pg_proc p join pg_namespace n on n.oid=p.pronamespace
             where n.nspname in ('public','gina') and p.prokind='f' and p.prorettype <> 'trigger'::regtype
               and has_function_privilege('anon', p.oid, 'EXECUTE')),
-  'public.get_shared_child_view', 'anon yalnız get_shared_child_view fonksiyonunu çalıştırabilir');
+  'public.get_shared_child_view,public.unsubscribe_with_token', 'anon yalnız öğretmen paylaşım görünümü ve imzalı vazgeçme fonksiyonunu çalıştırabilir (S02)');
 select is((select count(*)::int from pg_proc p join pg_namespace n on n.oid=p.pronamespace
             where n.nspname='gina' and p.proname in ('claims','role','family_id','child_id','valid_review_document')
               and has_function_privilege('authenticated', p.oid, 'EXECUTE')),
