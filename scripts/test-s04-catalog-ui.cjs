@@ -66,14 +66,14 @@ let browser, p, stage = 'setup';
 
   stage = 'subject_tester';
   await p.getByLabel('Yazılan ders adı', { exact: true }).fill('Fen');
-  await p.getByLabel('Çocuğun sınıfı', { exact: true }).selectOption('10');
+  await p.getByRole('combobox', { name: /Çocuğun sınıfı/ }).selectOption('10');
   await p.getByRole('button', { name: 'Önerileri göster', exact: true }).click();
   await p.getByText('3 aday — veliye seçtirilir.', { exact: true }).waitFor();
   for (const label of ['Fizik', 'Kimya', 'Biyoloji']) assert.ok((await body()).includes(label));
   await p.getByRole('region', { name: 'Ders eşleştirme denemesi' }).scrollIntoViewIfNeeded();
   await shot('input-catalog-match-fen-grade10-1280x800');
   await p.getByLabel('Yazılan ders adı', { exact: true }).fill('MAT');
-  await p.getByLabel('Çocuğun sınıfı', { exact: true }).selectOption('6');
+  await p.getByRole('combobox', { name: /Çocuğun sınıfı/ }).selectOption('6');
   await p.getByRole('button', { name: 'Önerileri göster', exact: true }).click();
   await p.getByText('Tek aday — veliye öneri olarak gösterilir, onayı beklenir.', { exact: true }).waitFor();
   results.push({ check: 'match_tester_ambiguous_and_single_both_need_confirmation', passed: true });

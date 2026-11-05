@@ -14,6 +14,11 @@ const stages: Record<string, string> = {
   high: "Lise",
   university: "Üniversite",
 };
+const confidence: Record<string, string> = {
+  high: "yüksek",
+  medium: "orta",
+  low: "düşük",
+};
 const reasons: Record<string, string> = {
   low_confidence: "Kaynak güveni düşük; il MEM teyidi bekliyor",
   no_calendar_value: "Doğrulanmış tarih yok",
@@ -233,7 +238,8 @@ export function CalendarSeedImport({ onDone }: { onDone: () => void }) {
                       : ""}
                   </h4>
                   <p className="text-sm">
-                    Güven: {rows[0]?.confidence ?? "—"} · Kontrol:{" "}
+                    Kaynak güveni:{" "}
+                    {confidence[rows[0]?.confidence ?? ""] ?? "—"} · Kontrol:{" "}
                     {rows[0]?.verified_on ?? rows[0]?.checked_at ?? "—"}
                   </p>
                   <ul className="mt-2 text-sm">

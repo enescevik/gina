@@ -13,6 +13,7 @@
 //   node scripts/import-education-calendar-draft.mjs --execute --admin-user <uuid> \
 //        (--docker supabase_db_gina --database <izole_db> | --db-url postgresql://postgres:...@127.0.0.1:54322/<izole_db>)
 // --admin-user: public.operations_members(role='content') ya da admins kaydı olan test kullanıcısı.
+// (JWT'deki gina.admin iddiası yalnız admins satırıyla birlikte geçerlidir; içerik operatörü için gerekmez.)
 import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
@@ -120,7 +121,7 @@ const body = JSON.stringify(seed);
 if (body.includes(`$${tag}$`)) throw new Error("seed contains dollar-quote tag");
 const sql = `begin;
 set local role authenticated;
-select set_config('request.jwt.claims', json_build_object('sub','${adminUser}','role','authenticated','gina',json_build_object('role','parent'))::text, true);
+select set_config('request.jwt.claims', json_build_object('sub','${adminUser}','role','authenticated','gina',json_build_object('role','parent','admin',true))::text, true);
 select public.admin_import_education_calendar_seed('${randomUUID()}'::uuid, $${tag}$${body}$${tag}$::jsonb, ${execute ? "true" : "false"});
 commit;
 `;
