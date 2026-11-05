@@ -6,6 +6,13 @@
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 
 import { json } from "./supabase.ts";
+import {
+  type AiAdapterId,
+  type AiModelRecord,
+  type AiProviderRecord,
+  type ModelCapabilities,
+  modelSupport,
+} from "../../../packages/core/src/ai-capabilities.ts";
 
 export { readParent } from "./auth.ts";
 
@@ -50,6 +57,10 @@ export interface AiConfig {
   maxOutputTokens: number;
   maxInputTokens?: number;
   promptVersion: string;
+  /** S06: ai_models.adapter; yoksa Anthropic varsayılır (eski yapılandırma). */
+  adapter?: AiAdapterId;
+  provider?: string;
+  capabilities?: ModelCapabilities;
 }
 
 /**
@@ -96,22 +107,77 @@ export async function resolveAi(
   }
   if (!model) return json({ error: "plan_has_no_ai", plan }, 402);
   const { data: registered, error: modelError } = await db.from("ai_models")
-    .select("active,provider").eq("id", model).maybeSingle();
+    .select(
+      "active,provider,adapter,contract_version,supports_vision,supports_pdf,supports_json_schema,context_tokens,tokenizer",
+    ).eq("id", model).maybeSingle();
   if (modelError) return json({ error: "ai_configuration_unavailable" }, 503);
-  if (!registered?.active || registered.provider !== "anthropic") {
-    return json({ error: "ai_model_unavailable" }, 503);
+  if (!registered?.active) return json({ error: "ai_model_unavailable" }, 503);
+  // S06: model yalnız adıyla etkin olmaz — adapter + yetenek beyanı + sözleşme sürümü + sağlayıcı kaydı gerekir.
+  const { data: providerRow, error: providerError } = await db.from("ai_providers")
+    .select("id,adapter,key_secret_name,data_region,cross_border,cost_class,status")
+    .eq("id", registered.provider).maybeSingle();
+  if (providerError) return json({ error: "ai_configuration_unavailable" }, 503);
+  const record: AiModelRecord = {
+    id: model,
+    provider: registered.provider,
+    active: true,
+    adapter: registered.adapter ?? null,
+    contractVersion: registered.contract_version ?? null,
+    vision: registered.supports_vision === true,
+    pdf: registered.supports_pdf === true,
+    jsonSchema: registered.supports_json_schema === true,
+    contextTokens: registered.context_tokens ?? undefined,
+    tokenizer: registered.tokenizer ?? undefined,
+  };
+  const providers: AiProviderRecord[] = providerRow
+    ? [{
+      id: providerRow.id,
+      displayName: providerRow.id,
+      adapter: providerRow.adapter,
+      keySecretName: providerRow.key_secret_name,
+      dataRegion: providerRow.data_region,
+      crossBorder: providerRow.cross_border === true,
+      costClass: providerRow.cost_class,
+      status: providerRow.status,
+    }]
+    : [];
+  const support = modelSupport(record, providers);
+  if (!support.supported) {
+    return json({
+      error: "ai_model_unsupported",
+      reasons: support.reasons,
+      unsupported_features: support.unsupportedFeatures,
+    }, 503);
   }
   return {
     model,
     maxOutputTokens: maxOutputTokens || minOutputTokens,
     maxInputTokens,
     promptVersion,
+    adapter: record.adapter as AiAdapterId,
+    provider: record.provider,
+    capabilities: {
+      vision: record.vision === true,
+      pdf: record.pdf === true,
+      jsonSchema: record.jsonSchema === true,
+      contextTokens: record.contextTokens as number,
+      tokenizer: record.tokenizer as ModelCapabilities["tokenizer"],
+    },
   };
 }
 
-export function apiKeyOrResponse(): string | Response {
-  const key = Deno.env.get("ANTHROPIC_API_KEY");
-  if (!key) return json({ error: "ai_not_configured" }, 503);
+/** Sağlayıcı anahtarı yalnız secret ADI ile ortamdan okunur. Anthropic: ANTHROPIC_API_KEY (eski davranış);
+ * diğer adapterler kendi secret adını bildirir, yoksa açık `provider_unconfigured`. Değer asla yazılmaz. */
+export function apiKeyOrResponse(config?: Pick<AiConfig, "adapter">): string | Response {
+  const adapter = config?.adapter ?? "anthropic-messages";
+  if (adapter === "anthropic-messages") {
+    const key = Deno.env.get("ANTHROPIC_API_KEY");
+    if (!key) return json({ error: "ai_not_configured" }, 503);
+    return key;
+  }
+  const secretName = adapter === "openai-chat" ? "OPENAI_API_KEY" : adapter === "gemini-generate" ? "GEMINI_API_KEY" : null;
+  const key = secretName ? Deno.env.get(secretName) : undefined;
+  if (!key) return json({ error: "provider_unconfigured", provider: adapter }, 503);
   return key;
 }
 
