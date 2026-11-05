@@ -195,7 +195,7 @@ export const b01 = {
   } as Record<string, string>,
   revoked: {
     title: "Yetkiniz kaldırıldı",
-    body: "Sunucu bu hesabın yönetim yetkisini artık kabul etmiyor. Bu sekmede okuma ve yazma durduruldu; hiçbir işlem gönderilmedi. Yetki yeniden verildiyse çıkış yapıp tekrar giriş yapın.",
+    body: "Sunucu bu hesabın yönetim yetkisini artık kabul etmiyor. Son istek reddedildi ve hiçbir değişiklik yazılmadı; bu sekmede okuma ve işlem durduruldu. Yetki yeniden verildiyse çıkış yapıp tekrar giriş yapın.",
   },
 };
 
