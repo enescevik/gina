@@ -40,6 +40,8 @@ import {
   moveProvaBlock,
   newProvaDraft,
   provaGenerationKind,
+  readSubjectSuggestion,
+  type SubjectSuggestion,
   type ProvaBlock,
   type ProvaDraft,
 } from "@gina/core";
@@ -71,7 +73,7 @@ import {
   BuilderQuestionPreview,
 } from "./prova-builder-ui";
 export default function ProvaBuilder() {
-  const { t } = useTranslation(),
+  const { t, i18n } = useTranslation(),
     { claims } = useSession(),
     cache = useQueryClient();
   const { draftId, groupId, childId: initialChild } = useLocalSearchParams<
@@ -146,6 +148,59 @@ export default function ProvaBuilder() {
       return data;
     },
   });
+  // P01: ders listesi soru bankasına bağımlı değil — S04 ders kataloğu (çocuğun sınıfına göre)
+  // bankadaki derslerle birleşir; boş bankada da ders seçilebilir.
+  const subjectCatalog = useQuery({
+    queryKey: ["guided_options_subject", familyId, draft.childId],
+    enabled: !!draft.childId,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("get_guided_input_options", {
+        p_child: draft.childId!,
+        p_kind: "subject",
+      });
+      if (error) throw error;
+      return (data as unknown as {
+        id: string;
+        label_tr: string;
+        label_en: string;
+      }[]) ?? [];
+    },
+  });
+  const [suggestion, setSuggestion] = useState<SubjectSuggestion | null>(null);
+  const suggest = useMutation({
+    mutationFn: async (text: string) => {
+      const call = supabase.rpc as unknown as (
+        fn: string,
+        args: Record<string, unknown>,
+      ) => PromiseLike<{ data: unknown; error: unknown }>;
+      const r = await call.call(supabase, "suggest_subject", {
+        p_text: text,
+        p_grade: draft.grade,
+      });
+      if (r.error) throw r.error;
+      return readSubjectSuggestion(r.data);
+    },
+    onSuccess: setSuggestion,
+    // Öneri servisi yoksa bile veli yazdığını onaylayarak ekleyebilir.
+    onError: () =>
+      setSuggestion({
+        input: subjectInput.trim(),
+        normalized: "",
+        grade: draft.grade,
+        match: "none",
+        requires_confirmation: true,
+        keep_label: true,
+        scope_note: false,
+        candidates: [],
+      }),
+  });
+  const confirmSubject = (label: string) => {
+    const value = label.trim();
+    if (!value) return;
+    update({ subjects: [...new Set([...draft.subjects, value])] });
+    setSubjectInput("");
+    setSuggestion(null);
+  };
   const material = useQuery({
     queryKey: ["builder_material", familyId, draft.blocks],
     queryFn: () => loadBuilderMaterial(draft.blocks),
@@ -263,9 +318,40 @@ export default function ProvaBuilder() {
   const missing = material.isSuccess && draft.blocks.some((block) =>
     questionsOf(block, mat).length === 0
   );
-  const mismatch = flat.some((q) =>
-    q.grade !== draft.grade || !draft.subjects.includes(q.subject)
-  );
+  // P01: çocuk/sınıf/ders/amaç değişince uygunsuz soruları işaretle (silmeden). Ortak kaynak
+  // grubu tek blok olarak işaretlenir ve bölünmez.
+  const allowedKind = provaGenerationKind(draft);
+  const issuesOf = (q: (typeof flat)[number]) => {
+    const issues: string[] = [];
+    if (q.grade !== draft.grade) {
+      issues.push(t("provaP01.issueGrade", { grade: q.grade }));
+    }
+    if (!draft.subjects.includes(q.subject)) {
+      issues.push(t("provaP01.issueSubject", { subject: q.subject }));
+    }
+    if (allowedKind !== "mixed" && q.kind !== allowedKind) {
+      issues.push(t(`provaP01.issueKind_${q.kind}`));
+    }
+    return issues;
+  };
+  const blockIssues = (block: ProvaBlock) => [
+    ...new Set(questionsOf(block, mat).flatMap(issuesOf)),
+  ];
+  const unsuitableBlocks = material.isSuccess
+    ? draft.blocks.filter((block) => blockIssues(block).length > 0)
+    : [];
+  const mismatch = flat.some((q) => issuesOf(q).length > 0);
+  const sourceMix = (["manual", "ai", "library", "document"] as const).map((
+    source,
+  ) => ({
+    source,
+    count: draft.blocks.filter((block) => block.source === source).reduce(
+      (n, block) => n + questionsOf(block, mat).length,
+      0,
+    ),
+  })).filter((x) => x.count > 0);
+  const sharedGroups = draft.blocks.filter((block) => block.kind === "group")
+    .length;
   const noAnswer = flat.some((q) => !hasAnswer(q));
   const scopeValid = !!child && !!draft.grade && draft.subjects.length > 0;
   const publishValid = scopeValid && !!draft.title.trim() &&
@@ -293,8 +379,12 @@ export default function ProvaBuilder() {
     setChecked(false);
     setSource(false);
   }
+  const english = i18n.language.startsWith("en");
   const choicesSubjects = [
     ...new Set([
+      ...(subjectCatalog.data ?? []).map((o) =>
+        english ? o.label_en : o.label_tr
+      ),
       ...(catalog.data ?? []).map((c) => c.subject),
       ...draft.subjects,
     ]),
@@ -611,22 +701,77 @@ export default function ProvaBuilder() {
                             />
                             <SatinButton
                               secondary
+                              busy={suggest.isPending}
                               disabled={!subjectInput.trim() ||
                                 draft.subjects.length >= 12}
                               title={t("provaBuilder.add")}
-                              onPress={() => {
-                                update({
-                                  subjects: [
-                                    ...new Set([
-                                      ...draft.subjects,
-                                      subjectInput.trim(),
-                                    ]),
-                                  ],
-                                });
-                                setSubjectInput("");
-                              }}
+                              onPress={() =>
+                                suggest.mutate(subjectInput.trim())}
                             />
+                            {subjectCatalog.error
+                              ? (
+                                <Text style={b.muted}>
+                                  {t("guidedInput.catalogFailed")}
+                                </Text>
+                              )
+                              : null}
+                            {suggestion
+                              ? (
+                                <View
+                                  accessibilityLiveRegion="polite"
+                                  style={[b.hint, { gap: 10 }]}
+                                >
+                                  <Text style={b.bold}>
+                                    {t(
+                                      suggestion.candidates.length
+                                        ? "provaP01.subjectSuggestTitle"
+                                        : "provaP01.subjectNoMatch",
+                                      { text: suggestion.input },
+                                    )}
+                                  </Text>
+                                  <View style={b.wrap}>
+                                    {suggestion.candidates.map((c) => (
+                                      <BuilderChoice
+                                        key={c.subject_id}
+                                        label={`${english ? c.label_en : c.label_tr}${
+                                          c.in_grade_scope
+                                            ? ""
+                                            : ` · ${t("provaP01.subjectOutOfGrade")}`
+                                        }`}
+                                        selected={false}
+                                        onPress={() =>
+                                          confirmSubject(
+                                            english ? c.label_en : c.label_tr,
+                                          )}
+                                      />
+                                    ))}
+                                    <BuilderChoice
+                                      label={t("provaP01.subjectKeep", {
+                                        text: suggestion.input,
+                                      })}
+                                      selected={false}
+                                      onPress={() =>
+                                        confirmSubject(suggestion.input)}
+                                    />
+                                  </View>
+                                  <Text style={b.muted}>
+                                    {t("provaP01.subjectConfirmHelp")}
+                                  </Text>
+                                </View>
+                              )
+                              : null}
                           </BuilderCard>
+                          {unsuitableBlocks.length
+                            ? (
+                              <View accessibilityRole="alert" style={b.hint}>
+                                <Text style={b.error}>
+                                  {t("provaP01.scopeChanged", {
+                                    count: unsuitableBlocks.length,
+                                  })}
+                                </Text>
+                              </View>
+                            )
+                            : null}
                         </>
                       )
                       : null}
@@ -783,6 +928,28 @@ export default function ProvaBuilder() {
                               target: draft.target,
                             })}
                           </Text>
+                          {sourceMix.length
+                            ? (
+                              <Text style={b.muted}>
+                                {t("provaP01.mixTitle")}{" "}
+                                {sourceMix.map((x) =>
+                                  `${t(`provaBuilder.source_${x.source}`)} ${x.count}`
+                                ).join(" · ")}
+                                {sharedGroups
+                                  ? ` · ${t("provaP01.sharedGroups", { count: sharedGroups })}`
+                                  : ""}
+                              </Text>
+                            )
+                            : null}
+                          {unsuitableBlocks.length
+                            ? (
+                              <Text accessibilityRole="alert" style={b.error}>
+                                {t("provaP01.unsuitableSummary", {
+                                  count: unsuitableBlocks.length,
+                                })}
+                              </Text>
+                            )
+                            : null}
                           {!draft.blocks.length
                             ? (
                               <View style={b.hint}>
@@ -797,7 +964,10 @@ export default function ProvaBuilder() {
                             : null}
                           {draft.blocks.map((block, index) => {
                             const qs = questionsOf(block, mat),
-                              group = mat.groups.find((g) => g.id === block.id);
+                              group = mat.groups.find((g) => g.id === block.id),
+                              issues = material.isSuccess
+                                ? blockIssues(block)
+                                : [];
                             return (
                               <View
                                 key={block.id}
@@ -809,8 +979,23 @@ export default function ProvaBuilder() {
                                     borderRadius: 20,
                                     padding: 16,
                                   },
+                                  issues.length > 0 && {
+                                    borderLeftWidth: 4,
+                                    borderLeftColor: "#B3261E",
+                                    paddingLeft: 12,
+                                  },
                                 ]}
                               >
+                                {issues.length
+                                  ? (
+                                    <Text
+                                      accessibilityLabel={`${t("provaP01.unsuitable")}: ${issues.join(", ")}`}
+                                      style={b.error}
+                                    >
+                                      {t("provaP01.unsuitable")} · {issues.join(" · ")}
+                                    </Text>
+                                  )
+                                  : null}
                                 <View style={b.row}>
                                   <View style={{ flex: 1, gap: 5 }}>
                                     <Text style={b.bold} numberOfLines={2}>

@@ -3453,5 +3453,22 @@
   "provaP02.editor.previewImages_one": "{{count}} görsel soruyla birlikte gösterilir.",
   "provaP02.editor.previewImages_other": "{{count}} görsel soruyla birlikte gösterilir.",
   "provaP02.editor.previewNotebook": "Çocuk cevabını çözüm defterine yazar veya çizer.",
-  "provaP02.editor.previewHidden": "Doğru cevap, ölçüt ve çözüm çocuğa gösterilmez."
+  "provaP02.editor.previewHidden": "Doğru cevap, ölçüt ve çözüm çocuğa gösterilmez.",
+  "provaP01.subjectSuggestTitle": "“{{text}}” için hangi dersi kastettin?",
+  "provaP01.subjectNoMatch": "“{{text}}” katalogdaki bir dersle eşleşmedi. Yazdığın gibi ekleyebilirsin.",
+  "provaP01.subjectKeep": "Yazdığım gibi ekle: {{text}}",
+  "provaP01.subjectOutOfGrade": "bu sınıfta yok",
+  "provaP01.subjectConfirmHelp": "Öneriler yalnız yardımcıdır; ders sen seçince eklenir.",
+  "provaP01.unsuitable": "Bu seçime uygun değil",
+  "provaP01.issueGrade": "{{grade}}. sınıf sorusu",
+  "provaP01.issueSubject": "ders: {{subject}}",
+  "provaP01.issueKind_multiple_choice": "çoktan seçmeli (bu Prova açık uçlu)",
+  "provaP01.issueKind_open_ended": "açık uçlu (bu Prova çoktan seçmeli)",
+  "provaP01.scopeChanged_one": "Seçimin değişti: {{count}} soru bloğu artık uygun değil. Silinmedi; Sorular adımında işaretli.",
+  "provaP01.scopeChanged_other": "Seçimin değişti: {{count}} soru bloğu artık uygun değil. Silinmedi; Sorular adımında işaretli.",
+  "provaP01.unsuitableSummary_one": "{{count}} blok seçili çocuk, sınıf, ders veya soru türüyle uyumsuz. Kaldır ya da seçimi düzelt.",
+  "provaP01.unsuitableSummary_other": "{{count}} blok seçili çocuk, sınıf, ders veya soru türüyle uyumsuz. Kaldır ya da seçimi düzelt.",
+  "provaP01.mixTitle": "Bu taslakta:",
+  "provaP01.sharedGroups_one": "{{count}} ortak kaynak grubu",
+  "provaP01.sharedGroups_other": "{{count}} ortak kaynak grubu"
 }

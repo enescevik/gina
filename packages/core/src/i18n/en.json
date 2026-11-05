@@ -3458,5 +3458,22 @@
   "provaP02.editor.previewImages_one": "{{count}} image is shown with the question.",
   "provaP02.editor.previewImages_other": "{{count}} images are shown with the question.",
   "provaP02.editor.previewNotebook": "Your child writes or draws the answer in the notebook.",
-  "provaP02.editor.previewHidden": "The answer, criteria and solution are not shown to your child."
+  "provaP02.editor.previewHidden": "The answer, criteria and solution are not shown to your child.",
+  "provaP01.subjectSuggestTitle": "Which subject did you mean by “{{text}}”?",
+  "provaP01.subjectNoMatch": "“{{text}}” did not match a catalogue subject. You can add it as written.",
+  "provaP01.subjectKeep": "Add as written: {{text}}",
+  "provaP01.subjectOutOfGrade": "not in this grade",
+  "provaP01.subjectConfirmHelp": "Suggestions only help; the subject is added when you choose it.",
+  "provaP01.unsuitable": "Not suitable for this choice",
+  "provaP01.issueGrade": "grade {{grade}} question",
+  "provaP01.issueSubject": "subject: {{subject}}",
+  "provaP01.issueKind_multiple_choice": "multiple choice (this Prova is open-ended)",
+  "provaP01.issueKind_open_ended": "open-ended (this Prova is multiple choice)",
+  "provaP01.scopeChanged_one": "Your choice changed: {{count}} question block no longer fits. It was not removed; it is marked in the Questions step.",
+  "provaP01.scopeChanged_other": "Your choice changed: {{count}} question blocks no longer fit. They were not removed; they are marked in the Questions step.",
+  "provaP01.unsuitableSummary_one": "{{count}} block does not fit the selected child, grade, subject or question type. Remove it or adjust the choice.",
+  "provaP01.unsuitableSummary_other": "{{count}} blocks do not fit the selected child, grade, subject or question type. Remove them or adjust the choice.",
+  "provaP01.mixTitle": "In this draft:",
+  "provaP01.sharedGroups_one": "{{count}} shared source group",
+  "provaP01.sharedGroups_other": "{{count}} shared source groups"
 }
