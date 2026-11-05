@@ -53,7 +53,7 @@ export default function ProfileArchiveScreen() {
   );
   const [tab, setTab] = useState<"active" | "archived">("active");
   const [feedback, setFeedback] = useState("");
-  const [restored, setRestored] = useState(false);
+  const [restored, setRestored] = useState<string | null>(null);
   const request = useRef({ key: "", id: "" });
   const sending = useRef(false);
   const children = useQuery({
@@ -98,9 +98,9 @@ export default function ProfileArchiveScreen() {
       if (error) throw error;
       return archived;
     },
-    onSuccess: async (archived) => {
+    onSuccess: async (archived, value) => {
       setSelected(null);
-      setRestored(!archived);
+      setRestored(archived ? null : value.id);
       setTab(archived ? "archived" : "active");
       setFeedback(
         t(archived ? "childArchive.savedArchive" : "childArchive.savedRestore"),
@@ -246,7 +246,7 @@ export default function ProfileArchiveScreen() {
           />
           <NavigationCard
             title={t("childArchive.manageRoutines")}
-            onPress={() => router.push("/parent/tasks")}
+            onPress={() => router.push({pathname:"/parent/tasks",params:{childId:restored!,paused:"1"}})}
           />
         </>
       )}

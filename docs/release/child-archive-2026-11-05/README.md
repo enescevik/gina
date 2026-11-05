@@ -8,7 +8,7 @@ Ayarlar → Aile → **Çocuk profili arşivi**. Aktif ve arşivdeki profiller a
 
 - Arşiv aynı çocuk kimliğini korur. Sınıf/okul değişikliği için ayrı Eğitim yolculuğu bağlantısı vardır.
 - Rutinler duraklatılır. Yeni görev, Prova, ödev, cevap, program, hedef, ödül, oda ve eğitim güncellemesi sunucuda engellenir. Tarihsel kayıtlar korunur; eğitim geçmişine ve gelişim raporuna arşiv ekranından ulaşılır.
-- Cihazın aktif çocuk kimliği ve izinli seçimleri kaldırılır. Önceden bütün çocuklara izin veren cihaz da ayrıca engellenir. Eski cihaz oturumu sunucu kontrolünü aşamaz. Geri alma cihazları/rutinleri/bağlantıları otomatik açmaz.
+- Cihazın aktif çocuk kimliği ve izinli seçimleri kaldırılır. Önceden bütün çocuklara izin veren cihaz da ayrıca engellenir. Eski cihaz oturumu sunucu kontrolünü aşamaz. Geri alma cihazları/rutinleri/bağlantıları otomatik açmaz. Rutinleri düzenle bağlantısı geri alınan çocuğun duraklatılmış rutinlerini açar.
 - Veli telefonundaki çocuk modu güvenli bekleme ekranına geçer. Ebeveyn alanına otomatik çıkmaz. Çıkış mevcut veli PIN’i veya aynı hesaba ait doğrulanmış kurtarma yolunu gerektirir. Ağ hatası ayrı açıklanır.
 - Çocuğa bağlı yeni AI rezervasyonları durur: belgeden program, ödev/çalışma, Prova üretimi, değerlendirme ve çalışma planı. Çocuk kimliğine bağlı olmayan genel aile önerileri devam edebilir; öneriyi arşivdeki çocuğa atamak engellenir.
 - Kullanılmış haklar yenilenmez. Arşivdeki çocuk mevcut paket çocuk sınırında sayılmaya devam eder.

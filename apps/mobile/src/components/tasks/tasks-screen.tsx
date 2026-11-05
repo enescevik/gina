@@ -43,10 +43,10 @@ export function TasksScreen() {
   const familyId = claims?.family_id ?? "";
   const timeZone = useFamilyTimezone();
   const cache = useQueryClient();
-  const params = useLocalSearchParams<{ childId?: string; create?: string; taskId?: string }>();
+  const params = useLocalSearchParams<{ childId?: string; create?: string; taskId?: string; paused?: string }>();
   const [childId, setChildId] = useState<string | null>(params.childId ?? null);
   const [initialCreate, setInitialCreate] = useState(params.create === "1");
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(params.paused === "1");
   const [creating, setCreating] = useState<PlannerChild | null>(null);
   const [notice, setNotice] = useState("");
   const children = useQuery({
