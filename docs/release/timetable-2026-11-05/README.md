@@ -29,7 +29,8 @@ Bu bir uzman görüşü/klinik değerlendirme değildir; ürün incelemesinde a�
 
 - Temel mantık: 251 test; bunun 8'i bu akışın zamanlama, ad eşleme, hariç tutma, öğle arasını koruma ve yer değiştirme davranışını kapsar.
 - İçe aktarma şeması ve açıklama sınırı: 5 test.
-- Mobil TypeScript/lint ve Edge tip kontrolü geçti.
+- Mobil, core, API ve yönetim TypeScript/lint ile Edge tip kontrolü geçti.
+- Son izole hizmet koşusunda 257 kontrol geçti; ayrı aileye erişim, AI onayı, açıklama sınırı, aynı isteğin tek üretimi ve değişen açıklamanın ayrı taslağı doğrulandı. Geçici veritabanı ve servisler temizlendi; `isolated-services.json` kaydı eklendi.
 - Gerçek yerel Auth/REST/Storage/Edge/DB ile sentetik aile üzerinde fotoğraf seçme, açıklama gönderme, 40 ders inceleme, saat tamamlama, kayıt/yeniden açma kontrol edildi. AI sağlayıcısı bu otomatik/yerel kabulde deterministik test yanıtı verir; gerçek fotoğrafı okuma kalitesi testi değildir.
 - Tarayıcıda tutamaktan sürükleme, iki dokunuşla değiştirme ve geri alma; 10 → 20 dakika teneffüste yalnız o günün devamının kayması doğrulandı.
 - Dar/geniş görünüm geçişinde içe aktarma penceresinin kapanması bulundu ve giderildi; tablo ve girişler korunarak geçiş tekrar denendi.
