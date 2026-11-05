@@ -48,8 +48,8 @@ Mobil kaynaklarda `components/…` kısaltması `apps/mobile/src/components/…`
 
 ## 4. İş sırası ve durum yöntemi
 
-Sıra: **R01 → L01–L04 → U01–U09 → P01–P05 → B01–B04 → S01–S06 → Q01–Q04 → K01 → F01 → R02 → WORLD-01**.
-Bu, geliştirme önceliğidir; ileri aşamadaki servis/entegrasyon kabulü erken UI işini durdurmaz. Aşağıda “son kabul” olarak belirtilen bağlar geliştirmeye başlama koşulu değildir. Ortak sözleşmeyi mevcut koddan sabitle, iki tarafı ayrı uygula, birleşik testi sonra kapat. Bağımsız işler öne alınabilir; R01 gizlilik yayını diğer kapsam için bekletilmez. S01/S02/S03/S05 hesap sahibi veya uzman adımları erkenden başlatılır. Ara TestFlight yayınları yapılabilir. R02 tüm kapsamın son yayın/kabulü; 3B bundan sonradır.
+Sıra: **R01 → Q00 ilk inceleme → L01–L04 → U01–U09 → P01–P05 → B01–B04 → S01–S06 → Q01–Q04 → K01 → F01 → R02 → WORLD-01**.
+Bu, geliştirme önceliğidir; ileri aşamadaki servis/entegrasyon kabulü erken UI işini durdurmaz. Aşağıda “son kabul” olarak belirtilen bağlar geliştirmeye başlama koşulu değildir. Ortak sözleşmeyi mevcut koddan sabitle, iki tarafı ayrı uygula, birleşik testi sonra kapat. Bağımsız işler öne alınabilir; R01 gizlilik yayını diğer kapsam için bekletilmez. S01/S02/S03/S05 hesap sahibi veya uzman adımları erkenden başlatılır. Ara TestFlight yayınları yapılabilir. R02 tüm kapsamın son yayın/kabulü; 3B bundan sonradır. Q00 ilk incelemesi iyileştirmelerin öncesinde başlar, her pakette düzeltme sonrası tekrarlanır; yalnız en sondaki cihaz testine bırakılmaz.
 
 Durumlar: `AÇIK`, `YAPILIYOR`, `KOD HAZIR`, `TEST EDİLDİ`, `YAYINLANDI`, `BEKLİYOR`. Kutucuk ancak işin kabul ölçütleri kapandığında işaretlenir. Her işte sonuç notu şu alanları taşımalı: **commit/PR; değişen dosyalar; test/ekran kanıtı; yayın sürümü veya yayımlanmadı; kalan sınır**. Başlangıçta aşağıdaki bütün kutular açıktır; “temeli var” yeniden geliştirme talimatı değildir.
 
@@ -58,6 +58,28 @@ Durumlar: `AÇIK`, `YAPILIYOR`, `KOD HAZIR`, `TEST EDİLDİ`, `YAYINLANDI`, `BEK
   - Kaynak: `supabase/migrations/20261105180000_reward_history.sql`, `20261105190000_note_history.sql`, ilgili iki release raporu; `.github/workflows/`, `scripts/deploy-preflight.mjs`.
   - Yap: canlı migration envanterini oku; uygun yedek ve eski istemci uyumunu kontrol et; bekleyen migration'ları sırasıyla uygula; web/mobil/tablet istemcilerini aynı kaynaktan yayımla. Yönetim bu paketten etkileniyorsa aynı kaynakla güncelle. Eski istemcinin kalıcı not silmesinin artık reddedileceğini sürüm notuna yaz.
   - Kabul: iki veli + çocuk + yabancı aileyle özel/paylaşılan not sınırı; paylaşım iptalinin açık ekranda görünmesi; eski ödül talebinde özgün bedel/ad; yeni web ve gerçek TestFlight/Ad Hoc sürüm kanıtı. Sadece PR merge, derleme veya atlanmış Actions işi yayın değildir.
+
+### Q00 — ZORUNLU: bütün uygulamalarda ekran ve süreçleri çok yönlü incele, düzelt, yeniden doğrula
+- [ ] **Q00 / Tüm ekranların deneyim incelemesi ve iyileştirilmesi.** Başlangıç: R01 acil yayını geciktirmeden, U/P/B düzenlemelerinden önce ilk envanter ve inceleme. Son kapanış: ilgili düzeltmeler ve Q01/Q02 kanıtları tamamlanınca. Bu görev yalnız rapor yazmak veya mevcut görünümü onaylamak değildir.
+  - Kaynak: `docs/EXPERIENCE-IMPLEMENTATION.md`, mevcut rota/bileşen ağacı, çalışan mobil/web/yönetim uygulamaları, son onaylı ekran referansları. Önceki inceleme planı devam eder; mevcut iş paketleri bulunabilecek sorunlara üst sınır değildir.
+  - **Kapsam:** iOS/Android mobil, aile web uygulaması, bağımsız çocuk cihazı, veli cihazındaki çocuk modu ve backoffice. Giriş/kayıt/kurtarma/OAuth, aile/eşleme/PIN, ana ekranlar, takvim/program, görev/ödül/hedef, Prova hazırlama–cevaplama–inceleme, gelişim, not/puan, kütüphane, paket/ödeme, bildirim/paylaşım/yardım, ayarlar/arşiv/silme ve tüm yönetim ekranları. Modal, sihirbaz adımı, menü, alt panel, boş/yükleniyor/hata/izin durumu da ayrı inceleme birimidir. Kaynak koddan yeni/eksik rotaları bularak envantere ekle; mevcut listeyle yetinme.
+
+  Her ekran ve bağlı akış şu bakış açılarının **tamamıyla**, kullanıcı türüne uygun biçimde değerlendirilecek:
+
+  | Bakış açısı | Somut inceleme soruları |
+  |---|---|
+  | Psikoloji | Seçenek yükü, belirsizlik, hata kaygısı ve karar yorgunluğu azaltılıyor mu? Çocuk dili utandırmadan/karşılaştırmayla baskı kurmadan yönlendiriyor mu? Veli ve çocuk ne olacağını öngörüp gerektiğinde geri dönebiliyor mu? |
+  | Pedagoji / çocuk gelişimi | Yaş, okuma ve motor becerilerine uygun mu? Rehberlik kademeli mi; özerklik, yetişkin yardımı ve ortak cihaz güvenliği dengeli mi? Ödül/rozet ve süre çocuğu zorlayıcı bir baskıya dönüşüyor mu? |
+  | Eğitmen / ölçme-değerlendirme | Okul/sınıf/program/dönem bağlamı doğru mu? Soru, ortak kaynak, cevap, rubrik ve geri bildirim birlikte anlaşılabiliyor mu? Eksik/inceleme bekleyen veri başarısızlık diye gösteriliyor mu; öneri uygulanabilir bir sonraki adıma dönüşüyor mu? |
+  | UX / bilgi mimarisi | Kullanıcı bu ekrana neden geliyor, ana işi ne ve sonraki adımı biliyor mu? Yinelenen bağlantı, gereksiz seçim, uzun form veya çıkmaz var mı? Seçmeli katalog/şablon, kolay düzeltme ve deneyimli kullanıcı kısa yolu yeterli mi? |
+  | Görsel / etkileşim tasarımı | Onaylı kimliğe ve yerleşim kararlarına sadık mı? Başlık, yazı, ikon, maskot, renk, buton, boşluk ve animasyon birbiriyle tutarlı mı? Hangi eylemin öncelikli olduğu açık mı; görsel süs içeriği/okunabilirliği engelliyor mu? |
+  | Yazılım mimarisi / güvenlik | Rol/aile/çocuk/cihaz sınırı, taslak ömrü, hata kurtarma, senkronizasyon, eski sürüm, eşzamanlı işlem, idempotency ve performans doğru mu? Kontrol yalnız UI'da mı; sunucu da aynı kuralı uyguluyor mu? |
+  | Erişilebilirlik / cihaz kullanımı | Küçük/büyük ekran, iki yön, safe area, klavye, büyük yazı, ekran okuyucu, kalem/parmak ve azaltılmış harekette kullanılabilir mi? Taşma, örtülme, sığmama, küçük hedef ve yanlış odak var mı? |
+
+  - **Yöntem:** her akışı gerçek uygulamada, yeni ve deneyimli kullanıcı senaryosuyla dolaş. 0/1/çok çocuk ve kayıt, farklı izinler, ilk/tekrar kullanım, ağ/hata durumlarını uygula. Sadece kaynak kod okumayı veya bir ana ekran görüntüsünü bütün ekranların incelenmesi sayma. Erişilemeyen ekranı `GÖRÜLEMEDİ` ve nedeni ile kaydet; uzman bakışını gerçek psikolog/pedagog veya çocuk kullanıcı araştırması yapılmış gibi sunma.
+  - **Teslim:** `docs/release/experience-review/SCREEN-REVIEW-MATRIX.md` içinde ekran/alt akış, platform/rol/ekran boyu, senaryo, her bakış açısına ait bulgu (veya gerekçeli sorun görülmedi/uygulanmaz), öncelik, ilgili iş kimliği, önerilen değişiklik, önce/sonra kanıtı, test ve kalan sınır. Bir sorunu birden fazla rolde tekrarlamak yerine gerekçelerini ilişkilendir.
+  - **Düzeltme:** bulguları U/P/B/S/L işlerine bağla; kapsam dışı kalan gerçek kusura yeni ID ekle. Onaylı ortak dili koruyarak gereken işleyiş, metin, kontrol ve yerleşim düzeltmelerini uygula. İşlev veya temel ürün kuralı değişecekse etkisini ayrı kaydet; sessizce özellik kaldırma. Sonra aynı senaryoyu yeniden dene ve onaylı referansla karşılaştır.
+  - **Kabul:** bütün mevcut rotalar ve alt akışlar matriste yer alır; görülmeyen/test edilmeyen alan açıkça ayrılır. Engelleyici/yüksek öncelikli kullanılabilirlik, erişilebilirlik ve yetki kusurları kapanır; diğer her bulgu ya düzeltilir ya gerekçeli, açık takip işidir. Q00 yalnız raporla kapanmaz; açık zorunlu bulgu varken R02 ve WORLD-01 başlamaz. Telefon/tablet/web/yönetim önce–sonra kanıtı gerekir; “tüm ekranlar incelendi” ancak kapsam matrisi bunu destekliyorsa yazılır.
 
 ### L — dönem ve içerik yaşam döngüsü
 - [ ] **L01 / Seçerek dönem aktarımı.** Bağımlılık: R01, mevcut eğitim dönemi ve rutin geçmişi.
@@ -183,7 +205,7 @@ Durumlar: `AÇIK`, `YAPILIYOR`, `KOD HAZIR`, `TEST EDİLDİ`, `YAYINLANDI`, `BEK
 
 ### Q — bütünleşik kalite, güvenlik ve işletim kabulü
 - [ ] **Q01 / Tüm ekranların cihaz ve erişilebilirlik matrisi.** Bağımlılık: U/P/B tamamlanmış paketleri, X05 fiziksel cihaz.
-  - Kaynak: ekran envanteri; `docs/design/screens/fidelity-completion/`, `notebook-keyboard-acceptance/`, `native-journal-recovery/` ve yeni ekran kanıtları.
+  - Kaynak: Q00 inceleme matrisi ve ekran envanteri; `docs/design/screens/fidelity-completion/`, `notebook-keyboard-acceptance/`, `native-journal-recovery/` ve yeni ekran kanıtları.
   - Yap: telefon dar/geniş, tablet iki yön, masaüstü; 0/1/çok veri, loading/empty/error/offline, klavye, büyük yazı, ekran okuyucu, azaltılmış hareket. Her ekran/alt akış için görülen kusur→düzeltme→kanıt kaydı. iPhone/iPad/Pencil/Android gerçek testini web screenshot'ından ayrı tut.
   - Kabul: taşma, arkada kalma, kesilmiş eylem, çizimde scroll/yön döngüsü yok; metin/dokunma erişimi; onaylı referansla yan yana görüntüler. Fiziksel cihaz denenmediyse kutu kapanmaz.
 - [ ] **Q02 / Uçtan uca işlev, yetki, performans.** Bağımlılık: tüm uygulama paketleri.
@@ -212,7 +234,7 @@ Durumlar: `AÇIK`, `YAPILIYOR`, `KOD HAZIR`, `TEST EDİLDİ`, `YAYINLANDI`, `BEK
   - Kabul: neyin mevcut ürüne dahil/neye ayrıca karar gerektiği açık; tasarım/uygulama/yayın onayı varmış gibi davranılmaz. Bu işin mevcut kapanışı plan teslimi ve kullanıcı kararı kaydıdır. Kullanıcı kapsamı genişletirse yeni iş kimlikleri ekle; 3B bunların da arkasına gider.
 
 ### R02 — son bütünleşik yayın ve devir
-- [ ] **R02 / Tüm tamamlanan kapsamı yayımla ve raporla.** Bağımlılık: R01, L/U/P/B/S/Q/K ve F01 planı; gereken dış onaylar. Ara yayınlar bu kapının yerine geçmez.
+- [ ] **R02 / Tüm tamamlanan kapsamı yayımla ve raporla.** Bağımlılık: R01, Q00 düzeltme ve tekrar kontrolleri, L/U/P/B/S/Q/K ve F01 planı; gereken dış onaylar. Ara yayınlar bu kapının yerine geçmez.
   - Yap: migration/Edge→web/yönetim→canlı kabul→imzalı mobil→TestFlight→kayıtlı tablet Ad Hoc→fiziksel kabul. Android hedefi için Play iç test; mağaza başvurusu yalnız ilgili işletme/hukuk/ödeme kapıları tamamlanınca. Gerçek aileleri testle değiştirme.
   - Kabul: kaynak commit, migration seviyesi, Edge ve hosting sürümü, Apple işleme/grup erişimi, tablet canlı manifest ve IPA hash, Android durumu, gerçek cihaz kanıtı. Kullanıcıya çalışan linkler, değişenler, açık sınırlamalar ve hesap sahibinin adım adım işleri verilir. “Her şey bitti” ancak bütün zorunlu işlerin kanıtı varsa söylenir.
 
@@ -253,4 +275,4 @@ Planlama tahmini: hazır yayın ½–1 iş günü; dönem/temizlik 3–5; mevcut
 
 ## 8. Claude'a verilecek başlangıç talimatı
 
-“GINA'da `docs/CLAUDE-REMAINING-WORK.md` dosyasını ana yürütme listesi, `docs/EXPERIENCE-IMPLEMENTATION.md` dosyasını ekran envanteri olarak oku. Güncel main'i yerel değişiklikleri koruyarak al. Önce mevcut yayın durumunu doğrula ve R01'den başla; tamamlanan işleri yeniden yapmadan sırayla ilerle. Onaylı tasarım/marka/maskotu koru. Her işin kabul ölçütünü gerçek test ve telefon/tablet kanıtıyla kapat; kod, test ve yayını ayrı raporla. Hesap sahibi veya bağımsız editör gerektiren işleri açık tutup bağımsız işlere devam et. İşlerin tümü tamamlanıp R02 kapatılmadan 3B dünya/atmosfer üretimine başlama. Önceki talimatlarla çelişkide bu dosyadaki son kullanıcı kararını uygula.”
+“GINA'da `docs/CLAUDE-REMAINING-WORK.md` dosyasını ana yürütme listesi, `docs/EXPERIENCE-IMPLEMENTATION.md` dosyasını ekran envanteri olarak oku. Güncel main'i yerel değişiklikleri koruyarak al. Önce mevcut yayın durumunu doğrula ve R01'den başla; tamamlanan işleri yeniden yapmadan sırayla ilerle. Onaylı tasarım/marka/maskotu koru. Q00 gereği bütün uygulamalardaki her ekran ve alt akışı psikoloji, pedagoji, eğitmen, UX/görsel tasarım, yazılım mimarisi/güvenlik ve erişilebilirlik bakışlarıyla gerçek kullanımda incele; bulguları yalnız raporlama, düzelt ve tekrar doğrula. Her işin kabul ölçütünü gerçek test ve telefon/tablet kanıtıyla kapat; kod, test ve yayını ayrı raporla. Hesap sahibi veya bağımsız editör gerektiren işleri açık tutup bağımsız işlere devam et. İşlerin tümü tamamlanıp R02 kapatılmadan 3B dünya/atmosfer üretimine başlama. Önceki talimatlarla çelişkide bu dosyadaki son kullanıcı kararını uygula.”

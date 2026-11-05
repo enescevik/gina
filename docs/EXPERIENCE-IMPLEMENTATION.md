@@ -23,6 +23,10 @@
 | 5 — Yönetim çalışma alanları | AI/katalog görünümü ve taslak koruması uygulandı; kalan kapsam açık. |
 | 6 — Cihaz, erişilebilirlik ve yayın | Açık. Web önizlemesi fiziksel cihaz kabulünün yerine geçmez. |
 
+## Zorunlu inceleme yöntemi — Q00
+
+[Q00 çok yönlü ekran incelemesi](CLAUDE-REMAINING-WORK.md) bu tablodaki ve kaynak kodda sonradan bulunan **bütün ekranlar ve alt akışlar** için zorunludur. Psikoloji, pedagoji, eğitmen, UX/görsel tasarım, yazılım mimarisi/güvenlik ve erişilebilirlik açısından gerçek kullanım incelemesi yapılır; bulgular uygulanır ve aynı senaryolarla yeniden doğrulanır. Bu, yalnız görsel benzerlik kontrolü veya rapor hazırlama işi değildir. İnceleme matrisi ve önce/sonra kanıtı olmadan ekran tamamlandı sayılmaz. Daha önce uygulanmış ekran da inceleme kapsamındadır; sorun yoksa gerekçesi kaydedilir, gereksiz yeniden tasarlanmaz.
+
 ## Ekran ve alt akış bazında kalan kapsam
 
 
