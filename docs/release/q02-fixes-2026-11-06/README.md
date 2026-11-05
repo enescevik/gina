@@ -226,7 +226,7 @@ Tümü izole klon DB'de, migration'lar main `7066de1` + bu dalın `2026110613000
 | Politika denkliği | `verify_policies` (scratch) → `policy-equivalence.json` | 110 = 110 politika; qual/with_check/komut/rol/tür 0 fark; 271 çıplak → 0, 271 InitPlan |
 | Perf önce/sonra | `python3 scripts/test-q02-perf.py --run-local` ×3 (+ önce-2) | §3 tabloları; `perf-before.json`, `perf-after.json`, `perf-after-2.json`, `perf-before-2.json` |
 | `pnpm --filter @gina/core test` | — | **312 geçti** (16,5 s) |
-| `scripts/test-e2e-family-chain.py --run-local` | — | E2E_RESULT |
+| `scripts/test-e2e-family-chain.py --run-local` | — | **296/296 kontrol geçti** (`chain-details-after.json`); `notes.foreign_revoke_device_response` artık `error: device_not_found` kaydediyor (önce `null`), `foreign_revoke_device_has_no_effect` geçmeye devam etti |
 | `scripts/security/check-auth-delete-privilege.sql` | yerel gerçek stack `postgres` DB, salt okunur | 8/8 `ok` (klonda 1 bilinen artefakt, §6) |
 
 CI (`.github/workflows/ci.yml` db işi) bu dalda GitHub'da **çalıştırılmadı** (push yok); adım yerel `psql` ile aynı komut biçiminde doğrulandı (`alter database … set timezone` klon DB'de uygulanıp 97 dosya geçti).
