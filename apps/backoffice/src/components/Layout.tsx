@@ -220,6 +220,8 @@ export function Layout(
                     </>
                   )
                   : null}
+                {roles.includes("content") ? <Link href="/education-calendars" className={router.pathname === "/education-calendars" ? "admin-nav active" : "admin-nav"}><PublicationIcon name="school" />Eğitim takvimleri</Link> : null}
+                {roles.includes("release") ? <Link href="/announcements" className={router.pathname === "/announcements" ? "admin-nav active" : "admin-nav"}><PublicationIcon name="chat" />Duyurular</Link> : null}
                 {roles.includes("release") ? <Link href="/notifications" className={router.pathname === "/notifications" ? "admin-nav active" : "admin-nav"} aria-current={router.pathname === "/notifications" ? "page" : undefined}><PublicationIcon name="check" />Bildirim teslimi</Link> : null}
                 {roles.includes("finance") ? <Link href="/billing" className={router.pathname === "/billing" ? "admin-nav active" : "admin-nav"} aria-current={router.pathname === "/billing" ? "page" : undefined}><PublicationIcon name="lock" />Paketler ve ödemeler</Link> : null}
                 {roles.includes("content")

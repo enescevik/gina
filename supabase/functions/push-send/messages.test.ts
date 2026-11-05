@@ -46,3 +46,11 @@ Deno.test("legacy exam identity and text remain available", () => {
     "Bir deneme tamamlandı",
   );
 });
+Deno.test("parent notices keep school details off the lock screen", () => {
+  const msg = messageFor({ kind: "parent_announcement", payload: { inbox_id: id, school: "Private School", body: "Detailed closure reason", child_id: id } }, "tr");
+  assertEquals(msg.body, "Yeni bir GINA duyurusu var");
+  assertEquals(msg.data, { kind: "parent_announcement", inbox_id: id });
+});
+Deno.test("calendar reminders have an English generic notification", () => {
+  assertEquals(messageFor({ kind: "education_reminder", payload: {} }, "en").body, "You can review the school calendar");
+});

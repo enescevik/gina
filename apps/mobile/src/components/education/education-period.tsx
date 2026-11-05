@@ -1,10 +1,18 @@
 import { useRef, useState } from "react";
 import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { randomUUID } from "expo-crypto";
 import { BookOpen, GraduationCap, School, Pencil } from "lucide-react-native";
-import { isCalendarDate } from "@gina/core";
+import {
+  isCalendarDate,
+  DEFAULT_EDUCATION_PLACE,
+  stageForGrade,
+  type EducationStage,
+  type EducationCatalog,
+  type EducationCalendarPreview,
+} from "@gina/core";
+import { CalendarContext } from "./calendar-context";
 import { supabase } from "@/lib/supabase";
 import { SetupWizard, ChoiceCard } from "@/components/setup/wizard";
 import { DateChoice } from "@/components/ui/date-time-choice";
@@ -77,6 +85,58 @@ export function EducationPeriodWizard({
   const [school, setSchool] = useState(current?.school ?? "");
   const [start, setStart] = useState(initial.today);
   const [keep, setKeep] = useState(true);
+  const catalog = useQuery({
+    queryKey: ["education_calendar_catalog", child.id],
+    queryFn: async () => {
+      const r = await supabase.rpc("education_calendar_catalog", {
+        p_child_id: child.id,
+      });
+      if (r.error) throw r.error;
+      return r.data as unknown as EducationCatalog;
+    },
+  });
+  const [chosenPlace, setChosenPlace] = useState<string | null>(null);
+  const [chosenStage, setChosenStage] = useState<EducationStage | null>(null);
+  const [reason, setReason] = useState<string | null>(null);
+  const [detail, setDetail] = useState("");
+  const placeId =
+    chosenPlace ?? catalog.data?.location?.place_id ?? DEFAULT_EDUCATION_PLACE;
+  const stage =
+    stageForGrade(grade) ??
+    chosenStage ??
+    catalog.data?.location?.stage ??
+    "primary";
+  const calendar = useQuery({
+    queryKey: [
+      "education_calendar_preview",
+      child.id,
+      placeId,
+      stage,
+      year,
+      action,
+      start,
+    ],
+    enabled: !!catalog.data && isCalendarDate(start),
+    queryFn: async () => {
+      const r = await supabase.rpc("preview_education_calendar", {
+        p_child_id: child.id,
+        p_place_id: placeId,
+        p_stage: stage,
+        p_academic_year: year,
+        p_action: action,
+        p_starts_on: start,
+      });
+      if (r.error) throw r.error;
+      return r.data as unknown as EducationCalendarPreview;
+    },
+  });
+  const calendarValid =
+    !!calendar.data &&
+    !calendar.isFetching &&
+    !calendar.error &&
+    (!calendar.data.warning ||
+      (!!reason &&
+        (reason !== "school_calendar" || detail.trim().length >= 10)));
   const request = useRef({ id: randomUUID(), payload: "" });
   const saving = useRef(false);
   const gradeText = (value: number | null) =>
@@ -87,6 +147,8 @@ export function EducationPeriodWizard({
         : t("parent.gradeShort", { grade: value });
   const choose = (next: Action) => {
     setAction(next);
+    setReason(null);
+    setDetail("");
     setYear(
       current
         ? current.academic_year + (next === "new_year" ? 1 : 0)
@@ -107,10 +169,12 @@ export function EducationPeriodWizard({
   const schoolValid =
     action !== "transfer" ||
     (!!school.trim() && school.trim() !== current?.school);
-  const valid = step === 0 || (dateValid && schoolValid);
+  const valid =
+    step === 0 || (dateValid && (step < 2 || (schoolValid && calendarValid)));
   const save = useMutation({
     mutationFn: async () => {
-      if (!dateValid || !schoolValid) throw Error("education_invalid");
+      if (!dateValid || !schoolValid || !calendarValid)
+        throw Error("education_invalid");
       const args = {
         p_child_id: child.id,
         p_revision: initial.revision,
@@ -121,15 +185,27 @@ export function EducationPeriodWizard({
         p_starts_on: start,
         p_timetable_revision: initial.timetable.revision,
         p_keep_timetable: keep,
+        p_place_id: placeId,
+        p_stage: stage,
+        p_calendar_id: calendar.data?.calendar?.id ?? null,
+        p_calendar_revision: calendar.data?.calendar?.revision ?? null,
+        p_reason: calendar.data?.warning ? reason : null,
+        p_detail:
+          calendar.data?.warning && reason === "school_calendar"
+            ? detail.trim()
+            : null,
       };
       const payload = JSON.stringify(args);
       if (request.current.payload && request.current.payload !== payload)
         request.current.id = randomUUID();
       request.current.payload = payload;
-      const { error } = await supabase.rpc("change_child_education", {
-        ...args,
-        p_request_id: request.current.id,
-      });
+      const { error } = await supabase.rpc(
+        "change_child_education_with_calendar",
+        {
+          ...args,
+          p_request_id: request.current.id,
+        },
+      );
       if (error) throw error;
     },
     onSuccess: async () => {
@@ -142,7 +218,7 @@ export function EducationPeriodWizard({
   });
   const conflict =
     !!save.error &&
-    /education_changed|timetable_conflict|education_use_transition/.test(
+    /education_changed|timetable_conflict|education_use_transition|calendar_changed/.test(
       save.error.message,
     );
   return (
@@ -151,6 +227,7 @@ export function EducationPeriodWizard({
       steps={[
         t("education.intent"),
         t("education.details"),
+        t("schoolCalendar.step"),
         t("education.program"),
         t("education.review"),
       ]}
@@ -257,17 +334,6 @@ export function EducationPeriodWizard({
               ))}
             </View>
           )}
-          <Field
-            label={t(
-              action === "transfer"
-                ? "education.schoolRequired"
-                : "education.school",
-            )}
-            value={school}
-            onChangeText={setSchool}
-            maxLength={120}
-          />
-          <Text style={u.small}>{t("education.schoolHelp")}</Text>
           {action === "correct" ? (
             <Text style={u.copy}>{t("education.correctionHelp")}</Text>
           ) : (
@@ -284,12 +350,63 @@ export function EducationPeriodWizard({
               {t("education.dateInvalid")}
             </Text>
           )}
+        </>
+      )}
+      {step === 2 && (
+        <>
+          <CalendarContext
+            catalog={catalog.data}
+            placeId={placeId}
+            stage={stage}
+            fixedStage={grade !== null}
+            onPlace={(id, name) => {
+              setChosenPlace(id);
+              setReason(null);
+              if (name) setSchool(name);
+            }}
+            onStage={setChosenStage}
+            preview={calendar.data}
+            loading={catalog.isPending || calendar.isFetching}
+            failed={!!catalog.error || !!calendar.error}
+            onRetry={() => {
+              void catalog.refetch();
+              void calendar.refetch();
+            }}
+            reason={reason}
+            detail={detail}
+            onReason={setReason}
+            onDetail={setDetail}
+          />
+          {catalog.data?.places.find((x) => x.id === placeId)?.kind !==
+            "school" && (
+            <>
+              <Field
+                label={t(
+                  action === "transfer"
+                    ? "education.schoolRequired"
+                    : "education.school",
+                )}
+                value={school}
+                editable={!catalog.isPending}
+                onChangeText={(value) => {
+                  setSchool(value);
+                  const place = catalog.data?.places.find(
+                    (x) => x.id === placeId,
+                  );
+                  if (place?.kind === "school" && value !== place.name)
+                    setChosenPlace(place.parent_id ?? DEFAULT_EDUCATION_PLACE);
+                }}
+                maxLength={120}
+              />
+              <Text style={u.small}>{t("education.schoolHelp")}</Text>
+            </>
+          )}
           {!schoolValid && (
             <Text style={u.small}>{t("education.transferInvalid")}</Text>
           )}
         </>
       )}
-      {step === 2 && (
+      {step === 3 && (
         <>
           <View style={u.row}>
             <BookOpen color={p.purple} />
@@ -328,7 +445,7 @@ export function EducationPeriodWizard({
           </View>
         </>
       )}
-      {step === 3 && (
+      {step === 4 && (
         <>
           <Text style={u.heading}>{t(`education.${action}`)}</Text>
           {current && (
@@ -384,6 +501,16 @@ export function EducationPeriodWizard({
             <Text style={u.copy}>{t("education.preserved")}</Text>
           </View>
           <Text style={u.small}>{t("education.unknown")}</Text>
+          <Text style={u.copy}>
+            {calendar.data?.calendar?.value.title ??
+              t("schoolCalendar.warning.calendar_missing")}
+          </Text>
+          {calendar.data?.warning && reason && (
+            <Text style={u.small}>
+              {t(`schoolCalendar.reason.${reason}`)}
+              {detail ? ` · ${detail}` : ""}
+            </Text>
+          )}
         </>
       )}
       {conflict && (

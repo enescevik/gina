@@ -43,6 +43,8 @@ const kinds: Record<string, string> = {
   exam_finished: "Prova tamamlandı",
   cohort_results: "Birlikte Prova sonucu",
   weekly_summary: "Haftalık özet",
+  parent_announcement: "Veli duyurusu",
+  education_reminder: "Eğitim takvimi hatırlatması",
 };
 export default function Notifications() {
   const { session } = useAuth();

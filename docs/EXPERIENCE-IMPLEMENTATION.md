@@ -169,3 +169,14 @@ Yeni ek öncelik: tarihli eğitim dönemi/okul kayıtları; ardından profil ar�
 - Uygulandı: eğitim/program sürüm çakışması, aile/veli kontrolü, tekrar güvenliği; yönetilen sınıfın eski istemciden değiştirilmesini engelleme; yeni sınav/okul puanı için sabit eğitim bağlamı.
 - Doğrulama ve kapsam sınırları: [eğitim dönemi raporu](release/education-periods-2026-11-05/README.md).
 - Sonraki: profil arşivi/geri alma + cihaz/bildirim/atama sınırları; dönem rapor filtreleri ve toplu içerik işlemleri. Bu paket üretimde/TestFlight'ta değil.
+
+## 5 Kasım — yönetilen takvimler ve aile duyuruları
+
+Yeni kullanıcı önceliği: takvime göre eğitim geçişi, okul istisnalarının incelenmesi, hedefli aile duyuruları. Kapsam ve sınırlar: [ürün/uygulama kararı](ACADEMIC-CALENDAR-AND-ANNOUNCEMENTS.md).
+
+- Kod eklendi: ülke/bölge/okul-kampüs kataloğu; kademe ve yıl bazında taslak/yayın; veli takvim kontrolü ve gerekçeli istisna; ayrı okul bilgisi inceleme kuyruğu.
+- Kod eklendi: uygulama içi gelen kutusu, okuma/arşiv/geri alma; yönetimde hedef/alıcı önizlemesi, açık gönderim, geri çekme ve tarihli kayıt sayfalaması; mevcut push teslim altyapısına veliye özel hedefleme.
+- Kod eklendi: varsayılan kapalı, tekilleştirilmiş yıl sınırı hatırlatmaları. İş zamanlayıcısı yoksa yönetim etkinleştiremez. Yarıyıl veya yıl sonu otomatik sınıf yükseltmez.
+- Açık: gerçek okul kaynaklarını doğrulayıp takvimleri girmek; üretim migration/zamanlayıcı, gerçek telefon push ve TestFlight kabulü. SMS/e-posta sağlayıcı/kanal izni kurulumu yok; uygulanmış gönderim olarak işaretlenmez.
+- TODO (ileride): gönüllü ebeveyn konu toplulukları; görünürlük, raporla/engelle, moderasyon ve silme kurallarıyla ayrı pilot. Tasarım/uygulama bu pakette yapılmadı.
+- Önceki kalan işler iptal edilmedi: dönem rapor filtreleri, geçmişi koruyan görev/ödül/not düzenleme ve toplu içerik temizliği; günlük veli akışı, cihaz/PIN ve kalan ekran/cihaz kabulü.

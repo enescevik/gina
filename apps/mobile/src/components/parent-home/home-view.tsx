@@ -195,7 +195,7 @@ export function ParentHomeView(p: HomeViewProps) {
           {p.profiles.length ? <Pressable accessibilityRole="button" accessibilityLabel={t('parentHome.childSpace')} onPress={() => go('/parent/child-mode')} style={s.childMode}>
             <LockKeyhole size={18} color={c.purple}/><Text style={s.linkText}>{t('parentPremium.childMode')}</Text>
           </Pressable> : null}
-          <IconButton label={t('parentHome.notifications')} onPress={() => go('/parent/notifications')}><Bell size={23} color={c.muted}/></IconButton>
+          <IconButton label={t('parentHome.notifications')} onPress={() => go('/parent/inbox')}><Bell size={23} color={c.muted}/></IconButton>
         </View>
       </View>
       {p.loading ? <View testID="home-loading" style={s.state} accessibilityLiveRegion="polite"><ActivityIndicator color={c.purple}/><Label>{t('release.loading')}</Label>

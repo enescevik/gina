@@ -63,3 +63,4 @@ export * from "./weekly-review";
 export * from "./review-journal";
 export * from "./attempt-summary";
 export * from "./timetable-review";
+export * from "./education-calendar";

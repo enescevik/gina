@@ -1700,18 +1700,18 @@ isOneToOne: false
                   ]
                 },"push_outbox": {
                   Row: {
-                    "recovery_revision": number,
+                    "target_user_id": string | null, "recovery_revision": number,
                     "lease_id": string | null,"next_attempt_at": string,
                     "attempts": number,"audience": string,"claimed_at": string | null,"created_at": string,"exclude_user_id": string | null,"family_id": string,"id": number,"kind": string,"last_error": string | null,"payload": NonNullable<Json>,"sent_at": string | null,"status": string,"target_child_id": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "recovery_revision"?: number,
+                    "target_user_id"?: string | null, "recovery_revision"?: number,
                     "lease_id"?: string | null,"next_attempt_at"?: string,
                     "attempts"?: number,"audience": string,"claimed_at"?: string | null,"created_at"?: string,"exclude_user_id"?: string | null,"family_id": string,"id"?: never,"kind": string,"last_error"?: string | null,"payload"?: NonNullable<Json>,"sent_at"?: string | null,"status"?: string,"target_child_id"?: string | null
                   }
                   Update: {
-                    "recovery_revision"?: number,
+                    "target_user_id"?: string | null, "recovery_revision"?: number,
                     "lease_id"?: string | null,"next_attempt_at"?: string,
                     "attempts"?: number,"audience"?: string,"claimed_at"?: string | null,"created_at"?: string,"exclude_user_id"?: string | null,"family_id"?: string,"id"?: never,"kind"?: string,"last_error"?: string | null,"payload"?: NonNullable<Json>,"sent_at"?: string | null,"status"?: string,"target_child_id"?: string | null
                   }
@@ -1732,14 +1732,14 @@ isOneToOne: false
                   ]
                 },"push_preferences": {
                   Row: {
-                    "approvals": boolean,"exams": boolean,"family_id": string,"updated_at": string,"user_id": string,"weekly_summary": boolean
+                    "approvals": boolean,"exams": boolean,"family_id": string,"updated_at": string,"user_id": string,"weekly_summary": boolean,"announcements": boolean,"education_reminders": boolean
                   }
                   ComputedFields: never
                   Insert: {
-                    "approvals"?: boolean,"exams"?: boolean,"family_id": string,"updated_at"?: string,"user_id": string,"weekly_summary"?: boolean
+                    "approvals"?: boolean,"exams"?: boolean,"family_id": string,"updated_at"?: string,"user_id": string,"weekly_summary"?: boolean,"announcements"?: boolean,"education_reminders"?: boolean
                   }
                   Update: {
-                    "approvals"?: boolean,"exams"?: boolean,"family_id"?: string,"updated_at"?: string,"user_id"?: string,"weekly_summary"?: boolean
+                    "approvals"?: boolean,"exams"?: boolean,"family_id"?: string,"updated_at"?: string,"user_id"?: string,"weekly_summary"?: boolean,"announcements"?: boolean,"education_reminders"?: boolean
                   }
                   Relationships: [
                     {
@@ -2293,6 +2293,22 @@ isOneToOne: false
                 }
           }
           Functions: {
+admin_announcements: { Args: { p_before?: string; p_before_id?: string }; Returns: Json },
+admin_save_announcement: { Args: { p_request: string; p_id: string; p_revision: number; p_value: Json }; Returns: Json },
+admin_preview_announcement: { Args: { p_id: string; p_revision: number }; Returns: Json },
+admin_publish_announcement: { Args: { p_request: string; p_id: string; p_revision: number; p_fingerprint: string; p_confirmed: boolean }; Returns: Json },
+admin_withdraw_announcement: { Args: { p_request: string; p_id: string; p_revision: number }; Returns: Json },
+admin_education_reminder_settings: { Args: { p_request: string; p_revision: number; p_enabled: boolean }; Returns: Json },
+parent_inbox: { Args: { p_before?: string; p_before_id?: string; p_archived?: boolean }; Returns: Json },
+mark_parent_inbox: { Args: { p_id: string; p_archived?: boolean | null }; Returns: undefined },
+
+education_calendar_catalog: { Args: { p_child_id?: string }; Returns: Json },
+preview_education_calendar: { Args: { p_child_id: string; p_place_id: string; p_stage: string; p_academic_year: number; p_action: string; p_starts_on: string }; Returns: Json },
+admin_education_calendars: { Args: Record<string, never>; Returns: Json },
+admin_save_education_place: { Args: { p_request: string; p_id: string; p_revision: number; p_value: Json }; Returns: Json },
+admin_save_education_calendar: { Args: { p_request: string; p_id: string; p_revision: number; p_place_id: string; p_stage: string; p_academic_year: number; p_value: Json; p_publish?: boolean }; Returns: Json },
+admin_review_education_report: { Args: { p_request: string; p_id: string; p_revision: number; p_status: string; p_note: string }; Returns: Json },
+change_child_education_with_calendar: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_action: string; p_academic_year: number; p_grade: number | null; p_school: string | null; p_starts_on: string; p_timetable_revision: number; p_keep_timetable: boolean; p_place_id: string; p_stage: string; p_calendar_id: string | null; p_calendar_revision: number | null; p_reason: string | null; p_detail: string | null }; Returns: Json },
 get_child_archive_preview: { Args: { p_child_id: string }; Returns: Json },
 set_child_archived: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_archived: boolean }; Returns: Json },
 get_child_education: { Args: { p_child_id: string }; Returns: Json },

@@ -316,7 +316,7 @@ export function PlannerCalendar({
           {!childMode ? (
             <IconButton
               label={t("push.menu")}
-              onPress={() => router.push("/parent/notifications")}
+              onPress={() => router.push("/parent/inbox")}
             >
               <Bell size={22} color={p.purple} />
             </IconButton>

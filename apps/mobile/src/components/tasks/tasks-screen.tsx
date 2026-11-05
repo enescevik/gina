@@ -163,7 +163,7 @@ export function TasksScreen() {
           />
           <IconButton
             label={t("push.menu")}
-            onPress={() => router.push("/parent/notifications")}
+            onPress={() => router.push("/parent/inbox")}
           >
             <Bell color={p.purple} size={22} />
           </IconButton>
