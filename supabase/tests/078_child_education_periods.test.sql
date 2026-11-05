@@ -7,7 +7,7 @@ insert into public.family_members(family_id,user_id) values ('10000000-0000-4000
 insert into public.children(id,family_id,name,grade) values ('20000000-0000-4000-8000-000000007801','10000000-0000-4000-8000-000000007801','Ece',2),('20000000-0000-4000-8000-000000007802','10000000-0000-4000-8000-000000007801','Can',5);
 insert into public.exams(id,family_id,child_id,title,subject,grade) values ('40000000-0000-4000-8000-000000007801','10000000-0000-4000-8000-000000007801','20000000-0000-4000-8000-000000007801','Old exam','Matematik',2);
 create function pg_temp.ch() returns uuid language sql as $$select '20000000-0000-4000-8000-000000007801'::uuid$$;
-create function pg_temp.year() returns integer language sql as $$select extract(year from now())::int$$;
+create function pg_temp.year() returns integer language sql as $$select extract(year from now())::int-1$$;
 create function pg_temp.first_day() returns date language sql as $$select make_date(pg_temp.year()-1,9,1)$$;
 create function pg_temp.next_day() returns date language sql as $$select make_date(pg_temp.year(),1,1)$$;
 set local role authenticated;
@@ -26,7 +26,7 @@ insert into public.exams(id,family_id,child_id,title,subject,grade) values ('400
 select is((select education_context->>'grade' from public.exams where id='40000000-0000-4000-8000-000000007802'),'2','new exam freezes education context');
 select throws_ok($$select public.change_child_education(gen_random_uuid(),pg_temp.ch(),0,'new_year',pg_temp.year(),3,'İlk Okul',pg_temp.next_day(),1,false)$$,'P0001','education_changed','stale period editor rejected');
 select throws_ok($$select public.change_child_education(gen_random_uuid(),pg_temp.ch(),1,'new_year',pg_temp.year(),3,'İlk Okul',pg_temp.next_day(),0,false)$$,'P0001','timetable_conflict','concurrent timetable change must be reviewed');
-select throws_ok($$select public.change_child_education(gen_random_uuid(),pg_temp.ch(),1,'new_year',pg_temp.year()+1,3,'İlk Okul',make_date(pg_temp.year()+1,9,1),1,false)$$,'P0001','education_date','future changes not silently applied today');
+select throws_ok($$select public.change_child_education(gen_random_uuid(),pg_temp.ch(),1,'new_year',pg_temp.year()+2,3,'İlk Okul',make_date(pg_temp.year()+2,9,1),1,false)$$,'P0001','education_date','future changes not silently applied today');
 select lives_ok($$select public.change_child_education('70000000-0000-4000-8000-000000007802',pg_temp.ch(),1,'new_year',pg_temp.year(),3,'İlk Okul',pg_temp.next_day(),1,false)$$,'new year archives program and starts empty');
 select is((select grade::int from public.children where id=pg_temp.ch()),3,'current grade used by curriculum now updated');
 select is((select grade::int from public.children where id='20000000-0000-4000-8000-000000007802'),5,'sibling unchanged');
@@ -48,6 +48,10 @@ select throws_ok($$select public.change_child_education(gen_random_uuid(),pg_tem
 select lives_ok($$select public.change_child_education('70000000-0000-4000-8000-000000007802',pg_temp.ch(),1,'new_year',pg_temp.year(),3,'İlk Okul',pg_temp.next_day(),1,false)$$,'old receipt remains replayable');
 select is(public.get_child_education(pg_temp.ch())->'current'->>'grade','4','old replay does not undo later correction');
 select is((select count(*)::int from public.exams where child_id=pg_temp.ch()),2,'transition keeps exams');
+insert into public.grades(id,family_id,child_id,subject,kind,score,max_score,graded_on) values ('50000000-0000-4000-8000-000000007801','10000000-0000-4000-8000-000000007801',pg_temp.ch(),'Matematik','exam',80,100,pg_temp.first_day()+1);
+select is((select education_context->>'grade' from public.grades where id='50000000-0000-4000-8000-000000007801'),'2','late entry uses the grade on assessment date, not current grade');
+update public.grades set education_context='{"grade":12}' where id='50000000-0000-4000-8000-000000007801';
+select is((select education_context->>'grade' from public.grades where id='50000000-0000-4000-8000-000000007801'),'2','client cannot overwrite evidence education context');
 select ok(not has_function_privilege('anon','public.get_child_education(uuid)','execute'),'anonymous no education history');
 select ok(not has_table_privilege('authenticated','gina.child_education_periods','UPDATE'),'cannot directly rewrite history');
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000007802","role":"authenticated","gina":{"family_id":"10000000-0000-4000-8000-000000007802","role":"parent"}}',true);

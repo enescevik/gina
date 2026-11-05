@@ -272,10 +272,7 @@ export function EducationPeriodWizard({
           ) : (
             <DateChoice
               label={t("education.start")}
-              value={new Intl.DateTimeFormat(i18n.language, {
-                dateStyle: "medium",
-                timeZone: "UTC",
-              }).format(new Date(start + "T12:00:00Z"))}
+              value={start}
               onChange={setStart}
               today={initial.today}
               hint={t("education.dateHelp")}

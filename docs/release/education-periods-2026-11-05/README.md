@@ -24,7 +24,7 @@ Geçiş sunucuda tek işlemle kaydedilir. Aile/veli yetkisi, beklenen eğitim s�
 ## Kontroller
 
 - Mobil TypeScript ve Expo lint başarılı; Expo web dışa aktarımı başarılı.
-- Boş şema kopyasında **78 SQL test dosyası / 2.146 kontrol** geçti. Yeni döneme ait 41 kontrol: yetki sınırları, sürüm çatışması, tekrar güvenliği, tarih kuralları, eski programı saklama, kardeş profilini koruma, eski istemciyi engelleme, eski sınav bağlamı, düzeltme geçmişi. [Sonuçlar](sql-checks.json).
+- Boş şema kopyasında **78 SQL test dosyası / 2.148 kontrol** geçti. Yeni döneme ait 43 kontrol: yetki sınırları, sürüm çatışması, tekrar güvenliği, tarih kuralları, eski programı saklama, kardeş profilini koruma, eski istemciyi engelleme, eski sınav bağlamı, düzeltme geçmişi. [Sonuçlar](sql-checks.json).
 - Yerel gerçek Auth/REST servisleriyle telefon/tablet kullanım kontrolleri: kaydetmeden değişiklik yapmama; yeni yıl ve program arşivi; arşivi gün/saatle açma; ayrı düzeltme geçmişi; geçersiz okul değişikliğini engelleme ve taslağı bırakma; 320 px sayfa/sihirbazda yatay taşma kontrolü. [Sonuçlar](ui-checks.json).
 - Görseller gerçek uygulamadan, yapay aile verisiyle alındı. Fiziksel iPhone/iPad, VoiceOver ve TestFlight kabulü bu turda yapılmadı.
 - Gerçek yerel Auth/REST/Storage/Edge servislerinde **259 kontrol** geçti; geçici veritabanı ve servisler kaldırıldı. AI sağlayıcısı bu testte yerel taklittir. [Servis sonuçları](service-checks.json).
