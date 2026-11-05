@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { overrideCommandSchema, type OverrideCommand, type OverridePayload } from "@gina/core";
 import { useAuth } from "@/lib/auth";
 import { overrideQueue, sendOverride } from "@/lib/override-command";
@@ -20,54 +20,81 @@ function statusOf(o: { revoked_at: string | null; starts_at: string; ends_at: st
   return { label: t.overrides.statusActive, cls: "bg-emerald-100 text-emerald-800", expirable: true };
 }
 
+type FamilyMatch = { id: string; name: string; plan: string; plan_source: string; plan_expires_at: string | null; child_count: number };
+const DURATIONS = [[30, "30 gün"], [90, "90 gün"], [180, "6 ay"], [365, "1 yıl"]] as const;
+const uuidLike = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 function GrantForm({ initialFamily, locked, onSave }: { initialFamily: string; locked: boolean; onSave: (payload: OverridePayload) => Promise<boolean> }) {
   const [familyId, setFamilyId] = useState(initialFamily);
   const [familyQuery, setFamilyQuery] = useState("");
-  const [matches, setMatches] = useState<{ id: string; name: string }[]>([]);
+  const [matches, setMatches] = useState<FamilyMatch[]>([]);
+  // Sunucudan doğrulanmış aileler; yalnız bunlardan biri seçiliyken hak verilebilir (yanlış aile onaydan önce görünür).
+  const [verified, setVerified] = useState<Record<string, FamilyMatch>>({});
   const [plan, setPlan] = useState<PaidPlan>("plus");
   const [reason, setReason] = useState("");
   const [endsAt, setEndsAt] = useState(inputDaysFromNow(90));
   const [searchError, setSearchError] = useState("");
+  const [checking, setChecking] = useState(false);
+  const lookupSeq = useRef(0);
 
-  async function findFamily() {
+  // `byId`: elle yazılan kimliğin sessiz doğrulaması; arama sonuç listesini değiştirmez.
+  const lookup = useCallback(async (query: string, byId = false) => {
+    const seq = ++lookupSeq.current;
     setSearchError("");
+    setChecking(true);
     try {
-      const { data, error } = await supabase().rpc("admin_search_families", { p_query: familyQuery.trim(), p_limit: 10 }).abortSignal(AbortSignal.timeout(15000));
+      const { data, error } = await supabase().rpc("admin_search_families", { p_query: query.trim(), p_limit: 10 }).abortSignal(AbortSignal.timeout(15000));
       if (error) throw error;
-      setMatches((data ?? []).map((f) => ({ id: f.id, name: f.name })));
-      if (!data?.length) setSearchError("Bu aramayla eşleşen aile bulunamadı.");
-    } catch { setSearchError("Aileler yüklenemedi. Aramayı yeniden deneyin."); }
-  }
+      if (seq !== lookupSeq.current) return;
+      const rows: FamilyMatch[] = (data ?? []).map((f) => ({ id: f.id, name: f.name, plan: f.plan, plan_source: f.plan_source, plan_expires_at: f.plan_expires_at, child_count: f.child_count }));
+      if (!byId) setMatches(rows);
+      setVerified((v) => ({ ...v, ...Object.fromEntries(rows.map((r) => [r.id, r])) }));
+      if (!rows.length && !byId) setSearchError("Bu aramayla eşleşen aile bulunamadı.");
+    } catch {
+      if (seq === lookupSeq.current) setSearchError("Aileler yüklenemedi. Aramayı yeniden deneyin.");
+    } finally {
+      if (seq === lookupSeq.current) setChecking(false);
+    }
+  }, []);
+  // Kimlik elle veya bağlantıyla geldiğinde aile adı ve paketi sunucudan doğrulanır.
+  useEffect(() => {
+    const id = familyId.trim();
+    if (!uuidLike.test(id) || verified[id]) return;
+    const timer = setTimeout(() => void lookup(id, true), 250);
+    return () => clearTimeout(timer);
+  }, [familyId, verified, lookup]);
+  const selected = verified[familyId.trim()] ?? null;
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    if (locked) return;
+    if (locked || !selected) return;
     try {
-      const saved = await onSave({action:"grant",family_id:familyId.trim(),plan,reason:reason.trim(),starts_at:new Date().toISOString(),ends_at:localInputToIso(endsAt)});
+      const saved = await onSave({action:"grant",family_id:selected.id,plan,reason:reason.trim(),starts_at:new Date().toISOString(),ends_at:localInputToIso(endsAt)});
       if (saved) setReason("");
     } catch { setSearchError("Bitiş tarihini kontrol edin."); }
   }
+  const sourceLabel = (s: string) => t.families.sources[s] ?? s;
 
   return (
     <Card title={t.overrides.grant}>
       <p className="mb-4 text-slate-600">Aileye süreli Plus veya Pro erişimi verin. Bu işlem mağaza aboneliği oluşturmaz ve ücret tahsil etmez.</p>
       {searchError ? <Notice>{searchError}</Notice> : null}
       <fieldset disabled={locked} className="min-w-0 border-0 p-0">
-      <div className="mb-3 flex flex-wrap items-end gap-2">
+      <form className="mb-3 flex flex-wrap items-end gap-2" onSubmit={(e) => { e.preventDefault(); if (familyQuery.trim()) void lookup(familyQuery); }}>
         <div className="min-w-64 flex-1">
           <label className="label" htmlFor="family-search">{t.overrides.family}</label>
           <input id="family-search" className="input" value={familyQuery} onChange={(e) => setFamilyQuery(e.target.value)} placeholder={t.families.placeholder} />
         </div>
-        <button className="btn-secondary" type="button" onClick={() => void findFamily()}>
-          {t.common.search}
+        <button className="btn-secondary" type="submit" disabled={checking}>
+          {checking ? "Aranıyor…" : t.common.search}
         </button>
-      </div>
+      </form>
       {matches.length > 0 ? (
-        <ul className="mb-3 flex flex-wrap gap-2">
+        <ul className="mb-3 flex flex-wrap gap-2" aria-label="Eşleşen aileler">
           {matches.map((m) => (
             <li key={m.id}>
-              <button type="button" className={`btn-secondary ${m.id === familyId ? "border-brand" : ""}`} onClick={() => setFamilyId(m.id)}>
-                {m.name}
+              <button type="button" aria-pressed={m.id === familyId} className={`btn-secondary ${m.id === familyId ? "border-brand bg-brand-light" : ""}`} onClick={() => setFamilyId(m.id)}>
+                {m.name} · {t.plans[m.plan] ?? m.plan}
               </button>
             </li>
           ))}
@@ -76,8 +103,22 @@ function GrantForm({ initialFamily, locked, onSave }: { initialFamily: string; l
       <form onSubmit={onSubmit} className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         <div className="md:col-span-2">
           <label className="label" htmlFor="family-id">{t.overrides.familyId}</label>
-          <input id="family-id" className="input font-mono" required value={familyId} onChange={(e) => setFamilyId(e.target.value)} />
+          <input id="family-id" className="input font-mono" required value={familyId} onChange={(e) => setFamilyId(e.target.value)} aria-describedby="family-summary" />
           {!familyId ? <p className="mt-1 text-xs text-slate-500">{t.overrides.pickFamily}</p> : null}
+        </div>
+        <div className="md:col-span-2 xl:col-span-4" id="family-summary" aria-live="polite">
+          {selected ? (
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+              <p className="text-base font-bold">Seçilen aile: {selected.name}</p>
+              <p className="mt-1">Şu an: {t.plans[selected.plan] ?? selected.plan} · {sourceLabel(selected.plan_source)}{selected.plan_expires_at ? ` · ${fmtDateTime(selected.plan_expires_at)} tarihine kadar` : ""} · {selected.child_count} çocuk</p>
+              <p className="mt-1">Bu işlemden sonra: <strong>{t.plans[plan]}</strong> geçici hakkı · {fmtDateTime(localInputToIso(endsAt))} tarihine kadar. Etkin paket, ailenin geçerli haklarının en yükseğine göre belirlenir.</p>
+              {selected.plan_source === "store" ? <p className="mt-1">Ailenin mağaza aboneliği var: geçici hak mağaza kaydını değiştirmez, iade veya iptal yapmaz.</p> : null}
+            </div>
+          ) : familyId.trim() ? (
+            <p className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+              {checking ? "Aile bilgisi doğrulanıyor…" : uuidLike.test(familyId.trim()) ? "Bu kimlikle aile bulunamadı. Aramadan bir aile seçin." : "Aile kimliği biçimi geçersiz. Aramadan bir aile seçin."}
+            </p>
+          ) : null}
         </div>
         <div>
           <label className="label" htmlFor="override-plan">{t.overrides.plan}</label>
@@ -89,13 +130,18 @@ function GrantForm({ initialFamily, locked, onSave }: { initialFamily: string; l
         <div>
           <label className="label" htmlFor="override-end">{t.overrides.endsAt}</label>
           <input id="override-end" type="datetime-local" className="input" required value={endsAt} onChange={(e) => setEndsAt(e.target.value)} />
+          <div className="mt-2 flex flex-wrap gap-2" aria-label="Hazır süreler">
+            {DURATIONS.map(([days, label]) => (
+              <button key={days} type="button" className="btn-secondary !min-h-11 !px-3 !py-2" onClick={() => setEndsAt(inputDaysFromNow(days))}>{label}</button>
+            ))}
+          </div>
         </div>
         <div className="md:col-span-2 xl:col-span-3">
           <label className="label" htmlFor="override-reason">{t.overrides.reason}</label>
           <input id="override-reason" className="input" required minLength={3} maxLength={1000} value={reason} onChange={(e) => setReason(e.target.value)} placeholder={t.overrides.reasonPlaceholder} />
         </div>
         <div className="flex items-end">
-          <button className="btn w-full" type="submit" disabled={locked}>
+          <button className="btn w-full" type="submit" disabled={locked || !selected}>
             {t.overrides.grant}
           </button>
         </div>
