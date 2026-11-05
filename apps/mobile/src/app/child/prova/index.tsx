@@ -1,3 +1,4 @@
+import { attemptSummary } from "@gina/core";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -11,6 +12,30 @@ import { useChildMode } from "@/lib/child-mode";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
+
+/** P04 sütunları üretilmiş tiplerde henüz yok; satır elle tiplenir. */
+interface ChildAttempt {
+  status: "in_progress" | "submitted" | "graded";
+  mc_total: number | null;
+  mc_correct: number | null;
+  open_total: number | null;
+  open_graded: number | null;
+  open_pending: number | null;
+  open_unanswered: number | null;
+  provisional: boolean | null;
+  created_at: string;
+}
+interface ChildExam {
+  id: string;
+  title: string;
+  status: string;
+  timed: boolean;
+  duration_minutes: number | null;
+  question_ids: string[];
+  exam_attempts: ChildAttempt[] | null;
+}
+const CHILD_EXAM_SELECT: string =
+  "id, title, status, timed, duration_minutes, question_ids, exam_attempts(status, mc_total, mc_correct, open_total, open_graded, open_pending, open_unanswered, provisional, created_at)";
 
 /** Çocuk Prova: atanmış denemeler ve tamamlananların sonucu (kitaplıktan açılır; tablette ve telefonda çocuk modunda). */
 export default function ChildProvaScreen() {
@@ -26,11 +51,11 @@ export default function ChildProvaScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("exams")
-        .select("id, title, status, timed, duration_minutes, question_ids, exam_attempts(status, mc_total, mc_correct, open_total, open_graded)")
+        .select(CHILD_EXAM_SELECT)
         .eq("child_id", childId)
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data;
+      return data as unknown as ChildExam[];
     },
   });
   useRealtimeInvalidate("exams", childId ? `child_id=eq.${childId}` : null, [["child_exams", childId]]);
@@ -76,11 +101,18 @@ export default function ChildProvaScreen() {
       </View>}>
       {done.length > 0 ? <Text accessibilityRole="header" className="mt-2 font-body-bold text-lg text-ink">{t("prova.done")}</Text> : null}
       {done.map((exam) => {
-        const attempt = exam.exam_attempts?.[0];
-        const pendingReview = (attempt?.open_total ?? 0) > (attempt?.open_graded ?? 0) || (attempt?.open_total == null && attempt?.status === "submitted");
-        const resultLabel = (attempt?.mc_total ?? 0) > 0
-          ? t("prova.resultMc", { correct: attempt?.mc_correct ?? 0, total: attempt?.mc_total ?? 0 })
-          : t(attempt?.status === "submitted" ? "prova.openEndedNote" : "prova.status.completed");
+        // En son bitmiş deneme; veli ekranıyla aynı sayaçlar (attemptSummary). Puan yargısı yok:
+        // karma sınavda şıklı sonuç "Ara sonuç" olarak + "ebeveynin inceleyecek" birlikte görünür.
+        const attempt = [...(exam.exam_attempts ?? [])]
+          .filter((a) => a.status !== "in_progress")
+          .sort((x, y) => y.created_at.localeCompare(x.created_at))[0];
+        const s = attempt ? attemptSummary(attempt, []) : null;
+        const pendingReview = s?.reviewState === "pending_review";
+        const hasMc = (s?.mcTotal ?? 0) > 0;
+        const resultLabel = hasMc
+          ? t("prova.resultMc", { correct: s?.mcCorrect ?? 0, total: s?.mcTotal ?? 0 })
+          : t(pendingReview ? "prova.openEndedNote" : "prova.status.completed");
+        const pendingNote = pendingReview && hasMc ? t("prova.openEndedPending") : null;
         return (
           <Pressable
             key={exam.id}
@@ -93,16 +125,21 @@ export default function ChildProvaScreen() {
                 params: { examId: exam.id },
               });
             }}
-            accessibilityLabel={`${exam.title}, ${t("prova.status.completed")}, ${resultLabel}`}
+            accessibilityLabel={`${exam.title}, ${t("prova.status.completed")}, ${pendingNote ? `${t("prova.provisionalResult")}, ` : ""}${resultLabel}${pendingNote ? `, ${pendingNote}` : ""}`}
             className="flex-row items-center gap-3 rounded-child bg-green-light p-4"
           >
             <SubjectIcon subject={exam.title} size={48} variant="illustrated" />
             <View className="flex-1">
               <Text className="font-body-bold text-base text-ink">{exam.title}</Text>
-              <Text className="font-body text-sm text-gray-700">
-                {resultLabel}
-              </Text>
-              {pendingReview && (attempt?.mc_total ?? 0) > 0 && <Text className="font-body-bold text-purple">{t("prova.openEndedNote")}</Text>}
+              <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+                {pendingNote ? (
+                  <View style={{ borderRadius: 999, backgroundColor: "#FFF6E3", borderWidth: 1, borderColor: "#E9C77E", paddingHorizontal: 10, paddingVertical: 2 }}>
+                    <Text className="font-body-bold text-sm text-ink">{t("prova.provisionalResult")}</Text>
+                  </View>
+                ) : null}
+                <Text className="font-body text-sm text-gray-700">{resultLabel}</Text>
+              </View>
+              {pendingNote ? <Text className="font-body-bold text-purple">{pendingNote}</Text> : null}
               <Text className="mt-2 font-body-bold text-purple">{t("prova.viewResult")}</Text>
             </View>
           </Pressable>
