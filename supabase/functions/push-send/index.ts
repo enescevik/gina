@@ -1,6 +1,7 @@
 // Durable per-device delivery. Deploy after 083000; old claim API deliberately fails closed.
 // S02: the same tick drains the email/SMS channel outbox after push; push behaviour is unchanged.
 import { json, serviceClient } from "../_shared/supabase.ts";
+import { authorizedBearer } from "./auth.ts";
 import { drainPush, type PushRow, type PushTarget } from "./handler.ts";
 import {
   apnsConfigFromEnv,
@@ -12,14 +13,13 @@ import { emailAdapterFromEnv } from "../_shared/channels/email.ts";
 import { smsAdapterFromEnv } from "../_shared/channels/sms.ts";
 import type { ChannelRow } from "../_shared/channels/render.ts";
 import { drainChannels, workerMissing } from "./channels.ts";
+// Q03-EDGE-1: sabit zamanlı karşılaştırma (./auth.ts). Sözleşme değişmedi: PUSH_SEND_SECRET veya
+// SUPABASE_SERVICE_ROLE_KEY bearer olarak kabul edilir (işletim betikleri / zamanlayıcı bu ucu böyle çağırır).
 function authorized(req: Request) {
-  const bearer = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ??
-    "";
-  return !!bearer &&
-    [
-      Deno.env.get("PUSH_SEND_SECRET"),
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
-    ].filter(Boolean).includes(bearer);
+  return authorizedBearer(req.headers.get("authorization"), [
+    Deno.env.get("PUSH_SEND_SECRET"),
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
+  ]);
 }
 Deno.serve(async (req) => {
   if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);

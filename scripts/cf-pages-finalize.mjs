@@ -4,6 +4,9 @@
 // - {{SUPABASE_ORIGIN}}, {{SUPABASE_WS_ORIGIN}} ve {{SCRIPT_HASHES}} yer tutucularını doldurur;
 //   SCRIPT_HASHES, HTML'lerdeki satır içi (src'siz, çalıştırılabilir) <script>'lerin sha256 özetleridir.
 //   Böylece CSP'de 'unsafe-inline' gerekmez.
+// - {{STATIC_IMMUTABLE_RULES}}: immutable önbellek kuralları yalnız çıktıda gerçekten var olan hash'li dosyaların
+//   tam yoluna yazılır; SPA fallback HTML'i bu kurala düşmez (Q03-HTTP-1). Üretilen dosya Cloudflare birleştirme
+//   kuralıyla sınanır: örnek yollarda hiçbir başlık iki kez gitmez (Q03-HTTP-2).
 // - --spa: kökte 404.html olmadığını doğrular (Pages SPA fallback'i buna bağlıdır).
 // - --remove <dosya>: yayına girmemesi gereken dosyaları siler (ör. Expo'nun _sitemap.html'i).
 //
@@ -15,6 +18,13 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { parseArgs } from "node:util";
+import {
+  listStaticAssets,
+  renderHeadersTemplate,
+  STATIC_RULES_PLACEHOLDER,
+  staticImmutableRules,
+  validateHeadersFile,
+} from "./cf-pages-headers.mjs";
 
 const { values } = parseArgs({
   options: {
@@ -85,14 +95,23 @@ const scriptHashes = [...hashes].sort().join(" ");
 for (const name of ["_headers", "_redirects"]) {
   const source = join(values.template, name);
   if (!existsSync(source)) continue;
-  const content = readFileSync(source, "utf8")
-    .replaceAll("{{SUPABASE_ORIGIN}}", supabaseOrigin)
-    .replaceAll("{{SUPABASE_WS_ORIGIN}}", supabaseWsOrigin)
-    .replaceAll("{{SCRIPT_HASHES}}", scriptHashes)
-    // Özet yoksa "script-src 'self' ;" kalmasın.
-    .replaceAll(" ;", ";");
-  const tooLong = content.split("\n").find((line) => line.length > 2000);
-  if (tooLong) fail(`${name}: 2000 karakteri aşan satır var (Cloudflare sınırı); satır içi script sayısını azaltın`);
+  const template = readFileSync(source, "utf8");
+  let staticRules = "";
+  if (name === "_headers" && template.includes(STATIC_RULES_PLACEHOLDER)) {
+    const rules = staticImmutableRules(listStaticAssets(outDir, "_expo/static"));
+    staticRules = rules.text;
+    if (rules.warning) console.warn(`cf-pages-finalize: ${rules.warning}`);
+    console.log(`immutable önbellek kuralı: ${rules.count} (${rules.mode})`);
+  }
+  const content = renderHeadersTemplate(template, { supabaseOrigin, supabaseWsOrigin, scriptHashes, staticRules });
+  if (name === "_headers") {
+    const probes = ["/", "/s/probe", "/_expo/static/js/web/missing.js", ...listStaticAssets(outDir, "_expo/static").slice(0, 3)];
+    const errors = validateHeadersFile(content, { probePaths: probes });
+    if (errors.length) fail(`${name}: ${errors.join("; ")}`);
+  } else {
+    const tooLong = content.split("\n").find((line) => line.length > 2000);
+    if (tooLong) fail(`${name}: 2000 karakteri aşan satır var (Cloudflare sınırı)`);
+  }
   writeFileSync(join(outDir, name), content);
   console.log(`yazıldı: ${relative(process.cwd(), join(outDir, name))}`);
 }

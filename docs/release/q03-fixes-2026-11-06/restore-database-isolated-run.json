@@ -1,0 +1,89 @@
+{
+ "environment": "disposable-local-postgres",
+ "script": {
+  "exit": 0,
+  "stdout": [
+   "  [schema] 115 migration psql ile sırayla (20261029200000_schema.sql … 20261106150000_rls_grant_hygiene.sql)",
+   "  [truncate] public/gina tüm tablolar + storage.objects/buckets TRUNCATE (tohumlar dökümden geri gelir)",
+   "  [data] (echo 'set session_replication_role = replica;'; pg_restore --data-only -f - /tmp/gina_q03fix_76a5ccfa45_data.dump) | psql  [süper kullanıcı]",
+   "  [acl-check] scripts/security/post-restore-acl-check.sql → 0 satır; NULL ACL (tetikleyici dışı) fonksiyon 0; tgenabled='D' tetikleyici 0",
+   "  [verify] 11 tablo sayımı (beklenenle karşılaştırılır), 5 ilişki/yetim sorgusu",
+   "[preflight] PostgreSQL 17.11 on aarch64-unknown-linux-gnu; rol postgres (süper: f)",
+   "[schema] {\"from\":\"migrations\",\"applied\":115,\"first\":\"20261029200000_schema.sql\",\"last\":\"20261106150000_rls_grant_hygiene.sql\"}",
+   "[truncate] tohum tabloları boşaltıldı",
+   "[data] tamam (replica)",
+   "[acl-check] anon fazlalığı 0, NULL ACL 0, kapalı tetikleyici 0 → geçti",
+   "[verify] sayımlar {\"auth.users\":2,\"auth.identities\":1,\"public.families\":1,\"public.family_members\":1,\"public.children\":1,\"public.devices\":1,\"public.learning_sources\":1,\"storage.objects\":1,\"public.notes\":3,\"gina.note_changes\":3,\"public.audit_log\":46}; ilişkiler {\"orphan_family_members\":0,\"orphan_devices\":0,\"orphan_families_created_by\":0,\"learning_sources_without_storage_object\":0,\"note_changes_without_note\":0}",
+   "restore-database: BAŞARILI (79718 ms)"
+  ],
+  "stderr": []
+ },
+ "source_counts": {
+  "auth.users": 2,
+  "auth.identities": 1,
+  "public.families": 1,
+  "public.family_members": 1,
+  "public.children": 1,
+  "public.devices": 1,
+  "public.learning_sources": 1,
+  "storage.objects": 1,
+  "public.notes": 3,
+  "gina.note_changes": 3,
+  "public.audit_log": 46
+ },
+ "dump": {
+  "contents": "auth+storage+public+gina --data-only -Fc (auth.schema_migrations, storage.migrations hariç)",
+  "bytes": 73602
+ },
+ "target_before": {
+  "public_tables": 0
+ },
+ "function_acl_parity_with_source": false,
+ "trigger_parity_with_source": true,
+ "acl_diff": {
+  "only_in_source": [
+   "public.admin_add_library_item(p_collection_id uuid, p_content jsonb, p_publish boolean)={postgres=X/postgres,authenticated=X/postgres}",
+   "public.admin_ai_failed_operations(p_statuses text[], p_action text, p_from timestamp with time zone, p_to timestamp with time zone, p_limit integer, p_offset integer)={postgres=X/postgres,authenticated=X/postgres}",
+   "public.admin_ai_operations()={postgres=X/postgres,authenticated=X/postgres}",
+   "public.admin_ai_policy_matrix()={postgres=X/postgres,authenticated=X/postgres}",
+   "public.admin_cancel_group_exam(p_id uuid, p_reason text)={postgres=X/postgres,authenticated=X/postgres}",
+   "public.admin_create_group_exam(p_id uuid, p_collection uuid, p_title text, p_items uuid[], p_start timestamp with time zone, p_end timestamp with time zone, p_minutes integer, p_plans plan_code[])={postgres=X/postgres,authenticated=X/postgres}",
+   "public.admin_group_exams()={postgres=X/postgres,authenticated=X/postgres}",
+   "public.admin_group_policy(p_enabled boolean, p_limits jsonb)={postgres=X/postgres,authenticated=X/postgres}",
+   "public.admin_learning_library()={postgres=X/postgres,authenticated=X/postgres}",
+   "public.admin_model_disable_preview(p_model_id text)={postgres=X/postgres,authenticated=X/postgres}"
+  ],
+  "only_in_target": [
+   "public.admin_add_library_item(p_collection_id uuid, p_content jsonb, p_publish boolean)={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+   "public.admin_ai_failed_operations(p_statuses text[], p_action text, p_from timestamp with time zone, p_to timestamp with time zone, p_limit integer, p_offset integer)={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+   "public.admin_ai_operations()={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+   "public.admin_ai_policy_matrix()={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+   "public.admin_cancel_group_exam(p_id uuid, p_reason text)={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+   "public.admin_create_group_exam(p_id uuid, p_collection uuid, p_title text, p_items uuid[], p_start timestamp with time zone, p_end timestamp with time zone, p_minutes integer, p_plans plan_code[])={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+   "public.admin_group_exams()={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+   "public.admin_group_policy(p_enabled boolean, p_limits jsonb)={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+   "public.admin_learning_library()={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}",
+   "public.admin_model_disable_preview(p_model_id text)={postgres=X/postgres,authenticated=X/postgres,service_role=X/postgres}"
+  ],
+  "differing_total": 180
+ },
+ "target_counts": {
+  "auth.users": 2,
+  "auth.identities": 1,
+  "public.families": 1,
+  "public.family_members": 1,
+  "public.children": 1,
+  "public.devices": 1,
+  "public.learning_sources": 1,
+  "storage.objects": 1,
+  "public.notes": 3,
+  "gina.note_changes": 3,
+  "public.audit_log": 46
+ },
+ "counts_match_source": true,
+ "restored_parent_sees_child_as_authenticated": true,
+ "cleanup": {
+  "gina_q03fix_76a5ccfa45_src_audit": true,
+  "gina_q03fix_76a5ccfa45_tgt_audit": true
+ }
+}

@@ -5,6 +5,9 @@ Usage: python3 scripts/test-q02-sql.py --run-local            # every supabase/t
        --timezone UTC          # session/database timezone (default Europe/Istanbul = family timezone, Q02-10)
        --out docs/release/x    # report directory (default docs/release/q02-2026-11-06)
 Writes <out>/sql-checks.json. Exit 1 on any failing assertion.
+       python3 scripts/test-q02-sql.py --run-local --fresh      # drop template public/gina, apply ALL migrations from scratch
+       python3 scripts/test-q02-sql.py --run-local --skip-migration 20261106150000  # A/B: leave one migration out
+Writes docs/release/q02-2026-11-06/sql-checks.json. Exit 1 on any failing assertion.
 """
 from pathlib import Path
 import json, re, subprocess, sys, uuid
@@ -17,6 +20,8 @@ timezone = args[args.index('--timezone') + 1] if '--timezone' in args else 'Euro
 out_dir = args[args.index('--out') + 1] if '--out' in args else 'docs/release/q02-2026-11-06'
 if not re.fullmatch(r'[A-Za-z_]+(/[A-Za-z_+-]+)?', timezone):
     raise SystemExit('invalid --timezone')
+fresh = '--fresh' in args
+skip_migration = args[args.index('--skip-migration') + 1] if '--skip-migration' in args else None
 root = Path(__file__).resolve().parents[1]
 db = 'gina_q02sql_' + uuid.uuid4().hex[:10] + '_audit'
 created = False
@@ -41,8 +46,21 @@ try:
     # copied by CREATE DATABASE, so set it on the clone. The app's own DB is untouched.
     sql('postgres', f"alter database {db} set timezone to '{timezone}';")
     sql(db, 'grant references on auth.users to postgres; create publication supabase_realtime;', owner=True)
+    if fresh:
+        # Q03: şablondaki hazır public/gina şemasını at, hosted Supabase'in public şeması varsayılan ayrıcalıklarını kur
+        # ve bütün migration'ları sıfırdan uygula (şablon ACL sapmasından bağımsız sonuç; bkz. scripts/security/rls-matrix.py).
+        sql(db, """drop schema public cascade; drop schema if exists gina cascade; create schema public authorization postgres;
+          grant usage, create on schema public to postgres; grant usage on schema public to anon, authenticated, service_role;
+          alter default privileges for role postgres in schema public grant all on tables to postgres, anon, authenticated, service_role;
+          alter default privileges for role postgres in schema public grant all on sequences to postgres, anon, authenticated, service_role;
+          alter default privileges for role postgres in schema public grant all on functions to postgres, anon, authenticated, service_role;
+          drop publication if exists supabase_realtime; create publication supabase_realtime;""", owner=True)
+        report['environment'] = 'empty-disposable-database-fresh-public-schema-all-migrations'
     for migration in sorted((root / 'supabase/migrations').glob('*.sql')):
-        if migration.name < '20261103093000':
+        if skip_migration and skip_migration in migration.name:
+            report['skipped_migration'] = migration.name
+            continue
+        if migration.name < '20261103093000' and not fresh:
             for line in migration.read_text().splitlines():
                 if line.lower().startswith('alter publication supabase_realtime add table '):
                     sql(db, line)
@@ -69,7 +87,8 @@ finally:
         sql('postgres', f'drop database {db} with(force);')
     out = root / out_dir
     out.mkdir(parents=True, exist_ok=True)
-    (out / ('sql-checks.json' if not only else f'sql-checks-{only}.json')).write_text(json.dumps(report, indent=2, ensure_ascii=False) + '\n')
+    out_name = ('sql-checks' + ('-fresh' if fresh else '') + ('-without-' + skip_migration if skip_migration else '')) + (f'-{only}' if only else '') + '.json'
+    (out / out_name).write_text(json.dumps(report, indent=2, ensure_ascii=False) + '\n')
     print(json.dumps({'files': len(report['files']), 'assertions': report.get('assertions'), 'failures': report['failures'][:20]}, ensure_ascii=False))
     if report['failures']:
         sys.exit(1)
