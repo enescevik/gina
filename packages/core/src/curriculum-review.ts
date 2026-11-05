@@ -97,3 +97,96 @@ export const curriculumCommandSchema = z.discriminatedUnion("action", [
   }).strict(),
 ]);
 export type CurriculumCommand = z.infer<typeof curriculumCommandSchema>;
+
+// --- Source acquisition / versioning (M01). A fetched revision is evidence, not approval or endorsement. ---
+export const CURRICULUM_SOURCE_FRESHNESS = [
+  "verified",
+  "unverified",
+  "pending_review",
+  "diff_review_required",
+  "withdrawn",
+] as const;
+export const curriculumSourceRevisionSchema = z.object({
+  id: z.uuid(),
+  sha256: hash,
+  bytes: z.number().int().min(1),
+  mime: z.string(),
+  resolved_url: z.string(),
+  redirect_chain: z.array(z.object({ url: z.string(), status: z.number() })),
+  inspection: z.record(z.string(), z.unknown()),
+  retrieved_at: z.string(),
+  last_checked_at: z.string(),
+  status: z.enum([
+    "pending_review",
+    "approved",
+    "diff_review_required",
+    "superseded",
+    "withdrawn",
+  ]),
+  extraction_status: z.enum(["queued", "done", "failed", "skipped"]),
+  review_note: z.string().nullable(),
+  reviewed_at: z.string().nullable(),
+  candidates: z.number().int(),
+  published_candidates: z.number().int(),
+});
+export const curriculumSourceRowSchema = z.object({
+  id: z.uuid(),
+  source_key: z.string(),
+  exam_family: z.literal("oyss"),
+  school_year: z.string(),
+  term: z.number().int(),
+  label: z.string(),
+  index_url: z.string(),
+  link_url: z.string(),
+  freshness: z.enum(CURRICULUM_SOURCE_FRESHNESS),
+  last_checked_at: z.string().nullable(),
+  last_check_error: z.string().nullable(),
+  index_published_on: z.string().nullable(),
+  index_updated_on: z.string().nullable(),
+  approved: z.object({
+    revision_id: z.uuid(),
+    sha256: hash,
+    retrieved_at: z.string(),
+    last_checked_at: z.string(),
+  }).nullable(),
+  revisions: z.array(curriculumSourceRevisionSchema),
+});
+export type CurriculumSourceRow = z.infer<typeof curriculumSourceRowSchema>;
+/** Parent-facing read: never a file, never a scenario choice; `officially_verified` is always false. */
+export const curriculumSourceFreshnessSchema = z.object({
+  status: z.enum([...CURRICULUM_SOURCE_FRESHNESS, "unpublished"]),
+  last_checked_at: z.string().nullable().optional(),
+  index_updated_on: z.string().nullable().optional(),
+  last_approved_retrieved_at: z.string().nullable().optional(),
+  last_approved_sha256: hash.nullable().optional(),
+  alternative: z.literal("free_study").nullable().optional(),
+  officially_verified: z.literal(false),
+});
+export type CurriculumSourceFreshness = z.infer<
+  typeof curriculumSourceFreshnessSchema
+>;
+export const curriculumSourceReviewCommandSchema = z.object({
+  request: z.uuid(),
+  revision_id: z.uuid(),
+  action: z.enum(["approve", "withdraw", "dismiss"]),
+  note: text(2000),
+  confirmed: z.literal(true),
+}).strict();
+export type CurriculumSourceReviewCommand = z.infer<
+  typeof curriculumSourceReviewCommandSchema
+>;
+export const curriculumSourceFetchTargetSchema = z.object({
+  exam_family: z.literal("oyss"),
+  school_year: z.string().regex(/^20\d{2}-20\d{2}$/).refine((v) =>
+    Number(v.slice(5)) === Number(v.slice(0, 4)) + 1
+  ),
+  term: z.number().int().min(1).max(2),
+  exam_no: z.number().int().min(1).max(2).optional(),
+  grade: z.number().int().min(1).max(12).optional(),
+  subject: text(80),
+  programme: text(160).optional(),
+  link_url: z.url({ protocol: /^https$/ }).max(500).optional(),
+}).strict();
+export type CurriculumSourceFetchTarget = z.infer<
+  typeof curriculumSourceFetchTargetSchema
+>;

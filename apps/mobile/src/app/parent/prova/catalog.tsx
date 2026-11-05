@@ -9,6 +9,7 @@ import {
   type CatalogBlueprintCommand,
   type CatalogScenario,
   catalogScenarioSchema,
+  curriculumSourceFreshnessSchema,
 } from "@gina/core";
 import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
@@ -116,6 +117,19 @@ export default function CatalogScreen() {
       });
       if (error) throw error;
       return catalogScenarioSchema.array().parse(data);
+    },
+  });
+  // Source freshness is informational: never a file, never a scenario choice, never official endorsement.
+  const freshness = useQuery({
+    queryKey: ["curriculum_source_freshness", family, academicYear, term, subject],
+    enabled: scopeValid && step > 0 && !pending && !saved,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc(
+        "get_curriculum_source_freshness",
+        { p_year: academicYear, p_term: term, p_subject: subject.trim() },
+      );
+      if (error) throw error;
+      return curriculumSourceFreshnessSchema.parse(data);
     },
   });
   const selected = scenarios.data?.find((s) =>
@@ -348,6 +362,29 @@ export default function CatalogScreen() {
                     {t("catalogFlow.termNumber", { n: term })} ·{" "}
                     {t("catalogFlow.examNumber", { n: exam })}
                   </Text>
+                  {freshness.data
+                    ? (
+                      <Text
+                        accessibilityRole={freshness.data.status === "verified"
+                          ? undefined
+                          : "alert"}
+                        style={freshness.data.status === "verified"
+                          ? u.copy
+                          : u.error}
+                      >
+                        {t(`catalogFlow.freshness.${freshness.data.status}`, {
+                          date: freshness.data.last_approved_retrieved_at
+                            ? new Date(
+                              freshness.data.last_approved_retrieved_at,
+                            ).toLocaleDateString()
+                            : "—",
+                        })}
+                        {freshness.data.alternative === "free_study"
+                          ? ` ${t("catalogFlow.freshness.freeStudy")}`
+                          : ""}
+                      </Text>
+                    )
+                    : null}
                   {scenarios.isPending
                     ? <Text style={u.copy}>{t("common.loading")}</Text>
                     : scenarios.isError
