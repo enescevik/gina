@@ -74,6 +74,9 @@ export function NotebookWorkspace({
   const wide = layout === "side-by-side";
   const stacked = layout === "stacked";
   const tabbed = layout === "tabs";
+  // Short landscape phones (≈390 dp tall): header, tabs, context strip, toolbar,
+  // page navigation and footer consumed the whole height and left no paper.
+  const shortHeight = height < 520;
   const [tab, setTab] = useState<"question" | "notebook">("question");
   const [expanded, setExpanded] = useState(false);
   const [questionExpanded, setQuestionExpanded] = useState(false);
@@ -296,7 +299,7 @@ export function NotebookWorkspace({
               tabbed && tab !== "notebook" && { display: "none" },
             ]}
           >
-            {tabbed && (
+            {tabbed && !shortHeight && (
               <View style={s.context}>
                 {contextOpen && (
                   <View style={{ width: 100 }}>
@@ -361,6 +364,7 @@ export function NotebookWorkspace({
               </View>
             )}
             <NotebookEditor
+              compact={shortHeight}
               document={document ?? page}
               onChange={(next) => {
                 setTab("notebook");

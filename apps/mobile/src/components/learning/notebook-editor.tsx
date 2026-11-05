@@ -93,6 +93,7 @@ export function NotebookEditor({
   underlay,
   annotation = false,
   showInk = true,
+  compact = false,
 }: {
   document: NotebookDocument;
   onChange: (doc: NotebookDocument) => void;
@@ -102,6 +103,8 @@ export function NotebookEditor({
   underlay?: NotebookDocument;
   annotation?: boolean;
   showInk?: boolean;
+  /** Short windows: drop the page-up/down strip so the paper keeps its height; hand tool still scrolls. */
+  compact?: boolean;
 }) {
   const { t } = useTranslation();
   const { animation } = useRouteMotion();
@@ -912,7 +915,7 @@ export function NotebookEditor({
           </ScrollView>
         </ScrollView>
       </View>
-      {viewportHeight > 0 && maxScrollY > 2 && (
+      {viewportHeight > 0 && maxScrollY > 2 && !compact && (
         <View style={s.pageNavigation}>
           <ToolButton label={t("notebook.pageUp")} disabled={!canPageUp}
             onPress={() => pageBy(-1)}>
