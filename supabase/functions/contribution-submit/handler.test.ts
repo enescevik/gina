@@ -23,3 +23,11 @@ Deno.test('real renderer preserves two ordered images and the empty gap',async()
  const white=await renderSvg('<svg xmlns="http://www.w3.org/2000/svg" width="1" height="26"><rect width="1" height="26" fill="white"/></svg>');
  if(base64(png)===base64(await canonicalLibraryPng(white)))throw Error('embedded images disappeared');
 });
+Deno.test('optional supersedes link must be a uuid and reaches begin unchanged',async()=>{
+ const f=fixture();equal((await f.run({...input,supersedes:'not-a-uuid'})).status,400);equal(f.calls,[]);
+ let seen:unknown;f.deps.begin=async(_r,i)=>{seen=i.supersedes;return{id:id(3),status:'pending',snapshot:{images:[]},supersedes_id:id(7),chain_id:id(7)};};
+ const r=await f.run({...input,supersedes:id(7)});equal(r.status,200);equal(seen,id(7));equal(await r.json(),{id:id(3),status:'pending',supersedes_id:id(7),chain_id:id(7)});
+});
+Deno.test('server-side chain errors are returned as contribution codes',async()=>{
+ for(const code of ['contribution_supersede_invalid','contribution_unchanged','contribution_supersede_taken']){const f=fixture();f.deps.begin=async()=>{throw Error(code);};const r=await f.run();equal(r.status,400);equal(await r.json(),{error:code});}
+});
