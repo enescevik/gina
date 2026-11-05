@@ -1,0 +1,37 @@
+{
+  "environment": "disposable-local-real-auth-rest",
+  "results": [
+    {
+      "check": "reward_preview_lists_goal_block_with_reason_and_keeps_it_out",
+      "passed": true
+    },
+    {
+      "check": "double_tap_sends_single_apply",
+      "passed": true
+    },
+    {
+      "check": "lost_reply_retry_same_key_one_run_partial_success_per_record",
+      "passed": true
+    },
+    {
+      "check": "reward_list_refreshed_filter_kept_selection_closed",
+      "passed": true
+    },
+    {
+      "check": "notes_bulk_archived",
+      "passed": true
+    },
+    {
+      "check": "notes_bulk_restore_returns_private_and_says_so",
+      "passed": true
+    },
+    {
+      "check": "routines_child_filter_kept_restore_returns_paused",
+      "passed": true
+    },
+    {
+      "check": "phone_tablet_layout_and_runtime",
+      "passed": true
+    }
+  ]
+}

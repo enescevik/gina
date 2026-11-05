@@ -6,8 +6,19 @@ import {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
-import { LockKeyhole, Users, Archive, ChevronRight } from "lucide-react-native";
+import {
+  LockKeyhole,
+  Users,
+  Archive,
+  Check,
+  ChevronRight,
+} from "lucide-react-native";
 import { Pressable } from "@/components/ui/pressable";
+import {
+  BulkArchiveSheet,
+  BulkSelectBar,
+  useBulkArchive,
+} from "@/components/ui/bulk-archive-sheet";
 import {
   ParentScreen,
   ChildPicker,
@@ -93,6 +104,18 @@ export default function ParentNotesScreen() {
   const rows = (notes.data?.pages.flatMap((p) => p.rows) ?? []).filter((row) =>
     seen.has(row.id) ? false : (seen.add(row.id), true),
   );
+  // Only the author's own notes are bulk candidates; a co-parent's shared note stays untouched.
+  const mine = rows.filter((row) => row.author_user_id === userId);
+  const bulk = useBulkArchive({
+    type: "note",
+    mode: archive ? "restore" : "archive",
+    scope: childId ? { child_id: childId } : {},
+    candidates: mine.map((row) => ({
+      id: row.id,
+      title: row.title || t("notes.untitled"),
+    })),
+    onFinished: () => cache.invalidateQueries({ queryKey: prefix }),
+  });
   const date = new Intl.DateTimeFormat(i18n.language, {
     day: "numeric",
     month: "short",
@@ -152,6 +175,9 @@ export default function ParentNotesScreen() {
             allLabel={t("noteEdit.all")}
           />
         ) : null}
+        {mine.length > 0 || bulk.selecting ? (
+          <BulkSelectBar bulk={bulk} total={mine.length} />
+        ) : null}
         {notice ? (
           <Text
             style={[u.copy, { color: p.purple }]}
@@ -173,29 +199,68 @@ export default function ParentNotesScreen() {
             : note.visibility === "private"
               ? LockKeyhole
               : Users;
+          const title = note.title || t("notes.untitled");
+          const own = note.author_user_id === userId;
+          const picked = bulk.selecting && bulk.isPicked(note.id);
           return (
             <Pressable
               key={note.id}
-              accessibilityRole="button"
-              accessibilityLabel={t("noteEdit.open", {
-                title: note.title || t("notes.untitled"),
-              })}
-              onPress={() => {
-                setNotice(null);
-                setSelected(note);
-              }}
+              {...(bulk.selecting
+                ? {
+                    accessibilityRole: "checkbox" as const,
+                    accessibilityLabel: own
+                      ? title
+                      : `${title}: ${t("bulkArchive.reason.note_not_author")}`,
+                    accessibilityState: { checked: picked, disabled: !own },
+                    "aria-checked": picked,
+                    disabled: !own,
+                    onPress: () => bulk.toggle(note.id),
+                  }
+                : {
+                    accessibilityRole: "button" as const,
+                    accessibilityLabel: t("noteEdit.open", { title }),
+                    onPress: () => {
+                      setNotice(null);
+                      setSelected(note);
+                    },
+                  })}
               style={({ pressed }) => [
                 u.card,
-                { gap: 12, backgroundColor: pressed ? p.lilac : "#FFFFFF" },
+                {
+                  gap: 12,
+                  backgroundColor: pressed || picked ? p.lilac : "#FFFFFF",
+                },
+                picked && { borderColor: p.purple, borderWidth: 2 },
+                bulk.selecting && !own && { opacity: 0.6 },
               ]}
             >
               <View style={u.row}>
                 <Icon color={p.purple} size={22} />
-                <Text style={[u.bold, u.fill]}>
-                  {note.title || t("notes.untitled")}
-                </Text>
-                <ChevronRight color={p.purple} size={20} />
+                <Text style={[u.bold, u.fill]}>{title}</Text>
+                {bulk.selecting ? (
+                  <View
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: 9,
+                      borderWidth: 2,
+                      borderColor: own ? p.purple : p.line,
+                      backgroundColor: picked ? p.purple : "#FFFFFF",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {picked ? <Check size={18} color="#FFFFFF" /> : null}
+                  </View>
+                ) : (
+                  <ChevronRight color={p.purple} size={20} />
+                )}
               </View>
+              {bulk.selecting && !own ? (
+                <Text style={u.small}>
+                  {t("bulkArchive.reason.note_not_author")}
+                </Text>
+              ) : null}
               <Text style={u.copy} numberOfLines={3}>
                 {note.body}
               </Text>
@@ -221,6 +286,7 @@ export default function ParentNotesScreen() {
           />
         ) : null}
       </ParentScreen>
+      <BulkArchiveSheet {...bulk.sheet} />
       {selected === "new" ? (
         <NoteEditor
           row={null}
