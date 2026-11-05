@@ -1,0 +1,214 @@
+// B01 UI tour against the disposable gina_b01ui_* services. Synthetic data only.
+const fs = require('node:fs'), assert = require('node:assert/strict'), { execFileSync } = require('node:child_process');
+const { chromium } = require(process.env.GINA_QA_PLAYWRIGHT_PATH || 'playwright');
+const f = JSON.parse(fs.readFileSync(process.env.B01UI_WORK + '/fixture.json'));
+assert.match(f.db, /^gina_b01ui_[0-9a-f]+_audit$/); assert.equal(new URL(f.url).hostname, '127.0.0.1');
+const outDir = process.env.SHOT_DIR; fs.mkdirSync(outDir, { recursive: true });
+const K1 = 'b0100000-0000-4000-8000-000000000001', K2 = 'b0100000-0000-4000-8000-000000000002';
+const sql = (q) => execFileSync('docker', ['exec', '-i', 'supabase_db_gina', 'psql', '-X', '-qAt', '-U', 'postgres', '-d', f.db, '-v', 'ON_ERROR_STOP=1'], { input: q }).toString().trim();
+const results = []; const ok = (check, detail) => { results.push({ check, passed: true, ...(detail ? { detail } : {}) }); console.log('PASS', check, detail ?? ''); };
+let browser, p, stage = 'setup';
+(async () => {
+  browser = await chromium.launch({ channel: 'chrome', headless: true });
+  const c = await browser.newContext({ viewport: { width: 1280, height: 800 }, locale: 'tr-TR', timezoneId: 'Europe/Istanbul' });
+  p = await c.newPage(); p.setDefaultTimeout(20000);
+  const errors = []; p.on('pageerror', e => errors.push(e.message));
+  const rpcCalls = []; p.on('request', r => { if (r.url().includes('/rest/v1/rpc/')) rpcCalls.push(r.url().split('/rpc/')[1].split('?')[0]); });
+  async function shot(name, full = false) {
+    await p.waitForTimeout(400);
+    await p.screenshot({ path: `${outDir}/${name}.png`, fullPage: full });
+    assert.ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'horizontal overflow on ' + name);
+  }
+  const both = async (name, fn) => { await p.setViewportSize({ width: 1280, height: 800 }); if (fn) await fn(); await shot(name + '-1280'); await p.setViewportSize({ width: 768, height: 1024 }); await shot(name + '-768'); await p.setViewportSize({ width: 1280, height: 800 }); };
+
+  stage = 'login';
+  await p.goto(f.app + '/sign-in');
+  await p.getByLabel('E-posta', { exact: true }).fill(f.creds.admin.email);
+  await p.getByLabel('Şifre', { exact: true }).fill(f.creds.admin.password);
+  await p.getByRole('button', { name: 'Giriş yap', exact: true }).click();
+  await p.waitForURL('**/dashboard');
+
+  stage = 'dashboard';
+  const queue = p.getByTestId('workqueue');
+  await queue.getByText('Önce bunlara bakın').waitFor();
+  await p.getByText('Aktif cihaz').waitFor();
+  const order = await p.evaluate(() => {
+    const q = document.querySelector('[data-testid=workqueue]'), s = [...document.querySelectorAll('div')].find(d => d.textContent === 'Aktif cihaz');
+    return !!(q && s && (q.compareDocumentPosition(s) & Node.DOCUMENT_POSITION_FOLLOWING));
+  });
+  assert.ok(order, 'workqueue before stats');
+  const ticketRow = queue.locator('[data-queue=tickets_open]');
+  assert.match(await ticketRow.innerText(), /Açık destek talepleri[\s\S]*Veli cevap bekliyor[\s\S]*1[\s\S]*En eski: 2 gün[\s\S]*Aç/);
+  assert.equal(await ticketRow.getByRole('link', { name: 'Aç' }).getAttribute('href'), '/support');
+  for (const k of ['store_notifications_attention', 'reconcile_jobs_failed', 'push_attention', 'ai_failed_operations']) assert.equal(await queue.locator(`[data-queue=${k}]`).count(), 1, k);
+  await both('01-dashboard-workqueue', null);
+  await queue.getByRole('button', { name: /^Finans/ }).click();
+  assert.equal(await queue.locator('[data-queue=tickets_open]').count(), 0); assert.equal(await queue.locator('[data-queue=reconcile_jobs_failed]').count(), 1);
+  await shot('02-dashboard-finance-filter-1280');
+  ok('dashboard_role_workqueue_before_counts', 'item+count+oldest+reason+link; role filter hides support items');
+
+  stage = 'families_paging';
+  await p.goto(f.app + '/families');
+  const status = p.getByTestId('families-status');
+  await status.filter({ hasText: '50 aile gösteriliyor; daha fazlası var.' }).waitFor();
+  await both('03-families-first-page');
+  await p.getByRole('button', { name: 'Daha fazla aile yükle' }).click();
+  await status.filter({ hasText: '100 aile gösteriliyor; daha fazlası var.' }).waitFor();
+  await p.getByRole('button', { name: 'Daha fazla aile yükle' }).click();
+  await status.filter({ hasText: 'Tüm aileler gösteriliyor (132).' }).waitFor();
+  const names = await p.locator('[data-family-row] .font-semibold.text-slate-900').allInnerTexts();
+  assert.equal(names.length, 132); assert.equal(new Set(names).size, 132);
+  for (const n of ['Sayfa 001', 'Sayfa 101', 'Sayfa 130', 'Kaya ailesi', 'Kaya Aile Evi']) assert.ok(names.includes(n), n);
+  assert.equal(await p.getByRole('button', { name: 'Daha fazla aile yükle' }).count(), 0);
+  const searchCalls = rpcCalls.filter(n => n === 'admin_families_search').length;
+  await p.getByText('Sayfa 130', { exact: true }).scrollIntoViewIfNeeded(); await shot('04-families-all-132-1280');
+  ok('families_keyset_beyond_100', `132 unique rows in 3 pages (${searchCalls} admin_families_search calls), no 'more' button at end`);
+  assert.equal(await p.locator('[data-family-row] code').first().isVisible(), false, 'UUID hidden until details opened');
+
+  stage = 'families_search';
+  await p.getByLabel(/Aile adı, çocuk adı/).fill('Elif'); await p.getByRole('button', { name: 'Ara', exact: true }).click();
+  await status.filter({ hasText: 'Bu aramayla eşleşen 1 ailenin tamamı gösteriliyor.' }).waitFor();
+  await p.getByText('Eşleşen: Çocuk adı').waitFor();
+  assert.ok(!(await p.locator('main').innerText()).includes('Elif'), 'child name never rendered');
+  const emailPart = f.creds.parent.email.slice(0, 18);
+  await p.getByLabel(/Aile adı, çocuk adı/).fill(emailPart); await p.getByRole('button', { name: 'Ara', exact: true }).click();
+  await p.getByText('Eşleşen: Ebeveyn e-postası').first().waitFor();
+  assert.ok(!(await p.locator('body').innerText()).includes(f.creds.parent.email), 'email never rendered');
+  await p.getByLabel(/Aile adı, çocuk adı/).fill('Kaya'); await p.getByRole('button', { name: 'Ara', exact: true }).click();
+  await status.filter({ hasText: 'Bu aramayla eşleşen 2 ailenin tamamı gösteriliyor.' }).waitFor();
+  await p.locator('[data-family-row]').first().getByText('Kimlik ve ayrıntı').click();
+  await both('05-families-search-matched-on');
+  ok('families_matched_on_marker_and_uuid_in_details', 'child name / email fragment marked, email text never shown, UUID inside details');
+
+  stage = 'billing_timeline';
+  await p.goto(f.app + '/billing?family=' + K1);
+  const tl = p.getByTestId('entitlement-timeline');
+  await tl.locator('li[data-kind]').first().waitFor();
+  const groups = await tl.locator('li[data-kind]').evaluateAll(ls => ls.map(l => [l.dataset.kind, l.dataset.group, l.querySelector('span.rounded-full.font-semibold')?.textContent]));
+  const g = Object.fromEntries(groups.map(([k, gr, label]) => [k, { gr, label }]));
+  assert.equal(g.store_refund.gr, 'refund'); assert.equal(g.store_cancel.gr, 'cancellation'); assert.equal(g.comp_granted.gr, 'compensation');
+  assert.equal(g.store_check_requested.gr, 'verification'); assert.equal(g.store_purchase.gr, 'purchase'); assert.equal(g.store_renewal.gr, 'renewal');
+  assert.equal(new Set([g.store_refund.label, g.store_cancel.label, g.comp_granted.label, g.store_check_requested.label]).size, 4, 'refund/cancel/comp/check badges differ');
+  await tl.getByText('Mağazadan durum okuması · iade veya iptal değildir').waitFor();
+  assert.equal(await p.locator('[data-verification=store_notified]').count(), 1);
+  await p.getByText('Mağaza bildirimiyle doğrulandı').waitFor();
+  await tl.scrollIntoViewIfNeeded();
+  await both('06-billing-timeline', async () => { await tl.scrollIntoViewIfNeeded(); });
+  await p.getByText('Mağaza bildirimiyle doğrulandı').scrollIntoViewIfNeeded(); await shot('07-billing-verification-label-1280');
+  ok('timeline_kinds_separate_badges', groups.map(x => x[0]).join(','));
+
+  stage = 'override_wrong_family';
+  await p.goto(f.app + '/overrides?family=' + K2);
+  const head = p.getByTestId('preview-family');
+  await head.getByText('Kaya Aile Evi', { exact: true }).waitFor();
+  assert.match(await head.innerText(), /0 üye · 1 çocuk/);
+  await both('08-override-wrong-family-visible', async () => { await head.scrollIntoViewIfNeeded(); });
+  ok('wrong_family_visible_in_preview', 'opened via link to K2: preview headline "Kaya Aile Evi · 0 üye · 1 çocuk" before any action');
+
+  stage = 'override_pick_right_family';
+  await p.getByLabel('Aile', { exact: true }).fill('Kaya'); await p.getByRole('button', { name: 'Ara', exact: true }).click();
+  await p.getByRole('button', { name: /Kaya ailesi · GINA Plus · 2 çocuk/ }).click();
+  await head.getByText('Kaya ailesi', { exact: true }).waitFor();
+  assert.match(await head.innerText(), /1 üye · 2 çocuk/);
+  await p.getByLabel('Paket').selectOption('pro');
+  await p.getByRole('radio', { name: /^30 gün/ }).click();
+  await p.getByLabel('Gerekçe').fill('Destek #42: ödeme sorunu telafisi (sentetik)');
+  const effect = p.getByTestId('preview-effect');
+  await effect.getByText('GINA Pro', { exact: true }).waitFor();
+  const applyBtn = p.getByTestId('override-apply');
+  await p.waitForFunction(() => !document.querySelector('[data-testid=override-apply]').disabled);
+  await both('09-override-preview-before-after', async () => { await effect.scrollIntoViewIfNeeded(); });
+  const applyCallsBefore = rpcCalls.filter(n => n === 'admin_override_apply').length;
+  await applyBtn.dblclick();
+  await p.getByText(/Kaya ailesi: Geçici hak kaydedildi\./).waitFor();
+  await p.waitForTimeout(800);
+  const applyCalls = rpcCalls.filter(n => n === 'admin_override_apply').length - applyCallsBefore;
+  const live = sql(`select count(*) from public.entitlement_overrides where family_id='${K1}' and revoked_at is null and ends_at>now() and reason like 'Destek #42%';`);
+  const audits = sql(`select count(*) from public.audit_log where action='entitlement_overrides.apply' and family_id='${K1}';`);
+  const wrong = sql(`select count(*) from public.entitlement_overrides where family_id='${K2}';`);
+  assert.equal(live, '1'); assert.equal(audits, '1'); assert.equal(applyCalls, 1); assert.equal(wrong, '0');
+  await shot('10-override-applied-once-1280');
+  ok('double_click_single_override', `dblclick → ${applyCalls} apply request, ${live} live override, ${audits} apply audit row, wrong family rows ${wrong}`);
+
+  stage = 'override_conflict_preview';
+  await p.getByRole('radio', { name: /^90 gün/ }).click();
+  await p.getByLabel('Gerekçe').fill('İkinci deneme: süre uzatma (sentetik)');
+  const conflicts = p.getByTestId('preview-conflicts');
+  await conflicts.waitFor();
+  await conflicts.getByText('Aynı paket, daha kısa süreli').waitFor();
+  assert.equal(await applyBtn.isDisabled(), true, 'replace requires explicit opt-in');
+  await conflicts.getByRole('checkbox').check();
+  await p.waitForFunction(() => !document.querySelector('[data-testid=override-apply]').disabled);
+  await both('11-override-conflict-explicit-replace', async () => { await conflicts.scrollIntoViewIfNeeded(); });
+  ok('conflict_requires_explicit_replace');
+
+  stage = 'override_conflict_race';
+  const S1 = 'b0300000-0000-4000-8000-000000000001';
+  await p.goto(f.app + '/overrides?family=' + S1);
+  await head.getByText('Sayfa 001', { exact: true }).waitFor();
+  await p.getByRole('radio', { name: /^7 gün/ }).click();
+  await p.getByLabel('Gerekçe').fill('Yarış denemesi (sentetik)');
+  await effect.getByText('GINA Plus', { exact: true }).nth(0).waitFor();
+  await p.waitForFunction(() => !document.querySelector('[data-testid=override-apply]').disabled);
+  assert.equal(await p.getByTestId('preview-conflicts').count(), 0);
+  // Another admin writes an override after this preview was shown.
+  sql(`insert into public.entitlement_overrides(family_id,plan,reason,granted_by,ends_at) values('${S1}','plus','Başka yönetici (sentetik)','${f.users.admin}',now()+interval '3 days');`);
+  await applyBtn.click();
+  await p.getByText(/Bu arada ailede başka bir geçici hak oluştu/).waitFor();
+  assert.equal(sql(`select count(*) from public.entitlement_overrides where family_id='${S1}';`), '1');
+  await p.getByTestId('preview-conflicts').waitFor();
+  await both('12-override-conflict-race-message');
+  ok('override_conflict_message_after_race', 'preview without conflict, concurrent override inserted, apply → override_conflict text, nothing written, preview refreshed with conflict');
+
+  stage = 'finance_operator';
+  const fc = await browser.newContext({ viewport: { width: 1280, height: 800 }, locale: 'tr-TR', timezoneId: 'Europe/Istanbul' });
+  const fp = await fc.newPage(); fp.setDefaultTimeout(20000); fp.on('pageerror', e => errors.push(e.message));
+  await fp.goto(f.app + '/sign-in');
+  await fp.getByLabel('E-posta', { exact: true }).fill(f.creds.finance.email);
+  await fp.getByLabel('Şifre', { exact: true }).fill(f.creds.finance.password);
+  await fp.getByRole('button', { name: 'Giriş yap', exact: true }).click();
+  await fp.waitForURL(u => !u.pathname.endsWith('/sign-in'));
+  await fp.goto(f.app + '/billing?family=' + K1);
+  const fq = fp.getByTestId('workqueue');
+  await fq.locator('[data-queue=reconcile_jobs_failed]').waitFor();
+  assert.equal(await fq.locator('[data-queue=tickets_open]').count(), 0, 'finance sees no support items');
+  assert.equal(await fq.locator('[data-queue=ai_failed_operations]').count(), 0, 'finance sees no AI items');
+  await fp.getByTestId('entitlement-timeline').locator('li[data-kind=store_refund]').waitFor();
+  await fp.waitForTimeout(400); await fp.screenshot({ path: `${outDir}/13-billing-finance-operator-1280.png` });
+  sql(`update public.operations_members set revoked_at=now() where user_id='${f.users.finance}';`);
+  await fp.evaluate(() => window.dispatchEvent(new Event('focus')));
+  await fp.getByText(/Yetkiniz kaldırıldı|etkin finans yetkisi gerekiyor/).first().waitFor();
+  assert.equal(await fp.getByTestId('entitlement-timeline').count(), 0, 'timeline unmounted after revocation');
+  await fp.waitForTimeout(400); await fp.screenshot({ path: `${outDir}/14-billing-finance-revoked-1280.png` });
+  await fc.close();
+  ok('finance_role_scoped_queue_and_revocation', 'finance operator: only billing items + timeline; revoked_at set → open tab shows explicit revoked state, timeline removed');
+
+  stage = 'role_revocation';
+  await p.goto(f.app + '/overrides?family=' + K1);
+  await head.getByText('Kaya ailesi', { exact: true }).waitFor();
+  await p.getByLabel('Paket').selectOption('pro');
+  await p.getByRole('radio', { name: /^90 gün/ }).click();
+  await p.getByLabel('Gerekçe').fill('Yetki iptali denemesi (sentetik)');
+  await p.getByTestId('preview-conflicts').getByRole('checkbox').check();
+  await p.waitForFunction(() => !document.querySelector('[data-testid=override-apply]').disabled);
+  sql(`delete from public.admins where user_id='${f.users.admin}';`);
+  await applyBtn.click();
+  await p.getByTestId('access-revoked').getByText('Yetkiniz kaldırıldı').waitFor();
+  const after = sql(`select count(*) from public.entitlement_overrides where family_id='${K1}' and revoked_at is null and ends_at>now();`);
+  assert.equal(after, '1', 'no write after revocation');
+  assert.equal(await p.getByTestId('override-apply').count(), 0, 'form removed after revocation');
+  await both('15-override-access-revoked');
+  await p.goto(f.app + '/families');
+  await p.getByText('Yetkiniz kaldırıldı').first().waitFor();
+  await shot('16-families-access-revoked-1280');
+  ok('role_revocation_blocks_open_tab', 'admins row deleted with old JWT: apply rejected (forbidden), explicit revoked state, override count unchanged');
+
+  assert.deepEqual(errors, []);
+  ok('no_page_exceptions_or_horizontal_overflow');
+  fs.writeFileSync(outDir + '/ui-checks.json', JSON.stringify({ environment: 'disposable-local-auth-postgrest gina_b01ui_*', viewports: ['1280x800', '768x1024'], results }, null, 2) + '\n');
+  await browser.close();
+})().catch(async e => {
+  console.log('CHECK_FAILED ' + stage + ' ' + String(e.message).slice(0, 800));
+  if (p) { await p.screenshot({ path: process.env.B01UI_WORK + '/failed.png', fullPage: true }).catch(() => {}); fs.writeFileSync(process.env.B01UI_WORK + '/failure.txt', await p.locator('body').innerText().catch(() => '')); }
+  if (browser) await browser.close(); process.exitCode = 1;
+});

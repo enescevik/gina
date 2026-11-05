@@ -1,4 +1,9 @@
+import { useState } from "react";
+
 import { Card, Layout, Notice } from "@/components/Layout";
+import { Workqueue } from "@/components/workqueue";
+import { isForbidden } from "@/lib/admin-rpc";
+import { b01 } from "@/lib/admin-workqueue-text";
 import { fmtNumber } from "@/lib/format";
 import { t } from "@/lib/i18n";
 import { errorMessage, supabase } from "@/lib/supabase";
@@ -45,17 +50,22 @@ function PlanTable({ title, values }: { title: string; values: Record<string, nu
 }
 
 export default function DashboardPage() {
+  const [revoked, setRevoked] = useState(false);
   const { data, error, loading, reload } = useAdminQuery(async () => unwrap(await supabase().rpc("admin_dashboard")) as unknown as Dashboard);
+  const lost = revoked || isForbidden(error);
 
   return (
     <Layout title={t.dashboard.title}>
-      {error ? (
+      {lost ? (
+        <Notice tone="error"><strong>{b01.revoked.title}.</strong> {b01.revoked.body}</Notice>
+      ) : <Workqueue onForbidden={() => setRevoked(true)} />}
+      {error && !lost ? (
         <Notice tone="error">
           {errorMessage(error, t.errors)}{" "}
           <button className="btn-secondary ml-2" disabled={loading} onClick={reload}>Yeniden dene</button>
         </Notice>
       ) : null}
-      {!data ? (
+      {lost ? null : !data ? (
         loading ? <p className="text-slate-500">{t.common.loading}</p> : null
       ) : (
         <>

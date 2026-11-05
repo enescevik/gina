@@ -117,3 +117,53 @@ Ortam: `docker` içindeki yerel Supabase Postgres'te `gina_completion_audit` bo�
 - Mağaza olayı eşlemesi Apple/Google bildirim türlerine göre statik; yeni alt türler `store_other` olur.
 - Yeni bulgu: `supabase/tests/083_school_grade_lifecycle.test.sql` 21:00–24:00 UTC arasında saat dilimine bağlı olarak başarısız oluyor (`current_date+1` UTC'de yarın ama Europe/Istanbul'da bugün; `change_school_grade` aile saat dilimine göre "gelecek" kararı veriyor). B01 ile ilgisi yok; düzeltilmedi.
 - `pnpm --filter @gina/core typecheck`: `src/period-transfer.test.ts` içinde 19 önceden var olan hata (L01 dalından); yeni dosyalar temiz.
+
+## UI bağlama (6 Kasım 2026 gecesi, B01 UI ajanı)
+
+Dal: `worktree-agent-a2ecfcd081b0ddc49` (main `eeb57af` üzerine). **Main'e push edilmedi, üretime yayımlanmadı, migration eklenmedi.** Yalnız sahiplik listesindeki dosyalar değişti.
+
+### Değişen dosyalar
+
+| Dosya | İçerik |
+|---|---|
+| `apps/backoffice/src/lib/admin-rpc.ts` (yeni) | Üretilmiş DB tiplerinde olmayan B01 RPC'leri için tipsiz çağrı; yanıtlar her zaman core zod şemasından geçer. `isForbidden` (42501/`forbidden`), `isDefinitiveRejection` |
+| `apps/backoffice/src/lib/admin-workqueue-text.ts` (yeni) | B01 Türkçe metinleri, `lib/i18n.ts` düzeninde ama ayrı dosyada (başka ajanlarla çakışmamak için `i18n.ts`'e dokunulmadı): kuyruk kalemi/neden/bağlantı, rol adları, zaman çizgisi tür ve grup etiketleri, engel/çakışma metinleri, S03 doğrulama etiketleri, "yetkiniz kaldırıldı" |
+| `apps/backoffice/src/lib/override-apply.ts` (yeni) | `admin_override_preview` (+`assertPreviewFamily`), `admin_override_apply` (+`overrideApplyArgs`/`readOverrideApplyResult`); uygulama niyeti IndexedDB kuyruğunda (`createLibraryQueue`, kapsam `override-apply`) saklanır, yeniden denemede aynı anahtar |
+| `apps/backoffice/src/components/workqueue.tsx` (yeni) | `admin_workqueue`: "Önce bunlara bakın" (en eski bekleyen ilk 3), rol süzgeci, rol başına kalem · sayı · en eski bekleme · neden · "Aç" bağlantısı; sıfır kuyruklar altta tek satır; 60 sn/odakta yenileme; `groupWorkqueue` rol sızıntısını reddeder |
+| `apps/backoffice/src/components/entitlement-timeline.tsx` (yeni) | `admin_family_entitlement_timeline` keyset ("Daha eski olayları yükle"), `appendTimelinePage` (başka ailenin sayfası birleştirilmez); 9 grup ayrı renkli rozet (satın alma / yenileme / iptal / iade / mağaza geri aldı / ödeme sorunu / telafi / elle kontrol / diğer); elle kontrolde "iade veya iptal değildir" |
+| `apps/backoffice/src/components/override-preview.tsx` (yeni) | Önizleme → uygula. Aile adı (büyük), üye/çocuk sayısı, oluşturulma, saat dilimi; önce / sonra / süre bitince; açılan/kapanan sınırlar; çakışmalar + açık "çakışanları sonlandır" onayı; 7/30/90 gün (ailenin saat diliminde gün sonu, sunucudan) veya özel bitiş; girdi değişince önizleme yenilenmeden uygulanamaz; senkron kapı + aynı anahtar ile çift tıklama tek istek; `request_conflict`, `override_conflict`, engel kodları, `family_not_found` metinleri; ağ hatasında "aynı işlemi yeniden kontrol et" |
+| `apps/backoffice/src/pages/dashboard.tsx` | İş kuyruğu sayaçlardan önce; yetki iptalinde sayaçlar yerine "Yetkiniz kaldırıldı" |
+| `apps/backoffice/src/pages/families.tsx` | `admin_families_search` (sayfa 50, gerçek cursor ile "Daha fazla aile yükle"; `appendFamilyPage` sıra kontrolü), `matched_on` rozetleri, e-posta/çocuk adı gösterilmez, UUID "Kimlik ve ayrıntı" içinde; "Paket ve ödeme" + "Geçici hak" bağlantıları |
+| `apps/backoffice/src/pages/billing.tsx` | Üstte finans rolü iş kuyruğu (`p_role='finance'`); seçili ailede hak zaman çizgisi; abonelikte S03 `verification` etiketi |
+| `apps/backoffice/src/pages/overrides.tsx` | Eski `GrantForm` kaldırıldı: aile seçimi `admin_families_search`, seçilen aile sabit bağlamda `OverrideGrant`. Sonlandırma (expire), bekleyen eski komut, liste ve denetim kaydı aynı kaldı; 42501 → "Yetkiniz kaldırıldı" ve form kaldırılır |
+| `docs/release/admin-workqueue-2026-11-06/ui/` | 25 ekran görüntüsü, `ui-checks.json`, `harness/` (aşağıdaki izole ortamın betikleri) |
+
+### Testler (gerçekten çalıştırıldı)
+
+- `pnpm --filter @gina/backoffice typecheck` → `✓ Types generated successfully`, `tsc --noEmit` hatasız.
+- `pnpm --filter @gina/backoffice lint` → hata/uyarı yok (ilk denemede React Compiler `set-state-in-effect` 4 hata verdi; efekt içi senkron setState kaldırılarak düzeltildi).
+- `pnpm --filter @gina/backoffice build` (`output: export`) → 22 statik sayfa, `apps/backoffice/out`.
+- İzole servis: `harness/run.py`, `scripts/test-isolated-services.py` yöntemiyle boş `gina_completion_audit` şablonundan `gina_b01ui_<rastgele>_audit` klonu, bütün migration'lar, geçici GoTrue + PostgREST container'ları (`<db>_auth`, `<db>_rest`), sentetik tohum (`harness/seed.sql`: 132 aile, "Kaya ailesi" / "Kaya Aile Evi" benzer adlı iki aile, mağaza aboneliği + satın alma/yenileme/iptal/iade olayları, iki telafi, başarısız elle kontrol, destek/fikir/push/AI kalemleri, yönetici + finans operatörü). Fixture ve oturum bilgisi repoda değil, `B01UI_WORK` geçici klasöründe. Statik `out/` + loopback proxy (`harness/serve.mjs`).
+- Playwright (`harness/tour.cjs`, Chrome headless, 1280×800 ve 768×1024) → `ui/ui-checks.json`, **11/11 geçti**:
+  - `dashboard_role_workqueue_before_counts`: kuyruk sayaçlardan önce; "Açık destek talepleri · Veli cevap bekliyor · 1 · En eski: 2 gün · Aç→/support"; Finans süzgecinde destek kalemi yok.
+  - `families_keyset_beyond_100`: 50 → 100 → 132; 132 benzersiz satır, 3 `admin_families_search` çağrısı, sonda "daha fazla" düğmesi yok.
+  - `families_matched_on_marker_and_uuid_in_details`: "Elif" → yalnız "Eşleşen: Çocuk adı" (çocuk adı ekranda yok); e-posta parçası → "Eşleşen: Ebeveyn e-postası", e-posta metni sayfada yok; UUID yalnız ayrıntıda.
+  - `timeline_kinds_separate_badges`: `store_refund`→refund, `store_cancel`→cancellation, `comp_granted`→compensation, `store_check_requested`→verification; dört rozet metni farklı; S03 etiketi "Mağaza bildirimiyle doğrulandı".
+  - `wrong_family_visible_in_preview`: `/overrides?family=<Kaya Aile Evi>` ile açılınca önizleme başlığı "Kaya Aile Evi · 0 üye · 1 çocuk"; doğru aile aramadan seçilince "Kaya ailesi · 1 üye · 2 çocuk".
+  - `double_click_single_override`: Pro 30 gün çift tıklama → 1 `admin_override_apply` isteği, 1 canlı telafi, 1 `entitlement_overrides.apply` denetim kaydı, yanlış aileye 0 satır.
+  - `conflict_requires_explicit_replace`: aynı ailede 90 gün Pro → çakışma "Aynı paket, daha kısa süreli"; onay kutusu işaretlenmeden düğme kapalı.
+  - `override_conflict_message_after_race`: çakışmasız önizlemeden sonra başka bir telafi SQL ile eklendi → uygula → `override_conflict` metni, yeni satır yazılmadı, önizleme çakışmayla yenilendi.
+  - `finance_role_scoped_queue_and_revocation`: finans operatörü `/billing`'de yalnız ödeme kalemleri (destek/AI yok) ve zaman çizgisi; `revoked_at` yazılınca açık sekme "Bu bölümü açmak için etkin finans yetkisi gerekiyor" durumuna geçti, zaman çizgisi kaldırıldı.
+  - `role_revocation_blocks_open_tab`: eski JWT ile açık sekmede `admins` satırı silindi → uygula `forbidden`, "Yetkiniz kaldırıldı" ve form kaldırıldı; telafi sayısı değişmedi; `/families` da aynı durumu gösterdi.
+  - `no_page_exceptions_or_horizontal_overflow`: sayfa istisnası yok, her ekran görüntüsünde yatay taşma yok.
+- Temizlik: her koşudan sonra `{"…_rest": true, "…_auth": true, "db_dropped": true}`; `docker ps -a` ve `pg_database` içinde `gina_b01ui` kalmadı. Başka ajanların container/DB'lerine dokunulmadı. (Koşu 3 kez yapıldı: 1. turda test seçici hataları, 2. turda yetki iptali adımı Plus seçtiği için çakışma kutusu çıkmadı — test düzeltildi; ekran görüntüleri ve `ui-checks.json` 3. temiz koşudan.)
+
+### Kalan sınır
+
+- `request_conflict` UI'da metin olarak bağlı ama tarayıcıdan tetiklenmedi (aynı anahtarı farklı girdiyle göndermek için IndexedDB'yi elle bozmak gerekir); sunucu davranışı pgTAP 097 ve yarış testinde kanıtlı.
+- Panel (`/dashboard`) ve `/families` hâlâ yalnız tam yönetici (`Layout` admin claim'i; `Layout.tsx` bu ajanın dosyası değil). Destek/içerik/yayın operatörü kendi kuyruğunu panelde göremez; finans operatörü `/billing`'de görür. Diğer roller için iş kuyruğu bileşeni kendi sayfalarına (destek/kütüphane/yayın — başka ajan) eklenebilir.
+- Finans operatörünün yetkisi iptal edildiğinde ekranda `Layout`'un "etkin finans yetkisi gerekiyor" durumu görünür (rol yenilemesi kuyruk isteğinden önce sonuçlandı); B01 "Yetkiniz kaldırıldı" metni yönetici sayfalarında ve kuyruk/zaman çizgisi `forbidden` aldığında çıkar.
+- `/billing` aile listesi hâlâ `finance_workspace` (ilk 50); gerçek sayfalama `/families`'te. Finans aile aramasının `admin_families_search`'e taşınması ayrı iş.
+- Tablet (768) aile listesinde eylem düğmeleri dördüncü sütunda kalıyor; okunur ama sıkışık.
+- Önizleme her girdi değişiminde 300 ms gecikmeyle sunucuya gider (yazmaz). `admin_workqueue` 60 sn'de bir ve sekme odağında yenilenir.
+- Yayımlanmadı; üretimde B01 migration'ı uygulanmadan bu sayfalar `admin_workqueue` vb. için 404/hata verir — yayın sırası: önce migration, sonra backoffice.
