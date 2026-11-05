@@ -139,7 +139,7 @@ $$;
 
 -- Audited refusal: another family presented a receipt that is already bound (or signed) elsewhere.
 -- The write RPC raises and rolls back, so the record is a separate service_role call. No raw token
--- is stored: a hash (correlation) and a short hint only.
+-- is stored: a hash (correlation), the length and a 4-character hint for long tokens only.
 create function public.record_store_account_conflict(
   p_platform public.store_platform, p_store_key text, p_caller_family_id uuid, p_user_id uuid default null,
   p_source text default 'client_verify'
@@ -158,7 +158,8 @@ begin
       'receipt bound to another family',
       jsonb_build_object('platform',p_platform,'source',p_source,'caller_family_id',p_caller_family_id,
         'owner_family_id',v_owner.family_id,'store_key_hash',encode(sha256(convert_to(p_store_key,'UTF8')),'hex'),
-        'store_key_hint',left(p_store_key,6)||'…'||length(p_store_key)::text))
+        'store_key_length',length(p_store_key),
+        'store_key_hint',case when length(p_store_key)>=16 then left(p_store_key,4)||'…' end))
     returning id into v_id;
   return v_owner.id;
 end;
