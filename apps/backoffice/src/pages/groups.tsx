@@ -3,6 +3,7 @@ import { useAuth } from "@/lib/auth";
 import { groupCreateQueue, sendGroupCreate } from "@/lib/group-command";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Card, Layout, Notice } from "@/components/Layout";
+import { useUnsavedChanges } from "@/components/unsaved-changes";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
 import { supabase } from "@/lib/supabase";
 import { fmtDateTime } from "@/lib/format";
@@ -113,6 +114,12 @@ function GroupsEditor({ user }: { user: string }) {
   const [cancel, setCancel] = useState<Group | null>(null);
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
+  // Yayın kalıcıdır: operatör özetle kontrol ettiğini onaylar; onay yalnız onaylandığı form hâli için geçerlidir.
+  const [confirmedFor, setConfirmedFor] = useState("");
+  const confirmed = confirmedFor !== "" && confirmedFor === JSON.stringify(form);
+  const setConfirmed = (value: boolean) => setConfirmedFor(value ? JSON.stringify(form) : "");
+  const formDirty = !!(form.title || form.collection || form.start || form.end || form.items.length);
+  const guard = useUnsavedChanges(formDirty || !!policy || (!!cancel && !!reason), busy);
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState("");
   const gate = useRef(false);
@@ -221,6 +228,7 @@ function GroupsEditor({ user }: { user: string }) {
   }
   return (
     <Layout title="Birlikte Prova">
+      {guard.dialog}
       <p className="mb-6 max-w-3xl text-slate-600">
         Aynı sınıf düzeyine aynı soru sürümünü verin. Bu evde yapılan bir
         çalışma; gözetimli veya resmî sınav değildir. Katılım ve takma adla
@@ -544,13 +552,31 @@ function GroupsEditor({ user }: { user: string }) {
               </div>
             )
             : null}
+          {collection && form.title.trim().length >= 3 && questionCount >= 3
+            ? (
+              <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900" aria-label="Yayın öncesi özet">
+                <p className="font-bold">Yayımlanacak: {form.title.trim()}</p>
+                <p className="mt-1">
+                  {collection.subject} · {collection.grade}. sınıf · {questionCount} soru · {form.minutes} dakika ·{" "}
+                  {form.start && form.end ? `${fmtDateTime(new Date(form.start).toISOString())} – ${fmtDateTime(new Date(form.end).toISOString())}` : "katılım penceresi seçilmedi"} ·{" "}
+                  {form.plans.length ? form.plans.join(", ") + " paketleri" : "paket seçilmedi"}
+                  {packageSource && form.review ? " · ölçütlü inceleme" : ""}
+                </p>
+                <p className="mt-1">Yayımlandıktan sonra sorular ve süre değişmez; aileler katılım penceresinde görür.</p>
+                <label className="mt-3 flex min-h-12 items-start gap-3">
+                  <input type="checkbox" className="mt-1" checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} />
+                  <span>Kaynağı, soruları, süreyi ve katılım penceresini kontrol ettim.</span>
+                </label>
+              </div>
+            )
+            : null}
           <button
             className="btn mt-5"
             disabled={busy || form.title.trim().length < 3 ||
               !form.collection ||
               !form.start || !form.end || !form.plans.length ||
               questionCount < 3 || questionCount > 50 || !!packages.error ||
-              !!library.error}
+              !!library.error || !confirmed}
             onClick={() => void create()}
           >
             Sürümü sabitle ve yayımla
