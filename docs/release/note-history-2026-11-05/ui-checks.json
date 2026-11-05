@@ -1,0 +1,37 @@
+{
+  "environment": "disposable-local-real-auth-rest-realtime",
+  "results": [
+    {
+      "check": "private_default_retry_no_duplicate_and_coparent_hidden",
+      "passed": true
+    },
+    {
+      "check": "sharing_current_content_only_history_denied_to_coparent",
+      "passed": true
+    },
+    {
+      "check": "live_unshare_removes_current_viewer_without_reload",
+      "passed": true
+    },
+    {
+      "check": "author_sees_preserved_private_versions",
+      "passed": true
+    },
+    {
+      "check": "archive_and_restore_private_preserve_content",
+      "passed": true
+    },
+    {
+      "check": "stale_edit_and_discard_preserve_saved_version",
+      "passed": true
+    },
+    {
+      "check": "cursor_pagination_does_not_skip_equal_timestamp_notes",
+      "passed": true
+    },
+    {
+      "check": "phone_tablet_no_overflow_or_runtime_errors",
+      "passed": true
+    }
+  ]
+}

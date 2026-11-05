@@ -1539,13 +1539,16 @@ isOneToOne: false
                   ]
                 },"notes": {
                   Row: {
+ revision: number; archived_at: string | null;
                     "author_child_id": string | null,"author_user_id": string | null,"body": string,"child_id": string | null,"created_at": string,"family_id": string,"id": string,"subject": string | null,"title": string | null,"updated_at": string,"visibility": Database["public"]['Enums']["note_visibility"]
                   }
                   ComputedFields: never
                   Insert: {
+ revision?: number; archived_at?: string | null;
                     "author_child_id"?: string | null,"author_user_id"?: string | null,"body"?: string,"child_id"?: string | null,"created_at"?: string,"family_id": string,"id"?: string,"subject"?: string | null,"title"?: string | null,"updated_at"?: string,"visibility"?: Database["public"]['Enums']["note_visibility"]
                   }
                   Update: {
+ revision?: number; archived_at?: string | null;
                     "author_child_id"?: string | null,"author_user_id"?: string | null,"body"?: string,"child_id"?: string | null,"created_at"?: string,"family_id"?: string,"id"?: string,"subject"?: string | null,"title"?: string | null,"updated_at"?: string,"visibility"?: Database["public"]['Enums']["note_visibility"]
                   }
                   Relationships: [
@@ -1569,7 +1572,9 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"operations_members": {
+                },"note_sync": {
+ Row: { family_id: string; user_id: string; revision: number }; Insert: {family_id: string;user_id: string;revision?: number}; Update: {revision?: number}; Relationships: [];
+ },"operations_members": {
                   Row: {
                     "expires_at": string,"granted_by": string | null,"revoked_at": string | null,"role": string,"user_id": string
                   }
@@ -2317,6 +2322,8 @@ isOneToOne: false
           }
           Functions: {
       change_reward: { Args: { p_request_id: string; p_id: string; p_revision: number; p_action: string; p_value?: Json }; Returns: Json };
+      save_parent_note: { Args: { p_request_id: string; p_id?: string; p_revision?: number; p_action?: string; p_child_id?: string; p_value?: Json }; Returns: Json };
+      note_history: { Args: { p_id: string; p_before_revision?: number }; Returns: Json };
       reward_history: { Args: { p_id: string; p_before_revision?: number }; Returns: Json };
       change_task_routine: { Args: { p_request_id: string; p_id: string; p_revision: number; p_action: string; p_value?: Json }; Returns: Json };
       task_routine_history: { Args: { p_id: string; p_before_revision?: number }; Returns: Json };

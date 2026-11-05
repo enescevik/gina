@@ -68,3 +68,5 @@ export * from "./education-calendar";
 export * from "./task-history";
 
 export * from "./reward-history";
+
+export * from "./note-history";

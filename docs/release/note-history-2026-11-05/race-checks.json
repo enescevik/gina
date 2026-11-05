@@ -1,0 +1,21 @@
+{
+  "environment": "empty-disposable-database",
+  "results": [
+    {
+      "check": "concurrent_create_one_receipt_one_note",
+      "passed": true
+    },
+    {
+      "check": "competing_edits_never_overwrite",
+      "passed": true
+    },
+    {
+      "check": "archive_and_edit_are_serialized",
+      "passed": true
+    },
+    {
+      "check": "last_plan_slot_consumed_once_including_archive",
+      "passed": true
+    }
+  ]
+}
