@@ -1,5 +1,7 @@
 # GINA öğrenme platformu — geliştirme durumu
 
+> **5 Kasım — Claude devri:** Güncel kalan işler ve sıralama [ana devir listesinde](../CLAUDE-REMAINING-WORK.md); rota/alt akışlar [ekran envanterinde](../EXPERIENCE-IMPLEMENTATION.md). Aşağıdaki eski listeler tarihsel kayıttır. Son kanıtlı yayın 26; PR #146 ödül ve #147 not düzeltmeleri main’de, henüz yayında değil. Kütüphane yazılım işlerinden sonra; 3B dünya bütün işler ve son yayın kabulünden sonra.
+
 2 Kasım 2026. Kullanıcı tüm kapsamın geliştirilmesini onayladı. Bu liste tamamlanma beyanı değil, devam eden işin kaydıdır. İlk bölümler tarihî geliştirme kaydıdır. Güncel durum belgenin sonundaki tarihli eklemelerdedir. TestFlight 0.1.0 (17) yayımlandı; ayrıntılar `docs/release/SHARED-DESIGN-17.md`. Aşağıdaki eski “dağıtılmadı” notları kendi tarihindeki durumu gösterir; güncel yeni artım kaydı belgenin sonundadır.
 
 ## Bu dalda yapılan, doğrulaması süren
@@ -654,3 +656,10 @@ kütüphane hâlâ açık. [Güncel yayın kaydı](../release/CLIENT-18-2026-11-
 ## 5 Kasım 2026 — özel not geçmişi ve arşiv
 
 Not ekranı onaylı ortak sihirbaza taşındı: özel varsayılan, içerik/paylaşım önizlemesi, yalnız yazara açık sürümler, arşiv ve özel olarak geri alma. Önceki aile RLS kuralının kişisel notları diğer veliye de okutma eksiği düzeltildi; geçmiş paylaşılmaz. Kullanıcıya özel canlı sinyal açık okuyucudan paylaşımı kaldırır. Kayıp yanıt, yarışan düzenleme/arşiv ve son paket hakkı korunur. Kanıt: `docs/release/note-history-2026-11-05/README.md`. Üretim ve TestFlight/Ad Hoc 26 bu geliştirmeyle değişmedi; RLS düzeltmesi henüz üretime uygulanmadı. Sırada seçerek dönem aktarımı ve toplu arşiv var; kütüphane en sonda.
+
+
+## 5 Kasım — kalan işlerin Claude'a devri
+
+- Ana iş listesi tekilleştirildi: `docs/CLAUDE-REMAINING-WORK.md`. Her pakette mevcut temel, kaynak, yapılacak değişiklik, bağımlılık ve kabul ölçütü; dış taraf adımları X01–X06 ile ayrıldı.
+- R01 önceliği: ödül/not hazır kodunun üretim yayını. Sonra dönem/içerik yaşam döngüsü, veli/çocuk/Prova/yönetim, sağlayıcı/katalog, bütünleşik kabul; kütüphane ve sosyal alan planı; son yayın. WORLD-01 kesinlikle en son.
+- Bu değişiklik yalnız dokümantasyondur. Yeni uygulama kodu, migration veya yayın yapılmadı; açık işler tamamlandı olarak işaretlenmedi.

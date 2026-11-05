@@ -1,6 +1,8 @@
 # GINA deneyim iyileştirmelerinin uygulama takibi
 
-5 Kasım 2026. Kullanıcı inceleme planını onayladı. Onaylı tasarım kimliği korunacak; mevcut işlevler sessizce kaldırılmayacak. Kütüphane sorularının toplu üretimi, önceki karar gereği en sonda.
+5 Kasım 2026. Kullanıcı inceleme planını onayladı. Onaylı tasarım kimliği korunacak; mevcut işlevler sessizce kaldırılmayacak. Kütüphane sorularının toplu üretimi yazılım/kullanım işlerinden sonra; **gerçek 3B dünya bütün diğer işler ve son yayın kabulü bittikten sonra en sonda**.
+
+**Güncel ana yapılacaklar listesi:** [Claude devir ve kabul listesi](CLAUDE-REMAINING-WORK.md). İş sırası, kaynak dosyalar, bağımlılıklar, dış taraf adımları ve kapanış ölçütleri oradadır. Bu belge ekran/alt akış kapsamını korur. “Açık / yeniden doğrulanacak” mevcut ekranın hiç uygulanmadığı anlamına gelmez; önce dene, yalnız kalan farkı düzelt.
 
 İlk paket: [değişiklikler ve kontrol kanıtları](release/experience-foundation-2026-11-05/README.md). **Aşağıdaki açık işler tamamlanmış sayılmaz.**
 
@@ -15,8 +17,8 @@
 | Faz | Durum |
 |---|---|
 | 1 — Kapsam ve durum doğruluğu | Temel değişiklikler uygulandı; yerel kabul geçti. Cihaz/PIN taslak koruması ve aynı ekranda PIN tamamlama eklendi; kabul kaydı aşağıdaki raporda. Fiziksel cihaz kabulü açık. |
-| 2 — Ortak seçim ve düzeltme | Tarih/saat/puan ve zil editörü uygulandı. Mevcut kayıtların geçmişi koruyan düzenlemesi açık. |
-| 3 — Veli günlük akış ve kurulum | Açık. |
+| 2 — Ortak seçim ve düzeltme | Tarih/saat/puan ve zil editörü uygulandı. Görev/okul puanı geçmişi yayında; ödül/not geçmişi main’de, yayın açık (R01). Seçerek aktarım/toplu arşiv ve tarihli plan geçmişi L01–L04’te. |
+| 3 — Veli günlük akış ve kurulum | Temeller mevcut; kalan deneyim ve kabul işleri U01–U09. |
 | 4 — Çocuk ve Prova bütünlüğü | Görsel/teslim/geçici sonuç temeli uygulandı; kalan kapsam açık. |
 | 5 — Yönetim çalışma alanları | AI/katalog görünümü ve taslak koruması uygulandı; kalan kapsam açık. |
 | 6 — Cihaz, erişilebilirlik ve yayın | Açık. Web önizlemesi fiziksel cihaz kabulünün yerine geçmez. |
@@ -25,6 +27,8 @@
 
 
 ### Hesap, aile ve günlük veli işleri
+
+Devir iş kimlikleri: **U01–U03, U07, U09; R01 ve S01–S03 yayın/servis kabulü**; tamamı Q01–Q03 kabul matrisine girer.
 
 | Ekran / akış | Durum | Tamamlanma hedefi |
 |---|---|---|
@@ -37,13 +41,13 @@
 | Bugün `/parent` | Kısmi: Çocuk/tarih/görev bağlamı ve bekleyen/onaylı ayrımı uygulandı. Ana iş önceliği ve tekrarların azaltılması açık. | Onay ve sıradaki iş öne; selamlama/maskot kompakt; aynı verinin tekrarı azaltılsın; bağlantılar bağlamı taşısın — İlk görünümde anlamlı bir sonraki iş; doğru çocuk/gün/kayıt açılır |
 | Takvim `/parent/calendar` | Kısmi: Tümü kapsamı ve etkinlikte tarih/saat kontrolü uygulandı. Günün birleşik bilgi hiyerarşisi açık. | Tümü kapsamını düzelt; etkinlik, ders ve ödevi aynı gün altında ayrı anlamlarla göster — İki çocuklu ailede hiçbir iş sessizce ilk çocuğa bağlanmaz |
 | Görevler `/parent/tasks` | Rutin düzenleme, geçmiş, arşiv/geri alma ve gönderilmiş görev bilgisini koruma uygulandı. Telefon/tablet web ve cihaz yetki testleri geçti; fiziksel kabul açık. | Günlük gerçekleşme ile rutin ayarını ayır; ayrıntı ve güvenli düzenleme ekle — Ad/gün/yıldız düzeltmesi kopya görev veya geçmiş puan değişimi üretmez |
-| Ödüller `/parent/rewards` | Açık / yeniden doğrulanacak | Düzenleme, teslim geçmişi ve talep durumları; yanlış ret/iptali önleyen sonuç açıklaması — Bedel değişiminin önceki taleplere etkisi açık; teslim edilmiş ödül bulunur |
+| Ödüller `/parent/rewards` | Düzenleme/geçmiş/arşiv ve eski talep bedelinin korunması PR #146 ile main’de; yayın R01, kalan deneyim U04. | Düzenleme, teslim geçmişi ve talep durumları; yanlış ret/iptali önleyen sonuç açıklaması — Bedel değişiminin önceki taleplere etkisi açık; teslim edilmiş ödül bulunur |
 | Diğer / ayarlar `/parent/menu` | Açık / yeniden doğrulanacak | Hesap, aile, cihazlar, öğrenme kayıtları ve yardım grupları; aynı düzeyde tutarlı gezinme — PIN, okul puanı ve destek beklenen kategoride bulunur |
 | Cihaz erişimi `/parent/device-access` | Kısmi: Taslak koruması, aynı ekranda doğrulamalı PIN ve erişim özeti uygulandı. Fiziksel cihaz kabulü açık. | Kullanıcı/PIN politikası taslağını koru; eksik PIN oluşturup aynı taslağa dön; kayıt özeti — Geri gitmek seçili çocukları sessizce kaybettirmez |
 | Aileler `/parent/families` | Açık / yeniden doğrulanacak | Etkin aile durumu; katılma ve değiştirmeyi ayır; çocuk sayısı ve sonuç özeti — Aile değiştirmek veri birleştirme sanılmaz |
 | Okul puanları `/parent/grades` | Kısmi: Ders kataloğu, tarih ve ondalıklı puan seçimi uygulandı. Sürümlü düzeltme/geçmiş, kaldırma/geri alma, dönem filtresi ve sayfalama uygulandı. Metin araması ve fiziksel cihaz kabulü açık. | Ders ve tarih seçimi, puan kontrolü, düzeltme/geçmiş, arama/sayfalama — Yanlış kayıt düzeltilir; 200 üzerindeki eski kayıt ulaşılabilir |
-| Notlar `/parent/notes` | Açık / yeniden doğrulanacak | Liste filtresinden bağımsız not hedefi; kim görecek özeti; etiketler, düzenleme — Kaydetmeden çocuk ve izleyici açık; yanlışlık düzeltilebilir |
-| Bildirimler `/parent/notifications` | Açık / yeniden doğrulanacak | Zil yalnız tercih açıyor; giriş adını düzelt veya ayrı gelen bildirim merkezi oluştur — Zil beklentisi ile hedef aynı; merkez eklenmesi ayrı işlev kapsamıdır |
+| Notlar `/parent/notes` | Hedef/görünürlük, düzenleme/geçmiş/arşiv ve özel not yetkisi PR #147 ile main’de; üretim yayını R01, son kabul U09. | Liste filtresinden bağımsız not hedefi; kim görecek özeti; etiketler, düzenleme — Kaydetmeden çocuk ve izleyici açık; yanlışlık düzeltilebilir |
+| Bildirimler `/parent/notifications` | Gelen kutusu, okuma/arşiv/geri alma 26 paketinde mevcut; U03/S02 son kabulü açık. | Zil gelen kutusuna, tercihler ayarlara; kapsam ve hedef bağlantılar doğru — Yeni bir bildirim merkezi kurma; fiziksel teslim ve doğru kayıt açılışını doğrula |
 | Paketler `/parent/subscription` | Açık / yeniden doğrulanacak | Gerçek AI, belge, kütüphane ve kullanım hakları; deneme hakkı ile mağaza aboneliğini ayır — Ekrandaki haklar sunucunun uyguladığı haklarla örtüşür |
 | Yardım `/parent/help` | Açık / yeniden doğrulanacak | Bağlama uygun SSS; isteğe bağlı güvenli ekran görüntüsü, yanıt beklentisi — Kullanıcı sorunu rota adı yazmadan anlatır; hata taslağı kaybettirmez |
 | Paylaş `/parent/share` | Açık / yeniden doğrulanacak | Bağlantı üretmeden alıcının göreceği veri ve süre önizlemesi; listede arama — Veli hangi veriyi açtığını bilir; önceki bağlantılar bulunur |
@@ -53,17 +57,19 @@
 
 ### Veli ekranlarının içindeki sihirbaz ve düzenleyiciler
 
+Devir iş kimlikleri: **U04–U05, U08; L01–L04 veri yaşam döngüsü**; tamamı Q01–Q03 kabul matrisine girer.
+
 | Ekran / akış | Durum | Tamamlanma hedefi |
 |---|---|---|
 | Ana ekran onayı ve haftaya açılma | Açık / yeniden doğrulanacak | Geri gönderilen göreve somut düzeltme açıklaması; Bugün sayılarıyla seçili günün planı ayrılmalı |
 | Çocuk ekleme: profil, okul, rutinler, son kontrol | Açık / yeniden doğrulanacak | Avatarlar kademeli; sınıf/yaş rahat seçilir; zorunlu öğrenme bilgisi ile isteğe bağlı kimlik ayrılır; seçilen her rutin uzun form açmaz; son kontrolde günler görünür |
 | Görev: şablon/kendi/AI kaynağı ve ayrıntı | Açık / yeniden doğrulanacak | Sık kullanan için kısa yol; okul günü/hafta sonu/tek sefer hazır seçenekleri; başlangıç/bitiş ayrıntıları isteğe bağlı |
 | Ödül oluşturma ve hedef seçimi | Açık / yeniden doğrulanacak | Yıldız bedeli hazır değer/adım kontrolü; hedef seçiminde mevcut hedef ve birikim; hedef seçmek yıldız harcamak değildir |
-| Görev/ödül için AI-belge önerisi | Açık / yeniden doğrulanacak | Örnekli geniş açıklama, dosya sayısı ve işlem hakkı özeti; çoklu seçim korunur; yeniden deneme çift tüketmez |
+| Görev/ödül için AI-belge önerisi | Çoklu kaynak ve açıklama temeli mevcut; U04/U08 tutarlılık ve fiziksel kabulü açık. | Örnekli geniş açıklama, dosya sayısı ve işlem hakkı özeti; çoklu seçim korunur; yeniden deneme çift tüketmez |
 | Etkinlik düzenleme | Kısmi: Tarih/saat seçimi ve seçili çocuk bağlamı uygulandı. Başlık önerileri ve tekrar kapsamı açık. | Tarih/saat seçici; tür ve başlık önerileri; tekrar eden kayıtta tek gün/tüm seri kapsamı |
-| Ders tablosu, tek ders düzenleme, gün kopyalama | Açık / yeniden doğrulanacak | Ders kataloğu; dolu hücre değişimi ve boş hücreye taşıma; hedef günün önce/sonra görünümü, geri alma |
+| Ders tablosu, tek ders düzenleme, gün kopyalama | Tablo ve dolu hücre takası uygulandı; boş hücre taşıma/kopyalama son kabulü U05. | Ders kataloğu; dolu hücre değişimi ve boş hücreye taşıma; hedef günün önce/sonra görünümü, geri alma |
 | Zil düzeni | Uygulandı; telefon/tablet web kabulü geçti. Fiziksel cihaz kabulü açık. | Odaklı düzenleme alanı; ilk ders/süre/ara/öğle arası; seçili gün/tüm günler açık; “Uygula” ve “Programı kaydet” aşamaları anlaşılır |
-| Program aktarımı: kaynak, kontrol, kaynak kaldırma | Açık / yeniden doğrulanacak | Yeni tablo korunur; belirsizlik hücre üzerinde; kaynak görüntüyle karşılaştırma; ek dosyayı kaldırmak dersleri silmekten ayrı anlatılır |
+| Program aktarımı: kaynak, kontrol, kaynak kaldırma | Açıklama, tablo ve kısaltma eşleme mevcut; kaynak/katalog ve fiziksel kabul U05/U08. | Yeni tablo korunur; belirsizlik hücre üzerinde; kaynak görüntüyle karşılaştırma; ek dosyayı kaldırmak dersleri silmekten ayrı anlatılır |
 | Ödev/çalışma listesi, düzenleyici ve belge aktarımı | Kısmi: Tarih/saat ortak kontrolleri uygulandı. Toplu dağıtım ve belge kapsamı açık. | Elle tarih biçimi yerine seçici; belgeye bağlam; işleri günlere topluca dağıtma; kaynak tarihi ve kullanıcının seçimi ayrılır |
 | Çanta listesi | Açık / yeniden doğrulanacak | Yarınki derslerden düzenlenebilir eşya önerisi; zorunlu okul talebi gibi sunulmaz; özgür ekleme korunur |
 | Çocuk PIN’i, veli PIN’i ve eşleme sonrası erişim | Açık / yeniden doğrulanacak | Tutarlı PIN kontrolü ve yeni PIN doğrulaması; eşleme tamamlandıktan sonra kimlerin kullanacağı/PIN kuralı özetlenir |
@@ -73,6 +79,8 @@
 | Ortak hata durumu | Açık / yeniden doğrulanacak | Çevrimdışı, oturum bitmiş, yetkisiz ve geçici servis hatası farklı güvenli eyleme yönlendirir; ilgisiz tek sorgu hatası çalışan bütün ekranı kapatmaz |
 
 ### Çocuk ekranları ve güvenli devir
+
+Devir iş kimlikleri: **U02, U06; P03 çözüm kabulü**; tamamı Q01–Q03 kabul matrisine girer.
 
 | Ekran / akış | Durum | Tamamlanma hedefi |
 |---|---|---|
@@ -90,6 +98,8 @@
 | Veli cihazında Dünyam ve yetişkine dönüş `/parent/child-mode/today` | Açık / yeniden doğrulanacak | Çocuk ekranı önde; çıkışta yetişkin adımı ve güvenli kurtarma — PIN/ağ/sosyal hesap dönüşleri çocuk kilidini korur |
 
 ### Veli Prova hazırlama, inceleme ve gelişim
+
+Devir iş kimlikleri: **P01–P05**; tamamı Q01–Q03 kabul matrisine girer.
 
 | Ekran / akış | Durum | Tamamlanma hedefi |
 |---|---|---|
@@ -126,6 +136,8 @@
 
 ### Yönetim paneli veri tablosundan iş kuyruğuna dönüşmeli
 
+Devir iş kimlikleri: **B01–B04, S04/S06**; tamamı Q01–Q03 kabul matrisine girer.
+
 | Ekran / akış | Durum | Tamamlanma hedefi |
 |---|---|---|
 | Başlangıç `/` | Açık / yeniden doğrulanacak | Yükleme ve rol eksikliğini ayır; doğru hesap/yetki isteme yolu — Her rol uygun başlangıca ulaşır |
@@ -155,15 +167,17 @@
 
 Her satırda kaynak değişikliği, beklenen davranış ve gerçek kontrol kanıtı bulunmadan “tamamlandı” yazılmayacak. Yeni bir veri kuralı gerekiyorsa migration, sunucu yetkisi, eşzamanlılık ve tekrar güvenliği ayrı test edilecek. Yayın durumu, kodun yazılmasıyla eş tutulmayacak.
 
-## Sıradaki uygulama paketi
+## Sıradaki uygulama paketleri
 
-Yeni ek öncelik: tarihli eğitim dönemi/okul kayıtları; ardından profil arşivi ve toplu içerik yaşam döngüsü. Sınıf değişimi kalıcı çocuk silmeyle yapılmayacak. Bu tasarım önerisi henüz uygulanmış değildir.
+1. **R01:** main'deki ödül/not düzeltmelerini, özellikle kişisel not erişim düzeltmesini güvenle yayımla ve doğrula.
+2. **L01–L04:** seçerek dönem aktarımı, toplu arşiv/geri alma, silme etki önizlemesi ve tarihli plan geçmişi. Eğitim dönemi/profil arşivini yeniden yazma; mevcut temeli kullan.
+3. **U / P / B / S:** veli–çocuk–Prova–yönetim deneyimleri; servis, katalog ve mağaza bağlantıları. Ayrıntı/bağımlılık/kabul [ana devir listesinde](CLAUDE-REMAINING-WORK.md).
+4. **Q → K01 → F01 → R02:** tüm cihaz/yetki/performans kabulü, kütüphane içerikleri ve bağımsız inceleme, sosyal alanın planı, son bütünleşik yayın.
+5. **WORLD-01:** yalnız diğer bütün işler ve R02 kapandıktan sonra gerçek 3B dünya. Beklenen bir dış işlem bu fazı öne alma gerekçesi değildir.
 
-1. Ödül/notu geçmişi koruyarak düzenleme; okul puanı ve tek rutin düzenleme/arşivi tamamlandı; ad/gün/yıldız/bedel değişiminin mevcut kayıtları geriye dönük değiştirmemesi.
-2. Veli ana ekranında sıradaki iş ve doğru bağlam; cihaz/PIN ayarlarında taslağı koruyarak tamamlama.
-3. Hazırlayıcıda soru bankasından bağımsız ders/program kapsamı ve tek soru sırası; ardından kalan çocuk/inceleme akışları.
-4. Yönetim iş kuyrukları ve içerik yaşam döngüsü; fiziksel cihaz ve yayın kapısı.
+## Tarihsel paket notları
 
+Aşağıdaki notlar yazıldıkları andaki durumu korur. Eğitim dönemi, profil arşivi, dönem raporları, rutinler ve yönetilen takvim altyapısı daha sonra 26 paketine dahil edildi. Aşağıdaki eski “yayımlanmadı” ve “sonraki” ifadeleri güncel açık iş sayılmaz; güncel durum yukarıdaki tablo ve ana devir listesindedir.
 
 ## 5 Kasım — eğitim dönemi devam paketi
 

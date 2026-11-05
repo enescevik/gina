@@ -1,5 +1,7 @@
 # GINA — silme, temizleme, arşiv ve eğitim geçişleri
 
+> **Güncel takip:** [Claude devir listesi](CLAUDE-REMAINING-WORK.md) R01/L01–L04/U04. Eğitim dönemi, profil arşivi, dönem raporları ve görev geçmişi 26 paketinde yayımlandı. Ödül/not geçmişi main’de; üretim yayını R01’de açık. Aşağıdaki eski paket notları yazıldıkları anı anlatır.
+
 5 Kasım 2026. Bu belge kullanıcının yeni isteği üzerine yapılan kaynak kodu/veri ilişkisi incelemesini ve ürün önerisini kaydeder. “Mevcut” kodda bulunan işlemi, “eklendi” bu daldaki değişikliği, “öneri/açık” henüz uygulanmamış davranışı ifade eder. Üretim verisi değiştirilmedi.
 
 ## 5 Kasım devam paketinin durumu
@@ -35,10 +37,10 @@ Yıldız, rozet, maskot, oda ve kişisel başarılar profilde kalır. Ders progr
 | Ödev/çalışma | Tek kayıtta `archived` ve tamamlanma var | Tarih/kapsam seçerek toplu arşivleme, geri alma ve filtre **açık**. Tamamlanmışı başarısız sayma. |
 | Çanta listesi | Tek eşya çıkarılabiliyor | “İşaretleri sıfırla” ile “Bu günün listesini temizle” ayrı olmalı; başka günlere etki etmemeli. Toplu işlem **açık**. |
 | Görev rutinleri | Düzenleme, değişiklik geçmişi, duraklat/devam et, tek rutin arşivi/geri alma **eklendi** | Gönderilmiş görev adı/ikonu/yıldızı korunur. Eski özgün veri yoksa geçiş anında bilinen değer ayrıştırılır. Henüz gönderilmemiş görevler güncel plandan hesaplanır. Toplu seçim/aktarım **açık**. |
-| Ödüller | Duraklatma ve talep iptal/teslim durumları var | Yeni taleplere kapatma ile kazanılmış ödülü yok etme ayrılmalı. Aktif talepleri açıklayan arşiv akışı **açık**. |
+| Ödüller | Düzenleme/geçmiş/tek ödül arşivi ve talep anındaki bedeli koruma PR #146 ile main’de | Üretim yayını R01; toplu işlemler L02, kalan talep/teslim deneyimi U04. Kazanılmış ödül geçmişi yok edilmez. |
 | Hedef | Hedef seçimi ödül talebinden ayrı | Hedefi bırakma/değiştirme birikmiş yıldızı silmemeli. Ayrı son kontrol ve geçmiş hedef görünümü **açık**. |
 | Okul puanı | Ekleme, düzeltme, geri alınabilir kaldırma ve geçmiş **eklendi** | Önce/sonra kontrolü, eşzamanlılık ve tekrar güvenliği; dönem filtresi/sayfalama; kaldırılan puan öğretmen görünümünden çıkar. Tarihi başka döneme taşıyan düzeltme ayrı karar gerektirir. |
-| Not | Silme var | Görünürlük/hedef, düzenleme ve geri alınabilir kaldırma **açık**. |
+| Not | Görünürlük/hedef, düzenleme/geçmiş, arşiv/özel geri alma ve kişisel not yetkisi PR #147 ile main’de | Yetki düzeltmesi dahil üretim yayını R01; toplu işlemler L02 ve son kabul U09. |
 | Takvim etkinliği | Silme ve kayıt makbuzu var | Tek gün/tekrarlı seri kapsamını açıkça göster; toplu tarih aralığı temizliği **açık**. |
 | Çocuk profili | Ayarlar içinde kalıcı silme var; birçok bağlı kayıt zincirleme siliniyor | Silmeyi sınıf değişiminden uzaklaştır. Profil arşivi ve arşiv etkisi önizlemesi **eklendi**. Kalıcı silmenin kapsamlı önizlemesi ve ayrı güçlü onayı **açık**. |
 | Bağlı cihaz | İptal etme var | Profil arşivi/kalıcı silme cihazdaki aktif oturumu ve izinli çocukları da güncellemeli. Arşiv entegrasyonu **eklendi**; geri alma erişimi kendiliğinden açmaz. |
