@@ -9,6 +9,19 @@ import { Card, Layout, Notice } from "@/components/Layout";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { useUnsavedChanges } from "@/components/unsaved-changes";
+import {
+  ChannelReadinessCard,
+  useChannelReadiness,
+} from "@/components/channel-readiness";
+import { adminRpc } from "@/lib/admin-rpc";
+import {
+  blockedLabel,
+  type ChannelPreview,
+  channelNames,
+  missingLabel,
+  outcomeLabel,
+  readChannelPreview,
+} from "@/lib/channel-ops";
 const stages = {
   preschool: "Okul öncesi",
   primary: "İlkokul",
@@ -25,11 +38,17 @@ type Draft = {
   place_id: string | null;
   stage: keyof typeof stages | null;
   push: boolean;
+  channels?: ("email" | "sms")[];
   expires_on: string;
   status: string;
   recipient_count: number | null;
 };
-type Preview = { count: number; fingerprint: string };
+type Preview = {
+  count: number;
+  fingerprint: string;
+  channels: ChannelPreview;
+};
+const optionalChannels = ["email", "sms"] as const;
 type Data = {
   rows: Draft[];
   total: number;
@@ -49,6 +68,10 @@ export default function Announcements() {
   );
 }
 function Workspace() {
+  const { roles, rolesReady, roleError } = useAuth();
+  const allowed = rolesReady && !roleError && roles.includes("release");
+  const [readinessTick, setReadinessTick] = useState(0);
+  const readiness = useChannelReadiness(allowed, readinessTick);
   const [dateBounds] = useState(() => ({
     min: new Date().toISOString().slice(0, 10),
     max: new Date(Date.now() + 90 * 86400000).toISOString().slice(0, 10),
@@ -158,10 +181,17 @@ function Workspace() {
         </p>
         <p className="mt-3 text-sm">
           Uygulama içi duyuru her zaman bulunur. Push yalnız veli tercihleri ve
-          cihaz izni uygunsa iletilir. SMS ve e-posta, gönderim hizmeti ve kanal
-          izinleri kurulana kadar kapalıdır; gönderilmiş sayılmaz.
+          cihaz izni uygunsa iletilir. E-posta ve SMS yalnız kanal hazırsa ve
+          veli adresini doğrulayıp kanalı açtıysa seçilebilir. Sağlayıcı kabulü
+          teslim veya okundu sayılmaz.
         </p>
       </Card>
+      <ChannelReadinessCard
+        readiness={readiness.data}
+        error={readiness.error}
+        loading={readiness.loading}
+        onRetry={() => setReadinessTick((x) => x + 1)}
+      />
       {error && (
         <Notice tone="error">
           {error}{" "}
@@ -225,6 +255,17 @@ function Workspace() {
                   <p className="text-sm">
                     Son görünme tarihi: {row.expires_on}
                   </p>
+                  {row.channels?.length
+                    ? (
+                      <p className="text-sm">
+                        Ek kanallar:{" "}
+                        {row.channels.map((c) => channelNames[c]).join(", ")}
+                      </p>
+                    )
+                    : null}
+                  {row.status !== "draft" && row.channels?.length
+                    ? <ChannelOutcomes id={row.id} />
+                    : null}
                   <div className="mt-4 flex flex-wrap gap-3">
                     {row.status === "draft" && (
                       <button
@@ -380,6 +421,7 @@ function Workspace() {
                 place_id,
                 stage,
                 push,
+                channels,
                 expires_on,
               } = draft;
               const args = {
@@ -391,6 +433,7 @@ function Workspace() {
                   place_id,
                   stage,
                   push,
+                  channels: channels ?? [],
                   expires_on,
                 } as Json,
               };
@@ -493,6 +536,59 @@ function Workspace() {
                 />
                 Telefon bildirimi de gönder
               </label>
+              <fieldset className="md:col-span-2">
+                <legend className="font-bold">
+                  İsteğe bağlı ek kanallar
+                </legend>
+                <p className="text-sm text-slate-600">
+                  Yalnız adresini doğrulamış ve bu kanalı açmış velilere
+                  gider. Hazır olmayan kanal seçilemez.
+                </p>
+                <div className="mt-2 flex flex-wrap gap-4">
+                  {optionalChannels.map((c) => {
+                    const state = readiness.data?.[c];
+                    const ready = !!state?.ready;
+                    const checked = !!draft.channels?.includes(c);
+                    return (
+                      <div key={c} className="min-w-56">
+                        <label className="flex min-h-12 items-center gap-3">
+                          <input
+                            type="checkbox"
+                            data-testid={`announcement-channel-${c}`}
+                            checked={checked}
+                            disabled={!checked && !ready}
+                            onChange={(e) =>
+                              change({
+                                channels: e.target.checked
+                                  ? [...(draft.channels ?? []), c]
+                                  : (draft.channels ?? []).filter((x) =>
+                                    x !== c
+                                  ),
+                              })}
+                          />
+                          {channelNames[c]}
+                        </label>
+                        {!ready
+                          ? (
+                            <p className="text-sm text-amber-900">
+                              {checked
+                                ? "Kanal artık hazır değil; bu kanal için gönderim yapılmaz. Seçimi kaldırın."
+                                : "Hazır değil: " +
+                                  (state?.missing.length
+                                    ? [
+                                      ...new Set(
+                                        state.missing.map(missingLabel),
+                                      ),
+                                    ].join("; ")
+                                    : "durum okunamadı")}
+                            </p>
+                          )
+                          : null}
+                      </div>
+                    );
+                  })}
+                </div>
+              </fieldset>
               <div className="flex flex-wrap gap-3 md:col-span-2">
                 <button className="btn" disabled={!dirty}>
                   Taslağı kaydet
@@ -509,7 +605,14 @@ function Workspace() {
                           p_revision: draft.revision,
                         }),
                       (v) => {
-                        setPreview(v as Preview);
+                        const p = v as { count: number; fingerprint: string };
+                        setPreview({
+                          count: p.count,
+                          fingerprint: p.fingerprint,
+                          channels: readChannelPreview(
+                            (v as { channels?: unknown }).channels,
+                          ),
+                        });
                         setConfirmed(false);
                       },
                     )
@@ -542,7 +645,75 @@ function Workspace() {
                   {draft.body}
                 </p>
               </article>
+              <div
+                data-testid="announcement-channel-preview"
+                className="my-4 grid gap-3 md:grid-cols-2"
+              >
+                <div className="rounded-2xl border border-emerald-200 bg-white p-4">
+                  <p className="font-bold">{channelNames.in_app}</p>
+                  <p className="text-sm">
+                    {preview.count} veli · her zaman oluşturulur
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-violet-100 bg-white p-4">
+                  <p className="font-bold">{channelNames.push}</p>
+                  <p className="text-sm">
+                    {draft.push
+                      ? "Bildirim izni olan cihazlara; kesin sayı gönderimde belli olur."
+                      : "Seçilmedi"}
+                  </p>
+                </div>
+                {optionalChannels.map((c) => {
+                  const p = preview.channels[c];
+                  if (!draft.channels?.includes(c)) return null;
+                  const blocked = Object.entries(p?.blocked ?? {});
+                  return (
+                    <div
+                      key={c}
+                      data-channel={c}
+                      className={"rounded-2xl border bg-white p-4 " +
+                        (p?.ready ? "border-emerald-200" : "border-amber-300")}
+                    >
+                      <p className="font-bold">
+                        {channelNames[c]} ·{" "}
+                        {p?.ready ? "hazır" : "hazır değil"}
+                      </p>
+                      <p className="text-sm">
+                        Uygun: <strong>{p?.eligible ?? 0}</strong> veli ·
+                        Engelli:{" "}
+                        <strong>
+                          {blocked.reduce((n, [, v]) => n + v, 0)}
+                        </strong>{" "}
+                        veli
+                      </p>
+                      {blocked.length
+                        ? (
+                          <ul className="mt-1 list-disc pl-5 text-sm">
+                            {blocked.map(([reason, n]) => (
+                              <li key={reason}>
+                                {blockedLabel(reason)}: {n}
+                              </li>
+                            ))}
+                          </ul>
+                        )
+                        : null}
+                      {!p?.ready && p?.missing.length
+                        ? (
+                          <p className="mt-1 text-sm text-amber-900">
+                            Eksik:{" "}
+                            {[...new Set(p.missing.map(missingLabel))].join(
+                              "; ",
+                            )}
+                          </p>
+                        )
+                        : null}
+                    </div>
+                  );
+                })}
+              </div>
               <p className="my-3 text-sm">
+                Sağlayıcının kabul etmesi, mesajın teslim edildiği veya
+                okunduğu anlamına gelmez.{" "}
                 {draft.push
                   ? "Uygulama içi + izinli cihazlara push. Push kabulü, okunma anlamına gelmez."
                   : "Yalnız uygulama içi duyuru."}{" "}
@@ -593,5 +764,78 @@ function Workspace() {
         </Card>
       )}
     </>
+  );
+}
+
+function ChannelOutcomes({ id }: { id: string }) {
+  const [state, setState] = useState<
+    | { kind: "idle" | "loading" | "error" }
+    | { kind: "done"; data: Record<string, Record<string, number>> }
+  >({ kind: "idle" });
+  async function load() {
+    setState({ kind: "loading" });
+    try {
+      const v = await adminRpc("admin_announcement_channels", { p_id: id });
+      const o = (v ?? {}) as { outbox?: unknown; planned?: unknown };
+      const pick = (x: unknown) =>
+        x && typeof x === "object"
+          ? (x as Record<string, Record<string, number>>)
+          : {};
+      const outbox = pick(o.outbox), planned = pick(o.planned);
+      setState({
+        kind: "done",
+        data: Object.keys(outbox).length ? outbox : planned,
+      });
+    } catch {
+      setState({ kind: "error" });
+    }
+  }
+  return (
+    <details
+      className="mt-2 text-sm"
+      onToggle={(e) => {
+        if ((e.target as HTMLDetailsElement).open && state.kind === "idle") {
+          void load();
+        }
+      }}
+    >
+      <summary className="cursor-pointer font-bold">
+        E-posta/SMS sonuçları
+      </summary>
+      {state.kind === "loading"
+        ? <p role="status">Okunuyor…</p>
+        : state.kind === "error"
+        ? (
+          <p role="alert">
+            Okunamadı.{" "}
+            <button className="support-link" onClick={() => void load()}>
+              Yeniden dene
+            </button>
+          </p>
+        )
+        : state.kind === "done"
+        ? (
+          <>
+            {Object.entries(state.data).map(([channel, outcomes]) => (
+              <div key={channel} className="mt-2">
+                <p className="font-bold">
+                  {channel === "email" || channel === "sms"
+                    ? channelNames[channel]
+                    : "Kanal"}
+                </p>
+                <ul className="list-disc pl-5">
+                  {Object.entries(outcomes).map(([code, n]) => (
+                    <li key={code}>{outcomeLabel(code)}: {n}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <p className="mt-2 text-slate-600">
+              “Sağlayıcı kabul etti” teslim veya okundu değildir.
+            </p>
+          </>
+        )
+        : null}
+    </details>
   );
 }
