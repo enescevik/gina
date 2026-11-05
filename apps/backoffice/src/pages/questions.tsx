@@ -70,31 +70,36 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
 
   const area = (key: "stem" | "choices" | "expected_answer" | "solution" | "explanation" | "source_urls", label: string, rows = 3) => (
     <div className="md:col-span-2">
-      <label className="label">{label}</label>
-      <textarea className={`input ${key === "choices" ? "font-mono" : ""}`} rows={rows} value={draft[key]} onChange={(e) => set({ [key]: e.target.value })} />
+      <label className="label" htmlFor={`q-${key}`}>{label}</label>
+      <textarea id={`q-${key}`} className={`input ${key === "choices" ? "font-mono" : ""}`} rows={rows} value={draft[key]} onChange={(e) => set({ [key]: e.target.value })} />
     </div>
   );
 
   return (
     <Card title={`${t.common.edit}: ${q.id}`}>
+      {q.times_asked > 0 ? (
+        <p className="mb-4 rounded-2xl bg-amber-50 p-3 text-sm text-amber-900">
+          Bu soru {fmtNumber(q.times_asked)} kez sorulmuş. Çocuk cevabı bulunan soruda metin, şık veya doğru cevap değişikliği sunucu tarafından reddedilir; yalnız anlatım, çözüm ve kaynak güncellenebilir.
+        </p>
+      ) : null}
       <div className="grid gap-3 md:grid-cols-2">
         <div className="grid grid-cols-3 gap-2 md:col-span-2">
           <div>
-            <label className="label">{t.questions.grade}</label>
-            <input type="number" min={1} max={12} className="input" value={draft.grade} onChange={(e) => set({ grade: Number(e.target.value) })} />
+            <label className="label" htmlFor="q-grade">{t.questions.grade}</label>
+            <input id="q-grade" type="number" min={1} max={12} className="input" value={draft.grade} onChange={(e) => set({ grade: Number(e.target.value) })} />
           </div>
           <div>
-            <label className="label">{t.questions.subject}</label>
-            <input className="input" value={draft.subject} onChange={(e) => set({ subject: e.target.value })} />
+            <label className="label" htmlFor="q-subject">{t.questions.subject}</label>
+            <input id="q-subject" className="input" value={draft.subject} onChange={(e) => set({ subject: e.target.value })} />
           </div>
           <div>
-            <label className="label">{t.questions.topic}</label>
-            <input className="input" value={draft.topic} onChange={(e) => set({ topic: e.target.value })} />
+            <label className="label" htmlFor="q-topic">{t.questions.topic}</label>
+            <input id="q-topic" className="input" value={draft.topic} onChange={(e) => set({ topic: e.target.value })} />
           </div>
         </div>
         <div>
-          <label className="label">{t.questions.difficulty}</label>
-          <select className="input" value={draft.difficulty} onChange={(e) => set({ difficulty: e.target.value as Difficulty })}>
+          <label className="label" htmlFor="q-difficulty">{t.questions.difficulty}</label>
+          <select id="q-difficulty" className="input" value={draft.difficulty} onChange={(e) => set({ difficulty: e.target.value as Difficulty })}>
             {DIFFICULTIES.map((d) => (
               <option key={d} value={d}>
                 {t.questions.difficulties[d]}
@@ -111,8 +116,8 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
           <>
             {area("choices", t.questions.choices, 6)}
             <div>
-              <label className="label">{t.questions.correctKey}</label>
-              <input className="input w-24" value={draft.correct_key} onChange={(e) => set({ correct_key: e.target.value })} />
+              <label className="label" htmlFor="q-correct">{t.questions.correctKey}</label>
+              <input id="q-correct" className="input w-24" value={draft.correct_key} onChange={(e) => set({ correct_key: e.target.value })} />
             </div>
             <div />
           </>
