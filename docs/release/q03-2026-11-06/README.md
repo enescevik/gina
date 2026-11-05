@@ -10,8 +10,8 @@ değiştirilmedi; düzeltmeler öneri olarak `patches/proposed/` altındadır (u
 
 | Önem | Adet | Bulgular |
 |---|---|---|
-| Yüksek | 0 | — |
-| Orta | 2 | Q03-BK-1 (yalnız `public`/`gina` dökümü geri yüklenemez), Q03-BK-2 (veri-dökümü hedefteki migration tohum/metadata satırlarıyla çakışır) |
+| Yüksek | 1 | Q03-BK-3 (şema dökümünün Supabase'e geri yüklenmesi 260 fonksiyonu `anon`/`authenticated`'a açar — geri yükleme prosedürü bulgusu, bugünkü üretim durumu değil) |
+| Orta | 2 | Q03-BK-1 (yalnız `public`/`gina` dökümü geri yüklenemez), Q03-BK-2 (veri-dökümü hedefteki tetikleyici/tohum satırlarıyla çakışır) |
 | Düşük | 6 | Q03-DB-1, Q03-DB-2, Q03-HTTP-1, Q03-HTTP-2, Q03-EDGE-1, Q03-DEP-1 |
 | Bilgi | 4 | Q03-DB-3, Q03-EDGE-2, Q03-LEAK-1, Q03-DEP-2 |
 
@@ -135,7 +135,90 @@ Canlı başlıklar (6 Kasım, oturumsuz GET, 7 istek, cf-ray kaydı var):
 
 ## 4. Yedek ve geri yükleme planı — izole tatbikat
 
-Bu bölüm `restore-drill.json` ile birlikte okunur; tatbikat ayrıntıları aşağıda (RESTORE-DRILL-SECTION).
+### Mevcut yaklaşımın değerlendirmesi
+
+Repo'daki yedek anlayışı "`public`/`gina` şema dökümü"dür (test şablonu `gina_completion_audit` de böyle üretilmiş).
+Bu **tam yedek değildir**: aile satırları `auth.users`'a FK ile bağlıdır (`families.created_by`,
+`family_members.user_id`, `devices.auth_user_id`, `gina.note_changes.actor`, `help_receipts.actor_id` …), parola
+hash'leri ve kimlikler `auth` şemasındadır, dosya meta verisi `storage.objects`'tadır ve dosya **içerikleri** hiçbir
+DB dökümünde yoktur (Supabase Storage nesne deposu). Supabase'in kendi günlük yedeği/PITR ayarı bu turda doğrulanamadı
+(hesap erişimi yok); `docs/DEPLOY.md` yedek adımı içermiyor.
+
+### Tatbikat (izole, sentetik veri) — `scripts/security/restore-drill.py --run-local`
+
+Kaynak: boş şablon + migration'lar → **gerçek GoTrue** kapsayıcısıyla `/signup` (sentetik veli, rastgele parola, yazılmaz)
+→ aile, çocuk, cihaz (ayrı auth kullanıcısı), `learning_sources` satırı + `storage.objects` satırı, `save_parent_note`
+RPC ile 3 not ve 3 `gina.note_changes` geçmişi. Kaynak sayımı: auth.users 2, identities 1, families 1, family_members 1,
+children 1, devices 1, learning_sources 1, storage.objects 1, notes 3, note_changes 3, audit_log 37.
+Dökümler kapsayıcı içindeki `pg_dump 17.11` ile `-Fc` alındı; hedefler aynı şablon + migration'lardan kuruldu.
+
+| Varyant | Döküm | Hedef hazırlığı | Sonuç | Kanıt |
+|---|---|---|---|---|
+| **A** (mevcut) | `--data-only -n public -n gina` (55 KB) | migration'lı boş DB | **BAŞARISIZ** | `families_created_by_fkey` ihlali: auth.users yok; 0 aile satırı geri geldi |
+| **B** | `--data-only -n auth -n storage -n public -n gina` + `auth.schema_migrations`/`storage.migrations` hariç (70 KB) | public/gina + storage tabloları truncate; tetikleyiciler açık | **BAŞARISIZ** | `note_changes_note_id_revision_key` çifti: `notes` COPY'si sırasında `note_audit` tetikleyicisi geçmişi yeniden üretti, dökümdeki geçmişle çakıştı; `family_members` 0 kaldı |
+| **C** | B dökümü | B gibi; `pg_restore -f - \| psql` aynı oturumda `set session_replication_role = replica` (süper kullanıcı) | **BAŞARILI** | 11/11 tablo sayımı kaynakla eşit; FK/ilişki 6/6; fonksiyon ACL ve tetikleyici paritesi eşit; devre dışı kalan tetikleyici 0; **GoTrue parola girişi 200**, JWT `gina.family_id` = kaynak aile, `role=parent`, `sub` = kaynak kullanıcı |
+| **D (1. koşu)** | `-n public -n gina` şema+veri+ACL (1,4 MB) + `--data-only -n auth -n storage` (15 KB) | public/gina şemaları düşürülüp boş `public` + Supabase varsayılan ayrıcalıkları; storage tabloları truncate; **önce auth/storage verisi, sonra şema dökümü** | **BAŞARILI ama ACL BOZUK** | sayımlar ve ilişkiler 6/6 eşit; GoTrue girişi 200 ve JWT doğru; tek beklenen hata `schema "public" already exists`; **260 fonksiyon `anon`/`authenticated`/`service_role` EXECUTE kazandı** (`restore-drill-acl-finding.json`, Q03-BK-3) |
+| **D (2. koşu)** | aynı | aynı + şema geri yüklemesi süresince `alter default privileges … revoke execute on functions from anon, authenticated, service_role`, sonra geri verildi | **BAŞARILI** | sayımlar/ilişkiler eşit; GoTrue girişi 200, JWT doğru; **fonksiyon ACL ve tetikleyici imzaları kaynakla birebir** (`restore-drill.json`) |
+
+Döngüsel FK / tetikleyici sırası sorunu: `pg_restore --data-only` tabloları bağımlılık sırasına koyar ama (1) geçmiş
+yazan tetikleyiciler (`note_audit`, denetim izi, limit tetikleyicileri) COPY sırasında çalışıp dökümdeki satırlarla
+çakışır, (2) `auth.users` olmadan hiçbir aile satırı girmez, (3) migration tohumları (`plans`, `app_settings`,
+`audit_log`, `storage.buckets`) döküm satırlarıyla PK çakışması yapar. Çözüm C'de gösterildi: hedef şemayı
+migration'larla kur, tohumlanan tabloları boşalt, veriyi tek oturumda `session_replication_role=replica` ile yükle
+(tetikleyici ve FK denetimi oturum düzeyinde kapalı; sonrasında tetikleyici durumu değişmez, `triggers_disabled_left=0`).
+Alternatif D (şema dökümünden geri yükleme) veri ve girişi geri getirir ama ACL paritesini **bozar** (Q03-BK-3).
+
+- **Q03-BK-3 (yüksek — geri yükleme prosedürü):** D'nin ilk koşusunda (`restore-drill-acl-finding.json`) hedefteki
+  Supabase varsayılan fonksiyon ayrıcalığı, dökümdeki açık `GRANT … TO authenticated` satırlarına **eklendi**:
+  260 fonksiyon (`admin_*`, `acquire_library_units`, `apply_ai_grades` gibi `authenticated`'dan bile revoke edilmiş
+  olanlar dahil) `anon=X, authenticated=X, service_role=X` aldı (520 fark satırı). Sebep: `pg_dump` ACL'yi yerleşik
+  varsayılana göre yazar; `anon` için REVOKE üretmez, hedefte `alter default privileges … grant execute on functions
+  to anon, authenticated, service_role` varsa her `CREATE FUNCTION` bunu alır. Yerel test şablonundaki 3 fonksiyonun
+  NULL ACL'si de aynı aileden bir döküm/geri yükleme izidir (§2). Etki: bir felaket kurtarmasından sonra iç kapılı
+  olmayan RPC'ler (service_role'a ayrılmış olanlar) `anon` anahtarıyla çağrılabilir hale gelir. Çare (tatbikatta
+  doğrulandı; aşağıdaki tabloda D'nin ikinci koşusu): şema geri yüklemesi süresince varsayılan fonksiyon ayrıcalığını
+  kaldır, sonra geri ver; ardından `patches/proposed/post-restore-acl-check.sql` sorgusu 0 satır dönmeli.
+  Sorumlu: DB + hesap sahibi; iş: Q03 → geri yükleme runbook'u (bu belge) ve R02 öncesi prova.
+
+- **Q03-BK-1 (orta):** Yalnız `public`/`gina` dökümü hesap ilişkisini geri getiremez (A). Etki: olay anında veli
+  girişi, cihaz eşlemesi ve dosya erişimi kurtarılamaz. Öneri: aşağıdaki plan; Supabase panelinde günlük yedek/PITR
+  durumunun hesap sahibince doğrulanması. Sorumlu: hesap sahibi + DB; iş: Q03 → R02 öncesi.
+- **Q03-BK-2 (orta):** Veri dökümünü tetikleyiciler açıkken veya tohumlu şemaya yüklemek sessizce çift/eksik satır
+  üretir (B: `family_members` 0, `audit_log` 1). Öneri: C reçetesi; geri yükleme sonrası sayım + ilişki + ACL/tetikleyici
+  parite kontrolü (`restore-drill.py` içindeki sorgular) zorunlu adım olmalı. Sorumlu: DB.
+
+### Adım adım geri yükleme planı (Auth + Storage dahil)
+
+1. **Yedek alma (düzenli):** Supabase hosted → günlük otomatik yedek/PITR açık mı doğrula (panel). Ek olarak
+   `pg_dump -Fc --data-only -n auth -n storage -n public -n gina --exclude-table-data=auth.schema_migrations
+   --exclude-table-data=storage.migrations` (servis rolü/`postgres` ile) ve ayrı bir **şema+ACL** dökümü
+   (`pg_dump -Fc -n public -n gina`, veri olmadan `-s` de yeterli) şifreli, erişimi kısıtlı depoda; Storage kovası
+   `gina-private-sources` için nesne kopyası (S3 uyumlu senkron veya Supabase Storage yedeği) — DB dökümü içerik taşımaz.
+2. **Hedef hazırlığı:** Yeni/boş Supabase projesi veya temizlenmiş veritabanı; `supabase db push` ile **aynı migration
+   seviyesi** (tercih: şema her zaman migration'lardan; şema dökümünden geri yükleme zorunluysa yükleme süresince
+   `alter default privileges for role postgres in schema public revoke execute on functions from anon, authenticated,
+   service_role`, bitince geri ver — Q03-BK-3); Auth hook (`custom_access_token_hook`) ve `verify_jwt` ayarları; Edge
+   sırları (X04) yeniden.
+3. **Tohum temizliği:** `public`/`gina` tüm tabloları ve `storage.objects/buckets` truncate (migration tohumları döküm
+   tarafından yeniden gelir). `auth.*` boş olmalı (yeni projede boştur).
+4. **Veri yükleme (tek oturum):** `(echo 'set session_replication_role = replica;'; pg_restore --data-only -f - yedek.dump) | psql -v ON_ERROR_STOP=1`.
+   Hosted'da süper kullanıcı yoksa `--disable-triggers` yerine tetikleyicileri geçici `alter table … disable trigger user`
+   ile kapatıp sonra açmak gerekir; bu adım sağlayıcı yetkisine bağlıdır ve tatbikatta yalnız süper kullanıcı yolu denendi.
+5. **Doğrulama (zorunlu):** tablo sayımları kaynak = hedef; ilişki sorguları (aile↔auth kullanıcısı, cihaz↔auth,
+   `storage.objects`↔`learning_sources.object_path`, geçmiş↔not); `pg_proc.proacl` ve `pg_trigger.tgenabled` imzaları
+   migration'lı referansla eşit ve `patches/proposed/post-restore-acl-check.sql` sorgusu 0 satır;
+   `scripts/security/rls-matrix.py` matrisi referansla aynı; sentetik/geçerli bir veli
+   ile GoTrue parola girişi ve JWT `gina` claim'i; backoffice Access kontrolü.
+6. **Storage içerikleri:** nesneleri kovaya geri kopyala; `learning_sources` satırlarının `object_path`'leri ile eşle;
+   eşleşmeyenleri `source_deletion_queue`/`invalid` durumuna al. Signed URL (120 s) akışını bir dosyayla dene.
+7. **Dönüş:** istemci yapılandırması (Supabase URL/anon key) yalnız proje değiştiyse; Edge fonksiyonlarını yeniden
+   dağıt; `check-backoffice-access.mjs`; sürüm notuna geri yükleme zamanı ve veri kaybı penceresi.
+8. **Geri alma:** eski projeyi silmeden önce yeni projede 5. adım yeşil olmalı; aksi halde eski projeye dön.
+
+Sınırlar: tatbikat yerel Postgres 17 + GoTrue imajıyla yapıldı; hosted Supabase'de süper kullanıcı yoktur
+(`session_replication_role` ve `--disable-triggers` sınırlı olabilir; Supabase'in kendi geri yükleme aracı tercih edilmeli).
+Storage **içerikleri** tatbikata dahil değildi (yalnız `storage.objects` meta satırı); Realtime/Vault/pg_cron
+zamanlayıcıları kapsam dışıdır. Üretimde deneme yapılmadı.
 
 ## 5. Günlük / rapor sızıntı taraması
 
@@ -164,13 +247,22 @@ Supabase proje adresi. Değer yazılmaz; yalnız dosya:satır.
 
 | Kimlik | Önem | Neden bu turda kapanmadı | Sorumlu / iş |
 |---|---|---|---|
+| Q03-BK-3 | yüksek (prosedür) | Bugünkü üretimde değil, geri yükleme anında ortaya çıkar; çare tatbikatta doğrulandı ve runbook'a yazıldı, ancak hosted ortamda prova yapılmadı (hesap erişimi yok). Üretim ACL'si salt okunur `post-restore-acl-check.sql` sorgusuyla hesap sahibince bir kez kontrol edilmeli (geçmiş bir geri yükleme olmuşsa) | hesap sahibi + DB; R02 öncesi |
 | Q03-BK-1, Q03-BK-2 | orta | Yedek işletim süreci değişikliği gerektirir (plan §4'te); üretimde deneme yapılmadı | hesap sahibi + DB; Q04/R02 öncesi |
 | Q03-DB-1, DB-2, DB-3 | düşük/bilgi | migration değişikliği kapsam dışı; öneri SQL hazır, izole testte doğrulanmadı (tam test paketi koşusu gerekir) | DB; sonraki migration turu |
 | Q03-HTTP-1, HTTP-2 | düşük | `deploy/` değişikliği kapsam dışı; önizleme dağıtımında başlık doğrulaması gerekir | yayın (Q04) |
 | Q03-EDGE-1 | düşük | Edge kodu kapsam dışı; 5 satırlık değişiklik, `push-send` testleriyle birlikte | Edge; S02 ile |
 | Q03-DEP-1 | düşük | üst paket düzeltmesi bekleniyor; yama uygulanmış ve test edilmiş durumda | araç zinciri |
 
-## 7. Sınırlar
+## 7. Yan gözlem (güvenlik dışı)
+
+Öneri SQL'ini izole DB'de doğrularken tam SQL test paketi koşuldu: 86 dosya, 2.464 kontrol; **tek başarısızlık
+`supabase/tests/083_school_grade_lifecycle.test.sql`** (`school_grade_changed` ilk `change_school_grade` çağrısında).
+Aynı dosya öneri **uygulanmadan** da (temel koşu) ve **tek başına** da aynı şekilde başarısız; yani öneriyle ilgisi yok,
+`78b04b2` ile gelen testin kendisi bu koşucuda (şablon + `20261103093000` sonrası migration'lar, `postgres` rolü,
+`psql -qAt`) geçmiyor. Güvenlik bulgusu değil; ilgili paketin (eğitim raporları/okul notu) sahibine not.
+
+## 8. Sınırlar
 
 - Canlı Supabase üzerinde hiçbir sorgu/çağrı yapılmadı; RLS sonuçları migration'ların izole uygulamasına aittir.
   Üretimde elle yapılmış grant/politika farkı varsa görünmez (öneri: aynı matris sorgusu salt okunur olarak üretimde

@@ -29,7 +29,13 @@ const PATTERNS = [
   { name: 'supabase_project_host', severity: 'info', re: /\b[a-z]{20}\.supabase\.co\b/ },
 ];
 
+// İncelenmiş yanlış pozitifler: dosya + desen; gerekçe raporda (docs/release/q03-2026-11-06/README.md §5).
+const ALLOWLIST = new Map([
+  ['scripts/check-testflight.test.mjs|supabase_secret_key', 'test yer tutucusu; önek adı literal, anahtar değil'],
+  ['supabase/functions/push-send/providers.test.ts|private_key_block', 'test çalışma anında ürettiği geçici anahtarı sarar'],
+]);
 const findings = [];
+const allowlisted = [];
 const secretFiles = [];
 let scanned = 0;
 
@@ -56,6 +62,8 @@ function walk(dir) {
         if (!p.re.test(line)) continue;
         if (p.exclude && p.exclude.test(line)) continue;
         if (rel === 'scripts/security/leak-scan.mjs') continue;
+        const reason = ALLOWLIST.get(rel + '|' + p.name);
+        if (reason) { allowlisted.push({ pattern: p.name, file: rel, line: i + 1, reason }); continue; }
         findings.push({ pattern: p.name, severity: p.severity, file: rel, line: i + 1 });
       }
     }
@@ -67,7 +75,7 @@ const bySeverity = {};
 for (const f of findings) bySeverity[f.severity] = (bySeverity[f.severity] ?? 0) + 1;
 const byPattern = {};
 for (const f of findings) byPattern[f.pattern] = (byPattern[f.pattern] ?? 0) + 1;
-const report = { scanned_files: scanned, secret_files_present_not_opened: secretFiles, by_severity: bySeverity, by_pattern: byPattern, findings };
+const report = { scanned_files: scanned, secret_files_present_not_opened: secretFiles, by_severity: bySeverity, by_pattern: byPattern, allowlisted, findings };
 const jsonAt = process.argv.indexOf('--json');
 if (jsonAt > 0) writeFileSync(process.argv[jsonAt + 1], JSON.stringify(report, null, 1) + '\n');
 console.log(JSON.stringify({ scanned_files: scanned, secret_files_present_not_opened: secretFiles.length, by_severity: bySeverity, by_pattern: byPattern }));
