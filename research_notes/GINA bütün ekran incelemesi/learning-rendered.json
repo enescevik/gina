@@ -1,0 +1,332 @@
+[
+  {
+    "route": "/parent/prova",
+    "url": "http://127.0.0.1:8088/parent/prova",
+    "width": 390,
+    "text": "Prova\nBirlikte hazırlan, gelişimini gör.\nProva hazırla\nProvalar\nSonuçlar\nKütüphane\nYükleniyor…\nÇocuğuna gönderilenler\nHenüz Prova gönderilmedi. Hazırladığın çalışma burada görünecek.\nBugün\nTakvim\nProva\nDiğer",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/builder",
+    "url": "http://127.0.0.1:8088/parent/prova/builder",
+    "width": 390,
+    "text": "Prova hazırla\nNasıl bir Prova hazırlayalım?\nÖnce çocuğunu ve çalışmanın amacını seç.\n1\nBaşlangıç\n2\nKapsam\n3\nSorular\n4\nKontrol\nKimin için?\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nÇalışmanın amacı\nKonu pekiştirme\nYazılıya hazırlık\nDeneme\nDersler\nBirden fazla ders seçerek karma Prova hazırlayabilirsin.\nBaşka ders ekle\nEkle\nTaslağı sakla\nDevam et",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-builder-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/library",
+    "url": "http://127.0.0.1:8088/parent/prova/library",
+    "width": 390,
+    "text": "Ayarlar\nGINA kütüphanesi\nİncelenmiş soruları ailenizin soru kütüphanesine ekleyin.\n5 soru ekleme hakkı\nAynı soruyu yeniden eklemek ikinci kez hak kullanmaz. Eklediğiniz sorular ailenizin kütüphanesinde kalır.\nHazır çalışmalar\nProvanın sınıfına ve derslerine uygun, incelenmiş soru paketleri.\nÇocuğuna uygun bir Prova hazırla\nÖnce çocuğu, sınıfı ve dersleri seç. Ardından kütüphaneden soruları ekleyebilirsin.\nYeni koleksiyonlar burada görünecek.\nPaylaştığım soru grupları\nHenüz bir soru grubu paylaşmadın. Hazırladığın soruyu kaydettikten sonra paylaşımı gözden geçirebilirsin.",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-library-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/question",
+    "url": "http://127.0.0.1:8088/parent/prova/question",
+    "width": 390,
+    "text": "Ayarlar\nSoru ekle\nKendi sorunuzu ve doğru yanıtını kütüphaneye ekleyin.\nDers\nSınıf\nKonu\nSenaryo (isteğe bağlı)\nÇoktan seçmeli\nAçık uçlu\nKolay\nOrta\nOrta üstü\nZor\nSoru\nSorunun görselleri\nFotoğraf veya kendi çizimini ekle. En fazla 3 görsel. Seçtiğin dosyalar, soruyu kaydedene kadar yalnız bu cihazda kalır.\nFotoğraf seç\nÇizim yap\nA\nA seçeneği\nB\nB seçeneği\nC\nC seçeneği\nD\nD seçeneği\nDoğru seçeneği harfine dokunarak işaretleyin.\nÇözüm yolu\nKonu anlatımı (isteğe bağlı)\nSorumu GINA kütüphanesine katkı olarak gönder\nKaydet ve yeni soru\nKaydet\nVazgeç",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-question-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/shared-source",
+    "url": "http://127.0.0.1:8088/parent/prova/shared-source",
+    "width": 390,
+    "text": "Birlikte düşünülen sorular\n1\nOrtak içerik\n2\nSorular\n3\nÖnizleme\nBir metin, çizim veya fotoğraf ekleyin; aynı içeriğe bağlı 2–12 soru hazırlayın.\nDers\nSınıf\nİçeriğin başlığı\nOrtak metin\nSoruların birlikte kullanacağı metni veya görseli ekleyin. Cevapları buraya yazmayın.\nSorunun görselleri\nFotoğraf veya kendi çizimini ekle. En fazla 3 görsel. Seçtiğin dosyalar, soruyu kaydedene kadar yalnız bu cihazda kalır.\nFotoğraf seç\nÇizim yap\nKaydedilmiş soru gruplarım\nOkul bahçesi\nSürüm 1\nSorulara geç",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-shared-source-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/level",
+    "url": "http://127.0.0.1:8088/parent/prova/level",
+    "width": 390,
+    "text": "Ayarlar\nSeviye tespiti\nFarklı konulardan bir denemeyle başlangıç düzeyini görün.\nSeçtiğiniz ders ve sınıfın konularından, farklı zorluklarda sorular seçilir. Sonuçlar konu ilerlemesine yansır.\nKimin için?\nSynthetic child\nSynthetic sibling\nKütüphanedeki dersler\nFen · 5. sınıf\nMatematik · 5. sınıf\nDers\nSınıf\nKonular\nTüm konular\nKonu başına soru\nEn fazla soru\nSüreli\nOluştur ve ata\nVazgeç",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-level-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/booklet",
+    "url": "http://127.0.0.1:8088/parent/prova/booklet",
+    "width": 390,
+    "text": "Ayarlar\nKitapçık\nSoruları yazdırılabilir bir kitapçık olarak hazırlayın.\nSoruları yazdırılabilir bir kitapçığa (A4 PDF) dönüştür; cevap anahtarı son sayfada.\nKütüphaneden\nDenemeden\nFen · 5. sınıf\nMatematik · 5. sınıf\nDers\nSınıf\nKitapçık başlığı\nCevap anahtarına çözüm yollarını ekle\n0 soru seçildi\nKitapçığı oluştur\nProva'ya dön",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-booklet-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/blueprint",
+    "url": "http://127.0.0.1:8088/parent/prova/blueprint",
+    "width": 390,
+    "text": "Senaryo ekle\n1 / 3 · Çocuk ve ders\n1\n2\n3\nOkulun açıkladığı senaryodaki konuları ve soru sayılarını gir. Bu kayıt soru üretmez; Prova hazırlarken kullanılacak bir dağılım şablonudur.\nİncelenmiş kaynaklardan seç\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nDers\nDers programından seçebilir veya dersin adını yazabilirsin.\nDevam et",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-blueprint-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/catalog",
+    "url": "http://127.0.0.1:8088/parent/prova/catalog",
+    "width": 390,
+    "text": "Okul senaryosunu seç\n1 / 3 · Çocuk ve ders\n1\n2\n3\nÇocuğunun sınıfına uygun yayımlanmış dağılımları gösteririz. Okulunun hangi senaryoyu kullanacağını öğretmeninin duyurusundan kontrol et.\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nDers\nMatematik\nTürkçe\nFen Bilimleri\nSosyal Bilgiler\nDin Kültürü ve Ahlak Bilgisi\nİngilizce\nDers adı — gerekirse düzenle\nÖğretim yılı\nDönem\n1. dönem\n2. dönem\nYazılı\n1. yazılı\n2. yazılı\nDevam et",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-catalog-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/groups",
+    "url": "http://127.0.0.1:8088/parent/prova/groups",
+    "width": 390,
+    "text": "Ayarlar\nBirlikte Prova\nAynı düzey, aynı sorular; her çocuk için kendi gelişim yolu.\nBirlikte keşfet, kendinle yarış\nÇocuğun kendi sınıf düzeyindeki çocuklarla aynı soru sürümünü çözer. Katılımı sen seçersin; sonuçları birlikte inceleyebilirsiniz. Bu çalışma evde yapılan bir provadır, gözetimli veya resmî sınav değildir.\nBu ay 0 / 0 katılım\nYeni katılımlar şu anda kapalı. Önceki sonuçlarını inceleyebilirsin.\nHenüz yayımlanmış ortak prova yok.",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-groups-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/progress",
+    "url": "http://127.0.0.1:8088/parent/prova/progress",
+    "width": 390,
+    "text": "Gelişim\nSynthetic child için öğrenme özeti\nBu çalışmalarda neler gördük?\nSynthetic child\nSynthetic sibling\n7 gün\n30 gün\n90 gün\nTüm dersler\n3\nfarklı soru\n0\ntekrar\n1\ndeğerlendirme bekliyor\nÇalışmaların görünümü\n4\n3\n2\n1\n0\n7–11\nEki\n12–18\nEki\n19–25\nEki\n26 Eki\n1 Kas\n2–5\nKas\nDoğru 1\nKısmi 1\nYanlış 0\nBoş 0\nFarklı sorular doğrudan karşılaştırılmaz. Bekleyen değerlendirmeler sütunlara dahil değildir.\nBirlikte sonraki adım\n1 yanıt değerlendirmeni bekliyor. Önce bu yanıtları birlikte inceleyelim.\nYanıtları incele\nKonuya yakından bak\nIşık\nFen · 5. sınıf\n1 yanıt · Henüz az gözlem\nİncele\nAlan\nMatematik · 5. sınıf\n1 yanıt · 1 değerlendirme bekliyor\nİncele\nÇevre\nMatematik · 5. sınıf\n1 yanıt · Henüz az gözlem\nİncele",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-progress-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/attempt/ebf05b7e-8d46-41a4-83de-c6705bc40d7f",
+    "url": "http://127.0.0.1:8088/parent/prova/attempt/ebf05b7e-8d46-41a4-83de-c6705bc40d7f",
+    "width": 390,
+    "text": "Ayarlar\nSynthetic mixed Prova\nBirazdan hazır…",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-attempt-item-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/review/ebf05b7e-8d46-41a4-83de-c6705bc40d7f",
+    "url": "http://127.0.0.1:8088/parent/prova/review/ebf05b7e-8d46-41a4-83de-c6705bc40d7f",
+    "width": 390,
+    "text": "Ayarlar\nDeğerlendirmem\nBirazdan hazır…",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-review-item-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/repeat/ebf05b7e-8d46-41a4-83de-c6705bc40d7f",
+    "url": "http://127.0.0.1:8088/parent/prova/repeat/ebf05b7e-8d46-41a4-83de-c6705bc40d7f",
+    "width": 390,
+    "text": "Ayarlar\nTekrar günleri\nSynthetic child ile küçük bir tekrar\nİncelediğiniz soruları seçin, kısa çalışma günlerini birlikte belirleyin.\n1 · Birlikte bakacağınız sorular\nSon 90 günde yanlış veya veli incelemesinde kısmen doğru bulunan sorular. Daha yeni bir Prova’da yanıtlanan sorular yeniden önerilmez.\n2. soru · Matematik · Kısmen doğru\nOkul bahçesi\nDikdörtgen bahçenin kenarları 8 metre ve 6 metredir.\n\nBahçenin çevresi kaç metredir?\nSoruyu ve çözümü incele\n2 · Size uygun günler\n1, 3 ve 7 gün sonrası düzenlenebilir başlangıç önerileridir. Çocuğunuzun temposuna göre değiştirin; hiçbir gün kendiliğinden seçilmez.\nAilenizin saat dilimi: Europe/Istanbul\n1. buluşma · 6 Kas Cum · 17:00\nGün ve içeriği düzenle\n2. buluşma · 8 Kas Paz · 17:00\nGün ve içeriği düzenle\n3. buluşma · 12 Kas Per · 17:00\nGün ve içeriği düzenle\nPlanı kontrol et",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-repeat-item-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova/share",
+    "url": "http://127.0.0.1:8088/parent/prova/share",
+    "width": 390,
+    "text": "Ayarlar\nKütüphaneye katkı\nÖnce paylaşacağın soruyu seç\nProva bölümünden kendi sorunu açıp paylaşmayı seç. İçeriğin tamamını kontrol ettikten sonra incelemeye gönderebilirsin.\nProva",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-share-390.png",
+    "dimensions": {
+      "scroll": 390,
+      "viewport": 390
+    }
+  },
+  {
+    "route": "/parent/prova",
+    "url": "http://127.0.0.1:8088/parent/prova",
+    "width": 1280,
+    "text": "Prova\nBirlikte hazırlan, gelişimini gör.\nProva hazırla\nTümü\nSynthetic child\nSynthetic sibling\nProvalar\nSonuçlar\n1\nKütüphane\nİncelemeni bekliyor\nSynthetic mixed Prova\nSynthetic child · İncelemeni bekliyor\nÇocuğuna gönderilenler\nSynthetic image Prova\nSynthetic child · 1 soru · Süresiz\nAtandı\nSynthetic mixed Prova\nSynthetic child · 3 soru · Süresiz\nİncelemeni bekliyor\nİncele\nBugün\nTakvim\nProva\nDiğer",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/builder",
+    "url": "http://127.0.0.1:8088/parent/prova/builder",
+    "width": 1280,
+    "text": "Prova hazırla\nTaslak kaydedildi\nNasıl bir Prova hazırlayalım?\nÖnce çocuğunu ve çalışmanın amacını seç.\n1\nBaşlangıç\n2\nKapsam\n3\nSorular\n4\nKontrol\nKimin için?\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nÇalışmanın amacı\nKonu pekiştirme\nYazılıya hazırlık\nDeneme\nDersler\nBirden fazla ders seçerek karma Prova hazırlayabilirsin.\nBaşka ders ekle\nEkle\nProva’nın özeti\nKimin için?\n—\nSınıf\n—\nÇalışmanın amacı\nYazılıya hazırlık\nDersler\n—\nSoru sayısı\n10\nSüre\nSüresiz\nSınıf uygunluğu, konu ve soru türünü göndermeden önce birlikte kontrol edeceğiz.\nBirlikte düşünmek için küçük bir başlangıç.\nTaslağı sakla\nDevam et",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-builder-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/library",
+    "url": "http://127.0.0.1:8088/parent/prova/library",
+    "width": 1280,
+    "text": "Ayarlar\nGINA kütüphanesi\nİncelenmiş soruları ailenizin soru kütüphanesine ekleyin.\n5 soru ekleme hakkı\nAynı soruyu yeniden eklemek ikinci kez hak kullanmaz. Eklediğiniz sorular ailenizin kütüphanesinde kalır.\nHazır çalışmalar\nProvanın sınıfına ve derslerine uygun, incelenmiş soru paketleri.\nÇocuğuna uygun bir Prova hazırla\nÖnce çocuğu, sınıfı ve dersleri seç. Ardından kütüphaneden soruları ekleyebilirsin.\nYeni koleksiyonlar burada görünecek.\nPaylaştığım soru grupları\nHenüz bir soru grubu paylaşmadın. Hazırladığın soruyu kaydettikten sonra paylaşımı gözden geçirebilirsin.",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-library-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/question",
+    "url": "http://127.0.0.1:8088/parent/prova/question",
+    "width": 1280,
+    "text": "Ayarlar\nSoru ekle\nKendi sorunuzu ve doğru yanıtını kütüphaneye ekleyin.\nDers\nSınıf\nKonu\nSenaryo (isteğe bağlı)\nÇoktan seçmeli\nAçık uçlu\nKolay\nOrta\nOrta üstü\nZor\nSoru\nSorunun görselleri\nFotoğraf veya kendi çizimini ekle. En fazla 3 görsel. Seçtiğin dosyalar, soruyu kaydedene kadar yalnız bu cihazda kalır.\nFotoğraf seç\nÇizim yap\nA\nA seçeneği\nB\nB seçeneği\nC\nC seçeneği\nD\nD seçeneği\nDoğru seçeneği harfine dokunarak işaretleyin.\nÇözüm yolu\nKonu anlatımı (isteğe bağlı)\nSorumu GINA kütüphanesine katkı olarak gönder\nKaydet ve yeni soru\nKaydet\nVazgeç",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-question-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/shared-source",
+    "url": "http://127.0.0.1:8088/parent/prova/shared-source",
+    "width": 1280,
+    "text": "Birlikte düşünülen sorular\n1\nOrtak içerik\n2\nSorular\n3\nÖnizleme\nBir metin, çizim veya fotoğraf ekleyin; aynı içeriğe bağlı 2–12 soru hazırlayın.\nDers\nSınıf\nİçeriğin başlığı\nOrtak metin\nSoruların birlikte kullanacağı metni veya görseli ekleyin. Cevapları buraya yazmayın.\nSorunun görselleri\nFotoğraf veya kendi çizimini ekle. En fazla 3 görsel. Seçtiğin dosyalar, soruyu kaydedene kadar yalnız bu cihazda kalır.\nFotoğraf seç\nÇizim yap\nKaydedilmiş soru gruplarım\nOkul bahçesi\nSürüm 1\nDeğişiklikler yeni sürüm olarak kaydedilir. Atanmış Provalar değişmez.\nSorulara geç",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-shared-source-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/level",
+    "url": "http://127.0.0.1:8088/parent/prova/level",
+    "width": 1280,
+    "text": "Ayarlar\nSeviye tespiti\nFarklı konulardan bir denemeyle başlangıç düzeyini görün.\nSeçtiğiniz ders ve sınıfın konularından, farklı zorluklarda sorular seçilir. Sonuçlar konu ilerlemesine yansır.\nKimin için?\nSynthetic child\nSynthetic sibling\nKütüphanedeki dersler\nFen · 5. sınıf\nMatematik · 5. sınıf\nDers\nSınıf\nKonular\nTüm konular\nKonu başına soru\nEn fazla soru\nSüreli\nOluştur ve ata\nVazgeç",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-level-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/booklet",
+    "url": "http://127.0.0.1:8088/parent/prova/booklet",
+    "width": 1280,
+    "text": "Ayarlar\nKitapçık\nSoruları yazdırılabilir bir kitapçık olarak hazırlayın.\nSoruları yazdırılabilir bir kitapçığa (A4 PDF) dönüştür; cevap anahtarı son sayfada.\nKütüphaneden\nDenemeden\nFen · 5. sınıf\nMatematik · 5. sınıf\nDers\nSınıf\nKitapçık başlığı\nCevap anahtarına çözüm yollarını ekle\n0 soru seçildi\nKitapçığı oluştur\nProva'ya dön",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-booklet-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/blueprint",
+    "url": "http://127.0.0.1:8088/parent/prova/blueprint",
+    "width": 1280,
+    "text": "Senaryo ekle\n1 / 3 · Çocuk ve ders\n1\nÇocuk ve ders\n2\nSoru dağılımı\n3\nSon bir bakış\nOkulun açıkladığı senaryodaki konuları ve soru sayılarını gir. Bu kayıt soru üretmez; Prova hazırlarken kullanılacak bir dağılım şablonudur.\nİncelenmiş kaynaklardan seç\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nDers\nDers programından seçebilir veya dersin adını yazabilirsin.\nDevam et",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-blueprint-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/catalog",
+    "url": "http://127.0.0.1:8088/parent/prova/catalog",
+    "width": 1280,
+    "text": "Okul senaryosunu seç\n1 / 3 · Çocuk ve ders\n1\nÇocuk ve ders\n2\nSenaryo seçimi\n3\nSon bir bakış\nÇocuğunun sınıfına uygun yayımlanmış dağılımları gösteririz. Okulunun hangi senaryoyu kullanacağını öğretmeninin duyurusundan kontrol et.\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nDers\nMatematik\nTürkçe\nFen Bilimleri\nSosyal Bilgiler\nDin Kültürü ve Ahlak Bilgisi\nİngilizce\nDers adı — gerekirse düzenle\nÖğretim yılı\nDönem\n1. dönem\n2. dönem\nYazılı\n1. yazılı\n2. yazılı\nDevam et",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-catalog-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/groups",
+    "url": "http://127.0.0.1:8088/parent/prova/groups",
+    "width": 1280,
+    "text": "Ayarlar\nBirlikte Prova\nAynı düzey, aynı sorular; her çocuk için kendi gelişim yolu.\nBirlikte keşfet, kendinle yarış\nÇocuğun kendi sınıf düzeyindeki çocuklarla aynı soru sürümünü çözer. Katılımı sen seçersin; sonuçları birlikte inceleyebilirsiniz. Bu çalışma evde yapılan bir provadır, gözetimli veya resmî sınav değildir.\nBu ay 0 / 0 katılım\nYeni katılımlar şu anda kapalı. Önceki sonuçlarını inceleyebilirsin.\nHenüz yayımlanmış ortak prova yok.",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-groups-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/progress",
+    "url": "http://127.0.0.1:8088/parent/prova/progress",
+    "width": 1280,
+    "text": "Gelişim\nSynthetic child için öğrenme özeti\nBu çalışmalarda neler gördük?\nSynthetic child\nSynthetic sibling\n7 gün\n30 gün\n90 gün\nTüm dersler\n3\nfarklı soru\n0\ntekrar\n1\ndeğerlendirme bekliyor\nÇalışmaların görünümü\n4\n3\n2\n1\n0\n7–11\nEki\n12–18\nEki\n19–25\nEki\n26 Eki\n1 Kas\n2–5\nKas\nDoğru 1\nKısmi 1\nYanlış 0\nBoş 0\nFarklı sorular doğrudan karşılaştırılmaz. Bekleyen değerlendirmeler sütunlara dahil değildir.\nBirlikte sonraki adım\n1 yanıt değerlendirmeni bekliyor. Önce bu yanıtları birlikte inceleyelim.\nYanıtları incele\nKonuya yakından bak\nIşık\nFen · 5. sınıf\n1 yanıt · Henüz az gözlem\nİncele\nAlan\nMatematik · 5. sınıf\n1 yanıt · 1 değerlendirme bekliyor\nİncele\nÇevre\nMatematik · 5. sınıf\n1 yanıt · Henüz az gözlem\nİncele",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-progress-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/attempt/ebf05b7e-8d46-41a4-83de-c6705bc40d7f",
+    "url": "http://127.0.0.1:8088/parent/prova/attempt/ebf05b7e-8d46-41a4-83de-c6705bc40d7f",
+    "width": 1280,
+    "text": "Ayarlar\nSynthetic mixed Prova\nSynthetic child · Fen / Matematik 5. sınıf\nPuan: 95 / 100\nÇoktan seçmeli: 1 / 1 doğru\nAçık uçlu: 1 / 2 puanlandı\nAçık uçlu cevapların Yapay zekâyla puanlanması Gina Pro'da var; şimdilik elle puanlayabilirsin.\nÇözümleri incele\nÇalışma planları\nKısa tekrar günleri planla\nÇalışma planı oluşturma Gina Pro'da var.\nProva'ya dön",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-attempt-item-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/review/ebf05b7e-8d46-41a4-83de-c6705bc40d7f",
+    "url": "http://127.0.0.1:8088/parent/prova/review/ebf05b7e-8d46-41a4-83de-c6705bc40d7f",
+    "width": 1280,
+    "text": "Synthetic child · Çözüm\n1 / 3\nÖzete dön\nHangisi kendi ışığını üretir?\nA\nGüneş\nÇocuğun seçtiği cevap\nDoğru cevap\nB\nAy\nÇözüm açıklaması\nÇizimli not ekle\nDeğerlendirmem\nDoğru · A\nÇocuğa geri bildirim\nKaydettiğin notlar ve geri bildirim çocuğuna görünür.\nKaydedildi\nKaydet ve sonraki",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-review-item-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/repeat/ebf05b7e-8d46-41a4-83de-c6705bc40d7f",
+    "url": "http://127.0.0.1:8088/parent/prova/repeat/ebf05b7e-8d46-41a4-83de-c6705bc40d7f",
+    "width": 1280,
+    "text": "Ayarlar\nTekrar günleri\nSynthetic child ile küçük bir tekrar\nİncelediğiniz soruları seçin, kısa çalışma günlerini birlikte belirleyin.\n1 · Birlikte bakacağınız sorular\nSon 90 günde yanlış veya veli incelemesinde kısmen doğru bulunan sorular. Daha yeni bir Prova’da yanıtlanan sorular yeniden önerilmez.\n2. soru · Matematik · Kısmen doğru\nOkul bahçesi\nDikdörtgen bahçenin kenarları 8 metre ve 6 metredir.\n\nBahçenin çevresi kaç metredir?\nSoruyu ve çözümü incele\n2 · Size uygun günler\n1, 3 ve 7 gün sonrası düzenlenebilir başlangıç önerileridir. Çocuğunuzun temposuna göre değiştirin; hiçbir gün kendiliğinden seçilmez.\nAilenizin saat dilimi: Europe/Istanbul\n1. buluşma · 6 Kas Cum · 17:00\nGün ve içeriği düzenle\n2. buluşma · 8 Kas Paz · 17:00\nGün ve içeriği düzenle\n3. buluşma · 12 Kas Per · 17:00\nGün ve içeriği düzenle\nPlanı kontrol et",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-repeat-item-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  },
+  {
+    "route": "/parent/prova/share",
+    "url": "http://127.0.0.1:8088/parent/prova/share",
+    "width": 1280,
+    "text": "Ayarlar\nKütüphaneye katkı\nÖnce paylaşacağın soruyu seç\nProva bölümünden kendi sorunu açıp paylaşmayı seç. İçeriğin tamamını kontrol ettikten sonra incelemeye gönderebilirsin.\nProva",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-share-1280.png",
+    "dimensions": {
+      "scroll": 1280,
+      "viewport": 1280
+    }
+  }
+]

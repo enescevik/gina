@@ -1,0 +1,1713 @@
+{
+  "source_commit": "a123b7f",
+  "scope": "non-Prova parent/account/public routes plus owned modals",
+  "coverage_note": "Route inventory exhaustive for assigned scope; source review targeted control/data paths. Rendered/native and all data permutations NOT claimed.",
+  "screens": [
+    {
+      "route": "/",
+      "kind": "route",
+      "user": "All",
+      "job": "Reach correct role workspace",
+      "problem": "No source-level defect established; redirect paths are role-dependent.",
+      "proposed_change": "Regression test parent/device/anonymous/recovery states; do not substitute login screenshot for destination.",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/index.tsx",
+          "line": 17
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Each role reaches its own destination; history cannot cross child lock.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/(auth)/sign-in",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Sign in, register, recover",
+      "problem": "Social controls demand age affirmation even for returning login; signup shows separate age check below email form. Disabled submit has only implicit rules.",
+      "proposed_change": "One clear account-entry route, registration-specific age explanation; show inline validity and explicit alternative path for child device.",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/social-sign-in.tsx",
+          "line": 14
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Returning users know why social action is disabled; account creation still validates adult requirement.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-login.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/(auth)/family",
+      "kind": "route",
+      "user": "New parent",
+      "job": "Create or join family",
+      "problem": "Defaults create; existing-family joining and account deletion share initial setup page. Risk is duplicate family from default primary path, not loss of existing data.",
+      "proposed_change": "Start with two clear intent choices; explain join when partner already set up family; retain delete under account tools.",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/(auth)/family.tsx",
+          "line": 23
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "New parent can join partner without inadvertently creating second family.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/reset-password",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Choose new password",
+      "problem": "Mismatch is explicit, but no show-password control unlike sign-in; expired and successful states separate.",
+      "proposed_change": "Use same password field affordances and clear expired-link recovery.",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/reset-password.tsx",
+          "line": 38
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Both entries can be inspected; expired recovery takes directly to resend form.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-reset-expired.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/auth-callback",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Complete social login",
+      "problem": "Loading/error handled; generic retry navigates sign-in. Genuine provider cancellation needs real integration test.",
+      "proposed_change": "Preserve provider-specific cancellation vs technical error distinction, retry without duplicate accounts.",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/auth-callback.tsx",
+          "line": 20
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Cancel returns usable login; invalid callback cannot leave indefinite loader.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/device/pair",
+      "kind": "route",
+      "user": "Child-device setup adult",
+      "job": "Connect device to family",
+      "problem": "Numeric code and instructions present, but multi-device process requires remembering separate route; no QR shortcut.",
+      "proposed_change": "Keep code fallback, add visual two-device step diagram and explicit parent destination; QR optional subsequent feature.",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/device/pair.tsx",
+          "line": 65
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "A first-time parent pairs devices without guessing where to type code; expiry is recoverable.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Know next useful action today",
+      "problem": "Task taps navigate generic task templates; goal/event taps drop child/date context; same data appears progress/tasks.",
+      "proposed_change": "Use context-preserving deep links and prioritize approvals + next plan, then expandable summaries.",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/parent-home/home-view.tsx",
+          "line": 127
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Selected child/day survives tap; tap opens referenced record or explains scoped list.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-home-desktop.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-home-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-home-tablet.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-homework-create.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-homework-import-source.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/calendar",
+      "kind": "route",
+      "user": "Parent",
+      "job": "See family day and schedule",
+      "problem": "All-family events can mix with first-child-only homework/bag due silent fallback.",
+      "proposed_change": "Make family aggregation explicit; label each child; require child only at child-specific actions.",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/calendar-screen.tsx",
+          "line": 100
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Two children under All show both homework sets or explicit selection prompt; no silent first-child edits.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-calendar-tablet.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-calendar-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-calendar-desktop.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/tasks",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Manage routines",
+      "problem": "Existing tasks expose pause/resume but no title/day/stars edit path; card repeats star value.",
+      "proposed_change": "Add context menu edit with safe future-effective rule; compact star duplication; separate today status from routine configuration.",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/tasks/tasks-screen.tsx",
+          "line": 345
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Correct one task without duplicate; existing completions keep historical meaning.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-tasks-desktop.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-tasks-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-tasks-tablet.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/rewards",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Manage rewards and delivery",
+      "problem": "Catalogue supports pause only, no edit; requests exclude history; decline/cancel are immediate adjacent actions.",
+      "proposed_change": "Add edit, fulfilled/history filter and consequence-aware cancellation confirmation/undo where safe.",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/rewards/rewards-screen.tsx",
+          "line": 45
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Price/title correction has explicit historical behavior; accidental decline is prevented; delivery history discoverable.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-rewards-tablet.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-rewards-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-rewards-desktop.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/menu",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Find account/family/device settings",
+      "problem": "Family tab holds child setup + invitation + grades/notes; account tab contains unrelated help/sharing/subscription; navigation differs from primary tab screens.",
+      "proposed_change": "Group account, family, devices, learning records visibly; persistent parent navigation at same structural level; move secondary links to named categories.",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/menu.tsx",
+          "line": 141
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Users locate child PIN, profile, school grades and support in one predictable category; no giant link wall.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-menu-tablet.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-menu-desktop.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-menu-phone.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/device-access",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Choose device users and PIN policy",
+      "problem": "Switching personal/shared and PIN policy can leave unsaved edits with back actions; missing PIN sends away from current draft.",
+      "proposed_change": "Dirty-state guard; contextual PIN creation returning to draft; show selected names and access consequence in save summary.",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/device-access.tsx",
+          "line": 27
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Back or PIN-setup navigation never silently discards configured users; saved access accurately described.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-device-access-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-device-access-desktop.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-device-access-tablet.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/families",
+      "kind": "route",
+      "user": "Parent/partner",
+      "job": "Join/switch active family",
+      "problem": "Duplicate-data preservation explained correctly; current active family still selectable into confirmation; no side-by-side data implication preview.",
+      "proposed_change": "Show current state non-actionable, separate Join and Switch, display child counts and consequences; do not invent automatic merge.",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/family-choice.tsx",
+          "line": 39
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Parent can tell which family is active and confirm switch without interpreting merge.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-families-desktop.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-families-tablet.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-families-phone.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/grades",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Record/correct school score",
+      "problem": "Subject/date raw input; recorded scores no edit/delete affordance; fixed limit200 without pagination.",
+      "proposed_change": "Guided subject, date picker, score range control, correction history and pagination/search.",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/grades.tsx",
+          "line": 97
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Mistyped subject/date/score can be corrected; older records remain reachable beyond200.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-grades-tablet.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-grades-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-grades-desktop.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/notes",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Record observations privately or shared",
+      "problem": "Default visibility family; selected list filter also becomes new note child target; free subject; no edit; fixed100 limit.",
+      "proposed_change": "Separate note target from list filter, explicit audience summary, structured tags, edit/history and paging.",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/notes.tsx",
+          "line": 27
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Before saving user knows who sees note and which child; correction does not require deleting/recreating.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-notes-tablet.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-notes-desktop.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-notes-phone.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/notifications",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Read notifications/choose preferences",
+      "problem": "Bell-labelled navigation leads only to preference toggles, no received notifications list.",
+      "proposed_change": "Separate inbox from notification settings, or rename entry to preferences if inbox deferred.",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/notifications.tsx",
+          "line": 62
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Bell destination matches user expectation; historical approval/exam notices recoverable or absence clearly communicated.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-notifications-desktop.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-notifications-tablet.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-notifications-phone.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/subscription",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Understand entitlements and purchase",
+      "problem": "Feature list only child/device/tasks/history/weekly AI, omits per-purpose AI quota/document/library entitlements.",
+      "proposed_change": "Current usage summary and complete plan comparison; separate test override visually; show store billing actions distinctly.",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/subscription.tsx",
+          "line": 218
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Displayed rights agree with AI/library restrictions; no surprise quota at creation step.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-subscription-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-subscription-desktop.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-subscription-tablet.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/help",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Find answer or contact support",
+      "problem": "FAQ/search/tickets/reply exist; long compose supports only text, no contextual screenshot attachment.",
+      "proposed_change": "Keep strong separation; prefill originating route and optional redacted attachment; clear response expectations.",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/help.tsx",
+          "line": 577
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "User can describe UI bug with context without exposing child details; error/retry retains draft.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-help-desktop.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-help-tablet.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-help-compose.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-help-phone.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/share",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Share restricted child view",
+      "problem": "Scope and expiry controls exist, but no recipient-view preview before creating link; list capped50.",
+      "proposed_change": "Show exact shared fields and expiry preview before creation; list search/paging; name links meaningfully.",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/share.tsx",
+          "line": 186
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Parent can inspect recipient view before sharing; revoked/expired statuses clear; no extra private data.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-share-desktop.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-share-settled-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-share-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-share-tablet.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/weekly-review",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Reflect on week",
+      "problem": "AI suggestion is text with only generic calendar link; turning advice into plan requires re-entry.",
+      "proposed_change": "Offer editable next-step draft with explicit parent approval; data sufficiency and measurement window visible.",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/weekly-review.tsx",
+          "line": 347
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Suggestion can become optional concrete action without automatic task/pressure; summary states data limits.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-weekly-review-desktop.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-weekly-review-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-weekly-review-settled-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-weekly-review-tablet.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/parent/room-credits",
+      "kind": "route",
+      "user": "Parent",
+      "job": "Review asset attribution",
+      "problem": "Every source button says Wikimedia / SoundBible, even one destination.",
+      "proposed_change": "Use actual source names and compact attribution rows.",
+      "priority": "P3",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/room-credits.tsx",
+          "line": 18
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Link title predicts real destination; license links remain accessible.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-room-credits-tablet.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-room-credits-desktop.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-room-credits-phone.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "/s/[token]",
+      "kind": "route",
+      "user": "Teacher/recipient",
+      "job": "Read permitted progress",
+      "problem": "Network/API errors and invalid link render same invalid message, no retry.",
+      "proposed_change": "Distinguish temporarily unavailable from revoked/expired while keeping security-sensitive validity details generic.",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/s/[token].tsx",
+          "line": 76
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Offline recipient can retry without asking for new link; revoked link never reveals data.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "home/approval",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Approve or return task",
+      "problem": "Return has no reason/draft child feedback; both actions immediate",
+      "proposed_change": "Offer optional constructive feedback and clear state outcome; no diagnostic judgement",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/parent-home/home-view.tsx",
+          "line": 112
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Returned child sees actionable next step, not rejection alone.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "home/weekly-expand",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "See other days",
+      "problem": "Expanded week changes plan date while Today task/progress remain; scope needs explicit headings",
+      "proposed_change": "Label Today vs selected-date groups clearly or synchronize date",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/parent-home/home-view.tsx",
+          "line": 170
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Changing date cannot make Today counts seem selected-day counts.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "menu/child-setup/profile",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Create child",
+      "problem": "Full avatar catalogue upfront; no child collaboration cue",
+      "proposed_change": "Progressive avatar choice with more, retain optional identity detail",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/setup/child-setup.tsx",
+          "line": 162
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Profile step feels short; no gender-based restrictions.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-child-create-profile.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "menu/child-setup/school",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Enter learning context",
+      "problem": "14 grade choices + year + gender + six interests in same step; no school curriculum/type",
+      "proposed_change": "Use age/year comfortable picker; grade selector; optional curriculum details only if used",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/setup/child-setup.tsx",
+          "line": 186
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "User distinguishes required learning context from optional identity; grade mismatch soft-check.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-child-school.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "menu/child-setup/routines",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Choose starter habits",
+      "problem": "Each selected habit expands long name/stars/seven-day form inside selection list",
+      "proposed_change": "Keep selection compact; edit one in sheet; show age-appropriate routine rationale",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/setup/child-setup.tsx",
+          "line": 328
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Selecting3routines does not create a long nested control wall.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "menu/child-setup/review",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Confirm child",
+      "problem": "Review exists; source no school type/curriculum as stored data",
+      "proposed_change": "Review selected schedules and child context, explain what may change later",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/setup/child-setup.tsx",
+          "line": 441
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Parent catches wrong class/year and schedule before save.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "tasks/create/template",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Choose task method",
+      "problem": "Template/custom/AI in same scrolled step; regular repeat creation still wizard",
+      "proposed_change": "Keep three source methods, allow returning user quick path with review",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/tasks/task-form.tsx",
+          "line": 128
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Template creation requires minimal actions, all fields editable.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-task-source.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "tasks/create/details",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Set habit reward and days",
+      "problem": "No start/end date control in UI despite source templates having those fields",
+      "proposed_change": "Add optional scheduling details, keep common cadence presets first",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/tasks/task-form.tsx",
+          "line": 236
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "School-day/weekend/once behavior explicit; no hidden indefinite repeat.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "rewards/create/details",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Price reward",
+      "problem": "Cost plain numeric field; hypothetical cost/3 estimate explicitly labelled example",
+      "proposed_change": "Use presets/stepper plus optional manual; optionally personalize estimate from selected child activity",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/rewards/reward-form.tsx",
+          "line": 171
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Parent can pick attainable cost without forced calculator; estimate never promise.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-reward-source.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "rewards/goal",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Select goal",
+      "problem": "Child and reward list share step; no visible per-child current balance in review",
+      "proposed_change": "Select child then show child-owned current goal/balance, choice stays voluntary",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/setup/goal-setup.tsx",
+          "line": 101
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Before replace parent sees existing goal, remaining stars, and no-spend meaning.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-goal-choice.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "setup/AI-document",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Generate task/reward suggestions",
+      "problem": "No optional instruction input; remaining allowance shown without per-request dynamic estimate",
+      "proposed_change": "Add examples+multiline context and unit-cost preview preserving multiselect",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/setup/ai-suggestions.tsx",
+          "line": 108
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Can explain abbreviations/preferences; failure retry does not double charge.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "calendar/event-editor",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Create/edit event",
+      "problem": "Raw date HH:mm strings; event kind/title largely manual; repeat choices expand inline",
+      "proposed_change": "Date/time picker, suggested titles/locations and recurrence presets; one-off vs series editing scope",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/event-editor.tsx",
+          "line": 347
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Date/time chosen without formatting knowledge; series consequence visible before save.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-event-editor.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "calendar/timetable",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Edit weekly lessons",
+      "problem": "Board fixed prior list issues; remaining long-week mobile scan and empty slot movement limited",
+      "proposed_change": "Keep current board, expand direct empty-slot move and quick lesson catalogue; verify touch vs page scroll",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/timetable-board.tsx",
+          "line": 355
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Phone day/tablet week agree; swap and empty move have undo and preserve durations.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-timetable-phone.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "timetable/bell-editor",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Apply school day rhythm",
+      "problem": "Pattern replaces day/all times; default all=true; caution only text Rendered phone opens editor inline below ~500px of unchanged header; sticky Programı kaydet stays disabled while the distinct Bu saatleri uygula action is lower down.",
+      "proposed_change": "Preview before/after affected days and exceptions; explicit scope and reversible operation Use a focused editing sheet/body with its own clear Apply action, then state that main program still needs save; avoid competing nested saves.",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/timetable-board.tsx",
+          "line": 110
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Lunch/break change shows downstream consequences; exceptional day not silently overwritten.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-bell-editor.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "timetable/lesson-editor",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Correct lesson",
+      "problem": "Raw lesson title and suggestion chips; time ±5 and manual present",
+      "proposed_change": "Search guided subject catalogue and preserve source abbreviation; optional precise time picker",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/timetable-board.tsx",
+          "line": 559
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "MAT mapping editable; same canonical subject used in reports.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "timetable/copy-day",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Copy day",
+      "problem": "Copying can replace multiple targets; need clear target change summary",
+      "proposed_change": "Before/after target lessons and undo/confirmation for overwrite",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/timetable-editor.tsx",
+          "line": 659
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Parent knows exactly which weekdays are replaced.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "timetable/import/source",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Analyse photos",
+      "problem": "Prompt/multifile controls now implemented; initial and retry cost clarity still needs rendered check",
+      "proposed_change": "Keep new instruction examples, show source count and exact expected quota charge",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/timetable-import.tsx",
+          "line": 494
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Three photos are analysed as one context with visible charge and optional instruction.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-timetable-import-source.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "timetable/import/review",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Review AI schedule",
+      "problem": "Current grid, name mapping, bells and compact warnings supersede user screenshot; not same old defect",
+      "proposed_change": "Preserve grid, indicate uncertain individual cells and before/after merge consequence",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/timetable-import.tsx",
+          "line": 578
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "User can fix uncertain cell in place and compare source, detect collisions before commit.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "timetable/source-remove",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Remove attachment",
+      "problem": "Delete confirmation exists; lesson/source distinction needs clear copy",
+      "proposed_change": "Explain removing attachment vs deleting lessons separately",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/timetable-import.tsx",
+          "line": 744
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Deleting reference never silently deletes timetable; user understands retention.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "calendar/homework-list",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Track homework/courses/study",
+      "problem": "Nested in calendar agenda after events; low discoverability; first-child scope under All",
+      "proposed_change": "Expose named Learning plan entry, unify day workload while retaining distinct statuses",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/calendar-screen.tsx",
+          "line": 664
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Parent finds homework quickly and sees all relevant children.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "calendar/homework-editor",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Create school task",
+      "problem": "Guided title/subject/topic good; dates/times still raw despite shortcuts",
+      "proposed_change": "Reuse date/time controls; retain sourced canonical IDs and let manual override be explicit",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/learning-plan.tsx",
+          "line": 802
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "No ISO-date typing required; selected curriculum/topic stable.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-homework-create.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "calendar/homework-import",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Import assignments",
+      "problem": "No user instruction; each result defaults planned_on current selected date; long record edit uses text dates",
+      "proposed_change": "Add context prompt, bulk schedule by day, table summary then per-item correction",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/learning-plan-import.tsx",
+          "line": 133
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Multiassignment user can distribute days without editing every form; source-derived vs chosen date distinguished.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-homework-import-source.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "calendar/school-bag",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Pack bag",
+      "problem": "Lessons are shown; items guided but no visible auto-suggested item mapping per lesson",
+      "proposed_change": "Suggest materials by tomorrow lessons with parent-editable catalogue, preserve manual option",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/planner/school-bag.tsx",
+          "line": 250
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Child can prepare tomorrow bag with checklist; suggestion never falsely claims mandatory item.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-school-bag.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "menu/child-pin",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Set child PIN",
+      "problem": "Input secure; save then clear, no second-entry or show control; user may mistype",
+      "proposed_change": "Use PIN widget with confirmation and explanation of child vs parent PIN",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/parent/menu.tsx",
+          "line": 42
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Mistyped PIN caught before save; remembers which PIN is which.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "menu/parent-pin",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Protect adult mode",
+      "problem": "One secure four-digit entry; no confirmation; explanation available",
+      "proposed_change": "Confirm new PIN; show reset path and impact without leaking value",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/parent/menu.tsx",
+          "line": 65
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Parent does not lock self out due unnoticed mistype.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-security.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "menu/device-pair",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Pair via code",
+      "problem": "Instructions exist but successful pair navigates away into access settings; draft transition implicit",
+      "proposed_change": "Show connected device then mandatory users/access review",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/parent/menu.tsx",
+          "line": 120
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "No misleading fully configured success before children/PIN policy saved.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-devices.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "menu/delete-child",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Remove child",
+      "problem": "Dangerous operation behind inline confirm; needs affected records visible",
+      "proposed_change": "Keep confirmation and add child name/data impact; do not soften permanent effect",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/parent/menu.tsx",
+          "line": 46
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "User confirms exact child and understands irreversible loss.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "account/delete",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Delete account",
+      "problem": "Clear family consequence and store note exist, but no subscription management action beside note",
+      "proposed_change": "Add manage-subscription shortcut; retain reauthentication; expired OTP recovery precise",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/account-deletion.tsx",
+          "line": 42
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "Deletion does not imply subscription cancellation; social and email paths tested separately.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-account-delete.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "account/email-verification",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Reauthenticate social account",
+      "problem": "Masked OTP max10 numeric, no resend cooldown; generic error combines send/verify",
+      "proposed_change": "Auto-fill and visible expiry/resend timing; concise reason-specific errors",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/email-verification.tsx",
+          "line": 19
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Repeated tap cannot create confusing multiple codes; latest code and expiry clear.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "help/FAQ",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Find guidance",
+      "problem": "Search and accordion exist; not yet verified with long content/catalogue",
+      "proposed_change": "Offer contextual suggested article and accessible empty search recovery",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/help.tsx",
+          "line": 641
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Known task can be found by ordinary Turkish terms.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "help/compose",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Ask support or propose idea",
+      "problem": "Category/subject/body explicit; no attachments",
+      "proposed_change": "Optional redacted screenshot and consent; prefill context",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/help.tsx",
+          "line": 577
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "User can report visual bug without manual route description.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-help-compose.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "help/thread",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Follow support response",
+      "problem": "Pagination, reply/reopen/close confirmed; no native notification integration verified",
+      "proposed_change": "Link notifications to thread, show response expectation and private audience",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/help.tsx",
+          "line": 369
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Reply retained after failure, closes/reopens predictable.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "subscription/beta-plan",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Test feature packages",
+      "problem": "Override is server-gated and clearly test-specific; must not confuse current store entitlement",
+      "proposed_change": "Show test expiry and real subscription independently",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/setup/beta-plans.tsx",
+          "line": 34
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Beta override cannot be mistaken for real purchase or renewal.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "share/create",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Share child data",
+      "problem": "Scope+duration no recipient preview",
+      "proposed_change": "Preview recipient view and explicit access-link warning",
+      "priority": "P1",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/share.tsx",
+          "line": 186
+        }
+      ],
+      "verification": "source_control_paths_reviewed; rendered_web_state_captured",
+      "acceptance": "User selects exact scopes before irrevocable external sharing.",
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/parent-share-settled-phone.png"
+      ],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    },
+    {
+      "route": "shared/global-error",
+      "kind": "modal_or_state",
+      "user": "Parent",
+      "job": "Recover failed screen",
+      "problem": "Generic retry exists but does not classify offline vs expired session",
+      "proposed_change": "Unified state taxonomy with context-preserving retry",
+      "priority": "P2",
+      "evidence": [
+        {
+          "file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/_layout.tsx",
+          "line": 72
+        }
+      ],
+      "verification": "source_control_paths_reviewed; source_only_not_rendered",
+      "acceptance": "Offline/expired/permission errors point to relevant safe action, not blank page.",
+      "screenshots": [],
+      "native_verification": "not tested in this audit",
+      "finding_type": "source/rendered observation where evidenced; proposed change is heuristic recommendation",
+      "perspectives": {
+        "cognitive_emotional": "Intent, target, consequence and recovery must be clear without remembering another screen; no psychological diagnosis inferred.",
+        "pedagogy": "Preserve child choice and constructive wording; do not equate task stars with ability.",
+        "education": "Keep subject/class/schedule and real work status consistent; avoid generic labels hiding learning context.",
+        "architecture": "Implement this acceptance criterion with explicit scope, revision/history, safe retry and server authorization.",
+        "design": "Keep approved cream/mint/purple/mascot; prioritize one main action, consistent controls and responsive layout."
+      }
+    }
+  ],
+  "count_by_kind": {
+    "route": 22,
+    "modal_or_state": 35
+  },
+  "render_coverage": {
+    "initial_parent_routes": 15,
+    "viewport_sizes": [
+      [
+        390,
+        844
+      ],
+      [
+        1280,
+        800
+      ],
+      [
+        1440,
+        900
+      ]
+    ],
+    "capture_count": 72,
+    "manual_visual_review_images": [
+      "home-phone",
+      "calendar-phone",
+      "menu-phone",
+      "home-tablet",
+      "grades-phone",
+      "notes-phone",
+      "notifications-phone",
+      "rewards-phone",
+      "tasks-phone",
+      "subscription-phone",
+      "help-phone",
+      "share-phone",
+      "families-phone",
+      "weekly-review-phone",
+      "calendar-tablet",
+      "tasks-tablet",
+      "rewards-tablet",
+      "menu-tablet",
+      "grade-form",
+      "note-form",
+      "event-editor",
+      "task-source",
+      "timetable-phone",
+      "child-school",
+      "bell-editor",
+      "share-settled-phone",
+      "weekly-review-settled-phone",
+      "help-compose",
+      "timetable-import-source",
+      "homework-create",
+      "homework-import-source",
+      "school-bag"
+    ],
+    "limitations": [
+      "Web rendering is not native device proof",
+      "Publicfamily/pair callback and valid public token source only",
+      "No destructive save, real email, social provider, purchase or paid AI calls",
+      "Empty timetable fixture: filled-grid drag not exercised",
+      "share/weekly-review initial captures loading; settled captures supersede them",
+      "Social providers disabled in local fixture; not a production defect"
+    ]
+  }
+}

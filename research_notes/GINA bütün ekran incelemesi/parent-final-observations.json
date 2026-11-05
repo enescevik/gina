@@ -1,0 +1,27 @@
+[
+  {
+    "name": "timetable-more",
+    "url": "http://127.0.0.1:8088/parent/calendar",
+    "text": "Ders programı\nSynthetic child’nin haftası\nBir kez planla, her hafta gör.\nSynthetic child\nSynthetic sibling\nHer hafta\nGün\nHafta tablosu\nDerse dokunarak düzenle.\nYer değiştir\nSaatler\nHafta sonunu göster\nFotoğraftan aktar\nPzt\nSal\nÇar\nPer\nCum\nPazartesi\n1\nDers yok\nDers ekle\nGünü kopyala\nBu haftadan itibaren her hafta tekrar eder. Veli ve çocuk düzenleyebilir.\nVazgeç\nProgramı kaydet"
+  },
+  {
+    "name": "login",
+    "url": "http://127.0.0.1:8088/sign-in",
+    "text": "Birlikte büyüyelim.\nEbeveyn hesabınızla giriş yapın; görevleri, dersleri ve güzel anları birlikte takip edin.\nEbeveyn girişi\nE-posta\nŞifre\nŞifreyi göster\nGiriş yap\nŞifremi unuttum\nKayıt ol\nBu cihazı çocuğunuz mu kullanacak?\nAyrı bir telefon veya tableti aile hesabınıza bağlayabilirsiniz. Kendi telefonunuzu paylaşacaksanız giriş yaptıktan sonra Çocuk modu’nu kullanın.\nÇocuk cihazını bağla"
+  },
+  {
+    "name": "signup",
+    "url": "http://127.0.0.1:8088/sign-in",
+    "text": "Kayıt ol\nHesabı bir ebeveyn oluşturur. Çocuğunuz için ayrıca e-posta adresi gerekmez.\nE-posta\nŞifre\nŞifreyi göster\nŞifreniz en az 8 karakter içermeli.\n18 yaşını doldurdum ve çocuğun ebeveyni veya yasal vasisiyim.\nKayıt ol\nGiriş yap"
+  },
+  {
+    "name": "forgot-password",
+    "url": "http://127.0.0.1:8088/sign-in",
+    "text": "Şifrenizi yenileyin\nEbeveyn hesabınızın e-posta adresini yazın. Şifrenizi yenilemek için size bir bağlantı göndereceğiz.\nE-posta\nYenileme bağlantısı gönder\nGiriş yap"
+  },
+  {
+    "name": "reset-expired",
+    "url": "http://127.0.0.1:8088/reset-password",
+    "text": "Şifrenizi yenileyin\nBu bağlantı geçersiz, kullanılmış veya başka bir cihazda açılmış olabilir. Yeni bir şifre yenileme bağlantısı isteyin.\nYenileme bağlantısı gönder"
+  }
+]

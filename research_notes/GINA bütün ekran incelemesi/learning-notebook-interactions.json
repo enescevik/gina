@@ -1,0 +1,51 @@
+[
+  {
+    "test": "ink scroll",
+    "before": {
+      "w": 768,
+      "h": 1024,
+      "scroll": []
+    },
+    "after": {
+      "w": 768,
+      "h": 1024,
+      "scroll": []
+    }
+  },
+  {
+    "test": "Yazı ekle veya düzenle",
+    "metrics": {
+      "w": 768,
+      "h": 1024,
+      "scroll": []
+    },
+    "text": "1 / 1\nSoru\nDeftere al\nSorunun tamamı\nGörselde pazartesi hangi ders var?\nÇözüm defterim\nKaydedildi\nGenişlet\nYazı\nSemboller\nSayfanın devamı aşağıda\nBitir\nDeftere yazı ekle\n+\n−\n×\n÷\n=\n≠\n≈\n<\n>\n≤\n≥\n°\n∠\n∥\n⊥\n√\nπ\n²\n³\n½\n¼\n|AB|\n→\nΔ\nDeftere yerleştir"
+  },
+  {
+    "test": "Matematik işaretleri",
+    "metrics": {
+      "w": 768,
+      "h": 1024,
+      "scroll": []
+    },
+    "text": "1 / 1\nSoru\nDeftere al\nSorunun tamamı\nGörselde pazartesi hangi ders var?\nÇözüm defterim\nKaydedildi\nGenişlet\nYazı\nSemboller\nSayfanın devamı aşağıda\nBitir\nDeftere yazı ekle\n+\n−\n×\n÷\n=\n≠\n≈\n<\n>\n≤\n≥\n°\n∠\n∥\n⊥\n√\nπ\n²\n³\n½\n¼\n|AB|\n→\nΔ\nDeftere yerleştir"
+  },
+  {
+    "test": "Diğer araçlar",
+    "metrics": {
+      "w": 768,
+      "h": 1024,
+      "scroll": []
+    },
+    "text": "1 / 1\nSoru\nDeftere al\nSorunun tamamı\nGörselde pazartesi hangi ders var?\nÇözüm defterim\nKaydedildi\nGenişlet\nYazı\nSemboller\nSayfanın devamı aşağıda\nBitir\nDiğer araçlar\nSeç ve taşı\n100%\nSemboller\nParmağınla veya kaleminle yaz. Sayfayı kaydırmak için el aracını seç."
+  },
+  {
+    "test": "source picker",
+    "text": "1 / 1\nSoru\nDeftere al\nSorunun tamamı\nGörselde pazartesi hangi ders var?\nÇözüm defterim\nKaydedildi\nGenişlet\nYazı\nSemboller\nSayfanın devamı aşağıda\nBitir\nSorudan deftere al\nGörselde pazartesi hangi ders var?\nSorudaki metni seçip kopyalayabilir, aşağıdaki alana yapıştırabilirsin.\nDeftere yazı ekle\nGörselin istediğin bölümünü sürükleyerek seç. Tamamını da alabilirsin.\nSeçili görseli deftere al\nVazgeç",
+    "metrics": {
+      "w": 768,
+      "h": 1024,
+      "scroll": []
+    }
+  }
+]

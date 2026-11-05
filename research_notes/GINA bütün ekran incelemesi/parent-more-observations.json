@@ -1,0 +1,36 @@
+[
+  {
+    "name": "child-school",
+    "url": "http://127.0.0.1:8088/parent/menu",
+    "text": "Ana sayfa\nAile ayarları\nSynthetic family A · Ailenizi, çocuk cihazlarını ve hesabınızın güvenliğini buradan yönetin.\nAilem\nÇocuk cihazları\nGüvenlik\nHesabım\nÇocuk ekle\nProfilini tanımlayın, yaşına uygun başlangıç görevlerini birlikte seçin.\nÇocuklar\nHer çocuğun görevleri, ders programı ve biriktirdiği yıldızlar ayrı tutulur.\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nDiğer ebeveyni davet edin\nPuanlar\nOkuldan gelen notları kaydedin; GINA denemelerinin sonuçları Prova bölümünde ayrı görünür.\nNotlar\nBir not ekleyin ve kimlerin görebileceğini seçin. “Kişisel” notlarınızı yalnız siz görürsünüz.\nÇocuk ekle\n2 / 4 · Yaş ve okul\n2\n3\n4\nOna uygun bir başlangıç\nDoğum yılı\nTam doğum tarihi istemiyoruz. Yaşa uygun öneriler için yalnız yıl yeterli.\nOkul / sınıf düzeyi\nHenüz okula gitmiyor\nOkul öncesi\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\nCinsiyet (isteğe bağlı)\nBelirtmek istemiyorum\nKız\nErkek\nİlgi alanları (isteğe bağlı)\nKitaplar\nBilim\nResim ve tasarım\nMüzik\nSpor\nDoğa\nDevam et"
+  },
+  {
+    "name": "bell-editor",
+    "url": "http://127.0.0.1:8088/parent/calendar",
+    "text": "Ders programı\nSynthetic child’nin haftası\nBir kez planla, her hafta gör.\nSynthetic child\nSynthetic sibling\nHer hafta\nGün\nHafta tablosu\nDerse dokunarak düzenle.\nYer değiştir\nSaatler\nPzt\nSal\nÇar\nPer\nCum\nDers saatlerini düzenle\nOkulun zil düzenini bir kez gir. Saatler aşağıda önizlenir; uygulamadan önce kontrol edebilirsin.\nTüm günler\nPazartesi\nİlk ders saati\n-5 dk\n+5 dk\nDers süresi (dakika)\n40 dk\n30\n35\n40\n45\n50\nHazır bir değeri seç veya sayıya dokunarak kendin yaz.\nTeneffüs (dakika)\n10 dk\n5\n10\n15\n20\nHazır bir değeri seç veya sayıya dokunarak kendin yaz.\nUzun ara / öğle arası\nYok\n1. dersten sonra\n2. dersten sonra\n3. dersten sonra\n4. dersten sonra\n5. dersten sonra\n6. dersten sonra\n7. dersten sonra\n8. dersten sonra\nPazartesi · saat önizlemesi\nUygula, seçili günlerin mevcut saatlerini bu düzene göre yeniden hesaplar. Uzun ara, normal teneffüsün yerine geçer. Dersler silinmez.\nBu saatleri uygula\nPazartesi\n1\nDers yok\nDers ekle\nGünü kopyala\nBu haftadan itibaren her hafta tekrar eder. Veli ve çocuk düzenleyebilir.\nVazgeç\nProgramı kaydet"
+  },
+  {
+    "name": "plan-editor",
+    "error": "interaction failed: locator.click: Timeout 2000ms exceeded."
+  },
+  {
+    "name": "security",
+    "url": "http://127.0.0.1:8088/parent/menu?section=security",
+    "text": "Ana sayfa\nAile ayarları\nSynthetic family A · Ailenizi, çocuk cihazlarını ve hesabınızın güvenliğini buradan yönetin.\nAilem\nÇocuk cihazları\nGüvenlik\nHesabım\nEbeveyn PIN'i (çocuk modundan çıkış için)\nBu 4 haneli kod, telefonunuzdaki Çocuk modu’ndan ebeveyn alanına dönüşü korur. Çocuğunuzla paylaşmayın. Hesap şifrenizden ve çocuk PIN’inden farklıdır.\nYeni ebeveyn PIN’i\nPIN’i kaydet\nAynı telefonda çocuk modu\nTelefonunuzu çocuğunuza verecekseniz eşleştirme gerekmez. Önce güvenlik bölümünde ebeveyn PIN’ini, çocuk profilinde de çocuk PIN’ini belirleyin.\nÇocuk moduna geç"
+  },
+  {
+    "name": "account",
+    "url": "http://127.0.0.1:8088/parent/menu?section=account",
+    "text": "Ana sayfa\nAile ayarları\nSynthetic family A · Ailenizi, çocuk cihazlarını ve hesabınızın güvenliğini buradan yönetin.\nAilem\nÇocuk cihazları\nGüvenlik\nHesabım\nBildirimler, paylaşım izinleri ve abonelikleriniz burada. Hesap silme işlemi ayrıca onayınızı ister.\nYardım\nYanıt bul, destek iste, fikrini paylaş.\nBildirimler\nHangi gelişmelerden haberdar olmak istersin?\nÖğretmenle paylaş\nYalnız seçtiğiniz bilgileri, belirlediğiniz süre boyunca görüntülenebilen bir bağlantıyla paylaşın. Bağlantıyı alan kişi değişiklik yapamaz.\nPaketler\nHesabımı sil\nÇıkış yap"
+  },
+  {
+    "name": "account-delete",
+    "url": "http://127.0.0.1:8088/parent/menu?section=account",
+    "text": "Ana sayfa\nAile ayarları\nSynthetic family A · Ailenizi, çocuk cihazlarını ve hesabınızın güvenliğini buradan yönetin.\nAilem\nÇocuk cihazları\nGüvenlik\nHesabım\nBildirimler, paylaşım izinleri ve abonelikleriniz burada. Hesap silme işlemi ayrıca onayınızı ister.\nYardım\nYanıt bul, destek iste, fikrini paylaş.\nBildirimler\nHangi gelişmelerden haberdar olmak istersin?\nÖğretmenle paylaş\nYalnız seçtiğiniz bilgileri, belirlediğiniz süre boyunca görüntülenebilen bir bağlantıyla paylaşın. Bağlantıyı alan kişi değişiklik yapamaz.\nPaketler\nHesabımı sil\nHesabınız ve yazdığınız notlar, üyesi olduğunuz tüm ailelerden kalıcı olarak silinir. Her aile ayrı değerlendirilir: başka bir ebeveyn varsa ortak çocuk kayıtları korunur. Son ebeveyn sizseniz o aile, çocuk kayıtları ve bağlı çocuk cihazlarının oturumları da silinir.\nHesabı silmek, Apple veya Google aboneliğinizi iptal etmez. Yenilenmesini istemiyorsanız önce mağaza hesabınızdan iptal edin.\nKimliğinizi doğrulamak için mevcut hesap şifrenizi yazın.\nŞifre\nBu işlemin geri alınamayacağını anladım.\nHesabımı kalıcı olarak sil\nVazgeç\nÇıkış yap"
+  },
+  {
+    "name": "devices",
+    "url": "http://127.0.0.1:8088/parent/menu?section=devices",
+    "text": "Ana sayfa\nAile ayarları\nSynthetic family A · Ailenizi, çocuk cihazlarını ve hesabınızın güvenliğini buradan yönetin.\nAilem\nÇocuk cihazları\nGüvenlik\nHesabım\nCihazı bağla\nYalnız çocuğunuzun ayrı bir telefonu veya tableti varsa kullanın. Eşleştirme, o cihazı ailenize bağlar; yeni bir ebeveyn hesabı oluşturmaz.\n1\nÇocuğun cihazında GINA’yı açın. Giriş ekranında “Çocuk cihazını bağla”ya dokunun.\n2\n“Eşleştirme kodu oluştur”a dokunun. Orada görünen 6 haneli kodu aşağıya yazın.\n3\nBağlandıktan sonra bu cihazda kimlerin giriş yapabileceğini ve PIN gerekip gerekmediğini seçin.\nÇocuk cihazındaki 6 haneli kod\nCihazı bağla\nBağlı cihazlar\nHenüz bağlı çocuk cihazı yok.\nAynı telefonda çocuk modu\nTelefonunuzu çocuğunuza verecekseniz eşleştirme gerekmez. Önce güvenlik bölümünde ebeveyn PIN’ini, çocuk profilinde de çocuk PIN’ini belirleyin.\nÇocuk moduna geç"
+  }
+]

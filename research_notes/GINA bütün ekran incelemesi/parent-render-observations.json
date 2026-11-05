@@ -1,0 +1,407 @@
+[
+  {
+    "name": "home-phone",
+    "url": "http://127.0.0.1:8088/parent",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Çocuk modu\nMerhaba, Synthetic parent\n5 Kasım Perşembe\nTümü\nSynthetic child\nSynthetic sibling\nGünün planı\nBugünde biraz yer var\nDersleri ve aile etkinliklerini tek bir yerde planlayın.\nPlanı düzenle\nÇocukların ilerlemesi\nSynthetic child\n1 / 1 görev\n2 yıldız\nSynthetic sibling\nİlk küçük adımını planlayın\n0 yıldız\nGörevler\nProva\nÖdüller\nHedefler\nSynthetic child için küçük bir hayal\nBirlikte bir ödül seçin; yıldızlar anlamlı bir hedefe dönüşsün.\nHedef belirle\nSynthetic sibling için küçük bir hayal\nBirlikte bir ödül seçin; yıldızlar anlamlı bir hedefe dönüşsün.\nHedef belirle\nHaftaya bakış\nBugünün görevleri\n1 / 1 tamamlandı\nSynthetic reading\nSynthetic child · Tamamlandı\nGörevler\nBirlikte bakalım\nBu haftayı birlikte konuşalım.\nBugün\nTakvim\nProva\nDiğer"
+  },
+  {
+    "name": "calendar-phone",
+    "url": "http://127.0.0.1:8088/parent/calendar",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Aile takvimi\nKüçük adımlar, güzel bir hafta.\nTakvim\nDers programı\nTümü\nSynthetic child\nSynthetic sibling\nKasım 2026\nBugün\nPzt\n2\nSal\n3\nÇar\n4\nPer\n5\nCum\n6\nCmt\n7\nPaz\n8\n5 Kasım Perşembe\n0 ders · 0 etkinlik\nSynthetic child · Çanta listesi\nDers veya etkinlik yok\nDers programını hazırlayabilir veya gününe bir etkinlik ekleyebilirsin.\nDers programı\nÖdev ve çalışmalar\nSynthetic child\nBelgeden ödev planla\nDevam eden\nTamamlanan / arşiv\nSatranç kursu\nKurs oturumu · Satranç · 16:30\nTeslim: 12 Kas\nMatematik ödevi\nÖdev · Matematik\nTeslim: 6 Kas\n1 adımın 0 tanesi işaretlendi\nEtkinlik ekle\nBugün\nTakvim\nProva\nDiğer"
+  },
+  {
+    "name": "tasks-phone",
+    "url": "http://127.0.0.1:8088/parent/tasks",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Görevler\nKüçük alışkanlıklar, büyük adımlar.\nSynthetic child\nSynthetic sibling\nAktif\n3\nDuraklatılan\n0\nSynthetic reading\nHer gün · 2 yıldız\nDuraklat\nBirlikte kitap okuyalım\nPzt · Çar · Cum · 2 yıldız\nDuraklat\nKaynak: synthetic-ai-pipeline.png\nBitkileri kontrol edelim\nPzt · Çar · Cum · 2 yıldız\nDuraklat\nKaynak: synthetic-ai-pipeline.png\nHer çocuk kendi hızında ilerler.\nYeni görev\nBugün\nTakvim\nProva\nDiğer"
+  },
+  {
+    "name": "rewards-phone",
+    "url": "http://127.0.0.1:8088/parent/rewards",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Ödüller\nBirlikte seçin, birlikte kutlayın.\nTalepler\n0\nKatalog\nHedef belirle\nBekleyen istek yok.\nÇocuğun bir ödül istediğinde burada görünecek.\nÖdül kataloğunu gör\nKüçük adımlar, büyük mutluluklar.\nYeni ödül\nBugün\nTakvim\nProva\nDiğer"
+  },
+  {
+    "name": "menu-phone",
+    "url": "http://127.0.0.1:8088/parent/menu",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Ana sayfa\nAile ayarları\nSynthetic family A · Ailenizi, çocuk cihazlarını ve hesabınızın güvenliğini buradan yönetin.\nAilem\nÇocuk cihazları\nGüvenlik\nHesabım\nÇocuk ekle\nProfilini tanımlayın, yaşına uygun başlangıç görevlerini birlikte seçin.\nÇocuklar\nHer çocuğun görevleri, ders programı ve biriktirdiği yıldızlar ayrı tutulur.\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nDiğer ebeveyni davet edin\nPuanlar\nOkuldan gelen notları kaydedin; GINA denemelerinin sonuçları Prova bölümünde ayrı görünür.\nNotlar\nBir not ekleyin ve kimlerin görebileceğini seçin. “Kişisel” notlarınızı yalnız siz görürsünüz."
+  },
+  {
+    "name": "families-phone",
+    "url": "http://127.0.0.1:8088/parent/families",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Ayarlar\nAile seçimi ve eş daveti\nBirlikte yöneteceğiniz aileyi seçin.\nAynı ailede birlikte yönetin\nEşinizin ayrı hesabı olabilir; yeni aile kurması gerekmez. Davet koduyla aynı aileye katılınca çocukları, görevleri ve takvimi birlikte görürsünüz.\nÜyesi olduğunuz aileler\nSynthetic family A\nŞu anda bu aile açık\nEşimin ailesine katıl\nEşinizin Ayarlar → Aile bölümündeki 8 karakterli davet kodunu girin. Bu kod, çocuk cihazının 6 haneli eşleştirme kodundan farklıdır.\nDavet kodu\nÖnce aileyi göster"
+  },
+  {
+    "name": "grades-phone",
+    "url": "http://127.0.0.1:8088/parent/grades",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Ayarlar\nPuanlar\nOkuldan gelen notları kaydedin; GINA denemelerinin sonuçları Prova bölümünde ayrı görünür.\nSynthetic child\nSynthetic sibling\nYeni puan\nHenüz puan girilmemiş.\nAna sayfa"
+  },
+  {
+    "name": "notes-phone",
+    "url": "http://127.0.0.1:8088/parent/notes",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Ayarlar\nNotlar\nBir not ekleyin ve kimlerin görebileceğini seçin. “Kişisel” notlarınızı yalnız siz görürsünüz.\nTüm aile\nSynthetic child\nSynthetic sibling\nYeni not\nHenüz not yok.\nAna sayfa"
+  },
+  {
+    "name": "notifications-phone",
+    "url": "http://127.0.0.1:8088/parent/notifications",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Ayarlar\nBildirimler\nHangi konularda haber almak istediğinizi seçin. Cihaz izni kapalıysa tercihleriniz kaydedilir, ancak telefona bildirim gelmez.\nBildirimler yalnız iOS ve Android uygulamasında çalışır.\nOnay bekleyen görevler\nÇocuk bir görevi bitirdiğinde haber ver.\nDenemeler\nBir Prova tamamlandığında veya Birlikte Prova sonuçları güncellendiğinde haber ver.\nHaftalık özet\nHaftalık özet hazır olduğunda haber ver.\nBildirimlerde çocuk adı, not ya da puan yer almaz."
+  },
+  {
+    "name": "share-phone",
+    "url": "http://127.0.0.1:8088/parent/share",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Ayarlar\nÖğretmenle paylaş\nYalnız seçtiğiniz bilgileri, belirlediğiniz süre boyunca görüntülenebilen bir bağlantıyla paylaşın. Bağlantıyı alan kişi değişiklik yapamaz.\nBirazdan hazır…"
+  },
+  {
+    "name": "subscription-phone",
+    "url": "http://127.0.0.1:8088/parent/subscription",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Ayarlar\nPaketler\nAilenizin ihtiyacına uygun bir paket seçin.\nPaket satın alma yalnız Gina Aile mobil uygulamasından (App Store / Google Play) yapılır. Aldığın paket burada otomatik görünür.\nGina Başlangıç\nMevcut paket\n• 2 çocuğa kadar\n• 1 bağlı çocuk cihazı\n• Çocuk başına 7 aktif görev\n• 30 günlük geçmiş\n• Yapay zekâ özeti yok\nGina Plus\n• 4 çocuğa kadar\n• 3 bağlı çocuk cihazı\n• Sınırsız görev\n• 365 günlük geçmiş\n• Haftalık aile özeti\nGina Pro\n• 8 çocuğa kadar\n• Sınırsız bağlı çocuk cihazı\n• Sınırsız görev\n• Sınırsız geçmiş\n• Haftalık aile özeti\nSatın alma ve iptal App Store / Google Play üzerinden yapılır; fiyatlar mağazada gösterilir.\nAna sayfa"
+  },
+  {
+    "name": "help-phone",
+    "url": "http://127.0.0.1:8088/parent/help",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Yardım\nBirlikte çözelim\nYanıt bul, destek iste, fikrini paylaş.\nSık sorulanlar\nTaleplerim\nYardım yazıları henüz yayımlanmadı. Destek talebi oluşturarak bize ulaşabilirsin.\nYanıtını bulamadın mı?\nDestek iste\nBir fikrim var"
+  },
+  {
+    "name": "weekly-review-phone",
+    "url": "http://127.0.0.1:8088/parent/weekly-review",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Ailece, adım adım\nHaftaya birlikte bakalım\nTamamlanan haftanın kayıtları ve birlikte deneyebileceğiniz küçük adımlar."
+  },
+  {
+    "name": "device-access-phone",
+    "url": "http://127.0.0.1:8088/parent/device-access",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Ayarlar\nBu cihazı kim kullanacak?\nKişisel tablet veya ortak telefon: erişimi çocuklarınıza göre ayarlayın.\nÖnce bir çocuk cihazı seçin\nBağlı cihazlar listesinden ayarlamak istediğiniz telefon veya tableti açın. Henüz cihaz bağlamadıysanız aynı bölümdeki eşleştirme adımlarını izleyin.\nÇocuk cihazlarına git"
+  },
+  {
+    "name": "room-credits-phone",
+    "url": "http://127.0.0.1:8088/parent/room-credits",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "text": "Ayarlar\nSes kayıtları\nKayıtlar kısaltıldı, filtrelendi ve ses düzeyleri dengelendi. Yağmur ve rüzgâr döngüsü oluşturuldu.\nSound of rain · Effib · CC BY-SA 3.0. Uyarlanan yağmur kaydı aynı lisansla sunulur.\nWikimedia / SoundBible\nLisansı görüntüle\nWind · Mark DiAngelo · CC BY 3.0.\nWikimedia / SoundBible\nLisansı görüntüle\nWhiskers’ purr · Adam Cuerden · Kamu malı.\nWikimedia / SoundBible"
+  },
+  {
+    "name": "home-tablet",
+    "url": "http://127.0.0.1:8088/parent",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Çocuk modu\nMerhaba, Synthetic parent\n5 Kasım Perşembe\nTümü\nSynthetic child\nSynthetic sibling\nGünün planı\nBugünde biraz yer var\nDersleri ve aile etkinliklerini tek bir yerde planlayın.\nPlanı düzenle\nÇocukların ilerlemesi\nSynthetic child\n1 / 1 görev\n2 yıldız\nSynthetic sibling\nİlk küçük adımını planlayın\n0 yıldız\nHedefler\nSynthetic child için küçük bir hayal\nBirlikte bir ödül seçin; yıldızlar anlamlı bir hedefe dönüşsün.\nHedef belirle\nSynthetic sibling için küçük bir hayal\nBirlikte bir ödül seçin; yıldızlar anlamlı bir hedefe dönüşsün.\nHedef belirle\nGörevler\nProva\nÖdüller\nHaftaya bakış\nBugünün görevleri\n1 / 1 tamamlandı\nSynthetic reading\nSynthetic child · Tamamlandı\nGörevler\nBirlikte bakalım\nBu haftayı birlikte konuşalım.\nBugün\nTakvim\nProva\nDiğer"
+  },
+  {
+    "name": "calendar-tablet",
+    "url": "http://127.0.0.1:8088/parent/calendar",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Aile takvimi\nKüçük adımlar, güzel bir hafta.\nTakvim\nDers programı\nTümü\nSynthetic child\nSynthetic sibling\nKasım 2026\nBugün\nPzt\n2\nSal\n3\nÇar\n4\nPer\n5\nCum\n6\nCmt\n7\nPaz\n8\n5 Kasım Perşembe\n0 ders · 0 etkinlik\nSynthetic child · Çanta listesi\nDers veya etkinlik yok\nDers programını hazırlayabilir veya gününe bir etkinlik ekleyebilirsin.\nDers programı\nÖdev ve çalışmalar\nSynthetic child\nBelgeden ödev planla\nDevam eden\nTamamlanan / arşiv\nSatranç kursu\nKurs oturumu · Satranç · 16:30\nTeslim: 12 Kas\nMatematik ödevi\nÖdev · Matematik\nTeslim: 6 Kas\n1 adımın 0 tanesi işaretlendi\nHaftaya bakış\n2 Pazartesi\nDers veya etkinlik yok\n3 Salı\nDers veya etkinlik yok\n4 Çarşamba\nDers veya etkinlik yok · Synthetic child · 2 açık çalışma\n5 Perşembe\nDers veya etkinlik yok · Synthetic child · 2 açık çalışma\n6 Cuma\nDers veya etkinlik yok · Synthetic child · 2 açık çalışma\n7 Cumartesi\nDers veya etkinlik yok · Synthetic child · 2 açık çalışma\n8 Pazar\nDers veya etkinlik yok · Synthetic child · 2 açık çalışma\nEtkinlik ekle\nBugün\nTakvim\nProva\nDiğer"
+  },
+  {
+    "name": "tasks-tablet",
+    "url": "http://127.0.0.1:8088/parent/tasks",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Görevler\nKüçük alışkanlıklar, büyük adımlar.\nSynthetic child\nSynthetic sibling\nAktif\n3\nDuraklatılan\n0\nSynthetic reading\nHer gün · 2 yıldız\nDuraklat\nBirlikte kitap okuyalım\nPzt · Çar · Cum · 2 yıldız\nDuraklat\nKaynak: synthetic-ai-pipeline.png\nBitkileri kontrol edelim\nPzt · Çar · Cum · 2 yıldız\nDuraklat\nKaynak: synthetic-ai-pipeline.png\nHer çocuk kendi hızında ilerler.\nYeni görev\nBugün\nTakvim\nProva\nDiğer"
+  },
+  {
+    "name": "rewards-tablet",
+    "url": "http://127.0.0.1:8088/parent/rewards",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Ödüller\nBirlikte seçin, birlikte kutlayın.\nTalepler\n0\nKatalog\nHedef belirle\nBekleyen istek yok.\nÇocuğun bir ödül istediğinde burada görünecek.\nÖdül kataloğunu gör\nKüçük adımlar, büyük mutluluklar.\nYeni ödül\nBugün\nTakvim\nProva\nDiğer"
+  },
+  {
+    "name": "menu-tablet",
+    "url": "http://127.0.0.1:8088/parent/menu",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Ana sayfa\nAile ayarları\nSynthetic family A · Ailenizi, çocuk cihazlarını ve hesabınızın güvenliğini buradan yönetin.\nAilem\nÇocuk cihazları\nGüvenlik\nHesabım\nÇocuk ekle\nProfilini tanımlayın, yaşına uygun başlangıç görevlerini birlikte seçin.\nÇocuklar\nHer çocuğun görevleri, ders programı ve biriktirdiği yıldızlar ayrı tutulur.\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nDiğer ebeveyni davet edin\nPuanlar\nOkuldan gelen notları kaydedin; GINA denemelerinin sonuçları Prova bölümünde ayrı görünür.\nNotlar\nBir not ekleyin ve kimlerin görebileceğini seçin. “Kişisel” notlarınızı yalnız siz görürsünüz."
+  },
+  {
+    "name": "families-tablet",
+    "url": "http://127.0.0.1:8088/parent/families",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Ayarlar\nAile seçimi ve eş daveti\nBirlikte yöneteceğiniz aileyi seçin.\nAynı ailede birlikte yönetin\nEşinizin ayrı hesabı olabilir; yeni aile kurması gerekmez. Davet koduyla aynı aileye katılınca çocukları, görevleri ve takvimi birlikte görürsünüz.\nÜyesi olduğunuz aileler\nSynthetic family A\nŞu anda bu aile açık\nEşimin ailesine katıl\nEşinizin Ayarlar → Aile bölümündeki 8 karakterli davet kodunu girin. Bu kod, çocuk cihazının 6 haneli eşleştirme kodundan farklıdır.\nDavet kodu\nÖnce aileyi göster"
+  },
+  {
+    "name": "grades-tablet",
+    "url": "http://127.0.0.1:8088/parent/grades",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Ayarlar\nPuanlar\nOkuldan gelen notları kaydedin; GINA denemelerinin sonuçları Prova bölümünde ayrı görünür.\nSynthetic child\nSynthetic sibling\nYeni puan\nHenüz puan girilmemiş.\nAna sayfa"
+  },
+  {
+    "name": "notes-tablet",
+    "url": "http://127.0.0.1:8088/parent/notes",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Ayarlar\nNotlar\nBir not ekleyin ve kimlerin görebileceğini seçin. “Kişisel” notlarınızı yalnız siz görürsünüz.\nTüm aile\nSynthetic child\nSynthetic sibling\nYeni not\nHenüz not yok.\nAna sayfa"
+  },
+  {
+    "name": "notifications-tablet",
+    "url": "http://127.0.0.1:8088/parent/notifications",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Ayarlar\nBildirimler\nHangi konularda haber almak istediğinizi seçin. Cihaz izni kapalıysa tercihleriniz kaydedilir, ancak telefona bildirim gelmez.\nBildirimler yalnız iOS ve Android uygulamasında çalışır.\nOnay bekleyen görevler\nÇocuk bir görevi bitirdiğinde haber ver.\nDenemeler\nBir Prova tamamlandığında veya Birlikte Prova sonuçları güncellendiğinde haber ver.\nHaftalık özet\nHaftalık özet hazır olduğunda haber ver.\nBildirimlerde çocuk adı, not ya da puan yer almaz."
+  },
+  {
+    "name": "share-tablet",
+    "url": "http://127.0.0.1:8088/parent/share",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Ayarlar\nÖğretmenle paylaş\nYalnız seçtiğiniz bilgileri, belirlediğiniz süre boyunca görüntülenebilen bir bağlantıyla paylaşın. Bağlantıyı alan kişi değişiklik yapamaz.\nSynthetic child\nSynthetic sibling\nBu çocuk için henüz paylaşım bağlantısı yok.\nYeni paylaşım bağlantısı\nKiminle paylaşıyorsun?\nPaylaşılacaklar\nPuanlar\nProva sonuçları\nGörev özeti\nNotlar, PIN'ler, doğum tarihi, soyadı ve aile üyelerinin e-postaları hiçbir zaman paylaşılmaz.\nGeçerlilik süresi\n7 gün\n30 gün\n90 gün\n180 gün\nBağlantı oluştur\nAna sayfa"
+  },
+  {
+    "name": "subscription-tablet",
+    "url": "http://127.0.0.1:8088/parent/subscription",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Ayarlar\nPaketler\nAilenizin ihtiyacına uygun bir paket seçin.\nPaket satın alma yalnız Gina Aile mobil uygulamasından (App Store / Google Play) yapılır. Aldığın paket burada otomatik görünür.\nGina Başlangıç\nMevcut paket\n• 2 çocuğa kadar\n• 1 bağlı çocuk cihazı\n• Çocuk başına 7 aktif görev\n• 30 günlük geçmiş\n• Yapay zekâ özeti yok\nGina Plus\n• 4 çocuğa kadar\n• 3 bağlı çocuk cihazı\n• Sınırsız görev\n• 365 günlük geçmiş\n• Haftalık aile özeti\nGina Pro\n• 8 çocuğa kadar\n• Sınırsız bağlı çocuk cihazı\n• Sınırsız görev\n• Sınırsız geçmiş\n• Haftalık aile özeti\nSatın alma ve iptal App Store / Google Play üzerinden yapılır; fiyatlar mağazada gösterilir.\nAna sayfa"
+  },
+  {
+    "name": "help-tablet",
+    "url": "http://127.0.0.1:8088/parent/help",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Yardım\nBirlikte çözelim\nYanıt bul, destek iste, fikrini paylaş.\nSık sorulanlar\nTaleplerim\nYardım yazıları henüz yayımlanmadı. Destek talebi oluşturarak bize ulaşabilirsin.\nYanıtını bulamadın mı?\nDestek iste\nBir fikrim var"
+  },
+  {
+    "name": "weekly-review-tablet",
+    "url": "http://127.0.0.1:8088/parent/weekly-review",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Ailece, adım adım\nHaftaya birlikte bakalım\nTamamlanan haftanın kayıtları ve birlikte deneyebileceğiniz küçük adımlar.\n26 Ekim 2026 – 1 Kasım 2026\nHaftanın kayıtları\nÖzet hazırlanırken kaydedilen bilgiler. Sonraki değişiklikler bu özeti değiştirmez.\nSynthetic child\nÇocuk A\nOnaylı görevlerden 0 yıldız\nBu hafta görev kaydı yok. Bu, çaba gösterilmediği anlamına gelmez.\nSynthetic sibling\nÇocuk B\nOnaylı görevlerden 0 yıldız\nBu hafta görev kaydı yok. Bu, çaba gösterilmediği anlamına gelmez.\nBu sayımlar yalnız kayıtlı görev durumlarını gösterir; tüm planlanan görevlerin tamamlanma oranı değildir. Yıldızlar yetenek ölçüsü değildir.\nKayıt anı: 5 Kas 2026 08:50\nAI ile küçük bir bakış\nBu bir sentetik hizmet testi özetidir.\nSynthetic child\nİsterseniz deneyin\nİsterseniz haftayı birlikte konuşabilirsiniz.\nSynthetic sibling\nİsterseniz deneyin\nİsterseniz haftayı birlikte konuşabilirsiniz.\nBirlikte konuşmak için\nKayıtları birlikte gözden geçirebilirsiniz.\nAI metni bir öneridir; hata içerebilir. Çocuğunun çabasını, ruh hâlini veya başarısını ölçmez. Öneriler otomatik olarak göreve dönüşmez.\nBirlikte bir adım planla"
+  },
+  {
+    "name": "device-access-tablet",
+    "url": "http://127.0.0.1:8088/parent/device-access",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Ayarlar\nBu cihazı kim kullanacak?\nKişisel tablet veya ortak telefon: erişimi çocuklarınıza göre ayarlayın.\nÖnce bir çocuk cihazı seçin\nBağlı cihazlar listesinden ayarlamak istediğiniz telefon veya tableti açın. Henüz cihaz bağlamadıysanız aynı bölümdeki eşleştirme adımlarını izleyin.\nÇocuk cihazlarına git"
+  },
+  {
+    "name": "room-credits-tablet",
+    "url": "http://127.0.0.1:8088/parent/room-credits",
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "text": "Ayarlar\nSes kayıtları\nKayıtlar kısaltıldı, filtrelendi ve ses düzeyleri dengelendi. Yağmur ve rüzgâr döngüsü oluşturuldu.\nSound of rain · Effib · CC BY-SA 3.0. Uyarlanan yağmur kaydı aynı lisansla sunulur.\nWikimedia / SoundBible\nLisansı görüntüle\nWind · Mark DiAngelo · CC BY 3.0.\nWikimedia / SoundBible\nLisansı görüntüle\nWhiskers’ purr · Adam Cuerden · Kamu malı.\nWikimedia / SoundBible"
+  },
+  {
+    "name": "home-desktop",
+    "url": "http://127.0.0.1:8088/parent",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Çocuk modu\nMerhaba, Synthetic parent\n5 Kasım Perşembe\nTümü\nSynthetic child\nSynthetic sibling\nGünün planı\nBugünde biraz yer var\nDersleri ve aile etkinliklerini tek bir yerde planlayın.\nPlanı düzenle\nÇocukların ilerlemesi\nSynthetic child\n1 / 1 görev\n2 yıldız\nSynthetic sibling\nİlk küçük adımını planlayın\n0 yıldız\nHedefler\nSynthetic child için küçük bir hayal\nBirlikte bir ödül seçin; yıldızlar anlamlı bir hedefe dönüşsün.\nHedef belirle\nSynthetic sibling için küçük bir hayal\nBirlikte bir ödül seçin; yıldızlar anlamlı bir hedefe dönüşsün.\nHedef belirle\nGörevler\nProva\nÖdüller\nHaftaya bakış\nBugünün görevleri\n1 / 1 tamamlandı\nSynthetic reading\nSynthetic child · Tamamlandı\nGörevler\nBirlikte bakalım\nBu haftayı birlikte konuşalım.\nBugün\nTakvim\nProva\nDiğer"
+  },
+  {
+    "name": "calendar-desktop",
+    "url": "http://127.0.0.1:8088/parent/calendar",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Aile takvimi\nKüçük adımlar, güzel bir hafta.\nTakvim\nDers programı\nTümü\nSynthetic child\nSynthetic sibling\nKasım 2026\nBugün\nPzt\n2\nSal\n3\nÇar\n4\nPer\n5\nCum\n6\nCmt\n7\nPaz\n8\n5 Kasım Perşembe\n0 ders · 0 etkinlik\nSynthetic child · Çanta listesi\nDers veya etkinlik yok\nDers programını hazırlayabilir veya gününe bir etkinlik ekleyebilirsin.\nDers programı\nÖdev ve çalışmalar\nSynthetic child\nBelgeden ödev planla\nDevam eden\nTamamlanan / arşiv\nSatranç kursu\nKurs oturumu · Satranç · 16:30\nTeslim: 12 Kas\nMatematik ödevi\nÖdev · Matematik\nTeslim: 6 Kas\n1 adımın 0 tanesi işaretlendi\nHaftaya bakış\n2 Pazartesi\nDers veya etkinlik yok\n3 Salı\nDers veya etkinlik yok\n4 Çarşamba\nDers veya etkinlik yok · Synthetic child · 2 açık çalışma\n5 Perşembe\nDers veya etkinlik yok · Synthetic child · 2 açık çalışma\n6 Cuma\nDers veya etkinlik yok · Synthetic child · 2 açık çalışma\n7 Cumartesi\nDers veya etkinlik yok · Synthetic child · 2 açık çalışma\n8 Pazar\nDers veya etkinlik yok · Synthetic child · 2 açık çalışma\nEtkinlik ekle\nBugün\nTakvim\nProva\nDiğer"
+  },
+  {
+    "name": "tasks-desktop",
+    "url": "http://127.0.0.1:8088/parent/tasks",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Görevler\nKüçük alışkanlıklar, büyük adımlar.\nSynthetic child\nSynthetic sibling\nAktif\n3\nDuraklatılan\n0\nSynthetic reading\nHer gün · 2 yıldız\nDuraklat\nBirlikte kitap okuyalım\nPzt · Çar · Cum · 2 yıldız\nDuraklat\nBitkileri kontrol edelim\nPzt · Çar · Cum · 2 yıldız\nDuraklat\nHer çocuk kendi hızında ilerler.\nYeni görev\nBugün\nTakvim\nProva\nDiğer"
+  },
+  {
+    "name": "rewards-desktop",
+    "url": "http://127.0.0.1:8088/parent/rewards",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Ödüller\nBirlikte seçin, birlikte kutlayın.\nTalepler\n0\nKatalog\nHedef belirle\nBekleyen istek yok.\nÇocuğun bir ödül istediğinde burada görünecek.\nÖdül kataloğunu gör\nKüçük adımlar, büyük mutluluklar.\nYeni ödül\nBugün\nTakvim\nProva\nDiğer"
+  },
+  {
+    "name": "menu-desktop",
+    "url": "http://127.0.0.1:8088/parent/menu",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Ana sayfa\nAile ayarları\nSynthetic family A · Ailenizi, çocuk cihazlarını ve hesabınızın güvenliğini buradan yönetin.\nBirazdan hazır…"
+  },
+  {
+    "name": "families-desktop",
+    "url": "http://127.0.0.1:8088/parent/families",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Ayarlar\nAile seçimi ve eş daveti\nBirlikte yöneteceğiniz aileyi seçin.\nAynı ailede birlikte yönetin\nEşinizin ayrı hesabı olabilir; yeni aile kurması gerekmez. Davet koduyla aynı aileye katılınca çocukları, görevleri ve takvimi birlikte görürsünüz.\nÜyesi olduğunuz aileler\nSynthetic family A\nŞu anda bu aile açık\nEşimin ailesine katıl\nEşinizin Ayarlar → Aile bölümündeki 8 karakterli davet kodunu girin. Bu kod, çocuk cihazının 6 haneli eşleştirme kodundan farklıdır.\nDavet kodu\nÖnce aileyi göster"
+  },
+  {
+    "name": "grades-desktop",
+    "url": "http://127.0.0.1:8088/parent/grades",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Ayarlar\nPuanlar\nOkuldan gelen notları kaydedin; GINA denemelerinin sonuçları Prova bölümünde ayrı görünür.\nBirazdan hazır…"
+  },
+  {
+    "name": "notes-desktop",
+    "url": "http://127.0.0.1:8088/parent/notes",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Ayarlar\nNotlar\nBir not ekleyin ve kimlerin görebileceğini seçin. “Kişisel” notlarınızı yalnız siz görürsünüz.\nBirazdan hazır…"
+  },
+  {
+    "name": "notifications-desktop",
+    "url": "http://127.0.0.1:8088/parent/notifications",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Ayarlar\nBildirimler\nHangi konularda haber almak istediğinizi seçin. Cihaz izni kapalıysa tercihleriniz kaydedilir, ancak telefona bildirim gelmez.\nBirazdan hazır…"
+  },
+  {
+    "name": "share-desktop",
+    "url": "http://127.0.0.1:8088/parent/share",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Ayarlar\nÖğretmenle paylaş\nYalnız seçtiğiniz bilgileri, belirlediğiniz süre boyunca görüntülenebilen bir bağlantıyla paylaşın. Bağlantıyı alan kişi değişiklik yapamaz.\nBirazdan hazır…"
+  },
+  {
+    "name": "subscription-desktop",
+    "url": "http://127.0.0.1:8088/parent/subscription",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Ayarlar\nPaketler\nAilenizin ihtiyacına uygun bir paket seçin.\nBirazdan hazır…"
+  },
+  {
+    "name": "help-desktop",
+    "url": "http://127.0.0.1:8088/parent/help",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Yardım\nBirlikte çözelim\nYanıt bul, destek iste, fikrini paylaş.\nSık sorulanlar\nTaleplerim\nYardım yazıları henüz yayımlanmadı. Destek talebi oluşturarak bize ulaşabilirsin.\nYanıtını bulamadın mı?\nDestek iste\nBir fikrim var"
+  },
+  {
+    "name": "weekly-review-desktop",
+    "url": "http://127.0.0.1:8088/parent/weekly-review",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Ailece, adım adım\nHaftaya birlikte bakalım\nTamamlanan haftanın kayıtları ve birlikte deneyebileceğiniz küçük adımlar."
+  },
+  {
+    "name": "device-access-desktop",
+    "url": "http://127.0.0.1:8088/parent/device-access",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Ayarlar\nBu cihazı kim kullanacak?\nKişisel tablet veya ortak telefon: erişimi çocuklarınıza göre ayarlayın.\nÖnce bir çocuk cihazı seçin\nBağlı cihazlar listesinden ayarlamak istediğiniz telefon veya tableti açın. Henüz cihaz bağlamadıysanız aynı bölümdeki eşleştirme adımlarını izleyin.\nÇocuk cihazlarına git"
+  },
+  {
+    "name": "room-credits-desktop",
+    "url": "http://127.0.0.1:8088/parent/room-credits",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "text": "Ayarlar\nSes kayıtları\nKayıtlar kısaltıldı, filtrelendi ve ses düzeyleri dengelendi. Yağmur ve rüzgâr döngüsü oluşturuldu.\nSound of rain · Effib · CC BY-SA 3.0. Uyarlanan yağmur kaydı aynı lisansla sunulur.\nWikimedia / SoundBible\nLisansı görüntüle\nWind · Mark DiAngelo · CC BY 3.0.\nWikimedia / SoundBible\nLisansı görüntüle\nWhiskers’ purr · Adam Cuerden · Kamu malı.\nWikimedia / SoundBible"
+  }
+]
