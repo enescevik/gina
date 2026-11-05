@@ -2,7 +2,7 @@ import * as Crypto from "expo-crypto";
 import { invalidateTaskState } from "@/lib/task-cache";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
-import { localDateOf, occurrencesBetween, templatesDueOn, weekDatesOf, recordedWeek } from '@gina/core';
+import { localDateOf, occurrencesBetween, tasksWithRecordedWork, taskSnapshot, weekDatesOf, recordedWeek } from '@gina/core';
 import { ParentHomeView } from '@/components/parent-home/home-view';
 import { useFamilyTimezone } from '@/lib/family';
 import { useRealtimeInvalidate } from '@/lib/realtime';
@@ -27,7 +27,7 @@ export default function ParentHomeScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name, grade, avatar").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, grade, avatar").is("archived_at", null).order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -39,7 +39,7 @@ export default function ParentHomeScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_templates")
-        .select("id, child_id, title, icon, days_of_week, starts_on, ends_on, active, sort_order")
+        .select("id, child_id, title, icon, stars, days_of_week, starts_on, ends_on, active, sort_order")
         .eq("family_id", familyId);
       if (error) throw error;
       return data;
@@ -52,7 +52,7 @@ export default function ParentHomeScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_completions")
-        .select("id, child_id, template_id, due_date, status")
+        .select("id, child_id, template_id, due_date, status, task_snapshot")
         .eq("family_id", familyId)
         .gte("due_date", from)
         .lte("due_date", to);
@@ -79,12 +79,12 @@ export default function ParentHomeScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_completions")
-        .select("id, completed_at, due_date, child_id, task_templates(title, icon, stars), children!task_completions_child_id_fkey(name)")
+        .select("id, completed_at, due_date, child_id, task_snapshot, task_templates(title, icon, stars), children!task_completions_child_id_fkey(name)")
         .eq("family_id", familyId)
         .eq("status", "done")
         .order("completed_at");
       if (error) throw error;
-      return data;
+      return data.map(row => ({...row, task_templates: taskSnapshot(row.task_snapshot) ?? row.task_templates}));
     },
   });
 
@@ -132,12 +132,13 @@ export default function ParentHomeScreen() {
 
   const visibleChildren = (children.data ?? []).filter((c) => !childFilter || c.id === childFilter);
   const familyDay = visibleChildren.map((child) => {
-    const dueIds = new Set(templatesDueOn((templates.data ?? []).filter((t2) => t2.child_id === child.id), today).map(task => task.id));
+    const dueIds = new Set(tasksWithRecordedWork((templates.data ?? []).filter((t2) => t2.child_id === child.id), completions.data ?? [], today).map(task => task.id));
     const due = dueIds.size;
     const done = (completions.data ?? []).filter(
-      (c) => c.child_id === child.id && c.due_date === today && dueIds.has(c.template_id) && (c.status === "done" || c.status === "approved"),
+      (c) => c.child_id === child.id && c.due_date === today && dueIds.has(c.template_id) && c.status === "approved",
     ).length;
-    return { child, due, done, stars: stars.data?.get(child.id) ?? 0 };
+    const pending = (completions.data ?? []).filter(c => c.child_id === child.id && c.due_date === today && dueIds.has(c.template_id) && c.status === "done").length;
+    return { child, due, done, pending, stars: stars.data?.get(child.id) ?? 0 };
   });
 
   const occurrences = occurrencesBetween(events.data ?? [], from, to, timeZone, exceptions.data ?? new Set()).filter(
@@ -149,10 +150,10 @@ export default function ParentHomeScreen() {
 
   const weeklyCounts = recordedWeek(completions.data ?? [], visibleChildren.map(c => c.id), from, today);
 
-  const pendingApprovals = (approvals.data ?? []).filter((a) => !childFilter || a.child_id === childFilter);
+  const pendingApprovals = (approvals.data ?? []).filter((a) => visibleChildren.some(child => child.id === a.child_id));
 
-  const dailyTasks = visibleChildren.flatMap(child => templatesDueOn((templates.data ?? []).filter(template => template.child_id === child.id), today).map(task => ({
-    id: task.id, title: task.title, icon: task.icon, childName: child.name,
+  const dailyTasks = visibleChildren.flatMap(child => tasksWithRecordedWork((templates.data ?? []).filter(template => template.child_id === child.id), completions.data ?? [], today).map(task => ({
+    id: task.id, title: task.title, icon: task.icon, childId: child.id, childName: child.name,
     status: completions.data?.find(completion => completion.template_id === task.id && completion.child_id === child.id && completion.due_date === today)?.status ?? 'planned',
   })));
   return <ParentHomeView
@@ -163,7 +164,7 @@ export default function ParentHomeScreen() {
     review={(id,approve)=>review.mutate({id,approve})} reviewing={review.isPending} reviewingId={review.variables?.id} reviewError={review.error}
     occurrences={occurrences} upcoming={upcoming}
     loading={children.isLoading || templates.isLoading || approvals.isLoading || completions.isLoading || events.isLoading || exceptions.isLoading || stars.isLoading}
-    error={children.error ?? templates.error ?? completions.error ?? approvals.error ?? events.error ?? exceptions.error ?? stars.error ?? me.error}
+    error={children.error ?? templates.error ?? completions.error ?? approvals.error ?? events.error ?? exceptions.error ?? stars.error}
     retry={()=>{void children.refetch();void templates.refetch();void approvals.refetch();void completions.refetch();void events.refetch();void exceptions.refetch();void stars.refetch();void me.refetch();}}
   />;
 }

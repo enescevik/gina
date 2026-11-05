@@ -1,3 +1,4 @@
+import { DecisionSheet } from "@/components/ui/decision-sheet";
 import { invalidateProvaLists } from "@/lib/prova-cache";
 import { ChildReviewFeedback } from "@/components/learning/child-review-feedback";
 import { ContextualQuestion } from "@/components/learning/question-context";
@@ -378,7 +379,7 @@ export default function TakeExamScreen() {
   );
 
   usePreventRemove(
-    !allowExit && !result && (anyDirty || saving),
+    !allowExit && !result && (anyDirty || saving || !!deadline),
     ({ repeat }) => setLeaveAction(() => repeat),
   );
 
@@ -458,6 +459,32 @@ export default function TakeExamScreen() {
       setLocalError(error);
     }
   }
+  function goTo(nextIndex: number) {
+    setConfirmFinish(false);
+    setIndex(nextIndex);
+  }
+
+  const decisions = <DecisionSheet
+    visible={!!leaveAction || confirmFinish}
+    title={t(leaveAction ? "experience.leaveTitle" : "experience.finishTitle")}
+    onClose={() => { if (!finish.isPending) { setLeaveAction(null); setConfirmFinish(false); } }}
+  >
+    {leaveAction ? <>
+      {deadline && <Text className="font-body-bold text-base text-ink">{t("experience.clockContinues")}</Text>}
+      <Text className="font-body text-base text-ink">{t(localError ? "provaV5.unsaved" : anyDirty || saving ? "notebook.leaveStoredHelp" : "experience.savedOnExit")}</Text>
+      <Button title={t("provaV5.keepWorking")} onPress={() => setLeaveAction(null)} />
+      <Button variant="ghost" title={t(localError ? "provaV5.discard" : "prova.backToList")} onPress={() => {
+        writes.cancelPending(); setAllowExit(true); leaveAction();
+      }} />
+    </> : <>
+      <Text className="font-body text-base text-ink">{t("experience.finishSummary", { answered: list.length - unanswered.length, total: list.length })}</Text>
+      <Text className="font-body text-base text-ink">{t(unanswered.length ? "prova.unansweredConfirm" : "experience.finishHelp", { count: unanswered.length })}</Text>
+      {unanswered.length > 0 && <Button variant="secondary" title={t("prova.goToUnanswered")} disabled={finish.isPending || timeUp} onPress={() => goTo(list.findIndex(item => item.id === unanswered[0]?.id))} />}
+      <Button title={t("experience.submitAnswers")} disabled={saving || timeUp || !!localError || !savedAnswers.isSuccess} loading={finish.isPending} onPress={() => finish.mutate()} />
+      <ErrorText error={finish.error} />
+      <Button variant="ghost" title={t("experience.checkAgain")} disabled={finish.isPending} onPress={() => setConfirmFinish(false)} />
+    </>}
+  </DecisionSheet>;
   const localNotice = (
     <>
       {recoveredCount > 0
@@ -597,19 +624,11 @@ export default function TakeExamScreen() {
   function saveAndGo(nextIndex: number) {
     if (timeUp) return;
     if (nextIndex >= list.length) {
-      if (unanswered.length > 0) {
-        setConfirmFinish(true);
-        AccessibilityInfo.announceForAccessibility(
-          t("prova.unansweredConfirm", { count: unanswered.length }),
-        );
-      } else finish.mutate();
+      setConfirmFinish(true);
+      AccessibilityInfo.announceForAccessibility(t("experience.finishTitle"));
     } else goTo(nextIndex);
   }
 
-  function goTo(nextIndex: number) {
-    setConfirmFinish(false);
-    setIndex(nextIndex);
-  }
 
   if (q?.kind === "open_ended" && savedAnswers.isSuccess) {
     return (
@@ -624,6 +643,7 @@ export default function TakeExamScreen() {
         onChange={(document) => editAnswer({ ...current, document })}
         onTextChange={(text) => editAnswer({ ...current, text })}
         disabled={timeUp || finish.isPending || !localReady || !!localError}
+        exitLabel={deadline ? t("prova.backToList") : undefined}
         onExit={() =>
           router.replace(
             actingChild ? "/parent/child-mode/prova" : "/child/prova",
@@ -656,56 +676,7 @@ export default function TakeExamScreen() {
                 />
               )
               : null}
-            {leaveAction
-              ? (
-                <View>
-                  <Text>
-                    {t(
-                      localError
-                        ? "provaV5.unsaved"
-                        : "notebook.leaveStoredHelp",
-                    )}
-                  </Text>
-                  <Button
-                    title={t("provaV5.keepWorking")}
-                    onPress={() => setLeaveAction(null)}
-                  />
-                  <Button
-                    variant="ghost"
-                    title={t(
-                      localError ? "provaV5.discard" : "notebook.leaveStored",
-                    )}
-                    onPress={() => {
-                      writes.cancelPending();
-                      setAllowExit(true);
-                      leaveAction();
-                    }}
-                  />
-                </View>
-              )
-              : null}
-            {confirmFinish && unanswered.length > 0
-              ? (
-                <View>
-                  <Text>
-                    {t("prova.unansweredConfirm", { count: unanswered.length })}
-                  </Text>
-                  <Button
-                    title={t("prova.goToUnanswered")}
-                    onPress={() =>
-                      goTo(
-                        list.findIndex((item) => item.id === unanswered[0]?.id),
-                      )}
-                  />
-                  <Button
-                    title={t("prova.finishAnyway")}
-                    disabled={saving || timeUp}
-                    loading={finish.isPending}
-                    onPress={() => finish.mutate()}
-                  />
-                </View>
-              )
-              : null}
+            {decisions}
             {timeUp && finish.error
               ? (
                 <Button
@@ -867,42 +838,6 @@ export default function TakeExamScreen() {
           </View>
         )
         : null}
-      {confirmFinish && unanswered.length > 0
-        ? (
-          <View
-            accessibilityLiveRegion="polite"
-            className="gap-3 rounded-child bg-coral-light p-4"
-          >
-            <Text className="font-body-bold text-base text-ink">
-              {t("prova.unansweredConfirm", { count: unanswered.length })}
-            </Text>
-            <View className="flex-row gap-2">
-              <View className="flex-1">
-                <Button
-                  variant="secondary"
-                  size="child"
-                  title={t("prova.goToUnanswered")}
-                  disabled={timeUp || finish.isPending ||
-                    !savedAnswers.isSuccess}
-                  onPress={() =>
-                    goTo(
-                      list.findIndex((item) => item.id === unanswered[0]?.id),
-                    )}
-                />
-              </View>
-              <View className="flex-1">
-                <Button
-                  size="child"
-                  title={t("prova.finishAnyway")}
-                  disabled={saving || timeUp}
-                  loading={finish.isPending}
-                  onPress={() => finish.mutate()}
-                />
-              </View>
-            </View>
-          </View>
-        )
-        : null}
       {localNotice}
       <Text
         accessibilityLiveRegion="polite"
@@ -944,28 +879,7 @@ export default function TakeExamScreen() {
           />
         )
         : null}
-      {leaveAction
-        ? (
-          <View className="gap-3 rounded-child bg-coral-light p-4">
-            <Text className="font-body-bold text-base text-ink">
-              {t(localError ? "provaV5.unsaved" : "notebook.leaveStoredHelp")}
-            </Text>
-            <Button
-              title={t("provaV5.keepWorking")}
-              onPress={() => setLeaveAction(null)}
-            />
-            <Button
-              variant="ghost"
-              title={t(localError ? "provaV5.discard" : "notebook.leaveStored")}
-              onPress={() => {
-                writes.cancelPending();
-                setAllowExit(true);
-                leaveAction();
-              }}
-            />
-          </View>
-        )
-        : null}
+      {decisions}
       {timeUp && finish.error
         ? (
           <Button

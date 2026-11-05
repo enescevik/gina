@@ -1,3 +1,4 @@
+import { NOTEBOOK_MODAL_PROPS } from "@/components/learning/notebook-layout";
 import { RepeatCalendarOrigin } from "@/components/learning/repeat-calendar-origin";
 import { randomUUID } from "expo-crypto";
 import { type CalendarCommand, calendarJournal } from "@/lib/calendar-command";
@@ -26,6 +27,7 @@ import {
   zonedIso,
 } from "@gina/core";
 import type { WeekEvent } from "@/components/calendar/week-list";
+import { DateChoice, TimeChoice } from "@/components/ui/date-time-choice";
 import { Field } from "@/components/ui/field";
 import { Toggle } from "@/components/ui/toggle";
 import { IconButton, p, SatinButton, Tag, u } from "./ui";
@@ -35,6 +37,7 @@ export function EventEditor({
   date,
   familyId,
   timeZone,
+  initialChildId = null,
   profiles,
   onClose,
 }: {
@@ -42,6 +45,7 @@ export function EventEditor({
   date: string;
   familyId: string;
   timeZone: string;
+  initialChildId?: string | null;
   profiles: PlannerChild[];
   onClose: () => void;
 }) {
@@ -107,7 +111,7 @@ export function EventEditor({
   const [title, setTitle] = useState(event?.title ?? "");
   const [kind, setKind] = useState<EventType>(event?.type ?? "activity");
   const [childId, setChildId] = useState<string | null>(
-    event?.child_id ?? null,
+    event ? event.child_id : initialChildId,
   );
   const [startDate, setDate] = useState(
     event ? localDateOf(new Date(event.starts_at), timeZone) : date,
@@ -239,10 +243,10 @@ export function EventEditor({
   const busy = save.isPending || remove.isPending;
   return (
     <Modal
+        {...NOTEBOOK_MODAL_PROPS}
       transparent
       animationType="none"
       onRequestClose={requestClose}
-      supportedOrientations={["portrait", "landscape"]}
     >
       <View
         style={{
@@ -344,13 +348,7 @@ export function EventEditor({
                     />
                   ))}
                 </View>
-                <Field
-                  label={t("calendar.date")}
-                  placeholder="2026-11-02"
-                  value={startDate}
-                  onChangeText={setDate}
-                  maxLength={10}
-                />
+                <DateChoice label={t("experience.dateLabel")} value={startDate} onChange={setDate} today={localDateOf(new Date(), timeZone)} />
                 <Toggle
                   label={t("calendar.allDay")}
                   value={allDay}
@@ -358,22 +356,12 @@ export function EventEditor({
                 />
                 {!allDay
                   ? (
-                    <View style={u.row}>
-                      <View style={u.fill}>
-                        <Field
-                          label={t("calendar.start")}
-                          value={start}
-                          onChangeText={setStart}
-                          maxLength={5}
-                        />
+                    <View style={[u.row, { flexWrap: "wrap", alignItems: "flex-start" }]}>
+                      <View style={[u.fill, { minWidth: 140 }]}>
+                        <TimeChoice label={t("experience.startTime")} value={start} onChange={setStart} />
                       </View>
-                      <View style={u.fill}>
-                        <Field
-                          label={t("calendar.end")}
-                          value={end}
-                          onChangeText={setEnd}
-                          maxLength={5}
-                        />
+                      <View style={[u.fill, { minWidth: 140 }]}>
+                        <TimeChoice label={t("experience.endTime")} value={end} onChange={setEnd} />
                       </View>
                     </View>
                   )

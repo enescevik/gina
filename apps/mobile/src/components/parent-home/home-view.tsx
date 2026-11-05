@@ -25,8 +25,8 @@ export interface HomeViewProps {
   profiles: Child[]; selected: string | null; select: (id: string | null) => void;
   today: string; week: string[]; parentName: string | null | undefined; timeZone: string;
   weeklyCounts: { approved: number; pending: number; returned: number };
-  familyDay: { child: Child; due: number; done: number; stars: number }[];
-  tasks: { id: string; title: string; icon: string; childName: string; status: string }[];
+  familyDay: { child: Child; due: number; done: number; pending: number; stars: number }[];
+  tasks: { id: string; title: string; icon: string; childId: string; childName: string; status: string }[];
   approvals: Approval[]; review: (id: string, approve: boolean) => void;
   reviewing: boolean; reviewingId?: string; reviewError: unknown;
   occurrences: Occurrence<WeekEvent>[]; upcoming: Occurrence<WeekEvent> | undefined;
@@ -72,7 +72,7 @@ function GoalRow({ child, balance, wide }: { child: Child; balance: number; wide
     <SatinButton title={t('common.retry')} secondary onPress={() => void goal.refetch()}/></View>;
   if (!goal.data) return <View style={[s.goalRow, s.row]}><Collectible slug="reward-mystery-box" size={72}/><View style={s.fill}><Text style={[s.text, s.bold]}>{t('betaUx.goalTitle', { name: child.name })}</Text><Label small>{t('betaUx.goalBody')}</Label><TextLink label={t('betaUx.chooseGoal')} href={{ pathname: "/parent/rewards", params: { goal: "1", childId: child.id } }}/></View></View>;
   return <Pressable accessibilityRole="button" accessibilityLabel={t('parentHome.goalTitle', { name: child.name })}
-    onPress={() => go('/parent/rewards')} style={[s.goalRow, s.row]}>
+    onPress={() => go({ pathname: '/parent/rewards', params: { goal: '1', childId: child.id } })} style={[s.goalRow, s.row]}>
     <Collectible slug={goal.data.rewardIcon} size={44}/>
     <View style={[s.fill, { gap: 5 }]}>
       <Text style={[s.text, s.bold]}>{child.name} · {goal.data.rewardTitle}</Text>
@@ -122,15 +122,15 @@ export function ParentHomeView(p: HomeViewProps) {
   </View>;
 
   const plan = <View testID="home-plan" style={s.stack}>
-    <View style={[s.row, s.between, s.wrap]}><Heading>{selectedDate === p.today ? t('parentPremium.plan') : dateFormat.format(new Date(selectedDate + 'T12:00:00Z'))}</Heading>{dayEvents.length > 0 && <TextLink label={t('parentHome.openCalendar')} href="/parent/calendar"/>}</View>
+    <View style={[s.row, s.between, s.wrap]}><Heading>{selectedDate === p.today ? t('parentPremium.plan') : dateFormat.format(new Date(selectedDate + 'T12:00:00Z'))}</Heading>{dayEvents.length > 0 && <TextLink label={t('parentHome.openCalendar')} href={{ pathname: "/parent/calendar", params: { date: selectedDate, ...(selectedChild ? { childId: selectedChild.id } : {}) } }}/>}</View>
     <View style={[s.card, { paddingVertical: 4, gap: 0 }]}>
-      {dayEvents.length ? dayEvents.map((o, i) => <Pressable key={`${o.event.id}-${o.date}`} accessibilityRole="button" onPress={() => go('/parent/calendar')} style={[s.eventRow, wide && { minHeight: 78 }]}>
+      {dayEvents.length ? dayEvents.map((o, i) => <Pressable key={`${o.event.id}-${o.date}`} accessibilityRole="button" onPress={() => go({ pathname: '/parent/calendar', params: { date: o.date, ...(o.event.child_id ? { childId: o.event.child_id } : {}) } })} style={[s.eventRow, wide && { minHeight: 78 }]}>
         <Text style={s.eventTime}>{o.event.all_day ? t('calendar.allDay') : clock.format(o.startsAt)}</Text>
         <View style={s.timeline}><View style={[s.timelineLine, i === 0 && { top: '50%' }, i === dayEvents.length - 1 && { bottom: '50%' }]}/><View style={[s.dot, { backgroundColor: i % 2 ? '#CB4A81' : c.purple }]}/></View>
         <View style={[s.iconTile, { backgroundColor: i % 2 ? '#FCE6EF' : c.lavender }]}>
           {o.event.type === 'school' ? <SubjectIcon subject={o.event.title} size={48} variant="illustrated"/> : <EventIcon type={o.event.type} size={48} variant="illustrated"/>}</View>
         <View style={s.fill}><Text style={[s.text, s.bold]}>{o.event.title}</Text><Label small>{o.event.childName || t('calendar.allFamily')} · {t(`event.type.${o.event.type}`)}</Label></View>
-      </Pressable>) : <View style={[s.row, { paddingVertical: 14 }]}><EventIcon type="school" size={64} variant="illustrated"/><View style={s.fill}><Text style={[s.text, s.bold]}>{t('betaUx.planTitle')}</Text><Label small>{t('betaUx.planBody')}</Label><TextLink label={t('betaUx.planAction')} href="/parent/calendar"/></View></View>}
+      </Pressable>) : <View style={[s.row, { paddingVertical: 14 }]}><EventIcon type="school" size={64} variant="illustrated"/><View style={s.fill}><Text style={[s.text, s.bold]}>{t('betaUx.planTitle')}</Text><Label small>{t('betaUx.planBody')}</Label><TextLink label={t('betaUx.planAction')} href={{ pathname: "/parent/calendar", params: { date: selectedDate, ...(selectedChild ? { childId: selectedChild.id } : {}) } }}/></View></View>}
     </View>
   </View>;
 
@@ -141,6 +141,7 @@ export function ParentHomeView(p: HomeViewProps) {
         <View style={[s.row, wide && s.fill]}><Avatar slug={d.child.avatar} size={42}/><View style={s.fill}><Text style={[s.text, s.bold]}>{d.child.name}</Text><Label small>{d.due ? t('parent.tasksOf', { done: d.done, total: d.due }) : t('betaUx.firstStep')}</Label></View></View>
         <View style={[{ gap: 8 }, wide && s.fill]}>
           <View style={s.row}><Star size={18} color="#AA6500" fill="#FFC75A"/><Label small>{t('parentPremium.stars', { count: d.stars })}</Label></View>
+          {d.pending > 0 && <Label small>{t('experience.pendingTasks', { count: d.pending })}</Label>}
           {d.due > 0 && <Progress value={d.done} max={d.due} label={t('parentPremium.taskProgress', { name: d.child.name })}/>}
         </View>{wide ? <ChevronRight size={18} color={c.muted}/> : null}
       </Pressable>)}
@@ -154,7 +155,7 @@ export function ParentHomeView(p: HomeViewProps) {
     <View style={[s.row, s.between, s.wrap]}><Heading>{t('parentHome.dailyTasks')}</Heading>{p.tasks.length > 0 && <Label small>{t('parentHome.completed', { done: p.familyDay.reduce((n, d) => n + d.done, 0), total: p.familyDay.reduce((n, d) => n + d.due, 0) })}</Label>}</View>
     {!p.tasks.length ? <View style={{ gap: 12 }}><View style={s.row}><Image accessible={false} source={require('../../../../../packages/assets/brand/growing-friend/contextual/planner.png')} style={{ width: 100, height: 94 }} resizeMode="contain"/><View style={s.fill}><Text style={[s.text, s.bold]}>{t('betaUx.taskTitle')}</Text><Label small>{t('betaUx.taskBody')}</Label></View></View><SatinButton title={t('betaUx.firstTask')} onPress={() => go({ pathname: '/parent/tasks', params: { create: '1' } })}/></View> : p.tasks.map((task, i) => {
       const done = task.status === 'approved', pending = task.status === 'done', returned = task.status === 'returned';
-      return <Pressable key={task.id} accessibilityRole="button" onPress={() => go('/parent/tasks')} style={[s.taskRow, i > 0 && s.divider]}>
+      return <Pressable key={task.id} accessibilityRole="button" onPress={() => go({ pathname: '/parent/tasks', params: { childId: task.childId, taskId: task.id } })} style={[s.taskRow, i > 0 && s.divider]}>
         {done ? <Check size={22} color={c.green}/> : pending ? <Clock3 size={22} color={c.orange}/> : <Circle size={22} color={c.purple}/>}
         <TaskIcon slug={task.icon} size={48} variant="illustrated"/><View style={s.fill}><Text style={[s.text, s.bold]}>{task.title}</Text>
           <Label small>{task.childName} · {t(done ? 'parentHome.done' : pending ? 'parentHome.waiting' : returned ? 'parentHome.returned' : 'parentHome.planned')}</Label>
@@ -194,7 +195,7 @@ export function ParentHomeView(p: HomeViewProps) {
           {p.profiles.length ? <Pressable accessibilityRole="button" accessibilityLabel={t('parentHome.childSpace')} onPress={() => go('/parent/child-mode')} style={s.childMode}>
             <LockKeyhole size={18} color={c.purple}/><Text style={s.linkText}>{t('parentPremium.childMode')}</Text>
           </Pressable> : null}
-          <IconButton label={t('parentHome.notifications')} onPress={() => go('/parent/notifications')}><Bell size={23} color={c.muted}/></IconButton>
+          <IconButton label={t('parentHome.notifications')} onPress={() => go('/parent/inbox')}><Bell size={23} color={c.muted}/></IconButton>
         </View>
       </View>
       {p.loading ? <View testID="home-loading" style={s.state} accessibilityLiveRegion="polite"><ActivityIndicator color={c.purple}/><Label>{t('release.loading')}</Label>

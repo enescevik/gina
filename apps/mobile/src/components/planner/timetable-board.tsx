@@ -16,7 +16,6 @@ import {
 import { useTranslation } from "react-i18next";
 import {
   ArrowDownUp,
-  Clock3,
   GripVertical,
   MoreHorizontal,
   Undo2,
@@ -30,66 +29,20 @@ import {
   inferBellPattern,
   isClock,
   type LessonSettings,
-  minutesClock,
   scheduleTimetable,
   swapTimetableCells,
   type TimetableCell,
   timetableDay,
 } from "@gina/core";
+import { TimeChoice } from "@/components/ui/date-time-choice";
+import { DecisionSheet } from "@/components/ui/decision-sheet";
 import { Field } from "@/components/ui/field";
 import { Pressable } from "@/components/ui/pressable";
+import { Toggle } from "@/components/ui/toggle";
 import { NumberChoice } from "@/components/ui/number-choice";
 import { IconButton, p, SatinButton, Tag, u } from "./ui";
+export { TimeChoice } from "@/components/ui/date-time-choice";
 
-export function TimeChoice(
-  { label, value, onChange }: {
-    label: string;
-    value: string;
-    onChange: (value: string) => void;
-  },
-) {
-  const { t } = useTranslation();
-  return (
-    <View style={{ gap: 8, flex: 1, minWidth: 120 }}>
-      <Field
-        label={label}
-        value={value}
-        placeholder="08:30"
-        maxLength={5}
-        keyboardType="numbers-and-punctuation"
-        onChangeText={onChange}
-      />
-      <View style={{ flexDirection: "row", gap: 6 }}>
-        {[-5, 5].map((delta) => (
-          <Pressable
-            key={delta}
-            accessibilityRole="button"
-            accessibilityLabel={t("weekReview.timeAdjust", {
-              label,
-              minutes: delta,
-            })}
-            disabled={!isClock(value) || clockMinutes(value) + delta < 0 ||
-              clockMinutes(value) + delta >= 1440}
-            onPress={() => onChange(minutesClock(clockMinutes(value) + delta))}
-            style={{
-              flex: 1,
-              minHeight: 48,
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 12,
-              backgroundColor: p.lilac,
-            }}
-          >
-            <Text style={u.bold}>
-              {delta > 0 ? "+" : ""}
-              {delta} {t("weekReview.minute")}
-            </Text>
-          </Pressable>
-        ))}
-      </View>
-    </View>
-  );
-}
 export function BellEditor({
   rows,
   settings,
@@ -107,7 +60,7 @@ export function BellEditor({
   const [pattern, setPattern] = useState<BellPattern>(() =>
     inferBellPattern(rows, day, settings)
   );
-  const [all, setAll] = useState(true);
+  const [all, setAll] = useState(false);
   const days = all ? [1, 2, 3, 4, 5, 6, 7] : [day];
   let preview: TimetableCell[] = [], error = "";
   try {
@@ -120,14 +73,10 @@ export function BellEditor({
       preview.some((r) => r.day === d && r.included !== false)
     ) ?? day;
   return (
-    <View style={[u.card, { gap: 16, backgroundColor: "#F5F1FC" }]}>
-      <View style={u.row}>
-        <Clock3 color={p.purple} />
-        <Text style={[u.heading, { flex: 1 }]}>{t("weekReview.bells")}</Text>
-        <IconButton label={t("common.cancel")} onPress={onCancel}>
-          <X color={p.ink} />
-        </IconButton>
-      </View>
+    <DecisionSheet visible title={t("weekReview.bells")} onClose={onCancel} footer={<View style={[u.row, { alignItems: "stretch" }]}>
+      <SatinButton secondary title={t("common.cancel")} onPress={onCancel} style={{ flex: 1 }}/>
+      <SatinButton disabled={!!error} title={t("experience.applyBellDraft")} onPress={() => onApply(pattern, days)} style={{ flex: 2 }}/>
+    </View>}>
       <Text style={u.copy}>{t("weekReview.bellsHelp")}</Text>
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
         <Tag
@@ -149,6 +98,7 @@ export function BellEditor({
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 20 }}>
         <View style={{ flex: 1, minWidth: 240 }}>
           <NumberChoice
+            showHint={false}
             label={t("planner.duration")}
             value={pattern.duration}
             onChange={(duration) => setPattern({ ...pattern, duration })}
@@ -160,6 +110,7 @@ export function BellEditor({
         </View>
         <View style={{ flex: 1, minWidth: 240 }}>
           <NumberChoice
+            showHint={false}
             label={t("planner.break")}
             value={pattern.break}
             onChange={(v) => setPattern({ ...pattern, break: v })}
@@ -170,9 +121,10 @@ export function BellEditor({
           />
         </View>
       </View>
-      <Text style={u.bold}>{t("weekReview.lunchAfter")}</Text>
+      <Toggle label={t("experience.longBreak")} value={pattern.lunchAfter > 0} onChange={value => setPattern({ ...pattern, lunchAfter: value ? 4 : 0 })}/>
+      {pattern.lunchAfter > 0 && <><Text style={u.bold}>{t("weekReview.lunchAfter")}</Text>
       <View style={{ flexDirection: "row", gap: 8, flexWrap: "wrap" }}>
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
           <Tag
             key={n}
             selected={pattern.lunchAfter === n}
@@ -182,10 +134,11 @@ export function BellEditor({
             onPress={() => setPattern({ ...pattern, lunchAfter: n })}
           />
         ))}
-      </View>
+      </View></>}
       {pattern.lunchAfter > 0
         ? (
           <NumberChoice
+            showHint={false}
             label={t("weekReview.lunchDuration")}
             value={pattern.lunchMinutes}
             onChange={(lunchMinutes) =>
@@ -212,13 +165,9 @@ export function BellEditor({
           ))}
       </View>
       <Text style={u.small}>{t("weekReview.replaceTimes")}</Text>
+      <Text style={u.small}>{t("experience.bellDraft")}</Text>
       {error ? <Text style={u.error}>{error}</Text> : null}
-      <SatinButton
-        disabled={!!error}
-        title={t("weekReview.applyTimes")}
-        onPress={() => onApply(pattern, days)}
-      />
-    </View>
+    </DecisionSheet>
   );
 }
 

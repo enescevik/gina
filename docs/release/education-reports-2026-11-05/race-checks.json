@@ -1,0 +1,17 @@
+{
+  "environment": "empty-disposable-database",
+  "results": [
+    {
+      "check": "same_request_create_one_score_one_history_entry",
+      "passed": true
+    },
+    {
+      "check": "two_parent_corrections_require_latest_revision",
+      "passed": true
+    },
+    {
+      "check": "withdraw_vs_correction_has_one_winner_with_history",
+      "passed": true
+    }
+  ]
+}

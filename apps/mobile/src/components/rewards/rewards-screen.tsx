@@ -42,9 +42,9 @@ export function RewardsScreen() {
   const requests = useQuery({
     queryKey: ["reward_requests", familyId], enabled: !!familyId,
     queryFn: async () => {
-      const { data, error } = await supabase.from("reward_requests").select("id,status,cost_snapshot,requested_at,family_rewards(title,icon),children(name,avatar)").eq("family_id", familyId).in("status", ["requested", "approved"]).order("requested_at");
+      const { data, error } = await supabase.from("reward_requests").select("id,status,cost_snapshot,requested_at,family_rewards(title,icon),children(name,avatar,archived_at)").eq("family_id", familyId).in("status", ["requested", "approved"]).order("requested_at");
       if (error) throw error;
-      return data;
+      return data.filter(row => row.children && !row.children.archived_at);
     },
   });
   const catalogKeys = [["family_rewards_all", familyId], ["family_rewards"], ["child_goal"]];
@@ -94,7 +94,7 @@ export function RewardsScreen() {
     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[u.content, { maxWidth: 1060, gap: 10, paddingTop: 4 }]}>
       <View style={u.topbar}>
         <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} style={u.logo} accessibilityLabel="Gina" resizeMode="contain" />
-        <IconButton label={t("push.menu")} onPress={() => router.push("/parent/notifications")}><Bell size={22} color={p.purple} /></IconButton>
+        <IconButton label={t("push.menu")} onPress={() => router.push("/parent/inbox")}><Bell size={22} color={p.purple} /></IconButton>
       </View>
       <View style={[u.hero, { minHeight: 112 }]}>
         <View style={u.fill}>

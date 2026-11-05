@@ -39,6 +39,7 @@ function ChildRow({ id, name, grade, avatar, onEdit }: { id: string; name: strin
   }, onSuccess: () => cache.invalidateQueries() });
   return <View style={parentStyles.card}>
     <View style={parentStyles.row}><Pressable accessibilityRole="button" accessibilityLabel={t("betaUx.editChild")} onPress={onEdit} style={[parentStyles.row, {flex:1}]}><Avatar slug={avatar} size={56}/><View style={{flex:1,gap:3}}><Text style={[parentStyles.copy,{fontFamily:"Nunito_700Bold"}]}>{name}</Text>{grade !== null && <Text style={parentStyles.muted}>{t("parent.gradeShort",{grade})}</Text>}</View><Pencil size={18} color="#6042DE"/></Pressable><IconButton label={t("mintRelease.childSettings")} onPress={() => setSettingsOpen(!settingsOpen)}><Settings2 size={23} color="#6042DE"/></IconButton></View>
+    <NavigationCard title={t("education.manage")} body={t("education.manageBody")} icon={<GraduationCap size={23} color="#6042DE"/>} onPress={()=>router.push({pathname:"/parent/education",params:{childId:id}})}/>
     {settingsOpen ? <View style={{gap:12}}><Text style={parentStyles.muted}>{t("unified.childPinHelp")}</Text><Field label={t("parentV5.childPinLabel", { name })} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} />
     <Button variant="secondary" title={t("parent.savePin")} loading={setChildPin.isPending} disabled={pin.length !== 4 || remove.isPending} onPress={() => setChildPin.mutate()} />
     {setChildPin.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.muted}>{t("unified.pinSaved")}</Text> : null}
@@ -95,7 +96,7 @@ export default function ParentMenuScreen() {
   const children = useQuery({
     queryKey: ["children_setup", familyId],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name, grade, avatar, birth_year, gender, interests").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, grade, avatar, birth_year, gender, interests").is("archived_at", null).order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -154,6 +155,7 @@ export default function ParentMenuScreen() {
 
       </View>
 
+      <NavigationCard title={t("childArchive.title")} body={t("childArchive.archiveMenuBody")} onPress={()=>router.push("/parent/profile-archive")}/>
       <FormSection title={t("unified.inviteTitle")}><Text style={parentStyles.muted}>{t("unified.inviteHelp")}</Text><Text selectable accessibilityLabel={t("parent.inviteCode")} style={{fontFamily:"Nunito_800ExtraBold",fontSize:26,letterSpacing:3,color:"#201951"}}>{family.data?.invite_code ?? "…"}</Text><NavigationCard title={t("experience.family.title")} body={t("experience.family.short")} onPress={()=>router.push("/parent/families")}/></FormSection>
       <NavigationCard title={t("parent.grades")} body={t("unified.gradesHelp")} icon={<GraduationCap size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/grades")}/>
       <NavigationCard title={t("parent.notes")} body={t("unified.notesHelp")} icon={<NotebookPen size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/notes")}/>

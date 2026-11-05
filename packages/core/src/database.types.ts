@@ -5,6 +5,9 @@ export type Database = {
 
   "public": {
           Tables: {
+      task_routine_sync: { Row: {child_id:string;family_id:string;revision:number}; Insert: {child_id:string;family_id:string;revision?:number}; Update:{child_id?:string;family_id?:string;revision?:number}; Relationships:[]; ComputedFields:never };
+
+school_grade_sync: { Row:{child_id:string;family_id:string;revision:number}; Insert:{child_id:string;family_id:string;revision?:number};Update:{revision?:number};Relationships:[] },
 guided_input_options: { Row: {id:string;kind:string;label_tr:string;label_en:string;subject:string;min_grade:number;max_grade:number;position:number;active:boolean;revision:number;updated_at:string}; Insert: {id:string;kind:string;label_tr:string;label_en:string;subject?:string;min_grade?:number;max_grade?:number;position?:number;active?:boolean;revision?:number;updated_at?:string}; Update: {label_tr?:string;label_en?:string;subject?:string;min_grade?:number;max_grade?:number;position?:number;active?:boolean}; Relationships: [] },
 
             "active_families": {
@@ -584,14 +587,14 @@ isOneToOne: false
     }
                   ]
                 },"children": {
-                  Row: {
+                  Row: { archived_at: string | null; archive_revision: number;
                     "avatar": string,"birth_date": string | null,"birth_year": number | null,"created_at": string,"family_id": string,"gender": string,"grade": number | null,"id": string,"interests": (string)[],"name": string,"sort_order": number
                   }
                   ComputedFields: never
-                  Insert: {
+                  Insert: { archived_at?: string | null; archive_revision?: number;
                     "avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"family_id": string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name": string,"sort_order"?: number
                   }
-                  Update: {
+                  Update: { archived_at?: string | null; archive_revision?: number;
                     "avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"family_id"?: string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name"?: string,"sort_order"?: number
                   }
                   Relationships: [
@@ -849,14 +852,14 @@ isOneToOne: false
     }
                   ]
                 },"exams": {
-                  Row: {
+                  Row: { education_context: Json | null;
                     "blueprint_id": string | null,"child_id": string,"content_locked_at": string | null,"created_at": string,"created_by": string | null,"duration_minutes": number | null,"family_id": string,"grade": number,"id": string,"kind": string,"preparation": Json | null,"question_ids": (string)[],"status": Database["public"]['Enums']["exam_status"],"subject": string,"timed": boolean,"title": string,"updated_at": string
                   }
                   ComputedFields: never
-                  Insert: {
+                  Insert: { education_context?: Json | null;
                     "blueprint_id"?: string | null,"child_id": string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"family_id": string,"grade": number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject": string,"timed"?: boolean,"title": string,"updated_at"?: string
                   }
-                  Update: {
+                  Update: { education_context?: Json | null;
                     "blueprint_id"?: string | null,"child_id"?: string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"family_id"?: string,"grade"?: number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject"?: string,"timed"?: boolean,"title"?: string,"updated_at"?: string
                   }
                   Relationships: [
@@ -1001,14 +1004,14 @@ isOneToOne: false
     }
                   ]
                 },"grades": {
-                  Row: {
+                  Row: { education_context: Json | null;revision:number;withdrawn_at:string|null;
                     "child_id": string,"created_at": string,"family_id": string,"graded_on": string,"id": string,"kind": Database["public"]['Enums']["grade_kind"],"max_score": number,"note": string | null,"score": number,"subject": string
                   }
                   ComputedFields: never
-                  Insert: {
+                  Insert: { education_context?: Json | null;revision?:number;withdrawn_at?:string|null;
                     "child_id": string,"created_at"?: string,"family_id": string,"graded_on"?: string,"id"?: string,"kind"?: Database["public"]['Enums']["grade_kind"],"max_score"?: number,"note"?: string | null,"score": number,"subject": string
                   }
-                  Update: {
+                  Update: { education_context?: Json | null;revision?:number;withdrawn_at?:string|null;
                     "child_id"?: string,"created_at"?: string,"family_id"?: string,"graded_on"?: string,"id"?: string,"kind"?: Database["public"]['Enums']["grade_kind"],"max_score"?: number,"note"?: string | null,"score"?: number,"subject"?: string
                   }
                   Relationships: [
@@ -1654,14 +1657,14 @@ isOneToOne: true
                   ]
                 },"prova_drafts": {
                   Row: {
-                    "content": NonNullable<Json>,"created_at": string,"created_by": string | null,"exam_id": string | null,"family_id": string,"id": string,"submitted_at": string | null,"updated_at": string,"version": number
+                    "discarded_at": string | null,"content": NonNullable<Json>,"created_at": string,"created_by": string | null,"exam_id": string | null,"family_id": string,"id": string,"submitted_at": string | null,"updated_at": string,"version": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "content": NonNullable<Json>,"created_at"?: string,"created_by"?: string | null,"exam_id"?: string | null,"family_id": string,"id": string,"submitted_at"?: string | null,"updated_at"?: string,"version"?: number
+                    "discarded_at"?: string | null,"content": NonNullable<Json>,"created_at"?: string,"created_by"?: string | null,"exam_id"?: string | null,"family_id": string,"id": string,"submitted_at"?: string | null,"updated_at"?: string,"version"?: number
                   }
                   Update: {
-                    "content"?: NonNullable<Json>,"created_at"?: string,"created_by"?: string | null,"exam_id"?: string | null,"family_id"?: string,"id"?: string,"submitted_at"?: string | null,"updated_at"?: string,"version"?: number
+                    "discarded_at"?: string | null,"content"?: NonNullable<Json>,"created_at"?: string,"created_by"?: string | null,"exam_id"?: string | null,"family_id"?: string,"id"?: string,"submitted_at"?: string | null,"updated_at"?: string,"version"?: number
                   }
                   Relationships: [
                     {
@@ -1700,18 +1703,18 @@ isOneToOne: false
                   ]
                 },"push_outbox": {
                   Row: {
-                    "recovery_revision": number,
+                    "target_user_id": string | null, "recovery_revision": number,
                     "lease_id": string | null,"next_attempt_at": string,
                     "attempts": number,"audience": string,"claimed_at": string | null,"created_at": string,"exclude_user_id": string | null,"family_id": string,"id": number,"kind": string,"last_error": string | null,"payload": NonNullable<Json>,"sent_at": string | null,"status": string,"target_child_id": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "recovery_revision"?: number,
+                    "target_user_id"?: string | null, "recovery_revision"?: number,
                     "lease_id"?: string | null,"next_attempt_at"?: string,
                     "attempts"?: number,"audience": string,"claimed_at"?: string | null,"created_at"?: string,"exclude_user_id"?: string | null,"family_id": string,"id"?: never,"kind": string,"last_error"?: string | null,"payload"?: NonNullable<Json>,"sent_at"?: string | null,"status"?: string,"target_child_id"?: string | null
                   }
                   Update: {
-                    "recovery_revision"?: number,
+                    "target_user_id"?: string | null, "recovery_revision"?: number,
                     "lease_id"?: string | null,"next_attempt_at"?: string,
                     "attempts"?: number,"audience"?: string,"claimed_at"?: string | null,"created_at"?: string,"exclude_user_id"?: string | null,"family_id"?: string,"id"?: never,"kind"?: string,"last_error"?: string | null,"payload"?: NonNullable<Json>,"sent_at"?: string | null,"status"?: string,"target_child_id"?: string | null
                   }
@@ -1732,14 +1735,14 @@ isOneToOne: false
                   ]
                 },"push_preferences": {
                   Row: {
-                    "approvals": boolean,"exams": boolean,"family_id": string,"updated_at": string,"user_id": string,"weekly_summary": boolean
+                    "approvals": boolean,"exams": boolean,"family_id": string,"updated_at": string,"user_id": string,"weekly_summary": boolean,"announcements": boolean,"education_reminders": boolean
                   }
                   ComputedFields: never
                   Insert: {
-                    "approvals"?: boolean,"exams"?: boolean,"family_id": string,"updated_at"?: string,"user_id": string,"weekly_summary"?: boolean
+                    "approvals"?: boolean,"exams"?: boolean,"family_id": string,"updated_at"?: string,"user_id": string,"weekly_summary"?: boolean,"announcements"?: boolean,"education_reminders"?: boolean
                   }
                   Update: {
-                    "approvals"?: boolean,"exams"?: boolean,"family_id"?: string,"updated_at"?: string,"user_id"?: string,"weekly_summary"?: boolean
+                    "approvals"?: boolean,"exams"?: boolean,"family_id"?: string,"updated_at"?: string,"user_id"?: string,"weekly_summary"?: boolean,"announcements"?: boolean,"education_reminders"?: boolean
                   }
                   Relationships: [
                     {
@@ -2139,13 +2142,16 @@ isOneToOne: false
                   ]
                 },"task_completions": {
                   Row: {
+                    task_snapshot: Json | null;
                     "child_id": string,"client_id": string,"completed_at": string,"completed_by": string | null,"due_date": string,"family_id": string,"id": string,"reviewed_at": string | null,"reviewed_by": string | null,"status": Database["public"]['Enums']["completion_status"],"template_id": string
                   }
                   ComputedFields: never
                   Insert: {
+                    task_snapshot?: Json | null;
                     "child_id": string,"client_id": string,"completed_at"?: string,"completed_by"?: string | null,"due_date": string,"family_id": string,"id"?: string,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"status"?: Database["public"]['Enums']["completion_status"],"template_id": string
                   }
                   Update: {
+                    task_snapshot?: Json | null;
                     "child_id"?: string,"client_id"?: string,"completed_at"?: string,"completed_by"?: string | null,"due_date"?: string,"family_id"?: string,"id"?: string,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"status"?: Database["public"]['Enums']["completion_status"],"template_id"?: string
                   }
                   Relationships: [
@@ -2171,13 +2177,19 @@ isOneToOne: false
                   ]
                 },"task_templates": {
                   Row: {
+                    revision: number;
+                    archived_at: string | null;
                     "active": boolean,"child_id": string,"created_at": string,"days_of_week": (number)[],"ends_on": string | null,"family_id": string,"icon": string,"id": string,"requires_approval": boolean,"sort_order": number,"stars": number,"starts_on": string,"time_of_day": Database["public"]['Enums']["time_of_day"],"title": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
+                    revision?: number;
+                    archived_at?: string | null;
                     "active"?: boolean,"child_id": string,"created_at"?: string,"days_of_week"?: (number)[],"ends_on"?: string | null,"family_id": string,"icon"?: string,"id"?: string,"requires_approval"?: boolean,"sort_order"?: number,"stars"?: number,"starts_on"?: string,"time_of_day"?: Database["public"]['Enums']["time_of_day"],"title": string,"updated_at"?: string
                   }
                   Update: {
+                    revision?: number;
+                    archived_at?: string | null;
                     "active"?: boolean,"child_id"?: string,"created_at"?: string,"days_of_week"?: (number)[],"ends_on"?: string | null,"family_id"?: string,"icon"?: string,"id"?: string,"requires_approval"?: boolean,"sort_order"?: number,"stars"?: number,"starts_on"?: string,"time_of_day"?: Database["public"]['Enums']["time_of_day"],"title"?: string,"updated_at"?: string
                   }
                   Relationships: [
@@ -2293,6 +2305,29 @@ isOneToOne: false
                 }
           }
           Functions: {
+      change_task_routine: { Args: { p_request_id: string; p_id: string; p_revision: number; p_action: string; p_value?: Json }; Returns: Json };
+      task_routine_history: { Args: { p_id: string; p_before_revision?: number }; Returns: Json };
+
+admin_announcements: { Args: { p_before?: string; p_before_id?: string }; Returns: Json },
+admin_save_announcement: { Args: { p_request: string; p_id: string; p_revision: number; p_value: Json }; Returns: Json },
+admin_preview_announcement: { Args: { p_id: string; p_revision: number }; Returns: Json },
+admin_publish_announcement: { Args: { p_request: string; p_id: string; p_revision: number; p_fingerprint: string; p_confirmed: boolean }; Returns: Json },
+admin_withdraw_announcement: { Args: { p_request: string; p_id: string; p_revision: number }; Returns: Json },
+admin_education_reminder_settings: { Args: { p_request: string; p_revision: number; p_enabled: boolean }; Returns: Json },
+parent_inbox: { Args: { p_before?: string; p_before_id?: string; p_archived?: boolean }; Returns: Json },
+mark_parent_inbox: { Args: { p_id: string; p_archived?: boolean | null }; Returns: undefined },
+
+education_calendar_catalog: { Args: { p_child_id?: string }; Returns: Json },
+preview_education_calendar: { Args: { p_child_id: string; p_place_id: string; p_stage: string; p_academic_year: number; p_action: string; p_starts_on: string }; Returns: Json },
+admin_education_calendars: { Args: Record<string, never>; Returns: Json },
+admin_save_education_place: { Args: { p_request: string; p_id: string; p_revision: number; p_value: Json }; Returns: Json },
+admin_save_education_calendar: { Args: { p_request: string; p_id: string; p_revision: number; p_place_id: string; p_stage: string; p_academic_year: number; p_value: Json; p_publish?: boolean }; Returns: Json },
+admin_review_education_report: { Args: { p_request: string; p_id: string; p_revision: number; p_status: string; p_note: string }; Returns: Json },
+change_child_education_with_calendar: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_action: string; p_academic_year: number; p_grade: number | null; p_school: string | null; p_starts_on: string; p_timetable_revision: number; p_keep_timetable: boolean; p_place_id: string; p_stage: string; p_calendar_id: string | null; p_calendar_revision: number | null; p_reason: string | null; p_detail: string | null }; Returns: Json },
+get_child_archive_preview: { Args: { p_child_id: string }; Returns: Json },
+set_child_archived: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_archived: boolean }; Returns: Json },
+get_child_education: { Args: { p_child_id: string }; Returns: Json },
+change_child_education: { Args: { p_request_id: string; p_child_id: string; p_revision: number; p_action: string; p_academic_year: number; p_grade: number | null; p_school: string | null; p_starts_on: string; p_timetable_revision: number; p_keep_timetable: boolean }; Returns: Json },
 get_guided_input_options: { Args: { p_child: string; p_kind: string }; Returns: Json },
 admin_save_guided_input: { Args: { p_id: string; p_revision: number; p_value: Json }; Returns: number },
 
@@ -2726,6 +2761,8 @@ get_learning_source_set: { Args: { p_source: string }; Returns: Json },
 "get_library_items":
 { Args: { "p_collection_id": string }; Returns: Json
                            },
+"set_prova_draft_discarded": { Args: { p_request_id: string; p_id: string; p_version: number; p_discarded: boolean }; Returns: Json },
+"get_discarded_prova_drafts": { Args: { p_child_id?: string; p_before_updated?: string; p_before_id?: string }; Returns: Json },
 "get_prova_drafts":
 { Args: { "p_id"?: string }; Returns: Json
                            },
@@ -2782,6 +2819,12 @@ get_learning_source_set: { Args: { p_source: string }; Returns: Json },
 "join_family":
 { Args: { "p_display_name"?: string,"p_invite_code": string }; Returns: string
                            },
+change_school_grade: { Args: { p_request_id:string; p_id:string; p_child_id:string; p_revision:number; p_action:string; p_value?:Json }; Returns:Json },
+school_grade_history: { Args: { p_id:string; p_before_revision?:number }; Returns:Json },
+school_grade_records: { Args: { p_child_id:string; p_period?:string; p_before_date?:string; p_before_id?:string; p_withdrawn?:boolean }; Returns:Json },
+education_report_periods: { Args: { p_child_id: string }; Returns: Json },
+learning_progress_education: { Args: { p_child_id: string; p_days?: number; p_grade?: number; p_subject?: string; p_period?: string }; Returns: Json },
+list_school_grades: { Args: { p_child_id: string; p_period?: string; p_before_date?: string; p_before_id?: string }; Returns: Json },
 "learning_progress":
 { Args: { "p_child_id": string,"p_days"?: number,"p_grade"?: number,"p_subject"?: string }; Returns: Json
                            },

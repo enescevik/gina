@@ -92,3 +92,6 @@
 @media(max-width:1200px){.billing-columns{grid-template-columns:260px minmax(0,1fr);gap:16px}.billing-metrics>div,.billing-metrics>button{padding:16px;gap:10px}.billing-metrics span{font-size:13px}.billing-center .admin-card{padding:20px}}
 @media(max-width:1050px){.billing-columns{grid-template-columns:1fr}.billing-family-list{grid-template-columns:repeat(2,minmax(0,1fr));max-height:250px}.billing-metrics{gap:8px}.billing-metrics svg{display:none}}
 @media(max-width:600px){.billing-intro{align-items:flex-start;flex-direction:column}.billing-metrics{grid-template-columns:1fr}.billing-metrics>div,.billing-metrics>button{padding:14px}.billing-metrics span{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;font-size:14px}.billing-metrics strong{margin:0}.billing-family-list{grid-template-columns:1fr}.billing-subscription dl{grid-template-columns:1fr}.billing-tabs{width:100%}.billing-tabs button{flex:1;padding:12px}.billing-section-heading{flex-wrap:wrap}.billing-effective{padding:16px}}
+
+/* Keep account actions reachable while the role-based navigation scrolls. */
+@media(min-width:901px){.admin-sidebar nav{min-height:0;overflow-y:auto;flex:1}.admin-sidebar .admin-nav,.admin-sidebar .admin-account,.admin-sidebar .admin-brand{flex-shrink:0}}

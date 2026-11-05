@@ -1,3 +1,4 @@
+import { NOTEBOOK_MODAL_PROPS } from "@/components/learning/notebook-layout";
 import { ReviewNotes } from "@/components/learning/review-notes";
 import { TimetableBoard } from "./timetable-board";
 import { PromptExamples } from "@/components/ui/number-choice";
@@ -389,10 +390,10 @@ function ImportModal(
   );
   return (
     <Modal
+        {...NOTEBOOK_MODAL_PROPS}
       visible
       animationType="fade"
       onRequestClose={close}
-      supportedOrientations={["portrait", "landscape"]}
     >
       <SafeAreaView style={u.root}>
         <View

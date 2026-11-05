@@ -1,0 +1,114 @@
+[
+  {
+    "route": "/parent/child-mode/today",
+    "url": "http://127.0.0.1:8088/parent/child-mode/today",
+    "width": 390,
+    "text": "2\nOdam\nMerhaba Synthetic child!\nSıradaki adımım\nBugünkü adımların tamam!\nEmeğinin tadını çıkar. Yarın yeni bir gün.\nBugünkü adımlarım\n1 tamamlandı\n0 onayda\n0 sırada\nBirlikte hedefimiz\nHedef seç ›\nHaftalık ilerlemem\nTakvimim\nDünyam\nGörevler\nProva (1)\nKoleksiyon",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-today-390.png"
+  },
+  {
+    "route": "/parent/child-mode/week",
+    "url": "http://127.0.0.1:8088/parent/child-mode/week",
+    "width": 390,
+    "text": "Haftam\nPzt\n2\nSal\n3\nÇar\n4\nPer\n5\nCum\n6\nCmt\n7\nPaz\n8\n5 Kasım Perşembe · Bugün\nSynthetic reading\nOnaylandı",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-week-390.png"
+  },
+  {
+    "route": "/parent/child-mode/calendar",
+    "url": "http://127.0.0.1:8088/parent/child-mode/calendar",
+    "width": 390,
+    "text": "Takvimim\nKüçük adımlar, güzel bir hafta.\nTakvim\nDers programı\nKasım 2026\nBugün\nPzt\n2\nSal\n3\nÇar\n4\nPer\n5\nCum\n6\nCmt\n7\nPaz\n8\n5 Kasım Perşembe\n0 ders · 0 etkinlik\nSynthetic child · Çanta listesi\nDers veya etkinlik yok\nDers programına bakabilir, derslerini düzenleyebilirsin.\nDers programı\nÖdev ve çalışmalar\nSynthetic child\nDevam eden\nTamamlanan / arşiv\nSatranç kursu\nKurs oturumu · Satranç · 16:30\nTeslim: 12 Kas\nMatematik ödevi\nÖdev · Matematik\nTeslim: 6 Kas\n1 adımın 0 tanesi işaretlendi\nDünyam\nTakvimim\nProva",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-calendar-390.png"
+  },
+  {
+    "route": "/parent/child-mode/collection",
+    "url": "http://127.0.0.1:8088/parent/child-mode/collection",
+    "width": 390,
+    "text": "Koleksiyonum\nİlk rozetine doğru\nKüçük adımların burada hatıraya dönüşecek. Kazandığın rozetleri bu rafta biriktireceksin.",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-collection-390.png"
+  },
+  {
+    "route": "/parent/child-mode/goal",
+    "url": "http://127.0.0.1:8088/parent/child-mode/goal",
+    "width": 390,
+    "text": "Hedefini seç\nBir ödül seç, sonra aşağıdan onayla. Yıldızların şimdi harcanmaz.\nBirlikte hikâye okuyalım\n15\nParkta birlikte yürüyüş\n20\nVazgeç",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-goal-390.png"
+  },
+  {
+    "route": "/parent/child-mode/room-preview",
+    "url": "http://127.0.0.1:8088/parent/child-mode/room-preview",
+    "width": 390,
+    "text": "Odamı düzenle\nGina’nın sıcak odası\nBu sürümde odada Gina maskotu yer alıyor. Karakter ve evcil hayvan tercihlerin saklanır; şimdilik ana ekranın görünümünü değiştirmez.\nKarakter\nOda\nDostum\nGüneşli odam\nBu oda hazır. Diğer oda temaları henüz seçilemiyor.",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-room-preview-390.png"
+  },
+  {
+    "route": "/parent/child-mode/prova",
+    "url": "http://127.0.0.1:8088/parent/child-mode/prova",
+    "width": 390,
+    "text": "Prova\nSeni bekleyen denemeler\nSynthetic image Prova\n1 soru · süresiz\nBaşla\nTamamlananlar\nSynthetic mixed Prova\nÇoktan seçmeli: 1 / 1 doğru\nSonucu ve geri bildirimi gör",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-prova-390.png"
+  },
+  {
+    "route": "/parent/child-mode/prova/e41804ff-cd1b-4513-8350-abb41785187e",
+    "url": "http://127.0.0.1:8088/parent/child-mode/prova/e41804ff-cd1b-4513-8350-abb41785187e",
+    "width": 390,
+    "text": "Deneme bitti!\nÇabanı tamamladın. Şimdi küçük bir mola verebilirsin.\nÇoktan seçmeli: 1 / 1 doğru\nAçık uçlu cevaplarını ebeveynin inceleyecek.\nGeri bildirimi göster\nProva'ya dön",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-exam-390.png"
+  },
+  {
+    "route": "/parent/child-mode/today",
+    "url": "http://127.0.0.1:8088/parent/child-mode/today",
+    "width": 1280,
+    "text": "Merhaba Synthetic child!\n2\nOdamı düzenle\nEbeveyn\nSıradaki adımım\nBugünkü adımların tamam!\nEmeğinin tadını çıkar. Yarın yeni bir gün.\nBugünkü adımlarım\n1 tamamlandı\n0 onayda\n0 sırada\nBirlikte hedefimiz\nHedef seç ›\nHaftalık ilerlemem\nTakvimim\nDünyam\nGörevler\nProva (1)\nKoleksiyon",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-today-1280.png"
+  },
+  {
+    "route": "/parent/child-mode/week",
+    "url": "http://127.0.0.1:8088/parent/child-mode/week",
+    "width": 1280,
+    "text": "Haftam\nPzt\n2\nSal\n3\nÇar\n4\nPer\n5\nCum\n6\nCmt\n7\nPaz\n8\n5 Kasım Perşembe · Bugün\nSynthetic reading\nOnaylandı",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-week-1280.png"
+  },
+  {
+    "route": "/parent/child-mode/calendar",
+    "url": "http://127.0.0.1:8088/parent/child-mode/calendar",
+    "width": 1280,
+    "text": "Takvimim\nKüçük adımlar, güzel bir hafta.\nTakvim\nDers programı\nKasım 2026\nBugün\nPzt\n2\nSal\n3\nÇar\n4\nPer\n5\nCum\n6\nCmt\n7\nPaz\n8\n5 Kasım Perşembe\n0 ders · 0 etkinlik\nSynthetic child · Çanta listesi\nBugün için alan var\nDers programına bakabilir, derslerini düzenleyebilirsin.\nDers programı\nÖdev ve çalışmalar\nSynthetic child\nHaftaya bakış\n2 Pazartesi\nDers veya etkinlik yok\n3 Salı\nDers veya etkinlik yok\n4 Çarşamba\nDers veya etkinlik yok\n5 Perşembe\nDers veya etkinlik yok\n6 Cuma\nDers veya etkinlik yok\n7 Cumartesi\nDers veya etkinlik yok\n8 Pazar\nDers veya etkinlik yok\nDünyam\nTakvimim\nProva",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-calendar-1280.png"
+  },
+  {
+    "route": "/parent/child-mode/collection",
+    "url": "http://127.0.0.1:8088/parent/child-mode/collection",
+    "width": 1280,
+    "text": "Koleksiyonum\nİlk rozetine doğru\nKüçük adımların burada hatıraya dönüşecek. Kazandığın rozetleri bu rafta biriktireceksin.",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-collection-1280.png"
+  },
+  {
+    "route": "/parent/child-mode/goal",
+    "url": "http://127.0.0.1:8088/parent/child-mode/goal",
+    "width": 1280,
+    "text": "Hedefini seç\nBir ödül seç, sonra aşağıdan onayla. Yıldızların şimdi harcanmaz.\nBirlikte hikâye okuyalım\n15\nParkta birlikte yürüyüş\n20\nVazgeç",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-goal-1280.png"
+  },
+  {
+    "route": "/parent/child-mode/room-preview",
+    "url": "http://127.0.0.1:8088/parent/child-mode/room-preview",
+    "width": 1280,
+    "text": "Odamı düzenle\nGina’nın sıcak odası\nBu sürümde odada Gina maskotu yer alıyor. Karakter ve evcil hayvan tercihlerin saklanır; şimdilik ana ekranın görünümünü değiştirmez.\nKarakter\nOda\nDostum\nGüneşli odam\nBu oda hazır. Diğer oda temaları henüz seçilemiyor.",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-room-preview-1280.png"
+  },
+  {
+    "route": "/parent/child-mode/prova",
+    "url": "http://127.0.0.1:8088/parent/child-mode/prova",
+    "width": 1280,
+    "text": "Prova\nSeni bekleyen denemeler\nSynthetic image Prova\n1 soru · süresiz\nBaşla\nTamamlananlar\nSynthetic mixed Prova\nÇoktan seçmeli: 1 / 1 doğru\nSonucu ve geri bildirimi gör",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-prova-1280.png"
+  },
+  {
+    "route": "/parent/child-mode/prova/e41804ff-cd1b-4513-8350-abb41785187e",
+    "url": "http://127.0.0.1:8088/parent/child-mode/prova/e41804ff-cd1b-4513-8350-abb41785187e",
+    "width": 1280,
+    "text": "Deneme bitti!\nÇabanı tamamladın. Şimdi küçük bir mola verebilirsin.\nÇoktan seçmeli: 1 / 1 doğru\nAçık uçlu cevaplarını ebeveynin inceleyecek.\nGeri bildirimi göster\nProva'ya dön",
+    "screenshot": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-exam-1280.png"
+  }
+]

@@ -16,9 +16,12 @@ export function NumberChoice({
   presets = [10, 15, 20, 30, 45, 60],
   unit = "",
   disabled = false,
+  precision = 0,
+  showHint = true,
+  useGrouping = true,
 }: {
   label: string;
-  value: number;
+  value: number | null;
   onChange: (value: number) => void;
   min?: number;
   max?: number;
@@ -26,20 +29,26 @@ export function NumberChoice({
   presets?: number[];
   unit?: string;
   disabled?: boolean;
+  precision?: 0 | 1 | 2;
+  showHint?: boolean;
+  useGrouping?: boolean;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [editing, setEditing] = useState(false),
     [input, setInput] = useState("");
-  const valid = /^\d+$/.test(input) && Number(input) >= min &&
-    Number(input) <= max;
+  const normalized = input.replace(",", ".");
+  const pattern = precision ? new RegExp(`^\\d+(?:\\.\\d{1,${precision}})?$`) : /^\d+$/;
+  const valid = pattern.test(normalized) && Number(normalized) >= min && Number(normalized) <= max;
+  const adjust = (delta: number) => onChange(Number(Math.max(min, Math.min(max, (value ?? min) + delta)).toFixed(precision)));
+  const displayed = value === null ? "—" : new Intl.NumberFormat(i18n.language, { maximumFractionDigits: precision, useGrouping }).format(value);
   return (
     <View style={{ gap: 12 }}>
       <Text style={u.bold}>{label}</Text>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
         <IconButton
           label={t("guidedInput.less", { label })}
-          disabled={disabled || value <= min}
-          onPress={() => onChange(Math.max(min, value - step))}
+          disabled={disabled || value === null || value <= min}
+          onPress={() => adjust(-step)}
         >
           <Minus color={p.purple} />
         </IconButton>
@@ -47,12 +56,12 @@ export function NumberChoice({
           accessibilityRole="button"
           accessibilityLabel={t("guidedInput.editNumber", {
             label,
-            value,
+            value: displayed,
             unit,
           })}
           disabled={disabled}
           onPress={() => {
-            setInput(String(value));
+            setInput(value === null ? "" : String(value));
             setEditing(!editing);
           }}
           style={{
@@ -65,12 +74,12 @@ export function NumberChoice({
             backgroundColor: p.lilac,
           }}
         >
-          <Text style={[u.bold, { fontSize: 24 }]}>{value} {unit}</Text>
+          <Text style={[u.bold, { fontSize: 24 }]}>{displayed} {unit}</Text>
         </Pressable>
         <IconButton
           label={t("guidedInput.more", { label })}
-          disabled={disabled || value >= max}
-          onPress={() => onChange(Math.min(max, value + step))}
+          disabled={disabled || (value !== null && value >= max)}
+          onPress={() => value === null ? onChange(min) : adjust(step)}
         >
           <Plus color={p.purple} />
         </IconButton>
@@ -103,24 +112,24 @@ export function NumberChoice({
           </Pressable>
         ))}
       </View>
-      <Text style={u.small}>{t("guidedInput.numberHint")}</Text>
+      {showHint && <Text style={u.small}>{t("guidedInput.numberHint")}</Text>}
       {editing
         ? (
           <View style={{ gap: 10 }}>
             <Field
               label={t("guidedInput.customNumber")}
               value={input}
-              keyboardType="number-pad"
-              maxLength={String(max).length}
+              keyboardType={precision ? "decimal-pad" : "number-pad"}
+              maxLength={String(Math.floor(max)).length + (precision ? precision + 1 : 0)}
               onChangeText={setInput}
               editable={!disabled}
-              hint={t("guidedInput.range", { min, max })}
+              hint={t(precision ? "experience.decimalRange" : "guidedInput.range", { min, max, precision })}
             />
             <SatinButton
               title={t("guidedInput.useNumber")}
               disabled={disabled || !valid}
               onPress={() => {
-                onChange(Number(input));
+                onChange(Number(normalized));
                 setEditing(false);
               }}
             />

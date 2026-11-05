@@ -1,0 +1,66 @@
+[
+  {
+    "name": "share-settled-phone",
+    "url": "http://127.0.0.1:8088/parent/share",
+    "text": "Ayarlar\nÖğretmenle paylaş\nYalnız seçtiğiniz bilgileri, belirlediğiniz süre boyunca görüntülenebilen bir bağlantıyla paylaşın. Bağlantıyı alan kişi değişiklik yapamaz.\nSynthetic child\nSynthetic sibling\nBu çocuk için henüz paylaşım bağlantısı yok.\nYeni paylaşım bağlantısı\nKiminle paylaşıyorsun?\nPaylaşılacaklar\nPuanlar\nProva sonuçları\nGörev özeti\nNotlar, PIN'ler, doğum tarihi, soyadı ve aile üyelerinin e-postaları hiçbir zaman paylaşılmaz.\nGeçerlilik süresi\n7 gün\n30 gün\n90 gün\n180 gün\nBağlantı oluştur\nAna sayfa"
+  },
+  {
+    "name": "weekly-review-settled-phone",
+    "url": "http://127.0.0.1:8088/parent/weekly-review",
+    "text": "Ailece, adım adım\nHaftaya birlikte bakalım\nTamamlanan haftanın kayıtları ve birlikte deneyebileceğiniz küçük adımlar.\n26 Ekim 2026 – 1 Kasım 2026\nHaftanın kayıtları\nÖzet hazırlanırken kaydedilen bilgiler. Sonraki değişiklikler bu özeti değiştirmez.\nSynthetic child\nÇocuk A\nOnaylı görevlerden 0 yıldız\nBu hafta görev kaydı yok. Bu, çaba gösterilmediği anlamına gelmez.\nSynthetic sibling\nÇocuk B\nOnaylı görevlerden 0 yıldız\nBu hafta görev kaydı yok. Bu, çaba gösterilmediği anlamına gelmez.\nBu sayımlar yalnız kayıtlı görev durumlarını gösterir; tüm planlanan görevlerin tamamlanma oranı değildir. Yıldızlar yetenek ölçüsü değildir.\nKayıt anı: 5 Kas 2026 08:50\nAI ile küçük bir bakış\nBu bir sentetik hizmet testi özetidir.\nSynthetic child\nİsterseniz deneyin\nİsterseniz haftayı birlikte konuşabilirsiniz.\nSynthetic sibling\nİsterseniz deneyin\nİsterseniz haftayı birlikte konuşabilirsiniz.\nBirlikte konuşmak için\nKayıtları birlikte gözden geçirebilirsiniz.\nAI metni bir öneridir; hata içerebilir. Çocuğunun çabasını, ruh hâlini veya başarısını ölçmez. Öneriler otomatik olarak göreve dönüşmez.\nBirlikte bir adım planla"
+  },
+  {
+    "name": "child-create-profile",
+    "url": "http://127.0.0.1:8088/parent/menu",
+    "text": "Ana sayfa\nAile ayarları\nSynthetic family A · Ailenizi, çocuk cihazlarını ve hesabınızın güvenliğini buradan yönetin.\nAilem\nÇocuk cihazları\nGüvenlik\nHesabım\nÇocuk ekle\nProfilini tanımlayın, yaşına uygun başlangıç görevlerini birlikte seçin.\nÇocuklar\nHer çocuğun görevleri, ders programı ve biriktirdiği yıldızlar ayrı tutulur.\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nDiğer ebeveyni davet edin\nPuanlar\nOkuldan gelen notları kaydedin; GINA denemelerinin sonuçları Prova bölümünde ayrı görünür.\nNotlar\nBir not ekleyin ve kimlerin görebileceğini seçin. “Kişisel” notlarınızı yalnız siz görürsünüz.\nÇocuk ekle\n1 / 4 · Çocuğunu tanıyalım\n1\n2\n3\n4\nYeni bir yol arkadaşı\nÇocuğunuz için e-posta veya telefon gerekmez. Gerçek adı yerine bir takma ad kullanabilirsiniz.\nAdı veya takma adı\nKendi yüzünü seçsin\nDevam et"
+  },
+  {
+    "name": "child-setup",
+    "error": "interaction failed: locator.fill: Timeout 30000ms exceeded."
+  },
+  {
+    "name": "grade-form",
+    "url": "http://127.0.0.1:8088/parent/grades",
+    "text": "Ayarlar\nPuanlar\nOkuldan gelen notları kaydedin; GINA denemelerinin sonuçları Prova bölümünde ayrı görünür.\nSynthetic child\nSynthetic sibling\nYeni puan\nDers\nSınav\nÖdev\nProje\nSözlü\nPerformans\nPuan\nTam puan\nTarih (YYYY-AA-GG)\nYıl-ay-gün biçiminde yazın. Örnek: 2026-11-01.\nKaydet\nHenüz puan girilmemiş.\nAna sayfa"
+  },
+  {
+    "name": "note-form",
+    "url": "http://127.0.0.1:8088/parent/notes",
+    "text": "Ayarlar\nNotlar\nBir not ekleyin ve kimlerin görebileceğini seçin. “Kişisel” notlarınızı yalnız siz görürsünüz.\nTüm aile\nSynthetic child\nSynthetic sibling\nYeni not\nBaşlık\nNot\nDers (isteğe bağlı)\nSadece ben\nAile\nÇocuğa açık\nKaydet\nHenüz not yok.\nAna sayfa"
+  },
+  {
+    "name": "task-source",
+    "url": "http://127.0.0.1:8088/parent/tasks",
+    "text": "Görevler\nKüçük alışkanlıklar, büyük adımlar.\nSynthetic child\nSynthetic sibling\nAktif\n3\nDuraklatılan\n0\nSynthetic reading\nHer gün · 2 yıldız\nDuraklat\nBirlikte kitap okuyalım\nPzt · Çar · Cum · 2 yıldız\nDuraklat\nKaynak: synthetic-ai-pipeline.png\nBitkileri kontrol edelim\nPzt · Çar · Cum · 2 yıldız\nDuraklat\nKaynak: synthetic-ai-pipeline.png\nHer çocuk kendi hızında ilerler.\nYeni görev\nBugün\nTakvim\nProva\nDiğer\nYeni görev\n1 / 3 · Bir başlangıç seç\n1\n2\n3\nSynthetic child\nHangi alışkanlıkla başlayalım?\nHazır bir fikir seçebilir veya kendi görevinizi yazabilirsiniz. Bir sonraki adımda her şeyi değiştirebilirsiniz.\nDişlerimi fırçalarım\n1 yıldız\n10 dakika kitap okurum\n2 yıldız\nOkul çantamı hazırlarım\n1 yıldız\nBitkilerimi sularım\n1 yıldız\nKendi görevimi yazacağım\nAI ile birkaç fikir\nProfiline göre\nBelgeden öner\nYalnız yaş aralığı, sınıf ve seçili ilgi alanları kullanılır. Ad, okul adı ve doğum yılı gönderilmez.\nAI önerileri Plus ve Pro paketlerinde. Beta hesabınızda Paketler bölümünden deneyebilirsiniz.\nBana üç fikir öner"
+  },
+  {
+    "name": "reward-source",
+    "url": "http://127.0.0.1:8088/parent/rewards",
+    "text": "Ödüller\nBirlikte seçin, birlikte kutlayın.\nTalepler\n0\nKatalog\nHedef belirle\nBekleyen istek yok.\nÇocuğun bir ödül istediğinde burada görünecek.\nÖdül kataloğunu gör\nKüçük adımlar, büyük mutluluklar.\nYeni ödül\nBugün\nTakvim\nProva\nDiğer\nYeni ödül\n1 / 3 · Bir başlangıç seç\n1\n2\n3\nBirlikte neyi kutlayalım?\nBir eşya kadar birlikte geçirilen zaman da güzel bir ödül olabilir.\nAilece film gecesi\n20 yıldız\nBirlikte piknik\n15 yıldız\nSeçtiğim yeni bir kitap\n30 yıldız\nKendi ödülümüzü yazalım\nAI ile birkaç fikir\nProfiline göre\nBelgeden öner\nYalnız yaş aralığı, sınıf ve seçili ilgi alanları kullanılır. Ad, okul adı ve doğum yılı gönderilmez.\nAI önerileri Plus ve Pro paketlerinde. Beta hesabınızda Paketler bölümünden deneyebilirsiniz.\nBana üç fikir öner"
+  },
+  {
+    "name": "goal-choice",
+    "url": "http://127.0.0.1:8088/parent/rewards",
+    "text": "Ödüller\nBirlikte seçin, birlikte kutlayın.\nTalepler\n0\nKatalog\nHedef belirle\nBekleyen istek yok.\nÇocuğun bir ödül istediğinde burada görünecek.\nÖdül kataloğunu gör\nKüçük adımlar, büyük mutluluklar.\nYeni ödül\nBugün\nTakvim\nProva\nDiğer\nHedef belirle\n1 / 2 · Bir başlangıç seç\n1\n2\nHangi hayale doğru ilerleyelim?\nÖdülü çocuğunuzla birlikte seçin. Hedefi son adımda onaylayacaksınız.\nSynthetic child\nSynthetic sibling\nBirlikte hikâye okuyalım\n15 yıldız\nParkta birlikte yürüyüş\n20 yıldız\nDevam et"
+  },
+  {
+    "name": "event-editor",
+    "url": "http://127.0.0.1:8088/parent/calendar",
+    "text": "Aile takvimi\nKüçük adımlar, güzel bir hafta.\nTakvim\nDers programı\nTümü\nSynthetic child\nSynthetic sibling\nKasım 2026\nBugün\nPzt\n2\nSal\n3\nÇar\n4\nPer\n5\nCum\n6\nCmt\n7\nPaz\n8\n5 Kasım Perşembe\n0 ders · 0 etkinlik\nSynthetic child · Çanta listesi\nDers veya etkinlik yok\nDers programını hazırlayabilir veya gününe bir etkinlik ekleyebilirsin.\nDers programı\nÖdev ve çalışmalar\nSynthetic child\nBelgeden ödev planla\nDevam eden\nTamamlanan / arşiv\nSatranç kursu\nKurs oturumu · Satranç · 16:30\nTeslim: 12 Kas\nMatematik ödevi\nÖdev · Matematik\nTeslim: 6 Kas\n1 adımın 0 tanesi işaretlendi\nEtkinlik ekle\nBugün\nTakvim\nProva\nDiğer\nEtkinlik ekle\nBaşlık\nOkul / ders\nAktivite\nTatil\nSınav\nAile\nDoktor\nDoğum günü\nDiğer\nTüm aile\nSynthetic child\nSynthetic sibling\nTarih (YYYY-AA-GG)\nTüm gün\nBaşlangıç (SS:DD)\nBitiş (SS:DD)\nYer (isteğe bağlı)\nHer hafta tekrar et (ders programı için günleri seç)\nPzt\nSal\nÇar\nPer\nCum\nCmt\nPaz\nKaydet"
+  },
+  {
+    "name": "timetable-phone",
+    "url": "http://127.0.0.1:8088/parent/calendar",
+    "text": "Ders programı\nSynthetic child’nin haftası\nBir kez planla, her hafta gör.\nSynthetic child\nSynthetic sibling\nHer hafta\nGün\nHafta tablosu\nDerse dokunarak düzenle.\nYer değiştir\nSaatler\nPzt\nSal\nÇar\nPer\nCum\nPazartesi\n1\nDers yok\nDers ekle\nGünü kopyala\nBu haftadan itibaren her hafta tekrar eder. Veli ve çocuk düzenleyebilir.\nVazgeç\nProgramı kaydet"
+  },
+  {
+    "name": "timetable-tablet",
+    "url": "http://127.0.0.1:8088/parent/calendar",
+    "text": "Ders programı\nSynthetic child’nin haftası\nBir kez planla, her hafta gör.\nSynthetic child\nSynthetic sibling\nHer hafta\nHaftaya bakış\nGün\nHafta tablosu\nDerse dokunarak düzenle.\nYer değiştir\nDers saatlerini düzenle\nHafta sonunu göster\nFotoğraftan aktar\nPzt\nSal\nÇar\nPer\nCum\nPazartesi\n1\nDers yok\nDers ekle\nGünü kopyala\nBu haftadan itibaren her hafta tekrar eder. Veli ve çocuk düzenleyebilir.\nVazgeç\nProgramı kaydet"
+  },
+  {
+    "name": "help-compose",
+    "url": "http://127.0.0.1:8088/parent/help",
+    "text": "Yardım\nDestek talebi\nNeyi yapmak istediğini ve nerede takıldığını anlat. Bir fikrin varsa nasıl yardımcı olacağını paylaş.\nBu görüşmeyi ailendeki diğer ebeveyn de görebilir. GINA destek ekibi talebini yanıtlamak için erişebilir.\nKonu\nHesap\nCihaz ve PIN\nÖğrenme ve Prova\nPaket ve ödeme\nDiğer\nKısa başlık\nEn az 3, en fazla 160 karakter.\nBize anlat\nŞifre, PIN, ödeme bilgisi veya gereksiz kişisel bilgi paylaşma.\nTalebi gönder"
+  }
+]

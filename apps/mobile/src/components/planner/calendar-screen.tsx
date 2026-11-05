@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -27,6 +27,7 @@ import {
   localDateOf,
   schoolBagDayAvailable,
   occurrencesBetween,
+  isCalendarDate,
   weekDatesOf,
   type Occurrence,
 } from "@gina/core";
@@ -42,7 +43,7 @@ import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import { IconButton, PlannerHero, SatinButton, Tag, p, u } from "./ui";
 import { TimetableEditor, type PlannerChild } from "./timetable-editor";
-import { LearningPlanSection, useLearningPlan } from "./learning-plan";
+import { LearningPlanSection, useFamilyLearningPlans } from "./learning-plan";
 import { SchoolBag } from "./school-bag";
 import { EventEditor } from "./event-editor";
 function shift(date: string, days: number) {
@@ -63,9 +64,12 @@ export function PlannerCalendar({
   const { width } = useWindowDimensions();
   const wide = width >= 1000;
   const today = localDateOf(new Date(), timeZone);
-  const [anchor, setAnchor] = useState(today);
-  const [selected, setSelected] = useState(today);
-  const [filter, setFilter] = useState<string | null>(null);
+  const params = useLocalSearchParams<{ childId?: string; date?: string }>();
+  const initialDay = typeof params.date === "string" && isCalendarDate(params.date) ? params.date : today;
+  const [anchor, setAnchor] = useState(initialDay);
+  const [selected, setSelected] = useState(initialDay);
+  const [filter, setFilter] = useState<string | null>(typeof params.childId === "string" ? params.childId : null);
+  const [chooseProgram, setChooseProgram] = useState(false);
   const [bag, setBag] = useState<{ child: PlannerChild; day: string } | null>(null);
   const [editing, setEditing] = useState<PlannerChild | null>(null);
   const [event, setEvent] = useState<WeekEvent | null | undefined>(undefined);
@@ -84,7 +88,7 @@ export function PlannerCalendar({
     queryFn: async () => {
       let req = supabase
         .from("children")
-        .select("id,name,avatar")
+        .select("id,name,avatar").is("archived_at", null)
         .order("sort_order");
       if (childMode) req = req.eq("id", active.childId);
       const { data, error } = await req;
@@ -99,16 +103,17 @@ export function PlannerCalendar({
   const date = week.includes(selected) ? selected : week[0];
   const selectedChild =
     profiles.find((c) => c.id === (childMode ? active.childId : filter)) ??
-    profiles[0];
-  const learning = useLearningPlan(selectedChild?.id, week[0], week[6]);
-  const learningCount = (day: string) => learningPlanForDay(learning.data?.items ?? [], day).filter(r => !r.content.done).length;
+    (profiles.length === 1 ? profiles[0] : undefined);
+  const scopedProfiles = selectedChild ? [selectedChild] : profiles;
+  const learning = useFamilyLearningPlans(scopedProfiles.map(c => c.id), week[0], week[6]);
+  const learningCount = (day: string) => learning.reduce((total, query) => total + learningPlanForDay(query.data?.items ?? [], day).filter(r => !r.content.done).length, 0);
   const occurrences = occurrencesBetween(
     events.data ?? [],
     week[0],
     week[6],
     timeZone,
     exceptions.data ?? new Set(),
-  ).filter((o) => !filter || !o.event.child_id || o.event.child_id === filter);
+  ).filter((o) => !selectedChild || !o.event.child_id || o.event.child_id === selectedChild.id);
   const dateText = (value: string, format: Intl.DateTimeFormatOptions) =>
     new Intl.DateTimeFormat(i18n.language, {
       ...format,
@@ -121,7 +126,8 @@ export function PlannerCalendar({
       timeZone,
     }).format(value);
   function openPlan(c = selectedChild) {
-    if (c) setEditing(c);
+    if (c) { setChooseProgram(false); setEditing(c); }
+    else setChooseProgram(true);
   }
   function openItem(e: WeekEvent) {
     if (e.timetable_entry_key) {
@@ -310,7 +316,7 @@ export function PlannerCalendar({
           {!childMode ? (
             <IconButton
               label={t("push.menu")}
-              onPress={() => router.push("/parent/notifications")}
+              onPress={() => router.push("/parent/inbox")}
             >
               <Bell size={22} color={p.purple} />
             </IconButton>
@@ -377,6 +383,11 @@ export function PlannerCalendar({
                 </View>
               </ScrollView>
             ) : null}
+            {chooseProgram ? <View style={[u.card, { gap: 10 }]}>
+              <Text accessibilityRole="header" style={u.heading}>{t("experience.chooseProgramChild")}</Text>
+              {profiles.map(c => <SatinButton key={c.id} secondary title={c.name} onPress={() => openPlan(c)} />)}
+              <SatinButton secondary title={t("common.cancel")} onPress={() => setChooseProgram(false)} />
+            </View> : null}
           </View>
         </View>
         {busy ? <ActivityIndicator color={p.purple} /> : null}
@@ -543,7 +554,7 @@ export function PlannerCalendar({
                                 ).length,
                               })
                             : t("learningPlan.noEvents")}
-                          {learningCount(d) ? ` · ${t("learningPlan.dayCount",{count:learningCount(d),name:selectedChild?.name})}` : ""}
+                          {learningCount(d) ? ` · ${t("learningPlan.dayCount",{count:learningCount(d),name:selectedChild?.name ?? t("planner.all")})}` : ""}
                         </Text>
                         <ChevronRight color={p.muted} size={16} />
                       </Pressable>
@@ -616,6 +627,7 @@ export function PlannerCalendar({
       </View>
       {event !== undefined && !childMode ? (
         <EventEditor
+            initialChildId={selectedChild?.id ?? null}
           event={event}
           date={date}
           familyId={familyId}
@@ -642,10 +654,6 @@ export function PlannerCalendar({
             })}
           </Text>
         </View>
-        {selectedChild && schoolBagDayAvailable(date, today) ? (
-          <SatinButton secondary title={t("schoolBag.entry", { name: selectedChild.name })}
-            onPress={() => setBag({ child: selectedChild, day: date })} />
-        ) : null}
         {items.length ? (
           items.map((o) => item(o))
         ) : (
@@ -661,7 +669,11 @@ export function PlannerCalendar({
             ) : null}
           </View>
         )}
-        {selectedChild ? <LearningPlanSection child={selectedChild} date={date} from={week[0]} to={week[6]} childMode={childMode}/> : null}
+        {scopedProfiles.map(child => <View key={child.id} style={{ gap: 12, paddingTop: 12 }}>
+          {!selectedChild && <View style={u.row}><Avatar slug={child.avatar} size={32} /><Text style={u.heading}>{child.name}</Text></View>}
+          {schoolBagDayAvailable(date, today) && <SatinButton secondary title={t("schoolBag.entry", { name: child.name })} onPress={() => setBag({ child, day: date })} />}
+          <LearningPlanSection child={child} date={date} from={week[0]} to={week[6]} childMode={childMode}/>
+        </View>)}
       </View>
     );
   }

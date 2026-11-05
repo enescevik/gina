@@ -99,6 +99,7 @@ export function ReportPicker<T extends string | number>(
                   key={option.value}
                   accessibilityRole="button"
                   accessibilityState={{ selected: value === option.value }}
+                  aria-pressed={value === option.value}
                   onPress={() => {
                     onChange(option.value);
                     setOpen(false);

@@ -38,7 +38,7 @@ test('dialogs preserve every iPad orientation and use no rotating sheet presenta
   assert.equal(NOTEBOOK_MODAL_PROPS.presentationStyle, 'overFullScreen');
 });
 test('every notebook native dialog adopts orientation policy; editor uses one modal host', () => {
-  for (const name of ['notebook-editor','notebook-source-picker','drawing-pad','parent-review-workspace']) {
+  for (const name of ['notebook-editor','notebook-source-picker','drawing-pad','parent-review-workspace','question-media','../ui/decision-sheet']) {
     const text = readFileSync(new URL(`apps/mobile/src/components/learning/${name}.tsx`,root),'utf8');
     const tree = ts.createSourceFile(name+'.tsx',text,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
     let count=0;

@@ -123,7 +123,7 @@ Deno.serve(async (req) => {
           typeof g.etkinlik !== "string" || !g.etkinlik.trim() || !Number.isFinite(g.sure_dk)) ||
         !Array.isArray(v.gorev_onerileri) || v.gorev_onerileri.some(g => typeof g !== "string")) throw Error("ai_result_invalid");
       return v;
-    });
+    }, attempt.child_id);
   if (result instanceof Response) return result;
 
   const plan = {

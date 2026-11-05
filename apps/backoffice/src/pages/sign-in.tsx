@@ -14,6 +14,7 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (session && isAdmin) void router.replace("/dashboard");
@@ -30,15 +31,15 @@ export default function SignIn() {
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
+    if (busy) return;
     setBusy(true);
     setError(null);
-    const { data, error: err } = await supabase().auth.signInWithPassword({
-      email: email.trim(),
-      password,
-    });
-    setBusy(false);
-    if (err) setError(t.signIn.failed);
-    else if (data.session) void router.replace("/");
+    try {
+      const { data, error: err } = await supabase().auth.signInWithPassword({ email: email.trim(), password });
+      if (err) setError(err.status && err.status >= 500 ? t.signIn.networkError : t.signIn.failed);
+      else if (data.session) { setPassword(""); void router.replace("/"); }
+    } catch { setError(t.signIn.networkError); }
+    finally { setBusy(false); }
   }
 
   return (
@@ -82,6 +83,7 @@ export default function SignIn() {
             type="email"
             autoComplete="username"
             required
+            disabled={busy}
             className="input mb-3"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -91,19 +93,21 @@ export default function SignIn() {
           </label>
           <input
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             autoComplete="current-password"
             required
+            disabled={busy}
             className="input mb-4"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <label className="mb-3 flex min-h-12 items-center gap-3 text-sm"><input type="checkbox" checked={showPassword} disabled={busy} onChange={e => setShowPassword(e.target.checked)}/>{showPassword ? t.signIn.hidePassword : t.signIn.showPassword}</label>
           <button
             type="submit"
             className="btn w-full"
             disabled={busy || !isConfigured}
           >
-            {t.signIn.submit}
+            {busy ? t.signIn.submitting : t.signIn.submit}
           </button>
           <a
             href="https://gina-web.pages.dev/sign-in?mode=reset"

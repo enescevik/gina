@@ -27,6 +27,8 @@ const ROUTES: Record<PushRole, Record<string, Href>> = {
     exam_finished: "/parent/prova",
     cohort_results: "/parent/prova/groups",
     weekly_summary: "/parent",
+    parent_announcement: "/parent/inbox",
+    education_reminder: "/parent/inbox",
   },
   device: {
     task_approved: "/child/today",

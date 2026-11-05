@@ -155,7 +155,7 @@ export default function GroupExams() {
     queryFn: async () => {
       const { data, error } = await supabase.from("children").select(
         "id,name,grade",
-      ).order("name");
+      ).is("archived_at", null).order("name");
       if (error) throw error;
       return data;
     },

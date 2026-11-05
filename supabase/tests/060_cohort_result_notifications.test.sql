@@ -89,6 +89,18 @@ select is((select count(*)::int from public.push_targets(current_setting('test.o
 select is((select count(*)::int from public.push_targets((select max(id) from public.push_outbox where kind='cohort_results'))),2,'new publication reaches both parents');
 select is(gina.cohort_notification_current('{"group_id":"not-a-uuid","publication_version":"oops"}','10000000-0000-4000-8000-000000004302'),false,'malformed stored payload fails closed without cast exception');
 select is(gina.cohort_notification_current('{"group_id":"60000000-0000-4000-8000-000000005901","publication_version":2}','10000000-0000-4000-8000-000000004303'),false,'foreign family cannot receive a cohort notice');
+savepoint archive_cohort;
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000004302","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000004302"}}',true);
+select public.set_child_archived(gen_random_uuid(),'20000000-0000-4000-8000-000000004702',0,true);
+reset role;
+select is((select count(*)::int from public.push_targets((select max(id) from public.push_outbox where kind='cohort_results'))),0,'archived participant suppresses queued cohort targets');
+select is((select status from public.push_outbox where id=(select max(id) from public.push_outbox where kind='cohort_results')),'no_targets','archive cancels pending cohort result');
+set local role authenticated;
+select public.set_child_archived(gen_random_uuid(),'20000000-0000-4000-8000-000000004702',1,false);
+reset role;
+select is((select status from public.push_outbox where id=(select max(id) from public.push_outbox where kind='cohort_results')),'no_targets','restore cannot requeue old cohort notification');
+rollback to archive_cohort;
 select lives_ok($$delete from public.families where id='10000000-0000-4000-8000-000000004302';set constraints all immediate;$$,'account deletion cleans result notification');
 select is((select count(*)::int from public.push_outbox where kind='cohort_results'),0,'no retained family result notification');
 select * from finish();rollback;

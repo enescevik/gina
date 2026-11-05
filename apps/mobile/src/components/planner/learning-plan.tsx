@@ -6,7 +6,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { randomUUID } from "expo-crypto";
 import { useTranslation } from "react-i18next";
 import {
@@ -19,6 +19,7 @@ import {
 } from "lucide-react-native";
 import {
   isCalendarDate,
+  localDateOf,
   type LearningPlanCommand,
   type LearningPlanContent,
   learningPlanContentSchema,
@@ -27,10 +28,11 @@ import {
   type LearningPlanRow,
   learningPlanRowSchema,
 } from "@gina/core";
+import { useFamilyTimezone } from "@/lib/family";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import { learningPlanJournal } from "@/lib/learning-plan-command";
-import { Field } from "@/components/ui/field";
+import { DateChoice, TimeChoice } from "@/components/ui/date-time-choice";
 import { Toggle } from "@/components/ui/toggle";
 import { Pressable } from "@/components/ui/pressable";
 import { ChoiceCard, SetupWizard } from "@/components/setup/wizard";
@@ -52,16 +54,19 @@ export function useLearningPlan(
   to: string,
 ) {
   const { session, claims } = useSession();
-  return useQuery({
+  return useQuery(learningPlanQuery(session?.user.id, claims?.family_id, childId, from, to));
+}
+function learningPlanQuery(userId: string | undefined, familyId: string | null | undefined, childId: string | undefined, from: string, to: string) {
+  return {
     queryKey: [
       "learning_plan",
-      session?.user.id,
-      claims?.family_id,
+      userId,
+      familyId,
       childId,
       from,
       to,
     ],
-    enabled: !!childId && !!claims?.family_id,
+    enabled: !!childId && !!familyId,
     refetchInterval: 20000,
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_learning_plan", {
@@ -72,7 +77,12 @@ export function useLearningPlan(
       if (error) throw error;
       return learningPlanListSchema.parse(data);
     },
-  });
+  };
+}
+/** Share the individual-child cache; the family view must not silently pick child one. */
+export function useFamilyLearningPlans(childIds: string[], from: string, to: string) {
+  const { session, claims } = useSession();
+  return useQueries({ queries: childIds.map(id => learningPlanQuery(session?.user.id, claims?.family_id, id, from, to)) });
 }
 export function LearningPlanSection(props: Props) {
   const { claims, session } = useSession();
@@ -362,6 +372,8 @@ function PlanEditor(
   const { t, i18n } = useTranslation(),
     { width } = useWindowDimensions(),
     { session, claims } = useSession();
+  const timeZone = useFamilyTimezone();
+  const today = localDateOf(new Date(), timeZone);
   const current = useQuery({
     queryKey: [
       "learning_plan_item",
@@ -445,31 +457,6 @@ function PlanEditor(
         timeZone: "UTC",
       }).format(new Date(day + "T12:00:00Z"))
       : day;
-  const dateChoices = (field: "planned_on" | "due_on") => (
-    <View style={[u.row, { flexWrap: "wrap" }]}>
-      {[0, 1, 7].map((offset) => {
-        const value = new Date(Date.parse(date) + offset * 86400000)
-          .toISOString().slice(0, 10);
-        return (
-          <Pressable
-            key={value}
-            accessibilityRole="button"
-            accessibilityState={{ selected: content[field] === value }}
-            onPress={() => change({ [field]: value })}
-            style={{
-              minHeight: 48,
-              paddingHorizontal: 14,
-              justifyContent: "center",
-              borderRadius: 16,
-              backgroundColor: content[field] === value ? p.mint : p.lilac,
-            }}
-          >
-            <Text style={u.bold}>{t(`learningPlan.dayChoices.${offset}`)}</Text>
-          </Pressable>
-        );
-      })}
-    </View>
-  );
   async function save() {
     if (
       busy || storageError ||
@@ -798,13 +785,7 @@ function PlanEditor(
               )
               : (
                 <>
-                  {dateChoices("planned_on")}
-                  <Field
-                    label={t("learningPlan.planned")}
-                    hint={t("learningPlan.dateHint")}
-                    value={content.planned_on}
-                    onChangeText={(planned_on) => change({ planned_on })}
-                  />
+                  <DateChoice label={t("learningPlan.planned")} value={content.planned_on} onChange={(planned_on) => change({ planned_on })} today={today} disabled={locked} />
                   <Toggle
                     label={t("learningPlan.hasDue")}
                     value={!!content.due_on}
@@ -820,13 +801,7 @@ function PlanEditor(
                   {content.due_on !== null
                     ? (
                       <>
-                        {dateChoices("due_on")}
-                        <Field
-                          label={t("learningPlan.due")}
-                          hint={t("learningPlan.dueHelp")}
-                          value={content.due_on}
-                          onChangeText={(due_on) => change({ due_on })}
-                        />
+                        <DateChoice label={t("learningPlan.due")} hint={t("learningPlan.dueHelp")} value={content.due_on} onChange={(due_on) => change({ due_on })} today={today} disabled={locked} />
                       </>
                     )
                     : null}
@@ -837,12 +812,7 @@ function PlanEditor(
                   />
                   {content.time !== null
                     ? (
-                      <Field
-                        label={t("learningPlan.time")}
-                        value={content.time}
-                        onChangeText={(time) => change({ time })}
-                        placeholder="16:00"
-                      />
+                      <TimeChoice label={t("learningPlan.time")} value={content.time} onChange={(time) => change({ time })} disabled={locked} />
                     )
                     : null}
                   <Text style={u.heading}>{t("learningPlan.steps")}</Text>

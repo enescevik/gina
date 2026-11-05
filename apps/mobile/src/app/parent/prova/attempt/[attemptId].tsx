@@ -1,4 +1,4 @@
-import { readNotebook } from "@gina/core";
+import { attemptSummary, readNotebook } from "@gina/core";
 import { Toggle } from "@/components/ui/toggle";
 import { type QuestionMediaItem } from "@/components/learning/question-media";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -131,6 +131,7 @@ export default function AttemptReviewScreen() {
   const finished = a && a.status !== "in_progress";
   const notebookNeedsReview = Array.from(answers.data?.values() ?? []).some(answer => answer.graded_by !== "parent" && (readNotebook(answer.answer_document)?.elements.length ?? 0) > 0);
   const hasOpen = (a?.open_total ?? 0) > 0;
+  const pendingReview = a ? attemptSummary(a, questions.data ?? []).pendingReview : false;
   const ent = entitlement.data;
 
   return (
@@ -141,8 +142,9 @@ export default function AttemptReviewScreen() {
             {a.children?.name} · {a.exams?.subject} {a.exams?.grade}. {t("prova.gradeWord")}
           </Text>
           <Text className="font-display text-xl text-ink">
-            {a.score_pct !== null ? t("prova.ai.scorePct", { pct: a.score_pct }) : t(`prova.ai.attemptStatus.${a.status}`)}
+            {pendingReview ? t("experience.provisionalScore", { score: a.score_pct ?? "—" }) : a.score_pct !== null ? t("prova.ai.scorePct", { pct: a.score_pct }) : t(`prova.ai.attemptStatus.${a.status}`)}
           </Text>
+          {pendingReview && <Text className="font-body text-base text-ink">{t("experience.reviewIncomplete")}</Text>}
           {(a.mc_total ?? 0) > 0 ? <Text className="font-body text-sm text-teal-dark">{t("prova.resultMc", { correct: a.mc_correct ?? 0, total: a.mc_total ?? 0 })}</Text> : null}
           {hasOpen ? (
             <Text className="font-body text-sm text-teal-dark">{t("prova.ai.openGraded", { graded: a.open_graded ?? 0, total: a.open_total ?? 0 })}</Text>

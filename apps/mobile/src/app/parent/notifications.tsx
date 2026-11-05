@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Linking, Platform, Text, View } from "react-native";
@@ -10,8 +11,8 @@ import { getPushPermission, requestPushPermission } from "@/lib/push";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
-type PrefKey = "approvals" | "exams" | "weekly_summary";
-const PREF_KEYS: PrefKey[] = ["approvals", "exams", "weekly_summary"];
+type PrefKey = "approvals" | "exams" | "weekly_summary" | "announcements" | "education_reminders";
+const PREF_KEYS: PrefKey[] = ["approvals", "exams", "weekly_summary", "announcements", "education_reminders"];
 
 /** Veli bildirim tercihleri (push_preferences; satır yoksa hepsi açık) ve cihaz izni. */
 export default function NotificationsScreen() {
@@ -32,18 +33,18 @@ export default function NotificationsScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("push_preferences")
-        .select("approvals, exams, weekly_summary")
+        .select("approvals, exams, weekly_summary, announcements, education_reminders")
         .eq("user_id", userId!)
         .maybeSingle();
       if (error) throw error;
-      return data ?? { approvals: true, exams: true, weekly_summary: true };
+      return data ?? { approvals: true, exams: true, weekly_summary: true, announcements: true, education_reminders: true };
     },
   });
 
   const save = useMutation({
     mutationFn: async ({ key, value }: { key: PrefKey; value: boolean }) => {
       if (!userId || !familyId) throw new Error("no_session");
-      const current = prefs.data ?? { approvals: true, exams: true, weekly_summary: true };
+      const current = prefs.data ?? { approvals: true, exams: true, weekly_summary: true, announcements: true, education_reminders: true };
       const { error } = await supabase
         .from("push_preferences")
         .upsert({ ...current, [key]: value, user_id: userId, family_id: familyId }, { onConflict: "user_id" });
@@ -61,6 +62,7 @@ export default function NotificationsScreen() {
 
   return (
     <Screen title={t("push.title")} subtitle={t("unified.notificationsHelp")} loading={prefs.isLoading || permission.isLoading} error={prefs.error ?? permission.error} onRetry={() => { void prefs.refetch(); void permission.refetch(); }}>
+      <Button variant="secondary" title={t("inbox.title")} onPress={()=>router.push("/parent/inbox")} />
       {Platform.OS === "web" || permission.data === "unsupported" ? (
         <Text className="font-body text-sm text-gray-600">{t("push.webNote")}</Text>
       ) : permission.data === "undetermined" ? (

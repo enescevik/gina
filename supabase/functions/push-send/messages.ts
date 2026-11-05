@@ -31,6 +31,8 @@ const TEXTS: Record<string, Record<Locale, string>> = {
     tr: "Birlikte Prova sonuçları güncellendi",
     en: "Group practice results have been updated",
   },
+  parent_announcement: { tr: "Yeni bir GINA duyurusu var", en: "You have a new GINA announcement" },
+  education_reminder: { tr: "Eğitim takvimini kontrol edebilirsin", en: "You can review the school calendar" },
   weekly_summary: {
     tr: "Haftalık özet hazır",
     en: "Your weekly summary is ready",
@@ -40,7 +42,7 @@ const TEXTS: Record<string, Record<Locale, string>> = {
 export function messageFor(row: MessageRow, locale: Locale): PushMessage {
   const data: Record<string, string> = { kind: row.kind };
   // Yalnız bilinen kimlik alanları geçer (savunma: payload'a başka alan yazılsa bile sızmaz).
-  for (const key of ["completion_id", "exam_id", "attempt_id", "group_id"]) {
+  for (const key of ["completion_id", "exam_id", "attempt_id", "group_id", "inbox_id"]) {
     const value = row.payload?.[key];
     if (
       typeof value === "string" &&

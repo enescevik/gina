@@ -1,0 +1,33 @@
+{
+  "environment": "disposable-local-real-services",
+  "results": [
+    {
+      "check": "admin_draft_and_publication_are_separate",
+      "passed": true
+    },
+    {
+      "check": "targeted_announcement_preview_then_explicit_publish",
+      "passed": true
+    },
+    {
+      "check": "parent_school_exception_reaches_private_review_queue",
+      "passed": true
+    },
+    {
+      "check": "parent_inbox_read_archive_and_restore_phone_tablet",
+      "passed": true
+    },
+    {
+      "check": "same_verified_school_calendar_visible_in_parent_wizard",
+      "passed": true
+    },
+    {
+      "check": "missing_calendar_explained_and_explicit_reason_unlocks_continue",
+      "passed": true
+    },
+    {
+      "check": "no_page_exceptions_or_horizontal_overflow",
+      "passed": true
+    }
+  ]
+}

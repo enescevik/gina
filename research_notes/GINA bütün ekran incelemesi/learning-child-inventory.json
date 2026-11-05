@@ -1,0 +1,1054 @@
+{
+  "baseline": "a123b7f, TestFlight25 source, 2026-11-05",
+  "scope": "child + parent/child-mode + parent/prova",
+  "method": "Source structural/behavior review; isolated local synthetic Expo-web UI at8088. No production data or code changes. Native devices/user study not tested.",
+  "screens": [
+    {
+      "id": "L01",
+      "route": "/child",
+      "audience_job": "Çocuk / izinli cihaz profili seçimi",
+      "priority": "P2",
+      "current_problem": "Profil seçimi anlaşılır; hiç profil yok durumunda yalnız bekleme metni, çocuğun yapabileceği sonraki adım yok.",
+      "proposed_change": "Yetişkine gösterilecek bağlantı/cihaz adı ve son eşleşme durumunu ekle; tek izinli profilde gereksiz ikinci karar sunma.",
+      "acceptance": "Boş izin listesinde çocuk yeniden deneme ile yetişkinden yardım istemeyi ayırt eder.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/index.tsx:19",
+      "perspectives": "duygusal: bekleme belirsizliği; pedagojik: okumaya yeni başlayanlar için avatar+sesli açıklama; eğitmen: hesap ile çocuk ayrımı; mimari: değişen izin listesi canlı güncelleme korunur; tasarım: tek adım",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/index.tsx",
+      "source_exists": true,
+      "rendered_viewports": [],
+      "rendered_state_excerpt": [],
+      "screenshots": [],
+      "observed": "source-only / no representative populated render",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L02",
+      "route": "/child/pin",
+      "audience_job": "Çocuk / güvenli giriş",
+      "priority": "P2",
+      "current_problem": "Cihaz PIN ekranı PinEntry kullanırken veli telefonunda standart Field kullanılıyor. PIN unutma yardımı metinsel.",
+      "proposed_change": "Tek çocuk PIN bileşeni; ad/avatar ve dört nokta; yanlış denemede sakin açıklama, yetişkinden yardım, iptal.",
+      "acceptance": "İki giriş yolu aynı tuş ve yardım modelini kullanır; engelleme süresi anlaşılırdır.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/pin.tsx:44",
+      "perspectives": "duygusal: hata utandırmaz; pedagojik: rakam okuma; eğitmen: bağımsız giriş; mimari: server PIN sınırları korunur; tasarım: tutarlı kontrol",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/pin.tsx",
+      "source_exists": true,
+      "rendered_viewports": [],
+      "rendered_state_excerpt": [],
+      "screenshots": [],
+      "observed": "source-only / no representative populated render",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L03",
+      "route": "/child/today",
+      "audience_job": "Çocuk / gününü ve sıradaki adımı görmek",
+      "priority": "P1",
+      "current_problem": "Sabit onaylı oda korunuyor. Ana görev alanı tamamlandı dediğinde atanmış Prova yalnız alttaki sayaçta kalabiliyor. Odam eylemi görünmeyen tercihlere götürüyor.",
+      "proposed_change": "Sıradaki adımı görev/ödev/Prova önceliğiyle açıklayan ortak öneri kuralı öner; yetişkinin verdiği sırayı koru. Oda görselini yeniden çizme.",
+      "acceptance": "Görevler tamam ama Prova bekliyorsa tüm gün bitti izlenimi verilmez; aynı çocuk telefon/tablette aynı durumu görür.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/room/child-home.tsx:44",
+      "perspectives": "duygusal: başarı ile bekleyen iş çelişkisi; pedagojik: tek sonraki adım; eğitmen: ödev/prova ayrımı; mimari: ortak durum özeti; tasarım: oda korunur",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/today.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Merhaba Synthetic child!\n2\nOdamı düzenle\nEbeveyn\nSıradaki adımım\nBugünkü adımların tamam!\nEmeğinin tadını çıkar. Yarın yeni bir gün.\nBugünkü adımlarım\n1 tamamlandı\n0 onayda\n0 sırada\nBirlikte hedefimiz\nHedef seç ›\nHaftalık ilerlemem\nTakvimim\nDünyam\nGörevler\nProva (1)\nKoleksiyon"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-today-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-today-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L04",
+      "route": "/child/week",
+      "audience_job": "Çocuk / görev haftası",
+      "priority": "P1",
+      "current_problem": "Tek gün görevleri okunuyor; returned durumu approved/done dışındaki her şeyle birlikte tamamlanmadı gösteriliyor. Görevler salt okunur, neden geri geldiği yok.",
+      "proposed_change": "İade/düzeltme istenen görev için nedeni ve yeniden deneme yolunu göster; haftalık ilerleme ile takvim farkını açıkla.",
+      "acceptance": "Geri gönderilmiş görev Onay bekliyor/Tamamlanmadı ile karışmaz; uygun günün görevine ulaşılır.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/week.tsx:83",
+      "perspectives": "duygusal: emeği yok saymama; pedagojik: düzeltilebilir geri bildirim; eğitmen: durum anlamı; mimari: tek durum eşleme; tasarım: rozet+metin",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/week.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Haftam\nPzt\n2\nSal\n3\nÇar\n4\nPer\n5\nCum\n6\nCmt\n7\nPaz\n8\n5 Kasım Perşembe · Bugün\nSynthetic reading\nOnaylandı"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-week-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-week-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L05",
+      "route": "/child/calendar",
+      "audience_job": "Çocuk / ders ödev kurs ve çanta",
+      "priority": "P2",
+      "current_problem": "Aynı takvim bileşeni çocukMode ile çalışıyor. Canlı boş gün görünümünde çok sayıda haftalık boş satır ve ayrı ödev paneli oluşuyor; çocuk adına tekrar filtre gösteriliyor.",
+      "proposed_change": "Çocuk için bugün/yarın yapılacaklar önce; günlerde ders ve ödev yoğunluğu; kişisel cihazda çocuk filtresi kaldırılmış ortak adaptasyon. Saatli ders ve tarihli ödev farklı ikon/başlık.",
+      "acceptance": "Çocuk yarın hangi kitap ve ödevi hazırlayacağını tek görünümden anlar; tablo/sürükleme ayrıntısı ebeveyn takvim raporuyla ortak.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/calendar.tsx:1",
+      "perspectives": "duygusal: yapılabilir yük; pedagojik: zaman kavramı; eğitmen: ders/ödev farkı; mimari: tek takvim modelini koru; tasarım: yaşa göre öncelik",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/calendar.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Takvimim\nKüçük adımlar, güzel bir hafta.\nTakvim\nDers programı\nKasım 2026\nBugün\nPzt\n2\nSal\n3\nÇar\n4\nPer\n5\nCum\n6\nCmt\n7\nPaz\n8\n5 Kasım Perşembe\n0 ders · 0 etkinlik\nSynthetic child · Çanta listesi\nBugün için alan var\nDers programına bakabilir, derslerini düzenleyebilirsin.\nDers programı\nÖdev ve çalışmalar\nSynthetic child\nHaftaya bakış\n2 Pazartesi\nDers vey"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-calendar-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-calendar-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L06",
+      "route": "/child/collection",
+      "audience_job": "Çocuk / başarı hatıraları",
+      "priority": "P2",
+      "current_problem": "Kazanılan/kilitli etiketleri var; kazanma koşulu, kişisel ilerleme, sıradaki küçük adım kartta yok. Canlı fixture boş rozet durumunu gösterdi; dolu raf kaynakla incelendi.",
+      "proposed_change": "Rozette neyi kutladığı, nasıl kazanıldığı ve kişisel ilerleme; tüm kilitleri gösterip eksiklik hissi yaratma.",
+      "acceptance": "Rozeti açan çocuk neyi başardığını veya hangi davranışı sürdüreceğini söyleyebilir; sosyal karşılaştırma eklenmez.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/collection.tsx:42",
+      "perspectives": "duygusal: olumlu öz yeterlik; pedagojik: süreç odaklı; eğitmen: anlamlı davranış; mimari: koşul server kaynaklı; tasarım: küçük hedef rafı",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/collection.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Koleksiyonum\nİlk rozetine doğru\nKüçük adımların burada hatıraya dönüşecek. Kazandığın rozetleri bu rafta biriktireceksin."
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-collection-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-collection-1280.png"
+      ],
+      "observed": "rendered empty/locked state only; populated source-only",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L07",
+      "route": "/child/goal",
+      "audience_job": "Çocuk / ödül hedefi seçimi",
+      "priority": "P2",
+      "current_problem": "Ödül bedeli var ama mevcut yıldız ve yeni hedefe kalan fark seçim ekranında yok; seçme sonrası onay düğmesi listenin sonunda.",
+      "proposed_change": "Mevcut/hedef yıldız farkı, hedef değişince birikimin kalacağı ve harcama olmadığı açık; sabit seçim özeti+tek onay.",
+      "acceptance": "Uzun listede seçilen hedef ve onay görünür; yıldız şimdi harcanmaz bilgisi korunur.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/goal.tsx:49",
+      "perspectives": "duygusal: gerçekçi hedef; pedagojik: miktar karşılaştırma; eğitmen: çaba ve ödül dengesi; mimari: tekrar seçme idempotent; tasarım: karar özeti",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/goal.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Hedefini seç\nBir ödül seç, sonra aşağıdan onayla. Yıldızların şimdi harcanmaz.\nBirlikte hikâye okuyalım\n15\nParkta birlikte yürüyüş\n20\nVazgeç"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-goal-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-goal-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L08",
+      "route": "/child/room-preview",
+      "audience_job": "Çocuk / odasını kişiselleştirme",
+      "priority": "P1",
+      "current_problem": "Canlı ekranda Karakter/Oda/Dostum seçimi sunuluyor ama açıklama seçimlerin ana ekranı değiştirmediğini söylüyor; kaydetmek karşılıksız eylem.",
+      "proposed_change": "Bu sürümde işlevin adını Tercihlerim yap veya çalışmayan özelleştirme seçimini Odam menüsünden çıkarıp sonra yeniden sunmayı ayrı ürün kararı olarak değerlendir. Kullanıcının sabit oda kararı korunmalı.",
+      "acceptance": "Kaydedilen seçimin etkisi önceden ve sonradan görülebilir; etkisiz düğmeler çocuk için özelleştirme gibi sunulmaz.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/room-preview.tsx:41",
+      "perspectives": "duygusal: güven ve kontrol; pedagojik: eylem/sonuç; eğitmen: dikkat dağılmaması; mimari: saklanan tercih ve görünen sahne ayrımı; tasarım: dürüst affordance",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/room-preview.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Odamı düzenle\nGina’nın sıcak odası\nBu sürümde odada Gina maskotu yer alıyor. Karakter ve evcil hayvan tercihlerin saklanır; şimdilik ana ekranın görünümünü değiştirmez.\nKarakter\nOda\nDostum\nGüneşli odam\nBu oda hazır. Diğer oda temaları henüz seçilemiyor."
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-room-preview-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-room-preview-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L09",
+      "route": "/child/prova",
+      "audience_job": "Çocuk / atanmış çalışmaya başlama ve sonuç bulma",
+      "priority": "P1",
+      "current_problem": "Bekleyenler/tamamlananlar net; tamamlanan karışık sınav başlık sonucu yalnız MC doğru sayısını gösterip açık uçlu bekleyen incelemeyi liste özetinde bastırıyor.",
+      "proposed_change": "Soru türlerine göre sonucu ve değerlendirme durumunu birlikte göster; birincil kartta kısa hedef, tahmini/süreli ayrımı.",
+      "acceptance": "1 şıklı doğru/2 açık uçlu bekleyen sınav tamamı doğru gibi okunmaz; yeniden başlama ve devam etme net.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/prova/index.tsx:79",
+      "perspectives": "duygusal: erken yargı yok; pedagojik: süreç farkı; eğitmen: puanlanmamış ayrımı; mimari: son attempt sırası açık; tasarım: durum hiyerarşisi",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/prova/index.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Prova\nSeni bekleyen denemeler\nSynthetic image Prova\n1 soru · süresiz\nBaşla\nTamamlananlar\nSynthetic mixed Prova\nÇoktan seçmeli: 1 / 1 doğru\nSonucu ve geri bildirimi gör"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-prova-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-prova-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L10",
+      "route": "/child/prova/[examId]",
+      "audience_job": "Çocuk / yanıtlama, defter, teslim ve geri bildirim",
+      "priority": "P1",
+      "current_problem": "Açık uçlu notebook ile çoktan seçmeli çözüm iki farklı kabuk. Ara ver süreli sınavda süreyi durdurmuyor. Tümü cevaplıysa Bitir doğrudan gönderiyor. İmge küçük kalabiliyor; çizim araçları keşif gerektiriyor.",
+      "proposed_change": "Ortak çözücü başlık/gezinme; süreli çalışmada süre sürer uyarısı; son kontrol özeti; görsele bağımsız yakınlaştırma; defter araçları aşamalı açıklama.",
+      "acceptance": "Telefon/tablet/portrede aynı soru/context/cevap korunur; çizimde scroll yok; modal açıp kapama boyutu değiştirmez; tümü cevaplı teslim de son kontrol sunar.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/prova/[examId].tsx:597",
+      "perspectives": "duygusal: süre kaygısı ve kontrol; pedagojik: soru görünürlüğü; eğitmen: teslim öncesi kontrol; mimari: journal/revision/serialwrites korunur; tasarım: tek çözüm kabuğu",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/prova/[examId].tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        768,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Deneme bitti!\nÇabanı tamamladın. Şimdi küçük bir mola verebilirsin.\nÇoktan seçmeli: 1 / 1 doğru\nAçık uçlu cevaplarını ebeveynin inceleyecek.\nGeri bildirimi göster\nProva'ya dön"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-exam-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-exam-1280.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-notebook-ink-portrait.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-notebook-symbols-portrait.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-notebook-source-picker.png"
+      ],
+      "observed": "rendered submitted mixed results and active open answer; tools interaction appended below",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ],
+      "interaction_evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/learning-notebook-interactions.json"
+    },
+    {
+      "id": "L11",
+      "route": "/parent/child-mode",
+      "audience_job": "Veli+çocuk / aynı telefonda çocuk oturumu",
+      "priority": "P2",
+      "current_problem": "Tek çocuk otomatik seçimi var. İki profil seçimi sonrası standart PIN input; sürekli uzun ebeveyn PIN açıklaması yeni/deneyimli ayrımı yapmıyor.",
+      "proposed_change": "İlk kullanım kısa açıklama; sonraki kullanım avatar+PIN; cihaz eşleme ile aynı cihazda çocuk modu ayrımını tek cümleyle koru.",
+      "acceptance": "Çocuk modunun cihaz eşleştirmesi gerektirmediği anlaşılır; PIN kurtarma yetişkin alanında.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/child-mode/index.tsx:75",
+      "perspectives": "duygusal: giriş sürtünmesi; pedagojik: aynı kontrol; eğitmen: güvenli devir; mimari: ayrı route guard testi; tasarım: progresif bilgi",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/child-mode/index.tsx",
+      "source_exists": true,
+      "rendered_viewports": [],
+      "rendered_state_excerpt": [],
+      "screenshots": [],
+      "observed": "source-only / no representative populated render",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L12",
+      "route": "/parent/child-mode/today",
+      "audience_job": "Çocuk / veli cihazında oda; veli / güvenli dönüş",
+      "priority": "P2",
+      "current_problem": "Oda aynı bileşeni kullanıyor; veliye dönüş normal PIN, unutma halinde parola/sosyal e-posta doğrulaması ayrı akış.",
+      "proposed_change": "Önce çocuk dünyası; çıkış kartında Bu adım yetişkin içindir ve kurtarma yolu; telefon ekranında yardım üst üste buton yığınına dönüşmesin.",
+      "acceptance": "Yanlış PIN, ağ kesilmesi, sosyal/e-posta hesapları dönüşü ayrı test; çıkış öncesi çocuk kilidi korunur.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/child-mode/today.tsx:58",
+      "perspectives": "duygusal: güvenli ayrım; pedagojik: yetişkin eylemi işareti; eğitmen: devir; mimari: UIlock/RLS ayrı; tasarım: tutarlı erişim",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/child-mode/today.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Merhaba Synthetic child!\n2\nOdamı düzenle\nEbeveyn\nSıradaki adımım\nBugünkü adımların tamam!\nEmeğinin tadını çıkar. Yarın yeni bir gün.\nBugünkü adımlarım\n1 tamamlandı\n0 onayda\n0 sırada\nBirlikte hedefimiz\nHedef seç ›\nHaftalık ilerlemem\nTakvimim\nDünyam\nGörevler\nProva (1)\nKoleksiyon"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-today-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-child-today-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L13",
+      "route": "/parent/prova",
+      "audience_job": "Veli / hazırlama, atanmışlar, sonuçlar",
+      "priority": "P2",
+      "current_problem": "Birleşik Prova hub önemli ilerleme. Aynı inceleme bekleyen sınav hem üst inceleme kuyruğunda hem gönderilenlerde tekrar. Diğer araçlar altında başka hazırlama yolları sürüyor.",
+      "proposed_change": "Ana akış Hazırla→Gönderilenler→İncele→Sonraki adım; araçları ilgili adım içinde bağlamsal aç. Tek sınav tek kart, durumla gruplama.",
+      "acceptance": "İlk kez gelen veli bir Prova oluşturmak için hangi girişe basacağını bilir; aynı iş aynı ekranda iki kart olmaz.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/index.tsx:112",
+      "perspectives": "duygusal: karar yükü; pedagojik: rehberli hazırlık; eğitmen: iş kuyruğu; mimari: canonical builder; tasarım: tek baskın CTA",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/index.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Prova\nBirlikte hazırlan, gelişimini gör.\nProva hazırla\nTümü\nSynthetic child\nSynthetic sibling\nProvalar\nSonuçlar\n1\nKütüphane\nİncelemeni bekliyor\nSynthetic mixed Prova\nSynthetic child · İncelemeni bekliyor\nÇocuğuna gönderilenler\nSynthetic image Prova\nSynthetic child · 1 soru · Süresiz\nAtandı\nSynthetic mixed Prova\nSynthetic child · 3 soru · Süresiz\nİn"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L14",
+      "route": "/parent/prova/builder",
+      "audience_job": "Veli / dört adımlı birleşik çalışma hazırlama",
+      "priority": "P1",
+      "current_problem": "Ders/konu önerileri var olan question_bank içeriğinden gelir; boş kütüphanede rehberlik kaybolur. Child query yalnız grade/avatar; okul/program/dönem kapsamı başlangıçta yok. Kaynak ekle ve manuel/shared yönleri ayrı panellere dağılıyor.",
+      "proposed_change": "Sınıf+dönem+program/kazanım bağlamını yönetilen katalogdan getir; okul adıyla yetenek çıkarsama. Yeni kullanıcıya öneri, deneyimliye hızlı şablon; tek taslak içinde soru/ortak içerik blokları.",
+      "acceptance": "Kütüphane boşken de uygun ders seçilebilir; çocuk değişiminde kapsam uyuşmazlığı kesin gösterilir; süre ve sayı rahat seçilir; taslak dönüşte korunur.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/learning/prova-builder.tsx:132",
+      "perspectives": "duygusal: başlangıç güveni; pedagojik: gelişim düzeyi; eğitmen: kapsam/kazanım; mimari: katalog ve bankayı ayır; tasarım: dört adım sade kalır",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/learning/prova-builder.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Prova hazırla\nTaslak kaydedildi\nNasıl bir Prova hazırlayalım?\nÖnce çocuğunu ve çalışmanın amacını seç.\n1\nBaşlangıç\n2\nKapsam\n3\nSorular\n4\nKontrol\nKimin için?\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nÇalışmanın amacı\nKonu pekiştirme\nYazılıya hazırlık\nDeneme\nDersler\nBirden fazla ders seçerek karma Prova hazırlayabilirsin.\nBaşka ders ekle\nEkl"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-builder-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-builder-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L15",
+      "route": "/parent/prova/question",
+      "audience_job": "Veli / tek soru oluşturma",
+      "priority": "P1",
+      "current_problem": "Ders, sınıf, konu, senaryo, tür, zorluk, soru, görsel, seçenekler, çözüm ve paylaşım tek uzun formda; ders/sınıf/konu elle; varsayılan doğru şık A. İlk kaydetme öncesi öğrenci/cevap önizlemesi yok.",
+      "proposed_change": "Builder kapsamını miras al; soru/görsel→yanıt/ölçüt→öğrenci önizlemesi şeklinde; doğru şık boş başlasın ve bilinçli seçilsin; paylaşım kaydetme sonrası.",
+      "acceptance": "Yanıt işaretlenmeden soru yayımlanamaz; açık uçlu beklenen cevap ve ölçüt net; uygulamadan çıkınca taslak kurtarılabilir.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/question.tsx:65",
+      "perspectives": "duygusal: hata endişesi azaltma; pedagojik: dil yükü; eğitmen: yanlış anahtar önleme; mimari: ortak taslak/veri doğrulama; tasarım: aşamalı form",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/question.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Ayarlar\nSoru ekle\nKendi sorunuzu ve doğru yanıtını kütüphaneye ekleyin.\nDers\nSınıf\nKonu\nSenaryo (isteğe bağlı)\nÇoktan seçmeli\nAçık uçlu\nKolay\nOrta\nOrta üstü\nZor\nSoru\nSorunun görselleri\nFotoğraf veya kendi çizimini ekle. En fazla 3 görsel. Seçtiğin dosyalar, soruyu kaydedene kadar yalnız bu cihazda kalır.\nFotoğraf seç\nÇizim yap\nA\nA seçeneği\nB\nB seçe"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-question-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-question-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L16",
+      "route": "/parent/prova/shared-source",
+      "audience_job": "Veli / ortak metin-görsele bağlı sorular",
+      "priority": "P2",
+      "current_problem": "Üç adım var ve builder’a eklenebiliyor; bağımsız rota ikinci bir ürün hissi veriyor. Ortak içerik terimleri senaryo ile karışabilir.",
+      "proposed_change": "Builder içinde Ortak içerik bloğu alt akışı; kaynak başlığı+hangi soruların bağlı olduğu sabit; sürüm/yeniden kullanım inceleme sırasında özet.",
+      "acceptance": "Tek prova içerisinde bağımsız soru ile 2–12 ortak kaynak sorusu birlikte düzenlenir; grupta sıra ve kaynak ilişkisi korunur.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/learning/shared-question-wizard.tsx:648",
+      "perspectives": "duygusal: yönünü kaybetmeme; pedagojik: okuma yükü; eğitmen: ortakstimulus bütünlüğü; mimari: immutable sürüm; tasarım: inline blok",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/shared-source.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Birlikte düşünülen sorular\n1\nOrtak içerik\n2\nSorular\n3\nÖnizleme\nBir metin, çizim veya fotoğraf ekleyin; aynı içeriğe bağlı 2–12 soru hazırlayın.\nDers\nSınıf\nİçeriğin başlığı\nOrtak metin\nSoruların birlikte kullanacağı metni veya görseli ekleyin. Cevapları buraya yazmayın.\nSorunun görselleri\nFotoğraf veya kendi çizimini ekle. En fazla 3 görsel. Seçtiği"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-shared-source-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-shared-source-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L17",
+      "route": "/parent/prova/library",
+      "audience_job": "Veli / incelenmiş içeriği edinme",
+      "priority": "P2",
+      "current_problem": "Kütüphaneye doğrudan gelince önce Prova hazırla yönü, boş koleksiyon ve katkı bilgileri aynı ekranda. Satın alınan/eklenen içerik ile hazır paket ayrımı zihinsel yük.",
+      "proposed_change": "Çocuğa uygun içerik, ailemdeki içerik ve katkılarım ayrı sekme/filtre; hak ne zaman harcanır seçim öncesi özet; boş state filtre/erişim/yayın eksikliğini ayrı anlatsın.",
+      "acceptance": "Veli edinme ile taslağa ekleme farkını ve kalan hakkı bilir; aynı içerik tekrar hak tüketmez.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/library.tsx:145",
+      "perspectives": "duygusal: kota güveni; pedagojik: uygun içerik; eğitmen: kalite etiketi; mimari: acquisition journal korunur; tasarım: keşfet/kullan ayrımı",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/library.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Ayarlar\nGINA kütüphanesi\nİncelenmiş soruları ailenizin soru kütüphanesine ekleyin.\n5 soru ekleme hakkı\nAynı soruyu yeniden eklemek ikinci kez hak kullanmaz. Eklediğiniz sorular ailenizin kütüphanesinde kalır.\nHazır çalışmalar\nProvanın sınıfına ve derslerine uygun, incelenmiş soru paketleri.\nÇocuğuna uygun bir Prova hazırla\nÖnce çocuğu, sınıfı ve de"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-library-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-library-1280.png"
+      ],
+      "observed": "rendered empty/locked state only; populated source-only",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L18",
+      "route": "/parent/prova/catalog",
+      "audience_job": "Veli / resmî okul senaryosuna uygun dağılım seçme",
+      "priority": "P2",
+      "current_problem": "Kaynak/doğrulama uyarısı iyi; öğretim yılı serbest alan ve çok seçeneğin ilk adımda yığılması; senaryonun okulca seçildiğini veli ayrıca doğruluyor.",
+      "proposed_change": "Okul duyurusu/öğretmen seçimi bilgisi varsa ön doldur; yıl kontrollü seçim; sınıf+dönem+yazılı özet; resmîlik iddiası kaynak ve sürümle sınırlı.",
+      "acceptance": "Okulunun kullandığı senaryo bulunamazsa soru üretildi sanmaz; manuel dağılıma geçince bağlamı korunur.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/catalog.tsx:304",
+      "perspectives": "duygusal: kesinlik yanılsaması önleme; pedagojik: program uyumu; eğitmen: kaynak geçerliliği; mimari: sürüm/hash; tasarım: kademeli seçim",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/catalog.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Okul senaryosunu seç\n1 / 3 · Çocuk ve ders\n1\nÇocuk ve ders\n2\nSenaryo seçimi\n3\nSon bir bakış\nÇocuğunun sınıfına uygun yayımlanmış dağılımları gösteririz. Okulunun hangi senaryoyu kullanacağını öğretmeninin duyurusundan kontrol et.\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nDers\nMatematik\nTürkçe\nFen Bilimleri\nSosyal Bilgiler\nDin Kültürü ve A"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-catalog-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-catalog-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L19",
+      "route": "/parent/prova/blueprint",
+      "audience_job": "Veli / dağılım şablonu hazırlama",
+      "priority": "P2",
+      "current_problem": "Senaryo ekle adı öğrenci hikâye senaryosu ile karışabilir; ilk açıklama bunu çözüyor fakat uzun. Konu adları serbest giriş, soru üretmediği ayrı açıklama.",
+      "proposed_change": "Adı Soru dağılımı; konuları katalog/kazanımdan seç; kaynak isteğe bağlı panel; kaç soru hangi kazanım görsel dağılım.",
+      "acceptance": "Kaydet sonrası şablonun hangi Prova’da kullanılacağı tek eylemle belli; soru oluşturulduğu sanılmaz.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/blueprint.tsx:287",
+      "perspectives": "duygusal: belirsizlik; pedagojik: hedef görünürlüğü; eğitmen: kapsam dengesi; mimari: versioned blueprint; tasarım: dağılım tablosu",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/blueprint.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Senaryo ekle\n1 / 3 · Çocuk ve ders\n1\nÇocuk ve ders\n2\nSoru dağılımı\n3\nSon bir bakış\nOkulun açıkladığı senaryodaki konuları ve soru sayılarını gir. Bu kayıt soru üretmez; Prova hazırlarken kullanılacak bir dağılım şablonudur.\nİncelenmiş kaynaklardan seç\nSynthetic child\n5. sınıf\nSynthetic sibling\n5. sınıf\nDers\nDers programından seçebilir veya dersin a"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-blueprint-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-blueprint-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L20",
+      "route": "/parent/prova/level",
+      "audience_job": "Veli / başlangıç çalışması atama",
+      "priority": "P1",
+      "current_problem": "Başlık Seviye tespiti; soru bankasından örneklem, standartlaştırılmış ölçüm değil. Varsayılan sınıf5, konu başına/en fazla sayıları input; Oluştur ve ata tek adım.",
+      "proposed_change": "Başlangıç çalışması dilini ve sınırlılıkları kullan; çocuk sınıfını otomatik; sayı seçiciler; önizleme ve sonra atama.",
+      "acceptance": "Veli sonucu tanı/seviye belgesi sanmaz; yanlış sınıfa atama önlenir; tek tık üretim-atama ayrılır.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/level.tsx:41",
+      "perspectives": "duygusal: etiketleme yok; pedagojik: örneklem sınırı; eğitmen: geçerlik; mimari: scope validation; tasarım: tekdenemenin anlamı",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/level.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Ayarlar\nSeviye tespiti\nFarklı konulardan bir denemeyle başlangıç düzeyini görün.\nSeçtiğiniz ders ve sınıfın konularından, farklı zorluklarda sorular seçilir. Sonuçlar konu ilerlemesine yansır.\nKimin için?\nSynthetic child\nSynthetic sibling\nKütüphanedeki dersler\nFen · 5. sınıf\nMatematik · 5. sınıf\nDers\nSınıf\nKonular\nTüm konular\nKonu başına soru\nEn fa"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-level-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-level-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L21",
+      "route": "/parent/prova/booklet",
+      "audience_job": "Veli / yazdırılabilir çalışma",
+      "priority": "P2",
+      "current_problem": "Kitapçıktaki soru altkümesini seçmek zor; kaynak library/exam, alan/konu filtreleri var ama soru düzeyinde önizleme yok. Çözüm yolları varsayılan açık.",
+      "proposed_change": "Öğrenci nüshası ve veli cevap anahtarı ayrı çıktı seçimi; taslaktan kitapçık üretme; sayfa önizlemesi ve seçilen sorular.",
+      "acceptance": "Çocuğa gönderilen PDF yanlışlıkla cevapları içermez; ortak kaynak ayrı sayfada kaybolmaz; kaynak sorular eksikse çıktı engellenir.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/booklet.tsx:57",
+      "perspectives": "duygusal: yanlış paylaşımı önleme; pedagojik: okunur kâğıt; eğitmen: doğru sınav nüshası; mimari: aynı snapshot; tasarım: print preview",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/booklet.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Ayarlar\nKitapçık\nSoruları yazdırılabilir bir kitapçık olarak hazırlayın.\nSoruları yazdırılabilir bir kitapçığa (A4 PDF) dönüştür; cevap anahtarı son sayfada.\nKütüphaneden\nDenemeden\nFen · 5. sınıf\nMatematik · 5. sınıf\nDers\nSınıf\nKitapçık başlığı\nCevap anahtarına çözüm yollarını ekle\n0 soru seçildi\nKitapçığı oluştur\nProva'ya dön"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-booklet-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-booklet-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L22",
+      "route": "/parent/prova/groups",
+      "audience_job": "Veli / ortak Prova kaydı, rıza, sonuç",
+      "priority": "P2",
+      "current_problem": "Açık sıralama onayı ve eşit puanda eşit sıra olumlu. Tek ekran kayıt/kota/katalog/rıza/sıralama/raporla çok yüklü olabilir; dolu etkinlik canlı seed yok.",
+      "proposed_change": "Önce çalışmanın amacı ve kişisel gelişim; sıralama ikincil/isteğe bağlı; takvim, sınıf/program, katılım sonucu ayrı aşamalar; çocuğa rekabet baskısı taşınmamalı.",
+      "acceptance": "Sıralama kapalıyken katılım mümkün; hız puanı olmaz; değerlendirme bekleyen sonuç geçici etiketli; yetki testleri ayrıca.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/groups.tsx:375",
+      "perspectives": "duygusal: karşılaştırma baskısı; pedagojik: kişisel gelişim; eğitmen: eşdeğer koşul; mimari: consent/audit; tasarım: aşamalı kayıt",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/groups.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Ayarlar\nBirlikte Prova\nAynı düzey, aynı sorular; her çocuk için kendi gelişim yolu.\nBirlikte keşfet, kendinle yarış\nÇocuğun kendi sınıf düzeyindeki çocuklarla aynı soru sürümünü çözer. Katılımı sen seçersin; sonuçları birlikte inceleyebilirsiniz. Bu çalışma evde yapılan bir provadır, gözetimli veya resmî sınav değildir.\nBu ay 0 / 0 katılım\nYeni kat"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-groups-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-groups-1280.png"
+      ],
+      "observed": "rendered empty/locked state only; populated source-only",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L23",
+      "route": "/parent/prova/progress",
+      "audience_job": "Veli / öğrenme kanıtı ve sonraki adım",
+      "priority": "P2",
+      "current_problem": "Farklı soru karşılaştırılmaz ve az gözlem uyarıları iyi. Grafik adet gösteriyor; yüzdelik başarı eğrisi sanılmaması için anlamı ilk bakışta açık olmalı. Konu listesi veri büyüyünce uzar.",
+      "proposed_change": "Grafik başlığında çözülen soru sayısı ve değerlendirme kapsamı; az veri durumunda küçük sonraki adım; konu bazlı filtre/kanıta erişim.",
+      "acceptance": "Aynı sorunun tekrarları ayrı sayılır; bekleyen yanlış sayılmaz; her çıkarım kanıt sorusuna açılır.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/learning/learning-progress-view.tsx:314",
+      "perspectives": "duygusal: gelişim etiketlenmez; pedagojik: deneyimden gözlem; eğitmen: kanıt sınırı; mimari: cohort/scope isolation; tasarım: anlamlı grafik",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/progress.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Gelişim\nSynthetic child için öğrenme özeti\nBu çalışmalarda neler gördük?\nSynthetic child\nSynthetic sibling\n7 gün\n30 gün\n90 gün\nTüm dersler\n3\nfarklı soru\n0\ntekrar\n1\ndeğerlendirme bekliyor\nÇalışmaların görünümü\n4\n3\n2\n1\n0\n7–11\nEki\n12–18\nEki\n19–25\nEki\n26 Eki\n1 Kas\n2–5\nKas\nDoğru 1\nKısmi 1\nYanlış 0\nBoş 0\nFarklı sorular doğrudan karşılaştırılmaz. Bekleyen"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-progress-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-progress-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L24",
+      "route": "/parent/prova/attempt/[attemptId]",
+      "audience_job": "Veli / sonuç özeti ve incelemeye başlama",
+      "priority": "P1",
+      "current_problem": "Canlı fixture Puan95/100 gösterirken açık uçlu1/2puanlandı diyor: üst puan nihai gibi. AIpuanla/çözümleriincele/tekrar/plan ayrı buton yolları.",
+      "proposed_change": "Önce inceleme durumu; eksik varken Ara sonuç etiketi; tek İncelemeyi tamamla eylemi; sonrası özet ve bir önerilen çalışma; AI asistanı inceleme içinde.",
+      "acceptance": "Eksik değerlendirme varsa nihai başarı ilan edilmez; AI önerisinin veli onayı ve kaynak kapsamı açık.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/attempt/[attemptId].tsx:144",
+      "perspectives": "duygusal: erken yargı yok; pedagojik: geri bildirim süreci; eğitmen: puan geçerliliği; mimari: status/score ayrı; tasarım: karar kuyruğu",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/attempt/[attemptId].tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Ayarlar\nSynthetic mixed Prova\nSynthetic child · Fen / Matematik 5. sınıf\nPuan: 95 / 100\nÇoktan seçmeli: 1 / 1 doğru\nAçık uçlu: 1 / 2 puanlandı\nAçık uçlu cevapların Yapay zekâyla puanlanması Gina Pro'da var; şimdilik elle puanlayabilirsin.\nÇözümleri incele\nÇalışma planları\nKısa tekrar günleri planla\nÇalışma planı oluşturma Gina Pro'da var.\nProva'ya "
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-attempt-item-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L25",
+      "route": "/parent/prova/review/[attemptId]",
+      "audience_job": "Veli / yanıtı görüp değerlendirme",
+      "priority": "P1",
+      "current_problem": "Şıklı soru kaynakta ve canlıda doğru/çocuk seçimi ile ayrı sunuluyor, boş defter zorunlu değil: iyi. Açık uçlu telefonda ortak metin Soruyu göster arkasında; notlu metin cevapta büyük boşluk ve küçük tuval; 0–100 çıplak sayı ölçüt sunmuyor.",
+      "proposed_change": "Soru+ortak kaynak bağlamı ilk bakışta; cevap türüne uyarlanan düzen; ölçüt/rubrik destekli skor+tek somut geri bildirim; isteğe bağlı çizimli not.",
+      "acceptance": "Veli hangi soru/cevap/anahtar üzerinde olduğunu aynı anda görür; çocuğun cevabı değişmez; AI uygulamak kaydetmek değildir.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/components/learning/parent-review-workspace.tsx:399",
+      "perspectives": "duygusal: yapıcı geri bildirim; pedagojik: düzeltme fırsatı; eğitmen: rubrik tutarlılığı; mimari: ayrı notlayer/revision; tasarım: yanıt türüneuyarlama",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/review/[attemptId].tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        768,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Synthetic child · Çözüm\n1 / 3\nÖzete dön\nHangisi kendi ışığını üretir?\nA\nGüneş\nÇocuğun seçtiği cevap\nDoğru cevap\nB\nAy\nÇözüm açıklaması\nÇizimli not ekle\nDeğerlendirmem\nDoğru · A\nÇocuğa geri bildirim\nKaydettiğin notlar ve geri bildirim çocuğuna görünür.\nKaydedildi\nKaydet ve sonraki"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-review-item-1280.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-review-mc-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-review-open-phone.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-review-open-portrait.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-review-open-tablet.png"
+      ],
+      "observed": "rendered multiple-choice and open-answer; question-picker interaction; phone/tablet/portrait",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L26",
+      "route": "/parent/prova/repeat/[attemptId]",
+      "audience_job": "Veli / kanıta dayalı tekrar takvimi",
+      "priority": "P2",
+      "current_problem": "Yanlış/kısmi sorular seçimi ve gün planı aynı uzun akış; eski soru yeniProva ile çözülmüşse önerilmiyor olması iyi.",
+      "proposed_change": "Seçili sorular→gün/süre→sonkontrol mini akış; öğrenciye anlaşılır kısa çalışma başlığı; ortak içeriği bölmeden seç.",
+      "acceptance": "Aynı tekrar iki kez kaydedilmez; çocuğun takvim yükü görülür; çalışma kaynak sınavla ilişkili kalır.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/repeat/[attemptId].tsx:36",
+      "perspectives": "duygusal: toparlanabilir hata; pedagojik: aralıklı çalışma; eğitmen: kanıtlı ihtiyaç; mimari: repeat journal; tasarım: mini wizard",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/repeat/[attemptId].tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Ayarlar\nTekrar günleri\nSynthetic child ile küçük bir tekrar\nİncelediğiniz soruları seçin, kısa çalışma günlerini birlikte belirleyin.\n1 · Birlikte bakacağınız sorular\nSon 90 günde yanlış veya veli incelemesinde kısmen doğru bulunan sorular. Daha yeni bir Prova’da yanıtlanan sorular yeniden önerilmez.\n2. soru · Matematik · Kısmen doğru\nOkul bahçesi\n"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-repeat-item-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-repeat-item-1280.png"
+      ],
+      "observed": "rendered Expo-web + source",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L27",
+      "route": "/parent/prova/plan/[planId]",
+      "audience_job": "Veli / AI çalışma planını düzenleyip uygulama",
+      "priority": "P2",
+      "current_problem": "Yedi günlük AI plan ile tekrar takvimi iki alternatif; görev fikirleri ve arşiv eylemi uzakta. Canlı planID yok, kaynak denetimi.",
+      "proposed_change": "Aynı Planla yüzeyinde mevcut takvimle çatışma, süre ve günlük yük; AIplan öneri olarak başlar, veli seçerek uygular; arşiv ikincil.",
+      "acceptance": "Gün seçmeden plan takvime yazılmaz; eski plan arşivlenirken atanmış işler silinmez; manuel düzenleme kolay.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/plan/[planId].tsx:97",
+      "perspectives": "duygusal: aşırıyük yok; pedagojik: kısa uygulanabilir adım; eğitmen: içerikle ilişki; mimari: plan/tasks ayrımı; tasarım: takvimüstündedüzenleme",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/plan/[planId].tsx",
+      "source_exists": true,
+      "rendered_viewports": [],
+      "rendered_state_excerpt": [],
+      "screenshots": [],
+      "observed": "source-only / no representative populated render",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    },
+    {
+      "id": "L28",
+      "route": "/parent/prova/share",
+      "audience_job": "Veli / kendi içeriğini incelemeye gönderme",
+      "priority": "P2",
+      "current_problem": "Hak/kisisel veri onayı ve ödül bilgisi olumlu; doğrudan rota yalnız önce soru seç placeholderı. Kaydederek paylaş ile aynı haklar ekranlarda tekrarlanabiliyor.",
+      "proposed_change": "Soru kaydetme ardından tek Katkı gönder adımı; ne paylaşılacak, kişisel veri, inceleme durumu ve hakkın ne zaman verileceği önizleme.",
+      "acceptance": "Reddetme gerekçesi ve düzeltme yolu görünür; paylaşım aileye kaydetmeyle karışmaz; rıza ayrı.",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/share.tsx:224",
+      "perspectives": "duygusal: adil karşılık; pedagojik: içerikkalitesi; eğitmen: lisans/yanıt anahtarı; mimari: inceleme yayınayrı; tasarım: tek onay",
+      "review": "source-reviewed; rendering status below",
+      "state_note": "Required acceptance test checklist, not an assertion that each state exists or was executed.",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/share.tsx",
+      "source_exists": true,
+      "rendered_viewports": [
+        390,
+        1280
+      ],
+      "rendered_state_excerpt": [
+        "Ayarlar\nKütüphaneye katkı\nÖnce paylaşacağın soruyu seç\nProva bölümünden kendi sorunu açıp paylaşmayı seç. İçeriğin tamamını kontrol ettikten sonra incelemeye gönderebilirsin.\nProva"
+      ],
+      "screenshots": [
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-share-390.png",
+        "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/learning-prova-share-1280.png"
+      ],
+      "observed": "rendered missing-selection state only; populated share source-only",
+      "required_test_states": [
+        "loading",
+        "empty",
+        "error",
+        "populated",
+        "pending-save",
+        "permission/entitlement"
+      ]
+    }
+  ],
+  "aliases": [
+    {
+      "route": "/parent/child-mode/calendar",
+      "alias_of": "/child/calendar",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/child-mode/calendar.tsx",
+      "type": "re-export",
+      "review": "same canonical UI; distinct guard/session requires tests"
+    },
+    {
+      "route": "/parent/child-mode/collection",
+      "alias_of": "/child/collection",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/child-mode/collection.tsx",
+      "type": "re-export",
+      "review": "same canonical UI; distinct guard/session requires tests"
+    },
+    {
+      "route": "/parent/child-mode/goal",
+      "alias_of": "/child/goal",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/child-mode/goal.tsx",
+      "type": "re-export",
+      "review": "same canonical UI; distinct guard/session requires tests"
+    },
+    {
+      "route": "/parent/child-mode/room-preview",
+      "alias_of": "/child/room-preview",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/child-mode/room-preview.tsx",
+      "type": "re-export",
+      "review": "same canonical UI; distinct guard/session requires tests"
+    },
+    {
+      "route": "/parent/child-mode/week",
+      "alias_of": "/child/week",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/child-mode/week.tsx",
+      "type": "re-export",
+      "review": "same canonical UI; distinct guard/session requires tests"
+    },
+    {
+      "route": "/parent/child-mode/prova",
+      "alias_of": "/child/prova",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/child-mode/prova/index.tsx",
+      "type": "re-export",
+      "review": "same canonical UI; distinct guard/session requires tests"
+    },
+    {
+      "route": "/parent/child-mode/prova/[examId]",
+      "alias_of": "/child/prova/[examId]",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/child-mode/prova/[examId].tsx",
+      "type": "re-export",
+      "review": "same canonical UI; distinct guard/session requires tests"
+    },
+    {
+      "route": "/parent/prova/exam",
+      "alias_of": "/parent/prova/builder",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/exam.tsx",
+      "type": "redirect-preserves-groupId"
+    },
+    {
+      "route": "/parent/prova/generate",
+      "alias_of": "/parent/prova/builder",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/parent/prova/generate.tsx",
+      "type": "redirect"
+    }
+  ],
+  "layouts": [
+    {
+      "route": "/child/_layout",
+      "type": "guard/layout",
+      "source_file": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/_layout.tsx",
+      "evidence": "/Users/enes/.codex/worktrees/gina-library-access/gina/apps/mobile/src/app/child/_layout.tsx:15",
+      "review": "source-only device-role guard, 30sec device-session poll; revoked physical device not executed in this audit"
+    }
+  ],
+  "coverage": {
+    "source_routes": 38,
+    "missing_routes": [],
+    "canonical_screens": 28,
+    "aliases": 9,
+    "layouts": 1,
+    "physical_native_devices_tested": false,
+    "browser": "separate ephemeral headless Chrome, Expo-web8088, syntheticlocalSupabase59215",
+    "visually_inspected_screenshot_files": [
+      "learning-prova-builder-390.png",
+      "learning-prova-builder-1280.png",
+      "learning-prova-question-390.png",
+      "learning-prova-progress-1280.png",
+      "learning-child-today-1280.png",
+      "learning-notebook-portrait.png",
+      "learning-notebook-ink-portrait.png",
+      "learning-notebook-symbols-portrait.png",
+      "learning-notebook-source-picker.png",
+      "learning-review-open-phone.png"
+    ],
+    "rendering_note": "Other route screenshots captured and body/controls inspected, not all bitmap files visually opened. Auth/device-role variants and all modal combinations not exhaustively exercised. 1440 desktop not separately captured in this branch;1280 browser is tablet-width only."
+  }
+}

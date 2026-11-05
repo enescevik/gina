@@ -1,0 +1,21 @@
+{
+  "environment": "empty-disposable-database",
+  "results": [
+    {
+      "check": "same_request_pause_one_revision_one_change",
+      "passed": true
+    },
+    {
+      "check": "concurrent_resume_and_archive_one_winner",
+      "passed": true
+    },
+    {
+      "check": "archive_and_submission_serialize_without_partial_work",
+      "passed": true
+    },
+    {
+      "check": "edit_and_submission_freeze_one_consistent_version",
+      "passed": true
+    }
+  ]
+}

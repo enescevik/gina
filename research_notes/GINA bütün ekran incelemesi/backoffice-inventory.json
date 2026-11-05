@@ -1,0 +1,1425 @@
+{
+  "scope": "Backoffice audit only",
+  "revision": "a123b7f",
+  "date": "2026-11-05",
+  "routes": [
+    {
+      "route": "/",
+      "primary_job": "Rolüne uygun girişe yönlendirme",
+      "source": "apps/backoffice/src/pages/index.tsx",
+      "line": 1,
+      "states": [
+        "Oturum yükleniyor",
+        "Rol yönlendirmesi"
+      ],
+      "priority": "P2",
+      "evidence": "source-reviewed redirect; successful sign-in reached dashboard",
+      "change": "Yönlendirmede rol eksikliği ile oturum yükleme ayrı gösterilmeli. Rolün yoksa oturumdan çık dışında doğru hesabı seçme ve yetki isteme yolu sunulmalı.",
+      "acceptance": "Oturumsuz, yetkisiz ve her operasyon rolü doğru başlangıca ulaşır; sonsuz yüklenme olmaz."
+    },
+    {
+      "route": "/sign-in",
+      "primary_job": "Yetkili operatörün giriş yapması",
+      "source": "apps/backoffice/src/pages/sign-in.tsx",
+      "line": 31,
+      "states": [
+        "Boş giriş",
+        "Gönderiliyor",
+        "Hatalı kimlik bilgisi",
+        "Yetkisiz mevcut oturum",
+        "Harici şifre yenileme"
+      ],
+      "priority": "P2",
+      "evidence": "source-reviewed + actual login successfully completed; no dedicated login screenshot",
+      "change": "Parola görünürlüğü yok; gönderimde düğme yazısı değişmiyor. Şifre yenileme genel aile web girişini yeni sekmede açıyor. Başarılı yenilemeden yönetim alanına geri dönüş açık olmalı; Cloudflare ve GINA girişinin neden ayrı olduğu kısa anlatılmalı.",
+      "acceptance": "Klavye ile giriş ve parola yenileme tamamlanır; yüklenme sesli duyurulur; ikinci kimlik adımı kullanıcıyı döngüye sokmaz."
+    },
+    {
+      "route": "/dashboard",
+      "primary_job": "Operatörün bugün yapılacak işi görmesi",
+      "source": "apps/backoffice/src/pages/dashboard.tsx",
+      "line": 51,
+      "states": [
+        "Sayaçlar",
+        "Paket dağılımı",
+        "AI tüketimi",
+        "Boş/hata/yükleme"
+      ],
+      "priority": "P1",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Aile/çocuk sayıları ve token toplamları ana içeriği kaplıyor; bekleyen destek, incelenecek sorular, başarısız AI/bildirim, yayın riski yok. Rol bazlı iş kuyruğu öne; kullanım sayıları ikincil özet olmalı.",
+      "acceptance": "Operatör tek ekranda en acil 3 işi, nedenini, bekleme süresini ve doğrudan açma eylemini görür. Hata varsa yükleniyor sonsuza kadar kalmaz.",
+      "observed_initial_text": "Panel\nGINA Aile\n2\nAile\n2\nÇocuk\n2\nEbeveyn\n0\nAktif cihaz\n0\nGlobal soru\nAktif mağaza abonelikleri (aile)\nBaşlangıç\t0\nPlus\t0\nPro\t0\nAktif komp'lar (aile)\nBaşlangıç\t0\nPlus\t0\nPro\t0\nEtkin pakete göre aileler\nBaşlangıç\t2\nPlus\t0\nPro\t0\nAI kullanımı (son 30 gün, tamamlanan özetler)\nModel\tAdet\tGirdi token\tÇıktı token\nclaude-sonnet-5-5\t1\t100\t100",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-dashboard-1440.png",
+      "viewports_observed": [
+        1440,
+        1280,
+        768
+      ]
+    },
+    {
+      "route": "/families",
+      "primary_job": "Aileyi bulup erişimini inceleme",
+      "source": "apps/backoffice/src/pages/families.tsx",
+      "line": 14,
+      "states": [
+        "Arama",
+        "100 satır liste",
+        "Boş sonuç",
+        "Paket/ödeme bağlantısı"
+      ],
+      "priority": "P2",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "En fazla 100 sonuç; liste bu sınıra ulaşıldığını söylemiyor. UUID her satırda baskın, 9 sütun yatay kayıyor. Arama alanının görünür/bağlı etiketi yok. Aile özeti, paket ve son etkinlik grupları; ID kopyalama ayrıntıda; sonuç sayısı ve sayfalama.",
+      "acceptance": "101 ailede ilk 100 tüm kayıt gibi sunulmaz. 768px görünümde aile adı/paket/eylem kaybolmaz; arama ekran okuyucuda adlandırılır.",
+      "observed_initial_text": "Aileler\nGINA Aile\n\nSalt okunur, asgari veri: aile adı, sayılar ve etkin paket. E-posta ile arama tam eşleşmedir ve e-posta gösterilmez.\n\nAra\nAile\tOluşturulma\tEbeveyn\tÇocuk\tCihaz\tPaket\tKaynak\tBitiş\t\n\nSynthetic family B\n46d08f70-3e1d-4918-a996-862a8baf44b5\n\t5 Kas 2026\t1\t0\t0\tBaşlangıç\tÜcretsiz\t—\tPaket ve ödeme\n\nSynthetic family A\n36c75545-6716-406c-a6a7-cf6dbaa70c75\n\t5 Kas 2026\t1\t2\t0\tBaşlangıç\tÜcretsiz\t—\tPaket ve ödeme",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-families-1440.png",
+      "viewports_observed": [
+        1440,
+        1280,
+        768
+      ]
+    },
+    {
+      "route": "/billing",
+      "primary_job": "Ailenin paket kaynağı ve mağaza durumunu açıklama",
+      "source": "apps/backoffice/src/pages/billing.tsx",
+      "line": 26,
+      "states": [
+        "Aile erişimi",
+        "Bildirim takibi",
+        "Aile seçimi",
+        "Mağazadan kontrol",
+        "Bekleyen kontrol",
+        "Geçmiş",
+        "İade açıklaması"
+      ],
+      "priority": "P2",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Aile listesi50, olay listesi50 sınırı açıklanıyor fakat sonraki sayfaya geçiş yok. Aile seçimi ile bildirim filtresi aynı URL durumuna bağlı; bekleyen kontrol geri yüklenince aile adı yerine UUID. Aile bağlamı sabit özet ve kaynak farkları zaman çizelgesiyle sunulmalı.",
+      "acceptance": "50 üzeri kayıt tarih/arama/sayfalama ile bulunur; geri yüklenen kontrol doğru aile adını gösterir; mağaza iptali, iade ve geçici hak karışmaz.",
+      "observed_initial_text": "Paketler ve ödemeler\nGINA Aile\n\nAilenin kullandığı paketi ve bu hakkın nereden geldiğini birlikte inceleyin.\n\nBilgileri yenile\nMağaza aboneliği olan aile\n0\nEtkin geçici hak\n0\nİşlenememiş bildirim\n0\nAile erişimi\nBildirim takibi\nAileyi bul\nAile adı veya kimliği\nAra\n\nEn fazla 50 aile gösterilir. Aramayla listeyi daraltabilirsiniz.\n\nSynthetic family A\nGINA Başlangıç\nBaşlangıç paketi\nSynthetic family B\nGINA Başlangıç\nBaşlangıç paketi\nÖnce bir aile seçin\n\nMağaza aboneliğini, geçici hakları ve güncel paket erişimini burada karşılaştırabilirsiniz.\n\nSon başarılı okuma: 5 Kas 2026 09:01. Görünür sekmede bilgiler düzenli yenilenir.",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-billing-1440.png",
+      "viewports_observed": [
+        1440,
+        1280,
+        768
+      ],
+      "observed_nested": [
+        "Synthetic family detail with no active store subscription"
+      ],
+      "nested_view_limit": "No store check or financial mutation executed."
+    },
+    {
+      "route": "/overrides",
+      "primary_job": "Geçici paket hakkı verme/sonlandırma",
+      "source": "apps/backoffice/src/pages/overrides.tsx",
+      "line": 23,
+      "states": [
+        "Aile arama",
+        "Hak verme",
+        "Hak sonlandırma",
+        "Belirsiz işlem",
+        "Aktif/pasif liste",
+        "Son30 işlem geçmişi"
+      ],
+      "priority": "P1",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Aramayla aile seçildikten sonra serbest UUID alanı isteniyor; varsayılan 90 gün, gerekçe tek satır; aile önce/sonra erişim önizlemesi yok. Aile kimliği saltokunur özet; 7/30/90gün+özel; gerekçe şablonu+not; etkili paket farkı onay öncesi gösterilmeli.",
+      "acceptance": "Yanlış aileye hak verme riski isim+ikinci bağlamla azaltılır. Süre, ücretsiz olduğu, mevcut mağaza hakkına etkisi açıkça doğrulanır; retry aynı işlem kimliğini korur.",
+      "observed_initial_text": "Geçici haklar\nGINA Aile\n\nAilelere verilen süreli paket haklarını ve işlem geçmişini yönetin. Her değişiklik gerekçesiyle kaydedilir.\n\nPaket hakkı ver\n\nAileye süreli Plus veya Pro erişimi verin. Bu işlem mağaza aboneliği oluşturmaz ve ücret tahsil etmez.\n\nAile\nAra\nAile kimliği\n\nÖnce Aileler sayfasından ya da aşağıdaki aramadan bir aile seçin.\n\nPaket\nPlus\nPro\nBitiş\nGerekçe\nPaket hakkı ver\nBitenleri de göster\n\nKayıt yok.\n\nSon denetim kayıtları\nZaman\tİşlem\tGerekçe\tYapan\n5 Kas 2026 08:51\tentitlement_overrides.delete\t—\tservice_role\n5 Kas 2026 08:50\tHak verildi\tIsolated local service acceptance\tservice_role",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-overrides-1440.png",
+      "viewports_observed": [
+        1440
+      ]
+    },
+    {
+      "route": "/ai",
+      "primary_job": "AI sağlayıcı/model ve paket davranışını yönetme",
+      "source": "apps/backoffice/src/pages/ai.tsx",
+      "line": 29,
+      "states": [
+        "Genel durdur/aç",
+        "Kaynak dosya limiti",
+        "Paket başına model/token",
+        "Model listesi",
+        "Yeni model"
+      ],
+      "priority": "P1",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Model/paket satırları doğrudan update; meşgul bayrağı ve taslak ayrılma koruması yok. Model durdurma sadece Evet/Hayır düğmesi; etkilenen paket gösterilmiyor. Yeni model yalnız ID/ad ile ekleniyor; görüntü/PDF desteği, maliyet, model testi, sürüm ve fallback sözleşmesi açıklanmıyor.",
+      "acceptance": "Model kapatmadan etkilenen akışlar/paketler listelenir; yeni sağlayıcı doğrulanmadan etkinleştirilmez; çift tıklama tek mantıksal değişiklik olur; alanlar etiketli, değişiklik geçmişi görünür.",
+      "observed_initial_text": "AI ayarları\nGINA Aile\nGenel AI anahtarı\nAçık\nAI'ı kapat (kill switch)\n\nKapalıyken hiçbir pakette AI çağrısı yapılmaz (app_settings 'ai.enabled').\n\nDosya, galeri ve kamera kaynakları\n\nBir analize eklenecek kaynak sayısı. Varsayılan 5; sunucu en fazla 10 dosya, toplam 20 sayfa ve 20 MB kabul eder. Her PDF en fazla 5 sayfa olabilir.\n\nEn fazla kaynak sayısı\n1 kaynak\n2 kaynak\n3 kaynak\n4 kaynak\n5 kaynak\n6 kaynak\n7 kaynak\n8 kaynak\n9 kaynak\n10 kaynak\n\nBirlikte analiz tek işlem hakkı kullanır. Prova’nın soru başına kotası değişmez. Gerçek AI tüketimi ve paket token sınırı ayrıca uygulanır.\n\nSınırı kaydet\nPaket bazlı ayarlar\nPaket\tModel\tAzami girdi token\tAzami çıktı token\tPrompt sürümü\tBu pakette açık\tGüncelleme\t\nBaşlangıç\t\n(model yok)\nClaude Haiku 5.5 (claude-haiku-5-5)\nClaude Sonnet 5.5 (claude-sonnet-5-5)\n\t\t\t\t\t2 Kas 2026 00:36\tKaydet\nPlus\t\n(model yok)\nClaude Haiku 5.5 (claude-haiku-5-5)\nClaude Sonnet 5.5 (claude-sonnet-5-5)\n\t\t\t\t\t2 Kas 2026 00:36\tKaydet\nPro\t\n(model yok)\nClaude Haiku 5.5 (claude-haiku-5-5)\nClaude Sonnet 5.5 (claude-sonnet-5-5)\n\t\t\t\t\t2 Kas 2026 00:36\tKaydet\nModeller\nModel kimliği\tGörünen ad\tSağlayıcı\tGirdi $/MTok\tÇıktı $/MTok\tAktif\nclaude-haiku-5-5\tClaude Haiku 5.5\tanthropic\t—\t—\tEvet\nclaude-sonnet-5-5\tClaude Sonnet 5.5\tanthropic\t—\t—\tEvet\nModel kimliği\nGörünen ad\nModel ekle",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-ai-1440.png",
+      "viewports_observed": [
+        1440,
+        1280,
+        768
+      ]
+    },
+    {
+      "route": "/operations",
+      "primary_job": "AI hatalarını ve kota davranışını yönetme",
+      "source": "apps/backoffice/src/pages/operations.tsx",
+      "line": 80,
+      "states": [
+        "Sağlayıcı sağlık",
+        "Kota matrisi",
+        "Son100işlem",
+        "Yeniden denemeye izin"
+      ],
+      "priority": "P1",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "En acil hatalar yerine kota düzenleme tablosu ilk sırada; son100işlem filtre/arama yok; UUID+ham hata kodu baskın; İncele formu üstte açılıyor ama fokus/kaydırma yok. Kuyruk durum/işlem / aile / tarih filtresiyle öne, politika ayrı ayarlar sekmesi; seçili işlem ayrıntısı bağlam içinde.",
+      "acceptance": "100 üzeri arızada kayıt bulunur; İncele sonrasında fokus seçiliolay başlığına gider; yeniden ücret riski+önceki istek durumu+son kontrol görünür; hiçbir çocuk cevabı gereksiz açılmaz.",
+      "observed_initial_text": "AI işlem merkezi\nGINA Aile\n\nÜretim durumunu ve işlem sınırlarını izleyin. Aile belgeleri ve çocukların cevapları bu ekranda gösterilmez.\n\nDurumu yenile\nanthropic: Çağrı kabul ediyor · 0 ardışık hata\nPaketlere göre işlem sınırları\nİşlem\tPaket\tDurum\tAylık\tDakikada\tAynı anda\t\nSoru üretimi\tfree\t Açık\t\t\t\tKaydet\nSoru üretimi\tplus\t Açık\t\t\t\tKaydet\nSoru üretimi\tpro\t Açık\t\t\t\tKaydet\nDeneme değerlendirmesi\tfree\t Açık\t\t\t\tKaydet\nDeneme değerlendirmesi\tplus\t Açık\t\t\t\tKaydet\nDeneme değerlendirmesi\tpro\t Açık\t\t\t\tKaydet\nBelgeden ders programı\tfree\t Açık\t\t\t\tKaydet\nBelgeden ders programı\tplus\t Açık\t\t\t\tKaydet\nBelgeden ders programı\tpro\t Açık\t\t\t\tKaydet\nÇalışma planı\tfree\t Açık\t\t\t\tKaydet\nÇalışma planı\tplus\t Açık\t\t\t\tKaydet\nÇalışma planı\tpro\t Açık\t\t\t\tKaydet\nHaftalık aile özeti\tfree\t Açık\t\t\t\tKaydet\nHaftalık aile özeti\tplus\t Açık\t\t\t\tKaydet\nHaftalık aile özeti\tpro\t Açık\t\t\t\tKaydet\nSon 100 işlem\nİşlem\tDurum\tZaman\tKayıt\t\nBelgeden ders programı\tHazır\t5 Kas 2026 08:51\t62cd2b34-c875-4741-844e-d8f86cbe0b3d\t\nBelgeden ders programı\tHazır\t5 Kas 2026 08:51\t0245ea8a-bd3b-46ea-a0a1-b9be80a07e42\t\nBelgeden ders programı\tHazır\t5 Kas 2026 08:50\t4826f9f9-d27b-4406-a346-48f06666c708\t\nHaftalık aile özeti\tHazır\t5 Kas 2026 08:50\t6ad431be-3879-4bfa-ac4c-90ed66a76545\t",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-operations-1440.png",
+      "viewports_observed": [
+        1440,
+        1280,
+        768
+      ]
+    },
+    {
+      "route": "/input-catalog",
+      "primary_job": "Ailelerin seçerek doldurduğu seçenekleri yönetme",
+      "source": "apps/backoffice/src/pages/input-catalog.tsx",
+      "line": 107,
+      "states": [
+        "Tür/arama",
+        "Kart listesi",
+        "Yeni seçenek",
+        "Düzenleme",
+        "Çakışma",
+        "Taslağı kapat"
+      ],
+      "priority": "P1",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Sabit kimlik elle zorunlu; yeni seçenekte sınıf 1–12 varsayılan; etkin/gizli, sınıf ve ders filtreleri eksik. Taslağı kapat onaysız setDraft(null); beforeunload iç gezinmeyi korumuyor. Kimliği üret; yaş / sınıf kapsamı bilinçli seçim; ders eşanlamlıları ve MAT/İNG gibi kısaltmalar ayrı kanonik ilişki olmalı.",
+      "acceptance": "Çanta/ödev/ders seçeneğinin mobil önizlemesi ve hangi sınıflarda görüleceği gösterilir; kayıpsız çıkış; Türkçe/İngilizce ve kanonik ders doğrulanır.",
+      "observed_initial_text": "Hazır seçenekler\nGINA Aile\nYazmak yerine seçmek\n\nÇanta, ödev ve çalışma ekranlarında sunulan seçenekleri yönetin. Sınıf aralığı çocuğun kayıtlı sınıfına göre uygulanır. Pasifleştirme eski kayıtları silmez. Her seçenek sabit kimliğiyle raporlanabilir; görünen metin geçmiş kayıtlarda korunur.\n\nSeçenek kataloğu\nTür\nÇanta eşyaları\nÖdev başlıkları\nÇalışma başlıkları\nKurs ve etkinlik\nDersler\nKonular\nÇalışma adımları\nAra\nSeçenek ekle\nKalemlik\n\nPencil case\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nSu matarası\n\nWater bottle\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nDefter\n\nNotebook\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nDers kitabı\n\nTextbook\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nÖdev dosyası\n\nHomework folder\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nBeslenme çantası\n\nLunch box\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nSpor kıyafeti\n\nSports clothes\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nResim malzemeleri\n\nArt supplies\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-input-catalog-1440.png",
+      "viewports_observed": [
+        1440,
+        1280,
+        768
+      ],
+      "observed_nested": [
+        "New option form",
+        "Filled Turkish draft then close: lost without confirmation"
+      ]
+    },
+    {
+      "route": "/questions",
+      "primary_job": "Eski genel soru bankasını düzenleme",
+      "source": "apps/backoffice/src/pages/questions.tsx",
+      "line": 16,
+      "states": [
+        "Sınıf / ders / konu filtre",
+        "50artarakliste",
+        "Soru editörü",
+        "Sil onayı"
+      ],
+      "priority": "P1",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Şıklar JSON textarea, doğru yanıt serbest metin; ders/konu serbest; global soruya doğrudanupdate ve kayıpsız çıkış koruması yok. Yeni kütüphane görsel / ortak kaynak/ölçüt/yayın akışından ayrı eski yönetim. Tek içerik editörüne geçir; eskileri saltokunur ve sürümletilerek düzenle.",
+      "acceptance": "JSON editörü yerine şık kontrolleri; öğrenci/öğretmen önizleme; ders/sınıf/kazanım seçimi; canlı/atanmış içerik etkisi fark görünümü; kapatınca taslak kaybolmaz.",
+      "observed_initial_text": "Global soru bankası\nGINA Aile\n\nYalnız global içerik (family_id boş). Ailelerin kendi soruları burada görünmez.\n\nSınıf: Tümü\nDers: Tümü\nKonu: Tümü\n0 soru\n\nBu filtreyle soru yok.",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-questions-1440.png",
+      "viewports_observed": [
+        1440
+      ],
+      "nested_view_limit": "Fixture list empty; populated editors source-only."
+    },
+    {
+      "route": "/library",
+      "primary_job": "Koleksiyon/taslak/katkı/kapsam/hak yönetme",
+      "source": "apps/backoffice/src/pages/library.tsx",
+      "line": 118,
+      "states": [
+        "Koleksiyonlar",
+        "Taslak paketler",
+        "Katkılar",
+        "Haklar ve ödüller",
+        "Senaryo kaynakları",
+        "Koleksiyon editörü",
+        "Tekilsoruekleyici",
+        "Tekilsoruyayınla",
+        "Eski katkı inceleme"
+      ],
+      "priority": "P1",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Üç farklı içerik yolu var: Soru bankası, Koleksiyonlar tekil soru ve Taslak paket. Koleksiyon durumdropdownundan yayımlama, soru için tek tuş İnceledim yayımla; yeni paket çok adımlı kontrollerinden farklı. Varsayılansekme eski Koleksiyonlar. Tek içerik yaşam döngüsü ve tek ana Hazırla → İncele → Yayımla yolu olmalı; legacy içerik göç aracıyla korunmalı.",
+      "acceptance": "Aynı soru nereden açılırsa açılsın sürüm, düzey, ortak kaynak, inceleme, etki ve yayın kontrolleri aynı; kaydet hiçbir yol üzerinden yanlışlıkla yayınlamaz.",
+      "observed_initial_text": "GINA kütüphanesi\nGINA Aile\n\nKoleksiyonları hazırlayın, soruları inceleyin ve paketlere açın. Bir koleksiyonun görünmesi için hem koleksiyonun hem içindeki soruların yayımlanmış olması gerekir.\n\nKoleksiyonlar\nTaslak paketler\nKatkılar\nHaklar ve ödüller\nSenaryo kaynakları\nKoleksiyon oluştur\nYenile\nKoleksiyonlar\n\nİlk koleksiyonunuzu oluşturun.\n\nİçeriğini görmek için bir koleksiyon seçin.",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-library-1440.png",
+      "viewports_observed": [
+        1440
+      ]
+    },
+    {
+      "route": "/library?tab=drafts",
+      "primary_job": "Soru paketini kaynak/öğrenci/cevap/ölçüt olarak inceleme",
+      "source": "apps/backoffice/src/components/library-drafts.tsx",
+      "line": 780,
+      "states": [
+        "Paket dosyası yükle",
+        "Paket listesi / sayfalama",
+        "Soru seçimi",
+        "Öğrenci görünümü",
+        "Cevap/puanlama",
+        "İnceleme notu",
+        "Çakışma",
+        "Görsel büyüt",
+        "Kaydedilmemiş taslakla çıkış diyaloğu"
+      ],
+      "priority": "P2",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "İnceleme view=review iken öğrenci/ortak kaynak gizleniyor; Soruyu aç linkiyle görünüm değiştiriliyor. Puanlama kararı sırasında kanıtın kaybolması geri/ileri yükü yaratır. Genişekranda kaynak+soru+rubrik solda sabit, inceleme kararı sağda; tablette kaynak çekmecesi kontrollü.",
+      "acceptance": "Öğrenci sorusu ve ortakgörseli not yazarken erişilebilir; soru değiştirmede taslak koruması; incelemenin yayın olmadığı belirgin; görsel hatası sıfır puan/uygun kararına dönüşmez.",
+      "observed_initial_text": "GINA kütüphanesi\n↑ Paket yükle\nKoleksiyonlar\nTaslak paketler\nKatkılar\nHaklar ve ödüller\nSenaryo kaynakları\n\nOrtak kaynakları, soruları ve puan ölçütlerini birlikte incele.\n\nTaslak paketler\n\nKaydetmek veya incelemek, soruları ailelere açmaz.\n\n▧\nİlk soru paketini ekle\n\nHazırlanan JSON dosyasını “Paket yükle” ile seç. Soruları ve görselleri kayıt öncesinde kontrol edebilirsin.",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-library-tab-drafts-1440.png",
+      "viewports_observed": [
+        1440,
+        1280,
+        768
+      ],
+      "observed_nested": [
+        "Valid prepared 20-question / 8-image local preview",
+        "Student view1280",
+        "Teacher view1280/768",
+        "Invalid raw pilot file rejection"
+      ],
+      "nested_view_limit": "No database import, review save or publication executed."
+    },
+    {
+      "route": "/library-publication",
+      "primary_job": "İncelenmiş paketi belirli aile paketlerine yayınlama",
+      "source": "apps/backoffice/src/components/library-publication.tsx",
+      "line": 583,
+      "states": [
+        "Eksik kimlik",
+        "Yayın kontrolleri",
+        "Aile bilgileri",
+        "Paket erişimi",
+        "Önizleme",
+        "Yayın onayı",
+        "Sürüm değişmesi",
+        "Yayından kaldır",
+        "Kaydedilmemiş taslakla çıkış diyaloğu"
+      ],
+      "priority": "P2",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Kısa açıklama rows=1 ve1.000 karakter; program/dönem serbest metin, kaynakla ilişki elle kuruluyor. Önizleme ailekartını gösteriyor fakat telefon/tablet akış ve kotanın etkisi kontrollu önizleme değil. Kaynak/kapsam kayıt seçimi, yeterli metin alanı ve yayımdan önce açık erişim özeti.",
+      "acceptance": "Bozukmedya/eksikinceleme yayınlayamaz; konu pratiği resmî MEB uygunluğu diye etiketlenmez; 1.000 karakter açıklama taşmaz; aile önizleme erişim / harcanan hak gerçeğini yansıtır.",
+      "observed_initial_text": "Kütüphaneden bir taslak paket seç.",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-library-publication-1440.png",
+      "viewports_observed": [
+        1440
+      ],
+      "nested_view_limit": "Only missing-package entry state observed; publication editor source-only."
+    },
+    {
+      "route": "/library?tab=policy",
+      "primary_job": "Kütüphane kotası ve katkı ödüllerini yönetme",
+      "source": "apps/backoffice/src/components/LibraryPolicy.tsx",
+      "line": 56,
+      "states": [
+        "Paket kotaları",
+        "Ödül kuralları",
+        "Yeni kural / kuralı düzenle",
+        "Kazanılmış hak kilidi"
+      ],
+      "priority": "P1",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Açık kurallar birlikte ödül veriyor; yöneticiye paragrafla bildiriliyor ama somut hesap önizleme yok. Ödül süresi ve geçerlilik iki ayrı sayı; örnek/simülasyon yok. 5, 10 ve 20 kabul senaryosu, toplam kazanılacak hak ve çakışan kurallar gösterilmeli.",
+      "acceptance": "Aynı katkının iki kuraldan kazandıracağı tutar görülebilir; eski haklar korunur; değişiklik önce/sonra ve tarih kapsamı gösterilir.",
+      "observed_initial_text": "GINA kütüphanesi\nGINA Aile\n\nKoleksiyonları hazırlayın, soruları inceleyin ve paketlere açın. Bir koleksiyonun görünmesi için hem koleksiyonun hem içindeki soruların yayımlanmış olması gerekir.\n\nKoleksiyonlar\nTaslak paketler\nKatkılar\nHaklar ve ödüller\nSenaryo kaynakları\nAylık kütüphane kullanımı\n\nHer yeni soru edinimi bir hak kullanır. Aynı sorunun tekrar açılması hak harcamaz. Katkıdan kazanılan ek haklar ayrıca korunur.\n\nfree · soru / ay\nKaydet\nplus · soru / ay\nKaydet\npro · soru / ay\nKaydet\nKatkı ödülleri\n\nYalnız onaylanan özgün sorular sayılır. Aynı dönüm noktası bir kez ödüllendirilir. Açık kurallar birlikte uygulanır; aynı katkıya birden fazla hak vermek istemiyorsanız tek kuralı açık tutun.\n\n5 kabul edilen soru için 20 kütüphane hakkı\n\nHer 5 kabul · 20 kütüphane sorusu · 30 gün geçerli · Kapalı\n\nDüzenle\nYeni ödül kuralı",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-library-tab-policy-1440.png",
+      "viewports_observed": [
+        1440
+      ]
+    },
+    {
+      "route": "/library?tab=review",
+      "primary_job": "Ailelerin gönüllü soru katkılarını inceleme",
+      "source": "apps/backoffice/src/components/contribution-sets.tsx",
+      "line": 661,
+      "states": [
+        "Katkı kuyruğu",
+        "Ortak kaynak/görsel büyüt",
+        "Soru / öğretmen cevabı",
+        "Rubrikdüzenle",
+        "Kabul / geri gönder",
+        "Kaydedilmemiş taslakla çıkış diyaloğu",
+        "Eski metinkatkıları"
+      ],
+      "priority": "P1",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Kabul bütün gruba işliyor; bir soru problemi bütün katkıyı geri göndermeyi gerektiriyor. Uzunöğretmenalanları soru/görselden aşağı kopuyor; ölçüt ekle var silme/yeniden sıralama kontrolü görünmüyor. Ortak kaynaktutarlılığınıkoruyarak soru bazlı karar/düzeltme işaretleri; katkı sahibine somut kanıt ve sonraki adım.",
+      "acceptance": "Kabul edilen/grupta bekleyen / reddedilen soru ayrılır; ödül yalnız onaylanan özgün soru sayısıyla; kişisel bilgi / telif kontrolü ve veliye giden metin ayrı; kısmi kabul iş kuralı ayrıca tasarlanır.",
+      "observed_initial_text": "GINA kütüphanesi\nGINA Aile\n\nKoleksiyonları hazırlayın, soruları inceleyin ve paketlere açın. Bir koleksiyonun görünmesi için hem koleksiyonun hem içindeki soruların yayımlanmış olması gerekir.\n\nKoleksiyonlar\nTaslak paketler\nKatkılar\nHaklar ve ödüller\nSenaryo kaynakları\nMetin ve görsel katkıları\n\nOrtak bağlamı, her sorunun cevabını ve paylaşım haklarını birlikte inceleyin. Kabul etmek yayınlamak değildir.\n\nYenile\nKuyruk boş\n\nVelilerin açıkça paylaştığı soru grupları burada görünecek.\n\nBir katkı seçin\n\nÖnce ortak metin ve görseller, ardından sorular ve cevaplar gösterilir.",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-library-tab-review-1440.png",
+      "viewports_observed": [
+        1440
+      ],
+      "nested_view_limit": "Fixture list empty; populated editors source-only."
+    },
+    {
+      "route": "/library?tab=curriculum",
+      "primary_job": "Resmî senaryo kaynaklarını doğrulama",
+      "source": "apps/backoffice/src/components/curriculum-review.tsx",
+      "line": 662,
+      "states": [
+        "JSON kaynak dosyası",
+        "Sınıf/ders/durum filtre",
+        "15 kayıtlık aday listesi",
+        "Özgün kaynak",
+        "Dağılım hücreleri",
+        "Kapsam incelemesi",
+        "Kataloğa aç / geri çek",
+        "Kaydedilmemiş taslakla çıkış diyaloğu"
+      ],
+      "priority": "P1",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Program, okul türü / kapsam, resmî URL serbest metin; belgeyle hücre karşılaştırması ayrı sekme ve uzun alt form. Kaynak-hücre-kazanım-soru adedi yan yana karşılaştırılmalı; okul türü/program/yıl kanonik seçenekler ve belirsizlik başına çözüm.",
+      "acceptance": "Dosya uyumu ile pedagojik onay karışmaz; MEB senaryosu ile okulun seçim onayı ayrı; tüm uyarılar karar+kanıt ile kapanır; aynı kaynak tekrar incelemede sürüm farkı görülebilir.",
+      "observed_initial_text": "GINA kütüphanesi\nGINA Aile\n\nKoleksiyonları hazırlayın, soruları inceleyin ve paketlere açın. Bir koleksiyonun görünmesi için hem koleksiyonun hem içindeki soruların yayımlanmış olması gerekir.\n\nKoleksiyonlar\nTaslak paketler\nKatkılar\nHaklar ve ödüller\nSenaryo kaynakları\nSenaryo kaynakları\n\nKaynağı kontrol et → incelemeyi kaydet → ayrı kararla kataloğa aç.\n\nYenile\nBu bölüm tam müfredat değildir. Okulun uyguladığı program ve seçtiği senaryo ayrıca doğrulanır. Dosya içe almak hiçbir kaydı onaylamaz.\nKaynak inceleme dosyası ekle\nSınıf\nTüm sınıflar\n5. sınıf\n6. sınıf\n7. sınıf\n8. sınıf\n9. sınıf\n10. sınıf\n11. sınıf\n12. sınıf\nDers\nTüm dersler\nDurum\nTüm durumlar\nKaynak incelemesi bekliyor\nİncelendi · henüz açık değil\nKatalogda açık\nGeri çekildi\n\n0 kayıt\n\nHenüz kayıt yok\n\nİnceleme dosyası ekleyin veya filtreleri genişletin.\n\nÖnceki\nSonraki\nBir senaryo seçin\n\nÖnce özgün kaynak ve soru dağılımı; ardından program kapsamı ve gerekçeli inceleme.",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-library-tab-curriculum-1440.png",
+      "viewports_observed": [
+        1440
+      ],
+      "nested_view_limit": "Fixture list empty; populated editors source-only."
+    },
+    {
+      "route": "/groups",
+      "primary_job": "Aynı düzeye ortak Prova yayımlama",
+      "source": "apps/backoffice/src/pages/groups.tsx",
+      "line": 358,
+      "states": [
+        "Yayın / paket hakları",
+        "Yeni Prova başlığı",
+        "Kaynak/soru seti",
+        "Tarihler/süre",
+        "Açık uçlu inceleme",
+        "Yayınla",
+        "İptal gerekçesi",
+        "Bekleyen yayın"
+      ],
+      "priority": "P1",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Politika ve yeni sınav aynıuzun sayfa; süre sayısal giriş alanı; yayın geri alınamayan içerik sabitlemesiyle tek son buton; ayrı aile / çocuk önizleme ve iş yükü tahmini yok. Üç adım: Kapsam→Sorular / süre→Önizleme/yayın. Öğretmen incelemesi gerektiren soru sayısı×katılımcı tahmini görünmeli.",
+      "acceptance": "Başlangıç/bitiş/saat dilimi/kişisel süre ayrımı örnekle net; ortak kaynağa bağlısorular blok korunur; benzer sınıfın program uygunluğu doğrulanır; sıralama rızası ve sonuç yayın durumu anlaşılır.",
+      "observed_initial_text": "Birlikte Prova\nGINA Aile\n\nAynı sınıf düzeyine aynı soru sürümünü verin. Bu evde yapılan bir çalışma; gözetimli veya resmî sınav değildir. Katılım ve takma adla sıralama ayrı veli tercihleridir. Eşit puan eşit sıradır; hız puanı yoktur.\n\nYayın ve paket hakları\n\nYeni katılımlar kapalı. Mevcut sonuçlar korunur. Aylık katılım hakkı aile başınadır; standart Prova deneme sınırı da uygulanır.\n\nHakları düzenle\nYeni ortak prova\n\nİncelenmiş ve yayımlanmış bir paketten 3–50 soru seçin. Ortak metin veya görsele bağlı sorular bir bütün olarak eklenir. Açık uçlu soru içeren gruplar otomatik sıralamaya alınmaz. Yayımlandıktan sonra içerik ve süre değişmez; düzeltmek için iptal edip yeni sürüm oluşturun. En fazla 1.000 katılımcı.\n\nBaşlık\nKaynak\nYayımlanmış kaynak seçin\nKatılım başlangıcı\nKatılım bitişi\n\nSaatler bu cihazın saat dilimindedir. Pencere en fazla 31 gün. Çocuğun süresi başladığı anda işler; ortak bitiş daha erkense orada durur.\n\nÇözme süresi (dakika)\nDahil paketler\nfree\nplus\npro\nSürümü sabitle ve yayımla\nYayımlanan provalar\n\nHenüz ortak prova oluşturulmadı.",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-groups-1440.png",
+      "viewports_observed": [
+        1440,
+        1280,
+        768
+      ]
+    },
+    {
+      "route": "/cohort-review",
+      "primary_job": "Anonim cevapları ölçütle puanlama ve sonuç yayınlama",
+      "source": "apps/backoffice/src/pages/cohort-review.tsx",
+      "line": 362,
+      "states": [
+        "Katılımcı kuyruğu",
+        "Soru seçimi",
+        "Defter/görsel büyüt",
+        "Şıklı otomatik puan",
+        "Açık uçlu rubrik",
+        "Okunamadı / beklet",
+        "Veli itirazı",
+        "Sonuç yayını"
+      ],
+      "priority": "P1",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Katılımcılar ve bütün soru butonları uzuyor; filtre Sonraki incelenmemiş/itirazlı yok; dirty iken gezinme disabled ama niye açıklaması eksik. Kanıt defteri ile rubrik uzun sayfa; puan çoğusıfır varsayılan. Yalnızrastgele kıyas yerine soru bazlı değerlendirme kuyruğu ve seçilmemiş ölçüt durumunu ayırma.",
+      "acceptance": "Defter görünmezse boşyanıt sayılmaz; kanıt+ölçüt aynı anda; 50 soru ve 1.000 katılımcıda hedef kayıt bulunur; not verilmemiş ile 0 puan farklı; sıralama açık itiraz varken kesinleşmez.",
+      "observed_initial_text": "Birlikte Prova · İnceleme\nGINA Aile\nProva seç",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-cohort-review-1440.png",
+      "viewports_observed": [
+        1440
+      ],
+      "nested_view_limit": "No group selected/no populated group fixture; scoring editor source-only."
+    },
+    {
+      "route": "/support",
+      "primary_job": "Aileye yanıt ve özel ekip notu",
+      "source": "apps/backoffice/src/components/support/help-center.tsx",
+      "line": 196,
+      "states": [
+        "Durum/konu filtre",
+        "Sayfalı kuyruk",
+        "Görüşme",
+        "Eski 100 mesaj",
+        "Aile yanıtı/ekip notu",
+        "Durum değiştir",
+        "Yeniden aç",
+        "Taslakla ayrılma",
+        "Belirsiz gönderim"
+      ],
+      "priority": "P2",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Kuyrukta metin / ID arama, sorumlu operatör, öncelik / yaş bilgisi bulunmuyor; aynı anda inceleyen kişiler görünmüyor. Bunlar ölçeklendiğinde uzun bekleyen sorunun kaçmasına neden olabilir. Konuya göre hazır cevap, yazıyı öner ve sonraki bekleyen; ekip notu ile aile mesajı renk/başlık ayrımı korunmalı.",
+      "acceptance": "Özel not aile önizlemesinde görünmez; 100 üzeri mesaj ulaşılır; taslaklı geçiş korunur; kişi değişiminde yanlışgörüşmeye gönderim olmaz; süre/sorumlu iş yükü görünür.",
+      "observed_initial_text": "Destek merkezi\nGINA Aile\n\nGörüşmeleri takip et, ailelere yardımcı ol.\n\nAçık\nİnceleniyor\nVeli yanıtı\nTamamlanan\nTümü\nDestek talepleri\nKonu\nTüm konular\nHesap\nCihaz ve PIN\nÖğrenme ve Prova\nPaket ve ödeme\nDiğer\nSynthetic pairing help\nAçık\n5 Kas\nYenile\n☏\nBir görüşme seçin\n\nYanıtları ve ekip notlarını burada takip edebilirsiniz.",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-support-1440.png",
+      "viewports_observed": [
+        1440,
+        1280,
+        768
+      ],
+      "observed_nested": [
+        "Synthetic conversation",
+        "Internal-note composer",
+        "Switch to family reply preserved separate draft"
+      ],
+      "nested_view_limit": "No outgoing message sent."
+    },
+    {
+      "route": "/ideas",
+      "primary_job": "Aile fikirlerini değerlendirme ve geri dönüş",
+      "source": "apps/backoffice/src/components/support/help-center.tsx",
+      "line": 196,
+      "states": [
+        "Destekle ortak kuyruk",
+        "Görüşme",
+        "Ekip notu",
+        "Yanıt/durum"
+      ],
+      "priority": "P2",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Destekteki aynı durumlar fikrin yaşamını açıklamıyor: Veli yanıtı/Tamamlanan, planlandı/yapılıyor/yayınlandı durumlarına karşılık gelmiyor. Fikri ürün kararı / benzer fikirler / sürüm bağıyla ilişkilendir; özel görüşmeyi kamu oylamasına otomatik çevirmeden.",
+      "acceptance": "Aileye düşünülen/planlanan/yapılan ayrılır; taahhüt edilmemiş tarih vaat edilmez; mükerrer fikirler kişisel veri ifşa etmeden birleştirilir.",
+      "observed_initial_text": "Fikirler\nGINA Aile\n\nAilelerin paylaştığı fikirleri değerlendir, geri dönüşlerini burada tut.\n\nAçık\nİnceleniyor\nVeli yanıtı\nTamamlanan\nTümü\nPaylaşılan fikirler\nKonu\nTüm konular\nHesap\nCihaz ve PIN\nÖğrenme ve Prova\nPaket ve ödeme\nDiğer\nBu görünümde talep yok\n\nBaşka bir durum veya konu seçebilirsiniz.\n\nYenile\n☏\nBir görüşme seçin\n\nYanıtları ve ekip notlarını burada takip edebilirsiniz.",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-ideas-1440.png",
+      "viewports_observed": [
+        1440
+      ]
+    },
+    {
+      "route": "/help-articles",
+      "primary_job": "SSS taslağı, inceleme ve yayın",
+      "source": "apps/backoffice/src/components/help-articles.tsx",
+      "line": 609,
+      "states": [
+        "Dil / platform listesi",
+        "Yeni yazı / yazıyı düzenle",
+        "Önizleme",
+        "Taslak",
+        "İncele",
+        "Yayın/geriçek",
+        "Karar gerekçesi",
+        "Sürüm çatışması"
+      ],
+      "priority": "P2",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Yeni yazı kodu elle;20.000 karakter yanıt tek metin alanı; başlık/paragraf/liste/adım türü rehberi ve uygulama akış bağı yok. Başlıktan kod öner; kısa yanıt+adımlar+ilgili güvenli bağlantılar; sürüm farkı ve telefon/desktop önizleme.",
+      "acceptance": "Taslak yayınlanmış yanıtı değiştirmez; kullanıcı hangi ekranın hangi adımını yapacağını anlar; link hedefleri yetkiyi aşmaz; İngilizce / Türkçe eşdeğerlik bekleyeni görünür.",
+      "observed_initial_text": "Yardım yazıları\n\nAilelere açık, güncel ve anlaşılır yanıtlar.\n\n＋ Yeni yazı\nYazı listesi\nDil filtresi\nTürkçe\nEnglish\nPlatform filtresi\nTüm platformlar\nTüm cihazlar için ortak\niOS\nAndroid\nWeb\nSynthetic help article\nTaslak · sürüm 2\nTüm cihazlar için ortak\n▤\nBir yanıtı birlikte netleştirelim\n\nListeden bir yazı seçin veya yeni bir taslak oluşturun.\n\nTaslak kaydı, ailelerin gördüğü yanıtı değiştirmez.",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-help-articles-1440.png",
+      "viewports_observed": [
+        1440,
+        1280,
+        768
+      ],
+      "observed_nested": [
+        "Existing draft editor",
+        "Preview with unpublished badge"
+      ],
+      "nested_view_limit": "No review or publication submitted."
+    },
+    {
+      "route": "/notifications",
+      "primary_job": "Push teslim hatalarını izleme ve kurtarma",
+      "source": "apps/backoffice/src/pages/notifications.tsx",
+      "line": 237,
+      "states": [
+        "İşlem gereken / tümü / durum",
+        "Sayfalama",
+        "Cihaz makbuz özeti",
+        "Hata ayrıntısı",
+        "Tekrar sıraya al",
+        "Gerekçe/onay",
+        "Belirsiz gönderim"
+      ],
+      "priority": "P2",
+      "evidence": "source-reviewed + actual local rendered initial state; deeper mutations not executed",
+      "change": "Sağlayıcı kabulü cihazda görülmesini garanti etmez ayrımı korunuyor. Kuyruk yalnız durum filtreli; seçili yeniden dene eylemi öncesinde neden/etkilenen adedi ve önerilen çözümü tek olay özetinde görmeli; teknik makbuzlar ikinci katmanda.",
+      "acceptance": "“Sent”, okundu anlamına gelmez; yanlış aile hedefi gösterilmez; başarılı makbuz yeniden yollanmaz; aynı komut retry tekrar hak/işlem yaratmaz; 24 saat / 2 kurtarma sınırı devre dışı bırakılma nedeninde görünür.",
+      "observed_initial_text": "Bildirim teslimi\nGINA Aile\n\nHer cihaza ayrı takip, kontrollü yeniden deneme\n\nSon 30 gündeki gönderimleri izleyin. Çocuk adı, mesaj içeriği ve cihaz anahtarları burada gösterilmez. Sağlayıcının kabul etmesi, bildirimin cihazda görüldüğü anlamına gelmez.\n\n5\n\nSırada\n\n—\n\nGönderiliyor\n\n—\n\nBaşarısız\n\n—\n\nHizmet ayarı eksik\n\nGöster\nİşlem gerekenler\nTümü\nSırada\nGönderiliyor\nSağlayıcı kabul etti\nBaşarısız\nHizmet ayarı eksik\nUygun cihaz yok\nDurumu yenile\nBu görünümde kayıt yok\n\nBu filtrede gösterilecek bildirim bulunmuyor. Diğer durumları üstteki seçimden inceleyebilirsiniz.",
+      "screenshot_1440": "/Users/enes/.codex/worktrees/gina-library-access/gina/research_notes/GINA bütün ekran incelemesi/screenshots/admin-notifications-1440.png",
+      "viewports_observed": [
+        1440
+      ]
+    }
+  ],
+  "counts": {
+    "physical_page_routes": 18,
+    "catalog_entries_including_library_tabs": 22,
+    "initial_views_captured": 20,
+    "additional_responsive_initial_views": 20,
+    "nested_screenshots": 11,
+    "screenshots_total": 51
+  },
+  "ui_measurements": [
+    {
+      "name": "dashboard-1280",
+      "url": "http://127.0.0.1:3107/dashboard",
+      "text": "Panel\nGINA Aile\n2\nAile\n2\nÇocuk\n2\nEbeveyn\n0\nAktif cihaz\n0\nGlobal soru\nAktif mağaza abonelikleri (aile)\nBaşlangıç\t0\nPlus\t0\nPro\t0\nAktif komp'lar (aile)\nBaşlangıç\t0\nPlus\t0\nPro\t0\nEtkin pakete göre aileler\nBaşlangıç\t2\nPlus\t0\nPro\t0\nAI kullanımı (son 30 gün, tamamlanan özetler)\nModel\tAdet\tGirdi token\tÇıktı token\nclaude-sonnet-5-5\t1\t100\t100",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 800,
+          "top": 0,
+          "right": 230,
+          "bottom": 800,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "families-1280",
+      "url": "http://127.0.0.1:3107/families",
+      "text": "Aileler\nGINA Aile\n\nSalt okunur, asgari veri: aile adı, sayılar ve etkin paket. E-posta ile arama tam eşleşmedir ve e-posta gösterilmez.\n\nAra\nAile\tOluşturulma\tEbeveyn\tÇocuk\tCihaz\tPaket\tKaynak\tBitiş\t\n\nSynthetic family B\n46d08f70-3e1d-4918-a996-862a8baf44b5\n\t5 Kas 2026\t1\t0\t0\tBaşlangıç\tÜcretsiz\t—\tPaket ve ödeme\n\nSynthetic family A\n36c75545-6716-406c-a6a7-cf6dbaa70c75\n\t5 Kas 2026\t1\t2\t0\tBaşlangıç\tÜcretsiz\t—\tPaket ve ödeme",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 800,
+          "top": 0,
+          "right": 230,
+          "bottom": 800,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "billing-1280",
+      "url": "http://127.0.0.1:3107/billing",
+      "text": "Paketler ve ödemeler\nGINA Aile\n\nAilenin kullandığı paketi ve bu hakkın nereden geldiğini birlikte inceleyin.\n\nBilgileri yenile\nMağaza aboneliği olan aile\n0\nEtkin geçici hak\n0\nİşlenememiş bildirim\n0\nAile erişimi\nBildirim takibi\nAileyi bul\nAile adı veya kimliği\nAra\n\nEn fazla 50 aile gösterilir. Aramayla listeyi daraltabilirsiniz.\n\nSynthetic family A\nGINA Başlangıç\nBaşlangıç paketi\nSynthetic family B\nGINA Başlangıç\nBaşlangıç paketi\nÖnce bir aile seçin\n\nMağaza aboneliğini, geçici hakları ve güncel paket erişimini burada karşılaştırabilirsiniz.\n\nSon başarılı okuma: 5 Kas 2026 09:02. Görünür sekmede bilgiler düzenli yenilenir.",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 800,
+          "top": 0,
+          "right": 230,
+          "bottom": 800,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "ai-1280",
+      "url": "http://127.0.0.1:3107/ai",
+      "text": "AI ayarları\nGINA Aile\nGenel AI anahtarı\nAçık\nAI'ı kapat (kill switch)\n\nKapalıyken hiçbir pakette AI çağrısı yapılmaz (app_settings 'ai.enabled').\n\nDosya, galeri ve kamera kaynakları\n\nBir analize eklenecek kaynak sayısı. Varsayılan 5; sunucu en fazla 10 dosya, toplam 20 sayfa ve 20 MB kabul eder. Her PDF en fazla 5 sayfa olabilir.\n\nEn fazla kaynak sayısı\n1 kaynak\n2 kaynak\n3 kaynak\n4 kaynak\n5 kaynak\n6 kaynak\n7 kaynak\n8 kaynak\n9 kaynak\n10 kaynak\n\nBirlikte analiz tek işlem hakkı kullanır. Prova’nın soru başına kotası değişmez. Gerçek AI tüketimi ve paket token sınırı ayrıca uygulanır.\n\nSınırı kaydet\nPaket bazlı ayarlar\nPaket\tModel\tAzami girdi token\tAzami çıktı token\tPrompt sürümü\tBu pakette açık\tGüncelleme\t\nBaşlangıç\t\n(model yok)\nClaude Haiku 5.5 (claude-haiku-5-5)\nClaude Sonnet 5.5 (claude-sonnet-5-5)\n\t\t\t\t\t2 Kas 2026 00:36\tKaydet\nPlus\t\n(model yok)\nClaude Haiku 5.5 (claude-haiku-5-5)\nClaude Sonnet 5.5 (claude-sonnet-5-5)\n\t\t\t\t\t2 Kas 2026 00:36\tKaydet\nPro\t\n(model yok)\nClaude Haiku 5.5 (claude-haiku-5-5)\nClaude Sonnet 5.5 (claude-sonnet-5-5)\n\t\t\t\t\t2 Kas 2026 00:36\tKaydet\nModeller\nModel kimliği\tGörünen ad\tSağlayıcı\tGirdi $/MTok\tÇıktı $/MTok\tAktif\nclaude-haiku-5-5\tClaude Haiku 5.5\tanthropic\t—\t—\tEvet\nclaude-sonnet-5-5\tClaude Sonnet 5.5\tanthropic\t—\t—\tEvet\nModel kimliği\nGörünen ad\nModel ekle",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 800,
+          "top": 0,
+          "right": 230,
+          "bottom": 800,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "operations-1280",
+      "url": "http://127.0.0.1:3107/operations",
+      "text": "AI işlem merkezi\nGINA Aile\n\nÜretim durumunu ve işlem sınırlarını izleyin. Aile belgeleri ve çocukların cevapları bu ekranda gösterilmez.\n\nDurumu yenile\nanthropic: Çağrı kabul ediyor · 0 ardışık hata\nPaketlere göre işlem sınırları\nİşlem\tPaket\tDurum\tAylık\tDakikada\tAynı anda\t\nSoru üretimi\tfree\t Açık\t\t\t\tKaydet\nSoru üretimi\tplus\t Açık\t\t\t\tKaydet\nSoru üretimi\tpro\t Açık\t\t\t\tKaydet\nDeneme değerlendirmesi\tfree\t Açık\t\t\t\tKaydet\nDeneme değerlendirmesi\tplus\t Açık\t\t\t\tKaydet\nDeneme değerlendirmesi\tpro\t Açık\t\t\t\tKaydet\nBelgeden ders programı\tfree\t Açık\t\t\t\tKaydet\nBelgeden ders programı\tplus\t Açık\t\t\t\tKaydet\nBelgeden ders programı\tpro\t Açık\t\t\t\tKaydet\nÇalışma planı\tfree\t Açık\t\t\t\tKaydet\nÇalışma planı\tplus\t Açık\t\t\t\tKaydet\nÇalışma planı\tpro\t Açık\t\t\t\tKaydet\nHaftalık aile özeti\tfree\t Açık\t\t\t\tKaydet\nHaftalık aile özeti\tplus\t Açık\t\t\t\tKaydet\nHaftalık aile özeti\tpro\t Açık\t\t\t\tKaydet\nSon 100 işlem\nİşlem\tDurum\tZaman\tKayıt\t\nBelgeden ders programı\tHazır\t5 Kas 2026 08:51\t62cd2b34-c875-4741-844e-d8f86cbe0b3d\t\nBelgeden ders programı\tHazır\t5 Kas 2026 08:51\t0245ea8a-bd3b-46ea-a0a1-b9be80a07e42\t\nBelgeden ders programı\tHazır\t5 Kas 2026 08:50\t4826f9f9-d27b-4406-a346-48f06666c708\t\nHaftalık aile özeti\tHazır\t5 Kas 2026 08:50\t6ad431be-3879-4bfa-ac4c-90ed66a76545\t",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 800,
+          "top": 0,
+          "right": 230,
+          "bottom": 800,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "input-catalog-1280",
+      "url": "http://127.0.0.1:3107/input-catalog",
+      "text": "Hazır seçenekler\nGINA Aile\nYazmak yerine seçmek\n\nÇanta, ödev ve çalışma ekranlarında sunulan seçenekleri yönetin. Sınıf aralığı çocuğun kayıtlı sınıfına göre uygulanır. Pasifleştirme eski kayıtları silmez. Her seçenek sabit kimliğiyle raporlanabilir; görünen metin geçmiş kayıtlarda korunur.\n\nSeçenek kataloğu\nTür\nÇanta eşyaları\nÖdev başlıkları\nÇalışma başlıkları\nKurs ve etkinlik\nDersler\nKonular\nÇalışma adımları\nAra\nSeçenek ekle\nKalemlik\n\nPencil case\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nSu matarası\n\nWater bottle\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nDefter\n\nNotebook\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nDers kitabı\n\nTextbook\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nÖdev dosyası\n\nHomework folder\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nBeslenme çantası\n\nLunch box\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nSpor kıyafeti\n\nSports clothes\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nResim malzemeleri\n\nArt supplies\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 800,
+          "top": 0,
+          "right": 230,
+          "bottom": 800,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "library-tab-drafts-1280",
+      "url": "http://127.0.0.1:3107/library?tab=drafts",
+      "text": "GINA kütüphanesi\n↑ Paket yükle\nKoleksiyonlar\nTaslak paketler\nKatkılar\nHaklar ve ödüller\nSenaryo kaynakları\n\nOrtak kaynakları, soruları ve puan ölçütlerini birlikte incele.\n\nTaslak paketler\n\nKaydetmek veya incelemek, soruları ailelere açmaz.\n\n▧\nİlk soru paketini ekle\n\nHazırlanan JSON dosyasını “Paket yükle” ile seç. Soruları ve görselleri kayıt öncesinde kontrol edebilirsin.",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 195,
+          "height": 800,
+          "top": 0,
+          "right": 195,
+          "bottom": 800,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1231.5,
+          "width": 158,
+          "height": 48,
+          "top": 1231.5,
+          "right": 176,
+          "bottom": 1279.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "groups-1280",
+      "url": "http://127.0.0.1:3107/groups",
+      "text": "Birlikte Prova\nGINA Aile\n\nAynı sınıf düzeyine aynı soru sürümünü verin. Bu evde yapılan bir çalışma; gözetimli veya resmî sınav değildir. Katılım ve takma adla sıralama ayrı veli tercihleridir. Eşit puan eşit sıradır; hız puanı yoktur.\n\nYayın ve paket hakları\n\nYeni katılımlar kapalı. Mevcut sonuçlar korunur. Aylık katılım hakkı aile başınadır; standart Prova deneme sınırı da uygulanır.\n\nHakları düzenle\nYeni ortak prova\n\nİncelenmiş ve yayımlanmış bir paketten 3–50 soru seçin. Ortak metin veya görsele bağlı sorular bir bütün olarak eklenir. Açık uçlu soru içeren gruplar otomatik sıralamaya alınmaz. Yayımlandıktan sonra içerik ve süre değişmez; düzeltmek için iptal edip yeni sürüm oluşturun. En fazla 1.000 katılımcı.\n\nBaşlık\nKaynak\nYayımlanmış kaynak seçin\nKatılım başlangıcı\nKatılım bitişi\n\nSaatler bu cihazın saat dilimindedir. Pencere en fazla 31 gün. Çocuğun süresi başladığı anda işler; ortak bitiş daha erkense orada durur.\n\nÇözme süresi (dakika)\nDahil paketler\nfree\nplus\npro\nSürümü sabitle ve yayımla\nYayımlanan provalar\n\nHenüz ortak prova oluşturulmadı.",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 800,
+          "top": 0,
+          "right": 230,
+          "bottom": 800,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "support-1280",
+      "url": "http://127.0.0.1:3107/support",
+      "text": "Destek merkezi\nGINA Aile\n\nGörüşmeleri takip et, ailelere yardımcı ol.\n\nAçık\nİnceleniyor\nVeli yanıtı\nTamamlanan\nTümü\nDestek talepleri\nKonu\nTüm konular\nHesap\nCihaz ve PIN\nÖğrenme ve Prova\nPaket ve ödeme\nDiğer\nSynthetic pairing help\nAçık\n5 Kas\nYenile\n☏\nBir görüşme seçin\n\nYanıtları ve ekip notlarını burada takip edebilirsiniz.",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 800,
+          "top": 0,
+          "right": 230,
+          "bottom": 800,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "help-articles-1280",
+      "url": "http://127.0.0.1:3107/help-articles",
+      "text": "Yardım yazıları\n\nAilelere açık, güncel ve anlaşılır yanıtlar.\n\n＋ Yeni yazı\nYazı listesi\nDil filtresi\nTürkçe\nEnglish\nPlatform filtresi\nTüm platformlar\nTüm cihazlar için ortak\niOS\nAndroid\nWeb\nSynthetic help article\nTaslak · sürüm 2\nTüm cihazlar için ortak\n▤\nBir yanıtı birlikte netleştirelim\n\nListeden bir yazı seçin veya yeni bir taslak oluşturun.\n\nTaslak kaydı, ailelerin gördüğü yanıtı değiştirmez.",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 800,
+          "top": 0,
+          "right": 230,
+          "bottom": 800,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "dashboard-768",
+      "url": "http://127.0.0.1:3107/dashboard",
+      "text": "Panel\n2\nAile\n2\nÇocuk\n2\nEbeveyn\n0\nAktif cihaz\n0\nGlobal soru\nAktif mağaza abonelikleri (aile)\nBaşlangıç\t0\nPlus\t0\nPro\t0\nAktif komp'lar (aile)\nBaşlangıç\t0\nPlus\t0\nPro\t0\nEtkin pakete göre aileler\nBaşlangıç\t2\nPlus\t0\nPro\t0\nAI kullanımı (son 30 gün, tamamlanan özetler)\nModel\tAdet\tGirdi token\tÇıktı token\nclaude-sonnet-5-5\t1\t100\t100",
+      "metrics": {
+        "w": 768,
+        "scroll": 768,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 88,
+          "top": 0,
+          "right": 768,
+          "bottom": 88,
+          "left": 0
+        },
+        "exit": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "families-768",
+      "url": "http://127.0.0.1:3107/families",
+      "text": "Aileler\n\nSalt okunur, asgari veri: aile adı, sayılar ve etkin paket. E-posta ile arama tam eşleşmedir ve e-posta gösterilmez.\n\nAra\nAile\tOluşturulma\tEbeveyn\tÇocuk\tCihaz\tPaket\tKaynak\tBitiş\t\n\nSynthetic family B\n46d08f70-3e1d-4918-a996-862a8baf44b5\n\t5 Kas 2026\t1\t0\t0\tBaşlangıç\tÜcretsiz\t—\tPaket ve ödeme\n\nSynthetic family A\n36c75545-6716-406c-a6a7-cf6dbaa70c75\n\t5 Kas 2026\t1\t2\t0\tBaşlangıç\tÜcretsiz\t—\tPaket ve ödeme",
+      "metrics": {
+        "w": 768,
+        "scroll": 768,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 88,
+          "top": 0,
+          "right": 768,
+          "bottom": 88,
+          "left": 0
+        },
+        "exit": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "billing-768",
+      "url": "http://127.0.0.1:3107/billing",
+      "text": "Paketler ve ödemeler\n\nAilenin kullandığı paketi ve bu hakkın nereden geldiğini birlikte inceleyin.\n\nBilgileri yenile\nMağaza aboneliği olan aile\n0\nEtkin geçici hak\n0\nİşlenememiş bildirim\n0\nAile erişimi\nBildirim takibi\nAileyi bul\nAile adı veya kimliği\nAra\n\nEn fazla 50 aile gösterilir. Aramayla listeyi daraltabilirsiniz.\n\nSynthetic family A\nGINA Başlangıç\nBaşlangıç paketi\nSynthetic family B\nGINA Başlangıç\nBaşlangıç paketi\nÖnce bir aile seçin\n\nMağaza aboneliğini, geçici hakları ve güncel paket erişimini burada karşılaştırabilirsiniz.\n\nSon başarılı okuma: 5 Kas 2026 09:02. Görünür sekmede bilgiler düzenli yenilenir.",
+      "metrics": {
+        "w": 768,
+        "scroll": 768,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 88,
+          "top": 0,
+          "right": 768,
+          "bottom": 88,
+          "left": 0
+        },
+        "exit": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "ai-768",
+      "url": "http://127.0.0.1:3107/ai",
+      "text": "AI ayarları\nGenel AI anahtarı\nAçık\nAI'ı kapat (kill switch)\n\nKapalıyken hiçbir pakette AI çağrısı yapılmaz (app_settings 'ai.enabled').\n\nDosya, galeri ve kamera kaynakları\n\nBir analize eklenecek kaynak sayısı. Varsayılan 5; sunucu en fazla 10 dosya, toplam 20 sayfa ve 20 MB kabul eder. Her PDF en fazla 5 sayfa olabilir.\n\nEn fazla kaynak sayısı\n1 kaynak\n2 kaynak\n3 kaynak\n4 kaynak\n5 kaynak\n6 kaynak\n7 kaynak\n8 kaynak\n9 kaynak\n10 kaynak\n\nBirlikte analiz tek işlem hakkı kullanır. Prova’nın soru başına kotası değişmez. Gerçek AI tüketimi ve paket token sınırı ayrıca uygulanır.\n\nSınırı kaydet\nPaket bazlı ayarlar\nPaket\tModel\tAzami girdi token\tAzami çıktı token\tPrompt sürümü\tBu pakette açık\tGüncelleme\t\nBaşlangıç\t\n(model yok)\nClaude Haiku 5.5 (claude-haiku-5-5)\nClaude Sonnet 5.5 (claude-sonnet-5-5)\n\t\t\t\t\t2 Kas 2026 00:36\tKaydet\nPlus\t\n(model yok)\nClaude Haiku 5.5 (claude-haiku-5-5)\nClaude Sonnet 5.5 (claude-sonnet-5-5)\n\t\t\t\t\t2 Kas 2026 00:36\tKaydet\nPro\t\n(model yok)\nClaude Haiku 5.5 (claude-haiku-5-5)\nClaude Sonnet 5.5 (claude-sonnet-5-5)\n\t\t\t\t\t2 Kas 2026 00:36\tKaydet\nModeller\nModel kimliği\tGörünen ad\tSağlayıcı\tGirdi $/MTok\tÇıktı $/MTok\tAktif\nclaude-haiku-5-5\tClaude Haiku 5.5\tanthropic\t—\t—\tEvet\nclaude-sonnet-5-5\tClaude Sonnet 5.5\tanthropic\t—\t—\tEvet\nModel kimliği\nGörünen ad\nModel ekle",
+      "metrics": {
+        "w": 768,
+        "scroll": 768,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 88,
+          "top": 0,
+          "right": 768,
+          "bottom": 88,
+          "left": 0
+        },
+        "exit": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "operations-768",
+      "url": "http://127.0.0.1:3107/operations",
+      "text": "AI işlem merkezi\n\nÜretim durumunu ve işlem sınırlarını izleyin. Aile belgeleri ve çocukların cevapları bu ekranda gösterilmez.\n\nDurumu yenile\nanthropic: Çağrı kabul ediyor · 0 ardışık hata\nPaketlere göre işlem sınırları\nİşlem\tPaket\tDurum\tAylık\tDakikada\tAynı anda\t\nSoru üretimi\tfree\t Açık\t\t\t\tKaydet\nSoru üretimi\tplus\t Açık\t\t\t\tKaydet\nSoru üretimi\tpro\t Açık\t\t\t\tKaydet\nDeneme değerlendirmesi\tfree\t Açık\t\t\t\tKaydet\nDeneme değerlendirmesi\tplus\t Açık\t\t\t\tKaydet\nDeneme değerlendirmesi\tpro\t Açık\t\t\t\tKaydet\nBelgeden ders programı\tfree\t Açık\t\t\t\tKaydet\nBelgeden ders programı\tplus\t Açık\t\t\t\tKaydet\nBelgeden ders programı\tpro\t Açık\t\t\t\tKaydet\nÇalışma planı\tfree\t Açık\t\t\t\tKaydet\nÇalışma planı\tplus\t Açık\t\t\t\tKaydet\nÇalışma planı\tpro\t Açık\t\t\t\tKaydet\nHaftalık aile özeti\tfree\t Açık\t\t\t\tKaydet\nHaftalık aile özeti\tplus\t Açık\t\t\t\tKaydet\nHaftalık aile özeti\tpro\t Açık\t\t\t\tKaydet\nSon 100 işlem\nİşlem\tDurum\tZaman\tKayıt\t\nBelgeden ders programı\tHazır\t5 Kas 2026 08:51\t62cd2b34-c875-4741-844e-d8f86cbe0b3d\t\nBelgeden ders programı\tHazır\t5 Kas 2026 08:51\t0245ea8a-bd3b-46ea-a0a1-b9be80a07e42\t\nBelgeden ders programı\tHazır\t5 Kas 2026 08:50\t4826f9f9-d27b-4406-a346-48f06666c708\t\nHaftalık aile özeti\tHazır\t5 Kas 2026 08:50\t6ad431be-3879-4bfa-ac4c-90ed66a76545\t",
+      "metrics": {
+        "w": 768,
+        "scroll": 768,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 88,
+          "top": 0,
+          "right": 768,
+          "bottom": 88,
+          "left": 0
+        },
+        "exit": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "input-catalog-768",
+      "url": "http://127.0.0.1:3107/input-catalog",
+      "text": "Hazır seçenekler\nYazmak yerine seçmek\n\nÇanta, ödev ve çalışma ekranlarında sunulan seçenekleri yönetin. Sınıf aralığı çocuğun kayıtlı sınıfına göre uygulanır. Pasifleştirme eski kayıtları silmez. Her seçenek sabit kimliğiyle raporlanabilir; görünen metin geçmiş kayıtlarda korunur.\n\nSeçenek kataloğu\nTür\nÇanta eşyaları\nÖdev başlıkları\nÇalışma başlıkları\nKurs ve etkinlik\nDersler\nKonular\nÇalışma adımları\nAra\nSeçenek ekle\nKalemlik\n\nPencil case\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nSu matarası\n\nWater bottle\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nDefter\n\nNotebook\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nDers kitabı\n\nTextbook\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nÖdev dosyası\n\nHomework folder\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nBeslenme çantası\n\nLunch box\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nSpor kıyafeti\n\nSports clothes\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle\nResim malzemeleri\n\nArt supplies\n\n1–12. sınıf · Gösteriliyor\n\nDüzenle",
+      "metrics": {
+        "w": 768,
+        "scroll": 768,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 88,
+          "top": 0,
+          "right": 768,
+          "bottom": 88,
+          "left": 0
+        },
+        "exit": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "library-tab-drafts-768",
+      "url": "http://127.0.0.1:3107/library?tab=drafts",
+      "text": "GINA kütüphanesi\n↑ Paket yükle\nKoleksiyonlar\nTaslak paketler\nKatkılar\nHaklar ve ödüller\nSenaryo kaynakları\n\nOrtak kaynakları, soruları ve puan ölçütlerini birlikte incele.\n\nTaslak paketler\n\nKaydetmek veya incelemek, soruları ailelere açmaz.\n\n▧\nİlk soru paketini ekle\n\nHazırlanan JSON dosyasını “Paket yükle” ile seç. Soruları ve görselleri kayıt öncesinde kontrol edebilirsin.",
+      "metrics": {
+        "w": 768,
+        "scroll": 768,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 84,
+          "top": 0,
+          "right": 768,
+          "bottom": 84,
+          "left": 0
+        },
+        "exit": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "groups-768",
+      "url": "http://127.0.0.1:3107/groups",
+      "text": "Birlikte Prova\n\nAynı sınıf düzeyine aynı soru sürümünü verin. Bu evde yapılan bir çalışma; gözetimli veya resmî sınav değildir. Katılım ve takma adla sıralama ayrı veli tercihleridir. Eşit puan eşit sıradır; hız puanı yoktur.\n\nYayın ve paket hakları\n\nYeni katılımlar kapalı. Mevcut sonuçlar korunur. Aylık katılım hakkı aile başınadır; standart Prova deneme sınırı da uygulanır.\n\nHakları düzenle\nYeni ortak prova\n\nİncelenmiş ve yayımlanmış bir paketten 3–50 soru seçin. Ortak metin veya görsele bağlı sorular bir bütün olarak eklenir. Açık uçlu soru içeren gruplar otomatik sıralamaya alınmaz. Yayımlandıktan sonra içerik ve süre değişmez; düzeltmek için iptal edip yeni sürüm oluşturun. En fazla 1.000 katılımcı.\n\nBaşlık\nKaynak\nYayımlanmış kaynak seçin\nKatılım başlangıcı\nKatılım bitişi\n\nSaatler bu cihazın saat dilimindedir. Pencere en fazla 31 gün. Çocuğun süresi başladığı anda işler; ortak bitiş daha erkense orada durur.\n\nÇözme süresi (dakika)\nDahil paketler\nfree\nplus\npro\nSürümü sabitle ve yayımla\nYayımlanan provalar\n\nHenüz ortak prova oluşturulmadı.",
+      "metrics": {
+        "w": 768,
+        "scroll": 768,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 88,
+          "top": 0,
+          "right": 768,
+          "bottom": 88,
+          "left": 0
+        },
+        "exit": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "support-768",
+      "url": "http://127.0.0.1:3107/support",
+      "text": "Destek merkezi\n\nGörüşmeleri takip et, ailelere yardımcı ol.\n\nAçık\nİnceleniyor\nVeli yanıtı\nTamamlanan\nTümü\nDestek talepleri\nKonu\nTüm konular\nHesap\nCihaz ve PIN\nÖğrenme ve Prova\nPaket ve ödeme\nDiğer\nSynthetic pairing help\nAçık\n5 Kas\nYenile",
+      "metrics": {
+        "w": 768,
+        "scroll": 768,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 84,
+          "top": 0,
+          "right": 768,
+          "bottom": 84,
+          "left": 0
+        },
+        "exit": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "help-articles-768",
+      "url": "http://127.0.0.1:3107/help-articles",
+      "text": "Yardım yazıları\n\nAilelere açık, güncel ve anlaşılır yanıtlar.\n\n＋ Yeni yazı\nYazı listesi\nDil filtresi\nTürkçe\nEnglish\nPlatform filtresi\nTüm platformlar\nTüm cihazlar için ortak\niOS\nAndroid\nWeb\nSynthetic help article\nTaslak · sürüm 2\nTüm cihazlar için ortak",
+      "metrics": {
+        "w": 768,
+        "scroll": 768,
+        "h": 800,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 84,
+          "top": 0,
+          "right": 768,
+          "bottom": 84,
+          "left": 0
+        },
+        "exit": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    },
+    {
+      "name": "support-thread-1280",
+      "url": "http://127.0.0.1:3107/support",
+      "text": "Destek merkezi\nGINA Aile\n\nGörüşmeleri takip et, ailelere yardımcı ol.\n\nAçık\nİnceleniyor\nVeli yanıtı\nTamamlanan\nTümü\nDestek talepleri\nKonu\nTüm konular\nHesap\nCihaz ve PIN\nÖğrenme ve Prova\nPaket ve ödeme\nDiğer\nSynthetic pairing help\nAçık\n5 Kas\nYenile\nSynthetic pairing help\nCihaz ve PIN\nAçık\n•••\n\nⓘ Yanıtlar ailedeki ebeveynlere görünür.\n\nEbeveyn\n5 Kas 08:51\n\nSynthetic family question\n\n🔒 Ekip notu · Aileye görünmez\n5 Kas 08:51\n\nSynthetic INTERNAL note\n\nDestek\n5 Kas 08:51\n\nSynthetic answer visible to family\n\nEbeveyn\n5 Kas 08:51\n\nSynthetic follow-up\n\nAileye yanıt\nEkip notu\nAiledeki ebeveynlere gönderilecek\nGönderim sonrası\nDurumu koru\nAçık\nİnceleniyor\nVeli yanıtı bekleniyor\nÇözüldü\nKapalı\nYanıtı gönder",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 900,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 900,
+          "top": 0,
+          "right": 230,
+          "bottom": 900,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "support-internal-draft-1280",
+      "url": "http://127.0.0.1:3107/support",
+      "text": "Destek merkezi\nGINA Aile\n\nGörüşmeleri takip et, ailelere yardımcı ol.\n\nAçık\nİnceleniyor\nVeli yanıtı\nTamamlanan\nTümü\nDestek talepleri\nKonu\nTüm konular\nHesap\nCihaz ve PIN\nÖğrenme ve Prova\nPaket ve ödeme\nDiğer\nSynthetic pairing help\nAçık\n5 Kas\nYenile\nSynthetic pairing help\nCihaz ve PIN\nAçık\n•••\n\nⓘ Yanıtlar ailedeki ebeveynlere görünür.\n\nEbeveyn\n5 Kas 08:51\n\nSynthetic family question\n\n🔒 Ekip notu · Aileye görünmez\n5 Kas 08:51\n\nSynthetic INTERNAL note\n\nDestek\n5 Kas 08:51\n\nSynthetic answer visible to family\n\nEbeveyn\n5 Kas 08:51\n\nSynthetic follow-up\n\nAileye yanıt\nEkip notu\nYalnız destek ekibi görecek\nGönderim sonrası\nDurumu koru\nAçık\nİnceleniyor\nVeli yanıtı bekleniyor\nÇözüldü\nKapalı\nEkip notunu kaydet",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 900,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 900,
+          "top": 0,
+          "right": 230,
+          "bottom": 900,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "support-draft-separation",
+      "familyDraft": ""
+    },
+    {
+      "name": "help-article-editor-1280",
+      "url": "http://127.0.0.1:3107/help-articles",
+      "text": "Yardım yazıları\n\nAilelere açık, güncel ve anlaşılır yanıtlar.\n\n＋ Yeni yazı\nYazı listesi\nDil filtresi\nTürkçe\nEnglish\nPlatform filtresi\nTüm platformlar\nTüm cihazlar için ortak\niOS\nAndroid\nWeb\nSynthetic help article\nTaslak · sürüm 2\nTüm cihazlar için ortak\nDüzenle\nÖnizleme\n⋯\n\nBu yazı henüz yayında değil. Taslak ailelere görünmez.\n\nSoru başlığı\nDil: Türkçe\nPlatform: Tüm cihazlar için ortak\nYanıt\n\nSon kayıt: sürüm 2 · İnceleme bekliyor\n\nTaslağı kaydet\nİncele\nYayımlama\n\nÖnce kayıtlı sürümü inceleyin.\n\nYayımla",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 900,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 900,
+          "top": 0,
+          "right": 230,
+          "bottom": 900,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "help-article-preview-1280",
+      "url": "http://127.0.0.1:3107/help-articles",
+      "text": "Yardım yazıları\n\nAilelere açık, güncel ve anlaşılır yanıtlar.\n\n＋ Yeni yazı\nYazı listesi\nDil filtresi\nTürkçe\nEnglish\nPlatform filtresi\nTüm platformlar\nTüm cihazlar için ortak\niOS\nAndroid\nWeb\nSynthetic help article\nTaslak · sürüm 2\nTüm cihazlar için ortak\nDüzenle\nÖnizleme\n⋯\n\nBu yazı henüz yayında değil. Taslak ailelere görünmez.\n\nTaslak · Ailelere görünmez\nSynthetic help article\n\nSynthetic new draft must remain private.\n\nDüzenlemeye dön\nYayımlama\n\nÖnce kayıtlı sürümü inceleyin.\n\nYayımla",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 900,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 900,
+          "top": 0,
+          "right": 230,
+          "bottom": 900,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "catalog-new-1280",
+      "url": "http://127.0.0.1:3107/input-catalog",
+      "text": "Hazır seçenekler\nGINA Aile\nYazmak yerine seçmek\n\nÇanta, ödev ve çalışma ekranlarında sunulan seçenekleri yönetin. Sınıf aralığı çocuğun kayıtlı sınıfına göre uygulanır. Pasifleştirme eski kayıtları silmez. Her seçenek sabit kimliğiyle raporlanabilir; görünen metin geçmiş kayıtlarda korunur.\n\nYeni seçenek\nSabit kimlikÖrnek: bag-pencil. Kaydettikten sonra değişmez.\nTür\nÇanta eşyaları\nÖdev başlıkları\nÇalışma başlıkları\nKurs ve etkinlik\nDersler\nKonular\nÇalışma adımları\nTürkçe metin\nİngilizce metin\nİlk sınıf\n1. sınıf\n2. sınıf\n3. sınıf\n4. sınıf\n5. sınıf\n6. sınıf\n7. sınıf\n8. sınıf\n9. sınıf\n10. sınıf\n11. sınıf\n12. sınıf\nSon sınıf\n1. sınıf\n2. sınıf\n3. sınıf\n4. sınıf\n5. sınıf\n6. sınıf\n7. sınıf\n8. sınıf\n9. sınıf\n10. sınıf\n11. sınıf\n12. sınıf\nSıra\nKullanıcılara göster\nKaydet\nTaslağı kapat",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 900,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 900,
+          "top": 0,
+          "right": 230,
+          "bottom": 900,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "catalog-unsaved-close",
+      "formClosed": true
+    },
+    {
+      "name": "billing-family-1280",
+      "url": "http://127.0.0.1:3107/billing?family=36c75545-6716-406c-a6a7-cf6dbaa70c75",
+      "text": "Paketler ve ödemeler\nGINA Aile\n\nAilenin kullandığı paketi ve bu hakkın nereden geldiğini birlikte inceleyin.\n\nBilgileri yenile\nMağaza aboneliği olan aile\n0\nEtkin geçici hak\n0\nİşlenememiş bildirim\n0\nAile erişimi\nBildirim takibi\nAileyi bul\nAile adı veya kimliği\nAra\n\nEn fazla 50 aile gösterilir. Aramayla listeyi daraltabilirsiniz.\n\nSynthetic family A\nGINA Başlangıç\nBaşlangıç paketi\nSynthetic family B\nGINA Başlangıç\nBaşlangıç paketi\nSynthetic family A\nAile erişimi\nŞu anda kullanılan paket\nGINA Başlangıç\n\nBaşlangıç paketi\n\nMağaza abonelikleri\n\nBu aileye bağlanmış mağaza aboneliği yok. Beta veya geçici hakla kullanım, satın alma olarak sayılmaz.\n\nGINA geçici hakları\nHakları yönet\n\nÜcretsiz verilen erişimdir. Mağazadan ücret alınmaz ve ücret iadesi yapılmış olmaz.\n\nGeçici hak tanımlanmamış.\n\nMağaza kontrol geçmişi\nYenile\n\nHenüz yönetimden kontrol istenmemiş.\n\nİptal ve ücret iadesi nasıl ayrılır?\n\nSon başarılı okuma: 5 Kas 2026 09:02. Görünür sekmede bilgiler düzenli yenilenir.",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 900,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 900,
+          "top": 0,
+          "right": 230,
+          "bottom": 900,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "collection-new-1280",
+      "url": "http://127.0.0.1:3107/library",
+      "text": "GINA kütüphanesi\nGINA Aile\n\nKoleksiyonları hazırlayın, soruları inceleyin ve paketlere açın. Bir koleksiyonun görünmesi için hem koleksiyonun hem içindeki soruların yayımlanmış olması gerekir.\n\nKoleksiyonlar\nTaslak paketler\nKatkılar\nHaklar ve ödüller\nSenaryo kaynakları\nKoleksiyon oluştur\nYenile\nKoleksiyon bilgileri\nAd\nDers\nSınıf\nMüfredat / eğitim yılı\nAçıklama\nDahil olan paketler\nfree\nplus\npro\nYayın durumu\nTaslak\nYayında\nArşiv\nKaydet\nVazgeç\nKoleksiyonlar\n\nİlk koleksiyonunuzu oluşturun.\n\nİçeriğini görmek için bir koleksiyon seçin.",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 900,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 230,
+          "height": 900,
+          "top": 0,
+          "right": 230,
+          "bottom": 900,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1051.5,
+          "width": 193,
+          "height": 48,
+          "top": 1051.5,
+          "right": 211,
+          "bottom": 1099.5,
+          "left": 18
+        }
+      }
+    },
+    {
+      "name": "library-pilot-local-preview-1280",
+      "url": "http://127.0.0.1:3107/library?tab=drafts",
+      "text": "GINA kütüphanesi\n↑ Paket yükle\nKoleksiyonlar\nTaslak paketler\nKatkılar\nHaklar ve ödüller\nSenaryo kaynakları\n\nOrtak kaynakları, soruları ve puan ölçütlerini birlikte incele.\n\nBu dosya geçerli bir GINA soru paketi değil. Hazırlanan JSON dosyasını seç.\n\nTaslak paketler\n\nKaydetmek veya incelemek, soruları ailelere açmaz.\n\n▧\nİlk soru paketini ekle\n\nHazırlanan JSON dosyasını “Paket yükle” ile seç. Soruları ve görselleri kayıt öncesinde kontrol edebilirsin.",
+      "metrics": {
+        "w": 1280,
+        "scroll": 1280,
+        "h": 900,
+        "sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 195,
+          "height": 900,
+          "top": 0,
+          "right": 195,
+          "bottom": 900,
+          "left": 0
+        },
+        "exit": {
+          "x": 18,
+          "y": 1231.5,
+          "width": 158,
+          "height": 48,
+          "top": 1231.5,
+          "right": 176,
+          "bottom": 1279.5,
+          "left": 18
+        }
+      }
+    }
+  ],
+  "preview_metadata": {
+    "environment": "isolated actual local services, synthetic admin with all operational roles",
+    "base": "http://127.0.0.1:3107",
+    "production_mutations": false,
+    "app_code_changes": false,
+    "database_mutations_by_this_audit": false,
+    "valid_library_preview_only": true
+  }
+}

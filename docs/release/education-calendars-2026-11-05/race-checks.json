@@ -1,0 +1,21 @@
+{
+  "environment": "empty-disposable-database",
+  "results": [
+    {
+      "check": "concurrent_same_request_publish_single_recipient_copy",
+      "passed": true
+    },
+    {
+      "check": "different_requests_same_draft_cannot_publish_twice",
+      "passed": true
+    },
+    {
+      "check": "edit_vs_publish_requires_review_of_the_winning_revision",
+      "passed": true
+    },
+    {
+      "check": "overlapping_reminder_runs_produce_one_inbox_and_push",
+      "passed": true
+    }
+  ]
+}

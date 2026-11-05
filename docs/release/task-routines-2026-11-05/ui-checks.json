@@ -1,0 +1,41 @@
+{
+  "environment": "disposable-local-real-auth-rest-realtime",
+  "results": [
+    {
+      "check": "lost_response_retry_one_revision",
+      "passed": true
+    },
+    {
+      "check": "archive_effect_preview_keeps_pending_work",
+      "passed": true
+    },
+    {
+      "check": "parent_displays_original_title_and_approves_original_stars_after_archive",
+      "passed": true
+    },
+    {
+      "check": "restore_preserves_updated_settings_and_requires_explicit_resume",
+      "passed": true
+    },
+    {
+      "check": "parent_can_read_edit_archive_restore_history",
+      "passed": true
+    },
+    {
+      "check": "stale_editor_cannot_overwrite_other_parent",
+      "passed": true
+    },
+    {
+      "check": "other_device_pause_refreshes_active_list",
+      "passed": true
+    },
+    {
+      "check": "child_keeps_original_completed_work_visible_after_routine_pause",
+      "passed": true
+    },
+    {
+      "check": "phone_tablet_layout_and_runtime",
+      "passed": true
+    }
+  ]
+}

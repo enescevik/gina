@@ -43,11 +43,11 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
   const returnToRoom = useCallback(() => scroll.current?.scrollTo({ y: 0, animated: false }), []);
-  const next = data.due.find(x => x.status === 'returned') ?? data.due.find(x => x.status === null);
+  const next = data.due.find(x => x.available && x.status === 'returned') ?? data.due.find(x => x.available && x.status === null);
   const selected = data.due.find(x => x.id === selectedId);
   const approved = data.due.filter(x => x.status === 'approved').length;
   const waiting = data.due.filter(x => x.status === 'done').length;
-  const todo = data.due.length - approved - waiting;
+  const todo = data.due.filter(task=>task.available && (task.status===null || task.status==='returned')).length;
   const go = (page: Parameters<typeof childPath>[0]) => router.push(childPath(page, actingAsParent));
   const openTasks = () => { setSelectedId(null); setTaskSheet(true); };
   const openTask = (id: string) => { setSelectedId(id); setTaskSheet(true); };
@@ -63,7 +63,7 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
       {error ? <View style={s.card}><ErrorText error={error} />{primary(t('common.retry'), retry)}</View> : data.loading ? <View style={s.state}><ActivityIndicator color={c.purple} /><Text style={s.text}>{t('childMint.loading')}</Text></View> : next ? <View style={[s.card, !wide && { padding: 10, gap: 8 }]}>
         <View style={s.row}><View style={s.taskArt}><TaskIcon slug={next.icon} size={wide ? 76 : 60} variant="illustrated" /></View><View style={{ flex: 1, gap: 4 }}><Text style={[s.heading, { fontSize: 19 }]}>{next.title}</Text><Text style={s.text}>{t('room.plusStars', { count: next.stars })}</Text>{next.status === 'returned' && <Text style={[s.small, { color: c.amber }]}>{t('child.returnedTryAgain')}</Text>}</View></View>
         {primary(t('childMint.start'), () => openTask(next.id))}
-      </View> : <View style={s.card}><View style={s.row}><Collectible slug={waiting ? 'star-filled' : data.due.length ? 'reward-trophy' : 'display-first-task'} size={shortLandscape ? 48 : 64}/><View style={{ flex: 1 }}><Text style={s.heading}>{t(waiting ? 'childMint.waitingTitle' : data.due.length ? 'childMint.allDone' : 'childMint.emptyTitle')}</Text><Text style={s.text}>{t(waiting ? 'childMint.waitingBody' : data.due.length ? 'childMint.allDoneBody' : 'childMint.emptyBody')}</Text></View></View>{!data.due.length && primary(t('betaUx.exploreCollection'), () => go('collection'))}</View>}
+      </View> : <View style={s.card}><View style={s.row}><Collectible slug={waiting ? 'star-filled' : data.due.length ? 'reward-trophy' : 'display-first-task'} size={shortLandscape ? 48 : 64}/><View style={{ flex: 1 }}><Text style={s.heading}>{t(waiting ? 'childMint.waitingTitle' : data.due.some(x=>!x.available && x.status==='returned') ? 'routine.pausedTitle' : data.due.length ? 'childMint.allDone' : 'childMint.emptyTitle')}</Text><Text style={s.text}>{t(waiting ? 'childMint.waitingBody' : data.due.some(x=>!x.available && x.status==='returned') ? 'routine.pausedBody' : data.due.length ? 'childMint.allDoneBody' : 'childMint.emptyBody')}</Text></View></View>{!data.due.length && primary(t('betaUx.exploreCollection'), () => go('collection'))}</View>}
     </View>
     {data.due.length > 0 && <View style={[s.section, s.divider, !wide && { gap: 8, paddingTop: 12 }]}>
       <Text accessibilityRole="header" style={s.heading}>{t('childMint.steps')}</Text>
@@ -101,10 +101,10 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
         <View style={s.row}><Text accessibilityRole="header" style={[s.heading, { flex: 1 }]}>{selected ? selected.title : t('room.todayTasks')}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('childMint.close')} onPress={() => setTaskSheet(false)} style={s.chip}><X size={22} color={c.ink} /></Pressable></View>
         <ScrollView contentContainerStyle={{ gap: 12, paddingBottom: 8 }}>
           <ErrorText error={data.completionError ?? data.error} />
-          {taskSheet && !data.loading && !data.error && <TaskFocus childId={childId} day={data.today} tasks={data.due} selectedId={selectedId} onSelect={setSelectedId} />}
+          {taskSheet && !data.loading && !data.error && <TaskFocus childId={childId} day={data.today} tasks={data.due.filter(task=>task.available)} selectedId={selectedId} onSelect={setSelectedId} />}
           {data.loading ? <ActivityIndicator color={c.purple} /> : (selected ? [selected] : data.due).map(task => <View key={task.id} style={s.card}>
-            <View style={s.row}><TaskIcon slug={task.icon} size={72} variant="illustrated" /><View style={{ flex: 1 }}><Text style={[s.text, s.bold]}>{task.title}</Text><Text style={s.small}>{t('room.plusStars', { count: task.stars })}</Text><Text accessibilityLiveRegion="polite" style={[s.small, { color: task.status === 'done' || task.status === 'returned' ? c.amber : c.muted }]}>{statusText(task.status)}</Text></View></View>
-            {(task.status === null || task.status === 'returned') && <>{primary(t('child.markDone'), () => data.complete(task.id), data.completing)}{!selected && <Button variant="ghost" title={t('focus.focusTask')} onPress={() => setSelectedId(task.id)} />}</>}
+            <View style={s.row}><TaskIcon slug={task.icon} size={72} variant="illustrated" /><View style={{ flex: 1 }}><Text style={[s.text, s.bold]}>{task.title}</Text><Text style={s.small}>{t('room.plusStars', { count: task.stars })}</Text><Text accessibilityLiveRegion="polite" style={[s.small, { color: task.status === 'done' || task.status === 'returned' ? c.amber : c.muted }]}>{!task.available && task.status === "returned" ? t("routine.pausedWork") : statusText(task.status)}</Text></View></View>
+            {task.available && (task.status === null || task.status === 'returned') && <>{primary(t('child.markDone'), () => data.complete(task.id), data.completing)}{!selected && <Button variant="ghost" title={t('focus.focusTask')} onPress={() => setSelectedId(task.id)} />}</>}
           </View>)}
           {!data.loading && !data.error && !data.due.length && <Text style={s.text}>{t('childMint.emptyBody')}</Text>}
         </ScrollView>

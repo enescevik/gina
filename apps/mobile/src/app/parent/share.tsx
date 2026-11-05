@@ -52,7 +52,7 @@ export default function ParentShareScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("children").select("id, name, grade, avatar").order("sort_order");
+      const { data, error } = await supabase.from("children").select("id, name, grade, avatar").is("archived_at", null).order("sort_order");
       if (error) throw error;
       return data;
     },

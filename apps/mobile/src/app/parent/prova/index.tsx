@@ -28,6 +28,8 @@ import { b, BuilderCard } from "@/components/learning/prova-builder-ui";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
+import { DraftLifecycle } from "@/components/learning/draft-lifecycle";
+import type { DraftRecord } from "@/lib/prova-draft";
 import { DraftOverview } from "@/components/learning/prova-draft-overview";
 import { fetchProvaDrafts } from "@/lib/prova-draft";
 import { provaErrorMessage } from "@/lib/prova-ai";
@@ -47,7 +49,7 @@ export default function ParentProvaScreen() {
     queryFn: async () => {
       const { data, error } = await supabase.from("children").select(
         "id,name,avatar,grade",
-      ).order("sort_order");
+      ).is("archived_at", null).order("sort_order");
       if (error) throw error;
       return data;
     },
@@ -84,6 +86,7 @@ export default function ParentProvaScreen() {
   useRealtimeInvalidate("exams", familyId ? `family_id=eq.${familyId}` : null, [
     ["exams", familyId],
   ]);
+  const [discardDraft, setDiscardDraft] = useState<DraftRecord | null>(null);
   const activeDrafts = (drafts.data ?? []).filter((d) =>
     !d.submitted_at && (!childId || d.content.childId === childId)
   );
@@ -218,7 +221,8 @@ export default function ParentProvaScreen() {
         {tab === "hub"
           ? (
             <View style={{ gap: 26 }}>
-              {activeDrafts.length > 0 ? <DraftOverview drafts={activeDrafts} familyId={familyId} wide={wide}>{pendingSection}</DraftOverview> : pendingSection}
+              {activeDrafts.length > 0 ? <DraftOverview drafts={activeDrafts} familyId={familyId} wide={wide} onDiscard={setDiscardDraft}>{pendingSection}</DraftOverview> : pendingSection}
+              <DraftLifecycle familyId={familyId} childId={childId} selected={discardDraft} onClose={() => setDiscardDraft(null)} />
               <View style={{ gap: 22, width: '100%', maxWidth: wide && activeDrafts.length > 0 ? 607 : undefined }}>
                 <Text style={b.h2}>{t("provaBuilder.assigned")}</Text>
                 {!visibleExams.length

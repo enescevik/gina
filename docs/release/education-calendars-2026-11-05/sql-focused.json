@@ -1,0 +1,12 @@
+[
+  {
+    "file": "080_education_calendars.test.sql",
+    "assertions": 35,
+    "passed": true
+  },
+  {
+    "file": "081_parent_announcements.test.sql",
+    "assertions": 41,
+    "passed": true
+  }
+]

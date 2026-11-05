@@ -34,7 +34,7 @@ export default function ChildModeEntryScreen() {
   const children = useQuery({
     queryKey: ["children"],
     queryFn: async () => {
-      const { data, error: queryError } = await supabase.from("children").select("id, name, grade, avatar").order("sort_order");
+      const { data, error: queryError } = await supabase.from("children").select("id, name, grade, avatar").is("archived_at", null).order("sort_order");
       if (queryError) throw queryError;
       return data;
     },

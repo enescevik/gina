@@ -1,3 +1,4 @@
+import { NOTEBOOK_MODAL_PROPS } from "@/components/learning/notebook-layout";
 import { TimeChoice, TimetableBoard } from "./timetable-board";
 import { TimetableImportEntry, TimetableSourceLinks } from "./timetable-import";
 import { type ComponentRef, useEffect, useMemo, useRef, useState } from "react";
@@ -24,6 +25,8 @@ import {
   validLessonSettings,
 } from "@gina/core";
 import { Avatar } from "@/components/avatar";
+import { DecisionSheet } from "@/components/ui/decision-sheet";
+import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Pressable } from "@/components/ui/pressable";
 import { timetableJournal } from "@/lib/timetable-command";
@@ -139,6 +142,8 @@ function LoadedEditor({
   const [error, setError] = useState("");
   const [conflict, setConflict] = useState(false);
   const [lesson, setLesson] = useState<Lesson | null>(null);
+  const [clearOpen, setClearOpen] = useState(false);
+  const [beforeClear, setBeforeClear] = useState<Draft | null>(null);
   const [copy, setCopy] = useState(false);
   const [targets, setTargets] = useState<number[]>([]);
   const [sheetError, setSheetError] = useState("");
@@ -168,6 +173,7 @@ function LoadedEditor({
   function change(next: Draft) {
     if (locked) return;
     setDraft(next);
+    setBeforeClear(null);
     setSaved(false);
     setNewer(false);
     setError("");
@@ -206,6 +212,7 @@ function LoadedEditor({
       const next = current && current.revision >= receipt.revision
         ? current
         : acknowledged;
+      if (current && current.revision > receipt.revision) setBeforeClear(null);
       setNewer(!!current && current.revision > receipt.revision);
       setDraft(next);
       setBaseline(JSON.stringify(next));
@@ -411,6 +418,7 @@ function LoadedEditor({
                       initial={draft}
                       disabled={dirty || locked}
                       onSaved={(next) => {
+                        setBeforeClear(null);
                         setDraft(next);
                         setBaseline(JSON.stringify(next));
                         setSaved(true);
@@ -439,10 +447,10 @@ function LoadedEditor({
                   disabled={locked}
                   onDragChange={setDragging}
                   onChange={(lessons) => change({ ...draft, lessons })}
-                  onSettingsChange={(settings) =>
-                    setDraft((current) =>
-                      current ? { ...current, settings } : current
-                    )}
+                  onSettingsChange={(settings) => {
+                    setBeforeClear(null);
+                    setDraft((current) => current ? { ...current, settings } : current);
+                  }}
                   onAdd={(d) => add(d)}
                 />
                 <Pressable
@@ -458,6 +466,8 @@ function LoadedEditor({
                   <Copy size={19} color={p.purple} />
                   <Text style={u.linkText}>{t("planner.copyDay")}</Text>
                 </Pressable>
+                {draft.lessons.length ? <Button variant="ghost" title={t("lifecycle.clearTimetable")} disabled={locked} onPress={() => setClearOpen(true)} /> : null}
+                {beforeClear ? <View style={u.card}><Text style={u.copy}>{t("lifecycle.clearedTimetable")}</Text><Button variant="secondary" title={t("lifecycle.undoTimetable")} disabled={locked} onPress={() => change({ ...beforeClear, revision: draft.revision })} /></View> : null}
                 <Text style={u.small}>{t("planner.sharedHelp")}</Text>
                 <TimetableSourceLinks childId={child.id} />
                 {!pending && query.data &&
@@ -485,6 +495,7 @@ function LoadedEditor({
                   requestLeave(() => {
                     void query.refetch().then((r) => {
                       if (r.data) {
+                        setBeforeClear(null);
                         setDraft(r.data);
                         setBaseline(JSON.stringify(r.data));
                         setConflict(false);
@@ -516,12 +527,25 @@ function LoadedEditor({
           />
         </View>
       </KeyboardAvoidingView>
+      <DecisionSheet visible={clearOpen} title={t("lifecycle.clearTimetable")} onClose={() => setClearOpen(false)}>
+        <Text style={u.heading}>{child.name}</Text>
+        <Text style={u.copy}>{t("lifecycle.clearTimetableBody", { count: draft?.lessons.length ?? 0 })}</Text>
+        <Text style={u.small}>{t("lifecycle.clearTimetableHelp")}</Text>
+        <Button title={t("common.cancel")} onPress={() => setClearOpen(false)} />
+        <Button variant="danger" title={t("lifecycle.clearDraft")} disabled={locked || !draft?.lessons.length} onPress={() => {
+          if (!draft || locked) return;
+          const previous = draft;
+          change({ ...draft, lessons: [] });
+          setBeforeClear(previous);
+          setClearOpen(false);
+        }} />
+      </DecisionSheet>
       <Modal
+        {...NOTEBOOK_MODAL_PROPS}
         visible={sheetOpen}
         transparent
         animationType="none"
         onRequestClose={closeSheet}
-        supportedOrientations={["portrait", "landscape"]}
       >
         <View
           style={{
