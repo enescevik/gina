@@ -29,7 +29,7 @@ Bu bir uzman görüşü/klinik değerlendirme değildir; ürün incelemesinde a�
 
 - Temel mantık: 251 test; bunun 8'i bu akışın zamanlama, ad eşleme, hariç tutma, öğle arasını koruma ve yer değiştirme davranışını kapsar.
 - İçe aktarma şeması ve açıklama sınırı: 5 test.
-- Mobil, core, API ve yönetim TypeScript/lint ile Edge tip kontrolü geçti.
+- Mobil, core, API ve yönetim TypeScript/lint ile Edge tip kontrolü geçti. GitHub CI ve bağımlılık denetimi son kaynakta geçti; 76 veritabanı dosyasında 2.073 kontrol başarılı.
 - Son izole hizmet koşusunda 257 kontrol geçti; ayrı aileye erişim, AI onayı, açıklama sınırı, aynı isteğin tek üretimi ve değişen açıklamanın ayrı taslağı doğrulandı. Geçici veritabanı ve servisler temizlendi; `isolated-services.json` kaydı eklendi.
 - Gerçek yerel Auth/REST/Storage/Edge/DB ile sentetik aile üzerinde fotoğraf seçme, açıklama gönderme, 40 ders inceleme, saat tamamlama, kayıt/yeniden açma kontrol edildi. AI sağlayıcısı bu otomatik/yerel kabulde deterministik test yanıtı verir; gerçek fotoğrafı okuma kalitesi testi değildir.
 - Tarayıcıda tutamaktan sürükleme, iki dokunuşla değiştirme ve geri alma; 10 → 20 dakika teneffüste yalnız o günün devamının kayması doğrulandı.
@@ -40,4 +40,18 @@ Bu bir uzman görüşü/klinik değerlendirme değildir; ürün incelemesinde a�
 
 [Telefon](screenshots/phone.png) · [Tablet](screenshots/tablet.png) · [Telefon inceleme](screenshots/import-phone.png) · [Tablet inceleme](screenshots/import-tablet.png) · [Saat düzeni](screenshots/bell-times.png)
 
-Yayın durumu bu klasördeki release.json dosyasında ayrıca kaydedilir; bu belgenin varlığı dağıtımın tamamlandığı anlamına gelmez.
+## Yayın
+
+Web ve `timetable-import` servisi güncellendi; 10 canlı web dosyası üretim çıktısıyla birebir eşleşti. Yetkisiz analiz isteği 403 ile reddedildi. Üretimde yetkili gerçek aile akışı bu tur yeniden çalıştırılmadı; işlev kanıtı izole servislerden gelir.
+
+**TestFlight 0.1.0 (25)** Apple tarafından `VALID` olarak işlendi ve `IN_BETA_TESTING` durumunda. Türkçe/İngilizce test notları kaydedilip geri okunarak doğrulandı. Bu, genel App Store yayını değildir.
+
+23 numaralı derleme web stilinin mobil tip düzeltmesi için iptal edildi. 24 numaralı paket kontrolünde eski paylaşım adresi bulundu; Apple'a gönderilmedi. Yerel yayın ortamı düzeltilip 25 yeniden derlendi; paket içindeki Supabase/web adresleri, imza ve iPhone/iPad desteği doğrulandı. Kaynak ve paket hash'i `package-25.json`, yayın bilgileri `release.json` içinde.
+
+### Cihazda kısa kabul
+
+1. TestFlight'ta **25** numaralı sürüme güncelleyin.
+2. Ders programı → üç nokta → Fotoğraftan aktar. Aynı görseli seçip ek açıklamaya kısaltmaları yazın; tabloyu kontrol edin.
+3. Saatler bölümünde ilk başlangıcı ve okulun ders/teneffüs düzenini girin. Tek bir teneffüsü artırın; aynı günün devamı kaymalı, diğer günler değişmemeli.
+4. Yer değiştir ile iki dersi seçin veya tutamaktan sürükleyin; Geri al işlemini deneyin.
+5. İnceleme açıkken telefonu/tableti döndürün; çalışma kapanmamalı. Kaydedip yeniden açınca günler ve saatler korunmalı.
