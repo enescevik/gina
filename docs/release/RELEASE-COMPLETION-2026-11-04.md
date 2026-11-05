@@ -1,5 +1,7 @@
 # GINA — yayını tamamlama ve kullanıcı adımları
 
+> **5 Kasım güncellemesi:** Aşağıdaki 4 Kasım kaydı tarihseldir. Son yayımlanan web/yönetim/servis paketi ve iOS **0.1.0 (26)** durumu [güncel yayın raporunda](foundation-2026-11-05/README.md). Paket Apple’da geçerli; test grubuna atanması için Apple girişi bekleniyor. Önceki erişilebilir TestFlight sürümü 25.
+
 4 Kasım 2026. Bu belge bir tamamlanma ilanı değildir. Hazır kod, doğrulanmış hizmet
 ve yayımlanmış sürüm ayrı izlenir. Son doğrulanmış TestFlight sürümü **0.1.0 (20)**;
 bu sürümden sonraki değişiklikler ayrı kabul ve yayın kaydı gerektirir.

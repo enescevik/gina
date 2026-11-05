@@ -18,7 +18,7 @@ Kaynak `1f1b505b9b8e9d8491554f22c1ff194142956a32`, main birleştirmesi `17e10605
 4. PR main'e birleştirildi. Main CI ve güvenlik incelemesi başarılı. GitHub yayın işleri eksik yayın anahtarları nedeniyle **atlandı**; yayın başarısı sayılmadı. Gerçek web/yönetim yayını mevcut yetkili yerel Wrangler oturumuyla yapıldı.
 5. Web: https://gina-web.pages.dev — dağıtım https://e6f5362c.gina-web.pages.dev. Altı sayfa ve beş JavaScript dosyasının canlı içeriği üretilen dosyalarla hash düzeyinde aynı.
 6. Yönetim: https://gina-backoffice.pages.dev — dağıtım https://6a1b070c.gina-backoffice.pages.dev. Ana adres ve bu gerçek önizlemede toplam 12 yol doğru `gina-family` Access kapısına yönleniyor. Bu yayında yönetici olarak giriş/yazma akışı yeniden denenmedi.
-7. iOS 0.1.0 (26): derleme/yükleme sonucu `release.json` ile tamamlanacak.
+7. iOS **0.1.0 (26)**: derlendi; imza ve üretim adresleri doğrulandı; Apple ön doğrulama ve yüklemesi hatasız tamamlandı. Apple `VALID`, iç test durumu `READY_FOR_BETA_TESTING`. Türkçe/İngilizce test notları kaydedilip tekrar okunarak doğrulandı. **Test grubuna atanması henüz doğrulanmadı:** mevcut yükleme anahtarı grup yönetiminde 403 döndürüyor; Chrome Apple oturumu kapalı. Kullanıcıdan açılan App Store Connect sekmesinde giriş yapması istendi. `IN_BETA_TESTING` görülmeden test kullanıcılarına açıldı denmez.
 
 ## Doğrulama ve sınırlar
 
@@ -27,7 +27,7 @@ Kaynak `1f1b505b9b8e9d8491554f22c1ff194142956a32`, main birleştirmesi `17e10605
 - Canlı veritabanında 10 salt okunur yapı/yetki kontrolü geçti. Başta şema kullanım iznini yasak sayan kontrol düzeltildi: `gina` şemasına kullanım izni mevcut tasarımın parçasıdır; özel geçmiş tablosunun doğrudan okuma/yazma izinleri kapalı olduğu doğrulandı.
 - 19 Edge giriş sınırı denemesinde 18 istek 4xx ile reddedildi. `google-rtdn` mevcut eksik Google bildirim yapılandırması nedeniyle 503 verdi; bu kanal hazır sayılmaz. Gerçek AI üretimi, ödeme veya bildirim gönderimi bu denemelerde yapılmadı.
 - Eğitim hatırlatmaları varsayılan kapalı kaldı. Gerçek velilere test duyurusu gönderilmedi; aile kayıtları sıfırlanmadı.
-- Expo Doctor 19/20: mevcut `newArchEnabled` alanı SDK 58 şemasınca artık tanınmıyor; bu alan derlemeyi engellemedi. Bu kontrol tamamen geçti diye raporlanmaz. Derlenen uygulamanın imzası, iPhone/iPad desteği, dört iPad yönü ve üretim adresleri ayrıca doğrulandı. Sonraki bakımda eski alan kaldırılacak.
+- Expo Doctor 19/20: mevcut `newArchEnabled` alanı SDK 58 şemasınca artık tanınmıyor; bu alan derlemeyi engellemedi. Bu kontrol tamamen geçti diye raporlanmaz. Derlenen uygulamanın imzası, iPhone/iPad desteği, dört iPad yönü ve üretim adresleri ayrıca doğrulandı. Sonraki bakımda eski alan kaldırılacak; mevcut paket Apple doğrulamasını geçti.
 - Fiziksel iPhone/iPad/Android, Apple Pencil ve ekran okuyucu kabulü bu yayın sırasında yapılmadı. App Store herkese açık yayın başlatılmadı.
 
 ## Sonraki geliştirme

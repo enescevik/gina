@@ -51,10 +51,24 @@
   "testflight": {
     "version": "0.1.0",
     "build": "26",
-    "state": "BUILT_VALIDATING",
+    "state": "READY_FOR_BETA_TESTING",
     "physicalDeviceTested": false,
     "signatureVerified": true,
-    "productionEndpointsVerified": true
+    "productionEndpointsVerified": true,
+    "processingState": "VALID",
+    "expired": false,
+    "appleBuildId": "62ac18c3-c09c-4ab3-80a3-8c713bec7948",
+    "deliveryId": "62ac18c3-c09c-4ab3-80a3-8c713bec7948",
+    "validationExit": 0,
+    "uploadExit": 0,
+    "notesVerified": true,
+    "notesLocales": [
+      "tr",
+      "en-US"
+    ],
+    "checkedAt": "2026-11-05T16:31:09.634Z",
+    "testerGroupAssignmentVerified": false,
+    "blocker": "Existing upload API key cannot read/manage beta groups (403); browser Apple session signed out. User sign-in requested for final group assignment."
   },
   "educationRemindersEnabled": false
 }
