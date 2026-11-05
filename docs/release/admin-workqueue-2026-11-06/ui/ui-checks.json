@@ -1,0 +1,62 @@
+{
+  "environment": "disposable-local-auth-postgrest gina_b01ui_*",
+  "viewports": [
+    "1280x800",
+    "768x1024"
+  ],
+  "results": [
+    {
+      "check": "dashboard_role_workqueue_before_counts",
+      "passed": true,
+      "detail": "item+count+oldest+reason+link; role filter hides support items"
+    },
+    {
+      "check": "families_keyset_beyond_100",
+      "passed": true,
+      "detail": "132 unique rows in 3 pages (3 admin_families_search calls), no 'more' button at end"
+    },
+    {
+      "check": "families_matched_on_marker_and_uuid_in_details",
+      "passed": true,
+      "detail": "child name / email fragment marked, email text never shown, UUID inside details"
+    },
+    {
+      "check": "timeline_kinds_separate_badges",
+      "passed": true,
+      "detail": "store_refund,store_cancel,store_check_requested,comp_revoked,comp_granted,store_renewal,comp_expired,comp_granted,store_purchase,store_subscription"
+    },
+    {
+      "check": "wrong_family_visible_in_preview",
+      "passed": true,
+      "detail": "opened via link to K2: preview headline \"Kaya Aile Evi · 0 üye · 1 çocuk\" before any action"
+    },
+    {
+      "check": "double_click_single_override",
+      "passed": true,
+      "detail": "dblclick → 1 apply request, 1 live override, 1 apply audit row, wrong family rows 0"
+    },
+    {
+      "check": "conflict_requires_explicit_replace",
+      "passed": true
+    },
+    {
+      "check": "override_conflict_message_after_race",
+      "passed": true,
+      "detail": "preview without conflict, concurrent override inserted, apply → override_conflict text, nothing written, preview refreshed with conflict"
+    },
+    {
+      "check": "finance_role_scoped_queue_and_revocation",
+      "passed": true,
+      "detail": "finance operator: only billing items + timeline; revoked_at set → open tab shows explicit revoked state, timeline removed"
+    },
+    {
+      "check": "role_revocation_blocks_open_tab",
+      "passed": true,
+      "detail": "admins row deleted with old JWT: apply rejected (forbidden), explicit revoked state, override count unchanged"
+    },
+    {
+      "check": "no_page_exceptions_or_horizontal_overflow",
+      "passed": true
+    }
+  ]
+}
