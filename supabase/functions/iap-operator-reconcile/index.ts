@@ -10,10 +10,11 @@ const deps:ReconcileDependencies={
  claim:async id=>{const {data,error}=await serviceClient().rpc('claim_operator_reconcile',{p_id:id});if(error)throw error;return data;},
  configured:p=>p==='apple'?appleApiConfigured():googleApiConfigured(),
  read:async(p,key)=>{
-  if(p==='apple')return fetchAppleState(key);
+  // Read-only store check: no acknowledge, no refund, no cancellation. Labelled source=operator.
+  if(p==='apple'){const s=await fetchAppleState(key);if(s)s.source='operator';return s;}
   const version=Date.now();
   const state=await googleState(serviceClient(),key,await fetchGoogleSubscription(key));
-  if(state)state.version=version;
+  if(state){state.version=version;state.source='operator';}
   return state;
  },
  finish:async(id,token,state,code)=>{const {data,error}=await serviceClient().rpc('finish_operator_reconcile',{p_id:id,p_token:token,p_state:state,p_code:code});if(error)throw error;return data;},

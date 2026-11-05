@@ -2,7 +2,7 @@ import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { processStoreNotification } from "./store-notification.ts";
 import { appleNotifications } from "../apple-notifications/handler.ts";
 import { googleRtdn } from "../google-rtdn/handler.ts";
-import type { StoreState } from "./iap.ts";
+import { IapError, type StoreState } from "./iap.ts";
 const equal = (a: unknown, b: unknown) => { if (JSON.stringify(a) !== JSON.stringify(b)) throw new Error(`${JSON.stringify(a)} != ${JSON.stringify(b)}`); };
 function inbox(options: {status?: string; claimError?: boolean; finishError?: boolean; finishFalse?: boolean} = {}) {
   const calls: {name: string; args: Record<string, unknown>}[] = [];
@@ -28,6 +28,19 @@ for (const [status, expected] of [["done", 200], ["busy", 503], ["bad", 503]] as
 for (const options of [{claimError: true}, {finishError: true}, {finishFalse: true}]) Deno.test(`storage failure never acknowledged: ${JSON.stringify(options)}`, async () => {
   const f = inbox(options);
   equal((await processStoreNotification(f.db, "apple", "id", null, {}, async () => ({}))).status, 503);
+});
+Deno.test("permanent rejection (foreign family / wrong product) is recorded by code and acknowledged to the provider", async () => {
+  for (const code of ["account_mismatch", "unknown_product", "bundle_mismatch", "not_a_subscription"]) {
+    const f = inbox(); const res = await processStoreNotification(f.db, "apple", "id", null, {}, async () => {throw Object.assign(new IapError(code, code === "account_mismatch" ? 409 : 422), {detail: "PRIVATE"});});
+    equal(res.status, 200); equal(await res.json(), {ok: false, rejected: code});
+    equal(f.calls[1].args.p_error, code); equal(f.calls[1].args.p_store_key, null);
+  }
+});
+Deno.test("retryable store errors (family not yet known, provider 5xx, write failed) stay 503 for redelivery", async () => {
+  for (const [code, status] of [["family_not_found", 404], ["apple_api_500", 502], ["store_state_write_failed", 503]] as const) {
+    const f = inbox(); const res = await processStoreNotification(f.db, "google", "id", null, {}, async () => {throw new IapError(code, status);});
+    equal(res.status, 503); equal(f.calls[1].args.p_error, "processing_failed");
+  }
 });
 Deno.test("processing error releases receipt for retry without storing provider secrets", async () => {
   const f = inbox(); const res = await processStoreNotification(f.db, "apple", "id", null, {}, async () => {throw new Error("private purchase token");});
@@ -63,6 +76,11 @@ Deno.test("Apple retryable failure is not converted into a successful deferred r
 for (const payload of [{}, {...applePayload, notificationUUID: ""}, {...applePayload, data: {bundleId: "other"}}, {...applePayload, data: {}}]) Deno.test(`Apple rejects malformed or wrong bundle before claim: ${JSON.stringify(payload)}`, async () => {
   const f = apple({payload}); equal((await appleNotifications(post({signedPayload: "outer"}), f.deps)).status, 400); equal(f.calls.length, 0);
 });
+Deno.test("Apple notification state is tagged source=notification", async () => {
+  const f = apple(); const seen: StoreState[] = []; f.deps.applyStoreState = async (_db, state) => {seen.push(state); return {} as never;};
+  f.deps.appleState = () => ({storeKey: "store-id"} as StoreState);
+  await appleNotifications(post({signedPayload: "outer"}), f.deps); equal(seen[0].source, "notification");
+});
 Deno.test("Apple TEST does not grant an entitlement", async () => {
   const f = apple({payload: {notificationUUID: "id", notificationType: "TEST"}});
   equal((await appleNotifications(post({signedPayload: "outer"}), f.deps)).status, 200); equal(f.counters().applied, 0);
@@ -92,6 +110,18 @@ Deno.test("verified Google revocation hint can refresh and apply state", async (
 });
 for (const body of [null, {}, {message: {messageId: "id", data: "bad"}}, envelope(null), envelope({...googleNotification, packageName: "other"}), envelope({}, ""), envelope({packageName: "com.enescevik.gina"})]) Deno.test(`Google malformed payload cannot occupy an event ID: ${JSON.stringify(body)}`, async () => {
   const f = google(); equal((await googleRtdn(post(body), f.deps)).status, 400); equal(f.calls.length, 0);
+});
+Deno.test("Google notification state is tagged source=notification", async () => {
+  const f = google(); const seen: StoreState[] = []; f.deps.refreshGoogle = async () => ({storeKey: "s"} as StoreState); f.deps.applyStoreState = async (_db, state) => {seen.push(state); return {} as never;};
+  equal((await googleRtdn(post(envelope()), f.deps)).status, 200); equal(seen[0].source, "notification");
+});
+Deno.test("Google eventTimeMillis must be a decimal string when present; valid value is accepted", async () => {
+  const f = google(); equal((await googleRtdn(post(envelope({...googleNotification, eventTimeMillis: "not-a-time"})), f.deps)).status, 400); equal(f.calls.length, 0);
+  const g = google(); equal((await googleRtdn(post(envelope({...googleNotification, eventTimeMillis: "1762387200000", version: "1.0"})), g.deps)).status, 200);
+});
+Deno.test("same Google token under two Pub/Sub message IDs is two inbox events but the entitlement write is the same versioned path", async () => {
+  const f = google(); await googleRtdn(post(envelope(googleNotification, "m1")), f.deps); await googleRtdn(post(envelope(googleNotification, "m2")), f.deps);
+  equal(f.calls.filter(c => c.name === "claim_store_notification").map(c => c.args.p_event_key), ["m1", "m2"]); equal(f.counters().applied, 2);
 });
 Deno.test("Google missing store credentials remains retryable", async () => {
   const f = google({configured: false}); equal((await googleRtdn(post(envelope()), f.deps)).status, 503); equal(f.counters().refreshed, 0);
