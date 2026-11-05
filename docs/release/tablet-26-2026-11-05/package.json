@@ -1,0 +1,28 @@
+{
+  "build": "26",
+  "version": "0.1.0",
+  "sourceCommit": "1f1b505b9b8e9d8491554f22c1ff194142956a32",
+  "origin": "local-eas-build",
+  "bundle": "com.enescevik.gina",
+  "sha256": "36edbde1f5b3e61e9bf4f51b19f0877c8000e9fc2829f153f84a45be2ddeaeb1",
+  "bytes": 61060459,
+  "signatureVerified": true,
+  "registeredDeviceCount": 1,
+  "sameRegisteredDevicesAsPrevious": true,
+  "productionEndpointsVerified": true,
+  "sameJavaScriptBundleAsStore": false,
+  "sameSourceAsStore": true,
+  "deviceFamilies": [
+    1,
+    2
+  ],
+  "iPadOrientations": [
+    "UIInterfaceOrientationPortrait",
+    "UIInterfaceOrientationPortraitUpsideDown",
+    "UIInterfaceOrientationLandscapeLeft",
+    "UIInterfaceOrientationLandscapeRight"
+  ],
+  "deviceInstallationTested": false,
+  "profileExpiresAt": "2027-10-31T01:05:56",
+  "release26FeatureMarkersVerified": true
+}

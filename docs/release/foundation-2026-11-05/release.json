@@ -71,5 +71,17 @@
     "group": "Team (Expo)",
     "groupAssignment": "Automatic existing group; observed in App Store Connect after user sign-in, no new testers or permissions added"
   },
-  "educationRemindersEnabled": false
+  "educationRemindersEnabled": false,
+  "tablet": {
+    "version": "0.1.0",
+    "build": "26",
+    "url": "https://gina-aile-enescevik--tablet.expo.app",
+    "deploymentId": "sbfnt5ls4x",
+    "sourceCommit": "1f1b505b9b8e9d8491554f22c1ff194142956a32",
+    "sha256": "36edbde1f5b3e61e9bf4f51b19f0877c8000e9fc2829f153f84a45be2ddeaeb1",
+    "signatureVerified": true,
+    "livePackageVerified": true,
+    "sameRegisteredDevicesAsPrevious": true,
+    "deviceInstallationTested": false
+  }
 }

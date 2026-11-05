@@ -6,9 +6,28 @@ Bu akış çocuk hesabının kullanamadığı TestFlight yerine, geliştirici he
 
 https://gina-aile-enescevik--tablet.expo.app
 
-2 Kasım 2026: 0.1.0 (16), kaynak `86c819dccdd2cd23db713163805d97defe8ff49f`, internal build `1aca834a-742c-472f-9928-0e00b4f04455`, Hosting deployment `ni9xihgvnv`. İmza, kayıtlı iPad, sürüm ve canlı `release.json` doğrulandı. Kablosuz kurulumun cihazdaki son onayı henüz kullanıcı tarafından denenmedi.
+**5 Kasım 2026 güncel:** **0.1.0 (26)**, TestFlight 26 ile aynı `1f1b505b9b8e9d8491554f22c1ff194142956a32` kaynağından Ad Hoc paket. [Yayın ve imza/cihaz kontrolü](tablet-26-2026-11-05/README.md). Canlı dağıtım `sbfnt5ls4x`; fiziksel iPad kurulum onayı kullanıcıda.
 
-## Her sürümde
+İlk kayıt (tarihsel), 2 Kasım 2026: 0.1.0 (16), kaynak `86c819dccdd2cd23db713163805d97defe8ff49f`, internal build `1aca834a-742c-472f-9928-0e00b4f04455`, Hosting deployment `ni9xihgvnv`. İmza, kayıtlı iPad, sürüm ve canlı `release.json` doğrulandı. Kablosuz kurulumun cihazdaki son onayı henüz kullanıcı tarafından denenmedi.
+
+## Yayın kontrolü: iki ayrı kurulum yolu
+
+- Telefon/uygun Apple hesabı için TestFlight; kayıtlı çocuk iPad’i için bu kablosuz kurulum sayfası ayrı yayımlanır. TestFlight’ın tamamlanması tablet bağlantısının güncellendiği anlamına gelmez.
+- Çocuk tableti sorulduğunda önce bu sayfanın canlı `release.json` kaydı okunur; yalnız başka bir TestFlight hesabında görülen iPad kurulumundan çocuğun tabletinin sürümü çıkarılmaz.
+- Her iki yolun da sürüm/kaynak eşleşmesi yayın raporuna yazılmadan “telefon ve tablet yayımlandı” denmez. Kurulum sayfasında sürüm güncellenmeden kullanıcı eski pakete yönlendirilmez.
+- TestFlight hesabı veya veli Apple hesabı bu Ad Hoc yolunda gerekli değildir. Cihaz, paket profilindeki kayıtlı cihazlardan biri olmalıdır.
+
+## Yerel EAS paketi kullanıldığında
+
+Bulut kota sınırında aynı kaynak commit'inden `eas build --platform ios --profile tablet --local --non-interactive --output ...` ile gerçek Ad Hoc IPA hazırlanabilir. `autoIncrement: false` ve EAS uzaktaki sürüm numarası, tamamlanan TestFlight sürümüyle eşleşmeli. Store IPA yeniden etiketlenmez; `prepare-tablet-install.mjs` için sahte bulut build JSON'u oluşturulmaz.
+
+1. Gerçek IPA imzasını, bundle kimliği/sürümünü, üretim adreslerini ve gömülü profilin kayıtlı cihaz listesini doğrula. Yeni cihaz eklenmediyse önceki çalışan Ad Hoc paketiyle cihaz listesi aynı olmalı. Rapora UDID, özel anahtar veya kullanıcı verisi koyma.
+2. Yerel IPA, aynı kaynaktaki ikon, `index.html`, `release.json` ve iOS `manifest.plist` ile ayrı bir statik kurulum klasörü hazırla. Manifest pakete HTTPS URL ile yönlenir; düğme `itms-services` ile manifesti açar. Safari önbelleğine karşı hem IPA hem manifest dosya adı sürüm içermeli (`gina-26.ipa`, `manifest-26.plist` gibi).
+3. Önce EAS Hosting önizlemesine yükle. İndirilen paketin SHA-256 değerini yerel doğrulanmış IPA ile karşılaştır; sayfa/manifest sürümünü kontrol et.
+4. Kontrol geçince yalnız `tablet` alias'ını yeni dağıtıma bağla; `--prod` kullanma. Canlı alias'tan IPA hash'ini, manifesti ve `release.json` kaydını tekrar doğrula. Önceki dağıtım kimliğini ve yayın kaydını geri dönüş için koru.
+5. Sonuç, web sayfası ve paket yayınıdır. iPad'deki kurulum onayı kullanıcı tarafından verilmeden cihaz kurulumu tamamlanmış sayılmaz.
+
+## Bulut build kullanıldığında, her sürümde
 
 1. `init` sohbetinde onaylanmış TestFlight build ID, sürüm numarası ve kaynak commit’i belirle. Eski yerel IPA’yı veya başka worktree’nin HEAD’ini güncel sayma.
 2. Aynı kaynak snapshot’ında `apps/mobile/eas.json` içine `tablet` profilini ekle: `extends: production`, `distribution: internal`, `autoIncrement: false`, `environment: production`, `channel: production`. Üretim Supabase/web ayarları kullanılmalı. Profil kayıtlı iPad’i içermeli.
