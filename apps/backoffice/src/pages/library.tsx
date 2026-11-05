@@ -2,6 +2,8 @@ import { CurriculumReviewPanel } from "@/components/curriculum-review";
 import { ContributionSets } from "@/components/contribution-sets";
 import { LibraryDrafts } from "@/components/library-drafts";
 import { LibraryPolicy, type RewardPolicy } from "@/components/LibraryPolicy";
+import { LibraryContentItems } from "@/components/library-content-items";
+import { LibraryPolicyPreview } from "@/components/library-policy-preview";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import type { Json } from "@gina/core";
@@ -67,10 +69,10 @@ export default function LibraryPage() {
   );
   const router = useRouter();
   const [tabChoice, setTab] = useState<
-    "content" | "drafts" | "review" | "policy" | "curriculum" | null
+    "content" | "items" | "drafts" | "review" | "policy" | "curriculum" | null
   >(null);
   const tab = tabChoice ?? (
-    router.query.packageId || router.query.tab === "drafts" ? "drafts" : router.query.tab === "curriculum" ? "curriculum" : router.query.tab === "review" ? "review" : router.query.tab === "policy" ? "policy" : "content"
+    router.query.packageId || router.query.tab === "drafts" ? "drafts" : router.query.tab === "curriculum" ? "curriculum" : router.query.tab === "review" ? "review" : router.query.tab === "policy" ? "policy" : router.query.tab === "items" ? "items" : "content"
   );
   const [editing, setEditing] = useState<Collection | null>(null);
   // Açılan koleksiyonun kayıtlı hâli: kaydedilmemiş değişiklik ve yayın durumu değişimi buna göre anlaşılır.
@@ -163,7 +165,7 @@ export default function LibraryPage() {
         aria-label="Kütüphane işlemleri"
         className={"mb-6 flex flex-wrap gap-2 rounded-2xl bg-brand-light p-2" + (tab === "drafts" ? " library-navigation" : "")}
       >
-        {([["content", "Koleksiyonlar"], ["drafts", "Taslak paketler"], [
+        {([["content", "Koleksiyonlar"], ["items", "Tüm içerik · AI ön inceleme"], ["drafts", "Taslak paketler"], [
           "review",
           `Katkılar${
             data?.submissions.filter((s) => s.status === "pending").length
@@ -191,6 +193,7 @@ export default function LibraryPage() {
         ))}
       </nav>
       {tab === "drafts" ? <LibraryDrafts /> : null}
+      {tab === "items" ? <LibraryContentItems /> : null}
       {tab === "curriculum" ? <CurriculumReviewPanel /> : null}
       {tab === "content"
         ? (
@@ -570,6 +573,7 @@ export default function LibraryPage() {
           />
         )
         : null}
+      {tab === "policy" ? <LibraryPolicyPreview /> : null}
       {tab === "review"
         ? (
           <>
