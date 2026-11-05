@@ -1,5 +1,7 @@
 # Eğitim takvimi, aile duyuruları ve gelecek sosyal alan
 
+> **5 Kasım devir güncellemesi:** Kalan işlerin güncel durumu, yürütme sırası ve kabul ölçütleri [Claude devir listesinde](CLAUDE-REMAINING-WORK.md). Bu belgedeki ürün kuralları korunur; eski faz/yayın ifadeleri güncel durum beyanı değildir. 3B dünya diğer bütün işlerin ve son yayın kabulünün arkasındadır.
+
 5 Kasım 2026 — PR #143 kapsamına eklenen ürün kararı. Üretim yayını değildir.
 
 ## Birbirinden ayrı kavramlar

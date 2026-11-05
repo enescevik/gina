@@ -1,5 +1,7 @@
 # GINA — yayını tamamlama ve kullanıcı adımları
 
+> **Kalan işlerin güncel takibi:** [Claude devir listesi](../CLAUDE-REMAINING-WORK.md), özellikle R01/R02 ve X01–X06. Bu rehberdeki eski sürüm/kurulum notlarını yeni bir hesap açılması veya tamamlanmış bir işin yeniden yapılması talimatı olarak kullanma.
+
 > **5 Kasım güncellemesi:** Aşağıdaki 4 Kasım kaydı tarihseldir. Son yayımlanan web/yönetim/servis paketi ve iOS **0.1.0 (26)** durumu [güncel yayın raporunda](foundation-2026-11-05/README.md). Paket Apple’da geçerli ve mevcut iç test grubunda erişilebilir (`IN_BETA_TESTING`). TestFlight üzerinden 26’ya güncellenebilir.
 
 4 Kasım 2026. Bu belge bir tamamlanma ilanı değildir. Hazır kod, doğrulanmış hizmet

@@ -1,5 +1,7 @@
 # 3 Kasım 2026 — yayından önce kapsamı tamamlama kararı
 
+> **5 Kasım devir güncellemesi:** Kalan işlerin güncel durumu, yürütme sırası ve kabul ölçütleri [Claude devir listesinde](../CLAUDE-REMAINING-WORK.md). Bu belgedeki ürün kuralları korunur; eski faz/yayın ifadeleri güncel durum beyanı değildir. 3B dünya diğer bütün işlerin ve son yayın kabulünün arkasındadır.
+
 Kullanıcı: **“Hepsini bitirelim sonra yayına alırız.”** Önceki TestFlight dağıtım önceliği ertelendi. Aşağıdaki işler bitmeden yeni TestFlight/mağaza/kablosuz iPad yayını yapılmayacak. Bir PR'ın birleşmesi yayın anlamına gelmez. Yerel geliştirme ve izole testler sürer. Gerçek aile kayıtları reset/reseed edilmez. Önceden ertelenmiş gün/gece/hava ve geniş maskot animasyonları ilk sürüm dışında kalır.
 
 **4 Kasım öncelik güncellemesi:** Kullanıcı kütüphane sorularını en sona aldı. Mevcut 100 taslak korunur; yeni soru üretimi bekler. Önce Prova/görev akışları, cihaz kabulü, canlı bağlantılar ve son tasarım denetimi tamamlanır.
