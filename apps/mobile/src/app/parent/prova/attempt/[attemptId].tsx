@@ -194,7 +194,7 @@ export default function AttemptReviewScreen() {
       </View> : null}
       {finished ? (
         ent?.ai_grading ? (
-          <View style={{gap:12}}>{media.data?.length ? <Toggle label={t("sources.aiConsent")} value={imageAiConsent} onChange={setImageAiConsent} disabled={aiGrade.isPending}/> : null}<Button title={t("prova.ai.gradeWithAi")} disabled={notebookNeedsReview} loading={aiGrade.isPending} onPress={() => aiGrade.mutate()} /></View>
+          <View style={{gap:12}}>{media.data?.length ? <Toggle label={t("sources.aiConsent")} value={imageAiConsent} onChange={setImageAiConsent} disabled={aiGrade.isPending}/> : null}<Button variant="secondary" title={t("prova.ai.gradeWithAi")} disabled={notebookNeedsReview} loading={aiGrade.isPending} onPress={() => aiGrade.mutate()} /></View>
         ) : (
           <Text className="font-body text-sm text-gray-500">{t("prova.ai.needsProGrading")}</Text>
         )

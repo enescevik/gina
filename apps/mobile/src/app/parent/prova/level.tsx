@@ -141,7 +141,10 @@ export default function LevelTestScreen() {
     },
     onSuccess: () => {
       void invalidateProvaLists(queryClient);
-      router.back();
+      // Deep links (web/share) have no history: a silent router.back() left the
+      // form on screen as if nothing happened although the test was assigned.
+      if (router.canGoBack()) router.back();
+      else router.replace("/parent/prova");
     },
   });
 
