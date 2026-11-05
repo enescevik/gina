@@ -7,6 +7,15 @@ import { useUnsavedChanges } from "@/components/unsaved-changes";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
 import { supabase } from "@/lib/supabase";
 import { fmtDateTime } from "@/lib/format";
+import { adminRpc } from "@/lib/admin-rpc";
+import {
+  type GroupPhases,
+  participationPhase,
+  planLabel,
+  planList,
+  rankingReasonText,
+  reviewPhase,
+} from "@/lib/cohort-text";
 type Plan = "free" | "plus" | "pro";
 type Group = {
   id: string;
@@ -112,6 +121,8 @@ function GroupsEditor({ user }: { user: string }) {
     { enabled: boolean; limits: Record<Plan, number> } | null
   >(null);
   const [cancel, setCancel] = useState<Group | null>(null);
+  // Yalnız iş yükü tahmini içindir; yayına gönderilmez.
+  const [expected, setExpected] = useState(30);
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
   // Yayın kalıcıdır: operatör özetle kontrol ettiğini onaylar; onay yalnız onaylandığı form hâli için geçerlidir.
@@ -153,6 +164,17 @@ function GroupsEditor({ user }: { user: string }) {
     (n, i) => n + i.count,
     0,
   );
+  // Şıklı olmayan birimler en az bir açık uçlu soru içerir; üst sınır olarak sayılır.
+  const openEnded = packageSource && form.review
+    ? packageSource.units.filter((u) => form.items.includes(u.key) && !u.eligible)
+      .reduce((n, u) => n + u.count, 0)
+    : 0;
+  const maxPoints = packageSource && form.review
+    ? packageSource.units.filter((u) => form.items.includes(u.key)).reduce(
+      (n, u) => n + (u.max_points ?? u.count),
+      0,
+    )
+    : questionCount;
   const creationLocked = busy || restoring || storageError || !!pending;
   async function run(action: () => Promise<void>) {
     if (gate.current) return;
@@ -292,7 +314,7 @@ function GroupsEditor({ user }: { user: string }) {
               </label>
               {(["free", "plus", "pro"] as const).map((plan) => (
                 <label className="label" key={plan}>
-                  {plan} · aylık katılım<input
+                  {planLabel[plan]} · aylık katılım<input
                     className="input"
                     type="number"
                     min={0}
@@ -467,7 +489,7 @@ function GroupsEditor({ user }: { user: string }) {
                             : form.plans.filter((p) => p !== plan),
                         })}
                     />
-                    {plan}
+                    {planLabel[plan]}
                   </label>
                 ))}
               </div>
@@ -554,20 +576,107 @@ function GroupsEditor({ user }: { user: string }) {
             : null}
           {collection && form.title.trim().length >= 3 && questionCount >= 3
             ? (
-              <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900" aria-label="Yayın öncesi özet">
-                <p className="font-bold">Yayımlanacak: {form.title.trim()}</p>
-                <p className="mt-1">
-                  {collection.subject} · {collection.grade}. sınıf · {questionCount} soru · {form.minutes} dakika ·{" "}
-                  {form.start && form.end ? `${fmtDateTime(new Date(form.start).toISOString())} – ${fmtDateTime(new Date(form.end).toISOString())}` : "katılım penceresi seçilmedi"} ·{" "}
-                  {form.plans.length ? form.plans.join(", ") + " paketleri" : "paket seçilmedi"}
-                  {packageSource && form.review ? " · ölçütlü inceleme" : ""}
+              <section
+                className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"
+                aria-label="Yayın öncesi önizleme"
+                data-testid="group-preview"
+              >
+                <p className="text-base font-bold">
+                  Yayımlanacak: {form.title.trim()}
                 </p>
-                <p className="mt-1">Yayımlandıktan sonra sorular ve süre değişmez; aileler katılım penceresinde görür.</p>
+                <ol className="mt-3 grid gap-3 md:grid-cols-3">
+                  <li className="rounded-xl bg-white p-3">
+                    <strong className="block">1 · Kapsam</strong>
+                    {collection.subject} · {collection.grade}. sınıf ·{" "}
+                    {collection.curriculum_version}
+                    <span className="block">
+                      {form.plans.length
+                        ? planList(form.plans) + " paketlerindeki aileler"
+                        : "Paket seçilmedi"}
+                    </span>
+                  </li>
+                  <li className="rounded-xl bg-white p-3">
+                    <strong className="block">2 · Sorular ve süre</strong>
+                    {questionCount} soru · toplam {maxPoints} puan
+                    <span className="block">
+                      Çocuk başına {form.minutes} dakika · tek deneme
+                    </span>
+                    {packageSource && form.review
+                      ? (
+                        <span className="block">
+                          En çok {openEnded} açık uçlu soru ölçütle incelenir
+                        </span>
+                      )
+                      : <span className="block">Otomatik puanlanır</span>}
+                  </li>
+                  <li className="rounded-xl bg-white p-3">
+                    <strong className="block">3 · Aile ve çocuk görünümü</strong>
+                    <span className="block">
+                      Aile: katılım penceresi{" "}
+                      {form.start && form.end
+                        ? `${fmtDateTime(new Date(form.start).toISOString())} – ${
+                          fmtDateTime(new Date(form.end).toISOString())
+                        }`
+                        : "seçilmedi"}; takma adla sıralama isteğe bağlı ve
+                      veli iznine bağlı.
+                    </span>
+                    <span className="block">
+                      Çocuk: başladığı anda {form.minutes} dakikalık süre işler;
+                      pencere daha erken biterse orada durur. Hız puanı yok.
+                    </span>
+                  </li>
+                </ol>
+                <div className="mt-3 grid gap-3 md:grid-cols-3">
+                  <div className="rounded-xl bg-white p-3">
+                    <strong className="block">Katılım penceresi</strong>
+                    Ailelerin katılabildiği aralık. En fazla 31 gün, 1.000
+                    katılımcı.
+                  </div>
+                  <div className="rounded-xl bg-white p-3">
+                    <strong className="block">Çocuğun süresi</strong>
+                    {form.minutes} dakika, tek deneme. Pencereden ayrı işler.
+                  </div>
+                  <div className="rounded-xl bg-white p-3">
+                    <strong className="block">İnceleme aşamaları</strong>
+                    {packageSource && form.review
+                      ? "Pencere kapanınca inceleme → itirazlar → sonuç yayını. Puanlanmamış veya okunamayan cevap kesin sıralamaya girmez."
+                      : "Otomatik puan; bitmemiş çalışma kesin sıralamaya girmez."}
+                  </div>
+                </div>
+                {packageSource && form.review
+                  ? (
+                    <div className="mt-3 rounded-xl bg-white p-3">
+                      <label className="label">
+                        Tahmini katılımcı (yalnız iş yükü tahmini)<input
+                          className="input !w-32"
+                          type="number"
+                          min={1}
+                          max={1000}
+                          value={expected}
+                          onChange={(e) =>
+                            setExpected(
+                              Math.max(1, Math.min(1000, +e.target.value || 1)),
+                            )}
+                        />
+                      </label>
+                      <p>
+                        İnceleme iş yükü: en çok{" "}
+                        <strong>{expected * openEnded}</strong>{" "}
+                        cevap ({expected} katılımcı × {openEnded}{" "}
+                        açık uçlu soru). İtirazlar buna eklenir.
+                      </p>
+                    </div>
+                  )
+                  : null}
+                <p className="mt-3">
+                  Yayımlandıktan sonra sorular ve süre değişmez; düzeltmek için
+                  iptal edip yeni sürüm oluşturun.
+                </p>
                 <label className="mt-3 flex min-h-12 items-start gap-3">
                   <input type="checkbox" className="mt-1" checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} />
                   <span>Kaynağı, soruları, süreyi ve katılım penceresini kontrol ettim.</span>
                 </label>
-              </div>
+              </section>
             )
             : null}
           <button
@@ -595,6 +704,7 @@ function GroupsEditor({ user }: { user: string }) {
               {fmtDateTime(g.starts_at)} – {fmtDateTime(g.ends_at)} ·{" "}
               {g.duration_minutes} dakika · sürüm {g.version_hash.slice(0, 10)}
             </p>
+            <PhaseDetails id={g.id} />
             {g.requires_review
               ? (
                 <a
@@ -666,5 +776,76 @@ function GroupsEditor({ user }: { user: string }) {
         )
         : null}
     </Layout>
+  );
+}
+
+function PhaseSummary({ id }: { id: string }) {
+  const phases = useAdminQuery(
+    async () =>
+      await adminRpc("group_exam_phases", { p_group: id }) as GroupPhases,
+    [id],
+  );
+  if (phases.error) {
+    return (
+      <p role="alert" className="mt-2">
+        Aşamalar açılamadı.{" "}
+        <button className="btn-secondary" onClick={phases.reload}>
+          Yeniden dene
+        </button>
+      </p>
+    );
+  }
+  const p = phases.data;
+  if (!p) return <p className="mt-2">Yükleniyor…</p>;
+  const excluded = Object.entries(p.ranking.excluded).filter(([, n]) => n > 0);
+  return (
+    <dl className="mt-2 grid gap-2 text-sm md:grid-cols-2">
+      <div>
+        <dt className="font-bold">Katılım penceresi</dt>
+        <dd>{participationPhase[p.participation.phase]}</dd>
+      </div>
+      <div>
+        <dt className="font-bold">Çocuğun süresi</dt>
+        <dd>{p.child_time.duration_minutes} dakika · tek deneme</dd>
+      </div>
+      <div>
+        <dt className="font-bold">İnceleme</dt>
+        <dd>
+          {reviewPhase[p.review.phase]}
+          {p.review.required
+            ? ` · ${p.review.pending ?? 0} bekleyen · ${
+              p.review.appeals ?? 0
+            } itiraz`
+            : ""}
+        </dd>
+      </div>
+      <div>
+        <dt className="font-bold">Sıralama · isteğe bağlı</dt>
+        <dd>
+          {p.ranking.eligible_entries} kayıt kesin sıralamada
+          {excluded.map(([reason, n]) => (
+            <span key={reason} className="block">
+              {n} · {rankingReasonText(reason)}
+            </span>
+          ))}
+        </dd>
+      </div>
+    </dl>
+  );
+}
+
+/** Aşamalar yalnız açıldığında yüklenir; uzun listede her prova için istek atılmaz. */
+function PhaseDetails({ id }: { id: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <details
+      className="mt-3 rounded-2xl border border-purple-100 p-3"
+      onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}
+    >
+      <summary className="cursor-pointer font-bold">
+        Aşamalar ve sıralama
+      </summary>
+      {open ? <PhaseSummary id={id} /> : null}
+    </details>
   );
 }
