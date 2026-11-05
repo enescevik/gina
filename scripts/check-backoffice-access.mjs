@@ -45,7 +45,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     const report = await checkBackofficeAccess({
       project: process.env.CF_PAGES_PROJECT ?? 'gina-backoffice',
       team: process.env.CF_ACCESS_TEAM ?? 'gina-family',
-      preview: process.env.CF_PREVIEW_ORIGIN,
+      preview: process.env.CF_PREVIEW_ORIGIN || undefined, // CI'da boş çıktı = rastgele önizleme adı
     });
     console.log(JSON.stringify(report, null, 2));
     if (!report.ok) process.exitCode = 1;

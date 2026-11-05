@@ -54,6 +54,7 @@ export function parseReleaseArgs(argv) {
   if (!['all', 'web', 'backoffice', 'tablet', 'ios'].includes(values.target)) throw new Error('invalid-target');
   if (values['expected-build'] && !/^\d+$/.test(values['expected-build'])) throw new Error('invalid-expected-build');
   if (values['expected-sha256'] && !/^[a-f0-9]{64}$/i.test(values['expected-sha256'])) throw new Error('invalid-expected-sha256');
+  if (values['deployment-url'] === '') delete values['deployment-url']; // CI'da boş çıktı = yok
   if (values['deployment-url']) {
     const u = new URL(values['deployment-url']);
     if (u.protocol !== 'https:' || u.username || u.password || u.search || u.hash || !u.hostname.endsWith('.pages.dev')) throw new Error('invalid-deployment-url');
@@ -601,7 +602,7 @@ export async function main(argv = process.argv.slice(2), processEnv = process.en
     const prefix = TARGETS[target]?.prefix ?? (args.command.startsWith('ios') || args.command.startsWith('tablet') ? 'EXPO_PUBLIC_' : null);
     const presence = envPresence(env, [...(prefix ? [`${prefix}SUPABASE_URL`, `${prefix}SUPABASE_ANON_KEY`] : []), 'SUPABASE_ACCESS_TOKEN', 'CLOUDFLARE_API_TOKEN', 'CLOUDFLARE_ACCOUNT_ID']);
     if (prefix && args.execute) assertPublicBuildEnvironment(env, prefix);
-    if (args.execute) assertSource(source); // env reddi önce: kirli ağaçta bile yanlış anahtar açıkça görünür
+    if (args.execute && args.command !== 'verify') assertSource(source); // env reddi önce; verify salt okunur, kirli ağaçta da çalışır
     if (args.command.startsWith('migrations') && args.execute) { requireEnv(env, ['SUPABASE_ACCESS_TOKEN']); ctx.ref = supabaseProjectRef(env); }
     const steps = buildPlan(args.command, ctx);
     if (args.json) console.log(JSON.stringify({ command: args.command, dryRun: !args.execute, source, versions, envPresent: presence, steps: steps.map(({ id, title, kind, argv, cwd, env: e, note }) => ({ id, title, kind, argv, cwd, env: e, note })) }, null, 2));
