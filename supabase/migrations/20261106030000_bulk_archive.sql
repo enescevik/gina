@@ -271,22 +271,28 @@ begin
     if t<>'school_bag' and v_id is null then raise exception 'item_invalid';end if;
     if p_operation='archive' then
      if t='reward' then
+      -- Lock before judging: a request/submission committing meanwhile must be seen.
+      perform 1 from public.family_rewards where id=v_id and family_id=f for update;
       blk:=gina.bulk_archive_block('reward',v_id,f);if blk is not null then raise exception '%',blk;end if;
       select to_jsonb(x) into before from public.family_rewards x where x.id=v_id;
       r:=public.change_reward(req,v_id,v_rev,'archive','{}');
      elsif t='task_routine' then
+      perform 1 from public.task_templates where id=v_id and family_id=f for update;
       blk:=gina.bulk_archive_block('task_routine',v_id,f);if blk is not null then raise exception '%',blk;end if;
       select to_jsonb(x) into before from public.task_templates x where x.id=v_id;
       r:=public.change_task_routine(req,v_id,v_rev,'archive','{}');
      elsif t='note' then
+      perform 1 from public.notes where id=v_id and family_id=f for update;
       blk:=gina.bulk_archive_block('note',v_id,f);if blk is not null then raise exception '%',blk;end if;
       select to_jsonb(x) into before from public.notes x where x.id=v_id;
       r:=public.save_parent_note(req,v_id,v_rev,'archive',(before->>'child_id')::uuid,'{}');
      elsif t='prova_draft' then
+      perform 1 from public.prova_drafts where id=v_id and family_id=f for update;
       blk:=gina.bulk_archive_block('prova_draft',v_id,f);if blk is not null then raise exception '%',blk;end if;
       select jsonb_build_object('id',x.id,'version',x.version,'title',x.content->>'title') into before from public.prova_drafts x where x.id=v_id;
       r:=public.set_prova_draft_discarded(req,v_id,v_rev,true);
      elsif t='learning_plan' then
+      perform 1 from gina.learning_plan x join public.children c on c.id=x.child_id where x.id=v_id and c.family_id=f for update of x;
       blk:=gina.bulk_archive_block('learning_plan',v_id,f);if blk is not null then raise exception '%',blk;end if;
       select to_jsonb(x) into before from gina.learning_plan x where x.id=v_id;
       content:=(before->'content')||jsonb_build_object('archived',true,'source_id',before->'source_id');
