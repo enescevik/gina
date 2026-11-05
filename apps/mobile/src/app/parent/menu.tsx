@@ -76,11 +76,12 @@ export default function ParentMenuScreen() {
   const { claims } = useSession();
   const familyId = claims?.family_id ?? "";
   const queryClient = useQueryClient();
-  const params = useLocalSearchParams<{section?:string}>();
+  const params = useLocalSearchParams<{section?:string;setup?:string}>();
   const {width,fontScale}=useWindowDimensions();
   const wide=width>=850&&fontScale<1.4;
   const [section,setSection] = useState(["family","devices","security","account"].includes(params.section ?? "") ? params.section! : "family");
-  const [setup, setSetup] = useState<SetupChild | "new" | null>(null);
+  const [setup, setSetup] = useState<SetupChild | "new" | null>(params.setup === "new" ? "new" : null);
+  const [savedChild, setSavedChild] = useState<"new" | "edit" | null>(null);
   const [pairCode, setPairCode] = useState("");
 
   const family = useQuery({
@@ -143,14 +144,18 @@ export default function ParentMenuScreen() {
         ["family","familyTab",Users],["devices","devicesTab",Tablet],["security","securityTab",ShieldCheck],["account","accountTab",UserRound],
       ] as const).map(([key,label,Icon])=><Pressable key={key} accessibilityRole="tab" accessibilityState={{selected:section===key}} onPress={()=>setSection(key)} style={{flexBasis:wide?"22%":"46%",flexGrow:1,minHeight:60,padding:12,borderRadius:19,borderWidth:1,borderColor:section===key?"#78C7AE":"#E5DEED",backgroundColor:section===key?"#DDF5EB":"#FFF",flexDirection:"row",alignItems:"center",gap:10}}><Icon size={22} color="#6042DE"/><Text style={[parentStyles.copy,{fontFamily:"Nunito_800ExtraBold",flex:1}]}>{t(`unified.${label}`)}</Text></Pressable>)}</View>
       {section === "family" ? <>
-      <NavigationCard title={t("parent.addChild")} body={t("betaUx.addChildBody")} icon={<Users size={24} color="#6042DE"/>} onPress={() => setSetup("new")}/>
-      {setup && <ChildSetup child={setup === "new" ? undefined : setup} onClose={() => setSetup(null)} onSaved={() => setSetup(null)}/>}
+      <NavigationCard title={t("parent.addChild")} body={t("betaUx.addChildBody")} icon={<Users size={24} color="#6042DE"/>} onPress={() => { setSavedChild(null); setSetup("new"); }}/>
+      {setup && <ChildSetup child={setup === "new" ? undefined : setup} onClose={() => setSetup(null)} onSaved={() => { setSavedChild(setup === "new" ? "new" : "edit"); setSetup(null); }}/>}
+      {savedChild ? <View accessibilityLiveRegion="polite"><InfoCard title={t("common.saved")} body={savedChild === "new" ? t("unified.childAdded") : undefined}>
+        {savedChild === "new" ? <Button variant="secondary" title={t("unified.devicesTab")} onPress={() => { setSavedChild(null); setSection("devices"); }}/> : null}
+        <Button variant="ghost" title={t("parent.home")} onPress={() => router.replace("/parent")}/>
+      </InfoCard></View> : null}
 
 
       <View style={{gap:12}}>
         <Text style={parentStyles.title}>{t("parent.children")}</Text><Text style={parentStyles.muted}>{t("unified.childrenHelp")}</Text>
         {children.data?.map((child) => (
-          <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} avatar={child.avatar} onEdit={() => setSetup(child)} />
+          <ChildRow key={child.id} id={child.id} name={child.name} grade={child.grade} avatar={child.avatar} onEdit={() => { setSavedChild(null); setSetup(child); }} />
         ))}
 
       </View>

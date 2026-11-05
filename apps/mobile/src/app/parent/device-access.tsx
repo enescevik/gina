@@ -306,15 +306,16 @@ function DeviceForm({ data }: { data: DeviceAccess }) {
         : null}
       <InfoCard
         title={t("experience.deviceSummary")}
-        body={t(
-          pin ? "experience.deviceSummaryPin" : "experience.deviceSummaryNoPin",
-          {
-            names:
-              data.children.filter((c) => selected.includes(c.id)).map((c) =>
-                c.name
-              ).join(", ") || t("experience.noChildSelected"),
-          },
-        )}
+        body={selected.length
+          ? t(
+            pin ? "experience.deviceSummaryPin" : "experience.deviceSummaryNoPin",
+            {
+              names: data.children.filter((c) => selected.includes(c.id)).map((
+                c,
+              ) => c.name).join(", "),
+            },
+          )
+          : t("experience.noChildSelected")}
       />
       <Button
         title={t("common.save")}

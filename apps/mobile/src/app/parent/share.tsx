@@ -229,7 +229,7 @@ export default function ParentShareScreen() {
       )}
 
       <ErrorText error={actionError} />
-      <Button variant="ghost" title={t("parent.home")} onPress={() => router.back()} />
+      <Button variant="ghost" title={t("parent.home")} onPress={() => router.navigate("/parent")} />
     </Screen>
   );
 }

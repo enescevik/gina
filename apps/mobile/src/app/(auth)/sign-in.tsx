@@ -51,8 +51,8 @@ export default function SignInScreen() {
     <View style={parentStyles.card}>
       {mode === "in" ? <Text style={parentStyles.title}>{t("unified.parentLogin")}</Text> : null}
       {mode !== "reset" ? <SocialSignIn disabled={busy} onBusy={setBusy}/> : null}
-      <Field label={t("auth.email")} autoCapitalize="none" autoComplete="email" keyboardType="email-address" value={email} onChangeText={setEmail} editable={!busy} />
-      {mode !== "reset" ? <Field label={t("auth.password")} secureTextEntry={!showPassword} autoComplete={mode === "in" ? "current-password" : "new-password"} value={password} onChangeText={setPassword} editable={!busy} /> : null}
+      <Field label={t("auth.email")} autoCapitalize="none" autoComplete="email" keyboardType="email-address" value={email} onChangeText={setEmail} editable={!busy} returnKeyType={mode === "reset" ? "send" : "next"} onSubmitEditing={() => { if (mode === "reset") void submit(); }} />
+      {mode !== "reset" ? <Field label={t("auth.password")} secureTextEntry={!showPassword} autoComplete={mode === "in" ? "current-password" : "new-password"} value={password} onChangeText={setPassword} editable={!busy} returnKeyType="go" onSubmitEditing={() => void submit()} /> : null}
       {mode !== "reset" ? <Toggle label={t(showPassword ? "unified.hidePassword" : "unified.showPassword")} value={showPassword} onChange={setShowPassword} disabled={busy}/> : null}
       {mode === "up" ? <><Text style={parentStyles.muted}>{t("accountV5.passwordHint")}</Text><Toggle label={t("accountV5.adult")} value={adult} onChange={setAdult} disabled={busy} /></> : null}
       <ErrorText error={error} />

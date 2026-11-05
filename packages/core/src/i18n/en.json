@@ -1260,6 +1260,7 @@
   "experience.family.noFamily": "You have not joined a family yet.",
   "experience.family.joinTitle": "Join my partner’s family",
   "experience.family.codeHelp": "Enter the 8-character invitation code from your partner’s Settings → Family. This is different from the 6-digit child device pairing code.",
+  "experience.family.codeHelpPath": "Enter the 8-character invite code from your partner’s Settings → My family → “Invite the other parent”. It is different from the 6-digit child device pairing code.",
   "experience.family.preview": "Preview family first",
   "experience.family.preserve": "Your previous family will not be deleted. You can return to it from this screen at any time.",
   "experience.family.duplicatesTitle": "If you both created child profiles",

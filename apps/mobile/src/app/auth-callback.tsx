@@ -17,5 +17,5 @@ export default function AuthCallback(){
    if(live)router.replace('/');
   }catch{if(live)setError(new Error(t('experience.social.noCode')));}
  })();return()=>{live=false;};},[code,errorParam,t]);
- return <ParentScreen navigation={false} title={t('experience.social.callback')} loading={!error} error={error} onRetry={()=>router.replace('/(auth)/sign-in')}><Button title={t('auth.signIn')} onPress={()=>router.replace('/(auth)/sign-in')}/></ParentScreen>;
+ return <ParentScreen navigation={false} title={t(error ? 'auth.signIn' : 'experience.social.callback')} loading={!error} error={error} onRetry={()=>router.replace('/(auth)/sign-in')}><Button title={t('auth.signIn')} onPress={()=>router.replace('/(auth)/sign-in')}/></ParentScreen>;
 }
