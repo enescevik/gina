@@ -52,6 +52,7 @@ export * from "./prova-generation-journal";
 export * from "./cohort-review";
 
 export * from "./push-recovery";
+export * from "./notification-channels";
 
 export * from "./repeat-calendar";
 export * from "./timetable-command";

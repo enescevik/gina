@@ -43,3 +43,7 @@ Vault kayıtları yoksa cron sessizce hiçbir şey yapmaz. İsteğe bağlı: anl
 ## Kontrol
 
 `select status, count(*) from push_outbox group by 1;` — `sent`, `no_targets`, `skipped_unconfigured`, `failed`. Geçersiz token'lar (APNs 410/Unregistered, FCM UNREGISTERED) otomatik silinir.
+
+## 5. E-posta ve SMS kanalları (S02, 6 Kasım 2026 — sağlayıcı yok, yayımlanmadı)
+
+`20261106080000_notification_channels.sql` + `_shared/channels/{email,sms}.ts`; aynı `push-send` tick'i kanal outbox'ını da boşaltır. Adres varlığı izin değildir: e-posta/SMS yalnız doğrulanmış adres + açık amaç tercihiyle gider; `service` ile `marketing` ayrı; tek dokunuş vazgeçme imzalı tokenla. Sağlayıcı kabulü (`accepted`) teslim/okundu değildir. Hazırlık `channel_readiness()` RPC'sinden okunur; alan adı/SMTP/sağlayıcı (X01/X02) yokken hiçbir ekran «hazır» yazmaz. Edge env adları: `RESEND_API_KEY` veya `SMTP_HOST/SMTP_PORT/SMTP_USERNAME/SMTP_PASSWORD/SMTP_SECURITY`, `SMS_API_URL/SMS_API_KEY`, `CHANNEL_UNSUBSCRIBE_URL`, `CHANNEL_CONFIRM_URL`; `app_settings`: `channels.email.provider|from_address|sender_domain_verified`, `channels.sms.provider|sender_id`, `channels.marketing.legal_review_done`. Ayrıntı: `docs/release/notification-channels-2026-11-06/README.md`.
