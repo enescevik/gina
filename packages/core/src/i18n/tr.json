@@ -3438,5 +3438,20 @@
     "unknownBefore": "Bu günün planı kayıtlarda yok. Gösterilen, {{date}} tarihinde bilinen en eski ayar.",
     "periodSnapshot": "Kapanan dönemin {{date}} tarihinde saklanan programı. O günkü hücreler ayrıca kaydedilmemişti.",
     "noTimetable": "Bu gün için kayıtlı ders programı yok."
-  }
+  },
+  "provaP02.editor.step0": "Soru ve görsel",
+  "provaP02.editor.step1": "Yanıt ve ölçüt",
+  "provaP02.editor.step2": "Öğrenci önizlemesi",
+  "provaP02.editor.step0Help": "Önce sorunun metnini, dersini ve gerekiyorsa görselini yaz. Yanıtı bir sonraki adımda belirleyeceksin.",
+  "provaP02.editor.step1Help": "Doğru şıkkı kendin işaretle; hiçbir şık önceden seçili gelmez. Açık uçlu soruda beklenen cevabı ve puanlama ölçütünü yaz.",
+  "provaP02.editor.step2Help": "Çocuğun göreceği hâli kontrol et. Doğru cevap ve çözüm burada gizlidir.",
+  "provaP02.editor.next": "Devam",
+  "provaP02.editor.back": "Önceki adım",
+  "provaP02.editor.correctMissing": "Doğru şıkkı işaretle.",
+  "provaP02.editor.expectedMissing": "Beklenen cevabı veya puanlama ölçütünü yaz.",
+  "provaP02.editor.previewTitle": "Öğrencinin göreceği",
+  "provaP02.editor.previewImages_one": "{{count}} görsel soruyla birlikte gösterilir.",
+  "provaP02.editor.previewImages_other": "{{count}} görsel soruyla birlikte gösterilir.",
+  "provaP02.editor.previewNotebook": "Çocuk cevabını çözüm defterine yazar veya çizer.",
+  "provaP02.editor.previewHidden": "Doğru cevap, ölçüt ve çözüm çocuğa gösterilmez."
 }

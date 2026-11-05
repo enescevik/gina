@@ -3443,5 +3443,20 @@
     "unknownBefore": "No plan is recorded for this day. Shown are the oldest settings known as of {{date}}.",
     "periodSnapshot": "The closed period's timetable as stored on {{date}}. That day's cells were not recorded separately.",
     "noTimetable": "No timetable is recorded for this day."
-  }
+  },
+  "provaP02.editor.step0": "Question and image",
+  "provaP02.editor.step1": "Answer and criteria",
+  "provaP02.editor.step2": "Student preview",
+  "provaP02.editor.step0Help": "Start with the question text, subject and any image. You will set the answer in the next step.",
+  "provaP02.editor.step1Help": "Mark the correct choice yourself; nothing is preselected. For open-ended questions, write the expected answer and scoring criteria.",
+  "provaP02.editor.step2Help": "Check what your child will see. The answer and solution stay hidden here.",
+  "provaP02.editor.next": "Continue",
+  "provaP02.editor.back": "Previous step",
+  "provaP02.editor.correctMissing": "Mark the correct choice.",
+  "provaP02.editor.expectedMissing": "Write the expected answer or scoring criteria.",
+  "provaP02.editor.previewTitle": "What the student sees",
+  "provaP02.editor.previewImages_one": "{{count}} image is shown with the question.",
+  "provaP02.editor.previewImages_other": "{{count}} images are shown with the question.",
+  "provaP02.editor.previewNotebook": "Your child writes or draws the answer in the notebook.",
+  "provaP02.editor.previewHidden": "The answer, criteria and solution are not shown to your child."
 }

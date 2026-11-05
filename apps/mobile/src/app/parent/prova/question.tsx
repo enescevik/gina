@@ -66,6 +66,40 @@ export default function QuestionScreen() {
   const [expected, setExpected] = useState("");
   const [solution, setSolution] = useState("");
   const [explanation, setExplanation] = useState("");
+  // P02: soru/görsel → yanıt/ölçüt → öğrenci önizleme. Doğru şık başlangıçta boş.
+  const [step, setStep] = useState<0 | 1 | 2>(0);
+  const [stepError, setStepError] = useState<string | null>(null);
+  function stepProblem(target: 0 | 1 | 2): string | null {
+    if (target >= 1) {
+      if (
+        !subject.trim() || !topic.trim() || !stem.trim() ||
+        !Number.isInteger(Number(grade)) || Number(grade) < 1 ||
+        Number(grade) > 12
+      ) return t("prova.questionInvalid");
+      if (images.some((image) => image.alt.trim().length < 3)) {
+        return t("sources.altRequired");
+      }
+      if (images.length && !storageConsent) {
+        return t("sources.consentRequired");
+      }
+    }
+    if (target >= 2) {
+      if (kind === "multiple_choice") {
+        if (KEYS.some((k) => !choices[k]?.trim())) {
+          return t("prova.choicesInvalid");
+        }
+        if (!KEYS.some((key) => key === correct)) {
+          return t("provaP02.editor.correctMissing");
+        }
+      } else if (!expected.trim()) return t("provaP02.editor.expectedMissing");
+    }
+    return null;
+  }
+  function goStep(target: 0 | 1 | 2) {
+    const problem = target > step ? stepProblem(target) : null;
+    setStepError(problem);
+    if (!problem) setStep(target);
+  }
 
   const save = useMutation({
     mutationFn: async (andNew: boolean) => {
@@ -164,6 +198,7 @@ export default function QuestionScreen() {
         setExpected("");
         setSolution("");
         setExplanation("");
+        setStep(0);
       } else {
         if (params.draftId) {
           router.replace({
@@ -191,6 +226,28 @@ export default function QuestionScreen() {
           pointerEvents={save.isPending ? "none" : "auto"}
           accessibilityElementsHidden={save.isPending}
         >
+          <View
+            accessibilityRole="tablist"
+            style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}
+          >
+            {([0, 1, 2] as const).map((n) => (
+              <Pressable
+                key={n}
+                accessibilityRole="tab"
+                accessibilityState={{ selected: step === n }}
+                onPress={() => goStep(n)}
+                className={chip(step === n)}
+              >
+                <Text className={chipText(step === n)}>
+                  {`${n + 1}. ${t(`provaP02.editor.step${n}`)}`}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+          <Text style={parentStyles.muted}>
+            {t(`provaP02.editor.step${step}Help`)}
+          </Text>
+          {step === 0 ? (<>
           <View className="flex-row gap-2">
             <View className="flex-[2]">
               <Field
@@ -285,6 +342,8 @@ export default function QuestionScreen() {
               />
             )
             : null}
+          </>) : null}
+          {step === 1 ? (<>
           {kind === "multiple_choice"
             ? (
               <View className="gap-2">
@@ -353,6 +412,42 @@ export default function QuestionScreen() {
             multiline
             className="min-h-16"
           />
+          </>) : null}
+          {step === 2 ? (<>
+          <View
+            accessibilityLabel={t("provaP02.editor.previewTitle")}
+            style={[parentStyles.card, { gap: 12 }]}
+          >
+            <Text style={parentStyles.muted}>
+              {t("provaP02.editor.previewTitle")} · {subject} · {t("prova.grade")} {grade}
+            </Text>
+            <Text style={{ fontFamily: "Nunito_700Bold", fontSize: 18, lineHeight: 26, color: "#2A2346" }}>
+              {stem}
+            </Text>
+            {images.length
+              ? (
+                <Text style={parentStyles.muted}>
+                  {t("provaP02.editor.previewImages", { count: images.length })}
+                </Text>
+              )
+              : null}
+            {kind === "multiple_choice"
+              ? KEYS.map((k) => (
+                <View
+                  key={k}
+                  style={{ flexDirection: "row", gap: 10, alignItems: "center", minHeight: 48, borderWidth: 1, borderColor: "#D9D3E6", borderRadius: 16, paddingHorizontal: 12 }}
+                >
+                  <Text style={{ fontFamily: "Nunito_800ExtraBold", color: "#5132BD" }}>{k}</Text>
+                  <Text style={{ flex: 1, fontFamily: "Nunito_600SemiBold", color: "#2A2346" }}>{choices[k]}</Text>
+                </View>
+              ))
+              : (
+                <View style={{ minHeight: 96, borderWidth: 1, borderStyle: "dashed", borderColor: "#C7BED7", borderRadius: 16, padding: 12, justifyContent: "center" }}>
+                  <Text style={parentStyles.muted}>{t("provaP02.editor.previewNotebook")}</Text>
+                </View>
+              )}
+            <Text style={parentStyles.muted}>{t("provaP02.editor.previewHidden")}</Text>
+          </View>
           <View style={parentStyles.card}>
             <Toggle
               label={t("library.share")}
@@ -382,8 +477,30 @@ export default function QuestionScreen() {
               )
               : null}
           </View>
+          </>) : null}
         </View>
+        {stepError
+          ? <Text accessibilityRole="alert" style={{ color: "#B3261E", fontFamily: "Nunito_700Bold" }}>{stepError}</Text>
+          : null}
         <ErrorText error={save.error} />
+        {step > 0
+          ? (
+            <Button
+              variant="secondary"
+              title={t("provaP02.editor.back")}
+              disabled={save.isPending}
+              onPress={() => goStep((step - 1) as 0 | 1)}
+            />
+          )
+          : null}
+        {step < 2
+          ? (
+            <Button
+              title={t("provaP02.editor.next")}
+              onPress={() => goStep((step + 1) as 1 | 2)}
+            />
+          )
+          : (<>
         <Button
           title={t("prova.saveAndNew")}
           loading={save.isPending}
@@ -397,6 +514,7 @@ export default function QuestionScreen() {
           onPress={() =>
             save.mutate(false)}
         />
+          </>)}
         <Button
           variant="ghost"
           title={t("common.cancel")}
