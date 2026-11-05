@@ -38,6 +38,12 @@ import {
 import { Avatar } from "@/components/avatar";
 import { Pressable } from "@/components/ui/pressable";
 import {
+  BulkArchiveSheet,
+  BulkCheck,
+  BulkSelectBar,
+  useBulkArchive,
+} from "@/components/ui/bulk-archive-sheet";
+import {
   CountBadge,
   IconButton,
   SatinButton,
@@ -163,6 +169,22 @@ export function RewardsScreen() {
       ? !!r.archived_at
       : !r.archived_at && r.active === (catalogFilter === "active"),
   );
+  // Rewards are family-wide: the bulk preview takes only the status filter.
+  const bulk = useBulkArchive({
+    type: "reward",
+    mode: catalogFilter === "archived" ? "restore" : "archive",
+    scope: catalogFilter === "archived" ? {} : { status: catalogFilter },
+    candidates: (visibleRewards ?? []).map((r) => ({
+      id: r.id,
+      title: r.title,
+    })),
+    onFinished: () =>
+      Promise.all(
+        [...catalogKeys, ["reward_history"]].map((queryKey) =>
+          cache.invalidateQueries({ queryKey }),
+        ),
+      ),
+  });
   const nav = [
     { label: t("calendar.today"), Icon: House, path: "/parent" as const },
     {
@@ -262,6 +284,7 @@ export function RewardsScreen() {
                     onPress={() => {
                       setCatalog(value);
                       setNotice("");
+                      bulk.cancel();
                     }}
                     style={{
                       minHeight: 54,
@@ -310,6 +333,11 @@ export function RewardsScreen() {
             ))}
           </View>
         )}
+        {catalog &&
+        !rewards.error &&
+        (bulk.selecting || (visibleRewards?.length ?? 0) > 0) ? (
+          <BulkSelectBar bulk={bulk} total={visibleRewards?.length ?? 0} />
+        ) : null}
         <SourceLoadError
           error={sources.error}
           retry={() => void sources.refetch()}
@@ -500,6 +528,11 @@ export function RewardsScreen() {
                   style={[
                     u.card,
                     { width: wide ? "48.5%" : "100%", padding: 14 },
+                    bulk.selecting &&
+                      bulk.isPicked(reward.id) && {
+                        borderColor: p.purple,
+                        borderWidth: 2,
+                      },
                   ]}
                 >
                   <View style={u.row}>
@@ -543,6 +576,13 @@ export function RewardsScreen() {
                                 : "rewardPremium.inactive",
                           )}
                         </Text>
+                        {bulk.selecting ? (
+                          <BulkCheck
+                            label={reward.title}
+                            checked={bulk.isPicked(reward.id)}
+                            onToggle={() => bulk.toggle(reward.id)}
+                          />
+                        ) : (
                         <Pressable
                           accessibilityRole="button"
                           accessibilityLabel={t("rewardEdit.named", {
@@ -566,6 +606,7 @@ export function RewardsScreen() {
                             {t("rewardEdit.details")}
                           </Text>
                         </Pressable>
+                        )}
                       </View>
                     </View>
                   </View>
@@ -601,6 +642,7 @@ export function RewardsScreen() {
           </View>
         ) : null}
       </ScrollView>
+      {!bulk.selecting ? (
       <View style={{ paddingHorizontal: 18, paddingVertical: 8 }}>
         <SatinButton
           title={t("rewardPremium.new")}
@@ -613,6 +655,7 @@ export function RewardsScreen() {
           style={{ width: "100%", maxWidth: 560, alignSelf: "center" }}
         />
       </View>
+      ) : null}
       <View
         style={[
           u.footer,
@@ -642,6 +685,7 @@ export function RewardsScreen() {
           </Pressable>
         ))}
       </View>
+      <BulkArchiveSheet {...bulk.sheet} />
       {editing && (
         <RewardEditor
           row={editing}

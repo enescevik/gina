@@ -4,7 +4,7 @@ import {
   SourceLoadError,
 } from "@/components/setup/source-links";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
@@ -32,6 +32,12 @@ import {
 } from "lucide-react-native";
 import { Avatar } from "@/components/avatar";
 import { Pressable } from "@/components/ui/pressable";
+import {
+  BulkArchiveSheet,
+  BulkCheck,
+  BulkSelectBar,
+  useBulkArchive,
+} from "@/components/ui/bulk-archive-sheet";
 import { IconButton, SatinButton, Tag, p, u } from "@/components/planner/ui";
 import type { PlannerChild } from "@/components/planner/timetable-editor";
 import { useSession } from "@/lib/session";
@@ -105,6 +111,24 @@ export function TasksScreen() {
   const visible = rows.filter((r) =>
     archived ? !!r.archived_at : !r.archived_at && r.active !== paused,
   );
+  const cache = useQueryClient();
+  const bulk = useBulkArchive({
+    type: "task_routine",
+    mode: archived ? "restore" : "archive",
+    scope: {
+      child_id: selected?.id,
+      ...(archived ? {} : { status: paused ? "paused" : "active" }),
+    },
+    candidates: visible.map((r) => ({ id: r.id, title: r.title })),
+    onFinished: () =>
+      Promise.all(
+        [
+          ["parent_task_templates", familyId],
+          ["family_task_templates", familyId],
+          ["task_routine_history", familyId],
+        ].map((queryKey) => cache.invalidateQueries({ queryKey })),
+      ),
+  });
   const busy = children.isLoading || (!!selected && templates.isLoading);
   const failed = children.error || templates.error;
   const daysText = (days: number[]) =>
@@ -279,6 +303,9 @@ export function TasksScreen() {
                 {notice}
               </Text>
             ) : null}
+            {visible.length > 0 || bulk.selecting ? (
+              <BulkSelectBar bulk={bulk} total={visible.length} />
+            ) : null}
             <SourceLoadError
               error={sources.error}
               retry={() => void sources.refetch()}
@@ -317,7 +344,8 @@ export function TasksScreen() {
                   key={task.id}
                   style={[
                     u.card,
-                    params.taskId === task.id && {
+                    (params.taskId === task.id ||
+                      (bulk.selecting && bulk.isPicked(task.id))) && {
                       borderColor: p.purple,
                       borderWidth: 2,
                     },
@@ -347,16 +375,24 @@ export function TasksScreen() {
                       </Text>
                       <StarReward count={task.stars} />
                     </View>
-                    <IconButton
-                      label={t("routine.editNamed", { title: task.title })}
-                      onPress={() => {
-                        setNotice("");
-                        setEditingName(selected.name);
-                        setEditing(task);
-                      }}
-                    >
-                      <Pencil color={p.purple} size={20} />
-                    </IconButton>
+                    {bulk.selecting ? (
+                      <BulkCheck
+                        label={task.title}
+                        checked={bulk.isPicked(task.id)}
+                        onToggle={() => bulk.toggle(task.id)}
+                      />
+                    ) : (
+                      <IconButton
+                        label={t("routine.editNamed", { title: task.title })}
+                        onPress={() => {
+                          setNotice("");
+                          setEditingName(selected.name);
+                          setEditing(task);
+                        }}
+                      >
+                        <Pencil color={p.purple} size={20} />
+                      </IconButton>
+                    )}
                   </View>
                   <SetupSourceLinks
                     sources={(sources.data ?? []).filter(
@@ -385,7 +421,7 @@ export function TasksScreen() {
           </>
         ) : null}
       </ScrollView>
-      {selected && !failed ? (
+      {selected && !failed && !bulk.selecting ? (
         <View
           style={{
             paddingHorizontal: 18,
@@ -433,6 +469,7 @@ export function TasksScreen() {
           </Pressable>
         ))}
       </View>
+      <BulkArchiveSheet {...bulk.sheet} />
       {editing && (
         <RoutineEditor
           key={`${editing.id}:${editing.revision}`}
