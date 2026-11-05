@@ -8,7 +8,7 @@
 
 | Faz | Durum |
 |---|---|
-| 1 — Kapsam ve durum doğruluğu | Temel değişiklikler uygulandı; yerel kabul geçti. Cihaz/PIN taslak koruması ve fiziksel cihaz kabulü açık. |
+| 1 — Kapsam ve durum doğruluğu | Temel değişiklikler uygulandı; yerel kabul geçti. Cihaz/PIN taslak koruması ve aynı ekranda PIN tamamlama eklendi; kabul kaydı aşağıdaki raporda. Fiziksel cihaz kabulü açık. |
 | 2 — Ortak seçim ve düzeltme | Tarih/saat/puan ve zil editörü uygulandı. Mevcut kayıtların geçmişi koruyan düzenlemesi açık. |
 | 3 — Veli günlük akış ve kurulum | Açık. |
 | 4 — Çocuk ve Prova bütünlüğü | Görsel/teslim/geçici sonuç temeli uygulandı; kalan kapsam açık. |
@@ -33,7 +33,7 @@
 | Görevler `/parent/tasks` | Açık / yeniden doğrulanacak | Günlük gerçekleşme ile rutin ayarını ayır; ayrıntı ve güvenli düzenleme ekle — Ad/gün/yıldız düzeltmesi kopya görev veya geçmiş puan değişimi üretmez |
 | Ödüller `/parent/rewards` | Açık / yeniden doğrulanacak | Düzenleme, teslim geçmişi ve talep durumları; yanlış ret/iptali önleyen sonuç açıklaması — Bedel değişiminin önceki taleplere etkisi açık; teslim edilmiş ödül bulunur |
 | Diğer / ayarlar `/parent/menu` | Açık / yeniden doğrulanacak | Hesap, aile, cihazlar, öğrenme kayıtları ve yardım grupları; aynı düzeyde tutarlı gezinme — PIN, okul puanı ve destek beklenen kategoride bulunur |
-| Cihaz erişimi `/parent/device-access` | Açık / yeniden doğrulanacak | Kullanıcı/PIN politikası taslağını koru; eksik PIN oluşturup aynı taslağa dön; kayıt özeti — Geri gitmek seçili çocukları sessizce kaybettirmez |
+| Cihaz erişimi `/parent/device-access` | Kısmi: Taslak koruması, aynı ekranda doğrulamalı PIN ve erişim özeti uygulandı. Fiziksel cihaz kabulü açık. | Kullanıcı/PIN politikası taslağını koru; eksik PIN oluşturup aynı taslağa dön; kayıt özeti — Geri gitmek seçili çocukları sessizce kaybettirmez |
 | Aileler `/parent/families` | Açık / yeniden doğrulanacak | Etkin aile durumu; katılma ve değiştirmeyi ayır; çocuk sayısı ve sonuç özeti — Aile değiştirmek veri birleştirme sanılmaz |
 | Okul puanları `/parent/grades` | Kısmi: Ders kataloğu, tarih ve ondalıklı puan seçimi uygulandı. Düzenleme/geçmiş/arama/sayfalama açık. | Ders ve tarih seçimi, puan kontrolü, düzeltme/geçmiş, arama/sayfalama — Yanlış kayıt düzeltilir; 200 üzerindeki eski kayıt ulaşılabilir |
 | Notlar `/parent/notes` | Açık / yeniden doğrulanacak | Liste filtresinden bağımsız not hedefi; kim görecek özeti; etiketler, düzenleme — Kaydetmeden çocuk ve izleyici açık; yanlışlık düzeltilebilir |

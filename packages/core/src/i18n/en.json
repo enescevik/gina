@@ -2795,6 +2795,18 @@
     "decimalRange": "Between {{min}} and {{max}}; up to {{precision}} decimal places.",
     "dateLabel": "Date",
     "startTime": "Start time",
-    "endTime": "End time"
+    "endTime": "End time",
+    "confirmPin": "Enter the PIN again",
+    "pinMismatch": "The two PINs must match. Please check them.",
+    "devicePinInline": "Create a PIN for the selected children here. Your device choices stay in place. PINs are saved separately; save the device settings afterwards.",
+    "deviceSummary": "Access to be saved",
+    "deviceSummaryPin": "{{names}} can use this device with their own four-digit PIN.",
+    "deviceSummaryNoPin": "{{names}} can open their profile on this device without a PIN. Adult settings remain protected.",
+    "noChildSelected": "No child selected yet",
+    "deviceLeaveTitle": "Device settings are not saved yet",
+    "deviceLeaveBody": "Leaving discards device choices and any unsaved PIN. A PIN you have already saved stays unchanged.",
+    "keepEditing": "Keep editing",
+    "clearPin": "Clear the PIN I entered",
+    "finishPinFirst": "Save or clear the PIN you entered before changing the children or PIN rule."
   }
 }

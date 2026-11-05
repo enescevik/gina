@@ -1,0 +1,25 @@
+{
+  "environment": "isolated-local-real-services",
+  "results": [
+    {
+      "check": "pin_requires_matching_confirmation",
+      "passed": true
+    },
+    {
+      "check": "device_back_preserves_choices_and_unsaved_pin",
+      "passed": true
+    },
+    {
+      "check": "inline_pin_save_keeps_device_draft_and_does_not_grant_access",
+      "passed": true
+    },
+    {
+      "check": "separate_device_save_grants_only_selected_child_with_pin",
+      "passed": true
+    },
+    {
+      "check": "saved_device_leaves_without_false_dirty_warning",
+      "passed": true
+    }
+  ]
+}

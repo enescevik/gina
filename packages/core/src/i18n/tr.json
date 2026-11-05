@@ -2790,6 +2790,18 @@
     "decimalRange": "{{min}}–{{max}} arasında; virgülden sonra en fazla {{precision}} basamak.",
     "dateLabel": "Tarih",
     "startTime": "Başlangıç saati",
-    "endTime": "Bitiş saati"
+    "endTime": "Bitiş saati",
+    "confirmPin": "PIN’i tekrar gir",
+    "pinMismatch": "İki PIN aynı olmalı. Tekrar kontrol et.",
+    "devicePinInline": "Seçili çocuklar için PIN’i burada oluşturabilirsin. Cihaz seçimlerin korunur. PIN ayrı kaydedilir; ardından cihaz ayarlarını kaydet.",
+    "deviceSummary": "Kaydedilecek erişim",
+    "deviceSummaryPin": "{{names}} bu cihazı kendi dört haneli PIN’iyle kullanabilecek.",
+    "deviceSummaryNoPin": "{{names}} bu cihazda PIN girmeden kendi profiline geçebilecek. Yetişkin ayarları açılmaz.",
+    "noChildSelected": "Henüz çocuk seçilmedi",
+    "deviceLeaveTitle": "Cihaz ayarları henüz kaydedilmedi",
+    "deviceLeaveBody": "Ayrılırsan cihaz seçimlerin ve yazıp kaydetmediğin PIN silinir. Daha önce kaydettiğin PIN değişmez.",
+    "keepEditing": "Düzenlemeye dön",
+    "clearPin": "Yazdığım PIN’i temizle",
+    "finishPinFirst": "Çocuk veya PIN kuralını değiştirmeden önce yazdığın PIN’i kaydet ya da temizle."
   }
 }
