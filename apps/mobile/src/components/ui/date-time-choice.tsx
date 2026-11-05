@@ -166,7 +166,7 @@ export function DateChoice(
                               accessibilityLabel={format(day, {
                                 dateStyle: "full",
                               })}
-                              accessibilityState={{ selected: value === day }}
+                              accessibilityState={{ selected: value === day }} aria-pressed={value === day}
                               onPress={() => choose(day)}
                               style={{
                                 flex: 1,

@@ -473,7 +473,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
           <Pressable
             key={row.id}
             accessibilityRole="button"
-            accessibilityState={{ selected: row.id === ticket }}
+            accessibilityState={{ selected: row.id === ticket }} aria-pressed={row.id === ticket}
             onPress={() => select(row.id)}
             style={[
               s.ticket,
@@ -653,7 +653,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
                         <Pressable
                           key={value}
                           accessibilityRole="tab"
-                          accessibilityState={{ selected: tab === value }}
+                          accessibilityState={{ selected: tab === value }} aria-selected={tab === value}
                           onPress={() =>
                             go(() => {
                               setTab(value);

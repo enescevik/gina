@@ -487,7 +487,7 @@ export function LearningPlanImport(
                 <Pressable
                   key={r.id}
                   accessibilityRole="button"
-                  accessibilityState={{ selected: active === r.index }}
+                  accessibilityState={{ selected: active === r.index }} aria-pressed={active === r.index}
                   onPress={() => setActive(r.index)}
                   style={{
                     minHeight: 48,

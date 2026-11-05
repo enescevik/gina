@@ -307,7 +307,7 @@ export function EducationPeriodWizard({
                   key={String(value)}
                   accessibilityRole="button"
                   accessibilityLabel={gradeText(value)}
-                  accessibilityState={{ selected: value === grade }}
+                  accessibilityState={{ selected: value === grade }} aria-pressed={value === grade}
                   onPress={() => setGrade(value)}
                   style={{
                     minHeight: 48,

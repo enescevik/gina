@@ -155,7 +155,7 @@ export function RewardForm({
                 key={slug}
                 accessibilityRole="button"
                 accessibilityLabel={t(`rewardIcon.${slug}`)}
-                accessibilityState={{ selected: icon === slug }}
+                accessibilityState={{ selected: icon === slug }} aria-pressed={icon === slug}
                 onPress={() => setIcon(slug)}
                 style={{
                   padding: 3,

@@ -87,8 +87,12 @@ export default function ParentNotesScreen() {
     setNotice(action);
     await cache.invalidateQueries({ queryKey: prefix });
   }
-  const profiles = children.data ?? [],
-    rows = notes.data?.pages.flatMap((p) => p.rows) ?? [];
+  const profiles = children.data ?? [];
+  // Pages refetched after a realtime hint can overlap at the cursor; one card per note id.
+  const seen = new Set<string>();
+  const rows = (notes.data?.pages.flatMap((p) => p.rows) ?? []).filter((row) =>
+    seen.has(row.id) ? false : (seen.add(row.id), true),
+  );
   const date = new Intl.DateTimeFormat(i18n.language, {
     day: "numeric",
     month: "short",
@@ -117,7 +121,7 @@ export default function ParentNotesScreen() {
             <Pressable
               key={String(a)}
               accessibilityRole="button"
-              accessibilityState={{ selected: archive === a }}
+              accessibilityState={{ selected: archive === a }} aria-pressed={archive === a}
               onPress={() => setArchive(a)}
               style={{
                 flex: 1,

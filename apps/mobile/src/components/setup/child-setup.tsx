@@ -170,7 +170,7 @@ export function ChildSetup({
                 accessibilityLabel={t("parentV5.avatarLabel", {
                   number: i + 1,
                 })}
-                accessibilityState={{ selected: avatar === slug }}
+                accessibilityState={{ selected: avatar === slug }} aria-pressed={avatar === slug}
                 onPress={() => setAvatar(slug)}
                 style={{
                   padding: 3,
@@ -215,7 +215,7 @@ export function ChildSetup({
                     <Pressable
                       key={String(value)}
                       accessibilityRole="button"
-                      accessibilityState={{ selected: grade === value }}
+                      accessibilityState={{ selected: grade === value }} aria-pressed={grade === value}
                       onPress={() => {
                         setGrade(value);
                         if (!value)
@@ -260,7 +260,7 @@ export function ChildSetup({
               <Pressable
                 key={value}
                 accessibilityRole="button"
-                accessibilityState={{ selected: gender === value }}
+                accessibilityState={{ selected: gender === value }} aria-pressed={gender === value}
                 onPress={() => setGender(value)}
                 style={{
                   minHeight: 48,
@@ -279,7 +279,7 @@ export function ChildSetup({
               <Pressable
                 key={value}
                 accessibilityRole="button"
-                accessibilityState={{ selected: interests.includes(value) }}
+                accessibilityState={{ selected: interests.includes(value) }} aria-pressed={interests.includes(value)}
                 onPress={() =>
                   setInterests(
                     interests.includes(value)
