@@ -83,3 +83,4 @@ export * from "./library-lifecycle";
 
 export * from "./plan-history";
 export * from "./admin-workqueue";
+export * from "./subject-synonyms";

@@ -12,6 +12,7 @@ import { Layout, Card, Notice } from "@/components/Layout";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { useUnsavedChanges } from "@/components/unsaved-changes";
+import { CalendarSeedImport } from "@/components/calendar-seed-import";
 const stages = {
   preschool: "Okul öncesi",
   primary: "İlkokul",
@@ -197,6 +198,7 @@ function Workspace() {
         {[
           ["calendars", "Takvimler"],
           ["places", "Bölgeler ve okullar"],
+          ["import", "Taslak içe aktar (kaynaklı)"],
           ["reports", `Okuldan gelen bilgiler (${data?.open_reports ?? 0})`],
         ].map(([id, title]) => (
           <button
@@ -627,6 +629,9 @@ function Workspace() {
             </form>
           )}
         </Card>
+      )}
+      {tab === "import" && (
+        <CalendarSeedImport onDone={() => setTick((x) => x + 1)} />
       )}
       {tab === "reports" && (
         <Card title="Okul takvimi farklılıkları">

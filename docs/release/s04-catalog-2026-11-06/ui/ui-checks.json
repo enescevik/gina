@@ -1,0 +1,30 @@
+{
+  "environment": "disposable-local-real-services",
+  "viewport": "1280x800",
+  "results": [
+    {
+      "check": "input_catalog_lists_32_subjects_with_synonyms",
+      "passed": true
+    },
+    {
+      "check": "match_tester_ambiguous_and_single_both_need_confirmation",
+      "passed": true
+    },
+    {
+      "check": "preview_shows_counts_skips_and_sources_without_writing",
+      "passed": true
+    },
+    {
+      "check": "confirmed_import_creates_20_unpublished_drafts_with_sources",
+      "passed": true
+    },
+    {
+      "check": "second_preview_is_idempotent",
+      "passed": true
+    },
+    {
+      "check": "no_page_exceptions_or_horizontal_overflow",
+      "passed": true
+    }
+  ]
+}
