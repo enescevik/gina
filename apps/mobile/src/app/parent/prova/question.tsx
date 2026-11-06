@@ -205,7 +205,8 @@ export default function QuestionScreen() {
             pathname: "/parent/prova/builder",
             params: { draftId: params.draftId },
           });
-        } else router.back();
+        } else if (router.canGoBack()) router.back();
+        else router.replace("/parent/prova");
       }
     },
   });
@@ -519,7 +520,7 @@ export default function QuestionScreen() {
           variant="ghost"
           title={t("common.cancel")}
           disabled={save.isPending}
-          onPress={() => router.back()}
+          onPress={() => router.canGoBack() ? router.back() : router.replace("/parent/prova")}
         />
       </View>
     </Screen>
