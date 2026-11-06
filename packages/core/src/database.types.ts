@@ -2582,14 +2582,14 @@ isOneToOne: false
           Views: {
             "current_question_bank": {
                   Row: {
-                    "choices": Json | null,"correct_key": string | null,"created_at": string,"created_by": string | null,"difficulty": Database["public"]['Enums']["question_difficulty"],"expected_answer": string | null,"explanation": string | null,"family_id": string | null,"grade": number,"id": string,"kind": Database["public"]['Enums']["question_kind"],"provenance": NonNullable<Json>,"scenario_code": string | null,"solution": string | null,"source_urls": (string)[],"stem": string,"subject": string,"times_asked": number,"topic": string,"updated_at": string
+                    "choices": Json | null,"correct_key": string | null,"created_at": string,"created_by": string | null,"difficulty": Database["public"]['Enums']["question_difficulty"],"expected_answer": string | null,"explanation": string | null,"family_id": string | null,"grade": number,"id": string,"interaction_type": string | null,"kind": Database["public"]['Enums']["question_kind"],"payload": Json | null,"provenance": NonNullable<Json>,"scenario_code": string | null,"schema_version": number | null,"solution": string | null,"source_urls": (string)[],"stem": string,"subject": string,"times_asked": number,"topic": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                           "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string | null,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"] | null,"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number | null,"id"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"] | null,"provenance"?: Json | null,"scenario_code"?: string | null,"solution"?: string | null,"source_urls"?: (string)[] | null,"stem"?: string | null,"subject"?: string | null,"times_asked"?: number | null,"topic"?: string | null,"updated_at"?: string | null
+                           "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string | null,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"] | null,"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number | null,"id"?: string | null,"interaction_type"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"] | null,"payload"?: Json | null,"provenance"?: Json | null,"scenario_code"?: string | null,"schema_version"?: number | null,"solution"?: string | null,"source_urls"?: (string)[] | null,"stem"?: string | null,"subject"?: string | null,"times_asked"?: number | null,"topic"?: string | null,"updated_at"?: string | null
                          }
                         Update: {
-                           "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string | null,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"] | null,"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number | null,"id"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"] | null,"provenance"?: Json | null,"scenario_code"?: string | null,"solution"?: string | null,"source_urls"?: (string)[] | null,"stem"?: string | null,"subject"?: string | null,"times_asked"?: number | null,"topic"?: string | null,"updated_at"?: string | null
+                           "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string | null,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"] | null,"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number | null,"id"?: string | null,"interaction_type"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"] | null,"payload"?: Json | null,"provenance"?: Json | null,"scenario_code"?: string | null,"schema_version"?: number | null,"solution"?: string | null,"source_urls"?: (string)[] | null,"stem"?: string | null,"subject"?: string | null,"times_asked"?: number | null,"topic"?: string | null,"updated_at"?: string | null
                          }
                         Relationships: [
                     {
@@ -2598,18 +2598,24 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "families"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_bank_interaction_type_fkey"
+      columns: ["interaction_type"]
+isOneToOne: false
+      referencedRelation: "interaction_types"
+      referencedColumns: ["type"]
     }
                   ]
                 },"standalone_question_bank": {
                   Row: {
-                    "choices": Json | null,"correct_key": string | null,"created_at": string,"created_by": string | null,"difficulty": Database["public"]['Enums']["question_difficulty"],"expected_answer": string | null,"explanation": string | null,"family_id": string | null,"grade": number,"id": string,"kind": Database["public"]['Enums']["question_kind"],"provenance": NonNullable<Json>,"scenario_code": string | null,"solution": string | null,"source_urls": (string)[],"stem": string,"subject": string,"times_asked": number,"topic": string,"updated_at": string
+                    "choices": Json | null,"correct_key": string | null,"created_at": string,"created_by": string | null,"difficulty": Database["public"]['Enums']["question_difficulty"],"expected_answer": string | null,"explanation": string | null,"family_id": string | null,"grade": number,"id": string,"interaction_type": string | null,"kind": Database["public"]['Enums']["question_kind"],"payload": Json | null,"provenance": NonNullable<Json>,"scenario_code": string | null,"schema_version": number | null,"solution": string | null,"source_urls": (string)[],"stem": string,"subject": string,"times_asked": number,"topic": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                           "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string | null,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"] | null,"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number | null,"id"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"] | null,"provenance"?: Json | null,"scenario_code"?: string | null,"solution"?: string | null,"source_urls"?: (string)[] | null,"stem"?: string | null,"subject"?: string | null,"times_asked"?: number | null,"topic"?: string | null,"updated_at"?: string | null
+                           "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string | null,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"] | null,"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number | null,"id"?: string | null,"interaction_type"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"] | null,"payload"?: Json | null,"provenance"?: Json | null,"scenario_code"?: string | null,"schema_version"?: number | null,"solution"?: string | null,"source_urls"?: (string)[] | null,"stem"?: string | null,"subject"?: string | null,"times_asked"?: number | null,"topic"?: string | null,"updated_at"?: string | null
                          }
                         Update: {
-                           "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string | null,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"] | null,"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number | null,"id"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"] | null,"provenance"?: Json | null,"scenario_code"?: string | null,"solution"?: string | null,"source_urls"?: (string)[] | null,"stem"?: string | null,"subject"?: string | null,"times_asked"?: number | null,"topic"?: string | null,"updated_at"?: string | null
+                           "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string | null,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"] | null,"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number | null,"id"?: string | null,"interaction_type"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"] | null,"payload"?: Json | null,"provenance"?: Json | null,"scenario_code"?: string | null,"schema_version"?: number | null,"solution"?: string | null,"source_urls"?: (string)[] | null,"stem"?: string | null,"subject"?: string | null,"times_asked"?: number | null,"topic"?: string | null,"updated_at"?: string | null
                          }
                         Relationships: [
                     {
@@ -2618,6 +2624,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "families"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_bank_interaction_type_fkey"
+      columns: ["interaction_type"]
+isOneToOne: false
+      referencedRelation: "interaction_types"
+      referencedColumns: ["type"]
     }
                   ]
                 }

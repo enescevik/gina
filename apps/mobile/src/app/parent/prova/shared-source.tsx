@@ -103,8 +103,6 @@ export default function SharedQuestionScreen() {
         questions: members.map((m, i) => {
           const q = rows[i]!;
           const rubric = readQuestionRubric(q.provenance);
-          // Ortak kaynak grupları bu fazda yalnız eski türleri taşır; yapılandırılmış üye sessizce dönüştürülmez.
-          if (q.kind === "structured") throw new Error("question_group_structured_unsupported");
           return {
             topic: q.topic,
             kind: q.kind,
