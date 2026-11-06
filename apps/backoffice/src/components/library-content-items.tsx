@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import Link from "next/link";
 import { prereviewStatus, prereviewStatusLabel } from "@gina/core";
-import { useAdminQuery } from "@/lib/use-async";
+import { useAuth } from "@/lib/auth";
+import { type KeysetPage, useKeysetList } from "@/lib/keyset";
 import { Notice } from "./Layout";
 import {
   type PrereviewKind,
@@ -13,10 +15,11 @@ import {
 } from "./content-prereview";
 import { adminRpc, fmtWhen, shortHash } from "./review-rpc";
 
-// P05 birleşik içerik listesi (admin_library_content_items) + E01 AI ön inceleme rozeti.
+// P05 birleşik içerik listesi + E01 AI ön inceleme rozeti. C07: `admin_library_content_page` ile gerçek
+// keyset sayfalama (ilk 200 sınırı yok), AI süzgeci sunucuda, senaryo adayları da listede (AI rozetiyle).
 // Yönetici kararı (durum / editoryal karar / canlı) ve AI ön incelemesi iki ayrı sütundur.
 
-type ItemKind = "package" | "contribution_set" | "legacy_item" | "collection" | "legacy_contribution";
+type ItemKind = "package" | "contribution_set" | "legacy_item" | "collection" | "legacy_contribution" | "curriculum_candidate";
 type ItemStatus = "draft" | "reviewed" | "approved" | "published" | "withdrawn";
 export type ContentItem = {
   kind: ItemKind;
@@ -44,6 +47,7 @@ const kindLabels: Record<ItemKind, string> = {
   legacy_item: "Koleksiyon sorusu",
   collection: "Koleksiyon",
   legacy_contribution: "Eski katkı",
+  curriculum_candidate: "Senaryo adayı",
 };
 const statusLabels: Record<ItemStatus, string> = {
   draft: "Taslak · yönetici kararı bekliyor",
@@ -58,7 +62,8 @@ const decisionLabels: Record<string, string> = {
   approved: "Yönetici kabul etti",
   rejected: "Yönetici reddetti",
 };
-const prereviewKindOf: Partial<Record<ItemKind, PrereviewKind>> = { package: "library_package", contribution_set: "contribution_set" };
+const prereviewKindOf: Partial<Record<ItemKind, PrereviewKind>> = { package: "library_package", contribution_set: "contribution_set", curriculum_candidate: "curriculum_candidate" };
+const PAGE = 50;
 
 type Trail =
   | { kind: "contribution"; data: ContributionTrail }
@@ -114,10 +119,17 @@ export function LibraryContentItems() {
   const [status, setStatus] = useState<"" | ItemStatus>("");
   const [kind, setKind] = useState<"" | ItemKind>("");
   const [ai, setAi] = useState<"" | "none" | "pending" | "ai_approved" | "needs_admin" | "ai_rejected_suggestion">("");
-  const items = useAdminQuery(
-    () => adminRpc<ContentItem[]>("admin_library_content_items", { p_kind: kind || null, p_status: status || null, p_limit: 200 }),
-    [status, kind],
+  const { isAdmin, roles } = useAuth();
+  // İçerik ekibi AI kuyruğunu yönetir; yalnız yayın ekibi listeyi ve paket izini görür (yayın kararı ayrı ekranda).
+  const canReview = isAdmin || roles.includes("content");
+  const fetchPage = useCallback(
+    (cursor: string | null) =>
+      adminRpc<KeysetPage<ContentItem>>("admin_library_content_page", {
+        p_kind: kind || null, p_status: status || null, p_prereview: ai || null, p_cursor: cursor, p_limit: PAGE,
+      }),
+    [kind, status, ai],
   );
+  const items = useKeysetList(fetchPage, JSON.stringify([kind, status, ai]), (r) => r.kind + ":" + r.id);
   const prereviews = usePrereviews();
   const gate = usePrereviewGate();
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -125,12 +137,8 @@ export function LibraryContentItems() {
   const [busy, setBusy] = useState(false);
   const [trail, setTrail] = useState<{ id: string; value: Trail | null; error: boolean } | null>(null);
 
-  const rows = (items.data ?? []).filter((r) => {
-    if (!ai) return true;
-    const rec = prereviews.data?.get(prereviewKey(prereviewKindOf[r.kind] ?? "-", r.id));
-    return ai === "none" ? !rec : rec?.prereview_status === ai;
-  });
-  const blocked = !gate.data || !!gate.data.reason;
+  const rows = items.rows ?? [];
+  const blocked = !canReview || !gate.data || !!gate.data.reason;
   const reload = () => {
     items.reload();
     prereviews.reload();
@@ -201,7 +209,9 @@ export function LibraryContentItems() {
           eğitimci incelemesinin yerine geçmez. AI karar veremediğinde kayıt &quot;BEKLİYOR — yönetici kararı&quot; olarak kalır.
         </p>
       </div>
-      <PrereviewGateNotice gate={gate.data} error={gate.error} />
+      {canReview ? <PrereviewGateNotice gate={gate.data} error={gate.error} /> : (
+        <Notice>Yayın ekibi görünümü: AI ön inceleme isteği ve editoryal karar içerik ekibindedir. Paketlerin yayın önizlemesine buradan gidebilirsiniz.</Notice>
+      )}
       <div className="grid gap-3 sm:grid-cols-3">
         <label className="label">
           Yönetici durumu
@@ -230,18 +240,22 @@ export function LibraryContentItems() {
         </label>
       </div>
       <div className="flex flex-wrap items-center gap-3">
-        <button type="button" className="btn-secondary" disabled={busy || blocked || !selected.size} onClick={() => void requestSelected()}>
-          Seçilenler için AI ön incelemesi iste ({selected.size})
-        </button>
-        <button type="button" className="btn-secondary" disabled={busy || blocked} onClick={() => void enqueueAll()}>
-          Karar bekleyen tümünü kuyruğa al
-        </button>
+        {canReview ? (
+          <>
+            <button type="button" className="btn-secondary" disabled={busy || blocked || !selected.size} onClick={() => void requestSelected()}>
+              Seçilenler için AI ön incelemesi iste ({selected.size})
+            </button>
+            <button type="button" className="btn-secondary" disabled={busy || blocked} onClick={() => void enqueueAll()}>
+              Karar bekleyen tümünü kuyruğa al
+            </button>
+          </>
+        ) : null}
         <button type="button" className="btn-secondary" onClick={reload}>Listeyi yenile</button>
-        {items.data ? <span role="status" className="text-sm text-slate-600">{rows.length} kayıt{items.data.length === 200 ? " (ilk 200; filtreyi daraltın)" : ""}</span> : null}
+        {items.rows ? <span role="status" data-testid="content-count" className="text-sm text-slate-600">{rows.length} kayıt gösteriliyor{items.hasMore ? " · devamı var" : " · liste tamam"}</span> : null}
       </div>
       {bulk ? <Notice tone={bulk.tone}>{bulk.text}</Notice> : null}
-      {items.error ? <Notice tone="error">İçerik listesi okunamadı. Yetkinizi kontrol edip yeniden deneyin.</Notice> : null}
-      {prereviews.error ? <Notice tone="error">AI ön inceleme kayıtları okunamadı; rozetler eksik olabilir.</Notice> : null}
+      {items.error && !items.pageError ? <Notice tone="error">İçerik listesi okunamadı. Yetkinizi kontrol edip yeniden deneyin.</Notice> : null}
+      {canReview && prereviews.error ? <Notice tone="error">AI ön inceleme kayıtları okunamadı; rozetler eksik olabilir.</Notice> : null}
       <div className="overflow-x-auto">
         <table className="table" aria-label="Kütüphane içerikleri">
           <thead>
@@ -293,10 +307,24 @@ export function LibraryContentItems() {
                       {r.live ? "Ailelere açık" : "Ailelere açık değil"}
                     </p>
                   </td>
-                  <td className="min-w-[240px]">{pk ? <PrereviewBadge record={rec} compact /> : <span className="text-xs text-slate-500">Bu tür AI ön incelemesine girmez</span>}</td>
+                  <td className="min-w-[240px]" data-testid="ai-cell" data-ai={r.prereview_status ?? "none"}>
+                    {!pk
+                      ? <span className="text-xs text-slate-500">Bu tür AI ön incelemesine girmez</span>
+                      : rec || !r.prereview_status
+                      ? <PrereviewBadge record={rec} compact />
+                      : <span className="text-sm font-semibold">AI ön inceleme · {aiLabel(r.prereview_status)}</span>}
+                  </td>
                   <td className="min-w-[200px]">
                     <div className="grid gap-2">
-                      {pk ? <RequestPrereviewButton kind={pk} id={r.id} gate={gate.data} onDone={() => prereviews.reload()} /> : null}
+                      {pk && canReview ? <RequestPrereviewButton kind={pk} id={r.id} gate={gate.data} onDone={() => prereviews.reload()} /> : null}
+                      {r.kind === "curriculum_candidate"
+                        ? isAdmin
+                          ? <Link className="btn-secondary text-center" href={{ pathname: "/library", query: { tab: "curriculum" } }}>Senaryo incelemesinde aç</Link>
+                          : <span className="text-xs text-slate-500">Senaryo kararı yönetici ekranında verilir.</span>
+                        : null}
+                      {r.kind === "package"
+                        ? <Link className="btn-secondary text-center" href={{ pathname: "/library-publication", query: { packageId: r.id } }}>Yayın önizlemesi</Link>
+                        : null}
                       {r.kind === "package" || r.kind === "contribution_set"
                         ? (
                           <button type="button" className="btn-secondary" aria-expanded={trail?.id === r.id} onClick={() => void openTrail(r)}>
@@ -323,7 +351,13 @@ export function LibraryContentItems() {
           </tbody>
         </table>
       </div>
-      {items.data && !rows.length ? <p className="py-4 text-slate-500">Bu filtreyle içerik yok.</p> : null}
+      {items.rows && !rows.length ? <p className="py-4 text-slate-500">Bu filtreyle içerik yok.</p> : null}
+      {items.pageError ? <Notice tone="error">Sonraki sayfa okunamadı; yüklenen kayıtlar korunuyor. Yeniden deneyin.</Notice> : null}
+      {items.hasMore ? (
+        <button type="button" className="btn-secondary justify-self-start" data-testid="content-more" disabled={items.loading} onClick={() => void items.loadMore()}>
+          {items.loading ? "Yükleniyor…" : `Sonraki ${PAGE} kaydı yükle`}
+        </button>
+      ) : null}
     </section>
   );
 }

@@ -71,7 +71,7 @@ insert into matrix values
  ('support_canned_replies','select public.support_canned_replies()','allowed','allowed','forbidden','forbidden','forbidden'),
  ('admin_learning_library','select public.admin_learning_library()','allowed','forbidden','allowed','forbidden','forbidden'),
  ('admin_library_content_items','select public.admin_library_content_items(null,null,5)','allowed','forbidden','allowed','forbidden','forbidden'),
- ('admin_library_content_page','select public.admin_library_content_page()','allowed','forbidden','allowed','forbidden','forbidden'),
+ ('admin_library_content_page','select public.admin_library_content_page()','allowed','forbidden','allowed','forbidden','allowed'),
  ('admin_list_library_draft_packages','select public.admin_list_library_draft_packages()','allowed','forbidden','allowed','forbidden','forbidden'),
  ('admin_list_contribution_sets','select public.admin_list_contribution_sets()','allowed','forbidden','allowed','forbidden','forbidden'),
  ('admin_content_prereviews','select public.admin_content_prereviews(null,10)','allowed','forbidden','allowed','forbidden','forbidden'),

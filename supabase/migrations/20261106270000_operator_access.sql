@@ -45,14 +45,15 @@ declare f text;begin
  -- Birlikte Prova oluşturma/önizleme/dağıtım ve ortak defter incelemesi.
  foreach f in array array['admin_learning_library','admin_review_contribution','admin_list_library_draft_packages',
   'admin_get_library_import','admin_get_library_reviews','admin_review_library_question','admin_list_contribution_sets',
-  'admin_get_contribution_set','admin_decide_contribution_set','admin_library_content_items','admin_library_package_trail',
+  'admin_get_contribution_set','admin_decide_contribution_set','admin_library_content_items',
   'admin_content_prereviews','request_content_prereview','enqueue_content_prereview','admin_library_group_integrity',
   'admin_group_exams','admin_group_package_catalog','admin_create_group_exam','admin_create_reviewed_group_exam',
   'admin_cancel_group_exam','admin_cohort_review_queue','admin_cohort_review_detail','admin_save_cohort_review',
   'admin_publish_cohort_results'] loop
   perform gina.c07_regate(f,array['content'],'gina.assert_admin()','gina.assert_operation_role(array[''content''])');
  end loop;
- -- Yayın önizlemesi içerik ve yayın ekibine; yayın kararı yalnız yayın ekibine (ve yöneticiye).
+ -- Yayın önizlemesi ve paket izi içerik ve yayın ekibine; yayın kararı yalnız yayın ekibine (ve yöneticiye).
+ perform gina.c07_regate('admin_library_package_trail',array['content','release'],'gina.assert_admin()','gina.assert_operation_role(array[''content'',''release''])');
  perform gina.c07_regate('admin_library_publication',array['content','release'],'gina.assert_admin()','gina.assert_operation_role(array[''content'',''release''])');
  perform gina.c07_regate('admin_set_library_publication',array['release'],'gina.assert_admin()','gina.assert_operation_role(array[''release''])');
  -- Yönetici dalı içerik ekibine de açılır (aile/veli dalı aynen kalır).
@@ -173,7 +174,7 @@ create function public.admin_library_content_page(p_kind text default null,p_sta
  p_cursor text default null,p_limit int default 50)
 returns jsonb language plpgsql stable security definer set search_path='' as $$
 declare ct timestamptz;ck text;ci uuid;parts text[];rows jsonb;n int;lim int;begin
- perform gina.assert_operation_role(array['content']);
+ perform gina.assert_operation_role(array['content','release']);
  if p_limit is null or p_limit<1 then raise exception 'invalid_input';end if;
  lim:=least(p_limit,200);
  if (p_kind is not null and p_kind not in('package','contribution_set','legacy_item','collection','legacy_contribution','curriculum_candidate'))

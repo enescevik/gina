@@ -106,7 +106,7 @@ export default function FamiliesPage() {
                 </p>
                 <ul className="divide-y divide-slate-100" aria-label="Aileler">
                   {list.rows.map((f) => (
-                    <li key={f.id} className="grid gap-2 py-3 md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)_minmax(0,1fr)_auto] md:items-start" data-family-row>
+                    <li key={f.id} className="grid gap-2 py-3 md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)_minmax(0,1fr)] md:items-start xl:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)_minmax(0,1fr)_auto]" data-family-row>
                       <div className="min-w-0">
                         <div className="font-semibold text-slate-900">{f.name}</div>
                         {list.query && f.matched_on.length ? (
@@ -136,7 +136,7 @@ export default function FamiliesPage() {
                         <div>{t.families.members}: {fmtNumber(f.member_count)} · {t.families.devices}: {fmtNumber(f.device_count)}</div>
                         <div>{b01.families.lastActivity}: {fmtDateTime(f.last_activity_at)}</div>
                       </div>
-                      {actions(f.id)}
+                      <div className="md:col-span-3 xl:col-span-1">{actions(f.id)}</div>
                     </li>
                   ))}
                 </ul>

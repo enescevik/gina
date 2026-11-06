@@ -43,10 +43,22 @@ type Draft = {
   status: string;
   recipient_count: number | null;
 };
+type PushAudience = {
+  ready: boolean;
+  eligible: number;
+  devices: number;
+  blocked: { no_device?: number; opted_out?: number; signed_out?: number };
+};
 type Preview = {
   count: number;
   fingerprint: string;
   channels: ChannelPreview;
+  push: PushAudience | null;
+};
+const pushBlocked: Record<string, string> = {
+  no_device: "Bildirim izni verilmiş cihazı yok",
+  opted_out: "Duyuru bildirimlerini kapatmış",
+  signed_out: "Cihazda oturumu açık değil",
 };
 const optionalChannels = ["email", "sms"] as const;
 type Data = {
@@ -599,14 +611,23 @@ function Workspace() {
                   disabled={dirty || !draft.revision}
                   onClick={() =>
                     void run(
-                      () =>
-                        supabase().rpc("admin_preview_announcement", {
+                      async () => {
+                        const r = await supabase().rpc("admin_preview_announcement", {
                           p_id: draft.id,
                           p_revision: draft.revision,
-                        }),
+                        });
+                        if (r.error) return r;
+                        // C07: push hedefi gerçek kayıtlardan (cihaz + tercih + açık oturum) sayılır.
+                        const push = await adminRpc("admin_announcement_push_audience", {
+                          p_id: draft.id,
+                          p_revision: draft.revision,
+                        }) as PushAudience;
+                        return { error: null, data: { ...(r.data as object), push_audience: push } };
+                      },
                       (v) => {
-                        const p = v as { count: number; fingerprint: string };
+                        const p = v as { count: number; fingerprint: string; push_audience?: PushAudience };
                         setPreview({
+                          push: p.push_audience ?? null,
                           count: p.count,
                           fingerprint: p.fingerprint,
                           channels: readChannelPreview(
@@ -655,13 +676,32 @@ function Workspace() {
                     {preview.count} veli · her zaman oluşturulur
                   </p>
                 </div>
-                <div className="rounded-2xl border border-violet-100 bg-white p-4">
-                  <p className="font-bold">{channelNames.push}</p>
-                  <p className="text-sm">
-                    {draft.push
-                      ? "Bildirim izni olan cihazlara; kesin sayı gönderimde belli olur."
-                      : "Seçilmedi"}
+                <div className="rounded-2xl border border-violet-100 bg-white p-4" data-testid="announcement-push-audience">
+                  <p className="font-bold">
+                    {channelNames.push}
+                    {preview.push ? ` · ${preview.push.ready ? "hazır" : "hazır değil"}` : ""}
                   </p>
+                  {!draft.push
+                    ? <p className="text-sm">Seçilmedi · uygulama içi kutu yine oluşur.</p>
+                    : preview.push
+                    ? (
+                      <>
+                        <p className="text-sm">
+                          Ulaşılabilir: <strong>{preview.push.eligible}</strong> veli · <strong>{preview.push.devices}</strong> cihaz
+                        </p>
+                        {Object.entries(preview.push.blocked).filter(([, n]) => n).length
+                          ? (
+                            <ul className="mt-1 list-disc pl-5 text-sm">
+                              {Object.entries(preview.push.blocked).filter(([, n]) => n).map(([k, n]) => (
+                                <li key={k}>{pushBlocked[k] ?? k}: {n}</li>
+                              ))}
+                            </ul>
+                          )
+                          : null}
+                        <p className="mt-1 text-xs text-slate-500">Sağlayıcı kabulü teslim veya okundu demek değildir.</p>
+                      </>
+                    )
+                    : <p className="text-sm">Push hedefi okunamadı.</p>}
                 </div>
                 {optionalChannels.map((c) => {
                   const p = preview.channels[c];

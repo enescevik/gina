@@ -11,6 +11,7 @@ import { Card, Layout, Notice } from "@/components/Layout";
 import { useUnsavedChanges } from "@/components/unsaved-changes";
 import { supabase } from "@/lib/supabase";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
+import { useAuth } from "@/lib/auth";
 type Plan = "free" | "plus" | "pro";
 type Collection = {
   id: string;
@@ -63,17 +64,30 @@ const blank = (): Collection => ({
   plans: ["plus", "pro"],
   status: "draft",
 });
+type LibraryTab = "content" | "items" | "drafts" | "review" | "policy" | "curriculum";
+/**
+ * C07 rol matrisi: yönetici bütün sekmeler; içerik ekibi birleşik liste + taslak + katkı incelemesi;
+ * yalnız yayın ekibi birleşik liste (paket izi ve yayın önizlemesine buradan gider). Koleksiyon, hak/ödül
+ * politikası ve senaryo kaynakları yönetici yazmasıdır.
+ */
+function libraryTabs(isAdmin: boolean, roles: string[]): LibraryTab[] {
+  if (isAdmin) return ["content", "items", "drafts", "review", "policy", "curriculum"];
+  if (roles.includes("content")) return ["items", "drafts", "review"];
+  return ["items"];
+}
 export default function LibraryPage() {
+  const { isAdmin, roles } = useAuth();
+  const canReview = isAdmin || roles.includes("content");
   const { data, error, reload } = useAdminQuery(async () =>
-    unwrap(await supabase().rpc("admin_learning_library")) as unknown as Library
-  );
+    canReview ? unwrap(await supabase().rpc("admin_learning_library")) as unknown as Library : null
+  , [canReview]);
   const router = useRouter();
-  const [tabChoice, setTab] = useState<
-    "content" | "items" | "drafts" | "review" | "policy" | "curriculum" | null
-  >(null);
-  const tab = tabChoice ?? (
+  const allowedTabs = libraryTabs(isAdmin, roles);
+  const [tabChoice, setTab] = useState<LibraryTab | null>(null);
+  const requested: LibraryTab = tabChoice ?? (
     router.query.packageId || router.query.tab === "drafts" ? "drafts" : router.query.tab === "curriculum" ? "curriculum" : router.query.tab === "review" ? "review" : router.query.tab === "policy" ? "policy" : router.query.tab === "items" ? "items" : "content"
   );
+  const tab: LibraryTab = allowedTabs.includes(requested) ? requested : allowedTabs[0]!;
   const [editing, setEditing] = useState<Collection | null>(null);
   // Açılan koleksiyonun kayıtlı hâli: kaydedilmemiş değişiklik ve yayın durumu değişimi buna göre anlaşılır.
   const [editingBase, setEditingBase] = useState<Collection | null>(null);
@@ -151,7 +165,7 @@ export default function LibraryPage() {
     }
   }
   return (
-    <Layout title="GINA kütüphanesi" compact={tab === "drafts"}>
+    <Layout title="GINA kütüphanesi" compact={tab === "drafts"} roles={["content", "release"]}>
       {guard.dialog}
       <p hidden={tab === "drafts"} className="mb-6 max-w-3xl text-slate-600">
         Koleksiyonları hazırlayın, soruları inceleyin ve paketlere açın. Bir
@@ -174,7 +188,7 @@ export default function LibraryPage() {
               })`
               : ""
           }`,
-        ], ["policy", "Haklar ve ödüller"], ["curriculum", "Senaryo kaynakları"]] as const).map(([value, label]) => (
+        ], ["policy", "Haklar ve ödüller"], ["curriculum", "Senaryo kaynakları"]] as const).filter(([value]) => allowedTabs.includes(value)).map(([value, label]) => (
           <button
             key={value}
             aria-current={tab === value ? "page" : undefined}
