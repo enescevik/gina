@@ -32,6 +32,8 @@ select lives_ok($$select public.save_question_with_sources('40000000-0000-4000-8
 select lives_ok($$select public.save_question_with_sources('40000000-0000-4000-8000-000000014313', pg_temp.q('true_false',
   '{"statements":[{"id":"s1","text":"Salı günü en çok sayfa okundu."}],"stimulus":{"kind":"bar_chart","alt":"Pazartesi 10, Salı 15 sayfa okunan grafik","x_label":"Gün","y_label":"Sayfa","bars":[{"label":"Pzt","value":10},{"label":"Sal","value":15}]}}',
   '{"answers":{"s1":true}}'))$$,'true/false with bar chart stimulus');
+select throws_like($$select public.save_question_with_sources(gen_random_uuid(), pg_temp.q('clock','{"mode":"set","display":"analog","step_minutes":5}','{"time":"19:30","accept_12h":false}'));
+  set constraints all immediate$$,'%question_structure_invalid%','grade 1–4 clock cannot disable 12-hour equivalence');
 select lives_ok($$set constraints all immediate$$,'deferred integrity checks pass');
 set constraints all deferred;
 insert into public.exams(id,family_id,child_id,title,subject,grade,question_ids,status) values
