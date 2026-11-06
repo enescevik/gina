@@ -21,7 +21,7 @@ import { apiKeyOrResponse, logUsage, parentOrResponse, provaEntitlement, resolve
 
 // D6/B1: v4 — istek başına enum şeması (ref/konu/kanıt) ve doğrulayıcıyla hizalı istem kuralları.
 // D9: v5 — grup sorularının ortak metni/tablosu yükte bir kez (`ortak_kaynaklar`), maddeler ref ile bağlı.
-const PROMPT_VERSION = "prova-grade/v5-shared-sources";
+const PROMPT_VERSION = "prova-grade/v6-alternatives-full";
 
 function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
