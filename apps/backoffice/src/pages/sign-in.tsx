@@ -7,6 +7,10 @@ import { useAuth } from "@/lib/auth";
 import { t } from "@/lib/i18n";
 import { isConfigured, supabase } from "@/lib/supabase";
 
+/** U01: shown after the operator opens password recovery in another tab, so they know to come back here. */
+const RECOVERY_RETURN =
+  "Şifre yenileme sayfası yeni sekmede açıldı. E-postadaki bağlantıyla yeni şifrenizi kaydettikten sonra bu sekmeye dönün ve yeni şifrenizle giriş yapın; panel sizi yetkinize uygun sayfaya götürür.";
+
 export default function SignIn() {
   const router = useRouter();
   const { session, isAdmin, roles, rolesReady } = useAuth();
@@ -15,6 +19,7 @@ export default function SignIn() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [recoveryOpened, setRecoveryOpened] = useState(false);
 
   useEffect(() => {
     if (session && isAdmin) void router.replace("/dashboard");
@@ -71,6 +76,7 @@ export default function SignIn() {
             ? <Notice tone="error">{t.common.notConfigured}</Notice>
             : null}
           {error ? <Notice tone="error">{error}</Notice> : null}
+          {recoveryOpened ? <Notice>{RECOVERY_RETURN}</Notice> : null}
           {session && !isAdmin && rolesReady && !roles.includes("support") &&
               !roles.includes("content") && !roles.includes("finance") && !roles.includes("release")
             ? <Notice>{t.signIn.notAdmin}</Notice>
@@ -110,7 +116,8 @@ export default function SignIn() {
             {busy ? t.signIn.submitting : t.signIn.submit}
           </button>
           <a
-            href="https://gina-web.pages.dev/sign-in?mode=reset"
+            href="https://gina-web.pages.dev/sign-in?mode=reset&from=admin"
+            onClick={() => { setRecoveryOpened(true); setPassword(""); setError(null); }}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-3 flex min-h-12 items-center justify-center rounded-xl font-semibold text-brand-dark underline decoration-purple-200 underline-offset-4 hover:bg-purple-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-purple-600"
