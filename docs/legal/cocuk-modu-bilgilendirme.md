@@ -53,7 +53,7 @@ Bu ekran senin için. Buradan çıkmak için annenin ya da babanın gizli şifre
 - Onay kutusu çocuğun rızası değildir; Veli Beyanı §3.5 ve §8'deki bilgilendirme sorumluluğunuzu (TMK m.339) yerine getirdiğinize ilişkin kayıttır. Kayıtta yalnızca Veli Beyanı §13'teki alanlar (beyan türü "çocuğa bilgilendirme", metin sürümü ve özeti, dil, tarih-saat, ebeveyn hesabı ile aile ve çocuk profili kimlikleri, uygulama sürümü) tutulur; çocuğun adı yazılmaz.
 - Kutu çocuk modunun ilk açılışında istenir; metin "Hakkında" bölümünden her zaman yeniden okunabilir ve önemli ölçüde değiştiğinde yeni sürümü ilk açılışta yeniden gösterilir [ÜRÜN KARARI: yeniden gösterim akışı].
 - Gina mağazalarda 18 yaşını doldurmuş ebeveynlere yönelik sunulur; çocuk modu, ebeveyn gözetiminde kullanılan sınırlı bir görünümdür. Çocuk hesap açmaz, e-posta veya telefon vermez.
-- Çocuk adına KVKK haklarını (bilgi alma, düzeltme, silme) veli/vasi olarak siz kullanırsınız: Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (henüz yok; şu an Yardım > destek talebi) veya [WEB ADRESİ]/legal/kvkk-basvuru-formu. Çocuğunuzun ilettiği düzeltme ve silme isteklerinin çoğunu uygulama içinden kendiniz yapabilirsiniz.
+- Çocuk adına KVKK haklarını (bilgi alma, düzeltme, silme) veli/vasi olarak siz kullanırsınız: Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (henüz yok; şu an Yardım > destek talebi) veya https://ginafamily.com/legal/kvkk-basvuru-formu. Çocuğunuzun ilettiği düzeltme ve silme isteklerinin çoğunu uygulama içinden kendiniz yapabilirsiniz.
 
 ### B.2 Çocuk modunda gösterilenler ve gösterilmeyenler
 
@@ -94,11 +94,11 @@ Bu ekran senin için. Buradan çıkmak için annenin ya da babanın gizli şifre
 - **İptal anında etkilidir:** sunucu her istekte cihazın iptal durumunu denetler; iptalden sonra tabletten gelen her istek reddedilir ve cihaz yeni veri alamaz. Yeniden eşleştirme için yeni kod gerekir.
 - **Kendiliğinden iptal:** çocuk profili silindiğinde veya pasife alındığında (18 yaş kuralı için KVKK Aydınlatma Metni'ne bakın), hesap silindiğinde ve cihaz [90 gün] kullanılmadığında eşleştirme kaldırılır. Veli Beyanı'nın yeni sürümü onaylanmazsa çocuk modu kapanır [ÜRÜN KARARI: yeniden onay akışı].
 - **Kayıp veya çalıntı tablet:** eşleştirmeyi hemen kaldırın. Tablette ebeveyn kimlik bilgisi bulunmaz; iptal sonrası cihazdaki önbelleğin temizlenmesi [ÜRÜN KARARI]. Yetkisiz kullanım şüphesini [E-POSTA] adresine bildirin.
-- **Verilerin akıbeti:** eşleştirme ve anonim oturum kaydı iptalle silinir; iptale ilişkin güvenlik günlüğü [12 ay] saklanır. Çocuğun koyduğu "Yaptım" işaretleri çocuk profilinin parçasıdır; profil silinene kadar kalır. Profil silme: Ayarlar > Çocuklar > [Çocuk] > Profili Sil; hesap silme: [WEB ADRESİ]/legal/hesap-ve-veri-silme.
+- **Verilerin akıbeti:** eşleştirme ve anonim oturum kaydı iptalle silinir; iptale ilişkin güvenlik günlüğü [12 ay] saklanır. Çocuğun koyduğu "Yaptım" işaretleri çocuk profilinin parçasıdır; profil silinene kadar kalır. Profil silme: Ayarlar > Çocuklar > [Çocuk] > Profili Sil; hesap silme: https://ginafamily.com/legal/hesap-ve-veri-silme.
 
 ### B.6 İlgili belgeler ve iletişim
 
-- Gizlilik Politikası: [WEB ADRESİ]/legal/gizlilik-politikasi; KVKK Aydınlatma Metni: [WEB ADRESİ]/legal/kvkk-aydinlatma-metni; Kullanım Koşulları: [WEB ADRESİ]/legal/kullanim-kosullari; Abonelik Koşulları: [WEB ADRESİ]/legal/abonelik-kosullari; Hesap ve Veri Silme: [WEB ADRESİ]/legal/hesap-ve-veri-silme; KVKK Başvuru Formu: [WEB ADRESİ]/legal/kvkk-basvuru-formu; Çerez Politikası (yalnızca web): [WEB ADRESİ]/legal/cerez-politikasi.
+- Gizlilik Politikası: https://ginafamily.com/legal/gizlilik-politikasi; KVKK Aydınlatma Metni: https://ginafamily.com/legal/kvkk-aydinlatma-metni; Kullanım Koşulları: https://ginafamily.com/legal/kullanim-kosullari; Abonelik Koşulları: https://ginafamily.com/legal/abonelik-kosullari; Hesap ve Veri Silme: https://ginafamily.com/legal/hesap-ve-veri-silme; KVKK Başvuru Formu: https://ginafamily.com/legal/kvkk-basvuru-formu; Çerez Politikası (yalnızca web): https://ginafamily.com/legal/cerez-politikasi.
 - Sorularınız için: [E-POSTA] veya uygulama içi form. Telefon kanalı yoktur.
 
 ---

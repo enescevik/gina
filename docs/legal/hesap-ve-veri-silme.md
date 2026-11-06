@@ -7,7 +7,7 @@
 | Yürürlük tarihi | [YÜRÜRLÜK TARİHİ] |
 | Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** Türkçe metin esastır; İngilizce çeviri bilgi amaçlıdır. |
 | Veri sorumlusu | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/VKN: [MERSİS/VKN] |
-| Yayın yeri | [WEB ADRESİ]/legal/hesap-ve-veri-silme; Google Play "Veri güvenliği" ve App Store Connect "Privacy Choices" bağlantısı; uygulamada Ayarlar > Hesap > Hesabı Sil |
+| Yayın yeri | https://ginafamily.com/legal/hesap-ve-veri-silme; Google Play "Veri güvenliği" ve App Store Connect "Privacy Choices" bağlantısı; uygulamada Ayarlar > Hesap > Hesabı Sil |
 | İlgili belgeler | [Gizlilik Politikası](./gizlilik-politikasi.md) · [KVKK Aydınlatma Metni](./kvkk-aydinlatma-metni.md) · [Kullanım Koşulları](./kullanim-kosullari.md) · [Abonelik Koşulları](./abonelik-kosullari-ve-on-bilgilendirme.md) · [Çerez Politikası](./cerez-politikasi.md) · [KVKK Başvuru Formu](./kvkk-basvuru-formu.md) |
 
 ## 31 Ekim 2026 uygulama denetimi (6 Kasım 2026'da yeniden doğrulandı) — yayımlamadan önce güncellenmeli
@@ -112,7 +112,7 @@ Gina Plus ve Gina Pro abonelikleri yalnızca App Store (satıcı Apple Distribut
 ## 10. İletişim ve KVKK başvurusu
 
 - E-posta: [E-POSTA] (kayıtlı adresinizden) · Posta: [ADRES] · KEP: [KEP ADRESİ – varsa]. Telefon kanalımız yoktur.
-- KVKK Başvuru Formu: [WEB ADRESİ]/legal/kvkk-basvuru-formu (uygulamada Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu).
+- KVKK Başvuru Formu: https://ginafamily.com/legal/kvkk-basvuru-formu (uygulamada Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu).
 - Başvurular en geç 30 gün içinde ücretsiz sonuçlandırılır; yanıtı yetersiz bulursanız Kişisel Verileri Koruma Kurulu'na (kvkk.gov.tr) şikâyet edebilirsiniz; süreler KVKK Başvuru Formu'ndadır.
 
 ## Değişiklik geçmişi

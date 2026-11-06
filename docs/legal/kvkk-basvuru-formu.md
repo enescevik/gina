@@ -7,7 +7,7 @@
 | Yürürlük tarihi | [YÜRÜRLÜK TARİHİ] |
 | Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** Uygulama denetimi: uygulama içi KVKK başvuru formu ve girişsiz, e-posta doğrulamalı web formu yoktur; uygulamada yalnızca genel Yardım > destek talebi vardır (`supabase/migrations/20261103030000_support_help.sql`). Uygulamada destek e-posta adresi gösterilmez. Karşılaştırma: `docs/release/c11-2026-11-06/legal-review.md`. |
 | Veri sorumlusu | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/VKN: [MERSİS/VKN] · KEP: [KEP ADRESİ – varsa] |
-| Yayın yeri | [WEB ADRESİ]/legal/kvkk-basvuru-formu (herkese açık HTML, TR/EN) · uygulama içi Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (bu ekran henüz yoktur) |
+| Yayın yeri | https://ginafamily.com/legal/kvkk-basvuru-formu (herkese açık HTML, TR/EN) · uygulama içi Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (bu ekran henüz yoktur) |
 | Dil | Türkçe metin esastır (805 sayılı Kanun); İngilizce çeviri bilgi amaçlıdır. |
 | İlgili belgeler | /legal/kvkk-aydinlatma-metni · /legal/gizlilik-politikasi · /legal/hesap-ve-veri-silme · /legal/kullanim-kosullari · /legal/abonelik-kosullari · /legal/cerez-politikasi · Veli Beyanı (uygulama içinde) |
 
@@ -23,7 +23,7 @@ Hesap veya profil silme, verileri görüntüleme ve düzeltme ve eşleştirme ip
 
 | Kanal | Nasıl | Not |
 |---|---|---|
-| Uygulama içi form | Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu | Oturumunuz kimliğinizi doğrular; çocuk modundan ve eşleştirilmiş tabletten erişilemez. Giriş yapamayanlar için web formu ([WEB ADRESİ]/legal/kvkk-basvuru-formu) kayıtlı e-postaya gönderilen doğrulama bağlantısıyla onaylanır. [ÜRÜN KARARI: web formu v1'de yoksa kaldırılır] |
+| Uygulama içi form | Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu | Oturumunuz kimliğinizi doğrular; çocuk modundan ve eşleştirilmiş tabletten erişilemez. Giriş yapamayanlar için web formu (https://ginafamily.com/legal/kvkk-basvuru-formu) kayıtlı e-postaya gönderilen doğrulama bağlantısıyla onaylanır. [ÜRÜN KARARI: web formu v1'de yoksa kaldırılır] |
 | E-posta | Hesabınızda kayıtlı adresten [E-POSTA] adresine | Tebliğ gereği yalnızca sistemimizde kayıtlı adresten gelen e-posta geçerlidir; hesabı olmayanlar Bölüm 3'teki bilgileri ekler. |
 | Posta | [VERİ SORUMLUSU UNVANI], [ADRES] adresine ıslak imzalı dilekçe | Zarfın üzerine "KVKK Başvurusu" yazın. |
 | KEP, güvenli e-imza, mobil imza | [KEP ADRESİ – varsa; yoksa satır kaldırılır] | — |
@@ -91,7 +91,7 @@ Tek kişilik ekip için takvime bağlı akış:
 
 ## 9. Kayıt tutma, değişiklik ve sürüm
 
-Başvuru, ekleri ve yanıtımız ispat amacıyla talebin kapanmasından itibaren [3 yıl] saklanır (Gizlilik Politikası Bölüm 10 ve Aydınlatma Metni Bölüm 9 ile aynı), sonra periyodik imhayla silinir. Belgeyi mevzuat veya iş akışımız değiştiğinde güncelleriz; güncel sürüm [WEB ADRESİ]/legal/kvkk-basvuru-formu adresinde ve Ayarlar > Gizlilik ve Yasal altındadır.
+Başvuru, ekleri ve yanıtımız ispat amacıyla talebin kapanmasından itibaren [3 yıl] saklanır (Gizlilik Politikası Bölüm 10 ve Aydınlatma Metni Bölüm 9 ile aynı), sonra periyodik imhayla silinir. Belgeyi mevzuat veya iş akışımız değiştiğinde güncelleriz; güncel sürüm https://ginafamily.com/legal/kvkk-basvuru-formu adresinde ve Ayarlar > Gizlilik ve Yasal altındadır.
 
 ## Değişiklik geçmişi
 

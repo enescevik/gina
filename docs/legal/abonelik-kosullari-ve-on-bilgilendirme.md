@@ -8,8 +8,8 @@
 | Yürürlük tarihi | [YÜRÜRLÜK TARİHİ] |
 | Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** 0.2'de anılan "inceleme notları" uzman onayı yerine geçmez. |
 | Dil | Türkçe metin esastır (805 sayılı Kanun); İngilizce çeviri yalnızca bilgi amaçlıdır. |
-| Gösterim yerleri | Satın alma ekranındaki bağlantı (Ek A), Ayarlar > Abonelik, Ayarlar > Gizlilik ve Yasal, [WEB ADRESİ]/legal/abonelik-kosullari, satın alma sonrası e-posta (Ek B) |
-| İlgili belgeler | Kullanım Koşulları ([WEB ADRESİ]/legal/kullanim-kosullari) · Gizlilik Politikası ([WEB ADRESİ]/legal/gizlilik-politikasi) · KVKK Aydınlatma Metni ([WEB ADRESİ]/legal/kvkk-aydinlatma-metni) · Açık Rıza Metinleri (Uygulama içinde gösterilir) · Hesap ve Veri Silme ([WEB ADRESİ]/legal/hesap-ve-veri-silme) · KVKK Başvuru Formu ([WEB ADRESİ]/legal/kvkk-basvuru-formu) · Çerez Politikası ([WEB ADRESİ]/legal/cerez-politikasi) |
+| Gösterim yerleri | Satın alma ekranındaki bağlantı (Ek A), Ayarlar > Abonelik, Ayarlar > Gizlilik ve Yasal, https://ginafamily.com/legal/abonelik-kosullari, satın alma sonrası e-posta (Ek B) |
+| İlgili belgeler | Kullanım Koşulları (https://ginafamily.com/legal/kullanim-kosullari) · Gizlilik Politikası (https://ginafamily.com/legal/gizlilik-politikasi) · KVKK Aydınlatma Metni (https://ginafamily.com/legal/kvkk-aydinlatma-metni) · Açık Rıza Metinleri (Uygulama içinde gösterilir) · Hesap ve Veri Silme (https://ginafamily.com/legal/hesap-ve-veri-silme) · KVKK Başvuru Formu (https://ginafamily.com/legal/kvkk-basvuru-formu) · Çerez Politikası (https://ginafamily.com/legal/cerez-politikasi) |
 
 <!-- Taslak notu (yayın öncesi silinecek). DECISIONS.md'ye göre kesinleşenler: paketler Gina Başlangıç (ücretsiz) / Gina Plus / Gina Pro; çocuk profili 2 / 4 / 8; ücretsiz pakette yapay zekâ yok; Plus: haftalık özet; Pro: haftalık özet + fotoğraftan takvim (ayda 20); "7 günlük ipuçları" ilk sürümde sunulmaz (DECISIONS.md, 6 Kasım 2026); tüm planlarda 7 gün ücretsiz deneme; ödeme yalnızca Apple uygulama içi satın alma ve Google Play faturalandırma, web'de satış yok; kuponlar yalnızca Apple teklif kodu / Google Play promosyon kodu; Aile Davet Kodu yalnızca aileye katılım içindir; telefon kanalı yok (yalnızca e-posta); SMS yok; fiyat artışında mağaza kuralı geçerli, ek "30 gün" taahhüdü yok; iadeler mağaza üzerinden, biz destek oluruz; yapay zekâ çıktıları Gina'da 12 ay, Anthropic'te kural olarak 30 gün (ihlal şüphesinde 2 yıla kadar; 30 gün kullandığımız modellerde zorunlu). Fiyatlar DECISIONS.md'deki öneridir (Plus 99,99 TL/ay – 999,99 TL/yıl; Pro 199,99 TL/ay – 1.999,99 TL/yıl); mağazada tanımlanan fiyatla teyit edilene kadar köşeli parantez içinde tutulur. Mağaza ürün kimlikleri: iOS gina_plus_monthly, gina_plus_yearly, gina_pro_monthly, gina_pro_yearly; Android gina_plus / gina_pro + monthly / yearly + trial7. Ürün kararı bekleyenler: paket başına eşleştirilmiş cihaz limiti; Apple Aile Paylaşımı (Family Sharing) açılıp açılmayacağı (şimdilik "sunulmaz"); abonelik bitince limit üstü profillerin salt okunur kalması; destek ilk yanıt süresi. Hukuki kimlik kararı verildi: Gina bireysel geliştirici (şahıs) olarak başlar, şirket kurulması yayının ön şartı değildir (DECISIONS.md, 30 Ekim 2026 "Hukuki kimlik"). [VERİ SORUMLUSU UNVANI] (yasal ad soyad), [ADRES], [E-POSTA] ve [MERSİS/VKN] (şahısta VKN/TCKN; MERSİS uygulanmaz) yer tutucuları Enes'in bilgileri girilene kadar korunur. -->
 
@@ -56,7 +56,7 @@ Uygulama'nın sağlayıcısı, destekten ve bu bilgilendirmeden sorumlu taraf:
 | Telefon | Telefon destek hattımız yoktur; bize e-posta ile ulaşın. |
 | MERSİS / vergi kimlik numarası | [MERSİS/VKN] |
 | KEP adresi (varsa) | [KEP ADRESİ] |
-| Web | [WEB ADRESİ] |
+| Web | https://ginafamily.com |
 
 Satın alma işlemleri yalnızca uygulama içi satın alma yoluyla yapılır (Apple uygulama içi satın alma ve Google Play faturalandırma). Bu işlemlerde kayıtlı satıcı, satın aldığınız mağazanın işletmecisidir:
 
@@ -164,7 +164,7 @@ Gina Plus ve Gina Pro, dönemsel olarak faturalandırılan belirsiz süreli abon
 
 ## 10. Hesap silme ve abonelik
 
-Hesabınızı Uygulama içinden (Ayarlar > Hesap > Hesabı Sil) veya giriş yapamıyorsanız web üzerindeki Hesap ve Veri Silme sayfasından ([WEB ADRESİ]/legal/hesap-ve-veri-silme), kayıtlı e-posta adresinizi doğrulayarak silebilirsiniz. **Hesabı silmek aboneliği iptal etmez:** faturalandırma, mağazanızdaki abonelik iptal edilene kadar Apple veya Google üzerinden devam eder. Bu nedenle silme işleminden önce aboneliğinizi mağazadan iptal etmenizi isteriz; silme ekranında etkin abonelik uyarısı ve mağazanın iptal bağlantısı gösterilir. Dilerseniz hesabı hemen silebilir ya da silmeyi geçerli abonelik döneminin sonuna planlayabilirsiniz: planlı silmede hesabınız dönem sonuna kadar açık kalır, tarih gelince kendiliğinden silinir ve o tarihe kadar planı aynı ekrandan iptal edebilirsiniz. Hemen silme seçeneği her zaman vardır. Silme işleminin kapsamı ve süreleri Gizlilik Politikası (Bölüm 11) ve Hesap ve Veri Silme sayfasında açıklanmıştır.
+Hesabınızı Uygulama içinden (Ayarlar > Hesap > Hesabı Sil) veya giriş yapamıyorsanız web üzerindeki Hesap ve Veri Silme sayfasından (https://ginafamily.com/legal/hesap-ve-veri-silme), kayıtlı e-posta adresinizi doğrulayarak silebilirsiniz. **Hesabı silmek aboneliği iptal etmez:** faturalandırma, mağazanızdaki abonelik iptal edilene kadar Apple veya Google üzerinden devam eder. Bu nedenle silme işleminden önce aboneliğinizi mağazadan iptal etmenizi isteriz; silme ekranında etkin abonelik uyarısı ve mağazanın iptal bağlantısı gösterilir. Dilerseniz hesabı hemen silebilir ya da silmeyi geçerli abonelik döneminin sonuna planlayabilirsiniz: planlı silmede hesabınız dönem sonuna kadar açık kalır, tarih gelince kendiliğinden silinir ve o tarihe kadar planı aynı ekrandan iptal edebilirsiniz. Hemen silme seçeneği her zaman vardır. Silme işleminin kapsamı ve süreleri Gizlilik Politikası (Bölüm 11) ve Hesap ve Veri Silme sayfasında açıklanmıştır.
 
 ## 11. Teknik gereksinimler ve uyumluluk
 
@@ -178,7 +178,7 @@ Uygulama; iOS [ASGARİ iOS SÜRÜMÜ] ve üzeri iPhone/iPad'lerde, Android [ASGA
 
 ## 13. Kişisel verileriniz
 
-Satın alma ve abonelik durumunuza ilişkin veriler (mağaza işlem ve abonelik kimlikleri, paket, başlangıç/yenileme tarihleri, kupon kullanımı, teyit kaydı) sözleşmenin ifası (KVKK m.5/2-c) ve vergi/ticari mevzuattan doğan yükümlülüklerimiz (m.5/2-ç) kapsamında işlenir; Apple ve Google ile yalnızca satın almanın doğrulanması için paylaşılır. Kart ve ödeme bilgileriniz mağazada kalır, bize ulaşmaz. Satın alma ve abonelik doğrulama kayıtları [10 yıl], teyit ile rıza/beyan kayıtları [3 yıl] (takma kimlikle), güvenlik günlükleri [12 ay] saklanır. Yapay zekâ özellikleri için veriler yalnızca her işlemdeki ayrı onayınızla, özelliğe göre en aza indirilerek Anthropic PBC'ye (ABD) gönderilir (Gizlilik Politikası Bölüm 5); işleme dayanağı seçtiğiniz paketin ifası (m.5/2-c), yurt dışına aktarım için ise ayrı izniniz/açık rızanızdır (varsayılan kapalı, her zaman geri alınabilir). Üretilen özetler Gina'da 12 ay saklanır; Anthropic'te girdi ve çıktılar kural olarak 30 gün tutulur (politika ihlali şüphesiyle işaretlenen içerik 2 yıla kadar). Ayrıntılar, haklarınız (KVKK m.11) ve başvuru yolu için KVKK Aydınlatma Metni ([WEB ADRESİ]/legal/kvkk-aydinlatma-metni), Gizlilik Politikası ([WEB ADRESİ]/legal/gizlilik-politikasi) ve KVKK Başvuru Formu'na ([WEB ADRESİ]/legal/kvkk-basvuru-formu) bakın.
+Satın alma ve abonelik durumunuza ilişkin veriler (mağaza işlem ve abonelik kimlikleri, paket, başlangıç/yenileme tarihleri, kupon kullanımı, teyit kaydı) sözleşmenin ifası (KVKK m.5/2-c) ve vergi/ticari mevzuattan doğan yükümlülüklerimiz (m.5/2-ç) kapsamında işlenir; Apple ve Google ile yalnızca satın almanın doğrulanması için paylaşılır. Kart ve ödeme bilgileriniz mağazada kalır, bize ulaşmaz. Satın alma ve abonelik doğrulama kayıtları [10 yıl], teyit ile rıza/beyan kayıtları [3 yıl] (takma kimlikle), güvenlik günlükleri [12 ay] saklanır. Yapay zekâ özellikleri için veriler yalnızca her işlemdeki ayrı onayınızla, özelliğe göre en aza indirilerek Anthropic PBC'ye (ABD) gönderilir (Gizlilik Politikası Bölüm 5); işleme dayanağı seçtiğiniz paketin ifası (m.5/2-c), yurt dışına aktarım için ise ayrı izniniz/açık rızanızdır (varsayılan kapalı, her zaman geri alınabilir). Üretilen özetler Gina'da 12 ay saklanır; Anthropic'te girdi ve çıktılar kural olarak 30 gün tutulur (politika ihlali şüphesiyle işaretlenen içerik 2 yıla kadar). Ayrıntılar, haklarınız (KVKK m.11) ve başvuru yolu için KVKK Aydınlatma Metni (https://ginafamily.com/legal/kvkk-aydinlatma-metni), Gizlilik Politikası (https://ginafamily.com/legal/gizlilik-politikasi) ve KVKK Başvuru Formu'na (https://ginafamily.com/legal/kvkk-basvuru-formu) bakın.
 
 ## 14. Şikâyet ve uyuşmazlık çözümü
 
@@ -192,7 +192,7 @@ Bu belgeyi mevzuat, mağaza kuralları veya paketlerimiz değiştiğinde güncel
 - **Paket içeriği:** Mevcut abonelerin ödenmiş dönem içindeki hakları aleyhe değiştirilmez. Bir paketin içeriğini daraltan değişiklikler en az 30 gün önce e-posta ve uygulama içi bildirimle duyurulur ve sonraki yenilemeden itibaren uygulanır; kabul etmiyorsanız aboneliğinizi dönem sonundan önce iptal edebilirsiniz. Bir özelliğin güvenlik, hukuki zorunluluk veya sağlayıcı kesintisi gibi nedenlerle geçici olarak durdurulması paket değişikliği sayılmaz; durum Uygulama'da duyurulur (bkz. Kullanım Koşulları 9.4).
 - **Belge metni:** Bu belgenin diğer değişiklikleri yürürlüğe girmeden en az [15 gün] önce duyurulur (Aydınlatma Metni, Gizlilik Politikası ve Kullanım Koşulları ile aynı süre). Yazım ve bağlantı düzeltmeleri bildirim gerektirmez.
 
-Belgenin güncel sürümü [WEB ADRESİ]/legal/abonelik-kosullari adresinde ve Uygulama'da yayımlanır; sürüm geçmişi belgenin sonundadır.
+Belgenin güncel sürümü https://ginafamily.com/legal/abonelik-kosullari adresinde ve Uygulama'da yayımlanır; sürüm geçmişi belgenin sonundadır.
 
 ## Ek A – Satın alma ekranı kısa metni (şablon)
 
@@ -212,7 +212,7 @@ Belgenin güncel sürümü [WEB ADRESİ]/legal/abonelik-kosullari adresinde ve U
 >
 > Abonelik Koşulları · Gizlilik Politikası · Kullanım Koşulları
 
-Bağlantılar sırasıyla [WEB ADRESİ]/legal/abonelik-kosullari, [WEB ADRESİ]/legal/gizlilik-politikasi ve [WEB ADRESİ]/legal/kullanim-kosullari adreslerine gider.
+Bağlantılar sırasıyla https://ginafamily.com/legal/abonelik-kosullari, https://ginafamily.com/legal/gizlilik-politikasi ve https://ginafamily.com/legal/kullanim-kosullari adreslerine gider.
 
 ## Ek B – Satın alma sonrası e-posta (kalıcı veri saklayıcısı) şablonu
 
