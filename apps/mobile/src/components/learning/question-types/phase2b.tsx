@@ -277,14 +277,15 @@ export function ClockQuestion({ payload, answer, onChange, disabled }: {
   payload: Phase2bPayload<"clock">; answer: Phase2bAnswerOf<"clock"> | undefined; onChange: (a: Phase2bAnswerOf<"clock">) => void; disabled: boolean;
 }) {
   const { t } = useTranslation();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const time = answer?.time;
   const step = payload.step_minutes;
   const mStep = minuteStep(step);
   const set = (delta: { hours?: number; minutes?: number }) => onChange({ type: "clock", v: 1, time: stepClock(time, delta, step) });
   const hh = time ? time.slice(0, 2) : "--", mm = time ? time.slice(3) : "--";
   const read = payload.mode === "read";
-  const face = Math.min(260, width - 96);
+  // Kısa yatay ekranda düğmeler görünür kalsın diye yüz yüksekliğe göre de küçülür.
+  const face = Math.max(140, Math.min(260, width - 96, height * 0.42));
   return (
     <View style={{ gap: 14 }}>
       <Help>{t(read ? "prova.qt.child.clock.helpRead" : "prova.qt.child.clock.helpSet")}{" "}{mStep ? t("prova.qt.child.clock.step", { count: step }) : t("prova.qt.child.clock.stepHour")}</Help>
