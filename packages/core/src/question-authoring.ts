@@ -7,7 +7,10 @@
  * Doğrulama `questionContentErrors` (SQL ile aynı kodlar) + yalnız öneri niteliğinde rehberlik.
  */
 import { AI_INTERACTION_TYPES } from "./prova-generation-journal";
+import { AUTHOR_PRACTICE_ONLY_TYPES } from "./question-authoring-p2";
 import {
+  PHASE2A_INTERACTION_TYPES,
+  PHASE2B_INTERACTION_TYPES,
   PRACTICE_ONLY_TYPES,
   questionContentErrors,
   type StructuredInteractionType,
@@ -405,9 +408,10 @@ export function structuredSaveErrorCodes(error: unknown): string[] {
 }
 
 /** OYSS/ortak yazılı (meb_common) sınavında kullanılamayan türler. */
-export function blockedForTrack(track: string | null | undefined, types: (string | null | undefined)[]): StructuredInteractionType[] {
+export function blockedForTrack(track: string | null | undefined, types: (string | null | undefined)[]): string[] {
   if (track !== "meb_common") return [];
-  return [...new Set(types.filter((t): t is StructuredInteractionType => !!t && PRACTICE_ONLY_TYPES.has(t as StructuredInteractionType)))];
+  // 1A/1B alıştırma türleri + bütün 2A/2B türleri (SQL interaction_types.practice_only).
+  return [...new Set(types.filter((t): t is string => !!t && AUTHOR_PRACTICE_ONLY_TYPES.has(t)))];
 }
 
 /**
@@ -442,12 +446,16 @@ export function unsupportedTypesForChild(devices: DeviceTypeSupport[], used: str
 // (sunucu `parseInteractionTypes` aynı kuralı uygular: `interaction_type_not_allowed_for_track`).
 export type AiInteractionType = (typeof AI_INTERACTION_TYPES)[number];
 export const AI_WRITTEN_TRACK_TYPES: readonly AiInteractionType[] = ["open_ended", "numeric"];
-export function aiTypesAllowed(writtenTrack: boolean): readonly AiInteractionType[] {
-  return writtenTrack ? AI_WRITTEN_TRACK_TYPES : AI_INTERACTION_TYPES;
+/** Faz anahtarları kapalıyken (varsayılan) yalnız 1A/1B + eski türler; 2A/2B ayrı anahtarlarla görünür. */
+export function aiTypesAllowed(writtenTrack: boolean, phases: { phase2a?: boolean; phase2b?: boolean } = {}): readonly AiInteractionType[] {
+  if (writtenTrack) return AI_WRITTEN_TRACK_TYPES;
+  return AI_INTERACTION_TYPES.filter((t) =>
+    (PHASE2A_INTERACTION_TYPES as readonly string[]).includes(t) ? !!phases.phase2a
+      : (PHASE2B_INTERACTION_TYPES as readonly string[]).includes(t) ? !!phases.phase2b : true);
 }
 /** Seçimi isteğe çevirir: boş seçim → undefined (alan hiç gönderilmez, eski davranış). Sıra sabit (kanonik). */
-export function aiInteractionTypesFor(selected: readonly string[], writtenTrack: boolean): AiInteractionType[] | undefined {
-  const allowed = aiTypesAllowed(writtenTrack);
+export function aiInteractionTypesFor(selected: readonly string[], writtenTrack: boolean, phases: { phase2a?: boolean; phase2b?: boolean } = {}): AiInteractionType[] | undefined {
+  const allowed = aiTypesAllowed(writtenTrack, phases);
   const out = allowed.filter((t) => selected.includes(t));
   return out.length ? [...out] : undefined;
 }

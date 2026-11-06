@@ -2,7 +2,7 @@ import { SetupSourceLinks } from "@/components/setup/source-links";
 import { type ReactNode } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Check, Pencil } from "lucide-react-native";
-import { contentReviewNames, questionContentReviewOf } from "@gina/core";
+import { contentReviewNames, isPhase2AuthorType, questionContentReviewOf } from "@gina/core";
 import { useTranslation } from "react-i18next";
 import { p } from "@/components/planner/ui";
 import { Pressable } from "@/components/ui/pressable";
@@ -11,6 +11,7 @@ import type { BuilderQuestion } from "./prova-builder-data";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { StructuredQuestionPreview } from "./structured-question-author";
+import { Phase2QuestionPreview, StimulusPreview } from "./structured-question-author-p2";
 
 /**
  * QT: yapılandırılmış sorunun önizlemesi. Görünüm satırı (standalone_question_bank) yeni sütunları
@@ -41,7 +42,15 @@ function StructuredBuilderPreview({ q, showAnswer }: { q: BuilderQuestion; showA
   const type = row.interaction_type ?? content.data?.interaction_type ?? null;
   const payload = row.payload ?? content.data?.payload ?? null;
   if (!payload) return null;
-  return <StructuredQuestionPreview type={type} payload={payload} answerKey={showAnswer ? row.answer_key ?? key.data ?? undefined : undefined} testID="builder-qt-preview" />;
+  const answerKey = showAnswer ? row.answer_key ?? key.data ?? undefined : undefined;
+  return (
+    <View testID="builder-qt-preview" style={{ gap: 12 }}>
+      <StimulusPreview stimulus={(payload as { stimulus?: unknown }).stimulus} />
+      {isPhase2AuthorType(type)
+        ? <Phase2QuestionPreview type={type} payload={payload} answerKey={answerKey} />
+        : <StructuredQuestionPreview type={type} payload={payload} answerKey={answerKey} testID="builder-qt-preview-body" />}
+    </View>
+  );
 }
 export function BuilderChoice(
   { label, selected, onPress, disabled = false }: {

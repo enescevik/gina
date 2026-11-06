@@ -20,3 +20,10 @@ export const CHILD_SUPPORTED_TYPES: readonly string[] = [
   ...(PHASE2A_CHILD_ENABLED ? PHASE2A_INTERACTION_TYPES : []),
   ...(PHASE2B_CHILD_ENABLED ? PHASE2B_INTERACTION_TYPES : []),
 ];
+
+/**
+ * Veli hazırlama / AI tür seçimi / PDF için faz anahtarları: çocuk anahtarlarıyla AYNI değer (faz başına tek
+ * anahtar; yayında `false` → `true` yalnız PHASE2A_CHILD_ENABLED / PHASE2B_CHILD_ENABLED satırında yapılır).
+ */
+export const PHASE2A_AUTHOR_ENABLED: boolean = PHASE2A_CHILD_ENABLED;
+export const PHASE2B_AUTHOR_ENABLED: boolean = PHASE2B_CHILD_ENABLED;

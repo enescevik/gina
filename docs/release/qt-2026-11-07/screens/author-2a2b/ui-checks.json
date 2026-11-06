@@ -1,0 +1,126 @@
+{
+  "environment": "disposable-local-gotrue-postgrest (own clone of gina_completion_audit)",
+  "database_pattern": "gina_qt2_<hex>_audit",
+  "viewports": {
+    "phone": {
+      "width": 390,
+      "height": 844
+    },
+    "narrow": {
+      "width": 360,
+      "height": 740
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024
+    },
+    "desktop": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "passed": true,
+  "results": [
+    {
+      "check": "release_build_with_switches_off_shows_nothing_new",
+      "passed": true
+    },
+    {
+      "check": "author_each_2a2b_type_and_stimulus_through_ui",
+      "passed": true,
+      "types": [
+        "mark_text",
+        "error_fix",
+        "multi_choice",
+        "two_stage",
+        "region_grid",
+        "region_sectors",
+        "region_image",
+        "clock",
+        "stimulus"
+      ]
+    },
+    {
+      "check": "inline_and_server_codes_match_for_2b",
+      "passed": true,
+      "server": "key_not_on_step"
+    },
+    {
+      "check": "meb_common_blocks_2a2b_and_free_track_assigns",
+      "passed": true,
+      "server": "interaction_type_not_allowed_for_track",
+      "bound": 9
+    },
+    {
+      "check": "ai_picker_lists_2a2b_behind_switch",
+      "passed": true
+    },
+    {
+      "check": "booklet_2a2b_student_and_key_pdf",
+      "passed": true,
+      "booklet-student": {
+        "pages": 4
+      },
+      "booklet-answer-key": {
+        "pages": 1
+      }
+    },
+    {
+      "check": "screens_at_390_360_768_1280",
+      "passed": true,
+      "count": 39
+    },
+    {
+      "check": "no_runtime_errors_overflow_raw_ids_or_keys",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    "switch-off-type-picker-phone-390x844.png",
+    "type-picker-phone-390x844.png",
+    "mark-text-editor-phone-390x844.png",
+    "mark-text-preview-key-phone-390x844.png",
+    "error-fix-editor-phone-390x844.png",
+    "error-fix-preview-key-phone-390x844.png",
+    "multi-choice-editor-phone-390x844.png",
+    "multi-choice-preview-key-phone-390x844.png",
+    "two-stage-editor-phone-390x844.png",
+    "two-stage-preview-key-phone-390x844.png",
+    "region-grid-editor-phone-390x844.png",
+    "region-grid-preview-key-phone-390x844.png",
+    "region-image-editor-phone-390x844.png",
+    "region-image-preview-key-phone-390x844.png",
+    "clock-editor-phone-390x844.png",
+    "clock-preview-key-phone-390x844.png",
+    "stimulus-alt-required-phone-390x844.png",
+    "stimulus-chart-editor-phone-390x844.png",
+    "stimulus-chart-preview-key-phone-390x844.png",
+    "validation-clock-step-phone-390x844.png",
+    "builder-meb-common-blocked-phone-390x844.png",
+    "builder-preview-key-phone-390x844.png",
+    "ai-types-2a2b-phone-390x844.png",
+    "booklet-paper-note-phone-390x844.png",
+    "type-picker-narrow-360x740.png",
+    "mark-text-editor-narrow-360x740.png",
+    "region-grid-stimulus-editor-narrow-360x740.png",
+    "clock-editor-narrow-360x740.png",
+    "booklet-paper-note-narrow-360x740.png",
+    "type-picker-tablet-768x1024.png",
+    "mark-text-editor-tablet-768x1024.png",
+    "region-grid-stimulus-editor-tablet-768x1024.png",
+    "clock-editor-tablet-768x1024.png",
+    "booklet-paper-note-tablet-768x1024.png",
+    "type-picker-desktop-1280x800.png",
+    "mark-text-editor-desktop-1280x800.png",
+    "region-grid-stimulus-editor-desktop-1280x800.png",
+    "clock-editor-desktop-1280x800.png",
+    "booklet-paper-note-desktop-1280x800.png"
+  ],
+  "cleanup": {
+    "db_rest": "removed",
+    "db_auth": "removed",
+    "database": "dropped",
+    "containers_left": "none",
+    "database_left": "0"
+  }
+}

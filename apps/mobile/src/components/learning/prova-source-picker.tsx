@@ -1,10 +1,11 @@
 import { NumberChoice } from "@/components/ui/number-choice";
 import { SourceFilesPicker } from "@/components/learning/source-files-picker";
 import { provaGenerationJournal } from "@/lib/setup-command";
-import { AI_INTERACTION_TYPES, aiInteractionTypesFor, aiTypesAllowed, canonicalSubject, catalogBlueprintFits, isStructuredType, provaAiUnits, provaGenerationKind, provaRemainingCount,
+import { aiInteractionTypesFor, aiTypesAllowed, canonicalSubject, catalogBlueprintFits, provaAiUnits, provaGenerationKind, provaRemainingCount,
   structuredFitsKind,
 } from "@gina/core";
 import i18next from "@/lib/i18n";
+import { PHASE2A_AUTHOR_ENABLED, PHASE2B_AUTHOR_ENABLED } from "./question-types/support";
 import { structuredTypeLabel } from "./structured-question-author";
 import { useMemo, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -46,6 +47,8 @@ import {
 import { type BuilderQuestion, loadAiEdits } from "./prova-builder-data";
 import { aiEditRoute } from "@/lib/prova-draft";
 
+/** 2A/2B AI tür seçenekleri yalnız faz anahtarı açıkken görünür. */
+const AI_PHASES = { phase2a: PHASE2A_AUTHOR_ENABLED, phase2b: PHASE2B_AUTHOR_ENABLED };
 /** QT-AI: tür/model hataları kendi sakin metinleriyle (prova.qt.author.aiErr.*); diğerleri eski yolla. */
 function provaErrorMessage(error: unknown): string | null {
   const code = error instanceof ProvaAiError ? error.code
@@ -99,7 +102,7 @@ export function ProvaSourcePicker(
   // QT-AI: isteğe bağlı tür seçimi; boşsa istek eski gövdeyle birebir aynı gider.
   const [aiTypes, setAiTypes] = useState<string[]>([]);
   const writtenTrack = draft.purpose === "written" || draft.context?.track === "meb_common";
-  const requestedTypes = aiInteractionTypesFor(aiTypes, writtenTrack);
+  const requestedTypes = aiInteractionTypesFor(aiTypes, writtenTrack, AI_PHASES);
   const [preview, setPreview] = useState<BuilderQuestion | null>(null),
     [aiRows, setAiRows] = useState<BuilderQuestion[]>([]);
   const journal = useMemo(
@@ -1032,12 +1035,12 @@ export function ProvaSourcePicker(
                           <Text style={b.bold}>{t("prova.qt.author.ai.typesTitle")}</Text>
                           <Text style={b.muted}>{t("prova.qt.author.ai.typesHelp")}</Text>
                           <View style={b.wrap}>
-                            {AI_INTERACTION_TYPES.map((type) => {
-                              const allowed = aiTypesAllowed(writtenTrack).includes(type);
+                            {aiTypesAllowed(false, AI_PHASES).map((type) => {
+                              const allowed = aiTypesAllowed(writtenTrack, AI_PHASES).includes(type);
                               return (
                                 <BuilderChoice
                                   key={type}
-                                  label={isStructuredType(type) ? structuredTypeLabel(t, type) : t(`provaBuilder.${type}`)}
+                                  label={type === "multiple_choice" || type === "open_ended" ? t(`provaBuilder.${type}`) : structuredTypeLabel(t, type)}
                                   selected={allowed && aiTypes.includes(type)}
                                   disabled={busy || !!generationRecord || !allowed}
                                   onPress={() => setAiTypes((v) => v.includes(type) ? v.filter((x) => x !== type) : [...v, type])}
@@ -1048,7 +1051,7 @@ export function ProvaSourcePicker(
                           {writtenTrack
                             ? <Text testID="qt-ai-types-written" style={b.muted}>{t("prova.qt.author.ai.typesWritten")}</Text>
                             : null}
-                          {requestedTypes?.some((x) => isStructuredType(x) && !structuredFitsKind(provaGenerationKind(draft), x))
+                          {requestedTypes?.some((x) => x !== "multiple_choice" && x !== "open_ended" && !structuredFitsKind(provaGenerationKind(draft), x))
                             ? <Text style={b.muted}>{t("prova.qt.author.ai.typesKindHint")}</Text>
                             : null}
                         </View>
