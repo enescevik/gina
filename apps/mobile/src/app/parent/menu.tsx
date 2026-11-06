@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { Text, View, useWindowDimensions } from "react-native";
 import { Pressable } from "@/components/ui/pressable";
 
-import { CircleHelp, Users, Tablet, ShieldCheck, UserRound, Settings2, Pencil, Bell, Share2, Crown, NotebookPen, GraduationCap, TriangleAlert } from "lucide-react-native";
+import { CircleHelp, Users, Tablet, ShieldCheck, UserRound, Settings2, Pencil, Bell, Share2, Crown, NotebookPen, GraduationCap, TriangleAlert, BookOpen, Inbox } from "lucide-react-native";
 import type { DeletionPreview } from "@gina/core";
 import { Avatar } from "@/components/avatar";
 import { ConfirmAction } from "@/components/ui/confirm-action";
@@ -96,7 +96,9 @@ export default function ParentMenuScreen() {
   const params = useLocalSearchParams<{section?:string;setup?:string}>();
   const {width,fontScale}=useWindowDimensions();
   const wide=width>=850&&fontScale<1.4;
-  const [section,setSection] = useState(["family","devices","security","account"].includes(params.section ?? "") ? params.section! : "family");
+  // U03 groups: account / family / devices / learning / help. Older links keep working ("security" now lives under devices).
+  const requested = params.section === "security" ? "devices" : params.section ?? "";
+  const [section,setSection] = useState(["family","devices","learning","account","help"].includes(requested) ? requested : "family");
   const [setup, setSetup] = useState<SetupChild | "new" | null>(params.setup === "new" ? "new" : null);
   const [savedChild, setSavedChild] = useState<"new" | "edit" | null>(null);
   const [pairCode, setPairCode] = useState("");
@@ -159,9 +161,9 @@ export default function ParentMenuScreen() {
 
   return (
     <Screen title={t("unified.settingsTitle")} subtitle={family.data?.name ? `${family.data.name} · ${t("unified.settingsBody")}` : t("unified.settingsBody")} loading={family.isLoading || children.isLoading || devices.isLoading} error={family.error ?? children.error ?? devices.error} onRetry={() => { void family.refetch(); void children.refetch(); void devices.refetch(); }}>
-      <View style={{flexDirection:"row",flexWrap:"wrap",gap:8}}>{([
-        ["family","familyTab",Users],["devices","devicesTab",Tablet],["security","securityTab",ShieldCheck],["account","accountTab",UserRound],
-      ] as const).map(([key,label,Icon])=><Pressable key={key} accessibilityRole="tab" accessibilityState={{selected:section===key}} onPress={()=>setSection(key)} style={{flexBasis:wide?"22%":"46%",flexGrow:1,minHeight:60,padding:12,borderRadius:19,borderWidth:1,borderColor:section===key?"#78C7AE":"#E5DEED",backgroundColor:section===key?"#DDF5EB":"#FFF",flexDirection:"row",alignItems:"center",gap:10}}><Icon size={22} color="#6042DE"/><Text style={[parentStyles.copy,{fontFamily:"Nunito_800ExtraBold",flex:1}]}>{t(`unified.${label}`)}</Text></Pressable>)}</View>
+      <View accessibilityRole="tablist" style={{flexDirection:"row",flexWrap:"wrap",gap:8}}>{([
+        ["family","menuFamily",Users],["devices","menuDevices",Tablet],["learning","menuLearning",BookOpen],["account","menuAccount",UserRound],["help","menuHelp",CircleHelp],
+      ] as const).map(([key,label,Icon])=><Pressable key={key} accessibilityRole="tab" accessibilityState={{selected:section===key}} aria-selected={section===key} onPress={()=>setSection(key)} style={{flexBasis:wide?"18%":"30%",flexGrow:1,minHeight:56,paddingHorizontal:10,paddingVertical:10,borderRadius:19,borderWidth:1,borderColor:section===key?"#78C7AE":"#E5DEED",backgroundColor:section===key?"#DDF5EB":"#FFF",flexDirection:"row",alignItems:"center",gap:8}}><Icon size={20} color="#6042DE" style={{flexShrink:0}}/><Text style={[parentStyles.copy,{fontFamily:"Nunito_800ExtraBold",flex:1}]}>{t(`parentToday.${label}`)}</Text></Pressable>)}</View>
       {section === "family" ? <>
       <NavigationCard title={t("parent.addChild")} body={t("betaUx.addChildBody")} icon={<Users size={24} color="#6042DE"/>} onPress={() => { setSavedChild(null); setSetup("new"); }}/>
       {setup && <ChildSetup child={setup === "new" ? undefined : setup} onClose={() => setSetup(null)} onSaved={() => { setSavedChild(setup === "new" ? "new" : "edit"); setSetup(null); }}/>}
@@ -181,8 +183,6 @@ export default function ParentMenuScreen() {
 
       <NavigationCard title={t("childArchive.title")} body={t("childArchive.archiveMenuBody")} onPress={()=>router.push("/parent/profile-archive")}/>
       <FormSection title={t("unified.inviteTitle")}><Text style={parentStyles.muted}>{t("unified.inviteHelp")}</Text><Text selectable accessibilityLabel={t("parent.inviteCode")} style={{fontFamily:"Nunito_800ExtraBold",fontSize:26,letterSpacing:3,color:"#201951"}}>{family.data?.invite_code ?? "…"}</Text><NavigationCard title={t("experience.family.title")} body={t("experience.family.short")} onPress={()=>router.push("/parent/families")}/></FormSection>
-      <NavigationCard title={t("parent.grades")} body={t("unified.gradesHelp")} icon={<GraduationCap size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/grades")}/>
-      <NavigationCard title={t("parent.notes")} body={t("unified.notesHelp")} icon={<NotebookPen size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/notes")}/>
       <DangerZone>
         {deletedName ? <Text accessibilityLiveRegion="polite" style={[parentStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{t("deletionPreview.done", { name: deletedName })}</Text> : null}
         {children.data?.map((child) => <Button key={child.id} variant="danger" title={t("deletionPreview.open", { name: child.name })} onPress={() => { setDeletedName(null); setDeleting({ childId: child.id, name: child.name }); }} />)}
@@ -192,6 +192,9 @@ export default function ParentMenuScreen() {
         onDone={(preview) => { setDeleting(null); setDeletedName(preview.kind === "child" ? preview.child.name : deleting.name); void queryClient.invalidateQueries(); }} /> : null}
       </> : null}
       {section === "devices" ? <>
+      <Text style={parentStyles.copy}>{t("parentToday.menuDevicesBody")}</Text>
+      {/* Child mode's "set a parent PIN first" link still opens ?section=security: show the PIN first then. */}
+      {params.section === "security" ? <ParentPinRow/> : null}
       <InfoCard title={t("parent.pairDevice")} body={t("unified.pairIntro")} steps={[t("unified.pairStep1"),t("unified.pairStep2"),t("unified.pairStep3")]} />
       <View style={parentStyles.card}>
         <Field label={t("unified.pairCode")} keyboardType="number-pad" maxLength={6} value={pairCode} onChangeText={value=>{setPairCode(value.replace(/\D/g,""));pairDevice.reset();}} />
@@ -204,14 +207,25 @@ export default function ParentMenuScreen() {
         {devices.data?.map(device=><View key={device.id} style={{gap:10,borderTopWidth:1,borderColor:"#EEE8EF",paddingTop:14}}><NavigationCard title={device.name} body={t("experience.device.manage")} onPress={()=>router.push({pathname:"/parent/device-access",params:{deviceId:device.id}})}/><ConfirmAction title={t("parent.removeDevice")} message={t("unified.deviceRemoveHelp")} busy={revokeDevice.isPending} onConfirm={()=>revokeDevice.mutate(device.id)}/></View>)}
         {revokeDevice.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.muted}>{t("unified.deviceRemoved")}</Text> : null}
       </View>
-      <InfoCard title={t("unified.samePhone")} body={t("unified.samePhoneBody")}><Button variant="secondary" title={t("unified.childModeAction")} onPress={()=>router.push("/parent/child-mode")}/></InfoCard>
+      {/* Q00-A1-16: the same-phone child mode card lives in one place, next to the parent PIN that exits it. */}
+      <View style={parentStyles.card}><View style={{flexDirection:"row",alignItems:"center",gap:10}}><ShieldCheck size={22} color="#6042DE"/><Text style={[parentStyles.title,{flex:1}]}>{t("unified.samePhone")}</Text></View>
+        <Text style={parentStyles.copy}>{t("unified.samePhoneBody")}</Text><Button variant="secondary" title={t("unified.childModeAction")} onPress={()=>router.push("/parent/child-mode")}/></View>
+      {params.section !== "security" ? <ParentPinRow/> : null}
       </> : null}
-      {section === "security" ? <><ParentPinRow/><InfoCard title={t("unified.samePhone")} body={t("unified.samePhoneBody")}><Button title={t("unified.childModeAction")} onPress={()=>router.push("/parent/child-mode")}/></InfoCard></> : null}
-      {section === "account" ? <>
-      <Text style={parentStyles.copy}>{t("unified.accountHelp")}</Text>
-      <NavigationCard title={t("help.title")} body={t("help.subtitle")} icon={<CircleHelp size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/help")}/>
-      <NavigationCard title={t("push.menu")} body={t("accountV5.notificationsBody")} icon={<Bell size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/notifications")}/>
+      {section === "learning" ? <>
+      <Text style={parentStyles.copy}>{t("parentToday.menuLearningBody")}</Text>
+      <NavigationCard title={t("parent.grades")} body={t("unified.gradesHelp")} icon={<GraduationCap size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/grades")}/>
+      <NavigationCard title={t("parent.notes")} body={t("unified.notesHelp")} icon={<NotebookPen size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/notes")}/>
       <NavigationCard title={t("share.title")} body={t("unified.shareHelp")} icon={<Share2 size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/share")}/>
+      </> : null}
+      {section === "help" ? <>
+      <Text style={parentStyles.copy}>{t("parentToday.menuHelpBody")}</Text>
+      <NavigationCard title={t("help.title")} body={t("help.subtitle")} icon={<CircleHelp size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/help")}/>
+      </> : null}
+      {section === "account" ? <>
+      <Text style={parentStyles.copy}>{t("parentToday.menuAccountBody")}</Text>
+      <NavigationCard title={t("inbox.title")} body={t("inbox.subtitle")} icon={<Inbox size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/inbox")}/>
+      <NavigationCard title={t("inbox.preferences")} body={t("accountV5.notificationsBody")} icon={<Bell size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/notifications")}/>
       <NavigationCard title={t("parent.subscription")} icon={<Crown size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/subscription")}/>
       <DangerZone><AccountDeletion /></DangerZone>
       <Button variant="ghost" title={t("auth.signOut")} loading={signOut.isPending} onPress={() => signOut.mutate()} />

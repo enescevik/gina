@@ -61,7 +61,7 @@ export default function NotificationsScreen() {
   const settings = useMutation({ mutationFn: () => Linking.openSettings() });
 
   return (
-    <Screen title={t("push.title")} subtitle={t("unified.notificationsHelp")} loading={prefs.isLoading || permission.isLoading} error={prefs.error ?? permission.error} onRetry={() => { void prefs.refetch(); void permission.refetch(); }}>
+    <Screen title={t("inbox.preferences")} subtitle={t("unified.notificationsHelp")} loading={prefs.isLoading || permission.isLoading} error={prefs.error ?? permission.error} onRetry={() => { void prefs.refetch(); void permission.refetch(); }}>
       <Button variant="secondary" title={t("inbox.title")} onPress={()=>router.push("/parent/inbox")} />
       {Platform.OS === "web" || permission.data === "unsupported" ? (
         <Text className="font-body text-sm text-gray-600">{t("push.webNote")}</Text>

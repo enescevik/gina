@@ -1,0 +1,85 @@
+{
+  "environment": "disposable-local-real-auth-rest (test-isolated-services.py --ui-hold); inbox unread count stubbed; failures injected by Playwright route",
+  "viewports": [
+    "390x844",
+    "768x1024",
+    "1280x800"
+  ],
+  "today": "2026-11-06",
+  "results": [
+    {
+      "check": "approvals_then_next_up_returned_task_first",
+      "passed": true,
+      "detail": {
+        "approvals": 3,
+        "hero_height": 92
+      }
+    },
+    {
+      "check": "link_repetition_reduced",
+      "passed": true
+    },
+    {
+      "check": "selected_day_separate_from_today_counts",
+      "passed": true
+    },
+    {
+      "check": "child_filter_scopes_today",
+      "passed": true
+    },
+    {
+      "check": "home_phone_tablet_desktop_no_overflow",
+      "passed": true
+    },
+    {
+      "check": "one_failing_query_closes_only_its_card_and_retries",
+      "passed": true
+    },
+    {
+      "check": "calendar_failure_isolated_to_plan_card",
+      "passed": true
+    },
+    {
+      "check": "offline_banner_keeps_cached_today_and_clears_on_reconnect",
+      "passed": true
+    },
+    {
+      "check": "bell_opens_inbox_preferences_from_inbox",
+      "passed": true,
+      "detail": {
+        "unread_source": "stubbed parent_inbox response"
+      }
+    },
+    {
+      "check": "menu_account_family_devices_learning_help_groups",
+      "passed": true,
+      "detail": {
+        "child_mode_cards": 1
+      }
+    },
+    {
+      "check": "slow_first_load_says_still_connecting_with_retry",
+      "passed": true
+    },
+    {
+      "check": "offline_first_load_fast_clear_state",
+      "passed": true,
+      "detail": {
+        "ms_to_offline_state": 1399,
+        "method": "navigator.onLine=false + REST aborted (internetdisconnected)"
+      }
+    },
+    {
+      "check": "zero_children_single_action",
+      "passed": true
+    },
+    {
+      "check": "one_child_zero_tasks_single_first_task_action",
+      "passed": true
+    },
+    {
+      "check": "no_runtime_errors",
+      "passed": true
+    }
+  ]
+}
