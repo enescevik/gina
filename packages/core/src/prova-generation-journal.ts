@@ -43,7 +43,18 @@ export const generationResultSchema = z.object({
     solution: z.string().nullable(),
     explanation: z.string().nullable(),
     source_urls: z.array(z.string()),
+    /** D1: set when the server grouped linked AI questions into one shared-source group. */
+    group_id: z.uuid().optional(),
+    prompt: z.string().optional(),
+    position: z.number().int().min(1).max(12).optional(),
   })).min(1).max(30),
+  groups: z.array(z.object({
+    id: z.uuid(),
+    title: z.string().min(1),
+    body: z.string(),
+    kind: z.string().nullable().optional(),
+    question_ids: z.array(z.uuid()).min(2).max(12),
+  })).optional(),
 });
 const recordSchema = z.object({
   request_id: z.uuid(),

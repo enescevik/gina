@@ -204,7 +204,9 @@ try {
     // C04 UI: opt-in synthetic Pro override so the deterministic prova-generate path is reachable.
     if(process.env.GINA_QA_UI_PLAN==='pro') await must(admin.from('entitlement_overrides').insert({family_id:a.family,plan:'pro',reason:'synthetic ui qa',ends_at:new Date(Date.now()+86400000).toISOString()}),'ui_pro_override');
     const file=process.env.GINA_QA_UI_FIXTURE||'/tmp/gina-experience-ui-private.json';
-    writeFileSync(file,JSON.stringify({pid:process.pid,url:base,anon:process.env.GINA_QA_ANON,email:a.email,password:a.password,userId:user,familyId:a.family,childId:child,examId:exam.id,attemptId:attempt,...c08Ui}),{mode:0o600});
+    writeFileSync(file,JSON.stringify({pid:process.pid,url:base,anon:process.env.GINA_QA_ANON,email:a.email,password:a.password,userId:user,familyId:a.family,childId:child,examId:exam.id,attemptId:attempt,...c08Ui,
+      // D1 UI: opt-in disposable service key (loopback DB only, 0600 file, deleted on release) for service-only seeds.
+      ...(process.env.GINA_QA_UI_SERVICE==='1'?{service:process.env.GINA_QA_SERVICE}:{})}),{mode:0o600});
     let timer, release;
     try {await new Promise(resolve=>{
       release=resolve; timer=setTimeout(resolve,2700000);

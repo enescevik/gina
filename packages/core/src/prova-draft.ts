@@ -36,6 +36,8 @@ export const provaDraftSchema = z.object({
   step: z.number().int().min(0).max(3),
   blocks: z.array(provaBlockSchema).max(100),
   context: provaContextSchema.optional(),
+  /** D1: question ids whose term/program mismatch the parent explicitly accepted (server: fitAccepted). */
+  fitAccepted: z.array(z.string().uuid()).max(200).optional(),
 }).strict().refine(
   (d) => new Set(d.blocks.map((b) => b.id)).size === d.blocks.length,
   "duplicate_block",
