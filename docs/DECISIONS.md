@@ -100,3 +100,10 @@ Kaynak öneriler: [F01](F01-SOCIAL-AND-NEXT-PROPOSALS.md) §9, [S04 takvim](lear
 - K3 senaryo adaylarında sunucu araması: ertelendi; aday sayısı ~2.000'i geçince.
 - K4 `/input-catalog` kapsam denetimi: ertelendi; kapsam tanımı K01 sonrası netleşecek.
 - K5 kenar menü bölüm gruplama: ertelendi; "Aşağıda N bölüm daha" ipucu yeterli, gezinme dili değişikliği ayrı tasarım kararı.
+
+## D19 hukuk metni uzlaştırma kararları (6 Kasım 2026, koordinatör önerisiyle)
+
+- Fotoğraftan takvim: Plus ayda 5, Pro ayda 20 işlem; öğrenme planı içe aktarmasıyla ortak sınır (koddaki davranış esas alındı).
+- Diğer veliye AI bildirimi, itiraz kilidi ve aile bazında AI'yı kapatma ilk sürümde yok; gerekirse destek ekibi aile bazında kapatır.
+- Web'in işlevsel yerel depolama ögeleri "kesinlikle gerekli" sınıfında önerilir; son karar hukuk incelemesinde.
+- Açık Rıza A modeli (tek rıza / işlem bazlı onay) hukuk kararıdır; değiştirilmedi.
