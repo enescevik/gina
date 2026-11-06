@@ -94,6 +94,7 @@ export default function SignInScreen() {
         {mode === "reset" ? <Button variant="ghost" title={t("u01.backToSignIn")} disabled={busy} onPress={() => change("in")} /> : null}
       </View>
     </View>
+    <Button variant="ghost" title={t("privacyCenter.title")} disabled={busy} onPress={() => router.push("/privacy")} />
     {mode !== "reset" ? <InfoCard title={t("unified.childDeviceTitle")} body={t("unified.childDeviceBody")}>
       <Button variant="secondary" title={t("unified.connectDevice")} disabled={busy} onPress={() => router.push("/device/pair")} />
     </InfoCard> : null}

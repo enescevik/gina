@@ -53,7 +53,8 @@ export function inspectTestflight({ app = {}, eas = {}, env = {}, exists = () =>
     ['web-url', 'EXPO_PUBLIC_WEB_URL', 'Öğretmen paylaşım bağlantıları'],
     ['legal-url', 'EXPO_PUBLIC_LEGAL_BASE_URL', 'Gizlilik ve abonelik bağlantıları'],
   ]) {
-    findings.push({ id, status: isPublicHttps(env[key]) ? 'pass' : 'warn', message: isPublicHttps(env[key]) ? `${feature}: HTTPS adresi tanımlı; sayfalar ayrıca açılmalı.` : `${feature}: yayın URL’si henüz hazır değil.` });
+    const ready = key === 'EXPO_PUBLIC_LEGAL_BASE_URL' ? (['https://ginafamily.com', 'https://ginafamily.com/'].includes(env[key]) && /^\d{4}-\d{2}-\d{2}\.[1-9]\d*$/.test(env.EXPO_PUBLIC_LEGAL_VERSION ?? '')) : isPublicHttps(env[key]);
+    findings.push({ id, status: ready ? 'pass' : 'warn', message: ready ? `${feature}: yayın yapılandırması mevcut; sayfalar ve onay kaydı ayrıca doğrulanmalı.` : `${feature}: yayın URL’si veya onaylı belge sürümü henüz hazır değil.` });
   }
   return {
     scope: 'ios-testflight-static-configuration-only',

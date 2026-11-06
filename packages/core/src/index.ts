@@ -95,3 +95,5 @@ export * from "./subject-synonyms";
 export * from "./task-review";
 export * from "./bulk-scope";
 export * from "./operation-members";
+
+export * from "./legal";
