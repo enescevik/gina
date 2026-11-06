@@ -547,7 +547,8 @@ export function PlannerCalendar({
                 {weekTotals[d]
                   ? (
                     <Text style={[u.small, { fontSize: 11 }]} testID={`c02-strip-count-${d}`}>
-                      {weekTotals[d].lessons === null ? "?" : weekTotals[d].lessons}
+                      {/* C12: bilinmeyen ders sayısı "?" yerine sakin bir tire; ayrıntı erişilebilirlik etiketinde. */}
+                      {weekTotals[d].lessons === null ? "–" : weekTotals[d].lessons}
                       {" · "}
                       {weekTotals[d].due}
                     </Text>
