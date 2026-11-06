@@ -21,6 +21,15 @@ export const blueprintInputSchema = z.object({
     !v || z.url({protocol:/^https$/}).safeParse(v).success
   ),
   confirmed: z.literal(true),
+  // C01: velinin "okulun senaryosunu biliyorum/bilmiyorum" beyanı ve kişiselleştirme metadata'sı. İsteğe bağlı:
+  // eski kayıtlı komutlar (yerel günlük) aynen okunur; sunucu yokluğu "sorulmadı" sayar. Okul onayı değildir.
+  school_scenario: z.enum(["known", "unknown"]).optional(),
+  personalization: z.object({
+    basis: z.literal("catalogue_seed"),
+    base_label: z.string().trim().min(1).max(200),
+    base_total: z.number().int().min(1).max(30),
+    base_blocks: z.number().int().min(1).max(30),
+  }).strict().optional(),
 }).strict().refine((v) =>
   v.rows.reduce((s, r) => s + r.count, 0) <= 30 &&
   new Set(v.rows.map((r) => r.topic)).size === v.rows.length
