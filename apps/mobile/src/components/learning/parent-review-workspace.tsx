@@ -30,7 +30,7 @@ import {
   Check,
   X,
 } from "lucide-react-native";
-import { emptyNotebook, readNotebook, type ReviewDraft, type ReviewBase } from "@gina/core";
+import { emptyNotebook, readNotebook, readQuestionRubric, type ReviewDraft, type ReviewBase } from "@gina/core";
 import { IconButton, p, SatinButton } from "@/components/planner/ui";
 import { Field } from "@/components/ui/field";
 import { Toggle } from "@/components/ui/toggle";
@@ -51,12 +51,19 @@ export interface ReviewQuestion {
   solution: string | null;
   choices: unknown;
   correct_key: string | null;
+  /** C04: şık gerekçeleri / anlatım (veli). */
+  explanation?: string | null;
+  /** C04: provenance.rubric — alternatif doğru cevaplar + ölçütler (yalnız veli). */
+  provenance?: unknown;
 }
 export interface ReviewAnswer {
   answer_document: unknown;
   answer_text: string | null;
   answer_key: string | null;
   is_correct: boolean | null;
+  /** C04: AI önerisi veli puanından ayrı gösterilir. */
+  graded_by?: string | null;
+  ai_score?: number | null;
 }
 export interface ReviewState {
   score: number | null;
@@ -181,6 +188,7 @@ export function ParentReviewWorkspace(
   const context = useQuestionContext(question.id);
   const [commonOpen, setCommonOpen] = useState(true);
   const isOpen = question.kind === "open_ended";
+  const rubric = readQuestionRubric(question.provenance);
   const hasAnswer = !!answer?.answer_key || !!answer?.answer_text?.trim() ||
     !!original?.elements.length || invalidDocument;
   const showNotebook = notesOpen || (isOpen && !!original?.elements.length);
@@ -384,7 +392,47 @@ export function ParentReviewWorkspace(
                 question.correct_key}
             </Text>
             <Text selectable style={s.copy}>{question.solution}</Text>
+            {question.explanation
+              ? (
+                <>
+                  <Text style={s.bold}>
+                    {t(isOpen ? "provaC04.review.explanation" : "provaC04.review.whyChoices")}
+                  </Text>
+                  <Text selectable style={s.copy}>{question.explanation}</Text>
+                </>
+              )
+              : null}
+            {isOpen && rubric.alternative_answers.length
+              ? (
+                <>
+                  <Text style={s.bold}>{t("provaC04.review.alternatives")}</Text>
+                  <Text selectable style={s.copy}>
+                    {rubric.alternative_answers.join(" · ")}
+                  </Text>
+                </>
+              )
+              : null}
+            {isOpen && rubric.criteria.length
+              ? (
+                <>
+                  <Text style={s.bold}>{t("provaC04.review.rubric")}</Text>
+                  {rubric.criteria.map((c, i) => (
+                    <Text key={i} selectable style={s.copy}>
+                      {t("provaC04.review.rubricItem", { text: c.text, points: c.points })}
+                    </Text>
+                  ))}
+                </>
+              )
+              : null}
           </View>
+        )
+        : null}
+      {isOpen && answer?.graded_by === "ai" && answer.ai_score !== null &&
+          answer.ai_score !== undefined
+        ? (
+          <Text accessibilityRole="text" style={s.small}>
+            {t("provaC04.review.aiPending", { score: answer.ai_score })}
+          </Text>
         )
         : null}
     </View>

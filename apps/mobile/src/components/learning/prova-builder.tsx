@@ -37,7 +37,12 @@ import {
 import { useTranslation } from "react-i18next";
 import {
   appendProvaBlocks,
+  confirmProvaPeriod,
+  defaultProvaContext,
   moveProvaBlock,
+  provaContextIssues,
+  type ProvaContext,
+  type ProvaEducationPeriod,
   newProvaDraft,
   provaGenerationKind,
   readSubjectSuggestion,
@@ -65,6 +70,7 @@ import {
   questionsOf,
 } from "./prova-builder-data";
 import { ProvaSourcePicker } from "./prova-source-picker";
+import { ProvaContextCard } from "./prova-context-card";
 
 import {
   b,
@@ -138,6 +144,25 @@ export default function ProvaBuilder() {
       return data;
     },
   });
+  // C04: çocuğun güncel eğitim dönemi/okulu (taslak bağlamı sunucuda bununla karşılaştırılır).
+  const education = useQuery({
+    queryKey: ["child_education", familyId, draft.childId],
+    enabled: !!draft.childId,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("get_child_education", {
+        p_child_id: draft.childId!,
+      });
+      if (error) throw error;
+      return ((data as { current?: ProvaEducationPeriod | null } | null)
+        ?.current) ?? null;
+    },
+  });
+  const period = education.data ?? null;
+  const contextView: ProvaContext = draft.context ??
+    defaultProvaContext(draft, period);
+  const contextIssues = provaContextIssues(draft, period);
+  const updateContext = (patch: Partial<ProvaContext>) =>
+    update({ context: { ...contextView, ...patch } });
   const catalog = useQuery({
     queryKey: ["builder_catalog", familyId, draft.grade],
     enabled: !!draft.grade,
@@ -207,7 +232,7 @@ export default function ProvaBuilder() {
   });
   const legacy = useQuery({
     queryKey: ["builder_legacy", familyId, groupId],
-    enabled: !!groupId && !draftId,
+    enabled: !!groupId,
     queryFn: async () => {
       const { data, error } = await supabase.from("question_source_groups")
         .select("id,grade,subject,title,question_source_members(question_id)")
@@ -248,7 +273,13 @@ export default function ProvaBuilder() {
     setError(null);
   };
   const save = useMutation({
-    mutationFn: async (content: ProvaDraft) => {
+    mutationFn: async (input: ProvaDraft) => {
+      // C04: taslak ilk kaydında dönem/okul bağlamını sunucu şemasına taşır (eski taslak da
+      // bir sonraki kayıtta). Eğitim kaydı yüklenmeden bağlam uydurulmaz.
+      const content: ProvaDraft = !input.context && input.childId &&
+          education.isSuccess
+        ? { ...input, context: defaultProvaContext(input, period) }
+        : input;
       const fingerprint = JSON.stringify({
         version: record?.version ?? 0,
         content,
@@ -356,7 +387,8 @@ export default function ProvaBuilder() {
   const scopeValid = !!child && !!draft.grade && draft.subjects.length > 0;
   const publishValid = scopeValid && !!draft.title.trim() &&
     draft.format !== "meb" && flat.length === draft.target && !missing &&
-    !mismatch && !noAnswer && !material.isPending && !material.error && checked;
+    !mismatch && !noAnswer && !material.isPending && !material.error && checked &&
+    contextIssues.length === 0;
   async function navigateStep(step: number) {
     if (step > 0 && !scopeValid) {
       setError(new Error(t("provaBuilder.missingScope")));
@@ -419,6 +451,22 @@ export default function ProvaBuilder() {
         [t("provaBuilder.grade"), draft.grade ?? "—"],
         [t("provaBuilder.purpose"), t(`provaBuilder.${draft.purpose}`)],
         [t("provaBuilder.subjects"), draft.subjects.join(" · ") || "—"],
+        [
+          t("provaC04.summary.track"),
+          `${t(`provaC04.context.scope_${contextView.scope}`)} · ${
+            t(`provaC04.context.track_${contextView.track}`)
+          }`,
+        ],
+        [
+          t("provaC04.summary.period"),
+          [
+            contextView.term ? t(`provaC04.context.term_${contextView.term}`) : null,
+            contextView.school,
+            contextView.schoolDeclared
+              ? t("provaC04.summary.schoolDeclared")
+              : t("provaC04.summary.ownStudy"),
+          ].filter(Boolean).join(" · "),
+        ],
         [t("provaBuilder.target"), draft.target],
         [
           t("provaBuilder.timing"),
@@ -607,6 +655,8 @@ export default function ProvaBuilder() {
                                       childId: c.id,
                                       grade: c.grade,
                                       title: "",
+                                      // Bağlam (dönem/okul) çocuğa aittir; çocuk değişince yeniden kurulur.
+                                      context: undefined,
                                     })}
                                   style={[
                                     b.child,
@@ -761,6 +811,22 @@ export default function ProvaBuilder() {
                               )
                               : null}
                           </BuilderCard>
+                          {draft.childId
+                            ? (
+                              <ProvaContextCard
+                                value={contextView}
+                                period={period}
+                                periodLoading={education.isPending}
+                                issues={contextIssues}
+                                subjectCount={draft.subjects.length}
+                                onChange={updateContext}
+                                onConfirmPeriod={() =>
+                                  update({
+                                    context: confirmProvaPeriod(contextView, period),
+                                  })}
+                              />
+                            )
+                            : null}
                           {unsuitableBlocks.length
                             ? (
                               <View accessibilityRole="alert" style={b.hint}>
@@ -922,6 +988,26 @@ export default function ProvaBuilder() {
                               onPress={() => void openSources()}
                             />
                           </View>
+                          {draftId && legacy.data &&
+                              !draft.blocks.some((block) => block.id === legacy.data.id)
+                            ? (
+                              <View style={[b.hint, { gap: 10 }]}>
+                                <Text style={b.bold}>
+                                  {t("provaC04.carriedGroup", { title: legacy.data.title })}
+                                </Text>
+                                <SatinButton
+                                  secondary
+                                  title={t("provaC04.carriedGroupAdd")}
+                                  onPress={() =>
+                                    void addBlocks([{
+                                      kind: "group",
+                                      id: legacy.data.id,
+                                      source: "manual",
+                                    }]).catch(() => {})}
+                                />
+                              </View>
+                            )
+                            : null}
                           <Text style={b.muted}>
                             {material.isPending ? t("common.loading") : t("provaBuilder.count", {
                               count: flat.length,
@@ -1120,6 +1206,14 @@ export default function ProvaBuilder() {
                                 </Text>
                               )
                               : null}
+                            {contextIssues.map((issue) => (
+                              <Text key={issue} style={b.error}>
+                                {t(`provaC04.issue.${issue}`, {
+                                  count: draft.subjects.length,
+                                })}{" "}
+                                {t("provaC04.issue.fixInStart")}
+                              </Text>
+                            ))}
                             {material.isSuccess && flat.length !== draft.target
                               ? (
                                 <Text style={b.error}>
@@ -1222,6 +1316,7 @@ export default function ProvaBuilder() {
         draftId={id}
         onClose={() => setSource(false)}
         onAdd={addBlocks}
+        currentCount={flat.length}
       />
       <Modal
         visible={!!leave}

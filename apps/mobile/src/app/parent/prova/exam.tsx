@@ -1,13 +1,5 @@
-import { Redirect, useLocalSearchParams } from "expo-router";
-/** Preserve links from existing scenario/group tools; all preparation uses one workspace. */
+import { ProvaDraftEntry } from "@/components/learning/prova-draft-entry";
+/** Links from scenario/group tools open the current draft (C04); a carried group is offered there. */
 export default function ExamCreateScreen() {
-  const { groupId } = useLocalSearchParams<{ groupId?: string }>();
-  return (
-    <Redirect
-      href={{
-        pathname: "/parent/prova/builder",
-        params: groupId ? { groupId } : {},
-      }}
-    />
-  );
+  return <ProvaDraftEntry />;
 }

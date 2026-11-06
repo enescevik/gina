@@ -158,3 +158,57 @@ export function confirmProvaPeriod(
 export function provaRemainingCount(target: number, current: number): number {
   return Math.max(0, Math.min(30, target - current));
 }
+export interface QuestionRubric {
+  criteria: { text: string; points: number }[];
+  alternative_answers: string[];
+}
+/** Parent-only view of provenance.rubric (AI or parent question); malformed → empty. */
+export function readQuestionRubric(provenance: unknown): QuestionRubric {
+  const r = provenance && typeof provenance === "object"
+    ? (provenance as { rubric?: unknown }).rubric
+    : null;
+  const empty: QuestionRubric = { criteria: [], alternative_answers: [] };
+  if (!r || typeof r !== "object") return empty;
+  const v = r as { criteria?: unknown; alternative_answers?: unknown };
+  return {
+    criteria: Array.isArray(v.criteria)
+      ? v.criteria.flatMap((c: { text?: unknown; points?: unknown } | null) => {
+        const text = typeof c?.text === "string" ? c.text.trim() : "";
+        const points = Number(c?.points);
+        return text && Number.isFinite(points) ? [{ text, points }] : [];
+      }).slice(0, 10)
+      : [],
+    alternative_answers: Array.isArray(v.alternative_answers)
+      ? v.alternative_answers.filter((a): a is string =>
+        typeof a === "string" && !!a.trim()
+      ).map((a) => a.trim()).slice(0, 10)
+      : [],
+  };
+}
+/**
+ * Editor text → rubric. Alternatives: one per line. Criteria: "text | points" per line.
+ * Returns null for an invalid line or a points total over 100 (server rejects it too).
+ */
+export function parseRubricInput(
+  alternatives: string,
+  criteria: string,
+): QuestionRubric | null {
+  const alternative_answers = [
+    ...new Set(alternatives.split("\n").map((l) => l.trim()).filter(Boolean)),
+  ];
+  const rows = criteria.split("\n").map((l) => l.trim()).filter(Boolean);
+  const parsed = rows.map((line) => {
+    const m = /^(.+?)\s*\|\s*(\d{1,3})$/.exec(line);
+    return m ? { text: m[1]!.trim(), points: Number(m[2]) } : null;
+  });
+  if (
+    parsed.some((c) => !c || c.points > 100 || c.text.length > 500) ||
+    alternative_answers.some((a) => a.length > 500) ||
+    alternative_answers.length > 10 || parsed.length > 10 ||
+    parsed.reduce((n, c) => n + (c?.points ?? 0), 0) > 100
+  ) return null;
+  return {
+    criteria: parsed as { text: string; points: number }[],
+    alternative_answers,
+  };
+}

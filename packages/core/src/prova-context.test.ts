@@ -3,7 +3,9 @@ import {
   confirmProvaPeriod,
   defaultProvaContext,
   newProvaDraft,
+  parseRubricInput,
   provaContextIssues,
+  readQuestionRubric,
   provaContextSchema,
   provaDraftSchema,
   provaRemainingCount,
@@ -81,6 +83,36 @@ describe("C04 prova context", () => {
     expect(
       provaContextIssues({ ...base, context: fixed }, { ...period, school: "Yeni" }),
     ).toEqual([]);
+  });
+  it("parses editor text into the server rubric shape", () => {
+    expect(parseRubricInput("0,5\n yarım \n\n0,5", "Böleni bulur | 40\nSonuç | 60"))
+      .toEqual({
+        alternative_answers: ["0,5", "yarım"],
+        criteria: [{ text: "Böleni bulur", points: 40 }, {
+          text: "Sonuç",
+          points: 60,
+        }],
+      });
+    expect(parseRubricInput("", "")).toEqual({
+      alternative_answers: [],
+      criteria: [],
+    });
+    expect(parseRubricInput("", "puansız satır")).toBeNull();
+    expect(parseRubricInput("", "a | 80\nb | 40")).toBeNull();
+  });
+  it("reads provenance rubric defensively", () => {
+    expect(readQuestionRubric({ generator: "parent" })).toEqual({
+      criteria: [],
+      alternative_answers: [],
+    });
+    expect(
+      readQuestionRubric({
+        rubric: {
+          criteria: [{ text: "x", points: 5 }, { text: "" }],
+          alternative_answers: ["y", 2],
+        },
+      }),
+    ).toEqual({ criteria: [{ text: "x", points: 5 }], alternative_answers: ["y"] });
   });
   it("counts the remaining AI questions for one request", () => {
     expect(provaRemainingCount(10, 3)).toBe(7);

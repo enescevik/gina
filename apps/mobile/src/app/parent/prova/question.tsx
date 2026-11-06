@@ -14,7 +14,7 @@ import {
 import { addToProvaDraft } from "@/lib/prova-draft";
 import { uploadLearningFile } from "@/lib/learning-files";
 
-import type { Enums } from "@gina/core";
+import { type Enums, type Json, parseRubricInput } from "@gina/core";
 
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
@@ -66,6 +66,12 @@ export default function QuestionScreen() {
   const [expected, setExpected] = useState("");
   const [solution, setSolution] = useState("");
   const [explanation, setExplanation] = useState("");
+  // C04: açık uçluda kabul edilecek diğer doğru cevaplar + puanlama ölçütleri (isteğe bağlı).
+  const [alternatives, setAlternatives] = useState("");
+  const [rubricText, setRubricText] = useState("");
+  const rubric = kind === "open_ended"
+    ? parseRubricInput(alternatives, rubricText)
+    : null;
   // P02: soru/görsel → yanıt/ölçüt → öğrenci önizleme. Doğru şık başlangıçta boş.
   const [step, setStep] = useState<0 | 1 | 2>(0);
   const [stepError, setStepError] = useState<string | null>(null);
@@ -92,6 +98,7 @@ export default function QuestionScreen() {
           return t("provaP02.editor.correctMissing");
         }
       } else if (!expected.trim()) return t("provaP02.editor.expectedMissing");
+      else if (!rubric) return t("provaC04.question.rubricInvalid");
     }
     return null;
   }
@@ -140,7 +147,14 @@ export default function QuestionScreen() {
         expected_answer: kind === "open_ended" ? expected.trim() || null : null,
         solution: solution.trim() || null,
         explanation: explanation.trim() || null,
+        ...(kind === "open_ended" && rubric &&
+            (rubric.criteria.length || rubric.alternative_answers.length)
+          ? { rubric: rubric as unknown as Json }
+          : {}),
       };
+      if (kind === "open_ended" && !rubric) {
+        throw new Error(t("provaC04.question.rubricInvalid"));
+      }
       const attachments = images.map((image) => ({
         source_id: image.file.id,
         alt: image.alt.trim(),
@@ -198,6 +212,8 @@ export default function QuestionScreen() {
         setExpected("");
         setSolution("");
         setExplanation("");
+        setAlternatives("");
+        setRubricText("");
         setStep(0);
       } else {
         if (params.draftId) {
@@ -388,14 +404,35 @@ export default function QuestionScreen() {
               </View>
             )
             : (
-              <Field
-                editable={!save.isPending}
-                label={t("prova.expected")}
-                value={expected}
-                onChangeText={setExpected}
-                multiline
-                className="min-h-20"
-              />
+              <View className="gap-4">
+                <Field
+                  editable={!save.isPending}
+                  label={t("prova.expected")}
+                  value={expected}
+                  onChangeText={setExpected}
+                  multiline
+                  className="min-h-20"
+                />
+                <Field
+                  editable={!save.isPending}
+                  label={t("provaC04.question.alternatives")}
+                  hint={t("provaC04.question.alternativesHint")}
+                  value={alternatives}
+                  onChangeText={setAlternatives}
+                  multiline
+                  className="min-h-16"
+                />
+                <Field
+                  editable={!save.isPending}
+                  label={t("provaC04.question.rubric")}
+                  hint={t("provaC04.question.rubricHint")}
+                  error={rubric ? undefined : t("provaC04.question.rubricInvalid")}
+                  value={rubricText}
+                  onChangeText={setRubricText}
+                  multiline
+                  className="min-h-16"
+                />
+              </View>
             )}
           <Field
             editable={!save.isPending}

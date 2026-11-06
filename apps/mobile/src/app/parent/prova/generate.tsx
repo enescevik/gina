@@ -1,5 +1,5 @@
-import { Redirect } from "expo-router";
-/** Existing AI entry links now join the same recoverable practice workspace. */
+import { ProvaDraftEntry } from "@/components/learning/prova-draft-entry";
+/** Existing AI entry links open the parent's current Prova draft (C04), or a new one. */
 export default function GenerateScreen() {
-  return <Redirect href="/parent/prova/builder" />;
+  return <ProvaDraftEntry />;
 }
