@@ -24,6 +24,10 @@ export const COGNITIVE_DEMANDS = [
   "degerlendirme",
   "yaratma",
 ] as const;
+/** D9/B3: üretim istemindeki rubrik ölçeği cümlesi. Veli rubriği ve açık uçlu puan 0–100'dür; kaynakta aynı ölçek.
+ * Eski (v6 ve öncesi) küçük puanlı AI rubrikleri okuma tarafında (core `scaleRubricTo100`) 100'e oranlanmaya devam eder. */
+export const RUBRIC_SCALE_RULE =
+  "Ölçüt puanları 100 üzerindendir: bir sorunun tüm criteria puanlarının toplamı tam 100 olsun (ör. 40 + 40 + 20), her puan pozitif tam sayı. Şıklı soruda criteria tek ölçüt olabilir (100 puan).";
 export interface QuestionRubric {
   criteria: { text: string; points: number }[];
   alternative_answers?: string[];
@@ -176,6 +180,112 @@ function sharedStemsFit(
     return !s || materializeSharedStem(s, q.stem, locale).length <= 10000;
   });
 }
+
+// ---------------------------------------------------------------------------------------------------------------
+// D9/B6: kişi adı denetimi. Ret değil, uyarıdır: ücretli çıktı reddedilmez; bulunan soru provenance'ında
+// `content_review` (needs_review) etiketi taşır ve veli incelemesine düşer. Düşük yanlış pozitif için:
+// - Kesin liste: yaygın Türkçe (ve birkaç İngilizce) ad, büyük harfle tam sözcük ya da kesme işaretli ek (Ali'nin).
+// - Belirsiz liste: aynı zamanda sözcük olan adlar (Deniz, Umut, Bahar…) yalnız cümle ortasında büyük harfle ya da
+//   kesme işaretli ekle; cümle başındaki "Deniz suyu…" işaretlenmez.
+// - Bitişik büyük harfli sözcük (Mustafa Kemal, Yunus Emre, Murat Nehri, Hz. Ömer) tam ad/tarihî kişi/yer sayılır, atlanır.
+// - Yer/gök cismiyle çakışan adlar (Ege, Güneş, Ay, Tuna, Fırat…) listede yok.
+// - Desen: "<Büyük harfli> adlı/isimli/adında (bir) öğrenci/çocuk/…" ve "named/called <Büyük harfli>" (listede olmasa da).
+const STRICT_NAMES = new Set(
+  ("Ali Ahmet Mehmet Mustafa Hasan Hüseyin İbrahim İsmail Murat Emre Burak Mert Kerem Arda Efe Emir Yusuf Ömer Eren " +
+    "Berk Kaan Alp Cem Kemal Selim Serkan Oğuz Onur Tolga Volkan Uğur Furkan Enes Batuhan Berat Baran Eymen Miraç " +
+    "Halil Recep Osman Yasin Yunus Hakan Taha Hamza Yiğit Emirhan Alperen Kadir Erkan Gökhan Serdar " +
+    "Sinan Tarık Orhan Okan Cengiz Levent Mesut Selçuk Berkay Çağan Doruk Aybars " +
+    "Ayşe Fatma Zeynep Elif Emine Hatice Merve Esra Büşra Ebru Ela Ecrin Azra Asel Zehra Meryem Hira Selin Sena " +
+    "Buse İrem Gizem Melis Melike Sude Beren Ceren Dilara Sibel Seda Gamze Özge Aslı Tuğba Kübra Esma Rabia Sevda " +
+    "Gülsüm Leyla Nisa Ece Eda Esin Hande Nazlı Şule Tuba Feyza Aylin Ayla Burcu Canan Gökçe Hazal Sinem Songül " +
+    "Tülay Zeliha Elçin Berna Nermin Serap Yeliz Zübeyde Halime Şeyma Betül Cansu Didem Elvan Funda Gülay Hülya " +
+    "Miray Pelin Yaren Zümra Elanur Eslem Mira " +
+    "John Mary Tom Emma Anna Jack Lucy Sarah David Emily Oliver Sophie James Peter Paul Kate Mike Alex").split(" "),
+);
+const AMBIGUOUS_NAMES = new Set(
+  ("Deniz Umut Bahar Yağmur Barış Irmak Toprak Doğa Kaya Çınar Defne Ceylan Derya Can Su Nur Ada Derin Damla Pınar " +
+    "Sevgi Gül Lale Öykü Yasemin Hilal Dilek Ezgi İpek Kader Melek Duru Eylül Poyraz Ayaz Metin Ümit Cihan Engin " +
+    "Nehir Ozan Ufuk Zafer Erdem " +
+    "Ben Lily Max").split(" "),
+);
+const HONORIFICS = new Set(["Hz", "Hazreti", "Hazret", "Sultan", "Şeyh", "Mimar", "Peygamber", "Halife", "Kanuni", "Fatih", "Yavuz"]);
+const ROLE_NOUNS =
+  "öğrenci|öğrencisi|çocuk|kız|oğlan|erkek|arkadaş|arkadaşı|kişi|öğretmen|çiftçi|satıcı|esnaf|doktor|kardeş|anne|baba|dede|nine|teyze|amca|komşu|adam|kadın|genç|bebek|usta|işçi|sporcu";
+const NAMED_TR = new RegExp(
+  `(?<![\\p{L}])(\\p{Lu}\\p{Ll}+)\\s+(?:adlı|isimli|adında|adındaki)\\s+(?:bir\\s+)?(?:${ROLE_NOUNS})(?![\\p{L}])`,
+  "gu",
+);
+const NAMED_EN = /(?<![\p{L}])(?:named|called)\s+(\p{Lu}\p{Ll}+)(?![\p{L}])/gu;
+const WORD = /\p{L}+(?:['’]\p{L}+)?/gu;
+const capitalized = (w: string) => /^\p{Lu}\p{Ll}*$/u.test(w);
+/** Metindeki olası kişi adlarını döndürür (tekrarsız, ilk görünüş sırasıyla). Saf ve deterministik. */
+export function detectPersonNames(text: string): string[] {
+  if (typeof text !== "string" || !text) return [];
+  const found: string[] = [];
+  const add = (n: string) => {
+    if (!found.includes(n)) found.push(n);
+  };
+  const tokens = [...text.matchAll(WORD)].map((m) => {
+    const [base, suffix] = m[0].split(/['’]/);
+    return { base, suffix: suffix !== undefined, start: m.index!, end: m.index! + m[0].length };
+  });
+  const sentenceInitial = (start: number) => {
+    let i = start - 1;
+    while (i >= 0 && /[\s"“”'‘’«»(\[\-–—*•]/u.test(text[i])) i--;
+    return i < 0 || /[.!?:;…\n\d)]/u.test(text[i]) || /\n/.test(text.slice(i, start));
+  };
+  // Yalnız tek boşlukla ayrılan (noktalama yok) komşu sözcük "bitişik" sayılır.
+  const joined = (a: { end: number }, b: { start: number }) => /^ $/.test(text.slice(a.end, b.start));
+  tokens.forEach((t, i) => {
+    const strict = STRICT_NAMES.has(t.base), ambiguous = AMBIGUOUS_NAMES.has(t.base);
+    if (!strict && !ambiguous) return;
+    const prev = tokens[i - 1], next = tokens[i + 1];
+    const prevJoined = prev && text.slice(prev.end, t.start).trim() === "" && !/\n/.test(text.slice(prev.end, t.start));
+    if (prev && HONORIFICS.has(prev.base) && /^\.?\s+$/.test(text.slice(prev.end, t.start))) return;
+    if (
+      prev && prevJoined && capitalized(prev.base) && !prev.suffix &&
+      (STRICT_NAMES.has(prev.base) || AMBIGUOUS_NAMES.has(prev.base) || t.suffix || !sentenceInitial(prev.start))
+    ) return;
+    if (next && !t.suffix && joined(t, next) && capitalized(next.base)) return;
+    if (strict || t.suffix || !sentenceInitial(t.start)) add(t.base);
+  });
+  for (const re of [NAMED_TR, NAMED_EN]) {
+    for (const m of text.matchAll(re)) add(m[1]);
+  }
+  return found;
+}
+export interface ContentReviewFlag {
+  status: "needs_review";
+  detector: "person-name/v1";
+  flags: { code: "person_name"; names: string[]; fields: string[]; suggestion: string }[];
+}
+/** Çocuğun gördüğü alanlar (gövde, şıklar, ortak kaynak) taranır; bulunursa uyarı etiketi, yoksa null. */
+export function personNameReview(
+  q: Pick<GeneratedQuestion, "stem" | "choices">,
+  shared: SharedSource | null,
+  locale: "tr" | "en",
+): ContentReviewFlag | null {
+  const names: string[] = [], fields: string[] = [];
+  const scan = (field: string, text: unknown) => {
+    const hit = detectPersonNames(typeof text === "string" ? text : "");
+    if (!hit.length) return;
+    fields.push(field);
+    for (const n of hit) if (!names.includes(n)) names.push(n);
+  };
+  scan("stem", q.stem);
+  (Array.isArray(q.choices) ? q.choices : []).forEach((c) => scan(`choice_${c?.key ?? "?"}`, c?.text));
+  if (shared) scan("shared_source", shared.content);
+  if (!names.length) return null;
+  const list = names.join(", ");
+  const suggestion = locale === "en"
+    ? `Replace the person name(s) (${list}) with a role such as "a student", "a friend" or "the teacher".`
+    : `Kişi adı (${list}) yerine "bir öğrenci", "arkadaşı", "öğretmeni" gibi bir rol ifadesi kullanın.`;
+  return {
+    status: "needs_review",
+    detector: "person-name/v1",
+    flags: [{ code: "person_name", names, fields: [...new Set(fields)], suggestion }],
+  };
+}
 export function validateGenerationResult(
   result: AiResult<GeneratedOutput>,
   context: GenerationContext,
@@ -293,6 +403,7 @@ export async function finishGeneration(
       const shared = q.shared_source_id
         ? sharedById.get(q.shared_source_id) ?? null
         : null;
+      const review = personNameReview(q, shared, locale);
       const trace = {
         ...(scenario
           ? {
@@ -329,6 +440,8 @@ export async function finishGeneration(
           }
           : {}),
         ...(scenario ? { content_fit: "pending_human_review" } : {}),
+        // D9/B6: kişi adı bulunursa soru reddedilmez; veli incelemesi için uyarı etiketi.
+        ...(review ? { content_review: review } : {}),
       };
       return {
         valid: !!q.expected_answer?.trim() && !!q.solution?.trim() &&

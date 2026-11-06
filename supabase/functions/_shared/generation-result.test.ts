@@ -343,4 +343,87 @@ Deno.test("D1/D5: real-model shape — shared table linked to non-adjacent quest
   assertEquals(rows[3].provenance.shared_prompt, "Tabloda verilen değerlere göre A ile C arasındaki fark kaç newtondur?");
   assertEquals(rows[1].stem, "Dinamometre hangi ilkeyle çalışır?");
   assertEquals(rows.filter((x) => x.provenance.shared_source_id === "tablo_1").length, 2);
+  assertEquals("content_review" in rows[0].provenance, false, "no person name, no review flag");
+});
+
+// ---------------------------------------------------------------------------------------------------------------
+// D9/B3: rubrik kaynakta 100 üzerinden; okuma tarafı ölçeklemesi eski satırlar için kalır.
+import { detectPersonNames, personNameReview, RUBRIC_SCALE_RULE } from "./generation-result.ts";
+import { answerKeyExtras } from "./answer-key.ts";
+Deno.test("D9/B3: generation prompt rule asks for criteria out of 100; 100-sum rubric is read unchanged, old small rubric still scaled", () => {
+  assert(RUBRIC_SCALE_RULE.includes("100 üzerinden") && RUBRIC_SCALE_RULE.includes("toplamı tam 100"));
+  const v7 = { generator: "ai", rubric: { criteria: [{ text: "Doğru okuma", points: 40 }, { text: "İşlem", points: 40 }, { text: "Birim", points: 20 }] } };
+  assertEquals(answerKeyExtras(v7).rubrik.map((c) => c.puan), [40, 40, 20]);
+  const v6 = { generator: "ai", rubric: { criteria: [{ text: "Doğru okuma", points: 2 }, { text: "Gerekçe", points: 3 }] } };
+  assertEquals(answerKeyExtras(v6).rubrik.map((c) => c.puan), [40, 60]);
+  // Doğrulayıcı değişmedi: 100 toplamlı v7 rubriği ve eski küçük puanlı rubrik ikisi de geçer.
+  const r = good();
+  r.output.questions[0] = q({ rubric: { criteria: v7.rubric.criteria, alternative_answers: [] } });
+  check(r);
+  check(good());
+});
+
+// D9/B6: kişi adı → ret değil, needs_review etiketi.
+Deno.test("D9/B6: person names are detected in typical generated wording", () => {
+  assertEquals(detectPersonNames("Ali ve Elif bahçede 12 fidan dikti. Ali'nin diktiği fidan sayısı kaçtır?"), ["Ali", "Elif"]);
+  assertEquals(detectPersonNames("Zeynep'in kumbarasında 45 TL var."), ["Zeynep"]);
+  assertEquals(detectPersonNames("Kemal 5 elma aldı."), ["Kemal"]);
+  assertEquals(detectPersonNames("Bu sırada Deniz pencereyi açtı."), ["Deniz"], "ambiguous name mid-sentence");
+  assertEquals(detectPersonNames("Deniz'in topu kayboldu."), ["Deniz"], "ambiguous name with suffix");
+  assertEquals(detectPersonNames("Kuzey adlı bir öğrenci deney yaptı."), ["Kuzey"], "pattern catches names outside the list");
+  assertEquals(detectPersonNames("A student named Tom measured the table."), ["Tom"]);
+  assertEquals(detectPersonNames("Bahçede Ali top oynuyor."), ["Ali"], "capitalized sentence start before a name is not a full name");
+});
+Deno.test("D9/B6: low false positives — places, historical figures, common nouns and shared-source headings are not names", () => {
+  for (
+    const text of [
+      "Deniz suyu tuzludur. Güneş ışığı Dünya'ya 8 dakikada ulaşır.",
+      "Ege Bölgesi'nde zeytin yetiştirilir; Ankara'nın iklimi karasaldır.",
+      "Mustafa Kemal Atatürk Samsun'a 1919'da çıktı.",
+      "Yunus Emre'nin şiirlerinde sevgi işlenir. Fatih Sultan Mehmet İstanbul'u fethetti.",
+      "Hz. Ömer adaletiyle bilinir.",
+      "Murat Nehri Fırat'ın koludur.",
+      "Umut etmek önemlidir. Bahar gelince ağaçlar çiçek açar.",
+      "Can you find the area of the rectangle?",
+      "Ortak metin\nTablodaki değerlere göre cevap verin.",
+      "Kaşağı adlı hikâyede kardeşler anlatılır.",
+      "Cisim | Dinamometre (N)\nA | 4\nB | 7\nC | 10",
+    ]
+  ) assertEquals(detectPersonNames(text), [], text);
+});
+Deno.test("D9/B6: a named question is saved (not rejected) with a needs_review tag and a role suggestion; shared source scanned once", async () => {
+  const shared = { id: "metin_1", kind: "text", content: "Elif ile arkadaşı markete gitti. Elif 3 ekmek aldı." };
+  const r = {
+    output: {
+      shared_sources: [shared],
+      questions: [
+        d5Open("Elif toplam kaç ekmek aldı?", "metin_1"),
+        d5Open("Bir öğrenci ekmekleri ikiye bölerse kaç parça olur?", "metin_1"),
+        d5Open("Dinamometre hangi ilkeyle çalışır?"),
+        { ...d5Open("Ali'nin ölçtüğü kuvvet hangisidir?"), kind: "open_ended" },
+      ],
+    },
+    inputTokens: 1,
+    outputTokens: 1,
+  };
+  validateGenerationResult(r as never, d5Written);
+  const f = fixture({ context: d5Written, provider_result: r, lease: "lease" });
+  const response = await recoverGeneration(f.db, parent, "id", {});
+  assert(response);
+  assertEquals(response.status, 200, "names never reject the paid output");
+  const rows = f.calls[1].args.p_rows as { stem: string; provenance: Record<string, unknown> }[];
+  assertEquals(rows.length, 4);
+  // deno-lint-ignore no-explicit-any
+  const review = (i: number) => rows[i].provenance.content_review as any;
+  assertEquals(review(0).status, "needs_review");
+  assertEquals(review(0).flags[0].names, ["Elif"]);
+  assertEquals(review(0).flags[0].fields, ["stem", "shared_source"]);
+  assert(review(0).flags[0].suggestion.includes("bir öğrenci"));
+  assertEquals(review(1).flags[0].fields, ["shared_source"], "linked question flagged through its shared passage");
+  assertEquals("content_review" in rows[2].provenance, false);
+  assertEquals(review(3).flags[0].names, ["Ali"]);
+  // Şıklar da taranır (çocuk görür).
+  const mcReview = personNameReview({ stem: "Hangisi doğrudur?", choices: [{ key: "A", text: "Mert haklıdır." }, { key: "B", text: "Hiçbiri" }] }, null, "en");
+  assertEquals(mcReview?.flags[0].fields, ["choice_A"]);
+  assert(mcReview!.flags[0].suggestion.startsWith("Replace"));
 });

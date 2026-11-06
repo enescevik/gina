@@ -1,9 +1,14 @@
 import { fail, sanitizedCode } from "../_shared/error-contract.ts";
-import { aiGradableOpenAnswer, needsNotebookReview } from "../_shared/answer-notebook.ts";
+import { needsNotebookReview } from "../_shared/answer-notebook.ts";
 import { questionImages } from "../_shared/question-images.ts";
 import { runAiOperation } from "../_shared/ai-operation.ts";
-import { GRADE_SYSTEM, gradeSchema, validateGradeReport } from "../_shared/grade-report.ts";
-import { answerKeyExtras } from "../_shared/answer-key.ts";
+import {
+  buildGradePayload,
+  GRADE_SYSTEM,
+  gradeSchema,
+  type SharedSourceMember,
+  validateGradeReport,
+} from "../_shared/grade-report.ts";
 // Prova açık uçlu cevap değerlendirmesi (AI). Veli deneme inceleme ekranından çağırır; çocuk asla çağırmaz.
 // Deploy: `supabase functions deploy prova-grade` (verify_jwt açık kalır).
 // Kurallar: yalnız parent; paket prova_ai_grading (Pro) sunucuda; model ai_settings'ten;
@@ -15,7 +20,8 @@ import { json, preflight, serviceClient } from "../_shared/supabase.ts";
 import { apiKeyOrResponse, logUsage, parentOrResponse, provaEntitlement, resolveAi } from "../_shared/prova.ts";
 
 // D6/B1: v4 — istek başına enum şeması (ref/konu/kanıt) ve doğrulayıcıyla hizalı istem kuralları.
-const PROMPT_VERSION = "prova-grade/v4-grade-contract";
+// D9: v5 — grup sorularının ortak metni/tablosu yükte bir kez (`ortak_kaynaklar`), maddeler ref ile bağlı.
+const PROMPT_VERSION = "prova-grade/v5-shared-sources";
 
 function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -78,32 +84,24 @@ Deno.serve(async (req) => {
   const mask = (text: string) =>
     nameParts.reduce((t: string, p: string) => t.replace(new RegExp(`(?<!\\p{L})${escapeRegExp(p)}(?!\\p{L})`, "giu"), "[ad]"), text);
 
-  const answerByQ = new Map((answers ?? []).map((a) => [a.question_id, a]));
   const ai = await resolveAi(db, ent.plan, 4000);
   if (ai instanceof Response) return ai;
   const apiKey = apiKeyOrResponse(ai);
   if (apiKey instanceof Response) return apiKey;
 
-  const refToQuestion = new Map<string, string>();
-  const refs = new Map<string, { topic: string; grade: boolean }>();
-  const byId = new Map(questions.map(q => [q.id, q]));
-  const payload = {
-    maddeler: questionIds.map((id, i) => {
-      const q = byId.get(id)!; const a = answerByQ.get(id);
-      const ref = `M${i + 1}`; const topic = mask(q.topic);
-      // Boş cevap puanlama_gerekli=false: AI 0 uyduramaz; sunucu onu "cevap yok" (puan null) olarak tutar.
-      const grade = aiGradableOpenAnswer(q.kind, a);
-      refToQuestion.set(ref, id); refs.set(ref, { topic, grade });
-      return { ref, konu: topic, tur: q.kind, soru: mask(q.stem),
-        beklenen_cevap: mask(q.expected_answer ?? ""), cozum_yolu: mask(q.solution ?? ""),
-        // C04: alternatif doğru cevaplar + rubrik (veli/AI sorusu); yalnız açık uçluda.
-        ...(q.kind === "open_ended" ? answerKeyExtras(q.provenance, mask) : {}),
-        secenekler: Array.isArray(q.choices) ? q.choices.map((c: {key?:string;text?:string}) => ({key:c.key,text:mask(c.text ?? "")})) : null, dogru_secim: q.correct_key, secilen: a?.answer_key,
-        dogru_mu: q.kind === "multiple_choice" || a?.graded_by === "parent" ? a?.is_correct ?? null : null, puanlama_gerekli: grade,
-        veli_puani: a?.graded_by === "parent" ? a.score : null,
-        ogrenci_cevabi: mask((a?.answer_text ?? "").slice(0, 4000)) };
-    }),
-  };
+  // D9: grup soruları — ortak metin/tablo yükte bir kez, bağlı maddeler `ortak_kaynak` ref'iyle.
+  const { data: members, error: membersError } = await db
+    .from("question_source_members")
+    .select("question_id, prompt, source_group:question_source_groups(id, title, body)")
+    .in("question_id", questionIds);
+  if (membersError) return fail("data_failed", 500);
+  const { payload, refs, refToQuestion } = buildGradePayload(
+    questionIds,
+    questions,
+    answers ?? [],
+    (members ?? []) as unknown as SharedSourceMember[],
+    mask,
+  );
   let images;
   try { images = await questionImages(db,parent.familyId,parent.userId,attemptId,questionIds,imageConsent); }
   catch (e) { return fail(sanitizedCode(e instanceof Error ? e.message : "", /^(data_failed|source_ai_consent_required|source_ai_limit)$/, "data_failed"), 400); }

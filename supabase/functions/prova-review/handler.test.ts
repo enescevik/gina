@@ -3,6 +3,7 @@ import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 const attempt = "10000000-0000-4000-8000-000000000001",
   question = "20000000-0000-4000-8000-000000000001",
   hash = "a".repeat(64);
+const d5Table = "Cisim | Dinamometre (N)\nA | 4\nB | 7\nC | 10";
 const report = {
   score: 80,
   readable: true,
@@ -21,9 +22,11 @@ function fixture(
     cached?: boolean;
     consentError?: boolean;
     providerError?: boolean;
+    group?: boolean;
   } = {},
 ) {
   const operations: string[] = [], writes: Record<string, unknown>[] = [];
+  const sent: unknown[] = [];
   let fingerprints = 0;
   const db = {
     from(table: string) {
@@ -74,10 +77,25 @@ function fixture(
           return {
             data: {
               kind: "open_ended",
-              stem: "Çevresi kaçtır?",
+              stem: changes.group
+                ? `Ortak tablo\n${d5Table}\n\nTablodaki cisimlerden hangisine en büyük kuvvet uygulanmıştır?`
+                : "Çevresi kaçtır?",
               expected_answer: "28",
               solution: "2(8+6)",
             },
+            error: null,
+          };
+        }
+        if (table === "question_source_members") {
+          // D1 grup sözleşmesi: üyenin gövdesi `başlık\nortak metin\n\nsoru`, prompt yalnız soru.
+          return {
+            data: changes.group
+              ? {
+                question_id: question,
+                prompt: "Tablodaki cisimlerden hangisine en büyük kuvvet uygulanmıştır?",
+                source_group: { id: "group-1", title: "Ortak tablo", body: d5Table },
+              }
+              : null,
             error: null,
           };
         }
@@ -136,6 +154,7 @@ function fixture(
     },
     runAiOperation: (...args) => {
       provider++;
+      sent.push(args[7]);
       if (!writes.some((w) => w.table === "answer_review_consents")) {
         throw new Error("no recorded consent");
       }
@@ -168,6 +187,7 @@ function fixture(
     request,
     operations,
     writes,
+    sent,
     stats: () => ({ rendered, provider, fingerprints }),
   };
 }
@@ -244,4 +264,20 @@ Deno.test("review handler: same answer cache skips renderer/provider; uncertain 
     !failed.writes.some((w) => w.table === "answer_review_suggestions"),
     "published failed suggestion",
   );
+});
+Deno.test("D9: group question sends the shared table once in its own field and the member prompt as the question", async () => {
+  const f = fixture({ group: true });
+  const response = await f.request();
+  assert(response.status === 200, await response.text());
+  const user = f.sent[0] as { type: string; text?: string }[];
+  const payload = JSON.parse(user[0].text!);
+  assert(payload.ortak_kaynak?.baslik === "Ortak tablo", JSON.stringify(payload));
+  assert(payload.ortak_kaynak.icerik === d5Table, "table rows must be sent verbatim");
+  assert(payload.soru === "Tablodaki cisimlerden hangisine en büyük kuvvet uygulanmıştır?", payload.soru);
+  assert(user[0].text!.split("Dinamometre").length === 2, "shared table sent more than once");
+  const plain = fixture();
+  await plain.request();
+  const plainPayload = JSON.parse((plain.sent[0] as { text: string }[])[0].text);
+  assert(!("ortak_kaynak" in plainPayload) && plainPayload.soru === "Çevresi kaçtır?", "ungrouped payload changed shape");
+  assert(f.operations.includes(`question_source_members:question_id=${question}`), "member lookup not scoped to the question");
 });
