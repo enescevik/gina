@@ -1,0 +1,140 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Faz 2 tekrar</title><style>
+@page { size: A4; margin: 16mm 14mm; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: "Nunito", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color: #1F2937; font-size: 11.5pt; line-height: 1.45; }
+h1, h2, h3 { font-family: "Baloo 2", "Nunito", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; }
+.cover { height: 250mm; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; page-break-after: always; break-after: page; }
+.cover h1 { font-size: 30pt; color: #0B7F7F; }
+.cover .sub { font-size: 14pt; margin-top: 6mm; color: #4A5A6A; }
+.cover .meta { margin-top: 14mm; font-size: 11pt; color: #4A5A6A; }
+.cover .fields { margin-top: 18mm; width: 120mm; text-align: left; }
+.cover .fields div { border-bottom: 1px solid #9AA8B5; padding: 3mm 0 1mm; margin-bottom: 5mm; color: #4A5A6A; }
+.q { break-inside: avoid; page-break-inside: avoid; margin-bottom: 7mm; }
+.q figure { margin: 3mm 0 3mm 11mm; }
+.q figure img { display: block; max-width: 145mm; max-height: 90mm; object-fit: contain; }
+.q figcaption { font-size: 9pt; color: #625C85; }
+.q .head { display: flex; gap: 3mm; align-items: baseline; }
+.q .num { font-family: "Baloo 2", "Nunito", Arial, sans-serif; font-weight: 700; color: #0B7F7F; min-width: 8mm; }
+.q .tag { font-size: 8.5pt; color: #6B7B8B; margin-left: 11mm; margin-bottom: 1.5mm; }
+.choices { list-style: none; padding: 0; margin: 2mm 0 0 11mm; }
+.choices li { margin: 1.2mm 0; }
+.choices b { display: inline-block; width: 7mm; }
+.lines { margin: 3mm 0 0 11mm; }
+.lines div { border-bottom: 1px solid #C7D0D9; height: 8mm; }
+.key { page-break-before: always; break-before: page; }
+.key h2 { font-size: 18pt; color: #0B7F7F; margin-bottom: 5mm; }
+.common { border: 1px solid #DCD0F4; border-radius: 3mm; padding: 4mm; margin-bottom: 5mm; background: #FCFAF6; break-inside: avoid; }
+.common h2 { font-size: 15pt; margin-bottom: 2mm; }
+.key table { width: 100%; border-collapse: collapse; font-size: 10.5pt; }
+.key td, .key th { border: 1px solid #C7D0D9; padding: 2mm 3mm; vertical-align: top; text-align: left; }
+.key th { background: #E6F4F4; }
+.key .sol { color: #4A5A6A; font-size: 9.5pt; margin-top: 1mm; }
+.q, .key td { overflow-wrap: anywhere; word-break: break-word; }
+.qt { margin: 2.5mm 0 0 11mm; }
+.qt .help { font-size: 9.5pt; color: #4A5A6A; margin-bottom: 2mm; }
+.qt table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.qt td, .qt th { vertical-align: top; padding: 1.6mm 2mm; text-align: left; }
+.qt .grid td, .qt .grid th { border: 1px solid #C7D0D9; }
+.qt .grid th { background: #F3EFFA; font-family: "Baloo 2", "Nunito", Arial, sans-serif; }
+.qt .lab { width: 11mm; white-space: nowrap; font-weight: 700; color: #5132BD; }
+.qt .marks { width: 30mm; white-space: nowrap; }
+.qt .sq { display: inline-block; width: 5.5mm; height: 5.5mm; border: 1.2px solid #4A5A6A; border-radius: 1mm; vertical-align: middle; margin: 0 1.2mm 0 2mm; }
+.qt .slot { display: inline-block; min-width: 10mm; height: 7mm; border: 1.2px solid #4A5A6A; border-radius: 1.5mm; vertical-align: middle; margin-left: 2mm; }
+.qt .blank { display: inline-block; min-width: 30mm; border-bottom: 1.2px solid #4A5A6A; height: 6mm; vertical-align: bottom; margin: 0 1mm; }
+.qt .blank sup { font-size: 7.5pt; color: #5132BD; }
+.qt .fill { line-height: 2.1; }
+.qt .bank { border: 1px dashed #B8AED6; border-radius: 2mm; padding: 2mm 3mm; margin-top: 2mm; }
+.qt .bank span { display: inline-block; border: 1px solid #DCD0F4; border-radius: 1.5mm; padding: 0.5mm 2.2mm; margin: 0.8mm 1mm; }
+.qt .ans { display: flex; flex-wrap: wrap; gap: 3mm; align-items: center; margin-top: 1mm; }
+.qt .ansbox { display: inline-block; width: 45mm; height: 9mm; border: 1.2px solid #4A5A6A; border-radius: 1.5mm; }
+.qt .unitline { display: inline-block; width: 25mm; border-bottom: 1.2px solid #4A5A6A; height: 7mm; }
+.qt .slots { display: flex; flex-wrap: wrap; gap: 2mm 4mm; margin-top: 2mm; }
+.qt .cell { height: 9mm; }
+.key ul { margin: 0; padding-left: 4mm; }
+.key li { margin: 0.6mm 0; }
+.key .note { color: #4A5A6A; font-size: 9pt; }
+.qt .ci { display: inline-block; width: 5mm; height: 5mm; border: 1.2px solid #4A5A6A; border-radius: 50%; vertical-align: middle; margin-right: 2mm; }
+.qt .sq { margin-left: 0; margin-right: 2mm; }
+.qt .passage { line-height: 2.2; border: 1px solid #E4DCF1; border-radius: 2mm; padding: 2mm 3mm; }
+.qt .stage { margin-bottom: 2mm; }
+.qt .regiongrid { width: auto; max-width: 100%; }
+.qt .rcell { width: 14mm; height: 14mm; text-align: center; vertical-align: middle; }
+.qt .rl { font-size: 7pt; color: #9AA8B5; }
+.qt svg.sectors, .qt svg.clock { width: 45mm; height: 45mm; display: block; margin: 1mm 0; }
+.qt svg.chart { width: 120mm; max-width: 100%; display: block; }
+.qt .stim { margin-bottom: 2mm; }
+.qt .digital { display: inline-block; font-size: 20pt; font-weight: 700; border: 1.2px solid #4A5A6A; border-radius: 2mm; padding: 1mm 4mm; }
+.qt .regimg { position: relative; display: inline-block; max-width: 145mm; }
+.qt .regimg img { display: block; max-width: 145mm; max-height: 90mm; }
+.qt .rbox { position: absolute; border: 1.5px dashed #5132BD; color: #5132BD; font-weight: 700; font-size: 9pt; padding: 0 1mm; box-sizing: border-box; }
+</style></head><body>
+<section class="cover">
+  <h1>Faz 2 tekrar</h1>
+  <div class="sub">Matematik · 5. sınıf</div>
+  <div class="meta">9 soru<br>Konular: Faz 2 tekrar</div>
+  <div class="fields"><div>Ad Soyad:</div><div>Tarih:</div></div>
+</section><main>
+
+<div class="q">
+  <div class="tag">Faz 2 tekrar · Orta üstü</div>
+  <div class="head"><span class="num">1.</span><span>Metindeki fiillerin altını çiz.</span></div>
+  
+  <div class="qt qt-mark"><div class="help">Doğru kelimelerin altını çiz.</div><div class="passage">Kedi hızlı koştu ve sonra uyudu.</div></div>
+</div>
+
+<div class="q">
+  <div class="tag">Faz 2 tekrar · Orta üstü</div>
+  <div class="head"><span class="num">2.</span><span>Hatalı kelimeyi bul ve düzelt.</span></div>
+  
+  <div class="qt qt-fix"><div class="help">Hatalı kelimelerin altını çiz; doğrusunu aşağıdaki satırlara yaz.</div><div class="passage">Ben dün okula gitdim ve derse girdim.</div><div class="lines" style="margin-left:0"><div></div><div></div><div></div></div></div>
+</div>
+
+<div class="q">
+  <div class="tag">Faz 2 tekrar · Orta üstü</div>
+  <div class="head"><span class="num">3.</span><span>Hangileri asal sayıdır?</span></div>
+  
+  <div class="qt qt-multi"><div class="help">2 seçenek işaretle.</div><table><tbody><tr><td><span class="sq"></span><b>A)</b> 2</td></tr><tr><td><span class="sq"></span><b>B)</b> 4</td></tr><tr><td><span class="sq"></span><b>C)</b> 6</td></tr><tr><td><span class="sq"></span><b>D)</b> 7</td></tr></tbody></table></div>
+</div>
+
+<div class="q">
+  <div class="tag">Faz 2 tekrar · Orta üstü</div>
+  <div class="head"><span class="num">4.</span><span>Bitkiler ve ışık</span></div>
+  
+  <div class="qt qt-stage"><div class="stage"><b>1. aşama:</b> Bitki karanlıkta büyür mü?<table><tbody><tr><td><span class="ci"></span><b>A)</b> Evet</td></tr><tr><td><span class="ci"></span><b>B)</b> Hayır</td></tr></tbody></table></div><div class="stage"><b>2. aşama:</b> Neden? Açıkla.<div class="lines" style="margin-left:0"><div></div><div></div><div></div></div></div></div>
+</div>
+
+<div class="q">
+  <div class="tag">Faz 2 tekrar · Orta üstü</div>
+  <div class="head"><span class="num">5.</span><span>Şeklin 3/8’ini boya.</span></div>
+  
+  <div class="qt qt-region"><div class="help">Doğru bölgeleri boya ya da işaretle.</div><table class="grid regiongrid"><tbody><tr><td class="rcell"><span class="rl">A1</span></td><td class="rcell"><span class="rl">A2</span></td><td class="rcell"><span class="rl">A3</span></td><td class="rcell"><span class="rl">A4</span></td></tr><tr><td class="rcell"><span class="rl">B1</span></td><td class="rcell"><span class="rl">B2</span></td><td class="rcell"><span class="rl">B3</span></td><td class="rcell"><span class="rl">B4</span></td></tr></tbody></table></div>
+</div>
+
+<div class="q">
+  <div class="tag">Faz 2 tekrar · Orta üstü</div>
+  <div class="head"><span class="num">6.</span><span>Pastanın 1. ve 3. dilimini işaretle.</span></div>
+  
+  <div class="qt qt-region"><div class="help">Doğru bölgeleri boya ya da işaretle.</div><svg class="sectors" viewBox="0 0 100 100"><path d="M50,50 L50.00,4.00 A46,46 0 0 1 89.84,27.00 Z" fill="none" stroke="#4A5A6A" stroke-width="0.8"></path><text x="65.00" y="24.02" font-size="6" text-anchor="middle" fill="#5132BD">1</text><path d="M50,50 L89.84,27.00 A46,46 0 0 1 89.84,73.00 Z" fill="none" stroke="#4A5A6A" stroke-width="0.8"></path><text x="80.00" y="50.00" font-size="6" text-anchor="middle" fill="#5132BD">2</text><path d="M50,50 L89.84,73.00 A46,46 0 0 1 50.00,96.00 Z" fill="none" stroke="#4A5A6A" stroke-width="0.8"></path><text x="65.00" y="75.98" font-size="6" text-anchor="middle" fill="#5132BD">3</text><path d="M50,50 L50.00,96.00 A46,46 0 0 1 10.16,73.00 Z" fill="none" stroke="#4A5A6A" stroke-width="0.8"></path><text x="35.00" y="75.98" font-size="6" text-anchor="middle" fill="#5132BD">4</text><path d="M50,50 L10.16,73.00 A46,46 0 0 1 10.16,27.00 Z" fill="none" stroke="#4A5A6A" stroke-width="0.8"></path><text x="20.00" y="50.00" font-size="6" text-anchor="middle" fill="#5132BD">5</text><path d="M50,50 L10.16,27.00 A46,46 0 0 1 50.00,4.00 Z" fill="none" stroke="#4A5A6A" stroke-width="0.8"></path><text x="35.00" y="24.02" font-size="6" text-anchor="middle" fill="#5132BD">6</text></svg></div>
+</div>
+
+<div class="q">
+  <div class="tag">Faz 2 tekrar · Orta üstü</div>
+  <div class="head"><span class="num">7.</span><span>Haritada gölü işaretle.</span></div>
+  
+  <div class="qt qt-region"><div class="help">Doğru bölgeleri boya ya da işaretle.</div><div class="regimg"><img src="data:image/png;base64,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ZVtZw3r17Px3n7ZxBUCxBFaYa6v9Ny5ttBdaDU/WXlm9dm7+lC9iAKBoAitYG1h/uLx5+V6v4VFnD3W/eXbOM0EAaiCwxuLtla0/Xd24vmox676Ti51vnJl/aVlaAVALgTVGbWb997WNq/fqzazThzpfPzX/srQCoDICa+z+dmvrzWubH96u66Hh80e7r5ya85OCANRJYE3IlXv9v65svrWyWfbPRc92mpeX5766PHfmkDV2AOolsCaqrau3b2y+c2Pr4p3SLrTOH+l+5cTsSyfmZpUVANUTWNNxY73/7s2t9nUt80X4U0udF4/Ptq8TC8IKAB4SWFO2stZ//9bWB5/2Lt7N6U7r/OHuC091v3RsdnlRVwHA4wRWKla3Bhdu9y7c6X18p3cryR/eObbQeeZI99n2dbS7NOvnAwHgiQRWij7d6F+62756V+71r6z2BoNmKmZmmjNL3TOHOucOd88d7jw177IKAIYisFI3+OxHeK6v9tqHiStrg5vr/fHdb7V3VMcXOsuLM+2Dv5NL3VNLHfdUADACgZWf9kKrveK6vTG4s9m/uzloX+3jxbXeYL032Og1m/3BVr/p9Qf9QfPg5quNpDaUup2Z2U4z15mZ7zYL3ZnF7kz7mO/w3P3XkbnO0fmZ9oJqRk8BQATfA5mfNoPaq6ZjC+2/dhsAID22agAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwA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wAKogt12hmfb/eAEFkAV1BX74gNzQAILoHwOS/bLtvsBCSyA8jkpGYFt94MQWACFU1eMzIdnZAILoGR22zkI2+4jE1gAJVNXHJCP0GgEFkCxHI0cnG330QgsgGI5Fwlh230EAgugTOqKQD5O+yWwAApkt51Ytt33S2ABFEhdEc6Hal8EFkBpHISMg233fRFYAKVxCjImtt2HJ7AAiqKuGCsfsCEJLIBy2G1n3Gy7D0lgAZRDXTEBPmbDEFgAhXDsMRm23YchsAAK4cxjYmy770lgAZRAXTFhPnK7E1gA2bPbzuTZdt+dwALInrpiKnzwdiGwAPLmkGNabLvvQmAB5M0JxxTZdn8SgQWQMXXF1PkQ7khgAeTKbjspsO2+I4EFkCt1RSJ8FLcTWABZcqSRDtvu2wksgCw5z0iKbffHCCyA/KgrEuRj+UUCCyAzdttJk233LxJYAJlRVyTLh/NzAgsgJw4wUmbb/XMCCyAnTi8SZ9v9AYEFkA11RRZ8UBuBBZALu+3kwrZ7I7AAcqGuyIiPq8ACyIDjirzYdhdYABkQWGSn8m13gQWQOnVFpmr+6AosgKTZbSdfNW+7CyyApKkrslbtB1hgAaRLXZG7arfdBRZAugQWBahz211gASRKXVGMCj/MM5fu3GwAAIjjBgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIIJLACAYAILACCYwAIACCawAACCCSwAgGACCwAgmMACAAgmsAAAggksAIBgAgsAIJjAAgAIJrAAAIL9PwAAAP//bSCWfgAAAAZJREFUAwCghD5KyvlyxAAAAABJRU5ErkJggg==" alt="Göl ve dağ olan sentetik harita"><span class="rbox" style="left:15%;top:15%;width:20%;height:20%">A</span><span class="rbox" style="left:65%;top:60.199999999999996%;width:20%;height:20%">B</span></div><table><tbody><tr><td><span class="sq"></span><b>A)</b> Göl</td></tr><tr><td><span class="sq"></span><b>B)</b> Dağ</td></tr></tbody></table></div>
+</div>
+
+<div class="q">
+  <div class="tag">Faz 2 tekrar · Orta üstü</div>
+  <div class="head"><span class="num">8.</span><span>Saat kaçı gösteriyor?</span></div>
+  
+  <div class="qt qt-clock"><div class="help">Saat kaçı gösteriyor? Yaz.</div><svg class="clock" viewBox="0 0 100 100"><circle cx="50" cy="50" r="47" fill="none" stroke="#4A5A6A" stroke-width="1.5"></circle><text x="50.0" y="15.0" font-size="8" text-anchor="middle">12</text><text x="69.0" y="20.1" font-size="8" text-anchor="middle">1</text><text x="82.9" y="34.0" font-size="8" text-anchor="middle">2</text><text x="88.0" y="53.0" font-size="8" text-anchor="middle">3</text><text x="82.9" y="72.0" font-size="8" text-anchor="middle">4</text><text x="69.0" y="85.9" font-size="8" text-anchor="middle">5</text><text x="50.0" y="91.0" font-size="8" text-anchor="middle">6</text><text x="31.0" y="85.9" font-size="8" text-anchor="middle">7</text><text x="17.1" y="72.0" font-size="8" text-anchor="middle">8</text><text x="12.0" y="53.0" font-size="8" text-anchor="middle">9</text><text x="17.1" y="34.0" font-size="8" text-anchor="middle">10</text><text x="31.0" y="20.1" font-size="8" text-anchor="middle">11</text><line x1="50" y1="50" x2="28.7" y2="55.7" stroke="#201951" stroke-width="3" stroke-linecap="round"></line><line x1="50" y1="50" x2="50.0" y2="82.0" stroke="#201951" stroke-width="1.8" stroke-linecap="round"></line><circle cx="50" cy="50" r="1.8" fill="#201951"></circle></svg><div class="ans"><b>Saat:</b><span class="unitline"></span> : <span class="unitline"></span></div></div>
+</div>
+
+<div class="q">
+  <div class="tag">Faz 2 tekrar · Orta üstü</div>
+  <div class="head"><span class="num">9.</span><span>Grafiğe göre değerlendir.</span></div>
+  
+  <div class="qt stim"><div class="help">Okunan kitaplar</div><svg class="chart" viewBox="0 0 160 78" role="img" aria-label="Okunan kitaplar"><line x1="0" y1="70" x2="160" y2="70" stroke="#4A5A6A" stroke-width="0.4"></line><rect x="8.00" y="23.60" width="37.33" height="46.40" fill="#B9A8EE"></rect><text x="26.67" y="22.10" font-size="4" text-anchor="middle">12</text><text x="26.67" y="75" font-size="4" text-anchor="middle">3-A</text><rect x="61.33" y="12.00" width="37.33" height="58.00" fill="#B9A8EE"></rect><text x="80.00" y="10.50" font-size="4" text-anchor="middle">15</text><text x="80.00" y="75" font-size="4" text-anchor="middle">3-B</text><rect x="114.67" y="54.53" width="37.33" height="15.47" fill="#B9A8EE"></rect><text x="133.33" y="53.03" font-size="4" text-anchor="middle">4</text><text x="133.33" y="75" font-size="4" text-anchor="middle">3-C</text></svg></div><div class="qt qt-tf"><div class="help">Her ifade doğruysa D, yanlışsa Y kutusunu işaretle.</div><table class="grid"><tbody><tr><td class="lab">a)</td><td>3-B sınıfı en çok kitabı okudu.</td><td class="marks"><span class="sq"></span>D<span class="sq"></span>Y</td></tr><tr><td class="lab">b)</td><td>3-A sınıfı 10 kitap okudu.</td><td class="marks"><span class="sq"></span>D<span class="sq"></span>Y</td></tr><tr><td class="lab">c)</td><td>3-C sınıfı hiç kitap okumadı.</td><td class="marks"><span class="sq"></span>D<span class="sq"></span>Y</td></tr></tbody></table></div>
+</div></main></body></html>

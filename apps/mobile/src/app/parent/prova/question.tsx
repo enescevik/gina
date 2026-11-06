@@ -820,12 +820,14 @@ export default function QuestionScreen() {
                       />
                     )
                     : (
-                      <Phase2QuestionPreview
-                        type={authored.type}
-                        payload={content.payload}
-                        answerKey={showKey ? content.answer_key : undefined}
-                        image={images[0]?.file.uri ?? null}
-                      />
+                      <View testID="qt-preview">
+                        <Phase2QuestionPreview
+                          type={authored.type}
+                          payload={content.payload}
+                          answerKey={showKey ? content.answer_key : undefined}
+                          image={images[0]?.file.uri ?? null}
+                        />
+                      </View>
                     )}
                   <Toggle label={t("prova.qt.author.preview.showKey")} value={showKey} onChange={setShowKey} />
                 </>
