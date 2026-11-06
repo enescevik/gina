@@ -57,4 +57,3 @@ begin
 end; $$;
 revoke all on function public.admin_ai_policy_matrix() from public, anon;
 grant execute on function public.admin_ai_policy_matrix() to authenticated;
-
