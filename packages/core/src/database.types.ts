@@ -2912,6 +2912,23 @@ isOneToOne: false
 "appeal_cohort_review":
 { Args: { "p_child": string,"p_group": string,"p_ord": number,"p_reason": string,"p_request": string,"p_review_revision": number }; Returns: Json
                            },
+"apple_revocation_begin":
+{ Args: { "p_allow_without_token"?: boolean,"p_apple_sub": string,"p_client_id"?: string,"p_request_id": string,"p_token_ciphertext"?: string,"p_token_type"?: string,"p_user_id": string }; Returns: Json
+                           },
+"apple_revocation_claim":
+{ Args: { "p_limit"?: number }; Returns: {
+              "apple_sub": string,"attempts": number,"client_id": string,"job_id": string,"token_ciphertext": string,"token_type": string
+            }[]
+                           },
+"apple_revocation_mark_deleted":
+{ Args: { "p_job_id": string }; Returns: undefined
+                           },
+"apple_revocation_record":
+{ Args: { "p_error"?: string,"p_job_id": string,"p_outcome": string }; Returns: string
+                           },
+"apple_token_store":
+{ Args: { "p_apple_sub": string,"p_client_id": string,"p_token_ciphertext": string,"p_token_type": string,"p_user_id": string }; Returns: undefined
+                           },
 "apply_ai_grades":
 { Args: { "p_attempt_id": string,"p_grades": Json,"p_summary"?: Json }; Returns: {
               "ai_feedback": Json | null,

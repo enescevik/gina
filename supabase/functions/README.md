@@ -12,8 +12,13 @@
 | `google-rtdn` | Google Play RTDN (Pub/Sub push) alıcısı; aynı akış | `supabase functions deploy google-rtdn --no-verify-jwt` |
 | `content-prereview` | E01: kütüphane taslağı / katkı kopyası / MEB senaryo adayı için AI ön inceleme. Yönetici JWT ile (`request_content_prereview` RPC yetkiyi kanıtlar ve kaydı kuyruğa alır) veya `x-cron-secret: CONTENT_PREREVIEW_SECRET` ile `{"drain":true}`. Normalize içerik modele gider; çıktı şemayla doğrulanır; güven ≥ 0,85 ve engelleyici bulgu yoksa `ai_approved` (yayın değil), aksi `needs_admin` + yönetici outbox bildirimi. Kapı: `app_settings content_prereview.enabled` (varsayılan kapalı), plan: `content_prereview.plan` (varsayılan `pro`); `ai.enabled`/`ai_settings`/`ai_models` kill switch'leri geçerli. Üretime dağıtılmadı. | `supabase functions deploy content-prereview --no-verify-jwt` |
 | `curriculum-source-fetch` | Yönetici (admin JWT) için sunucuda resmî ÖDSGM dizininden ders dosyasını indirir: host/IP doğrulamalı yönlendirme, 15 s / 5 MB, ZIP dizin denetimi, SHA-256 ve URL zinciri ile `record_curriculum_source_fetch` makbuzu. Aynı hash yeni iş açmaz; yeni hash fark incelemesi bekler. Katalog yayımlamaz, okul senaryosu seçmez (bkz. docs/learning/MEB-SCENARIO-PROTOCOL.md) | `supabase functions deploy curriculum-source-fetch` |
+| `delete-account` | Doğrulanmış hesabı siler (şifre / e-posta OTP / Apple yeniden doğrulaması). H01: Apple bağlı hesapta silmeden önce kalıcı iptal işi açar, Apple `/auth/revoke` çağırır; Apple erişilemezse iş `pending` kalır ve yanıt `apple_revocation` ile dürüst durum verir (bkz. docs/release/h01-2026-11-06) | `supabase functions deploy delete-account` |
+| `apple-token` | H01: Apple ile girişten sonra iOS yetkilendirme kodunu / web-Android sağlayıcı yenileme belirtecini Apple'da doğrulayıp şifreli saklar; değer istemciye dönmez | `supabase functions deploy apple-token` |
+| `apple-revocation-worker` | H01: pg_cron (15 dk) ile bekleyen Apple iptal işlerini yeniden dener. `x-cron-secret: APPLE_REVOCATION_SECRET` | `supabase functions deploy apple-revocation-worker --no-verify-jwt` |
 
 Gerekli secrets (`supabase secrets set …`; değerleri yalnız Enes girer):
+
+- H01 Apple ile Giriş iptali: `APPLE_TEAM_ID`, `APPLE_SIGNIN_KEY_ID`, `APPLE_SIGNIN_PRIVATE_KEY` (Sign in with Apple `.p8` içeriği), `APPLE_SERVICES_ID`, `APPLE_BUNDLE_ID` (aşağıdaki), `APPLE_TOKEN_ENCRYPTION_KEY` (32 bayt base64), `APPLE_REVOCATION_SECRET`; Vault: `project_url`, `apple_revocation_secret`
 
 - `APPLE_IAP_KEY_ID`, `APPLE_IAP_ISSUER_ID`, `APPLE_IAP_KEY_P8` — App Store Connect → Integrations → In-App Purchase anahtarı
 - `APPLE_BUNDLE_ID` = `com.enescevik.gina`
