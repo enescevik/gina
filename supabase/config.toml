@@ -480,6 +480,11 @@ verify_jwt = true
 [functions.curriculum-source-extract]
 verify_jwt = true
 
+# Scheduled calls authenticate with CONTENT_PREREVIEW_SECRET inside the handler.
+# User calls still require auth.getUser plus the content-role RPC; users cannot drain/pilot.
+[functions.content-prereview]
+verify_jwt = false
+
 # C10: RFC 8058 one-click unsubscribe. Mail clients send no JWT; the HMAC-signed, expiring,
 # single-use token is verified in the database (channel_one_click_unsubscribe, service role only).
 [functions.channel-unsubscribe]
