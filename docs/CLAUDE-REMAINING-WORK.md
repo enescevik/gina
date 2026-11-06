@@ -4,6 +4,10 @@
 
 Önceki liste [tarihsel arşive](CLAUDE-REMAINING-WORK-ARCHIVE-2026-11-06.md) taşındı. Eski C/D/K/R/WORLD kartları bu kapsamı genişletmez. Eski gece saati ve kota hedefi geçerli değildir.
 
+## Yeni onaylı ek kapsam: Prova soru türleri
+
+[Soru türleri planı](learning/PROVA-QUESTION-TYPES-PLAN.md) QT00–QT51 fazları artık ayrı geliştirme kapsamıdır. H00–H08 iptal olmaz; kritik mevcut kusurlar önce, bağımsız işler paralel. H08 düzeltme yayını yeni türlerin bütün fazlarını beklemez. Kütüphane içerik üretimi ve 3B dünya yine kapsam dışıdır.
+
 ## 1. Son kullanıcı kararı ve sınırlar
 
 - **Kütüphane içerik üretimi Claude kapsamından çıkarıldı.** Kullanıcı kütüphaneyi backoffice üzerinden yönetecek. K01 toplu soru üretimi, havuzu doldurma, soru onayı/yayını ve X06 editör organizasyonu bu teslimde yok.
