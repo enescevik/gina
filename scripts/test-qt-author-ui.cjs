@@ -94,6 +94,8 @@ async function setupStack() {
   proxy = http.createServer((req, res) => {
     const cors = { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*', 'access-control-expose-headers': '*' };
     if (req.method === 'OPTIONS') { res.writeHead(204, cors); res.end(); return; }
+    // QT-AI: Edge Function yerine yerel sahte uç (gerçek AI sağlayıcısı ÇAĞRILMAZ).
+    if (req.url.startsWith('/functions/v1/')) { mockFunction(req, res, cors); return; }
     const route = [['/auth/v1', authPort], ['/rest/v1', restPort]].find(([p]) => req.url === p || req.url.startsWith(p + '/'));
     if (!route) { res.writeHead(404, cors); res.end(); return; }
     const up = http.request({ hostname: '127.0.0.1', port: route[1], path: req.url.slice(route[0].length) || '/', method: req.method, headers: req.headers }, (r) => { res.writeHead(r.statusCode, { ...r.headers, ...cors }); r.pipe(res); });
@@ -102,6 +104,44 @@ async function setupStack() {
   proxy.on('upgrade', (_req, socket) => socket.destroy());
   await new Promise((r) => proxy.listen(0, '127.0.0.1', r));
   return { url: `http://127.0.0.1:${proxy.address().port}`, anon: jwt('anon', secret), service: jwt('service_role', secret) };
+}
+
+// ---------- mocked prova-generate (no provider; rows written with the same SQL helper the Edge path uses) ----------
+const aiRequests = [];
+const PRACTICE = new Set(['true_false', 'fill_blank', 'matching', 'ordering', 'classification']);
+const MOCK_ROWS = {
+  true_false: { stem: 'AI: Isı ile ilgili ifadeleri değerlendir.', payload: { statements: [{ id: 's1', text: 'Isı bir enerji türüdür.' }, { id: 's2', text: 'Buz ısı alınca donar.' }, { id: 's3', text: 'Sıcak çay zamanla soğur.' }] }, answer_key: { answers: { s1: true, s2: false, s3: true } } },
+  matching: { stem: 'AI: Maddeleri hâlleriyle eşleştir.', payload: { left: [{ id: 'l1', text: 'Buz' }, { id: 'l2', text: 'Su buharı' }], right: [{ id: 'r1', text: 'Katı' }, { id: 'r2', text: 'Gaz' }, { id: 'r3', text: 'Plazma' }], policy: 'one_to_one' }, answer_key: { pairs: { l1: 'r1', l2: 'r2' } } },
+  numeric: { stem: 'AI: 3/4 litre kaç mililitredir?', payload: { units: [{ id: 'ml', text: 'mL' }, { id: 'l', text: 'L' }], unit_required: true, work_area: false }, answer_key: { value: '750', unit: 'ml', unit_factors: { ml: 1, l: 1000 } } },
+};
+function mockFunction(req, res, cors) {
+  let raw = ''; req.on('data', (c) => { raw += c; });
+  req.on('end', () => {
+    const reply = (status, body) => { res.writeHead(status, { ...cors, 'content-type': 'application/json' }); res.end(JSON.stringify(body)); };
+    try {
+      assert.ok(req.url.startsWith('/functions/v1/prova-generate'), 'unexpected function ' + req.url);
+      const body = JSON.parse(raw); aiRequests.push({ body, keys: Object.keys(body).sort() });
+      const types = body.interaction_types;
+      const written = body.assessment === 'written' || body.draft_id === S.mockWrittenDraft;
+      if (types && written && types.some((x) => PRACTICE.has(x) || x === 'multiple_choice')) return reply(400, { code: 'interaction_type_not_allowed_for_track', error: 'interaction_type_not_allowed_for_track' });
+      if (types && body.draft_id === S.mockUnsupportedDraft) return reply(503, { code: 'ai_model_unsupported', error: 'ai_model_unsupported' });
+      const questions = [];
+      for (let i = 0; i < body.count; i++) {
+        const id = randomUUID();
+        const type = types ? types.filter((x) => MOCK_ROWS[x])[i % types.filter((x) => MOCK_ROWS[x]).length] : null;
+        if (type) {
+          const r = MOCK_ROWS[type];
+          const row = { grade: body.grade, subject: body.subject, topic: body.topic_plan[0].topic, difficulty: body.difficulty, stem: r.stem, interaction_type: type, schema_version: 1, payload: r.payload, answer_key: r.answer_key, solution: 'AI çözüm açıklaması.' };
+          sql(`select gina.qt_insert_structured('${id}','${S.family}',${lit(JSON.stringify(row))}::jsonb,'{"generator":"ai","model":"mock"}'::jsonb,'${S.parent}');`);
+          questions.push({ id, topic: row.topic, kind: 'structured', difficulty: row.difficulty, stem: row.stem, choices: null, correct_key: null, expected_answer: null, solution: row.solution, explanation: null, source_urls: [], interaction_type: type, schema_version: 1, payload: r.payload, answer_key: r.answer_key });
+        } else {
+          sql(`insert into public.question_bank(id,family_id,grade,subject,topic,kind,difficulty,stem,expected_answer,solution,provenance,created_by) values('${id}','${S.family}',${body.grade},${lit(body.subject)},${lit(body.topic_plan[0].topic)},'open_ended',${lit(body.difficulty)},'AI: Isı nedir? Açıkla.','Enerji aktarımı','Açıklama','{"generator":"ai","model":"mock"}','${S.parent}');`);
+          questions.push({ id, topic: body.topic_plan[0].topic, kind: 'open_ended', difficulty: body.difficulty, stem: 'AI: Isı nedir? Açıkla.', choices: null, correct_key: null, expected_answer: 'Enerji aktarımı', solution: 'Açıklama', explanation: null, source_urls: [] });
+        }
+      }
+      reply(200, { ok: true, model: 'mock', prompt_version: 'qt-mock', remaining: 20, questions });
+    } catch (e) { reply(500, { code: 'mock_failed', error: String(e.message).slice(0, 200) }); }
+  });
 }
 
 // ---------- synthetic accounts ----------
@@ -282,6 +322,8 @@ async function authorAll(page, WEB) {
   A.child = randomUUID();
   sql(`update public.plans set prova_monthly_exams=null where code='free'; insert into public.children(id,family_id,name,grade) values('${A.child}','${A.family}','Ece',5);`);
   const token = await login(A); // refreshed claims (family)
+  S.family = A.family; S.parent = A.id;
+  sql(`update public.plans set prova_ai_generate_monthly=20 where code='free';`);
 
   stage = 'export';
   const dist = path.join(work, 'web-' + DB.slice(10, 26));
@@ -417,7 +459,62 @@ async function authorAll(page, WEB) {
   assert.equal(overflow, 0);
   pass('booklet_student_and_private_key_separate_pdf_turkish_fonts', pdfInfo);
 
-  // 5) Same key screens at every viewport.
+  // 5) AI generation with type choice (mocked Edge endpoint; no provider). Body without a choice keeps the old keys.
+  stage = 'ai';
+  const aiDraft = async (purpose, title) => {
+    const id = randomUUID();
+    const r = await rpc(token, 'save_prova_draft', { p_request_id: randomUUID(), p_id: id, p_version: 0, p_content: { childId: A.child, grade: 5, title, purpose, format: 'practice', subjects: ['Fen'], topics: ['Isı'], target: 3, minutes: null, difficulty: 'orta', kind: purpose === 'written' ? 'open_ended' : 'mixed', note: '', step: 2, blocks: [],
+      context: { scope: 'subject', track: 'free', term: null, program: null, academicYear: null, periodId: null, school: null, schoolDeclared: false } } });
+    assert.ok(r.ok, 'ai draft ' + JSON.stringify(r.data).slice(0, 200)); return id;
+  };
+  const openAi = async (id) => {
+    await phone.goto(`${WEB}/parent/prova/builder?draftId=${id}`);
+    await button(phone, t('provaBuilder.addQuestions')).click();
+    await button(phone, t('provaBuilder.ai')).click();
+    await phone.getByTestId('qt-ai-types').waitFor();
+  };
+  const legacyKeys = ['assessment', 'blueprint_id', 'count', 'difficulty', 'draft_id', 'grade', 'kind', 'locale', 'note', 'request_id', 'subject', 'topic_plan'];
+  // a) written purpose: only open-ended + numeric selectable; no choice → old request body.
+  const written = await aiDraft('written', 'Yazılı AI');
+  await openAi(written);
+  await phone.getByTestId('qt-ai-types-written').waitFor();
+  assert.equal(await button(phone.getByTestId('qt-ai-types'), t('prova.qt.author.type.true_false')).isDisabled(), true);
+  assert.equal(await button(phone.getByTestId('qt-ai-types'), t('prova.qt.author.type.numeric')).isDisabled(), false);
+  await shot(phone, 'ai-types-written', 'qt-ai-types');
+  await button(phone, t('provaBuilder.generate')).click();
+  await phone.getByText(t('generationRecovery.question', { n: 1 }), { exact: true }).waitFor();
+  assert.deepEqual(aiRequests.at(-1).keys, legacyKeys, 'request without a type choice must keep the legacy body');
+  // b) model without JSON-schema support → friendly text (mock answers like the server's ai_model_unsupported).
+  S.mockUnsupportedDraft = await aiDraft('practice', 'Model AI');
+  await openAi(S.mockUnsupportedDraft);
+  await button(phone.getByTestId('qt-ai-types'), t('prova.qt.author.type.numeric')).click();
+  await button(phone.getByTestId('qt-ai-types'), t('prova.qt.author.type.true_false')).click();
+  await button(phone, t('provaBuilder.generate')).click();
+  await phone.getByText(t('prova.qt.author.aiErr.ai_model_unsupported'), { exact: true }).waitFor();
+  assert.deepEqual(aiRequests.at(-1).body.interaction_types, ['true_false', 'numeric'], 'canonical order');
+  await shot(phone, 'ai-model-unsupported');
+  // c) practice: three structured types → rows with key preview → added → assigned.
+  const practiceAi = await aiDraft('practice', 'AI etkileşimli');
+  await openAi(practiceAi);
+  for (const ty of ['true_false', 'matching', 'numeric']) await button(phone.getByTestId('qt-ai-types'), t('prova.qt.author.type.' + ty)).click();
+  await shot(phone, 'ai-types-practice', 'qt-ai-types');
+  await button(phone, t('provaBuilder.generate')).click();
+  await phone.getByText(t('generationRecovery.question', { n: 3 }), { exact: true }).waitFor();
+  assert.deepEqual(aiRequests.at(-1).body.interaction_types, ['true_false', 'matching', 'numeric']);
+  assert.equal(await phone.getByTestId('builder-qt-preview').count(), 3, 'structured AI rows render with the structured preview');
+  await phone.getByText('750', { exact: true }).first().waitFor(); // numeric key shown from the returned answer_key
+  await shot(phone, 'ai-structured-results', 'builder-qt-preview');
+  for (const n of [1, 2, 3]) await button(phone, t('generationRecovery.question', { n })).click();
+  await button(phone, t('provaBuilder.addSelected')).click();
+  for (let i = 0; i < 40 && sql(`select jsonb_array_length(content->'blocks') from public.prova_drafts where id='${practiceAi}';`) !== '3'; i++) await phone.waitForTimeout(250);
+  assert.equal(sql(`select jsonb_array_length(content->'blocks') from public.prova_drafts where id='${practiceAi}';`), '3');
+  const v = Number(sql(`select version from public.prova_drafts where id='${practiceAi}';`));
+  const sent = await rpc(token, 'submit_prova_draft', { p_request_id: randomUUID(), p_id: practiceAi, p_version: v });
+  assert.ok(sent.ok, 'submit ai draft ' + JSON.stringify(sent.data).slice(0, 200));
+  assert.equal(sql(`select count(*) from gina.exam_item_bindings b join public.question_bank q on q.id=b.question_id where b.exam_id='${practiceAi}' and q.kind='structured';`), '3');
+  pass('ai_type_choice_written_limit_errors_and_structured_rows_assigned', { requests: aiRequests.map((r) => r.body.interaction_types ?? null) });
+
+  // 6) Same key screens at every viewport.
   stage = 'viewports';
   for (const size of ['narrow', 'tablet', 'desktop']) {
     const page = await newPage(size); await signIn(page, A, WEB);
