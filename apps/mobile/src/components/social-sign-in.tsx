@@ -4,45 +4,15 @@ import {router} from 'expo-router';
 import {useTranslation} from 'react-i18next';
 import {Platform,Text,View,Image,ActivityIndicator} from 'react-native';
 import * as Apple from 'expo-apple-authentication';
-import {classifyServerError} from '@gina/core';
+import {authIssueKey,classifyAuthIssue,type AuthIssue} from '@gina/core';
 import {availableSocialProviders,signInSocial} from '@/lib/social-auth';
 import {Button} from './ui/button';
 import {Pressable} from './ui/pressable';
 import {Toggle} from './ui/toggle';
 import {parentStyles} from './ui/parent-screen';
 
-/** U01: one user-facing reason per auth failure; the next action depends on it. */
-export type AuthIssue='cancelled'|'expired'|'other_device'|'offline'|'session_expired'|'rate_limited'|'invalid_login'|'email_not_confirmed'|'weak_password'|'service'|'failed';
-
-/** Maps Supabase Auth errors and redirect params (`error`, `error_code`) onto U08 categories, then auth-specific reasons. */
-export function classifyAuthIssue(input:unknown):AuthIssue{
- const detail=typeof input==='object'&&input!==null?input as {code?:unknown;status?:unknown;name?:unknown;message?:unknown;error?:unknown;error_code?:unknown}:{};
- const code=String(detail.error_code??detail.code??'').toLowerCase();
- const error=String(detail.error??'').toLowerCase();
- const message=String(detail.message??(typeof input==='string'?input:'')).toLowerCase();
- const name=String(detail.name??'');
- if(/otp_expired|flow_state_expired/.test(code))return 'expired';
- if(/flow_state_not_found|bad_code_verifier|code verifier|pkce/.test(code+' '+message))return 'other_device';
- if(error==='access_denied')return 'cancelled';
- if(/invalid_credentials|invalid login credentials/.test(code+' '+message))return 'invalid_login';
- if(/email_not_confirmed/.test(code+' '+message))return 'email_not_confirmed';
- if(/weak_password|same_password/.test(code))return 'weak_password';
- if(/refresh_token_not_found|refresh_token_already_used|session_not_found|session_expired|pgrst301/.test(code)||/jwt expired/.test(message))return 'session_expired';
- const network=name==='AuthRetryableFetchError'||/network|failed to fetch|fetch failed|timeout|abort/.test(message);
- const safeCode=/^[a-z][a-z0-9_]{0,63}$/.test(code)?code:undefined;
- const status=typeof detail.status==='number'&&detail.status>0?detail.status:null;
- const classified=classifyServerError({code:safeCode,status,network});
- if(classified.category==='offline')return 'offline';
- if(classified.category==='rate_limited'||/over_email_send_rate_limit|over_request_rate_limit/.test(code))return 'rate_limited';
- if(classified.category==='session_expired')return 'session_expired';
- if(classified.category==='service_unavailable'&&status!==null)return 'service';
- return 'failed';
-}
-
-/** i18n key for an auth issue; existing copy is reused where it already says the right thing. */
-export function authIssueKey(issue:AuthIssue){
- return ({cancelled:'u01.cancelled',expired:'u01.linkExpired',other_device:'u01.otherDevice',offline:'release.networkError',session_expired:'u01.sessionExpired',rate_limited:'unified.errorRate',invalid_login:'auth.invalidLogin',email_not_confirmed:'unified.errorEmail',weak_password:'unified.errorPassword',service:'u01.serviceDown',failed:'experience.social.failed'} as const)[issue];
-}
+/** U01: one user-facing reason per auth failure; the next action depends on it. Logic lives in core (tested). */
+export {classifyAuthIssue,authIssueKey,type AuthIssue} from '@gina/core';
 
 export function AuthIssueText({issue}:{issue:AuthIssue|null}){
  const {t}=useTranslation();

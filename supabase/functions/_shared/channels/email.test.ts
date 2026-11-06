@@ -1,7 +1,7 @@
 // Fake servers only: an HTTP endpoint standing in for Resend and a plaintext TCP SMTP server.
 // Requires --allow-net=127.0.0.1. No real provider, no real mailbox, no env secrets.
 import { assert, assertEquals, assertMatch } from "jsr:@std/assert";
-import { emailAdapterFromEnv, resendAdapter, smtpAdapter } from "./email.ts";
+import { emailAdapterFromEnv, parseSender, resendAdapter, smtpAdapter } from "./email.ts";
 import type { OutboundEmail } from "./contract.ts";
 
 const message: OutboundEmail = {
@@ -92,7 +92,7 @@ Deno.test("resend: connection refused is a retryable network error", async () =>
 
 // SMTP ---------------------------------------------------------------------------------------------
 
-type Scenario = "accept" | "rcpt_450" | "rcpt_550" | "auth_535" | "hang";
+type Scenario = "accept" | "rcpt_450" | "rcpt_550" | "auth_535" | "hang" | "drop_after_data" | "data_451";
 async function fakeSmtp(scenario: Scenario) {
   const listener = Deno.listen({ hostname: "127.0.0.1", port: 0 });
   const transcript: string[] = [];
@@ -115,7 +115,12 @@ async function fakeSmtp(scenario: Scenario) {
               data = buf.slice(0, end);
               buf = buf.slice(end + 5);
               inData = false;
-              await conn.write(enc.encode("250 2.0.0 Ok: queued as FAKE123\r\n"));
+              if (scenario === "drop_after_data") {
+                // The relay queued the message but the reply never reaches the client.
+                conn.close();
+                return;
+              }
+              await conn.write(enc.encode(scenario === "data_451" ? "451 4.3.0 queue full\r\n" : "250 2.0.0 Ok: queued as FAKE123\r\n"));
               continue;
             }
             const nl = buf.indexOf("\r\n");
@@ -168,7 +173,7 @@ Deno.test("smtp: accepted message carries headers, base64 body, dot-stuffing and
     assertEquals(s.transcript.filter((l) => l.startsWith("RCPT")), ["RCPT TO:<parent@example.invalid>"]);
     assertMatch(s.data, /Subject: =\?UTF-8\?B\?/);
     assertMatch(s.data, /List-Unsubscribe-Post: List-Unsubscribe=One-Click/);
-    assertMatch(s.data, /Message-ID: <gina-channel-42@gina\.local>/);
+    assertMatch(s.data, /Message-ID: <gina-channel-42@example\.invalid>/);
     assertMatch(s.data, /Content-Transfer-Encoding: base64/);
     assert(!s.transcript.some((l) => l.includes("secret")), "password never appears in clear");
   } finally {
@@ -192,6 +197,45 @@ Deno.test("smtp: 4xx is retry, 5xx and bad credentials are permanent, hang is a 
     assert(!r.ok && r.retry && r.error === "smtp:timeout", JSON.stringify(r));
   } finally {
     await h.close();
+  }
+});
+
+Deno.test("smtp: reply lost after the message was handed over is permanent (no second copy); 4xx after DATA retries", async () => {
+  const lost = await fakeSmtp("drop_after_data");
+  try {
+    const r = await smtp(lost.port).send(message);
+    assert(!r.ok && r.retry === false && r.error === "smtp:end_of_data_unknown", JSON.stringify(r));
+    assert(lost.data.includes("Subject:"), "the relay did receive the message once");
+  } finally {
+    await lost.close();
+  }
+  const busy = await fakeSmtp("data_451");
+  try {
+    const r = await smtp(busy.port).send(message);
+    assert(!r.ok && r.retry === true && r.error === "smtp:end_of_data_451", JSON.stringify(r));
+  } finally {
+    await busy.close();
+  }
+});
+
+Deno.test("smtp: display-name sender uses the bare envelope address; header injection is refused before connecting", async () => {
+  const s = await fakeSmtp("accept");
+  try {
+    const r = await smtp(s.port).send({ ...message, from: "GINA Bildirim <bildirim@example.invalid>" });
+    assert(r.ok, JSON.stringify(r));
+    assertEquals(s.transcript.filter((l) => l.startsWith("MAIL FROM")), ["MAIL FROM:<bildirim@example.invalid>"]);
+    assertMatch(s.data, /^From: GINA Bildirim <bildirim@example\.invalid>\r$/m);
+  } finally {
+    await s.close();
+  }
+  assertEquals(parseSender("GİNA <a@example.invalid>")?.header, "=?UTF-8?B?R8SwTkE=?= <a@example.invalid>");
+  assertEquals(parseSender("a@example.invalid"), { envelope: "a@example.invalid", header: "a@example.invalid", domain: "example.invalid" });
+  assertEquals(parseSender("x\r\nBcc: v@example.invalid"), null);
+  assertEquals(parseSender("not-an-address"), null);
+  // No server is listening on port 9: an invalid address must fail before any connection attempt.
+  for (const bad of [{ from: "a@example.invalid\r\nBcc: v@example.invalid" }, { to: "p@example.invalid>\r\nRCPT TO:<v@example.invalid" }]) {
+    const r = await smtp(9).send({ ...message, ...bad });
+    assert(!r.ok && r.retry === false && r.error === "smtp:invalid_address", JSON.stringify(r));
   }
 });
 
