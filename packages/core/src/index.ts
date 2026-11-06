@@ -81,9 +81,12 @@ export * from "./period-transfer";
 export * from "./bulk-archive";
 export * from "./deletion-preview";
 export * from "./ai-capabilities";
+export * from "./ai-usage";
 export * from "./shared-limits";
 export * from "./library-lifecycle";
 
 export * from "./plan-history";
 export * from "./admin-workqueue";
 export * from "./subject-synonyms";
+export * from "./task-review";
+export * from "./bulk-scope";

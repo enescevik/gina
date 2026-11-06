@@ -4,6 +4,7 @@ import {
   recoverGeneration,
 } from "./generation-result.ts";
 import { serviceClient } from "./supabase.ts";
+import { isContractBody } from "./error-contract.ts";
 const parent = { familyId: "family", userId: "actor" };
 const context: GenerationContext = {
   schema: "gina.generation-context.v1",
@@ -113,7 +114,10 @@ for (
     const response = await recoverGeneration(f.db, parent, "id", {});
     assert(response);
     assertEquals(response.status, 409);
-    assertEquals(await response.json(), { error });
+    // C08: ortak sözleşme gövdesi; eski `error` alanı aynı kod.
+    const body = await response.json();
+    assertEquals(body.error, error);
+    assert(isContractBody(body));
     assertEquals(f.calls.length, 1);
   });
 }
@@ -153,7 +157,7 @@ Deno.test("check-only unknown request cannot fall through to paid generation", a
   const response = await recoverGeneration(f.db, parent, "id", {}, true);
   assert(response);
   assertEquals(response.status, 409);
-  assertEquals(await response.json(), { error: "generation_not_started" });
+  assertEquals((await response.json()).error, "generation_not_started");
   assertEquals(f.calls.length, 1);
 });
 

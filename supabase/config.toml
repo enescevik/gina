@@ -468,3 +468,8 @@ verify_jwt = true
 
 [functions.curriculum-source-fetch]
 verify_jwt = true
+
+# C10: RFC 8058 one-click unsubscribe. Mail clients send no JWT; the HMAC-signed, expiring,
+# single-use token is verified in the database (channel_one_click_unsubscribe, service role only).
+[functions.channel-unsubscribe]
+verify_jwt = false

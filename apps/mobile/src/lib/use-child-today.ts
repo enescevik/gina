@@ -10,7 +10,9 @@ import {
   templatesForPlanDay,
   weekDatesOf,
   localDateOf,
+  readReturnReason,
   type CompletionStatus,
+  type TaskReturnReason,
   type DayPlan,
 } from "@gina/core";
 
@@ -31,6 +33,8 @@ export interface ChildTodayData {
     status: CompletionStatus | null;
     completionId: string | null;
     available: boolean;
+    /** C03: geri gönderme nedeni (yalnız geri gönderilmiş gönderimde). */
+    returned?: { reason: TaskReturnReason; note: string | null } | null;
   }[];
   /** Hafta günleri → o gün düşen görev sayısı ve biten (done+approved) sayısı. */
   weekSummary: { date: string; due: number; done: number }[];
@@ -94,7 +98,7 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_completions")
-        .select("id, template_id, due_date, status, task_snapshot")
+        .select("id, template_id, due_date, status, task_snapshot, return_reason, return_note")
         .eq("child_id", childId)
         .gte("due_date", from)
         .lte("due_date", to);
@@ -158,6 +162,7 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
       stars: t.stars,
       status: (completion?.status ?? null) as CompletionStatus | null,
       completionId: completion?.id ?? null,
+      returned: completion?.status === "returned" ? readReturnReason(completion) : null,
     };
   });
 

@@ -14,7 +14,8 @@ type Deps = {
   db: SupabaseClient;
   /** `parentOrResponse`: sözleşmeli 401/403 yanıtı aynen döner; null eski çağıranlar için `forbidden`. */
   parent: (r: Request) => Promise<ParentContext | Response | null>;
-  key: () => string | Response;
+  /** C08: bağlamdaki çözülmüş adapter'a göre secret adı (Anthropic sabiti yok). */
+  key: (config?: Pick<AiConfig, "adapter">) => string | Response;
   resolve?: typeof resolveAi;
   document?: typeof provaDocument;
   run?: typeof runAiOperation;
@@ -102,7 +103,7 @@ export async function handleLearningPlanImport(
       return fail("ai_result_invalid", 502);
     }
   }
-  const key = deps.key();
+  const key = deps.key(c.config as AiConfig);
   if (key instanceof Response) return key;
   const document = await (deps.document ?? provaDocument)(
     db,

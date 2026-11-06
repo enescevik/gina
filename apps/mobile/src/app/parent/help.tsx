@@ -20,6 +20,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { HelpAttachments } from "@/components/help/help-attachments";
 import {
   ArrowLeft,
   ChevronDown,
@@ -273,6 +274,18 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
     refetchInterval: interval,
     refetchIntervalInBackground: false,
   });
+  // C03: reply tracking — per parent, only family-visible support replies count (team notes never).
+  const updates = useQuery({
+    queryKey: ["help", family, "updates"],
+    refetchInterval: interval,
+    refetchIntervalInBackground: false,
+    queryFn: async () => {
+      const { data, error } = await (supabase.rpc as unknown as (fn: string) => PromiseLike<{ data: unknown; error: unknown }>)("help_ticket_updates");
+      if (error) throw error;
+      return new Map((Array.isArray(data) ? data as { id: string; unread: boolean; last_support_sequence: number | null; last_seen_sequence: number | null }[] : []).map((row) => [row.id, row]));
+    },
+  });
+  const unreadCount = [...(updates.data?.values() ?? [])].filter((row) => row.unread).length;
   const current = thread.data?.pages[0];
   const messages = [
     ...new Map(
@@ -284,6 +297,18 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
   const rows = [
     ...new Map(tickets.data?.pages.flat().map((row) => [row.id, row])).values(),
   ];
+  // Opening a thread marks the newest loaded support reply as seen (monotonic on the server).
+  const newestSupport = Math.max(0, ...messages.filter((m) => m.author_role === "support").map((m) => m.sequence));
+  const seen = ticket ? updates.data?.get(ticket)?.last_seen_sequence ?? 0 : 0;
+  const { refetch: refetchUpdates } = updates;
+  useEffect(() => {
+    if (!ticket || !current || current.id !== ticket || newestSupport <= seen) return;
+    let alive = true;
+    void (supabase.rpc as unknown as (fn: string, args: Record<string, unknown>) => PromiseLike<{ error: unknown }>)(
+      "mark_help_ticket_read", { p_ticket_id: ticket, p_sequence: newestSupport },
+    ).then(({ error }) => { if (alive && !error) void refetchUpdates(); });
+    return () => { alive = false; };
+  }, [ticket, current, newestSupport, seen, refetchUpdates]);
   const locked = busy || !!pending || storageError;
   const go = (action: () => void) => {
     if (busy) return;
@@ -483,6 +508,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
                 <Text selectable style={b.copy}>{m.body}</Text>
               </View>
             ))}
+            <HelpAttachments ticketId={current.id} closed={current.status === "closed"} />
             {current.status === "closed" || current.status === "resolved"
               ? (
                 <View style={s.callout}>
@@ -536,9 +562,12 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
   const list = (
     <View style={[s.card, wide && { width: 320, minHeight: 620 }]}>
       <View style={s.row}>
-        <Text accessibilityRole="header" style={[b.h2, { flex: 1 }]}>
-          {t("help.tickets")}
-        </Text>
+        <View style={{ flex: 1 }}>
+          <Text accessibilityRole="header" style={b.h2}>
+            {t("help.tickets")}
+          </Text>
+          {unreadCount ? <Text testID="help-unread-count" accessibilityLiveRegion="polite" style={s.small}>{t("c03.help.unreadCount", { count: unreadCount })}</Text> : null}
+        </View>
         {textAction(t("help.new"), () => create("support"), !!pending)}
       </View>
       {tickets.isPending
@@ -568,6 +597,7 @@ function HelpWorkspace({ user, family }: { user: string; family: string }) {
             <Text style={s.small}>{t(`help.kind.${row.kind}`)}</Text>
             <Text style={b.bold}>{row.subject}</Text>
             {status(row.status)}
+            {updates.data?.get(row.id)?.unread ? <Text testID={"help-new-reply-" + row.id} style={[s.small, { color: p.purple, fontFamily: "Nunito_700Bold" }]}>{t("c03.help.newReply")}</Text> : null}
           </Pressable>
         ))}
       {tickets.hasNextPage && (

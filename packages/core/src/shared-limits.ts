@@ -51,6 +51,10 @@ export const ERROR_CODE_RULES: Readonly<Record<string, Rule>> = {
   forbidden: rule("permission_denied"),
   source_not_available: rule("permission_denied"),
   plan_has_no_ai: rule("permission_denied"),
+  // C08: paket kapıları ve AI önerisi onayı
+  plan_has_no_ai_grading: rule("permission_denied"),
+  plan_has_no_study_plan: rule("permission_denied"),
+  plan_limit_prova_scenarios: rule("permission_denied"),
   source_cleanup_forbidden: rule("permission_denied"),
   // Doğrulama
   invalid_input: rule("validation"),
@@ -76,6 +80,12 @@ export const ERROR_CODE_RULES: Readonly<Record<string, Rule>> = {
   source_changed: rule("conflict"),
   plan_import_unavailable: rule("conflict"),
   generation_in_progress: rule("conflict", true, 20),
+  answer_changed: rule("conflict"),
+  attempt_not_finished: rule("conflict"),
+  notebook_review_required: rule("conflict"),
+  prova_draft_changed: rule("conflict"),
+  ai_suggestion_changed: rule("conflict"),
+  ai_suggestion_missing: rule("conflict"),
   // Hız / kota
   ai_rate_limited: rule("rate_limited", true, 60),
   source_rate_limited: rule("rate_limited", true, 60),
@@ -99,6 +109,8 @@ export const ERROR_CODE_RULES: Readonly<Record<string, Rule>> = {
   source_upload_failed: rule("service_unavailable", true),
   library_media_failed: rule("service_unavailable", true),
   server_error: rule("service_unavailable", true),
+  weekly_unavailable: rule("service_unavailable", true),
+  weekly_save_pending: rule("service_unavailable", true),
 };
 
 /** Kullanıcıya gidebilecek kod biçimi: kısa, sabit, küçük harf. UUID/JSON/ham mesaj geçmez. */
@@ -176,6 +188,20 @@ export function classifyServerError(input: ClassifyInput): ErrorClassification {
     category,
     retryable: category === "service_unavailable",
   };
+}
+
+/** C08 — istemcinin bir sınıflandırmaya vereceği tepki (tek yer; mobil/web aynı kuralı kullanır).
+ * - refresh_session: oturumu yenile ve AYNI isteği bir kez tekrarla (gateway 401 dahil; taslak korunur).
+ * - sign_in: yenileme başarısızsa yeniden giriş. - retry: kullanıcı yeniden deneyebilir (retry_after_s varsa bekle).
+ * - fix_input: girdiyi düzelt. - upgrade: paket/kota. - none: sabit bilgi (belirsiz ücretli sonuç dahil; tekrar yok). */
+export type ErrorAction = "refresh_session" | "sign_in" | "retry" | "fix_input" | "upgrade" | "none";
+export function errorAction(c: ErrorClassification): ErrorAction {
+  if (c.category === "session_expired") return "refresh_session";
+  if (c.category === "unauthorized") return "sign_in";
+  if (c.category === "validation") return "fix_input";
+  if (c.code === "ai_quota_exceeded" || (c.category === "permission_denied" && c.code.startsWith("plan_"))) return "upgrade";
+  if (c.retryable || c.category === "offline") return "retry";
+  return "none";
 }
 
 /** Sunucu gövdesi kurucusu; `error` eski alan olarak aynı kodu taşır. */

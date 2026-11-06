@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
+import { readSourceLimits } from "@gina/core";
 import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
 import {
@@ -40,7 +41,9 @@ export function SourceFilesPicker({
     queryFn: async () => {
       const r = await supabase.rpc("get_learning_source_policy");
       if (r.error) throw r.error;
-      return r.data as { enabled: boolean; max_files: number };
+      // C08: sınırlar sunucuyla aynı okuyucudan (yönetimde değişen dosya sayısı/toplam bayt ikisinde de aynı).
+      const data = r.data as { enabled?: boolean } | null;
+      return { enabled: data?.enabled === true, ...readSourceLimits(data) };
     },
   });
   const max = policy.data?.max_files ?? 5,
@@ -67,7 +70,7 @@ export function SourceFilesPicker({
       });
       if (
         [...files, ...unique].reduce((n, f) => n + f.bytes.byteLength, 0) >
-          20971520
+          (policy.data?.max_total_bytes ?? 20971520)
       ) throw Error("source_size_or_type");
       if (unique.length) replace([...files, ...unique]);
       if (unique.length !== added.length) setError("duplicate");

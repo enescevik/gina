@@ -88,3 +88,7 @@ Kaynak öneriler: [F01](F01-SOCIAL-AND-NEXT-PROPOSALS.md) §9, [S04 takvim](lear
 - **Okul listesi (F01 13):** MEB kurum listesi şimdilik edinilmez; "bölge + okul adı yaz" kalır.
 - **Ders kimlikleri (F01 14, S04):** 20 yeni `subject-*` kimliği migration ile eklenir; eşleşme her zaman veli onaylı (tek aday olsa da sessiz bağlama yok). Prova/kütüphane `subject` metni kanonik kimliğe P02 ile bağlanır.
 - **Hazırlık sınıfı (F01 15):** ayrı sınıf değeri açılmaz; "9 + okul notu".
+
+## Pro "7 günlük ipucu" (6 Kasım 2026)
+
+- İlk sürümde **sunulmaz**. 30 Ekim paket kararındaki "Pro: 7 günlük ipucu" maddesi bu tarihten itibaren geçersizdir; Pro haftalık özet (Sonnet) + fotoğraftan takvim (20/ay) olarak kalır. Kod `daily_tips`'i "sunulmuyor" olarak işaretli tutar, ekranda vaat edilmez. Hukuk metinleri ve mağaza açıklamaları bu kararla uyumlu hâle getirilir. İleride ayrı uç/kota/izin ile ayrı özellik olarak eklenebilir. (Koordinatör önerisi; Enes'in ürün kararlarını öneriyle uygulama kuralı.)

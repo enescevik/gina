@@ -107,7 +107,7 @@ select results_eq(
  'all open answers scored → graded, final score_pct');
 select is(public.get_attempt_summary('60000000-0000-4000-8000-000000010141')->>'review_state','graded','summary: graded after parent review');
 
--- Senaryo B: yalnız metin cevap → bekliyor; AI puanı gelince graded ----------------------------------------
+-- Senaryo B: yalnız metin cevap → bekliyor; AI önerisi gelince yine bekliyor (C08); veli onayıyla graded ----------------------------------------
 reset role;
 insert into public.exam_attempts(id,family_id,exam_id,child_id) values
  ('60000000-0000-4000-8000-000000010142','10000000-0000-4000-8000-000000010101','50000000-0000-4000-8000-000000010134','20000000-0000-4000-8000-000000010101');
@@ -123,12 +123,19 @@ reset role;
 select set_config('request.jwt.claims','{"role":"service_role"}',true);
 select results_eq(
  $$select status::text, open_graded, open_pending, provisional, score_pct::int from public.apply_ai_grades('60000000-0000-4000-8000-000000010142','[{"question_id":"40000000-0000-4000-8000-000000010121","score":70,"kisa_geri_bildirim":"İyi"}]'::jsonb,null)$$,
- $$values ('graded',1,0,false,70)$$,
- 'B: AI score settles the attempt');
+ $$values ('submitted',0,1,true,null::int)$$,
+ 'B: AI score is only a suggestion; attempt stays provisional (C08)');
 select results_eq(
  $$select status::text, open_graded, open_pending, provisional from public.apply_ai_grades('60000000-0000-4000-8000-000000010142','[]'::jsonb,'{"genel_oneri":"x"}'::jsonb)$$,
- $$values ('graded',1,0,false)$$,
+ $$values ('submitted',0,1,true)$$,
  'B: AI summary without grades does not invent or reset scores');
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000010101","role":"authenticated","gina":{"family_id":"10000000-0000-4000-8000-000000010101","role":"parent"}}',true);
+select results_eq(
+ $$select status::text, open_graded, open_pending, provisional, score_pct::int from public.accept_ai_grade('60000000-0000-4000-8000-000000010142','40000000-0000-4000-8000-000000010121',70::smallint)$$,
+ $$values ('graded',1,0,false,70)$$,
+ 'B: parent confirms the AI suggestion → final score (C08)');
+reset role;
 
 -- Senaryo C: yalnız şıklı deneme etkilenmez ------------------------------------------------------------
 insert into public.exam_attempts(id,family_id,exam_id,child_id) values

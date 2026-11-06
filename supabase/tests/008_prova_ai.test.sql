@@ -1,6 +1,6 @@
 -- Prova AI: paket kapısı, veli puanlaması, AI puanı yazımı (service_role), çalışma planı RLS.
 begin;
-select plan(25);
+select plan(27);
 
 insert into auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at)
 values
@@ -152,8 +152,24 @@ select results_eq(
      where attempt_id = (select id from public.exam_attempts where exam_id = '60000000-0000-0000-0000-0000000000f1')
        and question_id in ('50000000-0000-0000-0000-0000000000f2', '50000000-0000-0000-0000-0000000000f3')
      order by question_id $$,
-  $$ values (80, 30, 'parent'), (60, 60, 'ai') $$,
-  'veli puanı AI puanını ezer; diğerine AI puanı yazılır'
+  $$ values (80::int, 30::int, 'parent'::text), (null::int, 60::int, null::text) $$,
+  'C08: AI puanı yalnız öneri (ai_score); veli puanı korunur, kesin puan yazılmaz'
+);
+select results_eq(
+  $$ select status::text, open_graded, provisional from public.exam_attempts where exam_id = '60000000-0000-0000-0000-0000000000f1' $$,
+  $$ values ('submitted', 1, true) $$,
+  'C08: AI önerisi denemeyi kesinleştirmez (ara sonuç)'
+);
+-- Veli AI önerisini onaylar → kesin puan
+reset role;
+set local role authenticated;
+select set_config('request.jwt.claims',
+  '{"sub": "00000000-0000-0000-0000-00000000f002", "role": "authenticated", "gina": {"family_id": "10000000-0000-0000-0000-0000000000f2", "role": "parent", "device_id": null, "child_id": null, "admin": false}}',
+  true);
+select lives_ok(
+  $$ select public.accept_ai_grade((select id from public.exam_attempts where exam_id = '60000000-0000-0000-0000-0000000000f1'),
+       '50000000-0000-0000-0000-0000000000f3', 60::smallint) $$,
+  'C08: veli AI önerisini kesinleştirir'
 );
 select results_eq(
   $$ select status::text, open_graded, score_pct::int from public.exam_attempts where exam_id = '60000000-0000-0000-0000-0000000000f1' $$,
@@ -164,6 +180,9 @@ select is(
   (select pct from public.get_attempt_topic_stats((select id from public.exam_attempts where exam_id = '60000000-0000-0000-0000-0000000000f1')) where topic = 'Madde'),
   60, 'konu bazlı sonuç'
 );
+reset role;
+set local role service_role;
+select set_config('request.jwt.claims', '{"role": "service_role"}', true);
 insert into public.study_plans (family_id, child_id, attempt_id, subject, grade, weak_topics, plan)
 values ('10000000-0000-0000-0000-0000000000f2', '20000000-0000-0000-0000-0000000000f2',
         (select id from public.exam_attempts where exam_id = '60000000-0000-0000-0000-0000000000f1'),

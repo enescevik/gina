@@ -1,8 +1,12 @@
-import { router } from "expo-router";
+import { myNotificationChannels, parseVerificationLink } from "@gina/core";
+import { router, useLocalSearchParams } from "expo-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Linking, Platform, Text, View } from "react-native";
 
+import { ChannelPreferences } from "@/components/notifications/channel-preferences";
+import { ConsentScope } from "@/components/notifications/consent-scope";
+import { ContactVerificationCard } from "@/components/notifications/contact-verification";
 import { Button } from "@/components/ui/button";
 import { ErrorText } from "@/components/ui/screen";
 import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
@@ -14,13 +18,30 @@ import { supabase } from "@/lib/supabase";
 type PrefKey = "approvals" | "exams" | "weekly_summary" | "announcements" | "education_reminders";
 const PREF_KEYS: PrefKey[] = ["approvals", "exams", "weekly_summary", "announcements", "education_reminders"];
 
-/** Veli bildirim tercihleri (push_preferences; satır yoksa hepsi açık) ve cihaz izni. */
+/**
+ * Veli bildirim tercihleri: cihaz izni + push türleri (push_preferences; satır yoksa hepsi açık),
+ * C10: e-posta/SMS adres doğrulama, kanal × amaç tercihleri ve rıza kapsamı (my_notification_channels).
+ * Doğrulama bağlantısı (`?kind=email&code=…`) kodu yalnız doldurur; veli oturumunda "Doğrula"ya dokunarak onaylar.
+ */
 export default function NotificationsScreen() {
   const { t, i18n } = useTranslation();
   const { session, claims } = useSession();
   const queryClient = useQueryClient();
   const userId = session?.user.id;
   const familyId = claims?.family_id;
+  const params = useLocalSearchParams<{ kind?: string; code?: string }>();
+  const link = parseVerificationLink(params);
+
+  const channels = useQuery({
+    queryKey: ["notification-channels", userId],
+    enabled: !!userId,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("my_notification_channels");
+      if (error) throw error;
+      return myNotificationChannels.parse(data);
+    },
+  });
+  const refreshChannels = () => void queryClient.invalidateQueries({ queryKey: ["notification-channels", userId] });
 
   const permission = useQuery({
     queryKey: ["push-permission"],
@@ -50,7 +71,10 @@ export default function NotificationsScreen() {
         .upsert({ ...current, [key]: value, user_id: userId, family_id: familyId }, { onConflict: "user_id" });
       if (error) throw error;
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["push-preferences", userId] }),
+    onSettled: () => {
+      void queryClient.invalidateQueries({ queryKey: ["push-preferences", userId] });
+      refreshChannels();
+    },
   });
 
   const allow = useMutation({
@@ -87,6 +111,24 @@ export default function NotificationsScreen() {
       {save.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.muted}>{t("unified.saved")}</Text> : null}
       <Text className="font-body text-sm text-gray-600">{t("push.privacyNote")}</Text>
       <ErrorText error={save.error ?? allow.error ?? settings.error} />
+
+      <View style={{ gap: 6, marginTop: 8 }}>
+        <Text accessibilityRole="header" style={parentStyles.title}>{t("channels.section.contacts")}</Text>
+        <Text style={parentStyles.muted}>{t("channels.section.contactsHint")}</Text>
+      </View>
+      {channels.data ? <>
+        <ContactVerificationCard key={`email-${link?.kind === "email" ? link.code : ""}`} kind="email" view={channels.data} prefillCode={link?.kind === "email" ? link.code : null} onChanged={refreshChannels} />
+        <ContactVerificationCard key={`sms-${link?.kind === "sms" ? link.code : ""}`} kind="sms" view={channels.data} prefillCode={link?.kind === "sms" ? link.code : null} onChanged={refreshChannels} />
+        <View style={{ gap: 6, marginTop: 8 }}>
+          <Text accessibilityRole="header" style={parentStyles.title}>{t("channels.section.preferences")}</Text>
+          <Text style={parentStyles.muted}>{t("channels.section.preferencesHint")}</Text>
+        </View>
+        <ChannelPreferences view={channels.data} onSaved={next => queryClient.setQueryData(["notification-channels", userId], myNotificationChannels.parse(next))} />
+        <ConsentScope view={channels.data} />
+      </> : channels.error ? <View style={parentStyles.card}>
+        <Text accessibilityRole="alert" style={parentStyles.copy}>{t("channels.error.load")}</Text>
+        <Button variant="secondary" title={t("common.retry")} onPress={() => void channels.refetch()} />
+      </View> : null}
     </Screen>
   );
 }

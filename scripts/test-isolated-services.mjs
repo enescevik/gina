@@ -7,8 +7,10 @@ import { isDeepStrictEqual } from 'node:util';
 import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import { testAiServices } from './isolated-ai-contract.mjs';
+import { testC08 } from './isolated-c08-contract.mjs';
 import { testSources } from './isolated-source-contract.mjs';
 import { testBackoffice } from './isolated-backoffice-contract.mjs';
+import { testC03 } from './isolated-c03-contract.mjs';
 import { observeRealtime } from './isolated-realtime-contract.mjs';
 const require = createRequire(new URL('../apps/mobile/package.json', import.meta.url));
 const { createClient } = require('@supabase/supabase-js');
@@ -56,7 +58,7 @@ const claims = session => JSON.parse(Buffer.from(session.access_token.split('.')
 const refresh = async c => (await must(c.auth.refreshSession(),'refresh_session')).session;
 try {
   if(storagePort) {
-    edge=spawn(process.env.GINA_QA_DENO_PATH||'deno',['run','--cached-only','--frozen','--config','supabase/functions/deno.json','--allow-net=127.0.0.1','--allow-env=GINA_QA_ISOLATED,SUPABASE_URL,SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY,SOURCE_CLEANUP_SECRET,ANTHROPIC_API_KEY','scripts/isolated-source-edge.ts'],{stdio:['ignore','pipe','ignore'],env:{...process.env,GINA_QA_ISOLATED:'1',ANTHROPIC_API_KEY:'synthetic-local-only',SUPABASE_URL:base,SUPABASE_ANON_KEY:process.env.GINA_QA_ANON,SUPABASE_SERVICE_ROLE_KEY:process.env.GINA_QA_SERVICE,SOURCE_CLEANUP_SECRET:randomBytes(24).toString('hex')}});
+    edge=spawn(process.env.GINA_QA_DENO_PATH||'deno',['run','--cached-only','--frozen','--config','supabase/functions/deno.json','--allow-net=127.0.0.1','--allow-env=GINA_QA_ISOLATED,SUPABASE_URL,SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY,SOURCE_CLEANUP_SECRET,ANTHROPIC_API_KEY,CHANNEL_UNSUBSCRIBE_PAGE_URL','scripts/isolated-source-edge.ts'],{stdio:['ignore','pipe','ignore'],env:{...process.env,GINA_QA_ISOLATED:'1',ANTHROPIC_API_KEY:'synthetic-local-only',SUPABASE_URL:base,SUPABASE_ANON_KEY:process.env.GINA_QA_ANON,SUPABASE_SERVICE_ROLE_KEY:process.env.GINA_QA_SERVICE,SOURCE_CLEANUP_SECRET:randomBytes(24).toString('hex')}});
     const ready=await new Promise((resolve,reject)=>{
       const timer=setTimeout(()=>reject(Error('source_edge_start_timeout')),15000);
       const lines=createInterface({input:edge.stdout});
@@ -176,7 +178,10 @@ try {
   await rpc(a.c,'change_task_routine',{p_request_id:randomUUID(),p_id:task,p_revision:2,p_action:'resume'});
   if(storagePort) await testSources({parent:a.c,other:b.c,child:device,childId:child,admin,base,pdf,must,assert});
   if(storagePort) await testAiServices({parent:a.c,other:b.c,child:device,childId:child,admin,base,must,assert});
+  let c08Ui={};
+  if(storagePort) c08Ui=await testC08({parent:a.c,child:device,childId:child,admin,base,must,assert,attempt,openQuestion:exam.question_ids[2]});
   await testBackoffice({admin,client,parent:a.c,other:b.c,child:device,must,assert});
+  if(process.env.GINA_QA_C03!=="0") await testC03({admin,client,parentA:a.c,other:b.c,device,childId:child,draftId,base,storage:!!storagePort,must,assert});
   await rpc(a.c,'revoke_device',{p_device_id:deviceId});
   // Deliberately retain the old JWT: revocation must take effect before refresh.
   assert('revoked_device_old_token_cannot_read_children',(await must(device.from('children').select('id'),'revoked_device_read')).length===0);
@@ -198,7 +203,7 @@ try {
     // C04 UI: opt-in synthetic Pro override so the deterministic prova-generate path is reachable.
     if(process.env.GINA_QA_UI_PLAN==='pro') await must(admin.from('entitlement_overrides').insert({family_id:a.family,plan:'pro',reason:'synthetic ui qa',ends_at:new Date(Date.now()+86400000).toISOString()}),'ui_pro_override');
     const file=process.env.GINA_QA_UI_FIXTURE||'/tmp/gina-experience-ui-private.json';
-    writeFileSync(file,JSON.stringify({pid:process.pid,url:base,anon:process.env.GINA_QA_ANON,email:a.email,password:a.password,userId:user,familyId:a.family,childId:child,examId:exam.id,attemptId:attempt}),{mode:0o600});
+    writeFileSync(file,JSON.stringify({pid:process.pid,url:base,anon:process.env.GINA_QA_ANON,email:a.email,password:a.password,userId:user,familyId:a.family,childId:child,examId:exam.id,attemptId:attempt,...c08Ui}),{mode:0o600});
     let timer, release;
     try {await new Promise(resolve=>{
       release=resolve; timer=setTimeout(resolve,2700000);

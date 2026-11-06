@@ -222,6 +222,8 @@ export default function AttemptReviewScreen() {
                     </Pressable>
                   ) : null}
                 </View>
+                {/* C08: AI puanı öneridir; kesin puan veli incelemede kaydedince oluşur. */}
+                {state === "pending" && item.ai_suggested && item.ai_score != null ? <Text testID="attempt-ai-suggestion" className="font-body text-sm text-gray-600">{t("c08.review.suggestionRow", { score: item.ai_score })}</Text> : null}
                 {state === "pending" && item.has_document && !item.has_text ? <Text className="font-body text-sm text-gray-600">{t("prova.ai.drawingPendingHint")}</Text> : null}
                 {state === "unanswered" && !attemptGraded ? (
                   <>

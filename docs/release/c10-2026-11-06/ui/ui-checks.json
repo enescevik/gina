@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "count": 9,
+  "results": [
+    {
+      "check": "preferences_initial_push_kept_email_form_sms_not_ready_locked_rows",
+      "passed": true
+    },
+    {
+      "check": "unverified_address_blocked",
+      "passed": true,
+      "detail": {
+        "publish_email": {
+          "address_unverified": 2
+        },
+        "sms_request": "channel_not_ready"
+      }
+    },
+    {
+      "check": "code_sent_via_starttls_fake",
+      "passed": true,
+      "detail": {
+        "accepted": 1,
+        "clear": [
+          "EHLO gina.local",
+          "STARTTLS"
+        ]
+      }
+    },
+    {
+      "check": "wrong_code_then_deep_link_verifies_on_tap",
+      "passed": true
+    },
+    {
+      "check": "opt_in_logged_with_consent_version",
+      "passed": true
+    },
+    {
+      "check": "rfc8058_one_click_once_replay_noop_tamper_rejected",
+      "passed": true,
+      "detail": {
+        "get": 200,
+        "post": [
+          200,
+          200
+        ],
+        "tampered": 400
+      }
+    },
+    {
+      "check": "desktop_history_and_reopt_in",
+      "passed": true
+    },
+    {
+      "check": "web_unsubscribe_page_button_once_then_already",
+      "passed": true,
+      "detail": {
+        "invalid_link": "shown"
+      }
+    },
+    {
+      "check": "after_unsubscribe_no_email_queued_and_address_removed",
+      "passed": true
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { fail } from "../_shared/error-contract.ts";
 import { runAiOperation } from "../_shared/ai-operation.ts";
 // Prova çalışma planı: bir denemenin zayıf konularından tekrar planı üretir (study_plans, status 'draft').
 // Deploy: `supabase functions deploy prova-plan` (verify_jwt açık kalır). Çocuk asla çağırmaz.
@@ -6,7 +7,7 @@ import { runAiOperation } from "../_shared/ai-operation.ts";
 // (çocuk adı/yaşı/aile verisi gönderilmez). Plan veli onaylayınca (set_study_plan_status) 'approved' olur.
 
 import { json, preflight, serviceClient } from "../_shared/supabase.ts";
-import { apiKeyOrResponse, callClaude, logUsage, provaEntitlement, readParent, resolveAi, sha256 } from "../_shared/prova.ts";
+import { apiKeyOrResponse, logUsage, parentOrResponse, provaEntitlement, resolveAi, sha256 } from "../_shared/prova.ts";
 
 const PROMPT_VERSION = "prova-plan/v1";
 const WEAK_THRESHOLD = 70;
@@ -54,9 +55,9 @@ const SCHEMA = {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return preflight();
-  if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
-  const parent = await readParent(req);
-  if (!parent) return json({ error: "forbidden" }, 403);
+  if (req.method !== "POST") return fail("method_not_allowed", 405);
+  const parent = await parentOrResponse(req);
+  if (parent instanceof Response) return parent;
 
   let attemptId: string;
   let days = 7;
@@ -68,7 +69,7 @@ Deno.serve(async (req) => {
     if (body.days === 14) days = 14;
     if (body.locale === "en") locale = "en";
   } catch {
-    return json({ error: "attempt_id_required" }, 400);
+    return fail("attempt_id_required", 400);
   }
 
   const db = serviceClient();
@@ -76,9 +77,9 @@ Deno.serve(async (req) => {
   try {
     ent = await provaEntitlement(db, parent.familyId);
   } catch {
-    return json({ error: "entitlement_failed" }, 500);
+    return fail("entitlement_failed", 500);
   }
-  if (!ent.study_plan) return json({ error: "plan_has_no_study_plan", plan: ent.plan }, 402);
+  if (!ent.study_plan) return fail("plan_has_no_study_plan", 402, { details: { plan: ent.plan }, legacy: { plan: ent.plan } });
 
   const { data: attempt } = await db
     .from("exam_attempts")
@@ -86,21 +87,21 @@ Deno.serve(async (req) => {
     .eq("id", attemptId)
     .eq("family_id", parent.familyId)
     .maybeSingle();
-  if (!attempt) return json({ error: "attempt_not_found" }, 404);
-  if (attempt.status === "in_progress") return json({ error: "attempt_not_finished" }, 409);
+  if (!attempt) return fail("attempt_not_found", 404);
+  if (attempt.status === "in_progress") return fail("attempt_not_finished", 409);
   const exam = (Array.isArray(attempt.exams) ? attempt.exams[0] : attempt.exams) as { subject: string; grade: number } | null;
-  if (!exam) return json({ error: "exam_not_found" }, 404);
+  if (!exam) return fail("exam_not_found", 404);
 
   const { data: stats, error: statsError } = await db.rpc("get_attempt_topic_stats", { p_attempt_id: attemptId });
-  if (statsError) return json({ error: "data_failed" }, 500);
+  if (statsError) return fail("data_failed", 500);
   const scored = ((stats ?? []) as { topic: string; total: number; pct: number | null }[]).filter((s) => s.pct !== null);
-  if (!scored.length) return json({ error: "no_scored_topics" }, 409);
+  if (!scored.length) return fail("no_scored_topics", 409);
   let weak = scored.filter((s) => (s.pct ?? 0) < WEAK_THRESHOLD);
   if (!weak.length) weak = [...scored].sort((a, b) => (a.pct ?? 0) - (b.pct ?? 0)).slice(0, 2);
 
   const ai = await resolveAi(db, ent.plan, 3000);
   if (ai instanceof Response) return ai;
-  const apiKey = apiKeyOrResponse();
+  const apiKey = apiKeyOrResponse(ai);
   if (apiKey instanceof Response) return apiKey;
 
   const feedback = (attempt.ai_feedback ?? {}) as { zayif_konular?: string[] };
@@ -156,7 +157,7 @@ Deno.serve(async (req) => {
   const { data: row, error: readError } = await db.from("study_plans").select("id,plan").eq("ai_job_id", result.jobId).single();
   if (insertError || readError || !row) {
     console.error("prova-plan insert", insertError?.code ?? readError?.code);
-    return json({ error: "save_failed" }, 500);
+    return fail("save_failed", 500);
   }
 
   await logUsage(db, {

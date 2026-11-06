@@ -32,6 +32,7 @@ import { DraftLifecycle } from "@/components/learning/draft-lifecycle";
 import type { DraftRecord } from "@/lib/prova-draft";
 import { DraftOverview } from "@/components/learning/prova-draft-overview";
 import { fetchProvaDrafts } from "@/lib/prova-draft";
+import { ProvaDraftBulkEntry } from "@/components/planner/bulk-scope-sheet";
 import { provaErrorMessage } from "@/lib/prova-ai";
 import { attemptSummary } from "@gina/core";
 
@@ -274,6 +275,8 @@ export default function ParentProvaScreen() {
                 ? <DraftOverview drafts={activeDrafts} familyId={familyId} wide={wide} onDiscard={setDiscardDraft} />
                 : empty(t("provaC04.prepareEmpty"))}
               <DraftLifecycle familyId={familyId} childId={childId} selected={discardDraft} onClose={() => setDiscardDraft(null)} />
+              {/* C03: toplu seçim girişi (yalnız taslaklar; Prova merkezinin geri kalanı C04). */}
+              <ProvaDraftBulkEntry childId={childId} childName={children.data?.find((c) => c.id === childId)?.name} />
               <View style={{ gap: 12 }}>
                 <Text style={b.h2}>{t("provaC04.toolsTitle")}</Text>
                 <NavigationCard

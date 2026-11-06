@@ -21,6 +21,12 @@ import { Field } from "@/components/ui/field";
 import { Toggle } from "@/components/ui/toggle";
 import { Avatar } from "@/components/avatar";
 import { p, SatinButton, Tag, u } from "@/components/planner/ui";
+import {
+  BlueprintProvenanceNote,
+  provenanceColumns,
+  provenanceRowSchema,
+  SavedBlueprintProvenance,
+} from "@/components/learning/blueprint-provenance";
 
 const year = () => {
   const d = new Date(), y = d.getFullYear() - (d.getMonth() < 7 ? 1 : 0);
@@ -56,6 +62,7 @@ export default function CatalogScreen() {
     [blocked, setBlocked] = useState(initial.blocked);
   const [step, setStep] = useState(0),
     [saved, setSaved] = useState(false),
+    [savedId, setSavedId] = useState<string | null>(null),
     [childId, setChildId] = useState(""),
     [subject, setSubject] = useState(""),
     [academicYear, setAcademicYear] = useState(year),
@@ -148,6 +155,24 @@ export default function CatalogScreen() {
       return sourceStatusSchema.parse(data);
     },
   });
+  // C01 UI: ailenin kayıtlı katalog kopyaları; köken ve resmî doğrulama yalnız sunucu sütunlarından gösterilir.
+  const copies = useQuery({
+    queryKey: ["catalog_copies", family, child?.id],
+    enabled: !!family && !!child && step > 0 && !pending && !saved,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("exam_blueprints").select(
+        provenanceColumns,
+      ).eq("distribution_kind", "school_catalogue");
+      if (error) throw error;
+      return provenanceRowSchema.array().parse(data);
+    },
+  });
+  const copyOf = (s: CatalogScenario) =>
+    copies.data?.find((r) =>
+      r.source_context.catalogue_id === s.id &&
+      r.source_context.revision === s.revision &&
+      r.source_context.child_id === child?.id
+    );
   const selected = scenarios.data?.find((s) =>
     s.id === selection?.id && s.revision === selection.revision &&
     s.content_hash === selection.content_hash
@@ -211,11 +236,13 @@ export default function CatalogScreen() {
         }
       }
     },
-    onSuccess: async () => {
+    onSuccess: async (id) => {
       await Promise.all([
         cache.invalidateQueries({ queryKey: ["blueprints", family] }),
         cache.invalidateQueries({ queryKey: ["builder_blueprints", family] }),
+        cache.invalidateQueries({ queryKey: ["catalog_copies", family] }),
       ]);
+      setSavedId(id);
       setSaved(true);
     },
     onError: () => {
@@ -281,6 +308,7 @@ export default function CatalogScreen() {
             <Check color={p.purple} />
             <Text style={u.heading}>{t("blueprintFlow.saved")}</Text>
             <Text style={u.copy}>{t("catalogFlow.saved")}</Text>
+            <SavedBlueprintProvenance id={savedId} />
           </View>
         )
         : blocked
@@ -560,8 +588,8 @@ export default function CatalogScreen() {
                     : null}
                   {step === 1 && schoolKnown
                     ? scenarios.data?.map((s) => (
+                      <View key={s.id} style={{ gap: 6 }}>
                       <ChoiceCard
-                        key={s.id}
                         title={schoolKnown === "unknown"
                           ? `${t("provaP02.catalog.studyTag")} · ${s.candidate.label}`
                           : s.candidate.label}
@@ -576,6 +604,15 @@ export default function CatalogScreen() {
                           setConfirmed(false);
                         }}
                       />
+                      {copyOf(s)
+                        ? (
+                          <BlueprintProvenanceNote
+                            row={copyOf(s)!}
+                            title={t("c01ui.provenance.savedCopy")}
+                          />
+                        )
+                        : null}
+                      </View>
                     ))
                     : null}
                   {step === 2 && selected

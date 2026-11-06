@@ -1,3 +1,4 @@
+import { fail } from "../_shared/error-contract.ts";
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { runAiOperation } from "../_shared/ai-operation.ts";
 import { type AiConfig, resolveAi } from "../_shared/prova.ts";
@@ -61,11 +62,13 @@ export function validateOutput(value: unknown, labels: string[]) {
   return value;
 }
 export interface Dependencies {
+  /** Üretimde parentOrResponse: oturum/yetki hatası sözleşmeli Response olarak döner. */
   parent: (
     request: Request,
-  ) => Promise<{ familyId: string; userId: string } | null>;
+  ) => Promise<{ familyId: string; userId: string } | Response | null>;
   db: SupabaseClient;
-  key: () => string | Response;
+  /** C08: çözülmüş adapter'a göre secret adı (Anthropic sabiti yok). */
+  key: (config?: Pick<AiConfig, "adapter">) => string | Response;
   resolve?: typeof resolveAi;
   run?: typeof runAiOperation;
 }
@@ -73,9 +76,10 @@ export async function handleWeeklySummary(
   req: Request,
   deps: Dependencies,
 ): Promise<Response> {
-  if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
+  if (req.method !== "POST") return fail("method_not_allowed", 405);
   const parent = await deps.parent(req);
-  if (!parent) return json({ error: "forbidden" }, 403);
+  if (parent instanceof Response) return parent;
+  if (!parent) return fail("forbidden", 403);
   let week: string;
   try {
     const raw = await req.text();
@@ -93,18 +97,18 @@ export async function handleWeeklySummary(
       date.toISOString().slice(0, 10) !== week || date.getUTCDay() !== 1
     ) throw Error();
   } catch {
-    return json({ error: "invalid_input" }, 400);
+    return fail("invalid_input", 400);
   }
   const db = deps.db;
   const ent = await db.rpc("get_family_entitlement", {
     p_family_id: parent.familyId,
   });
   if (ent.error || !Array.isArray(ent.data) || !ent.data[0]?.plan) {
-    return json({ error: "entitlement_failed" }, 503);
+    return fail("entitlement_failed", 503);
   }
   const config = await (deps.resolve ?? resolveAi)(db, ent.data[0].plan, 2000);
   if (config instanceof Response) return config;
-  const key = deps.key();
+  const key = deps.key(config);
   if (key instanceof Response) return key;
   const prepared = await db.rpc("prepare_weekly_summary", {
     p_family: parent.familyId,
@@ -114,17 +118,15 @@ export async function handleWeeklySummary(
   });
   if (prepared.error) {
     const code = prepared.error.message;
-    return json(
-      {
-        error: [
-            "weekly_date",
-            "weekly_no_children",
-            "plan_has_no_ai",
-            "weekly_forbidden",
-          ].includes(code)
-          ? code
-          : "weekly_unavailable",
-      },
+    return fail(
+      [
+          "weekly_date",
+          "weekly_no_children",
+          "plan_has_no_ai",
+          "weekly_forbidden",
+        ].includes(code)
+        ? code
+        : "weekly_unavailable",
       code === "weekly_forbidden"
         ? 403
         : code === "plan_has_no_ai"
@@ -141,20 +143,24 @@ export async function handleWeeklySummary(
     !Array.isArray(data.context.input.children) ||
     !record(data.context.config) || typeof data.context.system !== "string" ||
     !record(data.context.schema)
-  ) return json({ error: "weekly_context_invalid" }, 503);
+  ) return fail("weekly_context_invalid", 503);
   const context = data.context;
   const input = context.input as { children: { alias: string }[] };
   const labels = input.children.map((c) => c.alias);
   if (
     !labels.length || labels.some((l) => typeof l !== "string") ||
     new Set(labels).size !== labels.length
-  ) return json({ error: "weekly_context_invalid" }, 503);
+  ) return fail("weekly_context_invalid", 503);
+  // Haftalık bağlam hazırlandığı andaki yapılandırmayla üretilir; adapter değiştiyse anahtar ona göre çözülür.
+  const frozen = context.config as unknown as AiConfig;
+  const runKey = (frozen.adapter ?? "anthropic-messages") === (config.adapter ?? "anthropic-messages") ? key : deps.key(frozen);
+  if (runKey instanceof Response) return runKey;
   const result = await (deps.run ?? runAiOperation)(
     db,
     parent,
     "weekly",
     data.id,
-    key,
+    runKey,
     context.config as unknown as AiConfig,
     context.system as string,
     JSON.stringify(input),
@@ -168,10 +174,10 @@ export async function handleWeeklySummary(
     p_context: data.id,
     p_job: result.jobId,
   });
-  if (stored.error) return json({ error: "weekly_save_pending" }, 503);
+  if (stored.error) return fail("weekly_save_pending", 503);
   try {
     return json({ ok: true, summary: validateOutput(stored.data, labels) });
   } catch {
-    return json({ error: "ai_result_invalid" }, 502);
+    return fail("ai_result_invalid", 502);
   }
 }

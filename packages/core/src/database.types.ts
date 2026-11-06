@@ -2269,14 +2269,14 @@ isOneToOne: false
                   ]
                 },"task_completions": {
                   Row: {
-                    "child_id": string,"client_id": string,"completed_at": string,"completed_by": string | null,"due_date": string,"family_id": string,"id": string,"reviewed_at": string | null,"reviewed_by": string | null,"status": Database["public"]['Enums']["completion_status"],"task_snapshot": Json | null,"template_id": string
+                    "child_id": string,"client_id": string,"completed_at": string,"completed_by": string | null,"due_date": string,"family_id": string,"id": string,"reviewed_at": string | null,"return_note": string | null,"return_reason": string | null,"reviewed_by": string | null,"status": Database["public"]['Enums']["completion_status"],"task_snapshot": Json | null,"template_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "child_id": string,"client_id": string,"completed_at"?: string,"completed_by"?: string | null,"due_date": string,"family_id": string,"id"?: string,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"status"?: Database["public"]['Enums']["completion_status"],"task_snapshot"?: Json | null,"template_id": string
+                    "child_id": string,"client_id": string,"completed_at"?: string,"completed_by"?: string | null,"due_date": string,"family_id": string,"id"?: string,"reviewed_at"?: string | null,"return_note"?: string | null,"return_reason"?: string | null,"reviewed_by"?: string | null,"status"?: Database["public"]['Enums']["completion_status"],"task_snapshot"?: Json | null,"template_id": string
                   }
                   Update: {
-                    "child_id"?: string,"client_id"?: string,"completed_at"?: string,"completed_by"?: string | null,"due_date"?: string,"family_id"?: string,"id"?: string,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"status"?: Database["public"]['Enums']["completion_status"],"task_snapshot"?: Json | null,"template_id"?: string
+                    "child_id"?: string,"client_id"?: string,"completed_at"?: string,"completed_by"?: string | null,"due_date"?: string,"family_id"?: string,"id"?: string,"reviewed_at"?: string | null,"return_note"?: string | null,"return_reason"?: string | null,"reviewed_by"?: string | null,"status"?: Database["public"]['Enums']["completion_status"],"task_snapshot"?: Json | null,"template_id"?: string
                   }
                   Relationships: [
                     {
@@ -3535,7 +3535,7 @@ isOneToOne: false
         isSetofReturn: false
       } },
 "review_task_once":
-{ Args: { "p_approve": boolean,"p_completion_id": string,"p_expected_completed_at": string,"p_request_id": string }; Returns: Json
+{ Args: { "p_approve": boolean,"p_completion_id": string,"p_expected_completed_at": string,"p_request_id": string,"p_return_note"?: string | null,"p_return_reason"?: string | null }; Returns: Json
                            },
 "revoke_child_share":
 { Args: { "p_share_id": string }; Returns: undefined

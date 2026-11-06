@@ -2,12 +2,8 @@ import { setupPrompt } from "../_shared/setup-prompt.ts";
 import { json, preflight, serviceClient } from "../_shared/supabase.ts";
 import { fail } from "../_shared/error-contract.ts";
 import { parentOrResponse } from "../_shared/auth.ts";
-import {
-  apiKeyOrResponse,
-  callClaude,
-  resolveAi,
-  sha256,
-} from "../_shared/prova.ts";
+import { apiKeyOrResponse, resolveAi, sha256 } from "../_shared/prova.ts";
+import { generateWith } from "../_shared/ai-route.ts";
 import { setupDocumentResult, setupInput } from "../_shared/setup-drafts.ts";
 import { provaDocument } from "../_shared/prova-document.ts";
 export const defaults = {
@@ -15,7 +11,8 @@ export const defaults = {
   parentOrResponse,
   resolveAi,
   apiKeyOrResponse,
-  callClaude,
+  /** C08: çözülmüş adapter ile üretim (eski ad korunur; testler bu bağımlılığı değiştirir). */
+  callClaude: generateWith,
   provaDocument,
 };
 export async function setupSuggestions(
@@ -48,7 +45,7 @@ export async function setupSuggestions(
   if (!ent.limit) return fail("plan_has_no_ai", 402);
   const ai = await deps.resolveAi(db, ent.plan, body.source_id ? 3072 : 2048);
   if (ai instanceof Response) return ai;
-  const key = deps.apiKeyOrResponse();
+  const key = deps.apiKeyOrResponse(ai);
   if (key instanceof Response) return key;
   const document = body.source_id
     ? await deps.provaDocument(

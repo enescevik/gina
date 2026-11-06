@@ -1,13 +1,16 @@
+import { fail } from "../_shared/error-contract.ts";
 import { answerKeyExtras } from "../_shared/answer-key.ts";
 import { json, preflight, serviceClient } from "../_shared/supabase.ts";
 import {
   type AiUserContent,
   apiKeyOrResponse,
+  parentOrResponse,
   provaEntitlement,
-  readParent,
   resolveAi,
   sha256,
 } from "../_shared/prova.ts";
+import type { ParentContext } from "../_shared/auth.ts";
+import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { runAiOperation } from "../_shared/ai-operation.ts";
 import { questionImages } from "../_shared/question-images.ts";
 import {
@@ -17,6 +20,8 @@ import {
 } from "../_shared/review-report.ts";
 import { renderReviewNotebook } from "../_shared/review-renderer.ts";
 
+// C08: üretimde parentOrResponse (session_expired / unauthorized / forbidden sözleşmeli gövde); test null verebilir.
+const readParent: (req: Request, db: SupabaseClient) => Promise<ParentContext | Response | null> = parentOrResponse;
 const dependencies = {
   serviceClient,
   readParent,
@@ -34,25 +39,26 @@ export function createReviewHandler(
   return async (req: Request): Promise<Response> => {
     if (req.method === "OPTIONS") return preflight();
     if (req.method !== "POST") {
-      return json({ error: "method_not_allowed" }, 405);
+      return fail("method_not_allowed", 405);
     }
     try {
       const db = deps.serviceClient();
       const parent = await deps.readParent(req, db);
-      if (!parent) return json({ error: "forbidden" }, 403);
+      if (parent instanceof Response) return parent;
+      if (!parent) return fail("forbidden", 403);
       const raw = await req.text();
-      if (raw.length > 4096) return json({ error: "invalid_input" }, 400);
+      if (raw.length > 4096) return fail("invalid_input", 400);
       const body = JSON.parse(raw);
       const uuid =
         /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
       if (
         !uuid.test(body.attempt_id) || !uuid.test(body.question_id) ||
         !/^[a-f0-9]{64}$/.test(body.answer_hash) || body.consent !== true
-      ) return json({ error: "source_ai_consent_required" }, 400);
+      ) return fail("source_ai_consent_required", 400);
       const { data: gate, error: gateError } = await db.from("app_settings")
         .select("value").eq("key", "review_ai.enabled").maybeSingle();
       if (gateError || gate?.value !== true) {
-        return json({ error: "ai_disabled" }, 503);
+        return fail("ai_disabled", 503);
       }
       const { data: attempt, error: attemptError } = await db.from(
         "exam_attempts",
@@ -61,16 +67,16 @@ export function createReviewHandler(
         parent.familyId,
       ).maybeSingle();
       if (attemptError || !attempt) {
-        return json({ error: "attempt_not_found" }, 404);
+        return fail("attempt_not_found", 404);
       }
       if (attempt.status === "in_progress") {
-        return json({ error: "attempt_not_finished" }, 409);
+        return fail("attempt_not_finished", 409);
       }
       const { data: exam, error: examError } = await db.from("exams").select(
         "question_ids,grade,subject",
       ).eq("id", attempt.exam_id).eq("family_id", parent.familyId).single();
       if (examError || !exam.question_ids.includes(body.question_id)) {
-        return json({ error: "question_not_found" }, 404);
+        return fail("question_not_found", 404);
       }
       const [question, answer, fingerprint] = await Promise.all([
         db.from("question_bank").select("stem,expected_answer,solution,kind,provenance")
@@ -87,13 +93,13 @@ export function createReviewHandler(
       if (
         question.error || answer.error || fingerprint.error ||
         question.data?.kind !== "open_ended"
-      ) return json({ error: "data_failed" }, 400);
+      ) return fail("data_failed", 400);
       if (fingerprint.data !== body.answer_hash) {
-        return json({ error: "answer_changed" }, 409);
+        return fail("answer_changed", 409);
       }
       const ent = await deps.provaEntitlement(db, parent.familyId);
       if (!ent.ai_grading) {
-        return json({ error: "plan_has_no_ai_grading" }, 402);
+        return fail("plan_has_no_ai_grading", 402);
       }
       const { data: cached, error: cacheError } = await db.from(
         "answer_review_suggestions",
@@ -102,7 +108,7 @@ export function createReviewHandler(
         body.question_id,
       ).eq("answer_hash", body.answer_hash).eq("actor_id", parent.userId)
         .maybeSingle();
-      if (cacheError) return json({ error: "data_failed" }, 500);
+      if (cacheError) return fail("data_failed", 500);
       if (cached) {
         return json({
           id: cached.id,
@@ -111,7 +117,7 @@ export function createReviewHandler(
       }
       const config = await deps.resolveAi(db, ent.plan, 2500);
       if (config instanceof Response) return config;
-      const key = deps.apiKeyOrResponse();
+      const key = deps.apiKeyOrResponse(config);
       if (key instanceof Response) return key;
       // Persist consent before any child answer is sent, including failed provider calls.
       const consentRecord = await db.from("answer_review_consents").upsert({
@@ -125,7 +131,7 @@ export function createReviewHandler(
         onConflict: "attempt_id,question_id,answer_hash,actor_id",
         ignoreDuplicates: true,
       });
-      if (consentRecord.error) return json({ error: "data_failed" }, 500);
+      if (consentRecord.error) return fail("data_failed", 500);
       const images = await deps.questionImages(
         db,
         parent.familyId,
@@ -191,7 +197,7 @@ export function createReviewHandler(
         p_question_id: body.question_id,
       });
       if (current.error || current.data !== body.answer_hash) {
-        return json({ error: "answer_changed" }, 409);
+        return fail("answer_changed", 409);
       }
       const { data: saved, error } = await db.from("answer_review_suggestions")
         .upsert({
@@ -208,7 +214,7 @@ export function createReviewHandler(
           onConflict: "attempt_id,question_id,answer_hash,actor_id",
           ignoreDuplicates: true,
         }).select("id,result").maybeSingle();
-      if (error) return json({ error: "data_failed" }, 500);
+      if (error) return fail("data_failed", 500);
       if (saved) return json(saved);
       const existing = await db.from("answer_review_suggestions").select(
         "id,result",
@@ -217,12 +223,12 @@ export function createReviewHandler(
         body.answer_hash,
       ).eq("actor_id", parent.userId).single();
       return existing.error
-        ? json({ error: "data_failed" }, 500)
+        ? fail("data_failed", 500)
         : json(existing.data);
     } catch (e) {
       const message = e instanceof Error ? e.message : "data_failed";
-      return json({
-        error: [
+      return fail(
+        [
             "notebook_render_failed",
             "source_ai_limit",
             "source_not_ready",
@@ -232,7 +238,8 @@ export function createReviewHandler(
           ].includes(message)
           ? message
           : "data_failed",
-      }, 400);
+        400,
+      );
     }
   };
 }
