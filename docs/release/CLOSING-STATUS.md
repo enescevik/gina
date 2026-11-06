@@ -42,7 +42,7 @@ Durumlar:
 | Puanlama alternatif cevap kuralı | YAPILIYOR (D13) | `v6-alternatives-full` süreç ölçen soruda rubriği geçersiz kılabilir → amaca göre puanlama; gerçek modelle doğrulama sonraki yayında |
 | D10 kişi adı uyarısı veliye | MAIN'DE, YAYIN BEKLİYOR | migration `400000`, pgTAP 126 |
 | D11 yönetim P2 düzeltmeleri | MAIN'DE, YAYIN BEKLİYOR | Playwright 7/7 |
-| D12 aile süzgeci, denetimde yönetici adı | YAPILIYOR | migration `410000` |
+| D12 aile süzgeci, denetimde yönetici adı | MAIN'DE, YAYIN BEKLİYOR | migration `410000`, pgTAP 127; önce migration sonra yönetim yayını |
 | D14 AI sorusunu düzenleme | YAPILIYOR | D10 notu şimdilik yalnız atla/yeniden yaz diyor |
 | D15 MEB gerçek kabul pilotu | YAPILIYOR | Resmî senaryo → gerçek AI üretimi → atanmış sınav; K01'den önce |
 | D16 teknik/hukuk metin uyumu | YAPILIYOR | İngilizce gizlilik, 8 karakterli eşleme anlatımı |
