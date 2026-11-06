@@ -111,7 +111,14 @@ class SmtpSession {
     }
   }
   async command(line: string): Promise<{ code: number; text: string }> {
-    await this.conn.write(enc.encode(line + "\r\n"));
+    const bytes = enc.encode(line + "\r\n");
+    // Conn.write can be partial, particularly with larger HTML MIME messages.
+    let offset = 0;
+    while (offset < bytes.length) {
+      const written = await this.conn.write(bytes.subarray(offset));
+      if (written <= 0) throw new Error("smtp_closed");
+      offset += written;
+    }
     return await this.reply();
   }
   upgrade(conn: Deno.Conn) {
@@ -192,6 +199,8 @@ export function smtpAdapter(cfg: SmtpConfig): EmailAdapter {
         if (rcpt.code !== 250 && rcpt.code !== 251) return classify("rcpt_to", rcpt);
         const data = await session.command("DATA");
         if (data.code !== 354) return classify("data", data);
+        const boundary = message.html ? `gina-${crypto.randomUUID()}` : null;
+        const encodeBody = (text: string) => b64(text).replace(/(.{76})/g, "$1\r\n");
         const headers = [
           `From: ${sender.header}`,
           `To: ${message.to}`,
@@ -199,11 +208,13 @@ export function smtpAdapter(cfg: SmtpConfig): EmailAdapter {
           `Message-ID: <${message.idempotencyKey}@${sender.domain}>`,
           `Date: ${new Date().toUTCString()}`,
           "MIME-Version: 1.0",
-          "Content-Type: text/plain; charset=utf-8",
-          "Content-Transfer-Encoding: base64",
+          ...(boundary ? [`Content-Type: multipart/alternative; boundary="${boundary}"`] : ["Content-Type: text/plain; charset=utf-8", "Content-Transfer-Encoding: base64"]),
           ...Object.entries(message.headers ?? {}).map(([k, v]) => `${k}: ${v}`),
         ];
-        const body = b64(message.text).replace(/(.{76})/g, "$1\r\n");
+        const body = boundary
+          ? [`--${boundary}`, "Content-Type: text/plain; charset=utf-8", "Content-Transfer-Encoding: base64", "", encodeBody(message.text),
+            `--${boundary}`, "Content-Type: text/html; charset=utf-8", "Content-Transfer-Encoding: base64", "", encodeBody(message.html!), `--${boundary}--`, ""].join("\r\n")
+          : encodeBody(message.text);
         dataSent = true;
         const end = await session.command(`${headers.join("\r\n")}\r\n\r\n${dotStuff(body)}\r\n.`);
         if (end.code !== 250) return classify("end_of_data", end);

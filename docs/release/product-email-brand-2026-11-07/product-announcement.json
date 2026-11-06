@@ -1,0 +1,55 @@
+{
+  "checkedAt": "2026-11-06T22:53:17.847Z",
+  "addressVerified": true,
+  "preferenceEnabled": true,
+  "worker": {
+    "ok": true,
+    "claimed": 0,
+    "accepted": 0,
+    "retry": 0,
+    "failed": 0,
+    "unconfigured": 0,
+    "channels": {
+      "claimed": 0,
+      "accepted": 0,
+      "retry": 0,
+      "failed": 0,
+      "unconfigured": 0
+    }
+  },
+  "replayWorker": {
+    "ok": true,
+    "claimed": 0,
+    "accepted": 0,
+    "retry": 0,
+    "failed": 0,
+    "unconfigured": 0,
+    "channels": {
+      "claimed": 0,
+      "accepted": 0,
+      "retry": 0,
+      "failed": 0,
+      "unconfigured": 0
+    }
+  },
+  "receipts": [
+    {
+      "accepted_at": "2026-11-06 22:52:30.947676+00",
+      "attempts": 1,
+      "id": 4,
+      "kind": "contact_verification",
+      "last_error": null,
+      "provider": "smtp",
+      "status": "accepted"
+    },
+    {
+      "accepted_at": "2026-11-06 22:53:01.539377+00",
+      "attempts": 1,
+      "id": 5,
+      "kind": "parent_announcement",
+      "last_error": null,
+      "provider": "smtp",
+      "status": "accepted"
+    }
+  ]
+}
