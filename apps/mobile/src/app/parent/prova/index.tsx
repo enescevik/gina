@@ -32,6 +32,7 @@ import { DraftLifecycle } from "@/components/learning/draft-lifecycle";
 import type { DraftRecord } from "@/lib/prova-draft";
 import { DraftOverview } from "@/components/learning/prova-draft-overview";
 import { fetchProvaDrafts } from "@/lib/prova-draft";
+import { ProvaDraftBulkEntry } from "@/components/planner/bulk-scope-sheet";
 import { provaErrorMessage } from "@/lib/prova-ai";
 import { attemptSummary } from "@gina/core";
 
@@ -263,6 +264,8 @@ export default function ParentProvaScreen() {
             <View style={{ gap: 26 }}>
               {activeDrafts.length > 0 ? <DraftOverview drafts={activeDrafts} familyId={familyId} wide={wide} onDiscard={setDiscardDraft}>{pendingSection}</DraftOverview> : pendingSection}
               <DraftLifecycle familyId={familyId} childId={childId} selected={discardDraft} onClose={() => setDiscardDraft(null)} />
+              {/* C03: toplu seçim girişi (yalnız taslaklar; Prova merkezinin geri kalanı C04). */}
+              <ProvaDraftBulkEntry childId={childId} childName={children.data?.find((c) => c.id === childId)?.name} />
               <View style={{ gap: 22, width: '100%', maxWidth: wide && activeDrafts.length > 0 ? 607 : undefined }}>
                 <Text style={b.h2}>{t("provaBuilder.assigned")}</Text>
                 {!visibleExams.length

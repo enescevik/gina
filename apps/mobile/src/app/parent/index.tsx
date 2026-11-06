@@ -256,7 +256,7 @@ export default function ParentHomeScreen() {
     today={today} week={week} parentName={parentName} timeZone={timeZone}
     weeklyCounts={weeklyCounts}
     familyDay={familyDay} tasks={dailyTasks} approvals={pendingApprovals}
-    review={(id,approve,choice)=>review.mutate({id,approve,...choice})} reviewing={review.isPending} reviewingId={review.variables?.id} reviewError={review.error} reviewDone={review.isSuccess ? review.variables?.id : undefined}
+    review={(id,approve,choice)=>review.mutate({id,approve,...choice})} reviewing={review.isPending} reviewingId={review.variables?.id} reviewError={review.error} reviewDone={review.isSuccess && review.variables ? { id: review.variables.id, at: review.submittedAt } : undefined}
     occurrences={occurrences} upcoming={upcoming}
     unread={inbox.data?.unread ?? 0} online={online}
     // Yalnız çocuk listesi bütün ekranı belirler; diğer sorgular kendi kartında yüklenir ve hata verir.

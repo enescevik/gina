@@ -55,6 +55,7 @@ import { LearningPlanSection, useFamilyLearningPlans } from "./learning-plan";
 import { SchoolBag } from "./school-bag";
 import { EventEditor } from "./event-editor";
 import { PlanHistoryNote } from "./plan-history-note";
+import { PlannerBulkActions } from "./bulk-scope-sheet";
 function shift(date: string, days: number) {
   const d = new Date(`${date}T12:00:00Z`);
   d.setUTCDate(d.getUTCDate() + days);
@@ -798,6 +799,7 @@ export function PlannerCalendar({
           <View style={{ gap: 12, paddingTop: 12 }}>
             {schoolBagDayAvailable(date, today) && <SatinButton secondary title={t("schoolBag.entry", { name: selectedChild.name })} onPress={() => setBag({ child: selectedChild, day: date })} />}
             <LearningPlanSection child={selectedChild} date={date} from={week[0]} to={week[6]} childMode={childMode}/>
+            {!childMode && week[0] && week[6] ? <PlannerBulkActions child={selectedChild} from={week[0]} to={week[6]} today={today} /> : null}
           </View>
         ) : scopedProfiles.length > 1 ? (
           // "Tümü": one summary row per child instead of repeating each child's bag and homework blocks

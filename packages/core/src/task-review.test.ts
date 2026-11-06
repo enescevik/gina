@@ -9,6 +9,7 @@ import {
   reviewRequestKey,
   reviewSettled,
   reviewTaskArgs,
+  suggestionTaskTitle,
   TASK_RETURN_REASONS,
 } from "./index";
 import tr from "./i18n/tr.json";
@@ -50,6 +51,13 @@ describe("task return reason (C03)", () => {
     expect(reviewErrorKey("boom")).toBe("parentHome.reviewError");
     expect(reviewSettled("already_reviewed")).toBe(true);
     expect(reviewSettled("submission_changed")).toBe(false);
+  });
+  it("turns a weekly suggestion into a short editable task title", () => {
+    expect(suggestionTaskTitle("Her akşam 10 dakika kitap okuyun. Sonra kısa konuşun.")).toBe("Her akşam 10 dakika kitap okuyun");
+    const long = suggestionTaskTitle("Kesirlerde payda eşitleme konusunu haftada iki kez kısa ve eğlenceli tekrarlarla pekiştirmek iyi olabilir");
+    expect(long.length).toBeLessThanOrEqual(80);
+    expect(long.endsWith("…")).toBe(true);
+    expect(long).not.toMatch(/\s…$/);
   });
   it("has TR/EN copy for every reason, for parent and child", () => {
     for (const dict of [tr, en] as Record<string, any>[]) {

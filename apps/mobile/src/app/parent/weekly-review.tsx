@@ -26,7 +26,8 @@ import {
   Sparkles,
   Star,
 } from "lucide-react-native";
-import { type WeeklyReview, weeklyReviewSchema } from "@gina/core";
+import { suggestionTaskTitle, type WeeklyReview, weeklyReviewSchema } from "@gina/core";
+import { putTaskPrefill } from "@/components/tasks/task-prefill";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import { invokeProvaAi, ProvaAiError } from "@/lib/prova-ai";
@@ -438,21 +439,46 @@ function Summary({ data }: { data: WeeklyReview }) {
   );
 }
 
-type Step = { id: string; who: string; text: string };
+type Step = { id: string; who: string; text: string; alias: string | null };
+type WeeklyChild = { alias: string; child_id: string; name: string | null };
 /** AI önerileri yalnız öneridir: veli seçer, düzenler ve kendisi plana/göreve aktarır. Hiçbir şey otomatik atanmaz. */
 function StepPlanner({ data }: { data: WeeklyReview }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  // C03: the week's alias → today's active child id (archived children are not offered).
+  const linked = useQuery({
+    queryKey: ["weekly_review_children", data.week_start],
+    retry: false,
+    queryFn: async () => {
+      const { data: rows, error } = await (supabase.rpc as unknown as (fn: string, args: Record<string, unknown>) => PromiseLike<{ data: unknown; error: unknown }>)(
+        "weekly_review_children", { p_week: data.week_start });
+      if (error) throw error;
+      return Array.isArray(rows) ? (rows as WeeklyChild[]) : [];
+    },
+  });
+  const weekLabel = new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "long", timeZone: "UTC" }).format(new Date(data.week_start + "T12:00:00Z"));
+  const toTask = (step: { who: string; text: string; alias: string | null }) => {
+    const child = step.alias ? linked.data?.find((x) => x.alias === step.alias) : undefined;
+    const token = putTaskPrefill({
+      childId: child?.child_id ?? null,
+      title: suggestionTaskTitle(step.text),
+      suggestion: step.text,
+      source: t("c03.weekly.prefilled", { who: step.who, week: weekLabel }) + (child ? "" : " · " + t("c03.weekly.noChild")),
+    });
+    router.push({ pathname: "/parent/tasks", params: { create: "1", prefill: token, ...(child ? { childId: child.child_id } : {}) } });
+  };
   const steps: Step[] = [
     ...(data.summary?.cocuk_basina ?? []).map((child) => ({
       id: "child:" + child.etiket,
       who: data.children.find((x) => x.alias === child.etiket)?.name ??
         child.etiket,
       text: child.oneri,
+      alias: child.etiket,
     })),
     ...(data.summary?.veliye_oneriler ?? []).map((line, i) => ({
       id: "family:" + i,
       who: t("weeklyReview.planner.family"),
       text: line,
+      alias: null,
     })),
   ];
   const [picked, setPicked] = useState<Record<string, string>>({});
@@ -549,14 +575,21 @@ function StepPlanner({ data }: { data: WeeklyReview }) {
             title={t("weeklyReview.planner.copy")}
             onPress={() => void copy()}
           />
-          <Pressable
-            accessibilityRole="button"
-            style={s.link}
-            onPress={() => router.push("/parent/tasks?create=1")}
-          >
-            <Text style={s.linkText}>{t("weeklyReview.planner.toTask")}</Text>
-            <ArrowRight color={c.purple} size={20} />
-          </Pressable>
+          {chosen.map((step) => {
+            const child = step.alias ? linked.data?.find((x) => x.alias === step.alias) : undefined;
+            return (
+              <Pressable
+                key={"task:" + step.id}
+                testID={"weekly-to-task-" + step.id}
+                accessibilityRole="button"
+                style={s.link}
+                onPress={() => toTask(step)}
+              >
+                <Text style={s.linkText}>{child ? t("c03.weekly.toTaskFor", { name: child.name ?? step.who }) : t("weeklyReview.planner.toTask") + " · " + step.who}</Text>
+                <ArrowRight color={c.purple} size={20} />
+              </Pressable>
+            );
+          })}
           <Pressable
             accessibilityRole="button"
             style={s.link}

@@ -46,6 +46,7 @@ import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { supabase } from "@/lib/supabase";
 import { RoutineEditor, type Routine } from "./routine-editor";
+import { dropTaskPrefill, readTaskPrefill } from "./task-prefill";
 import { TaskForm } from "./task-form";
 import { TaskTile, StarReward } from "./task-visuals";
 export function TasksScreen() {
@@ -64,7 +65,10 @@ export function TasksScreen() {
     create?: string;
     taskId?: string;
     paused?: string;
+    prefill?: string;
   }>();
+  // C03: weekly-summary suggestion handed over in memory (never in the route); used once by the first form.
+  const [prefill, setPrefill] = useState(() => readTaskPrefill(params.prefill));
   const [childId, setChildId] = useState<string | null>(params.childId ?? null);
   const [initialCreate, setInitialCreate] = useState(params.create === "1");
   const [paused, setPaused] = useState(params.paused === "1");
@@ -541,13 +545,18 @@ export function TasksScreen() {
           child={creating ?? selected!}
           familyId={familyId}
           timeZone={timeZone}
+          prefill={!creating && initialCreate ? prefill : null}
           onClose={() => {
             setCreating(null);
             setInitialCreate(false);
+            dropTaskPrefill(params.prefill);
+            setPrefill(null);
           }}
           onCreated={() => {
             setCreating(null);
             setInitialCreate(false);
+            dropTaskPrefill(params.prefill);
+            setPrefill(null);
             setPaused(false);
             setNotice(t("taskPremium.created"));
           }}

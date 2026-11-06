@@ -96,6 +96,20 @@ export function reviewErrorKey(message: string | null | undefined): string {
   return "parentHome.reviewError";
 }
 
+/**
+ * Haftalık öneriden görev başlığı: ilk cümle, en çok 80 karakter (görev formu sınırı), kelime ortasından kesilmez.
+ * Öneri metninin tamamı formda kaynak olarak ayrıca gösterilir; hiçbir şey kendiliğinden kaydedilmez.
+ */
+export function suggestionTaskTitle(text: string, max = 80): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  const sentence = clean.split(/(?<=[.!?…])\s/)[0] ?? clean;
+  const base = sentence.replace(/[.!?…]+$/, "").trim();
+  if (base.length <= max) return base;
+  const cut = base.slice(0, max - 1);
+  const space = cut.lastIndexOf(" ");
+  return (space > max / 2 ? cut.slice(0, space) : cut).trim() + "…";
+}
+
 /** Bir inceleme hatası kartı kapatmalı mı: başka oturum karar verdiyse görev artık beklemede değildir. */
 export function reviewSettled(message: string | null | undefined): boolean {
   return message === "already_reviewed" || message === "not_found";

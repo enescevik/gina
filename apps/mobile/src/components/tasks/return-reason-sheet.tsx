@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { returnRequest, TASK_RETURN_NOTE_MAX, TASK_RETURN_REASONS, type TaskReturnReason } from "@gina/core";
@@ -11,7 +11,7 @@ import { p, SatinButton, u } from "@/components/planner/ui";
  * yalnız bir nedenle birlikte gider. "Başka bir neden" not ister. Neden seçmeden göndermek de mümkündür
  * (eski davranış). Gönderme çift dokunuşa karşı çağıranın tek isteğiyle korunur.
  */
-export function ReturnReasonSheet({ visible, taskTitle, childName, busy, error, onCancel, onSend }: {
+type Props = {
   visible: boolean;
   taskTitle: string;
   childName: string;
@@ -19,14 +19,16 @@ export function ReturnReasonSheet({ visible, taskTitle, childName, busy, error, 
   error: string | null;
   onCancel: () => void;
   onSend: (choice: { reason: TaskReturnReason | null; note: string | null }) => void;
-}) {
+};
+export function ReturnReasonSheet(props: Props) {
+  // Mounted only while open, so every opening starts with an empty choice.
+  return props.visible ? <ReturnReasonForm {...props} /> : null;
+}
+function ReturnReasonForm({ taskTitle, childName, busy, error, onCancel, onSend }: Props) {
   const { t } = useTranslation();
   const [reason, setReason] = useState<TaskReturnReason | null>(null);
   const [note, setNote] = useState("");
   const [local, setLocal] = useState<string | null>(null);
-  useEffect(() => {
-    if (!visible) { setReason(null); setNote(""); setLocal(null); }
-  }, [visible]);
   const submit = (withReason: boolean) => {
     const checked = returnRequest({ reason: withReason ? reason : null, note: withReason ? note : "" });
     if (!checked.ok) { setLocal(t(checked.error === "return_note_required" ? "c03.review.noteRequired" : "c03.review.noteInvalid")); return; }
@@ -36,7 +38,7 @@ export function ReturnReasonSheet({ visible, taskTitle, childName, busy, error, 
   const shown = local ?? error;
   return (
     <DecisionSheet
-      visible={visible}
+      visible
       title={t("c03.review.returnTitle")}
       onClose={() => { if (!busy) onCancel(); }}
       footer={
