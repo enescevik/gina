@@ -1,0 +1,46 @@
+{
+ "stage": "prova-resume",
+ "at": "2026-11-06T15:49:22.525Z",
+ "checks": [
+  {
+   "name": "replay_no_second_charge",
+   "ok": true,
+   "status": 200,
+   "remaining": 293
+  },
+  {
+   "name": "d1_ai_shared_source_became_real_group",
+   "ok": true,
+   "groups": 1,
+   "members": 2
+  },
+  {
+   "name": "group_block_saved",
+   "ok": true,
+   "blocks": [
+    "group",
+    "question",
+    "question"
+   ]
+  },
+  {
+   "name": "partial_exam_assigned_six_questions",
+   "ok": true,
+   "questions": 6
+  },
+  {
+   "name": "generation_jobs_two_done",
+   "ok": true,
+   "jobs": [
+    {
+     "status": "done",
+     "items": 3
+    },
+    {
+     "status": "done",
+     "items": 4
+    }
+   ]
+  }
+ ]
+}

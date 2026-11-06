@@ -1,0 +1,65 @@
+{
+ "stage": "prova",
+ "at": "2026-11-06T15:46:19.926Z",
+ "checks": [
+  {
+   "name": "manual_rubric_and_alternatives_saved",
+   "ok": true
+  },
+  {
+   "name": "shared_source_group_two_questions",
+   "ok": true
+  },
+  {
+   "name": "partial_generation_real_ok",
+   "ok": false,
+   "status": 402,
+   "code": "plan_has_no_ai"
+  },
+  {
+   "name": "partial_replay_same_result_no_second_charge",
+   "ok": false,
+   "before": 0,
+   "after": 0
+  },
+  {
+   "name": "select_all_and_add_no_extra_charge",
+   "ok": true,
+   "remaining": 0
+  },
+  {
+   "name": "partial_ai_rows_provenance_model_draft",
+   "ok": false,
+   "rows": []
+  },
+  {
+   "name": "full_generation_real_ok_open_ended",
+   "ok": false,
+   "status": 402,
+   "code": "plan_has_no_ai"
+  },
+  {
+   "name": "full_generation_charges_once_by_items",
+   "ok": false,
+   "before": 0,
+   "after": 0
+  },
+  {
+   "name": "full_ai_rubric_present_on_open_ended",
+   "ok": true,
+   "rows": []
+  },
+  {
+   "name": "ai_shared_source_used_by_linked_questions",
+   "ok": false,
+   "shared_sources": 0,
+   "linked_questions": 0,
+   "note": "provenance.shared_source only; not converted to question_source_groups (C04 sınır 2)"
+  },
+  {
+   "name": "stage_error",
+   "ok": false,
+   "message": "submitA: prova_question_count"
+  }
+ ]
+}

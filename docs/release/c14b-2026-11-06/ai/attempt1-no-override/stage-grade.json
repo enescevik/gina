@@ -1,0 +1,11 @@
+{
+ "stage": "grade",
+ "at": "2026-11-06T15:46:22.884Z",
+ "checks": [
+  {
+   "name": "stage_error",
+   "ok": false,
+   "message": "child_exam: Cannot coerce the result to a single JSON object"
+  }
+ ]
+}

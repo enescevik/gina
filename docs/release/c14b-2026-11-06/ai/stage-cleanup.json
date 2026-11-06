@@ -1,0 +1,15 @@
+{
+ "stage": "cleanup",
+ "at": "2026-11-06T15:50:41.695Z",
+ "checks": [
+  {
+   "name": "parent_delete_account_ok",
+   "ok": true,
+   "status": 200
+  },
+  {
+   "name": "anonymous_device_user_deleted",
+   "ok": false
+  }
+ ]
+}

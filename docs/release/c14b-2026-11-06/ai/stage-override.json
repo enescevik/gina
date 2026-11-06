@@ -1,0 +1,20 @@
+{
+ "stage": "override",
+ "at": "2026-11-06T15:47:05.499Z",
+ "checks": [
+  {
+   "name": "override_reasoned_time_limited_audited",
+   "ok": true,
+   "plan": "pro",
+   "hours": 3,
+   "audit_rows": 1
+  },
+  {
+   "name": "family_now_pro_via_override",
+   "ok": true,
+   "plan": "pro",
+   "ai_generate_limit": 300,
+   "remaining": 300
+  }
+ ]
+}

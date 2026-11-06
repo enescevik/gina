@@ -1,0 +1,82 @@
+{
+ "stage": "grade",
+ "at": "2026-11-06T15:50:13.424Z",
+ "checks": [
+  {
+   "name": "child_payload_has_no_answer_key_or_rubric",
+   "ok": true
+  },
+  {
+   "name": "prova_grade_real_suggestion_not_final",
+   "ok": true,
+   "status": 200,
+   "suggested": 4
+  },
+  {
+   "name": "ai_score_only_no_final_score",
+   "ok": true,
+   "open": 4,
+   "ai_scored": 4
+  },
+  {
+   "name": "alternative_answer_recognised_by_rubric",
+   "ok": false,
+   "ai_score": 60
+  },
+  {
+   "name": "wrong_answer_scored_low",
+   "ok": true,
+   "ai_score": 30
+  },
+  {
+   "name": "correct_answer_scored_high",
+   "ok": true,
+   "ai_score": 100
+  },
+  {
+   "name": "blank_answer_not_invented_zero",
+   "ok": true,
+   "blank": 0
+  },
+  {
+   "name": "summary_pending_review_with_ai_suggested",
+   "ok": true,
+   "review_state": "pending_review"
+  },
+  {
+   "name": "child_cannot_see_ai_suggestion",
+   "ok": true
+  },
+  {
+   "name": "grade_replay_no_second_job",
+   "ok": true,
+   "status": 200,
+   "jobs": 1,
+   "attempts_grade": 1
+  },
+  {
+   "name": "stale_suggestion_rejected",
+   "ok": true
+  },
+  {
+   "name": "child_cannot_accept",
+   "ok": true
+  },
+  {
+   "name": "parent_accept_makes_final",
+   "ok": true,
+   "score": 100
+  },
+  {
+   "name": "parent_own_score_overrides_suggestion",
+   "ok": true,
+   "score": 30,
+   "ai_score": 30
+  },
+  {
+   "name": "attempt_not_graded_until_all_parent_decisions",
+   "ok": true,
+   "status": "submitted"
+  }
+ ]
+}

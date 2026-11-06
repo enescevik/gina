@@ -1,0 +1,17 @@
+{
+ "stage": "setup",
+ "at": "2026-11-06T15:47:02.419Z",
+ "checks": [
+  {
+   "name": "synthetic_account_family_child_device",
+   "ok": true,
+   "email_domain": "example.invalid"
+  },
+  {
+   "name": "starts_on_free_plan",
+   "ok": true,
+   "plan": "free",
+   "ai_generate_limit": 0
+  }
+ ]
+}

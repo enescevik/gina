@@ -54,3 +54,24 @@ Sonuç: 28 çalışmaya devam eder; zorunlu güncelleme yok, 29 aynı gün dağ�
 ## Gerekenler
 
 - **Senin onayın**: 5 migration, 8 Edge, bayrak, web/yönetim, iOS/tablet 29 ve en fazla 4 sentetik gerçek AI çağrısı.
+
+## Yürütme kaydı (6 Kasım 2026, Enes onayı 15:38Z)
+
+| Adım | Sonuç |
+|---|---|
+| Anlık görüntü | 193 tablo, 682 satır (`.codex-setup/c14b/pre-release-snapshot.json`, gitignored) |
+| Ön kontrol | bekleyen 5, sıra dışı 0, ACL 0, RLS kapalı tablo 0 |
+| Migration | 5/5 uygulandı; ledger 146, son `20261106390000`; sonrası ACL 0, RLS kapalı 0 |
+| Edge | 8/8 dağıtıldı (`prova-generate` v21, `prova-grade` v22, `prova-review` v12, diğerleri); `content-prereview` jwt=true, `channel-unsubscribe` jwt=false değişmedi |
+| Bayrak | `question_groups.enabled=true` |
+| Web | https://1c0cf214.gina-web.pages.dev, canlı hash eşleşti |
+| Yönetim | https://30000ffb.gina-backoffice.pages.dev, Access 12/12 korumalı |
+| Sağlık | `health-check.mjs --strict` ok, başarısız/atlanan 0 |
+| Canlı AI ([ai/](ai/)) | 3 ücretli çağrı (tavan 4), sentetik hesap silindi, aile kapsamlı satır 0 |
+
+Canlı AI bulguları:
+- **B1 kapandı:** `prova-grade` 200, 4 öneri, kesin puan yazılmadı; tekrar ikinci iş açmadı; `accept_ai_grade` öneriyi kesin puan yaptı, eski öneri `ai_suggestion_changed` ile reddedildi, çocuk kabul edemedi, çocuk öneriyi göremedi.
+- **D1 doğrulandı:** gerçek üretimde ortak tablo gerçek gruba dönüştü (1 grup, 2 üye); grup üyesi tek soru olarak eklenince `prova_source_unavailable` (beklenen), `kind:"group"` bloğuyla eklendi.
+- **D9 doğrulandı:** istem `prova-generate/v7-rubric-100`; açık uçlu 4 sorunun rubrik toplamı 100.
+- **Yeni kalite bulgusu (P2):** "Pastanın yarısı yenmiş, yani 0,5." cevabı 60 aldı (beklenen ≥80). Model ölçütleri harfiyen uyguladı ("2/4 yazar" ölçütünü vermedi); rubriğin `alternative_answers` listesi tam puan anlamında okunmadı. İstemde "kabul edilen alternatif cevap tam puan sayılır" kuralı gerekli.
+- İlk deneme Pro izni olmadan koştu (402 `plan_has_no_ai`, sağlayıcıya istek yok); kaydı [ai/attempt1-no-override/](ai/attempt1-no-override/) içinde, ücretli sayılmaz.
