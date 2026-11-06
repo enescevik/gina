@@ -1,0 +1,32 @@
+{
+ "stage": "assign",
+ "target": "production",
+ "at": "2026-11-06T18:56:21.694Z",
+ "checks": [
+  {
+   "name": "assignment_replay_same_exam",
+   "ok": true
+  },
+  {
+   "name": "assigned_exam_has_exactly_scenario_questions",
+   "ok": true,
+   "questions": 6,
+   "status": "assigned",
+   "grade": 5,
+   "subject": "Türkçe"
+  },
+  {
+   "name": "child_sees_assigned_exam",
+   "ok": true
+  },
+  {
+   "name": "child_payload_has_no_key_rubric_or_provenance",
+   "ok": true,
+   "items": 6
+  },
+  {
+   "name": "assignment_no_charge",
+   "ok": true
+  }
+ ]
+}

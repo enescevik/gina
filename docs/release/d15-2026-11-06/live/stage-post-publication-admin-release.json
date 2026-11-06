@@ -1,0 +1,25 @@
+{
+  "stage": "post-publication-admin-release",
+  "at": "2026-11-06T18:54:11.321Z",
+  "candidateRevision": 2,
+  "questionCount": 6,
+  "checks": [
+    {
+      "name": "temp_admin_auth_removed",
+      "ok": true
+    },
+    {
+      "name": "temp_admin_role_removed",
+      "ok": true
+    },
+    {
+      "name": "temp_admin_credentials_removed_from_state",
+      "ok": true
+    },
+    {
+      "name": "global_catalog_remains_closed",
+      "ok": true
+    }
+  ],
+  "next": "Claude: scope, select, generate, assign; then Codex: cleanup --withdraw"
+}

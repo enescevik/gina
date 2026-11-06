@@ -1,0 +1,75 @@
+{
+ "stage": "generate",
+ "target": "production",
+ "at": "2026-11-06T18:56:17.686Z",
+ "checks": [
+  {
+   "name": "scenario_generation_ok",
+   "ok": true,
+   "status": 200,
+   "questions": 6
+  },
+  {
+   "name": "question_count_equals_scenario_total",
+   "ok": true,
+   "questions": 6,
+   "scenario_total": 6
+  },
+  {
+   "name": "per_block_counts_match_scenario",
+   "ok": true,
+   "got": {
+    "B1": 2,
+    "B2": 1,
+    "B3": 1,
+    "B4": 1,
+    "B5": 1
+   },
+   "expected": {
+    "B1": 2,
+    "B2": 1,
+    "B3": 1,
+    "B4": 1,
+    "B5": 1
+   }
+  },
+  {
+   "name": "every_question_traces_scenario_block_outcomes_source",
+   "ok": true,
+   "problems": []
+  },
+  {
+   "name": "shared_source_one_identity_linked_questions_counted_separately",
+   "ok": true,
+   "groups": 1,
+   "members": 3
+  },
+  {
+   "name": "charged_once_by_items",
+   "ok": true,
+   "before": 300,
+   "after": 294
+  },
+  {
+   "name": "replay_same_result_no_second_charge",
+   "ok": true
+  },
+  {
+   "name": "one_done_generation_job_for_pilot",
+   "ok": true,
+   "jobs": [
+    "done"
+   ]
+  },
+  {
+   "name": "content_fit_pending_human_review_not_success",
+   "ok": true,
+   "fit": 0,
+   "total": 6,
+   "not_fit": 0,
+   "accepted": false,
+   "needs_revision": 0,
+   "pending_human_review": 6
+  }
+ ]
+}

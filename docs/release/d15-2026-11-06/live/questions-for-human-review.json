@@ -1,0 +1,183 @@
+[
+ {
+  "id": "e548af26",
+  "block_id": "B1",
+  "outcome_ids": [
+   "T.O.5.6"
+  ],
+  "expected_answer": "Toprağı kazmışlar, domates ve biber fidelerini dikmişler, fideleri her gün sırayla sulamışlardır.",
+  "rubric": {
+   "assesses": "result",
+   "criteria": [
+    {
+     "text": "Toprağı kazma işini metne uygun yazması",
+     "points": 30
+    },
+    {
+     "text": "Fide dikme işini metne uygun yazması",
+     "points": 30
+    },
+    {
+     "text": "Sulama işini metne uygun yazması",
+     "points": 30
+    },
+    {
+     "text": "Cevabı kendi cümleleriyle, anlaşılır yazması",
+     "points": 10
+    }
+   ],
+   "alternative_answers": [
+    "Toprağı kazdılar; domates ve biber fidesi dikip her gün sırayla suladılar."
+   ]
+  }
+ },
+ {
+  "id": "1d287014",
+  "block_id": "B1",
+  "outcome_ids": [
+   "T.O.5.6"
+  ],
+  "expected_answer": "Yetişen sebzeler okul kantinine bağışlanacaktır. Öğretmen, emek vermeden sonuç alınamayacağını söylemiştir.",
+  "rubric": {
+   "assesses": "result",
+   "criteria": [
+    {
+     "text": "Sebzelerin okul kantinine bağışlanacağını yazması",
+     "points": 40
+    },
+    {
+     "text": "Öğretmenin emek vermeden sonuç alınamayacağını söylediğini yazması",
+     "points": 40
+    },
+    {
+     "text": "İki bilgiyi birbirine karıştırmadan, açık cümlelerle yazması",
+     "points": 20
+    }
+   ],
+   "alternative_answers": [
+    "Sebzeler kantine verilecek; öğretmen, çalışmadan karşılık beklenmeyeceğini söylemiştir."
+   ]
+  }
+ },
+ {
+  "id": "f118dabf",
+  "block_id": "B2",
+  "outcome_ids": [
+   "T.O.5.7"
+  ],
+  "expected_answer": "Afiş, suyun tasarruflu kullanılması gerektiğini, boşa akıtılmaması gerektiğini anlatır. Açık musluk ve boşa akan su, israfı gösterir. Kuruyan fidan, su olmazsa canlıların zarar gördüğünü gösterir. Dolu bardak ve 'Her damla değerlidir.' yazısı suyun kıymetini vurgular.",
+  "rubric": {
+   "assesses": "process",
+   "criteria": [
+    {
+     "text": "Afişin mesajını doğru belirlemesi (suyu tasarruflu kullanmalıyız / su israf edilmemelidir)",
+     "points": 40
+    },
+    {
+     "text": "Mesajı destekleyen en az iki görsel ögeyi (açık musluk, kuruyan fidan, dolu bardak vb.) belirtmesi",
+     "points": 40
+    },
+    {
+     "text": "Görsel ögeler ile mesaj arasındaki bağı açıklaması",
+     "points": 20
+    }
+   ],
+   "alternative_answers": [
+    "Su kaynaklarını korumalı, musluğu açık bırakmamalıyız; çünkü su boşa akarsa bitkiler ve canlılar zarar görür."
+   ]
+  }
+ },
+ {
+  "id": "b4c7fc95",
+  "block_id": "B3",
+  "outcome_ids": [
+   "T.O.5.20"
+  ],
+  "expected_answer": "'Gözümüz gibi korumak', bir şeye çok değer vererek zarar görmemesi için büyük özen göstermek demektir. 'Hasat', bahçede veya tarlada yetişen ürünün toplanması demektir. Metinde 'hasat zamanı yetişen sebzeleri bağışlayacağız' denmesi, hasadın yetişmiş sebzelerin toplandığı zaman olduğunu gösterir.",
+  "rubric": {
+   "assesses": "process",
+   "criteria": [
+    {
+     "text": "'Gözümüz gibi korumak' deyiminin anlamını doğru yazması (çok dikkatli ve özenle korumak)",
+     "points": 40
+    },
+    {
+     "text": "'Hasat' sözcüğünün anlamını doğru yazması (olgunlaşan ürünü toplama)",
+     "points": 30
+    },
+    {
+     "text": "Hasat anlamını metindeki ipuçlarına (yetişen sebzeler, emek, bahçe) dayandırarak açıklaması",
+     "points": 30
+    }
+   ],
+   "alternative_answers": [
+    "Gözümüz gibi korumak: çok değer vererek zarar görmesini önlemek. Hasat: yetişmiş ürünleri toplama."
+   ]
+  }
+ },
+ {
+  "id": "dd2213ab",
+  "block_id": "B4",
+  "outcome_ids": [
+   "T.Y.5.13"
+  ],
+  "expected_answer": "Örnek cevap: Okulumuzun bahçesi rengârenk çiçeklerle dolmuştu. Sabah güneşi doğunca bahçe, sanki bir tablo gibi ışıl ışıl parlıyordu. Gören herkes bu güzelliğe hayran kalıyordu. (Sıfatlar: rengârenk, ışıl ışıl; benzetme: tablo gibi.) Ölçütleri karşılayan farklı yazılar da kabul edilir.",
+  "rubric": {
+   "assesses": "process",
+   "criteria": [
+    {
+     "text": "En az iki sıfat kullanması",
+     "points": 25
+    },
+    {
+     "text": "En az bir deyim veya benzetme kullanması ve doğru yerde kullanması",
+     "points": 35
+    },
+    {
+     "text": "2-3 cümlelik, konuya bağlı ve anlam bütünlüğü olan bir paragraf yazması",
+     "points": 25
+    },
+    {
+     "text": "Yazım ve noktalama kurallarına büyük ölçüde uyması",
+     "points": 15
+    }
+   ],
+   "alternative_answers": [
+    "Bahçemizin rengârenk çiçekleri bayram yerini andırıyordu. Sabah güneşi vurunca bahçe, ışıl ışıl bir tabloya dönüşüyordu. Herkes bu güzelliğe hayran kaldı."
+   ]
+  }
+ },
+ {
+  "id": "f3823899",
+  "block_id": "B5",
+  "outcome_ids": [
+   "T.Y.5.16"
+  ],
+  "expected_answer": "Dün akşam annem bana Ankara'daki teyzemin geleceğini söyledi. Sevindim; çünkü onu çok özlemiştim. Kurallar: Cümleler büyük harfle başlar. Özel isimlerin ilk harfi büyük yazılır ve ekler kesme işaretiyle ayrılır. Tamamlanmış cümlenin sonuna nokta konur. 'Çünkü' öncesinde virgül veya noktalı virgül kullanılır.",
+  "rubric": {
+   "assesses": "process",
+   "criteria": [
+    {
+     "text": "Cümle başlarını büyük harfle yazması (Dün, Sevindim)",
+     "points": 20
+    },
+    {
+     "text": "'Ankara'daki' sözcüğünde özel ismin ilk harfini büyük yazıp ekini kesme işaretiyle ayırması",
+     "points": 30
+    },
+    {
+     "text": "Cümle sonlarına uygun noktalama işaretini (nokta) koyması",
+     "points": 30
+    },
+    {
+     "text": "'çünkü' öncesinde virgül veya noktalı virgül kullanması ya da kuralı doğru uygulaması; kuralı açıklaması",
+     "points": 20
+    }
+   ],
+   "alternative_answers": [
+    "Dün akşam annem bana Ankara'daki teyzemin geleceğini söyledi. Sevindim; çünkü onu çok özlemiştim.",
+    "Dün akşam annem bana Ankara'daki teyzemin geleceğini söyledi. Sevindim, çünkü onu çok özlemiştim."
+   ]
+  }
+ }
+]
