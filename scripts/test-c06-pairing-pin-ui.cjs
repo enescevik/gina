@@ -10,7 +10,7 @@ assert.equal(new URL(f.url).hostname, '127.0.0.1');
 assert.match(f.email, /^gina-[0-9a-f-]+@example\.invalid$/);
 const WEB = process.env.GINA_C06_WEB; assert.match(WEB, /^http:\/\/127\.0\.0\.1:\d+$/);
 const root = path.resolve(__dirname, '..');
-const out = root + '/docs/release/c06-2026-11-06'; fs.mkdirSync(out + '/screenshots', { recursive: true });
+const out = process.env.GINA_C06_OUT ? path.resolve(process.env.GINA_C06_OUT) : root + '/docs/release/c06-2026-11-06'; fs.mkdirSync(out + '/screenshots', { recursive: true });
 const tr = JSON.parse(fs.readFileSync(root + '/packages/core/src/i18n/tr.json'));
 const t = (key, vars = {}) => { let s = tr[key] ?? key.split('.').reduce((v, k) => v?.[k], tr); assert.ok(typeof s === 'string', 'missing key ' + key); for (const [k, v] of Object.entries(vars)) s = s.split('{{' + k + '}}').join(String(v)); return s; };
 const sizes = { phone: { width: 390, height: 844 }, tablet: { width: 768, height: 1024 }, desktop: { width: 1280, height: 800 } };
@@ -52,7 +52,7 @@ async function shot(page, name, focus) {
   await page.screenshot({ path: `${out}/screenshots/${name}.png`, fullPage: true });
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), name + ': horizontal overflow');
   const body = await page.locator('body').innerText();
-  assert.ok(!/\b(u02|c06|u01|experience|unified)\.[a-zA-Z]/.test(body), name + ': raw i18n key visible');
+  assert.ok(!/\b(u02|c06|u01|experience|unified|auth1)\.[a-zA-Z]/.test(body), name + ': raw i18n key visible');
   assert.ok(!/ailesi ailesi/i.test(body), name + ': repeated family word');
 }
 const button = (page, name) => page.getByRole('button', { name, exact: true });
@@ -72,7 +72,10 @@ async function newCode(page, name) {
   await page.goto(WEB + '/device/pair'); await button(page, t('unified.pairCodeAction')).waitFor();
   if (name) await page.getByLabel(t('unified.deviceName'), { exact: true }).fill(name);
   await button(page, t('unified.pairCodeAction')).click(); await page.getByTestId('pairing-active').waitFor();
-  return (await page.getByTestId('pairing-active').innerText()).match(/\b\d{6}\b/)[0];
+  // C13-AUTH-1: 8 characters, shown as 4+4.
+  const shown = (await page.getByTestId('pairing-code').innerText()).trim();
+  assert.match(shown, /^[ACDEFHJKMNPRTUVWXY3479]{4} [ACDEFHJKMNPRTUVWXY3479]{4}$/, 'grouped 8-char code');
+  return shown.replace(/\s/g, '');
 }
 
 (async () => {
@@ -82,6 +85,7 @@ async function newCode(page, name) {
        delete from public.families where name='Demir Ailesi';
        insert into public.active_families values('${f.userId}','${f.familyId}') on conflict(user_id) do update set family_id=excluded.family_id;
        update public.parent_pins set failed_count=0, locked_until=null;
+       delete from public.device_pairing_locks; delete from public.device_pairing_attempts;
        update public.families set name='Yılmaz Ailesi' where id='${f.familyId}';
        update public.children set name='Ece', avatar='avatar-default' where id='${f.childId}';
        delete from public.children where family_id='${f.familyId}' and id<>'${f.childId}';
@@ -94,7 +98,7 @@ async function newCode(page, name) {
   stage = 'menu_single_path';
   const parent = await newPage('phone'); await signIn(parent);
   await parent.goto(WEB + '/parent/menu?section=devices'); await text(parent, t('unified.connectedDevices')).waitFor();
-  assert.equal(await parent.getByLabel(t('unified.pairCode'), { exact: true }).count(), 0, 'menu must not keep its own code field');
+  assert.equal(await parent.getByLabel(t('auth1.parentPair.codeLabel'), { exact: true }).count(), 0, 'menu must not keep its own code field');
   await parent.getByTestId('parent-pin-setup').waitFor();
   await parent.getByLabel(t('parentV5.newParentPin'), { exact: true }).fill('2580');
   await parent.getByLabel(t('experience.confirmPin'), { exact: true }).fill('2580');
@@ -103,7 +107,7 @@ async function newCode(page, name) {
   await shot(parent, 'menu-devices-single-path-phone');
   await parent.setViewportSize(sizes.desktop); await shot(parent, 'menu-devices-single-path-desktop'); await parent.setViewportSize(sizes.phone);
   await parent.getByRole('button', { name: new RegExp('^' + t('parent.pairDevice')) }).first().click();
-  await parent.waitForURL('**/parent/pair-device'); await parent.getByLabel(t('unified.pairCode'), { exact: true }).waitFor();
+  await parent.waitForURL('**/parent/pair-device'); await parent.getByLabel(t('auth1.parentPair.codeLabel'), { exact: true }).waitFor();
   pass('menu_links_to_single_pair_screen_and_parent_pin_uses_shared_setup');
 
   // 2) Child tablet makes a QR; it decodes to the code-only link.
@@ -139,14 +143,27 @@ async function newCode(page, name) {
   const deviceId = new URL(fresh.url()).searchParams.get('deviceId');
   assert.equal(sql(`select name||'|'||access_mode||'|'||pin_policy||'|'||family_id from public.devices where id='${deviceId}';`), `Salon tableti|selected|required|${f.familyId}`);
   assert.equal(await pending(fresh), null, 'kept code removed after use');
+  assert.equal(sql(`select count(*) from public.device_pairing_previews where code='${code1}' and used_at is not null;`), '1', 'paired with a used preview token');
   pass('qr_sign_in_target_confirm_pairs_once_without_losing_code');
+
+  // 3b) C13-AUTH-1: the waiting tablet shows which family received it before entering child mode.
+  stage = 'device_receipt';
+  await tablet.getByTestId('pairing-receipt').waitFor({ timeout: 45000 });
+  assert.ok((await tablet.getByTestId('pairing-receipt-family').innerText()).includes('Yılmaz Ailesi'));
+  await tablet.getByRole('button', { name: t('auth1.device.notMyFamily'), exact: true }).waitFor();
+  await shot(tablet, 'device-paired-receipt-tablet', 'pairing-receipt');
+  await tablet.setViewportSize(sizes.phone); await shot(tablet, 'device-paired-receipt-phone', 'pairing-receipt'); await tablet.setViewportSize(sizes.tablet);
+  await button(tablet, t('auth1.device.continue')).click();
+  await tablet.waitForURL('**/child', { timeout: 20000 });
+  pass('device_shows_receiving_family_then_continues');
 
   // 4) Replaying the used QR link (signed in) or typing it again cannot pair a second time.
   stage = 'replay';
   await fresh.goto(link); await text(fresh, t('u02.parentPair.expiredTitle')).waitFor();
   assert.equal(await fresh.getByTestId('pairing-target').count(), 0);
   await shot(fresh, 'pair-used-code-phone');
-  await fresh.goto(WEB + '/parent/pair-device'); await fresh.getByLabel(t('unified.pairCode'), { exact: true }).fill(code1);
+  await fresh.goto(WEB + '/parent/pair-device'); await fresh.getByLabel(t('auth1.parentPair.codeLabel'), { exact: true }).fill(code1.slice(0, 4).toLowerCase() + '-' + code1.slice(4).toLowerCase());
+  assert.equal(await fresh.getByLabel(t('auth1.parentPair.codeLabel'), { exact: true }).inputValue(), code1.slice(0, 4) + ' ' + code1.slice(4), 'typed code normalised and grouped');
   await button(fresh, t('c06.pair.show')).click(); await text(fresh, t('u02.parentPair.expiredTitle')).waitFor();
   assert.equal(sql(`select count(*) from public.devices where id='${deviceId}';`), '1');
   pass('used_code_replay_is_refused');
@@ -196,12 +213,12 @@ async function newCode(page, name) {
   stage = 'child_boundaries';
   for (const p of ['/parent/menu?section=devices', '/parent/pair-device?code=' + code3, '/parent/device-access?deviceId=' + deviceId]) {
     await tablet.goto(WEB + p); await tablet.waitForURL((u) => u.pathname.startsWith('/child'), { timeout: 20000 });
-    assert.equal(await tablet.getByLabel(t('unified.pairCode'), { exact: true }).count(), 0);
+    assert.equal(await tablet.getByLabel(t('auth1.parentPair.codeLabel'), { exact: true }).count(), 0);
   }
   const deviceToken = await tokenOf(tablet); assert.ok(deviceToken);
   const denied = {
     preview: await rpc('preview_device_pairing', { p_code: code3 }, deviceToken),
-    pair: await rpc('pair_child_device', { p_code: code3 }, deviceToken),
+    pair: await rpc('pair_child_device', { p_code: code3, p_preview_token: randomUUID() }, deviceToken),
     parentPin: await rpc('verify_parent_pin', { p_pin: '2580' }, deviceToken),
     sibling: await rpc('child_pin_login', { p_child_id: canId, p_pin: '' }, deviceToken),
     configure: await rpc('configure_child_device', { p_device_id: deviceId, p_name: 'x', p_child_ids: [canId], p_pin_required: false }, deviceToken),
@@ -275,6 +292,55 @@ async function newCode(page, name) {
   assert.equal(sql(`select family_id from public.active_families where user_id='${f.userId}';`), f.familyId);
   assert.equal(sql(`select count(*) from public.children where family_id in ('${f.familyId}','${partnerFamily}') and archived_at is null;`), '3');
   pass('family_join_and_switch_texts_without_repeated_word');
+
+  // 11b) C13-AUTH-1: a stranger family pairs a waiting tablet; the tablet undoes it with one tap.
+  stage = 'device_not_my_family';
+  const partnerToken = (await auth('token?grant_type=password', { email: partnerEmail, password: partnerPassword })).body.access_token;
+  const stray = await newPage('tablet');
+  const code4 = await newCode(stray, 'Oyun odası tableti');
+  const strayPreview = await rpc('preview_device_pairing', { p_code: code4 }, partnerToken);
+  assert.equal(strayPreview.body?.status, 'ok', JSON.stringify(strayPreview.body));
+  await rpc('pair_child_device', { p_code: code4 }, partnerToken).then((r) => assert.ok(/client_update_required/.test(JSON.stringify(r.body)), 'legacy signature refused ' + JSON.stringify(r.body)));
+  const strayPair = await rpc('pair_child_device', { p_code: code4, p_preview_token: strayPreview.body.preview_token }, partnerToken);
+  assert.equal(strayPair.status, 200, JSON.stringify(strayPair.body));
+  await stray.getByTestId('pairing-receipt').waitFor({ timeout: 45000 });
+  assert.ok((await stray.getByTestId('pairing-receipt-family').innerText()).includes('Demir Ailesi'));
+  await shot(stray, 'device-wrong-family-receipt-tablet', 'pairing-receipt');
+  await stray.setViewportSize(sizes.phone); await shot(stray, 'device-wrong-family-receipt-phone', 'pairing-receipt'); await stray.setViewportSize(sizes.tablet);
+  await button(stray, t('auth1.device.notMyFamily')).click();
+  await stray.getByTestId('pairing-rejected').waitFor();
+  assert.equal(sql(`select (d.revoked_at is not null)::text from public.devices d join public.device_pairings p on p.auth_user_id=d.auth_user_id where p.code='${code4}';`), 'true', 'stray pairing revoked');
+  assert.equal(stray.url().includes('/child'), false);
+  await shot(stray, 'device-not-my-family-done-tablet', 'pairing-rejected');
+  const code5 = await newCode(stray);
+  assert.notEqual(code5, code4);
+  pass('device_not_my_family_undoes_pairing_and_gets_new_code');
+
+  // 11c) C13-AUTH-1: guessing codes in the parent app locks trying for 15 minutes (server-side count).
+  stage = 'bruteforce_lock';
+  sql(`delete from public.device_pairing_attempts where user_id='${f.userId}' or family_id='${f.familyId}'; delete from public.device_pairing_locks;`);
+  await parent.goto(WEB + '/parent/pair-device'); const field = parent.getByLabel(t('auth1.parentPair.codeLabel'), { exact: true }); await field.waitFor();
+  for (let i = 0; i < 10; i++) {
+    await field.fill('YYYY' + 'ACDEFHJKMN'[i] + 'PRT'); await button(parent, t('c06.pair.show')).click();
+    if (i < 9) {
+      await parent.getByTestId('pairing-invalid').waitFor();
+      await text(parent, t('auth1.parentPair.attemptsLeft', { count: 9 - i })).waitFor();
+      if (i === 0) await shot(parent, 'parent-pair-wrong-code-phone', 'pairing-invalid');
+    }
+  }
+  await parent.getByTestId('pairing-locked').waitFor();
+  assert.ok((await parent.getByTestId('pairing-locked').innerText()).includes(t('auth1.parentPair.lockedTitle')));
+  assert.equal(sql(`select count(*) from public.device_pairing_locks where scope='user' and subject='${f.userId}' and locked_until > now() + interval '14 minutes';`), '1');
+  await shot(parent, 'parent-pair-locked-phone', 'pairing-locked');
+  await parent.setViewportSize(sizes.tablet); await shot(parent, 'parent-pair-locked-tablet', 'pairing-locked'); await parent.setViewportSize(sizes.phone);
+  // While locked, even the right (live) code shows no target and cannot pair.
+  await field.fill(code5);
+  assert.equal(await button(parent, t('c06.pair.show')).isDisabled(), true, 'show disabled while locked');
+  const lockedPreview = await rpc('preview_device_pairing', { p_code: code5 }, await tokenOf(parent));
+  assert.equal(lockedPreview.body?.status, 'pairing_locked', JSON.stringify(lockedPreview.body));
+  assert.equal(await parent.getByTestId('pairing-target').count(), 0);
+  assert.equal(sql(`select (consumed_at is null)::text from public.device_pairings where code='${code5}';`), 'true');
+  pass('bruteforce_guessing_locks_preview_for_15_minutes', { lock_seconds: lockedPreview.body?.retry_after_seconds });
 
   // 12) Password recovery with real GoTrue links (PKCE): other device, used, expired, same device.
   stage = 'recovery';

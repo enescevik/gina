@@ -143,7 +143,7 @@ export function FamilyHub() {
         <>
           <View style={parentStyles.form}>
             <Text style={parentStyles.title}>{t("experience.family.joinTitle")}</Text>
-            <Text style={parentStyles.muted}>{t("experience.family.codeHelpPath")}</Text>
+            <Text style={parentStyles.muted}>{t("auth1.family.codeHelpPath")}</Text>
             <Field label={t("parent.inviteCode")} maxLength={8} autoCapitalize="characters" autoComplete="off" editable={!busy} value={code}
               onChangeText={(v) => { setCode(v.replace(/[^a-f0-9]/gi, "").toUpperCase()); setPreview(null); inspect.reset(); join.reset(); }} />
             <Button title={t("experience.family.preview")} loading={inspect.isPending} disabled={code.length !== 8 || busy} onPress={() => inspect.mutate(code)} />

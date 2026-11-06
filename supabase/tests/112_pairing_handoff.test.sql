@@ -17,14 +17,14 @@ insert into public.children(id,family_id,name) values
  ('20000000-0000-4000-8000-000000011201','10000000-0000-4000-8000-000000011201','Ece'),
  ('20000000-0000-4000-8000-000000011202','10000000-0000-4000-8000-000000011201','Can');
 insert into public.device_pairings(code,auth_user_id,device_name,expires_at) values
- ('112001','00000000-0000-4000-8000-000000011203','Ece tablet',now()+interval '9 minutes'),
- ('112002','00000000-0000-4000-8000-000000011204','Eski kod',now()-interval '1 second');
+ ('CDEFHJKM','00000000-0000-4000-8000-000000011203','Ece tablet',now()+interval '9 minutes'),
+ ('CDEFHJKN','00000000-0000-4000-8000-000000011204','Eski kod',now()-interval '1 second');
 
 -- Contract and grants.
 select ok(has_function_privilege('authenticated','public.preview_device_pairing(text)','execute'),'signed-in users may call preview');
 select ok(not has_function_privilege('anon','public.preview_device_pairing(text)','execute'),'anon cannot preview pairing codes');
 select is((select count(*)::int from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname='preview_device_pairing'),1,'single preview signature');
-select is((select provolatile from pg_proc where oid='public.preview_device_pairing(text)'::regprocedure),'s','preview is declared read-only (stable)');
+select is((select provolatile from pg_proc where oid='public.preview_device_pairing(text)'::regprocedure),'v','preview is volatile: failed attempts are counted (C13-AUTH-1)');
 select has_column('public','parent_pins','failed_count','parent PIN keeps a failure counter');
 select col_not_null('public','parent_pins','failed_count','failed_count is not null');
 select has_column('public','parent_pins','locked_until','parent PIN has a lock time');
@@ -32,32 +32,32 @@ select has_column('public','parent_pins','locked_until','parent PIN has a lock t
 set local role authenticated;
 -- Parent A previews a live code: device + own family shown; nothing consumed or created.
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000011201","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000011201"}}',true);
-select is(public.preview_device_pairing('112001')->>'status','ok','live code previews');
-select is(public.preview_device_pairing(' 112001 ')->>'device_name','Ece tablet','preview shows the name typed on the child device');
-select is(public.preview_device_pairing('112001')->>'family_name','Aile A','preview names the family that will receive the device');
-select ok((public.preview_device_pairing('112001')->>'seconds_left')::int between 1 and 540,'preview reports remaining seconds');
-select is(public.preview_device_pairing('112002')->>'status','invalid_or_expired','expired code is not previewable');
-select is(public.preview_device_pairing('999999')->>'status','invalid_or_expired','unknown code is not previewable');
+select is(public.preview_device_pairing('CDEFHJKM')->>'status','ok','live code previews');
+select is(public.preview_device_pairing(' cdef-hjkm ')->>'device_name','Ece tablet','preview shows the name typed on the child device');
+select is(public.preview_device_pairing('CDEFHJKM')->>'family_name','Aile A','preview names the family that will receive the device');
+select ok((public.preview_device_pairing('CDEFHJKM')->>'seconds_left')::int between 1 and 540,'preview reports remaining seconds');
+select is(public.preview_device_pairing('CDEFHJKN')->>'status','invalid_or_expired','expired code is not previewable');
+select is(public.preview_device_pairing('CDEFHJKP')->>'status','invalid_or_expired','unknown code is not previewable');
 select is(public.preview_device_pairing('12ab56')->>'status','invalid_or_expired','malformed code rejected without lookup');
 select is(public.preview_device_pairing(null)->>'status','invalid_or_expired','null code rejected');
-select ok(not (public.preview_device_pairing('112002') ? 'device_name'),'expired preview leaks no device name');
+select ok(not (public.preview_device_pairing('CDEFHJKN') ? 'device_name'),'expired preview leaks no device name');
 reset role;
-select is((select consumed_at from public.device_pairings where code='112001'),null,'preview never consumes the code');
+select is((select consumed_at from public.device_pairings where code='CDEFHJKM'),null,'preview never consumes the code');
 select is((select count(*)::int from public.devices where auth_user_id='00000000-0000-4000-8000-000000011203'),0,'preview never creates a device');
 
 -- Child device and anonymous (unpaired) users cannot preview.
 set local role authenticated;
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000011204","role":"authenticated","is_anonymous":true,"gina":{"role":null,"family_id":null}}',true);
-select throws_ok($$select public.preview_device_pairing('112001')$$,'42501','forbidden','unpaired device cannot preview another code');
+select throws_ok($$select public.preview_device_pairing('CDEFHJKM')$$,'42501','forbidden','unpaired device cannot preview another code');
 
 -- Confirm pairs exactly once; a second confirm (replay/double tap/other parent) fails.
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000011201","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000011201"}}',true);
-select isnt(public.pair_child_device('112001'),null,'confirmed preview pairs the device');
-select throws_ok($$select public.pair_child_device('112001')$$,'P0001','invalid_or_expired_code','used code cannot be reused');
-select is(public.preview_device_pairing('112001')->>'status','invalid_or_expired','used code no longer previews');
+select isnt(public.pair_child_device('CDEFHJKM',public.preview_device_pairing('CDEFHJKM')->>'preview_token'),null,'confirmed preview pairs the device');
+select throws_ok($$select public.pair_child_device('CDEFHJKM',public.preview_device_pairing('CDEFHJKM')->>'preview_token')$$,'P0001','invalid_preview_token','used code cannot be reused');
+select is(public.preview_device_pairing('CDEFHJKM')->>'status','invalid_or_expired','used code no longer previews');
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000011202","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000011202"}}',true);
-select throws_ok($$select public.pair_child_device('112001')$$,'P0001','invalid_or_expired_code','other family cannot take over a used code');
-select throws_ok($$select public.pair_child_device('112002')$$,'P0001','invalid_or_expired_code','expired code cannot pair');
+select throws_ok($$select public.pair_child_device('CDEFHJKM',public.preview_device_pairing('CDEFHJKM')->>'preview_token')$$,'P0001','invalid_preview_token','other family cannot take over a used code');
+select throws_ok($$select public.pair_child_device('CDEFHJKN',public.preview_device_pairing('CDEFHJKN')->>'preview_token')$$,'P0001','invalid_preview_token','expired code cannot pair');
 reset role;
 select is((select family_id from public.devices where auth_user_id='00000000-0000-4000-8000-000000011203'),'10000000-0000-4000-8000-000000011201'::uuid,'device belongs to the confirming family only');
 

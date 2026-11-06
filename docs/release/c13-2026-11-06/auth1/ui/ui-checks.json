@@ -1,0 +1,116 @@
+{
+  "environment": "disposable-local-real-auth-rest-realtime",
+  "viewports": {
+    "phone": {
+      "width": 390,
+      "height": 844
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024
+    },
+    "desktop": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "results": [
+    {
+      "check": "menu_links_to_single_pair_screen_and_parent_pin_uses_shared_setup",
+      "passed": true
+    },
+    {
+      "check": "qr_decodes_to_code_only_link",
+      "passed": true
+    },
+    {
+      "check": "qr_sign_in_target_confirm_pairs_once_without_losing_code",
+      "passed": true
+    },
+    {
+      "check": "device_shows_receiving_family_then_continues",
+      "passed": true
+    },
+    {
+      "check": "used_code_replay_is_refused",
+      "passed": true
+    },
+    {
+      "check": "server_expiry_during_sign_in_is_safe",
+      "passed": true
+    },
+    {
+      "check": "locally_expired_code_is_dropped_after_sign_in",
+      "passed": true
+    },
+    {
+      "check": "configured_single_child_device_enters_with_pin",
+      "passed": true
+    },
+    {
+      "check": "child_device_cannot_reach_parent_or_sibling",
+      "passed": true,
+      "denied": {
+        "preview": 403,
+        "pair": 403,
+        "parentPin": 403,
+        "sibling": 403,
+        "configure": 403
+      }
+    },
+    {
+      "check": "revoked_device_leaves_open_session_and_sees_reason",
+      "passed": true,
+      "seconds": 2
+    },
+    {
+      "check": "parent_exit_pin_shared_control_lock_and_exit",
+      "passed": true
+    },
+    {
+      "check": "family_join_and_switch_texts_without_repeated_word",
+      "passed": true
+    },
+    {
+      "check": "device_not_my_family_undoes_pairing_and_gets_new_code",
+      "passed": true
+    },
+    {
+      "check": "bruteforce_guessing_locks_preview_for_15_minutes",
+      "passed": true,
+      "lock_seconds": 899
+    },
+    {
+      "check": "reset_link_other_device_and_reused_link_get_new_link_form",
+      "passed": true,
+      "other_device_landing": {
+        "code": true,
+        "error_code": null
+      },
+      "reused_landing": {
+        "code": false,
+        "error_code": "otp_expired"
+      }
+    },
+    {
+      "check": "expired_reset_link_gets_new_link_form",
+      "passed": true,
+      "expired_landing": {
+        "code": false,
+        "error_code": "otp_expired"
+      }
+    },
+    {
+      "check": "same_device_reset_sets_new_password",
+      "passed": true
+    },
+    {
+      "check": "revoked_session_returns_to_sign_in_on_refresh",
+      "passed": true
+    },
+    {
+      "check": "no_runtime_errors_overflow_raw_keys_or_repeated_family_word",
+      "passed": true
+    }
+  ]
+}

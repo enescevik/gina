@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 import * as Linking from "expo-linking";
 import { sessionStorage as nativeStore } from "@/lib/storage";
+import { isPairingCode, normalizePairingCode } from "./pairing-code";
 
 /**
- * A child device's QR opens `…/parent/pair-device?code=123456`. When the parent is not signed in
+ * A child device's QR opens `…/parent/pair-device?code=ACDEFH34` (C13-AUTH-1: 8 characters). When the parent is not signed in
  * yet, the protected parent area cannot open, so the short-lived code is kept here until sign-in.
  *
- * - Only the 6-digit code and the time it was read are stored; no names or family data.
+ * - Only the 8-character code and the time it was read are stored; no names or family data.
  * - It expires with the code itself (10 minutes, server-side `device_pairings.expires_at` is the
  *   authority) and is removed after use, cancel, or an invalid/expired answer from the server.
  * - Web keeps it in this tab only (sessionStorage); native uses the app's local key-value store.
@@ -23,7 +24,7 @@ const webStore = () => {
   try { return typeof window !== "undefined" ? window.sessionStorage : null; } catch { return null; }
 };
 const valid = (value: unknown): value is Pending =>
-  !!value && typeof value === "object" && /^\d{6}$/.test(String((value as Pending).code)) &&
+  !!value && typeof value === "object" && isPairingCode((value as Pending).code) &&
   typeof (value as Pending).savedAt === "number";
 const fresh = (value: Pending | null | undefined) =>
   !!value && Date.now() - value.savedAt >= 0 && Date.now() - value.savedAt < PAIRING_TTL_MS;
@@ -41,7 +42,7 @@ async function write(value: Pending | null) {
   listeners.forEach((listener) => listener());
 }
 
-/** Returns the 6-digit pairing code carried by a QR/deep link, or null for any other link. */
+/** Returns the 8-character pairing code carried by a QR/deep link, or null for any other link. */
 export function pairingCodeFromUrl(url: string | null | undefined): string | null {
   if (!url) return null;
   try {
@@ -49,15 +50,16 @@ export function pairingCodeFromUrl(url: string | null | undefined): string | nul
     // gina://parent/pair-device parses the first segment as hostname on native.
     const path = [parsed.hostname, parsed.path].filter(Boolean).join("/").replace(/^\/+|\/+$/g, "");
     if (!/(^|\/)parent\/pair-device$/.test(path)) return null;
-    const code = parsed.queryParams?.code;
-    return typeof code === "string" && /^\d{6}$/.test(code) ? code : null;
+    const raw = parsed.queryParams?.code;
+    const code = typeof raw === "string" ? normalizePairingCode(raw) : null;
+    return isPairingCode(code) ? code : null;
   } catch {
     return null;
   }
 }
 
 export async function rememberPairingCode(code: string) {
-  if (!/^\d{6}$/.test(code)) return;
+  if (!isPairingCode(code)) return;
   // Re-scanning the same QR does not extend its life; a different code replaces the old one.
   const current = await readPairingCode();
   if (current?.code === code) return;

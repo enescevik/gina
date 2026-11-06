@@ -3118,6 +3118,9 @@ isOneToOne: false
 "delete_learning_source":
 { Args: { "p_source_id": string }; Returns: undefined
                            },
+"device_pairing_status":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "deletion_preview":
 { Args: { "p_target": Json }; Returns: Json
                            },
@@ -3475,10 +3478,10 @@ isOneToOne: false
 { Args: { "p_limit"?: number,"p_unread_only"?: boolean }; Returns: Json
                            },
 "pair_child_device":
-{ Args: { "p_code": string }; Returns: string
+{ Args: { "p_code": string }; Returns: string } | { Args: { "p_code": string,"p_preview_token": string }; Returns: string
                            },
 "pair_device":
-{ Args: { "p_code": string }; Returns: string
+{ Args: { "p_code": string }; Returns: string } | { Args: { "p_code": string,"p_preview_token": string }; Returns: string
                            },
 "parent_inbox":
 { Args: { "p_archived"?: boolean,"p_before"?: string,"p_before_id"?: string }; Returns: Json
@@ -3633,6 +3636,9 @@ isOneToOne: false
                            },
 "release_retry_push":
 { Args: { "p_confirmed": boolean,"p_outbox_id": number,"p_reason": string,"p_request": string,"p_revision": number }; Returns: Json
+                           },
+"reject_device_pairing":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "reply_help_ticket":
 { Args: { "p_body": string,"p_internal"?: boolean,"p_request_id": string,"p_revision": number,"p_status"?: string,"p_ticket_id": string }; Returns: Json

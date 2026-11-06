@@ -75,7 +75,8 @@ try {
   await rpc(p, 'set_child_pin', { p_child_id: child, p_pin: '1234' });
   const dev = client(); await must(dev.auth.signInAnonymously(), 'device_sign_in');
   const code = await rpc(dev, 'request_pairing', { p_device_name: 'Synthetic perf tablet' });
-  const deviceId = await rpc(p, 'pair_child_device', { p_code: code }); await refresh(dev);
+  const { preview_token: previewToken } = await rpc(p, 'preview_device_pairing', { p_code: code });
+  const deviceId = await rpc(p, 'pair_child_device', { p_code: code, p_preview_token: previewToken }); await refresh(dev);
   await rpc(p, 'configure_child_device', { p_device_id: deviceId, p_name: 'Synthetic perf tablet', p_child_ids: [child], p_pin_required: true });
   await refresh(dev); await rpc(dev, 'child_pin_login', { p_child_id: child, p_pin: '1234' }); const deviceSession = await refresh(dev);
   parentSession = await refresh(p);

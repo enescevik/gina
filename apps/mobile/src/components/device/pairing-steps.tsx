@@ -36,7 +36,7 @@ export function PairingSteps({ current }: { current: 1 | 2 | 3 | 4 }) {
                   <View style={{ width: 28, height: 28, borderRadius: 14, alignItems: "center", justifyContent: "center", backgroundColor: done ? "#247A68" : active ? "#6042DE" : "#FFFFFF", borderWidth: done || active ? 0 : 1, borderColor: "#CFC6E4" }}>
                     {done ? <Check size={16} color="#FFFFFF" /> : <Text style={{ fontFamily: "Nunito_800ExtraBold", color: active ? "#FFFFFF" : "#625C85" }}>{step}</Text>}
                   </View>
-                  <Text style={[parentStyles.muted, { flex: 1 }, active && { color: "#201951", fontFamily: "Nunito_700Bold" }]}>{t(`u02.steps.step${step}`)}</Text>
+                  <Text style={[parentStyles.muted, { flex: 1 }, active && { color: "#201951", fontFamily: "Nunito_700Bold" }]}>{t(step === 2 || step === 3 ? `auth1.steps.step${step}` : `u02.steps.step${step}`)}</Text>
                 </View>
               );
             })}

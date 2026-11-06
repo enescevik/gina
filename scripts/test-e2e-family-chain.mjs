@@ -81,7 +81,11 @@ async function joiner(label, inviteCode, family) {
 async function device(parent, label, childIds, name) {
   const c = client(); await must(c.auth.signInAnonymously(), 'anonymous_sign_in_' + label);
   const code = await rpc(c, 'request_pairing', { p_device_name: name }, 'request_pairing_' + label);
-  const id = await rpc(parent.c, 'pair_child_device', { p_code: code }, 'pair_' + label);
+  check('pairing_code_8_chars_' + label, /^[ACDEFHJKMNPRTUVWXY3479]{8}$/.test(code), code);
+  // C13-AUTH-1: pairing needs the single-use token from a successful preview.
+  const preview = await rpc(parent.c, 'preview_device_pairing', { p_code: code.slice(0, 4) + ' ' + code.slice(4) }, 'preview_' + label);
+  check('pairing_preview_token_' + label, preview?.status === 'ok' && /^[0-9a-f-]{36}$/.test(preview.preview_token ?? ''), JSON.stringify(preview?.status));
+  const id = await rpc(parent.c, 'pair_child_device', { p_code: code, p_preview_token: preview.preview_token }, 'pair_' + label);
   await refresh(c);
   await rpc(parent.c, 'configure_child_device', { p_device_id: id, p_name: name, p_child_ids: childIds, p_pin_required: true }, 'configure_' + label);
   const s = await refresh(c);
@@ -141,7 +145,8 @@ try {
   // Free plan allows one device: the second pairing must be refused before the synthetic entitlement.
   const secondAnon = client(); await must(secondAnon.auth.signInAnonymously(), 'anonymous_second_device');
   const limitCode = await rpc(secondAnon, 'request_pairing', { p_device_name: 'Limit probe' }, 'request_pairing_limit_probe');
-  await denied(a2.c.rpc('pair_child_device', { p_code: limitCode }), 'free_plan_second_device_refused', /plan_limit_devices/);
+  const limitPreview = await rpc(a2.c, 'preview_device_pairing', { p_code: limitCode }, 'preview_limit_probe');
+  await denied(a2.c.rpc('pair_child_device', { p_code: limitCode, p_preview_token: limitPreview.preview_token }), 'free_plan_second_device_refused', /plan_limit_devices/);
   await must(admin.from('entitlement_overrides').insert({ family_id: a1.family, plan: 'pro', reason: 'Q02 isolated chain', ends_at: new Date(Date.now() + 3600000).toISOString() }), 'synthetic_entitlement_a');
   const tabA = await device(a2, 'tabA', [c1, c2], 'Synthetic shared tablet');
   const devB = await device(b1, 'devB', [bc], 'Synthetic B phone');
@@ -151,7 +156,8 @@ try {
   check('foreign_revoke_device_has_no_effect', devARow.revoked_at === null, JSON.stringify(devARow));
   // Observation: the RPC answers success for a device outside the caller's family (silent no-op, no error).
   notes.push({ observation: 'foreign_revoke_device_response', error: foreignRevoke.error?.message ?? null, data: foreignRevoke.data ?? null });
-  await denied(a1.c.rpc('pair_child_device', { p_code: devB.code }), 'used_pairing_code_cannot_be_reused');
+  check('used_pairing_code_cannot_be_reused', (await rpc(a1.c, 'preview_device_pairing', { p_code: devB.code }, 'preview_used_code'))?.status === 'invalid_or_expired');
+  await denied(a1.c.rpc('pair_child_device', { p_code: devB.code }), 'legacy_tokenless_pairing_refused', /client_update_required/);
   await login(devA, c1, '1234', 'devA_logs_in_c1');
   check('devA_wrong_child_denied', !!(await devA.c.rpc('child_pin_login', { p_child_id: c2, p_pin: '2345' })).error);
   await login(tabA, c2, '2345', 'tabA_logs_in_c2');
@@ -412,7 +418,7 @@ try {
 
   // ---------------------------------------------------------------- C13. C01–C11 endpoints, narrow operators, Edge
   await section('c13', () => c13Phase({ check, denied, must, rpc, rest, sign, claims, token, base, lossyBase, setLossy: m => { lossyMode = m; },
-    admin, account, refresh, timed, notes, a1, a2, b1, devA, tabA, devB, sup, c1, c2, bc, attempt, q2, today }));
+    admin, account, refresh, timed, notes, a1, a2, b1, devA, tabA, devB, sup, c1, c2, bc, attempt, q2, today, client }));
 
   // ---------------------------------------------------------------- 14. token expiry, forged claims, role revocation in open sessions
   const a1Claims = claims((await a1.c.auth.getSession()).data.session);

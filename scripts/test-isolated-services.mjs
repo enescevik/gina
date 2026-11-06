@@ -85,7 +85,8 @@ try {
   await rpc(a.c,'set_child_pin',{p_child_id:child,p_pin:'1234'});
   const device=client();await must(device.auth.signInAnonymously(),'anonymous_device_sign_in');
   const code=await rpc(device,'request_pairing',{p_device_name:'Synthetic tablet'});
-  const deviceId=await rpc(a.c,'pair_child_device',{p_code:code});await refresh(device);
+  const {preview_token:previewToken}=await rpc(a.c,'preview_device_pairing',{p_code:code});
+  const deviceId=await rpc(a.c,'pair_child_device',{p_code:code,p_preview_token:previewToken});await refresh(device);
   assert('unconfigured_device_has_no_children',(await must(device.from('children').select('id'),'read_unconfigured_children')).length===0);
   await rpc(a.c,'configure_child_device',{p_device_id:deviceId,p_name:'Synthetic tablet',p_child_ids:[child],p_pin_required:true});
   await refresh(device);
