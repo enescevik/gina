@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import type { Json } from "@gina/core";
 import { Card, Layout, Notice } from "@/components/Layout";
 import { useUnsavedChanges } from "@/components/unsaved-changes";
+import { useConfirm } from "@/components/confirm-dialog";
+import { t } from "@/lib/i18n";
 import { supabase } from "@/lib/supabase";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
 import { useAuth } from "@/lib/auth";
@@ -131,6 +133,7 @@ function LibraryWorkspace() {
   const questionDirty = !!(question.topic || question.stem || question.answer || question.solution) || choices.some((c) => !!c);
   const dirty = collectionDirty || questionDirty || (!!review && !!note);
   const guard = useUnsavedChanges(dirty, busy);
+  const confirm = useConfirm();
   // Sekme değişimi de aynı koruma dialogundan geçer (kütüphane sekmeleri özel olay kullanır).
   const dirtyRef = useRef(dirty);
   useEffect(() => {
@@ -175,6 +178,7 @@ function LibraryWorkspace() {
   return (
     <>
       {guard.dialog}
+      {confirm.element}
       <p hidden={tab === "drafts"} className="mb-6 max-w-3xl text-slate-600">
         Koleksiyonları hazırlayın, soruları inceleyin ve paketlere açın. Bir
         koleksiyonun görünmesi için hem koleksiyonun hem içindeki soruların
@@ -300,7 +304,7 @@ function LibraryWorkspace() {
                                     : editing.plans.filter((x) => x !== p),
                                 })}
                             />
-                            {p}
+                            {t.plans[p] ?? p}
                           </label>
                         ))}
                       </div>
@@ -550,12 +554,35 @@ function LibraryWorkspace() {
                       {data?.items.filter((i) => i.collection_id === selected)
                         .map((i) => (
                           <Card key={i.id} title={i.content.topic}>
+                            <p className="mb-3 text-sm text-slate-600" data-testid="library-item-status">
+                              {i.status === "published" ? t.library.itemPublished : i.status === "archived" ? t.library.itemArchived : t.library.itemDraft}
+                            </p>
                             <Question content={i.content} />
                             <button
                               className="btn-secondary mt-4"
                               disabled={busy}
                               onClick={() =>
-                                void run(async () =>
+                                void (async () => {
+                                  // D11 (A3 P2, B02): yayımlama ve kaldırma tek tıkla gitmez; etkisi söylenip onay istenir.
+                                  const publishing = i.status !== "published";
+                                  const plans = collection.plans.map((p) => t.plans[p] ?? p).join(", ");
+                                  const ok = await confirm.ask(publishing
+                                    ? {
+                                      title: t.library.publishItemTitle,
+                                      body: <>
+                                        <p>{collection.status === "published" ? t.library.publishItemLive(collection.title, plans) : t.library.publishItemHidden(collection.title)}</p>
+                                        <p className="mt-2">{t.library.publishItemCheck}</p>
+                                      </>,
+                                      confirmLabel: t.library.publishItemConfirm,
+                                    }
+                                    : {
+                                      title: t.library.unpublishItemTitle,
+                                      body: t.library.unpublishItemBody,
+                                      confirmLabel: t.library.unpublishItemConfirm,
+                                      tone: "danger",
+                                    });
+                                  if (!ok) return;
+                                  await run(async () =>
                                   unwrap(
                                     await supabase().rpc(
                                       "admin_publish_library_item",
@@ -565,7 +592,8 @@ function LibraryWorkspace() {
                                       },
                                     ),
                                   )
-                                )}
+                                  );
+                                })()}
                             >
                               {i.status === "published"
                                 ? "Yayından kaldır"

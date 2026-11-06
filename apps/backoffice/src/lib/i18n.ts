@@ -113,6 +113,16 @@ export const tr = {
     actor: "Yapan",
     when: "Zaman",
     empty: "Kayıt yok.",
+    // D11 (A3 P2, B01): "Yapan" sütunu ham kimlik yerine kim olduğunu söyler; geçmiş sayfalanır.
+    actorSelf: "Siz",
+    actorSystem: "Sistem (otomatik)",
+    actorOther: "Başka yönetici",
+    actorIdLabel: "Hesap kimliği",
+    actorEmailNote: "Diğer yöneticilerin e-postası bu ekranda gösterilmez.",
+    auditShown: (n: string) => `Son ${n} kayıt gösteriliyor.`,
+    auditMore: "Daha eski kayıtları göster",
+    auditEnd: "Daha eski kayıt yok.",
+    auditPageError: "Daha eski kayıtlar yüklenemedi. Yeniden deneyin.",
   },
   questions: {
     title: "Global soru bankası",
@@ -157,6 +167,23 @@ export const tr = {
     sources: { store: "Mağaza", comp: "Komp", free: "Ücretsiz" } as Record<string, string>,
     giveComp: "Paket hakkı ver",
     empty: "Sonuç yok.",
+  },
+  // D11 (A3 P2, B02): koleksiyon paket adları ve soru yayımlama onayı.
+  library: {
+    plansLegend: "Dahil olan paketler",
+    itemDraft: "Taslak",
+    itemPublished: "Yayında",
+    itemArchived: "Arşivde",
+    publishItemTitle: "Bu soru yayımlansın mı?",
+    publishItemLive: (collection: string, plans: string) =>
+      `«${collection}» koleksiyonu yayında. Soru yayımlanınca ${plans} paketlerindeki aileler kütüphanede hemen görür.`,
+    publishItemHidden: (collection: string) =>
+      `«${collection}» koleksiyonu henüz yayında değil. Soru yayımlanmış sayılır; aileler koleksiyon yayımlanınca görür.`,
+    publishItemCheck: "Beklenen cevabı, çözümü ve öğrenme düzeyini kontrol ettiyseniz yayımlayın.",
+    publishItemConfirm: "İnceledim, yayımla",
+    unpublishItemTitle: "Soru yayından kaldırılsın mı?",
+    unpublishItemBody: "Soru arşive alınır ve kütüphanede artık görünmez. Ailelerin daha önce kendi soru bankasına aldığı kopyalar değişmez.",
+    unpublishItemConfirm: "Yayından kaldır",
   },
   errors: {
     forbidden: "Yetkisiz işlem (yönetici değil ya da yetki kaldırılmış).",
