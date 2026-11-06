@@ -4,9 +4,11 @@ import {
   decide,
   failureVerdict,
   PREREVIEW_CONFIDENCE_THRESHOLD,
+  PREREVIEW_PROMPT_VERSION,
   type PrereviewOutput,
   RUBRIC_PASS,
   SCHEMA,
+  SYSTEM,
   validateOutput,
 } from "./prereview.ts";
 
@@ -100,4 +102,18 @@ Deno.test("verdict carries provenance and the user message never reduces to a UR
   assert(buildUserMessage({ kind: "contribution_set" }).startsWith("Aile katkı kopyası"));
   const required = (SCHEMA as { required: string[] }).required;
   assert(required.includes("rubric") && required.includes("findings") && required.includes("confidence"));
+});
+
+Deno.test("C09 media: an image-bearing record is never ai_approved and the verdict says the image was not reviewed", () => {
+  const d = decide(clean, undefined, { mediaCount: 1 });
+  assert(d.status === "needs_admin" && d.reason === "media_not_reviewed");
+  assert(decide(clean, undefined, { mediaCount: 0 }).status === "ai_approved");
+  // Rejections and low confidence keep their own reason; the media flag does not upgrade anything.
+  assert(decide({ ...clean, confidence: 0.5 }, undefined, { mediaCount: 3 }).reason === "low_confidence");
+  const v = buildVerdict(clean, d, { model: "m", provider: "anthropic", promptVersion: "prereview-v2", inputTokens: 1, outputTokens: 1, mediaCount: 1 });
+  assert(v.media.count === 1 && v.media.reviewed === false && v.media.image_dependent_correctness === "not_proven" && v.provider === "anthropic" && v.advisory === true);
+  assert(failureVerdict("ai_disabled", null, { mediaCount: 2 }).media.image_dependent_correctness === "not_proven");
+  assert(buildUserMessage({ kind: "library_package" }, 2).includes("2 görsel var ve sana GÖSTERİLMEDİ"));
+  assert(!buildUserMessage({ kind: "library_package" }, 0).includes("GÖSTERİLMEDİ"));
+  assert(SYSTEM.includes("sana hiçbir görsel gösterilmez") && PREREVIEW_PROMPT_VERSION === "prereview-v2");
 });

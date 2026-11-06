@@ -3,7 +3,8 @@
 // the admin queue (needs_admin / ai_rejected_suggestion) always ends with a human decision.
 // Nothing here calls a provider: the Edge handler injects the call.
 
-export const PREREVIEW_PROMPT_VERSION = "prereview-v1";
+// v2 (C09): görseller modele gösterilmez; görsele bağlı doğruluk için solution_correct=unsure istenir.
+export const PREREVIEW_PROMPT_VERSION = "prereview-v2";
 export const PREREVIEW_CONFIDENCE_THRESHOLD = 0.85;
 export const PREREVIEW_MAX_ATTEMPTS = 3;
 
@@ -82,7 +83,8 @@ export interface PrereviewOutput {
 export const SYSTEM =
   `Sen GINA içerik ön inceleme asistanısın. Sana bir kütüphane taslak paketi, bir aile katkı kopyası veya bir MEB ortak yazılı senaryo adayının normalize edilmiş tam metni verilir. Görevin: içeriği okuyup beş rubrik sorusunu cevaplamak, bulguları listelemek ve bir öneri vermek. Kararı sen vermiyorsun; onay/ret son kararı yönetici verir, bağımsız eğitimci incelemesi ayrı bir kademedir.
 Rubrik: solution_correct (öğretmen cevabı/çözümü doğru ve beklenen cevapla tutarlı mı), measures_target_skill (soru iddia edilen kazanımı/beceriyi gerçekten ölçüyor mu; senaryo adayında blok sayıları ve çıktı metinleri tutarlı mı), age_language_appropriate (sınıf düzeyine, yaşa ve Türkçe diline uygun mu; cezalandırıcı/utandırıcı dil yok mu), copyright_or_copy_suspicion (telifli ders kitabı, yayınevi veya başka kaynağın aynen kopyası şüphesi var mı), leaked_exam_suspicion (okul yazılısı, öğretmen EBA havuzu veya gizli sınav sorusunun paylaşımı şüphesi var mı).
-Her rubrik cevabı yes/no/unsure. Emin değilsen unsure yaz; uydurma. Her sorunlu nokta findings içinde code+severity+detail ile yer alsın; blocking yalnız yayını engelleyecek sorun için. Kişisel veri (çocuk adı, okul adı, telefon) görürsen personal_data bulgusu yaz. confidence 0-1 arasında, bulguların eksiksizliğine duyduğun güvendir; içerik iyi diye otomatik yüksek verme. recommendation: approve yalnız tüm rubrik geçerse; reject yalnız açık ve ciddi sorun varsa; aksi admin_review. summary en çok 600 karakter, Türkçe. Yalnız istenen JSON'u döndür.`;
+Her rubrik cevabı yes/no/unsure. Emin değilsen unsure yaz; uydurma. Her sorunlu nokta findings içinde code+severity+detail ile yer alsın; blocking yalnız yayını engelleyecek sorun için. Kişisel veri (çocuk adı, okul adı, telefon) görürsen personal_data bulgusu yaz. confidence 0-1 arasında, bulguların eksiksizliğine duyduğun güvendir; içerik iyi diye otomatik yüksek verme. recommendation: approve yalnız tüm rubrik geçerse; reject yalnız açık ve ciddi sorun varsa; aksi admin_review. summary en çok 600 karakter, Türkçe. Yalnız istenen JSON'u döndür.
+Görseller: sana hiçbir görsel gösterilmez; yalnız başlık, metin ve alternatif metin (alt) gelir. Bir sorunun doğruluğu, cevabı veya anlaşılırlığı görsele bağlıysa (şekil, grafik, çizim, tablo görüntüsü) solution_correct için unsure yaz ve bunu advisory bir other bulgusuyla belirt; görseli görmüş gibi yorum yapma.`;
 
 export const SCHEMA = {
   type: "object",
@@ -191,6 +193,7 @@ export interface Decision {
 export function decide(
   output: PrereviewOutput,
   threshold = PREREVIEW_CONFIDENCE_THRESHOLD,
+  context: { mediaCount?: number } = {},
 ): Decision {
   const blocking = output.findings.filter((f) => f.severity === "blocking");
   const rubricFails = RUBRIC_KEYS.filter((k) => output.rubric[k] !== RUBRIC_PASS[k]);
@@ -205,17 +208,36 @@ export function decide(
   if (output.recommendation !== "approve") {
     return { status: "needs_admin", reason: "model_requested_review" };
   }
+  // C09: the model never saw the images; image-dependent correctness is not proven -> the admin decides.
+  if ((context.mediaCount ?? 0) > 0) return { status: "needs_admin", reason: "media_not_reviewed" };
   return { status: "ai_approved", reason: "all_checks_passed" };
+}
+
+/** Explicit record flag: images are counted by the database, never sent to the model. */
+export function mediaFlag(count: number) {
+  return {
+    count,
+    reviewed: false,
+    image_dependent_correctness: count > 0 ? "not_proven" : "not_applicable",
+  } as const;
 }
 
 /** Stored verdict: what the admin sees next to the record. Includes model/prompt provenance. */
 export function buildVerdict(
   output: PrereviewOutput,
   decision: Decision,
-  meta: { model: string; promptVersion: string; inputTokens: number | null; outputTokens: number | null },
+  meta: {
+    model: string;
+    provider?: string | null;
+    promptVersion: string;
+    inputTokens: number | null;
+    outputTokens: number | null;
+    mediaCount?: number;
+  },
 ) {
   return {
     model: meta.model,
+    provider: meta.provider ?? null,
     prompt_version: meta.promptVersion,
     confidence: output.confidence,
     recommendation: output.recommendation,
@@ -225,30 +247,42 @@ export function buildVerdict(
     summary: output.summary,
     input_tokens: meta.inputTokens,
     output_tokens: meta.outputTokens,
+    media: mediaFlag(meta.mediaCount ?? 0),
+    advisory: true,
   };
 }
 
 /** Verdict for a run that never produced a valid model output (kill switch, retry limit, etc.). */
-export function failureVerdict(reason: string, detail: string | null) {
+export function failureVerdict(
+  reason: string,
+  detail: string | null,
+  meta: { model?: string | null; provider?: string | null; promptVersion?: string; mediaCount?: number } = {},
+) {
   return {
-    model: null,
-    prompt_version: PREREVIEW_PROMPT_VERSION,
+    model: meta.model ?? null,
+    provider: meta.provider ?? null,
+    prompt_version: meta.promptVersion ?? PREREVIEW_PROMPT_VERSION,
     confidence: 0,
     recommendation: "admin_review",
     decision_reason: reason,
     rubric: null,
     findings: [{ code: "other", severity: "advisory", detail: detail ?? reason, item: null }],
     summary: null,
+    media: mediaFlag(meta.mediaCount ?? 0),
+    advisory: true,
   };
 }
 
 /** The user message: normalized content as JSON, never a bare URL. */
-export function buildUserMessage(content: Record<string, unknown>): string {
+export function buildUserMessage(content: Record<string, unknown>, mediaCount = 0): string {
   const kind = String(content.kind ?? "");
   const intro = kind === "library_package"
     ? "Kütüphane taslak paketi (öğrenci alanları, öğretmen cevap/çözüm/rubrik, ortak kaynak metinleri):"
     : kind === "contribution_set"
     ? "Aile katkı kopyası (yayın için önerilen özgün soru; aile ve çocuk kimliği çıkarıldı):"
     : "MEB ortak yazılı senaryo adayı (bloklar, soru sayıları ve tam kazanım metinleri):";
-  return `${intro}\n${JSON.stringify(content)}`;
+  const media = mediaCount > 0
+    ? `\nBu kayıtta ${mediaCount} görsel var ve sana GÖSTERİLMEDİ (yalnız alt metin). Görsele bağlı doğruluğu kanıtlanmış sayma.`
+    : "";
+  return `${intro}${media}\n${JSON.stringify(content)}`;
 }
