@@ -4,6 +4,8 @@
 
 Sorumlu: Enes (cihaz, hesap, izinler). Çıkan hata Claude'a, satır kimliği + ekran görüntüsü/video + saat ile gelir.
 
+> **7 Kasım güncellemesi:** Aşağıdaki B30/B31 derleme etiketleri tarihsel kalmıştır. Testleri [son yayın kaydındaki](../locale-brand-2026-11-07/README.md) iOS/tablet sürümüyle yap ve gerçek sürümü sonuç sütununa yaz. Bu not hiçbir fiziksel kabul satırını kendiliğinden kapatmaz.
+
 ## Derlemeler
 
 | Kod | Derleme | Kaynak | İçerik notu |
