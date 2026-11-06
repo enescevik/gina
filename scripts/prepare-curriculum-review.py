@@ -14,7 +14,7 @@ def prepare(data):
     scenarios = {s['id']: s for s in index['scenarios']}
     candidates = []
     for s in data['scenarios']:
-        match = re.fullmatch(r'([12])\. Dönem ([12])\. Ortak Yazılı Sınav', s['exam'])
+        match = re.fullmatch(r'([12])\. Dönem ([12])\. Ortak Yazılı Sınav', s['exam'] or '')
         if not match or int(match[1]) != data['term']:
             raise ValueError('exam_scope_unresolved')
         reasons = {'source_review_required','programme_and_school_scope_required'}

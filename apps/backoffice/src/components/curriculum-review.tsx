@@ -16,7 +16,7 @@ import { unwrap, useAdminQuery } from "@/lib/use-async";
 import { createLibraryQueue } from "@/lib/library-review";
 import { Card, Notice } from "./Layout";
 import { CurriculumSources } from "./curriculum-sources";
-import { CandidatePipelineBadges, CurriculumPipeline, usePipeline } from "./curriculum-pipeline";
+import { CandidatePipelineBadges, CurriculumPipeline, useCurriculumChanges, usePipeline } from "./curriculum-pipeline";
 import { OfficialVerificationOps } from "./official-verification-ops";
 
 const statuses = {
@@ -133,6 +133,8 @@ function Workspace({ user }: { user: string }) {
       unwrap(await supabase().rpc("admin_list_curriculum_candidates")),
     )
   );
+  // H02: a panel extraction imports draft candidates; the review list follows without a manual refresh.
+  useCurriculumChanges(list.reload);
   const detail = useAdminQuery(
     async () =>
       selected

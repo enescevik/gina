@@ -16,6 +16,8 @@
 | `apple-token` | H01: Apple ile girişten sonra iOS yetkilendirme kodunu / web-Android sağlayıcı yenileme belirtecini Apple'da doğrulayıp şifreli saklar; değer istemciye dönmez | `supabase functions deploy apple-token` |
 | `apple-revocation-worker` | H01: pg_cron (15 dk) ile bekleyen Apple iptal işlerini yeniden dener. `x-cron-secret: APPLE_REVOCATION_SECRET` | `supabase functions deploy apple-revocation-worker --no-verify-jwt` |
 
+| `curriculum-source-extract` | H02: yönetici (admin JWT) panelden tek bir kaynak sürümünün çıkarımını başlatır. Kısa kilit (3 dk) ile eşzamanlı tıklama tek iş yapar; özgün dosya özel kovadan, yoksa aynı host/DNS/boyut politikasıyla resmî adresten okunur; SHA-256 sürümle eşleşmezse gerekçeli `failed`; Python çıkarıcının Deno karşılığı (16 resmî dosyada birebir aynı adaylar) yalnız taslak/inceleme adayı içe alır. Ağ/depolama hatası karar sayılmaz, sürüm kuyrukta kalır. Onay/yayın yapmaz | `supabase functions deploy curriculum-source-extract` |
+
 Gerekli secrets (`supabase secrets set …`; değerleri yalnız Enes girer):
 
 - H01 Apple ile Giriş iptali: `APPLE_TEAM_ID`, `APPLE_SIGNIN_KEY_ID`, `APPLE_SIGNIN_PRIVATE_KEY` (Sign in with Apple `.p8` içeriği), `APPLE_SERVICES_ID`, `APPLE_BUNDLE_ID` (aşağıdaki), `APPLE_TOKEN_ENCRYPTION_KEY` (32 bayt base64), `APPLE_REVOCATION_SECRET`; Vault: `project_url`, `apple_revocation_secret`

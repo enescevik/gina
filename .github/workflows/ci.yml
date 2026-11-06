@@ -59,6 +59,8 @@ jobs:
       - run: deno test --frozen-lockfile --config supabase/functions/deno.json --allow-net=127.0.0.1 --allow-run=openssl --allow-read --allow-write --allow-env supabase/functions/_shared/channels/email-tls.test.ts
       - run: deno test --frozen-lockfile --config supabase/functions/deno.json supabase/functions/library-media/png.test.ts supabase/functions/library-media/handler.test.ts
       - run: deno test --frozen-lockfile --config supabase/functions/deno.json --allow-read=supabase/functions/prova-review/assets supabase/functions/_shared/review-report.test.ts supabase/functions/_shared/review-renderer.test.ts supabase/functions/prova-review/handler.test.ts supabase/functions/contribution-submit/handler.test.ts
+      # H02: Deno extractor parity (golden from scripts/test-meb-extract-parity.py) + panel extraction handler.
+      - run: deno test --frozen-lockfile --config supabase/functions/deno.json --allow-read=docs/learning/catalog/2026-2027-term1/sources,supabase/functions/_shared supabase/functions/_shared/meb-extract.test.ts supabase/functions/curriculum-source-extract/handler.test.ts
 
   db:
     name: supabase migrations + pgTAP

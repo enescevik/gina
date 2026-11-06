@@ -1,0 +1,66 @@
+{
+  "biyoloji3_4.xlsx": {
+    "bundle_sha256": "a61ecb1319a8cb4a2f9b9c9e3a47ba072a2717b9aa389fb9df1a28b870044790",
+    "scenarios": 34
+  },
+  "cografya4.xlsx": {
+    "bundle_sha256": "5e2f08b55e716a8780cb5b52b182cf58653c65c2226e8b68e2d4a59edd70fa6d",
+    "scenarios": 49
+  },
+  "dkab_lise2.xlsx": {
+    "bundle_sha256": "b46953feceed6e5acf075c1dedafbd71b45b7c5d6e38c50d451402e2b08981a3",
+    "scenarios": 43
+  },
+  "dkab_orta3.xlsx": {
+    "bundle_sha256": "cd35b82861de39504dee439eff557db306f23159d0dd5cf1b3f3f5784d23d994",
+    "scenarios": 39
+  },
+  "edebiyat2.xlsx": {
+    "bundle_sha256": "f3b0ec9888b700484fe098afa40953fb4f15ce0c92bba07cb409480a6e183e99",
+    "scenarios": 30
+  },
+  "felsefe3.xlsx": {
+    "bundle_sha256": "218133886a59dc97f5f3325dc480ed43a5918b50566f8432779b49b954704ae3",
+    "scenarios": 21
+  },
+  "fen3_2.xlsx": {
+    "bundle_sha256": "66574eb1eb2d762713f73134482fd9ae879e660f1fa87967a90014a4ad39000d",
+    "scenarios": 40
+  },
+  "fizik2.xlsx": {
+    "bundle_sha256": "2ef2959ef6c2ae7a8c4179268c7af9205831d63841b046e231f1a7a548164434",
+    "scenarios": 36
+  },
+  "ilkmat2.xlsx": {
+    "bundle_sha256": "bc01dea0773858e50819af0a36c78f4b18f323520ebf866f734633c9d2d17c16",
+    "scenarios": 36
+  },
+  "ingilizce_lise2.xlsx": {
+    "bundle_sha256": "64671d4942062cbd3416676f608fe7e7088e4d1c91c988f95059d70137f8bd3d",
+    "scenarios": 40
+  },
+  "ingilizce_orta2.xlsx": {
+    "bundle_sha256": "1bfe304af29fe0ff02f73b94e7c135c4c3d23983c77fcc84080ed979016f84e9",
+    "scenarios": 40
+  },
+  "kimya4.xlsx": {
+    "bundle_sha256": "8f835aa968c62ff2eb08aa3dd752ea8f10e56746a625d66b3ad3876e1dc8eab2",
+    "scenarios": 55
+  },
+  "matematik2.xlsx": {
+    "bundle_sha256": "dd27a759b1216072c4e2adf62c7c2d76cdb94884dbd04ff56c8ca5ec680a443d",
+    "scenarios": 41
+  },
+  "sosyal2.xlsx": {
+    "bundle_sha256": "af3122f2d5ef5c911830d80cf5e81ac534d77c980a03c47d5dee186761f7998f",
+    "scenarios": 50
+  },
+  "tarih3.xlsx": {
+    "bundle_sha256": "1a91c5b42bb43f49546961ea67ae3bc852128b4ead3f3bedd555eab4fd4f6e6f",
+    "scenarios": 48
+  },
+  "turkce2.xlsx": {
+    "bundle_sha256": "7e9364a512da9ba61b1ac1befbce077f4b4ceaba5cb52babd0ebf73eb2ddc549",
+    "scenarios": 46
+  }
+}

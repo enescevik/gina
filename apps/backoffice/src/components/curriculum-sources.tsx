@@ -8,7 +8,8 @@ import {
 import { supabase } from "@/lib/supabase";
 import { useAdminQuery } from "@/lib/use-async";
 import { Notice } from "./Layout";
-import { adminRpc, edgeFailure, fmtWhen, shortHash } from "./review-rpc";
+import { adminRpc, edgeErrorBody, edgeFailure, fmtWhen, shortHash } from "./review-rpc";
+import { announceCurriculumChange, ExtractButton, ExtractionState, levelLabel, sourceLevel, useCurriculumChanges, useExtraction } from "./curriculum-pipeline";
 
 // M01 kaynak sürümleri: indirilen resmî dosya kanıttır, onay/yayın/okul seçimi değildir.
 // Aynı özet yeni iş açmaz; değişen özet yeni sürümdür ve yöneticinin fark incelemesini ister.
@@ -31,7 +32,6 @@ const revisionLabel: Record<CurriculumSourceRow["revisions"][number]["status"], 
   superseded: "Kenara kondu / eskidi",
   withdrawn: "Geri çekildi",
 };
-const extractionLabel: Record<string, string> = { queued: "çıkarma sırada", done: "çıkarıldı", failed: "çıkarma başarısız", skipped: "çıkarılmadı" };
 const actionLabel = { approve: "Bu sürümü onayla", dismiss: "Reddet (kenara koy)", withdraw: "Geri çek" } as const;
 type Action = keyof typeof actionLabel;
 const reviewErrors: Record<string, string> = {
@@ -44,6 +44,7 @@ const fetchErrors: Record<string, string> = {
   forbidden: "Yönetici yetkisi doğrulanamadı.",
   invalid_input: "Kaynak hedefi geçersiz.",
   save_failed: "İndirme sonucu kaydedilemedi.",
+  request_conflict: "Aynı istek farklı içerikle gönderildi. Yeniden deneyin.",
 };
 
 export function staleSince(s: Pick<CurriculumSourceRow, "last_checked_at">, now = Date.now()): number | null {
@@ -54,6 +55,7 @@ export function staleSince(s: Pick<CurriculumSourceRow, "last_checked_at">, now 
 
 export function CurriculumSources() {
   const sources = useAdminQuery(async () => curriculumSourceRowSchema.array().parse(await adminRpc("admin_list_curriculum_sources")));
+  useCurriculumChanges(sources.reload);
   const list = sources.data ?? [];
   const attention = list.filter((s) => s.freshness === "diff_review_required" || s.freshness === "pending_review").length;
   const stale = list.filter((s) => staleSince(s) !== null || s.freshness === "unverified").length;
@@ -75,7 +77,12 @@ export function CurriculumSources() {
       {sources.error
         ? <Notice tone="error">Kaynak sürümleri okunamadı. Yetkinizi kontrol edip yeniden deneyin.</Notice>
         : sources.data && !list.length
-        ? <p className="text-sm">Henüz sunucu indirmesi yok. Depodaki manifest karşılaştırması için <code>scripts/fetch-curriculum-sources.py</code> kullanılır.</p>
+        ? (
+          <p className="text-sm" data-testid="sources-empty">
+            Henüz sunucu indirmesi yok. Yukarıdaki «Resmî dizin hedefleri» tablosunda etkin bir dönemin «İlk indirme» düğmesiyle resmî dizinden ders
+            seçip ilk indirmeyi başlatın.
+          </p>
+        )
         : null}
       <ul className="grid gap-4">
         {list.map((s) => <SourceCard key={s.id} source={s} reload={sources.reload} />)}
@@ -89,6 +96,8 @@ function SourceCard({ source: s, reload }: { source: CurriculumSourceRow; reload
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState<{ tone: "ok" | "error" | "warn"; text: string; candidates?: { text: string; href: string }[] } | null>(null);
   const days = staleSince(s);
+  const level = sourceLevel(s.source_key);
+  const x = useExtraction();
 
   async function check(linkUrl?: string) {
     if (busy) return;
@@ -97,7 +106,9 @@ function SourceCard({ source: s, reload }: { source: CurriculumSourceRow; reload
       school_year: s.school_year,
       term: s.term,
       subject: s.label,
-      ...(linkUrl ? { link_url: linkUrl } : {}),
+      // A per-level source re-checks its own official link; it never falls back to the other level's file.
+      ...(linkUrl ? { link_url: linkUrl } : level ? { link_url: s.link_url } : {}),
+      ...(level ? { level } : {}),
     });
     if (!target.success) {
       setMessage({ tone: "error", text: "Bu kaynağın hedefi (yıl/dönem/ders) doğrulanamadı; kontrol başlatılmadı." });
@@ -120,11 +131,15 @@ function SourceCard({ source: s, reload }: { source: CurriculumSourceRow; reload
         setMessage({ tone: "ok", text: `Resmî dizin kontrol edildi. Güncellik: ${freshnessLabel[r.freshness as CurriculumSourceRow["freshness"]] ?? r.freshness ?? "?"}. Hiçbir şey yayımlanmadı.` });
       }
       reload();
+      announceCurriculumChange();
     } catch (e) {
       const f = await edgeFailure(e);
+      const body = await edgeErrorBody(e);
       setMessage({
         tone: "error",
-        text: f.kind === "unreachable"
+        text: f.code === "source_duplicate"
+          ? `İndirilen dosya bu dönem için zaten «${String(body?.existing_label ?? "başka bir")}» kaynağında kayıtlı; ikinci kayıt açılmadı.`
+          : f.kind === "unreachable"
           ? "Resmî dizin kontrolü başlatılamadı: curriculum-source-fetch sunucu fonksiyonuna ulaşılamadı (bu ortamda Edge fonksiyonları çalışmıyor olabilir). Kaynak kaydı ve onaylı kopya değişmedi."
           : `Resmî dizin kontrolü tamamlanamadı: ${fetchErrors[f.code ?? ""] ?? f.code ?? `HTTP ${f.status}`}. Kaynak kaydı değişmedi.`,
       });
@@ -175,7 +190,7 @@ function SourceCard({ source: s, reload }: { source: CurriculumSourceRow; reload
     <li className="rounded-2xl border border-[#eee7f7] p-4 text-sm" data-testid="curriculum-source" data-freshness={s.freshness}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-base font-bold">{s.label} · {s.school_year} · {s.term}. dönem</p>
+          <p className="text-base font-bold">{s.label}{level ? ` · ${levelLabel[level]}` : ""} · {s.school_year} · {s.term}. dönem</p>
           <p className={`mt-1 inline-block rounded-full px-3 py-1 text-xs font-bold ${s.freshness === "verified" ? "bg-emerald-100 text-emerald-800" : s.freshness === "withdrawn" ? "bg-slate-200 text-slate-800" : "bg-amber-100 text-amber-900"}`}>
             {freshnessLabel[s.freshness]}
           </p>
@@ -244,10 +259,10 @@ function SourceCard({ source: s, reload }: { source: CurriculumSourceRow; reload
                   <td>{fmtWhen(r.last_checked_at)}</td>
                   <td>
                     <span className="font-semibold">{revisionLabel[r.status]}</span>
-                    <div className="text-xs">{extractionLabel[r.extraction_status] ?? r.extraction_status}{flags.length ? ` · bayrak: ${flags.join(", ")}` : ""}</div>
+                    <div className="text-xs"><ExtractionState revision={r} />{flags.length ? ` · bayrak: ${flags.join(", ")}` : ""}</div>
                     {r.review_note ? <div className="text-xs">Not: {r.review_note}</div> : null}
                   </td>
-                  <td>{r.candidates} aday · {r.published_candidates} yayımlı</td>
+                  <td>{r.candidates} aday{r.draft_candidates !== undefined ? ` · ${r.draft_candidates} taslak` : ""} · {r.published_candidates} yayımlı</td>
                   <td>
                     <div className="flex flex-wrap gap-2">
                       {actions.map((a) => (
@@ -261,6 +276,7 @@ function SourceCard({ source: s, reload }: { source: CurriculumSourceRow; reload
                           {actionLabel[a]}
                         </button>
                       ))}
+                      <ExtractButton revisionId={r.id} revision={r} x={x} />
                       <a className="btn-secondary inline-flex items-center" href={r.resolved_url} target="_blank" rel="noreferrer">Resmî dosya</a>
                     </div>
                   </td>
@@ -270,6 +286,13 @@ function SourceCard({ source: s, reload }: { source: CurriculumSourceRow; reload
           </tbody>
         </table>
       </div>
+      {x.message
+        ? (
+          <p role="status" data-testid="extract-message" className={`mt-3 rounded-xl border px-3 py-2 ${x.message.tone === "error" ? "border-red-200 bg-red-50 text-red-800" : x.message.tone === "ok" ? "border-emerald-200 bg-emerald-50 text-emerald-900" : "border-amber-300 bg-amber-50 text-amber-900"}`}>
+            {x.message.text}
+          </p>
+        )
+        : null}
       {form
         ? (
           <form
