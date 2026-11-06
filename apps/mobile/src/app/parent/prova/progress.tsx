@@ -29,6 +29,7 @@ import {
 import { ChildPicker, EmptyCard } from "@/components/ui/parent-screen";
 import { Pressable } from "@/components/ui/pressable";
 import { LoadingStar } from "@/components/collectible-motion";
+import { LegacyScoreCorrectionEntry } from "@/components/learning/legacy-score-correction";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
@@ -190,6 +191,7 @@ export default function ProvaProgressScreen() {
             <Text style={b.copy}>{t("childArchive.historyBody")}</Text>
           )}
         </View>
+        <LegacyScoreCorrectionEntry />
         {child ? (
           <>
             {children.data && children.data.length > 1 ? (

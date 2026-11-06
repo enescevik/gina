@@ -1,0 +1,90 @@
+{
+  "environment": "disposable-local-gotrue-postgrest (own clone of gina_completion_audit)",
+  "database_pattern": "gina_c01ui_<hex>_audit",
+  "viewports": {
+    "phone": {
+      "width": 390,
+      "height": 844
+    },
+    "desktop": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "passed": true,
+  "results": [
+    {
+      "check": "path_school_catalogue_label_from_server",
+      "passed": true,
+      "server": "known|school_catalogue|true|false|-",
+      "label": "Okulun senaryosu (veli onayı)"
+    },
+    {
+      "check": "path_unknown_study_label_from_server",
+      "passed": true,
+      "server": "unknown|parent_study|false|false|-",
+      "label": "Çalışma senaryosu — okul onayı yok"
+    },
+    {
+      "check": "path_personalized_label_from_server",
+      "passed": true,
+      "server": "known|personalized|false|false|catalogue_seed",
+      "label": "Kişiselleştirilmiş çalışma"
+    },
+    {
+      "check": "path_manual_parent_distribution_label_from_server",
+      "passed": true,
+      "server": "unstated|parent_study|false|false|-",
+      "label": "Veli dağılımı"
+    },
+    {
+      "check": "backoffice_read_only_panel_and_documented_service_role_command",
+      "passed": true,
+      "admin_patch_rows": 0,
+      "parent_patch": "blueprint_provenance_locked",
+      "preview_before": 1,
+      "preview_after": 0
+    },
+    {
+      "check": "official_verification_shown_separately_from_school_confirmation",
+      "passed": true,
+      "text": "Resmî kaynakla doğrulandı · 06.11.2026"
+    },
+    {
+      "check": "legacy_preview_lists_affected_attempts_keeps_given_scores_blocks_archived",
+      "passed": true
+    },
+    {
+      "check": "legacy_apply_lost_response_retry_same_request_idempotent",
+      "passed": true,
+      "db_corrections": "2|1",
+      "totals_after": "100:submitted:true,90:submitted:true",
+      "replay_equal_receipt": true,
+      "new_request": "already_corrected x2",
+      "answers_hash_unchanged": true
+    },
+    {
+      "check": "legacy_audit_trail_visible_after_reload",
+      "passed": true,
+      "audit_rows": 2
+    },
+    {
+      "check": "archived_event_message_and_restore_then_edit",
+      "passed": true,
+      "archived_save": "event_archived → message",
+      "after_restore": "edit saved"
+    },
+    {
+      "check": "no_runtime_errors_overflow_raw_ids_or_keys",
+      "passed": true
+    }
+  ],
+  "cleanup": {
+    "backoffice_out": "removed",
+    "db_rest": "removed",
+    "db_auth": "removed",
+    "database": "dropped",
+    "containers_left": "none",
+    "database_left": "0"
+  }
+}
