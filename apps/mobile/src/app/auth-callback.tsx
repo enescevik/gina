@@ -7,7 +7,7 @@ import {Button} from '@/components/ui/button';
 import {AuthIssueText,classifyAuthIssue,type AuthIssue} from '@/components/social-sign-in';
 import {AuthLinkResend} from '@/components/email-verification';
 import {supabase} from '@/lib/supabase';
-import {completeOAuthCode} from '@/lib/social-auth';
+import {completeOAuthCode,syncAppleProviderToken,takeReauthReturn} from '@/lib/social-auth';
 
 /** Web keeps redirect errors in the fragment for the implicit flow; PKCE puts them in the query. */
 function fragmentParams():{error?:string;error_code?:string}{
@@ -31,7 +31,8 @@ export default function AuthCallback(){
    // Browser client consumes PKCE during initialization; wait for it instead of exchanging twice.
    const {data,error}=await supabase.auth.getSession();if(error)throw error;
    if(!data.session)throw code?{code:'flow_state_not_found'}:new Error('missing_session');
-   if(live)router.replace('/');
+   if(Platform.OS==='web')await syncAppleProviderToken(data.session);
+   if(live)router.replace((Platform.OS==='web'?takeReauthReturn():null)??'/');
   }catch(e){if(live)setIssue(classifyAuthIssue(e));}
  })();return()=>{live=false;};},[code,errorParam,errorCode,attempt]);
  const backToSignIn=()=>router.replace('/(auth)/sign-in');

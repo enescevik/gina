@@ -1,0 +1,13 @@
+{
+  "environment": "empty-disposable-database",
+  "timezone": "UTC",
+  "files": [
+    {
+      "file": "131_apple_token_revocation.test.sql",
+      "passed": 64,
+      "failed": 0
+    }
+  ],
+  "failures": [],
+  "assertions": 64
+}

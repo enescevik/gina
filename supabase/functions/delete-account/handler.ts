@@ -94,7 +94,9 @@ export async function deleteAccount(req: Request, dependencies?: { db: SupabaseC
       const begin = await db.rpc("apple_revocation_begin", {
         p_request_id: input.request_id ?? crypto.randomUUID(), p_user_id: user.id, p_apple_sub: apple.sub,
         p_client_id: fresh?.clientId ?? null, p_token_type: fresh?.type ?? null, p_token_ciphertext: fresh?.ciphertext ?? null,
-        p_allow_without_token: appleReauth && !appleUnavailable,
+        // Clients before H01 send no request_id and cannot do an Apple re-auth: never block their deletion,
+        // record token_unavailable (manual) instead. Current clients are asked for a fresh Apple sign-in.
+        p_allow_without_token: appleReauth ? !appleUnavailable : input.request_id === undefined,
       });
       const job = begin.data as (RevocationJob & { status: JobStatus | "token_required" | "request_conflict" }) | null;
       if (begin.error || !job?.status) return fail({ error: "deletion_failed" }, 500);

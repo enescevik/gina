@@ -86,9 +86,16 @@ Deno.test("apple delete: stored web token + email OTP; Apple timeout keeps a pen
   equal(w.deletions, [id]);
 });
 
-Deno.test("apple delete: no token and no fresh Apple sign-in → 409, nothing deleted, no job, no Apple call", async () => {
+Deno.test("apple delete: pre-H01 client (no request_id) without token is not blocked: deleted, manual_required", async () => {
   const w = world(); await w.ready;
   const res = await deleteAccount(otp(), w.deps);
+  equal([res.status, await res.json()], [200, { ok: true, apple_revocation: "manual_required" }]);
+  equal([w.jobs[0].status, w.deletions, w.apple.calls], ["token_unavailable", [id], []]);
+});
+
+Deno.test("apple delete: no token and no fresh Apple sign-in → 409, nothing deleted, no job, no Apple call", async () => {
+  const w = world(); await w.ready;
+  const res = await deleteAccount(otp({ request_id: REQ }), w.deps);
   equal([res.status, await res.json()], [409, { error: "apple_reauthentication_required" }]);
   equal([w.deletions, w.jobs, w.apple.calls], [[], [], []]);
 });
