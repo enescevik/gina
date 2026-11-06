@@ -364,7 +364,8 @@ export function RequestPrereviewButton(
           : r.outcome === "in_progress"
           ? "Bu kayıt şu anda inceleniyor. Birazdan yenileyin."
           : r.outcome === "retry_pending"
-          ? `AI ön incelemesi şimdi yapılamadı; kayıt kuyrukta bekliyor${r.reason ? ` (${reasonLabel(r.reason)})` : ""}. Yönetici kararı ve yayın değişmedi.`
+          // H06-2: neden etiketi zaten "kuyrukta bekliyor" diyorsa tekrar etme.
+          ? `AI ön incelemesi şimdi yapılamadı: ${r.reason && /kuyrukta bekliyor/.test(reasonLabel(r.reason)) ? reasonLabel(r.reason) : `kayıt kuyrukta bekliyor${r.reason ? ` (${reasonLabel(r.reason)})` : ""}`}. Yönetici kararı ve yayın değişmedi.`
           : `AI ön incelemesi tamamlandı: ${prereviewStatusLabel((r.prereview_status ?? "pending") as PrereviewStatus, "tr")}${r.reason ? ` (${reasonLabel(r.reason)})` : ""}. Yönetici kararı ve yayın değişmedi.`,
       });
     } catch (e) {

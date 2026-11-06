@@ -4530,5 +4530,7 @@
   "privacyCenter.docs.abonelik-kosullari": "Abonelik koşulları",
   "privacyCenter.docs.cerez-politikasi": "Çerez politikası",
   "privacyCenter.docs.hesap-ve-veri-silme": "Hesap ve veri silme",
-  "privacyCenter.docs.kvkk-basvuru-formu": "KVKK başvuru bilgileri"
+  "privacyCenter.docs.kvkk-basvuru-formu": "KVKK başvuru bilgileri",
+  "h06.aiEditStep0": "Soru",
+  "h06.aiEditStep0Help": "Önce sorunun metnini ve konusunu düzenle. Bu düzenlemede görsel eklenmez. Yanıtı bir sonraki adımda kontrol edeceksin."
 }
