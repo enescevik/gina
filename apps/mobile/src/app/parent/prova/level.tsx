@@ -177,7 +177,7 @@ export default function LevelTestScreen() {
                     setSubject(s.subject);
                     setGrade(String(s.grade));
                   }}
-                  accessibilityState={{ selected: active }} className={chip(active)}
+                  accessibilityState={{ selected: active }} aria-pressed={active} className={chip(active)}
                 >
                   <Text className={chipText(active)}>
                     {s.subject} · {s.grade}. {t("prova.gradeWord")}
@@ -200,11 +200,11 @@ export default function LevelTestScreen() {
 
       <Text className="font-body-bold text-sm text-ink">{t("prova.level.topicsFrom")}</Text>
       <View className="flex-row flex-wrap gap-2">
-        <Pressable accessibilityRole="button" onPress={() => pickBlueprint(null)} accessibilityState={{ selected: blueprintId === null }} className={chip(blueprintId === null)}>
+        <Pressable accessibilityRole="button" onPress={() => pickBlueprint(null)} accessibilityState={{ selected: blueprintId === null }} aria-pressed={blueprintId === null} className={chip(blueprintId === null)}>
           <Text className={chipText(blueprintId === null)}>{t("prova.level.allTopics")}</Text>
         </Pressable>
         {blueprintsForSubject.map((bp) => (
-          <Pressable key={bp.id} accessibilityRole="button" onPress={() => pickBlueprint(bp.id)} accessibilityState={{ selected: blueprintId === bp.id }} className={chip(blueprintId === bp.id)}>
+          <Pressable key={bp.id} accessibilityRole="button" onPress={() => pickBlueprint(bp.id)} accessibilityState={{ selected: blueprintId === bp.id }} aria-pressed={blueprintId === bp.id} className={chip(blueprintId === bp.id)}>
             <Text className={chipText(blueprintId === bp.id)}>
               {bp.subject} · {bp.name}
             </Text>
@@ -212,14 +212,9 @@ export default function LevelTestScreen() {
         ))}
       </View>
 
-      <View className="flex-row gap-2">
-        <View className="flex-1">
-          <Field label={t("prova.level.perTopic")} keyboardType="number-pad" maxLength={2} value={perTopic} onChangeText={setPerTopic} />
-        </View>
-        <View className="flex-1">
-          <Field label={t("prova.level.maxQuestions")} keyboardType="number-pad" maxLength={2} value={maxQuestions} onChangeText={setMaxQuestions} />
-        </View>
-      </View>
+      {/* C12: sayılar hazır seçim + adım + isteğe bağlı elle giriş (NumberChoice); serbest metin alanı yok. */}
+      <NumberChoice label={t("prova.level.perTopic")} value={perTopicNum} min={1} max={10} step={1} presets={[2, 3, 5]} onChange={v => setPerTopic(String(v))} />
+      <NumberChoice label={t("prova.level.maxQuestions")} value={maxNum} min={1} max={60} step={1} presets={[10, 20, 24, 40]} onChange={v => setMaxQuestions(String(v))} />
       {blueprintId ? <Text className="font-body text-xs text-gray-600">{t("prova.level.blueprintQuotaNote")}</Text> : null}
 
       {subject.trim() ? (
