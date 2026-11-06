@@ -4537,5 +4537,10 @@
   "privacyCenter.docs.hesap-ve-veri-silme": "Account and data deletion",
   "privacyCenter.docs.kvkk-basvuru-formu": "Data request information",
   "h06.aiEditStep0": "Question",
-  "h06.aiEditStep0Help": "Start by editing the question text and topic. Images are not added in this edit. You will check the answer in the next step."
+  "h06.aiEditStep0Help": "Start by editing the question text and topic. Images are not added in this edit. You will check the answer in the next step.",
+  "language": {
+    "title": "App language",
+    "help": "Your choice is remembered on this device. Your content and school subjects are not translated.",
+    "temporary": "Language changed, but could not be saved on this device. You may need to select it again when you reopen the app."
+  }
 }

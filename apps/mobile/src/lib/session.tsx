@@ -3,7 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 
 import { ginaClaimsSchema, resolveLocale, type GinaClaims } from "@gina/core";
 
-import i18n from "./i18n";
+import i18n, { adoptAccountLanguage } from "./i18n";
 import { supabase } from "./supabase";
 import { queryClient } from "./query";
 import { clearReviewJournals } from "./review-journal";
@@ -116,7 +116,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       await supabase.auth.updateUser({ data: { locale } });
     };
     const sync = () => { void syncLocale().catch(() => { /* Retry on next session/language change. */ }); };
-    sync();
+    void adoptAccountLanguage(savedLocale).then(() => { if (live) sync(); });
     i18n.on("languageChanged", sync);
     return () => { live = false; i18n.off("languageChanged", sync); };
   }, [userId, anonymous, savedLocale, recovering]);

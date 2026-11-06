@@ -46,14 +46,14 @@ export default function SignInScreen() {
         }
         const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: Linking.createURL("/reset-password") });
         if (error) throw error;
-        setNotice(t(fromAdmin ? "u01.adminResetSent" : "accountV5.resetSent"));
+        setNotice(fromAdmin ? "u01.adminResetSent" : "accountV5.resetSent");
       } else {
         const result = mode === "in"
           ? await supabase.auth.signInWithPassword({ email: email.trim(), password })
           : await supabase.auth.signUp({ email: email.trim(), password, options: { emailRedirectTo: Linking.createURL("/auth-callback"), data: { locale: resolveLocale(i18n.language) } } });
         if (result.error) throw result.error;
         if (result.data.session) router.replace("/");
-        else { setPassword(""); setNotice(t("accountV5.checkEmail")); }
+        else { setPassword(""); setNotice("accountV5.checkEmail"); }
       }
     } catch (e) { setIssue(classifyAuthIssue(e)); } finally { setBusy(false); }
   }
@@ -83,7 +83,7 @@ export default function SignInScreen() {
       {mode === "up" ? <Text style={parentStyles.muted}>{t("accountV5.passwordHint")}</Text> : null}
       {mode === "up" && !adult ? <Text style={parentStyles.muted}>{t("u01.adultRequired")}</Text> : null}
       <AuthIssueText issue={issue} />
-      {notice ? <Text accessibilityLiveRegion="polite" style={[parentStyles.copy, { backgroundColor: "#F1EDFD", padding: 16, borderRadius: 12 }]}>{notice}</Text> : null}
+      {notice ? <Text accessibilityLiveRegion="polite" style={[parentStyles.copy, { backgroundColor: "#F1EDFD", padding: 16, borderRadius: 12 }]}>{t(notice)}</Text> : null}
       <Button title={t(mode === "reset" ? "accountV5.sendReset" : mode === "in" ? "auth.signIn" : "auth.signUp")} loading={busy} disabled={!valid} onPress={submit} />
       {issue === "invalid_login" && mode === "in" ? <Button variant="secondary" title={t("accountV5.forgot")} disabled={busy} onPress={() => change("reset")} /> : null}
       {canResendSignup && mode !== "reset" ? resend
