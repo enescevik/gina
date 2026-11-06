@@ -196,6 +196,7 @@ export default function ParentMenuScreen() {
       <Text style={parentStyles.copy}>{t("parentToday.menuAccountBody")}</Text>
       <NavigationCard title={t("inbox.title")} body={t("inbox.subtitle")} icon={<Inbox size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/inbox")}/>
       <NavigationCard title={t("inbox.preferences")} body={t("accountV5.notificationsBody")} icon={<Bell size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/notifications")}/>
+      <NavigationCard title={t("privacyCenter.title")} icon={<ShieldCheck size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/privacy")}/>
       <NavigationCard title={t("parent.subscription")} icon={<Crown size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/subscription")}/>
       <DangerZone><AccountDeletion /></DangerZone>
       <Button variant="ghost" title={t("auth.signOut")} loading={signOut.isPending} onPress={() => signOut.mutate()} />
