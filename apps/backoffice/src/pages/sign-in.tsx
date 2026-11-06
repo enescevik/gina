@@ -13,7 +13,7 @@ const RECOVERY_RETURN =
 
 export default function SignIn() {
   const router = useRouter();
-  const { session, isAdmin, roles, rolesReady } = useAuth();
+  const { session, isAdmin, roles, rolesReady, roleError, refreshRoles } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -72,7 +72,17 @@ export default function SignIn() {
             : null}
           {error ? <Notice tone="error">{error}</Notice> : null}
           {recoveryOpened ? <Notice>{RECOVERY_RETURN}</Notice> : null}
-          {session && !isAdmin && rolesReady && !roles.includes("support") &&
+          {session && !isAdmin && roleError
+            ? (
+              <Notice tone="error">
+                {t.signIn.roleCheckFailed}{" "}
+                <button type="button" className="btn-secondary" onClick={refreshRoles}>
+                  {t.signIn.retryRoleCheck}
+                </button>
+              </Notice>
+            )
+            : null}
+          {session && !isAdmin && rolesReady && !roleError && !roles.includes("support") &&
               !roles.includes("content") && !roles.includes("finance") && !roles.includes("release")
             ? <Notice>{t.signIn.notAdmin}</Notice>
             : null}
