@@ -28,6 +28,7 @@ import {
   Minimize2,
   Sparkles,
   Check,
+  PenLine,
   X,
 } from "lucide-react-native";
 import { emptyNotebook, openScoreSource, readNotebook, readQuestionRubric, type ReviewDraft, type ReviewBase } from "@gina/core";
@@ -682,12 +683,18 @@ export function ParentReviewWorkspace(
                     {t("parentReview.unknownDocument")}
                   </Text>
                 )}
+                {/* C12 (Q00-A2-10): düz metin gibi duruyordu; kenarlı, simgeli ikincil düğme. */}
                 <Pressable
                   accessibilityRole="button"
-                  style={[s.key, { backgroundColor: "transparent" }]}
+                  style={[s.key, {
+                    alignSelf: "flex-start",
+                    borderWidth: 1.5,
+                    borderColor: p.purple,
+                  }]}
                   onPress={() => setNotesOpen(true)}
                 >
-                  <Text style={s.bold}>
+                  <PenLine size={18} color={p.purple} />
+                  <Text style={[s.bold, { color: p.purple }]}>
                     {t(
                       document.elements.length
                         ? "parentReview.openDrawingNotes"
