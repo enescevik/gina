@@ -5,6 +5,7 @@
 import type { StructuredInteractionType } from "./index";
 import { isPhase2aType, phase2aContentErrors } from "./phase2a";
 import { isPhase2bType, phase2bContentErrors, stimulusErrors } from "./phase2b";
+import { crosswordContentErrors, isPhase3Type } from "./phase3";
 
 type Obj = Record<string, unknown>;
 const isObj = (v: unknown): v is Obj => !!v && typeof v === "object" && !Array.isArray(v);
@@ -35,6 +36,7 @@ import { parseNumberInput } from "./number";
 
 export function questionContentErrors(type: string, payload: unknown, key: unknown, schemaVersion = 1): string[] {
   if (schemaVersion !== 1) return ["schema_version_unsupported"];
+  if (isPhase3Type(type)) return crosswordContentErrors(payload, key);
   if (isObj(payload) && "stimulus" in payload) {
     const se = stimulusErrors(payload.stimulus);
     if (se.length) return se;

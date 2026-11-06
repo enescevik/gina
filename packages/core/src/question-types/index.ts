@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { crosswordAnswerErrors, crosswordAnswerState, isPhase3Type, type CrosswordAnswer, type CrosswordPayload, type Phase3InteractionType } from "./phase3";
 import { isPhase2bType, phase2bAnswerErrors, phase2bAnswerState, stimulusSchema, type Phase2bAnswer, type Phase2bInteractionType } from "./phase2b";
 import { isPhase2aType, phase2aAnswerErrors, phase2aAnswerState, type Phase2aAnswer, type Phase2aInteractionType } from "./phase2a";
 
@@ -128,7 +129,7 @@ export { parseNumberInput } from "./number";
 // ---------------------------------------------------------------------------------------------
 // Cevap doğrulaması (SQL gina.qt_answer_errors ile aynı kodlar). Boş dizi = geçerli.
 const ids = (arr: { id: string }[] | undefined) => (arr ?? []).map((x) => x.id);
-export function answerErrors(type: StructuredInteractionType | Phase2aInteractionType | Phase2bInteractionType, payload: unknown, answer: unknown): string[] {
+export function answerErrors(type: StructuredInteractionType | Phase2aInteractionType | Phase2bInteractionType | Phase3InteractionType, payload: unknown, answer: unknown): string[] {
   if (payload && typeof payload === "object" && "stimulus" in payload) {
     const { stimulus: _s, ...rest } = payload as Record<string, unknown>;
     payload = rest;
@@ -139,6 +140,7 @@ export function answerErrors(type: StructuredInteractionType | Phase2aInteractio
   if (a.v !== 1) return ["answer_version_unsupported"];
   if (isPhase2aType(type)) return phase2aAnswerErrors(type, payload as Record<string, unknown>, a);
   if (isPhase2bType(type)) return phase2bAnswerErrors(type, payload as Record<string, unknown>, a);
+  if (isPhase3Type(type)) return crosswordAnswerErrors(payload as CrosswordPayload, a);
   const field = { true_false: "items", fill_blank: "blanks", matching: "pairs", classification: "placement", ordering: "order", numeric: null }[type];
   const allowed = new Set(["type", "v", ...(field ? [field] : ["value", "unit"])]);
   if (Object.keys(a).some((k) => !allowed.has(k))) return ["answer_unknown_field"];
@@ -205,11 +207,12 @@ export function answerErrors(type: StructuredInteractionType | Phase2aInteractio
 // ---------------------------------------------------------------------------------------------
 // Cevap doluluk durumu (SQL score_details.answer_state ile aynı tanım). Puan DEĞİLDİR.
 export type AnswerState = "unanswered" | "partial" | "complete";
-export function answerState(type: StructuredInteractionType | Phase2aInteractionType | Phase2bInteractionType, payload: unknown, answer: StructuredAnswer | Phase2aAnswer | Phase2bAnswer | null | undefined): AnswerState {
+export function answerState(type: StructuredInteractionType | Phase2aInteractionType | Phase2bInteractionType | Phase3InteractionType, payload: unknown, answer: StructuredAnswer | Phase2aAnswer | Phase2bAnswer | CrosswordAnswer | null | undefined): AnswerState {
   const p = payload as Record<string, unknown>;
   if (!answer) return "unanswered";
   if (isPhase2aType(answer.type)) return phase2aAnswerState(p, answer as Phase2aAnswer);
   if (isPhase2bType(answer.type)) return phase2bAnswerState(answer as Phase2bAnswer);
+  if (isPhase3Type(answer.type)) return crosswordAnswerState(p as CrosswordPayload, answer as CrosswordAnswer);
   const ratio = (done: number, total: number): AnswerState => (done === 0 ? "unanswered" : done < total ? "partial" : "complete");
   switch (answer.type) {
     case "true_false":
@@ -293,3 +296,4 @@ export function categoryFull(p: ClassificationPayload, a: AnswerOf<"classificati
 export * from "./authoring";
 export * from "./phase2a";
 export * from "./phase2b";
+export * from "./phase3";

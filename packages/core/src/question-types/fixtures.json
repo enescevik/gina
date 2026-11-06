@@ -2461,6 +2461,189 @@
    "errors": [
     "stimulus_invalid"
    ]
+  },
+  {
+   "name": "crossword valid",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r5_c5"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 1,
+      "length": 5,
+      "text": "Yazı aracı"
+     },
+     {
+      "id": "d1",
+      "dir": "down",
+      "row": 1,
+      "col": 1,
+      "length": 4,
+      "text": "Miyavlayan hayvan"
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "a1": "KALEM",
+     "d1": "KEDİ"
+    }
+   },
+   "valid": true
+  },
+  {
+   "name": "crossword crossing mismatch",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r5_c5"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 1,
+      "length": 5,
+      "text": "Yazı aracı"
+     },
+     {
+      "id": "d1",
+      "dir": "down",
+      "row": 1,
+      "col": 1,
+      "length": 4,
+      "text": "Miyavlayan hayvan"
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "a1": "KALEM",
+     "d1": "BEDİ"
+    }
+   },
+   "valid": false,
+   "errors": [
+    "crossing_mismatch"
+   ]
+  },
+  {
+   "name": "crossword wrong length",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r5_c5"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 1,
+      "length": 5,
+      "text": "Yazı aracı"
+     },
+     {
+      "id": "d1",
+      "dir": "down",
+      "row": 1,
+      "col": 1,
+      "length": 4,
+      "text": "Miyavlayan hayvan"
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "a1": "KALEMS",
+     "d1": "KEDİ"
+    }
+   },
+   "valid": false,
+   "errors": [
+    "key_value_invalid"
+   ]
+  },
+  {
+   "name": "crossword clue outside grid",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r5_c5"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 3,
+      "length": 5,
+      "text": "x"
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "a1": "KALEM"
+    }
+   },
+   "valid": false,
+   "errors": [
+    "clues_invalid"
+   ]
+  },
+  {
+   "name": "crossword clue over block",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r1_c3"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 1,
+      "length": 5,
+      "text": "Yazı aracı"
+     },
+     {
+      "id": "d1",
+      "dir": "down",
+      "row": 1,
+      "col": 1,
+      "length": 4,
+      "text": "Miyavlayan hayvan"
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "a1": "KALEM",
+     "d1": "KEDİ"
+    }
+   },
+   "valid": false,
+   "errors": [
+    "clue_on_block"
+   ]
   }
  ],
  "scoring": [
@@ -6309,6 +6492,264 @@
     "answer_state": "complete",
     "outcome": "scored"
    }
+  },
+  {
+   "name": "crossword full",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r5_c5"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 1,
+      "length": 5,
+      "text": "Yazı aracı"
+     },
+     {
+      "id": "d1",
+      "dir": "down",
+      "row": 1,
+      "col": 1,
+      "length": 4,
+      "text": "Miyavlayan hayvan"
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "a1": "KALEM",
+     "d1": "KEDİ"
+    }
+   },
+   "answer": {
+    "type": "crossword",
+    "v": 1,
+    "cells": {
+     "r1_c1": "K",
+     "r1_c2": "A",
+     "r1_c3": "L",
+     "r1_c4": "E",
+     "r1_c5": "M",
+     "r2_c1": "E",
+     "r3_c1": "D",
+     "r4_c1": "İ"
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "crossword lowercase tr i ok",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r5_c5"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 1,
+      "length": 5,
+      "text": "Yazı aracı"
+     },
+     {
+      "id": "d1",
+      "dir": "down",
+      "row": 1,
+      "col": 1,
+      "length": 4,
+      "text": "Miyavlayan hayvan"
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "a1": "KALEM",
+     "d1": "KEDİ"
+    }
+   },
+   "answer": {
+    "type": "crossword",
+    "v": 1,
+    "cells": {
+     "r1_c1": "k",
+     "r1_c2": "a",
+     "r1_c3": "l",
+     "r1_c4": "e",
+     "r1_c5": "m",
+     "r2_c1": "e",
+     "r3_c1": "d",
+     "r4_c1": "i"
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "crossword dotless I is wrong",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r5_c5"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 1,
+      "length": 5,
+      "text": "Yazı aracı"
+     },
+     {
+      "id": "d1",
+      "dir": "down",
+      "row": 1,
+      "col": 1,
+      "length": 4,
+      "text": "Miyavlayan hayvan"
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "a1": "KALEM",
+     "d1": "KEDİ"
+    }
+   },
+   "answer": {
+    "type": "crossword",
+    "v": 1,
+    "cells": {
+     "r1_c1": "K",
+     "r1_c2": "A",
+     "r1_c3": "L",
+     "r1_c4": "E",
+     "r1_c5": "M",
+     "r2_c1": "E",
+     "r3_c1": "D",
+     "r4_c1": "I"
+    }
+   },
+   "expect": {
+    "score": 50,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "crossword half filled",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r5_c5"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 1,
+      "length": 5,
+      "text": "Yazı aracı"
+     },
+     {
+      "id": "d1",
+      "dir": "down",
+      "row": 1,
+      "col": 1,
+      "length": 4,
+      "text": "Miyavlayan hayvan"
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "a1": "KALEM",
+     "d1": "KEDİ"
+    }
+   },
+   "answer": {
+    "type": "crossword",
+    "v": 1,
+    "cells": {
+     "r1_c1": "K",
+     "r1_c2": "A",
+     "r1_c3": "L",
+     "r1_c4": "E",
+     "r1_c5": "M"
+    }
+   },
+   "expect": {
+    "score": 50,
+    "answer_state": "partial",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "crossword empty",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r5_c5"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 1,
+      "length": 5,
+      "text": "Yazı aracı"
+     },
+     {
+      "id": "d1",
+      "dir": "down",
+      "row": 1,
+      "col": 1,
+      "length": 4,
+      "text": "Miyavlayan hayvan"
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "a1": "KALEM",
+     "d1": "KEDİ"
+    }
+   },
+   "answer": {
+    "type": "crossword",
+    "v": 1,
+    "cells": {}
+   },
+   "expect": {
+    "score": null,
+    "answer_state": "unanswered",
+    "outcome": "unanswered"
+   }
   }
  ],
  "answers": [
@@ -7364,6 +7805,120 @@
    },
    "valid": false,
    "error": "answer_unknown_id"
+  },
+  {
+   "name": "crossword cell outside clues",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r5_c5"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 1,
+      "length": 5,
+      "text": "Yazı aracı"
+     },
+     {
+      "id": "d1",
+      "dir": "down",
+      "row": 1,
+      "col": 1,
+      "length": 4,
+      "text": "Miyavlayan hayvan"
+     }
+    ]
+   },
+   "answer": {
+    "type": "crossword",
+    "v": 1,
+    "cells": {
+     "r5_c5": "A"
+    }
+   },
+   "valid": false,
+   "error": "answer_unknown_id"
+  },
+  {
+   "name": "crossword two letters",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r5_c5"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 1,
+      "length": 5,
+      "text": "Yazı aracı"
+     },
+     {
+      "id": "d1",
+      "dir": "down",
+      "row": 1,
+      "col": 1,
+      "length": 4,
+      "text": "Miyavlayan hayvan"
+     }
+    ]
+   },
+   "answer": {
+    "type": "crossword",
+    "v": 1,
+    "cells": {
+     "r1_c1": "KA"
+    }
+   },
+   "valid": false,
+   "error": "answer_value_invalid"
+  },
+  {
+   "name": "crossword digit",
+   "type": "crossword",
+   "payload": {
+    "rows": 5,
+    "cols": 5,
+    "blocks": [
+     "r5_c5"
+    ],
+    "clues": [
+     {
+      "id": "a1",
+      "dir": "across",
+      "row": 1,
+      "col": 1,
+      "length": 5,
+      "text": "Yazı aracı"
+     },
+     {
+      "id": "d1",
+      "dir": "down",
+      "row": 1,
+      "col": 1,
+      "length": 4,
+      "text": "Miyavlayan hayvan"
+     }
+    ]
+   },
+   "answer": {
+    "type": "crossword",
+    "v": 1,
+    "cells": {
+     "r1_c1": "1"
+    }
+   },
+   "valid": false,
+   "error": "answer_value_invalid"
   }
  ],
  "numbers": [
