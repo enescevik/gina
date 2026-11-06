@@ -13,4 +13,6 @@ Bu kayıt X01'in alan adı ve Supabase Auth SMTP kısmını günceller; ürün b
 
 - Registry RDAP kontrolü: alan adı bitişi `2029-11-06T16:40:39Z` (Verisign, 6 Kasım 2026 sorgusu). Otomatik yenileme/ödeme yöntemi bu kayıttan çıkarılamaz.
 
-- Kullanıcının sağladığı yasal ad ve adres, yalnız Git tarafından dışlanan `.codex-setup/legal-private-2026-11-06/` altındaki 10 yerel taslak kopyasına işlendi. Ev adresi uzak depoya veya web’e yüklenmedi. Posta kodu teyidi ve hukuk incelemesi bekliyor.
+- Kullanıcının sağladığı yasal ad ve adres, yalnız Git tarafından dışlanan `.codex-setup/legal-private-2026-11-06/` altındaki 10 yerel taslak kopyasına işlendi. Ev adresi uzak depoya veya web’e yüklenmedi. Posta kodu kullanıcı tarafından teyit edilip özel yerel kopyalara eklendi; hukuk incelemesi bekliyor.
+
+- Gmail gönderici kurulumu tamamlandı: `GINA Destek <destek@ginafamily.com>`, Brevo SMTP 587/TLS. Kullanıcı ayrı `GINA Gmail SMTP` anahtarını oluşturup Gmail’e kendisi kaydetti; anahtar değeri okunmadı veya depoya yazılmadı. Gmail adres onayı başarılı. "İletinin gönderildiği adresten yanıtla" seçeneği etkin; kişisel varsayılan gönderen değişmedi. Gönderici test mesajı hedef Gmail hesabında INBOX etiketi ve doğru From adresiyle doğrulandı; farklı sağlayıcıya dış teslimat ayrıca test edilmedi.
