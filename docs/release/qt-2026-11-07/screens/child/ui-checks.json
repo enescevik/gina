@@ -1,0 +1,218 @@
+{
+  "environment": "disposable-local-gotrue-postgrest (own clone of gina_completion_audit)",
+  "database_pattern": "gina_qtc_<hex>_audit",
+  "child_session": "device role (devices.auth_user_id → custom_access_token_hook)",
+  "viewports": {
+    "phone": {
+      "width": 390,
+      "height": 844
+    },
+    "narrow": {
+      "width": 360,
+      "height": 740
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024
+    },
+    "desktop": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "passed": true,
+  "results": [
+    {
+      "check": "device_gets_no_keys_old_client_gets_update_required_projection_has_no_key",
+      "passed": true,
+      "device_keys": 0,
+      "v1": "client_update_required",
+      "v2_legacy_only": "client_update_required"
+    },
+    {
+      "check": "device_renders_v2_questions_all_unanswered",
+      "passed": true,
+      "attempt_question_count": 9,
+      "device_question_types": [
+        "classification",
+        "fill_blank",
+        "matching",
+        "multiple_choice",
+        "numeric",
+        "open_ended",
+        "ordering",
+        "true_false"
+      ]
+    },
+    {
+      "check": "true_false_choose_clear_undo_partial_saved",
+      "passed": true,
+      "saved": {
+        "v": 1,
+        "type": "true_false",
+        "items": {
+          "s1": true,
+          "s2": true
+        }
+      },
+      "targets_checked": 9
+    },
+    {
+      "check": "fill_blank_bank_tap_place_move_return_gap_first",
+      "passed": true
+    },
+    {
+      "check": "matching_tap_tap_swap_unpair",
+      "passed": true
+    },
+    {
+      "check": "reload_mid_exam_keeps_answers_and_states",
+      "passed": true
+    },
+    {
+      "check": "numeric_hint_comma_unit_saved",
+      "passed": true,
+      "saved": {
+        "value": "1,5",
+        "unit": "m"
+      }
+    },
+    {
+      "check": "numeric_work_area_opens_notebook_without_text_fallback",
+      "passed": true
+    },
+    {
+      "check": "ordering_tap_place_arrows_duplicate_words_rotation",
+      "passed": true,
+      "saved": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e"
+      ]
+    },
+    {
+      "check": "classification_select_place_capacity_takeback_partial",
+      "passed": true
+    },
+    {
+      "check": "legacy_multiple_choice_saved_via_v4_with_null_answer",
+      "passed": true
+    },
+    {
+      "check": "finish_shows_blank_and_partial_then_server_scores_without_child_oracle",
+      "passed": true,
+      "attempt_totals": "submitted|9|7|1|1|2|true",
+      "outcomes": {
+        "tf": "scored|33.3333",
+        "fill": "scored|100.0000",
+        "match": "scored|100.0000",
+        "num": "scored|100.0000",
+        "work": "pending_human|",
+        "order": "scored|100.0000",
+        "cls": "scored|75.0000",
+        "tf2": "no_row"
+      }
+    },
+    {
+      "check": "parent_attempt_lists_scored_partial_pending_unanswered",
+      "passed": true
+    },
+    {
+      "check": "parent_changes_auto_score_only_with_reason_and_history_shows",
+      "passed": true,
+      "override": "33→90"
+    },
+    {
+      "check": "parent_scores_pending_and_unanswered_items",
+      "passed": true,
+      "attempt_after": "0|1|false|85"
+    },
+    {
+      "check": "no_runtime_errors_overflow_raw_ids_or_keys",
+      "passed": true,
+      "screenshots": 70
+    }
+  ],
+  "screenshots": [
+    "tf-empty-phone-390x844.png",
+    "tf-empty-narrow-360x740.png",
+    "tf-empty-tablet-768x1024.png",
+    "tf-empty-desktop-1280x800.png",
+    "tf-partial-phone-390x844.png",
+    "tf-partial-narrow-360x740.png",
+    "tf-partial-tablet-768x1024.png",
+    "tf-partial-desktop-1280x800.png",
+    "fill-bank-complete-phone-390x844.png",
+    "fill-bank-complete-narrow-360x740.png",
+    "fill-bank-complete-tablet-768x1024.png",
+    "fill-bank-complete-desktop-1280x800.png",
+    "matching-complete-phone-390x844.png",
+    "matching-complete-narrow-360x740.png",
+    "matching-complete-tablet-768x1024.png",
+    "matching-complete-desktop-1280x800.png",
+    "numeric-hint-phone-390x844.png",
+    "numeric-unit-phone-390x844.png",
+    "numeric-unit-narrow-360x740.png",
+    "numeric-unit-tablet-768x1024.png",
+    "numeric-unit-desktop-1280x800.png",
+    "numeric-work-area-phone-390x844.png",
+    "numeric-work-area-narrow-360x740.png",
+    "numeric-work-area-tablet-768x1024.png",
+    "numeric-work-area-desktop-1280x800.png",
+    "ordering-sentence-phone-390x844.png",
+    "ordering-sentence-narrow-360x740.png",
+    "ordering-sentence-tablet-768x1024.png",
+    "ordering-sentence-desktop-1280x800.png",
+    "ordering-landscape-844x390.png",
+    "classification-full-phone-390x844.png",
+    "classification-full-narrow-360x740.png",
+    "classification-full-tablet-768x1024.png",
+    "classification-full-desktop-1280x800.png",
+    "classification-partial-phone-390x844.png",
+    "classification-partial-narrow-360x740.png",
+    "classification-partial-tablet-768x1024.png",
+    "classification-partial-desktop-1280x800.png",
+    "finish-sheet-phone-390x844.png",
+    "finish-sheet-narrow-360x740.png",
+    "finish-sheet-tablet-768x1024.png",
+    "finish-sheet-desktop-1280x800.png",
+    "child-result-phone-390x844.png",
+    "child-result-narrow-360x740.png",
+    "child-result-tablet-768x1024.png",
+    "child-result-desktop-1280x800.png",
+    "parent-attempt-phone-390x844.png",
+    "parent-attempt-narrow-360x740.png",
+    "parent-attempt-tablet-768x1024.png",
+    "parent-attempt-desktop-1280x800.png",
+    "parent-review-tf-phone-390x844.png",
+    "parent-review-tf-narrow-360x740.png",
+    "parent-review-tf-tablet-768x1024.png",
+    "parent-review-tf-desktop-1280x800.png",
+    "parent-review-tf-saved-phone-390x844.png",
+    "parent-review-tf-saved-narrow-360x740.png",
+    "parent-review-tf-saved-tablet-768x1024.png",
+    "parent-review-tf-saved-desktop-1280x800.png",
+    "parent-review-unanswered-phone-390x844.png",
+    "parent-review-unanswered-narrow-360x740.png",
+    "parent-review-unanswered-tablet-768x1024.png",
+    "parent-review-unanswered-desktop-1280x800.png",
+    "parent-review-ordering-phone-390x844.png",
+    "parent-review-ordering-narrow-360x740.png",
+    "parent-review-ordering-tablet-768x1024.png",
+    "parent-review-ordering-desktop-1280x800.png",
+    "parent-review-classification-phone-390x844.png",
+    "parent-review-classification-narrow-360x740.png",
+    "parent-review-classification-tablet-768x1024.png",
+    "parent-review-classification-desktop-1280x800.png"
+  ],
+  "cleanup": {
+    "db_rest": "removed",
+    "db_auth": "removed",
+    "database": "dropped",
+    "containers_left": "none",
+    "database_left": "0"
+  },
+  "note": "Web build in headless Chrome. Not physical-device acceptance (Pencil/finger, VoiceOver/TalkBack, rotation on hardware remain open)."
+}
