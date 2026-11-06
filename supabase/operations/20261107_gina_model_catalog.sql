@@ -118,3 +118,28 @@ update public.ai_models set adapter='openai-chat',supports_json_schema=true,
  context_tokens=64000,contract_version='catalog-text-v1',active=true,
  notes='Account-accessible; synthetic text JSON adapter contract passed 2026-11-07. Conservative 64K context declaration; media/tool chains not certified.'
 where id='gpt-6-sol';
+
+-- Claude GINA workspace: all 14 Models API entries, preserving existing configuration.
+insert into public.ai_models(id,provider,display_name,active,adapter,context_tokens,supports_json_schema,tokenizer,notes) values
+ ('claude-fable-5','anthropic','Claude Fable 5',false,'anthropic-messages',1000000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-fable-5-1','anthropic','Claude Fable 5.1',false,'anthropic-messages',1000000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-haiku-4-5-20251001','anthropic','Claude Haiku 4.5',false,'anthropic-messages',200000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-haiku-5-5','anthropic','Claude Haiku 5.5',false,'anthropic-messages',1000000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-opus-4-5-20251101','anthropic','Claude Opus 4.5',false,'anthropic-messages',200000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-opus-4-6','anthropic','Claude Opus 4.6',false,'anthropic-messages',1000000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-opus-4-7','anthropic','Claude Opus 4.7',false,'anthropic-messages',1000000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-opus-4-8','anthropic','Claude Opus 4.8',false,'anthropic-messages',1000000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-opus-5','anthropic','Claude Opus 5',false,'anthropic-messages',1000000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-opus-5-5','anthropic','Claude Opus 5.5',false,'anthropic-messages',1000000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-sonnet-4-5-20250929','anthropic','Claude Sonnet 4.5',false,'anthropic-messages',200000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-sonnet-4-6','anthropic','Claude Sonnet 4.6',false,'anthropic-messages',1000000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-sonnet-5','anthropic','Claude Sonnet 5',false,'anthropic-messages',1000000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.'),
+ ('claude-sonnet-5-5','anthropic','Claude Sonnet 5.5',false,'anthropic-messages',1000000,true,'provider_count','Account Models API inventory 2026-11-07. Adapter contract not verified; do not route production work.')
+on conflict(id) do nothing;
+-- Current Claude text JSON contracts verified with GINA Production v2.
+-- Existing Sonnet/Haiku media declarations are preserved; newly registered models remain text-only.
+update public.ai_models set contract_version='catalog-text-v1',active=true,
+ cost_class=case when id='claude-haiku-5-5' then 'low' when id in ('claude-opus-5-5','claude-fable-5-1') then 'high' else 'medium' end,
+ notes='GINA workspace key verified; synthetic text JSON adapter contract passed 2026-11-07. Existing media capabilities preserved; no route change.'
+where id in ('claude-sonnet-5-5','claude-haiku-5-5','claude-opus-5-5','claude-fable-5-1');
+update public.ai_providers set notes='GINA workspace key verified: Models API and four text JSON adapter contracts, 2026-11-07. Workspace spend cap USD 100/month.' where id='anthropic';
