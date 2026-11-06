@@ -21,6 +21,7 @@ import {
   type LessonSettings,
   nextLessonTimes,
   type TimetableCommand,
+  lessonsForSave,
   validateLessons,
   validLessonSettings,
 } from "@gina/core";
@@ -199,7 +200,7 @@ function LoadedEditor({
       const command = pending ?? journal.prepare({
         p_child_id: child.id,
         p_revision: draft.revision,
-        p_lessons: draft.lessons,
+        p_lessons: lessonsForSave(draft.lessons),
         p_settings: draft.settings,
       });
       setPending(command);

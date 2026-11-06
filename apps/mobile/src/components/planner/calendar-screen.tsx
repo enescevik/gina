@@ -40,9 +40,9 @@ import {
   DaySectionTitle,
   RoutineRows,
   isPlanRow,
-  planLessons,
   useDayPlans,
 } from "@/components/calendar/day-plan";
+import { dayLessonOccurrences, useWeekPlans, weekSummaries } from "./week-plans";
 import { Pressable } from "@/components/ui/pressable";
 import { useActiveChild } from "@/lib/active-child";
 import { useFamilyTimezone } from "@/lib/family";
@@ -127,13 +127,25 @@ export function PlannerCalendar({
   const past = date < today;
   const dayPlans = useDayPlans(familyId, scopedProfiles.map((c) => c.id), date);
   const dayItems = occurrences.filter((o) => o.date === date);
-  const lessons = (past
-    ? [
-        ...dayItems.filter((o) => o.event.type === "school" && !o.event.timetable_entry_key),
-        ...dayPlans.flatMap((q) => (q.data ? planLessons(q.data, timeZone) : [])),
-      ]
-    : dayItems.filter((o) => o.event.type === "school")
-  ).sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
+  // C02: every day (past, today, later) shows the lessons of that day's timetable version, with the
+  // parent-confirmed catalogue title. Manually entered school events stay as they are.
+  const english = i18n.language.startsWith("en");
+  const lessons = [
+    ...dayItems.filter((o) => o.event.type === "school" && !o.event.timetable_entry_key),
+    ...dayPlans.flatMap((q) => (q.data ? dayLessonOccurrences(q.data, timeZone, english) : [])),
+  ].sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
+  const weekPlans = useWeekPlans(familyId, scopedProfiles.map((c) => c.id), week[0], week[6]);
+  const weekTotals = weekSummaries(weekPlans.map((q) => q.data), week, [], scopedProfiles.map((c) => c.id));
+  const manualEvents = (d: string) =>
+    occurrences.filter((o) => o.date === d && !(o.event.type === "school" && o.event.timetable_entry_key));
+  const stripLabel = (d: string) => {
+    const s = weekTotals[d];
+    if (!s) return "";
+    return [
+      s.lessons === null ? t("c02.lessonsUnknown") : t("c02.lessonsCount", { count: s.lessons }),
+      t("c02.tasksCount", { count: s.due }),
+    ].join(" · ");
+  };
   const dayEvents = dayItems.filter((o) => o.event.type !== "school");
   const routines = scopedProfiles.flatMap((c, i) =>
     (dayPlans[i]?.data?.routines ?? []).map((routine) => ({ routine, childId: c.id })),
@@ -232,8 +244,8 @@ export function PlannerCalendar({
           </View>
         ) : null}
         <Pressable
-          accessibilityRole={isPlanRow(o.event) ? undefined : "button"}
-          disabled={isPlanRow(o.event)}
+          accessibilityRole={isPlanRow(o.event) && past ? undefined : "button"}
+          disabled={isPlanRow(o.event) && past}
           accessibilityLabel={`${o.event.title}, ${o.event.all_day ? t("calendar.allDay") : timeText(o.startsAt)}`}
           onPress={() => openItem(o.event)}
           style={({ pressed }) => [
@@ -278,12 +290,12 @@ export function PlannerCalendar({
                 ? ` · ${profiles.find((c) => c.id === o.event.child_id)?.name ?? t("calendar.allFamily")}`
                 : ""}
             </Text>
-            {!compact && o.event.notes ? <Text numberOfLines={2} style={[u.copy, {marginTop: 8}]}>{o.event.notes}</Text> : null}
+            {!compact && o.event.notes ? <Text numberOfLines={2} style={[u.copy, {marginTop: 8}]}>{isPlanRow(o.event) ? t("c02.originalText", { text: o.event.notes }) : o.event.notes}</Text> : null}
             {o.event.location ? (
               <Text style={u.small}>{o.event.location}</Text>
             ) : null}
           </View>
-          {!compact && !isPlanRow(o.event) ? <ChevronRight size={18} color={p.muted} /> : null}
+          {!compact && !(isPlanRow(o.event) && past) ? <ChevronRight size={18} color={p.muted} /> : null}
         </Pressable>
       </View>
     );
@@ -493,11 +505,12 @@ export function PlannerCalendar({
               <Pressable
                 key={d}
                 accessibilityRole="button"
-                accessibilityLabel={dateText(d, {
+                testID={`c02-strip-${d}`}
+                accessibilityLabel={[dateText(d, {
                   weekday: "long",
                   day: "numeric",
                   month: "long",
-                })}
+                }), stripLabel(d)].filter(Boolean).join(", ")}
                 accessibilityState={{ selected: d === date }} aria-pressed={d === date}
                 onPress={() => setSelected(d)}
                 style={{
@@ -530,6 +543,15 @@ export function PlannerCalendar({
                     {Number(d.slice(8))}
                   </Text>
                 </View>
+                {weekTotals[d]
+                  ? (
+                    <Text style={[u.small, { fontSize: 11 }]} testID={`c02-strip-count-${d}`}>
+                      {weekTotals[d].lessons === null ? "?" : weekTotals[d].lessons}
+                      {" · "}
+                      {weekTotals[d].due}
+                    </Text>
+                  )
+                  : null}
               </Pressable>
             ))}
           </View>
@@ -541,7 +563,8 @@ export function PlannerCalendar({
                 {wide ? <View style={[u.card, { flex: 1 }]}>
                   <Text style={u.heading}>{t("planner.weekOverview")}</Text>
                   {week.map((d) => {
-                    const list = occurrences.filter((o) => o.date === d);
+                    const list = manualEvents(d);
+                    const totals = weekTotals[d];
                     return (
                       <Pressable
                         key={d}
@@ -572,9 +595,11 @@ export function PlannerCalendar({
                           {dateText(d, { weekday: "long", day: "numeric" })}
                         </Text>
                         <Text style={[u.small, u.fill]}>
-                          {list.length
+                          {totals && totals.lessons === null
+                            ? `${t("c02.lessonsUnknown")} · ${t("c02.eventsCount", { count: list.filter((o) => o.event.type !== "school").length })}`
+                            : list.length || totals?.lessons
                             ? t("planner.daySummary", {
-                                lessons: list.filter(
+                                lessons: (totals?.lessons ?? 0) + list.filter(
                                   (o) => o.event.type === "school",
                                 ).length,
                                 events: list.filter(
@@ -582,6 +607,7 @@ export function PlannerCalendar({
                                 ).length,
                               })
                             : t("learningPlan.noEvents")}
+                          {totals?.due ? ` · ${t("c02.tasksCount", { count: totals.due })}` : ""}
                           {learningCount(d) ? ` · ${t("learningPlan.dayCount",{count:learningCount(d),name:selectedChild?.name ?? t("planner.all")})}` : ""}
                         </Text>
                         <ChevronRight color={p.muted} size={16} />

@@ -102,3 +102,70 @@ export function confirmSubjectChoice(
     ? { subject_id: hit.subject_id, label }
     : { subject_id: null, label };
 }
+
+/** C02 server link: child lesson name → parent-confirmed catalogue id (`child_subject_links`). */
+export const subjectLinkSchema = z.object({
+  alias_normalized: z.string(),
+  /** The text the parent confirmed, as written in the document/table (provenance). */
+  title: z.string(),
+  subject_id: z.string(),
+  label_tr: z.string(),
+  label_en: z.string(),
+  active: z.boolean(),
+  source: z.enum(["manual", "device_import"]),
+  revision: z.number().int(),
+  linked_at: z.string(),
+});
+export type SubjectLink = z.infer<typeof subjectLinkSchema>;
+export const subjectLinksSchema = z.object({
+  child_id: z.uuid(),
+  links: z.array(subjectLinkSchema),
+});
+export const subjectLinksReceiptSchema = subjectLinksSchema.extend({ changed: z.number().int() });
+
+/** Link for a lesson name (same normalisation as the server). */
+export function linkForTitle(links: readonly SubjectLink[], title: string): SubjectLink | null {
+  const key = normalizeSubjectAlias(title);
+  return key ? links.find((l) => l.alias_normalized === key) ?? null : null;
+}
+
+/**
+ * How a lesson is shown: the catalogue title (Turkish/English as the catalogue writes it) when the
+ * parent confirmed one, with the original text kept underneath when it differs. Unlinked lessons keep
+ * their own name exactly.
+ */
+export function subjectDisplay(
+  lesson: { title: string; subject_label_tr?: string | null; subject_label_en?: string | null },
+  english = false,
+): { title: string; original: string | null } {
+  const label = english ? lesson.subject_label_en : lesson.subject_label_tr;
+  if (!label) return { title: lesson.title, original: null };
+  const same = normalizeSubjectAlias(label) === normalizeSubjectAlias(lesson.title);
+  return { title: label, original: same ? null : lesson.title };
+}
+
+/**
+ * Old device-only bindings (U05, `gina:timetable:subjects:v1:*`) that are not on the server yet. A name
+ * the server already links to another subject is a conflict: it is shown, never sent silently.
+ */
+export function deviceBindingsToImport(
+  local: Readonly<Record<string, { subject_id: string; label_tr: string; label_en: string; title?: string }>>,
+  server: readonly SubjectLink[],
+): {
+  send: { key: string; title: string; subject_id: string; label_tr: string; label_en: string }[];
+  conflicts: { key: string; title: string; local: string; server: string }[];
+  same: string[];
+} {
+  const send: { key: string; title: string; subject_id: string; label_tr: string; label_en: string }[] = [];
+  const conflicts: { key: string; title: string; local: string; server: string }[] = [];
+  const same: string[] = [];
+  for (const [key, b] of Object.entries(local)) {
+    if (!key || !/^subject-[a-z0-9-]+$/.test(b?.subject_id ?? "")) continue;
+    const s = server.find((l) => l.alias_normalized === key);
+    const title = b.title?.trim() || s?.title || key;
+    if (!s) send.push({ key, title, subject_id: b.subject_id, label_tr: b.label_tr, label_en: b.label_en });
+    else if (s.subject_id === b.subject_id) same.push(key);
+    else conflicts.push({ key, title, local: b.label_tr, server: s.label_tr });
+  }
+  return { send, conflicts, same };
+}

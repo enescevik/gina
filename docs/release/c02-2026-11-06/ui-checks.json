@@ -1,0 +1,90 @@
+{
+  "environment": "disposable-local-auth-postgrest + expo web export (Chrome, tr-TR, Europe/Istanbul)",
+  "today": "2026-11-06",
+  "checks": [
+    {
+      "check": "device_local_binding_transferred_only_after_confirmation",
+      "passed": true,
+      "detail": {
+        "link": {
+          "title": "MAT",
+          "subject_id": "subject-math",
+          "source": "device_import"
+        }
+      }
+    },
+    {
+      "check": "second_device_sees_same_identity_and_binds_with_confirmation",
+      "passed": true
+    },
+    {
+      "check": "device_a_sees_device_b_link_and_original_text",
+      "passed": true,
+      "detail": {
+        "day_lessons": [
+          {
+            "title": "MAT",
+            "subject_id": "subject-math",
+            "label": "Matematik"
+          },
+          {
+            "title": "TRK",
+            "subject_id": "subject-turkish",
+            "label": "Türkçe"
+          }
+        ]
+      }
+    },
+    {
+      "check": "calendar_past_today_later_follow_plan_for_day",
+      "passed": true,
+      "detail": {
+        "past": "unknown_before",
+        "today_lessons": 2,
+        "later_routine": "Kitap oku 36a4 (30 dk)"
+      }
+    },
+    {
+      "check": "task_list_shows_today_version_and_pending_change",
+      "passed": true
+    },
+    {
+      "check": "routine_editor_offers_later_effective_day",
+      "passed": true
+    },
+    {
+      "check": "home_today_tasks_and_lessons_from_dated_plan",
+      "passed": true
+    },
+    {
+      "check": "planned_education_change_visible_and_cancelled",
+      "passed": true
+    },
+    {
+      "check": "education_change_undone_within_14_days",
+      "passed": true,
+      "detail": {
+        "lessons_restored": 14
+      }
+    },
+    {
+      "check": "hand_added_homework_respread_and_saved",
+      "passed": true,
+      "detail": {
+        "planned_on": [
+          "2026-11-06",
+          "2026-11-09",
+          "2026-11-10"
+        ]
+      }
+    },
+    {
+      "check": "respread_undo_restores_days",
+      "passed": true
+    },
+    {
+      "check": "layouts_390_768_1280_no_overflow_no_raw_keys",
+      "passed": true
+    }
+  ]
+}

@@ -32,9 +32,9 @@ export type Routine = Database["public"]["Tables"]["task_templates"]["Row"];
 type Action = "save" | "pause" | "resume" | "archive" | "restore";
 /**
  * L04: a later start day for an edit. The live `task_templates` row takes the new settings at once;
- * only screens that read `plan_for_day` (the calendar) keep today on the old version. Task lists and
- * the child's Today still read the live row, so the date picker stays closed until they switch too:
- * callers pass `allowFutureEffective` only from a screen whose views all read the day plan.
+ * screens that read the dated contract keep today on the old version. Since C02 the calendar, the child's
+ * Today, the parent home (`plan_for_day`/`plan_for_days`) and the task list (`routines_for_day`) all do,
+ * so the task list opens the picker. Callers pass `allowFutureEffective` only from such a screen.
  */
 export function RoutineEditor({
   row,
@@ -139,6 +139,8 @@ export function RoutineEditor({
           queryKey: ["task_routine_history", familyId, row.id],
         }),
         cache.invalidateQueries({ queryKey: ["plan_for_day", familyId] }),
+        cache.invalidateQueries({ queryKey: ["plan_for_days", familyId] }),
+        cache.invalidateQueries({ queryKey: ["routines_for_day", familyId] }),
       ]);
       onSaved(action);
     },
