@@ -22,14 +22,14 @@ const istanbulDay=(offset=0)=>{const d=new Date(Date.now()+offset*86400000);retu
  // Routine known since ten days ago; renamed today; renamed again for three days later.
  const R=randomUUID(),R2=randomUUID();
  const base={icon:'read-book',stars:2,days_of_week:[1,2,3,4,5,6,7],time_of_day:'evening',requires_approval:false};
- await api('task_templates',[{id:R,family_id:f.familyId,child_id:ada.id,title:'Kitap oku',...base,starts_on:istanbulDay(-10)},{id:R2,family_id:f.familyId,child_id:can.id,title:`Oda topla ${tag}`,...base,starts_on:istanbulDay(-10)}]);
+ await api('task_templates',[{id:R,family_id:f.familyId,child_id:ada.id,title:`Kitap oku ${tag}`,...base,starts_on:istanbulDay(-10)},{id:R2,family_id:f.familyId,child_id:can.id,title:`Oda topla ${tag}`,...base,starts_on:istanbulDay(-10)}]);
  const rev=async()=>(await api(`task_templates?id=eq.${R}&select=revision`))[0].revision;
- const now=await api('rpc/change_task_routine',{p_request_id:randomUUID(),p_id:R,p_revision:await rev(),p_action:'save',p_value:{title:'Kitap oku (20 dk)',...base}});
+ const now=await api('rpc/change_task_routine',{p_request_id:randomUUID(),p_id:R,p_revision:await rev(),p_action:'save',p_value:{title:`Kitap oku ${tag} (20 dk)`,...base}});
  assert.equal(now.effective_from,today);
- const sched=await api('rpc/change_task_routine',{p_request_id:randomUUID(),p_id:R,p_revision:await rev(),p_action:'save',p_value:{title:'Kitap oku (30 dk)',...base,stars:3},p_effective_from:later});
+ const sched=await api('rpc/change_task_routine',{p_request_id:randomUUID(),p_id:R,p_revision:await rev(),p_action:'save',p_value:{title:`Kitap oku ${tag} (30 dk)`,...base,stars:3},p_effective_from:later});
  assert.equal(sched.effective_from,later);
  const live=(await api(`task_templates?id=eq.${R}&select=title`))[0].title;
- assert.equal(live,'Kitap oku (30 dk)','live row already carries the scheduled settings');
+ assert.equal(live,`Kitap oku ${tag} (30 dk)`,'live row already carries the scheduled settings');
  // Timetable saved today (no older version exists → past days are "unknown before").
  const lessons=[1,2,3,4,5,6,7].map(d=>({id:'m'+d,day:d,title:'Matematik',start:'09:00',end:'09:40'}));
  await api('rpc/save_school_timetable_request',{p_request_id:randomUUID(),p_child_id:ada.id,p_revision:0,p_lessons:lessons,p_settings:{start:'09:00',duration:40,break:10}});
@@ -46,7 +46,7 @@ const istanbulDay=(offset=0)=>{const d=new Date(Date.now()+offset*86400000);retu
  browser=await chromium.launch({channel:'chrome',headless:true});const c=await browser.newContext({viewport:{width:390,height:844},locale:'tr-TR',timezoneId:'Europe/Istanbul'});
  await c.route(f.url+'/**',async route=>{try{if(route.request().method()==='OPTIONS')return route.fulfill({status:204,headers:{'access-control-allow-origin':'*','access-control-allow-headers':'*','access-control-allow-methods':'*'}});const res=await route.fetch();await route.fulfill({response:res,headers:{...res.headers(),'access-control-allow-origin':'*'}});}catch{await route.fulfill({status:503,body:'Local fixture unavailable'});}});
  page=await c.newPage();page.setDefaultTimeout(25000);const errors=[];page.on('pageerror',e=>errors.push(e.message));
- async function shot(name){await page.waitForTimeout(500);await page.screenshot({path:`${out}/${name}.png`,fullPage:true});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'document does not overflow: '+name);const body=await page.locator('body').innerText();assert.ok(!/dayPlan\.|planHistory\./.test(body),'translation resolved: '+name);}
+ async function shot(name){await page.waitForFunction(()=>!document.querySelector('[role=progressbar]'));await page.waitForTimeout(500);await page.screenshot({path:`${out}/${name}.png`,fullPage:true});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'document does not overflow: '+name);const body=await page.locator('body').innerText();assert.ok(!/dayPlan\.|planHistory\./.test(body),'translation resolved: '+name);}
  const phone=()=>page.setViewportSize({width:390,height:844}),desktop=()=>page.setViewportSize({width:1280,height:800});
  const text=t=>page.getByText(t,{exact:true});
  const open=async(day,child)=>{await page.goto(`${web}/parent/calendar?date=${day}${child?`&childId=${child}`:''}`);};
@@ -54,26 +54,28 @@ const istanbulDay=(offset=0)=>{const d=new Date(Date.now()+offset*86400000);retu
  stage='login';await page.goto(web);await page.getByLabel('E-posta',{exact:true}).fill(f.email);await page.getByLabel('Şifre',{exact:true}).fill(f.password);await page.getByRole('button',{name:'Giriş yap',exact:true}).click();await page.waitForURL('**/parent');
 
  stage='past_day';await open(yesterday,ada.id);
- await text('Kitap oku').waitFor();await text('Geçmiş gün').waitFor();
- assert.equal(await text('Kitap oku (20 dk)').count(),0);assert.equal(await text('Kitap oku (30 dk)').count(),0);
+ await text(`Kitap oku ${tag}`).waitFor();await text('Geçmiş gün').waitFor();
+ assert.equal(await text(`Kitap oku ${tag} (20 dk)`).count(),0);assert.equal(await text(`Kitap oku ${tag} (30 dk)`).count(),0);
  await page.getByText(/Bu günün planı kayıtlarda yok/).first().waitFor();
  await text('Matematik').first().waitFor();
- await shot('past-day-old-routine-phone');await desktop();await shot('past-day-old-routine-desktop');await phone();
+ await shot('past-day-old-routine-phone');
+ await text(`Kitap oku ${tag}`).scrollIntoViewIfNeeded();await shot('past-day-tasks-section-phone');await desktop();await shot('past-day-old-routine-desktop');await phone();
  ok('past_day_shows_that_days_routine_name_and_unknown_timetable_marker');
 
  stage='today';await open(today,ada.id);
- await text('Kitap oku (20 dk)').waitFor();await text('Bugün').first().waitFor();
- assert.equal(await text('Kitap oku (30 dk)').count(),0,'scheduled edit does not change today');
- assert.equal(await text('Kitap oku').count(),0);
+ await text(`Kitap oku ${tag} (20 dk)`).waitFor();await text('Bugün').first().waitFor();
+ assert.equal(await text(`Kitap oku ${tag} (30 dk)`).count(),0,'scheduled edit does not change today');
+ assert.equal(await text(`Kitap oku ${tag}`).count(),0);
  await text(`Piyano ${tag}`).waitFor();assert.equal(await text(`Yüzme ${tag}`).count(),0,'archived event hidden in calendar');
  await text('Görevler').waitFor();await text('Etkinlikler').waitFor();await text('Dersler').waitFor();
- await shot('today-scheduled-edit-unchanged-phone');await desktop();await shot('today-scheduled-edit-unchanged-desktop');await phone();
+ await shot('today-scheduled-edit-unchanged-phone');
+ await text('Görevler').scrollIntoViewIfNeeded();await shot('today-tasks-section-phone');await desktop();await shot('today-scheduled-edit-unchanged-desktop');await phone();
  ok('future_dated_edit_keeps_today_unchanged',{live_row_title:live});
  ok('archived_event_hidden_in_parent_calendar');
 
  stage='later';await open(later,ada.id);
- await text('Kitap oku (30 dk)').waitFor();await page.getByText(/tarihinden itibaren geçerli olacak ayarlar/).first().waitFor();
- await shot('later-day-scheduled-routine-phone');
+ await text(`Kitap oku ${tag} (30 dk)`).waitFor();await page.getByText(/tarihinden itibaren geçerli olacak ayarlar/).first().waitFor();
+ await text(`Kitap oku ${tag} (30 dk)`).scrollIntoViewIfNeeded();await shot('later-day-scheduled-routine-phone');
  ok('scheduled_day_shows_new_routine_with_note');
 
  stage='all_children';await open(today);
@@ -83,9 +85,10 @@ const istanbulDay=(offset=0)=>{const d=new Date(Date.now()+offset*86400000);retu
  await page.getByRole('button',{name:`Can ${tag} için günün ayrıntısını aç`,exact:true}).waitFor();
  assert.equal(await page.getByText(/Çanta listesi/).count(),0,'no per-child bag block in Tümü');
  assert.equal(await text(`Aile yemeği ${tag}`).count(),1,'family event listed once');
- await text('Kitap oku (20 dk)').waitFor();await text(`Oda topla ${tag}`).waitFor();
+ await text(`Kitap oku ${tag} (20 dk)`).waitFor();await text(`Oda topla ${tag}`).waitFor();
  assert.equal(await text(`Yüzme ${tag}`).count(),0);
- await shot('all-children-today-phone');await desktop();await shot('all-children-today-desktop');await phone();
+ await shot('all-children-today-phone');
+ await text('Çocuklara göre').scrollIntoViewIfNeeded();await shot('all-children-summary-rows-phone');await desktop();await shot('all-children-today-desktop');await phone();
  await page.getByRole('button',{name:`Ada ${tag} için günün ayrıntısını aç`,exact:true}).click();
  await page.getByText(`Ada ${tag} · Çanta listesi`).waitFor();assert.equal(await text(`Oda topla ${tag}`).count(),0);
  await shot('all-children-open-ada-phone');
