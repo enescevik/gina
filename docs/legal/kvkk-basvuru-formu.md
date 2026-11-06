@@ -5,9 +5,9 @@
 | Sürüm | 0.2 (taslak) |
 | Tarih | 2026-10-30 |
 | Yürürlük tarihi | [YÜRÜRLÜK TARİHİ] |
-| Durum | **Bu metin taslaktır; yayın öncesi avukat incelemesi önerilir.** |
+| Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** Uygulama denetimi: uygulama içi KVKK başvuru formu ve girişsiz, e-posta doğrulamalı web formu yoktur; uygulamada yalnızca genel Yardım > destek talebi vardır (`supabase/migrations/20261103030000_support_help.sql`). Uygulamada destek e-posta adresi gösterilmez. Karşılaştırma: `docs/release/c11-2026-11-06/legal-review.md`. |
 | Veri sorumlusu | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/VKN: [MERSİS/VKN] · KEP: [KEP ADRESİ – varsa] |
-| Yayın yeri | [WEB ADRESİ]/legal/kvkk-basvuru-formu (herkese açık HTML, TR/EN) · uygulama içi Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu |
+| Yayın yeri | [WEB ADRESİ]/legal/kvkk-basvuru-formu (herkese açık HTML, TR/EN) · uygulama içi Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (bu ekran henüz yoktur) |
 | Dil | Türkçe metin esastır (805 sayılı Kanun); İngilizce çeviri bilgi amaçlıdır. |
 | İlgili belgeler | /legal/kvkk-aydinlatma-metni · /legal/gizlilik-politikasi · /legal/hesap-ve-veri-silme · /legal/kullanim-kosullari · /legal/abonelik-kosullari · /legal/cerez-politikasi · Veli Beyanı (uygulama içinde) |
 
@@ -17,7 +17,7 @@
 
 **Kimler başvurabilir:** 18 yaşını doldurmuş ebeveyn ve vasi hesap sahipleri (davet koduyla aileye katılan diğer ebeveyn/vasi dâhil); çocuk profili için çocuğun velisi veya vasisi (Bölüm 5); reşit olmuş eski çocuk profili sahipleri.
 
-Hesap veya profil silme, verileri görüntüleme ve düzeltme, yapay zekâ izninin geri alınması ve eşleştirme iptali için başvuru gerekmez; bunları Ayarlar'dan anında yaparsınız (bkz. Hesap ve Veri Silme).
+Hesap veya profil silme, verileri görüntüleme ve düzeltme ve eşleştirme iptali için başvuru gerekmez; bunları uygulamadaki veli menüsünden anında yaparsınız (bkz. Hesap ve Veri Silme). Yapay zekâ onayı her işlemde ayrı alındığından geri alınacak genel bir izin yoktur; sonraki işlemlerde onay vermemeniz yeterlidir.
 
 ## 2. Başvuru kanalları
 
@@ -73,7 +73,7 @@ Uygulama içi form aynı alanları içerir; posta veya e-posta başvurusunda bu 
 | (a) işlenip işlenmediğini öğrenme; (b) bilgi ve kopya isteme; (c) amaç ve amaca uygun kullanım | Hesabınızla sınırlı sorgu; verilerinizin okunabilir kopyası (uygulamada dışa aktarma özelliği yoktur) [ÜRÜN KARARI: dosya biçimi]; amaç ve hukuki sebepler Aydınlatma Metni Bölüm 5'e göre. |
 | (ç) aktarılan üçüncü kişileri bilme | Aydınlatma Metni Bölüm 6–7'deki alıcılar; Anthropic (ABD) yalnızca yapay zekâ özelliğini açtıysanız. |
 | (d) düzeltme; (e) silme veya yok etme | Uygulama içinden düzeltemediğiniz verileri biz düzeltiriz. Silme KVKK m.7 ve Silme Yönetmeliği m.12'ye göre: işleme şartları kalkmışsa hesap/profil silme akışı çalışır, yedekler [30 gün] içinde temizlenir. Yasal nedenle tutulanlar (satın alma kayıtları [10 yıl], güvenlik günlükleri [12 ay], rıza/beyan ve başvuru kayıtları [3 yıl]) yanıtta gerekçesiyle belirtilir. |
-| (f) düzeltme ve silmenin alıcılara bildirilmesi | Expo'daki bildirim belirteci silinir, Apple ile Giriş belirteci iptal edilir, Anthropic'e silme talebi iletilir. Anthropic'teki girdiler kural olarak 30 gün içinde silinir; ihlal şüphesiyle işaretlenen içerik 2 yıla kadar tutulabilir; kullandığımız modellerde 30 günlük saklama zorunludur, kısaltamayız. Gina'daki özetler (en çok 12 ay) silinir. |
+| (f) düzeltme ve silmenin alıcılara bildirilmesi | Bildirim belirteci kaydımız silinir (Expo kullanılmaz; APNs/FCM geçersiz belirteci gönderimde bildirir). Apple ile Giriş belirtecinin iptali ve Anthropic'e silme talebi iletimi uygulamada henüz yoktur (uygulama denetimi 6 Kasım 2026); süreç uzmanla birlikte belirlenmelidir. Anthropic'teki girdiler kural olarak 30 gün içinde silinir; ihlal şüphesiyle işaretlenen içerik 2 yıla kadar tutulabilir; kullandığımız modellerde 30 günlük saklama zorunludur, kısaltamayız. Gina'daki özetler (en çok 12 ay) silinir. |
 | (g) otomatik analize itiraz | Yapay zekâ çıktıları hukuki sonuç doğuran otomatik karar üretmez; itirazda çıktılar silinir ve özellik kapatılır. |
 | (ğ) zararın giderilmesi | Talep kaydedilir ve avukata iletilir; tazminat hakkınız saklıdır. |
 
@@ -98,4 +98,5 @@ Başvuru, ekleri ve yanıtımız ispat amacıyla talebin kapanmasından itibaren
 | Sürüm | Tarih | Değişiklik |
 |---|---|---|
 | 0.2 | 2026-10-30 | İlk taslak (belge seti 0.2 ile; inceleme notları ve DECISIONS.md uygulandı): kanallar (uygulama içi/web formu, kayıtlı e-posta, posta, varsa KEP; telefon yok), Tebliğ m.5/2 alanları, 30 gün ücretsiz yanıt ve m.7 ücret kuralı, Kurul'a 30/60 gün şikâyet, çocuk adına yalnız veli/vasi ve doğum yılı, 18 yaş kuralı Veli Beyanı §11'e bağlı; incelemedeki "veli olmayan yetişkin" davet modeli DECISIONS gereği uygulanmadı; saklama süreleri ve Anthropic istisnaları diğer belgelerle hizalandı; slug'lar /legal/* ile eşitlendi. |
+| 0.2 (C11 teknik düzeltme) | 2026-11-06 | Durum satırı: uzman onayı yok; uygulama içi ve web KVKK formlarının henüz olmadığı yazıldı; yapay zekâ onayının işlem bazlı olduğu düzeltildi. |
 | 0.2 | 2026-10-30 | Belge seti tutarlılık kontrolü: ilgili belgeler listesine Abonelik Koşulları ve Çerez Politikası bağlantıları eklendi. İçerik değişmedi. |
