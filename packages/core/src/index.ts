@@ -15,6 +15,7 @@ export { SerialWrites } from "./serial-writes";
 
 export { AnswerReceipts } from "./answer-receipts";
 export * from "./answer-journal";
+export * from "./question-types";
 export * from "./learning-progress";
 
 export * from "./notebook";

@@ -115,3 +115,12 @@ Kaynak öneriler: [F01](F01-SOCIAL-AND-NEXT-PROPOSALS.md) §9, [S04 takvim](lear
 - Kütüphane içerik üretimi/onayı/yayını kullanıcı tarafından backoffice ile yönetilecek; Claude devrinden çıkarıldı. Mevcut yönetim araçlarının açıkça listelenmiş yazılım eksikleri kapsamda kalır.
 - 3B dünya kullanıcı ile Codex tarafından ayrı yürütülecek; Claude model/rig/atmosfer/3B planlamasına başlamaz.
 - Claude düzeltme yayını kütüphane veya 3B tamamlanmasına bağlı değildir. Eski R02 bağımlılığı bu teslim için uygulanmaz; mağaza satışına ait hukuk/hesap kapıları korunur.
+
+
+## Prova yapılandırılmış soru türleri (6 Kasım 2026, kullanıcı onayı)
+
+- Plan ve kabul kapıları: `docs/learning/PROVA-QUESTION-TYPES-PLAN.md`. Bu kayıt uygulamanın tamamlandığı anlamına gelmez.
+- Faz 0 sözleşme/geçiş/puanlama; 1A doğru-yanlış, doldurma, eşleştirme, sayısal kısa cevap; 1B sıralama/sınıflandırma; 2A işaretleme/düzeltme/çoklu doğru/iki aşama; 2B defter geliştirme ve görsel/ses uyaranları; 3 bulmaca/sesli cevap.
+- SQL sunucu puan otoritesi; öğrenci payload ve özel değerlendirme anahtarı ayrılır. Soru/puanlama sürümleri atanmış sınavda sabit, yapılandırılmış cevap idempotency/revision/hash kapsamında.
+- Türler paketle kapanmaz; AI hakkı/onayı ayrı, yoksa veli puanlar. Alıştırma türleri otomatik OYSS uyumlu sayılmaz. Türkçe harfler topluca ASCII eşitlenmez.
+- H00–H08 ve mevcut yayınlar bu fazların hepsini beklemez. Kütüphane toplu içerik üretimi ve 3B dünya Claude kapsamında değildir.

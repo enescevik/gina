@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { notebookSchema } from "./notebook";
+import { structuredAnswerSchema } from "./question-types";
 import type { AnswerReceipt, AnswerValue } from "./answer-receipts";
 
 export interface AnswerJournalStorage {
@@ -12,6 +13,8 @@ const valueSchema = z.object({
   key: z.string().max(20).optional(),
   text: z.string().max(20000).optional(),
   document: notebookSchema.optional(),
+  // QT00: sürümlü yapılandırılmış cevap. Eski (v1) günlük kayıtlarında yoktur ve aynen okunur.
+  answer: structuredAnswerSchema.optional(),
 }).strict();
 const recordSchema = z.object({
   version: z.literal(1),
@@ -37,7 +40,8 @@ export function answerJournalScope(
 }
 const same = (a: AnswerValue, b: AnswerValue) =>
   a.key === b.key && a.text === b.text &&
-  JSON.stringify(a.document) === JSON.stringify(b.document);
+  JSON.stringify(a.document) === JSON.stringify(b.document) &&
+  JSON.stringify(a.answer) === JSON.stringify(b.answer);
 export class AnswerJournalConflict extends Error {
   constructor(public questionId: string) {
     super("answer_changed");

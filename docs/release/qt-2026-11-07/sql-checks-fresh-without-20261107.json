@@ -1,0 +1,665 @@
+{
+  "environment": "empty-disposable-database-fresh-public-schema-all-migrations",
+  "timezone": "Europe/Istanbul",
+  "files": [
+    {
+      "file": "001_schema.test.sql",
+      "passed": 20,
+      "failed": 0
+    },
+    {
+      "file": "002_rls.test.sql",
+      "passed": 14,
+      "failed": 0
+    },
+    {
+      "file": "003_entitlements.test.sql",
+      "passed": 11,
+      "failed": 0
+    },
+    {
+      "file": "004_ai_summary_data.test.sql",
+      "passed": 6,
+      "failed": 0
+    },
+    {
+      "file": "005_prova.test.sql",
+      "passed": 17,
+      "failed": 0
+    },
+    {
+      "file": "006_resubmit.test.sql",
+      "passed": 8,
+      "failed": 0
+    },
+    {
+      "file": "007_rewards.test.sql",
+      "passed": 14,
+      "failed": 0
+    },
+    {
+      "file": "008_prova_ai.test.sql",
+      "passed": 27,
+      "failed": 0
+    },
+    {
+      "file": "009_prova_level.test.sql",
+      "passed": 16,
+      "failed": 0
+    },
+    {
+      "file": "010_iap.test.sql",
+      "passed": 10,
+      "failed": 0
+    },
+    {
+      "file": "011_push.test.sql",
+      "passed": 24,
+      "failed": 0
+    },
+    {
+      "file": "012_backoffice.test.sql",
+      "passed": 26,
+      "failed": 0
+    },
+    {
+      "file": "013_teacher_share.test.sql",
+      "passed": 22,
+      "failed": 0
+    },
+    {
+      "file": "014_room_pet.test.sql",
+      "passed": 7,
+      "failed": 0
+    },
+    {
+      "file": "015_account_lifecycle.test.sql",
+      "passed": 16,
+      "failed": 0
+    },
+    {
+      "file": "016_child_deletion.test.sql",
+      "passed": 7,
+      "failed": 0
+    },
+    {
+      "file": "017_room_atmosphere.test.sql",
+      "passed": 18,
+      "failed": 0
+    },
+    {
+      "file": "018_school_timetables.test.sql",
+      "passed": 17,
+      "failed": 0
+    },
+    {
+      "file": "019_device_family_access.test.sql",
+      "passed": 29,
+      "failed": 0
+    },
+    {
+      "file": "020_prova_jobs.test.sql",
+      "passed": 10,
+      "failed": 0
+    },
+    {
+      "file": "021_beta_setup.test.sql",
+      "passed": 32,
+      "failed": 0
+    },
+    {
+      "file": "022_setup_ai.test.sql",
+      "passed": 13,
+      "failed": 0
+    },
+    {
+      "file": "023_operation_safety.test.sql",
+      "passed": 15,
+      "failed": 0
+    },
+    {
+      "file": "024_learning_library.test.sql",
+      "passed": 30,
+      "failed": 0
+    },
+    {
+      "file": "025_generation_credits.test.sql",
+      "passed": 19,
+      "failed": 0
+    },
+    {
+      "file": "026_learning_sources.test.sql",
+      "passed": 34,
+      "failed": 0
+    },
+    {
+      "file": "027_exam_boundaries.test.sql",
+      "passed": 14,
+      "failed": 0
+    },
+    {
+      "file": "028_timetable_import.test.sql",
+      "passed": 33,
+      "failed": 0
+    },
+    {
+      "file": "029_group_exams.test.sql",
+      "passed": 54,
+      "failed": 0
+    },
+    {
+      "file": "030_answer_receipts.test.sql",
+      "passed": 15,
+      "failed": 0
+    },
+    {
+      "file": "031_setup_batch.test.sql",
+      "passed": 24,
+      "failed": 0
+    },
+    {
+      "file": "032_answer_notebooks.test.sql",
+      "passed": 14,
+      "failed": 0
+    },
+    {
+      "file": "033_shared_question_sources.test.sql",
+      "passed": 57,
+      "failed": 0
+    },
+    {
+      "file": "034_parent_answer_reviews.test.sql",
+      "passed": 35,
+      "failed": 0
+    },
+    {
+      "file": "035_prova_drafts.test.sql",
+      "passed": 38,
+      "failed": 0
+    },
+    {
+      "file": "036_learning_progress.test.sql",
+      "passed": 27,
+      "failed": 0
+    },
+    {
+      "file": "037_support_help.test.sql",
+      "passed": 70,
+      "failed": 0
+    },
+    {
+      "file": "038_operator_help_queue.test.sql",
+      "passed": 18,
+      "failed": 0
+    },
+    {
+      "file": "039_help_article_editor.test.sql",
+      "passed": 25,
+      "failed": 0
+    },
+    {
+      "file": "040_library_import.test.sql",
+      "passed": 67,
+      "failed": 0
+    },
+    {
+      "file": "041_library_editorial_review.test.sql",
+      "passed": 36,
+      "failed": 0
+    },
+    {
+      "file": "042_library_publication.test.sql",
+      "passed": 38,
+      "failed": 0
+    },
+    {
+      "file": "043_library_family_access.test.sql",
+      "passed": 36,
+      "failed": 0
+    },
+    {
+      "file": "044_repeat_candidates.test.sql",
+      "passed": 27,
+      "failed": 0
+    },
+    {
+      "file": "045_calendar_commands.test.sql",
+      "passed": 24,
+      "failed": 0
+    },
+    {
+      "file": "046_study_plan_calendar.test.sql",
+      "passed": 25,
+      "failed": 0
+    },
+    {
+      "file": "047_group_library_packages.test.sql",
+      "passed": 42,
+      "failed": 0
+    },
+    {
+      "file": "048_store_notification_recovery.test.sql",
+      "passed": 26,
+      "failed": 0
+    },
+    {
+      "file": "049_atomic_store_entitlements.test.sql",
+      "passed": 43,
+      "failed": 0
+    },
+    {
+      "file": "050_billing_operations.test.sql",
+      "passed": 22,
+      "failed": 0
+    },
+    {
+      "file": "051_override_commands.test.sql",
+      "passed": 23,
+      "failed": 0
+    },
+    {
+      "file": "052_operator_reconciliation.test.sql",
+      "passed": 31,
+      "failed": 0
+    },
+    {
+      "file": "053_document_setup.test.sql",
+      "passed": 33,
+      "failed": 0
+    },
+    {
+      "file": "054_family_blueprint.test.sql",
+      "passed": 27,
+      "failed": 0
+    },
+    {
+      "file": "055_contribution_sets.test.sql",
+      "passed": 53,
+      "failed": 0
+    },
+    {
+      "file": "056_curriculum_source_review.test.sql",
+      "passed": 37,
+      "failed": 0
+    },
+    {
+      "file": "057_catalogue_family_selection.test.sql",
+      "passed": 43,
+      "failed": 0
+    },
+    {
+      "file": "058_generation_recovery.test.sql",
+      "passed": 36,
+      "failed": 0
+    },
+    {
+      "file": "059_cohort_written_review.test.sql",
+      "passed": 58,
+      "failed": 0
+    },
+    {
+      "file": "060_cohort_result_notifications.test.sql",
+      "passed": 20,
+      "failed": 0
+    },
+    {
+      "file": "061_push_delivery_recovery.test.sql",
+      "passed": 31,
+      "failed": 0
+    },
+    {
+      "file": "062_push_operations.test.sql",
+      "passed": 28,
+      "failed": 0
+    },
+    {
+      "file": "063_repeat_calendar.test.sql",
+      "passed": 40,
+      "failed": 0
+    },
+    {
+      "file": "064_timetable_save_receipts.test.sql",
+      "passed": 33,
+      "failed": 0
+    },
+    {
+      "file": "065_school_bags.test.sql",
+      "passed": 47,
+      "failed": 0
+    },
+    {
+      "file": "066_weekly_summary_safety.test.sql",
+      "passed": 42,
+      "failed": 4
+    },
+    {
+      "file": "067_learning_plan.test.sql",
+      "passed": 58,
+      "failed": 0
+    },
+    {
+      "file": "068_task_submission_receipts.test.sql",
+      "passed": 27,
+      "failed": 0
+    },
+    {
+      "file": "069_learning_plan_import.test.sql",
+      "passed": 0,
+      "error": "ERROR:  plan_import_unavailable\nCONTEXT:  PL/pgSQL function public.apply_learning_plan_import(uuid,uuid,uuid,jsonb) line 16 at RAISE\nSQL function \"apply\" statement 1\n"
+    },
+    {
+      "file": "070_weekly_summary_reader.test.sql",
+      "passed": 34,
+      "failed": 0
+    },
+    {
+      "file": "071_exam_list_realtime.test.sql",
+      "passed": 5,
+      "failed": 0
+    },
+    {
+      "file": "072_realtime_claim_nulls.test.sql",
+      "passed": 18,
+      "failed": 0
+    },
+    {
+      "file": "073_learning_source_sets.test.sql",
+      "passed": 17,
+      "failed": 0
+    },
+    {
+      "file": "074_guided_input_catalog.test.sql",
+      "passed": 13,
+      "failed": 0
+    },
+    {
+      "file": "075_family_creation_identity.test.sql",
+      "passed": 6,
+      "failed": 0
+    },
+    {
+      "file": "076_timetable_policy_read.test.sql",
+      "passed": 2,
+      "failed": 0
+    },
+    {
+      "file": "077_prova_draft_lifecycle.test.sql",
+      "passed": 32,
+      "failed": 0
+    },
+    {
+      "file": "078_child_education_periods.test.sql",
+      "passed": 43,
+      "failed": 0
+    },
+    {
+      "file": "079_child_profile_archive.test.sql",
+      "passed": 58,
+      "failed": 0
+    },
+    {
+      "file": "080_education_calendars.test.sql",
+      "passed": 35,
+      "failed": 0
+    },
+    {
+      "file": "081_parent_announcements.test.sql",
+      "passed": 41,
+      "failed": 0
+    },
+    {
+      "file": "082_education_reports.test.sql",
+      "passed": 31,
+      "failed": 0
+    },
+    {
+      "file": "083_school_grade_lifecycle.test.sql",
+      "passed": 46,
+      "failed": 0
+    },
+    {
+      "file": "084_task_routine_lifecycle.test.sql",
+      "passed": 58,
+      "failed": 0
+    },
+    {
+      "file": "085_reward_history.test.sql",
+      "passed": 48,
+      "failed": 0
+    },
+    {
+      "file": "086_note_history.test.sql",
+      "passed": 43,
+      "failed": 0
+    },
+    {
+      "file": "087_curriculum_source_fetch.test.sql",
+      "passed": 54,
+      "failed": 0
+    },
+    {
+      "file": "088_period_transfer.test.sql",
+      "passed": 81,
+      "failed": 0
+    },
+    {
+      "file": "089_bulk_archive.test.sql",
+      "passed": 101,
+      "failed": 0
+    },
+    {
+      "file": "090_deletion_preview.test.sql",
+      "passed": 88,
+      "failed": 0
+    },
+    {
+      "file": "091_content_prereview.test.sql",
+      "passed": 84,
+      "failed": 0
+    },
+    {
+      "file": "092_ai_provider_matrix.test.sql",
+      "passed": 53,
+      "failed": 0
+    },
+    {
+      "file": "093_q02_cross_family_matrix.test.sql",
+      "passed": 47,
+      "failed": 0
+    },
+    {
+      "file": "094_store_verification_hardening.test.sql",
+      "passed": 87,
+      "failed": 0
+    },
+    {
+      "file": "095_notification_channels.test.sql",
+      "passed": 127,
+      "failed": 0
+    },
+    {
+      "file": "096_dated_plan_history.test.sql",
+      "passed": 108,
+      "failed": 0
+    },
+    {
+      "file": "097_admin_workqueue.test.sql",
+      "passed": 111,
+      "failed": 0
+    },
+    {
+      "file": "098_library_credit_safety.test.sql",
+      "passed": 155,
+      "failed": 0
+    },
+    {
+      "file": "099_shared_limits.test.sql",
+      "passed": 46,
+      "failed": 0
+    },
+    {
+      "file": "100_q02_fixes_rls_initplan.test.sql",
+      "passed": 47,
+      "failed": 0
+    },
+    {
+      "file": "101_open_answer_pending_score.test.sql",
+      "passed": 49,
+      "failed": 0
+    },
+    {
+      "file": "102_rls_grant_hygiene.test.sql",
+      "passed": 16,
+      "failed": 0
+    },
+    {
+      "file": "103_star_balance_and_child_delete.test.sql",
+      "passed": 47,
+      "failed": 0
+    },
+    {
+      "file": "104_subject_catalog_calendar_seed.test.sql",
+      "passed": 78,
+      "failed": 0
+    },
+    {
+      "file": "106_calendar_archived_events.test.sql",
+      "passed": 28,
+      "failed": 0
+    },
+    {
+      "file": "107_support_assignment.test.sql",
+      "passed": 77,
+      "failed": 0
+    },
+    {
+      "file": "108_blueprint_truth_and_archive_guard.test.sql",
+      "passed": 108,
+      "failed": 0
+    },
+    {
+      "file": "109_subject_link_and_dated_views.test.sql",
+      "passed": 149,
+      "failed": 0
+    },
+    {
+      "file": "110_prova_draft_context.test.sql",
+      "passed": 47,
+      "failed": 0
+    },
+    {
+      "file": "111_curriculum_pipeline_ops.test.sql",
+      "passed": 106,
+      "failed": 0
+    },
+    {
+      "file": "112_pairing_handoff.test.sql",
+      "passed": 38,
+      "failed": 0
+    },
+    {
+      "file": "113_operator_access.test.sql",
+      "passed": 191,
+      "failed": 0
+    },
+    {
+      "file": "114_task_return_reason_and_bulk_scopes.test.sql",
+      "passed": 81,
+      "failed": 0
+    },
+    {
+      "file": "115_ai_routing_and_grade_split.test.sql",
+      "passed": 66,
+      "failed": 0
+    },
+    {
+      "file": "116_channel_ui_support.test.sql",
+      "passed": 81,
+      "failed": 0
+    },
+    {
+      "file": "117_calendar_ops_and_synonym_admin.test.sql",
+      "passed": 137,
+      "failed": 0
+    },
+    {
+      "file": "118_prereview_ops.test.sql",
+      "passed": 83,
+      "failed": 0
+    },
+    {
+      "file": "119_c13_authz_hardening.test.sql",
+      "passed": 74,
+      "failed": 0
+    },
+    {
+      "file": "120_pairing_bruteforce_guard.test.sql",
+      "passed": 112,
+      "failed": 0
+    },
+    {
+      "file": "121_prova_shared_ai_and_subject_fit.test.sql",
+      "passed": 96,
+      "failed": 0
+    },
+    {
+      "file": "122_pairing_reject_notice.test.sql",
+      "passed": 39,
+      "failed": 0
+    },
+    {
+      "file": "123_operator_scope_admin_and_question_notes.test.sql",
+      "passed": 116,
+      "failed": 0
+    },
+    {
+      "file": "124_ai_quality_fixes.test.sql",
+      "passed": 31,
+      "failed": 0
+    },
+    {
+      "file": "125_content_accept_and_role_admin.test.sql",
+      "passed": 105,
+      "failed": 0
+    },
+    {
+      "file": "126_question_content_review_surface.test.sql",
+      "passed": 25,
+      "failed": 0
+    },
+    {
+      "file": "127_families_filter_and_audit_actors.test.sql",
+      "passed": 71,
+      "failed": 0
+    },
+    {
+      "file": "128_ai_question_edit.test.sql",
+      "passed": 70,
+      "failed": 0
+    },
+    {
+      "file": "129_curriculum_pilot_scope.test.sql",
+      "passed": 47,
+      "failed": 0
+    },
+    {
+      "file": "130_pairing_retention_jobs.test.sql",
+      "passed": 45,
+      "failed": 0
+    }
+  ],
+  "failures": [
+    "066_weekly_summary_safety.test.sql: not ok 32 - global pause prevents provider reservation",
+    "066_weekly_summary_safety.test.sql: # Failed test 32: \"global pause prevents provider reservation\"",
+    "066_weekly_summary_safety.test.sql: not ok 33 - monthly quota before second week provider",
+    "066_weekly_summary_safety.test.sql: # Failed test 33: \"monthly quota before second week provider\"",
+    "066_weekly_summary_safety.test.sql: not ok 34 - uncertain provider outcome recorded",
+    "066_weekly_summary_safety.test.sql: # Failed test 34: \"uncertain provider outcome recorded\"",
+    "066_weekly_summary_safety.test.sql: not ok 35 - uncertain request not automatically recharged",
+    "066_weekly_summary_safety.test.sql: # Failed test 35: \"uncertain request not automatically recharged\"",
+    "066_weekly_summary_safety.test.sql: # Looks like you failed 4 tests of 46",
+    "069_learning_plan_import.test.sql: ERROR:  plan_import_unavailable\nCONTEXT:  PL/pgSQL function public.apply_learning_plan_import(uuid,uuid,uuid,jsonb) line 16 at RAISE\nSQL function \"apply\" statement 1\n"
+  ],
+  "skipped_migration": "20261107000300_qt00_rpcs.sql",
+  "assertions": 5871
+}
