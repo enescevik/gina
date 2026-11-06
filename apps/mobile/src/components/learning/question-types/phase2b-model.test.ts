@@ -90,9 +90,9 @@ describe("2B reading, state and switch", () => {
     expect(answerState("region_select", {}, { type: "region_select", v: 1, selected: [] })).toBe("unanswered");
     expect(canRender("region_select", 1, { figure: { kind: "grid", rows: 1, cols: 2 }, regions: [{ id: "a", text: "1" }, { id: "b", text: "2" }] })).toBe(true);
   });
-  it("2B stays out of the reported list until its own switch is flipped", () => {
-    expect(PHASE2B_CHILD_ENABLED).toBe(false);
-    expect(CHILD_SUPPORTED_TYPES).not.toContain("clock");
+  it("2B is in the reported list after the release switch (Enes onayı, 6 Kasım 2026)", () => {
+    expect(PHASE2B_CHILD_ENABLED).toBe(true);
+    expect(CHILD_SUPPORTED_TYPES).toContain("clock");
     expect(CLIENT_SUPPORTED_WITH_PHASE2B).toEqual(expect.arrayContaining(["region_select", "clock", "true_false"]));
   });
 });

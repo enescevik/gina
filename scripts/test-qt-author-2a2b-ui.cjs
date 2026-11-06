@@ -239,23 +239,23 @@ const tok = (page, text) => page.getByTestId('qt-token-picker').getByRole('butto
   };
   browser = await chromium.launch({ channel: 'chrome', headless: true });
 
-  // 0) Release build (switches OFF): nothing new is shown, even with the types enabled server-side.
-  stage = 'switch_off';
-  const off = await exportWeb(false);
+  // 0) Release build (no QA env; switches are ON in support.ts since the 6 Nov 2026 release approval):
+  // all 14 types are offered and the stimulus editor is available.
+  stage = 'release_build';
+  const rel = await exportWeb(false);
   {
-    const page = await newPage('phone'); await signIn(page, A, off.url);
-    await page.goto(`${off.url}/parent/prova/question?subject=Matematik&grade=5`); await page.getByTestId('qt-type-picker').waitFor();
-    assert.equal(await page.getByTestId('qt-type-picker').getByRole('button').count(), 8, 'switch off: only 2 legacy + 6 1A/1B types');
-    for (const ty of ['mark_text', 'error_fix', 'multi_choice', 'two_stage', 'region_select', 'clock']) assert.equal(await page.getByText(t('prova.qt.author.type.' + ty), { exact: true }).count(), 0);
+    const page = await newPage('phone'); await signIn(page, A, rel.url);
+    await page.goto(`${rel.url}/parent/prova/question?subject=Matematik&grade=5`); await page.getByTestId('qt-type-picker').waitFor();
+    assert.equal(await page.getByTestId('qt-type-picker').getByRole('button').count(), 14, 'release build: 2 legacy + 12 structured types');
     await page.getByTestId('qt-type-picker').getByRole('button', { name: t('prova.qt.author.type.true_false'), exact: true }).click();
-    await field(page, t('prova.topic')).fill('x'); await field(page, t('prova.stem')).fill('Kapalı anahtar kontrolü');
+    await field(page, t('prova.topic')).fill('x'); await field(page, t('prova.stem')).fill('Yayın anahtarı kontrolü');
     await button(page, t('provaP02.editor.next')).click(); await page.getByTestId('qt-editor-true_false').waitFor();
-    assert.equal(await page.getByTestId('qt-stimulus-editor').count(), 0, 'switch off: no stimulus editor');
-    await shot(page, 'switch-off-type-picker');
+    assert.equal(await page.getByTestId('qt-stimulus-editor').count(), 1, 'release build: stimulus editor available');
+    await shot(page, 'release-type-picker');
     await page.context().close(); pages.pop();
   }
-  off.child.kill('SIGTERM');
-  pass('release_build_with_switches_off_shows_nothing_new');
+  rel.child.kill('SIGTERM');
+  pass('release_build_offers_all_14_types');
 
   const on = await exportWeb(true); serve = on.child; const WEB = on.url;
   // Synthetic "map" image for the image-region question (PNG rendered locally).

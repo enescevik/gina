@@ -52,9 +52,9 @@ describe("two stage editing", () => {
 });
 
 describe("client support switch and reading", () => {
-  it("2A stays out of the reported list until the switch is flipped", () => {
-    expect(PHASE2A_CHILD_ENABLED).toBe(false);
-    expect(CHILD_SUPPORTED_TYPES).not.toContain("mark_text");
+  it("2A is in the reported list after the release switch (Enes onayı, 6 Kasım 2026)", () => {
+    expect(PHASE2A_CHILD_ENABLED).toBe(true);
+    expect(CHILD_SUPPORTED_TYPES).toContain("mark_text");
     expect(CLIENT_SUPPORTED_WITH_PHASE2A).toEqual(expect.arrayContaining(["true_false", "mark_text", "error_fix", "multi_choice", "two_stage"]));
   });
   it("renders and reads 2A answers; fill state uses the shared answerState", () => {
