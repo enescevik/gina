@@ -3443,5 +3443,30 @@
     "unknownBefore": "No plan is recorded for this day. Shown are the oldest settings known as of {{date}}.",
     "periodSnapshot": "The closed period's timetable as stored on {{date}}. That day's cells were not recorded separately.",
     "noTimetable": "No timetable is recorded for this day."
+  },
+  "dayPlan": {
+    "todayBadge": "Today",
+    "selectedBadge": "Selected day",
+    "pastBadge": "Past day",
+    "summary": "{{lessons}} lessons · {{events}} events · {{tasks}} tasks",
+    "pastHelp": "Showing this day's recorded plan: the tasks, timetable and bell schedule that applied that day.",
+    "lessons": "Lessons",
+    "events": "Events",
+    "tasks": "Tasks",
+    "timetable": "Timetable",
+    "byChild": "By child",
+    "openChild": "Open the day for {{name}}",
+    "childSummary": "{{lessons}} lessons · {{tasks}} tasks · {{plans}} open study items",
+    "loadError": "The day's plan could not be loaded. Lessons and tasks shown may be incomplete.",
+    "effectiveTitle": "Starting from which day?",
+    "effectiveTodayOnly": "The change applies from today. Past days, submitted tasks and earned stars stay the same.",
+    "effectiveHelp": "Pick today or a later day. Current settings stay until then.",
+    "effectiveReview": "Applies: {{date}}",
+    "deleteScopeTitle": "What should we delete?",
+    "deleteOccurrence": "Cancel only this day",
+    "deleteSeries": "Delete the whole series",
+    "occurrenceHelp": "{{date}} is removed from the calendar; the other days of the series stay.",
+    "occurrenceFailed": "This day could not be cancelled. Try again.",
+    "titleSuggestions": "Suggestions"
   }
 }

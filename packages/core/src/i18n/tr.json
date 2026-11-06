@@ -3438,5 +3438,30 @@
     "unknownBefore": "Bu günün planı kayıtlarda yok. Gösterilen, {{date}} tarihinde bilinen en eski ayar.",
     "periodSnapshot": "Kapanan dönemin {{date}} tarihinde saklanan programı. O günkü hücreler ayrıca kaydedilmemişti.",
     "noTimetable": "Bu gün için kayıtlı ders programı yok."
+  },
+  "dayPlan": {
+    "todayBadge": "Bugün",
+    "selectedBadge": "Seçili gün",
+    "pastBadge": "Geçmiş gün",
+    "summary": "{{lessons}} ders · {{events}} etkinlik · {{tasks}} görev",
+    "pastHelp": "Bu günün kayıtlı planı gösteriliyor: o gün geçerli olan görevler, ders programı ve zil düzeni.",
+    "lessons": "Dersler",
+    "events": "Etkinlikler",
+    "tasks": "Görevler",
+    "timetable": "Ders programı",
+    "byChild": "Çocuklara göre",
+    "openChild": "{{name}} için günün ayrıntısını aç",
+    "childSummary": "{{lessons}} ders · {{tasks}} görev · {{plans}} açık çalışma",
+    "loadError": "Günün planı yüklenemedi. Gösterilen ders ve görevler eksik olabilir.",
+    "effectiveTitle": "Hangi tarihten itibaren?",
+    "effectiveTodayOnly": "Değişiklik bugünden itibaren geçerli olur. Geçmiş günler, gönderilmiş görevler ve kazanılan yıldızlar değişmez.",
+    "effectiveHelp": "Bugün veya ileri bir gün seç. O güne kadar mevcut ayarlar sürer.",
+    "effectiveReview": "Geçerlilik: {{date}}",
+    "deleteScopeTitle": "Neyi silelim?",
+    "deleteOccurrence": "Yalnız bu günü iptal et",
+    "deleteSeries": "Bütün seriyi sil",
+    "occurrenceHelp": "{{date}} günü takvimden kalkar; serinin diğer günleri kalır.",
+    "occurrenceFailed": "Bu gün iptal edilemedi. Yeniden dene.",
+    "titleSuggestions": "Öneriler"
   }
 }

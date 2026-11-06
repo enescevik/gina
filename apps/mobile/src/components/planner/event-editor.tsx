@@ -3,6 +3,7 @@ import { RepeatCalendarOrigin } from "@/components/learning/repeat-calendar-orig
 import { randomUUID } from "expo-crypto";
 import { type CalendarCommand, calendarJournal } from "@/lib/calendar-command";
 import { useSession } from "@/lib/session";
+import { supabase } from "@/lib/supabase";
 import { useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -49,7 +50,7 @@ export function EventEditor({
   profiles: PlannerChild[];
   onClose: () => void;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const cache = useQueryClient();
   const { session } = useSession();
   const journal = useMemo(
@@ -240,7 +241,43 @@ export function EventEditor({
     },
     onError: handleError,
   });
-  const busy = save.isPending || remove.isPending;
+  // Repeat scope: a weekly series can lose just the selected day (event_exceptions, like the
+  // calendar's existing cancelled-occurrence rule) or be deleted as a whole.
+  const cancelOccurrence = useMutation({
+    mutationFn: async () => {
+      if (!event?.rrule || pending || recovery.error) throw Error("event_changed");
+      const { error } = await supabase
+        .from("event_exceptions")
+        .upsert(
+          { event_id: event.id, occurrence_date: date, cancelled: true },
+          { onConflict: "event_id,occurrence_date" },
+        );
+      if (error) throw error;
+    },
+    onSuccess: async () => {
+      await cache.invalidateQueries({ queryKey: ["event_exceptions"] });
+      onClose();
+    },
+    onError: () => setError(t("dayPlan.occurrenceFailed")),
+  });
+  // Title suggestions: earlier titles of the same kind in this family (manual events only).
+  const suggestions = useMemo(() => {
+    if (event) return [];
+    const typed = title.trim().toLocaleLowerCase();
+    const known = cache.getQueryData<WeekEvent[]>(["events", familyId]) ?? [];
+    const seen = new Set<string>();
+    return known
+      .filter((e) => !e.timetable_entry_key && e.type === kind)
+      .map((e) => e.title.trim())
+      .filter((v) => {
+        const key = v.toLocaleLowerCase();
+        if (!v || seen.has(key) || key === typed || (typed && !key.includes(typed))) return false;
+        seen.add(key);
+        return true;
+      })
+      .slice(0, 6);
+  }, [cache, event, familyId, kind, title]);
+  const busy = save.isPending || remove.isPending || cancelOccurrence.isPending;
   return (
     <Modal
         {...NOTEBOOK_MODAL_PROPS}
@@ -322,6 +359,16 @@ export function EventEditor({
                   maxLength={120}
                   onChangeText={setTitle}
                 />
+                {suggestions.length ? (
+                  <View style={{ gap: 6 }}>
+                    <Text style={u.small}>{t("dayPlan.titleSuggestions")}</Text>
+                    <View style={[u.row, { flexWrap: "wrap" }]}>
+                      {suggestions.map((v) => (
+                        <Tag key={v} label={v} selected={false} onPress={() => setTitle(v)} />
+                      ))}
+                    </View>
+                  </View>
+                ) : null}
                 <View style={[u.row, { flexWrap: "wrap" }]}>
                   {eventTypeSchema.options.map((v) => (
                     <Tag
@@ -431,6 +478,28 @@ export function EventEditor({
             {event && !pending && !recovery.error
               ? (
                 <>
+                  {event.rrule ? (
+                    <View style={{ gap: 8 }}>
+                      <Text style={u.bold}>{t("dayPlan.deleteScopeTitle")}</Text>
+                      <Text style={u.small}>
+                        {t("dayPlan.occurrenceHelp", {
+                          date: new Intl.DateTimeFormat(i18n.language, {
+                            weekday: "long",
+                            day: "numeric",
+                            month: "long",
+                            timeZone: "UTC",
+                          }).format(new Date(`${date}T12:00:00Z`)),
+                        })}
+                      </Text>
+                      <SatinButton
+                        secondary
+                        title={t("dayPlan.deleteOccurrence")}
+                        busy={cancelOccurrence.isPending}
+                        disabled={busy || signature !== initial}
+                        onPress={() => cancelOccurrence.mutate()}
+                      />
+                    </View>
+                  ) : null}
                   <Text style={u.small}>
                     {confirmDelete ? t("planner.deleteHelp") : ""}
                   </Text>
@@ -439,6 +508,8 @@ export function EventEditor({
                     title={t(
                       confirmDelete
                         ? "planner.confirmDelete"
+                        : event.rrule
+                        ? "dayPlan.deleteSeries"
                         : "planner.deleteEvent",
                     )}
                     busy={remove.isPending}

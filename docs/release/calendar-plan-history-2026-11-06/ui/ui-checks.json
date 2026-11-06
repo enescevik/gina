@@ -1,0 +1,37 @@
+{
+  "environment": "disposable-local-real-auth-rest",
+  "today": "2026-11-06",
+  "results": [
+    {
+      "check": "archived_event_hidden_from_parent_rest_read",
+      "passed": true
+    },
+    {
+      "check": "past_day_shows_that_days_routine_name_and_unknown_timetable_marker",
+      "passed": true
+    },
+    {
+      "check": "future_dated_edit_keeps_today_unchanged",
+      "passed": true,
+      "detail": {
+        "live_row_title": "Kitap oku ab7c (30 dk)"
+      }
+    },
+    {
+      "check": "archived_event_hidden_in_parent_calendar",
+      "passed": true
+    },
+    {
+      "check": "scheduled_day_shows_new_routine_with_note",
+      "passed": true
+    },
+    {
+      "check": "all_children_no_repeated_child_blocks_and_open_child_detail",
+      "passed": true
+    },
+    {
+      "check": "phone_desktop_layout_and_runtime",
+      "passed": true
+    }
+  ]
+}
