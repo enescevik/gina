@@ -30,6 +30,21 @@ describe("durable timetable saves", () => {
     expect(timetableCommandSchema.parse({ ...input, p_lessons: [] }).p_lessons)
       .toEqual([]);
   });
+  it("accepts the dated receipt returned since dated plan history", () => {
+    const command = timetableCommandSchema.parse(input);
+    expect(
+      readTimetableReceipt(
+        { request: id, child_id: child, revision: 4, effective_from: "2026-11-06" },
+        command,
+      ).revision,
+    ).toBe(4);
+    expect(() =>
+      readTimetableReceipt(
+        { request: id, child_id: child, revision: 4, effective_from: "yarın" },
+        command,
+      )
+    ).toThrow();
+  });
   it("does not acknowledge a different child, request or revision", () => {
     for (
       const patch of [{ request: child }, { child_id: id }, { revision: 3 }, {

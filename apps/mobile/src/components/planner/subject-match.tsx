@@ -54,8 +54,9 @@ export function useSubjectBindings(childId: string | undefined) {
 }
 
 export function SubjectMatch(
-  { title, grade, binding, onBind }: {
+  { title, childId, grade: knownGrade, binding, onBind }: {
     title: string;
+    childId: string;
     grade: number | null | undefined;
     binding: SubjectBinding | null;
     onBind: (b: SubjectBinding | null) => void;
@@ -65,9 +66,22 @@ export function SubjectMatch(
   const name = title.trim();
   const normalized = normalizeSubjectAlias(name);
   const en = i18n.language.startsWith("en");
+  // Some callers only know id/name/avatar; the child's grade narrows the catalogue candidates.
+  const child = useQuery({
+    queryKey: ["planner_child_grade", childId],
+    enabled: knownGrade === undefined && !!childId,
+    staleTime: 300000,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("children").select("grade")
+        .eq("id", childId).maybeSingle();
+      if (error) throw error;
+      return (data?.grade ?? null) as number | null;
+    },
+  });
+  const grade = knownGrade !== undefined ? knownGrade : child.isError ? null : child.data;
   const suggestion = useQuery({
     queryKey: ["suggest_subject", normalized, grade ?? null],
-    enabled: !!normalized && !binding,
+    enabled: !!normalized && !binding && grade !== undefined,
     staleTime: 300000,
     queryFn: async (): Promise<SubjectSuggestion> => {
       const { data, error } = await rpc("suggest_subject", {
@@ -126,7 +140,7 @@ export function SubjectMatch(
               {suggestion.data.candidates.map((c) => (
                 <Tag
                   key={c.subject_id}
-                  label={c.in_grade_scope
+                  label={c.in_grade_scope || grade == null
                     ? t("u05.catalogConfirm", { label: label(c) })
                     : t("u05.catalogOutOfScope", {
                       label: t("u05.catalogConfirm", { label: label(c) }),

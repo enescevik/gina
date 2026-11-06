@@ -602,6 +602,7 @@ export function TimetableBoard<T extends TimetableCell>({
               ? (
                 <SubjectMatch
                   title={editing.title}
+                  childId={subjects.childId}
                   grade={subjects.grade}
                   binding={bindingFor(bindings.map, editing.title)}
                   onBind={(b) => bindings.bind(editing.title, b)}
@@ -791,7 +792,7 @@ export function TimetableBoard<T extends TimetableCell>({
       {mode === "week" && width < 900
         ? <Text style={u.small}>{t("weekReview.swipeWeek")}</Text>
         : null}
-      <View ref={hFrame}>
+      <View ref={hFrame} testID="tt-frame">
       <ScrollView
         ref={hScroll}
         horizontal
