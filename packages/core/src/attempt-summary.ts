@@ -165,3 +165,21 @@ export function openScoreSource(answer: {
   if (answer.ai_score !== null && answer.ai_score !== undefined) return "ai_suggestion";
   return "none";
 }
+
+/** D4-2 — süreli denemenin süre dolunca bittiğini sunucu satırından türetir.
+ * `finish_exam_attempt` istemcinin otomatik bitirmesiyle birkaç saniye sonra çalışır;
+ * cihaz saati sunucudan biraz ileride olabileceği için küçük bir pay bırakılır.
+ * Süresiz denemede, bitmemiş denemede ya da süreden önce gönderilende false. */
+export const TIME_UP_TOLERANCE_MS = 5_000;
+export function attemptEndedByTime(attempt: {
+  status?: string | null;
+  deadline_at?: string | null;
+  finished_at?: string | null;
+}): boolean {
+  if (!attempt.deadline_at || !attempt.finished_at) return false;
+  if (attempt.status === "in_progress") return false;
+  const deadline = Date.parse(attempt.deadline_at);
+  const finished = Date.parse(attempt.finished_at);
+  if (!Number.isFinite(deadline) || !Number.isFinite(finished)) return false;
+  return finished >= deadline - TIME_UP_TOLERANCE_MS;
+}

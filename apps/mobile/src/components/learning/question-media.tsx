@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "@/lib/supabase";
 import { sourceAction } from "@/lib/learning-files";
 import { useSession } from "@/lib/session";
+import { useRouteMotion } from "@/lib/use-route-motion";
 import { Button } from "@/components/ui/button";
 export interface QuestionMediaItem {
   source_id: string;
@@ -90,6 +91,7 @@ function SourceImage(
   const [failed, setFailed] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [zoom, setZoom] = useState(1);
+  const { animation } = useRouteMotion();
   const { width, height } = useWindowDimensions();
   const ratio = m.width > 0 && m.height > 0 ? m.width / m.height : 1;
   const fitWidth = Math.min(Math.max(160, width - 48), Math.max(160, height - 240) * ratio);
@@ -162,7 +164,7 @@ function SourceImage(
           {m.alt}
         </Text>
       )}
-      <Modal {...NOTEBOOK_MODAL_PROPS} visible={expanded} animationType="fade" onRequestClose={() => setExpanded(false)}>
+      <Modal {...NOTEBOOK_MODAL_PROPS} visible={expanded} animationType={animation} onRequestClose={() => setExpanded(false)}>
         <SafeAreaView style={{ flex: 1, backgroundColor: p.cream }}>
           <View accessibilityViewIsModal style={{ flex: 1 }}>
             <View style={{ padding: 16, gap: 8 }}>

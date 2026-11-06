@@ -38,6 +38,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { Pressable } from "@/components/ui/pressable";
 import { supabase } from "@/lib/supabase";
 import { useSession, decodeClaims } from "@/lib/session";
+import { useRouteMotion } from "@/lib/use-route-motion";
 import { createReviewJournal } from "@/lib/review-journal";
 import { invokeProvaAi, provaErrorMessage } from "@/lib/prova-ai";
 import { NotebookEditor } from "./notebook-editor";
@@ -116,6 +117,7 @@ export function ParentReviewWorkspace(
   },
 ) {
   const { t } = useTranslation();
+  const { animation } = useRouteMotion();
   const cache = useQueryClient();
   const { session, claims } = useSession();
   const userId = session?.user.id, familyId = claims?.family_id;
@@ -859,7 +861,7 @@ export function ParentReviewWorkspace(
           {...NOTEBOOK_MODAL_PROPS}
           visible={picker}
           transparent
-          animationType="fade"
+          animationType={animation}
           onRequestClose={() => setPicker(false)}
         >
           <View style={s.shade}>
@@ -896,7 +898,7 @@ export function ParentReviewWorkspace(
           {...NOTEBOOK_MODAL_PROPS}
           visible={!!leave}
           transparent
-          animationType="fade"
+          animationType={animation}
           onRequestClose={() => setLeave(null)}
         >
           <View style={s.shade}>
@@ -929,7 +931,7 @@ export function ParentReviewWorkspace(
           {...NOTEBOOK_MODAL_PROPS}
           visible={aiOpen}
           transparent
-          animationType="fade"
+          animationType={animation}
           onRequestClose={() => {
             if (!ai.isPending) setAiOpen(false);
           }}
@@ -974,7 +976,7 @@ export function ParentReviewWorkspace(
             </ScrollView>
           </View>
         </Modal>
-        <Modal {...NOTEBOOK_MODAL_PROPS} visible={questionPreview} transparent animationType="fade" onRequestClose={() => setQuestionPreview(false)}>
+        <Modal {...NOTEBOOK_MODAL_PROPS} visible={questionPreview} transparent animationType={animation} onRequestClose={() => setQuestionPreview(false)}>
           <View style={s.shade}><View style={s.dialog}><View style={s.row}><Text style={[s.heading, { flex: 1 }]}>{t("notebook.question")}</Text><IconButton label={t("notebook.close")} onPress={() => setQuestionPreview(false)}><X size={22} color={p.ink}/></IconButton></View><ScrollView contentContainerStyle={{ paddingBottom: 16 }}>{source}</ScrollView></View></View>
         </Modal>
       </KeyboardAvoidingView>

@@ -1,5 +1,10 @@
 import { expect, it } from "vitest";
-import { type BookletQuestion, buildBookletHtml } from "./prova-booklet";
+import {
+  type BookletQuestion,
+  bookletFontFaceCss,
+  buildBookletHtml,
+  withBookletFonts,
+} from "./prova-booklet";
 const q: BookletQuestion = {
   id: "q1",
   topic: "Çevre",
@@ -63,4 +68,17 @@ it("escapes shared text and never accepts remote or active image URLs", () => {
   expect(() =>
     render([{ ...q, images: [{ dataUri: "https://private/file", alt: "x" }] }])
   ).toThrow("invalid_booklet_image");
+});
+
+it("D4-4: gömülü yazı tipleri @font-face olarak head'e eklenir, bozuk base64 atlanır", () => {
+  const html = "<!doctype html><html><head><style>x{}</style></head><body>i</body></html>";
+  const out = withBookletFonts(html, [
+    { family: "Nunito", weight: 400, base64: "AAEAAA==" },
+    { family: "Baloo 2", weight: 700, base64: "x\"); } body { color: red" },
+  ]);
+  expect(out).toContain('@font-face { font-family: "Nunito"; font-style: normal; font-weight: 400; src: url(data:font/ttf;base64,AAEAAA==) format("truetype"); }');
+  expect(out).not.toContain("Baloo 2");
+  expect(out.indexOf("@font-face")).toBeLessThan(out.indexOf("</head>"));
+  expect(withBookletFonts(html, [])).toBe(html);
+  expect(bookletFontFaceCss([])).toBe("");
 });

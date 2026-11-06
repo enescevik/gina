@@ -4471,5 +4471,10 @@
   "prova.ai.errors.subject_link_changed": "Bu ders başka bir oturumda farklı bağlandı. Liste yenilendi.",
   "prova.ai.errors.subject_unknown": "Bu katalog dersi artık kullanılmıyor.",
   "d1.sharedUnlinked": "Bu AI sorusu ortak kaynağı (metin/tablo) göstermiyor; çocuğa gönderilemez. Taslaktan çıkar ve yeniden üret.",
-  "prova.ai.errors.prova_shared_source_unlinked": "Ortak kaynağı (metin/tablo) çocuğa göstermeyen bir AI sorusu var. O soruyu taslaktan çıkar ve yeniden üret."
+  "prova.ai.errors.prova_shared_source_unlinked": "Ortak kaynağı (metin/tablo) çocuğa göstermeyen bir AI sorusu var. O soruyu taslaktan çıkar ve yeniden üret.",
+  "d8.timeUpTitle": "Süre doldu",
+  "d8.timeUpChild": "Süre bitti, deneme kendiliğinden kapandı. Kaydettiğin cevapların teslim edildi.",
+  "d8.timeUpParent": "Süre dolunca deneme kendiliğinden bitti. Süre içinde kaydedilen cevaplar değerlendirildi.",
+  "d8.repeatDate": "Buluşma günü",
+  "d8.repeatTime": "Başlama saati"
 }

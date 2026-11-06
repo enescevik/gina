@@ -9,6 +9,7 @@ import { NotebookPage } from "@/components/learning/notebook-page";
 import { p, SatinButton } from "@/components/planner/ui";
 import {
   type AnswerJournal,
+  attemptEndedByTime,
   attemptSummary,
   AnswerJournalConflict,
   notebookHasAnswer,
@@ -93,6 +94,7 @@ export default function TakeExamScreen() {
   const [allowExit, setAllowExit] = useState(false);
   const [unsavedAtDeadline, setUnsavedAtDeadline] = useState(false);
   const autoFinishAttempt = useRef<string | null>(null);
+  const [timeUpFinished, setTimeUpFinished] = useState<string | null>(null);
   const [now, setNow] = useState(() => Date.now());
   // Boş soru varken "Bitir"e basılınca satır içi onay gösterilir (web'de Alert yok).
   const [confirmFinish, setConfirmFinish] = useState(false);
@@ -371,6 +373,16 @@ export default function TakeExamScreen() {
   const unanswered = list.filter((item) => !isAnswered(answers[item.id]));
   const result = finish.data ??
     (attempt.data?.status !== "in_progress" ? attempt.data : null);
+  // D4-2: süre dolunca otomatik bitirme bu ekranda tetiklendiyse ya da sunucu satırı
+  // bitişin süre sonunda olduğunu söylüyorsa sonuçta sakin bir "Süre doldu" notu gösterilir.
+  const endedByTime = !!result && (
+    timeUpFinished === result.id ||
+    attemptEndedByTime({
+      status: result.status,
+      deadline_at: result.deadline_at ?? attempt.data?.deadline_at,
+      finished_at: result.finished_at,
+    })
+  );
   const differs = (a: Answer | undefined, b: Answer | undefined) =>
     !sameAnswer(a, b);
   const dirty = !!draft && differs(draft, saved);
@@ -389,6 +401,7 @@ export default function TakeExamScreen() {
       !attempt.data || autoFinishAttempt.current === attempt.data.id
     ) return;
     autoFinishAttempt.current = attempt.data.id;
+    setTimeUpFinished(attempt.data.id);
     finish.mutate();
   }, [timeUp, saving, finish, result, attempt.data, localReady, localError]);
 
@@ -550,6 +563,16 @@ export default function TakeExamScreen() {
       >
         <View className="items-center gap-3 rounded-child bg-white p-8">
           <Collectible slug="display-first-task" size={96} />
+          {endedByTime && (
+            <View
+              accessibilityRole="summary"
+              testID="prova-time-up-result"
+              className="w-full gap-1 rounded-child bg-cream px-4 py-3"
+            >
+              <Text className="font-body-bold text-center text-lg text-ink">⏱ {t("d8.timeUpTitle")}</Text>
+              <Text className="font-body text-center text-base text-ink">{t("d8.timeUpChild")}</Text>
+            </View>
+          )}
           {summary.mcTotal > 0 && <Text className="font-display text-2xl text-ink">
             {t("prova.resultMc", {
               correct: summary.mcCorrect,

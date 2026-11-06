@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  attemptEndedByTime,
   attemptSummary,
   openAnswerPresent,
   openAnswerState,
@@ -117,5 +118,24 @@ describe("get_attempt_summary payload", () => {
   it("rejects malformed payloads instead of guessing", () => {
     expect(parseAttemptSummary({ ...base, provisional: "yes" })).toBeNull();
     expect(parseAttemptSummary(null)).toBeNull();
+  });
+});
+
+describe("attemptEndedByTime (D4-2)", () => {
+  const deadline = "2026-11-06T10:10:00.000Z";
+  it("süre dolduktan sonra biten süreli denemeyi tanır", () => {
+    expect(attemptEndedByTime({ status: "submitted", deadline_at: deadline, finished_at: "2026-11-06T10:10:02.000Z" })).toBe(true);
+  });
+  it("cihaz saati biraz ilerideyken (pay içinde) de süre doldu sayar", () => {
+    expect(attemptEndedByTime({ status: "submitted", deadline_at: deadline, finished_at: "2026-11-06T10:09:57.000Z" })).toBe(true);
+  });
+  it("süre bitmeden gönderilen denemede false", () => {
+    expect(attemptEndedByTime({ status: "graded", deadline_at: deadline, finished_at: "2026-11-06T10:04:00.000Z" })).toBe(false);
+  });
+  it("süresiz, bitmemiş ya da bozuk satırda false", () => {
+    expect(attemptEndedByTime({ status: "submitted", deadline_at: null, finished_at: deadline })).toBe(false);
+    expect(attemptEndedByTime({ status: "in_progress", deadline_at: deadline, finished_at: deadline })).toBe(false);
+    expect(attemptEndedByTime({ status: "submitted", deadline_at: deadline, finished_at: null })).toBe(false);
+    expect(attemptEndedByTime({ status: "submitted", deadline_at: "x", finished_at: deadline })).toBe(false);
   });
 });

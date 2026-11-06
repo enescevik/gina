@@ -1,4 +1,4 @@
-import { attemptSummary, parseAttemptSummary, readNotebook, type AttemptSummaryRpc } from "@gina/core";
+import { attemptEndedByTime, attemptSummary, parseAttemptSummary, readNotebook, type AttemptSummaryRpc } from "@gina/core";
 import { Toggle } from "@/components/ui/toggle";
 import { type QuestionMediaItem } from "@/components/learning/question-media";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -52,7 +52,7 @@ export default function AttemptReviewScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("exam_attempts")
-        .select("id, status, mc_total, mc_correct, open_total, open_graded, score_pct, ai_feedback, finished_at, children(name), exams(title, subject, grade, question_ids)")
+        .select("id, status, mc_total, mc_correct, open_total, open_graded, score_pct, ai_feedback, finished_at, deadline_at, children(name), exams(title, subject, grade, question_ids)")
         .eq("id", attemptId)
         .single();
       if (error) throw error;
@@ -175,6 +175,13 @@ export default function AttemptReviewScreen() {
           <Text className="font-body text-sm text-gray-600">
             {a.children?.name} · {a.exams?.subject} {a.exams?.grade}. {t("prova.gradeWord")}
           </Text>
+          {/* D4-2: süre dolunca biten denemede veli bunu sakin bir notla görür (kusur değil, bilgi). */}
+          {attemptEndedByTime(a) ? (
+            <View testID="prova-time-up-result" accessibilityRole="summary" className="gap-1 rounded-xl bg-[#F6F3FB] px-3 py-2">
+              <Text className="font-body-bold text-base text-ink">⏱ {t("d8.timeUpTitle")}</Text>
+              <Text className="font-body text-sm text-ink">{t("d8.timeUpParent")}</Text>
+            </View>
+          ) : null}
           {/* Önce inceleme durumu, sonra puan: eksik puan "ara sonuç"tur, sıfır değil. */}
           {view.pending > 0 ? <Text accessibilityRole="alert" className="font-body-bold text-base text-ink">{t("prova.ai.reviewWaiting", { count: view.pending })}</Text> : null}
           {view.unanswered > 0 ? <Text className="font-body-bold text-base text-ink">{t("prova.ai.unansweredCount", { count: view.unanswered })}</Text> : null}
