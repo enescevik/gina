@@ -15,8 +15,9 @@ import base64, hashlib, hmac, json, os, re, secrets, signal, subprocess, sys, te
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-if sys.argv[1:] != ['--run-local']:
-    raise SystemExit('Explicit --run-local required')
+if sys.argv[1:] not in (['--run-local'], ['--run-local', '--with-ui']):
+    raise SystemExit('Explicit --run-local required (optional --with-ui: backoffice Playwright tour, needs apps/backoffice/out built against http://gina-c05ui.invalid)')
+WITH_UI = '--with-ui' in sys.argv
 DB = 'gina_c05_' + secrets.token_hex(6) + '_audit'
 EDGE_IMAGE = 'public.ecr.aws/supabase/edge-runtime:v1.77.8'
 OUT = ROOT / 'docs/release/c05-2026-11-06'
@@ -327,6 +328,41 @@ try:
     report['summary'] = {'source': {'url': rev['resolved_url'], 'sha256': first['sha256'], 'bytes': rev['bytes'], 'chain': rev['redirect_chain']},
                          'candidates_imported': imported['created'], 'published_candidate': {'key': pick['key'], 'question_count': detail['candidate']['question_count'], 'blocks': expected},
                          'generated_questions': len(rows), 'per_block': got, 'fit_summary_after_one_review': fit2['summary']}
+
+    if WITH_UI:
+        # --- 8. Backoffice tour on the same state: failed extraction with reason, E01 AI badge (not a decision),
+        # a new-year target added from the UI, and a REAL Edge check started from the UI.
+        if not (ROOT / 'apps/backoffice/out/library.html').exists():
+            raise RuntimeError('backoffice_build_missing')
+        diff_rev = sql(DB, "select id from gina.curriculum_source_revisions where sha256=repeat('d',64)")
+        status, failed = rest(admin_token, 'admin_record_curriculum_extraction', {'p_request_id': str(uuid.uuid4()), 'p_revision_id': diff_rev,
+                              'p_result': {'outcome': 'failed', 'extractor': 'extract-meb-scenarios@c05', 'scenarios': 0, 'issues': 0, 'error': 'worksheet_path', 'bundle': None}})
+        check('ui_fixture_failed_extraction_recorded', status == 200 and failed['extraction_status'] == 'failed', failed)
+        sql(DB, "update public.app_settings set value='true' where key='content_prereview.enabled'")
+        status, queued = rest(admin_token, 'enqueue_content_prereview', {'p_scope': 'curriculum_candidates'})
+        draft_candidate = sql(DB, "select id from gina.curriculum_candidates where status='draft' order by external_key limit 1")
+        verdict = json.dumps({'model': 'synthetic-local-model', 'prompt_version': 'prereview-v1', 'confidence': 0.92, 'recommendation': 'approve', 'decision_reason': 'all_checks_passed',
+                              'findings': [], 'summary': 'Yerel sentetik sonuç; gerçek AI çağrısı yapılmadı.'}, ensure_ascii=False)
+        lease = str(uuid.uuid4())
+        sql(DB, f"""begin; set local role service_role; select set_config('request.jwt.claims','{{"role":"service_role"}}',true);
+          select public.content_prereview_claim('curriculum_candidate','{draft_candidate}','{lease}','prereview-v1');
+          select public.content_prereview_finish('curriculum_candidate','{draft_candidate}','{lease}','ai_approved',$v${verdict}$v$::jsonb); commit;
+          update public.app_settings set value='false' where key='content_prereview.enabled';""")
+        check('ui_fixture_e01_verdict_separate', sql(DB, f"select status from gina.curriculum_candidates where id='{draft_candidate}'") == 'draft', queued)
+        fixture = Path(tempfile.mkstemp(prefix='gina-c05-ui-', suffix='.json')[1])
+        os.chmod(fixture, 0o600)
+        fixture.write_text(json.dumps({'auth': auth_port, 'rest': rest_port, 'edge': edge_port, 'anon': anon, 'email': admin_email, 'password': admin_pw, 'db': DB}))
+        try:
+            tour = subprocess.run(['node', 'scripts/test-c05-backoffice-ui.cjs'], cwd=ROOT, env={**os.environ, 'GINA_C05_UI_FIXTURE': str(fixture)}, capture_output=True, text=True, timeout=600)
+        finally:
+            fixture.unlink()
+        sys.stderr.write(tour.stderr[-3000:])
+        try:
+            ui = json.loads(tour.stdout.strip().splitlines()[-1])
+        except Exception:
+            ui = {'raw': tour.stdout[-1500:]}
+        report['ui_checks'] = ui
+        check('backoffice_ui_tour', tour.returncode == 0 and ui and all(ui.values()), ui)
 except Exception as e:
     report['error'] = str(e) if isinstance(e, RuntimeError) else 'setup_failed:' + type(e).__name__ + ':' + str(e)[:400]
 finally:

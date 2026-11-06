@@ -2429,6 +2429,8 @@
   "catalogFlow.freshness.withdrawn": "This source was withdrawn; no new scenario selection is offered.",
   "catalogFlow.freshness.unpublished": "No official distribution is published for this year/term. Another year's file is not used.",
   "catalogFlow.freshness.freeStudy": "You can continue with free study or a manually entered distribution; no official fit is claimed.",
+  "catalogFlow.freshness.stale": "The last successful check was {{days}} days ago; freshness may be out of date. Scenarios rely on the last approved copy.",
+  "catalogFlow.freshness.notFetched": "An official index is registered for {{year}} · term {{term}}, but the file has not been reviewed yet. Another term's file is not used.",
   "catalogFlow.manual": "Enter the school distribution manually",
   "catalogFlow.changed": "This source changed or was withdrawn. Return to the scenario step and select a current option.",
   "catalogFlow.errors.curriculum_unavailable": "This source is no longer available for new practice exams. Choose a current scenario.",

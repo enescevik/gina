@@ -1,6 +1,6 @@
 {
   "environment": "disposable-db+auth+postgrest+supabase-edge-runtime(v1.77.8)+deno-run(prova-generate, deterministic provider)",
-  "database": "gina_c05_e76d0bc6221a_audit",
+  "database": "gina_c05_f0d9f79ea846_audit",
   "checks": [
     {
       "name": "edge_runtime_dns_ssrf_probe",
@@ -133,7 +133,7 @@
       "detail": {
         "action": "created",
         "target": {
-          "id": "8c8ed201-892c-4d41-9fd9-dc9fe987019e",
+          "id": "9b64a763-e741-4ce1-8b37-cd4fbd96915f",
           "note": "QA: henüz yayımlanmamış 2. dönem sayfası (erişilemez kaynak testi)",
           "term": 2,
           "status": "active",
@@ -141,7 +141,7 @@
           "exam_family": "oyss",
           "school_year": "2026-2027"
         },
-        "request": "27e38884-73a0-469f-a20e-a487b8fcd7e8"
+        "request": "6a29746b-202a-42cc-8665-480bc8bc1259"
       }
     },
     {
@@ -150,9 +150,9 @@
       "detail": {
         "error": "index:http_status:404",
         "outcome": "unverified",
-        "request": "4f66d1d3-fc0c-4811-ba15-59edee633c97",
+        "request": "a09cea52-d78b-4315-a2f0-3c294ba66881",
         "freshness": "unverified",
-        "source_id": "14ce4d12-7124-4253-b383-4f83d47a2bfc",
+        "source_id": "5579911c-c963-435a-8a29-47403aa454d1",
         "alternative": "free_study",
         "last_approved": null,
         "officially_verified": false
@@ -171,7 +171,7 @@
         "stale_days": 0,
         "alternative": "free_study",
         "substituted": false,
-        "last_checked_at": "2026-11-06T09:42:57.282224+00:00",
+        "last_checked_at": "2026-11-06T09:53:26.798881+00:00",
         "index_updated_on": null,
         "target_registered": true,
         "officially_verified": false,
@@ -185,7 +185,7 @@
       "detail": {
         "report": [
           {
-            "revision_id": "036afeb1-fea4-46d9-b4da-529a58687c38",
+            "revision_id": "d7b58dc2-d386-499d-b174-05728ccb0d50",
             "label": "Türkçe",
             "sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
             "outcome": "done",
@@ -217,10 +217,10 @@
       "pass": true,
       "detail": {
         "outcome": "unchanged",
-        "request": "32f9f18c-5259-4e3d-87f7-06b22c36456b",
+        "request": "b27dc8f8-c20a-4ef7-b9f7-507ed58275c5",
         "extraction": {
-          "at": "2026-11-06T09:42:58.143778+00:00",
-          "by": "47b0c79b-3ad4-4e86-87ef-a7dc50ce1a6f",
+          "at": "2026-11-06T09:53:27.458351+00:00",
+          "by": "0a3f8d8f-02bc-44ff-8537-e329474f3c73",
           "issues": 0,
           "created": 46,
           "outcome": "done",
@@ -229,7 +229,7 @@
           "scenarios": 46,
           "bundle_sha256": "8876f28983475f4db2dbd698bc28e53fe2d68d291b3f0ec37d54afce0a69e7b2"
         },
-        "revision_id": "036afeb1-fea4-46d9-b4da-529a58687c38",
+        "revision_id": "d7b58dc2-d386-499d-b174-05728ccb0d50",
         "extraction_status": "done"
       }
     },
@@ -237,10 +237,10 @@
       "name": "candidate_reviewed",
       "pass": true,
       "detail": {
-        "id": "b8529dae-5e47-4105-87b4-52d0d826e506",
+        "id": "2c419231-53e2-437a-a5aa-59185f24146b",
         "action": "review",
         "status": "reviewed",
-        "request": "1cc4d0be-bd29-47d4-9a9f-4fcab0b5beab",
+        "request": "3383b375-6dae-4929-87cd-cbc9e37e0421",
         "revision": 1
       }
     },
@@ -260,9 +260,9 @@
       "detail": {
         "action": "approve",
         "status": "approved",
-        "request": "4b219c6e-5879-4476-be11-9e064261cefd",
+        "request": "d062826d-6a62-4ff4-9cce-b30803670cd3",
         "freshness": "verified",
-        "revision_id": "036afeb1-fea4-46d9-b4da-529a58687c38",
+        "revision_id": "d7b58dc2-d386-499d-b174-05728ccb0d50",
         "withdrawn_candidates": 0
       }
     },
@@ -270,10 +270,10 @@
       "name": "candidate_published_separately",
       "pass": true,
       "detail": {
-        "id": "b8529dae-5e47-4105-87b4-52d0d826e506",
+        "id": "2c419231-53e2-437a-a5aa-59185f24146b",
         "action": "publish",
         "status": "published",
-        "request": "541dd418-3edd-4b90-b3ab-a95dd7979a7f",
+        "request": "45ded489-3532-4ba6-ae66-3ae68ce3f9cc",
         "revision": 2,
         "replaced_previous": 0
       }
@@ -291,25 +291,25 @@
         "stale_days": 0,
         "alternative": null,
         "substituted": false,
-        "last_checked_at": "2026-11-06T09:42:56.858497+00:00",
+        "last_checked_at": "2026-11-06T09:53:25.827649+00:00",
         "index_updated_on": "2026-09-10",
         "target_registered": true,
         "officially_verified": false,
         "last_approved_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
-        "last_approved_retrieved_at": "2026-11-06T09:42:56.413146+00:00"
+        "last_approved_retrieved_at": "2026-11-06T09:53:25.160068+00:00"
       }
     },
     {
       "name": "family_sees_only_published",
       "pass": true,
       "detail": [
-        "b8529dae-5e47-4105-87b4-52d0d826e506"
+        "2c419231-53e2-437a-a5aa-59185f24146b"
       ]
     },
     {
       "name": "family_selects_frozen_copy",
       "pass": true,
-      "detail": "e29d4392-2286-43e6-a02e-b53588d0e253"
+      "detail": "ceb9dab3-f671-421e-8db8-91c6deb36edc"
     },
     {
       "name": "wrong_count_rejected_no_rows",
@@ -331,7 +331,7 @@
           "model": "claude-haiku-5-5",
           "questions": [
             {
-              "id": "7cf47fc3-359e-4404-a4ce-ccf687264261",
+              "id": "efccf84b-6b15-4e60-bb84-3934fc33b464",
               "kind": "open_ended",
               "stem": "Sentetik soru B1.1: T.O.5.6: T.O.5.6. Metnin yüzey anlamını belirleyebilme",
               "topic": "Blok 1",
@@ -346,7 +346,7 @@
               "expected_answer": "Beklenen cevap B1.1"
             },
             {
-              "id": "96bcca80-3275-4356-bb1a-087b48d4753c",
+              "id": "cf216ea8-bfd0-482c-a452-e677b3dcbd82",
               "kind": "open_ended",
               "stem": "Sentetik soru B1.2: T.O.5.6: T.O.5.6. Metnin yüzey anlamını belirleyebilme",
               "topic": "Blok 1",
@@ -361,7 +361,7 @@
               "expected_answer": "Beklenen cevap B1.2"
             },
             {
-              "id": "b1a1ea08-2ebc-44e6-8be0-62a97428a084",
+              "id": "1f445673-407b-4085-94dd-93bf624af20d",
               "kind": "open_ended",
               "stem": "Sentetik soru B2.1: T.O.5.7: T.O.5.7. Görselle iletilen anlamı belirleyebilme",
               "topic": "Blok 2",
@@ -376,7 +376,7 @@
               "expected_answer": "Beklenen cevap B2.1"
             },
             {
-              "id": "4e9d9289-8c55-492c-8094-e82b4a525bfd",
+              "id": "14b68468-8d55-46e0-932d-bbd6aa07de5b",
               "kind": "open_ended",
               "stem": "Sentetik soru B3.1: T.O.5.20: T.O.5.20. Metinden hareketle söz varlığını geliştirmeye yönelik çözümleme yapabilme",
               "topic": "Blok 3",
@@ -391,7 +391,7 @@
               "expected_answer": "Beklenen cevap B3.1"
             },
             {
-              "id": "6ea56f6e-67fd-4e0d-9e12-2c91898ccdfd",
+              "id": "cd1dc2a8-8fb6-493e-8b9d-e332317137d6",
               "kind": "open_ended",
               "stem": "Sentetik soru B4.1: T.Y.5.13: T.Y.5.13. Yazısını zenginleştirecek biçimde söz varlığını kullanabilme",
               "topic": "Blok 4",
@@ -406,7 +406,7 @@
               "expected_answer": "Beklenen cevap B4.1"
             },
             {
-              "id": "9b8caef0-493d-4c44-b931-07f1b7f4d243",
+              "id": "e8093597-f346-4a68-afa1-57e2dc2a5f21",
               "kind": "open_ended",
               "stem": "Sentetik soru B5.1: T.Y.5.16: T.Y.5.16. Yazım ve noktalama işaretleriyle ilgili kuralları uygulayabilme",
               "topic": "Blok 5",
@@ -483,10 +483,10 @@
       "detail": {
         "got": {
           "B3": 1,
+          "B2": 1,
           "B4": 1,
           "B1": 2,
-          "B5": 1,
-          "B2": 1
+          "B5": 1
         },
         "expected": {
           "B1": 2,
@@ -511,6 +511,19 @@
             "count_cell": "C21",
             "outcome_cells": [
               "B21"
+            ]
+          }
+        },
+        {
+          "block": "B2",
+          "outcomes": [
+            "T.O.5.7"
+          ],
+          "cells": {
+            "sheet": "5. Sınıf",
+            "count_cell": "C13",
+            "outcome_cells": [
+              "B13"
             ]
           }
         },
@@ -541,19 +554,6 @@
           }
         },
         {
-          "block": "B1",
-          "outcomes": [
-            "T.O.5.6"
-          ],
-          "cells": {
-            "sheet": "5. Sınıf",
-            "count_cell": "C12",
-            "outcome_cells": [
-              "B12"
-            ]
-          }
-        },
-        {
           "block": "B5",
           "outcomes": [
             "T.Y.5.16"
@@ -567,15 +567,15 @@
           }
         },
         {
-          "block": "B2",
+          "block": "B1",
           "outcomes": [
-            "T.O.5.7"
+            "T.O.5.6"
           ],
           "cells": {
             "sheet": "5. Sınıf",
-            "count_cell": "C13",
+            "count_cell": "C12",
             "outcome_cells": [
-              "B13"
+              "B12"
             ]
           }
         }
@@ -628,12 +628,12 @@
         "stale_days": 0,
         "alternative": null,
         "substituted": false,
-        "last_checked_at": "2026-11-06T09:43:00.320583+00:00",
+        "last_checked_at": "2026-11-06T09:53:28.922233+00:00",
         "index_updated_on": "2026-09-10",
         "target_registered": true,
         "officially_verified": false,
         "last_approved_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
-        "last_approved_retrieved_at": "2026-11-06T09:42:56.413146+00:00"
+        "last_approved_retrieved_at": "2026-11-06T09:53:25.160068+00:00"
       }
     },
     {
@@ -643,6 +643,47 @@
         "stale": true,
         "stale_days": 9,
         "status": "diff_review_required"
+      }
+    },
+    {
+      "name": "ui_fixture_failed_extraction_recorded",
+      "pass": true,
+      "detail": {
+        "outcome": "failed",
+        "request": "7b842504-ddea-460a-9c88-41744b227f25",
+        "extraction": {
+          "at": "2026-11-06T09:53:29.221772+00:00",
+          "by": "0a3f8d8f-02bc-44ff-8537-e329474f3c73",
+          "error": "worksheet_path",
+          "outcome": "failed",
+          "extractor": "extract-meb-scenarios@c05"
+        },
+        "revision_id": "a07a2ee7-4462-4141-9d29-cf9ed7ba9bb7",
+        "extraction_status": "failed"
+      }
+    },
+    {
+      "name": "ui_fixture_e01_verdict_separate",
+      "pass": true,
+      "detail": {
+        "scope": "curriculum_candidates",
+        "queued": 45,
+        "requeued": 0,
+        "unchanged": 0
+      }
+    },
+    {
+      "name": "backoffice_ui_tour",
+      "pass": true,
+      "detail": {
+        "admin_login_non_family_member": true,
+        "targets_listed_with_status": true,
+        "target_non_index_host_rejected_with_reason": true,
+        "new_year_target_added_without_download": true,
+        "extraction_queue_and_operator_step_visible": true,
+        "candidate_list_shows_source_status_and_separate_ai_prereview": true,
+        "real_edge_check_from_ui_same_hash_no_new_revision": true,
+        "no_page_exceptions_or_horizontal_overflow": true
       }
     }
   ],
@@ -810,10 +851,10 @@
     "generated_questions": 6,
     "per_block": {
       "B3": 1,
+      "B2": 1,
       "B4": 1,
       "B1": 2,
-      "B5": 1,
-      "B2": 1
+      "B5": 1
     },
     "fit_summary_after_one_review": {
       "fit": 1,
@@ -824,5 +865,15 @@
       "pending_human_review": 5
     }
   },
-  "passed": 35
+  "ui_checks": {
+    "admin_login_non_family_member": true,
+    "targets_listed_with_status": true,
+    "target_non_index_host_rejected_with_reason": true,
+    "new_year_target_added_without_download": true,
+    "extraction_queue_and_operator_step_visible": true,
+    "candidate_list_shows_source_status_and_separate_ai_prereview": true,
+    "real_edge_check_from_ui_same_hash_no_new_revision": true,
+    "no_page_exceptions_or_horizontal_overflow": true
+  },
+  "passed": 38
 }
