@@ -114,6 +114,16 @@ describe("C04 prova context", () => {
       }),
     ).toEqual({ criteria: [{ text: "x", points: 5 }], alternative_answers: ["y"] });
   });
+  it("D13: reads rubric.assesses when valid; legacy/invalid stays absent; editor never emits it", () => {
+    const base = { criteria: [{ text: "x", points: 100 }], alternative_answers: [] };
+    expect(readQuestionRubric({ rubric: { ...base, assesses: "process" } }).assesses).toBe("process");
+    expect(readQuestionRubric({ rubric: { ...base, assesses: "result" } }).assesses).toBe("result");
+    expect("assesses" in readQuestionRubric({ rubric: base })).toBe(false);
+    expect("assesses" in readQuestionRubric({ rubric: { ...base, assesses: "" } })).toBe(false);
+    expect("assesses" in readQuestionRubric({ rubric: { ...base, assesses: "both" } })).toBe(false);
+    // gina.valid_question_rubric accepts only {criteria, alternative_answers}.
+    expect(Object.keys(parseRubricInput("0,5", "Sonuç | 100")!).sort()).toEqual(["alternative_answers", "criteria"]);
+  });
   it("counts the remaining AI questions for one request", () => {
     expect(provaRemainingCount(10, 3)).toBe(7);
     expect(provaRemainingCount(3, 5)).toBe(0);

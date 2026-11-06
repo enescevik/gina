@@ -422,7 +422,7 @@ Deno.test("D9: payload without groups keeps the D6 shape; masking covers shared 
   // D6 (v4) prova-grade/index.ts içindeki eski satır içi yükün alan sırası.
   check(JSON.stringify(Object.keys(payload)) === '["maddeler"]');
   check(JSON.stringify(Object.keys(payload.maddeler[0])) === JSON.stringify([
-    "ref", "konu", "tur", "soru", "beklenen_cevap", "cozum_yolu", "alternatif_dogru_cevaplar", "rubrik", "secenekler",
+    "ref", "konu", "tur", "soru", "beklenen_cevap", "cozum_yolu", "alternatif_dogru_cevaplar", "rubrik", "degerlendirme_amaci", "secenekler",
     "dogru_secim", "secilen", "dogru_mu", "puanlama_gerekli", "veli_puani", "ogrenci_cevabi",
   ]), JSON.stringify(Object.keys(payload.maddeler[0])));
   check(!("alternatif_dogru_cevaplar" in payload.maddeler[1]) && payload.maddeler[1].puanlama_gerekli === false);
@@ -473,5 +473,56 @@ Deno.test("D9: same group attempt builds the same paid-job hash; a repeat after 
     check(requests === 2, `provider requests ${requests}`);
   } finally {
     globalThis.fetch = original;
+  }
+});
+
+// ---------------------------------------------------------------------------------------------------------------
+// D13: amaç duyarlı puanlama (prova-grade/v7-purpose-aware). Canlı vaka: "Pastanın yarısı yenmiş, yani 0,5." rubrik
+// [2/4 yazar 40, 1/2 sadeleştirir ya da yarısı der 60]. Yalnız sonuç → tam puan; süreç → ölçütlere göre kısmi.
+import { REVIEW_SYSTEM } from "./review-report.ts";
+const pastaRubric = (assesses?: string) => ({
+  generator: "ai",
+  rubric: {
+    criteria: [{ text: "Yenen kısmı 2/4 olarak yazar", points: 40 }, { text: "Kesri 1/2 olarak sadeleştirir ya da yarısı der", points: 60 }],
+    alternative_answers: ["0,5", "yarısı"],
+    ...(assesses === undefined ? {} : { assesses }),
+  },
+});
+Deno.test("D13: grading payload carries the question purpose (result / process / infer for legacy)", () => {
+  const qs: GradeQuestionRow[] = [
+    open("q1", "4 dilimlik pastanın 2 dilimi yendi. Pastanın ne kadarı yendi?", pastaRubric("result")),
+    open("q2", "4 dilimlik pastanın 2 dilimi yendi. Yenen kısmı kesirle yaz, sadeleştir ve işlemini göster.", pastaRubric("process")),
+    open("q3", "Eski soru", pastaRubric()),
+    open("q4", "Bozuk alan", pastaRubric("everything")),
+    open("q5", "Veli sorusu, rubriksiz", { generator: "parent" }),
+    { ...open("q6", "Hangisi kesirdir?"), kind: "multiple_choice", choices: [{ key: "A", text: "1/2" }], correct_key: "A" },
+  ];
+  const ans = ["q1", "q2", "q3", "q4", "q5"].map((id) => ({ question_id: id, answer_text: "Pastanın yarısı yenmiş, yani 0,5." }))
+    .concat([{ question_id: "q6", answer_text: "" }]);
+  const { payload } = buildGradePayload(qs.map((q) => q.id), qs, ans, []);
+  // deno-lint-ignore no-explicit-any
+  const m = payload.maddeler as any[];
+  check(JSON.stringify(m.map((x) => x.degerlendirme_amaci ?? null)) ===
+    JSON.stringify(["sonuc", "surec", "sorudan_cikar", "sorudan_cikar", "sorudan_cikar", null]), JSON.stringify(m.map((x) => x.degerlendirme_amaci)));
+  check(m.slice(0, 5).every((x) => x.puanlama_gerekli === true));
+  // Süreç maddesinde de alternatifler ve rubrik aynen gider (sonuç ölçütü için doğru sayılır).
+  check(JSON.stringify(m[1].alternatif_dogru_cevaplar) === '["0,5","yarısı"]' && m[1].rubrik.length === 2);
+});
+Deno.test("D13: grade and review prompts state both purpose branches and the stem-inference default", () => {
+  for (const [name, prompt] of [["grade", GRADE_SYSTEM], ["review", REVIEW_SYSTEM]] as const) {
+    for (
+      const rule of [
+        "degerlendirme_amaci",
+        '"sonuc": soru yalnız sonucu ölçer',
+        "ara adımları ya da rubrikteki ara gösterimi yazmamış olsa bile tam doğru say (90–100)",
+        '"surec": soru işlem adımlarını, gerekçeyi ya da belirli bir gösterimi ölçer',
+        "doğru son cevap yalnız gerçekten karşıladığı ölçütlerin puanını alır",
+        "Alternatif cevaplar sonuç ölçütü için doğru sayılır",
+        '"sorudan_cikar": amaç belirtilmemiştir; sorunun metninden karar ver',
+      ]
+    ) check(prompt.includes(rule), `${name}: ${rule}`);
+    // v6'nın koşulsuz "adımsız da tam puan" cümlesi kalktı (artık yalnız "sonuc" dalında).
+    check(!prompt.includes("veriyorsa, ara adımları ya da rubrikteki ara gösterimi yazmamış olsa bile tam doğru say (90–100). rubrik verilmişse"), name);
+    check(!prompt.includes("${"), `${name}: template interpolated`);
   }
 });

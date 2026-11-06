@@ -161,9 +161,14 @@ export function confirmProvaPeriod(
 export function provaRemainingCount(target: number, current: number): number {
   return Math.max(0, Math.min(30, target - current));
 }
+/** D13: what an open-ended rubric measures — only the final result, or the process (steps/justification/
+ * representation). Optional; absent on legacy and parent rubrics (the grader infers it from the stem). */
+export const rubricAssessesSchema = z.enum(["result", "process"]);
+export type RubricAssesses = z.infer<typeof rubricAssessesSchema>;
 export interface QuestionRubric {
   criteria: { text: string; points: number }[];
   alternative_answers: string[];
+  assesses?: RubricAssesses;
 }
 /** Parent-only view of provenance.rubric (AI or parent question); malformed → empty. */
 export function readQuestionRubric(provenance: unknown): QuestionRubric {
@@ -172,7 +177,8 @@ export function readQuestionRubric(provenance: unknown): QuestionRubric {
     : null;
   const empty: QuestionRubric = { criteria: [], alternative_answers: [] };
   if (!r || typeof r !== "object") return empty;
-  const v = r as { criteria?: unknown; alternative_answers?: unknown };
+  const v = r as { criteria?: unknown; alternative_answers?: unknown; assesses?: unknown };
+  const assesses = rubricAssessesSchema.safeParse(v.assesses);
   const criteria = Array.isArray(v.criteria)
     ? v.criteria.flatMap((c: { text?: unknown; points?: unknown } | null) => {
       const text = typeof c?.text === "string" ? c.text.trim() : "";
@@ -188,11 +194,14 @@ export function readQuestionRubric(provenance: unknown): QuestionRubric {
         typeof a === "string" && !!a.trim()
       ).map((a) => a.trim()).slice(0, 10)
       : [],
+    ...(assesses.success ? { assesses: assesses.data } : {}),
   };
 }
 /**
  * Editor text → rubric. Alternatives: one per line. Criteria: "text | points" per line.
  * Returns null for an invalid line or a points total over 100 (server rejects it too).
+ * D13: never emits `assesses` — gina.valid_question_rubric accepts only {criteria, alternative_answers}; parent
+ * rubrics are graded with `degerlendirme_amaci: "sorudan_cikar"` (purpose inferred from the stem).
  */
 export function parseRubricInput(
   alternatives: string,

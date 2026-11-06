@@ -427,3 +427,40 @@ Deno.test("D9/B6: a named question is saved (not rejected) with a needs_review t
   assertEquals(mcReview?.flags[0].fields, ["choice_A"]);
   assert(mcReview!.flags[0].suggestion.startsWith("Replace"));
 });
+
+// ---------------------------------------------------------------------------------------------------------------
+// D13: rubric.assesses (result | process) — üretim şeması, istem ve geriye uyumluluk.
+import { RUBRIC_ASSESSES_RULE, RUBRIC_JSON_SCHEMA } from "./generation-result.ts";
+Deno.test("D13: generation schema requires assesses with result/process/blank; prompt rule names both", () => {
+  assertEquals(RUBRIC_JSON_SCHEMA.required, ["criteria", "alternative_answers", "assesses"]);
+  assertEquals(Object.keys(RUBRIC_JSON_SCHEMA.properties), RUBRIC_JSON_SCHEMA.required, "strict grammar: required = properties");
+  assertEquals(RUBRIC_JSON_SCHEMA.properties.assesses.enum, ["", "result", "process"]);
+  assert(RUBRIC_ASSESSES_RULE.includes('"process"') && RUBRIC_ASSESSES_RULE.includes('"result"') && RUBRIC_ASSESSES_RULE.includes("rubric.assesses"));
+});
+Deno.test("D13: validator accepts assesses result/process/blank and legacy rubrics without it; rejects unknown values", () => {
+  for (const assesses of ["result", "process", "", null, undefined]) {
+    const r = good();
+    r.output.questions[0] = q({ rubric: { ...rubric, ...(assesses === undefined ? {} : { assesses }) } });
+    check(r);
+  }
+  check(good(), scenarioContext);
+  for (const assesses of ["both", "Result", 1, true]) {
+    const r = good();
+    r.output.questions[0] = q({ rubric: { ...rubric, assesses } });
+    rejects(r, scenarioContext, `assesses ${assesses}`);
+  }
+});
+Deno.test("D13: stored provenance keeps a real assesses value and drops the blank placeholder", async () => {
+  const r = good();
+  r.output.questions[0] = q({ rubric: { ...rubric, assesses: "process" } });
+  r.output.questions[1] = q({ rubric: { ...rubric, assesses: "" }, outcome_ids: ["MAT.5.3.2"] });
+  const f = fixture({ context: scenarioContext, provider_result: r, lease: "lease" });
+  const response = await recoverGeneration(f.db, parent, "id", {});
+  assert(response);
+  assertEquals(response.status, 200);
+  const rows = f.calls[1].args.p_rows as { provenance: Record<string, unknown> }[];
+  assertEquals(rows[0].provenance.rubric, { ...rubric, assesses: "process" });
+  assertEquals(rows[1].provenance.rubric, rubric);
+  assertEquals(answerKeyExtras(rows[0].provenance).degerlendirme_amaci, "surec");
+  assertEquals(answerKeyExtras(rows[1].provenance).degerlendirme_amaci, "sorudan_cikar");
+});

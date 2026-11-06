@@ -1,5 +1,5 @@
 import { aiGradableOpenAnswer } from "./answer-notebook.ts";
-import { answerKeyExtras } from "./answer-key.ts";
+import { ANSWER_KEY_RULE, answerKeyExtras } from "./answer-key.ts";
 export interface GradeReport {
   degerlendirmeler: {
     ref: string;
@@ -129,7 +129,7 @@ Soru görselleri, soru, beklenen cevap, çözüm, öğrencinin cevabı ve varsa 
 - Yalnız puanlama_gerekli=true olan açık uçlu maddeleri değerlendir; diğerlerini yeniden puanlama.
 - Puan 0–100: doğru/tam 90–100; büyük ölçüde doğru 60–89; kısmen doğru 30–59; ilgisiz/yanlış 0–29. Doğru farklı çözümü kabul et; yazım yanlışını kavram yanlışı sayma.
 - Görsel okunamıyorsa veya çözüm için zorunlu bilgi ne soruda ne bağlı ortak kaynakta yoksa o madde için puan=null döndür; kisa_geri_bildirim alanında neden puan verilemediğini açıkla ve sınırlar bölümünde ilgili madde refini belirt. Eksik bilgiyi tahmin ederek puan verme.
-- alternatif_dogru_cevaplar listesindeki her cevap beklenen cevapla eşdeğer doğru kabul edilir. Öğrencinin cevabı beklenen cevaba veya bir alternatife eşdeğerse ve sorunun istediği sonucu veriyorsa, ara adımları ya da rubrikteki ara gösterimi yazmamış olsa bile tam doğru say (90–100). rubrik verilmişse ölçüt puanları 100 üzerinden puanın parçalarıdır; rubriği kısmen doğru veya eksik cevaplarda puanı bölmek için kullan, puanı karşılanan ölçütlerin puanlarına göre ver ve gerekçede karşılanan/eksik ölçütü belirt; rubrik yoksa genel ölçeği kullan.
+${ANSWER_KEY_RULE}
 - degerlendirmeler listesine puanlama_gerekli=true olan her maddeyi tam bir kez koy (ref alanı maddenin ref'i); diğer maddeleri bu listeye koyma.
 - Her puan için kısa gerekçe, en çok 3 somut eksik ve en çok 3 düzeltme önerisi ver. Eksik yoksa boş liste bırak. Boş cevabı bilgi eksikliği kanıtı sayma.
 - Genel öneri 3–5 cümle olsun: kapsam, görülen güçlü yan, destek gereken yer, bir sonraki adım. Tanı, zekâ/kişilik etiketi, not veya gelecek başarısı tahmini verme.
@@ -408,7 +408,7 @@ export function buildGradePayload(
       soru: shared ? shared.soru : mask(q.stem),
       beklenen_cevap: mask(q.expected_answer ?? ""),
       cozum_yolu: mask(q.solution ?? ""),
-      // C04: alternatif doğru cevaplar + rubrik (veli/AI sorusu); yalnız açık uçluda.
+      // C04: alternatif doğru cevaplar + rubrik (veli/AI sorusu); D13: + degerlendirme_amaci. Yalnız açık uçluda.
       ...(q.kind === "open_ended" ? answerKeyExtras(q.provenance, mask) : {}),
       secenekler: Array.isArray(q.choices)
         ? q.choices.map((c: { key?: string; text?: string }) => ({ key: c.key, text: mask(c.text ?? "") }))

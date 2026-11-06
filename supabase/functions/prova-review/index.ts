@@ -178,7 +178,7 @@ export function createReviewHandler(
             : question.data.stem,
           beklenen: question.data.expected_answer,
           cozum: question.data.solution,
-          // C04: alternatif doğru cevaplar + rubrik; eski sorularda boş listeler.
+          // C04: alternatif doğru cevaplar + rubrik; eski sorularda boş listeler. D13: + degerlendirme_amaci.
           ...answerKeyExtras(question.data.provenance),
           ogrenci_metni: answer.data.answer_text,
         }),
@@ -205,8 +205,8 @@ export function createReviewHandler(
         "grade",
         `review:${attempt.id}:${body.question_id}:${body.answer_hash}`,
         key,
-        // D9: review-v2 — ortak kaynak ayrı alanda.
-        { ...config, promptVersion: `${config.promptVersion}:review-v2` },
+        // D9: review-v2 — ortak kaynak ayrı alanda. D13: review-v3 — amaç duyarlı cevap anahtarı kuralı.
+        { ...config, promptVersion: `${config.promptVersion}:review-v3-purpose` },
         REVIEW_SYSTEM,
         user,
         REVIEW_SCHEMA,
