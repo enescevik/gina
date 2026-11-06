@@ -3504,5 +3504,6 @@
   "provaP02.booklet.student": "Create student copy",
   "provaP02.booklet.key": "Create answer key separately",
   "provaP02.booklet.studentShare": "Share student copy",
-  "provaP02.booklet.keyShare": "Share answer key"
+  "provaP02.booklet.keyShare": "Share answer key",
+  "provaP02.catalog.studyConfirm": "I understand this distribution is for study and is not my school's choice."
 }

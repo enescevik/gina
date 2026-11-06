@@ -519,7 +519,11 @@ export default function BlueprintScreen() {
                   </Text>
                   <Text style={u.copy}>{t("blueprintFlow.manualNotice")}</Text>
                   <Toggle
-                    label={t("blueprintFlow.confirm")}
+                    label={t(
+                      seed && (personalized || seed.school !== "known")
+                        ? "provaP02.catalog.studyConfirm"
+                        : "blueprintFlow.confirm",
+                    )}
                     value={confirmed}
                     onChange={setConfirmed}
                   />

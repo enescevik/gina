@@ -3499,5 +3499,6 @@
   "provaP02.booklet.student": "Öğrenci nüshasını oluştur",
   "provaP02.booklet.key": "Cevap anahtarını ayrı oluştur",
   "provaP02.booklet.studentShare": "Öğrenci nüshasını paylaş",
-  "provaP02.booklet.keyShare": "Cevap anahtarını paylaş"
+  "provaP02.booklet.keyShare": "Cevap anahtarını paylaş",
+  "provaP02.catalog.studyConfirm": "Bu dağılımın okulun seçimi olmadığını, çalışma amaçlı olduğunu anlıyorum."
 }

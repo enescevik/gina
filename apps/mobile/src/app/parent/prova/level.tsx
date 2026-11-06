@@ -26,7 +26,7 @@ function friendlyError(error: unknown, t: (k: string) => string): unknown {
 }
 
 /**
- * Seviye tespiti: çocuk + ders/sınıf (isteğe bağlı senaryo) → sunucu her konudan karışık zorlukta
+ * Başlangıç çalışması (eski adıyla seviye tespiti; standart tanı değil): çocuk + ders/sınıf (isteğe bağlı senaryo) → sunucu her konudan karışık zorlukta
  * (kolay→zor) dengeli bir set seçer (pick_level_questions) → önizleme → create_level_test ile atanır.
  */
 export default function LevelTestScreen() {
