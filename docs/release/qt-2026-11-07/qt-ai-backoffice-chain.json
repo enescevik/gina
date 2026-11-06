@@ -1,0 +1,56 @@
+{
+  "environment": "disposable-local-auth-postgrest-no-edge-no-ai",
+  "database": "gina_qtai_73aad31f4fbe_audit",
+  "chain": {
+    "reserve_ok": "true",
+    "questions": 6,
+    "types": [
+      "true_false",
+      "fill_blank",
+      "matching",
+      "numeric",
+      "ordering",
+      "classification"
+    ],
+    "job_status": "done",
+    "stored_keys": 6,
+    "payload_has_no_key_fields": true,
+    "student_projection_has_no_key": true,
+    "solution_not_in_payload": true,
+    "provenance_prompt_version": [
+      "prova-generate/v9-structured-types"
+    ],
+    "usage_rows": 1,
+    "sql_rejects_bypassed_bad_key": {
+      "exit": 3,
+      "error": "ERROR:  question_structure_invalid\nDETAIL:  key_value_invalid"
+    },
+    "rows_after_rejected_job": 6
+  },
+  "checks": {
+    "admin_login": true,
+    "list_shows_type_labels_and_summary_desktop": true,
+    "type_filter_structured_desktop": true,
+    "type_filter_legacy_desktop": true,
+    "preview_Eşleştirme_desktop": true,
+    "preview_Sıralama_desktop": true,
+    "preview_Doğru / Yanlış_desktop": true,
+    "list_shows_type_labels_and_summary_tablet": true,
+    "type_filter_structured_tablet": true,
+    "type_filter_legacy_tablet": true,
+    "preview_Eşleştirme_tablet": true,
+    "preview_Sıralama_tablet": true,
+    "preview_Doğru / Yanlış_tablet": true,
+    "structured_meta_save_keeps_content_hash_valid": true,
+    "keys_read_via_rpc_only": true,
+    "no_page_errors": true
+  },
+  "cleanup": {
+    "rest_removed": true,
+    "auth_removed": true,
+    "disposable_database_removed": true
+  },
+  "migrations_applied": 64,
+  "last_migration": "20261107000400_qt00_report_states.sql",
+  "global_questions": 7
+}
