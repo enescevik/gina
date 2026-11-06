@@ -1,0 +1,149 @@
+{
+  "environment": "disposable-local-gotrue-postgrest (own clone of gina_completion_audit)",
+  "database_pattern": "gina_qtc2b_<hex>_audit",
+  "phase2b": "only 2B interaction_types enabled in the disposable DB; web build with EXPO_PUBLIC_QT_PHASE2B=1; image regions without a loaded image (no Storage/Edge in this stack)",
+  "child_session": "device role (devices.auth_user_id → custom_access_token_hook)",
+  "viewports": {
+    "phone": {
+      "width": 390,
+      "height": 844
+    },
+    "narrow": {
+      "width": 360,
+      "height": 740
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024
+    },
+    "desktop": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "passed": true,
+  "results": [
+    {
+      "check": "2b_refused_while_disabled_then_projection_without_keys",
+      "passed": true
+    },
+    {
+      "check": "child_build_reports_2b_only",
+      "passed": true,
+      "reported": [
+        "classification",
+        "clock",
+        "fill_blank",
+        "matching",
+        "multiple_choice",
+        "numeric",
+        "open_ended",
+        "ordering",
+        "region_select",
+        "true_false"
+      ]
+    },
+    {
+      "check": "grid_colouring_toggle_with_bar_chart_alt_and_values",
+      "passed": true
+    },
+    {
+      "check": "sectors_toggle_limit_landscape",
+      "passed": true
+    },
+    {
+      "check": "image_regions_labelled_list_works_without_loaded_image",
+      "passed": true,
+      "note": "no Storage/Edge in stack; overlay on a loaded image not exercised"
+    },
+    {
+      "check": "clock_read_steppers_on_step_no_text_input",
+      "passed": true
+    },
+    {
+      "check": "clock_set_hands_with_buttons_on_15_minute_step",
+      "passed": true
+    },
+    {
+      "check": "table_stimulus_above_1a_question",
+      "passed": true
+    },
+    {
+      "check": "reload_keeps_2b_answers_finish_scores",
+      "passed": true,
+      "outcomes": {
+        "grid": "scored|100",
+        "sect": "scored|100",
+        "img": "scored|100",
+        "read": "scored|100",
+        "set": "scored|100",
+        "tf": "scored|100"
+      }
+    },
+    {
+      "check": "parent_reviews_2b_rows_count_summary_and_overrides",
+      "passed": true
+    },
+    {
+      "check": "no_runtime_errors_overflow_raw_ids_or_keys",
+      "passed": true,
+      "screenshots": 46
+    }
+  ],
+  "screenshots": [
+    "2b-grid-chart-phone-390x844.png",
+    "2b-grid-chart-narrow-360x740.png",
+    "2b-grid-chart-tablet-768x1024.png",
+    "2b-grid-chart-desktop-1280x800.png",
+    "2b-sectors-phone-390x844.png",
+    "2b-sectors-narrow-360x740.png",
+    "2b-sectors-tablet-768x1024.png",
+    "2b-sectors-desktop-1280x800.png",
+    "2b-sectors-landscape-844x390.png",
+    "2b-image-regions-no-image-phone-390x844.png",
+    "2b-image-regions-no-image-narrow-360x740.png",
+    "2b-image-regions-no-image-tablet-768x1024.png",
+    "2b-image-regions-no-image-desktop-1280x800.png",
+    "2b-clock-read-phone-390x844.png",
+    "2b-clock-read-narrow-360x740.png",
+    "2b-clock-read-tablet-768x1024.png",
+    "2b-clock-read-desktop-1280x800.png",
+    "2b-clock-set-phone-390x844.png",
+    "2b-clock-set-narrow-360x740.png",
+    "2b-clock-set-tablet-768x1024.png",
+    "2b-clock-set-desktop-1280x800.png",
+    "2b-clock-set-landscape-844x390.png",
+    "2b-table-tf-phone-390x844.png",
+    "2b-table-tf-narrow-360x740.png",
+    "2b-table-tf-tablet-768x1024.png",
+    "2b-table-tf-desktop-1280x800.png",
+    "2b-child-result-phone-390x844.png",
+    "2b-child-result-narrow-360x740.png",
+    "2b-child-result-tablet-768x1024.png",
+    "2b-child-result-desktop-1280x800.png",
+    "2b-parent-attempt-phone-390x844.png",
+    "2b-parent-attempt-narrow-360x740.png",
+    "2b-parent-attempt-tablet-768x1024.png",
+    "2b-parent-attempt-desktop-1280x800.png",
+    "2b-parent-review-grid-phone-390x844.png",
+    "2b-parent-review-grid-narrow-360x740.png",
+    "2b-parent-review-grid-tablet-768x1024.png",
+    "2b-parent-review-grid-desktop-1280x800.png",
+    "2b-parent-review-sectors-phone-390x844.png",
+    "2b-parent-review-sectors-narrow-360x740.png",
+    "2b-parent-review-sectors-tablet-768x1024.png",
+    "2b-parent-review-sectors-desktop-1280x800.png",
+    "2b-parent-review-clock-phone-390x844.png",
+    "2b-parent-review-clock-narrow-360x740.png",
+    "2b-parent-review-clock-tablet-768x1024.png",
+    "2b-parent-review-clock-desktop-1280x800.png"
+  ],
+  "cleanup": {
+    "db_rest": "removed",
+    "db_auth": "removed",
+    "database": "dropped",
+    "containers_left": "none",
+    "database_left": "0"
+  },
+  "note": "Web build in headless Chrome. Not physical-device acceptance (Pencil/finger, VoiceOver/TalkBack, rotation on hardware remain open)."
+}
