@@ -366,6 +366,8 @@ const tok = (page, text) => page.getByTestId('qt-token-picker').getByRole('butto
   const clock3 = await toPreviewAndSave(phone, 'clock');
   assert.deepEqual(clock3.key, { time: '09:15', accept_12h: true });
   assert.equal(sql(`select grade from public.question_bank where id='${clock3.id}';`), '3');
+  const young = await rpc(token, 'save_question_with_sources', { p_request_id: randomUUID(), p_images: [], p_question: { grade: 3, subject: 'Matematik', topic: 'x', difficulty: 'orta', stem: 'Saati kur.', interaction_type: 'clock', schema_version: 1, payload: { mode: 'set', display: 'analog', step_minutes: 5 }, answer_key: { time: '09:15', accept_12h: false } } });
+  assert.equal(young.data.message, 'question_structure_invalid'); assert.ok(String(young.data.details).includes('clock_12h_required'), 'server code ' + young.data.details);
 
   // Stimulus (bar chart with alt) on a 1A question.
   await openQuestion(phone, WEB, 'true_false', 'Grafiğe göre değerlendir.');
