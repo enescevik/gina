@@ -15,6 +15,8 @@ import { supabase } from "@/lib/supabase";
 type ShareScope = "grades" | "prova" | "tasks_summary";
 const SCOPES: ShareScope[] = ["grades", "prova", "tasks_summary"];
 const EXPIRY_DAYS = [7, 30, 90, 180] as const;
+type ShareFilter = "all" | "active" | "ended";
+const FILTERS: ShareFilter[] = ["all", "active", "ended"];
 
 /** Paylaşım bağlantısının kökü: EXPO_PUBLIC_WEB_URL, yoksa webde bulunulan origin. */
 function shareBaseUrl(): string | null {
@@ -47,6 +49,9 @@ export default function ParentShareScreen() {
   const [createdLink, setCreatedLink] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [actionError, setActionError] = useState<unknown>(null);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<ShareFilter>("all");
+  const [revokedLabel, setRevokedLabel] = useState<string | null>(null);
   const baseUrl = shareBaseUrl();
 
   const children = useQuery({
@@ -99,11 +104,12 @@ export default function ParentShareScreen() {
   });
 
   const revokeShare = useMutation({
-    mutationFn: async (id: string) => {
+    mutationFn: async ({ id }: { id: string; label: string }) => {
       const { error } = await supabase.rpc("revoke_child_share", { p_share_id: id });
       if (error) throw error;
     },
-    onSuccess: () => void queryClient.invalidateQueries({ queryKey: ["child_shares", selectedChild] }),
+    onMutate: () => setRevokedLabel(null),
+    onSuccess: (_data, { label: revoked }) => { setRevokedLabel(revoked); void queryClient.invalidateQueries({ queryKey: ["child_shares", selectedChild] }); },
   });
 
   const toggleScope = (scope: ShareScope) =>
@@ -133,10 +139,22 @@ export default function ParentShareScreen() {
   const dateFormat = new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "short", year: "numeric" });
   // Süre kontrolü listenin çekildiği ana göre (render saf kalsın).
   const now = shares.dataUpdatedAt;
+  const child = children.data?.find((c) => c.id === selectedChild);
+  // Önizleme: sunucu bitişi oluşturma anına göre hesaplar; burada bugünden gün ekleyerek yaklaşık tarih gösterilir.
+  const [previewBase] = useState(() => Date.now());
+  const previewExpiry = dateFormat.format(new Date(previewBase + days * 86_400_000));
+  const needle = search.trim().toLocaleLowerCase(i18n.language);
+  const shareRows = (shares.data ?? []).map((share) => {
+    const expired = new Date(share.expires_at).getTime() <= now;
+    return { share, expired, active: !share.revoked_at && !expired };
+  });
+  const visibleShares = shareRows.filter(({ share, active }) =>
+    (filter === "all" || (filter === "active" ? active : !active)) &&
+    (!needle || share.label.toLocaleLowerCase(i18n.language).includes(needle)));
 
   return (
     <Screen title={t("share.title")} subtitle={t("unified.shareHelp")} loading={children.isLoading || (!!selectedChild && shares.isLoading)} error={children.error ?? shares.error} onRetry={() => { void children.refetch(); if (selectedChild) void shares.refetch(); }}>
-      <ChildPicker profiles={children.data ?? []} selected={selectedChild} onSelect={id => { if (!createShare.isPending) { setChildId(id); setCreatedLink(null); setActionError(null); } }} />
+      <ChildPicker profiles={children.data ?? []} selected={selectedChild} onSelect={id => { if (!createShare.isPending) { setChildId(id); setCreatedLink(null); setActionError(null); setRevokedLabel(null); } }} />
       {!baseUrl ? <Text style={parentStyles.copy}>{t("share.noWebUrl")}</Text> : null}
       {createdLink ? (
         <View className="gap-3 rounded-parent border border-teal bg-teal-light p-4">
@@ -159,10 +177,30 @@ export default function ParentShareScreen() {
       ) : null}
 
       {shares.data?.length === 0 ? <Text className="font-body text-gray-500">{t("share.none")}</Text> : null}
-      {shares.data?.map((share) => {
-        const expired = new Date(share.expires_at).getTime() <= now;
+      {(shares.data?.length ?? 0) > 0 ? (
+        <View className="gap-2">
+          <Text accessibilityRole="header" className="text-lg font-body-bold text-ink">{t("share.history")}</Text>
+          <Field label={t("share.searchLabel")} value={search} onChangeText={setSearch} placeholder={t("share.searchPlaceholder")} maxLength={80} />
+          <View className="flex-row flex-wrap gap-2">
+            {FILTERS.map((option) => (
+              <Pressable
+                key={option}
+                accessibilityRole="button"
+                accessibilityState={{ selected: filter === option }} aria-pressed={filter === option}
+                onPress={() => setFilter(option)}
+                style={{ minHeight: 48, justifyContent: "center" }}
+                className={`rounded-full px-3 py-2 ${filter === option ? "bg-teal" : "bg-white"}`}
+              >
+                <Text className={filter === option ? "font-body-bold text-white" : "font-body text-ink"}>{t(`share.filter.${option}`)}</Text>
+              </Pressable>
+            ))}
+          </View>
+          <Text accessibilityLiveRegion="polite" className="font-body text-xs text-gray-500">{t("share.resultCount", { count: visibleShares.length, total: shareRows.length })}</Text>
+          {visibleShares.length === 0 ? <Text className="font-body text-gray-500">{t("share.noMatch")}</Text> : null}
+        </View>
+      ) : null}
+      {visibleShares.map(({ share, expired, active }) => {
         const status = share.revoked_at ? t("share.status.revoked") : expired ? t("share.status.expired") : t("share.status.active");
-        const active = !share.revoked_at && !expired;
         return (
           <View key={share.id} style={[parentStyles.card, { opacity: active ? 1 : .7 }]}>
             <View className="flex-row items-center gap-2">
@@ -175,11 +213,12 @@ export default function ParentShareScreen() {
               {share.last_viewed_at ? ` · ${t("share.lastViewed", { date: dateFormat.format(new Date(share.last_viewed_at)) })}` : ""}
             </Text>
             {active ? (
-              <ConfirmAction title={t("share.revoke")} busy={revokeShare.isPending} onConfirm={() => revokeShare.mutate(share.id)} />
+              <ConfirmAction title={t("share.revoke")} busy={revokeShare.isPending} onConfirm={() => revokeShare.mutate({ id: share.id, label: share.label })} />
             ) : null}
           </View>
         );
       })}
+      {revokedLabel ? <Text accessibilityLiveRegion="polite" className="font-body text-sm text-teal-dark">{t("share.revokedDone", { label: revokedLabel })}</Text> : null}
       {revokeShare.error ? <Text className="font-body text-sm text-danger">{errorMessage(t, revokeShare.error)}</Text> : null}
 
       {selectedChild ? (
@@ -215,6 +254,23 @@ export default function ParentShareScreen() {
                 <Text className={days === option ? "font-body-bold text-white" : "font-body text-ink"}>{t("share.days", { count: option })}</Text>
               </Pressable>
             ))}
+          </View>
+          <View testID="share-preview" accessibilityLabel={t("share.preview.title")} className="gap-2 rounded-parent border border-mist bg-white p-4">
+            <Text accessibilityRole="header" className="text-base font-body-bold text-ink">{t("share.preview.title")}</Text>
+            <Text className="font-body text-sm text-ink">
+              {t("share.preview.recipient", { label: label.trim() || t("share.preview.noLabel") })}
+            </Text>
+            <Text className="font-body text-sm text-ink">
+              {t("share.preview.child", { name: (child?.name ?? "").trim().split(/\s+/)[0] ?? "" })}
+              {child?.grade != null ? ` · ${t("share.preview.grade", { grade: child.grade })}` : ""}
+            </Text>
+            {scopes.length === 0 ? <Text className="font-body text-sm text-danger">{t("share.error.invalid_scopes")}</Text> : null}
+            {SCOPES.filter((scope) => scopes.includes(scope)).map((scope) => (
+              <Text key={scope} className="font-body text-sm text-ink">• {t(`share.preview.scope.${scope}`)}</Text>
+            ))}
+            <Text className="font-body text-sm text-ink">{t("share.preview.until", { date: previewExpiry, count: days })}</Text>
+            <Text className="font-body text-xs text-gray-500">{t("share.preview.notShared")}</Text>
+            <Text className="font-body text-xs text-gray-500">{t("share.preview.revocable")}</Text>
           </View>
           {createShare.error ? <Text className="font-body text-sm text-danger">{errorMessage(t, createShare.error)}</Text> : null}
           <Button

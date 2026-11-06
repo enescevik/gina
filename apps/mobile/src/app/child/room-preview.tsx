@@ -65,7 +65,7 @@ export default function RoomPreviewScreen() {
       <Text style={childStyles.copy}>{t("childV5.roomThemesNote")}</Text>
     </View>}
     <ErrorText error={prefs.error ?? save.error} />
-    {tab !== "room" ? <Button title={t("common.save")} loading={save.isPending} disabled={!childId || !prefs.isSuccess || !dirty} onPress={() => save.mutate()} /> : null}
-    {saved ? <Text style={childStyles.copy} accessibilityLiveRegion="polite">{t("release.roomSaved")}</Text> : null}
+    {tab !== "room" ? <Button title={t("childV5.savePref")} loading={save.isPending} disabled={!childId || !prefs.isSuccess || !dirty} onPress={() => save.mutate()} /> : null}
+    {saved ? <Text style={childStyles.copy} accessibilityLiveRegion="polite">{t("childV5.prefSaved")}</Text> : null}
   </ChildScreen>;
 }

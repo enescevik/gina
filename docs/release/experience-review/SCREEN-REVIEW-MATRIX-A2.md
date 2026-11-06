@@ -68,11 +68,13 @@ Rol: eşlenmiş çocuk cihazı (device JWT). Ölçüler: aksi yazılmadıkça ta
 - **Senaryo:** "Görevler" → "Bugünkü görevlerim" listesi; "Yaptım" → "Onay bekliyor"; "Bu göreve odaklan" → "Odak süresi seç" + tek görev (`a2/child-task-sheet-tablet.png`, `…-phone.png`, `…-after-done-phone.png`, `a2/child-task-focus-tablet.png`).
 - PS: "Hazır olduğunda başlayabilirsin." baskısız. PD: sayaç isteğe bağlı, görev tamamlama sayaca bağlı değil (kural korunuyor). UX: kapatma 48 dp, tek birincil eylem. MİM: `complete_task` idempotent (fixture testinde doğrulanmış). ER: modal `accessibilityViewIsModal`, durum `liveRegion`.
 - Öncelik: — · Sınır: odak sayacının ara verme/çıkış davranışı (U06 "mevcut sayacı dene") süre seçilmeden ileri gidilmedi → **kısmen görüldü**.
+- **Sonra (U06, 2026-11-06):** sayaç denendi — ara süreyi donduruyor, panel kapat/aç sayacı koruyor, “Sayacı bitir” görev/yıldızı değiştirmiyor. Kusurlar düzeltildi: molada birincil düğme molayı duraklatıyordu → “Molayı bitir”; panel kapanınca ana ekranda iz yoktu → “Odak sayacın açık/duraklatıldı” bağlantısı. Önce `docs/release/u06-u07-2026-11-06/before-child-focus-break-phone.png`, `docs/release/u06-u07-2026-11-06/before-child-focus-closed-home-phone.png` → sonra `docs/release/u06-u07-2026-11-06/child-focus-break-phone.png`, `docs/release/u06-u07-2026-11-06/child-focus-closed-home-phone.png`, `docs/release/u06-u07-2026-11-06/child-focus-paused-phone.png`. Kalan: gerçek cihaz arka plan/ön plan.
 
 ### `/child/week` — Haftam
 - Kanıt: `a2/child-week-tablet.png`, `…-phone.png`. Gün şeridi 48 dp, durum rozetleri "Onaylandı / Sırada / Onay bekliyor".
 - PS/PD: "Tamamlanmadı" etiketi yalnız geçmiş günlerde; bugün "Sırada" — doğru. EĞ: uygulanmaz. UX: tek gün görünümü, kişi filtresi yok. GÖ: onaylı. ER: sorun yok.
 - Sınır: **geri gönderilmiş görev nedeni ve "paused" durumu** bu veride oluşturulmadı → o satır GÖRÜLEMEDİ (kodda `child.returnedTryAgain` / `routine.pausedWork` ayrımı var).
+- **Sonra (U06, 2026-11-06):** geri gönderilmiş görev oluşturuldu ve görüldü: bugün “Geri gönderildi — tekrar dene!” + ceza değil/“tamamlanmadı” sayılmaz açıklaması, geçmiş gün “Geri gönderildi · velinle konuşabilirsin”, kayıtsız geçmiş gün “Kayıt yok”. `docs/release/u06-u07-2026-11-06/child-week-returned-phone.png`, `docs/release/u06-u07-2026-11-06/child-returned-next-phone.png` (4 ölçü). Neden metni sunucuda saklanmıyor (migration gerekir).
 
 ### `/child/calendar` — Takvimim
 - Kanıt: `a2/child-calendar-tablet.png`, `…-phone.png`. Takvim/Ders programı sekmeleri, çanta listesi, ödev/çalışmalar bölümü.
@@ -81,14 +83,17 @@ Rol: eşlenmiş çocuk cihazı (device JWT). Ölçüler: aksi yazılmadıkça ta
 ### `/child/collection` — Koleksiyonum (sıfır / dolu)
 - Kanıt: sıfır `a2/child-collection-tablet.png`, `…-phone.png`; dolu (5 tanım, 1 kazanılmış) çocuk modunda `a2/childmode-collection-phone.png`.
 - PS: "İlk rozetine doğru" + kazanma koşulunu anlatan kısa metin; kilitli rozetler %50 saydam, 4 kilit kabul edilebilir "duvar" değil. PD: rozet adı var ama **kazanma koşulu kartta yok** (U06 açık satırı; P2, mevcut iş). GÖ: iki sütun, büyük yazıda tek sütun. ER: kart `accessibilityLabel` "ad: kazanıldı/kilitli".
+- **Sonra (U06, 2026-11-06):** kart rozet kuralını (sunucu `rule`) ve kişisel onaylı-görev ilerlemesini (`x / N`) gösteriyor, kazanılanda tarih; “kimseyle yarış değildir”. Sıfır `docs/release/u06-u07-2026-11-06/child-collection-zero-phone.png`, dolu `docs/release/u06-u07-2026-11-06/child-collection-full-phone.png`, `…-tablet.png`.
 
 ### `/child/goal` — Hedefini seç
 - Kanıt: `a2/child-goal-tablet.png`, `…-selected-tablet.png`. "Yıldızların şimdi harcanmaz" açık; seçince "Bu benim hedefim olsun!"; Dünyam'da "Yeni kitap 2 / 8 yıldız · 6 yıldız kaldı".
 - PS/PD: tek adım onay, geri dönülebilir. MİM: `set_child_goal` sunucuda. Bulgu: Q00-A2-12 (derin bağlantıda `back`) P2.
+- **Sonra (U06, 2026-11-06):** Q00-A2-12 düzeltildi (geçmiş yoksa Dünyam’a döner; derin bağlantıyla denendi). Ekran şu anki yıldız, şu anki hedef, seçim özeti/kalan fark ve “yıldızların silinmez” gösteriyor; seçim bakiyeyi değiştirmedi (RPC ile doğrulandı). `docs/release/u06-u07-2026-11-06/child-goal-selected-phone.png`, `docs/release/u06-u07-2026-11-06/child-goal-change-phone.png`.
 
 ### `/child/room-preview` — Odamı düzenle
 - Kanıt: `a2/child-room-preview-tablet.png`, `…-pet-saved-tablet.png`, `…-phone.png`. "Bu sürümde odada Gina maskotu yer alıyor… şimdilik ana ekranın görünümünü değiştirmez." dürüst; Dostum sekmesinde köpek seçimi kaydedildi "Odan kaydedildi.".
 - UX/GÖ: sahneyi değiştirmeyen tercihler özelleştirme gibi sunulmuyor (U06 kabulü). ER: `tablist`/`radiogroup`.
+- **Sonra (U06, 2026-11-06):** kayıt sonucu “Tercihin kaydedildi. Ana ekrandaki oda şimdilik aynı görünür.” (eski “Odan kaydedildi.” sahne değişmiş izlenimi veriyordu). `docs/release/u06-u07-2026-11-06/child-room-pref-saved-phone.png`.
 
 ### `/child/prova` — Prova listesi
 - Kanıt: `a2/child-prova-list-tablet.png`, `…-phone.png`, `…-tablet-land.png`, devam durumu `a2/child-prova-list-resume-tablet.png`, sonrası `a2/child-prova-list-after-tablet.png`.

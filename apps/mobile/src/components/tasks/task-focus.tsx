@@ -18,6 +18,27 @@ export function TaskFocus({ childId, day, tasks, selectedId, onSelect }: {
   const scope = focusScope(session.user.id, claims.family_id, childId, day);
   return <FocusPanel key={scope} scope={scope} tasks={tasks} selectedId={selectedId} onSelect={onSelect} />;
 }
+/**
+ * Read-only: is a focus timer stored for this child/day? Lets the home screen say a timer is still open after the
+ * task sheet was closed (closing the sheet never stops or changes the timer). Never writes.
+ */
+export function useOpenFocus(childId: string, day: string) {
+  const { session, claims } = useSession();
+  const scope = session && claims?.family_id && childId && day ? focusScope(session.user.id, claims.family_id, childId, day) : null;
+  const [open, setOpen] = useState<{ taskId: string; phase: FocusState['phase']; running: boolean } | null>(null);
+  useEffect(() => {
+    if (!scope) return;
+    const storage = focusStorage(scope);
+    const read = () => {
+      try { const x = storage.read(); setOpen(x ? { taskId: x.taskId, phase: advanceFocus(x, Date.now()).phase, running: x.runningSince !== null } : null); }
+      catch { setOpen(null); }
+    };
+    read();
+    const interval = setInterval(read, 2000);
+    return () => clearInterval(interval);
+  }, [scope]);
+  return scope ? open : null;
+}
 function FocusPanel({ scope, tasks, selectedId, onSelect }: {
   scope: string; tasks: Task[]; selectedId: string | null; onSelect: (id: string) => void;
 }) {
@@ -83,9 +104,12 @@ function FocusPanel({ scope, tasks, selectedId, onSelect }: {
       : current.phase === 'finished' ? <Button variant="secondary" title={t('focus.back')} onPress={() => {const id=current.taskId;save(null);onSelect(id);}} />
       : <>
         {!eligible ? <Text style={s.text}>{t('focus.taskChanged')}</Text> : <>
-          <Button title={t(current.runningSince !== null ? 'focus.pause' : 'focus.resume')} onPress={() => act(current.runningSince !== null ? 'pause' : 'resume')} />
+          {/* Molada birincil eylem molayı bitirmek: molayı "duraklatmak" çocuğa anlamlı bir seçenek değildi. */}
+          {current.phase === 'break'
+            ? <Button title={t('focus.return')} onPress={() => act('return')} />
+            : <Button title={t(current.runningSince !== null ? 'focus.pause' : 'focus.resume')} onPress={() => act(current.runningSince !== null ? 'pause' : 'resume')} />}
           <View style={[s.row, {flexWrap:'wrap', justifyContent:'space-between'}]}>
-            <Button variant="ghost" title={t(current.phase === 'break' ? 'focus.return' : 'focus.break')} onPress={() => act(current.phase === 'break' ? 'return' : 'break')}/>
+            {current.phase === 'break' ? null : <Button variant="ghost" title={t('focus.break')} onPress={() => act('break')}/>}
             <Button variant="ghost" title={t('focus.end')} onPress={() => setEnding(true)}/>
           </View>
           {selectedId !== current.taskId && <Button variant="ghost" title={t('focus.openTask')} onPress={() => onSelect(current.taskId)}/>}
