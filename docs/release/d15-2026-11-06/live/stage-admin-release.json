@@ -1,0 +1,19 @@
+{
+  "stage": "admin-release",
+  "at": "2026-11-06T18:47:51.572Z",
+  "checks": [
+    {
+      "name": "temp_admin_auth_removed",
+      "ok": true
+    },
+    {
+      "name": "temp_admin_role_removed",
+      "ok": true
+    },
+    {
+      "name": "temp_admin_credentials_removed_from_state",
+      "ok": true
+    }
+  ],
+  "paused": "awaiting_actual_editorial_review_no_publication"
+}

@@ -1,0 +1,12 @@
+{
+ "stage": "admin-setup",
+ "target": "production",
+ "at": "2026-11-06T18:46:46.513Z",
+ "checks": [
+  {
+   "name": "admin_session_valid",
+   "ok": true,
+   "temp_admin": true
+  }
+ ]
+}

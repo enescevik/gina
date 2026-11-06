@@ -1,0 +1,62 @@
+{
+  "candidate": "tr-2026-2027-t1-turkce2-g5-c6",
+  "source_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+  "sheet": "5. Sınıf",
+  "source_header": "Senaryo 1",
+  "total": 6,
+  "all_cells_match": true,
+  "human_review_status": "pending",
+  "published": false,
+  "rows": [
+    {
+      "outcome_cell": "B12",
+      "count_cell": "C12",
+      "source_text": "T.O.5.6. Metnin yüzey anlamını belirleyebilme",
+      "draft_text": "T.O.5.6. Metnin yüzey anlamını belirleyebilme",
+      "source_count": 2,
+      "draft_count": 2,
+      "text_matches": true,
+      "count_matches": true
+    },
+    {
+      "outcome_cell": "B13",
+      "count_cell": "C13",
+      "source_text": "T.O.5.7. Görselle iletilen anlamı belirleyebilme",
+      "draft_text": "T.O.5.7. Görselle iletilen anlamı belirleyebilme",
+      "source_count": 1,
+      "draft_count": 1,
+      "text_matches": true,
+      "count_matches": true
+    },
+    {
+      "outcome_cell": "B21",
+      "count_cell": "C21",
+      "source_text": "T.O.5.20. Metinden hareketle söz varlığını geliştirmeye yönelik çözümleme yapabilme",
+      "draft_text": "T.O.5.20. Metinden hareketle söz varlığını geliştirmeye yönelik çözümleme yapabilme",
+      "source_count": 1,
+      "draft_count": 1,
+      "text_matches": true,
+      "count_matches": true
+    },
+    {
+      "outcome_cell": "B30",
+      "count_cell": "C30",
+      "source_text": "T.Y.5.13. Yazısını zenginleştirecek biçimde söz varlığını kullanabilme",
+      "draft_text": "T.Y.5.13. Yazısını zenginleştirecek biçimde söz varlığını kullanabilme",
+      "source_count": 1,
+      "draft_count": 1,
+      "text_matches": true,
+      "count_matches": true
+    },
+    {
+      "outcome_cell": "B32",
+      "count_cell": "C32",
+      "source_text": "T.Y.5.16. Yazım ve noktalama işaretleriyle ilgili kuralları uygulayabilme",
+      "draft_text": "T.Y.5.16. Yazım ve noktalama işaretleriyle ilgili kuralları uygulayabilme",
+      "source_count": 1,
+      "draft_count": 1,
+      "text_matches": true,
+      "count_matches": true
+    }
+  ]
+}

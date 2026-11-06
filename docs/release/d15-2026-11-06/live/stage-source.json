@@ -1,0 +1,59 @@
+{
+ "stage": "source",
+ "target": "production",
+ "at": "2026-11-06T18:46:59.122Z",
+ "checks": [
+  {
+   "name": "parent_cannot_fetch_sources",
+   "ok": true,
+   "status": 403
+  },
+  {
+   "name": "official_download_recorded",
+   "ok": true,
+   "status": 200,
+   "outcome": "new_revision",
+   "index": {
+    "url": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+    "published": "2026-09-07",
+    "updated": "2026-09-10"
+   }
+  },
+  {
+   "name": "downloaded_hash_equals_repository_manifest",
+   "ok": true,
+   "sha256": "6405d02aaaad"
+  },
+  {
+   "name": "not_claimed_official_endorsement",
+   "ok": true
+  },
+  {
+   "name": "original_file_stored",
+   "ok": true,
+   "stored": true
+  },
+  {
+   "name": "same_hash_no_new_revision",
+   "ok": true,
+   "outcome": "unchanged"
+  },
+  {
+   "name": "revision_chain_mime_size_recorded",
+   "ok": true,
+   "chain": [
+    "meb.ai:302",
+    "cdn.eba.gov.tr:200"
+   ],
+   "bytes": 31410,
+   "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+   "index_published_on": "2026-09-07",
+   "index_updated_on": "2026-09-10"
+  },
+  {
+   "name": "other_term_not_substituted",
+   "ok": true,
+   "outcome": "unpublished"
+  }
+ ]
+}

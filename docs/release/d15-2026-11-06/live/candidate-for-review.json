@@ -1,0 +1,95 @@
+{
+  "id": "2136f711-072a-4c34-aa4b-aad740159c46",
+  "key": "tr-2026-2027-t1-turkce2-g5-c6",
+  "exam": 1,
+  "term": 1,
+  "grade": 5,
+  "label": "Senaryo 1",
+  "review": null,
+  "status": "draft",
+  "subject": "Türkçe",
+  "revision": 0,
+  "candidate": {
+    "key": "tr-2026-2027-t1-turkce2-g5-c6",
+    "exam": 1,
+    "term": 1,
+    "grade": 5,
+    "label": "Senaryo 1",
+    "sheet": "5. Sınıf",
+    "blocks": [
+      {
+        "count": 2,
+        "outcomes": [
+          {
+            "cell": "B12",
+            "code": "T.O.5.6",
+            "text": "T.O.5.6. Metnin yüzey anlamını belirleyebilme"
+          }
+        ],
+        "count_cell": "C12"
+      },
+      {
+        "count": 1,
+        "outcomes": [
+          {
+            "cell": "B13",
+            "code": "T.O.5.7",
+            "text": "T.O.5.7. Görselle iletilen anlamı belirleyebilme"
+          }
+        ],
+        "count_cell": "C13"
+      },
+      {
+        "count": 1,
+        "outcomes": [
+          {
+            "cell": "B21",
+            "code": "T.O.5.20",
+            "text": "T.O.5.20. Metinden hareketle söz varlığını geliştirmeye yönelik çözümleme yapabilme"
+          }
+        ],
+        "count_cell": "C21"
+      },
+      {
+        "count": 1,
+        "outcomes": [
+          {
+            "cell": "B30",
+            "code": "T.Y.5.13",
+            "text": "T.Y.5.13. Yazısını zenginleştirecek biçimde söz varlığını kullanabilme"
+          }
+        ],
+        "count_cell": "C30"
+      },
+      {
+        "count": 1,
+        "outcomes": [
+          {
+            "cell": "B32",
+            "code": "T.Y.5.16",
+            "text": "T.Y.5.16. Yazım ve noktalama işaretleriyle ilgili kuralları uygulayabilme"
+          }
+        ],
+        "count_cell": "C32"
+      }
+    ],
+    "subject": "Türkçe",
+    "source_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx",
+    "header_cell": "C6",
+    "academic_year": "2026-2027",
+    "source_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+    "question_count": 6,
+    "review_reasons": [
+      "programme_and_school_scope_required",
+      "source_review_required"
+    ]
+  },
+  "reviewed_at": null,
+  "content_hash": "88b9b2ab6331ffc42b7b49dd3ccb0a7164c94cf7725282aa4c805fd38e325f09",
+  "academic_year": "2026-2027",
+  "question_count": 6,
+  "review_reasons": [
+    "programme_and_school_scope_required",
+    "source_review_required"
+  ]
+}
