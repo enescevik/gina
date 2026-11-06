@@ -1,0 +1,50 @@
+{
+  "checkedAt": "2026-11-06T22:37:31.368Z",
+  "worker": {
+    "ok": true,
+    "claimed": 0,
+    "accepted": 0,
+    "retry": 0,
+    "failed": 0,
+    "unconfigured": 0,
+    "channels": {
+      "claimed": 0,
+      "accepted": 0,
+      "retry": 0,
+      "failed": 0,
+      "unconfigured": 0
+    }
+  },
+  "readiness": {
+    "missing": [],
+    "provider": "smtp",
+    "ready": true,
+    "reported_at": "2026-11-06T22:37:26.336497+00:00"
+  },
+  "settings": [
+    {
+      "key": "channels.email.from_address",
+      "value": "GINA <bildirim@ginafamily.com>"
+    },
+    {
+      "key": "channels.email.provider",
+      "value": "smtp"
+    },
+    {
+      "key": "channels.email.sender_domain_verified",
+      "value": true
+    },
+    {
+      "key": "channels.marketing.legal_review_done",
+      "value": false
+    },
+    {
+      "key": "channels.sms.provider",
+      "value": null
+    },
+    {
+      "key": "channels.sms.sender_id",
+      "value": null
+    }
+  ]
+}

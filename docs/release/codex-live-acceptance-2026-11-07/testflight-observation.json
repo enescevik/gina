@@ -1,0 +1,12 @@
+{
+  "observedAt": "2026-11-06T22:12:00Z",
+  "method": "Authenticated App Store Connect browser UI",
+  "version": "0.1.0",
+  "build": "32",
+  "group": "Team (Expo)",
+  "internalTesters": 2,
+  "testersShowingInstalledBuild32": 2,
+  "observedDevices": ["iPhone 14 Pro Max", "iPad (6th generation)"],
+  "physicalFunctionAcceptance": false,
+  "note": "Personal tester addresses omitted. Crash Feedback page showed no feedback; this is not a claim that no crashes exist."
+}
