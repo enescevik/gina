@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { createContext, type ReactNode, useEffect, useState } from "react";
 
 import { useAuth } from "@/lib/auth";
+import { OperatorAccessContext } from "@/lib/use-async";
 import { t } from "@/lib/i18n";
 import { isConfigured, supabase } from "@/lib/supabase";
 
@@ -18,6 +19,13 @@ const NAV = [
   { href: "/library", label: "GINA kütüphanesi" },
   { href: "/groups", label: "Birlikte Prova" },
   { href: "/families", label: t.nav.families },
+];
+export type OperatorRole = "support" | "content" | "finance" | "release";
+/** C07 rol matrisi: tam yönetici olmayan operatörün göreceği ek bölümler (yönetici NAV'ı zaten görür). */
+const OPERATOR_NAV: { href: string; label: string; roles: OperatorRole[] }[] = [
+  { href: "/dashboard", label: "İş kuyruğum", roles: ["support", "content", "finance", "release"] },
+  { href: "/library", label: "GINA kütüphanesi", roles: ["content", "release"] },
+  { href: "/groups", label: "Birlikte Prova", roles: ["content"] },
 ];
 export const HeaderActionContext = createContext<HTMLElement | null>(null);
 const navIcons: Record<string, PublicationIconName> = {
@@ -42,13 +50,15 @@ export async function signOut(confirmed = false) {
 
 /** Admin sayfa çerçevesi: oturum yoksa girişe yönlendirir, admin claim'i yoksa uyarı gösterir. */
 export function Layout(
-  { title, children, support = false, content = false, finance = false, release = false, compact = false }: {
+  { title, children, support = false, content = false, finance = false, release = false, roles: anyOf, compact = false }: {
     title: string;
     children: ReactNode;
     support?: boolean;
     content?: boolean;
     finance?: boolean;
     release?: boolean;
+    /** C07: sayfa bu rollerden herhangi birine açık (tam yönetici her rolü taşır). */
+    roles?: OperatorRole[];
     compact?: boolean;
   },
 ) {
@@ -67,13 +77,18 @@ export function Layout(
     roles,
     rolesReady,
     roleError,
+    seenRoles,
     refreshRoles,
   } = useAuth();
-  const requiredRole = release ? "release" : finance ? "finance" : content ? "content" : "support";
-  const operation = support || content || finance || release;
+  const required: OperatorRole[] = anyOf ??
+    (release ? ["release"] : finance ? ["finance"] : content ? ["content"] : ["support"]);
+  const operation = !!anyOf || support || content || finance || release;
   const allowed = operation
-    ? rolesReady && roles.includes(requiredRole)
+    ? rolesReady && required.some((r) => roles.includes(r))
     : isAdmin;
+  // Açık oturumda rol kaldırılırsa "yetki gerekiyor" yerine açıkça "kaldırıldı" denir.
+  const revoked = operation && rolesReady && !roleError && !allowed &&
+    required.some((r) => seenRoles.includes(r));
 
   useEffect(() => {
     if (ready && isConfigured && !session) void router.replace("/sign-in");
@@ -99,10 +114,22 @@ export function Layout(
               </button>
             </Notice>
           )
+          : revoked
+          ? (
+            <div role="alert" data-testid="role-revoked">
+              <Notice tone="error">
+                <strong>Yetkiniz kaldırıldı.</strong>{" "}
+                Bu bölümdeki rolünüz artık etkin değil; ekrandaki bilgiler gizlendi ve işlem yapılamaz.{" "}
+                <button className="btn-secondary" onClick={() => void signOut()}>
+                  Çıkış yap
+                </button>
+              </Notice>
+            </div>
+          )
           : !allowed
           ? (
             <Notice>
-              {release ? "Bu bölümü açmak için etkin yayın operasyonu yetkisi gerekiyor." : finance ? "Bu bölümü açmak için etkin finans yetkisi gerekiyor." : content
+              {anyOf ? "Bu bölümü açmak için etkin bir operasyon yetkisi gerekiyor." : release ? "Bu bölümü açmak için etkin yayın operasyonu yetkisi gerekiyor." : finance ? "Bu bölümü açmak için etkin finans yetkisi gerekiyor." : content
                 ? "Bu bölümü açmak için etkin içerik yetkisi gerekiyor."
                 : "Bu bölümü açmak için etkin destek yetkisi gerekiyor."}{" "}
               <button className="btn-secondary" onClick={() => void signOut()}>
@@ -111,7 +138,7 @@ export function Layout(
             </Notice>
           )
           : null}
-        <div hidden={roleError || !allowed}>{allowed ? children : null}</div>
+        <div hidden={roleError || !allowed}>{allowed ? <OperatorAccessContext.Provider value={!!anyOf}>{children}</OperatorAccessContext.Provider> : null}</div>
       </>
     );
   } else if (!allowed) {
@@ -141,11 +168,7 @@ export function Layout(
                 ☰ Menü
           </button>
           <Link
-            href={isAdmin
-              ? "/dashboard"
-              : roles.includes("support")
-              ? "/support"
-              : roles.includes("content") ? "/help-articles" : roles.includes("finance") ? "/billing" : "/notifications"}
+            href="/dashboard"
             className="admin-brand"
             aria-label="GINA yönetim ana sayfa"
           >
@@ -192,9 +215,28 @@ export function Layout(
                     <PublicationIcon name={navIcons[item.href] ?? "document"} />{item.label}
                   </Link>
                 ))}
+                {!isAdmin
+                  ? OPERATOR_NAV.filter((item) => item.roles.some((r) => roles.includes(r))).map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      aria-current={activePath === item.href ? "page" : undefined}
+                      className={activePath === item.href ? "admin-nav active" : "admin-nav"}
+                    >
+                      <PublicationIcon name={navIcons[item.href] ?? "document"} />{item.label}
+                    </Link>
+                  ))
+                  : null}
                 {roles.includes("support")
                   ? (
                     <>
+                      <Link
+                        href="/support-replies"
+                        className={router.pathname === "/support-replies" ? "admin-nav active" : "admin-nav"}
+                        aria-current={router.pathname === "/support-replies" ? "page" : undefined}
+                      >
+                        <PublicationIcon name="document" />Hazır yanıtlar
+                      </Link>
                       <Link
                         href="/support"
                         className={router.pathname === "/support"

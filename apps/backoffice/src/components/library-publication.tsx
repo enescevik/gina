@@ -10,6 +10,7 @@ import {
   type LibraryPublishCommand,
 } from "@gina/core";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/lib/auth";
 import { clearLibraryCommands } from "@/lib/library-review";
 import {
   publicationQueue,
@@ -43,6 +44,8 @@ export function LibraryPublicationWorkspace({
   id: string;
 }) {
   const router = useRouter();
+  // C07: önizleme içerik ve yayın ekibine açık; yayın/geri çekme kararı yalnız yayın ekibinde (sunucu da aynı kuralı uygular).
+  const canPublish = useAuth().roles.includes("release");
   const [queue, setQueue] = useState(() => publicationQueue(user));
   const [data, setData] = useState<LibraryReadiness | null>(null),
     [access, setAccess] = useState<"checking" | "allowed" | "error" | "denied">(
@@ -170,7 +173,7 @@ export function LibraryPublicationWorkspace({
     !!data &&
     (form.version !== (data.publication?.version ?? 0) ||
       form.fingerprint !== data.checks.review_fingerprint);
-  const locked = busy || restoring || !!pending || storageError;
+  const locked = busy || restoring || !!pending || storageError || !canPublish;
   const guard = useRef({ dirty: false, busy: false });
   useEffect(() => {
     guard.current = { dirty: dirty || !!pending || confirmed, busy };
@@ -393,6 +396,11 @@ export function LibraryPublicationWorkspace({
         </div>
       ) : null}
       <div hidden={access !== "allowed"}>
+        {!canPublish && (
+          <p className="publication-notice" role="note" data-testid="publication-preview-only">
+            Önizleme modundasınız. Yayımlama ve geri çekme kararı yayın ekibi yetkisi ister; bu ekranda değişiklik kaydedilmez.
+          </p>
+        )}
         {notice && (
           <p className="publication-notice" role="status">
             {notice}

@@ -23,14 +23,9 @@ export default function SignIn() {
 
   useEffect(() => {
     if (session && isAdmin) void router.replace("/dashboard");
-    else if (session && rolesReady && roles.includes("support")) {
-      void router.replace("/support");
-    } else if (session && rolesReady && roles.includes("content")) {
-      void router.replace("/help-articles");
-    } else if (session && rolesReady && roles.includes("finance")) {
-      void router.replace("/billing");
-    } else if (session && rolesReady && roles.includes("release")) {
-      void router.replace("/notifications");
+    else if (session && rolesReady && roles.length) {
+      // C07: operatör kendi iş kuyruğuyla başlar.
+      void router.replace("/dashboard");
     }
   }, [session, isAdmin, roles, rolesReady, router]);
 

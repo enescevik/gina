@@ -1,16 +1,72 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { Text, useWindowDimensions, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { contributionSnapshot } from "@gina/core";
+import { randomUUID } from "expo-crypto";
+import { contributionSnapshot, contributionStatus } from "@gina/core";
 import { ParentScreen } from "@/components/ui/parent-screen";
 import { QuestionMedia } from "@/components/learning/question-media";
 import { Toggle } from "@/components/ui/toggle";
-import { p, SatinButton, u } from "@/components/planner/ui";
+import { p, SatinButton, Tag, u } from "@/components/planner/ui";
+import {
+  ContributionChains,
+  trailErrorKey,
+  useContributionChains,
+} from "@/components/prova-library/contribution-trail";
 import { contributionJournal } from "@/lib/setup-command";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
+
+/**
+ * Sends a corrected copy linked to a rejected one (p_supersedes). Text-only copies go
+ * straight to begin_question_contribution; copies with images need the Edge renderer, which
+ * forwards `supersedes`. One request id per chosen question makes double taps and retries
+ * resolve to the same server row (same id + same link = same result).
+ */
+async function sendCorrection(input: {
+  id: string;
+  question: string;
+  supersedes: string;
+  images: boolean;
+}) {
+  if (input.images) {
+    const { data, error } = await supabase.functions.invoke("contribution-submit", {
+      body: {
+        id: input.id,
+        question_id: input.question,
+        rights: true,
+        no_personal_data: true,
+        supersedes: input.supersedes,
+      },
+      timeout: 30000,
+    });
+    if (error) {
+      let code = "contribution_failed";
+      try {
+        code = (await error.context?.json())?.error ?? code;
+      } catch {}
+      throw Error(code);
+    }
+    if (data?.error) throw Error(data.error);
+    return contributionStatus.parse(data.status);
+  }
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 20000);
+  try {
+    const { data, error } = await supabase.rpc("begin_question_contribution", {
+      p_id: input.id,
+      p_question_id: input.question,
+      p_rights: true,
+      p_no_personal_data: true,
+      p_supersedes: input.supersedes,
+    }).abortSignal(controller.signal);
+    if (error) throw Error(error.message);
+    return contributionStatus.parse((data as { status?: string }).status);
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 export default function ContributionScreen() {
   const dimensions = useWindowDimensions();
@@ -18,9 +74,10 @@ export default function ContributionScreen() {
   const { t } = useTranslation(),
     { session, claims } = useSession(),
     cache = useQueryClient();
-  const { questionId, groupId } = useLocalSearchParams<
-    { questionId?: string; groupId?: string }
+  const { questionId, groupId, supersedes } = useLocalSearchParams<
+    { questionId?: string; groupId?: string; supersedes?: string }
   >();
+  const fixing = !!supersedes && !!questionId;
   const journal = useMemo(
     () => contributionJournal(session?.user.id ?? "", claims?.family_id ?? ""),
     [session?.user.id, claims?.family_id],
@@ -32,15 +89,23 @@ export default function ContributionScreen() {
       return { pending: null, blocked: true };
     }
   });
-  const [pending, setPending] = useState(initial.pending),
+  const [pending, setPending] = useState(fixing ? null : initial.pending),
     [rights, setRights] = useState(false),
     [personal, setPersonal] = useState(false),
-    [status, setStatus] = useState("");
+    [status, setStatus] = useState(""),
+    [chosen, setChosen] = useState(questionId ?? "");
+  const requests = useRef(new Map<string, string>());
+  const chains = useContributionChains();
+  const rejected = fixing
+    ? chains.data?.chains.flatMap((c) => c.steps).find((s) => s.id === supersedes)
+    : undefined;
+  const rejectedRow = fixing ? chains.data?.rows.get(supersedes!) : undefined;
+  const target = fixing ? chosen : questionId;
   const detail = useQuery({
-    queryKey: ["contribution_preview", claims?.family_id, questionId, groupId],
-    enabled: !pending && !initial.blocked && !!(questionId || groupId),
+    queryKey: ["contribution_preview", claims?.family_id, target, groupId],
+    enabled: !pending && (fixing || !initial.blocked) && !!(target || groupId),
     queryFn: async () => {
-      let id = questionId;
+      let id = target;
       if (!id && groupId) {
         const { data, error } = await supabase.from("question_source_members")
           .select("question_id").eq("group_id", groupId).order("position")
@@ -57,8 +122,45 @@ export default function ContributionScreen() {
       return { id, snapshot: contributionSnapshot.parse(data) };
     },
   });
+  const candidates = useQuery({
+    queryKey: [
+      "contribution_candidates",
+      claims?.family_id,
+      rejectedRow?.grade,
+      rejectedRow?.subject,
+    ],
+    enabled: fixing && !!rejectedRow && !!claims?.family_id,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("question_bank")
+        .select("id,topic,stem,created_at")
+        .eq("family_id", claims!.family_id!)
+        .eq("grade", rejectedRow!.grade)
+        .eq("subject", rejectedRow!.subject)
+        .order("created_at", { ascending: false })
+        .limit(12);
+      if (error) throw error;
+      return data;
+    },
+  });
   const submit = useMutation({
     mutationFn: async () => {
+      if (fixing) {
+        if (!rights || !personal || !detail.data) throw Error("consent_required");
+        const question = detail.data.id;
+        let id = requests.current.get(question);
+        if (!id) {
+          id = randomUUID();
+          requests.current.set(question, id);
+        }
+        return {
+          status: await sendCorrection({
+            id,
+            question,
+            supersedes: supersedes!,
+            images: !!detail.data.snapshot.images?.length,
+          }),
+        };
+      }
       if (initial.blocked) throw Error("contribution_local");
       if (!pending && (!rights || !personal || !detail.data)) {
         throw Error("consent_required");
@@ -72,10 +174,12 @@ export default function ContributionScreen() {
     onSuccess: (result) => {
       setStatus(result.status);
       void cache.invalidateQueries({ queryKey: ["contribution_sets"] });
+      void cache.invalidateQueries({ queryKey: ["learning_library"] });
     },
   });
   const error = submit.error ?? detail.error;
   const code = (error as { message?: string })?.message;
+  const trailKey = trailErrorKey(error);
   const key = code &&
       [
         "contribution_disabled",
@@ -93,6 +197,7 @@ export default function ContributionScreen() {
   if (!questionId && !groupId && !pending && !initial.blocked) {
     return (
       <ParentScreen title={t("contribution.title")}>
+        <ContributionChains />
         <View style={u.card}>
           <Text style={u.heading}>{t("contribution.chooseFirst")}</Text>
           <Text style={u.copy}>{t("contribution.chooseFirstHelp")}</Text>
@@ -107,30 +212,102 @@ export default function ContributionScreen() {
   return (
     <ParentScreen
       wide
-      title={t("contribution.title")}
-      subtitle={t("contribution.subtitle")}
+      title={t(fixing ? "contributionTrail.fixTitle" : "contribution.title")}
+      subtitle={t(fixing ? "contributionTrail.fixHelp" : "contribution.subtitle")}
     >
       {status && status !== "preparing"
         ? (
-          <View style={[u.card, { backgroundColor: p.mint }]}>
+          <View style={[u.card, { backgroundColor: p.mint }]} testID="contribution-done">
             <Text style={u.heading}>{t(`contribution.status.${status}`)}</Text>
-            <Text style={u.copy}>{t("contribution.savedHelp")}</Text>
-            <SatinButton
-              title={t("common.back")}
-              onPress={() =>
-                router.canGoBack()
-                  ? router.back()
-                  : router.replace("/parent/prova/library")}
-            />
+            <Text style={u.copy}>
+              {t(fixing ? "contributionTrail.fixSent" : "contribution.savedHelp")}
+            </Text>
+            {fixing
+              ? (
+                <SatinButton
+                  title={t("contributionTrail.viewHistory")}
+                  onPress={() => router.replace("/parent/prova/share")}
+                />
+              )
+              : (
+                <SatinButton
+                  title={t("common.back")}
+                  onPress={() =>
+                    router.canGoBack()
+                      ? router.back()
+                      : router.replace("/parent/prova/library")}
+                />
+              )}
           </View>
         )
         : (
           <>
-            {initial.blocked
+            {initial.blocked && !fixing
               ? (
                 <Text accessibilityRole="alert" style={u.error}>
                   {t("setupRecovery.blockedBody")}
                 </Text>
+              )
+              : null}
+            {fixing
+              ? (
+                <View style={[u.card, { backgroundColor: "#FFF1DD" }]} testID="contribution-fix">
+                  <Text style={u.heading}>{t("contributionTrail.previousNote")}</Text>
+                  <Text selectable style={u.copy}>
+                    {rejected?.review_note ?? (chains.isPending ? t("common.loading") : t("contributionTrail.noNote"))}
+                  </Text>
+                  {rejected && rejected.question_count > 1
+                    ? (
+                      <>
+                        <Text style={u.copy}>
+                          {t("contributionTrail.grouped", { count: rejected.question_count })}
+                        </Text>
+                        <Text style={u.small}>{t("contributionTrail.atomic")}</Text>
+                      </>
+                    )
+                    : null}
+                  <Text style={u.bold}>{t("contributionTrail.pick")}</Text>
+                  <View style={[u.row, { flexWrap: "wrap" }]}>
+                    {questionId
+                      ? (
+                        <Tag
+                          label={t("contributionTrail.original")}
+                          selected={chosen === questionId}
+                          onPress={() => {
+                            submit.reset();
+                            setChosen(questionId);
+                          }}
+                        />
+                      )
+                      : null}
+                    {candidates.data?.filter((q) => q.id !== questionId).map((q) => (
+                      <Tag
+                        key={q.id}
+                        label={q.topic || q.stem.slice(0, 40)}
+                        selected={chosen === q.id}
+                        onPress={() => {
+                          submit.reset();
+                          setChosen(q.id);
+                        }}
+                      />
+                    ))}
+                  </View>
+                  {candidates.data &&
+                      !candidates.data.some((q) => q.id !== questionId)
+                    ? <Text style={u.small}>{t("contributionTrail.noCandidates")}</Text>
+                    : null}
+                  <SatinButton
+                    secondary
+                    title={t("contributionTrail.writeNew")}
+                    onPress={() =>
+                      router.push({
+                        pathname: "/parent/prova/question",
+                        params: rejectedRow
+                          ? { grade: String(rejectedRow.grade), subject: rejectedRow.subject }
+                          : {},
+                      })}
+                  />
+                </View>
               )
               : null}
             {pending
@@ -244,10 +421,15 @@ export default function ContributionScreen() {
             {error
               ? (
                 <View>
-                  <Text accessibilityRole="alert" style={u.error}>
-                    {t("contribution.errors." + key)}
+                  <Text accessibilityRole="alert" style={u.error} testID="contribution-error">
+                    {t(
+                      trailKey ??
+                        (fixing && key === "contribution_failed"
+                          ? "contributionTrail.errors.failed"
+                          : "contribution.errors." + key),
+                    )}
                   </Text>
-                  {!pending
+                  {!pending && detail.error
                     ? (
                       <SatinButton
                         secondary
@@ -260,8 +442,15 @@ export default function ContributionScreen() {
               )
               : null}
             <SatinButton
-              title={t(pending ? "setupRecovery.retry" : "contribution.submit")}
-              disabled={initial.blocked || submit.isPending ||
+              title={t(
+                fixing
+                  ? "contributionTrail.fix"
+                  : pending
+                  ? "setupRecovery.retry"
+                  : "contribution.submit",
+              )}
+              busy={submit.isPending}
+              disabled={(!fixing && initial.blocked) || submit.isPending ||
                 (!pending && (!rights || !personal || !snapshot))}
               onPress={() => submit.mutate()}
             />

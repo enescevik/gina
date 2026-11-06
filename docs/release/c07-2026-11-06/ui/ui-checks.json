@@ -1,0 +1,251 @@
+{
+  "db": "gina_c07_<random>_audit",
+  "viewport": [
+    "1280x800",
+    "768x1024"
+  ],
+  "results": [
+    {
+      "check": "role_matrix_ui_and_rpc",
+      "passed": true,
+      "detail": {
+        "admin": {
+          "pages_allowed": [
+            "/dashboard",
+            "/families",
+            "/billing",
+            "/support",
+            "/support-replies",
+            "/library",
+            "/groups",
+            "/cohort-review",
+            "/announcements",
+            "/notifications",
+            "/overrides",
+            "/help-articles",
+            "/education-calendars"
+          ],
+          "nav": [
+            "/dashboard",
+            "/ai",
+            "/input-catalog",
+            "/operations",
+            "/overrides",
+            "/questions",
+            "/library",
+            "/groups",
+            "/families",
+            "/support-replies",
+            "/support",
+            "/ideas",
+            "/education-calendars",
+            "/announcements",
+            "/notifications",
+            "/billing",
+            "/help-articles"
+          ],
+          "rpc_checked": 12
+        },
+        "support": {
+          "pages_allowed": [
+            "/dashboard",
+            "/support",
+            "/support-replies"
+          ],
+          "nav": [
+            "/dashboard",
+            "/support-replies",
+            "/support",
+            "/ideas"
+          ],
+          "rpc_checked": 12
+        },
+        "content": {
+          "pages_allowed": [
+            "/dashboard",
+            "/library",
+            "/groups",
+            "/cohort-review",
+            "/help-articles",
+            "/education-calendars"
+          ],
+          "nav": [
+            "/dashboard",
+            "/library",
+            "/groups",
+            "/education-calendars",
+            "/help-articles"
+          ],
+          "rpc_checked": 12
+        },
+        "finance": {
+          "pages_allowed": [
+            "/dashboard",
+            "/billing"
+          ],
+          "nav": [
+            "/dashboard",
+            "/billing"
+          ],
+          "rpc_checked": 12
+        },
+        "release": {
+          "pages_allowed": [
+            "/dashboard",
+            "/library",
+            "/announcements",
+            "/notifications"
+          ],
+          "nav": [
+            "/dashboard",
+            "/library",
+            "/announcements",
+            "/notifications"
+          ],
+          "rpc_checked": 12
+        }
+      }
+    },
+    {
+      "check": "operator_dashboard_scoped_workqueue",
+      "passed": true,
+      "detail": {
+        "active_rows": {
+          "support": [
+            "tickets_open",
+            "tickets_unassigned",
+            "tickets_sla_breached",
+            "ideas_open"
+          ],
+          "content": [
+            "prereview_needs_admin",
+            "scenario_revisions"
+          ],
+          "finance": [],
+          "release": [
+            "push_attention",
+            "announcements_draft"
+          ]
+        },
+        "role_headings": {
+          "support": [
+            "Destek · 6"
+          ],
+          "content": [
+            "İçerik · 2"
+          ],
+          "finance": [
+            "Finans · 0"
+          ],
+          "release": [
+            "Yayın · 2"
+          ]
+        },
+        "content_admin_only_links_replaced": 1
+      }
+    },
+    {
+      "check": "support_unassigned_is_assignee_based",
+      "passed": true,
+      "detail": {
+        "db_unassigned": 1,
+        "row": "Sorumlusu atanmamış talepler Henüz bir ekip üyesine atanmadı 1 En eski: 3 gün Aç"
+      }
+    },
+    {
+      "check": "canned_replies_managed_tr_en_idempotent",
+      "passed": true,
+      "detail": {
+        "default_locale": "en",
+        "archived_hidden": true,
+        "double_click_rows": 1,
+        "stale_edit_rejected": true
+      }
+    },
+    {
+      "check": "team_note_not_leaked",
+      "passed": true,
+      "detail": {
+        "parent_view_clean": true,
+        "content_view_clean": true
+      }
+    },
+    {
+      "check": "billing_keyset_beyond_50_and_filter_reset",
+      "passed": true,
+      "detail": {
+        "total": 134,
+        "load_more_clicks": 2,
+        "search_rows": 10,
+        "search_rpc_calls": 1,
+        "text": "10 aile gösteriliyor · liste tamam · arama: “Sentetik aile 01”"
+      }
+    },
+    {
+      "check": "content_keyset_beyond_200_candidate_badge_filter_reset",
+      "passed": true,
+      "detail": {
+        "expected_rows": 232,
+        "load_more_clicks": 4,
+        "tabs": [
+          "Tüm içerik · AI ön inceleme",
+          "Taslak paketler",
+          "Katkılar"
+        ],
+        "ai_filter_rows": 1
+      }
+    },
+    {
+      "check": "release_library_view_and_publication_role",
+      "passed": true,
+      "detail": {
+        "content_publish": 403,
+        "release_publish_rule_error": "{\"code\":\"P0001\",\"details\":null,\"hint\":null,\"message\":\"library_publication_input\"}"
+      }
+    },
+    {
+      "check": "content_group_create_preview_distribute_once",
+      "passed": true,
+      "detail": {
+        "units_checked": 1,
+        "created": 1
+      }
+    },
+    {
+      "check": "content_cohort_review_queue",
+      "passed": true,
+      "detail": {
+        "ok": true
+      }
+    },
+    {
+      "check": "announcement_push_audience_real_counts",
+      "passed": true,
+      "detail": {
+        "card": "Telefon bildirimi (push) · hazır değil Ulaşılabilir: 1 veli · 2 cihaz Bildirim izni verilmiş cihazı yok: 2 Duyuru bildirimlerini kapatmış: 1 Sağlayıcı kabulü teslim veya okundu demek değildir."
+      }
+    },
+    {
+      "check": "role_revocation_in_open_tab",
+      "passed": true,
+      "detail": {
+        "content": {
+          "ui": "Yetkiniz kaldırıldı",
+          "rpc_status": 403
+        },
+        "finance": {
+          "ui": "Yetkiniz kaldırıldı",
+          "rpc_status": 403
+        },
+        "support": {
+          "ui": "Yetkiniz kaldırıldı",
+          "rpc_status": 403
+        }
+      }
+    },
+    {
+      "check": "no_page_errors",
+      "passed": true
+    }
+  ]
+}

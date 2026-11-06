@@ -1,0 +1,75 @@
+{
+  "environment": "disposable-local-gotrue-postgrest (own clone of gina_completion_audit)",
+  "database_pattern": "gina_c07m_<hex>_audit",
+  "viewports": {
+    "phone": {
+      "width": 390,
+      "height": 844
+    },
+    "desktop": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "passed": true,
+  "results": [
+    {
+      "check": "library_credit_summary_and_policy_preview_visible",
+      "passed": true,
+      "policy_at_10": {
+        "library": 6,
+        "plan_days": 0,
+        "ai_questions": 20
+      },
+      "stepper_targets": 2
+    },
+    {
+      "check": "same_acquisition_twice_charges_once_ui_and_db",
+      "passed": true,
+      "redemptions": 1,
+      "monthly_used": 1,
+      "draft_blocks": 1
+    },
+    {
+      "check": "rejection_chain_visible_to_family_other_family_hidden",
+      "passed": true,
+      "foreign_trail": "contribution_not_found"
+    },
+    {
+      "check": "unchanged_resubmission_refused_with_calm_text",
+      "passed": true
+    },
+    {
+      "check": "corrected_copy_linked_with_supersedes_and_double_tap_single_row",
+      "passed": true,
+      "new_rows": 1,
+      "second_correction": "contribution_supersede_taken"
+    },
+    {
+      "check": "group_double_tap_and_retry_single_entry",
+      "passed": true,
+      "entries": 1,
+      "exams": 1,
+      "retry_response": "same_exam_returned"
+    },
+    {
+      "check": "unfinished_result_not_ranked_reason_and_interim_visible",
+      "passed": true,
+      "ranked": false,
+      "reason": "unfinished",
+      "interim": true,
+      "board_size": 1
+    },
+    {
+      "check": "no_runtime_errors_overflow_raw_ids_or_keys",
+      "passed": true
+    }
+  ],
+  "cleanup": {
+    "db_rest": "removed",
+    "db_auth": "removed",
+    "database": "dropped",
+    "containers_left": "none",
+    "database_left": "0"
+  }
+}

@@ -81,7 +81,12 @@ function Workspace({ user, kind }: { user: string; kind: "support" | "idea" }) {
     ),
     [filter, setFilter] = useState("open"),
     [category, setCategory] = useState(""),
-    [assignee, setAssignee] = useState<"any" | "me" | "none">("any"),
+    // C07: iş kuyruğundaki "sorumlusuz" bağlantısı ?assignee=none ile aynı süzgeçle açılır.
+    [assignee, setAssignee] = useState<"any" | "me" | "none">(() =>
+      typeof window !== "undefined" && ["me", "none"].includes(new URLSearchParams(window.location.search).get("assignee") ?? "")
+        ? new URLSearchParams(window.location.search).get("assignee") as "me" | "none"
+        : "any"
+    ),
     [waiting, setWaiting] = useState(false),
     [search, setSearch] = useState(""),
     [query, setQuery] = useState(""),
@@ -883,6 +888,7 @@ function Conversation({
                   {mode === "family"
                     ? (
                       <ReplyHelpers
+                        ticket={current.id}
                         subject={current.subject}
                         category={current.category}
                         disabled={locked}
