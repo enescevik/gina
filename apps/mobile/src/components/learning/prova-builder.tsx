@@ -45,7 +45,10 @@ import {
   type ProvaEducationPeriod,
   newProvaDraft,
   provaGenerationKind,
+  provaQuestionPeriodIssues,
+  readProvaQuestionFit,
   readSubjectSuggestion,
+  setProvaFitAccepted,
   type SubjectSuggestion,
   type ProvaBlock,
   type ProvaDraft,
@@ -71,6 +74,7 @@ import {
 } from "./prova-builder-data";
 import { ProvaSourcePicker } from "./prova-source-picker";
 import { ProvaContextCard } from "./prova-context-card";
+import { ProvaSubjectLinks } from "./prova-subject-links";
 
 import {
   b,
@@ -352,8 +356,52 @@ export default function ProvaBuilder() {
   // P01: çocuk/sınıf/ders/amaç değişince uygunsuz soruları işaretle (silmeden). Ortak kaynak
   // grubu tek blok olarak işaretlenir ve bölünmez.
   const allowedKind = provaGenerationKind(draft);
+  // D1: soru düzeyinde dönem/program izi + ders metninin çocuğun veli onaylı katalog kimliği.
+  const flatIds = flat.map((q) => q.id);
+  const fit = useQuery({
+    queryKey: ["prova_question_fit", familyId, draft.childId, flatIds],
+    enabled: !!draft.childId,
+    queryFn: async () => {
+      const call = supabase.rpc as unknown as (
+        fn: string,
+        args: Record<string, unknown>,
+      ) => PromiseLike<{ data: unknown; error: unknown }>;
+      const r = await call.call(supabase, "get_prova_question_fit", {
+        p_child_id: draft.childId,
+        p_question_ids: flatIds.slice(0, 200),
+      });
+      if (r.error) throw r.error;
+      return readProvaQuestionFit(r.data);
+    },
+  });
+  const fitRow = (id: string) =>
+    fit.data?.questions.find((row) => row.question_id === id);
+  const periodIssuesOf = (id: string) =>
+    provaQuestionPeriodIssues(draft.context, fitRow(id));
+  const accepted = new Set(draft.fitAccepted ?? []);
+  const periodText = (id: string) => {
+    const row = fitRow(id);
+    return periodIssuesOf(id).map((issue) =>
+      issue === "term"
+        ? t("d1.period.term", { term: row?.term, draft: draft.context?.term })
+        : t("d1.period.program", {
+          program: row?.program,
+          draft: draft.context?.program,
+        })
+    );
+  };
+  // `update` birleştirir: kabul listesi boşalınca alan açıkça kaldırılır (eski taslak biçimi).
+  const setAccepted = (
+    ids: string[],
+    on: boolean,
+    extra: Partial<ProvaDraft> = {},
+  ) =>
+    update({
+      ...extra,
+      fitAccepted: setProvaFitAccepted(draft, ids, on).fitAccepted,
+    });
   const issuesOf = (q: (typeof flat)[number]) => {
-    const issues: string[] = [];
+    const issues: string[] = accepted.has(q.id) ? [] : periodText(q.id);
     if (q.grade !== draft.grade) {
       issues.push(t("provaP01.issueGrade", { grade: q.grade }));
     }
@@ -372,6 +420,9 @@ export default function ProvaBuilder() {
     ? draft.blocks.filter((block) => blockIssues(block).length > 0)
     : [];
   const mismatch = flat.some((q) => issuesOf(q).length > 0);
+  const periodOpen = flat.filter((q) =>
+    !accepted.has(q.id) && periodIssuesOf(q.id).length > 0
+  );
   const sourceMix = (["manual", "ai", "library", "document"] as const).map((
     source,
   ) => ({
@@ -827,6 +878,18 @@ export default function ProvaBuilder() {
                               />
                             )
                             : null}
+                          {draft.childId && draft.subjects.length
+                            ? (
+                              <ProvaSubjectLinks
+                                childId={draft.childId}
+                                grade={draft.grade}
+                                subjects={draft.subjects}
+                                links={fit.data?.subjects ?? []}
+                                loading={fit.isPending}
+                                onChanged={() => void fit.refetch()}
+                              />
+                            )
+                            : null}
                           {unsuitableBlocks.length
                             ? (
                               <View accessibilityRole="alert" style={b.hint}>
@@ -1036,6 +1099,14 @@ export default function ProvaBuilder() {
                               </Text>
                             )
                             : null}
+                          {periodOpen.length
+                            ? (
+                              <Text style={b.muted}>
+                                {t("d1.period.summary", { count: periodOpen.length })}{" "}
+                                {t("d1.period.fixHelp")}
+                              </Text>
+                            )
+                            : null}
                           {!draft.blocks.length
                             ? (
                               <View style={b.hint}>
@@ -1082,6 +1153,52 @@ export default function ProvaBuilder() {
                                     </Text>
                                   )
                                   : null}
+                                {(() => {
+                                  const periodIds = qs.filter((q) =>
+                                    periodIssuesOf(q.id).length > 0
+                                  ).map((q) => q.id);
+                                  if (!periodIds.length) return null;
+                                  const open = periodIds.filter((id) => !accepted.has(id));
+                                  return open.length
+                                    ? (
+                                      <View style={[b.wrap, { gap: 8 }]}>
+                                        <SatinButton
+                                          secondary
+                                          disabled={locked}
+                                          title={t("d1.period.accept")}
+                                          onPress={() =>
+                                            setAccepted(open, true)}
+                                        />
+                                        <SatinButton
+                                          secondary
+                                          disabled={locked}
+                                          title={t("d1.period.remove")}
+                                          onPress={() =>
+                                            setAccepted(periodIds, false, {
+                                              blocks: draft.blocks.filter((v) => v.id !== block.id),
+                                            })}
+                                        />
+                                      </View>
+                                    )
+                                    : (
+                                      <View style={[b.row, { gap: 8 }]}>
+                                        <Text style={[b.muted, { flex: 1 }]}>
+                                          {t("d1.period.accepted")} · {periodIds.flatMap(periodText).join(" · ")}
+                                        </Text>
+                                        <Pressable
+                                          accessibilityRole="button"
+                                          disabled={locked}
+                                          style={{ minHeight: 48, justifyContent: "center" }}
+                                          onPress={() =>
+                                            setAccepted(periodIds, false)}
+                                        >
+                                          <Text style={[b.bold, { color: p.purple }]}>
+                                            {t("d1.period.undo")}
+                                          </Text>
+                                        </Pressable>
+                                      </View>
+                                    );
+                                })()}
                                 <View style={b.row}>
                                   <View style={{ flex: 1, gap: 5 }}>
                                     <Text style={b.bold} numberOfLines={2}>

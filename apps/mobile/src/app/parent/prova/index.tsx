@@ -35,6 +35,7 @@ import { fetchProvaDrafts } from "@/lib/prova-draft";
 import { ProvaDraftBulkEntry } from "@/components/planner/bulk-scope-sheet";
 import { provaErrorMessage } from "@/lib/prova-ai";
 import { attemptSummary } from "@gina/core";
+import { useScenarioFit } from "@/components/learning/scenario-fit-review";
 
 /** P04 sütunları (open_pending/open_unanswered/provisional) üretilmiş tiplerde henüz yok; satır elle tiplenir. */
 interface HubAttempt {
@@ -138,6 +139,8 @@ export default function ParentProvaScreen() {
     ).map((a) => ({ exam: e, attempt: a }))
   ).sort((a, b) => b.attempt.created_at.localeCompare(a.attempt.created_at));
   const pending = attempts.filter((a) => a.attempt.status === "submitted");
+  // D1: C05 soru-kazanım uygunluğu incelemesi (yalnız katalog senaryosuna bağlı soru varsa görünür).
+  const fitSummary = useScenarioFit("pending").data?.summary;
   const reviewed = attempts.filter((a) => a.attempt.status === "graded");
   const sentOpen = visibleExams.filter((e) => e.status === "assigned").length;
   // İnceleme durumu: "2 açık uçlu cevap incelemeni bekliyor · 1 soru cevapsız". Eski kayıtta sayaç yoksa genel etiket.
@@ -372,6 +375,17 @@ export default function ParentProvaScreen() {
           ? (
             <View style={{ gap: 18 }}>
               {pending.length ? pendingSection : empty(t("provaC04.reviewEmpty"))}
+              {fitSummary && fitSummary.total > 0
+                ? (
+                  <NavigationCard
+                    title={t("d1.fit.title")}
+                    body={fitSummary.pending_human_review > 0
+                      ? t("d1.fit.entryPending", { count: fitSummary.pending_human_review })
+                      : t("d1.fit.entryDone", { count: fitSummary.total })}
+                    onPress={() => router.push("/parent/prova/fit")}
+                  />
+                )
+                : null}
               <NavigationCard
                 title={t("prova.progress.title")}
                 body={t("unified.progressHelp")}

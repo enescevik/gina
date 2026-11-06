@@ -1,6 +1,6 @@
 import * as Crypto from "expo-crypto";
 import { Toggle } from "@/components/ui/toggle";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,7 @@ import {
   type QuestionImageDraft,
   QuestionImageEditor,
 } from "@/components/learning/question-image-editor";
-import { addToProvaDraft } from "@/lib/prova-draft";
+import { addToProvaDraft, fetchProvaDrafts } from "@/lib/prova-draft";
 import { uploadLearningFile } from "@/lib/learning-files";
 
 import { type Enums, type Json, parseRubricInput } from "@gina/core";
@@ -41,6 +41,16 @@ export default function QuestionScreen() {
   const familyId = claims?.family_id ?? "";
   const queryClient = useQueryClient();
 
+  // D1: taslaktan açılan elle soru, taslağın dönem/programıyla soru düzeyinde işaretlenir.
+  const draftPeriod = useQuery({
+    queryKey: ["prova_draft_period", familyId, params.draftId],
+    enabled: !!params.draftId,
+    queryFn: async () => {
+      const context = (await fetchProvaDrafts(params.draftId))[0]?.content.context;
+      return { term: context?.term ?? null, program: context?.program ?? null };
+    },
+  });
+  const period = draftPeriod.data ?? { term: null, program: null };
   const request = useRef<{ body: string; id: string; shareId: string } | null>(
     null,
   );
@@ -132,6 +142,9 @@ export default function QuestionScreen() {
       if (share && (!rights || !noPersonal)) {
         throw new Error(t("library.consentRequired"));
       }
+      const tag = params.draftId
+        ? draftPeriod.data ?? (await draftPeriod.refetch()).data ?? period
+        : period;
       const body = {
         grade: Number(grade),
         subject: subject.trim(),
@@ -151,6 +164,8 @@ export default function QuestionScreen() {
             (rubric.criteria.length || rubric.alternative_answers.length)
           ? { rubric: rubric as unknown as Json }
           : {}),
+        ...(tag.term !== null ? { term: tag.term } : {}),
+        ...(tag.program !== null ? { program: tag.program } : {}),
       };
       if (kind === "open_ended" && !rubric) {
         throw new Error(t("provaC04.question.rubricInvalid"));
@@ -293,6 +308,18 @@ export default function QuestionScreen() {
             onChangeText={setTopic}
             placeholder={t("provaV5.topicExample")}
           />
+          {period.term !== null || period.program !== null
+            ? (
+              <Text style={parentStyles.muted}>
+                {t("d1.question.periodTag", {
+                  value: [
+                    period.term !== null ? t("d1.period.termN", { n: period.term }) : null,
+                    period.program,
+                  ].filter(Boolean).join(" · "),
+                })}
+              </Text>
+            )
+            : null}
           <Field
             editable={!save.isPending}
             label={t("prova.scenario")}
