@@ -2,6 +2,7 @@ import { aiGradableOpenAnswer, needsNotebookReview } from "../_shared/answer-not
 import { questionImages } from "../_shared/question-images.ts";
 import { runAiOperation } from "../_shared/ai-operation.ts";
 import { GRADE_SCHEMA, GRADE_SYSTEM, validateGradeReport } from "../_shared/grade-report.ts";
+import { answerKeyExtras } from "../_shared/answer-key.ts";
 // Prova açık uçlu cevap değerlendirmesi (AI). Veli deneme inceleme ekranından çağırır; çocuk asla çağırmaz.
 // Deploy: `supabase functions deploy prova-grade` (verify_jwt açık kalır).
 // Kurallar: yalnız parent; paket prova_ai_grading (Pro) sunucuda; model ai_settings'ten;
@@ -12,7 +13,7 @@ import { GRADE_SCHEMA, GRADE_SYSTEM, validateGradeReport } from "../_shared/grad
 import { json, preflight, serviceClient } from "../_shared/supabase.ts";
 import { apiKeyOrResponse, logUsage, provaEntitlement, readParent, resolveAi } from "../_shared/prova.ts";
 
-const PROMPT_VERSION = "prova-grade/v2-evidence";
+const PROMPT_VERSION = "prova-grade/v3-answer-key";
 
 function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -57,7 +58,7 @@ Deno.serve(async (req) => {
   const { data: exam } = await db.from("exams").select("question_ids").eq("id", attempt.exam_id).single();
   const questionIds: string[] = exam?.question_ids ?? [];
   const [questionResult, answerResult, childResult] = await Promise.all([
-    db.from("question_bank").select("id, topic, kind, stem, choices, correct_key, expected_answer, solution").in("id", questionIds).or(`family_id.eq.${parent.familyId},family_id.is.null`),
+    db.from("question_bank").select("id, topic, kind, stem, choices, correct_key, expected_answer, solution, provenance").in("id", questionIds).or(`family_id.eq.${parent.familyId},family_id.is.null`),
     db.from("exam_answers").select("question_id, answer_key, answer_text, answer_document, is_correct, score, graded_by").eq("attempt_id", attemptId),
     db.from("children").select("name,archived_at").eq("id", attempt.child_id).maybeSingle(),
   ]);
@@ -93,6 +94,8 @@ Deno.serve(async (req) => {
       refToQuestion.set(ref, id); refs.set(ref, { topic, grade });
       return { ref, konu: topic, tur: q.kind, soru: mask(q.stem),
         beklenen_cevap: mask(q.expected_answer ?? ""), cozum_yolu: mask(q.solution ?? ""),
+        // C04: alternatif doğru cevaplar + rubrik (veli/AI sorusu); yalnız açık uçluda.
+        ...(q.kind === "open_ended" ? answerKeyExtras(q.provenance, mask) : {}),
         secenekler: Array.isArray(q.choices) ? q.choices.map((c: {key?:string;text?:string}) => ({key:c.key,text:mask(c.text ?? "")})) : null, dogru_secim: q.correct_key, secilen: a?.answer_key,
         dogru_mu: q.kind === "multiple_choice" || a?.graded_by === "parent" ? a?.is_correct ?? null : null, puanlama_gerekli: grade,
         veli_puani: a?.graded_by === "parent" ? a.score : null,

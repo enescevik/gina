@@ -10,6 +10,7 @@ export function installIsolatedProvider() {
     learning: 0,
     task: 0,
     reward: 0,
+    prova: 0,
   };
   globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = new URL(input instanceof Request ? input.url : String(input));
@@ -60,6 +61,58 @@ export function installIsolatedProvider() {
           oneri: "İsterseniz haftayı birlikte konuşabilirsiniz.",
         })),
         veliye_oneriler: ["Kayıtları birlikte gözden geçirebilirsiniz."],
+      };
+    } else if (props?.questions && props?.shared_sources) {
+      // C04: deterministic Prova generation (synthetic wording, no curriculum copy).
+      // Two linked questions share one passage when at least two are requested.
+      stats.prova++;
+      const plan: { konu: string; soru_sayisi: number }[] = data.konular;
+      const mixed = String(data.tur).startsWith("karışık");
+      const only = mixed ? null : String(data.tur);
+      const total = plan.reduce((n, r) => n + r.soru_sayisi, 0);
+      let n = 0;
+      const questions = plan.flatMap((row) =>
+        Array.from({ length: row.soru_sayisi }, () => {
+          n++;
+          const kind = only ?? (n % 2 ? "open_ended" : "multiple_choice");
+          const mc = kind === "multiple_choice";
+          return {
+            topic: row.konu,
+            kind,
+            difficulty: "orta",
+            stem: `Sentetik AI sorusu ${n}: ${row.konu} için kısa bir örnek açıkla.`,
+            choices: mc
+              ? ["A", "B", "C", "D"].map((key) => ({ key, text: `Seçenek ${key}` }))
+              : [],
+            correct_key: mc ? "B" : "",
+            distractor_notes: mc
+              ? [{ key: "A", why: "Sentetik çeldirici gerekçesi." }]
+              : [],
+            expected_answer: mc ? "B" : `Sentetik beklenen cevap ${n}`,
+            solution: `Sentetik çözüm yolu ${n}.`,
+            explanation: "Sentetik anlatım.",
+            source_urls: [],
+            block_id: "",
+            outcome_ids: [],
+            question_type: "",
+            cognitive_demand: "",
+            intended_difficulty: "",
+            rubric: mc ? { criteria: [], alternative_answers: [] } : {
+              criteria: [{ text: "Kavramı doğru adlandırır", points: 50 }, {
+                text: "Örnek verir",
+                points: 50,
+              }],
+              alternative_answers: [`Alternatif cevap ${n}`],
+            },
+            shared_source_id: total >= 2 && n <= 2 ? "S1" : "",
+          };
+        })
+      );
+      output = {
+        shared_sources: total >= 2
+          ? [{ id: "S1", kind: "text", content: "Sentetik ortak metin: bir bahçede ölçüm yapılır." }]
+          : [],
+        questions,
       };
     } else if (props?.items) {
       stats.learning++;
