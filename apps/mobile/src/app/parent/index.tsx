@@ -134,6 +134,8 @@ export default function ParentHomeScreen() {
   useRealtimeInvalidate("star_events", familyId ? `family_id=eq.${familyId}` : null, [["family_star_totals", familyId]]);
 
   const reviewRequests = useRef(new Map<string, string>());
+  // Synchronous tap lock: a double tap sends one request even before isPending re-renders.
+  const reviewLock = useRef(false);
   // C03: a decided submission leaves the pending list at once — also when another parent decided first —
   // so a late realtime/focus refetch of the old list cannot keep an approved task "waiting".
   const dropApproval = async (id: string) => {
@@ -256,7 +258,7 @@ export default function ParentHomeScreen() {
     today={today} week={week} parentName={parentName} timeZone={timeZone}
     weeklyCounts={weeklyCounts}
     familyDay={familyDay} tasks={dailyTasks} approvals={pendingApprovals}
-    review={(id,approve,choice)=>review.mutate({id,approve,...choice})} reviewing={review.isPending} reviewingId={review.variables?.id} reviewError={review.error} reviewDone={review.isSuccess && review.variables ? { id: review.variables.id, at: review.submittedAt } : undefined}
+    review={(id,approve,choice,onDone)=>{ if (reviewLock.current) return; reviewLock.current = true; review.mutate({id,approve,...choice},{onSuccess:()=>onDone?.(),onSettled:()=>{ reviewLock.current = false; }}); }} reviewing={review.isPending} reviewingId={review.variables?.id} reviewError={review.error}
     occurrences={occurrences} upcoming={upcoming}
     unread={inbox.data?.unread ?? 0} online={online}
     // Yalnız çocuk listesi bütün ekranı belirler; diğer sorgular kendi kartında yüklenir ve hata verir.

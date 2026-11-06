@@ -1,0 +1,66 @@
+{
+  "environment": "disposable-local-auth-postgrest-storage-edge + expo web export (Chrome, tr-TR, Europe/Istanbul)",
+  "today": "2026-11-06",
+  "checks": [
+    {
+      "check": "other_reason_requires_note",
+      "passed": true
+    },
+    {
+      "check": "return_reason_saved_once_card_leaves_pending",
+      "passed": true,
+      "detail": {
+        "requests": 1
+      }
+    },
+    {
+      "check": "parent_home_shows_reason",
+      "passed": true
+    },
+    {
+      "check": "lost_reply_retry_single_approval_and_stars",
+      "passed": true,
+      "detail": {
+        "stars": 3
+      }
+    },
+    {
+      "check": "co_parent_sees_same_reason",
+      "passed": true
+    },
+    {
+      "check": "child_sees_reason_as_next_step",
+      "passed": true
+    },
+    {
+      "check": "child_week_shows_next_step",
+      "passed": true
+    },
+    {
+      "check": "calendar_bulk_archive_undo_counts_history",
+      "passed": true,
+      "detail": {
+        "listed": 16,
+        "history": [
+          "archive:16",
+          "restore:16"
+        ]
+      }
+    },
+    {
+      "check": "prova_draft_bulk_assigned_protected",
+      "passed": true,
+      "detail": {
+        "assignedListed": true
+      }
+    },
+    {
+      "check": "help_reply_marked_read_team_note_hidden",
+      "passed": true
+    },
+    {
+      "check": "layouts_390_768_1280_no_overflow_no_raw_keys",
+      "passed": true
+    }
+  ]
+}

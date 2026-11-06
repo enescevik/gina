@@ -32,8 +32,8 @@ export interface HomeViewProps {
   weeklyCounts: { approved: number; pending: number; returned: number };
   familyDay: { child: Child; due: number; done: number; pending: number; stars: number }[];
   tasks: Task[];
-  approvals: Approval[]; review: (id: string, approve: boolean, choice?: { reason: TaskReturnReason | null; note: string | null }) => void;
-  reviewing: boolean; reviewingId?: string; reviewError: unknown; reviewDone?: { id: string; at: number };
+  approvals: Approval[]; review: (id: string, approve: boolean, choice?: { reason: TaskReturnReason | null; note: string | null }, onDone?: () => void) => void;
+  reviewing: boolean; reviewingId?: string; reviewError: unknown;
   occurrences: Occurrence<WeekEvent>[]; upcoming: Occurrence<WeekEvent> | undefined;
   unread: number; online: boolean;
   /** Only the child list gates the whole screen. */
@@ -112,10 +112,8 @@ export function ParentHomeView(p: HomeViewProps) {
   const [showWeek, setShowWeek] = useState(false);
   const [expandedFor, setExpandedFor] = useState<string | null | undefined>(undefined);
   const [slow, setSlow] = useState(false);
-  const [returnState, setReturning] = useState<Approval | null>(null);
-  const [returnOpenedAt, setReturnOpenedAt] = useState(0);
-  // The sheet closes only when this submission's return was stored (a later resubmission reuses the id); errors stay inside it.
-  const returning = returnState && !(p.reviewDone?.id === returnState.id && p.reviewDone.at >= returnOpenedAt) ? returnState : null;
+  // The return sheet closes only when this submission's return was stored; errors stay visible inside it.
+  const [returning, setReturning] = useState<Approval | null>(null);
   useEffect(() => {
     if (!p.loading) return;
     const timer = setTimeout(() => setSlow(true), SLOW_MS);
@@ -144,7 +142,7 @@ export function ParentHomeView(p: HomeViewProps) {
           <View style={s.fill}><Text style={[s.text, s.bold]}>{item.task_templates?.title}</Text><Label small>{item.children?.name} · {t('room.plusStars', { count: item.task_templates?.stars ?? 0 })}</Label></View>
         </View>
         <View style={[s.row, compact && { flexDirection: 'column', alignItems: 'stretch' }]}>
-          <SatinButton title={t('parent.return')} secondary style={compact ? undefined : s.fill} onPress={() => { setReturnOpenedAt(Date.now()); setReturning(item); }} disabled={p.reviewing}/>
+          <SatinButton title={t('parent.return')} secondary style={compact ? undefined : s.fill} onPress={() => setReturning(item)} disabled={p.reviewing}/>
           <SatinButton title={t('parent.approve')} style={compact ? undefined : s.fill} onPress={() => p.review(item.id, true)} disabled={p.reviewing} busy={p.reviewing && p.reviewingId === item.id}/>
         </View>
         {item.previous ? <Text testID="home-approval-previous" style={s.small}>{t('c03.review.previous', { reason: t(`c03.reason.${item.previous.reason}`) })}{item.previous.note ? ` · “${item.previous.note}”` : ''}</Text> : null}
@@ -302,6 +300,6 @@ export function ParentHomeView(p: HomeViewProps) {
       busy={!!returning && p.reviewing && p.reviewingId === returning.id}
       error={returning && p.reviewError && !p.reviewing && p.reviewingId === returning.id ? t(reviewErrorKey((p.reviewError as Error).message)) : null}
       onCancel={() => setReturning(null)}
-      onSend={(choice) => { if (returning) p.review(returning.id, false, choice); }}/>
+      onSend={(choice) => { if (returning) p.review(returning.id, false, choice, () => setReturning(null)); }}/>
   </SafeAreaView>;
 }
