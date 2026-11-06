@@ -1,7 +1,7 @@
 import { NumberChoice } from "@/components/ui/number-choice";
 import { SourceFilesPicker } from "@/components/learning/source-files-picker";
 import { provaGenerationJournal } from "@/lib/setup-command";
-import { canonicalSubject, catalogBlueprintFits, provaGenerationKind, provaRemainingCount } from "@gina/core";
+import { canonicalSubject, catalogBlueprintFits, provaAiUnits, provaGenerationKind, provaRemainingCount } from "@gina/core";
 import { useMemo, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -332,6 +332,14 @@ export function ProvaSourcePicker(
     onError: setLocalError,
   });
   const releaseGeneration = () => cancelGeneration.mutate();
+  const aiUnits = provaAiUnits(generationRecord?.result);
+  const aiSource = generationRecord?.payload.source_id
+    ? "document" as const
+    : "ai" as const;
+  const inDraft = (id: string) => draft.blocks.some((block) => block.id === id);
+  const isSelected = (id: string) => selected.some((block) => block.id === id);
+  const unitSize = (unit: (typeof aiUnits)[number]) =>
+    unit.kind === "group" ? unit.questions.length : 1;
   const add = useMutation({
     mutationFn: () => onAdd(selected),
     onError: setLocalError,
@@ -1010,33 +1018,29 @@ export function ProvaSourcePicker(
                   {aiRows.length
                     ? <Text style={b.bold}>{t("provaBuilder.aiCheck")}</Text>
                     : null}
-                  {/* C04: aynı üretimin bütün önerileri seçilebilir; seçim yeni üretim/ücret doğurmaz. */}
-                  {aiRows.some((q) =>
-                      !draft.blocks.some((block) => block.id === q.id) &&
-                      !selected.some((block) => block.id === q.id)
-                    ) && recoveredFits
+                  {/* C04: aynı üretimin bütün önerileri seçilebilir; seçim yeni üretim/ücret doğurmaz.
+                      D1: sunucunun kurduğu ortak kaynak grubu tek seçimdir (bölünmez); ortak metin bir kez görünür. */}
+                  {aiUnits.some((unit) => !inDraft(unit.id) && !isSelected(unit.id)) &&
+                      recoveredFits
                     ? (
                       <View style={[b.hint, { gap: 8 }]}>
                         <SatinButton
                           secondary
                           disabled={busy}
                           title={t("provaC04.ai.selectAll", {
-                            count: aiRows.filter((q) =>
-                              !draft.blocks.some((block) => block.id === q.id)
-                            ).length,
+                            count: aiUnits.filter((unit) => !inDraft(unit.id))
+                              .reduce((n, unit) => n + unitSize(unit), 0),
                           })}
                           onPress={() =>
                             setSelected((v) => [
                               ...v,
-                              ...aiRows.filter((q) =>
-                                !draft.blocks.some((block) => block.id === q.id) &&
-                                !v.some((block) => block.id === q.id)
-                              ).map((q) => ({
-                                kind: "question" as const,
-                                id: q.id,
-                                source: generationRecord?.payload.source_id
-                                  ? "document" as const
-                                  : "ai" as const,
+                              ...aiUnits.filter((unit) =>
+                                !inDraft(unit.id) &&
+                                !v.some((block) => block.id === unit.id)
+                              ).map((unit) => ({
+                                kind: unit.kind,
+                                id: unit.id,
+                                source: aiSource,
                               })),
                             ])}
                         />
@@ -1044,27 +1048,73 @@ export function ProvaSourcePicker(
                       </View>
                     )
                     : null}
-                  {aiRows.map((q, index) => {
-                    const already = draft.blocks.some((b) => b.id === q.id);
-                    return (
-                      <View key={q.id} style={b.card}>
-                        <BuilderChoice
-                          label={t("generationRecovery.question", {
-                            n: index + 1,
-                          })}
-                          selected={already ||
-                            selected.some((b) => b.id === q.id)}
-                          disabled={already || busy || !recoveredFits}
-                          onPress={() =>
-                            choose({
-                              kind: "question",
-                              id: q.id,
-                              source: generationRecord?.payload.source_id
-                                ? "document"
-                                : "ai",
+                  {aiUnits.map((unit) => {
+                    const already = inDraft(unit.id);
+                    const first = aiRows.findIndex((q) =>
+                      q.id === (unit.kind === "group" ? unit.questions[0]?.id : unit.id)
+                    );
+                    if (unit.kind === "question") {
+                      const q = aiRows.find((row) => row.id === unit.id);
+                      if (!q) return null;
+                      return (
+                        <View key={unit.id} style={b.card}>
+                          <BuilderChoice
+                            label={t("generationRecovery.question", {
+                              n: first + 1,
                             })}
+                            selected={already || isSelected(unit.id)}
+                            disabled={already || busy || !recoveredFits}
+                            onPress={() =>
+                              choose({ kind: "question", id: unit.id, source: aiSource })}
+                          />
+                          <BuilderQuestionPreview q={q} showAnswer />
+                        </View>
+                      );
+                    }
+                    return (
+                      <View
+                        key={unit.id}
+                        style={[b.card, { gap: 10 }]}
+                        accessibilityLabel={t("d1.ai.groupLabel", { count: unit.questions.length })}
+                      >
+                        <BuilderChoice
+                          label={t("d1.ai.groupLabel", { count: unit.questions.length })}
+                          selected={already || isSelected(unit.id)}
+                          disabled={already || busy || !recoveredFits || !policy.data}
+                          onPress={() =>
+                            choose({ kind: "group", id: unit.id, source: aiSource })}
                         />
-                        <BuilderQuestionPreview q={q} showAnswer />
+                        <Text style={b.muted}>{t("d1.ai.groupHelp")}</Text>
+                        <View
+                          style={{
+                            backgroundColor: p.lilac,
+                            borderRadius: 16,
+                            padding: 12,
+                            gap: 6,
+                          }}
+                        >
+                          <Text style={[b.muted, { color: p.purple }]}>
+                            {t("sharedQuestions.common")}
+                          </Text>
+                          <Text style={b.bold}>{unit.title}</Text>
+                          <Text selectable style={b.copy}>{unit.body}</Text>
+                        </View>
+                        {unit.questions.map((member, i) => {
+                          const q = aiRows.find((row) => row.id === member.id);
+                          return q
+                            ? (
+                              <View key={member.id} style={{ gap: 4 }}>
+                                <Text style={b.bold}>
+                                  {t("generationRecovery.question", { n: first + i + 1 })}
+                                </Text>
+                                <BuilderQuestionPreview
+                                  q={{ ...q, stem: member.stem }}
+                                  showAnswer
+                                />
+                              </View>
+                            )
+                            : null;
+                        })}
                       </View>
                     );
                   })}

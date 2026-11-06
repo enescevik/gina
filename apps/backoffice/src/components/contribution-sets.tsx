@@ -15,6 +15,7 @@ import { supabase } from "@/lib/supabase";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
 import { createLibraryQueue } from "@/lib/library-review";
 import { Card, Notice } from "./Layout";
+import { adminRpc } from "@/lib/admin-rpc";
 type Teacher = ContributionDecision["teachers"][string];
 const statuses = {
   pending: "İnceleme bekliyor",
@@ -74,6 +75,8 @@ function Workspace({ user }: { user: string }) {
     [checked, setChecked] = useState<Record<string, boolean>>({}),
     [question, setQuestion] = useState(0),
     [note, setNote] = useState(""),
+    // D3: soru anahtarı → veliye görünecek düzeltme notu (yalnız geri gönderimde).
+    [questionNotes, setQuestionNotes] = useState<Record<string, string>>({}),
     [confirmed, setConfirmed] = useState(false),
     [dirty, setDirty] = useState(false);
   const [leave, setLeave] = useState<(() => void) | null>(null),
@@ -202,6 +205,7 @@ function Workspace({ user }: { user: string }) {
       setChecked({});
       setQuestion(0);
       setNote("");
+      setQuestionNotes({});
       setConfirmed(false);
       setDirty(false);
       setMessage("");
@@ -226,6 +230,11 @@ function Workspace({ user }: { user: string }) {
       checked[q.key] && teachers[q.key] && valid(teachers[q.key]!)
     );
   const locked = busy || !!pending || blocked || !ready;
+  const notes = Object.fromEntries(
+    Object.entries(questionNotes).map(([k, v]) => [k, v.trim()] as const).filter(([, v]) => v.length > 0),
+  );
+  const noteCount = Object.keys(notes).length;
+  const notesValid = Object.values(notes).every((v) => v.length >= 3 && v.length <= 1000);
   async function decide(approve: boolean) {
     if (busy || blocked || !ready) return;
     setBusy(true);
@@ -244,23 +253,45 @@ function Workspace({ user }: { user: string }) {
           note,
           teachers: approve ? teachers : {},
           confirmed: true,
+          ...(!approve && noteCount ? { question_notes: notes } : {}),
         });
         await queue.prepare(command);
         if (!live.current) return;
         setPending(command);
         setDirty(false);
       }
-      const { data, error } = await supabase().rpc(
-        "admin_decide_contribution_set",
-        {
-          p_request_id: command.request,
-          p_id: command.id,
-          p_approve: command.approve,
-          p_note: command.note,
-          p_teachers: command.teachers as Json,
-          p_confirmed: true,
-        },
-      ).abortSignal(AbortSignal.timeout(20000));
+      let data: unknown = null,
+        error: { code?: string; message?: string } | null = null;
+      if (command.question_notes && Object.keys(command.question_notes).length) {
+        // D3: soru notlu ret 7 parametreli RPC ile tek işlemde yazılır (üretilmiş tiplerde henüz yok).
+        try {
+          data = await adminRpc("admin_decide_contribution_set", {
+            p_request_id: command.request,
+            p_id: command.id,
+            p_approve: command.approve,
+            p_note: command.note,
+            p_teachers: command.teachers,
+            p_confirmed: true,
+            p_question_notes: command.question_notes,
+          }, 20000);
+        } catch (e) {
+          error = e as { code?: string; message?: string };
+        }
+      } else {
+        const r = await supabase().rpc(
+          "admin_decide_contribution_set",
+          {
+            p_request_id: command.request,
+            p_id: command.id,
+            p_approve: command.approve,
+            p_note: command.note,
+            p_teachers: command.teachers as Json,
+            p_confirmed: true,
+          },
+        ).abortSignal(AbortSignal.timeout(20000));
+        data = r.data;
+        error = r.error;
+      }
       if (error) {
         if (/^(P0001|22\w{3}|23\w{3})$/.test(error.code ?? "")) {
           await queue.acknowledge(command.request);
@@ -268,10 +299,11 @@ function Workspace({ user }: { user: string }) {
         }
         throw error;
       }
+      const out = data as Record<string, unknown> | null;
       if (
-        !data || typeof data !== "object" || Array.isArray(data) ||
-        data.id !== command.id ||
-        data.status !== (command.approve ? "approved" : "rejected")
+        !out || typeof out !== "object" || Array.isArray(out) ||
+        out.id !== command.id ||
+        out.status !== (command.approve ? "approved" : "rejected")
       ) throw Error("uncertain");
       await queue.acknowledge(command.request);
       if (!live.current) return;
@@ -279,6 +311,8 @@ function Workspace({ user }: { user: string }) {
       setMessage(
         command.approve
           ? "Katkı kabul edildi ve ayrı kütüphane taslağı oluşturuldu. Henüz yayımlanmadı."
+          : command.question_notes
+          ? `Gerekçeli inceleme sonucu ${Object.keys(command.question_notes).length} soru notuyla kaydedildi.`
           : "Gerekçeli inceleme sonucu kaydedildi.",
       );
       list.reload();
@@ -291,6 +325,10 @@ function Workspace({ user }: { user: string }) {
             ? "Katkının durumu değişti. Güncel kaydı yeniden açın."
             : code === "forbidden"
             ? "İşlem yetkiniz doğrulanamadı. Oturumu kontrol edin."
+            : code === "question_notes_invalid"
+            ? "Soru notları geçersiz: her not 3–1000 karakter olmalı ve bu katkının sorularına ait olmalı."
+            : code === "question_notes_reject_only"
+            ? "Soru notları yalnız geri gönderimde kullanılabilir; kabul bütün grup içindir."
             : "İşlem doğrulanamadı. Bekleyen bir kayıt varsa aynı işlemle yeniden kontrol edin; eksik alanlar varsa tamamlayın.",
         );
       }
@@ -445,6 +483,7 @@ function Workspace({ user }: { user: string }) {
                             onClick={() => setQuestion(index)}
                           >
                             {index + 1}. soru{checked[v.key] ? " ✓" : ""}
+                            {notes[v.key] || current.question_notes?.[v.key] ? " · not" : ""}
                           </button>
                         ))}
                       </div>
@@ -644,13 +683,40 @@ function Workspace({ user }: { user: string }) {
                                     />Soruyu, görselini, cevabını ve düzeyini
                                     inceledim.
                                   </label>
+                                  <label className="label">
+                                    Bu soru için düzeltme notu (yalnız geri
+                                    gönderimde veliye gösterilir)
+                                    <textarea
+                                      className="input min-h-20"
+                                      data-testid="question-note"
+                                      maxLength={1000}
+                                      value={questionNotes[q.key] ?? ""}
+                                      onChange={(e) => {
+                                        setQuestionNotes((v) => ({
+                                          ...v,
+                                          [q.key]: e.target.value,
+                                        }));
+                                        setDirty(true);
+                                      }}
+                                    />
+                                  </label>
                                 </fieldset>
                               )
                               : (
-                                <p className="rounded-2xl bg-brand-light p-4">
-                                  {statuses[current.status]} —{" "}
-                                  {current.review_note}
-                                </p>
+                                <>
+                                  <p className="rounded-2xl bg-brand-light p-4">
+                                    {statuses[current.status]} —{" "}
+                                    {current.review_note}
+                                  </p>
+                                  {current.question_notes?.[q.key]
+                                    ? (
+                                      <p className="d3-question-note" data-testid="question-note-readonly">
+                                        <strong>Bu soru için düzeltme notu:</strong>{" "}
+                                        {current.question_notes[q.key]}
+                                      </p>
+                                    )
+                                    : null}
+                                </>
                               )}
                           </>
                         )
@@ -665,8 +731,18 @@ function Workspace({ user }: { user: string }) {
                             sayılır. Ayrı taslağın yayın incelemesi daha sonra
                             yapılır.
                           </p>
+                          {noteCount
+                            ? (
+                              <div className="d3-question-note" data-testid="question-note-summary">
+                                <strong>{noteCount} soruya düzeltme notu yazıldı:</strong>{" "}
+                                {questions.map((v, i) => notes[v.key] ? `${i + 1}. soru` : null).filter(Boolean).join(", ")}.
+                                {" "}Notlar yalnız geri gönderimle kaydedilir; grup yine bütün olarak düzeltmeye döner.
+                                {notesValid ? null : <span className="block text-red-800">Her not en az 3 karakter olmalı.</span>}
+                              </div>
+                            )
+                            : null}
                           <label className="label mt-4">
-                            Veliye görünecek gerekçe<textarea
+                            Veliye görünecek genel gerekçe<textarea
                               className="input"
                               disabled={locked}
                               value={note}
@@ -693,7 +769,8 @@ function Workspace({ user }: { user: string }) {
                             <button
                               className="btn"
                               disabled={locked || !allChecked || !confirmed ||
-                                note.trim().length < 3}
+                                note.trim().length < 3 || noteCount > 0}
+                              title={noteCount > 0 ? "Soru notları yazılıyken kabul edilemez; notları silin ya da geri gönderin." : undefined}
                               onClick={() => void decide(true)}
                             >
                               Kabul et ve taslak oluştur
@@ -701,7 +778,7 @@ function Workspace({ user }: { user: string }) {
                             <button
                               className="btn-secondary"
                               disabled={locked || !confirmed ||
-                                note.trim().length < 3}
+                                note.trim().length < 3 || !notesValid}
                               onClick={() => void decide(false)}
                             >
                               Gerekçeyle geri gönder

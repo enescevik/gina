@@ -14,6 +14,7 @@ import {
   ChannelReadinessCard,
   useChannelReadiness,
 } from "@/components/channel-readiness";
+import { ChannelFailuresCard } from "@/components/channel-failures";
 interface Row {
   id: number;
   kind: string;
@@ -212,6 +213,7 @@ function Workspace({ user }: { user: string }) {
           />
         )
         : null}
+      {allowed ? <ChannelFailuresCard enabled={allowed} /> : null}
       {message ? <Notice tone="error">{message}</Notice> : null}
       {success ? <Notice tone="ok">{success}</Notice> : null}
       {storageError

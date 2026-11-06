@@ -52,6 +52,7 @@ export * from "./content-prereview";
 export * from "./catalog-blueprint";
 
 export * from "./prova-generation-journal";
+export * from "./prova-question-fit";
 
 export * from "./cohort-review";
 

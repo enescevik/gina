@@ -11,6 +11,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { p, SatinButton, Tag, u } from "@/components/planner/ui";
 import {
   ContributionChains,
+  QuestionNotes,
   trailErrorKey,
   useContributionChains,
 } from "@/components/prova-library/contribution-trail";
@@ -256,6 +257,7 @@ export default function ContributionScreen() {
                   <Text selectable style={u.copy}>
                     {rejected?.review_note ?? (chains.isPending ? t("common.loading") : t("contributionTrail.noNote"))}
                   </Text>
+                  <QuestionNotes questions={rejected?.questions} />
                   {rejected && rejected.question_count > 1
                     ? (
                       <>

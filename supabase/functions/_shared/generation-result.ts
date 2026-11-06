@@ -60,6 +60,24 @@ export interface GeneratedOutput {
   shared_sources?: SharedSource[] | null;
 }
 
+/** Localized heading of a shared source; becomes the group title (question_source_groups.title). */
+export function sharedSourceTitle(kind: SharedSource["kind"], locale: "tr" | "en") {
+  const tr = { text: "Ortak metin", table: "Ortak tablo", visual_description: "Ortak görsel açıklaması" };
+  const en = { text: "Shared passage", table: "Shared table", visual_description: "Shared visual description" };
+  return (locale === "en" ? en : tr)[kind];
+}
+/**
+ * D1: a linked question's stem is written self-contained, in the same shape the manual/library group contract
+ * materializes (`title\npassage\n\nprompt`). The server turns the linked rows into one shared-source group
+ * when it can; otherwise every question still carries the passage, so the child never sees a dangling reference.
+ */
+export function materializeSharedStem(
+  shared: SharedSource,
+  prompt: string,
+  locale: "tr" | "en",
+) {
+  return `${sharedSourceTitle(shared.kind, locale)}\n${shared.content.trim()}\n\n${prompt.trim()}`;
+}
 export type GenerationContext = {
   schema: "gina.generation-context.v1";
   subject: string;
@@ -146,6 +164,18 @@ export function validateQuestionProvenance(
   }
   return true;
 }
+/** The self-contained stem of a linked question must still fit question_bank's stem limit. */
+function sharedStemsFit(
+  questions: GeneratedQuestion[],
+  shared: SharedSource[] | null | undefined,
+  locale: "tr" | "en",
+) {
+  const byId = new Map((shared ?? []).map((s) => [s.id, s] as const));
+  return questions.every((q) => {
+    const s = q.shared_source_id ? byId.get(q.shared_source_id) : null;
+    return !s || materializeSharedStem(s, q.stem, locale).length <= 10000;
+  });
+}
 export function validateGenerationResult(
   result: AiResult<GeneratedOutput>,
   context: GenerationContext,
@@ -198,7 +228,8 @@ export function validateGenerationResult(
     // Every shared passage must be used; a shared source is one identity, linked questions count separately.
     [...sharedIds].some((id) =>
       !questions.some((q) => q.shared_source_id === id)
-    )
+    ) ||
+    !sharedStemsFit(questions, shared, context.locale)
   ) throw new Error("ai_result_invalid");
 }
 export async function finishGeneration(
@@ -287,9 +318,15 @@ export async function finishGeneration(
           ? { intended_difficulty: q.intended_difficulty }
           : {}),
         ...(q.rubric && q.rubric.criteria?.length ? { rubric: q.rubric } : {}),
-        // One shared passage keeps one identity; linked questions stay separate rows.
+        // One shared passage keeps one identity; linked questions stay separate rows. D1: the server groups
+        // rows that share it (complete_prova_generation_v2 → question_source_groups) using shared_prompt.
         ...(shared
-          ? { shared_source_id: shared.id, shared_source: shared }
+          ? {
+            shared_source_id: shared.id,
+            shared_source: shared,
+            shared_source_title: sharedSourceTitle(shared.kind, locale),
+            shared_prompt: q.stem.trim(),
+          }
           : {}),
         ...(scenario ? { content_fit: "pending_human_review" } : {}),
       };
@@ -306,7 +343,9 @@ export async function finishGeneration(
           difficulty: DIFFICULTIES.includes(q.difficulty)
             ? q.difficulty
             : difficulty,
-          stem: q.stem.trim(),
+          stem: shared
+            ? materializeSharedStem(shared, q.stem, locale)
+            : q.stem.trim(),
           choices,
           correct_key: isMc ? q.correct_key : null,
           expected_answer: q.expected_answer?.trim() || null,

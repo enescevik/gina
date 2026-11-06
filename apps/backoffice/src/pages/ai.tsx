@@ -6,6 +6,7 @@ import type { Tables } from "@gina/core";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 
 import { Card, Layout, Notice } from "@/components/Layout";
+import { useConfirm } from "@/components/confirm-dialog";
 import { fmtDateTime } from "@/lib/format";
 import { t } from "@/lib/i18n";
 import { errorMessage, isStaleError, supabase } from "@/lib/supabase";
@@ -121,6 +122,7 @@ export default function AiPage() {
   const lock = useRef(false);
   const onState = useCallback((id: string, dirty: boolean, busy: boolean) => setEdits(current => ({ ...current, [id]: { dirty, busy } })), []);
   const guard = useUnsavedChanges(Object.values(edits).some(e => e.dirty), busy || Object.values(edits).some(e => e.busy));
+  const confirm = useConfirm();
 
   const onSaved = (text: string | null, err?: unknown) => {
     setMsg(err ? { text: errorMessage(err, t.errors), tone: "error" } : { text: text ?? "", tone: "ok" });
@@ -136,7 +138,7 @@ export default function AiPage() {
     finally { lock.current = false; setBusy(false); }
   }
   async function setKill(enabled: boolean) {
-    if (!enabled && !window.confirm(t.ai.confirmOff)) return;
+    if (!enabled && !(await confirm.ask({ title: t.ai.turnOff, body: t.ai.confirmOff, confirmLabel: t.ai.turnOff, tone: "danger" }))) return;
     await mutate(() => supabase().rpc("admin_set_ai_enabled", { p_enabled: enabled }));
   }
   async function toggleModel(m: AiModel) {
@@ -150,13 +152,22 @@ export default function AiPage() {
         features = ` Etkilenen özellikler: ${preview.affected_features.map(f => featureLabel[f.feature] ?? f.feature).join(", ") || "Yok"}. Alternatif: ${preview.alternatives.join(", ") || "yok"}.`;
       } catch { features = " (Sunucu etki önizlemesi okunamadı.)"; }
     }
-    if (m.active && !window.confirm(`${m.display_name} pasifleştirilsin mi? Etkilenen paketler: ${affected.join(", ") || "Yok"}.${features} Bu modelin kullanıldığı yeni işlemler çalışmayabilir.`)) return;
+    if (m.active && !(await confirm.ask({
+      title: `${m.display_name} pasifleştirilsin mi?`,
+      body: <>
+        <p>Etkilenen paketler: {affected.join(", ") || "Yok"}.{features}</p>
+        <p className="mt-2">Bu modelin kullanıldığı yeni işlemler çalışmayabilir.</p>
+      </>,
+      confirmLabel: "Pasifleştir",
+      tone: "danger",
+    }))) return;
     await mutate(() => supabase().from("ai_models").update({ active: !m.active }).eq("id", m.id));
   }
 
   return (
     <Layout title={t.ai.title}>
       {guard.dialog}
+      {confirm.element}
       {error ? <Notice tone="error">{errorMessage(error, t.errors)}</Notice> : null}
       {msg ? <Notice tone={msg.tone}>{msg.text}</Notice> : null}
       {!data ? (

@@ -21,6 +21,8 @@ interface AuthState {
   roleError: boolean;
   /** Bu oturumda daha önce etkin görülmüş roller (iptal mesajı için). */
   seenRoles: string[];
+  /** D3 (Q00-A3-7): oturum admin claim'i taşıyor ama canlı `admins` kontrolü artık yetki vermiyor. */
+  adminRevoked: boolean;
   refreshRoles: () => void;
 }
 const AuthContext = createContext<AuthState>({
@@ -31,6 +33,7 @@ const AuthContext = createContext<AuthState>({
   rolesReady: false,
   roleError: false,
   seenRoles: [],
+  adminRevoked: false,
   refreshRoles: () => {},
 });
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -44,6 +47,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     roles: [] as string[],
     error: false,
     seen: [] as string[],
+    /** null = bilinmiyor (RPC yok/hata): yalnız kesin `false` iptal sayılır. */
+    admin: null as boolean | null,
   });
   const [tick, setTick] = useState(0), sequence = useRef(0);
   const refreshRoles = useCallback(() => setTick((n) => n + 1), []);
@@ -92,7 +97,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function refresh() {
       const request = ++sequence.current;
       try {
-        const { data, error } = await supabase().rpc("my_operation_roles");
+        const client = supabase();
+        const [{ data, error }, admin] = await Promise.all([
+          client.rpc("my_operation_roles"),
+          // Canlı yönetici kontrolü; migration yoksa veya ağ hatasında "bilinmiyor" kalır.
+          (client as unknown as { rpc: (n: string) => PromiseLike<{ data: unknown; error: unknown }> })
+            .rpc("my_admin_access")
+            .then((r) => (r.error || typeof r.data !== "boolean" ? null : r.data), () => null),
+        ]);
         if (
           error || !Array.isArray(data) ||
           !data.every((v) =>
@@ -117,6 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             error: false,
             // C07: bu oturumda bir kez görülen roller; kaldırılırsa ekran "yetkiniz kaldırıldı" der.
             seen: Array.from(new Set([...(old.user === user ? old.seen : []), ...(data as string[])])),
+            admin: admin ?? (old.user === user ? old.admin : null),
           }));
         }
       } catch {
@@ -126,6 +139,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             roles: old.user === user ? old.roles : [],
             error: true,
             seen: old.user === user ? old.seen : [],
+            admin: old.user === user ? old.admin : null,
           }));
         }
       }
@@ -153,6 +167,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         rolesReady,
         roleError: rolesReady && roleState.error,
         seenRoles: rolesReady ? roleState.seen : [],
+        adminRevoked: rolesReady && state.isAdmin && roleState.admin === false,
         refreshRoles,
       }}
     >

@@ -211,6 +211,17 @@ export function creditsNeeded(
   return units.filter((u) => chosen.has(u.key) && !u.owned).reduce((sum, u) => sum + u.count, 0);
 }
 
+export const contributionTrailQuestionSchema = z.object({
+  key: z.string(),
+  position: z.number().int().positive(),
+  excerpt: z.string(),
+  note: z.string().nullable(),
+});
+export type ContributionTrailQuestion = z.infer<typeof contributionTrailQuestionSchema>;
+/** Ret notu olan sorular (sırasıyla); düzeltme ekranında veliye gösterilir. */
+export function questionsToFix(step: { questions?: ContributionTrailQuestion[] }) {
+  return (step.questions ?? []).filter((q) => !!q.note);
+}
 export const contributionTrailStepSchema = z.object({
   id: z.uuid(),
   version: z.number().int().positive(),
@@ -228,6 +239,8 @@ export const contributionTrailStepSchema = z.object({
   prereview_status: z.string().nullable(),
   prereview_at: z.string().nullable(),
   package_status: libraryLifecycleStatus.nullable(),
+  /** D3: ret kararındaki soru bazlı notlar; notsuz/eski adımlarda boş. */
+  questions: z.array(contributionTrailQuestionSchema).optional(),
 });
 export const contributionTrailSchema = z.object({
   chain_id: z.uuid(),
