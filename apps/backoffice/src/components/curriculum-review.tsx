@@ -17,6 +17,7 @@ import { createLibraryQueue } from "@/lib/library-review";
 import { Card, Notice } from "./Layout";
 import { CurriculumSources } from "./curriculum-sources";
 import { CandidatePipelineBadges, CurriculumPipeline, usePipeline } from "./curriculum-pipeline";
+import { OfficialVerificationOps } from "./official-verification-ops";
 
 const statuses = {
   draft: "Kaynak incelemesi bekliyor",
@@ -458,6 +459,7 @@ function Workspace({ user }: { user: string }) {
           : null}
       </details>
       <CurriculumPipeline />
+      <OfficialVerificationOps candidate={current ? { id: current.id, revision: current.revision, label: current.label, status: current.status } : null} />
       <CurriculumSources />
       {list.error || detail.error
         ? (

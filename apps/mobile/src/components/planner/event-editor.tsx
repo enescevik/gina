@@ -95,6 +95,8 @@ export function EventEditor({
           ? "calendar.invalidDateTime"
           : e.message === "event_changed"
           ? "calendarRecovery.changed"
+          : e.message === "event_archived"
+          ? "c01ui.calendar.eventArchived"
           : "planner.saveError",
       ),
     );

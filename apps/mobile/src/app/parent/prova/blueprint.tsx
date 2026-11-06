@@ -20,6 +20,7 @@ import { Field } from "@/components/ui/field";
 import { Toggle } from "@/components/ui/toggle";
 import { Avatar } from "@/components/avatar";
 import { IconButton, p, SatinButton, Tag, u } from "@/components/planner/ui";
+import { SavedBlueprintProvenance } from "@/components/learning/blueprint-provenance";
 type ScenarioSeed = {
   child_id: string;
   subject: string;
@@ -69,7 +70,9 @@ export default function BlueprintScreen() {
   // Senaryo kataloğundan gelen tam dağılım; değişirse "kişiselleştirilmiş çalışma".
   const [seed] = useState(() => initial.pending ? null : readSeed(params.seed));
   const [step, setStep] = useState(() => seed ? 1 : 0),
-    [saved, setSaved] = useState(false);
+    [saved, setSaved] = useState(false),
+    // C01 UI: kayıttan sonra köken etiketi sunucudaki satırdan okunur (istemci tahmini değil).
+    [savedId, setSavedId] = useState<string | null>(null);
   const [form, setForm] = useState<BlueprintInput>(() =>
     initial.pending?.p_input ??
       (seed
@@ -175,11 +178,12 @@ export default function BlueprintScreen() {
         }
       }
     },
-    onSuccess: async () => {
+    onSuccess: async (id) => {
       await Promise.all([
         cache.invalidateQueries({ queryKey: ["blueprints", family] }),
         cache.invalidateQueries({ queryKey: ["builder_blueprints", family] }),
       ]);
+      setSavedId(id);
       setSaved(true);
     },
   });
@@ -232,6 +236,7 @@ export default function BlueprintScreen() {
             <Check color={p.purple} />
             <Text style={u.heading}>{t("blueprintFlow.saved")}</Text>
             <Text style={u.copy}>{t("blueprintFlow.savedHelp")}</Text>
+            <SavedBlueprintProvenance id={savedId} />
           </View>
         )
         : blocked
