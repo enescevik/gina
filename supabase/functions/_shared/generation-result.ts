@@ -8,6 +8,8 @@ import {
   officialUrls,
 } from "./prova.ts";
 import type { ScenarioProvenance } from "./catalogue-plan.ts";
+import { RUBRIC_ASSESSES, type RubricAssesses } from "./answer-key.ts";
+export { RUBRIC_ASSESSES };
 export const QUESTION_TYPES = [
   "coktan_secmeli",
   "acik_uclu",
@@ -28,9 +30,45 @@ export const COGNITIVE_DEMANDS = [
  * Eski (v6 ve öncesi) küçük puanlı AI rubrikleri okuma tarafında (core `scaleRubricTo100`) 100'e oranlanmaya devam eder. */
 export const RUBRIC_SCALE_RULE =
   "Ölçüt puanları 100 üzerindendir: bir sorunun tüm criteria puanlarının toplamı tam 100 olsun (ör. 40 + 40 + 20), her puan pozitif tam sayı. Şıklı soruda criteria tek ölçüt olabilir (100 puan).";
+/** D13 (v8): üretim istemindeki ölçme amacı cümlesi. Puanlama (prova-grade/v7) bu alanı `degerlendirme_amaci` olarak okur. */
+export const RUBRIC_ASSESSES_RULE =
+  'Açık uçlu soruda rubric.assesses alanını doldur: soru işlem adımlarını göstermeyi, açıklamayı, gerekçelendirmeyi ya da belirli bir gösterimle (kesir, şekil, tablo) yazmayı istiyorsa ve ölçütler bunları puanlıyorsa "process"; yalnız doğru sonucu/cevabı ölçüyorsa "result". Süreç puanlanacaksa soru metni bunu açıkça istesin (ör. "işlemlerini göster", "nedenini açıkla"). Şıklı soruda assesses boş metin kalır.';
+/** Structured-output schema of `questions[].rubric` (prova-generate). D13: `assesses` is required by the strict
+ * grammar, "" for multiple choice / unknown; the validator still accepts older outputs without it. */
+export const RUBRIC_JSON_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: ["criteria", "alternative_answers", "assesses"],
+  properties: {
+    criteria: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["text", "points"],
+        properties: {
+          text: { type: "string" },
+          points: {
+            type: "number",
+            description: "Out of 100; a question's criteria points sum to 100.",
+          },
+        },
+      },
+    },
+    alternative_answers: { type: "array", items: { type: "string" } },
+    assesses: {
+      type: "string",
+      enum: ["", ...RUBRIC_ASSESSES],
+      description:
+        "result = only the final answer is measured; process = steps/justification/representation are measured. Empty for multiple choice.",
+    },
+  },
+};
 export interface QuestionRubric {
   criteria: { text: string; points: number }[];
   alternative_answers?: string[];
+  /** D13: optional; absent/blank on legacy rows and multiple choice (grader infers from the stem). */
+  assesses?: RubricAssesses | "" | null;
 }
 export interface SharedSource {
   id: string;
@@ -121,7 +159,13 @@ function rubricValid(r: unknown): r is QuestionRubric {
       typeof c.points === "number" && Number.isFinite(c.points) && c.points > 0 &&
       c.points <= 100
     ) &&
-    (blank(v.alternative_answers) || isStringList(v.alternative_answers, 10));
+    (blank(v.alternative_answers) || isStringList(v.alternative_answers, 10)) &&
+    (blank(v.assesses) || (RUBRIC_ASSESSES as readonly unknown[]).includes(v.assesses));
+}
+/** Stored rubric: `assesses` kept only when it is a real value (schema placeholder "" dropped). */
+function storedRubric(r: QuestionRubric): QuestionRubric {
+  const { assesses, ...rest } = r;
+  return assesses === "result" || assesses === "process" ? { ...rest, assesses } : rest;
 }
 /** Per-question scenario trace: block membership, outcome subset, type/demand vocab, rubric and shared source. */
 export function validateQuestionProvenance(
@@ -428,7 +472,7 @@ export async function finishGeneration(
         ...(q.intended_difficulty
           ? { intended_difficulty: q.intended_difficulty }
           : {}),
-        ...(q.rubric && q.rubric.criteria?.length ? { rubric: q.rubric } : {}),
+        ...(q.rubric && q.rubric.criteria?.length ? { rubric: storedRubric(q.rubric) } : {}),
         // One shared passage keeps one identity; linked questions stay separate rows. D1: the server groups
         // rows that share it (complete_prova_generation_v2 → question_source_groups) using shared_prompt.
         ...(shared
