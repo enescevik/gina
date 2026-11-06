@@ -35,6 +35,10 @@ export const phase2bAnswerSchemas = {
   clock: z.object({ type: z.literal("clock"), v: z.literal(1), time: z.string().regex(/^([01][0-9]|2[0-3]):[0-5][0-9]$/).optional() }).strict(),
 } satisfies Record<Phase2bInteractionType, z.ZodType>;
 export type Phase2bAnswer = z.infer<(typeof phase2bAnswerSchemas)[Phase2bInteractionType]>;
+export type Phase2bAnswerOf<T extends Phase2bInteractionType> = Extract<Phase2bAnswer, { type: T }>;
+export type Phase2bPayload<T extends Phase2bInteractionType> = z.infer<(typeof phase2bPayloadSchemas)[T]>;
+/** 2B cevap birleşimi (istemci günlüğü/okuma için; sunucu yine doğrular). */
+export const phase2bAnswerSchema = z.discriminatedUnion("type", [phase2bAnswerSchemas.region_select, phase2bAnswerSchemas.clock]);
 
 export const parseClockTime = (t: unknown): number | null =>
   typeof t === "string" && /^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(t) ? Number(t.slice(0, 2)) * 60 + Number(t.slice(3)) : null;

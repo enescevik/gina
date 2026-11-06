@@ -8,11 +8,11 @@ import { Passage } from "./passage";
 import { markTextMax, multiChoiceMax, setFix, setStage, toggleMark, toggleSelected } from "./phase2a-model";
 import { Help, Option, SectionTitle, StepNote, qt } from "./ui";
 
-function Counter({ count, max, testID }: { count: number; max?: number; testID: string }) {
+export function Counter({ count, max, testID, countKey = "prova.qt.child.sel.count" }: { count: number; max?: number; testID: string; countKey?: string }) {
   const { t } = useTranslation();
   return (
     <Text testID={testID} accessibilityLiveRegion="polite" style={{ alignSelf: "flex-start", fontFamily: "Nunito_800ExtraBold", fontSize: 16, color: qt.ink, backgroundColor: qt.lilac, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 4 }}>
-      {max !== undefined ? t("prova.qt.child.sel.countOf", { count, max }) : t("prova.qt.child.sel.count", { count })}
+      {max !== undefined ? t("prova.qt.child.sel.countOf", { count, max }) : t(countKey, { count })}
     </Text>
   );
 }
@@ -59,7 +59,7 @@ export function ErrorFixQuestion({ payload, answer, onChange, disabled }: {
   return (
     <View style={{ gap: 12 }}>
       <Help>{t(payload.unit === "word" ? "prova.qt.child.fix.helpWord" : "prova.qt.child.fix.helpSentence")}</Help>
-      <Counter testID="qt-fix-count" count={marked.length} />
+      <Counter testID="qt-fix-count" count={marked.length} countKey="prova.qt.child.fix.count" />
       <Passage
         testPrefix="qt-fix"
         segments={payload.segments}

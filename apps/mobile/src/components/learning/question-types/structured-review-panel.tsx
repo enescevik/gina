@@ -160,6 +160,7 @@ export function StructuredReviewPanel({
           </Text>
         ) : null}
         <StructuredQuestion
+          questionId={question.id}
           type={question.interaction_type}
           schemaVersion={question.schema_version}
           payload={question.payload}

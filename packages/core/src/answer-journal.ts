@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { notebookSchema } from "./notebook";
-import { phase2aAnswerSchema, structuredAnswerSchema } from "./question-types";
+import { phase2aAnswerSchema, phase2bAnswerSchema, structuredAnswerSchema } from "./question-types";
 import type { AnswerReceipt, AnswerValue } from "./answer-receipts";
 
 export interface AnswerJournalStorage {
@@ -15,7 +15,7 @@ const valueSchema = z.object({
   document: notebookSchema.optional(),
   // QT00: sürümlü yapılandırılmış cevap. Eski (v1) günlük kayıtlarında yoktur ve aynen okunur.
   // QT30–QT33: 2A cevapları da aynı günlükte tutulur (tür etkin değilse sunucu zaten reddeder).
-  answer: z.union([structuredAnswerSchema, phase2aAnswerSchema]).optional(),
+  answer: z.union([structuredAnswerSchema, phase2aAnswerSchema, phase2bAnswerSchema]).optional(),
 }).strict();
 const recordSchema = z.object({
   version: z.literal(1),
