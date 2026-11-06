@@ -1,0 +1,73 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "check": "k_server_contract_and_role_gates",
+      "passed": true,
+      "detail": {
+        "old_call": "newest/<created_at>|<id>",
+        "gates": {
+          "admin_actors": "allowed",
+          "support_actors": "403:42501",
+          "parent_actors": "403:42501",
+          "anon_actors": "401:42501",
+          "support_families_filter": "allowed",
+          "anon_families": "401:42501"
+        },
+        "parent_label": null,
+        "fields": [
+          "id",
+          "label"
+        ]
+      }
+    },
+    {
+      "check": "k1_families_expiring_filter_sort_paging",
+      "passed": true,
+      "detail": {
+        "d1280": {
+          "first_page": 50,
+          "after_more": 56,
+          "expected_total": 56,
+          "status": "50 aile gösteriliyor; daha fazlası var.",
+          "end_status": "Etkin paketi 14 gün içinde biten 56 ailenin tamamı gösteriliyor."
+        },
+        "t768": {
+          "first_page": 50,
+          "after_more": 56,
+          "expected_total": 56,
+          "status": "50 aile gösteriliyor; daha fazlası var.",
+          "end_status": "Etkin paketi 14 gün içinde biten 56 ailenin tamamı gösteriliyor."
+        }
+      }
+    },
+    {
+      "check": "k2_override_audit_actor_labels",
+      "passed": true,
+      "detail": {
+        "d1280": {
+          "other": "email of the other admin",
+          "parent": "Başka yönetici",
+          "self": "Siz",
+          "system": "Sistem (otomatik)",
+          "actor_rpc_calls": 1
+        },
+        "t768": {
+          "other": "email of the other admin",
+          "parent": "Başka yönetici",
+          "self": "Siz",
+          "system": "Sistem (otomatik)",
+          "actor_rpc_calls": 1
+        }
+      }
+    },
+    {
+      "check": "no_native_dialogs_no_page_errors",
+      "passed": true,
+      "detail": {
+        "native_dialogs": 0,
+        "page_errors": 0
+      }
+    }
+  ]
+}

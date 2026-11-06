@@ -119,6 +119,8 @@ export const tr = {
     actorOther: "Başka yönetici",
     actorIdLabel: "Hesap kimliği",
     actorEmailNote: "Diğer yöneticilerin e-postası bu ekranda gösterilmez.",
+    // D12 (D11-K2): diğer ekip hesapları e-postayla gösterilir (yalnız tam yöneticiye; veli hesabı çözülmez).
+    actorNamedNote: "Diğer ekip hesapları e-postasıyla gösterilir; çözülemeyen hesap \"Başka yönetici\" olarak kalır.",
     auditShown: (n: string) => `Son ${n} kayıt gösteriliyor.`,
     auditMore: "Daha eski kayıtları göster",
     auditEnd: "Daha eski kayıt yok.",

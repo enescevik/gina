@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
-import { familiesSearchSchema, normalizeFamilyQuery, overrideCommandSchema, type FamilySearchRow, type OverrideCommand, type OverridePayload } from "@gina/core";
+import { actorLabel, auditActorsSchema, familiesSearchSchema, normalizeFamilyQuery, overrideCommandSchema, unresolvedActorIds, type FamilySearchRow, type OverrideCommand, type OverridePayload } from "@gina/core";
 import { OverrideGrant } from "@/components/override-preview";
 import { adminRpc, isForbidden } from "@/lib/admin-rpc";
 import { b01, planLabel } from "@/lib/admin-workqueue-text";
@@ -125,7 +125,33 @@ function OverridesEditor({ user }: { user:string }) {
     } catch { setOlderError(true); }
     finally { setOlderBusy(false); }
   }
-  const actorName = (id: string | null) => id === null ? t.overrides.actorSystem : id === user ? t.overrides.actorSelf : t.overrides.actorOther;
+  // D12 (D11-K2): diğer ekip hesaplarının e-postası yalnız tam yöneticiye açık `admin_audit_actors` ile çözülür.
+  // Çözülemeyen (veli/bilinmeyen kimlik, eski veritabanı, hata) satır "Başka yönetici" olarak kalır; aynı kimlik yeniden sorulmaz.
+  const [actors, setActors] = useState<ReadonlyMap<string, string | null>>(() => new Map());
+  const [actorsFailed, setActorsFailed] = useState(false);
+  const pendingKey = unresolvedActorIds((auditRows ?? []).map((a) => a.actor_id), actors, user).join(",");
+  useEffect(() => {
+    if (!pendingKey) return;
+    const ids = pendingKey.split(",");
+    let live = true;
+    void (async () => {
+      let found: Map<string, string | null>;
+      try {
+        found = new Map(auditActorsSchema.parse(await adminRpc("admin_audit_actors", { p_ids: ids }, 15000)).map((r) => [r.id, r.label]));
+      } catch (e) {
+        if (isForbidden(e)) markRevoked();
+        found = new Map();
+        if (live) setActorsFailed(true);
+      }
+      if (!live) return;
+      setActors((prev) => { const next = new Map(prev); for (const id of ids) next.set(id, found.get(id) ?? null); return next; });
+    })();
+    return () => { live = false; };
+  }, [pendingKey, markRevoked]);
+  const actorName = (id: string | null) => {
+    const who = actorLabel(id, user, actors);
+    return who.kind === "system" ? t.overrides.actorSystem : who.kind === "self" ? t.overrides.actorSelf : who.kind === "named" ? who.label : t.overrides.actorOther;
+  };
 
   const queue = useMemo(() => overrideQueue(user), [user]);
   const [pending,setPending] = useState<OverrideCommand|null>(null);
@@ -284,7 +310,7 @@ function OverridesEditor({ user }: { user:string }) {
         ) : (
           <>
           <p className="mb-2 text-sm text-slate-600" role="status" data-testid="override-audit-status">
-            {t.overrides.auditShown(String(auditRows.length))} {t.overrides.actorEmailNote}
+            {t.overrides.auditShown(String(auditRows.length))} {actorsFailed ? t.overrides.actorEmailNote : t.overrides.actorNamedNote}
           </p>
           <div className="overflow-x-auto"><table className="table" data-testid="override-audit">
             <thead>
@@ -302,7 +328,7 @@ function OverridesEditor({ user }: { user:string }) {
                   <td className="font-mono text-xs">{a.action === "entitlement_overrides.insert" ? "Hak verildi" : a.action === "entitlement_overrides.expire" ? "Hak sonlandırıldı" : a.action === "entitlement_overrides.update" ? "Hak güncellendi" : a.action}</td>
                   <td>{a.reason ?? t.common.none}</td>
                   <td className="text-sm" data-testid="override-audit-actor">
-                    <span className="font-medium text-slate-800">{actorName(a.actor_id)}</span>
+                    <span className="break-all font-medium text-slate-800">{actorName(a.actor_id)}</span>
                     {a.actor_id && a.actor_id !== user ? (
                       <details className="text-xs text-slate-500">
                         <summary className="cursor-pointer">{t.overrides.actorIdLabel}</summary>
