@@ -37,8 +37,15 @@ import {
 } from "./question-image-editor";
 import { QuestionMedia, type QuestionMediaItem } from "./question-media";
 import { uploadLearningFile } from "@/lib/learning-files";
-import { addToProvaDraft } from "@/lib/prova-draft";
+import { addToProvaDraft, replaceInProvaDraft } from "@/lib/prova-draft";
+import { provaErrorMessage } from "@/lib/prova-ai";
 import { supabase } from "@/lib/supabase";
+import {
+  type Json,
+  type QuestionContentReview,
+  type QuestionRubric,
+  remainingFlaggedNames,
+} from "@gina/core";
 
 export interface SharedQuestionDraft {
   topic: string;
@@ -49,6 +56,18 @@ export interface SharedQuestionDraft {
   solution: string;
   choices: { key: string; text: string }[];
   correct_key: string;
+  /** D14: AI grubu düzenlemesinde üyenin özgün satırı ve sihirbazda gösterilmeyen alanlar (olduğu gibi taşınır). */
+  carry?: {
+    sourceId: string;
+    rubric: QuestionRubric | null;
+    explanation: string | null;
+    scenario_code: string | null;
+  };
+}
+/** D14: sihirbaz AI ortak kaynak grubunu düzenler (yeni grup sürümü; üye ekleme/çıkarma, görsel, paylaşım yok). */
+export interface SharedAiEdit {
+  groupId: string;
+  review: QuestionContentReview | null;
 }
 export interface SharedGroupDraft {
   title: string;
@@ -79,7 +98,8 @@ const blankGroup = (): SharedGroupDraft => ({
 });
 
 export function SharedQuestionWizard(
-  { initial, enabled, familyId, catalog, draftId, scope }: {
+  { initial, enabled, familyId, catalog, draftId, scope, aiEdit }: {
+    aiEdit?: SharedAiEdit;
     draftId?: string;
     scope?: { grade: string; subject: string };
     initial?: SharedGroupDraft;
@@ -105,14 +125,45 @@ export function SharedQuestionWizard(
     [leave, setLeave] = useState<(() => void) | null>(null);
   const [validation, setValidation] = useState<string | null>(null),
     [uncertain, setUncertain] = useState(false);
-  const [saved, setSaved] = useState<{ id: string; version: number } | null>(
-    null,
-  );
+  const [saved, setSaved] = useState<
+    { id: string; version: number; question_ids?: string[] } | null
+  >(null);
   const request = useRef<string | null>(null);
   const scroll = useRef<ComponentRef<typeof ScrollView>>(null);
   const save = useMutation({
     mutationFn: async () => {
       request.current ??= randomUUID();
+      if (aiEdit) {
+        const { data, error } = await supabase.rpc("save_ai_group_edit", {
+          p_request_id: request.current,
+          p_group_id: aiEdit.groupId,
+          p_group: { title: draft.title.trim(), body: draft.body.trim() },
+          p_questions: draft.questions.map((q) => ({
+            source_id: q.carry?.sourceId ?? "",
+            topic: q.topic.trim() || draft.title.trim(),
+            kind: q.kind,
+            difficulty: q.difficulty,
+            stem: q.stem.trim(),
+            solution: q.solution.trim(),
+            explanation: q.carry?.explanation ?? null,
+            scenario_code: q.carry?.scenario_code ?? null,
+            expected_answer: q.kind === "open_ended"
+              ? q.expected_answer.trim()
+              : null,
+            choices: q.kind === "multiple_choice"
+              ? q.choices.map((c) => ({ ...c, text: c.text.trim() }))
+              : null,
+            correct_key: q.kind === "multiple_choice" ? q.correct_key : null,
+            rubric: (q.kind === "open_ended" ? q.carry?.rubric ?? null : null) as unknown as Json,
+          })),
+        }).abortSignal(AbortSignal.timeout(20_000));
+        if (error) throw error;
+        return data as unknown as {
+          id: string;
+          version: number;
+          question_ids: string[];
+        };
+      }
       for (const image of images) {
         await uploadLearningFile(image.file, "question_image");
       }
@@ -124,7 +175,7 @@ export function SharedQuestionWizard(
           subject: draft.subject.trim(),
           grade: Number(draft.grade),
         },
-        p_questions: draft.questions.map((q) => ({
+        p_questions: draft.questions.map(({ carry: _carry, ...q }) => ({
           ...q,
           topic: q.topic.trim() || draft.title.trim(),
           stem: q.stem.trim(),
@@ -174,7 +225,17 @@ export function SharedQuestionWizard(
   });
   const attach = useMutation({
     mutationFn: async (groupId: string) => {
-      if (draftId) {
+      if (draftId && aiEdit) {
+        await replaceInProvaDraft(
+          draftId,
+          aiEdit.groupId,
+          { kind: "group", id: groupId, source: "ai" },
+          {
+            from: draft.questions.map((q) => q.carry?.sourceId ?? ""),
+            to: saved?.question_ids ?? [],
+          },
+        );
+      } else if (draftId) {
         await addToProvaDraft(draftId, [{
           kind: "group",
           id: groupId,
@@ -184,7 +245,21 @@ export function SharedQuestionWizard(
       return groupId;
     },
     onSuccess: (groupId) => {
-      if (draftId) {
+      if (draftId && aiEdit) {
+        void cache.invalidateQueries({
+          predicate: (q) =>
+            ["builder_material", "ai_question_edits", "prova_drafts"].includes(
+              String(q.queryKey[0]),
+            ),
+        });
+        if (router.canGoBack()) router.back();
+        else {
+          router.replace({
+            pathname: "/parent/prova/builder",
+            params: { draftId },
+          });
+        }
+      } else if (draftId) {
         router.replace({
           pathname: "/parent/prova/builder",
           params: { draftId },
@@ -200,7 +275,31 @@ export function SharedQuestionWizard(
       ),
   });
   const locked = save.isPending || attach.isPending || uncertain || !!saved;
-  const reusable = step === 2 && !dirty && !!draft.previousId;
+  const reusable = !aiEdit && step === 2 && !dirty && !!draft.previousId;
+  // D14: özgün uyarıdaki adlardan ortak metinde ya da üye sorularında hâlâ geçenler (sunucu kaydederken yeniden denetler).
+  const remainingNames = aiEdit
+    ? remainingFlaggedNames(aiEdit.review, [
+      draft.title,
+      draft.body,
+      ...draft.questions.flatMap((q) => [
+        q.stem,
+        ...(q.kind === "multiple_choice" ? q.choices.map((c) => c.text) : []),
+      ]),
+    ])
+    : [];
+  const namesHint = aiEdit?.review
+    ? (
+      <Text
+        testID="ai-edit-names"
+        accessibilityLiveRegion="polite"
+        style={[s.small, { color: remainingNames.length ? p.purple : p.ink }]}
+      >
+        {remainingNames.length
+          ? t("d14.edit.namesRemaining", { names: remainingNames.join(", ") })
+          : t("d14.edit.namesCleared")}
+      </Text>
+    )
+    : null;
   usePreventRemove(
     (dirty || save.isPending || uncertain) && !saved,
     ({ repeat }) => {
@@ -242,7 +341,7 @@ export function SharedQuestionWizard(
         !draft.title.trim() || !draft.subject.trim() ||
         !Number.isInteger(Number(draft.grade)) || Number(draft.grade) < 1 ||
         Number(draft.grade) > 12 ||
-        (draft.body.trim().length < 20 && !images.length &&
+        (draft.body.trim().length < (aiEdit ? 1 : 20) && !images.length &&
           !draft.existingImages.length)
       ) return setValidation(t("sharedQuestions.sourceRequired"));
       if (
@@ -301,6 +400,7 @@ export function SharedQuestionWizard(
   );
   const editor = (
     <View style={{ gap: 16 }}>
+      {namesHint}
       {wide
         ? (
           <View style={s.row}>
@@ -331,7 +431,7 @@ export function SharedQuestionWizard(
             </Text>
           </Pressable>
         ))}
-        {draft.questions.length < 12 && !locked
+        {draft.questions.length < 12 && !locked && !aiEdit
           ? (
             <IconButton
               label={t("sharedQuestions.addQuestion")}
@@ -473,7 +573,7 @@ export function SharedQuestionWizard(
                   </Pressable>
                 ))}
               </View>
-              {draft.questions.length > 2
+              {draft.questions.length > 2 && !aiEdit
                 ? (
                   <Pressable
                     accessibilityRole="button"
@@ -503,9 +603,12 @@ export function SharedQuestionWizard(
   );
   const errorCode = (save.error as { message?: string } | null)?.message;
   const translatedError = errorCode &&
-    t(`sharedQuestions.errors.${errorCode}`, {
-      defaultValue: t("sharedQuestions.saveFailed"),
-    });
+    (aiEdit
+      ? provaErrorMessage(save.error)
+      : t(`sharedQuestions.errors.${errorCode}`, {
+        defaultValue: t("sharedQuestions.saveFailed"),
+      }));
+  const screenTitle = aiEdit ? "d14.edit.groupTitle" : "sharedQuestions.title";
   return (
     <SafeAreaView style={s.root}>
       <KeyboardAvoidingView
@@ -533,7 +636,7 @@ export function SharedQuestionWizard(
           {wide
             ? (
               <Text style={[s.heading, { marginLeft: 20, flex: 1 }]}>
-                {t("sharedQuestions.title")}
+                {t(screenTitle)}
               </Text>
             )
             : null}
@@ -543,7 +646,7 @@ export function SharedQuestionWizard(
             <Text style={[s.heading, { marginHorizontal: 20, fontSize: 25 }]}>
               {t(
                 step === 0
-                  ? "sharedQuestions.title"
+                  ? screenTitle
                   : step === 1
                   ? "sharedQuestions.questions"
                   : "sharedQuestions.preview",
@@ -645,6 +748,19 @@ export function SharedQuestionWizard(
               {step === 0
                 ? (
                   <>
+                    {aiEdit
+                      ? (
+                        <>
+                          <Text style={s.copy}>{t("d14.edit.groupHelp")}</Text>
+                          <Text testID="ai-edit-scope" style={s.small}>
+                            {t("d14.edit.lockedScope", {
+                              subject: draft.subject,
+                              grade: draft.grade,
+                            })}
+                          </Text>
+                        </>
+                      )
+                      : (<>
                     <Text style={s.copy}>{t("sharedQuestions.intro")}</Text>
                     <Field
                       label={t("grades.subject")}
@@ -678,6 +794,7 @@ export function SharedQuestionWizard(
                         );
                       })}
                     </View>
+                      </>)}
                     <Field
                       label={t("sharedQuestions.sourceTitle")}
                       value={draft.title}
@@ -695,6 +812,8 @@ export function SharedQuestionWizard(
                       maxLength={6000}
                       hint={t("sharedQuestions.sourceHint")}
                     />
+                    {namesHint}
+                    {aiEdit ? null : (<>
                     {draft.existingImages.map((m) => (
                       <View key={m.source_id}>
                         <QuestionMedia questionId={m.question_id} items={[m]} />
@@ -735,6 +854,7 @@ export function SharedQuestionWizard(
                         />
                       )
                       : null}
+                    </>)}
                     {!dirty && !initial && catalog?.length
                       ? (
                         <View style={{ gap: 8 }}>
@@ -832,7 +952,8 @@ export function SharedQuestionWizard(
                         <Text style={s.copy}>
                           {t("sharedQuestions.previewHelp")}
                         </Text>
-                        {saved || reusable ? <SatinButton secondary title={t("contribution.reviewShare")} onPress={()=>router.push({pathname:"/parent/prova/share",params:{groupId:saved?.id??draft.previousId!}})}/> : null}
+                        {namesHint}
+                        {(saved || reusable) && !aiEdit ? <SatinButton secondary title={t("contribution.reviewShare")} onPress={()=>router.push({pathname:"/parent/prova/share",params:{groupId:saved?.id??draft.previousId!}})}/> : null}
                         {draft.questions.map((item, i) => (
                           <View key={i} style={s.editorCard}>
                             <Text style={s.small}>
@@ -898,7 +1019,7 @@ export function SharedQuestionWizard(
                 }}
                 title={t(
                   saved || reusable
-                    ? "sharedQuestions.useExam"
+                    ? aiEdit && draftId ? "d14.edit.useInDraft" : "sharedQuestions.useExam"
                     : uncertain
                     ? "common.retry"
                     : step === 0

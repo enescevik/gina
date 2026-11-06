@@ -3857,6 +3857,12 @@ isOneToOne: false
 "routines_for_day":
 { Args: { "p_child_id": string,"p_day": string }; Returns: Json
                            },
+"save_ai_group_edit":
+{ Args: { "p_group": Json,"p_group_id": string,"p_questions": Json,"p_request_id": string }; Returns: Json
+                           },
+"save_ai_question_edit":
+{ Args: { "p_question": Json,"p_request_id": string,"p_source_id": string }; Returns: Json
+                           },
 "save_answer_review":
 { Args: { "p_ai_id"?: string,"p_answer_hash": string,"p_attempt_id": string,"p_document": Json,"p_feedback": string,"p_question_id": string,"p_request_id": string,"p_revision": number,"p_score": number }; Returns: number
                            },

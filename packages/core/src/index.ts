@@ -23,6 +23,7 @@ export * from "./prova-booklet";
 export * from './prova-draft';
 export * from "./rubric-scale";
 export * from "./question-content-review";
+export * from "./ai-question-edit";
 export * from "./help";
 export * from './operator-help';
 export * from './help-articles';
