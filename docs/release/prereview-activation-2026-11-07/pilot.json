@@ -1,0 +1,183 @@
+{
+  "date": "2026-11-07",
+  "provider": "anthropic",
+  "model": "claude-sonnet-5-5",
+  "prompt_version": "prereview-v2",
+  "items": 9,
+  "passed": 8,
+  "errors": 0,
+  "false_approvals": 0,
+  "threshold": 0.85,
+  "calibrated": false,
+  "rows": [
+    {
+      "key": "correct-square-perimeter-open",
+      "label": "correct",
+      "expected": [
+        "ai_approved",
+        "needs_admin"
+      ],
+      "preferred": "ai_approved",
+      "actual": "ai_approved",
+      "reason": "all_checks_passed",
+      "confidence": 0.85,
+      "findings": [
+        "other"
+      ],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "correct-division-mc",
+      "label": "correct",
+      "expected": [
+        "ai_approved",
+        "needs_admin"
+      ],
+      "preferred": "ai_approved",
+      "actual": "ai_approved",
+      "reason": "all_checks_passed",
+      "confidence": 0.85,
+      "findings": [],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "correct-antonym-mc",
+      "label": "correct",
+      "expected": [
+        "ai_approved",
+        "needs_admin"
+      ],
+      "preferred": "ai_approved",
+      "actual": "needs_admin",
+      "reason": "low_confidence",
+      "confidence": 0.8,
+      "findings": [
+        "other"
+      ],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "incorrect-fraction-key",
+      "label": "incorrect",
+      "expected": [
+        "ai_rejected_suggestion",
+        "needs_admin"
+      ],
+      "preferred": null,
+      "actual": "ai_rejected_suggestion",
+      "reason": "blocking_finding",
+      "confidence": 0.97,
+      "findings": [
+        "solution_incorrect",
+        "answer_key_mismatch",
+        "skill_mismatch"
+      ],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "incorrect-rectangle-area",
+      "label": "incorrect",
+      "expected": [
+        "ai_rejected_suggestion",
+        "needs_admin"
+      ],
+      "preferred": null,
+      "actual": "ai_rejected_suggestion",
+      "reason": "blocking_finding",
+      "confidence": 0.93,
+      "findings": [
+        "solution_incorrect",
+        "answer_key_mismatch"
+      ],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "incorrect-scenario-count",
+      "label": "incorrect",
+      "expected": [
+        "ai_rejected_suggestion",
+        "needs_admin"
+      ],
+      "preferred": null,
+      "actual": "needs_admin",
+      "reason": "low_confidence",
+      "confidence": 0.8,
+      "findings": [
+        "scenario_count_mismatch",
+        "other",
+        "other"
+      ],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "ambiguous-image-triangle",
+      "label": "ambiguous",
+      "expected": [
+        "needs_admin"
+      ],
+      "preferred": null,
+      "actual": "needs_admin",
+      "reason": "low_confidence",
+      "confidence": 0.6,
+      "findings": [
+        "other",
+        "other"
+      ],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "ambiguous-underspecified-word-problem",
+      "label": "ambiguous",
+      "expected": [
+        "needs_admin"
+      ],
+      "preferred": null,
+      "actual": "ai_rejected_suggestion",
+      "reason": "blocking_finding",
+      "confidence": 0.9,
+      "findings": [
+        "solution_incorrect",
+        "skill_mismatch",
+        "answer_key_mismatch",
+        "other"
+      ],
+      "error": null,
+      "pass": false,
+      "false_approval": false
+    },
+    {
+      "key": "ambiguous-personal-data-contribution",
+      "label": "ambiguous",
+      "expected": [
+        "needs_admin",
+        "ai_rejected_suggestion"
+      ],
+      "preferred": null,
+      "actual": "needs_admin",
+      "reason": "blocking_finding",
+      "confidence": 0.9,
+      "findings": [
+        "personal_data",
+        "rubric_incomplete",
+        "other"
+      ],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    }
+  ]
+}
