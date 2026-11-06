@@ -570,10 +570,11 @@ export function ParentReviewWorkspace(
           )}
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={t("parentReview.pickQuestion")}
+            accessibilityLabel={`${t("parentReview.pickQuestion")}: ${index + 1} / ${count}`}
             onPress={() =>
               setPicker(true)}
-            style={!wide ? { marginLeft: "auto" } : undefined}
+            // C12: 43 px yüksekliğindeki etiket 48 px dokunma hedefi oldu.
+            style={[{ minHeight: 48, minWidth: 48, justifyContent: "center" }, !wide ? { marginLeft: "auto" } : null]}
           >
             <Text style={s.tag}>{index + 1} / {count}</Text>
           </Pressable>

@@ -202,6 +202,7 @@ export function RepeatCalendar(
             <Button
               variant="ghost"
               title={t("repeatCalendar.inspect")}
+              accessibilityLabel={`${t("repeatCalendar.inspect")}: ${t("prova.ai.questionN", { n: q.position })}`}
               onPress={() =>
                 router.push({
                   pathname: "/parent/prova/review/[attemptId]",
@@ -356,6 +357,7 @@ export function RepeatCalendar(
                     <Button
                       variant="ghost"
                       title={t("repeatCalendar.inspect")}
+                      accessibilityLabel={`${t("repeatCalendar.inspect")}: ${t("prova.ai.questionN", { n: q.position })}`}
                       onPress={() =>
                         router.push({
                           pathname: "/parent/prova/review/[attemptId]",
@@ -399,6 +401,11 @@ export function RepeatCalendar(
                           ? "repeatCalendar.closeEdit"
                           : "repeatCalendar.editDay",
                       )}
+                      accessibilityLabel={`${t(
+                        editing === r.day
+                          ? "repeatCalendar.closeEdit"
+                          : "repeatCalendar.editDay",
+                      )}: ${t("repeatCalendar.day", { n: r.day })}`}
                       onPress={() =>
                         setEditing(editing === r.day ? null : r.day)}
                     />
