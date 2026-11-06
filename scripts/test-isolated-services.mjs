@@ -57,7 +57,7 @@ const claims = session => JSON.parse(Buffer.from(session.access_token.split('.')
 const refresh = async c => (await must(c.auth.refreshSession(),'refresh_session')).session;
 try {
   if(storagePort) {
-    edge=spawn(process.env.GINA_QA_DENO_PATH||'deno',['run','--cached-only','--frozen','--config','supabase/functions/deno.json','--allow-net=127.0.0.1','--allow-env=GINA_QA_ISOLATED,SUPABASE_URL,SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY,SOURCE_CLEANUP_SECRET,ANTHROPIC_API_KEY','scripts/isolated-source-edge.ts'],{stdio:['ignore','pipe','ignore'],env:{...process.env,GINA_QA_ISOLATED:'1',ANTHROPIC_API_KEY:'synthetic-local-only',SUPABASE_URL:base,SUPABASE_ANON_KEY:process.env.GINA_QA_ANON,SUPABASE_SERVICE_ROLE_KEY:process.env.GINA_QA_SERVICE,SOURCE_CLEANUP_SECRET:randomBytes(24).toString('hex')}});
+    edge=spawn(process.env.GINA_QA_DENO_PATH||'deno',['run','--cached-only','--frozen','--config','supabase/functions/deno.json','--allow-net=127.0.0.1','--allow-env=GINA_QA_ISOLATED,SUPABASE_URL,SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY,SOURCE_CLEANUP_SECRET,ANTHROPIC_API_KEY,CHANNEL_UNSUBSCRIBE_PAGE_URL','scripts/isolated-source-edge.ts'],{stdio:['ignore','pipe','ignore'],env:{...process.env,GINA_QA_ISOLATED:'1',ANTHROPIC_API_KEY:'synthetic-local-only',SUPABASE_URL:base,SUPABASE_ANON_KEY:process.env.GINA_QA_ANON,SUPABASE_SERVICE_ROLE_KEY:process.env.GINA_QA_SERVICE,SOURCE_CLEANUP_SECRET:randomBytes(24).toString('hex')}});
     const ready=await new Promise((resolve,reject)=>{
       const timer=setTimeout(()=>reject(Error('source_edge_start_timeout')),15000);
       const lines=createInterface({input:edge.stdout});

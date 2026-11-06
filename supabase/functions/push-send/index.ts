@@ -67,6 +67,7 @@ Deno.serve(async (req) => {
     // Channel readiness heartbeat: which secrets the worker can see, by name only.
     const render = {
       unsubscribeUrl: Deno.env.get("CHANNEL_UNSUBSCRIBE_URL") || null,
+      unsubscribePageUrl: Deno.env.get("CHANNEL_UNSUBSCRIBE_PAGE_URL") || null,
       confirmUrl: Deno.env.get("CHANNEL_CONFIRM_URL") || null,
     };
     const settings = await db.from("app_settings").select("key,value").in("key", [

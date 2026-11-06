@@ -72,6 +72,8 @@ export interface SmtpConfig {
   /** tls = implicit TLS (465), starttls = upgrade after EHLO, plain = local fakes only. */
   security: "tls" | "starttls" | "plain";
   timeoutMs?: number;
+  /** Extra trust anchors (PEM) for a private relay; system roots are used otherwise. Never disables verification. */
+  caCerts?: string[];
 }
 
 const enc = new TextEncoder(), dec = new TextDecoder();
@@ -147,7 +149,7 @@ export function smtpAdapter(cfg: SmtpConfig): EmailAdapter {
       let session: SmtpSession | null = null;
       try {
         const base = cfg.security === "tls"
-          ? await Deno.connectTls({ hostname: cfg.host, port: cfg.port })
+          ? await Deno.connectTls({ hostname: cfg.host, port: cfg.port, ...(cfg.caCerts ? { caCerts: cfg.caCerts } : {}) })
           : await Deno.connect({ hostname: cfg.host, port: cfg.port });
         session = new SmtpSession(base, deadline);
         const greeting = await session.reply();
@@ -155,9 +157,11 @@ export function smtpAdapter(cfg: SmtpConfig): EmailAdapter {
         let ehlo = await session.command("EHLO gina.local");
         if (ehlo.code !== 250) return classify("ehlo", ehlo);
         if (cfg.security === "starttls") {
+          // Never fall back to plaintext: a refused or stripped STARTTLS ends the attempt before
+          // credentials, addresses or content are sent.
           const start = await session.command("STARTTLS");
           if (start.code !== 220) return classify("starttls", start);
-          session.upgrade(await Deno.startTls(base as Deno.TcpConn, { hostname: cfg.host }));
+          session.upgrade(await Deno.startTls(base as Deno.TcpConn, { hostname: cfg.host, ...(cfg.caCerts ? { caCerts: cfg.caCerts } : {}) }));
           ehlo = await session.command("EHLO gina.local");
           if (ehlo.code !== 250) return classify("ehlo", ehlo);
         }
@@ -230,6 +234,7 @@ export function emailAdapterFromEnv(
         password: values.SMTP_PASSWORD,
         security: security as SmtpConfig["security"],
         timeoutMs: options.timeoutMs,
+        ...(env.get("SMTP_CA_CERT") ? { caCerts: [env.get("SMTP_CA_CERT")!] } : {}),
       }),
       missing: [],
     };

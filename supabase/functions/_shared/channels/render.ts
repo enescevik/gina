@@ -19,8 +19,12 @@ export interface ChannelRow {
 }
 
 export interface RenderOptions {
-  /** Base URL of the one-click unsubscribe endpoint; without it announcement mail is not sendable. */
+  /** Base URL of the one-click unsubscribe endpoint (Edge `channel-unsubscribe`, RFC 8058 POST target);
+   * without it announcement mail is not sendable. */
   unsubscribeUrl: string | null;
+  /** Optional human page (web `/unsubscribe`) used for the visible link in the body and in SMS. When
+   * absent the visible link is the endpoint itself, whose GET shows a confirmation form (never a GET side effect). */
+  unsubscribePageUrl?: string | null;
   /** Optional deep link that pre-fills the verification code in the app. */
   confirmUrl: string | null;
 }
@@ -55,9 +59,18 @@ function minutesLeft(row: ChannelRow): number {
   return Number.isFinite(until) ? Math.max(1, Math.round((until - Date.now()) / 60000)) : (row.channel === "email" ? 60 : 15);
 }
 
+function withToken(base: string, token: string): string {
+  return `${base}${base.includes("?") ? "&" : "?"}token=${encodeURIComponent(token)}`;
+}
+/** One-click endpoint URL (List-Unsubscribe header). */
 function unsubscribeLink(row: ChannelRow, o: RenderOptions): string {
   if (!o.unsubscribeUrl || !row.unsubscribe_token) throw new RenderError("unsubscribe_url_missing");
-  return `${o.unsubscribeUrl}${o.unsubscribeUrl.includes("?") ? "&" : "?"}token=${encodeURIComponent(row.unsubscribe_token)}`;
+  return withToken(o.unsubscribeUrl, row.unsubscribe_token);
+}
+/** Visible link for people: the web page when configured, otherwise the endpoint (GET = form). */
+function unsubscribePageLink(row: ChannelRow, o: RenderOptions): string {
+  const endpoint = unsubscribeLink(row, o);
+  return o.unsubscribePageUrl ? withToken(o.unsubscribePageUrl, row.unsubscribe_token!) : endpoint;
 }
 
 export function renderEmail(row: ChannelRow, o: RenderOptions): OutboundEmail {
@@ -67,16 +80,18 @@ export function renderEmail(row: ChannelRow, o: RenderOptions): OutboundEmail {
   if (row.kind === "contact_verification") {
     const code = String(row.payload.secret ?? "");
     if (!code) throw new RenderError("secret_scrubbed");
-    const link = o.confirmUrl ? `\n\n${o.confirmUrl}${o.confirmUrl.includes("?") ? "&" : "?"}code=${encodeURIComponent(code)}` : "";
+    // Deep link: opens the app's verify screen with the code filled in; the parent still confirms
+    // while signed in, so a scanner fetching the link verifies nothing.
+    const link = o.confirmUrl ? `\n\n${o.confirmUrl}${o.confirmUrl.includes("?") ? "&" : "?"}kind=email&code=${encodeURIComponent(code)}` : "";
     return { ...base, subject: t.verifySubject, text: t.verifyBody(code, minutesLeft(row)) + link };
   }
   if (!row.announcement) throw new RenderError("announcement_missing");
-  const link = unsubscribeLink(row, o);
+  const oneClick = unsubscribeLink(row, o);
   return {
     ...base,
     subject: row.announcement.title.slice(0, 160),
-    text: row.announcement.body + t.announcementFooter(link),
-    headers: { "List-Unsubscribe": `<${link}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
+    text: row.announcement.body + t.announcementFooter(unsubscribePageLink(row, o)),
+    headers: { "List-Unsubscribe": `<${oneClick}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
   };
 }
 
@@ -90,5 +105,5 @@ export function renderSms(row: ChannelRow, o: RenderOptions): OutboundSms {
     return { ...base, text: t.verifySms(code, minutesLeft(row)) };
   }
   if (!row.announcement) throw new RenderError("announcement_missing");
-  return { ...base, text: t.announcementSms(row.announcement.title.slice(0, 60), unsubscribeLink(row, o)).slice(0, 300) };
+  return { ...base, text: t.announcementSms(row.announcement.title.slice(0, 60), unsubscribePageLink(row, o)).slice(0, 300) };
 }
