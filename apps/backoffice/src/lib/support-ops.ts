@@ -210,40 +210,65 @@ export function waitingLabel(since: string | null, now = Date.now()) {
 export const waitingOverdue = (since: string | null, now = Date.now()) =>
   !!since && now - new Date(since).getTime() > 24 * 3600 * 1000;
 
-// Hazır yanıtlar yalnız "Aileye yanıt" taslağına, açık olan görüşmeye eklenir;
-// gönderilmeden önce operatör metni düzenler. Çocuk adı/puan içermez.
-export const cannedReplies: { id: string; title: string; categories: string[]; body: string }[] = [
-  {
-    id: "received",
-    title: "Aldık, bakıyoruz",
-    categories: [],
-    body: "Merhaba, mesajınızı aldık ve inceliyoruz. Bir gelişme olduğunda bu görüşmeden size yazacağız.",
-  },
-  {
-    id: "device-pin",
-    title: "Tablet eşleştirme",
-    categories: ["device"],
-    body: "Merhaba, ebeveyn uygulamasında Ayarlar > Cihazlar bölümünden yeni bir eşleştirme kodu oluşturup tablette bu kodu girebilirsiniz. Kodun süresi kısa olduğu için oluşturduktan hemen sonra kullanmanızı öneririz.",
-  },
-  {
-    id: "billing-restore",
-    title: "Satın alımı geri yükleme",
-    categories: ["billing"],
-    body: "Merhaba, satın alımı yapan hesapla giriş yapıp Ayarlar > Paket bölümünde \"Satın alımları geri yükle\" seçeneğini deneyebilir misiniz? Sorun sürerse mağaza makbuzunun tarihini bize yazmanız yeterli; kart bilgisi paylaşmayın.",
-  },
-  {
-    id: "more-info",
-    title: "Ek bilgi isteği",
-    categories: [],
-    body: "Merhaba, sorunu daha iyi anlamak için hangi cihazı kullandığınızı ve sorunun hangi ekranda olduğunu yazabilir misiniz? Ekran görüntüsünde çocuğunuzun adı veya kişisel bilgi görünmemesine dikkat edin.",
-  },
-  {
-    id: "resolved",
-    title: "Çözüldü mü?",
-    categories: [],
-    body: "Merhaba, yaptığımız düzenlemeden sonra sorun çözüldü mü? Devam ederse bu görüşmeye yazmanız yeterli.",
-  },
-];
+// Hazır yanıtlar (C07): sunucuda TR/EN, sürümlü ve destek ekibince yönetilir (`support_canned_replies`).
+// Yalnız "Aileye yanıt" taslağına eklenir; gönderilmeden önce operatör metni düzenler. Çocuk adı/puan içermez.
+export type CannedLocale = "tr" | "en";
+export type CannedReply = {
+  id: string;
+  locale: CannedLocale;
+  title: string;
+  body: string;
+  categories: string[];
+  position: number;
+  archived: boolean;
+  revision: number;
+  updated_at: string;
+};
+export async function loadCannedReplies(
+  locale: CannedLocale | null,
+  ticket: string | null,
+  includeArchived = false,
+): Promise<{ locale: CannedLocale; replies: CannedReply[] }> {
+  const data = await adminRpc("support_canned_replies", {
+    p_locale: locale,
+    p_ticket: ticket,
+    p_include_archived: includeArchived,
+  }) as { locale?: unknown; replies?: unknown };
+  if ((data?.locale !== "tr" && data?.locale !== "en") || !Array.isArray(data.replies)) throw Error("unexpected_shape");
+  return { locale: data.locale, replies: data.replies as CannedReply[] };
+}
+export async function saveCannedReply(input: {
+  request: string;
+  id: string | null;
+  expectedRevision: number | null;
+  locale: CannedLocale;
+  title: string;
+  body: string;
+  categories: string[];
+  position: number;
+  archived: boolean;
+}) {
+  return await adminRpc("save_support_canned_reply", {
+    p_request_id: input.request,
+    p_id: input.id,
+    p_expected_revision: input.expectedRevision,
+    p_locale: input.locale,
+    p_title: input.title,
+    p_body: input.body,
+    p_categories: input.categories,
+    p_position: input.position,
+    p_archived: input.archived,
+  }) as { id: string; revision: number; archived: boolean; replayed: boolean };
+}
+export function cannedError(e: unknown): string {
+  const m = String((e as { message?: string })?.message ?? "");
+  if (m.includes("canned_reply_changed")) return "Bu yanıt başka bir ekip üyesince değiştirildi. Listeyi yenileyip yeniden düzenleyin.";
+  if (m.includes("canned_reply_duplicate_title")) return "Bu dilde aynı başlıkla etkin bir hazır yanıt var.";
+  if (m.includes("request_conflict")) return "Aynı işlem farklı içerikle yeniden gönderildi. Formu yenileyin.";
+  if (m.includes("invalid_input")) return "Başlık 2–80, metin 5–2000 karakter olmalı.";
+  if (m.includes("forbidden") || m.includes("42501")) return "Destek yetkiniz etkin değil.";
+  return "Hazır yanıt kaydedilemedi. Bağlantınızı kontrol edip yeniden deneyin.";
+}
 
 const words = (text: string) =>
   text.toLocaleLowerCase("tr").split(/[^\p{L}\p{N}]+/u).filter((w) => w.length >= 4);

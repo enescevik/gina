@@ -6,7 +6,12 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
-import { BookOpen } from "lucide-react-native";
+import { BookOpen, History } from "lucide-react-native";
+import {
+  LibraryCredits,
+  PolicyPreviewCard,
+  useLibraryCredits,
+} from "@/components/prova-library/library-credits";
 import {
   EmptyCard,
   NavigationCard,
@@ -84,7 +89,12 @@ export default function LearningLibrary() {
       return data as unknown as Item[];
     },
   });
+  const credits = useLibraryCredits();
+  // Server summary first; the legacy catalog numbers are only a fallback while it loads.
+  const allowance = credits.data?.total_remaining ??
+    ((catalog.data?.remaining ?? 0) + (catalog.data?.bonus ?? 0));
   const redeem = useMutation({
+    mutationKey: ["library_acquire"],
     mutationFn: async (id: string) => {
       const { data, error } = await supabase.rpc("redeem_library_item", {
         p_item_id: id,
@@ -131,42 +141,25 @@ export default function LearningLibrary() {
         if (draftId) void draft.refetch();
       }}
     >
-      <View
-        style={[parentStyles.form, {
-          padding: 16,
-          flexDirection: "row",
-          alignItems: "center",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-        }]}
-      >
-        <View style={{ flex: 1, minWidth: 180, gap: 6 }}>
-          <Text style={[parentStyles.title, { fontSize: 20 }]}>
-            {t("library.allowance", {
-              count: (catalog.data?.remaining ?? 0) +
-                (catalog.data?.bonus ?? 0),
-            })}
-          </Text>
-          <Text style={parentStyles.muted}>{t("library.allowanceHelp")}</Text>
-        </View>
-        {draftId
-          ? (
-            <Button
-              variant="ghost"
-              title={t("provaBuilder.resume")}
-              onPress={() =>
-                router.replace({
-                  pathname: "/parent/prova/builder",
-                  params: { draftId },
-                })}
-            />
-          )
-          : null}
-      </View>
+      <LibraryCredits />
+      <Text style={parentStyles.muted}>{t("library.allowanceHelp")}</Text>
+      {draftId
+        ? (
+          <Button
+            variant="ghost"
+            title={t("provaBuilder.resume")}
+            onPress={() =>
+              router.replace({
+                pathname: "/parent/prova/builder",
+                params: { draftId },
+              })}
+          />
+        )
+        : null}
       <LibraryPackages
         key={`${session?.user.id}:${claims?.family_id}:${draftId ?? "catalog"}`}
         draft={draft.data ?? undefined}
-        allowance={(catalog.data?.remaining ?? 0) + (catalog.data?.bonus ?? 0)}
+        allowance={allowance}
       />
       {!draftId && !collections.length
         ? <EmptyCard title={t("library.empty")} slug="display-bookworm" />
@@ -200,6 +193,20 @@ export default function LearningLibrary() {
           </View>
         )
         : null}
+      {credits.data
+        ? (
+          <PolicyPreviewCard
+            initial={credits.data.contributions.next_milestones[0]?.next_at ??
+              credits.data.contributions.accepted_questions}
+          />
+        )
+        : null}
+      <NavigationCard
+        title={t("libraryCredits.trailLink")}
+        body={t("libraryCredits.trailLinkHelp")}
+        icon={<History color="#6042DE" size={24} />}
+        onPress={() => router.push("/parent/prova/share")}
+      />
       <ContributionHistory />
       {catalog.data?.contributions.length
         ? (
@@ -256,9 +263,7 @@ export default function LearningLibrary() {
                         draft.data?.content.blocks.some((b) =>
                           b.id === item.owned
                         )) ||
-                      (!item.owned &&
-                        !(catalog.data &&
-                          (catalog.data.remaining + catalog.data.bonus) > 0))}
+                      (!item.owned && !(allowance > 0))}
                     loading={redeem.isPending && redeem.variables === item.id}
                     onPress={() =>
                       redeem.mutate(item.id)}

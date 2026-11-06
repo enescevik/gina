@@ -24,7 +24,7 @@ export const b01 = {
   },
   items: {
     tickets_open: { label: "Açık destek talepleri", href: "/support" },
-    tickets_unassigned: { label: "Henüz cevaplanmamış talepler", href: "/support" },
+    tickets_unassigned: { label: "Sorumlusu atanmamış talepler", href: "/support?assignee=none" },
     tickets_sla_breached: { label: "24 saatten uzun bekleyen talepler", href: "/support" },
     ideas_open: { label: "Değerlendirilmemiş fikirler", href: "/ideas" },
     library_drafts: { label: "Editoryal inceleme bekleyen kütüphane taslakları", href: "/library?tab=drafts" },
@@ -45,6 +45,7 @@ export const b01 = {
   reasons: {
     parent_waiting: "Veli cevap bekliyor",
     no_operator_reply: "Ekipten henüz hiç cevap yok",
+    no_assignee: "Henüz bir ekip üyesine atanmadı",
     waiting_over_24h: "24 saati geçti",
     idea_untriaged: "Durumu belirlenmedi",
     awaiting_editorial_review: "Editör onayı olmadan yayımlanamaz",
@@ -203,6 +204,9 @@ export const planLabel = (plan: string) => (plan === "free" ? "GINA Başlangıç
 export const limitValue = (limit: string, value: string | null) =>
   limit === "ai_weekly" ? (value === "true" ? "Açık" : "Kapalı") : value === null ? "Sınırsız" : value;
 export const itemText = (item: WorkqueueItem) => b01.items[item.key] ?? { label: item.key, href: "/dashboard" };
+/** C07: bu ekranlar tam yönetici ister; operatörde bağlantı yerine açıklama gösterilir. */
+export const adminOnlyHref = (href: string) =>
+  href.startsWith("/overrides") || href.startsWith("/operations") || href.includes("tab=curriculum");
 export const reasonText = (item: WorkqueueItem) => b01.reasons[item.reason] ?? item.reason;
 export function waitingText(w: { unit: "minutes" | "hours" | "days"; value: number } | null) {
   if (!w) return "—";

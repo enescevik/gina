@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { ReconcileControl, ReconcileHistory, type ReconcileTarget } from "@/components/ReconcileControl";
 import { useRouter } from "next/router";
-import { useState, type FormEvent } from "react";
-import { financeWorkspaceSchema, type FinanceWorkspace } from "@gina/core";
+import { useCallback, useState, type FormEvent } from "react";
+import { familiesSearchSchema, financeWorkspaceSchema, normalizeFamilyQuery, type FamilySearchRow, type FinanceWorkspace } from "@gina/core";
+import { adminRpc, isForbidden } from "@/lib/admin-rpc";
+import { useKeysetList } from "@/lib/keyset";
 import { Card, Layout, Notice } from "@/components/Layout";
 import { PublicationIcon } from "@/components/library-publication-icon";
 import { useAuth } from "@/lib/auth";
@@ -24,18 +26,25 @@ export default function BillingPage() {
 function Workspace() {
   const router=useRouter(),{isAdmin}=useAuth();
   const [target,setTarget]=useState<ReconcileTarget|null>(null),[refresh,setRefresh]=useState(0);
-  const [input,setInput]=useState(""),[query,setQuery]=useState("");
+  const [input,setInput]=useState(""),[query,setQuery]=useState<string|null>(null),[inputError,setInputError]=useState(false);
   const [tab,setTab]=useState<"families"|"notifications">("families");
   const [revoked,setRevoked]=useState(false);
   const family=typeof router.query.family==="string"&&uuid.test(router.query.family)?router.query.family:undefined;
   const result=useSupportQuery(async()=>{
-    const {data,error}=await supabase().rpc("finance_workspace",{p_query:query,p_family_id:family}).abortSignal(AbortSignal.timeout(20000));
+    // Özet, seçili aile ayrıntısı ve bildirimler; aile listesi artık ayrı keyset aramadan gelir (ilk 50 sınırı yok).
+    const {data,error}=await supabase().rpc("finance_workspace",{p_query:"",p_family_id:family}).abortSignal(AbortSignal.timeout(20000));
     if(error)throw error;return financeWorkspaceSchema.parse(data);
-  },JSON.stringify({query,family}),"finance");
+  },JSON.stringify({family}),"finance");
   const data=result.data;
-  const search=(e:FormEvent)=>{e.preventDefault();setQuery(input.trim());};
+  const fetchFamilies=useCallback(async(cursor:string|null)=>{
+    const page=familiesSearchSchema.parse(await adminRpc("admin_families_search",{p_query:query,p_cursor:cursor,p_limit:50}));
+    return {rows:page.rows,has_more:page.has_more,next_cursor:page.next_cursor};
+  },[query]);
+  const families=useKeysetList<FamilySearchRow>(fetchFamilies,JSON.stringify(query),f=>f.id);
+  const familiesRevoked=isForbidden(families.error);
+  const search=(e:FormEvent)=>{e.preventDefault();try{setInputError(false);setQuery(normalizeFamilyQuery(input));}catch{setInputError(true);}};
   const select=(id?:string)=>void router.replace({pathname:"/billing",query:id?{family:id}:{}},undefined,{shallow:true});
-  if(revoked)return <div role="alert" data-testid="access-revoked"><Notice tone="error"><strong>{b01.revoked.title}.</strong> {b01.revoked.body}</Notice></div>;
+  if(revoked||familiesRevoked)return <div role="alert" data-testid="access-revoked"><Notice tone="error"><strong>{b01.revoked.title}.</strong> {b01.revoked.body}</Notice></div>;
   return <div className="billing-center">
     <Workqueue role="finance" onForbidden={()=>setRevoked(true)}/>
     <div className="billing-intro"><p>Ailenin kullandığı paketi ve bu hakkın nereden geldiğini birlikte inceleyin.</p><button className="btn-secondary" onClick={result.reload}>Bilgileri yenile</button></div>
@@ -53,10 +62,14 @@ function Workspace() {
     <ReconcileControl target={target} close={()=>setTarget(null)} done={()=>{result.reload();setRefresh(n=>n+1);}}/>
     <section id="billing-panel" role="tabpanel" aria-labelledby={`billing-${tab}`}>
     {tab==="families"?<div className="billing-columns">
-      <Card><h2>Aileyi bul</h2><form onSubmit={search} className="billing-search"><label htmlFor="billing-search" className="sr-only">Aile adı veya kimliği</label><input id="billing-search" className="input" value={input} maxLength={120} onChange={e=>setInput(e.target.value)} placeholder="Aile adı veya kimliği"/><button className="btn" type="submit">Ara</button></form>
-        <p className="billing-hint">En fazla 50 aile gösterilir. Aramayla listeyi daraltabilirsiniz.</p>
-        <div className="billing-family-list">{data?.families.map(f=><button key={f.id} aria-pressed={f.id===family} onClick={()=>select(f.id)}><strong>{f.name}</strong><span>{planName(f.plan)}</span><small>{sourceNames[f.source]}</small></button>)}</div>
-        {data?.families.length===0?<div className="billing-empty"><PublicationIcon name="family"/><p>Bu aramayla eşleşen aile yok. Adın bir bölümünü veya aile kimliğini deneyin.</p></div>:null}
+      <Card><h2>Aileyi bul</h2><form onSubmit={search} className="billing-search"><label htmlFor="billing-search" className="sr-only">Aile adı veya kimliği</label><input id="billing-search" className="input" value={input} maxLength={120} onChange={e=>setInput(e.target.value)} placeholder="Aile adı, çocuk adı, e-posta parçası veya kimlik"/><button className="btn" type="submit">Ara</button></form>
+        {inputError?<p className="billing-hint" role="alert">Arama en fazla 120 karakter olabilir.</p>:null}
+        <p className="billing-hint" data-testid="billing-family-count">{families.rows?`${families.rows.length} aile gösteriliyor${families.hasMore?" · devamı var":" · liste tamam"}`:"Aileler yükleniyor…"}{query?` · arama: “${query}”`:""}</p>
+        <div className="billing-family-list">{families.rows?.map(f=><button key={f.id} data-testid="billing-family" aria-pressed={f.id===family} onClick={()=>select(f.id)}><strong>{f.name}</strong><span>{planName(f.plan)}</span><small>{sourceNames[f.plan_source]}{f.matched_on.includes("email")?" · e-postayla eşleşti":f.matched_on.includes("child_name")?" · çocuk adıyla eşleşti":""}</small></button>)}</div>
+        {families.error&&!families.pageError?<Notice tone="error">Aile listesi okunamadı. Yeniden deneyin.</Notice>:null}
+        {families.pageError?<Notice tone="error">Sonraki aileler okunamadı; yüklenenler korunuyor.</Notice>:null}
+        {families.hasMore?<button className="btn-secondary mt-3" data-testid="billing-more" disabled={families.loading} onClick={()=>void families.loadMore()}>{families.loading?"Yükleniyor…":"Sonraki 50 aileyi yükle"}</button>:null}
+        {families.rows?.length===0?<div className="billing-empty"><PublicationIcon name="family"/><p>Bu aramayla eşleşen aile yok. Adın bir bölümünü, çocuk adını, e-posta parçasını veya aile kimliğini deneyin.</p></div>:null}
       </Card>
       {data?.detail?<FamilyDetail detail={data.detail} isAdmin={isAdmin} asOf={data.summary.as_of} refresh={refresh} onCheck={setTarget} onForbidden={()=>setRevoked(true)}/>:<Card><div className="billing-empty"><PublicationIcon name="eye"/><h2>Önce bir aile seçin</h2><p>Mağaza aboneliğini, geçici hakları ve güncel paket erişimini burada karşılaştırabilirsiniz.</p></div></Card>}
     </div>:<Card>

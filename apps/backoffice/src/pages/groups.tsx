@@ -73,9 +73,16 @@ type Package = {
 export default function Groups() {
   const { session } = useAuth();
   const user = session?.user.id ?? "";
-  return <GroupsEditor key={user} user={user} />;
+  // C07: sayfa düzeyi sorgular Layout'un rol bağlamında çalışsın diye Layout dış bileşende.
+  return (
+    <Layout title="Birlikte Prova" roles={["content"]}>
+      <GroupsEditor key={user} user={user} />
+    </Layout>
+  );
 }
 function GroupsEditor({ user }: { user: string }) {
+  // C07: katılım hakkı/yayın anahtarı genel politikadır; yalnız tam yönetici değiştirir.
+  const { isAdmin } = useAuth();
   const queue = useMemo(() => groupCreateQueue(user), [user]);
   const [pending, setPending] = useState<GroupCreateCommand | null>(null);
   const [restoring, setRestoring] = useState(true);
@@ -249,7 +256,7 @@ function GroupsEditor({ user }: { user: string }) {
     });
   }
   return (
-    <Layout title="Birlikte Prova">
+    <>
       {guard.dialog}
       <p className="mb-6 max-w-3xl text-slate-600">
         Aynı sınıf düzeyine aynı soru sürümünü verin. Bu evde yapılan bir
@@ -283,7 +290,13 @@ function GroupsEditor({ user }: { user: string }) {
             : "Yeni katılımlar kapalı"}. Mevcut sonuçlar korunur. Aylık katılım
           hakkı aile başınadır; standart Prova deneme sınırı da uygulanır.
         </p>
-        {!policy
+        {!isAdmin
+          ? (
+            <p className="mt-4 text-sm text-slate-500" data-testid="group-policy-admin-only">
+              Paket hakları ve yeni katılım anahtarı yönetici yetkisiyle değişir.
+            </p>
+          )
+          : !policy
           ? (
             <button
               className="btn-secondary mt-4"
@@ -775,7 +788,7 @@ function GroupsEditor({ user }: { user: string }) {
           </Card>
         )
         : null}
-    </Layout>
+    </>
   );
 }
 

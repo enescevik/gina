@@ -7,7 +7,7 @@ export default function LibraryPublicationPage() {
     { session } = useAuth();
   const id = router.query.packageId;
   return (
-    <Layout title="Yayına hazırla" compact>
+    <Layout title="Yayına hazırla" compact roles={["content", "release"]}>
       {session && typeof id === "string" && /^[a-f0-9-]{36}$/i.test(id) ? (
         <LibraryPublicationWorkspace
           key={session.user.id + id}

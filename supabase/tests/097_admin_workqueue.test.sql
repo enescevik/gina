@@ -94,7 +94,7 @@ select pg_temp.actor('00000000-0000-4000-8000-000000009702');
 select is(public.admin_workqueue()->'roles','["support"]'::jsonb,'support operator sees only the support role');
 select is(pg_temp.roles_in(public.admin_workqueue()),'["support"]'::jsonb,'support items only');
 select is((pg_temp.item(public.admin_workqueue(),'tickets_open')->>'count')::int,1,'one open support ticket');
-select is((pg_temp.item(public.admin_workqueue(),'tickets_unassigned')->>'count')::int,1,'ticket without operator reply counts as unassigned');
+select is((pg_temp.item(public.admin_workqueue(),'tickets_unassigned')->>'count')::int,2,'C07: unassigned = open/in-progress support tickets with no assignee (the replied in-progress ticket is still unassigned)');
 select is((pg_temp.item(public.admin_workqueue(),'tickets_sla_breached')->>'count')::int,1,'two-day-old open ticket breaches SLA');
 select ok((pg_temp.item(public.admin_workqueue(),'tickets_sla_breached')->>'oldest_waiting_seconds')::bigint>=2*86400-5,'oldest waiting time reported');
 select is(pg_temp.item(public.admin_workqueue(),'tickets_sla_breached')->>'reason','waiting_over_24h','reason attached');

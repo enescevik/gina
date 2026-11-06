@@ -178,7 +178,7 @@ select ok((select accepted_at is not null and last_error is null from gina.chann
 -- One-tap unsubscribe -----------------------------------------------------------------------------------
 set local role anon;
 select is(public.unsubscribe_with_token((select v::jsonb->>'unsubscribe_token' from kv where k='claim'))->>'enabled','false','signed link unsubscribes without a session');
-select throws_ok($$select public.unsubscribe_with_token(left((select v::jsonb->>'unsubscribe_token' from kv where k='claim'),-1)||'0')$$,'P0001','unsubscribe_invalid','tampered signature rejected');
+select throws_ok($$select public.unsubscribe_with_token(left((select v::jsonb->>'unsubscribe_token' from kv where k='claim'),-1)||case when right((select v::jsonb->>'unsubscribe_token' from kv where k='claim'),1)='0' then '1' else '0' end)$$,'P0001','unsubscribe_invalid','tampered signature rejected');
 select throws_ok($$select public.unsubscribe_with_token('garbage')$$,'P0001','unsubscribe_invalid','garbage rejected');
 reset role;
 select is((select source from gina.notification_preferences where user_id='00000000-0000-4000-8000-000000009502' and channel='email' and purpose='announcement'),'unsubscribe_link','unsubscribe recorded with its source');
