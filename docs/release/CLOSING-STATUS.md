@@ -46,7 +46,7 @@ Durumlar:
 | D12 aile süzgeci, denetimde yönetici adı | TAMAM | C14c (migration önce, yönetim sonra) |
 | D14 AI sorusunu düzenleme | CANLIDA, TEST BEKLİYOR | C14c; cihaz C15 |
 | D15 MEB gerçek kabul pilotu | TAMAM (canlı) / TEST BEKLİYOR (ekran, test 7) | Resmî kaynak → yayın → pilot kapsamı → gerçek üretim (6 soru, 2/1/1/1/1, tam iz) → atama → geri çekme; 1 ücretli çağrı; temizlik doğrulandı. Soru içerik uygunluğu insan incelemesi bekliyor |
-| D16 teknik/hukuk metin uyumu | TAMAM (metin) / DIŞ ENGEL (hukuk onayı X03) | İngilizce Kullanım Koşulları D18'de yazılıyor |
+| D16/D18 teknik ve hukuk metinleri | TAMAM (metin) / DIŞ ENGEL (hukuk onayı X03) | 10 hukuk belgesinin hepsinde İngilizce bölüm (D18); metin içi 16 tutarsızlık D19'da koda göre uzlaştırılıyor |
 | D17 eşleme saklama işleri | TAMAM | C14c: iki pg_cron işi etkin, ilk çalışmada kaldırılacak cihaz 0 |
 | D11 kararları K3/K4/K5 | ERTELENDİ | DECISIONS.md |
 | X01 alan adı / SMTP | DIŞ ENGEL | Canlıya alırken |
