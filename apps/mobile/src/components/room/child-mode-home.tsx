@@ -67,6 +67,8 @@ export function ChildModeHome({
       await exit();
       router.replace("/parent");
     } catch (e) {
+      // Locked or failed check: do not leave the typed parent PIN in the boxes.
+      setPin("");
       setError(e);
     } finally {
       setBusy(false);

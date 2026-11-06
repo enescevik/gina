@@ -2,6 +2,11 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { childModeKey, childModeStorage } from "./child-mode-store";
 import { supabase } from "./supabase";
 import { useSession } from "./session";
+import { captureLaunchUrl } from "@/components/device/pending-pairing";
+
+// C06: this provider module loads with the root layout, before routing can rewrite a signed-out
+// `/parent/pair-device?code=…` QR address; keep that short-lived code for after sign-in.
+captureLaunchUrl();
 
 export interface ActingChild { id: string; name: string }
 interface ChildModeState {

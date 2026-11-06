@@ -78,6 +78,16 @@ export async function readPairingCode(): Promise<Pending | null> {
 
 export const clearPairingCode = () => write(null);
 
+/**
+ * Web: read the address the tab was opened with before the router replaces a protected
+ * `/parent/...` URL with the sign-in route. Called once at module load (see lib/child-mode).
+ */
+export function captureLaunchUrl() {
+  if (Platform.OS !== "web" || typeof window === "undefined") return;
+  const code = pairingCodeFromUrl(window.location.href);
+  if (code) void rememberPairingCode(code);
+}
+
 /** Keeps a pairing code from the link that opened (or reopened) the app while signed out. */
 export function usePairingLinkCapture() {
   const url = Linking.useLinkingURL();
