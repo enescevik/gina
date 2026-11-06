@@ -2,7 +2,6 @@ import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { json } from "../_shared/supabase.ts";
 import {
   fetchWithPolicy,
-  INDEX_PAGES,
   inspectXlsx,
   matchSubjectLinks,
   MAX_PAGE_BYTES,
@@ -97,14 +96,27 @@ export async function handleCurriculumSourceFetch(
       note: "Common written-exam tables cover grades 5–12 only; no other year or grade is substituted.",
     });
   }
-  const indexUrl =
-    INDEX_PAGES[`${target.exam_family}:${target.school_year}:${target.term}`];
+  // The index page comes only from the admin-managed registry (gina.curriculum_source_targets). No registered,
+  // active page for exactly this year/term → `unpublished`; another term/year is never substituted.
+  const registered = await deps.db.rpc("get_curriculum_source_target", {
+    p_exam_family: target.exam_family,
+    p_year: target.school_year,
+    p_term: target.term,
+  });
+  if (registered.error) {
+    return json({ error: registered.error.code === "42501" ? "forbidden" : "data_failed" }, registered.error.code === "42501" ? 403 : 503);
+  }
+  const indexUrl = typeof registered.data?.index_url === "string" ? registered.data.index_url as string : null;
+  if (indexUrl && !/^https:\/\/([a-z0-9-]+\.)*meb\.gov\.tr\//.test(indexUrl)) {
+    return json({ error: "target_invalid" }, 500);
+  }
   if (!indexUrl) {
     return json({
       outcome: "unpublished",
       alternative: "free_study",
       officially_verified: false,
-      note: "No official index is known for this year/term; no URL was guessed.",
+      note: "No registered official index for exactly this year/term; no URL was guessed and no other term was used.",
+      requested: { school_year: target.school_year, term: target.term },
     });
   }
   const sourceKey = `${target.exam_family}:${target.school_year}:${target.term}:${slug(target.subject)}`;

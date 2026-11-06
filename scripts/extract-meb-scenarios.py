@@ -63,6 +63,12 @@ def extract(source, directory):
     path = directory / source["file"]
     if hashlib.sha256(path.read_bytes()).hexdigest() != source["sha256"]:
         raise ValueError("source_hash_changed")
+    # Keys are stable across revisions of the same official file: the canonical file stem (not a hash-suffixed
+    # local copy) plus the source's own year/term. A new revision therefore re-uses the key with a new hash.
+    year, term = source.get("academic_year", "2026-2027"), int(source.get("term", 1))
+    stem = source.get("stem") or path.stem
+    if not re.fullmatch(r"20\d{2}-20\d{2}", year) or term not in (1, 2) or not re.fullmatch(r"[a-z0-9_]{1,60}", stem):
+        raise ValueError("source_scope_invalid")
     result, issues = [], []
     for name, cells, merges, formulas in sheets(path):
         grade_match = re.search(r"\b(1[0-2]|[1-9])\s*\.?\s*[SsSİıiI]", name) or re.fullmatch(r"(1[0-2]|[1-9])", name)
@@ -115,7 +121,7 @@ def extract(source, directory):
             if not blocks:
                 warnings.append("empty_scenario")
             result.append({
-                "id": f"tr-2026-2027-t1-{path.stem}-g{grade}-{scenario_ref.lower()}", "grade": grade,
+                "id": f"tr-{year}-t{term}-{stem}-g{grade}-{scenario_ref.lower()}", "grade": grade,
                 "subject": source["label"], "sheet": name, "scenario": label,
                 "exam": exam, "source_url": source["resolved_url"], "source_sha256": source["sha256"],
                 "header_cell": scenario_ref, "question_count": sum(b["count"] for b in blocks),

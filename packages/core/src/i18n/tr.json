@@ -2424,6 +2424,8 @@
   "catalogFlow.freshness.withdrawn": "Bu kaynak geri çekildi; yeni senaryo seçimi yapılmaz.",
   "catalogFlow.freshness.unpublished": "Bu yıl/dönem için yayımlanmış resmî dağılım yok. Başka bir yılın dosyası kullanılmaz.",
   "catalogFlow.freshness.freeStudy": "Serbest çalışma veya elle girilen dağılımla devam edebilirsin; resmî uygunluk iddiası yoktur.",
+  "catalogFlow.freshness.stale": "Son başarılı kontrol {{days}} gün önce; güncellik eski olabilir. Senaryolar son onaylı kopyaya dayanır.",
+  "catalogFlow.freshness.notFetched": "{{year}} · {{term}}. dönem için resmî dizin kayıtlı ama dosya henüz incelenmedi. Başka dönemin dosyası kullanılmaz.",
   "catalogFlow.manual": "Okulun dağılımını elle gir",
   "catalogFlow.changed": "Bu kaynak güncellendi veya yayından kaldırıldı. Senaryo adımına dönüp güncel bir seçenek seç.",
   "catalogFlow.errors.curriculum_unavailable": "Bu kaynak artık yeni Provalar için kullanılamıyor. Güncel senaryo seç.",

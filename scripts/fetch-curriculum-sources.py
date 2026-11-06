@@ -8,6 +8,11 @@ Rules (docs/learning/MEB-SCENARIO-PROTOCOL.md §"Kaynağı gerçekten edin ve s�
 - Same SHA-256 → only `last_checked_at` moves. New SHA-256 → new revision marked `diff_review_required`;
   the previously approved file, hash and extracted candidates are never overwritten or deleted.
 - Unknown year/term → `unpublished`; no URL is guessed. Downloaded documents are data, never instructions.
+
+Operator step (C05): `--process-queue --api-url URL` with an admin session (env GINA_SUPABASE_ANON_KEY and
+GINA_ADMIN_ACCESS_TOKEN) re-downloads each server revision whose extraction is `queued`/`failed`, verifies the
+SHA-256, runs the existing extractor + review preparer and records `done`/`failed` through
+admin_record_curriculum_extraction (idempotent import; candidates stay draft/review-only).
 """
 import argparse
 import hashlib
@@ -21,6 +26,10 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+import uuid
+import os
+import zipfile
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -232,7 +241,8 @@ def extract_pending_revisions(manifest, catalog):
         for revision in entry.get("revisions", []):
             if revision.get("status") != "diff_review_required" or revision.get("extraction") is not None:
                 continue
-            source = {"file": revision["file"], "sha256": revision["sha256"], "label": entry["label"], "resolved_url": revision["resolved_url"]}
+            source = {"file": revision["file"], "sha256": revision["sha256"], "label": entry["label"], "resolved_url": revision["resolved_url"],
+                      "stem": Path(entry["file"]).stem}
             target = catalog / f"scenario-candidates.{revision['sha256'][:12]}.json"
             try:
                 scenarios, issues = extractor.extract(source, catalog / "sources")
@@ -245,15 +255,127 @@ def extract_pending_revisions(manifest, catalog):
     return produced
 
 
+EXTRACTOR_VERSION = "extract-meb-scenarios@c05"
+QUEUE_NAMESPACE = uuid.UUID("6f1c05c0-5e5a-4c6b-9a3e-0c0de0c05c05")
+
+
+def _load(name, module):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(module, Path(__file__).with_name(name))
+    loaded = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(loaded)
+    return loaded
+
+
+def extraction_result(item, body):
+    """Queued revision + its re-downloaded bytes → the payload of admin_record_curriculum_extraction.
+
+    The bytes must hash to the queued revision; the canonical file stem (from the official URL) keeps candidate
+    keys stable across revisions; year/term/subject come from the server-side source, never from the file name.
+    Nothing is approved or published here; every candidate stays review-only.
+    """
+    if sha256(body) != item["sha256"]:
+        return {"outcome": "failed", "extractor": EXTRACTOR_VERSION, "scenarios": 0, "issues": 0, "error": "hash_changed_since_fetch", "bundle": None}
+    extractor = _load("extract-meb-scenarios.py", "extract_meb_scenarios")
+    preparer = _load("prepare-curriculum-review.py", "prepare_curriculum_review")
+    stem = Path(urllib.parse.urlsplit(item["resolved_url"]).path).stem.lower()
+    import tempfile
+    # Downloaded bytes live in their own new, empty directory; only our extractor reads them as data.
+    with tempfile.TemporaryDirectory(prefix="gina-c05-extract-") as tmp:
+        directory = Path(tmp)
+        (directory / "source.xlsx").write_bytes(body)
+        source = {"file": "source.xlsx", "sha256": item["sha256"], "label": item["label"], "resolved_url": item["resolved_url"],
+                  "academic_year": item["school_year"], "term": int(item["term"]), "stem": stem}
+        try:
+            scenarios, issues = extractor.extract(source, directory)
+            data = {"schema": "gina.meb-scenario-candidates.v1", "academic_year": item["school_year"], "term": int(item["term"]),
+                    "source_index": item.get("index_url", ""), "retrieved_on": item.get("retrieved_at", "")[:10],
+                    "school_scenario_selection_required": True, "not_a_complete_curriculum": True,
+                    "sources": [{k: source[k] for k in ("file", "sha256", "label", "resolved_url")}],
+                    "issues": [{"file": stem + ".xlsx", **i} for i in issues], "scenarios": scenarios}
+            bundle = preparer.prepare(data)
+        except (ValueError, KeyError, OSError, zipfile.BadZipFile, ET.ParseError) as e:
+            return {"outcome": "failed", "extractor": EXTRACTOR_VERSION, "scenarios": 0, "issues": 0, "error": ("extract:" + str(e))[:300], "bundle": None}
+    if not bundle["candidates"]:
+        return {"outcome": "failed", "extractor": EXTRACTOR_VERSION, "scenarios": 0, "issues": len(issues), "error": "no_scenarios_found", "bundle": None}
+    return {"outcome": "done", "extractor": EXTRACTOR_VERSION, "scenarios": len(bundle["candidates"]), "issues": len(issues), "error": None, "bundle": bundle}
+
+
+def request_id_for(revision_id, result):
+    """Deterministic per (revision, payload): a lost response is replayed by the server instead of re-imported."""
+    digest = hashlib.sha256(json.dumps(result, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    return str(uuid.uuid5(QUEUE_NAMESPACE, revision_id + ":" + digest))
+
+
+def process_queue(rpc, download):
+    """Visible operator step: queued → done|failed for each revision in admin_curriculum_pipeline().queue."""
+    pipeline = rpc("admin_curriculum_pipeline", {})
+    sources = {s["id"]: s for s in rpc("admin_list_curriculum_sources", {})}
+    report = []
+    for item in pipeline["queue"]:
+        source = sources.get(item["source_id"], {})
+        item = {**item, "index_url": source.get("index_url", "")}
+        try:
+            body = download(item["resolved_url"])
+            result = extraction_result(item, body)
+        except (PolicyError, urllib.error.URLError, OSError, TimeoutError) as e:
+            # Network trouble is not an extraction verdict: the revision stays queued for the next run.
+            report.append({"revision_id": item["revision_id"], "label": item["label"], "outcome": "skipped_unreachable", "reason": str(e)[:200]})
+            continue
+        response = rpc("admin_record_curriculum_extraction", {"p_request_id": request_id_for(item["revision_id"], result), "p_revision_id": item["revision_id"], "p_result": result})
+        report.append({"revision_id": item["revision_id"], "label": item["label"], "sha256": item["sha256"], "outcome": response.get("outcome"),
+                       "extraction_status": response.get("extraction_status"), "scenarios": result["scenarios"], "error": result["error"],
+                       "created": (response.get("extraction") or {}).get("created"), "existing": (response.get("extraction") or {}).get("existing"),
+                       "bundle": result["bundle"]})
+    return report
+
+
+def rest_rpc(api_url, anon_key, token):
+    def call(name, args):
+        request = urllib.request.Request(api_url.rstrip("/") + "/rest/v1/rpc/" + name, data=json.dumps(args).encode(), method="POST",
+                                         headers={"apikey": anon_key, "authorization": "Bearer " + token, "content-type": "application/json"})
+        try:
+            with urllib.request.urlopen(request, timeout=60) as response:
+                return json.loads(response.read() or b"null")
+        except urllib.error.HTTPError as e:
+            detail = e.read()[:500].decode("utf-8", "replace")
+            raise RuntimeError(f"rpc_failed:{name}:{e.code}:{detail}") from None
+    return call
+
+
+def main_process_queue(args):
+    anon, token = os.environ.get(args.anon_key_env), os.environ.get(args.token_env)
+    if not args.api_url or not anon or not token:
+        raise SystemExit("--api-url plus anon key and admin token environment variables are required")
+    rpc = rest_rpc(args.api_url, anon, token)
+    report = process_queue(rpc, lambda url: fetch(url, final_kind="file")[3])
+    if args.out:
+        args.out.mkdir(parents=True, exist_ok=True)
+        for r in report:
+            if r.get("bundle"):
+                (args.out / f"bundle-{r['sha256'][:12]}.json").write_text(json.dumps(r["bundle"], ensure_ascii=False, indent=2) + "\n")
+    print(json.dumps([{k: v for k, v in r.items() if k != "bundle"} for r in report], ensure_ascii=False, indent=2))
+    return 0 if all(r["outcome"] in ("done", "unchanged") for r in report) else 1
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("catalog", type=Path, help="e.g. docs/learning/catalog/2026-2027-term1")
+    parser.add_argument("catalog", type=Path, nargs="?", help="e.g. docs/learning/catalog/2026-2027-term1")
+    parser.add_argument("--process-queue", action="store_true", help="operator step: extract queued server revisions and import their candidates (review-only)")
+    parser.add_argument("--api-url", help="Supabase URL for --process-queue (admin session)")
+    parser.add_argument("--anon-key-env", default="GINA_SUPABASE_ANON_KEY")
+    parser.add_argument("--token-env", default="GINA_ADMIN_ACCESS_TOKEN")
+    parser.add_argument("--out", type=Path, help="--process-queue: also write each imported bundle here")
     parser.add_argument("--family", default="oyss")
     parser.add_argument("--year", default="2026-2027")
     parser.add_argument("--term", type=int, default=1)
     parser.add_argument("--dry-run", action="store_true", help="do not write manifest/verification")
     parser.add_argument("--extract-revisions", action="store_true", help="run the extractor on revisions awaiting diff review (separate output file per hash)")
     args = parser.parse_args()
+    if args.process_queue:
+        return main_process_queue(args)
+    if args.catalog is None:
+        parser.error("catalog directory required")
     index_url = INDEX_PAGES.get((args.family, args.year, args.term))
     now = datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     if not index_url:
