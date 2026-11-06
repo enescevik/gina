@@ -16,7 +16,9 @@ import { generationDraftScope } from "../_shared/prova-generation-scope.ts";
 import {
   legacyKindFor,
   parseInteractionTypes,
+  disabledInteractionTypes,
   STRUCTURED_PROMPT,
+  STRUCTURED_PROMPT_VERSION,
   structuredGenerationSchema,
 } from "../_shared/structured-generation.ts";
 // Prova AI soru üretimi. Veli uygulamadan çağırır (JWT ile); çocuk asla çağırmaz.
@@ -156,6 +158,16 @@ Deno.serve(async (req) => {
   const interactionTypes = interaction?.types ?? null;
   const structuredRequested = !!interactionTypes?.some((t) => t !== "multiple_choice" && t !== "open_ended");
   const effectiveKind: KindMode = interactionTypes ? legacyKindFor(interactionTypes) : kind;
+  // QT-AI v10: Faz 2A/2B türleri enabled=false gelir. Kapalı tür sağlayıcıdan önce reddedilir (SQL zaten reddederdi,
+  // ama ücretli çıktı boşa gider ve iş takılırdı). Açıldığında aynı istek kod değişmeden çalışır.
+  if (structuredRequested) {
+    const disabled = await disabledInteractionTypes(db as unknown as Parameters<typeof disabledInteractionTypes>[0], interactionTypes!);
+    if (disabled === null) return fail("data_failed", 503);
+    if (disabled.length) {
+      return fail("interaction_type_unavailable", 409, { details: { types: disabled.join(",") } });
+    }
+  }
+  const promptVersion = structuredRequested ? STRUCTURED_PROMPT_VERSION : PROMPT_VERSION;
   let ent;
   try {
     ent = await provaEntitlement(db, parent.familyId);
@@ -303,7 +315,7 @@ Deno.serve(async (req) => {
     ? [{ type: "text", text: userPrompt }, ...document.media]
     : userPrompt;
   const promptHash = await sha256(
-    `${PROMPT_VERSION}\n${JSON.stringify(ai)}\n${
+    `${promptVersion}\n${JSON.stringify(ai)}\n${
       JSON.stringify(draftScope)
     }\n${systemPrompt}\n${userPrompt}`,
   );
@@ -323,7 +335,7 @@ Deno.serve(async (req) => {
     draftScope,
     document: document ? { id: document.id, sha256: document.sha256 } : null,
     ai,
-    promptVersion: PROMPT_VERSION,
+    promptVersion,
     promptHash,
     systemPrompt,
     userPrompt,

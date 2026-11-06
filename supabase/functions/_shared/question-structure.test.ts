@@ -6,14 +6,23 @@ import { assert, assertEquals } from "jsr:@std/assert";
 import fixtures from "../../../packages/core/src/question-types/fixtures.json" with { type: "json" };
 import { parseNumberInput, questionContentErrors } from "./question-structure.ts";
 
-// Edge yalnız AI'ın üretebildiği 1A/1B türlerini doğrular; 2A/2B/3 türleri ve uyaran (stimulus) AI üretiminde
-// henüz yok (sunucuda enabled=false). Onlar için Edge açıkça type_unknown / payload_unknown_field döner.
-const AI_TYPES = new Set(["true_false", "fill_blank", "matching", "numeric", "ordering", "classification"]);
-const aiCases = fixtures.content.filter((c) => AI_TYPES.has(c.type) && !(c.payload && typeof c.payload === "object" && "stimulus" in c.payload));
+// Edge, AI'ın üretebildiği türleri doğrular: 1A/1B + Faz 2A (mark_text, error_fix, multi_choice, two_stage) +
+// Faz 2B (clock, region_select) ve her türde isteğe bağlı uyaran (stimulus). 2A/2B sunucuda enabled=false gelir;
+// Edge doğrulayıcı yine kabul eder (açılınca çalışsın), üretim isteği ise kapalı türü sağlayıcıdan önce reddeder.
+// Faz 3 (crossword) ve kütüphane türleri (drag_magic) AI üretiminde yok: Edge açıkça type_unknown döner.
+const AI_TYPES = new Set([
+  "true_false", "fill_blank", "matching", "numeric", "ordering", "classification",
+  "mark_text", "error_fix", "multi_choice", "two_stage", "region_select", "clock",
+]);
+const aiCases = fixtures.content.filter((c) => AI_TYPES.has(c.type));
 Deno.test("non-AI phase types are refused explicitly by the Edge validator", () => {
-  for (const c of fixtures.content.filter((c) => !AI_TYPES.has(c.type) && c.type !== "drag_magic")) {
-    assertEquals(questionContentErrors(c.type, c.payload, c.key), ["type_unknown"], c.name);
-  }
+  const others = fixtures.content.filter((c) => !AI_TYPES.has(c.type));
+  assert(others.length > 0);
+  for (const c of others) assertEquals(questionContentErrors(c.type, c.payload, c.key), ["type_unknown"], c.name);
+});
+Deno.test("fixture scope covers every AI type including 2A/2B and stimulus", () => {
+  for (const t of AI_TYPES) assert(aiCases.some((c) => c.type === t), t);
+  assert(aiCases.some((c) => c.payload && typeof c.payload === "object" && "stimulus" in c.payload), "stimulus fixtures");
 });
 for (const c of aiCases) {
   Deno.test("core fixture parity: " + c.name, () => {

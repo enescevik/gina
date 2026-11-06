@@ -1,6 +1,8 @@
 // QT-AI test verisi: sağlayıcının döndürdüğü biçimde (model biçimi) sentetik yapılandırılmış sorular.
 // Gerçek sağlayıcı çağrısı yok; red-team testleri bu nesneleri bozarak üretir. Kişi adı ve görsel yok.
 type Q = Record<string, unknown>;
+/** Uyaran yok (model biçimi: bütün alanlar zorunlu, kullanılmayan boş). */
+export const NO_STIMULUS = { kind: "none", caption: "", alt: "", columns: [], rows: [], bars: [], x_label: "", y_label: "", unit: "" };
 const common = (type: string, stem: string, structure: Q, over: Q = {}): Q => ({
   interaction_type: type,
   schema_version: 1,
@@ -8,6 +10,7 @@ const common = (type: string, stem: string, structure: Q, over: Q = {}): Q => ({
   difficulty: "kolay",
   stem,
   structure,
+  stimulus: NO_STIMULUS,
   solution: "ÇÖZÜM-GİZLİ-" + type,
   explanation: "",
   source_urls: [],
@@ -107,6 +110,91 @@ export const aiStructured = {
         { id: "i4", text: "Elma ağacı", category: "c2" },
       ],
     }),
+  // ---- Faz 2A ----
+  mark_text: () =>
+    common("mark_text", "Cümledeki hareket bildiren sözcükleri işaretle.", {
+      unit: "word",
+      segments: [
+        { id: "w1", text: "Kedi" }, { id: "", text: " " }, { id: "w2", text: "bahçede" }, { id: "", text: " " },
+        { id: "w3", text: "koştu" }, { id: "", text: " ve " }, { id: "w4", text: "zıpladı" }, { id: "", text: "." },
+      ],
+      targets: ["w3", "w4"],
+      max_select: 0,
+    }),
+  error_fix: () =>
+    common("error_fix", "Cümledeki yazım yanlışını bul ve düzelt.", {
+      unit: "word",
+      segments: [
+        { id: "w1", text: "Okula" }, { id: "", text: " " }, { id: "w2", text: "herkez" }, { id: "", text: " " },
+        { id: "w3", text: "erken" }, { id: "", text: " " }, { id: "w4", text: "geldi" }, { id: "", text: "." },
+      ],
+      errors: [{ id: "w2", accepted: ["herkes"] }],
+      find_weight: 0,
+      fix_policy: "review_unmatched",
+      case_insensitive: true,
+    }),
+  multi_choice: () =>
+    common("multi_choice", "Hangileri memeli hayvandır? Doğru olanların hepsini seç.", {
+      options: [{ id: "a", text: "Kedi" }, { id: "b", text: "Serçe" }, { id: "c", text: "İnek" }, { id: "d", text: "Balık" }],
+      correct: ["a", "c"],
+      select_count: 0,
+    }),
+  two_stage: () =>
+    common("two_stage", "İki adımda cevapla.", {
+      stage1: { prompt: "Su donunca hangi hâle geçer?", options: [{ id: "a", text: "Katı" }, { id: "b", text: "Gaz" }] },
+      stage2: {
+        prompt: "Seçimini hangi bilgi destekler?",
+        mode: "choice",
+        options: [{ id: "c", text: "Soğuyan su buza dönüşür." }, { id: "d", text: "Isınan su buharlaşır." }],
+      },
+      stage1_answer: "a",
+      stage2_answer: "c",
+    }),
+  // ---- Faz 2B ----
+  region_grid: () =>
+    common("region_select", "Şeklin 3/4'ünü boya.", {
+      figure: { kind: "grid", rows: 2, cols: 2 },
+      regions: [
+        { id: "r1", text: "1. satır 1. sütun" }, { id: "r2", text: "1. satır 2. sütun" },
+        { id: "r3", text: "2. satır 1. sütun" }, { id: "r4", text: "2. satır 2. sütun" },
+      ],
+      key_mode: "count",
+      count: 3,
+      targets: [],
+      max_select: 0,
+    }),
+  region_sectors: () =>
+    common("region_select", "Dairenin yarısını boya.", {
+      figure: { kind: "sectors", rows: 0, cols: 0 },
+      regions: Array.from({ length: 6 }, (_, i) => ({ id: `d${i + 1}`, text: `${i + 1}. dilim` })),
+      key_mode: "count",
+      count: 3,
+      targets: [],
+      max_select: 0,
+    }),
+  clock_read: () =>
+    common("clock", "Saat kaçı gösteriyor?", { mode: "read", display: "analog", step_minutes: 15, shown_time: "03:15", time: "03:15", accept_12h: true }),
+  clock_set: () =>
+    common("clock", "Saati 07:30 olarak kur.", { mode: "set", display: "analog", step_minutes: 30, shown_time: "", time: "07:30", accept_12h: true }),
+  // ---- Uyaran (tablo / grafik) ----
+  numeric_table: () => ({
+    ...common("numeric", "Tabloya göre iki sınıfta toplam kaç öğrenci var?", {
+      units: [], unit_required: false, work_area: true, value: "47", unit: "", unit_factors: [],
+      abs_tolerance: 0, rel_tolerance: 0, unit_weight: 0, process_required: false,
+    }),
+    stimulus: { ...NO_STIMULUS, kind: "table", caption: "Sınıf mevcutları", alt: "İki satırlı tablo: 2-A sınıfında 23, 2-B sınıfında 24 öğrenci var.", columns: ["Sınıf", "Öğrenci"], rows: [["2-A", "23"], ["2-B", "24"]] },
+  }),
+  multi_choice_chart: () => ({
+    ...common("multi_choice", "Grafiğe göre 10'dan fazla satılan meyveleri seç.", {
+      options: [{ id: "a", text: "Elma" }, { id: "b", text: "Armut" }, { id: "c", text: "Muz" }],
+      correct: ["a", "c"],
+      select_count: 0,
+    }),
+    stimulus: {
+      ...NO_STIMULUS, kind: "bar_chart", alt: "Sütun grafiği: Elma 12, Armut 7, Muz 15 kilogram satıldı.", x_label: "Meyve", y_label: "Satış", unit: "kg",
+      bars: [{ label: "Elma", value: 12 }, { label: "Armut", value: 7 }, { label: "Muz", value: 15 }],
+    },
+  }),
 };
 export type AiStructuredName = keyof typeof aiStructured;
 /** Derin kopya + yol üzerinde değişiklik (red-team). */
