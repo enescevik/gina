@@ -687,6 +687,66 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"device_pairing_attempts": {
+                  Row: {
+                    "family_id": string | null,"id": number,"ok": boolean,"tried_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "family_id"?: string | null,"id"?: never,"ok": boolean,"tried_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "family_id"?: string | null,"id"?: never,"ok"?: boolean,"tried_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "device_pairing_attempts_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"device_pairing_locks": {
+                  Row: {
+                    "locked_until": string,"scope": string,"subject": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "locked_until": string,"scope": string,"subject": string
+                  }
+                  Update: {
+                    "locked_until"?: string,"scope"?: string,"subject"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"device_pairing_previews": {
+                  Row: {
+                    "code": string,"created_at": string,"expires_at": string,"family_id": string,"token": string,"used_at": string | null,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "code": string,"created_at"?: string,"expires_at": string,"family_id": string,"token"?: string,"used_at"?: string | null,"user_id": string
+                  }
+                  Update: {
+                    "code"?: string,"created_at"?: string,"expires_at"?: string,"family_id"?: string,"token"?: string,"used_at"?: string | null,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "device_pairing_previews_code_fkey"
+      columns: ["code"]
+isOneToOne: false
+      referencedRelation: "device_pairings"
+      referencedColumns: ["code"]
+    },{
+      foreignKeyName: "device_pairing_previews_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"device_pairings": {
                   Row: {
                     "auth_user_id": string,"code": string,"consumed_at": string | null,"device_name": string,"expires_at": string
@@ -891,14 +951,14 @@ isOneToOne: false
                   ]
                 },"exams": {
                   Row: {
-                    "academic_year": number | null,"assessment_track": string | null,"blueprint_id": string | null,"child_id": string,"content_locked_at": string | null,"created_at": string,"created_by": string | null,"duration_minutes": number | null,"education_context": Json | null,"education_period_id": string | null,"exam_scope": string | null,"family_id": string,"grade": number,"id": string,"kind": string,"preparation": Json | null,"question_ids": (string)[],"school_declared": boolean | null,"status": Database["public"]['Enums']["exam_status"],"subject": string,"term": number | null,"timed": boolean,"title": string,"updated_at": string
+                    "academic_year": number | null,"assessment_track": string | null,"blueprint_id": string | null,"child_id": string,"content_locked_at": string | null,"created_at": string,"created_by": string | null,"duration_minutes": number | null,"education_context": Json | null,"education_period_id": string | null,"exam_scope": string | null,"family_id": string,"grade": number,"id": string,"kind": string,"preparation": Json | null,"question_ids": (string)[],"school_declared": boolean | null,"status": Database["public"]['Enums']["exam_status"],"subject": string,"subject_links": Json | null,"term": number | null,"timed": boolean,"title": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "academic_year"?: number | null,"assessment_track"?: string | null,"blueprint_id"?: string | null,"child_id": string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"education_context"?: Json | null,"education_period_id"?: string | null,"exam_scope"?: string | null,"family_id": string,"grade": number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"school_declared"?: boolean | null,"status"?: Database["public"]['Enums']["exam_status"],"subject": string,"term"?: number | null,"timed"?: boolean,"title": string,"updated_at"?: string
+                    "academic_year"?: number | null,"assessment_track"?: string | null,"blueprint_id"?: string | null,"child_id": string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"education_context"?: Json | null,"education_period_id"?: string | null,"exam_scope"?: string | null,"family_id": string,"grade": number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"school_declared"?: boolean | null,"status"?: Database["public"]['Enums']["exam_status"],"subject": string,"subject_links"?: Json | null,"term"?: number | null,"timed"?: boolean,"title": string,"updated_at"?: string
                   }
                   Update: {
-                    "academic_year"?: number | null,"assessment_track"?: string | null,"blueprint_id"?: string | null,"child_id"?: string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"education_context"?: Json | null,"education_period_id"?: string | null,"exam_scope"?: string | null,"family_id"?: string,"grade"?: number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"school_declared"?: boolean | null,"status"?: Database["public"]['Enums']["exam_status"],"subject"?: string,"term"?: number | null,"timed"?: boolean,"title"?: string,"updated_at"?: string
+                    "academic_year"?: number | null,"assessment_track"?: string | null,"blueprint_id"?: string | null,"child_id"?: string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"education_context"?: Json | null,"education_period_id"?: string | null,"exam_scope"?: string | null,"family_id"?: string,"grade"?: number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"school_declared"?: boolean | null,"status"?: Database["public"]['Enums']["exam_status"],"subject"?: string,"subject_links"?: Json | null,"term"?: number | null,"timed"?: boolean,"title"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -2586,6 +2646,8 @@ isOneToOne: false
                            },
 "admin_decide_contribution_set":
 { Args: { "p_approve": boolean,"p_confirmed": boolean,"p_id": string,"p_note": string,"p_request_id": string,"p_teachers": Json }; Returns: Json
+                           } |
+{ Args: { "p_approve": boolean,"p_confirmed": boolean,"p_id": string,"p_note": string,"p_question_notes": Json,"p_request_id": string,"p_teachers": Json }; Returns: Json
                            },
 "admin_delete_global_question":
 { Args: { "p_question_id": string }; Returns: undefined
@@ -2613,6 +2675,9 @@ isOneToOne: false
                            },
 "admin_family_entitlement_timeline":
 { Args: { "p_cursor"?: string,"p_family_id": string,"p_limit"?: number }; Returns: Json
+                           },
+"admin_find_operator_account":
+{ Args: { "p_email": string }; Returns: Json
                            },
 "admin_get_contribution_set":
 { Args: { "p_id": string }; Returns: Json
@@ -2696,6 +2761,12 @@ isOneToOne: false
                            },
 "admin_model_disable_preview":
 { Args: { "p_model_id": string }; Returns: Json
+                           },
+"admin_operation_members":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"admin_operator_scopes":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "admin_override_apply":
 { Args: { "p_family_id": string,"p_idempotency_key": string,"p_plan": Database["public"]['Enums']["plan_code"],"p_reason": string,"p_replace_conflicts"?: boolean,"p_until": string }; Returns: Json
@@ -2799,6 +2870,12 @@ isOneToOne: false
                            },
 "admin_set_library_quota":
 { Args: { "p_monthly": number,"p_plan": Database["public"]['Enums']["plan_code"] }; Returns: undefined
+                           },
+"admin_set_operation_member":
+{ Args: { "p_expires_at": string,"p_reason": string,"p_request_id": string,"p_revoke": boolean,"p_role": string,"p_user_id": string }; Returns: Json
+                           },
+"admin_set_operator_scope":
+{ Args: { "p_allow_global"?: boolean,"p_grant": boolean,"p_place_id": string,"p_reason": string,"p_request_id": string,"p_user_id": string }; Returns: Json
                            },
 "admin_source_file_limit":
 { Args: { "p_max_files": number }; Returns: undefined
@@ -2967,6 +3044,9 @@ isOneToOne: false
 "child_logout":
 { Args: Record<PropertyKey, never>; Returns: undefined
                            },
+"child_mode_pin_status":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "child_pin_login":
 { Args: { "p_child_id": string,"p_pin": string }; Returns: boolean
                            },
@@ -3076,6 +3156,7 @@ isOneToOne: false
 "school_declared": boolean | null,
 "status": Database["public"]['Enums']["exam_status"],
 "subject": string,
+"subject_links": Json | null,
 "term": number | null,
 "timed": boolean,
 "title": string,
@@ -3118,9 +3199,6 @@ isOneToOne: false
 "delete_learning_source":
 { Args: { "p_source_id": string }; Returns: undefined
                            },
-"device_pairing_status":
-{ Args: Record<PropertyKey, never>; Returns: Json
-                           },
 "deletion_preview":
 { Args: { "p_target": Json }; Returns: Json
                            },
@@ -3146,6 +3224,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"device_pairing_status":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "education_calendar_catalog":
 { Args: { "p_child_id"?: string }; Returns: Json
                            },
@@ -3352,6 +3433,9 @@ isOneToOne: false
 "get_prova_entitlement":
 { Args: { "p_family_id"?: string }; Returns: Json
                            },
+"get_prova_question_fit":
+{ Args: { "p_child_id": string,"p_question_ids": (string)[] }; Returns: Json
+                           },
 "get_published_library_packages":
 { Args: { "p_grade": number,"p_subject": string }; Returns: Json
                            },
@@ -3453,6 +3537,9 @@ isOneToOne: false
 "list_question_contributions":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"list_scenario_question_fit":
+{ Args: { "p_limit"?: number,"p_state"?: string }; Returns: Json
+                           },
 "list_school_grades":
 { Args: { "p_before_date"?: string,"p_before_id"?: string,"p_child_id": string,"p_period"?: string }; Returns: Json
                            },
@@ -3464,6 +3551,9 @@ isOneToOne: false
                            },
 "mark_parent_inbox":
 { Args: { "p_archived"?: boolean,"p_id": string }; Returns: undefined
+                           },
+"my_admin_access":
+{ Args: Record<PropertyKey, never>; Returns: boolean
                            },
 "my_notification_channels":
 { Args: Record<PropertyKey, never>; Returns: Json
@@ -3478,10 +3568,14 @@ isOneToOne: false
 { Args: { "p_limit"?: number,"p_unread_only"?: boolean }; Returns: Json
                            },
 "pair_child_device":
-{ Args: { "p_code": string }; Returns: string } | { Args: { "p_code": string,"p_preview_token": string }; Returns: string
+{ Args: { "p_code": string }; Returns: string
+                           } |
+{ Args: { "p_code": string,"p_preview_token": string }; Returns: string
                            },
 "pair_device":
-{ Args: { "p_code": string }; Returns: string } | { Args: { "p_code": string,"p_preview_token": string }; Returns: string
+{ Args: { "p_code": string }; Returns: string
+                           } |
+{ Args: { "p_code": string,"p_preview_token": string }; Returns: string
                            },
 "parent_inbox":
 { Args: { "p_archived"?: boolean,"p_before"?: string,"p_before_id"?: string }; Returns: Json
@@ -3622,6 +3716,12 @@ isOneToOne: false
 "register_timetable_import":
 { Args: { "p_child": string,"p_job": string,"p_source": string }; Returns: Json
                            },
+"reject_device_pairing":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"release_channel_failure_page":
+{ Args: { "p_before"?: string,"p_before_id"?: number,"p_channel"?: string,"p_limit"?: number,"p_reason"?: string }; Returns: Json
+                           },
 "release_channel_failures":
 { Args: { "p_limit"?: number }; Returns: Json
                            },
@@ -3636,9 +3736,6 @@ isOneToOne: false
                            },
 "release_retry_push":
 { Args: { "p_confirmed": boolean,"p_outbox_id": number,"p_reason": string,"p_request": string,"p_revision": number }; Returns: Json
-                           },
-"reject_device_pairing":
-{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "reply_help_ticket":
 { Args: { "p_body": string,"p_internal"?: boolean,"p_request_id": string,"p_revision": number,"p_status"?: string,"p_ticket_id": string }; Returns: Json
