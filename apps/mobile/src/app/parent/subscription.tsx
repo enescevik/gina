@@ -1,3 +1,4 @@
+import { publishedLegal, legalUrl } from "@/lib/legal";
 import { BetaPlans } from "@/components/setup/beta-plans";
 import { AiUsageCard } from "@/components/subscription/ai-usage-card";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -32,8 +33,6 @@ type Period = Enums<"billing_period">;
 const PLAN_RANK: Record<PlanCode, number> = { free: 0, plus: 1, pro: 2 };
 /** Apple standart EULA (DECISIONS.md: özel EULA yok). */
 const APPLE_EULA_URL = "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
-/** Yayındaki hukuki sayfaların kökü (Cloudflare); tanımlı değilse bağlantılar gizlenir. */
-const LEGAL_BASE_URL = /^https:\/\//.test(process.env.EXPO_PUBLIC_LEGAL_BASE_URL ?? "") ? process.env.EXPO_PUBLIC_LEGAL_BASE_URL?.replace(/\/+$/, "") : undefined;
 
 function i18nText(j: Json | null, lang: string): string {
   if (j && typeof j === "object" && !Array.isArray(j)) {
@@ -57,7 +56,7 @@ export default function SubscriptionScreen() {
   const familyId = claims?.family_id ?? "";
   const isParent = claims?.role === "parent" && !!familyId;
   const canManage = iapSupported && isParent;
-  const canBuy = canManage && !!LEGAL_BASE_URL;
+  const canBuy = canManage && !!publishedLegal;
 
   const [period, setPeriod] = useState<Period>("yearly");
   const [notice, setNotice] = useState<Notice>(null);
@@ -170,7 +169,7 @@ export default function SubscriptionScreen() {
     <Screen title={t("subscription.title")} subtitle={t("accountV5.subscriptionBody")} loading={plans.isLoading || entitlement.isLoading || storeSub.isLoading} error={plans.error ?? entitlement.error ?? storeSub.error ?? planProducts.error} onRetry={() => { void plans.refetch(); void entitlement.refetch(); void storeSub.refetch(); void planProducts.refetch(); }}>
       <BetaPlans/>
       <AiUsageCard/>
-      {canManage && !LEGAL_BASE_URL ? <Text style={parentStyles.copy}>{t("accountV5.purchaseNotReady")}</Text> : null}
+      {canManage && !publishedLegal ? <Text style={parentStyles.copy}>{t("accountV5.purchaseNotReady")}</Text> : null}
       {entitlement.data?.source === "comp" ? (
         <Text className="font-body rounded-parent bg-star/20 p-3 text-base text-ink">{t("subscription.compNote")}</Text>
       ) : null}
@@ -295,8 +294,8 @@ export default function SubscriptionScreen() {
       <Text className="font-body text-sm text-gray-500">{iapSupported ? t("iap.legal") : t("subscription.storeNote")}</Text>
       <View style={{ gap: 4 }}>
         {Platform.OS === "ios" ? <Button variant="ghost" title={t("iap.eula")} onPress={() => openLink.mutate(APPLE_EULA_URL)} /> : null}
-        {LEGAL_BASE_URL ? <><Button variant="ghost" title={t("iap.subscriptionTerms")} onPress={() => openLink.mutate(`${LEGAL_BASE_URL}/legal/abonelik-kosullari`)} />
-          <Button variant="ghost" title={t("iap.privacy")} onPress={() => openLink.mutate(`${LEGAL_BASE_URL}/legal/gizlilik-politikasi`)} /></> : null}
+        {publishedLegal ? <><Button variant="ghost" title={t("iap.subscriptionTerms")} onPress={() => openLink.mutate(legalUrl("abonelik-kosullari", i18n.language)!)} />
+          <Button variant="ghost" title={t("iap.privacy")} onPress={() => openLink.mutate(legalUrl("gizlilik-politikasi", i18n.language)!)} /></> : null}
       </View>
 
       <ErrorText error={manage.error ?? redeem.error ?? openLink.error ?? offers.error} />

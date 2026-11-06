@@ -376,7 +376,7 @@ export function buildPlan(command, ctx) {
       sourceSteps(); envStep('EXPO_PUBLIC_'); versionStep();
       steps.push(step('deps', 'Bağımlılıklar (frozen lockfile)', { kind: 'shell', argv: ['pnpm', 'install', '--frozen-lockfile'] }));
       steps.push(step('doctor', 'Expo Doctor (newArchEnabled kalıntısı yok; SDK uyumu)', { kind: 'shell', argv: ['pnpm', 'exec', 'npx', '--yes', 'expo-doctor'], cwd: 'apps/mobile', optional: true }));
-      steps.push(step('build', `Yerel EAS production build → ${ctx.ipa}`, { kind: 'shell', argv: ['eas', 'build', '--platform', 'ios', '--profile', 'production', '--local', '--non-interactive', '--output', ctx.ipa], cwd: 'apps/mobile', env: ['EXPO_PUBLIC_SUPABASE_URL', 'EXPO_PUBLIC_SUPABASE_ANON_KEY', 'EXPO_PUBLIC_WEB_URL?', 'EXPO_PUBLIC_LEGAL_BASE_URL?'] }));
+      steps.push(step('build', `Yerel EAS production build → ${ctx.ipa}`, { kind: 'shell', argv: ['eas', 'build', '--platform', 'ios', '--profile', 'production', '--local', '--non-interactive', '--output', ctx.ipa], cwd: 'apps/mobile', env: ['EXPO_PUBLIC_SUPABASE_URL', 'EXPO_PUBLIC_SUPABASE_ANON_KEY', 'EXPO_PUBLIC_WEB_URL?', 'EXPO_PUBLIC_LEGAL_BASE_URL?', 'EXPO_PUBLIC_LEGAL_VERSION?'] }));
       steps.push(step('inspect', 'IPA: bundle/sürüm/build (Info.plist), SHA-256, codesign, üretim Supabase adresi pakette', { kind: 'check', detail: ctx.ipa }));
       break;
     }

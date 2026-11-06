@@ -1,0 +1,8 @@
+{
+  "checks": [
+    "tr-TR: direct signed-out access, support address, translation, no overflow, navigation passed",
+    "en-US: direct signed-out access, support address, translation, no overflow, navigation passed",
+    "Lawyer HTML: 10 full drafts, questions appendix and all internal links verified"
+  ],
+  "productionChanged": false
+}
