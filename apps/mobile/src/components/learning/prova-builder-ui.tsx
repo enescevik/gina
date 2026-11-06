@@ -2,6 +2,7 @@ import { SetupSourceLinks } from "@/components/setup/source-links";
 import { type ReactNode } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Check } from "lucide-react-native";
+import { contentReviewNames, questionContentReviewOf } from "@gina/core";
 import { useTranslation } from "react-i18next";
 import { p } from "@/components/planner/ui";
 import { Pressable } from "@/components/ui/pressable";
@@ -71,6 +72,7 @@ export function BuilderQuestionPreview(
           </View>
         ))
         : null}
+      <ContentReviewNote question={q} />
       {showAnswer
         ? (
           <View style={b.hint}>
@@ -87,6 +89,33 @@ export function BuilderQuestionPreview(
           </View>
         )
         : null}
+    </View>
+  );
+}
+/**
+ * D10: AI sorusunda kişi adı uyarısı (D9/B6). Sakin, engellemeyen bilgi notu; seçim/gönderim değişmez.
+ * Kaynak: üretim sonucu öğesi `content_review` ya da `question_bank.provenance.content_review`. Yalnız veli
+ * ekranlarında (öneri seçici, taslak önizleme) kullanılır; animasyon yok (azaltılmış hareket etkilenmez).
+ * AI sorusunu düzenleme yolu henüz yok; not bunu söyler (seçmeden geçmek ya da kendi sorusunu yazmak).
+ */
+function ContentReviewNote({ question }: { question: BuilderQuestion }) {
+  const { t } = useTranslation();
+  const names = contentReviewNames(questionContentReviewOf(question));
+  if (!names.length) return null;
+  return (
+    <View
+      testID="question-content-review"
+      accessible
+      accessibilityRole="text"
+      style={{ backgroundColor: p.lilac, borderRadius: 16, padding: 12, gap: 6 }}
+    >
+      <Text style={[b.muted, { color: p.purple }]}>
+        {t("d10.contentReview.title")}
+      </Text>
+      <Text style={b.copy}>
+        {t("d10.contentReview.personName", { names: names.join(", ") })}
+      </Text>
+      <Text style={b.muted}>{t("d10.contentReview.noEdit")}</Text>
     </View>
   );
 }

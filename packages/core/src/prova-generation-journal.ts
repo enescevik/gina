@@ -47,6 +47,9 @@ export const generationResultSchema = z.object({
     group_id: z.uuid().optional(),
     prompt: z.string().optional(),
     position: z.number().int().min(1).max(12).optional(),
+    /** D10: kişi adı uyarısı özeti (status + flags). Biçimi `questionContentReviewOf` savunmacı okur; bozuk değer
+     * ayrıştırmayı düşürmez (uyarı yalnız gösterilmez). */
+    content_review: z.unknown().optional(),
   })).min(1).max(30),
   groups: z.array(z.object({
     id: z.uuid(),

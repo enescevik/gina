@@ -1,6 +1,6 @@
 // D9/B6 — AI sorusu içerik uyarısı. `prova-generate` kişi adı bulduğunda soruyu reddetmez; provenance'a
 // `content_review: { status: "needs_review", detector, flags[] }` yazar. Bu dosya o alanın tipi ve savunmacı
-// okuyucusudur (eski/bozuk provenance → null). Bağımlılıksızdır. Mobil arayüz henüz göstermiyor (D8 sahipliği).
+// okuyucusudur (eski/bozuk provenance → null). Bağımlılıksızdır. D10: veli AI öneri ve taslak önizlemesinde gösterilir.
 
 export interface QuestionContentReviewFlag {
   code: "person_name";
@@ -40,4 +40,20 @@ export function readQuestionContentReview(provenance: unknown): QuestionContentR
   });
   if (!flags.length) return null;
   return { status: "needs_review", detector: typeof r.detector === "string" ? r.detector : "", flags };
+}
+
+/**
+ * D10: bir soru satırının içerik uyarısı. İki biçimi de okur: üretim sonucu öğesi (`complete_prova_generation_v2`
+ * → `questions[].content_review`, yalnız status + flags) ve `question_bank` satırı (`provenance.content_review`).
+ * Yalnız veli ekranları içindir; çocuk istemcisi soru satırı/provenance okumaz.
+ */
+export function questionContentReviewOf(row: unknown): QuestionContentReview | null {
+  if (!row || typeof row !== "object") return null;
+  return readQuestionContentReview(row) ?? readQuestionContentReview((row as { provenance?: unknown }).provenance);
+}
+
+/** Uyarıdaki kişi adları, ilk görülme sırasıyla tekilleştirilmiş. */
+export function contentReviewNames(review: QuestionContentReview | null): string[] {
+  if (!review) return [];
+  return [...new Set(review.flags.flatMap((f) => f.names.map((n) => n.trim())).filter(Boolean))];
 }
