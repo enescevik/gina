@@ -1,9 +1,11 @@
-import type { NotebookDocument } from "@gina/core";
+import type { NotebookDocument, StructuredAnswer } from "@gina/core";
 
 interface AnswerValue {
   key?: string;
   text?: string;
   document?: NotebookDocument;
+  /** QT: sürümlü yapılandırılmış cevap (submit_exam_answer_v4 p_answer). */
+  answer?: StructuredAnswer;
 }
 
 export type SavedAnswer = AnswerValue & { revision?: number };
@@ -29,7 +31,8 @@ function sameContent(a: unknown, b: unknown): boolean {
 
 export function sameAnswer(a: SavedAnswer | undefined, b: SavedAnswer | undefined) {
   return a?.key === b?.key && a?.text === b?.text &&
-    sameContent(a?.document, b?.document);
+    sameContent(a?.document, b?.document) &&
+    sameContent(a?.answer ?? null, b?.answer ?? null);
 }
 
 /** A read begun before an acknowledgement must not roll that answer back.
