@@ -10,7 +10,7 @@ import { Avatar } from "@/components/avatar";
 import { Collectible } from "@/components/collectible";
 import { LoadingStar } from "@/components/collectible-motion";
 import { Button } from "./button";
-import { ErrorText } from "./screen";
+import { ErrorText, SCROLL_FOCUS } from "./screen";
 
 export interface ParentScreenProps {
   title: string;
@@ -46,7 +46,7 @@ export function ParentScreen({ title, subtitle, children, home = false, wide = f
         </View>
           {navigation ? <Pressable accessibilityRole="button" accessibilityLabel={t(inMenu ? "parent.home" : "parent.menu")} onPress={() => router.push(inMenu ? "/parent" : "/parent/menu")} style={styles.menu}><MenuIcon size={22} color="#201951"/><Text style={styles.menuLabel}>{t(inMenu ? "parent.home" : "parent.menu")}</Text></Pressable> : null}
         </View>
-      <ScrollView style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.page, {maxWidth:pageWidth}]}>
+      <ScrollView {...SCROLL_FOCUS} style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.page, {maxWidth:pageWidth}]}>
         <View style={styles.header}>
           <View style={{flex:1,gap:8,minWidth:0}}>
             <Text accessibilityRole="header" style={styles.title}>{title}</Text>

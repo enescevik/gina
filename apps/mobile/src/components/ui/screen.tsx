@@ -3,6 +3,12 @@ import type { ReactNode } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+/**
+ * Q00-C12-13: web'de tarayıcı kaydırma kabını klavye odağına alabilir (Chrome). Kap işaretlenir;
+ * `global.css` görünür odak halkasını yalnız klavye odağında (`:focus-visible`) çizer. Native'de etkisizdir.
+ */
+export const SCROLL_FOCUS = { dataSet: { ginaScroll: "1" } } as unknown as Record<string, never>;
+
 export interface ScreenProps {
   title?: string;
   children: ReactNode;
@@ -16,7 +22,7 @@ export function Screen({ title, children, tone = "parent", scroll = true }: Scre
   const Body = scroll ? ScrollView : View;
   return (
     <SafeAreaView className={`flex-1 ${bg}`}>
-      <Body className="flex-1" contentContainerClassName="w-full max-w-3xl self-center gap-4 p-4">
+      <Body {...(scroll ? SCROLL_FOCUS : {})} className="flex-1" contentContainerClassName="w-full max-w-3xl self-center gap-4 p-4">
         {title ? <Text className="text-2xl font-body-bold text-ink dark:text-night-text">{title}</Text> : null}
         {children}
       </Body>

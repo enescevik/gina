@@ -1,0 +1,482 @@
+{
+ "environment": "disposable-local-auth-rest-storage-realtime-edge (deterministic AI provider)",
+ "results": [
+  {
+   "check": "t1_shared_source_steps_2_3_save",
+   "passed": true,
+   "detail": {
+    "group": true,
+    "version": 1,
+    "members": 2,
+    "emptyQuestionBlocked": true,
+    "step2": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "step3": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    }
+   }
+  },
+  {
+   "check": "t1_repeat_plan_save_filled",
+   "passed": true,
+   "detail": {
+    "questionsSelected": 2,
+    "eventsCreated": 3,
+    "times": "18:30,17:00,17:00",
+    "reopenShowsSaved": true,
+    "savedSummary": "Tekrar günleri takvimde\nAynı sorulara yeniden yer açtınız. Bu kayıttan ikinci bir plan oluşturulmaz; tarih ve saatleri takvimden düzenleyebilirsiniz.\nBirlikte kısa tekrar\n7 Kas 2026 18:30\nBirlikte kısa tekrar\n9 Kas 2026 17:",
+    "filled": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "preview": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "saved": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    }
+   }
+  },
+  {
+   "check": "t1_plan_page_opens",
+   "passed": true,
+   "detail": {
+    "start": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "snippet": "Ayarlar\nÇalışma planı\nSynthetic child · Matematik 4. sınıf · Taslak\nAI çalışma önerisi\nSentetik tekrar planı: kesirlere kısa tekrarlar.\nBu Prova’da tekrar edilebilecek konular\nBu sonuç yalnız incelenen sorulara dayanır; çocuğun genel yeterliliğini göstermez.\n• Kesirler — %40\nTakvimime yerleştir\nUygu"
+   }
+  },
+  {
+   "check": "t1_plan_day_confirm",
+   "passed": true,
+   "detail": {
+    "linked": [
+     1,
+     2
+    ],
+    "planStatusAfter": "approved",
+    "overlapWarningShown": false,
+    "overlapText": "",
+    "reopenedListsLinkedDays": true,
+    "selected": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "preview": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "done": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    }
+   }
+  },
+  {
+   "check": "t1_document_source_flow",
+   "passed": true,
+   "detail": {
+    "mix": "Bu taslakta: Belgeden üretildi 3",
+    "costLine": "3 soru üretimi 3 soru hakkı kullanır.",
+    "generateDisabledWithoutConsent": true,
+    "documentSource": {
+     "kind": "document",
+     "status": "ready"
+    },
+    "open": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "ready": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "proposals": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "added": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    }
+   }
+  },
+  {
+   "check": "t1_timer_10min_auto_finish",
+   "passed": true,
+   "detail": {
+    "minutes": 10,
+    "before": "in_progress",
+    "after": "submitted",
+    "clockBefore": "9:56",
+    "timeUpMomentShowsSüreDoldu": false,
+    "resultShowsTimeEnded": false,
+    "resultLine": "Çoktan seçmeli: 1 / 1 doğru Açık uçlu cevaplarını ebeveynin inceleyecek.",
+    "pageErrors": [],
+    "running": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "ended": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    }
+   }
+  },
+  {
+   "check": "t1_parent_pin_missing_card_observed",
+   "passed": true,
+   "detail": {
+    "childPickerVisibleBeforePin": false,
+    "actions": [
+     "Geri",
+     "Ayarlar",
+     "Ebeveyn PIN’i belirle"
+    ],
+    "setPinTarget": "/parent/menu?section=security",
+    "sizes": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "pageErrors": []
+   }
+  },
+  {
+   "check": "c12_12_modal_respects_reduced_motion",
+   "passed": true,
+   "detail": {
+    "reduce": {
+     "motion": "reduce",
+     "runningAnimationsDuringOpen": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "normal": {
+     "motion": "no-preference",
+     "runningAnimationsDuringOpen": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      0
+     ]
+    }
+   }
+  },
+  {
+   "check": "c12_13_sign_in_scroll_focus_visible",
+   "passed": true,
+   "detail": {
+    "order": [
+     {
+      "n": "Hesabım var",
+      "scroller": false,
+      "ring": true
+     },
+     {
+      "n": "Yeni hesap",
+      "scroller": false,
+      "ring": true
+     },
+     {
+      "n": "E-posta",
+      "scroller": false,
+      "ring": true
+     },
+     {
+      "n": "Şifre",
+      "scroller": false,
+      "ring": true
+     },
+     {
+      "n": "Şifreyi göster",
+      "scroller": false,
+      "ring": true
+     },
+     {
+      "n": "Şifremi unuttum",
+      "scroller": false,
+      "ring": true
+     },
+     {
+      "n": "Çocuk cihazını bağla",
+      "scroller": false,
+      "ring": true
+     },
+     {
+      "n": "BODY (sekme dizisinin sonu)",
+      "scroller": false,
+      "ring": false
+     },
+     {
+      "n": "Hesabım var",
+      "scroller": false,
+      "ring": true
+     },
+     {
+      "n": "Yeni hesap",
+      "scroller": false,
+      "ring": true
+     },
+     {
+      "n": "E-posta",
+      "scroller": false,
+      "ring": true
+     },
+     {
+      "n": "Şifre",
+      "scroller": false,
+      "ring": true
+     },
+     {
+      "n": "Şifreyi göster",
+      "scroller": false,
+      "ring": true
+     },
+     {
+      "n": "Şifremi unuttum",
+      "scroller": false,
+      "ring": true
+     }
+    ],
+    "scrollStopsInTabOrder": 0,
+    "scrollerProgrammaticFocus": {
+     "focused": true,
+     "outline": "solid 3px rgb(96, 66, 222)"
+    }
+   }
+  },
+  {
+   "check": "c12_t3_booklet_grade_choice",
+   "passed": true,
+   "detail": {
+    "textGrade": 0,
+    "radios": 12,
+    "checked": "true",
+    "sizes": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    }
+   }
+  }
+ ]
+}
