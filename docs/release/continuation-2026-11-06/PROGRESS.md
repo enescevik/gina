@@ -1,5 +1,7 @@
 # Devam kaydı — 6 Kasım 2026 (C00–C15)
 
+> **Güncel durum için tek tablo:** [../CLOSING-STATUS.md](../CLOSING-STATUS.md). Bu dosyadaki durum sütunları tarihseldir.
+
 Saatler Europe/Istanbul. Koordinatör: Claude (oturum modeli claude-opus-5-5; alt ajanlar Opus). Plan: [CLAUDE-REMAINING-WORK §4A](../../CLAUDE-REMAINING-WORK.md). Taban: main `0131229`.
 
 ## C00 — durum uzlaştırma (12:25)
