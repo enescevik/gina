@@ -1,0 +1,69 @@
+{
+ "stage": "select",
+ "target": "local-isolated",
+ "at": "2026-11-06T17:51:19.113Z",
+ "checks": [
+  {
+   "name": "parent_sees_verified_source_not_endorsement",
+   "ok": true,
+   "status": "verified",
+   "stale": false,
+   "last_approved": "6405d02aaaad"
+  },
+  {
+   "name": "family_sees_published_pilot_scenario",
+   "ok": true,
+   "visible": 1
+  },
+  {
+   "name": "scenario_summary_counts_visible",
+   "ok": true,
+   "total": 6,
+   "blocks": [
+    2,
+    1,
+    1,
+    1,
+    1
+   ]
+  },
+  {
+   "name": "other_term_or_year_not_substituted",
+   "ok": true
+  },
+  {
+   "name": "school_confirmation_required",
+   "ok": true
+  },
+  {
+   "name": "client_cannot_supply_review_provenance",
+   "ok": true
+  },
+  {
+   "name": "blueprint_selection_replay_same_copy",
+   "ok": true
+  },
+  {
+   "name": "frozen_copy_school_catalogue_not_official",
+   "ok": true,
+   "rows": [
+    "Blok 1:2",
+    "Blok 2:1",
+    "Blok 3:1",
+    "Blok 4:1",
+    "Blok 5:1"
+   ],
+   "distribution_kind": "school_catalogue"
+  },
+  {
+   "name": "frozen_copy_cannot_be_rewritten_by_client",
+   "ok": true,
+   "error": "curriculum_copy_immutable"
+  },
+  {
+   "name": "written_draft_saved",
+   "ok": true,
+   "target": 6
+  }
+ ]
+}
