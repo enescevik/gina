@@ -92,3 +92,11 @@ Kaynak öneriler: [F01](F01-SOCIAL-AND-NEXT-PROPOSALS.md) §9, [S04 takvim](lear
 ## Pro "7 günlük ipucu" (6 Kasım 2026)
 
 - İlk sürümde **sunulmaz**. 30 Ekim paket kararındaki "Pro: 7 günlük ipucu" maddesi bu tarihten itibaren geçersizdir; Pro haftalık özet (Sonnet) + fotoğraftan takvim (20/ay) olarak kalır. Kod `daily_tips`'i "sunulmuyor" olarak işaretli tutar, ekranda vaat edilmez. Hukuk metinleri ve mağaza açıklamaları bu kararla uyumlu hâle getirilir. İleride ayrı uç/kota/izin ile ayrı özellik olarak eklenebilir. (Koordinatör önerisi; Enes'in ürün kararlarını öneriyle uygulama kuralı.)
+
+## D11 yönetim kararları (6 Kasım 2026, koordinatör önerisiyle)
+
+- K1 `/families` bitişi 14 gün içinde süzgeci + sıralama: uygulanıyor (D12).
+- K2 denetimde yapan yöneticinin adı: yalnız tam yöneticiye açık `admin_audit_actors` ile uygulanıyor (D12).
+- K3 senaryo adaylarında sunucu araması: ertelendi; aday sayısı ~2.000'i geçince.
+- K4 `/input-catalog` kapsam denetimi: ertelendi; kapsam tanımı K01 sonrası netleşecek.
+- K5 kenar menü bölüm gruplama: ertelendi; "Aşağıda N bölüm daha" ipucu yeterli, gezinme dili değişikliği ayrı tasarım kararı.
