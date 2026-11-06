@@ -2614,6 +2614,11 @@ isOneToOne: false
 "admin_announcements":
 { Args: { "p_before"?: string,"p_before_id"?: string }; Returns: Json
                            },
+"admin_audit_actors":
+{ Args: { "p_ids": (string)[] }; Returns: {
+              "id": string,"label": string
+            }[]
+                           },
 "admin_cancel_group_exam":
 { Args: { "p_id": string,"p_reason": string }; Returns: undefined
                            },
@@ -2671,7 +2676,7 @@ isOneToOne: false
 { Args: { "p_override_id": string,"p_reason": string }; Returns: undefined
                            },
 "admin_families_search":
-{ Args: { "p_cursor"?: string,"p_limit"?: number,"p_query"?: string }; Returns: Json
+{ Args: { "p_cursor"?: string,"p_expiring_within_days"?: number,"p_limit"?: number,"p_query"?: string,"p_sort"?: string }; Returns: Json
                            },
 "admin_family_entitlement_timeline":
 { Args: { "p_cursor"?: string,"p_family_id": string,"p_limit"?: number }; Returns: Json

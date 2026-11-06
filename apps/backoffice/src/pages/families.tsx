@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
-import { appendFamilyPage, familiesSearchSchema, normalizeFamilyQuery, type FamilySearchRow } from "@gina/core";
+import { appendFamilyPage, FAMILY_EXPIRING_DAYS, familiesSearchSchema, familySearchArgs, normalizeFamilyQuery, type FamilySearchRow, type FamilySort } from "@gina/core";
 
 import { Card, Layout, Notice } from "@/components/Layout";
 import { adminRpc, isForbidden } from "@/lib/admin-rpc";
@@ -11,12 +11,19 @@ import { t } from "@/lib/i18n";
 import { errorMessage } from "@/lib/supabase";
 
 const PAGE = 50;
-type List = { query: string | null; rows: FamilySearchRow[]; cursor: string | null; hasMore: boolean };
+// D12 (D11-K1): süzgeç ve sıralama sunucuda; cursor o anki (sorgu, süzgeç, sıralama) üçlüsüne aittir.
+type View = { query: string | null; expiring: boolean; sort: FamilySort };
+type List = View & { asOf: string; rows: FamilySearchRow[]; cursor: string | null; hasMore: boolean };
+const DAY_MS = 86_400_000;
+const argsOf = (v: View, cursor: string | null) =>
+  familySearchArgs(v.query, cursor, PAGE, { expiringWithinDays: v.expiring ? FAMILY_EXPIRING_DAYS : null, sort: v.sort });
 
 export default function FamiliesPage() {
   const { session, isAdmin } = useAuth();
   const [input, setInput] = useState("");
   const [query, setQuery] = useState<string | null>(null);
+  const [expiring, setExpiring] = useState(false);
+  const [sort, setSort] = useState<FamilySort>("newest");
   const [list, setList] = useState<List | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -26,14 +33,14 @@ export default function FamiliesPage() {
   const seq = useRef(0);
 
   // İlk sayfa: önceki istek bekliyorsa sonucu yok sayılır (sıra numarası).
-  const loadFirst = useCallback(async (q: string | null) => {
+  const loadFirst = useCallback(async (view: View) => {
     const request = ++seq.current;
     setLoading(true); setError(null); setPageError(false);
     try {
-      const page = familiesSearchSchema.parse(await adminRpc("admin_families_search", { p_query: q, p_cursor: null, p_limit: PAGE }));
+      const page = familiesSearchSchema.parse(await adminRpc("admin_families_search", argsOf(view, null)));
       if (request !== seq.current) return;
       const merged = appendFamilyPage([], page, null, null);
-      setList({ query: q, rows: merged.rows, cursor: merged.cursor, hasMore: merged.hasMore });
+      setList({ ...view, asOf: page.as_of, rows: merged.rows, cursor: merged.cursor, hasMore: merged.hasMore });
     } catch (e) {
       if (request !== seq.current) return;
       if (isForbidden(e)) setRevoked(true);
@@ -43,9 +50,9 @@ export default function FamiliesPage() {
 
   useEffect(() => {
     if (!session || !isAdmin) return;
-    const timer = setTimeout(() => void loadFirst(query), 0);
+    const timer = setTimeout(() => void loadFirst({ query, expiring, sort }), 0);
     return () => clearTimeout(timer);
-  }, [session, isAdmin, query, loadFirst]);
+  }, [session, isAdmin, query, expiring, sort, loadFirst]);
 
   // Gerçek keyset: sunucunun verdiği cursor ile sonraki sayfa; gelen sayfa listeye eklenir, ilk sayfa yeniden istenmez.
   async function loadMore() {
@@ -54,7 +61,7 @@ export default function FamiliesPage() {
     const request = ++seq.current, expected = current.cursor;
     setLoading(true); setPageError(false);
     try {
-      const page = familiesSearchSchema.parse(await adminRpc("admin_families_search", { p_query: current.query, p_cursor: expected, p_limit: PAGE }));
+      const page = familiesSearchSchema.parse(await adminRpc("admin_families_search", argsOf(current, expected)));
       if (request !== seq.current) return;
       const merged = appendFamilyPage(current.rows, page, expected, current.cursor);
       setList({ ...current, rows: merged.rows, cursor: merged.cursor, hasMore: merged.hasMore });
@@ -87,22 +94,35 @@ export default function FamiliesPage() {
             <input id="family-query" className="input" maxLength={160} placeholder={b01.families.placeholder} value={input} onChange={(e) => setInput(e.target.value)} />
             <button className="btn" type="submit" disabled={loading}>{t.common.search}</button>
           </form>
+          <div className="mb-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm" role="group" aria-label={b01.families.viewLabel}>
+            <label className="inline-flex items-center gap-2">
+              <input type="checkbox" checked={expiring} disabled={loading} onChange={(e) => setExpiring(e.target.checked)} data-testid="families-expiring" />
+              {b01.families.expiringFilter(FAMILY_EXPIRING_DAYS)}
+            </label>
+            <label className="inline-flex items-center gap-2">
+              <span className="text-slate-600">{b01.families.sortLabel}</span>
+              <select className="input w-auto py-1" value={sort} disabled={loading} onChange={(e) => setSort(e.target.value as FamilySort)} data-testid="families-sort">
+                <option value="newest">{b01.families.sortNewest}</option>
+                <option value="expiring">{b01.families.sortExpiring}</option>
+              </select>
+            </label>
+          </div>
           {inputError ? <Notice tone="error">{inputError}</Notice> : null}
           {error ? (
             <Notice tone="error">
               {errorMessage(error, t.errors)}{" "}
-              <button className="btn-secondary ml-2" disabled={loading} onClick={() => void loadFirst(query)}>Yeniden dene</button>
+              <button className="btn-secondary ml-2" disabled={loading} onClick={() => void loadFirst({ query, expiring, sort })}>Yeniden dene</button>
             </Notice>
           ) : null}
           <Card>
             {!list ? (
               loading ? <p className="text-slate-500" role="status">{t.common.loading}</p> : null
             ) : list.rows.length === 0 ? (
-              <p className="text-sm text-slate-500">{b01.families.empty}</p>
+              <p className="text-sm text-slate-500">{list.expiring && !list.query ? b01.families.expiringEmpty(FAMILY_EXPIRING_DAYS) : b01.families.empty}</p>
             ) : (
               <>
                 <p className="mb-3 text-sm text-slate-600" role="status" data-testid="families-status">
-                  {list.hasMore ? b01.families.shownMore(fmtNumber(list.rows.length)) : b01.families.shownAll(fmtNumber(list.rows.length), !!list.query)}
+                  {list.hasMore ? b01.families.shownMore(fmtNumber(list.rows.length)) : list.expiring ? b01.families.expiringShownAll(fmtNumber(list.rows.length), FAMILY_EXPIRING_DAYS) : b01.families.shownAll(fmtNumber(list.rows.length), !!list.query)}
                 </p>
                 <ul className="divide-y divide-slate-100" aria-label="Aileler">
                   {list.rows.map((f) => (
@@ -128,6 +148,11 @@ export default function FamiliesPage() {
                           {b01.sources[f.plan_source] ?? f.plan_source}
                           {f.plan_expires_at ? ` · ${fmtDate(f.plan_expires_at)} tarihine kadar` : ""}
                         </div>
+                        {f.plan_expires_at && list.expiring ? (
+                          <div className="mt-0.5 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-900" data-testid="families-days-left">
+                            {b01.families.daysLeft(Math.max(0, Math.ceil((new Date(f.plan_expires_at).getTime() - Date.parse(list.asOf)) / DAY_MS)))}
+                          </div>
+                        ) : null}
                         {f.store_status ? <div className="text-xs text-slate-500">Mağaza: {b01.storeStatus[f.store_status]}</div> : null}
                         {f.active_override_count ? <div className="text-xs text-slate-500">{b01.families.activeOverrides}: {fmtNumber(f.active_override_count)}</div> : null}
                       </div>

@@ -6,6 +6,10 @@ import {
   closedLimits,
   entitlementTimelineSchema,
   familiesSearchSchema,
+  auditActorsSchema,
+  actorLabel,
+  unresolvedActorIds,
+  familySearchArgs,
   groupWorkqueue,
   normalizeFamilyQuery,
   openedLimits,
@@ -116,6 +120,44 @@ describe("families search", () => {
     expect(b.rows.map((r) => r.id)).toEqual([fam, other]);
     expect(b.hasMore).toBe(false);
     expect(() => appendFamilyPage(a.rows, p2, "stale", a.cursor)).toThrow("page_out_of_order");
+  });
+});
+
+describe("families search filter and sort (D12)", () => {
+  it("keeps the pre-D12 call shape when no filter or sort is used", () => {
+    expect(familySearchArgs("x", null, 50)).toEqual({ p_query: "x", p_cursor: null, p_limit: 50 });
+    expect(familySearchArgs(null, "c", 50, { sort: "newest", expiringWithinDays: null })).toEqual({ p_query: null, p_cursor: "c", p_limit: 50 });
+  });
+  it("adds the window and sort only when set", () => {
+    expect(familySearchArgs(null, null, 50, { expiringWithinDays: 14, sort: "expiring" }))
+      .toEqual({ p_query: null, p_cursor: null, p_limit: 50, p_expiring_within_days: 14, p_sort: "expiring" });
+  });
+  it("accepts the echoed sort/window and rejects an unknown sort", () => {
+    const base = { as_of: "x", query: null, limit: 50, rows: [], has_more: false, next_cursor: null };
+    expect(familiesSearchSchema.safeParse({ ...base, sort: "expiring", expiring_within_days: 14 }).success).toBe(true);
+    expect(familiesSearchSchema.safeParse({ ...base, sort: "newest", expiring_within_days: null }).success).toBe(true);
+    expect(familiesSearchSchema.safeParse(base).success).toBe(true);
+    expect(familiesSearchSchema.safeParse({ ...base, sort: "oldest" }).success).toBe(false);
+  });
+});
+
+describe("audit actors (D12)", () => {
+  const a = "00000000-0000-4000-8000-000000000001", b = "00000000-0000-4000-8000-000000000002", me = "00000000-0000-4000-8000-000000000003";
+  it("parses only id + label", () => {
+    expect(auditActorsSchema.safeParse([{ id: a, label: "x@example.invalid" }, { id: b, label: null }]).success).toBe(true);
+    expect(auditActorsSchema.safeParse([{ id: a, label: "x", email: "x" }]).success).toBe(false);
+  });
+  it("asks only for unknown, distinct, non-self ids", () => {
+    expect(unresolvedActorIds([a, a, null, me, b], new Map([[b, null]]), me)).toEqual([a]);
+    expect(unresolvedActorIds(Array.from({ length: 250 }, (_, i) => `id-${i}`), new Map(), me)).toHaveLength(200);
+  });
+  it("labels system, self, named and unresolved actors", () => {
+    const known = new Map<string, string | null>([[a, "a@example.invalid"], [b, null]]);
+    expect(actorLabel(null, me, known)).toEqual({ kind: "system" });
+    expect(actorLabel(me, me, known)).toEqual({ kind: "self" });
+    expect(actorLabel(a, me, known)).toEqual({ kind: "named", label: "a@example.invalid" });
+    expect(actorLabel(b, me, known)).toEqual({ kind: "other" });
+    expect(actorLabel("00000000-0000-4000-8000-000000000009", me, known)).toEqual({ kind: "other" });
   });
 });
 

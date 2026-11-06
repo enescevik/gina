@@ -70,10 +70,26 @@ export const familySearchRowSchema = z.object({
   matched_on: z.array(z.enum(["id", "invite_code", "name", "child_name", "email"])),
 }).strict();
 export type FamilySearchRow = z.infer<typeof familySearchRowSchema>;
+/** D12 (D11-K1): server-side sort for `admin_families_search`; "newest" is the pre-D12 default. */
+export const FAMILY_SORTS = ["newest", "expiring"] as const;
+export const familySortSchema = z.enum(FAMILY_SORTS);
+export type FamilySort = z.infer<typeof familySortSchema>;
+/** "Ends within N days" window used by /families (support queue). Server accepts 1–90. */
+export const FAMILY_EXPIRING_DAYS = 14;
+/** RPC args for `admin_families_search`; the D12 params are omitted when unused so a pre-D12 database still accepts the call. */
+export function familySearchArgs(query: string | null, cursor: string | null, limit: number, opts: { expiringWithinDays?: number | null; sort?: FamilySort } = {}) {
+  const args: Record<string, unknown> = { p_query: query, p_cursor: cursor, p_limit: limit };
+  if (opts.expiringWithinDays != null) args.p_expiring_within_days = opts.expiringWithinDays;
+  if (opts.sort && opts.sort !== "newest") args.p_sort = opts.sort;
+  return args;
+}
 export const familiesSearchSchema = z.object({
   as_of: z.string(),
   query: z.string().nullable(),
   limit: z.number().int().min(1).max(200),
+  /** D12: echoed by the server; absent on a pre-D12 database. */
+  sort: familySortSchema.optional(),
+  expiring_within_days: z.number().int().min(1).max(90).nullable().optional(),
   has_more: z.boolean(),
   rows: z.array(familySearchRowSchema),
   next_cursor: z.string().nullable(),
@@ -93,6 +109,29 @@ export function appendFamilyPage(pages: FamilySearchRow[], page: FamiliesSearch,
   const seen = new Set(pages.map((r) => r.id));
   const fresh = page.rows.filter((r) => !seen.has(r.id));
   return { rows: [...pages, ...fresh], cursor: page.next_cursor, hasMore: page.has_more };
+}
+
+/** D12 (D11-K2): `admin_audit_actors` — staff account id → display label (email); `null` when not resolvable. */
+export const AUDIT_ACTORS_MAX = 200;
+export const auditActorsSchema = z.array(z.object({ id: uuid, label: z.string().nullable() }).strict());
+export type AuditActor = z.infer<typeof auditActorsSchema>[number];
+/** Distinct non-null actor ids not yet resolved, capped at the server limit. */
+export function unresolvedActorIds(ids: (string | null)[], known: ReadonlyMap<string, string | null>, self: string): string[] {
+  const out: string[] = [];
+  for (const id of ids) {
+    if (!id || id === self || known.has(id) || out.includes(id)) continue;
+    out.push(id);
+    if (out.length === AUDIT_ACTORS_MAX) break;
+  }
+  return out;
+}
+export type ActorLabel = { kind: "system" } | { kind: "self" } | { kind: "named"; label: string } | { kind: "other" };
+/** Who did it: system (no actor), the signed-in admin, a resolved staff label, or an unresolved other admin. */
+export function actorLabel(id: string | null, self: string, known: ReadonlyMap<string, string | null>): ActorLabel {
+  if (id === null) return { kind: "system" };
+  if (id === self) return { kind: "self" };
+  const label = known.get(id);
+  return label ? { kind: "named", label } : { kind: "other" };
 }
 
 export const TIMELINE_STORE_KINDS = [
