@@ -4481,5 +4481,8 @@
   "d8.timeUpChild": "Time ran out, so the exam closed on its own. Your saved answers were handed in.",
   "d8.timeUpParent": "The exam ended on its own when time ran out. Answers saved within the time were counted.",
   "d8.repeatDate": "Session day",
-  "d8.repeatTime": "Start time"
+  "d8.repeatTime": "Start time",
+  "d10.contentReview.title": "Content note",
+  "d10.contentReview.personName": "This question mentions a person's name: {{names}}. A phrase like 'a student' is suggested.",
+  "d10.contentReview.noEdit": "AI questions cannot be edited here; you can skip this question or write your own."
 }

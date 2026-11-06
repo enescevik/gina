@@ -99,6 +99,8 @@ export interface GeneratedQuestion {
   solution: string | null;
   explanation: string | null;
   source_urls: string[];
+  /** D10: kişi adı uyarısı özeti (status + flags); `questionContentReviewOf` ile okunur. Eski sonuçlarda yok. */
+  content_review?: unknown;
 }
 
 export interface GenerateResponse {

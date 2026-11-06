@@ -4476,5 +4476,8 @@
   "d8.timeUpChild": "Süre bitti, deneme kendiliğinden kapandı. Kaydettiğin cevapların teslim edildi.",
   "d8.timeUpParent": "Süre dolunca deneme kendiliğinden bitti. Süre içinde kaydedilen cevaplar değerlendirildi.",
   "d8.repeatDate": "Buluşma günü",
-  "d8.repeatTime": "Başlama saati"
+  "d8.repeatTime": "Başlama saati",
+  "d10.contentReview.title": "İçerik notu",
+  "d10.contentReview.personName": "Bu soruda bir kişi adı geçiyor: {{names}}. 'bir öğrenci' gibi bir ifade önerilir.",
+  "d10.contentReview.noEdit": "AI sorusu burada düzenlenemez; istersen bu soruyu seçmeden geçebilir ya da kendi sorunu yazabilirsin."
 }
