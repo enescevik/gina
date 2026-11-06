@@ -106,7 +106,7 @@ const ok = (name) => { checks[name] = true; };
   const failed = pipe.locator('[data-testid=queue-item][data-extraction=failed]');
   await failed.waitFor();
   assert.match(await failed.innerText(), /çıkarma başarısız: worksheet_path/);
-  assert.match(await pipe.getByTestId('operator-step').innerText(), /--process-queue/);
+  assert.match(await pipe.getByTestId('operator-step').innerText(), /sunucuda, sizin oturumunuzla/); // H02: no terminal/token step
   await failed.scrollIntoViewIfNeeded();
   await shot('04-extraction-queue-failed-with-reason');
   ok('extraction_queue_and_operator_step_visible');

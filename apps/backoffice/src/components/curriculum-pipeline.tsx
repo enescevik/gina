@@ -406,7 +406,8 @@ function FirstDownload({ target, onClose }: { target: SourceTarget; onClose: () 
           </p>
         )
         : null}
-      {result && canExtract({ extraction_status: result.extraction_status, status: "pending_review" })
+      {result && canExtract({ extraction_status: result.extraction_status, status: "pending_review" }) &&
+          !(x.message?.revision === result.revision_id && x.message.tone === "ok")
         ? (
           <div className="flex flex-wrap items-center gap-3">
             <ExtractButton revisionId={result.revision_id} revision={{ extraction_status: result.extraction_status, status: "pending_review" }} x={x} />
