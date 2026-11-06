@@ -167,6 +167,7 @@
   "subscription.aiNone": "No AI summary",
   "subscription.comingSoon": "Opens when the store is set up",
   "subscription.storeNote": "Purchases and cancellation go through the App Store / Google Play; prices are shown in the store.",
+  "subscription.aiConsentNote": "A plan only sets what you can use. Every AI action, such as importing from a document or photo or the weekly summary, asks for your separate confirmation each time before it starts.",
   "parent.subscription": "Plans",
   "calendar.today": "Today",
   "calendar.allDay": "All day",

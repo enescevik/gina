@@ -12,7 +12,9 @@ import { join } from 'node:path';
 const authPort = Number(process.env.GINA_QA_AUTH_PORT), restPort = Number(process.env.GINA_QA_REST_PORT), storagePort = Number(process.env.GINA_QA_STORAGE_PORT || 0);
 if (![authPort, restPort, storagePort].every((v) => Number.isInteger(v) && v > 1024 && v < 65536) || !process.env.GINA_QA_SERVICE) throw Error('isolated_runner_required');
 const ROOT = new URL('../', import.meta.url);
-const OUT = new URL('docs/release/d15-2026-11-06/local/', ROOT);
+// H03: evidence can be redirected (GINA_MEB_PILOT_LOCAL_OUT, repo-relative) so a re-run does not overwrite D15's record.
+const OUT = new URL(`${(process.env.GINA_MEB_PILOT_LOCAL_OUT || 'docs/release/d15-2026-11-06/local').replace(/\/?$/, '/')}`, ROOT);
+const { openReviewPackage } = await import(new URL('scripts/question-review-package.mjs', ROOT));
 let edgePort = 0, edge;
 const proxy = http.createServer((req, res) => {
   const routes = [['/auth/v1', authPort], ['/rest/v1', restPort], ['/storage/v1', storagePort], ['/functions/v1', edgePort]];
@@ -47,6 +49,7 @@ try {
   checks['harness.question_groups_enabled_like_production'] = flagged.ok;
   mkdirSync(OUT, { recursive: true });
   for (const f of readdirSync(OUT)) if (/^(stage-.*|calls)\.json(l)?$|^(chain-trace|questions-for-human-review)\.json$/.test(f)) unlinkSync(new URL(f, OUT));
+  rmSync(new URL('review-package/', OUT), { recursive: true, force: true });
   const env = { ...process.env, GINA_MEB_PILOT_TARGET: 'local', GINA_MEB_PILOT_URL: base, GINA_MEB_PILOT_STATE: join(dir, 'state.json'), GINA_MEB_PILOT_OUT: OUT.pathname.replace(/\/$/, ''), GINA_MEB_PILOT_QA_STATS: `http://127.0.0.1:${edgePort}/__qa-provider-stats` };
   const plan = [['preflight'], ['setup'], ['override'], ['admin-setup', '--allow-temp-admin'], ['source'], ['extract'], ['review'], ['scope'], ['select'], ['generate'], ['assign'], ['cleanup', '--withdraw'], ['verify']];
   for (const [stage, ...flags] of plan) {
@@ -61,6 +64,12 @@ try {
     for (const c of result.checks) checks[`${stage}.${c.name}`] = c.ok;
     if (code !== 0) { checks[`${stage}.exit_zero`] = false; if (!['cleanup', 'verify'].includes(stage)) break; }
   }
+  // H03: after cleanup + verify (accounts, family rows and generated questions gone) the package still opens offline.
+  const opened = openReviewPackage(new URL('review-package/', OUT).pathname);
+  checks['h03.review_package_opens_after_cleanup_without_db'] = opened.ok;
+  checks['h03.review_package_has_all_generated_questions'] = opened.pkg?.questions.length === 6;
+  checks['h03.review_package_shared_source_with_body'] = (opened.pkg?.shared_sources ?? []).some((s) => s.body.trim() && s.question_ids.length >= 2);
+  if (!opened.ok) process.stderr.write(`review package problems: ${JSON.stringify(opened.problems)}\n`);
 } catch (e) {
   checks['harness.' + String(e.message).slice(0, 60)] = false;
 } finally {

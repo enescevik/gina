@@ -1,0 +1,70 @@
+{
+  "passed": 4,
+  "failed": 0,
+  "results": [
+    {
+      "check": "note_readable_tr-TR_phone",
+      "passed": true,
+      "detail": {
+        "left": 20,
+        "right": 370,
+        "width": 350,
+        "height": 100,
+        "fontSize": 17,
+        "lineHeight": "25px",
+        "scrollW": 350,
+        "clientW": 350,
+        "overflow": 0,
+        "vw": 390
+      }
+    },
+    {
+      "check": "note_readable_tr-TR_tablet",
+      "passed": true,
+      "detail": {
+        "left": 20,
+        "right": 748,
+        "width": 728,
+        "height": 50,
+        "fontSize": 17,
+        "lineHeight": "25px",
+        "scrollW": 728,
+        "clientW": 728,
+        "overflow": 0,
+        "vw": 768
+      }
+    },
+    {
+      "check": "note_readable_en-US_phone",
+      "passed": true,
+      "detail": {
+        "left": 20,
+        "right": 370,
+        "width": 350,
+        "height": 125,
+        "fontSize": 17,
+        "lineHeight": "25px",
+        "scrollW": 350,
+        "clientW": 350,
+        "overflow": 0,
+        "vw": 390
+      }
+    },
+    {
+      "check": "note_readable_en-US_tablet",
+      "passed": true,
+      "detail": {
+        "left": 20,
+        "right": 748,
+        "width": 728,
+        "height": 50,
+        "fontSize": 17,
+        "lineHeight": "25px",
+        "scrollW": 728,
+        "clientW": 728,
+        "overflow": 0,
+        "vw": 768
+      }
+    }
+  ]
+}
