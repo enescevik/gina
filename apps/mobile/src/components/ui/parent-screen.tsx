@@ -76,7 +76,8 @@ export function ChildPicker({ profiles, selected, onSelect, allLabel }: {
 }) {
   const soleId = profiles.length === 1 && !allLabel ? profiles[0].id : null;
   useEffect(() => { if (soleId && selected !== soleId) onSelect(soleId); }, [soleId, selected, onSelect]);
-  if (soleId) return <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}><Avatar slug={profiles[0].avatar} size={40}/><Text style={parentStyles.copy}>{profiles[0].name}</Text></View>;
+  // C12: tek çocukta "Tümü" + çocuk iki çip aynı içeriği seçtirir; seçim yükü yerine yalnız kimin verisi olduğu gösterilir.
+  if (soleId || (profiles.length === 1 && allLabel)) return <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}><Avatar slug={profiles[0].avatar} size={40}/><Text style={parentStyles.copy}>{profiles[0].name}</Text></View>;
   const options = allLabel ? [{ id: null, name: allLabel, avatar: null }, ...profiles] : profiles;
   return <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
     {options.map(child => <Pressable key={child.id ?? "all"} accessibilityRole="button" accessibilityState={{ selected: selected === child.id }} aria-pressed={selected === child.id}
@@ -132,8 +133,8 @@ export function InfoCard({title,body,steps,children}:{title:string;body?:string;
     {children}
   </View>;
 }
-export function NavigationCard({title,body,icon,onPress}:{title:string;body?:string;icon?:ReactNode;onPress:()=>void}) {
-  return <Pressable accessibilityRole="button" onPress={onPress} style={({pressed})=>[parentStyles.card,{minHeight:82,flexDirection:"row",alignItems:"center",gap:14,backgroundColor:pressed?"#F1ECFA":"#FFFFFF"}]}>
+export function NavigationCard({title,body,icon,onPress,accessibilityLabel}:{title:string;body?:string;icon?:ReactNode;onPress:()=>void;accessibilityLabel?:string}) {
+  return <Pressable accessibilityRole="button" accessibilityLabel={accessibilityLabel} onPress={onPress} style={({pressed})=>[parentStyles.card,{minHeight:82,flexDirection:"row",alignItems:"center",gap:14,backgroundColor:pressed?"#F1ECFA":"#FFFFFF"}]}>
     {icon ? <View style={{width:44,height:44,borderRadius:15,backgroundColor:"#EEE8FA",alignItems:"center",justifyContent:"center"}}>{icon}</View>:null}
     <View style={{flex:1,gap:4}}><Text style={[parentStyles.copy,{fontFamily:"Nunito_800ExtraBold"}]}>{title}</Text>{body?<Text style={parentStyles.muted}>{body}</Text>:null}</View><ChevronRight size={20} color="#756397"/>
   </Pressable>;

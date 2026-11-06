@@ -16,7 +16,7 @@ export default function RoomCredits() {
     {credits.map(item => <View key={item.key} style={parentStyles.card}>
       <Text style={parentStyles.copy}>{t(`atmosphere.${item.key}`)}</Text>
       <Button title={item.source} variant="secondary" onPress={() => open(item.url)} />
-      {item.license ? <Button title={t("atmosphere.license")} variant="ghost" onPress={() => open(item.license!)} /> : null}
+      {item.license ? <Button title={t("atmosphere.license")} accessibilityLabel={`${t("atmosphere.license")}: ${item.source}`} variant="ghost" onPress={() => open(item.license!)} /> : null}
     </View>)}
     <ErrorText error={error} />
   </ParentScreen>;

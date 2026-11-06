@@ -58,8 +58,8 @@ function Heading({ children }: { children: ReactNode }) {
   const { width, fontScale } = useWindowDimensions();
   return <Text accessibilityRole="header" style={[s.sectionTitle, width >= 1000 && fontScale < 1.4 && { fontSize: 28, lineHeight: 34 }]}>{children}</Text>;
 }
-function TextLink({ label, href }: { label: string; href: Href }) {
-  return <Pressable accessibilityRole="link" onPress={() => go(href)} style={s.link}>
+function TextLink({ label, href, a11y }: { label: string; href: Href; a11y?: string }) {
+  return <Pressable accessibilityRole="link" accessibilityLabel={a11y} onPress={() => go(href)} style={s.link}>
     <Text style={s.linkText}>{label}</Text><ChevronRight size={18} color={c.purple}/>
   </Pressable>;
 }
@@ -90,7 +90,7 @@ function GoalRow({ child, balance, wide }: { child: Child; balance: number; wide
   if (goal.isLoading) return <View style={s.goalRow}><Label>{child.name}</Label><ActivityIndicator accessibilityLabel={t('release.loading')} color={c.purple}/></View>;
   if (goal.error) return <View style={s.goalRow}><Label>{child.name}</Label><Label>{t('parentHome.goalError')}</Label>
     <SatinButton title={t('common.retry')} secondary onPress={() => void goal.refetch()}/></View>;
-  if (!goal.data) return <View style={[s.goalRow, s.row]}><Collectible slug="reward-mystery-box" size={64}/><View style={s.fill}><Text style={[s.text, s.bold]}>{t('betaUx.goalTitle', { name: child.name })}</Text><Label small>{t('betaUx.goalBody')}</Label><TextLink label={t('betaUx.chooseGoal')} href={{ pathname: "/parent/rewards", params: { goal: "1", childId: child.id } }}/></View></View>;
+  if (!goal.data) return <View style={[s.goalRow, s.row]}><Collectible slug="reward-mystery-box" size={64}/><View style={s.fill}><Text style={[s.text, s.bold]}>{t('betaUx.goalTitle', { name: child.name })}</Text><Label small>{t('betaUx.goalBody')}</Label><TextLink label={t('betaUx.chooseGoal')} a11y={`${t('betaUx.chooseGoal')}: ${child.name}`} href={{ pathname: "/parent/rewards", params: { goal: "1", childId: child.id } }}/></View></View>;
   return <Pressable accessibilityRole="button" accessibilityLabel={t('parentHome.goalTitle', { name: child.name })}
     onPress={() => go({ pathname: '/parent/rewards', params: { goal: '1', childId: child.id } })} style={[s.goalRow, s.row]}>
     <Collectible slug={goal.data.rewardIcon} size={44}/>
