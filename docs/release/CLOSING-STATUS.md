@@ -45,7 +45,8 @@ Durumlar:
 | D12 aile süzgeci, denetimde yönetici adı | MAIN'DE, YAYIN BEKLİYOR | migration `410000`, pgTAP 127; önce migration sonra yönetim yayını |
 | D14 AI sorusunu düzenleme | YAPILIYOR | D10 notu şimdilik yalnız atla/yeniden yaz diyor |
 | D15 MEB gerçek kabul pilotu | YAPILIYOR | Resmî senaryo → gerçek AI üretimi → atanmış sınav; K01'den önce |
-| D16 teknik/hukuk metin uyumu | YAPILIYOR | İngilizce gizlilik, 8 karakterli eşleme anlatımı |
+| D16 teknik/hukuk metin uyumu | MAIN'DE (metin) | İngilizce gizlilik eşitlendi, 8 karakterli eşleme, şirket kurma ön şart değil. Hukuk onayı dışarıda (X03). İngilizce Kullanım Koşulları yok |
+| D17 eşleme saklama işleri, eski eşleme testleri | YAPILIYOR | Gizlilikteki "90 gün kullanılmayan eşleme kaldırılır" vaadi kodda yoktu |
 | D11 kararları K3/K4/K5 | ERTELENDİ | DECISIONS.md |
 | X01 alan adı / SMTP | DIŞ ENGEL | Canlıya alırken |
 | X02 Firebase / Play / SMS | DIŞ ENGEL | Android iç test |
