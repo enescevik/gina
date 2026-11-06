@@ -1,0 +1,231 @@
+{
+  "environment": "disposable-local-real-auth-rest-realtime",
+  "fixtureDb": "gina_http_<random>_audit",
+  "results": [
+    {
+      "check": "layout_child-collection-zero-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "collection_zero_shows_rule_and_progress",
+      "passed": true,
+      "detail": "0 / 4,0 / 1,0 / 25,0 / 10,0 / 10"
+    },
+    {
+      "check": "layout_child-collection-zero-tablet-land",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "setup_one_approved_one_returned",
+      "passed": true,
+      "detail": "{\"today\":\"2026-11-06\",\"balance\":8,\"child_id\":\"2f287644-d69e-4cf1-8e06-2a758fa92963\",\"today_delta\":8}"
+    },
+    {
+      "check": "returned_task_is_next_step_with_reason",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "layout_child-returned-next-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_child-returned-next-phoneLand",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_child-returned-next-tablet",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_child-returned-next-tabletLand",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_child-bag-today-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "bag_today_tomorrow_switch",
+      "passed": true,
+      "detail": "Çantam\nBugün\nYarın\n1 / 3 hazır\nBeden eğitimi kıyafeti\nResim defteri\nKalem kutusu\nÇantamı takvimde aç"
+    },
+    {
+      "check": "layout_child-bag-tomorrow-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_child-task-sheet-returned-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_child-focus-running-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "focus_pause_freezes_time",
+      "passed": true,
+      "detail": "04:58 04:58 04:58"
+    },
+    {
+      "check": "layout_child-focus-paused-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "focus_break_primary_is_end_break_not_pause",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "layout_child-focus-break-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "focus_return_from_break_state",
+      "passed": true,
+      "detail": "Hazır olunca devam et | Diş fırçala | 04:57 | Tek bir adıma odaklan. İhtiyaç duyduğunda duraklatabilir veya mola verebilirsin. | Devam et | 5 dakika mola | Sayacı bitir | Bu cihazda saklanır. Uygulama kapalıyken süre ilerler; başka cihazlara aktarılmaz."
+    },
+    {
+      "check": "layout_child-focus-after-break-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "focus_home_shows_open_timer_after_close",
+      "passed": true,
+      "detail": "Odak sayacın duraklatıldı. Hazır olduğunda devam etmek için dokun."
+    },
+    {
+      "check": "layout_child-focus-closed-home-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "focus_survives_sheet_close",
+      "passed": true,
+      "detail": "panels=1"
+    },
+    {
+      "check": "layout_child-focus-reopened-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "focus_end_clears_timer",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "layout_child-focus-ended-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "week_returned_distinct_from_not_done",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "layout_child-week-returned-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_child-week-returned-tablet",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_child-goal-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "goal_summary_shows_gap",
+      "passed": true,
+      "detail": "Seçimin: Sinema günü | Bu hedef 30 yıldız. | 8 yıldızın var; 22 yıldız daha biriktirince ulaşırsın. | Onaylayınca hedefin olur; yıldızların harcanmaz."
+    },
+    {
+      "check": "layout_child-goal-selected-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_child-goal-selected-tablet-land",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "goal_select_keeps_stars_and_returns_home_on_deep_link",
+      "passed": true,
+      "detail": "{\"before\":{\"today\":\"2026-11-06\",\"balance\":8,\"child_id\":\"2f287644-d69e-4cf1-8e06-2a758fa92963\",\"today_delta\":8},\"after\":{\"today\":\"2026-11-06\",\"balance\":8,\"child_id\":\"2f287644-d69e-4cf1-8e06-2a758fa92963\",\"today_delta\":8}}"
+    },
+    {
+      "check": "goal_change_summary_says_stars_kept",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "layout_child-goal-change-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "collection_full_earned_and_progress",
+      "passed": true,
+      "detail": "1 / 4,1 / 25,1 / 10,0 / 10"
+    },
+    {
+      "check": "layout_child-collection-full-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_child-collection-full-tablet",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_child-room-pref-saved-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "setup_all_tasks_submitted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "homework_becomes_next_step",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "layout_child-next-homework-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_child-next-homework-tablet-land",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "no_page_errors",
+      "passed": true,
+      "detail": ""
+    }
+  ]
+}

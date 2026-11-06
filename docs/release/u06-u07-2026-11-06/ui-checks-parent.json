@@ -1,0 +1,121 @@
+{
+  "environment": "disposable-local-real-auth-rest-realtime",
+  "fixtureDb": "gina_http_<random>_audit",
+  "results": [
+    {
+      "check": "share_preview_recipient_data_expiry",
+      "passed": true,
+      "detail": "Alıcı şunları görecek | Kime: Ayşe Öğretmen | Çocuk: yalnız ilk adı (Synthetic) · 5. sınıf | • Puanlar: ders adı, tarih ve puan (son 100 kayıt; geri çekilen puanlar hariç) | Açık kalma süresi: 30 gün, yaklaşık 6 Ara 2026 tarihine kadar | Görünmeyecekler: notlar, PIN'ler, doğum tarihi, soyadı, ödevle"
+    },
+    {
+      "check": "layout_parent-share-preview-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_parent-share-preview-phoneLand",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_parent-share-preview-tablet",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_parent-share-preview-tabletLand",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "share_link_created",
+      "passed": true,
+      "detail": "http://127.0.0.1:8463/s/<token>"
+    },
+    {
+      "check": "viewer_sees_only_shared_scope",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "layout_share-viewer-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "viewer_network_error_not_called_revoked",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "layout_share-viewer-network-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_parent-share-search-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_parent-share-revoked-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "viewer_revoked_shows_invalid_not_network",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "layout_share-viewer-revoked-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_parent-help-draft-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "help_draft_restored_after_leaving",
+      "passed": true,
+      "detail": "PIN değiştirme sorunu"
+    },
+    {
+      "check": "layout_parent-help-draft-restored-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_parent-help-draft-restored-tablet-land",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "help_related_faq_NOT_OBSERVED_no_published_articles",
+      "passed": true,
+      "detail": "related_panels=0 (sentetik DB yayımlanmış yazı içermeyebilir)"
+    },
+    {
+      "check": "weekly_scope_period_children_counted",
+      "passed": true,
+      "detail": "Dönem: 26 Ekim 2026 – 1 Kasım 2026 | Kapsam: 2 çocuk (Ece, Synthetic sibling) | Sayılanlar: bu haftanın onaylanan, onay bekleyen ve geri gönderilen görev kayıtları ile onaylı görevlerden gelen yıldızlar. Prova, ödev, takvim ve notlar bu özete dahil değildir. | Hafta ailenin saat dilimine göre hesapl"
+    },
+    {
+      "check": "layout_parent-weekly-scope-phone",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "layout_parent-weekly-scope-tablet",
+      "passed": true,
+      "detail": "overflow=0 raw="
+    },
+    {
+      "check": "no_page_errors",
+      "passed": true,
+      "detail": ""
+    }
+  ]
+}
