@@ -1,0 +1,74 @@
+{
+  "environment": "disposable-local-auth-rest-storage-edge (deterministic AI provider)",
+  "results": [
+    {
+      "check": "seed_term2_question_draft_and_scenario_fit",
+      "passed": true
+    },
+    {
+      "check": "subject_text_linked_only_by_parent",
+      "passed": true,
+      "detail": {
+        "subject_id": "subject-science"
+      }
+    },
+    {
+      "check": "question_level_term_mismatch_flagged_with_fix_path",
+      "passed": true
+    },
+    {
+      "check": "ai_shared_text_and_two_linked_questions_saved_as_one_group",
+      "passed": true,
+      "detail": {
+        "group": "2e30cbb2-17dd-4de4-a26c-b5213677209f",
+        "members": 2,
+        "charged": 2
+      }
+    },
+    {
+      "check": "group_moves_as_one_block",
+      "passed": true
+    },
+    {
+      "check": "assigned_exam_counts_members_separately_with_subject_snapshot",
+      "passed": true,
+      "detail": {
+        "question_ids": 3,
+        "subject_links": [
+          {
+            "title": "Fen Bilimleri",
+            "subject_id": "subject-science"
+          }
+        ]
+      }
+    },
+    {
+      "check": "assigned_group_member_immutable",
+      "passed": true,
+      "detail": {
+        "error": "question_group_immutable"
+      }
+    },
+    {
+      "check": "child_sees_shared_content_once_per_member_three_separate_questions",
+      "passed": true,
+      "detail": {
+        "responses": 16
+      }
+    },
+    {
+      "check": "fit_review_reasoned_parent_decision_ai_separate",
+      "passed": true,
+      "detail": {
+        "decision": "fit",
+        "measured": [
+          "T.O.6.1"
+        ]
+      }
+    },
+    {
+      "check": "no_runtime_errors",
+      "passed": true
+    }
+  ]
+}
