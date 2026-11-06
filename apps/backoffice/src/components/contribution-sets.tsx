@@ -310,7 +310,7 @@ function Workspace({ user }: { user: string }) {
       setPending(null);
       setMessage(
         command.approve
-          ? "Katkı kabul edildi ve ayrı kütüphane taslağı oluşturuldu. Henüz yayımlanmadı."
+          ? "Katkı kabul edildi ve ayrı kütüphane taslağı oluşturuldu. Henüz yayımlanmadı; yayın kararı yayın ekibindedir."
           : command.question_notes
           ? `Gerekçeli inceleme sonucu ${Object.keys(command.question_notes).length} soru notuyla kaydedildi.`
           : "Gerekçeli inceleme sonucu kaydedildi.",
@@ -728,8 +728,8 @@ function Workspace({ user }: { user: string }) {
                           <p>
                             Kabul, bu grubun bütün soruları için geçerlidir.
                             Özgün kabul edilen sorular katkı politikasına göre
-                            sayılır. Ayrı taslağın yayın incelemesi daha sonra
-                            yapılır.
+                            sayılır. Kabul yalnız ayrı bir kütüphane taslağı
+                            oluşturur; yayın kararı yayın ekibindedir.
                           </p>
                           {noteCount
                             ? (

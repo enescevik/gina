@@ -19,6 +19,7 @@ const NAV = [
   { href: "/library", label: "GINA kütüphanesi" },
   { href: "/groups", label: "Birlikte Prova" },
   { href: "/families", label: t.nav.families },
+  { href: "/operators", label: "Operatör rolleri" },
   { href: "/operator-scopes", label: "Operatör kapsamları" },
 ];
 export type OperatorRole = "support" | "content" | "finance" | "release";
@@ -33,7 +34,7 @@ const navIcons: Record<string, PublicationIconName> = {
   "/dashboard": "grid", "/ai": "idea", "/operations": "check",
   "/overrides": "lock", "/questions": "document", "/library": "layers",
   "/input-catalog": "document",
-  "/groups": "school", "/families": "family", "/operator-scopes": "lock",
+  "/groups": "school", "/families": "family", "/operator-scopes": "lock", "/operators": "check",
 };
 
 export async function signOut(confirmed = false) {
