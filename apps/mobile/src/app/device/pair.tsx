@@ -81,7 +81,6 @@ export default function PairScreen() {
   }
   if (paired) {
     return <ParentScreen navigation={false} title={t("unified.pairTitle")}>
-      <ConnectionMoment status="connected"/>
       <PairingReceipt onContinue={enterChildMode} onRejected={afterReject} />
       <ErrorText error={error} />
     </ParentScreen>;

@@ -1,0 +1,2 @@
+{"files": 1, "assertions": 0, "failures": ["120_pairing_bruteforce_guard.test.sql: ERROR:  function \"public.pair_child_device(text,text)\" does not exist\n"]}
+AB exit 1

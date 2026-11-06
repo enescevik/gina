@@ -85,6 +85,7 @@ async function newCode(page, name) {
        delete from public.families where name='Demir Ailesi';
        insert into public.active_families values('${f.userId}','${f.familyId}') on conflict(user_id) do update set family_id=excluded.family_id;
        update public.parent_pins set failed_count=0, locked_until=null;
+       delete from public.device_pairing_locks; delete from public.device_pairing_attempts;
        update public.families set name='Yılmaz Ailesi' where id='${f.familyId}';
        update public.children set name='Ece', avatar='avatar-default' where id='${f.childId}';
        delete from public.children where family_id='${f.familyId}' and id<>'${f.childId}';
