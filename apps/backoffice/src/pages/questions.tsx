@@ -2,6 +2,7 @@ import type { Database, Json, Tables } from "@gina/core";
 import { useMemo, useState } from "react";
 
 import { Card, Layout, Notice } from "@/components/Layout";
+import { useConfirm } from "@/components/confirm-dialog";
 import { fmtDateTime, fmtNumber } from "@/lib/format";
 import { t } from "@/lib/i18n";
 import { errorMessage, supabase } from "@/lib/supabase";
@@ -41,6 +42,7 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
     source_urls: q.source_urls.join("\n"),
   });
   const [busy, setBusy] = useState(false);
+  const confirm = useConfirm();
   const [rows, setRows] = useState<Choice[] | null>(() => readChoices(q.choices));
   const set = (patch: Partial<typeof draft>) => setDraft({ ...draft, ...patch });
 
@@ -83,7 +85,8 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
   }
 
   async function remove() {
-    if (!window.confirm(t.questions.confirmDelete)) return;
+    if (busy) return;
+    if (!(await confirm.ask({ title: "Global soru silinsin mi?", body: t.questions.confirmDelete, confirmLabel: t.common.delete, tone: "danger" }))) return;
     const { error } = await supabase().rpc("admin_delete_global_question", { p_question_id: q.id });
     onDone(error ? null : t.questions.deleted, error ?? undefined);
   }
@@ -97,6 +100,7 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
 
   return (
     <Card title={`${t.common.edit}: ${q.id}`}>
+      {confirm.element}
       {q.times_asked > 0 ? (
         <p className="mb-4 rounded-2xl bg-amber-50 p-3 text-sm text-amber-900">
           Bu soru {fmtNumber(q.times_asked)} kez sorulmuş. Çocuk cevabı bulunan soruda metin, şık veya doğru cevap değişikliği sunucu tarafından reddedilir; yalnız anlatım, çözüm ve kaynak güncellenebilir.
