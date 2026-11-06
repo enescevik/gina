@@ -82,7 +82,8 @@ export default function ChildWeekScreen() {
                   <TaskIcon slug={task.icon} size={56} variant="illustrated" />
                   <View style={{ flex: 1, minWidth: 0, gap: 8 }}>
                     <Text style={[childStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{task.title}</Text>
-                    <Text style={{ alignSelf: "flex-start", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3, backgroundColor: status === "approved" ? "#E6F7EF" : "#FFF1D4", color: "#625C85", fontFamily: "Nunito_700Bold", fontSize: 13 }}>{status === "approved" ? t("child.approved") : status === "done" ? t("child.waitingApproval") : status === "returned" ? t(task.available ? "child.returnedTryAgain" : "routine.pausedWork") : t("childV5.notCompleted")}</Text>
+                    <Text testID={`week-status-${status ?? "none"}`} style={{ alignSelf: "flex-start", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3, backgroundColor: status === "approved" ? "#E6F7EF" : status === "returned" ? "#EEEAFE" : status === "done" ? "#FFF1D4" : "#F3F1F5", color: status === "returned" ? "#4A32B8" : "#625C85", fontFamily: "Nunito_700Bold", fontSize: 13 }}>{status === "approved" ? t("child.approved") : status === "done" ? t("child.waitingApproval") : status === "returned" ? t(!task.available ? "routine.pausedWork" : isToday ? "child.returnedTryAgain" : date < today ? "childMint.returnedPast" : "child.returnedTryAgain") : date < today ? t("childMint.weekNoRecord") : t("childV5.notCompleted")}</Text>
+                    {status === "returned" && task.available && isToday ? <Text style={[childStyles.copy, { fontSize: 14 }]}>{t("childMint.returnedBody")}</Text> : null}
                   </View>
                 </View>
               );
