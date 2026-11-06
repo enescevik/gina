@@ -1,0 +1,49 @@
+# Devam kaydı — 6 Kasım 2026 (C00–C15)
+
+Saatler Europe/Istanbul. Koordinatör: Claude (oturum modeli claude-opus-5-5; alt ajanlar Opus). Plan: [CLAUDE-REMAINING-WORK §4A](../../CLAUDE-REMAINING-WORK.md). Taban: main `0131229`.
+
+## C00 — durum uzlaştırma (12:25)
+
+**Kaynak:** main = origin/main (`0131229`); açık PR yok; kirli dosya yalnız izlenmeyen `packages/assets/fonts/` (kararla repoya alınmıyor) ve `.claude/` (ajan worktree'leri).
+
+**Migration sayısı (20/22 farkı):** Sabah kaydı "22 yeni migration" dedi; doğru sayı **20 yayımlanmamış 6 Kasım migration'ı**. 22, R01 ile 5 Kasım 23:12'de üretime uygulanmış `20261105180000` ve `20261105190000`'ı da sayıyordu (dosya adı glob'u ile sayıldı, ledger ile karşılaştırılmadı — hata).
+
+**Canlı ledger karşılaştırması** (Management API, salt okunur): repo 128 dosya, üretim 108 kayıt; repo dışı canlı kayıt yok.
+
+| Aralık | Durum |
+|---|---|
+| ≤ `20261105072000` (106 dosya) | UYGULANDI. 80 tanesinde ledger'daki `statements` birleşimi dosya metninden farklı: CLI ifadeleri bölerek sakladığı için biçim farkı olması muhtemel; **içerik eşitliği bu karşılaştırmayla doğrulanamadı** (bilinmiyor). |
+| `20261105180000`, `20261105190000` | UYGULANDI, hash aynı (R01). |
+| `20261106010000` … `20261106210000` (20 dosya; `190000` numarası boş) | **UYGULANMADI.** |
+
+**Sürüm tablosu**
+
+| Hedef | Durum | Kanıt |
+|---|---|---|
+| Üretim DB | 108 migration (R01 dahil) | Ledger okuması |
+| Veli webi | R01 kaynağı yayında (5 Kasım 23:31) | `gina-web.pages.dev`; Actions deploy işleri sonraki commit'lerde secret yok → atlandı, **yayın değil** |
+| Yönetim | 5 Kasım yayını; gece değişiklikleri yayımlanmadı | — |
+| iOS 0.1.0 (27) | EAS submit `finished`; uzak build no 27 | **Apple processing + iç grup erişimi doğrulanmadı** (yerelde ASC okuma anahtarı yok) → BEKLİYOR, App Store Connect kontrolü |
+| Tablet 0.1.0 (27) | Canlı `release.json` build 27, IPA SHA-256 `12cb54ee…` | Fiziksel kurulum yapılmadı |
+| Gece kapsamı (20 migration + istemciler) | Main'de, **yayımlanmadı** | C14 |
+
+**Dış bağımlılıklar:** X01 alan adı/SMTP — BEKLİYOR (canlıya alırken); X02 Firebase/Play/SMS — BEKLİYOR; X03 işletme/hukuk/mağaza — BEKLİYOR; X04 ek AI sağlayıcı anahtarları — BEKLİYOR; X05 fiziksel cihaz — kullanıcı; X06 bağımsız editör — E01 AI ön inceleme + yönetici onayı (6 Kasım kararı), bağımsız editör ayrı kademe.
+
+## Kart durumları
+
+| Kart | Durum | Not |
+|---|---|---|
+| C00 | TAMAM (okuma) | Bu bölüm |
+| C01 | YAPILIYOR | |
+| C02 | YAPILIYOR | |
+| C03 | AÇIK | C02 ile dosya çakışması nedeniyle C02 birleşince |
+| C04 | YAPILIYOR | |
+| C05 | YAPILIYOR | |
+| C06 | YAPILIYOR | |
+| C07 | YAPILIYOR | |
+| C08–C11 | AÇIK | Faz 3 |
+| C12 | SÜREKLİ | Her kartta |
+| C13–C15 | AÇIK | Faz 4 |
+| K01 / R02 / WORLD-01 | BEKLİYOR | Sıra korunur |
+
+## Günlük
