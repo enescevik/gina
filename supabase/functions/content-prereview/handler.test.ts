@@ -37,6 +37,11 @@ function fixture() {
     paused: false,
     health: [] as { provider: string; ok: boolean | null; error: string | null; uncertain: boolean }[],
     keyConfigs: [] as AiConfig[],
+    // H07: daily paid-call quota (null = unlimited) and paid claims granted so far.
+    budget: null as number | null,
+    granted: 0,
+    healthError: false,
+    onCall: null as (() => void) | null,
   };
   const key = (kind: string, id: string) => `${kind}:${id}`;
   const deps: Dependencies = {
@@ -49,6 +54,7 @@ function fixture() {
     call: async (_k, _c, _system, user) => {
       state.providerCalls++;
       state.providerPrompts.push(String(user));
+      state.onCall?.();
       if (state.providerError) throw Error(state.providerError);
       return { output: state.providerOutput, inputTokens: 120, outputTokens: 60 };
     },
@@ -57,6 +63,7 @@ function fixture() {
         state.rpcLog.push(name);
         if (name === "content_prereview_next") return { data: state.pending, error: null };
         if (name === "content_prereview_provider") {
+          if (state.healthError) return { data: null, error: { message: "health_unavailable" } };
           state.health.push({ provider: String(args.p_provider), ok: args.p_ok as boolean | null, error: (args.p_error as string | null) ?? null, uncertain: args.p_uncertain === true });
           return { data: { provider: args.p_provider, paused: state.paused }, error: null };
         }
@@ -85,6 +92,9 @@ function fixture() {
             row.verdict = { decision_reason: "retry_limit" };
             return { data: { error: "retry_limit", prereview_status: "needs_admin" }, error: null };
           }
+          // Same order as the database: quota is checked last, without changing the record.
+          if (state.budget !== null && state.granted >= state.budget) return { data: { error: "daily_limit", limit: state.budget, used: state.granted }, error: null };
+          state.granted++;
           const next = row ?? { status: "pending", hash: state.hash, prompt, verdict: null, attempts: 0, lease: null, error: null };
           next.hash = state.hash;
           next.prompt = prompt;
@@ -100,7 +110,10 @@ function fixture() {
           row.lease = null;
           row.error = (args.p_error as string | null) ?? null;
           // Same refund as the database: a paused provider was never called.
-          if (row.status === "pending" && row.error === "ai_temporarily_unavailable") row.attempts = Math.max(row.attempts - 1, 0);
+          if (row.status === "pending" && (row.error === "ai_temporarily_unavailable" || row.error === "provider_health_unavailable")) {
+            row.attempts = Math.max(row.attempts - 1, 0);
+            state.granted = Math.max(state.granted - 1, 0); // ledger: not_called does not count toward the quota
+          }
           if (row.status !== "pending") row.verdict = args.p_verdict;
           return { data: { prereview_status: row.status, attempts: row.attempts }, error: null };
         }
@@ -361,5 +374,63 @@ Deno.test("C13 oversized request body is refused before the caller check or the 
   assert(res.status === 400, "oversized body is a 400");
   assert((await res.json()).error === "invalid_input", "invalid_input code");
   assert(!callerChecked, "caller lookup never ran");
+});
+
+// ---- H07: activation readiness — quota, kill switch mid-run, breaker unreadable, single charge, no approval RPC --
+
+const ids = (n: number) => Array.from({ length: n }, (_, i) => `6d4399b9-46b1-47ba-bc6b-${(0x5558f48c4c00 + i).toString(16)}`);
+
+Deno.test("H07 daily quota: drain stops at the limit, remaining records stay queued with no attempt spent", async () => {
+  const f = fixture();
+  f.state.budget = 2;
+  f.state.caller = { kind: "system" };
+  const four = ids(4);
+  f.state.pending = four.map((id) => ({ kind: "curriculum_candidate", id }));
+  const body = await (await f.handler(post({ drain: true }, { "x-cron-secret": "x" }))).json();
+  assert(calls(f) === 2, `two paid calls, got ${calls(f)}`);
+  assert(body.processed === 3 && body.results[2].reason === "daily_limit" && body.results[2].outcome === "retry_pending", JSON.stringify(body));
+  for (const id of four.slice(2)) assert(!f.state.rows.has(`curriculum_candidate:${id}`), "over-quota records were not claimed");
+  f.state.caller = { kind: "admin", userId: "admin" };
+  const res = await f.handler(post({ kind: "curriculum_candidate", id: four[3] }));
+  const single = await res.json();
+  assert(res.status === 200 && single.outcome === "retry_pending" && single.reason === "daily_limit" && calls(f) === 2, JSON.stringify(single));
+});
+
+Deno.test("H07 kill switch flipped during a drain: the next claim refuses, the run stops, no further call", async () => {
+  const f = fixture();
+  f.state.caller = { kind: "system" };
+  f.state.pending = ids(3).map((id) => ({ kind: "curriculum_candidate", id }));
+  f.state.onCall = () => {
+    f.state.enabled = false;
+  };
+  const body = await (await f.handler(post({ drain: true }, { "x-cron-secret": "x" }))).json();
+  assert(calls(f) === 1 && body.processed === 2 && body.results[1].reason === "prereview_disabled", JSON.stringify(body));
+});
+
+Deno.test("H07 breaker state unreadable: no call, attempt refunded, never exhausts the retry limit", async () => {
+  const f = fixture();
+  f.state.healthError = true;
+  for (let i = 0; i < 5; i++) {
+    const body = await (await f.handler(post({ kind: "curriculum_candidate", id: ID }))).json();
+    assert(body.outcome === "retry_pending" && body.reason === "provider_health_unavailable", JSON.stringify(body));
+  }
+  assert(calls(f) === 0 && f.row()?.attempts === 0 && f.row()?.status === "pending" && f.state.granted === 0);
+});
+
+Deno.test("H07 same record requested concurrently and replayed: exactly one paid call", async () => {
+  const f = fixture();
+  const results = await Promise.all([0, 1, 2].map(() => f.handler(post({ kind: "curriculum_candidate", id: ID })).then((r) => r.json())));
+  assert(calls(f) === 1, `one paid call, got ${calls(f)}`);
+  assert(results.filter((r) => r.outcome === "reviewed").length === 1 && results.filter((r) => r.outcome === "in_progress").length === 2, JSON.stringify(results));
+  const replay = await (await f.handler(post({ kind: "curriculum_candidate", id: ID }))).json();
+  assert(replay.outcome === "cached" && calls(f) === 1);
+});
+
+Deno.test("H07 an AI approval touches only the pre-review RPCs (no approve / publish / decision RPC)", async () => {
+  const f = fixture();
+  const body = await (await f.handler(post({ kind: "curriculum_candidate", id: ID }))).json();
+  assert(body.prereview_status === "ai_approved");
+  const allowed = new Set(["content_prereview_claim", "content_prereview_finish", "content_prereview_provider"]);
+  assert(f.state.rpcLog.every((n) => allowed.has(n)), f.state.rpcLog.join(","));
 });
 

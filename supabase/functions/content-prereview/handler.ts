@@ -55,6 +55,10 @@ const NON_RETRYABLE = new Set<AiFailure["kind"]>([
   "unconfigured",
   "refusal",
 ]);
+/** Retryable outcomes that happen before any provider call (paused breaker, breaker state unreadable). */
+const NO_CALL_RETRY = new Set(["ai_temporarily_unavailable", "provider_health_unavailable"]);
+/** Drain stops its run on these: further items would not be called either (kill switch, quota, paused provider). */
+const STOP_DRAIN = new Set(["ai_temporarily_unavailable", "provider_health_unavailable", "daily_limit", "prereview_disabled"]);
 export const PILOT_MAX_ITEMS = 12;
 export const MAX_BODY_CHARS = 256 * 1024;
 
@@ -120,6 +124,8 @@ export async function reviewOne(deps: Dependencies, kind: PrereviewKind, id: str
   if (c.cached === true) return { kind, id, prereview_status: String(c.prereview_status), outcome: "cached" };
   if (c.error === "in_progress") return { kind, id, prereview_status: "pending", outcome: "in_progress" };
   if (c.error === "retry_limit") return { kind, id, prereview_status: "needs_admin", outcome: "needs_admin", reason: "retry_limit" };
+  // H07: daily paid-call quota reached. Nothing was claimed or charged; the record stays queued.
+  if (c.error === "daily_limit") return { kind, id, prereview_status: "pending", outcome: "retry_pending", reason: "daily_limit" };
   if (c.error === "source_obsolete") {
     return { kind, id, prereview_status: "needs_admin", outcome: "needs_admin", reason: String(c.reason ?? "source_obsolete") };
   }
@@ -145,7 +151,8 @@ export async function reviewOne(deps: Dependencies, kind: PrereviewKind, id: str
       : { kind, id, prereview_status: "pending", outcome: "error", reason: "finish_failed" };
   const retry = async (code: string): Promise<RecordResult> => {
     // Bounded: claim already counted this attempt; the third failure goes to the admin.
-    if (attempts >= 3 && code !== "ai_temporarily_unavailable") return toAdmin("retry_limit", code);
+    // No provider call was made for these codes (the database refunds the attempt), so they never exhaust it.
+    if (attempts >= 3 && !NO_CALL_RETRY.has(code)) return toAdmin("retry_limit", code);
     return await finish("pending", null, code)
       ? { kind, id, prereview_status: "pending", outcome: "retry_pending", reason: code }
       : { kind, id, prereview_status: "pending", outcome: "error", reason: "finish_failed" };
@@ -265,8 +272,8 @@ export function createHandler(deps: Dependencies) {
         if (!record(item) || !isUuid(item.id) || !(PREREVIEW_KINDS as readonly string[]).includes(String(item.kind))) continue;
         const r = await reviewOne(deps, item.kind as PrereviewKind, item.id);
         results.push(r);
-        // Paused provider: stop this run; the next scheduled drain retries without spending attempts.
-        if (r.reason === "ai_temporarily_unavailable") break;
+        // Paused provider / kill switch / quota: stop this run; the next scheduled drain retries without spending attempts.
+        if (r.reason && STOP_DRAIN.has(r.reason)) break;
       }
       return json({ ok: true, processed: results.length, results });
     }

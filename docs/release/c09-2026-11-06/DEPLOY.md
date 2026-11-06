@@ -1,5 +1,7 @@
 # C09 — AI içerik ön incelemesi: C14 yayın adımları (tek dosya)
 
+> **H07 (6 Kasım) güncellemesi:** aktivasyon için geçerli sıra artık [H07 runbook](../h07-2026-11-06/README.md#5-aktivasyon-runbooku-yürütülmedi)'tur (günlük kota `content_prereview.daily_call_limit`, ilk pilot `--only` ile ≤ 1 ücretli çağrı, drain turu 3 kayıt, sağlık okuması `gina.content_prereview_health()`). Aşağıdaki adımlar tarihsel C09 kaydıdır.
+
 Bu dosya C14 yayın planına eklenecek **sıralı** adımlardır. Hiçbiri bu kartta üretimde uygulanmadı. Sır değeri bu dosyaya, rapora veya Git'e yazılmaz; yalnız ADI geçer. Her adımın doğrulaması ve geri dönüşü yanındadır.
 
 **Ön koşul (sıra):** E01 `20261106050000_content_prereview.sql` → C05 `20261106250000` → C07 `20261106270000_operator_access.sql` → C08 `20261106290000_ai_routing_and_grade_split.sql` → C10 `20261106300000` → **C09 `20261106320000_prereview_ops.sql`**. C09, C08'in `gina.ai_provider_outcome/ai_provider_paused` fonksiyonlarını ve C07'nin `gina.assert_operation_role` fonksiyonunu kullanır; daha önce uygulanırsa migration hata verir (sessiz kısmi kurulum yok).

@@ -44,7 +44,10 @@ const deterministic = args.includes("--deterministic");
 const setPath = arg("--set") ?? new URL("./prereview-pilot-set.json", import.meta.url).pathname;
 const out = arg("--out");
 const set = JSON.parse(await Deno.readTextFile(setPath)) as { items: PilotItem[] };
-const items = set.items;
+// H07: `--only <key>` sends exactly one item (first hosted pilot = at most 1 paid call).
+const only = arg("--only");
+const items = only ? set.items.filter((i) => i.key === only) : set.items;
+if (only && items.length !== 1) throw new Error(`--only: pilot setinde '${only}' anahtarı yok.`);
 
 /** Deterministic stand-in: answers by label so that the plumbing (schema, threshold, media flag) is exercised. */
 function deterministicDeps(): Dependencies {
