@@ -3,6 +3,7 @@ import { Modal, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NOTEBOOK_MODAL_PROPS } from "@/components/learning/notebook-layout";
 import { p, u } from "@/components/planner/ui";
+import { useRouteMotion } from "@/lib/use-route-motion";
 
 /** One orientation-neutral host for decisions that must remain visible above the canvas. */
 export function DecisionSheet({ visible, title, children, onClose, footer }: {
@@ -12,12 +13,14 @@ export function DecisionSheet({ visible, title, children, onClose, footer }: {
   onClose: () => void;
   footer?: ReactNode;
 }) {
+  // Q00-C12-12: azaltılmış hareket tercihinde pencere solmadan, anında açılır/kapanır.
+  const { animation } = useRouteMotion();
   return (
     <Modal
       {...NOTEBOOK_MODAL_PROPS}
       visible={visible}
       transparent
-      animationType="fade"
+      animationType={animation}
       onRequestClose={onClose}
     >
       <SafeAreaView

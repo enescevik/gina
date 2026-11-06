@@ -71,13 +71,13 @@ export default function ProvaBookletScreen() {
 
   const [source, setSource] = useState<Source>("library");
   const [subject, setSubject] = useState("");
-  const [grade, setGrade] = useState("5");
+  const [grade, setGrade] = useState(5);
   const [topics, setTopics] = useState<string[]>([]);
   const [examId, setExamId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [includeSolutions, setIncludeSolutions] = useState(true);
 
-  const gradeNum = Number(grade) || 5;
+  const gradeNum = grade;
 
   const subjects = useQuery({
     queryKey: ["question_bank_subjects", familyId],
@@ -216,7 +216,7 @@ export default function ProvaBookletScreen() {
                     accessibilityRole="button"
                     onPress={() => {
                       setSubject(s.subject);
-                      setGrade(String(s.grade));
+                      setGrade(s.grade);
                       setTopics([]);
                     }}
                     accessibilityState={{ selected: active }} aria-pressed={active} className={chip(active)}
@@ -229,13 +229,26 @@ export default function ProvaBookletScreen() {
               })}
             </View>
           ) : null}
-          <View className="flex-row gap-2">
-            <View className="flex-[2]">
-              <Field label={t("grades.subject")} value={subject} onChangeText={setSubject} />
-            </View>
-            <View className="flex-1">
-              <Field label={t("prova.grade")} keyboardType="number-pad" maxLength={2} value={grade} onChangeText={setGrade} />
-            </View>
+          <Field label={t("grades.subject")} value={subject} onChangeText={setSubject} />
+          {/* Q00-C12-T3: sınıf serbest metin değil; 1–12 arası tek dokunuşla seçilir. */}
+          <Text nativeID="booklet-grade-label" className="font-body-bold text-sm text-ink">{t("prova.grade")}</Text>
+          <View accessibilityRole="radiogroup" aria-labelledby="booklet-grade-label" className="flex-row flex-wrap gap-2">
+            {Array.from({ length: 12 }, (_, i) => i + 1).map((g) => (
+              <Pressable
+                key={g}
+                accessibilityRole="radio"
+                accessibilityLabel={t("parent.gradeShort", { grade: g })}
+                accessibilityState={{ checked: grade === g }}
+                aria-checked={grade === g}
+                onPress={() => {
+                  if (g !== grade) setTopics([]);
+                  setGrade(g);
+                }}
+                className={chip(grade === g)}
+              >
+                <Text className={chipText(grade === g)}>{g}</Text>
+              </Pressable>
+            ))}
           </View>
           {availableTopics.length > 0 ? (
             <>

@@ -34,6 +34,7 @@ import {
   validateLessons,
 } from "@gina/core";
 import { useSession } from "@/lib/session";
+import { useRouteMotion } from "@/lib/use-route-motion";
 import { supabase } from "@/lib/supabase";
 import { invokeProvaAi, ProvaAiError } from "@/lib/prova-ai";
 import {
@@ -178,6 +179,7 @@ function ImportModal(
   },
 ) {
   const { t, i18n } = useTranslation();
+  const { animation } = useRouteMotion();
   const { width } = useWindowDimensions();
   const wide = width >= 900;
   const [file, setFile] = useState<LocalLearningFile | null>(null);
@@ -396,7 +398,7 @@ function ImportModal(
     <Modal
         {...NOTEBOOK_MODAL_PROPS}
       visible
-      animationType="fade"
+      animationType={animation}
       onRequestClose={close}
     >
       <SafeAreaView style={u.root}>

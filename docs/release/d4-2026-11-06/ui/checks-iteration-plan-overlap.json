@@ -1,0 +1,139 @@
+{
+ "environment": "disposable-local-auth-rest-storage-realtime-edge (deterministic AI provider)",
+ "results": [
+  {
+   "check": "t1_plan_page_opens",
+   "passed": true,
+   "detail": {
+    "start": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "snippet": "Ayarlar\nÇalışma planı\nSynthetic child · Matematik 4. sınıf · Taslak\nAI çalışma önerisi\nSentetik tekrar planı: kesirlere kısa tekrarlar.\nBu Prova’da tekrar edilebilecek konular\nBu sonuç yalnız incelenen sorulara dayanır; çocuğun genel yeterliliğini göstermez.\n• Kesirler — %40\nTakvimime yerleştir\nUygu"
+   }
+  },
+  {
+   "check": "t1_plan_day_confirm",
+   "passed": true,
+   "detail": {
+    "linked": [
+     1,
+     2
+    ],
+    "planStatusAfter": "approved",
+    "overlapWarningShown": true,
+    "overlapText": "Bu saatlerde başka planlar var\n1. gün: C03 swim, C03 chess\nSaatleri değiştirebilir veya bu çakışmayı bilerek devam edebilirsin. Başka bir cihaz sonradan takvimi değiştirebilir.\n2 etkinliği t",
+    "reopenedListsLinkedDays": true,
+    "selected": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "preview": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "done": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    }
+   }
+  },
+  {
+   "check": "document",
+   "passed": false,
+   "detail": {
+    "error": "locator.click: Timeout 25000ms exceeded."
+   }
+  },
+  {
+   "check": "t1_timer_10min_auto_finish",
+   "passed": true,
+   "detail": {
+    "minutes": 10,
+    "before": "in_progress",
+    "after": "submitted",
+    "clockBefore": "9:55",
+    "timeUpMomentShowsSüreDoldu": false,
+    "resultShowsTimeEnded": false,
+    "resultLine": "Çoktan seçmeli: 1 / 1 doğru Açık uçlu cevaplarını ebeveynin inceleyecek.",
+    "pageErrors": [],
+    "running": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "ended": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "narrow": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     },
+     "desktop": {
+      "overflow": 0,
+      "keys": []
+     }
+    }
+   }
+  }
+ ]
+}

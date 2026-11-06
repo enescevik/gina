@@ -11,3 +11,9 @@
   --font-rounded: 'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif;
   --font-serif: Georgia, 'Times New Roman', serif;
 }
+
+/* Q00-C12-13: klavyeyle odaklanan kaydırma kabı (ParentScreen/Screen) görünür halka taşır. */
+[data-gina-scroll]:focus-visible {
+  outline: 3px solid #6042de;
+  outline-offset: -3px;
+}

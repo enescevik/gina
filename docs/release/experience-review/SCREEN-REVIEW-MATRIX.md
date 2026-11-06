@@ -20,7 +20,7 @@ Bu dosya A1/A2/A3 matrislerini ([A1](SCREEN-REVIEW-MATRIX-A1.md), [A2](SCREEN-RE
 Durum: **TE** test edildi (bu turda gerçek uygulamada dolaşıldı + denetim) · **DÜZ** bu turda düzeltildi ve yeniden test edildi · **ÖK** önceki rapordaki gerçek-UI kanıtıyla kapalı (bu turda yeniden açılmadı) · **G** görüldü, kısmen · **ENG** engelli (dış bağımlılık) · **GÖRÜLEMEDİ** (neden yazılı).
 Bakış hücreleri: ✓ kontrol edildi, sorun görülmedi · **D** düzeltildi · **A** açık takip (ID) · U uygulanmaz · — bu turda ayrıca bakılmadı (önceki kanıt).
 Sütunlar: Psi psikoloji · Ped pedagoji/çocuk gelişimi · Eğt eğitmen/ölçme · UX bilgi mimarisi · Gör görsel/etkileşim · Mim mimari/güvenlik · Erş erişilebilirlik/cihaz.
-Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `after/<id>-{phone,narrow,tablet,tabletLand}.png`, büyük yazı `after/<id>-zoom-zoom135.png`, ölçümler `after/metrics.json`, kontroller `after/checks.json`.
+Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `d4/` = `../d4-2026-11-06/ui/` (D4 sonrası kanıtlar); `after/<id>-{phone,narrow,tablet,tabletLand}.png`, büyük yazı `after/<id>-zoom-zoom135.png`, ölçümler `after/metrics.json`, kontroller `after/checks.json`.
 
 ## 1. Bulgu kaydı (bütün kimlikler)
 
@@ -39,8 +39,8 @@ Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `after/<id>-{phone,narrow
 | Q00-C12-9 | P2 | Yönetim paneli iş kuyruğu | “Önce bunlara bakın” kartında hedef 19 px metin bağlantısı; satırda “Aç” 36 px ve hepsi aynı adda. | **DÜZ** `2a0e998`: kartın tamamı tıklanır, “Aç” 44 px + kuyruk adı. | `c12/backoffice/bo-dashboard-desktop.png` (ölçüm aracı `::after` alanını görmez, yalnız bağlantı kutusunu ölçer) |
 | Q00-C12-10 | P2 | `/questions` filtreleri | Sınıf/ders/konu seçimlerinde etiket yok. | **DÜZ** `2a0e998`. | `c12/backoffice/bo-metrics.json` (etiketsiz 3 → 0) |
 | Q00-C12-11 | P2 | `/operations` politika tablosu | “Açık” onay kutusu küçük satır; limit alanlarının ekran okuyucu adı ham kod (`prova_generate plus monthly_limit`). | **DÜZ** `aeec266`. A3'teki “tablette 40 px altı giriş” bu turda ölçülmedi (giriş `min-h-12`, ölçüm temiz). | `c12/backoffice/bo-operations-{desktop,tablet}.png` |
-| Q00-C12-12 | P2 | Modal geçişleri | `animationType="fade"` modallar azaltılmış hareket tercihine bakmıyor (kod okuma; kısa solma). | **A** — küçük; C15'te cihazda değerlendirilecek. | kod: `components/ui/decision-sheet.tsx`, `parent-review-workspace.tsx`, `prova/groups.tsx` |
-| Q00-C12-13 | P2 | Giriş ekranı klavye | Son odak bağlantısından sonra kaydırma kabı odak alıyor, görünür halka yok (Chrome kaydırılabilir kabı odaklanabilir yapar). | **A** — işlev engeli yok; sıra doğru (`after/checks.json` → `keyboard_sign_in_order`). | `c12/after/checks.json` |
+| Q00-C12-12 | P2 | Modal geçişleri | `animationType="fade"` modallar azaltılmış hareket tercihine bakmıyor (kod okuma; kısa solma). | **DÜZ (kısmi, D4)**: ortak `DecisionSheet` ve `timetable-import` artık `useRouteMotion` (reduce → `none`). Sonra: reduce'ta açılışta çalışan animasyon 0/6 örnek, normalde 4/6. **Açık (D1 alanı):** `parent-review-workspace.tsx` ×4, `prova/groups.tsx` ×3, `question-media.tsx` ×1 hâlâ sabit `fade`. | `d4/checks.json` → `c12_12_modal_respects_reduced_motion`; `d4/modal-{reduce,no-preference}-phone.png` |
+| Q00-C12-13 | P2 | Giriş ekranı klavye | Son odak bağlantısından sonra kaydırma kabı odak alıyor, görünür halka yok (Chrome kaydırılabilir kabı odaklanabilir yapar). | **DÜZ (D4)**: D4 ölçümü, sekme dizisinde son öğeden sonraki durağın kaydırma kabı değil `BODY` (sekme dizisinin sonu, headless Chrome) olduğunu gösterdi. Kap yine de Chrome'da odaklanabilir; `ParentScreen`/`Screen` kabı `data-gina-scroll` ile işaretlendi, `global.css` `:focus-visible` 3 px mor halka çiziyor (klavye kipinde ölçüldü: `solid 3px rgb(96,66,222)`). | `d4/checks.json` → `c12_13_sign_in_scroll_focus_visible`; `d4/sign-in-scroll-focus-phone.png` |
 | Q00-C12-14 | P2 | Takvim/çocuk ana ekranı | “Takvim”, “Bugün”, “Görevler” adları içerikte ve alt gezinmede iki kez geçiyor. | Gerekçeli **sorun yok**: farklı bölgeler (sekme vs gezinme), işlevleri farklı; değişiklik yapılmadı. | `after/metrics.json` |
 
 ### 1b. A1 (auth, veli, aile, ayarlar) — güncel durum
@@ -68,7 +68,7 @@ Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `after/<id>-{phone,narrow
 | Q00-A2-11 çocuk takvimi “düzenleyebilirsin” | P2 | **DÜZ** `4143cdd` (değer düzeltmesi) | `planner.childEmptyBody`: “Ders programına göz atabilirsin. Bir şey eklemek istersen veline söyleyebilirsin.” `c12/after/cm-calendar-phone.png`. |
 | Q00-A2-12 hedef derin bağlantı | P2 | **ÖK kapalı** | `u06-u07-2026-11-06/child-goal-selected-phone.png`. |
 | Q00-A2-13 AI hata metni ayrımı | P2 | **DÜZ** `e3d69cc` | `ErrorText`, C08 `ProvaAiError` kategori metnini (izin/paket, çevrimdışı, geçici servis…) artık genel “Bir şeyler ters gitti”ye düşürmüyor. Gerçek Edge hata ekranı bu turda üretilmedi (kod + tsc). |
-| A2 GÖRÜLEMEDİ listesi | — | Kapananlar **ÖK**: katalog 2–3 (`c01…/p1-school-confirmed-saved-phone.png`), dağılım 2–3 (`p01-p02…/blueprint-personalized-review-phone.png`), soru kaydı→paylaşım (`c07…/mobile/screenshots/share-fix-sent-phone.png`), kütüphane edinimi (`c07…/library-first-import-charged-phone.png`), Birlikte Prova katılım (`c07…/groups-phases-open-phone.png`), kitapçık (`p01-p02…/booklet-student-copy.pdf`), hazırlayıcı AI (`c04…/ai-fill-remaining-phone.png`), tek çocuklu çocuk modu (`u02…`), geri gönderilen görev ve odak sayacı (`u06-u07…`), veli telefonunda Prova çözme (`c04…/child-question-1-phone.png`). **Hâlâ GÖRÜLEMEDİ:** ortak kaynak adım 2–3 ekranla, dolu tekrar planı kaydı, plan gün onayı/takvim çakışması, “Belgeden yararlan”, süre dolumu otomatik bitirme (10 dk), veli PIN'i tanımsız kartı. Neden: sentetik veri/zaman; P1 kusur bilinmiyor. Takip: Q00-C12-T1. | |
+| A2 GÖRÜLEMEDİ listesi | — | Kapananlar **ÖK**: katalog 2–3 (`c01…/p1-school-confirmed-saved-phone.png`), dağılım 2–3 (`p01-p02…/blueprint-personalized-review-phone.png`), soru kaydı→paylaşım (`c07…/mobile/screenshots/share-fix-sent-phone.png`), kütüphane edinimi (`c07…/library-first-import-charged-phone.png`), Birlikte Prova katılım (`c07…/groups-phases-open-phone.png`), kitapçık (`p01-p02…/booklet-student-copy.pdf`), hazırlayıcı AI (`c04…/ai-fill-remaining-phone.png`), tek çocuklu çocuk modu (`u02…`), geri gönderilen görev ve odak sayacı (`u06-u07…`), veli telefonunda Prova çözme (`c04…/child-question-1-phone.png`). ~~Hâlâ GÖRÜLEMEDİ~~ → **D4'te gerçek uygulamada görüldü (6/6, TE):** ortak kaynak adım 2–3 + kayıt, dolu tekrar planı kaydı, plan gün onayı (+ çakışma uyarısı yineleme koşusunda), “Belgeden yararlan”, 10 dk süre dolumu (tarayıcı saati ileri alındı), veli PIN'i tanımsız kartı (yalnız gözlem). Ayrıntı: [`d4-2026-11-06`](../d4-2026-11-06/README.md). Kapanan: Q00-C12-T1. | |
 
 ### 1d. A3 (backoffice) — güncel durum
 
@@ -140,7 +140,7 @@ Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `after/<id>-{phone,narrow
 | `/parent/prova` Hazırla/Gönderilenler/İncelenecekler | veli · 4 ölçü + %135 | 0 / 1 / 2 çocuk | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | **D (C12-1)** | DÜZ | `after/{zero,one}-prova-*.png`, `after/prova-hub{,-sent,-review}-*.png`, `after/prova-hub-zoom-zoom135.png` |
 | `/parent/prova/builder` (4 adım) | veli · 4 ölçü + %135 | başlangıç | ✓ | ✓ | ✓ | D (A2-9) | ✓ | ✓ | D (C12-4) | DÜZ (kısmen sürüldü) | `after/prova-builder-*.png`; adımlar: `c04…` |
 | `/parent/prova/question` (3 adım) | veli · 4 ölçü | boş | ✓ | U | ✓ | ✓ | ✓ | ✓ | D (C12-4) | TE | `after/prova-question-*.png`; kayıt `p01-p02…/editor-after-save-phone.png` |
-| `/parent/prova/shared-source` | veli · 4 ölçü | adım 1 | ✓ | U | ✓ | ✓ | ✓ | ✓ | D (C12-4) | G (adım 2–3 GÖRÜLEMEDİ, T1) | `after/prova-shared-source-*.png` |
+| `/parent/prova/shared-source` | veli · 4 ölçü | adım 1 | ✓ | U | ✓ | ✓ | ✓ | ✓ | D (C12-4) | TE (D4: adım 2–3 + kayıt, 4 ölçü) | `after/prova-shared-source-*.png`; `d4/shared-source-step{2,3}-*.png`, `d4/shared-source-saved-*.png` |
 | `/parent/prova/library` | veli · 4 ölçü | — | ✓ | U | ✓ | ✓ | ✓ | ✓ | ✓ | TE | `after/prova-library-*.png`; edinim `c07…` |
 | `/parent/prova/catalog` | veli · 4 ölçü | — | ✓ | U | ✓ | ✓ | ✓ | ✓ (C01/C05) | ✓ | TE | `after/prova-catalog-*.png` |
 | `/parent/prova/blueprint` | veli · 4 ölçü | — | ✓ | U | ✓ | ✓ | ✓ | ✓ | ✓ | TE | `after/prova-blueprint-*.png` |
@@ -152,7 +152,7 @@ Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `after/<id>-{phone,narrow
 | `/parent/prova/attempt/[id]` | veli · 4 ölçü | puanlanmış; AI önerisi bekleyen | ✓ | ✓ | ✓ | D (A2-13) | ✓ | ✓ | D (C12-3) | DÜZ | `after/prova-attempt{,-ai}-*.png` |
 | `/parent/prova/review/[id]` | veli · 4 ölçü | 3 soru | ✓ | ✓ | ✓ | D (A2-10) | D | ✓ | D (C12-6) | DÜZ | `after/prova-review-*.png` |
 | `/parent/prova/repeat/[id]` | veli · 4 ölçü | 2 soru, 3 gün | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | D (C12-3) | DÜZ | `after/prova-repeat-*.png` |
-| `/parent/prova/plan/[id]` | veli | — | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | ÖK (gün onayı GÖRÜLEMEDİ, T1) | A2 `parent-plan-*.png` |
+| `/parent/prova/plan/[id]` | veli | — | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | TE (D4: 2 gün seçildi → gözden geçir → takvime eklendi, plan `approved`) | A2 `parent-plan-*.png`; `d4/plan-days-{selected,preview,saved}-*.png`, `d4/plan-days-preview-overlap-iteration-phone.png` |
 | `/parent/prova/exam`, `/generate` | veli | yönlendirme | U | U | U | ✓ | U | ✓ | U | ÖK | `c04…` (açık taslağa gider) |
 
 ### 2d. Çocuk modu (veli telefonu) ve bağımsız çocuk cihazı
@@ -199,10 +199,10 @@ Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `after/<id>-{phone,narrow
 | Karar sayfası (`decision-sheet`), ayrılma uyarısı | ÖK | A1 `device-access-leave-sheet-phone.png` |
 | Hesap silme, e-posta doğrulama | G / ENG | A1; Edge/sağlayıcı yok |
 | Paylaşım önizlemesi, yardım talebi + görsel eki | ÖK / G | `u06-u07…`; görsel eki UI'da koşulmadı (C03 sınırı) |
-| Kaynak seçici, ortak kaynak sihirbazı | G | `u05…/sources-50-more-phone.png`; adım 2–3 T1 |
+| Kaynak seçici, ortak kaynak sihirbazı | TE (D4) | `u05…/sources-50-more-phone.png`; `d4/shared-source-*`, `d4/document-*` |
 | Defter: yazı modalı, sorudan deftere al, genişlet, araçlar | TE | `after/notebook-text-modal-tablet.png`, `notebook-copy-sheet-tablet.png`, `notebook-copy-placed-tablet.png`, `notebook-expanded-tablet.png` |
 | İnceleme: soru seçici, çizimli not, AI rızası, soru önizlemesi | DÜZ / ÖK | C12-6, A2-10; `c08…/review-suggestion-in-score-phone.png` |
-| Plan takvime yerleştir, tekrar takvimi | G | `after/prova-repeat-*.png`; kaydetme T1 |
+| Plan takvime yerleştir, tekrar takvimi | TE (D4) | `after/prova-repeat-*.png`; `d4/repeat-{filled,preview,saved}-*.png`, `d4/plan-days-*` |
 | Boş durumlar (0 kayıt) | TE | `after/zero-*.png` (6 ekran × 3 ölçü) |
 | Yükleniyor / çevrimdışı / hata | ÖK | `u03…/home-offline-first-load-phone.png`, `home-tasks-error-phone.png`; AI kategori metni A2-13 |
 | İzin durumları (push, kamera) | ENG | web'de yok; C15 |
@@ -216,7 +216,7 @@ Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `after/<id>-{phone,narrow
 | Safe area | Kod: ana ekran alt gezinme `insets.bottom`, `SafeAreaView` hazırlayıcı/defter. Web'de çentik yok → **C15**. | — |
 | Okunmayan buton | %135 ölçekte Prova sekmeleri (C12-1, P1) düzeltildi; 76 rota × 4 ölçüde kesilen düğme metni 0. | `after/metrics.json`, `after/*-zoom-zoom135.png` |
 | Uzun prompt textarea ve örnekler | Hazırlayıcı/AI istem alanları `PromptExamples` + çok satırlı alan (C04 kanıtı); bu turda yeni kusur yok. | `c04…/ai-fill-remaining-phone.png` |
-| Süre seçici / elle giriş | `NumberChoice` hazırlayıcı ve seviye süresinde vardı; seviye sayı alanları da taşındı (C12-5). Kitapçık sınıf alanı (2 hane) serbest metin kaldı — **A** T3 (P2). | `after/prova-level-phone.png` |
+| Süre seçici / elle giriş | `NumberChoice` hazırlayıcı ve seviye süresinde vardı; seviye sayı alanları da taşındı (C12-5). Kitapçık sınıf alanı **D4'te 1–12 radyo seçimine** çevrildi (T3 kapandı; `d4/booklet-grade-*.png`). Ortak kaynak sihirbazının sınıf alanı aynı kalıpta serbest 2 hane — **A** D4-1 (D1 alanı). | `after/prova-level-phone.png` |
 | Bağlama uygun maskot | Veli ekranlarında başlık yanında, çocukta oda sahnesinde; Prova/defter/yönetimde maskot yok (dikkat dağıtmıyor). Değişiklik yok. | `after/*-phone.png` |
 | Azaltılmış hareket | `prefers-reduced-motion` ile çalışan CSS animasyonu 0; `ConnectionMoment`, koleksiyon, oda, rota geçişi `isReduceMotionEnabled` okuyor (kod). Modal solması açık takip C12-12. | `after/checks.json` |
 | Türkçe dil | Çözülmemiş anahtar 0 (76 rota × 4 ölçü); A2-11 değer düzeltmesi. | `after/metrics.json` |
@@ -232,10 +232,12 @@ Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `after/<id>-{phone,narrow
 
 | Takip | Öncelik | Kapsam | Neden açık |
 |---|---|---|---|
-| Q00-C12-T1 | P2 | Ortak kaynak adım 2–3 ekranla, dolu tekrar planı kaydı, plan gün onayı/çakışma, “Belgeden yararlan”, 10 dk süre dolumu, veli PIN'i tanımsız kartı | Sentetik veri/zaman gerektirir; bilinen kusur yok, GÖRÜLEMEDİ |
 | Q00-C12-T2 | P2 | `/ai`, `/questions` `window.confirm` → onaylı dilde diyalog | Tasarım kararı küçük; işlev çalışıyor |
-| Q00-C12-T3 | P2 | Kitapçık “sınıf” serbest 2 haneli alan → seçim | Küçük |
-| Q00-C12-12 | P2 | Modal solması reduced motion | Cihazda değerlendirilecek |
-| Q00-C12-13 | P2 | Giriş kaydırma kabı odak halkası | Web'e özgü |
+| Q00-C12-12 (kalan) | P2 | `parent-review-workspace.tsx`, `prova/groups.tsx`, `question-media.tsx` sabit `fade` | D1 Prova ekranları; aynı tek satır (`useRouteMotion`) D1'e devredildi (D4) |
+| D4-1 | P2 | Ortak kaynak sihirbazı “Sınıf” serbest 2 haneli alan | D1 alanı; kitapçıktaki radyo kalıbı uygulanabilir (D4) |
+| D4-2 | P2 | Süreli Prova süre dolunca sonuç ekranı “Süre doldu” demiyor (yalnız “Deneme bitti!”); bitiş anı ekranda görünmeden sonuç açılıyor | D1 alanı (`app/child/prova/[examId].tsx`); cevap kaybı yok (D4) |
+| D4-3 | P2 | Tekrar takvimi gün düzenlemede tarih/saat serbest metin (“Tarih (YYYY-AA-GG)”, “Saat (SS:DD)”) | `repeat-calendar.tsx` (Prova); `DateTimeChoice` kalıbı önerilir (D4) |
+| D4-4 | P2 | Native (iOS `expo-print`) kitapçık PDF'inde metin katmanı: SF UI alt kümesi ToUnicode eşlemesiz; `pdftotext` “i” harfini “!” çıkarıyor (görsel doğru) → PDF içi arama/kopyalama/ekran okuyucu bozuk | `lib/prova-booklet.ts` HTML'ine gömülü web yazı tipi veya eşlemeli sistem yazı tipi; fiziksel cihazda doğrulanmalı (D4) |
+| Kapanan (D4) | — | Q00-C12-T1, Q00-C12-T3, Q00-C12-13; Q00-C12-12 ortak bileşen kısmı | [`d4-2026-11-06`](../d4-2026-11-06/README.md) |
 | Q00-A3-4, Q00-A3-7 (yönetici kısmı), A3 kalan P2'ler | P2 | B01/B02/S04/S06 | A3/C07 raporlarında |
 | Fiziksel cihaz kabulü | — | VoiceOver/TalkBack, fontScale, safe area, dokunmatik defter, native yön, push | **C15** |
