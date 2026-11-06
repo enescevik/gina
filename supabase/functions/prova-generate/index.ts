@@ -7,6 +7,7 @@ import {
   type GenerationContext,
   QUESTION_TYPES,
   recoverGeneration,
+  RUBRIC_SCALE_RULE,
   validateGenerationResult,
 } from "../_shared/generation-result.ts";
 import { cataloguePlan } from "../_shared/catalogue-plan.ts";
@@ -33,7 +34,8 @@ import {
   sha256,
 } from "../_shared/prova.ts";
 
-const PROMPT_VERSION = "prova-generate/v6-shared-groups";
+// D9: v7 — rubrik ölçüt puanları 100 üzerinden (B3 kaynakta); kişi adı denetimi needs_review etiketi (B6).
+const PROMPT_VERSION = "prova-generate/v7-rubric-100";
 const MAX_TOTAL = 30;
 
 type KindMode = "multiple_choice" | "open_ended" | "mixed";
@@ -78,7 +80,7 @@ Kurallar:
 - source_urls: yalnız emin olduğun resmî kaynaklar (MEB ÖDSGM konu-soru dağılım tabloları, MEB ders kitapları, EBA). Emin değilsen boş liste bırak; adres uydurma.
 - Senaryo izi: senaryo_kapsami.learning_blocks verildiyse her soruda block_id'yi o bloğun block_id'si, outcome_ids'i gerçekten ölçtüğün çıktıların kimlikleri (o bloğun outcome_ids listesinden, en az bir tane) olarak yaz. Bir soru birden çok çıktıyı ölçebilir; blok için istenen soru sayısı çıktı sayısıyla çarpılmaz. Senaryo yoksa block_id ve outcome_ids boş bırak.
 - question_type: coktan_secmeli | acik_uclu | kisa_cevap | dogru_yanlis | bosluk_doldurma | eslestirme (şıklı soruda coktan_secmeli). cognitive_demand: hatirlama | anlama | uygulama | analiz | degerlendirme | yaratma. intended_difficulty: istenen zorluk; bu ölçülmüş güçlük değildir.
-- rubric: açık uçlu soruda puanlama ölçütleri (criteria: metin + puan) ve varsa alternatif doğru cevaplar. Şıklı soruda criteria tek ölçüt olabilir.
+- rubric: açık uçlu soruda puanlama ölçütleri (criteria: metin + puan) ve varsa alternatif doğru cevaplar. ${RUBRIC_SCALE_RULE}
 - Ortak metin/tablo gerekirse shared_sources listesine bir kez yaz (id, kind, content) ve bağlı soruların (en az iki, en çok on iki) shared_source_id alanına aynı id'yi koy; aynı metni soru gövdesinde tekrarlama. Ortak kaynak çocuğa soruların üstünde bir kez gösterilir; bağlı her soru yine ayrı sayılır ve ayrı cevaplanır. Görsel dosya yoksa visual_description yalnız metinle tarif edilebilen bir durum olsun. Gerekmiyorsa shared_sources boş liste, shared_source_id boş metin kalır.
 - Sorularda hiçbir kişi adı kullanma; uydurma ve yaygın adlar da buna dahildir (çocuğun ya da sınıf arkadaşlarının adına denk gelebilir). Kişi gerekiyorsa "bir öğrenci", "arkadaşı", "öğretmeni" gibi rol ifadesi kullan. Marka ya da hassas konu kullanma; çocuklara uygun, kapsayıcı bir dil kullan.
 - İstenen dilde yaz (tr = Türkçe, en = İngilizce).
@@ -155,7 +157,10 @@ const SCHEMA = {
                   required: ["text", "points"],
                   properties: {
                     text: { type: "string" },
-                    points: { type: "number" },
+                    points: {
+                      type: "number",
+                      description: "Out of 100; a question's criteria points sum to 100.",
+                    },
                   },
                 },
               },
