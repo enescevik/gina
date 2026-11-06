@@ -26,7 +26,7 @@ function friendlyError(error: unknown, t: (k: string) => string): unknown {
 }
 
 /**
- * Seviye tespiti: çocuk + ders/sınıf (isteğe bağlı senaryo) → sunucu her konudan karışık zorlukta
+ * Başlangıç çalışması (eski adıyla seviye tespiti; standart tanı değil): çocuk + ders/sınıf (isteğe bağlı senaryo) → sunucu her konudan karışık zorlukta
  * (kolay→zor) dengeli bir set seçer (pick_level_questions) → önizleme → create_level_test ile atanır.
  */
 export default function LevelTestScreen() {
@@ -133,7 +133,7 @@ export default function LevelTestScreen() {
         p_blueprint_id: blueprintId ?? undefined,
         p_per_topic: perTopicNum,
         p_max_questions: maxNum,
-        p_title: t("prova.level.examTitle", { subject: subject.trim() }),
+        p_title: t("provaP02.level.examTitle", { subject: subject.trim() }),
         p_timed: timed,
         p_duration_minutes: timed ? Math.max(1, Number(minutes) || 40) : undefined,
       });
@@ -152,12 +152,12 @@ export default function LevelTestScreen() {
   const chipText = (active: boolean) => (active ? "font-body-bold text-white" : "font-body text-ink");
   const blueprintsForSubject = blueprints.data ?? [];
 
-  if (children.isSuccess && children.data.length === 0) return <Screen title={t("prova.level.title")}><EmptyCard title={t("unified.chooseChild")} body={t("unified.noChildHelp")}><Button title={t("unified.createFirstChild")} onPress={()=>router.push("/parent/menu")}/></EmptyCard></Screen>;
+  if (children.isSuccess && children.data.length === 0) return <Screen title={t("provaP02.level.title")}><EmptyCard title={t("unified.chooseChild")} body={t("unified.noChildHelp")}><Button title={t("unified.createFirstChild")} onPress={()=>router.push("/parent/menu")}/></EmptyCard></Screen>;
 
   return (
-    <Screen title={t("prova.level.title")} subtitle={t("unified.levelHelp")} loading={children.isLoading || blueprints.isLoading || subjects.isLoading} error={children.error ?? blueprints.error ?? subjects.error} onRetry={() => { void children.refetch(); void blueprints.refetch(); void subjects.refetch(); }}>
+    <Screen title={t("provaP02.level.title")} subtitle={t("provaP02.level.help")} loading={children.isLoading || blueprints.isLoading || subjects.isLoading} error={children.error ?? blueprints.error ?? subjects.error} onRetry={() => { void children.refetch(); void blueprints.refetch(); void subjects.refetch(); }}>
       <View style={parentStyles.card}>
-      <Text className="font-body text-base text-gray-600">{t("prova.level.intro")}</Text>
+      <Text className="font-body text-base text-gray-600">{t("provaP02.level.intro")}</Text>
 
       <Text className="font-body-bold text-sm text-ink">{t("prova.forChild")}</Text>
       <ChildPicker profiles={children.data ?? []} selected={childId} onSelect={id => { if (id) pickChild(id); }} />

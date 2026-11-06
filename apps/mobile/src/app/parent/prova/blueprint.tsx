@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Check, Minus, Plus, Trash2 } from "lucide-react-native";
@@ -18,6 +18,26 @@ import { Field } from "@/components/ui/field";
 import { Toggle } from "@/components/ui/toggle";
 import { Avatar } from "@/components/avatar";
 import { IconButton, p, SatinButton, Tag, u } from "@/components/planner/ui";
+type ScenarioSeed = {
+  child_id: string;
+  subject: string;
+  academic_year: string;
+  term: number;
+  exam: number;
+  rows: { topic: string; count: number }[];
+  source_url: string;
+  label: string;
+  school: "known" | "unknown";
+};
+function readSeed(raw: string | undefined): ScenarioSeed | null {
+  if (!raw) return null;
+  try {
+    const v = JSON.parse(raw) as ScenarioSeed;
+    return Array.isArray(v.rows) && typeof v.label === "string" ? v : null;
+  } catch {
+    return null;
+  }
+}
 function schoolYear() {
   const now = new Date();
   const year = now.getFullYear() - (now.getMonth() < 7 ? 1 : 0);
@@ -43,9 +63,27 @@ export default function BlueprintScreen() {
       initial.pending,
     ),
     [blocked, setBlocked] = useState(initial.blocked);
-  const [step, setStep] = useState(0), [saved, setSaved] = useState(false);
+  const params = useLocalSearchParams<{ seed?: string }>();
+  // Senaryo kataloğundan gelen tam dağılım; değişirse "kişiselleştirilmiş çalışma".
+  const [seed] = useState(() => initial.pending ? null : readSeed(params.seed));
+  const [step, setStep] = useState(() => seed ? 1 : 0),
+    [saved, setSaved] = useState(false);
   const [form, setForm] = useState<BlueprintInput>(() =>
     initial.pending?.p_input ??
+      (seed
+        ? {
+          child_id: seed.child_id,
+          grade: 0,
+          subject: seed.subject,
+          name: "",
+          academic_year: seed.academic_year,
+          term: seed.term,
+          exam: seed.exam,
+          rows: seed.rows,
+          source_url: seed.source_url,
+          confirmed: true,
+        }
+        : null) ??
       {
         child_id: "",
         grade: 0,
@@ -81,7 +119,31 @@ export default function BlueprintScreen() {
   const subjects = [
     ...new Set(timetable.data?.lessons.map((l) => l.title) ?? []),
   ];
-  const input = { ...form, grade, child_id: child?.id ?? form.child_id };
+  const personalized = !!seed && (
+    seed.rows.length !== form.rows.length ||
+    seed.rows.some((r, i) =>
+      r.count !== form.rows[i]?.count || r.topic !== form.rows[i]?.topic
+    )
+  );
+  const seedTotal = seed?.rows.reduce((sum, r) => sum + r.count, 0) ?? 0;
+  const seedTag = seed
+    ? t(
+      personalized
+        ? "provaP02.catalog.personalizedTag"
+        : seed.school === "known"
+        ? "provaP02.catalog.schoolTag"
+        : "provaP02.catalog.studyTag",
+    )
+    : "";
+  const seededName = seed
+    ? `${seed.label} · ${seedTag}`.slice(0, 100)
+    : "";
+  const input = {
+    ...form,
+    name: form.name.trim() || seededName,
+    grade,
+    child_id: child?.id ?? form.child_id,
+  };
   const total = form.rows.reduce((sum, r) => sum + r.count, 0);
   const valid = step === 0
     ? !!child && grade >= 1 && grade <= 12 && !!form.subject.trim()
@@ -285,6 +347,29 @@ export default function BlueprintScreen() {
               ? (
                 <>
                   <Text style={u.copy}>{t("blueprintFlow.rowHelp")}</Text>
+                  {seed
+                    ? (
+                      <View
+                        accessibilityLiveRegion="polite"
+                        style={[u.card, { backgroundColor: p.lilac }]}
+                      >
+                        <Text style={u.bold}>{seedTag}</Text>
+                        <Text style={u.copy}>
+                          {t(
+                            personalized
+                              ? "provaP02.catalog.personalizedBody"
+                              : "provaP02.catalog.seedBody",
+                            {
+                              label: seed.label,
+                              from: seedTotal,
+                              to: total,
+                              blocks: seed.rows.length,
+                            },
+                          )}
+                        </Text>
+                      </View>
+                    )
+                    : null}
                   <Field
                     label={t("prova.blueprintName")}
                     value={form.name}
@@ -408,7 +493,8 @@ export default function BlueprintScreen() {
               : (
                 <>
                   <View style={[u.card, { backgroundColor: p.mint }]}>
-                    <Text style={u.heading}>{form.name}</Text>
+                    <Text style={u.heading}>{input.name}</Text>
+                    {seed ? <Text style={u.bold}>{seedTag}</Text> : null}
                     <Text style={u.copy}>
                       {child?.name} · {form.subject} ·{" "}
                       {t("parent.gradeShort", { grade })}
@@ -433,7 +519,11 @@ export default function BlueprintScreen() {
                   </Text>
                   <Text style={u.copy}>{t("blueprintFlow.manualNotice")}</Text>
                   <Toggle
-                    label={t("blueprintFlow.confirm")}
+                    label={t(
+                      seed && (personalized || seed.school !== "known")
+                        ? "provaP02.catalog.studyConfirm"
+                        : "blueprintFlow.confirm",
+                    )}
                     value={confirmed}
                     onChange={setConfirmed}
                   />

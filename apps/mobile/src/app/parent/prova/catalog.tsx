@@ -53,7 +53,10 @@ export default function CatalogScreen() {
     [term, setTerm] = useState(1),
     [exam, setExam] = useState(1),
     [selection, setSelection] = useState<CatalogScenario | null>(null),
-    [confirmed, setConfirmed] = useState(false);
+    [confirmed, setConfirmed] = useState(false),
+    // M01 protokolü: "Okulun senaryosunu biliyorum" / "Henüz bilmiyorum". İkincisinde seçim
+    // çalışma senaryosudur; okul doğrulaması yapılmış gibi kaydedilmez.
+    [schoolKnown, setSchoolKnown] = useState<"known" | "unknown" | null>(null);
   const children = useQuery({
     queryKey: ["children", family],
     enabled: !!family,
@@ -141,6 +144,32 @@ export default function CatalogScreen() {
     setSelection(null);
     setConfirmed(false);
   }
+  // Tam senaryo dağılımını elle düzenlenebilir dağılım ekranına taşır. Orada blok/adet
+  // değişirse "kişiselleştirilmiş çalışma" etiketi gösterilir; resmî uygunluk iddiası yok.
+  function openAsStudy(scenario: CatalogScenario) {
+    const rows = scenario.candidate.blocks.map((b, i) => ({
+      topic: `${i + 1}. ${b.outcomes[0]?.code ? `${b.outcomes[0].code} ` : ""}${
+        b.outcomes[0]?.text ?? ""
+      }`.slice(0, 200).trim(),
+      count: b.count,
+    }));
+    router.push({
+      pathname: "/parent/prova/blueprint",
+      params: {
+        seed: JSON.stringify({
+          child_id: child?.id ?? "",
+          subject: subject.trim(),
+          academic_year: academicYear,
+          term,
+          exam,
+          rows,
+          source_url: scenario.candidate.source_url,
+          label: scenario.candidate.label,
+          school: schoolKnown === "known" ? "known" : "unknown",
+        }),
+      },
+    });
+  }
   const close = () =>
     router.canGoBack() ? router.back() : router.replace("/parent/prova");
   const save = useMutation({
@@ -215,14 +244,21 @@ export default function CatalogScreen() {
       valid={saved ||
         (!blocked && (!!pending || (!children.isError && (step === 0
           ? scopeValid
-          : !!selected && !scenarios.isError && (step === 1 || confirmed)))))}
+          : !!selected && !scenarios.isError &&
+            (step === 1 || confirmed || schoolKnown === "unknown")))))}
       onClose={close}
       onSave={() =>
-        saved ? close() : save.mutate()}
+        saved
+          ? close()
+          : schoolKnown === "unknown" && selected && !pending
+          ? openAsStudy(selected)
+          : save.mutate()}
       saveLabel={saved
         ? t("blueprintFlow.back")
         : pending
         ? t("setupRecovery.retry")
+        : schoolKnown === "unknown"
+        ? t("provaP02.catalog.useAsStudy")
         : t("catalogFlow.save")}
       error={changed ? null : error}
     >
@@ -362,6 +398,30 @@ export default function CatalogScreen() {
                     {t("catalogFlow.termNumber", { n: term })} ·{" "}
                     {t("catalogFlow.examNumber", { n: exam })}
                   </Text>
+                  {freshness.isPending
+                    ? (
+                      <Text style={u.copy}>
+                        {t("provaP02.catalog.freshnessChecking")}
+                      </Text>
+                    )
+                    : freshness.isError
+                    ? (
+                      <Text accessibilityRole="alert" style={u.error}>
+                        {t("provaP02.catalog.freshnessUnknown")}{" "}
+                        {t("catalogFlow.freshness.freeStudy")}
+                      </Text>
+                    )
+                    : null}
+                  {freshness.data?.last_checked_at
+                    ? (
+                      <Text style={u.copy}>
+                        {t("provaP02.catalog.lastChecked", {
+                          date: new Date(freshness.data.last_checked_at)
+                            .toLocaleDateString(),
+                        })}
+                      </Text>
+                    )
+                    : null}
                   {freshness.data
                     ? (
                       <Text
@@ -425,11 +485,51 @@ export default function CatalogScreen() {
                       </View>
                     )
                     : null}
-                  {step === 1
+                  {step === 1 && scenarios.data?.length
+                    ? (
+                      <>
+                        <Text style={u.bold}>
+                          {t("provaP02.catalog.schoolQuestion")}
+                        </Text>
+                        <ChoiceCard
+                          title={t("provaP02.catalog.known")}
+                          body={t("provaP02.catalog.knownBody")}
+                          selected={schoolKnown === "known"}
+                          onPress={() => {
+                            setSchoolKnown("known");
+                            reset();
+                          }}
+                        />
+                        <ChoiceCard
+                          title={t("provaP02.catalog.unknown")}
+                          body={t("provaP02.catalog.unknownBody")}
+                          selected={schoolKnown === "unknown"}
+                          onPress={() => {
+                            setSchoolKnown("unknown");
+                            reset();
+                          }}
+                        />
+                        {schoolKnown
+                          ? (
+                            <Text style={u.bold}>
+                              {t(
+                                schoolKnown === "known"
+                                  ? "provaP02.catalog.pickSchool"
+                                  : "provaP02.catalog.pickStudy",
+                              )}
+                            </Text>
+                          )
+                          : null}
+                      </>
+                    )
+                    : null}
+                  {step === 1 && schoolKnown
                     ? scenarios.data?.map((s) => (
                       <ChoiceCard
                         key={s.id}
-                        title={s.candidate.label}
+                        title={schoolKnown === "unknown"
+                          ? `${t("provaP02.catalog.studyTag")} · ${s.candidate.label}`
+                          : s.candidate.label}
                         body={`${s.programme}\n${s.school_scope}\n${
                           t("catalogFlow.count", {
                             n: s.candidate.question_count,
@@ -482,12 +582,40 @@ export default function CatalogScreen() {
                           onPress={() =>
                             void Linking.openURL(selected.programme_url)}
                         />
-                        <Text style={u.copy}>{t("catalogFlow.notice")}</Text>
-                        <Toggle
-                          label={t("catalogFlow.confirm")}
-                          value={confirmed}
-                          onChange={setConfirmed}
-                        />
+                        <Text style={u.bold}>
+                          {t("provaP02.catalog.fullDistribution", {
+                            blocks: selected.candidate.blocks.length,
+                            count: selected.candidate.question_count,
+                          })}
+                        </Text>
+                        {schoolKnown === "unknown"
+                          ? (
+                            <View style={[u.card, { backgroundColor: p.lilac }]}>
+                              <Text style={u.bold}>
+                                {t("provaP02.catalog.studyTag")}
+                              </Text>
+                              <Text style={u.copy}>
+                                {t("provaP02.catalog.unknownNotice")}
+                              </Text>
+                            </View>
+                          )
+                          : (
+                            <>
+                              <Text style={u.copy}>
+                                {t("catalogFlow.notice")}
+                              </Text>
+                              <Toggle
+                                label={t("catalogFlow.confirm")}
+                                value={confirmed}
+                                onChange={setConfirmed}
+                              />
+                              <SatinButton
+                                secondary
+                                title={t("provaP02.catalog.customize")}
+                                onPress={() => openAsStudy(selected)}
+                              />
+                            </>
+                          )}
                       </>
                     )
                     : null}

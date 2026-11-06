@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "results": [
+    {
+      "check": "bank_subjects_before_seed",
+      "passed": true,
+      "detail": {
+        "grade": 5,
+        "subjects": [
+          "Fen",
+          "Matematik"
+        ]
+      }
+    },
+    {
+      "check": "shared_source_group_seeded",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "empty_bank_subject_list_from_catalogue_and_suggest_subject_needs_confirmation",
+      "passed": true
+    },
+    {
+      "check": "mixed_draft_sources_shared_group_and_unsuitable_marks_without_deleting",
+      "passed": true,
+      "detail": {
+        "blocks": 5,
+        "group": true
+      }
+    },
+    {
+      "check": "stepped_editor_correct_choice_starts_empty_preview_hides_answer_saves_once",
+      "passed": true
+    },
+    {
+      "check": "scenario_unknown_path_study_label_freshness_unverified_personalized_saved_without_school_confirmation",
+      "passed": true,
+      "detail": {
+        "name": "Sentetik senaryo cfe7 · Kişiselleştirilmiş çalışma",
+        "rows": [
+          {
+            "count": 3,
+            "topic": "1. Kesirlerle toplama ve çıkarma işlemi yapar (sentetik)."
+          },
+          {
+            "count": 3,
+            "topic": "2. Ondalık gösterimleri karşılaştırır (sentetik)."
+          }
+        ],
+        "source_context": {
+          "exam": 1,
+          "term": 1,
+          "origin": "parent_entered",
+          "academic_year": "2026-2027",
+          "school_confirmed": true,
+          "officially_verified": false
+        }
+      }
+    },
+    {
+      "check": "booklet_student_copy_and_answer_key_are_separate_documents",
+      "passed": true
+    },
+    {
+      "check": "review_blank_phone",
+      "passed": true,
+      "detail": {
+        "placeholder": null
+      }
+    },
+    {
+      "check": "review_blank_tablet",
+      "passed": true,
+      "detail": {
+        "placeholder": null
+      }
+    },
+    {
+      "check": "review_blank_desktop",
+      "passed": true,
+      "detail": {
+        "placeholder": "—"
+      }
+    },
+    {
+      "check": "review_blank_question_no_answer_label_and_dash_placeholder",
+      "passed": true
+    },
+    {
+      "check": "no_page_errors_no_overflow_translations_resolved",
+      "passed": true
+    }
+  ]
+}
