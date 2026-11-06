@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { rubricNeedsScaling, scaleRubricTo100 } from "./rubric-scale";
 export const provaBlockSchema = z.object({
   kind: z.enum(["question", "group"]),
   id: z.string().uuid(),
@@ -172,14 +173,16 @@ export function readQuestionRubric(provenance: unknown): QuestionRubric {
   const empty: QuestionRubric = { criteria: [], alternative_answers: [] };
   if (!r || typeof r !== "object") return empty;
   const v = r as { criteria?: unknown; alternative_answers?: unknown };
+  const criteria = Array.isArray(v.criteria)
+    ? v.criteria.flatMap((c: { text?: unknown; points?: unknown } | null) => {
+      const text = typeof c?.text === "string" ? c.text.trim() : "";
+      const points = Number(c?.points);
+      return text && Number.isFinite(points) ? [{ text, points }] : [];
+    }).slice(0, 10)
+    : [];
   return {
-    criteria: Array.isArray(v.criteria)
-      ? v.criteria.flatMap((c: { text?: unknown; points?: unknown } | null) => {
-        const text = typeof c?.text === "string" ? c.text.trim() : "";
-        const points = Number(c?.points);
-        return text && Number.isFinite(points) ? [{ text, points }] : [];
-      }).slice(0, 10)
-      : [],
+    // D6/B3: AI rubriği veli rubriğiyle aynı 100'lük ölçekte gösterilir (saklanan satır değişmez).
+    criteria: rubricNeedsScaling(provenance) ? scaleRubricTo100(criteria) : criteria,
     alternative_answers: Array.isArray(v.alternative_answers)
       ? v.alternative_answers.filter((a): a is string =>
         typeof a === "string" && !!a.trim()

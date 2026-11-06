@@ -1,5 +1,7 @@
-import { validateGradeReport } from "./grade-report.ts";
-const refs = new Map([["M1", { topic: "Kesirler", grade: true }], ["M2", {
+import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
+import { GRADE_SYSTEM, gradeSchema, validateGradeReport } from "./grade-report.ts";
+import { runAiOperation } from "./ai-operation.ts";
+const refs =new Map([["M1", { topic: "Kesirler", grade: true }], ["M2", {
   topic: "Uzunluk",
   grade: false,
 }]]);
@@ -124,4 +126,218 @@ Deno.test("D5: invalid reports carry a fixed rule name for diagnostics, never co
   item.degerlendirmeler[0].kisa_geri_bildirim = " ";
   const got = [count, evidence, topic, steps, limits, item].map(code).join();
   if (got !== "envelope,evidence,topic,steps,fields,item") throw Error(got);
+});
+
+// ---------------------------------------------------------------------------------------------------------------
+// D6/B1 — gerçekçi model çıktısı fixture'ları. Soru/konu yapısı D5'in A ve C denemeleriyle aynı (stage-prova.json,
+// run-d5.mjs). Model çıktısı D5'te saklanmadığı için içerik D5 prova-review gerçek çıktısının biçimine (aynı soru
+// için 5 maddelik kanıt listesi, uzun sınır notu) göre kuruldu; sentetiktir, gerçek çağrı yoktur.
+type Refs = Map<string, { topic: string; grade: boolean }>;
+function check(value: unknown, message = "assertion failed"): asserts value {
+  if (!value) throw Error(message);
+}
+const ruleOf = (r: unknown, rs: Refs) => {
+  try {
+    validateGradeReport(r, rs);
+  } catch (e) {
+    if ((e as Error).message !== "ai_result_invalid") throw e;
+    return (e as { validationCode?: string }).validationCode ?? "?";
+  }
+  return "accepted";
+};
+// C denemesi: ortak kaynaklı grup (Çevre, Alan) + rubrikli Kesirler sorusu; üçü de cevaplı açık uçlu.
+const refsC: Refs = new Map([
+  ["M1", { topic: "Çevre", grade: true }],
+  ["M2", { topic: "Alan", grade: true }],
+  ["M3", { topic: "Kesirler", grade: true }],
+]);
+// A denemesi: aynı üç soru + AI'nın ürettiği 2 şıklı (puanlama_gerekli=false) ve 1 açık uçlu Kesirler sorusu.
+const refsA: Refs = new Map([
+  ["M1", { topic: "Çevre", grade: true }],
+  ["M2", { topic: "Alan", grade: true }],
+  ["M3", { topic: "Kesirler", grade: true }],
+  ["M4", { topic: "Kesirler", grade: false }],
+  ["M5", { topic: "Kesirler", grade: false }],
+  ["M6", { topic: "Kesirler", grade: true }],
+]);
+const graded = (ref: string, puan: number | null, eksikler: string[] = [], oneriler: string[] = []) => ({
+  ref,
+  puan,
+  kisa_geri_bildirim: puan === null
+    ? "Soru metninde kenar uzunlukları yok; ortak metin verilmediği için puan verilemedi."
+    : "Cevap beklenen cevapla karşılaştırıldı; gerekçe aşağıda.",
+  eksikler,
+  iyilestirme_onerileri: oneriler,
+});
+const realisticC = () => ({
+  degerlendirmeler: [
+    graded("M1", 20, ["Yalnız iki kenar toplandı.", "Çevrenin tüm kenarların toplamı olduğu yazılmadı."], [
+      "Dikdörtgenin dört kenarını çizip tek tek topla.",
+    ]),
+    graded("M2", 95, [], [""]),
+    // D5 prova-review gerçek çıktısı aynı soru için 5 kanıt maddesi yazdı; v3 istemi eksikleri sınırlamıyordu.
+    graded("M3", 60, [
+      "2/4 kesri yazılmamış.",
+      "Sadeleştirme işlemi gösterilmemiş.",
+      "1/2 kesir olarak yazılmamış.",
+      "Rubrikteki 40 puanlık ölçüt karşılanmadı.",
+    ], ["Önce kesri yaz, sonra sadeleştir.", "Pay ve paydayı aynı sayıya böl.", "Sonucu kesir olarak yaz.", "Şekil çiz."]),
+  ],
+  ozet: {
+    guclu_konular: ["Alan"],
+    zayif_konular: ["Çevre", "Kesirler"],
+    genel_oneri:
+      "Bu denemede üç açık uçlu soru değerlendirildi. Alan hesabı doğru ve işlem gösterilmiş. Çevre sorusunda tüm kenarları toplamak gerekiyor. Kesirlerde sonuç doğru, ancak kesir yazımı ve sadeleştirme adımı eksik. Bir sonraki adımda çevre ve kesir yazımı birlikte çalışılabilir.",
+    konu_analizi: [
+      { konu: "Çevre", kanitlar: ["M1"], gozlem: "İki kenar toplanmış; kavram yanılgısı ya da dikkat hatası olabilir.", sonraki_adim: "Dört kenarı çizerek topla." },
+      { konu: "Alan", kanitlar: ["M2"], gozlem: "Alan formülü doğru uygulanmış.", sonraki_adim: "Farklı ölçülerle pekiştir." },
+      { konu: "Kesirler", kanitlar: ["M3", "M3"], gozlem: "Eşdeğer cevap doğru; kesir gösterimi eksik.", sonraki_adim: "Kesir yaz ve sadeleştir." },
+    ],
+    calisma_adimlari: [
+      { konu: "Çevre", etkinlik: "Dikdörtgen çiz, dört kenarı yaz ve topla.", sure_dk: 10, basari_olcutu: "Üç dikdörtgenin çevresini doğru bulur." },
+      { konu: "Kesirler", etkinlik: "Pasta modelinde kesir yaz ve sadeleştir.", sure_dk: 15, basari_olcutu: "Dört kesri doğru sadeleştirir." },
+      { konu: "Alan", etkinlik: "Kareli kâğıtta alan say.", sure_dk: 5, basari_olcutu: "Sayımla formül sonucunu karşılaştırır." },
+      { konu: "Kesirler", etkinlik: "Eş kesir kartları eşleştir.", sure_dk: 10, basari_olcutu: "Beş eşleşmeyi doğru yapar." },
+      { konu: "Çevre", etkinlik: "Masanın çevresini ölç.", sure_dk: 20, basari_olcutu: "Ölçümü toplamla doğrular." },
+    ],
+    veli_destegi: ["Birlikte bir dikdörtgen çizin.", "Kesirleri mutfakta gösterin.", "Doğru adımları övün."],
+    sinirlar: [
+      "Yalnız üç soru değerlendirildi.",
+      "Sonuçlar yalnız bu denemeye dayanır.",
+      "Çevre ve alan sorularının ortak metni verilmedi.",
+      "Öğrenci zihinden hesaplamış olabilir.",
+      "MEB uyumu doğrulanmadı.",
+      "Bu sonuç yalnız veliye öneridir.",
+    ],
+  },
+});
+
+Deno.test("D6/B1: realistic attempt C output is accepted and normalized to the prompt limits", () => {
+  const out = validateGradeReport(realisticC(), refsC);
+  check(out.degerlendirmeler.length === 3);
+  check(out.degerlendirmeler[2].eksikler.length === 3 && out.degerlendirmeler[2].iyilestirme_onerileri.length === 3, "lists cut to 3");
+  check(out.degerlendirmeler[1].iyilestirme_onerileri.length === 0, "blank suggestion dropped, not rejected");
+  check(out.ozet.sinirlar.length === 5 && out.ozet.calisma_adimlari.length === 4, "presentation caps");
+  check(out.ozet.konu_analizi[2].kanitlar.join() === "M3", "evidence deduplicated");
+  // Önbellek yolu (job.cached) aynı doğrulayıcıdan geçer: normalleştirilmiş çıktı yeniden kabul edilir ve değişmez.
+  check(JSON.stringify(validateGradeReport(out, refsC)) === JSON.stringify(out), "idempotent for cached replay");
+});
+
+Deno.test("D6/B1: attempt A (multiple choice not requested) accepts only the requested open answers", () => {
+  const r = realisticC();
+  r.degerlendirmeler.push(graded("M6", 100));
+  r.ozet.konu_analizi[2].kanitlar = ["M3", "M4", "M6"];
+  const out = validateGradeReport(r, refsA);
+  check(out.degerlendirmeler.map((g) => g.ref).join() === "M1,M2,M3,M6");
+  check(out.ozet.konu_analizi[2].kanitlar.join() === "M3,M4,M6", "MC refs are valid evidence of their topic");
+});
+
+Deno.test("D6/B1: harmless topic spelling differences map to the canonical name; invented topics do not", () => {
+  const r = realisticC();
+  r.ozet.zayif_konular = [" çevre", "KESİRLER"];
+  r.ozet.konu_analizi[0].konu = "Çevre ";
+  const out = validateGradeReport(r, refsC);
+  check(out.ozet.zayif_konular.join() === "Çevre,Kesirler" && out.ozet.konu_analizi[0].konu === "Çevre", JSON.stringify(out.ozet.zayif_konular));
+  const merged = realisticC();
+  merged.ozet.konu_analizi[0].konu = "Çevre ve alan";
+  check(ruleOf(merged, refsC) === "topic");
+  const sub = realisticC();
+  sub.ozet.calisma_adimlari[0].konu = "Genel tekrar";
+  check(ruleOf(sub, refsC) === "topic");
+});
+
+Deno.test("D6/B1: broken or partial output is still rejected with a fixed rule name", () => {
+  type R = ReturnType<typeof realisticC>;
+  const cases: [string, (r: R) => unknown, Refs][] = [
+    ["envelope", () => '{"degerlendirmeler": [', refsC],
+    ["envelope", () => null, refsC],
+    ["envelope", (r) => ({ ...r, degerlendirmeler: r.degerlendirmeler.slice(0, 2) }), refsC], // kısmi: bir madde eksik
+    ["item", (r) => ({ ...r, degerlendirmeler: [r.degerlendirmeler[0], r.degerlendirmeler[1], { ...r.degerlendirmeler[2], ref: "M9" }] }), refsC],
+    ["item", (r) => ({ ...r, degerlendirmeler: [r.degerlendirmeler[0], r.degerlendirmeler[1], { ...r.degerlendirmeler[2], puan: 150 }] }), refsC],
+    ["item", (r) => ({ ...r, degerlendirmeler: [r.degerlendirmeler[0], r.degerlendirmeler[1], { ...r.degerlendirmeler[2], eksikler: [3] }] }), refsC],
+    ["item", (r) => ({ ...r, degerlendirmeler: [r.degerlendirmeler[0], r.degerlendirmeler[1], r.degerlendirmeler[2], graded("M4", 0)] }), refsA], // istenmeyen şıklı madde
+    ["fields", (r) => ({ ...r, ozet: undefined }), refsC],
+    ["fields", (r) => ({ ...r, ozet: { ...r.ozet, sinirlar: [" "] } }), refsC],
+    ["fields", (r) => ({ ...r, ozet: { ...r.ozet, konu_analizi: [] } }), refsC],
+    ["evidence", (r) => ({ ...r, ozet: { ...r.ozet, konu_analizi: [{ ...r.ozet.konu_analizi[0], kanitlar: ["M1: iki kenar toplandı"] }] } }), refsC],
+    ["evidence", (r) => ({ ...r, ozet: { ...r.ozet, konu_analizi: [{ ...r.ozet.konu_analizi[0], kanitlar: ["M2"] }] } }), refsC],
+    ["evidence", (r) => ({ ...r, ozet: { ...r.ozet, konu_analizi: [{ ...r.ozet.konu_analizi[0], kanitlar: [] }] } }), refsC],
+    ["steps", (r) => ({ ...r, ozet: { ...r.ozet, calisma_adimlari: [{ ...r.ozet.calisma_adimlari[0], sure_dk: 45 }] } }), refsC],
+    ["steps", (r) => ({ ...r, ozet: { ...r.ozet, calisma_adimlari: [{ ...r.ozet.calisma_adimlari[0], sure_dk: 7.5 }] } }), refsC],
+  ];
+  const got = cases.map(([, make, rs]) => ruleOf(make(realisticC()), rs));
+  check(got.join() === cases.map(([c]) => c).join(), got.join());
+});
+
+Deno.test("D6/B1: per-request schema pins refs, topics and evidence to the payload values", () => {
+  // deno-lint-ignore no-explicit-any
+  const s = gradeSchema(refsA) as any;
+  const g = s.properties.degerlendirmeler.items.properties;
+  check(JSON.stringify(g.ref.enum) === '["M1","M2","M3","M6"]', "only requested refs can be graded");
+  const o = s.properties.ozet.properties;
+  for (const t of [o.guclu_konular.items, o.zayif_konular.items, o.konu_analizi.items.properties.konu, o.calisma_adimlari.items.properties.konu]) {
+    check(JSON.stringify(t.enum) === '["Çevre","Alan","Kesirler"]', JSON.stringify(t));
+  }
+  check(JSON.stringify(o.konu_analizi.items.properties.kanitlar.items.enum) === '["M1","M2","M3","M4","M5","M6"]');
+  // Her nesne düzeyinde tüm alanlar zorunlu ve ek alan yok (structured output sözleşmesi).
+  // deno-lint-ignore no-explicit-any
+  const walk = (n: any): void => {
+    if (n?.type === "object") {
+      check(n.additionalProperties === false && JSON.stringify(n.required) === JSON.stringify(Object.keys(n.properties)));
+      Object.values(n.properties).forEach(walk);
+    }
+    if (n?.type === "array") walk(n.items);
+  };
+  walk(s);
+  // Puanlanacak madde yoksa boş enum (geçersiz şema) yazılmaz.
+  // deno-lint-ignore no-explicit-any
+  const none = gradeSchema(new Map([["M1", { topic: "Kesirler", grade: false }]])) as any;
+  check(!("enum" in none.properties.degerlendirmeler.items.properties.ref));
+  // İstem doğrulayıcının kurallarını açıkça söyler.
+  for (const rule of ["en çok 3 somut eksik", "birebir yaz", "kanitlar yalnız", "sure_dk 5 ile 20", "sinirlar en az 1, en çok 5", "100 üzerinden"]) {
+    check(GRADE_SYSTEM.includes(rule), rule);
+  }
+});
+
+Deno.test("D6/B1: invalid paid grade output is saved uncertain with its rule; no second paid call", async () => {
+  const calls: { name: string; args: Record<string, unknown> }[] = [];
+  let reservations = 0;
+  const db = {
+    rpc: (name: string, args: Record<string, unknown>) => {
+      calls.push({ name, args });
+      if (name === "reserve_ai_operation") {
+        reservations++;
+        // İkinci istek: iş belirsiz kaldığı için rezervasyon yeni ücretli çağrıya izin vermez.
+        return Promise.resolve({ data: reservations === 1 ? { id: "job", lease: "l" } : { error: "ai_result_uncertain" }, error: null });
+      }
+      return Promise.resolve({ data: null, error: null });
+    },
+  } as unknown as SupabaseClient;
+  const bad = realisticC();
+  bad.ozet.konu_analizi[0].kanitlar = ["M1: iki kenar toplandı"];
+  const original = globalThis.fetch;
+  const requests: string[] = [];
+  const responses = [
+    new Response(JSON.stringify({ input_tokens: 900 })),
+    new Response(JSON.stringify({ stop_reason: "end_turn", content: [{ type: "text", text: JSON.stringify(bad) }], usage: { input_tokens: 900, output_tokens: 700 } })),
+  ];
+  globalThis.fetch = (input) => {
+    requests.push(String(input));
+    const next = responses.shift();
+    return next ? Promise.resolve(next) : Promise.reject(Error("unexpected paid call"));
+  };
+  try {
+    const config = { model: "synthetic-model", promptVersion: "test", maxInputTokens: 8000, maxOutputTokens: 4000 };
+    const run = () =>
+      runAiOperation(db, { familyId: "f", userId: "u" }, "grade", "attempt", "k", config, GRADE_SYSTEM, "{}", gradeSchema(refsC), (v) => validateGradeReport(v, refsC));
+    const first = await run();
+    check(first instanceof Response && first.status === 502);
+    const finish = calls.find((c) => c.name === "finish_ai_operation")!.args;
+    check(finish.p_uncertain === true && finish.p_error === "ai_result_invalid_evidence", JSON.stringify(finish));
+    const second = await run();
+    check(second instanceof Response && second.status === 409);
+    check(requests.length === 2, `provider requests ${requests.length}`);
+  } finally {
+    globalThis.fetch = original;
+  }
 });

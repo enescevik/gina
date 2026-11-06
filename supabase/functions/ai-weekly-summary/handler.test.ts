@@ -201,3 +201,42 @@ Deno.test("weekly output rejects invented/duplicate aliases and oversized or ext
   }
   assert(validateOutput(output, ["Çocuk A"]) === output);
 });
+
+Deno.test("D6/B5: a plan without weekly summary gets the upgrade code (402 plan_has_no_ai), not 503 ai_disabled", async () => {
+  const withPlan = (aiWeekly: boolean | null, planError = false) => {
+    const f = fixture();
+    f.state.configResponse = new Response(
+      JSON.stringify({ error: "ai_disabled", code: "ai_disabled" }),
+      { status: 503 },
+    );
+    const db = f.deps.db as unknown as Record<string, unknown>;
+    const reads: string[] = [];
+    db.from = (table: string) => {
+      reads.push(table);
+      const chain = {
+        select: () => chain,
+        eq: () => chain,
+        maybeSingle: async () =>
+          planError
+            ? { data: null, error: { message: "private database error" } }
+            : { data: aiWeekly === null ? null : { ai_weekly: aiWeekly }, error: null },
+      };
+      return chain;
+    };
+    return { f, reads };
+  };
+  const free = withPlan(false);
+  const r = await handleWeeklySummary(request(), free.f.deps);
+  const body = await r.json();
+  assert(r.status === 402, String(r.status));
+  assert(body.code === "plan_has_no_ai" && body.category === "permission_denied", JSON.stringify(body));
+  assert(free.reads.join() === "plans");
+  assert(!free.f.state.key && !free.f.state.run && !free.f.state.calls.includes("prepare_weekly_summary"));
+  // Paket haftalık özeti içeriyorsa (genel AI kapatma / model kapalı) ya da paket okunamazsa asıl 503 korunur.
+  for (const [weekly, err] of [[true, false], [null, false], [false, true]] as const) {
+    const k = withPlan(weekly, err);
+    const res = await handleWeeklySummary(request(), k.f.deps);
+    assert(res.status === 503 && !k.f.state.run, `weekly=${weekly} err=${err} -> ${res.status}`);
+    assert(!(await res.text()).includes("private database error"));
+  }
+});

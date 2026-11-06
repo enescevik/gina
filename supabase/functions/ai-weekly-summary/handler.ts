@@ -107,7 +107,30 @@ export async function handleWeeklySummary(
     return fail("entitlement_failed", 503);
   }
   const config = await (deps.resolve ?? resolveAi)(db, ent.data[0].plan, 2000);
-  if (config instanceof Response) return config;
+  if (config instanceof Response) {
+    // D6/B5: paketi haftalık özeti içermiyorsa (Free) model kapalı olduğu için resolveAi önce `ai_disabled` (503)
+    // döner; istemci "geçici olarak kullanılamıyor" yerine paket yükseltme görmeli → sözleşmedeki 402 plan_has_no_ai.
+    // Paket okuması başarısızsa ya da paket haftalık özeti içeriyorsa (genel AI kapatma) asıl yanıt korunur.
+    if (config.status === 503) {
+      let weekly: unknown = null;
+      try {
+        const plan = await db.from("plans").select("ai_weekly").eq(
+          "code",
+          ent.data[0].plan,
+        ).maybeSingle();
+        weekly = plan.error ? null : plan.data?.ai_weekly;
+      } catch {
+        weekly = null;
+      }
+      if (weekly === false) {
+        return fail("plan_has_no_ai", 402, {
+          details: { plan: ent.data[0].plan },
+          legacy: { plan: ent.data[0].plan },
+        });
+      }
+    }
+    return config;
+  }
   const key = deps.key(config);
   if (key instanceof Response) return key;
   const prepared = await db.rpc("prepare_weekly_summary", {

@@ -1,6 +1,7 @@
 // C04: open-ended answer key extras (alternative correct answers + rubric) stored in
 // question_bank.provenance.rubric by both AI generation and parent-written questions.
 // Only the grading/review payloads read this; it is never sent to the child.
+import { rubricNeedsScaling, scaleRubricTo100 } from "../../../packages/core/src/rubric-scale.ts";
 
 export interface AnswerKeyExtras {
   alternatif_dogru_cevaplar: string[];
@@ -39,15 +40,21 @@ export function answerKeyExtras(
       if (!text || !Number.isFinite(points) || points < 0 || points > 100) {
         return [];
       }
-      return [{ olcut: mask(text), puan: Math.round(points) }];
+      return [{ olcut: mask(text), points }];
     })
     : [];
+  // D6/B3: AI rubriği (ör. toplam 5–6) istemdeki 0–100 puan ölçeğine oranlanır; veli rubriği olduğu gibi kalır.
+  const kept = criteria.slice(0, MAX_ITEMS);
+  const scaled = rubricNeedsScaling(provenance) ? scaleRubricTo100(kept) : kept;
   return {
     alternatif_dogru_cevaplar: [...new Set(alternatives.map(mask))].slice(
       0,
       MAX_ITEMS,
     ),
-    rubrik: criteria.slice(0, MAX_ITEMS),
+    rubrik: scaled.map((c) => ({
+      olcut: c.olcut,
+      puan: Math.round(c.points),
+    })),
   };
 }
 

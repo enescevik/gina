@@ -52,3 +52,16 @@ Deno.test("answer key: list sizes are bounded", () => {
   assertEquals(extras.alternatif_dogru_cevaplar.length, 10);
   assertEquals(ANSWER_KEY_RULE.includes("alternatif_dogru_cevaplar"), true);
 });
+
+Deno.test("D6/B3: AI rubric (D5 real shape, total 5) reaches the grader on the 0–100 scale; parent rubric unchanged", () => {
+  const rubric = {
+    criteria: [{ text: "Ölçüm aracını adlandırır", points: 2 }, { text: "Birimi yazar", points: 2 }, { text: "Gerekçe verir", points: 1 }],
+    alternative_answers: ["dinamometre ile"],
+  };
+  assertEquals(answerKeyExtras({ generator: "ai", rubric }).rubrik.map((c) => c.puan), [40, 40, 20]);
+  assertEquals(answerKeyExtras({ generator: "parent", rubric }).rubrik.map((c) => c.puan), [2, 2, 1]);
+  assertEquals(
+    answerKeyExtras({ generator: "parent", rubric: { criteria: [{ text: "a", points: 40 }, { text: "b", points: 60 }], alternative_answers: [] } }).rubrik.map((c) => c.puan),
+    [40, 60],
+  );
+});

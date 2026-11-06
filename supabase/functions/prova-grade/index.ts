@@ -2,7 +2,7 @@ import { fail, sanitizedCode } from "../_shared/error-contract.ts";
 import { aiGradableOpenAnswer, needsNotebookReview } from "../_shared/answer-notebook.ts";
 import { questionImages } from "../_shared/question-images.ts";
 import { runAiOperation } from "../_shared/ai-operation.ts";
-import { GRADE_SCHEMA, GRADE_SYSTEM, validateGradeReport } from "../_shared/grade-report.ts";
+import { GRADE_SYSTEM, gradeSchema, validateGradeReport } from "../_shared/grade-report.ts";
 import { answerKeyExtras } from "../_shared/answer-key.ts";
 // Prova açık uçlu cevap değerlendirmesi (AI). Veli deneme inceleme ekranından çağırır; çocuk asla çağırmaz.
 // Deploy: `supabase functions deploy prova-grade` (verify_jwt açık kalır).
@@ -14,7 +14,8 @@ import { answerKeyExtras } from "../_shared/answer-key.ts";
 import { json, preflight, serviceClient } from "../_shared/supabase.ts";
 import { apiKeyOrResponse, logUsage, parentOrResponse, provaEntitlement, resolveAi } from "../_shared/prova.ts";
 
-const PROMPT_VERSION = "prova-grade/v3-answer-key";
+// D6/B1: v4 — istek başına enum şeması (ref/konu/kanıt) ve doğrulayıcıyla hizalı istem kuralları.
+const PROMPT_VERSION = "prova-grade/v4-grade-contract";
 
 function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -107,7 +108,7 @@ Deno.serve(async (req) => {
   try { images = await questionImages(db,parent.familyId,parent.userId,attemptId,questionIds,imageConsent); }
   catch (e) { return fail(sanitizedCode(e instanceof Error ? e.message : "", /^(data_failed|source_ai_consent_required|source_ai_limit)$/, "data_failed"), 400); }
   const result = await runAiOperation(db, parent, "grade", attemptId, apiKey, ai,
-    GRADE_SYSTEM, images.length ? [{type:"text",text:JSON.stringify(payload)},...images] : JSON.stringify(payload), GRADE_SCHEMA, value => validateGradeReport(value, refs), attempt.child_id);
+    GRADE_SYSTEM, images.length ? [{type:"text",text:JSON.stringify(payload)},...images] : JSON.stringify(payload), gradeSchema(refs), value => validateGradeReport(value, refs), attempt.child_id);
   if (result instanceof Response) return result;
 
   const grades = (result.output.degerlendirmeler ?? [])
