@@ -76,7 +76,8 @@ const ok = (name) => { checks[name] = true; };
     const table = p.locator('table.table').first();
     await table.waitFor();
     const text = await table.innerText();
-    for (const label of ['Doğru / Yanlış', 'Boşluk doldurma', 'Eşleştirme', 'Sayısal cevap', 'Sıralama', 'Sınıflandırma', 'Çoktan seçmeli']) {
+    for (const label of ['Doğru / Yanlış', 'Boşluk doldurma', 'Eşleştirme', 'Sayısal cevap', 'Sıralama', 'Sınıflandırma', 'Çoktan seçmeli',
+      'Metinde işaretleme', 'Hata bulma ve düzeltme', 'Birden çok doğru', 'İki aşamalı', 'Bölge boyama', 'Saat']) {
       assert.ok(text.includes(label), 'type label missing: ' + label);
     }
     assert.ok(text.includes('3 ifade'), 'structured summary missing');
@@ -86,7 +87,7 @@ const ok = (name) => { checks[name] = true; };
     stage = 'filter_' + size;
     const only = async (value, label) => {
       await p.getByRole('combobox', { name: 'Tür' }).selectOption(value);
-      await p.getByText(value ? '1 soru' : '7 soru', { exact: true }).waitFor();
+      await p.getByText(value ? '1 soru' : `${f.total} soru`, { exact: true }).waitFor();
       const rows = p.locator('table.table tbody tr');
       if (value) {
         await rows.filter({ hasText: label }).first().waitFor();
@@ -101,7 +102,9 @@ const ok = (name) => { checks[name] = true; };
     await only('', null);
 
     stage = 'preview_' + size;
-    for (const [type, keyText] of [['Eşleştirme', 'Kanı pompalar'], ['Sıralama', 'Kedi → süt → içti.'], ['Doğru / Yanlış', 'Yanlış']]) {
+    for (const [type, keyText] of [['Eşleştirme', 'Kanı pompalar'], ['Sıralama', 'Kedi → süt → içti.'], ['Doğru / Yanlış', 'Yanlış'],
+      ['Metinde işaretleme', 'koştu, zıpladı'], ['Hata bulma ve düzeltme', 'herkes'], ['Birden çok doğru', 'Elma, Muz'], ['İki aşamalı', 'Soğuyan su buza dönüşür.'],
+      ['Bölge boyama', '3 / 4'], ['Saat', '03:15']]) {
       const row = p.locator('table.table tbody tr').filter({ hasText: type });
       await row.getByRole('button', { name: 'Düzenle' }).click();
       const preview = p.getByTestId('structured-preview');
@@ -113,9 +116,15 @@ const ok = (name) => { checks[name] = true; };
       assert.ok(!student.includes('ÇÖZÜM-GİZLİ'), 'solution leaked into student preview');
       assert.equal(await p.locator('#q-stem').count(), 0, 'structured stem must not be editable');
       ok(`preview_${type}_${size}`);
-      if (type === 'Eşleştirme') {
+      const shots = { 'Eşleştirme': '02-structured-preview-matching', 'Birden çok doğru': '03-multi-choice-bar-chart-stimulus', 'İki aşamalı': '04-two-stage',
+        'Bölge boyama': '05-region-select-grid', 'Hata bulma ve düzeltme': '06-error-fix' };
+      if (type === 'Birden çok doğru') {
+        assert.ok(await preview.getByTestId('stimulus-preview').isVisible(), 'stimulus rendered');
+        assert.match(await preview.getByTestId('stimulus-preview').innerText(), /Alternatif metin: Sütun grafiği/);
+      }
+      if (shots[type]) {
         await preview.scrollIntoViewIfNeeded();
-        await shot(`${size}-02-structured-preview-matching`);
+        await shot(`${size}-${shots[type]}`);
       }
       await p.getByRole('button', { name: 'Kapat' }).click();
     }
@@ -130,7 +139,7 @@ const ok = (name) => { checks[name] = true; };
   await p.getByText('Kaydedildi', { exact: false }).first().waitFor();
   ok('structured_meta_save_keeps_content_hash_valid');
 
-  assert.ok(keyCalls.length >= 6, 'answer keys read through get_question_answer_keys');
+  assert.ok(keyCalls.length >= 18, 'answer keys read through get_question_answer_keys');
   ok('keys_read_via_rpc_only');
   assert.deepEqual(errors, []);
   ok('no_page_errors');

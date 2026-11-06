@@ -1,4 +1,12 @@
-import { isStructuredType, questionContentErrors, type StructuredInteractionType } from "@gina/core";
+import {
+  isPhase2aType,
+  isPhase2bType,
+  isStructuredType,
+  questionContentErrors,
+  type Phase2aInteractionType,
+  type Phase2bInteractionType,
+  type StructuredInteractionType,
+} from "@gina/core";
 import { useEffect, useState } from "react";
 
 import { adminRpc } from "@/lib/admin-rpc";
@@ -14,6 +22,9 @@ const isObj = (v: unknown): v is Obj => !!v && typeof v === "object" && !Array.i
 const list = (v: unknown): Obj[] => (Array.isArray(v) ? v.filter(isObj) : []);
 const text = (v: unknown) => (typeof v === "string" ? v : "");
 const s = t.questions.structured;
+/** Önizlemesi olan türler: 1A/1B + Faz 2A + Faz 2B. Diğerleri (ör. bulmaca) ham JSON ile gösterilir. */
+type PreviewType = StructuredInteractionType | Phase2aInteractionType | Phase2bInteractionType;
+const isPreviewType = (v: unknown): v is PreviewType => typeof v === "string" && (isStructuredType(v) || isPhase2aType(v) || isPhase2bType(v));
 
 export function typeLabel(kind: string, interactionType: string | null | undefined): string {
   const type = interactionType ?? kind;
@@ -21,16 +32,23 @@ export function typeLabel(kind: string, interactionType: string | null | undefin
 }
 /** Listede kısa özet: "3 ifade", "2 boşluk" … */
 export function structuredSummary(interactionType: string | null | undefined, payload: unknown): string {
-  if (!isStructuredType(interactionType) || !isObj(payload)) return "";
-  const n = {
+  if (!isPreviewType(interactionType) || !isObj(payload)) return "";
+  const n: Record<PreviewType, number> = {
     true_false: list(payload.statements).length,
     fill_blank: list(payload.segments).filter((x) => x.type === "blank").length,
     matching: list(payload.left).length,
     numeric: 1,
     ordering: list(payload.items).length,
     classification: list(payload.items).length,
-  }[interactionType];
-  return interactionType === "numeric" ? s.summary.numeric ?? "" : `${n} ${s.summary[interactionType] ?? ""}`;
+    mark_text: list(payload.segments).filter((x) => typeof x.id === "string").length,
+    error_fix: list(payload.segments).filter((x) => typeof x.id === "string").length,
+    multi_choice: list(payload.options).length,
+    two_stage: 2,
+    region_select: list(payload.regions).length,
+    clock: 1,
+  };
+  const base = interactionType === "numeric" || interactionType === "clock" ? s.summary[interactionType] ?? "" : `${n[interactionType]} ${s.summary[interactionType] ?? ""}`;
+  return isObj(payload.stimulus) ? `${base} · ${s.stimulusKind[text(payload.stimulus.kind)] ?? ""}` : base;
 }
 
 export type AnswerKeyRow = { question_id: string; interaction_type: string; schema_version: number; key: unknown; policy: string; policy_version: number; points: number };
@@ -42,8 +60,129 @@ const Chip = ({ children }: { children: React.ReactNode }) => (
   <span className="mr-1 inline-block rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs text-slate-600">{children}</span>
 );
 
-function PayloadView({ type, p }: { type: StructuredInteractionType; p: Obj }) {
+function StimulusView({ st }: { st: Obj }) {
+  return (
+    <figure className="mb-3 rounded border border-slate-200 bg-slate-50 p-2 text-sm" data-testid="stimulus-preview">
+      {st.caption ? <figcaption className="mb-1 font-semibold">{text(st.caption)}</figcaption> : null}
+      {st.kind === "table" ? (
+        <table className="table">
+          <thead>
+            <tr>{(Array.isArray(st.columns) ? st.columns : []).map((c, i) => <th key={i}>{String(c)}</th>)}</tr>
+          </thead>
+          <tbody>
+            {(Array.isArray(st.rows) ? st.rows : []).map((r, i) => (
+              <tr key={i}>{(Array.isArray(r) ? r : []).map((c, j) => <td key={j}>{String(c)}</td>)}</tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <ul className="space-y-1">
+          {list(st.bars).map((b, i) => {
+            const max = Math.max(1, ...list(st.bars).map((x) => Number(x.value) || 0));
+            return (
+              <li key={i} className="flex items-center gap-2">
+                <span className="w-24 shrink-0 truncate">{text(b.label)}</span>
+                <span className="h-3 rounded bg-brand" style={{ width: `${(100 * (Number(b.value) || 0)) / max}%`, maxWidth: "60%" }} />
+                <span className="text-xs">{String(b.value)}{st.unit ? ` ${text(st.unit)}` : ""}</span>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      <p className="mt-1 text-xs text-slate-500">{s.alt}: {text(st.alt)}</p>
+    </figure>
+  );
+}
+const Options = ({ items }: { items: unknown }) => (
+  <ul className="space-y-1">
+    {list(items).map((x) => (
+      <li key={text(x.id)} className="rounded border border-slate-200 px-2 py-1">
+        <Chip>{text(x.id)}</Chip>
+        {text(x.text)}
+      </li>
+    ))}
+  </ul>
+);
+const Segments = ({ p }: { p: Obj }) => (
+  <p className="leading-8">
+    {list(p.segments).map((g, i) =>
+      typeof g.id === "string" ? (
+        <span key={i} className="rounded border-b-2 border-dotted border-brand px-0.5" title={g.id}>{text(g.text)}</span>
+      ) : (
+        <span key={i}>{text(g.text)}</span>
+      ),
+    )}
+  </p>
+);
+
+function PayloadView({ type, p }: { type: PreviewType; p: Obj }) {
+  const stimulus = isObj(p.stimulus) ? <StimulusView st={p.stimulus} /> : null;
+  return (
+    <>
+      {stimulus}
+      <PayloadBody type={type} p={p} />
+    </>
+  );
+}
+function PayloadBody({ type, p }: { type: PreviewType; p: Obj }) {
   switch (type) {
+    case "mark_text":
+    case "error_fix":
+      return (
+        <div>
+          <p className="mb-1 text-xs text-slate-500">
+            {s.unit[text(p.unit)] ?? text(p.unit)}
+            {typeof p.max_select === "number" ? ` · ${s.maxSelect} ${p.max_select}` : ""}
+          </p>
+          <Segments p={p} />
+        </div>
+      );
+    case "multi_choice":
+      return (
+        <div>
+          <p className="mb-1 text-xs text-slate-500">{typeof p.select_count === "number" ? `${s.selectCount}: ${p.select_count}` : s.selectCountHidden}</p>
+          <Options items={p.options} />
+        </div>
+      );
+    case "two_stage": {
+      const s1 = isObj(p.stage1) ? p.stage1 : {}, s2 = isObj(p.stage2) ? p.stage2 : {};
+      return (
+        <div className="space-y-2">
+          <p className="label">1 · {text(s1.prompt)}</p>
+          <Options items={s1.options} />
+          <p className="label">2 · {text(s2.prompt)} <span className="text-xs font-normal text-slate-500">({s.stageMode[text(s2.mode)] ?? text(s2.mode)})</span></p>
+          {s2.mode === "choice" ? <Options items={s2.options} /> : null}
+        </div>
+      );
+    }
+    case "region_select": {
+      const f = isObj(p.figure) ? p.figure : {};
+      const regions = list(p.regions);
+      return (
+        <div>
+          <p className="mb-1 text-xs text-slate-500">
+            {s.figure[text(f.kind)] ?? text(f.kind)}
+            {f.kind === "grid" ? ` ${String(f.rows)}×${String(f.cols)}` : ""}
+            {typeof p.max_select === "number" ? ` · ${s.maxSelect} ${p.max_select}` : ""}
+          </p>
+          <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${f.kind === "grid" && typeof f.cols === "number" ? f.cols : Math.min(6, regions.length)}, minmax(0, 1fr))` }}>
+            {regions.map((r) => (
+              <div key={text(r.id)} className="rounded border border-slate-300 p-1 text-center text-xs">
+                <Chip>{text(r.id)}</Chip>
+                {text(r.text)}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+    case "clock":
+      return (
+        <p>
+          {s.clockMode[text(p.mode)] ?? text(p.mode)} · {s.clockDisplay[text(p.display)] ?? text(p.display)} · {s.step} {String(p.step_minutes)} {s.minutes}
+          {p.shown_time ? <span className="ml-2 rounded bg-slate-100 px-2 font-mono">{text(p.shown_time)}</span> : null}
+        </p>
+      );
     case "true_false":
       return (
         <ol className="list-decimal space-y-1 pl-5">
@@ -160,7 +299,7 @@ function PayloadView({ type, p }: { type: StructuredInteractionType; p: Obj }) {
   }
 }
 
-function KeyView({ type, p, k }: { type: StructuredInteractionType; p: Obj; k: Obj }) {
+function KeyView({ type, p, k }: { type: PreviewType; p: Obj; k: Obj }) {
   const label = (arr: unknown, id: unknown) => text(list(arr).find((x) => x.id === id)?.text) || text(id);
   const rows: [string, string][] = [];
   if (type === "true_false" && isObj(k.answers)) {
@@ -184,6 +323,24 @@ function KeyView({ type, p, k }: { type: StructuredInteractionType; p: Obj; k: O
     k.orders.forEach((o, i) => rows.push([`${s.orders} ${i + 1}`, Array.isArray(o) ? o.map((x) => label(p.items, x)).join(" → ") : String(o)]));
   } else if (type === "classification" && isObj(k.membership)) {
     for (const [i, c] of Object.entries(k.membership)) rows.push([label(p.items, i), label(p.categories, c)]);
+  } else if (type === "mark_text" && Array.isArray(k.targets)) {
+    rows.push([s.targets, k.targets.map((x) => label(p.segments, x)).join(", ")]);
+  } else if (type === "error_fix" && isObj(k.errors)) {
+    for (const [id, v] of Object.entries(k.errors)) rows.push([label(p.segments, id), (isObj(v) && Array.isArray(v.accepted) ? v.accepted.map(String) : []).join(" | ")]);
+    rows.push([s.fixPolicy, text(k.fix_policy) || "review_unmatched"]);
+    if (typeof k.find_weight === "number") rows.push([s.findWeight, String(k.find_weight)]);
+    if (k.case_insensitive) rows.push([s.caseInsensitive, "✓"]);
+  } else if (type === "multi_choice" && Array.isArray(k.correct)) {
+    rows.push([s.correct, k.correct.map((x) => label(p.options, x)).join(", ")]);
+  } else if (type === "two_stage") {
+    rows.push(["1", label(isObj(p.stage1) ? p.stage1.options : [], k.stage1)]);
+    rows.push(["2", k.stage2 === undefined ? s.parentScores : label(isObj(p.stage2) ? p.stage2.options : [], k.stage2)]);
+  } else if (type === "region_select") {
+    if (typeof k.count === "number") rows.push([s.regionCount, `${k.count} / ${list(p.regions).length}`]);
+    if (Array.isArray(k.targets)) rows.push([s.targets, k.targets.map((x) => label(p.regions, x)).join(", ")]);
+  } else if (type === "clock") {
+    rows.push([s.value, text(k.time)]);
+    if (k.accept_12h) rows.push([s.accept12h, "✓"]);
   }
   if (isObj(k.weights)) rows.push([s.weights, Object.entries(k.weights).map(([id, w]) => `${id}: ${String(w)}`).join(", ")]);
   if (!rows.length) return <pre className="overflow-x-auto text-xs">{JSON.stringify(k, null, 2)}</pre>;
@@ -228,7 +385,7 @@ export function StructuredQuestionPreview({
     };
   }, [questionId]);
 
-  const known = isStructuredType(interactionType) && isObj(payload);
+  const known = isPreviewType(interactionType) && isObj(payload);
   const errors = key.row && interactionType ? questionContentErrors(interactionType, payload, key.row.key, schemaVersion ?? 1) : null;
   return (
     <div className="grid gap-3 md:col-span-2 md:grid-cols-2" data-testid="structured-preview">
