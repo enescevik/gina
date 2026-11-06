@@ -22,6 +22,19 @@ function statusOf(o: { revoked_at: string | null; starts_at: string; ends_at: st
 }
 
 type FamilyMatch = FamilySearchRow;
+type AuditRow = { id: number; action: string; actor_id: string | null; target_id: string | null; family_id: string | null; reason: string | null; created_at: string };
+type AuditPage = { rows: AuditRow[]; hasMore: boolean };
+const AUDIT_PAGE = 30;
+/** `audit_log.id` kimlik sütunudur (ekleme sırası); `id < before` ile kesişimsiz sonraki sayfa. Bir fazla satır "daha var" demektir. */
+async function loadAuditPage(before: number | null): Promise<AuditPage> {
+  let q = supabase()
+    .from("audit_log")
+    .select("id, action, actor_id, target_id, family_id, reason, created_at")
+    .eq("target_table", "entitlement_overrides");
+  if (before !== null) q = q.lt("id", before);
+  const rows = unwrap(await q.order("id", { ascending: false }).limit(AUDIT_PAGE + 1)) as AuditRow[];
+  return { rows: rows.slice(0, AUDIT_PAGE), hasMore: rows.length > AUDIT_PAGE };
+}
 const uuidLike = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /** Aile seçimi `admin_families_search` ile; seçilen aile sabit bağlam olur, önizleme adı/üye sayısını sunucudan gösterir. */
@@ -94,16 +107,25 @@ function OverridesEditor({ user }: { user:string }) {
     async () => unwrap(await supabase().rpc("admin_list_overrides", { p_include_inactive: showInactive })),
     [showInactive],
   );
-  const audit = useAdminQuery(async () =>
-    unwrap(
-      await supabase()
-        .from("audit_log")
-        .select("id, action, actor_id, target_id, family_id, reason, created_at")
-        .eq("target_table", "entitlement_overrides")
-        .order("created_at", { ascending: false })
-        .limit(30),
-    ),
-  );
+  const audit = useAdminQuery(() => loadAuditPage(null));
+  // D11 (A3 P2, B01): geçmiş 30 kayıtla sınırlı değil. Kimlik (identity) sırasıyla keyset; ilk sayfa yenilenince eski sayfalar düşer.
+  const [older, setOlder] = useState<{ base: AuditPage; rows: AuditRow[]; hasMore: boolean } | null>(null);
+  const [olderBusy, setOlderBusy] = useState(false);
+  const [olderError, setOlderError] = useState(false);
+  const olderRows = older && older.base === audit.data ? older : null;
+  const auditRows = audit.data ? [...audit.data.rows, ...(olderRows?.rows ?? [])] : null;
+  const auditHasMore = olderRows ? olderRows.hasMore : !!audit.data?.hasMore;
+  async function loadOlder() {
+    const base = audit.data, last = auditRows?.[auditRows.length - 1];
+    if (!base || !last || olderBusy) return;
+    setOlderBusy(true); setOlderError(false);
+    try {
+      const page = await loadAuditPage(last.id);
+      setOlder({ base, rows: [...(olderRows?.rows ?? []), ...page.rows], hasMore: page.hasMore });
+    } catch { setOlderError(true); }
+    finally { setOlderBusy(false); }
+  }
+  const actorName = (id: string | null) => id === null ? t.overrides.actorSystem : id === user ? t.overrides.actorSelf : t.overrides.actorOther;
 
   const queue = useMemo(() => overrideQueue(user), [user]);
   const [pending,setPending] = useState<OverrideCommand|null>(null);
@@ -255,12 +277,16 @@ function OverridesEditor({ user }: { user:string }) {
 
       <Card title={t.overrides.auditTitle}>
         {audit.error ? <Notice tone="error">İşlem geçmişi yüklenemedi.</Notice> : null}
-        {!audit.data ? (
+        {!auditRows ? (
           <p className="text-slate-500">{t.common.loading}</p>
-        ) : audit.data.length === 0 ? (
+        ) : auditRows.length === 0 ? (
           <p className="text-sm text-slate-500">{t.overrides.empty}</p>
         ) : (
-          <div className="overflow-x-auto"><table className="table">
+          <>
+          <p className="mb-2 text-sm text-slate-600" role="status" data-testid="override-audit-status">
+            {t.overrides.auditShown(String(auditRows.length))} {t.overrides.actorEmailNote}
+          </p>
+          <div className="overflow-x-auto"><table className="table" data-testid="override-audit">
             <thead>
               <tr>
                 <th>{t.overrides.when}</th>
@@ -270,16 +296,31 @@ function OverridesEditor({ user }: { user:string }) {
               </tr>
             </thead>
             <tbody>
-              {audit.data.map((a) => (
+              {auditRows.map((a) => (
                 <tr key={a.id}>
                   <td className="whitespace-nowrap">{fmtDateTime(a.created_at)}</td>
                   <td className="font-mono text-xs">{a.action === "entitlement_overrides.insert" ? "Hak verildi" : a.action === "entitlement_overrides.expire" ? "Hak sonlandırıldı" : a.action === "entitlement_overrides.update" ? "Hak güncellendi" : a.action}</td>
                   <td>{a.reason ?? t.common.none}</td>
-                  <td className="font-mono text-xs text-slate-500">{a.actor_id ?? "service_role"}</td>
+                  <td className="text-sm" data-testid="override-audit-actor">
+                    <span className="font-medium text-slate-800">{actorName(a.actor_id)}</span>
+                    {a.actor_id && a.actor_id !== user ? (
+                      <details className="text-xs text-slate-500">
+                        <summary className="cursor-pointer">{t.overrides.actorIdLabel}</summary>
+                        <code className="break-all">{a.actor_id}</code>
+                      </details>
+                    ) : null}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table></div>
+          {olderError ? <Notice tone="error">{t.overrides.auditPageError}</Notice> : null}
+          {auditHasMore ? (
+            <button className="btn-secondary mt-4" disabled={olderBusy} onClick={() => void loadOlder()}>
+              {olderBusy ? t.common.loading : t.overrides.auditMore}
+            </button>
+          ) : <p className="mt-2 text-xs text-slate-500">{t.overrides.auditEnd}</p>}
+          </>
         )}
       </Card>
     </Layout>
