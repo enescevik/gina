@@ -23,7 +23,7 @@ Hesap veya profil silme, verileri görüntüleme ve düzeltme ve eşleştirme ip
 
 | Kanal | Nasıl | Not |
 |---|---|---|
-| Uygulama içi form | Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu | Oturumunuz kimliğinizi doğrular; çocuk modundan ve eşleştirilmiş tabletten erişilemez. Giriş yapamayanlar için web formu ([WEB ADRESİ]/legal/kvkk-basvuru-formu) kayıtlı e-postaya gönderilen doğrulama bağlantısıyla onaylanır. [ÜRÜN KARARI: web formu v1'de yoksa kaldırılır] |
+| Uygulama içi form | Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (bu ekran uygulamada henüz yoktur; şu an uygulama içinden Yardım > destek talebi açılabilir) | Oturumunuz kimliğinizi doğrular; çocuk modundan ve eşleştirilmiş tabletten erişilemez. Giriş yapamayanlar için web formu ([WEB ADRESİ]/legal/kvkk-basvuru-formu) kayıtlı e-postaya gönderilen doğrulama bağlantısıyla onaylanır. [ÜRÜN KARARI: web formu v1'de yoksa kaldırılır] |
 | E-posta | Hesabınızda kayıtlı adresten [E-POSTA] adresine | Tebliğ gereği yalnızca sistemimizde kayıtlı adresten gelen e-posta geçerlidir; hesabı olmayanlar Bölüm 3'teki bilgileri ekler. |
 | Posta | [VERİ SORUMLUSU UNVANI], [ADRES] adresine ıslak imzalı dilekçe | Zarfın üzerine "KVKK Başvurusu" yazın. |
 | KEP, güvenli e-imza, mobil imza | [KEP ADRESİ – varsa; yoksa satır kaldırılır] | — |
@@ -71,10 +71,10 @@ Uygulama içi form aynı alanları içerir; posta veya e-posta başvurusunda bu 
 | Hak | Ne yaparız |
 |---|---|
 | (a) işlenip işlenmediğini öğrenme; (b) bilgi ve kopya isteme; (c) amaç ve amaca uygun kullanım | Hesabınızla sınırlı sorgu; verilerinizin okunabilir kopyası (uygulamada dışa aktarma özelliği yoktur) [ÜRÜN KARARI: dosya biçimi]; amaç ve hukuki sebepler Aydınlatma Metni Bölüm 5'e göre. |
-| (ç) aktarılan üçüncü kişileri bilme | Aydınlatma Metni Bölüm 6–7'deki alıcılar; Anthropic (ABD) yalnızca yapay zekâ özelliğini açtıysanız. |
+| (ç) aktarılan üçüncü kişileri bilme | Aydınlatma Metni Bölüm 6–7'deki alıcılar; Anthropic (ABD) yalnızca bir yapay zekâ işlemine onay verdiyseniz (onay her işlemde ayrı alınır). |
 | (d) düzeltme; (e) silme veya yok etme | Uygulama içinden düzeltemediğiniz verileri biz düzeltiriz. Silme KVKK m.7 ve Silme Yönetmeliği m.12'ye göre: işleme şartları kalkmışsa hesap/profil silme akışı çalışır, yedekler [30 gün] içinde temizlenir. Yasal nedenle tutulanlar (satın alma kayıtları [10 yıl], güvenlik günlükleri [12 ay], rıza/beyan ve başvuru kayıtları [3 yıl]) yanıtta gerekçesiyle belirtilir. |
 | (f) düzeltme ve silmenin alıcılara bildirilmesi | Bildirim belirteci kaydımız silinir (Expo kullanılmaz; APNs/FCM geçersiz belirteci gönderimde bildirir). Apple ile Giriş belirtecinin iptali ve Anthropic'e silme talebi iletimi uygulamada henüz yoktur (uygulama denetimi 6 Kasım 2026); süreç uzmanla birlikte belirlenmelidir. Anthropic'teki girdiler kural olarak 30 gün içinde silinir; ihlal şüphesiyle işaretlenen içerik 2 yıla kadar tutulabilir; kullandığımız modellerde 30 günlük saklama zorunludur, kısaltamayız. Gina'daki özetler (en çok 12 ay) silinir. |
-| (g) otomatik analize itiraz | Yapay zekâ çıktıları hukuki sonuç doğuran otomatik karar üretmez; itirazda çıktılar silinir ve özellik kapatılır. |
+| (g) otomatik analize itiraz | Yapay zekâ çıktıları hukuki sonuç doğuran otomatik karar üretmez; itirazda ilgili çıktılar silinir. Aile için ayrı bir yapay zekâ kapatma anahtarı olmadığından yeni işlemler, onay verilmeyerek durdurulur. [ÜRÜN KARARI: itiraz eden aile için yapay zekâ işlemlerinin sunucuda kapatılması] |
 | (ğ) zararın giderilmesi | Talep kaydedilir ve avukata iletilir; tazminat hakkınız saklıdır. |
 
 ## 8. İç prosedür özeti
@@ -101,6 +101,7 @@ Başvuru, ekleri ve yanıtımız ispat amacıyla talebin kapanmasından itibaren
 | 0.2 (C11 teknik düzeltme) | 2026-11-06 | Durum satırı: uzman onayı yok; uygulama içi ve web KVKK formlarının henüz olmadığı yazıldı; yapay zekâ onayının işlem bazlı olduğu düzeltildi. |
 | 0.2 | 2026-10-30 | Belge seti tutarlılık kontrolü: ilgili belgeler listesine Abonelik Koşulları ve Çerez Politikası bağlantıları eklendi. İçerik değişmedi. |
 | 0.2 (D18 İngilizce sürüm) | 2026-11-06 | Belgenin sonuna güncel Türkçe metinden çevrilen bilgi amaçlı İngilizce bölüm eklendi; Türkçe metnin içeriği değiştirilmedi. Hukuk uzmanı onayı yoktur. Ayrıntı: `docs/release/d18-2026-11-06/README.md`. |
+| 0.2 (D19 tutarlılık düzeltmesi) | 2026-11-06 | Koddan doğrulanan davranışa göre (TR ve EN birlikte): §2 tablosunda uygulama içi KVKK Başvurusu ekranının henüz olmadığı notu; §7 (ç) ve (g) işlem bazlı yapay zekâ onayına göre ("özelliği açtıysanız", "özellik kapatılır" ifadeleri düzeltildi; aile bazlı kapatma [ÜRÜN KARARI] olarak işaretlendi). Hukuk uzmanı onayı yoktur. Ayrıntı: `docs/release/d19-2026-11-06/README.md`. |
 
 ---
 
@@ -129,7 +130,7 @@ No request is needed to delete an account or profile, to view and correct data o
 
 | Channel | How | Note |
 |---|---|---|
-| In-app form | Settings > Privacy and Legal > Data Subject Request | Your session verifies your identity; not accessible from child mode or a paired tablet. For those who cannot sign in, the web form ([WEB ADRESİ]/legal/kvkk-basvuru-formu) is confirmed with a verification link sent to the registered email. [ÜRÜN KARARI: web formu v1'de yoksa kaldırılır] (Product decision: removed if there is no web form in v1.) |
+| In-app form | Settings > Privacy and Legal > Data Subject Request (this screen does not exist in the app yet; at present you can open a support request from Help in the app) | Your session verifies your identity; not accessible from child mode or a paired tablet. For those who cannot sign in, the web form ([WEB ADRESİ]/legal/kvkk-basvuru-formu) is confirmed with a verification link sent to the registered email. [ÜRÜN KARARI: web formu v1'de yoksa kaldırılır] (Product decision: removed if there is no web form in v1.) |
 | Email | From the address registered to your account to [E-POSTA] | Under the Communiqué, only email from an address registered in our system is valid; those without an account add the information in Section 3. |
 | Post | Petition with wet signature to [VERİ SORUMLUSU UNVANI], [ADRES] | Write "KVKK Başvurusu" (KVKK request) on the envelope. |
 | KEP, secure e-signature, mobile signature | [KEP ADRESİ – varsa; yoksa satır kaldırılır] (KEP address if any; otherwise the row is removed) | — |
@@ -177,10 +178,10 @@ The in-app form contains the same fields; for a request by post or email, use th
 | Right | What we do |
 |---|---|
 | (a) learn whether data is processed; (b) request information and a copy; (c) purpose and use in line with the purpose | A query limited to your account; a readable copy of your data (the app has no export feature) [ÜRÜN KARARI: dosya biçimi] (product decision: file format); purposes and legal bases according to Privacy Notice Section 5. |
-| (ç) know the third parties to whom data is transferred | The recipients in Privacy Notice Sections 6–7; Anthropic (USA) only if you turned on the AI feature. |
+| (ç) know the third parties to whom data is transferred | The recipients in Privacy Notice Sections 6–7; Anthropic (USA) only if you confirmed an AI operation (confirmation is asked separately for each operation). |
 | (d) rectification; (e) erasure or destruction | We correct data you cannot correct from within the app. Erasure under KVKK Art. 7 and Art. 12 of the Deletion Regulation: if the processing conditions no longer exist, the account/profile deletion flow runs and backups are purged within [30 gün] (30 days). Records kept for legal reasons (purchase records [10 yıl] (10 years), security logs [12 ay] (12 months), consent/declaration and request records [3 yıl] (3 years)) are stated in the reply with the reasons. |
 | (f) notifying recipients of rectification and erasure | Our notification token record is deleted (Expo is not used; APNs/FCM report an invalid token during sending). Revocation of the Sign in with Apple token and forwarding a deletion request to Anthropic do not exist in the app yet (app audit 6 November 2026); the process must be set with an expert. Inputs at Anthropic are, as a rule, deleted within 30 days; content flagged on suspicion of a violation may be kept for up to 2 years; for the models we use, the 30-day retention is mandatory and we cannot shorten it. Summaries in Gina (at most 12 months) are deleted. |
-| (g) objecting to automated analysis | AI outputs do not produce automated decisions with legal effect; on objection the outputs are deleted and the feature is turned off. |
+| (g) objecting to automated analysis | AI outputs do not produce automated decisions with legal effect; on objection the related outputs are deleted. As there is no separate AI off switch for a family, new operations are stopped by not confirming them. [ÜRÜN KARARI: itiraz eden aile için yapay zekâ işlemlerinin sunucuda kapatılması] (Product decision: turning off AI operations on the server for a family that objects.) |
 | (ğ) compensation for damage | The request is recorded and passed to a lawyer; your right to compensation is reserved. |
 
 ## 8. Summary of the internal procedure
@@ -207,3 +208,4 @@ The request, its attachments and our reply are kept for evidence for [3 yıl] (3
 | 0.2 (C11 technical correction) | 6 November 2026 | Status row: no expert approval; noted that the in-app and web KVKK forms do not exist yet; corrected that AI confirmation is per operation. |
 | 0.2 | 30 October 2026 | Consistency check across the document set: Subscription Terms and Cookie Policy links added to the list of related documents. Content unchanged. |
 | 0.2 (D18 English version) | 6 November 2026 | This English section added, translated from the current Turkish text; the content of the Turkish text was not changed. No legal expert approval. Details: `docs/release/d18-2026-11-06/README.md`. |
+| 0.2 (D19 consistency correction) | 6 November 2026 | Following behaviour verified in the code (TR and EN together): note in the §2 table that the in-app Data Subject Request screen does not exist yet; §7 (ç) and (g) follow per-operation AI confirmation ("if you turned on the feature" and "the feature is turned off" corrected; family-level switch-off marked as [ÜRÜN KARARI]). No legal expert approval. Details: `docs/release/d19-2026-11-06/README.md`. |
