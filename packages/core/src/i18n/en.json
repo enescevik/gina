@@ -370,6 +370,7 @@
   "prova.qt.child.fill.wordUsed": "used",
   "prova.qt.child.fill.placeIn": "Where does “{{word}}” go? Tap a gap.",
   "prova.qt.child.fill.pickWord": "Tap a word for gap {{n}}.",
+  "prova.qt.child.fill.placed": "“{{word}}” is in gap {{n}} now.",
   "prova.qt.child.fill.returned": "“{{word}}” went back to the words.",
   "prova.qt.child.fill.typePlaceholder": "gap {{n}}",
   "prova.qt.child.match.help": "Pick a card on the left, then its match on the right. Tap the same match again to undo it.",

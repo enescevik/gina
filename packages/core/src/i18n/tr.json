@@ -370,6 +370,7 @@
   "prova.qt.child.fill.wordUsed": "kullanıldı",
   "prova.qt.child.fill.placeIn": "“{{word}}” hangi boşluğa? Bir boşluğa dokun.",
   "prova.qt.child.fill.pickWord": "Boşluk {{n}} için bir kelimeye dokun.",
+  "prova.qt.child.fill.placed": "“{{word}}” {{n}}. boşluğa kondu.",
   "prova.qt.child.fill.returned": "“{{word}}” kelimelere geri döndü.",
   "prova.qt.child.fill.typePlaceholder": "{{n}}. boşluk",
   "prova.qt.child.match.help": "Soldan bir kart seç, sonra sağdan eşini seç. Eşi kaldırmak için aynı eşe yeniden dokun.",

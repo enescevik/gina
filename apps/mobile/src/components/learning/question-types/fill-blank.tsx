@@ -45,7 +45,7 @@ export function FillBlankQuestion({
     onChange(placeToken(current, payload, blankId, token));
     setWord(null);
     setBlankFocus(null);
-    setNote(null);
+    setNote(t("prova.qt.child.fill.placed", { word: wordText(token), n: blankNumber.get(blankId) }));
   }
   function tapBlank(id: string) {
     const v = current.blanks[id];

@@ -57,6 +57,8 @@ export function Option({
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityHint={accessibilityHint}
       accessibilityState={{ disabled: !!disabled, selected, ...state }}
+      aria-checked={role === "radio" ? !!state?.checked : undefined}
+      aria-selected={role === "radio" ? undefined : selected}
       disabled={disabled}
       onPress={onPress}
       style={{
