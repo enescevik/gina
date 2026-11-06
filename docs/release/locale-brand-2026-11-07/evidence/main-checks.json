@@ -1,0 +1,37 @@
+{
+  "commit": "4084e3f0a45cc29ea12625df37d9d26ef7dad2e5",
+  "checks": [
+    {
+      "name": "main-ci",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "supabase migrations + pgTAP",
+          "conclusion": "success",
+          "url": "https://github.com/enescevik/gina/actions/runs/42311781040/job/128214707647"
+        },
+        {
+          "name": "lint, typecheck, test",
+          "conclusion": "success",
+          "url": "https://github.com/enescevik/gina/actions/runs/42311781040/job/128214707920"
+        },
+        {
+          "name": "Edge auth, account deletion + weather",
+          "conclusion": "success",
+          "url": "https://github.com/enescevik/gina/actions/runs/42311781040/job/128214707933"
+        }
+      ]
+    },
+    {
+      "name": "main-security",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "name": "dependencies",
+          "conclusion": "success",
+          "url": "https://github.com/enescevik/gina/actions/runs/42311781036/job/128214707447"
+        }
+      ]
+    }
+  ]
+}

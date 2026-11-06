@@ -1,6 +1,8 @@
 # GINA — tek güncel kapanış tablosu
 
-**Dil/ikon takip işi:** [7 Kasım dil ve marka yüzeyleri](locale-brand-2026-11-07/README.md). H04 ürün e-postası tasarımı da [PR #160](https://github.com/enescevik/gina/pull/160) ile canlıda. Aşağıdaki H08 yayın tablosu tarihsel kayıttır; sonradan başka thread tarafından yayımlanan AI yönetim değişikliklerinin yerine geçmez.
+**Son salt okunur sunucu kontrolü (7 Kasım 02:43 TR):** ledger 164, son migration `20261107040000`; 13 etkin cron, son 24 saatte 1.834 başarılı/0 başarısız çalışma. [Kanıt](locale-brand-2026-11-07/evidence/server-state.json). Bu tur migration uygulanmadı.
+
+**Dil/ikon yayını tamam:** iOS/TestFlight ve kayıtlı tablet **0.1.0 (33)**; web, yönetim ve eski Expo web güncel. Fiziksel cihaz kabulü açık. Ayrıntı:  [7 Kasım dil ve marka yüzeyleri](locale-brand-2026-11-07/README.md). H04 ürün e-postası tasarımı da [PR #160](https://github.com/enescevik/gina/pull/160) ile canlıda. Aşağıdaki H08 yayın tablosu tarihsel kayıttır; sonradan başka thread tarafından yayımlanan AI yönetim değişikliklerinin yerine geçmez.
 
 **7 Kasım 01:25 TR bağımsız kabul güncellemesi:** [Codex canlı kontrolü](codex-live-acceptance-2026-11-07/README.md). TestFlight 32 iki testçide kurulu; H02 panel akışı ve Gmail EN confirm/reset teslimi doğrulandı; H01 sunucu sırları kuruldu. Ürün SMTP kanalı ayrıca 01:42 TR’de açıldı; Gmail teslimi ve vazgeçme testi geçti. C15 ve gerçek Apple iptali açık. Son canlı ledger 161; bu kabul turu migration/istemci yayını yapmadı.
 
@@ -13,14 +15,14 @@
 | C14 | Enes 16:01Z | `c16b8b1` | 141, son `20261106340000` | 24 fonksiyon | web `a31715be`, yönetim `b1cd107a` | iOS 28 gönderim `8f37781c` (IPA `9e2dbc10…`); tablet 28 `m8aeavsrur` (IPA `116a7fad…`) |
 | C14b | Enes 15:38Z | `b04207c`; `prova-grade` ek düzeltme `8fb2eef` | 146, son `20261106390000` | 8 + `prova-grade` | web `1c0cf214`, yönetim `30000ffb` | iOS 29 gönderim `d9628cbd` (IPA `a5ad4764…`); tablet 29 `b9q067lwk9`, kaynak `8fb2eef` (IPA `d2d254c6…`) |
 | C14c | Enes 18:23Z | **`bba2b01`** | **151, son `20261106450000`** | `prova-generate` v8, `prova-grade` v7, `prova-review` v3 | **web `7f515ca0`, yönetim `d4ebcb30`** | **iOS 30 gönderim `b7ccb6a4` (IPA `7ddc64f9…`); tablet 30 `c4aic5og2w`, kaynak `bba2b01` (IPA `be558e9e…`)** |
-| **H08 (güncel)** | Enes 19:51Z (yayın yetkisi) | **`fe08cb60`** | **160, son `20261107000400`** (470000/480000 başka hatta 20:57Z; QT Faz 0 21:58Z) | `delete-account` v18, `apple-token`, `apple-revocation-worker`, `push-send` v17, H02/H07 fonksiyonları | **web `f1adee0b`, yönetim `04c33ac6`** | **iOS 32 gönderim `670700d0` (IPA `ef6e6834…`); tablet 32 `gxt6d74dz6` (IPA `04834182…`)** |
+| **H08 (tarihsel)** | Enes 19:51Z (yayın yetkisi) | **`fe08cb60`** | **160, son `20261107000400`** (470000/480000 başka hatta 20:57Z; QT Faz 0 21:58Z) | `delete-account` v18, `apple-token`, `apple-revocation-worker`, `push-send` v17, H02/H07 fonksiyonları | **web `f1adee0b`, yönetim `04c33ac6`** | **iOS 32 gönderim `670700d0` (IPA `ef6e6834…`); tablet 32 `gxt6d74dz6` (IPA `04834182…`)** |
 
 - **Ayarlar:** `question_groups.enabled=true`; `curriculum_catalog.enabled=false`; `content_prereview.enabled=true` (21:04Z, Codex/PR #156, günlük sınır 25); `channels.email.provider="smtp"` (7 Kasım Codex kabulüyle açık; doğrulama/duyuru kanalı).
 - **Zamanlanmış işler (7 Kasım bağımsız kontrolü: 13 etkin; son 3 saatte çalışmış işlerde başarısızlık 0; günlük işlerin bir kısmı bu aralıkta hiç çalışmadı):** `prune-unused-devices` 03:25, `prune-pairing-records` 03:35, `apple-revocation-worker` */15, `content-prereview-drain` */10, `push-send`, `settle-group-attempts`, `source-cleanup`.
 - **Canlı sağlık:** `health-check.mjs --strict` temiz, ACL 0, RLS kapalı tablo 0.
 - **Alan adı / e-posta** ([STATUS](domain-email-2026-11-06/STATUS.md) esas): `ginafamily.com`, `www`, `admin.ginafamily.com` kurulu; Auth e-postaları `noreply@ginafamily.com` (Brevo SMTP), TR reset gerçek teslimatla doğrulandı; `destek@ginafamily.com` yönlendirmesi Active ve Cloudflare teslim kaydı var; Gmail "GINA Destek" göndericisi kurulu ve INBOX teslimatı doğrulandı. Gmail EN yeni hesap ve reset teslimatı SPF/DKIM/DMARC pass ile ayrıca doğrulandı (Codex canlı kabul). Açık: farklı sağlayıcı teslimatı, bağlantıyla parola değiştirme cihaz kabulü ; ürün bildirim kanalında Gmail teslim/vazgeçme kabulü tamam.
 - **iOS dağıtımı:** iOS 32 gönderimi `670700d0`; Codex gerçek App Store Connect oturumunda mevcut Team (Expo) ve iki testçide Installed 0.1.0 (32) kaydını doğruladı. İşleme, grup erişimi ve kurulum kapandı; C15 işlev/etkileşim kabulü açık.
-- **Yayındaki uygulama kaynağı ile main farkı:** web, yönetim, iOS/tablet 32 `fe08cb60`'tan derlendi. Main'e sonra giren uygulama kodu yalnız Prova QT Faz 0'dır: `packages/core` (`question-types/*`, `answer-journal.ts`, `answer-receipts.ts`, `index.ts`, `database.types.ts`) ve `apps/mobile/src/app/parent/prova/shared-source.tsx` (structured üyeyi reddeden 2 satır). Bunlar **hiçbir istemci derlemesinde yok**; yalnız Faz 0 migration'ları üretimde. Diğer farklar test (066/069/116 vb.) ve belgedir.
+- **H08 zamanındaki kaynak farkı (tarihsel):** H08 istemcileri `fe08cb60` tabanlıydı. Bu cümle artık güncel istemci durumunu tanımlamaz. Son dil/ikon yayını ve gerçek derleme/hash eşlemesi için [7 Kasım yayın kaydını](locale-brand-2026-11-07/README.md) kullan; başka thread’lerdeki sonraki yayınları da kendi kaynak kaydıyla karşılaştır.
 
 ## Güncel kalan işler (H00–H08)
 
@@ -128,7 +130,7 @@ Faz 0 = yalnız veri sözleşmesi, puanlama ve RPC altyapısı; **kullanıcı ö
 | X01 (kalan kısım) | farklı sağlayıcı ve cihaz bağlantı kabulü | Ürün SMTP kanalı açık; Gmail teslim/vazgeçme kabulü ve onaylı marka şablonu PR #159/#160 ile tamam. Giriş/destek ayarları korundu |
 | X02 Firebase / Play / SMS | Android iç test, SMS kanalı | hesaplar |
 | X03 mağaza ve hukuk onayı | satış, mağaza başvurusu, hukuk metinlerinin yayını | hukuk uzmanı incelemesi; yasal kimlik/adres. Bireysel geliştirici olarak başlanır, şirket kurulması ön şart değil |
-| X04 OpenAI / Gemini | ek AI sağlayıcıları (C08) | anahtarlar |
+| X04 ek AI sağlayıcıları | Eski “anahtarlar yok” kaydı güncel değil: Brand PR #161 sonrası OpenAI-compatible/Anthropic zincir denemeleri başarılı, yönetim ekranında üç sağlayıcı çağrı kabul ediyor | Sağlayıcı/model bazında gerçek deneme kanıtı Brand kaydında izlenir; bütün modeller denendi iddiası yok. Kullanıcıdan aynı anahtarları tekrar isteme |
 | X06 bağımsız editör | Ayrı kütüphane içerik operasyonu; Claude devri dışında | Kullanıcının backoffice içerik süreci |
 
 ## 5. Ertelenenler ve kapsam dışı (tamamlanmış sayılmaz)

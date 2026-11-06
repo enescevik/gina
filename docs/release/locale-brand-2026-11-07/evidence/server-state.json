@@ -1,0 +1,12 @@
+[
+  {
+    "report": {
+      "checked_at": "2026-11-06T23:43:33.581552+00:00",
+      "active_cron": 13,
+      "last_migration": "20261107040000",
+      "cron_failed_24h": 0,
+      "migration_count": 164,
+      "cron_success_24h": 1834
+    }
+  }
+]
