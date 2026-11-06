@@ -9,7 +9,9 @@ import { splitStructuredQuestion } from "../supabase/functions/_shared/structure
 import { aiStructured, mutate } from "../supabase/functions/_shared/structured-generation.fixture.ts";
 import fixtures from "../packages/core/src/question-types/fixtures.json" with { type: "json" };
 
-const cases: { name: string; type: string; payload: unknown; key: unknown }[] = fixtures.content.map((c) => ({ ...c }));
+// Edge yalnız AI'ın ürettiği türleri bilir (1A/1B/2A/2B); Faz 3 ve diğerleri orada bilerek `type_unknown`.
+const EDGE_TYPES = new Set(["true_false", "fill_blank", "matching", "numeric", "ordering", "classification", "mark_text", "error_fix", "multi_choice", "two_stage", "region_select", "clock"]);
+const cases: { name: string; type: string; payload: unknown; key: unknown }[] = fixtures.content.filter((c) => EDGE_TYPES.has(c.type)).map((c) => ({ ...c }));
 // Model biçiminden ayrılmış payload/anahtarlar ve onların bozulmuş (ağırlık, eksik kimlik, boş anahtar) türevleri.
 for (const [name, make] of Object.entries(aiStructured)) {
   const r = splitStructuredQuestion(make());

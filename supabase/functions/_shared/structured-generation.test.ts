@@ -14,11 +14,13 @@ import { serviceClient } from "./supabase.ts";
 import { isContractBody } from "./error-contract.ts";
 import { aiStructured, type AiStructuredName, mutate } from "./structured-generation.fixture.ts";
 import {
+  disabledInteractionTypes,
   legacyKindFor,
   parseInteractionTypes,
   splitStructuredQuestion,
   STRUCTURE_JSON_SCHEMAS,
   STRUCTURED_PROMPT,
+  STRUCTURED_PROMPT_VERSION,
   structuredGenerationSchema,
 } from "./structured-generation.ts";
 
@@ -109,11 +111,25 @@ const PAYLOAD_KEYS: Record<string, string[]> = {
   numeric: ["units", "units[].id", "units[].text", "unit_required", "work_area"],
   ordering: ["items", "items[].id", "items[].text", "mode"],
   classification: ["items", "items[].id", "items[].text", "categories", "categories[].id", "categories[].text", "categories[].capacity"],
+  mark_text: ["unit", "segments", "segments[].id", "segments[].text", "max_select"],
+  error_fix: ["unit", "segments", "segments[].id", "segments[].text"],
+  multi_choice: ["options", "options[].id", "options[].text", "select_count"],
+  two_stage: [
+    "stage1", "stage1.prompt", "stage1.options", "stage1.options[].id", "stage1.options[].text",
+    "stage2", "stage2.prompt", "stage2.mode", "stage2.options", "stage2.options[].id", "stage2.options[].text",
+  ],
+  region_select: ["figure", "figure.kind", "figure.rows", "figure.cols", "regions", "regions[].id", "regions[].text", "max_select"],
+  clock: ["mode", "display", "step_minutes", "shown_time"],
 };
+const STIMULUS_PATHS = [
+  "stimulus", "stimulus.kind", "stimulus.caption", "stimulus.alt", "stimulus.columns", "stimulus.rows",
+  "stimulus.bars", "stimulus.bars[].label", "stimulus.bars[].value", "stimulus.x_label", "stimulus.y_label", "stimulus.unit",
+];
 const paths = (o: Any, p = ""): string[] =>
   Object.entries(o).flatMap(([k, v]) => [
     p + k,
-    ...(Array.isArray(v) ? v.flatMap((e) => (e && typeof e === "object" ? paths(e, `${p}${k}[].`) : [])) : []),
+    ...(Array.isArray(v) ? v.flatMap((e) => (e && typeof e === "object" && !Array.isArray(e) ? paths(e, `${p}${k}[].`) : [])) : []),
+    ...(v && typeof v === "object" && !Array.isArray(v) ? paths(v, `${p}${k}.`) : []),
   ]);
 for (const name of Object.keys(aiStructured) as AiStructuredName[]) {
   Deno.test("split " + name + ": valid, payload rebuilt from allowlist only, nothing private leaks", () => {
@@ -122,9 +138,16 @@ for (const name of Object.keys(aiStructured) as AiStructuredName[]) {
     assert(r.ok, JSON.stringify(r));
     const { payload, answer_key, interaction_type, schema_version } = r.value;
     assertEquals(schema_version, 1);
-    for (const p of new Set(paths(payload))) assert(PAYLOAD_KEYS[interaction_type].includes(p), `${name}: payload path ${p}`);
+    for (const p of new Set(paths(payload))) {
+      assert([...PAYLOAD_KEYS[interaction_type]!, ...STIMULUS_PATHS].includes(p), `${name}: payload path ${p}`);
+    }
     const json = JSON.stringify(payload);
-    for (const secret of ["ÇÖZÜM-GİZLİ", "answer", "accepted", "tokens", "pairs", "orders", "category", "membership", "unit_factors", "prova-generate"]) {
+    for (
+      const secret of [
+        "ÇÖZÜM-GİZLİ", "answer", "accepted", "tokens", "pairs", "orders", "category", "membership", "unit_factors", "prova-generate",
+        "targets", "errors", "correct", "key_mode", "accept_12h", '"none"',
+      ]
+    ) {
       assert(!json.includes(secret), `${name}: payload contains ${secret}`);
     }
     assert(Object.keys(answer_key).length > 0);
@@ -434,4 +457,166 @@ Deno.test("job: shared passage with a structured question keeps the self-contain
   assert(rows[1].stem.startsWith("Ortak metin\nBir bahçede"));
   assertEquals(rows[1].provenance.shared_prompt, "Aşağıdaki ifadeler doğru mu, yanlış mı?");
   assertEquals(rows[1].provenance.shared_source_id, "P1");
+});
+
+// ---------------------------------------------------------------------------------------------------------------
+// Faz 2A / 2B / uyaran (QT-AI v10)
+Deno.test("2A/2B: practice-only on written/OYSS, prompt appendix versioned separately, legacy prompt untouched", () => {
+  const all: Any[] = ["mark_text", "error_fix", "multi_choice", "two_stage", "region_select", "clock"];
+  assertEquals(parseInteractionTypes(all, false), { types: all });
+  assertEquals(parseInteractionTypes(["open_ended", ...all], true), {
+    error: "interaction_type_not_allowed_for_track",
+    details: { track: "meb_common", types: all.join(",") },
+  });
+  assertEquals(STRUCTURED_PROMPT_VERSION, "prova-generate/v10-structured-phase2");
+  assertEquals(PROMPT_VERSION, "prova-generate/v9-structured-types", "legacy (no interaction_types) keeps v9");
+  for (const t of [...all, "stimulus"]) assert(STRUCTURED_PROMPT.includes(t), t);
+  assert(STRUCTURED_PROMPT.includes("Görsel/resim üzerinde bölge asla yok"));
+  const s: Any = structuredGenerationSchema(SCHEMA as Any, all as Any, vocab);
+  assertEquals(strictEverywhere(s), []);
+  const region = s.properties.questions.items.anyOf.find((v: Any) => v.properties.interaction_type.enum[0] === "region_select");
+  assertEquals(region.properties.structure.properties.figure.properties.kind.enum, ["grid", "sectors"], "no image regions in the AI schema");
+  for (const v of s.properties.questions.items.anyOf) assertEquals(v.properties.stimulus.properties.kind.enum, ["none", "table", "bar_chart"]);
+});
+Deno.test("2A/2B: disabled types are refused before any provider call; read failure is not treated as enabled", async () => {
+  const table = (rows: unknown, error: unknown = null) => ({
+    from: (t: string) => {
+      assertEquals(t, "interaction_types");
+      return { select: () => ({ in: (_c: string, v: string[]) => Promise.resolve({ data: error ? null : (rows as Any[]).filter((r) => v.includes(r.type)), error }) }) };
+    },
+  });
+  const rows = [{ type: "true_false", enabled: true }, { type: "mark_text", enabled: false }, { type: "clock", enabled: false }];
+  assertEquals(await disabledInteractionTypes(table(rows), ["open_ended", "true_false", "mark_text", "clock"]), ["mark_text", "clock"]);
+  assertEquals(await disabledInteractionTypes(table(rows), ["true_false"]), []);
+  assertEquals(await disabledInteractionTypes(table(rows), ["multiple_choice"]), [], "legacy types need no lookup");
+  assertEquals(await disabledInteractionTypes(table(rows, { message: "x" }), ["true_false"]), null);
+  assertEquals(await disabledInteractionTypes(table([{ type: "mark_text", enabled: true }]), ["mark_text", "two_stage"]), ["two_stage"], "unknown row = disabled");
+});
+Deno.test("2A/2B split keys equal the core contract shapes", () => {
+  const ok = (n: AiStructuredName) => {
+    const r = splitStructuredQuestion(aiStructured[n]());
+    assert(r.ok, n + JSON.stringify(r));
+    return r.value as Any;
+  };
+  assertEquals(ok("mark_text").answer_key, { targets: ["w3", "w4"] });
+  assertEquals(ok("mark_text").payload.segments[1], { text: " " }, "non-selectable piece has no id");
+  assertEquals(ok("error_fix").answer_key, { errors: { w2: { accepted: ["herkes"] } }, fix_policy: "review_unmatched", case_insensitive: true });
+  assertEquals(ok("multi_choice").answer_key, { correct: ["a", "c"] });
+  assert(!("select_count" in ok("multi_choice").payload));
+  assertEquals(ok("two_stage").answer_key, { stage1: "a", stage2: "c" });
+  assertEquals(ok("region_grid").payload.figure, { kind: "grid", rows: 2, cols: 2 });
+  assertEquals(ok("region_grid").answer_key, { count: 3 });
+  assertEquals(ok("region_sectors").payload.figure, { kind: "sectors" });
+  assertEquals(ok("clock_read").payload, { mode: "read", display: "analog", step_minutes: 15, shown_time: "03:15" });
+  assertEquals(ok("clock_set").payload, { mode: "set", display: "analog", step_minutes: 30 });
+  assertEquals(ok("clock_set").answer_key, { time: "07:30", accept_12h: true });
+  assertEquals(ok("numeric_table").payload.stimulus, {
+    kind: "table", caption: "Sınıf mevcutları", alt: "İki satırlı tablo: 2-A sınıfında 23, 2-B sınıfında 24 öğrenci var.", columns: ["Sınıf", "Öğrenci"], rows: [["2-A", "23"], ["2-B", "24"]],
+  });
+  assertEquals(Object.keys(ok("multi_choice_chart").payload.stimulus), ["kind", "alt", "x_label", "y_label", "unit", "bars"], "empty caption dropped");
+  assert(!("stimulus" in ok("true_false").payload), "kind none → no stimulus");
+});
+Deno.test("red-team 2A mark_text: targets not in text, all targets, unit mismatch, ambiguous twins, stem lists answers", () => {
+  expectCode(mutate(aiStructured.mark_text(), (s) => (s.targets = ["w9"])), "key_value_invalid", "target not in the text");
+  expectCode(mutate(aiStructured.mark_text(), (s) => (s.targets = ["w1", "w2", "w3", "w4"])), "selection_balance_invalid", "every segment a target");
+  expectCode(mutate(aiStructured.mark_text(), (s) => (s.targets = [])), "selection_balance_invalid", "no target");
+  expectCode(mutate(aiStructured.mark_text(), (s) => (s.segments[0].text = "Küçük kedi")), "segment_unit_mismatch", "two words in a word segment");
+  expectCode(mutate(aiStructured.mark_text(), (s) => (s.segments[2].text = "koştu")), "duplicate_text", "same word marked once, unmarked once");
+  expectCode(mutate(aiStructured.mark_text(), (_s, q) => (q.stem = "Şu sözcükleri işaretle: koştu, zıpladı.")), "payload_answer_leak", "stem lists the targets");
+  expectCode(mutate(aiStructured.mark_text(), (s) => (s.max_select = 1)), "max_select_invalid", "limit below target count");
+});
+Deno.test("red-team 2A error_fix: 'error' that is actually correct, fix in stem, no error, ambiguous twin", () => {
+  expectCode(mutate(aiStructured.error_fix(), (s) => (s.errors = [{ id: "w3", accepted: ["erken"] }])), "error_not_wrong", "correct word marked as error");
+  expectCode(mutate(aiStructured.error_fix(), (s) => (s.errors[0].accepted = ["herkes", "Herkez"])), "error_not_wrong", "shown spelling also accepted");
+  expectCode(mutate(aiStructured.error_fix(), (_s, q) => (q.stem = "herkes sözcüğünü doğru yaz.")), "payload_answer_leak", "fix in instructions");
+  expectCode(mutate(aiStructured.error_fix(), (s) => (s.errors = [])), "selection_balance_invalid", "no error at all");
+  expectCode(mutate(aiStructured.error_fix(), (s) => (s.errors[0].id = "w9")), "key_unknown_id", "error on unknown segment");
+  expectCode(mutate(aiStructured.error_fix(), (s) => s.errors.push({ id: "w2", accepted: ["herkes"] })), "duplicate_id", "duplicate error entry");
+  expectCode(mutate(aiStructured.error_fix(), (s) => (s.segments[4].text = "herkez")), "duplicate_text", "same wrong spelling, only one flagged");
+  expectCode(mutate(aiStructured.error_fix(), (s) => (s.find_weight = 2)), "weights_invalid", "find weight out of range");
+});
+Deno.test("red-team 2A multi_choice: all-correct, none, select_count mismatch, duplicate options", () => {
+  expectCode(mutate(aiStructured.multi_choice(), (s) => (s.correct = ["a", "b", "c", "d"])), "selection_balance_invalid", "all options correct");
+  expectCode(mutate(aiStructured.multi_choice(), (s) => (s.correct = [])), "selection_balance_invalid", "no correct option");
+  expectCode(mutate(aiStructured.multi_choice(), (s) => (s.select_count = 3)), "select_count_mismatch", "told 3, key has 2");
+  expectCode(mutate(aiStructured.multi_choice(), (s) => (s.options[3].text = "kedi")), "duplicate_text", "same-looking options");
+  expectCode(mutate(aiStructured.multi_choice(), (s) => (s.options = s.options.slice(0, 2))), "options_invalid", "two options only");
+});
+Deno.test("red-team 2A two_stage: stage 2 reveals stage 1, mode/key mismatch, shared ids", () => {
+  expectCode(mutate(aiStructured.two_stage(), (s) => (s.stage2.prompt = "Su neden katı hâle geçer?")), "stage_reveals_answer", "stage 2 prompt names the answer");
+  expectCode(mutate(aiStructured.two_stage(), (s) => (s.stage2.options[0].text = "Katı olduğu için.")), "stage_reveals_answer", "stage 2 option names the answer");
+  expectCode(mutate(aiStructured.two_stage(), (s) => (s.stage2.options[1].id = "a")), "stage_invalid", "stage 2 reuses a stage 1 id");
+  expectCode(mutate(aiStructured.two_stage(), (s) => (s.stage1_answer = "z")), "key_value_invalid", "unknown stage 1 answer");
+  expectCode(mutate(aiStructured.two_stage(), (s) => (s.stage2.mode = "text")), "stage_invalid", "text mode with options");
+  expectCode(mutate(aiStructured.two_stage(), (s) => { s.stage2.mode = "text"; s.stage2.options = []; }), "key_value_invalid", "text mode with a stage 2 key");
+  const text = mutate(aiStructured.two_stage(), (s) => { s.stage2.mode = "text"; s.stage2.options = []; s.stage2_answer = ""; });
+  const r = splitStructuredQuestion(text);
+  assert(r.ok);
+  assertEquals(r.value.answer_key, { stage1: "a" });
+  assertEquals(r.value.payload.stage2, { prompt: "Seçimini hangi bilgi destekler?", mode: "text" });
+});
+Deno.test("red-team 2B clock: read shown_time ≠ key, off-step key, stem states the time, digital read, set with shown time", () => {
+  expectCode(mutate(aiStructured.clock_read(), (s) => (s.time = "03:30")), "clock_invalid", "read: shown time differs from key");
+  expectCode(mutate(aiStructured.clock_read(), (s) => { s.time = "03:10"; s.shown_time = "03:10"; }), "key_not_on_step", "key off the 15-minute step");
+  expectCode(mutate(aiStructured.clock_read(), (_s, q) => (q.stem = "Saat 3:15'i gösteriyor; saati yaz.")), "payload_answer_leak", "read stem says the time");
+  expectCode(mutate(aiStructured.clock_read(), (s) => (s.display = "digital")), "clock_trivial", "copying a digital clock");
+  expectCode(mutate(aiStructured.clock_set(), (s) => (s.shown_time = "07:30")), "clock_invalid", "set mode shows the answer");
+  expectCode(mutate(aiStructured.clock_set(), (s) => (s.time = "7:30")), "key_invalid", "malformed time");
+  expectCode(mutate(aiStructured.clock_set(), (s) => (s.step_minutes = 10)), "clock_invalid", "unsupported step");
+});
+Deno.test("red-team 2B region_select: count ≥ parts, fraction vs parts, image figure, grid size, duplicate labels", () => {
+  expectCode(mutate(aiStructured.region_grid(), (s) => (s.count = 4)), "key_value_invalid", "count equals the number of parts");
+  expectCode(mutate(aiStructured.region_grid(), (s) => (s.count = 5)), "key_value_invalid", "count above the number of parts");
+  expectCode(mutate(aiStructured.region_grid(), (s) => (s.count = 2)), "fraction_mismatch", "3/4 asked, 2 of 4 keyed");
+  expectCode(mutate(aiStructured.region_sectors(), (_s, q) => (q.stem = "Dairenin dörtte birini boya.")), "fraction_mismatch", "1/4 of 6 slices");
+  expectCode(mutate(aiStructured.region_sectors(), (_s, q) => (q.stem = "6 eş parçadan 2 tanesini boya.")), "fraction_mismatch", "2 of 6 asked, 3 keyed");
+  assert(splitStructuredQuestion(mutate(aiStructured.region_sectors(), (_s, q) => (q.stem = "Dairenin altıda üçünü boya."))).ok, "3/6 of 6, count 3");
+  expectCode(mutate(aiStructured.region_grid(), (s) => (s.figure.kind = "image")), "figure_invalid", "image regions never from AI");
+  expectCode(mutate(aiStructured.region_grid(), (s) => (s.figure.cols = 3)), "figure_invalid", "2x3 grid with 4 regions");
+  expectCode(mutate(aiStructured.region_sectors(), (s) => (s.figure.rows = 2)), "figure_invalid", "sectors with rows");
+  expectCode(mutate(aiStructured.region_grid(), (s) => (s.regions[1].text = "1. satır 1. sütun")), "duplicate_text", "duplicate region label");
+  expectCode(mutate(aiStructured.region_grid(), (s) => { s.key_mode = "targets"; s.targets = ["r1"]; }), "key_invalid", "targets mode with a count");
+  expectCode(mutate(aiStructured.region_grid(), (s) => { s.key_mode = "targets"; s.count = 0; s.targets = ["r1", "r9"]; }), "key_value_invalid", "unknown target region");
+  expectCode(mutate(aiStructured.region_grid(), (_s, q) => (q.stem = "Resimdeki karelerin 3/4'ünü boya.")), "image_reference_unavailable", "picture reference");
+  assert(splitStructuredQuestion(mutate(aiStructured.region_grid(), (_s, q) => (q.stem = "Şekildeki karelerin 3/4'ünü boya."))).ok, "the drawn figure may be referenced");
+});
+Deno.test("red-team stimulus: alt that states the answer, missing alt, shape errors, stray fields on 'none'", () => {
+  expectCode(mutate(aiStructured.numeric_table(), (_s, q) => (q.stimulus.alt = "Tabloda iki sınıf var; toplam 47 öğrenci.")), "stimulus_reveals_answer", "alt gives the computed total");
+  expectCode(mutate(aiStructured.numeric_table(), (_s, q) => (q.stimulus.caption = "Toplam 47")), "stimulus_reveals_answer", "caption gives the answer");
+  expectCode(mutate(aiStructured.clock_set(), (_s, q) => { q.stimulus = { ...q.stimulus, kind: "table", alt: "Okul 07:30'da başlar.", columns: ["Ders"], rows: [["Matematik"]] }; }), "stimulus_reveals_answer", "alt gives the time");
+  expectCode(mutate(aiStructured.two_stage(), (_s, q) => { q.stimulus = { ...q.stimulus, kind: "table", alt: "Doğru seçenek katı olandır.", columns: ["Madde"], rows: [["Su"]] }; }), "stimulus_reveals_answer", "alt names the stage 1 answer");
+  assert(splitStructuredQuestion(aiStructured.multi_choice_chart()).ok, "alt may restate data values/labels");
+  expectCode(mutate(aiStructured.numeric_table(), (_s, q) => (q.stimulus.alt = "")), "stimulus_alt_invalid", "missing alt");
+  expectCode(mutate(aiStructured.numeric_table(), (_s, q) => (q.stimulus.rows = [["2-A"]])), "stimulus_invalid", "row shorter than columns");
+  expectCode(mutate(aiStructured.numeric_table(), (_s, q) => (q.stimulus.bars = [{ label: "x", value: 1 }])), "stimulus_invalid", "bars on a table");
+  expectCode(mutate(aiStructured.multi_choice_chart(), (_s, q) => (q.stimulus.bars = q.stimulus.bars.slice(0, 1))), "stimulus_invalid", "one bar");
+  expectCode(mutate(aiStructured.multi_choice_chart(), (_s, q) => (q.stimulus.bars[0].value = -1)), "stimulus_invalid", "negative bar");
+  expectCode(mutate(aiStructured.true_false(), (_s, q) => (q.stimulus.alt = "bir şey")), "stimulus_invalid", "alt on kind none");
+  expectCode(mutate(aiStructured.true_false(), (_s, q) => (q.stimulus = { kind: "image", alt: "foto" })), "stimulus_invalid", "image stimulus / missing fields");
+  expectCode(mutate(aiStructured.true_false(), (_s, q) => delete q.stimulus), "payload_unknown_field", "stimulus field is required in the AI form");
+});
+Deno.test("job: 2A/2B rows flow to complete_prova_generation_v2 with payload/key split and person-name scan of nested text", async () => {
+  const ctx: GenerationContext = {
+    ...base,
+    total: 4,
+    topics: [{ topic: "Canlılar", count: 4 }],
+    interactionTypes: ["two_stage", "multi_choice", "region_select", "clock"],
+    promptVersion: "prova-generate/v10-structured-phase2",
+  };
+  const named = mutate(aiStructured.two_stage(), (s) => (s.stage1.prompt = "Ayşe suyu dondurucuya koydu. Su hangi hâle geçer?"));
+  const r = output([named, aiStructured.multi_choice_chart(), aiStructured.region_grid(), aiStructured.clock_read()]);
+  const f = db({ context: ctx, provider_result: r, lease: "lease" });
+  const res = await recoverGeneration(f.client, parent, "id", {});
+  assert(res && res.status === 200);
+  const rows = f.calls[1].args.p_rows as Record<string, Any>[];
+  assertEquals(rows.map((x) => x.interaction_type), ["two_stage", "multi_choice", "region_select", "clock"]);
+  assertEquals(rows[0].provenance.content_review.flags[0].fields, ["stage1_prompt"]);
+  assertEquals(rows[1].payload.stimulus.kind, "bar_chart");
+  assertEquals(rows[3].answer_key, { time: "03:15", accept_12h: true });
+  for (const row of rows) {
+    assertEquals(row.provenance.prompt_version, "prova-generate/v10-structured-phase2");
+    assert(!/"(correct|targets|count|time|stage1_answer|accept_12h)"/.test(JSON.stringify(row.payload)), "key in payload");
+  }
+  const written: GenerationContext = { ...ctx, writtenTrack: true };
+  assertEquals(rejectCodes(r, written), ["interaction_type_not_allowed_for_track"]);
 });

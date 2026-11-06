@@ -1,6 +1,6 @@
 {
   "environment": "disposable-local-auth-postgrest-no-edge-no-ai",
-  "database": "gina_qtai_73aad31f4fbe_audit",
+  "database": "gina_qtai_c5f111a42fd7_audit",
   "chain": {
     "reserve_ok": "true",
     "questions": 6,
@@ -18,14 +18,40 @@
     "student_projection_has_no_key": true,
     "solution_not_in_payload": true,
     "provenance_prompt_version": [
-      "prova-generate/v9-structured-types"
+      "prova-generate/v10-structured-phase2"
     ],
     "usage_rows": 1,
     "sql_rejects_bypassed_bad_key": {
       "exit": 3,
       "error": "ERROR:  question_structure_invalid\nDETAIL:  key_value_invalid"
     },
-    "rows_after_rejected_job": 6
+    "rows_after_rejected_job": 6,
+    "phase2_enabled_before": "clock=false,error_fix=false,mark_text=false,multi_choice=false,region_select=false,two_stage=false",
+    "phase2_refused_while_disabled": {
+      "exit": 3,
+      "error": "ERROR:  interaction_type_unavailable"
+    },
+    "phase2_after_enable": {
+      "job_status": "done",
+      "types": [
+        "classification",
+        "clock",
+        "error_fix",
+        "fill_blank",
+        "mark_text",
+        "matching",
+        "multi_choice",
+        "numeric",
+        "numeric",
+        "ordering",
+        "region_select",
+        "true_false",
+        "two_stage"
+      ],
+      "stored_keys": 6,
+      "payload_has_no_key_fields": true,
+      "stimulus_rows": 2
+    }
   },
   "checks": {
     "admin_login": true,
@@ -35,12 +61,24 @@
     "preview_Eşleştirme_desktop": true,
     "preview_Sıralama_desktop": true,
     "preview_Doğru / Yanlış_desktop": true,
+    "preview_Metinde işaretleme_desktop": true,
+    "preview_Hata bulma ve düzeltme_desktop": true,
+    "preview_Birden çok doğru_desktop": true,
+    "preview_İki aşamalı_desktop": true,
+    "preview_Bölge boyama_desktop": true,
+    "preview_Saat_desktop": true,
     "list_shows_type_labels_and_summary_tablet": true,
     "type_filter_structured_tablet": true,
     "type_filter_legacy_tablet": true,
     "preview_Eşleştirme_tablet": true,
     "preview_Sıralama_tablet": true,
     "preview_Doğru / Yanlış_tablet": true,
+    "preview_Metinde işaretleme_tablet": true,
+    "preview_Hata bulma ve düzeltme_tablet": true,
+    "preview_Birden çok doğru_tablet": true,
+    "preview_İki aşamalı_tablet": true,
+    "preview_Bölge boyama_tablet": true,
+    "preview_Saat_tablet": true,
     "structured_meta_save_keeps_content_hash_valid": true,
     "keys_read_via_rpc_only": true,
     "no_page_errors": true
@@ -50,7 +88,7 @@
     "auth_removed": true,
     "disposable_database_removed": true
   },
-  "migrations_applied": 64,
-  "last_migration": "20261107000400_qt00_report_states.sql",
-  "global_questions": 7
+  "migrations_applied": 72,
+  "last_migration": "20261107030000_qt50_crossword.sql",
+  "global_questions": 14
 }

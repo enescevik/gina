@@ -104,6 +104,29 @@ def lit(value):
 
 
 FAM, JOB, BAD_JOB = 'c0000000-0000-4000-8000-0000000a1001', 'c0000000-0000-4000-8000-0000000a2001', 'c0000000-0000-4000-8000-0000000a2002'
+JOB2 = 'c0000000-0000-4000-8000-0000000a2003'
+PHASE2 = ['mark_text', 'error_fix', 'multi_choice', 'two_stage', 'region_select', 'clock']
+
+
+def phase2_sql(user_id, rows, job):
+    """Faz 2A/2B rows through the same reserve → save → complete chain (one transaction)."""
+    n = len(rows)
+    ctx = {'schema': 'gina.generation-context.v1', 'promptHash': 'd' * 64, 'total': n, 'catalogueBound': False, 'subject': 'Hayat Bilgisi', 'grade': 2}
+    return f"""
+begin;
+set local role service_role;
+select set_config('request.jwt.claims','{{"role":"service_role"}}',true);
+select public.reserve_prova_generation_v3('{job}','{FAM}','{user_id}',repeat('d',64),{n},'{{"subject":"Hayat Bilgisi","grade":2,"phase2":true}}'::jsonb,{lit(ctx)});
+select public.save_prova_provider_result('{job}',(select lease from public.prova_generation_jobs where id='{job}'),'{{"output":{{"questions":[]}}}}');
+select jsonb_array_length(public.complete_prova_generation_v2('{job}',(select lease from public.prova_generation_jobs where id='{job}'),{lit(rows)},'synthetic-local-model','prova-generate/v10-structured-phase2',10,20)->'questions');
+commit;
+select json_build_object(
+ 'job_status', (select status from public.prova_generation_jobs where id='{job}'),
+ 'types', (select jsonb_agg(q.interaction_type order by q.interaction_type) from public.question_bank q where q.provenance->>'prompt_version'='prova-generate/v10-structured-phase2' and q.family_id='{FAM}'),
+ 'stored_keys', (select count(*) from public.question_answer_keys k join public.question_bank q on q.id=k.question_id where q.family_id='{FAM}' and q.interaction_type in ({",".join("'" + t + "'" for t in PHASE2)})),
+ 'payload_has_no_key_fields', (select bool_and(q.payload::text !~ '"(targets|errors|correct|count|time|accept_12h|stage1_answer)"') from public.question_bank q where q.family_id='{FAM}' and q.interaction_type in ({",".join("'" + t + "'" for t in PHASE2)})),
+ 'stimulus_rows', (select count(*) from public.question_bank q where q.family_id='{FAM}' and q.payload ? 'stimulus'));
+"""
 
 
 def chain_sql(user_id, rows):
@@ -121,7 +144,7 @@ set local role service_role;
 select set_config('request.jwt.claims','{{"role":"service_role"}}',true);
 insert into chain values('reserve', public.reserve_prova_generation_v3('{JOB}','{FAM}','{user_id}',repeat('e',64),{n},'{{"subject":"Hayat Bilgisi","grade":2,"interaction_types":["true_false"]}}'::jsonb,{lit(ctx)}));
 select public.save_prova_provider_result('{JOB}',(select lease from public.prova_generation_jobs where id='{JOB}'),'{{"output":{{"questions":[]}}}}');
-insert into chain values('result', public.complete_prova_generation_v2('{JOB}',(select lease from public.prova_generation_jobs where id='{JOB}'),{lit(rows)},'synthetic-local-model','prova-generate/v9-structured-types',10,20));
+insert into chain values('result', public.complete_prova_generation_v2('{JOB}',(select lease from public.prova_generation_jobs where id='{JOB}'),{lit(rows)},'synthetic-local-model','prova-generate/v10-structured-phase2',10,20));
 commit;
 select json_build_object(
  'reserve_ok', (select v->>'ok' from chain where k='reserve'),
@@ -236,9 +259,22 @@ try:
     report['chain']['rows_after_rejected_job'] = int(left)
     assert int(left) == len(rows), 'rejected_job_left_no_rows'
 
+    # 1b) Faz 2A/2B: types ship enabled=false → SQL refuses the whole job; after enabling (ONLY in this disposable DB)
+    # the same Edge rows complete. This mirrors the Edge pre-check (409 interaction_type_unavailable before any charge).
+    rows2 = json.loads(command(['deno', 'run', '--no-lock', '--config', 'supabase/functions/deno.json', 'scripts/qt-ai-sample-rows.ts', '--phase2'], cwd=ROOT))
+    enabled = sql(DB, "select string_agg(type||'='||enabled, ',' order by type) from public.interaction_types where type in (" + ",".join("'" + t + "'" for t in PHASE2) + ");").strip()
+    report['chain']['phase2_enabled_before'] = enabled
+    code, err = sql_error(phase2_sql(user['id'], rows2, JOB2))
+    report['chain']['phase2_refused_while_disabled'] = {'exit': code, 'error': err}
+    assert code != 0 and 'interaction_type_unavailable' in err, 'phase2_disabled_refused'
+    sql(DB, "update public.interaction_types set enabled=true where type in (" + ",".join("'" + t + "'" for t in PHASE2) + ");")
+    p2 = json.loads(sql(DB, phase2_sql(user['id'], rows2, JOB2)).strip().splitlines()[-1])
+    report['chain']['phase2_after_enable'] = p2
+    assert p2['job_status'] == 'done' and p2['stored_keys'] == 6 and p2['payload_has_no_key_fields'] and p2['stimulus_rows'] == 2, 'phase2_chain'
+
     # 2) Global seed + UI tour
-    report['global_questions'] = int(sql(DB, global_sql(user['id'], rows)).strip().splitlines()[-1])
-    FIXTURE.write_text(json.dumps({'auth': auth_port, 'rest': rest_port, 'anon': anon, 'email': email, 'password': password, 'db': DB}))
+    report['global_questions'] = int(sql(DB, global_sql(user['id'], rows + rows2)).strip().splitlines()[-1])
+    FIXTURE.write_text(json.dumps({'auth': auth_port, 'rest': rest_port, 'anon': anon, 'email': email, 'password': password, 'db': DB, 'total': report['global_questions']}))
     os.chmod(FIXTURE, 0o600)
     env = {**os.environ, 'GINA_QTAI_FIXTURE': str(FIXTURE)}
     out = subprocess.run(['node', 'scripts/test-qt-backoffice-ui.cjs'], cwd=ROOT, env=env, capture_output=True, text=True, timeout=600)
