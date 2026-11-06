@@ -1,6 +1,6 @@
-# Üçüncü ara yayın (C14c) — plan (onay bekliyor)
+# Üçüncü ara yayın (C14c) — plan ve yürütme kaydı (YAYINDA)
 
-6 Kasım 2026 akşamı. Kaynak: main (D10–D17 birleşik). **Hiçbir adım çalıştırılmadı.** Önceki: [C14b](../c14b-2026-11-06/PLAN.md).
+6 Kasım 2026 akşamı. Kaynak: main (D10–D17 birleşik). **Durum: yürütüldü** (Enes onayı 18:23Z; yürütme kaydı aşağıda). Plan bölümleri onay öncesi metindir. Önceki: [C14b](../c14b-2026-11-06/PLAN.md).
 
 ## Kapsam
 
