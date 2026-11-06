@@ -40,6 +40,7 @@ import {
 } from "@/components/ui/bulk-archive-sheet";
 import { IconButton, SatinButton, Tag, p, u } from "@/components/planner/ui";
 import type { PlannerChild } from "@/components/planner/timetable-editor";
+import { localDateOf, routinesForDaySchema } from "@gina/core";
 import { useSession } from "@/lib/session";
 import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
@@ -48,7 +49,7 @@ import { RoutineEditor, type Routine } from "./routine-editor";
 import { TaskForm } from "./task-form";
 import { TaskTile, StarReward } from "./task-visuals";
 export function TasksScreen() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const wide = width >= 900;
@@ -98,6 +99,21 @@ export function TasksScreen() {
       return data;
     },
   });
+  // C02: the list shows the version in force today; a later-dated change is shown as "from <day>".
+  const today = localDateOf(new Date(), timeZone);
+  const dated = useQuery({
+    queryKey: ["routines_for_day", familyId, selected?.id, today],
+    enabled: !!selected && !!familyId,
+    queryFn: async () => {
+      const { data, error } = await (supabase.rpc as unknown as (fn: string, args: Record<string, unknown>) => PromiseLike<{ data: unknown; error: Error | null }>)(
+        "routines_for_day",
+        { p_child_id: selected!.id, p_day: today },
+      );
+      if (error) throw error;
+      return routinesForDaySchema.parse(data);
+    },
+  });
+  const datedOf = (id: string) => dated.data?.routines.find((r) => r.id === id) ?? null;
   useRealtimeInvalidate(
     "task_templates",
     familyId ? `family_id=eq.${familyId}` : null,
@@ -105,6 +121,7 @@ export function TasksScreen() {
       ["parent_task_templates", familyId],
       ["family_task_templates", familyId],
       ["task_routine_history", familyId],
+      ["routines_for_day", familyId],
     ],
   );
   const rows = templates.data ?? [];
@@ -131,6 +148,8 @@ export function TasksScreen() {
   });
   const busy = children.isLoading || (!!selected && templates.isLoading);
   const failed = children.error || templates.error;
+  const dateLabel = (value: string) =>
+    new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "long", timeZone: "UTC" }).format(new Date(`${value}T12:00:00Z`));
   const daysText = (days: number[]) =>
     days.length === 7
       ? t("redesign.everyDay")
@@ -366,15 +385,39 @@ export function TasksScreen() {
                       gap: 12,
                     }}
                   >
-                    <TaskTile slug={task.icon} size={wide ? 72 : 64} />
-                    <View style={[u.fill, { gap: 5 }]}>
-                      <Text style={u.bold}>{task.title}</Text>
-                      <Text style={u.small}>
-                        {daysText(task.days_of_week)} ·{" "}
-                        {t("room.starCount", { count: task.stars })}
-                      </Text>
-                      <StarReward count={task.stars} />
-                    </View>
+                    {(() => {
+                      const d = datedOf(task.id);
+                      // Today's version when a later-dated change is waiting; otherwise the row is today's.
+                      const now = d?.next && d.version ? d.version : null;
+                      const shown = now ?? task;
+                      return (
+                        <>
+                          <TaskTile slug={shown.icon} size={wide ? 72 : 64} />
+                          <View style={[u.fill, { gap: 5 }]}>
+                            <Text style={u.bold}>{shown.title}</Text>
+                            <Text style={u.small}>
+                              {daysText(shown.days_of_week)} ·{" "}
+                              {t("room.starCount", { count: shown.stars })}
+                            </Text>
+                            <StarReward count={shown.stars} />
+                            {d?.next
+                              ? (
+                                <Text testID={`c02-next-${task.id}`} style={[u.small, { color: p.purple }]}>
+                                  {t("c02.routineNext", {
+                                    date: dateLabel(d.next.effective_from),
+                                    title: d.next.title,
+                                    stars: t("room.starCount", { count: d.next.stars }),
+                                  })}
+                                </Text>
+                              )
+                              : null}
+                            {!d?.version && task.starts_on > today
+                              ? <Text style={[u.small, { color: p.purple }]}>{t("c02.routineStarts", { date: dateLabel(task.starts_on) })}</Text>
+                              : null}
+                          </View>
+                        </>
+                      );
+                    })()}
                     {bulk.selecting ? (
                       <BulkCheck
                         label={task.title}
@@ -473,6 +516,7 @@ export function TasksScreen() {
       {editing && (
         <RoutineEditor
           key={`${editing.id}:${editing.revision}`}
+          allowFutureEffective
           row={editing}
           childName={editingName}
           familyId={familyId}

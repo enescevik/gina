@@ -1,3 +1,4 @@
+import { EducationChangeStatus } from "./education-change";
 import { useRef, useState } from "react";
 import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
@@ -43,8 +44,12 @@ export function PeriodTransfer({
   const [saved, setSaved] = useState<PeriodTransferResult | null>(null);
   const from = education.history[0];
   const to = education.current;
-  if (!from || !to) return null;
+  // C02: planned change + 14-day undo live next to the transfer card (same screen, same period data).
+  const status = <EducationChangeStatus child={child} />;
+  if (!from || !to) return status;
   return (
+    <>
+    {status}
     <View style={[u.card, { backgroundColor: p.mint }]}>
       <View style={u.row}>
         <ArrowRightLeft color={p.purple} size={26} />
@@ -87,6 +92,7 @@ export function PeriodTransfer({
         />
       )}
     </View>
+    </>
   );
 }
 

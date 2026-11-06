@@ -210,4 +210,80 @@ class SourceAcquisitionPolicy(unittest.TestCase):
         self.assertTrue(verification["live_checks"]); self.assertEqual(len(verification["live_checks"][-1]["results"]), 16)
 
 
+class OperatorQueue(unittest.TestCase):
+    """C05: queued server revision → re-downloaded bytes → same extractor/preparer → idempotent import payload."""
+    ROOT = Path(__file__).resolve().parents[1] / "docs/learning/catalog/2026-2027-term1"
+
+    def item(self, **over):
+        body = (self.ROOT / "sources/turkce2.xlsx").read_bytes()
+        item = {"revision_id": "11111111-1111-4111-8111-111111111111", "source_id": "s1", "label": "Türkçe", "school_year": "2026-2027", "term": 1,
+                "sha256": hashlib.sha256(body).hexdigest(), "resolved_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx",
+                "retrieved_at": "2026-11-06T10:00:00Z", "index_url": "https://odsgm.meb.gov.tr/x"}
+        item.update(over)
+        return item, body
+
+    def test_real_official_file_yields_the_same_candidates_as_the_repository_extraction(self):
+        item, body = self.item()
+        result = fetcher.extraction_result(item, body)
+        self.assertEqual(result["outcome"], "done")
+        candidates = result["bundle"]["candidates"]
+        repo = [s for s in json.loads((self.ROOT / "scenario-candidates.json").read_text())["scenarios"] if s["source_sha256"] == item["sha256"]]
+        self.assertEqual(len(candidates), len(repo))
+        self.assertEqual(result["scenarios"], len(repo))
+        by_key = {c["key"]: c for c in candidates}
+        for s in repo:
+            c = by_key[s["id"]]
+            self.assertEqual(c["question_count"], s["question_count"])
+            self.assertEqual([b["count"] for b in c["blocks"]], [b["count"] for b in s["blocks"]])
+            self.assertEqual([[o["text"] for o in b["outcomes"]] for b in c["blocks"]], [[o["text"] for o in b["outcomes"]] for b in s["blocks"]])
+        self.assertTrue(all(c["source_sha256"] == item["sha256"] and c["academic_year"] == "2026-2027" and c["term"] == 1 for c in candidates))
+        self.assertTrue(all("source_review_required" in c["review_reasons"] for c in candidates), "nothing is pre-approved")
+
+    def test_bytes_that_changed_since_the_fetch_are_not_extracted(self):
+        item, body = self.item()
+        result = fetcher.extraction_result(item, body + b"x")
+        self.assertEqual((result["outcome"], result["error"], result["bundle"]), ("failed", "hash_changed_since_fetch", None))
+
+    def test_term_two_source_cannot_reuse_a_term_one_table(self):
+        item, body = self.item(term=2)
+        result = fetcher.extraction_result(item, body)
+        self.assertEqual(result["outcome"], "failed")
+        self.assertEqual(result["error"], "extract:exam_scope_unresolved")
+
+    def test_next_year_keys_follow_the_source_scope(self):
+        item, body = self.item(school_year="2027-2028")
+        result = fetcher.extraction_result(item, body)
+        self.assertEqual(result["outcome"], "done")
+        self.assertTrue(all(c["key"].startswith("tr-2027-2028-t1-turkce2-") and c["academic_year"] == "2027-2028" for c in result["bundle"]["candidates"]))
+
+    def test_non_workbook_bytes_fail_with_reason(self):
+        body = b"PK-not-a-real-zip"
+        item, _ = self.item(sha256=hashlib.sha256(body).hexdigest())
+        result = fetcher.extraction_result(item, body)
+        self.assertEqual(result["outcome"], "failed")
+        self.assertTrue(result["error"].startswith("extract:"))
+
+    def test_queue_run_records_once_with_a_deterministic_request_and_leaves_unreachable_items_queued(self):
+        item, body = self.item()
+        calls = []
+        def rpc(name, args):
+            calls.append((name, args))
+            if name == "admin_curriculum_pipeline":
+                return {"queue": [item, {**item, "revision_id": "22222222-2222-4222-8222-222222222222", "resolved_url": "https://cdn.eba.gov.tr/down.xlsx"}]}
+            if name == "admin_list_curriculum_sources":
+                return [{"id": "s1", "index_url": "https://odsgm.meb.gov.tr/x"}]
+            return {"outcome": "done", "extraction_status": "done", "extraction": {"created": 3, "existing": 0}}
+        def download(url):
+            if url.endswith("down.xlsx"):
+                raise fetcher.PolicyError("http_status:503")
+            return body
+        first = fetcher.process_queue(rpc, download)
+        self.assertEqual([r["outcome"] for r in first], ["done", "skipped_unreachable"])
+        records = [a for n, a in calls if n == "admin_record_curriculum_extraction"]
+        self.assertEqual(len(records), 1, "unreachable revision is not marked failed")
+        fetcher.process_queue(rpc, download)
+        again = [a for n, a in calls if n == "admin_record_curriculum_extraction"]
+        self.assertEqual(again[0]["p_request_id"], again[1]["p_request_id"], "retry after a lost response replays the same request")
+
+
 if __name__=="__main__":unittest.main()

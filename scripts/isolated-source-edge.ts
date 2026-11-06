@@ -28,6 +28,8 @@ route = "/setup-suggestions";
 await import("../supabase/functions/setup-suggestions/index.ts");
 route = "/timetable-import";
 await import("../supabase/functions/timetable-import/index.ts");
+route = "/prova-generate";
+await import("../supabase/functions/prova-generate/index.ts");
 Deno.serve = serve;
 serve({
   hostname: "127.0.0.1",

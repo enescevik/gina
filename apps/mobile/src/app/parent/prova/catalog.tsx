@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { z } from "zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { Linking, Text, View } from "react-native";
@@ -25,6 +26,14 @@ const year = () => {
   const d = new Date(), y = d.getFullYear() - (d.getMonth() < 7 ? 1 : 0);
   return `${y}-${y + 1}`;
 };
+// C05: get_curriculum_source_status = v1 freshness + exact requested term, reason and staleness. Never a substitute term.
+const sourceStatusSchema = curriculumSourceFreshnessSchema.extend({
+  reason: z.enum(["no_official_index", "source_not_fetched"]).optional(),
+  stale: z.boolean().optional(),
+  stale_days: z.number().int().nullable().optional(),
+  substituted: z.literal(false).optional(),
+});
+
 export default function CatalogScreen() {
   const { t } = useTranslation(),
     { session, claims } = useSession(),
@@ -127,12 +136,16 @@ export default function CatalogScreen() {
     queryKey: ["curriculum_source_freshness", family, academicYear, term, subject],
     enabled: scopeValid && step > 0 && !pending && !saved,
     queryFn: async () => {
-      const { data, error } = await supabase.rpc(
-        "get_curriculum_source_freshness",
-        { p_year: academicYear, p_term: term, p_subject: subject.trim() },
-      );
+      // C05: v2 adds the exact requested term, whether an official index is registered, and staleness.
+      const { data, error } = await (supabase as unknown as {
+        rpc: (fn: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: unknown }>;
+      }).rpc("get_curriculum_source_status", {
+        p_year: academicYear,
+        p_term: term,
+        p_subject: subject.trim(),
+      });
       if (error) throw error;
-      return curriculumSourceFreshnessSchema.parse(data);
+      return sourceStatusSchema.parse(data);
     },
   });
   const selected = scenarios.data?.find((s) =>
@@ -442,6 +455,28 @@ export default function CatalogScreen() {
                         {freshness.data.alternative === "free_study"
                           ? ` ${t("catalogFlow.freshness.freeStudy")}`
                           : ""}
+                      </Text>
+                    )
+                    : null}
+                  {freshness.data?.reason === "source_not_fetched"
+                    ? (
+                      <Text accessibilityRole="alert" style={u.error}>
+                        {t("catalogFlow.freshness.notFetched", {
+                          year: academicYear,
+                          term,
+                        })}
+                      </Text>
+                    )
+                    : null}
+                  {freshness.data?.stale &&
+                      freshness.data.status !== "unpublished" &&
+                      !!freshness.data.last_approved_sha256 &&
+                      typeof freshness.data.stale_days === "number"
+                    ? (
+                      <Text accessibilityRole="alert" style={u.error}>
+                        {t("catalogFlow.freshness.stale", {
+                          days: freshness.data.stale_days,
+                        })}
                       </Text>
                     )
                     : null}

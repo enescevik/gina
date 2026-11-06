@@ -16,6 +16,7 @@ import { unwrap, useAdminQuery } from "@/lib/use-async";
 import { createLibraryQueue } from "@/lib/library-review";
 import { Card, Notice } from "./Layout";
 import { CurriculumSources } from "./curriculum-sources";
+import { CandidatePipelineBadges, CurriculumPipeline, usePipeline } from "./curriculum-pipeline";
 
 const statuses = {
   draft: "Kaynak incelemesi bekliyor",
@@ -94,6 +95,9 @@ function Workspace({ user }: { user: string }) {
     [page, setPage] = useState(0);
   const [confirmed, setConfirmed] = useState(false),
     [decisionNote, setDecisionNote] = useState("");
+  // C05: per-candidate source revision state and the separate E01 AI pre-review (never the admin decision).
+  const pipeline = usePipeline();
+  const pipelineById = useMemo(() => new Map((pipeline.data?.candidates ?? []).map((c) => [c.id, c])), [pipeline.data]);
   const [leave, setLeave] = useState<(() => void) | null>(null),
     dialog = useRef<HTMLDialogElement>(null);
   const live = useRef(true), fileGeneration = useRef(0);
@@ -453,6 +457,7 @@ function Workspace({ user }: { user: string }) {
           )
           : null}
       </details>
+      <CurriculumPipeline />
       <CurriculumSources />
       {list.error || detail.error
         ? (
@@ -550,6 +555,7 @@ function Workspace({ user }: { user: string }) {
                       {r.academic_year} · {r.term}. dönem · {r.exam}. yazılı
                     </span>
                     <span className="block text-sm">{statuses[r.status]}</span>
+                    <CandidatePipelineBadges state={pipelineById.get(r.id)} />
                   </button>
                 ))}
                 <div className="flex gap-2">

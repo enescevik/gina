@@ -42,6 +42,7 @@ import { IconButton, p, SatinButton, u } from "./ui";
 import type { PlannerChild } from "./timetable-editor";
 import { LearningPlanImport } from "./learning-plan-import";
 import { PlanSourcesMore, usePlanSources } from "./plan-sources";
+import { PlanDistribute } from "./plan-distribute";
 type Props = {
   child: PlannerChild;
   date: string;
@@ -143,6 +144,53 @@ function PlanSection({ child, date, from, to, childMode }: Props) {
     }
   }
   const rows = learningPlanForDay(query.data?.items ?? [], date);
+  // C02: bulk re-spreading of the week's open homework, whether it came from a document or was added by
+  // hand. Each item is saved with its own revision through the same journal (one at a time, so a lost
+  // reply is recovered by the existing "retry"); nothing is saved before the parent applies the preview.
+  const open = (query.data?.items ?? []).filter((r) => !r.content.done && !r.content.archived);
+  const [spreadUndo, setSpreadUndo] = useState<{ id: string; planned_on: string; from: string }[] | null>(null);
+  const [spreadNote, setSpreadNote] = useState("");
+  async function respread(dates: { id: string; planned_on: string; from?: string }[], undoable: boolean) {
+    if (busy || pending || recovery.blocked) return;
+    setBusy(true);
+    setError("");
+    setSpreadNote("");
+    const before: { id: string; planned_on: string; from: string }[] = [];
+    let saved = 0;
+    try {
+      // Items moved out of the visible week (e.g. by an earlier spread) are read again with their current revision.
+      const lookup = new Map((query.data?.items ?? []).map((r) => [r.id, r]));
+      if (dates.some((d) => !lookup.has(d.id))) {
+        const span = dates.flatMap((d) => [d.planned_on, d.from ?? d.planned_on]).sort();
+        const { data, error: readError } = await supabase.rpc("get_learning_plan", { p_child_id: child.id, p_from: span[0]!, p_to: span[span.length - 1]! });
+        if (readError) throw readError;
+        for (const r of learningPlanListSchema.parse(data).items) lookup.set(r.id, r);
+      }
+      for (const d of dates) {
+        const row = lookup.get(d.id);
+        if (!row || row.content.planned_on === d.planned_on) continue;
+        const c = journal.prepare({ p_id: row.id, p_revision: row.revision, p_content: { ...row.content, planned_on: d.planned_on } });
+        setPending(c);
+        await journal.send(c);
+        setPending(null);
+        before.push({ id: row.id, planned_on: row.content.planned_on, from: d.planned_on });
+        saved++;
+      }
+      setSpreadUndo(undoable && before.length ? before : null);
+      setSpreadNote(t("c02.respreadSaved", { count: saved }));
+    } catch (e) {
+      try {
+        setPending(journal.read());
+      } catch {
+        setError(t("timetableRecovery.storage"));
+      }
+      setError(t((e as Error).message === "plan_changed" ? "c02.respreadChanged" : "c02.respreadPartial", { count: saved }));
+      setSpreadUndo(before.length ? before : null);
+    } finally {
+      setBusy(false);
+      await query.refetch();
+    }
+  }
   const visible = history
     ? (query.data?.items ?? []).filter((r) =>
       r.content.done || r.content.archived
@@ -244,6 +292,26 @@ function PlanSection({ child, date, from, to, childMode }: Props) {
                 </Pressable>
               ))}
             </View>
+            {!history && !childMode && (open.length >= 2 || spreadUndo || spreadNote)
+              ? (
+                <View testID="c02-respread" style={{ gap: 8 }}>
+                  <Text style={u.small}>{t("c02.respreadHelp", { count: open.length })}</Text>
+                  <PlanDistribute
+                    items={open.map((r, index) => ({ index, title: r.content.title, due_on: r.content.due_on, planned_on: r.content.planned_on }))}
+                    start={query.data?.today ?? date}
+                    today={query.data?.today}
+                    disabled={busy || !!pending || recovery.blocked}
+                    onApply={(dates) =>
+                      void respread(
+                        Object.entries(dates).map(([i, planned_on]) => ({ id: open[Number(i)]!.id, planned_on })),
+                        true,
+                      )}
+                    onUndo={spreadUndo ? () => { const back = spreadUndo; setSpreadUndo(null); void respread(back, false); } : null}
+                  />
+                  {spreadNote ? <Text accessibilityLiveRegion="polite" style={[u.small, { color: "#197465" }]}>{spreadNote}</Text> : null}
+                </View>
+              )
+              : null}
             {visible.length
               ? visible.map((row) => (
                 <Pressable

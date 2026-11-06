@@ -1,7 +1,7 @@
 import { NumberChoice } from "@/components/ui/number-choice";
 import { SourceFilesPicker } from "@/components/learning/source-files-picker";
 import { provaGenerationJournal } from "@/lib/setup-command";
-import { canonicalSubject, catalogBlueprintFits, provaGenerationKind } from "@gina/core";
+import { canonicalSubject, catalogBlueprintFits, provaGenerationKind, provaRemainingCount } from "@gina/core";
 import { useMemo, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -50,9 +50,11 @@ type RepeatUnit = {
   }[];
 };
 export function ProvaSourcePicker(
-  { visible, draft, draftId, onClose, onAdd }: {
+  { visible, draft, draftId, onClose, onAdd, currentCount = 0 }: {
     visible: boolean;
     draft: ProvaDraft;
+    /** Questions already in the draft (groups expanded) — for "complete with AI". */
+    currentCount?: number;
     draftId: string;
     onClose: () => void;
     onAdd: (blocks: ProvaBlock[]) => Promise<void>;
@@ -925,6 +927,20 @@ export function ProvaSourcePicker(
                                   ))}
                                 </View>
                                 <NumberChoice label={t("provaBuilder.target")} value={count} min={1} max={30} step={1} presets={[3,5,10,20,30]} disabled={busy} onChange={setCount}/>
+                                {/* C04: kısmi veya tam AI üretimi aynı taslakta — eksik soru sayısı tek istekle. */}
+                                {provaRemainingCount(draft.target, currentCount) > 0 &&
+                                    count !== provaRemainingCount(draft.target, currentCount)
+                                  ? (
+                                    <SatinButton
+                                      secondary
+                                      disabled={busy}
+                                      title={t(currentCount === 0 ? "provaC04.ai.fillAll" : "provaC04.ai.fillRemaining", {
+                                        count: provaRemainingCount(draft.target, currentCount),
+                                      })}
+                                      onPress={() => setCount(provaRemainingCount(draft.target, currentCount))}
+                                    />
+                                  )
+                                  : null}
                               </>
                             )
                             : null}
@@ -993,6 +1009,40 @@ export function ProvaSourcePicker(
                     : null}
                   {aiRows.length
                     ? <Text style={b.bold}>{t("provaBuilder.aiCheck")}</Text>
+                    : null}
+                  {/* C04: aynı üretimin bütün önerileri seçilebilir; seçim yeni üretim/ücret doğurmaz. */}
+                  {aiRows.some((q) =>
+                      !draft.blocks.some((block) => block.id === q.id) &&
+                      !selected.some((block) => block.id === q.id)
+                    ) && recoveredFits
+                    ? (
+                      <View style={[b.hint, { gap: 8 }]}>
+                        <SatinButton
+                          secondary
+                          disabled={busy}
+                          title={t("provaC04.ai.selectAll", {
+                            count: aiRows.filter((q) =>
+                              !draft.blocks.some((block) => block.id === q.id)
+                            ).length,
+                          })}
+                          onPress={() =>
+                            setSelected((v) => [
+                              ...v,
+                              ...aiRows.filter((q) =>
+                                !draft.blocks.some((block) => block.id === q.id) &&
+                                !v.some((block) => block.id === q.id)
+                              ).map((q) => ({
+                                kind: "question" as const,
+                                id: q.id,
+                                source: generationRecord?.payload.source_id
+                                  ? "document" as const
+                                  : "ai" as const,
+                              })),
+                            ])}
+                        />
+                        <Text style={b.muted}>{t("provaC04.ai.noSecondCharge")}</Text>
+                      </View>
+                    )
                     : null}
                   {aiRows.map((q, index) => {
                     const already = draft.blocks.some((b) => b.id === q.id);

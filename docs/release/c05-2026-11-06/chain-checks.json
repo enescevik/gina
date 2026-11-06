@@ -1,0 +1,897 @@
+{
+  "environment": "disposable-db+auth+postgrest+supabase-edge-runtime(v1.77.8)+deno-run(prova-generate, deterministic provider)",
+  "database": "gina_c05_e2d858905c47_audit",
+  "checks": [
+    {
+      "name": "edge_runtime_dns_ssrf_probe",
+      "pass": true,
+      "detail": {
+        "resolveDns_api_present": true,
+        "official_host_resolves_public": true,
+        "rebinding_localtest.me_rejected": true,
+        "rebinding_127.0.0.1.nip.io_rejected": true,
+        "rejects:http://odsgm.meb.gov.tr/": true,
+        "rejects:https://localhost/": true,
+        "rejects:https://169.254.169.254/latest/meta-data": true,
+        "rejects:https://odsgm.meb.gov.tr:8443/": true,
+        "rejects:https://user@odsgm.meb.gov.tr/": true,
+        "rejects:https://meb.ai/x": true,
+        "missing_resolveDns_fails_closed": true,
+        "official_index_fetched_with_policy": true,
+        "official_file_via_meb_ai_hop": true,
+        "runtime": {
+          "deno": {
+            "deno": "supabase-edge-runtime-1.77.8 (compatible with Deno v2.1.4)",
+            "v8": "11.6.189.12",
+            "typescript": "5.1.6"
+          },
+          "edge_runtime": true
+        }
+      }
+    },
+    {
+      "name": "edge_fetch_refuses_parent",
+      "pass": true,
+      "detail": {
+        "error": "forbidden"
+      }
+    },
+    {
+      "name": "official_download_new_revision",
+      "pass": true,
+      "detail": {
+        "outcome": "new_revision",
+        "status": "pending_review",
+        "extraction_status": "queued",
+        "sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+        "index": {
+          "url": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+          "published": "2026-09-07",
+          "updated": "2026-09-10"
+        },
+        "officially_verified": false,
+        "stored": false
+      }
+    },
+    {
+      "name": "downloaded_hash_matches_repository_manifest",
+      "pass": true,
+      "detail": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee"
+    },
+    {
+      "name": "unchanged_file_no_duplicate_revision",
+      "pass": true,
+      "detail": {
+        "outcome": "unchanged"
+      }
+    },
+    {
+      "name": "revision_records_chain_mime_size",
+      "pass": true,
+      "detail": {
+        "chain": [
+          {
+            "url": "https://meb.ai/ankmeb4",
+            "status": 302
+          },
+          {
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx",
+            "status": 200
+          }
+        ],
+        "bytes": 31410,
+        "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "inspection": {
+          "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "flags": [],
+          "entries": 21,
+          "expansion": 155671
+        }
+      }
+    },
+    {
+      "name": "term2_without_registered_index_unpublished",
+      "pass": true,
+      "detail": {
+        "outcome": "unpublished",
+        "alternative": "free_study",
+        "officially_verified": false,
+        "note": "No registered official index for exactly this year/term; no URL was guessed and no other term was used.",
+        "requested": {
+          "school_year": "2026-2027",
+          "term": 2
+        }
+      }
+    },
+    {
+      "name": "next_year_unpublished_no_guess",
+      "pass": true,
+      "detail": {
+        "outcome": "unpublished",
+        "alternative": "free_study",
+        "officially_verified": false,
+        "note": "No registered official index for exactly this year/term; no URL was guessed and no other term was used.",
+        "requested": {
+          "school_year": "2027-2028",
+          "term": 1
+        }
+      }
+    },
+    {
+      "name": "target_foreign_host_rejected",
+      "pass": true,
+      "detail": {
+        "code": "P0001",
+        "details": null,
+        "hint": null,
+        "message": "curriculum_target_host"
+      }
+    },
+    {
+      "name": "admin_registers_term2_target",
+      "pass": true,
+      "detail": {
+        "action": "created",
+        "target": {
+          "id": "256e18f9-8e03-49da-bc38-f01da1a4c3d6",
+          "note": "QA: henüz yayımlanmamış 2. dönem sayfası (erişilemez kaynak testi)",
+          "term": 2,
+          "status": "active",
+          "index_url": "https://odsgm.meb.gov.tr/www/c05-qa-bu-sayfa-yok/icerik/0",
+          "exam_family": "oyss",
+          "school_year": "2026-2027"
+        },
+        "request": "d46637aa-4730-48c8-9855-e7509223081f"
+      }
+    },
+    {
+      "name": "unreachable_official_page_unverified_no_revision",
+      "pass": true,
+      "detail": {
+        "error": "index:http_status:404",
+        "outcome": "unverified",
+        "request": "2535b5f6-e6ff-47b4-bcbc-3be88987fcef",
+        "freshness": "unverified",
+        "source_id": "c168cdcd-d3b4-47fa-b76f-1a2ed5199214",
+        "alternative": "free_study",
+        "last_approved": null,
+        "officially_verified": false
+      }
+    },
+    {
+      "name": "parent_term2_unverified_free_study_not_term1",
+      "pass": true,
+      "detail": {
+        "stale": true,
+        "status": "unverified",
+        "requested": {
+          "term": 2,
+          "school_year": "2026-2027"
+        },
+        "stale_days": 0,
+        "alternative": "free_study",
+        "substituted": false,
+        "last_checked_at": "2026-11-06T10:02:11.176912+00:00",
+        "index_updated_on": null,
+        "target_registered": true,
+        "officially_verified": false,
+        "last_approved_sha256": null,
+        "last_approved_retrieved_at": null
+      }
+    },
+    {
+      "name": "operator_step_extracts_queued_revision",
+      "pass": true,
+      "detail": {
+        "report": [
+          {
+            "revision_id": "876dc4ea-b283-47db-9160-037265bc60c7",
+            "label": "Türkçe",
+            "sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+            "outcome": "done",
+            "extraction_status": "done",
+            "scenarios": 46,
+            "error": null,
+            "created": 46,
+            "existing": 0
+          }
+        ],
+        "stderr": ""
+      }
+    },
+    {
+      "name": "import_count_equals_repository_extraction",
+      "pass": true,
+      "detail": {
+        "created": 46,
+        "repository": 46
+      }
+    },
+    {
+      "name": "operator_rerun_no_work",
+      "pass": true,
+      "detail": "[]\n"
+    },
+    {
+      "name": "same_bundle_again_unchanged_no_duplicates",
+      "pass": true,
+      "detail": {
+        "outcome": "unchanged",
+        "request": "980678ef-2150-4d0d-83e3-2bb9354b5524",
+        "extraction": {
+          "at": "2026-11-06T10:02:11.650172+00:00",
+          "by": "5412ea7f-d7b1-4570-bdd1-0e7a2bc93964",
+          "issues": 0,
+          "created": 46,
+          "outcome": "done",
+          "existing": 0,
+          "extractor": "extract-meb-scenarios@c05",
+          "scenarios": 46,
+          "bundle_sha256": "8876f28983475f4db2dbd698bc28e53fe2d68d291b3f0ec37d54afce0a69e7b2"
+        },
+        "revision_id": "876dc4ea-b283-47db-9160-037265bc60c7",
+        "extraction_status": "done"
+      }
+    },
+    {
+      "name": "candidate_reviewed",
+      "pass": true,
+      "detail": {
+        "id": "e8d543e6-9112-4dc6-a2d1-808011a54ff5",
+        "action": "review",
+        "status": "reviewed",
+        "request": "78b16846-7669-4e12-b1a9-1f189c34f588",
+        "revision": 1
+      }
+    },
+    {
+      "name": "publish_blocked_until_source_approved",
+      "pass": true,
+      "detail": {
+        "code": "P0001",
+        "details": null,
+        "hint": null,
+        "message": "curriculum_source_not_approved"
+      }
+    },
+    {
+      "name": "source_revision_approved",
+      "pass": true,
+      "detail": {
+        "action": "approve",
+        "status": "approved",
+        "request": "46f94078-b776-4a3f-9291-16272cebcfdb",
+        "freshness": "verified",
+        "revision_id": "876dc4ea-b283-47db-9160-037265bc60c7",
+        "withdrawn_candidates": 0
+      }
+    },
+    {
+      "name": "candidate_published_separately",
+      "pass": true,
+      "detail": {
+        "id": "e8d543e6-9112-4dc6-a2d1-808011a54ff5",
+        "action": "publish",
+        "status": "published",
+        "request": "b215fe22-47c7-4869-9183-ee08318926f1",
+        "revision": 2,
+        "replaced_previous": 0
+      }
+    },
+    {
+      "name": "parent_sees_verified_not_endorsed",
+      "pass": true,
+      "detail": {
+        "stale": false,
+        "status": "verified",
+        "requested": {
+          "term": 1,
+          "school_year": "2026-2027"
+        },
+        "stale_days": 0,
+        "alternative": null,
+        "substituted": false,
+        "last_checked_at": "2026-11-06T10:02:10.804617+00:00",
+        "index_updated_on": "2026-09-10",
+        "target_registered": true,
+        "officially_verified": false,
+        "last_approved_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+        "last_approved_retrieved_at": "2026-11-06T10:02:10.347189+00:00"
+      }
+    },
+    {
+      "name": "family_sees_only_published",
+      "pass": true,
+      "detail": [
+        "e8d543e6-9112-4dc6-a2d1-808011a54ff5"
+      ]
+    },
+    {
+      "name": "family_selects_frozen_copy",
+      "pass": true,
+      "detail": "b492c15a-d738-48ff-812c-11e7bc3c2743"
+    },
+    {
+      "name": "wrong_count_rejected_no_rows",
+      "pass": true,
+      "detail": {
+        "status": 502,
+        "body": {
+          "error": "ai_result_uncertain"
+        }
+      }
+    },
+    {
+      "name": "generation_completed",
+      "pass": true,
+      "detail": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "model": "claude-haiku-5-5",
+          "questions": [
+            {
+              "id": "a6e3faa3-fb13-4e0c-8a0c-defacfc63374",
+              "kind": "open_ended",
+              "stem": "Sentetik soru B1.1: T.O.5.6: T.O.5.6. Metnin yüzey anlamını belirleyebilme",
+              "topic": "Blok 1",
+              "choices": null,
+              "solution": "Çözüm adımları B1.1",
+              "difficulty": "orta",
+              "correct_key": null,
+              "explanation": "Deterministik yerel sağlayıcı; içerik kalitesi testi değildir.",
+              "source_urls": [
+                "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx"
+              ],
+              "expected_answer": "Beklenen cevap B1.1"
+            },
+            {
+              "id": "0584c0ad-1826-4030-bbbf-c58683b8c603",
+              "kind": "open_ended",
+              "stem": "Sentetik soru B1.2: T.O.5.6: T.O.5.6. Metnin yüzey anlamını belirleyebilme",
+              "topic": "Blok 1",
+              "choices": null,
+              "solution": "Çözüm adımları B1.2",
+              "difficulty": "orta",
+              "correct_key": null,
+              "explanation": "Deterministik yerel sağlayıcı; içerik kalitesi testi değildir.",
+              "source_urls": [
+                "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx"
+              ],
+              "expected_answer": "Beklenen cevap B1.2"
+            },
+            {
+              "id": "cdb48c3c-2c92-4164-92bf-884eaa05f329",
+              "kind": "open_ended",
+              "stem": "Sentetik soru B2.1: T.O.5.7: T.O.5.7. Görselle iletilen anlamı belirleyebilme",
+              "topic": "Blok 2",
+              "choices": null,
+              "solution": "Çözüm adımları B2.1",
+              "difficulty": "orta",
+              "correct_key": null,
+              "explanation": "Deterministik yerel sağlayıcı; içerik kalitesi testi değildir.",
+              "source_urls": [
+                "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx"
+              ],
+              "expected_answer": "Beklenen cevap B2.1"
+            },
+            {
+              "id": "a59ef0db-468d-45f4-acb5-d94ad6923bee",
+              "kind": "open_ended",
+              "stem": "Sentetik soru B3.1: T.O.5.20: T.O.5.20. Metinden hareketle söz varlığını geliştirmeye yönelik çözümleme yapabilme",
+              "topic": "Blok 3",
+              "choices": null,
+              "solution": "Çözüm adımları B3.1",
+              "difficulty": "orta",
+              "correct_key": null,
+              "explanation": "Deterministik yerel sağlayıcı; içerik kalitesi testi değildir.",
+              "source_urls": [
+                "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx"
+              ],
+              "expected_answer": "Beklenen cevap B3.1"
+            },
+            {
+              "id": "8033be5c-3c77-4936-86fd-735f9a6a8017",
+              "kind": "open_ended",
+              "stem": "Sentetik soru B4.1: T.Y.5.13: T.Y.5.13. Yazısını zenginleştirecek biçimde söz varlığını kullanabilme",
+              "topic": "Blok 4",
+              "choices": null,
+              "solution": "Çözüm adımları B4.1",
+              "difficulty": "orta",
+              "correct_key": null,
+              "explanation": "Deterministik yerel sağlayıcı; içerik kalitesi testi değildir.",
+              "source_urls": [
+                "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx"
+              ],
+              "expected_answer": "Beklenen cevap B4.1"
+            },
+            {
+              "id": "2b2557e4-5d59-46e5-af25-2e20894d6420",
+              "kind": "open_ended",
+              "stem": "Sentetik soru B5.1: T.Y.5.16: T.Y.5.16. Yazım ve noktalama işaretleriyle ilgili kuralları uygulayabilme",
+              "topic": "Blok 5",
+              "choices": null,
+              "solution": "Çözüm adımları B5.1",
+              "difficulty": "orta",
+              "correct_key": null,
+              "explanation": "Deterministik yerel sağlayıcı; içerik kalitesi testi değildir.",
+              "source_urls": [
+                "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx"
+              ],
+              "expected_answer": "Beklenen cevap B5.1"
+            }
+          ],
+          "remaining": 88,
+          "prompt_version": "prova-generate/v5-scenario-provenance"
+        }
+      }
+    },
+    {
+      "name": "provider_received_full_outcome_text_not_url",
+      "pass": true,
+      "detail": {
+        "blocks": [
+          {
+            "block_id": "B1",
+            "count": 2,
+            "outcome_ids": [
+              "T.O.5.6"
+            ]
+          },
+          {
+            "block_id": "B2",
+            "count": 1,
+            "outcome_ids": [
+              "T.O.5.7"
+            ]
+          },
+          {
+            "block_id": "B3",
+            "count": 1,
+            "outcome_ids": [
+              "T.O.5.20"
+            ]
+          },
+          {
+            "block_id": "B4",
+            "count": 1,
+            "outcome_ids": [
+              "T.Y.5.13"
+            ]
+          },
+          {
+            "block_id": "B5",
+            "count": 1,
+            "outcome_ids": [
+              "T.Y.5.16"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "question_count_equals_scenario_total",
+      "pass": true,
+      "detail": {
+        "questions": 6,
+        "scenario_total": 6
+      }
+    },
+    {
+      "name": "per_block_counts_match",
+      "pass": true,
+      "detail": {
+        "got": {
+          "B1": 2,
+          "B5": 1,
+          "B4": 1,
+          "B3": 1,
+          "B2": 1
+        },
+        "expected": {
+          "B1": 2,
+          "B2": 1,
+          "B3": 1,
+          "B4": 1,
+          "B5": 1
+        }
+      }
+    },
+    {
+      "name": "every_question_traces_block_outcomes_source",
+      "pass": true,
+      "detail": [
+        {
+          "block": "B1",
+          "outcomes": [
+            "T.O.5.6"
+          ],
+          "cells": {
+            "sheet": "5. Sınıf",
+            "count_cell": "C12",
+            "outcome_cells": [
+              "B12"
+            ]
+          }
+        },
+        {
+          "block": "B5",
+          "outcomes": [
+            "T.Y.5.16"
+          ],
+          "cells": {
+            "sheet": "5. Sınıf",
+            "count_cell": "C32",
+            "outcome_cells": [
+              "B32"
+            ]
+          }
+        },
+        {
+          "block": "B4",
+          "outcomes": [
+            "T.Y.5.13"
+          ],
+          "cells": {
+            "sheet": "5. Sınıf",
+            "count_cell": "C30",
+            "outcome_cells": [
+              "B30"
+            ]
+          }
+        },
+        {
+          "block": "B3",
+          "outcomes": [
+            "T.O.5.20"
+          ],
+          "cells": {
+            "sheet": "5. Sınıf",
+            "count_cell": "C21",
+            "outcome_cells": [
+              "B21"
+            ]
+          }
+        },
+        {
+          "block": "B1",
+          "outcomes": [
+            "T.O.5.6"
+          ],
+          "cells": {
+            "sheet": "5. Sınıf",
+            "count_cell": "C12",
+            "outcome_cells": [
+              "B12"
+            ]
+          }
+        },
+        {
+          "block": "B2",
+          "outcomes": [
+            "T.O.5.7"
+          ],
+          "cells": {
+            "sheet": "5. Sınıf",
+            "count_cell": "C13",
+            "outcome_cells": [
+              "B13"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "shared_source_one_identity_questions_counted_separately",
+      "pass": true,
+      "detail": 2
+    },
+    {
+      "name": "content_fit_pending_not_success",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "fit_review_queue_pending_unaccepted",
+      "pass": true,
+      "detail": {
+        "fit": 0,
+        "total": 6,
+        "not_fit": 0,
+        "accepted": false,
+        "needs_revision": 0,
+        "pending_human_review": 6
+      }
+    },
+    {
+      "name": "reasoned_fit_recorded_set_still_unaccepted",
+      "pass": true,
+      "detail": {
+        "fit": 1,
+        "total": 6,
+        "not_fit": 0,
+        "accepted": false,
+        "needs_revision": 0,
+        "pending_human_review": 5
+      }
+    },
+    {
+      "name": "changed_source_diff_review_assigned_copy_unchanged",
+      "pass": true,
+      "detail": {
+        "stale": false,
+        "status": "diff_review_required",
+        "requested": {
+          "term": 1,
+          "school_year": "2026-2027"
+        },
+        "stale_days": 0,
+        "alternative": null,
+        "substituted": false,
+        "last_checked_at": "2026-11-06T10:02:12.799135+00:00",
+        "index_updated_on": "2026-09-10",
+        "target_registered": true,
+        "officially_verified": false,
+        "last_approved_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+        "last_approved_retrieved_at": "2026-11-06T10:02:10.347189+00:00"
+      }
+    },
+    {
+      "name": "old_check_shown_stale",
+      "pass": true,
+      "detail": {
+        "stale": true,
+        "stale_days": 9,
+        "status": "diff_review_required"
+      }
+    },
+    {
+      "name": "ui_fixture_failed_extraction_recorded",
+      "pass": true,
+      "detail": {
+        "outcome": "failed",
+        "request": "3b353b6f-c027-4424-8bcc-7db30de22b3c",
+        "extraction": {
+          "at": "2026-11-06T10:02:13.035107+00:00",
+          "by": "5412ea7f-d7b1-4570-bdd1-0e7a2bc93964",
+          "error": "worksheet_path",
+          "outcome": "failed",
+          "extractor": "extract-meb-scenarios@c05"
+        },
+        "revision_id": "c284bf9e-1cdd-4881-918e-96b85fc73798",
+        "extraction_status": "failed"
+      }
+    },
+    {
+      "name": "ui_fixture_e01_verdict_separate",
+      "pass": true,
+      "detail": {
+        "scope": "curriculum_candidates",
+        "queued": 45,
+        "requeued": 0,
+        "unchanged": 0
+      }
+    },
+    {
+      "name": "backoffice_ui_tour",
+      "pass": true,
+      "detail": {
+        "admin_login_non_family_member": true,
+        "targets_listed_with_status": true,
+        "target_non_index_host_rejected_with_reason": true,
+        "new_year_target_added_without_download": true,
+        "extraction_queue_and_operator_step_visible": true,
+        "candidate_list_shows_source_status_and_separate_ai_prereview": true,
+        "real_edge_check_from_ui_same_hash_no_new_revision": true,
+        "no_page_exceptions_or_horizontal_overflow": true
+      }
+    },
+    {
+      "name": "mobile_catalog_ui_tour",
+      "pass": true,
+      "detail": {
+        "parent_login": true,
+        "term1_shows_published_scenario_and_stale_notice": true,
+        "term2_unverified_free_study_no_term1_scenarios": true,
+        "next_year_registered_index_not_fetched_explicit": true,
+        "no_page_exceptions_or_horizontal_overflow": true
+      }
+    }
+  ],
+  "cleanup": {
+    "edge_removed": true,
+    "rest_removed": true,
+    "auth_removed": true,
+    "disposable_database_removed": true
+  },
+  "edge_runtime_probe": {
+    "runtime": {
+      "deno": {
+        "deno": "supabase-edge-runtime-1.77.8 (compatible with Deno v2.1.4)",
+        "v8": "11.6.189.12",
+        "typescript": "5.1.6"
+      },
+      "edge_runtime": true
+    },
+    "checks": [
+      {
+        "name": "resolveDns_api_present",
+        "pass": true,
+        "detail": "function"
+      },
+      {
+        "name": "official_host_resolves_public",
+        "pass": true,
+        "detail": [
+          "95.0.196.220"
+        ]
+      },
+      {
+        "name": "rebinding_localtest.me_rejected",
+        "pass": true,
+        "detail": {
+          "answer": [
+            "127.0.0.1"
+          ],
+          "code": "non_public_address:odsgm.meb.gov.tr"
+        }
+      },
+      {
+        "name": "rebinding_127.0.0.1.nip.io_rejected",
+        "pass": true,
+        "detail": {
+          "answer": [
+            "127.0.0.1"
+          ],
+          "code": "non_public_address:odsgm.meb.gov.tr"
+        }
+      },
+      {
+        "name": "rejects:http://odsgm.meb.gov.tr/",
+        "pass": true,
+        "detail": "https_required"
+      },
+      {
+        "name": "rejects:https://localhost/",
+        "pass": true,
+        "detail": "host_not_allowed:localhost"
+      },
+      {
+        "name": "rejects:https://169.254.169.254/latest/meta-data",
+        "pass": true,
+        "detail": "host_not_allowed:169.254.169.254"
+      },
+      {
+        "name": "rejects:https://odsgm.meb.gov.tr:8443/",
+        "pass": true,
+        "detail": "url_authority_rejected"
+      },
+      {
+        "name": "rejects:https://user@odsgm.meb.gov.tr/",
+        "pass": true,
+        "detail": "url_authority_rejected"
+      },
+      {
+        "name": "rejects:https://meb.ai/x",
+        "pass": true,
+        "detail": "host_not_allowed:meb.ai"
+      },
+      {
+        "name": "missing_resolveDns_fails_closed",
+        "pass": true,
+        "detail": {
+          "code": "dns_unavailable:odsgm.meb.gov.tr",
+          "requested": 0
+        }
+      },
+      {
+        "name": "official_index_fetched_with_policy",
+        "pass": true,
+        "detail": {
+          "chain": [
+            {
+              "url": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+              "status": 200
+            }
+          ],
+          "links": 44,
+          "dates": {
+            "published": "2026-09-07",
+            "updated": "2026-09-10"
+          },
+          "turkce": [
+            "https://meb.ai/ankmeb4"
+          ]
+        }
+      },
+      {
+        "name": "official_file_via_meb_ai_hop",
+        "pass": true,
+        "detail": {
+          "chain": [
+            {
+              "url": "https://meb.ai/ankmeb4",
+              "status": 302
+            },
+            {
+              "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx",
+              "status": 200
+            }
+          ],
+          "bytes": 31410,
+          "sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+          "inspection": {
+            "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "entries": 21,
+            "expansion": 155671,
+            "flags": []
+          }
+        }
+      }
+    ],
+    "passed": true
+  },
+  "summary": {
+    "source": {
+      "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx",
+      "sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+      "bytes": 31410,
+      "chain": [
+        {
+          "url": "https://meb.ai/ankmeb4",
+          "status": 302
+        },
+        {
+          "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx",
+          "status": 200
+        }
+      ]
+    },
+    "candidates_imported": 46,
+    "published_candidate": {
+      "key": "tr-2026-2027-t1-turkce2-g5-c6",
+      "question_count": 6,
+      "blocks": {
+        "B1": 2,
+        "B2": 1,
+        "B3": 1,
+        "B4": 1,
+        "B5": 1
+      }
+    },
+    "generated_questions": 6,
+    "per_block": {
+      "B1": 2,
+      "B5": 1,
+      "B4": 1,
+      "B3": 1,
+      "B2": 1
+    },
+    "fit_summary_after_one_review": {
+      "fit": 1,
+      "total": 6,
+      "not_fit": 0,
+      "accepted": false,
+      "needs_revision": 0,
+      "pending_human_review": 5
+    }
+  },
+  "ui_checks": {
+    "admin_login_non_family_member": true,
+    "targets_listed_with_status": true,
+    "target_non_index_host_rejected_with_reason": true,
+    "new_year_target_added_without_download": true,
+    "extraction_queue_and_operator_step_visible": true,
+    "candidate_list_shows_source_status_and_separate_ai_prereview": true,
+    "real_edge_check_from_ui_same_hash_no_new_revision": true,
+    "no_page_exceptions_or_horizontal_overflow": true
+  },
+  "mobile_ui_checks": {
+    "parent_login": true,
+    "term1_shows_published_scenario_and_stale_notice": true,
+    "term2_unverified_free_study_no_term1_scenarios": true,
+    "next_year_registered_index_not_fetched_explicit": true,
+    "no_page_exceptions_or_horizontal_overflow": true
+  },
+  "passed": 39
+}

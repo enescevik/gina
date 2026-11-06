@@ -1,3 +1,4 @@
+import { answerKeyExtras } from "../_shared/answer-key.ts";
 import { json, preflight, serviceClient } from "../_shared/supabase.ts";
 import {
   type AiUserContent,
@@ -72,7 +73,7 @@ export function createReviewHandler(
         return json({ error: "question_not_found" }, 404);
       }
       const [question, answer, fingerprint] = await Promise.all([
-        db.from("question_bank").select("stem,expected_answer,solution,kind")
+        db.from("question_bank").select("stem,expected_answer,solution,kind,provenance")
           .eq("id", body.question_id).single(),
         db.from("exam_answers").select("answer_text,answer_document").eq(
           "attempt_id",
@@ -150,6 +151,8 @@ export function createReviewHandler(
           soru: question.data.stem,
           beklenen: question.data.expected_answer,
           cozum: question.data.solution,
+          // C04: alternatif doğru cevaplar + rubrik; eski sorularda boş listeler.
+          ...answerKeyExtras(question.data.provenance),
           ogrenci_metni: answer.data.answer_text,
         }),
       }, ...images];

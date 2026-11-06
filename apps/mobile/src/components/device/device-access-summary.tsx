@@ -10,8 +10,10 @@ type Child = { id: string; name: string; pin_set: boolean };
  * One-glance summary of a child device: single or shared, which children may enter and
  * whether each needs a PIN. Shows "not saved yet" while the draft differs from the server.
  */
-export function DeviceAccessSummary({ personal, pinRequired, allowed, dirty }: {
+export function DeviceAccessSummary({ personal, pinRequired, allowed, dirty, legacyPin = false }: {
   personal: boolean; pinRequired: boolean; allowed: Child[]; dirty: boolean;
+  /** Saved server policy is the older "existing" rule: only children who already have a PIN are asked. */
+  legacyPin?: boolean;
 }) {
   const { t } = useTranslation();
   const TypeIcon = personal ? UserRound : Users;
@@ -29,8 +31,8 @@ export function DeviceAccessSummary({ personal, pinRequired, allowed, dirty }: {
       <Row icon={<TypeIcon size={20} color="#6042DE" />} label={t("u02.access.type")} value={t(personal ? "u02.access.single" : "u02.access.shared")} />
       <Row icon={<Users size={20} color="#6042DE" />} label={t("u02.access.children", { count: allowed.length })}
         value={allowed.length ? allowed.map((c) => c.name).join(", ") : t("experience.noChildSelected")} />
-      <Row icon={<KeyRound size={20} color="#6042DE" />} label={t("u02.access.pin")} value={t(pinRequired ? "u02.access.pinRequired" : "u02.access.pinOptional")} />
-      {pinRequired && allowed.some((c) => !c.pin_set)
+      <Row icon={<KeyRound size={20} color="#6042DE" />} label={t("u02.access.pin")} value={legacyPin && !dirty ? t("c06.access.pinExisting") : t(pinRequired ? "u02.access.pinRequired" : "u02.access.pinOptional")} />
+      {pinRequired && !(legacyPin && !dirty) && allowed.some((c) => !c.pin_set)
         ? <Text style={[parentStyles.muted, { color: "#8A3A2E" }]}>{t("u02.access.pinMissing", { names: allowed.filter((c) => !c.pin_set).map((c) => c.name).join(", ") })}</Text>
         : null}
       {dirty ? <Text style={parentStyles.muted}>{t("u02.access.unsavedBody")}</Text> : null}

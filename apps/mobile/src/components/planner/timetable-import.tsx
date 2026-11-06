@@ -27,6 +27,7 @@ import {
 } from "lucide-react-native";
 import {
   type Json,
+  lessonsForSave,
   type Lesson,
   type LessonSettings,
   normalizeLessonTitle,
@@ -292,7 +293,7 @@ function ImportModal(
         p_request_id: receipt.current.id,
         p_import_id: selected.id,
         p_revision: initial.revision,
-        p_lessons: combined as unknown as Json,
+        p_lessons: lessonsForSave(combined) as unknown as Json,
         p_settings: settings as unknown as Json,
       });
       if (error) throw error;
