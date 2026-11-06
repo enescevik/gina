@@ -1,0 +1,75 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "check": "c12_t2_ai_in_app_confirm",
+      "passed": true,
+      "detail": {
+        "sizes": [
+          "d1280",
+          "t768"
+        ],
+        "esc_cancels": true,
+        "cancel_cancels": true,
+        "confirm_applies": true,
+        "focus_trapped": true
+      }
+    },
+    {
+      "check": "c12_t2_questions_in_app_confirm",
+      "passed": true,
+      "detail": {
+        "esc_cancels": true,
+        "confirm_deletes": true
+      }
+    },
+    {
+      "check": "b01_override_audit_actor_and_paging",
+      "passed": true,
+      "detail": {
+        "first_page": 30,
+        "total": 181,
+        "more_clicks": 6,
+        "seeded": 45,
+        "labels": [
+          "Siz",
+          "Başka yönetici",
+          "Sistem (otomatik)"
+        ]
+      }
+    },
+    {
+      "check": "b02_library_plan_labels_and_publish_confirm",
+      "passed": true,
+      "detail": {
+        "cancel_keeps": "draft",
+        "publish": "published",
+        "unpublish": "archived"
+      }
+    },
+    {
+      "check": "a3_4_sidebar_hidden_sections_hint",
+      "passed": true,
+      "detail": {
+        "hint": "↓ Aşağıda 12 bölüm daha",
+        "scrollTop": 371
+      }
+    },
+    {
+      "check": "a3_7_admin_revocation_single_notice",
+      "passed": true,
+      "detail": {
+        "notices": 1,
+        "rpc_refused": true
+      }
+    },
+    {
+      "check": "no_native_dialogs_no_page_errors",
+      "passed": true,
+      "detail": {
+        "native_dialogs": 0,
+        "page_errors": 0
+      }
+    }
+  ]
+}

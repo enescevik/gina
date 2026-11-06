@@ -20,7 +20,7 @@ Bu dosya A1/A2/A3 matrislerini ([A1](SCREEN-REVIEW-MATRIX-A1.md), [A2](SCREEN-RE
 Durum: **TE** test edildi (bu turda gerçek uygulamada dolaşıldı + denetim) · **DÜZ** bu turda düzeltildi ve yeniden test edildi · **ÖK** önceki rapordaki gerçek-UI kanıtıyla kapalı (bu turda yeniden açılmadı) · **G** görüldü, kısmen · **ENG** engelli (dış bağımlılık) · **GÖRÜLEMEDİ** (neden yazılı).
 Bakış hücreleri: ✓ kontrol edildi, sorun görülmedi · **D** düzeltildi · **A** açık takip (ID) · U uygulanmaz · — bu turda ayrıca bakılmadı (önceki kanıt).
 Sütunlar: Psi psikoloji · Ped pedagoji/çocuk gelişimi · Eğt eğitmen/ölçme · UX bilgi mimarisi · Gör görsel/etkileşim · Mim mimari/güvenlik · Erş erişilebilirlik/cihaz.
-Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `d4/` = `../d4-2026-11-06/ui/` (D4 sonrası kanıtlar); `d8/` = `../d8-2026-11-06/ui/` (D8 sonrası kanıtlar); `after/<id>-{phone,narrow,tablet,tabletLand}.png`, büyük yazı `after/<id>-zoom-zoom135.png`, ölçümler `after/metrics.json`, kontroller `after/checks.json`.
+Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `d4/` = `../d4-2026-11-06/ui/` (D4 sonrası kanıtlar); `d8/` = `../d8-2026-11-06/ui/` (D8 sonrası kanıtlar); `d11/` = `../d11-2026-11-06/ui/` (D11 sonrası kanıtlar); `after/<id>-{phone,narrow,tablet,tabletLand}.png`, büyük yazı `after/<id>-zoom-zoom135.png`, ölçümler `after/metrics.json`, kontroller `after/checks.json`.
 
 ## 1. Bulgu kaydı (bütün kimlikler)
 
@@ -79,12 +79,19 @@ Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `d4/` = `../d4-2026-11-06
 | B02 ortak soru editörü (`/questions` JSON şık) | P1 | **DÜZ** `1d351b0` | Şıklar alan alan + doğru cevap radyo grubu; bilinmeyen biçimde JSON korunur. `c12/backoffice/bo-questions-editor-desktop.png`, `bo-checks.json` → `questions_structured_choice_editor` (gerçek global soru ile). |
 | B03 grup önizlemesi | P2 | **ÖK kapalı** | `c07…/11-groups-preview-content-1280.png`. |
 | B04 sorumlu/hazır yanıt | P2 | **ÖK kapalı** | `b03-b04…/ui/11-support-assigned-1280.png`, `c07…/03-canned-replies-manage-1280.png`. |
-| Q00-A3-4 kenar menü kaydırma | P2 | **A** (kısmi, A3) | Headless kaydırma çubuğu görünmez; gerçek tarayıcı kontrolü C15. |
+| Q00-A3-4 kenar menü kaydırma | P2 | **DÜZ** D3 `053bd5f`, D11'de yeniden doğrulandı | Her zaman görünür “↓ Aşağıda N bölüm daha” düğmesi menüyü kaydırır (kaydırma çubuğundan bağımsız). `d11/screenshots/nav-more-hint-1280.png`, `d11/ui-checks.json` → `a3_4_sidebar_hidden_sections_hint` (1280×800: “Aşağıda 12 bölüm daha”, `scrollTop` 371). Bölüm gruplama ayrı karar (D11 README §Karar). |
 | Q00-A3-5 rol hatası ≠ yetkisiz | P2 | **DÜZ** `aeec266` | `c12/backoffice/bo-sign-in-role-error-desktop.png`, `bo-sign-in-no-role-desktop.png`; `bo-checks.json` iki kontrol geçti (rolsüz sentetik hesap, RPC 503 taklidi). |
 | Q00-A3-6 gizli dosya girişi | P2 | Gerekçeli sorun yok | Görünür “Paket yükle” düğmesi hedeftir; gizli `input` ölçümde 1 px. |
-| Q00-A3-7 yetki düşünce tek bildirim | P2 | **A** (kısmi) | Operatör: `c07…/14-revoked-*-1280.png`. Yönetici (`admins`) iptali yalnız pgTAP. |
-| `/ai` ve `/questions` `window.confirm` | P2 | **A** (Q00-C12-T2) | Tarayıcı diyaloğu erişilebilir ama onaylı dilde değil. |
-| Diğer A3 P2'ler (aile araması tam eşleşme, denetim “Yapan” UUID, AI model etki özeti, kütüphane paket etiketi ham kod, politika örnek hesap, katalog sunucu araması, yardım yazısı yapısı) | P2 | Bir kısmı C07/B03-B04/C11 ile kapandı (yardım yazısı yapısı `b03-b04…/06-help-article-draft-live-1280.png`, eşanlamlılar C11); kalanlar **A** → B01/B02/S04/S06 kimlikleri altında. | A3 tablo + C07/C11 raporları |
+| Q00-A3-7 yetki düşünce tek bildirim | P2 | **DÜZ** (operatör C07; yönetici D3 `053bd5f`, D11'de yeniden doğrulandı) | Operatör: `c07…/14-revoked-*-1280.png`. Yönetici: açık oturumda `admins` satırı silinir → tek “Yönetici yetkiniz kaldırıldı.” bildirimi, yönetici bölümleri menüden kalkar, aynı token ile RPC reddedilir. `d11/screenshots/admin-revoked-{1280,768}.png`, `d11/ui-checks.json` → `a3_7_admin_revocation_single_notice`. |
+| `/ai` ve `/questions` `window.confirm` | P2 | **DÜZ** (Q00-C12-T2) D3 `053bd5f`, D11'de yeniden doğrulandı | `components/confirm-dialog.tsx` (`<dialog>` + `showModal`, `aria-labelledby`, Esc/Vazgeç = hayır, ilk odak Vazgeç). `d11/screenshots/{ai,questions}-confirm-{d1280,t768}.png`; `d11/ui-checks.json` → `c12_t2_ai_in_app_confirm`, `c12_t2_questions_in_app_confirm` (tarayıcı diyaloğu 0, Tab diyalogdan çıkmadı). |
+| Diğer A3 P2'ler (aile araması tam eşleşme, denetim “Yapan” UUID, AI model etki özeti, kütüphane paket etiketi ham kod, politika örnek hesap, katalog sunucu araması, yardım yazısı yapısı) | P2 | Kapananlar aşağıda; kalan 4 madde **karar** (D11 README §Karar) | A3 tablo + C07/C11/B01/S06/P05 raporları; [`d11-2026-11-06`](../d11-2026-11-06/README.md) |
+| B01 `/overrides` denetim “Yapan” ham UUID; 30 kayıt sınırı | P2 | **DÜZ** (D11) | “Siz / Başka yönetici / Sistem (otomatik)”; kimlik yalnız “Hesap kimliği” açılınca. `audit_log.id` keyset ile “Daha eski kayıtları göster” (30'arlı, kesişimsiz). `d11/screenshots/overrides-audit-{d1280,t768}.png`, `overrides-audit-paged-768.png`; `b01_override_audit_actor_and_paging` (181 kayıt, 6 sayfa, 45 tohum satırı tekrarsız). Diğer yöneticinin e-postası: karar. |
+| B02 koleksiyon paket etiketi ham kod (`free/plus/pro`) | P2 | **DÜZ** (D11) | “Başlangıç / Plus / Pro”. `d11/screenshots/library-collection-plans-{d1280,t768}.png`; `b02_library_plan_labels_and_publish_confirm`. |
+| B02 kütüphane sorusu tek tıkla “İnceledim, yayımla” / “Yayından kaldır” | P2 | **DÜZ** (D11) | Uygulama içi onay: koleksiyon yayındaysa hangi paketlerdeki ailelerin hemen göreceği, değilse ne zaman görüneceği; kaldırmada arşiv ve aile kopyalarının değişmediği. Soru kartında durum (Taslak/Yayında/Arşivde). `d11/screenshots/library-{publish,unpublish}-confirm-*.png`; Vazgeç/Esc DB'yi değiştirmedi. |
+| B01 aile araması tam eşleşme; `/billing` geçmiş sayfalama | P2 | **ÖK kapalı** (B01) | `admin_families_search` e-postada `ilike` (≥3 karakter) + eşleşme çipleri; zaman çizgisi keyset (`entitlement-timeline.tsx`). `admin-workqueue-2026-11-06`. |
+| S06 AI model etki özeti; `/operations` sunucu filtre/sayfalama; tablet giriş yüksekliği | P2 | **ÖK kapalı** (S06/C12) | `admin_model_disable_preview`, politika matrisi ve sağlayıcı değişim etkisi kartı (`ai-providers-2026-11-06`); arıza kuyruğu `admin_ai_failed_operations` sunucu süzgeç + sayfa; Q00-C12-11 ölçümü temiz. |
+| B02 politika örnek hesap | P2 | **ÖK kapalı** (P05) | `library_policy_preview` (“Ödül kuralı önizlemesi”, kabul sayısına göre toplam ve çakışan kurallar). |
+| B01 aile listesi sıralama/durum süzgeci; B01 diğer yöneticinin adı; S04 senaryo adayı sunucu araması; S04 katalog kapsam denetimi; A3-4 menü gruplama | P2 | **Karar** (D11) | RPC/migration veya ürün kararı ister; öneri [`d11` §Karar](../d11-2026-11-06/README.md#karar-gereken). |
 
 
 ## 2. Rota envanteri × yedi bakış açısı
@@ -232,9 +239,9 @@ Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `d4/` = `../d4-2026-11-06
 
 | Takip | Öncelik | Kapsam | Neden açık |
 |---|---|---|---|
-| Q00-C12-T2 | P2 | `/ai`, `/questions` `window.confirm` → onaylı dilde diyalog | Tasarım kararı küçük; işlev çalışıyor |
 | Kapanan (D4) | — | Q00-C12-T1, Q00-C12-T3, Q00-C12-13; Q00-C12-12 ortak bileşen kısmı | [`d4-2026-11-06`](../d4-2026-11-06/README.md) |
 | Kapanan (D8) | — | Q00-C12-12 (kalan 8 `fade`), D4-1, D4-2, D4-3, D4-4 (iOS simülatörde doğrulandı) | [`d8-2026-11-06`](../d8-2026-11-06/README.md) |
 | D8-1 | P2 | D4-4 düzeltmesi fiziksel iPhone/iPad ve Android PDF yolunda doğrulanmadı; `groups`/`question-media` pencerelerinin reduced-motion ölçümü yapılmadı (veri yok) | C15 / sonraki fixture (D8) |
-| Q00-A3-4, Q00-A3-7 (yönetici kısmı), A3 kalan P2'ler | P2 | B01/B02/S04/S06 | A3/C07 raporlarında |
+| Kapanan (D11) | — | Q00-C12-T2, Q00-A3-4, Q00-A3-7 (yönetici kısmı) — kod D3'te, matris D11'de kapatıldı, yeniden doğrulandı; B01 denetim “Yapan” + sayfalama; B02 paket etiketi + soru yayımlama onayı; B01/S06/P05 ile önceden kapanan A3 P2'ler işaretlendi | [`d11-2026-11-06`](../d11-2026-11-06/README.md) |
+| D11-K1…K5 | P2 · karar | Aile listesi sıralama/süzgeç, diğer yönetici adı, senaryo adayı sunucu araması, katalog kapsam denetimi, menü gruplama | [`d11` §Karar](../d11-2026-11-06/README.md#karar-gereken) |
 | Fiziksel cihaz kabulü | — | VoiceOver/TalkBack, fontScale, safe area, dokunmatik defter, native yön, push | **C15** |
