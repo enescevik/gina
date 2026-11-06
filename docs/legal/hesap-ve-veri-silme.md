@@ -66,7 +66,7 @@ Bu silmeler de canlı sistemden hemen, yedeklerden en geç [30 gün] içinde kal
 | Görevler ve puanlar | Görevler, tamamlama/onay geçmişi, çocuk modu işlem kayıtları, yıldızlar, ödüller, not/puan bilgileri |
 | Takvim, notlar, gelişim | Takvim ve ders programı, notlar, gelişim (kilometre taşı) kayıtları |
 | Yüklenen belge ve görseller, Prova kayıtları | Aileye yüklenen görseller/PDF'ler (aile silinince; depolama nesnesi saatlik temizlikle), soru bankası, denemeler, çocuğun cevapları ve çözüm defterleri, yapay zekâ onay kayıtları ve değerlendirme önerileri; oluşturduğunuz öğretmen paylaşım bağlantıları |
-| Yapay zekâ çıktıları | Gina'daki tüm özetler ve ipuçları (Anthropic için Bölüm 7) |
+| Yapay zekâ çıktıları | Gina'daki tüm yapay zekâ özetleri ve çıktıları (Anthropic için Bölüm 7) |
 | Cihaz eşleştirmeleri | Eşleştirilmiş tabletler, anonim çocuk oturumları, eşleştirme kodları; anında geçersiz olur |
 | Bildirim belirteçleri | Push belirteçleri ve bildirim tercihleri (APNs/FCM için Bölüm 7; Expo kullanılmaz) |
 | Giriş bağlantıları | Apple ile Giriş (Apple'a belirteç iptali bildirilir), Google ile Giriş, e-posta/şifre girişi |
