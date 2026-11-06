@@ -125,16 +125,16 @@ export function FamilyHub() {
           ))}
           {target ? (
             <View testID="family-switch-impact" style={[parentStyles.card, { gap: 12, borderColor: "#A89BD4" }]}>
-              <Text accessibilityRole="header" style={parentStyles.title}>{t("u02.family.switchTo", { name: target.name })}</Text>
+              <Text accessibilityRole="header" style={parentStyles.title}>{t("c06.family.switchTo", { name: target.name })}</Text>
               <Impact lines={[
                 t("u02.family.opens", { name: target.name, children: t("experience.family.children", { count: target.children }) }),
-                t("u02.family.staysBehind", keep),
+                t("c06.family.staysBehind", keep),
                 t("u02.family.noMerge"),
                 t("u02.family.devicesStay"),
                 t("u02.family.switchBack"),
               ]} />
               <ErrorText error={switchFamily.error} />
-              <Button title={t("u02.family.switchAction", { name: target.name })} loading={switchFamily.isPending} disabled={busy} onPress={() => switchFamily.mutate(target)} />
+              <Button title={t("c06.family.switchAction", { name: target.name })} loading={switchFamily.isPending} disabled={busy} onPress={() => switchFamily.mutate(target)} />
               <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => setTarget(null)} />
             </View>
           ) : null}
@@ -172,12 +172,12 @@ export function FamilyHub() {
                     </View>
                   ) : null}
                   <Impact lines={[
-                    t("u02.family.joinOpens", { name: preview.family.name }),
-                    active ? t("u02.family.joinKeeps", { name: active.name }) : t("u02.family.joinFirst"),
+                    t("c06.family.joinOpens", { name: preview.family.name }),
+                    active ? t("c06.family.joinKeeps", { name: active.name }) : t("u02.family.joinFirst"),
                     t("u02.family.noMerge"),
                   ]} />
                   <ErrorText error={join.error} />
-                  <Button title={t("u02.family.joinAction", { name: preview.family.name })} loading={join.isPending} disabled={busy} onPress={() => join.mutate()} />
+                  <Button title={t("c06.family.joinAction", { name: preview.family.name })} loading={join.isPending} disabled={busy} onPress={() => join.mutate()} />
                 </>
               )}
               <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => setPreview(null)} />

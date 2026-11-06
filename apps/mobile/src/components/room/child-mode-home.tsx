@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { ChildScreen as Screen } from "@/components/room/child-screen";
 import { ErrorText } from "@/components/ui/screen";
+import { PinEntry } from "@/components/ui/pin-entry";
 import { useChildMode } from "@/lib/child-mode";
 import { supabase } from "@/lib/supabase";
 
@@ -95,17 +96,16 @@ export function ChildModeHome({
             </Text>
           )}
           <Text style={parentStyles.copy}>{t("unified.parentExitHelp")}</Text>
-          <Field
+          {/* C06: the same PIN control as every other 4-digit PIN; server locks after 5 wrong tries. */}
+          <PinEntry
             label={t("childMode.parentPin")}
-            keyboardType="number-pad"
-            secureTextEntry
-            maxLength={4}
-            editable={!busy}
             value={pin}
-            onChangeText={(value) => setPin(value.replace(/\D/g, ""))}
-            className="text-center text-2xl tracking-widest"
+            disabled={busy}
+            onChange={(value) => { setPin(value); setError(null); }}
+            onSubmit={() => void confirmExit()}
           />
           <ErrorText error={error} />
+          <Text style={parentStyles.muted}>{t("u02.pinRecovery.lock")}</Text>
           <Button
             title={t("childMode.exit")}
             loading={busy}

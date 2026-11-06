@@ -317,6 +317,7 @@ function DeviceForm({ data }: { data: DeviceAccess }) {
         pinRequired={pin}
         allowed={data.children.filter((c) => selected.includes(c.id))}
         dirty={savedSnapshot !== snapshot}
+        legacyPin={data.pin_policy === "existing" && !save.isSuccess}
       />
       <Button
         title={t("common.save")}

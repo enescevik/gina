@@ -10,7 +10,14 @@ import { ErrorText } from "@/components/ui/screen";
 import { ChildScreen as Screen, childStyles } from "@/components/room/child-screen";
 import { deviceAccess } from "@/lib/family-experience";
 import { refreshClaims } from "@/lib/session";
+import { InfoCard } from "@/components/ui/parent-screen";
 import { supabase } from "@/lib/supabase";
+
+/** Access removed by the parent: the server answers forbidden for this device. */
+const isRevoked = (error: unknown) => {
+  const detail = (error ?? {}) as { code?: string; message?: string };
+  return detail.code === "42501" || /forbidden/.test(detail.message ?? "");
+};
 
 /** Tablet: "Kim giriyor?" — profil seçimi, sonra PIN. */
 export default function ChildPickerScreen() {
@@ -27,6 +34,15 @@ export default function ChildPickerScreen() {
     if(error)throw error;if(!data)throw new Error(t('child.wrongPin'));
     await refreshClaims();router.replace('/child/today');
   },onError:()=>{void children.refetch();}});
+
+  if (isRevoked(children.error) || isRevoked(enter.error)) {
+    return (
+      <Screen tone="child" surface="access" title={t("u02.revoked.title")}>
+        <InfoCard title={t("u02.revoked.title")} body={t("u02.revoked.body")} />
+        <Button size="child" title={t("u02.revoked.action")} onPress={() => { void refreshClaims().catch(() => undefined).finally(() => router.replace({ pathname: "/device/pair", params: { revoked: "1" } })); }} />
+      </Screen>
+    );
+  }
 
   return (
     <Screen tone="child" surface="access" loading={children.isLoading} title={t("child.pickProfile")}>

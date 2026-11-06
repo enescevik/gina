@@ -3834,5 +3834,22 @@
   "u02.family.joinOpens": "After joining, {{name}} opens and you see its children, tasks and calendar together with your partner.",
   "u02.family.joinKeeps": "Your family {{name}} is not deleted; you can return under “Switch family”.",
   "u02.family.joinFirst": "This will be your account's first family.",
-  "u02.family.joinAction": "Join {{name}}"
+  "u02.family.joinAction": "Join {{name}}",
+  "c06.pair.resumed": "The code from the QR you scanned before signing in was kept. Confirm only if the device and family are right; nothing is connected until you do.",
+  "c06.pair.lostTitle": "The QR code is no longer valid",
+  "c06.pair.lostBody": "The code you scanned before signing in has expired or was already used. On the child's device tap “Create new code”, then scan the new QR or type the code below.",
+  "c06.pair.targetTitle": "Check the device before connecting",
+  "c06.pair.device": "Device (name typed on the child's device)",
+  "c06.pair.family": "Family it will join",
+  "c06.pair.checkDevice": "The name and code on the child's device must match. If they differ, do not confirm.",
+  "c06.pair.notThis": "Not this device",
+  "c06.pair.show": "Show device",
+  "c06.pair.previewFirst": "We first show the device name and the family it will join; no device is connected until you confirm.",
+  "c06.access.pinExisting": "Earlier setting: a child with a PIN enters with it, a child without a PIN taps the profile. Saving applies the choice above.",
+  "c06.family.switchTo": "Switch open family: {{name}}",
+  "c06.family.staysBehind": "Stays in the currently open “{{name}}”: {{children}} · connected devices: {{devices}}. Nothing is deleted.",
+  "c06.family.switchAction": "Continue with “{{name}}”",
+  "c06.family.joinOpens": "After joining, “{{name}}” opens and you see its children, tasks and calendar together with your partner.",
+  "c06.family.joinKeeps": "Your current family “{{name}}” is not deleted; you can return under “Switch family”.",
+  "c06.family.joinAction": "Join: {{name}}"
 }
