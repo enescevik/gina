@@ -13,15 +13,14 @@ import {
   attemptEndedByTime,
   attemptSummary,
   AnswerJournalConflict,
-  CLIENT_SUPPORTED_INTERACTION_TYPES,
   notebookHasAnswer,
   readNotebook,
   SerialWrites,
-  structuredAnswerSchema,
 } from "@gina/core";
+import { CHILD_SUPPORTED_TYPES } from "@/components/learning/question-types/support";
 import { StructuredQuestion, UpdateRequired } from "@/components/learning/question-types/StructuredQuestion";
 import { QuestionNavigator } from "@/components/learning/question-types/question-navigator";
-import { fillCounts, questionFillState } from "@/components/learning/question-types/model";
+import { clientAnswerSchema, fillCounts, questionFillState } from "@/components/learning/question-types/model";
 import {
   onlineManager,
   useMutation,
@@ -168,7 +167,7 @@ export default function TakeExamScreen() {
         }
         let structured: Answer["answer"];
         if (row.answer !== null) {
-          const parsed = structuredAnswerSchema.safeParse(row.answer);
+          const parsed = clientAnswerSchema.safeParse(row.answer);
           // Bilinmeyen cevap sürümü tahminle okunmaz: açık güncelleme yolu.
           if (!parsed.success) throw new Error("client_update_required");
           structured = parsed.data;
@@ -191,7 +190,7 @@ export default function TakeExamScreen() {
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_attempt_questions_v2", {
         p_exam_id: examId,
-        p_supported: [...CLIENT_SUPPORTED_INTERACTION_TYPES],
+        p_supported: [...CHILD_SUPPORTED_TYPES],
       });
       if (error) throw error;
       return data;

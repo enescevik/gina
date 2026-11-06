@@ -1,5 +1,5 @@
 import type { NotebookDocument } from "./notebook";
-import type { StructuredAnswer } from "./question-types";
+import type { Phase2aAnswer, StructuredAnswer } from "./question-types";
 
 /** Keeps an uncertain transport request stable until the server confirms its receipt.
  * A newer local edit is sent only after that receipt is reconciled. */
@@ -8,7 +8,7 @@ export interface AnswerValue {
   text?: string;
   document?: NotebookDocument;
   /** QT00 yapılandırılmış cevap (submit_exam_answer_v4 p_answer). */
-  answer?: StructuredAnswer;
+  answer?: StructuredAnswer | Phase2aAnswer;
 }
 export interface AnswerReceipt {
   id: string;

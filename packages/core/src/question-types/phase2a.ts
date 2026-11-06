@@ -31,6 +31,15 @@ export const phase2aAnswerSchemas = {
   two_stage: z.object({ ...tag("two_stage"), stage1: ID.optional(), stage2: z.union([ID, z.object({ text: z.string().max(2000) }).strict()]).optional() }).strict(),
 } satisfies Record<Phase2aInteractionType, z.ZodType>;
 export type Phase2aAnswer = z.infer<(typeof phase2aAnswerSchemas)[Phase2aInteractionType]>;
+export type Phase2aAnswerOf<T extends Phase2aInteractionType> = Extract<Phase2aAnswer, { type: T }>;
+export type Phase2aPayload<T extends Phase2aInteractionType> = z.infer<(typeof phase2aPayloadSchemas)[T]>;
+/** 2A cevap birleşimi (istemci günlüğü/okuma için; sunucu yine doğrular). */
+export const phase2aAnswerSchema = z.discriminatedUnion("type", [
+  phase2aAnswerSchemas.mark_text,
+  phase2aAnswerSchemas.error_fix,
+  phase2aAnswerSchemas.multi_choice,
+  phase2aAnswerSchemas.two_stage,
+]);
 
 type Obj = Record<string, unknown>;
 const isObj = (v: unknown): v is Obj => !!v && typeof v === "object" && !Array.isArray(v);
