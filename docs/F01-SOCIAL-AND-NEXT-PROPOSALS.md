@@ -138,7 +138,7 @@ Tablolar: `gina.community_rooms`, `community_memberships` (user, room, alias sna
 
 | | |
 |---|---|
-| Bugün (MEVCUT) | Tablet anonim Auth + **6 haneli eşleştirme kodu**; iptal anında (`devices.revoked_at`); çocuk PIN'i. |
+| Bugün (MEVCUT) | Tablet anonim Auth + **6 haneli eşleştirme kodu**; iptal anında (`devices.revoked_at`); çocuk PIN'i. (Güncel durum, 6 Kasım 2026: QR çocuk cihazında gösterilir ve veli telefonu okur (U02); kod C13-AUTH-1 ile 8 karakter, önizleme jetonu ve deneme kilidiyle — `docs/release/c13-2026-11-06/AUTH-1-FIX.md`. Bu satır önerinin yazıldığı günkü durumdur.) |
 | Öneri | Veli telefonunda tek kullanımlık QR (kod + kısa imza, 2 dk TTL) → tablet kamerayla okur; aynı RPC'ye düşer. 6 hane **kalır** (kamera izni vermeyenler, web). |
 | Kapsam | Mobil: QR üretimi (veli) + tarayıcı (çocuk cihazı) — `expo-camera`; sunucu: mevcut pairing RPC'ye `source: 'qr'` alanı; web'de QR yalnız gösterim. 2–3 gün. |
 | Bağımlılık | Kamera izni metni (App Store/Play), erişilebilirlik (QR okunamazsa koda düşüş), fiziksel cihaz testi (X05). |

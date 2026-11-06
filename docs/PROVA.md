@@ -10,7 +10,7 @@ Modül **Prova**; içindeki her çalışma bir **deneme**, ilk kullanımda (ve i
 
 1. **Soru kütüphanesi** (`question_bank`): elle ya da AI ile üretilen her soru ders + sınıf + konu (+ senaryo kodu) ile kaydedilir; şıklı (`multiple_choice`) ya da açık uçlu (`open_ended`); zorluk `kolay | orta | orta_ustu | zor`; **beklenen cevap, çözüm yolu, anlatım** soruyla birlikte; `source_urls` (resmî kaynaklar öncelikli) ve `provenance` (üreten kişi/AI, model, prompt, prompt sürümü) tutulur; `times_asked` sorunun kaç denemede kullanıldığını sayar. İleride kitapçık (PDF) bu kütüphaneden derlenir.
 2. **Senaryolar** (`exam_blueprints`): ör. «Fen 5. sınıf Senaryo 2» = `[{topic, count}]` satırları + kaynak URL. Ebeveyn MEB tablosunu yükler/yapıştırır; AI konu başına soru sayısı önerir, ebeveyn düzenler.
-3. **Deneme** (`exams`): senaryodan ya da elle soru seçerek oluşur; süreli/süresiz; çocuk tablet/telefonda çözer (`exam_attempts`, `exam_answers`): şıklılar anında otomatik puanlanır; açık uçlular AI değerlendirmesine düşer (puan + eksik noktalar + iyileştirme önerileri). Sonuçtan istenirse çalışma planı üretilir (görev şablonları + takvim etkinlikleri).
+3. **Deneme** (`exams`): senaryodan ya da elle soru seçerek oluşur; süreli/süresiz; çocuk tablet/telefonda çözer (`exam_attempts`, `exam_answers`): şıklılar anında otomatik puanlanır; açık uçlular veli onayıyla AI değerlendirmesine gönderilebilir (puan önerisi + eksik noktalar + iyileştirme önerileri); AI puanı öneridir, kesin puan yalnız veli kabul ettiğinde (`accept_ai_grade`) veya kendisi puan verdiğinde oluşur (C08, `20261106290000_ai_routing_and_grade_split.sql`). Sonuçtan istenirse çalışma planı üretilir (görev şablonları + takvim etkinlikleri).
 4. **Seviye tespiti:** ders+sınıf için dengeli bir deneme üretip sonucu `level` olarak kaydeder; sonraki üretimlerde zorluk dağılımına girdi olur.
 
 ## AI soru üretimi (Edge Function `prova-generate`, Anthropic anahtarıyla açılır)
@@ -30,7 +30,7 @@ Bu istek Prova'da şuna çevrilir: üç deneme (ders başına bir), her biri ilg
 
 ## AI değerlendirme (Edge Function `prova-grade`)
 
-Açık uçlu cevapları beklenen cevap + çözüm yoluna göre 0-100 puanlar; `eksikler[]`, `iyilestirme_onerileri[]`, `kisa_geri_bildirim` döndürür; denemenin tamamı için konu bazlı güçlü/zayıf alanlar çıkarır. İstenirse `plan_olustur` ile zayıf konulardan görev şablonları ve tekrar takvimi önerir (veli onaylayınca yazılır).
+Açık uçlu cevaplar için beklenen cevap + çözüm yoluna göre 0-100 **puan önerisi** üretir (yalnız `ai_score`/`ai_feedback`/`ai_details` yazılır; kesin `score` veli yolundan gelir); `eksikler[]`, `iyilestirme_onerileri[]`, `kisa_geri_bildirim` döndürür; denemenin tamamı için konu bazlı güçlü/zayıf alanlar çıkarır. İstenirse `plan_olustur` ile zayıf konulardan görev şablonları ve tekrar takvimi önerir (veli onaylayınca yazılır).
 
 ## Paket kapısı
 

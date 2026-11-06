@@ -181,7 +181,7 @@ TestFlight çocuk hesabında yaş sınırı nedeniyle açılamadığı için iPa
 - [x] Lint ve typecheck geçti. Bu kontroller mevcut kaynak ağacına aittir; iPad’deki paket build 6’dır.
 - [ ] Aile eşleştirme ve diğer gerçek cihaz kabul kontrolleri kullanıcıyla tamamlanacak.
 
-Tablette **Bu cihaz çocuk tableti → Eşleştirme kodu al** seçilir. Veli telefonunda Gina hesabına girilip **Cihaz ekle** üzerinden tablet kodu girilir (10 dakika geçerli). Tablette ayrı çocuk e-posta hesabı oluşturmak gerekmez. Kurulum sonrasında kablo bağlantısı gerekmez; eşleştirme/senkronizasyon için internet gerekir.
+Tablette **Bu cihaz çocuk tableti → Eşleştirme kodu al** seçilir. Veli telefonunda Gina hesabına girilip **Cihaz ekle** üzerinden tabletteki QR okutulur ya da 8 karakterli kod (4+4 gruplu, ör. `ACDE FH34`) girilir; kod 10 dakika geçerlidir, cihaz önizlendikten sonra 5 dakika içinde onaylanır. 10 dakikada 10 yanlış denemeden sonra (ailede toplam 20) kod girişi 15 dakika kilitlenir. Tablet bağlandığı aile adını gösterir; aile yanlışsa 15 dakika içinde **Bu benim ailem değil** ile eşleşmeyi iptal eder. (Bu akış migration `20261106340000` ve yeni mobil sürümle gelir; eski build 6 eski 6 haneli akışı gösterir.) Tablette ayrı çocuk e-posta hesabı oluşturmak gerekmez. Kurulum sonrasında kablo bağlantısı gerekmez; eşleştirme/senkronizasyon için internet gerekir.
 
 Ad Hoc kimlik bilgileri EAS’te ve Git’in yok saydığı `apps/mobile/credentials.json` / `apps/mobile/credentials/ios/` altında, `600` dosya izniyle tutuluyor. Geçici imzalama keychain’i işlem sonunda silindi. IPA bu profile kayıtlı cihaz içindir; yeni cihaz eklendiğinde profil/paket yeniden hazırlanmalıdır.
 
@@ -203,7 +203,7 @@ Doğal pet esnemesi/oyunu/sesi ve canlı konuma bağlı hava henüz yalnız stat
 ## 7. Mağazaya çıkmadan önce senden gerekenler
 
 1. Alan adı ve destek e-postası seç; satın almayı kendi hesabından yap. Gizlilik ve destek sayfalarının kalıcı HTTPS adresleri gerekiyor.
-2. Şirket/gerçek kişi yayıncı bilgilerini ve yasal iletişim adresini kesinleştir. `docs/legal` taslaklarını gerçek ürün davranışıyla birlikte yetkin danışmana kontrol ettir; taslak metinleri doldurmadan yayınlama.
+2. Yayıncı bilgilerini ve yasal iletişim adresini kesinleştir. Karar (DECISIONS.md, "Hukuki kimlik"): bireysel geliştirici (gerçek kişi) olarak başlanır; şirket kurmak yayının ön şartı değildir, mağazada satıcı adı olarak yasal ad görünür, belgelerde MERSİS yerine VKN/TCKN yazılır. `docs/legal` taslaklarını gerçek ürün davranışıyla birlikte yetkin danışmana kontrol ettir; taslak metinleri doldurmadan yayınlama.
 3. App Store Connect’te yaş derecelendirmesi ve App Privacy sorularını kullanılan veri akışlarına göre cevapla. Çocuklara yönelik sınıflandırmayı yalnız görsel tarza göre seçme.
 4. Ücretli özellik çıkacaksa sözleşme/banka/vergi ve abonelik ürünlerini hesabında tamamla; satın alma/geri yükleme ve sunucu doğrulaması çalışmadan paketleri satışa açma.
 5. Nihai cihaz ekran görüntüleri, destek/gizlilik URL’leri, inceleme notları ve inceleme için ayrı test hesabı hazır olunca mağaza başvurusunu yapacağız. Apple inceleme sonucunu önceden garanti edemeyiz.
@@ -284,7 +284,7 @@ Son iOS build'inin gerçek ekranlarını örnek aile verileriyle çek. Repodaki 
 - [ ] **Age Rating:** anketi gerçek özelliklere göre cevapla; yaş derecesini tahmin ederek seçme.
 - [ ] **Made for Kids:** sırf çocuk ekranı bulunduğu için işaretleme. Hedef kitle, mağaza metinleri ve Kids kurallarını birlikte değerlendir. Bu sınıflandırma onaydan sonra değiştirilemez. [Apple: uygulama bilgileri ve Made for Kids](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information).
 - [ ] **Pricing and Availability:** ücretsiz indirme + uygulama içi abonelik modeli seçilirse indirme fiyatı **Free** olur. Yayın ülkelerini seç; abonelikleri **Subscriptions** altında ayrıca kur. Ücretli kapsamı cihazda satın alma/geri yükleme ve sunucu doğrulaması geçmeden satışa açma.
-- [ ] **App Review Information:** çalışan ayrı inceleme hesabı, iletişim bilgileri, çocuk modu/PIN/eşleştirme adımları ve varsa özel erişim talimatları. Gerçek aile hesabını verme.
+- [ ] **App Review Information:** çalışan ayrı inceleme hesabı, iletişim bilgileri, çocuk modu/PIN/eşleştirme adımları ve varsa özel erişim talimatları. Gerçek aile hesabını verme. Eşleştirme notu güncel akışı anlatmalı: kod tablette/ikinci cihazda üretilir, **8 karakter** (QR ile de okunur), önizlemeden sonra 5 dakika içinde onaylanır; yanlış kodlar 10 denemede 15 dakika kilitler (inceleyici kodu elle yazacaksa bunu belirt). Çocuk PIN'i isteğe bağlıdır; PIN'siz çocuk profiline dokunarak girer, ebeveyn alanına dönüş 4 haneli ebeveyn PIN'i ister (inceleme hesabının ebeveyn PIN'ini nota yaz). AI özellikleri yalnız ücretli pakette ve her işlemde ayrı onayla çalışır; tek sağlayıcı Anthropic.
 - [ ] **Build:** yüklenen ve işlenmesi tamamlanan doğru sürümü seç. App Store sürüm kaydı ile build sürümünü eşleştir.
 - [ ] **Copyright / Content Rights:** gerçek hak sahibini ve kullanılan içeriklerin lisans durumunu doğru belirt.
 - [ ] **Version Release:** ilk yayın için **Manually release this version** önerilir; Apple onayından sonra yayın zamanını sen belirlersin.
