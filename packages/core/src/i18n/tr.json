@@ -797,7 +797,7 @@
   "parentV5.newParentPin": "Yeni ebeveyn PIN’i",
   "parentV5.avatarLabel": "Görünüm {{number}}",
   "parentV5.childModeTitle": "Çocuk modu",
-  "parentV5.childModeSubtitle": "Telefonunuzu çocuğunuza verecekseniz eşleştirme gerekmez. Önce güvenlik bölümünde ebeveyn PIN’ini, çocuk profilinde de çocuk PIN’ini belirleyin.",
+  "parentV5.childModeSubtitle": "Telefonunuzu çocuğunuza verecekseniz eşleştirme gerekmez. Çocuk modundan çıkmak için önce güvenlik bölümünde ebeveyn PIN’ini belirleyin; çocuk PIN’i isteğe bağlıdır.",
   "parentV5.noChildren": "Henüz çocuk profili yok",
   "release.networkError": "Bağlantı kurulamadı. İnternetini kontrol edip yeniden dene.",
   "release.genericError": "İşlem tamamlanamadı. Biraz sonra yeniden dene.",
