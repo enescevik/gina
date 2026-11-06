@@ -1,5 +1,5 @@
 import {ConnectionMoment} from "@/components/ui/quiet-motion";
-import { router, useFocusEffect } from "expo-router";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AppState, Text, View } from "react-native";
@@ -8,7 +8,7 @@ import { PairingQr } from "@/components/device/pairing-qr";
 import { PairingSteps } from "@/components/device/pairing-steps";
 import { Field } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
-import { ParentScreen, parentStyles } from "@/components/ui/parent-screen";
+import { InfoCard, ParentScreen, parentStyles } from "@/components/ui/parent-screen";
 import { ErrorText } from "@/components/ui/screen";
 import { refreshClaims, useSession } from "@/lib/session";
 import { unregisterPush } from "@/lib/push";
@@ -20,6 +20,7 @@ const pairingLink = (code: string) => Linking.createURL("/parent/pair-device", {
 export default function PairScreen() {
   const { t } = useTranslation();
   const { session, claims, loading, isAnonymous } = useSession();
+  const { revoked } = useLocalSearchParams<{ revoked?: string }>();
   const [deviceName,setDeviceName] = useState(t("unified.defaultDeviceName"));
   const [pairing, setPairing] = useState<{ code: string; expires: number } | null>(null);
   const [remaining, setRemaining] = useState(0);
@@ -69,6 +70,7 @@ export default function PairScreen() {
     catch (e) { leaving.current = false; setError(e); } finally { setBusy(false); }
   }
   return <ParentScreen navigation={false} title={t("unified.pairTitle")} subtitle={t("unified.pairBody")}>
+    {revoked === "1" && !pairing ? <InfoCard title={t("u02.revoked.title")} body={t("u02.revoked.body")} /> : null}
     <ConnectionMoment status={pairing && remaining ? "waiting" : "idle"}/>
     {!pairing ? <Field label={t("unified.deviceName")} hint={t("unified.deviceNameHint")} value={deviceName} onChangeText={setDeviceName} maxLength={60} editable={!busy}/> : null}
     {pairing && remaining ? <View testID="pairing-active" style={[parentStyles.card, { alignItems: "center", paddingVertical: 28 }]}>

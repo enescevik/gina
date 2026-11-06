@@ -43,8 +43,8 @@ export default function ChildPinScreen() {
       // Access removed while this screen was open: say so calmly, then let the layout
       // move the device back to pairing once the refreshed session has no device role.
       if (isRevoked(e)) {
+        // Claims are refreshed only when the child taps on, so this message stays readable.
         setRevoked(true);
-        void refreshClaims().catch(() => undefined);
       } else setError(e);
     } finally {
       setBusy(false);
@@ -55,7 +55,7 @@ export default function ChildPinScreen() {
     return (
       <Screen tone="child" surface="access" title={t("u02.revoked.title")}>
         <InfoCard title={t("u02.revoked.title")} body={t("u02.revoked.body")} />
-        <Button size="child" title={t("u02.revoked.action")} onPress={() => router.replace("/")} />
+        <Button size="child" title={t("u02.revoked.action")} onPress={() => { void refreshClaims().catch(() => undefined).finally(() => router.replace({ pathname: "/device/pair", params: { revoked: "1" } })); }} />
       </Screen>
     );
   }
