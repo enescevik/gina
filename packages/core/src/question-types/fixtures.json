@@ -1895,6 +1895,572 @@
    "errors": [
     "stage_invalid"
    ]
+  },
+  {
+   "name": "region grid count valid",
+   "type": "region_select",
+   "payload": {
+    "figure": {
+     "kind": "grid",
+     "rows": 2,
+     "cols": 4
+    },
+    "regions": [
+     {
+      "id": "g1",
+      "text": "Parça 1"
+     },
+     {
+      "id": "g2",
+      "text": "Parça 2"
+     },
+     {
+      "id": "g3",
+      "text": "Parça 3"
+     },
+     {
+      "id": "g4",
+      "text": "Parça 4"
+     },
+     {
+      "id": "g5",
+      "text": "Parça 5"
+     },
+     {
+      "id": "g6",
+      "text": "Parça 6"
+     },
+     {
+      "id": "g7",
+      "text": "Parça 7"
+     },
+     {
+      "id": "g8",
+      "text": "Parça 8"
+     }
+    ]
+   },
+   "key": {
+    "count": 3
+   },
+   "valid": true
+  },
+  {
+   "name": "region grid size mismatch",
+   "type": "region_select",
+   "payload": {
+    "figure": {
+     "kind": "grid",
+     "rows": 3,
+     "cols": 4
+    },
+    "regions": [
+     {
+      "id": "g1",
+      "text": "Parça 1"
+     },
+     {
+      "id": "g2",
+      "text": "Parça 2"
+     },
+     {
+      "id": "g3",
+      "text": "Parça 3"
+     },
+     {
+      "id": "g4",
+      "text": "Parça 4"
+     },
+     {
+      "id": "g5",
+      "text": "Parça 5"
+     },
+     {
+      "id": "g6",
+      "text": "Parça 6"
+     },
+     {
+      "id": "g7",
+      "text": "Parça 7"
+     },
+     {
+      "id": "g8",
+      "text": "Parça 8"
+     }
+    ]
+   },
+   "key": {
+    "count": 3
+   },
+   "valid": false,
+   "errors": [
+    "figure_invalid"
+   ]
+  },
+  {
+   "name": "region count all rejected",
+   "type": "region_select",
+   "payload": {
+    "figure": {
+     "kind": "grid",
+     "rows": 2,
+     "cols": 4
+    },
+    "regions": [
+     {
+      "id": "g1",
+      "text": "Parça 1"
+     },
+     {
+      "id": "g2",
+      "text": "Parça 2"
+     },
+     {
+      "id": "g3",
+      "text": "Parça 3"
+     },
+     {
+      "id": "g4",
+      "text": "Parça 4"
+     },
+     {
+      "id": "g5",
+      "text": "Parça 5"
+     },
+     {
+      "id": "g6",
+      "text": "Parça 6"
+     },
+     {
+      "id": "g7",
+      "text": "Parça 7"
+     },
+     {
+      "id": "g8",
+      "text": "Parça 8"
+     }
+    ]
+   },
+   "key": {
+    "count": 8
+   },
+   "valid": false,
+   "errors": [
+    "key_value_invalid"
+   ]
+  },
+  {
+   "name": "region image targets valid",
+   "type": "region_select",
+   "payload": {
+    "figure": {
+     "kind": "image",
+     "source": "question_media"
+    },
+    "regions": [
+     {
+      "id": "r1",
+      "text": "Ankara",
+      "box": [
+       0.4,
+       0.3,
+       0.1,
+       0.1
+      ]
+     },
+     {
+      "id": "r2",
+      "text": "İzmir",
+      "box": [
+       0.1,
+       0.4,
+       0.1,
+       0.1
+      ]
+     },
+     {
+      "id": "r3",
+      "text": "Van",
+      "box": [
+       0.8,
+       0.4,
+       0.1,
+       0.1
+      ]
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "r1"
+    ]
+   },
+   "valid": true
+  },
+  {
+   "name": "region image count not allowed",
+   "type": "region_select",
+   "payload": {
+    "figure": {
+     "kind": "image",
+     "source": "question_media"
+    },
+    "regions": [
+     {
+      "id": "r1",
+      "text": "Ankara",
+      "box": [
+       0.4,
+       0.3,
+       0.1,
+       0.1
+      ]
+     },
+     {
+      "id": "r2",
+      "text": "İzmir",
+      "box": [
+       0.1,
+       0.4,
+       0.1,
+       0.1
+      ]
+     },
+     {
+      "id": "r3",
+      "text": "Van",
+      "box": [
+       0.8,
+       0.4,
+       0.1,
+       0.1
+      ]
+     }
+    ]
+   },
+   "key": {
+    "count": 1
+   },
+   "valid": false,
+   "errors": [
+    "key_invalid"
+   ]
+  },
+  {
+   "name": "region image box out of bounds",
+   "type": "region_select",
+   "payload": {
+    "figure": {
+     "kind": "image",
+     "source": "question_media"
+    },
+    "regions": [
+     {
+      "id": "r1",
+      "text": "a",
+      "box": [
+       0.95,
+       0.3,
+       0.1,
+       0.1
+      ]
+     },
+     {
+      "id": "r2",
+      "text": "b",
+      "box": [
+       0.1,
+       0.1,
+       0.1,
+       0.1
+      ]
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "r1"
+    ]
+   },
+   "valid": false,
+   "errors": [
+    "region_box_invalid"
+   ]
+  },
+  {
+   "name": "clock read valid",
+   "type": "clock",
+   "payload": {
+    "mode": "read",
+    "display": "analog",
+    "step_minutes": 5,
+    "shown_time": "07:30"
+   },
+   "key": {
+    "time": "07:30"
+   },
+   "valid": true
+  },
+  {
+   "name": "clock read shown differs from key",
+   "type": "clock",
+   "payload": {
+    "mode": "read",
+    "display": "analog",
+    "step_minutes": 5,
+    "shown_time": "07:30"
+   },
+   "key": {
+    "time": "08:30"
+   },
+   "valid": false,
+   "errors": [
+    "clock_invalid"
+   ]
+  },
+  {
+   "name": "clock key off step",
+   "type": "clock",
+   "payload": {
+    "mode": "set",
+    "display": "analog",
+    "step_minutes": 5
+   },
+   "key": {
+    "time": "07:32"
+   },
+   "valid": false,
+   "errors": [
+    "key_not_on_step"
+   ]
+  },
+  {
+   "name": "clock bad key",
+   "type": "clock",
+   "payload": {
+    "mode": "set",
+    "display": "analog",
+    "step_minutes": 5
+   },
+   "key": {
+    "time": "25:00"
+   },
+   "valid": false,
+   "errors": [
+    "key_invalid"
+   ]
+  },
+  {
+   "name": "stimulus table on true/false",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "3A en kalabalık sınıftır."
+     },
+     {
+      "id": "s2",
+      "text": "3C'de 25 öğrenci var."
+     }
+    ],
+    "stimulus": {
+     "kind": "table",
+     "caption": "Sınıf mevcudu",
+     "alt": "Üç sınıfın öğrenci sayıları tablosu",
+     "columns": [
+      "Sınıf",
+      "Öğrenci"
+     ],
+     "rows": [
+      [
+       "3A",
+       24
+      ],
+      [
+       "3B",
+       22
+      ],
+      [
+       "3C",
+       25
+      ]
+     ]
+    }
+   },
+   "key": {
+    "answers": {
+     "s1": false,
+     "s2": true
+    }
+   },
+   "valid": true
+  },
+  {
+   "name": "stimulus bar chart on numeric",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false,
+    "stimulus": {
+     "kind": "bar_chart",
+     "alt": "Haftalık kitap okuma grafiği",
+     "x_label": "Gün",
+     "y_label": "Sayfa",
+     "bars": [
+      {
+       "label": "Pzt",
+       "value": 10
+      },
+      {
+       "label": "Sal",
+       "value": 15
+      }
+     ]
+    }
+   },
+   "key": {
+    "value": "25"
+   },
+   "valid": true
+  },
+  {
+   "name": "stimulus missing alt",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "3A en kalabalık sınıftır."
+     },
+     {
+      "id": "s2",
+      "text": "3C'de 25 öğrenci var."
+     }
+    ],
+    "stimulus": {
+     "kind": "table",
+     "caption": "Sınıf mevcudu",
+     "columns": [
+      "Sınıf",
+      "Öğrenci"
+     ],
+     "rows": [
+      [
+       "3A",
+       24
+      ],
+      [
+       "3B",
+       22
+      ],
+      [
+       "3C",
+       25
+      ]
+     ]
+    }
+   },
+   "key": {
+    "answers": {
+     "s1": false,
+     "s2": true
+    }
+   },
+   "valid": false,
+   "errors": [
+    "stimulus_alt_invalid"
+   ]
+  },
+  {
+   "name": "stimulus ragged table",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "3A en kalabalık sınıftır."
+     },
+     {
+      "id": "s2",
+      "text": "3C'de 25 öğrenci var."
+     }
+    ],
+    "stimulus": {
+     "kind": "table",
+     "caption": "Sınıf mevcudu",
+     "alt": "Üç sınıfın öğrenci sayıları tablosu",
+     "columns": [
+      "Sınıf",
+      "Öğrenci"
+     ],
+     "rows": [
+      [
+       "3A"
+      ]
+     ]
+    }
+   },
+   "key": {
+    "answers": {
+     "s1": false,
+     "s2": true
+    }
+   },
+   "valid": false,
+   "errors": [
+    "stimulus_invalid"
+   ]
+  },
+  {
+   "name": "stimulus unknown field",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "3A en kalabalık sınıftır."
+     },
+     {
+      "id": "s2",
+      "text": "3C'de 25 öğrenci var."
+     }
+    ],
+    "stimulus": {
+     "kind": "table",
+     "caption": "Sınıf mevcudu",
+     "alt": "Üç sınıfın öğrenci sayıları tablosu",
+     "columns": [
+      "Sınıf",
+      "Öğrenci"
+     ],
+     "rows": [
+      [
+       "3A",
+       24
+      ],
+      [
+       "3B",
+       22
+      ],
+      [
+       "3C",
+       25
+      ]
+     ],
+     "answer": "3C"
+    }
+   },
+   "key": {
+    "answers": {
+     "s1": false,
+     "s2": true
+    }
+   },
+   "valid": false,
+   "errors": [
+    "stimulus_invalid"
+   ]
   }
  ],
  "scoring": [
@@ -5274,6 +5840,475 @@
     "answer_state": "complete",
     "outcome": "pending_human"
    }
+  },
+  {
+   "name": "region count exact",
+   "type": "region_select",
+   "payload": {
+    "figure": {
+     "kind": "grid",
+     "rows": 2,
+     "cols": 4
+    },
+    "regions": [
+     {
+      "id": "g1",
+      "text": "Parça 1"
+     },
+     {
+      "id": "g2",
+      "text": "Parça 2"
+     },
+     {
+      "id": "g3",
+      "text": "Parça 3"
+     },
+     {
+      "id": "g4",
+      "text": "Parça 4"
+     },
+     {
+      "id": "g5",
+      "text": "Parça 5"
+     },
+     {
+      "id": "g6",
+      "text": "Parça 6"
+     },
+     {
+      "id": "g7",
+      "text": "Parça 7"
+     },
+     {
+      "id": "g8",
+      "text": "Parça 8"
+     }
+    ]
+   },
+   "key": {
+    "count": 3
+   },
+   "answer": {
+    "type": "region_select",
+    "v": 1,
+    "selected": [
+     "g1",
+     "g5",
+     "g8"
+    ]
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "region count wrong",
+   "type": "region_select",
+   "payload": {
+    "figure": {
+     "kind": "grid",
+     "rows": 2,
+     "cols": 4
+    },
+    "regions": [
+     {
+      "id": "g1",
+      "text": "Parça 1"
+     },
+     {
+      "id": "g2",
+      "text": "Parça 2"
+     },
+     {
+      "id": "g3",
+      "text": "Parça 3"
+     },
+     {
+      "id": "g4",
+      "text": "Parça 4"
+     },
+     {
+      "id": "g5",
+      "text": "Parça 5"
+     },
+     {
+      "id": "g6",
+      "text": "Parça 6"
+     },
+     {
+      "id": "g7",
+      "text": "Parça 7"
+     },
+     {
+      "id": "g8",
+      "text": "Parça 8"
+     }
+    ]
+   },
+   "key": {
+    "count": 3
+   },
+   "answer": {
+    "type": "region_select",
+    "v": 1,
+    "selected": [
+     "g1",
+     "g5"
+    ]
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "region none",
+   "type": "region_select",
+   "payload": {
+    "figure": {
+     "kind": "grid",
+     "rows": 2,
+     "cols": 4
+    },
+    "regions": [
+     {
+      "id": "g1",
+      "text": "Parça 1"
+     },
+     {
+      "id": "g2",
+      "text": "Parça 2"
+     },
+     {
+      "id": "g3",
+      "text": "Parça 3"
+     },
+     {
+      "id": "g4",
+      "text": "Parça 4"
+     },
+     {
+      "id": "g5",
+      "text": "Parça 5"
+     },
+     {
+      "id": "g6",
+      "text": "Parça 6"
+     },
+     {
+      "id": "g7",
+      "text": "Parça 7"
+     },
+     {
+      "id": "g8",
+      "text": "Parça 8"
+     }
+    ]
+   },
+   "key": {
+    "count": 3
+   },
+   "answer": {
+    "type": "region_select",
+    "v": 1,
+    "selected": []
+   },
+   "expect": {
+    "score": null,
+    "answer_state": "unanswered",
+    "outcome": "unanswered"
+   }
+  },
+  {
+   "name": "region target hit",
+   "type": "region_select",
+   "payload": {
+    "figure": {
+     "kind": "image",
+     "source": "question_media"
+    },
+    "regions": [
+     {
+      "id": "r1",
+      "text": "Ankara",
+      "box": [
+       0.4,
+       0.3,
+       0.1,
+       0.1
+      ]
+     },
+     {
+      "id": "r2",
+      "text": "İzmir",
+      "box": [
+       0.1,
+       0.4,
+       0.1,
+       0.1
+      ]
+     },
+     {
+      "id": "r3",
+      "text": "Van",
+      "box": [
+       0.8,
+       0.4,
+       0.1,
+       0.1
+      ]
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "r1"
+    ]
+   },
+   "answer": {
+    "type": "region_select",
+    "v": 1,
+    "selected": [
+     "r1"
+    ]
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "region select all gains nothing",
+   "type": "region_select",
+   "payload": {
+    "figure": {
+     "kind": "image",
+     "source": "question_media"
+    },
+    "regions": [
+     {
+      "id": "r1",
+      "text": "Ankara",
+      "box": [
+       0.4,
+       0.3,
+       0.1,
+       0.1
+      ]
+     },
+     {
+      "id": "r2",
+      "text": "İzmir",
+      "box": [
+       0.1,
+       0.4,
+       0.1,
+       0.1
+      ]
+     },
+     {
+      "id": "r3",
+      "text": "Van",
+      "box": [
+       0.8,
+       0.4,
+       0.1,
+       0.1
+      ]
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "r1"
+    ]
+   },
+   "answer": {
+    "type": "region_select",
+    "v": 1,
+    "selected": [
+     "r1",
+     "r2",
+     "r3"
+    ]
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "clock exact",
+   "type": "clock",
+   "payload": {
+    "mode": "set",
+    "display": "analog",
+    "step_minutes": 5
+   },
+   "key": {
+    "time": "07:30"
+   },
+   "answer": {
+    "type": "clock",
+    "v": 1,
+    "time": "07:30"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "clock 12h equivalent",
+   "type": "clock",
+   "payload": {
+    "mode": "set",
+    "display": "analog",
+    "step_minutes": 5
+   },
+   "key": {
+    "time": "19:30"
+   },
+   "answer": {
+    "type": "clock",
+    "v": 1,
+    "time": "07:30"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "clock 12h refused when disabled",
+   "type": "clock",
+   "payload": {
+    "mode": "set",
+    "display": "analog",
+    "step_minutes": 5
+   },
+   "key": {
+    "time": "19:30",
+    "accept_12h": false
+   },
+   "answer": {
+    "type": "clock",
+    "v": 1,
+    "time": "07:30"
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "clock wrong",
+   "type": "clock",
+   "payload": {
+    "mode": "set",
+    "display": "analog",
+    "step_minutes": 5
+   },
+   "key": {
+    "time": "07:30"
+   },
+   "answer": {
+    "type": "clock",
+    "v": 1,
+    "time": "06:30"
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "clock empty",
+   "type": "clock",
+   "payload": {
+    "mode": "set",
+    "display": "analog",
+    "step_minutes": 5
+   },
+   "key": {
+    "time": "07:30"
+   },
+   "answer": {
+    "type": "clock",
+    "v": 1
+   },
+   "expect": {
+    "score": null,
+    "answer_state": "unanswered",
+    "outcome": "unanswered"
+   }
+  },
+  {
+   "name": "stimulus does not change scoring",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "3A en kalabalık sınıftır."
+     },
+     {
+      "id": "s2",
+      "text": "3C'de 25 öğrenci var."
+     }
+    ],
+    "stimulus": {
+     "kind": "table",
+     "caption": "Sınıf mevcudu",
+     "alt": "Üç sınıfın öğrenci sayıları tablosu",
+     "columns": [
+      "Sınıf",
+      "Öğrenci"
+     ],
+     "rows": [
+      [
+       "3A",
+       24
+      ],
+      [
+       "3B",
+       22
+      ],
+      [
+       "3C",
+       25
+      ]
+     ]
+    }
+   },
+   "key": {
+    "answers": {
+     "s1": false,
+     "s2": true
+    }
+   },
+   "answer": {
+    "type": "true_false",
+    "v": 1,
+    "items": {
+     "s1": false,
+     "s2": true
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
   }
  ],
  "answers": [
@@ -6256,6 +7291,76 @@
     "stage2": {
      "text": "x"
     }
+   },
+   "valid": false,
+   "error": "answer_unknown_id"
+  },
+  {
+   "name": "clock off step answer",
+   "type": "clock",
+   "payload": {
+    "mode": "set",
+    "display": "analog",
+    "step_minutes": 5
+   },
+   "answer": {
+    "type": "clock",
+    "v": 1,
+    "time": "07:33"
+   },
+   "valid": false,
+   "error": "answer_value_invalid"
+  },
+  {
+   "name": "region unknown",
+   "type": "region_select",
+   "payload": {
+    "figure": {
+     "kind": "grid",
+     "rows": 2,
+     "cols": 4
+    },
+    "regions": [
+     {
+      "id": "g1",
+      "text": "Parça 1"
+     },
+     {
+      "id": "g2",
+      "text": "Parça 2"
+     },
+     {
+      "id": "g3",
+      "text": "Parça 3"
+     },
+     {
+      "id": "g4",
+      "text": "Parça 4"
+     },
+     {
+      "id": "g5",
+      "text": "Parça 5"
+     },
+     {
+      "id": "g6",
+      "text": "Parça 6"
+     },
+     {
+      "id": "g7",
+      "text": "Parça 7"
+     },
+     {
+      "id": "g8",
+      "text": "Parça 8"
+     }
+    ]
+   },
+   "answer": {
+    "type": "region_select",
+    "v": 1,
+    "selected": [
+     "g9"
+    ]
    },
    "valid": false,
    "error": "answer_unknown_id"

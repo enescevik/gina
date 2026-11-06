@@ -4,6 +4,7 @@
  */
 import type { StructuredInteractionType } from "./index";
 import { isPhase2aType, phase2aContentErrors } from "./phase2a";
+import { isPhase2bType, phase2bContentErrors, stimulusErrors } from "./phase2b";
 
 type Obj = Record<string, unknown>;
 const isObj = (v: unknown): v is Obj => !!v && typeof v === "object" && !Array.isArray(v);
@@ -34,7 +35,15 @@ import { parseNumberInput } from "./number";
 
 export function questionContentErrors(type: string, payload: unknown, key: unknown, schemaVersion = 1): string[] {
   if (schemaVersion !== 1) return ["schema_version_unsupported"];
+  if (isObj(payload) && "stimulus" in payload) {
+    const se = stimulusErrors(payload.stimulus);
+    if (se.length) return se;
+    if (JSON.stringify(payload).length > 16000) return ["payload_invalid"];
+    const { stimulus: _s, ...rest } = payload;
+    payload = rest;
+  }
   if (isPhase2aType(type)) return phase2aContentErrors(type, payload, key);
+  if (isPhase2bType(type)) return phase2bContentErrors(type, payload, key);
   if (type === "numeric" && isObj(payload)) {
     if (!onlyKeys(payload, ["units", "unit_required", "work_area"]) || (payload.work_area !== undefined && typeof payload.work_area !== "boolean")) {
       return ["payload_unknown_field"];
