@@ -190,6 +190,11 @@ export default function ProfileArchiveScreen() {
                   ? "childArchive.restore"
                   : "childArchive.archive",
               )}
+              accessibilityLabel={`${t(
+                child.archived_at
+                  ? "childArchive.restore"
+                  : "childArchive.archive",
+              )}: ${child.name}`}
               onPress={() => {
                 save.reset();
                 setSelected(child.id);

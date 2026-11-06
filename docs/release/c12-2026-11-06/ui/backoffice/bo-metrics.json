@@ -1,0 +1,455 @@
+[
+ {
+  "route": "dashboard",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [
+     "Başarısız veya sonucu belirsiz 19",
+     "Açık destek talepleri 19",
+     "Sorumlusu atanmamış talepler 19"
+    ],
+    "smallCount": 3,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [
+     "Başarısız veya sonucu belirsiz 39",
+     "Açık destek talepleri 19",
+     "Sorumlusu atanmamış talepler 19"
+    ],
+    "smallCount": 3,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "families",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "billing",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [
+     "7 gün içinde biten geçici hakl 19"
+    ],
+    "smallCount": 1,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [
+     "7 gün içinde biten geçici hakl 39"
+    ],
+    "smallCount": 1,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "overrides",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "ai",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "operations",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "input-catalog",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "questions",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "library",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "library?tab=drafts",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [
+     "Soru paketi dosyası 1"
+    ],
+    "smallCount": 1,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [
+     "Soru paketi dosyası 1"
+    ],
+    "smallCount": 1,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "library?tab=policy",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "library?tab=review",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "library?tab=curriculum",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "library-publication",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "groups",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "cohort-review",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "support",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "support-replies",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "ideas",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "help-articles",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "notifications",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "announcements",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ },
+ {
+  "route": "education-calendars",
+  "sizes": {
+   "desktop": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   },
+   "tablet": {
+    "overflow": 0,
+    "small": [],
+    "smallCount": 0,
+    "unlabeled": 0,
+    "rawError": false
+   }
+  }
+ }
+]

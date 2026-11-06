@@ -476,7 +476,7 @@ export function NotebookEditor({
             </ToolButton>
           </>
         )}
-        {annotation && roomy && [2, 1].map(i => <Pressable key={i} accessibilityRole="button" accessibilityLabel={t(`notebook.color${i}`)} accessibilityState={{ selected: color === NOTEBOOK_COLORS[i], disabled }} disabled={disabled} style={s.colorTouch} onPress={() => { finish(); setColor(NOTEBOOK_COLORS[i]); setTool("pen"); }}><View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: NOTEBOOK_COLORS[i], borderWidth: color === NOTEBOOK_COLORS[i] ? 3 : 0, borderColor: "#fff", outlineWidth: color === NOTEBOOK_COLORS[i] ? 1 : 0, outlineColor: p.purple }}/></Pressable>)}
+        {annotation && roomy && [2, 1].map(i => <Pressable key={i} accessibilityRole="button" accessibilityLabel={t(`notebook.color${i}`)} accessibilityState={{ selected: color === NOTEBOOK_COLORS[i], disabled }} aria-pressed={color === NOTEBOOK_COLORS[i]} disabled={disabled} style={s.colorTouch} onPress={() => { finish(); setColor(NOTEBOOK_COLORS[i]); setTool("pen"); }}><View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: NOTEBOOK_COLORS[i], borderWidth: color === NOTEBOOK_COLORS[i] ? 3 : 0, borderColor: "#fff", outlineWidth: color === NOTEBOOK_COLORS[i] ? 1 : 0, outlineColor: p.purple }}/></Pressable>)}
         <ToolButton
           label={t("notebook.moreTools")}
           onPress={() => setOptionsOpen(true)}
@@ -494,7 +494,7 @@ export function NotebookEditor({
                     key={c}
                     accessibilityRole="button"
                     accessibilityLabel={t(`notebook.color${i}`)}
-                    accessibilityState={{ selected: color === c, disabled }}
+                    accessibilityState={{ selected: color === c, disabled }} aria-pressed={color === c}
                     disabled={disabled}
                     onPress={() => setColor(c)}
                     style={s.colorTouch}
@@ -946,7 +946,7 @@ function ToolButton(
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
-      accessibilityState={{ selected: active, disabled }}
+      accessibilityState={{ selected: active, disabled }} aria-pressed={active}
       disabled={disabled}
       onPress={onPress}
       style={[s.tool, {

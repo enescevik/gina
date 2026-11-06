@@ -233,7 +233,7 @@ export function ProgressChart({ report }: { report: LearningProgress }) {
                     key={w.week_start}
                     accessibilityRole="button"
                     accessibilityLabel={a11y}
-                    accessibilityState={{ selected: selected === w.week_start }}
+                    accessibilityState={{ selected: selected === w.week_start }} aria-pressed={selected === w.week_start}
                     onPress={() =>
                       setSelected(
                         selected === w.week_start ? null : w.week_start,

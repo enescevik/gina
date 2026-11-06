@@ -108,9 +108,10 @@ function FirstItem({ item }: { item: WorkqueueItem }) {
   const text = itemText(item);
   const { isAdmin } = useAuth();
   return (
-    <li className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm">
+    <li className="relative rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm focus-within:ring-2 focus-within:ring-purple-600">
+      {/* C12: bütün kart tıklanabilir (19 px metin bağlantısı yerine kart boyu hedef). */}
       {isAdmin || !adminOnlyHref(text.href)
-        ? <Link href={text.href} className="font-semibold text-slate-900 underline-offset-2 hover:underline">{text.label}</Link>
+        ? <Link href={text.href} className="font-semibold text-slate-900 underline-offset-2 after:absolute after:inset-0 after:rounded-xl after:content-[''] hover:underline focus:outline-none">{text.label}</Link>
         : <span className="font-semibold text-slate-900">{text.label}</span>}
       <div className="mt-1 text-amber-900"><strong>{fmtNumber(item.count)}</strong> · {b01.workqueue.oldest}: {waitingText(waitingLabel(item.oldest_waiting_seconds))}</div>
       <div className="text-xs text-slate-600">{reasonText(item)}</div>
@@ -130,7 +131,7 @@ function QueueRow({ item }: { item: WorkqueueItem }) {
       <span className="rounded-full bg-slate-900 px-2.5 py-0.5 text-xs font-semibold text-white" aria-label={`${fmtNumber(item.count)} kayıt`}>{fmtNumber(item.count)}</span>
       <span className="w-28 text-xs text-slate-600">{b01.workqueue.oldest}: {waitingText(waitingLabel(item.oldest_waiting_seconds))}</span>
       {isAdmin || !adminOnlyHref(text.href)
-        ? <Link href={text.href} className="btn-secondary !min-h-9 !px-3 !py-1 text-sm">{b01.workqueue.open}</Link>
+        ? <Link href={text.href} aria-label={`${b01.workqueue.open}: ${text.label}`} className="btn-secondary !min-h-11 !px-4 !py-1 text-sm">{b01.workqueue.open}</Link>
         : <span className="text-xs text-slate-500" data-testid="admin-only-link">Yönetici ekranı</span>}
     </li>
   );

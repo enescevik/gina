@@ -280,7 +280,7 @@ export function RewardsScreen() {
                 ) : (
                   <Pressable
                     accessibilityRole="button"
-                    accessibilityState={{ selected: false }}
+                    accessibilityState={{ selected: false }} aria-pressed={false}
                     onPress={() => {
                       setCatalog(value);
                       setNotice("");

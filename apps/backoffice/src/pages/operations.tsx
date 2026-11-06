@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Card, Layout, Notice } from "@/components/Layout";
+import { t } from "@/lib/i18n";
 import { supabase } from "@/lib/supabase";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
 import { AiFailureQueue, type QueueJob } from "@/components/ai-failure-queue";
@@ -22,6 +23,7 @@ interface Operations {
     paused: boolean;
   }[];
 }
+const LIMIT_LABELS = { monthly_limit: "Aylık", per_minute: "Dakikada", max_concurrent: "Aynı anda" } as const;
 const names: Record<string, string> = {
   generate: "Soru üretimi",
   import: "Belgeden ders programı",
@@ -216,9 +218,10 @@ function PolicyRow(
       <td>{names[p.action]}</td>
       <td>{p.plan_code}</td>
       <td>
-        <label>
+        <label className="flex min-h-12 items-center gap-2">
           <input
             type="checkbox"
+            className="h-5 w-5"
             checked={draft.enabled}
             onChange={(e) => setDraft({ ...draft, enabled: e.target.checked })}
             disabled={busy}
@@ -230,7 +233,8 @@ function PolicyRow(
         <td key={k}>
           <input
             className="input w-24"
-            aria-label={`${p.action} ${p.plan_code} ${k}`}
+            // C12: ekran okuyucu ham kod yerine sütun adını ve işlemi duyar.
+            aria-label={`${names[p.action] ?? p.action} · ${t.plans[p.plan_code] ?? p.plan_code} · ${LIMIT_LABELS[k]}`}
             type="number"
             min={k === "monthly_limit" ? 0 : 1}
             max={k === "monthly_limit" ? 10000 : k === "per_minute" ? 60 : 10}

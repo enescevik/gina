@@ -1089,7 +1089,7 @@
     "emptyBody": "Ders programını hazırlayabilir veya gününe bir etkinlik ekleyebilirsin.",
     "addChildHelp": "Çocuğunu ekledikten sonra ona özel haftalık ders programını hazırlayabilirsin.",
     "more": "Diğer",
-    "childEmptyBody": "Ders programına bakabilir, derslerini düzenleyebilirsin."
+    "childEmptyBody": "Ders programına göz atabilirsin. Bir şey eklemek istersen veline söyleyebilirsin."
   },
   "taskPremium": {
     "subtitle": "Küçük alışkanlıklar, büyük adımlar.",
@@ -4370,6 +4370,15 @@
       "changed": "Bu öneri başka bir cihazda değişti. Güncel hâli gösteriliyor.",
       "error": "Kaydedilemedi. Bağlantını kontrol edip yeniden dene.",
       "loadError": "Tatil önerileri yüklenemedi."
+    }
+  },
+  "c12": {
+    "builderMatchTarget": "Hedefi {{count}} soru yap",
+    "holiday": {
+      "title": "Okul tatili — program duraklatıldı",
+      "body": "{{title}} ({{range}}). Bu günlerde dersler gösterilmez; ders programı silinmedi. Tatil kararını Eğitim bölümünden değiştirebilirsin.",
+      "child": "Bugün okul tatili. Ders yok; dinlenebilirsin.",
+      "home": "{{name}}: okul tatili — ders programı duraklatıldı"
     }
   }
 }

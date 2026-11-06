@@ -573,7 +573,7 @@ export default function ProvaBuilder() {
                       accessibilityState={{
                         selected: draft.step === step,
                         disabled: locked || step > draft.step,
-                      }}
+                      }} aria-pressed={draft.step === step}
                       disabled={locked || step > draft.step}
                       onPress={() => void navigateStep(step)}
                       style={[
@@ -649,7 +649,7 @@ export default function ProvaBuilder() {
                                   accessibilityRole="button"
                                   accessibilityState={{
                                     selected: draft.childId === c.id,
-                                  }}
+                                  }} aria-pressed={draft.childId === c.id}
                                   onPress={() =>
                                     update({
                                       childId: c.id,
@@ -1216,9 +1216,24 @@ export default function ProvaBuilder() {
                             ))}
                             {material.isSuccess && flat.length !== draft.target
                               ? (
-                                <Text style={b.error}>
-                                  {t("provaBuilder.missingCount")}
-                                </Text>
+                                <View style={{ gap: 8 }}>
+                                  <Text style={b.error}>
+                                    {t("provaBuilder.missingCount")}
+                                  </Text>
+                                  {/* C12 (Q00-A2-9): hedefi iki adım geri gitmeden hazır soru sayısına eşitle. */}
+                                  {flat.length > 0 && flat.length <= 100
+                                    ? (
+                                      <SatinButton
+                                        secondary
+                                        title={t("c12.builderMatchTarget", {
+                                          count: flat.length,
+                                        })}
+                                        onPress={() =>
+                                          update({ target: flat.length })}
+                                      />
+                                    )
+                                    : null}
+                                </View>
                               )
                               : null}
                             <Toggle

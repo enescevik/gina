@@ -209,9 +209,11 @@ export default function ParentProvaScreen() {
           )
           : null}
         <View
+          // C12: büyük yazı/dar ekranda sekmeler üst üste binmek yerine alt satıra geçer.
           style={{
             flexDirection: "row",
-            gap: wide ? 32 : 16,
+            flexWrap: "wrap",
+            columnGap: wide ? 32 : 16,
             justifyContent: wide ? 'flex-start' : 'space-between',
             borderBottomWidth: 1,
             borderBottomColor: p.line,
@@ -221,10 +223,10 @@ export default function ParentProvaScreen() {
             <Pressable
               key={v}
               accessibilityRole="tab"
-              accessibilityState={{ selected: tab === v }}
+              accessibilityState={{ selected: tab === v }} aria-selected={tab === v}
               onPress={() => setTab(v)}
               style={{
-                flexShrink: 1,
+                flexShrink: 0,
                 flexDirection: 'row',
                 gap: 6,
                 minHeight: 48,
@@ -415,7 +417,7 @@ export default function ParentProvaScreen() {
           <Pressable
             key={key}
             accessibilityRole="button"
-            accessibilityState={{ selected: key === "prova" }}
+            accessibilityState={{ selected: key === "prova" }} aria-current={key === "prova" ? "page" : undefined}
             onPress={() => key !== "prova" && router.navigate(path)}
             style={{
               flex: 1,

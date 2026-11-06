@@ -54,7 +54,7 @@ import { TimetableEditor, type PlannerChild } from "./timetable-editor";
 import { LearningPlanSection, useFamilyLearningPlans } from "./learning-plan";
 import { SchoolBag } from "./school-bag";
 import { EventEditor } from "./event-editor";
-import { PlanHistoryNote } from "./plan-history-note";
+import { HolidayPauseNote, PlanHistoryNote } from "./plan-history-note";
 import { PlannerBulkActions } from "./bulk-scope-sheet";
 function shift(date: string, days: number) {
   const d = new Date(`${date}T12:00:00Z`);
@@ -547,7 +547,8 @@ export function PlannerCalendar({
                 {weekTotals[d]
                   ? (
                     <Text style={[u.small, { fontSize: 11 }]} testID={`c02-strip-count-${d}`}>
-                      {weekTotals[d].lessons === null ? "?" : weekTotals[d].lessons}
+                      {/* C12: bilinmeyen ders sayısı "?" yerine sakin bir tire; ayrıntı erişilebilirlik etiketinde. */}
+                      {weekTotals[d].lessons === null ? "–" : weekTotals[d].lessons}
                       {" · "}
                       {weekTotals[d].due}
                     </Text>
@@ -725,6 +726,9 @@ export function PlannerCalendar({
           </Text>
         </View>
         {past ? <Text style={u.small}>{t("dayPlan.pastHelp")}</Text> : null}
+        {scopedProfiles.map((c, i) => (
+          <HolidayPauseNote key={`holiday-${c.id}`} plan={dayPlans[i]?.data} name={selectedChild ? null : c.name} />
+        ))}
         {past
           ? scopedProfiles.map((c, i) => {
               const plan = dayPlans[i]?.data;

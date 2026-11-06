@@ -30,8 +30,11 @@ export function SatinButton({
   style,
   selected,
   badge,
+  accessibilityLabel,
 }: {
   title: string;
+  /** C12: aynı başlıklı birden çok düğmede (ör. her çocuk için) ekran okuyucu hangisi olduğunu duyar. */
+  accessibilityLabel?: string;
   onPress: () => void;
   selected?: boolean;
   badge?: number;
@@ -45,7 +48,7 @@ export function SatinButton({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={badge === undefined ? title : `${title}: ${badge}`}
+      accessibilityLabel={accessibilityLabel ?? (badge === undefined ? title : `${title}: ${badge}`)}
       accessibilityState={{ disabled: disabled || busy, busy, selected }}
       disabled={disabled || busy}
       onPress={onPress}

@@ -251,7 +251,7 @@ export default function QuestionScreen() {
               <Pressable
                 key={n}
                 accessibilityRole="tab"
-                accessibilityState={{ selected: step === n }}
+                accessibilityState={{ selected: step === n }} aria-selected={step === n}
                 onPress={() => goStep(n)}
                 className={chip(step === n)}
               >
@@ -306,7 +306,7 @@ export default function QuestionScreen() {
                 key={k}
                 accessibilityRole="button"
                 onPress={() => setKind(k)}
-                accessibilityState={{ selected: kind === k }}
+                accessibilityState={{ selected: kind === k }} aria-pressed={kind === k}
                 className={chip(kind === k)}
               >
                 <Text className={chipText(kind === k)}>
@@ -321,7 +321,7 @@ export default function QuestionScreen() {
                 key={d}
                 accessibilityRole="button"
                 onPress={() => setDifficulty(d)}
-                accessibilityState={{ selected: difficulty === d }}
+                accessibilityState={{ selected: difficulty === d }} aria-pressed={difficulty === d}
                 className={chip(difficulty === d)}
               >
                 <Text className={chipText(difficulty === d)}>
@@ -372,7 +372,7 @@ export default function QuestionScreen() {
                       accessibilityLabel={t("provaV5.correctChoice", {
                         key: k,
                       })}
-                      accessibilityState={{ selected: correct === k }}
+                      accessibilityState={{ selected: correct === k }} aria-pressed={correct === k}
                       onPress={() =>
                         setCorrect(k)}
                       className={`h-12 w-12 items-center justify-center rounded-full ${

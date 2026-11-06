@@ -45,8 +45,9 @@ export function dayLessonOccurrences(plan: DayPlan, timeZone: string, english = 
   // A past day older than every known timetable version shows the note only: the oldest known (= later)
   // program is not presented as that day's lessons.
   if (plan.day < plan.today && plan.timetable.status === "unknown_before") return [];
+  // C12: lessons paused by an accepted holiday are not presented as that day's program (the banner says so).
   return plan.timetable.day_lessons
-    .slice()
+    .filter((l) => !l.paused)
     .sort((a, b) => a.start.localeCompare(b.start))
     .map((l) => {
       const starts = zonedIso(plan.day, l.start, timeZone);

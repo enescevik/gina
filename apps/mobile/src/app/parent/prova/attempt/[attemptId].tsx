@@ -216,7 +216,7 @@ export default function AttemptReviewScreen() {
                     {t("prova.ai.questionN", { n: item.position })} · {state === "graded" && item.score !== null ? t("prova.ai.answerScore", { score: item.score }) : t(`prova.ai.answerState.${state}`)}{state === "graded" && item.graded_by ? ` · ${t(item.graded_by === "ai" ? "provaC04.review.byAi" : "provaC04.review.byParent")}` : ""}
                   </Text>
                   {state !== "unanswered" || attemptGraded ? (
-                    <Pressable accessibilityRole="button" style={{ minHeight: 48, justifyContent: "center", paddingHorizontal: 8 }}
+                    <Pressable accessibilityRole="button" accessibilityLabel={`${t("prova.ai.review")}: ${t("prova.ai.questionN", { n: item.position })}`} style={{ minHeight: 48, justifyContent: "center", paddingHorizontal: 8 }}
                       onPress={() => router.push({ pathname: "/parent/prova/review/[attemptId]", params: { attemptId, questionId: item.question_id } })}>
                       <Text className="font-body-bold text-teal-dark">{t("prova.ai.review")}</Text>
                     </Pressable>

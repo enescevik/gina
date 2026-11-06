@@ -28,6 +28,7 @@ import {
   Minimize2,
   Sparkles,
   Check,
+  PenLine,
   X,
 } from "lucide-react-native";
 import { emptyNotebook, openScoreSource, readNotebook, readQuestionRubric, type ReviewDraft, type ReviewBase } from "@gina/core";
@@ -569,10 +570,11 @@ export function ParentReviewWorkspace(
           )}
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel={t("parentReview.pickQuestion")}
+            accessibilityLabel={`${t("parentReview.pickQuestion")}: ${index + 1} / ${count}`}
             onPress={() =>
               setPicker(true)}
-            style={!wide ? { marginLeft: "auto" } : undefined}
+            // C12: 43 px yüksekliğindeki etiket 48 px dokunma hedefi oldu.
+            style={[{ minHeight: 48, minWidth: 48, justifyContent: "center" }, !wide ? { marginLeft: "auto" } : null]}
           >
             <Text style={s.tag}>{index + 1} / {count}</Text>
           </Pressable>
@@ -595,7 +597,7 @@ export function ParentReviewWorkspace(
                 <Pressable
                   key={key}
                   accessibilityRole="tab"
-                  accessibilityState={{ selected: tab === key }}
+                  accessibilityState={{ selected: tab === key }} aria-selected={tab === key}
                   onPress={() => setTab(key)}
                   style={[s.tab, tab === key && { backgroundColor: p.purple }]}
                 >
@@ -682,12 +684,18 @@ export function ParentReviewWorkspace(
                     {t("parentReview.unknownDocument")}
                   </Text>
                 )}
+                {/* C12 (Q00-A2-10): düz metin gibi duruyordu; kenarlı, simgeli ikincil düğme. */}
                 <Pressable
                   accessibilityRole="button"
-                  style={[s.key, { backgroundColor: "transparent" }]}
+                  style={[s.key, {
+                    alignSelf: "flex-start",
+                    borderWidth: 1.5,
+                    borderColor: p.purple,
+                  }]}
                   onPress={() => setNotesOpen(true)}
                 >
-                  <Text style={s.bold}>
+                  <PenLine size={18} color={p.purple} />
+                  <Text style={[s.bold, { color: p.purple }]}>
                     {t(
                       document.elements.length
                         ? "parentReview.openDrawingNotes"

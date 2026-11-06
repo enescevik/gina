@@ -47,7 +47,7 @@ export function useDayPlans(familyId: string, childIds: string[], day: string) {
  */
 export function planLessons(plan: DayPlan, timeZone: string): Occurrence<WeekEvent>[] {
   return plan.timetable.day_lessons
-    .slice()
+    .filter((l) => !l.paused)
     .sort((a, b) => a.start.localeCompare(b.start))
     .map((l) => {
       const starts = zonedIso(plan.day, l.start, timeZone);

@@ -38,6 +38,9 @@ export const tr = {
     resetHelp: "Şifrenizi GINA web üzerinden yenileyip bu sekmeye dönün. E-postadaki Cloudflare kodu, GINA şifreniz değildir.",
     failed: "Giriş başarısız. E-posta veya şifre hatalı.",
     notAdmin: "Bu hesabın yönetici yetkisi yok. Yetki verildiyse çıkış yapıp yeniden giriş yapın.",
+    // C12 (Q00-A3-5): geçici rol kontrolü hatası "yetkiniz yok" ile karışmasın.
+    roleCheckFailed: "Yetkiniz şu an kontrol edilemedi. Bu, yetkinizin olmadığı anlamına gelmez; bağlantınızı kontrol edip yeniden deneyin.",
+    retryRoleCheck: "Yeniden dene",
   },
   plans: { free: "Başlangıç", plus: "Plus", pro: "Pro" } as Record<string, string>,
   dashboard: {

@@ -61,8 +61,8 @@ export function BulkScopeActions({ type, scope, scopeLabel, disabled }: {
   const [mode, setMode] = useState<Mode | null>(null);
   return (
     <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-      <SatinButton secondary title={t("c03.bulk.openArchive")} disabled={disabled} onPress={() => setMode("archive")} />
-      {type !== "school_bag" ? <SatinButton secondary title={t("c03.bulk.openRestore")} disabled={disabled} onPress={() => setMode("restore")} /> : null}
+      <SatinButton secondary title={t("c03.bulk.openArchive")} accessibilityLabel={`${t("c03.bulk.openArchive")} · ${t(`c03.bulk.type.${type}`)}`} disabled={disabled} onPress={() => setMode("archive")} />
+      {type !== "school_bag" ? <SatinButton secondary title={t("c03.bulk.openRestore")} accessibilityLabel={`${t("c03.bulk.openRestore")} · ${t(`c03.bulk.type.${type}`)}`} disabled={disabled} onPress={() => setMode("restore")} /> : null}
       {mode ? <BulkScopeSheet type={type} mode={mode} scope={scope} scopeLabel={scopeLabel} onClose={() => setMode(null)} /> : null}
     </View>
   );
