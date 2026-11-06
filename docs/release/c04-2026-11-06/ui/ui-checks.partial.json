@@ -1,0 +1,95 @@
+{
+  "failed_stage": "parent_review",
+  "results": [
+    {
+      "check": "seed_library_and_shared_image_group",
+      "passed": true,
+      "detail": {
+        "members": 2,
+        "image_source": "question_image"
+      }
+    },
+    {
+      "check": "hub_three_tabs",
+      "passed": true
+    },
+    {
+      "check": "context_single_subject_mismatch_explained",
+      "passed": true
+    },
+    {
+      "check": "draft_saved_on_step",
+      "passed": true
+    },
+    {
+      "check": "library_question_and_shared_image_group_added",
+      "passed": true
+    },
+    {
+      "check": "manual_question_with_alternatives_and_rubric",
+      "passed": true
+    },
+    {
+      "check": "ai_partial_generation_select_all_single_charge",
+      "passed": true,
+      "detail": {
+        "before": 272,
+        "afterGenerate": 270,
+        "afterSelect": 270
+      }
+    },
+    {
+      "check": "one_draft_three_sources_plus_shared_image",
+      "passed": true,
+      "detail": {
+        "mix": "Bu taslakta: Senin eklediğin 1 · AI önerisi 2 · Kütüphane 3 · 1 ortak kaynak grubu"
+      }
+    },
+    {
+      "check": "save_and_reopen_keeps_blocks_and_context",
+      "passed": true,
+      "detail": {
+        "blocks": [
+          "library",
+          "library",
+          "manual",
+          "ai",
+          "ai"
+        ]
+      }
+    },
+    {
+      "check": "assigned_with_context_columns",
+      "passed": true,
+      "detail": {
+        "questions": 6,
+        "track": "meb_common",
+        "term": 1
+      }
+    },
+    {
+      "check": "assigned_version_unaffected_by_edits",
+      "passed": true,
+      "detail": {
+        "direct_update_error": "question_in_use"
+      }
+    },
+    {
+      "check": "child_solved_without_answer_key",
+      "passed": true,
+      "detail": {
+        "responses": 29
+      }
+    },
+    {
+      "check": "attempt_submitted_pending_review",
+      "passed": true,
+      "detail": {
+        "status": "submitted",
+        "provisional": true,
+        "open_pending": 2,
+        "open_unanswered": 2
+      }
+    }
+  ]
+}
