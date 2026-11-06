@@ -16,7 +16,7 @@ function healthyFetcher(overrides = {}) {
     if (overrides[u.origin + u.pathname]) return overrides[u.origin + u.pathname](u, options);
     if (u.origin === 'https://gina-web.pages.dev') return new Response('<html>', { status: 200, headers: webHeaders });
     if (u.hostname.endsWith('gina-backoffice.pages.dev')) return accessRedirect(url);
-    if (u.pathname === '/rest/v1/') return new Response('{}', { status: options.headers?.apikey ? 200 : 401 });
+    if (u.pathname === '/rest/v1/families') return new Response(JSON.stringify({ code: '42501', message: 'permission denied' }), { status: options.headers?.apikey ? 401 : 401 });
     if (u.pathname === '/auth/v1/health') return new Response(JSON.stringify({ version: 'v2.x', name: 'GoTrue', description: 'x' }), { status: 200 });
     if (u.hostname === 'api.supabase.com') return new Response(JSON.stringify([{ slug: 'push-send', version: 12, status: 'ACTIVE', verify_jwt: false }, { slug: 'delete-account', version: 14, status: 'ACTIVE', verify_jwt: true }]), { status: 200 });
     if (u.pathname === '/release.json') return new Response(JSON.stringify({ version: '0.1.0', build: '27', sourceCommit: 'a'.repeat(40), origin: 'local-eas-build', sha256: 'f'.repeat(64) }), { status: 200 });

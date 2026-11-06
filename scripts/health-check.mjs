@@ -40,14 +40,17 @@ export async function checkSupabase({ url, anonKey, fetcher }) {
   if (kind === 'secret') return [check('supabase-rest', 'fail', { reason: 'secret-key-refused' }), check('supabase-auth', 'fail', { reason: 'secret-key-refused' })];
   const base = new URL(url).origin;
   try {
-    // Anon apikey ile kök REST: 200 (OpenAPI) beklenir; anahtar yoksa 401 da "uç ayakta" sayılır ama anahtar eksikliği not edilir.
-    const r = await fetcher(`${base}/rest/v1/`, { headers: kind === 'anon' || kind === 'publishable' ? { apikey: anonKey } : {}, redirect: 'manual', signal: timeout() });
-    await r.body?.cancel();
-    const ok = (kind === 'anon' || kind === 'publishable') ? r.status === 200 : r.status === 401;
-    results.push(check('supabase-rest', ok ? 'pass' : 'fail', { http: r.status, keyKind: kind }));
+    // Yeni publishable anahtarlarda kök OpenAPI uç noktası anon'a kapalı (401). Bunun yerine korumalı bir tabloyu
+    // anon olarak oku: PostgREST ayakta ise JSON hata (401/403, PG 42501) ya da boş liste döner; 5xx/ağ hatası başarısızdır.
+    const r = await fetcher(`${base}/rest/v1/families?select=id&limit=1`, { headers: kind === 'anon' || kind === 'publishable' ? { apikey: anonKey } : {}, redirect: 'manual', signal: timeout() });
+    let body = null;
+    try { body = await r.json(); } catch { /* gövde JSON değil */ }
+    const denied = (r.status === 401 || r.status === 403) && body && typeof body === 'object' && !Array.isArray(body);
+    const emptyAllowed = r.status === 200 && Array.isArray(body) && body.length === 0;
+    results.push(check('supabase-rest', denied || emptyAllowed ? 'pass' : 'fail', { http: r.status, keyKind: kind, anonDenied: denied }));
   } catch { results.push(check('supabase-rest', 'fail', { http: null })); }
   try {
-    const r = await fetcher(`${base}/auth/v1/health`, { redirect: 'manual', signal: timeout() });
+    const r = await fetcher(`${base}/auth/v1/health`, { headers: kind === 'anon' || kind === 'publishable' ? { apikey: anonKey } : {}, redirect: 'manual', signal: timeout() });
     let body = {};
     try { body = await r.json(); } catch { /* gövde JSON değil */ }
     results.push(check('supabase-auth', r.status === 200 && typeof body.version === 'string' ? 'pass' : 'fail', { http: r.status, version: typeof body.version === 'string' ? body.version : null }));
