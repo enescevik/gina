@@ -1,0 +1,130 @@
+{
+ "environment": "disposable-local-auth-rest-storage-realtime-edge",
+ "results": [
+  {
+   "check": "c12_12_question_preview_respects_reduced_motion",
+   "passed": true,
+   "detail": {
+    "reduce": {
+     "motion": "reduce",
+     "which": "question_preview",
+     "runningAnimationsDuringOpen": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ]
+    },
+    "normal": {
+     "motion": "no-preference",
+     "which": "question_preview",
+     "runningAnimationsDuringOpen": [
+      0,
+      1,
+      1,
+      1,
+      1,
+      1
+     ]
+    }
+   }
+  },
+  {
+   "check": "d4_1_shared_source_grade_choice",
+   "passed": true,
+   "detail": {
+    "textGrade": 0,
+    "radios": 12,
+    "radiogroup": 1,
+    "checked7": "true",
+    "checked5": "false",
+    "savedGrade": 7,
+    "sizes": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     }
+    }
+   }
+  },
+  {
+   "check": "d4_3_repeat_day_uses_date_time_choice",
+   "passed": true,
+   "detail": {
+    "freeTextDateFields": 0,
+    "freeTextTimeFields": 0,
+    "dateLabel": "Buluşma günü: 13 Kasım 2026",
+    "timeLabel": "Başlama saati: 18:30",
+    "expectedEvent": "2026-11-13 18:30",
+    "savedEvent": "2026-11-13 18:30",
+    "sizes": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     }
+    }
+   }
+  },
+  {
+   "check": "d4_2_child_result_shows_time_up_client",
+   "passed": true,
+   "detail": {
+    "status": "submitted",
+    "note": "Süre doldu Süre bitti, deneme kendiliğinden kapandı. Kaydettiğin cevapların teslim edildi.",
+    "pageErrors": [],
+    "sizes": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     }
+    }
+   }
+  },
+  {
+   "check": "d4_2_time_up_server_child_and_parent",
+   "passed": true,
+   "detail": {
+    "attemptRow": "submitted|true",
+    "childFirst": true,
+    "childAfterReload": true,
+    "parentNote": "Süre doldu Süre dolunca deneme kendiliğinden bitti. Süre içinde kaydedilen cevaplar değerlendirildi.",
+    "untimedAttemptShowsTimeUp": false,
+    "pageErrors": [],
+    "child": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     }
+    },
+    "parent": {
+     "phone": {
+      "overflow": 0,
+      "keys": []
+     },
+     "tablet": {
+      "overflow": 0,
+      "keys": []
+     }
+    }
+   }
+  }
+ ]
+}
