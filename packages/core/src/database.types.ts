@@ -41,14 +41,14 @@ isOneToOne: false
                   ]
                 },"ai_feature_requirements": {
                   Row: {
-                    "action": string,"entry_point": string | null,"feature": string,"input_kind": string,"min_context_tokens": number,"plans": (Database["public"]['Enums']["plan_code"])[],"requires_json_schema": boolean,"requires_pdf": boolean,"requires_vision": boolean
+                    "action": string,"entry_point": string | null,"feature": string,"input_kind": string,"min_context_tokens": number,"offered": boolean,"plans": (Database["public"]['Enums']["plan_code"])[],"requires_json_schema": boolean,"requires_pdf": boolean,"requires_vision": boolean
                   }
                   ComputedFields: never
                   Insert: {
-                    "action": string,"entry_point"?: string | null,"feature": string,"input_kind": string,"min_context_tokens": number,"plans": (Database["public"]['Enums']["plan_code"])[],"requires_json_schema"?: boolean,"requires_pdf"?: boolean,"requires_vision"?: boolean
+                    "action": string,"entry_point"?: string | null,"feature": string,"input_kind": string,"min_context_tokens": number,"offered"?: boolean,"plans": (Database["public"]['Enums']["plan_code"])[],"requires_json_schema"?: boolean,"requires_pdf"?: boolean,"requires_vision"?: boolean
                   }
                   Update: {
-                    "action"?: string,"entry_point"?: string | null,"feature"?: string,"input_kind"?: string,"min_context_tokens"?: number,"plans"?: (Database["public"]['Enums']["plan_code"])[],"requires_json_schema"?: boolean,"requires_pdf"?: boolean,"requires_vision"?: boolean
+                    "action"?: string,"entry_point"?: string | null,"feature"?: string,"input_kind"?: string,"min_context_tokens"?: number,"offered"?: boolean,"plans"?: (Database["public"]['Enums']["plan_code"])[],"requires_json_schema"?: boolean,"requires_pdf"?: boolean,"requires_vision"?: boolean
                   }
                   Relationships: [
                     
@@ -75,14 +75,14 @@ isOneToOne: false
                   ]
                 },"ai_operation_jobs": {
                   Row: {
-                    "action": string,"created_at": string,"error_code": string | null,"family_id": string,"id": string,"input_hash": string,"lease": string,"requested_by": string | null,"result": Json | null,"status": string,"updated_at": string
+                    "action": string,"created_at": string,"error_code": string | null,"family_id": string,"id": string,"input_hash": string,"lease": string,"provider": string | null,"requested_by": string | null,"result": Json | null,"status": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "action": string,"created_at"?: string,"error_code"?: string | null,"family_id": string,"id"?: string,"input_hash": string,"lease": string,"requested_by"?: string | null,"result"?: Json | null,"status": string,"updated_at"?: string
+                    "action": string,"created_at"?: string,"error_code"?: string | null,"family_id": string,"id"?: string,"input_hash": string,"lease": string,"provider"?: string | null,"requested_by"?: string | null,"result"?: Json | null,"status": string,"updated_at"?: string
                   }
                   Update: {
-                    "action"?: string,"created_at"?: string,"error_code"?: string | null,"family_id"?: string,"id"?: string,"input_hash"?: string,"lease"?: string,"requested_by"?: string | null,"result"?: Json | null,"status"?: string,"updated_at"?: string
+                    "action"?: string,"created_at"?: string,"error_code"?: string | null,"family_id"?: string,"id"?: string,"input_hash"?: string,"lease"?: string,"provider"?: string | null,"requested_by"?: string | null,"result"?: Json | null,"status"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -90,6 +90,12 @@ isOneToOne: false
       columns: ["family_id"]
 isOneToOne: false
       referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ai_operation_jobs_provider_fkey"
+      columns: ["provider"]
+isOneToOne: false
+      referencedRelation: "ai_providers"
       referencedColumns: ["id"]
     }
                   ]
@@ -125,7 +131,13 @@ isOneToOne: false
                     "failures"?: number,"open_until"?: string | null,"provider"?: string,"updated_at"?: string
                   }
                   Relationships: [
-                    
+                    {
+      foreignKeyName: "ai_provider_health_provider_fkey"
+      columns: ["provider"]
+isOneToOne: true
+      referencedRelation: "ai_providers"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"ai_providers": {
                   Row: {
@@ -783,14 +795,14 @@ isOneToOne: false
                   ]
                 },"exam_answers": {
                   Row: {
-                    "ai_details": Json | null,"ai_feedback": string | null,"ai_score": number | null,"answer_document": Json | null,"answer_key": string | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"edit_revision": number,"feedback": string | null,"graded_at": string | null,"graded_by": string | null,"is_correct": boolean | null,"question_id": string,"review_ai_id": string | null,"review_document": Json | null,"review_revision": number,"score": number | null
+                    "ai_details": Json | null,"ai_feedback": string | null,"ai_graded_at": string | null,"ai_score": number | null,"answer_document": Json | null,"answer_key": string | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"edit_revision": number,"feedback": string | null,"graded_at": string | null,"graded_by": string | null,"is_correct": boolean | null,"question_id": string,"review_ai_id": string | null,"review_document": Json | null,"review_revision": number,"score": number | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id": string,"review_ai_id"?: string | null,"review_document"?: Json | null,"review_revision"?: number,"score"?: number | null
+                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_graded_at"?: string | null,"ai_score"?: number | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id": string,"review_ai_id"?: string | null,"review_document"?: Json | null,"review_revision"?: number,"score"?: number | null
                   }
                   Update: {
-                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_score"?: number | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id"?: string,"review_ai_id"?: string | null,"review_document"?: Json | null,"review_revision"?: number,"score"?: number | null
+                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_graded_at"?: string | null,"ai_score"?: number | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id"?: string,"review_ai_id"?: string | null,"review_document"?: Json | null,"review_revision"?: number,"score"?: number | null
                   }
                   Relationships: [
                     {
@@ -879,14 +891,14 @@ isOneToOne: false
                   ]
                 },"exams": {
                   Row: {
-                    "blueprint_id": string | null,"child_id": string,"content_locked_at": string | null,"created_at": string,"created_by": string | null,"duration_minutes": number | null,"education_context": Json | null,"family_id": string,"grade": number,"id": string,"kind": string,"preparation": Json | null,"question_ids": (string)[],"status": Database["public"]['Enums']["exam_status"],"subject": string,"timed": boolean,"title": string,"updated_at": string
+                    "academic_year": number | null,"assessment_track": string | null,"blueprint_id": string | null,"child_id": string,"content_locked_at": string | null,"created_at": string,"created_by": string | null,"duration_minutes": number | null,"education_context": Json | null,"education_period_id": string | null,"exam_scope": string | null,"family_id": string,"grade": number,"id": string,"kind": string,"preparation": Json | null,"question_ids": (string)[],"school_declared": boolean | null,"status": Database["public"]['Enums']["exam_status"],"subject": string,"term": number | null,"timed": boolean,"title": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "blueprint_id"?: string | null,"child_id": string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"education_context"?: Json | null,"family_id": string,"grade": number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject": string,"timed"?: boolean,"title": string,"updated_at"?: string
+                    "academic_year"?: number | null,"assessment_track"?: string | null,"blueprint_id"?: string | null,"child_id": string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"education_context"?: Json | null,"education_period_id"?: string | null,"exam_scope"?: string | null,"family_id": string,"grade": number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"school_declared"?: boolean | null,"status"?: Database["public"]['Enums']["exam_status"],"subject": string,"term"?: number | null,"timed"?: boolean,"title": string,"updated_at"?: string
                   }
                   Update: {
-                    "blueprint_id"?: string | null,"child_id"?: string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"education_context"?: Json | null,"family_id"?: string,"grade"?: number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"status"?: Database["public"]['Enums']["exam_status"],"subject"?: string,"timed"?: boolean,"title"?: string,"updated_at"?: string
+                    "academic_year"?: number | null,"assessment_track"?: string | null,"blueprint_id"?: string | null,"child_id"?: string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"education_context"?: Json | null,"education_period_id"?: string | null,"exam_scope"?: string | null,"family_id"?: string,"grade"?: number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"school_declared"?: boolean | null,"status"?: Database["public"]['Enums']["exam_status"],"subject"?: string,"term"?: number | null,"timed"?: boolean,"title"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -1223,6 +1235,32 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "help_article_versions"
       referencedColumns: ["article_id","revision"]
+    }
+                  ]
+                },"help_attachments": {
+                  Row: {
+                    "bytes": number,"created_at": string,"created_by": string | null,"data": string,"family_id": string,"height": number | null,"id": string,"mime": string,"redaction": NonNullable<Json>,"sha256": string,"ticket_id": string,"width": number | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "bytes": number,"created_at"?: string,"created_by"?: string | null,"data": string,"family_id": string,"height"?: number | null,"id": string,"mime": string,"redaction": NonNullable<Json>,"sha256": string,"ticket_id": string,"width"?: number | null
+                  }
+                  Update: {
+                    "bytes"?: number,"created_at"?: string,"created_by"?: string | null,"data"?: string,"family_id"?: string,"height"?: number | null,"id"?: string,"mime"?: string,"redaction"?: NonNullable<Json>,"sha256"?: string,"ticket_id"?: string,"width"?: number | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "help_attachments_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "help_attachments_ticket_id_fkey"
+      columns: ["ticket_id"]
+isOneToOne: false
+      referencedRelation: "help_tickets"
+      referencedColumns: ["id"]
     }
                   ]
                 },"help_messages": {
@@ -1637,14 +1675,14 @@ isOneToOne: false
                   ]
                 },"parent_pins": {
                   Row: {
-                    "family_id": string,"pin_hash": string,"updated_at": string
+                    "failed_count": number,"family_id": string,"locked_until": string | null,"pin_hash": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "family_id": string,"pin_hash": string,"updated_at"?: string
+                    "failed_count"?: number,"family_id": string,"locked_until"?: string | null,"pin_hash": string,"updated_at"?: string
                   }
                   Update: {
-                    "family_id"?: string,"pin_hash"?: string,"updated_at"?: string
+                    "failed_count"?: number,"family_id"?: string,"locked_until"?: string | null,"pin_hash"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -1743,14 +1781,14 @@ isOneToOne: false
                   ]
                 },"prova_generation_jobs": {
                   Row: {
-                    "created_at": string,"error_code": string | null,"family_id": string,"id": string,"items": number,"lease": string | null,"prompt_hash": string,"provider_result": Json | null,"requested_by": string | null,"result": Json | null,"status": string,"updated_at": string
+                    "created_at": string,"error_code": string | null,"family_id": string,"id": string,"items": number,"lease": string | null,"prompt_hash": string,"provider": string | null,"provider_result": Json | null,"requested_by": string | null,"result": Json | null,"status": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"error_code"?: string | null,"family_id": string,"id": string,"items": number,"lease"?: string | null,"prompt_hash": string,"provider_result"?: Json | null,"requested_by"?: string | null,"result"?: Json | null,"status": string,"updated_at"?: string
+                    "created_at"?: string,"error_code"?: string | null,"family_id": string,"id": string,"items": number,"lease"?: string | null,"prompt_hash": string,"provider"?: string | null,"provider_result"?: Json | null,"requested_by"?: string | null,"result"?: Json | null,"status": string,"updated_at"?: string
                   }
                   Update: {
-                    "created_at"?: string,"error_code"?: string | null,"family_id"?: string,"id"?: string,"items"?: number,"lease"?: string | null,"prompt_hash"?: string,"provider_result"?: Json | null,"requested_by"?: string | null,"result"?: Json | null,"status"?: string,"updated_at"?: string
+                    "created_at"?: string,"error_code"?: string | null,"family_id"?: string,"id"?: string,"items"?: number,"lease"?: string | null,"prompt_hash"?: string,"provider"?: string | null,"provider_result"?: Json | null,"requested_by"?: string | null,"result"?: Json | null,"status"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -1758,6 +1796,12 @@ isOneToOne: false
       columns: ["family_id"]
 isOneToOne: false
       referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "prova_generation_jobs_provider_fkey"
+      columns: ["provider"]
+isOneToOne: false
+      referencedRelation: "ai_providers"
       referencedColumns: ["id"]
     }
                   ]
@@ -2269,14 +2313,14 @@ isOneToOne: false
                   ]
                 },"task_completions": {
                   Row: {
-                    "child_id": string,"client_id": string,"completed_at": string,"completed_by": string | null,"due_date": string,"family_id": string,"id": string,"reviewed_at": string | null,"return_note": string | null,"return_reason": string | null,"reviewed_by": string | null,"status": Database["public"]['Enums']["completion_status"],"task_snapshot": Json | null,"template_id": string
+                    "child_id": string,"client_id": string,"completed_at": string,"completed_by": string | null,"due_date": string,"family_id": string,"id": string,"return_note": string | null,"return_reason": string | null,"reviewed_at": string | null,"reviewed_by": string | null,"status": Database["public"]['Enums']["completion_status"],"task_snapshot": Json | null,"template_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "child_id": string,"client_id": string,"completed_at"?: string,"completed_by"?: string | null,"due_date": string,"family_id": string,"id"?: string,"reviewed_at"?: string | null,"return_note"?: string | null,"return_reason"?: string | null,"reviewed_by"?: string | null,"status"?: Database["public"]['Enums']["completion_status"],"task_snapshot"?: Json | null,"template_id": string
+                    "child_id": string,"client_id": string,"completed_at"?: string,"completed_by"?: string | null,"due_date": string,"family_id": string,"id"?: string,"return_note"?: string | null,"return_reason"?: string | null,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"status"?: Database["public"]['Enums']["completion_status"],"task_snapshot"?: Json | null,"template_id": string
                   }
                   Update: {
-                    "child_id"?: string,"client_id"?: string,"completed_at"?: string,"completed_by"?: string | null,"due_date"?: string,"family_id"?: string,"id"?: string,"reviewed_at"?: string | null,"return_note"?: string | null,"return_reason"?: string | null,"reviewed_by"?: string | null,"status"?: Database["public"]['Enums']["completion_status"],"task_snapshot"?: Json | null,"template_id"?: string
+                    "child_id"?: string,"client_id"?: string,"completed_at"?: string,"completed_by"?: string | null,"due_date"?: string,"family_id"?: string,"id"?: string,"return_note"?: string | null,"return_reason"?: string | null,"reviewed_at"?: string | null,"reviewed_by"?: string | null,"status"?: Database["public"]['Enums']["completion_status"],"task_snapshot"?: Json | null,"template_id"?: string
                   }
                   Relationships: [
                     {
@@ -2455,8 +2499,39 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "acquire_library_units":
+            "accept_ai_grade":
+{ Args: { "p_attempt_id": string,"p_expected": number,"p_question_id": string }; Returns: {
+              "ai_feedback": Json | null,
+"child_id": string,
+"created_at": string,
+"deadline_at": string | null,
+"exam_id": string,
+"family_id": string,
+"finished_at": string | null,
+"graded_at": string | null,
+"id": string,
+"mc_correct": number | null,
+"mc_total": number | null,
+"open_graded": number | null,
+"open_pending": number | null,
+"open_total": number | null,
+"open_unanswered": number | null,
+"provisional": boolean | null,
+"score_pct": number | null,
+"started_at": string,
+"status": Database["public"]['Enums']["attempt_status"]
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "exam_attempts"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
+"acquire_library_units":
 { Args: { "p_draft_id"?: string,"p_package_id": string,"p_publication_version": number,"p_request_id": string,"p_unit_keys": (string)[] }; Returns: Json
+                           },
+"add_help_attachment":
+{ Args: { "p_attachment_id": string,"p_data": string,"p_height": number,"p_mime": string,"p_redaction": Json,"p_request_id": string,"p_ticket_id": string,"p_width": number }; Returns: Json
                            },
 "admin_add_library_item":
 { Args: { "p_collection_id": string,"p_content": Json,"p_publish"?: boolean }; Returns: string
@@ -2472,6 +2547,9 @@ isOneToOne: false
                            },
 "admin_announcement_channels":
 { Args: { "p_id": string }; Returns: Json
+                           },
+"admin_announcement_push_audience":
+{ Args: { "p_id": string,"p_revision": number }; Returns: Json
                            },
 "admin_announcements":
 { Args: { "p_before"?: string,"p_before_id"?: string }; Returns: Json
@@ -2500,6 +2578,9 @@ isOneToOne: false
 "admin_create_reviewed_group_exam":
 { Args: { "p_end": string,"p_id": string,"p_minutes": number,"p_package_id": string,"p_plans": (Database["public"]['Enums']["plan_code"])[],"p_publication_version": number,"p_review": boolean,"p_start": string,"p_title": string,"p_units": (string)[] }; Returns: string
                            },
+"admin_curriculum_pipeline":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "admin_dashboard":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
@@ -2509,11 +2590,20 @@ isOneToOne: false
 "admin_delete_global_question":
 { Args: { "p_question_id": string }; Returns: undefined
                            },
+"admin_education_calendar_checks":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "admin_education_calendars":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"admin_education_holidays":
+{ Args: { "p_academic_year"?: number }; Returns: Json
+                           },
 "admin_education_reminder_settings":
 { Args: { "p_enabled": boolean,"p_request": string,"p_revision": number }; Returns: Json
+                           },
+"admin_education_report_summary":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "admin_expire_override":
 { Args: { "p_override_id": string,"p_reason": string }; Returns: undefined
@@ -2557,6 +2647,9 @@ isOneToOne: false
 "admin_import_education_calendar_seed":
 { Args: { "p_execute"?: boolean,"p_request": string,"p_seed": Json }; Returns: Json
                            },
+"admin_import_education_holidays":
+{ Args: { "p_execute"?: boolean,"p_request": string,"p_seed": Json }; Returns: Json
+                           },
 "admin_import_library_bundle":
 { Args: { "p_bundle": Json,"p_request_id": string }; Returns: Json
                            },
@@ -2565,6 +2658,9 @@ isOneToOne: false
                            },
 "admin_library_content_items":
 { Args: { "p_kind"?: string,"p_limit"?: number,"p_status"?: string }; Returns: Json
+                           },
+"admin_library_content_page":
+{ Args: { "p_cursor"?: string,"p_kind"?: string,"p_limit"?: number,"p_prereview"?: string,"p_status"?: string }; Returns: Json
                            },
 "admin_library_group_integrity":
 { Args: { "p_limit"?: number }; Returns: Json
@@ -2579,6 +2675,9 @@ isOneToOne: false
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "admin_list_curriculum_candidates":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"admin_list_curriculum_source_targets":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "admin_list_curriculum_sources":
@@ -2604,6 +2703,9 @@ isOneToOne: false
 "admin_override_preview":
 { Args: { "p_family_id": string,"p_plan": Database["public"]['Enums']["plan_code"],"p_reason": string,"p_until": string }; Returns: Json
                            },
+"admin_prereview_candidate_context":
+{ Args: { "p_ids": (string)[] }; Returns: Json
+                           },
 "admin_preview_announcement":
 { Args: { "p_id": string,"p_revision": number }; Returns: Json
                            },
@@ -2616,6 +2718,9 @@ isOneToOne: false
 "admin_publish_cohort_results":
 { Args: { "p_fingerprint": string,"p_group": string,"p_request": string,"p_version": number }; Returns: Json
                            },
+"admin_publish_education_calendar":
+{ Args: { "p_checks": Json,"p_id": string,"p_note": string,"p_request": string,"p_revision": number }; Returns: Json
+                           },
 "admin_publish_library_item":
 { Args: { "p_id": string,"p_published": boolean }; Returns: undefined
                            },
@@ -2623,6 +2728,9 @@ isOneToOne: false
 { Args: Record<PropertyKey, never>; Returns: {
               "grade": number,"question_count": number,"subject": string,"times_asked_total": number,"topic": string
             }[]
+                           },
+"admin_record_curriculum_extraction":
+{ Args: { "p_request_id": string,"p_result": Json,"p_revision_id": string }; Returns: Json
                            },
 "admin_retry_ai_operation":
 { Args: { "p_id": string,"p_reason": string }; Returns: undefined
@@ -2651,6 +2759,9 @@ isOneToOne: false
 "admin_save_contribution_reward":
 { Args: { "p_amount": number,"p_days": number,"p_enabled": boolean,"p_id": string,"p_kind": string,"p_plan": Database["public"]['Enums']["plan_code"],"p_threshold": number,"p_title": string }; Returns: string
                            },
+"admin_save_curriculum_source_target":
+{ Args: { "p_request_id": string,"p_target": Json }; Returns: Json
+                           },
 "admin_save_education_calendar":
 { Args: { "p_academic_year": number,"p_id": string,"p_place_id": string,"p_publish"?: boolean,"p_request": string,"p_revision": number,"p_stage": string,"p_value": Json }; Returns: Json
                            },
@@ -2666,6 +2777,9 @@ isOneToOne: false
 "admin_save_override":
 { Args: { "p_command": Json,"p_request_id": string }; Returns: Json
                            },
+"admin_save_subject_synonym":
+{ Args: { "p_action": string,"p_alias": string,"p_grade_max": number,"p_grade_min": number,"p_key": Json,"p_note": string,"p_request": string,"p_revision": number,"p_subject_id": string }; Returns: Json
+                           },
 "admin_search_families":
 { Args: { "p_limit"?: number,"p_query"?: string }; Returns: {
               "child_count": number,"created_at": string,"device_count": number,"id": string,"member_count": number,"name": string,"plan": Database["public"]['Enums']["plan_code"],"plan_expires_at": string,"plan_source": string
@@ -2677,6 +2791,9 @@ isOneToOne: false
 "admin_set_ai_operation_policy":
 { Args: { "p_action": string,"p_concurrent": number,"p_enabled": boolean,"p_monthly": number,"p_per_minute": number,"p_plan": Database["public"]['Enums']["plan_code"] }; Returns: undefined
                            },
+"admin_set_education_holiday_status":
+{ Args: { "p_id": string,"p_request": string,"p_revision": number,"p_status": string }; Returns: Json
+                           },
 "admin_set_library_publication":
 { Args: { "p_confirmed": boolean,"p_curriculum_label": string,"p_description": string,"p_expected_version": number,"p_package_id": string,"p_plans": (Database["public"]['Enums']["plan_code"])[],"p_reason"?: string,"p_request_id": string,"p_review_fingerprint": string,"p_status": string,"p_title": string }; Returns: Json
                            },
@@ -2685,6 +2802,9 @@ isOneToOne: false
                            },
 "admin_source_file_limit":
 { Args: { "p_max_files": number }; Returns: undefined
+                           },
+"admin_subject_synonym_changes":
+{ Args: { "p_subject_id"?: string }; Returns: Json
                            },
 "admin_subject_synonyms":
 { Args: Record<PropertyKey, never>; Returns: Json
@@ -2735,6 +2855,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"apply_due_education_changes":
+{ Args: { "p_child_id": string }; Returns: Json
+                           },
 "apply_learning_plan_import":
 { Args: { "p_child_id": string,"p_import_id": string,"p_items": Json,"p_request_id": string }; Returns: Json
                            },
@@ -2776,6 +2899,9 @@ isOneToOne: false
                            },
 "bulk_restore_apply":
 { Args: { "p_idempotency_key": string,"p_items": Json }; Returns: Json
+                           },
+"cancel_child_education_schedule":
+{ Args: { "p_child_id": string,"p_request_id": string,"p_schedule_id": string }; Returns: Json
                            },
 "cancel_reward_request":
 { Args: { "p_request_id": string }; Returns: {
@@ -2820,6 +2946,9 @@ isOneToOne: false
 "channel_claim":
 { Args: { "p_limit"?: number }; Returns: Json
                            },
+"channel_one_click_unsubscribe":
+{ Args: { "p_token": string }; Returns: Json
+                           },
 "channel_readiness":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
@@ -2832,6 +2961,9 @@ isOneToOne: false
 "check_deletion_preview":
 { Args: { "p_token": string,"p_user_id": string }; Returns: Json
                            },
+"child_education_reports":
+{ Args: { "p_child_id": string }; Returns: Json
+                           },
 "child_logout":
 { Args: Record<PropertyKey, never>; Returns: undefined
                            },
@@ -2840,6 +2972,9 @@ isOneToOne: false
                            },
 "child_star_balance":
 { Args: { "p_child_id": string,"p_day"?: string }; Returns: Json
+                           },
+"child_subject_links":
+{ Args: { "p_child_id": string }; Returns: Json
                            },
 "child_topic_mastery":
 { Args: { "p_child_id": string }; Returns: {
@@ -2870,6 +3005,8 @@ isOneToOne: false
 "due_date": string,
 "family_id": string,
 "id": string,
+"return_note": string | null,
+"return_reason": string | null,
 "reviewed_at": string | null,
 "reviewed_by": string | null,
 "status": Database["public"]['Enums']["completion_status"],
@@ -2900,6 +3037,9 @@ isOneToOne: false
 "content_prereview_next":
 { Args: { "p_limit"?: number }; Returns: Json
                            },
+"content_prereview_provider":
+{ Args: { "p_error"?: string,"p_ok"?: boolean,"p_provider": string,"p_uncertain"?: boolean }; Returns: Json
+                           },
 "contribution_review_trail":
 { Args: { "p_id": string }; Returns: Json
                            },
@@ -2916,21 +3056,27 @@ isOneToOne: false
                            },
 "create_level_test":
 { Args: { "p_blueprint_id"?: string,"p_child_id": string,"p_duration_minutes"?: number,"p_grade": number,"p_max_questions"?: number,"p_per_topic"?: number,"p_subject": string,"p_timed"?: boolean,"p_title"?: string }; Returns: {
-              "blueprint_id": string | null,
+              "academic_year": number | null,
+"assessment_track": string | null,
+"blueprint_id": string | null,
 "child_id": string,
 "content_locked_at": string | null,
 "created_at": string,
 "created_by": string | null,
 "duration_minutes": number | null,
 "education_context": Json | null,
+"education_period_id": string | null,
+"exam_scope": string | null,
 "family_id": string,
 "grade": number,
 "id": string,
 "kind": string,
 "preparation": Json | null,
 "question_ids": (string)[],
+"school_declared": boolean | null,
 "status": Database["public"]['Enums']["exam_status"],
 "subject": string,
+"term": number | null,
 "timed": boolean,
 "title": string,
 "updated_at": string
@@ -2943,6 +3089,9 @@ isOneToOne: false
       } },
 "custom_access_token_hook":
 { Args: { "event": Json }; Returns: Json
+                           },
+"decide_education_holiday":
+{ Args: { "p_child_id": string,"p_decision": string,"p_key": string,"p_request_id": string,"p_revision": number }; Returns: Json
                            },
 "decide_reward_request":
 { Args: { "p_approve": boolean,"p_request_id": string }; Returns: {
@@ -2996,6 +3145,12 @@ isOneToOne: false
       } },
 "education_calendar_catalog":
 { Args: { "p_child_id"?: string }; Returns: Json
+                           },
+"education_change_state":
+{ Args: { "p_child_id": string }; Returns: Json
+                           },
+"education_holiday_suggestions":
+{ Args: { "p_child_id": string }; Returns: Json
                            },
 "education_report_periods":
 { Args: { "p_child_id": string }; Returns: Json
@@ -3120,6 +3275,12 @@ isOneToOne: false
 "get_curriculum_source_freshness":
 { Args: { "p_subject": string,"p_term": number,"p_year": string }; Returns: Json
                            },
+"get_curriculum_source_status":
+{ Args: { "p_subject": string,"p_term": number,"p_year": string }; Returns: Json
+                           },
+"get_curriculum_source_target":
+{ Args: { "p_exam_family": string,"p_term": number,"p_year": string }; Returns: Json
+                           },
 "get_discarded_prova_drafts":
 { Args: { "p_before_id"?: string,"p_before_updated"?: string,"p_child_id"?: string }; Returns: Json
                            },
@@ -3142,6 +3303,9 @@ isOneToOne: false
                            },
 "get_help_articles":
 { Args: { "p_editor"?: boolean,"p_locale"?: string,"p_platform"?: string }; Returns: Json
+                           },
+"get_help_attachment":
+{ Args: { "p_attachment_id": string }; Returns: Json
                            },
 "get_help_editor_article":
 { Args: { "p_id": string }; Returns: Json
@@ -3224,6 +3388,9 @@ isOneToOne: false
               "answer_document": Json,"answer_key": string,"answer_text": string,"question_id": string,"revision": number
             }[]
                            },
+"get_scenario_question_fit":
+{ Args: { "p_question_ids": (string)[] }; Returns: Json
+                           },
 "get_school_bag":
 { Args: { "p_child_id": string,"p_day": string }; Returns: Json
                            },
@@ -3245,6 +3412,9 @@ isOneToOne: false
 "group_exam_phases":
 { Args: { "p_group": string }; Returns: Json
                            },
+"help_ticket_updates":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "iap_reconcile_candidates":
 { Args: { "p_limit"?: number,"p_min_age"?: string,"p_window"?: string }; Returns: {
               "expires_at": string,"family_id": string,"id": string,"platform": Database["public"]['Enums']["store_platform"],"product_id": string,"status": Database["public"]['Enums']["subscription_status"],"store_key": string
@@ -3261,6 +3431,9 @@ isOneToOne: false
                            },
 "library_policy_preview":
 { Args: { "p_accepted_count": number,"p_rules"?: Json }; Returns: Json
+                           },
+"list_help_attachments":
+{ Args: { "p_ticket_id": string }; Returns: Json
                            },
 "list_help_editor_articles":
 { Args: { "p_after_id"?: string,"p_after_slug"?: string,"p_locale"?: string,"p_platform"?: string }; Returns: Json
@@ -3280,6 +3453,12 @@ isOneToOne: false
 "list_school_grades":
 { Args: { "p_before_date"?: string,"p_before_id"?: string,"p_child_id": string,"p_period"?: string }; Returns: Json
                            },
+"mark_help_ticket_read":
+{ Args: { "p_sequence": number,"p_ticket_id": string }; Returns: Json
+                           },
+"mark_operator_prereview_notices_read":
+{ Args: { "p_ids"?: (string)[] }; Returns: Json
+                           },
 "mark_parent_inbox":
 { Args: { "p_archived"?: boolean,"p_id": string }; Returns: undefined
                            },
@@ -3291,6 +3470,9 @@ isOneToOne: false
                            },
 "note_history":
 { Args: { "p_before_revision"?: number,"p_id": string }; Returns: Json
+                           },
+"operator_prereview_notices":
+{ Args: { "p_limit"?: number,"p_unread_only"?: boolean }; Returns: Json
                            },
 "pair_child_device":
 { Args: { "p_code": string }; Returns: string
@@ -3312,6 +3494,9 @@ isOneToOne: false
 "plan_for_day":
 { Args: { "p_child_id": string,"p_day": string }; Returns: Json
                            },
+"plan_for_days":
+{ Args: { "p_child_id": string,"p_from": string,"p_to": string }; Returns: Json
+                           },
 "prepare_learning_plan_import":
 { Args: { "p_child": string,"p_context": Json,"p_family": string,"p_locale": string,"p_source": string,"p_user": string }; Returns: Json
                            },
@@ -3320,6 +3505,9 @@ isOneToOne: false
                            },
 "prepare_weekly_summary":
 { Args: { "p_context": Json,"p_family": string,"p_user": string,"p_week": string }; Returns: Json
+                           },
+"preview_device_pairing":
+{ Args: { "p_code": string }; Returns: Json
                            },
 "preview_education_calendar":
 { Args: { "p_academic_year": number,"p_action": string,"p_child_id": string,"p_place_id": string,"p_stage": string,"p_starts_on": string }; Returns: Json
@@ -3410,6 +3598,9 @@ isOneToOne: false
 "record_curriculum_source_fetch":
 { Args: { "p_actor_id": string,"p_request_id": string,"p_revision": Json,"p_source": Json }; Returns: Json
                            },
+"record_scenario_question_fit_suggestion":
+{ Args: { "p_question_id": string,"p_verdict": Json }; Returns: Json
+                           },
 "record_source_cleanup":
 { Args: { "p_path": string,"p_success": boolean }; Returns: undefined
                            },
@@ -3428,11 +3619,17 @@ isOneToOne: false
 "register_timetable_import":
 { Args: { "p_child": string,"p_job": string,"p_source": string }; Returns: Json
                            },
+"release_channel_failures":
+{ Args: { "p_limit"?: number }; Returns: Json
+                           },
 "release_channel_operations":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
 "release_push_operations":
 { Args: { "p_before"?: number,"p_limit"?: number,"p_status"?: string }; Returns: Json
+                           },
+"release_requeue_channel":
+{ Args: { "p_id": number }; Returns: Json
                            },
 "release_retry_push":
 { Args: { "p_confirmed": boolean,"p_outbox_id": number,"p_reason": string,"p_request": string,"p_revision": number }; Returns: Json
@@ -3472,7 +3669,7 @@ isOneToOne: false
         isSetofReturn: false
       } },
 "reserve_ai_operation":
-{ Args: { "p_action": string,"p_family_id": string,"p_hash": string,"p_lease": string,"p_user_id": string }; Returns: Json
+{ Args: { "p_action": string,"p_family_id": string,"p_hash": string,"p_lease": string,"p_provider"?: string,"p_user_id": string }; Returns: Json
                            },
 "reserve_catalog_prova_generation":
 { Args: { "p_blueprint_id": string,"p_draft_id": string,"p_family_id": string,"p_hash": string,"p_id": string,"p_items": number,"p_user_id": string }; Returns: Json
@@ -3481,7 +3678,7 @@ isOneToOne: false
 { Args: { "p_action": string,"p_child_id": string,"p_family_id": string,"p_hash": string,"p_lease": string,"p_user_id": string }; Returns: Json
                            },
 "reserve_learning_plan_import":
-{ Args: { "p_context": string,"p_family": string,"p_lease": string,"p_user": string }; Returns: Json
+{ Args: { "p_context": string,"p_family": string,"p_lease": string,"p_provider"?: string,"p_user": string }; Returns: Json
                            },
 "reserve_learning_source":
 { Args: { "p_bytes": number,"p_consent": boolean,"p_id": string,"p_kind": string,"p_mime": string,"p_name": string,"p_sha256": string }; Returns: Json
@@ -3502,7 +3699,7 @@ isOneToOne: false
 { Args: { "p_family_id": string,"p_hash": string,"p_id": string,"p_lease": string,"p_user_id": string }; Returns: Json
                            },
 "reserve_weekly_summary":
-{ Args: { "p_context": string,"p_family": string,"p_lease": string,"p_user": string }; Returns: Json
+{ Args: { "p_context": string,"p_family": string,"p_lease": string,"p_provider"?: string,"p_user": string }; Returns: Json
                            },
 "resume_prova_generation":
 { Args: { "p_family_id": string,"p_id": string,"p_intent": Json,"p_user_id": string }; Returns: Json
@@ -3513,6 +3710,9 @@ isOneToOne: false
 "review_help_article":
 { Args: { "p_action": string,"p_id": string,"p_reason": string,"p_request_id": string,"p_revision": number }; Returns: Json
                            },
+"review_scenario_question_fit":
+{ Args: { "p_input": Json,"p_question_id": string,"p_request_id": string }; Returns: Json
+                           },
 "review_task":
 { Args: { "p_approve": boolean,"p_completion_id": string }; Returns: {
               "child_id": string,
@@ -3522,6 +3722,8 @@ isOneToOne: false
 "due_date": string,
 "family_id": string,
 "id": string,
+"return_note": string | null,
+"return_reason": string | null,
 "reviewed_at": string | null,
 "reviewed_by": string | null,
 "status": Database["public"]['Enums']["completion_status"],
@@ -3535,7 +3737,7 @@ isOneToOne: false
         isSetofReturn: false
       } },
 "review_task_once":
-{ Args: { "p_approve": boolean,"p_completion_id": string,"p_expected_completed_at": string,"p_request_id": string,"p_return_note"?: string | null,"p_return_reason"?: string | null }; Returns: Json
+{ Args: { "p_approve": boolean,"p_completion_id": string,"p_expected_completed_at": string,"p_request_id": string,"p_return_note"?: string,"p_return_reason"?: string }; Returns: Json
                            },
 "revoke_child_share":
 { Args: { "p_share_id": string }; Returns: undefined
@@ -3548,6 +3750,9 @@ isOneToOne: false
                            },
 "reward_history":
 { Args: { "p_before_revision"?: number,"p_id": string }; Returns: Json
+                           },
+"routines_for_day":
+{ Args: { "p_child_id": string,"p_day": string }; Returns: Json
                            },
 "save_answer_review":
 { Args: { "p_ai_id"?: string,"p_answer_hash": string,"p_attempt_id": string,"p_document": Json,"p_feedback": string,"p_question_id": string,"p_request_id": string,"p_revision": number,"p_score": number }; Returns: number
@@ -3598,6 +3803,15 @@ isOneToOne: false
                            },
 "save_setup_batch":
 { Args: { "p_child_id"?: string,"p_items": Json,"p_kind": string,"p_request_id": string }; Returns: Json
+                           },
+"save_support_canned_reply":
+{ Args: { "p_archived"?: boolean,"p_body": string,"p_categories"?: (string)[],"p_expected_revision": number,"p_id": string,"p_locale": string,"p_position"?: number,"p_request_id": string,"p_title": string }; Returns: Json
+                           },
+"schedule_child_education_change":
+{ Args: { "p_academic_year": number,"p_action": string,"p_child_id": string,"p_grade": number,"p_keep_timetable": boolean,"p_request_id": string,"p_revision": number,"p_school": string,"p_starts_on": string }; Returns: Json
+                           },
+"schedule_child_education_change_with_calendar":
+{ Args: { "p_academic_year": number,"p_action": string,"p_calendar_id": string,"p_calendar_revision": number,"p_child_id": string,"p_detail": string,"p_grade": number,"p_keep_timetable": boolean,"p_place_id": string,"p_reason": string,"p_request_id": string,"p_revision": number,"p_school": string,"p_stage": string,"p_starts_on": string }; Returns: Json
                            },
 "school_grade_history":
 { Args: { "p_before_revision"?: number,"p_id": string }; Returns: Json
@@ -3661,6 +3875,9 @@ isOneToOne: false
       } },
 "set_child_pin":
 { Args: { "p_child_id": string,"p_pin": string }; Returns: undefined
+                           },
+"set_child_subject_links":
+{ Args: { "p_child_id": string,"p_links": Json,"p_request_id": string,"p_source"?: string }; Returns: Json
                            },
 "set_group_ranking_consent":
 { Args: { "p_child": string,"p_enabled": boolean,"p_group": string }; Returns: undefined
@@ -3769,11 +3986,17 @@ isOneToOne: false
 "suggest_subject":
 { Args: { "p_grade"?: number,"p_text": string }; Returns: Json
                            },
+"support_canned_replies":
+{ Args: { "p_include_archived"?: boolean,"p_locale"?: string,"p_ticket"?: string }; Returns: Json
+                           },
 "task_routine_history":
 { Args: { "p_before_revision"?: number,"p_id": string }; Returns: Json
                            },
 "transfer_education_period_items":
 { Args: { "p_child_id": string,"p_from_period_id": string,"p_items": Json,"p_request_id": string,"p_revision": number,"p_to_period_id": string }; Returns: Json
+                           },
+"undo_child_education_change":
+{ Args: { "p_child_id": string,"p_request_id": string,"p_revision": number }; Returns: Json
                            },
 "undo_complete":
 { Args: { "p_completion_id": string }; Returns: undefined
@@ -3789,6 +4012,9 @@ isOneToOne: false
                            },
 "verify_parent_pin":
 { Args: { "p_pin": string }; Returns: boolean
+                           },
+"weekly_review_children":
+{ Args: { "p_week": string }; Returns: Json
                            },
 "withdraw_question_contribution":
 { Args: { "p_id": string }; Returns: undefined
