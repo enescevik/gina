@@ -1,0 +1,4 @@
+{
+  "reset": "{{ if eq .Data.locale \"en\" }}Reset your GINA password{{ else }}GINA şifreni yenile{{ end }}",
+  "confirm": "{{ if eq .Data.locale \"en\" }}Confirm your GINA account{{ else }}GINA hesabını doğrula{{ end }}"
+}
