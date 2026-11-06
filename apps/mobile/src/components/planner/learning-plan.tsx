@@ -148,24 +148,32 @@ function PlanSection({ child, date, from, to, childMode }: Props) {
   // hand. Each item is saved with its own revision through the same journal (one at a time, so a lost
   // reply is recovered by the existing "retry"); nothing is saved before the parent applies the preview.
   const open = (query.data?.items ?? []).filter((r) => !r.content.done && !r.content.archived);
-  const [spreadUndo, setSpreadUndo] = useState<{ id: string; planned_on: string }[] | null>(null);
+  const [spreadUndo, setSpreadUndo] = useState<{ id: string; planned_on: string; from: string }[] | null>(null);
   const [spreadNote, setSpreadNote] = useState("");
-  async function respread(dates: { id: string; planned_on: string }[], undoable: boolean) {
+  async function respread(dates: { id: string; planned_on: string; from?: string }[], undoable: boolean) {
     if (busy || pending || recovery.blocked) return;
     setBusy(true);
     setError("");
     setSpreadNote("");
-    const before: { id: string; planned_on: string }[] = [];
+    const before: { id: string; planned_on: string; from: string }[] = [];
     let saved = 0;
     try {
+      // Items moved out of the visible week (e.g. by an earlier spread) are read again with their current revision.
+      const lookup = new Map((query.data?.items ?? []).map((r) => [r.id, r]));
+      if (dates.some((d) => !lookup.has(d.id))) {
+        const span = dates.flatMap((d) => [d.planned_on, d.from ?? d.planned_on]).sort();
+        const { data, error: readError } = await supabase.rpc("get_learning_plan", { p_child_id: child.id, p_from: span[0]!, p_to: span[span.length - 1]! });
+        if (readError) throw readError;
+        for (const r of learningPlanListSchema.parse(data).items) lookup.set(r.id, r);
+      }
       for (const d of dates) {
-        const row = (query.data?.items ?? []).find((r) => r.id === d.id);
+        const row = lookup.get(d.id);
         if (!row || row.content.planned_on === d.planned_on) continue;
         const c = journal.prepare({ p_id: row.id, p_revision: row.revision, p_content: { ...row.content, planned_on: d.planned_on } });
         setPending(c);
         await journal.send(c);
         setPending(null);
-        before.push({ id: row.id, planned_on: row.content.planned_on });
+        before.push({ id: row.id, planned_on: row.content.planned_on, from: d.planned_on });
         saved++;
       }
       setSpreadUndo(undoable && before.length ? before : null);
@@ -284,7 +292,7 @@ function PlanSection({ child, date, from, to, childMode }: Props) {
                 </Pressable>
               ))}
             </View>
-            {!history && !childMode && open.length >= 2
+            {!history && !childMode && (open.length >= 2 || spreadUndo || spreadNote)
               ? (
                 <View testID="c02-respread" style={{ gap: 8 }}>
                   <Text style={u.small}>{t("c02.respreadHelp", { count: open.length })}</Text>

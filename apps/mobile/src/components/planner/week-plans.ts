@@ -42,6 +42,9 @@ export function useWeekPlans(familyId: string, childIds: string[], from: string,
  * Rows are `plan:`-prefixed: past days are read-only, today/later open the program editor.
  */
 export function dayLessonOccurrences(plan: DayPlan, timeZone: string, english = false): Occurrence<WeekEvent>[] {
+  // A past day older than every known timetable version shows the note only: the oldest known (= later)
+  // program is not presented as that day's lessons.
+  if (plan.day < plan.today && plan.timetable.status === "unknown_before") return [];
   return plan.timetable.day_lessons
     .slice()
     .sort((a, b) => a.start.localeCompare(b.start))
