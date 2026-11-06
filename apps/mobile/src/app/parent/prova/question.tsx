@@ -19,12 +19,24 @@ import {
 import { uploadLearningFile } from "@/lib/learning-files";
 
 import {
+  AUTHOR_PRACTICE_ONLY_TYPES,
+  buildPhase2Content,
+  buildStimulus,
+  isPhase2AuthorType,
+  newPhase2Draft,
+  newStimulusDraft,
+  PHASE2A_INTERACTION_TYPES,
+  PHASE2B_INTERACTION_TYPES,
+  type Phase2Draft,
+  type Phase2InteractionType,
+  phase2DraftErrors,
+  type StimulusDraft,
+  stimulusErrors,
   buildStructuredContent,
   type Enums,
   isStructuredType,
   type Json,
   newStructuredDraft,
-  PRACTICE_ONLY_TYPES,
   parseRubricInput,
   STRUCTURED_INTERACTION_TYPES,
   type StructuredDraft,
@@ -51,12 +63,25 @@ import {
   structuredErrorMessage,
   structuredTypeLabel,
 } from "@/components/learning/structured-question-author";
+import {
+  Phase2QuestionEditor,
+  Phase2QuestionPreview,
+  StimulusEditor,
+  StimulusPreview,
+} from "@/components/learning/structured-question-author-p2";
+import { PHASE2A_AUTHOR_ENABLED, PHASE2B_AUTHOR_ENABLED } from "@/components/learning/question-types/support";
 import { supabase } from "@/lib/supabase";
 
 type Kind = Enums<"question_kind">;
 /** QT: eski iki tür + yapılandırılmış etkileşim türleri (her pakette aynı; AI gerekmez). */
-type QuestionType = Exclude<Kind, "structured"> | StructuredInteractionType;
-const QUESTION_TYPES: QuestionType[] = ["multiple_choice", "open_ended", ...STRUCTURED_INTERACTION_TYPES];
+type QuestionType = Exclude<Kind, "structured"> | StructuredInteractionType | Phase2InteractionType;
+/** Faz 2A/2B türleri yalnız kendi anahtarı açıkken listelenir (varsayılan kapalı; sunucuda da enabled=false). */
+const QUESTION_TYPES: QuestionType[] = [
+  "multiple_choice", "open_ended", ...STRUCTURED_INTERACTION_TYPES,
+  ...(PHASE2A_AUTHOR_ENABLED ? PHASE2A_INTERACTION_TYPES : []),
+  ...(PHASE2B_AUTHOR_ENABLED ? PHASE2B_INTERACTION_TYPES : []),
+];
+const isAuthoredType = (k: string): boolean => isStructuredType(k) || isPhase2AuthorType(k);
 type Difficulty = Enums<"question_difficulty">;
 const DIFFICULTIES: Difficulty[] = ["kolay", "orta", "orta_ustu", "zor"];
 const KEYS = ["A", "B", "C", "D"] as const;
@@ -106,10 +131,13 @@ export default function QuestionScreen() {
   const [topic, setTopic] = useState("");
   const [scenario, setScenario] = useState("");
   const [qtype, setQtype] = useState<QuestionType>("multiple_choice");
-  const kind: Kind = isStructuredType(qtype) ? "structured" : qtype;
+  const kind: Kind = isStructuredType(qtype) || isPhase2AuthorType(qtype) ? "structured" : qtype;
   const setKind = (k: Kind) => {
     if (k !== "structured") setQtype(k);
   };
+  const [p2Drafts, setP2Drafts] = useState<Partial<Record<Phase2InteractionType, Phase2Draft>>>({});
+  // QT42: tablo/grafik uyaranı her yapılandırılmış türe eklenebilir (Faz 2B anahtarı).
+  const [stim, setStim] = useState<StimulusDraft>(newStimulusDraft);
   // QT: tür başına taslak; tür değiştirip geri dönünce yazılanlar kaybolmaz.
   const [drafts, setDrafts] = useState<Partial<Record<StructuredInteractionType, StructuredDraft>>>({});
   const [touched, setTouched] = useState(false);
@@ -118,10 +146,17 @@ export default function QuestionScreen() {
   const structured: StructuredDraft | null = isStructuredType(qtype)
     ? drafts[qtype] ?? newStructuredDraft(qtype)
     : null;
-  const structuredErrors = structured ? structuredDraftErrors(structured) : [];
+  const p2: Phase2Draft | null = isPhase2AuthorType(qtype) ? p2Drafts[qtype] ?? newPhase2Draft(qtype) : null;
+  /** Hazırlanan yapılandırılmış soru (1A/1B ya da 2A/2B); null = eski tür. */
+  const authored: { type: string } | null = structured ?? p2;
+  const stimulus = PHASE2B_AUTHOR_ENABLED && authored ? buildStimulus(stim) : null;
+  const structuredErrors = structured
+    ? [...new Set([...structuredDraftErrors(structured), ...stimulusErrors(stimulus)])].sort()
+    : p2 ? phase2DraftErrors(p2, { hasImage: images.length > 0, stimulus }) : [];
   const pointsValue = points.trim() ? Number(points.trim().replace(",", ".")) : null;
   const pointsInvalid = pointsValue !== null && !(pointsValue > 0 && pointsValue <= 100);
-  const content = structured ? buildStructuredContent(structured) : null;
+  const baseContent = structured ? buildStructuredContent(structured) : p2 ? buildPhase2Content(p2) : null;
+  const content = baseContent && stimulus ? { ...baseContent, payload: { ...baseContent.payload, stimulus } } : baseContent;
   const [difficulty, setDifficulty] = useState<Difficulty>("orta_ustu");
   const [stem, setStem] = useState("");
   const [choices, setChoices] = useState<Record<string, string>>({
@@ -190,10 +225,10 @@ export default function QuestionScreen() {
       }
     }
     if (target >= 2) {
-      if (structured) {
+      if (authored) {
         setTouched(true);
         if (structuredErrors.length) {
-          return structuredErrorMessage(t, structured.type, structuredErrors[0]!);
+          return structuredErrorMessage(t, authored.type, structuredErrors[0]!);
         }
         if (pointsInvalid) return structuredErrorMessage(t, null, "question_points_invalid");
       } else if (kind === "multiple_choice") {
@@ -224,9 +259,9 @@ export default function QuestionScreen() {
       if (kind === "multiple_choice" && (!KEYS.some(key => key === correct) || KEYS.some((k) => !choices[k]?.trim()))) {
         throw new Error(t("prova.choicesInvalid"));
       }
-      if (structured && (structuredErrors.length || pointsInvalid)) {
+      if (authored && (structuredErrors.length || pointsInvalid)) {
         setTouched(true);
-        throw new Error(structuredErrorMessage(t, structured.type, structuredErrors[0] ?? "question_points_invalid"));
+        throw new Error(structuredErrorMessage(t, authored.type, structuredErrors[0] ?? "question_points_invalid"));
       }
       if (images.some((image) => image.alt.trim().length < 3)) {
         throw new Error(t("sources.altRequired"));
@@ -245,14 +280,14 @@ export default function QuestionScreen() {
       const tag = params.draftId
         ? draftPeriod.data ?? (await draftPeriod.refetch()).data ?? period
         : period;
-      const body = structured && content
+      const body = authored && content
         ? {
           grade: Number(grade),
           subject: subject.trim(),
           topic: topic.trim(),
           scenario_code: scenario.trim() || null,
           kind: "structured" as const,
-          interaction_type: structured.type,
+          interaction_type: authored.type,
           schema_version: 1 as const,
           payload: content.payload as Json,
           answer_key: content.answer_key as Json,
@@ -393,6 +428,8 @@ export default function QuestionScreen() {
         setAlternatives("");
         setRubricText("");
         setDrafts({});
+        setP2Drafts({});
+        setStim(newStimulusDraft());
         setTouched(false);
         setPoints("");
         setShowKey(false);
@@ -533,7 +570,7 @@ export default function QuestionScreen() {
           />
           <Text nativeID="qt-type-label" className="font-body-bold text-base text-ink">{t("prova.qt.author.typeTitle")}</Text>
           <View testID="qt-type-picker" accessibilityLabelledBy="qt-type-label" className="flex-row flex-wrap gap-2">
-            {(editFrom ? QUESTION_TYPES.filter((k) => !isStructuredType(k)) : QUESTION_TYPES).map((k) => (
+            {(editFrom ? QUESTION_TYPES.filter((k) => !isAuthoredType(k)) : QUESTION_TYPES).map((k) => (
               <Pressable
                 key={k}
                 accessibilityRole="button"
@@ -542,16 +579,16 @@ export default function QuestionScreen() {
                 className={chip(qtype === k)}
               >
                 <Text className={chipText(qtype === k)}>
-                  {isStructuredType(k) ? structuredTypeLabel(t, k) : t(`prova.kind.${k}`)}
+                  {isAuthoredType(k) ? structuredTypeLabel(t, k) : t(`prova.kind.${k}`)}
                 </Text>
               </Pressable>
             ))}
           </View>
-          {isStructuredType(qtype)
+          {isAuthoredType(qtype)
             ? (
               <Text testID="qt-type-help" style={parentStyles.muted}>
                 {t(`prova.qt.author.typeHelp.${qtype}`)}{" "}
-                {PRACTICE_ONLY_TYPES.has(qtype) ? t("prova.qt.author.practiceOnlyHelp") : t("prova.qt.author.numericTrackHelp")}
+                {AUTHOR_PRACTICE_ONLY_TYPES.has(qtype) ? t("prova.qt.author.practiceOnlyHelp") : t("prova.qt.author.numericTrackHelp")}
               </Text>
             )
             : null}
@@ -604,18 +641,38 @@ export default function QuestionScreen() {
           </>)}
           </>) : null}
           {step === 1 ? (<>
-          {structured
+          {authored
             ? (
               <View className="gap-4">
-                <StructuredQuestionEditor
-                  draft={structured}
-                  disabled={save.isPending}
-                  onChange={(next) => {
-                    setTouched(true);
-                    setStepError(null);
-                    setDrafts((d) => ({ ...d, [next.type]: next }));
-                  }}
-                />
+                {structured
+                  ? (
+                    <StructuredQuestionEditor
+                      draft={structured}
+                      disabled={save.isPending}
+                      onChange={(next) => {
+                        setTouched(true);
+                        setStepError(null);
+                        setDrafts((d) => ({ ...d, [next.type]: next }));
+                      }}
+                    />
+                  )
+                  : p2
+                  ? (
+                    <Phase2QuestionEditor
+                      draft={p2}
+                      image={images[0]?.file ?? null}
+                      disabled={save.isPending}
+                      onChange={(next) => {
+                        setTouched(true);
+                        setStepError(null);
+                        setP2Drafts((d) => ({ ...d, [next.type]: next }));
+                      }}
+                    />
+                  )
+                  : null}
+                {PHASE2B_AUTHOR_ENABLED
+                  ? <StimulusEditor draft={stim} disabled={save.isPending} onChange={(next) => { setTouched(true); setStim(next); }} />
+                  : null}
                 <Field
                   editable={!save.isPending}
                   label={t("prova.qt.author.points")}
@@ -632,7 +689,7 @@ export default function QuestionScreen() {
                       <Text style={{ fontFamily: "Nunito_800ExtraBold", color: "#A43135" }}>{t("prova.qt.author.errorsTitle")}</Text>
                       {structuredErrors.map((code) => (
                         <Text key={code} style={{ fontFamily: "Nunito_600SemiBold", color: "#7A2328", fontSize: 15, lineHeight: 22 }}>
-                          {"• "}{structuredErrorMessage(t, structured.type, code)}
+                          {"• "}{structuredErrorMessage(t, authored.type, code)}
                         </Text>
                       ))}
                     </View>
@@ -750,14 +807,26 @@ export default function QuestionScreen() {
                 </Text>
               )
               : null}
-            {structured && content
+            {authored && content
               ? (
                 <>
-                  <StructuredQuestionPreview
-                    type={structured.type}
-                    payload={content.payload}
-                    answerKey={showKey ? content.answer_key : undefined}
-                  />
+                  <StimulusPreview stimulus={content.payload.stimulus} />
+                  {structured
+                    ? (
+                      <StructuredQuestionPreview
+                        type={structured.type}
+                        payload={content.payload}
+                        answerKey={showKey ? content.answer_key : undefined}
+                      />
+                    )
+                    : (
+                      <Phase2QuestionPreview
+                        type={authored.type}
+                        payload={content.payload}
+                        answerKey={showKey ? content.answer_key : undefined}
+                        image={images[0]?.file.uri ?? null}
+                      />
+                    )}
                   <Toggle label={t("prova.qt.author.preview.showKey")} value={showKey} onChange={setShowKey} />
                 </>
               )
@@ -779,7 +848,7 @@ export default function QuestionScreen() {
             <Text style={parentStyles.muted}>{t("provaP02.editor.previewHidden")}</Text>
           </View>
           {namesHint}
-          {editFrom ? null : structured ? (
+          {editFrom ? null : authored ? (
             <Text style={parentStyles.muted}>{t("prova.qt.author.noShare")}</Text>
           ) : (
           <View style={parentStyles.card}>
@@ -817,12 +886,12 @@ export default function QuestionScreen() {
         {stepError
           ? <Text accessibilityRole="alert" style={{ color: "#B3261E", fontFamily: "Nunito_700Bold" }}>{stepError}</Text>
           : null}
-        {save.error && structured && structuredSaveErrorCodes(save.error).some((c) => t(`prova.qt.author.err.${c}`, { defaultValue: "" }))
+        {save.error && authored && structuredSaveErrorCodes(save.error).some((c) => t(`prova.qt.author.err.${c}`, { defaultValue: "" }))
           ? (
             <View testID="qt-save-errors" accessibilityRole="alert" style={{ gap: 4 }}>
               {structuredSaveErrorCodes(save.error).map((code) => (
                 <Text key={code} style={{ color: "#B3261E", fontFamily: "Nunito_700Bold" }}>
-                  {structuredErrorMessage(t, structured.type, code)}
+                  {structuredErrorMessage(t, authored.type, code)}
                 </Text>
               ))}
             </View>

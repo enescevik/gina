@@ -126,7 +126,7 @@ export function addImageBox(d: RegionDraft & { seq: number }, x: number, y: numb
   const r = (n: number) => Math.round(n * 1000) / 1000;
   return { ...d, seq, boxes: [...d.boxes, { id: `b${seq}`, text: String(d.boxes.length + 1), box: [r(bx), r(by), r(w), r(w)] }] };
 }
-export function resizeImageBox(d: RegionDraft, id: string, size: number): RegionDraft {
+export function resizeImageBox<D extends RegionDraft>(d: D, id: string, size: number): D {
   return {
     ...d,
     boxes: d.boxes.map((b) => {

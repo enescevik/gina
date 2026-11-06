@@ -64,6 +64,20 @@ function bookletStructuredLabels(t: TFunction): BookletLabels["structured"] {
     processRequired: k("processRequired"),
     caseInsensitive: k("caseInsensitive"),
     keyUnavailable: k("keyUnavailable"),
+    markHelp: (unit, max) => k(max ? "markHelpMax" : "markHelp", { unit: k(`unit_${unit}`), count: max }),
+    errorFixHelp: (unit) => k("errorFixHelp", { unit: k(`unit_${unit}`) }),
+    multiHelp: (count) => (count ? k("multiHelpCount", { count }) : k("multiHelpAll")),
+    stage: (n) => k("stage", { n }),
+    regionHelp: k("regionHelp"),
+    regionCountHelp: (n) => k("regionCount", { count: n }),
+    clockRead: k("clockRead"),
+    clockSet: k("clockSet"),
+    clockTime: k("clockTime"),
+    stimulusAlt: k("stimulusAlt"),
+    regionCount: (n) => k("regionCount", { count: n }),
+    accept12h: k("accept12h"),
+    parentScores: k("parentScores"),
+    fixPolicyReview: k("fixPolicyReview"),
   };
 }
 
