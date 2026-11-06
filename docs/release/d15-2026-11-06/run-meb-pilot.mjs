@@ -15,6 +15,11 @@
 //                                  hücreleri resmî dosyayla gerçekten karşılaştırdığını beyanı. Yoksa aşama yalnız
 //                                  backoffice'te yapılmış kararı doğrular)
 //              --withdraw (cleanup: pilot için yayımlanan adayı geri çek; üretimde Enes kararı)
+//              --allow-cleanup-without-review-package (cleanup: H03 inceleme paketi tam değilse bile temizle; yalnız
+//                                  bilinçli operatör kararı, sonuç raporda `review_package_gate_overridden` olarak görünür)
+// H03: `generate` üretilen soruları temizlikten ÖNCE taşınabilir inceleme paketine yazar (`review-package/`:
+// tam kök, tür/şıklar, ortak kaynak, gömülü görseller, cevap, rubrik, kazanım, kaynak izi). `cleanup` paket
+// çevrimdışı tam açılmadıkça hiçbir şeyi silmez (paket eksikse ve sorular hâlâ duruyorsa önce yeniden dışa aktarır).
 // Kurallar: gerçek aile/kullanıcıya dokunmaz; sentetik hesaplar `@example.invalid`. Anahtar/parola/token yazdırmaz;
 // durum yalnız gitignored `.codex-setup/d15/meb-pilot-state.json` (0600) içinde. Ücretli çağrı tavanı 3
 // (`calls.jsonl`, kişisel veri/sır yok). Global `curriculum_catalog.enabled` anahtarı DEĞİŞTİRİLMEZ.
@@ -31,7 +36,8 @@ const argv = process.argv.slice(2);
 const stage = argv[0];
 const flag = (name) => argv.includes(name);
 if (!LOCAL && !flag('--prod')) throw Error('explicit_--prod_required (or GINA_MEB_PILOT_TARGET=local from the isolated runner)');
-const OUT = LOCAL ? new URL(`file://${process.env.GINA_MEB_PILOT_OUT}/`) : new URL('./live/', import.meta.url);
+// H03: a later live run can write to its own repo-relative directory (GINA_MEB_PILOT_LIVE_OUT) instead of D15's `live/`.
+const OUT = LOCAL ? new URL(`file://${process.env.GINA_MEB_PILOT_OUT}/`) : process.env.GINA_MEB_PILOT_LIVE_OUT ? new URL(`${process.env.GINA_MEB_PILOT_LIVE_OUT.replace(/\/?$/, '/')}`, ROOT) : new URL('./live/', import.meta.url);
 const STATE = LOCAL ? new URL(`file://${process.env.GINA_MEB_PILOT_STATE}`) : new URL('.codex-setup/d15/meb-pilot-state.json', ROOT);
 mkdirSync(OUT, { recursive: true });
 mkdirSync(new URL('./', STATE), { recursive: true });
@@ -39,6 +45,8 @@ const MAX_PAID = 3;
 const PROJECT = 'wixjxlxgyhgdacadsawo';
 const require = createRequire(new URL('apps/mobile/package.json', ROOT));
 const { createClient } = require('@supabase/supabase-js');
+const { collectReviewPackage, scenarioFrom, writeReviewPackage, openReviewPackage } = await import(new URL('scripts/question-review-package.mjs', ROOT));
+const REVIEW_DIR = new URL('review-package/', OUT).pathname;
 
 let URL_BASE, SERVICE, ANON;
 if (LOCAL) {
@@ -279,6 +287,8 @@ async function stageReview() {
   detail = await rpc(a, 'admin_get_curriculum_candidate', { p_id: c.id });
   state.candidateRevision = c.revision; state.questionCount = detail.candidate.question_count;
   state.blocks = detail.candidate.blocks.map((b, i) => ({ block_id: `B${i + 1}`, count: b.count, outcome_ids: b.outcomes.map((o) => (o.code && o.code.trim()) || `cell:${o.cell}`) }));
+  // H03: genel müfredat verisi (kazanım metni, kaynak URL'si); inceleme paketi için. Aile verisi değil.
+  state.scenarioCandidate = detail.candidate;
   save();
 }
 
@@ -420,6 +430,30 @@ async function stageGenerate() {
   }, null, 1) + '\n');
   // İnsan alan/dil incelemesi için (AI kontrol önerisinden ayrı): soru, beklenen cevap, rubrik. Kişisel veri yok.
   writeFileSync(new URL('questions-for-human-review.json', OUT), JSON.stringify(mineRows.map((q) => ({ id: short(q.id), block_id: q.provenance.block_id, outcome_ids: q.provenance.outcome_ids, expected_answer: q.expected_answer, rubric: q.provenance.rubric })), null, 1) + '\n');
+  // H03: tam inceleme paketi — temizlikten önce, sunucudaki satırlardan.
+  const pkg = await exportReviewPackage(parent);
+  require_('review_package_complete_before_cleanup', pkg.ok, { problems: pkg.problems, questions: pkg.questions, shared_sources: pkg.shared_sources, images: pkg.images, sha256: String(pkg.sha256 ?? '').slice(0, 12) });
+}
+
+async function reviewScenario(parent) {
+  let candidate = state.scenarioCandidate;
+  if (!candidate) {
+    const list = await rpc(parent, 'get_curriculum_scenarios', { p_child_id: state.childId, p_year: SCOPE.school_year, p_term: SCOPE.term, p_exam: EXAM_NO, p_subject: SCOPE.subject });
+    candidate = list.find((s) => s.id === state.candidateId)?.candidate;
+  }
+  if (!candidate) throw Error('review_package_scenario_unavailable');
+  return scenarioFrom({ candidate, catalogue_id: state.candidateId, revision: state.candidateRevision, source_sha256: state.sha });
+}
+
+// H03: soruları sınav sırasıyla oku, paketi yaz, diskte çevrimdışı yeniden aç. Kişisel veri/sır yok.
+async function exportReviewPackage(parent) {
+  const ids = (state.genQuestions ?? []).map((q) => q.id);
+  const pkg = await collectReviewPackage(admin, { questionIds: ids, scenario: await reviewScenario(parent), origin: { kind: 'meb_pilot', target: LOCAL ? 'local-isolated' : 'production', note: `${CANDIDATE_KEY}; ${LOCAL ? 'deterministic provider' : 'real provider'}` } });
+  writeReviewPackage(REVIEW_DIR, pkg);
+  const opened = openReviewPackage(REVIEW_DIR);
+  const complete = opened.ok && opened.pkg.questions.length === ids.length;
+  state.reviewPackageSha = pkg.content_sha256; save();
+  return { ok: complete, problems: opened.problems, questions: opened.pkg?.questions.length, shared_sources: opened.pkg?.shared_sources.length, images: opened.pkg?.images.length, sha256: pkg.content_sha256 };
 }
 
 // ---- 10. Çocuğa atama: grup bloğu, adet, cevap anahtarı/rubrik/provenance çocuğa gitmez; atama ücret düşürmez. ----
@@ -463,6 +497,14 @@ async function snapshotHash() {
 // ---- 11. Temizlik: (isteğe bağlı) geri çekme → atanmış sınav değişmez; pilot kapsamı kalkar; hesaplar silinir. ----
 async function stageCleanup() {
   const parent = await session(state.email, state.password);
+  // H03 kapısı: inceleme paketi çevrimdışı tam açılmadan hiçbir şey silinmez.
+  if (state.genQuestions?.length) {
+    let opened = openReviewPackage(REVIEW_DIR);
+    let ok = opened.ok && opened.pkg.questions.length === state.genQuestions.length && opened.pkg.content_sha256 === state.reviewPackageSha;
+    if (!ok) { try { const r = await exportReviewPackage(parent); ok = r.ok; opened = { problems: r.problems }; } catch (e) { opened = { problems: [String(e.message).slice(0, 120)] }; } }
+    if (!ok && flag('--allow-cleanup-without-review-package')) check('review_package_gate_overridden', true, { problems: opened.problems });
+    else require_('review_package_opens_offline_before_cleanup', ok, { problems: opened.problems, sha256: String(state.reviewPackageSha ?? '').slice(0, 12) });
+  }
   if (state.examId && state.blueprintId) {
     const before = await snapshotHash();
     if (flag('--withdraw') || LOCAL) {

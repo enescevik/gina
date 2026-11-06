@@ -1,0 +1,27 @@
+{
+  "environment": "disposable-local-auth-postgrest-storage-edge+h03-review-package(synthetic-fixture)",
+  "checks": {
+    "fixture.parent_sees_one_shared_source_for_three_questions": true,
+    "fixture.image_linked_to_each_group_member": true,
+    "export.package_complete_before_cleanup": true,
+    "cleanup.questions_gone": true,
+    "cleanup.group_gone": true,
+    "cleanup.source_row_gone": true,
+    "cleanup.object_gone": true,
+    "cleanup.auth_user_gone": true,
+    "offline.package_opens_complete_without_db_or_session": true,
+    "offline.one_shared_source_three_linked_questions": true,
+    "offline.image_embedded_and_byte_identical": true,
+    "offline.multiple_choice_choices_and_key": true,
+    "offline.full_stem_prompt_answer_rubric_outcome_source": true,
+    "offline.no_personal_or_storage_data": true,
+    "offline.no_url_resource_in_html": true,
+    "offline.review_stays_pending_not_accepted": true
+  },
+  "cleanup": {
+    "storage_removed": true,
+    "rest_removed": true,
+    "auth_removed": true,
+    "disposable_database_removed": true
+  }
+}

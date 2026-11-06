@@ -1,0 +1,13 @@
+{
+ "stage": "override",
+ "target": "local-isolated",
+ "at": "2026-11-06T20:07:00.496Z",
+ "checks": [
+  {
+   "name": "family_pro_via_reasoned_override",
+   "ok": true,
+   "plan": "pro",
+   "remaining": 300
+  }
+ ]
+}

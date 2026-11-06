@@ -1,0 +1,33 @@
+{
+ "stage": "review",
+ "target": "local-isolated",
+ "at": "2026-11-06T20:07:03.900Z",
+ "checks": [
+  {
+   "name": "candidate_reviewed",
+   "ok": true,
+   "status": "reviewed"
+  },
+  {
+   "name": "publish_blocked_until_source_approved",
+   "ok": true,
+   "error": "curriculum_source_not_approved"
+  },
+  {
+   "name": "source_revision_approved",
+   "ok": true,
+   "status": "approved"
+  },
+  {
+   "name": "candidate_published_separately",
+   "ok": true,
+   "status": "published"
+  },
+  {
+   "name": "candidate_published_source_approved",
+   "ok": true,
+   "status": "published",
+   "revision": 2
+  }
+ ]
+}

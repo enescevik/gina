@@ -2,6 +2,7 @@
 Never targets the existing local app DB or a hosted project; prints no credentials.
 Usage: python3 scripts/test-isolated-services.py --run-local
        python3 scripts/test-isolated-services.py --run-local --meb-pilot   # D15 MEB pilot chain (implies storage)
+       python3 scripts/test-isolated-services.py --run-local --review-package   # H03 review package fixture (implies storage)
 """
 import base64
 import hashlib
@@ -22,9 +23,12 @@ ROOT = Path(__file__).resolve().parents[1]
 flags = set(sys.argv[1:])
 UI_HOLD = '--ui-hold' in flags
 MEB_PILOT = '--meb-pilot' in flags
-WITH_STORAGE = '--with-storage' in flags or MEB_PILOT
+REVIEW_PACKAGE = '--review-package' in flags
+if MEB_PILOT and REVIEW_PACKAGE:
+    raise SystemExit('--meb-pilot and --review-package are separate runs')
+WITH_STORAGE = '--with-storage' in flags or MEB_PILOT or REVIEW_PACKAGE
 WITH_REALTIME = '--with-realtime' in flags
-if '--run-local' not in flags or flags - {'--run-local', '--with-storage', '--with-realtime', '--ui-hold', '--meb-pilot'}:
+if '--run-local' not in flags or flags - {'--run-local', '--with-storage', '--with-realtime', '--ui-hold', '--meb-pilot', '--review-package'}:
     raise SystemExit('Explicit --run-local required')
 DB = 'gina_http_' + secrets.token_hex(8) + '_audit'
 NAMES = [DB + '_auth', DB + '_rest']
@@ -224,9 +228,13 @@ try:
         report['environment'] += '-storage-edge'
     if MEB_PILOT:
         report['environment'] += '+d15-meb-pilot(real-official-download,deterministic-provider)'
+    if REVIEW_PACKAGE:
+        report['environment'] += '+h03-review-package(synthetic-fixture)'
+    runner = 'scripts/test-meb-pilot-local.mjs' if MEB_PILOT else 'scripts/test-question-review-package-local.mjs' if REVIEW_PACKAGE else 'scripts/test-isolated-services.mjs'
+    streams = MEB_PILOT or REVIEW_PACKAGE
     # D15: the MEB pilot runner streams its stage logs on stderr (inherited); only the JSON report is on stdout.
-    process = subprocess.Popen(['node', 'scripts/test-meb-pilot-local.mjs' if MEB_PILOT else 'scripts/test-isolated-services.mjs'], cwd=ROOT, env=env, stdout=subprocess.PIPE,
-                               stderr=None if MEB_PILOT else subprocess.PIPE, text=True, start_new_session=True)
+    process = subprocess.Popen(['node', runner], cwd=ROOT, env=env, stdout=subprocess.PIPE,
+                               stderr=None if streams else subprocess.PIPE, text=True, start_new_session=True)
     try:
         stdout, _ = process.communicate(timeout=3000 if UI_HOLD else 900 if MEB_PILOT else 420)
     finally:

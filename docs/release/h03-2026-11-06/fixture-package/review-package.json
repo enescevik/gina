@@ -1,0 +1,346 @@
+{
+ "format": "gina.question-review-package/v1",
+ "generated_at": "2026-11-06T20:07:40.342Z",
+ "origin": {
+  "kind": "fixture",
+  "target": "local-isolated",
+  "note": "H03 synthetic fixture"
+ },
+ "review": {
+  "status": "pending_human_review",
+  "accepted": false,
+  "note": "İnsan içerik onayı bu paketle verilmiş sayılmaz; inceleme kararı ayrı kaydedilir."
+ },
+ "scenario": {
+  "key": "syn-h03-g5-turkce",
+  "label": "Sentetik senaryo (H03)",
+  "catalogue_id": "00000000",
+  "revision": 2,
+  "academic_year": "2026-2027",
+  "term": 1,
+  "exam": 1,
+  "grade": 5,
+  "subject": "Türkçe",
+  "sheet": "Sentetik",
+  "header_cell": "C6",
+  "total": 4,
+  "source_sha256": "af5fd4ea376d31b7c4a451a8df3980acd0a5fd50e03765c6d67f6a11786ff1fd",
+  "source_url": "https://example.org/h03/synthetic-distribution.xlsx",
+  "index_url": null,
+  "blocks": [
+   {
+    "block_id": "B1",
+    "count": 3,
+    "count_cell": "C10",
+    "outcomes": [
+     {
+      "code": "SYN.O.5.1",
+      "text": "SYN.O.5.1. Metindeki ve görseldeki bilgiyi belirleyebilme (sentetik)",
+      "cell": "B10"
+     }
+    ]
+   },
+   {
+    "block_id": "B2",
+    "count": 1,
+    "count_cell": "C11",
+    "outcomes": [
+     {
+      "code": "SYN.Y.5.2",
+      "text": "SYN.Y.5.2. Kısa bir paragraf yazabilme (sentetik)",
+      "cell": "B11"
+     }
+    ]
+   }
+  ]
+ },
+ "shared_sources": [
+  {
+   "id": "group-07baab77",
+   "origin": "question_group",
+   "version": 1,
+   "title": "Sınıf bahçesi panosu",
+   "body": "Sınıfımız bahçede üç sıra fide dikti. Birinci sıraya marul, ikinci sıraya fasulye, üçüncü sıraya nane dikildi. Panodaki görselde sulama sırası renklerle gösterilmiştir: yeşil şeritler pazartesi, mor şeritler perşembe sulanır.",
+   "kind": "text",
+   "images": [
+    {
+     "image_id": "img-800801266f09",
+     "alt": "Yeşil ve mor dikey şeritlerden oluşan sulama panosu"
+    }
+   ],
+   "question_ids": [
+    "ec5e4b9b",
+    "5bcf1388",
+    "fb79f40e"
+   ]
+  }
+ ],
+ "images": [
+  {
+   "id": "img-800801266f09",
+   "mime": "image/png",
+   "bytes": 90,
+   "sha256": "800801266f09b67033af5da53ae38e1ca3f799c6602ae719d24561a244ee3d0b",
+   "width": 24,
+   "height": 16,
+   "data_uri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAQCAIAAACDRijCAAAAIUlEQVR4nGOw3z8fDWX730BDxKhhGDVo1KBRg0YNoswgAHC+Y19oXJGWAAAAAElFTkSuQmCC"
+  }
+ ],
+ "questions": [
+  {
+   "id": "ec5e4b9b",
+   "position": 1,
+   "block_id": "B1",
+   "outcome_ids": [
+    "SYN.O.5.1"
+   ],
+   "outcomes": [
+    {
+     "code": "SYN.O.5.1",
+     "text": "SYN.O.5.1. Metindeki ve görseldeki bilgiyi belirleyebilme (sentetik)"
+    }
+   ],
+   "kind": "open_ended",
+   "grade": 5,
+   "subject": "Türkçe",
+   "topic": "Sentetik bahçe",
+   "difficulty": "orta",
+   "stem": "Sınıf bahçesi panosu\nSınıfımız bahçede üç sıra fide dikti. Birinci sıraya marul, ikinci sıraya fasulye, üçüncü sıraya nane dikildi. Panodaki görselde sulama sırası renklerle gösterilmiştir: yeşil şeritler pazartesi, mor şeritler perşembe sulanır.\n\nMetne göre ikinci sıraya hangi fide dikilmiştir? Kısaca yazınız.",
+   "shared_source_id": "group-07baab77",
+   "shared_position": 1,
+   "prompt": "Metne göre ikinci sıraya hangi fide dikilmiştir? Kısaca yazınız.",
+   "choices": null,
+   "correct_key": null,
+   "expected_answer": "İkinci sıraya fasulye dikilmiştir.",
+   "solution": null,
+   "explanation": null,
+   "rubric": {
+    "assesses": "result",
+    "criteria": [
+     {
+      "text": "Fasulye cevabını vermesi",
+      "points": 80
+     },
+     {
+      "text": "Tam cümle kurması",
+      "points": 20
+     }
+    ],
+    "alternative_answers": [
+     "Fasulye."
+    ]
+   },
+   "images": [],
+   "source": {
+    "scenario_version": "00000000-0000-4000-8000-0000000000a3@2:h03fixture",
+    "catalogue_id": "00000000",
+    "catalogue_revision": 2,
+    "source_sha256": "af5fd4ea376d31b7c4a451a8df3980acd0a5fd50e03765c6d67f6a11786ff1fd",
+    "source_cells": {
+     "sheet": "Sentetik",
+     "count_cell": "C10",
+     "outcome_cells": [
+      "B10"
+     ]
+    }
+   },
+   "generation": {
+    "generator": "ai",
+    "model": "synthetic-fixture",
+    "prompt_version": "h03-fixture/v1"
+   },
+   "content_fit": "pending_human_review"
+  },
+  {
+   "id": "5bcf1388",
+   "position": 2,
+   "block_id": "B1",
+   "outcome_ids": [
+    "SYN.O.5.1"
+   ],
+   "outcomes": [
+    {
+     "code": "SYN.O.5.1",
+     "text": "SYN.O.5.1. Metindeki ve görseldeki bilgiyi belirleyebilme (sentetik)"
+    }
+   ],
+   "kind": "multiple_choice",
+   "grade": 5,
+   "subject": "Türkçe",
+   "topic": "Sentetik bahçe",
+   "difficulty": "orta",
+   "stem": "Sınıf bahçesi panosu\nSınıfımız bahçede üç sıra fide dikti. Birinci sıraya marul, ikinci sıraya fasulye, üçüncü sıraya nane dikildi. Panodaki görselde sulama sırası renklerle gösterilmiştir: yeşil şeritler pazartesi, mor şeritler perşembe sulanır.\n\nPanodaki görsele göre mor şeritler hangi gün sulanır?",
+   "shared_source_id": "group-07baab77",
+   "shared_position": 2,
+   "prompt": "Panodaki görsele göre mor şeritler hangi gün sulanır?",
+   "choices": [
+    {
+     "key": "A",
+     "text": "Pazartesi"
+    },
+    {
+     "key": "B",
+     "text": "Salı"
+    },
+    {
+     "key": "C",
+     "text": "Perşembe"
+    },
+    {
+     "key": "D",
+     "text": "Cuma"
+    }
+   ],
+   "correct_key": "C",
+   "expected_answer": null,
+   "solution": null,
+   "explanation": null,
+   "rubric": null,
+   "images": [],
+   "source": {
+    "scenario_version": "00000000-0000-4000-8000-0000000000a3@2:h03fixture",
+    "catalogue_id": "00000000",
+    "catalogue_revision": 2,
+    "source_sha256": "af5fd4ea376d31b7c4a451a8df3980acd0a5fd50e03765c6d67f6a11786ff1fd",
+    "source_cells": {
+     "sheet": "Sentetik",
+     "count_cell": "C10",
+     "outcome_cells": [
+      "B10"
+     ]
+    }
+   },
+   "generation": {
+    "generator": "ai",
+    "model": "synthetic-fixture",
+    "prompt_version": "h03-fixture/v1"
+   },
+   "content_fit": "pending_human_review"
+  },
+  {
+   "id": "fb79f40e",
+   "position": 3,
+   "block_id": "B1",
+   "outcome_ids": [
+    "SYN.O.5.1"
+   ],
+   "outcomes": [
+    {
+     "code": "SYN.O.5.1",
+     "text": "SYN.O.5.1. Metindeki ve görseldeki bilgiyi belirleyebilme (sentetik)"
+    }
+   ],
+   "kind": "open_ended",
+   "grade": 5,
+   "subject": "Türkçe",
+   "topic": "Sentetik bahçe",
+   "difficulty": "orta",
+   "stem": "Sınıf bahçesi panosu\nSınıfımız bahçede üç sıra fide dikti. Birinci sıraya marul, ikinci sıraya fasulye, üçüncü sıraya nane dikildi. Panodaki görselde sulama sırası renklerle gösterilmiştir: yeşil şeritler pazartesi, mor şeritler perşembe sulanır.\n\nMetindeki bilgilere göre bahçede kaç sıra fide vardır ve son sırada ne yetişir?",
+   "shared_source_id": "group-07baab77",
+   "shared_position": 3,
+   "prompt": "Metindeki bilgilere göre bahçede kaç sıra fide vardır ve son sırada ne yetişir?",
+   "choices": null,
+   "correct_key": null,
+   "expected_answer": "Üç sıra fide vardır; son sırada nane yetişir.",
+   "solution": null,
+   "explanation": null,
+   "rubric": {
+    "assesses": "process",
+    "criteria": [
+     {
+      "text": "Sıra sayısını doğru yazması",
+      "points": 50
+     },
+     {
+      "text": "Son sıradaki bitkiyi doğru yazması",
+      "points": 50
+     }
+    ],
+    "alternative_answers": []
+   },
+   "images": [],
+   "source": {
+    "scenario_version": "00000000-0000-4000-8000-0000000000a3@2:h03fixture",
+    "catalogue_id": "00000000",
+    "catalogue_revision": 2,
+    "source_sha256": "af5fd4ea376d31b7c4a451a8df3980acd0a5fd50e03765c6d67f6a11786ff1fd",
+    "source_cells": {
+     "sheet": "Sentetik",
+     "count_cell": "C10",
+     "outcome_cells": [
+      "B10"
+     ]
+    }
+   },
+   "generation": {
+    "generator": "ai",
+    "model": "synthetic-fixture",
+    "prompt_version": "h03-fixture/v1"
+   },
+   "content_fit": "pending_human_review"
+  },
+  {
+   "id": "0ed1ce16",
+   "position": 4,
+   "block_id": "B2",
+   "outcome_ids": [
+    "SYN.Y.5.2"
+   ],
+   "outcomes": [
+    {
+     "code": "SYN.Y.5.2",
+     "text": "SYN.Y.5.2. Kısa bir paragraf yazabilme (sentetik)"
+    }
+   ],
+   "kind": "open_ended",
+   "grade": 5,
+   "subject": "Türkçe",
+   "topic": "Sentetik bahçe",
+   "difficulty": "orta",
+   "stem": "Okul bahçesinde geçirdiğiniz bir günü en az bir benzetme kullanarak iki üç cümleyle anlatınız.",
+   "shared_source_id": null,
+   "shared_position": null,
+   "prompt": null,
+   "choices": null,
+   "correct_key": null,
+   "expected_answer": "Örnek: Bahçe sabah güneşinde bir tablo gibi parlıyordu. Fideleri suladık ve toprağın kokusunu içimize çektik.",
+   "solution": null,
+   "explanation": null,
+   "rubric": {
+    "assesses": "process",
+    "criteria": [
+     {
+      "text": "En az bir benzetme kullanması",
+      "points": 50
+     },
+     {
+      "text": "Konuya bağlı 2-3 cümle yazması",
+      "points": 50
+     }
+    ],
+    "alternative_answers": []
+   },
+   "images": [],
+   "source": {
+    "scenario_version": "00000000-0000-4000-8000-0000000000a3@2:h03fixture",
+    "catalogue_id": "00000000",
+    "catalogue_revision": 2,
+    "source_sha256": "af5fd4ea376d31b7c4a451a8df3980acd0a5fd50e03765c6d67f6a11786ff1fd",
+    "source_cells": {
+     "sheet": "Sentetik",
+     "count_cell": "C11",
+     "outcome_cells": [
+      "B11"
+     ]
+    }
+   },
+   "generation": {
+    "generator": "ai",
+    "model": "synthetic-fixture",
+    "prompt_version": "h03-fixture/v1"
+   },
+   "content_fit": "pending_human_review"
+  }
+ ],
+ "content_sha256": "f5f8bf3243a864ce1ec30719560c8940b2eb70d2c0ad2f9e261344276986c7c5"
+}
