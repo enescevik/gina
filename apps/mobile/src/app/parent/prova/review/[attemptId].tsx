@@ -9,6 +9,8 @@ import {
   type ReviewState,
 } from "@/components/learning/parent-review-workspace";
 import { REVIEW_SNAPSHOT_OPTIONS } from "@/lib/answer-state";
+import { StructuredReviewPanel } from "@/components/learning/question-types/structured-review-panel";
+import { questionFillState } from "@/components/learning/question-types/model";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -33,10 +35,10 @@ export default function ParentReviewScreen() {
       const ids = data.exams?.question_ids ?? [];
       const [qs, answers] = await Promise.all([
         supabase.from("question_bank").select(
-          "id,stem,kind,choices,correct_key,expected_answer,solution,explanation,provenance",
+          "id,stem,kind,choices,correct_key,expected_answer,solution,explanation,provenance,interaction_type,schema_version,payload",
         ).in("id", ids),
         supabase.from("exam_answers").select(
-          "question_id,answer_document,answer_text,answer_key,is_correct,score,graded_by,ai_score",
+          "question_id,answer_document,answer_text,answer_key,is_correct,score,graded_by,ai_score,answer,score_details",
         ).eq("attempt_id", attemptId),
       ]);
       if (qs.error || answers.error) throw qs.error ?? answers.error;
@@ -59,9 +61,11 @@ export default function ParentReviewScreen() {
       ? position.index
       : requestedIndex;
   const q = attempt.data?.questions[index];
+  const structured = q?.kind === "structured";
   const review = useQuery({
     queryKey: ["answer_review", family, attemptId, q?.id],
-    enabled: !!q,
+    // Yapılandırılmış maddenin incelemesi ayrı panelde (set_structured_answer_score); açık uçlu akış aynen.
+    enabled: !!q && !structured,
     ...REVIEW_SNAPSHOT_OPTIONS,
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_answer_review", {
@@ -90,6 +94,22 @@ export default function ParentReviewScreen() {
         index: next,
       });}
   }, [attemptId, questionId, count]);
+  if (attempt.data && q && structured && !attempt.error) {
+    return (
+      <StructuredReviewPanel
+        key={`${family}:${attemptId}:${q.id}`}
+        attemptId={attemptId}
+        childName={attempt.data.children?.name ?? ""}
+        question={q}
+        answer={attempt.data.answers.find((a) => a.question_id === q.id)}
+        index={index}
+        count={count}
+        finished={attempt.data.status !== "in_progress"}
+        onNavigate={navigate}
+        onReload={() => { void attempt.refetch(); }}
+      />
+    );
+  }
   if (
     !attempt.data || !review.data || review.isFetching || !q || attempt.error ||
     review.error
@@ -125,6 +145,15 @@ export default function ParentReviewScreen() {
         );
         if (question.kind === "multiple_choice") {
           return answer?.answer_key ? "reviewed" : "empty";
+        }
+        if (question.kind === "structured") {
+          // Puanlı (otomatik/veli) → değerlendirildi; puansız ama cevaplı → bekliyor; boş → cevap yok (0 değil).
+          if (answer?.score !== null && answer?.score !== undefined) return "reviewed";
+          let filled = false;
+          try {
+            filled = questionFillState(question, { answer: answer?.answer as never }) !== "unanswered";
+          } catch { filled = !!answer?.answer; }
+          return filled ? "waiting" : "empty";
         }
         // P04: sunucu kuralıyla aynı — veli puanı (açık 0 dahil) "değerlendirildi";
         // yalnız çizim "inceleme bekliyor"; ne metin ne çizim "cevap yok" (0 değil).
