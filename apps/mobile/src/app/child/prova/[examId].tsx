@@ -905,11 +905,15 @@ export default function TakeExamScreen() {
         ? (
           <View className="gap-4 rounded-child bg-cream p-5">
             <ContextualQuestion questionId={q.id} stem={q.stem} />
-            <QuestionMedia questionId={q.id} />
+            {/* QT41: görsel bölge sorusunda görsel, bölgelerle birlikte soru içinde çizilir (iki kez değil). */}
+            {q.interaction_type === "region_select" && (q.payload as { figure?: { kind?: string } } | null)?.figure?.kind === "image"
+              ? null
+              : <QuestionMedia questionId={q.id} />}
             {q.kind === "structured"
               ? (
                 <StructuredQuestion
                   key={q.id}
+                  questionId={q.id}
                   type={q.interaction_type}
                   schemaVersion={q.schema_version}
                   payload={q.payload}

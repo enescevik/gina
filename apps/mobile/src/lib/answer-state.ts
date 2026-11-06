@@ -1,11 +1,11 @@
-import type { NotebookDocument, Phase2aAnswer, StructuredAnswer } from "@gina/core";
+import type { NotebookDocument, Phase2aAnswer, Phase2bAnswer, StructuredAnswer } from "@gina/core";
 
 interface AnswerValue {
   key?: string;
   text?: string;
   document?: NotebookDocument;
   /** QT: sürümlü yapılandırılmış cevap (submit_exam_answer_v4 p_answer). */
-  answer?: StructuredAnswer | Phase2aAnswer;
+  answer?: StructuredAnswer | Phase2aAnswer | Phase2bAnswer;
 }
 
 export type SavedAnswer = AnswerValue & { revision?: number };

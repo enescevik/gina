@@ -63,7 +63,7 @@ export interface Phase2aSummary {
 }
 
 /** Seçim türleri: yalnız seçilen ya da hedef olan öğeler satır olur (uzun metinde gürültü olmasın). */
-function selectionRows(items: { id: string; text: string }[], selected: string[], targets: string[] | null, all: boolean, l: Phase2aLabels): ReviewRow[] {
+export function selectionRows(items: { id: string; text: string }[], selected: string[], targets: string[] | null, all: boolean, l: Phase2aLabels): ReviewRow[] {
   return items.filter((i) => all || selected.includes(i.id) || targets?.includes(i.id)).map((i) => {
     const sel = selected.includes(i.id);
     const target = targets ? targets.includes(i.id) : null;

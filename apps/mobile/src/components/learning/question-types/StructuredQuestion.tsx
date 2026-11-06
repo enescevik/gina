@@ -2,6 +2,7 @@ import {
   answerState,
   type AnswerOf,
   type Phase2aAnswerOf,
+  type Phase2bAnswerOf,
 } from "@gina/core";
 import { useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,8 +12,9 @@ import { Pressable } from "@/components/ui/pressable";
 import { ClassificationQuestion } from "./classification";
 import { FillBlankQuestion } from "./fill-blank";
 import { MatchingQuestion } from "./matching";
-import { canRender, isClientType, readPayload, readPhase2aPayload, type ClientAnswer, type ClientInteractionType, type ScoreDetails } from "./model";
+import { canRender, isClientType, readPayload, readPhase2aPayload, readPhase2bPayload, readStimulus, type ClientAnswer, type ClientInteractionType, type ScoreDetails } from "./model";
 import { ErrorFixQuestion, MarkTextQuestion, MultiChoiceQuestion, TwoStageQuestion } from "./phase2a";
+import { ClockQuestion, RegionSelectQuestion, StimulusView } from "./phase2b";
 import { NumericQuestion } from "./numeric";
 import { OrderingQuestion } from "./ordering";
 import { StructuredReview } from "./structured-review";
@@ -61,6 +63,7 @@ export function FillStatePill({ type, payload, answer }: { type: ClientInteracti
  * `onChange(answer, typed)` — typed=true yazarak yapılan değişikliktir (ekran ~400ms erteleyerek kaydeder).
  */
 export function StructuredQuestion({
+  questionId = "",
   type,
   schemaVersion,
   payload,
@@ -71,6 +74,8 @@ export function StructuredQuestion({
   onOpenWorkArea,
   hasWork,
 }: {
+  /** Görsel bölge seçiminde sorunun özel görseli için (get_question_media). */
+  questionId?: string;
   type: string | null | undefined;
   schemaVersion?: number | null;
   payload: unknown;
@@ -87,8 +92,10 @@ export function StructuredQuestion({
   if (!isClientType(type) || !canRender(type, schemaVersion, payload)) {
     return review ? <Text style={{ fontFamily: "Nunito_700Bold", fontSize: 16, color: qt.ink }}>{t("prova.qt.review.unsupported")}</Text> : <UpdateRequired />;
   }
+  const stimulus = readStimulus(payload);
+  const stim = stimulus ? <StimulusView stimulus={stimulus} /> : null;
   if (review) {
-    return <StructuredReview type={type} payload={payload} answer={answer} details={review.details} answerKey={review.answerKey} />;
+    return <View style={{ gap: 12 }}>{stim}<StructuredReview type={type} payload={payload} answer={answer} details={review.details} answerKey={review.answerKey} /></View>;
   }
   const locked = disabled || !onChange;
   function change(next: ClientAnswer | undefined, typed = false) {
@@ -138,6 +145,12 @@ export function StructuredQuestion({
     case "two_stage":
       body = <TwoStageQuestion {...common} payload={readPhase2aPayload("two_stage", payload)!} answer={answer as Phase2aAnswerOf<"two_stage"> | undefined} onChange={(a, typed) => change(a, typed)} />;
       break;
+    case "region_select":
+      body = <RegionSelectQuestion {...common} questionId={questionId} payload={readPhase2bPayload("region_select", payload)!} answer={answer as Phase2bAnswerOf<"region_select"> | undefined} onChange={(a) => change(a)} />;
+      break;
+    case "clock":
+      body = <ClockQuestion {...common} payload={readPhase2bPayload("clock", payload)!} answer={answer as Phase2bAnswerOf<"clock"> | undefined} onChange={(a) => change(a)} />;
+      break;
   }
   return (
     <View testID={`qt-${type}`} style={{ gap: 12 }}>
@@ -156,6 +169,7 @@ export function StructuredQuestion({
           <Text style={{ fontFamily: "Nunito_800ExtraBold", fontSize: 16, color: qt.purpleDark }}>{t("prova.qt.child.undo")}</Text>
         </Pressable>
       </View>
+      {stim}
       {body}
     </View>
   );

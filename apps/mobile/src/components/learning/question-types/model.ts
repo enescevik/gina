@@ -13,11 +13,18 @@ import {
   type ClassificationPayload,
   type FillBlankPayload,
   isPhase2aType,
+  isPhase2bType,
   isStructuredType,
   parseNumberInput,
   phase2aAnswerSchema,
   phase2aPayloadSchemas,
+  phase2bAnswerSchema,
+  phase2bPayloadSchemas,
   type Phase2aAnswer,
+  type Phase2bAnswer,
+  type Phase2bInteractionType,
+  type Stimulus,
+  stimulusSchema,
   type Phase2aInteractionType,
   setBlank,
   setPlacement,
@@ -33,21 +40,38 @@ import { z } from "zod";
 // Payload / cevap okuma
 
 /** Sunucudan gelen payload'ı türün şemasıyla okur. Bozuk/bilinmeyen sürüm → null (güncelleme gerekir). */
+/** QT42: tablo/grafik uyaranı her yapılandırılmış türe eklenebilir; tür şeması onu içermez (sunucu da ayırır). */
+export function withoutStimulus(payload: unknown): unknown {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload) || !("stimulus" in payload)) return payload;
+  const { stimulus: _s, ...rest } = payload as Record<string, unknown>;
+  return rest;
+}
+export function readStimulus(payload: unknown): Stimulus | null {
+  const s = payload && typeof payload === "object" ? (payload as { stimulus?: unknown }).stimulus : undefined;
+  if (s === undefined) return null;
+  const parsed = stimulusSchema.safeParse(s);
+  return parsed.success ? parsed.data : null;
+}
 export function readPayload<T extends StructuredInteractionType>(type: T, payload: unknown): StudentPayload<T> | null {
   const schema = studentPayloadSchemas[type] as unknown as z.ZodType<StudentPayload<T>>;
-  const parsed = schema.safeParse(payload);
+  const parsed = schema.safeParse(withoutStimulus(payload));
   return parsed.success ? parsed.data : null;
 }
 
 /** İstemcinin okuyabildiği bütün yapılandırılmış cevaplar (1A/1B + 2A). */
-export type ClientAnswer = StructuredAnswer | Phase2aAnswer;
-export type ClientInteractionType = StructuredInteractionType | Phase2aInteractionType;
-export const clientAnswerSchema = z.union([structuredAnswerSchema, phase2aAnswerSchema]);
-export const isClientType = (t: string | null | undefined): t is ClientInteractionType => isStructuredType(t) || isPhase2aType(t ?? "");
+export type ClientAnswer = StructuredAnswer | Phase2aAnswer | Phase2bAnswer;
+export type ClientInteractionType = StructuredInteractionType | Phase2aInteractionType | Phase2bInteractionType;
+export const clientAnswerSchema = z.union([structuredAnswerSchema, phase2aAnswerSchema, phase2bAnswerSchema]);
+export const isClientType = (t: string | null | undefined): t is ClientInteractionType => isStructuredType(t) || isPhase2aType(t ?? "") || isPhase2bType(t ?? "");
 
 /** 2A payload'ı (öğrenci projeksiyonu ya da veli tam payload'ı; ikisi de aynı anahtarları taşır). */
 export function readPhase2aPayload<T extends Phase2aInteractionType>(type: T, payload: unknown) {
-  const parsed = (phase2aPayloadSchemas[type] as unknown as z.ZodType<z.infer<(typeof phase2aPayloadSchemas)[T]>>).safeParse(payload);
+  const parsed = (phase2aPayloadSchemas[type] as unknown as z.ZodType<z.infer<(typeof phase2aPayloadSchemas)[T]>>).safeParse(withoutStimulus(payload));
+  return parsed.success ? parsed.data : null;
+}
+/** 2B payload'ı (uyaran ayrı okunur). */
+export function readPhase2bPayload<T extends Phase2bInteractionType>(type: T, payload: unknown) {
+  const parsed = (phase2bPayloadSchemas[type] as unknown as z.ZodType<z.infer<(typeof phase2bPayloadSchemas)[T]>>).safeParse(withoutStimulus(payload));
   return parsed.success ? parsed.data : null;
 }
 
@@ -62,7 +86,10 @@ export function readStructuredAnswer(type: string, value: unknown): ClientAnswer
 /** Bu istemci soruyu çizebilir mi (tür + şema sürümü + payload). */
 export function canRender(type: string | null | undefined, schemaVersion: number | null | undefined, payload: unknown): boolean {
   if (!isClientType(type) || (schemaVersion ?? 1) !== 1) return false;
-  return isPhase2aType(type) ? readPhase2aPayload(type, payload) !== null : readPayload(type, payload) !== null;
+  if (payload && typeof payload === "object" && "stimulus" in payload && !readStimulus(payload)) return false;
+  return isPhase2aType(type) ? readPhase2aPayload(type, payload) !== null
+    : isPhase2bType(type) ? readPhase2bPayload(type, payload) !== null
+    : readPayload(type, payload) !== null;
 }
 
 // ---------------------------------------------------------------------------------------------
