@@ -7,7 +7,7 @@
 | Yürürlük tarihi | [YÜRÜRLÜK TARİHİ] |
 | Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** Uygulama denetimi: uygulama içi KVKK başvuru formu ve girişsiz, e-posta doğrulamalı web formu yoktur; uygulamada yalnızca genel Yardım > destek talebi vardır (`supabase/migrations/20261103030000_support_help.sql`). Uygulamada destek e-posta adresi gösterilmez. Karşılaştırma: `docs/release/c11-2026-11-06/legal-review.md`. |
 | Veri sorumlusu | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/VKN: [MERSİS/VKN] · KEP: [KEP ADRESİ – varsa] |
-| Yayın yeri | [WEB ADRESİ]/legal/kvkk-basvuru-formu (herkese açık HTML, TR/EN) · uygulama içi Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (bu ekran henüz yoktur) |
+| Yayın yeri | https://ginafamily.com/legal/kvkk-basvuru-formu (herkese açık HTML, TR/EN) · uygulama içi Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (bu ekran henüz yoktur) |
 | Dil | Türkçe metin esastır (805 sayılı Kanun); İngilizce çeviri bilgi amaçlıdır ve sayfanın sonundadır. / The Turkish text prevails; an English version is at the end of this page. |
 | İlgili belgeler | /legal/kvkk-aydinlatma-metni · /legal/gizlilik-politikasi · /legal/hesap-ve-veri-silme · /legal/kullanim-kosullari · /legal/abonelik-kosullari · /legal/cerez-politikasi · Veli Beyanı (uygulama içinde) |
 
@@ -23,7 +23,7 @@ Hesap veya profil silme, verileri görüntüleme ve düzeltme ve eşleştirme ip
 
 | Kanal | Nasıl | Not |
 |---|---|---|
-| Uygulama içi form | Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (bu ekran uygulamada henüz yoktur; şu an uygulama içinden Yardım > destek talebi açılabilir) | Oturumunuz kimliğinizi doğrular; çocuk modundan ve eşleştirilmiş tabletten erişilemez. Giriş yapamayanlar için web formu ([WEB ADRESİ]/legal/kvkk-basvuru-formu) kayıtlı e-postaya gönderilen doğrulama bağlantısıyla onaylanır. [ÜRÜN KARARI: web formu v1'de yoksa kaldırılır] |
+| Uygulama içi form | Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (bu ekran uygulamada henüz yoktur; şu an uygulama içinden Yardım > destek talebi açılabilir) | Oturumunuz kimliğinizi doğrular; çocuk modundan ve eşleştirilmiş tabletten erişilemez. Giriş yapamayanlar için web formu (https://ginafamily.com/legal/kvkk-basvuru-formu) kayıtlı e-postaya gönderilen doğrulama bağlantısıyla onaylanır. [ÜRÜN KARARI: web formu v1'de yoksa kaldırılır] |
 | E-posta | Hesabınızda kayıtlı adresten [E-POSTA] adresine | Tebliğ gereği yalnızca sistemimizde kayıtlı adresten gelen e-posta geçerlidir; hesabı olmayanlar Bölüm 3'teki bilgileri ekler. |
 | Posta | [VERİ SORUMLUSU UNVANI], [ADRES] adresine ıslak imzalı dilekçe | Zarfın üzerine "KVKK Başvurusu" yazın. |
 | KEP, güvenli e-imza, mobil imza | [KEP ADRESİ – varsa; yoksa satır kaldırılır] | — |
@@ -91,7 +91,7 @@ Tek kişilik ekip için takvime bağlı akış:
 
 ## 9. Kayıt tutma, değişiklik ve sürüm
 
-Başvuru, ekleri ve yanıtımız ispat amacıyla talebin kapanmasından itibaren [3 yıl] saklanır (Gizlilik Politikası Bölüm 10 ve Aydınlatma Metni Bölüm 9 ile aynı), sonra periyodik imhayla silinir. Belgeyi mevzuat veya iş akışımız değiştiğinde güncelleriz; güncel sürüm [WEB ADRESİ]/legal/kvkk-basvuru-formu adresinde ve Ayarlar > Gizlilik ve Yasal altındadır.
+Başvuru, ekleri ve yanıtımız ispat amacıyla talebin kapanmasından itibaren [3 yıl] saklanır (Gizlilik Politikası Bölüm 10 ve Aydınlatma Metni Bölüm 9 ile aynı), sonra periyodik imhayla silinir. Belgeyi mevzuat veya iş akışımız değiştiğinde güncelleriz; güncel sürüm https://ginafamily.com/legal/kvkk-basvuru-formu adresinde ve Ayarlar > Gizlilik ve Yasal altındadır.
 
 ## Değişiklik geçmişi
 
@@ -114,7 +114,7 @@ Başvuru, ekleri ve yanıtımız ispat amacıyla talebin kapanmasından itibaren
 | Effective date | [YÜRÜRLÜK TARİHİ] |
 | Status | **Draft. No legal expert has reviewed or approved it (6 November 2026); it is not published without expert approval and a written approval record.** App audit: there is no in-app KVKK request form and no no-sign-in, email-verified web form; the app has only the general Help > support request (`supabase/migrations/20261103030000_support_help.sql`). The support email address is not shown in the app. Comparison: `docs/release/c11-2026-11-06/legal-review.md`. |
 | Data controller | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/tax ID: [MERSİS/VKN] · KEP (registered electronic mail): [KEP ADRESİ – varsa] (if any) |
-| Published at | [WEB ADRESİ]/legal/kvkk-basvuru-formu (public HTML, TR/EN) · in the app under Settings > Privacy and Legal > Data Subject Request (this screen does not exist yet) |
+| Published at | https://ginafamily.com/legal/kvkk-basvuru-formu (public HTML, TR/EN) · in the app under Settings > Privacy and Legal > Data Subject Request (this screen does not exist yet) |
 | Language | The Turkish text prevails (Law No. 805 on the Compulsory Use of Turkish); this English translation is for information only. It was translated from the Turkish text on 6 November 2026 (D18) and has the same content. Placeholders and Turkish lawyer/product notes in square brackets are shared with the Turkish text; an English gloss follows in parentheses. |
 | Related documents | /legal/kvkk-aydinlatma-metni · /legal/gizlilik-politikasi · /legal/hesap-ve-veri-silme · /legal/kullanim-kosullari · /legal/abonelik-kosullari · /legal/cerez-politikasi · Parent Declaration (in the app) |
 
@@ -130,7 +130,7 @@ No request is needed to delete an account or profile, to view and correct data o
 
 | Channel | How | Note |
 |---|---|---|
-| In-app form | Settings > Privacy and Legal > Data Subject Request (this screen does not exist in the app yet; at present you can open a support request from Help in the app) | Your session verifies your identity; not accessible from child mode or a paired tablet. For those who cannot sign in, the web form ([WEB ADRESİ]/legal/kvkk-basvuru-formu) is confirmed with a verification link sent to the registered email. [ÜRÜN KARARI: web formu v1'de yoksa kaldırılır] (Product decision: removed if there is no web form in v1.) |
+| In-app form | Settings > Privacy and Legal > Data Subject Request (this screen does not exist in the app yet; at present you can open a support request from Help in the app) | Your session verifies your identity; not accessible from child mode or a paired tablet. For those who cannot sign in, the web form (https://ginafamily.com/legal/kvkk-basvuru-formu) is confirmed with a verification link sent to the registered email. [ÜRÜN KARARI: web formu v1'de yoksa kaldırılır] (Product decision: removed if there is no web form in v1.) |
 | Email | From the address registered to your account to [E-POSTA] | Under the Communiqué, only email from an address registered in our system is valid; those without an account add the information in Section 3. |
 | Post | Petition with wet signature to [VERİ SORUMLUSU UNVANI], [ADRES] | Write "KVKK Başvurusu" (KVKK request) on the envelope. |
 | KEP, secure e-signature, mobile signature | [KEP ADRESİ – varsa; yoksa satır kaldırılır] (KEP address if any; otherwise the row is removed) | — |
@@ -198,7 +198,7 @@ Scheduled flow for a one-person team:
 
 ## 9. Record keeping, changes and version
 
-The request, its attachments and our reply are kept for evidence for [3 yıl] (3 years) from the closing of the request (the same as Privacy Policy Section 10 and Privacy Notice Section 9), and then deleted by periodic destruction. We update the document when the legislation or our workflow changes; the current version is at [WEB ADRESİ]/legal/kvkk-basvuru-formu and under Settings > Privacy and Legal.
+The request, its attachments and our reply are kept for evidence for [3 yıl] (3 years) from the closing of the request (the same as Privacy Policy Section 10 and Privacy Notice Section 9), and then deleted by periodic destruction. We update the document when the legislation or our workflow changes; the current version is at https://ginafamily.com/legal/kvkk-basvuru-formu and under Settings > Privacy and Legal.
 
 ## Change log
 

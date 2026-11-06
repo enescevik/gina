@@ -6,7 +6,7 @@
 | Tarih | 2026-10-30 |
 | Yürürlük tarihi | [YÜRÜRLÜK TARİHİ] |
 | Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** 0.2'de anılan "inceleme notları" uzman onayı yerine geçmez. |
-| Yayın yeri | [WEB ADRESİ]/legal/kvkk-aydinlatma-metni (herkese açık HTML, TR/EN) · uygulama içi Ayarlar > Gizlilik ve Yasal (bu ekran uygulamada henüz yoktur) |
+| Yayın yeri | https://ginafamily.com/legal/kvkk-aydinlatma-metni (herkese açık HTML, TR/EN) · uygulama içi Ayarlar > Gizlilik ve Yasal (bu ekran uygulamada henüz yoktur) |
 | Dil | Türkçe metin esastır; İngilizce çeviri yalnızca bilgi amaçlıdır ve sayfanın sonundadır. / The Turkish text prevails; an English version is at the end of this page. |
 
 > **Uygulama denetimi (6 Kasım 2026, C11/S05):** Yapay zekâ özellikleri, gönderilen veriler, işlem bazlı onay ve yüklenen belgelerin saklanması için güncel ve esas anlatım Gizlilik Politikası Bölüm 5'tedir; bu metindeki ilgili bölümler ona göre kısaltıldı. Henüz uygulanmayanlar: "Ayarlar > Gizlilik ve Yasal", "Rızalarım", "Ayarlar > Yapay Zekâ Özeti" ve uygulama içi KVKK başvuru formu; kayıt ve çocuk ekleme ekranlarında bu metnin bağlantısı ve "okudum" kaydı; girişsiz web silme, planlı silme ve silme e-postaları; 18 yaş otomatik pasifleştirme; hesap silindikten sonra satın alma ve onay kayıtlarının saklanması (şu an aileyle birlikte silinir); Apple ile Giriş belirteç iptali. Karşılaştırma: `docs/release/c11-2026-11-06/legal-review.md`.
@@ -33,7 +33,7 @@ Bu metin onayınıza sunulmaz: kayıt ve çocuk ekleme ekranlarında bağlantı 
 | E-posta | [E-POSTA] |
 | KEP adresi | [KEP ADRESİ – varsa] |
 | MERSİS / VKN (veya TCKN) | [MERSİS/VKN] |
-| Web | [WEB ADRESİ] |
+| Web | https://ginafamily.com |
 
 Telefon veya SMS kanalımız yoktur; tüm iletişim e-posta, posta/KEP ve uygulama içi formlarla yapılır.
 
@@ -126,7 +126,7 @@ Verilerinizi satmayız. Aşağıdaki alıcılar dışında üçüncü kişilerle
 | Aile üyeleri | – | Davet koduyla aileye katılan, 18 yaşını doldurmuş diğer ebeveyn/vasi, ailenin çocuk profillerini ve kayıtlarını görür ve düzenler. |
 | Yetkili kamu kurum ve kuruluşları | Türkiye | Mahkeme, savcılık, Kişisel Verileri Koruma Kurumu gibi kurumların hukuka uygun talepleri; yalnızca talep kapsamındaki veriler. |
 
-Sağlayıcılar kendi alt işleyenlerini kullanabilir (Supabase için Amazon Web Services; Anthropic için bulut altyapısı sağlayıcıları); bu sonraki aktarımlar Bölüm 7'de açıklanır. Güncel alt işleyen listesini Gizlilik Politikamızda ([WEB ADRESİ]/legal/gizlilik-politikasi) tutarız; yeni bir alıcı eklenmeden önce bu metin güncellenir.
+Sağlayıcılar kendi alt işleyenlerini kullanabilir (Supabase için Amazon Web Services; Anthropic için bulut altyapısı sağlayıcıları); bu sonraki aktarımlar Bölüm 7'de açıklanır. Güncel alt işleyen listesini Gizlilik Politikamızda (https://ginafamily.com/legal/gizlilik-politikasi) tutarız; yeni bir alıcı eklenmeden önce bu metin güncellenir.
 
 ## 7. Yurt dışına aktarım
 
@@ -178,7 +178,7 @@ Verilerinizi amaç için gerekli süre boyunca ve aşağıdaki tabloya göre sak
 | Destek yazışmaları, KVKK başvuru ve veri ihlali kayıtları | Talebin kapanmasından itibaren [3 yıl] |
 | Hesap silme bildirimi için e-posta adresiniz | Silme tamamlanana kadar; ardından silinir |
 
-Hesabınızı **Ayarlar > Hesap > Hesabı Sil** yolundan, tek bir çocuk profilini **Ayarlar > Çocuklar > [Çocuk] > Profili Sil** yolundan silebilirsiniz; giriş yapamıyorsanız [WEB ADRESİ]/legal/hesap-ve-veri-silme sayfasından kayıtlı e-posta adresinizi doğrulayarak talep edebilirsiniz. Silme; aileyi, ebeveyn hesabını, çocuk profillerini, görev ve yıldız geçmişini, takvimi, notları, puanları, yapay zekâ çıktılarını, push token'larını, eşleştirilmiş cihazları ve Apple/Google giriş bağlantılarını (Apple ile Giriş belirteçlerinin iptali dâhil) kapsar. Silme talebinizi aldığımızda ve tamamladığımızda sizi e-posta ile bilgilendiririz; bu amaçla e-posta adresiniz silme tamamlanana kadar tutulur. Dilerseniz silmeyi geçerli abonelik döneminin sonuna planlayabilirsiniz; hemen silme seçeneği her zaman vardır. Hesap silme, mağaza aboneliğinizi iptal etmez; silme ekranında etkin abonelik uyarısı ve mağazanın iptal bağlantısı gösterilir, aboneliği App Store veya Google Play üzerinden ayrıca iptal etmeniz gerekir.
+Hesabınızı **Ayarlar > Hesap > Hesabı Sil** yolundan, tek bir çocuk profilini **Ayarlar > Çocuklar > [Çocuk] > Profili Sil** yolundan silebilirsiniz; giriş yapamıyorsanız https://ginafamily.com/legal/hesap-ve-veri-silme sayfasından kayıtlı e-posta adresinizi doğrulayarak talep edebilirsiniz. Silme; aileyi, ebeveyn hesabını, çocuk profillerini, görev ve yıldız geçmişini, takvimi, notları, puanları, yapay zekâ çıktılarını, push token'larını, eşleştirilmiş cihazları ve Apple/Google giriş bağlantılarını (Apple ile Giriş belirteçlerinin iptali dâhil) kapsar. Silme talebinizi aldığımızda ve tamamladığımızda sizi e-posta ile bilgilendiririz; bu amaçla e-posta adresiniz silme tamamlanana kadar tutulur. Dilerseniz silmeyi geçerli abonelik döneminin sonuna planlayabilirsiniz; hemen silme seçeneği her zaman vardır. Hesap silme, mağaza aboneliğinizi iptal etmez; silme ekranında etkin abonelik uyarısı ve mağazanın iptal bağlantısı gösterilir, aboneliği App Store veya Google Play üzerinden ayrıca iptal etmeniz gerekir.
 
 ## 10. Haklarınız ve başvuru usulü
 
@@ -186,7 +186,7 @@ KVKK m.11 uyarınca: (a) verilerinizin işlenip işlenmediğini öğrenme, (b) i
 
 Başvurunuzu, Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ'e uygun olarak şu kanallardan yapabilirsiniz:
 
-- Uygulama içi form: Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (henüz yok; şu an uygulama içinden Yardım > destek talebi), veya web formu: [WEB ADRESİ]/legal/kvkk-basvuru-formu
+- Uygulama içi form: Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (henüz yok; şu an uygulama içinden Yardım > destek talebi), veya web formu: https://ginafamily.com/legal/kvkk-basvuru-formu
 - Hesabınızda kayıtlı e-posta adresinizden [E-POSTA] adresine e-posta
 - Yazılı olarak [ADRES] adresine (kimlik tespiti ile) veya KEP: [KEP ADRESİ – varsa]
 
@@ -200,7 +200,7 @@ Yapay zekâ onayı işlem bazındadır; sonraki işlemlerde onay vermeyerek akta
 
 ## 12. Çerezler ve benzeri teknolojiler
 
-Mobil uygulama çerez kullanmaz; takip, analitik veya çökme raporlama SDK'sı içermez. Web uygulaması oturum ve dil tercihi için zorunlu yerel depolama ögeleri ile ağ kesilince yarım kalan işlemlerin tekrar denenmesi, bekleyen eşleştirme kodu, çocuk modu ve görünüm önbelleği için birinci taraf işlevsel yerel depolama ögeleri kullanır; analitik, reklam veya takip çerezi kullanılmaz ve bu nedenle çerez bandı gösterilmez. İşlevsel ögelerin açık rıza gerektirip gerektirmediği için uzman incelemesi gerekir (Çerez Politikası §2 ve §4). Ayrıntılar Çerez Politikamızdadır: [WEB ADRESİ]/legal/cerez-politikasi.
+Mobil uygulama çerez kullanmaz; takip, analitik veya çökme raporlama SDK'sı içermez. Web uygulaması oturum ve dil tercihi için zorunlu yerel depolama ögeleri ile ağ kesilince yarım kalan işlemlerin tekrar denenmesi, bekleyen eşleştirme kodu, çocuk modu ve görünüm önbelleği için birinci taraf işlevsel yerel depolama ögeleri kullanır; analitik, reklam veya takip çerezi kullanılmaz ve bu nedenle çerez bandı gösterilmez. İşlevsel ögelerin açık rıza gerektirip gerektirmediği için uzman incelemesi gerekir (Çerez Politikası §2 ve §4). Ayrıntılar Çerez Politikamızdadır: https://ginafamily.com/legal/cerez-politikasi.
 
 ## 13. Güvenlik
 
@@ -208,9 +208,9 @@ Veriler iletimde ve sunucuda şifrelenir; her ailenin verisine yalnızca o ailen
 
 ## 14. Değişiklikler, sürüm ve dil
 
-Bu metni mevzuat, hizmet veya alıcılar değiştiğinde güncelleriz. Önemli değişiklikleri (yeni alıcı, yeni amaç, yurt dışı aktarım veya veri bölgesi değişikliği, Anthropic saklama rejiminde değişiklik, çocuk verilerini etkileyen değişiklikler) yürürlükten en az [15 gün] önce uygulama içi bildirim ve e-posta ile duyururuz; açık rıza gerektiren değişiklikler için rızanızı yeniden isteriz. Güncel metin her zaman [WEB ADRESİ]/legal/kvkk-aydinlatma-metni adresinde ve Ayarlar > Gizlilik ve Yasal altında yer alır; önceki sürümleri [E-POSTA] adresinden isteyebilirsiniz. Bu metnin Türkçe sürümü esastır; İngilizce çevirisi yalnızca bilgilendirme amaçlıdır.
+Bu metni mevzuat, hizmet veya alıcılar değiştiğinde güncelleriz. Önemli değişiklikleri (yeni alıcı, yeni amaç, yurt dışı aktarım veya veri bölgesi değişikliği, Anthropic saklama rejiminde değişiklik, çocuk verilerini etkileyen değişiklikler) yürürlükten en az [15 gün] önce uygulama içi bildirim ve e-posta ile duyururuz; açık rıza gerektiren değişiklikler için rızanızı yeniden isteriz. Güncel metin her zaman https://ginafamily.com/legal/kvkk-aydinlatma-metni adresinde ve Ayarlar > Gizlilik ve Yasal altında yer alır; önceki sürümleri [E-POSTA] adresinden isteyebilirsiniz. Bu metnin Türkçe sürümü esastır; İngilizce çevirisi yalnızca bilgilendirme amaçlıdır.
 
-İlgili belgeler: Gizlilik Politikası ([WEB ADRESİ]/legal/gizlilik-politikasi) · Açık Rıza Metinleri (uygulama içinde) · Veli Beyanı (uygulama içinde) · Çocuk Modu Bilgilendirmesi (çocuk modunda) · Kullanım Koşulları ([WEB ADRESİ]/legal/kullanim-kosullari) · Abonelik Koşulları ([WEB ADRESİ]/legal/abonelik-kosullari) · Çerez Politikası ([WEB ADRESİ]/legal/cerez-politikasi) · Hesap ve Veri Silme ([WEB ADRESİ]/legal/hesap-ve-veri-silme) · KVKK Başvuru Formu ([WEB ADRESİ]/legal/kvkk-basvuru-formu).
+İlgili belgeler: Gizlilik Politikası (https://ginafamily.com/legal/gizlilik-politikasi) · Açık Rıza Metinleri (uygulama içinde) · Veli Beyanı (uygulama içinde) · Çocuk Modu Bilgilendirmesi (çocuk modunda) · Kullanım Koşulları (https://ginafamily.com/legal/kullanim-kosullari) · Abonelik Koşulları (https://ginafamily.com/legal/abonelik-kosullari) · Çerez Politikası (https://ginafamily.com/legal/cerez-politikasi) · Hesap ve Veri Silme (https://ginafamily.com/legal/hesap-ve-veri-silme) · KVKK Başvuru Formu (https://ginafamily.com/legal/kvkk-basvuru-formu).
 
 ## Değişiklik geçmişi
 
@@ -233,7 +233,7 @@ Bu metni mevzuat, hizmet veya alıcılar değiştiğinde güncelleriz. Önemli d
 | Date | 30 October 2026 |
 | Effective date | [YÜRÜRLÜK TARİHİ] |
 | Status | **Draft. No legal expert has reviewed or approved it (6 November 2026); it is not published without expert approval and a written approval record.** The "review notes" mentioned in 0.2 do not replace expert approval. |
-| Published at | [WEB ADRESİ]/legal/kvkk-aydinlatma-metni (public HTML, TR/EN) · in the app under Settings > Privacy and Legal (this screen does not exist in the app yet) |
+| Published at | https://ginafamily.com/legal/kvkk-aydinlatma-metni (public HTML, TR/EN) · in the app under Settings > Privacy and Legal (this screen does not exist in the app yet) |
 | Language | The Turkish text prevails; this English translation is for information only. It was translated from the Turkish text on 6 November 2026 (D18) and has the same content. Placeholders and Turkish lawyer/product notes in square brackets are shared with the Turkish text; an English gloss follows in parentheses. |
 
 > **App audit (6 November 2026, C11/S05):** The current and primary description of the AI features, the data sent, per-operation confirmation and the retention of uploaded documents is in Section 5 of the Privacy Policy; the related sections of this text have been shortened accordingly. Not yet implemented: "Settings > Privacy and Legal", "My Consents", "Settings > AI Summary" and the in-app KVKK request form; the link to this text and the "I have read" record on the sign-up and add-child screens; no-sign-in web deletion, scheduled deletion and deletion emails; automatic deactivation at 18; keeping purchase and consent records after account deletion (at present they are deleted together with the family); Sign in with Apple token revocation. Comparison: `docs/release/c11-2026-11-06/legal-review.md`.
@@ -260,7 +260,7 @@ This text is not submitted for your approval: it is shown as a link on the sign-
 | Email | [E-POSTA] |
 | KEP address (registered electronic mail) | [KEP ADRESİ – varsa] (if any) |
 | MERSİS / tax ID (or Turkish ID number) | [MERSİS/VKN] |
-| Web | [WEB ADRESİ] |
+| Web | https://ginafamily.com |
 
 We have no telephone or SMS channel; all communication is by email, post/KEP and in-app forms.
 
@@ -353,7 +353,7 @@ We do not sell your data. We do not share it with third parties other than the r
 | Family members | – | The other parent/guardian aged 18 or over who joined the family with the invite code sees and edits the family's child profiles and records. |
 | Competent public institutions and organisations | Turkey | Lawful requests of institutions such as courts, prosecutors and the Personal Data Protection Authority; only the data within the scope of the request. |
 
-Providers may use their own sub-processors (Amazon Web Services for Supabase; cloud infrastructure providers for Anthropic); these onward transfers are explained in Section 7. We keep the current list of sub-processors in our Privacy Policy ([WEB ADRESİ]/legal/gizlilik-politikasi); this text is updated before a new recipient is added.
+Providers may use their own sub-processors (Amazon Web Services for Supabase; cloud infrastructure providers for Anthropic); these onward transfers are explained in Section 7. We keep the current list of sub-processors in our Privacy Policy (https://ginafamily.com/legal/gizlilik-politikasi); this text is updated before a new recipient is added.
 
 ## 7. Transfers abroad
 
@@ -405,7 +405,7 @@ We keep your data for as long as necessary for the purpose and according to the 
 | Support correspondence, KVKK request and data breach records | [3 yıl] (3 years) from the closing of the request |
 | Your email address for the account deletion notice | Until the deletion is completed; then deleted |
 
-You can delete your account via **Settings > Account > Delete Account** and a single child profile via **Settings > Children > [Child] > Delete Profile**; if you cannot sign in, you can make the request from the [WEB ADRESİ]/legal/hesap-ve-veri-silme page by verifying your registered email address. Deletion covers the family, the parent account, child profiles, chore and star history, the calendar, notes, scores, AI outputs, push tokens, paired devices and Apple/Google sign-in links (including revocation of Sign in with Apple tokens). We inform you by email when we receive and when we complete your deletion request; for this purpose your email address is kept until the deletion is completed. If you wish, you can schedule the deletion for the end of the current subscription period; the option to delete immediately is always available. Deleting the account does not cancel your store subscription; the deletion screen shows an active subscription warning and the store's cancellation link, and you must cancel the subscription separately through the App Store or Google Play.
+You can delete your account via **Settings > Account > Delete Account** and a single child profile via **Settings > Children > [Child] > Delete Profile**; if you cannot sign in, you can make the request from the https://ginafamily.com/legal/hesap-ve-veri-silme page by verifying your registered email address. Deletion covers the family, the parent account, child profiles, chore and star history, the calendar, notes, scores, AI outputs, push tokens, paired devices and Apple/Google sign-in links (including revocation of Sign in with Apple tokens). We inform you by email when we receive and when we complete your deletion request; for this purpose your email address is kept until the deletion is completed. If you wish, you can schedule the deletion for the end of the current subscription period; the option to delete immediately is always available. Deleting the account does not cancel your store subscription; the deletion screen shows an active subscription warning and the store's cancellation link, and you must cancel the subscription separately through the App Store or Google Play.
 
 ## 10. Your rights and how to apply
 
@@ -413,7 +413,7 @@ Under KVKK Art. 11 you have the right to: (a) learn whether your data is process
 
 You can apply through the following channels, in line with the Communiqué on the Procedures and Principles of Application to the Data Controller:
 
-- In-app form: Settings > Privacy and Legal > Data Subject Request (not yet available; at present use Help > support request in the app), or the web form: [WEB ADRESİ]/legal/kvkk-basvuru-formu
+- In-app form: Settings > Privacy and Legal > Data Subject Request (not yet available; at present use Help > support request in the app), or the web form: https://ginafamily.com/legal/kvkk-basvuru-formu
 - Email from the email address registered in your account to [E-POSTA]
 - In writing to [ADRES] (with identity verification) or by KEP: [KEP ADRESİ – varsa] (if any)
 
@@ -427,7 +427,7 @@ Rights regarding child profiles are exercised by the child's parent or guardian;
 
 ## 12. Cookies and similar technologies
 
-The mobile app does not use cookies; it contains no tracking, analytics or crash reporting SDK. The web app uses strictly necessary local storage items for the session and language preference, and first-party functional local storage items for retrying unfinished operations after a network drop, a pending pairing code, child mode and a view cache; no analytics, advertising or tracking cookies are used, and therefore no cookie banner is shown. Expert review is needed on whether the functional items require explicit consent (Cookie Policy §2 and §4). Details are in our Cookie Policy: [WEB ADRESİ]/legal/cerez-politikasi.
+The mobile app does not use cookies; it contains no tracking, analytics or crash reporting SDK. The web app uses strictly necessary local storage items for the session and language preference, and first-party functional local storage items for retrying unfinished operations after a network drop, a pending pairing code, child mode and a view cache; no analytics, advertising or tracking cookies are used, and therefore no cookie banner is shown. Expert review is needed on whether the functional items require explicit consent (Cookie Policy §2 and §4). Details are in our Cookie Policy: https://ginafamily.com/legal/cerez-politikasi.
 
 ## 13. Security
 
@@ -435,9 +435,9 @@ Data is encrypted in transit and on the server; row-level access control is appl
 
 ## 14. Changes, version and language
 
-We update this text when the legislation, the service or the recipients change. We announce material changes (new recipient, new purpose, change of transfer abroad or data region, change in Anthropic's retention regime, changes affecting children's data) by in-app notification and email at least [15 gün] (15 days) before they take effect; for changes that require explicit consent, we ask for your consent again. The current text is always available at [WEB ADRESİ]/legal/kvkk-aydinlatma-metni and under Settings > Privacy and Legal; you can request earlier versions from [E-POSTA]. The Turkish version of this text prevails; the English translation is for information only.
+We update this text when the legislation, the service or the recipients change. We announce material changes (new recipient, new purpose, change of transfer abroad or data region, change in Anthropic's retention regime, changes affecting children's data) by in-app notification and email at least [15 gün] (15 days) before they take effect; for changes that require explicit consent, we ask for your consent again. The current text is always available at https://ginafamily.com/legal/kvkk-aydinlatma-metni and under Settings > Privacy and Legal; you can request earlier versions from [E-POSTA]. The Turkish version of this text prevails; the English translation is for information only.
 
-Related documents: Privacy Policy ([WEB ADRESİ]/legal/gizlilik-politikasi) · Consent Texts (in the app) · Parent Declaration (in the app) · Child Mode Notice (in child mode) · Terms of Use ([WEB ADRESİ]/legal/kullanim-kosullari) · Subscription Terms ([WEB ADRESİ]/legal/abonelik-kosullari) · Cookie Policy ([WEB ADRESİ]/legal/cerez-politikasi) · Account and Data Deletion ([WEB ADRESİ]/legal/hesap-ve-veri-silme) · Data Subject Request Form ([WEB ADRESİ]/legal/kvkk-basvuru-formu).
+Related documents: Privacy Policy (https://ginafamily.com/legal/gizlilik-politikasi) · Consent Texts (in the app) · Parent Declaration (in the app) · Child Mode Notice (in child mode) · Terms of Use (https://ginafamily.com/legal/kullanim-kosullari) · Subscription Terms (https://ginafamily.com/legal/abonelik-kosullari) · Cookie Policy (https://ginafamily.com/legal/cerez-politikasi) · Account and Data Deletion (https://ginafamily.com/legal/hesap-ve-veri-silme) · Data Subject Request Form (https://ginafamily.com/legal/kvkk-basvuru-formu).
 
 ## Change log
 

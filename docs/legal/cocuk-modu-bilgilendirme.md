@@ -53,7 +53,7 @@ Bu ekran senin için. Annenin ya da babanın telefonundaysan, buradan çıkmak i
 - Onay kutusu çocuğun rızası değildir; Veli Beyanı §3.5 ve §8'deki bilgilendirme sorumluluğunuzu (TMK m.339) yerine getirdiğinize ilişkin kayıttır. Kayıtta yalnızca Veli Beyanı §13'teki alanlar (beyan türü "çocuğa bilgilendirme", metin sürümü ve özeti, dil, tarih-saat, ebeveyn hesabı ile aile ve çocuk profili kimlikleri, uygulama sürümü) tutulur; çocuğun adı yazılmaz.
 - Kutu çocuk modunun ilk açılışında istenir; metin "Hakkında" bölümünden her zaman yeniden okunabilir ve önemli ölçüde değiştiğinde yeni sürümü ilk açılışta yeniden gösterilir [ÜRÜN KARARI: yeniden gösterim akışı].
 - Gina mağazalarda 18 yaşını doldurmuş ebeveynlere yönelik sunulur; çocuk modu, ebeveyn gözetiminde kullanılan sınırlı bir görünümdür. Çocuk hesap açmaz, e-posta veya telefon vermez.
-- Çocuk adına KVKK haklarını (bilgi alma, düzeltme, silme) veli/vasi olarak siz kullanırsınız: Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (henüz yok; şu an Yardım > destek talebi) veya [WEB ADRESİ]/legal/kvkk-basvuru-formu. Çocuğunuzun ilettiği düzeltme ve silme isteklerinin çoğunu uygulama içinden kendiniz yapabilirsiniz.
+- Çocuk adına KVKK haklarını (bilgi alma, düzeltme, silme) veli/vasi olarak siz kullanırsınız: Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (henüz yok; şu an Yardım > destek talebi) veya https://ginafamily.com/legal/kvkk-basvuru-formu. Çocuğunuzun ilettiği düzeltme ve silme isteklerinin çoğunu uygulama içinden kendiniz yapabilirsiniz.
 
 ### B.2 Çocuk modunda gösterilenler ve gösterilmeyenler
 
@@ -94,11 +94,11 @@ Bu ekran senin için. Annenin ya da babanın telefonundaysan, buradan çıkmak i
 - **İptal anında etkilidir:** sunucu her istekte cihazın iptal durumunu denetler; iptalden sonra tabletten gelen her istek reddedilir ve cihaz yeni veri alamaz. Yeniden eşleştirme için yeni kod gerekir.
 - **Kendiliğinden iptal:** çocuk profili silindiğinde veya pasife alındığında (18 yaş kuralı için KVKK Aydınlatma Metni'ne bakın), hesap silindiğinde ve cihaz [90 gün] kullanılmadığında eşleştirme kaldırılır. Veli Beyanı'nın yeni sürümü onaylanmazsa çocuk modu kapanır [ÜRÜN KARARI: yeniden onay akışı].
 - **Kayıp veya çalıntı tablet:** eşleştirmeyi hemen kaldırın. Tablette ebeveyn kimlik bilgisi bulunmaz; iptal sonrası cihazdaki önbelleğin temizlenmesi [ÜRÜN KARARI]. Yetkisiz kullanım şüphesini [E-POSTA] adresine bildirin.
-- **Verilerin akıbeti:** eşleştirme ve anonim oturum kaydı iptalle silinir; iptale ilişkin güvenlik günlüğü [12 ay] saklanır. Çocuğun koyduğu "Yaptım" işaretleri çocuk profilinin parçasıdır; profil silinene kadar kalır. Profil silme: Ayarlar > Çocuklar > [Çocuk] > Profili Sil; hesap silme: [WEB ADRESİ]/legal/hesap-ve-veri-silme.
+- **Verilerin akıbeti:** eşleştirme ve anonim oturum kaydı iptalle silinir; iptale ilişkin güvenlik günlüğü [12 ay] saklanır. Çocuğun koyduğu "Yaptım" işaretleri çocuk profilinin parçasıdır; profil silinene kadar kalır. Profil silme: Ayarlar > Çocuklar > [Çocuk] > Profili Sil; hesap silme: https://ginafamily.com/legal/hesap-ve-veri-silme.
 
 ### B.6 İlgili belgeler ve iletişim
 
-- Gizlilik Politikası: [WEB ADRESİ]/legal/gizlilik-politikasi; KVKK Aydınlatma Metni: [WEB ADRESİ]/legal/kvkk-aydinlatma-metni; Kullanım Koşulları: [WEB ADRESİ]/legal/kullanim-kosullari; Abonelik Koşulları: [WEB ADRESİ]/legal/abonelik-kosullari; Hesap ve Veri Silme: [WEB ADRESİ]/legal/hesap-ve-veri-silme; KVKK Başvuru Formu: [WEB ADRESİ]/legal/kvkk-basvuru-formu; Çerez Politikası (yalnızca web): [WEB ADRESİ]/legal/cerez-politikasi.
+- Gizlilik Politikası: https://ginafamily.com/legal/gizlilik-politikasi; KVKK Aydınlatma Metni: https://ginafamily.com/legal/kvkk-aydinlatma-metni; Kullanım Koşulları: https://ginafamily.com/legal/kullanim-kosullari; Abonelik Koşulları: https://ginafamily.com/legal/abonelik-kosullari; Hesap ve Veri Silme: https://ginafamily.com/legal/hesap-ve-veri-silme; KVKK Başvuru Formu: https://ginafamily.com/legal/kvkk-basvuru-formu; Çerez Politikası (yalnızca web): https://ginafamily.com/legal/cerez-politikasi.
 - Sorularınız için: [E-POSTA] veya uygulama içi form. Telefon kanalı yoktur.
 
 ---
@@ -171,7 +171,7 @@ This screen is for you. If you are on your mum's or dad's phone, you need their 
 - The confirmation box is not the child's consent; it is a record that you have fulfilled your responsibility to inform (TMK Art. 339, Turkish Civil Code — parents take the child's views into account) in Parent Declaration §3.5 and §8. The record contains only the fields in Parent Declaration §13 (declaration type "informing the child", text version and hash, language, date and time, parent account and family and child profile IDs, app version); the child's name is not written.
 - The box is asked for when child mode is first opened; the text can always be read again from the "About" section and, when it changes materially, the new version is shown again at the next first opening [ÜRÜN KARARI: yeniden gösterim akışı] (product decision: re-display flow).
 - Gina is offered on the stores for parents aged 18 or over; child mode is a limited view used under parental supervision. The child does not open an account and does not give an email address or phone number.
-- You, as parent/guardian, exercise the KVKK rights (information, rectification, erasure) on the child's behalf: Settings > Privacy and Legal > Data Subject Request (not yet available; at present Help > support request) or [WEB ADRESİ]/legal/kvkk-basvuru-formu. You can make most of the corrections and deletions your child asks for yourself from within the app.
+- You, as parent/guardian, exercise the KVKK rights (information, rectification, erasure) on the child's behalf: Settings > Privacy and Legal > Data Subject Request (not yet available; at present Help > support request) or https://ginafamily.com/legal/kvkk-basvuru-formu. You can make most of the corrections and deletions your child asks for yourself from within the app.
 
 ### B.2 What is and is not shown in child mode
 
@@ -212,11 +212,11 @@ This screen is for you. If you are on your mum's or dad's phone, you need their 
 - **Revocation is effective immediately:** the server checks the device's revocation status on every request; after revocation every request from the tablet is rejected and the device cannot receive new data. A new code is needed to pair again.
 - **Automatic revocation:** the pairing is removed when the child profile is deleted or deactivated (for the 18-year rule see the KVKK Privacy Notice), when the account is deleted and when the device has not been used for [90 gün] (90 days). If the new version of the Parent Declaration is not confirmed, child mode is turned off [ÜRÜN KARARI: yeniden onay akışı] (product decision: re-confirmation flow).
 - **Lost or stolen tablet:** remove the pairing immediately. No parent credentials are on the tablet; clearing the cache on the device after revocation [ÜRÜN KARARI] (product decision). Report suspected unauthorised use to [E-POSTA].
-- **What happens to the data:** the pairing and anonymous session record are deleted on revocation; the security log of the revocation is kept for [12 ay] (12 months). The "Done" marks the child made are part of the child profile and remain until the profile is deleted. Profile deletion: Settings > Children > [Child] > Delete Profile; account deletion: [WEB ADRESİ]/legal/hesap-ve-veri-silme.
+- **What happens to the data:** the pairing and anonymous session record are deleted on revocation; the security log of the revocation is kept for [12 ay] (12 months). The "Done" marks the child made are part of the child profile and remain until the profile is deleted. Profile deletion: Settings > Children > [Child] > Delete Profile; account deletion: https://ginafamily.com/legal/hesap-ve-veri-silme.
 
 ### B.6 Related documents and contact
 
-- Privacy Policy: [WEB ADRESİ]/legal/gizlilik-politikasi; KVKK Privacy Notice: [WEB ADRESİ]/legal/kvkk-aydinlatma-metni; Terms of Use: [WEB ADRESİ]/legal/kullanim-kosullari; Subscription Terms: [WEB ADRESİ]/legal/abonelik-kosullari; Account and Data Deletion: [WEB ADRESİ]/legal/hesap-ve-veri-silme; Data Subject Request Form: [WEB ADRESİ]/legal/kvkk-basvuru-formu; Cookie Policy (web only): [WEB ADRESİ]/legal/cerez-politikasi.
+- Privacy Policy: https://ginafamily.com/legal/gizlilik-politikasi; KVKK Privacy Notice: https://ginafamily.com/legal/kvkk-aydinlatma-metni; Terms of Use: https://ginafamily.com/legal/kullanim-kosullari; Subscription Terms: https://ginafamily.com/legal/abonelik-kosullari; Account and Data Deletion: https://ginafamily.com/legal/hesap-ve-veri-silme; Data Subject Request Form: https://ginafamily.com/legal/kvkk-basvuru-formu; Cookie Policy (web only): https://ginafamily.com/legal/cerez-politikasi.
 - For questions: [E-POSTA] or the in-app form. There is no telephone channel.
 
 ---

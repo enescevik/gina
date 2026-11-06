@@ -7,7 +7,7 @@
 | Yürürlük tarihi | [YÜRÜRLÜK TARİHİ] |
 | Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** Türkçe metin esastır; İngilizce çeviri bilgi amaçlıdır ve sayfanın sonundadır. / The Turkish text prevails; an English version is at the end of this page. |
 | Veri sorumlusu | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/VKN: [MERSİS/VKN] |
-| Yayın yeri | [WEB ADRESİ]/legal/hesap-ve-veri-silme; Google Play "Veri güvenliği" ve App Store Connect "Privacy Choices" bağlantısı; uygulamada Ayarlar > Hesap > Hesabı Sil |
+| Yayın yeri | https://ginafamily.com/legal/hesap-ve-veri-silme; Google Play "Veri güvenliği" ve App Store Connect "Privacy Choices" bağlantısı; uygulamada Ayarlar > Hesap > Hesabı Sil |
 | İlgili belgeler | [Gizlilik Politikası](./gizlilik-politikasi.md) · [KVKK Aydınlatma Metni](./kvkk-aydinlatma-metni.md) · [Kullanım Koşulları](./kullanim-kosullari.md) · [Abonelik Koşulları](./abonelik-kosullari-ve-on-bilgilendirme.md) · [Çerez Politikası](./cerez-politikasi.md) · [KVKK Başvuru Formu](./kvkk-basvuru-formu.md) |
 
 ## 31 Ekim 2026 uygulama denetimi (6 Kasım 2026'da yeniden doğrulandı) — yayımlamadan önce güncellenmeli
@@ -112,7 +112,7 @@ Gina Plus ve Gina Pro abonelikleri yalnızca App Store (satıcı Apple Distribut
 ## 10. İletişim ve KVKK başvurusu
 
 - E-posta: [E-POSTA] (kayıtlı adresinizden) · Posta: [ADRES] · KEP: [KEP ADRESİ – varsa]. Telefon kanalımız yoktur.
-- KVKK Başvuru Formu: [WEB ADRESİ]/legal/kvkk-basvuru-formu (uygulamada Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu; bu ekran henüz yoktur, şu an uygulama içinden Yardım > destek talebi açılabilir).
+- KVKK Başvuru Formu: https://ginafamily.com/legal/kvkk-basvuru-formu (uygulamada Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu; bu ekran henüz yoktur, şu an uygulama içinden Yardım > destek talebi açılabilir).
 - Başvurular en geç 30 gün içinde ücretsiz sonuçlandırılır; yanıtı yetersiz bulursanız Kişisel Verileri Koruma Kurulu'na (kvkk.gov.tr) şikâyet edebilirsiniz; süreler KVKK Başvuru Formu'ndadır.
 
 ## Değişiklik geçmişi
@@ -136,7 +136,7 @@ Gina Plus ve Gina Pro abonelikleri yalnızca App Store (satıcı Apple Distribut
 | Effective date | [YÜRÜRLÜK TARİHİ] |
 | Status | **Draft. No legal expert has reviewed or approved it (6 November 2026); it is not published without expert approval and a written approval record.** The Turkish text prevails; this English translation is for information only. It was translated from the Turkish text on 6 November 2026 (D18) and has the same content. Placeholders and Turkish lawyer/product notes in square brackets are shared with the Turkish text; an English gloss follows in parentheses. |
 | Data controller | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/tax ID: [MERSİS/VKN] |
-| Published at | [WEB ADRESİ]/legal/hesap-ve-veri-silme; Google Play "Data safety" and App Store Connect "Privacy Choices" link; in the app, Settings > Account > Delete Account |
+| Published at | https://ginafamily.com/legal/hesap-ve-veri-silme; Google Play "Data safety" and App Store Connect "Privacy Choices" link; in the app, Settings > Account > Delete Account |
 | Related documents | [Privacy Policy](./gizlilik-politikasi.md) · [KVKK Privacy Notice](./kvkk-aydinlatma-metni.md) · [Terms of Use](./kullanim-kosullari.md) · [Subscription Terms](./abonelik-kosullari-ve-on-bilgilendirme.md) · [Cookie Policy](./cerez-politikasi.md) · [Data Subject Request Form](./kvkk-basvuru-formu.md) |
 
 ## App audit of 31 October 2026 (re-verified on 6 November 2026) — must be updated before publication
@@ -241,7 +241,7 @@ Cancellation takes effect at the end of the period; to use the Plus/Pro features
 ## 10. Contact and KVKK requests
 
 - Email: [E-POSTA] (from your registered address) · Post: [ADRES] · KEP: [KEP ADRESİ – varsa] (if any). We have no telephone channel.
-- Data Subject Request Form: [WEB ADRESİ]/legal/kvkk-basvuru-formu (in the app, Settings > Privacy and Legal > Data Subject Request; this screen does not exist yet, at present you can open a support request from Help in the app).
+- Data Subject Request Form: https://ginafamily.com/legal/kvkk-basvuru-formu (in the app, Settings > Privacy and Legal > Data Subject Request; this screen does not exist yet, at present you can open a support request from Help in the app).
 - Requests are concluded free of charge within 30 days at the latest; if you find the reply insufficient, you can complain to the Personal Data Protection Board (kvkk.gov.tr); the deadlines are in the Data Subject Request Form.
 
 ## Change log
