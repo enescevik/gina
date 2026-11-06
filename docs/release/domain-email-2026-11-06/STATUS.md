@@ -16,3 +16,12 @@ Bu kayıt X01'in alan adı ve Supabase Auth SMTP kısmını günceller; ürün b
 - Kullanıcının sağladığı yasal ad ve adres, yalnız Git tarafından dışlanan `.codex-setup/legal-private-2026-11-06/` altındaki 10 yerel taslak kopyasına işlendi. Ev adresi uzak depoya veya web’e yüklenmedi. Posta kodu kullanıcı tarafından teyit edilip özel yerel kopyalara eklendi; hukuk incelemesi bekliyor.
 
 - Gmail gönderici kurulumu tamamlandı: `GINA Destek <destek@ginafamily.com>`, Brevo SMTP 587/TLS. Kullanıcı ayrı `GINA Gmail SMTP` anahtarını oluşturup Gmail’e kendisi kaydetti; anahtar değeri okunmadı veya depoya yazılmadı. Gmail adres onayı başarılı. "İletinin gönderildiği adresten yanıtla" seçeneği etkin; kişisel varsayılan gönderen değişmedi. Gönderici test mesajı hedef Gmail hesabında INBOX etiketi ve doğru From adresiyle doğrulandı; farklı sağlayıcıya dış teslimat ayrıca test edilmedi.
+
+## Düşük maliyetli başlangıç — öneri ve açık işler
+
+- Öneri: Türkiye odaklı davetli ücretsiz beta; pazarlama ve ücretli satış sonraki aşama. Bu öneri onaylanmış ürün kapsamının veya canlı erişim/ödeme ayarlarının değiştirildiği anlamına gelmez.
+- Yeni ücretli hizmet alınmadı. Mevcut destek iletimi Cloudflare → Gmail, yanıtlar Gmail → Brevo; gizlilik taslağına TR/EN teknik veri akışı eklendi.
+- Güncel kaynaklardan 10 özel yerel taslak yeniden oluşturuldu; doğrulanmış ad, iletişim adresi ve posta kodu korundu. Ev adresi uzak depoya veya web’e konmadı.
+- Ücretsiz beta kişisel veri yükümlülüklerini kaldırmaz. Gerçek ailelere açılıştan önce çocuk verileri, aydınlatma/veli beyanı, sağlayıcı sözleşmeleri, yurt dışı aktarım ve gerçek saklama/silme davranışları hukuk incelemesine taşınmalı. Mevcut DECISIONS.md hukuk incelemesi şartı sürer.
+- KEP/VERBİS gerekliliği ve GVK mükerrer 20/B uygunluğu doğrulanmadı; hizmet satın alınması veya vergi muafiyeti varsayılmadı. Ücretli satıştan önce mali müşavir değerlendirmesi gerekir.
+- Uygulamada olmayan ekranlar, planlı silme/bildirimler ve doğrulanmamış saklama süreleri taslakların yayın engelidir; bu dokümantasyon düzeltmesi bunları uygulamaz. Destek için sabit cevap süresi taahhüdü eklenmedi.
