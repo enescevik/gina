@@ -9,7 +9,7 @@ yapılmadı. Yayımlanmadı.** Durum: `KOD HAZIR` + izole SQL/core testleri geç
 | Commit | İçerik |
 |---|---|
 | `45a359f` | migration + pgTAP 108 + core şema/yardımcılar + blueprint ekranı yükü + üretilmiş DB tipleri |
-| (bu rapor commit'i) | tetikleyici adı düzeltmesi (057 sözleşmesi) + bu README |
+| `58fe426` | tetikleyici adı düzeltmesi (057 sözleşmesi) + bu README |
 
 ## Değişen dosyalar
 
