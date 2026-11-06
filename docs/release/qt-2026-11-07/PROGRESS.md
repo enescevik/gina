@@ -17,13 +17,13 @@ Durum ölçeği: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAM
 | QT13 sayısal kısa cevap | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın ve gerçek cihaz kabulü açık |
 | QT20 sıralama | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın ve gerçek cihaz kabulü açık |
 | QT21 sınıflandırma | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın ve gerçek cihaz kabulü açık |
-| QT30 metin işaretleme | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107040000 + istemci faz anahtarı; gerçek cihaz kabulü açık |
-| QT31 hata bulma–düzeltme | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107040000 + istemci faz anahtarı; gerçek cihaz kabulü açık |
-| QT32 çoklu doğru seçenek | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107040000 + istemci faz anahtarı; gerçek cihaz kabulü açık |
-| QT33 iki aşamalı | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107040000 + istemci faz anahtarı; gerçek cihaz kabulü açık |
+| QT30 metin işaretleme | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107050400 + istemci faz anahtarı; gerçek cihaz kabulü açık |
+| QT31 hata bulma–düzeltme | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107050400 + istemci faz anahtarı; gerçek cihaz kabulü açık |
+| QT32 çoklu doğru seçenek | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107050400 + istemci faz anahtarı; gerçek cihaz kabulü açık |
+| QT33 iki aşamalı | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107050400 + istemci faz anahtarı; gerçek cihaz kabulü açık |
 | QT40 defter güçlendirme | PLANLANDI | Yeni defter yok; mevcut NotebookWorkspace + cihaz kabulü (DIŞ ENGEL: Pencil cihazı) |
-| QT41 şekil boyama + saat | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107040000 + istemci faz anahtarı; gerçek cihaz kabulü açık |
-| QT42 tablo/grafik, harita/şema | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107040000 + istemci faz anahtarı; gerçek cihaz kabulü açık |
+| QT41 şekil boyama + saat | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107050400 + istemci faz anahtarı; gerçek cihaz kabulü açık |
+| QT42 tablo/grafik, harita/şema | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107050400 + istemci faz anahtarı; gerçek cihaz kabulü açık |
 | QT43 dikte | KARAR BEKLİYOR | Ses dosyası depolama/yükleme hattı (özel ses türü, imzalı URL, silme) veya cihaz TTS seçimi; TTS metni istemciye taşıyacağı için cevap sızar |
 | QT44 problem kurma | PLANLANDI | Açık uçlu + rubrik ön ayarı (yeni cevap altyapısı yok) |
 | QT50 bulmaca | YAPILIYOR · sunucu+core KOD HAZIR | `enabled=false` |
@@ -77,7 +77,7 @@ Durum ölçeği: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAM
 
 ## Faz 1A + 1B ortak kabul kapısı — birleşik dal kanıtı (7 Kasım 2026)
 
-Birleşik dal `claude/prova-question-types` (`d17c38f1`): Faz 0 + istemci dalları (`claude/qt-child`, `claude/qt-parent`, `claude/qt-ai`) + `20261107000500_qt10_question_views`.
+Birleşik dal `claude/prova-question-types` (`d17c38f1`): Faz 0 + istemci dalları (`claude/qt-child`, `claude/qt-parent`, `claude/qt-ai`) + `20261107050000_qt10_question_views`.
 
 | Kontrol | Komut | Sonuç |
 |---|---|---|
@@ -112,7 +112,7 @@ Bilinen sınırlar: kaydedilmiş yapılandırılmış soru düzenlenemez (AI/ell
 
 Birleşik dal `claude/prova-question-types` @ `d952d4f9` (origin/main `86d815ce` Faz 0 yayını dahil). Main/prod/Edge/istemci yayını YAPILMADI.
 
-**Yayın paketi:** migration `20261107000500` (görünüm sütunları), `20261107010000` (2A, kapalı), `20261107020000` (2B, kapalı), `20261107030000` (Faz 3 bulmaca, kapalı kalır), `20261107040000` (2A+2B açma + 1–4. sınıf saat 12 saat koruması) → Edge `prova-generate` (v9 eski gövde birebir; yapılandırılmış istek v10) → web/backoffice → imzalı mobil. Mobilde faz anahtarı: `apps/mobile/src/components/learning/question-types/support.ts` `PHASE2A_CHILD_ENABLED` / `PHASE2B_CHILD_ENABLED` (yayında `true` yapılmalı; hazırlama anahtarları bunlara bağlı). Anahtar kapalı eski/yeni istemci yeni türü açık `client_update_required` ile reddeder.
+**Yayın paketi:** migration `20261107050000` (görünüm sütunları), `20261107050100` (2A, kapalı), `20261107050200` (2B, kapalı), `20261107050300` (Faz 3 bulmaca, kapalı kalır), `20261107050400` (2A+2B açma + 1–4. sınıf saat 12 saat koruması) → Edge `prova-generate` (v9 eski gövde birebir; yapılandırılmış istek v10) → web/backoffice → imzalı mobil. Mobilde faz anahtarı: `apps/mobile/src/components/learning/question-types/support.ts` `PHASE2A_CHILD_ENABLED` / `PHASE2B_CHILD_ENABLED` (yayında `true` yapılmalı; hazırlama anahtarları bunlara bağlı). Anahtar kapalı eski/yeni istemci yeni türü açık `client_update_required` ile reddeder.
 
 | Kontrol | Sonuç (d952d4f9) |
 |---|---|

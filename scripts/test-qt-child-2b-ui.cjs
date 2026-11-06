@@ -145,7 +145,7 @@ async function fixture() {
   parent.family = fam.data; tok = (await session(parent)).access_token; parent.token = tok;
   const child = randomUUID();
   const base = { grade: 3, subject: 'Matematik', topic: 'Kesirler ve zaman', difficulty: 'kolay', schema_version: 1 };
-  // 20261107040000_qt_enable_phase2 enables 2A/2B; turn both off in this disposable DB to prove the gate, then 2B only on.
+  // 20261107050400_qt_enable_phase2 enables 2A/2B; turn both off in this disposable DB to prove the gate, then 2B only on.
   sql(`update public.interaction_types set enabled=false where phase in ('2A','2B');`);
   const refused = await rpc(tok, 'save_question_with_sources', { p_request_id: randomUUID(), p_question: { ...base, ...Q.read } });
   assert.equal(refused.ok, false); assert.match(JSON.stringify(refused.data), /interaction_type_unavailable/);

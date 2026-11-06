@@ -1,0 +1,420 @@
+{
+  "checkedAt": "2026-11-06T22:19:49.481Z",
+  "secretNames": [
+    "ANTHROPIC_API_KEY",
+    "APNS_BUNDLE_ID",
+    "APNS_ENV",
+    "APNS_KEY_ID",
+    "APNS_KEY_P8",
+    "APNS_TEAM_ID",
+    "APPLE_BUNDLE_ID",
+    "APPLE_IAP_ISSUER_ID",
+    "APPLE_IAP_KEY_ID",
+    "APPLE_IAP_KEY_P8",
+    "APPLE_REVOCATION_SECRET",
+    "APPLE_SERVICES_ID",
+    "APPLE_SIGNIN_KEY_ID",
+    "APPLE_SIGNIN_PRIVATE_KEY",
+    "APPLE_TEAM_ID",
+    "APPLE_TOKEN_ENCRYPTION_KEY",
+    "CONTENT_PREREVIEW_SECRET",
+    "IAP_CRON_SECRET",
+    "OPENAI_API_KEY",
+    "PUSH_SEND_SECRET",
+    "SOURCE_CLEANUP_SECRET",
+    "SUPABASE_ANON_KEY",
+    "SUPABASE_DB_URL",
+    "SUPABASE_JWKS",
+    "SUPABASE_PUBLISHABLE_KEYS",
+    "SUPABASE_SECRET_KEYS",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_URL"
+  ],
+  "functions": [
+    {
+      "name": "ai-weekly-summary",
+      "version": 26,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "apple-notifications",
+      "version": 22,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    },
+    {
+      "name": "delete-account",
+      "version": 25,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "google-rtdn",
+      "version": 22,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    },
+    {
+      "name": "iap-reconcile",
+      "version": 22,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    },
+    {
+      "name": "iap-verify",
+      "version": 23,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "prova-generate",
+      "version": 29,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "prova-grade",
+      "version": 31,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "prova-plan",
+      "version": 27,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "push-send",
+      "version": 24,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    },
+    {
+      "name": "setup-suggestions",
+      "version": 22,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "ai-preflight",
+      "version": 24,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "learning-source",
+      "version": 17,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "source-cleanup",
+      "version": 17,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    },
+    {
+      "name": "timetable-import",
+      "version": 22,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "prova-review",
+      "version": 20,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "library-media",
+      "version": 14,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "iap-operator-reconcile",
+      "version": 11,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    },
+    {
+      "name": "learning-plan-import",
+      "version": 16,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "contribution-submit",
+      "version": 11,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "channel-unsubscribe",
+      "version": 10,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    },
+    {
+      "name": "content-prereview",
+      "version": 13,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    },
+    {
+      "name": "curriculum-source-fetch",
+      "version": 12,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "room-weather",
+      "version": 10,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "curriculum-source-extract",
+      "version": 9,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "apple-token",
+      "version": 8,
+      "status": "ACTIVE",
+      "verify_jwt": true
+    },
+    {
+      "name": "apple-revocation-worker",
+      "version": 8,
+      "status": "ACTIVE",
+      "verify_jwt": false
+    }
+  ],
+  "migrations": [
+    {
+      "count": 161,
+      "last": "20261107010000"
+    }
+  ],
+  "cron": [
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "apple-revocation-worker",
+      "last_start": "2026-11-06 22:15:00.345767+00",
+      "runs_3h": 5,
+      "schedule": "*/15 * * * *"
+    },
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "content-prereview-drain",
+      "last_start": "2026-11-06 22:10:00.191258+00",
+      "runs_3h": 18,
+      "schedule": "*/10 * * * *"
+    },
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "gina-education-reminders",
+      "last_start": null,
+      "runs_3h": 0,
+      "schedule": "0 8 * * *"
+    },
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "iap-reconcile",
+      "last_start": null,
+      "runs_3h": 0,
+      "schedule": "17 */6 * * *"
+    },
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "prune-pairing-records",
+      "last_start": null,
+      "runs_3h": 0,
+      "schedule": "35 3 * * *"
+    },
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "prune-unused-devices",
+      "last_start": null,
+      "runs_3h": 0,
+      "schedule": "25 3 * * *"
+    },
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "purge-ai-summaries",
+      "last_start": null,
+      "runs_3h": 0,
+      "schedule": "15 3 * * *"
+    },
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "purge-apple-revocation-jobs",
+      "last_start": null,
+      "runs_3h": 0,
+      "schedule": "45 3 * * *"
+    },
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "purge-push-outbox",
+      "last_start": null,
+      "runs_3h": 0,
+      "schedule": "30 3 * * *"
+    },
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "purge-weekly-summary-contexts",
+      "last_start": null,
+      "runs_3h": 0,
+      "schedule": "20 3 * * *"
+    },
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "push-send",
+      "last_start": "2026-11-06 22:19:00.179498+00",
+      "runs_3h": 180,
+      "schedule": "* * * * *"
+    },
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "settle-group-attempts",
+      "last_start": "2026-11-06 22:15:00.342982+00",
+      "runs_3h": 36,
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "active": true,
+      "failures_3h": 0,
+      "jobname": "source-cleanup",
+      "last_start": "2026-11-06 21:43:00.065301+00",
+      "runs_3h": 3,
+      "schedule": "43 * * * *"
+    }
+  ],
+  "prereview": [
+    {
+      "health": {
+        "admin_daily_limit_exempt": true,
+        "ai_enabled": true,
+        "alerts": [],
+        "budget_calls_24h": 0,
+        "calls_24h": 1,
+        "calls_by_outcome_24h": {
+          "needs_admin": 1
+        },
+        "cron": {
+          "active": true,
+          "jobid": 9,
+          "schedule": "*/10 * * * *"
+        },
+        "cron_runs": [
+          {
+            "message": "1 row",
+            "start_time": "2026-11-06T22:10:00.191258+00:00",
+            "status": "succeeded"
+          },
+          {
+            "message": "1 row",
+            "start_time": "2026-11-06T22:00:00.327801+00:00",
+            "status": "succeeded"
+          },
+          {
+            "message": "1 row",
+            "start_time": "2026-11-06T21:50:00.177429+00:00",
+            "status": "succeeded"
+          },
+          {
+            "message": "1 row",
+            "start_time": "2026-11-06T21:40:00.188212+00:00",
+            "status": "succeeded"
+          },
+          {
+            "message": "1 row",
+            "start_time": "2026-11-06T21:30:00.358839+00:00",
+            "status": "succeeded"
+          }
+        ],
+        "daily_call_limit": 25,
+        "enabled": true,
+        "kicks": [
+          {
+            "created_at": "2026-11-06T21:09:19.204085+00:00",
+            "error": null,
+            "http_status": 200,
+            "note": "posted",
+            "timed_out": false
+          }
+        ],
+        "providers": [
+          {
+            "paused": false,
+            "provider": "anthropic"
+          },
+          {
+            "paused": false,
+            "provider": "gemini"
+          },
+          {
+            "paused": false,
+            "provider": "openai_compatible"
+          }
+        ],
+        "queue": {
+          "ai_approved": 0,
+          "ai_rejected_suggestion": 0,
+          "needs_admin": 1,
+          "oldest_pending_at": null,
+          "pending_leased": 0,
+          "pending_ready": 0,
+          "pending_retry_exhausted": 0
+        },
+        "remaining_24h": 25,
+        "top_errors_24h": [],
+        "unfinished_calls": 0
+      }
+    }
+  ],
+  "gates": [
+    {
+      "key": "channels.email.provider",
+      "value": null
+    },
+    {
+      "key": "content_prereview.enabled",
+      "value": true
+    },
+    {
+      "key": "curriculum_catalog.enabled",
+      "value": false
+    }
+  ],
+  "apple": [
+    {
+      "jobs": 0,
+      "pending": 0
+    }
+  ],
+  "vault": [
+    {
+      "name": "apple_revocation_secret"
+    },
+    {
+      "name": "project_url"
+    }
+  ]
+}

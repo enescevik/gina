@@ -25,7 +25,7 @@ insert into qs values
  ('two_stage','40000000-0000-4000-8000-000000014214','{"stage1":{"prompt":"Hangisi iletkendir?","options":[{"id":"a1","text":"Bakır"},{"id":"a2","text":"Plastik"}]},"stage2":{"prompt":"Neden?","mode":"text"}}','{"stage1":"a1"}');
 grant select on qs to authenticated;
 
--- Yayın anahtarı (20261107040000) türleri açar; kapalıyken davranış burada açıkça kapatılarak denenir.
+-- Yayın anahtarı (20261107050400) türleri açar; kapalıyken davranış burada açıkça kapatılarak denenir.
 update public.interaction_types set enabled=false where phase='2A';
 set local role authenticated;
 select pg_temp.as_parent();

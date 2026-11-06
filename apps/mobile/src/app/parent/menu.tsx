@@ -1,3 +1,4 @@
+import { LanguageChoice } from "@/components/language-choice";
 import { IconButton } from "@/components/planner/ui";
 import { ChildSetup, type SetupChild } from "@/components/setup/child-setup";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -193,6 +194,7 @@ export default function ParentMenuScreen() {
       <NavigationCard title={t("help.title")} body={t("help.subtitle")} icon={<CircleHelp size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/help")}/>
       </> : null}
       {section === "account" ? <>
+      <View style={parentStyles.card}><LanguageChoice /></View>
       <Text style={parentStyles.copy}>{t("parentToday.menuAccountBody")}</Text>
       <NavigationCard title={t("inbox.title")} body={t("inbox.subtitle")} icon={<Inbox size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/inbox")}/>
       <NavigationCard title={t("inbox.preferences")} body={t("accountV5.notificationsBody")} icon={<Bell size={22} color="#6042DE"/>} onPress={()=>router.push("/parent/notifications")}/>

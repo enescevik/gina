@@ -1,10 +1,10 @@
 import "../global.css";
-import "@/lib/i18n";
+import { restoreAppLanguage } from "@/lib/i18n";
 
 import { Baloo2_600SemiBold, Baloo2_700Bold, Baloo2_800ExtraBold, useFonts } from "@expo-google-fonts/baloo-2";
 import { Nunito_400Regular, Nunito_600SemiBold, Nunito_700Bold, Nunito_800ExtraBold } from "@expo-google-fonts/nunito";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { colorScheme } from "nativewind";
 import { Stack, type ErrorBoundaryProps } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -21,6 +21,8 @@ import { SessionProvider, useSession } from "@/lib/session";
 
 export default function RootLayout() {
   useAppLifecycle();
+  const [languageReady, setLanguageReady] = useState(false);
+  useEffect(() => { void restoreAppLanguage().finally(() => setLanguageReady(true)); }, []);
   // v5 is a complete light palette; OS dark mode must not turn only labels/inputs dark.
   useEffect(() => { colorScheme.set("light"); }, []);
   // Onaylı tasarım tipografisi: çocuk başlıkları Baloo 2, gövde Nunito (yüklenene dek sistem fontu).
@@ -35,7 +37,7 @@ export default function RootLayout() {
     Nunito_800ExtraBold,
   });
   const webFontsReady = useWebFontsReady(fontsLoaded, !!fontError);
-  if ((!fontsLoaded && !fontError) || !webFontsReady) return <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#FCFAF6" }}><ActivityIndicator color="#6042DE" /></View>;
+  if (!languageReady || (!fontsLoaded && !fontError) || !webFontsReady) return <View style={{ flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: "#FCFAF6" }}><ActivityIndicator color="#6042DE" /></View>;
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>

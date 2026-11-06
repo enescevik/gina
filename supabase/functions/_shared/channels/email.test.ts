@@ -251,3 +251,23 @@ Deno.test("factory: missing env is reported by name; plaintext SMTP needs explic
   assertEquals(emailAdapterFromEnv(null, env({})), { adapter: null, missing: ["provider_not_selected"] });
   assertEquals(emailAdapterFromEnv("sendgrid", env({})), { adapter: null, missing: ["provider_unknown:sendgrid"] });
 });
+
+Deno.test("smtp: HTML mail preserves exact UTF-8 plain and HTML alternatives and unsubscribe headers", async () => {
+  const s = await fakeSmtp("accept");
+  const html = '<!doctype html><html lang="tr"><body><h1>Çocuğunla birlikte 🌱</h1>' + '<p>İngilizce &amp; Türkçe</p>'.repeat(800) + '</body></html>';
+  try {
+    const result = await smtp(s.port).send({ ...message, html });
+    assert(result.ok);
+    const boundary = /Content-Type: multipart\/alternative; boundary="([^"]+)"/.exec(s.data)?.[1];
+    assert(boundary);
+    const parts = s.data.split(`--${boundary}`);
+    const decode = (part: string) => new TextDecoder().decode(Uint8Array.from(atob(part.split("\r\n\r\n")[1].trim().replace(/\s/g, "")), (c) => c.charCodeAt(0)));
+    assertEquals(decode(parts[1]), message.text);
+    assertEquals(decode(parts[2]), html);
+    assert(parts[1].includes("Content-Type: text/plain; charset=utf-8"));
+    assert(parts[2].includes("Content-Type: text/html; charset=utf-8"));
+    assert(parts[3].startsWith("--"));
+    assert(s.data.includes("List-Unsubscribe-Post: List-Unsubscribe=One-Click"));
+    assertEquals(s.transcript.filter(l => l.startsWith("MAIL FROM")).length, 1);
+  } finally { await s.close(); }
+});

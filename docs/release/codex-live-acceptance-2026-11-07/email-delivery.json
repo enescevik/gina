@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-11-06T22:18:55.397Z",
+  "method": "Gmail connector metadata, no links/tokens stored",
+  "messages": [
+    {
+      "messageId": "1a1b2f093bab73a7",
+      "inbox": true,
+      "subject": "Reset your GINA password",
+      "sender": "GINA <noreply@ginafamily.com>",
+      "spf": true,
+      "dkim": true,
+      "dmarc": true
+    },
+    {
+      "messageId": "1a1b2f08ca8a671e",
+      "inbox": true,
+      "subject": "Confirm your email address",
+      "sender": "GINA <noreply@ginafamily.com>",
+      "spf": true,
+      "dkim": true,
+      "dmarc": true
+    }
+  ],
+  "scope": "Gmail inbox delivery, English signup confirmation and password reset; click-through not tested"
+}

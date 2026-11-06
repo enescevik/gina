@@ -259,6 +259,7 @@ Deno.serve(async (req) => {
     db,
     ent.plan === "free" && (ent.ai_generate_bonus ?? 0) > 0 ? "plus" : ent.plan,
     16000,
+    "question_generation",
   );
   if (ai instanceof Response) return ai;
   // QT-AI: yapılandırılmış tür yalnız JSON şeması destekleyen modelle istenir (doğrulamasız kabul yok).
@@ -393,7 +394,7 @@ Deno.serve(async (req) => {
     result = reservation.provider_result ??
       await generateWith<GeneratedOutput>(
         apiKey,
-        ai,
+        { ...ai, execution: { kind: "generation", id: requestId, lease } },
         systemPrompt,
         userContent,
         schema,

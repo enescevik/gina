@@ -1,0 +1,57 @@
+{
+  "checkedAt": "2026-11-06T22:19:50.643Z",
+  "ok": true,
+  "failed": [],
+  "skipped": [],
+  "note": "Kişisel veri okunmadı; anon/public uçlar ve oturumsuz HTTP. Atlanan kontrol başarı sayılmaz.",
+  "checks": [
+    {
+      "id": "web-root",
+      "status": "pass",
+      "http": 200,
+      "headers": {
+        "content-security-policy": true,
+        "x-content-type-options": true,
+        "x-frame-options": true,
+        "referrer-policy": true
+      },
+      "scriptSrcNoUnsafeInline": true,
+      "noCookies": true
+    },
+    {
+      "id": "backoffice-access",
+      "status": "pass",
+      "probes": 12,
+      "unprotected": []
+    },
+    {
+      "id": "supabase-rest",
+      "status": "pass",
+      "http": 401,
+      "keyKind": "publishable",
+      "anonDenied": true
+    },
+    {
+      "id": "supabase-auth",
+      "status": "pass",
+      "http": 200,
+      "version": "v2.197.0"
+    },
+    {
+      "id": "edge-functions",
+      "status": "pass",
+      "count": 27,
+      "method": "authenticated Supabase CLI"
+    },
+    {
+      "id": "tablet-alias",
+      "status": "pass",
+      "http": 200,
+      "version": "0.1.0",
+      "build": "32",
+      "sourceCommit": "fe08cb60d20c99fe238d4821ff4e0968313c8578",
+      "origin": "local-eas-build",
+      "expectedBuild": "32"
+    }
+  ]
+}

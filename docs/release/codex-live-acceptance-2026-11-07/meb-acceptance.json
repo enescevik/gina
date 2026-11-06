@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-11-06T22:21:58.310Z",
+  "method": "Real administrator browser UI, then independent read-only SQL and official source hash",
+  "rows": [
+    {
+      "bytes": 23454,
+      "candidates": 36,
+      "drafts": 36,
+      "extraction_attempts": 1,
+      "extraction_status": "done",
+      "published": 0,
+      "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+      "status": "pending_review"
+    }
+  ],
+  "official": {
+    "status": 200,
+    "bytes": 23454,
+    "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf"
+  },
+  "hashMatches": true,
+  "repeatDownload": "UI reported existing same revision, no new record",
+  "catalogPublished": false
+}

@@ -6,6 +6,7 @@ import { Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, Vi
 import { Pressable } from "@/components/ui/pressable";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { LanguageChoice } from "@/components/language-choice";
 import { Avatar } from "@/components/avatar";
 import { Collectible } from "@/components/collectible";
 import { LoadingStar } from "@/components/collectible-motion";
@@ -44,7 +45,7 @@ export function ParentScreen({ title, subtitle, children, home = false, wide = f
           {navigation && !home ? <Pressable accessibilityRole="button" accessibilityLabel={t("common.back")} onPress={() => router.canGoBack() ? router.back() : router.replace("/parent")} style={styles.back}><ArrowLeft size={24} color="#201951" /></Pressable> : <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} style={{width:124,height:48}} resizeMode="contain" accessibilityLabel={t("app.name")} />}
           {navigation && !home ? <Image source={require("../../../../../packages/assets/brand/growing-friend/logo.png")} style={{width:96,height:40}} resizeMode="contain" accessibilityLabel={t("app.name")} /> : null}
         </View>
-          {navigation ? <Pressable accessibilityRole="button" accessibilityLabel={t(inMenu ? "parent.home" : "parent.menu")} onPress={() => router.push(inMenu ? "/parent" : "/parent/menu")} style={styles.menu}><MenuIcon size={22} color="#201951"/><Text style={styles.menuLabel}>{t(inMenu ? "parent.home" : "parent.menu")}</Text></Pressable> : null}
+          {navigation ? <Pressable accessibilityRole="button" accessibilityLabel={t(inMenu ? "parent.home" : "parent.menu")} onPress={() => router.push(inMenu ? "/parent" : "/parent/menu")} style={styles.menu}><MenuIcon size={22} color="#201951"/><Text style={styles.menuLabel}>{t(inMenu ? "parent.home" : "parent.menu")}</Text></Pressable> : <LanguageChoice compact />}
         </View>
       <ScrollView {...SCROLL_FOCUS} style={styles.fill} keyboardShouldPersistTaps="handled" contentContainerStyle={[styles.page, {maxWidth:pageWidth}]}>
         <View style={styles.header}>
@@ -111,7 +112,7 @@ export function FormSection({title,children,initiallyOpen=false}: {title:string;
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: "#FCFAF6" }, fill: { flex: 1 },
   page: { width: "100%", maxWidth: 1000, alignSelf: "center", paddingBottom: 36 },
-  topbar: {width:"100%",alignSelf:"center",flexDirection:"row",alignItems:"center",justifyContent:"space-between",gap:12,paddingHorizontal:20,paddingVertical:10},
+  topbar: {flexWrap:"wrap",width:"100%",alignSelf:"center",flexDirection:"row",alignItems:"center",justifyContent:"space-between",gap:12,paddingHorizontal:20,paddingVertical:10},
   brand: {flexDirection:"row",alignItems:"center",gap:12,flexShrink:1},
   header: {marginHorizontal:20,marginTop:12,marginBottom:24,gap:12,flexDirection:"row",alignItems:"center"},
   back:{width:48,height:48,alignItems:"center",justifyContent:"center",borderRadius:24,backgroundColor:"#EEEAFE"},

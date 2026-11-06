@@ -143,7 +143,7 @@ async function fixture() {
   const fam = await rpc(tok, 'create_family', { p_name: 'Sentetik QT 2A ailesi', p_display_name: 'Sentetik veli' }); assert.ok(fam.ok, 'create_family ' + JSON.stringify(fam.data).slice(0, 200));
   parent.family = fam.data; tok = (await session(parent)).access_token; parent.token = tok;
   const child = randomUUID();
-  // Release migration 20261107040000 enables 2A; reproduce the disabled state first, then re-enable (disposable DB only).
+  // Release migration 20261107050400 enables 2A; reproduce the disabled state first, then re-enable (disposable DB only).
   sql(`update public.interaction_types set enabled=false where phase in ('2A','2B');`);
   // Server ships 2A disabled: authoring must refuse it until enabled (in this disposable DB only).
   const refused = await rpc(tok, 'save_question_with_sources', { p_request_id: randomUUID(), p_question: { grade: 3, subject: 'Türkçe', topic: 'Fiil', difficulty: 'kolay', schema_version: 1, ...Q.mark } });

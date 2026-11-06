@@ -1,0 +1,19 @@
+{
+  "checkedAt": "2026-11-06T22:26:56.774Z",
+  "method": "Same pg_net + Vault path as scheduled worker; no Apple token job existed",
+  "requestId": 124,
+  "rows": [
+    {
+      "result": {
+        "failed": 0,
+        "ok": true,
+        "pending": 0,
+        "processed": 0,
+        "succeeded": 0
+      },
+      "status_code": 200,
+      "timed_out": false
+    }
+  ],
+  "realAppleRevocationTested": false
+}

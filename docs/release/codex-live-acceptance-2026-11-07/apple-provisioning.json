@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-11-06T22:17:56.918Z",
+  "configuredNames": [
+    "APPLE_TEAM_ID",
+    "APPLE_SIGNIN_KEY_ID",
+    "APPLE_SIGNIN_PRIVATE_KEY",
+    "APPLE_BUNDLE_ID",
+    "APPLE_SERVICES_ID",
+    "APPLE_TOKEN_ENCRYPTION_KEY",
+    "APPLE_REVOCATION_SECRET"
+  ],
+  "vault": [
+    {
+      "matching_names": 1
+    }
+  ],
+  "unauthenticatedStatus": 403,
+  "authenticatedStatus": 200,
+  "worker": {
+    "ok": true,
+    "processed": 0,
+    "succeeded": 0,
+    "pending": 0,
+    "failed": 0
+  },
+  "realAppleRevocationTested": false
+}

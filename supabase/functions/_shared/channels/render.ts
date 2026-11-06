@@ -1,6 +1,7 @@
 // Renders a claimed channel_outbox row into an outbound message. Text is generic: a verification code
 // or the operator-authored announcement copy. No child name, score or family data ever enters here.
 import type { OutboundEmail, OutboundSms } from "./contract.ts";
+import { brandedProductEmail } from "./brand-email.ts";
 
 export interface ChannelRow {
   id: number;
@@ -83,7 +84,11 @@ export function renderEmail(row: ChannelRow, o: RenderOptions): OutboundEmail {
     // Deep link: opens the app's verify screen with the code filled in; the parent still confirms
     // while signed in, so a scanner fetching the link verifies nothing.
     const link = o.confirmUrl ? `\n\n${o.confirmUrl}${o.confirmUrl.includes("?") ? "&" : "?"}kind=email&code=${encodeURIComponent(code)}` : "";
-    return { ...base, subject: t.verifySubject, text: t.verifyBody(code, minutesLeft(row)) + link };
+    return { ...base, subject: t.verifySubject, text: t.verifyBody(code, minutesLeft(row)) + link,
+      html: brandedProductEmail({ kind: "verification", locale: row.locale,
+        title: row.locale === "en" ? "Confirm your email." : "E-posta adresini doğrula.",
+        body: row.locale === "en" ? "Use the code below to receive GINA notifications at this address." : "GINA bildirimlerini bu adreste alabilmek için aşağıdaki kodu kullan.",
+        code, minutes: minutesLeft(row), actionUrl: link.trim() || null }) };
   }
   if (!row.announcement) throw new RenderError("announcement_missing");
   const oneClick = unsubscribeLink(row, o);
@@ -91,6 +96,8 @@ export function renderEmail(row: ChannelRow, o: RenderOptions): OutboundEmail {
     ...base,
     subject: row.announcement.title.slice(0, 160),
     text: row.announcement.body + t.announcementFooter(unsubscribePageLink(row, o)),
+    html: brandedProductEmail({kind: "announcement", locale: row.locale, title: row.announcement.title.slice(0, 160), body: row.announcement.body,
+      actionUrl: "https://ginafamily.com/parent/inbox", unsubscribeUrl: unsubscribePageLink(row, o)}),
     headers: { "List-Unsubscribe": `<${oneClick}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" },
   };
 }

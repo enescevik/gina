@@ -113,7 +113,7 @@ Cevap hash'i: `sha256({key,text,document,revision} [+ answer])`. Veli puanı/inc
 
 ## 7. Faz 2A / 2B / 3 ekleri (sunucu + core)
 
-Migration'lar: `20261107010000_qt30_phase2a_types`, `20261107020000_qt40_phase2b_types`, `20261107030000_qt50_crossword` (hepsi `enabled=false` gelir), açma: `20261107040000_qt_enable_phase2` (2A+2B; crossword kapalı). 1A/1B fonksiyonları `_p1/_p2/_p3` olarak yeniden adlandırılıp dağıtıcılarla sarıldı; eski davranış aynı (golden testler).
+Migration'lar: `20261107050100_qt30_phase2a_types`, `20261107050200_qt40_phase2b_types`, `20261107050300_qt50_crossword` (hepsi `enabled=false` gelir), açma: `20261107050400_qt_enable_phase2` (2A+2B; crossword kapalı). 1A/1B fonksiyonları `_p1/_p2/_p3` olarak yeniden adlandırılıp dağıtıcılarla sarıldı; eski davranış aynı (golden testler).
 
 | Tür | payload | anahtar | cevap | Politika |
 |---|---|---|---|---|

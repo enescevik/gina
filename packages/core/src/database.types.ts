@@ -39,6 +39,110 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"ai_chain_assignments": {
+                  Row: {
+                    "chain_id": string,"updated_at": string,"usage_key": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "chain_id": string,"updated_at"?: string,"usage_key": string
+                  }
+                  Update: {
+                    "chain_id"?: string,"updated_at"?: string,"usage_key"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ai_chain_assignments_chain_id_fkey"
+      columns: ["chain_id"]
+isOneToOne: false
+      referencedRelation: "ai_chains"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ai_chain_assignments_usage_key_fkey"
+      columns: ["usage_key"]
+isOneToOne: true
+      referencedRelation: "ai_usage_kinds"
+      referencedColumns: ["key"]
+    }
+                  ]
+                },"ai_chain_attempts": {
+                  Row: {
+                    "chain_id": string,"created_at": string,"error_code": string | null,"finished_at": string | null,"id": string,"input_tokens": number | null,"lease": string | null,"model_id": string,"output_tokens": number | null,"position": number,"provider": string,"run_id": string,"status": string,"uncertain": boolean,"usage_key": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "chain_id": string,"created_at"?: string,"error_code"?: string | null,"finished_at"?: string | null,"id"?: string,"input_tokens"?: number | null,"lease"?: string | null,"model_id": string,"output_tokens"?: number | null,"position": number,"provider": string,"run_id": string,"status": string,"uncertain"?: boolean,"usage_key": string
+                  }
+                  Update: {
+                    "chain_id"?: string,"created_at"?: string,"error_code"?: string | null,"finished_at"?: string | null,"id"?: string,"input_tokens"?: number | null,"lease"?: string | null,"model_id"?: string,"output_tokens"?: number | null,"position"?: number,"provider"?: string,"run_id"?: string,"status"?: string,"uncertain"?: boolean,"usage_key"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ai_chain_attempts_chain_id_fkey"
+      columns: ["chain_id"]
+isOneToOne: false
+      referencedRelation: "ai_chains"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ai_chain_attempts_model_id_fkey"
+      columns: ["model_id"]
+isOneToOne: false
+      referencedRelation: "ai_models"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ai_chain_attempts_provider_fkey"
+      columns: ["provider"]
+isOneToOne: false
+      referencedRelation: "ai_providers"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ai_chain_attempts_usage_key_fkey"
+      columns: ["usage_key"]
+isOneToOne: false
+      referencedRelation: "ai_usage_kinds"
+      referencedColumns: ["key"]
+    }
+                  ]
+                },"ai_chain_steps": {
+                  Row: {
+                    "chain_id": string,"model_id": string,"position": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "chain_id": string,"model_id": string,"position": number
+                  }
+                  Update: {
+                    "chain_id"?: string,"model_id"?: string,"position"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ai_chain_steps_chain_id_fkey"
+      columns: ["chain_id"]
+isOneToOne: false
+      referencedRelation: "ai_chains"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ai_chain_steps_model_id_fkey"
+      columns: ["model_id"]
+isOneToOne: false
+      referencedRelation: "ai_models"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"ai_chains": {
+                  Row: {
+                    "attempt_seconds": number,"enabled": boolean,"id": string,"name": string,"on_rate_limit": boolean,"on_server_error": boolean,"on_timeout": boolean,"total_seconds": number,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempt_seconds"?: number,"enabled"?: boolean,"id"?: string,"name": string,"on_rate_limit"?: boolean,"on_server_error"?: boolean,"on_timeout"?: boolean,"total_seconds"?: number,"updated_at"?: string
+                  }
+                  Update: {
+                    "attempt_seconds"?: number,"enabled"?: boolean,"id"?: string,"name"?: string,"on_rate_limit"?: boolean,"on_server_error"?: boolean,"on_timeout"?: boolean,"total_seconds"?: number,"updated_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"ai_feature_requirements": {
                   Row: {
                     "action": string,"entry_point": string | null,"feature": string,"input_kind": string,"min_context_tokens": number,"offered": boolean,"plans": (Database["public"]['Enums']["plan_code"])[],"requires_json_schema": boolean,"requires_pdf": boolean,"requires_vision": boolean
@@ -75,14 +179,14 @@ isOneToOne: false
                   ]
                 },"ai_operation_jobs": {
                   Row: {
-                    "action": string,"created_at": string,"error_code": string | null,"family_id": string,"id": string,"input_hash": string,"lease": string,"provider": string | null,"requested_by": string | null,"result": Json | null,"status": string,"updated_at": string
+                    "action": string,"chain_run_id": string | null,"created_at": string,"error_code": string | null,"family_id": string,"id": string,"input_hash": string,"lease": string,"provider": string | null,"requested_by": string | null,"result": Json | null,"status": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "action": string,"created_at"?: string,"error_code"?: string | null,"family_id": string,"id"?: string,"input_hash": string,"lease": string,"provider"?: string | null,"requested_by"?: string | null,"result"?: Json | null,"status": string,"updated_at"?: string
+                    "action": string,"chain_run_id"?: string | null,"created_at"?: string,"error_code"?: string | null,"family_id": string,"id"?: string,"input_hash": string,"lease": string,"provider"?: string | null,"requested_by"?: string | null,"result"?: Json | null,"status": string,"updated_at"?: string
                   }
                   Update: {
-                    "action"?: string,"created_at"?: string,"error_code"?: string | null,"family_id"?: string,"id"?: string,"input_hash"?: string,"lease"?: string,"provider"?: string | null,"requested_by"?: string | null,"result"?: Json | null,"status"?: string,"updated_at"?: string
+                    "action"?: string,"chain_run_id"?: string | null,"created_at"?: string,"error_code"?: string | null,"family_id"?: string,"id"?: string,"input_hash"?: string,"lease"?: string,"provider"?: string | null,"requested_by"?: string | null,"result"?: Json | null,"status"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -218,6 +322,20 @@ isOneToOne: false
       referencedRelation: "families"
       referencedColumns: ["id"]
     }
+                  ]
+                },"ai_usage_kinds": {
+                  Row: {
+                    "key": string,"label": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "key": string,"label": string
+                  }
+                  Update: {
+                    "key"?: string,"label"?: string
+                  }
+                  Relationships: [
+                    
                   ]
                 },"answer_review_consents": {
                   Row: {
@@ -1855,14 +1973,14 @@ isOneToOne: false
                   ]
                 },"prova_generation_jobs": {
                   Row: {
-                    "created_at": string,"error_code": string | null,"family_id": string,"id": string,"items": number,"lease": string | null,"prompt_hash": string,"provider": string | null,"provider_result": Json | null,"requested_by": string | null,"result": Json | null,"status": string,"updated_at": string
+                    "chain_run_id": string | null,"created_at": string,"error_code": string | null,"family_id": string,"id": string,"items": number,"lease": string | null,"prompt_hash": string,"provider": string | null,"provider_result": Json | null,"requested_by": string | null,"result": Json | null,"status": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"error_code"?: string | null,"family_id": string,"id": string,"items": number,"lease"?: string | null,"prompt_hash": string,"provider"?: string | null,"provider_result"?: Json | null,"requested_by"?: string | null,"result"?: Json | null,"status": string,"updated_at"?: string
+                    "chain_run_id"?: string | null,"created_at"?: string,"error_code"?: string | null,"family_id": string,"id": string,"items": number,"lease"?: string | null,"prompt_hash": string,"provider"?: string | null,"provider_result"?: Json | null,"requested_by"?: string | null,"result"?: Json | null,"status": string,"updated_at"?: string
                   }
                   Update: {
-                    "created_at"?: string,"error_code"?: string | null,"family_id"?: string,"id"?: string,"items"?: number,"lease"?: string | null,"prompt_hash"?: string,"provider"?: string | null,"provider_result"?: Json | null,"requested_by"?: string | null,"result"?: Json | null,"status"?: string,"updated_at"?: string
+                    "chain_run_id"?: string | null,"created_at"?: string,"error_code"?: string | null,"family_id"?: string,"id"?: string,"items"?: number,"lease"?: string | null,"prompt_hash"?: string,"provider"?: string | null,"provider_result"?: Json | null,"requested_by"?: string | null,"result"?: Json | null,"status"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -2677,6 +2795,9 @@ isOneToOne: false
 "admin_add_library_item":
 { Args: { "p_collection_id": string,"p_content": Json,"p_publish"?: boolean }; Returns: string
                            },
+"admin_ai_chains":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "admin_ai_failed_operations":
 { Args: { "p_action"?: string,"p_from"?: string,"p_limit"?: number,"p_offset"?: number,"p_statuses"?: (string)[],"p_to"?: string }; Returns: Json
                            },
@@ -2694,6 +2815,9 @@ isOneToOne: false
                            },
 "admin_announcements":
 { Args: { "p_before"?: string,"p_before_id"?: string }; Returns: Json
+                           },
+"admin_assign_ai_chain":
+{ Args: { "p_chain_id": string,"p_expected_updated_at"?: string,"p_usage_key": string }; Returns: undefined
                            },
 "admin_audit_actors":
 { Args: { "p_ids": (string)[] }; Returns: {
@@ -2910,6 +3034,9 @@ isOneToOne: false
 "admin_review_library_question":
 { Args: { "p_expected_review_revision": number,"p_note": string,"p_outcome": string,"p_package_id": string,"p_question_key": string,"p_question_revision": number,"p_request_id": string }; Returns: Json
                            },
+"admin_save_ai_chain":
+{ Args: { "p_attempt_seconds": number,"p_enabled": boolean,"p_expected_updated_at"?: string,"p_id": string,"p_models": (string)[],"p_name": string,"p_on_rate_limit": boolean,"p_on_server_error": boolean,"p_on_timeout": boolean,"p_total_seconds": number }; Returns: Json
+                           },
 "admin_save_announcement":
 { Args: { "p_id": string,"p_request": string,"p_revision": number,"p_value": Json }; Returns: Json
                            },
@@ -2986,6 +3113,12 @@ isOneToOne: false
                            },
 "admin_workqueue":
 { Args: { "p_role"?: string }; Returns: Json
+                           },
+"ai_chain_finish_attempt":
+{ Args: { "p_error"?: string,"p_id": string,"p_input"?: number,"p_ok": boolean,"p_output"?: number,"p_uncertain"?: boolean }; Returns: undefined
+                           },
+"ai_chain_start_attempt":
+{ Args: { "p_chain": string,"p_input_kind": string,"p_job_id"?: string,"p_job_kind"?: string,"p_lease"?: string,"p_model": string,"p_plan": string,"p_position": number,"p_run": string,"p_skip"?: string,"p_usage": string }; Returns: Json
                            },
 "ai_model_support":
 { Args: { "p_model_id": string }; Returns: Json
@@ -3933,6 +4066,9 @@ isOneToOne: false
 "reserve_child_ai_operation":
 { Args: { "p_action": string,"p_child_id": string,"p_family_id": string,"p_hash": string,"p_lease": string,"p_user_id": string }; Returns: Json
                            },
+"reserve_child_ai_operation_routed":
+{ Args: { "p_action": string,"p_child_id": string,"p_family_id": string,"p_hash": string,"p_lease": string,"p_provider": string,"p_user_id": string }; Returns: Json
+                           },
 "reserve_learning_plan_import":
 { Args: { "p_context": string,"p_family": string,"p_lease": string,"p_provider"?: string,"p_user": string }; Returns: Json
                            },
@@ -3956,6 +4092,9 @@ isOneToOne: false
                            },
 "reserve_weekly_summary":
 { Args: { "p_context": string,"p_family": string,"p_lease": string,"p_provider"?: string,"p_user": string }; Returns: Json
+                           },
+"resolve_ai_chain":
+{ Args: { "p_plan": string,"p_usage_key": string }; Returns: Json
                            },
 "resume_prova_generation":
 { Args: { "p_family_id": string,"p_id": string,"p_intent": Json,"p_user_id": string }; Returns: Json

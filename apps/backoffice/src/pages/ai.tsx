@@ -1,6 +1,7 @@
+import { AiChains } from "@/components/ai-chains";
 import { useUnsavedChanges } from "@/components/unsaved-changes";
 import { SourcePolicy } from "@/components/source-policy";
-import { AiPolicyMatrixCard, ModelDisablePreviewButton, ProviderChangeImpactCard, featureLabel, useAiPolicyMatrix } from "@/components/ai-policy";
+import { AiPolicyMatrixCard, ModelDisablePreviewButton, ProviderChangeImpactCard, featureLabel, useAiPolicyMatrix, type DisablePreview } from "@/components/ai-policy";
 import { adminRpc } from "@/components/review-rpc";
 import type { Tables } from "@gina/core";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
@@ -35,10 +36,12 @@ function SettingEditor({ row, models, onSaved, onState }: { row: AiSetting; mode
   const [busy, setBusy] = useState(false);
   const lock = useRef(false);
   const dirty = JSON.stringify(draft) !== JSON.stringify(row);
+  const activeModels = models.filter(m => m.active);
+  const unavailableModel = !!draft.model_id && !activeModels.some(m => m.id === draft.model_id);
   useEffect(() => { onState(row.plan_code, dirty, busy); return () => onState(row.plan_code, false, false); }, [row.plan_code, dirty, busy, onState]);
   async function save(e: FormEvent) {
     e.preventDefault();
-    if (lock.current || !dirty) return;
+    if (lock.current || !dirty || unavailableModel) return;
     lock.current = true; setBusy(true);
     try {
       const { error } = await supabase().from("ai_settings").update({
@@ -57,10 +60,14 @@ function SettingEditor({ row, models, onSaved, onState }: { row: AiSetting; mode
     </div>
     <fieldset disabled={busy} className="grid min-w-0 gap-4 sm:grid-cols-2">
       <div className="min-w-0 sm:col-span-2"><label htmlFor={`model-${row.plan_code}`}>{t.ai.model}</label>
-        <select id={`model-${row.plan_code}`} required={draft.enabled} aria-describedby={`model-hint-${row.plan_code}`} className="input mt-2 w-full" value={draft.model_id ?? ""} onChange={e => setDraft({ ...draft, model_id: e.target.value || null })}>
+        <select id={`model-${row.plan_code}`} required={draft.enabled} aria-describedby={`model-hint-${row.plan_code}`} className="input mt-2 w-full" value={unavailableModel ? "" : draft.model_id ?? ""} onChange={e => setDraft({ ...draft, model_id: e.target.value || null })}>
           <option value="">{t.ai.noModel}</option>
-          {models.map(m => <option key={m.id} value={m.id} disabled={!m.active}>{m.display_name}</option>)}
+          {activeModels.map(m => <option key={m.id} value={m.id}>{m.display_name}</option>)}
         </select>
+        {unavailableModel && <div className="mt-2 text-sm text-amber-800">
+          <p role="alert">Kayıtlı model pasif. Kaydetmeden önce aktif bir model seçin veya model seçimini temizleyin.</p>
+          <button type="button" className="btn-secondary mt-2" onClick={() => setDraft({ ...draft, model_id: null })}>Model seçimini temizle</button>
+        </div>}
         <span id={`model-hint-${row.plan_code}`} className="mt-1 block break-all text-sm text-slate-500">{draft.model_id || t.ai.noModel}</span>
       </div>
       <label>{t.ai.maxInput}<input type="number" required min={1} step={1} className="input mt-2 w-full" value={draft.max_input_tokens} onChange={e => setDraft({ ...draft, max_input_tokens: Number(e.target.value) })} /></label>
@@ -69,7 +76,7 @@ function SettingEditor({ row, models, onSaved, onState }: { row: AiSetting; mode
       <label className="flex min-h-12 items-center gap-3"><input type="checkbox" checked={draft.enabled} onChange={e => setDraft({ ...draft, enabled: e.target.checked })} />{t.ai.enabled}</label>
       {dirty && <p className="rounded-2xl bg-violet-50 p-3 text-sm sm:col-span-2">{t.plans[row.plan_code]} paketinin sonraki AI işlemleri bu ayarları kullanacak. Önceden üretilen içerikler değişmez.</p>}
       <div className="flex flex-wrap gap-3 sm:col-span-2">
-        <button className="btn" disabled={!dirty || busy}>{busy ? "Kaydediliyor…" : `${t.plans[row.plan_code]} ayarlarını kaydet`}</button>
+        <button className="btn" disabled={!dirty || busy || unavailableModel}>{busy ? "Kaydediliyor…" : `${t.plans[row.plan_code]} ayarlarını kaydet`}</button>
         {dirty && <button type="button" className="btn-secondary" disabled={busy} onClick={() => setDraft(row)}>Değişiklikleri geri al</button>}
       </div>
     </fieldset>
@@ -116,6 +123,7 @@ function ModelForm({ onSaved, onState }: { onSaved: (msg: string | null, err?: u
 export default function AiPage() {
   const { data, error, reload } = useAdminQuery(loadAll);
   const matrix = useAiPolicyMatrix();
+  const [showInactiveModels, setShowInactiveModels] = useState(false);
   const [msg, setMsg] = useState<{ text: string; tone: "ok" | "error" } | null>(null);
   const [edits, setEdits] = useState<Record<string, { dirty: boolean; busy: boolean }>>({});
   const [busy, setBusy] = useState(false);
@@ -142,26 +150,32 @@ export default function AiPage() {
     await mutate(() => supabase().rpc("admin_set_ai_enabled", { p_enabled: enabled }));
   }
   async function toggleModel(m: AiModel) {
-    let affected = data?.settings.filter(s => s.model_id === m.id && s.enabled).map(s => t.plans[s.plan_code]) ?? [];
-    let features = "";
+    if (busy || lock.current) return;
     if (m.active) {
-      // Sunucu önizlemesi (S06): kapatmanın etkilediği paket ve özellikler; okunamazsa yerel paket listesine düşer.
+      let preview: DisablePreview;
+      lock.current = true; setBusy(true);
       try {
-        const preview = await adminRpc<{ affected_plans: string[]; affected_features: { feature: string }[]; alternatives: string[] }>("admin_model_disable_preview", { p_model_id: m.id });
-        affected = preview.affected_plans.map(p => t.plans[p] ?? p);
-        features = ` Etkilenen özellikler: ${preview.affected_features.map(f => featureLabel[f.feature] ?? f.feature).join(", ") || "Yok"}. Alternatif: ${preview.alternatives.join(", ") || "yok"}.`;
-      } catch { features = " (Sunucu etki önizlemesi okunamadı.)"; }
+        preview = await adminRpc<DisablePreview>("admin_model_disable_preview", { p_model_id: m.id });
+        if (!Array.isArray(preview.affected_flows) || !Array.isArray(preview.affected_chains)) throw new Error("impact_unavailable");
+      } catch {
+        setMsg({ text: "Kullanım ve etki bilgisi okunamadı. Model pasifleştirilmedi; yeniden deneyin.", tone: "error" });
+        return;
+      } finally { lock.current = false; setBusy(false); }
+      if (!(await confirm.ask({
+        title: `${m.display_name} pasifleştirilsin mi?`,
+        body: <>
+          {preview.affected_chains?.map(c => <p key={c.id} className="mb-2"><strong>{c.name} · {c.position}. adım</strong>: {c.usages.join(", ") || "Henüz iş türüne atanmamış"}. {c.remaining_active ? `${c.remaining_active} aktif adım kalır; pasif adım atlanır. Girdi yetenekleri ayrıca kontrol edilir.` : "Aktif adım kalmaz; bağlı işler durur."}</p>)}
+          {preview.affected_flows.length ? <ul className="list-disc pl-5">{preview.affected_flows.map(flow => <li key={flow.flow_id}>
+            <strong>{flow.flow_label} · {t.plans[flow.plan_code] ?? flow.plan_code}</strong>: {flow.enabled ? "zincirler kapalıyken tek model işlemleri engellenir" : "akış kapalı, model bağlantısı kayıtlı"}.
+          </li>)}</ul> : <p>Bu modele bağlı kayıtlı akış yok.</p>}
+          <p className="mt-2">Etkilenen özellikler: {preview.affected_features.map(f => featureLabel[f.feature] ?? f.feature).join(", ") || "Yok"}.</p>
+          <p className="mt-2">Aktif alternatifler: {preview.alternatives.join(", ") || "yok"}.</p>
+          <p className="mt-2">Mevcut model bağlantıları korunur ve pasif olarak işaretlenir. Zincirdeki pasif adım atlanır. Zincir kullanılmayan tek model ayarında aktif model seçmek gerekir.</p>
+        </>,
+        confirmLabel: "Etkileri gördüm, pasifleştir", tone: "danger",
+      }))) return;
     }
-    if (m.active && !(await confirm.ask({
-      title: `${m.display_name} pasifleştirilsin mi?`,
-      body: <>
-        <p>Etkilenen paketler: {affected.join(", ") || "Yok"}.{features}</p>
-        <p className="mt-2">Bu modelin kullanıldığı yeni işlemler çalışmayabilir.</p>
-      </>,
-      confirmLabel: "Pasifleştir",
-      tone: "danger",
-    }))) return;
-    await mutate(() => supabase().from("ai_models").update({ active: !m.active }).eq("id", m.id));
+    await mutate(() => supabase().from("ai_models").update({ active: !m.active }).eq("id", m.id).eq("updated_at", m.updated_at).select("id").single());
   }
 
   return (
@@ -193,13 +207,19 @@ export default function AiPage() {
           </Card>
 
           <SourcePolicy onState={onState} />
+          <AiChains models={data.models} onState={onState} />
           <Card title={t.ai.perPlan}>
+            <p className="mb-3 text-sm text-slate-600">Paketin açık/kapalı durumu ve token sınırları zincirlerde de geçerlidir. Aşağıdaki tek model seçimi yalnız zincirler kapalıyken kullanılır.</p>
             <div className="grid min-w-0 gap-4 xl:grid-cols-2">
               {data.settings.map(row => <SettingEditor key={`${row.plan_code}-${row.updated_at}`} row={row} models={data.models} onSaved={onSaved} onState={onState} />)}
             </div>
           </Card>
 
           <Card title={t.ai.models}>
+            <label className="mb-4 flex min-h-12 items-center gap-3 text-sm">
+              <input type="checkbox" checked={showInactiveModels} onChange={e => setShowInactiveModels(e.target.checked)} />
+              Pasif modelleri yönet ({data.models.filter(m => !m.active).length})
+            </label>
             <div className="overflow-x-auto">
             <table className="table">
               <thead>
@@ -214,7 +234,7 @@ export default function AiPage() {
                 </tr>
               </thead>
               <tbody>
-                {data.models.map((m) => (
+                {data.models.filter(m => m.active || showInactiveModels).map((m) => (
                   <tr key={m.id}>
                     <td className="font-mono">{m.id}</td>
                     <td>{m.display_name}</td>

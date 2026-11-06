@@ -35,7 +35,7 @@ export const geminiAdapter: AiAdapter = {
     if (!apiKey) throw new AiProviderError("provider_unconfigured");
     const res = await fetch(`${BASE_URL}/models/${encodeURIComponent(cfg.model)}:countTokens`, {
       method: "POST",
-      signal: AbortSignal.timeout(15_000),
+      signal: cfg.signal ?? AbortSignal.timeout(15_000),
       headers: { "x-goog-api-key": apiKey, "content-type": "application/json" },
       body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: system }, ...toGeminiParts(user)] }] }),
     });
@@ -50,7 +50,7 @@ export const geminiAdapter: AiAdapter = {
     if (tokens > (cfg.maxInputTokens ?? 8000)) throw new AiProviderError("ai_input_too_large");
     const res = await fetch(`${BASE_URL}/models/${encodeURIComponent(cfg.model)}:generateContent`, {
       method: "POST",
-      signal: AbortSignal.timeout(115_000),
+      signal: cfg.signal ?? AbortSignal.timeout(115_000),
       headers: { "x-goog-api-key": apiKey, "content-type": "application/json" },
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: system }] },

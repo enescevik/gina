@@ -1,3 +1,5 @@
+import { anthropicHttpError } from "./ai-provider.ts";
+import type { AiChain } from "./ai-chain-types.ts";
 // Prova AI fonksiyonlarının (prova-generate / prova-grade / prova-plan) ortak yardımcıları.
 // Kurallar (docs/DECISIONS.md): yalnız veli (gina.role = parent) çağırır; paket kapısı sunucuda;
 // model ve token limiti ai_settings'ten (yoksa plans.ai_model); kill switch app_settings 'ai.enabled'
@@ -54,6 +56,9 @@ export async function provaEntitlement(
 }
 
 export interface AiConfig {
+  chain?: AiChain;
+  execution?: { kind: "operation" | "generation" | "prereview"; id?: string; lease: string };
+  signal?: AbortSignal;
   model: string;
   maxOutputTokens: number;
   maxInputTokens?: number;
@@ -72,6 +77,7 @@ export async function resolveAi(
   db: SupabaseClient,
   plan: string,
   minOutputTokens: number,
+  usageKey?: string,
 ): Promise<AiConfig | Response> {
   const { data: global, error: globalError } = await db.from("app_settings")
     .select("value").eq("key", "ai.enabled").maybeSingle();
@@ -98,6 +104,33 @@ export async function resolveAi(
     maxOutputTokens = setting.max_output_tokens ?? 0;
     maxInputTokens = setting.max_input_tokens ?? 8000;
     promptVersion = setting.prompt_version ?? "v1";
+  }
+  if (usageKey) {
+    const { data: chain, error } = await db.rpc("resolve_ai_chain", { p_usage_key: usageKey, p_plan: plan });
+    if (error) return fail("ai_configuration_unavailable", 503);
+    if (chain?.error) return fail(chain.error === "ai_disabled" ? "ai_disabled" : "ai_model_unavailable", 503);
+    if (chain) {
+      const steps: AiChain["steps"] = chain.steps.map((m: Record<string, unknown>) => {
+        const p = m.provider_record as Record<string, unknown>;
+        const supported = modelSupport({ id: String(m.id), provider: String(m.provider), active: m.active === true,
+          adapter: m.adapter as AiAdapterId, contractVersion: m.contract_version as string,
+          vision: m.supports_vision === true, pdf: m.supports_pdf === true, jsonSchema: m.supports_json_schema === true,
+          contextTokens: m.context_tokens as number, tokenizer: m.tokenizer as ModelCapabilities["tokenizer"] },
+          [{ id: p.id, displayName: p.id, adapter: p.adapter, keySecretName: p.key_secret_name,
+            dataRegion: p.data_region, crossBorder: p.cross_border, costClass: p.cost_class, status: p.status } as AiProviderRecord]);
+        return { position: Number(m.position), active: m.active === true && supported.supported, paused: m.paused === true,
+          config: { model: String(m.id), provider: String(m.provider), adapter: m.adapter as AiAdapterId,
+            maxOutputTokens: maxOutputTokens || minOutputTokens, maxInputTokens, promptVersion,
+            capabilities: { vision: m.supports_vision === true, pdf: m.supports_pdf === true,
+              jsonSchema: m.supports_json_schema === true, contextTokens: m.context_tokens as number,
+              tokenizer: m.tokenizer as ModelCapabilities["tokenizer"] } } };
+      });
+      const first = steps.find(s => s.active && !s.paused && typeof apiKeyOrResponse(s.config) === "string");
+      if (!first) return fail("ai_model_unavailable", 503);
+      return { ...first.config, chain: { id: chain.id, usage_key: usageKey, plan, updated_at: chain.updated_at,
+        on_rate_limit: chain.on_rate_limit, on_server_error: chain.on_server_error, on_timeout: chain.on_timeout,
+        attempt_seconds: chain.attempt_seconds, total_seconds: chain.total_seconds, steps } };
+    }
   }
   if (!model) {
     const { data: planRow } = await db.from("plans").select("ai_model").eq(
@@ -183,6 +216,9 @@ export function apiKeyOrResponse(
 }
 
 export interface AiResult<T> {
+  model?: string;
+  provider?: string;
+  chainRunId?: string;
   output: T;
   inputTokens: number | null;
   outputTokens: number | null;
@@ -229,7 +265,7 @@ export async function callClaude<T>(
     "https://api.anthropic.com/v1/messages/count_tokens",
     {
       method: "POST",
-      signal: AbortSignal.timeout(15_000),
+      signal: cfg.signal ?? AbortSignal.timeout(15_000),
       headers,
       body: JSON.stringify({
         model: cfg.model,
@@ -238,7 +274,7 @@ export async function callClaude<T>(
       }),
     },
   );
-  if (!count.ok) throw new Error(`anthropic_${count.status}`);
+  if (!count.ok) throw await anthropicHttpError(count);
   const tokens = (await count.json()).input_tokens;
   if (!Number.isInteger(tokens) || tokens < 0) {
     throw new Error("ai_token_count_invalid");
@@ -248,7 +284,7 @@ export async function callClaude<T>(
   }
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
-    signal: AbortSignal.timeout(115_000),
+    signal: cfg.signal ?? AbortSignal.timeout(115_000),
     headers: {
       "x-api-key": apiKey,
       "anthropic-version": "2023-06-01",
@@ -266,7 +302,7 @@ export async function callClaude<T>(
       output_config: { format: { type: "json_schema", schema } },
     }),
   });
-  if (!res.ok) throw new Error(`anthropic_${res.status}`);
+  if (!res.ok) throw await anthropicHttpError(res);
   const data = await res.json();
   if (data.stop_reason === "refusal") throw new Error("anthropic_refusal");
   if (data.stop_reason === "max_tokens") {
