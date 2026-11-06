@@ -183,3 +183,64 @@ it("QT: structured text is escaped", () => {
   const html = qtRender("student", [sq("x1", "true_false", { statements: [{ id: "s1", text: "<script>x</script>" }] })]);
   expect(html).not.toContain("<script>x");
 });
+
+// ---------------------------------------------------------------------------------------------
+// QT Faz 2A/2B: kâğıt cevap alanları, uyaran ve özel anahtar
+const IMG = "data:image/png;base64,iVBORw0KGgo=";
+const P2: BookletQuestion[] = [
+  sq("mk", "mark_text", { unit: "word", segments: [{ id: "k1", text: "Kedi" }, { text: " " }, { id: "k2", text: "koştu" }, { text: "." }], max_select: 1 }, { targets: ["k2"] }),
+  sq("ef", "error_fix", { unit: "word", segments: [{ id: "k1", text: "Ben" }, { text: " " }, { id: "k2", text: "gitdim" }] }, { errors: { k2: { accepted: ["gittim"] } }, fix_policy: "review_unmatched" }),
+  sq("mc", "multi_choice", { options: [{ id: "o1", text: "2" }, { id: "o2", text: "3" }, { id: "o3", text: "9" }], select_count: 2 }, { correct: ["o1", "o3"] }),
+  sq("ts", "two_stage", { stage1: { prompt: "Hangisi?", options: [{ id: "a1", text: "X" }, { id: "a2", text: "Y" }] }, stage2: { prompt: "Neden?", mode: "text" } }, { stage1: "a2" }),
+  sq("rg", "region_select", { figure: { kind: "grid", rows: 2, cols: 2 }, regions: [{ id: "g1_1", text: "A1" }, { id: "g1_2", text: "A2" }, { id: "g2_1", text: "B1" }, { id: "g2_2", text: "B2" }] }, { count: 3 }),
+  sq("rs", "region_select", { figure: { kind: "sectors" }, regions: [1, 2, 3, 4].map((n) => ({ id: `d${n}`, text: String(n) })) }, { targets: ["d1"] }),
+  { ...sq("ri", "region_select", { figure: { kind: "image", source: "question_media" }, regions: [{ id: "b1", text: "Göl", box: [0.1, 0.1, 0.2, 0.2] }, { id: "b2", text: "Dağ", box: [0.6, 0.5, 0.3, 0.3] }] }, { targets: ["b2"] }), images: [{ dataUri: IMG, alt: "Harita" }] },
+  sq("cr", "clock", { mode: "read", display: "analog", step_minutes: 5, shown_time: "08:30" }, { time: "08:30", accept_12h: true }),
+  sq("cs", "clock", { mode: "set", display: "digital", step_minutes: 15 }, { time: "10:15" }),
+  sq("st", "true_false", { statements: [{ id: "s1", text: "3-B daha çok okudu." }], stimulus: { kind: "bar_chart", alt: "GIZLI_ALT kitap sayıları", caption: "Okunan kitaplar", bars: [{ label: "3-A", value: 12 }, { label: "3-B", value: 15 }] } }, { answers: { s1: true } }),
+  sq("tb", "numeric", { units: [], unit_required: false, stimulus: { kind: "table", alt: "TABLO_ALT fiyatlar", columns: ["Ürün", "Fiyat"], rows: [["Elma", 5]] } }, { value: "5" }),
+];
+it("QT 2A/2B: student copy has a paper answer area per type and never a key", () => {
+  const html = qtRender("student", P2);
+  const part = (id: string, next?: string) => between(html, `Soru ${id}:`, next ? `Soru ${next}:` : undefined);
+  expect(part("mk", "ef")).toContain("kelimelerin altını çiz");
+  expect(part("mk", "ef")).toContain("En çok 1");
+  expect(part("ef", "mc")).toContain('class="lines"');
+  expect(part("mc", "ts")).toContain("2 seçenek işaretle.");
+  expect(part("mc", "ts").match(/class="sq"/g)).toHaveLength(3);
+  expect(part("ts", "rg")).toContain("1. aşama");
+  expect(part("ts", "rg")).toContain("2. aşama");
+  expect(part("rg", "rs").match(/class="rcell"/g)).toHaveLength(4);
+  expect(part("rs", "ri").match(/<path /g)).toHaveLength(4);
+  const ri = part("ri", "cr");
+  expect(ri).toContain('class="regimg"');
+  expect(ri.match(/class="rbox"/g)).toHaveLength(2);
+  expect(ri.match(/data:image\/png/g)).toHaveLength(1); // not printed twice
+  expect(part("cr", "cs")).toContain('class="clock"');
+  expect(part("cr", "cs").match(/<line /g)).toHaveLength(2); // hands at shown time
+  expect(part("cs", "st")).not.toContain('class="clock"'); // digital set: time line only
+  expect(part("cs", "st")).toContain('class="unitline"');
+  expect(part("st", "tb")).toContain('svg class="chart"');
+  expect(part("tb")).toContain("<th>Ürün</th>");
+  for (const secret of ["GIZLI_ALT", "TABLO_ALT", "gittim", "10:15", "Dağ)", "bölge boyanmalı", "veli puanlar", "12 saatlik"]) expect(html).not.toContain(secret);
+  expect(html).not.toContain('<section class="key">');
+});
+it("QT 2A/2B: private key lists values and stimulus alt text", () => {
+  const key = qtRender("key", P2);
+  expect(key).toContain("<b>koştu</b>");
+  expect(key).toContain("gitdim → <b>gittim</b>");
+  expect(key).toContain("<b>A, C</b>");
+  expect(key).toContain("1. aşama: <b>B</b> · Y");
+  expect(key).toContain("Serbest cevap: veli değerlendirir.");
+  expect(key).toContain("3 bölge boyanmalı");
+  expect(key).toContain("<b>1</b>"); // sector label
+  expect(key).toContain("B (Dağ)");
+  expect(key).toContain("<b>08:30</b>");
+  expect(key).toContain("12 saatlik okuma");
+  expect(key).toContain("<b>10:15</b>");
+  expect(key).toContain("Uyaran açıklaması: GIZLI_ALT kitap sayıları");
+  expect(key).toContain("Uyaran açıklaması: TABLO_ALT fiyatlar");
+});
+it("QT 2B: region image must be an embedded data image", () => {
+  expect(() => qtRender("student", [{ ...P2[6]!, images: [{ dataUri: "https://x/y.png", alt: "x" }] }])).toThrow("invalid_booklet_image");
+});

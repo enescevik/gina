@@ -122,6 +122,20 @@ h1, h2, h3 { font-family: "Baloo 2", "Nunito", -apple-system, "Segoe UI", Roboto
 .key ul { margin: 0; padding-left: 4mm; }
 .key li { margin: 0.6mm 0; }
 .key .note { color: #4A5A6A; font-size: 9pt; }
+.qt .ci { display: inline-block; width: 5mm; height: 5mm; border: 1.2px solid #4A5A6A; border-radius: 50%; vertical-align: middle; margin-right: 2mm; }
+.qt .sq { margin-left: 0; margin-right: 2mm; }
+.qt .passage { line-height: 2.2; border: 1px solid #E4DCF1; border-radius: 2mm; padding: 2mm 3mm; }
+.qt .stage { margin-bottom: 2mm; }
+.qt .regiongrid { width: auto; max-width: 100%; }
+.qt .rcell { width: 14mm; height: 14mm; text-align: center; vertical-align: middle; }
+.qt .rl { font-size: 7pt; color: #9AA8B5; }
+.qt svg.sectors, .qt svg.clock { width: 45mm; height: 45mm; display: block; margin: 1mm 0; }
+.qt svg.chart { width: 120mm; max-width: 100%; display: block; }
+.qt .stim { margin-bottom: 2mm; }
+.qt .digital { display: inline-block; font-size: 20pt; font-weight: 700; border: 1.2px solid #4A5A6A; border-radius: 2mm; padding: 1mm 4mm; }
+.qt .regimg { position: relative; display: inline-block; max-width: 145mm; }
+.qt .regimg img { display: block; max-width: 145mm; max-height: 90mm; }
+.qt .rbox { position: absolute; border: 1.5px dashed #5132BD; color: #5132BD; font-weight: 700; font-size: 9pt; padding: 0 1mm; box-sizing: border-box; }
 `;
 
 // ---------------------------------------------------------------------------------------------
@@ -152,6 +166,21 @@ export interface StructuredBookletLabels {
   processRequired: string;
   caseInsensitive: string;
   keyUnavailable: string;
+  // Faz 2A/2B
+  markHelp: (unit: "word" | "sentence", max?: number) => string;
+  errorFixHelp: (unit: "word" | "sentence") => string;
+  multiHelp: (count?: number) => string;
+  stage: (n: number) => string;
+  regionHelp: string;
+  regionCountHelp: (n: number) => string;
+  clockRead: string;
+  clockSet: string;
+  clockTime: string;
+  stimulusAlt: string;
+  regionCount: (n: number) => string;
+  accept12h: string;
+  parentScores: string;
+  fixPolicyReview: string;
 }
 export const DEFAULT_STRUCTURED_BOOKLET_LABELS: StructuredBookletLabels = {
   type: (t) => t,
@@ -179,6 +208,20 @@ export const DEFAULT_STRUCTURED_BOOKLET_LABELS: StructuredBookletLabels = {
   processRequired: "İşlem gerekli: veli puanlar.",
   caseInsensitive: "Büyük/küçük harf fark etmez.",
   keyUnavailable: "Anahtar alınamadı",
+  markHelp: (unit, max) => `Doğru ${unit === "word" ? "kelimelerin" : "cümlelerin"} altını çiz.${max ? ` En çok ${max} tane seç.` : ""}`,
+  errorFixHelp: (unit) => `Hatalı ${unit === "word" ? "kelimelerin" : "cümlelerin"} altını çiz; doğrusunu aşağıdaki satırlara yaz.`,
+  multiHelp: (count) => (count ? `${count} seçenek işaretle.` : "Doğru olanların hepsini işaretle."),
+  stage: (n) => `${n}. aşama`,
+  regionHelp: "Doğru bölgeleri boya ya da işaretle.",
+  regionCountHelp: (n) => `${n} bölge`,
+  clockRead: "Saat kaçı gösteriyor? Yaz.",
+  clockSet: "Saati çiz ya da yaz.",
+  clockTime: "Saat",
+  stimulusAlt: "Uyaran açıklaması",
+  regionCount: (n) => `${n} bölge boyanmalı (hangileri olduğu fark etmez)`,
+  accept12h: "12 saatlik okuma da kabul (ör. 20:30 = 8:30).",
+  parentScores: "Serbest cevap: veli değerlendirir.",
+  fixPolicyReview: "Listede olmayan düzeltmeler veliye gider.",
 };
 
 type Entry = { id: string; text: string };
@@ -246,7 +289,149 @@ function layoutOf(q: BookletQuestion): StructuredLayout {
   };
 }
 
+const DATA_IMAGE = /^data:image\/(png|jpeg);base64,[A-Za-z0-9+/=]+$/;
+/** Tablo / çubuk grafik uyaranı (öğrenci nüshasında başlıkla; açıklaması anahtarda). */
+function stimulusHtml(s: unknown): string {
+  const o = obj(s);
+  if (o.kind === "table" && Array.isArray(o.columns) && Array.isArray(o.rows)) {
+    return `<div class="qt stim">${o.caption ? `<div class="help">${escapeHtml(o.caption)}</div>` : ""}<table class="grid"><thead><tr>${
+      (o.columns as unknown[]).map((c) => `<th>${escapeHtml(c)}</th>`).join("")}</tr></thead><tbody>${
+      (o.rows as unknown[][]).map((r) => `<tr>${(Array.isArray(r) ? r : []).map((c) => `<td>${escapeHtml(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+  if (o.kind === "bar_chart" && Array.isArray(o.bars)) {
+    const bars = (o.bars as { label: unknown; value: unknown }[]).map((b) => ({ label: String(b.label), value: Number(b.value) || 0 }));
+    const max = Math.max(1, ...bars.map((b) => b.value));
+    const w = 160, h = 70, bw = w / bars.length;
+    const rects = bars.map((b, i) => {
+      const bh = (b.value / max) * (h - 12);
+      return `<rect x="${(i * bw + bw * 0.15).toFixed(2)}" y="${(h - bh).toFixed(2)}" width="${(bw * 0.7).toFixed(2)}" height="${bh.toFixed(2)}" fill="#B9A8EE"/>` +
+        `<text x="${(i * bw + bw / 2).toFixed(2)}" y="${(h - bh - 1.5).toFixed(2)}" font-size="4" text-anchor="middle">${escapeHtml(b.value)}</text>` +
+        `<text x="${(i * bw + bw / 2).toFixed(2)}" y="${h + 5}" font-size="4" text-anchor="middle">${escapeHtml(b.label)}</text>`;
+    }).join("");
+    return `<div class="qt stim">${o.caption ? `<div class="help">${escapeHtml(o.caption)}</div>` : ""}<svg class="chart" viewBox="0 0 ${w} ${h + 8}" role="img" aria-label="${escapeHtml(o.caption ?? "")}"><line x1="0" y1="${h}" x2="${w}" y2="${h}" stroke="#4A5A6A" stroke-width="0.4"/>${rects}</svg>${
+      o.unit || o.y_label ? `<div class="help">${escapeHtml([o.y_label, o.unit].filter(Boolean).join(" · "))}</div>` : ""}</div>`;
+  }
+  return "";
+}
+/** Boş saat kadranı (set) ya da gösterilen saat (read). */
+function clockFace(time?: string): string {
+  const ticks = Array.from({ length: 12 }, (_, i) => {
+    const a = (i * Math.PI) / 6;
+    return `<text x="${(50 + 38 * Math.sin(a)).toFixed(1)}" y="${(53 - 38 * Math.cos(a)).toFixed(1)}" font-size="8" text-anchor="middle">${i === 0 ? 12 : i}</text>`;
+  }).join("");
+  let hands = "";
+  const m = time ? /^(\d{2}):(\d{2})$/.exec(time) : null;
+  if (m) {
+    const hh = Number(m[1]) % 12, mm = Number(m[2]);
+    const ha = ((hh + mm / 60) * Math.PI) / 6, ma = (mm * Math.PI) / 30;
+    hands = `<line x1="50" y1="50" x2="${(50 + 22 * Math.sin(ha)).toFixed(1)}" y2="${(50 - 22 * Math.cos(ha)).toFixed(1)}" stroke="#201951" stroke-width="3" stroke-linecap="round"/>` +
+      `<line x1="50" y1="50" x2="${(50 + 32 * Math.sin(ma)).toFixed(1)}" y2="${(50 - 32 * Math.cos(ma)).toFixed(1)}" stroke="#201951" stroke-width="1.8" stroke-linecap="round"/>`;
+  }
+  return `<svg class="clock" viewBox="0 0 100 100"><circle cx="50" cy="50" r="47" fill="none" stroke="#4A5A6A" stroke-width="1.5"/>${ticks}${hands}<circle cx="50" cy="50" r="1.8" fill="#201951"/></svg>`;
+}
+function sectorsSvg(n: number): string {
+  const paths = Array.from({ length: n }, (_, i) => {
+    const a0 = (i * 2 * Math.PI) / n - Math.PI / 2, a1 = ((i + 1) * 2 * Math.PI) / n - Math.PI / 2, am = (a0 + a1) / 2;
+    const p = (a: number, r: number) => `${(50 + r * Math.cos(a)).toFixed(2)},${(50 + r * Math.sin(a)).toFixed(2)}`;
+    return `<path d="M50,50 L${p(a0, 46)} A46,46 0 0 1 ${p(a1, 46)} Z" fill="none" stroke="#4A5A6A" stroke-width="0.8"/><text x="${p(am, 30).split(",")[0]}" y="${p(am, 30).split(",")[1]}" font-size="6" text-anchor="middle" fill="#5132BD">${i + 1}</text>`;
+  }).join("");
+  return `<svg class="sectors" viewBox="0 0 100 100">${paths}</svg>`;
+}
+function passageHtml(p: Record<string, unknown>): string {
+  return (Array.isArray(p.segments) ? p.segments : []).map((seg) => multiline(obj(seg).text)).join("");
+}
+function phase2StudentHtml(q: BookletQuestion, L: StructuredBookletLabels): string | null {
+  const p = obj(q.payload);
+  const help = (text: string) => `<div class="help">${escapeHtml(text)}</div>`;
+  const opts = (arr: unknown, mark: "sq" | "ci") => `<table><tbody>${entries(arr).map((o, i) => `<tr><td><span class="${mark}"></span><b>${letter(i)})</b> ${escapeHtml(o.text)}</td></tr>`).join("")}</tbody></table>`;
+  switch (q.interaction_type) {
+    case "mark_text":
+      return `<div class="qt qt-mark">${help(L.markHelp(p.unit === "sentence" ? "sentence" : "word", typeof p.max_select === "number" ? p.max_select : undefined))}<div class="passage">${passageHtml(p)}</div></div>`;
+    case "error_fix":
+      return `<div class="qt qt-fix">${help(L.errorFixHelp(p.unit === "sentence" ? "sentence" : "word"))}<div class="passage">${passageHtml(p)}</div><div class="lines" style="margin-left:0"><div></div><div></div><div></div></div></div>`;
+    case "multi_choice":
+      return `<div class="qt qt-multi">${help(L.multiHelp(typeof p.select_count === "number" ? p.select_count : undefined))}${opts(p.options, "sq")}</div>`;
+    case "two_stage": {
+      const s1 = obj(p.stage1), s2 = obj(p.stage2);
+      return `<div class="qt qt-stage"><div class="stage"><b>${escapeHtml(L.stage(1))}:</b> ${multiline(s1.prompt)}${opts(s1.options, "ci")}</div><div class="stage"><b>${escapeHtml(L.stage(2))}:</b> ${multiline(s2.prompt)}${
+        s2.mode === "choice" ? opts(s2.options, "ci") : `<div class="lines" style="margin-left:0"><div></div><div></div><div></div></div>`}</div></div>`;
+    }
+    case "region_select": {
+      const f = obj(p.figure);
+      const regions = entries(p.regions);
+      if (f.kind === "grid") {
+        const rows = Number(f.rows) || 1, cols = Number(f.cols) || 1;
+        return `<div class="qt qt-region">${help(L.regionHelp)}<table class="grid regiongrid"><tbody>${Array.from({ length: rows }, (_, r) => `<tr>${Array.from({ length: cols }, (_, c) =>
+          `<td class="rcell"><span class="rl">${escapeHtml(regions[r * cols + c]?.text ?? "")}</span></td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+      }
+      if (f.kind === "sectors") return `<div class="qt qt-region">${help(L.regionHelp)}${sectorsSvg(regions.length)}</div>`;
+      const img = q.images?.[0];
+      const boxes = (Array.isArray(p.regions) ? p.regions : []).map((r, i) => {
+        const b = obj(r).box as number[] | undefined;
+        return Array.isArray(b) ? `<span class="rbox" style="left:${b[0]! * 100}%;top:${b[1]! * 100}%;width:${b[2]! * 100}%;height:${b[3]! * 100}%">${letter(i)}</span>` : "";
+      }).join("");
+      if (img && !DATA_IMAGE.test(img.dataUri)) throw new Error("invalid_booklet_image");
+      return `<div class="qt qt-region">${help(L.regionHelp)}${img ? `<div class="regimg"><img src="${img.dataUri}" alt="${escapeHtml(img.alt)}"/>${boxes}</div>` : ""}<table><tbody>${
+        regions.map((r, i) => `<tr><td><span class="sq"></span><b>${letter(i)})</b> ${escapeHtml(r.text)}</td></tr>`).join("")}</tbody></table></div>`;
+    }
+    case "clock": {
+      const read = p.mode === "read";
+      const shown = typeof p.shown_time === "string" ? p.shown_time : undefined;
+      const face = p.display === "analog" ? clockFace(read ? shown : undefined) : read ? `<div class="digital">${escapeHtml(shown)}</div>` : "";
+      return `<div class="qt qt-clock">${help(read ? L.clockRead : L.clockSet)}${face}<div class="ans"><b>${escapeHtml(L.clockTime)}:</b><span class="unitline"></span> : <span class="unitline"></span></div></div>`;
+    }
+    default:
+      return null;
+  }
+}
+function phase2KeyHtml(q: BookletQuestion, L: StructuredBookletLabels): string | null {
+  const p = obj(q.payload), k = obj(q.answer_key);
+  const li = (s: string) => `<li>${s}</li>`;
+  const textOf = (arr: unknown, id: unknown) => entries(arr).find((e) => e.id === id)?.text ?? "—";
+  const segs = (Array.isArray(p.segments) ? p.segments : []).map(obj).filter((s) => typeof s.id === "string").map((s) => ({ id: String(s.id), text: String(s.text) }));
+  switch (q.interaction_type) {
+    case "mark_text":
+      return `<ul>${(Array.isArray(k.targets) ? k.targets : []).map((id) => li(`<b>${escapeHtml(segs.find((s) => s.id === id)?.text ?? "—")}</b>`)).join("")}</ul>`;
+    case "error_fix":
+      return `<ul>${Object.entries(obj(k.errors)).map(([id, v]) => li(`${escapeHtml(segs.find((s) => s.id === id)?.text ?? "—")} → <b>${
+        (Array.isArray(obj(v).accepted) ? obj(v).accepted as unknown[] : []).map(escapeHtml).join(" / ")}</b>`)).join("")}</ul>${k.fix_policy === "review_unmatched" ? `<div class="note">${escapeHtml(L.fixPolicyReview)}</div>` : ""}`;
+    case "multi_choice": {
+      const options = entries(p.options);
+      return `<b>${options.map((o, i) => ((k.correct as unknown[] | undefined)?.includes(o.id) ? letter(i) : null)).filter(Boolean).join(", ")}</b>`;
+    }
+    case "two_stage": {
+      const s1 = obj(p.stage1), s2 = obj(p.stage2);
+      const at = (arr: unknown, id: unknown) => entries(arr).findIndex((e) => e.id === id);
+      return `<ul>${li(`${escapeHtml(L.stage(1))}: <b>${at(s1.options, k.stage1) >= 0 ? letter(at(s1.options, k.stage1)) : "—"}</b> · ${escapeHtml(textOf(s1.options, k.stage1))}`)}${
+        li(`${escapeHtml(L.stage(2))}: ${s2.mode === "choice" ? `<b>${at(s2.options, k.stage2) >= 0 ? letter(at(s2.options, k.stage2)) : "—"}</b> · ${escapeHtml(textOf(s2.options, k.stage2))}` : escapeHtml(L.parentScores)}`)}</ul>`;
+    }
+    case "region_select": {
+      const regions = entries(p.regions);
+      const image = obj(p.figure).kind === "image";
+      if (typeof k.count === "number") return `<b>${escapeHtml(L.regionCount(k.count))}</b>`;
+      return `<b>${(Array.isArray(k.targets) ? k.targets : []).map((id) => {
+        const i = regions.findIndex((r) => r.id === id);
+        return i < 0 ? "—" : image ? `${letter(i)} (${escapeHtml(regions[i]!.text)})` : escapeHtml(regions[i]!.text);
+      }).join(", ")}</b>`;
+    }
+    case "clock":
+      return `<b>${escapeHtml(k.time)}</b>${k.accept_12h ? `<div class="note">${escapeHtml(L.accept12h)}</div>` : ""}`;
+    default:
+      return null;
+  }
+}
+
 function structuredStudentHtml(q: BookletQuestion, L: StructuredBookletLabels): string {
+  const stim = stimulusHtml(obj(q.payload).stimulus);
+  return stim + (phase2StudentHtml(q, L) ?? structuredStudentBody(q, L));
+}
+function structuredKeyHtml(q: BookletQuestion, L: StructuredBookletLabels): string {
+  if (!q.answer_key || typeof q.answer_key !== "object") return `<span class="note">${escapeHtml(L.keyUnavailable)}</span>`;
+  const alt = obj(obj(q.payload).stimulus).alt;
+  return (phase2KeyHtml(q, L) ?? structuredKeyBody(q, L)) + (typeof alt === "string" ? `<div class="note">${escapeHtml(L.stimulusAlt)}: ${escapeHtml(alt)}</div>` : "");
+}
+
+function structuredStudentBody(q: BookletQuestion, L: StructuredBookletLabels): string {
   const p = obj(q.payload);
   const l = layoutOf(q);
   const help = (text: string) => `<div class="help">${escapeHtml(text)}</div>`;
@@ -298,7 +483,7 @@ function structuredStudentHtml(q: BookletQuestion, L: StructuredBookletLabels): 
   }
 }
 
-function structuredKeyHtml(q: BookletQuestion, L: StructuredBookletLabels): string {
+function structuredKeyBody(q: BookletQuestion, L: StructuredBookletLabels): string {
   if (!q.answer_key || typeof q.answer_key !== "object") return `<span class="note">${escapeHtml(L.keyUnavailable)}</span>`;
   const k = obj(q.answer_key);
   const p = obj(q.payload);
@@ -393,7 +578,9 @@ export function buildBookletHtml(
         : `<div class="lines">${
           "<div></div>".repeat(Math.max(1, openLines))
         }</div>`;
-      const images = (q.images ?? []).map((image) => {
+      // Görsel üzerinde bölge: görsel bölge katmanıyla birlikte cevap alanında basılır (iki kez değil).
+      const regionImage = q.kind === "structured" && q.interaction_type === "region_select" && obj(obj(q.payload).figure).kind === "image";
+      const images = (regionImage ? [] : q.images ?? []).map((image) => {
         if (
           !/^data:image\/(png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(image.dataUri)
         ) throw new Error("invalid_booklet_image");

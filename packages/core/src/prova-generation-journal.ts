@@ -1,8 +1,11 @@
 import { z } from "zod";
 import type { AnswerJournalStorage } from "./answer-journal";
-import { LEGACY_INTERACTION_TYPES, STRUCTURED_INTERACTION_TYPES } from "./question-types";
-/** QT-AI: AI'nın üretebileceği türler (prova-generate `parseInteractionTypes` ile aynı küme). */
-export const AI_INTERACTION_TYPES = [...LEGACY_INTERACTION_TYPES, ...STRUCTURED_INTERACTION_TYPES] as const;
+import { LEGACY_INTERACTION_TYPES, PHASE2A_INTERACTION_TYPES, PHASE2B_INTERACTION_TYPES, STRUCTURED_INTERACTION_TYPES } from "./question-types";
+/**
+ * QT-AI: AI tür seçiminde gönderilebilecek türler. 1A/1B prova-generate `parseInteractionTypes` ile aynı;
+ * 2A/2B istemcide faz anahtarının arkasındadır (sunucu bu türleri henüz üretmez → `interaction_types_invalid`).
+ */
+export const AI_INTERACTION_TYPES = [...LEGACY_INTERACTION_TYPES, ...STRUCTURED_INTERACTION_TYPES, ...PHASE2A_INTERACTION_TYPES, ...PHASE2B_INTERACTION_TYPES] as const;
 export const PROVA_GENERATION_PREFIX = "gina:prova:generation:v1:";
 export const generationPayloadSchema = z.object({
   draft_id: z.uuid(),
@@ -46,7 +49,7 @@ export const generationResultSchema = z.object({
     topic: z.string(),
     kind: z.enum(["multiple_choice", "open_ended", "structured"]),
     /** QT-AI: yapılandırılmış satırda tür + öğrenci içeriği + veliye dönen özel anahtar (complete_prova_generation). */
-    interaction_type: z.enum(STRUCTURED_INTERACTION_TYPES).optional(),
+    interaction_type: z.enum([...STRUCTURED_INTERACTION_TYPES, ...PHASE2A_INTERACTION_TYPES, ...PHASE2B_INTERACTION_TYPES]).optional(),
     schema_version: z.number().int().optional(),
     payload: z.record(z.string(), z.unknown()).optional(),
     answer_key: z.record(z.string(), z.unknown()).optional(),
