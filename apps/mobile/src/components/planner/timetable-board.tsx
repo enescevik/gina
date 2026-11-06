@@ -35,6 +35,7 @@ import {
   scheduleTimetable,
   swapTimetableCells,
   type TimetableCell,
+  subjectDisplay,
   timetableDay,
 } from "@gina/core";
 import { TimeChoice } from "@/components/ui/date-time-choice";
@@ -50,7 +51,7 @@ import {
   moveTimetableCellToDay,
   readEmptyCellId,
 } from "./planner-moves";
-import { bindingFor, SubjectMatch, useSubjectBindings } from "./subject-match";
+import { bindingFor, DeviceBindingImport, SubjectMatch, useSubjectBindings } from "./subject-match";
 export { TimeChoice } from "@/components/ui/date-time-choice";
 
 export function BellEditor({
@@ -763,6 +764,16 @@ export function TimetableBoard<T extends TimetableCell>({
           </View>
         )
         : null}
+      {subjects
+        ? <DeviceBindingImport bindings={bindings} titles={rows.map((r) => r.title)} />
+        : null}
+      {subjects && bindings.error
+        ? (
+          <Text accessibilityRole="alert" style={[u.small, { color: "#B42318" }]}>
+            {t(String((bindings.error as Error).message).includes("subject_link_changed") ? "c02.linkConflict" : "c02.linkError")}
+          </Text>
+        )
+        : null}
       {missing && !bells
         ? (
           <View
@@ -946,7 +957,7 @@ export function TimetableBoard<T extends TimetableCell>({
                                       : p.ink,
                                   }]}
                                 >
-                                  {row.title}
+                                  {catalogLabel ?? row.title}
                                 </Text>
                                 <Text
                                   style={[u.small, {
@@ -960,10 +971,12 @@ export function TimetableBoard<T extends TimetableCell>({
                                     ? `${row.start}–${row.end}`
                                     : t("weekReview.noTime")}
                                 </Text>
-                                {catalogLabel && catalogLabel !== row.title
+                                {catalogLabel
                                   ? (
                                     <Text style={[u.small, { fontSize: 12 }]}>
-                                      {t("u05.catalogBound", { label: catalogLabel })}
+                                      {subjectDisplay({ title: row.title, subject_label_tr: catalogLabel }).original
+                                        ? t("c02.originalText", { text: row.title })
+                                        : t("u05.catalogBound", { label: catalogLabel })}
                                     </Text>
                                   )
                                   : null}

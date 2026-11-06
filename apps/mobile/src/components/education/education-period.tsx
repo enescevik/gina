@@ -6,6 +6,7 @@ import { randomUUID } from "expo-crypto";
 import { BookOpen, GraduationCap, School, Pencil } from "lucide-react-native";
 import {
   isCalendarDate,
+  scheduleDayProblem,
   DEFAULT_EDUCATION_PLACE,
   stageForGrade,
   type EducationStage,
@@ -159,9 +160,12 @@ export function EducationPeriodWizard({
     setStart(next === "correct" && current ? current.starts_on : initial.today);
     setKeep(true);
   };
+  // C02: a new year / school change may be planned for a later day (tomorrow … one year); it is applied on
+  // that day and can be undone for 14 days. Initial setup and corrections stay immediate.
+  const scheduling = !!current && (action === "new_year" || action === "transfer") && isCalendarDate(start) && start > initial.today;
   const dateValid =
     isCalendarDate(start) &&
-    start <= initial.today &&
+    (start <= initial.today || (scheduling && !scheduleDayProblem(start, initial.today))) &&
     Number(start.slice(0, 4)) >= year &&
     Number(start.slice(0, 4)) <= year + 1 &&
     (!current || action === "correct" || start > current.starts_on) &&
@@ -195,10 +199,28 @@ export function EducationPeriodWizard({
             ? detail.trim()
             : null,
       };
-      const payload = JSON.stringify(args);
+      const payload = JSON.stringify({ ...args, scheduling });
       if (request.current.payload && request.current.payload !== payload)
         request.current.id = randomUUID();
       request.current.payload = payload;
+      if (scheduling) {
+        const { error } = await (supabase.rpc as unknown as (fn: string, a: Record<string, unknown>) => PromiseLike<{ error: Error | null }>)(
+          "schedule_child_education_change",
+          {
+            p_request_id: request.current.id,
+            p_child_id: child.id,
+            p_revision: initial.revision,
+            p_action: action,
+            p_academic_year: year,
+            p_grade: grade,
+            p_school: school.trim() || null,
+            p_starts_on: start,
+            p_keep_timetable: keep,
+          },
+        );
+        if (error) throw error;
+        return;
+      }
       const { error } = await supabase.rpc(
         "change_child_education_with_calendar",
         {
@@ -218,7 +240,7 @@ export function EducationPeriodWizard({
   });
   const conflict =
     !!save.error &&
-    /education_changed|timetable_conflict|education_use_transition|calendar_changed/.test(
+    /education_changed|education_scheduled|timetable_conflict|education_use_transition|calendar_changed/.test(
       save.error.message,
     );
   return (
@@ -342,7 +364,7 @@ export function EducationPeriodWizard({
               value={start}
               onChange={setStart}
               today={initial.today}
-              hint={t("education.dateHelp")}
+              hint={action === "new_year" || action === "transfer" ? t("c02.dateHelpSchedule") : t("education.dateHelp")}
             />
           )}
           {!dateValid && (
@@ -494,6 +516,14 @@ export function EducationPeriodWizard({
               }).format(new Date(start + "T12:00:00Z"))}
             </Text>
           </View>
+          {scheduling
+            ? (
+              <View testID="c02-schedule-review" style={[u.card, { backgroundColor: p.mint }]}>
+                <Text style={u.bold}>{t("c02.scheduleReview", { date: new Intl.DateTimeFormat(i18n.language, { dateStyle: "medium", timeZone: "UTC" }).format(new Date(start + "T12:00:00Z")) })}</Text>
+                <Text style={u.small}>{t("c02.scheduleReviewHelp")}</Text>
+              </View>
+            )
+            : null}
           <View style={[u.card, { backgroundColor: p.lilac }]}>
             <Text style={u.bold}>
               {t(keep ? "education.keep" : "education.clear")}

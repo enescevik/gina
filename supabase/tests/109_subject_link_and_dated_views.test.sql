@@ -272,6 +272,18 @@ select is((public.apply_due_education_changes(pg_temp.ch())->>'failed') is not n
 select is((public.education_change_state(pg_temp.ch())->'last_failed'->>'action'),'transfer','failure surfaced to the parent');
 select is((public.get_child_education(pg_temp.ch())->'current'->>'reason'),'new_year','current period untouched by the failed apply');
 
+-- Task list contract: today's version vs. a later-dated pending version (weekday independent).
+select lives_ok($$select public.change_task_routine(gen_random_uuid(),pg_temp.r1(),(select revision from public.task_templates where id=pg_temp.r1()),'save',
+ jsonb_build_object('title','Kitap oku (30 dk)','icon','read-book','stars',4,'days_of_week','[1,2,3,4,5,6,7]'::jsonb,'time_of_day','evening','requires_approval',true),pg_temp.t()+4)$$,'routine change planned four days ahead');
+select is((select x->'version'->>'title' from jsonb_array_elements(public.routines_for_day(pg_temp.ch(),pg_temp.t())->'routines') x where x->>'id'=pg_temp.r1()::text),'Kitap oku','task list today shows the version in force');
+select is((select x->'next'->>'effective_from' from jsonb_array_elements(public.routines_for_day(pg_temp.ch(),pg_temp.t())->'routines') x where x->>'id'=pg_temp.r1()::text),(pg_temp.t()+4)::text,'pending version and its day are listed');
+select is((select x->'next'->>'title' from jsonb_array_elements(public.routines_for_day(pg_temp.ch(),pg_temp.t())->'routines') x where x->>'id'=pg_temp.r1()::text),'Kitap oku (30 dk)','pending version title');
+select is((select x->'version'->>'title' from jsonb_array_elements(public.routines_for_day(pg_temp.ch(),pg_temp.t()+4)->'routines') x where x->>'id'=pg_temp.r1()::text),'Kitap oku (30 dk)','on that day the new version is in force');
+select is((select title from public.task_templates where id=pg_temp.r1()),'Kitap oku (30 dk)','the live row already carries the planned settings (why lists read the dated version)');
+select pg_temp.as_sibling_device();
+select throws_ok($$select public.routines_for_day(pg_temp.ch(),pg_temp.t())$$,'42501','plan_forbidden','sibling device cannot read the task list');
+select pg_temp.as_parent_a();
+
 -- Grants: new functions are not callable anonymously; private helpers are not callable at all.
 reset role;
 select ok(not has_function_privilege('anon','public.set_child_subject_links(uuid,uuid,jsonb,text)','execute'),'anon cannot set links');

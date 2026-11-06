@@ -3,7 +3,9 @@ import { invalidateTaskState } from "@/lib/task-cache";
 import { onlineManager, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Platform } from 'react-native';
-import { localDateOf, occurrencesBetween, tasksWithRecordedWork, taskSnapshot, weekDatesOf, recordedWeek, starTotalsByChild } from '@gina/core';
+import { localDateOf, occurrencesBetween, tasksWithRecordedWork, taskSnapshot, templatesForPlanDay, weekDatesOf, recordedWeek, starTotalsByChild } from '@gina/core';
+import { useTranslation } from 'react-i18next';
+import { dayLessonOccurrences, useWeekPlans } from '@/components/planner/week-plans';
 import { ParentHomeView } from '@/components/parent-home/home-view';
 import { useFamilyTimezone } from '@/lib/family';
 import { useRealtimeInvalidate } from '@/lib/realtime';
@@ -26,6 +28,7 @@ const retryOnline = (count: number) => count < 1 && isOnline();
 
 /** Approved mint/violet parent home; existing queries and review RPC remain authoritative. Each card owns its load/error state (U03). */
 export default function ParentHomeScreen() {
+  const { i18n } = useTranslation();
   const { claims, session } = useSession();
   const familyId = claims?.family_id ?? "";
   const timeZone = useFamilyTimezone();
@@ -121,7 +124,7 @@ export default function ParentHomeScreen() {
     },
   });
 
-  useRealtimeInvalidate("task_templates", familyId ? `family_id=eq.${familyId}` : null, [["family_task_templates", familyId]]);
+  useRealtimeInvalidate("task_templates", familyId ? `family_id=eq.${familyId}` : null, [["family_task_templates", familyId], ["plan_for_days", familyId]]);
 
   useRealtimeInvalidate("task_completions", familyId ? `family_id=eq.${familyId}` : null, [
     ["approvals", familyId],
@@ -164,8 +167,44 @@ export default function ParentHomeScreen() {
   const parentName = me.data;
 
   const visibleChildren = (children.data ?? []).filter((c) => !childFilter || c.id === childFilter);
+  // C02: today's tasks and the week's lessons come from the same dated contract as the calendar and the
+  // child's Today (`plan_for_days`): the routine/timetable version in force that day, never the live row.
+  const childIds = (children.data ?? []).map((c) => c.id);
+  const weekPlans = useWeekPlans(familyId, childIds, from, to);
+  // A planned education change whose day has come is applied on the parent's next open (idempotent on the
+  // server; until then every dated read already shows the planned period). Children see the result after.
+  const dueChanges = useQuery({
+    queryKey: ["apply_due_education_changes", familyId, today, childIds.join(",")],
+    enabled: !!familyId && childIds.length > 0,
+    staleTime: Infinity,
+    retry: retryOnline,
+    queryFn: async () => {
+      let applied = 0;
+      for (const id of childIds) {
+        const { data, error } = await (supabase.rpc as unknown as (fn: string, args: Record<string, unknown>) => PromiseLike<{ data: { applied?: boolean } | null; error: Error | null }>)(
+          "apply_due_education_changes",
+          { p_child_id: id },
+        );
+        if (error) throw error;
+        if (data?.applied) applied++;
+      }
+      return applied;
+    },
+  });
+  useEffect(() => {
+    if (dueChanges.data) {
+      void queryClient.invalidateQueries({ queryKey: ["children"] });
+      void queryClient.invalidateQueries({ queryKey: ["plan_for_days", familyId] });
+      void queryClient.invalidateQueries({ queryKey: ["plan_for_day", familyId] });
+    }
+  }, [dueChanges.data, queryClient, familyId]);
+  const planOf = (childId: string, day: string) => weekPlans[childIds.indexOf(childId)]?.data?.find((p) => p.day === day) ?? null;
+  const dayTemplates = (childId: string, day: string) => {
+    const plan = planOf(childId, day);
+    return plan ? templatesForPlanDay(plan, (templates.data ?? []).filter((t2) => t2.child_id === childId)) : [];
+  };
   const familyDay = visibleChildren.map((child) => {
-    const dueIds = new Set(tasksWithRecordedWork((templates.data ?? []).filter((t2) => t2.child_id === child.id), completions.data ?? [], today).map(task => task.id));
+    const dueIds = new Set(tasksWithRecordedWork(dayTemplates(child.id, today), completions.data ?? [], today).map(task => task.id));
     const due = dueIds.size;
     const done = (completions.data ?? []).filter(
       (c) => c.child_id === child.id && c.due_date === today && dueIds.has(c.template_id) && c.status === "approved",
@@ -174,9 +213,15 @@ export default function ParentHomeScreen() {
     return { child, due, done, pending, stars: stars.data?.get(child.id) ?? 0 };
   });
 
-  const occurrences = occurrencesBetween(events.data ?? [], from, to, timeZone, exceptions.data ?? new Set()).filter(
+  const english = i18n.language.startsWith('en');
+  const occurrences = [
+    ...occurrencesBetween(events.data ?? [], from, to, timeZone, exceptions.data ?? new Set())
+      // Timetable-generated rows are replaced by each day's own timetable version below.
+      .filter((o) => !(o.event.type === 'school' && o.event.timetable_entry_key)),
+    ...weekPlans.flatMap((q) => (q.data ?? []).flatMap((plan) => dayLessonOccurrences(plan, timeZone, english))),
+  ].filter(
     (o) => !childFilter || o.event.child_id === null || o.event.child_id === childFilter,
-  );
+  ).sort((a, b) => a.startsAt.getTime() - b.startsAt.getTime());
   const upcoming = occurrencesBetween(events.data ?? [], today, to, timeZone, exceptions.data ?? new Set())
     .filter(o => o.event.type === 'exam' && (!childFilter || o.event.child_id === null || o.event.child_id === childFilter) && (o.endsAt ?? o.startsAt).getTime() >= now)
     .sort((a,b) => a.startsAt.getTime()-b.startsAt.getTime())[0];
@@ -185,7 +230,7 @@ export default function ParentHomeScreen() {
 
   const pendingApprovals = (approvals.data ?? []).filter((a) => visibleChildren.some(child => child.id === a.child_id));
 
-  const dailyTasks = visibleChildren.flatMap(child => tasksWithRecordedWork((templates.data ?? []).filter(template => template.child_id === child.id), completions.data ?? [], today).map(task => ({
+  const dailyTasks = visibleChildren.flatMap(child => tasksWithRecordedWork(dayTemplates(child.id, today), completions.data ?? [], today).map(task => ({
     id: task.id, title: task.title, icon: task.icon, childId: child.id, childName: child.name,
     status: completions.data?.find(completion => completion.template_id === task.id && completion.child_id === child.id && completion.due_date === today)?.status ?? 'planned',
   })));
@@ -209,9 +254,9 @@ export default function ParentHomeScreen() {
     retry={()=>{void children.refetch();void me.refetch();void inbox.refetch();}}
     sections={{
       approvals: section([approvals]),
-      tasks: section([templates, completions]),
-      progress: section([templates, completions, stars]),
-      plan: section([events, exceptions]),
+      tasks: section([templates, completions, ...weekPlans]),
+      progress: section([templates, completions, stars, ...weekPlans]),
+      plan: section([events, exceptions, ...weekPlans]),
     }}
   />;
 }
