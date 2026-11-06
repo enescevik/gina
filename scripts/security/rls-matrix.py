@@ -90,7 +90,10 @@ try:
         p.prosrc ~* 'gina\\.is_device\\(\\)' as uses_is_device,
         p.prosrc ~* 'role\\(\\)\\s*=\\s*''device''' as uses_raw_device_role,
         p.prosrc ~* 'revoked_at' as mentions_revoked_at,
-        p.prosrc ~* 'gina\\.(is_parent|is_admin|is_admin_strict|assert_admin|is_service|is_device)\\(\\)|auth\\.uid\\(\\)|gina\\.family_id\\(\\)|gina\\.child_id\\(\\)' as has_caller_check
+        p.prosrc ~* 'gina\\.(is_parent|is_admin|is_admin_strict|assert_admin|is_service|is_device)\\(\\)|auth\\.uid\\(\\)|gina\\.family_id\\(\\)|gina\\.child_id\\(\\)|gina\\.(has_operation_role|has_any_operation_role|assert_operation_role)\\(' as has_caller_check,
+        -- C13: dar operatör kapısı (destek/içerik/finans/yayın) — fonksiyon gövdesindeki rol adları
+        (select coalesce(jsonb_agg(distinct m[1]), '[]') from regexp_matches(p.prosrc, '''(support|content|finance|release)''', 'g') m
+          where p.prosrc ~* 'gina\\.(has_operation_role|has_any_operation_role|assert_operation_role)\\(') as operator_roles
       from pg_proc p join pg_namespace n on n.oid = p.pronamespace
       where n.nspname in ('public','gina') and p.prokind = 'f' order by 1,2,3""")
 
@@ -188,11 +191,24 @@ try:
     no_rls = [f"{t['schema']}.{t['table']}" for t in report['tables'] if not t['rls_enabled']]
     check('tables_without_rls', not no_rls, no_rls)
 
+    # C13: persona × fonksiyon/tablo sızıntı taraması (scripts/security/c13-rpc-fuzz.sql; tek kullanımlık DB'de, geri alınır)
+    fuzz = None
+    if '--with-fuzz' in sys.argv:
+        fuzz_out = sql(db, (root / 'scripts/security/c13-rpc-fuzz.sql').read_text())
+        fuzz = json.loads(fuzz_out.strip().splitlines()[-1])
+        report['c13_rpc_fuzz'] = fuzz
+        unexpected = [l for l in fuzz['leaks'] if l['leak'] not in ('operator_family_meta',)]
+        check('c13_persona_fuzz_no_unexpected_leak', not unexpected, unexpected)
+        check('c13_persona_fuzz_positive_control', len(fuzz['positive_control_a_parent_sees_family_data']) > 0 and len(fuzz['positive_control_dev_a1_sees_child1_data']) > 0,
+              {'a_parent': len(fuzz['positive_control_a_parent_sees_family_data']), 'dev_a1': len(fuzz['positive_control_dev_a1_sees_child1_data'])})
+
     report['summary'] = {
         'tables': len(report['tables']), 'tables_without_rls': len(no_rls), 'functions': len(report['functions']),
         'security_definer_functions': sum(1 for f in report['functions'] if f['security_definer']),
         'security_definer_without_search_path': len(sd_no_sp), 'anon_executable_functions': len(anon_fns),
         'authenticated_write_grants_without_policy': len(direct_write),
+        'operator_gated_functions': sum(1 for f in report['functions'] if f.get('operator_roles')),
+        'c13_fuzz': None if fuzz is None else {'functions': fuzz['functions'], 'tables': fuzz['tables'], 'calls': fuzz['calls'], 'leaks': len(fuzz['leaks'])},
         'synthetic_failed': [c['check'] for c in report['synthetic'] if not c['passed']],
     }
     out.mkdir(parents=True, exist_ok=True)

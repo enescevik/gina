@@ -21,14 +21,13 @@ def launch(runner: str, prefix: str, timeout: int, argv: list[str]) -> None:
     replacements = [
         ("'gina_http_' + secrets.token_hex(8) + '_audit'", f"'{prefix}' + secrets.token_hex(8) + '_audit'"),
         ("['node', 'scripts/test-isolated-services.mjs']", f"['node', '{runner}']"),
-        ("timeout=3000 if UI_HOLD else 180", f"timeout={int(timeout)}"),
+        ("timeout=3000 if UI_HOLD else 420", f"timeout={int(timeout)}"),
         ("env = {**os.environ, 'GINA_QA_UI_HOLD'", "env = {**os.environ, 'GINA_QA_DB': DB, 'GINA_QA_JWT_SECRET': secret, 'GINA_QA_UI_HOLD'"),
         # Surface the runner's own stderr (stack traces, never credentials) when its report is missing.
         ("stdout, _ = process.communicate(", "stdout, runner_stderr = process.communicate("),
-        # ALTER TABLE ... OWNER rewrites the owner's ACL entries, so the clone's `postgres` role loses the
-        # DELETE privilege it has in the real local stack, the template and hosted Supabase. The account
-        # deletion trigger (SECURITY DEFINER, owner postgres) deletes anonymous device users; restore parity.
-        ("    grant references on auth.users to postgres;", "    grant select, delete, references on auth.users to postgres;"),
+        # C13: test-isolated-services.py now grants `postgres` all on auth.users itself (the Q02-8 parity fix
+        # moved upstream), so no auth.users substitution is needed; the anchor is asserted to stay present.
+        ("    grant all on auth.users to postgres;", "    grant all on auth.users to postgres;"),
         ("    if process.returncode:\n        raise RuntimeError('service_contract_failed')",
          "    if process.returncode:\n        print(runner_stderr[-4000:], file=sys.stderr)\n        raise RuntimeError('service_contract_failed')"),
         ("        report['checks'] = json.loads(stdout)['checks']\n    except Exception:\n",

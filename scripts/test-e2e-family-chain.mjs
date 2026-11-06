@@ -6,6 +6,7 @@ import http from 'node:http';
 import { createHmac, randomUUID, randomBytes } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { c13Phase } from './test-e2e-family-chain.c13.mjs';
 const require = createRequire(new URL('../apps/mobile/package.json', import.meta.url));
 const { createClient } = require('@supabase/supabase-js');
 const authPort = Number(process.env.GINA_QA_AUTH_PORT), restPort = Number(process.env.GINA_QA_REST_PORT);
@@ -409,6 +410,10 @@ try {
   await login(devA, c1, '1234', 'devA_relogin_c1');
   check('grade_history_preserved_across_archive', JSON.stringify(await rpc(a1.c, 'school_grade_records', { p_child_id: c1 }, 'grades_after_restore')).includes(gradeId));
 
+  // ---------------------------------------------------------------- C13. C01–C11 endpoints, narrow operators, Edge
+  await section('c13', () => c13Phase({ check, denied, must, rpc, rest, sign, claims, token, base, lossyBase, setLossy: m => { lossyMode = m; },
+    admin, account, refresh, timed, notes, a1, a2, b1, devA, tabA, devB, sup, c1, c2, bc, attempt, q2, today }));
+
   // ---------------------------------------------------------------- 14. token expiry, forged claims, role revocation in open sessions
   const a1Claims = claims((await a1.c.auth.getSession()).data.session);
   const expired = sign({ ...a1Claims, iat: a1Claims.iat - 7200, exp: Math.floor(Date.now() / 1000) - 60 });
@@ -503,8 +508,10 @@ try {
   await new Promise(r => lossy.close(r)); await new Promise(r => proxy.close(r));
   const passed = Object.values(checks).filter(Boolean).length, total = Object.keys(checks).length;
   try {
-    mkdirSync(new URL('../docs/release/q02-2026-11-06/', import.meta.url), { recursive: true });
-    writeFileSync(new URL('../docs/release/q02-2026-11-06/chain-details.json', import.meta.url), JSON.stringify({ environment: 'disposable-local-auth-postgrest', passed, total, failures, notes, timing_ms: timing }, null, 2) + '\n');
+    // C13: GINA_QA_CHAIN_OUT selects the evidence folder (default: the original Q02 report folder).
+    const outDir = new URL('../' + (process.env.GINA_QA_CHAIN_OUT || 'docs/release/q02-2026-11-06').replace(/\/?$/, '/'), import.meta.url);
+    mkdirSync(outDir, { recursive: true });
+    writeFileSync(new URL('chain-details.json', outDir), JSON.stringify({ environment: 'disposable-local-auth-postgrest', passed, total, failures, notes, timing_ms: timing }, null, 2) + '\n');
   } catch {}
   if (failures.length) process.exitCode = 1;
   console.log(JSON.stringify({ checks }));
