@@ -15,7 +15,16 @@ export async function s04Rpc(
   fn:
     | "suggest_subject"
     | "admin_subject_synonyms"
-    | "admin_import_education_calendar_seed",
+    | "admin_import_education_calendar_seed"
+    // C11
+    | "admin_save_subject_synonym"
+    | "admin_subject_synonym_changes"
+    | "admin_education_calendar_checks"
+    | "admin_publish_education_calendar"
+    | "admin_import_education_holidays"
+    | "admin_education_holidays"
+    | "admin_set_education_holiday_status"
+    | "admin_education_report_summary",
   args?: Record<string, unknown>,
 ): Promise<unknown> {
   const client = supabase();
