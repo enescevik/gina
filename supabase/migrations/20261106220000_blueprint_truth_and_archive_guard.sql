@@ -105,7 +105,9 @@ begin
  return new;
 end;$$;
 revoke all on function gina.guard_blueprint_provenance() from public,anon,authenticated,service_role;
-create trigger guard_blueprint_provenance before insert or update on public.exam_blueprints for each row execute function gina.guard_blueprint_provenance();
+-- Ad bilinçli: "provenance_guard" > "protect_catalog_blueprint" (alfabetik sıra) — katalog kopyasının mevcut
+-- curriculum_copy_immutable sözleşmesi önce çalışır; bu tetikleyici yalnız köken sütunlarını ek olarak korur.
+create trigger provenance_guard before insert or update on public.exam_blueprints for each row execute function gina.guard_blueprint_provenance();
 
 -- Katalog seçimi (save_catalog_blueprint, confirmed=true zorunlu) bağ satırını yazınca kopya okul onayı alır.
 create function gina.mark_catalog_blueprint() returns trigger language plpgsql security definer set search_path='' as $$
