@@ -113,10 +113,9 @@ update public.ai_models set adapter='openai-chat',supports_json_schema=true,
  cost_class=case when id='gpt-6-luna' then 'low' when id='gpt-6-astra' then 'high' else 'medium' end,
  notes='Account-accessible; synthetic text JSON adapter contract passed 2026-11-07. Media and tool chains not certified. No route change.'
 where id in ('gpt-6-luna','gpt-6.1-sol','gpt-6-astra','gpt-6.1-terra');
--- Conservative context declaration for the previous Sol revision.
-update public.ai_models set adapter='openai-chat',supports_json_schema=true,
- context_tokens=64000,contract_version='catalog-text-v1',active=true,
- notes='Account-accessible; synthetic text JSON adapter contract passed 2026-11-07. Conservative 64K context declaration; media/tool chains not certified.'
+-- Legacy Sol remains archived; current Sol 6.1 is the selectable version.
+update public.ai_models set active=false,
+ notes='Archived in favor of gpt-6.1-sol. Retained for historical references; not selectable.'
 where id='gpt-6-sol';
 
 -- Claude GINA workspace: all 14 Models API entries, preserving existing configuration.

@@ -12,8 +12,9 @@ type Model = { id: string; display_name: string; provider: string; active: boole
 type Feature = { feature: string; input_kind: string; action: string; requires_vision: boolean; requires_pdf: boolean; requires_json_schema: boolean; min_context_tokens: number; plans: string[]; entry_point: string | null };
 type PlanPolicy = { action: string; enabled: boolean; monthly_limit: number; per_minute: number; max_concurrent: number; max_media_items: number; max_media_bytes: number };
 type PlanRow = { plan_code: string; enabled: boolean; model_id: string | null; max_input_tokens: number; max_output_tokens: number; prompt_version: string; prova_ai_generate_monthly: number | null; setup_ai_monthly: number | null; policies: PlanPolicy[] };
-export type PolicyMatrix = { global_enabled: boolean; providers: Provider[]; models: Model[]; features: Feature[]; plans: PlanRow[] };
-type DisablePreview = { model_id: string; provider: string; active: boolean; affected_plans: string[]; affected_features: { feature: string; inputs: string[]; plans: string[] }[]; alternatives: string[]; jobs_last_30d: Record<string, number> };
+export type AiFlow = { flow_id: string; flow_label: string; plan_code: string; model_id: string | null; enabled: boolean; model_active: boolean };
+export type PolicyMatrix = { flows: AiFlow[]; global_enabled: boolean; providers: Provider[]; models: Model[]; features: Feature[]; plans: PlanRow[] };
+export type DisablePreview = { affected_flows: AiFlow[]; model_id: string; provider: string; active: boolean; affected_plans: string[]; affected_features: { feature: string; inputs: string[]; plans: string[] }[]; alternatives: string[]; jobs_last_30d: Record<string, number> };
 type Impact = {
   from: string; to: string; blocked: boolean; block_reasons: string[];
   affected_features: { feature: string; inputs: string[]; plans: string[] }[];
@@ -68,6 +69,18 @@ export function AiPolicyMatrixCard({ matrix, error }: { matrix: PolicyMatrix | n
       {error ? <Notice tone="error">Politika matrisi okunamadı.</Notice> : null}
       {!matrix ? (!error ? <p className="text-slate-500">{t.common.loading}</p> : null) : (
         <div className="grid gap-6" data-testid="ai-policy-matrix">
+          <div className="overflow-x-auto">
+            <table className="table" aria-label="AI akışlarında kullanılan modeller">
+              <thead><tr><th>Akış</th><th>Paket</th><th>Model</th><th>Durum</th></tr></thead>
+              <tbody>{(matrix.flows ?? []).map(flow => <tr key={flow.flow_id}>
+                <td>{flow.flow_label}</td><td>{t.plans[flow.plan_code] ?? flow.plan_code}</td>
+                <td className="font-mono">{flow.model_id ?? t.ai.noModel}</td>
+                <td>{flow.enabled ? "Açık" : "Kapalı"}
+                  {flow.model_id && !flow.model_active && <strong className="ml-2 rounded bg-amber-100 px-2 py-1 text-amber-900">Pasif model · yeni işlemler engellenir</strong>}
+                </td>
+              </tr>)}</tbody>
+            </table>
+          </div>
           <p className="text-sm font-semibold">Genel AI anahtarı: {matrix.global_enabled ? t.ai.on : t.ai.off}</p>
           <div className="overflow-x-auto">
             <table className="table" aria-label="Paket ve işlem sınırları">
@@ -89,6 +102,7 @@ export function AiPolicyMatrixCard({ matrix, error }: { matrix: PolicyMatrix | n
                         ? (
                           <td rowSpan={Math.max(p.policies.length, 1)} className="text-xs">
                             <span className="font-mono">{p.model_id ?? t.ai.noModel}</span>
+                            {p.model_id && !matrix.models.some(m => m.id === p.model_id && m.active) && <strong className="ml-2 text-amber-800">Pasif model</strong>}
                             <br />girdi {p.max_input_tokens} · çıktı {p.max_output_tokens} · {p.prompt_version}
                             <br />soru üretimi/ay {p.prova_ai_generate_monthly ?? "—"} · kurulum/ay {p.setup_ai_monthly ?? "—"}
                           </td>
@@ -127,7 +141,7 @@ export function AiPolicyMatrixCard({ matrix, error }: { matrix: PolicyMatrix | n
                 <tr><th>Model</th><th>Sağlayıcı</th><th>Etkin</th><th>Destek</th></tr>
               </thead>
               <tbody>
-                {matrix.models.map((m) => (
+                {matrix.models.filter(m => m.active).map((m) => (
                   <tr key={m.id}>
                     <td><span className="font-mono">{m.id}</span><div className="text-xs">{m.display_name}</div></td>
                     <td>{m.provider}</td>
@@ -176,12 +190,13 @@ export function ModelDisablePreviewButton({ modelId }: { modelId: string }) {
           ? <p className="text-xs text-slate-500">{t.common.loading}</p>
           : (
             <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-950" data-testid="model-disable-preview">
+              {!!d.affected_flows?.length && <ul className="mb-2 list-disc pl-4">{d.affected_flows.map(flow => <li key={flow.flow_id}>{flow.flow_label} · {t.plans[flow.plan_code] ?? flow.plan_code} ({flow.enabled ? "açık; yeni işlemler engellenecek" : "kapalı; model bağlantısı kayıtlı"})</li>)}</ul>}
               <p className="font-bold">Etkilenen paketler: {d.affected_plans.length ? plans(d.affected_plans) : "yok"}</p>
               {d.affected_features.length
                 ? <ul className="list-disc pl-4">{d.affected_features.map((f) => <li key={f.feature}>{featureLabel[f.feature] ?? f.feature} ({f.inputs.map((i) => inputLabel[i] ?? i).join(", ")}) · {plans(f.plans)}</li>)}</ul>
                 : <p>Etkilenen özellik yok.</p>}
               <p>Aynı sağlayıcıda desteklenen alternatif: {d.alternatives.length ? d.alternatives.join(", ") : "yok"}</p>
-              <p>Son 30 gün iş hacmi: {Object.entries(d.jobs_last_30d).map(([a, n]) => `${actionLabel[a] ?? a} ${n}`).join(" · ") || "yok"}</p>
+              <p>Sistem genelinde son 30 gün iş hacmi: {Object.entries(d.jobs_last_30d).map(([a, n]) => `${actionLabel[a] ?? a} ${n}`).join(" · ") || "yok"}</p>
             </div>
           )
         : null}
