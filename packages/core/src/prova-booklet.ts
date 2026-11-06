@@ -105,7 +105,7 @@ h1, h2, h3 { font-family: "Baloo 2", "Nunito", -apple-system, "Segoe UI", Roboto
 .qt td, .qt th { vertical-align: top; padding: 1.6mm 2mm; text-align: left; }
 .qt .grid td, .qt .grid th { border: 1px solid #C7D0D9; }
 .qt .grid th { background: #F3EFFA; font-family: "Baloo 2", "Nunito", Arial, sans-serif; }
-.qt .lab { width: 8mm; font-weight: 700; color: #5132BD; }
+.qt .lab { width: 11mm; white-space: nowrap; font-weight: 700; color: #5132BD; }
 .qt .marks { width: 30mm; white-space: nowrap; }
 .qt .sq { display: inline-block; width: 5.5mm; height: 5.5mm; border: 1.2px solid #4A5A6A; border-radius: 1mm; vertical-align: middle; margin: 0 1.2mm 0 2mm; }
 .qt .slot { display: inline-block; min-width: 10mm; height: 7mm; border: 1.2px solid #4A5A6A; border-radius: 1.5mm; vertical-align: middle; margin-left: 2mm; }
