@@ -37,6 +37,9 @@ import {
 import { useTranslation } from "react-i18next";
 import {
   appendProvaBlocks,
+  blockedForTrack,
+  type DeviceTypeSupport,
+  unsupportedTypesForChild,
   confirmProvaPeriod,
   defaultProvaContext,
   isAiEditable,
@@ -67,7 +70,9 @@ import {
   fetchProvaDrafts,
   persistProvaDraft,
 } from "@/lib/prova-draft";
-import { provaErrorMessage } from "@/lib/prova-ai";
+import { provaErrorMessage as baseErrorMessage } from "@/lib/prova-ai";
+import i18n from "@/lib/i18n";
+import { structuredTypeLabel } from "./structured-question-author";
 import { NOTEBOOK_MODAL_PROPS } from "./notebook-layout";
 import {
   hasAnswer,
@@ -84,6 +89,13 @@ import {
   BuilderChoice,
   BuilderQuestionPreview,
 } from "./prova-builder-ui";
+/** QT: tür/iz hataları (ör. `interaction_type_not_allowed_for_track`) kendi metinleriyle; diğerleri eski yolla. */
+function provaErrorMessage(error: unknown): string | null {
+  const message = error && typeof error === "object" && "message" in error ? String((error as { message: unknown }).message) : "";
+  const key = `prova.qt.author.err.${message}`;
+  if (message && i18n.exists(key)) return i18n.t(key);
+  return baseErrorMessage(error);
+}
 export default function ProvaBuilder() {
   const { t, i18n } = useTranslation(),
     { claims } = useSession(),
@@ -376,6 +388,24 @@ export default function ProvaBuilder() {
       return readProvaQuestionFit(r.data);
     },
   });
+  // QT: çocuğun cihazları kullanılan türleri bildirdi mi? Uyarıdır; atamayı engellemez.
+  const usedTypes = [...new Set(flat.flatMap((q) =>
+    q.kind === "structured" && q.interaction_type ? [q.interaction_type] : []
+  ))];
+  const typeSupport = useQuery({
+    queryKey: ["child_question_type_support", familyId, draft.childId],
+    enabled: !!draft.childId && usedTypes.length > 0 && draft.step === 3,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("get_child_question_type_support", {
+        p_child_id: draft.childId!,
+      });
+      if (error) throw error;
+      return (data ?? []) as unknown as DeviceTypeSupport[];
+    },
+  });
+  const support = typeSupport.data
+    ? unsupportedTypesForChild(typeSupport.data, usedTypes)
+    : null;
   const fitRow = (id: string) =>
     fit.data?.questions.find((row) => row.question_id === id);
   const periodIssuesOf = (id: string) =>
@@ -423,7 +453,13 @@ export default function ProvaBuilder() {
     if (!draft.subjects.includes(q.subject)) {
       issues.push(t("provaP01.issueSubject", { subject: q.subject }));
     }
-    if (allowedKind !== "mixed" && q.kind !== allowedKind) {
+    // QT: OYSS/ortak yazılı izinde alıştırma türü açıkça engellenir (sunucu da reddeder; çevrilmez).
+    const blocked = blockedForTrack(draft.context?.track, [q.interaction_type]);
+    if (blocked.length) {
+      issues.push(t("prova.qt.author.trackBlocked", { type: structuredTypeLabel(t, blocked[0]) }));
+    } else if (allowedKind !== "mixed" && q.kind === "structured") {
+      issues.push(t("prova.qt.author.kindMismatch", { type: structuredTypeLabel(t, q.interaction_type) }));
+    } else if (allowedKind !== "mixed" && q.kind !== allowedKind) {
       issues.push(t(`provaP01.issueKind_${q.kind}`));
     }
     return issues;
@@ -1342,12 +1378,38 @@ export default function ProvaBuilder() {
                                 </Text>
                               )
                               : null}
+                            {flat.some((q) => blockedForTrack(draft.context?.track, [q.interaction_type]).length)
+                              ? (
+                                <Text testID="qt-track-blocked" style={b.error}>
+                                  {t("prova.qt.author.trackBlockedSummary", {
+                                    types: blockedForTrack(draft.context?.track, flat.map((q) => q.interaction_type))
+                                      .map((x) => structuredTypeLabel(t, x)).join(", "),
+                                  })}
+                                </Text>
+                              )
+                              : null}
                             {noAnswer
                               ? (
                                 <Text style={b.error}>
                                   {t("provaBuilder.missingAnswer")}
                                 </Text>
                               )
+                              : null}
+                            {support && support.missing.length
+                              ? (
+                                <View testID="qt-device-support" style={[b.hint, { gap: 6 }]}>
+                                  <Text style={b.bold}>{t("prova.qt.author.device.title")}</Text>
+                                  <Text style={b.copy}>
+                                    {t(support.noDevice ? "prova.qt.author.device.none" : "prova.qt.author.device.missing", {
+                                      types: support.missing.map((x) => structuredTypeLabel(t, x)).join(", "),
+                                    })}
+                                  </Text>
+                                  <Text style={b.muted}>{t("prova.qt.author.device.update")}</Text>
+                                </View>
+                              )
+                              : null}
+                            {typeSupport.error
+                              ? <Text style={b.muted}>{t("prova.qt.author.device.unknown")}</Text>
                               : null}
                             {contextIssues.map((issue) => (
                               <Text key={issue} style={b.error}>

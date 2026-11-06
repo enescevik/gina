@@ -8,6 +8,40 @@ import { p } from "@/components/planner/ui";
 import { Pressable } from "@/components/ui/pressable";
 import { QuestionMedia } from "./question-media";
 import type { BuilderQuestion } from "./prova-builder-data";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+import { StructuredQuestionPreview } from "./structured-question-author";
+
+/**
+ * QT: yapılandırılmış sorunun önizlemesi. Görünüm satırı (standalone_question_bank) yeni sütunları
+ * taşımayabilir; içerik o zaman question_bank'tan okunur. Anahtar yalnız “cevabı göster” açıkken
+ * veli RPC'siyle (`get_question_answer_keys`) alınır.
+ */
+function StructuredBuilderPreview({ q, showAnswer }: { q: BuilderQuestion; showAnswer: boolean }) {
+  const row = q as BuilderQuestion & { interaction_type?: string | null; payload?: unknown };
+  const content = useQuery({
+    queryKey: ["qt_payload", q.id],
+    enabled: row.payload === undefined || row.interaction_type === undefined,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("question_bank").select("interaction_type,payload").eq("id", q.id).single();
+      if (error) throw error;
+      return data;
+    },
+  });
+  const key = useQuery({
+    queryKey: ["qt_answer_key", q.id],
+    enabled: showAnswer,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("get_question_answer_keys", { p_question_ids: [q.id] });
+      if (error) throw error;
+      return ((data ?? []) as unknown as { question_id: string; key: unknown }[]).find((k) => k.question_id === q.id)?.key ?? null;
+    },
+  });
+  const type = row.interaction_type ?? content.data?.interaction_type ?? null;
+  const payload = row.payload ?? content.data?.payload ?? null;
+  if (!payload) return null;
+  return <StructuredQuestionPreview type={type} payload={payload} answerKey={showAnswer ? key.data ?? undefined : undefined} testID="builder-qt-preview" />;
+}
 export function BuilderChoice(
   { label, selected, onPress, disabled = false }: {
     label: string;
@@ -78,6 +112,7 @@ export function BuilderQuestionPreview(
         : null}
       <Text style={b.h2}>{q.stem}</Text>
       <QuestionMedia questionId={q.id} />
+      {q.kind === "structured" ? <StructuredBuilderPreview q={q} showAnswer={showAnswer} /> : null}
       {Array.isArray(q.choices)
         ? (q.choices as { key: string; text: string }[]).map((c) => (
           <View key={c.key} style={b.choice}>
@@ -90,7 +125,7 @@ export function BuilderQuestionPreview(
         : null}
       <ContentReviewNote question={q} editable={editable} />
       {onEdit ? <EditAction onPress={onEdit} /> : null}
-      {showAnswer
+      {showAnswer && q.kind !== "structured"
         ? (
           <View style={b.hint}>
             <Text style={b.bold}>{t("provaBuilder.answer")}</Text>
