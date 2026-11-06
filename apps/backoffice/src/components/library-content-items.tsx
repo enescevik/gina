@@ -275,7 +275,7 @@ export function LibraryContentItems() {
               return [
                 <tr key={r.kind + r.id} data-testid="content-item" data-kind={r.kind}>
                   <td>
-                    {pk
+                    {pk && canReview
                       ? (
                         <input
                           type="checkbox"

@@ -76,6 +76,14 @@ function libraryTabs(isAdmin: boolean, roles: string[]): LibraryTab[] {
   return ["items"];
 }
 export default function LibraryPage() {
+  // C07: Layout dışta; sayfa sorguları içerik/yayın rolü bağlamında çalışır.
+  return (
+    <Layout title="GINA kütüphanesi" roles={["content", "release"]}>
+      <LibraryWorkspace />
+    </Layout>
+  );
+}
+function LibraryWorkspace() {
   const { isAdmin, roles } = useAuth();
   const canReview = isAdmin || roles.includes("content");
   const { data, error, reload } = useAdminQuery(async () =>
@@ -165,7 +173,7 @@ export default function LibraryPage() {
     }
   }
   return (
-    <Layout title="GINA kütüphanesi" compact={tab === "drafts"} roles={["content", "release"]}>
+    <>
       {guard.dialog}
       <p hidden={tab === "drafts"} className="mb-6 max-w-3xl text-slate-600">
         Koleksiyonları hazırlayın, soruları inceleyin ve paketlere açın. Bir
@@ -698,7 +706,7 @@ export default function LibraryPage() {
           </>
         )
         : null}
-    </Layout>
+    </>
   );
 }
 function Question({ content: q }: { content: Content }) {
