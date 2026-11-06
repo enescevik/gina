@@ -9,7 +9,7 @@ import { ErrorText } from "@/components/ui/screen";
 import { supabase } from "@/lib/supabase";
 import { formatSeconds } from "./pairing-code";
 
-type Status = { status: "not_paired" } | { status: "paired"; family_name: string | null; device_name: string; undo_seconds_left: number };
+import type { DevicePairingStatus as Status } from "./pairing-receipt-ack";
 // Generated database types predate the C13-AUTH-1 device RPCs.
 const rpc = supabase.rpc.bind(supabase) as unknown as (name: string) => PromiseLike<{ data: unknown; error: { message: string } | null }>;
 const undoExpired = (error: unknown) => /pairing_undo_expired/.test(String((error as { message?: string } | null)?.message ?? ""));
@@ -19,7 +19,7 @@ const undoExpired = (error: unknown) => /pairing_undo_expired/.test(String((erro
  * "This is not my family" removes the pairing with the tablet's own session (server allows it only
  * within 15 minutes of pairing); the tablet can then ask for a new code. Only the family name is shown.
  */
-export function PairingReceipt({ onContinue, onRejected }: { onContinue: () => void; onRejected: () => void }) {
+export function PairingReceipt({ onContinue, onRejected }: { onContinue: (pairedAt?: string) => void; onRejected: () => void }) {
   const { t } = useTranslation();
   const status = useQuery({
     queryKey: ["device_pairing_status"],
@@ -39,7 +39,7 @@ export function PairingReceipt({ onContinue, onRejected }: { onContinue: () => v
     if (!status.data) return;
     if (status.data.status === "not_paired") { onRejected(); return; }
     // An old pairing (window closed) needs no receipt.
-    if (status.data.undo_seconds_left <= 0) onContinue();
+    if (status.data.undo_seconds_left <= 0) onContinue(status.data.paired_at);
   }, [status.data, onContinue, onRejected]);
   useEffect(() => {
     if (!until) return;
@@ -66,7 +66,7 @@ export function PairingReceipt({ onContinue, onRejected }: { onContinue: () => v
       </View>
       {open ? <Text style={parentStyles.muted}>{t("auth1.device.pairedCheck", { time: formatSeconds(left) })}</Text> : <InfoCard title={t("auth1.device.undoExpired")} />}
       <ErrorText error={undoExpired(reject.error) ? null : reject.error} />
-      <Button title={t("auth1.device.continue")} disabled={reject.isPending} onPress={onContinue} />
+      <Button testID="pairing-continue" title={t("auth1.device.continue")} disabled={reject.isPending} onPress={() => onContinue(paired.paired_at)} />
       {open ? <Button variant="danger" testID="pairing-not-my-family" title={t("auth1.device.notMyFamily")} loading={reject.isPending} disabled={reject.isPending} onPress={() => reject.mutate()} /> : null}
     </View>
   );

@@ -7,6 +7,8 @@ import * as Linking from "expo-linking";
 import { PairingQr } from "@/components/device/pairing-qr";
 import { PairingSteps } from "@/components/device/pairing-steps";
 import { PairingReceipt } from "@/components/device/pairing-receipt";
+import { acknowledgePairing, PAIRING_GATE_KEY } from "@/components/device/pairing-receipt-ack";
+import { queryClient } from "@/lib/query";
 import { formatPairingCode, spellPairingCode } from "@/components/device/pairing-code";
 import { Field } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
@@ -22,7 +24,7 @@ const pairingLink = (code: string) => Linking.createURL("/parent/pair-device", {
 export default function PairScreen() {
   const { t } = useTranslation();
   const { session, claims, loading, isAnonymous } = useSession();
-  const { revoked } = useLocalSearchParams<{ revoked?: string }>();
+  const { revoked, receipt } = useLocalSearchParams<{ revoked?: string; receipt?: string }>();
   const [deviceName,setDeviceName] = useState(t("unified.defaultDeviceName"));
   const [pairing, setPairing] = useState<{ code: string; expires: number } | null>(null);
   const [remaining, setRemaining] = useState(0);
@@ -59,9 +61,29 @@ export default function PairScreen() {
     const sub = AppState.addEventListener("change", state => { if (state === "active") tick(); });
     return () => { live = false; clearInterval(timer); sub.remove(); };
   }, [pairing, paired]));
-  const enterChildMode = useCallback(() => router.replace("/child"), []);
+  // D2: the app was closed while a parent paired this tablet; the stored token still has no device role.
+  // Ask the server once on open and, if paired, take a fresh token so the receipt card shows first.
+  const [foundOnOpen, setFoundOnOpen] = useState(false);
+  const checkedOnOpen = useRef(false);
+  useEffect(() => {
+    if (checkedOnOpen.current || loading || !session || !isAnonymous || claims?.role === "device" || pairing) return;
+    checkedOnOpen.current = true;
+    void (async () => {
+      const { data, error } = await (supabase.rpc.bind(supabase) as unknown as (name: string) => PromiseLike<{ data: unknown; error: unknown }>)("device_pairing_status");
+      if (error || (data as { status?: string } | null)?.status !== "paired") return;
+      const next = await refreshClaims();
+      if (next?.role === "device") setFoundOnOpen(true);
+    })().catch(() => { /* the normal pairing screen stays usable */ });
+  }, [loading, session, isAnonymous, claims?.role, pairing]);
+  const deviceId = claims?.device_id ?? null;
+  const enterChildMode = useCallback((pairedAt?: string) => {
+    // D2: "Continue" confirms this pairing on this tablet; the child-area gate stops asking for it.
+    const go = () => { queryClient.setQueryData([PAIRING_GATE_KEY, deviceId], false); router.replace("/child"); };
+    if (deviceId && pairedAt) void acknowledgePairing(deviceId, pairedAt).finally(go); else go();
+  }, [deviceId]);
   const afterReject = useCallback(() => {
     // The server revoked this tablet; a fresh token drops the device role so a new code can be asked for.
+    queryClient.removeQueries({ queryKey: [PAIRING_GATE_KEY] });
     void refreshClaims().catch(e => setError(e)).finally(() => { setPairing(null); setRejected(true); });
   }, []);
   async function requestCode() {
@@ -81,6 +103,7 @@ export default function PairScreen() {
   }
   if (paired) {
     return <ParentScreen navigation={false} title={t("unified.pairTitle")}>
+      {receipt === "1" || foundOnOpen ? <View testID="pairing-receipt-on-open"><InfoCard title={t("d2.device.openTitle")} body={t("d2.device.openBody")} /></View> : null}
       <PairingReceipt onContinue={enterChildMode} onRejected={afterReject} />
       <ErrorText error={error} />
     </ParentScreen>;

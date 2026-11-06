@@ -13,7 +13,10 @@ import { ParentScreen as Screen, EmptyCard, parentStyles, InfoCard } from "@/com
 import { useChildMode } from "@/lib/child-mode";
 import { supabase } from "@/lib/supabase";
 
-/** Veli telefonunda çocuk moduna giriş: çocuk seçimi + çocuk PIN'i (veli PIN'i tanımlı olmalı). */
+// Generated database types predate the D2 RPC.
+const rpc = supabase.rpc.bind(supabase) as unknown as (name: string) => PromiseLike<{ data: unknown; error: { message: string } | null }>;
+
+/** Veli telefonunda çocuk moduna giriş: çocuk seçimi + (varsa) çocuk PIN'i; veli PIN'i tanımlı olmalı. */
 export default function ChildModeEntryScreen() {
   const { t } = useTranslation();
   const { enter } = useChildMode();
@@ -40,18 +43,32 @@ export default function ChildModeEntryScreen() {
     },
   });
 
+  // D2: same rule as the server (verify_child_pin): a child without a PIN enters by choosing the profile.
+  const pinStatus = useQuery({
+    queryKey: ["child_mode_pin_status"],
+    queryFn: async () => {
+      const { data, error: rpcError } = await rpc("child_mode_pin_status");
+      if (rpcError) throw rpcError;
+      return new Map((data as { child_id: string; pin_set: boolean }[]).map((row) => [row.child_id, row.pin_set]));
+    },
+  });
+
   const selected = chosen ?? (children.data?.length === 1 ? children.data[0] : null);
+  // Unknown (still loading or failed) → ask for the PIN; the server stays the authority either way.
+  const noPin = !!selected && pinStatus.data?.get(selected.id) === false;
 
   async function submit() {
-    if (busy || !selected || !/^\d{4}$/.test(pin)) return;
+    if (busy || !selected || (!noPin && !/^\d{4}$/.test(pin))) return;
     setBusy(true);
     setError(null);
     try {
-      const { data: ok, error: rpcError } = await supabase.rpc("verify_child_pin", { p_child_id: selected.id, p_pin: pin });
+      const { data: ok, error: rpcError } = await supabase.rpc("verify_child_pin", { p_child_id: selected.id, p_pin: noPin ? "" : pin });
       if (rpcError) throw rpcError;
       if (!ok) {
-        setError(new Error(t("child.wrongPin")));
+        // A PIN was set meanwhile on another phone: switch to the PIN entry.
+        setError(new Error(t(noPin ? "d2.childMode.pinAdded" : "child.wrongPin")));
         setPin("");
+        if (noPin) void pinStatus.refetch();
         return;
       }
       await enter(selected);
@@ -76,7 +93,7 @@ export default function ChildModeEntryScreen() {
     <Screen title={selected ? t("child.hello", { name: selected.name }) : t("parentV5.childModeTitle")} subtitle={t("parentV5.childModeSubtitle")}
       loading={children.isLoading || parentPinSet.isLoading} error={children.error ?? parentPinSet.error} onRetry={() => { void children.refetch(); void parentPinSet.refetch(); }}>
       {children.data?.length === 0 ? <EmptyCard title={t("parentV5.noChildren")}><Button title={t("parent.menu")} onPress={() => router.push("/parent/menu")} /></EmptyCard> : null}
-      {!selected ? <InfoCard title={t("unified.samePhone")} body={t("u02.childMode.noPairing")} /> : null}
+      {!selected ? <InfoCard title={t("unified.samePhone")} body={t("d2.childMode.intro")} /> : null}
       {!selected ? (
         <View className="flex-row flex-wrap gap-4">
           {children.data?.map((child) => (
@@ -97,12 +114,18 @@ export default function ChildModeEntryScreen() {
         <>
           <View style={{ alignItems: "center", gap: 8 }}>
             <Avatar slug={selected.avatar} size={72} />
-            <Text style={[parentStyles.muted, { textAlign: "center" }]}>{t("experience.pin.prompt")}</Text>
+            {noPin ? null : <Text style={[parentStyles.muted, { textAlign: "center" }]}>{t("experience.pin.prompt")}</Text>}
           </View>
-          <PinEntry label={t("childV5.pinLabel")} value={pin} onChange={setPin} disabled={busy} onSubmit={() => void submit()} />
+          {noPin ? (
+            <View testID="child-mode-no-pin">
+              <InfoCard title={t("d2.childMode.noPinTitle")} body={t("d2.childMode.noPinBody", { name: selected.name })} />
+            </View>
+          ) : (
+            <PinEntry label={t("childV5.pinLabel")} value={pin} onChange={setPin} disabled={busy || pinStatus.isLoading} onSubmit={() => void submit()} />
+          )}
           <ErrorText error={error} />
-          <Button size="child" title={t("unified.enterMyWorld")} loading={busy} disabled={pin.length !== 4} onPress={submit} />
-          <PinRecovery audience="child" />
+          <Button size="child" testID="child-mode-enter" title={t("unified.enterMyWorld")} loading={busy || pinStatus.isLoading} disabled={!noPin && pin.length !== 4} onPress={submit} />
+          {noPin ? null : <PinRecovery audience="child" />}
           <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => { if (children.data?.length === 1) router.back(); else setSelected(null); setPin(""); setError(null); }} />
         </>
       )}

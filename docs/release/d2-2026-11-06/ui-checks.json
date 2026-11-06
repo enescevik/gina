@@ -1,0 +1,51 @@
+{
+  "environment": "disposable-local-real-auth-rest-realtime",
+  "viewports": {
+    "phone": {
+      "width": 390,
+      "height": 844
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024
+    }
+  },
+  "results": [
+    {
+      "check": "pinless_child_enters_directly_on_parent_phone",
+      "passed": true
+    },
+    {
+      "check": "pin_child_uses_shared_pin_entry",
+      "passed": true
+    },
+    {
+      "check": "pin_added_meanwhile_switches_to_pin_entry",
+      "passed": true
+    },
+    {
+      "check": "closed_tablet_shows_receipt_on_open_before_child_area",
+      "passed": true
+    },
+    {
+      "check": "reject_on_open_revokes_and_returns_to_pairing",
+      "passed": true
+    },
+    {
+      "check": "parent_gets_inbox_note_without_personal_data",
+      "passed": true
+    },
+    {
+      "check": "device_token_gate_shows_card_then_remembers_continue",
+      "passed": true
+    },
+    {
+      "check": "no_card_after_undo_window",
+      "passed": true
+    },
+    {
+      "check": "no_runtime_errors_overflow_or_raw_keys",
+      "passed": true
+    }
+  ]
+}
