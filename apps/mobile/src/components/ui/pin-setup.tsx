@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
-import { Field } from "./field";
+import { PinEntry } from "./pin-entry";
 import { Button } from "./button";
 import { ErrorText } from "./screen";
 import { parentStyles } from "./parent-screen";
@@ -47,42 +47,42 @@ export function PinSetup({ childId, name, onState }: {
     onState?.({ dirty: false, busy: false });
   }, [onState]);
   const valid = /^\d{4}$/.test(pin) && pin === confirmation;
+  const mismatch = confirmation.length === 4 && confirmation !== pin;
   return (
     <View style={{ gap: 12 }}>
       <Text style={parentStyles.muted}>
         {t(childId ? "unified.childPinHelp" : "unified.parentPinHelp")}
       </Text>
-      <Field
+      <PinEntry
+        compact
         label={t(childId ? "parentV5.childPinLabel" : "parentV5.newParentPin", {
           name,
         })}
-        keyboardType="number-pad"
-        secureTextEntry
-        maxLength={4}
-        autoComplete="off"
-        editable={!save.isPending}
+        disabled={save.isPending}
         value={pin}
-        onChangeText={(value) => {
-          setPin(value.replace(/\D/g, ""));
+        onChange={(value) => {
+          setPin(value);
           save.reset();
         }}
       />
-      <Field
+      <PinEntry
+        compact
         label={t("experience.confirmPin")}
-        keyboardType="number-pad"
-        secureTextEntry
-        maxLength={4}
-        autoComplete="off"
-        editable={!save.isPending}
+        disabled={save.isPending}
         value={confirmation}
-        error={confirmation.length === 4 && confirmation !== pin
-          ? t("experience.pinMismatch")
-          : null}
-        onChangeText={(value) => {
-          setConfirmation(value.replace(/\D/g, ""));
+        invalid={mismatch}
+        onChange={(value) => {
+          setConfirmation(value);
           save.reset();
         }}
       />
+      {mismatch
+        ? (
+          <Text accessibilityRole="alert" style={{ fontFamily: "Nunito_600SemiBold", color: "#A43135", fontSize: 15 }}>
+            {t("experience.pinMismatch")}
+          </Text>
+        )
+        : null}
       <Button
         variant="secondary"
         title={t("parent.savePin")}

@@ -18,6 +18,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { Pressable } from "@/components/ui/pressable";
 import { Avatar } from "@/components/avatar";
 import { ErrorText } from "@/components/ui/screen";
+import { DeviceAccessSummary } from "@/components/device/device-access-summary";
 import { type DeviceAccess, deviceAccess } from "@/lib/family-experience";
 import { supabase } from "@/lib/supabase";
 
@@ -295,7 +296,14 @@ function DeviceForm({ data }: { data: DeviceAccess }) {
             : null}
         </View>
       </View>
-      <ErrorText error={save.error} />
+      {/device_not_found|forbidden/.test(String((save.error as { message?: string } | null)?.message ?? ""))
+        ? (
+          <InfoCard
+            title={t("u02.access.goneTitle")}
+            body={t("u02.access.goneBody")}
+          />
+        )
+        : <ErrorText error={save.error} />}
       {save.isSuccess
         ? (
           <InfoCard
@@ -304,18 +312,11 @@ function DeviceForm({ data }: { data: DeviceAccess }) {
           />
         )
         : null}
-      <InfoCard
-        title={t("experience.deviceSummary")}
-        body={selected.length
-          ? t(
-            pin ? "experience.deviceSummaryPin" : "experience.deviceSummaryNoPin",
-            {
-              names: data.children.filter((c) => selected.includes(c.id)).map((
-                c,
-              ) => c.name).join(", "),
-            },
-          )
-          : t("experience.noChildSelected")}
+      <DeviceAccessSummary
+        personal={personal}
+        pinRequired={pin}
+        allowed={data.children.filter((c) => selected.includes(c.id))}
+        dirty={savedSnapshot !== snapshot}
       />
       <Button
         title={t("common.save")}
@@ -332,7 +333,7 @@ function DeviceForm({ data }: { data: DeviceAccess }) {
         variant="ghost"
         title={t("common.back")}
         disabled={busy}
-        onPress={() => router.back()}
+        onPress={() => (router.canGoBack() ? router.back() : router.replace("/parent/menu?section=devices"))}
       />
       <DecisionSheet
         visible={!!leave}

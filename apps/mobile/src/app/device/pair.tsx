@@ -1,19 +1,26 @@
 import {ConnectionMoment} from "@/components/ui/quiet-motion";
-import { router, useFocusEffect } from "expo-router";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AppState, Text, View } from "react-native";
+import * as Linking from "expo-linking";
+import { PairingQr } from "@/components/device/pairing-qr";
+import { PairingSteps } from "@/components/device/pairing-steps";
 import { Field } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
-import { ParentScreen, parentStyles, InfoCard } from "@/components/ui/parent-screen";
+import { InfoCard, ParentScreen, parentStyles } from "@/components/ui/parent-screen";
 import { ErrorText } from "@/components/ui/screen";
 import { refreshClaims, useSession } from "@/lib/session";
 import { unregisterPush } from "@/lib/push";
 import { supabase } from "@/lib/supabase";
 
+/** The QR carries only the short-lived 6-digit code inside an app link; no names or family data. */
+const pairingLink = (code: string) => Linking.createURL("/parent/pair-device", { queryParams: { code } });
+
 export default function PairScreen() {
   const { t } = useTranslation();
   const { session, claims, loading, isAnonymous } = useSession();
+  const { revoked } = useLocalSearchParams<{ revoked?: string }>();
   const [deviceName,setDeviceName] = useState(t("unified.defaultDeviceName"));
   const [pairing, setPairing] = useState<{ code: string; expires: number } | null>(null);
   const [remaining, setRemaining] = useState(0);
@@ -63,17 +70,28 @@ export default function PairScreen() {
     catch (e) { leaving.current = false; setError(e); } finally { setBusy(false); }
   }
   return <ParentScreen navigation={false} title={t("unified.pairTitle")} subtitle={t("unified.pairBody")}>
+    {revoked === "1" && !pairing ? <InfoCard title={t("u02.revoked.title")} body={t("u02.revoked.body")} /> : null}
     <ConnectionMoment status={pairing && remaining ? "waiting" : "idle"}/>
     {!pairing ? <Field label={t("unified.deviceName")} hint={t("unified.deviceNameHint")} value={deviceName} onChangeText={setDeviceName} maxLength={60} editable={!busy}/> : null}
-    {pairing ? <View style={[parentStyles.card, { alignItems: "center", paddingVertical: 32 }]}>
-      <Text selectable style={{ fontFamily: "Nunito_700Bold", fontSize: 44, letterSpacing: 5, color: remaining ? "#6042DE" : "#625C85" }}>{pairing.code}</Text>
-      <Text style={[parentStyles.copy, { textAlign: "center" }]}>{t(remaining ? "device.waiting" : "accountV5.codeExpired")}</Text>
-      {remaining ? <Text style={parentStyles.muted}>{t("accountV5.codeRemaining", { time: `${Math.floor(remaining / 60)}:${String(remaining % 60).padStart(2, "0")}` })}</Text> : null}
+    {pairing && remaining ? <View testID="pairing-active" style={[parentStyles.card, { alignItems: "center", paddingVertical: 28 }]}>
+      <Text style={[parentStyles.copy, { textAlign: "center", fontFamily: "Nunito_800ExtraBold" }]}>{t("u02.pair.scanTitle")}</Text>
+      <PairingQr value={pairingLink(pairing.code)} label={t("u02.pair.qrLabel")} />
+      <Text style={[parentStyles.muted, { textAlign: "center" }]}>{t("u02.pair.orType")}</Text>
+      <Text selectable accessibilityLabel={t("u02.pair.codeLabel", { code: pairing.code.split("").join(" ") })} style={{ fontFamily: "Nunito_700Bold", fontSize: 44, letterSpacing: 5, color: "#6042DE" }}>{pairing.code}</Text>
+      <View accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: 600, now: remaining }} style={{ width: "100%", maxWidth: 320, height: 8, borderRadius: 4, backgroundColor: "#EEE8FA", overflow: "hidden" }}>
+        <View style={{ width: `${Math.round((remaining / 600) * 100)}%`, height: 8, backgroundColor: remaining > 60 ? "#6042DE" : "#C9534F" }} />
+      </View>
+      <Text style={parentStyles.muted}>{t("accountV5.codeRemaining", { time: `${Math.floor(remaining / 60)}:${String(remaining % 60).padStart(2, "0")}` })}</Text>
+      <Text style={[parentStyles.muted, { textAlign: "center" }]}>{t("u02.pair.qrPrivacy")}</Text>
+    </View> : null}
+    {pairing && !remaining ? <View testID="pairing-expired" accessibilityLiveRegion="polite" style={[parentStyles.card, { alignItems: "center", gap: 12 }]}>
+      <Text style={[parentStyles.title, { textAlign: "center", fontSize: 21 }]}>{t("u02.pair.expiredTitle")}</Text>
+      <Text style={[parentStyles.copy, { textAlign: "center" }]}>{t("u02.pair.expiredBody")}</Text>
     </View> : null}
     {!pairing || !remaining ? <Button title={t(pairing ? "accountV5.newCode" : "unified.pairCodeAction")} disabled={!isAnonymous} loading={busy} onPress={requestCode} /> : null}
     {!session && error ? <Button title={t("common.retry")} onPress={authenticate} loading={busy} /> : null}
     <ErrorText error={error} />
-    <InfoCard title={t("unified.pairChildHelp")} steps={[t("unified.pairChildStep1"),t("unified.pairChildStep2"),t("unified.pairChildStep3")]} />
+    <PairingSteps current={pairing && remaining ? 3 : 1} />
     <Button variant="ghost" title={t("device.thisIsParentPhone")} disabled={busy} onPress={exit} />
   </ParentScreen>;
 }

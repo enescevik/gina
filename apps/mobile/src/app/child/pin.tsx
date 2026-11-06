@@ -1,26 +1,31 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import {Text,View} from "react-native";
+import { Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { InfoCard } from "@/components/ui/parent-screen";
 
 import { Button } from "@/components/ui/button";
-import { PinEntry } from "@/components/ui/pin-entry";
+import { PinEntry, PinRecovery } from "@/components/ui/pin-entry";
 import { ErrorText } from "@/components/ui/screen";
 import { ChildScreen as Screen } from "@/components/room/child-screen";
 import { refreshClaims } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
+const isRevoked = (error: unknown) => {
+  const detail = (error ?? {}) as { code?: string; message?: string };
+  return detail.code === "42501" || /forbidden/.test(detail.message ?? "");
+};
+
 export default function ChildPinScreen() {
   const { t } = useTranslation();
   const { childId, name } = useLocalSearchParams<{ childId: string; name?: string }>();
-  const [help,setHelp]=useState(false);
   const [pin, setPin] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
+  const [revoked, setRevoked] = useState(false);
 
   async function submit() {
-    if (busy || !childId || !/^\d{4}$/.test(pin)) return;
+    if (busy || revoked || !childId || !/^\d{4}$/.test(pin)) return;
     setBusy(true);
     setError(null);
     try {
@@ -34,22 +39,36 @@ export default function ChildPinScreen() {
       await refreshClaims();
       router.replace("/child/today");
     } catch (e) {
-      setError(e);
+      setPin("");
+      // Access removed while this screen was open: say so calmly, then let the layout
+      // move the device back to pairing once the refreshed session has no device role.
+      if (isRevoked(e)) {
+        // Claims are refreshed only when the child taps on, so this message stays readable.
+        setRevoked(true);
+      } else setError(e);
     } finally {
       setBusy(false);
     }
   }
 
+  if (revoked) {
+    return (
+      <Screen tone="child" surface="access" title={t("u02.revoked.title")}>
+        <InfoCard title={t("u02.revoked.title")} body={t("u02.revoked.body")} />
+        <Button size="child" title={t("u02.revoked.action")} onPress={() => { void refreshClaims().catch(() => undefined).finally(() => router.replace({ pathname: "/device/pair", params: { revoked: "1" } })); }} />
+      </Screen>
+    );
+  }
+
   return (
     <Screen tone="child" surface="access" title={name ? t("child.hello", { name }) : t("child.enterPin")}>
-      <View style={{alignItems:"center",gap:12}}>
-        <Text style={{fontFamily:"Nunito_600SemiBold",fontSize:17,color:"#625C85",textAlign:"center"}}>{t('experience.pin.prompt')}</Text>
+      <View style={{ alignItems: "center", gap: 12 }}>
+        <Text style={{ fontFamily: "Nunito_600SemiBold", fontSize: 17, color: "#625C85", textAlign: "center" }}>{t("experience.pin.prompt")}</Text>
       </View>
-      <PinEntry label={t("childV5.pinLabel")} value={pin} onChange={setPin} disabled={busy} onSubmit={()=>void submit()}/>
+      <PinEntry label={t("childV5.pinLabel")} value={pin} onChange={setPin} disabled={busy} onSubmit={() => void submit()} />
       <ErrorText error={error} />
       <Button size="child" title={t("unified.enterMyWorld")} loading={busy} disabled={!childId || pin.length !== 4} onPress={submit} />
-      <Button variant="ghost" title={t('experience.pin.help')} onPress={()=>setHelp(!help)}/>
-      {help?<InfoCard title={t("unified.pinHelpTitle")} body={t("unified.childPinInstruction")}/>:null}
+      <PinRecovery audience="child" />
       <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => router.back()} />
     </Screen>
   );
