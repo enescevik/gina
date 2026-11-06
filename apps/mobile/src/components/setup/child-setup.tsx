@@ -397,7 +397,7 @@ export function ChildSetup({
                           accessibilityRole="button"
                           accessibilityState={{
                             selected: task.days.includes(day),
-                          }}
+                          }} aria-pressed={task.days.includes(day)}
                           onPress={() =>
                             setTasks(
                               tasks.map((item) =>

@@ -262,7 +262,7 @@ export function NotebookWorkspace({
                 <Pressable
                   key={key}
                   accessibilityRole="tab"
-                  accessibilityState={{ selected: tab === key }}
+                  accessibilityState={{ selected: tab === key }} aria-selected={tab === key}
                   onPress={() => setTab(key)}
                   style={[s.tab, shortHeight && { minHeight: 40 }, tab === key && { backgroundColor: p.purple }]}
                 >

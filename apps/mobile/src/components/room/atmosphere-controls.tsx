@@ -36,7 +36,7 @@ export function AtmosphereControls({
             accessibilityLabel={t(
               audio.listening ? "atmosphere.soundOff" : "atmosphere.soundOn",
             )}
-            accessibilityState={{ selected: audio.listening }}
+            accessibilityState={{ selected: audio.listening }} aria-pressed={audio.listening}
             onPress={audio.toggle}
             style={{
               minWidth: 48,

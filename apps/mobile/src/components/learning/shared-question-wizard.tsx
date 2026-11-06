@@ -319,7 +319,7 @@ export function SharedQuestionWizard(
             key={i}
             accessibilityRole="tab"
             accessibilityLabel={t("sharedQuestions.questionN", { n: i + 1 })}
-            accessibilityState={{ selected: active === i }}
+            accessibilityState={{ selected: active === i }} aria-selected={active === i}
             onPress={() => {
               setActive(i);
               setDetails(false);
@@ -559,7 +559,7 @@ export function SharedQuestionWizard(
               accessibilityState={{
                 selected: step === i,
                 disabled: i > step || locked,
-              }}
+              }} aria-pressed={step === i}
               disabled={i > step || locked}
               onPress={() => move(i)}
               style={[s.step, step === i && { backgroundColor: p.purple }, { paddingHorizontal: wide ? 16 : 8, gap: wide ? 8 : 4 }]}

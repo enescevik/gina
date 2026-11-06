@@ -128,7 +128,7 @@ export function DrawingPad(
                 disabled={busy}
                 accessibilityRole="button"
                 accessibilityLabel={t(`sources.colors.${i}`)}
-                accessibilityState={{ selected: c === color }}
+                accessibilityState={{ selected: c === color }} aria-pressed={c === color}
                 onPress={() => setColor(c)}
                 style={{
                   width: 50,

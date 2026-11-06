@@ -596,7 +596,7 @@ export function ParentReviewWorkspace(
                 <Pressable
                   key={key}
                   accessibilityRole="tab"
-                  accessibilityState={{ selected: tab === key }}
+                  accessibilityState={{ selected: tab === key }} aria-selected={tab === key}
                   onPress={() => setTab(key)}
                   style={[s.tab, tab === key && { backgroundColor: p.purple }]}
                 >

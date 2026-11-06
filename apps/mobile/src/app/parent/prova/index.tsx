@@ -221,7 +221,7 @@ export default function ParentProvaScreen() {
             <Pressable
               key={v}
               accessibilityRole="tab"
-              accessibilityState={{ selected: tab === v }}
+              accessibilityState={{ selected: tab === v }} aria-selected={tab === v}
               onPress={() => setTab(v)}
               style={{
                 flexShrink: 1,
@@ -415,7 +415,7 @@ export default function ParentProvaScreen() {
           <Pressable
             key={key}
             accessibilityRole="button"
-            accessibilityState={{ selected: key === "prova" }}
+            accessibilityState={{ selected: key === "prova" }} aria-current={key === "prova" ? "page" : undefined}
             onPress={() => key !== "prova" && router.navigate(path)}
             style={{
               flex: 1,

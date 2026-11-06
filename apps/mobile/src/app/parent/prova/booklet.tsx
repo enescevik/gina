@@ -198,7 +198,7 @@ export default function ProvaBookletScreen() {
 
       <View className="flex-row gap-2">
         {(["library", "exam"] as const).map((s) => (
-          <Pressable key={s} accessibilityRole="button" onPress={() => setSource(s)} accessibilityState={{ selected: source === s }} className={chip(source === s)}>
+          <Pressable key={s} accessibilityRole="button" onPress={() => setSource(s)} accessibilityState={{ selected: source === s }} aria-pressed={source === s} className={chip(source === s)}>
             <Text className={chipText(source === s)}>{t(`prova.booklet.source.${s}`)}</Text>
           </Pressable>
         ))}
@@ -219,7 +219,7 @@ export default function ProvaBookletScreen() {
                       setGrade(String(s.grade));
                       setTopics([]);
                     }}
-                    accessibilityState={{ selected: active }} className={chip(active)}
+                    accessibilityState={{ selected: active }} aria-pressed={active} className={chip(active)}
                   >
                     <Text className={chipText(active)}>
                       {s.subject} · {s.grade}. {t("prova.gradeWord")}
@@ -242,7 +242,7 @@ export default function ProvaBookletScreen() {
               <Text className="font-body-bold text-sm text-ink">{t("prova.booklet.pickTopics")}</Text>
               <View className="flex-row flex-wrap gap-2">
                 {availableTopics.map((topic) => (
-                  <Pressable key={topic} accessibilityRole="button" onPress={() => toggleTopic(topic)} accessibilityState={{ selected: topics.includes(topic) }} className={chip(topics.includes(topic))}>
+                  <Pressable key={topic} accessibilityRole="button" onPress={() => toggleTopic(topic)} accessibilityState={{ selected: topics.includes(topic) }} aria-pressed={topics.includes(topic)} className={chip(topics.includes(topic))}>
                     <Text className={chipText(topics.includes(topic))}>{topic}</Text>
                   </Pressable>
                 ))}

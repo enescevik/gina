@@ -573,7 +573,7 @@ export default function ProvaBuilder() {
                       accessibilityState={{
                         selected: draft.step === step,
                         disabled: locked || step > draft.step,
-                      }}
+                      }} aria-pressed={draft.step === step}
                       disabled={locked || step > draft.step}
                       onPress={() => void navigateStep(step)}
                       style={[
@@ -649,7 +649,7 @@ export default function ProvaBuilder() {
                                   accessibilityRole="button"
                                   accessibilityState={{
                                     selected: draft.childId === c.id,
-                                  }}
+                                  }} aria-pressed={draft.childId === c.id}
                                   onPress={() =>
                                     update({
                                       childId: c.id,

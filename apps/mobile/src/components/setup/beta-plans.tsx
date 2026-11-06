@@ -47,7 +47,7 @@ export function BetaPlans() {
             accessibilityState={{
               selected: access.data?.selected_plan === plan,
               disabled: change.isPending,
-            }}
+            }} aria-pressed={access.data?.selected_plan === plan}
             disabled={change.isPending}
             onPress={() => change.mutate(plan)}
             style={{
