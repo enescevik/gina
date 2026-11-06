@@ -76,7 +76,7 @@ Her senaryodan sonra kontrol: uygulamada Abonelik ekranındaki paket + Supabase 
 
 Ayrıntılı eksik listesi ve çelişki tablosu: [legal-review.md](legal-review.md). Özet sıra:
 
-1. **İşletme bilgileri** (veri sorumlusu unvanı, adres, MERSİS/VKN, KEP, destek e-postası, yürürlük tarihi, fiyat/ürün kararı) → Enes doldurur.
+1. **İşletme bilgileri** → Enes doldurur. Hukuki kimlik kararı verildi: bireysel geliştirici (şahıs) olarak başlanır; şirket kurmak yayının ön şartı değildir (DECISIONS.md). Girilecek değerler: yasal ad soyad (veri sorumlusu), adres, VKN/TCKN (MERSİS uygulanmaz), varsa KEP, destek e-postası, yürürlük tarihi, fiyat/ürün kararı.
 2. **Hukuk uzmanı incelemesi** → `[AVUKAT …]` işaretli sorular (69 ayrı soru) ve "Uzman incelemesi gerekir" notları; onay kaydı (kim, tarih, hangi sürüm) `docs/legal/` değişiklik geçmişine.
 3. **Yayın** → onaylı sürüm `https://<alan adı>/legal/…` altında (uygulama `/legal/abonelik-kosullari` ve `/legal/gizlilik-politikasi` yollarını kullanıyor).
 4. **Bağlama** → EAS build ortamına `EXPO_PUBLIC_LEGAL_BASE_URL=https://<alan adı>`; bu olmadan satın alma kapalı kalır.
