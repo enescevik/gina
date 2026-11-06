@@ -34,7 +34,7 @@ Saatler Europe/Istanbul. Koordinatör: Claude (oturum modeli claude-opus-5-5; al
 | Kart | Durum | Not |
 |---|---|---|
 | C00 | TAMAM (okuma) | Bu bölüm |
-| C01 | YAPILIYOR | |
+| C01 | KOD HAZIR (sunucu) — UI takibi açık | Main `b8bef9e`. Okul onayı/beyan/köken/resmî doğrulama ayrı; arşivli takvim kaydı düzenleme reddi; haftalık özet çocuk eşleme hatası düzeltildi; eski sıfır puan önizleme/uygulama/denetim RPC'leri. pgTAP 4.104/0 (İst+UTC). **Açık (C01-UI):** köken etiketi ekranda yok, eski puan düzeltme ekranı yok, resmî doğrulama yönetim akışı yok, takvimde `event_archived` özel mesajı (C02 sonrası). |
 | C02 | YAPILIYOR | |
 | C03 | AÇIK | C02 ile dosya çakışması nedeniyle C02 birleşince |
 | C04 | YAPILIYOR | |
@@ -47,3 +47,4 @@ Saatler Europe/Istanbul. Koordinatör: Claude (oturum modeli claude-opus-5-5; al
 | K01 / R02 / WORLD-01 | BEKLİYOR | Sıra korunur |
 
 ## Günlük
+| 12:55 | C01 | ajan → main `b8bef9e` | KOD HAZIR | Ayrıntı: `docs/release/c01-2026-11-06/README.md`. Yayın sırası: migration önce, istemci sonra. |
