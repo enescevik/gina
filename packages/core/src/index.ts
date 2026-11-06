@@ -21,6 +21,7 @@ export * from "./notebook";
 export * from "./notebook-tokens";
 export * from "./prova-booklet";
 export * from './prova-draft';
+export * from "./rubric-scale";
 export * from "./help";
 export * from './operator-help';
 export * from './help-articles';
