@@ -166,4 +166,3 @@ declare enabled boolean;ai_on boolean;lim int;used int;unfinished int;stuck int;
   'unfinished_calls',unfinished,'queue',queue,'providers',providers,'cron',cronj,'cron_runs',runs,'kicks',kicks,'alerts',to_jsonb(alerts));
 end;$$;
 revoke all on function gina.content_prereview_health() from public,anon,authenticated,service_role;
-
