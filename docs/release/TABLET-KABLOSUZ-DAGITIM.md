@@ -6,7 +6,9 @@ Bu akış çocuk hesabının kullanamadığı TestFlight yerine, geliştirici he
 
 https://gina-aile-enescevik--tablet.expo.app
 
-**6 Kasım 2026 güncel (C14):** **0.1.0 (28)**, canlı dağıtım `m8aeavsrur`, IPA SHA-256 `116a7fad02a3…`, tek kayıtlı cihaz; önceki 27 dağıtımı `7hteqzifmy`.
+**6 Kasım 2026 güncel (C14b):** **0.1.0 (29)**, canlı dağıtım `b9q067lwk9`, kaynak `8fb2eef`, IPA SHA-256 `d2d254c663c3…`; önceki 28 dağıtımı `m8aeavsrur` (geri dönüş: `eas deploy:alias --alias tablet --id m8aeavsrur`). Canlı alias doğrulaması dağıtımdan hemen sonra CDN gecikmesiyle bir kez düştü, ardından `verify --target tablet` temiz.
+
+**6 Kasım 2026 (C14):** **0.1.0 (28)**, canlı dağıtım `m8aeavsrur`, IPA SHA-256 `116a7fad02a3…`, tek kayıtlı cihaz; önceki 27 dağıtımı `7hteqzifmy`.
 
 **6 Kasım 2026 (önceki):** **0.1.0 (27)**, TestFlight 27 ile aynı uygulama kodundan Ad Hoc paket; [yayın raporu](tablet-27-2026-11-06/README.md), canlı dağıtım `7hteqzifmy`; fiziksel iPad kurulum onayı kullanıcıda.
 

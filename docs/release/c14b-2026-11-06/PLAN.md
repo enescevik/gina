@@ -67,6 +67,9 @@ Sonuç: 28 çalışmaya devam eder; zorunlu güncelleme yok, 29 aynı gün dağ�
 | Web | https://1c0cf214.gina-web.pages.dev, canlı hash eşleşti |
 | Yönetim | https://30000ffb.gina-backoffice.pages.dev, Access 12/12 korumalı |
 | Sağlık | `health-check.mjs --strict` ok, başarısız/atlanan 0 |
+| iOS 29 | yerel EAS store build, SHA-256 `a5ad4764cad2…`, TestFlight gönderimi `d9628cbd` |
+| Tablet 29 | dağıtım `b9q067lwk9` → `tablet` alias, hash doğrulandı ([kayıt](../tablet-29-2026-11-06/release.json)) |
+| Ek düzeltme | `prova-grade/v6-alternatives-full` (alternatif cevap tam puan), `8fb2eef`, yeniden dağıtıldı; canlıda ölçülmedi |
 | Canlı AI ([ai/](ai/)) | 3 ücretli çağrı (tavan 4), sentetik hesap silindi, aile kapsamlı satır 0 |
 
 Canlı AI bulguları:
