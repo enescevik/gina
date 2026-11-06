@@ -430,6 +430,13 @@ verify_jwt = false
 [functions.delete-account]
 verify_jwt = true
 
+[functions.apple-token]
+verify_jwt = true
+
+# x-cron-secret (APPLE_REVOCATION_SECRET) from pg_cron; no user JWT.
+[functions.apple-revocation-worker]
+verify_jwt = false
+
 [functions.room-weather]
 verify_jwt = true
 
