@@ -1,0 +1,36 @@
+{
+  "grade": 7,
+  "subject": "Matematik",
+  "locale": "tr",
+  "count": 4,
+  "outcomes": [
+    {
+      "id": "outcome-50e68635c16b97a9d3b14cf2",
+      "code": "MAT.7.1.3",
+      "text": "MAT.7.1.3. Rasyonel sayıların karşılaştırma ve sıralama ilişkilerini yorumlayabilme",
+      "evidence": {
+        "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6",
+        "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+        "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+        "sheet": "7.sınıf",
+        "cell": "C9",
+        "count_cell": "D9"
+      }
+    },
+    {
+      "id": "outcome-5c9c24393ec414e61ff500c9",
+      "code": "MAT.7.1.4",
+      "text": "MAT.7.1.4. Rasyonel sayılar ve işlemler içeren gerçek yaşam problemlerini çözebilme",
+      "evidence": {
+        "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6",
+        "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+        "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+        "sheet": "7.sınıf",
+        "cell": "C10",
+        "count_cell": "D10"
+      }
+    }
+  ],
+  "mapping_status": "proposed_pending_subject_review",
+  "rationale": "7. sınıf Matematik için yerel envanterde taslak yok; canlı paket envanteri boş. İki çıktıda ikişer soru; tam yıl kapsamı veya resmi sınav değildir."
+}

@@ -1,0 +1,466 @@
+{
+  "p_request_id": "9e2163f4-2c0b-4b82-8ff1-374fb8368a53",
+  "p_bundle": {
+    "schema": "gina.library-import.v1",
+    "package_key": "gina-g7-math-rational-chain-20261107",
+    "revision": 1,
+    "previous_hash": null,
+    "title": "7. sınıf Matematik · Rasyonel sayılar · İlk AI zincir partisi (4 taslak)",
+    "grade": 7,
+    "subject": "Matematik",
+    "provenance": {
+      "locale": "tr",
+      "generation_run_id": "4a3b17a9-c10b-45bf-9408-94ee5663eac2",
+      "chain_run_id": "4a6b0087-0729-4caf-ab36-914ebdc6631c",
+      "model": "claude-sonnet-5-5",
+      "provider": "anthropic",
+      "prompt_version": "library-first-batch/v2-compatible-schema",
+      "prompt_sha256": "ae88ab594c1d2e2030c5aa842d75c606758216aee046d4c66c8008a0bccd2874",
+      "curriculum_reference": [
+        {
+          "id": "outcome-50e68635c16b97a9d3b14cf2",
+          "code": "MAT.7.1.3",
+          "text": "MAT.7.1.3. Rasyonel sayıların karşılaştırma ve sıralama ilişkilerini yorumlayabilme",
+          "evidence": {
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+            "cell": "C9",
+            "sheet": "7.sınıf",
+            "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+            "count_cell": "D9",
+            "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6"
+          }
+        },
+        {
+          "id": "outcome-5c9c24393ec414e61ff500c9",
+          "code": "MAT.7.1.4",
+          "text": "MAT.7.1.4. Rasyonel sayılar ve işlemler içeren gerçek yaşam problemlerini çözebilme",
+          "evidence": {
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+            "cell": "C10",
+            "sheet": "7.sınıf",
+            "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+            "count_cell": "D10",
+            "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6"
+          }
+        }
+      ],
+      "mapping_status": "proposed_pending_subject_review",
+      "human_editorial_approval": null,
+      "intended_use": "review_only_practice_pool_not_official_exam",
+      "input_tokens": 719,
+      "output_tokens": 6995
+    },
+    "assets": [],
+    "sources": [],
+    "questions": [
+      {
+        "key": "q1",
+        "revision": 1,
+        "source_key": null,
+        "student": {
+          "grade": 7,
+          "subject": "Matematik",
+          "topic": "Negatif ve pozitif rasyonel sayıları sıralama",
+          "kind": "open_ended",
+          "difficulty": "orta",
+          "stem": "Şu rasyonel sayılar veriliyor: -0,8; -3/4; 0,6; 5/8; -7/10. Bu sayıları sayı doğrusunda soldan sağa doğru, yani en küçükten en büyüğe sıralayınız. Sıralamanızı gerekçelendiriniz: negatif sayıları kendi aralarında, pozitif sayıları kendi aralarında nasıl karşılaştırdığınızı gösteriniz. Ayrıca sıfıra en uzak olan sayıyı belirtip nedenini açıklayınız.",
+          "choices": []
+        },
+        "teacher": {
+          "correct_key": null,
+          "expected_answer": "-0,8 < -3/4 < -7/10 < 0,6 < 5/8. Sıfıra en uzak sayı -0,8'dir.",
+          "solution": "1) Sayıları ondalık biçime çevirelim: -3/4 = -0,75; 5/8 = 0,625; -7/10 = -0,7; -0,8 ve 0,6 zaten ondalık gösterimdedir. 2) Negatif sayılar sıfırın solunda, pozitif sayılar sağındadır; bu yüzden her negatif sayı her pozitif sayıdan küçüktür. 3) Negatiflerde mutlak değeri büyük olan sayı daha küçüktür: |-0,8| = 0,8; |-0,75| = 0,75; |-0,7| = 0,7 ve 0,8 > 0,75 > 0,7 olduğundan -0,8 < -0,75 < -0,7. 4) Pozitiflerde 0,6 = 0,600 ve 5/8 = 0,625 olduğundan 0,6 < 5/8. 5) Sıralama: -0,8 < -3/4 < -7/10 < 0,6 < 5/8. 6) Sıfıra uzaklıklar 0,8; 0,75; 0,7; 0,6; 0,625 olduğundan en uzak sayı -0,8'dir.",
+          "explanation": "Negatif sayılar pozitiflerden küçüktür. İki negatif sayıdan mutlak değeri büyük olan sayı sayı doğrusunda sıfırdan daha uzakta ve solda olduğu için daha küçüktür. Kesirleri ondalık biçime çevirmek karşılaştırmayı kolaylaştırır.",
+          "common_misconception": "Öğrenciler -0,8 sayısını, 0,8 daha büyük olduğu için -0,7'den büyük sanabilir; negatif sayılarda mutlak değer büyüdükçe sayının küçüldüğünü gözden kaçırırlar.",
+          "next_step": "Farklı paydalı negatif kesirleri ortak paydaya getirerek sıralayan ve sayı doğrusunda gösteren benzer bir çalışma yapılabilir.",
+          "rubric": {
+            "scoring": "Toplam 100 puan. Eşdeğer doğru yöntemler (ondalık, ortak payda, sayı doğrusu) kabul edilir. Bir önceki adımdaki hata sonraki adımlarda tutarlı kullanılırsa aynı hata tekrar cezalandırılmaz. Yazı düzeni veya çözüm hızı değerlendirilmez.",
+            "criteria": [
+              {
+                "id": "k1",
+                "points": 20,
+                "criterion": "Kesirleri uygun biçimde (ondalık veya ortak payda) doğru dönüştürür ya da karşılaştırılabilir hale getirir."
+              },
+              {
+                "id": "k2",
+                "points": 25,
+                "criterion": "Negatif sayıları kendi aralarında doğru sıralar ve mutlak değer ilişkisine dayanan gerekçeyi açıklar."
+              },
+              {
+                "id": "k3",
+                "points": 15,
+                "criterion": "Pozitif sayıları (0,6 ve 5/8) doğru karşılaştırır ve negatiflerin pozitiflerden küçük olduğunu belirtir."
+              },
+              {
+                "id": "k4",
+                "points": 20,
+                "criterion": "Beş sayının tamamını doğru sırada yazar (aynı hata sıralamada tekrar ediyorsa yalnız bir kez puan kırılır)."
+              },
+              {
+                "id": "k5",
+                "points": 20,
+                "criterion": "Sıfıra en uzak sayıyı (-0,8) doğru belirler ve mutlak değerlere dayanarak açıklar."
+              }
+            ],
+            "max_points": 100,
+            "missing_answer": "Yanıt yoksa 0 puan; okunamayan yanıt ayrı inceleme gerektirir.",
+            "review_required": true
+          }
+        },
+        "metadata": {
+          "curriculum": {
+            "id": "outcome-50e68635c16b97a9d3b14cf2",
+            "code": "MAT.7.1.3",
+            "text": "MAT.7.1.3. Rasyonel sayıların karşılaştırma ve sıralama ilişkilerini yorumlayabilme",
+            "evidence": {
+              "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+              "cell": "C9",
+              "sheet": "7.sınıf",
+              "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+              "count_cell": "D9",
+              "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6"
+            },
+            "mapping_status": "proposed_pending_subject_review",
+            "school_track_applicability": "pending_review"
+          },
+          "provenance": {
+            "generator": "ai",
+            "generation_run_id": "4a3b17a9-c10b-45bf-9408-94ee5663eac2",
+            "chain_run_id": "4a6b0087-0729-4caf-ab36-914ebdc6631c",
+            "model": "claude-sonnet-5-5",
+            "provider": "anthropic",
+            "prompt_version": "library-first-batch/v2-compatible-schema"
+          },
+          "difficulty_calibration": "estimated_not_empirical",
+          "human_editorial_approval": null,
+          "response": {
+            "requires_reasoning": true
+          },
+          "depends_on_question_ids": [],
+          "agent_review": {
+            "human_approval": false,
+            "mathematical_check": "passed",
+            "edits": [
+              {
+                "question": "q1",
+                "field": "solution",
+                "before": "1) Sayıları ondalık biçime çevirelim: -3/4 = -0,75; 5/8 = 0,625; diğerleri zaten ondalıktır (-0,8; 0,6; -7/10 = -0,7). 2) Negatif sayılar sıfırın solunda, pozitif sayılar sağındadır; bu yüzden her negatif sayı her pozitif sayıdan küçüktür. 3) Negatiflerde mutlak değeri büyük olan sayı daha küçüktür: |-0,8| = 0,8; |-0,75| = 0,75; |-0,7| = 0,7 ve 0,8 > 0,75 > 0,7 olduğundan -0,8 < -0,75 < -0,7. 4) Pozitiflerde 0,6 = 0,600 ve 5/8 = 0,625 olduğundan 0,6 < 5/8. 5) Sıralama: -0,8 < -3/4 < -7/10 < 0,6 < 5/8. 6) Sıfıra uzaklıklar 0,8; 0,75; 0,7; 0,6; 0,625 olduğundan en uzak sayı -0,8'dir.",
+                "after": "1) Sayıları ondalık biçime çevirelim: -3/4 = -0,75; 5/8 = 0,625; -7/10 = -0,7; -0,8 ve 0,6 zaten ondalık gösterimdedir. 2) Negatif sayılar sıfırın solunda, pozitif sayılar sağındadır; bu yüzden her negatif sayı her pozitif sayıdan küçüktür. 3) Negatiflerde mutlak değeri büyük olan sayı daha küçüktür: |-0,8| = 0,8; |-0,75| = 0,75; |-0,7| = 0,7 ve 0,8 > 0,75 > 0,7 olduğundan -0,8 < -0,75 < -0,7. 4) Pozitiflerde 0,6 = 0,600 ve 5/8 = 0,625 olduğundan 0,6 < 5/8. 5) Sıralama: -0,8 < -3/4 < -7/10 < 0,6 < 5/8. 6) Sıfıra uzaklıklar 0,8; 0,75; 0,7; 0,6; 0,625 olduğundan en uzak sayı -0,8'dir.",
+                "reviewer": "Codex technical/content check; not human editorial approval"
+              }
+            ],
+            "notes": [
+              "Müfredat/sınıf/okul uygulanabilirliği alan editörü incelemesini bekler."
+            ]
+          }
+        }
+      },
+      {
+        "key": "q2",
+        "revision": 1,
+        "source_key": null,
+        "student": {
+          "grade": 7,
+          "subject": "Matematik",
+          "topic": "Negatif kesirleri karşılaştırma ve iki sayı arasında rasyonel sayı bulma",
+          "kind": "open_ended",
+          "difficulty": "orta_ustu",
+          "stem": "a = -5/6, b = -7/9 ve c = -3/4 rasyonel sayıları veriliyor. a) Bu üç sayıyı en küçükten en büyüğe sıralayınız ve işlem yaparak gerekçelendiriniz. b) b ile c sayılarının arasında kalan bir rasyonel sayı bulunuz; bu sayının gerçekten b ile c arasında olduğunu gösteriniz.",
+          "choices": []
+        },
+        "teacher": {
+          "correct_key": null,
+          "expected_answer": "a) -5/6 < -7/9 < -3/4, yani a < b < c. b) Örneğin -55/72 sayısı b ile c arasındadır (-56/72 < -55/72 < -54/72). Bu aralıktaki herhangi bir rasyonel sayı, doğru karşılaştırma gerekçesiyle kabul edilir.",
+          "solution": "a) Paydalar 6, 9 ve 4 olduğundan ortak payda 36'dır. -5/6 = -30/36; -7/9 = -28/36; -3/4 = -27/36. Paydalar eşit olduğundan negatif sayılarda payın mutlak değeri büyük olan sayı daha küçüktür: 30 > 28 > 27 olduğundan -30/36 < -28/36 < -27/36. Sıralama: -5/6 < -7/9 < -3/4. b) b = -28/36 ve c = -27/36 ardışık paylı olduğundan paydayı 2 ile genişletiriz: b = -56/72, c = -54/72. Bu ikisinin arasında -55/72 vardır: -56/72 < -55/72 < -54/72. Dolayısıyla -55/72, b ile c arasında bir rasyonel sayıdır. Farklı doğru cevaplar da olabilir (örneğin -111/144).",
+          "explanation": "Farklı paydalı kesirler ortak paydaya getirilerek karşılaştırılır. Paydaları eşit negatif kesirlerde payın mutlak değeri büyüdükçe sayı küçülür. İki rasyonel sayı arasında sonsuz sayıda rasyonel sayı bulunur; payda genişletilerek aradaki sayı kolayca yazılabilir.",
+          "common_misconception": "Öğrenciler -5/6 sayısını, payı veya paydası büyük diye -3/4'ten büyük sanabilir; ayrıca ardışık paylı kesirler arasında başka sayı olmadığını düşünebilirler.",
+          "next_step": "Aynı sayıların sayı doğrusu üzerinde yaklaşık yerlerini işaretleyip iki sayı arasında birden fazla rasyonel sayı bulma etkinliği yapılabilir.",
+          "rubric": {
+            "scoring": "Toplam 100 puan. Eşdeğer doğru çözümler ve b) için bu aralıktaki herhangi bir doğru rasyonel sayı kabul edilir. Ortak payda hesabındaki bir hata sonraki adımlarda tutarlı kullanılmışsa aynı hata tekrar cezalandırılmaz. Yazı güzelliği ve hız değerlendirilmez.",
+            "criteria": [
+              {
+                "id": "k1",
+                "points": 20,
+                "criterion": "Üç sayıyı uygun bir yöntemle (ortak payda, ondalık gösterim veya sayı doğrusu) doğru karşılaştırılabilir biçimde gösterir."
+              },
+              {
+                "id": "k2",
+                "points": 25,
+                "criterion": "Negatif sayıları doğru karşılaştırır ve kullandığı yönteme uygun gerekçeyi açıklar."
+              },
+              {
+                "id": "k3",
+                "points": 15,
+                "criterion": "a) kısmının sonucunu doğru biçimde (a < b < c) yazar."
+              },
+              {
+                "id": "k4",
+                "points": 25,
+                "criterion": "b ile c arasında geçerli bir rasyonel sayı bulur (paydayı genişletme veya eşdeğer bir yöntem)."
+              },
+              {
+                "id": "k5",
+                "points": 15,
+                "criterion": "Bulduğu sayının b ile c arasında olduğunu karşılaştırarak gösterir."
+              }
+            ],
+            "max_points": 100,
+            "missing_answer": "Yanıt yoksa 0 puan; okunamayan yanıt ayrı inceleme gerektirir.",
+            "review_required": true
+          }
+        },
+        "metadata": {
+          "curriculum": {
+            "id": "outcome-50e68635c16b97a9d3b14cf2",
+            "code": "MAT.7.1.3",
+            "text": "MAT.7.1.3. Rasyonel sayıların karşılaştırma ve sıralama ilişkilerini yorumlayabilme",
+            "evidence": {
+              "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+              "cell": "C9",
+              "sheet": "7.sınıf",
+              "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+              "count_cell": "D9",
+              "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6"
+            },
+            "mapping_status": "proposed_pending_subject_review",
+            "school_track_applicability": "pending_review"
+          },
+          "provenance": {
+            "generator": "ai",
+            "generation_run_id": "4a3b17a9-c10b-45bf-9408-94ee5663eac2",
+            "chain_run_id": "4a6b0087-0729-4caf-ab36-914ebdc6631c",
+            "model": "claude-sonnet-5-5",
+            "provider": "anthropic",
+            "prompt_version": "library-first-batch/v2-compatible-schema"
+          },
+          "difficulty_calibration": "estimated_not_empirical",
+          "human_editorial_approval": null,
+          "response": {
+            "requires_reasoning": true
+          },
+          "depends_on_question_ids": [],
+          "agent_review": {
+            "human_approval": false,
+            "mathematical_check": "passed",
+            "edits": [
+              {
+                "question": "q2",
+                "field": "rubric.criteria.k1",
+                "before": "Üç kesri doğru ortak paydaya getirir (36 veya başka uygun ortak payda).",
+                "after": "Üç sayıyı uygun bir yöntemle (ortak payda, ondalık gösterim veya sayı doğrusu) doğru karşılaştırılabilir biçimde gösterir.",
+                "reviewer": "Codex technical/content check; not human editorial approval"
+              },
+              {
+                "question": "q2",
+                "field": "rubric.criteria.k2",
+                "before": "Negatif kesirleri doğru sıralar ve payların mutlak değerine dayalı gerekçeyi belirtir.",
+                "after": "Negatif sayıları doğru karşılaştırır ve kullandığı yönteme uygun gerekçeyi açıklar.",
+                "reviewer": "Codex technical/content check; not human editorial approval"
+              },
+              {
+                "question": "q2",
+                "field": "explanation",
+                "before": "Farklı paydalı kesirler ortak paydaya getirilerek karşılaştırılır. Negatif kesirlerde payın mutlak değeri büyüdükçe sayı küçülür. İki rasyonel sayı arasında sonsuz sayıda rasyonel sayı bulunur; payda genişletilerek aradaki sayı kolayca yazılabilir.",
+                "after": "Farklı paydalı kesirler ortak paydaya getirilerek karşılaştırılır. Paydaları eşit negatif kesirlerde payın mutlak değeri büyüdükçe sayı küçülür. İki rasyonel sayı arasında sonsuz sayıda rasyonel sayı bulunur; payda genişletilerek aradaki sayı kolayca yazılabilir.",
+                "reviewer": "Codex technical/content check; not human editorial approval"
+              }
+            ],
+            "notes": [
+              "Müfredat/sınıf/okul uygulanabilirliği alan editörü incelemesini bekler."
+            ]
+          }
+        }
+      },
+      {
+        "key": "q3",
+        "revision": 1,
+        "source_key": null,
+        "student": {
+          "grade": 7,
+          "subject": "Matematik",
+          "topic": "Kesirlerle çok adımlı gerçek yaşam problemi (su deposu)",
+          "kind": "open_ended",
+          "difficulty": "orta",
+          "stem": "Kapasitesi 240 litre olan bir su deposu tamamen doludur. Sabah depo kapasitesinin 3/8'i kadar su kullanılıyor. Öğleden sonra deponun o andaki suyunun 2/5'i kullanılıyor. Akşam ise depo kapasitesinin 1/6'sı kadar su depoya ekleniyor. Akşam eklemeden sonra depoda kaç litre su vardır? Bu su miktarı deponun tüm kapasitesinin kaçta kaçıdır? İşlemlerinizi ve gerekçenizi yazınız.",
+          "choices": []
+        },
+        "teacher": {
+          "correct_key": null,
+          "expected_answer": "Depoda 130 litre su vardır; bu, deponun kapasitesinin 13/24'üdür.",
+          "solution": "1) Sabah kullanılan su: 240 x 3/8 = 90 litre. Kalan su: 240 - 90 = 150 litre. 2) Öğleden sonra kullanılan su, o andaki suyun (150 litrenin) 2/5'idir: 150 x 2/5 = 60 litre. Kalan su: 150 - 60 = 90 litre. 3) Akşam eklenen su, kapasitenin 1/6'sıdır: 240 x 1/6 = 40 litre. 4) Depodaki su: 90 + 40 = 130 litre. 5) Kapasiteye oranı: 130/240 = 13/24.",
+          "explanation": "Sabah ve akşam kesirleri deponun tüm kapasitesine, öğleden sonraki kesir ise o andaki su miktarına aittir. Her adımda hangi bütünün kullanıldığını belirlemek gerekir. Sonuç litre olarak bulunduktan sonra kapasiteye bölünerek kesir biçiminde ifade edilir.",
+          "common_misconception": "Öğrenciler 2/5 kesrini de 240 litrenin kesri gibi alıp 96 litre bulabilir; oysa bu kesir o andaki 150 litreye aittir.",
+          "next_step": "Bütünün her adımda değiştiği benzer problemlerde şema veya çubuk modeli çizerek bütünü belirleme çalışması yapılabilir.",
+          "rubric": {
+            "scoring": "Toplam 100 puan. Eşdeğer doğru çözüm yolları (kesirle çarpma, oran-orantı, çubuk modeli) kabul edilir. Bir adımdaki hata sonraki adımlarda tutarlı kullanılırsa aynı hata tekrar cezalandırılmaz. Yazı düzeni ve hız değerlendirilmez.",
+            "criteria": [
+              {
+                "id": "k1",
+                "points": 20,
+                "criterion": "Sabah kullanılan suyu (90 L) ve kalan suyu (150 L) doğru bulur."
+              },
+              {
+                "id": "k2",
+                "points": 25,
+                "criterion": "2/5 kesrini doğru bütüne (150 L) uygular ve öğleden sonra kalan 90 L değerine ulaşır."
+              },
+              {
+                "id": "k3",
+                "points": 15,
+                "criterion": "Akşam eklenen 1/6'yı kapasite üzerinden (40 L) doğru hesaplar."
+              },
+              {
+                "id": "k4",
+                "points": 20,
+                "criterion": "Depodaki son su miktarını 130 litre olarak bulur."
+              },
+              {
+                "id": "k5",
+                "points": 20,
+                "criterion": "130/240 oranını 13/24 olarak sadeleştirir ve hangi bütüne göre olduğunu belirtir."
+              }
+            ],
+            "max_points": 100,
+            "missing_answer": "Yanıt yoksa 0 puan; okunamayan yanıt ayrı inceleme gerektirir.",
+            "review_required": true
+          }
+        },
+        "metadata": {
+          "curriculum": {
+            "id": "outcome-5c9c24393ec414e61ff500c9",
+            "code": "MAT.7.1.4",
+            "text": "MAT.7.1.4. Rasyonel sayılar ve işlemler içeren gerçek yaşam problemlerini çözebilme",
+            "evidence": {
+              "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+              "cell": "C10",
+              "sheet": "7.sınıf",
+              "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+              "count_cell": "D10",
+              "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6"
+            },
+            "mapping_status": "proposed_pending_subject_review",
+            "school_track_applicability": "pending_review"
+          },
+          "provenance": {
+            "generator": "ai",
+            "generation_run_id": "4a3b17a9-c10b-45bf-9408-94ee5663eac2",
+            "chain_run_id": "4a6b0087-0729-4caf-ab36-914ebdc6631c",
+            "model": "claude-sonnet-5-5",
+            "provider": "anthropic",
+            "prompt_version": "library-first-batch/v2-compatible-schema"
+          },
+          "difficulty_calibration": "estimated_not_empirical",
+          "human_editorial_approval": null,
+          "response": {
+            "requires_reasoning": true
+          },
+          "depends_on_question_ids": [],
+          "agent_review": {
+            "human_approval": false,
+            "mathematical_check": "passed",
+            "edits": [],
+            "notes": [
+              "Müfredat/sınıf/okul uygulanabilirliği alan editörü incelemesini bekler.",
+              "q3 ve q4 ardışık kesirler bakımından benzer işlem yapısında; birlikte kullanımda çeşitlilik incelenmeli."
+            ]
+          }
+        }
+      },
+      {
+        "key": "q4",
+        "revision": 1,
+        "source_key": null,
+        "student": {
+          "grade": 7,
+          "subject": "Matematik",
+          "topic": "Kesirlerle bütçe problemi (çok adımlı)",
+          "kind": "open_ended",
+          "difficulty": "orta_ustu",
+          "stem": "Bir ailenin aylık bütçesi 12 000 TL'dir. Bütçenin 1/4'ü kiraya ayrılıyor. Kira ödendikten sonra kalan paranın 2/5'i market harcamasına gidiyor. Market harcamasından sonra kalan paranın yarısı birikim hesabına yatırılıyor. Birikim hesabına kaç TL yatırılmıştır? Bu tutar aylık bütçenin kaçta kaçıdır? Hangi kesrin hangi bütüne ait olduğunu belirterek işlemlerinizi gösteriniz.",
+          "choices": []
+        },
+        "teacher": {
+          "correct_key": null,
+          "expected_answer": "Birikim hesabına 2 700 TL yatırılmıştır; bu, aylık bütçenin 9/40'ıdır.",
+          "solution": "1) Kira, tüm bütçenin 1/4'üdür: 12 000 x 1/4 = 3 000 TL. Kalan para: 12 000 - 3 000 = 9 000 TL. 2) Market harcaması, kira sonrası kalan paranın (9 000 TL) 2/5'idir: 9 000 x 2/5 = 3 600 TL. Kalan para: 9 000 - 3 600 = 5 400 TL. 3) Birikim, market sonrası kalan paranın yarısıdır: 5 400 x 1/2 = 2 700 TL. 4) Bütçeye oranı: 2 700/12 000 = 27/120 = 9/40.",
+          "explanation": "Kira kesri tüm bütçeye, market kesri kira sonrası kalan paraya, birikim kesri ise market sonrası kalan paraya aittir. Bu yüzden her adımda bütün değişir ve kalan para yeniden hesaplanmalıdır. Son tutar, ilk bütüne oranlanarak sadeleştirilmiş kesir olarak yazılır.",
+          "common_misconception": "Öğrenciler 2/5 kesrini de 12 000 TL'nin kesri sanıp 4 800 TL hesaplayabilir veya 1/4, 2/5 ve 1/2 kesirlerini doğrudan toplayarak bütçeden çıkarabilir.",
+          "next_step": "Her adımda kalan miktarı gösteren çubuk modeli veya tablo kullanarak ardışık kesir problemleri ve kesirlerin çarpımıyla tek adımda çözüm yolları incelenebilir.",
+          "rubric": {
+            "scoring": "Toplam 100 puan. Eşdeğer doğru yöntemler (kesirleri ardışık çarpma, tablo, çubuk modeli) kabul edilir. Önceki adımdaki hata sonraki adımlarda tutarlı kullanılırsa aynı hata tekrar cezalandırılmaz. Yazı güzelliği ve hız değerlendirilmez.",
+            "criteria": [
+              {
+                "id": "k1",
+                "points": 20,
+                "criterion": "Kirayı (3 000 TL) ve kira sonrası kalan parayı (9 000 TL) doğru hesaplar."
+              },
+              {
+                "id": "k2",
+                "points": 25,
+                "criterion": "2/5 kesrini doğru bütüne (9 000 TL) uygular; market harcamasını (3 600 TL) ve kalan parayı (5 400 TL) bulur."
+              },
+              {
+                "id": "k3",
+                "points": 20,
+                "criterion": "Birikim tutarını 2 700 TL olarak doğru bulur."
+              },
+              {
+                "id": "k4",
+                "points": 20,
+                "criterion": "2 700/12 000 oranını 9/40 olarak doğru yazar ve sadeleştirir."
+              },
+              {
+                "id": "k5",
+                "points": 15,
+                "criterion": "Her kesrin hangi bütüne ait olduğunu açıkça belirtir."
+              }
+            ],
+            "max_points": 100,
+            "missing_answer": "Yanıt yoksa 0 puan; okunamayan yanıt ayrı inceleme gerektirir.",
+            "review_required": true
+          }
+        },
+        "metadata": {
+          "curriculum": {
+            "id": "outcome-5c9c24393ec414e61ff500c9",
+            "code": "MAT.7.1.4",
+            "text": "MAT.7.1.4. Rasyonel sayılar ve işlemler içeren gerçek yaşam problemlerini çözebilme",
+            "evidence": {
+              "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+              "cell": "C10",
+              "sheet": "7.sınıf",
+              "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+              "count_cell": "D10",
+              "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6"
+            },
+            "mapping_status": "proposed_pending_subject_review",
+            "school_track_applicability": "pending_review"
+          },
+          "provenance": {
+            "generator": "ai",
+            "generation_run_id": "4a3b17a9-c10b-45bf-9408-94ee5663eac2",
+            "chain_run_id": "4a6b0087-0729-4caf-ab36-914ebdc6631c",
+            "model": "claude-sonnet-5-5",
+            "provider": "anthropic",
+            "prompt_version": "library-first-batch/v2-compatible-schema"
+          },
+          "difficulty_calibration": "estimated_not_empirical",
+          "human_editorial_approval": null,
+          "response": {
+            "requires_reasoning": true
+          },
+          "depends_on_question_ids": [],
+          "agent_review": {
+            "human_approval": false,
+            "mathematical_check": "passed",
+            "edits": [],
+            "notes": [
+              "Müfredat/sınıf/okul uygulanabilirliği alan editörü incelemesini bekler.",
+              "q3 ve q4 ardışık kesirler bakımından benzer işlem yapısında; birlikte kullanımda çeşitlilik incelenmeli."
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
