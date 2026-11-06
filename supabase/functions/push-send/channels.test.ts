@@ -165,3 +165,30 @@ Deno.test("C10 render: List-Unsubscribe points to the one-click endpoint, the vi
   // Without a page the endpoint link is used (its GET shows a confirmation form, never unsubscribes).
   assert(renderEmail(announcement, { ...o, unsubscribePageUrl: null }).text.includes(`${o.unsubscribeUrl}?token=`));
 });
+
+Deno.test("brand mail: approved assets, localized code and CTA, safe operator copy and unsubscribe remain", () => {
+  const opts = { ...render, confirmUrl: "https://ginafamily.com/verify-contact", unsubscribePageUrl: "https://ginafamily.com/unsubscribe" };
+  for (const locale of ["tr", "en", "de"]) {
+    const m = renderEmail({ ...verification, channel: "email", sender: "GINA <bildirim@example.invalid>", locale }, opts);
+    assert(m.html);
+    assert(m.html.includes(`lang="${locale === "en" ? "en" : "tr"}"`));
+    assert(m.html.includes("https://ginafamily.com/email/v1/logo.png"));
+    assert(m.html.includes("https://ginafamily.com/email/v1/device.png"));
+    assert(m.html.includes("#5936C9") && m.html.includes("#EEF8F2"));
+    assert(m.html.includes("123456") && m.text.includes("123456"));
+    assert(m.html.includes("kind=email&amp;code=123456"));
+    assert(m.html.includes(locale === "en" ? "Confirm my email" : "E-postamı doğrula"));
+    assert(!m.html.includes("Stop announcement") && !m.html.includes("Duyuru e-postalarını kapat"));
+  }
+  const hostile = { ...announcement, announcement: { ...announcement.announcement!, title: '<img src=x onerror="alert(1)">', body: 'Merhaba <script>alert(1)</script> & "test"\nİkinci satır' } };
+  const mail = renderEmail(hostile, opts);
+  assert(mail.html);
+  assert(mail.html.includes("https://ginafamily.com/email/v1/family.png"));
+  assert(mail.html.includes("&lt;img") && mail.html.includes("&lt;script&gt;"));
+  assert(!mail.html.includes("<script>") && !mail.html.includes('<img src=x'));
+  assert(mail.html.includes('<br>İkinci satır'));
+  assert(mail.html.includes('href="https://ginafamily.com/parent/inbox"'));
+  assert(mail.html.includes('href="https://ginafamily.com/unsubscribe?token='));
+  assertEquals(mail.headers?.["List-Unsubscribe-Post"], "List-Unsubscribe=One-Click");
+  assert(mail.text.includes(hostile.announcement.body));
+});
