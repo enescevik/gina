@@ -204,19 +204,19 @@ export default function QuestionsPage() {
       {list.error ? <Notice tone="error">{errorMessage(list.error, t.errors)}</Notice> : null}
 
       <div className="mb-4 grid gap-2 md:grid-cols-3">
-        <select className="input" value={grade ?? ""} onChange={(e) => { setGrade(e.target.value ? Number(e.target.value) : null); setSubject(""); setTopic(""); setLimit(PAGE); }}>
+        <select aria-label={t.questions.grade} className="input" value={grade ?? ""} onChange={(e) => { setGrade(e.target.value ? Number(e.target.value) : null); setSubject(""); setTopic(""); setLimit(PAGE); }}>
           <option value="">{`${t.questions.grade}: ${t.questions.all}`}</option>
           {options.grades.map((g) => (
             <option key={g} value={g}>{g}</option>
           ))}
         </select>
-        <select className="input" value={subject} onChange={(e) => { setSubject(e.target.value); setTopic(""); setLimit(PAGE); }}>
+        <select aria-label={t.questions.subject} className="input" value={subject} onChange={(e) => { setSubject(e.target.value); setTopic(""); setLimit(PAGE); }}>
           <option value="">{`${t.questions.subject}: ${t.questions.all}`}</option>
           {options.subjects.map((s) => (
             <option key={s} value={s}>{s}</option>
           ))}
         </select>
-        <select className="input" value={topic} onChange={(e) => { setTopic(e.target.value); setLimit(PAGE); }}>
+        <select aria-label={t.questions.topic} className="input" value={topic} onChange={(e) => { setTopic(e.target.value); setLimit(PAGE); }}>
           <option value="">{`${t.questions.topic}: ${t.questions.all}`}</option>
           {options.topics.map((s) => (
             <option key={s} value={s}>{s}</option>
