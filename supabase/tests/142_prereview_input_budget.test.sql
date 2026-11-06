@@ -1,0 +1,11 @@
+begin;
+select plan(7);
+select is((select value from public.app_settings where key='content_prereview.max_input_tokens'),'24000'::jsonb,'separate bounded review input budget');
+select ok(gina.prereview_requeueable('provider_input_too_large'),'explicit request can recover pre-generation token rejection');
+select ok(not gina.prereview_requeueable('provider_refusal'),'refusal remains nonretryable');
+select ok(not gina.prereview_requeueable('provider_auth'),'auth rejection remains nonretryable');
+select ok(not gina.prereview_requeueable('ai_result_invalid'),'invalid output is not an admin requeue reason');
+select ok(not gina.prereview_requeueable('provider_timeout'),'uncertain paid call remains nonretryable');
+select ok(not has_function_privilege('authenticated','gina.prereview_requeueable(text)','EXECUTE'),'private policy function is not exposed to clients');
+select * from finish();
+rollback;

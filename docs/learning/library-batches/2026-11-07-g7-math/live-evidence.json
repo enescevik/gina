@@ -1,0 +1,102 @@
+{
+  "review": {
+    "lease": null,
+    "attempts": 1,
+    "queued_at": "2026-11-06T23:20:03.035282+00:00",
+    "target_id": "72c33209-f463-4768-acd9-e4a30602c250",
+    "claimed_at": null,
+    "last_error": "ai_input_too_large",
+    "updated_at": "2026-11-06T23:20:03.629026+00:00",
+    "target_kind": "library_package",
+    "content_hash": "036e4f140c387e4f44ef0713b16bacdba1ae2755508abdc78964ca1e7cdc8b42",
+    "prereview_at": "2026-11-06T23:20:03.629026+00:00",
+    "prompt_version": "prereview-v2",
+    "prereview_status": "needs_admin",
+    "prereview_verdict": {
+      "media": {
+        "count": 0,
+        "reviewed": false,
+        "image_dependent_correctness": "not_applicable"
+      },
+      "model": "claude-sonnet-5-5",
+      "rubric": null,
+      "summary": null,
+      "advisory": true,
+      "findings": [
+        {
+          "code": "other",
+          "item": null,
+          "detail": "ai_input_too_large",
+          "severity": "advisory"
+        }
+      ],
+      "provider": "anthropic",
+      "confidence": 0,
+      "content_hash": "036e4f140c387e4f44ef0713b16bacdba1ae2755508abdc78964ca1e7cdc8b42",
+      "prompt_version": "prereview-v2",
+      "recommendation": "admin_review",
+      "decision_reason": "provider_input_too_large"
+    }
+  },
+  "answers": 4,
+  "package": {
+    "id": "72c33209-f463-4768-acd9-e4a30602c250",
+    "revision": 1,
+    "package_key": "gina-g7-math-rational-chain-20261107"
+  },
+  "attempts": [
+    {
+      "id": "1e20962b-5974-40b6-bd41-95da72633560",
+      "lease": null,
+      "run_id": "904d74f2-6b61-45dd-a060-b989660e2f03",
+      "status": "failed",
+      "chain_id": "a1000000-0000-4000-8000-000000000004",
+      "model_id": "claude-sonnet-5-5",
+      "position": 1,
+      "provider": "anthropic",
+      "uncertain": false,
+      "usage_key": "question_generation",
+      "created_at": "2026-11-06T23:17:02.73833+00:00",
+      "error_code": "anthropic_400",
+      "finished_at": "2026-11-06T23:17:03.397063+00:00",
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "id": "6be5069c-cab8-4a23-ad5c-d5a435dc5d23",
+      "lease": null,
+      "run_id": "4a6b0087-0729-4caf-ab36-914ebdc6631c",
+      "status": "succeeded",
+      "chain_id": "a1000000-0000-4000-8000-000000000004",
+      "model_id": "claude-sonnet-5-5",
+      "position": 1,
+      "provider": "anthropic",
+      "uncertain": false,
+      "usage_key": "question_generation",
+      "created_at": "2026-11-06T23:18:06.751838+00:00",
+      "error_code": null,
+      "finished_at": "2026-11-06T23:18:56.483052+00:00",
+      "input_tokens": 719,
+      "output_tokens": 6995
+    },
+    {
+      "id": "3f505368-4257-4436-b3a7-2f31e0b2a258",
+      "lease": "150ea66b-2ed3-473a-a02b-60affbf8a77a",
+      "run_id": "e31577bb-dd9f-4405-9189-1217bf65b342",
+      "status": "failed",
+      "chain_id": "a1000000-0000-4000-8000-000000000002",
+      "model_id": "claude-sonnet-5-5",
+      "position": 1,
+      "provider": "anthropic",
+      "uncertain": false,
+      "usage_key": "content_prereview",
+      "created_at": "2026-11-06T23:20:03.368884+00:00",
+      "error_code": "ai_input_too_large",
+      "finished_at": "2026-11-06T23:20:03.595735+00:00",
+      "input_tokens": null,
+      "output_tokens": null
+    }
+  ],
+  "questions": 4,
+  "publication_count": 0
+}

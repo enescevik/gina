@@ -1,0 +1,30 @@
+[
+  {
+    "question": "q1",
+    "field": "solution",
+    "before": "1) Sayıları ondalık biçime çevirelim: -3/4 = -0,75; 5/8 = 0,625; diğerleri zaten ondalıktır (-0,8; 0,6; -7/10 = -0,7). 2) Negatif sayılar sıfırın solunda, pozitif sayılar sağındadır; bu yüzden her negatif sayı her pozitif sayıdan küçüktür. 3) Negatiflerde mutlak değeri büyük olan sayı daha küçüktür: |-0,8| = 0,8; |-0,75| = 0,75; |-0,7| = 0,7 ve 0,8 > 0,75 > 0,7 olduğundan -0,8 < -0,75 < -0,7. 4) Pozitiflerde 0,6 = 0,600 ve 5/8 = 0,625 olduğundan 0,6 < 5/8. 5) Sıralama: -0,8 < -3/4 < -7/10 < 0,6 < 5/8. 6) Sıfıra uzaklıklar 0,8; 0,75; 0,7; 0,6; 0,625 olduğundan en uzak sayı -0,8'dir.",
+    "after": "1) Sayıları ondalık biçime çevirelim: -3/4 = -0,75; 5/8 = 0,625; -7/10 = -0,7; -0,8 ve 0,6 zaten ondalık gösterimdedir. 2) Negatif sayılar sıfırın solunda, pozitif sayılar sağındadır; bu yüzden her negatif sayı her pozitif sayıdan küçüktür. 3) Negatiflerde mutlak değeri büyük olan sayı daha küçüktür: |-0,8| = 0,8; |-0,75| = 0,75; |-0,7| = 0,7 ve 0,8 > 0,75 > 0,7 olduğundan -0,8 < -0,75 < -0,7. 4) Pozitiflerde 0,6 = 0,600 ve 5/8 = 0,625 olduğundan 0,6 < 5/8. 5) Sıralama: -0,8 < -3/4 < -7/10 < 0,6 < 5/8. 6) Sıfıra uzaklıklar 0,8; 0,75; 0,7; 0,6; 0,625 olduğundan en uzak sayı -0,8'dir.",
+    "reviewer": "Codex technical/content check; not human editorial approval"
+  },
+  {
+    "question": "q2",
+    "field": "rubric.criteria.k1",
+    "before": "Üç kesri doğru ortak paydaya getirir (36 veya başka uygun ortak payda).",
+    "after": "Üç sayıyı uygun bir yöntemle (ortak payda, ondalık gösterim veya sayı doğrusu) doğru karşılaştırılabilir biçimde gösterir.",
+    "reviewer": "Codex technical/content check; not human editorial approval"
+  },
+  {
+    "question": "q2",
+    "field": "rubric.criteria.k2",
+    "before": "Negatif kesirleri doğru sıralar ve payların mutlak değerine dayalı gerekçeyi belirtir.",
+    "after": "Negatif sayıları doğru karşılaştırır ve kullandığı yönteme uygun gerekçeyi açıklar.",
+    "reviewer": "Codex technical/content check; not human editorial approval"
+  },
+  {
+    "question": "q2",
+    "field": "explanation",
+    "before": "Farklı paydalı kesirler ortak paydaya getirilerek karşılaştırılır. Negatif kesirlerde payın mutlak değeri büyüdükçe sayı küçülür. İki rasyonel sayı arasında sonsuz sayıda rasyonel sayı bulunur; payda genişletilerek aradaki sayı kolayca yazılabilir.",
+    "after": "Farklı paydalı kesirler ortak paydaya getirilerek karşılaştırılır. Paydaları eşit negatif kesirlerde payın mutlak değeri büyüdükçe sayı küçülür. İki rasyonel sayı arasında sonsuz sayıda rasyonel sayı bulunur; payda genişletilerek aradaki sayı kolayca yazılabilir.",
+    "reviewer": "Codex technical/content check; not human editorial approval"
+  }
+]

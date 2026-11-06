@@ -5,6 +5,8 @@ import { json, serviceClient } from "../_shared/supabase.ts";
 import { type Caller, createHandler } from "./handler.ts";
 import { resolveCaller } from "./auth.ts";
 
+import { prereviewConfig } from "../_shared/prereview-config.ts";
+
 const service = serviceClient();
 Deno.serve(createHandler({
   service,
@@ -31,7 +33,12 @@ Deno.serve(createHandler({
     const { data, error } = await service.from("app_settings").select("value").eq("key", "content_prereview.plan").maybeSingle();
     if (error) return json({ error: "ai_configuration_unavailable" }, 503);
     const plan = typeof data?.value === "string" ? data.value : "pro";
-    return resolveAi(service, plan, 1500, "content_prereview");
+    const resolved = await resolveAi(service, plan, 1500, "content_prereview");
+    if (resolved instanceof Response) return resolved;
+    const { data: budget, error: budgetError } = await service.from("app_settings").select("value").eq("key", "content_prereview.max_input_tokens").maybeSingle();
+    if (budgetError) return json({ error: "ai_configuration_unavailable" }, 503);
+    try { return prereviewConfig(resolved, budget?.value); }
+    catch { return json({ error: "ai_configuration_unavailable" }, 503); }
   },
   call: generateWith,
 }));
