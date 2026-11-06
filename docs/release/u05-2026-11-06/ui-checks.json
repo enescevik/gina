@@ -1,0 +1,91 @@
+{
+  "environment": "disposable-local-real-auth-rest",
+  "viewports": [
+    "390x844",
+    "768x1024",
+    "1280x800"
+  ],
+  "results": [
+    {
+      "check": "forty_lessons_two_children_week_grid",
+      "passed": true,
+      "detail": "40 cells + one empty row per day while arranging; Deniz and Ada switch tags"
+    },
+    {
+      "check": "drag_to_empty_cell_with_edge_autoscroll",
+      "passed": true,
+      "detail": {
+        "scrolledBy": 436
+      }
+    },
+    {
+      "check": "undo_then_accessible_tap_move_to_empty_cell",
+      "passed": true
+    },
+    {
+      "check": "copy_day_before_after_and_undo",
+      "passed": true
+    },
+    {
+      "check": "subject_suggest_requires_parent_confirmation_and_keeps_source_name",
+      "passed": true
+    },
+    {
+      "check": "saved_moves_use_bell_times_ids_and_names_preserved",
+      "passed": true,
+      "detail": {
+        "d1p1": {
+          "id": "d1p1",
+          "day": 5,
+          "end": "16:30",
+          "start": "15:50",
+          "title": "Türkçe"
+        },
+        "d2p3": {
+          "id": "d2p3",
+          "day": 3,
+          "end": "16:30",
+          "start": "15:50",
+          "title": "İngilizce"
+        }
+      }
+    },
+    {
+      "check": "uncertainty_on_cell_and_missing_times_from_parent_bells",
+      "passed": true
+    },
+    {
+      "check": "bag_editable_suggestions_marked_not_school_request",
+      "passed": true,
+      "detail": {
+        "saved": 6
+      }
+    },
+    {
+      "check": "source_picker_pages_past_30",
+      "passed": true
+    },
+    {
+      "check": "bulk_homework_distribution_preview_undo_and_save",
+      "passed": true,
+      "detail": {
+        "Okuma özeti": "2026-11-06",
+        "Kesir problemleri": "2026-11-09",
+        "Harita çalışması": "2026-11-10",
+        "Deney raporu": "2026-11-11",
+        "Kelime tekrarı": "2026-11-12"
+      }
+    },
+    {
+      "check": "removing_source_file_keeps_lessons",
+      "passed": true,
+      "detail": {
+        "lessons": 40
+      }
+    },
+    {
+      "check": "no_page_errors_no_overflow_translations_resolved",
+      "passed": true
+    }
+  ]
+}

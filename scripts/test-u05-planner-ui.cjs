@@ -88,7 +88,7 @@ delete from public.children where family_id='${f.familyId}' and name in ('Deniz'
   ], warnings: ["Saatler fotoğrafta yok"] };
   psql(db, `insert into public.learning_sources(id,family_id,uploaded_by,kind,name,mime,bytes,sha256,object_path,status,storage_consent,created_at) values ${sourceSql};
 insert into public.ai_operation_jobs(id,family_id,requested_by,action,input_hash,lease,status,result) values
- ('${job}','${f.familyId}','${f.userId}','plan','u05-${job}',gen_random_uuid(),'done',jsonb_build_object('output','${JSON.stringify(draft).replace(/'/g, "''")}'::jsonb)),
+ ('${job}','${f.familyId}','${f.userId}','import','u05-${job}',gen_random_uuid(),'done',jsonb_build_object('output','${JSON.stringify(draft).replace(/'/g, "''")}'::jsonb)),
  ('${ttJob}','${f.familyId}','${f.userId}','plan','u05-${ttJob}',gen_random_uuid(),'done','{}'::jsonb);
 insert into gina.learning_plan_imports(family_id,child_id,source_id,locale,context,job_id) values ('${f.familyId}','${deniz.id}','${oldest.id}','tr','{"input":{"grade":5}}','${job}');
 insert into public.timetable_imports(id,family_id,child_id,source_id,draft) values ('${ttJob}','${f.familyId}','${ada.id}','${ttSource.id}','${JSON.stringify(ttDraft).replace(/'/g, "''")}');
@@ -108,8 +108,8 @@ insert into public.app_settings(key,value) values('sources.enabled','true'::json
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   page.on("response", async (r) => {
-    if (r.url().includes("/rpc/save_school_timetable_request") && r.request().method() === "POST") {
-      console.log("SAVE_RPC " + r.status() + " " + (await r.text().catch(() => "")).slice(0, 300));
+    if (/rpc\/(save_school_timetable_request|apply_learning_plan_import)/.test(r.url()) && r.request().method() === "POST") {
+      console.log("RPC " + r.url().split("/rpc/")[1] + " " + r.status() + " " + (await r.text().catch(() => "")).slice(0, 300));
     }
   });
   const body = () => page.locator("body").innerText();
