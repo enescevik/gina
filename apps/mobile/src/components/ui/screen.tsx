@@ -32,6 +32,9 @@ export function ErrorText({ error }: { error: unknown }) {
   let copy: string;
   if (i18n.exists(`prova.ai.errors.${detail.code ?? message}`)) copy = t(`prova.ai.errors.${detail.code ?? message}`);
   else if (i18n.exists(`prova.ai.errors.${message}`)) copy = t(`prova.ai.errors.${message}`);
+  // C12 (Q00-A2-13): sınıflandırılmış Edge hatası (ProvaAiError: izin/paket, çevrimdışı, geçici servis…) kendi
+  // kategori metnini taşır; koda sahip olduğu için aşağıdaki genel metne düşmemeli.
+  else if (typeof (error as { category?: unknown }).category === "string" && message.trim()) copy = message;
   else if (/network|fetch|connection|timeout|abort/i.test(message)) copy = t("release.networkError");
   else if (/invalid.login.credentials|invalid_credentials/i.test(message + detail.code)) copy = t("auth.invalidLogin");
   else if (/pin_locked/.test(message)) copy = t("release.pinLocked");
