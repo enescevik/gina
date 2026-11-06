@@ -73,6 +73,7 @@ export async function handleLearningPlanImport(
       db,
       ent.data[0].plan,
       6000,
+      "learning_plan_import",
     );
     if (config instanceof Response) return config;
     prepared = await db.rpc("prepare_learning_plan_import", {

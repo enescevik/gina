@@ -1,3 +1,4 @@
+import { AiChains } from "@/components/ai-chains";
 import { useUnsavedChanges } from "@/components/unsaved-changes";
 import { SourcePolicy } from "@/components/source-policy";
 import { AiPolicyMatrixCard, ModelDisablePreviewButton, ProviderChangeImpactCard, featureLabel, useAiPolicyMatrix, type DisablePreview } from "@/components/ai-policy";
@@ -155,7 +156,7 @@ export default function AiPage() {
       lock.current = true; setBusy(true);
       try {
         preview = await adminRpc<DisablePreview>("admin_model_disable_preview", { p_model_id: m.id });
-        if (!Array.isArray(preview.affected_flows)) throw new Error("impact_unavailable");
+        if (!Array.isArray(preview.affected_flows) || !Array.isArray(preview.affected_chains)) throw new Error("impact_unavailable");
       } catch {
         setMsg({ text: "Kullanım ve etki bilgisi okunamadı. Model pasifleştirilmedi; yeniden deneyin.", tone: "error" });
         return;
@@ -163,12 +164,13 @@ export default function AiPage() {
       if (!(await confirm.ask({
         title: `${m.display_name} pasifleştirilsin mi?`,
         body: <>
+          {preview.affected_chains?.map(c => <p key={c.id} className="mb-2"><strong>{c.name} · {c.position}. adım</strong>: {c.usages.join(", ") || "Henüz iş türüne atanmamış"}. {c.remaining_active ? `${c.remaining_active} aktif adım kalır; pasif adım atlanır. Girdi yetenekleri ayrıca kontrol edilir.` : "Aktif adım kalmaz; bağlı işler durur."}</p>)}
           {preview.affected_flows.length ? <ul className="list-disc pl-5">{preview.affected_flows.map(flow => <li key={flow.flow_id}>
-            <strong>{flow.flow_label} · {t.plans[flow.plan_code] ?? flow.plan_code}</strong>: {flow.enabled ? "yeni işlemler engellenecek" : "akış kapalı, model bağlantısı kayıtlı"}.
+            <strong>{flow.flow_label} · {t.plans[flow.plan_code] ?? flow.plan_code}</strong>: {flow.enabled ? "zincirler kapalıyken tek model işlemleri engellenir" : "akış kapalı, model bağlantısı kayıtlı"}.
           </li>)}</ul> : <p>Bu modele bağlı kayıtlı akış yok.</p>}
           <p className="mt-2">Etkilenen özellikler: {preview.affected_features.map(f => featureLabel[f.feature] ?? f.feature).join(", ") || "Yok"}.</p>
           <p className="mt-2">Aktif alternatifler: {preview.alternatives.join(", ") || "yok"}.</p>
-          <p className="mt-2">Mevcut model bağlantıları korunur ve pasif olarak işaretlenir. Yeni model seçimi gerekir; otomatik olarak başka modele geçilmez.</p>
+          <p className="mt-2">Mevcut model bağlantıları korunur ve pasif olarak işaretlenir. Zincirdeki pasif adım atlanır. Zincir kullanılmayan tek model ayarında aktif model seçmek gerekir.</p>
         </>,
         confirmLabel: "Etkileri gördüm, pasifleştir", tone: "danger",
       }))) return;
@@ -205,7 +207,9 @@ export default function AiPage() {
           </Card>
 
           <SourcePolicy onState={onState} />
+          <AiChains models={data.models} onState={onState} />
           <Card title={t.ai.perPlan}>
+            <p className="mb-3 text-sm text-slate-600">Paketin açık/kapalı durumu ve token sınırları zincirlerde de geçerlidir. Aşağıdaki tek model seçimi yalnız zincirler kapalıyken kullanılır.</p>
             <div className="grid min-w-0 gap-4 xl:grid-cols-2">
               {data.settings.map(row => <SettingEditor key={`${row.plan_code}-${row.updated_at}`} row={row} models={data.models} onSaved={onSaved} onState={onState} />)}
             </div>

@@ -123,7 +123,7 @@ export function createReviewHandler(
           result: validateReviewReport(cached.result),
         });
       }
-      const config = await deps.resolveAi(db, ent.plan, 2500);
+      const config = await deps.resolveAi(db, ent.plan, 2500, "notebook_review");
       if (config instanceof Response) return config;
       const key = deps.apiKeyOrResponse(config);
       if (key instanceof Response) return key;

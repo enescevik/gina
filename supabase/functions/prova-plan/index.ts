@@ -99,7 +99,7 @@ Deno.serve(async (req) => {
   let weak = scored.filter((s) => (s.pct ?? 0) < WEAK_THRESHOLD);
   if (!weak.length) weak = [...scored].sort((a, b) => (a.pct ?? 0) - (b.pct ?? 0)).slice(0, 2);
 
-  const ai = await resolveAi(db, ent.plan, 3000);
+  const ai = await resolveAi(db, ent.plan, 3000, "study_plan");
   if (ai instanceof Response) return ai;
   const apiKey = apiKeyOrResponse(ai);
   if (apiKey instanceof Response) return apiKey;
@@ -149,7 +149,7 @@ Deno.serve(async (req) => {
       grade: exam.grade,
       weak_topics: weak.map((w) => ({ topic: w.topic, pct: w.pct, total: w.total })),
       plan,
-      model: ai.model,
+      model: result.model ?? ai.model,
       prompt_version: PROMPT_VERSION,
       input_hash: await sha256(`${PROMPT_VERSION}\n${userPrompt}\n${ai.model}`),
       created_by: parent.userId,
@@ -163,7 +163,7 @@ Deno.serve(async (req) => {
   await logUsage(db, {
     family_id: parent.familyId,
     action: "plan",
-    model: ai.model,
+    model: result.model ?? ai.model,
     items: 1,
     input_tokens: result.inputTokens,
     output_tokens: result.outputTokens,

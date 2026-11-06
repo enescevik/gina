@@ -14,7 +14,8 @@ type PlanPolicy = { action: string; enabled: boolean; monthly_limit: number; per
 type PlanRow = { plan_code: string; enabled: boolean; model_id: string | null; max_input_tokens: number; max_output_tokens: number; prompt_version: string; prova_ai_generate_monthly: number | null; setup_ai_monthly: number | null; policies: PlanPolicy[] };
 export type AiFlow = { flow_id: string; flow_label: string; plan_code: string; model_id: string | null; enabled: boolean; model_active: boolean };
 export type PolicyMatrix = { flows: AiFlow[]; global_enabled: boolean; providers: Provider[]; models: Model[]; features: Feature[]; plans: PlanRow[] };
-export type DisablePreview = { affected_flows: AiFlow[]; model_id: string; provider: string; active: boolean; affected_plans: string[]; affected_features: { feature: string; inputs: string[]; plans: string[] }[]; alternatives: string[]; jobs_last_30d: Record<string, number> };
+export type DisablePreview = {
+  affected_chains?: { id: string; name: string; position: number; remaining_active: number; usages: string[] }[]; affected_flows: AiFlow[]; model_id: string; provider: string; active: boolean; affected_plans: string[]; affected_features: { feature: string; inputs: string[]; plans: string[] }[]; alternatives: string[]; jobs_last_30d: Record<string, number> };
 type Impact = {
   from: string; to: string; blocked: boolean; block_reasons: string[];
   affected_features: { feature: string; inputs: string[]; plans: string[] }[];
@@ -70,13 +71,14 @@ export function AiPolicyMatrixCard({ matrix, error }: { matrix: PolicyMatrix | n
       {!matrix ? (!error ? <p className="text-slate-500">{t.common.loading}</p> : null) : (
         <div className="grid gap-6" data-testid="ai-policy-matrix">
           <div className="overflow-x-auto">
-            <table className="table" aria-label="AI akışlarında kullanılan modeller">
+            <p className="mb-2 text-sm">Aşağıdaki tek model bağlantıları zincirler kapalıyken kullanılır.</p>
+            <table className="table" aria-label="Zincirler kapalıyken kullanılan tek model ayarları">
               <thead><tr><th>Akış</th><th>Paket</th><th>Model</th><th>Durum</th></tr></thead>
               <tbody>{(matrix.flows ?? []).map(flow => <tr key={flow.flow_id}>
                 <td>{flow.flow_label}</td><td>{t.plans[flow.plan_code] ?? flow.plan_code}</td>
                 <td className="font-mono">{flow.model_id ?? t.ai.noModel}</td>
                 <td>{flow.enabled ? "Açık" : "Kapalı"}
-                  {flow.model_id && !flow.model_active && <strong className="ml-2 rounded bg-amber-100 px-2 py-1 text-amber-900">Pasif model · yeni işlemler engellenir</strong>}
+                  {flow.model_id && !flow.model_active && <strong className="ml-2 rounded bg-amber-100 px-2 py-1 text-amber-900">Pasif tek model</strong>}
                 </td>
               </tr>)}</tbody>
             </table>
@@ -190,7 +192,8 @@ export function ModelDisablePreviewButton({ modelId }: { modelId: string }) {
           ? <p className="text-xs text-slate-500">{t.common.loading}</p>
           : (
             <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs text-amber-950" data-testid="model-disable-preview">
-              {!!d.affected_flows?.length && <ul className="mb-2 list-disc pl-4">{d.affected_flows.map(flow => <li key={flow.flow_id}>{flow.flow_label} · {t.plans[flow.plan_code] ?? flow.plan_code} ({flow.enabled ? "açık; yeni işlemler engellenecek" : "kapalı; model bağlantısı kayıtlı"})</li>)}</ul>}
+              {d.affected_chains?.map(c => <p key={c.id} className="mb-2"><strong>{c.name}</strong>: {c.usages.join(", ") || "Atanmamış"}. {c.remaining_active ? `${c.remaining_active} aktif adım kalır; pasif adım atlanır.` : "Aktif adım kalmaz; bağlı işler durur."}</p>)}
+              {!!d.affected_flows?.length && <ul className="mb-2 list-disc pl-4">{d.affected_flows.map(flow => <li key={flow.flow_id}>{flow.flow_label} · {t.plans[flow.plan_code] ?? flow.plan_code} ({flow.enabled ? "zincirler kapalıyken engellenir" : "kapalı; model bağlantısı kayıtlı"})</li>)}</ul>}
               <p className="font-bold">Etkilenen paketler: {d.affected_plans.length ? plans(d.affected_plans) : "yok"}</p>
               {d.affected_features.length
                 ? <ul className="list-disc pl-4">{d.affected_features.map((f) => <li key={f.feature}>{featureLabel[f.feature] ?? f.feature} ({f.inputs.map((i) => inputLabel[i] ?? i).join(", ")}) · {plans(f.plans)}</li>)}</ul>

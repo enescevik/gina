@@ -42,7 +42,7 @@ update public.app_settings set value='true' where key='channels.email.sender_dom
 insert into gina.channel_provider_status(channel,provider,configured,missing) values('email','smtp',true,'{}') on conflict(channel) do update set configured=true,missing='{}',reported_at=now();
 
 -- Grants: anon surface unchanged; one-click is service-role only; operator views need release -------
-select is((select string_agg(n.nspname||'.'||p.proname,',' order by 1) from pg_proc p join pg_namespace n on n.oid=p.pronamespace
+select is((select string_agg(n.nspname||'.'||p.proname,',' order by n.nspname,p.proname) from pg_proc p join pg_namespace n on n.oid=p.pronamespace
   where n.nspname in('public','gina') and p.prokind='f' and p.prorettype<>'trigger'::regtype and has_function_privilege('anon',p.oid,'EXECUTE')),
   'public.get_shared_child_view,public.unsubscribe_with_token','anon may still only run the share view and the signed unsubscribe');
 select ok(not has_function_privilege('authenticated','public.channel_one_click_unsubscribe(text)','EXECUTE') and has_function_privilege('service_role','public.channel_one_click_unsubscribe(text)','EXECUTE'),'one-click unsubscribe is callable only by the Edge function (service role)');

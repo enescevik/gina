@@ -31,7 +31,7 @@ Deno.serve(createHandler({
     const { data, error } = await service.from("app_settings").select("value").eq("key", "content_prereview.plan").maybeSingle();
     if (error) return json({ error: "ai_configuration_unavailable" }, 503);
     const plan = typeof data?.value === "string" ? data.value : "pro";
-    return resolveAi(service, plan, 1500);
+    return resolveAi(service, plan, 1500, "content_prereview");
   },
   call: generateWith,
 }));

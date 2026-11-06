@@ -1,3 +1,4 @@
+import { generateWith } from "./ai-route.ts";
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import {
   type AiConfig,
@@ -27,7 +28,7 @@ export async function runAiOperation<T>(
   const adapter = adapterFor(config.adapter ?? "anthropic-messages");
   if (!adapter) return fail("ai_model_unsupported", 503);
   // Hash yalnız eski alanları içerir; yetenek/adapter alanları aynı girdinin iş kimliğini değiştirmez.
-  const { adapter: _adapter, provider: _provider, capabilities: _capabilities, ...hashConfig } = config;
+  const { adapter: _adapter, provider: _provider, capabilities: _capabilities, execution: _execution, signal: _signal, ...hashConfig } = config;
   const hash = await sha256(
     JSON.stringify({ scope, config: hashConfig, system, user, schema }),
   );
@@ -49,8 +50,8 @@ export async function runAiOperation<T>(
           ...provider,
         },
       )
-      : await db.rpc(childId ? "reserve_child_ai_operation" : "reserve_ai_operation", {
-        ...(childId ? { p_child_id: childId } : provider),
+      : await db.rpc(childId ? (config.chain ? "reserve_child_ai_operation_routed" : "reserve_child_ai_operation") : "reserve_ai_operation", {
+        ...(childId ? { p_child_id: childId, ...(config.chain ? provider : {}) } : provider),
         p_family_id: parent.familyId,
         p_user_id: parent.userId,
         p_action: action,
@@ -87,9 +88,9 @@ export async function runAiOperation<T>(
   }
   let result: AiResult<T>;
   try {
-    const generated = await adapter.generate<unknown>(
+    const generated = await generateWith<unknown>(
       apiKey,
-      config,
+      { ...config, execution: { kind: "operation", id: job.id, lease } },
       system,
       user,
       schema,
