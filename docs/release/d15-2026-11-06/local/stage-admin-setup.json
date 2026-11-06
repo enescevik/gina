@@ -1,0 +1,12 @@
+{
+ "stage": "admin-setup",
+ "target": "local-isolated",
+ "at": "2026-11-06T17:51:14.429Z",
+ "checks": [
+  {
+   "name": "admin_session_valid",
+   "ok": true,
+   "temp_admin": true
+  }
+ ]
+}

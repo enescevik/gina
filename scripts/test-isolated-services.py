@@ -1,6 +1,7 @@
 """Run real Auth/PostgREST acceptance only in a disposable, empty audit DB clone.
 Never targets the existing local app DB or a hosted project; prints no credentials.
 Usage: python3 scripts/test-isolated-services.py --run-local
+       python3 scripts/test-isolated-services.py --run-local --meb-pilot   # D15 MEB pilot chain (implies storage)
 """
 import base64
 import hashlib
@@ -20,9 +21,10 @@ import urllib.request
 ROOT = Path(__file__).resolve().parents[1]
 flags = set(sys.argv[1:])
 UI_HOLD = '--ui-hold' in flags
-WITH_STORAGE = '--with-storage' in flags
+MEB_PILOT = '--meb-pilot' in flags
+WITH_STORAGE = '--with-storage' in flags or MEB_PILOT
 WITH_REALTIME = '--with-realtime' in flags
-if '--run-local' not in flags or flags - {'--run-local', '--with-storage', '--with-realtime', '--ui-hold'}:
+if '--run-local' not in flags or flags - {'--run-local', '--with-storage', '--with-realtime', '--ui-hold', '--meb-pilot'}:
     raise SystemExit('Explicit --run-local required')
 DB = 'gina_http_' + secrets.token_hex(8) + '_audit'
 NAMES = [DB + '_auth', DB + '_rest']
@@ -220,9 +222,13 @@ try:
         healthy(storage_port, '/status')
         env['GINA_QA_STORAGE_PORT'] = str(storage_port)
         report['environment'] += '-storage-edge'
-    process = subprocess.Popen(['node', 'scripts/test-isolated-services.mjs'], cwd=ROOT, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
+    if MEB_PILOT:
+        report['environment'] += '+d15-meb-pilot(real-official-download,deterministic-provider)'
+    # D15: the MEB pilot runner streams its stage logs on stderr (inherited); only the JSON report is on stdout.
+    process = subprocess.Popen(['node', 'scripts/test-meb-pilot-local.mjs' if MEB_PILOT else 'scripts/test-isolated-services.mjs'], cwd=ROOT, env=env, stdout=subprocess.PIPE,
+                               stderr=None if MEB_PILOT else subprocess.PIPE, text=True, start_new_session=True)
     try:
-        stdout, _ = process.communicate(timeout=3000 if UI_HOLD else 420)
+        stdout, _ = process.communicate(timeout=3000 if UI_HOLD else 900 if MEB_PILOT else 420)
     finally:
         # Include the optional Deno child if Node exits or times out unexpectedly.
         try:

@@ -1,0 +1,13 @@
+{
+ "stage": "setup",
+ "target": "local-isolated",
+ "at": "2026-11-06T17:51:13.680Z",
+ "checks": [
+  {
+   "name": "synthetic_account_family_child_device",
+   "ok": true,
+   "email_domain": "example.invalid",
+   "grade": 5
+  }
+ ]
+}

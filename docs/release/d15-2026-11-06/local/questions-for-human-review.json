@@ -1,0 +1,128 @@
+[
+ {
+  "id": "0873a52c",
+  "block_id": "B1",
+  "outcome_ids": [
+   "T.O.5.6"
+  ],
+  "expected_answer": "Beklenen cevap B1.1",
+  "rubric": {
+   "criteria": [
+    {
+     "text": "Çıktıya uygun gerekçe",
+     "points": 50
+    },
+    {
+     "text": "Doğru sonuç",
+     "points": 50
+    }
+   ],
+   "alternative_answers": []
+  }
+ },
+ {
+  "id": "9aa679fc",
+  "block_id": "B1",
+  "outcome_ids": [
+   "T.O.5.6"
+  ],
+  "expected_answer": "Beklenen cevap B1.2",
+  "rubric": {
+   "criteria": [
+    {
+     "text": "Çıktıya uygun gerekçe",
+     "points": 50
+    },
+    {
+     "text": "Doğru sonuç",
+     "points": 50
+    }
+   ],
+   "alternative_answers": []
+  }
+ },
+ {
+  "id": "80e4cd2d",
+  "block_id": "B2",
+  "outcome_ids": [
+   "T.O.5.7"
+  ],
+  "expected_answer": "Beklenen cevap B2.1",
+  "rubric": {
+   "criteria": [
+    {
+     "text": "Çıktıya uygun gerekçe",
+     "points": 50
+    },
+    {
+     "text": "Doğru sonuç",
+     "points": 50
+    }
+   ],
+   "alternative_answers": []
+  }
+ },
+ {
+  "id": "aaa7227c",
+  "block_id": "B3",
+  "outcome_ids": [
+   "T.O.5.20"
+  ],
+  "expected_answer": "Beklenen cevap B3.1",
+  "rubric": {
+   "criteria": [
+    {
+     "text": "Çıktıya uygun gerekçe",
+     "points": 50
+    },
+    {
+     "text": "Doğru sonuç",
+     "points": 50
+    }
+   ],
+   "alternative_answers": []
+  }
+ },
+ {
+  "id": "7ebf7d4f",
+  "block_id": "B4",
+  "outcome_ids": [
+   "T.Y.5.13"
+  ],
+  "expected_answer": "Beklenen cevap B4.1",
+  "rubric": {
+   "criteria": [
+    {
+     "text": "Çıktıya uygun gerekçe",
+     "points": 50
+    },
+    {
+     "text": "Doğru sonuç",
+     "points": 50
+    }
+   ],
+   "alternative_answers": []
+  }
+ },
+ {
+  "id": "31ed24dd",
+  "block_id": "B5",
+  "outcome_ids": [
+   "T.Y.5.16"
+  ],
+  "expected_answer": "Beklenen cevap B5.1",
+  "rubric": {
+   "criteria": [
+    {
+     "text": "Çıktıya uygun gerekçe",
+     "points": 50
+    },
+    {
+     "text": "Doğru sonuç",
+     "points": 50
+    }
+   ],
+   "alternative_answers": []
+  }
+ }
+]
