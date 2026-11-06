@@ -3075,6 +3075,9 @@ isOneToOne: false
 "claim_store_notification":
 { Args: { "p_event_key": string,"p_event_type": string,"p_payload": Json,"p_platform": Database["public"]['Enums']["store_platform"] }; Returns: Json
                            },
+"clear_curriculum_pilot_family":
+{ Args: { "p_family_id": string }; Returns: Json
+                           },
 "complete_prova_generation":
 { Args: { "p_id": string,"p_input": number,"p_model": string,"p_output": number,"p_prompt_version": string,"p_rows": Json }; Returns: Json
                            },
@@ -3357,6 +3360,9 @@ isOneToOne: false
                            },
 "get_child_education":
 { Args: { "p_child_id": string }; Returns: Json
+                           },
+"get_curriculum_pilot_family":
+{ Args: { "p_family_id": string }; Returns: Json
                            },
 "get_curriculum_scenarios":
 { Args: { "p_child_id": string,"p_exam": number,"p_subject": string,"p_term": number,"p_year": string }; Returns: Json
@@ -3986,6 +3992,9 @@ isOneToOne: false
                            },
 "set_child_subject_links":
 { Args: { "p_child_id": string,"p_links": Json,"p_request_id": string,"p_source"?: string }; Returns: Json
+                           },
+"set_curriculum_pilot_family":
+{ Args: { "p_family_id": string,"p_hours": number,"p_reason": string }; Returns: Json
                            },
 "set_group_ranking_consent":
 { Args: { "p_child": string,"p_enabled": boolean,"p_group": string }; Returns: undefined
