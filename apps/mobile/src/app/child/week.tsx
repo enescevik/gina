@@ -4,7 +4,8 @@ import { WeekStrip } from "@/components/room/week-strip";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
-import { localDateOf, tasksWithRecordedWork, weekDatesOf } from "@gina/core";
+import { localDateOf, readReturnReason, tasksWithRecordedWork, weekDatesOf } from "@gina/core";
+import { ReturnNext } from "@/components/child-home/return-next";
 
 import { TaskIcon } from "@/components/task-icon";
 import { ErrorText } from "@/components/ui/screen";
@@ -45,7 +46,7 @@ export default function ChildWeekScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_completions")
-        .select("id, template_id, due_date, status, task_snapshot")
+        .select("id, template_id, due_date, status, task_snapshot, return_reason, return_note")
         .eq("child_id", childId)
         .gte("due_date", from)
         .lte("due_date", to);
@@ -59,6 +60,7 @@ export default function ChildWeekScreen() {
   useRealtimeInvalidate("task_templates", childId ? `child_id=eq.${childId}` : null, [["task_templates", childId]]);
   useRealtimeInvalidate("task_routine_sync", childId ? `child_id=eq.${childId}` : null, [["task_routine_sync", childId]]);
   const byKey = new Map((completions.data ?? []).map((c) => [`${c.template_id}:${c.due_date}`, c.status]));
+  const reasonByKey = new Map((completions.data ?? []).map((c) => [`${c.template_id}:${c.due_date}`, c.status === "returned" ? readReturnReason(c) : null]));
   const dayFormat = new Intl.DateTimeFormat(i18n.language, { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
 
   return (
@@ -83,7 +85,7 @@ export default function ChildWeekScreen() {
                   <View style={{ flex: 1, minWidth: 0, gap: 8 }}>
                     <Text style={[childStyles.copy, { fontFamily: "Nunito_700Bold" }]}>{task.title}</Text>
                     <Text testID={`week-status-${status ?? "none"}`} style={{ alignSelf: "flex-start", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3, backgroundColor: status === "approved" ? "#E6F7EF" : status === "returned" ? "#EEEAFE" : status === "done" ? "#FFF1D4" : "#F3F1F5", color: status === "returned" ? "#4A32B8" : "#625C85", fontFamily: "Nunito_700Bold", fontSize: 13 }}>{status === "approved" ? t("child.approved") : status === "done" ? t("child.waitingApproval") : status === "returned" ? t(!task.available ? "routine.pausedWork" : isToday ? "child.returnedTryAgain" : date < today ? "childMint.returnedPast" : "child.returnedTryAgain") : date < today ? t("childMint.weekNoRecord") : t("childV5.notCompleted")}</Text>
-                    {status === "returned" && task.available && isToday ? <Text style={[childStyles.copy, { fontSize: 14 }]}>{t("childMint.returnedBody")}</Text> : null}
+                    {status === "returned" && task.available && isToday ? <ReturnNext returned={reasonByKey.get(`${task.id}:${date}`)} testID="week-return-next" /> : null}
                   </View>
                 </View>
               );

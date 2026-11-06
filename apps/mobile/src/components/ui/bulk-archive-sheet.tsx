@@ -202,7 +202,8 @@ export function BulkSelectBar({ bulk, total }: { bulk: BulkArchiveController; to
         <View style={{ flexGrow: 1, minWidth: 180 }}>
           <Button title={t("bulkArchive.preview")} disabled={bulk.count === 0} onPress={bulk.showEffect} />
         </View>
-        <Button title={t("bulkArchive.ui.selectAll")} variant="secondary" disabled={total === 0 || bulk.count === total} onPress={bulk.pickAll} />
+        {/* C03: only the loaded rows are picked, so the label names them instead of claiming "all". */}
+        <Button title={t("c03.bulk.pickListed", { count: total })} variant="secondary" disabled={total === 0 || bulk.count === total} onPress={bulk.pickAll} />
         <Button title={t("common.cancel")} variant="ghost" onPress={bulk.cancel} />
       </View>
     </View>

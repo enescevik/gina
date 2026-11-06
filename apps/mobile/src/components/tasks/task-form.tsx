@@ -24,6 +24,7 @@ import { SetupSaveRecovery } from "@/components/setup/save-recovery";
 import { ChoiceCard, SetupWizard } from "@/components/setup/wizard";
 import { TASK_STARTERS } from "@/components/setup/templates";
 import { StarReward, TaskTile } from "./task-visuals";
+import type { TaskPrefill } from "./task-prefill";
 const DAYS: IsoWeekday[] = [1, 2, 3, 4, 5, 6, 7];
 export function TaskForm({
   child,
@@ -31,21 +32,24 @@ export function TaskForm({
   timeZone,
   onClose,
   onCreated,
+  prefill,
 }: {
   child: PlannerChild;
   familyId: string;
   timeZone: string;
   onClose: () => void;
   onCreated: () => void;
+  /** C03: haftalık öneriden gelen başlık ve kaynak satırı; yalnız formu doldurur, kaydetmez. */
+  prefill?: TaskPrefill | null;
 }) {
   const { t } = useTranslation();
   const cache = useQueryClient();
-  const [step, setStep] = useState(0);
-  const [title, setTitle] = useState("");
+  const [step, setStep] = useState(prefill ? 1 : 0);
+  const [title, setTitle] = useState(prefill?.title ?? "");
   const [stars, setStars] = useState(1);
   const [days, setDays] = useState<IsoWeekday[]>([1, 2, 3, 4, 5]);
   const [icon, setIcon] = useState("task-custom");
-  const [choice, setChoice] = useState<string | null>(null);
+  const [choice, setChoice] = useState<string | null>(prefill ? "custom" : null);
   const [allIcons, setAllIcons] = useState(false);
   const saving = useRef(false);
   const [aiDrafts, setAiDrafts] = useState<SuggestionDraft[]>([]);
@@ -170,6 +174,13 @@ export function TaskForm({
       )}
       {step === 1 && choice !== "ai" && (
         <>
+          {prefill ? (
+            <View testID="task-form-prefill" style={{ gap: 4, padding: 12, borderRadius: 16, backgroundColor: p.lilac }}>
+              <Text style={u.bold}>{prefill.source}</Text>
+              <Text style={u.copy}>{prefill.suggestion}</Text>
+              <Text style={u.small}>{t("c03.weekly.prefillHint")}</Text>
+            </View>
+          ) : null}
           <Field
             label={t("taskPremium.title")}
             value={title}

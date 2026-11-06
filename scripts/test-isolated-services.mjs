@@ -10,6 +10,7 @@ import { testAiServices } from './isolated-ai-contract.mjs';
 import { testC08 } from './isolated-c08-contract.mjs';
 import { testSources } from './isolated-source-contract.mjs';
 import { testBackoffice } from './isolated-backoffice-contract.mjs';
+import { testC03 } from './isolated-c03-contract.mjs';
 import { observeRealtime } from './isolated-realtime-contract.mjs';
 const require = createRequire(new URL('../apps/mobile/package.json', import.meta.url));
 const { createClient } = require('@supabase/supabase-js');
@@ -180,6 +181,7 @@ try {
   let c08Ui={};
   if(storagePort) c08Ui=await testC08({parent:a.c,child:device,childId:child,admin,base,must,assert,attempt,openQuestion:exam.question_ids[2]});
   await testBackoffice({admin,client,parent:a.c,other:b.c,child:device,must,assert});
+  if(process.env.GINA_QA_C03!=="0") await testC03({admin,client,parentA:a.c,other:b.c,device,childId:child,draftId,base,storage:!!storagePort,must,assert});
   await rpc(a.c,'revoke_device',{p_device_id:deviceId});
   // Deliberately retain the old JWT: revocation must take effect before refresh.
   assert('revoked_device_old_token_cannot_read_children',(await must(device.from('children').select('id'),'revoked_device_read')).length===0);
