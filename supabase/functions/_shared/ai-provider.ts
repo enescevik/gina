@@ -60,6 +60,7 @@ export function classifyAiError(e: unknown): AiFailure {
   const m = PROVIDER_CODE.exec(message);
   if (m) {
     const detail = m[2];
+    if (detail === "quota") return done(message, "rate_limited", false, "generation_failed");
     if (detail === "429") return done(message, "rate_limited", false, "generation_failed");
     if (detail === "401" || detail === "403") return done(message, "auth", false, "generation_failed");
     if (/^5[0-9][0-9]$/.test(detail)) return done(message, "server", true, "ai_result_uncertain");
@@ -125,4 +126,23 @@ export function parseStructuredText<T>(text: unknown): T {
   } catch {
     throw new AiProviderError("ai_result_invalid");
   }
+}
+
+/** Anthropic spend caps may be HTTP 400; billing is HTTP 402. Inspect only known
+ * quota markers and never propagate the provider's raw message (which can contain input).
+ * Reference: https://platform.claude.com/docs/en/api/errors */
+export async function anthropicHttpError(response: Response): Promise<AiProviderError> {
+  if (response.status === 402) return new AiProviderError('anthropic_quota');
+  if (response.status === 400) {
+    try {
+      const body = await response.json();
+      const error = body?.error;
+      const message = typeof error?.message === 'string' ? error.message : '';
+      if (error?.type === 'billing_error' || error?.type === 'invalid_request_error' && (
+        /^Your credit balance is too low\b/i.test(message) ||
+        /^(?:Your (?:organization|workspace) |You |This request )[^.\n]{0,120}(?:hit|reached|exceed|exceeded)[^.\n]{0,80}(?:spend|spending|usage) limit/i.test(message)
+      )) return new AiProviderError('anthropic_quota');
+    } catch { /* malformed error is still an ordinary rejected request */ }
+  }
+  return new AiProviderError(`anthropic_${response.status}`);
 }

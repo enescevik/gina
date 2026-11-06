@@ -5,7 +5,7 @@ insert into public.admins(user_id) values('00000000-0000-4000-8000-000000013701'
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000013701","role":"authenticated","gina":{"admin":true}}',true);
 update public.ai_models set active=true where id in('claude-sonnet-5-5','claude-haiku-5-5');
 update public.ai_providers set status='active' where id='anthropic';
-update public.ai_settings set enabled=true where plan_code='pro';
+update public.ai_settings set enabled=true,model_id='claude-haiku-5-5' where plan_code='pro';
 create temp table chain_test(c jsonb);
 grant all on chain_test to authenticated,service_role;
 set local role authenticated;
@@ -49,7 +49,7 @@ select throws_ok($$select public.admin_ai_chains()$$,'42501','forbidden','non-ad
 reset role;
 
 -- Real additional provider attempts consume the ordinary budget, while full admins remain exempt.
-update public.ai_settings set enabled=true where plan_code='pro';
+update public.ai_settings set enabled=true,model_id='claude-haiku-5-5' where plan_code='pro';
 update public.ai_models set active=true where id='claude-sonnet-5-5';
 update public.app_settings set value='true' where key in('content_prereview.enabled','content_prereview.admin_daily_limit_exempt');
 update public.app_settings set value='1' where key='content_prereview.daily_call_limit';

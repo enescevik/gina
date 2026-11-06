@@ -1,3 +1,4 @@
+import { anthropicHttpError } from "./ai-provider.ts";
 import type { AiChain } from "./ai-chain-types.ts";
 // Prova AI fonksiyonlarının (prova-generate / prova-grade / prova-plan) ortak yardımcıları.
 // Kurallar (docs/DECISIONS.md): yalnız veli (gina.role = parent) çağırır; paket kapısı sunucuda;
@@ -273,7 +274,7 @@ export async function callClaude<T>(
       }),
     },
   );
-  if (!count.ok) throw new Error(`anthropic_${count.status}`);
+  if (!count.ok) throw await anthropicHttpError(count);
   const tokens = (await count.json()).input_tokens;
   if (!Number.isInteger(tokens) || tokens < 0) {
     throw new Error("ai_token_count_invalid");
@@ -301,7 +302,7 @@ export async function callClaude<T>(
       output_config: { format: { type: "json_schema", schema } },
     }),
   });
-  if (!res.ok) throw new Error(`anthropic_${res.status}`);
+  if (!res.ok) throw await anthropicHttpError(res);
   const data = await res.json();
   if (data.stop_reason === "refusal") throw new Error("anthropic_refusal");
   if (data.stop_reason === "max_tokens") {

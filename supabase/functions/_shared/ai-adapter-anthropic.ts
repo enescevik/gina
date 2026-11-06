@@ -1,7 +1,7 @@
 // Anthropic Messages adapteri: mevcut callClaude davranışı değişmeden ortak arayüze sarılır.
 // Token sayımı sağlayıcı tokenizer'ı ile (count_tokens); üretim tek POST; otomatik tekrar yok.
 import { type AiConfig, type AiResult, type AiUserContent, callClaude } from "./prova.ts";
-import { type AiAdapter, AiProviderError, registerAdapter } from "./ai-provider.ts";
+import { type AiAdapter, AiProviderError, anthropicHttpError, registerAdapter } from "./ai-provider.ts";
 
 export const anthropicAdapter: AiAdapter = {
   id: "anthropic-messages",
@@ -15,7 +15,7 @@ export const anthropicAdapter: AiAdapter = {
       headers: { "x-api-key": apiKey, "anthropic-version": "2023-06-01", "content-type": "application/json" },
       body: JSON.stringify({ model: cfg.model, system, messages: [{ role: "user", content: user }] }),
     });
-    if (!res.ok) throw new AiProviderError(`anthropic_${res.status}`);
+    if (!res.ok) throw await anthropicHttpError(res);
     const tokens = (await res.json()).input_tokens;
     if (!Number.isInteger(tokens) || tokens < 0) throw new AiProviderError("ai_token_count_invalid");
     return tokens;

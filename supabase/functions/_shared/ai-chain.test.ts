@@ -1,3 +1,4 @@
+import { anthropicHttpError, classifyAiError } from "./ai-provider.ts";
 import { assertEquals, assertRejects } from "jsr:@std/assert";
 import { type chainDefaults, runAiChain } from "./ai-chain.ts";
 import { type AiAdapter, AiProviderError } from "./ai-provider.ts";
@@ -216,4 +217,42 @@ Deno.test("chain: expired total deadline makes no paid calls", async () => {
   f.deps.now = () => n++ === 0 ? 0 : 31000;
   await assertRejects(() => runAiChain(cfg, "s", "u", {}, f.deps));
   assertEquals(f.calls, []);
+});
+
+Deno.test("chain: Anthropic credit/spend cap errors are safe fallback, ordinary 400 is not", async () => {
+  for (
+    const message of [
+      "Your credit balance is too low to access the Anthropic API.",
+      "Your organization has reached its monthly spend limit.",
+      "You have exceeded your usage limit.",
+    ]
+  ) {
+    const error = await anthropicHttpError(
+      Response.json({ error: { type: "invalid_request_error", message } }, {
+        status: 400,
+      }),
+    );
+    assertEquals(classifyAiError(error).kind, "rate_limited");
+    const f = fixture(error);
+    await runAiChain(cfg, "s", "u", {}, f.deps);
+    assertEquals(f.calls, ["first", "second"]);
+  }
+  assertEquals(
+    classifyAiError(await anthropicHttpError(new Response("", { status: 402 })))
+      .kind,
+    "rate_limited",
+  );
+  assertEquals(
+    classifyAiError(
+      await anthropicHttpError(
+        Response.json({
+          error: {
+            type: "invalid_request_error",
+            message: "max_tokens must be positive",
+          },
+        }, { status: 400 }),
+      ),
+    ).kind,
+    "rejected",
+  );
 });
