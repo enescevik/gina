@@ -7,6 +7,7 @@ import { isDeepStrictEqual } from 'node:util';
 import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import { testAiServices } from './isolated-ai-contract.mjs';
+import { testC08 } from './isolated-c08-contract.mjs';
 import { testSources } from './isolated-source-contract.mjs';
 import { testBackoffice } from './isolated-backoffice-contract.mjs';
 import { observeRealtime } from './isolated-realtime-contract.mjs';
@@ -176,6 +177,8 @@ try {
   await rpc(a.c,'change_task_routine',{p_request_id:randomUUID(),p_id:task,p_revision:2,p_action:'resume'});
   if(storagePort) await testSources({parent:a.c,other:b.c,child:device,childId:child,admin,base,pdf,must,assert});
   if(storagePort) await testAiServices({parent:a.c,other:b.c,child:device,childId:child,admin,base,must,assert});
+  let c08Ui={};
+  if(storagePort) c08Ui=await testC08({parent:a.c,child:device,childId:child,admin,base,must,assert,attempt,openQuestion:exam.question_ids[2]});
   await testBackoffice({admin,client,parent:a.c,other:b.c,child:device,must,assert});
   await rpc(a.c,'revoke_device',{p_device_id:deviceId});
   // Deliberately retain the old JWT: revocation must take effect before refresh.
@@ -198,7 +201,7 @@ try {
     // C04 UI: opt-in synthetic Pro override so the deterministic prova-generate path is reachable.
     if(process.env.GINA_QA_UI_PLAN==='pro') await must(admin.from('entitlement_overrides').insert({family_id:a.family,plan:'pro',reason:'synthetic ui qa',ends_at:new Date(Date.now()+86400000).toISOString()}),'ui_pro_override');
     const file=process.env.GINA_QA_UI_FIXTURE||'/tmp/gina-experience-ui-private.json';
-    writeFileSync(file,JSON.stringify({pid:process.pid,url:base,anon:process.env.GINA_QA_ANON,email:a.email,password:a.password,userId:user,familyId:a.family,childId:child,examId:exam.id,attemptId:attempt}),{mode:0o600});
+    writeFileSync(file,JSON.stringify({pid:process.pid,url:base,anon:process.env.GINA_QA_ANON,email:a.email,password:a.password,userId:user,familyId:a.family,childId:child,examId:exam.id,attemptId:attempt,...c08Ui}),{mode:0o600});
     let timer, release;
     try {await new Promise(resolve=>{
       release=resolve; timer=setTimeout(resolve,2700000);

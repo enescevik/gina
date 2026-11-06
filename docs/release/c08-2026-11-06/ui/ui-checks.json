@@ -1,0 +1,50 @@
+{
+  "environment": "isolated-auth-rest-storage-edge + expo web export + Playwright chrome",
+  "results": [
+    {
+      "check": "usage_card_matches_get_ai_usage",
+      "passed": true,
+      "detail": {
+        "import": {
+          "used": 12,
+          "limit": 20,
+          "remaining": 8
+        },
+        "media_max_files": 5
+      }
+    },
+    {
+      "check": "daily_tips_not_shown",
+      "passed": true
+    },
+    {
+      "check": "attempt_shows_ai_suggestion_not_final",
+      "passed": true
+    },
+    {
+      "check": "gateway_401_refreshes_session_and_retries_once_draft_kept",
+      "passed": true,
+      "detail": {
+        "review_calls": 2,
+        "refresh_calls": 1
+      }
+    },
+    {
+      "check": "parent_confirmation_makes_score_final",
+      "passed": true,
+      "detail": {
+        "score": 70,
+        "graded_by": "parent",
+        "review_state": "graded"
+      }
+    },
+    {
+      "check": "attempt_after_confirmation_no_pending_suggestion",
+      "passed": true
+    },
+    {
+      "check": "no_page_errors",
+      "passed": true
+    }
+  ]
+}
