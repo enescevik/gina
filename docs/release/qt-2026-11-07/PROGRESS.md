@@ -17,7 +17,17 @@ Durum ölçeği: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAM
 | QT13 sayısal kısa cevap | YAPILIYOR | 〃 |
 | QT20 sıralama | YAPILIYOR | Sunucu+core hazır (1B sunucu tarafı Faz 0 ile birlikte geldi) |
 | QT21 sınıflandırma | YAPILIYOR | 〃 |
-| QT30–QT51 | PLANLANDI | Faz 2A/2B/3 |
+| QT30 metin işaretleme | YAPILIYOR · sunucu+core KOD HAZIR | `enabled=false`; istemci çizicisi yok |
+| QT31 hata bulma–düzeltme | YAPILIYOR · sunucu+core KOD HAZIR | Anahtarda olmayan anlamlı düzeltme → veli |
+| QT32 çoklu doğru seçenek | YAPILIYOR · sunucu+core KOD HAZIR | `max(0, TP/P − FP/N)`; hepsi-doğru yapı ret |
+| QT33 iki aşamalı | YAPILIYOR · sunucu+core KOD HAZIR | Metin gerekçe → veli; seçenekli gerekçe otomatik |
+| QT40 defter güçlendirme | PLANLANDI | Yeni defter yok; mevcut NotebookWorkspace + cihaz kabulü (DIŞ ENGEL: Pencil cihazı) |
+| QT41 şekil boyama + saat | YAPILIYOR · sunucu+core KOD HAZIR | `region_select` (ızgara/dilim/görsel bölge), `clock` |
+| QT42 tablo/grafik, harita/şema | YAPILIYOR · sunucu+core KOD HAZIR | `stimulus` (table/bar_chart, alt zorunlu) + görsel bölge kutuları |
+| QT43 dikte | KARAR BEKLİYOR | Ses dosyası depolama/yükleme hattı (özel ses türü, imzalı URL, silme) veya cihaz TTS seçimi; TTS metni istemciye taşıyacağı için cevap sızar |
+| QT44 problem kurma | PLANLANDI | Açık uçlu + rubrik ön ayarı (yeni cevap altyapısı yok) |
+| QT50 bulmaca | YAPILIYOR · sunucu+core KOD HAZIR | `enabled=false` |
+| QT51 sesli cevap | KARAR BEKLİYOR | Çocuk sesi kaydı/aktarımı için ayrı açık rıza ve saklama/silme kararı (hukuk/ürün); mevcut izinlerden türetilmez |
 
 ## Faz 0 (QT00 + QT01) kanıtı — 7 Kasım 2026
 

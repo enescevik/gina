@@ -649,12 +649,22 @@
     },
     {
       "file": "140_qt_scoring_golden.test.sql",
-      "passed": 360,
+      "passed": 581,
       "failed": 0
     },
     {
       "file": "141_qt_contract_flow.test.sql",
-      "passed": 87,
+      "passed": 88,
+      "failed": 0
+    },
+    {
+      "file": "142_qt_phase2a_flow.test.sql",
+      "passed": 21,
+      "failed": 0
+    },
+    {
+      "file": "143_qt_phase2b_flow.test.sql",
+      "passed": 16,
       "failed": 0
     }
   ],
@@ -670,5 +680,5 @@
     "066_weekly_summary_safety.test.sql: # Looks like you failed 4 tests of 46",
     "069_learning_plan_import.test.sql: ERROR:  plan_import_unavailable\nCONTEXT:  PL/pgSQL function public.apply_learning_plan_import(uuid,uuid,uuid,jsonb) line 16 at RAISE\nSQL function \"apply\" statement 1\n"
   ],
-  "assertions": 6318
+  "assertions": 6577
 }
