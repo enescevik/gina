@@ -1,7 +1,8 @@
 import * as Crypto from "expo-crypto";
 import { invalidateTaskState } from "@/lib/task-cache";
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useRef, useState } from 'react';
+import { onlineManager, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { Platform } from 'react-native';
 import { localDateOf, occurrencesBetween, tasksWithRecordedWork, taskSnapshot, weekDatesOf, recordedWeek, starTotalsByChild } from '@gina/core';
 import { ParentHomeView } from '@/components/parent-home/home-view';
 import { useFamilyTimezone } from '@/lib/family';
@@ -10,7 +11,20 @@ import { useSession } from '@/lib/session';
 import { supabase } from '@/lib/supabase';
 import { useFamilyEvents } from '@/lib/use-family-events';
 
-/** Approved mint/violet parent home; existing queries and review RPC remain authoritative. */
+/** Web reports `navigator.onLine` on first load; native updates `onlineManager` from expo-network (app-lifecycle). */
+function isOnline() {
+  return onlineManager.isOnline() && !(Platform.OS === 'web' && typeof navigator !== 'undefined' && navigator.onLine === false);
+}
+function subscribeOnline(notify: () => void) {
+  const off = onlineManager.subscribe(notify);
+  if (Platform.OS !== 'web' || typeof window === 'undefined') return off;
+  window.addEventListener('online', notify); window.addEventListener('offline', notify);
+  return () => { off(); window.removeEventListener('online', notify); window.removeEventListener('offline', notify); };
+}
+/** A1-13: no second slow attempt while the device is known to be offline; reconnect refetches (refetchOnReconnect). */
+const retryOnline = (count: number) => count < 1 && isOnline();
+
+/** Approved mint/violet parent home; existing queries and review RPC remain authoritative. Each card owns its load/error state (U03). */
 export default function ParentHomeScreen() {
   const { claims, session } = useSession();
   const familyId = claims?.family_id ?? "";
@@ -26,6 +40,7 @@ export default function ParentHomeScreen() {
 
   const children = useQuery({
     queryKey: ["children"],
+    retry: retryOnline,
     queryFn: async () => {
       const { data, error } = await supabase.from("children").select("id, name, grade, avatar").is("archived_at", null).order("sort_order");
       if (error) throw error;
@@ -35,6 +50,7 @@ export default function ParentHomeScreen() {
 
   const templates = useQuery({
     queryKey: ["family_task_templates", familyId],
+    retry: retryOnline,
     enabled: !!familyId,
     queryFn: async () => {
       const { data, error } = await supabase
@@ -48,6 +64,7 @@ export default function ParentHomeScreen() {
 
   const completions = useQuery({
     queryKey: ["family_completions", familyId, today],
+    retry: retryOnline,
     enabled: !!familyId,
     queryFn: async () => {
       const { data, error } = await supabase
@@ -63,6 +80,7 @@ export default function ParentHomeScreen() {
 
   const stars = useQuery({
     queryKey: ["family_star_totals", familyId],
+    retry: retryOnline,
     enabled: !!familyId,
     queryFn: async () => {
       // Q02-3: çocuk başına bakiye sunucuda toplanır; tüm aile defteri çekilmez. Görünüm aynı (yok → 0).
@@ -74,6 +92,7 @@ export default function ParentHomeScreen() {
 
   const approvals = useQuery({
     queryKey: ["approvals", familyId],
+    retry: retryOnline,
     enabled: !!familyId,
     queryFn: async () => {
       const { data, error } = await supabase
@@ -127,6 +146,21 @@ export default function ParentHomeScreen() {
     onSettled: () => invalidateTaskState(queryClient),
   });
 
+  // Zil rozeti: Duyurular ekranının ilk sayfasıyla aynı anahtar/şekil (önbellek paylaşılır). Hata rozeti gizler, ekranı kapatmaz.
+  const inbox = useQuery({
+    queryKey: ["parent_inbox", session?.user.id, claims?.family_id, false, null],
+    enabled: !!familyId,
+    retry: retryOnline,
+    refetchInterval: 60000,
+    queryFn: async () => {
+      const r = await supabase.rpc("parent_inbox", { p_archived: false });
+      if (r.error) throw r.error;
+      return r.data as unknown as { unread: number; rows: unknown[] };
+    },
+  });
+
+  const online = useSyncExternalStore(subscribeOnline, isOnline, () => true);
+
   const parentName = me.data;
 
   const visibleChildren = (children.data ?? []).filter((c) => !childFilter || c.id === childFilter);
@@ -155,6 +189,12 @@ export default function ParentHomeScreen() {
     id: task.id, title: task.title, icon: task.icon, childId: child.id, childName: child.name,
     status: completions.data?.find(completion => completion.template_id === task.id && completion.child_id === child.id && completion.due_date === today)?.status ?? 'planned',
   })));
+
+  const section = (queries: { isLoading: boolean; error: unknown; refetch: () => unknown }[]) => ({
+    loading: queries.some(q => q.isLoading),
+    error: queries.find(q => q.error)?.error ?? null,
+    retry: () => { for (const q of queries) void q.refetch(); },
+  });
   return <ParentHomeView
     profiles={children.data ?? []} selected={childFilter} select={setChildFilter}
     today={today} week={week} parentName={parentName} timeZone={timeZone}
@@ -162,8 +202,16 @@ export default function ParentHomeScreen() {
     familyDay={familyDay} tasks={dailyTasks} approvals={pendingApprovals}
     review={(id,approve)=>review.mutate({id,approve})} reviewing={review.isPending} reviewingId={review.variables?.id} reviewError={review.error}
     occurrences={occurrences} upcoming={upcoming}
-    loading={children.isLoading || templates.isLoading || approvals.isLoading || completions.isLoading || events.isLoading || exceptions.isLoading || stars.isLoading}
-    error={children.error ?? templates.error ?? completions.error ?? approvals.error ?? events.error ?? exceptions.error ?? stars.error}
-    retry={()=>{void children.refetch();void templates.refetch();void approvals.refetch();void completions.refetch();void events.refetch();void exceptions.refetch();void stars.refetch();void me.refetch();}}
+    unread={inbox.data?.unread ?? 0} online={online}
+    // Yalnız çocuk listesi bütün ekranı belirler; diğer sorgular kendi kartında yüklenir ve hata verir.
+    loading={children.isLoading}
+    error={children.error}
+    retry={()=>{void children.refetch();void me.refetch();void inbox.refetch();}}
+    sections={{
+      approvals: section([approvals]),
+      tasks: section([templates, completions]),
+      progress: section([templates, completions, stars]),
+      plan: section([events, exceptions]),
+    }}
   />;
 }
