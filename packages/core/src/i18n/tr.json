@@ -1089,7 +1089,7 @@
     "emptyBody": "Ders programını hazırlayabilir veya gününe bir etkinlik ekleyebilirsin.",
     "addChildHelp": "Çocuğunu ekledikten sonra ona özel haftalık ders programını hazırlayabilirsin.",
     "more": "Diğer",
-    "childEmptyBody": "Ders programına bakabilir, derslerini düzenleyebilirsin."
+    "childEmptyBody": "Ders programına göz atabilirsin. Bir şey eklemek istersen veline söyleyebilirsin."
   },
   "taskPremium": {
     "subtitle": "Küçük alışkanlıklar, büyük adımlar.",
@@ -4349,5 +4349,8 @@
       "attachClosed": "Kapalı talebe görsel eklenemez.",
       "openAttachment": "Görseli aç"
     }
+  },
+  "c12": {
+    "builderMatchTarget": "Hedefi {{count}} soru yap"
   }
 }

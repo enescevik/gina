@@ -1089,7 +1089,7 @@
     "emptyBody": "Set up your school timetable or add an event to the day.",
     "addChildHelp": "Add your child to start their weekly school timetable.",
     "more": "More",
-    "childEmptyBody": "Check your timetable or edit your lessons."
+    "childEmptyBody": "You can look at your timetable. If you want to add something, tell your parent."
   },
   "taskPremium": {
     "subtitle": "Little habits, meaningful steps.",
@@ -4354,5 +4354,8 @@
       "attachClosed": "Images cannot be added to a closed request.",
       "openAttachment": "Open image"
     }
+  },
+  "c12": {
+    "builderMatchTarget": "Set the target to {{count}} questions"
   }
 }
