@@ -1,0 +1,63 @@
+{
+ "baseline": {
+  "v3": "accepted",
+  "v4": "accepted"
+ },
+ "rows": [
+  {
+   "variant": "eksikler 4 (istem v3 eksik sayısını sınırlamıyordu)",
+   "v3_deployed": "item",
+   "v4_d6": "accepted"
+  },
+  {
+   "variant": "iyilestirme 4",
+   "v3_deployed": "item",
+   "v4_d6": "accepted"
+  },
+  {
+   "variant": "tam doğru cevapta eksikler [\"\"]",
+   "v3_deployed": "item",
+   "v4_d6": "accepted"
+  },
+  {
+   "variant": "sinirlar 6 (istem 4+ konu + puansız madde refi istiyor)",
+   "v3_deployed": "fields",
+   "v4_d6": "accepted"
+  },
+  {
+   "variant": "calisma_adimlari 5",
+   "v3_deployed": "steps",
+   "v4_d6": "accepted"
+  },
+  {
+   "variant": "kanitlar açıklamalı (M1: ...)",
+   "v3_deployed": "evidence",
+   "v4_d6": "evidence"
+  },
+  {
+   "variant": "birleştirilmiş konu (Çevre ve alan)",
+   "v3_deployed": "topic",
+   "v4_d6": "topic"
+  },
+  {
+   "variant": "konu adı küçük harf (çevre)",
+   "v3_deployed": "topic",
+   "v4_d6": "accepted"
+  },
+  {
+   "variant": "pekiştirme adımı konusu 'Genel tekrar'",
+   "v3_deployed": "topic",
+   "v4_d6": "topic"
+  },
+  {
+   "variant": "şıklı/istenmeyen madde değerlendirildi",
+   "v3_deployed": "envelope",
+   "v4_d6": "envelope"
+  },
+  {
+   "variant": "sure_dk 25",
+   "v3_deployed": "steps",
+   "v4_d6": "steps"
+  }
+ ]
+}
