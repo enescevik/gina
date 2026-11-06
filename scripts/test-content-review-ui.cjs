@@ -6,7 +6,7 @@ const f = JSON.parse(fs.readFileSync(process.env.GINA_CQUI_FIXTURE));
 assert.match(f.email, /^gina-cqui-[0-9a-f]+@example\.invalid$/);
 assert.match(f.db, /^gina_cqui_[0-9a-f]+_audit$/);
 const ROOT = path.resolve(__dirname, '..'), OUT = ROOT + '/apps/backoffice/out';
-const SHOTS = ROOT + '/docs/release/content-prereview-2026-11-06/ui';
+const SHOTS = process.env.GINA_CQUI_SHOTS ? path.resolve(process.env.GINA_CQUI_SHOTS) : ROOT + '/docs/release/content-prereview-2026-11-06/ui';
 const BUILD_URL = 'http://gina-cqui.invalid', BUILD_ANON = 'cqui-placeholder-anon';
 fs.mkdirSync(SHOTS, { recursive: true });
 const checks = {};
@@ -137,6 +137,32 @@ const ok = (name) => { checks[name] = true; };
   assert.equal(edgeCalls, before + 1);
   assert.equal(await row2.locator('[data-testid=prereview-badge]').getAttribute('data-status'), 'ai_rejected_suggestion');
   await shot('04-request-edge-missing');
+  if (process.env.GINA_CQUI_H06_OUT) {
+    // H06 (isteğe bağlı): H07 `retry_pending` + `daily_limit` iletisinin masaüstü yerleşimi. Edge yanıtı TAKLİTTİR
+    // (bu ortamda Edge yok); sunucu kuyruğa alma RPC'si gerçektir. Ücretli/gerçek AI çağrısı yok.
+    stage = 'h06_daily_limit_message';
+    const h06 = path.resolve(process.env.GINA_CQUI_H06_OUT); fs.mkdirSync(h06, { recursive: true });
+    await p.route(BUILD_URL + '/functions/v1/content-prereview', (r) => r.request().method() === 'OPTIONS'
+      ? r.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } })
+      : r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ outcome: 'retry_pending', reason: 'daily_limit' }) }));
+    await row2.getByRole('button', { name: 'AI ön incelemesi iste' }).click();
+    const msg = row2.getByText(/şimdi yapılamadı: Günlük AI çağrı sınırı doldu; kayıt kuyrukta bekliyor/);
+    await msg.waitFor();
+    const metrics = {};
+    for (const [label, vp] of [['1280x800', { width: 1280, height: 800 }], ['1440x900', { width: 1440, height: 900 }]]) {
+      await p.setViewportSize(vp); await p.waitForTimeout(400); await msg.scrollIntoViewIfNeeded();
+      await p.screenshot({ path: `${h06}/bo-prereview-daily-limit-${label}.png` });
+      metrics[label] = await p.evaluate(() => ({ overflow: document.documentElement.scrollWidth - innerWidth,
+        rawReason: /\bdaily_limit\b|\bretry_pending\b/.test(document.body.innerText) }));
+      const m = await msg.boundingBox(); metrics[label].messageInViewport = !!m && m.x >= 0 && m.x + m.width <= vp.width + 1;
+    }
+    await p.setViewportSize({ width: 1280, height: 800 });
+    await p.unroute(BUILD_URL + '/functions/v1/content-prereview');
+    fs.writeFileSync(`${h06}/bo-prereview-daily-limit.json`, JSON.stringify({ mocked: 'edge content-prereview response {outcome:retry_pending, reason:daily_limit}', text: (await msg.innerText()).slice(0, 300), metrics }, null, 1));
+    assert.ok(Object.values(metrics).every((m) => m.overflow <= 1 && !m.rawReason && m.messageInViewport), 'h06 daily_limit layout');
+    assert.equal(((await msg.innerText()).match(/kuyrukta bekliyor/g) || []).length, 1, 'H06-2: queued phrase not repeated');
+    ok('h06_daily_limit_retry_pending_message_desktop');
+  }
   await api(token, 'PATCH', '/app_settings?key=eq.content_prereview.enabled', { value: false }, { prefer: 'return=minimal' });
   ok('request_without_edge_shows_explicit_error_and_keeps_verdict');
 

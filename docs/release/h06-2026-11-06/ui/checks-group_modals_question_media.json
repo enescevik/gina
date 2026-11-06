@@ -1,0 +1,345 @@
+{
+ "environment": "disposable-local-auth-rest-storage-edge; web export; Playwright Chrome headless tr-TR Europe/Istanbul",
+ "results": [
+  {
+   "check": "d8_1_group_join_modal_respects_reduced_motion",
+   "passed": true,
+   "detail": {
+    "reduce": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normal": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  {
+   "check": "h06_group_join_modal_layout",
+   "passed": true,
+   "detail": {
+    "phone": {
+     "viewport": [
+      390,
+      844
+     ],
+     "overflow": 0,
+     "interactive": 6,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "narrow": {
+     "viewport": [
+      360,
+      740
+     ],
+     "overflow": 0,
+     "interactive": 6,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "tablet": {
+     "viewport": [
+      768,
+      1024
+     ],
+     "overflow": 0,
+     "interactive": 6,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "wide": {
+     "viewport": [
+      1280,
+      800
+     ],
+     "overflow": 0,
+     "interactive": 6,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    }
+   }
+  },
+  {
+   "check": "d8_1_group_ranking_modal_respects_reduced_motion",
+   "passed": true,
+   "detail": {
+    "reduce": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normal": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  {
+   "check": "h06_group_ranking_modal_layout",
+   "passed": true,
+   "detail": {
+    "phone": {
+     "viewport": [
+      390,
+      844
+     ],
+     "overflow": 0,
+     "interactive": 2,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "narrow": {
+     "viewport": [
+      360,
+      740
+     ],
+     "overflow": 0,
+     "interactive": 2,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "tablet": {
+     "viewport": [
+      768,
+      1024
+     ],
+     "overflow": 0,
+     "interactive": 2,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "wide": {
+     "viewport": [
+      1280,
+      800
+     ],
+     "overflow": 0,
+     "interactive": 2,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    }
+   }
+  },
+  {
+   "check": "d8_1_group_result_modal_respects_reduced_motion",
+   "passed": true,
+   "detail": {
+    "reduce": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normal": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  {
+   "check": "h06_group_result_modal_layout",
+   "passed": true,
+   "detail": {
+    "phone": {
+     "viewport": [
+      390,
+      844
+     ],
+     "overflow": 0,
+     "interactive": 1,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "narrow": {
+     "viewport": [
+      360,
+      740
+     ],
+     "overflow": 0,
+     "interactive": 1,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "tablet": {
+     "viewport": [
+      768,
+      1024
+     ],
+     "overflow": 0,
+     "interactive": 1,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "wide": {
+     "viewport": [
+      1280,
+      800
+     ],
+     "overflow": 0,
+     "interactive": 1,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    }
+   }
+  },
+  {
+   "check": "d8_1_question_media_modal_respects_reduced_motion",
+   "passed": true,
+   "detail": {
+    "readyQuestionImages": 4,
+    "reduce": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normal": [
+     0,
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  {
+   "check": "h06_question_media_modal_layout",
+   "passed": true,
+   "detail": {
+    "zoomAfterPlus": "200%",
+    "sizes": {
+     "phone": {
+      "viewport": [
+       390,
+       844
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "narrow": {
+      "viewport": [
+       360,
+       740
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "tablet": {
+      "viewport": [
+       768,
+       1024
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "wide": {
+      "viewport": [
+       1280,
+       800
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     }
+    }
+   }
+  }
+ ]
+}
