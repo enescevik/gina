@@ -4,6 +4,11 @@
  * index page; every hop re-checks host + resolved public IPs; 15 s / 5 MB; bounded ZIP directory inspection.
  * Nothing inside a page or workbook is executed or treated as an instruction.
  */
+/**
+ * Index page live-checked on 2026-11-05 (M01). The Edge Function no longer reads this map: it resolves the page
+ * from the admin-managed registry (`get_curriculum_source_target`), seeded with this same row. Kept as the
+ * reference value for tests and the Python operator tool.
+ */
 export const INDEX_PAGES: Record<string, string> = {
   "oyss:2026-2027:1":
     "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
@@ -92,7 +97,11 @@ export async function checkUrl(
   let addresses: string[];
   try {
     addresses = await resolve(url.hostname);
-  } catch {
+  } catch (e) {
+    // Fail closed: a runtime without a DNS API cannot prove the address is public, so nothing is requested.
+    if (e instanceof PolicyError && e.message === "dns_unavailable") {
+      return fail("dns_unavailable:" + url.hostname);
+    }
     return fail("dns_failed:" + url.hostname);
   }
   if (!addresses.length || !addresses.every(ipIsPublic)) {
@@ -102,6 +111,8 @@ export async function checkUrl(
 }
 
 export const denoResolver: Resolver = async (host) => {
+  const api = (Deno as unknown as { resolveDns?: unknown }).resolveDns;
+  if (typeof api !== "function") throw new PolicyError("dns_unavailable");
   const results = await Promise.allSettled([
     Deno.resolveDns(host, "A"),
     Deno.resolveDns(host, "AAAA"),

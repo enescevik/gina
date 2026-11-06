@@ -21,11 +21,20 @@ const routes = () => ({
 });
 
 /** In-memory stand-in for record_curriculum_source_fetch: same sha → unchanged; failure → unverified. */
-function fakeDb() {
+const registry = (args: Record<string, unknown>) =>
+  args.p_exam_family === "oyss" && args.p_year === "2026-2027" && args.p_term === 1
+    ? { id: "t1", index_url: INDEX, status: "active" }
+    : null;
+function fakeDb(targets: (args: Record<string, unknown>) => unknown = registry) {
   const calls: { name: string; args: Record<string, unknown> }[] = [];
+  const lookups: Record<string, unknown>[] = [];
   const revisions = new Set<string>();
   const db = {
     rpc: (name: string, args: Record<string, unknown>) => {
+      if (name === "get_curriculum_source_target") {
+        lookups.push(args);
+        return Promise.resolve({ data: targets(args), error: null });
+      }
       calls.push({ name, args });
       const source = args.p_source as Record<string, unknown>;
       const revision = args.p_revision as Record<string, unknown> | null;
@@ -39,7 +48,7 @@ function fakeDb() {
       throw Error("handler must not read tables directly");
     },
   } as unknown as SupabaseClient;
-  return { db, calls };
+  return { db, calls, lookups };
 }
 const admin = { userId: "00000000-0000-4000-8000-000000000002" };
 const request = (body: unknown, method = "POST") =>
@@ -159,9 +168,49 @@ Deno.test("policy failures become unverified receipts: foreign host on page, non
 
 Deno.test("database refusal and conflicts are surfaced, not retried into duplicate work", async () => {
   const t = transportFor(routes());
-  const mk = (error: { code?: string; message: string }) => ({ rpc: () => Promise.resolve({ data: null, error }), from: () => { throw Error("no"); } }) as unknown as SupabaseClient;
+  const mk = (error: { code?: string; message: string }) => ({ rpc: (name: string, args: Record<string, unknown>) => name === "get_curriculum_source_target" ? Promise.resolve({ data: registry(args), error: null }) : Promise.resolve({ data: null, error }), from: () => { throw Error("no"); } }) as unknown as SupabaseClient;
   const deps = (db: SupabaseClient) => ({ db, admin, transport: t.transport, resolve: publicResolver, upload: () => Promise.resolve(null) });
   assertEquals((await handleCurriculumSourceFetch(request({ request_id: id, target }), deps(mk({ code: "42501", message: "forbidden" })))).status, 403);
   assertEquals((await handleCurriculumSourceFetch(request({ request_id: id, target }), deps(mk({ code: "P0001", message: "request_conflict" })))).status, 409);
   assertEquals((await handleCurriculumSourceFetch(request({ request_id: id, target }), deps(mk({ message: "boom" })))).status, 500);
+});
+
+Deno.test("index page comes only from the registry: new term after admin registration, retired/absent term → unpublished", async () => {
+  const term2 = "https://odsgm.meb.gov.tr/www/2donem-konu-soru-dagilim-tablolari-2026-2027/icerik/9999";
+  const t = transportFor({ ...routes(), [term2]: { status: 200, headers: { "content-type": "text/html" }, body: PAGE } });
+  const withTerm2 = fakeDb((a) => a.p_term === 2 ? { id: "t2", index_url: term2, status: "active" } : registry(a));
+  const deps = { db: withTerm2.db, admin, transport: t.transport, resolve: publicResolver, upload: () => Promise.resolve(null) };
+  const fetched = await (await handleCurriculumSourceFetch(request({ request_id: id, target: { ...target, term: 2 } }), deps)).json();
+  assertEquals(fetched.outcome, "new_revision");
+  assertEquals((withTerm2.calls[0].args.p_source as { index_url: string }).index_url, term2);
+  assertEquals((withTerm2.calls[0].args.p_source as { source_key: string }).source_key, "oyss:2026-2027:2:matematik");
+  assert(t.calls.includes(term2) && !t.calls.includes(INDEX), "term-2 fetch never reads the term-1 page");
+  const none = fakeDb(() => null);
+  const t2 = transportFor(routes());
+  const unpublished = await (await handleCurriculumSourceFetch(request({ request_id: id, target: { ...target, term: 2 } }), { ...deps, db: none.db, transport: t2.transport })).json();
+  assertEquals(unpublished.outcome, "unpublished");
+  assertEquals(unpublished.requested, { school_year: "2026-2027", term: 2 });
+  assertEquals(t2.calls, [], "no network when no page is registered");
+  assertEquals(none.calls, [], "nothing recorded");
+  const foreign = fakeDb(() => ({ id: "x", index_url: "https://evil.invalid/index", status: "active" }));
+  assertEquals((await handleCurriculumSourceFetch(request({ request_id: id, target }), { ...deps, db: foreign.db, transport: t2.transport })).status, 500);
+  assertEquals(t2.calls, [], "a non-MEB registry value is never requested");
+  const broken = { rpc: () => Promise.resolve({ data: null, error: { message: "boom" } }), from: () => { throw Error("no"); } } as unknown as SupabaseClient;
+  assertEquals((await handleCurriculumSourceFetch(request({ request_id: id, target }), { ...deps, db: broken, transport: t2.transport })).status, 503);
+});
+
+Deno.test("runtime without Deno.resolveDns fails closed before any request", async () => {
+  const f = fakeDb();
+  const t = transportFor(routes());
+  const original = (Deno as unknown as { resolveDns?: unknown }).resolveDns;
+  Object.defineProperty(Deno, "resolveDns", { value: undefined, configurable: true, writable: true });
+  try {
+    const result = await (await handleCurriculumSourceFetch(request({ request_id: id, target }), { db: f.db, admin, transport: t.transport, upload: () => Promise.resolve(null) })).json();
+    assertEquals(result.outcome, "unverified");
+    assertEquals(result.error, "index:dns_unavailable:odsgm.meb.gov.tr");
+    assertEquals(t.calls, [], "no HTTP request without a DNS proof");
+    assertEquals((f.calls[0].args.p_revision), null);
+  } finally {
+    Object.defineProperty(Deno, "resolveDns", { value: original, configurable: true, writable: true });
+  }
 });
