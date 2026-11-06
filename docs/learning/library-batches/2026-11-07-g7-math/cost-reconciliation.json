@@ -1,0 +1,40 @@
+{
+  "currency": "USD",
+  "basis": "actual provider request token counters multiplied by verified standard API tariff; not a tax-inclusive invoice",
+  "pricing_source": "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
+  "rates_per_million": {
+    "input": 2,
+    "output": 10,
+    "cache_write_5m": 2.5,
+    "cache_write_1h": 4,
+    "cache_read": 0.1
+  },
+  "first_generation": {
+    "request_id": "req_011CgnXcmRBtdiHBw7MJeAeb",
+    "source": "Claude Console GINA Messages Logs, observed 2026-11-07 Europe/Istanbul",
+    "input_tokens": 719,
+    "cache_creation_input_tokens_5m": 1397,
+    "cache_creation_input_tokens_1h": 0,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 6995,
+    "service_tier": "standard",
+    "usd": 0.0748805
+  },
+  "first_prereview": {
+    "provider_usage": {
+      "request_id": "req_011CgnYd1zuVB28UkbgQBG9p",
+      "input_tokens": 7420,
+      "service_tier": "standard",
+      "output_tokens": 1546,
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 1924
+      },
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 1924
+    },
+    "usd": 0.03511
+  },
+  "first_batch_total_usd": 0.1099905,
+  "rejected_requests": "HTTP400 schema rejection and input-token-limit failure produced no generation; provider successful Messages log contains one generation and one review for this batch."
+}

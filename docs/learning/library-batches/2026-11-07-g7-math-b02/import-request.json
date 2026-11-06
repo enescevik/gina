@@ -1,0 +1,262 @@
+{
+  "p_request_id": "e59c924a-d513-4e69-887f-9a9c9e51cab5",
+  "p_bundle": {
+    "schema": "gina.library-import.v1",
+    "package_key": "gina-g7-math-rational-chain-20261107-b02",
+    "revision": 1,
+    "previous_hash": null,
+    "title": "7. sınıf Matematik · Rasyonel sayılar · İkinci AI zincir partisi (2 taslak)",
+    "grade": 7,
+    "subject": "Matematik",
+    "provenance": {
+      "locale": "tr",
+      "generation_run_id": "9c660d74-e4a6-4f20-8aae-4cb421048c28",
+      "chain_run_id": "5dd2f256-1429-438c-9496-9ab2ae587486",
+      "model": "claude-sonnet-5-5",
+      "provider": "anthropic",
+      "prompt_version": "library-batch-02/v1",
+      "prompt_sha256": "94a7f0ca528b3a592c9851ea4258230a8f10d0b9bbb4a0ccd1b1b4893c0b1802",
+      "curriculum_reference": [
+        {
+          "id": "outcome-50e68635c16b97a9d3b14cf2",
+          "code": "MAT.7.1.3",
+          "text": "MAT.7.1.3. Rasyonel sayıların karşılaştırma ve sıralama ilişkilerini yorumlayabilme",
+          "evidence": {
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+            "cell": "C9",
+            "sheet": "7.sınıf",
+            "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+            "count_cell": "D9",
+            "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6"
+          }
+        },
+        {
+          "id": "outcome-5c9c24393ec414e61ff500c9",
+          "code": "MAT.7.1.4",
+          "text": "MAT.7.1.4. Rasyonel sayılar ve işlemler içeren gerçek yaşam problemlerini çözebilme",
+          "evidence": {
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+            "cell": "C10",
+            "sheet": "7.sınıf",
+            "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+            "count_cell": "D10",
+            "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6"
+          }
+        }
+      ],
+      "mapping_status": "proposed_pending_subject_review",
+      "human_editorial_approval": null,
+      "intended_use": "review_only_practice_pool_not_official_exam",
+      "input_tokens": 1433,
+      "output_tokens": 5336,
+      "provider_usage": {
+        "request_id": "req_011CgnYrEy7p5jrjQ8rZBmEg",
+        "input_tokens": 1433,
+        "service_tier": "standard",
+        "output_tokens": 5336,
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 1594
+        },
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 1594
+      }
+    },
+    "assets": [],
+    "sources": [],
+    "questions": [
+      {
+        "key": "q1",
+        "revision": 1,
+        "source_key": null,
+        "student": {
+          "grade": 7,
+          "subject": "Matematik",
+          "topic": "Rasyonel sayılarda karşılaştırma: negatif ve pozitif sıcaklık verileriyle bir yargıyı karşı örnekle değerlendirme",
+          "kind": "open_ended",
+          "difficulty": "orta_ustu",
+          "stem": "Bir dağ kasabasında dört gün boyunca ölçülen gece en düşük sıcaklıkları (°C) şöyledir: 1. gün -7/2, 2. gün -11/4, 3. gün 1/4, 4. gün -13/4. Bir öğrenci şu yargıyı ileri sürüyor: \"Sıfıra uzaklığı (mutlak değeri) daha büyük olan sıcaklık her zaman daha yüksektir.\" a) Bu yargı doğru mudur? Verilen sıcaklıklardan seçeceğiniz bir sayı çiftiyle karşılaştırma yaparak karşı örnek gösteriniz. b) Sıcaklıkları uygun bir yöntemle karşılaştırarak en soğuk ve en sıcak günü belirtiniz. c) Negatif sayılar için mutlak değer ile büyüklük arasındaki doğru ilişkiyi bir cümleyle yazınız.",
+          "choices": []
+        },
+        "teacher": {
+          "correct_key": null,
+          "expected_answer": "a) Yargı yanlıştır. Örneğin |-7/2| = 7/2 > 1/4 = |1/4| olduğu hâlde -7/2 < 1/4 olur. Ayrıca |-7/2| = 14/4 > 11/4 = |-11/4| olduğu hâlde -14/4 < -11/4 olur. b) En soğuk gün 1. gün (-7/2 °C), en sıcak gün 3. gün (1/4 °C). c) Negatif sayılarda mutlak değer büyüdükçe sayı küçülür.",
+          "solution": "1) Sayıları paydası 4 olan kesirlere çeviririz: -7/2 = -14/4, -11/4, 1/4, -13/4. 2) Yargıyı sınamak için mutlak değerlere bakarız: |-14/4| = 14/4 ve |1/4| = 1/4. Mutlak değeri büyük olan -14/4'tür. Ancak negatif sayı pozitif sayıdan küçüktür, yani -14/4 < 1/4. Yargı bu örnekle çürür. 3) İkinci karşı örnek: |-14/4| = 14/4 > 11/4 = |-11/4| iken sayı doğrusunda -14/4, -11/4'ün solundadır, yani -14/4 < -11/4. 4) Sıralama: -14/4 < -13/4 < -11/4 < 1/4. En küçük sıcaklık 1. gün (-7/2 °C), en büyük sıcaklık 3. gün (1/4 °C). 5) Negatif sayılarda sıfıra uzaklık arttıkça sayı sola kayar ve küçülür.",
+          "explanation": "Bir yargının yanlış olduğunu göstermek için tek bir karşı örnek yeterlidir. Burada mutlak değeri büyük olan -7/2, hem pozitif 1/4'ten hem de -11/4'ten küçüktür. Negatiflerde sıfırdan uzaklaşmak sayıyı küçülttüğü için en soğuk gün mutlak değeri en büyük negatif sayıya sahip olan gündür.",
+          "common_misconception": "Öğrenciler negatif sayılarda da mutlak değeri büyük olan sayının büyük olduğunu sanır ve -7/2'yi -11/4'ten büyük kabul eder. Bazıları da paydaları eşitlemeden yalnız paylara bakarak karşılaştırır.",
+          "next_step": "Farklı bir sıcaklık listesinde ortak paydada karşılaştırma yaparak bir yargıyı yine karşı örnekle sınamasını ve yargıyı doğru olacak biçimde yeniden yazmasını iste.",
+          "rubric": {
+            "scoring": "Toplam 100 puan. Eşdeğer doğru karşı örnekler ve ondalık ya da kesir gösterimleri kabul edilir. Aynı işlem hatası sonraki adımlarda yinelenirse yalnız ilk ölçütte puan kırılır; sonraki adımlar tutarlıysa tam puan verilir.",
+            "criteria": [
+              {
+                "id": "k1",
+                "points": 20,
+                "criterion": "Yargının yanlış olduğunu açıkça belirtir."
+              },
+              {
+                "id": "k2",
+                "points": 30,
+                "criterion": "Verilerden uygun bir karşı örnek seçer ve mutlak değerleri ile sayıların gerçek sıralamasını karşılaştırarak yargının neden çürüdüğünü gösterir."
+              },
+              {
+                "id": "k3",
+                "points": 30,
+                "criterion": "Ortak payda, ondalık gösterim veya sayı doğrusu gibi uygun bir yöntemle sıcaklıkları doğru karşılaştırır ve en soğuk ile en sıcak günü doğru belirler."
+              },
+              {
+                "id": "k4",
+                "points": 20,
+                "criterion": "Negatif sayılarda mutlak değer büyüdükçe sayının küçüldüğünü doğru ifade eder."
+              }
+            ],
+            "max_points": 100,
+            "missing_answer": "Yanıt yoksa 0 puan; okunamayan yanıt ayrı inceleme gerektirir.",
+            "review_required": true
+          }
+        },
+        "metadata": {
+          "curriculum": {
+            "id": "outcome-50e68635c16b97a9d3b14cf2",
+            "code": "MAT.7.1.3",
+            "text": "MAT.7.1.3. Rasyonel sayıların karşılaştırma ve sıralama ilişkilerini yorumlayabilme",
+            "evidence": {
+              "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+              "cell": "C9",
+              "sheet": "7.sınıf",
+              "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+              "count_cell": "D9",
+              "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6"
+            },
+            "mapping_status": "proposed_pending_subject_review",
+            "school_track_applicability": "pending_review"
+          },
+          "provenance": {
+            "generator": "ai",
+            "generation_run_id": "9c660d74-e4a6-4f20-8aae-4cb421048c28",
+            "chain_run_id": "5dd2f256-1429-438c-9496-9ab2ae587486",
+            "model": "claude-sonnet-5-5",
+            "provider": "anthropic",
+            "prompt_version": "library-batch-02/v1"
+          },
+          "difficulty_calibration": "estimated_not_empirical",
+          "human_editorial_approval": null,
+          "response": {
+            "requires_reasoning": true
+          },
+          "depends_on_question_ids": [],
+          "agent_review": {
+            "human_approval": false,
+            "mathematical_check": "passed exact rational arithmetic",
+            "edits": [
+              {
+                "key": "q1",
+                "field": "stem",
+                "before": "Bir dağ kasabasında dört gün boyunca ölçülen gece en düşük sıcaklıkları (°C) şöyledir: 1. gün -7/2, 2. gün -11/4, 3. gün 1/4, 4. gün -13/4. Bir öğrenci şu yargıyı ileri sürüyor: \"Sıfıra uzaklığı (mutlak değeri) daha büyük olan sıcaklık her zaman daha yüksektir.\" a) Bu yargı doğru mudur? Verilen sıcaklıklardan seçeceğiniz sayı çiftleriyle karşılaştırma yaparak karşı örnek gösteriniz. b) Sıcaklıkları ortak paydada karşılaştırarak en soğuk ve en sıcak günü belirtiniz. c) Negatif sayılar için mutlak değer ile büyüklük arasındaki doğru ilişkiyi bir cümleyle yazınız.",
+                "after": "Bir dağ kasabasında dört gün boyunca ölçülen gece en düşük sıcaklıkları (°C) şöyledir: 1. gün -7/2, 2. gün -11/4, 3. gün 1/4, 4. gün -13/4. Bir öğrenci şu yargıyı ileri sürüyor: \"Sıfıra uzaklığı (mutlak değeri) daha büyük olan sıcaklık her zaman daha yüksektir.\" a) Bu yargı doğru mudur? Verilen sıcaklıklardan seçeceğiniz bir sayı çiftiyle karşılaştırma yaparak karşı örnek gösteriniz. b) Sıcaklıkları uygun bir yöntemle karşılaştırarak en soğuk ve en sıcak günü belirtiniz. c) Negatif sayılar için mutlak değer ile büyüklük arasındaki doğru ilişkiyi bir cümleyle yazınız."
+              },
+              {
+                "key": "q1",
+                "field": "rubric.k3",
+                "before": "Ortak payda kullanarak sıcaklıkları doğru karşılaştırır ve en soğuk ile en sıcak günü doğru belirler.",
+                "after": "Ortak payda, ondalık gösterim veya sayı doğrusu gibi uygun bir yöntemle sıcaklıkları doğru karşılaştırır ve en soğuk ile en sıcak günü doğru belirler."
+              }
+            ]
+          }
+        }
+      },
+      {
+        "key": "q2",
+        "revision": 1,
+        "source_key": null,
+        "student": {
+          "grade": 7,
+          "subject": "Matematik",
+          "topic": "Rasyonel sayılarla gerçek yaşam problemi: ip rulosundan eş uzunlukta parçalar kesme ve parçaları uzatma",
+          "kind": "open_ended",
+          "difficulty": "orta_ustu",
+          "stem": "Uzunluğu 17,5 m olan bir ip rulosunun 2/7'si perde için ayrılıyor. Rulodan geriye kalan ip, her biri 5/6 m uzunluğunda eş parçalara kesiliyor ve artan parça kalmıyor. Daha sonra bu parçaların her birine, kendi uzunluğunun 1/5'i kadar ek ip eklenerek parçalar uzatılıyor. Eklemeler için ayrı bir ip kaynağı kullanılıyor; kesme ve ekleme sırasında uzunluk kaybı olmadığı kabul ediliyor. a) Kaç parça elde edilmiştir? b) Uzatılmış her parçanın uzunluğu kaç metredir? c) Uzatılmış parçaların toplam uzunluğu, perde için ayrılandan sonra kalan ipin uzunluğundan kaç metre fazladır? İşlemlerinizi ve gerekçenizi yazınız.",
+          "choices": []
+        },
+        "teacher": {
+          "correct_key": null,
+          "expected_answer": "a) 15 parça. b) Her parça 1 m olur. c) Toplam uzunluk 15 m olur ve kalan ipten 2,5 m fazladır.",
+          "solution": "1) Perde için ayrılan ip: 17,5 × 2/7 = 35/2 × 2/7 = 5 m. 2) Kalan ip: 17,5 - 5 = 12,5 m. 3) Parça sayısı: 12,5 ÷ 5/6 = 25/2 × 6/5 = 15 parça. 4) Eklenen uzunluk: 5/6 × 1/5 = 1/6 m. Yeni parça uzunluğu: 5/6 + 1/6 = 1 m. 5) Toplam uzunluk: 15 × 1 = 15 m. 6) Fark: 15 - 12,5 = 2,5 m.",
+          "explanation": "Önce ruloda perde için ayrılan miktar, sonra kalan ip bulunur; kalan ip eş parçaların uzunluğuna bölünerek parça sayısı elde edilir. Uzatma her parçaya eklendiği için toplam uzunluk, 15 parçanın yeni uzunluğuyla çarpılarak ya da eklenen 15 × 1/6 = 2,5 m ile 12,5 m toplanarak bulunur. İki yol aynı sonucu verir.",
+          "common_misconception": "Öğrenciler 2/7'yi kalan ipten değil, ruloya ait olmayan bir miktardan alır ya da 12,5'i 5/6 ile bölmek yerine çarpar. Bazıları da 1/5'i parçanın değil, tüm rulonun kesri olarak alır.",
+          "next_step": "Ek uzunluğun parça uzunluğunun kesri yerine sabit bir uzunluk (örneğin 1/4 m) olarak verildiği benzer bir ip problemini çözmesini iste.",
+          "rubric": {
+            "scoring": "Toplam 100 puan. Ondalık ya da kesir gösterimi ve 15 × 1/6 = 2,5 m gibi eşdeğer yollar kabul edilir. Aynı hata sonraki adımlarda yinelenirse yalnız ilk ölçütte puan kırılır; sonraki işlemler tutarlıysa tam puan verilir.",
+            "criteria": [
+              {
+                "id": "k1",
+                "points": 25,
+                "criterion": "Perde için ayrılan ipi (5 m) ve kalan ipi (12,5 m) doğru hesaplar."
+              },
+              {
+                "id": "k2",
+                "points": 25,
+                "criterion": "Kalan ipi parça uzunluğuna bölerek parça sayısını (15) doğru bulur ve bölme işlemini gerekçelendirir."
+              },
+              {
+                "id": "k3",
+                "points": 25,
+                "criterion": "Eklenen uzunluğu 1/6 m ve uzatılmış parçanın uzunluğunu 1 m olarak doğru hesaplar."
+              },
+              {
+                "id": "k4",
+                "points": 25,
+                "criterion": "Toplam uzunluğu (15 m) bulur, kalan ip ile farkı (2,5 m) doğru hesaplar ve birimi belirtir."
+              }
+            ],
+            "max_points": 100,
+            "missing_answer": "Yanıt yoksa 0 puan; okunamayan yanıt ayrı inceleme gerektirir.",
+            "review_required": true
+          }
+        },
+        "metadata": {
+          "curriculum": {
+            "id": "outcome-5c9c24393ec414e61ff500c9",
+            "code": "MAT.7.1.4",
+            "text": "MAT.7.1.4. Rasyonel sayılar ve işlemler içeren gerçek yaşam problemlerini çözebilme",
+            "evidence": {
+              "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+              "cell": "C10",
+              "sheet": "7.sınıf",
+              "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+              "count_cell": "D10",
+              "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6"
+            },
+            "mapping_status": "proposed_pending_subject_review",
+            "school_track_applicability": "pending_review"
+          },
+          "provenance": {
+            "generator": "ai",
+            "generation_run_id": "9c660d74-e4a6-4f20-8aae-4cb421048c28",
+            "chain_run_id": "5dd2f256-1429-438c-9496-9ab2ae587486",
+            "model": "claude-sonnet-5-5",
+            "provider": "anthropic",
+            "prompt_version": "library-batch-02/v1"
+          },
+          "difficulty_calibration": "estimated_not_empirical",
+          "human_editorial_approval": null,
+          "response": {
+            "requires_reasoning": true
+          },
+          "depends_on_question_ids": [],
+          "agent_review": {
+            "human_approval": false,
+            "mathematical_check": "passed exact rational arithmetic",
+            "edits": [
+              {
+                "key": "q2",
+                "field": "stem",
+                "before": "Uzunluğu 17,5 m olan bir ip rulosunun 2/7'si perde için ayrılıyor. Rulodan geriye kalan ip, her biri 5/6 m uzunluğunda eş parçalara kesiliyor ve artan parça kalmıyor. Daha sonra bu parçaların her birine, kendi uzunluğunun 1/5'i kadar ek ip eklenerek parçalar uzatılıyor. a) Kaç parça elde edilmiştir? b) Uzatılmış her parçanın uzunluğu kaç metredir? c) Uzatılmış parçaların toplam uzunluğu, perde için ayrılandan sonra kalan ipin uzunluğundan kaç metre fazladır? İşlemlerinizi ve gerekçenizi yazınız.",
+                "after": "Uzunluğu 17,5 m olan bir ip rulosunun 2/7'si perde için ayrılıyor. Rulodan geriye kalan ip, her biri 5/6 m uzunluğunda eş parçalara kesiliyor ve artan parça kalmıyor. Daha sonra bu parçaların her birine, kendi uzunluğunun 1/5'i kadar ek ip eklenerek parçalar uzatılıyor. Eklemeler için ayrı bir ip kaynağı kullanılıyor; kesme ve ekleme sırasında uzunluk kaybı olmadığı kabul ediliyor. a) Kaç parça elde edilmiştir? b) Uzatılmış her parçanın uzunluğu kaç metredir? c) Uzatılmış parçaların toplam uzunluğu, perde için ayrılandan sonra kalan ipin uzunluğundan kaç metre fazladır? İşlemlerinizi ve gerekçenizi yazınız."
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

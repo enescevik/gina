@@ -15,3 +15,9 @@ Dört cevap Python Fraction ile bağımsız doğrulandı. Her rubrik pozitif tam
 Geçici operasyon ucu ve anahtarı kaldırıldı; geçici SQL tablo/RPC'leri kaldırıldı. Tam koşu kaydı canlı audit_log içinde `library_generation.batch_completed` olayıyla saklıdır. Aile/çocuk kaydı, aile kotası veya yayın kapısı değiştirilmedi. Büyük seri başlatılmadı.
 
 Dosyalar: `import-request.json` mevcut admin_import_library_bundle sözleşmesindeki tekrar kullanılabilir istek; `provider-result.json` ham çıktı ve üretim izi; `agent-edits.json` teknik değişiklikler; `live-evidence.json` canlı durum/denemeler; `verification.json` son kontroller. Bunlar öğretmen cevaplarını içerir, öğrenciye açık sunulmaz.
+
+## Aynı gün takip: ön inceleme ve maliyet
+
+`20261107040000_prereview_input_budget.sql` ve ayrı ön inceleme yapılandırmasıyla 24.000 token sınırı uygulandı; aile planları değişmedi. Mevcut dört soru Sonnet 5.5 ön incelemesini %86 güven ve sıfır engelleyici bulguyla geçti (`ai_approved`). İnsan onayı değildir, yayın yapılmadı. `completed-prereview.json` güncel kanıttır; yukarıdaki ilk ihtiyaç kaydı tarihsel durumdur.
+
+Claude Console GINA Messages Logs içinde ilk üretimin `req_011CgnXcmRBtdiHBw7MJeAeb` kaydı bulundu: 719 önbelleksiz giriş, 1397 beş dakikalık önbellek yazımı, 0 önbellek okuma, 6995 çıkış. Standart API tarifesiyle üretim $0.0748805, ön inceleme $0.03511, toplam $0.1099905. Sayılar gerçek sağlayıcı kullanımıdır; tutar token tarifesiyle hesaplanmıştır (vergi ve hesaba özel fatura düzeltmeleri hariç). Eski bilinmeyen maliyet notu bu kayıtla giderildi; `cost-reconciliation.json` ayrıntıları içerir. İki soruluk ikinci parti ayrı klasörde ve canlı ayrı pakettedir.
