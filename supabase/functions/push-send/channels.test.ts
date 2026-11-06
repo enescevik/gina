@@ -136,3 +136,19 @@ Deno.test("render: generic text, unsubscribe headers, code only for the verifica
   const smsNotice = renderSms({ ...announcement, channel: "sms", recipient: "+905551112233", sender: "GINA" }, render);
   assert(smsNotice.text.startsWith("GINA duyuru: Yarıyıl tatili") && smsNotice.text.length <= 300);
 });
+
+Deno.test("C10 render: List-Unsubscribe points to the one-click endpoint, the visible link to the page; verify mail carries a deep link", () => {
+  const o = { unsubscribeUrl: "https://edge.example.invalid/functions/v1/channel-unsubscribe", unsubscribePageUrl: "https://app.example.invalid/unsubscribe", confirmUrl: "https://app.example.invalid/verify-contact" };
+  const mail = renderEmail(announcement, o);
+  assertEquals(mail.headers?.["List-Unsubscribe"], `<${o.unsubscribeUrl}?token=${encodeURIComponent(announcement.unsubscribe_token!)}>`);
+  assertEquals(mail.headers?.["List-Unsubscribe-Post"], "List-Unsubscribe=One-Click");
+  assert(mail.text.includes(`${o.unsubscribePageUrl}?token=`), "people get the page link");
+  assert(!mail.text.includes(o.unsubscribeUrl), "the POST endpoint is not shown as the human link when a page exists");
+  const sms = renderSms({ ...announcement, channel: "sms", sender: "GINA" }, o);
+  assert(sms.text.includes(`${o.unsubscribePageUrl}?token=`));
+  const code = renderEmail({ ...verification, channel: "email", sender: "noreply@example.invalid", payload: { ...verification.payload, secret: "ABCD2345" } }, o);
+  assert(code.text.includes(`${o.confirmUrl}?kind=email&code=ABCD2345`), "deep link pre-fills the code");
+  assert(!code.headers, "service mail has no unsubscribe header");
+  // Without a page the endpoint link is used (its GET shows a confirmation form, never unsubscribes).
+  assert(renderEmail(announcement, { ...o, unsubscribePageUrl: null }).text.includes(`${o.unsubscribeUrl}?token=`));
+});
