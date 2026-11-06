@@ -28,7 +28,7 @@
 | H04 hesap ve ürün e-postası kabulü | YAPILIYOR | Auth TR reset + destek yönlendirme/gönderici STATUS'ta | Claude hazırlık; gerçek teslimat Enes |
 | H05 satın alma AI notu, fotoğraf saklama metni | KOD HAZIR (main) | `subscription.aiConsentNote` TR/EN, Playwright 4/4 (390/768); dosya yaşam döngüsü koddan doğrulandı, üretimde `source-cleanup` cron (43 * * * *) etkin; hukuk taslakları TR/EN güncel ([h05](h05-2026-11-06/README.md)). Yayın H08 | Claude; özel hukuk kopyaları + avukat Enes |
 | H06 görsel/etkileşim kabul boşlukları | AÇIK | H01–H05 sonrasına | Claude; fiziksel cihaz Enes |
-| H07 AI ön inceleme işletim hazırlığı | YAPILIYOR | kapı kapalı kalır | Claude; aktivasyon kararı Enes |
+| H07 AI ön inceleme işletim hazırlığı | KOD HAZIR (main) — teknik hazırlık tamam, aktivasyon bekliyor | Günlük kota + çağrı defteri, takılı kayıt kurtarma, sağlık RPC'si, kapı kapalıyken no-op cron; pgTAP 133 65/65, tam SQL 5.982/0, izole 19/19 ([h07](h07-2026-11-06/README.md)). `content_prereview.enabled` kapalı kalır | Claude; aktivasyon (sır, --no-verify-jwt, pilot) Enes kararı |
 | H08 regresyon, düzeltme yayını, rapor | AÇIK | son | Claude |
 
 Kütüphane içerik üretimi/onayı ve 3B dünya Claude'un açık işi değildir (aşağıda yalnız bilgi).
