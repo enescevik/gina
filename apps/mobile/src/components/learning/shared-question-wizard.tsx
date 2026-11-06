@@ -646,26 +646,37 @@ export function SharedQuestionWizard(
                 ? (
                   <>
                     <Text style={s.copy}>{t("sharedQuestions.intro")}</Text>
-                    <View style={s.row}>
-                      <View style={{ flex: 3 }}>
-                        <Field
-                          label={t("grades.subject")}
-                          value={draft.subject}
-                          onChangeText={(subject) => update({ subject })}
-                          editable={!locked}
-                          maxLength={80}
-                        />
-                      </View>
-                      <View style={{ flex: 1 }}>
-                        <Field
-                          label={t("prova.grade")}
-                          value={draft.grade}
-                          onChangeText={(grade) => update({ grade })}
-                          editable={!locked}
-                          keyboardType="number-pad"
-                          maxLength={2}
-                        />
-                      </View>
+                    <Field
+                      label={t("grades.subject")}
+                      value={draft.subject}
+                      onChangeText={(subject) => update({ subject })}
+                      editable={!locked}
+                      maxLength={80}
+                    />
+                    {/* D4-1: sınıf serbest metin değil; kitapçıktaki gibi 1–12 arası tek dokunuşla seçilir. */}
+                    <Text nativeID="shared-source-grade-label" style={s.bold}>{t("prova.grade")}</Text>
+                    <View
+                      accessibilityRole="radiogroup"
+                      aria-labelledby="shared-source-grade-label"
+                      style={s.gradeRow}
+                    >
+                      {Array.from({ length: 12 }, (_, i) => i + 1).map((g) => {
+                        const active = Number(draft.grade) === g;
+                        return (
+                          <Pressable
+                            key={g}
+                            accessibilityRole="radio"
+                            accessibilityLabel={t("parent.gradeShort", { grade: g })}
+                            accessibilityState={{ checked: active, disabled: locked }}
+                            aria-checked={active}
+                            disabled={locked}
+                            onPress={() => update({ grade: String(g) })}
+                            style={[s.gradeChip, active && s.gradeChipActive, locked && !active && s.gradeChipLocked]}
+                          >
+                            <Text style={[s.gradeChipText, active && s.gradeChipTextActive]}>{g}</Text>
+                          </Pressable>
+                        );
+                      })}
                     </View>
                     <Field
                       label={t("sharedQuestions.sourceTitle")}
@@ -1011,6 +1022,22 @@ const s = StyleSheet.create({
     borderWidth: 1,
   },
   row: { flexDirection: "row", alignItems: "center", gap: 10 },
+  gradeRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+  gradeChip: {
+    minWidth: 48,
+    minHeight: 48,
+    paddingHorizontal: 14,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: "#D9D3E6",
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  gradeChipActive: { backgroundColor: "#4D32BB", borderColor: "#4D32BB" },
+  gradeChipLocked: { opacity: 0.5 },
+  gradeChipText: { fontFamily: "Nunito_600SemiBold", fontSize: 17, color: p.ink },
+  gradeChipTextActive: { fontFamily: "Nunito_700Bold", color: "#FFFFFF" },
   sourceCard: {
     gap: 16,
     borderWidth: 1,

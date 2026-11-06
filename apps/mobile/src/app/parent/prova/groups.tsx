@@ -16,6 +16,7 @@ import { p, SatinButton, Tag, u } from "@/components/planner/ui";
 import { supabase } from "@/lib/supabase";
 import { useFamilyTimezone } from "@/lib/family";
 import { useSession } from "@/lib/session";
+import { useRouteMotion } from "@/lib/use-route-motion";
 import {
   type CohortReviewRow,
   CohortWrittenReport,
@@ -132,6 +133,7 @@ function Choice(
 }
 export default function GroupExams() {
   const { t, i18n } = useTranslation();
+  const { animation } = useRouteMotion();
   const { claims } = useSession();
   const cache = useQueryClient();
   const timeZone = useFamilyTimezone();
@@ -306,7 +308,7 @@ export default function GroupExams() {
         ? (
           <Modal
             visible
-            animationType="fade"
+            animationType={animation}
             onRequestClose={() => {
               if (!gate.current) setRankingRequest(null);
             }}
@@ -357,7 +359,7 @@ export default function GroupExams() {
         ? (
           <Modal
             visible
-            animationType="fade"
+            animationType={animation}
             onRequestClose={() => {
               if (!gate.current) setJoining(null);
             }}
@@ -556,7 +558,7 @@ export default function GroupExams() {
         ? (
           <Modal
             visible
-            animationType="fade"
+            animationType={animation}
             onRequestClose={() => setSelected(null)}
             supportedOrientations={["portrait", "landscape"]}
           >

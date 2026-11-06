@@ -180,3 +180,35 @@ ${common}
     escapeHtml(title)
   }</title><style>${STYLE}</style></head><body>${cover}<main>${body}</main>${key}</body></html>`;
 }
+
+/** D4-4 — native PDF (WKWebView → CoreGraphics) için gömülü yazı tipi.
+ * Kök neden: HTML'deki "Nunito"/"Baloo 2" WebView'da yüklü değil, metin sistem fontuna
+ * (SF) düşüyor. Cihaz dili Türkçe iken SF'nin Türkçeye özel "i" glifi cmap'te karşılığı
+ * olmayan bir glif; PDF yazıcısı bunu ToUnicode'suz MacRoman alt kümesine 0x21 koduyla
+ * koyuyor, `pdftotext`/arama/kopyalama "i" yerine "!" okuyor (görsel doğru). Uygulamanın
+ * kendi yazı tiplerini @font-face ile gömmek metin katmanını düzeltir. */
+export interface BookletFont {
+  family: "Nunito" | "Baloo 2";
+  weight: 400 | 600 | 700 | 800;
+  /** TTF baytlarının base64 hâli (data: öneki olmadan). */
+  base64: string;
+}
+
+export function bookletFontFaceCss(fonts: readonly BookletFont[]): string {
+  return fonts
+    .filter((f) => /^[A-Za-z0-9+/]+={0,2}$/.test(f.base64))
+    .map((f) =>
+      `@font-face { font-family: "${f.family}"; font-style: normal; font-weight: ${f.weight}; src: url(data:font/ttf;base64,${f.base64}) format("truetype"); }`
+    )
+    .join("\n");
+}
+
+/** Hazır kitapçık HTML'ine yazı tiplerini ekler; yazı tipi yoksa HTML'i aynen döndürür. */
+export function withBookletFonts(
+  html: string,
+  fonts: readonly BookletFont[],
+): string {
+  const css = bookletFontFaceCss(fonts);
+  if (!css || !html.includes("</head>")) return html;
+  return html.replace("</head>", `<style>${css}</style></head>`);
+}

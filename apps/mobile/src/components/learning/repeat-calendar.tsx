@@ -17,6 +17,7 @@ import {
 import { b, BuilderCard, BuilderChoice } from "./prova-builder-ui";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
+import { DateChoice, TimeChoice } from "@/components/ui/date-time-choice";
 import { p, SatinButton } from "@/components/planner/ui";
 import { useSession } from "@/lib/session";
 import { useFamilyEvents } from "@/lib/use-family-events";
@@ -412,11 +413,12 @@ export function RepeatCalendar(
                     {editing === r.day
                       ? (
                         <View style={{ gap: 12 }}>
-                          <Field
-                            label={t("repeatCalendar.date")}
+                          {/* D4-3: tarih/saat serbest metin değil; ortak takvim ve saat seçicileri. */}
+                          <DateChoice
+                            label={t("d8.repeatDate")}
                             value={r.date}
-                            onChangeText={(date) => edit(r.day, { date })}
-                            placeholder="YYYY-MM-DD"
+                            onChange={(date) => edit(r.day, { date })}
+                            today={localDateOf(new Date(), source.timezone)}
                           />
                           <View
                             style={{
@@ -436,11 +438,10 @@ export function RepeatCalendar(
                               ),
                             )}
                           </View>
-                          <Field
-                            label={t("repeatCalendar.time")}
+                          <TimeChoice
+                            label={t("d8.repeatTime")}
                             value={r.time}
-                            onChangeText={(time) => edit(r.day, { time })}
-                            placeholder="17:00"
+                            onChange={(time) => edit(r.day, { time })}
                           />
                           <View
                             style={{

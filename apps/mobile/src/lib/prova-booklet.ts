@@ -1,5 +1,9 @@
 import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
+import { Asset } from "expo-asset";
+import { File } from "expo-file-system";
+import { Nunito_400Regular, Nunito_700Bold } from "@expo-google-fonts/nunito";
+import { Baloo2_700Bold } from "@expo-google-fonts/baloo-2";
 import { supabase } from "./supabase";
 import { sourceAction } from "./learning-files";
 import i18n from "./i18n";
@@ -7,7 +11,7 @@ import { Platform } from "react-native";
 
 /** Kitapçık (PDF) için HTML üretir ve yazdırır/paylaşır. Tüm metinler kaçışlanır; sayfa A4. */
 
-import type { BookletQuestion } from "@gina/core";
+import { type BookletFont, type BookletQuestion, withBookletFonts } from "@gina/core";
 export { buildBookletHtml, escapeHtml } from "@gina/core";
 export type {
   BookletChoice,
@@ -15,6 +19,31 @@ export type {
   BookletOptions,
   BookletQuestion,
 } from "@gina/core";
+
+const BOOKLET_FONTS: { family: BookletFont["family"]; weight: BookletFont["weight"]; module: number }[] = [
+  { family: "Nunito", weight: 400, module: Nunito_400Regular },
+  { family: "Nunito", weight: 700, module: Nunito_700Bold },
+  { family: "Baloo 2", weight: 700, module: Baloo2_700Bold },
+];
+let fontLoad: Promise<BookletFont[]> | null = null;
+
+/** D4-4: native PDF'te metin katmanı doğru kalsın diye uygulamanın yazı tipleri HTML'e gömülür
+ * (bkz. core `withBookletFonts`). Yükleme başarısız olursa PDF yine üretilir, yalnız sistem
+ * fontuna düşer; hata yutulur ama bir sonraki denemede yeniden okunur. */
+export function loadBookletFonts(): Promise<BookletFont[]> {
+  fontLoad ??= Promise.all(
+    BOOKLET_FONTS.map(async ({ family, weight, module }) => {
+      const asset = await Asset.fromModule(module).downloadAsync();
+      const uri = asset.localUri ?? asset.uri;
+      return { family, weight, base64: await new File(uri).base64() };
+    }),
+  ).catch((error: unknown) => {
+    fontLoad = null;
+    console.warn("booklet fonts unavailable", error);
+    return [];
+  });
+  return fontLoad;
+}
 
 /**
  * Yerelde PDF'e çevirip paylaşım sayfasını açar; webde tarayıcı yazdırma penceresini açar
@@ -52,7 +81,7 @@ export async function printBooklet(
   }
   // A4: 595 × 842 pt.
   const { uri } = await Print.printToFileAsync({
-    html,
+    html: withBookletFonts(html, await loadBookletFonts()),
     width: 595,
     height: 842,
   });
