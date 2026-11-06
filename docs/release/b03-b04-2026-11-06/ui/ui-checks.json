@@ -1,0 +1,89 @@
+{
+  "db_prefix": "gina_b34_",
+  "viewport": [
+    "1280x800",
+    "768x1024"
+  ],
+  "results": [
+    {
+      "check": "cohort_queue_filled_next_unreviewed_and_appeal",
+      "passed": true,
+      "detail": {
+        "unreviewedView": true,
+        "appealVisible": true
+      }
+    },
+    {
+      "check": "cohort_unreadable_not_zero_and_not_ranked",
+      "passed": true,
+      "detail": "unreadable labelled, still in review queue; ranking card optional"
+    },
+    {
+      "check": "cohort_search",
+      "passed": true,
+      "detail": "0 / 4 for a non-matching alias"
+    },
+    {
+      "check": "groups_preview_and_phases",
+      "passed": true,
+      "detail": "phases separate; plan labels readable"
+    },
+    {
+      "check": "help_article_draft_vs_live_and_device_preview",
+      "passed": true,
+      "detail": "live v1 unchanged while draft v2 differs"
+    },
+    {
+      "check": "announcement_channel_readiness_and_preview",
+      "passed": true,
+      "detail": {
+        "readiness": "Kanal hazırlığı Hazır kanal, mesajın gönderim hizmetine verilebileceğini gösterir. Sağlayıcı kabulü teslim veya okundu anlamına gelmez. Uygulama içi Hazır Telefon bildirimi (push) Hazır değil Hizmet anahtarı sunucuda tanımlı değil Sunucu ortam ayarı eksik Son durum bildirimi: 6 Kas 2026 04:53 E-post",
+        "preview": "Uygulama içi 4 veli · her zaman oluşturulur Telefon bildirimi (push) Bildirim izni olan cihazlara; kesin sayı gönderimde belli olur. E-posta · hazır değil Uygun: 0 veli · Engelli: 4 veli Kanal hazır değil: 4 Eksik: Hizmet anahtarı sunucuda tanımlı değil; Sunucu ortam ayarı eksik"
+      }
+    },
+    {
+      "check": "notifications_event_first_receipt_second",
+      "passed": true,
+      "detail": "event + fix shown, receipt collapsed"
+    },
+    {
+      "check": "support_queue_waiting_and_unassigned",
+      "passed": true,
+      "detail": "Plus paketim görünmüyor Açık 5 Kas Veli 26 sa bekliyor Sorumlusuz"
+    },
+    {
+      "check": "support_assign_to_me_keeps_draft",
+      "passed": true,
+      "detail": "assigned, draft intact and not stale"
+    },
+    {
+      "check": "support_canned_and_related_article_use_live_text",
+      "passed": true,
+      "detail": "canned + live article inserted into this draft only"
+    },
+    {
+      "check": "support_draft_not_carried_to_other_conversation",
+      "passed": true,
+      "detail": "other conversation opens with an empty draft"
+    },
+    {
+      "check": "support_team_note_hidden_from_family",
+      "passed": true,
+      "detail": "operator sees note; parent RPC output has no internal note/assignee"
+    },
+    {
+      "check": "support_search_reaches_team_notes",
+      "passed": true,
+      "detail": "one ticket matched by internal note text"
+    },
+    {
+      "check": "ideas_stage_and_similar_link",
+      "passed": true,
+      "detail": "planned + linked; support tickets untouched"
+    },
+    {
+      "check": "no_page_errors",
+      "passed": true
+    }
+  ]
+}
