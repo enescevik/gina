@@ -82,7 +82,7 @@ Koordinatör C14 sonrası C15'i beklemek için durdu; bu hataydı — bağımsı
 | İş | Kapsam | Durum |
 |---|---|---|
 | D1 | AI ortak kaynak → gerçek soru grubu + çocuğa ortak içerik; soru düzeyinde dönem/program eşleşmesi; Prova dersinin kanonik kimliğe bağlanması; MEB soru uygunluğu veli inceleme ekranı (migration `350000`, pgTAP 121) | YAPILIYOR |
-| D2 | PIN'siz çocuk modu; tablet yeniden açılışında eşleme onay kartı; red bildirimi; u02 testi (`360000`, 122) | YAPILIYOR |
+| D2 | PIN'siz çocuk modu; tablet yeniden açılışında eşleme onay kartı; red bildirimi; u02 testi (`360000`, 122) | KOD HAZIR — pgTAP 5.311/0, Playwright D2 9/9, U02 15/15; yayımlanmadı. Açık: red notu yalnız uygulama içi, eski `childModeSubtitle` metni çelişkili. |
 | D3 | Operatör bölge/okul kapsam ekranı; kanal hataları sayfası; soru bazlı katkı ret notu; yönetim `confirm` pencereleri, A3-4/A3-7 (`370000`, 123) | YAPILIYOR |
 | D4 | Görülemeyen 6 alt akış; reduced-motion solma; giriş odak halkası; kitapçık sınıf seçimi; native PDF yolu | YAPILIYOR |
 | D5 | Gerçek AI kabulü — üretimde sentetik hesapla, ≤30 çağrı, temizlik; ön inceleme kapısı açılmaz | YAPILIYOR |
