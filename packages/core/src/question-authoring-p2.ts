@@ -193,9 +193,16 @@ export function normalizeTime(s: string): string | null {
   return h <= 23 && min <= 59 ? `${String(h).padStart(2, "0")}:${String(min).padStart(2, "0")}` : null;
 }
 
-export function phase2DraftErrors(d: Phase2Draft, opts: { hasImage?: boolean; stimulus?: Stimulus | null } = {}): string[] {
+/**
+ * 1–4. sınıfta çocuk saati 1–12 saat adımlayıcılarıyla girer; bu yüzden 12 saatlik okuma kabulü zorunludur
+ * (`accept_12h` her zaman true). 5. sınıf ve üstünde veli seçer.
+ */
+export const clockRequires12h = (grade: number | null | undefined): boolean => typeof grade === "number" && grade >= 1 && grade <= 4;
+
+export function phase2DraftErrors(d: Phase2Draft, opts: { hasImage?: boolean; stimulus?: Stimulus | null; grade?: number | null } = {}): string[] {
   const { payload, answer_key } = buildPhase2Content(d);
   const errs = new Set(questionContentErrors(d.type, opts.stimulus ? { ...payload, stimulus: opts.stimulus } : payload, answer_key));
+  if (d.type === "clock" && clockRequires12h(opts.grade) && !d.accept12h) errs.add("clock_12h_required");
   if (d.type === "multi_choice" || d.type === "two_stage") {
     const rows = d.type === "multi_choice" ? d.options : [...d.options1, ...(d.mode2 === "choice" ? d.options2 : [])];
     if (rows.some((r) => !r.text.trim())) errs.add("row_empty");

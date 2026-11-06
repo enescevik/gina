@@ -21,6 +21,7 @@ import { uploadLearningFile } from "@/lib/learning-files";
 import {
   AUTHOR_PRACTICE_ONLY_TYPES,
   buildPhase2Content,
+  clockRequires12h,
   buildStimulus,
   isPhase2AuthorType,
   newPhase2Draft,
@@ -146,13 +147,15 @@ export default function QuestionScreen() {
   const structured: StructuredDraft | null = isStructuredType(qtype)
     ? drafts[qtype] ?? newStructuredDraft(qtype)
     : null;
-  const p2: Phase2Draft | null = isPhase2AuthorType(qtype) ? p2Drafts[qtype] ?? newPhase2Draft(qtype) : null;
+  const p2Raw: Phase2Draft | null = isPhase2AuthorType(qtype) ? p2Drafts[qtype] ?? newPhase2Draft(qtype) : null;
+  // 1–4. sınıf: çocuk 1–12 saat adımlayıcısı görür → 12 saatlik kabul her zaman açık gönderilir.
+  const p2: Phase2Draft | null = p2Raw?.type === "clock" && clockRequires12h(Number(grade)) ? { ...p2Raw, accept12h: true } : p2Raw;
   /** Hazırlanan yapılandırılmış soru (1A/1B ya da 2A/2B); null = eski tür. */
   const authored: { type: string } | null = structured ?? p2;
   const stimulus = PHASE2B_AUTHOR_ENABLED && authored ? buildStimulus(stim) : null;
   const structuredErrors = structured
     ? [...new Set([...structuredDraftErrors(structured), ...stimulusErrors(stimulus)])].sort()
-    : p2 ? phase2DraftErrors(p2, { hasImage: images.length > 0, stimulus }) : [];
+    : p2 ? phase2DraftErrors(p2, { hasImage: images.length > 0, stimulus, grade: Number(grade) || null }) : [];
   const pointsValue = points.trim() ? Number(points.trim().replace(",", ".")) : null;
   const pointsInvalid = pointsValue !== null && !(pointsValue > 0 && pointsValue <= 100);
   const baseContent = structured ? buildStructuredContent(structured) : p2 ? buildPhase2Content(p2) : null;
@@ -659,6 +662,7 @@ export default function QuestionScreen() {
                   : p2
                   ? (
                     <Phase2QuestionEditor
+                      grade={Number(grade) || null}
                       draft={p2}
                       image={images[0]?.file ?? null}
                       disabled={save.isPending}
