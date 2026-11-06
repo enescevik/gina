@@ -3908,5 +3908,114 @@
     "respreadSaved_other": "{{count}} items moved to new days and saved.",
     "respreadPartial": "Spreading stopped part way: {{count}} saved. Retry the pending item.",
     "respreadChanged": "An item changed in another session; {{count}} saved. The list was refreshed; try again."
+  },
+  "bulkArchive.ui.restoreEffect.event": "Calendar entries show in the calendar again; a repeating series comes back whole.",
+  "bulkArchive.ui.restoreEffect.prova_draft": "Prova drafts return to the draft list; nothing is assigned.",
+  "bulkArchive.ui.restoreEffect.learning_plan": "Homework and study items return to the open list; skipped if the open plan limit is full.",
+  "bulkArchive.ui.restoreEffect.school_bag": "The bag day returns to how it was before the bulk action (if it has not changed since).",
+  "bulkArchive.ui.rowRestored.record": "Restored",
+  "c03": {
+    "review": {
+      "returnTitle": "Why are you sending it back?",
+      "returnHelp": "Pick a short reason so your child knows what to do next. It is not a punishment, just the next step.",
+      "noReason": "Send back without a reason",
+      "noteLabel": "Short note (optional)",
+      "noteLabelRequired": "Short note",
+      "notePlaceholder": "E.g. Make the bed too",
+      "noteCount": "{{count}}/140",
+      "noteVisible": "The note shows on your child's screen and to the other parent; it is not shown in notifications.",
+      "send": "Send back",
+      "noteRequired": "Write a short note for “Another reason”.",
+      "noteInvalid": "The note can be up to 140 characters and needs a reason.",
+      "alreadyReviewed": "This task was already reviewed in another session; the list was refreshed.",
+      "changed": "Your child sent the task again; look at the current version.",
+      "previous": "Previously sent back: {{reason}}",
+      "returnedBecause": "Sent back because: {{reason}}"
+    },
+    "reason": {
+      "not_finished": "Not finished yet",
+      "needs_care": "Needs a bit more care",
+      "missing_part": "A part is missing",
+      "do_together": "Let's look at it together",
+      "wrong_day": "Belongs to another day",
+      "other": "Another reason"
+    },
+    "childNext": {
+      "not_finished": "Finish the rest, then send it again.",
+      "needs_care": "Take one more careful look, then send it again.",
+      "missing_part": "Complete the missing part, then send it again.",
+      "do_together": "Look at it together with your parent; send it again when ready.",
+      "wrong_day": "This task belongs to another day; you can talk to your parent.",
+      "other": "Read your parent's note; send it again when ready."
+    },
+    "child": {
+      "nextStep": "Next step",
+      "note": "Note from your parent: {{note}}"
+    },
+    "bulk": {
+      "openArchive": "Archive in bulk",
+      "openRestore": "Restore from archive",
+      "type": {
+        "event": "Calendar entries",
+        "prova_draft": "Prova drafts",
+        "learning_plan": "Homework and study",
+        "school_bag": "School bag days"
+      },
+      "scopeRange": "Scope: {{from}} – {{to}}",
+      "scopeAll": "Scope: all records",
+      "limits": "The preview lists at most 300 records per type; at most 200 records are processed at once.",
+      "truncated": "There are more than 300 records in this scope; only the first 300 are listed. Your selection is limited to these — narrow the range for the rest.",
+      "pickListed": "Select the {{count}} listed records",
+      "clearPicks": "Clear selection",
+      "picked": "{{count}} records selected",
+      "overLimit": "At most 200 records can be processed at once; select fewer.",
+      "seriesNote": "A repeating event is archived as a whole series; timetable rows are not listed.",
+      "provaNote": "Assigned or answered Provas are not archived; they are kept.",
+      "planNote": "Homework and study items go to the archive; steps and evidence are not deleted.",
+      "bagNote": "Past days do not change. You can only reset the ticks or empty the day's list.",
+      "bagModeReset": "Reset ticks",
+      "bagModeClear": "Empty the day's list",
+      "notPermanent": "Archiving is not permanent deletion; records can be restored here.",
+      "empty": "Nothing to process in this scope.",
+      "undo": "Undo this action",
+      "undone": "{{count}} records restored.",
+      "undoFailed": "Undo did not finish. Try again: the same request is never applied twice.",
+      "history": "Recent bulk actions",
+      "historyRow": "{{date}} · {{op}} · {{ok}} done, {{skipped}} skipped · {{who}}",
+      "historyMine": "you",
+      "historyOther": "other parent",
+      "historyEmpty": "No bulk actions yet.",
+      "op": {
+        "archive": "Archive",
+        "restore": "Restore"
+      },
+      "openPanel": "Select and archive"
+    },
+    "weekly": {
+      "prefilled": "From the weekly summary: {{who}} · week of {{week}}",
+      "prefillHint": "The title was shortened from the suggestion's first sentence; edit it before saving.",
+      "noChild": "This suggestion is not linked to a child; choose the child in the task form.",
+      "toTaskFor": "Add as a task for {{name}}"
+    },
+    "help": {
+      "newReply": "New reply",
+      "unreadCount": "{{count}} requests have a new reply",
+      "attach": "Add an image (optional)",
+      "attachHelp": "Crop the screenshot so no name, face, phone, email, address or school details show. Location and device data are removed from the file.",
+      "cropTop": "Crop the top strip",
+      "cropBottom": "Crop the bottom strip",
+      "cropReset": "Undo cropping",
+      "confirm": "I checked that the image shows no personal information",
+      "send": "Attach image",
+      "remove": "Cancel",
+      "attached": "Image attached",
+      "attachments": "Attachments ({{count}})",
+      "attachmentLabel": "Attachment {{n}}",
+      "attachError": "The image could not be attached. Try again; the same image is never added twice.",
+      "attachTooLarge": "The image is too large; crop a smaller part.",
+      "attachLimit": "At most 3 images can be attached to a request.",
+      "attachClosed": "Images cannot be added to a closed request.",
+      "openAttachment": "Open image"
+    }
   }
 }

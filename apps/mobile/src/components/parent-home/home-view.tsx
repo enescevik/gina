@@ -4,7 +4,8 @@ import { ActivityIndicator, Image, ScrollView, Text, View, useWindowDimensions }
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { Bell, CalendarDays, Check, ChevronRight, Circle, Clock3, GraduationCap, Home, LockKeyhole, MoreHorizontal, Plus, RotateCcw, Star, Users, CircleAlert, FileText, WifiOff } from 'lucide-react-native';
-import type { Occurrence } from '@gina/core';
+import { reviewErrorKey, type Occurrence, type TaskReturnReason } from '@gina/core';
+import { ReturnReasonSheet } from '@/components/tasks/return-reason-sheet';
 import type { WeekEvent } from '@/components/calendar/week-list';
 import { Pressable } from '@/components/ui/pressable';
 import { Avatar } from '@/components/avatar';
@@ -20,8 +21,9 @@ import { FamilyWeekReview } from './family-week-review';
 const logo = require('../../../../../packages/assets/brand/growing-friend/logo.png');
 const mascot = require('../../../../../packages/assets/brand/growing-friend/contextual/family.png');
 type Child = { id: string; name: string; grade: number | null; avatar: string | null };
-type Approval = { id: string; child_id: string; task_templates: { title: string; icon: string; stars: number } | null; children: { name: string } | null };
-type Task = { id: string; title: string; icon: string; childId: string; childName: string; status: string };
+type ReturnInfo = { reason: TaskReturnReason; note: string | null } | null;
+type Approval = { id: string; child_id: string; previous?: ReturnInfo; task_templates: { title: string; icon: string; stars: number } | null; children: { name: string } | null };
+type Task = { id: string; title: string; icon: string; childId: string; childName: string; status: string; returned?: ReturnInfo };
 /** One card's own query state: a failing query closes only its card (U03). */
 export type SectionState = { loading: boolean; error: unknown; retry: () => void };
 export interface HomeViewProps {
@@ -30,8 +32,8 @@ export interface HomeViewProps {
   weeklyCounts: { approved: number; pending: number; returned: number };
   familyDay: { child: Child; due: number; done: number; pending: number; stars: number }[];
   tasks: Task[];
-  approvals: Approval[]; review: (id: string, approve: boolean) => void;
-  reviewing: boolean; reviewingId?: string; reviewError: unknown;
+  approvals: Approval[]; review: (id: string, approve: boolean, choice?: { reason: TaskReturnReason | null; note: string | null }) => void;
+  reviewing: boolean; reviewingId?: string; reviewError: unknown; reviewDone?: string;
   occurrences: Occurrence<WeekEvent>[]; upcoming: Occurrence<WeekEvent> | undefined;
   unread: number; online: boolean;
   /** Only the child list gates the whole screen. */
@@ -110,6 +112,9 @@ export function ParentHomeView(p: HomeViewProps) {
   const [showWeek, setShowWeek] = useState(false);
   const [expandedFor, setExpandedFor] = useState<string | null | undefined>(undefined);
   const [slow, setSlow] = useState(false);
+  const [returning, setReturning] = useState<Approval | null>(null);
+  // The sheet closes only when this submission's return was stored; errors stay visible inside it.
+  useEffect(() => { if (returning && p.reviewDone === returning.id) setReturning(null); }, [returning, p.reviewDone]);
   useEffect(() => {
     if (!p.loading) return;
     const timer = setTimeout(() => setSlow(true), SLOW_MS);
@@ -138,10 +143,11 @@ export function ParentHomeView(p: HomeViewProps) {
           <View style={s.fill}><Text style={[s.text, s.bold]}>{item.task_templates?.title}</Text><Label small>{item.children?.name} · {t('room.plusStars', { count: item.task_templates?.stars ?? 0 })}</Label></View>
         </View>
         <View style={[s.row, compact && { flexDirection: 'column', alignItems: 'stretch' }]}>
-          <SatinButton title={t('parent.return')} secondary style={compact ? undefined : s.fill} onPress={() => p.review(item.id, false)} disabled={p.reviewing}/>
+          <SatinButton title={t('parent.return')} secondary style={compact ? undefined : s.fill} onPress={() => setReturning(item)} disabled={p.reviewing}/>
           <SatinButton title={t('parent.approve')} style={compact ? undefined : s.fill} onPress={() => p.review(item.id, true)} disabled={p.reviewing} busy={p.reviewing && p.reviewingId === item.id}/>
         </View>
-        {p.reviewError && p.reviewingId === item.id ? <Text accessibilityRole="alert" style={[s.text, { color: c.orange }]}>{t('parentHome.reviewError')}</Text> : null}
+        {item.previous ? <Text testID="home-approval-previous" style={s.small}>{t('c03.review.previous', { reason: t(`c03.reason.${item.previous.reason}`) })}{item.previous.note ? ` · “${item.previous.note}”` : ''}</Text> : null}
+        {p.reviewError && p.reviewingId === item.id && !returning ? <Text accessibilityRole="alert" style={[s.text, { color: c.orange }]}>{t(reviewErrorKey((p.reviewError as Error).message))}</Text> : null}
       </View>)}
       {p.approvals.length > 2 ? <Pressable accessibilityRole="button" accessibilityState={{ expanded: allApprovals }}
         onPress={() => setExpandedFor(allApprovals ? undefined : p.selected)} style={s.link}>
@@ -225,6 +231,7 @@ export function ParentHomeView(p: HomeViewProps) {
         {done ? <Check size={22} color={c.green}/> : pending ? <Clock3 size={22} color={c.orange}/> : returned ? <RotateCcw size={22} color={c.orange}/> : <Circle size={22} color={c.purple}/>}
         <TaskIcon slug={task.icon} size={44} variant="illustrated"/><View style={s.fill}><Text style={[s.text, s.bold]}>{task.title}</Text>
           <Label small>{task.childName} · {t(done ? 'parentHome.done' : pending ? 'parentHome.waiting' : returned ? 'parentHome.returned' : 'parentHome.planned')}</Label>
+          {returned && task.returned ? <Text testID="home-task-return-reason" style={s.small}>{t('c03.review.returnedBecause', { reason: t(`c03.reason.${task.returned.reason}`) })}{task.returned.note ? ` · “${task.returned.note}”` : ''}</Text> : null}
         </View><ChevronRight size={18} color={c.muted}/>
       </Pressable>;
     })}{p.tasks.length > 0 && <TextLink label={t('parentHome.tasks')} href={selectedChild ? { pathname: '/parent/tasks', params: { childId: selectedChild.id } } : '/parent/tasks'}/>}
@@ -290,5 +297,10 @@ export function ParentHomeView(p: HomeViewProps) {
       <Icon size={25} color={key === 'today' ? c.purple : c.muted} fill={key === 'today' ? c.purple : 'none'}/>
       <Text style={[s.small, { textAlign: 'center' }, wide && { fontSize: 18, lineHeight: 25 }, key === 'today' && s.purple, key === 'today' && s.bold]}>{t(`parentHome.${key}`)}</Text>{key === 'today' ? <View style={s.navIndicator}/> : null}
     </Pressable>)}</View>
+    <ReturnReasonSheet visible={!!returning} taskTitle={returning?.task_templates?.title ?? ''} childName={returning?.children?.name ?? ''}
+      busy={!!returning && p.reviewing && p.reviewingId === returning.id}
+      error={returning && p.reviewError && !p.reviewing && p.reviewingId === returning.id ? t(reviewErrorKey((p.reviewError as Error).message)) : null}
+      onCancel={() => setReturning(null)}
+      onSend={(choice) => { if (returning) p.review(returning.id, false, choice); }}/>
   </SafeAreaView>;
 }

@@ -87,3 +87,5 @@ export * from "./library-lifecycle";
 export * from "./plan-history";
 export * from "./admin-workqueue";
 export * from "./subject-synonyms";
+export * from "./task-review";
+export * from "./bulk-scope";

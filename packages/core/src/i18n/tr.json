@@ -3903,5 +3903,114 @@
     "respreadSaved_other": "{{count}} kaydın günü değişti ve kaydedildi.",
     "respreadPartial": "Dağıtım yarıda kaldı: {{count}} kayıt kaydedildi. Bekleyen kaydı yeniden dene.",
     "respreadChanged": "Bir ödev başka bir oturumda değişti; {{count}} kayıt kaydedildi. Liste yenilendi, yeniden dene."
+  },
+  "bulkArchive.ui.restoreEffect.event": "Takvim kayıtları takvimde yeniden görünür; tekrarlayan seri bütün olarak döner.",
+  "bulkArchive.ui.restoreEffect.prova_draft": "Prova taslakları taslak listesine döner; hiçbir şey atanmaz.",
+  "bulkArchive.ui.restoreEffect.learning_plan": "Ödev ve çalışmalar açık listeye döner; açık plan sınırı doluysa atlanır.",
+  "bulkArchive.ui.restoreEffect.school_bag": "Çanta günü, toplu işlemden önceki hâline döner (o gün değişmediyse).",
+  "bulkArchive.ui.rowRestored.record": "Geri alındı",
+  "c03": {
+    "review": {
+      "returnTitle": "Neden geri gönderiyorsun?",
+      "returnHelp": "Kısa bir neden seç; çocuğun ne yapacağını bilsin. Ceza değil, bir sonraki adım.",
+      "noReason": "Neden seçmeden gönder",
+      "noteLabel": "Kısa not (isteğe bağlı)",
+      "noteLabelRequired": "Kısa not",
+      "notePlaceholder": "Örn. Yatağı da topla",
+      "noteCount": "{{count}}/140",
+      "noteVisible": "Not çocuğun ekranında ve diğer velide görünür; bildirimde gösterilmez.",
+      "send": "Geri gönder",
+      "noteRequired": "“Başka bir neden” için kısa bir not yaz.",
+      "noteInvalid": "Not en çok 140 karakter olabilir ve bir neden seçilmeli.",
+      "alreadyReviewed": "Bu görev başka bir oturumda zaten incelendi; liste yenilendi.",
+      "changed": "Çocuk görevi yeniden gönderdi; güncel hâline bak.",
+      "previous": "Önceki geri gönderme: {{reason}}",
+      "returnedBecause": "Geri gönderme nedeni: {{reason}}"
+    },
+    "reason": {
+      "not_finished": "Henüz bitmemiş",
+      "needs_care": "Biraz daha özen gerekiyor",
+      "missing_part": "Bir parçası eksik",
+      "do_together": "Birlikte bakalım",
+      "wrong_day": "Başka bir güne ait",
+      "other": "Başka bir neden"
+    },
+    "childNext": {
+      "not_finished": "Kalan kısmı bitir, sonra yeniden gönder.",
+      "needs_care": "Bir kez daha dikkatlice bak, sonra yeniden gönder.",
+      "missing_part": "Eksik kalan parçayı tamamla, sonra yeniden gönder.",
+      "do_together": "Velinle birlikte bakın; hazır olunca yeniden gönder.",
+      "wrong_day": "Bu görev başka bir güne ait; velinle konuşabilirsin.",
+      "other": "Velinin notunu oku; hazır olunca yeniden gönder."
+    },
+    "child": {
+      "nextStep": "Sıradaki adım",
+      "note": "Velinin notu: {{note}}"
+    },
+    "bulk": {
+      "openArchive": "Toplu arşivle",
+      "openRestore": "Arşivden geri al",
+      "type": {
+        "event": "Takvim kayıtları",
+        "prova_draft": "Prova taslakları",
+        "learning_plan": "Ödev ve çalışmalar",
+        "school_bag": "Çanta günleri"
+      },
+      "scopeRange": "Kapsam: {{from}} – {{to}}",
+      "scopeAll": "Kapsam: bütün kayıtlar",
+      "limits": "Önizleme her türde en çok 300 kayıt listeler; bir seferde en çok 200 kayıt işlenir.",
+      "truncated": "Bu kapsamda 300’den fazla kayıt var; yalnız ilk 300 listelendi. Seçim bunlarla sınırlı — kalanlar için aralığı daralt.",
+      "pickListed": "Listelenen {{count}} kaydı seç",
+      "clearPicks": "Seçimi temizle",
+      "picked": "{{count}} kayıt seçildi",
+      "overLimit": "Bir seferde en çok 200 kayıt işlenebilir; seçimi azalt.",
+      "seriesNote": "Tekrarlayan etkinlik bütün seri olarak arşivlenir; ders programı satırları listelenmez.",
+      "provaNote": "Atanmış veya cevaplanmış Provalar arşivlenmez, korunur.",
+      "planNote": "Ödev ve çalışmalar arşive gider; adımlar ve kanıtlar silinmez.",
+      "bagNote": "Geçmiş günler değişmez. Yalnız işaretleri sıfırlayabilir ya da günün listesini boşaltabilirsin.",
+      "bagModeReset": "İşaretleri sıfırla",
+      "bagModeClear": "Gün listesini boşalt",
+      "notPermanent": "Arşivlemek kalıcı silmek değildir; kayıtlar buradan geri alınabilir.",
+      "empty": "Bu kapsamda işlenecek kayıt yok.",
+      "undo": "Bu işlemi geri al",
+      "undone": "{{count}} kayıt geri alındı.",
+      "undoFailed": "Geri alma tamamlanamadı. Yeniden dene: aynı istek ikinci kez uygulanmaz.",
+      "history": "Son toplu işlemler",
+      "historyRow": "{{date}} · {{op}} · {{ok}} başarılı, {{skipped}} atlandı · {{who}}",
+      "historyMine": "sen",
+      "historyOther": "diğer veli",
+      "historyEmpty": "Henüz toplu işlem yok.",
+      "op": {
+        "archive": "Arşiv",
+        "restore": "Geri alma"
+      },
+      "openPanel": "Seçerek arşivle"
+    },
+    "weekly": {
+      "prefilled": "Haftalık özetten: {{who}} · {{week}} haftası",
+      "prefillHint": "Başlık önerinin ilk cümlesinden kısaltıldı; kaydetmeden önce düzenleyebilirsin.",
+      "noChild": "Bu öneri bir çocuğa bağlı değil; görev formunda çocuğu sen seç.",
+      "toTaskFor": "{{name}} için görev olarak ekle"
+    },
+    "help": {
+      "newReply": "Yeni yanıt",
+      "unreadCount": "{{count}} talepte yeni yanıt var",
+      "attach": "Görsel ekle (isteğe bağlı)",
+      "attachHelp": "Ekran görüntüsünü kırp; ad, yüz, telefon, e-posta, adres ve okul bilgisi görünmesin. Konum ve cihaz bilgisi dosyadan silinir.",
+      "cropTop": "Üst şeridi kırp",
+      "cropBottom": "Alt şeridi kırp",
+      "cropReset": "Kırpmayı geri al",
+      "confirm": "Görselde kişisel bilgi olmadığını kontrol ettim",
+      "send": "Görseli ekle",
+      "remove": "Vazgeç",
+      "attached": "Görsel eklendi",
+      "attachments": "Ekler ({{count}})",
+      "attachmentLabel": "Ek {{n}}",
+      "attachError": "Görsel eklenemedi. Yeniden dene; aynı görsel iki kez eklenmez.",
+      "attachTooLarge": "Görsel çok büyük; daha küçük bir bölümü kırp.",
+      "attachLimit": "Bir talebe en çok 3 görsel eklenebilir.",
+      "attachClosed": "Kapalı talebe görsel eklenemez.",
+      "openAttachment": "Görseli aç"
+    }
   }
 }

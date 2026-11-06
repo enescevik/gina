@@ -3,7 +3,7 @@ import { invalidateTaskState } from "@/lib/task-cache";
 import { onlineManager, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Platform } from 'react-native';
-import { localDateOf, occurrencesBetween, tasksWithRecordedWork, taskSnapshot, templatesForPlanDay, weekDatesOf, recordedWeek, starTotalsByChild } from '@gina/core';
+import { localDateOf, occurrencesBetween, readReturnReason, reviewRequestKey, reviewSettled, reviewTaskArgs, tasksWithRecordedWork, taskSnapshot, templatesForPlanDay, weekDatesOf, recordedWeek, starTotalsByChild, type TaskReturnReason } from '@gina/core';
 import { useTranslation } from 'react-i18next';
 import { dayLessonOccurrences, useWeekPlans } from '@/components/planner/week-plans';
 import { ParentHomeView } from '@/components/parent-home/home-view';
@@ -72,7 +72,7 @@ export default function ParentHomeScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_completions")
-        .select("id, child_id, template_id, due_date, status, task_snapshot")
+        .select("id, child_id, template_id, due_date, status, task_snapshot, return_reason, return_note")
         .eq("family_id", familyId)
         .gte("due_date", from)
         .lte("due_date", to);
@@ -100,12 +100,12 @@ export default function ParentHomeScreen() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("task_completions")
-        .select("id, completed_at, due_date, child_id, task_snapshot, task_templates(title, icon, stars), children!task_completions_child_id_fkey(name)")
+        .select("id, completed_at, due_date, child_id, task_snapshot, return_reason, return_note, task_templates(title, icon, stars), children!task_completions_child_id_fkey(name)")
         .eq("family_id", familyId)
         .eq("status", "done")
         .order("completed_at");
       if (error) throw error;
-      return data.map(row => ({...row, task_templates: taskSnapshot(row.task_snapshot) ?? row.task_templates}));
+      return data.map(row => ({...row, previous: readReturnReason(row), task_templates: taskSnapshot(row.task_snapshot) ?? row.task_templates}));
     },
   });
 
@@ -134,18 +134,28 @@ export default function ParentHomeScreen() {
   useRealtimeInvalidate("star_events", familyId ? `family_id=eq.${familyId}` : null, [["family_star_totals", familyId]]);
 
   const reviewRequests = useRef(new Map<string, string>());
+  // C03: a decided submission leaves the pending list at once — also when another parent decided first —
+  // so a late realtime/focus refetch of the old list cannot keep an approved task "waiting".
+  const dropApproval = async (id: string) => {
+    await queryClient.cancelQueries({ queryKey: ["approvals", familyId] });
+    queryClient.setQueryData<typeof approvals.data>(["approvals", familyId], (rows) => rows?.filter((row) => row.id !== id));
+  };
   const review = useMutation({
-    mutationFn: async ({ id, approve }: { id: string; approve: boolean }) => {
+    mutationFn: async ({ id, approve, reason = null, note = null }: { id: string; approve: boolean; reason?: TaskReturnReason | null; note?: string | null }) => {
       const row = approvals.data?.find(item => item.id === id);
       if (!row) throw new Error("submission_changed");
-      const key = `${id}:${row.completed_at}:${approve}`;
+      // Same decision and content → same id (a lost reply is replayed, never applied twice).
+      const key = reviewRequestKey({ completionId: id, completedAt: row.completed_at, approve, reason, note });
       let requestId = reviewRequests.current.get(key);
       if (!requestId) { requestId = Crypto.randomUUID(); reviewRequests.current.set(key, requestId); }
-      const { error } = await supabase.rpc("review_task_once", {
-        p_request_id: requestId, p_completion_id: id, p_approve: approve, p_expected_completed_at: row.completed_at,
-      });
-      if (error) throw error;
+      const { error } = await (supabase.rpc as unknown as (fn: string, args: Record<string, unknown>) => PromiseLike<{ error: { message: string } | null }>)(
+        "review_task_once",
+        reviewTaskArgs({ requestId, completionId: id, approve, completedAt: row.completed_at, reason, note }),
+      );
+      if (error) throw new Error(error.message);
     },
+    onSuccess: (_data, vars) => dropApproval(vars.id),
+    onError: (error, vars) => { if (reviewSettled(error.message)) void dropApproval(vars.id); },
     onSettled: () => invalidateTaskState(queryClient),
   });
 
@@ -233,6 +243,7 @@ export default function ParentHomeScreen() {
   const dailyTasks = visibleChildren.flatMap(child => tasksWithRecordedWork(dayTemplates(child.id, today), completions.data ?? [], today).map(task => ({
     id: task.id, title: task.title, icon: task.icon, childId: child.id, childName: child.name,
     status: completions.data?.find(completion => completion.template_id === task.id && completion.child_id === child.id && completion.due_date === today)?.status ?? 'planned',
+    returned: readReturnReason(completions.data?.find(completion => completion.template_id === task.id && completion.child_id === child.id && completion.due_date === today && completion.status === 'returned')),
   })));
 
   const section = (queries: { isLoading: boolean; error: unknown; refetch: () => unknown }[]) => ({
@@ -245,7 +256,7 @@ export default function ParentHomeScreen() {
     today={today} week={week} parentName={parentName} timeZone={timeZone}
     weeklyCounts={weeklyCounts}
     familyDay={familyDay} tasks={dailyTasks} approvals={pendingApprovals}
-    review={(id,approve)=>review.mutate({id,approve})} reviewing={review.isPending} reviewingId={review.variables?.id} reviewError={review.error}
+    review={(id,approve,choice)=>review.mutate({id,approve,...choice})} reviewing={review.isPending} reviewingId={review.variables?.id} reviewError={review.error} reviewDone={review.isSuccess ? review.variables?.id : undefined}
     occurrences={occurrences} upcoming={upcoming}
     unread={inbox.data?.unread ?? 0} online={online}
     // Yalnız çocuk listesi bütün ekranı belirler; diğer sorgular kendi kartında yüklenir ve hata verir.
