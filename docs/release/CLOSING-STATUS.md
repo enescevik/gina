@@ -26,7 +26,7 @@
 | H02 MEB kaynağını panelden indirme/çıkarma | YAPILIYOR | — | Claude |
 | H03 insan incelemesi paketi | YAPILIYOR | — | Claude; içerik onayı Enes |
 | H04 hesap ve ürün e-postası kabulü | YAPILIYOR | Auth TR reset + destek yönlendirme/gönderici STATUS'ta | Claude hazırlık; gerçek teslimat Enes |
-| H05 satın alma AI notu, fotoğraf saklama metni | YAPILIYOR | — | Claude; hukuk Enes/avukat |
+| H05 satın alma AI notu, fotoğraf saklama metni | KOD HAZIR (main) | `subscription.aiConsentNote` TR/EN, Playwright 4/4 (390/768); dosya yaşam döngüsü koddan doğrulandı, üretimde `source-cleanup` cron (43 * * * *) etkin; hukuk taslakları TR/EN güncel ([h05](h05-2026-11-06/README.md)). Yayın H08 | Claude; özel hukuk kopyaları + avukat Enes |
 | H06 görsel/etkileşim kabul boşlukları | AÇIK | H01–H05 sonrasına | Claude; fiziksel cihaz Enes |
 | H07 AI ön inceleme işletim hazırlığı | YAPILIYOR | kapı kapalı kalır | Claude; aktivasyon kararı Enes |
 | H08 regresyon, düzeltme yayını, rapor | AÇIK | son | Claude |
