@@ -86,7 +86,7 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
 
   async function remove() {
     if (busy) return;
-    if (!(await confirm.ask({ title: "Global soru silinsin mi?", body: t.questions.confirmDelete, confirmLabel: t.common.delete, tone: "danger" }))) return;
+    if (!(await confirm.ask({ title: "Global soruyu sil", body: t.questions.confirmDelete, confirmLabel: t.common.delete, tone: "danger" }))) return;
     const { error } = await supabase().rpc("admin_delete_global_question", { p_question_id: q.id });
     onDone(error ? null : t.questions.deleted, error ?? undefined);
   }

@@ -1,0 +1,77 @@
+{
+  "environment": "disposable-local-gotrue-postgrest (own clone of gina_completion_audit)",
+  "database_pattern": "gina_d3_<hex>_audit",
+  "viewports": {
+    "backoffice": [
+      "1280x800",
+      "768x1024",
+      "1280x640 (menu hint)"
+    ],
+    "mobile": [
+      "390x844"
+    ]
+  },
+  "passed": true,
+  "results": [
+    {
+      "check": "operator_scope_screen_admin_only",
+      "passed": true,
+      "release_rpc_status": 403
+    },
+    {
+      "check": "scope_grant_double_click_one_row_one_audit",
+      "passed": true
+    },
+    {
+      "check": "scope_last_removal_needs_in_app_confirmation",
+      "passed": true,
+      "audit_rows": 2
+    },
+    {
+      "check": "channel_failures_filters_paging_requeue_limit",
+      "passed": true,
+      "total": 36,
+      "sms": 4,
+      "requeueable": 33,
+      "failed": 30,
+      "limit_rpc": "channel_requeue_limit"
+    },
+    {
+      "check": "content_operator_rejects_with_question_note",
+      "passed": true,
+      "stored": "q2",
+      "audit": 1
+    },
+    {
+      "check": "ai_and_questions_use_in_app_confirmation",
+      "passed": true,
+      "native_dialogs": 0
+    },
+    {
+      "check": "sidebar_hidden_sections_hint",
+      "passed": true,
+      "hint": "↓ Aşağıda 13 bölüm daha",
+      "scrolled": 211
+    },
+    {
+      "check": "admin_revocation_single_notice",
+      "passed": true,
+      "rpc_status": 403
+    },
+    {
+      "check": "parent_sees_question_notes_on_trail_and_fix_screen",
+      "passed": true
+    },
+    {
+      "check": "no_page_errors_no_overflow_no_raw_keys",
+      "passed": true
+    }
+  ],
+  "cleanup": {
+    "db_rest": "removed",
+    "db_auth": "removed",
+    "database": "dropped",
+    "containers_left": "none",
+    "database_left": "0"
+  }
+}
