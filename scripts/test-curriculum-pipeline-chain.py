@@ -351,18 +351,30 @@ try:
         check('ui_fixture_e01_verdict_separate', sql(DB, f"select status from gina.curriculum_candidates where id='{draft_candidate}'") == 'draft', queued)
         fixture = Path(tempfile.mkstemp(prefix='gina-c05-ui-', suffix='.json')[1])
         os.chmod(fixture, 0o600)
-        fixture.write_text(json.dumps({'auth': auth_port, 'rest': rest_port, 'edge': edge_port, 'anon': anon, 'email': admin_email, 'password': admin_pw, 'db': DB}))
+        fixture.write_text(json.dumps({'auth': auth_port, 'rest': rest_port, 'edge': edge_port, 'anon': anon, 'email': admin_email, 'password': admin_pw, 'db': DB,
+                                       'parent_email': parent_email, 'parent_password': parent_pw}))
         try:
             tour = subprocess.run(['node', 'scripts/test-c05-backoffice-ui.cjs'], cwd=ROOT, env={**os.environ, 'GINA_C05_UI_FIXTURE': str(fixture)}, capture_output=True, text=True, timeout=600)
+            sys.stderr.write(tour.stderr[-3000:])
+            try:
+                ui = json.loads(tour.stdout.strip().splitlines()[-1])
+            except Exception:
+                ui = {'raw': tour.stdout[-1500:]}
+            report['ui_checks'] = ui
+            check('backoffice_ui_tour', tour.returncode == 0 and ui and all(ui.values()), ui)
+            if os.environ.get('GINA_C05_MOBILE_WEB'):
+                # Parent catalog on the mobile web export: stale term 1, unverified term 2, registered-but-unfetched next year.
+                sql(DB, "update gina.curriculum_sources set last_checked_at=now()-interval '9 days' where term=1")
+                mobile = subprocess.run(['node', 'scripts/test-c05-mobile-catalog-ui.cjs'], cwd=ROOT, env={**os.environ, 'GINA_C05_UI_FIXTURE': str(fixture)}, capture_output=True, text=True, timeout=600)
+                sys.stderr.write(mobile.stderr[-3000:])
+                try:
+                    mui = json.loads(mobile.stdout.strip().splitlines()[-1])
+                except Exception:
+                    mui = {'raw': mobile.stdout[-1500:]}
+                report['mobile_ui_checks'] = mui
+                check('mobile_catalog_ui_tour', mobile.returncode == 0 and mui and all(mui.values()), mui)
         finally:
             fixture.unlink()
-        sys.stderr.write(tour.stderr[-3000:])
-        try:
-            ui = json.loads(tour.stdout.strip().splitlines()[-1])
-        except Exception:
-            ui = {'raw': tour.stdout[-1500:]}
-        report['ui_checks'] = ui
-        check('backoffice_ui_tour', tour.returncode == 0 and ui and all(ui.values()), ui)
 except Exception as e:
     report['error'] = str(e) if isinstance(e, RuntimeError) else 'setup_failed:' + type(e).__name__ + ':' + str(e)[:400]
 finally:

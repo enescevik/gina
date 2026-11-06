@@ -470,6 +470,7 @@ export default function CatalogScreen() {
                     : null}
                   {freshness.data?.stale &&
                       freshness.data.status !== "unpublished" &&
+                      !!freshness.data.last_approved_sha256 &&
                       typeof freshness.data.stale_days === "number"
                     ? (
                       <Text accessibilityRole="alert" style={u.error}>

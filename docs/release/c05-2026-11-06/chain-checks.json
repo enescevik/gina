@@ -1,6 +1,6 @@
 {
   "environment": "disposable-db+auth+postgrest+supabase-edge-runtime(v1.77.8)+deno-run(prova-generate, deterministic provider)",
-  "database": "gina_c05_f0d9f79ea846_audit",
+  "database": "gina_c05_e2d858905c47_audit",
   "checks": [
     {
       "name": "edge_runtime_dns_ssrf_probe",
@@ -133,7 +133,7 @@
       "detail": {
         "action": "created",
         "target": {
-          "id": "9b64a763-e741-4ce1-8b37-cd4fbd96915f",
+          "id": "256e18f9-8e03-49da-bc38-f01da1a4c3d6",
           "note": "QA: henüz yayımlanmamış 2. dönem sayfası (erişilemez kaynak testi)",
           "term": 2,
           "status": "active",
@@ -141,7 +141,7 @@
           "exam_family": "oyss",
           "school_year": "2026-2027"
         },
-        "request": "6a29746b-202a-42cc-8665-480bc8bc1259"
+        "request": "d46637aa-4730-48c8-9855-e7509223081f"
       }
     },
     {
@@ -150,9 +150,9 @@
       "detail": {
         "error": "index:http_status:404",
         "outcome": "unverified",
-        "request": "a09cea52-d78b-4315-a2f0-3c294ba66881",
+        "request": "2535b5f6-e6ff-47b4-bcbc-3be88987fcef",
         "freshness": "unverified",
-        "source_id": "5579911c-c963-435a-8a29-47403aa454d1",
+        "source_id": "c168cdcd-d3b4-47fa-b76f-1a2ed5199214",
         "alternative": "free_study",
         "last_approved": null,
         "officially_verified": false
@@ -171,7 +171,7 @@
         "stale_days": 0,
         "alternative": "free_study",
         "substituted": false,
-        "last_checked_at": "2026-11-06T09:53:26.798881+00:00",
+        "last_checked_at": "2026-11-06T10:02:11.176912+00:00",
         "index_updated_on": null,
         "target_registered": true,
         "officially_verified": false,
@@ -185,7 +185,7 @@
       "detail": {
         "report": [
           {
-            "revision_id": "d7b58dc2-d386-499d-b174-05728ccb0d50",
+            "revision_id": "876dc4ea-b283-47db-9160-037265bc60c7",
             "label": "Türkçe",
             "sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
             "outcome": "done",
@@ -217,10 +217,10 @@
       "pass": true,
       "detail": {
         "outcome": "unchanged",
-        "request": "b27dc8f8-c20a-4ef7-b9f7-507ed58275c5",
+        "request": "980678ef-2150-4d0d-83e3-2bb9354b5524",
         "extraction": {
-          "at": "2026-11-06T09:53:27.458351+00:00",
-          "by": "0a3f8d8f-02bc-44ff-8537-e329474f3c73",
+          "at": "2026-11-06T10:02:11.650172+00:00",
+          "by": "5412ea7f-d7b1-4570-bdd1-0e7a2bc93964",
           "issues": 0,
           "created": 46,
           "outcome": "done",
@@ -229,7 +229,7 @@
           "scenarios": 46,
           "bundle_sha256": "8876f28983475f4db2dbd698bc28e53fe2d68d291b3f0ec37d54afce0a69e7b2"
         },
-        "revision_id": "d7b58dc2-d386-499d-b174-05728ccb0d50",
+        "revision_id": "876dc4ea-b283-47db-9160-037265bc60c7",
         "extraction_status": "done"
       }
     },
@@ -237,10 +237,10 @@
       "name": "candidate_reviewed",
       "pass": true,
       "detail": {
-        "id": "2c419231-53e2-437a-a5aa-59185f24146b",
+        "id": "e8d543e6-9112-4dc6-a2d1-808011a54ff5",
         "action": "review",
         "status": "reviewed",
-        "request": "3383b375-6dae-4929-87cd-cbc9e37e0421",
+        "request": "78b16846-7669-4e12-b1a9-1f189c34f588",
         "revision": 1
       }
     },
@@ -260,9 +260,9 @@
       "detail": {
         "action": "approve",
         "status": "approved",
-        "request": "d062826d-6a62-4ff4-9cce-b30803670cd3",
+        "request": "46f94078-b776-4a3f-9291-16272cebcfdb",
         "freshness": "verified",
-        "revision_id": "d7b58dc2-d386-499d-b174-05728ccb0d50",
+        "revision_id": "876dc4ea-b283-47db-9160-037265bc60c7",
         "withdrawn_candidates": 0
       }
     },
@@ -270,10 +270,10 @@
       "name": "candidate_published_separately",
       "pass": true,
       "detail": {
-        "id": "2c419231-53e2-437a-a5aa-59185f24146b",
+        "id": "e8d543e6-9112-4dc6-a2d1-808011a54ff5",
         "action": "publish",
         "status": "published",
-        "request": "45ded489-3532-4ba6-ae66-3ae68ce3f9cc",
+        "request": "b215fe22-47c7-4869-9183-ee08318926f1",
         "revision": 2,
         "replaced_previous": 0
       }
@@ -291,25 +291,25 @@
         "stale_days": 0,
         "alternative": null,
         "substituted": false,
-        "last_checked_at": "2026-11-06T09:53:25.827649+00:00",
+        "last_checked_at": "2026-11-06T10:02:10.804617+00:00",
         "index_updated_on": "2026-09-10",
         "target_registered": true,
         "officially_verified": false,
         "last_approved_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
-        "last_approved_retrieved_at": "2026-11-06T09:53:25.160068+00:00"
+        "last_approved_retrieved_at": "2026-11-06T10:02:10.347189+00:00"
       }
     },
     {
       "name": "family_sees_only_published",
       "pass": true,
       "detail": [
-        "2c419231-53e2-437a-a5aa-59185f24146b"
+        "e8d543e6-9112-4dc6-a2d1-808011a54ff5"
       ]
     },
     {
       "name": "family_selects_frozen_copy",
       "pass": true,
-      "detail": "ceb9dab3-f671-421e-8db8-91c6deb36edc"
+      "detail": "b492c15a-d738-48ff-812c-11e7bc3c2743"
     },
     {
       "name": "wrong_count_rejected_no_rows",
@@ -331,7 +331,7 @@
           "model": "claude-haiku-5-5",
           "questions": [
             {
-              "id": "efccf84b-6b15-4e60-bb84-3934fc33b464",
+              "id": "a6e3faa3-fb13-4e0c-8a0c-defacfc63374",
               "kind": "open_ended",
               "stem": "Sentetik soru B1.1: T.O.5.6: T.O.5.6. Metnin yüzey anlamını belirleyebilme",
               "topic": "Blok 1",
@@ -346,7 +346,7 @@
               "expected_answer": "Beklenen cevap B1.1"
             },
             {
-              "id": "cf216ea8-bfd0-482c-a452-e677b3dcbd82",
+              "id": "0584c0ad-1826-4030-bbbf-c58683b8c603",
               "kind": "open_ended",
               "stem": "Sentetik soru B1.2: T.O.5.6: T.O.5.6. Metnin yüzey anlamını belirleyebilme",
               "topic": "Blok 1",
@@ -361,7 +361,7 @@
               "expected_answer": "Beklenen cevap B1.2"
             },
             {
-              "id": "1f445673-407b-4085-94dd-93bf624af20d",
+              "id": "cdb48c3c-2c92-4164-92bf-884eaa05f329",
               "kind": "open_ended",
               "stem": "Sentetik soru B2.1: T.O.5.7: T.O.5.7. Görselle iletilen anlamı belirleyebilme",
               "topic": "Blok 2",
@@ -376,7 +376,7 @@
               "expected_answer": "Beklenen cevap B2.1"
             },
             {
-              "id": "14b68468-8d55-46e0-932d-bbd6aa07de5b",
+              "id": "a59ef0db-468d-45f4-acb5-d94ad6923bee",
               "kind": "open_ended",
               "stem": "Sentetik soru B3.1: T.O.5.20: T.O.5.20. Metinden hareketle söz varlığını geliştirmeye yönelik çözümleme yapabilme",
               "topic": "Blok 3",
@@ -391,7 +391,7 @@
               "expected_answer": "Beklenen cevap B3.1"
             },
             {
-              "id": "cd1dc2a8-8fb6-493e-8b9d-e332317137d6",
+              "id": "8033be5c-3c77-4936-86fd-735f9a6a8017",
               "kind": "open_ended",
               "stem": "Sentetik soru B4.1: T.Y.5.13: T.Y.5.13. Yazısını zenginleştirecek biçimde söz varlığını kullanabilme",
               "topic": "Blok 4",
@@ -406,7 +406,7 @@
               "expected_answer": "Beklenen cevap B4.1"
             },
             {
-              "id": "e8093597-f346-4a68-afa1-57e2dc2a5f21",
+              "id": "2b2557e4-5d59-46e5-af25-2e20894d6420",
               "kind": "open_ended",
               "stem": "Sentetik soru B5.1: T.Y.5.16: T.Y.5.16. Yazım ve noktalama işaretleriyle ilgili kuralları uygulayabilme",
               "topic": "Blok 5",
@@ -482,11 +482,11 @@
       "pass": true,
       "detail": {
         "got": {
-          "B3": 1,
-          "B2": 1,
-          "B4": 1,
           "B1": 2,
-          "B5": 1
+          "B5": 1,
+          "B4": 1,
+          "B3": 1,
+          "B2": 1
         },
         "expected": {
           "B1": 2,
@@ -501,45 +501,6 @@
       "name": "every_question_traces_block_outcomes_source",
       "pass": true,
       "detail": [
-        {
-          "block": "B3",
-          "outcomes": [
-            "T.O.5.20"
-          ],
-          "cells": {
-            "sheet": "5. Sınıf",
-            "count_cell": "C21",
-            "outcome_cells": [
-              "B21"
-            ]
-          }
-        },
-        {
-          "block": "B2",
-          "outcomes": [
-            "T.O.5.7"
-          ],
-          "cells": {
-            "sheet": "5. Sınıf",
-            "count_cell": "C13",
-            "outcome_cells": [
-              "B13"
-            ]
-          }
-        },
-        {
-          "block": "B4",
-          "outcomes": [
-            "T.Y.5.13"
-          ],
-          "cells": {
-            "sheet": "5. Sınıf",
-            "count_cell": "C30",
-            "outcome_cells": [
-              "B30"
-            ]
-          }
-        },
         {
           "block": "B1",
           "outcomes": [
@@ -567,6 +528,32 @@
           }
         },
         {
+          "block": "B4",
+          "outcomes": [
+            "T.Y.5.13"
+          ],
+          "cells": {
+            "sheet": "5. Sınıf",
+            "count_cell": "C30",
+            "outcome_cells": [
+              "B30"
+            ]
+          }
+        },
+        {
+          "block": "B3",
+          "outcomes": [
+            "T.O.5.20"
+          ],
+          "cells": {
+            "sheet": "5. Sınıf",
+            "count_cell": "C21",
+            "outcome_cells": [
+              "B21"
+            ]
+          }
+        },
+        {
           "block": "B1",
           "outcomes": [
             "T.O.5.6"
@@ -576,6 +563,19 @@
             "count_cell": "C12",
             "outcome_cells": [
               "B12"
+            ]
+          }
+        },
+        {
+          "block": "B2",
+          "outcomes": [
+            "T.O.5.7"
+          ],
+          "cells": {
+            "sheet": "5. Sınıf",
+            "count_cell": "C13",
+            "outcome_cells": [
+              "B13"
             ]
           }
         }
@@ -628,12 +628,12 @@
         "stale_days": 0,
         "alternative": null,
         "substituted": false,
-        "last_checked_at": "2026-11-06T09:53:28.922233+00:00",
+        "last_checked_at": "2026-11-06T10:02:12.799135+00:00",
         "index_updated_on": "2026-09-10",
         "target_registered": true,
         "officially_verified": false,
         "last_approved_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
-        "last_approved_retrieved_at": "2026-11-06T09:53:25.160068+00:00"
+        "last_approved_retrieved_at": "2026-11-06T10:02:10.347189+00:00"
       }
     },
     {
@@ -650,15 +650,15 @@
       "pass": true,
       "detail": {
         "outcome": "failed",
-        "request": "7b842504-ddea-460a-9c88-41744b227f25",
+        "request": "3b353b6f-c027-4424-8bcc-7db30de22b3c",
         "extraction": {
-          "at": "2026-11-06T09:53:29.221772+00:00",
-          "by": "0a3f8d8f-02bc-44ff-8537-e329474f3c73",
+          "at": "2026-11-06T10:02:13.035107+00:00",
+          "by": "5412ea7f-d7b1-4570-bdd1-0e7a2bc93964",
           "error": "worksheet_path",
           "outcome": "failed",
           "extractor": "extract-meb-scenarios@c05"
         },
-        "revision_id": "a07a2ee7-4462-4141-9d29-cf9ed7ba9bb7",
+        "revision_id": "c284bf9e-1cdd-4881-918e-96b85fc73798",
         "extraction_status": "failed"
       }
     },
@@ -683,6 +683,17 @@
         "extraction_queue_and_operator_step_visible": true,
         "candidate_list_shows_source_status_and_separate_ai_prereview": true,
         "real_edge_check_from_ui_same_hash_no_new_revision": true,
+        "no_page_exceptions_or_horizontal_overflow": true
+      }
+    },
+    {
+      "name": "mobile_catalog_ui_tour",
+      "pass": true,
+      "detail": {
+        "parent_login": true,
+        "term1_shows_published_scenario_and_stale_notice": true,
+        "term2_unverified_free_study_no_term1_scenarios": true,
+        "next_year_registered_index_not_fetched_explicit": true,
         "no_page_exceptions_or_horizontal_overflow": true
       }
     }
@@ -850,11 +861,11 @@
     },
     "generated_questions": 6,
     "per_block": {
-      "B3": 1,
-      "B2": 1,
-      "B4": 1,
       "B1": 2,
-      "B5": 1
+      "B5": 1,
+      "B4": 1,
+      "B3": 1,
+      "B2": 1
     },
     "fit_summary_after_one_review": {
       "fit": 1,
@@ -875,5 +886,12 @@
     "real_edge_check_from_ui_same_hash_no_new_revision": true,
     "no_page_exceptions_or_horizontal_overflow": true
   },
-  "passed": 38
+  "mobile_ui_checks": {
+    "parent_login": true,
+    "term1_shows_published_scenario_and_stale_notice": true,
+    "term2_unverified_free_study_no_term1_scenarios": true,
+    "next_year_registered_index_not_fetched_explicit": true,
+    "no_page_exceptions_or_horizontal_overflow": true
+  },
+  "passed": 39
 }
