@@ -8,6 +8,8 @@ import {
   type BlueprintCommand,
   type BlueprintInput,
   blueprintInputSchema,
+  seedIsPersonalized,
+  seedProvenanceInput,
 } from "@gina/core";
 import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
@@ -119,12 +121,7 @@ export default function BlueprintScreen() {
   const subjects = [
     ...new Set(timetable.data?.lessons.map((l) => l.title) ?? []),
   ];
-  const personalized = !!seed && (
-    seed.rows.length !== form.rows.length ||
-    seed.rows.some((r, i) =>
-      r.count !== form.rows[i]?.count || r.topic !== form.rows[i]?.topic
-    )
-  );
+  const personalized = !!seed && seedIsPersonalized(seed, form.rows);
   const seedTotal = seed?.rows.reduce((sum, r) => sum + r.count, 0) ?? 0;
   const seedTag = seed
     ? t(
@@ -138,8 +135,10 @@ export default function BlueprintScreen() {
   const seededName = seed
     ? `${seed.label} · ${seedTag}`.slice(0, 100)
     : "";
+  // C01: okul beyanı ve kişiselleştirme sunucuya ayrı alan olarak gider; hiçbiri okul onayı değildir.
   const input = {
     ...form,
+    ...(seed ? seedProvenanceInput(seed, form.rows) : {}),
     name: form.name.trim() || seededName,
     grade,
     child_id: child?.id ?? form.child_id,

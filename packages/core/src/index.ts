@@ -39,6 +39,8 @@ export * from "./billing";
 export * from "./setup-ai-journal";
 
 export * from "./blueprint";
+export * from "./blueprint-provenance";
+export * from "./legacy-score-correction";
 
 export * from "./contribution";
 

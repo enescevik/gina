@@ -859,14 +859,14 @@ isOneToOne: false
                   ]
                 },"exam_blueprints": {
                   Row: {
-                    "created_at": string,"created_by": string | null,"family_id": string,"grade": number,"id": string,"name": string,"rows": NonNullable<Json>,"source_context": NonNullable<Json>,"source_url": string | null,"subject": string
+                    "created_at": string,"created_by": string | null,"distribution_kind": string,"family_id": string,"grade": number,"id": string,"name": string,"official_source_verified": boolean,"official_verified_at": string | null,"personalization": Json | null,"provenance_corrected_at": string | null,"rows": NonNullable<Json>,"school_confirmed": boolean,"school_scenario": string,"source_context": NonNullable<Json>,"source_url": string | null,"subject": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"created_by"?: string | null,"family_id": string,"grade": number,"id"?: string,"name": string,"rows"?: NonNullable<Json>,"source_context"?: NonNullable<Json>,"source_url"?: string | null,"subject": string
+                    "created_at"?: string,"created_by"?: string | null,"distribution_kind"?: string,"family_id": string,"grade": number,"id"?: string,"name": string,"official_source_verified"?: boolean,"official_verified_at"?: string | null,"personalization"?: Json | null,"provenance_corrected_at"?: string | null,"rows"?: NonNullable<Json>,"school_confirmed"?: boolean,"school_scenario"?: string,"source_context"?: NonNullable<Json>,"source_url"?: string | null,"subject": string
                   }
                   Update: {
-                    "created_at"?: string,"created_by"?: string | null,"family_id"?: string,"grade"?: number,"id"?: string,"name"?: string,"rows"?: NonNullable<Json>,"source_context"?: NonNullable<Json>,"source_url"?: string | null,"subject"?: string
+                    "created_at"?: string,"created_by"?: string | null,"distribution_kind"?: string,"family_id"?: string,"grade"?: number,"id"?: string,"name"?: string,"official_source_verified"?: boolean,"official_verified_at"?: string | null,"personalization"?: Json | null,"provenance_corrected_at"?: string | null,"rows"?: NonNullable<Json>,"school_confirmed"?: boolean,"school_scenario"?: string,"source_context"?: NonNullable<Json>,"source_url"?: string | null,"subject"?: string
                   }
                   Relationships: [
                     {
@@ -1267,14 +1267,14 @@ isOneToOne: false
                   ]
                 },"help_tickets": {
                   Row: {
-                    "category": string,"created_at": string,"created_by": string | null,"family_id": string,"id": string,"kind": string,"revision": number,"status": string,"subject": string,"updated_at": string
+                    "assigned_at": string | null,"assignee_id": string | null,"category": string,"created_at": string,"created_by": string | null,"family_id": string,"id": string,"idea_stage": string | null,"kind": string,"revision": number,"similar_to": string | null,"status": string,"subject": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "category": string,"created_at"?: string,"created_by"?: string | null,"family_id": string,"id"?: string,"kind": string,"revision"?: number,"status"?: string,"subject": string,"updated_at"?: string
+                    "assigned_at"?: string | null,"assignee_id"?: string | null,"category": string,"created_at"?: string,"created_by"?: string | null,"family_id": string,"id"?: string,"idea_stage"?: string | null,"kind": string,"revision"?: number,"similar_to"?: string | null,"status"?: string,"subject": string,"updated_at"?: string
                   }
                   Update: {
-                    "category"?: string,"created_at"?: string,"created_by"?: string | null,"family_id"?: string,"id"?: string,"kind"?: string,"revision"?: number,"status"?: string,"subject"?: string,"updated_at"?: string
+                    "assigned_at"?: string | null,"assignee_id"?: string | null,"category"?: string,"created_at"?: string,"created_by"?: string | null,"family_id"?: string,"id"?: string,"idea_stage"?: string | null,"kind"?: string,"revision"?: number,"similar_to"?: string | null,"status"?: string,"subject"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -1282,6 +1282,12 @@ isOneToOne: false
       columns: ["family_id"]
 isOneToOne: false
       referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "help_tickets_similar_to_fkey"
+      columns: ["similar_to"]
+isOneToOne: false
+      referencedRelation: "help_tickets"
       referencedColumns: ["id"]
     }
                   ]
@@ -2542,6 +2548,9 @@ isOneToOne: false
 "admin_group_policy":
 { Args: { "p_enabled": boolean,"p_limits": Json }; Returns: undefined
                            },
+"admin_help_ticket_meta":
+{ Args: { "p_ticket_id": string }; Returns: Json
+                           },
 "admin_import_curriculum_candidates":
 { Args: { "p_bundle": Json,"p_request_id": string }; Returns: Json
                            },
@@ -2680,6 +2689,12 @@ isOneToOne: false
 "admin_subject_synonyms":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"admin_support_operators":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"admin_support_queue":
+{ Args: { "p_assignee"?: string,"p_before_id"?: string,"p_before_time"?: string,"p_category"?: string,"p_kind"?: string,"p_query"?: string,"p_status"?: string,"p_waiting"?: boolean }; Returns: Json
+                           },
 "admin_withdraw_announcement":
 { Args: { "p_id": string,"p_request": string,"p_revision": number }; Returns: Json
                            },
@@ -2723,6 +2738,9 @@ isOneToOne: false
 "apply_learning_plan_import":
 { Args: { "p_child_id": string,"p_import_id": string,"p_items": Json,"p_request_id": string }; Returns: Json
                            },
+"apply_legacy_open_zero_corrections":
+{ Args: { "p_attempt_ids": (string)[],"p_family_id"?: string,"p_request_id": string }; Returns: Json
+                           },
 "apply_repeat_calendar":
 { Args: { "p_attempt_id": string,"p_items": Json,"p_question_ids": (string)[],"p_request_id": string,"p_source_hash": string }; Returns: Json
                            },
@@ -2734,6 +2752,9 @@ isOneToOne: false
                            },
 "apply_verified_store_state":
 { Args: { "p_caller_family_id"?: string,"p_purchaser_user_id"?: string,"p_state": Json }; Returns: Json
+                           },
+"assign_help_ticket":
+{ Args: { "p_assignee": string,"p_expected_assignee": string,"p_request_id": string,"p_ticket_id": string }; Returns: Json
                            },
 "assign_question_source_group":
 { Args: { "p_child_id": string,"p_group_id": string,"p_minutes"?: number,"p_request_id": string,"p_timed"?: boolean,"p_title": string }; Returns: string
@@ -3149,6 +3170,9 @@ isOneToOne: false
 "get_learning_source_set":
 { Args: { "p_source": string }; Returns: Json
                            },
+"get_legacy_open_zero_corrections":
+{ Args: { "p_family_id"?: string }; Returns: Json
+                           },
 "get_library_items":
 { Args: { "p_collection_id": string }; Returns: Json
                            },
@@ -3305,6 +3329,9 @@ isOneToOne: false
                            },
 "preview_family_invite":
 { Args: { "p_invite_code": string }; Returns: Json
+                           },
+"preview_legacy_open_zero_corrections":
+{ Args: { "p_family_id"?: string }; Returns: Json
                            },
 "preview_question_contribution":
 { Args: { "p_question_id": string }; Returns: Json
@@ -3637,6 +3664,9 @@ isOneToOne: false
                            },
 "set_group_ranking_consent":
 { Args: { "p_child": string,"p_enabled": boolean,"p_group": string }; Returns: undefined
+                           },
+"set_idea_stage":
+{ Args: { "p_expected_similar": string,"p_expected_stage": string,"p_request_id": string,"p_similar_to": string,"p_stage": string,"p_ticket_id": string }; Returns: Json
                            },
 "set_notification_preference":
 { Args: { "p_channel": string,"p_enabled": boolean,"p_purpose": string }; Returns: Json
