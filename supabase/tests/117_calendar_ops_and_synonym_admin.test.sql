@@ -27,8 +27,8 @@ create function pg_temp.sib() returns uuid language sql as $$select '20000000-00
 create function pg_temp.fam() returns uuid language sql as $$select '10000000-0000-4000-8000-000000011701'::uuid$$;
 create function pg_temp.country() returns uuid language sql as $$select 'ec000000-0000-4000-8000-000000000001'::uuid$$;
 create function pg_temp.t() returns date language sql security definer as $$select gina.family_today(pg_temp.fam())$$;
--- İlk hafta içi gün (yarından itibaren); ara tatil penceresi wd..wd+4.
-create function pg_temp.wd() returns date language sql security definer as $$select min(d)::date from generate_series(pg_temp.t()+1,pg_temp.t()+7,interval '1 day') d where extract(isodow from d) between 1 and 5$$;
+-- Yarından sonraki ilk Pazartesi; ara tatil penceresi wd..wd+4 (Pzt–Cuma), önceki dönem Pazar biter.
+create function pg_temp.wd() returns date language sql security definer as $$select min(d)::date from generate_series(pg_temp.t()+1,pg_temp.t()+7,interval '1 day') d where extract(isodow from d)=1$$;
 create function pg_temp.as_admin() returns void language sql as $$select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000011701","role":"authenticated","gina":{"role":"parent"}}',true)$$;
 create function pg_temp.as_parent() returns void language sql as $$select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000011702","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000011701"}}',true)$$;
 create function pg_temp.as_parent_b() returns void language sql as $$select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000011703","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000011701"}}',true)$$;

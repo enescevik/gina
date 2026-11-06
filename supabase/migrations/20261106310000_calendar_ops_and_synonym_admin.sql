@@ -333,8 +333,11 @@ declare loc gina.child_education_locations;cal jsonb;y int;begin
   cal:=gina.education_calendar_match(loc.place_id,loc.stage,y);
   if cal is not null then
    return query select 'b:'||(cal->>'id')||':'||g.s::text,'break'::text,null::text,g.s,g.e,cal->'value'->>'source_url'
-    from (select (t->>'ends_on')::date+1 s,(lead(t->>'starts_on') over(order by (t->>'starts_on')::date))::date-1 e
-          from jsonb_array_elements(cal->'value'->'terms') t) g
+    -- Dönemler arası boşluk; baştaki/sondaki hafta sonu kırpılır (ör. Cuma biten + Pazartesi başlayan → Pzt–Cuma).
+    from (select x.s+case extract(isodow from x.s)::int when 6 then 2 when 7 then 1 else 0 end s,
+                 x.e-case extract(isodow from x.e)::int when 7 then 2 when 6 then 1 else 0 end e
+          from (select (t->>'ends_on')::date+1 s,(lead(t->>'starts_on') over(order by (t->>'starts_on')::date))::date-1 e
+                from jsonb_array_elements(cal->'value'->'terms') t) x where x.e is not null) g
     where g.e is not null and g.e>=g.s and g.s<=p_to and g.e>=p_from;
   end if;
  end loop;
