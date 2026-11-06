@@ -59,3 +59,4 @@ Saatler Europe/Istanbul. Koordinatör: Claude (oturum modeli claude-opus-5-5; al
 | 14:55 | C10 | ajan → main `39223af` | KOD HAZIR | Birleşik main: core 397 test; mobil/backoffice tsc 0. |
 | 15:05 | C01 UI | ajan → main | KOD HAZIR | `docs/release/c01-2026-11-06/README.md` "UI takibi". |
 | 15:40 | C08 | ajan → main | KOD HAZIR | Birleşik main: pgTAP 114 dosya / 4.785 / 0; core 404 test; tsc 0. |
+| 14:10 | Ürün kararı | koordinatör | KARAR KAYDI | Pro "7 günlük ipucu" ilk sürümde sunulmaz; DECISIONS güncellendi. Hukuk/mağaza metni düzeltmesi C11'e iletildi. |
