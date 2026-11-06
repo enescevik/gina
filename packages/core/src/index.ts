@@ -1,4 +1,5 @@
-export type { Database, Json, Tables, TablesInsert, TablesUpdate, Enums } from "./database.types";
+export type { Database } from "./database.overrides";
+export type { Json, Tables, TablesInsert, TablesUpdate, Enums } from "./database.types";
 export * from "./domain";
 export * from "./recurrence";
 export * from "./events";
