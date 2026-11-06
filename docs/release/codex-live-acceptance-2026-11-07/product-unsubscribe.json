@@ -1,0 +1,49 @@
+{
+  "checkedAt": "2026-11-06T22:39:23.900Z",
+  "first": {
+    "status": 200,
+    "body": "unsubscribed"
+  },
+  "replay": {
+    "status": 200,
+    "body": "already_unsubscribed"
+  },
+  "worker": {
+    "ok": true,
+    "claimed": 0,
+    "accepted": 0,
+    "retry": 0,
+    "failed": 0,
+    "unconfigured": 0,
+    "channels": {
+      "claimed": 0,
+      "accepted": 0,
+      "retry": 0,
+      "failed": 0,
+      "unconfigured": 0
+    }
+  },
+  "after": [
+    {
+      "attempts": 1,
+      "skip_reason": "preference_off",
+      "status": "skipped"
+    }
+  ],
+  "consent": [
+    {
+      "channel": "email",
+      "enabled": true,
+      "policy_version": "channels-2026-11-06",
+      "purpose": "announcement",
+      "source": "user"
+    },
+    {
+      "channel": "email",
+      "enabled": false,
+      "policy_version": null,
+      "purpose": "announcement",
+      "source": "unsubscribe_link"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-11-06T22:37:07.420Z",
+  "id": "1a1b30053fd53e69",
+  "inbox": true,
+  "from": "GINA <bildirim@ginafamily.com>",
+  "subject": "GINA ürün kanalı bağlantı testi — 7 Kasım",
+  "spf": true,
+  "dkim": true,
+  "dmarc": true
+}

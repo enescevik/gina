@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-11-06T22:38:59.947Z",
+  "id": "1a1b303764313d9e",
+  "inbox": true,
+  "from": "GINA <bildirim@ginafamily.com>",
+  "subject": "GINA ürün bildirimi kabul testi — 7 Kasım",
+  "spf": true,
+  "dkim": true,
+  "dmarc": true,
+  "oneClickEndpointIsGina": true,
+  "oneClickPost": true,
+  "bodyLinksToGina": true
+}

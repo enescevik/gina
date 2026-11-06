@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-11-06T22:39:59.984Z",
+  "deleted": {
+    "ok": true
+  },
+  "checks": [
+    {
+      "contacts": 0,
+      "families": 0,
+      "outbox": 0,
+      "users": 0
+    }
+  ]
+}
