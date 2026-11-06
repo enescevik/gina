@@ -1,0 +1,69 @@
+{
+ "stage": "errors",
+ "at": "2026-11-06T14:25:59.536Z",
+ "checks": [
+  {
+   "name": "broken_json_rejected",
+   "ok": true,
+   "status": 400,
+   "code": "bad_request",
+   "category": "validation",
+   "retryable": false
+  },
+  {
+   "name": "too_many_questions_rejected",
+   "ok": true,
+   "status": 400,
+   "code": "too_many_questions",
+   "max": 30
+  },
+  {
+   "name": "weekly_non_monday_rejected",
+   "ok": true,
+   "status": 400,
+   "code": "invalid_input"
+  },
+  {
+   "name": "grade_bad_attempt_rejected",
+   "ok": true,
+   "status": 400,
+   "code": "attempt_id_required"
+  },
+  {
+   "name": "large_file_rejected_before_upload",
+   "ok": true,
+   "status": 400,
+   "code": "source_failed",
+   "category": "service_unavailable"
+  },
+  {
+   "name": "large_file_no_source_row",
+   "ok": true
+  },
+  {
+   "name": "quota_exceeded_before_provider",
+   "ok": true,
+   "status": 402,
+   "code": "ai_quota_exceeded",
+   "category": "rate_limited",
+   "retryable": false
+  },
+  {
+   "name": "quota_rejection_no_job_no_attempt",
+   "ok": true,
+   "op_jobs": 7,
+   "attempts": 5
+  },
+  {
+   "name": "usage_preview_shows_zero_remaining",
+   "ok": true,
+   "used": 5,
+   "limit": 5,
+   "remaining": 0
+  },
+  {
+   "name": "error_stage_no_generation_job",
+   "ok": true
+  }
+ ]
+}

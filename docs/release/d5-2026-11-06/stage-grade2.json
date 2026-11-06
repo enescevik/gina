@@ -1,0 +1,12 @@
+{
+ "stage": "grade2",
+ "at": "2026-11-06T14:23:31.570Z",
+ "checks": [
+  {
+   "name": "open_only_grade_real_suggestion_not_final",
+   "ok": false,
+   "status": 502,
+   "code": "ai_result_uncertain"
+  }
+ ]
+}

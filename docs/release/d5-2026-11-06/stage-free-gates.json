@@ -1,0 +1,27 @@
+{
+ "stage": "free-gates",
+ "at": "2026-11-06T14:16:47.335Z",
+ "checks": [
+  {
+   "name": "free_plan_generate_rejected_before_provider",
+   "ok": true,
+   "status": 402,
+   "code": "plan_has_no_ai",
+   "category": "permission_denied"
+  },
+  {
+   "name": "free_plan_weekly_rejected_before_provider",
+   "ok": true,
+   "status": 503,
+   "code": "ai_disabled",
+   "category": "service_unavailable",
+   "retryable": false
+  },
+  {
+   "name": "free_gates_no_job_no_usage",
+   "ok": true,
+   "gen_jobs": 0,
+   "op_jobs": 0
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "stage": "c09",
+ "at": "2026-11-06T14:26:02.568Z",
+ "checks": [
+  {
+   "name": "c09_pilot_requires_system_secret_not_configured",
+   "ok": true,
+   "service_wrong_secret": 403,
+   "parent_jwt": 403
+  },
+  {
+   "name": "c09_gate_still_closed",
+   "ok": true
+  }
+ ]
+}

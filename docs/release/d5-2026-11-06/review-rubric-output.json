@@ -1,0 +1,14 @@
+{
+ "score": 60,
+ "evidence": [
+  "Öğrenci \"Pastanın yarısı yenmiş\" yazmış (yarısı, kabul edilen cevap).",
+  "Öğrenci \"0,5\" yazmış (kabul edilen eşdeğer cevap).",
+  "2/4 kesri yazılmamış.",
+  "Sadeleştirme işlemi (2 ile bölme) gösterilmemiş.",
+  "1/2 kesri kesir olarak yazılmamış."
+ ],
+ "feedback": "Pastanın yarısının yenildiğini doğru söylemişsin, 0,5 yazman da yarıya eşit olduğu için doğru. Bu çok iyi! Soruda kesir olarak yazmak istendiği için 2/4 yazıp sonra 1/2'ye sadeleştirdiğini de göstermen gerekiyordu. Böylece nasıl düşündüğün de görünür.",
+ "readable": true,
+ "next_step": "Şu soruyu çöz: 8 dilimlik bir pastanın 4 dilimi yenmiş. Önce kesri yaz (4/8), sonra pay ve paydayı 4'e bölerek sadeleştir ve 1/2 olduğunu göster.",
+ "limitation": "Puan yalnızca öğrencinin yazdığı kısa cevaba dayanır. Rubrikte 2/4 yazımı 40 puan, yarısı/1/2 ifadesi 60 puandır. Öğrenci 2/4'ü yazmadığı için 40 puan verilmedi, ancak cevap doğru ve eşdeğer olduğundan veli puanı esnetmeye karar verebilir. Öğrenci zihinden hesaplamış olabilir, bu görülemiyor. Bu sonuç yalnızca veliye öneridir."
+}

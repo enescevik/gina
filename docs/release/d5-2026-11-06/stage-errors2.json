@@ -1,0 +1,34 @@
+{
+ "stage": "errors2",
+ "at": "2026-11-06T14:26:39.347Z",
+ "checks": [
+  {
+   "name": "large_image_rejected_with_specific_code",
+   "ok": true,
+   "status": 400,
+   "code": "source_size_or_type",
+   "category": "validation",
+   "retryable": false
+  },
+  {
+   "name": "large_pdf_rejected_with_specific_code",
+   "ok": false,
+   "pdf_11mib": {
+    "status": 400,
+    "code": "source_failed",
+    "category": "service_unavailable",
+    "retryable": true
+   },
+   "pdf_25mib": {
+    "status": 400,
+    "code": "source_failed",
+    "category": "service_unavailable",
+    "retryable": true
+   }
+  },
+  {
+   "name": "large_files_no_source_row_no_upload",
+   "ok": true
+  }
+ ]
+}
