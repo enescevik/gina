@@ -5,7 +5,8 @@ import { z } from "zod";
 // review (X06) remains a separate quality tier. The runtime contract lives in
 // supabase/functions/_shared/prereview.ts; these schemas mirror it for clients.
 
-export const PREREVIEW_PROMPT_VERSION = "prereview-v1";
+// C09: v2 tells the model that images are not shown (mirrors supabase/functions/_shared/prereview.ts).
+export const PREREVIEW_PROMPT_VERSION = "prereview-v2";
 export const PREREVIEW_CONFIDENCE_THRESHOLD = 0.85;
 export const PREREVIEW_MAX_ATTEMPTS = 3;
 

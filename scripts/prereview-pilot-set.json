@@ -1,0 +1,158 @@
+{
+  "schema": "gina.prereview-pilot.v1",
+  "note": "Sentetik, özgün C09 pilot örnekleri. Gerçek aile/çocuk verisi yok; sınav/yayınevi kopyası değil. Beklenen karar, eşiğin (0,85) kalibrasyonu için gözlem çerçevesidir; tek koşu kalibrasyon sayılmaz.",
+  "items": [
+    {
+      "key": "correct-division-mc",
+      "label": "correct",
+      "expect": { "status": ["ai_approved", "needs_admin"], "preferred": "ai_approved" },
+      "media_count": 0,
+      "content": {
+        "kind": "library_package", "title": "Bölme işlemi", "grade": 5, "subject": "Matematik",
+        "sources": [],
+        "questions": [{
+          "key": "q1",
+          "student": { "grade": 5, "subject": "Matematik", "topic": "Bölme", "kind": "multiple_choice", "difficulty": "kolay",
+            "stem": "48 ÷ 6 işleminin sonucu kaçtır?", "choices": [{"key": "A", "text": "6"}, {"key": "B", "text": "7"}, {"key": "C", "text": "8"}, {"key": "D", "text": "9"}] },
+          "teacher": { "correct_key": "C", "expected_answer": "8", "solution": "6 × 8 = 48 olduğundan 48 ÷ 6 = 8.", "explanation": "Bölmeyi çarpma ile kontrol et." },
+          "curriculum": { "candidate_code": "MAT.5.1.4" }
+        }]
+      }
+    },
+    {
+      "key": "correct-square-perimeter-open",
+      "label": "correct",
+      "expect": { "status": ["ai_approved", "needs_admin"], "preferred": "ai_approved" },
+      "media_count": 0,
+      "content": {
+        "kind": "library_package", "title": "Karenin çevresi", "grade": 5, "subject": "Matematik",
+        "sources": [],
+        "questions": [{
+          "key": "q1",
+          "student": { "grade": 5, "subject": "Matematik", "topic": "Çevre", "kind": "open_ended", "difficulty": "kolay",
+            "stem": "Bir kenarı 7 cm olan karenin çevresi kaç cm'dir? İşlemini yaz.", "choices": [] },
+          "teacher": { "correct_key": null, "expected_answer": "28 cm", "solution": "Karenin dört kenarı eşittir: 4 × 7 = 28 cm.",
+            "rubric": { "max_points": 2, "criteria": [{ "id": "c1", "points": 1, "criterion": "4 × 7 işlemini kurar." }, { "id": "c2", "points": 1, "criterion": "28 cm sonucunu birimiyle yazar." }] } },
+          "curriculum": { "candidate_code": "MAT.5.3.6" }
+        }]
+      }
+    },
+    {
+      "key": "correct-antonym-mc",
+      "label": "correct",
+      "expect": { "status": ["ai_approved", "needs_admin"], "preferred": "ai_approved" },
+      "media_count": 0,
+      "content": {
+        "kind": "library_package", "title": "Zıt anlam", "grade": 5, "subject": "Türkçe",
+        "sources": [],
+        "questions": [{
+          "key": "q1",
+          "student": { "grade": 5, "subject": "Türkçe", "topic": "Söz varlığı", "kind": "multiple_choice", "difficulty": "kolay",
+            "stem": "\"Sevinç\" kelimesinin zıt anlamlısı aşağıdakilerden hangisidir?", "choices": [{"key": "A", "text": "Neşe"}, {"key": "B", "text": "Üzüntü"}, {"key": "C", "text": "Mutluluk"}, {"key": "D", "text": "Coşku"}] },
+          "teacher": { "correct_key": "B", "expected_answer": "Üzüntü", "solution": "Neşe, mutluluk ve coşku eş/yakın anlamlıdır; zıt anlamlı üzüntüdür." },
+          "curriculum": { "candidate_code": "T.O.5.20" }
+        }]
+      }
+    },
+    {
+      "key": "incorrect-fraction-key",
+      "label": "incorrect",
+      "expect": { "status": ["ai_rejected_suggestion", "needs_admin"], "findings_any": ["solution_incorrect", "answer_key_mismatch"] },
+      "media_count": 0,
+      "content": {
+        "kind": "library_package", "title": "Kesirlerle toplama", "grade": 5, "subject": "Matematik",
+        "sources": [],
+        "questions": [{
+          "key": "q1",
+          "student": { "grade": 5, "subject": "Matematik", "topic": "Kesirler", "kind": "multiple_choice", "difficulty": "kolay",
+            "stem": "3/4 + 1/4 işleminin sonucu kaçtır?", "choices": [{"key": "A", "text": "4/8"}, {"key": "B", "text": "1"}, {"key": "C", "text": "3/16"}, {"key": "D", "text": "2/4"}] },
+          "teacher": { "correct_key": "A", "expected_answer": "4/8", "solution": "Paylar ve paydalar toplanır: (3+1)/(4+4) = 4/8." },
+          "curriculum": { "candidate_code": "MAT.5.1.7" }
+        }]
+      }
+    },
+    {
+      "key": "incorrect-rectangle-area",
+      "label": "incorrect",
+      "expect": { "status": ["ai_rejected_suggestion", "needs_admin"], "findings_any": ["solution_incorrect", "answer_key_mismatch"] },
+      "media_count": 0,
+      "content": {
+        "kind": "library_package", "title": "Dikdörtgenin alanı", "grade": 5, "subject": "Matematik",
+        "sources": [],
+        "questions": [{
+          "key": "q1",
+          "student": { "grade": 5, "subject": "Matematik", "topic": "Alan", "kind": "open_ended", "difficulty": "orta",
+            "stem": "Uzun kenarı 9 cm, kısa kenarı 4 cm olan dikdörtgenin alanı kaç cm²'dir?", "choices": [] },
+          "teacher": { "correct_key": null, "expected_answer": "26 cm²", "solution": "2 × (9 + 4) = 26." },
+          "curriculum": { "candidate_code": "MAT.5.3.7" }
+        }]
+      }
+    },
+    {
+      "key": "incorrect-scenario-count",
+      "label": "incorrect",
+      "expect": { "status": ["ai_rejected_suggestion", "needs_admin"], "findings_any": ["scenario_count_mismatch"] },
+      "media_count": 0,
+      "content": {
+        "kind": "curriculum_candidate", "external_key": "pilot-tr-g5-c6",
+        "candidate": {
+          "label": "Senaryo 1", "grade": 5, "subject": "Türkçe", "academic_year": "2026-2027", "term": 1, "question_count": 6,
+          "blocks": [
+            { "count": 2, "outcomes": [{ "code": "T.O.5.6", "text": "T.O.5.6. Metnin yüzey anlamını belirleyebilme" }] },
+            { "count": 1, "outcomes": [{ "code": "T.O.5.7", "text": "T.O.5.7. Görselle iletilen anlamı belirleyebilme" }] },
+            { "count": 1, "outcomes": [{ "code": "T.Y.5.16", "text": "T.Y.5.16. Yazım ve noktalama işaretleriyle ilgili kuralları uygulayabilme" }] }
+          ]
+        }
+      }
+    },
+    {
+      "key": "ambiguous-image-triangle",
+      "label": "ambiguous",
+      "expect": { "status": ["needs_admin"] },
+      "media_count": 1,
+      "content": {
+        "kind": "library_package", "title": "Üçgenin çevresi", "grade": 5, "subject": "Matematik",
+        "sources": [{ "key": "s1", "title": "Üçgen", "body": "", "alt": "Kenarları ölçülerle etiketlenmiş bir üçgen çizimi." }],
+        "questions": [{
+          "key": "q1", "source_key": "s1",
+          "student": { "grade": 5, "subject": "Matematik", "topic": "Çevre", "kind": "open_ended", "difficulty": "kolay",
+            "stem": "Şekildeki üçgenin çevresi kaç cm'dir?", "choices": [] },
+          "teacher": { "correct_key": null, "expected_answer": "24 cm", "solution": "Kenarlar toplanır: 7 + 8 + 9 = 24." },
+          "curriculum": { "candidate_code": "MAT.5.3.6" }
+        }]
+      }
+    },
+    {
+      "key": "ambiguous-underspecified-word-problem",
+      "label": "ambiguous",
+      "expect": { "status": ["needs_admin"] },
+      "media_count": 0,
+      "content": {
+        "kind": "library_package", "title": "Bilyeler", "grade": 5, "subject": "Matematik",
+        "sources": [],
+        "questions": [{
+          "key": "q1",
+          "student": { "grade": 5, "subject": "Matematik", "topic": "Problemler", "kind": "open_ended", "difficulty": "kolay",
+            "stem": "Ali'nin 12 bilyesi vardı. Arkadaşına biraz bilye verdi. Ali'nin kaç bilyesi kaldı?", "choices": [] },
+          "teacher": { "correct_key": null, "expected_answer": "8", "solution": "12 − 4 = 8." },
+          "curriculum": { "candidate_code": "MAT.5.1.3" }
+        }]
+      }
+    },
+    {
+      "key": "ambiguous-personal-data-contribution",
+      "label": "ambiguous",
+      "expect": { "status": ["needs_admin", "ai_rejected_suggestion"], "findings_any": ["personal_data"] },
+      "media_count": 0,
+      "content": {
+        "kind": "contribution_set",
+        "snapshot": {
+          "title": "Sınıf sorusu", "body": "", "grade": 5, "subject": "Matematik", "grouped": false,
+          "questions": [{ "key": "q1", "kind": "open_ended", "grade": 5, "subject": "Matematik", "topic": "Toplama", "difficulty": "kolay",
+            "stem": "Örnek Ortaokulu 5-B sınıfından Deniz Kaya 0555 000 00 00 numaralı telefonla 15 + 27 işlemini sordu. Sonuç kaçtır?", "choices": [], "correct_key": null }]
+        },
+        "media_count": 0
+      }
+    }
+  ]
+}
