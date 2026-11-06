@@ -1,0 +1,42 @@
+{
+ "stage": "verify",
+ "at": "2026-11-06T14:30:15.881Z",
+ "checks": [
+  {
+   "name": "auth_user_absent_0",
+   "ok": true
+  },
+  {
+   "name": "auth_user_absent_1",
+   "ok": true
+  },
+  {
+   "name": "family_scoped_rows_absent",
+   "ok": true,
+   "counts": {
+    "families": 0,
+    "family_members": 0,
+    "children": 0,
+    "devices": 0,
+    "question_bank": 0,
+    "question_source_groups": 0,
+    "prova_drafts": 0,
+    "exams": 0,
+    "exam_attempts": 0,
+    "prova_generation_jobs": 0,
+    "ai_operation_jobs": 0,
+    "prova_ai_usage": 0,
+    "ai_request_attempts": 0,
+    "entitlement_overrides": 0,
+    "ai_summaries": 0,
+    "task_templates": 0,
+    "learning_sources": 0
+   }
+  },
+  {
+   "name": "generated_and_manual_questions_absent",
+   "ok": true,
+   "checked": 10
+  }
+ ]
+}

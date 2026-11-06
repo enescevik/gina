@@ -1,0 +1,17 @@
+{
+ "cocuk_basina": [
+  {
+   "oneri": "İsterseniz bu hafta için küçük bir ortak adım seçebilirsiniz: birlikte kısa bir görev belirleyip yanıt kaydı oluşturmayı deneyebilirsiniz. Bu tamamen isteğe bağlıdır ve veli değerlendirmenizin yerine geçmez.",
+   "etiket": "Çocuk A",
+   "basarilar": [
+    "Bu hafta kayıtlı cevap durumu yok; onaylanan görevden gelen yıldız da 0."
+   ],
+   "zorlananlar": []
+  }
+ ],
+ "haftanin_ozeti": "26 Ekim 2026 haftasında Çocuk A için kayıtlı görev cevabı bulunmuyor: bekleyen, onaylı ya da yeniden ele alınacak kayıt yok ve onaylı görevlerden kazanılan yıldız 0. Kayıt olmaması bir zorlanma veya başarısızlık anlamına gelmez; yalnızca bu hafta sisteme işlenmiş bir cevap görünmüyor.",
+ "veliye_oneriler": [
+  "Kayıt görünmüyorsa çalışmalar sistem dışında yapılmış olabilir; çocukla kısaca konuşup isterseniz bir sonraki göreve birlikte başlayabilirsiniz.",
+  "Bu özet yalnızca kayıtlı sayımlara dayanır ve yapay zekâ önerisidir; veli değerlendirmenizin yerine geçmez."
+ ]
+}
