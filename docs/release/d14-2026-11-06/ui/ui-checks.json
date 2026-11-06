@@ -1,0 +1,54 @@
+{
+  "environment": "disposable-local-auth-rest-storage-edge (deterministic AI provider), reducedMotion=reduce",
+  "results": [
+    {
+      "check": "seed_empty_draft",
+      "passed": true
+    },
+    {
+      "check": "picker_shows_person_name_note_with_edit_actions",
+      "passed": true,
+      "detail": {
+        "charged": 3
+      }
+    },
+    {
+      "check": "single_ai_question_edited_as_new_row_and_added",
+      "passed": true,
+      "detail": {
+        "edited": "874a252f-3143-46d6-af36-0201e2e1ed9f",
+        "content_review": "resolved"
+      }
+    },
+    {
+      "check": "ai_group_edited_as_new_version_and_added",
+      "passed": true,
+      "detail": {
+        "version": 2,
+        "members": 2
+      }
+    },
+    {
+      "check": "review_preview_edit_replaces_block_in_place",
+      "passed": true,
+      "detail": {
+        "blocks": [
+          "question",
+          "group"
+        ]
+      }
+    },
+    {
+      "check": "edited_rows_assigned_without_second_charge",
+      "passed": true,
+      "detail": {
+        "question_ids": 3,
+        "remaining": 294
+      }
+    },
+    {
+      "check": "no_runtime_errors",
+      "passed": true
+    }
+  ]
+}

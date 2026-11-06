@@ -39,6 +39,7 @@ import {
   appendProvaBlocks,
   confirmProvaPeriod,
   defaultProvaContext,
+  isAiEditable,
   moveProvaBlock,
   provaContextIssues,
   type ProvaContext,
@@ -61,6 +62,7 @@ import { Avatar } from "@/components/avatar";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import {
+  aiEditRoute,
   type DraftRecord,
   fetchProvaDrafts,
   persistProvaDraft,
@@ -507,6 +509,17 @@ export default function ProvaBuilder() {
       )
       : null;
   const previewGroup = mat.groups.find((g) => g.id === previewBlock?.id);
+  // D14: AI sorusu (ya da tümü AI olan ortak kaynak grubu) mevcut editörde düzenlenebilir.
+  const previewEdit = previewBlock && preview &&
+      questionsOf(previewBlock, mat).every((q) => isAiEditable(q.provenance))
+    ? { kind: previewBlock.kind, id: previewBlock.id }
+    : null;
+  async function openAiEdit(target: { kind: "question" | "group"; id: string }) {
+    try {
+      await save.mutateAsync(draft);
+      router.push(aiEditRoute(target, id));
+    } catch {}
+  }
   const summary = (
     <View style={{ gap: 18 }}>
       <Text style={b.h2}>{t("provaBuilder.summary")}</Text>
@@ -1404,6 +1417,10 @@ export default function ProvaBuilder() {
                                   key={preview.id}
                                   q={preview}
                                   showAnswer={answer}
+                                  onEdit={previewEdit && !locked
+                                    ? () => void openAiEdit(previewEdit)
+                                    : undefined}
+                                  editable={!!previewEdit}
                                 />
                               )
                               : null}

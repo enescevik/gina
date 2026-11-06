@@ -11,10 +11,22 @@ import {
   type QuestionImageDraft,
   QuestionImageEditor,
 } from "@/components/learning/question-image-editor";
-import { addToProvaDraft, fetchProvaDrafts } from "@/lib/prova-draft";
+import {
+  addToProvaDraft,
+  fetchProvaDrafts,
+  replaceInProvaDraft,
+} from "@/lib/prova-draft";
 import { uploadLearningFile } from "@/lib/learning-files";
 
-import { type Enums, type Json, parseRubricInput } from "@gina/core";
+import {
+  type Enums,
+  type Json,
+  parseRubricInput,
+  questionContentReviewOf,
+  readQuestionRubric,
+  remainingFlaggedNames,
+  rubricToInput,
+} from "@gina/core";
 
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
@@ -35,11 +47,23 @@ const KEYS = ["A", "B", "C", "D"] as const;
 export default function QuestionScreen() {
   const { t } = useTranslation();
   const params = useLocalSearchParams<
-    { draftId?: string; subject?: string; grade?: string }
+    { draftId?: string; subject?: string; grade?: string; editFrom?: string }
   >();
   const { claims } = useSession();
   const familyId = claims?.family_id ?? "";
   const queryClient = useQueryClient();
+  // D14: `editFrom` = AI sorusu. Aynı editör özgün satırla dolar; kayıt yeni bir "ai_edited" satırı olur (özgün değişmez).
+  const editFrom = params.editFrom;
+  const source = useQuery({
+    queryKey: ["ai_edit_source", familyId, editFrom],
+    enabled: !!editFrom,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("question_bank").select("*")
+        .eq("id", editFrom!).single();
+      if (error) throw error;
+      return data;
+    },
+  });
 
   // D1: taslaktan açılan elle soru, taslağın dönem/programıyla soru düzeyinde işaretlenir.
   const draftPeriod = useQuery({
@@ -82,6 +106,37 @@ export default function QuestionScreen() {
   const rubric = kind === "open_ended"
     ? parseRubricInput(alternatives, rubricText)
     : null;
+  const [seeded, setSeeded] = useState<string | null>(null);
+  if (source.data && seeded !== source.data.id) {
+    const q = source.data;
+    setSeeded(q.id);
+    setSubject(q.subject);
+    setGrade(String(q.grade));
+    setTopic(q.topic);
+    setScenario(q.scenario_code ?? "");
+    setKind(q.kind);
+    setDifficulty(q.difficulty);
+    setStem(q.stem);
+    const list = Array.isArray(q.choices)
+      ? q.choices as { key?: string; text?: string }[]
+      : [];
+    setChoices(Object.fromEntries(KEYS.map((k) => [
+      k,
+      list.find((c) => c?.key === k)?.text ?? "",
+    ])));
+    setCorrect(q.correct_key ?? "");
+    setExpected(q.expected_answer ?? "");
+    setSolution(q.solution ?? "");
+    setExplanation(q.explanation ?? "");
+    const input = rubricToInput(readQuestionRubric(q.provenance));
+    setAlternatives(input.alternatives);
+    setRubricText(input.criteria);
+  }
+  const review = source.data ? questionContentReviewOf(source.data) : null;
+  const remainingNames = remainingFlaggedNames(review, [
+    stem,
+    ...(kind === "multiple_choice" ? KEYS.map((k) => choices[k] ?? "") : []),
+  ]);
   // P02: soru/görsel → yanıt/ölçüt → öğrenci önizleme. Doğru şık başlangıçta boş.
   const [step, setStep] = useState<0 | 1 | 2>(0);
   const [stepError, setStepError] = useState<string | null>(null);
@@ -170,6 +225,34 @@ export default function QuestionScreen() {
       if (kind === "open_ended" && !rubric) {
         throw new Error(t("provaC04.question.rubricInvalid"));
       }
+      if (editFrom) {
+        // D14: ders/sınıf/dönem özgünden gelir (sunucu yok sayar); görsel ve paylaşım bu yolda yok.
+        const { grade: _g, subject: _s, term: _t, program: _p, ...edit } =
+          body as typeof body & { term?: unknown; program?: unknown };
+        const fingerprint = JSON.stringify(edit);
+        if (!request.current || request.current.body !== fingerprint) {
+          request.current = {
+            body: fingerprint,
+            id: Crypto.randomUUID(),
+            shareId: Crypto.randomUUID(),
+          };
+        }
+        const { data, error } = await supabase.rpc("save_ai_question_edit", {
+          p_request_id: request.current.id,
+          p_source_id: editFrom,
+          p_question: edit as unknown as Json,
+        });
+        if (error) throw error;
+        const saved = data as unknown as { id: string };
+        if (params.draftId) {
+          await replaceInProvaDraft(params.draftId, editFrom, {
+            kind: "question",
+            id: saved.id,
+            source: "ai",
+          });
+        }
+        return andNew;
+      }
       const attachments = images.map((image) => ({
         source_id: image.file.id,
         alt: image.alt.trim(),
@@ -213,6 +296,22 @@ export default function QuestionScreen() {
             "level_preview",
           ].includes(String(query.queryKey[0])),
       });
+      if (editFrom) {
+        void queryClient.invalidateQueries({
+          predicate: (query) =>
+            ["builder_material", "ai_question_edits", "prova_drafts"].includes(
+              String(query.queryKey[0]),
+            ),
+        });
+        if (router.canGoBack()) router.back();
+        else if (params.draftId) {
+          router.replace({
+            pathname: "/parent/prova/builder",
+            params: { draftId: params.draftId },
+          });
+        } else router.replace("/parent/prova");
+        return;
+      }
       if(share&&request.current){router.push({pathname:"/parent/prova/share",params:{questionId:request.current.id}});return;}
       if (andNew) {
         request.current = null;
@@ -250,8 +349,36 @@ export default function QuestionScreen() {
     active: boolean,
   ) => (active ? "font-body-bold text-white" : "font-body text-ink");
 
+  if (editFrom && (!source.data || seeded !== source.data.id)) {
+    return (
+      <Screen
+        title={t("d14.edit.title")}
+        loading={!source.error}
+        error={source.error}
+        onRetry={() => void source.refetch()}
+      >
+        <></>
+      </Screen>
+    );
+  }
+  const namesHint = review
+    ? (
+      <Text
+        testID="ai-edit-names"
+        accessibilityLiveRegion="polite"
+        style={[parentStyles.muted, remainingNames.length ? { color: "#5132BD" } : null]}
+      >
+        {remainingNames.length
+          ? t("d14.edit.namesRemaining", { names: remainingNames.join(", ") })
+          : t("d14.edit.namesCleared")}
+      </Text>
+    )
+    : null;
   return (
-    <Screen title={t("prova.newQuestion")} subtitle={t("unified.questionHelp")}>
+    <Screen
+      title={t(editFrom ? "d14.edit.title" : "prova.newQuestion")}
+      subtitle={t(editFrom ? "d14.edit.help" : "unified.questionHelp")}
+    >
       <View style={parentStyles.card}>
         <View
           style={{ gap: 20 }}
@@ -280,6 +407,13 @@ export default function QuestionScreen() {
             {t(`provaP02.editor.step${step}Help`)}
           </Text>
           {step === 0 ? (<>
+          {editFrom
+            ? (
+              <Text testID="ai-edit-scope" style={parentStyles.muted}>
+                {t("d14.edit.lockedScope", { subject, grade })}
+              </Text>
+            )
+            : (
           <View className="flex-row gap-2">
             <View className="flex-[2]">
               <Field
@@ -301,6 +435,7 @@ export default function QuestionScreen() {
               />
             </View>
           </View>
+            )}
           <Field
             editable={!save.isPending}
             label={t("prova.topic")}
@@ -365,6 +500,8 @@ export default function QuestionScreen() {
             multiline
             className="min-h-24"
           />
+          {namesHint}
+          {editFrom ? null : (<>
           <QuestionImageEditor
             images={images}
             onChange={(next) => {
@@ -386,6 +523,7 @@ export default function QuestionScreen() {
               />
             )
             : null}
+          </>)}
           </>) : null}
           {step === 1 ? (<>
           {kind === "multiple_choice"
@@ -513,6 +651,8 @@ export default function QuestionScreen() {
               )}
             <Text style={parentStyles.muted}>{t("provaP02.editor.previewHidden")}</Text>
           </View>
+          {namesHint}
+          {editFrom ? null : (
           <View style={parentStyles.card}>
             <Toggle
               label={t("library.share")}
@@ -542,6 +682,7 @@ export default function QuestionScreen() {
               )
               : null}
           </View>
+          )}
           </>) : null}
         </View>
         {stepError
@@ -563,6 +704,15 @@ export default function QuestionScreen() {
             <Button
               title={t("provaP02.editor.next")}
               onPress={() => goStep((step + 1) as 1 | 2)}
+            />
+          )
+          : editFrom
+          ? (
+            <Button
+              testID="ai-edit-save"
+              title={t(params.draftId ? "d14.edit.save" : "common.save")}
+              loading={save.isPending}
+              onPress={() => save.mutate(false)}
             />
           )
           : (<>

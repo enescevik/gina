@@ -5,6 +5,7 @@ import {
   type ProvaBlock,
   type ProvaDraft,
   provaDraftSchema,
+  replaceProvaBlock,
 } from "@gina/core";
 import { supabase } from "./supabase";
 export interface DraftRecord {
@@ -58,4 +59,45 @@ export async function addToProvaDraft(id: string, blocks: ProvaBlock[]) {
     }
   }
   throw new Error("prova_draft_changed");
+}
+/**
+ * D14: AI sorusu/grubu düzenlenince taslaktaki özgün blok yerinde düzenlenmiş olanla değişir (yoksa sona eklenir).
+ * Sunucudaki güncel taslak üzerinde çalışır; sürüm çakışmasında yeniden dener (addToProvaDraft ile aynı düzen).
+ */
+export async function replaceInProvaDraft(
+  id: string,
+  fromId: string,
+  block: ProvaBlock,
+  accepted?: { from: string[]; to: string[] },
+) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const d = (await fetchProvaDrafts(id))[0];
+    if (!d) throw new Error("prova_draft_not_found");
+    if (d.submitted_at) throw new Error("prova_draft_submitted");
+    const next = replaceProvaBlock(d.content, fromId, block, accepted);
+    if (JSON.stringify(next) === JSON.stringify(d.content)) return d;
+    try {
+      return await persistProvaDraft(id, d.version, next, randomUUID());
+    } catch (e) {
+      if ((e as { message?: string }).message !== "prova_draft_changed") {
+        throw e;
+      }
+    }
+  }
+  throw new Error("prova_draft_changed");
+}
+/** D14: AI düzenleme ekranını aç (tek soru → soru editörü, ortak kaynak grubu → grup sihirbazı; ikisi de mevcut editör). */
+export function aiEditRoute(
+  target: { kind: "question" | "group"; id: string },
+  draftId?: string,
+) {
+  return target.kind === "group"
+    ? {
+      pathname: "/parent/prova/shared-source" as const,
+      params: { aiGroupId: target.id, ...(draftId ? { draftId } : {}) },
+    }
+    : {
+      pathname: "/parent/prova/question" as const,
+      params: { editFrom: target.id, ...(draftId ? { draftId } : {}) },
+    };
 }
