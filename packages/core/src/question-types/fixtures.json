@@ -1,0 +1,4440 @@
+{
+ "version": 1,
+ "content": [
+  {
+   "name": "tf valid",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true,
+     "s2": false,
+     "s3": true
+    }
+   },
+   "valid": true
+  },
+  {
+   "name": "tf key missing id",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true,
+     "s2": false
+    }
+   },
+   "valid": false,
+   "errors": [
+    "key_missing_id"
+   ]
+  },
+  {
+   "name": "tf key unknown id",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true,
+     "s2": false,
+     "s3": true,
+     "s9": true
+    }
+   },
+   "valid": false,
+   "errors": [
+    "key_unknown_id"
+   ]
+  },
+  {
+   "name": "tf duplicate statement id",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "a"
+     },
+     {
+      "id": "s1",
+      "text": "b"
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true
+    }
+   },
+   "valid": false,
+   "errors": [
+    "statements_invalid"
+   ]
+  },
+  {
+   "name": "tf correct field leaks in payload rejected",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "a",
+      "correct": true
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true
+    }
+   },
+   "valid": false,
+   "errors": [
+    "statements_invalid"
+   ]
+  },
+  {
+   "name": "tf unknown payload field",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ],
+    "answers": {
+     "s1": true
+    }
+   },
+   "key": {
+    "answers": {
+     "s1": true,
+     "s2": false,
+     "s3": true
+    }
+   },
+   "valid": false,
+   "errors": [
+    "payload_unknown_field"
+   ]
+  },
+  {
+   "name": "tf bad weight",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true,
+     "s2": false,
+     "s3": true
+    },
+    "weights": {
+     "s1": 0
+    }
+   },
+   "valid": false,
+   "errors": [
+    "weights_invalid"
+   ]
+  },
+  {
+   "name": "fill keyboard valid",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "Ankara"
+      ]
+     }
+    }
+   },
+   "valid": true
+  },
+  {
+   "name": "fill bank valid",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Su donunca "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " olur, ısınınca "
+     },
+     {
+      "type": "blank",
+      "id": "b2"
+     },
+     {
+      "type": "text",
+      "text": " olur."
+     }
+    ],
+    "input": "bank",
+    "bank": [
+     {
+      "id": "w1",
+      "text": "katı"
+     },
+     {
+      "id": "w2",
+      "text": "buhar"
+     },
+     {
+      "id": "w3",
+      "text": "sıvı"
+     }
+    ],
+    "bank_reuse": false
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "tokens": [
+       "w1"
+      ]
+     },
+     "b2": {
+      "tokens": [
+       "w2"
+      ]
+     }
+    }
+   },
+   "valid": true
+  },
+  {
+   "name": "fill bank unsolvable without reuse",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Su donunca "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " olur, ısınınca "
+     },
+     {
+      "type": "blank",
+      "id": "b2"
+     },
+     {
+      "type": "text",
+      "text": " olur."
+     }
+    ],
+    "input": "bank",
+    "bank": [
+     {
+      "id": "w1",
+      "text": "katı"
+     },
+     {
+      "id": "w2",
+      "text": "buhar"
+     },
+     {
+      "id": "w3",
+      "text": "sıvı"
+     }
+    ],
+    "bank_reuse": false
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "tokens": [
+       "w1"
+      ]
+     },
+     "b2": {
+      "tokens": [
+       "w1"
+      ]
+     }
+    }
+   },
+   "valid": false,
+   "errors": [
+    "bank_unsolvable"
+   ]
+  },
+  {
+   "name": "fill bank token not in bank",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Su donunca "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " olur, ısınınca "
+     },
+     {
+      "type": "blank",
+      "id": "b2"
+     },
+     {
+      "type": "text",
+      "text": " olur."
+     }
+    ],
+    "input": "bank",
+    "bank": [
+     {
+      "id": "w1",
+      "text": "katı"
+     },
+     {
+      "id": "w2",
+      "text": "buhar"
+     },
+     {
+      "id": "w3",
+      "text": "sıvı"
+     }
+    ],
+    "bank_reuse": false
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "tokens": [
+       "w9"
+      ]
+     },
+     "b2": {
+      "tokens": [
+       "w2"
+      ]
+     }
+    }
+   },
+   "valid": false,
+   "errors": [
+    "key_value_invalid"
+   ]
+  },
+  {
+   "name": "fill duplicate blank id",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "x"
+      ]
+     }
+    }
+   },
+   "valid": false,
+   "errors": [
+    "segments_invalid"
+   ]
+  },
+  {
+   "name": "fill keyboard with bank rejected",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard",
+    "bank": [
+     {
+      "id": "w1",
+      "text": "x"
+     },
+     {
+      "id": "w2",
+      "text": "y"
+     }
+    ]
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "Ankara"
+      ]
+     }
+    }
+   },
+   "valid": false,
+   "errors": [
+    "bank_not_allowed"
+   ]
+  },
+  {
+   "name": "matching valid with distractor",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "l1",
+      "text": "Kalp"
+     },
+     {
+      "id": "l2",
+      "text": "Akciğer"
+     },
+     {
+      "id": "l3",
+      "text": "Mide"
+     }
+    ],
+    "right": [
+     {
+      "id": "r1",
+      "text": "Kan pompalar"
+     },
+     {
+      "id": "r2",
+      "text": "Solunum"
+     },
+     {
+      "id": "r3",
+      "text": "Sindirim"
+     },
+     {
+      "id": "r4",
+      "text": "Görme"
+     }
+    ],
+    "policy": "one_to_one"
+   },
+   "key": {
+    "pairs": {
+     "l1": "r1",
+     "l2": "r2",
+     "l3": "r3"
+    }
+   },
+   "valid": true
+  },
+  {
+   "name": "matching key not one-to-one",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "l1",
+      "text": "Kalp"
+     },
+     {
+      "id": "l2",
+      "text": "Akciğer"
+     },
+     {
+      "id": "l3",
+      "text": "Mide"
+     }
+    ],
+    "right": [
+     {
+      "id": "r1",
+      "text": "Kan pompalar"
+     },
+     {
+      "id": "r2",
+      "text": "Solunum"
+     },
+     {
+      "id": "r3",
+      "text": "Sindirim"
+     },
+     {
+      "id": "r4",
+      "text": "Görme"
+     }
+    ],
+    "policy": "one_to_one"
+   },
+   "key": {
+    "pairs": {
+     "l1": "r1",
+     "l2": "r1",
+     "l3": "r3"
+    }
+   },
+   "valid": false,
+   "errors": [
+    "key_not_one_to_one"
+   ]
+  },
+  {
+   "name": "matching many-to-one allows shared right",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "l1",
+      "text": "Kalp"
+     },
+     {
+      "id": "l2",
+      "text": "Akciğer"
+     },
+     {
+      "id": "l3",
+      "text": "Mide"
+     }
+    ],
+    "right": [
+     {
+      "id": "r1",
+      "text": "Kan pompalar"
+     },
+     {
+      "id": "r2",
+      "text": "Solunum"
+     },
+     {
+      "id": "r3",
+      "text": "Sindirim"
+     },
+     {
+      "id": "r4",
+      "text": "Görme"
+     }
+    ],
+    "policy": "many_to_one"
+   },
+   "key": {
+    "pairs": {
+     "l1": "r1",
+     "l2": "r1",
+     "l3": "r3"
+    }
+   },
+   "valid": true
+  },
+  {
+   "name": "matching too few right for one-to-one",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "l1",
+      "text": "Kalp"
+     },
+     {
+      "id": "l2",
+      "text": "Akciğer"
+     },
+     {
+      "id": "l3",
+      "text": "Mide"
+     }
+    ],
+    "right": [
+     {
+      "id": "r1",
+      "text": "Kan pompalar"
+     },
+     {
+      "id": "r2",
+      "text": "Solunum"
+     }
+    ],
+    "policy": "one_to_one"
+   },
+   "key": {
+    "pairs": {
+     "l1": "r1",
+     "l2": "r2",
+     "l3": "r2"
+    }
+   },
+   "valid": false,
+   "errors": [
+    "right_too_few"
+   ]
+  },
+  {
+   "name": "matching id shared across sides",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "x1",
+      "text": "a"
+     },
+     {
+      "id": "x2",
+      "text": "b"
+     }
+    ],
+    "right": [
+     {
+      "id": "x1",
+      "text": "c"
+     },
+     {
+      "id": "x3",
+      "text": "d"
+     }
+    ],
+    "policy": "many_to_one"
+   },
+   "key": {
+    "pairs": {
+     "x1": "x1",
+     "x2": "x3"
+    }
+   },
+   "valid": false,
+   "errors": [
+    "duplicate_id"
+   ]
+  },
+  {
+   "name": "matching pair to missing target",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "l1",
+      "text": "Kalp"
+     },
+     {
+      "id": "l2",
+      "text": "Akciğer"
+     },
+     {
+      "id": "l3",
+      "text": "Mide"
+     }
+    ],
+    "right": [
+     {
+      "id": "r1",
+      "text": "Kan pompalar"
+     },
+     {
+      "id": "r2",
+      "text": "Solunum"
+     },
+     {
+      "id": "r3",
+      "text": "Sindirim"
+     },
+     {
+      "id": "r4",
+      "text": "Görme"
+     }
+    ],
+    "policy": "one_to_one"
+   },
+   "key": {
+    "pairs": {
+     "l1": "r1",
+     "l2": "r2",
+     "l3": "r9"
+    }
+   },
+   "valid": false,
+   "errors": [
+    "key_value_invalid"
+   ]
+  },
+  {
+   "name": "numeric valid",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "12.5"
+   },
+   "valid": true
+  },
+  {
+   "name": "numeric unit valid",
+   "type": "numeric",
+   "payload": {
+    "units": [
+     {
+      "id": "cm",
+      "text": "cm"
+     },
+     {
+      "id": "m",
+      "text": "m"
+     },
+     {
+      "id": "mm",
+      "text": "mm"
+     },
+     {
+      "id": "g",
+      "text": "g"
+     }
+    ],
+    "unit_required": true
+   },
+   "key": {
+    "value": "150",
+    "unit": "cm",
+    "unit_factors": {
+     "cm": 1,
+     "m": 100,
+     "mm": 0.1
+    }
+   },
+   "valid": true
+  },
+  {
+   "name": "numeric work area flag",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false,
+    "work_area": true
+   },
+   "key": {
+    "value": "12.5",
+    "process_required": true
+   },
+   "valid": true
+  },
+  {
+   "name": "numeric key value expression rejected",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "2+3"
+   },
+   "valid": false,
+   "errors": [
+    "key_value_invalid"
+   ]
+  },
+  {
+   "name": "numeric unit given when not required",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "3",
+    "unit": "cm"
+   },
+   "valid": false,
+   "errors": [
+    "unit_not_required"
+   ]
+  },
+  {
+   "name": "numeric key unit factor not 1",
+   "type": "numeric",
+   "payload": {
+    "units": [
+     {
+      "id": "cm",
+      "text": "cm"
+     },
+     {
+      "id": "m",
+      "text": "m"
+     },
+     {
+      "id": "mm",
+      "text": "mm"
+     },
+     {
+      "id": "g",
+      "text": "g"
+     }
+    ],
+    "unit_required": true
+   },
+   "key": {
+    "value": "150",
+    "unit": "cm",
+    "unit_factors": {
+     "cm": 2
+    }
+   },
+   "valid": false,
+   "errors": [
+    "unit_factors_invalid"
+   ]
+  },
+  {
+   "name": "numeric rel tolerance too large",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "3",
+    "rel_tolerance": 0.9
+   },
+   "valid": false,
+   "errors": [
+    "tolerance_invalid"
+   ]
+  },
+  {
+   "name": "ordering valid",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "a",
+      "text": "Tohum ekilir"
+     },
+     {
+      "id": "b",
+      "text": "Filiz çıkar"
+     },
+     {
+      "id": "c",
+      "text": "Çiçek açar"
+     },
+     {
+      "id": "d",
+      "text": "Meyve olur"
+     }
+    ],
+    "mode": "sequence"
+   },
+   "key": {
+    "orders": [
+     [
+      "a",
+      "b",
+      "c",
+      "d"
+     ]
+    ]
+   },
+   "valid": true
+  },
+  {
+   "name": "ordering single item rejected",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "a",
+      "text": "x"
+     }
+    ],
+    "mode": "sequence"
+   },
+   "key": {
+    "orders": [
+     [
+      "a"
+     ]
+    ]
+   },
+   "valid": false,
+   "errors": [
+    "items_invalid"
+   ]
+  },
+  {
+   "name": "ordering order missing item",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "a",
+      "text": "Tohum ekilir"
+     },
+     {
+      "id": "b",
+      "text": "Filiz çıkar"
+     },
+     {
+      "id": "c",
+      "text": "Çiçek açar"
+     },
+     {
+      "id": "d",
+      "text": "Meyve olur"
+     }
+    ],
+    "mode": "sequence"
+   },
+   "key": {
+    "orders": [
+     [
+      "a",
+      "b",
+      "c"
+     ]
+    ]
+   },
+   "valid": false,
+   "errors": [
+    "order_invalid"
+   ]
+  },
+  {
+   "name": "ordering order duplicate item",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "a",
+      "text": "Tohum ekilir"
+     },
+     {
+      "id": "b",
+      "text": "Filiz çıkar"
+     },
+     {
+      "id": "c",
+      "text": "Çiçek açar"
+     },
+     {
+      "id": "d",
+      "text": "Meyve olur"
+     }
+    ],
+    "mode": "sequence"
+   },
+   "key": {
+    "orders": [
+     [
+      "a",
+      "b",
+      "c",
+      "c"
+     ]
+    ]
+   },
+   "valid": false,
+   "errors": [
+    "order_invalid"
+   ]
+  },
+  {
+   "name": "ordering duplicate alternative",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "a",
+      "text": "Tohum ekilir"
+     },
+     {
+      "id": "b",
+      "text": "Filiz çıkar"
+     },
+     {
+      "id": "c",
+      "text": "Çiçek açar"
+     },
+     {
+      "id": "d",
+      "text": "Meyve olur"
+     }
+    ],
+    "mode": "sequence"
+   },
+   "key": {
+    "orders": [
+     [
+      "a",
+      "b",
+      "c",
+      "d"
+     ],
+     [
+      "a",
+      "b",
+      "c",
+      "d"
+     ]
+    ]
+   },
+   "valid": false,
+   "errors": [
+    "order_duplicate"
+   ]
+  },
+  {
+   "name": "ordering same text distinct ids",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "w1",
+      "text": "ve"
+     },
+     {
+      "id": "w2",
+      "text": "ve"
+     },
+     {
+      "id": "w3",
+      "text": "Ali"
+     }
+    ],
+    "mode": "sentence"
+   },
+   "key": {
+    "orders": [
+     [
+      "w3",
+      "w1",
+      "w2"
+     ],
+     [
+      "w3",
+      "w2",
+      "w1"
+     ]
+    ]
+   },
+   "valid": true
+  },
+  {
+   "name": "classification valid",
+   "type": "classification",
+   "payload": {
+    "items": [
+     {
+      "id": "i1",
+      "text": "Kedi"
+     },
+     {
+      "id": "i2",
+      "text": "Köpek"
+     },
+     {
+      "id": "i3",
+      "text": "Gül"
+     },
+     {
+      "id": "i4",
+      "text": "Lale"
+     }
+    ],
+    "categories": [
+     {
+      "id": "c1",
+      "text": "Hayvan",
+      "capacity": 2
+     },
+     {
+      "id": "c2",
+      "text": "Bitki"
+     }
+    ]
+   },
+   "key": {
+    "membership": {
+     "i1": "c1",
+     "i2": "c1",
+     "i3": "c2",
+     "i4": "c2"
+    }
+   },
+   "valid": true
+  },
+  {
+   "name": "classification key exceeds capacity",
+   "type": "classification",
+   "payload": {
+    "items": [
+     {
+      "id": "i1",
+      "text": "Kedi"
+     },
+     {
+      "id": "i2",
+      "text": "Köpek"
+     },
+     {
+      "id": "i3",
+      "text": "Gül"
+     },
+     {
+      "id": "i4",
+      "text": "Lale"
+     }
+    ],
+    "categories": [
+     {
+      "id": "c1",
+      "text": "Hayvan",
+      "capacity": 1
+     },
+     {
+      "id": "c2",
+      "text": "Bitki"
+     }
+    ]
+   },
+   "key": {
+    "membership": {
+     "i1": "c1",
+     "i2": "c1",
+     "i3": "c2",
+     "i4": "c2"
+    }
+   },
+   "valid": false,
+   "errors": [
+    "capacity_exceeded"
+   ]
+  },
+  {
+   "name": "classification one category",
+   "type": "classification",
+   "payload": {
+    "items": [
+     {
+      "id": "i1",
+      "text": "Kedi"
+     },
+     {
+      "id": "i2",
+      "text": "Köpek"
+     },
+     {
+      "id": "i3",
+      "text": "Gül"
+     },
+     {
+      "id": "i4",
+      "text": "Lale"
+     }
+    ],
+    "categories": [
+     {
+      "id": "c1",
+      "text": "Hayvan"
+     }
+    ]
+   },
+   "key": {
+    "membership": {
+     "i1": "c1",
+     "i2": "c1",
+     "i3": "c1",
+     "i4": "c1"
+    }
+   },
+   "valid": false,
+   "errors": [
+    "categories_invalid"
+   ]
+  },
+  {
+   "name": "classification unknown category",
+   "type": "classification",
+   "payload": {
+    "items": [
+     {
+      "id": "i1",
+      "text": "Kedi"
+     },
+     {
+      "id": "i2",
+      "text": "Köpek"
+     },
+     {
+      "id": "i3",
+      "text": "Gül"
+     },
+     {
+      "id": "i4",
+      "text": "Lale"
+     }
+    ],
+    "categories": [
+     {
+      "id": "c1",
+      "text": "Hayvan",
+      "capacity": 2
+     },
+     {
+      "id": "c2",
+      "text": "Bitki"
+     }
+    ]
+   },
+   "key": {
+    "membership": {
+     "i1": "c1",
+     "i2": "c1",
+     "i3": "c2",
+     "i4": "c9"
+    }
+   },
+   "valid": false,
+   "errors": [
+    "key_value_invalid"
+   ]
+  },
+  {
+   "name": "unknown type",
+   "type": "drag_magic",
+   "payload": {},
+   "key": {},
+   "valid": false,
+   "errors": [
+    "type_unknown"
+   ]
+  }
+ ],
+ "scoring": [
+  {
+   "name": "tf full",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true,
+     "s2": false,
+     "s3": true
+    }
+   },
+   "answer": {
+    "type": "true_false",
+    "v": 1,
+    "items": {
+     "s1": true,
+     "s2": false,
+     "s3": true
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "tf partial answered",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true,
+     "s2": false,
+     "s3": true
+    }
+   },
+   "answer": {
+    "type": "true_false",
+    "v": 1,
+    "items": {
+     "s1": true
+    }
+   },
+   "expect": {
+    "score": 33.3333,
+    "answer_state": "partial",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "tf all wrong",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true,
+     "s2": false,
+     "s3": true
+    }
+   },
+   "answer": {
+    "type": "true_false",
+    "v": 1,
+    "items": {
+     "s1": false,
+     "s2": true,
+     "s3": false
+    }
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "tf blank submitted",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true,
+     "s2": false,
+     "s3": true
+    }
+   },
+   "answer": {
+    "type": "true_false",
+    "v": 1,
+    "items": {}
+   },
+   "expect": {
+    "score": null,
+    "answer_state": "unanswered",
+    "outcome": "unanswered"
+   }
+  },
+  {
+   "name": "tf never answered",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true,
+     "s2": false,
+     "s3": true
+    }
+   },
+   "answer": null,
+   "expect": {
+    "score": null,
+    "answer_state": "unanswered",
+    "outcome": "unanswered"
+   }
+  },
+  {
+   "name": "tf weighted",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true,
+     "s2": false,
+     "s3": true
+    },
+    "weights": {
+     "s1": 2
+    }
+   },
+   "answer": {
+    "type": "true_false",
+    "v": 1,
+    "items": {
+     "s1": true,
+     "s2": true,
+     "s3": false
+    }
+   },
+   "expect": {
+    "score": 50,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "tf five statements four right",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "ifade 1"
+     },
+     {
+      "id": "s2",
+      "text": "ifade 2"
+     },
+     {
+      "id": "s3",
+      "text": "ifade 3"
+     },
+     {
+      "id": "s4",
+      "text": "ifade 4"
+     },
+     {
+      "id": "s5",
+      "text": "ifade 5"
+     }
+    ]
+   },
+   "key": {
+    "answers": {
+     "s1": true,
+     "s2": true,
+     "s3": true,
+     "s4": true,
+     "s5": true
+    }
+   },
+   "answer": {
+    "type": "true_false",
+    "v": 1,
+    "items": {
+     "s1": true,
+     "s2": true,
+     "s3": true,
+     "s4": true,
+     "s5": false
+    }
+   },
+   "expect": {
+    "score": 80,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill exact",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "Ankara"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "Ankara"
+     }
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill trim and spaces",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "Ankara"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "   Ankara  "
+     }
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill case sensitive by default",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "Ankara"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "ankara"
+     }
+    }
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill case insensitive when allowed",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "Ankara"
+      ]
+     }
+    },
+    "case_insensitive": true
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "ANKARA"
+     }
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill TR dotless I lowercases to ı",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "ılık"
+      ]
+     }
+    },
+    "case_insensitive": true
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "ILIK"
+     }
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill TR no ASCII folding ı/i",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "ılık"
+      ]
+     }
+    },
+    "case_insensitive": true
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "ilik"
+     }
+    }
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill TR dotted İ",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "İzmir"
+      ]
+     }
+    },
+    "case_insensitive": true
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "izmir"
+     }
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill no ş/s folding",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "şeker"
+      ]
+     }
+    },
+    "case_insensitive": true
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "seker"
+     }
+    }
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill NFC decomposed input",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "Çiçek"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "Çiçek"
+     }
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill alternative accepted",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "Ankara",
+       "ANKARA"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "ANKARA"
+     }
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill blank text unanswered",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "Ankara"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "   "
+     }
+    }
+   },
+   "expect": {
+    "score": null,
+    "answer_state": "unanswered",
+    "outcome": "unanswered"
+   }
+  },
+  {
+   "name": "fill no fuzzy match",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "accepted": [
+       "Ankara"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "Ankra"
+     }
+    }
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill bank full",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Su donunca "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " olur, ısınınca "
+     },
+     {
+      "type": "blank",
+      "id": "b2"
+     },
+     {
+      "type": "text",
+      "text": " olur."
+     }
+    ],
+    "input": "bank",
+    "bank": [
+     {
+      "id": "w1",
+      "text": "katı"
+     },
+     {
+      "id": "w2",
+      "text": "buhar"
+     },
+     {
+      "id": "w3",
+      "text": "sıvı"
+     }
+    ],
+    "bank_reuse": false
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "tokens": [
+       "w1"
+      ]
+     },
+     "b2": {
+      "tokens": [
+       "w2"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "token": "w1"
+     },
+     "b2": {
+      "token": "w2"
+     }
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill bank swapped",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Su donunca "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " olur, ısınınca "
+     },
+     {
+      "type": "blank",
+      "id": "b2"
+     },
+     {
+      "type": "text",
+      "text": " olur."
+     }
+    ],
+    "input": "bank",
+    "bank": [
+     {
+      "id": "w1",
+      "text": "katı"
+     },
+     {
+      "id": "w2",
+      "text": "buhar"
+     },
+     {
+      "id": "w3",
+      "text": "sıvı"
+     }
+    ],
+    "bank_reuse": false
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "tokens": [
+       "w1"
+      ]
+     },
+     "b2": {
+      "tokens": [
+       "w2"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "token": "w2"
+     },
+     "b2": {
+      "token": "w1"
+     }
+    }
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fill bank half",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Su donunca "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " olur, ısınınca "
+     },
+     {
+      "type": "blank",
+      "id": "b2"
+     },
+     {
+      "type": "text",
+      "text": " olur."
+     }
+    ],
+    "input": "bank",
+    "bank": [
+     {
+      "id": "w1",
+      "text": "katı"
+     },
+     {
+      "id": "w2",
+      "text": "buhar"
+     },
+     {
+      "id": "w3",
+      "text": "sıvı"
+     }
+    ],
+    "bank_reuse": false
+   },
+   "key": {
+    "blanks": {
+     "b1": {
+      "tokens": [
+       "w1"
+      ]
+     },
+     "b2": {
+      "tokens": [
+       "w2"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "token": "w1"
+     }
+    }
+   },
+   "expect": {
+    "score": 50,
+    "answer_state": "partial",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "match full",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "l1",
+      "text": "Kalp"
+     },
+     {
+      "id": "l2",
+      "text": "Akciğer"
+     },
+     {
+      "id": "l3",
+      "text": "Mide"
+     }
+    ],
+    "right": [
+     {
+      "id": "r1",
+      "text": "Kan pompalar"
+     },
+     {
+      "id": "r2",
+      "text": "Solunum"
+     },
+     {
+      "id": "r3",
+      "text": "Sindirim"
+     },
+     {
+      "id": "r4",
+      "text": "Görme"
+     }
+    ],
+    "policy": "one_to_one"
+   },
+   "key": {
+    "pairs": {
+     "l1": "r1",
+     "l2": "r2",
+     "l3": "r3"
+    }
+   },
+   "answer": {
+    "type": "matching",
+    "v": 1,
+    "pairs": {
+     "l1": "r1",
+     "l2": "r2",
+     "l3": "r3"
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "match two swapped",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "l1",
+      "text": "Kalp"
+     },
+     {
+      "id": "l2",
+      "text": "Akciğer"
+     },
+     {
+      "id": "l3",
+      "text": "Mide"
+     }
+    ],
+    "right": [
+     {
+      "id": "r1",
+      "text": "Kan pompalar"
+     },
+     {
+      "id": "r2",
+      "text": "Solunum"
+     },
+     {
+      "id": "r3",
+      "text": "Sindirim"
+     },
+     {
+      "id": "r4",
+      "text": "Görme"
+     }
+    ],
+    "policy": "one_to_one"
+   },
+   "key": {
+    "pairs": {
+     "l1": "r1",
+     "l2": "r2",
+     "l3": "r3"
+    }
+   },
+   "answer": {
+    "type": "matching",
+    "v": 1,
+    "pairs": {
+     "l1": "r2",
+     "l2": "r1",
+     "l3": "r3"
+    }
+   },
+   "expect": {
+    "score": 33.3333,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "match distractor chosen",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "l1",
+      "text": "Kalp"
+     },
+     {
+      "id": "l2",
+      "text": "Akciğer"
+     },
+     {
+      "id": "l3",
+      "text": "Mide"
+     }
+    ],
+    "right": [
+     {
+      "id": "r1",
+      "text": "Kan pompalar"
+     },
+     {
+      "id": "r2",
+      "text": "Solunum"
+     },
+     {
+      "id": "r3",
+      "text": "Sindirim"
+     },
+     {
+      "id": "r4",
+      "text": "Görme"
+     }
+    ],
+    "policy": "one_to_one"
+   },
+   "key": {
+    "pairs": {
+     "l1": "r1",
+     "l2": "r2",
+     "l3": "r3"
+    }
+   },
+   "answer": {
+    "type": "matching",
+    "v": 1,
+    "pairs": {
+     "l1": "r1",
+     "l2": "r2",
+     "l3": "r4"
+    }
+   },
+   "expect": {
+    "score": 66.6667,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "match partial",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "l1",
+      "text": "Kalp"
+     },
+     {
+      "id": "l2",
+      "text": "Akciğer"
+     },
+     {
+      "id": "l3",
+      "text": "Mide"
+     }
+    ],
+    "right": [
+     {
+      "id": "r1",
+      "text": "Kan pompalar"
+     },
+     {
+      "id": "r2",
+      "text": "Solunum"
+     },
+     {
+      "id": "r3",
+      "text": "Sindirim"
+     },
+     {
+      "id": "r4",
+      "text": "Görme"
+     }
+    ],
+    "policy": "one_to_one"
+   },
+   "key": {
+    "pairs": {
+     "l1": "r1",
+     "l2": "r2",
+     "l3": "r3"
+    }
+   },
+   "answer": {
+    "type": "matching",
+    "v": 1,
+    "pairs": {
+     "l1": "r1"
+    }
+   },
+   "expect": {
+    "score": 33.3333,
+    "answer_state": "partial",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num comma decimal",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "12.5"
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "12,5"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num dot decimal",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "12.5"
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "12.5"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num fraction",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "12.5"
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "25/2"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num mixed fraction",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "12.5"
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "12 1/2"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num trailing zero",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "12.5"
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "12,50"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num wrong",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "12.5"
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "12,4"
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num expression not evaluated",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "0.3"
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "0.1+0.2"
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num empty",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "12.5"
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": ""
+   },
+   "expect": {
+    "score": null,
+    "answer_state": "unanswered",
+    "outcome": "unanswered"
+   }
+  },
+  {
+   "name": "num zero target abs tolerance in",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "0",
+    "abs_tolerance": 0.01
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "0,005"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num zero target boundary",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "0",
+    "abs_tolerance": 0.01
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "-0,01"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num zero target out",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "0",
+    "abs_tolerance": 0.01
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "0,0101"
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num rel tolerance boundary",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "200",
+    "rel_tolerance": 0.05
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "190"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num rel tolerance out",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "200",
+    "rel_tolerance": 0.05
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "189,9"
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num thousands dot",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "1500"
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "1.500"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num 1,5 is not 1500",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "1500"
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "1,5"
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num unit conversion m",
+   "type": "numeric",
+   "payload": {
+    "units": [
+     {
+      "id": "cm",
+      "text": "cm"
+     },
+     {
+      "id": "m",
+      "text": "m"
+     },
+     {
+      "id": "mm",
+      "text": "mm"
+     },
+     {
+      "id": "g",
+      "text": "g"
+     }
+    ],
+    "unit_required": true
+   },
+   "key": {
+    "value": "150",
+    "unit": "cm",
+    "unit_factors": {
+     "cm": 1,
+     "m": 100,
+     "mm": 0.1
+    }
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "1,5",
+    "unit": "m"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num unit conversion mm",
+   "type": "numeric",
+   "payload": {
+    "units": [
+     {
+      "id": "cm",
+      "text": "cm"
+     },
+     {
+      "id": "m",
+      "text": "m"
+     },
+     {
+      "id": "mm",
+      "text": "mm"
+     },
+     {
+      "id": "g",
+      "text": "g"
+     }
+    ],
+    "unit_required": true
+   },
+   "key": {
+    "value": "150",
+    "unit": "cm",
+    "unit_factors": {
+     "cm": 1,
+     "m": 100,
+     "mm": 0.1
+    }
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "1500",
+    "unit": "mm"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num unit missing",
+   "type": "numeric",
+   "payload": {
+    "units": [
+     {
+      "id": "cm",
+      "text": "cm"
+     },
+     {
+      "id": "m",
+      "text": "m"
+     },
+     {
+      "id": "mm",
+      "text": "mm"
+     },
+     {
+      "id": "g",
+      "text": "g"
+     }
+    ],
+    "unit_required": true
+   },
+   "key": {
+    "value": "150",
+    "unit": "cm",
+    "unit_factors": {
+     "cm": 1,
+     "m": 100,
+     "mm": 0.1
+    }
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "150"
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "partial",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num unit not convertible",
+   "type": "numeric",
+   "payload": {
+    "units": [
+     {
+      "id": "cm",
+      "text": "cm"
+     },
+     {
+      "id": "m",
+      "text": "m"
+     },
+     {
+      "id": "mm",
+      "text": "mm"
+     },
+     {
+      "id": "g",
+      "text": "g"
+     }
+    ],
+    "unit_required": true
+   },
+   "key": {
+    "value": "150",
+    "unit": "cm",
+    "unit_factors": {
+     "cm": 1,
+     "m": 100,
+     "mm": 0.1
+    }
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "150",
+    "unit": "g"
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num unit weighted full",
+   "type": "numeric",
+   "payload": {
+    "units": [
+     {
+      "id": "cm",
+      "text": "cm"
+     },
+     {
+      "id": "m",
+      "text": "m"
+     },
+     {
+      "id": "mm",
+      "text": "mm"
+     },
+     {
+      "id": "g",
+      "text": "g"
+     }
+    ],
+    "unit_required": true
+   },
+   "key": {
+    "value": "150",
+    "unit": "cm",
+    "unit_factors": {
+     "cm": 1,
+     "m": 100,
+     "mm": 0.1
+    },
+    "unit_weight": 0.25
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "150",
+    "unit": "cm"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num unit weighted only unit",
+   "type": "numeric",
+   "payload": {
+    "units": [
+     {
+      "id": "cm",
+      "text": "cm"
+     },
+     {
+      "id": "m",
+      "text": "m"
+     },
+     {
+      "id": "mm",
+      "text": "mm"
+     },
+     {
+      "id": "g",
+      "text": "g"
+     }
+    ],
+    "unit_required": true
+   },
+   "key": {
+    "value": "150",
+    "unit": "cm",
+    "unit_factors": {
+     "cm": 1,
+     "m": 100,
+     "mm": 0.1
+    },
+    "unit_weight": 0.25
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "140",
+    "unit": "cm"
+   },
+   "expect": {
+    "score": 25,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "num process required goes to parent",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "key": {
+    "value": "12.5",
+    "process_required": true
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "12,5"
+   },
+   "expect": {
+    "score": null,
+    "answer_state": "complete",
+    "outcome": "pending_human"
+   }
+  },
+  {
+   "name": "order exact",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "a",
+      "text": "Tohum ekilir"
+     },
+     {
+      "id": "b",
+      "text": "Filiz çıkar"
+     },
+     {
+      "id": "c",
+      "text": "Çiçek açar"
+     },
+     {
+      "id": "d",
+      "text": "Meyve olur"
+     }
+    ],
+    "mode": "sequence"
+   },
+   "key": {
+    "orders": [
+     [
+      "a",
+      "b",
+      "c",
+      "d"
+     ]
+    ]
+   },
+   "answer": {
+    "type": "ordering",
+    "v": 1,
+    "order": [
+     "a",
+     "b",
+     "c",
+     "d"
+    ]
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "order reversed",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "a",
+      "text": "Tohum ekilir"
+     },
+     {
+      "id": "b",
+      "text": "Filiz çıkar"
+     },
+     {
+      "id": "c",
+      "text": "Çiçek açar"
+     },
+     {
+      "id": "d",
+      "text": "Meyve olur"
+     }
+    ],
+    "mode": "sequence"
+   },
+   "key": {
+    "orders": [
+     [
+      "a",
+      "b",
+      "c",
+      "d"
+     ]
+    ]
+   },
+   "answer": {
+    "type": "ordering",
+    "v": 1,
+    "order": [
+     "d",
+     "c",
+     "b",
+     "a"
+    ]
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "order one adjacent swap",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "a",
+      "text": "Tohum ekilir"
+     },
+     {
+      "id": "b",
+      "text": "Filiz çıkar"
+     },
+     {
+      "id": "c",
+      "text": "Çiçek açar"
+     },
+     {
+      "id": "d",
+      "text": "Meyve olur"
+     }
+    ],
+    "mode": "sequence"
+   },
+   "key": {
+    "orders": [
+     [
+      "a",
+      "b",
+      "c",
+      "d"
+     ]
+    ]
+   },
+   "answer": {
+    "type": "ordering",
+    "v": 1,
+    "order": [
+     "b",
+     "a",
+     "c",
+     "d"
+    ]
+   },
+   "expect": {
+    "score": 83.3333,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "order accepted alternative",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "a",
+      "text": "Tohum ekilir"
+     },
+     {
+      "id": "b",
+      "text": "Filiz çıkar"
+     },
+     {
+      "id": "c",
+      "text": "Çiçek açar"
+     },
+     {
+      "id": "d",
+      "text": "Meyve olur"
+     }
+    ],
+    "mode": "sequence"
+   },
+   "key": {
+    "orders": [
+     [
+      "a",
+      "b",
+      "c",
+      "d"
+     ],
+     [
+      "b",
+      "a",
+      "c",
+      "d"
+     ]
+    ]
+   },
+   "answer": {
+    "type": "ordering",
+    "v": 1,
+    "order": [
+     "b",
+     "a",
+     "c",
+     "d"
+    ]
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "order two items wrong",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "a",
+      "text": "Tohum ekilir"
+     },
+     {
+      "id": "b",
+      "text": "Filiz çıkar"
+     }
+    ],
+    "mode": "sequence"
+   },
+   "key": {
+    "orders": [
+     [
+      "a",
+      "b"
+     ]
+    ]
+   },
+   "answer": {
+    "type": "ordering",
+    "v": 1,
+    "order": [
+     "b",
+     "a"
+    ]
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "order same-text words either way",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "w1",
+      "text": "ve"
+     },
+     {
+      "id": "w2",
+      "text": "ve"
+     },
+     {
+      "id": "w3",
+      "text": "Ali"
+     }
+    ],
+    "mode": "sentence"
+   },
+   "key": {
+    "orders": [
+     [
+      "w3",
+      "w1",
+      "w2"
+     ],
+     [
+      "w3",
+      "w2",
+      "w1"
+     ]
+    ]
+   },
+   "answer": {
+    "type": "ordering",
+    "v": 1,
+    "order": [
+     "w3",
+     "w2",
+     "w1"
+    ]
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "class full",
+   "type": "classification",
+   "payload": {
+    "items": [
+     {
+      "id": "i1",
+      "text": "Kedi"
+     },
+     {
+      "id": "i2",
+      "text": "Köpek"
+     },
+     {
+      "id": "i3",
+      "text": "Gül"
+     },
+     {
+      "id": "i4",
+      "text": "Lale"
+     }
+    ],
+    "categories": [
+     {
+      "id": "c1",
+      "text": "Hayvan",
+      "capacity": 2
+     },
+     {
+      "id": "c2",
+      "text": "Bitki"
+     }
+    ]
+   },
+   "key": {
+    "membership": {
+     "i1": "c1",
+     "i2": "c1",
+     "i3": "c2",
+     "i4": "c2"
+    }
+   },
+   "answer": {
+    "type": "classification",
+    "v": 1,
+    "placement": {
+     "i1": "c1",
+     "i2": "c1",
+     "i3": "c2",
+     "i4": "c2"
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "class one wrong",
+   "type": "classification",
+   "payload": {
+    "items": [
+     {
+      "id": "i1",
+      "text": "Kedi"
+     },
+     {
+      "id": "i2",
+      "text": "Köpek"
+     },
+     {
+      "id": "i3",
+      "text": "Gül"
+     },
+     {
+      "id": "i4",
+      "text": "Lale"
+     }
+    ],
+    "categories": [
+     {
+      "id": "c1",
+      "text": "Hayvan",
+      "capacity": 2
+     },
+     {
+      "id": "c2",
+      "text": "Bitki"
+     }
+    ]
+   },
+   "key": {
+    "membership": {
+     "i1": "c1",
+     "i2": "c1",
+     "i3": "c2",
+     "i4": "c2"
+    }
+   },
+   "answer": {
+    "type": "classification",
+    "v": 1,
+    "placement": {
+     "i1": "c2",
+     "i2": "c1",
+     "i3": "c2",
+     "i4": "c2"
+    }
+   },
+   "expect": {
+    "score": 75,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "class partial",
+   "type": "classification",
+   "payload": {
+    "items": [
+     {
+      "id": "i1",
+      "text": "Kedi"
+     },
+     {
+      "id": "i2",
+      "text": "Köpek"
+     },
+     {
+      "id": "i3",
+      "text": "Gül"
+     },
+     {
+      "id": "i4",
+      "text": "Lale"
+     }
+    ],
+    "categories": [
+     {
+      "id": "c1",
+      "text": "Hayvan",
+      "capacity": 2
+     },
+     {
+      "id": "c2",
+      "text": "Bitki"
+     }
+    ]
+   },
+   "key": {
+    "membership": {
+     "i1": "c1",
+     "i2": "c1",
+     "i3": "c2",
+     "i4": "c2"
+    }
+   },
+   "answer": {
+    "type": "classification",
+    "v": 1,
+    "placement": {
+     "i1": "c1",
+     "i2": "c1"
+    }
+   },
+   "expect": {
+    "score": 50,
+    "answer_state": "partial",
+    "outcome": "scored"
+   }
+  }
+ ],
+ "answers": [
+  {
+   "name": "tf ok",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "answer": {
+    "type": "true_false",
+    "v": 1,
+    "items": {
+     "s1": true
+    }
+   },
+   "valid": true
+  },
+  {
+   "name": "tf unknown id",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "answer": {
+    "type": "true_false",
+    "v": 1,
+    "items": {
+     "s9": true
+    }
+   },
+   "valid": false,
+   "error": "answer_unknown_id"
+  },
+  {
+   "name": "tf string value",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "answer": {
+    "type": "true_false",
+    "v": 1,
+    "items": {
+     "s1": "true"
+    }
+   },
+   "valid": false,
+   "error": "answer_value_invalid"
+  },
+  {
+   "name": "tf wrong type tag",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "answer": {
+    "type": "matching",
+    "v": 1,
+    "items": {
+     "s1": true
+    }
+   },
+   "valid": false,
+   "error": "answer_type_mismatch"
+  },
+  {
+   "name": "tf extra field",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "answer": {
+    "type": "true_false",
+    "v": 1,
+    "items": {},
+    "score": 100
+   },
+   "valid": false,
+   "error": "answer_unknown_field"
+  },
+  {
+   "name": "tf future version",
+   "type": "true_false",
+   "payload": {
+    "statements": [
+     {
+      "id": "s1",
+      "text": "Güneş bir yıldızdır."
+     },
+     {
+      "id": "s2",
+      "text": "Ay kendi ışığını üretir."
+     },
+     {
+      "id": "s3",
+      "text": "Dünya Güneş'in etrafında döner."
+     }
+    ]
+   },
+   "answer": {
+    "type": "true_false",
+    "v": 2,
+    "items": {}
+   },
+   "valid": false,
+   "error": "answer_version_unsupported"
+  },
+  {
+   "name": "fill bank reuse forbidden",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Su donunca "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " olur, ısınınca "
+     },
+     {
+      "type": "blank",
+      "id": "b2"
+     },
+     {
+      "type": "text",
+      "text": " olur."
+     }
+    ],
+    "input": "bank",
+    "bank": [
+     {
+      "id": "w1",
+      "text": "katı"
+     },
+     {
+      "id": "w2",
+      "text": "buhar"
+     },
+     {
+      "id": "w3",
+      "text": "sıvı"
+     }
+    ],
+    "bank_reuse": false
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "token": "w1"
+     },
+     "b2": {
+      "token": "w1"
+     }
+    }
+   },
+   "valid": false,
+   "error": "answer_token_reused"
+  },
+  {
+   "name": "fill bank text instead of token",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Su donunca "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " olur, ısınınca "
+     },
+     {
+      "type": "blank",
+      "id": "b2"
+     },
+     {
+      "type": "text",
+      "text": " olur."
+     }
+    ],
+    "input": "bank",
+    "bank": [
+     {
+      "id": "w1",
+      "text": "katı"
+     },
+     {
+      "id": "w2",
+      "text": "buhar"
+     },
+     {
+      "id": "w3",
+      "text": "sıvı"
+     }
+    ],
+    "bank_reuse": false
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "katı"
+     }
+    }
+   },
+   "valid": false,
+   "error": "answer_value_invalid"
+  },
+  {
+   "name": "fill keyboard too long",
+   "type": "fill_blank",
+   "payload": {
+    "segments": [
+     {
+      "type": "text",
+      "text": "Türkiye'nin başkenti "
+     },
+     {
+      "type": "blank",
+      "id": "b1"
+     },
+     {
+      "type": "text",
+      "text": " şehridir."
+     }
+    ],
+    "input": "keyboard"
+   },
+   "answer": {
+    "type": "fill_blank",
+    "v": 1,
+    "blanks": {
+     "b1": {
+      "text": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+     }
+    }
+   },
+   "valid": false,
+   "error": "answer_value_invalid"
+  },
+  {
+   "name": "match reuse one-to-one",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "l1",
+      "text": "Kalp"
+     },
+     {
+      "id": "l2",
+      "text": "Akciğer"
+     },
+     {
+      "id": "l3",
+      "text": "Mide"
+     }
+    ],
+    "right": [
+     {
+      "id": "r1",
+      "text": "Kan pompalar"
+     },
+     {
+      "id": "r2",
+      "text": "Solunum"
+     },
+     {
+      "id": "r3",
+      "text": "Sindirim"
+     },
+     {
+      "id": "r4",
+      "text": "Görme"
+     }
+    ],
+    "policy": "one_to_one"
+   },
+   "answer": {
+    "type": "matching",
+    "v": 1,
+    "pairs": {
+     "l1": "r1",
+     "l2": "r1"
+    }
+   },
+   "valid": false,
+   "error": "answer_pair_reused"
+  },
+  {
+   "name": "match reuse many-to-one ok",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "l1",
+      "text": "Kalp"
+     },
+     {
+      "id": "l2",
+      "text": "Akciğer"
+     },
+     {
+      "id": "l3",
+      "text": "Mide"
+     }
+    ],
+    "right": [
+     {
+      "id": "r1",
+      "text": "Kan pompalar"
+     },
+     {
+      "id": "r2",
+      "text": "Solunum"
+     },
+     {
+      "id": "r3",
+      "text": "Sindirim"
+     },
+     {
+      "id": "r4",
+      "text": "Görme"
+     }
+    ],
+    "policy": "many_to_one"
+   },
+   "answer": {
+    "type": "matching",
+    "v": 1,
+    "pairs": {
+     "l1": "r1",
+     "l2": "r1"
+    }
+   },
+   "valid": true
+  },
+  {
+   "name": "match unknown right",
+   "type": "matching",
+   "payload": {
+    "left": [
+     {
+      "id": "l1",
+      "text": "Kalp"
+     },
+     {
+      "id": "l2",
+      "text": "Akciğer"
+     },
+     {
+      "id": "l3",
+      "text": "Mide"
+     }
+    ],
+    "right": [
+     {
+      "id": "r1",
+      "text": "Kan pompalar"
+     },
+     {
+      "id": "r2",
+      "text": "Solunum"
+     },
+     {
+      "id": "r3",
+      "text": "Sindirim"
+     },
+     {
+      "id": "r4",
+      "text": "Görme"
+     }
+    ],
+    "policy": "one_to_one"
+   },
+   "answer": {
+    "type": "matching",
+    "v": 1,
+    "pairs": {
+     "l1": "r9"
+    }
+   },
+   "valid": false,
+   "error": "answer_value_invalid"
+  },
+  {
+   "name": "num unknown unit",
+   "type": "numeric",
+   "payload": {
+    "units": [
+     {
+      "id": "cm",
+      "text": "cm"
+     },
+     {
+      "id": "m",
+      "text": "m"
+     },
+     {
+      "id": "mm",
+      "text": "mm"
+     },
+     {
+      "id": "g",
+      "text": "g"
+     }
+    ],
+    "unit_required": true
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": "1",
+    "unit": "kg"
+   },
+   "valid": false,
+   "error": "answer_unknown_id"
+  },
+  {
+   "name": "num value number type",
+   "type": "numeric",
+   "payload": {
+    "units": [],
+    "unit_required": false
+   },
+   "answer": {
+    "type": "numeric",
+    "v": 1,
+    "value": 12
+   },
+   "valid": false,
+   "error": "answer_value_invalid"
+  },
+  {
+   "name": "order not permutation",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "a",
+      "text": "Tohum ekilir"
+     },
+     {
+      "id": "b",
+      "text": "Filiz çıkar"
+     },
+     {
+      "id": "c",
+      "text": "Çiçek açar"
+     },
+     {
+      "id": "d",
+      "text": "Meyve olur"
+     }
+    ],
+    "mode": "sequence"
+   },
+   "answer": {
+    "type": "ordering",
+    "v": 1,
+    "order": [
+     "a",
+     "a",
+     "b",
+     "c"
+    ]
+   },
+   "valid": false,
+   "error": "answer_order_invalid"
+  },
+  {
+   "name": "order missing item",
+   "type": "ordering",
+   "payload": {
+    "items": [
+     {
+      "id": "a",
+      "text": "Tohum ekilir"
+     },
+     {
+      "id": "b",
+      "text": "Filiz çıkar"
+     },
+     {
+      "id": "c",
+      "text": "Çiçek açar"
+     },
+     {
+      "id": "d",
+      "text": "Meyve olur"
+     }
+    ],
+    "mode": "sequence"
+   },
+   "answer": {
+    "type": "ordering",
+    "v": 1,
+    "order": [
+     "a",
+     "b",
+     "c"
+    ]
+   },
+   "valid": false,
+   "error": "answer_order_invalid"
+  },
+  {
+   "name": "class capacity exceeded",
+   "type": "classification",
+   "payload": {
+    "items": [
+     {
+      "id": "i1",
+      "text": "Kedi"
+     },
+     {
+      "id": "i2",
+      "text": "Köpek"
+     },
+     {
+      "id": "i3",
+      "text": "Gül"
+     },
+     {
+      "id": "i4",
+      "text": "Lale"
+     }
+    ],
+    "categories": [
+     {
+      "id": "c1",
+      "text": "Hayvan",
+      "capacity": 2
+     },
+     {
+      "id": "c2",
+      "text": "Bitki"
+     }
+    ]
+   },
+   "answer": {
+    "type": "classification",
+    "v": 1,
+    "placement": {
+     "i1": "c1",
+     "i2": "c1",
+     "i3": "c1"
+    }
+   },
+   "valid": false,
+   "error": "answer_capacity_exceeded"
+  },
+  {
+   "name": "class unknown category",
+   "type": "classification",
+   "payload": {
+    "items": [
+     {
+      "id": "i1",
+      "text": "Kedi"
+     },
+     {
+      "id": "i2",
+      "text": "Köpek"
+     },
+     {
+      "id": "i3",
+      "text": "Gül"
+     },
+     {
+      "id": "i4",
+      "text": "Lale"
+     }
+    ],
+    "categories": [
+     {
+      "id": "c1",
+      "text": "Hayvan",
+      "capacity": 2
+     },
+     {
+      "id": "c2",
+      "text": "Bitki"
+     }
+    ]
+   },
+   "answer": {
+    "type": "classification",
+    "v": 1,
+    "placement": {
+     "i1": "c9"
+    }
+   },
+   "valid": false,
+   "error": "answer_value_invalid"
+  }
+ ],
+ "numbers": [
+  [
+   "7",
+   "7"
+  ],
+  [
+   " 7 ",
+   "7"
+  ],
+  [
+   "-3",
+   "-3"
+  ],
+  [
+   "−3",
+   "-3"
+  ],
+  [
+   "12,5",
+   "12.5"
+  ],
+  [
+   "12.5",
+   "12.5"
+  ],
+  [
+   "1.250,5",
+   "1250.5"
+  ],
+  [
+   "1.500",
+   "1500"
+  ],
+  [
+   "3/4",
+   "0.75"
+  ],
+  [
+   "1 3/4",
+   "1.75"
+  ],
+  [
+   "1,2,3",
+   null
+  ],
+  [
+   "1..2",
+   null
+  ],
+  [
+   "3/0",
+   null
+  ],
+  [
+   "1 5/4",
+   null
+  ],
+  [
+   "+5",
+   null
+  ],
+  [
+   "1e3",
+   null
+  ],
+  [
+   "",
+   null
+  ],
+  [
+   "abc",
+   null
+  ],
+  [
+   "1,5.2",
+   null
+  ],
+  [
+   "٣",
+   null
+  ]
+ ]
+}

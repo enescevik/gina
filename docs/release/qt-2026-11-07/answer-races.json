@@ -1,0 +1,46 @@
+{
+  "environment": "disposable-local-db",
+  "database": "gina_qtrace_2bd26e5fa7_audit",
+  "checks": [
+    {
+      "check": "two devices, same base revision: second gets answer_changed",
+      "passed": true,
+      "second_waited_s": 1.46,
+      "expected_error": "answer_changed"
+    },
+    {
+      "check": "duplicate request id in flight: replay returns same revision",
+      "passed": true,
+      "second_waited_s": 1.41,
+      "expected_error": null
+    },
+    {
+      "check": "late out-of-order write with stale revision rejected",
+      "passed": true
+    },
+    {
+      "check": "submit racing finish: rejected with attempt_closed",
+      "passed": true,
+      "second_waited_s": 1.4,
+      "expected_error": "attempt_closed"
+    },
+    {
+      "check": "double finish: idempotent",
+      "passed": true,
+      "second_waited_s": 1.39,
+      "expected_error": null
+    },
+    {
+      "check": "write after deadline rejected with time_up",
+      "passed": true
+    },
+    {
+      "check": "parent score request replay in flight: single override row",
+      "passed": true,
+      "second_waited_s": 1.4,
+      "expected_error": null
+    }
+  ],
+  "passed": true,
+  "cleanup": "database dropped"
+}

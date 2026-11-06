@@ -763,14 +763,14 @@ isOneToOne: false
                   ]
                 },"devices": {
                   Row: {
-                    "access_mode": string,"active_child_id": string | null,"auth_user_id": string,"family_id": string,"id": string,"last_seen_at": string | null,"name": string,"paired_at": string,"pin_policy": string,"revoked_at": string | null
+                    "access_mode": string,"active_child_id": string | null,"auth_user_id": string,"family_id": string,"id": string,"last_seen_at": string | null,"name": string,"paired_at": string,"pin_policy": string,"question_types": (string)[] | null,"question_types_at": string | null,"revoked_at": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "access_mode"?: string,"active_child_id"?: string | null,"auth_user_id": string,"family_id": string,"id"?: string,"last_seen_at"?: string | null,"name"?: string,"paired_at"?: string,"pin_policy"?: string,"revoked_at"?: string | null
+                    "access_mode"?: string,"active_child_id"?: string | null,"auth_user_id": string,"family_id": string,"id"?: string,"last_seen_at"?: string | null,"name"?: string,"paired_at"?: string,"pin_policy"?: string,"question_types"?: (string)[] | null,"question_types_at"?: string | null,"revoked_at"?: string | null
                   }
                   Update: {
-                    "access_mode"?: string,"active_child_id"?: string | null,"auth_user_id"?: string,"family_id"?: string,"id"?: string,"last_seen_at"?: string | null,"name"?: string,"paired_at"?: string,"pin_policy"?: string,"revoked_at"?: string | null
+                    "access_mode"?: string,"active_child_id"?: string | null,"auth_user_id"?: string,"family_id"?: string,"id"?: string,"last_seen_at"?: string | null,"name"?: string,"paired_at"?: string,"pin_policy"?: string,"question_types"?: (string)[] | null,"question_types_at"?: string | null,"revoked_at"?: string | null
                   }
                   Relationships: [
                     {
@@ -855,14 +855,14 @@ isOneToOne: false
                   ]
                 },"exam_answers": {
                   Row: {
-                    "ai_details": Json | null,"ai_feedback": string | null,"ai_graded_at": string | null,"ai_score": number | null,"answer_document": Json | null,"answer_key": string | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"edit_revision": number,"feedback": string | null,"graded_at": string | null,"graded_by": string | null,"is_correct": boolean | null,"question_id": string,"review_ai_id": string | null,"review_document": Json | null,"review_revision": number,"score": number | null
+                    "ai_details": Json | null,"ai_feedback": string | null,"ai_graded_at": string | null,"ai_score": number | null,"answer": Json | null,"answer_document": Json | null,"answer_key": string | null,"answer_text": string | null,"answered_at": string,"attempt_id": string,"edit_revision": number,"feedback": string | null,"graded_at": string | null,"graded_by": string | null,"is_correct": boolean | null,"question_id": string,"review_ai_id": string | null,"review_document": Json | null,"review_revision": number,"score": number | null,"score_details": Json | null,"score_exact": number | null,"scored_policy": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_graded_at"?: string | null,"ai_score"?: number | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id": string,"review_ai_id"?: string | null,"review_document"?: Json | null,"review_revision"?: number,"score"?: number | null
+                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_graded_at"?: string | null,"ai_score"?: number | null,"answer"?: Json | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id": string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id": string,"review_ai_id"?: string | null,"review_document"?: Json | null,"review_revision"?: number,"score"?: number | null,"score_details"?: Json | null,"score_exact"?: number | null,"scored_policy"?: string | null
                   }
                   Update: {
-                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_graded_at"?: string | null,"ai_score"?: number | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id"?: string,"review_ai_id"?: string | null,"review_document"?: Json | null,"review_revision"?: number,"score"?: number | null
+                    "ai_details"?: Json | null,"ai_feedback"?: string | null,"ai_graded_at"?: string | null,"ai_score"?: number | null,"answer"?: Json | null,"answer_document"?: Json | null,"answer_key"?: string | null,"answer_text"?: string | null,"answered_at"?: string,"attempt_id"?: string,"edit_revision"?: number,"feedback"?: string | null,"graded_at"?: string | null,"graded_by"?: string | null,"is_correct"?: boolean | null,"question_id"?: string,"review_ai_id"?: string | null,"review_document"?: Json | null,"review_revision"?: number,"score"?: number | null,"score_details"?: Json | null,"score_exact"?: number | null,"scored_policy"?: string | null
                   }
                   Relationships: [
                     {
@@ -899,14 +899,14 @@ isOneToOne: false
                   ]
                 },"exam_attempts": {
                   Row: {
-                    "ai_feedback": Json | null,"child_id": string,"created_at": string,"deadline_at": string | null,"exam_id": string,"family_id": string,"finished_at": string | null,"graded_at": string | null,"id": string,"mc_correct": number | null,"mc_total": number | null,"open_graded": number | null,"open_pending": number | null,"open_total": number | null,"open_unanswered": number | null,"provisional": boolean | null,"score_pct": number | null,"started_at": string,"status": Database["public"]['Enums']["attempt_status"]
+                    "ai_feedback": Json | null,"child_id": string,"created_at": string,"deadline_at": string | null,"exam_id": string,"family_id": string,"finished_at": string | null,"graded_at": string | null,"id": string,"items_partial": number | null,"items_pending": number | null,"items_scored": number | null,"items_total": number | null,"items_unanswered": number | null,"mc_correct": number | null,"mc_total": number | null,"open_graded": number | null,"open_pending": number | null,"open_total": number | null,"open_unanswered": number | null,"provisional": boolean | null,"score_pct": number | null,"started_at": string,"status": Database["public"]['Enums']["attempt_status"]
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_feedback"?: Json | null,"child_id": string,"created_at"?: string,"deadline_at"?: string | null,"exam_id": string,"family_id": string,"finished_at"?: string | null,"graded_at"?: string | null,"id"?: string,"mc_correct"?: number | null,"mc_total"?: number | null,"open_graded"?: number | null,"open_pending"?: number | null,"open_total"?: number | null,"open_unanswered"?: number | null,"provisional"?: boolean | null,"score_pct"?: number | null,"started_at"?: string,"status"?: Database["public"]['Enums']["attempt_status"]
+                    "ai_feedback"?: Json | null,"child_id": string,"created_at"?: string,"deadline_at"?: string | null,"exam_id": string,"family_id": string,"finished_at"?: string | null,"graded_at"?: string | null,"id"?: string,"items_partial"?: number | null,"items_pending"?: number | null,"items_scored"?: number | null,"items_total"?: number | null,"items_unanswered"?: number | null,"mc_correct"?: number | null,"mc_total"?: number | null,"open_graded"?: number | null,"open_pending"?: number | null,"open_total"?: number | null,"open_unanswered"?: number | null,"provisional"?: boolean | null,"score_pct"?: number | null,"started_at"?: string,"status"?: Database["public"]['Enums']["attempt_status"]
                   }
                   Update: {
-                    "ai_feedback"?: Json | null,"child_id"?: string,"created_at"?: string,"deadline_at"?: string | null,"exam_id"?: string,"family_id"?: string,"finished_at"?: string | null,"graded_at"?: string | null,"id"?: string,"mc_correct"?: number | null,"mc_total"?: number | null,"open_graded"?: number | null,"open_pending"?: number | null,"open_total"?: number | null,"open_unanswered"?: number | null,"provisional"?: boolean | null,"score_pct"?: number | null,"started_at"?: string,"status"?: Database["public"]['Enums']["attempt_status"]
+                    "ai_feedback"?: Json | null,"child_id"?: string,"created_at"?: string,"deadline_at"?: string | null,"exam_id"?: string,"family_id"?: string,"finished_at"?: string | null,"graded_at"?: string | null,"id"?: string,"items_partial"?: number | null,"items_pending"?: number | null,"items_scored"?: number | null,"items_total"?: number | null,"items_unanswered"?: number | null,"mc_correct"?: number | null,"mc_total"?: number | null,"open_graded"?: number | null,"open_pending"?: number | null,"open_total"?: number | null,"open_unanswered"?: number | null,"provisional"?: boolean | null,"score_pct"?: number | null,"started_at"?: string,"status"?: Database["public"]['Enums']["attempt_status"]
                   }
                   Relationships: [
                     {
@@ -1399,6 +1399,20 @@ isOneToOne: false
                   }
                   Update: {
                     "country"?: string,"ends_on"?: string,"id"?: string,"kind"?: string,"name"?: NonNullable<Json>,"school_year"?: string | null,"starts_on"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"interaction_types": {
+                  Row: {
+                    "auto_scorable": boolean,"created_at": string,"enabled": boolean,"family": string,"phase": string,"policy": string,"policy_version": number,"practice_only": boolean,"schema_version": number,"type": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "auto_scorable": boolean,"created_at"?: string,"enabled"?: boolean,"family": string,"phase": string,"policy": string,"policy_version": number,"practice_only": boolean,"schema_version": number,"type": string
+                  }
+                  Update: {
+                    "auto_scorable"?: boolean,"created_at"?: string,"enabled"?: boolean,"family"?: string,"phase"?: string,"policy"?: string,"policy_version"?: number,"practice_only"?: boolean,"schema_version"?: number,"type"?: string
                   }
                   Relationships: [
                     
@@ -1937,16 +1951,60 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"question_bank": {
+                },"question_answer_keys": {
                   Row: {
-                    "choices": Json | null,"correct_key": string | null,"created_at": string,"created_by": string | null,"difficulty": Database["public"]['Enums']["question_difficulty"],"expected_answer": string | null,"explanation": string | null,"family_id": string | null,"grade": number,"id": string,"kind": Database["public"]['Enums']["question_kind"],"provenance": NonNullable<Json>,"scenario_code": string | null,"solution": string | null,"source_urls": (string)[],"stem": string,"subject": string,"times_asked": number,"topic": string,"updated_at": string
+                    "content_hash": string,"created_at": string,"family_id": string | null,"interaction_type": string,"key": NonNullable<Json>,"points": number,"policy": string,"policy_version": number,"question_id": string,"schema_version": number,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"],"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade": number,"id"?: string,"kind": Database["public"]['Enums']["question_kind"],"provenance"?: NonNullable<Json>,"scenario_code"?: string | null,"solution"?: string | null,"source_urls"?: (string)[],"stem": string,"subject": string,"times_asked"?: number,"topic": string,"updated_at"?: string
+                    "content_hash": string,"created_at"?: string,"family_id"?: string | null,"interaction_type": string,"key": NonNullable<Json>,"points"?: number,"policy": string,"policy_version": number,"question_id": string,"schema_version": number,"updated_at"?: string
                   }
                   Update: {
-                    "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"],"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number,"id"?: string,"kind"?: Database["public"]['Enums']["question_kind"],"provenance"?: NonNullable<Json>,"scenario_code"?: string | null,"solution"?: string | null,"source_urls"?: (string)[],"stem"?: string,"subject"?: string,"times_asked"?: number,"topic"?: string,"updated_at"?: string
+                    "content_hash"?: string,"created_at"?: string,"family_id"?: string | null,"interaction_type"?: string,"key"?: NonNullable<Json>,"points"?: number,"policy"?: string,"policy_version"?: number,"question_id"?: string,"schema_version"?: number,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "question_answer_keys_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_answer_keys_interaction_type_fkey"
+      columns: ["interaction_type"]
+isOneToOne: false
+      referencedRelation: "interaction_types"
+      referencedColumns: ["type"]
+    },{
+      foreignKeyName: "question_answer_keys_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: true
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_answer_keys_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: true
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_answer_keys_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: true
+      referencedRelation: "standalone_question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"question_bank": {
+                  Row: {
+                    "choices": Json | null,"correct_key": string | null,"created_at": string,"created_by": string | null,"difficulty": Database["public"]['Enums']["question_difficulty"],"expected_answer": string | null,"explanation": string | null,"family_id": string | null,"grade": number,"id": string,"interaction_type": string | null,"kind": Database["public"]['Enums']["question_kind"],"payload": Json | null,"provenance": NonNullable<Json>,"scenario_code": string | null,"schema_version": number | null,"solution": string | null,"source_urls": (string)[],"stem": string,"subject": string,"times_asked": number,"topic": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"],"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade": number,"id"?: string,"interaction_type"?: string | null,"kind": Database["public"]['Enums']["question_kind"],"payload"?: Json | null,"provenance"?: NonNullable<Json>,"scenario_code"?: string | null,"schema_version"?: number | null,"solution"?: string | null,"source_urls"?: (string)[],"stem": string,"subject": string,"times_asked"?: number,"topic": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "choices"?: Json | null,"correct_key"?: string | null,"created_at"?: string,"created_by"?: string | null,"difficulty"?: Database["public"]['Enums']["question_difficulty"],"expected_answer"?: string | null,"explanation"?: string | null,"family_id"?: string | null,"grade"?: number,"id"?: string,"interaction_type"?: string | null,"kind"?: Database["public"]['Enums']["question_kind"],"payload"?: Json | null,"provenance"?: NonNullable<Json>,"scenario_code"?: string | null,"schema_version"?: number | null,"solution"?: string | null,"source_urls"?: (string)[],"stem"?: string,"subject"?: string,"times_asked"?: number,"topic"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -1955,6 +2013,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "families"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_bank_interaction_type_fkey"
+      columns: ["interaction_type"]
+isOneToOne: false
+      referencedRelation: "interaction_types"
+      referencedColumns: ["type"]
     }
                   ]
                 },"question_contributions": {
@@ -2570,6 +2634,11 @@ isOneToOne: false
 "finished_at": string | null,
 "graded_at": string | null,
 "id": string,
+"items_partial": number | null,
+"items_pending": number | null,
+"items_scored": number | null,
+"items_total": number | null,
+"items_unanswered": number | null,
 "mc_correct": number | null,
 "mc_total": number | null,
 "open_graded": number | null,
@@ -2940,6 +3009,11 @@ isOneToOne: false
 "finished_at": string | null,
 "graded_at": string | null,
 "id": string,
+"items_partial": number | null,
+"items_pending": number | null,
+"items_scored": number | null,
+"items_total": number | null,
+"items_unanswered": number | null,
 "mc_correct": number | null,
 "mc_total": number | null,
 "open_graded": number | null,
@@ -3316,6 +3390,11 @@ isOneToOne: false
 "finished_at": string | null,
 "graded_at": string | null,
 "id": string,
+"items_partial": number | null,
+"items_pending": number | null,
+"items_scored": number | null,
+"items_total": number | null,
+"items_unanswered": number | null,
 "mc_correct": number | null,
 "mc_total": number | null,
 "open_graded": number | null,
@@ -3356,6 +3435,11 @@ isOneToOne: false
               "choices": Json,"difficulty": Database["public"]['Enums']["question_difficulty"],"id": string,"kind": Database["public"]['Enums']["question_kind"],"ord": number,"stem": string
             }[]
                            },
+"get_attempt_questions_v2":
+{ Args: { "p_exam_id": string,"p_supported": (string)[] }; Returns: {
+              "choices": Json,"difficulty": Database["public"]['Enums']["question_difficulty"],"id": string,"interaction_type": string,"kind": Database["public"]['Enums']["question_kind"],"ord": number,"payload": Json,"schema_version": number,"stem": string
+            }[]
+                           },
 "get_attempt_summary":
 { Args: { "p_attempt_id": string }; Returns: Json
                            },
@@ -3382,6 +3466,9 @@ isOneToOne: false
 { Args: { "p_device_id"?: string }; Returns: Json
                            },
 "get_child_education":
+{ Args: { "p_child_id": string }; Returns: Json
+                           },
+"get_child_question_type_support":
 { Args: { "p_child_id": string }; Returns: Json
                            },
 "get_curriculum_pilot_family":
@@ -3431,6 +3518,9 @@ isOneToOne: false
 "get_help_ticket":
 { Args: { "p_before"?: number,"p_ticket_id": string }; Returns: Json
                            },
+"get_interaction_types":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "get_learning_library":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
@@ -3473,6 +3563,9 @@ isOneToOne: false
 "get_published_library_packages":
 { Args: { "p_grade": number,"p_subject": string }; Returns: Json
                            },
+"get_question_answer_keys":
+{ Args: { "p_question_ids": (string)[] }; Returns: Json
+                           },
 "get_question_context":
 { Args: { "p_question_ids": (string)[] }; Returns: Json
                            },
@@ -3509,6 +3602,11 @@ isOneToOne: false
               "answer_document": Json,"answer_key": string,"answer_text": string,"question_id": string,"revision": number
             }[]
                            },
+"get_saved_exam_answers_v4":
+{ Args: { "p_attempt_id": string }; Returns: {
+              "answer": Json,"answer_document": Json,"answer_key": string,"answer_text": string,"question_id": string,"revision": number
+            }[]
+                           },
 "get_scenario_question_fit":
 { Args: { "p_question_ids": (string)[] }; Returns: Json
                            },
@@ -3523,6 +3621,9 @@ isOneToOne: false
                            },
 "get_shared_child_view":
 { Args: { "p_token": string }; Returns: Json
+                           },
+"get_structured_score_overrides":
+{ Args: { "p_attempt_id": string }; Returns: Json
                            },
 "get_timetable_sources":
 { Args: { "p_child_id": string }; Returns: Json
@@ -3979,6 +4080,11 @@ isOneToOne: false
 "finished_at": string | null,
 "graded_at": string | null,
 "id": string,
+"items_partial": number | null,
+"items_pending": number | null,
+"items_scored": number | null,
+"items_total": number | null,
+"items_unanswered": number | null,
 "mc_correct": number | null,
 "mc_total": number | null,
 "open_graded": number | null,
@@ -4055,6 +4161,9 @@ isOneToOne: false
 "set_room_preference":
 { Args: { "p_acting_child_id"?: string,"p_character": string,"p_theme"?: string }; Returns: undefined
                            },
+"set_structured_answer_score":
+{ Args: { "p_answer_hash": string,"p_attempt_id": string,"p_question_id": string,"p_reason"?: string,"p_request_id": string,"p_score": number }; Returns: Json
+                           },
 "set_study_plan_status":
 { Args: { "p_plan_id": string,"p_status": string }; Returns: {
               "ai_job_id": string | null,
@@ -4100,6 +4209,11 @@ isOneToOne: false
 "finished_at": string | null,
 "graded_at": string | null,
 "id": string,
+"items_partial": number | null,
+"items_pending": number | null,
+"items_scored": number | null,
+"items_total": number | null,
+"items_unanswered": number | null,
 "mc_correct": number | null,
 "mc_total": number | null,
 "open_graded": number | null,
@@ -4128,6 +4242,9 @@ isOneToOne: false
                            },
 "submit_exam_answer_v3":
 { Args: { "p_answer_document"?: Json,"p_answer_key"?: string,"p_answer_text"?: string,"p_attempt_id": string,"p_expected_revision": number,"p_question_id": string,"p_request_id": string }; Returns: number
+                           },
+"submit_exam_answer_v4":
+{ Args: { "p_answer"?: Json,"p_answer_document"?: Json,"p_answer_key"?: string,"p_answer_text"?: string,"p_attempt_id": string,"p_expected_revision": number,"p_question_id": string,"p_request_id": string }; Returns: number
                            },
 "submit_prova_draft":
 { Args: { "p_id": string,"p_request_id": string,"p_version": number }; Returns: string
@@ -4173,7 +4290,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "attempt_status": "in_progress"|"submitted"|"graded","billing_period": "monthly"|"yearly","child_goal_status": "active"|"reached"|"redeemed"|"cancelled","completion_status": "done"|"approved"|"returned","event_type": "school"|"activity"|"holiday"|"exam"|"family"|"doctor"|"birthday"|"other","exam_status": "draft"|"ready"|"assigned"|"completed","grade_kind": "exam"|"homework"|"project"|"oral"|"performance","member_role": "parent"|"guardian","note_visibility": "private"|"family"|"child"|"teacher","plan_code": "free"|"plus"|"pro","question_difficulty": "kolay"|"orta"|"orta_ustu"|"zor","question_kind": "multiple_choice"|"open_ended","reward_request_status": "requested"|"approved"|"declined"|"delivered"|"cancelled","store_platform": "apple"|"google","subscription_status": "active"|"grace"|"on_hold"|"expired"|"revoked","time_of_day": "morning"|"afternoon"|"evening"|"any"
+            "attempt_status": "in_progress"|"submitted"|"graded","billing_period": "monthly"|"yearly","child_goal_status": "active"|"reached"|"redeemed"|"cancelled","completion_status": "done"|"approved"|"returned","event_type": "school"|"activity"|"holiday"|"exam"|"family"|"doctor"|"birthday"|"other","exam_status": "draft"|"ready"|"assigned"|"completed","grade_kind": "exam"|"homework"|"project"|"oral"|"performance","member_role": "parent"|"guardian","note_visibility": "private"|"family"|"child"|"teacher","plan_code": "free"|"plus"|"pro","question_difficulty": "kolay"|"orta"|"orta_ustu"|"zor","question_kind": "multiple_choice"|"open_ended"|"structured","reward_request_status": "requested"|"approved"|"declined"|"delivered"|"cancelled","store_platform": "apple"|"google","subscription_status": "active"|"grace"|"on_hold"|"expired"|"revoked","time_of_day": "morning"|"afternoon"|"evening"|"any"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -4289,7 +4406,7 @@ export type CompositeTypes<
 export const Constants = {
   "public": {
           Enums: {
-            "attempt_status": ["in_progress", "submitted", "graded"],"billing_period": ["monthly", "yearly"],"child_goal_status": ["active", "reached", "redeemed", "cancelled"],"completion_status": ["done", "approved", "returned"],"event_type": ["school", "activity", "holiday", "exam", "family", "doctor", "birthday", "other"],"exam_status": ["draft", "ready", "assigned", "completed"],"grade_kind": ["exam", "homework", "project", "oral", "performance"],"member_role": ["parent", "guardian"],"note_visibility": ["private", "family", "child", "teacher"],"plan_code": ["free", "plus", "pro"],"question_difficulty": ["kolay", "orta", "orta_ustu", "zor"],"question_kind": ["multiple_choice", "open_ended"],"reward_request_status": ["requested", "approved", "declined", "delivered", "cancelled"],"store_platform": ["apple", "google"],"subscription_status": ["active", "grace", "on_hold", "expired", "revoked"],"time_of_day": ["morning", "afternoon", "evening", "any"]
+            "attempt_status": ["in_progress", "submitted", "graded"],"billing_period": ["monthly", "yearly"],"child_goal_status": ["active", "reached", "redeemed", "cancelled"],"completion_status": ["done", "approved", "returned"],"event_type": ["school", "activity", "holiday", "exam", "family", "doctor", "birthday", "other"],"exam_status": ["draft", "ready", "assigned", "completed"],"grade_kind": ["exam", "homework", "project", "oral", "performance"],"member_role": ["parent", "guardian"],"note_visibility": ["private", "family", "child", "teacher"],"plan_code": ["free", "plus", "pro"],"question_difficulty": ["kolay", "orta", "orta_ustu", "zor"],"question_kind": ["multiple_choice", "open_ended", "structured"],"reward_request_status": ["requested", "approved", "declined", "delivered", "cancelled"],"store_platform": ["apple", "google"],"subscription_status": ["active", "grace", "on_hold", "expired", "revoked"],"time_of_day": ["morning", "afternoon", "evening", "any"]
           }
         }
 } as const

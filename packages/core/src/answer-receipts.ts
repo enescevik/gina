@@ -1,4 +1,5 @@
 import type { NotebookDocument } from "./notebook";
+import type { StructuredAnswer } from "./question-types";
 
 /** Keeps an uncertain transport request stable until the server confirms its receipt.
  * A newer local edit is sent only after that receipt is reconciled. */
@@ -6,6 +7,8 @@ export interface AnswerValue {
   key?: string;
   text?: string;
   document?: NotebookDocument;
+  /** QT00 yapılandırılmış cevap (submit_exam_answer_v4 p_answer). */
+  answer?: StructuredAnswer;
 }
 export interface AnswerReceipt {
   id: string;
@@ -35,7 +38,8 @@ export class AnswerReceipts {
         pending.answer.key === answer.key &&
         pending.answer.text === answer.text &&
         JSON.stringify(pending.answer.document) ===
-          JSON.stringify(answer.document)
+          JSON.stringify(answer.document) &&
+        JSON.stringify(pending.answer.answer) === JSON.stringify(answer.answer)
       ) return;
     }
     const receipt = {
