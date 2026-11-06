@@ -11,7 +11,9 @@ insert into public.family_members(family_id,user_id) values('10000000-0000-4000-
 insert into public.children(id,family_id,name,grade) values('20000000-0000-4000-8000-000000009902','10000000-0000-4000-8000-000000009902','Child',5);
 insert into public.devices(id,family_id,auth_user_id,active_child_id) values('30000000-0000-4000-8000-000000009902','10000000-0000-4000-8000-000000009902','00000000-0000-4000-8000-000000009903','20000000-0000-4000-8000-000000009902');
 insert into public.entitlement_overrides(family_id,plan,reason,ends_at) values('10000000-0000-4000-8000-000000009902','pro','test',now()+interval '1 day');
-update public.app_settings set value='true' where key in ('ai.enabled','sources.enabled');
+-- H08a: ai.enabled seed.sql'den gelir, migration'dan değil; boş/taze DB'de satırı kendimiz kuruyoruz.
+insert into public.app_settings(key,value) values('ai.enabled','true') on conflict (key) do update set value=excluded.value;
+update public.app_settings set value='true' where key='sources.enabled';
 insert into public.learning_sources(id,family_id,uploaded_by,kind,name,mime,bytes,sha256,object_path,status,storage_consent,pages)
 select ('40000000-0000-4000-8000-00000000990'||n)::uuid,'10000000-0000-4000-8000-000000009902','00000000-0000-4000-8000-000000009902','document','Page.png','image/png',1000,repeat('c',64),'private/u08/'||n,'ready','v1',1 from generate_series(1,9)n;
 create function pg_temp.actor(id text, admin boolean default false, role_name text default 'parent') returns void language sql as $$
