@@ -1,5 +1,12 @@
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
-import { GRADE_SYSTEM, gradeSchema, validateGradeReport } from "./grade-report.ts";
+import {
+  buildGradePayload,
+  GRADE_SYSTEM,
+  type GradeQuestionRow,
+  gradeSchema,
+  sharedSourcePlan,
+  validateGradeReport,
+} from "./grade-report.ts";
 import { runAiOperation } from "./ai-operation.ts";
 const refs =new Map([["M1", { topic: "Kesirler", grade: true }], ["M2", {
   topic: "Uzunluk",
@@ -337,6 +344,133 @@ Deno.test("D6/B1: invalid paid grade output is saved uncertain with its rule; no
     const second = await run();
     check(second instanceof Response && second.status === 409);
     check(requests.length === 2, `provider requests ${requests.length}`);
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+// ---------------------------------------------------------------------------------------------------------------
+// D9: grup sorularının ortak metni/tablosu puanlama yükünde bir kez; bağlı maddeler `ortak_kaynak` ref'iyle.
+// D1/D5 tablo fixture'ı (generation-result.test.ts ile aynı): ortak TABLO, bitişik olmayan 1. ve 4. soruya bağlı.
+const d5Table = "Cisim | Dinamometre (N)\nA | 4\nB | 7\nC | 10";
+const p1 = "Tablodaki cisimlerden hangisine en büyük kuvvet uygulanmıştır?";
+const p4 = "Tabloda verilen değerlere göre A ile C arasındaki fark kaç newtondur?";
+const open = (id: string, stem: string, provenance: unknown = { generator: "ai" }): GradeQuestionRow => ({
+  id, topic: "Kuvvetin ölçülmesi", kind: "open_ended", stem, choices: [], correct_key: null,
+  expected_answer: "Beklenen", solution: "Çözüm", provenance,
+});
+const ids = ["q1", "q2", "q3", "q4"];
+const d1Questions = [
+  open("q1", `Ortak tablo\n${d5Table}\n\n${p1}`),
+  open("q2", "Dinamometre hangi ilkeyle çalışır?"),
+  open("q3", "Kuvvetin birimi nedir?"),
+  open("q4", `Ortak tablo\n${d5Table}\n\n${p4}`),
+];
+const d1Members = [
+  { question_id: "q1", prompt: p1, source_group: { id: "g1", title: "Ortak tablo", body: d5Table } },
+  { question_id: "q4", prompt: p4, source_group: { id: "g1", title: "Ortak tablo", body: d5Table } },
+];
+const answered = ids.map((id) => ({ question_id: id, answer_text: "C cismi" }));
+
+Deno.test("D9: D1 group — shared table sent once, linked non-adjacent items reference it, prompts kept apart", () => {
+  const { payload, refs } = buildGradePayload(ids, d1Questions, answered, d1Members);
+  // deno-lint-ignore no-explicit-any
+  const p = payload as any;
+  check(p.ortak_kaynaklar.length === 1, JSON.stringify(p.ortak_kaynaklar));
+  check(JSON.stringify(p.ortak_kaynaklar[0]) === JSON.stringify({ kaynak: "K1", baslik: "Ortak tablo", icerik: d5Table, maddeler: ["M1", "M4"] }));
+  check(p.maddeler[0].ortak_kaynak === "K1" && p.maddeler[0].soru === p1);
+  check(p.maddeler[3].ortak_kaynak === "K1" && p.maddeler[3].soru === p4);
+  check(!("ortak_kaynak" in p.maddeler[1]) && p.maddeler[1].soru === "Dinamometre hangi ilkeyle çalışır?");
+  check(JSON.stringify(payload).split("Dinamometre (N)").length === 2, "table must appear exactly once");
+  // Refs (şema/kanıt enum'u) yalnız madde ref'leri; K ref'i hiçbir enum'a girmez.
+  check(JSON.stringify([...refs.keys()]) === '["M1","M2","M3","M4"]');
+  const schema = JSON.stringify(gradeSchema(refs));
+  check(!schema.includes('"K1"'), "shared source ref leaked into the schema");
+  check(GRADE_SYSTEM.includes("ortak_kaynaklar") && GRADE_SYSTEM.includes("Kaynak ref'lerini"), "prompt must explain shared sources");
+});
+
+Deno.test("D9: legacy v5 (table only in provenance) and v6 ungrouped self-contained rows also send the source once", () => {
+  const shared = { id: "tablo_1", kind: "table", content: d5Table };
+  // v5: gövde yalnız soru, tablo yalnız provenance'ta (D5'te çocuğa eksik giden biçim).
+  const v5 = [open("q1", p1, { generator: "ai", shared_source_id: "tablo_1", shared_source: shared }),
+    open("q2", p4, { generator: "ai", shared_source_id: "tablo_1", shared_source: shared })];
+  const a = sharedSourcePlan(["q1", "q2"], (id) => (id === "q1" ? "M1" : "M2"), v5, []);
+  check(a.sources.length === 1 && a.sources[0].baslik === "Ortak kaynak" && a.sources[0].icerik === d5Table);
+  check(a.byQuestion.get("q2")!.soru === p4 && a.byQuestion.get("q2")!.kaynak === "K1");
+  // v6, grup kurulamadı (bayrak kapalı): gövde kendi başına okunur biçimde, shared_prompt ayrı.
+  const v6 = (id: string, prompt: string) =>
+    open(id, `Ortak tablo\n${d5Table}\n\n${prompt}`, {
+      generator: "ai", shared_source_id: "tablo_1", shared_source: shared, shared_source_title: "Ortak tablo", shared_prompt: prompt,
+    });
+  const b = sharedSourcePlan(["q1", "q2"], (id) => (id === "q1" ? "M1" : "M2"), [v6("q1", p1), v6("q2", p4)], []);
+  check(b.sources.length === 1 && b.sources[0].baslik === "Ortak tablo" && JSON.stringify(b.sources[0].maddeler) === '["M1","M2"]');
+  check(b.byQuestion.get("q1")!.soru === p1);
+  // Gövde metni başka biçimde taşıyor: kaynaksız, gövde aynen (bilgi kaybı ya da çift gönderim yok).
+  const odd = open("q1", `Önce tabloyu oku:\n${d5Table}\n${p1}`, { generator: "ai", shared_source_id: "tablo_1", shared_source: shared, shared_prompt: p1 });
+  check(sharedSourcePlan(["q1"], () => "M1", [odd], []).sources.length === 0);
+  // Veli sorusu provenance'ı (generator: parent) hiçbir zaman kaynak üretmez; yalnız D1 grubu üretir.
+  check(sharedSourcePlan(["q1"], () => "M1", [open("q1", p1, { generator: "parent", shared_source: shared })], []).sources.length === 0);
+});
+
+Deno.test("D9: payload without groups keeps the D6 shape; masking covers shared content", () => {
+  const plain: GradeQuestionRow[] = [
+    open("q1", "Dikdörtgenin çevresi kaç cm'dir?"),
+    { ...open("q2", "Hangisi kesirdir?"), kind: "multiple_choice", choices: [{ key: "A", text: "1/2" }], correct_key: "A" },
+  ];
+  const ans = [{ question_id: "q1", answer_text: "28" }, { question_id: "q2", answer_key: "A", is_correct: true }];
+  const { payload } = buildGradePayload(["q1", "q2"], plain, ans, []);
+  // D6 (v4) prova-grade/index.ts içindeki eski satır içi yükün alan sırası.
+  check(JSON.stringify(Object.keys(payload)) === '["maddeler"]');
+  check(JSON.stringify(Object.keys(payload.maddeler[0])) === JSON.stringify([
+    "ref", "konu", "tur", "soru", "beklenen_cevap", "cozum_yolu", "alternatif_dogru_cevaplar", "rubrik", "secenekler",
+    "dogru_secim", "secilen", "dogru_mu", "puanlama_gerekli", "veli_puani", "ogrenci_cevabi",
+  ]), JSON.stringify(Object.keys(payload.maddeler[0])));
+  check(!("alternatif_dogru_cevaplar" in payload.maddeler[1]) && payload.maddeler[1].puanlama_gerekli === false);
+  const mask = (t: string) => t.replaceAll("Deniz", "[ad]");
+  const group = { id: "g", title: "Ortak metin", body: "Deniz dinamometreyle ölçtü." };
+  const named = [{ question_id: "q1", prompt: "Deniz kaç N ölçtü?", source_group: group },
+    { question_id: "q2", prompt: "Deniz hangi birimi kullandı?", source_group: group }];
+  const masked = JSON.stringify(buildGradePayload(["q1", "q2"], [open("q1", "x"), open("q2", "y")], answered, named, mask).payload);
+  check(!masked.includes("Deniz") && masked.includes("[ad] dinamometreyle"), masked);
+});
+
+Deno.test("D9: same group attempt builds the same paid-job hash; a repeat after an invalid result is not charged again", async () => {
+  const build = () => JSON.stringify(buildGradePayload(ids, d1Questions, answered, d1Members).payload);
+  check(build() === build(), "payload must be deterministic");
+  const hashes: unknown[] = [];
+  let reservations = 0;
+  const db = {
+    rpc: (name: string, args: Record<string, unknown>) => {
+      if (name === "reserve_ai_operation") {
+        reservations++;
+        hashes.push(args.p_hash);
+        return Promise.resolve({ data: reservations === 1 ? { id: "job", lease: "l" } : { error: "ai_result_uncertain" }, error: null });
+      }
+      return Promise.resolve({ data: null, error: null });
+    },
+  } as unknown as SupabaseClient;
+  const { refs } = buildGradePayload(ids, d1Questions, answered, d1Members);
+  const original = globalThis.fetch;
+  let requests = 0;
+  const responses = [
+    new Response(JSON.stringify({ input_tokens: 900 })),
+    new Response(JSON.stringify({ stop_reason: "end_turn", content: [{ type: "text", text: "{}" }], usage: { input_tokens: 900, output_tokens: 10 } })),
+  ];
+  globalThis.fetch = () => {
+    requests++;
+    const next = responses.shift();
+    return next ? Promise.resolve(next) : Promise.reject(Error("unexpected paid call"));
+  };
+  try {
+    const config = { model: "synthetic-model", promptVersion: "test", maxInputTokens: 8000, maxOutputTokens: 4000 };
+    const run = () =>
+      runAiOperation(db, { familyId: "f", userId: "u" }, "grade", "attempt", "k", config, GRADE_SYSTEM, build(), gradeSchema(refs), (v) => validateGradeReport(v, refs));
+    const first = await run();
+    check(first instanceof Response && first.status === 502);
+    const second = await run();
+    check(second instanceof Response && second.status === 409);
+    check(hashes.length === 2 && hashes[0] === hashes[1], "repeat must hit the same job");
+    check(requests === 2, `provider requests ${requests}`);
   } finally {
     globalThis.fetch = original;
   }

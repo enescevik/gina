@@ -19,6 +19,10 @@ import {
   validateReviewReport,
 } from "../_shared/review-report.ts";
 import { renderReviewNotebook } from "../_shared/review-renderer.ts";
+import {
+  type SharedSourceMember,
+  sharedSourcePlan,
+} from "../_shared/grade-report.ts";
 
 // C08: üretimde parentOrResponse (session_expired / unauthorized / forbidden sözleşmeli gövde); test null verebilir.
 const readParent: (req: Request, db: SupabaseClient) => Promise<ParentContext | Response | null> = parentOrResponse;
@@ -78,7 +82,7 @@ export function createReviewHandler(
       if (examError || !exam.question_ids.includes(body.question_id)) {
         return fail("question_not_found", 404);
       }
-      const [question, answer, fingerprint] = await Promise.all([
+      const [question, answer, fingerprint, member] = await Promise.all([
         db.from("question_bank").select("stem,expected_answer,solution,kind,provenance")
           .eq("id", body.question_id).single(),
         db.from("exam_answers").select("answer_text,answer_document").eq(
@@ -89,9 +93,13 @@ export function createReviewHandler(
           p_attempt_id: attempt.id,
           p_question_id: body.question_id,
         }),
+        // D9: grup sorusunun ortak metni/tablosu ayrı ve bir kez gider.
+        db.from("question_source_members").select(
+          "question_id,prompt,source_group:question_source_groups(id,title,body)",
+        ).eq("question_id", body.question_id).maybeSingle(),
       ]);
       if (
-        question.error || answer.error || fingerprint.error ||
+        question.error || answer.error || fingerprint.error || member.error ||
         question.data?.kind !== "open_ended"
       ) return fail("data_failed", 400);
       if (fingerprint.data !== body.answer_hash) {
@@ -149,12 +157,25 @@ export function createReviewHandler(
           answer.data.answer_document,
         )
         : null;
+      const shared = sharedSourcePlan(
+        [body.question_id],
+        () => "M1",
+        [{ id: body.question_id, ...question.data }],
+        member.data ? [member.data as unknown as SharedSourceMember] : [],
+      );
+      const source = shared.sources[0];
       const user: Exclude<AiUserContent, string> = [{
         type: "text",
         text: JSON.stringify({
           sinif: exam.grade,
           ders: exam.subject,
-          soru: question.data.stem,
+          // Ortak kaynaksız soruda yük D6 ile aynı biçimdedir (ek alan yok).
+          ...(source
+            ? { ortak_kaynak: { baslik: source.baslik, icerik: source.icerik } }
+            : {}),
+          soru: source
+            ? shared.byQuestion.get(body.question_id)!.soru
+            : question.data.stem,
           beklenen: question.data.expected_answer,
           cozum: question.data.solution,
           // C04: alternatif doğru cevaplar + rubrik; eski sorularda boş listeler.
@@ -184,7 +205,8 @@ export function createReviewHandler(
         "grade",
         `review:${attempt.id}:${body.question_id}:${body.answer_hash}`,
         key,
-        { ...config, promptVersion: `${config.promptVersion}:review-v1` },
+        // D9: review-v2 — ortak kaynak ayrı alanda.
+        { ...config, promptVersion: `${config.promptVersion}:review-v2` },
         REVIEW_SYSTEM,
         user,
         REVIEW_SCHEMA,
