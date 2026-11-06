@@ -6,7 +6,16 @@ import { assert, assertEquals } from "jsr:@std/assert";
 import fixtures from "../../../packages/core/src/question-types/fixtures.json" with { type: "json" };
 import { parseNumberInput, questionContentErrors } from "./question-structure.ts";
 
-for (const c of fixtures.content) {
+// Edge yalnız AI'ın üretebildiği 1A/1B türlerini doğrular; 2A/2B/3 türleri ve uyaran (stimulus) AI üretiminde
+// henüz yok (sunucuda enabled=false). Onlar için Edge açıkça type_unknown / payload_unknown_field döner.
+const AI_TYPES = new Set(["true_false", "fill_blank", "matching", "numeric", "ordering", "classification"]);
+const aiCases = fixtures.content.filter((c) => AI_TYPES.has(c.type) && !(c.payload && typeof c.payload === "object" && "stimulus" in c.payload));
+Deno.test("non-AI phase types are refused explicitly by the Edge validator", () => {
+  for (const c of fixtures.content.filter((c) => !AI_TYPES.has(c.type) && c.type !== "drag_magic")) {
+    assertEquals(questionContentErrors(c.type, c.payload, c.key), ["type_unknown"], c.name);
+  }
+});
+for (const c of aiCases) {
   Deno.test("core fixture parity: " + c.name, () => {
     const errs = questionContentErrors(c.type, c.payload, c.key);
     if (c.valid) assertEquals(errs, []);
