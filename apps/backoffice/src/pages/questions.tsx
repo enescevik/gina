@@ -11,6 +11,19 @@ type Question = Tables<"question_bank">;
 type Difficulty = Database["public"]["Enums"]["question_difficulty"];
 
 const PAGE = 50;
+type Choice = { key: string; text: string };
+/** C12 (B02): şıklar bilinen biçimdeyse ({key,text}[]) alan alan düzenlenir; JSON yalnız bilinmeyen biçimde. */
+function readChoices(value: Json | null): Choice[] | null {
+  if (!Array.isArray(value) || !value.length) return null;
+  const out: Choice[] = [];
+  for (const c of value) {
+    if (!c || typeof c !== "object" || Array.isArray(c)) return null;
+    const { key, text, ...rest } = c as Record<string, Json>;
+    if (typeof key !== "string" || typeof text !== "string" || Object.keys(rest).length) return null;
+    out.push({ key, text });
+  }
+  return out;
+}
 const DIFFICULTIES: Difficulty[] = ["kolay", "orta", "orta_ustu", "zor"];
 
 function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?: unknown) => void }) {
@@ -28,11 +41,18 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
     source_urls: q.source_urls.join("\n"),
   });
   const [busy, setBusy] = useState(false);
+  const [rows, setRows] = useState<Choice[] | null>(() => readChoices(q.choices));
   const set = (patch: Partial<typeof draft>) => setDraft({ ...draft, ...patch });
 
   async function save() {
     let choices: Json | null = null;
-    if (draft.choices.trim()) {
+    if (rows) {
+      if (rows.some((r) => !r.text.trim())) {
+        onDone(null, new Error("Bütün şıkları doldurun."));
+        return;
+      }
+      choices = rows.map((r) => ({ key: r.key, text: r.text })) as Json;
+    } else if (draft.choices.trim()) {
       try {
         choices = JSON.parse(draft.choices) as Json;
       } catch {
@@ -114,12 +134,31 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
         {area("stem", t.questions.stem, 4)}
         {q.kind === "multiple_choice" ? (
           <>
-            {area("choices", t.questions.choices, 6)}
-            <div>
-              <label className="label" htmlFor="q-correct">{t.questions.correctKey}</label>
-              <input id="q-correct" className="input w-24" value={draft.correct_key} onChange={(e) => set({ correct_key: e.target.value })} />
-            </div>
-            <div />
+            {rows ? (
+              <fieldset className="md:col-span-2">
+                <legend className="label">{t.questions.choices} · {t.questions.correctKey}</legend>
+                <div className="grid gap-2">
+                  {rows.map((r, i) => (
+                    <div key={r.key} className="flex items-center gap-3">
+                      <label className="flex min-h-12 min-w-16 items-center gap-2 font-semibold">
+                        <input type="radio" name="q-correct" className="h-5 w-5" checked={draft.correct_key === r.key} onChange={() => set({ correct_key: r.key })} aria-label={`${t.questions.correctKey}: ${r.key}`} />
+                        {r.key}
+                      </label>
+                      <input className="input" aria-label={`${t.questions.choices} ${r.key}`} value={r.text} onChange={(e) => setRows(rows.map((x, j) => (j === i ? { ...x, text: e.target.value } : x)))} />
+                    </div>
+                  ))}
+                </div>
+              </fieldset>
+            ) : (
+              <>
+                {area("choices", t.questions.choices, 6)}
+                <div>
+                  <label className="label" htmlFor="q-correct">{t.questions.correctKey}</label>
+                  <input id="q-correct" className="input w-24" value={draft.correct_key} onChange={(e) => set({ correct_key: e.target.value })} />
+                </div>
+                <div />
+              </>
+            )}
           </>
         ) : (
           area("expected_answer", t.questions.expectedAnswer)
