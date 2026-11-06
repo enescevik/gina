@@ -80,7 +80,7 @@ Kurallar:
 - question_type: coktan_secmeli | acik_uclu | kisa_cevap | dogru_yanlis | bosluk_doldurma | eslestirme (şıklı soruda coktan_secmeli). cognitive_demand: hatirlama | anlama | uygulama | analiz | degerlendirme | yaratma. intended_difficulty: istenen zorluk; bu ölçülmüş güçlük değildir.
 - rubric: açık uçlu soruda puanlama ölçütleri (criteria: metin + puan) ve varsa alternatif doğru cevaplar. Şıklı soruda criteria tek ölçüt olabilir.
 - Ortak metin/tablo gerekirse shared_sources listesine bir kez yaz (id, kind, content) ve bağlı soruların (en az iki, en çok on iki) shared_source_id alanına aynı id'yi koy; aynı metni soru gövdesinde tekrarlama. Ortak kaynak çocuğa soruların üstünde bir kez gösterilir; bağlı her soru yine ayrı sayılır ve ayrı cevaplanır. Görsel dosya yoksa visual_description yalnız metinle tarif edilebilen bir durum olsun. Gerekmiyorsa shared_sources boş liste, shared_source_id boş metin kalır.
-- Sorularda gerçek kişi adı, marka ya da hassas konu kullanma; çocuklara uygun, kapsayıcı bir dil kullan.
+- Sorularda hiçbir kişi adı kullanma; uydurma ve yaygın adlar da buna dahildir (çocuğun ya da sınıf arkadaşlarının adına denk gelebilir). Kişi gerekiyorsa "bir öğrenci", "arkadaşı", "öğretmeni" gibi rol ifadesi kullan. Marka ya da hassas konu kullanma; çocuklara uygun, kapsayıcı bir dil kullan.
 - İstenen dilde yaz (tr = Türkçe, en = İngilizce).
 Yanıtı yalnız verilen JSON şemasıyla ver.`;
 
