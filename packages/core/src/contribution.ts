@@ -57,6 +57,8 @@ export const contributionDetail = z.object({
   status: contributionStatus,
   package_id: z.uuid().nullable(),
   review_note: z.string().nullable(),
+  /** D3: soru anahtarı → düzeltme notu (yalnız retle yazılır; eski kararlarda yok). */
+  question_notes: z.record(z.string(), z.string()).nullable().optional(),
   snapshot: contributionSnapshot,
   media: z.object({
     base64: z.string(),
@@ -71,6 +73,7 @@ export const contributionCommand = z.object({
   rights: z.literal(true),
   no_personal_data: z.literal(true),
 }).strict();
+export const contributionQuestionNotes = z.record(z.string(), z.string().trim().min(3).max(1000));
 export const contributionDecision = z.object({
   request: z.uuid(),
   id: z.uuid(),
@@ -78,7 +81,11 @@ export const contributionDecision = z.object({
   note: z.string().trim().min(3).max(2000),
   teachers: z.record(z.string(), libraryTeacherSchema),
   confirmed: z.literal(true),
-}).strict();
+  /** D3: soru bazlı ret notu; yalnız `approve=false` ile. Kabul her zaman bütün grup içindir. */
+  question_notes: contributionQuestionNotes.optional(),
+}).strict().refine((v) => !v.approve || !v.question_notes || Object.keys(v.question_notes).length === 0, {
+  message: "question_notes_reject_only",
+});
 export type ContributionDecision = z.infer<typeof contributionDecision>;
 export const CONTRIBUTION_PREFIX = "gina:contribution:v2:";
 export function createContributionJournal({

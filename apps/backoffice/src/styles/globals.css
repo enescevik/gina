@@ -113,3 +113,13 @@
 .support-helpers summary{cursor:pointer;font-weight:700;min-height:36px;display:flex;align-items:center}
 .support-helper-list{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
 .support-helper-lang{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0}
+/* D3 Q00-A3-4: görünmeyen menü bölümleri için her zaman görünür ipucu (gizli kaydırma çubuğunda da). */
+.admin-nav-more{display:none}
+@media(min-width:901px){.admin-nav-more{display:block;flex-shrink:0;margin-top:-22px;min-height:40px;padding:8px 12px;border-radius:14px;background:linear-gradient(#F0F6F100,#F0F6F1 40%);color:#6042DE;font-weight:700;font-size:13px;text-align:left}.admin-nav-more:hover{background:#E6EDE8}.admin-nav-more:focus-visible{outline:3px solid #6042DE;outline-offset:2px}}
+/* D3: operatör kapsamı ve teslim süzgeçleri */
+.d3-filters{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-bottom:12px}
+.d3-filters .label{min-width:180px}
+.d3-scope-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 0;border-top:1px solid #E6EDE8}
+.d3-chip{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 6px 6px 12px;border-radius:999px;background:#EEE7FA;color:#3D2A8F;font-weight:600}
+.d3-chip button{min-height:32px;min-width:32px;border-radius:999px;background:#fff;color:#6042DE;font-weight:700}
+.d3-question-note{margin-top:12px;padding:12px;border-radius:16px;background:#FFF1DD}

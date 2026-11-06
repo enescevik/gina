@@ -2,7 +2,7 @@ import Head from "next/head";
 import { PublicationIcon, type PublicationIconName } from "./library-publication-icon";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { createContext, type ReactNode, useEffect, useState } from "react";
+import { createContext, type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
 import { useAuth } from "@/lib/auth";
 import { OperatorAccessContext } from "@/lib/use-async";
@@ -19,6 +19,7 @@ const NAV = [
   { href: "/library", label: "GINA kütüphanesi" },
   { href: "/groups", label: "Birlikte Prova" },
   { href: "/families", label: t.nav.families },
+  { href: "/operator-scopes", label: "Operatör kapsamları" },
 ];
 export type OperatorRole = "support" | "content" | "finance" | "release";
 /** C07 rol matrisi: tam yönetici olmayan operatörün göreceği ek bölümler (yönetici NAV'ı zaten görür). */
@@ -32,7 +33,7 @@ const navIcons: Record<string, PublicationIconName> = {
   "/dashboard": "grid", "/ai": "idea", "/operations": "check",
   "/overrides": "lock", "/questions": "document", "/library": "layers",
   "/input-catalog": "document",
-  "/groups": "school", "/families": "family",
+  "/groups": "school", "/families": "family", "/operator-scopes": "lock",
 };
 
 export async function signOut(confirmed = false) {
@@ -78,8 +79,27 @@ export function Layout(
     rolesReady,
     roleError,
     seenRoles,
+    adminRevoked,
     refreshRoles,
   } = useAuth();
+  const nav = useRef<HTMLElement | null>(null);
+  const [below, setBelow] = useState(0);
+  // Q00-A3-4: dikey kaydırmalı menüde görünmeyen bölüm sayısı; macOS gizli kaydırma çubuğunda ipucu verir.
+  const measure = useCallback(() => {
+    const el = nav.current;
+    if (!el || el.scrollHeight <= el.clientHeight + 4) { setBelow(0); return; }
+    const bottom = el.getBoundingClientRect().bottom;
+    setBelow(Array.from(el.querySelectorAll("a.admin-nav")).filter((a) => a.getBoundingClientRect().top > bottom - 24).length);
+  }, []);
+  const navRef = useCallback((el: HTMLElement | null) => {
+    nav.current = el;
+    measure();
+  }, [measure]);
+  useEffect(() => {
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  });
   const required: OperatorRole[] = anyOf ??
     (release ? ["release"] : finance ? ["finance"] : content ? ["content"] : ["support"]);
   const operation = !!anyOf || support || content || finance || release;
@@ -141,6 +161,19 @@ export function Layout(
         <div hidden={roleError || !allowed}>{allowed ? <OperatorAccessContext.Provider value={!!anyOf}>{children}</OperatorAccessContext.Provider> : null}</div>
       </>
     );
+  } else if (adminRevoked) {
+    // Q00-A3-7 (yönetici): admins satırı kalkınca her bölümde ayrı hata yerine tek bildirim; veri gizlenir.
+    body = (
+      <div role="alert" data-testid="admin-revoked">
+        <Notice tone="error">
+          <strong>Yönetici yetkiniz kaldırıldı.</strong>{" "}
+          Bu oturumda yönetici bölümleri kapatıldı; ekrandaki bilgiler gizlendi ve işlem yapılamaz.{" "}
+          <button className="btn-secondary" onClick={() => void signOut()}>
+            Çıkış yap
+          </button>
+        </Notice>
+      </div>
+    );
   } else if (!allowed) {
     body = (
       <Notice>
@@ -180,7 +213,7 @@ export function Layout(
               (isAdmin || roles.includes("support") ||
                 roles.includes("content") || roles.includes("finance") || roles.includes("release"))
             ? (
-              <nav aria-label="Yönetim bölümleri" onClick={event=>{if((event.target as Element).closest("a"))setMenuOpen(false);}}>
+              <nav ref={navRef} onScroll={measure} aria-label="Yönetim bölümleri" onClick={event=>{if((event.target as Element).closest("a"))setMenuOpen(false);}}>
                 {publication && isAdmin ? (
                   <Link
                     href="/library"
@@ -193,7 +226,7 @@ export function Layout(
                 {publication ? (
                   <details className="publication-other-nav">
                     <summary>Diğer bölümler</summary>
-                    {(isAdmin ? NAV.filter(item => item.href !== "/library") : [])
+                    {(isAdmin && !adminRevoked ? NAV.filter(item => item.href !== "/library") : [])
                       .map(item => (
                         <Link key={item.href} href={item.href} className="admin-nav">
                           {item.label}
@@ -201,7 +234,7 @@ export function Layout(
                       ))}
                   </details>
                 ) : null}
-                {(isAdmin && !publication ? NAV : []).map((item) => (
+                {(isAdmin && !adminRevoked && !publication ? NAV : []).map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
@@ -215,7 +248,7 @@ export function Layout(
                     <PublicationIcon name={navIcons[item.href] ?? "document"} />{item.label}
                   </Link>
                 ))}
-                {!isAdmin
+                {!isAdmin || adminRevoked
                   ? OPERATOR_NAV.filter((item) => item.roles.some((r) => roles.includes(r))).map((item) => (
                     <Link
                       key={item.href}
@@ -284,11 +317,23 @@ export function Layout(
               </nav>
             )
             : null}
+          {below > 0
+            ? (
+              <button
+                type="button"
+                className="admin-nav-more"
+                data-testid="nav-more"
+                onClick={() => nav.current?.scrollBy({ top: nav.current.clientHeight - 48, behavior: "smooth" })}
+              >
+                ↓ Aşağıda {below} bölüm daha
+              </button>
+            )
+            : null}
           {session
             ? (
               <div className="admin-account">
                 <span>
-                  {isAdmin
+                  {isAdmin && !adminRevoked
                     ? "Yönetici"
                     : roles.includes("support")
                     ? "Destek ekibi"

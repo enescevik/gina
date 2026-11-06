@@ -6,8 +6,10 @@ import { History } from "lucide-react-native";
 import {
   canSupersede,
   type ContributionTrail,
+  type ContributionTrailQuestion,
   contributionRow,
   contributionTrailSchema,
+  questionsToFix,
 } from "@gina/core";
 import { p, SatinButton, u } from "@/components/planner/ui";
 import { useFamilyTimezone } from "@/lib/family";
@@ -59,6 +61,31 @@ export function useContributionChains() {
       };
     },
   });
+}
+
+/** D3: ret kararındaki soru bazlı notlar. Notu olmayan sorular düzeltme istemez; grup yine bütün gönderilir. */
+export function QuestionNotes({ questions }: { questions?: ContributionTrailQuestion[] }) {
+  const { t } = useTranslation();
+  const fix = questionsToFix({ questions });
+  if (!fix.length) return null;
+  const untouched = (questions?.length ?? 0) - fix.length;
+  return (
+    <View style={{ gap: 6 }} testID="question-notes">
+      <Text style={u.bold}>{t("contributionTrail.questionNotes")}</Text>
+      {fix.map((q) => (
+        <View
+          key={q.key}
+          testID="question-note"
+          accessible
+          style={{ gap: 2, padding: 10, borderRadius: 14, backgroundColor: "#FFFFFF" }}
+        >
+          <Text style={u.small}>{t("contributionTrail.questionLabel", { position: q.position, excerpt: q.excerpt })}</Text>
+          <Text selectable style={u.copy}>{q.note}</Text>
+        </View>
+      ))}
+      {untouched > 0 ? <Text style={u.small}>{t("contributionTrail.questionsOk", { count: untouched })}</Text> : null}
+    </View>
+  );
 }
 
 export function ContributionChains() {
@@ -151,6 +178,7 @@ export function ContributionChains() {
                         </Text>
                       )
                       : null}
+                    {step.status === "rejected" ? <QuestionNotes questions={step.questions} /> : null}
                     {step.decision === "approved" && step.package_status
                       ? <Text style={u.small}>{t("contributionTrail.inLibraryDraft")}</Text>
                       : null}
