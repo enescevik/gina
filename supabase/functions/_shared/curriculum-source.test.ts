@@ -80,6 +80,9 @@ Deno.test("size and time limits stop the download; declared and streamed sizes b
   const slow = (_: string, init: { signal: AbortSignal }) =>
     new Promise<Response>((_, reject) => init.signal.addEventListener("abort", () => reject(new DOMException("aborted", "AbortError"))));
   await assertRejects(() => fetchWithPolicy("https://cdn.eba.gov.tr/slow.xlsx", { transport: slow, resolve: publicResolver, timeoutMs: 5 }), PolicyError, "timeout");
+  // C13-SCAN-3: fast headers, stalled body — the same deadline must stop the body read.
+  const stalled = () => Promise.resolve(new Response(new ReadableStream({ pull: () => new Promise(() => {}) }), { status: 200 }));
+  await assertRejects(() => fetchWithPolicy("https://cdn.eba.gov.tr/stalled.xlsx", { transport: stalled, resolve: publicResolver, timeoutMs: 5 }), PolicyError, "timeout");
   const ok = transportFor({ "https://cdn.eba.gov.tr/a.xlsx": { status: 200, headers: { "content-type": "application/octet-stream" }, body: workbook() } });
   const got = await fetchWithPolicy("https://cdn.eba.gov.tr/a.xlsx", { transport: ok.transport, resolve: publicResolver });
   assertEquals(got.finalUrl, "https://cdn.eba.gov.tr/a.xlsx");
