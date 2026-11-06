@@ -1,0 +1,191 @@
+{
+  "generated_at": "2026-11-06T11:21:21.656Z",
+  "set": "scripts/prereview-pilot-set.json",
+  "mode": "deterministic",
+  "http_status": 200,
+  "model": "deterministic-local",
+  "provider": "anthropic",
+  "prompt_version": "prereview-v2",
+  "error": null,
+  "summary": {
+    "items": 9,
+    "passed": 9,
+    "errors": 0,
+    "false_approvals": 0,
+    "correct_auto_approved": 3,
+    "correct_total": 3,
+    "confidences": {
+      "correct": [
+        0.93,
+        0.93,
+        0.93
+      ],
+      "incorrect": [
+        0.9,
+        0.9,
+        0.9
+      ],
+      "ambiguous": [
+        0.95,
+        0.6,
+        0.6
+      ]
+    },
+    "threshold": 0.85,
+    "calibrated": false
+  },
+  "rows": [
+    {
+      "key": "correct-division-mc",
+      "label": "correct",
+      "expected": [
+        "ai_approved",
+        "needs_admin"
+      ],
+      "preferred": "ai_approved",
+      "actual": "ai_approved",
+      "reason": "all_checks_passed",
+      "confidence": 0.93,
+      "findings": [],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "correct-square-perimeter-open",
+      "label": "correct",
+      "expected": [
+        "ai_approved",
+        "needs_admin"
+      ],
+      "preferred": "ai_approved",
+      "actual": "ai_approved",
+      "reason": "all_checks_passed",
+      "confidence": 0.93,
+      "findings": [],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "correct-antonym-mc",
+      "label": "correct",
+      "expected": [
+        "ai_approved",
+        "needs_admin"
+      ],
+      "preferred": "ai_approved",
+      "actual": "ai_approved",
+      "reason": "all_checks_passed",
+      "confidence": 0.93,
+      "findings": [],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "incorrect-fraction-key",
+      "label": "incorrect",
+      "expected": [
+        "ai_rejected_suggestion",
+        "needs_admin"
+      ],
+      "preferred": null,
+      "actual": "ai_rejected_suggestion",
+      "reason": "blocking_finding",
+      "confidence": 0.9,
+      "findings": [
+        "solution_incorrect"
+      ],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "incorrect-rectangle-area",
+      "label": "incorrect",
+      "expected": [
+        "ai_rejected_suggestion",
+        "needs_admin"
+      ],
+      "preferred": null,
+      "actual": "ai_rejected_suggestion",
+      "reason": "blocking_finding",
+      "confidence": 0.9,
+      "findings": [
+        "solution_incorrect"
+      ],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "incorrect-scenario-count",
+      "label": "incorrect",
+      "expected": [
+        "ai_rejected_suggestion",
+        "needs_admin"
+      ],
+      "preferred": null,
+      "actual": "ai_rejected_suggestion",
+      "reason": "blocking_finding",
+      "confidence": 0.9,
+      "findings": [
+        "scenario_count_mismatch"
+      ],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "ambiguous-image-triangle",
+      "label": "ambiguous",
+      "expected": [
+        "needs_admin"
+      ],
+      "preferred": null,
+      "actual": "needs_admin",
+      "reason": "media_not_reviewed",
+      "confidence": 0.95,
+      "findings": [],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "ambiguous-underspecified-word-problem",
+      "label": "ambiguous",
+      "expected": [
+        "needs_admin"
+      ],
+      "preferred": null,
+      "actual": "needs_admin",
+      "reason": "low_confidence",
+      "confidence": 0.6,
+      "findings": [
+        "other"
+      ],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    },
+    {
+      "key": "ambiguous-personal-data-contribution",
+      "label": "ambiguous",
+      "expected": [
+        "needs_admin",
+        "ai_rejected_suggestion"
+      ],
+      "preferred": null,
+      "actual": "needs_admin",
+      "reason": "low_confidence",
+      "confidence": 0.6,
+      "findings": [
+        "personal_data"
+      ],
+      "error": null,
+      "pass": true,
+      "false_approval": false
+    }
+  ]
+}

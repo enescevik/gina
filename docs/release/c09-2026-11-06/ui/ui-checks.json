@@ -1,0 +1,69 @@
+{
+  "db": "gina_c09_<random>_audit",
+  "viewport": "1280x800",
+  "provider": "deterministic loopback boundary (no hosted model)",
+  "results": [
+    {
+      "check": "scheduled_drain_through_real_edge",
+      "passed": true,
+      "detail": {
+        "processed": 3,
+        "provider_calls": 2,
+        "results": [
+          "contribution_set:ai_rejected_suggestion:blocking_finding",
+          "contribution_set:needs_admin:media_not_reviewed",
+          "curriculum_candidate:needs_admin:source_superseded"
+        ]
+      }
+    },
+    {
+      "check": "content_operator_without_family_sees_queue_and_notices",
+      "passed": true,
+      "detail": {
+        "waiting": "3 kayıt yönetici kararı bekliyor: Senaryo kaynağının yeni sürümü var; eski sürümün adayı AI'ya gönderilmedi (1) · Görsel AI'ya gösterilmedi; görsele bağlı doğruluk kanıtlanmadı (1) · Engelleyici bulgu var (1)"
+      }
+    },
+    {
+      "check": "media_flag_and_candidate_source_badges",
+      "passed": true,
+      "detail": {
+        "old": "Kaynak: eski kaynak sürümü (yerine yenisi geldi) · 2026-2027/1. dönem · AI'ya gönderilmez",
+        "current": "Kaynak: onaylı kaynak sürümü · 2026-2027/1. dönem"
+      }
+    },
+    {
+      "check": "ui_request_correct_record_ai_approval_logged_apart_from_admin_decision",
+      "passed": true,
+      "detail": {
+        "decision_cell": "Taslak · yönetici kararı bekliyor Yönetici kararı yok Ailelere açık değil"
+      }
+    },
+    {
+      "check": "ui_request_ambiguous_record_lands_in_admin_queue_with_notice",
+      "passed": true,
+      "detail": {
+        "needs_admin_rows": 3
+      }
+    },
+    {
+      "check": "non_family_admin_gets_notices_and_marks_read",
+      "passed": true
+    },
+    {
+      "check": "admin_decision_separate_from_ai_record",
+      "passed": true,
+      "detail": {
+        "contribution": "rejected by admin",
+        "ai": "ai_approved (unchanged, separate record)"
+      }
+    },
+    {
+      "check": "finance_role_cannot_see_prereview_queue",
+      "passed": true
+    },
+    {
+      "check": "no_page_errors",
+      "passed": true
+    }
+  ]
+}
