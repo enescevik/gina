@@ -566,8 +566,13 @@
       "file": "115_ai_routing_and_grade_split.test.sql",
       "passed": 66,
       "failed": 0
+    },
+    {
+      "file": "116_channel_ui_support.test.sql",
+      "passed": 81,
+      "failed": 0
     }
   ],
   "failures": [],
-  "assertions": 4704
+  "assertions": 4785
 }
