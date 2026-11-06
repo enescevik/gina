@@ -43,7 +43,7 @@ export const openAiAdapter: AiAdapter = {
     if (estimated > (cfg.maxInputTokens ?? 8000)) throw new AiProviderError("ai_input_too_large");
     const res = await fetch(`${baseUrl()}/chat/completions`, {
       method: "POST",
-      signal: AbortSignal.timeout(115_000),
+      signal: cfg.signal ?? AbortSignal.timeout(115_000),
       headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
       body: JSON.stringify({
         model: cfg.model,

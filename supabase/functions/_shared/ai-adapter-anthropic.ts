@@ -11,7 +11,7 @@ export const anthropicAdapter: AiAdapter = {
   async countTokens(apiKey: string, cfg: AiConfig, system: string, user: AiUserContent): Promise<number> {
     const res = await fetch("https://api.anthropic.com/v1/messages/count_tokens", {
       method: "POST",
-      signal: AbortSignal.timeout(15_000),
+      signal: cfg.signal ?? AbortSignal.timeout(15_000),
       headers: { "x-api-key": apiKey, "anthropic-version": "2023-06-01", "content-type": "application/json" },
       body: JSON.stringify({ model: cfg.model, system, messages: [{ role: "user", content: user }] }),
     });

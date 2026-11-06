@@ -522,7 +522,7 @@ export async function finishGeneration(
                 document_sha256: document.sha256,
               }
               : {}),
-            model: ai.model,
+            model: result.model ?? ai.model,
             prompt_version: context.promptVersion,
             settings_prompt_version: ai.promptVersion,
             prompt_hash: promptHash,
@@ -547,7 +547,7 @@ export async function finishGeneration(
       p_id: requestId,
       p_lease: lease,
       p_rows: rows,
-      p_model: ai.model,
+      p_model: result.model ?? ai.model,
       p_prompt_version: context.promptVersion,
       p_input: result.inputTokens,
       p_output: result.outputTokens,

@@ -43,7 +43,7 @@ export async function setupSuggestions(
   });
   if (error || !ent) return fail("entitlement_failed", 500);
   if (!ent.limit) return fail("plan_has_no_ai", 402);
-  const ai = await deps.resolveAi(db, ent.plan, body.source_id ? 3072 : 2048);
+  const ai = await deps.resolveAi(db, ent.plan, body.source_id ? 3072 : 2048, "setup_suggestions");
   if (ai instanceof Response) return ai;
   const key = deps.apiKeyOrResponse(ai);
   if (key instanceof Response) return key;

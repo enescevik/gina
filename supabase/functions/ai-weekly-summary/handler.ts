@@ -106,7 +106,7 @@ export async function handleWeeklySummary(
   if (ent.error || !Array.isArray(ent.data) || !ent.data[0]?.plan) {
     return fail("entitlement_failed", 503);
   }
-  const config = await (deps.resolve ?? resolveAi)(db, ent.data[0].plan, 2000);
+  const config = await (deps.resolve ?? resolveAi)(db, ent.data[0].plan, 2000, "weekly_summary");
   if (config instanceof Response) {
     // D6/B5: paketi haftalık özeti içermiyorsa (Free) model kapalı olduğu için resolveAi önce `ai_disabled` (503)
     // döner; istemci "geçici olarak kullanılamıyor" yerine paket yükseltme görmeli → sözleşmedeki 402 plan_has_no_ai.

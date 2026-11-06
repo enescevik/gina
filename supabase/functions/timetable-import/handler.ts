@@ -79,7 +79,7 @@ export async function handleTimetableImport(
   if (policyError || !policy?.enabled) {
     return fail("ai_disabled", 402);
   }
-  const ai = await deps.resolveAi(db, ent.plan, 8000);
+  const ai = await deps.resolveAi(db, ent.plan, 8000, "timetable_import");
   if (ai instanceof Response) return ai;
   const key = deps.apiKeyOrResponse(ai);
   if (key instanceof Response) return key;
@@ -122,7 +122,7 @@ export async function handleTimetableImport(
   await deps.logUsage(db, {
     family_id: parent.familyId,
     action: "import",
-    model: ai.model,
+    model: result.model ?? ai.model,
     items: 1,
     input_tokens: result.inputTokens,
     output_tokens: result.outputTokens,

@@ -104,6 +104,7 @@ async function prepare(deps: Dependencies): Promise<Prepared> {
   if (config instanceof Response) return { ok: false, reason: await responseReason(config), retryable: false };
   const apiKey = deps.key(config);
   if (apiKey instanceof Response) return { ok: false, reason: await responseReason(apiKey), retryable: false };
+  if (config.chain) return { ok: true, config, apiKey };
   const health = await providerHealth(deps, providerOf(config));
   if (!health) return { ok: false, reason: "provider_health_unavailable", retryable: true };
   if (health.paused) return { ok: false, reason: "ai_temporarily_unavailable", retryable: true };
@@ -165,15 +166,17 @@ export async function reviewOne(deps: Dependencies, kind: PrereviewKind, id: str
 
   let result: AiResult<unknown>;
   try {
-    result = await deps.call(apiKey, { ...config, promptVersion }, SYSTEM, buildUserMessage(c.content, mediaCount), SCHEMA);
+    result = await deps.call(apiKey, { ...config, promptVersion, execution: { kind: "prereview", lease } }, SYSTEM, buildUserMessage(c.content, mediaCount), SCHEMA);
   } catch (e) {
     const failure = classifyAiError(e);
-    await providerHealth(deps, meta.provider, { ok: false, error: failure.code, uncertain: failure.uncertain });
-    if (NON_RETRYABLE.has(failure.kind)) return toAdmin(`provider_${failure.kind}`, failure.code, meta);
+    if (!config.chain) await providerHealth(deps, meta.provider, { ok: false, error: failure.code, uncertain: failure.uncertain });
+    if (NON_RETRYABLE.has(failure.kind) || config.chain && failure.uncertain) return toAdmin(`provider_${failure.kind}`, failure.code, meta);
     return retry(failure.code);
   }
   // The provider answered; a contract violation is ours to retry, not a provider outage.
-  await providerHealth(deps, meta.provider, { ok: true });
+  if (!config.chain) await providerHealth(deps, meta.provider, { ok: true });
+  meta.model = result.model ?? meta.model;
+  meta.provider = result.provider ?? meta.provider;
   try {
     const output = validateOutput(result.output);
     const decision = decide(output, undefined, { mediaCount });
@@ -209,7 +212,7 @@ export async function runPilot(deps: Dependencies, items: unknown[]) {
     }
     const mediaCount = typeof item.media_count === "number" && item.media_count > 0 ? item.media_count : 0;
     try {
-      const r = await deps.call(apiKey, { ...config, promptVersion }, SYSTEM, buildUserMessage(item.content, mediaCount), SCHEMA);
+      const r = await deps.call(apiKey, { ...config, chain: undefined, promptVersion }, SYSTEM, buildUserMessage(item.content, mediaCount), SCHEMA);
       await providerHealth(deps, providerOf(config), { ok: true });
       try {
         const output = validateOutput(r.output);

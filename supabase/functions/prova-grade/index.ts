@@ -86,7 +86,7 @@ Deno.serve(async (req) => {
   const mask = (text: string) =>
     nameParts.reduce((t: string, p: string) => t.replace(new RegExp(`(?<!\\p{L})${escapeRegExp(p)}(?!\\p{L})`, "giu"), "[ad]"), text);
 
-  const ai = await resolveAi(db, ent.plan, 4000);
+  const ai = await resolveAi(db, ent.plan, 4000, "open_ended_grading");
   if (ai instanceof Response) return ai;
   const apiKey = apiKeyOrResponse(ai);
   if (apiKey instanceof Response) return apiKey;
@@ -122,7 +122,7 @@ Deno.serve(async (req) => {
     }));
   const summary = {
     ...result.output.ozet,
-    model: ai.model,
+    model: result.model ?? ai.model,
     prompt_version: PROMPT_VERSION,
     graded_at: new Date().toISOString(),
     evidence: Object.fromEntries(refToQuestion),
@@ -142,7 +142,7 @@ Deno.serve(async (req) => {
   await logUsage(db, {
     family_id: parent.familyId,
     action: "grade",
-    model: ai.model,
+    model: result.model ?? ai.model,
     items: grades.length,
     input_tokens: result.inputTokens,
     output_tokens: result.outputTokens,
