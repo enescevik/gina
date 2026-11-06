@@ -23,7 +23,7 @@ Saatler Europe/Istanbul. Koordinatör: Claude (oturum modeli claude-opus-5-5; al
 | Üretim DB | 108 migration (R01 dahil) | Ledger okuması |
 | Veli webi | R01 kaynağı yayında (5 Kasım 23:31) | `gina-web.pages.dev`; Actions deploy işleri sonraki commit'lerde secret yok → atlandı, **yayın değil** |
 | Yönetim | 5 Kasım yayını; gece değişiklikleri yayımlanmadı | — |
-| iOS 0.1.0 (27) | EAS submit `finished`; uzak build no 27 | **Apple processing + iç grup erişimi doğrulanmadı** (yerelde ASC okuma anahtarı yok) → BEKLİYOR, App Store Connect kontrolü |
+| iOS 0.1.0 (27) | EAS submit `finished`; Apple işledi; TestFlight'ta erişilebilir | Kullanıcı 6 Kasım 12:24'te TestFlight'tan kurduğunu bildirdi (fiziksel cihaz). Özellik kabul testi (C15) ayrı. |
 | Tablet 0.1.0 (27) | Canlı `release.json` build 27, IPA SHA-256 `12cb54ee…` | Fiziksel kurulum yapılmadı |
 | Gece kapsamı (20 migration + istemciler) | Main'de, **yayımlanmadı** | C14 |
 
