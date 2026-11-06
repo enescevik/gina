@@ -1,6 +1,6 @@
 import { useUnsavedChanges } from "@/components/unsaved-changes";
 import { SourcePolicy } from "@/components/source-policy";
-import { AiPolicyMatrixCard, ModelDisablePreviewButton, ProviderChangeImpactCard, featureLabel, useAiPolicyMatrix } from "@/components/ai-policy";
+import { AiPolicyMatrixCard, ModelDisablePreviewButton, ProviderChangeImpactCard, featureLabel, useAiPolicyMatrix, type DisablePreview } from "@/components/ai-policy";
 import { adminRpc } from "@/components/review-rpc";
 import type { Tables } from "@gina/core";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
@@ -149,26 +149,31 @@ export default function AiPage() {
     await mutate(() => supabase().rpc("admin_set_ai_enabled", { p_enabled: enabled }));
   }
   async function toggleModel(m: AiModel) {
-    let affected = data?.settings.filter(s => s.model_id === m.id && s.enabled).map(s => t.plans[s.plan_code]) ?? [];
-    let features = "";
+    if (busy || lock.current) return;
     if (m.active) {
-      // Sunucu önizlemesi (S06): kapatmanın etkilediği paket ve özellikler; okunamazsa yerel paket listesine düşer.
+      let preview: DisablePreview;
+      lock.current = true; setBusy(true);
       try {
-        const preview = await adminRpc<{ affected_plans: string[]; affected_features: { feature: string }[]; alternatives: string[] }>("admin_model_disable_preview", { p_model_id: m.id });
-        affected = preview.affected_plans.map(p => t.plans[p] ?? p);
-        features = ` Etkilenen özellikler: ${preview.affected_features.map(f => featureLabel[f.feature] ?? f.feature).join(", ") || "Yok"}. Alternatif: ${preview.alternatives.join(", ") || "yok"}.`;
-      } catch { features = " (Sunucu etki önizlemesi okunamadı.)"; }
+        preview = await adminRpc<DisablePreview>("admin_model_disable_preview", { p_model_id: m.id });
+        if (!Array.isArray(preview.affected_flows)) throw new Error("impact_unavailable");
+      } catch {
+        setMsg({ text: "Kullanım ve etki bilgisi okunamadı. Model pasifleştirilmedi; yeniden deneyin.", tone: "error" });
+        return;
+      } finally { lock.current = false; setBusy(false); }
+      if (!(await confirm.ask({
+        title: `${m.display_name} pasifleştirilsin mi?`,
+        body: <>
+          {preview.affected_flows.length ? <ul className="list-disc pl-5">{preview.affected_flows.map(flow => <li key={flow.flow_id}>
+            <strong>{flow.flow_label} · {t.plans[flow.plan_code] ?? flow.plan_code}</strong>: {flow.enabled ? "yeni işlemler engellenecek" : "akış kapalı, model bağlantısı kayıtlı"}.
+          </li>)}</ul> : <p>Bu modele bağlı kayıtlı akış yok.</p>}
+          <p className="mt-2">Etkilenen özellikler: {preview.affected_features.map(f => featureLabel[f.feature] ?? f.feature).join(", ") || "Yok"}.</p>
+          <p className="mt-2">Aktif alternatifler: {preview.alternatives.join(", ") || "yok"}.</p>
+          <p className="mt-2">Mevcut model bağlantıları korunur ve pasif olarak işaretlenir. Yeni model seçimi gerekir; otomatik olarak başka modele geçilmez.</p>
+        </>,
+        confirmLabel: "Etkileri gördüm, pasifleştir", tone: "danger",
+      }))) return;
     }
-    if (m.active && !(await confirm.ask({
-      title: `${m.display_name} pasifleştirilsin mi?`,
-      body: <>
-        <p>Etkilenen paketler: {affected.join(", ") || "Yok"}.{features}</p>
-        <p className="mt-2">Bu modelin kullanıldığı yeni işlemler çalışmayabilir.</p>
-      </>,
-      confirmLabel: "Pasifleştir",
-      tone: "danger",
-    }))) return;
-    await mutate(() => supabase().from("ai_models").update({ active: !m.active }).eq("id", m.id));
+    await mutate(() => supabase().from("ai_models").update({ active: !m.active }).eq("id", m.id).eq("updated_at", m.updated_at).select("id").single());
   }
 
   return (
@@ -245,7 +250,7 @@ export default function AiPage() {
             </div>
             <ModelForm onSaved={onSaved} onState={onState} />
           </Card>
-          <AiPolicyMatrixCard matrix={matrix.data ? { ...matrix.data, models: matrix.data.models.filter(m => m.active) } : null} error={matrix.error} />
+          <AiPolicyMatrixCard matrix={matrix.data} error={matrix.error} />
           {matrix.data ? <ProviderChangeImpactCard providers={matrix.data.providers} /> : null}
         </>
       )}
