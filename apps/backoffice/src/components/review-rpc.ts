@@ -35,6 +35,18 @@ export async function edgeFailure(error: unknown): Promise<EdgeFailure> {
   return { kind: "unreachable", code: null, status: null };
 }
 
+/** Sözleşmeli Edge hata gövdesi (yalnız JSON nesnesi); ham metin ekrana basılmaz. */
+export async function edgeErrorBody(error: unknown): Promise<Record<string, unknown> | null> {
+  const e = error as { name?: string; context?: Response } | null;
+  if (e?.name !== "FunctionsHttpError" || !e.context) return null;
+  try {
+    const body = await e.context.clone().json();
+    return body && typeof body === "object" && !Array.isArray(body) ? body as Record<string, unknown> : null;
+  } catch {
+    return null;
+  }
+}
+
 export function shortHash(h: string | null | undefined) {
   return h ? h.slice(0, 12) : "—";
 }

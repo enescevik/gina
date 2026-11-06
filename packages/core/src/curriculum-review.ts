@@ -128,6 +128,14 @@ export const curriculumSourceRevisionSchema = z.object({
   reviewed_at: z.string().nullable(),
   candidates: z.number().int(),
   published_candidates: z.number().int(),
+  // H02: panel extraction state (optional: older read models do not send them).
+  extraction: z.record(z.string(), z.unknown()).nullable().optional(),
+  extraction_running: z.boolean().optional(),
+  extraction_started_at: z.string().nullable().optional(),
+  extraction_attempts: z.number().int().optional(),
+  extraction_last_error: z.string().nullable().optional(),
+  draft_candidates: z.number().int().optional(),
+  stored: z.boolean().optional(),
 });
 export const curriculumSourceRowSchema = z.object({
   id: z.uuid(),
@@ -186,6 +194,8 @@ export const curriculumSourceFetchTargetSchema = z.object({
   subject: text(80),
   programme: text(160).optional(),
   link_url: z.url({ protocol: /^https$/ }).max(500).optional(),
+  /** H02: school level when the official page lists the subject once per level. */
+  level: z.enum(["ortaokul", "lise"]).optional(),
 }).strict();
 export type CurriculumSourceFetchTarget = z.infer<
   typeof curriculumSourceFetchTargetSchema

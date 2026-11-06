@@ -2967,6 +2967,9 @@ isOneToOne: false
 "attach_question_source":
 { Args: { "p_alt": string,"p_question_id": string,"p_source_id": string }; Returns: undefined
                            },
+"begin_curriculum_extraction":
+{ Args: { "p_actor_id": string,"p_revision_id": string }; Returns: Json
+                           },
 "begin_question_contribution":
 { Args: { "p_id": string,"p_no_personal_data": boolean,"p_question_id": string,"p_rights": boolean,"p_supersedes"?: string }; Returns: Json
                            },
@@ -3703,6 +3706,9 @@ isOneToOne: false
 "read_library_source_bytes":
 { Args: { "p_source_id": string }; Returns: Json
                            },
+"record_curriculum_extraction_service":
+{ Args: { "p_actor_id": string,"p_request_id": string,"p_result": Json,"p_revision_id": string }; Returns: Json
+                           },
 "record_curriculum_source_fetch":
 { Args: { "p_actor_id": string,"p_request_id": string,"p_revision": Json,"p_source": Json }; Returns: Json
                            },
@@ -3738,6 +3744,9 @@ isOneToOne: false
                            },
 "release_channel_operations":
 { Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"release_curriculum_extraction":
+{ Args: { "p_actor_id": string,"p_error": string,"p_revision_id": string }; Returns: Json
                            },
 "release_push_operations":
 { Args: { "p_before"?: number,"p_limit"?: number,"p_status"?: string }; Returns: Json
