@@ -17,7 +17,7 @@ export function LanguageChoice({ compact = false }: { compact?: boolean }) {
     <View accessibilityRole="radiogroup" accessibilityLabel={t("language.title")} style={styles.row}>
       <Globe size={18} color="#625C85" accessible={false} />
       {(["tr", "en"] as const).map(locale => <Pressable key={locale} testID={`language-${locale}`}
-        accessibilityRole="radio" accessibilityLabel={locale === "tr" ? "Türkçe" : "English"}
+        accessibilityRole="radio" aria-checked={current === locale} accessibilityLabel={locale === "tr" ? "Türkçe" : "English"}
         accessibilityState={{ checked: current === locale, disabled: busy }} disabled={busy}
         onPress={async () => { setBusy(true); try { setTemporary(!(await setAppLanguage(locale))); } finally { setBusy(false); } }}
         style={[styles.option, !compact && { flex: 1 }, current === locale && styles.selected]}>
