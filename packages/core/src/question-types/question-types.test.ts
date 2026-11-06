@@ -3,7 +3,7 @@ import fixtures from "./fixtures.json";
 import {
   answerErrors, answerState, emptyAnswer, moveItem, parseNumberInput, questionContentErrors, setPair, setNumeric,
   setPlacement, setTrueFalse, categoryFull, structuredAnswerSchema, studentPayloadSchemas, fillBlankFromMarkup,
-  type StructuredAnswer, type StructuredInteractionType,
+  type StructuredAnswer, type StructuredInteractionType, isPhase2aType, phase2aAnswerSchemas, phase2aPayloadSchemas, type Phase2aInteractionType,
 } from "./index";
 
 // Ortak örnekler: aynı fixtures.json SQL golden testini (supabase/tests/140) de üretir.
@@ -28,8 +28,9 @@ describe("shared fixtures: answer validation mirrors SQL codes", () => {
 describe("shared fixtures: answer state equals SQL answer_state (not a score)", () => {
   for (const s of fixtures.scoring) {
     it(s.name, () => {
-      const answer = s.answer ? structuredAnswerSchema.parse(s.answer) : null;
-      const payload = studentPayloadSchemas[s.type as StructuredInteractionType].parse(s.payload);
+      const p2 = isPhase2aType(s.type);
+      const answer = s.answer ? (p2 ? phase2aAnswerSchemas[s.type as Phase2aInteractionType] : structuredAnswerSchema).parse(s.answer) : null;
+      const payload = (p2 ? phase2aPayloadSchemas[s.type as Phase2aInteractionType] : studentPayloadSchemas[s.type as StructuredInteractionType]).parse(s.payload);
       expect(answerState(s.type as StructuredInteractionType, payload, answer as StructuredAnswer | null)).toBe(s.expect.answer_state);
     });
   }

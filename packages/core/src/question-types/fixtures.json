@@ -1318,6 +1318,583 @@
    "errors": [
     "type_unknown"
    ]
+  },
+  {
+   "name": "mark valid",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "t3",
+     "t4"
+    ]
+   },
+   "valid": true
+  },
+  {
+   "name": "mark all targets rejected",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "t1",
+     "t2",
+     "t3",
+     "t4"
+    ]
+   },
+   "valid": false,
+   "errors": [
+    "selection_balance_invalid"
+   ]
+  },
+  {
+   "name": "mark no targets rejected",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "targets": []
+   },
+   "valid": false,
+   "errors": [
+    "selection_balance_invalid"
+   ]
+  },
+  {
+   "name": "mark target not selectable",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "t9"
+    ]
+   },
+   "valid": false,
+   "errors": [
+    "key_value_invalid"
+   ]
+  },
+  {
+   "name": "mark duplicate segment id",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "a"
+     },
+     {
+      "id": "t1",
+      "text": "b"
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "t1"
+    ]
+   },
+   "valid": false,
+   "errors": [
+    "segments_invalid"
+   ]
+  },
+  {
+   "name": "mark max_select below targets",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ],
+    "max_select": 1
+   },
+   "key": {
+    "targets": [
+     "t3",
+     "t4"
+    ]
+   },
+   "valid": false,
+   "errors": [
+    "max_select_invalid"
+   ]
+  },
+  {
+   "name": "multi valid",
+   "type": "multi_choice",
+   "payload": {
+    "options": [
+     {
+      "id": "o1",
+      "text": "Kedi"
+     },
+     {
+      "id": "o2",
+      "text": "Gül"
+     },
+     {
+      "id": "o3",
+      "text": "Köpek"
+     },
+     {
+      "id": "o4",
+      "text": "Lale"
+     },
+     {
+      "id": "o5",
+      "text": "Kuş"
+     }
+    ]
+   },
+   "key": {
+    "correct": [
+     "o1",
+     "o3",
+     "o5"
+    ]
+   },
+   "valid": true
+  },
+  {
+   "name": "multi all correct rejected",
+   "type": "multi_choice",
+   "payload": {
+    "options": [
+     {
+      "id": "o1",
+      "text": "Kedi"
+     },
+     {
+      "id": "o2",
+      "text": "Gül"
+     },
+     {
+      "id": "o3",
+      "text": "Köpek"
+     },
+     {
+      "id": "o4",
+      "text": "Lale"
+     },
+     {
+      "id": "o5",
+      "text": "Kuş"
+     }
+    ]
+   },
+   "key": {
+    "correct": [
+     "o1",
+     "o2",
+     "o3",
+     "o4",
+     "o5"
+    ]
+   },
+   "valid": false,
+   "errors": [
+    "selection_balance_invalid"
+   ]
+  },
+  {
+   "name": "multi select_count mismatch",
+   "type": "multi_choice",
+   "payload": {
+    "options": [
+     {
+      "id": "o1",
+      "text": "Kedi"
+     },
+     {
+      "id": "o2",
+      "text": "Gül"
+     },
+     {
+      "id": "o3",
+      "text": "Köpek"
+     },
+     {
+      "id": "o4",
+      "text": "Lale"
+     },
+     {
+      "id": "o5",
+      "text": "Kuş"
+     }
+    ],
+    "select_count": 2
+   },
+   "key": {
+    "correct": [
+     "o1",
+     "o3",
+     "o5"
+    ]
+   },
+   "valid": false,
+   "errors": [
+    "select_count_mismatch"
+   ]
+  },
+  {
+   "name": "error fix valid",
+   "type": "error_fix",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ben"
+     },
+     {
+      "text": " dün okula "
+     },
+     {
+      "id": "t2",
+      "text": "gidiyorum"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t3",
+      "text": "arkadaşlarımla"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t4",
+      "text": "oynadık"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "errors": {
+     "t2": {
+      "accepted": [
+       "gittim"
+      ]
+     }
+    }
+   },
+   "valid": true
+  },
+  {
+   "name": "error fix unknown id",
+   "type": "error_fix",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ben"
+     },
+     {
+      "text": " dün okula "
+     },
+     {
+      "id": "t2",
+      "text": "gidiyorum"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t3",
+      "text": "arkadaşlarımla"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t4",
+      "text": "oynadık"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "errors": {
+     "t9": {
+      "accepted": [
+       "x"
+      ]
+     }
+    }
+   },
+   "valid": false,
+   "errors": [
+    "key_unknown_id"
+   ]
+  },
+  {
+   "name": "two stage valid",
+   "type": "two_stage",
+   "payload": {
+    "stage1": {
+     "prompt": "Hangi madde iletkendir?",
+     "options": [
+      {
+       "id": "a1",
+       "text": "Bakır"
+      },
+      {
+       "id": "a2",
+       "text": "Plastik"
+      }
+     ]
+    },
+    "stage2": {
+     "prompt": "Neden?",
+     "mode": "choice",
+     "options": [
+      {
+       "id": "r1",
+       "text": "Metal olduğu için"
+      },
+      {
+       "id": "r2",
+       "text": "Renkli olduğu için"
+      }
+     ]
+    }
+   },
+   "key": {
+    "stage1": "a1",
+    "stage2": "r1"
+   },
+   "valid": true
+  },
+  {
+   "name": "two stage text valid",
+   "type": "two_stage",
+   "payload": {
+    "stage1": {
+     "prompt": "Hangi madde iletkendir?",
+     "options": [
+      {
+       "id": "a1",
+       "text": "Bakır"
+      },
+      {
+       "id": "a2",
+       "text": "Plastik"
+      }
+     ]
+    },
+    "stage2": {
+     "prompt": "Nedenini yaz.",
+     "mode": "text"
+    }
+   },
+   "key": {
+    "stage1": "a1"
+   },
+   "valid": true
+  },
+  {
+   "name": "two stage shared ids rejected",
+   "type": "two_stage",
+   "payload": {
+    "stage1": {
+     "prompt": "Hangi madde iletkendir?",
+     "options": [
+      {
+       "id": "a1",
+       "text": "Bakır"
+      },
+      {
+       "id": "a2",
+       "text": "Plastik"
+      }
+     ]
+    },
+    "stage2": {
+     "prompt": "Neden?",
+     "mode": "choice",
+     "options": [
+      {
+       "id": "a1",
+       "text": "x"
+      },
+      {
+       "id": "r2",
+       "text": "y"
+      }
+     ]
+    }
+   },
+   "key": {
+    "stage1": "a1",
+    "stage2": "r2"
+   },
+   "valid": false,
+   "errors": [
+    "stage_invalid"
+   ]
   }
  ],
  "scoring": [
@@ -3680,6 +4257,1023 @@
     "answer_state": "partial",
     "outcome": "scored"
    }
+  },
+  {
+   "name": "mark exact",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "t3",
+     "t4"
+    ]
+   },
+   "answer": {
+    "type": "mark_text",
+    "v": 1,
+    "selected": [
+     "t3",
+     "t4"
+    ]
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "mark select all gains nothing",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "t3",
+     "t4"
+    ]
+   },
+   "answer": {
+    "type": "mark_text",
+    "v": 1,
+    "selected": [
+     "t1",
+     "t2",
+     "t3",
+     "t4"
+    ]
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "mark one right one wrong",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "t3",
+     "t4"
+    ]
+   },
+   "answer": {
+    "type": "mark_text",
+    "v": 1,
+    "selected": [
+     "t3",
+     "t1"
+    ]
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "mark one right",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "t3",
+     "t4"
+    ]
+   },
+   "answer": {
+    "type": "mark_text",
+    "v": 1,
+    "selected": [
+     "t3"
+    ]
+   },
+   "expect": {
+    "score": 50,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "mark none",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "targets": [
+     "t3",
+     "t4"
+    ]
+   },
+   "answer": {
+    "type": "mark_text",
+    "v": 1,
+    "selected": []
+   },
+   "expect": {
+    "score": null,
+    "answer_state": "unanswered",
+    "outcome": "unanswered"
+   }
+  },
+  {
+   "name": "multi all correct",
+   "type": "multi_choice",
+   "payload": {
+    "options": [
+     {
+      "id": "o1",
+      "text": "Kedi"
+     },
+     {
+      "id": "o2",
+      "text": "Gül"
+     },
+     {
+      "id": "o3",
+      "text": "Köpek"
+     },
+     {
+      "id": "o4",
+      "text": "Lale"
+     },
+     {
+      "id": "o5",
+      "text": "Kuş"
+     }
+    ]
+   },
+   "key": {
+    "correct": [
+     "o1",
+     "o3",
+     "o5"
+    ]
+   },
+   "answer": {
+    "type": "multi_choice",
+    "v": 1,
+    "selected": [
+     "o1",
+     "o3",
+     "o5"
+    ]
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "multi select everything",
+   "type": "multi_choice",
+   "payload": {
+    "options": [
+     {
+      "id": "o1",
+      "text": "Kedi"
+     },
+     {
+      "id": "o2",
+      "text": "Gül"
+     },
+     {
+      "id": "o3",
+      "text": "Köpek"
+     },
+     {
+      "id": "o4",
+      "text": "Lale"
+     },
+     {
+      "id": "o5",
+      "text": "Kuş"
+     }
+    ]
+   },
+   "key": {
+    "correct": [
+     "o1",
+     "o3",
+     "o5"
+    ]
+   },
+   "answer": {
+    "type": "multi_choice",
+    "v": 1,
+    "selected": [
+     "o1",
+     "o2",
+     "o3",
+     "o4",
+     "o5"
+    ]
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "multi two right one wrong",
+   "type": "multi_choice",
+   "payload": {
+    "options": [
+     {
+      "id": "o1",
+      "text": "Kedi"
+     },
+     {
+      "id": "o2",
+      "text": "Gül"
+     },
+     {
+      "id": "o3",
+      "text": "Köpek"
+     },
+     {
+      "id": "o4",
+      "text": "Lale"
+     },
+     {
+      "id": "o5",
+      "text": "Kuş"
+     }
+    ]
+   },
+   "key": {
+    "correct": [
+     "o1",
+     "o3",
+     "o5"
+    ]
+   },
+   "answer": {
+    "type": "multi_choice",
+    "v": 1,
+    "selected": [
+     "o1",
+     "o3",
+     "o2"
+    ]
+   },
+   "expect": {
+    "score": 16.6667,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "multi one right",
+   "type": "multi_choice",
+   "payload": {
+    "options": [
+     {
+      "id": "o1",
+      "text": "Kedi"
+     },
+     {
+      "id": "o2",
+      "text": "Gül"
+     },
+     {
+      "id": "o3",
+      "text": "Köpek"
+     },
+     {
+      "id": "o4",
+      "text": "Lale"
+     },
+     {
+      "id": "o5",
+      "text": "Kuş"
+     }
+    ]
+   },
+   "key": {
+    "correct": [
+     "o1",
+     "o3",
+     "o5"
+    ]
+   },
+   "answer": {
+    "type": "multi_choice",
+    "v": 1,
+    "selected": [
+     "o1"
+    ]
+   },
+   "expect": {
+    "score": 33.3333,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fix found and fixed",
+   "type": "error_fix",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ben"
+     },
+     {
+      "text": " dün okula "
+     },
+     {
+      "id": "t2",
+      "text": "gidiyorum"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t3",
+      "text": "arkadaşlarımla"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t4",
+      "text": "oynadık"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "errors": {
+     "t2": {
+      "accepted": [
+       "gittim"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "error_fix",
+    "v": 1,
+    "marks": {
+     "t2": {
+      "text": "gittim"
+     }
+    }
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fix found not fixed text missing",
+   "type": "error_fix",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ben"
+     },
+     {
+      "text": " dün okula "
+     },
+     {
+      "id": "t2",
+      "text": "gidiyorum"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t3",
+      "text": "arkadaşlarımla"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t4",
+      "text": "oynadık"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "errors": {
+     "t2": {
+      "accepted": [
+       "gittim"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "error_fix",
+    "v": 1,
+    "marks": {
+     "t2": {}
+    }
+   },
+   "expect": {
+    "score": 50,
+    "answer_state": "partial",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fix alternative goes to parent",
+   "type": "error_fix",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ben"
+     },
+     {
+      "text": " dün okula "
+     },
+     {
+      "id": "t2",
+      "text": "gidiyorum"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t3",
+      "text": "arkadaşlarımla"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t4",
+      "text": "oynadık"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "errors": {
+     "t2": {
+      "accepted": [
+       "gittim"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "error_fix",
+    "v": 1,
+    "marks": {
+     "t2": {
+      "text": "gitmiştim"
+     }
+    }
+   },
+   "expect": {
+    "score": null,
+    "answer_state": "complete",
+    "outcome": "pending_human"
+   }
+  },
+  {
+   "name": "fix alternative closed policy zero fix",
+   "type": "error_fix",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ben"
+     },
+     {
+      "text": " dün okula "
+     },
+     {
+      "id": "t2",
+      "text": "gidiyorum"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t3",
+      "text": "arkadaşlarımla"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t4",
+      "text": "oynadık"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "errors": {
+     "t2": {
+      "accepted": [
+       "gittim"
+      ]
+     }
+    },
+    "fix_policy": "closed"
+   },
+   "answer": {
+    "type": "error_fix",
+    "v": 1,
+    "marks": {
+     "t2": {
+      "text": "gitmiştim"
+     }
+    }
+   },
+   "expect": {
+    "score": 50,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fix false mark penalised",
+   "type": "error_fix",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ben"
+     },
+     {
+      "text": " dün okula "
+     },
+     {
+      "id": "t2",
+      "text": "gidiyorum"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t3",
+      "text": "arkadaşlarımla"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t4",
+      "text": "oynadık"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "errors": {
+     "t2": {
+      "accepted": [
+       "gittim"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "error_fix",
+    "v": 1,
+    "marks": {
+     "t2": {
+      "text": "gittim"
+     },
+     "t1": {}
+    }
+   },
+   "expect": {
+    "score": 83.3333,
+    "answer_state": "partial",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "fix mark everything",
+   "type": "error_fix",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ben"
+     },
+     {
+      "text": " dün okula "
+     },
+     {
+      "id": "t2",
+      "text": "gidiyorum"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t3",
+      "text": "arkadaşlarımla"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t4",
+      "text": "oynadık"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "key": {
+    "errors": {
+     "t2": {
+      "accepted": [
+       "gittim"
+      ]
+     }
+    }
+   },
+   "answer": {
+    "type": "error_fix",
+    "v": 1,
+    "marks": {
+     "t1": {},
+     "t2": {},
+     "t3": {},
+     "t4": {}
+    }
+   },
+   "expect": {
+    "score": 0,
+    "answer_state": "partial",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "two stage both right",
+   "type": "two_stage",
+   "payload": {
+    "stage1": {
+     "prompt": "Hangi madde iletkendir?",
+     "options": [
+      {
+       "id": "a1",
+       "text": "Bakır"
+      },
+      {
+       "id": "a2",
+       "text": "Plastik"
+      }
+     ]
+    },
+    "stage2": {
+     "prompt": "Neden?",
+     "mode": "choice",
+     "options": [
+      {
+       "id": "r1",
+       "text": "Metal olduğu için"
+      },
+      {
+       "id": "r2",
+       "text": "Renkli olduğu için"
+      }
+     ]
+    }
+   },
+   "key": {
+    "stage1": "a1",
+    "stage2": "r1"
+   },
+   "answer": {
+    "type": "two_stage",
+    "v": 1,
+    "stage1": "a1",
+    "stage2": "r1"
+   },
+   "expect": {
+    "score": 100,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "two stage reason wrong",
+   "type": "two_stage",
+   "payload": {
+    "stage1": {
+     "prompt": "Hangi madde iletkendir?",
+     "options": [
+      {
+       "id": "a1",
+       "text": "Bakır"
+      },
+      {
+       "id": "a2",
+       "text": "Plastik"
+      }
+     ]
+    },
+    "stage2": {
+     "prompt": "Neden?",
+     "mode": "choice",
+     "options": [
+      {
+       "id": "r1",
+       "text": "Metal olduğu için"
+      },
+      {
+       "id": "r2",
+       "text": "Renkli olduğu için"
+      }
+     ]
+    }
+   },
+   "key": {
+    "stage1": "a1",
+    "stage2": "r1"
+   },
+   "answer": {
+    "type": "two_stage",
+    "v": 1,
+    "stage1": "a1",
+    "stage2": "r2"
+   },
+   "expect": {
+    "score": 50,
+    "answer_state": "complete",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "two stage only first",
+   "type": "two_stage",
+   "payload": {
+    "stage1": {
+     "prompt": "Hangi madde iletkendir?",
+     "options": [
+      {
+       "id": "a1",
+       "text": "Bakır"
+      },
+      {
+       "id": "a2",
+       "text": "Plastik"
+      }
+     ]
+    },
+    "stage2": {
+     "prompt": "Neden?",
+     "mode": "choice",
+     "options": [
+      {
+       "id": "r1",
+       "text": "Metal olduğu için"
+      },
+      {
+       "id": "r2",
+       "text": "Renkli olduğu için"
+      }
+     ]
+    }
+   },
+   "key": {
+    "stage1": "a1",
+    "stage2": "r1"
+   },
+   "answer": {
+    "type": "two_stage",
+    "v": 1,
+    "stage1": "a1"
+   },
+   "expect": {
+    "score": 50,
+    "answer_state": "partial",
+    "outcome": "scored"
+   }
+  },
+  {
+   "name": "two stage text reason to parent",
+   "type": "two_stage",
+   "payload": {
+    "stage1": {
+     "prompt": "Hangi madde iletkendir?",
+     "options": [
+      {
+       "id": "a1",
+       "text": "Bakır"
+      },
+      {
+       "id": "a2",
+       "text": "Plastik"
+      }
+     ]
+    },
+    "stage2": {
+     "prompt": "Nedenini yaz.",
+     "mode": "text"
+    }
+   },
+   "key": {
+    "stage1": "a1"
+   },
+   "answer": {
+    "type": "two_stage",
+    "v": 1,
+    "stage1": "a1",
+    "stage2": {
+     "text": "Elektriği iletir."
+    }
+   },
+   "expect": {
+    "score": null,
+    "answer_state": "complete",
+    "outcome": "pending_human"
+   }
   }
  ],
  "answers": [
@@ -4353,6 +5947,318 @@
    },
    "valid": false,
    "error": "answer_value_invalid"
+  },
+  {
+   "name": "mark unknown id",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "answer": {
+    "type": "mark_text",
+    "v": 1,
+    "selected": [
+     "t9"
+    ]
+   },
+   "valid": false,
+   "error": "answer_unknown_id"
+  },
+  {
+   "name": "mark duplicate selection",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "answer": {
+    "type": "mark_text",
+    "v": 1,
+    "selected": [
+     "t3",
+     "t3"
+    ]
+   },
+   "valid": false,
+   "error": "answer_value_invalid"
+  },
+  {
+   "name": "mark over max",
+   "type": "mark_text",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ali"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t2",
+      "text": "topu"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t3",
+      "text": "attı"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t4",
+      "text": "koştu"
+     },
+     {
+      "text": "."
+     }
+    ],
+    "max_select": 2
+   },
+   "answer": {
+    "type": "mark_text",
+    "v": 1,
+    "selected": [
+     "t1",
+     "t2",
+     "t3"
+    ]
+   },
+   "valid": false,
+   "error": "answer_too_many"
+  },
+  {
+   "name": "multi over select_count",
+   "type": "multi_choice",
+   "payload": {
+    "options": [
+     {
+      "id": "o1",
+      "text": "Kedi"
+     },
+     {
+      "id": "o2",
+      "text": "Gül"
+     },
+     {
+      "id": "o3",
+      "text": "Köpek"
+     },
+     {
+      "id": "o4",
+      "text": "Lale"
+     },
+     {
+      "id": "o5",
+      "text": "Kuş"
+     }
+    ],
+    "select_count": 3
+   },
+   "answer": {
+    "type": "multi_choice",
+    "v": 1,
+    "selected": [
+     "o1",
+     "o2",
+     "o3",
+     "o4"
+    ]
+   },
+   "valid": false,
+   "error": "answer_too_many"
+  },
+  {
+   "name": "fix non-selectable",
+   "type": "error_fix",
+   "payload": {
+    "unit": "word",
+    "segments": [
+     {
+      "id": "t1",
+      "text": "Ben"
+     },
+     {
+      "text": " dün okula "
+     },
+     {
+      "id": "t2",
+      "text": "gidiyorum"
+     },
+     {
+      "text": " ve "
+     },
+     {
+      "id": "t3",
+      "text": "arkadaşlarımla"
+     },
+     {
+      "text": " "
+     },
+     {
+      "id": "t4",
+      "text": "oynadık"
+     },
+     {
+      "text": "."
+     }
+    ]
+   },
+   "answer": {
+    "type": "error_fix",
+    "v": 1,
+    "marks": {
+     "t9": {}
+    }
+   },
+   "valid": false,
+   "error": "answer_unknown_id"
+  },
+  {
+   "name": "two stage bad option",
+   "type": "two_stage",
+   "payload": {
+    "stage1": {
+     "prompt": "Hangi madde iletkendir?",
+     "options": [
+      {
+       "id": "a1",
+       "text": "Bakır"
+      },
+      {
+       "id": "a2",
+       "text": "Plastik"
+      }
+     ]
+    },
+    "stage2": {
+     "prompt": "Neden?",
+     "mode": "choice",
+     "options": [
+      {
+       "id": "r1",
+       "text": "Metal olduğu için"
+      },
+      {
+       "id": "r2",
+       "text": "Renkli olduğu için"
+      }
+     ]
+    }
+   },
+   "answer": {
+    "type": "two_stage",
+    "v": 1,
+    "stage1": "r1"
+   },
+   "valid": false,
+   "error": "answer_unknown_id"
+  },
+  {
+   "name": "two stage text in choice mode",
+   "type": "two_stage",
+   "payload": {
+    "stage1": {
+     "prompt": "Hangi madde iletkendir?",
+     "options": [
+      {
+       "id": "a1",
+       "text": "Bakır"
+      },
+      {
+       "id": "a2",
+       "text": "Plastik"
+      }
+     ]
+    },
+    "stage2": {
+     "prompt": "Neden?",
+     "mode": "choice",
+     "options": [
+      {
+       "id": "r1",
+       "text": "Metal olduğu için"
+      },
+      {
+       "id": "r2",
+       "text": "Renkli olduğu için"
+      }
+     ]
+    }
+   },
+   "answer": {
+    "type": "two_stage",
+    "v": 1,
+    "stage1": "a1",
+    "stage2": {
+     "text": "x"
+    }
+   },
+   "valid": false,
+   "error": "answer_unknown_id"
   }
  ],
  "numbers": [
