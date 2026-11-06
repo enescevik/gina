@@ -13,6 +13,13 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { useUnsavedChanges } from "@/components/unsaved-changes";
 import { CalendarSeedImport } from "@/components/calendar-seed-import";
+import {
+  CheckBadges,
+  HolidayAdmin,
+  PublishReview,
+  ReportSummary,
+  useCalendarChecks,
+} from "@/components/calendar-ops";
 const stages = {
   preschool: "Okul öncesi",
   primary: "İlkokul",
@@ -58,6 +65,7 @@ function Workspace() {
     [report, setReport] = useState<Report | null>(null),
     [note, setNote] = useState("");
   const pending = useRef<{ payload: string; id: string } | null>(null);
+  const checks = useCalendarChecks(tick);
   const lock = useRef(false);
   const dirty =
     (!!draft && JSON.stringify(draft) !== original) || !!place || !!note;
@@ -199,6 +207,7 @@ function Workspace() {
           ["calendars", "Takvimler"],
           ["places", "Bölgeler ve okullar"],
           ["import", "Taslak içe aktar (kaynaklı)"],
+          ["holidays", "Tatil günleri"],
           ["reports", `Okuldan gelen bilgiler (${data?.open_reports ?? 0})`],
         ].map(([id, title]) => (
           <button
@@ -248,6 +257,7 @@ function Workspace() {
                       : "Yayında + yeni taslak"
                     : "Taslak"}
                 </p>
+                <CheckBadges check={checks.data?.get(c.id)} />
                 <button className="btn-secondary mt-4" onClick={() => edit(c)}>
                   İncele ve düzenle
                 </button>
@@ -466,13 +476,20 @@ function Workspace() {
                     Kaynakta hata varsa önce taslağı düzeltin. Ailelerin sınıfı
                     veya okul kaydı kendiliğinden değişmez.
                   </p>
-                  <button
-                    type="button"
-                    className="btn"
-                    onClick={() => save(true)}
-                  >
-                    Kaynağı doğruladım, takvimi yayımla
-                  </button>
+                  <PublishReview
+                    key={`${draft.id}:${draft.revision}`}
+                    calendarId={draft.id}
+                    revision={draft.revision}
+                    check={checks.data?.get(draft.id)}
+                    sourceUrl={draft.draft.source_url}
+                    onDone={(m) => {
+                      setDraft(null);
+                      setPublish(false);
+                      pending.current = null;
+                      setTick((x) => x + 1);
+                      setMessage(m);
+                    }}
+                  />
                 </section>
               )}
             </fieldset>
@@ -633,6 +650,7 @@ function Workspace() {
       {tab === "import" && (
         <CalendarSeedImport onDone={() => setTick((x) => x + 1)} />
       )}
+      {tab === "holidays" && <HolidayAdmin />}
       {tab === "reports" && (
         <Card title="Okul takvimi farklılıkları">
           <p className="mb-4">
@@ -640,6 +658,7 @@ function Workspace() {
             kontrol edin; doğrulama sonrasında ilgili kapsam için takvimi ayrıca
             kaydedip yayımlayın. Bildirimi kapatmak otomatik duyuru göndermez.
           </p>
+          <ReportSummary tick={tick} />
           {!data?.reports.length && (
             <p>İnceleme bekleyen okul bildirimi yok.</p>
           )}

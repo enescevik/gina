@@ -4350,6 +4350,28 @@
       "openAttachment": "Görseli aç"
     }
   },
+  "c11": {
+    "holiday": {
+      "title": "Tatil önerileri",
+      "break": "Ara tatil",
+      "question_one": "Okul takvimine göre bu tarihlerde tatil var. {{name}} için programda {{count}} ders günü görünüyor. Bu günleri tatil olarak işaretleyelim mi?",
+      "question_other": "Okul takvimine göre bu tarihlerde tatil var. {{name}} için programda {{count}} ders günü görünüyor. Bu günleri tatil olarak işaretleyelim mi?",
+      "questionNoLessons": "Okul takvimine göre bu tarihlerde tatil var. {{name}} için bu günlerde ders görünmüyor; yine de işaretleyebilirsin.",
+      "keeps": "Ders programı, görevler, yıldızlar ve sınıf değişmez; yalnız bu günlerdeki dersler tatil olarak işaretlenir. İstediğin an geri alabilirsin.",
+      "accept": "Tatil olarak işaretle",
+      "dismiss": "Bu sefer değil",
+      "undo": "Kararı geri al",
+      "source": "Takvim kaynağını aç",
+      "accepted": "Tatil olarak işaretlendi.",
+      "dismissed": "Öneri kapatıldı; program olduğu gibi kaldı.",
+      "undone": "Karar geri alındı.",
+      "acceptedBody": "Bu günlerde {{name}} için dersler tatil olarak işaretli. Program silinmedi.",
+      "dismissedBody": "Bu öneriyi kapattın; program olduğu gibi kullanılıyor.",
+      "changed": "Bu öneri başka bir cihazda değişti. Güncel hâli gösteriliyor.",
+      "error": "Kaydedilemedi. Bağlantını kontrol edip yeniden dene.",
+      "loadError": "Tatil önerileri yüklenemedi."
+    }
+  },
   "c12": {
     "builderMatchTarget": "Hedefi {{count}} soru yap"
   }

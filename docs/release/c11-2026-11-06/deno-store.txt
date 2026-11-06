@@ -1,0 +1,9 @@
+running 10 tests from ./supabase/functions/_shared/iap-state.test.ts
+running 35 tests from ./supabase/functions/_shared/store-notification.test.ts
+running 7 tests from ./supabase/functions/_shared/iap-lifecycle.test.ts
+running 7 tests from ./supabase/functions/_shared/google-acknowledge.test.ts
+running 18 tests from ./supabase/functions/iap-operator-reconcile/handler.test.ts
+running 9 tests from ./supabase/functions/iap-reconcile/handler.test.ts
+running 6 tests from ./supabase/functions/iap-verify/c11-client-selection.test.ts
+running 15 tests from ./supabase/functions/iap-verify/handler.test.ts
+ok | 107 passed | 0 failed (2s)

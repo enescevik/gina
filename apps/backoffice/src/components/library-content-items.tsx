@@ -5,11 +5,14 @@ import { useAuth } from "@/lib/auth";
 import { type KeysetPage, useKeysetList } from "@/lib/keyset";
 import { Notice } from "./Layout";
 import {
+  CandidateSourceBadge,
   type PrereviewKind,
   PrereviewBadge,
+  PrereviewDecisionQueue,
   PrereviewGateNotice,
   prereviewKey,
   RequestPrereviewButton,
+  useCandidateSources,
   usePrereviewGate,
   usePrereviews,
 } from "./content-prereview";
@@ -138,6 +141,8 @@ export function LibraryContentItems() {
   const [trail, setTrail] = useState<{ id: string; value: Trail | null; error: boolean } | null>(null);
 
   const rows = items.rows ?? [];
+  // C09/C05: senaryo adayının kaynak sürümü/hedefi/güncelliği rozette; eski kaynak AI'ya gönderilmez.
+  const candidateSources = useCandidateSources(rows.filter((r) => r.kind === "curriculum_candidate").map((r) => r.id));
   const blocked = !canReview || !gate.data || !!gate.data.reason;
   const reload = () => {
     items.reload();
@@ -209,6 +214,7 @@ export function LibraryContentItems() {
           eğitimci incelemesinin yerine geçmez. AI karar veremediğinde kayıt &quot;BEKLİYOR — yönetici kararı&quot; olarak kalır.
         </p>
       </div>
+      {canReview ? <PrereviewDecisionQueue onShowQueue={() => setAi("needs_admin")} /> : null}
       {canReview ? <PrereviewGateNotice gate={gate.data} error={gate.error} /> : (
         <Notice>Yayın ekibi görünümü: AI ön inceleme isteği ve editoryal karar içerik ekibindedir. Paketlerin yayın önizlemesine buradan gidebilirsiniz.</Notice>
       )}
@@ -299,6 +305,7 @@ export function LibraryContentItems() {
                       {r.publication_version ? ` · yayın sürümü ${r.publication_version}` : ""}
                     </p>
                     <p className="text-xs text-slate-500">Güncelleme {fmtWhen(r.updated_at)}</p>
+                    {r.kind === "curriculum_candidate" ? <CandidateSourceBadge source={candidateSources.data?.[r.id]} /> : null}
                   </td>
                   <td className="min-w-[200px]" data-testid="admin-decision">
                     <p className="font-semibold">{statusLabels[r.status]}</p>

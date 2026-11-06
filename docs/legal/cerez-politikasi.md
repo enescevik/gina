@@ -5,7 +5,7 @@
 | Sürüm | 0.2 (taslak) |
 | Tarih | 2026-10-30 |
 | Yürürlük tarihi | [YÜRÜRLÜK TARİHİ] |
-| Durum | **Bu metin taslaktır; yayın öncesi avukat incelemesi önerilir.** |
+| Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** Uygulama denetimi §2'de: web uygulaması tablodakinden fazla yerel depolama ögesi kullanıyor. |
 | Veri sorumlusu | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/VKN: [MERSİS/VKN] · KEP: [KEP ADRESİ – varsa] |
 | Yayın yeri | [WEB ADRESİ]/legal/cerez-politikasi (herkese açık HTML, TR/EN); web alt bilgisi; Gizlilik Politikası §16 ve Aydınlatma Metni §12 bağlantıları; rıza gerektiren öge eklenirse rıza bandı |
 | İlgili belgeler | [Gizlilik Politikası](./gizlilik-politikasi.md) · [KVKK Aydınlatma Metni](./kvkk-aydinlatma-metni.md) · [Kullanım Koşulları](./kullanim-kosullari.md) · [Abonelik Koşulları](./abonelik-kosullari-ve-on-bilgilendirme.md) · [Hesap ve Veri Silme](./hesap-ve-veri-silme.md) · [KVKK Başvuru Formu](./kvkk-basvuru-formu.md) |
@@ -13,7 +13,7 @@
 
 ## Kısa özet
 
-- Gina web uygulaması tarayıcınıza yalnızca iki iş için veri yazar: oturumunuzu sürdürmek ve dil/bölge tercihinizi hatırlamak. Bunlar zorunlu ögelerdir; açık rıza gerektirmez.
+- Gina web uygulaması tarayıcınıza oturumunuzu sürdürmek, dil/bölge tercihinizi hatırlamak ve ağ kesildiğinde yarım kalan işlemleri (ör. cevap, takvim komutu, destek mesajı) kaybetmeden tekrar denemek için veri yazar (§2). Bunlar birinci taraf, işlevsel ögelerdir; açık rıza gerektirip gerektirmediği için uzman incelemesi gerekir.
 - Analitik, reklam veya takip çerezi kullanmayız; bu yüzden çerez bandı göstermeyiz. Siteye girmeniz rıza sayılmaz.
 - Rıza gerektiren bir öge eklersek önce bu Politika'yı güncelleriz ve reddedebileceğiniz, önceden işaretli olmayan bir rıza bandı gösteririz.
 - Mobil uygulamalarımız çerez kullanmaz ve takip SDK'sı içermez.
@@ -39,7 +39,7 @@ Kişisel Verileri Koruma Kurumu'nun Çerez Uygulamaları Hakkında Rehberi (Temm
 | `[DİL/BÖLGE TERCİHİ ANAHTARI]` | Yerel depolama | Seçtiğiniz dili (Türkçe/İngilizce) ve tarih-sayı biçimi bölge ayarını hatırlamak | Siz değiştirene veya tarayıcı verisini silene kadar | Birinci taraf | Zorunlu (talep ettiğiniz arayüz tercihi) |
 | `__cf_bm`, `cf_clearance` | Çerez | Yalnızca Cloudflare bot koruması etkinse: otomatik trafiği insan ziyaretçiden ayırmak | `__cf_bm` en fazla 30 dakika; `cf_clearance` [CLOUDFLARE DOĞRULAMA SÜRESİ] | Cloudflare (barındırma sağlayıcımız); yalnızca güvenlik | Zorunlu [TEKNİK KARAR: koruma kapalıysa satır silinir] |
 
-Tarayıcınızda bu ögeler dışında hiçbir şey saklanmaz; giriş yapmadan yalnızca yasal sayfaları okuyorsanız (varsa Cloudflare güvenlik çerezleri dışında) hiçbir öge yazılmaz. Görevler, çocuk adı ve notlar sayfa açıkken bellekte tutulur, tarayıcıya kalıcı yazılmaz [TEKNİK: çevrimdışı önbellek eklenirse güncellenir]. Web'de satın alma olmadığından ödeme veya mağaza çerezi yoktur. Hiçbir öge izleme, profil çıkarma veya reklam için kullanılmaz ya da paylaşılmaz.
+**Uygulama denetimi (6 Kasım 2026):** Web uygulaması yukarıdaki tabloya ek olarak tarayıcının yerel depolamasına (`localStorage`/`sessionStorage`) birinci taraf, işlevsel ögeler yazar: yarım kalan işlemlerin ağ kesilince tekrar denenmesi için kısa ömürlü kuyruklar (`gina:` ve `gina.` önekli anahtarlar; ör. çocuğun Prova cevap günlüğü `gina.answer-journal.v1:*`, ebeveyn inceleme günlüğü, destek mesajı kuyruğu `gina.help-outbox.v1:*`, takvim/plan/kurulum/kütüphane komutları), QR'dan okunan bekleyen eşleştirme kodu (`gina-pending-pairing`), çocuk modu ve eşleştirilmiş cihaz kaydı ile oda görünümü önbelleği. Bu ögeler kişisel veri (ör. çocuğun cevap taslağı) içerebilir, sunucuya yalnız işlem tamamlanırken gönderilir, işlem bitince veya çıkışta silinmesi hedeflenir; reklam veya takip için kullanılmaz. Tablo yayın öncesi üretim derlemesinde tarayıcı araçlarıyla bu ögelerle tamamlanmalı ve "zorunlu/işlevsel" sınıflandırması için uzman incelemesi gerekir. Giriş yapmadan yalnızca yasal sayfaları okuyorsanız (varsa Cloudflare güvenlik çerezleri dışında) hiçbir öge yazılmaz. Öğretmen paylaşım bağlantısıyla açılan salt okunur sayfa da bu Politika kapsamındadır. Web'de satın alma olmadığından ödeme veya mağaza çerezi yoktur. Hiçbir öge izleme, profil çıkarma veya reklam için kullanılmaz ya da paylaşılmaz.
 
 ## 3. Zorunlu ögelerin hukuki sebebi ve engellenmesinin etkisi
 
@@ -88,7 +88,7 @@ Bunlar yalnızca tarayıcınızı etkiler; hesabınızdaki verileri silmek için
 
 ## 8. Mobil uygulama
 
-iOS ve Android uygulamalarımız çerez kullanmaz. Oturum bilgisi cihazınızda uygulamanın korumalı alanında saklanır ve çıkışta silinir; bu Gizlilik Politikası kapsamındadır. Uygulamalarda üçüncü taraf analitik, reklam veya takip SDK'sı yoktur; reklam kimlikleri (IDFA/AAID) toplanmaz; ilk sürümde çökme raporlama da yoktur. Bildirim (Expo) ve mağaza SDK'ları yalnızca hizmet için gereken veriyi işler, takip amacıyla veri toplamaz; mağaza gizlilik beyanlarımızda "takip: hayır" bildirilir.
+iOS ve Android uygulamalarımız çerez kullanmaz. Oturum bilgisi cihazınızda uygulamanın korumalı alanında saklanır ve çıkışta silinir; bu Gizlilik Politikası kapsamındadır. Uygulamalarda üçüncü taraf analitik, reklam veya takip SDK'sı yoktur; reklam kimlikleri (IDFA/AAID) toplanmaz; ilk sürümde çökme raporlama da yoktur. Bildirim (expo-notifications; bildirimler doğrudan APNs/FCM ile gönderilir, Expo bildirim hizmeti kullanılmaz) ve mağaza SDK'ları yalnızca hizmet için gereken veriyi işler, takip amacıyla veri toplamaz; mağaza gizlilik beyanlarımızda "takip: hayır" bildirilir.
 
 ## 9. Haklarınız ve iletişim
 
@@ -103,4 +103,5 @@ Güncel sürüm ve yürürlük tarihi sayfanın başındadır; değişiklik gün
 | Sürüm | Tarih | Değişiklik |
 |---|---|---|
 | 0.2 | 2026-10-30 | İlk taslak (0.1 yayımlanmadı); belge setinin 0.2 revizyonuyla birlikte oluşturuldu. İnceleme notları ve DECISIONS.md ile hizalandı: m.9/4-c standart sözleşme + m.9/5 bildirim, AB SCC güvence sayılmaz, hizmeti oluşturan sağlayıcıda açık rıza yolu yok; güvenlik günlükleri [12 ay], rıza kayıtları [3 YIL], bildirim [15 GÜN]; telefon kanalı ve web'de satış yok; yer tutucular ve /legal/* slug'ları diğer belgelerle eşitlendi. |
+| 0.2 (C11 teknik düzeltme) | 2026-11-06 | Durum satırı (uzman onayı yok); §2'ye web uygulamasının gerçek yerel depolama ögeleri (işlem kuyrukları, bekleyen eşleştirme, çocuk modu ve önbellek) ve öğretmen paylaşım sayfası eklendi; "tarayıcıya kalıcı yazılmaz" ifadesi düzeltildi. |
 | 0.2 | 2026-10-30 | Belge seti tutarlılık kontrolü: ilgili belgeler listesine Abonelik Koşulları bağlantısı eklendi. İçerik değişmedi. |

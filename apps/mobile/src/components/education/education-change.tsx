@@ -12,6 +12,7 @@ import { educationChangeStateSchema, type EducationChangeState } from "@gina/cor
 import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
 import { p, SatinButton, u } from "@/components/planner/ui";
+import { HolidaySuggestions } from "./holiday-suggestions";
 
 type LooseRpc = (fn: string, args: Record<string, unknown>) => PromiseLike<{ data: unknown; error: Error | null }>;
 const rpc = supabase.rpc.bind(supabase) as unknown as LooseRpc;
@@ -166,6 +167,8 @@ export function EducationChangeStatus({ child }: { child: { id: string; name: st
           </View>
         )
         : null}
+      {/* C11: yayımlanmış takvimden tatil önerisi (veli kabul eder; program silinmez). */}
+      <HolidaySuggestions child={child} />
     </View>
   );
 }

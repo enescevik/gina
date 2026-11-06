@@ -1,5 +1,6 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { apiKeyOrResponse, callClaude, resolveAi } from "../_shared/prova.ts";
+import { apiKeyOrResponse, resolveAi } from "../_shared/prova.ts";
+import { generateWith } from "../_shared/ai-route.ts";
 import { json, serviceClient } from "../_shared/supabase.ts";
 import { type Caller, createHandler } from "./handler.ts";
 
@@ -19,7 +20,7 @@ Deno.serve(createHandler({
       return secretMatches(Deno.env.get("CONTENT_PREREVIEW_SECRET"), cron) ? { kind: "system" } : null;
     }
     const token = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "") ?? "";
-    if (!token || body.drain === true) return null;
+    if (!token || body.drain === true || body.pilot === true) return null;
     const { data, error } = await service.auth.getUser(token);
     if (error || !data.user || data.user.is_anonymous) return null;
     // Authority is proven in the database: the admin-only RPC also queues the record.
@@ -31,12 +32,13 @@ Deno.serve(createHandler({
     if (requested.error || !requested.data) return null;
     return { kind: "admin", userId: data.user.id };
   },
-  key: apiKeyOrResponse,
+  // C08: secret name from the resolved adapter; no fallback to another provider's key.
+  key: (config) => apiKeyOrResponse(config),
   resolve: async () => {
     const { data, error } = await service.from("app_settings").select("value").eq("key", "content_prereview.plan").maybeSingle();
     if (error) return json({ error: "ai_configuration_unavailable" }, 503);
     const plan = typeof data?.value === "string" ? data.value : "pro";
     return resolveAi(service, plan, 1500);
   },
-  call: callClaude,
+  call: generateWith,
 }));

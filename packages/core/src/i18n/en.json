@@ -4355,6 +4355,28 @@
       "openAttachment": "Open image"
     }
   },
+  "c11": {
+    "holiday": {
+      "title": "Holiday suggestions",
+      "break": "School break",
+      "question_one": "The school calendar shows a holiday on these dates. {{name}}'s timetable has {{count}} school day here. Mark these days as a holiday?",
+      "question_other": "The school calendar shows a holiday on these dates. {{name}}'s timetable has {{count}} school days here. Mark these days as a holiday?",
+      "questionNoLessons": "The school calendar shows a holiday on these dates. {{name}} has no lessons on these days; you can still mark them.",
+      "keeps": "The timetable, tasks, stars and grade stay as they are; only lessons on these days are marked as a holiday. You can undo this at any time.",
+      "accept": "Mark as holiday",
+      "dismiss": "Not this time",
+      "undo": "Undo decision",
+      "source": "Open calendar source",
+      "accepted": "Marked as a holiday.",
+      "dismissed": "Suggestion closed; the timetable is unchanged.",
+      "undone": "Decision undone.",
+      "acceptedBody": "Lessons for {{name}} are marked as a holiday on these days. Nothing was deleted.",
+      "dismissedBody": "You closed this suggestion; the timetable is used as usual.",
+      "changed": "This suggestion changed on another device. Showing the current state.",
+      "error": "Could not save. Check your connection and try again.",
+      "loadError": "Holiday suggestions could not be loaded."
+    }
+  },
   "c12": {
     "builderMatchTarget": "Set the target to {{count}} questions"
   }

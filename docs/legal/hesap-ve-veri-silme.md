@@ -5,16 +5,16 @@
 | Sürüm | 0.2 (taslak) |
 | Tarih | 2026-10-30 |
 | Yürürlük tarihi | [YÜRÜRLÜK TARİHİ] |
-| Durum | **Bu metin taslaktır; yayın öncesi avukat incelemesi önerilir.** Türkçe metin esastır; İngilizce çeviri bilgi amaçlıdır. |
+| Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** Türkçe metin esastır; İngilizce çeviri bilgi amaçlıdır. |
 | Veri sorumlusu | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/VKN: [MERSİS/VKN] |
 | Yayın yeri | [WEB ADRESİ]/legal/hesap-ve-veri-silme; Google Play "Veri güvenliği" ve App Store Connect "Privacy Choices" bağlantısı; uygulamada Ayarlar > Hesap > Hesabı Sil |
 | İlgili belgeler | [Gizlilik Politikası](./gizlilik-politikasi.md) · [KVKK Aydınlatma Metni](./kvkk-aydinlatma-metni.md) · [Kullanım Koşulları](./kullanim-kosullari.md) · [Abonelik Koşulları](./abonelik-kosullari-ve-on-bilgilendirme.md) · [Çerez Politikası](./cerez-politikasi.md) · [KVKK Başvuru Formu](./kvkk-basvuru-formu.md) |
 
-## 31 Ekim 2026 uygulama denetimi — yayımlamadan önce güncellenmeli
+## 31 Ekim 2026 uygulama denetimi (6 Kasım 2026'da yeniden doğrulandı) — yayımlamadan önce güncellenmeli
 
-Bu belgenin aşağıdaki bölümleri hedef davranışı anlatan **hukuki taslaktır**, çalışan özelliğin kanıtı değildir. Mevcut uygulama: veli menüsünde ve aile kurulum ekranında **Hesabımı sil** → mevcut şifre + geri alınamaz işlem onayı → hemen silme. Başka veli varsa ortak çocuk kayıtları korunur ve aile sahipliği devredilir; son veli silinirse aile/çocuk verisi ve eşlenmiş anonim cihaz hesapları silinir. Silinen kullanıcının yazdığı notlar, oluşturduğu paylaşım bağlantıları, push tercihleri ve oturumları kaldırılır. Sunucu RLS/Edge üyelik kontrolü eski JWT erişimini de kapatır. Mağaza aboneliği iptal edilmez. Tek çocuk profili veli menüsündeki çocuk kartından, veri kapsamını açıklayan ikinci onayla silinir; diğer çocuklar korunur.
+Bu belgenin aşağıdaki bölümleri hedef davranışı anlatan **hukuki taslaktır**, çalışan özelliğin kanıtı değildir. Mevcut uygulama (`supabase/functions/delete-account/handler.ts`, `supabase/migrations/20261106040000_deletion_preview.sql`): veli menüsünde ve aile kurulum ekranında **Hesabımı sil** → etki önizlemesi (15 dakika geçerli, hedef değişirse silme yapılmaz) → mevcut şifre veya son 5 dakika içinde e-posta tek kullanımlık koduyla yeniden doğrulama + geri alınamaz işlem onayı → hemen silme. Hesap üyesi olduğu her aileden ayrı ayrı çıkarılır. Başka veli varsa ortak çocuk kayıtları korunur ve aile sahipliği devredilir; son veli silinirse aile/çocuk verisi ve eşlenmiş anonim cihaz hesapları silinir. Silinen kullanıcının yazdığı notlar, oluşturduğu paylaşım bağlantıları, push tercihleri ve oturumları kaldırılır. Sunucu RLS/Edge üyelik kontrolü eski JWT erişimini de kapatır. Mağaza aboneliği iptal edilmez. Tek çocuk profili veli menüsündeki çocuk kartından, etki önizlemesi ve veri kapsamını açıklayan ikinci onayla (`confirm_child_deletion`) silinir; diğer çocuklar korunur, başka bir ebeveynin o çocuk hakkındaki kişisel notu silinmez, aileye bağlı içerik (yüklenen dosyalar, soru bankası, ödüller) korunur. Silmeden farklı olarak çocuk profili **arşivlenebilir** (geri alınabilir duraklatma; kazanılmış kayıtlar korunur, eşleştirilmiş cihazlar engellenir) ve kayıtlar toplu arşivlenip geri yüklenebilir; arşiv silme değildir ve süre sınırı yoktur. Yüklenen belge/görseller aile silinince silinir; depolama nesnesi saatlik temizlik işiyle kaldırılır.
 
-**Henüz uygulanmayan taslak vaatleri:** dönem sonuna planlı silme; girişsiz e-posta doğrulamalı web silme formu; silme tamamlandı e-postası; 18 yaşında otomatik pasifleştirme; Apple/Google sosyal giriş belirteci iptali (bu sağlayıcılar beta girişinde açık değil); hukuki saklama süresi ve yedekten silme otomasyonu. Bunları varmış gibi yayımlamayın. Supabase/mağaza hizmet günlükleri ve yedekleri uygulama transaction'ıyla silinmez; saklama/imha politikası gerçek üretim ayarlarıyla ayrıca doğrulanmalıdır. Yayın metni uygulamadaki yol ve davranışla eşleştirilmeli; sorumlu unvanı, iletişim, saklama süreleri ve web başvuru yolu tamamlanmalıdır.
+**Henüz uygulanmayan taslak vaatleri:** dönem sonuna planlı silme; girişsiz e-posta doğrulamalı web silme formu; silme alındı/tamamlandı e-postası (e-posta sağlayıcısı bağlı değil); 18 yaşında otomatik pasifleştirme; Apple ile Giriş belirteç iptali (sosyal giriş uygulamada sağlayıcı ayarı açıksa görünür; silmede Apple'a iptal isteği gönderilmez); hukuki saklama süresi (satın alma, onay ve denetim kayıtları şu an aileyle birlikte hemen silinir) ve yedekten silme otomasyonu. Etkin abonelik varsa silme önizlemesinde uyarı ve uygulamadaki Abonelik ekranına (oradan mağazanın yönetim sayfasına) giden bağlantı gösterilir; silme ekranı ayrıca "aboneliği önce mağazadan iptal edin" uyarısını gösterir. Bunları varmış gibi yayımlamayın. Supabase/mağaza hizmet günlükleri ve yedekleri uygulama transaction'ıyla silinmez; saklama/imha politikası gerçek üretim ayarlarıyla ayrıca doğrulanmalıdır. Yayın metni uygulamadaki yol ve davranışla eşleştirilmeli; sorumlu unvanı, iletişim, saklama süreleri ve web başvuru yolu tamamlanmalıdır.
 
 ## Kısa özet (bağlayıcı değildir)
 
@@ -64,10 +64,11 @@ Bu silmeler de canlı sistemden hemen, yedeklerden en geç [30 gün] içinde kal
 | Aile | Aile adı, aile davet kodları, üyelikler, saat dilimi |
 | Çocuk profilleri | Ad/takma ad, doğum yılı, varsa avatar ve sınıf düzeyi, çocuk PIN'i |
 | Görevler ve puanlar | Görevler, tamamlama/onay geçmişi, çocuk modu işlem kayıtları, yıldızlar, ödüller, not/puan bilgileri |
-| Takvim, notlar, gelişim | Takvim ve ders programı, notlar, gelişim (kilometre taşı) kayıtları [ÜRÜN KARARI: Gina Pro fotoğraftan takvim görselleri] |
-| Yapay zekâ çıktıları | Gina'daki tüm özetler ve ipuçları (Anthropic için Bölüm 7) |
+| Takvim, notlar, gelişim | Takvim ve ders programı, notlar, gelişim (kilometre taşı) kayıtları |
+| Yüklenen belge ve görseller, Prova kayıtları | Aileye yüklenen görseller/PDF'ler (aile silinince; depolama nesnesi saatlik temizlikle), soru bankası, denemeler, çocuğun cevapları ve çözüm defterleri, yapay zekâ onay kayıtları ve değerlendirme önerileri; oluşturduğunuz öğretmen paylaşım bağlantıları |
+| Yapay zekâ çıktıları | Gina'daki tüm yapay zekâ özetleri ve çıktıları (Anthropic için Bölüm 7) |
 | Cihaz eşleştirmeleri | Eşleştirilmiş tabletler, anonim çocuk oturumları, eşleştirme kodları; anında geçersiz olur |
-| Bildirim belirteçleri | Push belirteçleri ve bildirim tercihleri (Expo için Bölüm 7) |
+| Bildirim belirteçleri | Push belirteçleri ve bildirim tercihleri (APNs/FCM için Bölüm 7; Expo kullanılmaz) |
 | Giriş bağlantıları | Apple ile Giriş (Apple'a belirteç iptali bildirilir), Google ile Giriş, e-posta/şifre girişi |
 
 ## 6. Yasal veya meşru nedenle sınırlı süre tutulanlar
@@ -89,7 +90,7 @@ Aşağıdaki kayıtlar silmeden sonra da tutulur; erişimleri kısıtlıdır, m�
 - **Canlı sistem:** Onay anında erişim kapanır ve veriler veritabanımızdan (Supabase, Frankfurt/AB) silinir.
 - **Yedekler:** Şifreli yedekler aynı bölgede tutulur ve en geç [30 gün] içinde döngüden çıkar; bir yedek geri yüklenirse silinen hesaplar yeniden silinir.
 - **Yapay zekâ (Anthropic, ABD):** Yalnızca ücretli pakette ve izninizle gönderilen takma adlı girdiler ve çıktılar Anthropic'te kural olarak 30 gün içinde silinir; kullandığımız modellerde bu saklama zorunludur, silme talebiyle kısaltılamaz. Kullanım politikası ihlali şüphesiyle işaretlenen içerik Anthropic tarafından 2 yıla kadar tutulabilir.
-- **Bildirim iletimi (Expo, ABD):** İçerik yalnızca iletim sırasında bellekte tutulur; belirteç kaydımız hemen silinir, Expo'daki belirteç [EXPO BELİRTEÇ SİLME SÜRESİ] içinde geçersiz kılınır; geçersiz belirteçler en geç [90 gün] içinde temizlenir.
+- **Bildirim iletimi (Apple APNs, Google FCM):** Bildirimler Expo üzerinden değil doğrudan APNs ve FCM ile gönderilir; bildirim metni çocuk adı, not veya puan içermez. Belirteç kaydımız hesapla birlikte hemen silinir; APNs/FCM'in geçersiz saydığı belirteçler gönderim sırasında otomatik silinir; gönderim kuyruğu kayıtları 30 gün sonra temizlenir. Önceki taslaktaki "Expo'daki belirteç silme süresi" yer tutucusu bu nedenle kaldırıldı.
 - **Süre ve bilgilendirme:** Talebinizi aldığımızda ve tamamladığımızda kayıtlı e-postanıza bilgi gönderir, işlemi en geç 30 gün içinde tamamlarız (KVKK m.13; Silme Yönetmeliği m.12).
 
 ## 8. Abonelik uyarısı: önce mağazadan iptal edin
@@ -104,7 +105,7 @@ Gina Plus ve Gina Pro abonelikleri yalnızca App Store (satıcı Apple Distribut
 
 ## 9. Birden fazla ebeveyn, 18 yaş ve çocuk adına talepler
 
-- **Ailede başka ebeveyn/vasi varsa:** [ÜRÜN KARARI — avukat görüşüyle: (a) yalnızca sizin hesabınız ve aile üyeliğiniz silinir, çocuk profilleri diğer ebeveynde kalır; (b) son ebeveyn hesabı silinince aile ve tüm çocuk profilleri silinir.]
+- **Ailede başka ebeveyn/vasi varsa (uygulamadaki güncel davranış):** yalnızca sizin hesabınız, aile üyeliğiniz ve size ait kişisel kayıtlar (yazdığınız notlar, oluşturduğunuz paylaşım bağlantıları, bildirim tercihleri) silinir; aile sahipliği diğer ebeveyne geçer, çocuk profilleri ve ortak kayıtlar onda kalır. Son ebeveyn hesabı silinince aile, tüm çocuk profilleri ve eşleştirilmiş cihazların anonim oturumları silinir. Uzman incelemesi gerekir: bu kuralın Veli Beyanı ve KVKK silme yükümlülüğüyle uyumu.
 - **18 yaşını dolduran çocuk:** Profil, doğum yılına 18 eklenen yılın 31 Aralık'ında pasife alınır ve [SİLME SÜRESİ, örn. 90 gün] içinde kendiliğinden silinir; öncesinde bildirim alırsınız (Veli Beyanı Bölüm 11). Reşit olan çocuğunuz kimliğini doğrulayarak [E-POSTA] üzerinden silme isteyebilir. [AVUKAT: kimlik doğrulama yöntemi]
 - **Çocuk adına talepler:** Yalnızca aile hesabındaki veli/vasi yapabilir; diğer durumlar için KVKK Başvuru Formu Bölüm 5 uygulanır.
 
@@ -119,4 +120,5 @@ Gina Plus ve Gina Pro abonelikleri yalnızca App Store (satıcı Apple Distribut
 | Sürüm | Tarih | Değişiklik |
 |---|---|---|
 | 0.2 | 2026-10-30 | İlk taslak; belge ailesinin 0.2 revizyonuyla birlikte envanter maddesi ve inceleme notlarına göre yazıldı (0.1 yayımlanmadı). Slug'lar ve süreler DECISIONS.md ile hizalandı; e-posta doğrulamalı web silme, hemen/dönem sonunda silme, bildirim için e-posta adresinin tutulması, Apple belirteç iptali, anında eşleştirme iptali, yalnızca doğum yılı, 18 yaş kuralı, telefon kanalı ve dışa aktarma yokluğu yazıldı. Çok ebeveynli silme [ÜRÜN KARARI]. |
+| 0.2 (C11 teknik düzeltme) | 2026-11-06 | Uygulama denetimi 6 Kasım koduyla yeniden doğrulandı: etki önizlemesi, yeniden doğrulama (şifre veya e-posta kodu), çok ebeveynli silme davranışı, arşiv ≠ silme, yüklenen dosyalar, Expo yerine doğrudan APNs/FCM; uygulanmamış vaatler güncellendi. Hukuk uzmanı onayı yoktur. |
 | 0.2 | 2026-10-30 | Belge seti tutarlılık kontrolü: cihaz eşleştirme ekran yolu "Ayarlar > Çocuklar > [Çocuk] > Cihazlar" olarak eşitlendi; rıza/beyan kayıtlarının hukuki sebebi Aydınlatma §5 ile aynı biçimde "m.5/2-ç ve m.5/2-e" yazıldı. |
