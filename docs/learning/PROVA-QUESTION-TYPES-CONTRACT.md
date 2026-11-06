@@ -110,3 +110,20 @@ Cevap hash'i: `sha256({key,text,document,revision} [+ answer])`. Veli puanı/inc
 - Yapılandırılmış türlerde AI puan önerisi yok (otomatik puan + veli). AI düzenleme yapılandırılmış soruda kapalı.
 - Kütüphane içe aktarma/yayın ve toplu grup sınavı yapılandırılmış tür taşımaz (kapsam dışı/sonraki faz).
 - Cihaz yeteneği atamada **uyarıdır** (veli `get_child_question_type_support`); kesin engel cevap/soru RPC'sindeki açık hatadır.
+
+## 7. Faz 2A / 2B / 3 ekleri (sunucu + core)
+
+Migration'lar: `20261107010000_qt30_phase2a_types`, `20261107020000_qt40_phase2b_types`, `20261107030000_qt50_crossword` (hepsi `enabled=false` gelir), açma: `20261107040000_qt_enable_phase2` (2A+2B; crossword kapalı). 1A/1B fonksiyonları `_p1/_p2/_p3` olarak yeniden adlandırılıp dağıtıcılarla sarıldı; eski davranış aynı (golden testler).
+
+| Tür | payload | anahtar | cevap | Politika |
+|---|---|---|---|---|
+| `mark_text` | `{unit: word\|sentence, segments:[{id?,text}], max_select?}` | `{targets:[id]}` (1 ≤ P < seçilebilir) | `{selected:[id]}` | `max(0, TP/P − FP/N)` |
+| `multi_choice` | `{options:[{id,text}] 3–8, select_count?}` | `{correct:[id]}` (P≥1, N≥1; select_count = P) | `{selected:[id]}` | aynı |
+| `error_fix` | `{unit, segments}` | `{errors:{id:{accepted:[..]}}, find_weight=0.5, fix_policy: review_unmatched\|closed, case_insensitive}` | `{marks:{id:{text?}}}` | `fw·max(0,found/P − FP/N) + (1−fw)·fixed/P`; anahtarda olmayan anlamlı düzeltme → veli (`pending_human`) |
+| `two_stage` | `{stage1:{prompt,options}, stage2:{prompt, mode: choice\|text, options?}}` | `{stage1:id, stage2?:id, weights?}` | `{stage1?:id, stage2?: id \| {text}}` | ağırlıklı; metin gerekçe → veli |
+| `region_select` | `{figure:{kind: grid\|sectors\|image, rows?, cols?, source?:"question_media"}, regions:[{id,text,box?}], max_select?}` | `{targets:[id]}` veya şekilde `{count:n}` | `{selected:[id]}` | dengeli seçim / tam adet |
+| `clock` | `{mode: read\|set, display, step_minutes, shown_time? (read)}` | `{time:"HH:MM", accept_12h=true}` | `{time}` | tam eşleşme (12 saat denkliği isteğe bağlı) |
+| `stimulus` (her yapılandırılmış türe) | `{kind: table\|bar_chart, alt (zorunlu), caption?, …}` | — | — | puanı etkilemez; izin listesiyle yeniden kurulur |
+| `crossword` (Faz 3, kapalı) | `{rows, cols, blocks?, clues:[{id,dir,row,col,length,text}]}` | `{answers:{id:"KELİME"}}` | `{cells:{"rR_cC":"A"}}` | ipucu bazlı; TR büyük harf; tamamlanma ayrı |
+
+Bütün 2A/2B türleri `practice_only` (OYSS/`meb_common` izinde reddedilir). Görsel bölgede görsel, sorunun mevcut özel medya bağlantısıdır; AI görsel bölge üretmez. Dikte (QT43) ve sesli cevap (QT51) ses depolama + rıza kararı beklediği için tanımlı değildir; problem kurma (QT44) açık uçlu + rubrik ön ayarıdır.
