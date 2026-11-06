@@ -209,9 +209,11 @@ export default function ParentProvaScreen() {
           )
           : null}
         <View
+          // C12: büyük yazı/dar ekranda sekmeler üst üste binmek yerine alt satıra geçer.
           style={{
             flexDirection: "row",
-            gap: wide ? 32 : 16,
+            flexWrap: "wrap",
+            columnGap: wide ? 32 : 16,
             justifyContent: wide ? 'flex-start' : 'space-between',
             borderBottomWidth: 1,
             borderBottomColor: p.line,
@@ -224,7 +226,7 @@ export default function ParentProvaScreen() {
               accessibilityState={{ selected: tab === v }} aria-selected={tab === v}
               onPress={() => setTab(v)}
               style={{
-                flexShrink: 1,
+                flexShrink: 0,
                 flexDirection: 'row',
                 gap: 6,
                 minHeight: 48,
