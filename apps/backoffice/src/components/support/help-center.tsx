@@ -4,7 +4,6 @@ import {
   definitiveHelpFailure,
   type HelpThread,
   helpThreadSchema,
-  helpTicketSchema,
   type OperatorHelpCommand,
   type PendingOperatorHelp,
 } from "@gina/core";
@@ -13,6 +12,13 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { useSupportQuery } from "@/lib/use-support-query";
 import { operatorOutbox, sendOperatorHelp } from "@/lib/operator-help";
+import {
+  ideaStages,
+  loadQueue,
+  waitingLabel,
+  waitingOverdue,
+} from "@/lib/support-ops";
+import { ReplyHelpers, TicketPanel } from "./ticket-ops";
 const labels: Record<string, string> = {
   open: "Açık",
   in_progress: "İnceleniyor",
@@ -75,7 +81,15 @@ function Workspace({ user, kind }: { user: string; kind: "support" | "idea" }) {
     ),
     [filter, setFilter] = useState("open"),
     [category, setCategory] = useState(""),
+    [assignee, setAssignee] = useState<"any" | "me" | "none">("any"),
+    [waiting, setWaiting] = useState(false),
+    [search, setSearch] = useState(""),
+    [query, setQuery] = useState(""),
     [version, setVersion] = useState(0);
+  useEffect(() => {
+    const t = setTimeout(() => setQuery(search.trim()), 350);
+    return () => clearTimeout(t);
+  }, [search]);
   const [busy, setBusy] = useState(false),
     [message, setMessage] = useState(""),
     [dirty, setDirty] = useState(false),
@@ -296,12 +310,54 @@ function Workspace({ user, kind }: { user: string; kind: "support" | "idea" }) {
                 <option key={value} value={value}>{label}</option>
               ))}
             </select>
+            <label className="label" htmlFor="queue-search">Ara</label>
+            <input
+              id="queue-search"
+              className="input"
+              type="search"
+              data-testid="support-search"
+              placeholder="Konu, mesaj veya ekip notu"
+              maxLength={80}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            {search.trim().length === 1
+              ? <small className="support-ops-hint">En az 2 harf yazın.</small>
+              : null}
+            <label className="label" htmlFor="queue-assignee">Sorumlu</label>
+            <select
+              id="queue-assignee"
+              className="input"
+              data-testid="support-assignee-filter"
+              value={assignee}
+              onChange={(e) =>
+                setAssignee(e.target.value as "any" | "me" | "none")}
+            >
+              <option value="any">Herkes</option>
+              <option value="me">Bana atananlar</option>
+              <option value="none">Sorumlusuz</option>
+            </select>
+            {kind === "support"
+              ? (
+                <label className="support-check">
+                  <input
+                    type="checkbox"
+                    checked={waiting}
+                    onChange={(e) => setWaiting(e.target.checked)}
+                  />
+                  Yalnız veli yanıt bekleyenler
+                </label>
+              )
+              : null}
           </header>
           <Queue
-            key={`${kind}:${filter}:${category}`}
+            key={`${kind}:${filter}:${category}:${assignee}:${waiting}:${query}`}
             kind={kind}
             status={filter}
             category={category}
+            assignee={assignee}
+            waiting={waiting}
+            query={query}
             selected={selected}
             choose={choose}
             version={version}
@@ -319,6 +375,7 @@ function Workspace({ user, kind }: { user: string; kind: "support" | "idea" }) {
               busy={busy}
               onSend={send}
               onDirty={setDirty}
+              onOpsChanged={() => setVersion((v) => v + 1)}
               back={() => choose(null)}
             />
           )
@@ -334,10 +391,13 @@ function Workspace({ user, kind }: { user: string; kind: "support" | "idea" }) {
   );
 }
 function Queue(
-  { kind, status, category, selected, choose, version }: {
-    kind: string;
+  { kind, status, category, assignee, waiting, query, selected, choose, version }: {
+    kind: "support" | "idea";
     status: string;
     category: string;
+    assignee: "any" | "me" | "none";
+    waiting: boolean;
+    query: string;
     selected: string | null;
     choose: (id: string) => void;
     version: number;
@@ -345,16 +405,11 @@ function Queue(
 ) {
   const [cursors, setCursors] = useState<{ time: string; id: string }[]>([]);
   const cursor = cursors.at(-1);
-  const result = useSupportQuery(async () => {
-    const { data, error } = await supabase().rpc("list_operator_help_tickets", {
-      p_kind: kind,
-      p_status: status || "all",
-      ...(category ? { p_category: category } : {}),
-      ...(cursor ? { p_before_time: cursor.time, p_before_id: cursor.id } : {}),
-    });
-    if (error) throw error;
-    return helpTicketSchema.array().parse(data);
-  }, JSON.stringify([kind, status, category, cursor, version]));
+  const result = useSupportQuery(
+    () =>
+      loadQueue({ kind, status, category, assignee, waiting, query, cursor }),
+    JSON.stringify([kind, status, category, assignee, waiting, query, cursor, version]),
+  );
   // SQL defaults to open. The all-status option is explicitly encoded as "all"
   // by the RPC caller below rather than filtering a partially loaded page.
   return (
@@ -368,7 +423,7 @@ function Queue(
           ? (
             <div className="support-empty">
               <h3>Bu görünümde talep yok</h3>
-              <p>Başka bir durum veya konu seçebilirsiniz.</p>
+              <p>Başka bir durum, konu, sorumlu veya arama deneyebilirsiniz.</p>
             </div>
           )
           : result.data.map((row) => (
@@ -380,13 +435,45 @@ function Queue(
             >
               <strong>{row.subject}</strong>
               <span>
-                <Chip status={row.status} />
+                {row.kind === "idea" && row.idea_stage
+                  ? (
+                    <span className="support-chip">
+                      {ideaStages[row.idea_stage]}
+                    </span>
+                  )
+                  : <Chip status={row.status} />}
                 <small>
                   {new Date(row.updated_at).toLocaleDateString("tr-TR", {
                     day: "numeric",
                     month: "short",
                   })}
                 </small>
+              </span>
+              <span className="support-ticket-ops">
+                {row.waiting_since
+                  ? (
+                    <small
+                      className={waitingOverdue(row.waiting_since)
+                        ? "support-overdue"
+                        : ""}
+                    >
+                      Veli {waitingLabel(row.waiting_since)} bekliyor
+                    </small>
+                  )
+                  : null}
+                <small>
+                  {row.assignee_id
+                    ? (row.assignee_is_me
+                      ? "Sorumlu: siz"
+                      : `Sorumlu: ${row.assignee_label ?? "ekip üyesi"}`)
+                    : "Sorumlusuz"}
+                </small>
+                {row.similar_count > 0
+                  ? <small>{row.similar_count} benzer fikir</small>
+                  : null}
+                {row.match === "message"
+                  ? <small>Mesajda eşleşti</small>
+                  : null}
               </span>
             </button>
           ))}
@@ -447,8 +534,10 @@ function Conversation({
   busy,
   onSend,
   onDirty,
+  onOpsChanged,
   back,
 }: {
+  onOpsChanged: () => void;
   id: string;
   version: number;
   delivered: PendingOperatorHelp | null;
@@ -615,8 +704,10 @@ function Conversation({
                 </div>
               )
               : null}
+            <TicketPanel id={id} locked={locked} onChanged={onOpsChanged} />
             <p className="support-privacy">
-              ⓘ Yanıtlar ailedeki ebeveynlere görünür.
+              ⓘ Yanıtlar ailedeki ebeveynlere görünür. Sorumlu, fikir durumu ve
+              ekip notları aileye görünmez.
             </p>
             <div className="support-messages">
               {current.messages.length === 100 && !allOlder
@@ -788,6 +879,22 @@ function Conversation({
                         revision: draft.revision ?? current.revision,
                       })}
                   />
+                  {mode === "family"
+                    ? (
+                      <ReplyHelpers
+                        subject={current.subject}
+                        category={current.category}
+                        disabled={locked}
+                        onInsert={(text) =>
+                          setFamily((d) => ({
+                            ...d,
+                            body: (d.body.trim() ? d.body.trimEnd() + "\n\n" : "") +
+                              text,
+                            revision: d.revision ?? current.revision,
+                          }))}
+                      />
+                    )
+                    : null}
                   {stale
                     ? (
                       <div className="support-notice" role="alert">
