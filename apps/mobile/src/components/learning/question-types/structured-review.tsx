@@ -1,7 +1,8 @@
-import type { StructuredAnswer, StructuredInteractionType } from "@gina/core";
+import { isPhase2aType } from "@gina/core";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
-import { autoResultHint, orderingSummary, reviewRows, type ScoreDetails } from "./model";
+import { autoResultHint, orderingSummary, reviewRows, type ClientAnswer, type ClientInteractionType, type ScoreDetails } from "./model";
+import { phase2aReviewRows, phase2aSummary } from "./phase2a-model";
 import { MarkBadge, qt } from "./ui";
 
 /** Yalnız VELİ: alt madde başına çocuğun cevabı, sunucu işareti ve anahtardaki doğru cevap. Salt okunur. */
@@ -12,14 +13,24 @@ export function StructuredReview({
   details,
   answerKey,
 }: {
-  type: StructuredInteractionType;
+  type: ClientInteractionType;
   payload: unknown;
-  answer: StructuredAnswer | undefined;
+  answer: ClientAnswer | undefined;
   details: ScoreDetails | null;
   answerKey: unknown;
 }) {
   const { t } = useTranslation();
-  const rows = reviewRows(type, payload, answer, details, answerKey, {
+  const rows = isPhase2aType(type) ? phase2aReviewRows(type, payload, answer, details, answerKey, {
+    selected: t("prova.qt.review.p2.selected"),
+    notSelected: t("prova.qt.review.p2.notSelected"),
+    shouldSelect: t("prova.qt.review.p2.shouldSelect"),
+    shouldNotSelect: t("prova.qt.review.p2.shouldNotSelect"),
+    marked: (fix) => (fix ? t("prova.qt.review.p2.markedFix", { fix }) : t("prova.qt.review.p2.markedNoFix")),
+    notMarked: t("prova.qt.review.p2.notMarked"),
+    notAnError: t("prova.qt.review.p2.notAnError"),
+    stage1: t("prova.qt.review.p2.stage1"),
+    stage2: t("prova.qt.review.p2.stage2"),
+  }) : reviewRows(type, payload, answer as never, details, answerKey, {
     yes: t("prova.qt.child.tf.true"),
     no: t("prova.qt.child.tf.false"),
     blank: (n) => t("prova.qt.review.blankN", { n }),
@@ -32,6 +43,7 @@ export function StructuredReview({
     ? ((answerKey as { orders: unknown[] }).orders.length)
     : 0;
   const hint = autoResultHint(details);
+  const p2 = isPhase2aType(type) ? phase2aSummary(type, details) : null;
   return (
     <View testID="qt-review" style={{ gap: 10 }}>
       {order ? (
@@ -40,6 +52,11 @@ export function StructuredReview({
         </Text>
       ) : null}
       {orders > 1 ? <Text style={{ fontFamily: "Nunito_600SemiBold", fontSize: 15, color: qt.muted }}>{t("prova.qt.review.altOrders", { count: orders - 1 })}</Text> : null}
+      {p2 ? (
+        <Text testID="qt-review-p2-summary" style={{ fontFamily: "Nunito_800ExtraBold", fontSize: 16, lineHeight: 22, color: qt.ink }}>
+          {t(`prova.qt.review.p2.summary.${p2.key}`, p2.values)}
+        </Text>
+      ) : null}
       {hint !== null ? <Text style={{ fontFamily: "Nunito_700Bold", fontSize: 15, color: qt.ink }}>{t("prova.qt.review.autoHint", { score: Math.round(hint) })}</Text> : null}
       {rows.map((row) => (
         <View key={row.id} testID={`qt-review-row-${row.id}`} style={{ gap: 4, borderTopWidth: 1, borderTopColor: "#F0ECF4", paddingTop: 8 }}>

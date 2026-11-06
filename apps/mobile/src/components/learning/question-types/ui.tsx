@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Text, View, type AccessibilityRole, type AccessibilityState } from "react-native";
-import { Check, Minus, X } from "lucide-react-native";
+import { Check, Eye, Minus, X } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Pressable } from "@/components/ui/pressable";
 import type { ItemMark } from "./model";
@@ -57,8 +57,8 @@ export function Option({
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityHint={accessibilityHint}
       accessibilityState={{ disabled: !!disabled, selected, ...state }}
-      aria-checked={role === "radio" ? !!state?.checked : undefined}
-      aria-selected={role === "radio" ? undefined : selected}
+      aria-checked={role === "radio" || role === "checkbox" ? !!state?.checked : undefined}
+      aria-selected={role === "radio" || role === "checkbox" ? undefined : selected}
       disabled={disabled}
       onPress={onPress}
       style={{
@@ -128,6 +128,7 @@ export function MarkBadge({ mark }: { mark: ItemMark }) {
     correct: { bg: qt.mint, fg: qt.mintDark, icon: <Check size={16} color={qt.mintDark} accessible={false} /> },
     incorrect: { bg: "#FFE9E9", fg: "#A43135", icon: <X size={16} color="#A43135" accessible={false} /> },
     blank: { bg: "#F1EEF5", fg: qt.muted, icon: <Minus size={16} color={qt.muted} accessible={false} /> },
+    review: { bg: qt.warm, fg: qt.ink, icon: <Eye size={16} color={qt.ink} accessible={false} /> },
   }[mark];
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 4, alignSelf: "flex-start", borderRadius: 999, backgroundColor: look.bg, paddingHorizontal: 10, paddingVertical: 3 }}>

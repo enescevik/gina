@@ -1,11 +1,9 @@
 import {
   answerState,
-  isStructuredType,
   type AnswerOf,
-  type StructuredAnswer,
-  type StructuredInteractionType,
+  type Phase2aAnswerOf,
 } from "@gina/core";
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { CircleAlert, Undo2 } from "lucide-react-native";
@@ -13,7 +11,8 @@ import { Pressable } from "@/components/ui/pressable";
 import { ClassificationQuestion } from "./classification";
 import { FillBlankQuestion } from "./fill-blank";
 import { MatchingQuestion } from "./matching";
-import { canRender, readPayload, type ScoreDetails } from "./model";
+import { canRender, isClientType, readPayload, readPhase2aPayload, type ClientAnswer, type ClientInteractionType, type ScoreDetails } from "./model";
+import { ErrorFixQuestion, MarkTextQuestion, MultiChoiceQuestion, TwoStageQuestion } from "./phase2a";
 import { NumericQuestion } from "./numeric";
 import { OrderingQuestion } from "./ordering";
 import { StructuredReview } from "./structured-review";
@@ -44,7 +43,7 @@ export function UpdateRequired({ testID = "qt-update-required" }: { testID?: str
 }
 
 /** Çocuğa doluluk durumu (puan/doğruluk DEĞİL): Boş · Yarım · Cevaplandı. */
-export function FillStatePill({ type, payload, answer }: { type: StructuredInteractionType; payload: unknown; answer: StructuredAnswer | undefined }) {
+export function FillStatePill({ type, payload, answer }: { type: ClientInteractionType; payload: unknown; answer: ClientAnswer | undefined }) {
   const { t } = useTranslation();
   const state = answerState(type, payload, answer ?? null);
   const look = { unanswered: ["#FFFFFF", qt.line, "○"], partial: [qt.warm, qt.warmLine, "◐"], complete: [qt.lilac, qt.purple, "●"] }[state];
@@ -75,24 +74,24 @@ export function StructuredQuestion({
   type: string | null | undefined;
   schemaVersion?: number | null;
   payload: unknown;
-  answer: StructuredAnswer | undefined;
-  onChange?: (answer: StructuredAnswer | undefined, typed: boolean) => void;
+  answer: ClientAnswer | undefined;
+  onChange?: (answer: ClientAnswer | undefined, typed: boolean) => void;
   disabled?: boolean;
   review?: StructuredReviewData;
   onOpenWorkArea?: () => void;
   hasWork?: boolean;
 }) {
   const { t } = useTranslation();
-  const [history, setHistory] = useState<(StructuredAnswer | undefined)[]>([]);
+  const [history, setHistory] = useState<(ClientAnswer | undefined)[]>([]);
   const typing = useRef(false);
-  if (!isStructuredType(type) || !canRender(type, schemaVersion, payload)) {
+  if (!isClientType(type) || !canRender(type, schemaVersion, payload)) {
     return review ? <Text style={{ fontFamily: "Nunito_700Bold", fontSize: 16, color: qt.ink }}>{t("prova.qt.review.unsupported")}</Text> : <UpdateRequired />;
   }
   if (review) {
     return <StructuredReview type={type} payload={payload} answer={answer} details={review.details} answerKey={review.answerKey} />;
   }
   const locked = disabled || !onChange;
-  function change(next: StructuredAnswer | undefined, typed = false) {
+  function change(next: ClientAnswer | undefined, typed = false) {
     if (locked) return;
     // Yazarken her harfi ayrı geri alma adımı yapmayız: ardışık yazım tek adımdır.
     if (!(typed && typing.current)) setHistory((h) => [...h.slice(-19), answer]);
@@ -107,7 +106,7 @@ export function StructuredQuestion({
     onChange!(previous, false);
   }
   const common = { disabled: locked };
-  let body: React.ReactNode;
+  let body: ReactNode;
   switch (type) {
     case "true_false":
       body = <TrueFalseQuestion {...common} payload={readPayload("true_false", payload)!} answer={answer as AnswerOf<"true_false"> | undefined} onChange={(a) => change(a)} />;
@@ -126,6 +125,18 @@ export function StructuredQuestion({
       break;
     case "classification":
       body = <ClassificationQuestion {...common} payload={readPayload("classification", payload)!} answer={answer as AnswerOf<"classification"> | undefined} onChange={(a) => change(a)} />;
+      break;
+    case "mark_text":
+      body = <MarkTextQuestion {...common} payload={readPhase2aPayload("mark_text", payload)!} answer={answer as Phase2aAnswerOf<"mark_text"> | undefined} onChange={(a) => change(a)} />;
+      break;
+    case "error_fix":
+      body = <ErrorFixQuestion {...common} payload={readPhase2aPayload("error_fix", payload)!} answer={answer as Phase2aAnswerOf<"error_fix"> | undefined} onChange={(a, typed) => change(a, typed)} />;
+      break;
+    case "multi_choice":
+      body = <MultiChoiceQuestion {...common} payload={readPhase2aPayload("multi_choice", payload)!} answer={answer as Phase2aAnswerOf<"multi_choice"> | undefined} onChange={(a) => change(a)} />;
+      break;
+    case "two_stage":
+      body = <TwoStageQuestion {...common} payload={readPhase2aPayload("two_stage", payload)!} answer={answer as Phase2aAnswerOf<"two_stage"> | undefined} onChange={(a, typed) => change(a, typed)} />;
       break;
   }
   return (

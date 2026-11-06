@@ -12,8 +12,13 @@ import {
   categoryFull,
   type ClassificationPayload,
   type FillBlankPayload,
+  isPhase2aType,
   isStructuredType,
   parseNumberInput,
+  phase2aAnswerSchema,
+  phase2aPayloadSchemas,
+  type Phase2aAnswer,
+  type Phase2aInteractionType,
   setBlank,
   setPlacement,
   structuredAnswerSchema,
@@ -34,18 +39,30 @@ export function readPayload<T extends StructuredInteractionType>(type: T, payloa
   return parsed.success ? parsed.data : null;
 }
 
+/** İstemcinin okuyabildiği bütün yapılandırılmış cevaplar (1A/1B + 2A). */
+export type ClientAnswer = StructuredAnswer | Phase2aAnswer;
+export type ClientInteractionType = StructuredInteractionType | Phase2aInteractionType;
+export const clientAnswerSchema = z.union([structuredAnswerSchema, phase2aAnswerSchema]);
+export const isClientType = (t: string | null | undefined): t is ClientInteractionType => isStructuredType(t) || isPhase2aType(t ?? "");
+
+/** 2A payload'ı (öğrenci projeksiyonu ya da veli tam payload'ı; ikisi de aynı anahtarları taşır). */
+export function readPhase2aPayload<T extends Phase2aInteractionType>(type: T, payload: unknown) {
+  const parsed = (phase2aPayloadSchemas[type] as unknown as z.ZodType<z.infer<(typeof phase2aPayloadSchemas)[T]>>).safeParse(payload);
+  return parsed.success ? parsed.data : null;
+}
+
 /** Kayıtlı cevap (jsonb) → yapılandırılmış cevap; tür uyuşmuyorsa null değil hata. */
-export function readStructuredAnswer(type: string, value: unknown): StructuredAnswer | undefined {
+export function readStructuredAnswer(type: string, value: unknown): ClientAnswer | undefined {
   if (value === null || value === undefined) return undefined;
-  const parsed = structuredAnswerSchema.safeParse(value);
+  const parsed = clientAnswerSchema.safeParse(value);
   if (!parsed.success || parsed.data.type !== type) throw new Error("client_update_required");
   return parsed.data;
 }
 
 /** Bu istemci soruyu çizebilir mi (tür + şema sürümü + payload). */
 export function canRender(type: string | null | undefined, schemaVersion: number | null | undefined, payload: unknown): boolean {
-  if (!isStructuredType(type) || (schemaVersion ?? 1) !== 1) return false;
-  return readPayload(type, payload) !== null;
+  if (!isClientType(type) || (schemaVersion ?? 1) !== 1) return false;
+  return isPhase2aType(type) ? readPhase2aPayload(type, payload) !== null : readPayload(type, payload) !== null;
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -60,10 +77,10 @@ export interface NavigatorAnswer {
   key?: string;
   text?: string;
   hasDocument?: boolean;
-  answer?: StructuredAnswer;
+  answer?: ClientAnswer;
 }
 export function questionFillState(q: NavigatorQuestion, a: NavigatorAnswer | undefined): AnswerState {
-  if (q.kind === "structured" && isStructuredType(q.interaction_type)) {
+  if (q.kind === "structured" && isClientType(q.interaction_type)) {
     return answerState(q.interaction_type, q.payload, a?.answer ?? null);
   }
   return a?.key || a?.text?.trim() || a?.hasDocument ? "complete" : "unanswered";
@@ -195,7 +212,8 @@ export function readScoreDetails(raw: unknown): ScoreDetails | null {
   return raw && typeof raw === "object" && !Array.isArray(raw) ? (raw as ScoreDetails) : null;
 }
 
-export type ItemMark = "correct" | "incorrect" | "blank" | "unknown";
+/** review: anahtarda olmayan anlamlı cevap; veli karar verir (pending_human). */
+export type ItemMark = "correct" | "incorrect" | "blank" | "unknown" | "review";
 export interface ReviewRow {
   id: string;
   prompt: string;

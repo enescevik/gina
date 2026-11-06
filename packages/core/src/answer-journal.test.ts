@@ -174,4 +174,11 @@ describe("durable answer journal", () => {
     expect(f.data.size).toBe(0);
     expect(saved).toBe(false);
   });
+  it("keeps 2A structured answers and refuses unknown answer shapes", () => {
+    const f = fixture(), j = f.open();
+    const a = { type: "error_fix" as const, v: 1 as const, marks: { w2: { text: "gitti" } } };
+    j.edit(uid(5), { answer: a }, 0);
+    expect(f.open().restore()[uid(5)]).toEqual({ answer: a });
+    expect(() => j.edit(uid(6), { answer: { type: "mark_text", v: 2, selected: [] } as never }, 0)).toThrow();
+  });
 });
