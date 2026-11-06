@@ -17,6 +17,8 @@ $$;
 create function pg_temp.q(t text, payload jsonb, key jsonb) returns jsonb language sql as $$
  select jsonb_build_object('grade',2,'subject','Matematik','topic','Kesirler','difficulty','kolay','stem','Yönergeyi uygula.','interaction_type',t,'schema_version',1,'payload',payload,'answer_key',key);
 $$;
+-- Yayın anahtarı (20261107040000) türleri açar; kapalıyken davranış burada açıkça kapatılarak denenir.
+update public.interaction_types set enabled=false where phase='2B';
 set local role authenticated;
 select pg_temp.as_parent();
 select throws_like($$select public.save_question_with_sources(gen_random_uuid(), pg_temp.q('clock','{"mode":"set","display":"analog","step_minutes":5}','{"time":"07:30"}'))$$,'%interaction_type_unavailable%','2B disabled by default');
