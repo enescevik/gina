@@ -1,0 +1,34 @@
+{
+ "ArtifactName": ".",
+ "CreatedAt": "2026-11-06T14:49:19.855089+03:00",
+ "trivy": "0.70.0",
+ "db_updated_at": "2026-11-05T19:01:45Z",
+ "command": "trivy fs --scanners vuln --include-dev-deps --skip-db-update --skip-dirs node_modules .",
+ "Results": [
+  {
+   "Target": "pnpm-lock.yaml",
+   "Type": "pnpm",
+   "packages_scanned": 1133,
+   "Vulnerabilities": [
+    {
+     "VulnerabilityID": "CVE-2026-118773",
+     "PkgName": "glob",
+     "InstalledVersion": "13.0.6",
+     "FixedVersion": "14.0.2",
+     "Severity": "MEDIUM",
+     "Title": "glob: glob: Denial of Service (DoS) via incomplete traversal cancellation",
+     "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-118773"
+    },
+    {
+     "VulnerabilityID": "CVE-2026-118764",
+     "PkgName": "minimatch",
+     "InstalledVersion": "10.2.6",
+     "FixedVersion": "11.0.1",
+     "Severity": "MEDIUM",
+     "Title": "minimatch: minimatch: Denial of Service via crafted glob pattern expansion",
+     "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-118764"
+    }
+   ]
+  }
+ ]
+}

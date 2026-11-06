@@ -1,0 +1,1832 @@
+{
+  "environment": "disposable local GoTrue+PostgREST on loopback, Docker Desktop on this Mac shared with other agents; absolute numbers are NOT production latencies; compare phases inside one run only",
+  "measured_at": "2026-11-06T12:04:19.271Z",
+  "db_prefix": "gina_c13p_",
+  "reps": 15,
+  "week": [
+    "2026-11-02",
+    "2026-11-08"
+  ],
+  "seed": {
+    "notes": [],
+    "task_templates": 250,
+    "task_completions": 600,
+    "star_events": 1000,
+    "timetable": "35 lessons",
+    "education_location": "set",
+    "learning_sources": 500,
+    "notes_rows": 500,
+    "help_tickets": 120,
+    "help_attachments": 90,
+    "drawn_answers": 20,
+    "drawn_answer_bytes_each": 49499,
+    "library": {
+      "collections": 100,
+      "items": 400,
+      "packages": 100,
+      "candidates": 300,
+      "view_rows": 600
+    },
+    "note": "tasks/completions/stars/sources/notes/tickets inserted with the service role, library rows with postgres, all in the disposable DB; Prova/answers through real RPCs",
+    "policy_audit": {
+      "policies_total": 112,
+      "bare_helper_policies": 0,
+      "in_window_20261106180000_320000": 0,
+      "bare": []
+    },
+    "candidate": {
+      "file": "docs/release/c13-2026-11-06/perf/candidate.sql",
+      "applied": true,
+      "error": null
+    },
+    "plan_version_on_equivalence": {
+      "cases": 4000,
+      "with_versions": 3620,
+      "mismatches": 0
+    },
+    "output_equivalence_before_after": {
+      "plan_for_days_42d_parent": true,
+      "plan_for_days_7d_device": true,
+      "routines_for_day_parent_today": true,
+      "routines_for_day_parent_past60": true,
+      "routines_for_day_parent_future200": true,
+      "plan_for_day_parent_past150": true
+    },
+    "rollback": {
+      "applied": true,
+      "error": null
+    },
+    "table_rows": [
+      {
+        "table": "gina.curriculum_candidates",
+        "rows": 300
+      },
+      {
+        "table": "public.exam_answers",
+        "rows": 20
+      },
+      {
+        "table": "public.help_attachments",
+        "rows": 90
+      },
+      {
+        "table": "public.help_tickets",
+        "rows": 120
+      },
+      {
+        "table": "public.learning_sources",
+        "rows": 500
+      },
+      {
+        "table": "public.library_items",
+        "rows": 400
+      },
+      {
+        "table": "public.notes",
+        "rows": 500
+      },
+      {
+        "table": "public.star_events",
+        "rows": 1000
+      },
+      {
+        "table": "public.task_completions",
+        "rows": 600
+      },
+      {
+        "table": "gina.task_routine_changes",
+        "rows": 370
+      },
+      {
+        "table": "public.task_templates",
+        "rows": 250
+      }
+    ]
+  },
+  "phase": "before",
+  "measurements": [
+    {
+      "label": "child_today_plan_for_days_7d_device",
+      "reps": 15,
+      "p50_ms": 277.2,
+      "p95_ms": 478.6,
+      "min_ms": 253.9,
+      "max_ms": 478.6,
+      "rows": 7,
+      "bytes": 178979
+    },
+    {
+      "label": "child_today_task_templates_device",
+      "reps": 15,
+      "p50_ms": 15.5,
+      "p95_ms": 25.1,
+      "min_ms": 10.6,
+      "max_ms": 25.1,
+      "rows": 220,
+      "bytes": 43255
+    },
+    {
+      "label": "child_today_completions_week_device",
+      "reps": 15,
+      "p50_ms": 6.6,
+      "p95_ms": 9,
+      "min_ms": 5.9,
+      "max_ms": 9,
+      "rows": 35,
+      "bytes": 9906
+    },
+    {
+      "label": "child_today_star_balance_device",
+      "reps": 15,
+      "p50_ms": 7.1,
+      "p95_ms": 11.1,
+      "min_ms": 4.4,
+      "max_ms": 11.1,
+      "rows": 1,
+      "bytes": 104
+    },
+    {
+      "label": "child_today_all4_parallel_device",
+      "reps": 15,
+      "p50_ms": 356,
+      "p95_ms": 483.8,
+      "min_ms": 313.5,
+      "max_ms": 483.8,
+      "rows": 4,
+      "bytes": 232249
+    },
+    {
+      "label": "child_today_plan_for_days_7d_parent",
+      "reps": 15,
+      "p50_ms": 390.8,
+      "p95_ms": 514.8,
+      "min_ms": 309.8,
+      "max_ms": 514.8,
+      "rows": 7,
+      "bytes": 178979
+    },
+    {
+      "label": "calendar_plan_for_days_7d_parent_2children",
+      "reps": 15,
+      "p50_ms": 282.4,
+      "p95_ms": 418.9,
+      "min_ms": 257.9,
+      "max_ms": 418.9,
+      "rows": 2,
+      "bytes": 260505
+    },
+    {
+      "label": "calendar_plan_for_days_42d_parent",
+      "reps": 7,
+      "p50_ms": 1732.2,
+      "p95_ms": 1872,
+      "min_ms": 1639,
+      "max_ms": 1872,
+      "rows": 42,
+      "bytes": 1074143
+    },
+    {
+      "label": "calendar_plan_for_days_42d_device",
+      "reps": 7,
+      "p50_ms": 1804.9,
+      "p95_ms": 2059.9,
+      "min_ms": 1623,
+      "max_ms": 2059.9,
+      "rows": 42,
+      "bytes": 1074143
+    },
+    {
+      "label": "tasks_children_list_parent",
+      "reps": 15,
+      "p50_ms": 7.9,
+      "p95_ms": 10.5,
+      "min_ms": 6.3,
+      "max_ms": 10.5,
+      "rows": 2,
+      "bytes": 222
+    },
+    {
+      "label": "tasks_templates_select_star_parent",
+      "reps": 15,
+      "p50_ms": 9.7,
+      "p95_ms": 14.1,
+      "min_ms": 7.9,
+      "max_ms": 14.1,
+      "rows": 220,
+      "bytes": 122886
+    },
+    {
+      "label": "tasks_routines_for_day_parent",
+      "reps": 15,
+      "p50_ms": 448.8,
+      "p95_ms": 598.2,
+      "min_ms": 410.8,
+      "max_ms": 598.2,
+      "rows": 220,
+      "bytes": 71725
+    },
+    {
+      "label": "review_attempt_with_embeds_parent",
+      "reps": 15,
+      "p50_ms": 11.7,
+      "p95_ms": 18.5,
+      "min_ms": 9,
+      "max_ms": 18.5,
+      "rows": 1,
+      "bytes": 916
+    },
+    {
+      "label": "review_questions_in_ids_parent",
+      "reps": 15,
+      "p50_ms": 12.4,
+      "p95_ms": 17.6,
+      "min_ms": 9.4,
+      "max_ms": 17.6,
+      "rows": 20,
+      "bytes": 4431
+    },
+    {
+      "label": "review_exam_answers_drawn_parent",
+      "reps": 15,
+      "p50_ms": 44.1,
+      "p95_ms": 58.3,
+      "min_ms": 28,
+      "max_ms": 58.3,
+      "rows": 20,
+      "bytes": 994052
+    },
+    {
+      "label": "review_get_answer_review_parent",
+      "reps": 15,
+      "p50_ms": 8.1,
+      "p95_ms": 11.8,
+      "min_ms": 6.8,
+      "max_ms": 11.8,
+      "rows": 1,
+      "bytes": 160
+    },
+    {
+      "label": "review_get_review_ai_policy_parent",
+      "reps": 15,
+      "p50_ms": 7.6,
+      "p95_ms": 17.6,
+      "min_ms": 6.7,
+      "max_ms": 17.6,
+      "rows": 1,
+      "bytes": 32
+    },
+    {
+      "label": "saved_exam_answers_v3_drawn_device",
+      "reps": 15,
+      "p50_ms": 42.5,
+      "p95_ms": 57.8,
+      "min_ms": 32.3,
+      "max_ms": 57.8,
+      "rows": 20,
+      "bytes": 993032
+    },
+    {
+      "label": "saved_exam_answers_v3_drawn_parent",
+      "reps": 15,
+      "p50_ms": 44.4,
+      "p95_ms": 117.5,
+      "min_ms": 30.6,
+      "max_ms": 117.5,
+      "rows": 20,
+      "bytes": 993032
+    },
+    {
+      "label": "bo_admin_library_content_page_p1_operator",
+      "reps": 15,
+      "p50_ms": 17.1,
+      "p95_ms": 32.2,
+      "min_ms": 12.9,
+      "max_ms": 32.2,
+      "rows": 50,
+      "bytes": 21922
+    },
+    {
+      "label": "bo_admin_library_content_page_p2_operator",
+      "reps": 15,
+      "p50_ms": 18.1,
+      "p95_ms": 28,
+      "min_ms": 10.9,
+      "max_ms": 28,
+      "rows": 50,
+      "bytes": 21935
+    },
+    {
+      "label": "bo_admin_library_content_page_draft_operator",
+      "reps": 15,
+      "p50_ms": 13.5,
+      "p95_ms": 18.9,
+      "min_ms": 10.4,
+      "max_ms": 18.9,
+      "rows": 50,
+      "bytes": 21922
+    },
+    {
+      "label": "sources_page0_parent",
+      "reps": 15,
+      "p50_ms": 9.4,
+      "p95_ms": 14.7,
+      "min_ms": 5.7,
+      "max_ms": 14.7,
+      "rows": 31,
+      "bytes": 3217
+    },
+    {
+      "label": "sources_page10_parent",
+      "reps": 15,
+      "p50_ms": 8.6,
+      "p95_ms": 10.6,
+      "min_ms": 6.6,
+      "max_ms": 10.6,
+      "rows": 31,
+      "bytes": 3256
+    },
+    {
+      "label": "notes_list_active_parent",
+      "reps": 15,
+      "p50_ms": 8.9,
+      "p95_ms": 11.3,
+      "min_ms": 7.8,
+      "max_ms": 11.3,
+      "rows": 21,
+      "bytes": 15186
+    },
+    {
+      "label": "notes_list_child_parent",
+      "reps": 15,
+      "p50_ms": 10.2,
+      "p95_ms": 11.4,
+      "min_ms": 9.2,
+      "max_ms": 11.4,
+      "rows": 21,
+      "bytes": 15426
+    },
+    {
+      "label": "notes_list_archive_parent",
+      "reps": 15,
+      "p50_ms": 9.7,
+      "p95_ms": 11.2,
+      "min_ms": 7.9,
+      "max_ms": 11.2,
+      "rows": 21,
+      "bytes": 15757
+    },
+    {
+      "label": "help_list_tickets_parent",
+      "reps": 15,
+      "p50_ms": 11.3,
+      "p95_ms": 17.9,
+      "min_ms": 8.3,
+      "max_ms": 17.9,
+      "rows": 50,
+      "bytes": 11832
+    },
+    {
+      "label": "help_list_attachments_parent",
+      "reps": 15,
+      "p50_ms": 8.7,
+      "p95_ms": 11,
+      "min_ms": 5.5,
+      "max_ms": 11,
+      "rows": 3,
+      "bytes": 492
+    }
+  ],
+  "explains": [
+    {
+      "label": "child_today_plan_for_days_7d_device",
+      "planning_ms": 0.03,
+      "execution_ms": 419.33,
+      "shared_hit_blocks": 8598,
+      "shared_read_blocks": 0,
+      "top_rows": 1,
+      "seq_scans": [],
+      "index_scans": [],
+      "subplans": [],
+      "function_calls": [
+        {
+          "fn": "gina.plan_version_on",
+          "calls": 1547,
+          "total_ms": 205.52,
+          "self_ms": 205.52
+        },
+        {
+          "fn": "gina.task_routine_version_on",
+          "calls": 1540,
+          "total_ms": 318.3,
+          "self_ms": 10.9
+        },
+        {
+          "fn": "gina.task_routine_versions",
+          "calls": 1540,
+          "total_ms": 102.49,
+          "self_ms": 102.49
+        },
+        {
+          "fn": "gina.normalize_subject_alias",
+          "calls": 280,
+          "total_ms": 3.66,
+          "self_ms": 3.66
+        },
+        {
+          "fn": "gina.claims",
+          "calls": 70,
+          "total_ms": 10.84,
+          "self_ms": 10.84
+        },
+        {
+          "fn": "gina.annotate_lessons",
+          "calls": 14,
+          "total_ms": 8.97,
+          "self_ms": 5.31
+        },
+        {
+          "fn": "gina.education_calendar_match",
+          "calls": 14,
+          "total_ms": 1.08,
+          "self_ms": 1.08
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 7,
+          "total_ms": 4.79,
+          "self_ms": 2.32
+        },
+        {
+          "fn": "gina.device_allows",
+          "calls": 7,
+          "total_ms": 4.4,
+          "self_ms": 4.4
+        },
+        {
+          "fn": "gina.timetable_versions",
+          "calls": 7,
+          "total_ms": 1.56,
+          "self_ms": 1.56
+        },
+        {
+          "fn": "gina.timetable_version_on",
+          "calls": 7,
+          "total_ms": 3.03,
+          "self_ms": 0.86
+        },
+        {
+          "fn": "gina.plan_for_day_base",
+          "calls": 7,
+          "total_ms": 376.24,
+          "self_ms": 32.59
+        },
+        {
+          "fn": "gina.plan_for_day_dated",
+          "calls": 7,
+          "total_ms": 392.75,
+          "self_ms": 7.54
+        },
+        {
+          "fn": "gina.is_device",
+          "calls": 7,
+          "total_ms": 14.39,
+          "self_ms": 3.36
+        },
+        {
+          "fn": "gina.local_day",
+          "calls": 7,
+          "total_ms": 1.4,
+          "self_ms": 1.4
+        },
+        {
+          "fn": "public.plan_for_day",
+          "calls": 7,
+          "total_ms": 402.35,
+          "self_ms": 2.62
+        },
+        {
+          "fn": "gina.child_holiday_windows",
+          "calls": 7,
+          "total_ms": 6.98,
+          "self_ms": 5.9
+        },
+        {
+          "fn": "public.plan_for_days",
+          "calls": 1,
+          "total_ms": 418.34,
+          "self_ms": 15.99
+        }
+      ]
+    },
+    {
+      "label": "child_today_task_templates_device",
+      "planning_ms": 2.22,
+      "execution_ms": 7.39,
+      "shared_hit_blocks": 914,
+      "shared_read_blocks": 0,
+      "top_rows": 220,
+      "seq_scans": [
+        {
+          "relation": "task_completions",
+          "actual_rows": 600,
+          "removed_by_filter": 0,
+          "filter": "(((InitPlan 13).col1 OR ((InitPlan 14).col1 AND (child_id = (InitPlan 15).col1))) AND (family_id = (InitPlan 12).col1) AND (child_id = (InitPlan 11).col1))",
+          "loops": 1
+        }
+      ],
+      "index_scans": [
+        {
+          "index": "task_templates_child_sort_idx",
+          "relation": "task_templates",
+          "actual_rows": 220,
+          "loops": 1
+        }
+      ],
+      "subplans": [
+        {
+          "name": "InitPlan 1",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 2",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 3",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 4",
+          "loops": 1
+        },
+        {
+          "name": "SubPlan 16",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 11",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 12",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 13",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 14",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 15",
+          "loops": 1
+        }
+      ],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 21,
+          "total_ms": 2.77,
+          "self_ms": 2.77
+        },
+        {
+          "fn": "gina.device_allows",
+          "calls": 2,
+          "total_ms": 1.67,
+          "self_ms": 1.67
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 2,
+          "total_ms": 1.88,
+          "self_ms": 1.21
+        },
+        {
+          "fn": "gina.is_device",
+          "calls": 2,
+          "total_ms": 3.71,
+          "self_ms": 0.92
+        }
+      ]
+    },
+    {
+      "label": "child_today_completions_week_device",
+      "planning_ms": 3.35,
+      "execution_ms": 13.91,
+      "shared_hit_blocks": 678,
+      "shared_read_blocks": 0,
+      "top_rows": 35,
+      "seq_scans": [],
+      "index_scans": [
+        {
+          "index": "task_completions_child_date_idx",
+          "actual_rows": 35,
+          "loops": 1
+        }
+      ],
+      "subplans": [
+        {
+          "name": "InitPlan 1",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 2",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 3",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 4",
+          "loops": 1
+        }
+      ],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 10,
+          "total_ms": 4.98,
+          "self_ms": 4.98
+        },
+        {
+          "fn": "gina.device_allows",
+          "calls": 1,
+          "total_ms": 3.67,
+          "self_ms": 3.67
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 4.76,
+          "self_ms": 2.4
+        },
+        {
+          "fn": "gina.is_device",
+          "calls": 1,
+          "total_ms": 7.24,
+          "self_ms": 1.11
+        }
+      ]
+    },
+    {
+      "label": "child_today_star_balance_device",
+      "planning_ms": 0.02,
+      "execution_ms": 10.41,
+      "shared_hit_blocks": 1256,
+      "shared_read_blocks": 0,
+      "top_rows": 1,
+      "seq_scans": [],
+      "index_scans": [],
+      "subplans": [],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 11,
+          "total_ms": 2.13,
+          "self_ms": 2.13
+        },
+        {
+          "fn": "gina.device_allows",
+          "calls": 1,
+          "total_ms": 1.04,
+          "self_ms": 1.04
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 2.07,
+          "self_ms": 1.49
+        },
+        {
+          "fn": "gina.is_device",
+          "calls": 1,
+          "total_ms": 2.02,
+          "self_ms": 0.43
+        },
+        {
+          "fn": "public.child_star_balance",
+          "calls": 1,
+          "total_ms": 10.13,
+          "self_ms": 5.04
+        }
+      ]
+    },
+    {
+      "label": "calendar_plan_for_days_7d_parent",
+      "planning_ms": 0.02,
+      "execution_ms": 361.93,
+      "shared_hit_blocks": 8378,
+      "shared_read_blocks": 0,
+      "top_rows": 1,
+      "seq_scans": [],
+      "index_scans": [],
+      "subplans": [],
+      "function_calls": [
+        {
+          "fn": "gina.plan_version_on",
+          "calls": 1547,
+          "total_ms": 181.28,
+          "self_ms": 181.28
+        },
+        {
+          "fn": "gina.task_routine_versions",
+          "calls": 1540,
+          "total_ms": 78.08,
+          "self_ms": 78.08
+        },
+        {
+          "fn": "gina.task_routine_version_on",
+          "calls": 1540,
+          "total_ms": 266.96,
+          "self_ms": 8.92
+        },
+        {
+          "fn": "gina.normalize_subject_alias",
+          "calls": 280,
+          "total_ms": 2.72,
+          "self_ms": 2.72
+        },
+        {
+          "fn": "gina.claims",
+          "calls": 35,
+          "total_ms": 7.39,
+          "self_ms": 7.39
+        },
+        {
+          "fn": "gina.annotate_lessons",
+          "calls": 14,
+          "total_ms": 6.63,
+          "self_ms": 3.91
+        },
+        {
+          "fn": "gina.education_calendar_match",
+          "calls": 14,
+          "total_ms": 2.88,
+          "self_ms": 2.88
+        },
+        {
+          "fn": "gina.child_holiday_windows",
+          "calls": 7,
+          "total_ms": 5.63,
+          "self_ms": 2.74
+        },
+        {
+          "fn": "gina.plan_for_day_dated",
+          "calls": 7,
+          "total_ms": 323.77,
+          "self_ms": 6.26
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 7,
+          "total_ms": 8.7,
+          "self_ms": 3.08
+        },
+        {
+          "fn": "gina.local_day",
+          "calls": 7,
+          "total_ms": 1.3,
+          "self_ms": 1.3
+        },
+        {
+          "fn": "gina.timetable_versions",
+          "calls": 7,
+          "total_ms": 1.31,
+          "self_ms": 1.31
+        },
+        {
+          "fn": "gina.timetable_version_on",
+          "calls": 7,
+          "total_ms": 3.49,
+          "self_ms": 0.86
+        },
+        {
+          "fn": "gina.plan_for_day_base",
+          "calls": 7,
+          "total_ms": 310.87,
+          "self_ms": 28.66
+        },
+        {
+          "fn": "public.plan_for_day",
+          "calls": 7,
+          "total_ms": 332.63,
+          "self_ms": 3.23
+        },
+        {
+          "fn": "public.plan_for_days",
+          "calls": 1,
+          "total_ms": 361.21,
+          "self_ms": 28.59
+        }
+      ]
+    },
+    {
+      "label": "calendar_plan_for_days_42d_parent",
+      "planning_ms": 0.02,
+      "execution_ms": 1802.86,
+      "shared_hit_blocks": 34614,
+      "shared_read_blocks": 0,
+      "top_rows": 1,
+      "seq_scans": [],
+      "index_scans": [],
+      "subplans": [],
+      "function_calls": [
+        {
+          "fn": "gina.plan_version_on",
+          "calls": 9282,
+          "total_ms": 1057.03,
+          "self_ms": 1057.03
+        },
+        {
+          "fn": "gina.task_routine_versions",
+          "calls": 9240,
+          "total_ms": 474.87,
+          "self_ms": 474.87
+        },
+        {
+          "fn": "gina.task_routine_version_on",
+          "calls": 9240,
+          "total_ms": 1577.07,
+          "self_ms": 47.24
+        },
+        {
+          "fn": "gina.normalize_subject_alias",
+          "calls": 1680,
+          "total_ms": 11.79,
+          "self_ms": 11.79
+        },
+        {
+          "fn": "gina.claims",
+          "calls": 210,
+          "total_ms": 16.33,
+          "self_ms": 16.33
+        },
+        {
+          "fn": "gina.annotate_lessons",
+          "calls": 84,
+          "total_ms": 24.53,
+          "self_ms": 12.74
+        },
+        {
+          "fn": "gina.education_calendar_match",
+          "calls": 84,
+          "total_ms": 1.98,
+          "self_ms": 1.98
+        },
+        {
+          "fn": "gina.child_holiday_windows",
+          "calls": 42,
+          "total_ms": 6.43,
+          "self_ms": 4.45
+        },
+        {
+          "fn": "gina.plan_for_day_dated",
+          "calls": 42,
+          "total_ms": 1726.2,
+          "self_ms": 10.6
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 42,
+          "total_ms": 24.09,
+          "self_ms": 10.47
+        },
+        {
+          "fn": "gina.local_day",
+          "calls": 42,
+          "total_ms": 1.21,
+          "self_ms": 1.21
+        },
+        {
+          "fn": "gina.timetable_versions",
+          "calls": 42,
+          "total_ms": 5.01,
+          "self_ms": 5.01
+        },
+        {
+          "fn": "gina.timetable_version_on",
+          "calls": 42,
+          "total_ms": 8.89,
+          "self_ms": 1.8
+        },
+        {
+          "fn": "gina.plan_for_day_base",
+          "calls": 42,
+          "total_ms": 1691.07,
+          "self_ms": 77.1
+        },
+        {
+          "fn": "public.plan_for_day",
+          "calls": 42,
+          "total_ms": 1737.91,
+          "self_ms": 5.29
+        },
+        {
+          "fn": "public.plan_for_days",
+          "calls": 1,
+          "total_ms": 1802.64,
+          "self_ms": 64.73
+        }
+      ]
+    },
+    {
+      "label": "plan_for_day_single_parent",
+      "planning_ms": 0.02,
+      "execution_ms": 45.31,
+      "shared_hit_blocks": 3802,
+      "shared_read_blocks": 0,
+      "top_rows": 1,
+      "seq_scans": [],
+      "index_scans": [],
+      "subplans": [],
+      "function_calls": [
+        {
+          "fn": "gina.plan_version_on",
+          "calls": 221,
+          "total_ms": 23.09,
+          "self_ms": 23.09
+        },
+        {
+          "fn": "gina.task_routine_version_on",
+          "calls": 220,
+          "total_ms": 33.81,
+          "self_ms": 0.9
+        },
+        {
+          "fn": "gina.task_routine_versions",
+          "calls": 220,
+          "total_ms": 10.01,
+          "self_ms": 10.01
+        },
+        {
+          "fn": "gina.normalize_subject_alias",
+          "calls": 42,
+          "total_ms": 0.39,
+          "self_ms": 0.39
+        },
+        {
+          "fn": "gina.claims",
+          "calls": 5,
+          "total_ms": 0.77,
+          "self_ms": 0.77
+        },
+        {
+          "fn": "gina.education_calendar_match",
+          "calls": 2,
+          "total_ms": 0.36,
+          "self_ms": 0.36
+        },
+        {
+          "fn": "gina.annotate_lessons",
+          "calls": 2,
+          "total_ms": 1.28,
+          "self_ms": 0.88
+        },
+        {
+          "fn": "gina.timetable_versions",
+          "calls": 1,
+          "total_ms": 0.31,
+          "self_ms": 0.31
+        },
+        {
+          "fn": "gina.timetable_version_on",
+          "calls": 1,
+          "total_ms": 0.62,
+          "self_ms": 0.12
+        },
+        {
+          "fn": "gina.plan_for_day_base",
+          "calls": 1,
+          "total_ms": 41.28,
+          "self_ms": 5.32
+        },
+        {
+          "fn": "public.plan_for_day",
+          "calls": 1,
+          "total_ms": 45.17,
+          "self_ms": 0.83
+        },
+        {
+          "fn": "gina.child_holiday_windows",
+          "calls": 1,
+          "total_ms": 1.03,
+          "self_ms": 0.67
+        },
+        {
+          "fn": "gina.local_day",
+          "calls": 1,
+          "total_ms": 0.26,
+          "self_ms": 0.26
+        },
+        {
+          "fn": "gina.plan_for_day_dated",
+          "calls": 1,
+          "total_ms": 43.31,
+          "self_ms": 0.75
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 0.89,
+          "self_ms": 0.51
+        }
+      ]
+    },
+    {
+      "label": "tasks_templates_select_star_parent",
+      "planning_ms": 2.44,
+      "execution_ms": 4,
+      "shared_hit_blocks": 469,
+      "shared_read_blocks": 0,
+      "top_rows": 220,
+      "seq_scans": [
+        {
+          "relation": "task_completions",
+          "actual_rows": 0,
+          "removed_by_filter": 0,
+          "filter": "(((InitPlan 13).col1 OR ((InitPlan 14).col1 AND (child_id = (InitPlan 15).col1))) AND (family_id = (InitPlan 12).col1) AND (child_id = (InitPlan 11).col1))",
+          "loops": 0
+        }
+      ],
+      "index_scans": [
+        {
+          "index": "task_templates_child_sort_idx",
+          "relation": "task_templates",
+          "actual_rows": 220,
+          "loops": 1
+        }
+      ],
+      "subplans": [
+        {
+          "name": "InitPlan 1",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 2",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 3",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 4",
+          "loops": 0
+        },
+        {
+          "name": "SubPlan 16",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 11",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 12",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 13",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 14",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 15",
+          "loops": 0
+        }
+      ],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 5,
+          "total_ms": 1.89,
+          "self_ms": 1.89
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 2.12,
+          "self_ms": 1.3
+        }
+      ]
+    },
+    {
+      "label": "tasks_routines_for_day_parent",
+      "planning_ms": 0.02,
+      "execution_ms": 545.17,
+      "shared_hit_blocks": 10943,
+      "shared_read_blocks": 0,
+      "top_rows": 1,
+      "seq_scans": [],
+      "index_scans": [],
+      "subplans": [],
+      "function_calls": [
+        {
+          "fn": "gina.plan_version_on",
+          "calls": 2640,
+          "total_ms": 359.34,
+          "self_ms": 359.34
+        },
+        {
+          "fn": "gina.task_routine_versions",
+          "calls": 2640,
+          "total_ms": 131.28,
+          "self_ms": 131.28
+        },
+        {
+          "fn": "gina.task_routine_version_on",
+          "calls": 2640,
+          "total_ms": 524.03,
+          "self_ms": 33.42
+        },
+        {
+          "fn": "gina.claims",
+          "calls": 5,
+          "total_ms": 2.59,
+          "self_ms": 2.59
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 6.43,
+          "self_ms": 4.84
+        },
+        {
+          "fn": "public.routines_for_day",
+          "calls": 1,
+          "total_ms": 544.97,
+          "self_ms": 13.51
+        }
+      ]
+    },
+    {
+      "label": "review_attempt_parent",
+      "planning_ms": 0.89,
+      "execution_ms": 2.92,
+      "shared_hit_blocks": 243,
+      "shared_read_blocks": 0,
+      "top_rows": 1,
+      "seq_scans": [
+        {
+          "relation": "exam_attempts",
+          "actual_rows": 1,
+          "removed_by_filter": 0,
+          "filter": "(((InitPlan 2).col1 OR ((InitPlan 3).col1 AND (child_id = (InitPlan 4).col1))) AND (family_id = (InitPlan 1).col1) AND (id = 'fe7076c4-c59e-47ab-9076-a87b49ec23da'::uuid))",
+          "loops": 1
+        }
+      ],
+      "index_scans": [],
+      "subplans": [
+        {
+          "name": "InitPlan 1",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 2",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 3",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 4",
+          "loops": 0
+        }
+      ],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 5,
+          "total_ms": 1.36,
+          "self_ms": 1.36
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 2.49,
+          "self_ms": 1.32
+        }
+      ]
+    },
+    {
+      "label": "review_questions_in_ids_parent",
+      "planning_ms": 1.55,
+      "execution_ms": 4.34,
+      "shared_hit_blocks": 295,
+      "shared_read_blocks": 0,
+      "top_rows": 20,
+      "seq_scans": [
+        {
+          "relation": "question_bank",
+          "actual_rows": 20,
+          "removed_by_filter": 0,
+          "filter": "(((NOT (InitPlan 1).col1) OR (InitPlan 2).col1) AND (((family_id = (InitPlan 3).col1) AND (InitPlan 4).col1) OR ((family_id IS NULL) AND ((InitPlan 5).col1 OR (InitPlan 6).col1)) OR (InitPlan 7).col1) AND (id = ANY ('{a30fc117-1887-4729-99e4-e645f3e53fc9,5d8595fa-fde7-49dd-8556-302146de845a,91a7cd05-f96c-4582-9a25-809543b59334,d616e70e-4be2-4b2d-8fbd-66ae5f1e7f53,3b147a2a-9ca4-44f1-af31-bdb1f816f563,2d02780f-5738-47d9-ae18-947e5fdef0ef,34998034-6c49-497d-a9d7-e13fc541c5a1,50b7c839-f36a-47a5-90db-102b115d47cc,222fdc60-613e-4587-ae02-7767ce367066,7ef5fbfc-fcde-4e1f-9528-c1a6653a8b4c,8688bef5-50cf-4f3e-9486-07df149c21fb,c6aee5eb-dae6-4e42-9938-87ffaf252ee2,0c356ced-3ea7-441e-8f3c-58cc23fefb90,fbcf6eb2-7e4e-405a-9531-1ddeaf5d3513,7d56da71-cc60-4630-8e11-10cc516999c6,b50c2764-9a97-4a71-864c-a70901377865,ff9bfca6-405c-424c-ad7b-14c6c99cbe9f,7e4ebad1-bf79-471a-8e0c-5c8f371836e1,3aea9081-d023-4348-b7a5-7bef00340175,cc26c503-f4fd-4924-86c0-3c2683309417}'::uuid[])))",
+          "loops": 1
+        }
+      ],
+      "index_scans": [],
+      "subplans": [
+        {
+          "name": "InitPlan 1",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 2",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 3",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 4",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 5",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 6",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 7",
+          "loops": 0
+        }
+      ],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 6,
+          "total_ms": 1.98,
+          "self_ms": 1.98
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 1.7,
+          "self_ms": 0.93
+        },
+        {
+          "fn": "gina.is_admin",
+          "calls": 1,
+          "total_ms": 2.01,
+          "self_ms": 1.14
+        }
+      ]
+    },
+    {
+      "label": "review_exam_answers_drawn_parent",
+      "planning_ms": 1.16,
+      "execution_ms": 4.34,
+      "shared_hit_blocks": 246,
+      "shared_read_blocks": 0,
+      "top_rows": 20,
+      "seq_scans": [
+        {
+          "relation": "exam_answers",
+          "actual_rows": 20,
+          "removed_by_filter": 0,
+          "filter": "((attempt_id = 'fe7076c4-c59e-47ab-9076-a87b49ec23da'::uuid) AND (ANY (attempt_id = (hashed SubPlan 14).col1)))",
+          "loops": 1
+        },
+        {
+          "relation": "exam_attempts",
+          "actual_rows": 1,
+          "removed_by_filter": 0,
+          "filter": "(((InitPlan 11).col1 OR ((InitPlan 12).col1 AND (child_id = (InitPlan 13).col1))) AND (family_id = (InitPlan 8).col1))",
+          "loops": 1
+        }
+      ],
+      "index_scans": [],
+      "subplans": [
+        {
+          "name": "SubPlan 14",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 8",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 9",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 10",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 11",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 12",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 13",
+          "loops": 0
+        }
+      ],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 10,
+          "total_ms": 2.4,
+          "self_ms": 2.4
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 2,
+          "total_ms": 3.72,
+          "self_ms": 1.59
+        }
+      ]
+    },
+    {
+      "label": "review_get_answer_review_parent",
+      "planning_ms": 0.03,
+      "execution_ms": 7.1,
+      "shared_hit_blocks": 993,
+      "shared_read_blocks": 0,
+      "top_rows": 1,
+      "seq_scans": [],
+      "index_scans": [],
+      "subplans": [],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 6,
+          "total_ms": 1.02,
+          "self_ms": 1.02
+        },
+        {
+          "fn": "extensions.digest",
+          "calls": 1,
+          "total_ms": 1.27,
+          "self_ms": 1.27
+        },
+        {
+          "fn": "gina.answer_fingerprint",
+          "calls": 1,
+          "total_ms": 2.47,
+          "self_ms": 1.19
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 2.34,
+          "self_ms": 1.45
+        },
+        {
+          "fn": "public.get_answer_review",
+          "calls": 1,
+          "total_ms": 6.92,
+          "self_ms": 1.98
+        }
+      ]
+    },
+    {
+      "label": "saved_exam_answers_v3_drawn_device",
+      "planning_ms": 0.03,
+      "execution_ms": 5.3,
+      "shared_hit_blocks": 1040,
+      "shared_read_blocks": 0,
+      "top_rows": 20,
+      "seq_scans": [],
+      "index_scans": [],
+      "subplans": [],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 12,
+          "total_ms": 1.56,
+          "self_ms": 1.56
+        },
+        {
+          "fn": "gina.device_allows",
+          "calls": 1,
+          "total_ms": 1.01,
+          "self_ms": 1.01
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 0.88,
+          "self_ms": 0.56
+        },
+        {
+          "fn": "public.get_saved_exam_answers_v3",
+          "calls": 1,
+          "total_ms": 5.2,
+          "self_ms": 1.72
+        },
+        {
+          "fn": "gina.is_device",
+          "calls": 1,
+          "total_ms": 1.88,
+          "self_ms": 0.35
+        }
+      ]
+    },
+    {
+      "label": "saved_exam_answers_v3_drawn_parent",
+      "planning_ms": 0.03,
+      "execution_ms": 5.33,
+      "shared_hit_blocks": 621,
+      "shared_read_blocks": 0,
+      "top_rows": 20,
+      "seq_scans": [],
+      "index_scans": [],
+      "subplans": [],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 7,
+          "total_ms": 2.46,
+          "self_ms": 2.46
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 2.24,
+          "self_ms": 1.09
+        },
+        {
+          "fn": "public.get_saved_exam_answers_v3",
+          "calls": 1,
+          "total_ms": 5.28,
+          "self_ms": 1.72
+        }
+      ]
+    },
+    {
+      "label": "bo_admin_library_content_page_p1_operator",
+      "planning_ms": 0.02,
+      "execution_ms": 16.99,
+      "shared_hit_blocks": 3526,
+      "shared_read_blocks": 0,
+      "top_rows": 1,
+      "seq_scans": [],
+      "index_scans": [],
+      "subplans": [],
+      "function_calls": [
+        {
+          "fn": "gina.library_review_fingerprint",
+          "calls": 100,
+          "total_ms": 2.06,
+          "self_ms": 1.83
+        },
+        {
+          "fn": "extensions.digest",
+          "calls": 100,
+          "total_ms": 0.23,
+          "self_ms": 0.23
+        },
+        {
+          "fn": "gina.claims",
+          "calls": 3,
+          "total_ms": 0.84,
+          "self_ms": 0.84
+        },
+        {
+          "fn": "gina.is_admin",
+          "calls": 2,
+          "total_ms": 0.94,
+          "self_ms": 0.35
+        },
+        {
+          "fn": "gina.is_admin_strict",
+          "calls": 2,
+          "total_ms": 2.32,
+          "self_ms": 1.38
+        },
+        {
+          "fn": "public.admin_library_content_page",
+          "calls": 1,
+          "total_ms": 16.8,
+          "self_ms": 10.54
+        },
+        {
+          "fn": "gina.has_any_operation_role",
+          "calls": 1,
+          "total_ms": 4.07,
+          "self_ms": 0.39
+        },
+        {
+          "fn": "gina.assert_operation_role",
+          "calls": 1,
+          "total_ms": 4.2,
+          "self_ms": 0.13
+        },
+        {
+          "fn": "gina.has_operation_role",
+          "calls": 1,
+          "total_ms": 1.83,
+          "self_ms": 1.1
+        }
+      ]
+    },
+    {
+      "label": "sources_page0_parent",
+      "planning_ms": 0.77,
+      "execution_ms": 2.05,
+      "shared_hit_blocks": 251,
+      "shared_read_blocks": 0,
+      "top_rows": 31,
+      "seq_scans": [],
+      "index_scans": [
+        {
+          "index": "learning_sources_family_id_created_at_idx",
+          "relation": "learning_sources",
+          "actual_rows": 32,
+          "loops": 1
+        }
+      ],
+      "subplans": [
+        {
+          "name": "InitPlan 1",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 2",
+          "loops": 1
+        }
+      ],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 5,
+          "total_ms": 1.01,
+          "self_ms": 1.01
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 1.34,
+          "self_ms": 0.71
+        }
+      ]
+    },
+    {
+      "label": "sources_page10_parent",
+      "planning_ms": 0.57,
+      "execution_ms": 1.7,
+      "shared_hit_blocks": 262,
+      "shared_read_blocks": 0,
+      "top_rows": 31,
+      "seq_scans": [
+        {
+          "relation": "learning_sources",
+          "actual_rows": 400,
+          "removed_by_filter": 100,
+          "filter": "((InitPlan 1).col1 AND (family_id = (InitPlan 2).col1) AND (kind = 'document'::text) AND (status = 'ready'::text))",
+          "loops": 1
+        }
+      ],
+      "index_scans": [],
+      "subplans": [
+        {
+          "name": "InitPlan 1",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 2",
+          "loops": 1
+        }
+      ],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 5,
+          "total_ms": 0.58,
+          "self_ms": 0.58
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 1.08,
+          "self_ms": 0.57
+        }
+      ]
+    },
+    {
+      "label": "notes_list_active_parent",
+      "planning_ms": 1.71,
+      "execution_ms": 3.06,
+      "shared_hit_blocks": 234,
+      "shared_read_blocks": 0,
+      "top_rows": 21,
+      "seq_scans": [],
+      "index_scans": [
+        {
+          "index": "notes_active_page",
+          "relation": "notes",
+          "actual_rows": 21,
+          "loops": 1
+        }
+      ],
+      "subplans": [
+        {
+          "name": "InitPlan 1",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 2",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 3",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 4",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 5",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 6",
+          "loops": 0
+        }
+      ],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 5,
+          "total_ms": 1.6,
+          "self_ms": 1.6
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 2.04,
+          "self_ms": 1.03
+        }
+      ]
+    },
+    {
+      "label": "notes_list_child_parent",
+      "planning_ms": 1.01,
+      "execution_ms": 2.45,
+      "shared_hit_blocks": 231,
+      "shared_read_blocks": 0,
+      "top_rows": 21,
+      "seq_scans": [],
+      "index_scans": [
+        {
+          "index": "notes_active_page",
+          "relation": "notes",
+          "actual_rows": 21,
+          "loops": 1
+        }
+      ],
+      "subplans": [
+        {
+          "name": "InitPlan 1",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 2",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 3",
+          "loops": 1
+        },
+        {
+          "name": "InitPlan 4",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 5",
+          "loops": 0
+        },
+        {
+          "name": "InitPlan 6",
+          "loops": 0
+        }
+      ],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 5,
+          "total_ms": 1.23,
+          "self_ms": 1.23
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 1.64,
+          "self_ms": 0.96
+        }
+      ]
+    },
+    {
+      "label": "help_list_tickets_parent",
+      "planning_ms": 0.02,
+      "execution_ms": 6.19,
+      "shared_hit_blocks": 907,
+      "shared_read_blocks": 0,
+      "top_rows": 1,
+      "seq_scans": [],
+      "index_scans": [],
+      "subplans": [],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 6,
+          "total_ms": 1.55,
+          "self_ms": 1.55
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 2.89,
+          "self_ms": 1.92
+        },
+        {
+          "fn": "public.list_help_tickets",
+          "calls": 1,
+          "total_ms": 6.03,
+          "self_ms": 2.57
+        }
+      ]
+    },
+    {
+      "label": "help_list_attachments_parent",
+      "planning_ms": 0.02,
+      "execution_ms": 8.19,
+      "shared_hit_blocks": 1024,
+      "shared_read_blocks": 0,
+      "top_rows": 1,
+      "seq_scans": [],
+      "index_scans": [],
+      "subplans": [],
+      "function_calls": [
+        {
+          "fn": "gina.claims",
+          "calls": 7,
+          "total_ms": 1.86,
+          "self_ms": 1.86
+        },
+        {
+          "fn": "gina.is_admin_strict",
+          "calls": 1,
+          "total_ms": 0.83,
+          "self_ms": 0.48
+        },
+        {
+          "fn": "gina.is_parent",
+          "calls": 1,
+          "total_ms": 2.14,
+          "self_ms": 1.15
+        },
+        {
+          "fn": "gina.is_admin",
+          "calls": 1,
+          "total_ms": 0.35,
+          "self_ms": 0.14
+        },
+        {
+          "fn": "gina.has_operation_role",
+          "calls": 1,
+          "total_ms": 2.39,
+          "self_ms": 1.1
+        },
+        {
+          "fn": "public.list_help_attachments",
+          "calls": 1,
+          "total_ms": 8.03,
+          "self_ms": 3.31
+        }
+      ]
+    },
+    {
+      "label": "bo_library_content_items_view_owner",
+      "planning_ms": 2.91,
+      "execution_ms": 4.08,
+      "shared_hit_blocks": 1345,
+      "top_rows": 51
+    }
+  ],
+  "outputs": {
+    "plan_for_days_42d_parent": "4629bf1f882cf7fe4e7cf3d9c344938cf391dd0c5bceadecba471988cfa7b030",
+    "plan_for_days_7d_device": "60ea5c6b4af02da89d4fc94cdb533dd4a794c4d8fbc0a1bf54d17798ec264733",
+    "routines_for_day_parent_today": "2a74e138e8af623c2e8f6101cfcc9cd4b83095fe500511d8dc8c915de2b444bd",
+    "routines_for_day_parent_past60": "a7329e8477fb5a511789558ac8c934192beac2f979b75d47f0950ca007d98e86",
+    "routines_for_day_parent_future200": "bd03624b237695f846eea069d3a98046963e4a654fb0b5e4c5bf3ebc03b0dffb",
+    "plan_for_day_parent_past150": "8a58446d1475f82ce0c0540e213a4a8cbea895065fa8fb6bfe883217d96cc767"
+  }
+}

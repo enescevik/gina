@@ -1,0 +1,39 @@
+=== /
+HTTP/2 103 
+HTTP/2 200 
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, must-revalidate
+strict-transport-security: max-age=31536000; includeSubDomains
+content-security-policy: default-src 'self'; script-src 'self' 'sha256-67fhrP0+BkBqmgGGXTtgiVO/9EQs3QruYNU/7fnRkI8='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://wixjxlxgyhgdacadsawo.supabase.co; font-src 'self' data:; connect-src 'self' https://wixjxlxgyhgdacadsawo.supabase.co wss://wixjxlxgyhgdacadsawo.supabase.co; worker-src 'self' blob:; manifest-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+cross-origin-opener-policy: same-origin
+permissions-policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-frame-options: DENY
+cf-ray: a563e7b43b37b633-IST
+=== /s/probe
+HTTP/2 200 
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=0, must-revalidate
+strict-transport-security: max-age=31536000; includeSubDomains
+content-security-policy: default-src 'self'; script-src 'self' 'sha256-67fhrP0+BkBqmgGGXTtgiVO/9EQs3QruYNU/7fnRkI8='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://wixjxlxgyhgdacadsawo.supabase.co; font-src 'self' data:; connect-src 'self' https://wixjxlxgyhgdacadsawo.supabase.co wss://wixjxlxgyhgdacadsawo.supabase.co; worker-src 'self' blob:; manifest-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+cross-origin-opener-policy: same-origin
+permissions-policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+referrer-policy: strict-origin-when-cross-origin
+referrer-policy: no-referrer
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-robots-tag: noindex, nofollow
+cf-ray: a563e7b4eec5548e-IST
+=== /_expo/static/c13-missing-probe.js
+HTTP/2 200 
+content-type: text/html; charset=utf-8
+cache-control: public, max-age=31536000, immutable
+strict-transport-security: max-age=31536000; includeSubDomains
+content-security-policy: default-src 'self'; script-src 'self' 'sha256-67fhrP0+BkBqmgGGXTtgiVO/9EQs3QruYNU/7fnRkI8='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://wixjxlxgyhgdacadsawo.supabase.co; font-src 'self' data:; connect-src 'self' https://wixjxlxgyhgdacadsawo.supabase.co wss://wixjxlxgyhgdacadsawo.supabase.co; worker-src 'self' blob:; manifest-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+cross-origin-opener-policy: same-origin
+permissions-policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-frame-options: DENY
+cf-ray: a563e7b5abdd548d-IST

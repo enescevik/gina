@@ -124,15 +124,26 @@ export const denoResolver: Resolver = async (host) => {
   return addresses;
 };
 
-async function readBounded(response: Response, max: number) {
+async function readBounded(response: Response, max: number, signal?: AbortSignal) {
   const declared = Number(response.headers.get("content-length") ?? 0);
   if (declared > max) fail("size_limit");
   const reader = response.body?.getReader();
   if (!reader) return new Uint8Array();
+  // C13-SCAN-3: a stalled body must not outlive the request deadline, whatever the transport does with the signal.
+  const aborted = new Promise<never>((_, reject) => {
+    const stop = () => {
+      reject(new DOMException("aborted", "AbortError"));
+      reader.cancel().catch(() => {});
+    };
+    if (signal?.aborted) stop();
+    else signal?.addEventListener("abort", stop, { once: true });
+  });
+  aborted.catch(() => {});
   const chunks: Uint8Array[] = [];
   let total = 0;
   for (;;) {
-    const { value, done } = await reader.read();
+    const { value, done } = signal ? await Promise.race([reader.read(), aborted]) : await reader.read();
+    if (signal?.aborted) throw new DOMException("aborted", "AbortError");
     if (done) break;
     total += value.length;
     if (total > max) {
@@ -191,23 +202,32 @@ export async function fetchWithPolicy(
           ? "timeout"
           : "network_error:" + (e instanceof Error ? e.name : "unknown"),
       );
+    }
+    // C13-SCAN-3: the same deadline covers the body read (a slow body after fast headers cannot hang the worker).
+    try {
+      chain.push({ url: current, status: response!.status });
+      if ([301, 302, 303, 307, 308].includes(response!.status)) {
+        const location = response!.headers.get("location");
+        await response!.body?.cancel();
+        if (!location) fail("redirect_without_location");
+        current = new URL(location!, current).toString();
+        continue;
+      }
+      if (response!.status !== 200) fail("http_status:" + response!.status);
+      await checkUrl(current, true, resolve);
+      let body: Uint8Array;
+      try {
+        body = await readBounded(response!, maxBytes, controller.signal);
+      } catch (e) {
+        if (e instanceof PolicyError) throw e;
+        return fail(controller.signal.aborted ? "timeout" : "network_error:" + (e instanceof Error ? e.name : "unknown"));
+      }
+      const mime = (response!.headers.get("content-type") ?? "").split(";")[0]
+        .trim().toLowerCase();
+      return { finalUrl: current, chain, mime, body };
     } finally {
       clearTimeout(timer);
     }
-    chain.push({ url: current, status: response!.status });
-    if ([301, 302, 303, 307, 308].includes(response!.status)) {
-      const location = response!.headers.get("location");
-      await response!.body?.cancel();
-      if (!location) fail("redirect_without_location");
-      current = new URL(location!, current).toString();
-      continue;
-    }
-    if (response!.status !== 200) fail("http_status:" + response!.status);
-    await checkUrl(current, true, resolve);
-    const body = await readBounded(response!, maxBytes);
-    const mime = (response!.headers.get("content-type") ?? "").split(";")[0]
-      .trim().toLowerCase();
-    return { finalUrl: current, chain, mime, body };
   }
   return fail("too_many_redirects");
 }

@@ -1,0 +1,547 @@
+{
+ "card": "C13 madde 4 — izole geri yükleme tatbikatı",
+ "environment": "disposable-local: supabase_db_gina içinde gina_c13r_* klonları + geçici GoTrue/PostgREST/Storage(file backend, tmpfs) kapsayıcıları",
+ "hosted_evidence": false,
+ "hosted_note": "pg_dump yerel süper kullanıcıyla (supabase_admin) alındı; bu hosted kanıt DEĞİLDİR. Hosted Supabase PITR/yedek paneli ve süper kullanıcısız geri yükleme (--trigger-mode disable-user, hosted rolüyle) AÇIK.",
+ "secrets_policy": "parolalar, JWT sırrı, imzalı URL belirteçleri ve bağlantı parolaları yazılmadı; bağlantı dizeleri maskeli (yalnız dbname/user)",
+ "source": {
+  "app_proof_baseline": {
+   "gotrue_password_sign_in_parent_a_status": 200,
+   "jwt_sub_equals_source_parent_a": true,
+   "jwt_gina_family_id_equals_source_family_a": true,
+   "jwt_gina_role": "parent",
+   "gotrue_wrong_password_status": 400,
+   "gotrue_wrong_password_rejected": true,
+   "gotrue_password_sign_in_parent_b_status": 200,
+   "jwt_b_gina_family_id_equals_source_family_b": true,
+   "rest_parent_a_learning_sources": {
+    "status": 200,
+    "rows": 1,
+    "all_own_family": true,
+    "sha256_equals_original_upload": true
+   },
+   "rest_parent_a_children": {
+    "status": 200,
+    "rows": 1,
+    "is_child_a": true
+   },
+   "rest_foreign_parent_b_reads_family_a_learning_sources": {
+    "status": 200,
+    "rows": 0
+   },
+   "rest_foreign_parent_b_reads_family_a_children": {
+    "status": 200,
+    "rows": 0
+   },
+   "rest_parent_b_sees_only_own_sources": {
+    "status": 200,
+    "rows": 1
+   },
+   "rest_anon_learning_sources": {
+    "status": 401,
+    "rows": null
+   },
+   "rest_anon_children": {
+    "status": 401,
+    "rows": null
+   },
+   "storage_sign_service_role_status": 200,
+   "storage_signed_url_get_status": 200,
+   "storage_signed_url_bytes": 49205,
+   "storage_signed_url_sha256_equals_original": true,
+   "storage_signed_url_content_type": "application/pdf",
+   "storage_tampered_signed_url_status": 400,
+   "storage_object_b_signed_get_status": 200,
+   "storage_object_b_sha256_equals_original": true,
+   "storage_parent_a_sign_family_a_object_status": 400,
+   "storage_parent_a_download_family_a_object_status": 400,
+   "storage_parent_a_got_bytes": false,
+   "storage_foreign_parent_b_sign_family_a_object_status": 400,
+   "storage_foreign_parent_b_download_family_a_object_status": 400,
+   "storage_foreign_parent_b_got_bytes": false,
+   "storage_anon_sign_family_a_object_status": 400,
+   "storage_anon_download_family_a_object_status": 400,
+   "storage_anon_got_bytes": false,
+   "storage_public_url_status": 400,
+   "pass": true
+  },
+  "uploads": {
+   "a": {
+    "object_path": "10000000-0000-4000-8000-0000000c13a1/50000000-0000-4000-8000-0000000c13a1.pdf",
+    "bytes": 49205,
+    "sha256": "33110a5d0fc87146088b5d7681f8c27ff3828aa9a6e44b026112211b815b1e18"
+   },
+   "b": {
+    "object_path": "10000000-0000-4000-8000-0000000c13b1/50000000-0000-4000-8000-0000000c13b1.pdf",
+    "bytes": 49211,
+    "sha256": "00e370370a3ee45af1af9e838e5460b162fe6dd1b18e30320dba2f732338e1ca"
+   }
+  },
+  "counts": {
+   "auth.users": 3,
+   "auth.identities": 2,
+   "public.families": 2,
+   "public.family_members": 2,
+   "public.children": 2,
+   "public.devices": 1,
+   "public.learning_sources": 2,
+   "storage.objects": 2,
+   "public.notes": 3,
+   "gina.note_changes": 3,
+   "public.audit_log": 57
+  },
+  "extra_counts": {
+   "storage.buckets": 2,
+   "auth.sessions": 4,
+   "auth.refresh_tokens": 4
+  },
+  "relations": {
+   "family_member_parent_a_linked_to_auth_user": 1,
+   "family_member_parent_b_linked_to_auth_user": 1,
+   "identity_linked_to_user_a": 1,
+   "device_user_linked": 1,
+   "source_a_has_storage_object": 1,
+   "source_b_has_storage_object": 1,
+   "storage_object_size_equals_source_bytes": 2,
+   "note_history_rows_for_family_a": 3,
+   "orphan_family_members": 0,
+   "orphan_identities": 0,
+   "orphan_storage_objects_without_bucket": 0,
+   "learning_sources_without_storage_object": 0,
+   "storage_objects_without_learning_source": 0
+  },
+  "acl_check": {
+   "post_restore_acl_check_rows": 0,
+   "rows": [],
+   "rows_beyond_pgtap_102_allowlist": 0,
+   "null_acl_non_trigger_functions": 0,
+   "triggers_disabled": 0
+  },
+  "storage_files": [
+   "<store>/<store>/gina-private-sources/10000000-0000-4000-8000-0000000c13a1/50000000-0000-4000-8000-0000000c13a1.pdf/86b91d25-52ea-4142-b231-f92eb251de5e 49205",
+   "<store>/<store>/gina-private-sources/10000000-0000-4000-8000-0000000c13b1/50000000-0000-4000-8000-0000000c13b1.pdf/2a9f7121-a287-44ae-a44c-b52d724c7da3 49211"
+  ],
+  "stop": {
+   "auth": true,
+   "rest": true,
+   "storage": true
+  },
+  "seconds": 14.6
+ },
+ "dump": {
+  "command": "pg_dump -U supabase_admin -Fc --data-only -n auth -n storage -n public -n gina --exclude-table-data=auth.schema_migrations --exclude-table-data=storage.migrations",
+  "bytes": 93835,
+  "taken_as": "supabase_admin (yerel süper kullanıcı) — hosted kanıt değil",
+  "contains_storage_file_bytes": false
+ },
+ "storage_snapshot": {
+  "method": "docker exec <src_storage> tar -C /mnt -cf - . (busybox tar; xattr taşımaz)",
+  "tar_bytes": 111616,
+  "files": 2
+ },
+ "targets": {
+  "replica": {
+   "trigger_mode": "replica",
+   "superuser_for_data_load": true,
+   "before_restore_public_tables": 0,
+   "restore_database": {
+    "dry_run": {
+     "exit": 0,
+     "mode": "dry-run",
+     "steps": [
+      "preflight",
+      "schema",
+      "truncate",
+      "data",
+      "acl-check",
+      "verify"
+     ],
+     "executed_nothing": true
+    },
+    "wrong_target_confirm_exit": 2,
+    "execute_exit": 0,
+    "execute_seconds": 16.7,
+    "execute_command": "node scripts/restore-database.mjs --conn \"dbname=<tgt> user=postgres\" --superuser-conn \"dbname=<tgt> user=supabase_admin\" --data-dump <dump> --exec-prefix \"docker exec -i supabase_db_gina\" --expected-counts <src-counts.json> --trigger-mode replica --execute --target-confirm <tgt>",
+    "stdout_tail": [
+     "restore-database: execute — hedef dbname=<tag>_tgt user=postgres",
+     "[preflight] PostgreSQL 17.11 on aarch64-unknown-linux-gnu; rol postgres (süper: f)",
+     "[schema] {\"from\":\"migrations\",\"applied\":140,\"first\":\"20261029200000_schema.sql\",\"last\":\"20261106330000_c13_hardening.sql\"}",
+     "[truncate] tohum tabloları boşaltıldı",
+     "[data] tamam (replica)",
+     "[acl-check] anon fazlalığı 0, NULL ACL 0, kapalı tetikleyici 0 → geçti",
+     "[verify] sayımlar {\"auth.users\":3,\"auth.identities\":2,\"public.families\":2,\"public.family_members\":2,\"public.children\":2,\"public.devices\":1,\"public.learning_sources\":2,\"storage.objects\":2,\"public.notes\":3,\"gina.note_changes\":3,\"public.audit_log\":57}; ilişkiler {\"orphan_family_members\":0,\"orphan_devices\":0,\"orphan_families_created_by\":0,\"learning_sources_without_storage_object\":0,\"note_changes_without_note\":0}",
+     "restore-database: BAŞARILI (16585 ms)"
+    ],
+    "stderr_tail": [],
+    "data_step_exit": 0,
+    "script_report": {
+     "mode": "execute",
+     "target": "dbname=<tag>_tgt user=postgres",
+     "trigger_mode": "replica",
+     "plan": [
+      {
+       "step": "preflight",
+       "detail": "hedef dbname=<tag>_tgt user=postgres; süper kullanıcı bağlantısı: dbname=<tag>_tgt user=supabase_admin"
+      },
+      {
+       "step": "schema",
+       "detail": "140 migration psql ile sırayla (20261029200000_schema.sql … 20261106330000_c13_hardening.sql)"
+      },
+      {
+       "step": "truncate",
+       "detail": "public/gina tüm tablolar + storage.objects/buckets TRUNCATE (tohumlar dökümden geri gelir)"
+      },
+      {
+       "step": "data",
+       "detail": "(echo 'set session_replication_role = replica;'; pg_restore --data-only -f - /tmp/<tag>_data.dump) | psql  [süper kullanıcı]"
+      },
+      {
+       "step": "acl-check",
+       "detail": "scripts/security/post-restore-acl-check.sql → 0 satır; NULL ACL (tetikleyici dışı) fonksiyon 0; tgenabled='D' tetikleyici 0"
+      },
+      {
+       "step": "verify",
+       "detail": "11 tablo sayımı (beklenenle karşılaştırılır), 5 ilişki/yetim sorgusu"
+      }
+     ],
+     "steps": {
+      "preflight": {
+       "version": "PostgreSQL 17.11 on aarch64-unknown-linux-gnu",
+       "user": "postgres",
+       "user_is_superuser": false,
+       "superuser_conn_is_superuser": true
+      },
+      "schema": {
+       "from": "migrations",
+       "applied": 140,
+       "first": "20261029200000_schema.sql",
+       "last": "20261106330000_c13_hardening.sql"
+      },
+      "truncate": {
+       "before": {
+        "auth.users": 0,
+        "auth.identities": 0,
+        "public.families": 0,
+        "public.family_members": 0,
+        "public.children": 0,
+        "public.devices": 0,
+        "public.learning_sources": 0,
+        "storage.objects": 0,
+        "public.notes": 0,
+        "gina.note_changes": 0,
+        "public.audit_log": 35
+       }
+      },
+      "data": {
+       "mode": "replica",
+       "exit": 0,
+       "errors": []
+      },
+      "acl_check": {
+       "anon_executable_beyond_allowlist": [],
+       "null_acl_non_trigger_functions": 0,
+       "triggers_disabled": 0
+      },
+      "verify": {
+       "counts": {
+        "auth.users": 3,
+        "auth.identities": 2,
+        "public.families": 2,
+        "public.family_members": 2,
+        "public.children": 2,
+        "public.devices": 1,
+        "public.learning_sources": 2,
+        "storage.objects": 2,
+        "public.notes": 3,
+        "gina.note_changes": 3,
+        "public.audit_log": 57
+       },
+       "expected": {
+        "auth.users": 3,
+        "auth.identities": 2,
+        "public.families": 2,
+        "public.family_members": 2,
+        "public.children": 2,
+        "public.devices": 1,
+        "public.learning_sources": 2,
+        "storage.objects": 2,
+        "public.notes": 3,
+        "gina.note_changes": 3,
+        "public.audit_log": 57
+       },
+       "counts_match_expected": true,
+       "relations": {
+        "orphan_family_members": 0,
+        "orphan_devices": 0,
+        "orphan_families_created_by": 0,
+        "learning_sources_without_storage_object": 0,
+        "note_changes_without_note": 0
+       },
+       "relations_ok": true
+      }
+     },
+     "ok": true,
+     "duration_ms": 16585
+    },
+    "script_ok": true
+   },
+   "restore_ok": true,
+   "counts": {
+    "auth.users": 3,
+    "auth.identities": 2,
+    "public.families": 2,
+    "public.family_members": 2,
+    "public.children": 2,
+    "public.devices": 1,
+    "public.learning_sources": 2,
+    "storage.objects": 2,
+    "public.notes": 3,
+    "gina.note_changes": 3,
+    "public.audit_log": 57
+   },
+   "counts_equal_source": true,
+   "extra_counts": {
+    "storage.buckets": 2,
+    "auth.sessions": 4,
+    "auth.refresh_tokens": 4
+   },
+   "relations": {
+    "family_member_parent_a_linked_to_auth_user": 1,
+    "family_member_parent_b_linked_to_auth_user": 1,
+    "identity_linked_to_user_a": 1,
+    "device_user_linked": 1,
+    "source_a_has_storage_object": 1,
+    "source_b_has_storage_object": 1,
+    "storage_object_size_equals_source_bytes": 2,
+    "note_history_rows_for_family_a": 3,
+    "orphan_family_members": 0,
+    "orphan_identities": 0,
+    "orphan_storage_objects_without_bucket": 0,
+    "learning_sources_without_storage_object": 0,
+    "storage_objects_without_learning_source": 0
+   },
+   "relations_equal_source": true,
+   "content_digest_equal_source": {
+    "auth.users(id,email,encrypted_password,role,aud,email_confirmed_at)": true,
+    "auth.identities(user_id,provider,provider_id)": true,
+    "public.families": true,
+    "public.family_members": true,
+    "public.children": true,
+    "public.devices": true,
+    "public.learning_sources": true,
+    "storage.objects(id,bucket_id,name,version,owner_id,metadata)": true,
+    "storage.buckets": true,
+    "public.notes": true,
+    "gina.note_changes": true
+   },
+   "acl_check": {
+    "post_restore_acl_check_rows": 0,
+    "rows": [],
+    "rows_beyond_pgtap_102_allowlist": 0,
+    "null_acl_non_trigger_functions": 0,
+    "triggers_disabled": 0
+   },
+   "storage_bytes_restore": {
+    "tar_extract_exit": 0,
+    "files": [
+     "<store>/<store>/gina-private-sources/10000000-0000-4000-8000-0000000c13a1/50000000-0000-4000-8000-0000000c13a1.pdf/86b91d25-52ea-4142-b231-f92eb251de5e 49205",
+     "<store>/<store>/gina-private-sources/10000000-0000-4000-8000-0000000c13b1/50000000-0000-4000-8000-0000000c13b1.pdf/2a9f7121-a287-44ae-a44c-b52d724c7da3 49211"
+    ],
+    "files_equal_source": true
+   },
+   "app_proof": {
+    "gotrue_password_sign_in_parent_a_status": 200,
+    "jwt_sub_equals_source_parent_a": true,
+    "jwt_gina_family_id_equals_source_family_a": true,
+    "jwt_gina_role": "parent",
+    "gotrue_wrong_password_status": 400,
+    "gotrue_wrong_password_rejected": true,
+    "gotrue_password_sign_in_parent_b_status": 200,
+    "jwt_b_gina_family_id_equals_source_family_b": true,
+    "rest_parent_a_learning_sources": {
+     "status": 200,
+     "rows": 1,
+     "all_own_family": true,
+     "sha256_equals_original_upload": true
+    },
+    "rest_parent_a_children": {
+     "status": 200,
+     "rows": 1,
+     "is_child_a": true
+    },
+    "rest_foreign_parent_b_reads_family_a_learning_sources": {
+     "status": 200,
+     "rows": 0
+    },
+    "rest_foreign_parent_b_reads_family_a_children": {
+     "status": 200,
+     "rows": 0
+    },
+    "rest_parent_b_sees_only_own_sources": {
+     "status": 200,
+     "rows": 1
+    },
+    "rest_anon_learning_sources": {
+     "status": 401,
+     "rows": null
+    },
+    "rest_anon_children": {
+     "status": 401,
+     "rows": null
+    },
+    "storage_sign_service_role_status": 200,
+    "storage_signed_url_get_status": 200,
+    "storage_signed_url_bytes": 49205,
+    "storage_signed_url_sha256_equals_original": true,
+    "storage_signed_url_content_type": "application/octet-stream",
+    "storage_tampered_signed_url_status": 400,
+    "storage_object_b_signed_get_status": 200,
+    "storage_object_b_sha256_equals_original": true,
+    "storage_parent_a_sign_family_a_object_status": 400,
+    "storage_parent_a_download_family_a_object_status": 400,
+    "storage_parent_a_got_bytes": false,
+    "storage_foreign_parent_b_sign_family_a_object_status": 400,
+    "storage_foreign_parent_b_download_family_a_object_status": 400,
+    "storage_foreign_parent_b_got_bytes": false,
+    "storage_anon_sign_family_a_object_status": 400,
+    "storage_anon_download_family_a_object_status": 400,
+    "storage_anon_got_bytes": false,
+    "storage_public_url_status": 400,
+    "pass": true
+   },
+   "stop": {
+    "auth": true,
+    "rest": true,
+    "storage": true
+   },
+   "pass": true
+  },
+  "disable-user": {
+   "trigger_mode": "disable-user",
+   "superuser_for_data_load": false,
+   "before_restore_public_tables": 0,
+   "restore_database": {
+    "dry_run": {
+     "exit": 0,
+     "mode": "dry-run",
+     "steps": [
+      "preflight",
+      "schema",
+      "truncate",
+      "data",
+      "acl-check",
+      "verify"
+     ],
+     "executed_nothing": true
+    },
+    "wrong_target_confirm_exit": 2,
+    "execute_exit": 1,
+    "execute_seconds": 16.0,
+    "execute_command": "node scripts/restore-database.mjs --conn \"dbname=<tgt> user=postgres\" --data-dump <dump> --exec-prefix \"docker exec -i supabase_db_gina\" --expected-counts <src-counts.json> --trigger-mode disable-user --execute --target-confirm <tgt>",
+    "stdout_tail": [
+     "restore-database: execute — hedef dbname=<tag>_tgt2 user=postgres",
+     "[preflight] PostgreSQL 17.11 on aarch64-unknown-linux-gnu; rol postgres (süper: f)",
+     "[schema] {\"from\":\"migrations\",\"applied\":140,\"first\":\"20261029200000_schema.sql\",\"last\":\"20261106330000_c13_hardening.sql\"}",
+     "[truncate] tohum tabloları boşaltıldı",
+     "restore-database: BAŞARISIZ (15894 ms)"
+    ],
+    "stderr_tail": [
+     "restore-database: veri geri yüklemesi başarısız: pg_restore: error: could not execute query: ERROR:  permission denied for table audit_log_entries"
+    ],
+    "data_step_exit": 1,
+    "script_report": {
+     "mode": "execute",
+     "target": "dbname=<tag>_tgt2 user=postgres",
+     "trigger_mode": "disable-user",
+     "plan": [
+      {
+       "step": "preflight",
+       "detail": "hedef dbname=<tag>_tgt2 user=postgres; süper kullanıcı bağlantısı: aynı"
+      },
+      {
+       "step": "schema",
+       "detail": "140 migration psql ile sırayla (20261029200000_schema.sql … 20261106330000_c13_hardening.sql)"
+      },
+      {
+       "step": "truncate",
+       "detail": "public/gina tüm tablolar + storage.objects/buckets TRUNCATE (tohumlar dökümden geri gelir)"
+      },
+      {
+       "step": "data",
+       "detail": "alter table … disable trigger user → pg_restore --data-only /tmp/<tag>_data.dump → enable trigger user  [sahip yetkisi; FK denetimi açık; tatbikatta denenmedi]"
+      },
+      {
+       "step": "acl-check",
+       "detail": "scripts/security/post-restore-acl-check.sql → 0 satır; NULL ACL (tetikleyici dışı) fonksiyon 0; tgenabled='D' tetikleyici 0"
+      },
+      {
+       "step": "verify",
+       "detail": "11 tablo sayımı (beklenenle karşılaştırılır), 5 ilişki/yetim sorgusu"
+      }
+     ],
+     "steps": {
+      "preflight": {
+       "version": "PostgreSQL 17.11 on aarch64-unknown-linux-gnu",
+       "user": "postgres",
+       "user_is_superuser": false,
+       "superuser_conn_is_superuser": false
+      },
+      "schema": {
+       "from": "migrations",
+       "applied": 140,
+       "first": "20261029200000_schema.sql",
+       "last": "20261106330000_c13_hardening.sql"
+      },
+      "truncate": {
+       "before": {
+        "auth.users": 0,
+        "auth.identities": 0,
+        "public.families": 0,
+        "public.family_members": 0,
+        "public.children": 0,
+        "public.devices": 0,
+        "public.learning_sources": 0,
+        "storage.objects": 0,
+        "public.notes": 0,
+        "gina.note_changes": 0,
+        "public.audit_log": 35
+       }
+      },
+      "data": {
+       "mode": "disable-user",
+       "exit": 1,
+       "errors": [
+        "pg_restore: error: could not execute query: ERROR:  permission denied for table audit_log_entries"
+       ]
+      }
+     },
+     "ok": false,
+     "error": "veri geri yüklemesi başarısız: pg_restore: error: could not execute query: ERROR:  permission denied for table audit_log_entries",
+     "duration_ms": 15894
+    },
+    "script_ok": false
+   },
+   "restore_ok": false,
+   "note": "restore-database.mjs veri adımı başarısız; uygulama kanıtı bu hedefte çalıştırılmadı"
+  }
+ },
+ "cleanup": {
+  "dump_file_removed": true,
+  "<tag>_src_dropped": true,
+  "<tag>_tgt_dropped": true,
+  "<tag>_tgt2_dropped": true,
+  "verified": {
+   "containers_left": 0,
+   "databases_left": 0,
+   "dump_absent": true,
+   "scratch_removed": true
+  }
+ },
+ "migrations": {
+  "count": 140,
+  "last": "20261106330000_c13_hardening.sql"
+ },
+ "ok": true,
+ "duration_seconds": 60.2,
+ "run_tag": "gina_c13r_3f74806768"
+}

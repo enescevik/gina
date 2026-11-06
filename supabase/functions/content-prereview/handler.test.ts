@@ -1,7 +1,7 @@
 import type { AiConfig } from "../_shared/prova.ts";
 import { PREREVIEW_PROMPT_VERSION, RUBRIC_PASS } from "../_shared/prereview.ts";
 import { json } from "../_shared/supabase.ts";
-import { type Caller, createHandler, type Dependencies } from "./handler.ts";
+import { type Caller, createHandler, type Dependencies, MAX_BODY_CHARS } from "./handler.ts";
 
 function assert(value: unknown, message = "assertion failed"): asserts value {
   if (!value) throw Error(message);
@@ -349,3 +349,17 @@ Deno.test("C09 pilot: system only, explicit paid confirmation, no record writes,
   const off = await f.handler(post({ pilot: true, confirm_paid: true, items }));
   assert(off.status === 503 && (await off.json()).error === "ai_disabled" && calls(f) === 2, "global kill switch stops the pilot too");
 });
+
+Deno.test("C13 oversized request body is refused before the caller check or the queue", async () => {
+  let callerChecked = false;
+  const f = fixture();
+  const handler = createHandler({ ...f.deps, caller: (req: Request, body: unknown) => {
+    callerChecked = true;
+    return f.deps.caller(req, body as Record<string, unknown>);
+  } });
+  const res = await handler(post({ kind: "curriculum_candidate", id: ID, pad: "x".repeat(MAX_BODY_CHARS) }));
+  assert(res.status === 400, "oversized body is a 400");
+  assert((await res.json()).error === "invalid_input", "invalid_input code");
+  assert(!callerChecked, "caller lookup never ran");
+});
+

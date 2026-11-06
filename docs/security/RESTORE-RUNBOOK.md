@@ -48,3 +48,20 @@ ayrı `--superuser-conn`. Hosted ortamda süper kullanıcı yoksa `--trigger-mod
 Üretimde çalıştırılmadı. Hesap sahibinin salt okunur `scripts/security/post-restore-acl-check.sql` sorgusunu canlıda
 **bir kez** çalıştırması önerilir (geçmişte şema dökümünden geri yükleme yapılmışsa ACL kaybı burada görünür; beklenen 0 satır).
 Supabase panelinde günlük yedek/PITR durumu da hesap sahibince doğrulanmalıdır (bu repo'dan görülemez).
+
+## C13 güncellemesi (6 Kasım 2026)
+
+Kaynak: [`docs/release/c13-2026-11-06/README.md`](../release/c13-2026-11-06/README.md) §4 ve
+[`restore/README.md`](../release/c13-2026-11-06/restore/README.md); betik `scripts/security/c13-restore-drill.py --run-local`.
+
+- **Auth + Storage baytları + ilişkiler birlikte** izole tatbikatta geri geldi: gerçek GoTrue parola girişi 200 ve JWT
+  `gina.family_id` kaynakla aynı; Storage API'den imzalı URL ile dosya açıldı, sha256 orijinal yüklemeyle aynı; veli JWT'si
+  PostgREST'te kendi `learning_sources`/`children` satırlarını okudu, yabancı veli 0 satır, anon 401. Bu kanıt **yerel süper
+  kullanıcı dökümüyle** alındı; hosted geri yükleme kanıtı değildir.
+- **C13-RST-1 (düzeltildi):** `post-restore-acl-check.sql` bilinçli anon istisnası `unsubscribe_with_token`'ı tanımıyordu
+  (pgTAP 102/116 izin listesinde var); başarılı geri yükleme "BAŞARISIZ" görünüyordu. İstisna eklendi; beklenen yine 0 satır.
+- **C13-RST-2 (açık):** `--trigger-mode disable-user` süper kullanıcısız denendi ve **başarısız**: `postgres` rolü `auth.*`
+  tablolarına yazamıyor (`permission denied for table audit_log_entries`). Hosted'da Auth verisini bu betikle geri yüklemek
+  mümkün değil; Supabase'in kendi yedek/PITR aracı veya destek talebi gerekir. Hesap sahibi adımı.
+- **C13-RST-3 (açık, düşük):** Storage dosya arka ucu içerik türünü dosya xattr'ında tutuyor; tar kopyası bunu taşımadı
+  (geri gelen nesne `application/octet-stream`). Hosted nesne kopyası yöntemi içerik türünü korumalı (S3 kopya/metadata).

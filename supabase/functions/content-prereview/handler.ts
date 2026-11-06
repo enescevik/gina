@@ -56,6 +56,7 @@ const NON_RETRYABLE = new Set<AiFailure["kind"]>([
   "refusal",
 ]);
 export const PILOT_MAX_ITEMS = 12;
+export const MAX_BODY_CHARS = 256 * 1024;
 
 function isUuid(v: unknown): v is string {
   return typeof v === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
@@ -236,7 +237,10 @@ export function createHandler(deps: Dependencies) {
     if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
     let body: unknown;
     try {
-      body = await req.json();
+      // C13-SCAN-5: bound the body before parsing; the anon key alone passes verify_jwt.
+      const raw = await req.text();
+      if (raw.length > MAX_BODY_CHARS) return json({ error: "invalid_input" }, 400);
+      body = JSON.parse(raw);
     } catch {
       return json({ error: "invalid_input" }, 400);
     }
