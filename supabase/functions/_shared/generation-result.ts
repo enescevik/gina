@@ -9,6 +9,13 @@ import {
 } from "./prova.ts";
 import type { ScenarioProvenance } from "./catalogue-plan.ts";
 import { RUBRIC_ASSESSES, type RubricAssesses } from "./answer-key.ts";
+import {
+  isStructuredType,
+  PRACTICE_ONLY_TYPES,
+  splitStructuredQuestion,
+  type StructuredSplit,
+  visibleStructuredTexts,
+} from "./structured-generation.ts";
 export { RUBRIC_ASSESSES };
 export const QUESTION_TYPES = [
   "coktan_secmeli",
@@ -95,6 +102,11 @@ export interface GeneratedQuestion {
   intended_difficulty?: string | null;
   rubric?: QuestionRubric | null;
   shared_source_id?: string | null;
+  /** QT-AI: yapılandırılmış soruda ayırıcı (eski satırlarda yok; eski türde `kind` ile aynı). */
+  interaction_type?: string | null;
+  schema_version?: number | null;
+  /** QT-AI: türe özgü model biçimi; payload + answer_key'e ayrılır (bkz. structured-generation.ts). */
+  structure?: unknown;
 }
 export interface GeneratedOutput {
   questions: GeneratedQuestion[];
@@ -132,7 +144,7 @@ export type GenerationContext = {
   scenarioCode: string | null;
   blueprintSource: string | null;
   blueprintSnapshot: Record<string, unknown> | null;
-  draftScope: { id: string; version: number; purpose: unknown } | null;
+  draftScope: { id: string; version: number; purpose: unknown; track?: string } | null;
   document: { id: string; sha256: string } | null;
   ai: AiConfig;
   promptVersion: string;
@@ -142,7 +154,18 @@ export type GenerationContext = {
   catalogueBound: boolean;
   /** Present only for catalogue-bound jobs; comes from the private server binding via cataloguePlan. */
   scenario?: ScenarioProvenance | null;
+  /** QT-AI: istenen etkileşim türleri. Yoksa eski davranış (yalnız `kind`); eski kayıtlı bağlamlar bu alanı taşımaz. */
+  interactionTypes?: string[];
+  /** QT-AI: yazılı/OYSS (meb_common) isteği; alıştırma türleri doğrulamada da reddedilir (savunma derinliği). */
+  writtenTrack?: boolean;
 };
+/** Ücretli çıktı deterministik doğrulamadan geçmedi. Mesaj eski kodla aynı (`ai_result_invalid` → iş `uncertain`,
+ * tekrar/ikinci ücret yok); `codes` yalnız yapılandırılmış soru hatalarının sabit kodlarıdır. */
+export class GenerationInvalidError extends Error {
+  constructor(readonly codes: string[] = []) {
+    super("ai_result_invalid");
+  }
+}
 const blank = (v: unknown) =>
   v === undefined || v === null || v === "" ||
   (Array.isArray(v) && v.length === 0);
@@ -308,6 +331,7 @@ export function personNameReview(
   q: Pick<GeneratedQuestion, "stem" | "choices">,
   shared: SharedSource | null,
   locale: "tr" | "en",
+  extra: { field: string; text: string }[] = [],
 ): ContentReviewFlag | null {
   const names: string[] = [], fields: string[] = [];
   const scan = (field: string, text: unknown) => {
@@ -318,6 +342,7 @@ export function personNameReview(
   };
   scan("stem", q.stem);
   (Array.isArray(q.choices) ? q.choices : []).forEach((c) => scan(`choice_${c?.key ?? "?"}`, c?.text));
+  for (const e of extra) scan(e.field, e.text);
   if (shared) scan("shared_source", shared.content);
   if (!names.length) return null;
   const list = names.join(", ");
@@ -330,11 +355,66 @@ export function personNameReview(
     flags: [{ code: "person_name", names, fields: [...new Set(fields)], suggestion }],
   };
 }
+/** QT-AI: soru yapılandırılmış satır olarak mı ele alınır (yalnız tür istenmiş bağlamda). */
+export function isStructuredQuestion(q: GeneratedQuestion | null | undefined, context: GenerationContext) {
+  return !!context.interactionTypes && !!q && isStructuredType(q.interaction_type);
+}
+/** Eski (şıklı/açık uçlu) sorunun kuralları aynen; tür istenmiş bağlamda ayırıcı ve izinli tür de denetlenir. */
+function legacyQuestionInvalid(q: GeneratedQuestion, context: GenerationContext, sharedIds: Set<string>) {
+  const { topics, kind } = context;
+  return !q || typeof q.stem !== "string" || !q.stem.trim() ||
+    q.stem.length > 10000 ||
+    typeof q.expected_answer !== "string" || !q.expected_answer.trim() ||
+    typeof q.solution !== "string" || !q.solution.trim() ||
+    typeof q.topic !== "string" || !topics.some((t) => t.topic === q.topic) ||
+    !["multiple_choice", "open_ended"].includes(q.kind) ||
+    (kind !== "mixed" && q.kind !== kind) ||
+    (!!context.interactionTypes &&
+      (q.interaction_type !== q.kind || !context.interactionTypes.includes(q.kind))) ||
+    (q.kind === "multiple_choice" &&
+      (!Array.isArray(q.choices) || q.choices.length !== 4 ||
+        new Set(q.choices.map((c) => c?.key)).size !== 4 ||
+        q.choices.some((c) =>
+          !c || !["A", "B", "C", "D"].includes(c.key) ||
+          typeof c.text !== "string" || !c.text.trim()
+        ) ||
+        !q.choices.some((c) => c.key === q.correct_key))) ||
+    (q.explanation !== undefined && typeof q.explanation !== "string") ||
+    (q.distractor_notes !== undefined &&
+      (!Array.isArray(q.distractor_notes) ||
+        q.distractor_notes.some((n) =>
+          !n || typeof n.key !== "string" || typeof n.why !== "string"
+        ))) ||
+    !validateQuestionProvenance(q, context, sharedIds);
+}
+/** QT-AI: yapılandırılmış sorunun ortak alanları + istenen tür/iz kuralı + payload/anahtar ayrımı. Boş = geçerli. */
+export function structuredQuestionErrors(
+  q: GeneratedQuestion,
+  context: GenerationContext,
+  sharedIds: Set<string>,
+): { errors: string[]; split: StructuredSplit | null } {
+  const errors = new Set<string>();
+  const type = String(q.interaction_type);
+  if (!context.interactionTypes?.includes(type)) errors.add("interaction_type_not_requested");
+  if (context.writtenTrack && PRACTICE_ONLY_TYPES.has(type)) errors.add("interaction_type_not_allowed_for_track");
+  if (
+    typeof q.stem !== "string" || !q.stem.trim() || q.stem.length > 10000 ||
+    typeof q.solution !== "string" || !q.solution.trim() || q.solution.length > 10000 ||
+    typeof q.explanation !== "string" || q.explanation.length > 10000 ||
+    !DIFFICULTIES.includes(q.difficulty) ||
+    !Array.isArray(q.source_urls) || q.source_urls.some((u) => typeof u !== "string")
+  ) errors.add("question_incomplete");
+  if (typeof q.topic !== "string" || !context.topics.some((t) => t.topic === q.topic)) errors.add("topic_invalid");
+  if (!validateQuestionProvenance(q, context, sharedIds)) errors.add("provenance_invalid");
+  const split = splitStructuredQuestion(q);
+  if (!split.ok) for (const e of split.errors) errors.add(e);
+  return { errors: [...errors].sort(), split: split.ok ? split.value : null };
+}
 export function validateGenerationResult(
   result: AiResult<GeneratedOutput>,
   context: GenerationContext,
 ) {
-  const { total, topics, kind } = context;
+  const { total, topics } = context;
   const questions = result?.output?.questions;
   const shared = result?.output?.shared_sources;
   const sharedIds = new Set<string>();
@@ -350,32 +430,17 @@ export function validateGenerationResult(
     for (const s of shared!) sharedIds.add(s.id);
     if (sharedIds.size !== shared!.length) throw new Error("ai_result_invalid");
   }
+  if (!Array.isArray(questions)) throw new Error("ai_result_invalid");
+  // Yapılandırılmış satır hataları kodlarıyla toplanır; tek hatalı satır işin tamamını reddeder.
+  const structuredCodes = new Set<string>();
+  for (const q of questions) {
+    if (!isStructuredQuestion(q, context)) continue;
+    for (const e of structuredQuestionErrors(q, context, sharedIds).errors) structuredCodes.add(e);
+  }
+  if (structuredCodes.size) throw new GenerationInvalidError([...structuredCodes].sort());
   if (
-    !Array.isArray(questions) || questions.length !== total ||
-    questions.some((q) =>
-      !q || typeof q.stem !== "string" || !q.stem.trim() ||
-      q.stem.length > 10000 ||
-      typeof q.expected_answer !== "string" || !q.expected_answer.trim() ||
-      typeof q.solution !== "string" || !q.solution.trim() ||
-      typeof q.topic !== "string" || !topics.some((t) => t.topic === q.topic) ||
-      !["multiple_choice", "open_ended"].includes(q.kind) ||
-      (kind !== "mixed" && q.kind !== kind) ||
-      (q.kind === "multiple_choice" &&
-        (!Array.isArray(q.choices) || q.choices.length !== 4 ||
-          new Set(q.choices.map((c) => c?.key)).size !== 4 ||
-          q.choices.some((c) =>
-            !c || !["A", "B", "C", "D"].includes(c.key) ||
-            typeof c.text !== "string" || !c.text.trim()
-          ) ||
-          !q.choices.some((c) => c.key === q.correct_key))) ||
-      (q.explanation !== undefined && typeof q.explanation !== "string") ||
-      (q.distractor_notes !== undefined &&
-        (!Array.isArray(q.distractor_notes) ||
-          q.distractor_notes.some((n) =>
-            !n || typeof n.key !== "string" || typeof n.why !== "string"
-          ))) ||
-      !validateQuestionProvenance(q, context, sharedIds)
-    ) ||
+    questions.length !== total ||
+    questions.some((q) => !isStructuredQuestion(q, context) && legacyQuestionInvalid(q, context, sharedIds)) ||
     topics.some((t) =>
       questions.filter((q) => q.topic === t.topic).length !== t.count
     ) ||
@@ -385,6 +450,13 @@ export function validateGenerationResult(
     ) ||
     !sharedStemsFit(questions, shared, context.locale)
   ) throw new Error("ai_result_invalid");
+}
+/** Doğrulama reddi yanıtı: eski gövde aynen; yapılandırılmış satır kodları varsa `details.reasons` (sabit kodlar). */
+export function invalidResponse(e: unknown) {
+  const codes = e instanceof GenerationInvalidError ? e.codes : [];
+  return codes.length
+    ? fail("ai_result_invalid", 502, { details: { reasons: codes.join(",") } })
+    : fail("ai_result_invalid", 502);
 }
 export async function finishGeneration(
   db: ReturnType<typeof serviceClient>,
@@ -399,8 +471,8 @@ export async function finishGeneration(
   }
   try {
     validateGenerationResult(result, context);
-  } catch {
-    return fail("ai_result_invalid", 502);
+  } catch (e) {
+    return invalidResponse(e);
   }
   const {
     total,
@@ -427,9 +499,12 @@ export async function finishGeneration(
   const rows = (result.output.questions ?? [])
     .slice(0, total)
     .filter((q) => q.stem?.trim())
-    .filter((q) => kind === "mixed" || q.kind === kind)
+    .filter((q) => isStructuredQuestion(q, context) || kind === "mixed" || q.kind === kind)
     .map((q) => {
-      const isMc = q.kind === "multiple_choice";
+      const structured = isStructuredQuestion(q, context)
+        ? structuredQuestionErrors(q, context, new Set(sharedById.keys())).split
+        : null;
+      const isMc = !structured && q.kind === "multiple_choice";
       const choices = isMc ? (q.choices ?? []).slice(0, 4) : null;
       const validMc = isMc && choices?.length === 4 &&
         new Set(choices.map((c) => c.key)).size === 4 && choices.every((c) =>
@@ -447,7 +522,7 @@ export async function finishGeneration(
       const shared = q.shared_source_id
         ? sharedById.get(q.shared_source_id) ?? null
         : null;
-      const review = personNameReview(q, shared, locale);
+      const review = personNameReview(q, shared, locale, structured ? visibleStructuredTexts(structured.payload) : []);
       const trace = {
         ...(scenario
           ? {
@@ -487,6 +562,57 @@ export async function finishGeneration(
         // D9/B6: kişi adı bulunursa soru reddedilmez; veli incelemesi için uyarı etiketi.
         ...(review ? { content_review: review } : {}),
       };
+      const provenance = {
+        generator: "ai",
+        ...trace,
+        ...(blueprintSnapshot ? { blueprint: blueprintSnapshot } : {}),
+        ...(draftScope
+          ? { draft_id: draftScope.id, draft_version: draftScope.version }
+          : {}),
+        ...(document
+          ? {
+            document_source_id: document.id,
+            document_sha256: document.sha256,
+          }
+          : {}),
+        model: ai.model,
+        prompt_version: context.promptVersion,
+        settings_prompt_version: ai.promptVersion,
+        prompt_hash: promptHash,
+        prompt: {
+          system: context.systemPrompt,
+          user: JSON.parse(userPrompt),
+        },
+        requested_by: parent.userId,
+        created_at: createdAt,
+      };
+      if (isStructuredQuestion(q, context)) {
+        // QT-AI: öğrenci payload'ı yalnız izin listesinden yeniden kurulmuş nesnedir; anahtar ayrı alanda gider ve
+        // SQL (gina.qt_insert_structured) onu çocuk erişimi olmayan question_answer_keys tablosuna yazar.
+        return {
+          valid: !!structured && !!q.solution?.trim(),
+          row: {
+            family_id: parent.familyId,
+            grade,
+            subject,
+            topic: q.topic.trim(),
+            scenario_code: scenarioCode,
+            interaction_type: structured?.interaction_type,
+            schema_version: structured?.schema_version,
+            payload: structured?.payload,
+            answer_key: structured?.answer_key,
+            difficulty: q.difficulty,
+            stem: shared
+              ? materializeSharedStem(shared, q.stem, locale)
+              : q.stem.trim(),
+            solution: q.solution?.trim() || null,
+            explanation: q.explanation?.trim() || null,
+            source_urls: [...new Set(sources)],
+            provenance,
+            created_by: parent.userId,
+          } as Record<string, unknown>,
+        };
+      }
       return {
         valid: !!q.expected_answer?.trim() && !!q.solution?.trim() &&
           (isMc ? validMc : q.kind === "open_ended"),
@@ -509,32 +635,9 @@ export async function finishGeneration(
           solution: q.solution?.trim() || null,
           explanation: ((q.explanation?.trim() ?? "") + notes).trim() || null,
           source_urls: [...new Set(sources)],
-          provenance: {
-            generator: "ai",
-            ...trace,
-            ...(blueprintSnapshot ? { blueprint: blueprintSnapshot } : {}),
-            ...(draftScope
-              ? { draft_id: draftScope.id, draft_version: draftScope.version }
-              : {}),
-            ...(document
-              ? {
-                document_source_id: document.id,
-                document_sha256: document.sha256,
-              }
-              : {}),
-            model: ai.model,
-            prompt_version: context.promptVersion,
-            settings_prompt_version: ai.promptVersion,
-            prompt_hash: promptHash,
-            prompt: {
-              system: context.systemPrompt,
-              user: JSON.parse(userPrompt),
-            },
-            requested_by: parent.userId,
-            created_at: createdAt,
-          },
+          provenance,
           created_by: parent.userId,
-        },
+        } as Record<string, unknown>,
       };
     })
     .filter((x) => x.valid)
