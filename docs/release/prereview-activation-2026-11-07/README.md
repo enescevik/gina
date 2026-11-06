@@ -17,6 +17,12 @@ bağımsız eğitimci onayı değiştirilmez.
   Sentetik pilotun 9 çağrısı bu kayıt kotasından ayrıdır ve otomatik tekrarlanmaz.
 - Zamanlayıcı mevcut `*/10 * * * *` işidir. Yalnız kuyruğa alınmış kayıtlar işlenir;
   tüm arşiv kendiliğinden kuyruğa alınmaz. AI sonucu içerik yayımlamaz.
+- Canlı yönetici oturumundan yalnız bir taslak senaryo kuyruğa alındı. Zamanlayıcının
+  `gina.kick_content_prereview()` yolu bir kez tetiklendi; pg_net → Edge → model →
+  sonuç kaydı zinciri HTTP 200 ile tamamlandı. Sonuç `needs_admin`; panelde
+  `BEKLİYOR — yönetici kararı` görüldü. İçerik hash'i ve editoryal durumu değişmedi,
+  ailelere açılmadı. `calls_24h=1`, bitmemiş çağrı 0; tek uyarı beklenen kota freni.
+  Pilot ve gerçek kayıt dahil bu aktivasyonda toplam 10 sağlayıcı çağrısı yapıldı.
 
 İzleme: `select gina.content_prereview_health();`. Durdurma:
 `update public.app_settings set value='false'::jsonb where key='content_prereview.enabled';`.
