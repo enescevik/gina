@@ -20,7 +20,7 @@ const ADMIN_RESET_MARK = "gina.u01.adminReset";
 
 export default function SignInScreen() {
   const { t, i18n } = useTranslation();
-  const params = useLocalSearchParams<{ mode?: string; reason?: string; from?: string; error?: string; error_code?: string }>();
+  const params = useLocalSearchParams<{ mode?: string; reason?: string; from?: string; error?: string; error_code?: string; error_description?: string }>();
   const [showPassword, setShowPassword] = useState(false);
   const [mode, setMode] = useState<Mode>(params.mode === "reset" ? "reset" : params.mode === "up" ? "up" : "in");
   const [email, setEmail] = useState("");
@@ -29,7 +29,7 @@ export default function SignInScreen() {
   const [busy, setBusy] = useState(false);
   // A redirect that lands here (expired link, cancelled provider) or a session that ended explains itself first.
   const [issue, setIssue] = useState<AuthIssue | null>(() =>
-    params.reason === "session_expired" ? "session_expired" : params.error ? classifyAuthIssue({ error: params.error, error_code: params.error_code }) : null);
+    params.reason === "session_expired" ? "session_expired" : params.error ? classifyAuthIssue({ error: params.error, error_code: params.error_code, error_description: params.error_description }) : null);
   const [notice, setNotice] = useState<string | null>(null);
   const [resend, setResend] = useState(false);
   const fromAdmin = params.from === "admin";
@@ -94,6 +94,7 @@ export default function SignInScreen() {
         {mode === "reset" ? <Button variant="ghost" title={t("u01.backToSignIn")} disabled={busy} onPress={() => change("in")} /> : null}
       </View>
     </View>
+    <Button variant="ghost" title={t("privacyCenter.title")} disabled={busy} onPress={() => router.push("/privacy")} />
     {mode !== "reset" ? <InfoCard title={t("unified.childDeviceTitle")} body={t("unified.childDeviceBody")}>
       <Button variant="secondary" title={t("unified.connectDevice")} disabled={busy} onPress={() => router.push("/device/pair")} />
     </InfoCard> : null}

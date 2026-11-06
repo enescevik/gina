@@ -35,7 +35,7 @@ select is(pg_temp.reserve('20000000-0000-4000-8000-000000005802',pg_temp.context
 select ok(pg_temp.resume('20000000-0000-4000-8000-000000005802')?'provider_result','saved provider output recovered without provider call');
 select public.complete_prova_generation_v2('20000000-0000-4000-8000-000000005802',(select lease from public.prova_generation_jobs where id='20000000-0000-4000-8000-000000005802'),'[{"grade":5,"subject":"Fen","topic":"Isı","kind":"open_ended","difficulty":"orta","stem":"Isı nedir?","expected_answer":"Enerji aktarımı","solution":"Açıklama","source_urls":[],"provenance":{}}]','original-model','v1',10,20);
 reset role;
-update public.app_settings set value='false' where key='ai.enabled';update public.plans set prova_ai_generate_monthly=0;
+insert into public.app_settings(key,value) values('ai.enabled','false') on conflict (key) do update set value=excluded.value;update public.plans set prova_ai_generate_monthly=0;
 set local role service_role;
 select ok(pg_temp.resume('20000000-0000-4000-8000-000000005802')?'cached','completed result available with AI disabled');
 select is((select sum(consumed)::int from public.generation_credit_allocations),1,'recovery never consumes twice');

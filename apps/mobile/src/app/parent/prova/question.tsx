@@ -466,13 +466,14 @@ export default function QuestionScreen() {
                 className={chip(step === n)}
               >
                 <Text className={chipText(step === n)}>
-                  {`${n + 1}. ${t(`provaP02.editor.step${n}`)}`}
+                  {`${n + 1}. ${t(editFrom && n === 0 ? "h06.aiEditStep0" : `provaP02.editor.step${n}`)}`}
                 </Text>
               </Pressable>
             ))}
           </View>
           <Text style={parentStyles.muted}>
-            {t(`provaP02.editor.step${step}Help`)}
+            {/* H06-1: AI düzenlemesinde görsel editörü yok; adım adı/yardımı görsel istemez. */}
+            {t(editFrom && step === 0 ? "h06.aiEditStep0Help" : `provaP02.editor.step${step}Help`)}
           </Text>
           {step === 0 ? (<>
           {editFrom

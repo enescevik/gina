@@ -56,6 +56,8 @@ const reasonLabels: Record<string, string> = {
   source_target_retired: "Kaynak hedefi (yıl/dönem) emekli; AI çağrılmadı",
   ai_temporarily_unavailable: "Sağlayıcı geçici olarak duraklatıldı; AI çağrılmadı",
   provider_health_unavailable: "Sağlayıcı durumu okunamadı; AI çağrılmadı",
+  // H07
+  daily_limit: "Günlük AI çağrı sınırı doldu; kayıt kuyrukta bekliyor, AI çağrılmadı",
   provider_unconfigured: "Seçili sağlayıcı yapılandırılmadı; AI çağrılmadı",
   ai_model_unsupported: "Model bu iş için desteklenmiyor; AI çağrılmadı",
   ai_configuration_unavailable: "AI ayarları okunamadı; AI çağrılmadı",
@@ -361,6 +363,9 @@ export function RequestPrereviewButton(
           ? "İçerik değişmediği için önceki AI sonucu geçerli; yeni AI çağrısı yapılmadı."
           : r.outcome === "in_progress"
           ? "Bu kayıt şu anda inceleniyor. Birazdan yenileyin."
+          : r.outcome === "retry_pending"
+          // H06-2: neden etiketi zaten "kuyrukta bekliyor" diyorsa tekrar etme.
+          ? `AI ön incelemesi şimdi yapılamadı: ${r.reason && /kuyrukta bekliyor/.test(reasonLabel(r.reason)) ? reasonLabel(r.reason) : `kayıt kuyrukta bekliyor${r.reason ? ` (${reasonLabel(r.reason)})` : ""}`}. Yönetici kararı ve yayın değişmedi.`
           : `AI ön incelemesi tamamlandı: ${prereviewStatusLabel((r.prereview_status ?? "pending") as PrereviewStatus, "tr")}${r.reason ? ` (${reasonLabel(r.reason)})` : ""}. Yönetici kararı ve yayın değişmedi.`,
       });
     } catch (e) {

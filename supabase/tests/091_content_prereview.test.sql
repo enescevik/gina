@@ -138,7 +138,8 @@ select is((public.content_prereview_claim('curriculum_candidate',pg_temp.id('ret
 select lives_ok($$select public.content_prereview_finish('curriculum_candidate',pg_temp.id('retry'),pg_temp.lease(2),'pending',null,'ai_result_invalid')$$,'malformed output is a retryable failure');
 select is((public.content_prereview_claim('curriculum_candidate',pg_temp.id('retry'),pg_temp.lease(3),'prereview-v1')->>'attempts')::int,3,'retry attempt 3');
 select lives_ok($$select public.content_prereview_finish('curriculum_candidate',pg_temp.id('retry'),pg_temp.lease(3),'pending',null,'anthropic_timeout')$$,'third failure recorded');
-select is(public.content_prereview_next(10),'[]'::jsonb,'exhausted record leaves the worker queue');
+-- H07: the exhausted record stays visible to the worker so the next claim retires it for free (it used to stick).
+select is(public.content_prereview_next(10),jsonb_build_array(jsonb_build_object('kind','curriculum_candidate','id',pg_temp.id('retry'))),'exhausted record stays visible so the next claim retires it (H07)');
 select is(public.content_prereview_claim('curriculum_candidate',pg_temp.id('retry'),pg_temp.lease(4),'prereview-v1')->>'error','retry_limit','fourth claim trips the retry limit');
 select is(pg_temp.q(format($$select prereview_status from gina.content_prereviews where target_id=%L$$,pg_temp.id('retry'))),'needs_admin','retry limit routes to the admin');
 select is(pg_temp.q(format($$select prereview_verdict->>'decision_reason' from gina.content_prereviews where target_id=%L$$,pg_temp.id('retry'))),'retry_limit','reason is recorded');

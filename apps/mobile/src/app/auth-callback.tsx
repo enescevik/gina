@@ -1,19 +1,19 @@
 import {useEffect,useState} from 'react';
 import {Platform,Text,View} from 'react-native';
-import {router,useLocalSearchParams} from 'expo-router';
+import {router,useLocalSearchParams,type Href} from 'expo-router';
 import {useTranslation} from 'react-i18next';
 import {ParentScreen,parentStyles} from '@/components/ui/parent-screen';
 import {Button} from '@/components/ui/button';
 import {AuthIssueText,classifyAuthIssue,type AuthIssue} from '@/components/social-sign-in';
 import {AuthLinkResend} from '@/components/email-verification';
 import {supabase} from '@/lib/supabase';
-import {completeOAuthCode} from '@/lib/social-auth';
+import {completeOAuthCode,syncAppleProviderToken,takeReauthReturn} from '@/lib/social-auth';
+import {readAuthRedirectError,type AuthRedirectError} from '@gina/core';
 
-/** Web keeps redirect errors in the fragment for the implicit flow; PKCE puts them in the query. */
-function fragmentParams():{error?:string;error_code?:string}{
- if(Platform.OS!=='web'||typeof window==='undefined'||!window.location.hash)return {};
- const hash=new URLSearchParams(window.location.hash.slice(1));
- return {error:hash.get('error')??undefined,error_code:hash.get('error_code')??undefined};
+/** Web: PKCE errors arrive in the query, implicit-flow errors in the fragment. Native: the deep-link query. */
+function redirectError(params:{error?:string;error_code?:string;error_description?:string}):AuthRedirectError|null{
+ if(Platform.OS==='web'&&typeof window!=='undefined')return readAuthRedirectError(window.location.search,window.location.hash);
+ return params.error?readAuthRedirectError(new URLSearchParams(Object.entries(params).filter((e):e is [string,string]=>typeof e[1]==='string')).toString(),''):null;
 }
 
 /**
@@ -21,19 +21,20 @@ function fragmentParams():{error?:string;error_code?:string}{
  * (request a new one here), opened in another browser/device (sign in with password), offline, other failure.
  */
 export default function AuthCallback(){
- const params=useLocalSearchParams<{code?:string;error?:string;error_code?:string}>();const {code}=params;const {t}=useTranslation();
+ const params=useLocalSearchParams<{code?:string;error?:string;error_code?:string;error_description?:string}>();const {code}=params;const {t}=useTranslation();
  const [issue,setIssue]=useState<AuthIssue|null>(null);const [attempt,setAttempt]=useState(0);
- const errorParam=params.error??fragmentParams().error;const errorCode=params.error_code??fragmentParams().error_code;
+ const [linkError]=useState(()=>redirectError(params));
  useEffect(()=>{let live=true;void(async()=>{
   try{
-   if(errorParam)throw {error:errorParam,error_code:errorCode};
+   if(linkError)throw linkError;
    if(Platform.OS!=='web'){if(!code)throw new Error('missing_code');await completeOAuthCode(code);}
    // Browser client consumes PKCE during initialization; wait for it instead of exchanging twice.
    const {data,error}=await supabase.auth.getSession();if(error)throw error;
    if(!data.session)throw code?{code:'flow_state_not_found'}:new Error('missing_session');
-   if(live)router.replace('/');
+   if(Platform.OS==='web')await syncAppleProviderToken(data.session);
+   if(live)router.replace(((Platform.OS==='web'?takeReauthReturn():null)??'/') as Href);
   }catch(e){if(live)setIssue(classifyAuthIssue(e));}
- })();return()=>{live=false;};},[code,errorParam,errorCode,attempt]);
+ })();return()=>{live=false;};},[code,linkError,attempt]);
  const backToSignIn=()=>router.replace('/(auth)/sign-in');
  return <ParentScreen navigation={false} title={t(issue==='cancelled'?'u01.cancelledTitle':issue?'auth.signIn':'experience.social.callback')} loading={!issue}>
   {issue==='cancelled'

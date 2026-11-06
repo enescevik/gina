@@ -1,0 +1,440 @@
+{
+  "environment": "disposable-db+auth+postgrest+supabase-edge-runtime(v1.77.8); real official network; no storage; no AI",
+  "database": "gina_h02_167b0eaf3ebe_audit",
+  "checks": [
+    {
+      "name": "isolated_catalogue_empty",
+      "pass": true,
+      "detail": {
+        "sources": 0,
+        "revisions": 0,
+        "candidates": 0,
+        "published": 0,
+        "approved": 0
+      }
+    },
+    {
+      "name": "global_catalogue_off_at_start",
+      "pass": true,
+      "detail": "false"
+    },
+    {
+      "name": "parent_cannot_list_index_links",
+      "pass": true,
+      "detail": {
+        "error": "forbidden"
+      }
+    },
+    {
+      "name": "parent_cannot_extract",
+      "pass": true,
+      "detail": {
+        "error": "forbidden"
+      }
+    },
+    {
+      "name": "anon_cannot_extract",
+      "pass": true,
+      "detail": {
+        "error": "forbidden"
+      }
+    },
+    {
+      "name": "backoffice_ui_tours_desktop_and_tablet",
+      "pass": true,
+      "detail": {
+        "desktop_admin_login": true,
+        "empty_catalogue_has_a_start_path_and_no_token_command": true,
+        "official_index_links_listed_from_registered_target": true,
+        "first_download_from_panel_creates_queued_revision": true,
+        "extraction_from_panel_double_click_single_attempt": true,
+        "source_card_shows_extraction_state_and_counts": true,
+        "draft_review_opens_from_panel": true,
+        "tablet_admin_login": true,
+        "per_level_subject_requires_level_then_downloads": true,
+        "extraction_from_queue_on_tablet": true,
+        "tablet_draft_review_nothing_approved_or_published": true,
+        "no_page_exceptions_or_horizontal_overflow": true
+      }
+    },
+    {
+      "name": "ui_left_drafts_only",
+      "pass": true,
+      "detail": {
+        "sources": 2,
+        "revisions": 2,
+        "candidates": 86,
+        "published": 0,
+        "approved": 0
+      }
+    },
+    {
+      "name": "index_links_from_registered_page",
+      "pass": true,
+      "detail": {
+        "texts": [
+          "Biyoloji",
+          "Coğrafya",
+          "Din Kültürü ve Ahlak Bilgisi",
+          "Felsefe",
+          "Fen Bilimleri",
+          "Fizik",
+          "Kimya",
+          "Matematik",
+          "Sosyal Bilgiler",
+          "T.C. MİLLİ EĞİTİM BAKANLIĞI",
+          "Tarih",
+          "Türk Dili ve Edebiyatı",
+          "Türkçe",
+          "İlköğretim Matematik",
+          "İngilizce"
+        ],
+        "index": {
+          "url": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+          "published": "2026-09-07",
+          "updated": "2026-09-10"
+        }
+      }
+    },
+    {
+      "name": "first_download_new_revision_queued",
+      "pass": true,
+      "detail": {
+        "outcome": "new_revision",
+        "status": "pending_review",
+        "extraction_status": "queued",
+        "sha256": "6efb716bcbd758c211402c862ae3ddddb722d497677d905942e8d2aab16ab538",
+        "stored": false
+      }
+    },
+    {
+      "name": "same_hash_no_new_revision",
+      "pass": true,
+      "detail": {
+        "sha256": "6efb716bcbd758c211402c862ae3ddddb722d497677d905942e8d2aab16ab538",
+        "status": "pending_review",
+        "outcome": "unchanged",
+        "request": "32e78180-b1f7-4502-a22c-4bc959f5545f",
+        "freshness": "pending_review",
+        "source_id": "f8471a8b-b13e-4873-a3dd-e28257642772",
+        "revision_id": "97361298-9b61-4620-b27b-36b560d3bfd6",
+        "retrieved_at": "2026-11-06T20:27:04.423023+00:00",
+        "last_checked_at": "2026-11-06T20:27:04.824197+00:00",
+        "extraction_status": "queued",
+        "index": {
+          "url": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+          "published": "2026-09-07",
+          "updated": "2026-09-10"
+        },
+        "officially_verified": false,
+        "stored": false
+      }
+    },
+    {
+      "name": "concurrent_clicks_one_extraction",
+      "pass": true,
+      "detail": [
+        [
+          200,
+          "done"
+        ],
+        [
+          409,
+          "extraction_in_progress"
+        ]
+      ]
+    },
+    {
+      "name": "extraction_matches_repository_python_extraction",
+      "pass": true,
+      "detail": {
+        "scenarios": 36,
+        "repo": 36,
+        "origin": "official_url"
+      }
+    },
+    {
+      "name": "same_candidate_keys_as_python",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "name": "repeat_click_already_done",
+      "pass": true,
+      "detail": {
+        "outcome": "already_done",
+        "revision_id": "97361298-9b61-4620-b27b-36b560d3bfd6",
+        "extraction_status": "done",
+        "extraction": {
+          "at": "2026-11-06T20:27:05.140568+00:00",
+          "by": "bbabbe37-b41f-4409-9d3d-10dec7c2cff5",
+          "issues": 0,
+          "created": 36,
+          "outcome": "done",
+          "existing": 0,
+          "extractor": "extract-meb-scenarios@h02-deno",
+          "scenarios": 36,
+          "bundle_sha256": "1f99cbc810b1d576b0acbd36cd0b217bd182e78df3d15ff6cf99fb8db0bd4005"
+        }
+      }
+    },
+    {
+      "name": "review_only_no_approval_no_publish",
+      "pass": true,
+      "detail": {
+        "sources": 3,
+        "revisions": 3,
+        "candidates": 122,
+        "published": 0,
+        "approved": 0
+      }
+    },
+    {
+      "name": "ui_created_level_source_reused",
+      "pass": true,
+      "detail": {
+        "sha256": "7517a025357dd00a2f02c2975875dfa6737a48247f756d3db27bf0f8213a9f85",
+        "status": "pending_review",
+        "outcome": "unchanged",
+        "request": "5077c8b9-49ab-484b-8b0b-d6587c9bfef7",
+        "freshness": "pending_review",
+        "source_id": "61723bdb-f9fb-457d-8186-7f0d1b6ad092",
+        "revision_id": "154c4600-109a-4e48-8910-ae9fcfa0c7f3",
+        "retrieved_at": "2026-11-06T20:27:00.62222+00:00",
+        "last_checked_at": "2026-11-06T20:27:06.366225+00:00",
+        "extraction_status": "done",
+        "index": {
+          "url": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+          "published": "2026-09-07",
+          "updated": "2026-09-10"
+        },
+        "officially_verified": false,
+        "stored": false
+      }
+    },
+    {
+      "name": "same_bytes_other_card_refused",
+      "pass": true,
+      "detail": {
+        "error": "source_duplicate",
+        "existing_label": "İngilizce",
+        "sha256": "7517a025357dd00a2f02c2975875dfa6737a48247f756d3db27bf0f8213a9f85",
+        "officially_verified": false
+      }
+    },
+    {
+      "name": "other_level_file_is_its_own_source",
+      "pass": true,
+      "detail": {
+        "sha256": "006b7e8e1ff066c5869195b2e5f89bfa0f6de5e04b00568b5a01a7f3f30911dd",
+        "status": "pending_review",
+        "outcome": "new_revision",
+        "request": "b73698c5-2228-4332-b35d-e1e836f737c7",
+        "freshness": "pending_review",
+        "source_id": "6dbbd9c8-1deb-4507-93fc-cbf7ac2684fe",
+        "revision_id": "a3a18166-20c9-45a6-a4df-4d298d9f4bb7",
+        "retrieved_at": "2026-11-06T20:27:07.405186+00:00",
+        "extraction_status": "queued",
+        "previous_approved": null,
+        "index": {
+          "url": "https://odsgm.meb.gov.tr/www/1donem-konu-soru-dagilim-tablolari-2026-2027/icerik/1724",
+          "published": "2026-09-07",
+          "updated": "2026-09-10"
+        },
+        "officially_verified": false,
+        "stored": false
+      }
+    },
+    {
+      "name": "second_admin_can_list_before_revocation",
+      "pass": true,
+      "detail": "links"
+    },
+    {
+      "name": "revoked_admin_cannot_extract",
+      "pass": true,
+      "detail": {
+        "error": "forbidden"
+      }
+    },
+    {
+      "name": "revoked_admin_cannot_download",
+      "pass": true,
+      "detail": {
+        "error": "forbidden"
+      }
+    },
+    {
+      "name": "revoked_admin_changed_nothing",
+      "pass": true,
+      "detail": {
+        "sources": 4,
+        "revisions": 4,
+        "candidates": 122,
+        "published": 0,
+        "approved": 0
+      }
+    },
+    {
+      "name": "changed_source_failed_verdict",
+      "pass": true,
+      "detail": {
+        "outcome": "failed",
+        "request": "4edc654b-79fe-4e19-b5f1-42ee6ce63b57",
+        "extraction": {
+          "at": "2026-11-06T20:27:08.988077+00:00",
+          "by": "bbabbe37-b41f-4409-9d3d-10dec7c2cff5",
+          "error": "hash_changed_since_fetch",
+          "outcome": "failed",
+          "extractor": "extract-meb-scenarios@h02-deno"
+        },
+        "revision_id": "6e2abb32-6835-43a0-8bd6-bb0af53796e8",
+        "extraction_status": "failed",
+        "origin": "official_url",
+        "scenarios": 0,
+        "issues": 0,
+        "error": "hash_changed_since_fetch",
+        "extractor": "extract-meb-scenarios@h02-deno"
+      }
+    },
+    {
+      "name": "failed_verdict_retry_is_deterministic",
+      "pass": true,
+      "detail": {
+        "outcome": "failed",
+        "request": "d14eb343-d532-4bd1-bc6f-350456404247",
+        "extraction": {
+          "at": "2026-11-06T20:27:09.384115+00:00",
+          "by": "bbabbe37-b41f-4409-9d3d-10dec7c2cff5",
+          "error": "hash_changed_since_fetch",
+          "outcome": "failed",
+          "extractor": "extract-meb-scenarios@h02-deno"
+        },
+        "revision_id": "6e2abb32-6835-43a0-8bd6-bb0af53796e8",
+        "extraction_status": "failed",
+        "origin": "official_url",
+        "scenarios": 0,
+        "issues": 0,
+        "error": "hash_changed_since_fetch",
+        "extractor": "extract-meb-scenarios@h02-deno"
+      }
+    },
+    {
+      "name": "network_error_not_a_verdict",
+      "pass": true,
+      "detail": {
+        "response": {
+          "error": "source_unreachable",
+          "reason": "source_unreachable:http_status:404",
+          "revision": {
+            "revision_id": "042dac4d-2a53-4a57-883d-6d67d51330dd",
+            "extraction_status": "queued",
+            "extraction_attempts": 1,
+            "extraction_last_error": "source_unreachable:http_status:404"
+          }
+        },
+        "row": "queued|source_unreachable:http_status:404|true"
+      }
+    },
+    {
+      "name": "ssrf_lookalike_host_refused",
+      "pass": true,
+      "detail": {
+        "error": "source_unreachable",
+        "reason": "source_unreachable:host_not_allowed:cdn.eba.gov.tr.h02-qa.invalid",
+        "revision": {
+          "revision_id": "c557f466-4ac5-4363-ab37-d1e19ae1aa81",
+          "extraction_status": "queued",
+          "extraction_attempts": 1,
+          "extraction_last_error": "source_unreachable:host_not_allowed:cdn.eba.gov.tr.h02-qa.invalid"
+        }
+      }
+    },
+    {
+      "name": "ssrf_http_scheme_refused",
+      "pass": true,
+      "detail": {
+        "error": "source_unreachable",
+        "reason": "source_unreachable:https_required",
+        "revision": {
+          "revision_id": "10563131-29cc-462e-b4cf-e68361d6a5e9",
+          "extraction_status": "queued",
+          "extraction_attempts": 1,
+          "extraction_last_error": "source_unreachable:https_required"
+        }
+      }
+    },
+    {
+      "name": "ssrf_metadata_ip_refused",
+      "pass": true,
+      "detail": {
+        "error": "source_unreachable",
+        "reason": "source_unreachable:host_not_allowed:169.254.169.254",
+        "revision": {
+          "revision_id": "00babbf7-b52e-499c-9257-101d495e2c4c",
+          "extraction_status": "queued",
+          "extraction_attempts": 1,
+          "extraction_last_error": "source_unreachable:host_not_allowed:169.254.169.254"
+        }
+      }
+    },
+    {
+      "name": "ssrf_userinfo_refused",
+      "pass": true,
+      "detail": {
+        "error": "source_unreachable",
+        "reason": "source_unreachable:url_authority_rejected",
+        "revision": {
+          "revision_id": "d2f03803-4b7e-4c69-a63f-dc0adba96db9",
+          "extraction_status": "queued",
+          "extraction_attempts": 1,
+          "extraction_last_error": "source_unreachable:url_authority_rejected"
+        }
+      }
+    },
+    {
+      "name": "pipeline_has_no_token_command",
+      "pass": true,
+      "detail": "panel:curriculum-source-extract"
+    },
+    {
+      "name": "final_no_publication_no_approval_catalogue_off",
+      "pass": true,
+      "detail": {
+        "sources": 4,
+        "revisions": 10,
+        "candidates": 122,
+        "published": 0,
+        "approved": 0
+      }
+    }
+  ],
+  "cleanup": {
+    "edge_removed": true,
+    "rest_removed": true,
+    "auth_removed": true,
+    "disposable_database_removed": true
+  },
+  "ui_checks": {
+    "desktop_admin_login": true,
+    "empty_catalogue_has_a_start_path_and_no_token_command": true,
+    "official_index_links_listed_from_registered_target": true,
+    "first_download_from_panel_creates_queued_revision": true,
+    "extraction_from_panel_double_click_single_attempt": true,
+    "source_card_shows_extraction_state_and_counts": true,
+    "draft_review_opens_from_panel": true,
+    "tablet_admin_login": true,
+    "per_level_subject_requires_level_then_downloads": true,
+    "extraction_from_queue_on_tablet": true,
+    "tablet_draft_review_nothing_approved_or_published": true,
+    "no_page_exceptions_or_horizontal_overflow": true
+  },
+  "final_counts": {
+    "sources": 4,
+    "revisions": 10,
+    "candidates": 122,
+    "published": 0,
+    "approved": 0
+  },
+  "passed": 31
+}

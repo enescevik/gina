@@ -62,7 +62,7 @@ function AppRoutes() {
   return <Stack screenOptions={{ headerShown: false, gestureEnabled: false, ...motion }}>
     <Stack.Protected guard={claims?.role === "parent"}><Stack.Screen name="parent" /></Stack.Protected>
     <Stack.Protected guard={!actingChild}>
-      <Stack.Screen name="index" /><Stack.Screen name="(auth)" /><Stack.Screen name="child" />
+      <Stack.Screen name="privacy" /><Stack.Screen name="index" /><Stack.Screen name="(auth)" /><Stack.Screen name="child" />
       <Stack.Screen name="auth-callback" /><Stack.Screen name="reset-password" /><Stack.Screen name="device" /><Stack.Screen name="s/[token]" />
     </Stack.Protected>
   </Stack>;

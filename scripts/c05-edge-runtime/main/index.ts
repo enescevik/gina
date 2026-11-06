@@ -11,6 +11,8 @@ declare const EdgeRuntime: {
 };
 const SERVICES: Record<string, string> = {
   "curriculum-source-fetch": "/home/deno/functions/curriculum-source-fetch",
+  // H02: panel-started extraction (scripts/test-h02-panel-extraction.py).
+  "curriculum-source-extract": "/home/deno/functions/curriculum-source-extract",
   "c05-probe": "/home/deno/qa/probe",
 };
 const upstream = (prefix: string) => {

@@ -192,5 +192,8 @@ describe("source acquisition contracts", () => {
     expect(curriculumSourceFetchTargetSchema.safeParse({ ...target, school_year: "2026-2028" }).success).toBe(false);
     expect(curriculumSourceFetchTargetSchema.safeParse({ ...target, link_url: "http://meb.ai/x" }).success).toBe(false);
     expect(curriculumSourceFetchTargetSchema.safeParse({ ...target, approved: true }).success).toBe(false);
+    // H02: a per-level subject (İngilizce/DKAB) names its level; nothing else is accepted.
+    expect(curriculumSourceFetchTargetSchema.safeParse({ ...target, subject: "İngilizce", level: "lise", link_url: "https://meb.ai/ankmeb16" }).success).toBe(true);
+    expect(curriculumSourceFetchTargetSchema.safeParse({ ...target, level: "ilkokul" }).success).toBe(false);
   });
 });

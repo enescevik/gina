@@ -430,6 +430,13 @@ verify_jwt = false
 [functions.delete-account]
 verify_jwt = true
 
+[functions.apple-token]
+verify_jwt = true
+
+# x-cron-secret (APPLE_REVOCATION_SECRET) from pg_cron; no user JWT.
+[functions.apple-revocation-worker]
+verify_jwt = false
+
 [functions.room-weather]
 verify_jwt = true
 
@@ -468,6 +475,15 @@ verify_jwt = true
 
 [functions.curriculum-source-fetch]
 verify_jwt = true
+
+# H02: panel-started, per-revision extraction (Deno port of the Python extractor). Admin JWT only.
+[functions.curriculum-source-extract]
+verify_jwt = true
+
+# Scheduled calls authenticate with CONTENT_PREREVIEW_SECRET inside the handler.
+# User calls still require auth.getUser plus the content-role RPC; users cannot drain/pilot.
+[functions.content-prereview]
+verify_jwt = false
 
 # C10: RFC 8058 one-click unsubscribe. Mail clients send no JWT; the HMAC-signed, expiring,
 # single-use token is verified in the database (channel_one_click_unsubscribe, service role only).

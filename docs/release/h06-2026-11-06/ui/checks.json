@@ -1,0 +1,1106 @@
+{
+ "environment": "disposable-local-auth-rest-storage-edge; web export; Playwright Chrome headless tr-TR Europe/Istanbul",
+ "results": [
+  {
+   "check": "d8_1_group_join_modal_respects_reduced_motion",
+   "passed": true,
+   "detail": {
+    "reduce": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normal": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  {
+   "check": "h06_group_join_modal_layout",
+   "passed": true,
+   "detail": {
+    "phone": {
+     "viewport": [
+      390,
+      844
+     ],
+     "overflow": 0,
+     "interactive": 6,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "narrow": {
+     "viewport": [
+      360,
+      740
+     ],
+     "overflow": 0,
+     "interactive": 6,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "tablet": {
+     "viewport": [
+      768,
+      1024
+     ],
+     "overflow": 0,
+     "interactive": 6,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "wide": {
+     "viewport": [
+      1280,
+      800
+     ],
+     "overflow": 0,
+     "interactive": 6,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    }
+   }
+  },
+  {
+   "check": "d8_1_group_ranking_modal_respects_reduced_motion",
+   "passed": true,
+   "detail": {
+    "reduce": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normal": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  {
+   "check": "h06_group_ranking_modal_layout",
+   "passed": true,
+   "detail": {
+    "phone": {
+     "viewport": [
+      390,
+      844
+     ],
+     "overflow": 0,
+     "interactive": 2,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "narrow": {
+     "viewport": [
+      360,
+      740
+     ],
+     "overflow": 0,
+     "interactive": 2,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "tablet": {
+     "viewport": [
+      768,
+      1024
+     ],
+     "overflow": 0,
+     "interactive": 2,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "wide": {
+     "viewport": [
+      1280,
+      800
+     ],
+     "overflow": 0,
+     "interactive": 2,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    }
+   }
+  },
+  {
+   "check": "d8_1_group_result_modal_respects_reduced_motion",
+   "passed": true,
+   "detail": {
+    "reduce": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normal": [
+     0,
+     1,
+     1,
+     1,
+     1,
+     1
+    ]
+   }
+  },
+  {
+   "check": "h06_group_result_modal_layout",
+   "passed": true,
+   "detail": {
+    "phone": {
+     "viewport": [
+      390,
+      844
+     ],
+     "overflow": 0,
+     "interactive": 1,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "narrow": {
+     "viewport": [
+      360,
+      740
+     ],
+     "overflow": 0,
+     "interactive": 1,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "tablet": {
+     "viewport": [
+      768,
+      1024
+     ],
+     "overflow": 0,
+     "interactive": 1,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    },
+    "wide": {
+     "viewport": [
+      1280,
+      800
+     ],
+     "overflow": 0,
+     "interactive": 1,
+     "small": [],
+     "unlabeled": [],
+     "overlaps": [],
+     "offRight": [],
+     "rawKeys": [],
+     "runningAnimations": 0
+    }
+   }
+  },
+  {
+   "check": "d8_1_question_media_modal_respects_reduced_motion",
+   "passed": true,
+   "detail": {
+    "readyQuestionImages": 4,
+    "reduce": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normal": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     0
+    ]
+   }
+  },
+  {
+   "check": "h06_question_media_modal_layout",
+   "passed": true,
+   "detail": {
+    "zoomAfterPlus": "200%",
+    "sizes": {
+     "phone": {
+      "viewport": [
+       390,
+       844
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "narrow": {
+      "viewport": [
+       360,
+       740
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "tablet": {
+      "viewport": [
+       768,
+       1024
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "wide": {
+      "viewport": [
+       1280,
+       800
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     }
+    }
+   }
+  },
+  {
+   "check": "h06_screen_sign-in",
+   "passed": true,
+   "detail": {
+    "sizes": {
+     "phone": {
+      "viewport": [
+       390,
+       844
+      ],
+      "overflow": 0,
+      "interactive": 11,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "narrow": {
+      "viewport": [
+       360,
+       740
+      ],
+      "overflow": 0,
+      "interactive": 11,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "tablet": {
+      "viewport": [
+       768,
+       1024
+      ],
+      "overflow": 0,
+      "interactive": 11,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "wide": {
+      "viewport": [
+       1280,
+       800
+      ],
+      "overflow": 0,
+      "interactive": 11,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     }
+    },
+    "primary": {
+     "name": "Giriş yap",
+     "visible": true,
+     "disabled": true,
+     "enabledAfterFill": true
+    },
+    "keyboard": {
+     "reached": true,
+     "steps": 2,
+     "allInView": true,
+     "order": [
+      "Şifreyi göster",
+      "Giriş yap"
+     ]
+    },
+    "also:Apple ile devam et": 1,
+    "reducedRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normalRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "smallTargets": {}
+   }
+  },
+  {
+   "check": "h06_screen_auth-callback-expired",
+   "passed": true,
+   "detail": {
+    "sizes": {
+     "phone": {
+      "viewport": [
+       390,
+       844
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "narrow": {
+      "viewport": [
+       360,
+       740
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "tablet": {
+      "viewport": [
+       768,
+       1024
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "wide": {
+      "viewport": [
+       1280,
+       800
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     }
+    },
+    "primary": {
+     "name": "Doğrulama bağlantısını yeniden gönder",
+     "visible": true,
+     "disabled": true,
+     "enabledAfterFill": true
+    },
+    "keyboard": {
+     "reached": true,
+     "steps": 1,
+     "allInView": true,
+     "order": [
+      "Doğrulama bağlantısını yeniden gönder"
+     ]
+    },
+    "reducedRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normalRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "smallTargets": {}
+   }
+  },
+  {
+   "check": "h06_screen_auth-callback-fragment-expired",
+   "passed": true,
+   "detail": {
+    "sizes": {
+     "phone": {
+      "viewport": [
+       390,
+       844
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "narrow": {
+      "viewport": [
+       360,
+       740
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "tablet": {
+      "viewport": [
+       768,
+       1024
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "wide": {
+      "viewport": [
+       1280,
+       800
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     }
+    },
+    "primary": {
+     "name": "Doğrulama bağlantısını yeniden gönder",
+     "visible": true,
+     "disabled": true,
+     "enabledAfterFill": true
+    },
+    "keyboard": {
+     "reached": true,
+     "steps": 1,
+     "allInView": true,
+     "order": [
+      "Doğrulama bağlantısını yeniden gönder"
+     ]
+    },
+    "reducedRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normalRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "smallTargets": {}
+   }
+  },
+  {
+   "check": "h06_screen_auth-callback-other-device",
+   "passed": true,
+   "detail": {
+    "sizes": {
+     "phone": {
+      "viewport": [
+       390,
+       844
+      ],
+      "overflow": 0,
+      "interactive": 1,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "narrow": {
+      "viewport": [
+       360,
+       740
+      ],
+      "overflow": 0,
+      "interactive": 1,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "tablet": {
+      "viewport": [
+       768,
+       1024
+      ],
+      "overflow": 0,
+      "interactive": 1,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "wide": {
+      "viewport": [
+       1280,
+       800
+      ],
+      "overflow": 0,
+      "interactive": 1,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     }
+    },
+    "primary": {
+     "name": "Giriş ekranına dön",
+     "visible": true,
+     "disabled": false
+    },
+    "keyboard": {
+     "reached": true,
+     "steps": 1,
+     "allInView": true,
+     "order": [
+      "Giriş ekranına dön"
+     ]
+    },
+    "reducedRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normalRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "smallTargets": {}
+   }
+  },
+  {
+   "check": "h06_screen_reset-password-expired",
+   "passed": true,
+   "detail": {
+    "sizes": {
+     "phone": {
+      "viewport": [
+       390,
+       844
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "narrow": {
+      "viewport": [
+       360,
+       740
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "tablet": {
+      "viewport": [
+       768,
+       1024
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "wide": {
+      "viewport": [
+       1280,
+       800
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     }
+    },
+    "primary": {
+     "name": "Yenileme bağlantısı gönder",
+     "visible": true,
+     "disabled": true,
+     "enabledAfterFill": true
+    },
+    "keyboard": {
+     "reached": true,
+     "steps": 1,
+     "allInView": true,
+     "order": [
+      "Yenileme bağlantısı gönder"
+     ]
+    },
+    "reducedRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normalRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "smallTargets": {}
+   }
+  },
+  {
+   "check": "h06_screen_subscription-ai-consent",
+   "passed": true,
+   "detail": {
+    "sizes": {
+     "phone": {
+      "viewport": [
+       390,
+       844
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "narrow": {
+      "viewport": [
+       360,
+       740
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "tablet": {
+      "viewport": [
+       768,
+       1024
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "wide": {
+      "viewport": [
+       1280,
+       800
+      ],
+      "overflow": 0,
+      "interactive": 3,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     }
+    },
+    "reducedRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normalRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "smallTargets": {}
+   }
+  },
+  {
+   "check": "h06_screen_ai-question-edit",
+   "passed": true,
+   "detail": {
+    "sizes": {
+     "phone": {
+      "viewport": [
+       390,
+       844
+      ],
+      "overflow": 0,
+      "interactive": 16,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "narrow": {
+      "viewport": [
+       360,
+       740
+      ],
+      "overflow": 0,
+      "interactive": 16,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "tablet": {
+      "viewport": [
+       768,
+       1024
+      ],
+      "overflow": 0,
+      "interactive": 16,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "wide": {
+      "viewport": [
+       1280,
+       800
+      ],
+      "overflow": 0,
+      "interactive": 16,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     }
+    },
+    "primary": {
+     "name": "Devam",
+     "visible": true,
+     "disabled": false
+    },
+    "keyboard": {
+     "reached": true,
+     "steps": 15,
+     "allInView": true,
+     "order": [
+      "Geri",
+      "Ayarlar",
+      "1. Soru",
+      "2. Yanıt ve ölçüt",
+      "3. Öğrenci önizlemesi",
+      "Konu",
+      "Senaryo (isteğe bağlı)",
+      "Çoktan seçmeli",
+      "Açık uçlu",
+      "Kolay",
+      "Orta",
+      "Orta üstü",
+      "Zor",
+      "Soru",
+      "Devam"
+     ]
+    },
+    "reducedRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normalRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "smallTargets": {}
+   }
+  },
+  {
+   "check": "h06_screen_account-deletion-apple",
+   "passed": true,
+   "detail": {
+    "sizes": {
+     "phone": {
+      "viewport": [
+       390,
+       844
+      ],
+      "overflow": 0,
+      "interactive": 5,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "narrow": {
+      "viewport": [
+       360,
+       740
+      ],
+      "overflow": 0,
+      "interactive": 5,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "tablet": {
+      "viewport": [
+       768,
+       1024
+      ],
+      "overflow": 0,
+      "interactive": 5,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     },
+     "wide": {
+      "viewport": [
+       1280,
+       800
+      ],
+      "overflow": 0,
+      "interactive": 5,
+      "small": [],
+      "unlabeled": [],
+      "overlaps": [],
+      "offRight": [],
+      "rawKeys": [],
+      "runningAnimations": 0
+     }
+    },
+    "primary": {
+     "name": "Apple ile doğrula",
+     "visible": true,
+     "disabled": false
+    },
+    "keyboard": {
+     "reached": true,
+     "steps": 3,
+     "allInView": true,
+     "order": [
+      "Bu işlem geri alınamaz. Aşağıdaki kayıtlar ailedek",
+      "Aboneliği mağazada yönet",
+      "Apple ile doğrula"
+     ]
+    },
+    "reducedRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "normalRunning": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "smallTargets": {}
+   }
+  }
+ ]
+}

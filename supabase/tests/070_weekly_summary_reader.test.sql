@@ -73,7 +73,7 @@ select set_config('request.jwt.claims','{"role":"service_role"}',true);
 select public.finish_ai_operation((select (value->>'id')::uuid from job),'00000000-0000-4000-8000-000000008811','{"output":{"haftanin_ozeti":"Synthetic saved output"},"inputTokens":10,"outputTokens":5}');
 reset role;
 delete from public.entitlement_overrides where family_id='10000000-0000-0000-0000-0000000000e1';
-update public.app_settings set value='false' where key='ai.enabled';
+insert into public.app_settings(key,value) values('ai.enabled','false') on conflict (key) do update set value=excluded.value;
 set local role authenticated;
 select set_config('request.jwt.claims','{"sub":"00000000-0000-0000-0000-00000000e101","role":"authenticated","gina":{"family_id":"10000000-0000-0000-0000-0000000000e1","role":"parent"}}',true);
 select is(pg_temp.review()->>'state','ready','saved job readable after plan downgrade and AI shutdown');

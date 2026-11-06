@@ -34,3 +34,10 @@ test('development, internal and simulator profiles cannot pass the store preflig
   for(const change of [{developmentClient:true},{distribution:'internal'},{ios:{simulator:true}}]){const x=fixture();x.eas.build.production=change;assert.equal(inspectTestflight(x).findings.find(x=>x.id==='store-profile').status,'block');}
 });
 test('missing icon is a build blocker',()=>{const x=fixture();x.exists=()=>false;assert.equal(inspectTestflight(x).findings.find(x=>x.id==='ios-icon').status,'block');});
+
+test('legal URL alone never passes the publication preflight', () => {
+  const x = fixture(); x.env.EXPO_PUBLIC_LEGAL_BASE_URL = 'https://ginafamily.com';
+  assert.equal(inspectTestflight(x).findings.find(f => f.id === 'legal-url').status, 'warn');
+  x.env.EXPO_PUBLIC_LEGAL_VERSION = '2026-11-06.1';
+  assert.equal(inspectTestflight(x).findings.find(f => f.id === 'legal-url').status, 'pass');
+});

@@ -1,0 +1,102 @@
+{
+ "stage": "generate",
+ "target": "local-isolated",
+ "at": "2026-11-06T20:07:05.196Z",
+ "checks": [
+  {
+   "name": "wrong_count_rejected_no_rows",
+   "ok": true,
+   "status": 502,
+   "code": "ai_result_uncertain"
+  },
+  {
+   "name": "scenario_generation_ok",
+   "ok": true,
+   "status": 200,
+   "questions": 6
+  },
+  {
+   "name": "provider_received_full_outcome_text_not_url",
+   "ok": true,
+   "blocks": [
+    "B1:2",
+    "B2:1",
+    "B3:1",
+    "B4:1",
+    "B5:1"
+   ]
+  },
+  {
+   "name": "question_count_equals_scenario_total",
+   "ok": true,
+   "questions": 6,
+   "scenario_total": 6
+  },
+  {
+   "name": "per_block_counts_match_scenario",
+   "ok": true,
+   "got": {
+    "B1": 2,
+    "B2": 1,
+    "B3": 1,
+    "B4": 1,
+    "B5": 1
+   },
+   "expected": {
+    "B1": 2,
+    "B2": 1,
+    "B3": 1,
+    "B4": 1,
+    "B5": 1
+   }
+  },
+  {
+   "name": "every_question_traces_scenario_block_outcomes_source",
+   "ok": true,
+   "problems": []
+  },
+  {
+   "name": "shared_source_one_identity_linked_questions_counted_separately",
+   "ok": true,
+   "groups": 1,
+   "members": 2
+  },
+  {
+   "name": "charged_once_by_items",
+   "ok": true,
+   "before": 294,
+   "after": 288
+  },
+  {
+   "name": "replay_same_result_no_second_charge",
+   "ok": true
+  },
+  {
+   "name": "one_done_generation_job_for_pilot",
+   "ok": true,
+   "jobs": [
+    "uncertain",
+    "done"
+   ]
+  },
+  {
+   "name": "content_fit_pending_human_review_not_success",
+   "ok": true,
+   "fit": 0,
+   "total": 6,
+   "not_fit": 0,
+   "accepted": false,
+   "needs_revision": 0,
+   "pending_human_review": 6
+  },
+  {
+   "name": "review_package_complete_before_cleanup",
+   "ok": true,
+   "problems": [],
+   "questions": 6,
+   "shared_sources": 1,
+   "images": 0,
+   "sha256": "552f21f73bc9"
+  }
+ ]
+}

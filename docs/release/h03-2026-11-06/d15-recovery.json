@@ -1,0 +1,315 @@
+{
+ "assessed_at": "2026-11-06T20:07:41.775Z",
+ "inputs": [
+  "live/questions-for-human-review.json",
+  "live/chain-trace.json",
+  "live/candidate-for-review.json",
+  "live/calls.jsonl",
+  "live/stage-generate.json",
+  "live/stage-cleanup.json",
+  "live/stage-verify.json"
+ ],
+ "paid_generation_calls": 1,
+ "per_question": [
+  {
+   "id": "e548af26",
+   "block_id": "B1",
+   "grouped": true,
+   "fields": [
+    {
+     "field": "stem",
+     "recoverable": false
+    },
+    {
+     "field": "kind",
+     "recoverable": true
+    },
+    {
+     "field": "choices",
+     "recoverable": "not_applicable"
+    },
+    {
+     "field": "shared_source_text_and_id",
+     "recoverable": false
+    },
+    {
+     "field": "shared_member_prompt",
+     "recoverable": false
+    },
+    {
+     "field": "images",
+     "recoverable": "none_expected_ai_path_has_no_image_files"
+    },
+    {
+     "field": "expected_answer",
+     "recoverable": true
+    },
+    {
+     "field": "rubric_with_assesses",
+     "recoverable": true
+    },
+    {
+     "field": "outcome_text",
+     "recoverable": true
+    },
+    {
+     "field": "source_link",
+     "recoverable": true
+    }
+   ]
+  },
+  {
+   "id": "1d287014",
+   "block_id": "B1",
+   "grouped": true,
+   "fields": [
+    {
+     "field": "stem",
+     "recoverable": false
+    },
+    {
+     "field": "kind",
+     "recoverable": true
+    },
+    {
+     "field": "choices",
+     "recoverable": "not_applicable"
+    },
+    {
+     "field": "shared_source_text_and_id",
+     "recoverable": false
+    },
+    {
+     "field": "shared_member_prompt",
+     "recoverable": false
+    },
+    {
+     "field": "images",
+     "recoverable": "none_expected_ai_path_has_no_image_files"
+    },
+    {
+     "field": "expected_answer",
+     "recoverable": true
+    },
+    {
+     "field": "rubric_with_assesses",
+     "recoverable": true
+    },
+    {
+     "field": "outcome_text",
+     "recoverable": true
+    },
+    {
+     "field": "source_link",
+     "recoverable": true
+    }
+   ]
+  },
+  {
+   "id": "f118dabf",
+   "block_id": "B2",
+   "grouped": false,
+   "fields": [
+    {
+     "field": "stem",
+     "recoverable": false
+    },
+    {
+     "field": "kind",
+     "recoverable": true
+    },
+    {
+     "field": "choices",
+     "recoverable": "not_applicable"
+    },
+    {
+     "field": "shared_source_text_and_id",
+     "recoverable": "not_applicable"
+    },
+    {
+     "field": "shared_member_prompt",
+     "recoverable": "not_applicable"
+    },
+    {
+     "field": "images",
+     "recoverable": "none_expected_ai_path_has_no_image_files"
+    },
+    {
+     "field": "expected_answer",
+     "recoverable": true
+    },
+    {
+     "field": "rubric_with_assesses",
+     "recoverable": true
+    },
+    {
+     "field": "outcome_text",
+     "recoverable": true
+    },
+    {
+     "field": "source_link",
+     "recoverable": true
+    }
+   ]
+  },
+  {
+   "id": "b4c7fc95",
+   "block_id": "B3",
+   "grouped": true,
+   "fields": [
+    {
+     "field": "stem",
+     "recoverable": false
+    },
+    {
+     "field": "kind",
+     "recoverable": true
+    },
+    {
+     "field": "choices",
+     "recoverable": "not_applicable"
+    },
+    {
+     "field": "shared_source_text_and_id",
+     "recoverable": false
+    },
+    {
+     "field": "shared_member_prompt",
+     "recoverable": false
+    },
+    {
+     "field": "images",
+     "recoverable": "none_expected_ai_path_has_no_image_files"
+    },
+    {
+     "field": "expected_answer",
+     "recoverable": true
+    },
+    {
+     "field": "rubric_with_assesses",
+     "recoverable": true
+    },
+    {
+     "field": "outcome_text",
+     "recoverable": true
+    },
+    {
+     "field": "source_link",
+     "recoverable": true
+    }
+   ]
+  },
+  {
+   "id": "dd2213ab",
+   "block_id": "B4",
+   "grouped": false,
+   "fields": [
+    {
+     "field": "stem",
+     "recoverable": false
+    },
+    {
+     "field": "kind",
+     "recoverable": true
+    },
+    {
+     "field": "choices",
+     "recoverable": "not_applicable"
+    },
+    {
+     "field": "shared_source_text_and_id",
+     "recoverable": "not_applicable"
+    },
+    {
+     "field": "shared_member_prompt",
+     "recoverable": "not_applicable"
+    },
+    {
+     "field": "images",
+     "recoverable": "none_expected_ai_path_has_no_image_files"
+    },
+    {
+     "field": "expected_answer",
+     "recoverable": true
+    },
+    {
+     "field": "rubric_with_assesses",
+     "recoverable": true
+    },
+    {
+     "field": "outcome_text",
+     "recoverable": true
+    },
+    {
+     "field": "source_link",
+     "recoverable": true
+    }
+   ]
+  },
+  {
+   "id": "f3823899",
+   "block_id": "B5",
+   "grouped": false,
+   "fields": [
+    {
+     "field": "stem",
+     "recoverable": false
+    },
+    {
+     "field": "kind",
+     "recoverable": true
+    },
+    {
+     "field": "choices",
+     "recoverable": "not_applicable"
+    },
+    {
+     "field": "shared_source_text_and_id",
+     "recoverable": "not_applicable"
+    },
+    {
+     "field": "shared_member_prompt",
+     "recoverable": "not_applicable"
+    },
+    {
+     "field": "images",
+     "recoverable": "none_expected_ai_path_has_no_image_files"
+    },
+    {
+     "field": "expected_answer",
+     "recoverable": true
+    },
+    {
+     "field": "rubric_with_assesses",
+     "recoverable": true
+    },
+    {
+     "field": "outcome_text",
+     "recoverable": true
+    },
+    {
+     "field": "source_link",
+     "recoverable": true
+    }
+   ]
+  }
+ ],
+ "validation_of_best_effort_package": {
+  "ok": false,
+  "problems": [
+   "shared_title:d15-group-unrecoverable",
+   "shared_content_missing:d15-group-unrecoverable",
+   "stem_missing:e548af26",
+   "shared_prompt_missing:e548af26",
+   "stem_missing:1d287014",
+   "shared_prompt_missing:1d287014",
+   "stem_missing:f118dabf",
+   "stem_missing:b4c7fc95",
+   "shared_prompt_missing:b4c7fc95",
+   "stem_missing:dd2213ab",
+   "stem_missing:f3823899"
+  ],
+  "warnings": []
+ },
+ "conclusion": "Soru kökleri, ortak kaynak başlığı/metni (grup B1×2 + B3×1) ve B2 afiş betimlemesi hiçbir güvenli artefakta yazılmamış; üretim satırları cleanup/verify ile silinmiş (generated_questions_absent). Cevap, rubrik (assesses dahil), kazanım metni ve kaynak ilişkisi kurtarılabilir. Tam inceleme için yeni pilot gerekir."
+}

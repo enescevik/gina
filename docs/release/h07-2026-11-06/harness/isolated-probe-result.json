@@ -1,0 +1,135 @@
+{
+ "checks": [
+  {
+   "name": "gate_closed_drain_claims_nothing",
+   "ok": true,
+   "status": 200,
+   "processed": 1
+  },
+  {
+   "name": "gate_closed_admin_request_no_call",
+   "ok": true,
+   "status": 503,
+   "reason": "prereview_disabled"
+  },
+  {
+   "name": "gate_closed_kick_records_nothing",
+   "ok": true
+  },
+  {
+   "name": "gate_closed_zero_provider_calls",
+   "ok": true
+  },
+  {
+   "name": "unauthorized_calls_rejected_403",
+   "ok": true,
+   "statuses": {
+    "no_auth": 403,
+    "wrong_cron_secret": 403,
+    "empty_cron_secret": 403,
+    "anon_key_as_user": 403,
+    "admin_token_drain": 403,
+    "admin_token_pilot": 403,
+    "finance_user": 403,
+    "parent_user": 403
+   }
+  },
+  {
+   "name": "unauthorized_zero_provider_calls",
+   "ok": true
+  },
+  {
+   "name": "quota_one_paid_call_then_daily_limit",
+   "ok": true,
+   "reasons": [
+    "blocking_finding",
+    "daily_limit"
+   ],
+   "calls": 1
+  },
+  {
+   "name": "quota_admin_request_deferred",
+   "ok": true,
+   "status": 200,
+   "outcome": "retry_pending",
+   "reason": "daily_limit"
+  },
+  {
+   "name": "ledger_one_paid_row",
+   "ok": true
+  },
+  {
+   "name": "content_operator_request_reviewed",
+   "ok": true,
+   "status": 200,
+   "body": {
+    "ok": true,
+    "kind": "contribution_set",
+    "id": "c0910000-0000-4000-8000-000000000001",
+    "prereview_status": "ai_approved",
+    "outcome": "reviewed",
+    "reason": "all_checks_passed"
+   }
+  },
+  {
+   "name": "replay_cached_no_second_charge",
+   "ok": true,
+   "outcome": "cached"
+  },
+  {
+   "name": "ledger_charged_once_for_item",
+   "ok": true
+  },
+  {
+   "name": "ai_approved_is_not_human_approval",
+   "ok": true,
+   "row": "pending|null"
+  },
+  {
+   "name": "ai_audit_actor_is_system",
+   "ok": true
+  },
+  {
+   "name": "health_readable_by_content_operator",
+   "ok": true,
+   "status": 200,
+   "calls_24h": 2,
+   "alerts": [
+    "drain_not_scheduled"
+   ]
+  },
+  {
+   "name": "health_refused_for_finance",
+   "ok": true,
+   "status": 403
+  },
+  {
+   "name": "kick_without_vault_recorded",
+   "ok": true
+  },
+  {
+   "name": "health_alerts_vault_secret_missing",
+   "ok": true,
+   "alerts": [
+    "drain_not_scheduled",
+    "vault_secret_missing"
+   ]
+  },
+  {
+   "name": "kill_switch_immediate",
+   "ok": true,
+   "admin": 503,
+   "drain": 1
+  }
+ ],
+ "passed": 19,
+ "total": 19,
+ "harness": {
+  "db": "gina_c09_1f42ebf24ada_audit",
+  "cleanup": {
+   "gina_c09_1f42ebf24ada_audit_rest": true,
+   "gina_c09_1f42ebf24ada_audit_auth": true,
+   "db_dropped": true
+  }
+ }
+}

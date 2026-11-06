@@ -214,3 +214,48 @@ Deno.test("runtime without Deno.resolveDns fails closed before any request", asy
     Object.defineProperty(Deno, "resolveDns", { value: original, configurable: true, writable: true });
   }
 });
+
+Deno.test("H02 list_links: registered page's subject links for the first download; nothing recorded, foreign links dropped", async () => {
+  const f = fakeDb();
+  const t = transportFor(routes());
+  const deps = { db: f.db, admin, transport: t.transport, resolve: publicResolver, upload: () => Promise.resolve(null) };
+  const listed = await (await handleCurriculumSourceFetch(request({ request_id: id, action: "list_links", target: { exam_family: "oyss", school_year: "2026-2027", term: 1 } }), deps)).json();
+  assertEquals(listed.outcome, "links");
+  assertEquals(listed.index, { url: INDEX, published: "2026-09-07", updated: "2026-09-10" });
+  assertEquals(listed.links.map((l: { text: string }) => l.text), ["İlköğretim Matematik", "İngilizce", "İngilizce", "Fen Bilimleri"]);
+  assertEquals(listed.links.filter((l: { ambiguous: boolean }) => l.ambiguous).length, 2);
+  assertEquals(f.calls, [], "listing writes nothing");
+  assertEquals(t.calls, [INDEX], "only the index page is read; no file, no foreign host");
+  const none = fakeDb(() => null);
+  const unpublished = await (await handleCurriculumSourceFetch(request({ request_id: id, action: "list_links", target: { exam_family: "oyss", school_year: "2027-2028", term: 1 } }), { ...deps, db: none.db })).json();
+  assertEquals([unpublished.outcome, unpublished.links], ["unpublished", []]);
+  assertEquals((await handleCurriculumSourceFetch(request({ request_id: id, action: "list_links", target: { exam_family: "oyss", school_year: "2026-2028", term: 1 } }), deps)).status, 400);
+  assertEquals((await handleCurriculumSourceFetch(request({ request_id: id, action: "delete", target }), deps)).status, 400);
+  assertEquals((await handleCurriculumSourceFetch(request({ request_id: id, action: "list_links", target }), { ...deps, admin: null })).status, 403);
+  const down = transportFor({ ...routes(), [INDEX]: { status: 503 } });
+  const outage = await (await handleCurriculumSourceFetch(request({ request_id: id, action: "list_links", target }), { ...deps, transport: down.transport })).json();
+  assertEquals([outage.outcome, outage.error], ["unverified", "index:http_status:503"]);
+});
+
+Deno.test("H02 level keeps per-level files of one subject in separate sources; duplicate bytes surface, not a second record", async () => {
+  const f = fakeDb();
+  const t = transportFor(routes());
+  const deps = { db: f.db, admin, transport: t.transport, resolve: publicResolver, upload: () => Promise.resolve(null) };
+  const orta = await (await handleCurriculumSourceFetch(request({ request_id: id, target: { ...target, subject: "İngilizce", link_url: "https://meb.ai/ankmeb6", level: "ortaokul" } }), deps)).json();
+  assertEquals(orta.outcome, "new_revision");
+  assertEquals((f.calls[0].args.p_source as { source_key: string }).source_key, "oyss:2026-2027:1:ingilizce-ortaokul");
+  assertEquals((f.calls[0].args.p_source as { label: string }).label, "İngilizce");
+  assertEquals((await handleCurriculumSourceFetch(request({ request_id: id, target: { ...target, level: "ilkokul" } }), deps)).status, 400);
+  const dup = {
+    rpc: (name: string, args: Record<string, unknown>) =>
+      name === "get_curriculum_source_target"
+        ? Promise.resolve({ data: registry(args), error: null })
+        : Promise.resolve({ data: null, error: { code: "P0001", message: "curriculum_source_duplicate", details: "İngilizce" } }),
+    from: () => {
+      throw Error("no");
+    },
+  } as unknown as SupabaseClient;
+  const r = await handleCurriculumSourceFetch(request({ request_id: id, target: { ...target, subject: "İngilizce", link_url: "https://meb.ai/ankmeb6" } }), { ...deps, db: dup });
+  const j = await r.json();
+  assertEquals([r.status, j.error, j.existing_label], [409, "source_duplicate", "İngilizce"]);
+});

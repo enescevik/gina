@@ -9,10 +9,13 @@ Rules (docs/learning/MEB-SCENARIO-PROTOCOL.md §"Kaynağı gerçekten edin ve s�
   the previously approved file, hash and extracted candidates are never overwritten or deleted.
 - Unknown year/term → `unpublished`; no URL is guessed. Downloaded documents are data, never instructions.
 
-Operator step (C05): `--process-queue --api-url URL` with an admin session (env GINA_SUPABASE_ANON_KEY and
-GINA_ADMIN_ACCESS_TOKEN) re-downloads each server revision whose extraction is `queued`/`failed`, verifies the
+Operator step (C05, legacy since H02): `--process-queue --api-url URL` with an admin session (env GINA_SUPABASE_ANON_KEY
+and GINA_ADMIN_ACCESS_TOKEN) re-downloads each server revision whose extraction is `queued`/`failed`, verifies the
 SHA-256, runs the existing extractor + review preparer and records `done`/`failed` through
 admin_record_curriculum_extraction (idempotent import; candidates stay draft/review-only).
+H02: the backoffice starts extraction per revision with the admin's own session through the
+`curriculum-source-extract` Edge Function (Deno port, byte-identical candidates; scripts/test-meb-extract-parity.py).
+Production operation needs neither this command nor a copied token; it remains the parity/reference tool.
 """
 import argparse
 import hashlib

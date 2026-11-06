@@ -2712,6 +2712,9 @@ isOneToOne: false
 "admin_cohort_review_queue":
 { Args: { "p_group": string }; Returns: Json
                            },
+"admin_content_prereview_health":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "admin_content_prereviews":
 { Args: { "p_limit"?: number,"p_status"?: string }; Returns: Json
                            },
@@ -2990,6 +2993,23 @@ isOneToOne: false
 "appeal_cohort_review":
 { Args: { "p_child": string,"p_group": string,"p_ord": number,"p_reason": string,"p_request": string,"p_review_revision": number }; Returns: Json
                            },
+"apple_revocation_begin":
+{ Args: { "p_allow_without_token"?: boolean,"p_apple_sub": string,"p_client_id"?: string,"p_request_id": string,"p_token_ciphertext"?: string,"p_token_type"?: string,"p_user_id": string }; Returns: Json
+                           },
+"apple_revocation_claim":
+{ Args: { "p_limit"?: number }; Returns: {
+              "apple_sub": string,"attempts": number,"client_id": string,"job_id": string,"token_ciphertext": string,"token_type": string
+            }[]
+                           },
+"apple_revocation_mark_deleted":
+{ Args: { "p_job_id": string }; Returns: undefined
+                           },
+"apple_revocation_record":
+{ Args: { "p_error"?: string,"p_job_id": string,"p_outcome": string }; Returns: string
+                           },
+"apple_token_store":
+{ Args: { "p_apple_sub": string,"p_client_id": string,"p_token_ciphertext": string,"p_token_type": string,"p_user_id": string }; Returns: undefined
+                           },
 "apply_ai_grades":
 { Args: { "p_attempt_id": string,"p_grades": Json,"p_summary"?: Json }; Returns: {
               "ai_feedback": Json | null,
@@ -3052,6 +3072,9 @@ isOneToOne: false
                            },
 "attach_question_source":
 { Args: { "p_alt": string,"p_question_id": string,"p_source_id": string }; Returns: undefined
+                           },
+"begin_curriculum_extraction":
+{ Args: { "p_actor_id": string,"p_revision_id": string }; Returns: Json
                            },
 "begin_question_contribution":
 { Args: { "p_id": string,"p_no_personal_data": boolean,"p_question_id": string,"p_rights": boolean,"p_supersedes"?: string }; Returns: Json
@@ -3816,6 +3839,9 @@ isOneToOne: false
 "read_library_source_bytes":
 { Args: { "p_source_id": string }; Returns: Json
                            },
+"record_curriculum_extraction_service":
+{ Args: { "p_actor_id": string,"p_request_id": string,"p_result": Json,"p_revision_id": string }; Returns: Json
+                           },
 "record_curriculum_source_fetch":
 { Args: { "p_actor_id": string,"p_request_id": string,"p_revision": Json,"p_source": Json }; Returns: Json
                            },
@@ -3851,6 +3877,9 @@ isOneToOne: false
                            },
 "release_channel_operations":
 { Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"release_curriculum_extraction":
+{ Args: { "p_actor_id": string,"p_error": string,"p_revision_id": string }; Returns: Json
                            },
 "release_push_operations":
 { Args: { "p_before"?: number,"p_limit"?: number,"p_status"?: string }; Returns: Json

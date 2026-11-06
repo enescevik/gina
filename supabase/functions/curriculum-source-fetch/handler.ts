@@ -2,9 +2,11 @@ import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { json } from "../_shared/supabase.ts";
 import {
   fetchWithPolicy,
+  hostAllowed,
   inspectXlsx,
   matchSubjectLinks,
   MAX_PAGE_BYTES,
+  normalizeSubject,
   parseIndex,
   PolicyError,
   type Resolver,
@@ -25,6 +27,8 @@ export interface FetchTarget {
   programme?: string;
   /** Optional disambiguation; must still be one of the links on the official index page. */
   link_url?: string;
+  /** H02: school level of a subject listed once per level (İngilizce, DKAB): keeps the two files in separate sources. */
+  level?: "ortaokul" | "lise";
 }
 export interface FetchDeps {
   db: SupabaseClient;
@@ -53,7 +57,8 @@ function parseTarget(raw: unknown): FetchTarget | null {
     (grade !== undefined && (!Number.isInteger(grade) || grade < 1 || grade > 12)) ||
     typeof t.subject !== "string" || !t.subject.trim() || t.subject.length > 80 ||
     (t.programme !== undefined && (typeof t.programme !== "string" || t.programme.length > 160)) ||
-    (t.link_url !== undefined && (typeof t.link_url !== "string" || t.link_url.length > 500))
+    (t.link_url !== undefined && (typeof t.link_url !== "string" || t.link_url.length > 500)) ||
+    (t.level !== undefined && t.level !== "ortaokul" && t.level !== "lise")
   ) return null;
   return {
     exam_family: "oyss",
@@ -64,7 +69,65 @@ function parseTarget(raw: unknown): FetchTarget | null {
     subject: t.subject.trim(),
     programme: t.programme as string | undefined,
     link_url: t.link_url as string | undefined,
+    level: t.level as FetchTarget["level"],
   };
+}
+
+/** One source per year/term/subject — and per level when the official page lists the subject once per level. */
+export function sourceKeyFor(target: FetchTarget) {
+  const prefix = `${target.exam_family}:${target.school_year}:${target.term}:`;
+  if (!target.level) return prefix + slug(target.subject);
+  return prefix + slug(target.subject).slice(0, 60 - target.level.length - 1) + "-" + target.level;
+}
+
+const MEB_INDEX = /^https:\/\/([a-z0-9-]+\.)*meb\.gov\.tr\//;
+const SCHOOL_YEAR = /^20\d{2}-20\d{2}$/;
+
+/** H02 `list_links`: subject links of the registered official index page, for the panel's first download. No write. */
+async function listLinks(body: Record<string, unknown>, deps: FetchDeps): Promise<Response> {
+  const t = body.target as Record<string, unknown> | undefined;
+  const term = Number(t?.term);
+  if (
+    !t || t.exam_family !== "oyss" || typeof t.school_year !== "string" || !SCHOOL_YEAR.test(t.school_year) ||
+    Number(t.school_year.slice(5)) !== Number(t.school_year.slice(0, 4)) + 1 || ![1, 2].includes(term)
+  ) return json({ error: "invalid_input" }, 400);
+  const registered = await deps.db.rpc("get_curriculum_source_target", { p_exam_family: "oyss", p_year: t.school_year, p_term: term });
+  if (registered.error) {
+    return json({ error: registered.error.code === "42501" ? "forbidden" : "data_failed" }, registered.error.code === "42501" ? 403 : 503);
+  }
+  const indexUrl = typeof registered.data?.index_url === "string" ? registered.data.index_url as string : null;
+  if (!indexUrl) return json({ outcome: "unpublished", requested: { school_year: t.school_year, term }, officially_verified: false, links: [] });
+  if (!MEB_INDEX.test(indexUrl)) return json({ error: "target_invalid" }, 500);
+  let parsed;
+  try {
+    const page = await fetchWithPolicy(indexUrl, { transport: deps.transport, resolve: deps.resolve, maxBytes: MAX_PAGE_BYTES });
+    parsed = parseIndex(new TextDecoder().decode(page.body));
+  } catch (e) {
+    return json({ outcome: "unverified", error: "index:" + (e instanceof PolicyError ? e.message : "unavailable"), officially_verified: false, links: [] });
+  }
+  // Only links whose first hop the download policy accepts; page text is data and never widens the policy.
+  const seen = new Set<string>();
+  const links = parsed.links.filter((l) => {
+    let host = "";
+    try {
+      const u = new URL(l.href);
+      if (u.protocol !== "https:") return false;
+      host = u.hostname;
+    } catch {
+      return false;
+    }
+    if (!l.text || l.text.length > 80 || !hostAllowed(host, false) || seen.has(l.href)) return false;
+    seen.add(l.href);
+    return true;
+  }).slice(0, 100);
+  const counts = new Map<string, number>();
+  for (const l of links) counts.set(normalizeSubject(l.text), (counts.get(normalizeSubject(l.text)) ?? 0) + 1);
+  return json({
+    outcome: "links",
+    officially_verified: false,
+    index: { url: indexUrl, ...parsed.dates },
+    links: links.map((l) => ({ text: l.text, href: l.href, ambiguous: (counts.get(normalizeSubject(l.text)) ?? 0) > 1 })),
+  });
 }
 
 /** Admin-only. Downloads on the server, records a revision receipt; never publishes or picks a scenario. */
@@ -85,6 +148,8 @@ export async function handleCurriculumSourceFetch(
   if (!body || typeof body !== "object" || !UUID.test(String(body.request_id))) {
     return json({ error: "invalid_input" }, 400);
   }
+  if (body.action === "list_links") return await listLinks(body, deps);
+  if (body.action !== undefined) return json({ error: "invalid_input" }, 400);
   const target = parseTarget(body.target);
   if (!target) return json({ error: "invalid_input" }, 400);
   const requestId = String(body.request_id);
@@ -119,7 +184,7 @@ export async function handleCurriculumSourceFetch(
       requested: { school_year: target.school_year, term: target.term },
     });
   }
-  const sourceKey = `${target.exam_family}:${target.school_year}:${target.term}:${slug(target.subject)}`;
+  const sourceKey = sourceKeyFor(target);
   const record = (source: Record<string, unknown>, revision: Record<string, unknown> | null) =>
     deps.db.rpc("record_curriculum_source_fetch", {
       p_request_id: requestId,
@@ -198,6 +263,10 @@ export async function handleCurriculumSourceFetch(
     storage_path: stored,
   });
   if (error) {
+    // H02: the same official bytes already belong to another source of this year/term → no duplicate record.
+    if (error.message === "curriculum_source_duplicate") {
+      return json({ error: "source_duplicate", existing_label: error.details ?? null, sha256: digest, officially_verified: false }, 409);
+    }
     return json(
       { error: error.code === "42501" ? "forbidden" : error.message === "request_conflict" ? "request_conflict" : "save_failed" },
       error.code === "42501" ? 403 : error.message === "request_conflict" ? 409 : 500,

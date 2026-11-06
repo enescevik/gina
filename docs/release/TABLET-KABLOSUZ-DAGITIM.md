@@ -6,7 +6,9 @@ Bu akış çocuk hesabının kullanamadığı TestFlight yerine, geliştirici he
 
 https://gina-aile-enescevik--tablet.expo.app
 
-**6 Kasım 2026 güncel (C14c):** **0.1.0 (30)**, canlı dağıtım `c4aic5og2w`, IPA SHA-256 `be558e9e8639…`; önceki 29 dağıtımı `b9q067lwk9`.
+**6 Kasım 2026 güncel (H08):** **0.1.0 (32)**, canlı dağıtım `gxt6d74dz6`, kaynak `fe08cb60`, IPA SHA-256 `048341824c7d…`; önceki 31 (`711945e`, başka hat), 30 `c4aic5og2w`.
+
+**6 Kasım 2026 (C14c):** **0.1.0 (30)**, canlı dağıtım `c4aic5og2w`, IPA SHA-256 `be558e9e8639…`; önceki 29 dağıtımı `b9q067lwk9`.
 
 **6 Kasım 2026 (C14b):** **0.1.0 (29)**, canlı dağıtım `b9q067lwk9`, kaynak `8fb2eef`, IPA SHA-256 `d2d254c663c3…`; önceki 28 dağıtımı `m8aeavsrur` (geri dönüş: `eas deploy:alias --alias tablet --id m8aeavsrur`). Canlı alias doğrulaması dağıtımdan hemen sonra CDN gecikmesiyle bir kez düştü, ardından `verify --target tablet` temiz.
 

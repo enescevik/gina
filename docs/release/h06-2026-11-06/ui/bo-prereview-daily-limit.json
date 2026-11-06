@@ -1,0 +1,16 @@
+{
+ "mocked": "edge content-prereview response {outcome:retry_pending, reason:daily_limit}",
+ "text": "AI ön incelemesi şimdi yapılamadı: Günlük AI çağrı sınırı doldu; kayıt kuyrukta bekliyor, AI çağrılmadı. Yönetici kararı ve yayın değişmedi.",
+ "metrics": {
+  "1280x800": {
+   "overflow": 0,
+   "rawReason": false,
+   "messageInViewport": true
+  },
+  "1440x900": {
+   "overflow": 0,
+   "rawReason": false,
+   "messageInViewport": true
+  }
+ }
+}

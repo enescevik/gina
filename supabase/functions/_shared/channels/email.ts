@@ -135,6 +135,18 @@ function dotStuff(body: string): string {
   return body.replace(/\r?\n/g, "\r\n").split("\r\n").map((l) => l.startsWith(".") ? "." + l : l).join("\r\n");
 }
 
+/** `GINA <bildirim@example.com>` or a bare address → envelope address, header value and Message-ID domain. */
+export function parseSender(from: string): { envelope: string; header: string; domain: string } | null {
+  if (/[\r\n]/.test(from)) return null;
+  const named = /^\s*"?([^"<>]*?)"?\s*<([^<>\s@]+@[^<>\s@]+)>\s*$/.exec(from);
+  const envelope = named ? named[2] : from.trim();
+  if (!/^[^<>\s@]+@([^<>\s@]+\.[^<>\s@]+)$/.test(envelope)) return null;
+  const name = named?.[1].trim() ?? "";
+  const quoted = /^[A-Za-z0-9 !#$%&'*+\-/=?^_`{|}~]*$/.test(name) ? name : `"${name.replace(/["\\]/g, "")}"`;
+  const header = name ? `${/^[\x20-\x7e]*$/.test(name) ? quoted : encodedWord(name)} <${envelope}>` : envelope;
+  return { envelope, header, domain: envelope.split("@")[1].toLowerCase() };
+}
+
 function classify(step: string, r: { code: number }): AdapterResult {
   // 4xx transient (greylisting, rate limits, mailbox busy); 5xx permanent.
   return { ok: false, retry: r.code < 500, error: `smtp:${step}_${r.code}` };
@@ -147,6 +159,11 @@ export function smtpAdapter(cfg: SmtpConfig): EmailAdapter {
     async send(message) {
       const deadline = Date.now() + timeout;
       let session: SmtpSession | null = null;
+      // Once the message terminator is written the relay may have queued it even if its reply is lost.
+      // SMTP has no idempotency key, so that case is not retried: at most one copy, never two.
+      let dataSent = false;
+      const sender = parseSender(message.from);
+      if (!sender || /[\r\n<>\s]/.test(message.to)) return { ok: false, retry: false, error: "smtp:invalid_address" };
       try {
         const base = cfg.security === "tls"
           ? await Deno.connectTls({ hostname: cfg.host, port: cfg.port, ...(cfg.caCerts ? { caCerts: cfg.caCerts } : {}) })
@@ -169,17 +186,17 @@ export function smtpAdapter(cfg: SmtpConfig): EmailAdapter {
           const auth = await session.command(`AUTH PLAIN ${b64(`\0${cfg.username}\0${cfg.password ?? ""}`)}`);
           if (auth.code !== 235) return { ok: false, retry: auth.code < 500, error: `smtp:auth_${auth.code}` };
         }
-        const from = await session.command(`MAIL FROM:<${message.from}>`);
+        const from = await session.command(`MAIL FROM:<${sender.envelope}>`);
         if (from.code !== 250) return classify("mail_from", from);
         const rcpt = await session.command(`RCPT TO:<${message.to}>`);
         if (rcpt.code !== 250 && rcpt.code !== 251) return classify("rcpt_to", rcpt);
         const data = await session.command("DATA");
         if (data.code !== 354) return classify("data", data);
         const headers = [
-          `From: ${message.from}`,
+          `From: ${sender.header}`,
           `To: ${message.to}`,
           `Subject: ${encodedWord(message.subject)}`,
-          `Message-ID: <${message.idempotencyKey}@gina.local>`,
+          `Message-ID: <${message.idempotencyKey}@${sender.domain}>`,
           `Date: ${new Date().toUTCString()}`,
           "MIME-Version: 1.0",
           "Content-Type: text/plain; charset=utf-8",
@@ -187,12 +204,14 @@ export function smtpAdapter(cfg: SmtpConfig): EmailAdapter {
           ...Object.entries(message.headers ?? {}).map(([k, v]) => `${k}: ${v}`),
         ];
         const body = b64(message.text).replace(/(.{76})/g, "$1\r\n");
+        dataSent = true;
         const end = await session.command(`${headers.join("\r\n")}\r\n\r\n${dotStuff(body)}\r\n.`);
         if (end.code !== 250) return classify("end_of_data", end);
         await session.command("QUIT").catch(() => ({ code: 221, text: "" }));
         const queued = /queued as ([A-Za-z0-9._-]+)/i.exec(end.text)?.[1] ?? null;
         return { ok: true, providerMessageId: queued, acceptedAt: new Date().toISOString() };
       } catch (reason) {
+        if (dataSent) return { ok: false, retry: false, error: "smtp:end_of_data_unknown" };
         return networkFailure("smtp", reason);
       } finally {
         session?.close();

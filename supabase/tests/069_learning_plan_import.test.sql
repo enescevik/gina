@@ -34,7 +34,9 @@ insert into public.learning_sources(id,family_id,kind,name,mime,bytes,sha256,obj
 ('40000000-0000-4000-8000-000000009102','10000000-0000-0000-0000-0000000000e2','document','Other.pdf','application/pdf',100,repeat('b',64),'audit/import/source2','ready','v1',1,now());
 update public.children set grade=5 where id='20000000-0000-0000-0000-00000000e1c1';
 insert into public.entitlement_overrides(family_id,plan,reason,ends_at) values('10000000-0000-0000-0000-0000000000e1','pro','test',now()+interval '1 day');
-update public.app_settings set value='true' where key in ('ai.enabled','sources.enabled');
+-- H08a: ai.enabled seed.sql'den gelir, migration'dan değil; boş/taze DB'de satırı kendimiz kuruyoruz.
+insert into public.app_settings(key,value) values('ai.enabled','true') on conflict (key) do update set value=excluded.value;
+update public.app_settings set value='true' where key='sources.enabled';
 create function pg_temp.prepare(source uuid default '40000000-0000-4000-8000-000000009101',context jsonb default '{"config":{"model":"claude-sonnet-5-5","maxOutputTokens":4000,"promptVersion":"v1"},"system":"synthetic","schema":{}}') returns jsonb language sql as $$select public.prepare_learning_plan_import('10000000-0000-0000-0000-0000000000e1','00000000-0000-0000-0000-00000000e101','20000000-0000-0000-0000-00000000e1c1',source,'tr',context)$$;
 create function pg_temp.reserve(c uuid,lease uuid default '00000000-0000-4000-8000-000000009111') returns jsonb language sql as $$select public.reserve_learning_plan_import('10000000-0000-0000-0000-0000000000e1','00000000-0000-0000-0000-00000000e101',c,lease)$$;
 create function pg_temp.view() returns jsonb language sql as $$select public.get_learning_plan_import('20000000-0000-0000-0000-00000000e1c1','40000000-0000-4000-8000-000000009101','tr')$$;
@@ -53,11 +55,11 @@ set local role service_role;
 select is(pg_temp.reserve((select (value->>'id')::uuid from context))->>'error','source_unavailable','source flag is checked at reservation');
 reset role;
 update public.app_settings set value='true' where key='sources.enabled';
-update public.app_settings set value='false' where key='ai.enabled';
+insert into public.app_settings(key,value) values('ai.enabled','false') on conflict (key) do update set value=excluded.value;
 set local role service_role;
 select is(pg_temp.reserve((select (value->>'id')::uuid from context))->>'error','ai_disabled','AI pause prevents paid call');
 reset role;
-update public.app_settings set value='true' where key='ai.enabled';
+insert into public.app_settings(key,value) values('ai.enabled','true') on conflict (key) do update set value=excluded.value;
 update public.ai_models set active=false where id='claude-sonnet-5-5';
 set local role service_role;
 select is(pg_temp.reserve((select (value->>'id')::uuid from context))->>'error','ai_model_unavailable','disabled original model is not replaced silently');

@@ -89,6 +89,7 @@ export * from "./deletion-preview";
 export * from "./ai-capabilities";
 export * from "./ai-usage";
 export * from "./shared-limits";
+export * from "./auth-links";
 export * from "./library-lifecycle";
 
 export * from "./plan-history";
@@ -97,3 +98,5 @@ export * from "./subject-synonyms";
 export * from "./task-review";
 export * from "./bulk-scope";
 export * from "./operation-members";
+
+export * from "./legal";

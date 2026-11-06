@@ -9,6 +9,7 @@ import { ParentScreen, parentStyles } from "@/components/ui/parent-screen";
 import { AuthIssueText, classifyAuthIssue, type AuthIssue } from "@/components/social-sign-in";
 import { AuthLinkResend } from "@/components/email-verification";
 import { useSession } from "@/lib/session";
+import { readAuthRedirectError, recoveryExchangeIssue } from "@gina/core";
 import { supabase } from "@/lib/supabase";
 
 /** Set by the sign-in reset form opened from the admin panel (web, same browser). Only a timestamp. */
@@ -21,19 +22,17 @@ function takeAdminMark() {
     return at > 0 && Date.now() - at < 2 * 3600_000;
   } catch { return false; }
 }
-function redirectIssue(params: { error?: string; error_code?: string }): AuthIssue | null {
-  let { error, error_code } = params;
-  if (!error && Platform.OS === "web" && typeof window !== "undefined" && window.location.hash) {
-    const hash = new URLSearchParams(window.location.hash.slice(1));
-    error = hash.get("error") ?? undefined; error_code = hash.get("error_code") ?? undefined;
-  }
-  return error ? classifyAuthIssue({ error, error_code }) : null;
+function redirectIssue(params: { error?: string; error_code?: string; error_description?: string }): AuthIssue | null {
+  const found = Platform.OS === "web" && typeof window !== "undefined"
+    ? readAuthRedirectError(window.location.search, window.location.hash)
+    : params.error ? readAuthRedirectError(new URLSearchParams(Object.entries(params).filter((e): e is [string, string] => typeof e[1] === "string")).toString(), "") : null;
+  return found ? classifyAuthIssue(found) : null;
 }
 
 /** PKCE recovery: native consumes the code; web is consumed by the auth client at startup. */
 export default function ResetPasswordScreen() {
   const { t } = useTranslation();
-  const params = useLocalSearchParams<{ code?: string; error?: string; error_code?: string }>();
+  const params = useLocalSearchParams<{ code?: string; error?: string; error_code?: string; error_description?: string }>();
   const { code } = params;
   const { session, recovering, loading } = useSession();
   const started = useRef(false);
@@ -45,11 +44,16 @@ export default function ResetPasswordScreen() {
   const [done, setDone] = useState<null | { admin: boolean }>(null);
   const [issue, setIssue] = useState<AuthIssue | null>(null);
   const [linkIssue] = useState(() => redirectIssue(params));
+  const [exchangeAttempt, setExchangeAttempt] = useState(0);
+  const [exchangeIssue, setExchangeIssue] = useState<"offline" | "expired" | null>(null);
   useEffect(() => {
     if (Platform.OS === "web" || !code || started.current) return;
     started.current = true;
-    void supabase.auth.exchangeCodeForSession(code).then(({ error }) => { if (error) throw error; }).catch(() => setIssue("expired")).finally(() => setChecking(false));
-  }, [code]);
+    // Used/expired/other-app link needs a new link; offline keeps the same link and offers a retry.
+    void supabase.auth.exchangeCodeForSession(code).then(({ error }) => { if (error) throw error; setExchangeIssue(null); })
+      .catch((e: unknown) => setExchangeIssue(recoveryExchangeIssue(e))).finally(() => setChecking(false));
+  }, [code, exchangeAttempt]);
+  const retryExchange = () => { started.current = false; setChecking(true); setExchangeAttempt((n) => n + 1); };
   const ready = password.length >= 8 && password === confirm;
   async function save() {
     if (busy || !recovering || !ready) return;
@@ -57,7 +61,8 @@ export default function ResetPasswordScreen() {
     try { const { error } = await supabase.auth.updateUser({ password }); if (error) throw error; setPassword(""); setConfirm(""); setDone({ admin: takeAdminMark() }); }
     catch (e) { setIssue(classifyAuthIssue(e)); } finally { setBusy(false); }
   }
-  const canSave = !!session && recovering && !linkIssue && issue !== "expired";
+  const canSave = !!session && recovering && !linkIssue && !exchangeIssue && issue !== "expired";
+  const exchangeOffline = !linkIssue && exchangeIssue === "offline";
   return <ParentScreen navigation={false} title={t("accountV5.resetTitle")} loading={checking || (loading && !done)}>
     {done ? <>
       <Text accessibilityLiveRegion="polite" style={parentStyles.copy}>{t("accountV5.passwordChanged")}</Text>
@@ -71,6 +76,10 @@ export default function ResetPasswordScreen() {
       <AuthIssueText issue={issue} />
       <Button title={t("common.save")} disabled={!ready} loading={busy} onPress={save} />
       {issue === "session_expired" ? <Button variant="secondary" title={t("u01.newResetLink")} onPress={() => setIssue("expired")} /> : null}
+    </> : exchangeOffline ? <>
+      <AuthIssueText issue="offline" />
+      <Button title={t("common.retry")} onPress={retryExchange} />
+      <Button variant="ghost" title={t("u01.backToSignIn")} onPress={() => router.replace("/(auth)/sign-in")} />
     </> : <>
       {/* Expired, used or opened elsewhere: ask for a new link right here instead of a dead end. */}
       <Text style={parentStyles.copy}>{t(linkIssue === "offline" ? "release.networkError" : "accountV5.resetExpired")}</Text>

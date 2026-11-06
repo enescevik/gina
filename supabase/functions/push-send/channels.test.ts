@@ -52,6 +52,7 @@ function fixture(rows: ChannelRow[], email: (m: OutboundEmail) => Promise<Adapte
       return Promise.resolve();
     },
     render,
+    receiptRetryDelayMs: 0,
   };
   return { d, receipts, sent, pending };
 }
@@ -90,6 +91,18 @@ Deno.test("adapter exception is a retry; a failing receipt stops the worker befo
   g.d.record = () => Promise.reject(new Error("channel_receipt_invalid"));
   await assertRejects(() => drainChannels(g.d), Error, "channel_receipt_invalid");
   assertEquals(g.sent.length, 1, "no further sends after a lost receipt");
+});
+
+Deno.test("H04: a transient receipt failure after acceptance is retried; the message is sent once", async () => {
+  const f = fixture([announcement, { ...announcement, id: 17, lease_id: "l17" }], () => ({ ok: true, providerMessageId: "re_x", acceptedAt: "" }));
+  const original = f.d.record;
+  let calls = 0;
+  f.d.record = (...args) => (++calls === 1 ? Promise.reject(new Error("push_storage_failed")) : original(...args));
+  const counts = await drainChannels(f.d);
+  assertEquals(counts.accepted, 2);
+  assertEquals(f.sent, ["email:gina-channel-11", "email:gina-channel-17"], "one provider call per row");
+  assertEquals(f.receipts.map((r) => [r.id, r.status]), [[11, "accepted"], [17, "accepted"]]);
+  assertEquals(calls, 3);
 });
 
 Deno.test("missing provider or unsubscribe URL records unconfigured, not a retry loop; nothing is sent", async () => {

@@ -83,11 +83,11 @@ create temporary table other_context as select pg_temp.prepare(pg_temp.week(2)) 
 select throws_ok($$select pg_temp.store((select (value->>'id')::uuid from other_context),(select (value->>'id')::uuid from job))$$,'P0001','weekly_result_unavailable','a result cannot attach to another week');
 select throws_ok($$select public.prepare_weekly_summary('10000000-0000-0000-0000-0000000000e1','00000000-0000-0000-0000-00000000e201',pg_temp.week(),'{}')$$,'42501','weekly_forbidden','foreign parent rejected even through service');
 reset role;
-update public.app_settings set value='false' where key='ai.enabled';
+insert into public.app_settings(key,value) values('ai.enabled','false') on conflict (key) do update set value=excluded.value;
 set local role service_role;
 select is(pg_temp.reserve((select (value->>'id')::uuid from other_context))->>'error','ai_disabled','global pause prevents provider reservation');
 reset role;
-update public.app_settings set value='true' where key='ai.enabled';
+insert into public.app_settings(key,value) values('ai.enabled','true') on conflict (key) do update set value=excluded.value;
 update public.ai_operation_policies set monthly_limit=1 where action='weekly' and plan_code='pro';
 set local role service_role;
 select is(pg_temp.reserve((select (value->>'id')::uuid from other_context))->>'error','ai_quota_exceeded','monthly quota before second week provider');
