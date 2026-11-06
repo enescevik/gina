@@ -1,0 +1,1 @@
+{"project": "wixjxlxgyhgdacadsawo", "checks": [{"mode": "connection", "status": 200, "check": "connection", "connected": true, "visible_models": 14}, {"mode": "smoke", "status": 200, "check": "synthetic_structured_output", "valid": true, "model": "claude-sonnet-5-5", "inputTokens": 227, "outputTokens": 9}], "temporary_access_removed": true}

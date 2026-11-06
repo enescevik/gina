@@ -1,0 +1,139 @@
+{
+ "stage": "prova",
+ "at": "2026-11-06T14:19:19.382Z",
+ "checks": [
+  {
+   "name": "manual_rubric_and_alternatives_saved",
+   "ok": true
+  },
+  {
+   "name": "shared_source_group_two_questions",
+   "ok": true
+  },
+  {
+   "name": "partial_generation_real_ok",
+   "ok": true,
+   "status": 200
+  },
+  {
+   "name": "partial_replay_same_result_no_second_charge",
+   "ok": true,
+   "before": 300,
+   "after": 297
+  },
+  {
+   "name": "select_all_and_add_no_extra_charge",
+   "ok": true,
+   "remaining": 297
+  },
+  {
+   "name": "partial_ai_rows_provenance_model_draft",
+   "ok": true,
+   "rows": [
+    {
+     "kind": "multiple_choice",
+     "model": "claude-sonnet-5-5",
+     "prompt_version": "prova-generate/v5-scenario-provenance",
+     "rubric_criteria": 1,
+     "alternatives": 0,
+     "shared_source": false,
+     "draft_bound": true
+    },
+    {
+     "kind": "multiple_choice",
+     "model": "claude-sonnet-5-5",
+     "prompt_version": "prova-generate/v5-scenario-provenance",
+     "rubric_criteria": 1,
+     "alternatives": 0,
+     "shared_source": false,
+     "draft_bound": true
+    },
+    {
+     "kind": "open_ended",
+     "model": "claude-sonnet-5-5",
+     "prompt_version": "prova-generate/v5-scenario-provenance",
+     "rubric_criteria": 3,
+     "alternatives": 2,
+     "shared_source": false,
+     "draft_bound": true
+    }
+   ]
+  },
+  {
+   "name": "full_generation_real_ok_open_ended",
+   "ok": true,
+   "status": 200
+  },
+  {
+   "name": "full_generation_charges_once_by_items",
+   "ok": true,
+   "before": 297,
+   "after": 293
+  },
+  {
+   "name": "full_ai_rubric_present_on_open_ended",
+   "ok": true,
+   "rows": [
+    {
+     "rubric_criteria": 4,
+     "rubric_points": 5,
+     "alternatives": 1,
+     "shared_source_id": "set",
+     "shared_kind": "table"
+    },
+    {
+     "rubric_criteria": 3,
+     "rubric_points": 6,
+     "alternatives": 1,
+     "shared_source_id": null,
+     "shared_kind": null
+    },
+    {
+     "rubric_criteria": 3,
+     "rubric_points": 6,
+     "alternatives": 1,
+     "shared_source_id": null,
+     "shared_kind": null
+    },
+    {
+     "rubric_criteria": 3,
+     "rubric_points": 5,
+     "alternatives": 1,
+     "shared_source_id": "set",
+     "shared_kind": "table"
+    }
+   ]
+  },
+  {
+   "name": "ai_shared_source_used_by_linked_questions",
+   "ok": true,
+   "shared_sources": 1,
+   "linked_questions": 2,
+   "note": "provenance.shared_source only; not converted to question_source_groups (C04 sınır 2)"
+  },
+  {
+   "name": "partial_exam_assigned_six_questions",
+   "ok": true,
+   "questions": 6
+  },
+  {
+   "name": "assignment_no_charge",
+   "ok": true,
+   "remaining": 293
+  },
+  {
+   "name": "generation_jobs_two_done",
+   "ok": true,
+   "jobs": [
+    {
+     "status": "done",
+     "items": 3
+    },
+    {
+     "status": "done",
+     "items": 4
+    }
+   ]
+  }
+ ]
+}

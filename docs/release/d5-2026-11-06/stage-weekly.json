@@ -1,0 +1,32 @@
+{
+ "stage": "weekly",
+ "at": "2026-11-06T14:22:17.999Z",
+ "checks": [
+  {
+   "name": "weekly_summary_real_ok",
+   "ok": true,
+   "status": 200
+  },
+  {
+   "name": "weekly_replay_no_second_job",
+   "ok": true,
+   "jobs": [
+    {
+     "status": "done",
+     "provider": "anthropic"
+    }
+   ]
+  },
+  {
+   "name": "weekly_quota_preview_used_one",
+   "ok": true,
+   "used": 1,
+   "limit": 5,
+   "remaining": 4
+  },
+  {
+   "name": "usage_hides_model_names",
+   "ok": true
+  }
+ ]
+}

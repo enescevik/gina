@@ -99,3 +99,29 @@ Deno.test("P04: an item not requested for grading (blank answer) cannot receive 
   z.degerlendirmeler = [{ ref: "M2", puan: 0, kisa_geri_bildirim: "Boş.", eksikler: [], iyilestirme_onerileri: [] }];
   rejects(z);
 });
+
+Deno.test("D5: invalid reports carry a fixed rule name for diagnostics, never content", () => {
+  const code = (r: unknown) => {
+    try {
+      validateGradeReport(r, refs);
+    } catch (e) {
+      if ((e as Error).message !== "ai_result_invalid") throw e;
+      return (e as { validationCode?: string }).validationCode;
+    }
+    throw Error("invalid report accepted");
+  };
+  const count = sample();
+  count.degerlendirmeler = [];
+  const evidence = sample();
+  evidence.ozet.konu_analizi[0].kanitlar = ["M1: paydaları eşitlemedi"];
+  const topic = sample();
+  topic.ozet.zayif_konular = ["Kesirlerde toplama"];
+  const steps = sample();
+  steps.ozet.calisma_adimlari[0].sure_dk = 30;
+  const limits = sample();
+  limits.ozet.sinirlar = [];
+  const item = sample();
+  item.degerlendirmeler[0].kisa_geri_bildirim = " ";
+  const got = [count, evidence, topic, steps, limits, item].map(code).join();
+  if (got !== "envelope,evidence,topic,steps,fields,item") throw Error(got);
+});

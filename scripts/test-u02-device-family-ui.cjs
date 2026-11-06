@@ -1,6 +1,8 @@
 // U02 UI checks against a disposable local Auth/REST/Realtime fixture (synthetic data only).
 // Usage: GINA_QA_UI_FIXTURE=<fixture.json> GINA_U02_WEB=http://127.0.0.1:<port> \
-//        GINA_QA_PLAYWRIGHT_PATH=<playwright> node scripts/test-u02-device-family-ui.cjs
+//        GINA_QA_PLAYWRIGHT_PATH=<playwright> [GINA_U02_OUT=<dir>] [GINA_U02_FAIL_DIR=<dir>] node scripts/test-u02-device-family-ui.cjs
+// D2: pairing is the C13-AUTH-1 flow — 8-character code shown 4+4, parent preview (device + family) →
+// confirm with the single-use preview token, and the tablet confirms the receiving family before child mode.
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const { execFileSync } = require('node:child_process');
 const { randomUUID } = require('node:crypto');
@@ -10,7 +12,7 @@ assert.equal(new URL(f.url).hostname, '127.0.0.1');
 assert.match(f.email, /^gina-[0-9a-f-]+@example\.invalid$/);
 const WEB = process.env.GINA_U02_WEB; assert.match(WEB, /^http:\/\/127\.0\.0\.1:\d+$/);
 const root = path.resolve(__dirname, '..');
-const out = root + '/docs/release/u02-2026-11-06'; fs.mkdirSync(out + '/screenshots', { recursive: true });
+const out = process.env.GINA_U02_OUT ? path.resolve(process.env.GINA_U02_OUT) : root + '/docs/release/u02-2026-11-06'; fs.mkdirSync(out + '/screenshots', { recursive: true });
 const tr = JSON.parse(fs.readFileSync(root + '/packages/core/src/i18n/tr.json'));
 const t = (key, vars = {}) => { let s = tr[key] ?? key.split('.').reduce((v, k) => v?.[k], tr); assert.ok(typeof s === 'string', 'missing key ' + key); for (const [k, v] of Object.entries(vars)) s = s.split('{{' + k + '}}').join(String(v)); return s; };
 const sizes = { phone: { width: 390, height: 844 }, tablet: { width: 768, height: 1024 }, desktop: { width: 1280, height: 800 } };
@@ -47,7 +49,7 @@ async function shot(page, name, focus) {
   await page.screenshot({ path: `${out}/screenshots/${name}.png`, fullPage: true });
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), name + ': horizontal overflow');
   const text = await page.locator('body').innerText();
-  assert.ok(!/u02\.|experience\.|unified\./.test(text), name + ': raw i18n key visible');
+  assert.ok(!/\b(u02|c06|auth1|d2|experience|unified)\.[a-zA-Z]/.test(text), name + ': raw i18n key visible');
 }
 async function signIn(page, email, password) {
   await page.goto(WEB); await page.getByLabel('E-posta', { exact: true }).fill(email); await page.getByLabel('Şifre', { exact: true }).fill(password);
@@ -56,6 +58,17 @@ async function signIn(page, email, password) {
 const button = (page, name) => page.getByRole('button', { name, exact: true });
 const text = (page, value) => page.getByText(value, { exact: true }).first();
 
+const CODE = /^[ACDEFHJKMNPRTUVWXY3479]{8}$/;
+const grouped = (code) => code.slice(0, 4) + ' ' + code.slice(4);
+async function shownCode(page) {
+  const shown = (await page.getByTestId('pairing-code').innerText()).trim();
+  assert.match(shown, /^[ACDEFHJKMNPRTUVWXY3479]{4} [ACDEFHJKMNPRTUVWXY3479]{4}$/, 'grouped 8-char code');
+  return shown.replace(/\s/g, '');
+}
+async function rpc(name, args, token) {
+  const res = await fetch(f.url + '/rest/v1/rpc/' + name, { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: JSON.stringify(args) });
+  return { status: res.status, body: await res.json().catch(() => null) };
+}
 function decodeQr(png) {
   const result = execFileSync('swift', [root + '/scripts/u02/decode-qr.swift', png], { encoding: 'utf8', timeout: 180000 }).trim();
   return result.split(' ').slice(1).join(' ');
@@ -104,7 +117,7 @@ function decodeQr(png) {
   await parent.setViewportSize(sizes.tablet); await shot(parent, 'families-join-two-families-tablet', 'family-two-families');
   await parent.setViewportSize(sizes.desktop); await shot(parent, 'families-join-two-families-desktop', 'family-join-impact');
   await parent.setViewportSize(sizes.phone);
-  await button(parent, t('u02.family.joinAction', { name: 'Eşin ailesi' })).click();
+  await button(parent, t('c06.family.joinAction', { name: 'Eşin ailesi' })).click();
   await parent.waitForURL('**/parent');
   assert.equal(sql(`select count(*) from public.family_members where user_id='${f.userId}';`), '2');
   assert.equal(sql(`select count(*) from public.children where family_id='${f.familyId}';`), '1');
@@ -120,7 +133,7 @@ function decodeQr(png) {
   assert.ok(switchText.includes('Ece (eşin profili)') && switchText.includes(t('u02.family.devicesStay')));
   await shot(parent, 'families-switch-impact-phone', 'family-switch-impact');
   await parent.setViewportSize(sizes.tablet); await shot(parent, 'families-switch-impact-tablet', 'family-switch-impact'); await parent.setViewportSize(sizes.phone);
-  await button(parent, t('u02.family.switchAction', { name: familyName })).click(); await parent.waitForURL('**/parent');
+  await button(parent, t('c06.family.switchAction', { name: familyName })).click(); await parent.waitForURL('**/parent');
   assert.equal(sql(`select family_id from public.active_families where user_id='${f.userId}';`), f.familyId);
   pass('switch_shows_what_stays_and_returns_to_original_family');
 
@@ -147,29 +160,34 @@ function decodeQr(png) {
   await device.getByTestId('pairing-qr').screenshot({ path: qrPng });
   const link = decodeQr(qrPng);
   const code = new URL(link).searchParams.get('code');
-  assert.match(code, /^\d{6}$/); assert.equal(new URL(link).pathname, '/parent/pair-device');
+  assert.match(code, CODE); assert.equal(new URL(link).pathname, '/parent/pair-device');
   assert.deepEqual([...new URL(link).searchParams.keys()], ['code']);
   assert.ok(!/Ortak|Ece|example|family/i.test(link), 'QR must not carry personal data');
-  assert.ok((await device.getByTestId('pairing-active').innerText()).includes(code));
+  assert.equal(await shownCode(device), code);
+  assert.ok((await device.getByTestId('pairing-active').innerText()).includes(grouped(code)));
   await shot(device, 'device-pair-qr-tablet');
   await shot(device, 'device-pair-steps-tablet', 'pairing-steps');
   await device.setViewportSize(sizes.phone); await shot(device, 'device-pair-qr-phone', 'pairing-qr');
   await device.setViewportSize(sizes.desktop); await shot(device, 'device-pair-qr-desktop'); await device.setViewportSize(sizes.tablet);
-  pass('qr_decodes_to_pairing_link_with_only_code', { qr_payload_shape: '/parent/pair-device?code=<6 digits>' });
+  pass('qr_decodes_to_pairing_link_with_only_code', { qr_payload_shape: '/parent/pair-device?code=<8 chars>' });
 
   // 5) Parent opens the scanned link: confirmation, then access setup (single child, personal device).
   stage = 'parent_pair';
   assert.equal(new URL(link).origin, WEB);
   await parent.goto(link);
   await text(parent, t('u02.parentPair.fromQr')).waitFor();
-  assert.equal(await parent.getByLabel(t('unified.pairCode'), { exact: true }).inputValue(), code);
-  await shot(parent, 'parent-pair-from-qr-phone');
+  // Preview first: device name + receiving family; nothing is paired yet.
+  await parent.getByTestId('pairing-target').waitFor();
+  { const target = await parent.getByTestId('pairing-target').innerText(); assert.ok(target.includes('Ortak tablet') && target.includes(familyName), target); }
+  assert.equal(sql(`select (consumed_at is null)::text from public.device_pairings where code='${code}';`), 'true', 'not consumed before confirm');
+  await shot(parent, 'parent-pair-from-qr-phone', 'pairing-target');
   await button(parent, t('u02.parentPair.confirm')).click();
   await parent.waitForURL('**/parent/device-access**');
   await parent.getByTestId('device-access-summary').waitFor();
   const deviceId = new URL(parent.url()).searchParams.get('deviceId'); assert.match(deviceId, /^[0-9a-f-]{36}$/);
   assert.equal(sql(`select name||'|'||access_mode||'|'||pin_policy from public.devices where id='${deviceId}';`), 'Ortak tablet|selected|required');
-  pass('parent_confirms_pairing_device_locked_until_configured');
+  assert.equal(sql(`select count(*) from public.device_pairing_previews where code='${code}' and used_at is not null;`), '1', 'paired with a used preview token');
+  pass('parent_previews_then_confirms_pairing_device_locked_until_configured');
 
   stage = 'draft_preserved';
   await parent.getByRole('radio', { name: new RegExp(t('experience.device.personal')) }).click();
@@ -193,6 +211,10 @@ function decodeQr(png) {
 
   // 6) Child device: profile -> wrong PIN -> recovery -> correct PIN.
   stage = 'child_pin';
+  // C13-AUTH-1: the waiting tablet names the receiving family before child mode.
+  await device.getByTestId('pairing-receipt').waitFor({ timeout: 45000 });
+  assert.ok((await device.getByTestId('pairing-receipt-family').innerText()).includes(familyName));
+  await button(device, t('auth1.device.continue')).click();
   await device.waitForURL('**/child', { timeout: 40000 });
   await device.getByText('Ece', { exact: true }).first().click();
   await device.waitForURL('**/child/pin**');
@@ -234,7 +256,7 @@ function decodeQr(png) {
 
   stage = 'child_mode_multi';
   await parent.goto(WEB + '/parent/child-mode'); await text(parent, 'Can').waitFor();
-  await text(parent, t('u02.childMode.noPairing')).waitFor();
+  await text(parent, t('d2.childMode.intro')).waitFor();
   await shot(parent, 'child-mode-multi-picker-phone');
   await parent.getByRole('button', { name: /Can/ }).first().click();
   await parent.getByLabel(t('childV5.pinLabel'), { exact: true }).waitFor();
@@ -247,17 +269,18 @@ function decodeQr(png) {
   await device2.clock.install();
   await device2.goto(WEB + '/device/pair'); await button(device2, t('unified.pairCodeAction')).click();
   await device2.getByTestId('pairing-active').waitFor();
-  const oldCode = (await device2.getByTestId('pairing-active').innerText()).match(/\b\d{6}\b/)[0];
+  const oldCode = await shownCode(device2);
   sql(`update public.device_pairings set expires_at=now()-interval '1 second' where code='${oldCode}';`);
   await device2.clock.fastForward('10:05');
   await device2.getByTestId('pairing-expired').waitFor();
   assert.equal(await device2.getByTestId('pairing-qr').count(), 0);
   await shot(device2, 'device-pair-expired-phone', 'pairing-expired');
-  await parent.goto(WEB + '/parent/pair-device'); await parent.getByLabel(t('unified.pairCode'), { exact: true }).fill(oldCode);
-  await button(parent, t('u02.parentPair.confirm')).click(); await text(parent, t('u02.parentPair.expiredTitle')).waitFor();
+  await parent.goto(WEB + '/parent/pair-device'); await parent.getByLabel(t('auth1.parentPair.codeLabel'), { exact: true }).fill(oldCode);
+  await button(parent, t('c06.pair.show')).click(); await text(parent, t('u02.parentPair.expiredTitle')).waitFor();
+  assert.equal(await parent.getByTestId('pairing-target').count(), 0);
   await shot(parent, 'parent-pair-expired-code-phone');
   await button(device2, t('accountV5.newCode')).click(); await device2.getByTestId('pairing-active').waitFor();
-  const newCode = (await device2.getByTestId('pairing-active').innerText()).match(/\b\d{6}\b/)[0];
+  const newCode = await shownCode(device2);
   assert.notEqual(newCode, oldCode);
   assert.equal(sql(`select count(*) from public.device_pairings where code='${oldCode}';`), '0');
   pass('expired_code_hides_qr_refreshes_and_parent_gets_guidance');
@@ -282,12 +305,18 @@ function decodeQr(png) {
   // 9b) Child already inside (phone, no PIN device): the open session leaves within the layout's check interval.
   stage = 'revoke_inside_child_world';
   const deviceId2 = await (async () => {
-    const res = await fetch(f.url + '/rest/v1/rpc/pair_child_device', { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + parentToken, 'content-type': 'application/json' }, body: JSON.stringify({ p_code: newCode }) });
-    assert.ok(res.ok, 'pair2 ' + res.status); return res.json();
+    const legacy = await rpc('pair_child_device', { p_code: newCode }, parentToken);
+    assert.ok(/client_update_required/.test(JSON.stringify(legacy.body)), 'token-less signature refused ' + JSON.stringify(legacy.body));
+    const preview = await rpc('preview_device_pairing', { p_code: newCode }, parentToken);
+    assert.equal(preview.body?.status, 'ok', JSON.stringify(preview.body));
+    const res = await rpc('pair_child_device', { p_code: newCode, p_preview_token: preview.body.preview_token }, parentToken);
+    assert.equal(res.status, 200, 'pair2 ' + JSON.stringify(res.body)); return res.body;
   })();
   const cfg = await fetch(f.url + '/rest/v1/rpc/configure_child_device', { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + parentToken, 'content-type': 'application/json' }, body: JSON.stringify({ p_device_id: deviceId2, p_name: 'Telefon', p_child_ids: [f.childId], p_pin_required: false }) });
   assert.ok(cfg.ok, 'configure2 ' + cfg.status);
   await device2.clock.resume().catch(() => {});
+  await device2.getByTestId('pairing-receipt').waitFor({ timeout: 60000 });
+  await button(device2, t('auth1.device.continue')).click();
   await device2.waitForURL('**/child', { timeout: 60000 });
   await device2.getByText('Ece', { exact: true }).first().click();
   await device2.waitForURL('**/child/today', { timeout: 30000 });
@@ -307,8 +336,9 @@ function decodeQr(png) {
 })().catch(async (e) => {
   console.log('CHECK_FAILED ' + stage + ' ' + String(e.message).slice(0, 900));
   for (const [i, page] of pages.entries()) {
-    await page.screenshot({ path: `/tmp/gina-u02-failed-${i}.png`, fullPage: true }).catch(() => {});
-    fs.writeFileSync(`/tmp/gina-u02-failed-${i}.txt`, await page.locator('body').innerText().catch(() => '') + '\nURL ' + page.url() + '\nERRORS ' + JSON.stringify(page.errors));
+    const failDir = process.env.GINA_U02_FAIL_DIR || '/tmp';
+    await page.screenshot({ path: `${failDir}/gina-u02-failed-${i}.png`, fullPage: true }).catch(() => {});
+    fs.writeFileSync(`${failDir}/gina-u02-failed-${i}.txt`, await page.locator('body').innerText().catch(() => '') + '\nURL ' + page.url() + '\nERRORS ' + JSON.stringify(page.errors));
   }
   if (browser) await browser.close();
   process.exitCode = 1;

@@ -1,0 +1,17 @@
+{
+ "stage": "breaker-reset",
+ "at": "2026-11-06T14:28:04.731Z",
+ "checks": [
+  {
+   "name": "standalone_generation_ok",
+   "ok": true,
+   "status": 200
+  },
+  {
+   "name": "shared_breaker_counter_back_to_zero",
+   "ok": true,
+   "failures": 0,
+   "open_until": null
+  }
+ ]
+}
