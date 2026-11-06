@@ -224,6 +224,12 @@ select throws_ok($$select public.set_structured_answer_score(gen_random_uuid(),(
 select pg_temp.as_device();
 select throws_ok($$select public.set_structured_answer_score(gen_random_uuid(),(select id from att),'40000000-0000-4000-8000-000000014115','x',1::smallint,'x')$$,'42501',null,'child cannot score');
 
+-- 7b) Gelişim raporu: yapılandırılmış maddeler doğru sınıflanır (cevaplı madde 'blank' sayılmaz).
+select pg_temp.as_parent();
+select results_eq($$select (s->>'correct')::int, (s->>'partial')::int, (s->>'wrong')::int, (s->>'blank')::int, (s->>'pending')::int
+  from (select public.learning_progress('20000000-0000-4000-8000-000000014101',30)->'summary' s) x$$,
+  $$values (2,4,1,0,0)$$, 'learning progress: MC+numeric correct, 4 partial, parent-0 wrong, none blank/pending');
+
 -- 8) Hash zinciri + sürüm sabitliği --------------------------------------------------------------
 reset role;
 select is((select gina.answer_fingerprint(a) from public.exam_answers a where attempt_id=(select id from att) and question_id='40000000-0000-4000-8000-000000014117'),
