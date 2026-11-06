@@ -107,3 +107,11 @@ Kaynak öneriler: [F01](F01-SOCIAL-AND-NEXT-PROPOSALS.md) §9, [S04 takvim](lear
 - Diğer veliye AI bildirimi, itiraz kilidi ve aile bazında AI'yı kapatma ilk sürümde yok; gerekirse destek ekibi aile bazında kapatır.
 - Web'in işlevsel yerel depolama ögeleri "kesinlikle gerekli" sınıfında önerilir; son karar hukuk incelemesinde.
 - Açık Rıza A modeli (tek rıza / işlem bazlı onay) hukuk kararıdır; değiştirilmedi.
+
+
+## Claude devrinin daraltılması (6 Kasım 2026, son kullanıcı talimatı)
+
+- Güncel yürütme listesi `docs/CLAUDE-REMAINING-WORK.md` H00–H08; eski devir listesi tarihsel arşivdir.
+- Kütüphane içerik üretimi/onayı/yayını kullanıcı tarafından backoffice ile yönetilecek; Claude devrinden çıkarıldı. Mevcut yönetim araçlarının açıkça listelenmiş yazılım eksikleri kapsamda kalır.
+- 3B dünya kullanıcı ile Codex tarafından ayrı yürütülecek; Claude model/rig/atmosfer/3B planlamasına başlamaz.
+- Claude düzeltme yayını kütüphane veya 3B tamamlanmasına bağlı değildir. Eski R02 bağımlılığı bu teslim için uygulanmaz; mağaza satışına ait hukuk/hesap kapıları korunur.

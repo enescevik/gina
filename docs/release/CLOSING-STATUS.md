@@ -1,6 +1,6 @@
 # GINA — tek güncel kapanış tablosu
 
-6 Kasım 2026, ~19:45 (UTC). Bu tablo `continuation-2026-11-06/PROGRESS.md`, `overnight-2026-11-06/PROGRESS.md` ve C/D raporlarındaki durum sütunlarının **yerini alır**. Eski tablolardaki "KOD HAZIR / yayımlanmadı" ifadeleri tarihseldir. Sıra: kütüphane (K01) sonra, 3B dünya (WORLD-01) en son.
+6 Kasım 2026, ~19:45 (UTC). Bu tablo `continuation-2026-11-06/PROGRESS.md`, `overnight-2026-11-06/PROGRESS.md` ve C/D raporlarındaki durum sütunlarının **yerini alır**. Eski tablolardaki "KOD HAZIR / yayımlanmadı" ifadeleri tarihseldir. Son kapsam kararı: Kütüphane içerik üretimi backoffice üzerinden kullanıcı tarafından, 3B dünya kullanıcı + Codex tarafından ayrı yürütülecek. İkisi de Claude devrinin dışındadır. Güncel kalan işlerin öncelik ve kabul ölçütleri: [H00–H08](../CLAUDE-REMAINING-WORK.md).
 
 ## Son yayınlar
 
@@ -69,11 +69,11 @@
 
 | Kimlik | Ne kapalı | Gereken |
 |---|---|---|
-| X01 (kalan kısım) | ürün bildirim e-postaları (C10), destek adresi yönlendirmesi | Gmail hedef teyidi, yönlendirme kuralı ve teslimat testi; C10 kanal kabulü |
+| X01 (kalan kısım) | ürün bildirim e-postaları (C10), EN/yeni hesap ve farklı sağlayıcı teslimat kabulü | Destek yönlendirmesi ve Gmail göndericisi kurulu (domain-email STATUS, PR #153/#154); kalan gerçek kanal testleri H04 |
 | X02 Firebase / Play / SMS | Android iç test, SMS kanalı | hesaplar |
 | X03 mağaza ve hukuk onayı | satış, mağaza başvurusu, hukuk metinlerinin yayını | hukuk uzmanı incelemesi; yasal kimlik/adres. Bireysel geliştirici olarak başlanır, şirket kurulması ön şart değil |
 | X04 OpenAI / Gemini | ek AI sağlayıcıları (C08) | anahtarlar |
-| X06 bağımsız editör | kütüphane onay/yayın sayıları (K01) | editör |
+| X06 bağımsız editör | Ayrı kütüphane içerik operasyonu; Claude devri dışında | Kullanıcının backoffice içerik süreci |
 
 ## 5. Bilerek ertelenenler (tamamlanmış sayılmaz)
 
@@ -85,6 +85,6 @@
 | Satın alma ekranında AI onayı cümlesi | satış açılmadan önce küçük metin işi |
 | Veli rubriğinde "sonuç / süreç" seçici | migration gerekir; şimdilik sorudan çıkarım |
 | D11 K3/K4/K5 yönetim kararları | DECISIONS.md |
-| K01 kütüphane üretimi | Enes kararıyla beklemede (6 Kasım 17:09); 100 taslak / 1.440 eksik / 0 onay / 0 yayın |
-| R02 son yayın | K01 ve dış kabullerden sonra |
-| WORLD-01 3B dünya | en son |
+| K01 kütüphane üretimi | Claude kapsamı dışında; kullanıcı backoffice üzerinden yürütecek. Tarihsel sayılar ilerleme kanıtı olarak korunur. |
+| R02 eski son yayın sırası | Bu Claude teslimini bağlamaz. H08 düzeltme yayını K01/WORLD-01 beklemez; mağaza satışı dış kabul kapılarına bağlıdır. |
+| WORLD-01 3B dünya | Claude kapsamı dışında; kullanıcı + Codex ile ayrı çalışma |

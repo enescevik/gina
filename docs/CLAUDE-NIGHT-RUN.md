@@ -1,3 +1,5 @@
+> TARİHSEL GECE PLANI: Yeni Claude devri için `docs/CLAUDE-REMAINING-WORK.md` içindeki H00–H08 geçerlidir. Eski kota/saat hedefleri uygulanmaz. Kütüphane içerik üretimi ve 3B dünya Claude kapsamı dışındadır.
+
 # Claude gece çalışma protokolü
 
 > **6 Kasım devam notu:** 5–6 Kasım gece çalışması tamamlandı; bu protokolün N00/Fable başlangıcını veya eski 07.00/kota hedefini yeni oturumda tekrar başlatma. Güncel işler, öncelikler ve kapanış ölçütleri [ana listenin §4A bölümündedir](CLAUDE-REMAINING-WORK.md#4a--6-kasım-sonrası-devam-planı). Mevcut başlangıç cevaplarını `release/overnight-2026-11-06/FABLE-PREFLIGHT.md` ve `DECISIONS.md` üzerinden koru. Aşağıdaki genel alt ajan/checkpoint ilkeleri sürer; yeni tarihli gece hedefi ancak gerçekten belirlenirse geçerlidir.
