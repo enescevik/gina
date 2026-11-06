@@ -1,7 +1,7 @@
 // Local acceptance launcher: use the unchanged production handler with a
 // randomly allocated loopback port. No provider or hosted-service access.
 import { PDFDocument } from "npm:pdf-lib@1.17.1";
-import { installIsolatedProvider } from "./isolated-ai-provider.ts";
+import { installIsolatedProvider, type ProviderFault, pushProviderFault } from "./isolated-ai-provider.ts";
 if (Deno.env.get("GINA_QA_ISOLATED") !== "1") {
   throw Error("isolated_runner_required");
 }
@@ -30,6 +30,8 @@ route = "/timetable-import";
 await import("../supabase/functions/timetable-import/index.ts");
 route = "/prova-generate";
 await import("../supabase/functions/prova-generate/index.ts");
+route = "/prova-grade";
+await import("../supabase/functions/prova-grade/index.ts");
 // C10: unchanged one-click unsubscribe handler (service role RPC; no provider).
 route = "/channel-unsubscribe";
 await import("../supabase/functions/channel-unsubscribe/index.ts");
@@ -45,6 +47,12 @@ serve({
   const path = new URL(req.url).pathname;
   if (path === "/__qa-provider-stats" && req.method === "GET") {
     return Response.json(stats);
+  }
+  if (path === "/__qa-provider-fault" && req.method === "POST") {
+    return req.json().then((b: { fault: ProviderFault }) => {
+      pushProviderFault(b.fault);
+      return Response.json({ ok: true });
+    });
   }
   const handler = handlers.get(path);
   return handler ? handler(req, info) : new Response(null, { status: 404 });

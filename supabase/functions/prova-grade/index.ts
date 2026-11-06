@@ -1,3 +1,4 @@
+import { fail, sanitizedCode } from "../_shared/error-contract.ts";
 import { aiGradableOpenAnswer, needsNotebookReview } from "../_shared/answer-notebook.ts";
 import { questionImages } from "../_shared/question-images.ts";
 import { runAiOperation } from "../_shared/ai-operation.ts";
@@ -8,10 +9,10 @@ import { answerKeyExtras } from "../_shared/answer-key.ts";
 // Kurallar: yalnız parent; paket prova_ai_grading (Pro) sunucuda; model ai_settings'ten;
 // ANTHROPIC_API_KEY yoksa 503 ai_not_configured. Metindeki bilinen çocuk adı maskelenir.
 // Görseller yalnız açık, bu değerlendirmeye ait veli onayıyla gönderilir; görseldeki PII otomatik maskelenmez.
-// Veli puanı varsa AI onu ezmez (apply_ai_grades).
+// C08: AI puanı yalnız öneridir (ai_score); kesin puanı veli onaylar (accept_ai_grade / score_open_answer).
 
 import { json, preflight, serviceClient } from "../_shared/supabase.ts";
-import { apiKeyOrResponse, logUsage, provaEntitlement, readParent, resolveAi } from "../_shared/prova.ts";
+import { apiKeyOrResponse, logUsage, parentOrResponse, provaEntitlement, resolveAi } from "../_shared/prova.ts";
 
 const PROMPT_VERSION = "prova-grade/v3-answer-key";
 
@@ -21,9 +22,9 @@ function escapeRegExp(s: string): string {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return preflight();
-  if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
-  const parent = await readParent(req);
-  if (!parent) return json({ error: "forbidden" }, 403);
+  if (req.method !== "POST") return fail("method_not_allowed", 405);
+  const parent = await parentOrResponse(req);
+  if (parent instanceof Response) return parent;
 
   let attemptId: string;
   let imageConsent = false;
@@ -33,7 +34,7 @@ Deno.serve(async (req) => {
     imageConsent = body.image_consent === true;
     if (typeof attemptId !== "string" || !/^[0-9a-f-]{36}$/i.test(attemptId)) throw new Error("bad");
   } catch {
-    return json({ error: "attempt_id_required" }, 400);
+    return fail("attempt_id_required", 400);
   }
 
   const db = serviceClient();
@@ -41,9 +42,9 @@ Deno.serve(async (req) => {
   try {
     ent = await provaEntitlement(db, parent.familyId);
   } catch {
-    return json({ error: "entitlement_failed" }, 500);
+    return fail("entitlement_failed", 500);
   }
-  if (!ent.ai_grading) return json({ error: "plan_has_no_ai_grading", plan: ent.plan }, 402);
+  if (!ent.ai_grading) return fail("plan_has_no_ai_grading", 402, { details: { plan: ent.plan }, legacy: { plan: ent.plan } });
 
   // Deneme bu veliye ait mi ve bitmiş mi?
   const { data: attempt } = await db
@@ -52,8 +53,8 @@ Deno.serve(async (req) => {
     .eq("id", attemptId)
     .eq("family_id", parent.familyId)
     .maybeSingle();
-  if (!attempt) return json({ error: "attempt_not_found" }, 404);
-  if (attempt.status === "in_progress") return json({ error: "attempt_not_finished" }, 409);
+  if (!attempt) return fail("attempt_not_found", 404);
+  if (attempt.status === "in_progress") return fail("attempt_not_finished", 409);
 
   const { data: exam } = await db.from("exams").select("question_ids").eq("id", attempt.exam_id).single();
   const questionIds: string[] = exam?.question_ids ?? [];
@@ -63,14 +64,14 @@ Deno.serve(async (req) => {
     db.from("children").select("name,archived_at").eq("id", attempt.child_id).maybeSingle(),
   ]);
 
-  if (questionResult.error || answerResult.error || childResult.error) return json({ error: "data_failed" }, 500);
-  if (childResult.data?.archived_at) return json({ error: "child_archived" }, 409);
+  if (questionResult.error || answerResult.error || childResult.error) return fail("data_failed", 500);
+  if (childResult.data?.archived_at) return fail("child_archived", 409);
   const questions = questionResult.data; const answers = answerResult.data; const child = childResult.data;
   // Never grade a typed fragment as the whole answer while ignoring the student's ink.
   // Notebook image evaluation is a separate consented pipeline, not implemented here.
   const hasNotebook = needsNotebookReview(answerResult.data ?? []);
-  if (hasNotebook) return json({ error: "notebook_review_required" }, 409);
-  if (!questions?.length || questions.length !== questionIds.length) return json({ error: "data_failed" }, 500);
+  if (hasNotebook) return fail("notebook_review_required", 409);
+  if (!questions?.length || questions.length !== questionIds.length) return fail("data_failed", 500);
   // Mask the known child name. Free text may still contain other personal details.
   const nameParts = (child?.name ?? "").split(/\s+/).filter((p: string) => p.length >= 2);
   const mask = (text: string) =>
@@ -79,7 +80,7 @@ Deno.serve(async (req) => {
   const answerByQ = new Map((answers ?? []).map((a) => [a.question_id, a]));
   const ai = await resolveAi(db, ent.plan, 4000);
   if (ai instanceof Response) return ai;
-  const apiKey = apiKeyOrResponse();
+  const apiKey = apiKeyOrResponse(ai);
   if (apiKey instanceof Response) return apiKey;
 
   const refToQuestion = new Map<string, string>();
@@ -104,7 +105,7 @@ Deno.serve(async (req) => {
   };
   let images;
   try { images = await questionImages(db,parent.familyId,parent.userId,attemptId,questionIds,imageConsent); }
-  catch (e) { return json({error:e instanceof Error ? e.message : "data_failed"},400); }
+  catch (e) { return fail(sanitizedCode(e instanceof Error ? e.message : "", /^(data_failed|source_ai_consent_required|source_ai_limit)$/, "data_failed"), 400); }
   const result = await runAiOperation(db, parent, "grade", attemptId, apiKey, ai,
     GRADE_SYSTEM, images.length ? [{type:"text",text:JSON.stringify(payload)},...images] : JSON.stringify(payload), GRADE_SCHEMA, value => validateGradeReport(value, refs), attempt.child_id);
   if (result instanceof Response) return result;
@@ -134,7 +135,7 @@ Deno.serve(async (req) => {
   });
   if (applyError) {
     console.error("prova-grade apply", applyError.message);
-    return json({ error: "save_failed" }, 500);
+    return fail("save_failed", 500);
   }
 
   await logUsage(db, {
@@ -148,5 +149,6 @@ Deno.serve(async (req) => {
     operation_id: result.jobId,
   });
 
-  return json({ ok: true, graded: grades.length, attempt: row, summary });
+  // graded: eski alan (öneri sayısı). suggested/final: C08 — AI puanı kesin değildir.
+  return json({ ok: true, graded: grades.length, suggested: grades.length, final: false, attempt: row, summary });
 });

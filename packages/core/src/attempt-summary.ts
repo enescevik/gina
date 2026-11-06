@@ -111,6 +111,12 @@ const openAnswerSchema = z.object({
   state: z.enum(["graded", "pending", "unanswered"]),
   score: z.number().int().min(0).max(100).nullable(),
   graded_by: z.enum(["ai", "parent"]).nullable(),
+  /** C08: AI önerisi (kesin puan değil). Eski yanıtlarda yok. */
+  ai_score: z.number().int().min(0).max(100).nullable().optional(),
+  /** C08: AI önerisi var, veli henüz kesinleştirmedi. */
+  ai_suggested: z.boolean().optional(),
+  /** C08: C08 öncesi AI'nın score'a yazdığı eski kayıt (yeniden yazılmaz, eskisi gibi okunur). */
+  legacy_ai: z.boolean().optional(),
   has_text: z.boolean(),
   has_document: z.boolean(),
 });
@@ -134,6 +140,7 @@ export const attemptSummaryRpcSchema = z.object({
   finished_at: z.string().nullable(),
   graded_at: z.string().nullable(),
   open_answers: z.array(openAnswerSchema).optional(),
+  ai_suggestion_count: z.number().int().min(0).optional(),
 });
 export type AttemptSummaryRpc = z.infer<typeof attemptSummaryRpcSchema>;
 export type OpenAnswerSummary = z.infer<typeof openAnswerSchema>;
@@ -142,4 +149,19 @@ export type OpenAnswerSummary = z.infer<typeof openAnswerSchema>;
 export function parseAttemptSummary(value: unknown): AttemptSummaryRpc | null {
   const parsed = attemptSummaryRpcSchema.safeParse(value);
   return parsed.success ? parsed.data : null;
+}
+
+/** C08 — açık uçlu cevabın puan kaynağı: veli kesin puanı, AI önerisi (onay bekliyor), eski AI puanı, yok.
+ * AI önerisi hiçbir zaman kesin puan gibi gösterilmez; eski `graded_by='ai'` kayıtları yeniden yazılmaz. */
+export type OpenScoreSource = "parent" | "ai_suggestion" | "legacy_ai" | "none";
+export function openScoreSource(answer: {
+  score?: number | null;
+  graded_by?: string | null;
+  ai_score?: number | null;
+}): OpenScoreSource {
+  const hasScore = answer.score !== null && answer.score !== undefined;
+  if (hasScore && answer.graded_by === "ai") return "legacy_ai";
+  if (hasScore) return "parent";
+  if (answer.ai_score !== null && answer.ai_score !== undefined) return "ai_suggestion";
+  return "none";
 }

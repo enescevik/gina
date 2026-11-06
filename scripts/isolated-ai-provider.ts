@@ -1,6 +1,13 @@
 // Deterministic provider boundary for local integration acceptance, NOT an AI
 // quality test. The real production handlers, tokenizer path and DB are unchanged.
 // Network permission is loopback-only; no hosted provider can be reached.
+// C08: deterministik hata enjeksiyonu (yalnız yerel kabul). Sıradaki ücretli /v1/messages isteği bu hatayı alır.
+export type ProviderFault = "429" | "503" | "timeout" | "lost" | "badjson";
+const faults: ProviderFault[] = [];
+export function pushProviderFault(fault: ProviderFault) {
+  if (!["429", "503", "timeout", "lost", "badjson"].includes(fault)) throw Error("unknown_fault");
+  faults.push(fault);
+}
 export function installIsolatedProvider() {
   const original = globalThis.fetch;
   const stats = {
@@ -11,6 +18,10 @@ export function installIsolatedProvider() {
     task: 0,
     reward: 0,
     prova: 0,
+    grade: 0,
+    /** C08: sağlayıcıya giden her ücretli mesaj isteği (hata enjekte edilenler dahil). */
+    messages: 0,
+    faults: 0,
   };
   globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = new URL(input instanceof Request ? input.url : String(input));
@@ -24,6 +35,15 @@ export function installIsolatedProvider() {
     }
     if (url.pathname !== "/v1/messages") {
       throw Error("unexpected_provider_path");
+    }
+    stats.messages++;
+    const fault = faults.shift();
+    if (fault) {
+      stats.faults++;
+      if (fault === "429" || fault === "503") return new Response("{}", { status: Number(fault) });
+      if (fault === "timeout") throw new DOMException("synthetic timeout", "TimeoutError");
+      if (fault === "lost") throw new TypeError("synthetic connection reset");
+      return Response.json({ stop_reason: "end_turn", content: [{ type: "text", text: "{not json" }], usage: { input_tokens: 1, output_tokens: 1 } });
     }
     const body = JSON.parse(String(init.body));
     const props = body.output_config?.format?.schema?.properties;
@@ -113,6 +133,28 @@ export function installIsolatedProvider() {
           ? [{ id: "S1", kind: "text", content: "Sentetik ortak metin: bir bahçede ölçüm yapılır." }]
           : [],
         questions,
+      };
+    } else if (props?.degerlendirmeler) {
+      // C08: açık uçlu öneri — puanlama gerekli maddelere sabit 70; AI puanı yalnız öneridir.
+      stats.grade++;
+      const items = (data.maddeler ?? []) as { ref: string; konu: string; puanlama_gerekli: boolean }[];
+      output = {
+        degerlendirmeler: items.filter((m) => m.puanlama_gerekli).map((m) => ({
+          ref: m.ref,
+          puan: 70,
+          kisa_geri_bildirim: "Sentetik öneri.",
+          eksikler: [],
+          iyilestirme_onerileri: [],
+        })),
+        ozet: {
+          guclu_konular: [],
+          zayif_konular: [],
+          genel_oneri: "Sentetik hizmet testi.",
+          konu_analizi: [{ konu: items[0].konu, kanitlar: [items[0].ref], gozlem: "Sentetik gözlem.", sonraki_adim: "Sentetik adım." }],
+          calisma_adimlari: [],
+          veli_destegi: [],
+          sinirlar: ["Sentetik"],
+        },
       };
     } else if (props?.items) {
       stats.learning++;

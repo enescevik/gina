@@ -30,7 +30,7 @@ import {
   Check,
   X,
 } from "lucide-react-native";
-import { emptyNotebook, readNotebook, readQuestionRubric, type ReviewDraft, type ReviewBase } from "@gina/core";
+import { emptyNotebook, openScoreSource, readNotebook, readQuestionRubric, type ReviewDraft, type ReviewBase } from "@gina/core";
 import { IconButton, p, SatinButton } from "@/components/planner/ui";
 import { Field } from "@/components/ui/field";
 import { Toggle } from "@/components/ui/toggle";
@@ -64,6 +64,8 @@ export interface ReviewAnswer {
   /** C04: AI önerisi veli puanından ayrı gösterilir. */
   graded_by?: string | null;
   ai_score?: number | null;
+  /** C08: kesin puan (veli). Eski graded_by='ai' kayıtlarında AI'dan yazılmış eski puan. */
+  score?: number | null;
 }
 export interface ReviewState {
   score: number | null;
@@ -427,11 +429,31 @@ export function ParentReviewWorkspace(
           </View>
         )
         : null}
-      {isOpen && answer?.graded_by === "ai" && answer.ai_score !== null &&
-          answer.ai_score !== undefined
+      {/* C08: AI puanı yalnız öneri (ai_score). Kesin puan, veli alana alıp kaydedince oluşur. Eski
+          graded_by='ai' kayıtları yeniden yazılmaz; "eski AI puanı" olarak ayrı etiketlenir. */}
+      {isOpen && answer && openScoreSource(answer) === "ai_suggestion"
         ? (
-          <Text accessibilityRole="text" style={s.small}>
-            {t("provaC04.review.aiPending", { score: answer.ai_score })}
+          <View style={{ gap: 8 }} testID="review-ai-suggestion">
+            <Text accessibilityRole="text" style={s.small}>
+              {t("provaC04.review.aiPending", { score: answer.ai_score })}
+            </Text>
+            {String(answer.ai_score) !== score
+              ? (
+                <SatinButton
+                  secondary
+                  title={t("c08.review.useSuggestion", { score: answer.ai_score })}
+                  icon={<Sparkles color={p.purple} size={18} />}
+                  disabled={locked}
+                  onPress={() => change({ score: String(answer.ai_score) })}
+                />
+              )
+              : null}
+          </View>
+        )
+        : isOpen && answer && openScoreSource(answer) === "legacy_ai"
+        ? (
+          <Text accessibilityRole="text" style={s.small} testID="review-legacy-ai">
+            {t("c08.review.legacyAi", { score: answer.score })}
           </Text>
         )
         : null}
