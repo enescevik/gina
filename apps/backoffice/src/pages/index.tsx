@@ -12,13 +12,8 @@ export default function Home() {
     if (!session) void router.replace("/sign-in");
     else if (isAdmin) void router.replace("/dashboard");
     else if (rolesReady) {
-      void router.replace(
-        roles.includes("support")
-          ? "/support"
-          : roles.includes("content")
-          ? "/help-articles"
-          : roles.includes("finance") ? "/billing" : roles.includes("release") ? "/notifications" : "/sign-in",
-      );
+      // C07: her operatör önce kendi iş kuyruğunu görür.
+      void router.replace(roles.length ? "/dashboard" : "/sign-in");
     }
   }, [ready, session, isAdmin, rolesReady, roles, router]);
   return <p className="p-6 text-slate-500">{t.common.loading}</p>;

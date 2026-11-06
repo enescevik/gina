@@ -4,7 +4,7 @@ import { groupWorkqueue, waitingLabel, workqueueSchema, type AdminQueueRole, typ
 
 import { Notice } from "@/components/Layout";
 import { adminRpc, isForbidden } from "@/lib/admin-rpc";
-import { b01, itemText, reasonText, waitingText } from "@/lib/admin-workqueue-text";
+import { adminOnlyHref, b01, itemText, reasonText, waitingText } from "@/lib/admin-workqueue-text";
 import { useAuth } from "@/lib/auth";
 import { fmtDateTime, fmtNumber } from "@/lib/format";
 
@@ -106,9 +106,12 @@ export function Workqueue({ role, onForbidden }: { role?: AdminQueueRole; onForb
 
 function FirstItem({ item }: { item: WorkqueueItem }) {
   const text = itemText(item);
+  const { isAdmin } = useAuth();
   return (
     <li className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm">
-      <Link href={text.href} className="font-semibold text-slate-900 underline-offset-2 hover:underline">{text.label}</Link>
+      {isAdmin || !adminOnlyHref(text.href)
+        ? <Link href={text.href} className="font-semibold text-slate-900 underline-offset-2 hover:underline">{text.label}</Link>
+        : <span className="font-semibold text-slate-900">{text.label}</span>}
       <div className="mt-1 text-amber-900"><strong>{fmtNumber(item.count)}</strong> · {b01.workqueue.oldest}: {waitingText(waitingLabel(item.oldest_waiting_seconds))}</div>
       <div className="text-xs text-slate-600">{reasonText(item)}</div>
     </li>
@@ -117,6 +120,7 @@ function FirstItem({ item }: { item: WorkqueueItem }) {
 
 function QueueRow({ item }: { item: WorkqueueItem }) {
   const text = itemText(item);
+  const { isAdmin } = useAuth();
   return (
     <li className="flex flex-wrap items-center gap-x-4 gap-y-1 px-3 py-2 text-sm" data-queue={item.key}>
       <span className="min-w-0 flex-1">
@@ -125,7 +129,9 @@ function QueueRow({ item }: { item: WorkqueueItem }) {
       </span>
       <span className="rounded-full bg-slate-900 px-2.5 py-0.5 text-xs font-semibold text-white" aria-label={`${fmtNumber(item.count)} kayıt`}>{fmtNumber(item.count)}</span>
       <span className="w-28 text-xs text-slate-600">{b01.workqueue.oldest}: {waitingText(waitingLabel(item.oldest_waiting_seconds))}</span>
-      <Link href={text.href} className="btn-secondary !min-h-9 !px-3 !py-1 text-sm">{b01.workqueue.open}</Link>
+      {isAdmin || !adminOnlyHref(text.href)
+        ? <Link href={text.href} className="btn-secondary !min-h-9 !px-3 !py-1 text-sm">{b01.workqueue.open}</Link>
+        : <span className="text-xs text-slate-500" data-testid="admin-only-link">Yönetici ekranı</span>}
     </li>
   );
 }

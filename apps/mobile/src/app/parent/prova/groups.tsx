@@ -20,6 +20,10 @@ import {
   type CohortReviewRow,
   CohortWrittenReport,
 } from "@/components/learning/cohort-written-report";
+import {
+  GroupPhases,
+  RankingNotice,
+} from "@/components/prova-library/group-phases";
 interface Group {
   id: string;
   title: string;
@@ -58,6 +62,12 @@ interface Report {
   reviews?: CohortReviewRow[];
   ready: boolean;
   participated: boolean;
+  /** Server-side: false keeps this entry off the definitive board, with ranking_reason. */
+  ranked?: boolean;
+  ranking_reason?: string | null;
+  ranking_optional?: boolean;
+  /** Automatic cohorts: own count while the attempt is still open; never a final result. */
+  interim?: boolean;
   cancelled: boolean;
   ends_at?: string;
   correct: number;
@@ -476,6 +486,7 @@ export default function GroupExams() {
             {g.status === "cancelled"
               ? <Text style={u.error}>{t("group.cancelled")}</Text>
               : null}
+            <GroupPhases group={g.id} formatDate={date} childName={childName} />
             {entries.map((e) => (
               <View
                 key={e.child_id}
@@ -621,12 +632,20 @@ export default function GroupExams() {
                             )
                             : (
                               <Text style={u.heading}>
+                                {report.data.interim
+                                  ? `${t("groupPhases.interim")} · `
+                                  : ""}
                                 {t("prova.resultMc", {
                                   correct: report.data.correct,
                                   total: report.data.total,
                                 })}
                               </Text>
                             )}
+                          <RankingNotice
+                            ranked={report.data.ranked}
+                            reason={report.data.ranking_reason}
+                            interim={report.data.interim}
+                          />
                           <Text style={u.small}>{t("group.limits")}</Text>
                           {report.data.topics.map((topic) => (
                             <View

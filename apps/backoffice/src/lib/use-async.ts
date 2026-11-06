@@ -1,13 +1,21 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { useAuth } from "./auth";
 
 /**
- * Admin oturumu hazır olunca veri yükler. `key` değişince yeniden yükler; `reload()` elle yeniler.
+ * C07: `Layout roles=[…]` sayfası, canlı rol kontrolü geçtiyse bu bağlamı `true` verir; böylece aynı
+ * yönetim bileşenleri tam yönetici olmayan yetkili operatörde de yüklenir. Asıl yetki her RPC'de sunucudadır.
+ */
+export const OperatorAccessContext = createContext(false);
+
+/**
+ * Admin (veya sayfanın rolüne sahip operatör) oturumu hazır olunca veri yükler. `key` değişince yeniden yükler; `reload()` elle yeniler.
  * Yükleyici her render'da güncel tutulur (ref), bu yüzden kapanıştaki filtreler hep günceldir.
  */
 export function useAdminQuery<T>(load: () => Promise<T>, key: unknown[] = []) {
-  const { isAdmin } = useAuth();
+  const { isAdmin: admin } = useAuth();
+  const operator = useContext(OperatorAccessContext);
+  const isAdmin = admin || operator;
   const loadRef = useRef(load);
   useEffect(() => {
     loadRef.current = load;

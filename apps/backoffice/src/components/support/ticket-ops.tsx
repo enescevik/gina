@@ -4,7 +4,8 @@ import { parseArticle } from "@/lib/help-article-structure";
 import { useSupportQuery } from "@/lib/use-support-query";
 import {
   assignTicket,
-  cannedReplies,
+  type CannedLocale,
+  loadCannedReplies,
   type IdeaStage,
   ideaStages,
   loadMeta,
@@ -241,16 +242,24 @@ type Article = { id: string; title: string; body: string };
  * taslağına eklenir, kendiliğinden gönderilmez. Yalnız yayımlanmış yazılar önerilir.
  */
 export function ReplyHelpers(
-  { subject, category, disabled, onInsert }: {
+  { ticket, subject, category, disabled, onInsert }: {
+    ticket: string;
     subject: string;
     category: string;
     disabled: boolean;
     onInsert: (text: string) => void;
   },
 ) {
+  // C07: varsayılan dil talep eden ailenin dilidir; operatör TR/EN arasında değiştirebilir.
+  const [chosen, setChosen] = useState<CannedLocale | null>(null);
+  const canned = useSupportQuery(
+    () => loadCannedReplies(chosen, ticket),
+    `canned:${ticket}:${chosen ?? "auto"}`,
+  );
+  const locale: CannedLocale = canned.data?.locale ?? chosen ?? "tr";
   const articles = useSupportQuery(async () => {
     const data = await adminRpc("get_help_articles", {
-      p_locale: "tr",
+      p_locale: locale,
       p_platform: "all",
       p_editor: false,
     });
@@ -258,8 +267,8 @@ export function ReplyHelpers(
     return (data as Article[]).filter((a) =>
       typeof a.title === "string" && typeof a.body === "string"
     );
-  }, "published-help-tr");
-  const canned = cannedReplies.filter((c) =>
+  }, `published-help-${locale}`);
+  const replies = (canned.data?.replies ?? []).filter((c) =>
     !c.categories.length || c.categories.includes(category)
   );
   const related = articles.data
@@ -269,17 +278,37 @@ export function ReplyHelpers(
     <div className="support-helpers" data-testid="support-helpers">
       <details>
         <summary>Hazır yanıt ekle</summary>
-        <div className="support-helper-list">
-          {canned.map((c) => (
+        <div className="support-helper-lang" role="group" aria-label="Yanıt dili">
+          {(["tr", "en"] as const).map((l) => (
             <button
-              key={c.id}
-              className="btn-secondary"
-              disabled={disabled}
-              onClick={() => onInsert(c.body)}
+              key={l}
+              type="button"
+              className={locale === l ? "btn !min-h-9 !px-3 !py-1" : "btn-secondary !min-h-9 !px-3 !py-1"}
+              aria-pressed={locale === l}
+              onClick={() => setChosen(l)}
             >
-              {c.title}
+              {l === "tr" ? "Türkçe" : "English"}
             </button>
           ))}
+          {!chosen && canned.data ? <span className="support-ops-hint">Ailenin dili seçildi.</span> : null}
+        </div>
+        <div className="support-helper-list" data-testid="canned-list" data-locale={locale}>
+          {canned.error
+            ? <p className="support-ops-hint">Hazır yanıtlar yüklenemedi.</p>
+            : !canned.data
+            ? <p className="support-ops-hint">Yükleniyor…</p>
+            : !replies.length
+            ? <p className="support-ops-hint">Bu dil ve kategori için hazır yanıt yok.</p>
+            : replies.map((c) => (
+              <button
+                key={c.id}
+                className="btn-secondary"
+                disabled={disabled}
+                onClick={() => onInsert(c.body)}
+              >
+                {c.title}
+              </button>
+            ))}
         </div>
       </details>
       <details>
