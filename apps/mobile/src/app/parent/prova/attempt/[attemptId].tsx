@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ErrorText } from "@/components/ui/screen";
 import { ParentScreen as Screen } from "@/components/ui/parent-screen";
 import { invokeProvaAi, type GradeResponse, type PlanResponse } from "@/lib/prova-ai";
+import { StructuredAttemptSection } from "@/components/learning/question-types/structured-attempt-section";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
@@ -246,6 +247,8 @@ export default function AttemptReviewScreen() {
           <ErrorText error={giveZero.error} />
         </View>
       ) : null}
+
+      {a ? <StructuredAttemptSection attemptId={attemptId} finished={!!finished} /> : null}
 
       {summary && (summary.zayif_konular?.length || summary.genel_oneri) ? (
         <View className="gap-1 rounded-parent bg-teal-light p-4">

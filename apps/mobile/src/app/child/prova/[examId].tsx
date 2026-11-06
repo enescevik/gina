@@ -9,13 +9,19 @@ import { NotebookPage } from "@/components/learning/notebook-page";
 import { p, SatinButton } from "@/components/planner/ui";
 import {
   type AnswerJournal,
+  type AnswerState,
   attemptEndedByTime,
   attemptSummary,
   AnswerJournalConflict,
+  CLIENT_SUPPORTED_INTERACTION_TYPES,
   notebookHasAnswer,
   readNotebook,
   SerialWrites,
+  structuredAnswerSchema,
 } from "@gina/core";
+import { StructuredQuestion, UpdateRequired } from "@/components/learning/question-types/StructuredQuestion";
+import { QuestionNavigator } from "@/components/learning/question-types/question-navigator";
+import { fillCounts, questionFillState } from "@/components/learning/question-types/model";
 import {
   onlineManager,
   useMutation,
@@ -61,10 +67,28 @@ interface Choice {
   text: string;
 }
 
-/** Cevap verilmiş mi: şık seçilmiş ya da boş olmayan metin yazılmış. */
-function isAnswered(answer: Answer | undefined): boolean {
-  return !!answer?.key || !!answer?.text?.trim() ||
-    notebookHasAnswer(answer?.document);
+interface AttemptQuestion {
+  id: string;
+  kind: string;
+  interaction_type: string | null;
+  schema_version: number | null;
+  payload: unknown;
+}
+
+/** Doluluk durumu (puan değil): şık/metin/çizim ya da yapılandırılmış cevabın ortak answerState'i. */
+function fillState(q: AttemptQuestion, answer: Answer | undefined): AnswerState {
+  return questionFillState(q, {
+    key: answer?.key,
+    text: answer?.text,
+    hasDocument: notebookHasAnswer(answer?.document),
+    answer: answer?.answer,
+  });
+}
+
+/** Sunucu "client_update_required" dediyse (yeni soru türü) açık güncelleme ekranı gösterilir. */
+function needsUpdate(error: unknown): boolean {
+  return !!error && typeof error === "object" &&
+    (error as { message?: unknown }).message === "client_update_required";
 }
 
 function formatRemaining(ms: number): string {
@@ -98,6 +122,8 @@ export default function TakeExamScreen() {
   const [now, setNow] = useState(() => Date.now());
   // Boş soru varken "Bitir"e basılınca satır içi onay gösterilir (web'de Alert yok).
   const [confirmFinish, setConfirmFinish] = useState(false);
+  // Sayısal sorunun isteğe bağlı işlem defteri (aynı NotebookWorkspace; answer_document olarak kaydedilir).
+  const [workArea, setWorkArea] = useState<string | null>(null);
   const lastAnnouncedMinute = useRef<number | null>(null);
 
   const attempt = useQuery({
@@ -131,7 +157,7 @@ export default function TakeExamScreen() {
     structuralSharing: mergeAnswerSnapshot,
     enabled: !!attempt.data?.id,
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_saved_exam_answers_v3", {
+      const { data, error } = await supabase.rpc("get_saved_exam_answers_v4", {
         p_attempt_id: attempt.data?.id ?? "",
       });
       if (error) throw error;
@@ -140,11 +166,19 @@ export default function TakeExamScreen() {
         if (row.answer_document !== null && !document) {
           throw new Error("notebook_version_unsupported");
         }
+        let structured: Answer["answer"];
+        if (row.answer !== null) {
+          const parsed = structuredAnswerSchema.safeParse(row.answer);
+          // Bilinmeyen cevap sürümü tahminle okunmaz: açık güncelleme yolu.
+          if (!parsed.success) throw new Error("client_update_required");
+          structured = parsed.data;
+        }
         return [row.question_id, {
           key: row.answer_key ?? undefined,
           text: row.answer_text ?? undefined,
           revision: row.revision,
           document: document ?? undefined,
+          answer: structured,
         }];
       })) as Record<string, Answer>;
     },
@@ -155,8 +189,9 @@ export default function TakeExamScreen() {
     queryKey: ["attempt_questions", examId],
     enabled: !!attempt.data,
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_attempt_questions", {
+      const { data, error } = await supabase.rpc("get_attempt_questions_v2", {
         p_exam_id: examId,
+        p_supported: [...CLIENT_SUPPORTED_INTERACTION_TYPES],
       });
       if (error) throw error;
       return data;
@@ -224,7 +259,7 @@ export default function TakeExamScreen() {
           const timer = setTimeout(() => abort.abort(), 20_000);
           try {
             const { data, error } = await supabase.rpc(
-              "submit_exam_answer_v3",
+              "submit_exam_answer_v4",
               {
                 p_request_id: receipt.id,
                 p_attempt_id: attemptId,
@@ -233,6 +268,8 @@ export default function TakeExamScreen() {
                 p_answer_key: receipt.answer.key,
                 p_answer_text: receipt.answer.text,
                 p_answer_document: receipt.answer.document,
+                // Eski türlerde undefined → null (v3 ile aynı davranış).
+                p_answer: receipt.answer.answer,
               },
             ).abortSignal(abort.signal);
             if (error) throw error;
@@ -370,7 +407,12 @@ export default function TakeExamScreen() {
   const draft = q ? drafts[q.id] : undefined;
   const saved = q ? savedAnswers.data?.[q.id] : undefined;
   const choices = (q?.choices as Choice[] | null) ?? [];
-  const unanswered = list.filter((item) => !isAnswered(answers[item.id]));
+  const states = list.map((item) => fillState(item, answers[item.id]));
+  const counts = fillCounts(states);
+  const unanswered = list.filter((_, i) => states[i] === "unanswered");
+  const firstOpen = states.findIndex((state) => state !== "complete");
+  const hasStructured = list.some((item) => item.kind === "structured");
+  const updateRequired = needsUpdate(questions.error) || needsUpdate(savedAnswers.error) || needsUpdate(writes.error);
   const result = finish.data ??
     (attempt.data?.status !== "in_progress" ? attempt.data : null);
   // D4-2: süre dolunca otomatik bitirme bu ekranda tetiklendiyse ya da sunucu satırı
@@ -405,7 +447,7 @@ export default function TakeExamScreen() {
     finish.mutate();
   }, [timeUp, saving, finish, result, attempt.data, localReady, localError]);
 
-  function editAnswer(answer: Answer) {
+  function editAnswer(answer: Answer, delay?: number) {
     if (!q || timeUp || result || !savedAnswers.isSuccess || !localReady) {
       return;
     }
@@ -418,13 +460,14 @@ export default function TakeExamScreen() {
         key: answer.key,
         text: answer.text,
         document: answer.document,
+        answer: answer.answer,
       }, revision);
       setLocalError(null);
     } catch (error) {
       setLocalError(error);
       return;
     }
-    writes.enqueue(q.id, answer, q.kind === "multiple_choice" ? 0 : 400);
+    writes.enqueue(q.id, answer, delay ?? (q.kind === "multiple_choice" ? 0 : 400));
   }
 
   function retryLocal() {
@@ -439,6 +482,7 @@ export default function TakeExamScreen() {
           key: value.key,
           text: value.text,
           document: value.document,
+          answer: value.answer,
         }, value.revision ?? savedAnswers.data?.[id]?.revision ?? 0);
         writes.enqueue(id, value);
       }
@@ -474,6 +518,7 @@ export default function TakeExamScreen() {
   }
   function goTo(nextIndex: number) {
     setConfirmFinish(false);
+    setWorkArea(null);
     setIndex(nextIndex);
   }
 
@@ -491,8 +536,9 @@ export default function TakeExamScreen() {
       }} />
     </> : <>
       <Text className="font-body text-base text-ink">{t("experience.finishSummary", { answered: list.length - unanswered.length, total: list.length })}</Text>
-      <Text className="font-body text-base text-ink">{t(unanswered.length ? "prova.unansweredConfirm" : "experience.finishHelp", { count: unanswered.length })}</Text>
-      {unanswered.length > 0 && <Button variant="secondary" title={t("prova.goToUnanswered")} disabled={finish.isPending || timeUp} onPress={() => goTo(list.findIndex(item => item.id === unanswered[0]?.id))} />}
+      <Text className="font-body text-base text-ink">{t(unanswered.length ? "prova.unansweredConfirm" : counts.partial ? "prova.qt.child.partialConfirm" : "experience.finishHelp", { count: unanswered.length || counts.partial })}</Text>
+      {unanswered.length > 0 && counts.partial > 0 ? <Text testID="qt-finish-partial" className="font-body text-base text-ink">{t("prova.qt.child.finishPartial", { count: counts.partial })}</Text> : null}
+      {firstOpen >= 0 && <Button variant="secondary" title={t(counts.partial && !unanswered.length ? "prova.qt.child.goToPartial" : "prova.goToUnanswered")} disabled={finish.isPending || timeUp} onPress={() => goTo(firstOpen)} />}
       <Button title={t("experience.submitAnswers")} disabled={saving || timeUp || !!localError || !savedAnswers.isSuccess} loading={finish.isPending} onPress={() => finish.mutate()} />
       <ErrorText error={finish.error} />
       <Button variant="ghost" title={t("experience.checkAgain")} disabled={finish.isPending} onPress={() => setConfirmFinish(false)} />
@@ -584,6 +630,12 @@ export default function TakeExamScreen() {
               {t("prova.openEndedNote")}
             </Text>
           )}
+          {/* QT: yapılandırılmış maddelerde çocuğa madde başı doğruluk gösterilmez. */}
+          {hasStructured && (
+            <Text testID="qt-result-note" className="font-body text-center text-base text-gray-600">
+              {t("prova.qt.child.savedNote")}
+            </Text>
+          )}
         </View>
         <ChildReviewFeedback attemptId={result.id} />
         {localNotice}
@@ -608,6 +660,14 @@ export default function TakeExamScreen() {
                     </Text>
                     {value.key ? <Text>{value.key}</Text> : null}
                     {value.text ? <Text>{value.text}</Text> : null}
+                    {value.answer
+                      ? (() => {
+                        const item = list.find((x) => x.id === id);
+                        return item
+                          ? <StructuredQuestion type={item.interaction_type} schemaVersion={item.schema_version} payload={item.payload} answer={value.answer} disabled />
+                          : null;
+                      })()
+                      : null}
                     {value.document
                       ? (
                         <NotebookPage
@@ -652,6 +712,53 @@ export default function TakeExamScreen() {
     } else goTo(nextIndex);
   }
 
+
+  const exitToList = () =>
+    router.replace(actingChild ? "/parent/child-mode/prova" : "/child/prova");
+  const editDisabled = timeUp || finish.isPending || !savedAnswers.isSuccess ||
+    !localReady || !!localError;
+
+  if (updateRequired) {
+    return (
+      <Screen tone="child" surface="desk" title={t("prova.title")}>
+        <UpdateRequired />
+        <Button size="child" title={t("prova.backToList")} onPress={exitToList} />
+      </Screen>
+    );
+  }
+
+  if (q?.kind === "structured" && workArea === q.id && savedAnswers.isSuccess) {
+    return (
+      <NotebookWorkspace
+        key={`work-${q.id}`}
+        title={examInfo.data?.title ?? t("prova.title")}
+        progress={`${index + 1} / ${list.length}`}
+        questionId={q.id}
+        stem={q.stem}
+        document={current?.document}
+        text=""
+        onChange={(document) => editAnswer({ answer: current?.answer, document })}
+        disabled={editDisabled}
+        exitLabel={deadline ? t("prova.backToList") : undefined}
+        onExit={exitToList}
+        saved={localReady && !localError && !timeUp && !writes.error && !dirty && !saving}
+        status={(deadline ? t("prova.timeLeft", { time: formatRemaining(deadline - now) }) + " · " : "") +
+          (localError ? t("notebook.localFailed") : timeUp ? t("provaV5.timeEnded") : writes.error ? t("notebook.localPending")
+            : dirty || saving || !localReady ? t("provaV5.savingAnswer") : t("notebook.saved"))}
+        alerts={<>{localNotice}<ErrorText error={writes.error} /></>}
+        footer={
+          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <SatinButton
+              title={t("prova.qt.child.num.backToAnswer")}
+              onPress={() => setWorkArea(null)}
+              icon={<ArrowLeft size={20} color="#fff" />}
+              style={{ minHeight: 48, borderRadius: 28, paddingVertical: 10, paddingHorizontal: 18 }}
+            />
+          </View>
+        }
+      />
+    );
+  }
 
   if (q?.kind === "open_ended" && savedAnswers.isSuccess) {
     return (
@@ -785,12 +892,38 @@ export default function TakeExamScreen() {
           </Text>
         )
         : null}
+      {list.length > 1
+        ? (
+          <QuestionNavigator
+            states={states}
+            current={index}
+            disabled={finish.isPending || timeUp}
+            onSelect={goTo}
+          />
+        )
+        : null}
       {q
         ? (
           <View className="gap-4 rounded-child bg-cream p-5">
             <ContextualQuestion questionId={q.id} stem={q.stem} />
             <QuestionMedia questionId={q.id} />
-            {q.kind === "multiple_choice"
+            {q.kind === "structured"
+              ? (
+                <StructuredQuestion
+                  key={q.id}
+                  type={q.interaction_type}
+                  schemaVersion={q.schema_version}
+                  payload={q.payload}
+                  answer={current?.answer}
+                  disabled={editDisabled}
+                  hasWork={notebookHasAnswer(current?.document)}
+                  onOpenWorkArea={() => setWorkArea(q.id)}
+                  onChange={(next, typed) =>
+                    // Yapılandırılmış soruda şık/metin alanı yoktur; işlem defteri (varsa) korunur.
+                    editAnswer({ answer: next, document: current?.document }, typed ? 400 : 0)}
+                />
+              )
+              : q.kind === "multiple_choice"
               ? (
                 <View
                   accessibilityRole="radiogroup"
