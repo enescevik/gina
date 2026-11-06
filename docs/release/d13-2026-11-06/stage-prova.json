@@ -1,0 +1,19 @@
+{
+ "stage": "prova",
+ "at": "2026-11-06T18:28:17.025Z",
+ "checks": [
+  {
+   "name": "purpose_field_on_synthetic_rows",
+   "ok": true,
+   "assesses": [
+    "result",
+    "process",
+    null
+   ]
+  },
+  {
+   "name": "attempt_finished_three_open_answers",
+   "ok": true
+  }
+ ]
+}

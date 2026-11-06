@@ -1,0 +1,39 @@
+{
+ "stage": "grade",
+ "at": "2026-11-06T18:28:48.058Z",
+ "checks": [
+  {
+   "name": "grade_ok",
+   "ok": true,
+   "status": 200,
+   "suggested": 3
+  },
+  {
+   "name": "prompt_version_v7",
+   "ok": true,
+   "prompt_version": "prova-grade/v7-purpose-aware"
+  },
+  {
+   "name": "d13_1_result_only_equivalent_answer_full_marks",
+   "ok": true,
+   "ai_score": 95
+  },
+  {
+   "name": "d13_2_process_question_criteria_based_partial",
+   "ok": true,
+   "ai_score": 60,
+   "expected": "≈60 (yarısı ölçütü), 2/4 ölçütü eksik"
+  },
+  {
+   "name": "d13_2_process_scored_below_result",
+   "ok": true,
+   "result": 95,
+   "process": 60
+  },
+  {
+   "name": "grade_replay_no_second_job",
+   "ok": true,
+   "status": 200
+  }
+ ]
+}

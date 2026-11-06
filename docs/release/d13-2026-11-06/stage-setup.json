@@ -1,0 +1,11 @@
+{
+ "stage": "setup",
+ "at": "2026-11-06T18:28:09.522Z",
+ "checks": [
+  {
+   "name": "synthetic_account_family_child_device",
+   "ok": true,
+   "email_domain": "example.invalid"
+  }
+ ]
+}

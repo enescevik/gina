@@ -1,0 +1,14 @@
+{
+ "result": {
+  "ai_score": 95,
+  "feedback": "Bu madde yalnız sonucu ölçtüğü için 'sonuc' kuralı uygulandı. Öğrencinin 'yarısı, 0,5' cevabı beklenen cevaba ve alternatif cevaplara eşdeğer olduğundan tam doğru sayıldı. 2/4 ara gösterimi yazılmamış olsa da sonuç doğrudur."
+ },
+ "process": {
+  "ai_score": 60,
+  "feedback": "Soru işlemi göstermeyi ve önce kesir yazıp sonra sadeleştirmeyi istediği için 'surec' kuralı uygulandı. Öğrenci 'yarısı' diyerek sadeleştirilmiş sonuca ulaştı (60 puan). Yenen kısmı 2/4 olarak yazmadığı ve işlem göstermediği için ilk ölçüt (40 puan) karşılanmadı."
+ },
+ "inferred": {
+  "ai_score": 60,
+  "feedback": "Soru 'kesir olarak yaz ve sadeleştir' dediği için gösterim istenmiş sayıldı ve 'surec' kuralı seçildi. 'Yarısı' ifadesi ikinci ölçütü karşılıyor (60 puan). Cevapta 2/4 kesri yer almadığı için ilk ölçüt (40 puan) karşılanmadı; 0,5 ondalık gösterimdir, kesir olarak yazılmamıştır."
+ }
+}

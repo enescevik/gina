@@ -1,0 +1,11 @@
+{
+ "stage": "override",
+ "at": "2026-11-06T18:28:12.712Z",
+ "checks": [
+  {
+   "name": "family_now_pro_via_override",
+   "ok": true,
+   "plan": "pro"
+  }
+ ]
+}

@@ -1,0 +1,2 @@
+{"at":"2026-11-06T18:28:47.293Z","step":"prova-grade D13 (same answer; result / process / inferred)","paid":true,"endpoint":"prova-grade","response":{"status":200,"suggested":3,"prompt_version":"prova-grade/v7-purpose-aware","ms":27652},"paid_index":1}
+{"at":"2026-11-06T18:28:47.988Z","step":"prova-grade D13 replay","paid":false,"endpoint":"prova-grade","response":{"status":200}}
