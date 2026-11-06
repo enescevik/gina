@@ -1,0 +1,13 @@
+{
+ "stage": "override",
+ "target": "production",
+ "at": "2026-11-06T18:29:52.267Z",
+ "checks": [
+  {
+   "name": "family_pro_via_reasoned_override",
+   "ok": true,
+   "plan": "pro",
+   "remaining": 300
+  }
+ ]
+}

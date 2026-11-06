@@ -1,0 +1,57 @@
+{
+ "stage": "preflight",
+ "target": "production",
+ "at": "2026-11-06T18:29:45.646Z",
+ "checks": [
+  {
+   "name": "pilot_scope_migration_deployed",
+   "ok": true
+  },
+  {
+   "name": "global_catalog_switch_off",
+   "ok": true,
+   "catalog_enabled": false
+  },
+  {
+   "name": "pro_plan_has_scenarios_and_ai",
+   "ok": true,
+   "code": "pro",
+   "prova_scenarios": true,
+   "prova_ai_generate_monthly": 300
+  },
+  {
+   "name": "provider_breakers_closed",
+   "ok": true,
+   "providers": [
+    {
+     "p": "openai_compatible",
+     "f": 0,
+     "open": false
+    },
+    {
+     "p": "gemini",
+     "f": 0,
+     "open": false
+    },
+    {
+     "p": "anthropic",
+     "f": 0,
+     "open": false
+    }
+   ]
+  },
+  {
+   "name": "official_manifest_entry_present",
+   "ok": true,
+   "file": "turkce2.xlsx",
+   "sha256": "6405d02aaaad",
+   "bytes": 31410
+  },
+  {
+   "name": "paid_calls_so_far_within_cap",
+   "ok": true,
+   "paid": 0,
+   "cap": 3
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+{
+ "stage": "setup",
+ "target": "production",
+ "at": "2026-11-06T18:29:49.564Z",
+ "checks": [
+  {
+   "name": "synthetic_account_family_child_device",
+   "ok": true,
+   "email_domain": "example.invalid",
+   "grade": 5
+  }
+ ]
+}
