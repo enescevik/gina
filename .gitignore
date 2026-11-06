@@ -56,3 +56,7 @@ apps/mobile/GoogleService-Info.plist
 .codex-setup/
 apps/mobile/credentials.json
 apps/mobile/credentials/
+
+# local secrets (never commit)
+docs/secrets/
+__pycache__/
