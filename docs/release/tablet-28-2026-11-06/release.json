@@ -1,0 +1,9 @@
+{
+  "version": "0.1.0",
+  "build": "28",
+  "sourceCommit": "c16b8b12ab1323c8b8f7dee42414ebccf58b88a8",
+  "origin": "local-eas-build",
+  "installUrl": "itms-services://?action=download-manifest&url=https%3A%2F%2Fgina-aile-enescevik--tablet.expo.app%2Fmanifest-28.plist",
+  "sha256": "116a7fad02a338fe74343e15cfac48889d88693d066038401636e032760ab82d",
+  "bytes": 61455666
+}

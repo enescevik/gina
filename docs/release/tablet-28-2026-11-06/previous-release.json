@@ -1,0 +1,10 @@
+{
+  "version": "0.1.0",
+  "build": "27",
+  "sourceCommit": "7795445ad7372e9d406659d0e83853edf12f9539",
+  "sourceNote": "Store ve tablet 27 paketleri ayn\u0131 uygulama kodundan; aralar\u0131ndaki commit fark\u0131 yaln\u0131z docs/",
+  "origin": "local-eas-build",
+  "installUrl": "itms-services://?action=download-manifest&url=https%3A%2F%2Fgina-aile-enescevik--tablet.expo.app%2Fmanifest-27.plist",
+  "sha256": "12cb54eedfe6e7b3a1d060a10078819ae8a0012367274946ea310fd381d0eeb0",
+  "bytes": 61077472
+}
