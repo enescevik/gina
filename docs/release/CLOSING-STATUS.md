@@ -1,6 +1,6 @@
 # GINA — tek güncel kapanış tablosu
 
-6 Kasım 2026, ~20:10 (UTC), H00 uzlaştırması. Bu tablo `continuation-2026-11-06/PROGRESS.md`, `overnight-2026-11-06/PROGRESS.md` ve C/D raporlarındaki durum sütunlarının **yerini alır**. Eski tablolardaki "KOD HAZIR / yayımlanmadı" ifadeleri tarihseldir. Son kapsam kararı: Kütüphane içerik üretimi backoffice üzerinden kullanıcı tarafından, 3B dünya kullanıcı + Codex tarafından ayrı yürütülecek. İkisi de Claude devrinin dışındadır. Güncel kalan işlerin öncelik ve kabul ölçütleri: [H00–H08](../CLAUDE-REMAINING-WORK.md).
+7 Kasım 2026, ~01:15 (TR), H08 sonrası uzlaştırma. Bu tablo `continuation-2026-11-06/PROGRESS.md`, `overnight-2026-11-06/PROGRESS.md` ve C/D raporlarındaki durum sütunlarının **yerini alır**. Eski tablolardaki "KOD HAZIR / yayımlanmadı" ifadeleri tarihseldir. Son kapsam kararı: Kütüphane içerik üretimi backoffice üzerinden kullanıcı tarafından, 3B dünya kullanıcı + Codex tarafından ayrı yürütülecek. İkisi de Claude devrinin dışındadır. Güncel kalan işlerin öncelik ve kabul ölçütleri: [H00–H08](../CLAUDE-REMAINING-WORK.md).
 
 ## Son yayınlar
 
@@ -16,23 +16,39 @@
 - **Canlı sağlık:** `health-check.mjs --strict` temiz, ACL 0, RLS kapalı tablo 0.
 - **Alan adı / e-posta** ([STATUS](domain-email-2026-11-06/STATUS.md) esas): `ginafamily.com`, `www`, `admin.ginafamily.com` kurulu; Auth e-postaları `noreply@ginafamily.com` (Brevo SMTP), TR reset gerçek teslimatla doğrulandı; `destek@ginafamily.com` yönlendirmesi Active ve Cloudflare teslim kaydı var; Gmail "GINA Destek" göndericisi kurulu ve INBOX teslimatı doğrulandı. Açık: EN/yeni hesap teslimatı, farklı sağlayıcıya dış teslimat, ürün bildirim kanalı (H04).
 - **iOS dağıtım adımları ayrı:** 30 için gönderim `b7ccb6a4` yapıldı (KANITLI); Apple işleme ve test grubu erişimi bu oturumdan doğrulanamadı (App Store Connect erişimi yok; sorumlu Enes); cihaza kurulum yok (C15). Enes 27'nin TestFlight'a geldiğini 6 Kasım'da teyit etti.
-- **Main:** bu yayınların ötesinde yalnız belge değişiklikleri var (D18/D19 hukuk metinleri, alan adı uzlaştırması, raporlar). Uygulamaya giden kod yok.
+- **Yayındaki uygulama kaynağı ile main farkı:** web, yönetim, iOS/tablet 32 `fe08cb60`'tan derlendi. Main'e sonra giren uygulama kodu yalnız Prova QT Faz 0'dır: `packages/core` (`question-types/*`, `answer-journal.ts`, `answer-receipts.ts`, `index.ts`, `database.types.ts`) ve `apps/mobile/src/app/parent/prova/shared-source.tsx` (structured üyeyi reddeden 2 satır). Bunlar **hiçbir istemci derlemesinde yok**; yalnız Faz 0 migration'ları üretimde. Diğer farklar test (066/069/116 vb.) ve belgedir.
 
 ## Güncel kalan işler (H00–H08)
 
 | Kart | Durum | Kanıt | Sorumlu |
 |---|---|---|---|
 | H00 kayıt uzlaştırması | KABUL TAMAM | bu dosya, C14c planı (YAYINDA), ekran matrisi D11-K1/K2 → D12, D19 raporu main'de | Claude |
-| H01 Apple hesap silme / belirteç iptali | KOD HAZIR (main) | Apple girişi üretimde açık (app.json, c06 config diff). Şifreli belirteç saklama, kalıcı iptal işi + worker, Apple ile yeniden doğrulama; pgTAP 131 64/64, Deno 46/46 ([h01](h01-2026-11-06/README.md)). Apple sırları yokken silme engellenmez, iş `token_unavailable` (elle) kaydedilir | Claude; Apple sırları + gerçek cihaz kabulü Enes |
-| H02 MEB kaynağını panelden indirme/çıkarma | KOD HAZIR (main) | Boş katalogdan ilk indirme, sürüm bazlı sunucu çıkarımı (Deno, Python ile 16/16 dosyada bayt bayt aynı), kilit, yeniden deneme; izole zincir 31/31 + UI 12/12, pgTAP 132 ([h02](h02-2026-11-06/README.md)). Yalnız taslak; genel katalog kapalı | Claude; gerçek yönetici oturumuyla tek ders kabulü Enes |
-| H03 insan incelemesi paketi | KOD HAZIR (main) / AÇIK (içerik) | Taşınabilir paket (tam kök, ortak kaynak, gömülü görsel, rubrik, kaynak izi), pilot paketi temizlikten önce dışa aktarıyor; izole 16/16 ve pilot 76/76 ([h03](h03-2026-11-06/README.md)). D15 soru kökleri kurtarılamadı (temizlikte silindi); tam paket için yeni pilot (1 ücretli çağrı) Enes onayı ister. İçerik onayı yapılmadı | Claude; yeni pilot ve içerik onayı Enes |
-| H04 hesap ve ürün e-postası kabulü | KOD HAZIR (main) / gerçek teslimat AÇIK | Şablon denetimi (TR/EN), süresi dolmuş/kullanılmış bağlantı ekranı, SMTP çift gönderim ve makbuz düzeltmeleri, hesap dili, kanal nabzı; pgTAP 134, Deno, core 470 ([h04](h04-2026-11-06/README.md)). Ürün kanalı sağlayıcısı kapalı kalır | Claude; gerçek teslimat, ürün SMTP sırları ve kanal açma Enes |
-| H05 satın alma AI notu, fotoğraf saklama metni | KOD HAZIR (main) | `subscription.aiConsentNote` TR/EN, Playwright 4/4 (390/768); dosya yaşam döngüsü koddan doğrulandı, üretimde `source-cleanup` cron (43 * * * *) etkin; hukuk taslakları TR/EN güncel ([h05](h05-2026-11-06/README.md)). Yayın H08 | Claude; özel hukuk kopyaları + avukat Enes |
-| H06 görsel/etkileşim kabul boşlukları | KOD HAZIR (main) / cihaz AÇIK | groups ve question-media pencereleri ölçüldü (azaltılmış 0/6, normal 5–6/6); değişen ekranlar 4 ölçüde 16/16; H06-1, H06-2 düzeltildi; C15 cihaz listesi 18 satır ([h06](h06-2026-11-06/README.md), [C15](h06-2026-11-06/C15-DEVICE-CHECKLIST.md)) | Claude; fiziksel cihaz Enes |
-| H07 AI ön inceleme işletim hazırlığı | KOD HAZIR (main) — teknik hazırlık tamam, aktivasyon bekliyor | Günlük kota + çağrı defteri, takılı kayıt kurtarma, sağlık RPC'si, kapı kapalıyken no-op cron; pgTAP 133 65/65, tam SQL 5.982/0, izole 19/19 ([h07](h07-2026-11-06/README.md)). `content_prereview.enabled` kapalı kalır | Claude; aktivasyon (sır, --no-verify-jwt, pilot) Enes kararı |
+| H01 Apple hesap silme / belirteç iptali | YAYINDA (H08) / gerçek Apple kabulü AÇIK | Apple girişi üretimde açık (app.json, c06 config diff). Şifreli belirteç saklama, kalıcı iptal işi + worker, Apple ile yeniden doğrulama; pgTAP 131 64/64, Deno 46/46 ([h01](h01-2026-11-06/README.md)). Apple sırları yokken silme engellenmez, iş `token_unavailable` (elle) kaydedilir | Claude; Apple sırları + gerçek cihaz kabulü Enes |
+| H02 MEB kaynağını panelden indirme/çıkarma | YAYINDA (H08) / gerçek yönetici kabulü AÇIK | Boş katalogdan ilk indirme, sürüm bazlı sunucu çıkarımı (Deno, Python ile 16/16 dosyada bayt bayt aynı), kilit, yeniden deneme; izole zincir 31/31 + UI 12/12, pgTAP 132 ([h02](h02-2026-11-06/README.md)). Yalnız taslak; genel katalog kapalı | Claude; gerçek yönetici oturumuyla tek ders kabulü Enes |
+| H03 insan incelemesi paketi | KOD HAZIR (betik; uygulamaya gitmez) / içerik paketi ve onayı AÇIK | Taşınabilir paket (tam kök, ortak kaynak, gömülü görsel, rubrik, kaynak izi), pilot paketi temizlikten önce dışa aktarıyor; izole 16/16 ve pilot 76/76 ([h03](h03-2026-11-06/README.md)). D15 soru kökleri kurtarılamadı (temizlikte silindi); tam paket için yeni pilot (1 ücretli çağrı) Enes onayı ister. İçerik onayı yapılmadı | Claude; yeni pilot ve içerik onayı Enes |
+| H04 hesap ve ürün e-postası kabulü | YAYINDA (H08) / gerçek teslimat AÇIK, ürün kanalı KAPALI | Şablon denetimi (TR/EN), süresi dolmuş/kullanılmış bağlantı ekranı, SMTP çift gönderim ve makbuz düzeltmeleri, hesap dili, kanal nabzı; pgTAP 134, Deno, core 470 ([h04](h04-2026-11-06/README.md)). Ürün kanalı sağlayıcısı kapalı kalır | Claude; gerçek teslimat, ürün SMTP sırları ve kanal açma Enes |
+| H05 satın alma AI notu, fotoğraf saklama metni | YAYINDA (H08, web + 32) / cihaz AÇIK | `subscription.aiConsentNote` TR/EN, Playwright 4/4 (390/768); dosya yaşam döngüsü koddan doğrulandı, üretimde `source-cleanup` cron (43 * * * *) etkin; hukuk taslakları TR/EN güncel ([h05](h05-2026-11-06/README.md)). Yayın H08 | Claude; özel hukuk kopyaları + avukat Enes |
+| H06 görsel/etkileşim kabul boşlukları | YAYINDA (H08, web + 32) / cihaz AÇIK | groups ve question-media pencereleri ölçüldü (azaltılmış 0/6, normal 5–6/6); değişen ekranlar 4 ölçüde 16/16; H06-1, H06-2 düzeltildi; C15 cihaz listesi 18 satır ([h06](h06-2026-11-06/README.md), [C15](h06-2026-11-06/C15-DEVICE-CHECKLIST.md)) | Claude; fiziksel cihaz Enes |
+| H07 AI ön inceleme işletim hazırlığı | YAYINDA; kapı 21:04Z'de Codex ile AÇILDI (`content_prereview.enabled=true`, `verify_jwt=false`, günlük sınır 25). İlk gerçek pilot sonucu Codex kaydında (`prereview-activation-2026-11-07`), bu thread doğrulamadı | Günlük kota + çağrı defteri, takılı kayıt kurtarma, sağlık RPC'si, kapı kapalıyken no-op cron; pgTAP 133 65/65, tam SQL 5.982/0, izole 19/19 ([h07](h07-2026-11-06/README.md)). `content_prereview.enabled` kapalı kalır | Claude; aktivasyon (sır, --no-verify-jwt, pilot) Enes kararı |
 | H08 regresyon, düzeltme yayını, rapor | YAYINDA | [h08](h08-2026-11-06/README.md): regresyon temiz (şablon + boş DB, iki saat dilimi), migration → Edge → web/yönetim → iOS/tablet 32; sağlık temiz | Claude; TestFlight işleme/tester erişimi ve cihaz Enes |
 
 Kütüphane içerik üretimi/onayı ve 3B dünya Claude'un açık işi değildir (aşağıda yalnız bilgi).
+
+## Açık kabul kalemleri (kapatılmadı)
+
+| Kalem | Neden açık | Sorumlu |
+|---|---|---|
+| iOS 32 Apple işleme / test grubu erişimi | yalnız gönderim kaydı var | Enes |
+| Fiziksel cihaz (C15, 18 madde) | cihaz sonucu yok | Enes |
+| Apple belirteç iptali | üretim sırları yok, gerçek Apple hesabıyla deneme yok | Enes |
+| MEB panel akışı (H02) | gerçek yönetici oturumuyla uçtan uca deneme yok | Enes |
+| Ürün bildirim e-postası (H04) | kanal kapalı, ürün SMTP sırları ve gerçek teslimat yok | Enes |
+| Auth e-postası EN / yeni hesap / farklı sağlayıcı | gerçek teslimat kanıtı yok | Enes |
+| H03 tam inceleme paketi | D15 içeriği kurtarılamadı; yeni pilot onayı | Enes |
+
+## Prova yeni soru türleri (ayrı thread)
+
+Faz 0 = yalnız veri sözleşmesi, puanlama ve RPC altyapısı; **kullanıcı özelliği olarak tamamlanmış sayılmaz.** Üretimde yalnız migration `20261107000000`–`000400`. Çocuk ekranı, veli incelemesi, AI üretim şemaları, gönderim/uyumluluk ve PDF ([QT PROGRESS](qt-2026-11-07/PROGRESS.md)) Prova thread'inin dalında; main'de ve yayında değil.
 
 ## 1. Kodda tamam ve canlıda, kabul kanıtı tam (tarihsel, sorumlu Claude)
 
@@ -97,7 +113,7 @@ Kütüphane içerik üretimi/onayı ve 3B dünya Claude'un açık işi değildir
 | İş | Neden / ne zaman |
 |---|---|
 | C13 barındırılan ortamda tam geri yükleme / PITR tatbikatı | ertelenmiş kabul işi; ayrı ortam/maliyet/erişim kararı (Enes); üretimin üzerine restore yok |
-| C09 AI ön inceleme kapısı | teknik hazırlık H07; aktivasyon ayrı karar (Enes) |
+| C09 AI ön inceleme kapısı | Açık (Codex, 21:04Z); kalite kalibrasyonu ve yanlış onay ölçümü Codex/Enes |
 | Apple ile Giriş belirteç iptali | H01'de yapılıyor |
 | Satın alma ekranında AI onayı cümlesi | H05'te yapılıyor |
 | Veli rubriğinde "sonuç / süreç" seçici | migration gerekir; şimdilik sorudan çıkarım |
