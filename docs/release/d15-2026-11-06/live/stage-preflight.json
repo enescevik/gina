@@ -1,7 +1,7 @@
 {
  "stage": "preflight",
  "target": "production",
- "at": "2026-11-06T18:46:33.316Z",
+ "at": "2026-11-06T18:53:23.448Z",
  "checks": [
   {
    "name": "pilot_scope_migration_deployed",

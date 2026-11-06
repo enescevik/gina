@@ -10,7 +10,7 @@ Durumlar:
 - **DIŞ ENGEL**: başka bir hesap ya da kişiye bağlı.
 - **ERTELENDİ**: bilerek sonraya bırakıldı; kabul sayılmaz.
 
-Üretim seviyesi: ledger 146 (son `20261106390000`); web `1c0cf214`; yönetim `30000ffb`; tablet 29 `b9q067lwk9`; iOS 29 gönderildi (`d9628cbd`).
+Üretim seviyesi (C14c, 6 Kasım ~19:00Z): ledger 151 (son `20261106450000`); web `7f515ca0`; yönetim `d4ebcb30`; tablet 30 `c4aic5og2w`; iOS 30 gönderildi (`b7ccb6a4`).
 
 | İş | Durum | Kanıt / kalan |
 |---|---|---|
@@ -30,6 +30,7 @@ Durumlar:
 | C13 güvenlik ve performans | TAMAM / ERTELENDİ | AUTH-1 kapandı. **Barındırılan ortamda tam geri yükleme / PITR tatbikatı ertelenmiş kabul işi; tamamlanmış değil.** |
 | C14 ara yayın 1 | TAMAM | c14-2026-11-06/PLAN.md |
 | C14b ara yayın 2 | TAMAM | c14b-2026-11-06/PLAN.md |
+| C14c ara yayın 3 | TAMAM | c14c-2026-11-06/PLAN.md yürütme kaydı |
 | C15 cihaz kabulü | DIŞ ENGEL (Enes) | 29/30 kurulumu; çocuk cihazı, kalem, yön, VoiceOver, yazı boyutu, bildirim, OAuth |
 | D1 AI ortak kaynak grupları | TAMAM | Canlıda gerçek grup kuruldu (C14b) |
 | D2 PIN'siz çocuk modu, eşleme onayı | CANLIDA, TEST BEKLİYOR | C15 |
@@ -39,14 +40,14 @@ Durumlar:
 | D6 puanlama düzeltmesi (B1) | TAMAM | C14b'de canlı 200 + `accept_ai_grade` |
 | D7 içerik operatörü taslak kabulü | TAMAM | C14b |
 | D9 ortak metin puanlama, rubrik 100, kişi adı | TAMAM | C14b canlı: rubrik 100 |
-| Puanlama alternatif cevap kuralı | MAIN'DE, YAYIN BEKLİYOR (D13) | `prova-grade/v7-purpose-aware`: yalnız sonuç / süreç / sorudan çıkar; gerçek model kontrolü `d13/run-d13.mjs` yayında. Veli rubriğinde amaç seçici yok (migration gerekir) |
-| D10 kişi adı uyarısı veliye | MAIN'DE, YAYIN BEKLİYOR | migration `400000`, pgTAP 126 |
-| D11 yönetim P2 düzeltmeleri | MAIN'DE, YAYIN BEKLİYOR | Playwright 7/7 |
-| D12 aile süzgeci, denetimde yönetici adı | MAIN'DE, YAYIN BEKLİYOR | migration `410000`, pgTAP 127; önce migration sonra yönetim yayını |
-| D14 AI sorusunu düzenleme | MAIN'DE, YAYIN BEKLİYOR | migration `430000`, pgTAP 128; tek soru ve ortak kaynak grubu düzenlenir (özgün satır korunur, yeni grup sürümü); Playwright 7/7 |
-| D15 MEB gerçek kabul pilotu | MAIN'DE, CANLI KOŞU BEKLİYOR | migration `440000` (yalnız sentetik aileye süreli pilot kapsamı), pgTAP 129; yerelde resmî ÖDSGM indirmesiyle zincir 71/71. Canlı için Enes: tek senaryonun editoryal incelemesi + yönetici kimliği |
-| D16 teknik/hukuk metin uyumu | MAIN'DE (metin) | İngilizce gizlilik eşitlendi, 8 karakterli eşleme, şirket kurma ön şart değil. Hukuk onayı dışarıda (X03). İngilizce Kullanım Koşulları yok |
-| D17 eşleme saklama işleri, eski eşleme testleri | MAIN'DE, YAYIN BEKLİYOR | migration `450000`, pgTAP 130; A1 14/14, U02 15/15; pg_cron yayında doğrulanacak |
+| Puanlama (amaca göre) | TAMAM | C14c canlı: yalnız sonuç 95, süreç 60 (`v7-purpose-aware`). Veli rubriğinde amaç seçici yok (sorudan çıkarım) |
+| D10 kişi adı uyarısı veliye | CANLIDA, TEST BEKLİYOR | C14c; cihaz C15 |
+| D11 yönetim P2 düzeltmeleri | TAMAM | C14c |
+| D12 aile süzgeci, denetimde yönetici adı | TAMAM | C14c (migration önce, yönetim sonra) |
+| D14 AI sorusunu düzenleme | CANLIDA, TEST BEKLİYOR | C14c; cihaz C15 |
+| D15 MEB gerçek kabul pilotu | YAPILIYOR (canlı) | Kaynak indirildi, 46 aday; yayın Enes kararı bekliyor, ardından üretim/atama/geri çekme |
+| D16 teknik/hukuk metin uyumu | TAMAM (metin) / DIŞ ENGEL (hukuk onayı X03) | İngilizce Kullanım Koşulları D18'de yazılıyor |
+| D17 eşleme saklama işleri | TAMAM | C14c: iki pg_cron işi etkin, ilk çalışmada kaldırılacak cihaz 0 |
 | D11 kararları K3/K4/K5 | ERTELENDİ | DECISIONS.md |
 | X01 alan adı / SMTP | DIŞ ENGEL | Canlıya alırken |
 | X02 Firebase / Play / SMS | DIŞ ENGEL | Android iç test |

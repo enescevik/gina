@@ -54,3 +54,21 @@ Zorunlu güncelleme yok. **Sıra kuralı:** yönetim, migration'dan sonra yayım
 
 - **Senin onayın**: 5 migration, 3 Edge, web/yönetim, iOS/tablet 30, ≤2 sentetik gerçek AI çağrısı.
 - MEB pilotu için ayrıca: "MEB pilotu da" + editoryal inceleme için 10 dakikalık zaman.
+
+## Yürütme kaydı (6 Kasım 2026, Enes onayı 18:23Z: "onay + MEB pilotu da")
+
+| Adım | Sonuç |
+|---|---|
+| Anlık görüntü | 197 tablo, 682 satır (`.codex-setup/c14c/`, gitignored) |
+| Ön kontrol | bekleyen 5, sıra dışı 0, ACL 0, RLS kapalı 0 |
+| Migration | 5/5; ledger 151, son `20261106450000`; sonrası ACL 0, RLS kapalı 0 |
+| pg_cron | `prune-unused-devices` (03:25 UTC) ve `prune-pairing-records` (03:35 UTC) etkin; bugün kaldırılacak cihaz 0 / 2 |
+| Edge | `prova-generate`, `prova-grade`, `prova-review` dağıtıldı |
+| Web | https://7f515ca0.gina-web.pages.dev, canlı hash eşleşti |
+| Yönetim | https://d4ebcb30.gina-backoffice.pages.dev, Access 12/12 (migration sonrası yayımlandı) |
+| Sağlık | `health-check.mjs --strict` ok |
+| Canlı puanlama ([d13](../d13-2026-11-06/)) | 1 ücretli çağrı; `prova-grade/v7-purpose-aware`; yalnız sonuç 95, süreç 60 (ilkinden düşük), tekrar ikinci iş açmadı; sentetik hesap silindi, aile satırları 0 |
+| iOS 30 | yerel EAS store build, SHA-256 `7ddc64f9713c…`, TestFlight gönderimi `b7ccb6a4` |
+| Tablet 30 | dağıtım `c4aic5og2w` → `tablet` alias; ilk alias doğrulaması CDN gecikmesiyle düştü, `verify --target tablet` sonra temiz ([kayıt](../tablet-30-2026-11-06/release.json)) |
+
+MEB pilotu: ön kontrol, sentetik aile ve Pro izni (Claude); kaynak indirme, 46 aday çıkarma ve geçici yönetici silme (Codex, operatör olarak). Yayın, üretim, atama ve geri çekme Enes'in "yayımla" kararını bekliyor. Kanıt: [d15 live](../d15-2026-11-06/live/).
