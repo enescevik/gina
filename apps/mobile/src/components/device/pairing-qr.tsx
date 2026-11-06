@@ -21,7 +21,7 @@ export function PairingQr({ value, size = 220, label, dimmed = false }: { value:
       testID="pairing-qr"
       style={{ width: size, height: size, borderRadius: 22, overflow: "hidden", backgroundColor: "#FFFFFF", opacity: dimmed ? 0.15 : 1 }}
     >
-      <Svg accessible={Platform.OS === "web" ? undefined : false} aria-hidden width={size} height={size} viewBox={`0 0 ${count} ${count}`} shapeRendering="crispEdges">
+      <Svg accessible={Platform.OS === "web" ? undefined : false} aria-hidden width={size} height={size} viewBox={`0 0 ${count} ${count}`}>
         <Rect width={count} height={count} fill="#FFFFFF" />
         <Path d={path} fill="#201951" />
       </Svg>
