@@ -41,6 +41,7 @@ import { SubjectIcon } from "@/components/subject-icon";
 import { IconButton, p, SatinButton, u } from "./ui";
 import type { PlannerChild } from "./timetable-editor";
 import { LearningPlanImport } from "./learning-plan-import";
+import { PlanSourcesMore, usePlanSources } from "./plan-sources";
 type Props = {
   child: PlannerChild;
   date: string;
@@ -419,24 +420,10 @@ function PlanEditor(
   const [pending, setPending] = useState<LearningPlanCommand | null>(null),
     [storageError, setStorageError] = useState(false),
     [chooseSource, setChooseSource] = useState(false);
-  const docs = useQuery({
-    queryKey: [
-      "learning_plan_sources",
-      session?.user.id,
-      claims?.family_id,
-      child.id,
-    ],
-    enabled: chooseSource && !childMode,
-    queryFn: async () => {
-      const { data, error } = await supabase.from("learning_sources").select(
-        "id,name,mime",
-      ).eq("kind", "document").eq("status", "ready").order("created_at", {
-        ascending: false,
-      }).limit(30);
-      if (error) throw error;
-      return data;
-    },
-  });
+  const docs = usePlanSources(
+    [session?.user.id, claims?.family_id, child.id],
+    chooseSource && !childMode,
+  );
   const dirty =
     JSON.stringify(content) !== JSON.stringify(source?.content ?? null) ||
     !!label.trim();
@@ -506,7 +493,7 @@ function PlanEditor(
   }
   const linkedSource = source?.source?.id === content.source_id
     ? source.source
-    : docs.data?.find((doc) => doc.id === content.source_id);
+    : docs.list?.find((doc) => doc.id === content.source_id);
   const summary = (
     <View style={{ gap: 14 }}>
       <View style={[u.row, { gap: 12 }]}>
@@ -751,16 +738,21 @@ function PlanEditor(
                                     onPress={() => void docs.refetch()}
                                   />
                                 )
-                                : docs.data?.length
-                                ? docs.data.map((doc) => (
-                                  <ChoiceCard
-                                    key={doc.id}
-                                    title={doc.name}
-                                    selected={content.source_id === doc.id}
-                                    onPress={() =>
-                                      change({ source_id: doc.id })}
-                                  />
-                                ))
+                                : docs.list?.length
+                                ? (
+                                  <>
+                                    {docs.list.map((doc) => (
+                                      <ChoiceCard
+                                        key={doc.id}
+                                        title={doc.name}
+                                        selected={content.source_id === doc.id}
+                                        onPress={() =>
+                                          change({ source_id: doc.id })}
+                                      />
+                                    ))}
+                                    <PlanSourcesMore sources={docs} />
+                                  </>
+                                )
                                 : (
                                   <Text style={u.copy}>
                                     {t("learningPlan.noSources")}

@@ -28,6 +28,8 @@ export function readTimetableReceipt(
     request: z.uuid(),
     child_id: z.uuid(),
     revision: z.number().int().positive(),
+    // 20261106090000_dated_plan_history adds the applied date to the receipt.
+    effective_from: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
   }).strict().parse(value);
   if (
     result.request !== command.p_request_id ||

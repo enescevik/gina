@@ -102,9 +102,10 @@ function Consent(
   );
 }
 export function TimetableImportEntry(
-  { childId, initial, disabled, onSaved, compact = false }: {
+  { childId, grade, initial, disabled, onSaved, compact = false }: {
     compact?: boolean;
     childId: string;
+    grade?: number | null;
     initial: Timetable;
     disabled: boolean;
     onSaved: (next: Timetable) => void;
@@ -153,6 +154,7 @@ export function TimetableImportEntry(
         ? (
           <ImportModal
             childId={childId}
+            grade={grade}
             initial={initial}
             onClose={() => setOpen(false)}
             onSaved={(next) => {
@@ -166,8 +168,9 @@ export function TimetableImportEntry(
   );
 }
 function ImportModal(
-  { childId, initial, onClose, onSaved }: {
+  { childId, grade, initial, onClose, onSaved }: {
     childId: string;
+    grade?: number | null;
     initial: Timetable;
     onClose: () => void;
     onSaved: (next: Timetable) => void;
@@ -560,6 +563,7 @@ function ImportModal(
                         })}
                       rows={rows}
                       settings={settings}
+                      subjects={{ childId, grade }}
                       onSettingsChange={(s) => {
                         setSettings(s);
                         setReviewed(false);
