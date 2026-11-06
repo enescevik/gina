@@ -17,13 +17,13 @@ Durum ölçeği: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAM
 | QT13 sayısal kısa cevap | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın ve gerçek cihaz kabulü açık |
 | QT20 sıralama | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın ve gerçek cihaz kabulü açık |
 | QT21 sınıflandırma | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın ve gerçek cihaz kabulü açık |
-| QT30 metin işaretleme | YAPILIYOR · sunucu+core KOD HAZIR | `enabled=false`; istemci çizicisi yok |
-| QT31 hata bulma–düzeltme | YAPILIYOR · sunucu+core KOD HAZIR | Anahtarda olmayan anlamlı düzeltme → veli |
-| QT32 çoklu doğru seçenek | YAPILIYOR · sunucu+core KOD HAZIR | `max(0, TP/P − FP/N)`; hepsi-doğru yapı ret |
-| QT33 iki aşamalı | YAPILIYOR · sunucu+core KOD HAZIR | Metin gerekçe → veli; seçenekli gerekçe otomatik |
+| QT30 metin işaretleme | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107040000 + istemci faz anahtarı; gerçek cihaz kabulü açık |
+| QT31 hata bulma–düzeltme | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107040000 + istemci faz anahtarı; gerçek cihaz kabulü açık |
+| QT32 çoklu doğru seçenek | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107040000 + istemci faz anahtarı; gerçek cihaz kabulü açık |
+| QT33 iki aşamalı | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107040000 + istemci faz anahtarı; gerçek cihaz kabulü açık |
 | QT40 defter güçlendirme | PLANLANDI | Yeni defter yok; mevcut NotebookWorkspace + cihaz kabulü (DIŞ ENGEL: Pencil cihazı) |
-| QT41 şekil boyama + saat | YAPILIYOR · sunucu+core KOD HAZIR | `region_select` (ızgara/dilim/görsel bölge), `clock` |
-| QT42 tablo/grafik, harita/şema | YAPILIYOR · sunucu+core KOD HAZIR | `stimulus` (table/bar_chart, alt zorunlu) + görsel bölge kutuları |
+| QT41 şekil boyama + saat | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107040000 + istemci faz anahtarı; gerçek cihaz kabulü açık |
+| QT42 tablo/grafik, harita/şema | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın anahtarı 20261107040000 + istemci faz anahtarı; gerçek cihaz kabulü açık |
 | QT43 dikte | KARAR BEKLİYOR | Ses dosyası depolama/yükleme hattı (özel ses türü, imzalı URL, silme) veya cihaz TTS seçimi; TTS metni istemciye taşıyacağı için cevap sızar |
 | QT44 problem kurma | PLANLANDI | Açık uçlu + rubrik ön ayarı (yeni cevap altyapısı yok) |
 | QT50 bulmaca | YAPILIYOR · sunucu+core KOD HAZIR | `enabled=false` |
@@ -106,3 +106,27 @@ Birleşik dal `claude/prova-question-types` (`d17c38f1`): Faz 0 + istemci dallar
 | Yayın | YAPILMADI — Faz 0 DB onayı var (H08 hattı uygular); istemci/Edge yayını ayrıca onay ister |
 
 Bilinen sınırlar: kaydedilmiş yapılandırılmış soru düzenlenemez (AI/elle düzenleme kapalı); ortak kaynak grupları ve kütüphane paylaşımı yalnız eski türler; ağırlık (weights) için UI yok; global yapılandırılmış soru backoffice'te salt okunur (admin kaydetme RPC'si yok). Ürün kararı: amaç “yazılıya hazırlık” veya tür “şıklı/açık uçlu” seçiliyken yapılandırılmış sorular (sayısal dahil) “Karma” seçimi ister.
+
+
+## Toplu ortak kabul kapısı — Faz 1A + 1B + 2A + 2B (tek yayın, Enes kararı)
+
+Birleşik dal `claude/prova-question-types` @ `d952d4f9` (origin/main `86d815ce` Faz 0 yayını dahil). Main/prod/Edge/istemci yayını YAPILMADI.
+
+**Yayın paketi:** migration `20261107000500` (görünüm sütunları), `20261107010000` (2A, kapalı), `20261107020000` (2B, kapalı), `20261107030000` (Faz 3 bulmaca, kapalı kalır), `20261107040000` (2A+2B açma + 1–4. sınıf saat 12 saat koruması) → Edge `prova-generate` (v9 eski gövde birebir; yapılandırılmış istek v10) → web/backoffice → imzalı mobil. Mobilde faz anahtarı: `apps/mobile/src/components/learning/question-types/support.ts` `PHASE2A_CHILD_ENABLED` / `PHASE2B_CHILD_ENABLED` (yayında `true` yapılmalı; hazırlama anahtarları bunlara bağlı). Anahtar kapalı eski/yeni istemci yeni türü açık `client_update_required` ile reddeder.
+
+| Kontrol | Sonuç (d952d4f9) |
+|---|---|
+| Tam pgTAP (`test-q02-sql.py --fresh`) | 137 dosya / 6843 iddia / **0 hata** |
+| Golden fixtures paritesi | güncel |
+| Yarış testi | 7/7 |
+| Core tsc + vitest | 738/738 |
+| Mobil tsc / lint / soru türü testleri | 0 / temiz / 42/42 |
+| Edge deno check + test | temiz / 421/421 |
+| Backoffice typecheck + lint + build | temiz |
+| UI: çocuk 1A/1B · 2A · 2B | 16/16 · 10/10 · 11/11 |
+| UI: hazırlama 1A/1B (+AI seçici) · 2A/2B (+saat kararları, PDF) | 14/14 · 8/8 |
+| UI: backoffice (73 migration) | geçti |
+
+Kararlar uygulandı: sayısal soru açık uçlu/yazılı amacında Karma'sız; AI günlüğü yapılandırılmış anahtarı cihazda saklamaz; 1–4. sınıf saat 1–12 (sunucu korumalı); ekran okuyucuda saat okuma maddesi veliye düşer (yalnız iOS/Android).
+
+**Açık / dış engel:** gerçek cihaz kabulü (Pencil/parmak, VoiceOver/TalkBack — ekran okuyucu saat notu dahil, döndürme/pinch, büyük yazı, native `expo-print` PDF) — DIŞ ENGEL; görsel bölgelerin gerçek görselle yerleşimi (izole yığında Storage/Edge yok; yalnız birim + etiket listesi yolu); gerçek AI sağlayıcısında 12 varyantlı şemanın kabulü (sentetik pilot gerekli, Gemini riskli); dikte/sesli cevap ses depolama + rıza kararı; kaydedilmiş yapılandırılmış soru düzenleme, ortak kaynak grubu/kütüphane paylaşımı, global yapılandırılmış soru düzenleme (admin RPC) yok; çocuk notu metni (saat) taslak.

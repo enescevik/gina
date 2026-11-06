@@ -684,10 +684,10 @@
     },
     {
       "file": "143_qt_phase2b_flow.test.sql",
-      "passed": 16,
+      "passed": 17,
       "failed": 0
     }
   ],
   "failures": [],
-  "assertions": 6842
+  "assertions": 6843
 }

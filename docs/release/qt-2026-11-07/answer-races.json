@@ -1,6 +1,6 @@
 {
   "environment": "disposable-local-db",
-  "database": "gina_qtrace_754cfc4ce2_audit",
+  "database": "gina_qtrace_a14b03dc83_audit",
   "checks": [
     {
       "check": "two devices, same base revision: second gets answer_changed",
@@ -11,7 +11,7 @@
     {
       "check": "duplicate request id in flight: replay returns same revision",
       "passed": true,
-      "second_waited_s": 1.4,
+      "second_waited_s": 1.38,
       "expected_error": null
     },
     {
@@ -27,7 +27,7 @@
     {
       "check": "double finish: idempotent",
       "passed": true,
-      "second_waited_s": 1.37,
+      "second_waited_s": 1.39,
       "expected_error": null
     },
     {
@@ -37,7 +37,7 @@
     {
       "check": "parent score request replay in flight: single override row",
       "passed": true,
-      "second_waited_s": 1.39,
+      "second_waited_s": 1.4,
       "expected_error": null
     }
   ],
