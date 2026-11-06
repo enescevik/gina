@@ -1,0 +1,75 @@
+{
+  "environment": "disposable-local-real-auth-rest-realtime",
+  "results": [
+    {
+      "check": "toggle_switch_not_in_tab_order",
+      "passed": true,
+      "detail": "Hesabım var → Yeni hesap → E-posta → Şifre → Şifreyi göster → Şifremi unuttum → Çocuk cihazını bağla → Birlikte büyüyelim.Ebeve"
+    },
+    {
+      "check": "enter_submits_sign_in",
+      "passed": true,
+      "detail": "http://127.0.0.1:8717/parent"
+    },
+    {
+      "check": "home_bell_labelled_as_inbox",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "grades_home_button_goes_home",
+      "passed": true,
+      "detail": "http://127.0.0.1:8717/parent"
+    },
+    {
+      "check": "families_invite_path_matches_menu",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "callback_error_title_not_opening",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "device_shows_grouped_8_char_code",
+      "passed": true,
+      "detail": "•••• ••••"
+    },
+    {
+      "check": "parent_previews_device_and_family_before_pairing",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "device_summary_no_child_sentence",
+      "passed": true,
+      "detail": "Henüz çocuk seçilmedi"
+    },
+    {
+      "check": "device_summary_with_child_sentence",
+      "passed": true,
+      "detail": "Kaydedilecek erişim | Kaydedilmedi | Cihaz | Birden çok çocuğun ortak cihazı | İzinli çocuk (1) | Synthetic child | Giriş | PIN gerekli: her çocuk kendi 4 haneli PIN'iyle girer | Bu seçimler henüz kaydedilmedi. Kaydedene kadar çocuk cihazı eski ayarla çalışır; ekrandan ayrılırken size sorulur."
+    },
+    {
+      "check": "empty_home_cta_opens_wizard_directly",
+      "passed": true,
+      "detail": "http://127.0.0.1:8717/parent/menu?setup=new"
+    },
+    {
+      "check": "child_saved_feedback_and_next_steps",
+      "passed": true,
+      "detail": "Çocuk ekle | Profilini tanımlayın, yaşına uygun başlangıç görevlerini birlikte seçin. | Kaydedildi | Çocuk profili eklendi. Profil ayarlarından çocuk PIN’ini belirleyebilirsiniz. | Çocuk cihazları | Ana sayfa"
+    },
+    {
+      "check": "saved_feedback_home_button",
+      "passed": true,
+      "detail": "http://127.0.0.1:8717/parent"
+    },
+    {
+      "check": "no_runtime_errors",
+      "passed": true,
+      "detail": ""
+    }
+  ]
+}

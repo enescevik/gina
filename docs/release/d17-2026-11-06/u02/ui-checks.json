@@ -1,0 +1,82 @@
+{
+  "environment": "disposable-local-real-auth-rest-realtime",
+  "viewports": {
+    "phone": {
+      "width": 390,
+      "height": 844
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024
+    },
+    "desktop": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "results": [
+    {
+      "check": "single_family_switch_tab_explains_no_merge",
+      "passed": true
+    },
+    {
+      "check": "join_keeps_both_families_and_children_unmerged",
+      "passed": true
+    },
+    {
+      "check": "switch_shows_what_stays_and_returns_to_original_family",
+      "passed": true
+    },
+    {
+      "check": "child_mode_single_child_same_pin_control_wrong_pin_and_recovery",
+      "passed": true
+    },
+    {
+      "check": "qr_decodes_to_pairing_link_with_only_code",
+      "passed": true,
+      "qr_payload_shape": "/parent/pair-device?code=<8 chars>"
+    },
+    {
+      "check": "parent_previews_then_confirms_pairing_device_locked_until_configured",
+      "passed": true
+    },
+    {
+      "check": "unsaved_access_draft_survives_leave_attempt",
+      "passed": true
+    },
+    {
+      "check": "single_child_personal_device_saved",
+      "passed": true
+    },
+    {
+      "check": "child_device_wrong_pin_recovery_then_correct_pin",
+      "passed": true
+    },
+    {
+      "check": "multi_child_shared_device_inline_pin_and_draft_kept",
+      "passed": true
+    },
+    {
+      "check": "child_mode_multi_child_picker_then_shared_pin_control",
+      "passed": true
+    },
+    {
+      "check": "expired_code_hides_qr_refreshes_and_parent_gets_guidance",
+      "passed": true
+    },
+    {
+      "check": "revoked_on_open_pin_screen_returns_to_pairing",
+      "passed": true,
+      "seconds": 31
+    },
+    {
+      "check": "revoked_while_inside_child_world_returns_to_pairing",
+      "passed": true,
+      "seconds": 31
+    },
+    {
+      "check": "no_runtime_errors_or_horizontal_overflow",
+      "passed": true
+    }
+  ]
+}
