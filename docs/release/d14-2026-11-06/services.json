@@ -1,0 +1,10 @@
+{
+  "checks_total": 465,
+  "checks_passed": 465,
+  "cleanup": {
+    "storage_removed": true,
+    "rest_removed": true,
+    "auth_removed": true,
+    "disposable_database_removed": true
+  }
+}

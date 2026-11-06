@@ -9,13 +9,27 @@ import type { QuestionMediaItem } from "@/components/learning/question-media";
 import { ParentScreen } from "@/components/ui/parent-screen";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
+import {
+  type QuestionContentReview,
+  questionContentReviewOf,
+  readQuestionRubric,
+} from "@gina/core";
 
 export default function SharedQuestionScreen() {
   const { t } = useTranslation();
   const { claims } = useSession();
-  const { groupId, draftId, grade, subject } = useLocalSearchParams<
-    { groupId?: string; draftId?: string; grade?: string; subject?: string }
+  const params = useLocalSearchParams<
+    {
+      groupId?: string;
+      draftId?: string;
+      grade?: string;
+      subject?: string;
+      /** D14: AI ortak kaynak grubunu aynı sihirbazda düzenle (yeni grup sürümü). */
+      aiGroupId?: string;
+    }
   >();
+  const { draftId, grade, subject, aiGroupId } = params;
+  const groupId = aiGroupId ?? params.groupId;
   const familyId = claims?.family_id ?? "";
   const policy = useQuery({
     queryKey: ["question_group_policy", familyId],
@@ -44,7 +58,9 @@ export default function SharedQuestionScreen() {
   const initial = useQuery({
     queryKey: ["question_group_editor", familyId, groupId],
     enabled: !!groupId,
-    queryFn: async (): Promise<SharedGroupDraft> => {
+    queryFn: async (): Promise<
+      { draft: SharedGroupDraft; review: QuestionContentReview | null }
+    > => {
       const { data: group, error } = await supabase.from(
         "question_source_groups",
       ).select("*").eq("id", groupId!).single();
@@ -63,15 +79,24 @@ export default function SharedQuestionScreen() {
         supabase.rpc("get_question_media", { p_question_ids: [ids[0]!] }),
       ]);
       if (questions.error || media.error) throw questions.error ?? media.error;
-      return {
+      const rows = members.map((m) =>
+        questions.data.find((q) => q.id === m.question_id)!
+      );
+      // D14: üyelerin kişi adı uyarıları tek ipucunda birleşir (sunucu her üyeyi ayrı denetler).
+      const flags = rows.flatMap((q) => questionContentReviewOf(q)?.flags ?? []);
+      const review: QuestionContentReview | null = aiGroupId && flags.length
+        ? { status: "needs_review", detector: "", flags }
+        : null;
+      return { review, draft: {
         title: group.title,
         body: group.body,
         grade: String(group.grade),
         subject: group.subject,
         previousId: group.id,
         existingImages: media.data as unknown as QuestionMediaItem[],
-        questions: members.map((m) => {
-          const q = questions.data.find((q) => q.id === m.question_id)!;
+        questions: members.map((m, i) => {
+          const q = rows[i]!;
+          const rubric = readQuestionRubric(q.provenance);
           return {
             topic: q.topic,
             kind: q.kind,
@@ -83,9 +108,22 @@ export default function SharedQuestionScreen() {
             choices: Array.isArray(q.choices)
               ? q.choices as { key: string; text: string }[]
               : ["A", "B", "C", "D"].map((key) => ({ key, text: "" })),
+            ...(aiGroupId
+              ? {
+                carry: {
+                  sourceId: q.id,
+                  // AI rubriği 100'lük ölçekte (readQuestionRubric) taşınır; düzenlenen satır veli ölçeğindedir.
+                  rubric: rubric.criteria.length || rubric.alternative_answers.length
+                    ? rubric
+                    : null,
+                  explanation: q.explanation,
+                  scenario_code: q.scenario_code,
+                },
+              }
+              : {}),
           };
         }),
-      };
+      } };
     },
   });
   const error = policy.error ?? groups.error ?? initial.error;
@@ -95,7 +133,7 @@ export default function SharedQuestionScreen() {
   ) {
     return (
       <ParentScreen
-        title={t("sharedQuestions.title")}
+        title={t(aiGroupId ? "d14.edit.groupTitle" : "sharedQuestions.title")}
         loading={!error}
         error={error}
         onRetry={() => {
@@ -117,7 +155,10 @@ export default function SharedQuestionScreen() {
         ? { grade: grade ?? "", subject: subject ?? "" }
         : undefined}
       enabled={policy.data === true}
-      initial={initial.data}
+      initial={initial.data?.draft}
+      aiEdit={aiGroupId && initial.data
+        ? { groupId: aiGroupId, review: initial.data.review }
+        : undefined}
       catalog={groups.data}
     />
   );

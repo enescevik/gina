@@ -1,7 +1,7 @@
 import { SetupSourceLinks } from "@/components/setup/source-links";
 import { type ReactNode } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Check } from "lucide-react-native";
+import { Check, Pencil } from "lucide-react-native";
 import { contentReviewNames, questionContentReviewOf } from "@gina/core";
 import { useTranslation } from "react-i18next";
 import { p } from "@/components/planner/ui";
@@ -55,11 +55,27 @@ export function BuilderCard(
   );
 }
 export function BuilderQuestionPreview(
-  { q, showAnswer = false }: { q: BuilderQuestion; showAnswer?: boolean },
+  { q, showAnswer = false, onEdit, editable = !!onEdit }: {
+    q: BuilderQuestion;
+    showAnswer?: boolean;
+    /** D14: AI sorusunu mevcut editörde aç ("Düzenle"). */
+    onEdit?: () => void;
+    /** D14: düzenleme yolu var (ör. grup düzeyinde) → not "Düzenle"yi önerir. */
+    editable?: boolean;
+  },
 ) {
   const { t } = useTranslation();
+  const edited = !!q.provenance && typeof q.provenance === "object" &&
+    !Array.isArray(q.provenance) && q.provenance.generator === "ai_edited";
   return (
     <View style={{ gap: 14 }}>
+      {edited
+        ? (
+          <Text testID="question-edited-tag" style={[b.muted, { color: p.purple }]}>
+            {t("d14.edit.edited")}
+          </Text>
+        )
+        : null}
       <Text style={b.h2}>{q.stem}</Text>
       <QuestionMedia questionId={q.id} />
       {Array.isArray(q.choices)
@@ -72,7 +88,8 @@ export function BuilderQuestionPreview(
           </View>
         ))
         : null}
-      <ContentReviewNote question={q} />
+      <ContentReviewNote question={q} editable={editable} />
+      {onEdit ? <EditAction onPress={onEdit} /> : null}
       {showAnswer
         ? (
           <View style={b.hint}>
@@ -96,9 +113,11 @@ export function BuilderQuestionPreview(
  * D10: AI sorusunda kişi adı uyarısı (D9/B6). Sakin, engellemeyen bilgi notu; seçim/gönderim değişmez.
  * Kaynak: üretim sonucu öğesi `content_review` ya da `question_bank.provenance.content_review`. Yalnız veli
  * ekranlarında (öneri seçici, taslak önizleme) kullanılır; animasyon yok (azaltılmış hareket etkilenmez).
- * AI sorusunu düzenleme yolu henüz yok; not bunu söyler (seçmeden geçmek ya da kendi sorusunu yazmak).
+ * D14: düzenleme yolu olan yerde ikinci satır "Düzenle"yi önerir; olmayan yerde (eski metin) seçmeden geçmeyi/kendi sorusunu.
  */
-function ContentReviewNote({ question }: { question: BuilderQuestion }) {
+function ContentReviewNote(
+  { question, editable }: { question: BuilderQuestion; editable: boolean },
+) {
   const { t } = useTranslation();
   const names = contentReviewNames(questionContentReviewOf(question));
   if (!names.length) return null;
@@ -115,8 +134,41 @@ function ContentReviewNote({ question }: { question: BuilderQuestion }) {
       <Text style={b.copy}>
         {t("d10.contentReview.personName", { names: names.join(", ") })}
       </Text>
-      <Text style={b.muted}>{t("d10.contentReview.noEdit")}</Text>
+      <Text style={b.muted}>
+        {t(editable ? "d14.contentReview.canEdit" : "d10.contentReview.noEdit")}
+      </Text>
     </View>
+  );
+}
+/** D14: sakin ikincil eylem (48pt dokunma alanı, kalem simgesi); animasyon yok. */
+export function EditAction(
+  { onPress, label, disabled = false }: {
+    onPress: () => void;
+    label?: string;
+    disabled?: boolean;
+  },
+) {
+  const { t } = useTranslation();
+  return (
+    <Pressable
+      testID="ai-question-edit"
+      accessibilityRole="button"
+      accessibilityLabel={label ?? t("d14.edit.actionLabel")}
+      accessibilityState={{ disabled }}
+      disabled={disabled}
+      onPress={onPress}
+      style={[b.choice, {
+        alignSelf: "flex-start",
+        borderColor: "#D9CCF3",
+        backgroundColor: "#FFFFFF",
+        opacity: disabled ? 0.55 : 1,
+      }]}
+    >
+      <Pencil size={18} color={p.purple} />
+      <Text style={[b.bold, { color: p.purple, flexShrink: 1 }]}>
+        {label ?? t("d14.edit.action")}
+      </Text>
+    </Pressable>
   );
 }
 function DocumentOrigin({ question }: { question: BuilderQuestion }) {
