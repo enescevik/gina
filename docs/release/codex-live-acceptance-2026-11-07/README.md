@@ -17,7 +17,7 @@
 | H01 şifreli hesap canlı regresyonu | Ayrı sentetik hesap+aile: yanlış parola 403 ve hesap kalıyor; doğru parola 200; kullanıcı 404, üyelik yok; yanlış Apple iptal iddiası yok. **7/7** | Yalnız sentetik kayıtlar oluşturulup silindi |
 | Süresi dolmuş bağlantı | Canlı web, `otp_expired`: “This link has expired or was already used” + Request a new link + e-posta formu | Apple/Google gerçek giriş testinin yerine geçmez |
 | Canlı sağlık | Web başlıkları, Access koruması, anonim REST erişim sınırı, Auth, etkin Edge fonksiyonları ve tablet32: geçti. Ledger **161**, son `20261107010000` (başka hattın AI katalog/quota migration'ı; bu tur migration uygulanmadı) | Sağlık endpoint'i bütün işlevlerin kabulü değildir |
-| Ön inceleme / cron | Ön inceleme açık, alerts=[]; 24 saatte 1 çağrı. 13 cron etkin, son 3 saatte çalışmış işlerde başarısızlık 0 | Günlük işlerden bazıları 3 saatlik pencerede **hiç çalışmamış**. “Hepsi son 3 saatte başarılı çalıştı” ifadesi doğru değil; sıradaki zamanları gelmemiş olabilir |
+| Ön inceleme / cron | Ön inceleme açık, alerts=[]; son 24 saatte 1 çağrı, yapılandırılmış günlük sınır 25. 13 cron etkin, son 3 saatte çalışmış işlerde başarısızlık 0 | Günlük işlerden bazıları 3 saatlik pencerede **hiç çalışmamış**. “Hepsi son 3 saatte başarılı çalıştı” ifadesi doğru değil; sıradaki zamanları gelmemiş olabilir |
 
 ## Kanıt dosyaları
 
@@ -41,6 +41,15 @@
 5. **H03 yeni pilot — ayrı tek çağrılık pilot kararı ve insan içerik onayı.** Paket betiği hazır; bu tur kütüphane/pilot sorusu üretilmedi veya yayımlanmadı. İnsan uygunluk onayı ajan testi yerine geçmez.
 6. **Tam restore/PITR — ayrı ortam ve maliyet kararı.** Kullanıcı hedef/maliyet sınırını seçer; kurulum ve uygulamayı ajan yapabilir. Üretim üzerine restore yapılmaz.
 7. **Hukuk/mağaza kararı — kullanıcı ve hukuk uzmanı.** Teknik test bu onayın yerine geçmez.
+
+### Brand sohbetiyle SMTP çapraz kontrolü
+
+Kullanıcının “oluşturduk diye biliyorum” düzeltmesi üzerine `brand` sohbeti (`01a1a6d8-8ada-7762-a00b-775181ddaa8d`) okundu. Orada tamamlanan iki ayrı kurulum doğrulandı:
+
+- **GINA Supabase SMTP:** hesap doğrulama ve parola sıfırlama, `noreply@ginafamily.com`.
+- **GINA Gmail SMTP:** Gmail üzerinden destek yanıtı, `destek@ginafamily.com`; kullanıcı anahtarı kendisi kaydetmiş, teslim testi geçmiş.
+
+Brand kaydı ürün bildirim kanalını ayrıca açık iş olarak bırakıyor. Bu kontrol sırasında üretim `app_settings.channels.email.provider` tekrar salt okunur sorgulandı: **null**. Mevcut iki kurulumun yeniden yapılması gerekmiyor. Ürün bildirimleri için önerilen üçüncü anahtar henüz oluşturulmadı; kullanıcının “kontrol eder misin” yanıtı yeni anahtar oluşturma onayı olarak yorumlanmadı. Mevcut anahtarlar değiştirilmedi.
 
 ### SMTP için mevcut teknik sınırlama
 
