@@ -9,7 +9,7 @@ import { createInterface } from 'node:readline';
 
 export async function c13Phase(x) {
   const { check, denied, must, rpc, rest, sign, claims, token, base, lossyBase, setLossy, admin, account, refresh, timed, notes,
-    a1, a2, b1, devA, tabA, devB, sup, c1, c2, bc, attempt, q2, today } = x;
+    a1, a2, b1, devA, tabA, devB, sup, c1, c2, bc, attempt, q2, today, client } = x;
   const addDays = (d, n) => { const t = new Date(d + 'T00:00:00Z'); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); };
   const statusOf = async (bearer, fn, args) => { const r = await rest(base, bearer, 'rpc/' + fn, { method: 'POST', body: JSON.stringify(args) }); return { status: r.status, body: (await r.text()).slice(0, 200) }; };
 
@@ -69,9 +69,10 @@ export async function c13Phase(x) {
   await denied(b1.c.rpc('preview_legacy_open_zero_corrections', { p_family_id: a1.family }), 'c13_foreign_parent_legacy_preview_denied');
   await denied(b1.c.rpc('apply_legacy_open_zero_corrections', { p_request_id: randomUUID(), p_attempt_ids: [attempt], p_family_id: a1.family }), 'c13_foreign_parent_legacy_apply_denied');
   await denied(sup.c.rpc('preview_legacy_open_zero_corrections', { p_family_id: a1.family }), 'c13_support_legacy_preview_denied');
-  const preview = await rpc(a1.c, 'preview_device_pairing', { p_code: '000000' }, 'c13_parent_pairing_preview');
+  const preview = await rpc(a1.c, 'preview_device_pairing', { p_code: 'CDEFHJKM' }, 'c13_parent_pairing_preview');
   check('c13_pairing_preview_unknown_code', preview?.status === 'invalid_or_expired', JSON.stringify(preview));
-  await denied(devA.c.rpc('preview_device_pairing', { p_code: '000000' }), 'c13_device_cannot_preview_pairing');
+  await denied(devA.c.rpc('preview_device_pairing', { p_code: 'CDEFHJKM' }), 'c13_device_cannot_preview_pairing');
+  await authOne({ check, denied, must, rpc, claims, admin, account, refresh, notes, a1, b1, client });
   await rpc(a1.c, 'my_notification_channels', {}, 'c13_parent_channels');
   await denied(devA.c.rpc('my_notification_channels', {}), 'c13_device_cannot_read_channels');
 
@@ -160,4 +161,46 @@ async function startEdge(base) {
   });
   if (!port) { child.kill('SIGKILL'); return null; }
   return { port, stop: () => child.kill('SIGTERM') };
+}
+
+// ---- C13-AUTH-1: pairing brute-force guard over the real GoTrue + PostgREST (no direct SQL).
+async function authOne({ check, denied, must, rpc, claims, admin, account, refresh, a1, b1, client }) {
+  // A fresh signed-up parent with a family of their own = the attacker of the finding.
+  const atk = await account('auth1_attacker');
+  const fam = await rpc(atk.c, 'create_family', { p_name: 'Synthetic attacker family', p_display_name: 'Synthetic attacker' }, 'auth1_attacker_family');
+  await refresh(atk.c);
+  check('auth1_attacker_is_parent', !!fam && claims((await atk.c.auth.getSession()).data.session).gina.role === 'parent');
+  // A victim tablet waits with a real code.
+  const tab = client(); await must(tab.auth.signInAnonymously(), 'auth1_victim_tablet_anon');
+  const victimCode = await rpc(tab, 'request_pairing', { p_device_name: 'Synthetic victim tablet' }, 'auth1_victim_code');
+  check('auth1_code_is_8_from_alphabet', /^[ACDEFHJKMNPRTUVWXY3479]{8}$/.test(victimCode), victimCode);
+  // Legacy (26/27) client: token-less pair_device / pair_child_device refused even with the right code.
+  await denied(atk.c.rpc('pair_device', { p_code: victimCode }), 'auth1_legacy_pair_device_refused', /client_update_required/);
+  await denied(atk.c.rpc('pair_child_device', { p_code: victimCode }), 'auth1_legacy_pair_child_device_refused', /client_update_required/);
+  // Guessing: 10 wrong codes in a row → locked for 15 min; the lock also covers the right code.
+  const answers = [];
+  for (let i = 0; i < 10; i++) answers.push(await rpc(atk.c, 'preview_device_pairing', { p_code: 'YYYYYY' + 'ACDEFHJKMN'[i] + 'P' }, 'auth1_guess_' + i));
+  check('auth1_guesses_counted', answers.slice(0, 9).every((a, i) => a.status === 'invalid_or_expired' && a.attempts_left === 9 - i), JSON.stringify(answers.map(a => a.attempts_left ?? a.status)));
+  check('auth1_tenth_guess_locks', answers[9].status === 'pairing_locked' && answers[9].retry_after_seconds === 900, JSON.stringify(answers[9]));
+  const lockedRight = await rpc(atk.c, 'preview_device_pairing', { p_code: victimCode }, 'auth1_locked_right_code');
+  check('auth1_locked_even_right_code', lockedRight.status === 'pairing_locked' && !('preview_token' in lockedRight), JSON.stringify(lockedRight));
+  await denied(atk.c.rpc('pair_child_device', { p_code: victimCode, p_preview_token: randomUUID() }), 'auth1_guessed_token_refused', /invalid_preview_token/);
+  // The real parent (a1, other family) is not affected by the attacker's lock; their token is theirs only.
+  const good = await rpc(a1.c, 'preview_device_pairing', { p_code: victimCode.toLowerCase() }, 'auth1_parent_preview');
+  check('auth1_parent_preview_ok', good.status === 'ok' && good.token_seconds_left <= 300 && good.family_name, JSON.stringify({ s: good.status, t: good.token_seconds_left }));
+  await denied(b1.c.rpc('pair_child_device', { p_code: victimCode, p_preview_token: good.preview_token }), 'auth1_token_bound_to_user', /invalid_preview_token/);
+  const deviceId = await rpc(a1.c, 'pair_child_device', { p_code: victimCode, p_preview_token: good.preview_token }, 'auth1_pair_with_token');
+  await denied(a1.c.rpc('pair_child_device', { p_code: victimCode, p_preview_token: good.preview_token }), 'auth1_token_single_use', /invalid_preview_token/);
+  // Tablet side: sees the receiving family; "not my family" with its own session undoes it.
+  const s1 = await refresh(tab);
+  check('auth1_tablet_became_device', claims(s1).gina.role === 'device', JSON.stringify(claims(s1).gina));
+  const status = await rpc(tab, 'device_pairing_status', {}, 'auth1_tablet_status');
+  check('auth1_tablet_sees_family', status.status === 'paired' && status.family_name === 'Synthetic family A' && status.undo_seconds_left > 0 && status.undo_seconds_left <= 900, JSON.stringify(status));
+  await denied(a1.c.rpc('reject_device_pairing', {}), 'auth1_parent_cannot_use_device_undo');
+  check('auth1_tablet_rejects', (await rpc(tab, 'reject_device_pairing', {}, 'auth1_tablet_reject')).status === 'rejected');
+  const s2 = await refresh(tab);
+  check('auth1_rejected_tablet_loses_role', claims(s2).gina.role !== 'device', JSON.stringify(claims(s2).gina));
+  const row = await must(admin.from('devices').select('revoked_at').eq('id', deviceId).single(), 'auth1_device_row');
+  check('auth1_device_revoked_by_undo', row.revoked_at !== null);
+  check('auth1_tablet_new_code', /^[ACDEFHJKMNPRTUVWXY3479]{8}$/.test(await rpc(tab, 'request_pairing', { p_device_name: 'Synthetic victim tablet' }, 'auth1_new_code')));
 }

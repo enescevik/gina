@@ -46,25 +46,25 @@ select is((select count(*)::int from public.children where id in('20000000-0000-
 
 -- Re-pair is closed until the parent saves access, even on a formerly PIN-free device.
 update public.devices set revoked_at=now() where id='30000000-0000-4000-8000-000000001301';
-insert into public.device_pairings(code,auth_user_id,device_name) values('907813','00000000-0000-4000-8000-000000001303','Re-paired');
+insert into public.device_pairings(code,auth_user_id,device_name) values('HJKMNP73','00000000-0000-4000-8000-000000001303','Re-paired');
 set local role authenticated;
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000001301","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000001301"}}',true);
-select is(public.pair_child_device('907813'),'30000000-0000-4000-8000-000000001301'::uuid,'revoked device can pair again');
+select is(public.pair_child_device('HJKMNP73',public.preview_device_pairing('HJKMNP73')->>'preview_token'),'30000000-0000-4000-8000-000000001301'::uuid,'revoked device can pair again');
 select is(public.get_child_device_access('30000000-0000-4000-8000-000000001301')->>'pin_policy','required','re-pair removes previous PIN exemption');
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000001303","role":"authenticated","gina":{"role":"device","family_id":"10000000-0000-4000-8000-000000001301","device_id":"30000000-0000-4000-8000-000000001301","child_id":null}}',true);
 select is((select count(*)::int from public.children),0,'newly paired device has no profiles until parent configures');
 select throws_ok($$select public.child_pin_login('20000000-0000-4000-8000-000000001301','1234')$$,'42501','forbidden','even correct PIN cannot enter before configuration');
 reset role;
 
--- The installed TestFlight 12 client can still pair using the previous RPC.
+-- C13-AUTH-1: the installed 26/27 client (token-less pair_device) can no longer pair a new device.
 update public.devices set revoked_at=now() where id='30000000-0000-4000-8000-000000001301';
-insert into public.device_pairings(code,auth_user_id,device_name) values('907814','00000000-0000-4000-8000-000000001303','Legacy');
+insert into public.device_pairings(code,auth_user_id,device_name) values('HJKMNP74','00000000-0000-4000-8000-000000001303','Legacy');
 set local role authenticated;
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000001301","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000001301"}}',true);
-select is(public.pair_device('907814'),'30000000-0000-4000-8000-000000001301'::uuid,'legacy client pairing remains compatible');
-select is(public.get_child_device_access('30000000-0000-4000-8000-000000001301')->>'pin_policy','existing','legacy pairing keeps previous PIN policy');
-select is(public.get_child_device_access('30000000-0000-4000-8000-000000001301')->>'access_mode','all','legacy pairing has profiles without the new configuration screen');
+select throws_ok($$select public.pair_device('HJKMNP74')$$,'P0001','client_update_required','legacy client pairing is refused with client_update_required');
 reset role;
+select isnt((select revoked_at from public.devices where id='30000000-0000-4000-8000-000000001301'),null,'refused legacy pairing leaves the device revoked');
+select is((select consumed_at from public.device_pairings where code='HJKMNP74'),null,'refused legacy pairing does not consume the code');
 
 select * from finish();
 rollback;
