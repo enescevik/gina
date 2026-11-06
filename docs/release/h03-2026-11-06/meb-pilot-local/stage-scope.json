@@ -1,0 +1,26 @@
+{
+ "stage": "scope",
+ "target": "local-isolated",
+ "at": "2026-11-06T20:07:04.241Z",
+ "checks": [
+  {
+   "name": "switch_off_scenario_invisible_before_scope",
+   "ok": true,
+   "visible": 0
+  },
+  {
+   "name": "pilot_scope_set_time_limited",
+   "ok": true,
+   "ends_at": "2026-11-06T23:07:04.21875+00:00",
+   "catalog_enabled": false
+  },
+  {
+   "name": "pilot_scope_audited",
+   "ok": true
+  },
+  {
+   "name": "other_families_stay_closed",
+   "ok": true
+  }
+ ]
+}

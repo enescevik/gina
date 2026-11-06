@@ -63,7 +63,7 @@ globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
       question_type: "acik_uclu",
       cognitive_demand: "uygulama",
       intended_difficulty: prompt.zorluk ?? "orta",
-      rubric: { criteria: [{ text: "Çıktıya uygun gerekçe", points: 50 }, { text: "Doğru sonuç", points: 50 }], alternative_answers: [] },
+      rubric: { criteria: [{ text: "Çıktıya uygun gerekçe", points: 50 }, { text: "Doğru sonuç", points: 50 }], alternative_answers: [], assesses: "process" }, // H03: v8 schema parity (assesses required)
       shared_source_id: b.block_id === sharedBlock ? "S1" : "",
     }))
   );

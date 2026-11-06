@@ -1,0 +1,484 @@
+{
+ "format": "gina.question-review-package/v1",
+ "generated_at": "2026-11-06T20:07:05.188Z",
+ "origin": {
+  "kind": "meb_pilot",
+  "target": "local-isolated",
+  "note": "tr-2026-2027-t1-turkce2-g5-c6; deterministic provider"
+ },
+ "review": {
+  "status": "pending_human_review",
+  "accepted": false,
+  "note": "İnsan içerik onayı bu paketle verilmiş sayılmaz; inceleme kararı ayrı kaydedilir."
+ },
+ "scenario": {
+  "key": "tr-2026-2027-t1-turkce2-g5-c6",
+  "label": "Senaryo 1",
+  "catalogue_id": "547ac872",
+  "revision": 2,
+  "academic_year": "2026-2027",
+  "term": 1,
+  "exam": 1,
+  "grade": 5,
+  "subject": "Türkçe",
+  "sheet": "5. Sınıf",
+  "header_cell": "C6",
+  "total": 6,
+  "source_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+  "source_url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx",
+  "index_url": null,
+  "blocks": [
+   {
+    "block_id": "B1",
+    "count": 2,
+    "count_cell": "C12",
+    "outcomes": [
+     {
+      "code": "T.O.5.6",
+      "text": "T.O.5.6. Metnin yüzey anlamını belirleyebilme",
+      "cell": "B12"
+     }
+    ]
+   },
+   {
+    "block_id": "B2",
+    "count": 1,
+    "count_cell": "C13",
+    "outcomes": [
+     {
+      "code": "T.O.5.7",
+      "text": "T.O.5.7. Görselle iletilen anlamı belirleyebilme",
+      "cell": "B13"
+     }
+    ]
+   },
+   {
+    "block_id": "B3",
+    "count": 1,
+    "count_cell": "C21",
+    "outcomes": [
+     {
+      "code": "T.O.5.20",
+      "text": "T.O.5.20. Metinden hareketle söz varlığını geliştirmeye yönelik çözümleme yapabilme",
+      "cell": "B21"
+     }
+    ]
+   },
+   {
+    "block_id": "B4",
+    "count": 1,
+    "count_cell": "C30",
+    "outcomes": [
+     {
+      "code": "T.Y.5.13",
+      "text": "T.Y.5.13. Yazısını zenginleştirecek biçimde söz varlığını kullanabilme",
+      "cell": "B30"
+     }
+    ]
+   },
+   {
+    "block_id": "B5",
+    "count": 1,
+    "count_cell": "C32",
+    "outcomes": [
+     {
+      "code": "T.Y.5.16",
+      "text": "T.Y.5.16. Yazım ve noktalama işaretleriyle ilgili kuralları uygulayabilme",
+      "cell": "B32"
+     }
+    ]
+   }
+  ]
+ },
+ "shared_sources": [
+  {
+   "id": "group-b600a9cd",
+   "origin": "question_group",
+   "version": 1,
+   "title": "Ortak metin",
+   "body": "Ortak sentetik metin: bir okul gezisi notu (tek kaynak, bağlı sorular ayrı sayılır).",
+   "kind": "text",
+   "images": [],
+   "question_ids": [
+    "1586d516",
+    "af108d8f"
+   ]
+  }
+ ],
+ "images": [],
+ "questions": [
+  {
+   "id": "1586d516",
+   "position": 1,
+   "block_id": "B1",
+   "outcome_ids": [
+    "T.O.5.6"
+   ],
+   "outcomes": [
+    {
+     "code": "T.O.5.6",
+     "text": "T.O.5.6. Metnin yüzey anlamını belirleyebilme"
+    }
+   ],
+   "kind": "open_ended",
+   "grade": 5,
+   "subject": "Türkçe",
+   "topic": "Blok 1",
+   "difficulty": "orta",
+   "stem": "Ortak metin\nOrtak sentetik metin: bir okul gezisi notu (tek kaynak, bağlı sorular ayrı sayılır).\n\nSentetik soru B1.1: T.O.5.6: T.O.5.6. Metnin yüzey anlamını belirleyebilme",
+   "shared_source_id": "group-b600a9cd",
+   "shared_position": 1,
+   "prompt": "Sentetik soru B1.1: T.O.5.6: T.O.5.6. Metnin yüzey anlamını belirleyebilme",
+   "choices": null,
+   "correct_key": null,
+   "expected_answer": "Beklenen cevap B1.1",
+   "solution": "Çözüm adımları B1.1",
+   "explanation": "Deterministik yerel sağlayıcı; içerik kalitesi testi değildir.",
+   "rubric": {
+    "assesses": "process",
+    "criteria": [
+     {
+      "text": "Çıktıya uygun gerekçe",
+      "points": 50
+     },
+     {
+      "text": "Doğru sonuç",
+      "points": 50
+     }
+    ],
+    "alternative_answers": []
+   },
+   "images": [],
+   "source": {
+    "scenario_version": "547ac872-f897-4312-8a81-14ee2e3c08c3@2:88b9b2ab6331",
+    "catalogue_id": "547ac872",
+    "catalogue_revision": 2,
+    "source_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+    "source_cells": {
+     "sheet": "5. Sınıf",
+     "count_cell": "C12",
+     "outcome_cells": [
+      "B12"
+     ]
+    }
+   },
+   "generation": {
+    "generator": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "prova-generate/v8-rubric-assesses"
+   },
+   "content_fit": "pending_human_review"
+  },
+  {
+   "id": "af108d8f",
+   "position": 2,
+   "block_id": "B1",
+   "outcome_ids": [
+    "T.O.5.6"
+   ],
+   "outcomes": [
+    {
+     "code": "T.O.5.6",
+     "text": "T.O.5.6. Metnin yüzey anlamını belirleyebilme"
+    }
+   ],
+   "kind": "open_ended",
+   "grade": 5,
+   "subject": "Türkçe",
+   "topic": "Blok 1",
+   "difficulty": "orta",
+   "stem": "Ortak metin\nOrtak sentetik metin: bir okul gezisi notu (tek kaynak, bağlı sorular ayrı sayılır).\n\nSentetik soru B1.2: T.O.5.6: T.O.5.6. Metnin yüzey anlamını belirleyebilme",
+   "shared_source_id": "group-b600a9cd",
+   "shared_position": 2,
+   "prompt": "Sentetik soru B1.2: T.O.5.6: T.O.5.6. Metnin yüzey anlamını belirleyebilme",
+   "choices": null,
+   "correct_key": null,
+   "expected_answer": "Beklenen cevap B1.2",
+   "solution": "Çözüm adımları B1.2",
+   "explanation": "Deterministik yerel sağlayıcı; içerik kalitesi testi değildir.",
+   "rubric": {
+    "assesses": "process",
+    "criteria": [
+     {
+      "text": "Çıktıya uygun gerekçe",
+      "points": 50
+     },
+     {
+      "text": "Doğru sonuç",
+      "points": 50
+     }
+    ],
+    "alternative_answers": []
+   },
+   "images": [],
+   "source": {
+    "scenario_version": "547ac872-f897-4312-8a81-14ee2e3c08c3@2:88b9b2ab6331",
+    "catalogue_id": "547ac872",
+    "catalogue_revision": 2,
+    "source_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+    "source_cells": {
+     "sheet": "5. Sınıf",
+     "count_cell": "C12",
+     "outcome_cells": [
+      "B12"
+     ]
+    }
+   },
+   "generation": {
+    "generator": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "prova-generate/v8-rubric-assesses"
+   },
+   "content_fit": "pending_human_review"
+  },
+  {
+   "id": "63c6a4c1",
+   "position": 3,
+   "block_id": "B2",
+   "outcome_ids": [
+    "T.O.5.7"
+   ],
+   "outcomes": [
+    {
+     "code": "T.O.5.7",
+     "text": "T.O.5.7. Görselle iletilen anlamı belirleyebilme"
+    }
+   ],
+   "kind": "open_ended",
+   "grade": 5,
+   "subject": "Türkçe",
+   "topic": "Blok 2",
+   "difficulty": "orta",
+   "stem": "Sentetik soru B2.1: T.O.5.7: T.O.5.7. Görselle iletilen anlamı belirleyebilme",
+   "shared_source_id": null,
+   "shared_position": null,
+   "prompt": null,
+   "choices": null,
+   "correct_key": null,
+   "expected_answer": "Beklenen cevap B2.1",
+   "solution": "Çözüm adımları B2.1",
+   "explanation": "Deterministik yerel sağlayıcı; içerik kalitesi testi değildir.",
+   "rubric": {
+    "assesses": "process",
+    "criteria": [
+     {
+      "text": "Çıktıya uygun gerekçe",
+      "points": 50
+     },
+     {
+      "text": "Doğru sonuç",
+      "points": 50
+     }
+    ],
+    "alternative_answers": []
+   },
+   "images": [],
+   "source": {
+    "scenario_version": "547ac872-f897-4312-8a81-14ee2e3c08c3@2:88b9b2ab6331",
+    "catalogue_id": "547ac872",
+    "catalogue_revision": 2,
+    "source_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+    "source_cells": {
+     "sheet": "5. Sınıf",
+     "count_cell": "C13",
+     "outcome_cells": [
+      "B13"
+     ]
+    }
+   },
+   "generation": {
+    "generator": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "prova-generate/v8-rubric-assesses"
+   },
+   "content_fit": "pending_human_review"
+  },
+  {
+   "id": "67a5fa0f",
+   "position": 4,
+   "block_id": "B3",
+   "outcome_ids": [
+    "T.O.5.20"
+   ],
+   "outcomes": [
+    {
+     "code": "T.O.5.20",
+     "text": "T.O.5.20. Metinden hareketle söz varlığını geliştirmeye yönelik çözümleme yapabilme"
+    }
+   ],
+   "kind": "open_ended",
+   "grade": 5,
+   "subject": "Türkçe",
+   "topic": "Blok 3",
+   "difficulty": "orta",
+   "stem": "Sentetik soru B3.1: T.O.5.20: T.O.5.20. Metinden hareketle söz varlığını geliştirmeye yönelik çözümleme yapabilme",
+   "shared_source_id": null,
+   "shared_position": null,
+   "prompt": null,
+   "choices": null,
+   "correct_key": null,
+   "expected_answer": "Beklenen cevap B3.1",
+   "solution": "Çözüm adımları B3.1",
+   "explanation": "Deterministik yerel sağlayıcı; içerik kalitesi testi değildir.",
+   "rubric": {
+    "assesses": "process",
+    "criteria": [
+     {
+      "text": "Çıktıya uygun gerekçe",
+      "points": 50
+     },
+     {
+      "text": "Doğru sonuç",
+      "points": 50
+     }
+    ],
+    "alternative_answers": []
+   },
+   "images": [],
+   "source": {
+    "scenario_version": "547ac872-f897-4312-8a81-14ee2e3c08c3@2:88b9b2ab6331",
+    "catalogue_id": "547ac872",
+    "catalogue_revision": 2,
+    "source_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+    "source_cells": {
+     "sheet": "5. Sınıf",
+     "count_cell": "C21",
+     "outcome_cells": [
+      "B21"
+     ]
+    }
+   },
+   "generation": {
+    "generator": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "prova-generate/v8-rubric-assesses"
+   },
+   "content_fit": "pending_human_review"
+  },
+  {
+   "id": "1d3a5c68",
+   "position": 5,
+   "block_id": "B4",
+   "outcome_ids": [
+    "T.Y.5.13"
+   ],
+   "outcomes": [
+    {
+     "code": "T.Y.5.13",
+     "text": "T.Y.5.13. Yazısını zenginleştirecek biçimde söz varlığını kullanabilme"
+    }
+   ],
+   "kind": "open_ended",
+   "grade": 5,
+   "subject": "Türkçe",
+   "topic": "Blok 4",
+   "difficulty": "orta",
+   "stem": "Sentetik soru B4.1: T.Y.5.13: T.Y.5.13. Yazısını zenginleştirecek biçimde söz varlığını kullanabilme",
+   "shared_source_id": null,
+   "shared_position": null,
+   "prompt": null,
+   "choices": null,
+   "correct_key": null,
+   "expected_answer": "Beklenen cevap B4.1",
+   "solution": "Çözüm adımları B4.1",
+   "explanation": "Deterministik yerel sağlayıcı; içerik kalitesi testi değildir.",
+   "rubric": {
+    "assesses": "process",
+    "criteria": [
+     {
+      "text": "Çıktıya uygun gerekçe",
+      "points": 50
+     },
+     {
+      "text": "Doğru sonuç",
+      "points": 50
+     }
+    ],
+    "alternative_answers": []
+   },
+   "images": [],
+   "source": {
+    "scenario_version": "547ac872-f897-4312-8a81-14ee2e3c08c3@2:88b9b2ab6331",
+    "catalogue_id": "547ac872",
+    "catalogue_revision": 2,
+    "source_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+    "source_cells": {
+     "sheet": "5. Sınıf",
+     "count_cell": "C30",
+     "outcome_cells": [
+      "B30"
+     ]
+    }
+   },
+   "generation": {
+    "generator": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "prova-generate/v8-rubric-assesses"
+   },
+   "content_fit": "pending_human_review"
+  },
+  {
+   "id": "224a8d7b",
+   "position": 6,
+   "block_id": "B5",
+   "outcome_ids": [
+    "T.Y.5.16"
+   ],
+   "outcomes": [
+    {
+     "code": "T.Y.5.16",
+     "text": "T.Y.5.16. Yazım ve noktalama işaretleriyle ilgili kuralları uygulayabilme"
+    }
+   ],
+   "kind": "open_ended",
+   "grade": 5,
+   "subject": "Türkçe",
+   "topic": "Blok 5",
+   "difficulty": "orta",
+   "stem": "Sentetik soru B5.1: T.Y.5.16: T.Y.5.16. Yazım ve noktalama işaretleriyle ilgili kuralları uygulayabilme",
+   "shared_source_id": null,
+   "shared_position": null,
+   "prompt": null,
+   "choices": null,
+   "correct_key": null,
+   "expected_answer": "Beklenen cevap B5.1",
+   "solution": "Çözüm adımları B5.1",
+   "explanation": "Deterministik yerel sağlayıcı; içerik kalitesi testi değildir.",
+   "rubric": {
+    "assesses": "process",
+    "criteria": [
+     {
+      "text": "Çıktıya uygun gerekçe",
+      "points": 50
+     },
+     {
+      "text": "Doğru sonuç",
+      "points": 50
+     }
+    ],
+    "alternative_answers": []
+   },
+   "images": [],
+   "source": {
+    "scenario_version": "547ac872-f897-4312-8a81-14ee2e3c08c3@2:88b9b2ab6331",
+    "catalogue_id": "547ac872",
+    "catalogue_revision": 2,
+    "source_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+    "source_cells": {
+     "sheet": "5. Sınıf",
+     "count_cell": "C32",
+     "outcome_cells": [
+      "B32"
+     ]
+    }
+   },
+   "generation": {
+    "generator": "ai",
+    "model": "claude-sonnet-5-5",
+    "prompt_version": "prova-generate/v8-rubric-assesses"
+   },
+   "content_fit": "pending_human_review"
+  }
+ ],
+ "content_sha256": "552f21f73bc9fa90f1817346d02337d34ab1b5026d5ad820161c0838dbe5b6be"
+}
