@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-11-06T22:17:51.417Z",
+  "signupStatus": 200,
+  "confirmationSent": true,
+  "confirmedStatus": 200,
+  "resetStatus": 200,
+  "recipient": "owner Gmail plus alias",
+  "locale": "en",
+  "note": "Delivery-only test; no password-reset completion claimed."
+}
