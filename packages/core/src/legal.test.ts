@@ -15,10 +15,8 @@ describe("legal publication boundary", () => {
     expect(legalDocumentUrl(publication, "kullanim-kosullari", "tr-TR")).toBe("https://ginafamily.com/legal/kullanim-kosullari?lang=tr");
   });
   it("creates an email draft without embedding user data or a destructive action", () => {
-    const url = new URL(privacyRequestMailto("deletion", "tr"));
-    expect(url.protocol).toBe("mailto:");
-    expect(url.pathname).toBe("destek@ginafamily.com");
-    expect(url.searchParams.get("subject")).toBe("GINA hesap silme talebi");
-    expect([...url.searchParams.keys()]).toEqual(["subject"]);
+    expect(privacyRequestMailto("deletion", "tr")).toBe(
+      "mailto:destek@ginafamily.com?subject=" + encodeURIComponent("GINA hesap silme talebi"),
+    );
   });
 });

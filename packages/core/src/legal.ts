@@ -3,11 +3,10 @@ export const LEGAL_DOCUMENTS = ["gizlilik-politikasi", "kvkk-aydinlatma-metni", 
 export type LegalDocument = (typeof LEGAL_DOCUMENTS)[number];
 export function legalPublication(base: string | undefined, version: string | undefined): { base: string; version: string } | null {
   if (!base || !version || !/^\d{4}-\d{2}-\d{2}\.[1-9]\d*$/.test(version)) return null;
-  try {
-    const url = new URL(base);
-    if (url.protocol !== "https:" || url.hostname !== "ginafamily.com" || url.port || url.username || url.password || url.pathname !== "/" || url.search || url.hash) return null;
-    return { base: url.origin, version };
-  } catch { return null; }
+  // This package also runs without DOM types. An exact origin allowlist avoids
+  // parsing differences and rejects credentials, ports, paths and redirect input.
+  if (base !== "https://ginafamily.com" && base !== "https://ginafamily.com/") return null;
+  return { base: "https://ginafamily.com", version };
 }
 export function legalDocumentUrl(publication: ReturnType<typeof legalPublication>, document: LegalDocument, locale: string): string | null {
   if (!publication || !LEGAL_DOCUMENTS.includes(document)) return null;
