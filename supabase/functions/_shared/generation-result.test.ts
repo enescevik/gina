@@ -302,3 +302,45 @@ Deno.test("D1: titles are localized and an oversized self-contained stem is refu
   r.output.questions[1] = q({ shared_source_id: "P1", outcome_ids: ["MAT.5.3.2"] });
   rejects(r, scenarioContext, "materialized stem over 10000");
 });
+// D5 (docs/release/d5-2026-11-06, B2): real claude-sonnet-5-5 full written exam — 4 open-ended, one shared TABLE
+// linked to the 1st and 4th question whose stems start "Tablodaki…/Tabloda verilen…". The real wording was not
+// stored in the report; this fixture keeps the observed shape with synthetic text (no personal data).
+const d5Written: GenerationContext = {
+  ...context,
+  subject: "Fen Bilimleri",
+  total: 4,
+  topics: [{ topic: "Kuvvetin ölçülmesi", count: 4 }],
+  kind: "open_ended",
+};
+const d5Table = "Cisim | Dinamometre (N)\nA | 4\nB | 7\nC | 10";
+const d5Open = (stem: string, shared = "") => ({
+  topic: "Kuvvetin ölçülmesi", kind: "open_ended", difficulty: "orta", stem, choices: [], correct_key: "", distractor_notes: [],
+  expected_answer: "Beklenen", solution: "Çözüm", explanation: "", source_urls: [], block_id: "", outcome_ids: [],
+  question_type: "acik_uclu", cognitive_demand: "uygulama", intended_difficulty: "orta",
+  rubric: { criteria: [{ text: "Doğru okuma", points: 2 }, { text: "Gerekçe", points: 3 }], alternative_answers: ["C cismi"] }, shared_source_id: shared,
+});
+Deno.test("D1/D5: real-model shape — shared table linked to non-adjacent questions is written self-contained for grouping", async () => {
+  const r = {
+    output: {
+      shared_sources: [{ id: "tablo_1", kind: "table", content: d5Table }],
+      questions: [
+        d5Open("Tablodaki cisimlerden hangisine en büyük kuvvet uygulanmıştır?", "tablo_1"),
+        d5Open("Dinamometre hangi ilkeyle çalışır?"),
+        d5Open("Kuvvetin birimi nedir?"),
+        d5Open("Tabloda verilen değerlere göre A ile C arasındaki fark kaç newtondur?", "tablo_1"),
+      ],
+    },
+    inputTokens: 194,
+    outputTokens: 6655,
+  };
+  const f = fixture({ context: d5Written, provider_result: r, lease: "lease" });
+  const response = await recoverGeneration(f.db, parent, "id", {});
+  assert(response);
+  assertEquals(response.status, 200);
+  const rows = f.calls[1].args.p_rows as { stem: string; provenance: Record<string, unknown> }[];
+  assertEquals(rows[0].stem, `Ortak tablo\n${d5Table}\n\nTablodaki cisimlerden hangisine en büyük kuvvet uygulanmıştır?`);
+  assertEquals(rows[3].stem.startsWith(`Ortak tablo\n${d5Table}\n\n`), true, "4th question also carries the table");
+  assertEquals(rows[3].provenance.shared_prompt, "Tabloda verilen değerlere göre A ile C arasındaki fark kaç newtondur?");
+  assertEquals(rows[1].stem, "Dinamometre hangi ilkeyle çalışır?");
+  assertEquals(rows.filter((x) => x.provenance.shared_source_id === "tablo_1").length, 2);
+});

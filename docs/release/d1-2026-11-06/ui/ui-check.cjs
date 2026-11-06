@@ -219,6 +219,7 @@ const pass = (check, detail) => { results.push({ check, passed: true, ...(detail
   await page.getByLabel('Gerekçe', { exact: true }).fill('Soru metnin ana düşüncesini doğrudan soruyor.');
   await page.getByRole('switch', { name: 'Soruyu ve kazanımları okudum; bu karar benim' }).click();
   await btn(page, 'Kararı kaydet').click();
+  await page.getByText('İncelemeni bekleyen soru yok.').waitFor();
   await page.getByRole('button', { name: /^İncelenen \(/ }).first().click();
   await page.getByText('Kararın kaydedildi: Uygun').waitFor();
   const fit = await must(db.rpc('get_scenario_question_fit', { p_question_ids: [fitQ] }), 'fit_read');

@@ -4470,5 +4470,7 @@
   "prova.ai.errors.content_fit_outcome_mismatch": "The selected outcomes do not belong to this question's block, or no outcome was selected for “Suitable”.",
   "prova.ai.errors.content_fit_revision_conflict": "This question was reviewed in another session. The list was refreshed; check your decision again.",
   "prova.ai.errors.subject_link_changed": "This subject was linked differently in another session. The list was refreshed.",
-  "prova.ai.errors.subject_unknown": "This catalogue subject is no longer used."
+  "prova.ai.errors.subject_unknown": "This catalogue subject is no longer used.",
+  "d1.sharedUnlinked": "This AI question does not show its shared source (passage/table); it cannot be sent to the child. Remove it and generate again.",
+  "prova.ai.errors.prova_shared_source_unlinked": "An AI question does not show its shared source (passage/table) to the child. Remove it from the draft and generate again."
 }

@@ -400,8 +400,21 @@ export default function ProvaBuilder() {
       ...extra,
       fitAccepted: setProvaFitAccepted(draft, ids, on).fitAccepted,
     });
+  // D5 B2 geçici kural: ortak kaynağa atıf yapıp onu göstermeyen eski AI sorusu gönderilemez (sunucu da reddeder).
+  const groupMembers = new Set(
+    mat.groups.flatMap((g) => g.question_source_members.map((m) => m.question_id)),
+  );
+  const sharedUnlinked = (q: (typeof flat)[number]) => {
+    const pv = q.provenance as
+      | { shared_source_id?: string; shared_source?: { content?: string } }
+      | null;
+    const content = pv?.shared_source?.content?.trim();
+    return !!pv?.shared_source_id && !!content && !groupMembers.has(q.id) &&
+      !q.stem.includes(content);
+  };
   const issuesOf = (q: (typeof flat)[number]) => {
     const issues: string[] = accepted.has(q.id) ? [] : periodText(q.id);
+    if (sharedUnlinked(q)) issues.push(t("d1.sharedUnlinked"));
     if (q.grade !== draft.grade) {
       issues.push(t("provaP01.issueGrade", { grade: q.grade }));
     }

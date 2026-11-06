@@ -230,5 +230,40 @@ select ok(not has_function_privilege('authenticated','gina.link_ai_shared_source
 select ok(not has_function_privilege('authenticated','gina.tag_question_period(uuid,uuid,int,text,text)','execute'),'tag helper not exposed');
 select ok(not has_table_privilege('authenticated','gina.question_period_tags','select'),'period tags not directly readable');
 
+-- 6) D5 gerçek model biçimi (B2): tam yazılı üretim, 4 açık uçlu, bir ortak TABLO 1. ve 4. soruya bağlı ----------
+-- Gerçek içerik raporda saklanmadı; biçim (tür, bağlı soru konumları, "Tablodaki…" gövdeleri) sentetik metinle aynıdır.
+create function pg_temp.trow(prompt text,shared boolean) returns jsonb language sql as $$
+ select pg_temp.row(prompt,shared,null,E'Cisim | Dinamometre (N)\nA | 4\nB | 7\nC | 10')
+  || case when shared then jsonb_build_object('stem','Ortak tablo'||E'\n'||E'Cisim | Dinamometre (N)\nA | 4\nB | 7\nC | 10'||E'\n\n'||prompt,
+     'provenance',(pg_temp.row(prompt,shared,null,E'Cisim | Dinamometre (N)\nA | 4\nB | 7\nC | 10')->'provenance')
+       ||jsonb_build_object('shared_source_title','Ortak tablo','shared_source',jsonb_build_object('id','T1','kind','table','content',E'Cisim | Dinamometre (N)\nA | 4\nB | 7\nC | 10'),'shared_source_id','T1'))
+   else '{}'::jsonb end;
+$$;
+set local role service_role; select pg_temp.service();
+select set_config('test.r5',pg_temp.generate('60000000-0000-4000-8000-000000012105',jsonb_build_array(
+ pg_temp.trow('Tablodaki cisimlerden hangisine en büyük kuvvet uygulanmıştır? Nedenini yaz.',true),
+ pg_temp.trow('Dinamometre hangi ilkeyle çalışır?',false),
+ pg_temp.trow('Kuvvetin birimi nedir ve neden bu adı almıştır?',false),
+ pg_temp.trow('Tabloda verilen değerlere göre A ile C arasındaki fark kaç newtondur?',true)))::text,true);
+reset role;
+select is((select kind_title from (select g.title kind_title from public.question_source_groups g where g.id=(current_setting('test.r5')::jsonb->'groups'->0->>'id')::uuid) x),'Ortak tablo','D5 shape: shared table becomes a group');
+select is(current_setting('test.r5')::jsonb->'groups'->0->>'kind','table','group keeps the table kind');
+select is((select string_agg(m.prompt,' | ' order by m.position) from public.question_source_members m where m.group_id=(current_setting('test.r5')::jsonb->'groups'->0->>'id')::uuid),
+ 'Tablodaki cisimlerden hangisine en büyük kuvvet uygulanmıştır? Nedenini yaz. | Tabloda verilen değerlere göre A ile C arasındaki fark kaç newtondur?','non-adjacent linked questions (1st and 4th) are one group in order');
+select is((select body from public.question_source_groups where id=(current_setting('test.r5')::jsonb->'groups'->0->>'id')::uuid),E'Cisim | Dinamometre (N)\nA | 4\nB | 7\nC | 10','table rows kept verbatim once');
+-- Geçici kural: v5 biçimi (tablo yalnız provenance'ta) atanamaz; v6 kendi başına okunur satırlar atanabilir.
+reset role;
+insert into public.question_bank(id,family_id,grade,subject,topic,kind,difficulty,stem,expected_answer,solution,provenance,created_by) values
+ ('40000000-0000-4000-8000-000000012121','10000000-0000-4000-8000-000000012101',6,'Fen Bilimleri','Kuvvet','open_ended','orta','Tablodaki cisimlerden hangisi en ağırdır?','C','Tabloyu oku.',
+  '{"generator":"ai","prompt_version":"prova-generate/v5-scenario-provenance","shared_source_id":"T1","shared_source":{"id":"T1","kind":"table","content":"Cisim | Kütle\nA | 1\nC | 3"}}','00000000-0000-4000-8000-000000012101');
+set local role authenticated; select pg_temp.parent();
+select lives_ok($$select public.save_prova_draft(gen_random_uuid(),'50000000-0000-4000-8000-000000012107',0,pg_temp.content('[{"kind":"question","id":"40000000-0000-4000-8000-000000012121","source":"ai"}]',1))$$,'legacy AI question with a dangling table can be in a draft (marked in the builder)');
+select throws_ok($$select public.submit_prova_draft(gen_random_uuid(),'50000000-0000-4000-8000-000000012107',1)$$,'P0001','prova_shared_source_unlinked','legacy AI question referring to an unseen table cannot be assigned');
+reset role;
+select throws_ok($$insert into public.exams(family_id,child_id,title,subject,grade,question_ids,status) values('10000000-0000-4000-8000-000000012101','20000000-0000-4000-8000-000000012101','x','Fen Bilimleri',6,'{40000000-0000-4000-8000-000000012121}','assigned')$$,
+ 'P0001','prova_shared_source_unlinked','no other assignment path bypasses the rule');
+select lives_ok($$insert into public.exams(family_id,child_id,title,subject,grade,question_ids,status) values('10000000-0000-4000-8000-000000012101','20000000-0000-4000-8000-000000012101','x','Fen Bilimleri',6,
+ array[(select id from public.question_bank where provenance->>'shared_prompt'='Tek bağlı soru: tablodaki en kısa bitki hangisi?')],'assigned')$$,'self-contained ungrouped v6 question can be assigned');
+
 select * from finish();
 rollback;

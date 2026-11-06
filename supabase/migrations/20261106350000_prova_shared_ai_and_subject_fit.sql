@@ -57,6 +57,26 @@ begin
 end; $$;
 revoke all on function gina.link_ai_shared_sources(uuid,jsonb) from public,anon,authenticated,service_role;
 
+-- Geçici kural (D5 B2): ortak kaynağa atıf yapan bir AI sorusu ne bir ortak kaynak grubunun üyesi ne de gövdesi
+-- ortak metni taşıyorsa (v5 ve öncesi üretim: metin yalnız provenance'ta) hiçbir yoldan atanamaz; çocuk o soruyu
+-- çözemez. v6 satırları ya gruplanır ya da kendi başına okunur yazılır, bu kurala takılmaz. Kilitli eski sınavlar etkilenmez.
+create function gina.ai_shared_source_unlinked(p_ids uuid[]) returns boolean language sql stable security definer set search_path='' as $$
+ select exists(select 1 from public.question_bank q
+  where q.id=any(p_ids) and q.provenance ? 'shared_source_id' and nullif(q.provenance->>'shared_source_id','') is not null
+   and not exists(select 1 from public.question_source_members m where m.question_id=q.id)
+   and position(btrim(coalesce(q.provenance#>>'{shared_source,content}','')) in q.stem)=0)
+$$;
+revoke all on function gina.ai_shared_source_unlinked(uuid[]) from public,anon,authenticated,service_role;
+create function gina.guard_exam_ai_shared_source() returns trigger language plpgsql security definer set search_path='' as $$
+begin
+ if tg_op='UPDATE' and (old.content_locked_at is not null or new.question_ids is not distinct from old.question_ids) then return new; end if;
+ if gina.ai_shared_source_unlinked(new.question_ids) then raise exception 'prova_shared_source_unlinked'; end if;
+ return new;
+end; $$;
+revoke all on function gina.guard_exam_ai_shared_source() from public,anon,authenticated,service_role;
+create trigger exam_ai_shared_source_guard before insert or update of question_ids on public.exams
+for each row execute function gina.guard_exam_ai_shared_source();
+
 -- ---------------------------------------------------------------------------
 -- 2a) Soru düzeyinde dönem/program izi (yalnız sunucu yazar; bir kez yazılır)
 -- ---------------------------------------------------------------------------
