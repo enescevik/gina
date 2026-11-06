@@ -39,7 +39,7 @@ Durumlar:
 | D6 puanlama düzeltmesi (B1) | TAMAM | C14b'de canlı 200 + `accept_ai_grade` |
 | D7 içerik operatörü taslak kabulü | TAMAM | C14b |
 | D9 ortak metin puanlama, rubrik 100, kişi adı | TAMAM | C14b canlı: rubrik 100 |
-| Puanlama alternatif cevap kuralı | YAPILIYOR (D13) | `v6-alternatives-full` süreç ölçen soruda rubriği geçersiz kılabilir → amaca göre puanlama; gerçek modelle doğrulama sonraki yayında |
+| Puanlama alternatif cevap kuralı | MAIN'DE, YAYIN BEKLİYOR (D13) | `prova-grade/v7-purpose-aware`: yalnız sonuç / süreç / sorudan çıkar; gerçek model kontrolü `d13/run-d13.mjs` yayında. Veli rubriğinde amaç seçici yok (migration gerekir) |
 | D10 kişi adı uyarısı veliye | MAIN'DE, YAYIN BEKLİYOR | migration `400000`, pgTAP 126 |
 | D11 yönetim P2 düzeltmeleri | MAIN'DE, YAYIN BEKLİYOR | Playwright 7/7 |
 | D12 aile süzgeci, denetimde yönetici adı | MAIN'DE, YAYIN BEKLİYOR | migration `410000`, pgTAP 127; önce migration sonra yönetim yayını |
