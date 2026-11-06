@@ -1,0 +1,46 @@
+{
+ "stage": "cleanup",
+ "target": "production",
+ "at": "2026-11-06T18:58:01.156Z",
+ "checks": [
+  {
+   "name": "pilot_candidate_withdrawn",
+   "ok": true,
+   "status": "withdrawn"
+  },
+  {
+   "name": "withdrawn_scenario_not_offered",
+   "ok": true
+  },
+  {
+   "name": "withdrawn_source_stops_new_generation_before_provider",
+   "ok": true,
+   "status": 409,
+   "code": "curriculum_unavailable"
+  },
+  {
+   "name": "assigned_exam_questions_and_frozen_copy_unchanged",
+   "ok": true,
+   "sha256": "44fe5a4f509a"
+  },
+  {
+   "name": "pilot_scope_cleared",
+   "ok": true,
+   "removed": true,
+   "family_id": "06c2e60f-e656-4bb9-96a9-917171df4e56"
+  },
+  {
+   "name": "parent_delete_account_ok",
+   "ok": true,
+   "status": 200
+  },
+  {
+   "name": "anonymous_device_user_deleted_or_gone",
+   "ok": true
+  },
+  {
+   "name": "temp_admin_removed",
+   "ok": true
+  }
+ ]
+}

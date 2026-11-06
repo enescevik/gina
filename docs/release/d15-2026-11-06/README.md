@@ -153,3 +153,22 @@ Migration'sız alternatif: kısa süre global `curriculum_catalog.enabled=true` 
 - Atanmış sınav senaryo bağını kendi satırında taşımaz; iz soru provenance'ı ve üretim işi bağı (`catalog_generation_links`) üzerinden.
 - `packages/core/src/database.types.ts` yeniden üretilmedi (yeni RPC'ler yalnız servis rolü; betik tipsiz çağırır). Birleştirmeden sonra `scripts/gen-db-types-isolated.sh --run-local` önerilir.
 - Arayüz, fiziksel cihaz, çocuk cevaplama/puanlama bu pilotun kapsamında değil.
+
+## 6. Canlı koşu sonucu (6 Kasım 2026, 18:24–18:58Z)
+
+Enes onayı: "onay + MEB pilotu da" (18:23Z), "Yayımlandı" (18:54Z). Ücretli çağrı **1 / 3**.
+
+| Aşama | Yürüten | Sonuç |
+|---|---|---|
+| preflight, setup, override | Claude | geçti |
+| admin-setup, source, extract, admin-release | Codex (operatör) | resmî `turkce2.xlsx` indirildi, hash manifestle aynı, kovaya yazıldı; tekrar yeni revizyon açmadı; 46 aday taslak; geçici yönetici silindi |
+| review (yayın) | Codex, Enes'in editoryal kararıyla | revizyon onayı ayrı, tek aday `tr-2026-2027-t1-turkce2-g5-c6` yayımlandı (6 soru: 2/1/1/1/1); hücre karşılaştırması `live/source-cell-comparison.json` |
+| scope, select | Claude | yalnız pilot aile görür, genel anahtar kapalı; okul onayı zorunlu; dondurulmuş `school_catalogue` kopya, istemci yeniden yazamaz |
+| generate | Claude | gerçek model, 6 soru, blok adetleri tutuyor; her soruda senaryo/blok/çıktı/kaynak izi; 1 ortak kaynak grubu (3 soru); hak 1 kez (6 öğe) düştü, tekrar ücretsiz; uygunluk 6/6 insan incelemesi bekliyor |
+| assign | Claude | çocuk sınavı görüyor; çocuk yükünde cevap anahtarı/rubrik/provenance yok |
+| cleanup --withdraw | Codex | yayın geri çekildi; yeni üretim sağlayıcıya gitmeden `409 curriculum_unavailable`; atanmış sınav ve dondurulmuş kopya değişmedi; kapsam, hesaplar, geçici yönetici silindi |
+| verify | Claude | auth 0, aile kapsamlı tablolar 0, üretilen 6 soru yok, kapsam yok, genel anahtar kapalı, yerel durum dosyası silindi |
+
+Üretimde kalıcı kalanlar (bilinçli): resmî kaynak kaydı, onaylı revizyon ve kovadaki orijinal dosya; 45 taslak aday + 1 geri çekilmiş aday. Genel katalog kapalı.
+
+Protokol kabul testleri: 1, 2 (indirme/yeni hash/geri çekme), 3 (blok sayımı), 4 (iz), 5 (istemci provenance reddi, kopya değişmez), 6 (tekrar ücret almaz) canlıda geçti. 7 (veli/çocuk ekran okunabilirliği) cihaz kabulüne (C15) kalır. Üretilen soruların alan/dil uygunluğu insan incelemesi olmadan kabul edilmiş sayılmaz.

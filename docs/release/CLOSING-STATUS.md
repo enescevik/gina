@@ -19,7 +19,7 @@ Durumlar:
 | C02 ders bağı, tarihli görünümler | CANLIDA, TEST BEKLİYOR | C14; C15 |
 | C03 geri gönderme nedeni | TAMAM | C14; izole + canlı smoke |
 | C04 Prova merkezi | CANLIDA, TEST BEKLİYOR | Gerçek AI üretimi C14b'de geçti; cihaz C15 |
-| C05 kaynak çıkarımı | CANLIDA, TEST BEKLİYOR | MEB gerçek zinciri D15 pilotu |
+| C05 kaynak çıkarımı | TAMAM (canlı) | D15 pilotunda hosted indirme, hash, kova ve çıkarım canlı geçti |
 | C06 tek eşleme yolu | CANLIDA, TEST BEKLİYOR | C15 fiziksel cihaz |
 | C07 rol matrisi | TAMAM | pgTAP 113, C14 |
 | C08 AI sağlayıcı yönlendirmesi | TAMAM (Anthropic) / DIŞ ENGEL (X04) | Gerçek Anthropic D5 + C14b; OpenAI/Gemini anahtarı yok |
@@ -45,7 +45,7 @@ Durumlar:
 | D11 yönetim P2 düzeltmeleri | TAMAM | C14c |
 | D12 aile süzgeci, denetimde yönetici adı | TAMAM | C14c (migration önce, yönetim sonra) |
 | D14 AI sorusunu düzenleme | CANLIDA, TEST BEKLİYOR | C14c; cihaz C15 |
-| D15 MEB gerçek kabul pilotu | YAPILIYOR (canlı) | Kaynak indirildi, 46 aday; yayın Enes kararı bekliyor, ardından üretim/atama/geri çekme |
+| D15 MEB gerçek kabul pilotu | TAMAM (canlı) / TEST BEKLİYOR (ekran, test 7) | Resmî kaynak → yayın → pilot kapsamı → gerçek üretim (6 soru, 2/1/1/1/1, tam iz) → atama → geri çekme; 1 ücretli çağrı; temizlik doğrulandı. Soru içerik uygunluğu insan incelemesi bekliyor |
 | D16 teknik/hukuk metin uyumu | TAMAM (metin) / DIŞ ENGEL (hukuk onayı X03) | İngilizce Kullanım Koşulları D18'de yazılıyor |
 | D17 eşleme saklama işleri | TAMAM | C14c: iki pg_cron işi etkin, ilk çalışmada kaldırılacak cihaz 0 |
 | D11 kararları K3/K4/K5 | ERTELENDİ | DECISIONS.md |
