@@ -1,6 +1,6 @@
 import {useEffect,useState} from 'react';
 import {Platform,Text,View} from 'react-native';
-import {router,useLocalSearchParams} from 'expo-router';
+import {router,useLocalSearchParams,type Href} from 'expo-router';
 import {useTranslation} from 'react-i18next';
 import {ParentScreen,parentStyles} from '@/components/ui/parent-screen';
 import {Button} from '@/components/ui/button';
@@ -32,7 +32,7 @@ export default function AuthCallback(){
    const {data,error}=await supabase.auth.getSession();if(error)throw error;
    if(!data.session)throw code?{code:'flow_state_not_found'}:new Error('missing_session');
    if(Platform.OS==='web')await syncAppleProviderToken(data.session);
-   if(live)router.replace((Platform.OS==='web'?takeReauthReturn():null)??'/');
+   if(live)router.replace(((Platform.OS==='web'?takeReauthReturn():null)??'/') as Href);
   }catch(e){if(live)setIssue(classifyAuthIssue(e));}
  })();return()=>{live=false;};},[code,errorParam,errorCode,attempt]);
  const backToSignIn=()=>router.replace('/(auth)/sign-in');
