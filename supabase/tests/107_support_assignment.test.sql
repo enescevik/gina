@@ -142,6 +142,7 @@ select is((public.create_help_ticket(gen_random_uuid(),'idea','other','Sesli oku
 
 -- Fikir durumu ve benzer bağ (yönetici).
 select pg_temp.actor('00000000-0000-4000-8000-000000010701',true,'admin',null);
+select ok(not exists(select 1 from jsonb_array_elements(public.admin_help_ticket_meta('70000000-0000-4000-8000-000000010704')->'similar') x where jsonb_typeof(x->'linked')<>'boolean'),'unlinked candidates report linked=false, never null');
 select throws_ok($$select public.set_idea_stage(gen_random_uuid(),'70000000-0000-4000-8000-000000010701',null,null,'planned',null)$$,'22023','idea_only','support ticket cannot get an idea stage (no conversion to public idea)');
 select throws_ok($$select public.set_idea_stage(gen_random_uuid(),'70000000-0000-4000-8000-000000010703','new',null,'bogus',null)$$,'22023','invalid_input','unknown stage refused');
 select is((public.set_idea_stage(gen_random_uuid(),'70000000-0000-4000-8000-000000010704','new',null,'reviewing','70000000-0000-4000-8000-000000010703'))->>'similar_to','70000000-0000-4000-8000-000000010703','link similar idea');

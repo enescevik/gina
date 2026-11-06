@@ -85,7 +85,8 @@ function Workspace({ user, kind }: { user: string; kind: "support" | "idea" }) {
     [waiting, setWaiting] = useState(false),
     [search, setSearch] = useState(""),
     [query, setQuery] = useState(""),
-    [version, setVersion] = useState(0);
+    [version, setVersion] = useState(0),
+    [opsVersion, setOpsVersion] = useState(0);
   useEffect(() => {
     const t = setTimeout(() => setQuery(search.trim()), 350);
     return () => clearTimeout(t);
@@ -360,7 +361,7 @@ function Workspace({ user, kind }: { user: string; kind: "support" | "idea" }) {
             query={query}
             selected={selected}
             choose={choose}
-            version={version}
+            version={version * 1000 + opsVersion}
           />
         </aside>
         {selected
@@ -375,7 +376,7 @@ function Workspace({ user, kind }: { user: string; kind: "support" | "idea" }) {
               busy={busy}
               onSend={send}
               onDirty={setDirty}
-              onOpsChanged={() => setVersion((v) => v + 1)}
+              onOpsChanged={() => setOpsVersion((v) => v + 1)}
               back={() => choose(null)}
             />
           )

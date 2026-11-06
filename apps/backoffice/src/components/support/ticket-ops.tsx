@@ -28,14 +28,20 @@ export function TicketPanel(
     onChanged: () => void;
   },
 ) {
-  const [tick, setTick] = useState(0);
-  const meta = useSupportQuery(() => loadMeta(id), id + ":meta:" + tick);
+  // reload() keeps the last good data visible (same query identity), so the
+  // result note below stays on screen while fresh meta loads.
+  const meta = useSupportQuery(() => loadMeta(id), id + ":meta");
   const operators = useSupportQuery(loadOperators, "operators");
   const [busy, setBusy] = useState(false),
-    [note, setNote] = useState<{ text: string; error: boolean } | null>(null);
+    [note, setNote] = useState<{ text: string; error: boolean } | null>(null),
+    // Meta read before the last action: controls stay disabled until a fresh
+    // read replaces it, so the next change never sends a stale expectation.
+    [before, setBefore] = useState<unknown>(null);
   const m = meta.data;
+  const refreshing = before !== null && before === m;
   async function run(action: () => Promise<unknown>, done: string) {
-    if (busy || locked) return;
+    if (busy || locked || refreshing) return;
+    setBefore(m);
     setBusy(true);
     setNote(null);
     try {
@@ -46,7 +52,7 @@ export function TicketPanel(
       setNote({ text: opsError(error), error: true });
     } finally {
       setBusy(false);
-      setTick((n) => n + 1);
+      meta.reload();
     }
   }
   if (meta.error) {
@@ -78,7 +84,7 @@ export function TicketPanel(
             className="input"
             data-testid="support-assignee"
             value={m.assignee_id ?? ""}
-            disabled={busy || locked || !operators.data}
+            disabled={busy || locked || refreshing || !operators.data}
             onChange={(e) => {
               const next = e.target.value || null;
               void run(
@@ -108,7 +114,7 @@ export function TicketPanel(
             <button
               className="btn-secondary"
               data-testid="support-assign-me"
-              disabled={busy || locked}
+              disabled={busy || locked || refreshing}
               onClick={() =>
                 void run(
                   () => assignTicket(id, m.assignee_id, me.id),
@@ -120,7 +126,7 @@ export function TicketPanel(
           )
           : null}
       </div>
-      {m.kind === "idea" ? <IdeaControls meta={m} busy={busy || locked} run={run} /> : null}
+      {m.kind === "idea" ? <IdeaControls meta={m} busy={busy || locked || refreshing} run={run} /> : null}
       {note
         ? (
           <p

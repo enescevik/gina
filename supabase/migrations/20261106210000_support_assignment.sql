@@ -169,7 +169,7 @@ begin
   'idea_stage',t.idea_stage,'similar_to',t.similar_to,
   'similar',case when t.kind<>'idea' then '[]'::jsonb else (select coalesce(jsonb_agg(jsonb_build_object('id',c.id,'subject',c.subject,
      'idea_stage',c.idea_stage,'linked',c.linked,'score',c.score) order by c.linked desc,c.score desc),'[]')
-   from (select c.id,c.subject,c.idea_stage,(c.id=t.similar_to or c.similar_to=t.id) linked,
+   from (select c.id,c.subject,c.idea_stage,(c.id is not distinct from t.similar_to or c.similar_to is not distinct from t.id) linked,
      round(extensions.similarity(c.subject,t.subject)::numeric,2) score
      from public.help_tickets c where c.kind='idea' and c.id<>t.id
      and (c.id=t.similar_to or c.similar_to=t.id or extensions.similarity(c.subject,t.subject)>=0.2)
