@@ -19,6 +19,8 @@ interface AuthState {
   roles: string[];
   rolesReady: boolean;
   roleError: boolean;
+  /** Bu oturumda daha önce etkin görülmüş roller (iptal mesajı için). */
+  seenRoles: string[];
   refreshRoles: () => void;
 }
 const AuthContext = createContext<AuthState>({
@@ -28,6 +30,7 @@ const AuthContext = createContext<AuthState>({
   roles: [],
   rolesReady: false,
   roleError: false,
+  seenRoles: [],
   refreshRoles: () => {},
 });
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -40,6 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user: "",
     roles: [] as string[],
     error: false,
+    seen: [] as string[],
   });
   const [tick, setTick] = useState(0), sequence = useRef(0);
   const refreshRoles = useCallback(() => setTick((n) => n + 1), []);
@@ -107,7 +111,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               clearArticleCommands();
             } catch { /* access remains denied */ }
           }
-          setRoleState({ user, roles: data as string[], error: false });
+          setRoleState((old) => ({
+            user,
+            roles: data as string[],
+            error: false,
+            // C07: bu oturumda bir kez görülen roller; kaldırılırsa ekran "yetkiniz kaldırıldı" der.
+            seen: Array.from(new Set([...(old.user === user ? old.seen : []), ...(data as string[])])),
+          }));
         }
       } catch {
         if (live && request === sequence.current) {
@@ -115,6 +125,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             user,
             roles: old.user === user ? old.roles : [],
             error: true,
+            seen: old.user === user ? old.seen : [],
           }));
         }
       }
@@ -141,6 +152,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         roles: rolesReady ? roleState.roles : [],
         rolesReady,
         roleError: rolesReady && roleState.error,
+        seenRoles: rolesReady ? roleState.seen : [],
         refreshRoles,
       }}
     >

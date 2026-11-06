@@ -226,7 +226,8 @@ export function LibraryPackages(
             title={t("libraryPackages.start")}
             body={t("libraryPackages.scopeHelp")}
             icon={<BookOpen size={24} color="#6042DE" />}
-            onPress={() => router.push("/parent/prova/builder")}
+            // C04: açık taslak varsa ona döner, yoksa yeni taslak başlatır.
+            onPress={() => router.push("/parent/prova/exam")}
           />
         )
         : catalog.isPending

@@ -26,7 +26,7 @@ select is((select count(*)::int from pg_class c join pg_namespace n on n.oid=c.r
   0, 'gina.* tablolarında anon/authenticated select grant''i yok');
 
 -- anon EXECUTE: yalnız öğretmen paylaşım görünümü (tetikleyici fonksiyonları çağrılamaz; dışarıda).
-select is((select coalesce(string_agg(n.nspname||'.'||p.proname, ',' order by 1),'') from pg_proc p join pg_namespace n on n.oid=p.pronamespace
+select is((select coalesce(string_agg(n.nspname||'.'||p.proname, ',' order by n.nspname||'.'||p.proname),'') from pg_proc p join pg_namespace n on n.oid=p.pronamespace
             where n.nspname in ('public','gina') and p.prokind='f' and p.prorettype <> 'trigger'::regtype
               and has_function_privilege('anon', p.oid, 'EXECUTE')),
   'public.get_shared_child_view,public.unsubscribe_with_token', 'anon yalnız öğretmen paylaşım görünümü ve imzalı vazgeçme fonksiyonunu çalıştırabilir (S02)');

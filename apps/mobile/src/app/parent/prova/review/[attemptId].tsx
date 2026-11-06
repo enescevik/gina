@@ -33,10 +33,10 @@ export default function ParentReviewScreen() {
       const ids = data.exams?.question_ids ?? [];
       const [qs, answers] = await Promise.all([
         supabase.from("question_bank").select(
-          "id,stem,kind,choices,correct_key,expected_answer,solution",
+          "id,stem,kind,choices,correct_key,expected_answer,solution,explanation,provenance",
         ).in("id", ids),
         supabase.from("exam_answers").select(
-          "question_id,answer_document,answer_text,answer_key,is_correct,score",
+          "question_id,answer_document,answer_text,answer_key,is_correct,score,graded_by,ai_score",
         ).eq("attempt_id", attemptId),
       ]);
       if (qs.error || answers.error) throw qs.error ?? answers.error;

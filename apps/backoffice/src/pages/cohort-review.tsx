@@ -107,7 +107,7 @@ export default function CohortReview() {
     ? router.query.group
     : "";
   return (
-    <Layout title="Birlikte Prova · İnceleme" compact>
+    <Layout title="Birlikte Prova · İnceleme" compact roles={["content"]}>
       {session && group
         ? (
           <Workspace

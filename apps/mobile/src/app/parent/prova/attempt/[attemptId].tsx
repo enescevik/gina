@@ -213,7 +213,7 @@ export default function AttemptReviewScreen() {
               <View key={item.question_id} style={{ gap: 6, paddingVertical: 8, borderTopWidth: 1, borderTopColor: "#F0ECF4" }}>
                 <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
                   <Text className="font-body-bold text-base text-ink" style={{ flexGrow: 1 }}>
-                    {t("prova.ai.questionN", { n: item.position })} · {state === "graded" && item.score !== null ? t("prova.ai.answerScore", { score: item.score }) : t(`prova.ai.answerState.${state}`)}
+                    {t("prova.ai.questionN", { n: item.position })} · {state === "graded" && item.score !== null ? t("prova.ai.answerScore", { score: item.score }) : t(`prova.ai.answerState.${state}`)}{state === "graded" && item.graded_by ? ` · ${t(item.graded_by === "ai" ? "provaC04.review.byAi" : "provaC04.review.byParent")}` : ""}
                   </Text>
                   {state !== "unanswered" || attemptGraded ? (
                     <Pressable accessibilityRole="button" style={{ minHeight: 48, justifyContent: "center", paddingHorizontal: 8 }}

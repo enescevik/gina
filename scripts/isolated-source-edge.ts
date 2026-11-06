@@ -31,6 +31,8 @@ await import("../supabase/functions/timetable-import/index.ts");
 // C03: real account deletion path (re-authentication, preview token, Auth admin delete, storage cleanup).
 route = "/delete-account";
 await import("../supabase/functions/delete-account/index.ts");
+route = "/prova-generate";
+await import("../supabase/functions/prova-generate/index.ts");
 Deno.serve = serve;
 serve({
   hostname: "127.0.0.1",

@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Card, Layout, Notice } from "@/components/Layout";
 import { Workqueue } from "@/components/workqueue";
 import { isForbidden } from "@/lib/admin-rpc";
+import { useAuth } from "@/lib/auth";
 import { b01 } from "@/lib/admin-workqueue-text";
 import { fmtNumber } from "@/lib/format";
 import { t } from "@/lib/i18n";
@@ -49,16 +50,31 @@ function PlanTable({ title, values }: { title: string; values: Record<string, nu
   );
 }
 
+/**
+ * C07: panel her operatöre açık; iş kuyruğu sunucuda çağıranın canlı rolleriyle süzülür.
+ * Aile/abonelik sayaçları (`admin_dashboard`) yalnız tam yöneticiye yüklenir.
+ */
 export default function DashboardPage() {
+  const { isAdmin } = useAuth();
   const [revoked, setRevoked] = useState(false);
-  const { data, error, loading, reload } = useAdminQuery(async () => unwrap(await supabase().rpc("admin_dashboard")) as unknown as Dashboard);
-  const lost = revoked || isForbidden(error);
-
   return (
-    <Layout title={t.dashboard.title}>
-      {lost ? (
+    <Layout title={isAdmin ? t.dashboard.title : "İş kuyruğum"} roles={["support", "content", "finance", "release"]}>
+      {revoked ? (
         <Notice tone="error"><strong>{b01.revoked.title}.</strong> {b01.revoked.body}</Notice>
       ) : <Workqueue onForbidden={() => setRevoked(true)} />}
+      {isAdmin && !revoked ? <AdminCounts onForbidden={() => setRevoked(true)} /> : null}
+    </Layout>
+  );
+}
+
+function AdminCounts({ onForbidden }: { onForbidden: () => void }) {
+  const { data, error, loading, reload } = useAdminQuery(async () => unwrap(await supabase().rpc("admin_dashboard")) as unknown as Dashboard);
+  const lost = isForbidden(error);
+  useEffect(() => {
+    if (lost) onForbidden();
+  }, [lost, onForbidden]);
+  return (
+    <>
       {error && !lost ? (
         <Notice tone="error">
           {errorMessage(error, t.errors)}{" "}
@@ -109,6 +125,6 @@ export default function DashboardPage() {
           </Card>
         </>
       )}
-    </Layout>
+    </>
   );
 }

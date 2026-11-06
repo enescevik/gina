@@ -197,6 +197,8 @@ try {
     await refresh(a.c);
     await rpc(a.c,'set_parent_pin',{p_pin:'5678'});
     await rpc(a.c,'set_child_pin',{p_child_id:child,p_pin:'1234'});
+    // C04 UI: opt-in synthetic Pro override so the deterministic prova-generate path is reachable.
+    if(process.env.GINA_QA_UI_PLAN==='pro') await must(admin.from('entitlement_overrides').insert({family_id:a.family,plan:'pro',reason:'synthetic ui qa',ends_at:new Date(Date.now()+86400000).toISOString()}),'ui_pro_override');
     const file=process.env.GINA_QA_UI_FIXTURE||'/tmp/gina-experience-ui-private.json';
     writeFileSync(file,JSON.stringify({pid:process.pid,url:base,anon:process.env.GINA_QA_ANON,email:a.email,password:a.password,userId:user,familyId:a.family,childId:child,examId:exam.id,attemptId:attempt}),{mode:0o600});
     let timer, release;

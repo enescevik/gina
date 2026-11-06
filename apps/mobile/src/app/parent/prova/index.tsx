@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { router, useFocusEffect } from "expo-router";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
   Image,
@@ -66,11 +66,18 @@ interface HubExam {
 const HUB_EXAM_SELECT: string =
   "id,child_id,title,kind,status,timed,duration_minutes,question_ids,children(name,avatar),exam_attempts(id,status,mc_total,mc_correct,open_total,open_graded,open_pending,open_unanswered,provisional,score_pct,finished_at,created_at)";
 
+const HUB_TABS = ["prepare", "sent", "review"] as const;
+type HubTab = (typeof HUB_TABS)[number];
+
 export default function ParentProvaScreen() {
   const { t } = useTranslation(),
     { claims } = useSession(),
     familyId = claims?.family_id ?? "";
-  const [tab, setTab] = useState<"hub" | "results" | "library">("hub"),
+  // C04: üç iş — Hazırla (taslak + araçlar) / Gönderilenler / İncelenecekler.
+  const { tab: initialTab } = useLocalSearchParams<{ tab?: string }>();
+  const [tab, setTab] = useState<HubTab>(
+    HUB_TABS.includes(initialTab as HubTab) ? initialTab as HubTab : "prepare",
+  ),
     [tools, setTools] = useState(false),
     [selectedChild, setSelectedChild] = useState<string | null>(null);
   const { width, fontScale } = useWindowDimensions(),
@@ -131,6 +138,8 @@ export default function ParentProvaScreen() {
     ).map((a) => ({ exam: e, attempt: a }))
   ).sort((a, b) => b.attempt.created_at.localeCompare(a.attempt.created_at));
   const pending = attempts.filter((a) => a.attempt.status === "submitted");
+  const reviewed = attempts.filter((a) => a.attempt.status === "graded");
+  const sentOpen = visibleExams.filter((e) => e.status === "assigned").length;
   // İnceleme durumu: "2 açık uçlu cevap incelemeni bekliyor · 1 soru cevapsız". Eski kayıtta sayaç yoksa genel etiket.
   const reviewLabel = (attempt: HubAttempt) => {
     const s = attemptSummary(attempt, []);
@@ -154,7 +163,7 @@ export default function ParentProvaScreen() {
   );
   const pendingSection = pending.length ? <View style={{ gap: 12 }}>
     <Text style={b.h2}>{t("provaBuilder.reviewPending")}</Text>
-    {pending.slice(0, 3).map(({ exam, attempt }) => <Pressable key={attempt.id} accessibilityRole="button"
+    {pending.map(({ exam, attempt }) => <Pressable key={attempt.id} accessibilityRole="button"
       onPress={() => router.push({ pathname: "/parent/prova/attempt/[attemptId]", params: { attemptId: attempt.id } })}
       style={{ minHeight: 72, flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: p.line }}>
       <View style={{ width: 45, height: 45, backgroundColor: '#E5F3ED', borderRadius: 14, alignItems: 'center', justifyContent: 'center' }}><ClipboardCheck size={23} color="#227D73"/></View>
@@ -208,7 +217,7 @@ export default function ParentProvaScreen() {
             borderBottomColor: p.line,
           }}
         >
-          {(["hub", "results", "library"] as const).map((v) => (
+          {HUB_TABS.map((v) => (
             <Pressable
               key={v}
               accessibilityRole="tab"
@@ -231,8 +240,8 @@ export default function ParentProvaScreen() {
                   color: tab === v ? p.purple : p.muted,
                 }]}
               >
-                {t(`provaBuilder.${v}`)}
-              </Text>{v === 'results' && attempts.length > 0 && <Text style={{ backgroundColor: p.lilac, borderRadius: 12, minWidth: 23, textAlign: 'center', color: p.muted, fontFamily: 'Nunito_800ExtraBold', fontSize: 13, padding: 3 }}>{attempts.length}</Text>}
+                {t(`provaC04.tab.${v}`)}
+              </Text>{(v === 'review' ? pending.length : v === 'sent' ? sentOpen : activeDrafts.length) > 0 && <Text accessibilityLabel={t('provaC04.tabCount', { count: v === 'review' ? pending.length : v === 'sent' ? sentOpen : activeDrafts.length })} style={{ backgroundColor: p.lilac, borderRadius: 12, minWidth: 23, textAlign: 'center', color: p.muted, fontFamily: 'Nunito_800ExtraBold', fontSize: 13, padding: 3 }}>{v === 'review' ? pending.length : v === 'sent' ? sentOpen : activeDrafts.length}</Text>}
             </Pressable>
           ))}
         </View>
@@ -259,88 +268,119 @@ export default function ParentProvaScreen() {
         {drafts.isPending || exams.isPending
           ? <Text>{t("common.loading")}</Text>
           : null}
-        {tab === "hub"
+        {tab === "prepare"
           ? (
             <View style={{ gap: 26 }}>
-              {activeDrafts.length > 0 ? <DraftOverview drafts={activeDrafts} familyId={familyId} wide={wide} onDiscard={setDiscardDraft}>{pendingSection}</DraftOverview> : pendingSection}
+              {activeDrafts.length > 0
+                ? <DraftOverview drafts={activeDrafts} familyId={familyId} wide={wide} onDiscard={setDiscardDraft} />
+                : empty(t("provaC04.prepareEmpty"))}
               <DraftLifecycle familyId={familyId} childId={childId} selected={discardDraft} onClose={() => setDiscardDraft(null)} />
               {/* C03: toplu seçim girişi (yalnız taslaklar; Prova merkezinin geri kalanı C04). */}
               <ProvaDraftBulkEntry childId={childId} childName={children.data?.find((c) => c.id === childId)?.name} />
-              <View style={{ gap: 22, width: '100%', maxWidth: wide && activeDrafts.length > 0 ? 607 : undefined }}>
-                <Text style={b.h2}>{t("provaBuilder.assigned")}</Text>
-                {!visibleExams.length
-                  ? empty(t("provaBuilder.noAssigned"))
+              <View style={{ gap: 12 }}>
+                <Text style={b.h2}>{t("provaC04.toolsTitle")}</Text>
+                <NavigationCard
+                  title={t("library.title")}
+                  body={t("unified.libraryHelp")}
+                  onPress={() => router.push("/parent/prova/library")}
+                />
+                <NavigationCard
+                  title={t("prova.newQuestion")}
+                  body={t("unified.questionHelp")}
+                  onPress={() => router.push("/parent/prova/question")}
+                />
+                <SatinButton
+                  secondary
+                  title={t("provaBuilder.otherTools")}
+                  onPress={() => setTools((v) => !v)}
+                />
+                {tools
+                  ? ([
+                    ["provaP02.level.title", "/parent/prova/level"],
+                    ["group.title", "/parent/prova/groups"],
+                    ["prova.booklet.title", "/parent/prova/booklet"],
+                    ["prova.newBlueprint", "/parent/prova/blueprint"],
+                  ] as const).map(([label, path]) => (
+                    <NavigationCard
+                      key={path}
+                      title={t(label)}
+                      onPress={() => router.push(path)}
+                    />
+                  ))
                   : null}
-                {visibleExams.map((exam) => {
-                  const latest = [...exam.exam_attempts].sort((a, b) =>
-                    b.created_at.localeCompare(a.created_at)
-                  )[0];
-                  return (
-                    <View key={exam.id} style={b.card}>
-                      <View style={b.row}>
-                        <Avatar slug={exam.children?.avatar} size={48} />
-                        <View style={{ flex: 1, gap: 5 }}>
-                          <Text style={b.bold}>{exam.title}</Text>
-                          <Text style={b.muted}>
-                            {exam.children?.name} · {t("prova.questionCount", {
-                              count: exam.question_ids.length,
-                            })} · {exam.timed
-                              ? `${exam.duration_minutes} ${t("prova.min")}`
-                              : t("provaBuilder.untimed")}
-                          </Text>
-                        </View>
-                      </View>
-                      <Text style={b.muted}>
-                        {latest?.status === "submitted"
-                          ? reviewLabel(latest)
-                          : latest?.status === "graded"
-                          ? (latest.mc_total ?? 0) === 0
-                            ? t("prova.ai.attemptStatus.graded")
-                            : t("prova.resultMc", {
-                            correct: latest.mc_correct ?? 0,
-                            total: latest.mc_total ?? 0,
-                          })
-                          : latest?.status === "in_progress"
-                          ? t("prova.inProgress")
-                          : t(`prova.status.${exam.status}`)}
-                      </Text>
-                      {latest && ["submitted", "graded"].includes(latest.status)
-                        ? (
-                          <SatinButton
-                            secondary
-                            title={t("prova.ai.review")}
-                            icon={<ArrowRight color={p.purple} size={18} />}
-                            onPress={() =>
-                              router.push({
-                                pathname: "/parent/prova/attempt/[attemptId]",
-                                params: { attemptId: latest.id },
-                              })}
-                          />
-                        )
-                        : null}
-                    </View>
-                  );
-                })}
               </View>
             </View>
           )
           : null}
-        {tab === "results"
+        {tab === "sent"
           ? (
-            <>
+            <View style={{ gap: 22, width: "100%" }}>
+              <Text style={b.h2}>{t("provaBuilder.assigned")}</Text>
+              {!visibleExams.length ? empty(t("provaBuilder.noAssigned")) : null}
+              {visibleExams.map((exam) => {
+                const latest = [...exam.exam_attempts].sort((a, b) =>
+                  b.created_at.localeCompare(a.created_at)
+                )[0];
+                return (
+                  <View key={exam.id} style={b.card}>
+                    <View style={b.row}>
+                      <Avatar slug={exam.children?.avatar} size={48} />
+                      <View style={{ flex: 1, gap: 5 }}>
+                        <Text style={b.bold}>{exam.title}</Text>
+                        <Text style={b.muted}>
+                          {exam.children?.name} · {t("prova.questionCount", {
+                            count: exam.question_ids.length,
+                          })} · {exam.timed
+                            ? `${exam.duration_minutes} ${t("prova.min")}`
+                            : t("provaBuilder.untimed")}
+                        </Text>
+                      </View>
+                    </View>
+                    <Text style={b.muted}>
+                      {latest?.status === "submitted"
+                        ? reviewLabel(latest)
+                        : latest?.status === "graded"
+                        ? (latest.mc_total ?? 0) === 0
+                          ? t("prova.ai.attemptStatus.graded")
+                          : t("prova.resultMc", {
+                            correct: latest.mc_correct ?? 0,
+                            total: latest.mc_total ?? 0,
+                          })
+                        : latest?.status === "in_progress"
+                        ? t("prova.inProgress")
+                        : t(`prova.status.${exam.status}`)}
+                    </Text>
+                    {latest?.status === "submitted"
+                      ? (
+                        <SatinButton
+                          secondary
+                          title={t("provaC04.goReview")}
+                          icon={<ArrowRight color={p.purple} size={18} />}
+                          onPress={() => setTab("review")}
+                        />
+                      )
+                      : null}
+                  </View>
+                );
+              })}
+            </View>
+          )
+          : null}
+        {tab === "review"
+          ? (
+            <View style={{ gap: 18 }}>
+              {pending.length ? pendingSection : empty(t("provaC04.reviewEmpty"))}
               <NavigationCard
                 title={t("prova.progress.title")}
                 body={t("unified.progressHelp")}
                 onPress={() => router.push("/parent/prova/progress")}
               />
-              {!attempts.length ? empty(t("provaBuilder.noResults")) : null}
-              {attempts.map(({ exam, attempt }) => (
+              {reviewed.length ? <Text style={b.h2}>{t("provaC04.reviewedTitle")}</Text> : null}
+              {reviewed.map(({ exam, attempt }) => (
                 <NavigationCard
                   key={attempt.id}
                   title={`${exam.children?.name} · ${exam.title}`}
-                  body={attempt.status === "submitted"
-                    ? reviewLabel(attempt)
-                    : (attempt.mc_total ?? 0) === 0
+                  body={(attempt.mc_total ?? 0) === 0
                     ? t("prova.ai.attemptStatus.graded")
                     : t("prova.resultMc", {
                       correct: attempt.mc_correct ?? 0,
@@ -353,46 +393,7 @@ export default function ParentProvaScreen() {
                     })}
                 />
               ))}
-            </>
-          )
-          : null}
-        {tab === "library"
-          ? (
-            <>
-              <NavigationCard
-                title={t("library.title")}
-                body={t("unified.libraryHelp")}
-                onPress={() => router.push("/parent/prova/library")}
-              />
-              <NavigationCard
-                title={t("prova.newQuestion")}
-                body={t("unified.questionHelp")}
-                onPress={() => router.push("/parent/prova/question")}
-              />
-              <SatinButton
-                secondary
-                title={t("provaBuilder.otherTools")}
-                onPress={() => setTools((v) => !v)}
-              />
-              {tools
-                ? (
-                  <>
-                    {([
-                      ["prova.level.title", "/parent/prova/level"],
-                      ["group.title", "/parent/prova/groups"],
-                      ["prova.booklet.title", "/parent/prova/booklet"],
-                      ["prova.newBlueprint", "/parent/prova/blueprint"],
-                    ] as const).map(([label, path]) => (
-                      <NavigationCard
-                        key={path}
-                        title={t(label)}
-                        onPress={() => router.push(path)}
-                      />
-                    ))}
-                  </>
-                )
-                : null}
-            </>
+            </View>
           )
           : null}
       </ScrollView>
