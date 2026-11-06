@@ -207,3 +207,72 @@ Gina'da AI'ye giden girdiler: veli metinleri, MEB tablosu yapıştırma, fotoğr
 4. PIN/giriş oran sınırlama denetimi ve migration güvenlik betiği.
 5. Haftalık Claude güvenlik incelemesi rutini.
 6. Alan adı gelince SPF/DKIM/DMARC; lansman öncesi bağımsız sızma testi.
+
+---
+
+## 7. Öğretsen entegrasyonu: eğitmen, uzman ve kurs önerileri + birebir/sınıf görüşme — Enes'in fikri (6 Kasım)
+
+Öğretsen, aynı ekibin geliştirdiği eğitmen/kurs uygulamasıdır ve birebir ile sınıf görüşmesi (meet) özelliği gelecek. Fikir: Gina'daki çocuk ihtiyacı ve ilgisine göre veliye Öğretsen'deki eğitmen, pedagog, psikolog ve kurs/eğitim ilanlarını göstermek; görüşmeyi Öğretsen'in meet özelliğiyle yapmak.
+
+### 7.1 Temel ilke: öneriyi veli ister, veri veli izniyle ve en az ölçüde gider
+
+- **Gina varsayılan olarak Öğretsen'e hiçbir çocuk verisi göndermez.** Bağlantı veli ayarlarında ayrı bir özelliktir: "Öğretsen hesabımı bağla" (OAuth benzeri hesap bağlama), varsayılan kapalı, her an kaldırılabilir.
+- **Paylaşım her seferinde, kapsamı görünerek yapılır.** Veli bir eğitmene başvururken ya da talep açarken neyin gideceğini görür ve seçer: sınıf düzeyi, ders, zorlandığı kazanımlar özeti, isteğe bağlı kısa not. Varsayılan paket: **ad yok** (takma ad ya da "5. sınıf öğrencisi"), doğum yılı yerine sınıf, ham cevaplar ve puan geçmişi yok. Öğretmen paylaşımındaki (TEACHER_SHARE) "özet, ham veri değil" kuralı burada da geçerli.
+- **Ters yön de kontrollü:** Öğretsen'den Gina'ya yalnız veli onayıyla randevu (takvime etkinlik) ve eğitmenin bıraktığı ödev/öneri (görev şablonu) gelir; bunlar da veli onayından sonra çocuğa görünür.
+- KVKK: Gina ve Öğretsen ayrı veri sorumlusu sayılır (aynı ekip olsa bile). Aktarım için ayrı açık rıza metni + aydınlatma; `[AVUKAT]`. Ortak hesap/tek oturum açma yapılabilir ama veri tabanları ayrı kalır.
+
+### 7.2 Öneriler nasıl üretilir — ve nerede durulur
+
+| Kategori | Öneri tetikleyicisi | Sınır |
+|---|---|---|
+| **Ders eğitmeni / kurs** | Prova'da bir kazanımda süren zorlanma ("zorlandım" + tekrarlarda düşük sonuç), yaklaşan yazılı, velinin ➕ işaretleri. Kart: "Kesirlerde birebir destek isterseniz Öğretsen'de bu konuya uygun eğitmenler var." | Haftada en fazla 1 kart; veli "gösterme" diyebilir. |
+| **Yetenek / ilgi kursu** (müzik, resim, kodlama, spor, satranç) | Yalnız **velinin ya da çocuğun açıkça belirttiği** ilgi alanları (profilde "ilgi alanları" seçimi) ve sık tamamlanan etkinlik türleri. | "Yetenekli" etiketi ya da AI yargısı yok; dil "ilgisini çekebilir" düzeyinde. |
+| **Pedagog / psikolog / gelişim uzmanı** | **Otomatik öneri yok.** Yalnız veli kendisi "Uzman ara" bölümüne girince listelenir. | Gina verisinden "çocuğunuzun psikoloğa ihtiyacı var" türü bir çıkarım asla yapılmaz (tanı dili yasağı, §3a). Bu hem etik hem hukuki (sağlık verisi) zorunluluktur. |
+
+- Öneriler **cihazda ya da Gina sunucusunda** eşleştirilir; Öğretsen'e yalnız "5. sınıf matematik, kesirler, İstanbul/online" gibi anonim bir arama sorgusu gider. Veli bir ilana dokunana kadar Öğretsen hangi aileden geldiğini bilmez.
+- AI bu eşleştirmede kullanılırsa yalnız veli alanında ve takma adlı girdiyle (mevcut AI kuralı).
+
+### 7.3 İlan etiği
+
+- Kartlarda açıkça **"Öğretsen'den ilan"** ya da "Öğretsen önerisi" etiketi yazar; aynı ekibin ürünü olduğu gizlenmez.
+- **Çocuk ekranında hiçbir ilan gösterilmez** (çocuk modu ve eşleştirilmiş tablet). Yalnız veli alanı.
+- Sıralama ücretle satın alınamaz; özellikle pedagog/psikolog kategorisinde yalnız uygunluk, doğrulama ve uzaklık/online seçeneği belirler. İleride ders eğitmenlerinde "öne çıkan" alan olursa ayrı ve açıkça "sponsorlu" etiketli olur.
+- Davranışsal reklam, üçüncü taraf reklam SDK'sı, ilan için çocuk verisiyle profil çıkarma yok (DECISIONS: reklam/takip SDK'sı yok). Önerinin nedeni karta yazılır: "Bu kartı, Prova'da kesirler konusunda zorlandığı için görüyorsunuz."
+- Ücretsiz pakette ilan sıklığı Plus/Pro'dan fazla olmamalı; ücretsiz kullanıcıyı ilanla cezalandırmak güveni bozar. Öneri: tüm paketlerde aynı kural, veli tamamen kapatabilir.
+
+### 7.4 Eğitmen ve uzman güvenliği (Öğretsen tarafında şart)
+
+- Kimlik doğrulama, diploma/sertifika kontrolü; çocuklarla çalışan herkes için **adli sicil kaydı** belgesi. Psikolog için uzmanlık belgesi ve meslek kuruluşu kaydı.
+- Rozetler: "Kimliği doğrulandı", "Adli sicil kontrolü yapıldı" (tarihiyle). Doğrulanmamış eğitmen Gina'da hiç listelenmez.
+- Değerlendirme ve şikâyet mekanizması; şikâyet edilen eğitmen inceleme bitene kadar Gina listelerinden çıkar.
+
+### 7.5 Birebir ve sınıf görüşmesi (meet) — çocuk güvenliği
+
+- Görüşmeyi **veli ayarlar**; çocuk kendisi eğitmen bulamaz, mesajlaşma başlatamaz.
+- Varsayılan: veli görüşmeye **izleyici olarak katılabilir** (sessiz) ve her an girebilir; 7-9 yaşta veli onayı olmadan birebir görüşme başlamaz.
+- Eğitmen ile çocuk arasında **özel mesaj yok**; tüm yazışma veli üzerinden ya da veli de görür. Kişisel iletişim bilgisi (telefon, sosyal medya) paylaşımı sohbet filtresinde engellenir.
+- **Kayıt varsayılan kapalı.** Veli isterse kayıt; yalnız veliye açık, sınırlı süre (ör. 30 gün) ve otomatik silme. Sınıf görüşmesinde diğer çocukların görüntüsü nedeniyle kayıt yalnız tüm velilerin onayıyla.
+- Sınıf görüşmesinde çocukların tam adı yerine takma ad, kamera varsayılan kapalı, ekranda diğer çocukların bilgisi yok.
+- Görüşme Gina takvimine "Öğretsen dersi" olarak düşer; görüşme bağlantısı uygulama içinden açılır, dışarıya paylaşılabilir açık link yok.
+
+### 7.6 Mağaza ve ödeme
+
+- Birebir canlı ders gibi **kişiden kişiye gerçek zamanlı hizmetler** Apple kurallarında (3.1.3(d)) uygulama içi satın alma dışında ödenebilir; ama ödeme **Öğretsen'de** olmalı. Gina içinde fiyat ve "satın al" düğmesi gösterilmez, yalnız "Öğretsen'de görüntüle" bağlantısı olur. Böylece Gina'nın IAP kuralı (yalnız Apple/Google) bozulmaz. Mağaza incelemesi için `[DOĞRULA]`.
+- İleride iki uygulama arasında indirim (ör. Gina Pro abonelerine Öğretsen'de ilk ders indirimi) mağaza kurallarına uygun biçimde Öğretsen tarafında verilir.
+
+### 7.7 Ek öneriler
+
+- **Eğitmen raporu Gina'ya:** ders sonrası eğitmenin 3 maddelik notu ("bugün ne yaptık, ne çalışmalı") veli onayıyla Gina'ya düşer, çalışma planına görev olarak eklenebilir.
+- **Prova'yı eğitmenle paylaş:** veli tek bir denemenin sonuç özetini (ya da kitapçığını) derse girmeden önce eğitmene gönderir; eğitmen hazırlıklı gelir.
+- **Eğitmenin hazırladığı deneme:** Öğretsen eğitmeni Gina'da veliye bir Prova denemesi önerir; veli onaylarsa çocuğa atanır, sonuç yine yalnız özet olarak eğitmene döner.
+- **Okul öğretmeni ile Öğretsen eğitmeni ayrımı:** okul öğretmeni paylaşımı (TEACHER_SHARE) ile ücretli eğitmen ayrı rollerdir, izinleri ayrı yönetilir.
+- **Ücretsiz içerik önce:** zorlanma kartında ilk öneri her zaman kütüphaneden ücretsiz tekrar (§1.2) olur; eğitmen önerisi ikinci seçenektir. Gina'nın güveni "her sorunda satış" algısına dönüşmemeli.
+- **Ölçüm:** hangi önerinin işe yaradığı (ders sonrası Prova sonucunda iyileşme) yalnız aile içinde gösterilir; Öğretsen'e kişisel sonuç gitmez, yalnız veli izinliyse anonim toplu istatistik.
+
+### 7.8 Önerilen sıra
+
+1. Hukuk ve rıza çerçevesi (iki ayrı veri sorumlusu, aktarım rızası) ve Öğretsen'de eğitmen doğrulama + adli sicil şartı.
+2. Hesap bağlama + "Öğretsen'de görüntüle" bağlantılı, ilansız ilk sürüm: veli kendisi "Eğitmen/uzman ara"ya girer.
+3. Prova zorlanmasına bağlı ders eğitmeni kartı (haftada en fazla 1, etiketli, kapatılabilir).
+4. Randevunun takvime düşmesi ve eğitmen notunun göreve dönüşmesi.
+5. Meet entegrasyonu (veli katılımı, kayıt kapalı, özel mesaj yok).
