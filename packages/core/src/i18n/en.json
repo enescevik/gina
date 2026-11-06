@@ -4378,6 +4378,12 @@
     }
   },
   "c12": {
-    "builderMatchTarget": "Set the target to {{count}} questions"
+    "builderMatchTarget": "Set the target to {{count}} questions",
+    "holiday": {
+      "title": "School holiday — timetable paused",
+      "body": "{{title}} ({{range}}). Lessons are not shown on these days; the timetable was not deleted. You can change the holiday decision in Education.",
+      "child": "Today is a school holiday. No lessons; you can rest.",
+      "home": "{{name}}: school holiday — timetable paused"
+    }
   }
 }

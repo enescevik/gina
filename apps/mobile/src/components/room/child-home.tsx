@@ -80,7 +80,8 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
         {([{ count: approved, key: 'finished', Icon: Check, color: '#128772' }, { count: waiting, key: 'waiting', Icon: Clock3, color: c.amber }, { count: todo, key: 'todo', Icon: Circle, color: c.muted }] as const).map(({ count, key, Icon, color }) => <View key={key} style={[s.status, !wide && s.statusPhone]} accessible accessibilityLabel={t(`childMint.${key}`, { count })}><Icon size={wide ? 24 : 20} color={color} strokeWidth={2.3} /><Text style={[s.small, { color, textAlign: 'center', fontSize: wide ? 12 : 13 }]}>{data.loading || data.error ? '—' : t(`childMint.${key}`, { count })}</Text></View>)}
       </View>
     </View>
-    }<BagGlance childId={childId} today={data.today} onOpen={() => go('calendar')} />
+    }{data.holiday ? <View accessibilityRole="text" style={[s.card, { backgroundColor: '#E7F5EE' }]}><Text style={s.heading}>{data.holiday.title}</Text><Text style={s.text}>{t('c12.holiday.child')}</Text></View> : null}
+    <BagGlance childId={childId} today={data.today} onOpen={() => go('calendar')} />
     <View style={[s.section, s.divider, !wide && { gap: 8, paddingTop: 12 }]}>
       <Text accessibilityRole="header" style={s.heading}>{t('childMint.goal')}</Text>
       {goal.error ? <View style={s.card}><ErrorText error={goal.error} /><Pressable accessibilityRole="button" onPress={() => void goal.refetch()} style={s.chip}><Text style={s.text}>{t('common.retry')}</Text></Pressable></View> : goal.isLoading ? <ActivityIndicator color={c.purple} /> : <Pressable accessibilityRole="button" accessibilityLabel={t('room.myGoal')} onPress={() => go('goal')} style={({ pressed }) => [s.card, s.row, pressed && s.pressed]}>

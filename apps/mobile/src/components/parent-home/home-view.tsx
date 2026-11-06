@@ -35,6 +35,8 @@ export interface HomeViewProps {
   approvals: Approval[]; review: (id: string, approve: boolean, choice?: { reason: TaskReturnReason | null; note: string | null }, onDone?: () => void) => void;
   reviewing: boolean; reviewingId?: string; reviewError: unknown;
   occurrences: Occurrence<WeekEvent>[]; upcoming: Occurrence<WeekEvent> | undefined;
+  /** C12: days whose lessons are paused by an accepted school holiday (per child). */
+  holidays?: { date: string; name: string }[];
   unread: number; online: boolean;
   /** Only the child list gates the whole screen. */
   loading: boolean; error: unknown; retry: () => void;
@@ -189,6 +191,7 @@ export function ParentHomeView(p: HomeViewProps) {
       </Pressable>
     </View>
     {weekControl}
+    {(p.holidays ?? []).filter((h) => h.date === selectedDate).map((h) => <View key={`holiday-${h.name}`} accessibilityRole="text" style={[s.card, { backgroundColor: '#E7F5EE', borderColor: '#BFE5D3', paddingVertical: 12 }]}><Label>{t('c12.holiday.home', { name: h.name })}</Label></View>)}
     {p.sections.plan.loading || p.sections.plan.error ? <CardState state={p.sections.plan} message={t('parentToday.planError')} testID="home-plan-state"/> : <View style={[s.card, { paddingVertical: 4, gap: 0 }]}>
       {dayEvents.map((o, i) => <Pressable key={`${o.event.id}-${o.date}`} accessibilityRole="button" onPress={() => go({ pathname: '/parent/calendar', params: { date: o.date, ...(o.event.child_id ? { childId: o.event.child_id } : {}) } })} style={[s.eventRow, wide && { minHeight: 78 }]}>
         <Text style={s.eventTime}>{o.event.all_day ? t('calendar.allDay') : clock.format(o.startsAt)}</Text>

@@ -3,7 +3,7 @@ import { invalidateTaskState } from "@/lib/task-cache";
 import { onlineManager, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Platform } from 'react-native';
-import { localDateOf, occurrencesBetween, readReturnReason, reviewRequestKey, reviewSettled, reviewTaskArgs, tasksWithRecordedWork, taskSnapshot, templatesForPlanDay, weekDatesOf, recordedWeek, starTotalsByChild, type TaskReturnReason } from '@gina/core';
+import { localDateOf, occurrencesBetween, readReturnReason, reviewRequestKey, reviewSettled, reviewTaskArgs, tasksWithRecordedWork, taskSnapshot, templatesForPlanDay, weekDatesOf, pausedHoliday, recordedWeek, starTotalsByChild, type TaskReturnReason } from '@gina/core';
 import { useTranslation } from 'react-i18next';
 import { dayLessonOccurrences, useWeekPlans } from '@/components/planner/week-plans';
 import { ParentHomeView } from '@/components/parent-home/home-view';
@@ -260,6 +260,7 @@ export default function ParentHomeScreen() {
     familyDay={familyDay} tasks={dailyTasks} approvals={pendingApprovals}
     review={(id,approve,choice,onDone)=>{ if (reviewLock.current) return; reviewLock.current = true; review.mutate({id,approve,...choice},{onSuccess:()=>onDone?.(),onSettled:()=>{ reviewLock.current = false; }}); }} reviewing={review.isPending} reviewingId={review.variables?.id} reviewError={review.error}
     occurrences={occurrences} upcoming={upcoming}
+    holidays={visibleChildren.flatMap((c) => (weekPlans[childIds.indexOf(c.id)]?.data ?? []).filter((d) => pausedHoliday(d)).map((d) => ({ date: d.day, name: c.name })))}
     unread={inbox.data?.unread ?? 0} online={online}
     // Yalnız çocuk listesi bütün ekranı belirler; diğer sorgular kendi kartında yüklenir ve hata verir.
     loading={children.isLoading}

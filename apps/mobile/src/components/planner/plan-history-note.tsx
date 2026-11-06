@@ -5,7 +5,7 @@
 // period's snapshot, or settings scheduled for a later day.
 import { StyleSheet, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { planHistoryNote, type PlanVersionStatus } from "@gina/core";
+import { pausedHoliday, planHistoryNote, type DayPlan, type PlanVersionStatus } from "@gina/core";
 import { p } from "./ui";
 
 export type PlanHistoryEntry = {
@@ -35,6 +35,25 @@ export function PlanHistoryNote({ entry, today }: { entry: PlanHistoryEntry; tod
   );
 }
 
+/**
+ * C12: calm note for a day whose lessons are paused by a holiday the parent accepted (`plan_for_day.holiday`).
+ * The program is not deleted; routines and other items are shown exactly as the server returns them.
+ */
+export function HolidayPauseNote({ plan, name }: { plan: Pick<DayPlan, "holiday"> | null | undefined; name?: string | null }) {
+  const { t, i18n } = useTranslation();
+  const holiday = pausedHoliday(plan);
+  if (!holiday) return null;
+  const day = (value: string) =>
+    new Intl.DateTimeFormat(i18n.language, { day: "numeric", month: "long" }).format(new Date(value + "T12:00:00Z"));
+  const range = holiday.starts_on === holiday.ends_on ? day(holiday.starts_on) : `${day(holiday.starts_on)} – ${day(holiday.ends_on)}`;
+  return (
+    <View accessibilityRole="text" style={[s.box, s.holiday]}>
+      <Text style={[s.text, s.holidayTitle]}>{name ? `${name} · ` : ""}{t("c12.holiday.title")}</Text>
+      <Text style={s.text}>{t("c12.holiday.body", { title: holiday.title, range })}</Text>
+    </View>
+  );
+}
+
 /** Label for the effective-day control in an editor: "from today" or "from <date>". */
 export function effectiveFromLabel(value: string | null, today: string, t: (key: string, options?: Record<string, string>) => string, locale: string) {
   if (!value || value === today) return t("planHistory.effectiveToday");
@@ -47,5 +66,7 @@ const s = StyleSheet.create({
   box: { borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, minHeight: 48, justifyContent: "center" },
   muted: { backgroundColor: p.cream, borderColor: p.line },
   scheduled: { backgroundColor: p.lilac, borderColor: "#E4DCF4" },
+  holiday: { backgroundColor: "#E7F5EE", borderColor: "#BFE5D3", gap: 2 },
+  holidayTitle: { color: "#1F5F4E", fontFamily: "Nunito_800ExtraBold" },
   text: { color: p.muted, fontFamily: "Nunito_600SemiBold", fontSize: 14, lineHeight: 20 },
 });

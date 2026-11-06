@@ -6,6 +6,8 @@ import {
   familyLocalDay,
   planHistoryNote,
   planVersionOn,
+  pausedHoliday,
+  summarizeDayPlan,
   type PlanVersion,
 } from "./plan-history";
 
@@ -110,5 +112,19 @@ describe("plan_for_day contract", () => {
     expect(planHistoryNote(plan.plans[0]!)).toBe("unknown_before");
     expect(planHistoryNote({ status: "known", effective_from: null, known_since: "2026-10-20" })).toBe("legacy");
     expect(planHistoryNote({ status: "known", effective_from: "2026-11-13", known_since: "2026-11-06" }, "2026-11-06")).toBe("scheduled");
+  });
+  it("C12: accepted holiday pauses lessons; a pending suggestion pauses nothing", () => {
+    const holiday = { key: "tr-2026-ara", kind: "break", title: "Ara tatil", starts_on: "2026-11-05", ends_on: "2026-11-13" };
+    const accepted = dayPlanSchema.parse({
+      ...sample, day: "2026-11-07", holiday: { ...holiday, decision: "accepted" },
+      timetable: { ...sample.timetable, day_lessons: sample.timetable.day_lessons.map((l) => ({ ...l, paused: true })) },
+    });
+    expect(pausedHoliday(accepted)?.title).toBe("Ara tatil");
+    expect(summarizeDayPlan(accepted, []).lessons).toBe(0);
+    const pending = dayPlanSchema.parse({ ...sample, day: "2026-11-07", holiday: { ...holiday, decision: null } });
+    expect(pausedHoliday(pending)).toBeNull();
+    expect(summarizeDayPlan(pending, []).lessons).toBe(1);
+    expect(pausedHoliday(dayPlanSchema.parse({ ...sample, holiday: null }))).toBeNull();
+    expect(pausedHoliday(dayPlanSchema.parse(sample))).toBeNull();
   });
 });

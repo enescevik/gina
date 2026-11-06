@@ -50,6 +50,8 @@ export const dayPlanLessonSchema = z.object({
   subject_label_tr: z.string().nullable().optional(),
   subject_label_en: z.string().nullable().optional(),
   subject_source: z.enum(["lesson", "link"]).nullable().optional(),
+  /** C11: veli tatil önerisini kabul ettiyse o günün dersi silinmez, `paused` işaretlenir. */
+  paused: z.boolean().optional(),
 });
 export const dayPlanTimetableSchema = z.object({
   revision: z.number().int(),
@@ -100,6 +102,16 @@ export const scheduledEducationSchema = z.object({
   school: z.string().nullable(),
   keep_timetable: z.boolean(),
 });
+/** C11: `plan_for_day` tatil penceresi; `decision` yalnız veli kararıdır (accepted → dersler duraklatıldı). */
+export const dayPlanHolidaySchema = z.object({
+  key: z.string(),
+  kind: z.string(),
+  title: z.string(),
+  starts_on: day,
+  ends_on: day,
+  decision: z.string().nullable(),
+});
+export type DayPlanHoliday = z.infer<typeof dayPlanHolidaySchema>;
 /** `plan_for_day(p_child_id, p_day)` result. */
 export const dayPlanSchema = z.object({
   child_id: z.uuid(),
@@ -112,6 +124,7 @@ export const dayPlanSchema = z.object({
   timetable: dayPlanTimetableSchema,
   plans: z.array(dayPlanItemSchema),
   scheduled_education: scheduledEducationSchema.nullable().optional(),
+  holiday: dayPlanHolidaySchema.nullable().optional(),
 });
 export type DayPlan = z.infer<typeof dayPlanSchema>;
 /** `plan_for_days(p_child_id, p_from, p_to)`: the same contract for every day of a range (≤ 42). */
@@ -237,7 +250,7 @@ export function summarizeDayPlan(
     date: plan.day,
     due: plan.routines.length + extra.size,
     done,
-    lessons: unknown ? null : plan.timetable.day_lessons.length,
+    lessons: unknown ? null : plan.timetable.day_lessons.filter((l) => !l.paused).length,
     lessonsUnknown: unknown,
     homework: plan.plans.filter((p) => !p.content.done).length,
   };
@@ -352,3 +365,11 @@ export const routinesForDaySchema = z.object({
   })),
 });
 export type RoutinesForDay = z.infer<typeof routinesForDaySchema>;
+
+/**
+ * C12: the holiday the parent accepted for this day (lessons paused), or null. A pending/dismissed suggestion
+ * does not pause anything; routines and other plan items follow the server as returned.
+ */
+export function pausedHoliday(plan: Pick<DayPlan, "holiday"> | null | undefined): DayPlanHoliday | null {
+  return plan?.holiday?.decision === "accepted" ? plan.holiday : null;
+}

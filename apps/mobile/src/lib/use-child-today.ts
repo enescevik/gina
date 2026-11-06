@@ -5,6 +5,7 @@ import * as Crypto from "expo-crypto";
 
 import {
   dayPlansSchema,
+  pausedHoliday,
   readChildStarBalance,
   tasksWithRecordedWork,
   templatesForPlanDay,
@@ -14,6 +15,7 @@ import {
   type CompletionStatus,
   type TaskReturnReason,
   type DayPlan,
+  type DayPlanHoliday,
 } from "@gina/core";
 
 import { useFamilyTimezone } from "./family";
@@ -39,6 +41,8 @@ export interface ChildTodayData {
   /** Hafta günleri → o gün düşen görev sayısı ve biten (done+approved) sayısı. */
   weekSummary: { date: string; due: number; done: number }[];
   stars: number;
+  /** C12: holiday the parent accepted for today (lessons paused); null otherwise. */
+  holiday: DayPlanHoliday | null;
   todayDone: number;
   todayStarsEarned: number;
   loading: boolean;
@@ -182,6 +186,7 @@ export function useChildToday(childId: string, actingAsParent = false): ChildTod
     due,
     weekSummary,
     stars: starEvents.data?.balance ?? 0,
+    holiday: pausedHoliday(planOf(today)),
     todayDone: due.filter((t) => t.status === "done" || t.status === "approved").length,
     todayStarsEarned,
     loading: templates.isPending || completions.isPending || plans.isPending,

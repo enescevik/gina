@@ -4373,6 +4373,12 @@
     }
   },
   "c12": {
-    "builderMatchTarget": "Hedefi {{count}} soru yap"
+    "builderMatchTarget": "Hedefi {{count}} soru yap",
+    "holiday": {
+      "title": "Okul tatili — program duraklatıldı",
+      "body": "{{title}} ({{range}}). Bu günlerde dersler gösterilmez; ders programı silinmedi. Tatil kararını Eğitim bölümünden değiştirebilirsin.",
+      "child": "Bugün okul tatili. Ders yok; dinlenebilirsin.",
+      "home": "{{name}}: okul tatili — ders programı duraklatıldı"
+    }
   }
 }
