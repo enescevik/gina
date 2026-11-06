@@ -29,6 +29,10 @@ YAYIN ÖNCESİ KONTROL LİSTESİ (v0.2 incelemesinden):
 
 # Gina Gizlilik Politikası
 
+> **Teknik güncelleme — 6 Kasım 2026 (hesap e-postaları):** Supabase Auth hesap doğrulama ve şifre yenileme e-postaları Brevo SMTP üzerinden `noreply@ginafamily.com` göndereniyle aktiftir. E-posta dili için kullanıcı metadata’sında `locale` (`tr`/`en`) tutulur. Bu kurulum ürün duyurusu, pazarlama, hesap silme bildirimi veya SMS kanallarının açıldığı anlamına gelmez. Aşağıdaki sağlayıcı/alıcı ve aktarım açıklamaları hukuk incelemesinde Brevo hesap e-postalarını da kapsayacak şekilde tamamlanmalıdır; saklama süresi ve aktarım mekanizması burada varsayılmamıştır.
+>
+> **Technical update — 6 November 2026 (account emails):** Supabase Auth sends account confirmation and password recovery emails through Brevo SMTP as `noreply@ginafamily.com`. User metadata stores `locale` (`tr`/`en`) to choose the email language. This does not enable product announcements, marketing, account-deletion notices or SMS. The provider/recipient and international-transfer sections below still require review to cover Brevo account emails; retention periods and transfer mechanisms are not assumed here.
+
 **Sürüm:** 0.2 (taslak) · **Taslak tarihi:** 2026-10-30 · **Yürürlük tarihi:** [YÜRÜRLÜK TARİHİ]
 
 > **Durum (6 Kasım 2026, C11/S05):** Bu metin taslaktır. **Hukuk uzmanı incelemesi ve onayı yapılmadı;** uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz. 0.2'de anılan "inceleme notları" uzman onayı yerine geçmez. Uygulamayla karşılaştırma ve açık maddeler: `docs/release/c11-2026-11-06/legal-review.md`.
@@ -49,7 +53,7 @@ Türkçe metin esastır; bilgi amaçlı İngilizce sürüm sayfanın sonundadır
 
 ## 1. Kapsam
 
-Bu Gizlilik Politikası ("Politika"), [VERİ SORUMLUSU UNVANI] ("biz") tarafından "Gina" adıyla (mağazalarda "Gina Aile") sunulan iOS ve Android uygulamalarını, Gina web uygulamasını ve [WEB SİTESİ ADRESİ] adresindeki web sitesini (birlikte "Gina") kapsar. Politika yalnızca Gina'ya özgüdür; Apple, Google ve diğer üçüncü taraflar kendi hizmetlerindeki verileri kendi politikalarına göre işler.
+Bu Gizlilik Politikası ("Politika"), [VERİ SORUMLUSU UNVANI] ("biz") tarafından "Gina" adıyla (mağazalarda "Gina Aile") sunulan iOS ve Android uygulamalarını, Gina web uygulamasını ve https://ginafamily.com adresindeki web sitesini (birlikte "Gina") kapsar. Politika yalnızca Gina'ya özgüdür; Apple, Google ve diğer üçüncü taraflar kendi hizmetlerindeki verileri kendi politikalarına göre işler.
 
 Politika, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamındaki aydınlatma yükümlülüğümüzü yerine getiren [KVKK Aydınlatma Metni](./kvkk-aydinlatma-metni.md) ile birlikte okunmalıdır. Politika'ya kayıt ekranından ve Ayarlar > Gizlilik ve Yasal bölümünden her zaman ulaşabilirsiniz. Aydınlatma Metni'ni okumanız rıza anlamına gelmez; açık rıza veya ayrı izin gerektiren işlemler için onayınızı ayrı ve önceden işaretlenmemiş kutucuklarla isteriz; bu onaylar hesap açmanın, girişin veya satın almanın ön şartı değildir.
 
@@ -264,9 +268,9 @@ Politika'yı mevzuat, sağlayıcılarımız veya özelliklerimiz değiştikçe g
 - Gizlilik ve destek: [E-POSTA]
 - Posta: [ADRES] · KEP: [KEP ADRESİ]
 - Telefon kanalı yoktur.
-- Hesap ve veri silme (Privacy Choices): [Hesap ve Veri Silme](./hesap-ve-veri-silme.md) — [WEB SİTESİ ADRESİ]/legal/hesap-ve-veri-silme
-- KVKK başvurusu: [KVKK Başvuru Formu](./kvkk-basvuru-formu.md) — [WEB SİTESİ ADRESİ]/legal/kvkk-basvuru-formu
-- Bu Politika'nın sabit adresi: [WEB SİTESİ ADRESİ]/legal/gizlilik-politikasi
+- Hesap ve veri silme (Privacy Choices): [Hesap ve Veri Silme](./hesap-ve-veri-silme.md) — https://ginafamily.com/legal/hesap-ve-veri-silme
+- KVKK başvurusu: [KVKK Başvuru Formu](./kvkk-basvuru-formu.md) — https://ginafamily.com/legal/kvkk-basvuru-formu
+- Bu Politika'nın sabit adresi: https://ginafamily.com/legal/gizlilik-politikasi
 - Kişisel Verileri Koruma Kurumu: [kvkk.gov.tr](https://www.kvkk.gov.tr)
 
 ## Değişiklik geçmişi
@@ -302,7 +306,7 @@ Politika'yı mevzuat, sağlayıcılarımız veya özelliklerimiz değiştikçe g
 
 ## 1. Scope
 
-This Privacy Policy ("Policy") covers the iOS and Android apps offered by [VERİ SORUMLUSU UNVANI] ("we") under the name "Gina" (listed on the stores as "Gina Aile"), the Gina web app and the website at [WEB SİTESİ ADRESİ] (together "Gina"). The Policy is specific to Gina; Apple, Google and other third parties process data in their own services under their own policies.
+This Privacy Policy ("Policy") covers the iOS and Android apps offered by [VERİ SORUMLUSU UNVANI] ("we") under the name "Gina" (listed on the stores as "Gina Aile"), the Gina web app and the website at https://ginafamily.com (together "Gina"). The Policy is specific to Gina; Apple, Google and other third parties process data in their own services under their own policies.
 
 Read the Policy together with the KVKK Privacy Notice (Turkish), which fulfils our information duty under Turkey's Personal Data Protection Law No. 6698 ("KVKK"). You can always reach the Policy from the sign-up screen and from Settings > Privacy and Legal. Reading the Privacy Notice is not consent; for processing that requires explicit consent or a separate permission we ask with separate, unticked boxes, and none of these consents is a condition of opening an account, signing in or purchasing.
 
@@ -517,9 +521,9 @@ We update the Policy as legislation, our providers or our features change; the v
 - Privacy and support: [E-POSTA]
 - Post: [ADRES] · KEP: [KEP ADRESİ]
 - There is no telephone channel.
-- Account and data deletion (Privacy Choices): Account and Data Deletion page — [WEB SİTESİ ADRESİ]/legal/hesap-ve-veri-silme
-- Data subject requests: Data Subject Request Form — [WEB SİTESİ ADRESİ]/legal/kvkk-basvuru-formu
-- This Policy's permanent address: [WEB SİTESİ ADRESİ]/legal/gizlilik-politikasi
+- Account and data deletion (Privacy Choices): Account and Data Deletion page — https://ginafamily.com/legal/hesap-ve-veri-silme
+- Data subject requests: Data Subject Request Form — https://ginafamily.com/legal/kvkk-basvuru-formu
+- This Policy's permanent address: https://ginafamily.com/legal/gizlilik-politikasi
 - Personal Data Protection Authority of Turkey: [kvkk.gov.tr](https://www.kvkk.gov.tr)
 
 ## Change log

@@ -7,7 +7,7 @@
 | Yürürlük tarihi | [YÜRÜRLÜK TARİHİ] |
 | Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** Uygulama denetimi §2'de: web uygulaması tablodakinden fazla yerel depolama ögesi kullanıyor. |
 | Veri sorumlusu | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/VKN: [MERSİS/VKN] · KEP: [KEP ADRESİ – varsa] |
-| Yayın yeri | [WEB ADRESİ]/legal/cerez-politikasi (herkese açık HTML, TR/EN); web alt bilgisi; Gizlilik Politikası §16 ve Aydınlatma Metni §12 bağlantıları; rıza gerektiren öge eklenirse rıza bandı |
+| Yayın yeri | https://ginafamily.com/legal/cerez-politikasi (herkese açık HTML, TR/EN); web alt bilgisi; Gizlilik Politikası §16 ve Aydınlatma Metni §12 bağlantıları; rıza gerektiren öge eklenirse rıza bandı |
 | İlgili belgeler | [Gizlilik Politikası](./gizlilik-politikasi.md) · [KVKK Aydınlatma Metni](./kvkk-aydinlatma-metni.md) · [Kullanım Koşulları](./kullanim-kosullari.md) · [Abonelik Koşulları](./abonelik-kosullari-ve-on-bilgilendirme.md) · [Hesap ve Veri Silme](./hesap-ve-veri-silme.md) · [KVKK Başvuru Formu](./kvkk-basvuru-formu.md) |
 | Dil | Türkçe metin esastır (805 sayılı Kanun); İngilizce çeviri bilgi amaçlıdır ve sayfanın sonundadır. / The Turkish text prevails; an English version is at the end of this page. |
 
@@ -20,7 +20,7 @@
 
 ## 1. Kapsam ve tanımlar
 
-Bu Politika, [VERİ SORUMLUSU UNVANI] ("biz") tarafından [WEB ADRESİ] adresinde sunulan Gina ebeveyn web uygulamasını ve aynı adresteki yasal sayfaları kapsar. Hangi verileri hangi amaçla işlediğimizi KVKK Aydınlatma Metni ve Gizlilik Politikası anlatır; bu Politika yalnızca tarayıcınızda saklanan ögeleri ve web ziyaretinde kendiliğinden oluşan ağ kayıtlarını açıklar. Yalnızca ekibimizin eriştiği yönetim paneli kapsam dışındadır.
+Bu Politika, [VERİ SORUMLUSU UNVANI] ("biz") tarafından https://ginafamily.com adresinde sunulan Gina ebeveyn web uygulamasını ve aynı adresteki yasal sayfaları kapsar. Hangi verileri hangi amaçla işlediğimizi KVKK Aydınlatma Metni ve Gizlilik Politikası anlatır; bu Politika yalnızca tarayıcınızda saklanan ögeleri ve web ziyaretinde kendiliğinden oluşan ağ kayıtlarını açıklar. Yalnızca ekibimizin eriştiği yönetim paneli kapsam dışındadır.
 
 - **Çerez:** Web sitesinin tarayıcınıza yazdığı ve sonraki her istekte sunucuya geri gönderilen küçük metin dosyası.
 - **Yerel depolama (local storage / session storage):** Tarayıcının web uygulamasına ayırdığı, sunucuya kendiliğinden gönderilmeyen alan; veriyi gerektiğinde uygulama gönderir.
@@ -81,8 +81,8 @@ Cloudflare bu verileri reklam veya profil çıkarma için kullanmaz; yalnızca a
 ## 7. Tarayıcı ayarlarından silme ve engelleme
 
 - **Çıkış yapmak** oturum ögesini siler.
-- **Site verisini silmek:** Tarayıcınızın gizlilik ayarlarındaki "site verileri" veya "web sitesi verileri" bölümünden (menü adları tarayıcıya ve sürüme göre değişir) [WEB ADRESİ] için saklanan çerez ve site verisini silebilirsiniz.
-- **Engellemek:** Aynı ayarlardan [WEB ADRESİ] için çerez ve site verisini engelleyebilirsiniz; bu durumda web uygulamasına giriş yapılamaz. Gizli/özel pencere kapandığında ögeler kendiliğinden silinir.
+- **Site verisini silmek:** Tarayıcınızın gizlilik ayarlarındaki "site verileri" veya "web sitesi verileri" bölümünden (menü adları tarayıcıya ve sürüme göre değişir) https://ginafamily.com için saklanan çerez ve site verisini silebilirsiniz.
+- **Engellemek:** Aynı ayarlardan https://ginafamily.com için çerez ve site verisini engelleyebilirsiniz; bu durumda web uygulamasına giriş yapılamaz. Gizli/özel pencere kapandığında ögeler kendiliğinden silinir.
 
 Bunlar yalnızca tarayıcınızı etkiler; hesabınızdaki verileri silmek için Ayarlar > Hesap > Hesabı Sil yolunu veya [Hesap ve Veri Silme](./hesap-ve-veri-silme.md) sayfasını kullanın.
 
