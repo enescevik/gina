@@ -1,0 +1,26 @@
+[
+ {
+  "check": "questions_structured_choice_editor",
+  "passed": true,
+  "detail": {
+   "radios": 4,
+   "json": 0,
+   "checked": "Doğru şık: A"
+  }
+ },
+ {
+  "check": "sign_in_role_error_not_reported_as_no_access",
+  "passed": true,
+  "detail": "Yönetim alanına hoş geldiniz\n\nYönetici girişi\n\nCloudflare doğrulamasından sonra mevcut GINA e-posta adresiniz ve şifrenizle giriş yapın.\n\nYetkiniz şu an kontrol edilemedi. Bu, yetkinizin olmadığı anlamına gelmez; bağlantınızı kontrol edip yeniden deneyin. Yeni"
+ },
+ {
+  "check": "sign_in_no_role_reported",
+  "passed": true,
+  "detail": "Yönetim alanına hoş geldiniz\n\nYönetici girişi\n\nCloudflare doğrulamasından sonra mevcut GINA e-posta adresiniz ve şifrenizle giriş yapın.\n\nBu hesabın yönetici yetkisi yok. Yetki verildiyse çıkış yapıp yeniden giriş yapın.\nE-posta\nŞifre\nŞifreyi göster\nGiriş yap\n"
+ },
+ {
+  "check": "no_page_errors",
+  "passed": true,
+  "detail": []
+ }
+]

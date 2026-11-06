@@ -1,0 +1,200 @@
+[
+ {
+  "check": "keyboard_sign_in_order",
+  "passed": true,
+  "detail": [
+   {
+    "n": "Hesabım var",
+    "ring": true
+   },
+   {
+    "n": "Yeni hesap",
+    "ring": true
+   },
+   {
+    "n": "E-posta",
+    "ring": true
+   },
+   {
+    "n": "Şifre",
+    "ring": true
+   },
+   {
+    "n": "Şifreyi göster",
+    "ring": true
+   },
+   {
+    "n": "Şifremi unuttum",
+    "ring": true
+   },
+   {
+    "n": "Çocuk cihazını bağla",
+    "ring": true
+   },
+   {
+    "n": "Birlikte büyüyelim.\nEbeveyn hesabınızla ",
+    "ring": false
+   },
+   {
+    "n": "Hesabım var",
+    "ring": true
+   },
+   {
+    "n": "Yeni hesap",
+    "ring": true
+   },
+   {
+    "n": "E-posta",
+    "ring": true
+   },
+   {
+    "n": "Şifre",
+    "ring": true
+   }
+  ]
+ },
+ {
+  "check": "fresh_family_and_one_child",
+  "passed": true,
+  "detail": {
+   "family": "ok",
+   "child": "ok"
+  }
+ },
+ {
+  "check": "reduced_motion_no_running_css_animations_child_week",
+  "passed": true,
+  "detail": {
+   "running": 0
+  }
+ },
+ {
+  "check": "notebook_probe",
+  "passed": true,
+  "detail": {
+   "phone": {
+    "paper": {
+     "w": 340,
+     "h": 476
+    },
+    "scrollBefore": [
+     0
+    ],
+    "scrollAfter": [
+     0
+    ],
+    "outerScrollStable": true,
+    "hasExpand": 0,
+    "hasCopy": 0
+   },
+   "phoneLand": {
+    "paper": {
+     "w": 806,
+     "h": 206
+    },
+    "scrollBefore": [
+     0
+    ],
+    "scrollAfter": [
+     0
+    ],
+    "outerScrollStable": true,
+    "hasExpand": 0,
+    "hasCopy": 0
+   },
+   "tablet": {
+    "paper": {
+     "w": 718,
+     "h": 497
+    },
+    "scrollBefore": [
+     0
+    ],
+    "scrollAfter": [
+     0
+    ],
+    "outerScrollStable": true,
+    "hasExpand": 1,
+    "hasCopy": 1
+   },
+   "tabletLand": {
+    "paper": {
+     "w": 790,
+     "h": 582
+    },
+    "scrollBefore": [
+     0
+    ],
+    "scrollAfter": [
+     0
+    ],
+    "outerScrollStable": true,
+    "hasExpand": 1,
+    "hasCopy": 1
+   },
+   "rotation": [
+    {
+     "size": "tablet",
+     "paperH": 1005,
+     "url": "/parent/child-mode/prova/89176dcc-42b9-4228-8f1e-9fca4ad9a91f"
+    },
+    {
+     "size": "tabletLand",
+     "paperH": 1106,
+     "url": "/parent/child-mode/prova/89176dcc-42b9-4228-8f1e-9fca4ad9a91f"
+    },
+    {
+     "size": "tablet",
+     "paperH": 1005,
+     "url": "/parent/child-mode/prova/89176dcc-42b9-4228-8f1e-9fca4ad9a91f"
+    },
+    {
+     "size": "phone",
+     "paperH": 476,
+     "url": "/parent/child-mode/prova/89176dcc-42b9-4228-8f1e-9fca4ad9a91f"
+    },
+    {
+     "size": "tablet",
+     "paperH": 1005,
+     "url": "/parent/child-mode/prova/89176dcc-42b9-4228-8f1e-9fca4ad9a91f"
+    },
+    {
+     "size": "tablet-after-modal-rotate",
+     "paperH": 1005,
+     "url": "/parent/child-mode/prova/89176dcc-42b9-4228-8f1e-9fca4ad9a91f"
+    }
+   ],
+   "copySheet": [
+    {
+     "w": 100,
+     "h": 42,
+     "natural": "2048x768",
+     "overflowRight": -592
+    },
+    {
+     "w": 198,
+     "h": 74,
+     "natural": "960x360",
+     "overflowRight": -535
+    },
+    {
+     "w": 640,
+     "h": 240,
+     "natural": "960x360",
+     "overflowRight": -64
+    }
+   ],
+   "placedImages": [
+    {
+     "w": 373,
+     "h": 140,
+     "clippedRight": -280
+    }
+   ],
+   "expanded": {
+    "w": 718,
+    "h": 1005
+   }
+  }
+ }
+]

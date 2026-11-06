@@ -1,0 +1,22 @@
+[
+ {
+  "check": "parent_home",
+  "passed": true,
+  "detail": "okul tatili — ders programı duraklatıldı"
+ },
+ {
+  "check": "calendar_day",
+  "passed": true,
+  "detail": "Okul tatili — program duraklatıldı"
+ },
+ {
+  "check": "child_today",
+  "passed": true,
+  "detail": "Bugün okul tatili"
+ },
+ {
+  "check": "no_page_errors",
+  "passed": true,
+  "detail": []
+ }
+]
