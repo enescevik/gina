@@ -1,0 +1,88 @@
+{
+  "source": "../apple-mint-delivery/manifest.json",
+  "method": "Deterministic resizing and transparent padding of existing raster sources; no new artwork or claimed vector source.",
+  "androidSafeArea": "620px content inside 1024px canvas",
+  "assets": [
+    {
+      "file": "icon-32.png",
+      "source": "apple-mint-delivery/app-icon.png",
+      "width": 32,
+      "height": 32,
+      "alpha": false,
+      "colorSpace": "srgb",
+      "sha256": "bb6c645ac187c2c139a946f6e90fe01fd63aff19fa623b5078bbba2accc18d9a"
+    },
+    {
+      "file": "icon-48.png",
+      "source": "apple-mint-delivery/app-icon.png",
+      "width": 48,
+      "height": 48,
+      "alpha": false,
+      "colorSpace": "srgb",
+      "sha256": "d6568a567f00ce8bb41168cf42a6e2b8e7304bb6c9ea7d48b8a9aa09e920f273"
+    },
+    {
+      "file": "icon-180.png",
+      "source": "apple-mint-delivery/app-icon.png",
+      "width": 180,
+      "height": 180,
+      "alpha": false,
+      "colorSpace": "srgb",
+      "sha256": "037524015f50a4cfa12bed53219b2c62c11c26df93e46b38c5fc321ad12c5898"
+    },
+    {
+      "file": "icon-192.png",
+      "source": "apple-mint-delivery/app-icon.png",
+      "width": 192,
+      "height": 192,
+      "alpha": false,
+      "colorSpace": "srgb",
+      "sha256": "86aed04bde6b9b47db3e55eaa8d0d106a58aece35ca14b318aa53f99088dcc17"
+    },
+    {
+      "file": "icon-512.png",
+      "source": "apple-mint-delivery/app-icon.png",
+      "width": 512,
+      "height": 512,
+      "alpha": false,
+      "colorSpace": "srgb",
+      "sha256": "bf6d0e9bac60e6fd59233877c7bd72fe1a3b2cbde5f813b896210befb5fb797f"
+    },
+    {
+      "file": "android-foreground.png",
+      "source": "apple-mint-delivery/mascot-mark.png",
+      "width": 1024,
+      "height": 1024,
+      "alpha": true,
+      "colorSpace": "srgb",
+      "sha256": "f834ce6e5451823346c7d7051bc4910801bb3e4bf441cd0df2a263850e7f5e95"
+    },
+    {
+      "file": "android-monochrome.png",
+      "source": "apple-mint-delivery/mascot-mark-mono.png",
+      "width": 1024,
+      "height": 1024,
+      "alpha": true,
+      "colorSpace": "srgb",
+      "sha256": "abe9b85c20c58cbf42223787abf851288fcdf90e6506ad4f2da8863281dd47ea"
+    },
+    {
+      "file": "android-background.png",
+      "source": "apple-mint-delivery/manifest.json",
+      "width": 1024,
+      "height": 1024,
+      "alpha": false,
+      "colorSpace": "srgb",
+      "sha256": "3466ca7fbca8f719744285771610035f19c0725d3d9957df59ba63f9f4842811"
+    },
+    {
+      "file": "notification.png",
+      "source": "apple-mint-delivery/mascot-mark-mono.png",
+      "width": 96,
+      "height": 96,
+      "alpha": true,
+      "colorSpace": "srgb",
+      "sha256": "bdd9a1f0adc8d4cddc027cd541427be79631d40d32ad3b6acbc2102e6d42202c"
+    }
+  ]
+}

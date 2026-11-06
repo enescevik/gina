@@ -241,7 +241,8 @@ export function tabletInstallHtml({ version, build, installUrl }) {
   const escape = v => String(v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   return `<!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><title>Gina · Tablet kurulumu</title>
+<meta name="robots" content="noindex,nofollow"><title>GINA · Tablet kurulumu</title>
+<link rel="icon" type="image/png" href="icon.png?v=mint1"><link rel="apple-touch-icon" href="icon.png?v=mint1"><meta name="theme-color" content="#6650CD">
 <style>*{box-sizing:border-box}body{margin:0;background:#f8f5ef;color:#292149;font-family:system-ui,-apple-system,sans-serif;min-height:100svh;display:grid;place-items:center;padding:28px}main{width:min(100%,480px);background:white;padding:38px;border-radius:28px;box-shadow:0 16px 60px #2921490c}img{width:88px;height:88px;border-radius:22px}h1{font-size:29px;letter-spacing:-.8px;margin-bottom:8px}p{line-height:1.65;color:#625a74}a{display:block;padding:18px;text-align:center;background:#6242c6;color:white;text-decoration:none;border-radius:15px;font-weight:650;margin:28px 0}small{display:block;line-height:1.6;color:#71697e}.version{display:inline-block;background:#eee8fc;color:#51349d;border-radius:40px;padding:8px 14px;font-weight:600;margin-top:12px}ol{padding-left:22px;line-height:1.8;color:#625a74}footer{border-top:1px solid #eee8f4;margin-top:26px;padding-top:20px}</style></head>
 <body><main><img src="icon.png" alt="Gina"><h1>Gina tabletinde.</h1>
 <p>Kayıtlı iPad için güncel test sürümü.</p><div class="version">${escape(version)} (${escape(build)})</div>

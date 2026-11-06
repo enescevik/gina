@@ -1,5 +1,7 @@
 # GINA — tek güncel kapanış tablosu
 
+**Dil/ikon takip işi:** [7 Kasım dil ve marka yüzeyleri](locale-brand-2026-11-07/README.md). H04 ürün e-postası tasarımı da [PR #160](https://github.com/enescevik/gina/pull/160) ile canlıda. Aşağıdaki H08 yayın tablosu tarihsel kayıttır; sonradan başka thread tarafından yayımlanan AI yönetim değişikliklerinin yerine geçmez.
+
 **7 Kasım 01:25 TR bağımsız kabul güncellemesi:** [Codex canlı kontrolü](codex-live-acceptance-2026-11-07/README.md). TestFlight 32 iki testçide kurulu; H02 panel akışı ve Gmail EN confirm/reset teslimi doğrulandı; H01 sunucu sırları kuruldu. Ürün SMTP kanalı ayrıca 01:42 TR’de açıldı; Gmail teslimi ve vazgeçme testi geçti. C15 ve gerçek Apple iptali açık. Son canlı ledger 161; bu kabul turu migration/istemci yayını yapmadı.
 
 7 Kasım 2026, ~01:15 (TR), H08 sonrası uzlaştırma. Bu tablo `continuation-2026-11-06/PROGRESS.md`, `overnight-2026-11-06/PROGRESS.md` ve C/D raporlarındaki durum sütunlarının **yerini alır**. Eski tablolardaki "KOD HAZIR / yayımlanmadı" ifadeleri tarihseldir. Son kapsam kararı: Kütüphane içerik üretimi backoffice üzerinden kullanıcı tarafından, 3B dünya kullanıcı + Codex tarafından ayrı yürütülecek. İkisi de Claude devrinin dışındadır. Güncel kalan işlerin öncelik ve kabul ölçütleri: [H00–H08](../CLAUDE-REMAINING-WORK.md).
@@ -123,7 +125,7 @@ Faz 0 = yalnız veri sözleşmesi, puanlama ve RPC altyapısı; **kullanıcı ö
 
 | Kimlik | Ne kapalı | Gereken |
 |---|---|---|
-| X01 (kalan kısım) | ürün bildirim e-postaları (C10), farklı sağlayıcı ve cihaz bağlantı kabulü | Destek yönlendirmesi ve Gmail göndericisi kurulu (domain-email STATUS, PR #153/#154); kalan gerçek kanal testleri H04 |
+| X01 (kalan kısım) | farklı sağlayıcı ve cihaz bağlantı kabulü | Ürün SMTP kanalı açık; Gmail teslim/vazgeçme kabulü ve onaylı marka şablonu PR #159/#160 ile tamam. Giriş/destek ayarları korundu |
 | X02 Firebase / Play / SMS | Android iç test, SMS kanalı | hesaplar |
 | X03 mağaza ve hukuk onayı | satış, mağaza başvurusu, hukuk metinlerinin yayını | hukuk uzmanı incelemesi; yasal kimlik/adres. Bireysel geliştirici olarak başlanır, şirket kurulması ön şart değil |
 | X04 OpenAI / Gemini | ek AI sağlayıcıları (C08) | anahtarlar |
