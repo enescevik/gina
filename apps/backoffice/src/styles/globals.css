@@ -95,3 +95,20 @@
 
 /* Keep account actions reachable while the role-based navigation scrolls. */
 @media(min-width:901px){.admin-sidebar nav{min-height:0;overflow-y:auto;flex:1;padding-right:4px}.admin-sidebar nav::-webkit-scrollbar{width:8px}.admin-sidebar nav::-webkit-scrollbar-track{background:#e6edE8;border-radius:4px}.admin-sidebar nav::-webkit-scrollbar-thumb{background:#b7a8e3;border-radius:4px}.admin-sidebar .admin-nav,.admin-sidebar .admin-account,.admin-sidebar .admin-brand{flex-shrink:0}}
+/* B04 destek operasyonları: sorumlu, bekleme, fikir durumu, hazır yanıt */
+.support-ops{margin:12px 0;padding:12px 14px;border:1px solid #e0d5f3;border-radius:14px;background:#fffdfa;display:grid;gap:10px}
+.support-ops-row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px}
+.support-ops-assign,.support-ops-idea label{display:grid;gap:4px;font-size:14px;font-weight:700;color:#4a4370}
+.support-ops-assign select,.support-ops-idea select{min-height:44px;min-width:200px}
+.support-ops-hint{font-size:13px;color:#625c85;margin:0}
+.support-ops-note{margin:0;font-size:14px;color:#24705a}.support-ops-note.error{color:#a33a3a}
+.support-ops-loading{font-size:14px;color:#625c85}
+.support-ops-idea h3{font-size:15px;margin:6px 0 0}
+.support-similar{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.support-similar li{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:14px}
+.support-chip.status-overdue,.support-overdue{color:#a33a3a;font-weight:700}
+.support-ticket-ops{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:#625c85}
+.support-check{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:14px;min-height:44px}
+.support-helpers{display:grid;gap:6px;margin:8px 0}
+.support-helpers summary{cursor:pointer;font-weight:700;min-height:36px;display:flex;align-items:center}
+.support-helper-list{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}

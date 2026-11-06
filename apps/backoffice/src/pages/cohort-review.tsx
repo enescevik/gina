@@ -16,6 +16,18 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/lib/supabase";
 import { unwrap, useAdminQuery } from "@/lib/use-async";
 import { createLibraryQueue } from "@/lib/library-review";
+import { fmtDateTime } from "@/lib/format";
+import { adminRpc } from "@/lib/admin-rpc";
+import {
+  type GroupPhases,
+  nextEntry,
+  normalizeSearch,
+  participationPhase,
+  questionState,
+  type QueueEntry,
+  rankingReasonText,
+  reviewPhase,
+} from "@/lib/cohort-text";
 interface Queue {
   review_open: boolean;
   group: {
@@ -35,14 +47,7 @@ interface Queue {
     fingerprint: string;
     published: boolean;
   };
-  entries: {
-    entry_id: string;
-    alias: string;
-    attempt_status: string;
-    total: number;
-    pending: number;
-    appeals: number;
-  }[];
+  entries: QueueEntry[];
 }
 interface Question {
   ord: number;
@@ -135,7 +140,10 @@ function Workspace({ user, group }: { user: string; group: string }) {
     [ord, setOrd] = useState(1),
     [confirmPublish, setConfirmPublish] = useState(false),
     [dirty, setDirty] = useState(false),
-    [reset, setReset] = useState(0);
+    [reset, setReset] = useState(0),
+    [search, setSearch] = useState(""),
+    [focus, setFocus] = useState<"pending" | "appeal" | null>(null),
+    [queueNote, setQueueNote] = useState("");
   const gate = useRef(false);
   useEffect(() => {
     let active = true;
@@ -163,6 +171,11 @@ function Workspace({ user, group }: { user: string; group: string }) {
       ) as unknown as Queue,
     [user, group],
   );
+  const phases = useAdminQuery(
+    async () =>
+      await adminRpc("group_exam_phases", { p_group: group }) as GroupPhases,
+    [user, group],
+  );
   const detail = useAdminQuery(
     async () =>
       entry
@@ -174,9 +187,49 @@ function Workspace({ user, group }: { user: string; group: string }) {
         : null,
     [user, entry],
   );
+  // Kuyruktan gelindiyse kayıt açılınca ilgili (itirazlı / incelenmemiş) soruya git.
+  if (focus && detail.data?.entry === entry && !detail.loading) {
+    const target = detail.data.questions.find((x) =>
+      focus === "appeal"
+        ? x.appeal?.status === "open"
+        : x.question.kind !== "multiple_choice" && !x.reviewed
+    );
+    setFocus(null);
+    if (target && target.ord !== ord) setOrd(target.ord);
+  }
   const q = detail.data?.entry === entry
     ? detail.data.questions.find((x) => x.ord === ord)
     : undefined;
+  const entries = list.data?.entries ?? [];
+  const term = normalizeSearch(search);
+  const visible = term
+    ? entries.filter((e) => normalizeSearch(e.alias).includes(term))
+    : entries;
+  const openEntry = (id: string, intent: "pending" | "appeal" | null) => {
+    setEntry(id);
+    setOrd(1);
+    setFocus(intent);
+  };
+  const goNext = (kind: "pending" | "appeal") => {
+    const found = nextEntry(
+      entries,
+      entry,
+      kind === "appeal"
+        ? (e) => e.appeals > 0
+        : (e) => e.pending > 0 && e.attempt_status !== "in_progress",
+    );
+    if (!found) {
+      setQueueNote(
+        kind === "appeal"
+          ? "Açık itirazlı kayıt kalmadı."
+          : "İncelenmemiş kayıt kalmadı.",
+      );
+      return;
+    }
+    setQueueNote("");
+    setSearch("");
+    openEntry(found.entry_id, kind);
+  };
   async function send(c: CohortReviewCommand) {
     if (gate.current || storageError || !ready) return;
     gate.current = true;
@@ -231,6 +284,7 @@ function Workspace({ user, group }: { user: string; group: string }) {
       );
       list.reload();
       detail.reload();
+      phases.reload();
     } catch (e) {
       const code = (e as Error).message;
       setMessage(
@@ -246,6 +300,7 @@ function Workspace({ user, group }: { user: string; group: string }) {
       );
       list.reload();
       detail.reload();
+      phases.reload();
     } finally {
       gate.current = false;
       setBusy(false);
@@ -340,7 +395,10 @@ function Workspace({ user, group }: { user: string; group: string }) {
             <div className="mb-5 grid grid-cols-2 gap-3 md:grid-cols-4">
               {[
                 [list.data.state.participants, "Katılımcı"],
-                [list.data.state.pending, "İnceleme bekliyor"],
+                [
+                  list.data.state.pending,
+                  "İnceleme bekliyor (okunamayanlar dahil)",
+                ],
                 [list.data.state.appeals, "Açık itiraz"],
                 [
                   list.data.state.published ? "Yayımlandı" : "Taslak",
@@ -358,22 +416,74 @@ function Workspace({ user, group }: { user: string; group: string }) {
                 </div>
               ))}
             </div>
-            <div className="grid items-start gap-5 xl:grid-cols-[240px_minmax(0,1fr)]">
+            {phases.data ? <PhasesCard p={phases.data} /> : null}
+            {phases.error
+              ? (
+                <Notice tone="error">
+                  Aşama ve sıralama özeti açılamadı. İnceleme kuyruğu yine de
+                  kullanılabilir.
+                </Notice>
+              )
+              : null}
+            <div className="grid items-start gap-5 xl:grid-cols-[280px_minmax(0,1fr)]">
               <Card title="Cevaplar">
                 <p className="mb-3 text-sm text-slate-600">
                   Takma ad kullanılır. Aile ve çocuk adı bu incelemeye taşınmaz.
                 </p>
+                <div className="mb-3 grid gap-2">
+                  <button
+                    className="btn"
+                    data-testid="cohort-next-unreviewed"
+                    disabled={locked || dirty || !list.data.review_open}
+                    onClick={() => goNext("pending")}
+                  >
+                    Sıradaki incelenmemiş
+                  </button>
+                  <button
+                    className="btn-secondary"
+                    data-testid="cohort-next-appeal"
+                    disabled={locked || dirty || !list.data.review_open}
+                    onClick={() => goNext("appeal")}
+                  >
+                    Sıradaki itiraz
+                  </button>
+                </div>
+                {!list.data.review_open
+                  ? (
+                    <p className="mb-3 text-sm text-slate-600">
+                      Katılım penceresi kapanmadan cevaplar incelemeye açılmaz.
+                    </p>
+                  )
+                  : null}
+                {queueNote
+                  ? <p role="status" className="mb-3 text-sm">{queueNote}</p>
+                  : null}
+                <label className="label">
+                  Takma adla ara<input
+                    className="input"
+                    data-testid="cohort-search"
+                    type="search"
+                    value={search}
+                    placeholder="Örn. Kâşif 1a2b"
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </label>
+                <p className="my-2 text-sm text-slate-600" aria-live="polite">
+                  {term
+                    ? `${visible.length} / ${entries.length} kayıt`
+                    : `${entries.length} kayıt`}
+                </p>
                 {!list.data.entries.length
                   ? <p>Henüz cevaplayan katılımcı yok.</p>
                   : null}
-                {list.data.entries.map((e) => (
+                {term && !visible.length && entries.length
+                  ? <p>Bu takma adla kayıt bulunamadı.</p>
+                  : null}
+                {visible.map((e) => (
                   <button
                     key={e.entry_id}
                     disabled={locked || dirty}
-                    onClick={() => {
-                      setEntry(e.entry_id);
-                      setOrd(1);
-                    }}
+                    onClick={() => openEntry(e.entry_id, null)}
                     aria-pressed={entry === e.entry_id}
                     className={"mb-2 w-full rounded-2xl border p-3 text-left " +
                       (entry === e.entry_id
@@ -382,7 +492,11 @@ function Workspace({ user, group }: { user: string; group: string }) {
                   >
                     <strong>{e.alias}</strong>
                     <span className="mt-1 block text-sm">
-                      {e.pending} inceleme · {e.appeals} itiraz
+                      {e.attempt_status === "in_progress"
+                        ? "Çalışma bitmedi · incelenemez"
+                        : e.pending || e.appeals
+                        ? `${e.pending} inceleme bekliyor · ${e.appeals} itiraz`
+                        : "Tamamlandı"}
                     </span>
                   </button>
                 ))}
@@ -395,16 +509,36 @@ function Workspace({ user, group }: { user: string; group: string }) {
                         aria-label="Sorular"
                         className="mb-4 flex flex-wrap gap-2"
                       >
-                        {detail.data?.questions.map((x) => (
-                          <button
-                            key={x.ord}
-                            className={ord === x.ord ? "btn" : "btn-secondary"}
-                            disabled={locked || dirty}
-                            onClick={() => setOrd(x.ord)}
-                          >
-                            {x.ord}. soru {x.reviewed ? "✓" : ""}
-                          </button>
-                        ))}
+                        {detail.data?.entry === entry
+                          ? detail.data.questions.map((x) => {
+                            const st = questionState({
+                              kind: x.question.kind,
+                              reviewed: x.reviewed,
+                              outcome: x.outcome,
+                              appealOpen: x.appeal?.status === "open",
+                            });
+                            return (
+                              <button
+                                key={x.ord}
+                                className={ord === x.ord
+                                  ? "btn"
+                                  : "btn-secondary"}
+                                disabled={locked || dirty}
+                                aria-current={ord === x.ord ? "true" : undefined}
+                                onClick={() => setOrd(x.ord)}
+                              >
+                                {x.ord}. soru ·{" "}
+                                <span
+                                  className={st.tone === "warn"
+                                    ? "text-amber-800"
+                                    : undefined}
+                                >
+                                  {st.label}
+                                </span>
+                              </button>
+                            );
+                          })
+                          : null}
                       </nav>
                       {detail.loading ? <p>Çözüm yükleniyor…</p> : q
                         ? (
@@ -452,6 +586,22 @@ function Workspace({ user, group }: { user: string; group: string }) {
                   ? "Güncel sonuçlar ailelere açık. Yeni inceleme veya itiraz, kesin sıralamayı yeniden incelemeye alır."
                   : "Bütün incelemeler ve itirazlar tamamlanmadan kesin puan ve sıralama yayımlanmaz. Puanı kaydetmek sonuç yayımlamaz."}
               </p>
+              <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-600">
+                <li>
+                  Yayın, ailelere bu inceleme sürümündeki puanları ve geri
+                  bildirimleri açar; çocuğun özgün cevabı değişmez.
+                </li>
+                <li>
+                  Yayından sonra bir cevap yeniden değerlendirilirse veya itiraz
+                  açılırsa sonuçlar yeniden taslağa döner; kesin sıralama yeni
+                  sürüm yayımlanana kadar gösterilmez.
+                </li>
+                <li>
+                  Okunamayan, puanlanmamış veya bitmemiş kayıtlar kesin
+                  sıralamaya girmez. Sıralama isteğe bağlıdır ve sonuçtan sonra
+                  ikincil gösterilir.
+                </li>
+              </ul>
               {canPublish
                 ? (
                   <>
@@ -524,6 +674,16 @@ function ReviewQuestion({
   const open = q.appeal?.status === "open";
   return (
     <div className="grid items-start gap-4 lg:grid-cols-2">
+      {q.outcome === "unreadable"
+        ? (
+          <div className="lg:col-span-2">
+            <Notice>
+              Okunamadı — puan verilmedi. Bu cevap boş veya sıfır sayılmaz;
+              puanlanana kadar kesin sıralamaya girmez.
+            </Notice>
+          </div>
+        )
+        : null}
       <Card title={`${q.ord}. soru · Gönderilen çözüm`}>
         {q.question.group_source
           ? (
@@ -765,6 +925,74 @@ function ReviewQuestion({
             </>
           )}
       </Card>
+    </div>
+  );
+}
+
+function PhasesCard({ p }: { p: GroupPhases }) {
+  const excluded = Object.entries(p.ranking.excluded).filter(([, n]) => n > 0);
+  return (
+    <div
+      className="mb-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4"
+      aria-label="Prova aşamaları"
+    >
+      <section className="rounded-2xl border border-purple-100 bg-white p-4">
+        <h2 className="font-bold">Katılım penceresi</h2>
+        <p>{participationPhase[p.participation.phase]}</p>
+        <p className="text-sm text-slate-600">
+          {fmtDateTime(p.participation.starts_at)} –{" "}
+          {fmtDateTime(p.participation.ends_at)}
+        </p>
+        {p.participation.entries != null
+          ? (
+            <p className="text-sm text-slate-600">
+              {p.participation.entries} katılım
+            </p>
+          )
+          : null}
+      </section>
+      <section className="rounded-2xl border border-purple-100 bg-white p-4">
+        <h2 className="font-bold">Çocuğun süresi</h2>
+        <p>{p.child_time.duration_minutes} dakika · tek deneme</p>
+        <p className="text-sm text-slate-600">
+          Süre çocuk başladığında işler; katılım penceresi daha erken biterse
+          orada durur.
+        </p>
+      </section>
+      <section className="rounded-2xl border border-purple-100 bg-white p-4">
+        <h2 className="font-bold">İnceleme</h2>
+        <p>{reviewPhase[p.review.phase]}</p>
+        {p.review.required
+          ? (
+            <p className="text-sm text-slate-600">
+              {p.review.pending ?? 0} cevap bekliyor ·{" "}
+              {p.review.unfinished ?? 0} bitmemiş çalışma ·{" "}
+              {p.review.appeals ?? 0} açık itiraz
+              {p.review.publication_version
+                ? ` · yayın sürümü ${p.review.publication_version}`
+                : ""}
+            </p>
+          )
+          : null}
+      </section>
+      <section className="rounded-2xl border border-purple-100 bg-white p-4">
+        <h2 className="font-bold">Sıralama · isteğe bağlı</h2>
+        <p>{p.ranking.eligible_entries} kayıt kesin sıralamada</p>
+        <p className="text-sm text-slate-600">
+          Veli izni gerekir ve sonuçtan sonra ikincil gösterilir.
+        </p>
+        {excluded.length
+          ? (
+            <ul className="mt-2 text-sm" aria-label="Sıralamaya girmeyenler">
+              {excluded.map(([reason, n]) => (
+                <li key={reason}>
+                  {n} · {rankingReasonText(reason)}
+                </li>
+              ))}
+            </ul>
+          )
+          : null}
+      </section>
     </div>
   );
 }

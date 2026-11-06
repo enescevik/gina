@@ -9,6 +9,11 @@ import { useAuth } from "@/lib/auth";
 import { createLibraryQueue } from "@/lib/library-review";
 import { supabase } from "@/lib/supabase";
 import { fmtDateTime } from "@/lib/format";
+import { pushEvent } from "@/lib/channel-ops";
+import {
+  ChannelReadinessCard,
+  useChannelReadiness,
+} from "@/components/channel-readiness";
 interface Row {
   id: number;
   kind: string;
@@ -83,6 +88,8 @@ function Workspace({ user }: { user: string }) {
     [confirmed, setConfirmed] = useState(false),
     [message, setMessage] = useState(""),
     [success, setSuccess] = useState("");
+  const [readinessTick, setReadinessTick] = useState(0);
+  const readiness = useChannelReadiness(allowed, readinessTick);
   const gate = useRef(false), active = useRef(allowed);
   useEffect(() => {
     active.current = allowed;
@@ -195,6 +202,16 @@ function Workspace({ user }: { user: string }) {
           cihazda görüldüğü anlamına gelmez.
         </p>
       </div>
+      {allowed
+        ? (
+          <ChannelReadinessCard
+            readiness={readiness.data}
+            error={readiness.error}
+            loading={readiness.loading}
+            onRetry={() => setReadinessTick((v) => v + 1)}
+          />
+        )
+        : null}
       {message ? <Notice tone="error">{message}</Notice> : null}
       {success ? <Notice tone="ok">{success}</Notice> : null}
       {storageError
@@ -347,47 +364,81 @@ function Workspace({ user }: { user: string }) {
           <div className="grid items-start gap-4 xl:grid-cols-2">
             {data.rows.map((row) => (
               <Card key={row.id} title={kinds[row.kind] ?? "Bildirim"}>
-                <div className="mb-4 flex flex-wrap items-center gap-2">
-                  <span className="rounded-full bg-purple-50 px-3 py-2 text-sm font-bold text-purple-800">
-                    {labels[row.status] ?? row.status}
-                  </span>
-                  <span className="text-sm text-slate-500">
-                    #{row.id} · {fmtDateTime(row.created_at)}
-                  </span>
-                </div>
-                <dl className="grid grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <dt className="text-slate-500">Sağlayıcı kabulü</dt>
-                    <dd className="font-bold">
-                      {row.receipts.sent ?? 0} cihaz
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-slate-500">Bu turdaki deneme</dt>
-                    <dd className="font-bold">{row.attempts} / 5</dd>
-                  </div>
-                  <div>
-                    <dt className="text-slate-500">Geçici hata</dt>
-                    <dd className="font-bold">
-                      {row.receipts.retry ?? 0} cihaz
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-slate-500">Operatör kurtarması</dt>
-                    <dd className="font-bold">{row.revision} / 2</dd>
-                  </div>
-                </dl>
-                {row.status === "pending"
-                  ? (
-                    <p className="mt-3 text-sm">
-                      En erken deneme: {fmtDateTime(row.next_attempt_at)}
-                    </p>
-                  )
-                  : null}
+                {(() => {
+                  const ev = pushEvent(row.status, row.receipts);
+                  return (
+                    <div
+                      data-testid="push-event"
+                      className={"mb-4 rounded-2xl border p-4 " +
+                        (ev.tone === "ok"
+                          ? "border-emerald-200 bg-emerald-50"
+                          : ev.tone === "error"
+                          ? "border-red-200 bg-red-50"
+                          : "border-amber-200 bg-amber-50")}
+                    >
+                      <p className="font-bold">{ev.event}</p>
+                      <p className="mt-2 text-sm">
+                        <strong>Ne yapılmalı:</strong> {ev.fix}
+                      </p>
+                      <p className="mt-2 text-xs text-slate-600">
+                        {fmtDateTime(row.created_at)}
+                      </p>
+                    </div>
+                  );
+                })()}
+                <details className="mb-2">
+                  <summary className="cursor-pointer text-sm font-bold">
+                    Teknik makbuz
+                  </summary>
+                  <p className="mt-3 text-sm text-slate-600">
+                    Kayıt #{row.id} · durum: {labels[row.status] ?? "Bilinmiyor"}
+                  </p>
+                  <dl className="mt-2 grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <dt className="text-slate-500">
+                        Sağlayıcı kabulü (okundu değil)
+                      </dt>
+                      <dd className="font-bold">
+                        {row.receipts.sent ?? 0} cihaz
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-slate-500">Bu turdaki deneme</dt>
+                      <dd className="font-bold">{row.attempts} / 5</dd>
+                    </div>
+                    <div>
+                      <dt className="text-slate-500">Geçici hata</dt>
+                      <dd className="font-bold">
+                        {row.receipts.retry ?? 0} cihaz
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-slate-500">
+                        Kalıcı hata / geçersiz cihaz
+                      </dt>
+                      <dd className="font-bold">
+                        {(row.receipts.failed ?? 0) + (row.receipts.gone ?? 0)}
+                        {" "}
+                        cihaz
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-slate-500">Operatör kurtarması</dt>
+                      <dd className="font-bold">{row.revision} / 2</dd>
+                    </div>
+                  </dl>
+                  {row.status === "pending"
+                    ? (
+                      <p className="mt-3 text-sm">
+                        En erken deneme: {fmtDateTime(row.next_attempt_at)}
+                      </p>
+                    )
+                    : null}
+                </details>
                 {row.recoveries.length
                   ? (
-                    <details className="mt-4">
-                      <summary className="cursor-pointer font-bold">
+                    <details className="mt-2">
+                      <summary className="cursor-pointer text-sm font-bold">
                         Kontrol geçmişi
                       </summary>
                       {row.recoveries.map((r) => (
