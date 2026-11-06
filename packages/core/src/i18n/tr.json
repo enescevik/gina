@@ -1008,7 +1008,10 @@
     "returnedAction": "Yeniden dene",
     "returnedDone": "Yeniden gönder",
     "returnedPast": "Geri gönderildi · velinle konuşabilirsin",
-    "weekNoRecord": "Kayıt yok"
+    "weekNoRecord": "Kayıt yok",
+    "focusRunning": "Odak sayacın açık ve sürüyor. Görmek için dokun.",
+    "focusPaused": "Odak sayacın duraklatıldı. Hazır olduğunda devam etmek için dokun.",
+    "focusFinished": "Odak süren tamamlandı. Görevine dönmek için dokun."
   },
   "mintRelease": {
     "childSettings": "Profil ayarları",

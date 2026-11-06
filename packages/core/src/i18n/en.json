@@ -1008,7 +1008,10 @@
     "returnedAction": "Try again",
     "returnedDone": "Send again",
     "returnedPast": "Sent back · talk with your parent",
-    "weekNoRecord": "No record"
+    "weekNoRecord": "No record",
+    "focusRunning": "Your focus timer is open and running. Tap to see it.",
+    "focusPaused": "Your focus timer is paused. Tap when you are ready to continue.",
+    "focusFinished": "Your focus time is done. Tap to go back to your task."
   },
   "mintRelease": {
     "childSettings": "Profile settings",

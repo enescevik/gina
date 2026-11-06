@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
-import { CalendarDays, Check, ChevronRight, Circle, ClipboardCheck, Clock3, GraduationCap, House, LockKeyhole, Pencil, Play, Star, Trophy, X } from 'lucide-react-native';
+import { CalendarDays, Check, ChevronRight, Circle, ClipboardCheck, Clock3, GraduationCap, House, LockKeyhole, Pencil, Play, Star, Timer, Trophy, X } from 'lucide-react-native';
 import { useCallback, useRef, useState, type ComponentRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Image, Modal, ScrollView, Text, View, useWindowDimensions } from "react-native";
@@ -14,7 +14,7 @@ import { Collectible } from '@/components/collectible';
 import { rewardTicketArt } from './room-art';
 import { SatinButton } from '@/components/planner/ui';
 import { Button } from '@/components/ui/button';
-import { TaskFocus } from '@/components/tasks/task-focus';
+import { TaskFocus, useOpenFocus } from '@/components/tasks/task-focus';
 import { TaskIcon } from '@/components/task-icon';
 import { ErrorText } from '@/components/ui/screen';
 import { childPath } from '@/lib/active-child';
@@ -35,6 +35,7 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
   const goal = useChildGoal(childId);
   const exams = useChildExamCount(childId);
   const homework = useChildHomework(childId, data.today);
+  const openFocus = useOpenFocus(childId, data.today);
   const client = useQueryClient();
   const { width, height, fontScale } = useWindowDimensions();
   const insets = useSafeAreaInsets();
@@ -64,6 +65,7 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
   const panel = <View style={[s.panelContent, wide && { paddingLeft: 22 }, !wide && s.panelContentPhone, shortLandscape && { padding: 12, gap: 10 }]}>
     <View style={[s.section, !wide && { gap: 8 }]}>
       <Text accessibilityRole="header" style={s.heading}>{t('childMint.next')}</Text>
+      {openFocus && !taskSheet ? <Pressable testID="child-focus-open" accessibilityRole="button" onPress={() => openTask(openFocus.taskId)} style={({ pressed }) => [s.link, pressed && s.pressed]}><Timer size={22} color={c.purple} /><Text style={[s.small, { color: c.ink, flex: 1 }]}>{t(openFocus.phase === 'finished' ? 'childMint.focusFinished' : openFocus.running ? 'childMint.focusRunning' : 'childMint.focusPaused')}</Text><ChevronRight size={18} color={c.purple} /></Pressable> : null}
       {error ? <View style={s.card}><ErrorText error={error} />{primary(t('common.retry'), retry)}</View> : data.loading ? <View style={s.state}><ActivityIndicator color={c.purple} /><Text style={s.text}>{t('childMint.loading')}</Text></View> : next ? <View style={[s.card, !wide && { padding: 10, gap: 8 }]}>
         <View style={s.row}><View style={s.taskArt}><TaskIcon slug={next.icon} size={wide ? 76 : 60} variant="illustrated" /></View><View style={{ flex: 1, gap: 4 }}><Text style={[s.heading, { fontSize: 19 }]}>{next.title}</Text><Text style={s.text}>{t('room.plusStars', { count: next.stars })}</Text>{next.status === 'returned' && <Text style={[s.small, { color: c.amber }]}>{t('child.returnedTryAgain')}</Text>}</View></View>
         {next.status === 'returned' && <View testID="child-returned-explain" style={{ backgroundColor: '#FFF6E5', borderRadius: 14, padding: 10, gap: 4 }}><Text style={[s.small, { color: c.ink }]}>{t('childMint.returnedTitle')}</Text><Text style={s.small}>{t('childMint.returnedBody')}</Text></View>}
