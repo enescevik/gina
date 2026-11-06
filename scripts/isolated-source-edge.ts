@@ -30,6 +30,9 @@ route = "/timetable-import";
 await import("../supabase/functions/timetable-import/index.ts");
 route = "/prova-generate";
 await import("../supabase/functions/prova-generate/index.ts");
+// C10: unchanged one-click unsubscribe handler (service role RPC; no provider).
+route = "/channel-unsubscribe";
+await import("../supabase/functions/channel-unsubscribe/index.ts");
 Deno.serve = serve;
 serve({
   hostname: "127.0.0.1",
