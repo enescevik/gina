@@ -98,3 +98,7 @@
 - Gerçek il takvimlerinin (İstanbul/Ankara/Kastamonu/Sivas) yayını yönetici işidir; bu dal hiçbir gerçek takvimi yayımlamadı. Düzce (düşük güven) içe aktarılmıyor ve kapı her yoldan yayını engelliyor.
 - `database.types.ts` yeniden üretilmedi; yeni RPC'ler backoffice'te `s04Rpc`, mobilde gevşek `rpc` ile çağrılıyor.
 - Fiziksel cihaz, VoiceOver/TalkBack denenmedi; kanıt web export + Playwright.
+
+## Main ile son birleştirme (C09 `a8c94ce`)
+
+Rapor commit'inden sonra main (C09 ön inceleme, migration `20261106320000`, pgTAP 118) birleştirildi (`7496398`); çakışma yok, C09 migration'ı C11 fonksiyonlarına dokunmuyor. Birleşik ağaçta yeniden koşuldu: tam pgTAP Europe/Istanbul **117 dosya, 5086 kontrol, 0 hata** ([post-merge-istanbul](post-merge-istanbul/sql-checks.json)), UTC **117 dosya, 5086 kontrol, 0 hata** ([post-merge-utc](post-merge-utc/sql-checks.json)); backoffice typecheck/lint temiz; mobil `tsc` çıkış 0. İzole servis ve Playwright birleşmeden önceki ağaçta koştu (C11 dosyaları birleşmede değişmedi).
