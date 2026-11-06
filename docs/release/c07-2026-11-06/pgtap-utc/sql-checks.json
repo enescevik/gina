@@ -538,11 +538,31 @@
       "failed": 0
     },
     {
+      "file": "109_subject_link_and_dated_views.test.sql",
+      "passed": 149,
+      "failed": 0
+    },
+    {
+      "file": "110_prova_draft_context.test.sql",
+      "passed": 47,
+      "failed": 0
+    },
+    {
+      "file": "111_curriculum_pipeline_ops.test.sql",
+      "passed": 106,
+      "failed": 0
+    },
+    {
+      "file": "112_pairing_handoff.test.sql",
+      "passed": 38,
+      "failed": 0
+    },
+    {
       "file": "113_operator_access.test.sql",
       "passed": 191,
       "failed": 0
     }
   ],
   "failures": [],
-  "assertions": 4295
+  "assertions": 4635
 }
