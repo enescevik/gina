@@ -1,6 +1,6 @@
 # Codex bağımsız canlı kabul — 7 Kasım 2026
 
-İncelenen main: `d582bde6eafd3a1d4d3f61f389c6b9f909b41fe5`. Kontroller 6 Kasım 22:12–22:25 UTC / 7 Kasım 01:12–01:25 TR. H00–H08 kabul işlemleridir; ayrı Prova thread'ine, kütüphane üretimine ve 3B dünyaya müdahale edilmedi. Yerel değişiklikler korunarak ayrı worktree kullanıldı.
+İncelenen main: `d582bde6eafd3a1d4d3f61f389c6b9f909b41fe5`. Kontroller 6 Kasım 22:12–22:27 UTC / 7 Kasım 01:12–01:27 TR. H00–H08 kabul işlemleridir; ayrı Prova thread'ine, kütüphane üretimine ve 3B dünyaya müdahale edilmedi. Yerel değişiklikler korunarak ayrı worktree kullanıldı.
 
 ## Tamamlananlar
 
@@ -24,8 +24,10 @@
 - `health.json`, `server-readiness.json`: bağımsız canlı salt okunur sağlık ve sunucu özeti.
 - `meb-acceptance.json`: gerçek yönetici akışından sonra SQL sayıları + resmî dosya hash eşleşmesi.
 - `apple-provisioning.json`: yalnız sır adları ve işçi HTTP sonuçları; sır değerleri yok.
+- `apple-vault-dispatch.json`: zamanlayıcının kullandığı pg_net + Vault yolu ayrıca çalıştırıldı; HTTP200, timed_out=false, processed=0. Gerçek Apple iptali sayılmaz.
 - `email-trigger.json`, `email-delivery.json`, `email-cleanup.json`: teslim sınırı, Gmail metadata ve temizlik.
 - `password-delete-smoke.json`: yeni bağımsız sentetik silme testi.
+- Son salt okunur SQL kontrolü: bu tura ait sentetik silme kullanıcıları **0**, e-posta test kullanıcıları **0**, sentetik aileler **0**.
 - Tarayıcı ekran görüntüleri bu kontrolün yerel worktree'sinde tutuldu; testçi e-posta adreslerini gereksiz yere Git'e taşımamak için yayımlanmadı.
 
 Önceki `h08-2026-11-06/live-smoke.json` referansı main'de gerçek bir dosyaya gitmiyordu (yalnız betik var). Önceki koşunun kanıtı varmış gibi sayılmadı; yukarıdaki yeni bağımsız test ve kayıtları onun yerine doğrulama sağlıyor.
