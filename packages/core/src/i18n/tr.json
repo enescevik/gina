@@ -554,6 +554,7 @@
   "prova.qt.child.clock.step_one": "Dakika düğmesi her basışta {{count}} dakika değiştirir.",
   "prova.qt.child.clock.step_other": "Dakika düğmesi her basışta {{count}} dakika değiştirir.",
   "prova.qt.child.clock.stepHour": "Bu soruda yalnız tam saatler var.",
+  "prova.qt.child.clock.parentCheck": "Bu saat sorusuna bir büyüğünle birlikte bakacaksınız. Şimdilik bir sonraki soruya geçebilirsin.",
   "prova.qt.child.clock.analogFace": "Akrepli ve yelkovanlı saat",
   "prova.qt.child.clock.digitalFace": "Dijital saat",
   "prova.qt.child.clock.yourAnswer": "Senin cevabın",

@@ -142,7 +142,7 @@ export default function TakeExamScreen() {
     queryKey: ["notebook_exam_title", examId],
     enabled: !!attempt.data,
     queryFn: async () => {
-      const { data, error } = await supabase.from("exams").select("title").eq(
+      const { data, error } = await supabase.from("exams").select("title, grade").eq(
         "id",
         examId,
       ).single();
@@ -914,6 +914,7 @@ export default function TakeExamScreen() {
                 <StructuredQuestion
                   key={q.id}
                   questionId={q.id}
+                  grade={examInfo.data?.grade}
                   type={q.interaction_type}
                   schemaVersion={q.schema_version}
                   payload={q.payload}

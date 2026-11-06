@@ -554,6 +554,7 @@
   "prova.qt.child.clock.step_one": "Minutes change by {{count}}.",
   "prova.qt.child.clock.step_other": "Minutes change by {{count}}.",
   "prova.qt.child.clock.stepHour": "Only whole hours in this question.",
+  "prova.qt.child.clock.parentCheck": "You’ll look at this clock question together with a grown-up. You can go on to the next question for now.",
   "prova.qt.child.clock.analogFace": "Clock with hands",
   "prova.qt.child.clock.digitalFace": "Digital clock",
   "prova.qt.child.clock.yourAnswer": "Your answer",

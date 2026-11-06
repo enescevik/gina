@@ -1,9 +1,9 @@
 import { type Phase2bAnswerOf, type Phase2bPayload, type Stimulus } from "@gina/core";
 import { useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
-import { useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { Text, View, useWindowDimensions } from "react-native";
+import { AccessibilityInfo, Text, View, useWindowDimensions } from "react-native";
 import Svg, { Circle, Defs, Line, Path, Pattern, Rect, Text as SvgText } from "react-native-svg";
 import { Check, Minus, Plus } from "lucide-react-native";
 import { Pressable } from "@/components/ui/pressable";
@@ -13,7 +13,7 @@ import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import { Counter } from "./phase2a";
 import { toggleSelected } from "./phase2a-model";
-import { boxStyle, handAngles, minuteStep, sectorPath, stepClock } from "./phase2b-model";
+import { boxStyle, clockNeedsParent, displayHour, handAngles, minuteStep, sectorPath, stepClock, twelveHourForGrade } from "./phase2b-model";
 import { Help, SectionTitle, StepNote, qt } from "./ui";
 
 // ---------------------------------------------------------------------------------------------
@@ -273,16 +273,41 @@ function Stepper({ label, value, onMinus, onPlus, disabled, testID }: { label: s
   );
 }
 
-export function ClockQuestion({ payload, answer, onChange, disabled }: {
+/** Ekran okuyucu açık mı (açılış + değişiklik dinleyicisi). */
+function useScreenReader() {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    let live = true;
+    void AccessibilityInfo.isScreenReaderEnabled().then((v) => { if (live) setOn(v); }).catch(() => undefined);
+    const sub = AccessibilityInfo.addEventListener("screenReaderChanged", setOn);
+    return () => { live = false; sub.remove(); };
+  }, []);
+  return on;
+}
+
+export function ClockQuestion({ payload, answer, onChange, disabled, grade }: {
   payload: Phase2bPayload<"clock">; answer: Phase2bAnswerOf<"clock"> | undefined; onChange: (a: Phase2bAnswerOf<"clock">) => void; disabled: boolean;
+  /** Sınavın sınıfı: 1–4 → 12 saatlik düğmeler. */
+  grade?: number | null;
 }) {
   const { t } = useTranslation();
+  const screenReader = useScreenReader();
+  const twelve = twelveHourForGrade(grade);
+  const parentCheck = clockNeedsParent(payload.mode, screenReader);
+  const announced = useRef(false);
+  useEffect(() => {
+    if (parentCheck && !announced.current) {
+      announced.current = true;
+      AccessibilityInfo.announceForAccessibility(t("prova.qt.child.clock.parentCheck"));
+    }
+  }, [parentCheck, t]);
   const { width, height } = useWindowDimensions();
   const time = answer?.time;
   const step = payload.step_minutes;
   const mStep = minuteStep(step);
-  const set = (delta: { hours?: number; minutes?: number }) => onChange({ type: "clock", v: 1, time: stepClock(time, delta, step) });
-  const hh = time ? time.slice(0, 2) : "--", mm = time ? time.slice(3) : "--";
+  const set = (delta: { hours?: number; minutes?: number }) => onChange({ type: "clock", v: 1, time: stepClock(time, delta, step, twelve) });
+  const hh = time ? displayHour(time, twelve) : "--", mm = time ? time.slice(3) : "--";
+  const shown = time ? `${hh}:${mm}` : null;
   const read = payload.mode === "read";
   // Kısa yatay ekranda düğmeler görünür kalsın diye yüz yüksekliğe göre de küçülür.
   const face = Math.max(140, Math.min(260, width - 96, height * 0.42));
@@ -293,16 +318,21 @@ export function ClockQuestion({ payload, answer, onChange, disabled }: {
         // Okuma modunda yüzün erişilebilir etiketi saati SÖYLEMEZ (aksi halde cevap verilmiş olur).
         <ClockFace testID="qt-clock-shown" time={payload.shown_time ?? null} display={payload.display} size={face} label={t(payload.display === "analog" ? "prova.qt.child.clock.analogFace" : "prova.qt.child.clock.digitalFace")} />
       ) : (
-        <ClockFace testID="qt-clock-set" time={time ?? null} display={payload.display} size={face} label={time ? t("prova.qt.child.clock.yourTime", { time }) : t("prova.qt.child.clock.notSet")} />
+        <ClockFace testID="qt-clock-set" time={payload.display === "digital" ? shown : time ?? null} display={payload.display} size={face} label={shown ? t("prova.qt.child.clock.yourTime", { time: shown }) : t("prova.qt.child.clock.notSet")} />
       )}
+      {parentCheck ? (
+        // Görme desteğiyle okuma modunda saat sorulamaz: cevapsız bırakılır, veli birlikte bakar (puan kuyruğuna düşer).
+        <StepNote testID="qt-clock-parent-check">{t("prova.qt.child.clock.parentCheck")}</StepNote>
+      ) : <>
       <SectionTitle>{t(read ? "prova.qt.child.clock.yourAnswer" : "prova.qt.child.clock.setTitle")}</SectionTitle>
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
         <Stepper testID="qt-clock-hour" label={t("prova.qt.child.clock.hour")} value={hh} disabled={disabled} onMinus={() => set({ hours: -1 })} onPlus={() => set({ hours: 1 })} />
         {mStep ? <Stepper testID="qt-clock-minute" label={t("prova.qt.child.clock.minute")} value={mm} disabled={disabled} onMinus={() => set({ minutes: -mStep })} onPlus={() => set({ minutes: mStep })} /> : null}
       </View>
       <Text testID="qt-clock-answer" accessibilityLiveRegion="polite" style={{ alignSelf: "center", fontFamily: "Nunito_800ExtraBold", fontSize: 18, color: qt.ink }}>
-        {time ? t("prova.qt.child.clock.yourTime", { time }) : t("prova.qt.child.clock.notSet")}
+        {shown ? t("prova.qt.child.clock.yourTime", { time: shown }) : t("prova.qt.child.clock.notSet")}
       </Text>
+      </>}
     </View>
   );
 }
