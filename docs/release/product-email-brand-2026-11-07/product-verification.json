@@ -1,0 +1,34 @@
+{
+  "checkedAt": "2026-11-06T22:52:37.541Z",
+  "requested": {
+    "kind": "email",
+    "masked": "e***@gmail.com",
+    "status": "pending",
+    "expires_at": "2026-11-06T23:52:18.245364+00:00"
+  },
+  "worker": {
+    "ok": true,
+    "claimed": 0,
+    "accepted": 0,
+    "retry": 0,
+    "failed": 0,
+    "unconfigured": 0,
+    "channels": {
+      "claimed": 1,
+      "accepted": 1,
+      "retry": 0,
+      "failed": 0,
+      "unconfigured": 0
+    }
+  },
+  "receipts": [
+    {
+      "accepted_at": "2026-11-06 22:52:30.947676+00",
+      "attempts": 1,
+      "kind": "contact_verification",
+      "last_error": null,
+      "provider": "smtp",
+      "status": "accepted"
+    }
+  ]
+}

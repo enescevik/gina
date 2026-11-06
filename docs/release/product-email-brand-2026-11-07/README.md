@@ -17,7 +17,12 @@
 - Deno: SMTP/Resend, kanal işçisi, marka/XSS/MIME, unsubscribe ve TLS/STARTTLS toplam **30 test geçti**.
 - Auth şablon denetimi: 8 dil varyantı, hata yok.
 - Tarayıcı önizleme: Türkçe 390 px ve İngilizce 320 px; yatay taşma yok, logo/maskot yükleniyor. Bu, Gmail/iOS Mail gerçek görünüm kabulünün yerine geçmez.
-- Canlı yayın ve Gmail teslim kanıtı aşağıdaki takip kaydında tamamlanacaktır.
+- `b7998528` kaynak commit'inden yalnız `push-send` yayımlandı: ACTIVE, sürüm 26. `verify_jwt=false` mevcut durumuyla korundu; işçi kendi özel sırrıyla doğrulanır (`deployment.json`).
+- Gerçek üretim kuyruğundan kendi test adresimize hem doğrulama hem duyuru ulaştı: Gmail INBOX, SPF/DKIM/DMARC başarılı, HTML + düz metin birlikte (`delivery.json`). Gmail'de logo, aile maskotu, başlık, gövde, mor düğme ve izin kapatma bağlantısı görsel olarak kontrol edildi.
+- Tekrar işçi çağrısı ikinci ileti üretmedi; iki gönderinin de deneme sayısı 1 (`product-verification.json`, `product-announcement.json`).
+- İzin kapatma 200, tekrar çağrı `already_unsubscribed`; sonraki test bildirimi gönderilmeden `preference_off` ile atlandı (`product-unsubscribe.json`).
+- Brevo'nun teslim sırasında görsel/bağlantı adreslerini yeniden yazdığı ve takip pikseli eklediği gözlendi. Ortak hesap ayarlarına müdahale edilmedi.
+- Sentetik test hesabı gerçek hesap silme akışıyla temizlendi; aile, iletişim adresi ve kuyruk kalıntıları `product-cleanup.json` ile doğrulandı.
 
 ## Sınırlar
 

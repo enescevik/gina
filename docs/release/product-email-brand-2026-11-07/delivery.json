@@ -1,0 +1,48 @@
+{
+  "verification": {
+    "receivedInInbox": true,
+    "auth": [
+      "dkim=pass",
+      "spf=pass",
+      "dmarc=pass"
+    ],
+    "mimeTypes": [
+      "multipart/alternative",
+      "text/plain",
+      "text/html"
+    ],
+    "logo": true,
+    "brandPurple": true,
+    "hasHtml": true,
+    "unsubscribeHeader": true,
+    "oneClickHeader": true
+  },
+  "announcement": {
+    "receivedInInbox": true,
+    "auth": [
+      "dkim=pass",
+      "spf=pass",
+      "dmarc=pass"
+    ],
+    "mimeTypes": [
+      "multipart/alternative",
+      "text/plain",
+      "text/html"
+    ],
+    "logo": true,
+    "brandPurple": true,
+    "hasHtml": true,
+    "unsubscribeHeader": true,
+    "oneClickHeader": true
+  },
+  "visualReview": {
+    "gmailChrome": "Logo, family mascot, heading, body, CTA and unsubscribe footer visually verified",
+    "responsivePreviewWidths": [
+      320,
+      390
+    ],
+    "nativeIosMail": "not tested",
+    "outlook": "not tested",
+    "providerRewrites": "Brevo rewrites image/link URLs and adds tracking; shared account settings were not changed"
+  }
+}
