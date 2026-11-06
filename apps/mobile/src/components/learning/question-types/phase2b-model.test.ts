@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { answerErrors, answerState } from "@gina/core";
 import { canRender, questionFillState, readStimulus, readStructuredAnswer, withoutStimulus } from "./model";
-import { boxStyle, handAngles, minuteStep, phase2bReviewRows, regionCountSummary, sectorPath, stepClock } from "./phase2b-model";
+import { boxStyle, clockNeedsParent, displayHour, handAngles, minuteStep, phase2bReviewRows, regionCountSummary, sectorPath, stepClock, twelveHourForGrade } from "./phase2b-model";
 import { CHILD_SUPPORTED_TYPES, CLIENT_SUPPORTED_WITH_PHASE2B, PHASE2B_CHILD_ENABLED } from "./support";
 
 const labels = { selected: "seçti", notSelected: "seçmedi", shouldSelect: "seçilmeli", shouldNotSelect: "seçilmemeli", marked: () => "", notMarked: "", notAnError: "", stage1: "", stage2: "", time: "Saat" };
@@ -29,6 +29,37 @@ describe("clock steppers", () => {
     expect(handAngles("03:30")).toEqual({ hour: 105, minute: 180 });
     expect(handAngles("12:00")).toEqual({ hour: 0, minute: 0 });
     expect(handAngles("3:30")).toBeNull();
+  });
+});
+
+describe("12-hour clock for grades 1-4", () => {
+  it("picks the mode from the exam grade", () => {
+    expect([1, 3, 4].map(twelveHourForGrade)).toEqual([true, true, true]);
+    expect([5, 8, null, undefined, 0].map(twelveHourForGrade)).toEqual([false, false, false, false, false]);
+  });
+  it("shows 1-12 and stores h % 12 (12 -> 00)", () => {
+    expect(stepClock(undefined, { minutes: 5 }, 5, true)).toBe("00:05");      // 12:05 stored as 00:05
+    expect(displayHour("00:05", true)).toBe("12");
+    expect(displayHour("00:05", false)).toBe("00");
+    expect(stepClock("11:00", { hours: 1 }, 60, true)).toBe("00:00");         // 11 -> 12
+    expect(stepClock("00:00", { hours: -1 }, 60, true)).toBe("11:00");        // 12 -> 11
+    expect(stepClock("11:45", { minutes: 15 }, 15, true)).toBe("00:00");      // 11:45 -> 12:00
+    expect(stepClock("15:30", { minutes: 0 }, 30, true)).toBe("03:30");       // a 24h value is folded onto 12h
+    expect(stepClock("03:07", { minutes: 5 }, 5, true)).toBe("03:10");        // step rounding
+    for (let h = 0; h < 12; h++) expect(Number(displayHour(`${String(h).padStart(2, "0")}:00`, true))).toBeGreaterThanOrEqual(1);
+  });
+  it("never produces 13-23 in 12-hour mode", () => {
+    let t: string | undefined;
+    for (let i = 0; i < 300; i++) {
+      t = stepClock(t, i % 2 ? { hours: 1 } : { minutes: -5 }, 5, true);
+      expect(Number(t.slice(0, 2))).toBeLessThan(12);
+      expect(answerErrors("clock", { mode: "set", display: "analog", step_minutes: 5 }, { type: "clock", v: 1, time: t })).toEqual([]);
+    }
+  });
+  it("read-mode clock with a screen reader goes to the parent; set mode and sighted use do not", () => {
+    expect(clockNeedsParent("read", true)).toBe(true);
+    expect(clockNeedsParent("read", false)).toBe(false);
+    expect(clockNeedsParent("set", true)).toBe(false);
   });
 });
 

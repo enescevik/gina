@@ -145,6 +145,8 @@ async function fixture() {
   parent.family = fam.data; tok = (await session(parent)).access_token; parent.token = tok;
   const child = randomUUID();
   const base = { grade: 3, subject: 'Matematik', topic: 'Kesirler ve zaman', difficulty: 'kolay', schema_version: 1 };
+  // 20261107040000_qt_enable_phase2 enables 2A/2B; turn both off in this disposable DB to prove the gate, then 2B only on.
+  sql(`update public.interaction_types set enabled=false where phase in ('2A','2B');`);
   const refused = await rpc(tok, 'save_question_with_sources', { p_request_id: randomUUID(), p_question: { ...base, ...Q.read } });
   assert.equal(refused.ok, false); assert.match(JSON.stringify(refused.data), /interaction_type_unavailable/);
   sql(`update public.plans set prova_monthly_exams=null where code='free';
@@ -296,12 +298,21 @@ async function untilSaved(attempt, q, pick, expected) {
   await tid(kid, 'qt-clock-shown').waitFor();
   assert.equal(await tid(kid, 'qt-clock-shown').getAttribute('aria-label'), t('prova.qt.child.clock.analogFace'), 'shown face does not speak the time');
   assert.equal(await kid.locator('input').count(), 0, 'no free-text time field');
+  // Grade-3 exam: hours run 1–12 (12:00 shown as 12, stored as 00:xx); never 0 or 13–23.
+  await tid(kid, 'qt-clock-minute-plus').click(); await tid(kid, 'qt-clock-minute-minus').click();
+  assert.equal((await tid(kid, 'qt-clock-hour-value').innerText()).trim(), '12');
+  await untilSaved(attempt, F.ids.read, (a) => a.time, '00:00');
+  const seen = new Set();
+  for (let i = 0; i < 12; i++) { await tid(kid, 'qt-clock-hour-plus').click(); seen.add((await tid(kid, 'qt-clock-hour-value').innerText()).trim()); }
+  assert.deepEqual([...seen].map(Number).sort((a, b) => a - b), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], '12-hour cycle shows exactly 1..12');
   for (let i = 0; i < 9; i++) await tid(kid, 'qt-clock-hour-minus').click();
   for (let i = 0; i < 6; i++) await tid(kid, 'qt-clock-minute-plus').click();
+  assert.equal((await tid(kid, 'qt-clock-hour-value').innerText()).trim(), '3');
   await untilSaved(attempt, F.ids.read, (a) => a.time, '03:30');
+  assert.equal(await tid(kid, 'qt-clock-parent-check').count(), 0, 'sighted (no screen reader) path unchanged');
   await targets(kid, 'qt-clock');
   await shot(kid, '2b-clock-read', { child: true });
-  pass('clock_read_steppers_on_step_no_text_input');
+  pass('clock_read_steppers_on_step_no_text_input_12h_for_grade_3', { hours_seen: [...seen] });
 
   stage = 'clock_set';
   await goQuestion(kid, 5);
@@ -309,7 +320,8 @@ async function untilSaved(attempt, q, pick, expected) {
   for (let i = 0; i < 5; i++) await tid(kid, 'qt-clock-hour-minus').click();
   for (let i = 0; i < 3; i++) await tid(kid, 'qt-clock-minute-plus').click();
   await untilSaved(attempt, F.ids.set, (a) => a.time, '07:45');
-  assert.equal(await tid(kid, 'qt-clock-set').getAttribute('aria-label'), t('prova.qt.child.clock.yourTime', { time: '07:45' }));
+  assert.equal((await tid(kid, 'qt-clock-hour-value').innerText()).trim(), '7');
+  assert.equal(await tid(kid, 'qt-clock-set').getAttribute('aria-label'), t('prova.qt.child.clock.yourTime', { time: '7:45' }));
   await shot(kid, '2b-clock-set', { child: true });
   await kid.setViewportSize({ width: 844, height: 390 }); await kid.waitForTimeout(400);
   await kid.screenshot({ path: `${out}/2b-clock-set-landscape-844x390.png`, fullPage: true }); shots.push('2b-clock-set-landscape-844x390.png');

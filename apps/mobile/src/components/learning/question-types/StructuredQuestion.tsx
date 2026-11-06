@@ -64,6 +64,7 @@ export function FillStatePill({ type, payload, answer }: { type: ClientInteracti
  */
 export function StructuredQuestion({
   questionId = "",
+  grade,
   type,
   schemaVersion,
   payload,
@@ -76,6 +77,8 @@ export function StructuredQuestion({
 }: {
   /** Görsel bölge seçiminde sorunun özel görseli için (get_question_media). */
   questionId?: string;
+  /** Sınavın sınıfı (saat düğmeleri 1–4. sınıfta 1–12). */
+  grade?: number | null;
   type: string | null | undefined;
   schemaVersion?: number | null;
   payload: unknown;
@@ -149,7 +152,7 @@ export function StructuredQuestion({
       body = <RegionSelectQuestion {...common} questionId={questionId} payload={readPhase2bPayload("region_select", payload)!} answer={answer as Phase2bAnswerOf<"region_select"> | undefined} onChange={(a) => change(a)} />;
       break;
     case "clock":
-      body = <ClockQuestion {...common} payload={readPhase2bPayload("clock", payload)!} answer={answer as Phase2bAnswerOf<"clock"> | undefined} onChange={(a) => change(a)} />;
+      body = <ClockQuestion {...common} grade={grade} payload={readPhase2bPayload("clock", payload)!} answer={answer as Phase2bAnswerOf<"clock"> | undefined} onChange={(a) => change(a)} />;
       break;
   }
   return (

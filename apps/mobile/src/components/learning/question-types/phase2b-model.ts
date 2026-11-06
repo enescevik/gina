@@ -8,15 +8,28 @@ import { selectionRows, type Phase2aLabels } from "./phase2a-model";
 
 const DAY = 24 * 60;
 
-/** Saat/dakika düğmeleri: adım `step_minutes`'a oturur, 24 saatte döner. Boş başlangıç 12:00 kabul edilir. */
-export function stepClock(time: string | undefined, delta: { hours?: number; minutes?: number }, step: number): string {
-  const base = parseClockTime(time) ?? 12 * 60;
-  const aligned = Math.round(base / step) * step;
-  let next = aligned + (delta.hours ?? 0) * 60 + (delta.minutes ?? 0);
-  next = ((next % DAY) + DAY) % DAY;
-  next = Math.round(next / step) * step % DAY;
+/**
+ * Saat/dakika düğmeleri: adım `step_minutes`'a oturur. 24 saatlik düzende gün içinde döner; 12 saatlik
+ * düzende (1–4. sınıf) 12 saat içinde döner ve `h % 12` olarak saklanır (12 → "00"; sunucu `accept_12h`
+ * ile 12 saatlik eşdeğeri kabul eder). Boş başlangıç 12:00 kabul edilir.
+ */
+export function stepClock(time: string | undefined, delta: { hours?: number; minutes?: number }, step: number, twelveHour = false): string {
+  const period = twelveHour ? DAY / 2 : DAY;
+  const wrap = (v: number) => ((v % period) + period) % period;
+  const base = wrap(parseClockTime(time) ?? 12 * 60);
+  let next = wrap(Math.round(base / step) * step + (delta.hours ?? 0) * 60 + (delta.minutes ?? 0));
+  next = wrap(Math.round(next / step) * step);
   return formatClockTime(next);
 }
+/** Gösterilen saat: 12 saatlik düzende 1–12 (00 → 12), aksi halde 00–23. */
+export function displayHour(time: string, twelveHour: boolean): string {
+  const h = Number(time.slice(0, 2));
+  return twelveHour ? String(h % 12 || 12) : time.slice(0, 2);
+}
+/** 1–4. sınıf: 12 saatlik düğmeler; 5+ ya da bilinmeyen sınıf: 24 saat. */
+export const twelveHourForGrade = (grade: number | null | undefined) => typeof grade === "number" && grade >= 1 && grade <= 4;
+/** Okuma modundaki saat, ekran okuyucuyla görülemez (yüzün etiketi saati söylemez): soru veliye bırakılır. */
+export const clockNeedsParent = (mode: "read" | "set", screenReader: boolean) => mode === "read" && screenReader;
 /** Dakika adımı saat düğmesinden küçükse dakika düğmesi; 60 dk adımda yalnız saat düğmeleri. */
 export const minuteStep = (step: number) => (step >= 60 ? 0 : step);
 

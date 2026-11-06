@@ -57,8 +57,22 @@
       "note": "no Storage/Edge in stack; overlay on a loaded image not exercised"
     },
     {
-      "check": "clock_read_steppers_on_step_no_text_input",
-      "passed": true
+      "check": "clock_read_steppers_on_step_no_text_input_12h_for_grade_3",
+      "passed": true,
+      "hours_seen": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ]
     },
     {
       "check": "clock_set_hands_with_buttons_on_15_minute_step",
