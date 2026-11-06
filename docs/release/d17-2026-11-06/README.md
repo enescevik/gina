@@ -62,13 +62,13 @@ KVKK Aydınlatma §173 ve Çocuk Modu Bilgilendirmesi zaten "[90 gün] kullanıl
 |---|---|
 | pgTAP 130 tek başına, Europe/Istanbul / UTC | 45/45 · 45/45 |
 | A/B: 130, migration'sız (`--skip-migration 20261106450000`) | beklenen düşüş: `function "gina.prune_unused_devices(timestamptz)" does not exist` |
-| Tam pgTAP Europe/Istanbul (`test-q02-sql.py --run-local`) | **128 dosya, 5.847 iddia, 0 hata** (102 hijyen dâhil) |
-| Tam pgTAP UTC (`--timezone UTC`) | **128 dosya, 5.847 iddia, 0 hata** |
+| Tam pgTAP Europe/Istanbul (`test-q02-sql.py --run-local`) | **129 dosya, 5.917 iddia, 0 hata** (102 hijyen dâhil; D14 ve D15 birleştirildikten sonra) |
+| Tam pgTAP UTC (`--timezone UTC`) | **129 dosya, 5.917 iddia, 0 hata** |
 | İzole servisler `--run-local --with-realtime --ui-hold` (kendi fixture'ı scratchpad'de) | **194/194**; temizlik realtime/rest/auth/DB `removed: true`, fixture dosyası silindi |
 | `expo export -p web` (fixture'a bağlı) + `serve-spa.mjs` 8717 | başarılı; sunucu durduruldu |
 | Playwright A1 (`test-screen-review-a1-ui.cjs`) | **14/14** — [a1/after-checks.json](a1/after-checks.json), görüntüler `a1/` |
 | Playwright U02 (`test-u02-device-family-ui.cjs`) | **15/15** — [u02/ui-checks.json](u02/ui-checks.json), görüntüler `u02/screenshots/` |
-| `pnpm --filter @gina/core test` | 450/450 (63 dosya) |
+| `pnpm --filter @gina/core test` | 457/457 (64 dosya) |
 | `pnpm typecheck` | 4/4 |
 
 **pgTAP 130 kapsamı:** yetki (anon/authenticated/service_role çalıştıramaz, security definer + boş search_path); son kullanım sinyalleri tek tek
