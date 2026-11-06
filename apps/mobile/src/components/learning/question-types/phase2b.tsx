@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { AccessibilityInfo, Text, View, useWindowDimensions } from "react-native";
+import { AccessibilityInfo, Platform, Text, View, useWindowDimensions } from "react-native";
 import Svg, { Circle, Defs, Line, Path, Pattern, Rect, Text as SvgText } from "react-native-svg";
 import { Check, Minus, Plus } from "lucide-react-native";
 import { Pressable } from "@/components/ui/pressable";
@@ -273,10 +273,14 @@ function Stepper({ label, value, onMinus, onPlus, disabled, testID }: { label: s
   );
 }
 
-/** Ekran okuyucu açık mı (açılış + değişiklik dinleyicisi). */
+/**
+ * Ekran okuyucu açık mı (açılış + değişiklik dinleyicisi). Web'de algılanamaz: react-native-web her zaman
+ * `true` döndürür; bu yüzden web'de görünen davranış korunur (yalnız iOS/Android'de etkin).
+ */
 function useScreenReader() {
   const [on, setOn] = useState(false);
   useEffect(() => {
+    if (Platform.OS === "web") return;
     let live = true;
     void AccessibilityInfo.isScreenReaderEnabled().then((v) => { if (live) setOn(v); }).catch(() => undefined);
     const sub = AccessibilityInfo.addEventListener("screenReaderChanged", setOn);
