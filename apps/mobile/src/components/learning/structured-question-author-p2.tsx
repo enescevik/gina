@@ -5,6 +5,7 @@
  */
 import {
   addImageBox,
+  clockRequires12h,
   type Phase2Draft,
   reconcileTokens,
   regionList,
@@ -140,7 +141,7 @@ function BoxPlacer({ image, draft, onChange, disabled }: { image: LocalLearningF
   );
 }
 
-export function Phase2QuestionEditor({ draft, onChange, image, disabled = false }: { draft: Phase2Draft; onChange: (d: Phase2Draft) => void; image: LocalLearningFile | null; disabled?: boolean }) {
+export function Phase2QuestionEditor({ draft, onChange, image, grade = null, disabled = false }: { draft: Phase2Draft; onChange: (d: Phase2Draft) => void; image: LocalLearningFile | null; grade?: number | null; disabled?: boolean }) {
   const { t } = useTranslation();
   const set = (patch: Partial<Phase2Draft>) => onChange({ ...draft, ...patch } as Phase2Draft);
   switch (draft.type) {
@@ -261,7 +262,16 @@ export function Phase2QuestionEditor({ draft, onChange, image, disabled = false 
           <Chips values={[1, 5, 15, 30, 60] as const} value={d.step} disabled={disabled} label={(v) => t("prova.qt.author.clock.stepN", { count: v })} onChange={(step) => set({ step })} />
           <Field label={t(d.mode === "read" ? "prova.qt.author.clock.timeRead" : "prova.qt.author.clock.timeSet")} hint={t("prova.qt.author.clock.timeHint")}
             value={d.time} maxLength={5} editable={!disabled} onChangeText={(time) => set({ time })} />
-          <Toggle label={t("prova.qt.author.clock.accept12h")} value={d.accept12h} disabled={disabled} onChange={(accept12h) => set({ accept12h })} />
+          {clockRequires12h(grade)
+            ? <Text testID="qt-clock-12h-fixed" style={s.muted}>{t("prova.qt.author.clock.accept12hFixed")}</Text>
+            : <Toggle label={t("prova.qt.author.clock.accept12h")} value={d.accept12h} disabled={disabled} onChange={(accept12h) => set({ accept12h })} />}
+          {d.mode === "read"
+            ? (
+              <View testID="qt-clock-a11y-note" accessibilityRole="text" style={s.note}>
+                <Text style={s.copy}>{t("prova.qt.author.clock.a11yNote")}</Text>
+              </View>
+            )
+            : null}
         </View>
       );
     }
@@ -426,6 +436,7 @@ const s = StyleSheet.create({
   box: { position: "absolute", borderWidth: 2, borderStyle: "dashed", borderColor: "#5132BD", borderRadius: 6, backgroundColor: "#FFFFFF33" },
   boxOn: { backgroundColor: "#6042DE40", borderStyle: "solid" },
   boxLabel: { fontFamily: "Nunito_800ExtraBold", color: "#5132BD", fontSize: 13, paddingHorizontal: 3, backgroundColor: "#FFFFFFCC", alignSelf: "flex-start" },
+  note: { borderWidth: 1, borderColor: "#D4E9DD", backgroundColor: "#EDF7F1", borderRadius: 16, padding: 12 },
   stimBox: { borderWidth: 1, borderColor: "#E4DCF1", borderRadius: 16, padding: 12, backgroundColor: "#FCFAF6" },
   chip: { minHeight: 44, paddingHorizontal: 14, paddingVertical: 9, borderWidth: 1, borderColor: "#E5DDED", borderRadius: 16, backgroundColor: "#FFFEFB", justifyContent: "center", maxWidth: "100%" },
   chipOn: { backgroundColor: p.lilac, borderColor: "#9C81E8" },

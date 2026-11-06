@@ -81,7 +81,7 @@ async function setupStack() {
     if (file < '20261103093000') { for (const line of text.split('\n')) if (line.toLowerCase().startsWith('alter publication supabase_realtime add table ')) sql(line); }
     else sql(text);
   }
-  assert.equal(sql("select count(*) from public.interaction_types where family='structured' and enabled;"), '6', 'structured types not migrated');
+  assert.equal(sql("select count(*) from public.interaction_types where family='structured' and enabled and phase in ('1A','1B');"), '6', 'structured types not migrated');
   const auth = inspect('supabase_auth_gina'), rest = inspect('supabase_rest_gina');
   const secret = randomBytes(36).toString('base64url');
   const authPort = startContainer(DB + '_auth', auth.image, {
@@ -182,8 +182,8 @@ async function targets48(page, testId) {
 }
 
 // ---------- authoring through the real screen ----------
-async function openQuestion(page, WEB, type, stem, beforeNext) {
-  await page.goto(`${WEB}/parent/prova/question?subject=Matematik&grade=5`);
+async function openQuestion(page, WEB, type, stem, beforeNext, grade = 5) {
+  await page.goto(`${WEB}/parent/prova/question?subject=Matematik&grade=${grade}`);
   await field(page, t('prova.topic')).fill('Faz 2 tekrar');
   await field(page, t('prova.stem')).fill(stem);
   await page.getByTestId('qt-type-picker').getByRole('button', { name: t('prova.qt.author.type.' + type), exact: true }).click();
@@ -345,8 +345,29 @@ const tok = (page, text) => page.getByTestId('qt-token-picker').getByRole('butto
 
   await openQuestion(phone, WEB, 'clock', 'Saat kaçı gösteriyor?');
   await field(phone, t('prova.qt.author.clock.timeRead')).fill('8:30');
+  await phone.getByTestId('qt-clock-a11y-note').getByText(t('prova.qt.author.clock.a11yNote'), { exact: true }).waitFor();
+  await phone.getByRole('switch', { name: t('prova.qt.author.clock.accept12h') }).waitFor(); // grade 5: parent may choose
   Q.clock = await toPreviewAndSave(phone, 'clock', 'clock');
   assert.deepEqual(Q.clock.key, { time: '08:30', accept_12h: true }); assert.equal(Q.clock.payload.shown_time, '08:30');
+  // Grade 5, toggle off → key without accept_12h.
+  await openQuestion(phone, WEB, 'clock', 'Saati kur (24 saat).');
+  await button(phone, t('prova.qt.author.clock.mode_set')).click();
+  assert.equal(await phone.getByTestId('qt-clock-a11y-note').count(), 0, 'a11y note only in read mode');
+  await field(phone, t('prova.qt.author.clock.timeSet')).fill('20:30');
+  await phone.getByRole('switch', { name: t('prova.qt.author.clock.accept12h') }).click();
+  const clock24 = await toPreviewAndSave(phone, 'clock');
+  assert.deepEqual(clock24.key, { time: '20:30' });
+  // Grade 3: no toggle, short explanation, accept_12h always sent true.
+  await openQuestion(phone, WEB, 'clock', 'Saat kaçı gösteriyor?', undefined, 3);
+  await field(phone, t('prova.qt.author.clock.timeRead')).fill('9:15');
+  await phone.getByTestId('qt-clock-12h-fixed').waitFor();
+  assert.equal(await phone.getByRole('switch', { name: t('prova.qt.author.clock.accept12h') }).count(), 0, 'grade 3: no 12h toggle');
+  await shot(phone, 'clock-grade3-12h-fixed', 'qt-editor-clock');
+  const clock3 = await toPreviewAndSave(phone, 'clock');
+  assert.deepEqual(clock3.key, { time: '09:15', accept_12h: true });
+  assert.equal(sql(`select grade from public.question_bank where id='${clock3.id}';`), '3');
+  const young = await rpc(token, 'save_question_with_sources', { p_request_id: randomUUID(), p_images: [], p_question: { grade: 3, subject: 'Matematik', topic: 'x', difficulty: 'orta', stem: 'Saati kur.', interaction_type: 'clock', schema_version: 1, payload: { mode: 'set', display: 'analog', step_minutes: 5 }, answer_key: { time: '09:15', accept_12h: false } } });
+  assert.equal(young.data.message, 'question_structure_invalid'); assert.ok(String(young.data.details).includes('clock_12h_required'), 'server code ' + young.data.details);
 
   // Stimulus (bar chart with alt) on a 1A question.
   await openQuestion(phone, WEB, 'true_false', 'Grafiğe göre değerlendir.');

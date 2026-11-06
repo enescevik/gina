@@ -6,6 +6,7 @@ import {
   buildStimulus,
   newPhase2Draft,
   newStimulusDraft,
+  clockRequires12h,
   normalizeTime,
   PHASE2_INTERACTION_TYPES,
   phase2DraftErrors,
@@ -123,5 +124,16 @@ describe("phase 2 authoring drafts", () => {
     const base = { draft_id: "00000000-0000-4000-8000-000000000003", subject: "Fen", grade: 5, topic_plan: [{ topic: "Isı", count: 1 }], blueprint_id: null, count: 1,
       kind: "mixed", assessment: "practice", difficulty: "orta", note: "", locale: "tr" };
     expect(generationPayloadSchema.safeParse({ ...base, interaction_types: ["clock", "mark_text"] }).success).toBe(true);
+  });
+  it("clock: grade 1-4 requires 12-hour acceptance; grade 5+ may turn it off", () => {
+    const d: Phase2Draft = { type: "clock", seq: 0, mode: "set", display: "analog", step: 5, time: "08:30", accept12h: false };
+    expect(clockRequires12h(3)).toBe(true);
+    expect(clockRequires12h(4)).toBe(true);
+    expect(clockRequires12h(5)).toBe(false);
+    expect(clockRequires12h(null)).toBe(false);
+    expect(phase2DraftErrors(d, { grade: 2 })).toEqual(["clock_12h_required"]);
+    expect(phase2DraftErrors({ ...d, accept12h: true }, { grade: 2 })).toEqual([]);
+    expect(phase2DraftErrors(d, { grade: 7 })).toEqual([]);
+    expect(phase2DraftErrors(d)).toEqual([]);
   });
 });
