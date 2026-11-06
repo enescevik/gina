@@ -33,6 +33,27 @@ interface QuestionRow {
   solution: string | null;
 }
 
+/**
+ * P02: öğrenci nüshası ve cevap anahtarı ayrı belgeler. Ortak düzen (`buildBookletHtml`) tek
+ * belge üretir; bütün içerik kaçışlandığı için bölüm etiketleri yalnız düzenin kendisinden gelir.
+ */
+function splitBooklet(html: string): { student: string; key: string } {
+  const keyStart = html.indexOf('<section class="key">');
+  const bodyEnd = html.lastIndexOf("</body>");
+  const mainStart = html.indexOf("<main>");
+  const mainEnd = html.indexOf("</main>");
+  const coverStart = html.indexOf('<section class="cover">');
+  if (keyStart < 0 || bodyEnd < 0 || mainStart < 0 || mainEnd < 0 || coverStart < 0) {
+    throw new Error("invalid_booklet_layout");
+  }
+  const coverEnd = html.indexOf("</section>", coverStart) + "</section>".length;
+  const student = html.slice(0, keyStart) + html.slice(bodyEnd);
+  const key = (html.slice(0, coverStart) + html.slice(coverEnd, mainStart) +
+    html.slice(mainEnd + "</main>".length))
+    .replace("</style>", ".key{page-break-before:auto;break-before:auto}</style>");
+  return { student, key };
+}
+
 function toBooklet(q: QuestionRow): BookletQuestion {
   const choices = Array.isArray(q.choices)
     ? (q.choices as unknown[]).flatMap((c) =>
@@ -134,10 +155,13 @@ export default function ProvaBookletScreen() {
     source === "exam" ? (selectedExam?.title ?? "") : subject.trim() ? t("prova.booklet.defaultTitle", { subject: subject.trim(), grade: gradeNum }) : "";
 
   const generate = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (copy: "student" | "key") => {
       if (questions.length === 0) throw new Error(t("prova.booklet.noQuestions"));
+      const baseTitle = title.trim() || defaultTitle || t("prova.booklet.title");
       const html = buildBookletHtml({
-        title: title.trim() || defaultTitle || t("prova.booklet.title"),
+        title: copy === "key"
+          ? `${baseTitle} · ${t("prova.booklet.answerKey")}`
+          : baseTitle,
         subtitle: source === "exam" && selectedExam ? `${selectedExam.subject} · ${selectedExam.grade}. ${t("prova.gradeWord")}` : undefined,
         questions: await attachBookletImages(questions.map(toBooklet)),
         includeSolutions,
@@ -152,7 +176,11 @@ export default function ProvaBookletScreen() {
           difficulty: (d) => t(`prova.difficulty.${d}`),
         },
       });
-      await printBooklet(html, t("prova.booklet.shareTitle"));
+      const parts = splitBooklet(html);
+      await printBooklet(
+        copy === "key" ? parts.key : parts.student,
+        t(copy === "key" ? "provaP02.booklet.keyShare" : "provaP02.booklet.studentShare"),
+      );
     },
   });
 
@@ -166,7 +194,7 @@ export default function ProvaBookletScreen() {
   return (
     <Screen title={t("prova.booklet.title")} subtitle={t("unified.bookletHelp")} loading={subjects.isLoading || exams.isLoading} error={subjects.error ?? exams.error} onRetry={() => { void subjects.refetch(); void exams.refetch(); }}>
       <View style={parentStyles.card}>
-      <Text className="font-body text-base text-gray-600">{t("prova.booklet.intro")}</Text>
+      <Text className="font-body text-base text-gray-600">{t("provaP02.booklet.intro")}</Text>
 
       <View className="flex-row gap-2">
         {(["library", "exam"] as const).map((s) => (
@@ -248,7 +276,9 @@ export default function ProvaBookletScreen() {
 
       <Text className="font-body text-sm text-gray-600">{t("prova.selectedCount", { count: questions.length })}</Text>
       <ErrorText error={generate.error ?? subjects.error ?? libraryQuestions.error ?? exams.error ?? examQuestions.error} />
-      <Button title={t("prova.booklet.generate")} loading={generate.isPending} disabled={questions.length === 0} onPress={() => generate.mutate()} />
+      <Text className="font-body text-sm text-gray-600">{t("provaP02.booklet.twoCopies")}</Text>
+      <Button title={t("provaP02.booklet.student")} loading={generate.isPending && generate.variables === "student"} disabled={questions.length === 0 || generate.isPending} onPress={() => generate.mutate("student")} />
+      <Button variant="secondary" title={t("provaP02.booklet.key")} loading={generate.isPending && generate.variables === "key"} disabled={questions.length === 0 || generate.isPending} onPress={() => generate.mutate("key")} />
       <Button variant="ghost" title={t("prova.backToList")} onPress={() => router.back()} />
     </View>
     </Screen>
