@@ -638,7 +638,7 @@ export function ProvaSourcePicker(
                         <View style={b.row}>
                           <Text style={[b.muted, { flex: 1 }]}>
                             {q.subject} · {q.topic} ·{" "}
-                            {t(`provaBuilder.${q.kind}`)}
+                            {q.kind === "structured" ? t("prova.qt.author.kindStructured") : t(`provaBuilder.${q.kind}`)}
                           </Text>
                           <Pressable
                             accessibilityRole="button"
