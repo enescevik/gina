@@ -2,6 +2,7 @@
 // Sunucu: admin_operator_scopes() / admin_set_operator_scope(...). Aynı değişiklik ağ hatasından sonra aynı
 // istek kimliğiyle yeniden gönderilir (çift tıklama veya yeniden deneme ikinci kayıt/denetim yazmaz).
 import { type EducationPlace, educationPlaceLabel } from "@gina/core";
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Card, Layout, Notice } from "@/components/Layout";
@@ -146,7 +147,7 @@ function Workspace() {
           <li>Kapsam yalnız yayın operasyonu rolüne uygulanır (duyuru hedefi).</li>
           <li>Kapsamı olmayan yayın operatörü <strong>bütün bölgelere</strong> duyuru gönderebilir.</li>
           <li>Kapsam eklenince yalnız seçilen bölge ya da okul ve onun altındaki okullar hedeflenebilir; “herkes” seçilemez.</li>
-          <li>Her değişiklik gerekçesiyle denetim kaydına yazılır. Rol vermek veya kaldırmak bu ekranın işi değildir.</li>
+          <li>Her değişiklik gerekçesiyle denetim kaydına yazılır. Rol vermek veya kaldırmak <Link className="underline" href="/operators">Operatör rolleri</Link> ekranındadır.</li>
         </ul>
       </Card>
       {message ? <Notice tone={message.tone}>{message.text}</Notice> : null}

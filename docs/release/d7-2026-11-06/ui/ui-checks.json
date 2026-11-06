@@ -1,0 +1,53 @@
+{
+  "environment": "disposable-local-gotrue-postgrest (own clone of gina_completion_audit)",
+  "database_pattern": "gina_d7_<hex>_audit",
+  "viewports": {
+    "backoffice": [
+      "1280x800",
+      "768x1024"
+    ]
+  },
+  "passed": true,
+  "results": [
+    {
+      "check": "operators_screen_admin_only",
+      "passed": true,
+      "list_status": 403,
+      "grant_status": 403
+    },
+    {
+      "check": "content_operator_accepts_group_creates_draft_only",
+      "passed": true,
+      "contribution": "approved",
+      "package": "draft",
+      "questions": 2,
+      "shared_sources": 1,
+      "publications": 0,
+      "publish_rpc": 403,
+      "general_import_rpc": 403
+    },
+    {
+      "check": "admin_grants_and_updates_role",
+      "passed": true,
+      "audit_rows": 2,
+      "candidate_sees_content": true
+    },
+    {
+      "check": "open_tab_revocation_takes_effect",
+      "passed": true,
+      "rpc_status": 403,
+      "notice": "role-revoked"
+    },
+    {
+      "check": "no_page_errors_no_overflow_no_raw_keys",
+      "passed": true
+    }
+  ],
+  "cleanup": {
+    "db_rest": "removed",
+    "db_auth": "removed",
+    "database": "dropped",
+    "containers_left": "none",
+    "database_left": "0"
+  }
+}
