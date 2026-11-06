@@ -1,3 +1,4 @@
+import { fail } from "../_shared/error-contract.ts";
 import { json, serviceClient } from "./supabase.ts";
 import {
   type AiConfig,
@@ -209,12 +210,12 @@ export async function finishGeneration(
   result: AiResult<GeneratedOutput>,
 ) {
   if (context.schema !== "gina.generation-context.v1") {
-    return json({ error: "generation_context_unsupported" }, 409);
+    return fail("generation_context_unsupported", 409);
   }
   try {
     validateGenerationResult(result, context);
   } catch {
-    return json({ error: "ai_result_invalid" }, 502);
+    return fail("ai_result_invalid", 502);
   }
   const {
     total,
@@ -343,7 +344,7 @@ export async function finishGeneration(
     .filter((x) => x.valid)
     .map((x) => x.row);
 
-  if (rows.length !== total) return json({ error: "generation_empty" }, 502);
+  if (rows.length !== total) return fail("generation_empty", 502);
   const { data: completed, error: saveError } = await db.rpc(
     "complete_prova_generation_v2",
     {
@@ -357,7 +358,7 @@ export async function finishGeneration(
     },
   );
   // A transport failure may follow a successful commit: keep the job for a same-ID retry.
-  if (saveError) return json({ error: "save_failed" }, 500);
+  if (saveError) return fail("save_failed", 500);
   return json(completed);
 }
 /** Resume persisted work before reading mutable plan/model/draft settings; never invokes a provider. */
@@ -375,18 +376,16 @@ export async function recoverGeneration(
     p_intent: intent,
   });
   if (error) {
-    return json(
-      { error: error.code === "42501" ? "forbidden" : "data_failed" },
-      error.code === "42501" ? 403 : 503,
-    );
+    return fail(error.code === "42501" ? "forbidden" : "data_failed", error.code === "42501" ? 403 : 503);
   }
   if (!data) {
-    return only ? json({ error: "generation_not_started" }, 409) : null;
+    return only ? fail("generation_not_started", 409) : null;
   }
   if (data.cached) return json(data.cached);
-  if (data.error) return json({ error: data.error }, 409);
+  // Rezervasyon kodu sözleşmeden geçer (bilinmeyen/ham metin `server_error`); durum eskisiyle aynı 409.
+  if (data.error) return fail(String(data.error), 409);
   if (!data.lease || !data.context || !data.provider_result) {
-    return json({ error: "ai_result_uncertain" }, 503);
+    return fail("ai_result_uncertain", 503);
   }
   return finishGeneration(
     db,

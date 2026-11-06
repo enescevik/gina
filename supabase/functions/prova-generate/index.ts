@@ -1,3 +1,5 @@
+import { fail } from "../_shared/error-contract.ts";
+import { classifyAiError, generateWith } from "../_shared/ai-route.ts";
 import {
   COGNITIVE_DEMANDS,
   finishGeneration,
@@ -23,11 +25,10 @@ import {
   type AiResult,
   type AiUserContent,
   apiKeyOrResponse,
-  callClaude,
   DIFFICULTIES,
   type Difficulty,
+  parentOrResponse,
   provaEntitlement,
-  readParent,
   resolveAi,
   sha256,
 } from "../_shared/prova.ts";
@@ -210,24 +211,24 @@ function clampInt(
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return preflight();
-  if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
-  const parent = await readParent(req);
-  if (!parent) return json({ error: "forbidden" }, 403);
+  if (req.method !== "POST") return fail("method_not_allowed", 405);
+  const parent = await parentOrResponse(req);
+  if (parent instanceof Response) return parent;
 
   let body: GenerateBody;
   try {
     body = await req.json();
   } catch {
-    return json({ error: "bad_request" }, 400);
+    return fail("bad_request", 400);
   }
   if (!body || typeof body !== "object") {
-    return json({ error: "bad_request" }, 400);
+    return fail("bad_request", 400);
   }
   const requestId = body.request_id ?? crypto.randomUUID();
   if (
     !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
       .test(requestId)
-  ) return json({ error: "bad_request" }, 400);
+  ) return fail("bad_request", 400);
   const subject = typeof body.subject === "string"
     ? body.subject.trim().slice(0, 80)
     : "";
@@ -248,13 +249,13 @@ Deno.serve(async (req) => {
   const locale = body.locale === "en" ? "en" : "tr";
   const count = clampInt(body.count, 1, MAX_TOTAL, 5);
   if (!subject || !grade) {
-    return json({ error: "subject_and_grade_required" }, 400);
+    return fail("subject_and_grade_required", 400);
   }
 
   const db = serviceClient();
   const { request_id: _requestId, recover_only: recoverOnly, ...intent } = body;
   if (JSON.stringify(intent).length > 50000) {
-    return json({ error: "invalid_input" }, 400);
+    return fail("invalid_input", 400);
   }
   const recovered = await recoverGeneration(
     db,
@@ -265,7 +266,7 @@ Deno.serve(async (req) => {
   );
   if (recovered) return recovered;
   if (recoverOnly === true) {
-    return json({ error: "generation_not_started" }, 409);
+    return fail("generation_not_started", 409);
   }
   const draftScope = await generationDraftScope(
     db,
@@ -276,16 +277,16 @@ Deno.serve(async (req) => {
   );
   if (draftScope instanceof Response) return draftScope;
   if (draftScope?.purpose === "written" && assessment !== "written") {
-    return json({ error: "prova_draft_changed" }, 409);
+    return fail("prova_draft_changed", 409);
   }
   let ent;
   try {
     ent = await provaEntitlement(db, parent.familyId);
   } catch {
-    return json({ error: "entitlement_failed" }, 500);
+    return fail("entitlement_failed", 500);
   }
   if (ent.ai_generate_limit <= 0) {
-    return json({ error: "plan_has_no_ai", plan: ent.plan }, 402);
+    return fail("plan_has_no_ai", 402, { details: { plan: ent.plan }, legacy: { plan: ent.plan } });
   }
 
   // Konu planı: senaryodan (satır sayılarıyla) ya da tek konu.
@@ -297,7 +298,7 @@ Deno.serve(async (req) => {
   let scenario: GenerationContext["scenario"] = null;
   if (body.blueprint_id) {
     if (!ent.scenarios) {
-      return json({ error: "plan_limit_prova_scenarios", plan: ent.plan }, 402);
+      return fail("plan_limit_prova_scenarios", 402, { details: { plan: ent.plan }, legacy: { plan: ent.plan } });
     }
     const { data: bp } = await db
       .from("exam_blueprints")
@@ -305,7 +306,7 @@ Deno.serve(async (req) => {
       .eq("id", body.blueprint_id)
       .eq("family_id", parent.familyId)
       .maybeSingle();
-    if (!bp) return json({ error: "blueprint_not_found" }, 404);
+    if (!bp) return fail("blueprint_not_found", 404);
     try {
       const parsed = blueprintPlan(bp, grade, subject);
       scenarioCode = parsed.name;
@@ -316,12 +317,12 @@ Deno.serve(async (req) => {
         "get_catalog_blueprint_context",
         { p_family_id: parent.familyId, p_blueprint_id: bp.id },
       );
-      if (catalogueError) return json({ error: "data_failed" }, 503);
+      if (catalogueError) return fail("data_failed", 503);
       if (catalogue) {
         if (
           !draftScope || draftScope.purpose !== "written" ||
           assessment !== "written"
-        ) return json({ error: "curriculum_scope_mismatch" }, 409);
+        ) return fail("curriculum_scope_mismatch", 409);
         const plan = cataloguePlan(catalogue, grade, subject, topics);
         // The provider receives the normalized block/outcome wording (learning_blocks), never only a URL.
         blueprintSnapshot = { id: bp.id, ...plan, rows: topics };
@@ -344,7 +345,7 @@ Deno.serve(async (req) => {
           row.topic.trim()
         )).size !== body.topic_plan.length
     ) {
-      return json({ error: "topic_required" }, 400);
+      return fail("topic_required", 400);
     }
     topics = body.topic_plan.map((row) => ({
       topic: row.topic.trim(),
@@ -354,15 +355,15 @@ Deno.serve(async (req) => {
     const topic = typeof body.topic === "string"
       ? body.topic.trim().slice(0, 200)
       : "";
-    if (!topic) return json({ error: "topic_required" }, 400);
+    if (!topic) return fail("topic_required", 400);
     topics = [{ topic, count }];
   }
   const total = topics.reduce((s, t) => s + t.count, 0);
   if (!topics.length || total < 1) {
-    return json({ error: "topic_required" }, 400);
+    return fail("topic_required", 400);
   }
   if (total > MAX_TOTAL) {
-    return json({ error: "too_many_questions", max: MAX_TOTAL }, 400);
+    return fail("too_many_questions", 400, { details: { max: MAX_TOTAL }, legacy: { max: MAX_TOTAL } });
   }
 
   const ai = await resolveAi(
@@ -371,7 +372,7 @@ Deno.serve(async (req) => {
     16000,
   );
   if (ai instanceof Response) return ai;
-  const apiKey = apiKeyOrResponse();
+  const apiKey = apiKeyOrResponse(ai);
   if (apiKey instanceof Response) return apiKey;
 
   const request = {
@@ -451,25 +452,13 @@ Deno.serve(async (req) => {
     },
   );
   if (reservationError) {
-    return json(
-      {
-        error: ["curriculum_scope_mismatch", "prova_draft_changed"].includes(
-            reservationError.message,
-          )
-          ? reservationError.message
-          : "save_failed",
-      },
-      ["curriculum_scope_mismatch", "prova_draft_changed"].includes(
-          reservationError.message,
-        )
-        ? 409
-        : 500,
-    );
+    const known = ["curriculum_scope_mismatch", "prova_draft_changed"].includes(reservationError.message);
+    return fail(known ? reservationError.message : "save_failed", known ? 409 : 500);
   }
   if (reservation?.cached) return json(reservation.cached);
   if (reservation?.error) {
-    return json(
-      { error: reservation.error },
+    return fail(
+      String(reservation.error),
       reservation.error === "ai_quota_exceeded" ? 402 : 409,
     );
   }
@@ -486,7 +475,7 @@ Deno.serve(async (req) => {
     );
   }
   const lease = reservation?.lease;
-  if (!lease) return json({ error: "ai_result_uncertain" }, 503);
+  if (!lease) return fail("ai_result_uncertain", 503);
   async function failJob(code: string, uncertain: boolean) {
     await db.rpc("fail_prova_generation_v2", {
       p_id: requestId,
@@ -498,7 +487,7 @@ Deno.serve(async (req) => {
   let result: AiResult<GeneratedOutput>;
   try {
     result = reservation.provider_result ??
-      await callClaude<GeneratedOutput>(
+      await generateWith<GeneratedOutput>(
         apiKey,
         ai,
         SYSTEM_PROMPT,
@@ -512,30 +501,14 @@ Deno.serve(async (req) => {
         p_lease: lease,
         p_result: result,
       });
-      if (error) return json({ error: "ai_result_uncertain" }, 503);
+      if (error) return fail("ai_result_uncertain", 503);
     }
   } catch (e) {
-    const message = e instanceof Error ? e.message : "provider_outcome_unknown";
-    const code =
-      /^(anthropic_[a-z0-9_]+|ai_input_too_large|ai_result_invalid)$/.test(
-          message,
-        )
-        ? message
-        : "provider_outcome_unknown";
-    const uncertain = [
-      "provider_outcome_unknown",
-      "ai_result_invalid",
-      "anthropic_max_tokens",
-      "anthropic_refusal",
-    ].includes(code) || /^anthropic_5[0-9][0-9]$/.test(code);
-    await failJob(code, uncertain);
-    return json({
-      error: uncertain
-        ? "ai_result_uncertain"
-        : code === "ai_input_too_large"
-        ? code
-        : "generation_failed",
-    }, 502);
+    // C08: sağlayıcıdan bağımsız sınıflandırma (anthropic_/openai_/gemini_ kodları aynı kurala uyar).
+    // Belirsiz sonuç (5xx, zaman aşımı, ret, kesilme, bozuk çıktı) işi `uncertain` bırakır: tekrar/fallback yok.
+    const failure = classifyAiError(e);
+    await failJob(failure.code, failure.uncertain);
+    return fail(failure.publicError, 502);
   }
 
   return finishGeneration(db, parent, requestId, lease, context, result);

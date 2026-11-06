@@ -76,6 +76,9 @@ export interface FeatureRequirement {
   plans: AiPlan[];
   /** Mevcut Edge giriş noktası; null = henüz ayrı uç nokta yok. */
   entryPoint: string | null;
+  /** C08: false = ayrı uç/kota yok; paket/kullanım ekranında çalışıyor gibi gösterilmez
+   * (DB: ai_feature_requirements.offered). Varsayılan true. */
+  offered?: boolean;
 }
 
 export interface PlanFeatureLimit {
@@ -100,7 +103,8 @@ const PRO: AiPlan[] = ["pro"];
 /** Özellik → girdi türü → gereken yetenek. Girdi türü satırda yoksa o özellik o girdiyi kabul etmez. */
 export const FEATURE_MATRIX: readonly FeatureRequirement[] = [
   { feature: "weekly_summary", input: "text", action: "weekly", requires: req(false, false, 16_000), plans: PAID, entryPoint: "ai-weekly-summary" },
-  { feature: "daily_tips", input: "text", action: "weekly", requires: req(false, false, 16_000), plans: PRO, entryPoint: null },
+  // DECISIONS paketi "7 günlük ipucu"nu Pro'ya yazar; ayrı uç/kota/ekran yok → sunulmuyor (C08 raporu).
+  { feature: "daily_tips", input: "text", action: "weekly", requires: req(false, false, 16_000), plans: PRO, entryPoint: null, offered: false },
   { feature: "photo_calendar", input: "image", action: "import", requires: req(true, false, 32_000), plans: PAID, entryPoint: "timetable-import" },
   { feature: "document_analysis", input: "image", action: "learning_import", requires: req(true, false, 32_000), plans: PAID, entryPoint: "learning-plan-import" },
   { feature: "document_analysis", input: "pdf", action: "learning_import", requires: req(false, true, 64_000), plans: PAID, entryPoint: "learning-plan-import" },
@@ -160,6 +164,11 @@ export const PLAN_LIMIT_DEFAULTS: readonly PlanFeatureLimit[] = (() => {
   }
   return rows;
 })();
+
+/** Özellik kullanıcıya sunuluyor mu (en az bir satır offered ve giriş noktası var). */
+export function featureOffered(feature: AiFeature): boolean {
+  return FEATURE_MATRIX.some((r) => r.feature === feature && r.offered !== false && r.entryPoint !== null);
+}
 
 export function featureRequirements(feature: AiFeature, input?: AiInputKind): FeatureRequirement[] {
   return FEATURE_MATRIX.filter((r) => r.feature === feature && (input === undefined || r.input === input));

@@ -1,4 +1,5 @@
-import { type AiConfig, callClaude } from "../_shared/prova.ts";
+import type { AiConfig } from "../_shared/prova.ts";
+import { generateWith } from "../_shared/ai-route.ts";
 import {
   SCHEMA,
   SYSTEM,
@@ -26,7 +27,7 @@ export async function featureSmoke(
   mode: FeatureMode,
   key: string,
   config: AiConfig,
-  generate = callClaude,
+  generate = generateWith,
 ) {
   const cfg = {
     ...config,

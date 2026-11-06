@@ -1,7 +1,7 @@
 // Prova AI fonksiyonlarının (prova-generate / prova-grade / prova-plan) ortak yardımcıları.
 // Kurallar (docs/DECISIONS.md): yalnız veli (gina.role = parent) çağırır; paket kapısı sunucuda;
 // model ve token limiti ai_settings'ten (yoksa plans.ai_model); kill switch app_settings 'ai.enabled'
-// ve ai_settings.enabled; ANTHROPIC_API_KEY yalnız ortamdan okunur. Modele kişisel veri gönderilmez.
+// ve ai_settings.enabled; sağlayıcı anahtarı yalnız secret adıyla ortamdan okunur (apiKeyOrResponse(config)). Modele kişisel veri gönderilmez.
 
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 
@@ -12,6 +12,7 @@ import {
   type AiProviderRecord,
   type ModelCapabilities,
   modelSupport,
+  PROVIDER_DEFAULTS,
 } from "../../../packages/core/src/ai-capabilities.ts";
 
 export { parentOrResponse, readParent } from "./auth.ts";
@@ -165,19 +166,20 @@ export async function resolveAi(
   };
 }
 
-/** Sağlayıcı anahtarı yalnız secret ADI ile ortamdan okunur. Anthropic: ANTHROPIC_API_KEY (eski davranış);
- * diğer adapterler kendi secret adını bildirir, yoksa açık `provider_unconfigured`. Değer asla yazılmaz. */
-export function apiKeyOrResponse(config?: Pick<AiConfig, "adapter">): string | Response {
+/** Sağlayıcı anahtarı yalnız secret ADI ile ortamdan okunur (C08: çağıran resolveAi çıktısını geçirir).
+ * Secret adı adapter kaydından (core PROVIDER_DEFAULTS = ai_providers tohumu) gelir; Anthropic sabiti yok.
+ * Config verilmezse eski davranış (Anthropic) korunur. Anthropic anahtarı yoksa `ai_not_configured` (eski kod),
+ * diğer sağlayıcılarda `provider_unconfigured`. Değer asla yazılmaz/loglanmaz. */
+export function apiKeyOrResponse(
+  config?: Pick<AiConfig, "adapter">,
+  env: (name: string) => string | undefined = (name) => Deno.env.get(name),
+): string | Response {
   const adapter = config?.adapter ?? "anthropic-messages";
-  if (adapter === "anthropic-messages") {
-    const key = Deno.env.get("ANTHROPIC_API_KEY");
-    if (!key) return fail("ai_not_configured", 503);
-    return key;
-  }
-  const secretName = adapter === "openai-chat" ? "OPENAI_API_KEY" : adapter === "gemini-generate" ? "GEMINI_API_KEY" : null;
-  const key = secretName ? Deno.env.get(secretName) : undefined;
-  if (!key) return fail("provider_unconfigured", 503, { details: { provider: adapter }, legacy: { provider: adapter } });
-  return key;
+  const secretName = PROVIDER_DEFAULTS.find((p) => p.adapter === adapter)?.keySecretName;
+  const key = secretName ? env(secretName) : undefined;
+  if (key) return key;
+  if (adapter === "anthropic-messages") return fail("ai_not_configured", 503);
+  return fail("provider_unconfigured", 503, { details: { provider: adapter }, legacy: { provider: adapter } });
 }
 
 export interface AiResult<T> {

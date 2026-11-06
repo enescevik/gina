@@ -1,4 +1,12 @@
 import { FunctionsHttpError } from "@supabase/supabase-js";
+import {
+  classifyServerError,
+  type ErrorAction,
+  errorAction,
+  type ErrorCategory,
+  type ErrorClassification,
+  type ServerErrorBody,
+} from "@gina/core";
 
 import i18n from "./i18n";
 import { supabase } from "./supabase";
@@ -6,34 +14,64 @@ import { supabase } from "./supabase";
 /** Prova AI Edge Function'ları (yalnız veli alanı; çocuk ekranları çağırmaz). */
 export type ProvaAiFunction = "prova-review" | "prova-generate" | "prova-grade" | "prova-plan" | "setup-suggestions" | "timetable-import" | "learning-plan-import" | "ai-weekly-summary";
 
-/** Sunucunun döndürdüğü hata kodu taşıyan hata; mesajı prova.ai.errors.* çevirisidir. */
+/** Sunucunun döndürdüğü hata kodu taşıyan hata; mesajı prova.ai.errors.* çevirisidir. C08: ortak sözleşmenin
+ * kategori/retryable/eylem alanları da taşınır; özel çeviri yoksa kategori metni gösterilir (ham kod/JSON değil). */
 export class ProvaAiError extends Error {
+  public readonly category: ErrorCategory;
+  public readonly retryable: boolean;
+  public readonly retryAfterS: number | undefined;
+  public readonly action: ErrorAction;
   constructor(
     public code: string,
     public status: number,
+    classification?: ErrorClassification,
   ) {
+    const c = classification ?? classifyServerError({ code, status: status || null, network: code === "network" });
     const key = `prova.ai.errors.${code}`;
-    super(i18n.exists(key) ? i18n.t(key) : i18n.t("prova.ai.errors.unknown"));
+    super(i18n.exists(key) ? i18n.t(key) : i18n.t(`c08.errorCategory.${c.category}`, { defaultValue: i18n.t("prova.ai.errors.unknown") }));
+    this.category = c.category;
+    this.retryable = c.retryable;
+    this.retryAfterS = c.retry_after_s;
+    this.action = errorAction(c);
   }
 }
 
-export async function invokeProvaAi<T>(name: ProvaAiFunction, body: Record<string, unknown>): Promise<T> {
-  const { data, error } = await supabase.functions.invoke(name, { body });
-  if (error) {
-    if (error instanceof FunctionsHttpError) {
-      const res = error.context as Response;
-      let code = "unknown";
-      try {
-        const payload = (await res.json()) as { error?: string };
-        if (payload.error) code = payload.error;
-      } catch {
-        // gövde JSON değil
-      }
-      throw new ProvaAiError(code, res.status);
+async function failureOf(error: unknown): Promise<ProvaAiError> {
+  if (error instanceof FunctionsHttpError) {
+    const res = error.context as Response;
+    let payload: Partial<ServerErrorBody> | null = null;
+    try {
+      payload = (await res.json()) as Partial<ServerErrorBody>;
+    } catch {
+      // Gövde yok/JSON değil (ör. gateway verify_jwt 401): durum koduna göre sınıflandırılır.
     }
-    throw new ProvaAiError("network", 0);
+    const c = classifyServerError({ body: payload, status: res.status });
+    // Gövdesiz gateway 401 için kod session_expired; aksi hâlde sunucu kodu (eski `error` alanı dahil).
+    const code = typeof payload?.code === "string" ? payload.code : typeof payload?.error === "string" ? payload.error : c.code;
+    return new ProvaAiError(code, res.status, c);
   }
-  return data as T;
+  return new ProvaAiError("network", 0, classifyServerError({ network: true }));
+}
+
+/**
+ * C08: oturum süresi dolduysa (gateway'in gövdesiz 401'i dahil) oturum bir kez yenilenir ve AYNI gövde bir kez
+ * tekrar gönderilir. Çağıranın taslağı/state'i dokunulmaz; gateway reddinde fonksiyon hiç çalışmadığı için
+ * ücretli iş açılmamıştır. Yenileme başarısızsa `session_expired` hatası taşınır (ekran girişe yönlendirir).
+ * Belirsiz ücretli sonuçta (ai_result_uncertain) hiçbir zaman otomatik tekrar yoktur.
+ */
+export async function invokeProvaAi<T>(name: ProvaAiFunction, body: Record<string, unknown>): Promise<T> {
+  let refreshed = false;
+  for (;;) {
+    const { data, error } = await supabase.functions.invoke(name, { body });
+    if (!error) return data as T;
+    const failure = await failureOf(error);
+    if (failure.action === "refresh_session" && !refreshed) {
+      refreshed = true;
+      const { data: session, error: refreshError } = await supabase.auth.refreshSession();
+      if (!refreshError && session.session) continue;
+    }
+    throw failure;
+  }
 }
 
 /** DB RPC hata kodlarını (plan_limit_prova_* vb.) aynı çeviriye bağlar. */

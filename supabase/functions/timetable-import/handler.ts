@@ -81,7 +81,7 @@ export async function handleTimetableImport(
   }
   const ai = await deps.resolveAi(db, ent.plan, 8000);
   if (ai instanceof Response) return ai;
-  const key = deps.apiKeyOrResponse();
+  const key = deps.apiKeyOrResponse(ai);
   if (key instanceof Response) return key;
   const document = await deps.provaDocument(
     db,

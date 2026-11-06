@@ -81,6 +81,7 @@ export * from "./period-transfer";
 export * from "./bulk-archive";
 export * from "./deletion-preview";
 export * from "./ai-capabilities";
+export * from "./ai-usage";
 export * from "./shared-limits";
 export * from "./library-lifecycle";
 

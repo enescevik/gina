@@ -32,6 +32,9 @@ export async function runAiOperation<T>(
     JSON.stringify({ scope, config: hashConfig, system, user, schema }),
   );
   const lease = crypto.randomUUID();
+  // C08: çözülmüş sağlayıcı rezervasyona gider (devre kesici ve iş satırı sağlayıcı başına). Çocuk yolu
+  // (reserve_child_ai_operation, imza değişmedi) sağlayıcıyı ailenin aynı anda çözülen etkin modelinden alır.
+  const provider = config.provider ? { p_provider: config.provider } : {};
   const { data: job, error } =
     action === "weekly" || action === "learning_import"
       ? await db.rpc(
@@ -43,10 +46,11 @@ export async function runAiOperation<T>(
           p_user: parent.userId,
           p_context: scope,
           p_lease: lease,
+          ...provider,
         },
       )
       : await db.rpc(childId ? "reserve_child_ai_operation" : "reserve_ai_operation", {
-        ...(childId ? { p_child_id: childId } : {}),
+        ...(childId ? { p_child_id: childId } : provider),
         p_family_id: parent.familyId,
         p_user_id: parent.userId,
         p_action: action,
@@ -65,6 +69,8 @@ export async function runAiOperation<T>(
         ? 402
         : job.error === "ai_rate_limited"
         ? 429
+        : job.error === "ai_temporarily_unavailable" || job.error === "provider_unconfigured"
+        ? 503
         : 409,
     );
   }

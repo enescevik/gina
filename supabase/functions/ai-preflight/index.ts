@@ -10,7 +10,8 @@ import {
   validateTimetableExtraction,
 } from "../_shared/timetable-extraction.ts";
 import { handlePreflight } from "./handler.ts";
-import { callClaude, resolveAi } from "../_shared/prova.ts";
+import { apiKeyOrResponse, resolveAi } from "../_shared/prova.ts";
+import { generateWith } from "../_shared/ai-route.ts";
 import { serviceClient } from "../_shared/supabase.ts";
 
 Deno.serve((req) =>
@@ -24,16 +25,19 @@ Deno.serve((req) =>
       if (config instanceof Response) {
         throw new Error("configuration_unavailable");
       }
+      // C08: anahtar çözülmüş adapter'ın secret adıyla okunur (Anthropic sabiti yok); değer asla dönmez/loglanmaz.
+      const key = apiKeyOrResponse(config);
+      if (key instanceof Response) throw new Error("configuration_unavailable");
       if (featureModes.includes(mode as FeatureMode)) {
         return featureSmoke(
           mode as FeatureMode,
-          Deno.env.get("ANTHROPIC_API_KEY")!,
+          key,
           config,
         );
       }
       if (mode === "document-smoke") {
-        const result = await callClaude<unknown>(
-          Deno.env.get("ANTHROPIC_API_KEY")!,
+        const result = await generateWith<unknown>(
+          key,
           {
             ...config,
             maxOutputTokens: Math.min(config.maxOutputTokens, 1024),
@@ -66,8 +70,8 @@ Deno.serve((req) =>
         };
       }
       // Fixed, non-personal input; no caller-supplied prompt/model or automatic retry.
-      const result = await callClaude<{ sum: number }>(
-        Deno.env.get("ANTHROPIC_API_KEY")!,
+      const result = await generateWith<{ sum: number }>(
+        key,
         { ...config, maxOutputTokens: 256 },
         "This is a synthetic connectivity test. Return only the requested sum.",
         "What is 2 + 3?",
