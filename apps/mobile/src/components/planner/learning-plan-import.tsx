@@ -3,7 +3,6 @@ import { GuidedField } from "@/components/ui/guided-field";
 import { SourceFilesPicker } from "@/components/learning/source-files-picker";
 import { useMemo, useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
-import { useQuery } from "@tanstack/react-query";
 import { randomUUID } from "expo-crypto";
 import { useTranslation } from "react-i18next";
 import { BookOpen, CheckCircle2, Circle, FileText } from "lucide-react-native";
@@ -29,6 +28,8 @@ import { ChoiceCard, SetupWizard } from "@/components/setup/wizard";
 import { SetupSourceLinks } from "@/components/setup/source-links";
 import { SubjectIcon } from "@/components/subject-icon";
 import { p, SatinButton, u } from "./ui";
+import { PlanSourcesMore, usePlanSources } from "./plan-sources";
+import { PlanDistribute } from "./plan-distribute";
 import type { PlannerChild } from "./timetable-editor";
 type Row = { index: number; id: string; content: LearningPlanContent };
 export function LearningPlanImport(
@@ -84,23 +85,11 @@ export function LearningPlanImport(
       recovery.pending?.p_items.map((r) => r.index) ?? [],
     ),
     [active, setActive] = useState(recovery.pending?.p_items[0]?.index ?? 0);
-  const docs = useQuery({
-    queryKey: [
-      "learning_plan_sources",
-      session?.user.id,
-      claims?.family_id,
-      child.id,
-    ],
-    queryFn: async () => {
-      const r = await supabase.from("learning_sources").select("id,name,mime")
-        .eq("kind", "document").eq("status", "ready").order("created_at", {
-          ascending: false,
-        }).limit(30);
-      if (r.error) throw r.error;
-      return r.data;
-    },
-  });
+  const docs = usePlanSources([session?.user.id, claims?.family_id, child.id]);
   const [picking, setPicking] = useState(false);
+  const [beforeSpread, setBeforeSpread] = useState<Record<number, string> | null>(
+    null,
+  );
   const locked = busy || picking || !!pending || recovery.blocked;
   const normalize = (r: Row): Row => ({
     ...r,
@@ -349,10 +338,10 @@ export function LearningPlanImport(
                   onPress={() => void docs.refetch()}
                 />
               )
-              : !docs.data?.length
+              : !docs.list?.length
               ? <Text style={u.small}>{t("planImport.noDocuments")}</Text>
               : null}
-            {docs.data?.map((d) => (
+            {docs.list?.map((d) => (
               <ChoiceCard
                 key={d.id}
                 title={d.name}
@@ -366,6 +355,7 @@ export function LearningPlanImport(
                 art={<FileText color={p.purple} />}
               />
             ))}
+            <PlanSourcesMore sources={docs} />
             {source || file
               ? (
                 <>
@@ -481,6 +471,47 @@ export function LearningPlanImport(
       {step === 2 && editing
         ? (
           <>
+            <PlanDistribute
+              items={chosen.map((r) => ({
+                index: r.index,
+                title: r.content.title,
+                due_on: r.content.due_on,
+                planned_on: r.content.planned_on,
+              }))}
+              start={date}
+              disabled={locked}
+              onApply={(dates) => {
+                if (locked) return;
+                setBeforeSpread(
+                  Object.fromEntries(
+                    chosen.map((r) => [r.index, r.content.planned_on]),
+                  ),
+                );
+                setConfirmed(false);
+                setRows((old) =>
+                  old.map((r) =>
+                    dates[r.index]
+                      ? { ...r, content: { ...r.content, planned_on: dates[r.index] } }
+                      : r
+                  )
+                );
+              }}
+              onUndo={beforeSpread
+                ? () => {
+                  if (locked) return;
+                  const back = beforeSpread;
+                  setBeforeSpread(null);
+                  setConfirmed(false);
+                  setRows((old) =>
+                    old.map((r) =>
+                      back[r.index]
+                        ? { ...r, content: { ...r.content, planned_on: back[r.index] } }
+                        : r
+                    )
+                  );
+                }
+                : null}
+            />
             <Text style={u.copy}>{t("planImport.editHint")}</Text>
             <View style={[u.row, { flexWrap: "wrap" }]}>
               {chosen.map((r) => (

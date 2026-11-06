@@ -31,7 +31,8 @@ import { useSession } from "@/lib/session";
 import { schoolBagJournal } from "@/lib/school-bag-command";
 import { Toggle } from "@/components/ui/toggle";
 import { SubjectIcon } from "@/components/subject-icon";
-import { IconButton, p, SatinButton, u } from "./ui";
+import { IconButton, p, SatinButton, Tag, u } from "./ui";
+import { bagSuggestions } from "./planner-moves";
 import type { PlannerChild } from "./timetable-editor";
 
 type Props = { child: PlannerChild; day: string; onClose: () => void };
@@ -114,6 +115,9 @@ function BagEditor(
     [items, setItems] = useState(recovery.command?.p_items ?? initial.items),
     [label, setLabel] = useState("");
   const [catalogId,setCatalogId]=useState<string|null>(null);
+  // A hint taken into the field counts as used once added, even if the parent edited it.
+  const [hint, setHint] = useState<string | null>(null),
+    [usedHints, setUsedHints] = useState<string[]>([]);
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [saved, setSaved] = useState(false),
@@ -163,6 +167,8 @@ function BagEditor(
       return;
     }
     change([...items, { id: randomUUID(), label: clean, checked: false, catalog_id: clean===label.trim()?catalogId:null }]);
+    if (hint) setUsedHints([...usedHints, hint]);
+    setHint(null);
     setLabel("");
     setCatalogId(null);
   }
@@ -242,6 +248,88 @@ function BagEditor(
     timeZone: "UTC",
   }).format(new Date(day + "T12:00:00Z"));
   const checked = items.filter((i) => i.checked).length;
+  const same = (a: string, b: string) =>
+    a.trim().toLocaleLowerCase(i18n.language) ===
+      b.trim().toLocaleLowerCase(i18n.language);
+  const hints = bagSuggestions(source.lessons)
+    .map((h) =>
+      t(`u05.bag${h.kind[0].toUpperCase()}${h.kind.slice(1)}`, {
+        subject: h.subject,
+      })
+    )
+    .filter((h, i, all) => h.length <= 80 && all.findIndex((x) => same(x, h)) === i);
+  const openHints = hints.filter((h) =>
+    !usedHints.includes(h) && !items.some((i) => same(i.label, h))
+  );
+  const suggestions = !locked
+    ? (
+      <View
+        style={{
+          gap: 10,
+          padding: 14,
+          borderRadius: 18,
+          backgroundColor: p.cream,
+        }}
+      >
+        <View style={[u.row, { flexWrap: "wrap", gap: 8 }]}>
+          <Text style={[u.bold, u.fill]}>{t("u05.bagSuggestTitle")}</Text>
+          <View
+            style={{
+              paddingHorizontal: 10,
+              paddingVertical: 4,
+              borderRadius: 12,
+              backgroundColor: "#FFF0DB",
+            }}
+          >
+            <Text style={[u.small, { color: "#6E3F17" }]}>
+              {t("u05.bagNotSchool")}
+            </Text>
+          </View>
+        </View>
+        <Text style={u.small}>{t("u05.bagSuggestHelp")}</Text>
+        {!hints.length
+          ? <Text style={u.small}>{t("u05.bagNoSuggest")}</Text>
+          : !openHints.length
+          ? <Text style={u.small}>{t("u05.bagAllAdded")}</Text>
+          : (
+            <>
+              <View style={[u.row, { flexWrap: "wrap", gap: 8 }]}>
+                {openHints.map((h) => (
+                  <Tag
+                    key={h}
+                    label={h}
+                    selected={same(label, h)}
+                    onPress={() => {
+                      setLabel(h);
+                      setHint(h);
+                      setCatalogId(null);
+                      setError("");
+                    }}
+                  >
+                    <Plus size={16} color={p.purple} />
+                  </Tag>
+                ))}
+              </View>
+              <SatinButton
+                secondary
+                title={t("u05.bagAddAll")}
+                disabled={items.length >= 30}
+                onPress={() =>
+                  change([
+                    ...items,
+                    ...openHints.slice(0, 30 - items.length).map((h) => ({
+                      id: randomUUID(),
+                      label: h,
+                      checked: false,
+                      catalog_id: null,
+                    })),
+                  ])}
+              />
+            </>
+          )}
+      </View>
+    )
+    : null;
   const panels = [
     <View
       key="lessons"
@@ -331,12 +419,13 @@ function BagEditor(
             <Text style={u.copy}>{t("schoolBag.emptyBody")}</Text>
           </View>
         )}
+      {suggestions}
       {!locked
         ? (
           <>
             <View style={[u.row, { alignItems: "flex-end" }]}>
               <View style={u.fill}>
-                <GuidedField childId={child.id} kind="bag" label={t("schoolBag.itemLabel")} value={label} onChange={(v,id)=>{setLabel(v);setCatalogId(id);}} />
+                <GuidedField childId={child.id} kind="bag" label={t("schoolBag.itemLabel")} value={label} onChange={(v,id)=>{setLabel(v);setCatalogId(id);if(!v.trim())setHint(null);}} />
               </View>
               <IconButton
                 label={t("schoolBag.add")}

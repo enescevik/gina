@@ -33,6 +33,7 @@ import { timetableJournal } from "@/lib/timetable-command";
 import { useSession } from "@/lib/session";
 import { useSchoolTimetable } from "@/lib/school-timetable";
 import { IconButton, p, PlannerHero, SatinButton, Tag, u } from "./ui";
+import { copyDayPlan } from "./planner-moves";
 export interface PlannerChild {
   grade?: number | null;
   id: string;
@@ -144,6 +145,9 @@ function LoadedEditor({
   const [lesson, setLesson] = useState<Lesson | null>(null);
   const [clearOpen, setClearOpen] = useState(false);
   const [beforeClear, setBeforeClear] = useState<Draft | null>(null);
+  const [beforeCopy, setBeforeCopy] = useState<
+    { draft: Draft; days: number[] } | null
+  >(null);
   const [copy, setCopy] = useState(false);
   const [targets, setTargets] = useState<number[]>([]);
   const [sheetError, setSheetError] = useState("");
@@ -174,6 +178,7 @@ function LoadedEditor({
     if (locked) return;
     setDraft(next);
     setBeforeClear(null);
+    setBeforeCopy(null);
     setSaved(false);
     setNewer(false);
     setError("");
@@ -279,6 +284,9 @@ function LoadedEditor({
       .filter((l) => l.day === d)
       .sort((a, b) => a.start.localeCompare(b.start));
   const sheetOpen = !!lesson || copy || !!leave;
+  const copyPlan = copy && draft
+    ? copyDayPlan(draft.lessons, day, targets, newKey)
+    : null;
   const closeSheet = () => {
     setLesson(null);
     setCopy(false);
@@ -415,6 +423,7 @@ function LoadedEditor({
                     <TimetableImportEntry
                       compact
                       childId={child.id}
+                      grade={child.grade}
                       initial={draft}
                       disabled={dirty || locked}
                       onSaved={(next) => {
@@ -444,6 +453,7 @@ function LoadedEditor({
                     })}
                   rows={draft.lessons}
                   settings={draft.settings}
+                  subjects={{ childId: child.id, grade: child.grade }}
                   disabled={locked}
                   onDragChange={setDragging}
                   onChange={(lessons) => change({ ...draft, lessons })}
@@ -467,6 +477,29 @@ function LoadedEditor({
                   <Text style={u.linkText}>{t("planner.copyDay")}</Text>
                 </Pressable>
                 {draft.lessons.length ? <Button variant="ghost" title={t("lifecycle.clearTimetable")} disabled={locked} onPress={() => setClearOpen(true)} /> : null}
+                {beforeCopy
+                  ? (
+                    <View style={[u.card, { gap: 10 }]}>
+                      <Text accessibilityLiveRegion="polite" style={u.copy}>
+                        {t("u05.copied", {
+                          days: beforeCopy.days.map((d) => t(`planner.day${d}`))
+                            .join(", "),
+                        })}
+                      </Text>
+                      <Button
+                        variant="secondary"
+                        title={t("u05.undoCopy")}
+                        disabled={locked}
+                        onPress={() => {
+                          if (locked) return;
+                          setDraft({ ...beforeCopy.draft, revision: draft.revision });
+                          setBeforeCopy(null);
+                          setSaved(false);
+                        }}
+                      />
+                    </View>
+                  )
+                  : null}
                 {beforeClear ? <View style={u.card}><Text style={u.copy}>{t("lifecycle.clearedTimetable")}</Text><Button variant="secondary" title={t("lifecycle.undoTimetable")} disabled={locked} onPress={() => change({ ...beforeClear, revision: draft.revision })} /></View> : null}
                 <Text style={u.small}>{t("planner.sharedHelp")}</Text>
                 <TimetableSourceLinks childId={child.id} />
@@ -714,29 +747,55 @@ function LoadedEditor({
                           />
                         ))}
                     </View>
+                    {copyPlan && copyPlan.preview.length
+                      ? (
+                        <View style={{ gap: 10 }}>
+                          <Text style={u.bold}>{t("u05.copyPreview")}</Text>
+                          {copyPlan.preview.map((x) => (
+                            <View
+                              key={x.day}
+                              style={{
+                                gap: 4,
+                                padding: 12,
+                                borderRadius: 16,
+                                backgroundColor: p.cream,
+                              }}
+                            >
+                              <Text style={u.bold}>{t(`planner.day${x.day}`)}</Text>
+                              <Text style={u.small}>
+                                {x.before.length
+                                  ? t("u05.copyBefore", { count: x.before.length }) +
+                                    " · " + x.before.map((l) => l.title).join(", ")
+                                  : t("u05.copyBeforeEmpty")}
+                              </Text>
+                              <Text style={[u.small, { color: "#197465" }]}>
+                                {t("u05.copyAfter", { count: x.after.length })}
+                                {" · " + x.after.map((l) => l.title).join(", ")}
+                              </Text>
+                            </View>
+                          ))}
+                          {copyPlan.preview.some((x) => x.before.length)
+                            ? <Text style={u.error}>{t("u05.copyReplaces")}</Text>
+                            : null}
+                        </View>
+                      )
+                      : null}
                     <SatinButton
                       title={t("planner.copyConfirm")}
                       disabled={!targets.length || !rows(day).length}
                       onPress={() => {
-                        if (!draft) return;
-                        const lessons = [
-                          ...draft.lessons.filter(
-                            (l) => !targets.includes(l.day),
-                          ),
-                          ...targets.flatMap((d) =>
-                            rows(day).map((l) => ({
-                              ...l,
-                              id: newKey(),
-                              day: d,
-                            }))
-                          ),
-                        ];
-                        const err = validateLessons(lessons);
+                        if (!draft || !copyPlan) return;
+                        const err = validateLessons(copyPlan.lessons);
                         if (err) {
                           setSheetError(t(`planner.${err}`));
                           return;
                         }
-                        change({ ...draft, lessons });
+                        const previous = draft;
+                        change({ ...draft, lessons: copyPlan.lessons });
+                        setBeforeCopy({
+                          draft: previous,
+                          days: copyPlan.preview.map((x) => x.day),
+                        });
                         setCopy(false);
                       }}
                     />
