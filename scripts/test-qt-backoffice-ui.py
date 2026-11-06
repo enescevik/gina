@@ -262,6 +262,8 @@ try:
     # 1b) Faz 2A/2B: types ship enabled=false → SQL refuses the whole job; after enabling (ONLY in this disposable DB)
     # the same Edge rows complete. This mirrors the Edge pre-check (409 interaction_type_unavailable before any charge).
     rows2 = json.loads(command(['deno', 'run', '--no-lock', '--config', 'supabase/functions/deno.json', 'scripts/qt-ai-sample-rows.ts', '--phase2'], cwd=ROOT))
+    # Yayın migration'ı (20261107040000) türleri açar; kapalı durum burada açıkça yeniden kurulur.
+    sql(DB, "update public.interaction_types set enabled=false where type in (" + ",".join("'" + t + "'" for t in PHASE2) + ");")
     enabled = sql(DB, "select string_agg(type||'='||enabled, ',' order by type) from public.interaction_types where type in (" + ",".join("'" + t + "'" for t in PHASE2) + ");").strip()
     report['chain']['phase2_enabled_before'] = enabled
     code, err = sql_error(phase2_sql(user['id'], rows2, JOB2))

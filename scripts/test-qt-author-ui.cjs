@@ -77,7 +77,7 @@ async function setupStack() {
     if (file < '20261103093000') { for (const line of text.split('\n')) if (line.toLowerCase().startsWith('alter publication supabase_realtime add table ')) sql(line); }
     else sql(text);
   }
-  assert.equal(sql("select count(*) from public.interaction_types where family='structured' and enabled;"), '6', 'structured types not migrated');
+  assert.equal(sql("select count(*) from public.interaction_types where phase in ('1A','1B') and enabled;"), '6', 'structured types not migrated');
   const auth = inspect('supabase_auth_gina'), rest = inspect('supabase_rest_gina');
   const secret = randomBytes(36).toString('base64url');
   const authPort = startContainer(DB + '_auth', auth.image, {
