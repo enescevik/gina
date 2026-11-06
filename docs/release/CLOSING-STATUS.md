@@ -1,65 +1,90 @@
 # GINA — tek güncel kapanış tablosu
 
-6 Kasım 2026 akşamı. Bu tablo `continuation-2026-11-06/PROGRESS.md`, `overnight-2026-11-06/PROGRESS.md` ve C/D raporlarındaki durum sütunlarının **yerini alır**. Eski tablolardaki "KOD HAZIR / yayımlanmadı" ifadeleri tarihseldir.
+6 Kasım 2026, ~19:45 (UTC). Bu tablo `continuation-2026-11-06/PROGRESS.md`, `overnight-2026-11-06/PROGRESS.md` ve C/D raporlarındaki durum sütunlarının **yerini alır**. Eski tablolardaki "KOD HAZIR / yayımlanmadı" ifadeleri tarihseldir. Sıra: kütüphane (K01) sonra, 3B dünya (WORLD-01) en son.
 
-Durumlar:
-- **TAMAM**: kod main'de, üretimde ve gerekli kabul kanıtı var.
-- **CANLIDA, TEST BEKLİYOR**: üretimde ama cihaz ya da gerçek servis kabulü eksik.
-- **MAIN'DE, YAYIN BEKLİYOR**: kod hazır, üretime çıkmadı.
-- **YAPILIYOR**: üzerinde çalışılıyor.
-- **DIŞ ENGEL**: başka bir hesap ya da kişiye bağlı.
-- **ERTELENDİ**: bilerek sonraya bırakıldı; kabul sayılmaz.
+## Son yayınlar
 
-Üretim seviyesi (C14c, 6 Kasım ~19:00Z): ledger 151 (son `20261106450000`); web `7f515ca0`; yönetim `d4ebcb30`; tablet 30 `c4aic5og2w`; iOS 30 gönderildi (`b7ccb6a4`).
+| Yayın | Onay | Kaynak commit | DB (ledger) | Edge | Web / yönetim | Mobil |
+|---|---|---|---|---|---|---|
+| C14 | Enes 16:01Z | `c16b8b1` | 141, son `20261106340000` | 24 fonksiyon | web `a31715be`, yönetim `b1cd107a` | iOS 28 gönderim `8f37781c` (IPA `9e2dbc10…`); tablet 28 `m8aeavsrur` (IPA `116a7fad…`) |
+| C14b | Enes 15:38Z | `b04207c`; `prova-grade` ek düzeltme `8fb2eef` | 146, son `20261106390000` | 8 + `prova-grade` | web `1c0cf214`, yönetim `30000ffb` | iOS 29 gönderim `d9628cbd` (IPA `a5ad4764…`); tablet 29 `b9q067lwk9`, kaynak `8fb2eef` (IPA `d2d254c6…`) |
+| **C14c (güncel)** | Enes 18:23Z | **`bba2b01`** | **151, son `20261106450000`** | `prova-generate` v8, `prova-grade` v7, `prova-review` v3 | **web `7f515ca0`, yönetim `d4ebcb30`** | **iOS 30 gönderim `b7ccb6a4` (IPA `7ddc64f9…`); tablet 30 `c4aic5og2w`, kaynak `bba2b01` (IPA `be558e9e…`)** |
 
-| İş | Durum | Kanıt / kalan |
+- **Ayarlar:** `question_groups.enabled=true`; `curriculum_catalog.enabled=false`; `content_prereview.enabled=false`.
+- **Zamanlanmış işler:** pg_cron `prune-unused-devices` 03:25 UTC, `prune-pairing-records` 03:35 UTC.
+- **Canlı sağlık:** `health-check.mjs --strict` temiz, ACL 0, RLS kapalı tablo 0.
+- **Alan adı:** `ginafamily.com` ve `admin.ginafamily.com` kurulu; hesap e-postaları `noreply@ginafamily.com` (Brevo SMTP) üzerinden gidiyor ([kayıt](domain-email-2026-11-06/STATUS.md)).
+- **iOS:** gönderim TestFlight'a yüklendiğini gösterir; Apple işlemesi ve cihaza kurulum ayrı adımlardır.
+- **Main:** bu yayınların ötesinde yalnız belge değişiklikleri var (D18/D19 hukuk metinleri, alan adı uzlaştırması, raporlar). Uygulamaya giden kod yok.
+
+## 1. Kodda tamam ve canlıda, kabul kanıtı tam
+
+| İş | Kanıt |
+|---|---|
+| C00 envanter | continuation PROGRESS §C00 |
+| C03 geri gönderme nedeni | C14; izole + canlı smoke |
+| C05 kaynak çıkarımı | D15 pilotunda hosted indirme, hash, kova, çıkarım canlı geçti |
+| C07 rol matrisi | pgTAP 113; C14 |
+| C08 AI yönlendirme (Anthropic) | D5, C14b, C14c gerçek çağrılar |
+| C13 AUTH-1 eşleme kaba kuvvet koruması | `20261106340000`, C14 |
+| C14 / C14b / C14c ara yayınları | yukarıdaki tablo; `c14*-2026-11-06/PLAN.md` yürütme kayıtları |
+| D1 AI ortak kaynak grupları | C14b canlı: gerçek grup kuruldu |
+| D3 operatör kapsamı, kanal hataları | C14b |
+| D5 gerçek AI kabulü | d5, c14b/ai |
+| D6 puanlama düzeltmesi (B1) | C14b canlı 200 + `accept_ai_grade` |
+| D7 içerik operatörü taslak kabulü | C14b |
+| D9 ortak metin puanlama, rubrik 100 | C14b canlı |
+| D11 yönetim P2 düzeltmeleri | C14c |
+| D12 aile süzgeci, denetimde yönetici adı | C14c |
+| D13 amaca göre puanlama | C14c canlı: yalnız sonuç 95, süreç 60 |
+| D15 MEB gerçek kabul zinciri | Canlı: resmî kaynak → yayın → pilot kapsamı → gerçek üretim (6 soru, 2/1/1/1/1, tam iz) → atama → geri çekme; 1 ücretli çağrı; temizlik doğrulandı ([§6](d15-2026-11-06/README.md)) |
+| D17 eşleme saklama işleri | C14c: iki pg_cron işi etkin |
+| X01'in alan adı ve hesap e-postası kısmı | Türkçe şifre sıfırlama gerçek teslimatla doğrulandı (Codex, PR #151/#152) |
+
+## 2. Canlıda, fiziksel cihaz testi bekliyor (C15 — Enes)
+
+| İş | Cihazda bakılacak |
+|---|---|
+| C01 köken etiketleri | veli telefonu/tablet görünümü |
+| C02 ders bağı, tarihli görünümler | ana ekran, çocuk Bugün, takvim |
+| C04 Prova merkezi | Hazırla / Gönderilenler / İncelenecekler akışı |
+| C06 tek eşleme yolu, D2 PIN'siz çocuk modu ve eşleme onayı | gerçek tablet eşleme, yeniden açılış, red |
+| C12 ekran incelemesi | VoiceOver/TalkBack, yazı boyutu, güvenli alan, kalem, yön |
+| D4/D8 PDF yazı tipi | fiziksel iPhone/iPad ve Android PDF metin katmanı |
+| D10 kişi adı uyarısı, D14 AI sorusunu düzenleme | telefon 390 px ve tablet düzeni |
+| D15 protokol testi 7 | veli/çocuk ekranında senaryo, defter, rubrik okunabilirliği |
+| Bildirim, gerçek OAuth girişi | push teslimi; Google/Apple giriş dönüş adresleri |
+| İngilizce hesap e-postası ve yeni hesap doğrulaması | gerçek teslimat |
+
+Üretilen MEB pilot sorularının alan/dil uygunluğu insan incelemesi olmadan kabul sayılmaz.
+
+## 3. Kodda tamam, yalnız belge düzeyinde (uygulamaya gitmez)
+
+| İş | Durum |
+|---|---|
+| D16/D18/D19 hukuk metinleri | 10 belgenin hepsi TR + EN; 16 iç tutarsızlıktan 15'i koddan çözüldü; alan adı yer tutucuları dolduruldu. Yayın hukuk onayına bağlı (X03). Açık Rıza A modeli (tek rıza mı, işlem bazlı onay mı) avukat kararı |
+| Kapanış tablosu | bu dosya |
+
+## 4. Dış bağımlılık nedeniyle kapalı
+
+| Kimlik | Ne kapalı | Gereken |
 |---|---|---|
-| C00 envanter | TAMAM | continuation PROGRESS §C00 |
-| C01 köken etiketleri | CANLIDA, TEST BEKLİYOR | C14; cihaz kabulü C15 |
-| C02 ders bağı, tarihli görünümler | CANLIDA, TEST BEKLİYOR | C14; C15 |
-| C03 geri gönderme nedeni | TAMAM | C14; izole + canlı smoke |
-| C04 Prova merkezi | CANLIDA, TEST BEKLİYOR | Gerçek AI üretimi C14b'de geçti; cihaz C15 |
-| C05 kaynak çıkarımı | TAMAM (canlı) | D15 pilotunda hosted indirme, hash, kova ve çıkarım canlı geçti |
-| C06 tek eşleme yolu | CANLIDA, TEST BEKLİYOR | C15 fiziksel cihaz |
-| C07 rol matrisi | TAMAM | pgTAP 113, C14 |
-| C08 AI sağlayıcı yönlendirmesi | TAMAM (Anthropic) / DIŞ ENGEL (X04) | Gerçek Anthropic D5 + C14b; OpenAI/Gemini anahtarı yok |
-| C09 AI ön inceleme | ERTELENDİ | Kapı kapalı; K01'den önce açılacak (sır + pg_cron + pilot) |
-| C10 bildirim kanalları | DIŞ ENGEL | X01 alan adı/SMTP, X02 SMS/Firebase |
-| C11 takvim, mağaza, hukuk metinleri | CANLIDA / DIŞ ENGEL | Mağaza ve hukuk onayı (X03); metin uyumu D16 |
-| C12 ekran incelemesi | CANLIDA, TEST BEKLİYOR | Matris §5; fiziksel erişilebilirlik C15 |
-| C13 güvenlik ve performans | TAMAM / ERTELENDİ | AUTH-1 kapandı. **Barındırılan ortamda tam geri yükleme / PITR tatbikatı ertelenmiş kabul işi; tamamlanmış değil.** |
-| C14 ara yayın 1 | TAMAM | c14-2026-11-06/PLAN.md |
-| C14b ara yayın 2 | TAMAM | c14b-2026-11-06/PLAN.md |
-| C14c ara yayın 3 | TAMAM | c14c-2026-11-06/PLAN.md yürütme kaydı |
-| C15 cihaz kabulü | DIŞ ENGEL (Enes) | 29/30 kurulumu; çocuk cihazı, kalem, yön, VoiceOver, yazı boyutu, bildirim, OAuth |
-| D1 AI ortak kaynak grupları | TAMAM | Canlıda gerçek grup kuruldu (C14b) |
-| D2 PIN'siz çocuk modu, eşleme onayı | CANLIDA, TEST BEKLİYOR | C15 |
-| D3 operatör kapsamı, kanal hataları | TAMAM | C14b |
-| D4/D8 ekran devirleri, PDF yazı tipi | CANLIDA, TEST BEKLİYOR | D8-1: fiziksel cihaz PDF (C15) |
-| D5 gerçek AI kabulü | TAMAM | d5 + c14b/ai |
-| D6 puanlama düzeltmesi (B1) | TAMAM | C14b'de canlı 200 + `accept_ai_grade` |
-| D7 içerik operatörü taslak kabulü | TAMAM | C14b |
-| D9 ortak metin puanlama, rubrik 100, kişi adı | TAMAM | C14b canlı: rubrik 100 |
-| Puanlama (amaca göre) | TAMAM | C14c canlı: yalnız sonuç 95, süreç 60 (`v7-purpose-aware`). Veli rubriğinde amaç seçici yok (sorudan çıkarım) |
-| D10 kişi adı uyarısı veliye | CANLIDA, TEST BEKLİYOR | C14c; cihaz C15 |
-| D11 yönetim P2 düzeltmeleri | TAMAM | C14c |
-| D12 aile süzgeci, denetimde yönetici adı | TAMAM | C14c (migration önce, yönetim sonra) |
-| D14 AI sorusunu düzenleme | CANLIDA, TEST BEKLİYOR | C14c; cihaz C15 |
-| D15 MEB gerçek kabul pilotu | TAMAM (canlı) / TEST BEKLİYOR (ekran, test 7) | Resmî kaynak → yayın → pilot kapsamı → gerçek üretim (6 soru, 2/1/1/1/1, tam iz) → atama → geri çekme; 1 ücretli çağrı; temizlik doğrulandı. Soru içerik uygunluğu insan incelemesi bekliyor |
-| D16/D18 teknik ve hukuk metinleri | TAMAM (metin) / DIŞ ENGEL (hukuk onayı X03) | 10 hukuk belgesinin hepsinde İngilizce bölüm (D18); metin içi 16 tutarsızlık D19'da koda göre uzlaştırılıyor |
-| D17 eşleme saklama işleri | TAMAM | C14c: iki pg_cron işi etkin, ilk çalışmada kaldırılacak cihaz 0 |
-| D11 kararları K3/K4/K5 | ERTELENDİ | DECISIONS.md |
-| X01 alan adı / SMTP | DIŞ ENGEL | Canlıya alırken |
-| X02 Firebase / Play / SMS | DIŞ ENGEL | Android iç test |
-| X03 mağaza ve hukuk onayı | DIŞ ENGEL | Bireysel geliştirici olarak başlanır (DECISIONS); şirket kurulması zorunlu engel değildir |
-| X04 OpenAI / Gemini | DIŞ ENGEL | Anahtar |
-| X06 bağımsız editör | DIŞ ENGEL | K01 onay/yayın sayıları buna bağlı |
-| K01 kütüphane üretimi | ERTELENDİ (Enes, 6 Kasım 17:09) | 100 taslak / 1.440 eksik / 0 onay / 0 yayın |
-| R02 son yayın | ERTELENDİ | K01 ve dış kabullerden sonra |
-| WORLD-01 3B dünya | ERTELENDİ | En son |
+| X01 (kalan kısım) | ürün bildirim e-postaları (C10), destek adresi yönlendirmesi | Gmail hedef teyidi, yönlendirme kuralı ve teslimat testi; C10 kanal kabulü |
+| X02 Firebase / Play / SMS | Android iç test, SMS kanalı | hesaplar |
+| X03 mağaza ve hukuk onayı | satış, mağaza başvurusu, hukuk metinlerinin yayını | hukuk uzmanı incelemesi; yasal kimlik/adres. Bireysel geliştirici olarak başlanır, şirket kurulması ön şart değil |
+| X04 OpenAI / Gemini | ek AI sağlayıcıları (C08) | anahtarlar |
+| X06 bağımsız editör | kütüphane onay/yayın sayıları (K01) | editör |
 
-## Claude'un tamamlayabileceği / dış erişim bekleyen ayrımı
+## 5. Bilerek ertelenenler (tamamlanmış sayılmaz)
 
-- **Claude (şimdi):** D12, D13, D14, D15, D16, ardından üçüncü küçük yayın (onayla), içinde puanlama ve MEB pilotunun gerçek model doğrulaması. C09 kapısının açılması K01'den önce.
-- **Enes:** C15 cihaz kabulü, yayın onayları, K01 başlama kararı.
-- **Dış:** X01, X02, X03, X04, X06; barındırılan geri yükleme tatbikatı için ayrı proje/maliyet kararı.
+| İş | Neden / ne zaman |
+|---|---|
+| C13 barındırılan ortamda tam geri yükleme / PITR tatbikatı | ertelenmiş kabul işi; ayrı proje ve maliyet kararı |
+| C09 AI ön inceleme kapısı | kütüphaneden (K01) önce açılacak: sır + pg_cron + pilot |
+| Apple ile Giriş belirteç iptali | Apple girişi açılmadan `delete-account` içine eklenmeli (App Store 5.1.1(v)) |
+| Satın alma ekranında AI onayı cümlesi | satış açılmadan önce küçük metin işi |
+| Veli rubriğinde "sonuç / süreç" seçici | migration gerekir; şimdilik sorudan çıkarım |
+| D11 K3/K4/K5 yönetim kararları | DECISIONS.md |
+| K01 kütüphane üretimi | Enes kararıyla beklemede (6 Kasım 17:09); 100 taslak / 1.440 eksik / 0 onay / 0 yayın |
+| R02 son yayın | K01 ve dış kabullerden sonra |
+| WORLD-01 3B dünya | en son |
