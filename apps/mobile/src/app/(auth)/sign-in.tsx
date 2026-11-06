@@ -12,13 +12,14 @@ import { Field } from "@/components/ui/field";
 import { ParentScreen, parentStyles, InfoCard } from "@/components/ui/parent-screen";
 import { Toggle } from "@/components/ui/toggle";
 import { supabase } from "@/lib/supabase";
+import { resolveLocale } from "@gina/core";
 
 type Mode = "in" | "up" | "reset";
 /** Web only: lets the reset-password tab tell an operator to return to the admin tab. No address or token stored. */
 const ADMIN_RESET_MARK = "gina.u01.adminReset";
 
 export default function SignInScreen() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const params = useLocalSearchParams<{ mode?: string; reason?: string; from?: string; error?: string; error_code?: string }>();
   const [showPassword, setShowPassword] = useState(false);
   const [mode, setMode] = useState<Mode>(params.mode === "reset" ? "reset" : params.mode === "up" ? "up" : "in");
@@ -49,7 +50,7 @@ export default function SignInScreen() {
       } else {
         const result = mode === "in"
           ? await supabase.auth.signInWithPassword({ email: email.trim(), password })
-          : await supabase.auth.signUp({ email: email.trim(), password, options: { emailRedirectTo: Linking.createURL("/auth-callback") } });
+          : await supabase.auth.signUp({ email: email.trim(), password, options: { emailRedirectTo: Linking.createURL("/auth-callback"), data: { locale: resolveLocale(i18n.language) } } });
         if (result.error) throw result.error;
         if (result.data.session) router.replace("/");
         else { setPassword(""); setNotice(t("accountV5.checkEmail")); }

@@ -6,6 +6,7 @@
 // Kullanım (repo kökünden): node scripts/build-web.mjs
 // Çıktı: apps/mobile/dist  →  wrangler pages deploy apps/mobile/dist --project-name gina-web
 
+import { cpSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -23,6 +24,7 @@ const run = (cmd, args) => execFileSync(cmd, args, { cwd: root, stdio: "inherit"
 
 // --clear: Metro önbelleğindeki eski EXPO_PUBLIC_* değerleri pakete sızmasın.
 run("pnpm", ["--filter", "@gina/mobile", "exec", "expo", "export", "-p", "web", "--output-dir", "dist", "--clear"]);
+cpSync(join(root, "deploy/web/email"), join(root, "apps/mobile/dist/email"), { recursive: true });
 run("node", [
   "scripts/cf-pages-finalize.mjs",
   "--out", "apps/mobile/dist",

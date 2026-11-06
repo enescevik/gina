@@ -1,8 +1,9 @@
 import type { Session } from "@supabase/supabase-js";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
-import { ginaClaimsSchema, type GinaClaims } from "@gina/core";
+import { ginaClaimsSchema, resolveLocale, type GinaClaims } from "@gina/core";
 
+import i18n from "./i18n";
 import { supabase } from "./supabase";
 import { queryClient } from "./query";
 import { clearReviewJournals } from "./review-journal";
@@ -97,6 +98,28 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     });
     return () => { live = false; subscription.subscription.unsubscribe(); };
   }, [attempt]);
+
+  // Run outside onAuthStateChange: auth mutations inside its callback can deadlock.
+  // Never emit USER_UPDATED during password recovery, where it ends recovery mode.
+  const userId = session?.user.id;
+  const anonymous = session?.user.is_anonymous;
+  const savedLocale = session?.user.user_metadata.locale;
+  useEffect(() => {
+    if (!userId || anonymous || recovering) return;
+    let live = true;
+    const syncLocale = async () => {
+      const locale = resolveLocale(i18n.language);
+      if (savedLocale === locale || recoveryPending) return;
+      const { data } = await supabase.auth.getSession();
+      if (!live || recoveryPending || data.session?.user.id !== userId || data.session.user.is_anonymous) return;
+      if (data.session.user.user_metadata.locale === locale) return;
+      await supabase.auth.updateUser({ data: { locale } });
+    };
+    const sync = () => { void syncLocale().catch(() => { /* Retry on next session/language change. */ }); };
+    sync();
+    i18n.on("languageChanged", sync);
+    return () => { live = false; i18n.off("languageChanged", sync); };
+  }, [userId, anonymous, savedLocale, recovering]);
 
   const value = useMemo<SessionState>(
     () => ({
