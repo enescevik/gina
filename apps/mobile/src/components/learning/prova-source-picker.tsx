@@ -1,7 +1,9 @@
 import { NumberChoice } from "@/components/ui/number-choice";
 import { SourceFilesPicker } from "@/components/learning/source-files-picker";
 import { provaGenerationJournal } from "@/lib/setup-command";
-import { AI_INTERACTION_TYPES, aiInteractionTypesFor, aiTypesAllowed, canonicalSubject, catalogBlueprintFits, isStructuredType, provaAiUnits, provaGenerationKind, provaRemainingCount } from "@gina/core";
+import { AI_INTERACTION_TYPES, aiInteractionTypesFor, aiTypesAllowed, canonicalSubject, catalogBlueprintFits, isStructuredType, provaAiUnits, provaGenerationKind, provaRemainingCount,
+  structuredFitsKind,
+} from "@gina/core";
 import i18next from "@/lib/i18n";
 import { structuredTypeLabel } from "./structured-question-author";
 import { useMemo, useState } from "react";
@@ -1046,7 +1048,7 @@ export function ProvaSourcePicker(
                           {writtenTrack
                             ? <Text testID="qt-ai-types-written" style={b.muted}>{t("prova.qt.author.ai.typesWritten")}</Text>
                             : null}
-                          {requestedTypes?.some((x) => isStructuredType(x)) && provaGenerationKind(draft) !== "mixed"
+                          {requestedTypes?.some((x) => isStructuredType(x) && !structuredFitsKind(provaGenerationKind(draft), x))
                             ? <Text style={b.muted}>{t("prova.qt.author.ai.typesKindHint")}</Text>
                             : null}
                         </View>

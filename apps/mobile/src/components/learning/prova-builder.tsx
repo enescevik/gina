@@ -38,6 +38,7 @@ import { useTranslation } from "react-i18next";
 import {
   appendProvaBlocks,
   blockedForTrack,
+  structuredFitsKind,
   type DeviceTypeSupport,
   unsupportedTypesForChild,
   confirmProvaPeriod,
@@ -457,7 +458,7 @@ export default function ProvaBuilder() {
     const blocked = blockedForTrack(draft.context?.track, [q.interaction_type]);
     if (blocked.length) {
       issues.push(t("prova.qt.author.trackBlocked", { type: structuredTypeLabel(t, blocked[0]) }));
-    } else if (allowedKind !== "mixed" && q.kind === "structured") {
+    } else if (q.kind === "structured" && !structuredFitsKind(allowedKind, q.interaction_type)) {
       issues.push(t("prova.qt.author.kindMismatch", { type: structuredTypeLabel(t, q.interaction_type) }));
     } else if (allowedKind !== "mixed" && q.kind !== allowedKind) {
       issues.push(t(`provaP01.issueKind_${q.kind}`));

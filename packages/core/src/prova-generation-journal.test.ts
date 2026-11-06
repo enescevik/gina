@@ -171,7 +171,10 @@ describe("QT-AI interaction_types in the generation journal", () => {
     expect(done.result!.questions[0]!.kind).toBe("structured");
     const again = f.open().read()!;
     expect(again.result!.questions[0]!.payload).toEqual({ statements: [{ id: "s1", text: "Isı bir enerjidir." }] });
-    expect(again.result!.questions[0]!.answer_key).toEqual({ answers: { s1: true } });
+    // Özel anahtar cihaz depolamasına yazılmaz (ne dönen kayıtta ne de yeniden okunan kayıtta).
+    expect(done.result!.questions[0]!.answer_key).toBeUndefined();
+    expect(again.result!.questions[0]!.answer_key).toBeUndefined();
+    expect([...f.data.values()].join("")).not.toContain('"answer_key"');
     const units = provaAiUnits(again.result);
     expect(units).toHaveLength(1);
     expect(units[0]!.kind).toBe("question");

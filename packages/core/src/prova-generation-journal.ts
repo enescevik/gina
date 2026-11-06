@@ -32,6 +32,10 @@ export const generationPayloadSchema = z.object({
   (!p.source_id || p.ai_consent === true)
 );
 const choice = z.object({ key: z.string(), text: z.string() });
+function withoutStructuredKeys<T extends { questions: { answer_key?: unknown }[] }>(result: T): T {
+  return { ...result, questions: result.questions.map(({ answer_key: _k, ...q }) => q) };
+}
+
 export const generationResultSchema = z.object({
   ok: z.literal(true),
   model: z.string().min(1),
@@ -102,7 +106,8 @@ export function createProvaGenerationJournal(
     if (!value) return null;
     const r = recordSchema.parse(JSON.parse(value));
     if (r.payload.draft_id !== draft) throw Error("generation_scope_changed");
-    return r;
+    // Eski bir kayıtta anahtar kalmışsa okunurken de atılır.
+    return r.result ? { ...r, result: withoutStructuredKeys(r.result) } : r;
   };
   const same = (r: ProvaGenerationRecord) => {
     const current = read();
@@ -128,9 +133,11 @@ export function createProvaGenerationJournal(
         new Set(result.questions.map((q) => q.id)).size !==
           result.questions.length
       ) throw Error("generation_result_invalid");
+      // QT: yapılandırılmış satırların özel cevap anahtarı cihaz depolamasına yazılmaz (telefonda çocuk modu);
+      // önizleme anahtarı gerektiğinde get_question_answer_keys ile sunucudan okunur.
       const next = recordSchema.parse({
         ...current,
-        result,
+        result: withoutStructuredKeys(result),
         safeFailure: undefined,
       });
       store.set(key, JSON.stringify(next));

@@ -161,3 +161,13 @@ describe("guidance, server errors, track and device support", () => {
     expect(unsupportedTypesForChild([dev(null)], [])).toEqual({ missing: [], noDevice: false });
   });
 });
+
+import { structuredFitsKind } from "./question-authoring";
+describe("structuredFitsKind (7 Kasım 2026 kararı)", () => {
+  it("numeric fits open-ended / written purpose without Mixed; other structured types need Mixed", () => {
+    expect(structuredFitsKind("open_ended", "numeric")).toBe(true);
+    expect(structuredFitsKind("open_ended", "true_false")).toBe(false);
+    expect(structuredFitsKind("multiple_choice", "numeric")).toBe(false);
+    expect(structuredFitsKind("mixed", "matching")).toBe(true);
+  });
+});

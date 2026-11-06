@@ -410,6 +410,16 @@ export function blockedForTrack(track: string | null | undefined, types: (string
   return [...new Set(types.filter((t): t is StructuredInteractionType => !!t && PRACTICE_ONLY_TYPES.has(t as StructuredInteractionType)))];
 }
 
+/**
+ * Prova türü (Şıklı / Açık uçlu / Karma; "Yazılıya hazırlık" amacı Açık uçluya sabitlenir) ile yapılandırılmış soru uyumu.
+ * Karar (7 Kasım 2026): sayısal kısa cevap açık uçlu/yazılı amacında Karma'ya zorlamadan eklenebilir; Şıklı'da ve
+ * diğer yapılandırılmış türlerde Karma uyarısı kalır.
+ */
+export function structuredFitsKind(kind: "mixed" | "multiple_choice" | "open_ended", type: string | null | undefined): boolean {
+  if (kind === "mixed") return true;
+  return kind === "open_ended" && type === "numeric";
+}
+
 /** Cihaz destek bildirimi (get_child_question_type_support) → bildirmemiş türler. Uyarıdır, engel değildir. */
 export interface DeviceTypeSupport {
   device_id: string;
