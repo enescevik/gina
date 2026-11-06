@@ -167,6 +167,7 @@
   "subscription.aiNone": "Yapay zekâ özeti yok",
   "subscription.comingSoon": "Mağaza kurulumunda açılır",
   "subscription.storeNote": "Satın alma ve iptal App Store / Google Play üzerinden yapılır; fiyatlar mağazada gösterilir.",
+  "subscription.aiConsentNote": "Paket yalnız kullanım hakkı verir. Belge ya da fotoğraftan içe aktarma, haftalık özet gibi her yapay zekâ işlemi başlamadan önce her seferinde ayrıca onayını ister.",
   "parent.subscription": "Paketler",
   "calendar.today": "Bugün",
   "calendar.allDay": "Tüm gün",
