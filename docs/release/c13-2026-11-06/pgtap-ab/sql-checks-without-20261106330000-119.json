@@ -1,0 +1,22 @@
+{
+  "environment": "empty-disposable-database",
+  "timezone": "Europe/Istanbul",
+  "files": [
+    {
+      "file": "119_c13_authz_hardening.test.sql",
+      "passed": 71,
+      "failed": 3
+    }
+  ],
+  "failures": [
+    "119_c13_authz_hardening.test.sql: not ok 59 - tam admin aile sorusunu okuyamaz",
+    "119_c13_authz_hardening.test.sql: # Failed test 59: \"tam admin aile sorusunu okuyamaz\"",
+    "119_c13_authz_hardening.test.sql: not ok 61 - tam admin bir aileye soru ekleyemez",
+    "119_c13_authz_hardening.test.sql: # Failed test 61: \"tam admin bir aileye soru ekleyemez\"",
+    "119_c13_authz_hardening.test.sql: not ok 64 - tam admin aile sorusunu güncelleyemedi",
+    "119_c13_authz_hardening.test.sql: # Failed test 64: \"tam admin aile sorusunu güncelleyemedi\"",
+    "119_c13_authz_hardening.test.sql: # Looks like you failed 3 tests of 74"
+  ],
+  "skipped_migration": "20261106330000_c13_hardening.sql",
+  "assertions": 71
+}

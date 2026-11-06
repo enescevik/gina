@@ -1,0 +1,337 @@
+{
+ "scanned_files": 2532,
+ "secret_files_present_not_opened": [
+  "apps/backoffice/.env.example",
+  "apps/mobile/.env.example"
+ ],
+ "by_severity": {
+  "info": 17,
+  "low": 12,
+  "medium": 11,
+  "high": 1
+ },
+ "by_pattern": {
+  "supabase_project_host": 17,
+  "email_non_placeholder": 6,
+  "hex64_possible_device_token": 6,
+  "tr_phone": 9,
+  "assigned_secret_literal": 2,
+  "private_key_block": 1
+ },
+ "allowlisted": [
+  {
+   "pattern": "email_non_placeholder",
+   "file": "docs/DEPLOY.md",
+   "line": 61,
+   "reason": "hesap sahibinin Access izin listesi e-postası; belgeleme amaçlı (Q03-LEAK-1), sır değil"
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "file": "docs/DEPLOY.md",
+   "line": 94,
+   "reason": "hesap sahibinin Access izin listesi e-postası; belgeleme amaçlı (Q03-LEAK-1), sır değil"
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "file": "docs/IAP.md",
+   "line": 36,
+   "reason": "Google Play RTDN için Google'un yayımladığı sistem servis hesabı adresi; kişisel değil"
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "file": "docs/release/FAMILY-EXPERIENCE-13.md",
+   "line": 20,
+   "reason": "aynı Access izin listesi e-postası (Q03-LEAK-1)"
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "file": "docs/release/RELEASE-COMPLETION-2026-11-04.md",
+   "line": 46,
+   "reason": "aynı Access izin listesi e-postası (Q03-LEAK-1)"
+  },
+  {
+   "pattern": "assigned_secret_literal",
+   "file": "docs/release/content-prereview-2026-11-06/README.md",
+   "line": 38,
+   "reason": "x-cron-secret başlığının SIR ADI (ortam değişkeni adı) belgelenir; değer yok"
+  },
+  {
+   "pattern": "supabase_secret_key",
+   "file": "scripts/check-testflight.test.mjs",
+   "line": 24,
+   "reason": "test yer tutucusu; önek adı literal, anahtar değil"
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "file": "scripts/test-meb-scenarios.py",
+   "line": 84,
+   "reason": "URL userinfo reddi test vektörü (user@host), e-posta değil"
+  },
+  {
+   "pattern": "assigned_secret_literal",
+   "file": "supabase/functions/README.md",
+   "line": 13,
+   "reason": "aynı; sır adı belgelenir, değer yok"
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "file": "supabase/functions/_shared/curriculum-source.test.ts",
+   "line": 24,
+   "reason": "URL userinfo reddi test vektörü (user:pw@host), e-posta değil"
+  },
+  {
+   "pattern": "private_key_block",
+   "file": "supabase/functions/push-send/providers.test.ts",
+   "line": 18,
+   "reason": "test çalışma anında ürettiği geçici anahtarı sarar"
+  }
+ ],
+ "findings": [
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "docs/release/FAMILY-EXPERIENCE-13.md",
+   "line": 40
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "docs/release/FAMILY-EXPERIENCE-13.md",
+   "line": 51
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "docs/release/YAYIN-KURULUM-REHBERI.md",
+   "line": 49
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "docs/release/YAYIN-KURULUM-REHBERI.md",
+   "line": 85
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "severity": "low",
+   "file": "docs/release/c05-2026-11-06/chain-checks.json",
+   "line": 17
+  },
+  {
+   "pattern": "hex64_possible_device_token",
+   "severity": "low",
+   "file": "docs/release/c05-2026-11-06/chain-checks.json",
+   "line": 59
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "severity": "low",
+   "file": "docs/release/c05-2026-11-06/chain-checks.json",
+   "line": 770
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "docs/release/c06-2026-11-06/README.md",
+   "line": 34
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "severity": "low",
+   "file": "docs/release/c11-2026-11-06/user-guides.md",
+   "line": 20
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "severity": "low",
+   "file": "docs/release/c11-2026-11-06/user-guides.md",
+   "line": 24
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "severity": "low",
+   "file": "docs/release/c11-2026-11-06/user-guides.md",
+   "line": 47
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "docs/release/continuation-2026-11-06/PROGRESS.md",
+   "line": 54
+  },
+  {
+   "pattern": "tr_phone",
+   "severity": "medium",
+   "file": "packages/core/src/notification-channels.test.ts",
+   "line": 13
+  },
+  {
+   "pattern": "tr_phone",
+   "severity": "medium",
+   "file": "packages/core/src/notification-channels.test.ts",
+   "line": 14
+  },
+  {
+   "pattern": "assigned_secret_literal",
+   "severity": "medium",
+   "file": "scripts/health-check.test.mjs",
+   "line": 28
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "scripts/health-check.test.mjs",
+   "line": 28
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "scripts/health-check.test.mjs",
+   "line": 40
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "scripts/health-check.test.mjs",
+   "line": 64
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "scripts/health-check.test.mjs",
+   "line": 69
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "scripts/health-check.test.mjs",
+   "line": 72
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "scripts/health-check.test.mjs",
+   "line": 94
+  },
+  {
+   "pattern": "tr_phone",
+   "severity": "medium",
+   "file": "scripts/prereview-pilot-set.json",
+   "line": 152
+  },
+  {
+   "pattern": "assigned_secret_literal",
+   "severity": "medium",
+   "file": "scripts/release-local.test.mjs",
+   "line": 38
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "scripts/release-local.test.mjs",
+   "line": 38
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "scripts/release-local.test.mjs",
+   "line": 41
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "scripts/release-local.test.mjs",
+   "line": 51
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "scripts/release-local.test.mjs",
+   "line": 186
+  },
+  {
+   "pattern": "supabase_project_host",
+   "severity": "info",
+   "file": "scripts/release-summary.test.mjs",
+   "line": 10
+  },
+  {
+   "pattern": "tr_phone",
+   "severity": "medium",
+   "file": "scripts/test-c10-channels-ui.cjs",
+   "line": 105
+  },
+  {
+   "pattern": "tr_phone",
+   "severity": "medium",
+   "file": "supabase/functions/_shared/channels/sms.test.ts",
+   "line": 5
+  },
+  {
+   "pattern": "private_key_block",
+   "severity": "high",
+   "file": "supabase/functions/_shared/google-acknowledge.test.ts",
+   "line": 12
+  },
+  {
+   "pattern": "email_non_placeholder",
+   "severity": "low",
+   "file": "supabase/functions/curriculum-source-fetch/runtime-probe.ts",
+   "line": 56
+  },
+  {
+   "pattern": "hex64_possible_device_token",
+   "severity": "low",
+   "file": "supabase/functions/prova-review/assets/provenance.json",
+   "line": 15
+  },
+  {
+   "pattern": "hex64_possible_device_token",
+   "severity": "low",
+   "file": "supabase/functions/prova-review/assets/provenance.json",
+   "line": 16
+  },
+  {
+   "pattern": "hex64_possible_device_token",
+   "severity": "low",
+   "file": "supabase/functions/prova-review/assets/provenance.json",
+   "line": 17
+  },
+  {
+   "pattern": "hex64_possible_device_token",
+   "severity": "low",
+   "file": "supabase/functions/prova-review/assets/provenance.json",
+   "line": 18
+  },
+  {
+   "pattern": "hex64_possible_device_token",
+   "severity": "low",
+   "file": "supabase/functions/prova-review/assets/provenance.json",
+   "line": 19
+  },
+  {
+   "pattern": "tr_phone",
+   "severity": "medium",
+   "file": "supabase/functions/push-send/channels.test.ts",
+   "line": 29
+  },
+  {
+   "pattern": "tr_phone",
+   "severity": "medium",
+   "file": "supabase/functions/push-send/channels.test.ts",
+   "line": 136
+  },
+  {
+   "pattern": "tr_phone",
+   "severity": "medium",
+   "file": "supabase/tests/095_notification_channels.test.sql",
+   "line": 71
+  },
+  {
+   "pattern": "tr_phone",
+   "severity": "medium",
+   "file": "supabase/tests/095_notification_channels.test.sql",
+   "line": 113
+  }
+ ]
+}
