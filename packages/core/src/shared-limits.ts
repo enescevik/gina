@@ -60,6 +60,8 @@ export const ERROR_CODE_RULES: Readonly<Record<string, Rule>> = {
   invalid_input: rule("validation"),
   method_not_allowed: rule("validation"),
   source_size_or_type: rule("validation"),
+  // D6/B4: PDF 10 MiB üstü rezervasyonda adıyla reddedilir (önceden tablo CHECK'i → source_failed, tekrar edilebilir).
+  source_file_too_large: rule("validation"),
   source_file_limit: rule("validation"),
   source_page_limit: rule("validation"),
   source_dimensions: rule("validation"),
