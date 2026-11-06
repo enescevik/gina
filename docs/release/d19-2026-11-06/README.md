@@ -1,6 +1,6 @@
 # D19 — Yasal belgelerdeki iç tutarsızlıkların koddan çözülmesi (6 Kasım 2026)
 
-**Durum:** Worktree dalında tamamlandı; `main`'e alınmadı, üretime hiçbir şey gönderilmedi. Hukuk uzmanı onayı yoktur; tüm belgeler taslak olarak kalır.
+**Durum:** main'e alındı (merge `D19 legal draft inconsistencies resolved from code`, 6 Kasım ~19:30Z); yalnız belge değişikliği, uygulamaya/üretime giden kod yok. Hukuk metinleri yayımlanmadı. Hukuk uzmanı onayı yoktur; tüm belgeler taslak olarak kalır.
 
 Girdi: [D18 README §3](../d18-2026-11-06/README.md) — `docs/legal/*` içinde bulunan 16 iç tutarsızlık. Her biri yalnızca **koddaki doğrulanabilir davranışa** (`apps/mobile`, `apps/backoffice`, `supabase/migrations`, `supabase/functions`, `packages/core`) veya **[DECISIONS.md](../../DECISIONS.md)** kaydına dayanarak düzeltildi. Hukuki nitelendirme, dayanak veya yeni hukuki iddia eklenmedi; gerçek bir hukuk/ürün kararı kalan yerlerde `[AVUKAT: …]` / `[ÜRÜN KARARI: …]` işaretleri korundu ya da eklendi.
 

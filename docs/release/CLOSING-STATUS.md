@@ -1,6 +1,6 @@
 # GINA — tek güncel kapanış tablosu
 
-6 Kasım 2026, ~19:45 (UTC). Bu tablo `continuation-2026-11-06/PROGRESS.md`, `overnight-2026-11-06/PROGRESS.md` ve C/D raporlarındaki durum sütunlarının **yerini alır**. Eski tablolardaki "KOD HAZIR / yayımlanmadı" ifadeleri tarihseldir. Son kapsam kararı: Kütüphane içerik üretimi backoffice üzerinden kullanıcı tarafından, 3B dünya kullanıcı + Codex tarafından ayrı yürütülecek. İkisi de Claude devrinin dışındadır. Güncel kalan işlerin öncelik ve kabul ölçütleri: [H00–H08](../CLAUDE-REMAINING-WORK.md).
+6 Kasım 2026, ~20:10 (UTC), H00 uzlaştırması. Bu tablo `continuation-2026-11-06/PROGRESS.md`, `overnight-2026-11-06/PROGRESS.md` ve C/D raporlarındaki durum sütunlarının **yerini alır**. Eski tablolardaki "KOD HAZIR / yayımlanmadı" ifadeleri tarihseldir. Son kapsam kararı: Kütüphane içerik üretimi backoffice üzerinden kullanıcı tarafından, 3B dünya kullanıcı + Codex tarafından ayrı yürütülecek. İkisi de Claude devrinin dışındadır. Güncel kalan işlerin öncelik ve kabul ölçütleri: [H00–H08](../CLAUDE-REMAINING-WORK.md).
 
 ## Son yayınlar
 
@@ -13,11 +13,27 @@
 - **Ayarlar:** `question_groups.enabled=true`; `curriculum_catalog.enabled=false`; `content_prereview.enabled=false`.
 - **Zamanlanmış işler:** pg_cron `prune-unused-devices` 03:25 UTC, `prune-pairing-records` 03:35 UTC.
 - **Canlı sağlık:** `health-check.mjs --strict` temiz, ACL 0, RLS kapalı tablo 0.
-- **Alan adı:** `ginafamily.com` ve `admin.ginafamily.com` kurulu; hesap e-postaları `noreply@ginafamily.com` (Brevo SMTP) üzerinden gidiyor ([kayıt](domain-email-2026-11-06/STATUS.md)).
-- **iOS:** gönderim TestFlight'a yüklendiğini gösterir; Apple işlemesi ve cihaza kurulum ayrı adımlardır.
+- **Alan adı / e-posta** ([STATUS](domain-email-2026-11-06/STATUS.md) esas): `ginafamily.com`, `www`, `admin.ginafamily.com` kurulu; Auth e-postaları `noreply@ginafamily.com` (Brevo SMTP), TR reset gerçek teslimatla doğrulandı; `destek@ginafamily.com` yönlendirmesi Active ve Cloudflare teslim kaydı var; Gmail "GINA Destek" göndericisi kurulu ve INBOX teslimatı doğrulandı. Açık: EN/yeni hesap teslimatı, farklı sağlayıcıya dış teslimat, ürün bildirim kanalı (H04).
+- **iOS dağıtım adımları ayrı:** 30 için gönderim `b7ccb6a4` yapıldı (KANITLI); Apple işleme ve test grubu erişimi bu oturumdan doğrulanamadı (App Store Connect erişimi yok; sorumlu Enes); cihaza kurulum yok (C15). Enes 27'nin TestFlight'a geldiğini 6 Kasım'da teyit etti.
 - **Main:** bu yayınların ötesinde yalnız belge değişiklikleri var (D18/D19 hukuk metinleri, alan adı uzlaştırması, raporlar). Uygulamaya giden kod yok.
 
-## 1. Kodda tamam ve canlıda, kabul kanıtı tam
+## Güncel kalan işler (H00–H08)
+
+| Kart | Durum | Kanıt | Sorumlu |
+|---|---|---|---|
+| H00 kayıt uzlaştırması | KABUL TAMAM | bu dosya, C14c planı (YAYINDA), ekran matrisi D11-K1/K2 → D12, D19 raporu main'de | Claude |
+| H01 Apple hesap silme / belirteç iptali | YAPILIYOR | — | Claude; gerçek Apple kabulü Enes (Apple hesabı) |
+| H02 MEB kaynağını panelden indirme/çıkarma | YAPILIYOR | — | Claude |
+| H03 insan incelemesi paketi | YAPILIYOR | — | Claude; içerik onayı Enes |
+| H04 hesap ve ürün e-postası kabulü | YAPILIYOR | Auth TR reset + destek yönlendirme/gönderici STATUS'ta | Claude hazırlık; gerçek teslimat Enes |
+| H05 satın alma AI notu, fotoğraf saklama metni | YAPILIYOR | — | Claude; hukuk Enes/avukat |
+| H06 görsel/etkileşim kabul boşlukları | AÇIK | H01–H05 sonrasına | Claude; fiziksel cihaz Enes |
+| H07 AI ön inceleme işletim hazırlığı | YAPILIYOR | kapı kapalı kalır | Claude; aktivasyon kararı Enes |
+| H08 regresyon, düzeltme yayını, rapor | AÇIK | son | Claude |
+
+Kütüphane içerik üretimi/onayı ve 3B dünya Claude'un açık işi değildir (aşağıda yalnız bilgi).
+
+## 1. Kodda tamam ve canlıda, kabul kanıtı tam (tarihsel, sorumlu Claude)
 
 | İş | Kanıt |
 |---|---|
@@ -41,7 +57,7 @@
 | D17 eşleme saklama işleri | C14c: iki pg_cron işi etkin |
 | X01'in alan adı ve hesap e-postası kısmı | Türkçe şifre sıfırlama gerçek teslimatla doğrulandı (Codex, PR #151/#152) |
 
-## 2. Canlıda, fiziksel cihaz testi bekliyor (C15 — Enes)
+## 2. Canlıda, fiziksel cihaz testi bekliyor (C15 — sorumlu Enes; hata gelirse Claude)
 
 | İş | Cihazda bakılacak |
 |---|---|
@@ -58,14 +74,14 @@
 
 Üretilen MEB pilot sorularının alan/dil uygunluğu insan incelemesi olmadan kabul sayılmaz.
 
-## 3. Kodda tamam, yalnız belge düzeyinde (uygulamaya gitmez)
+## 3. Kodda tamam, yalnız belge düzeyinde (uygulamaya gitmez; hukuk onayı Enes/avukat)
 
 | İş | Durum |
 |---|---|
 | D16/D18/D19 hukuk metinleri | 10 belgenin hepsi TR + EN; 16 iç tutarsızlıktan 15'i koddan çözüldü; alan adı yer tutucuları dolduruldu. Yayın hukuk onayına bağlı (X03). Açık Rıza A modeli (tek rıza mı, işlem bazlı onay mı) avukat kararı |
 | Kapanış tablosu | bu dosya |
 
-## 4. Dış bağımlılık nedeniyle kapalı
+## 4. Dış bağımlılık nedeniyle kapalı (DIŞ ENGEL)
 
 | Kimlik | Ne kapalı | Gereken |
 |---|---|---|
@@ -75,14 +91,14 @@
 | X04 OpenAI / Gemini | ek AI sağlayıcıları (C08) | anahtarlar |
 | X06 bağımsız editör | Ayrı kütüphane içerik operasyonu; Claude devri dışında | Kullanıcının backoffice içerik süreci |
 
-## 5. Bilerek ertelenenler (tamamlanmış sayılmaz)
+## 5. Ertelenenler ve kapsam dışı (tamamlanmış sayılmaz)
 
 | İş | Neden / ne zaman |
 |---|---|
-| C13 barındırılan ortamda tam geri yükleme / PITR tatbikatı | ertelenmiş kabul işi; ayrı proje ve maliyet kararı |
-| C09 AI ön inceleme kapısı | kütüphaneden (K01) önce açılacak: sır + pg_cron + pilot |
-| Apple ile Giriş belirteç iptali | Apple girişi açılmadan `delete-account` içine eklenmeli (App Store 5.1.1(v)) |
-| Satın alma ekranında AI onayı cümlesi | satış açılmadan önce küçük metin işi |
+| C13 barındırılan ortamda tam geri yükleme / PITR tatbikatı | ertelenmiş kabul işi; ayrı ortam/maliyet/erişim kararı (Enes); üretimin üzerine restore yok |
+| C09 AI ön inceleme kapısı | teknik hazırlık H07; aktivasyon ayrı karar (Enes) |
+| Apple ile Giriş belirteç iptali | H01'de yapılıyor |
+| Satın alma ekranında AI onayı cümlesi | H05'te yapılıyor |
 | Veli rubriğinde "sonuç / süreç" seçici | migration gerekir; şimdilik sorudan çıkarım |
 | D11 K3/K4/K5 yönetim kararları | DECISIONS.md |
 | K01 kütüphane üretimi | Claude kapsamı dışında; kullanıcı backoffice üzerinden yürütecek. Tarihsel sayılar ilerleme kanıtı olarak korunur. |

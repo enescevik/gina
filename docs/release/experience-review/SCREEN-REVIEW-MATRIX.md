@@ -243,5 +243,6 @@ Kanıt kısaltması: `c12/` = `../c12-2026-11-06/ui/`; `d4/` = `../d4-2026-11-06
 | Kapanan (D8) | — | Q00-C12-12 (kalan 8 `fade`), D4-1, D4-2, D4-3, D4-4 (iOS simülatörde doğrulandı) | [`d8-2026-11-06`](../d8-2026-11-06/README.md) |
 | D8-1 | P2 | D4-4 düzeltmesi fiziksel iPhone/iPad ve Android PDF yolunda doğrulanmadı; `groups`/`question-media` pencerelerinin reduced-motion ölçümü yapılmadı (veri yok) | C15 / sonraki fixture (D8) |
 | Kapanan (D11) | — | Q00-C12-T2, Q00-A3-4, Q00-A3-7 (yönetici kısmı) — kod D3'te, matris D11'de kapatıldı, yeniden doğrulandı; B01 denetim “Yapan” + sayfalama; B02 paket etiketi + soru yayımlama onayı; B01/S06/P05 ile önceden kapanan A3 P2'ler işaretlendi | [`d11-2026-11-06`](../d11-2026-11-06/README.md) |
-| D11-K1…K5 | P2 · karar | Aile listesi sıralama/süzgeç, diğer yönetici adı, senaryo adayı sunucu araması, katalog kapsam denetimi, menü gruplama | [`d11` §Karar](../d11-2026-11-06/README.md#karar-gereken) |
+| D11-K1, K2 | — | Aile listesi süzgeç/sıralama; denetimde yönetici adı | **Kapandı (D12)**, C14c'de yayında ([`d12`](../d12-2026-11-06/README.md)) |
+| D11-K3…K5 | P2 · ertelendi | Senaryo adayı sunucu araması, katalog kapsam denetimi, menü gruplama | Ertelenmiş ürün kararı (DECISIONS.md "D11 yönetim kararları"); zorunlu iş değil |
 | Fiziksel cihaz kabulü | — | VoiceOver/TalkBack, fontScale, safe area, dokunmatik defter, native yön, push | **C15** |
