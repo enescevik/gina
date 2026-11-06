@@ -7,7 +7,7 @@
 | **Sürüm** | 0.2 (taslak) |
 | **Tarih** | 2026-10-30 |
 | **Yürürlük tarihi** | [YÜRÜRLÜK TARİHİ] |
-| **Durum** | Bu metin taslaktır; yayın öncesi avukat incelemesi önerilir. |
+| **Durum** | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan kullanılmaz.** Uygulama denetimi: bu metin ve onay kutusu uygulamada henüz gösterilmiyor; çocuk modu kapsamı (Prova cevapları, çözüm defteri, hedef, oda) ve eşleştirme yönü aşağıda güncel davranışa göre düzeltildi. Karşılaştırma: `docs/release/c11-2026-11-06/legal-review.md`. |
 | **Veri sorumlusu** | [VERİ SORUMLUSU UNVANI], [ADRES], [E-POSTA], MERSİS/VKN: [MERSİS/VKN] |
 | **Gösterildiği yerler** | Çocuk modunun ilk açılışı (ebeveyn çocukla birlikte okur ve kutuyu işaretler) ve çocuk modundaki "Hakkında" bölümü (eşleştirilmiş tablet ve ebeveyn telefonu). Web'de yayımlanmaz; mağazalara bildirilen yasal sayfa listesinde yer almaz. |
 | **Niteliği** | Hukuken zorunlu değildir; KVKK aydınlatması çocuğun kanuni temsilcisi olan ebeveyne yapılır ve bu metin onun yerine geçmez. Aydınlatma Tebliği m.5/1-g'deki "açık, sade, muğlak olmayan dil" ilkesinin çocuklar için iyi uygulamasıdır; Apple 5.1.4 ve Google Play aile politikaları için destekleyici kanıttır. |
@@ -23,16 +23,16 @@
 ### Merhaba [ÇOCUK ADI]!
 
 **Gina ne yapar?**
-Gina, görevlerini ve kazandığın yıldızları gösteren bir uygulama. Bu ekranı senin için annen ya da baban açtı. Bir görevi bitirince "Yaptım" düğmesine basarsın. Annen ya da baban bakar ve onaylar. Yıldızları onlar verir.
+Gina, görevlerini, haftanı ve kazandığın yıldızları gösteren bir uygulama. Bu ekranı senin için annen ya da baban açtı. Bir görevi bitirince "Yaptım" düğmesine basarsın. Annen ya da baban bakar ve onaylar. Yıldızları onlar verir. Burada hedef seçebilir, odanı süsleyebilir ve annenin ya da babanın sana verdiği denemeleri (Prova) çözebilirsin.
 
 **Burada neler kayıtlı?**
-Adın (ya da takma adın), seçtiğin avatar, görevlerin, "Yaptım" dediğin zamanlar ve yıldızların. Hepsi bu kadar. Fotoğrafın, soyadın ve okulunun adı burada yok.
+Adın (ya da takma adın), seçtiğin avatar, görevlerin, "Yaptım" dediğin zamanlar, yıldızların, seçtiğin hedefler ve oda tercihlerin, denemelerde yazdığın cevaplar ve defterine yazıp çizdiklerin. Fotoğrafın ve soyadın burada yok.
 
 **Kim görebilir?**
-Seni Gina'ya ekleyen büyüklerin, yani annen ya da baban görebilir. Kardeşlerin senin görevlerini göremez; sen de onlarınkini göremezsin. Başka kimse görmez.
+Seni Gina'ya ekleyen büyüklerin, yani annen ya da baban görebilir. Kardeşlerin senin görevlerini göremez; sen de onlarınkini göremezsin. Annen ya da baban isterse okul puanlarını, deneme sonuçlarını ve görev özetini öğretmeninle paylaşabilir.
 
 **Burada robot ya da sohbet var mı?**
-Hayır. Gina'da seninle konuşan bir robot ya da yapay zekâ yok. Mesaj yazamazsın, kimseyle sohbet edemezsin, kimse sana mesaj gönderemez. Burada reklam da yok; hiçbir şey satın alınmaz.
+Hayır. Gina'da seninle konuşan bir robot ya da sohbet yok. Mesaj yazamazsın, kimseyle sohbet edemezsin, kimse sana mesaj gönderemez. Denemelerdeki bazı soruları bir bilgisayar programı hazırlamış olabilir; annen ya da baban onları önce kontrol eder. Annen ya da baban, cevaplarını kontrol etmek için bir bilgisayar programından yardım isteyebilir. Burada reklam da yok; hiçbir şey satın alınmaz.
 
 **Bir şey yanlışsa ne yapmalısın?**
 Bir görev yanlış yazılmışsa, bir yıldızın eksikse ya da adın yanlış yazılmışsa annene ya da babana söyle. Onlar düzeltebilir ya da silebilir. Merak ettiğin bir şey varsa da onlara sor.
@@ -53,36 +53,37 @@ Bu ekran senin için. Buradan çıkmak için annenin ya da babanın gizli şifre
 - Onay kutusu çocuğun rızası değildir; Veli Beyanı §3.5 ve §8'deki bilgilendirme sorumluluğunuzu (TMK m.339) yerine getirdiğinize ilişkin kayıttır. Kayıtta yalnızca Veli Beyanı §13'teki alanlar (beyan türü "çocuğa bilgilendirme", metin sürümü ve özeti, dil, tarih-saat, ebeveyn hesabı ile aile ve çocuk profili kimlikleri, uygulama sürümü) tutulur; çocuğun adı yazılmaz.
 - Kutu çocuk modunun ilk açılışında istenir; metin "Hakkında" bölümünden her zaman yeniden okunabilir ve önemli ölçüde değiştiğinde yeni sürümü ilk açılışta yeniden gösterilir [ÜRÜN KARARI: yeniden gösterim akışı].
 - Gina mağazalarda 18 yaşını doldurmuş ebeveynlere yönelik sunulur; çocuk modu, ebeveyn gözetiminde kullanılan sınırlı bir görünümdür. Çocuk hesap açmaz, e-posta veya telefon vermez.
-- Çocuk adına KVKK haklarını (bilgi alma, düzeltme, silme) veli/vasi olarak siz kullanırsınız: Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu veya [WEB ADRESİ]/legal/kvkk-basvuru-formu. Çocuğunuzun ilettiği düzeltme ve silme isteklerinin çoğunu uygulama içinden kendiniz yapabilirsiniz.
+- Çocuk adına KVKK haklarını (bilgi alma, düzeltme, silme) veli/vasi olarak siz kullanırsınız: Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (henüz yok; şu an Yardım > destek talebi) veya [WEB ADRESİ]/legal/kvkk-basvuru-formu. Çocuğunuzun ilettiği düzeltme ve silme isteklerinin çoğunu uygulama içinden kendiniz yapabilirsiniz.
 
 ### B.2 Çocuk modunda gösterilenler ve gösterilmeyenler
 
 | Gösterilir | Gösterilmez |
 |---|---|
-| Çocuğun adı veya takma adı ve seçtiği hazır avatar | Doğum yılı (yalnızca yaşa uygun arayüz için kullanılır); soyadı, fotoğraf, okul adı, T.C. kimlik numarası, telefon ve e-posta zaten hiç istenmez |
-| Kendi görevleri, "Yaptım" işaretleri ve onay durumu | Ailedeki diğer çocukların profilleri, görevleri ve yıldızları |
-| Kazandığı yıldızlar ve varsa tanımlı ödüller | Ebeveynin yazdığı serbest metin notlar, not/puan kayıtları, gelişim takibi kayıtları |
-| Kendi takvimi ve ders programı | AI özetleri ve her türlü yapay zekâ çıktısı; sohbet veya mesajlaşma |
-| Bu bilgilendirme ("Hakkında") | Ayarlar, satın alma ekranı, abonelik, aile davet kodu, ebeveyn e-postası, hesap/profil silme, rıza kutucukları, dış bağlantılar, tarayıcı ve mağaza |
+| Çocuğun adı veya takma adı ve seçtiği hazır avatar | Doğum yılı (yalnızca yaşa uygun arayüz için kullanılır); soyadı, fotoğraf, T.C. kimlik numarası, telefon ve e-posta zaten hiç istenmez |
+| Kendi görevleri, "Yaptım" işaretleri ve onay durumu; haftası ve hedefleri | Ailedeki diğer çocukların profilleri, görevleri ve yıldızları (bir cihaza birden çok çocuk seçildiyse ve PIN kapalıysa cihazı kullanan çocuk seçilmiş diğer profillere de girebilir) |
+| Kazandığı yıldızlar, koleksiyonu, odası/evcil hayvanı ve varsa tanımlı ödüller | Ebeveynin yazdığı serbest metin notlar, not/puan kayıtları, gelişim takibi kayıtları |
+| Kendi takvimi ve ders programı | AI özetleri, ebeveyne yönelik yapay zekâ önerileri ve taslakları; sohbet veya mesajlaşma |
+| Ebeveynin atadığı Prova denemeleri (bazı sorular yapay zekâ ile üretilmiş ve ebeveynce incelenmiş olabilir) ve ebeveynin onayladığı geri bildirim | Onaylanmamış ebeveyn veya yapay zekâ geri bildirimi, ebeveynin işaret katmanı |
+| — | Ayarlar, satın alma ekranı, abonelik, aile davet kodu, ebeveyn e-postası, hesap/profil silme, rıza kutucukları, dış bağlantılar, tarayıcı ve mağaza |
 
-- **Kaydedilen tek işlem:** çocuğun "Yaptım" işareti; görev kimliği ve zamanıyla çocuğun profiline yazılır. Onay, yıldız ve ödül kararları ebeveynindir. Çocuk modunda metin girişi (görev ekleme, not yazma, mesaj gönderme) yoktur [ÜRÜN KARARI: çocuğun görev önerme özelliği eklenirse güncellenir].
-- **Yapay zekâ:** AI özeti yalnızca ücretli paketlerde (Gina Plus ve Gina Pro), yalnızca ebeveyn alanında, varsayılan kapalı ve ayrı özellik izniyle sunulur; ücretsiz pakette (Gina Başlangıç) yoktur. Çocuk hiçbir pakette ve ekranda yapay zekâ ile etkileşmez (Veli Beyanı §7).
+- **Çocuk modunda kaydedilenler:** "Yaptım" işareti (görev kimliği ve zamanıyla), seçilen hedefler, oda/evcil hayvan tercihleri ve Prova denemelerinde çocuğun yazdığı cevaplar ile el yazısı/çizim içeren çözüm defteri. Onay, yıldız, ödül ve puan kararları ebeveynindir. Çocuk modunda mesaj gönderme ve not yazma yoktur [ÜRÜN KARARI: çocuğun görev önerme özelliği eklenirse güncellenir].
+- **Yapay zekâ:** Yapay zekâ özellikleri yalnızca ücretli paketlerde (Gina Plus ve Gina Pro), yalnızca ebeveyn alanında ve her işlemde ebeveynin ayrı onayıyla çalışır; ücretsiz pakette (Gina Başlangıç) yoktur. Çocuk yapay zekâ ile doğrudan etkileşmez ve çocuk cihazı yapay zekâ isteği başlatamaz; ancak Gina Pro'da ebeveynin ayrı onayıyla çocuğun Prova cevabı ve çözüm defteri değerlendirme önerisi için sağlayıcıya (Anthropic, ABD) gönderilir (Gizlilik Politikası Bölüm 5). Uzman incelemesi gerekir: bu durumun çocuğa yönelik metinde nasıl anlatılacağı.
 - **Üçüncü taraf yok:** çocuk modunda analitik, reklam, takip aracı ve çökme raporlama yoktur. Bildirim içerikleri kişisel veri içermez.
 
 ### B.3 Ebeveyn telefonunda çocuk modu
 
 - Çocuk modu, telefonunuzdaki ebeveyn oturumu içinde çalışan kısıtlı bir görünümdür; ayrı giriş gerekmez.
-- **Giriş:** çocuğun 4 haneli Çocuk PIN'i. PIN'i Ayarlar > Çocuklar > [Çocuk] altında siz belirlersiniz; sunucuda yalnızca özet (hash) olarak saklanır. Bu PIN çocuğun kendi ekranını seçmesi içindir; ebeveyn alanını korumaz.
+- **Giriş:** çocuğun 4 haneli Çocuk PIN'i. PIN'i Ayarlar > Çocuklar > [Çocuk] altında siz belirlersiniz; sunucuda yalnızca özet (hash) olarak saklanır; 5 yanlış denemede 60 saniye kilitlenir. Bu PIN çocuğun kendi ekranını seçmesi içindir; ebeveyn alanını korumaz.
 - **Çıkış:** 4 haneli Veli PIN'i. Veli PIN'inizi çocuğunuzla paylaşmayın; Çocuk PIN'inden ve telefon kilidinizden farklı seçin. Biyometrik doğrulama bu sürümde yoktur [ÜRÜN KARARI: Faz 2].
-- Çocuk modundayken yapılan tek işlem ("Yaptım") seçili çocuğun profiline yazılır; ebeveyn verileriniz, ayarlar ve satın alma ekranları görünmez. Telefonunuza gelen bildirimler, aramalar ve diğer uygulamalar işletim sisteminin kontrolündedir; Gina bunları kısıtlayamaz.
+- Çocuk modundayken yapılan işlemler (B.2) seçili çocuğun profiline yazılır; ebeveyn verileriniz, ayarlar ve satın alma ekranları görünmez. Telefonunuza gelen bildirimler, aramalar ve diğer uygulamalar işletim sisteminin kontrolündedir; Gina bunları kısıtlayamaz.
 
 ### B.4 Tablet eşleştirme
 
-- **Nasıl yapılır:** Ayarlar > Çocuklar > [Çocuk] > Cihazlar > Cihaz Eşleştir adımında 6 haneli, tek kullanımlık bir Cihaz Eşleştirme Kodu üretilir [ÜRÜN KARARI: kodun geçerlilik süresi]; kodu tabletteki Gina'ya girersiniz. Tablete e-posta veya şifre girilmez.
+- **Nasıl yapılır (uygulamadaki güncel akış):** Çocuğun cihazında Gina açılır ve cihaz 10 dakika geçerli, tek kullanımlık 6 haneli bir Cihaz Eşleştirme Kodu ile aynı kodu taşıyan bir QR gösterir. Siz kendi telefonunuzda QR'ı okutursunuz veya kodu yazarsınız; hangi cihazın hangi aileye bağlanacağını gördükten sonra onaylarsınız ve cihazın hangi çocuk profillerini açacağını ve PIN istenip istenmeyeceğini seçersiniz. Onaylamadan hiçbir şey bağlanmaz. Tablete e-posta veya şifre girilmez.
 - **Cihaz Eşleştirme Kodu, aile davet kodu değildir.** Aile davet kodu yalnızca aileye katılım içindir ve cihaz eşleştirmede kullanılamaz; bu sürümde aileye yalnızca 18 yaşını doldurmuş diğer ebeveyn/vasi davet edilebilir ve katılan her ebeveyn/vasi çocuk profillerini görür.
-- **Tabletteki oturum anonimdir:** yalnızca eşleştirirken seçtiğiniz çocuk profiline, yalnızca B.2'deki sınırlar içinde erişir [ÜRÜN KARARI: tek tablette birden fazla çocuk varsa her çocuk kendi PIN'iyle girer]. Sınırlar sunucu tarafında, her istekte uygulanır (satır düzeyi erişim denetimi); tablette ebeveyn alanı yoktur.
-- **Kaydedilenler:** cihaz kimliği, anonim oturum kimliği, eşleştirme kodunun kaydı, eşleştirme ve son kullanım zamanı, iptal kaydı ve çocuğun "Yaptım" işaretleri (KVKK Aydınlatma Metni ile aynı). Konum, kişiler ve fotoğraf izni istenmez [ÜRÜN KARARI: QR eşleştirmede yalnızca o sırada kamera izni].
-- Eşleştirilebilecek cihaz sayısına bir sınır konursa Abonelik Koşulları'nda belirtilir [ÜRÜN KARARI: paket başına cihaz sayısı].
+- **Tabletteki oturum anonimdir:** yalnızca seçtiğiniz çocuk profillerine, yalnızca B.2'deki sınırlar içinde erişir. Birden fazla çocuk seçtiyseniz, PIN açıksa her çocuk kendi 4 haneli PIN'iyle girer; PIN'i kapatırsanız seçili çocuklar profillerine dokunarak girer ve cihaza erişen biri bu profillerin hepsini açabilir. Sınırlar sunucu tarafında, her istekte uygulanır (satır düzeyi erişim denetimi); tablette ebeveyn alanı yoktur.
+- **Kaydedilenler:** cihaz kimliği, anonim oturum kimliği, eşleştirme kodunun kaydı, eşleştirme ve son kullanım zamanı, iptal kaydı ve çocuğun "Yaptım" işaretleri (KVKK Aydınlatma Metni ile aynı). Konum, kişiler ve fotoğraf izni istenmez. QR yalnızca 6 haneli kodu taşır (ad, aile veya çocuk bilgisi içermez); QR'ı ebeveyn telefonunun kendi kamerası okur, Gina bunun için kamera izni istemez.
+- Eşleştirilebilecek cihaz sayısı pakete bağlıdır (uygulamadaki varsayılan: Başlangıç 1, Plus 3, Pro sınırsız); kesin sınırlar işletme kararıyla Abonelik Koşulları'nda belirtilir.
 - **Gözetim ve sorumluluk:** Çocuk modunun teknik sınırlarını sunucu tarafında biz uygularız; bu sınırlar çocuk cihaza gözetiminiz dışında eriştiğinde de geçerlidir. Gina bir ebeveyn denetimi veya içerik filtreleme aracı değildir: cihazın fiziksel gözetimi, cihaz kilidi, ekran süresi ve Gina dışındaki uygulama, tarayıcı ve mağaza erişimi işletim sistemi denetimleriyle (Apple Ekran Süresi, Google Family Link) ve sizin gözetiminizle sınırlandırılır (Veli Beyanı §6, Kullanım Koşulları §5.2).
 
 ### B.5 Eşleştirmeyi iptal etme
@@ -105,4 +106,5 @@ Bu ekran senin için. Buradan çıkmak için annenin ya da babanın gizli şifre
 | Sürüm | Tarih | Değişiklik |
 |---|---|---|
 | 0.2 | 2026-10-30 | İlk taslak; belge seti 0.2 revizyonuyla oluşturuldu ve aynı gün inceleme notlarıyla gözden geçirildi. Veli Beyanı §8'deki özet 7-10 yaş diline genişletildi (mesaj/sohbet/yapay zekâ yok, kardeşlerin verisi görünmez, çıkış için Veli PIN'i); ebeveyn teknik notu eklendi (gösterilen/gösterilmeyen veriler, PIN'ler, Cihaz Eşleştirme Kodu ile aile davet kodu ayrımı, tablet eşleştirme ve iptali). DECISIONS.md uyarınca: iptal anında etkili (eski "[1 saat]" yerine), aileye yalnızca 18+ ebeveyn/vasi, yapay zekâ çocuk modunda ve ücretsiz pakette yok, iletişim yalnızca e-posta, güvenlik günlükleri [12 ay]; onay kaydı Veli Beyanı §13 ile hizalandı; paket başına cihaz sayısı [ÜRÜN KARARI] bırakıldı. |
+| 0.2 (C11 teknik düzeltme) | 2026-11-06 | Uygulamayla teknik karşılaştırma: çocuk modu kapsamı (hedef, oda, Prova cevapları ve çözüm defteri), yapay zekâ üretimi sorular ve onaylı değerlendirme, eşleştirme yönü (kod/QR çocuk cihazında, 10 dakika), QR için kamera izni istenmediği, isteğe bağlı PIN ve çok çocuklu cihaz davranışı, cihaz sınırı varsayılanları. Metin uygulamada henüz gösterilmiyor. Hukuk uzmanı onayı yoktur. |
 | 0.2 | 2026-10-30 | Belge seti tutarlılık kontrolü: ekran yolları diğer belgelerle eşitlendi ("Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu"; "Ayarlar > Çocuklar > [Çocuk] > Cihazlar"); B.6'ya Çerez Politikası bağlantısı eklendi. |

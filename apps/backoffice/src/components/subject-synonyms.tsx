@@ -9,12 +9,16 @@ import { Notice } from "@/components/Layout";
 import { useAdminQuery } from "@/lib/use-async";
 import { s04Rpc } from "@/components/s04-rpc";
 
-/** Ders kimliği → eşanlamlılar. Yalnız okuma; eşanlamlılar migration ile kaynaktan gelir. */
+/** Ders kimliği → etkin eşanlamlılar (kaynak + yönetici). Düzenleme: SubjectSynonymEditor (C11). */
 export function useSubjectSynonyms(enabled: boolean) {
   return useAdminQuery(async () => {
     if (!enabled) return null;
+    // C11: öneriden kaldırılmış eşanlamlı veliye aday üretmez; listede de gösterilmez.
+    const raw = await s04Rpc("admin_subject_synonyms");
     const rows = subjectSynonymSchema.array().parse(
-      await s04Rpc("admin_subject_synonyms"),
+      Array.isArray(raw)
+        ? raw.filter((r) => (r as { active?: boolean }).active !== false)
+        : raw,
     );
     return groupSubjectSynonyms(rows);
   }, [enabled]);

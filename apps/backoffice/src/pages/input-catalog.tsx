@@ -9,6 +9,7 @@ import {
   SynonymChips,
   useSubjectSynonyms,
 } from "@/components/subject-synonyms";
+import { SubjectSynonymEditor } from "@/components/subject-synonym-editor";
 
 type Option = Tables<"guided_input_options">;
 const kinds = {
@@ -49,6 +50,7 @@ export default function InputCatalog() {
     [error, setError] = useState(""),
     [message, setMessage] = useState("");
   const synonyms = useSubjectSynonyms(kind === "subject");
+  const [synonymSubject, setSynonymSubject] = useState<string | null>(null);
   const dirty = !!draft && JSON.stringify(draft) !== original;
   const guard = useUnsavedChanges(dirty, busy);
   function edit(o: Option) {
@@ -308,7 +310,9 @@ export default function InputCatalog() {
               {visible.map((o) => (
                 <div
                   key={o.id}
-                  className="rounded-2xl border border-violet-100 bg-white p-4"
+                  className={`rounded-2xl border border-violet-100 bg-white p-4${
+                    synonymSubject === o.id ? " md:col-span-2" : ""
+                  }`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
@@ -326,6 +330,28 @@ export default function InputCatalog() {
                             </p>
                             {synonyms.data
                               ? <SynonymChips items={synonyms.data.get(o.id)} />
+                              : null}
+                            <button
+                              type="button"
+                              className="mt-2 min-h-12 text-sm font-semibold text-[#6042DE] underline"
+                              aria-expanded={synonymSubject === o.id}
+                              onClick={() =>
+                                setSynonymSubject(
+                                  synonymSubject === o.id ? null : o.id,
+                                )}
+                            >
+                              {synonymSubject === o.id
+                                ? "Eşanlamlı yönetimini kapat"
+                                : "Eşanlamlıları yönet"}
+                            </button>
+                            {synonymSubject === o.id
+                              ? (
+                                <SubjectSynonymEditor
+                                  subjectId={o.id}
+                                  subjectLabel={o.label_tr}
+                                  onChanged={synonyms.reload}
+                                />
+                              )
                               : null}
                           </>
                         )

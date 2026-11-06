@@ -1,0 +1,56 @@
+{
+  "when": "2026-11-06T11:38:35.158Z",
+  "environment": "disposable-local-auth-postgrest + static exports",
+  "results": [
+    {
+      "check": "synonym added from the editor with note; suggestion follows and still needs parent confirmation",
+      "passed": true
+    },
+    {
+      "check": "catalog synonym deactivated and reactivated with notes; history shows all three changes",
+      "passed": true
+    },
+    {
+      "check": "calendar list shows seed provenance/confidence and publish checks",
+      "passed": true
+    },
+    {
+      "check": "hidden-region medium draft shows blocks and the publish button stays disabled",
+      "passed": true
+    },
+    {
+      "check": "country calendar published only after the full checklist; review recorded",
+      "passed": true,
+      "detail": {
+        "stage": "middle"
+      }
+    },
+    {
+      "check": "holiday drafts imported after preview + confirmation; one published separately",
+      "passed": true,
+      "detail": {
+        "drafts": 7
+      }
+    },
+    {
+      "check": "child placed on the published country calendar; break suggestion exists",
+      "passed": true,
+      "detail": {
+        "window": "2026-11-16..2026-11-20",
+        "lesson_days": 0
+      }
+    },
+    {
+      "check": "parent accepts the break: plan marks lessons paused, timetable row unchanged",
+      "passed": true
+    },
+    {
+      "check": "second device undoes; stale first device gets a conflict message and refreshes (no double change)",
+      "passed": true
+    },
+    {
+      "check": "no page errors on backoffice / phone / tablet",
+      "passed": true
+    }
+  ]
+}

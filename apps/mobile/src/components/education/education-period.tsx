@@ -204,8 +204,10 @@ export function EducationPeriodWizard({
         request.current.id = randomUUID();
       request.current.payload = payload;
       if (scheduling) {
+        // C11: the plan carries the same calendar place/stage/reason as an immediate change; the server
+        // re-checks the calendar warning and writes the school-exception report only when the plan is applied.
         const { error } = await (supabase.rpc as unknown as (fn: string, a: Record<string, unknown>) => PromiseLike<{ error: Error | null }>)(
-          "schedule_child_education_change",
+          "schedule_child_education_change_with_calendar",
           {
             p_request_id: request.current.id,
             p_child_id: child.id,
@@ -216,6 +218,12 @@ export function EducationPeriodWizard({
             p_school: school.trim() || null,
             p_starts_on: start,
             p_keep_timetable: keep,
+            p_place_id: args.p_place_id,
+            p_stage: args.p_stage,
+            p_calendar_id: args.p_calendar_id,
+            p_calendar_revision: args.p_calendar_revision,
+            p_reason: args.p_reason,
+            p_detail: args.p_detail,
           },
         );
         if (error) throw error;
