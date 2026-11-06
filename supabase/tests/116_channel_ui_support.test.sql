@@ -166,7 +166,7 @@ select is(public.channel_one_click_unsubscribe((select v from kv where k='tok_m'
 select is(public.channel_one_click_unsubscribe((select v from kv where k='tok_m'))->>'status','already_done','mail client retry of the POST is a no-op');
 select throws_ok($$select public.channel_one_click_unsubscribe((select v from kv where k='tok_exp'))$$,'P0001','unsubscribe_expired','expired link refused');
 select throws_ok($$select public.channel_one_click_unsubscribe((select v from kv where k='tok_srv'))$$,'P0001','unsubscribe_invalid','service purpose cannot be unsubscribed by link');
-select throws_ok($$select public.channel_one_click_unsubscribe(left((select v from kv where k='tok_m'),-2)||'00')$$,'P0001','unsubscribe_invalid','tampered signature refused');
+select throws_ok($$select public.channel_one_click_unsubscribe(left((select v from kv where k='tok_m'),-2)||case when right((select v from kv where k='tok_m'),2)='00' then '11' else '00' end)$$,'P0001','unsubscribe_invalid','tampered signature refused');
 select throws_ok($$select public.channel_one_click_unsubscribe('@@@@@@@@@@@@@@@@@@@@@@@@.'||repeat('a',40))$$,'P0001','unsubscribe_invalid','malformed token refused without a server error');
 reset role;
 select is((select string_agg(via,',' order by via) from gina.unsubscribe_token_uses),'link,one_click','each link use is recorded once with its path');

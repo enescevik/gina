@@ -8,9 +8,10 @@
 |---|---|---|---|---|---|---|
 | C14 | Enes 16:01Z | `c16b8b1` | 141, son `20261106340000` | 24 fonksiyon | web `a31715be`, yönetim `b1cd107a` | iOS 28 gönderim `8f37781c` (IPA `9e2dbc10…`); tablet 28 `m8aeavsrur` (IPA `116a7fad…`) |
 | C14b | Enes 15:38Z | `b04207c`; `prova-grade` ek düzeltme `8fb2eef` | 146, son `20261106390000` | 8 + `prova-grade` | web `1c0cf214`, yönetim `30000ffb` | iOS 29 gönderim `d9628cbd` (IPA `a5ad4764…`); tablet 29 `b9q067lwk9`, kaynak `8fb2eef` (IPA `d2d254c6…`) |
-| **C14c (güncel)** | Enes 18:23Z | **`bba2b01`** | **151, son `20261106450000`** | `prova-generate` v8, `prova-grade` v7, `prova-review` v3 | **web `7f515ca0`, yönetim `d4ebcb30`** | **iOS 30 gönderim `b7ccb6a4` (IPA `7ddc64f9…`); tablet 30 `c4aic5og2w`, kaynak `bba2b01` (IPA `be558e9e…`)** |
+| C14c | Enes 18:23Z | **`bba2b01`** | **151, son `20261106450000`** | `prova-generate` v8, `prova-grade` v7, `prova-review` v3 | **web `7f515ca0`, yönetim `d4ebcb30`** | **iOS 30 gönderim `b7ccb6a4` (IPA `7ddc64f9…`); tablet 30 `c4aic5og2w`, kaynak `bba2b01` (IPA `be558e9e…`)** |
+| **H08 (güncel)** | Enes 19:51Z (yayın yetkisi) | **`fe08cb60`** | **160, son `20261107000400`** (470000/480000 başka hatta 20:57Z; QT Faz 0 21:58Z) | `delete-account` v18, `apple-token`, `apple-revocation-worker`, `push-send` v17, H02/H07 fonksiyonları | **web `f1adee0b`, yönetim `04c33ac6`** | **iOS 32 gönderim `670700d0` (IPA `ef6e6834…`); tablet 32 `gxt6d74dz6` (IPA `04834182…`)** |
 
-- **Ayarlar:** `question_groups.enabled=true`; `curriculum_catalog.enabled=false`; `content_prereview.enabled=false`.
+- **Ayarlar:** `question_groups.enabled=true`; `curriculum_catalog.enabled=false`; `content_prereview.enabled=true` (21:04Z, Codex/PR #156, günlük sınır 25); `channels.email.provider` boş (ürün e-postası kapalı).
 - **Zamanlanmış işler:** pg_cron `prune-unused-devices` 03:25 UTC, `prune-pairing-records` 03:35 UTC.
 - **Canlı sağlık:** `health-check.mjs --strict` temiz, ACL 0, RLS kapalı tablo 0.
 - **Alan adı / e-posta** ([STATUS](domain-email-2026-11-06/STATUS.md) esas): `ginafamily.com`, `www`, `admin.ginafamily.com` kurulu; Auth e-postaları `noreply@ginafamily.com` (Brevo SMTP), TR reset gerçek teslimatla doğrulandı; `destek@ginafamily.com` yönlendirmesi Active ve Cloudflare teslim kaydı var; Gmail "GINA Destek" göndericisi kurulu ve INBOX teslimatı doğrulandı. Açık: EN/yeni hesap teslimatı, farklı sağlayıcıya dış teslimat, ürün bildirim kanalı (H04).
@@ -29,7 +30,7 @@
 | H05 satın alma AI notu, fotoğraf saklama metni | KOD HAZIR (main) | `subscription.aiConsentNote` TR/EN, Playwright 4/4 (390/768); dosya yaşam döngüsü koddan doğrulandı, üretimde `source-cleanup` cron (43 * * * *) etkin; hukuk taslakları TR/EN güncel ([h05](h05-2026-11-06/README.md)). Yayın H08 | Claude; özel hukuk kopyaları + avukat Enes |
 | H06 görsel/etkileşim kabul boşlukları | KOD HAZIR (main) / cihaz AÇIK | groups ve question-media pencereleri ölçüldü (azaltılmış 0/6, normal 5–6/6); değişen ekranlar 4 ölçüde 16/16; H06-1, H06-2 düzeltildi; C15 cihaz listesi 18 satır ([h06](h06-2026-11-06/README.md), [C15](h06-2026-11-06/C15-DEVICE-CHECKLIST.md)) | Claude; fiziksel cihaz Enes |
 | H07 AI ön inceleme işletim hazırlığı | KOD HAZIR (main) — teknik hazırlık tamam, aktivasyon bekliyor | Günlük kota + çağrı defteri, takılı kayıt kurtarma, sağlık RPC'si, kapı kapalıyken no-op cron; pgTAP 133 65/65, tam SQL 5.982/0, izole 19/19 ([h07](h07-2026-11-06/README.md)). `content_prereview.enabled` kapalı kalır | Claude; aktivasyon (sır, --no-verify-jwt, pilot) Enes kararı |
-| H08 regresyon, düzeltme yayını, rapor | AÇIK | son | Claude |
+| H08 regresyon, düzeltme yayını, rapor | YAYINDA | [h08](h08-2026-11-06/README.md): regresyon temiz (şablon + boş DB, iki saat dilimi), migration → Edge → web/yönetim → iOS/tablet 32; sağlık temiz | Claude; TestFlight işleme/tester erişimi ve cihaz Enes |
 
 Kütüphane içerik üretimi/onayı ve 3B dünya Claude'un açık işi değildir (aşağıda yalnız bilgi).
 
