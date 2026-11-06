@@ -1,7 +1,9 @@
 import { NumberChoice } from "@/components/ui/number-choice";
 import { SourceFilesPicker } from "@/components/learning/source-files-picker";
 import { provaGenerationJournal } from "@/lib/setup-command";
-import { canonicalSubject, catalogBlueprintFits, provaAiUnits, provaGenerationKind, provaRemainingCount } from "@gina/core";
+import { AI_INTERACTION_TYPES, aiInteractionTypesFor, aiTypesAllowed, canonicalSubject, catalogBlueprintFits, isStructuredType, provaAiUnits, provaGenerationKind, provaRemainingCount } from "@gina/core";
+import i18next from "@/lib/i18n";
+import { structuredTypeLabel } from "./structured-question-author";
 import { useMemo, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
@@ -29,8 +31,9 @@ import {
   type GenerateResponse,
   invokeProvaAi,
   ProvaAiError,
-  provaErrorMessage,
+  provaErrorMessage as baseErrorMessage,
 } from "@/lib/prova-ai";
+
 import { NOTEBOOK_MODAL_PROPS } from "./notebook-layout";
 import {
   b,
@@ -40,6 +43,15 @@ import {
 } from "./prova-builder-ui";
 import { type BuilderQuestion, loadAiEdits } from "./prova-builder-data";
 import { aiEditRoute } from "@/lib/prova-draft";
+
+/** QT-AI: tür/model hataları kendi sakin metinleriyle (prova.qt.author.aiErr.*); diğerleri eski yolla. */
+function provaErrorMessage(error: unknown): string | null {
+  const code = error instanceof ProvaAiError ? error.code
+    : error && typeof error === "object" && "message" in error ? String((error as { message: unknown }).message) : "";
+  const key = `prova.qt.author.aiErr.${code}`;
+  if (code && i18next.exists(key)) return i18next.t(key);
+  return baseErrorMessage(error);
+}
 
 type Mode = "sources" | "library" | "ai" | "manual" | "document" | "repeat";
 type RepeatUnit = {
@@ -82,6 +94,10 @@ export function ProvaSourcePicker(
     [localError, setLocalError] = useState<unknown>(null);
   const [topics, setTopics] = useState<string[]>([]),
     [blueprintId, setBlueprintId] = useState<string | null>(null);
+  // QT-AI: isteğe bağlı tür seçimi; boşsa istek eski gövdeyle birebir aynı gider.
+  const [aiTypes, setAiTypes] = useState<string[]>([]);
+  const writtenTrack = draft.purpose === "written" || draft.context?.track === "meb_common";
+  const requestedTypes = aiInteractionTypesFor(aiTypes, writtenTrack);
   const [preview, setPreview] = useState<BuilderQuestion | null>(null),
     [aiRows, setAiRows] = useState<BuilderQuestion[]>([]);
   const journal = useMemo(
@@ -278,6 +294,7 @@ export function ProvaSourcePicker(
           ...(mode === "document" && file
             ? { source_id: file.id, ai_consent: true as const }
             : {}),
+          ...(requestedTypes ? { interaction_types: requestedTypes } : {}),
         };
         record = journal.prepare(payload);
         setGenerationRecord(record);
@@ -1009,6 +1026,30 @@ export function ProvaSourcePicker(
                             )
                             : null}
                         </View>
+                        <View testID="qt-ai-types" style={{ gap: 8 }}>
+                          <Text style={b.bold}>{t("prova.qt.author.ai.typesTitle")}</Text>
+                          <Text style={b.muted}>{t("prova.qt.author.ai.typesHelp")}</Text>
+                          <View style={b.wrap}>
+                            {AI_INTERACTION_TYPES.map((type) => {
+                              const allowed = aiTypesAllowed(writtenTrack).includes(type);
+                              return (
+                                <BuilderChoice
+                                  key={type}
+                                  label={isStructuredType(type) ? structuredTypeLabel(t, type) : t(`provaBuilder.${type}`)}
+                                  selected={allowed && aiTypes.includes(type)}
+                                  disabled={busy || !!generationRecord || !allowed}
+                                  onPress={() => setAiTypes((v) => v.includes(type) ? v.filter((x) => x !== type) : [...v, type])}
+                                />
+                              );
+                            })}
+                          </View>
+                          {writtenTrack
+                            ? <Text testID="qt-ai-types-written" style={b.muted}>{t("prova.qt.author.ai.typesWritten")}</Text>
+                            : null}
+                          {requestedTypes?.some((x) => isStructuredType(x)) && provaGenerationKind(draft) !== "mixed"
+                            ? <Text style={b.muted}>{t("prova.qt.author.ai.typesKindHint")}</Text>
+                            : null}
+                        </View>
                         <View style={b.hint}>
                           <Text style={b.bold}>
                             {typeof remaining === "number"
@@ -1104,7 +1145,7 @@ export function ProvaSourcePicker(
                           <BuilderQuestionPreview
                             q={q}
                             showAnswer
-                            onEdit={busy || !recoveredFits
+                            onEdit={busy || !recoveredFits || q.kind === "structured"
                               ? undefined
                               : () => openEdit({ kind: "question", id })}
                           />

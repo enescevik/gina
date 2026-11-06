@@ -6,6 +6,7 @@
  * bağlı değildir: satırı taşımak kimliği değiştirmez, silinen kimlik aynı taslakta yeniden kullanılmaz.
  * Doğrulama `questionContentErrors` (SQL ile aynı kodlar) + yalnız öneri niteliğinde rehberlik.
  */
+import { AI_INTERACTION_TYPES } from "./prova-generation-journal";
 import {
   PRACTICE_ONLY_TYPES,
   questionContentErrors,
@@ -424,4 +425,19 @@ export function unsupportedTypesForChild(devices: DeviceTypeSupport[], used: str
   if (devices.some((d) => types.every((t) => d.question_types?.includes(t)))) return { missing: [], noDevice: false };
   const missing = types.filter((t) => !devices.some((d) => d.question_types?.includes(t)));
   return { missing: missing.length ? missing : types, noDevice: false };
+}
+
+// ---------------------------------------------------------------------------------------------
+// QT-AI: veli AI üretiminde tür seçimi. Yazılı/OYSS (meb_common) isteğinde yalnız açık uçlu + sayısal
+// (sunucu `parseInteractionTypes` aynı kuralı uygular: `interaction_type_not_allowed_for_track`).
+export type AiInteractionType = (typeof AI_INTERACTION_TYPES)[number];
+export const AI_WRITTEN_TRACK_TYPES: readonly AiInteractionType[] = ["open_ended", "numeric"];
+export function aiTypesAllowed(writtenTrack: boolean): readonly AiInteractionType[] {
+  return writtenTrack ? AI_WRITTEN_TRACK_TYPES : AI_INTERACTION_TYPES;
+}
+/** Seçimi isteğe çevirir: boş seçim → undefined (alan hiç gönderilmez, eski davranış). Sıra sabit (kanonik). */
+export function aiInteractionTypesFor(selected: readonly string[], writtenTrack: boolean): AiInteractionType[] | undefined {
+  const allowed = aiTypesAllowed(writtenTrack);
+  const out = allowed.filter((t) => selected.includes(t));
+  return out.length ? [...out] : undefined;
 }

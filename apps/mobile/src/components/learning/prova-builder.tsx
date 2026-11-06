@@ -547,7 +547,7 @@ export default function ProvaBuilder() {
   const previewGroup = mat.groups.find((g) => g.id === previewBlock?.id);
   // D14: AI sorusu (ya da tümü AI olan ortak kaynak grubu) mevcut editörde düzenlenebilir.
   const previewEdit = previewBlock && preview &&
-      questionsOf(previewBlock, mat).every((q) => isAiEditable(q.provenance))
+      questionsOf(previewBlock, mat).every((q) => q.kind !== "structured" && isAiEditable(q.provenance))
     ? { kind: previewBlock.kind, id: previewBlock.id }
     : null;
   async function openAiEdit(target: { kind: "question" | "group"; id: string }) {

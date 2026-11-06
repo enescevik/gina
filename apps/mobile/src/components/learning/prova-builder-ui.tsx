@@ -18,7 +18,8 @@ import { StructuredQuestionPreview } from "./structured-question-author";
  * veli RPC'siyle (`get_question_answer_keys`) alınır.
  */
 function StructuredBuilderPreview({ q, showAnswer }: { q: BuilderQuestion; showAnswer: boolean }) {
-  const row = q as BuilderQuestion & { interaction_type?: string | null; payload?: unknown };
+  // AI sonucu satırı veliye dönen anahtarı taşır; o zaman ayrıca RPC çağrılmaz.
+  const row = q as BuilderQuestion & { interaction_type?: string | null; payload?: unknown; answer_key?: unknown };
   const content = useQuery({
     queryKey: ["qt_payload", q.id],
     enabled: row.payload === undefined || row.interaction_type === undefined,
@@ -30,7 +31,7 @@ function StructuredBuilderPreview({ q, showAnswer }: { q: BuilderQuestion; showA
   });
   const key = useQuery({
     queryKey: ["qt_answer_key", q.id],
-    enabled: showAnswer,
+    enabled: showAnswer && !row.answer_key,
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_question_answer_keys", { p_question_ids: [q.id] });
       if (error) throw error;
@@ -40,7 +41,7 @@ function StructuredBuilderPreview({ q, showAnswer }: { q: BuilderQuestion; showA
   const type = row.interaction_type ?? content.data?.interaction_type ?? null;
   const payload = row.payload ?? content.data?.payload ?? null;
   if (!payload) return null;
-  return <StructuredQuestionPreview type={type} payload={payload} answerKey={showAnswer ? key.data ?? undefined : undefined} testID="builder-qt-preview" />;
+  return <StructuredQuestionPreview type={type} payload={payload} answerKey={showAnswer ? row.answer_key ?? key.data ?? undefined : undefined} testID="builder-qt-preview" />;
 }
 export function BuilderChoice(
   { label, selected, onPress, disabled = false }: {

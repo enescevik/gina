@@ -1,5 +1,8 @@
 import { z } from "zod";
 import type { AnswerJournalStorage } from "./answer-journal";
+import { LEGACY_INTERACTION_TYPES, STRUCTURED_INTERACTION_TYPES } from "./question-types";
+/** QT-AI: AI'nın üretebileceği türler (prova-generate `parseInteractionTypes` ile aynı küme). */
+export const AI_INTERACTION_TYPES = [...LEGACY_INTERACTION_TYPES, ...STRUCTURED_INTERACTION_TYPES] as const;
 export const PROVA_GENERATION_PREFIX = "gina:prova:generation:v1:";
 export const generationPayloadSchema = z.object({
   draft_id: z.uuid(),
@@ -20,7 +23,10 @@ export const generationPayloadSchema = z.object({
   locale: z.enum(["tr", "en"]),
   source_id: z.uuid().optional(),
   ai_consent: z.literal(true).optional(),
+  /** QT-AI: isteğe bağlı tür seçimi. Yoksa istek gövdesi eski davranışla birebir aynıdır (eski kayıtlar da yüklenir). */
+  interaction_types: z.array(z.enum(AI_INTERACTION_TYPES)).min(1).max(AI_INTERACTION_TYPES.length).optional(),
 }).strict().refine((p) =>
+  (!p.interaction_types || new Set(p.interaction_types).size === p.interaction_types.length) &&
   p.topic_plan.reduce((n, r) => n + r.count, 0) === p.count &&
   new Set(p.topic_plan.map((r) => r.topic)).size === p.topic_plan.length &&
   (!p.source_id || p.ai_consent === true)
@@ -34,7 +40,12 @@ export const generationResultSchema = z.object({
   questions: z.array(z.object({
     id: z.uuid(),
     topic: z.string(),
-    kind: z.enum(["multiple_choice", "open_ended"]),
+    kind: z.enum(["multiple_choice", "open_ended", "structured"]),
+    /** QT-AI: yapılandırılmış satırda tür + öğrenci içeriği + veliye dönen özel anahtar (complete_prova_generation). */
+    interaction_type: z.enum(STRUCTURED_INTERACTION_TYPES).optional(),
+    schema_version: z.number().int().optional(),
+    payload: z.record(z.string(), z.unknown()).optional(),
+    answer_key: z.record(z.string(), z.unknown()).optional(),
     difficulty: z.enum(["kolay", "orta", "orta_ustu", "zor"]),
     stem: z.string().min(1),
     choices: z.array(choice).nullable(),
