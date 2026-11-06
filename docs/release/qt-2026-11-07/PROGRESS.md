@@ -11,12 +11,12 @@ Durum ölçeği: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAM
 |---|---|---|
 | QT00 veri/güvenlik sözleşmesi | KOD HAZIR (sunucu+core) · istemci YAPILIYOR | Migration 0000–0400, pgTAP 140/141, yarış testi; istemci alt ajanlarda |
 | QT01 puanlama | KOD HAZIR (SQL) | Golden 360 iddia core fixtures'tan üretiliyor |
-| QT10 doğru/yanlış | YAPILIYOR | Sunucu+core hazır; çocuk/veli/PDF/AI istemci işi sürüyor |
-| QT11 boşluk doldurma | YAPILIYOR | 〃 |
-| QT12 eşleştirme | YAPILIYOR | 〃 |
-| QT13 sayısal kısa cevap | YAPILIYOR | 〃 |
-| QT20 sıralama | YAPILIYOR | Sunucu+core hazır (1B sunucu tarafı Faz 0 ile birlikte geldi) |
-| QT21 sınıflandırma | YAPILIYOR | 〃 |
+| QT10 doğru/yanlış | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın ve gerçek cihaz kabulü açık |
+| QT11 boşluk doldurma | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın ve gerçek cihaz kabulü açık |
+| QT12 eşleştirme | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın ve gerçek cihaz kabulü açık |
+| QT13 sayısal kısa cevap | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın ve gerçek cihaz kabulü açık |
+| QT20 sıralama | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın ve gerçek cihaz kabulü açık |
+| QT21 sınıflandırma | KOD HAZIR | Sunucu+core+çocuk+veli+PDF+AI+backoffice; yayın ve gerçek cihaz kabulü açık |
 | QT30 metin işaretleme | YAPILIYOR · sunucu+core KOD HAZIR | `enabled=false`; istemci çizicisi yok |
 | QT31 hata bulma–düzeltme | YAPILIYOR · sunucu+core KOD HAZIR | Anahtarda olmayan anlamlı düzeltme → veli |
 | QT32 çoklu doğru seçenek | YAPILIYOR · sunucu+core KOD HAZIR | `max(0, TP/P − FP/N)`; hepsi-doğru yapı ret |
@@ -73,3 +73,36 @@ Durum ölçeği: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAM
 | İzole DB yetki/negatif, SQL golden, core sözleşme testleri | [x] |
 | Gerçek cihaz (Pencil, VoiceOver/TalkBack, döndürme) | DIŞ ENGEL — fiziksel cihaz erişimi gerekli |
 | Sürümler, eski istemci davranışı, ekranlar, sınırlamalar raporu | Kısmen (bu dosya); yayın yapılmadı |
+
+
+## Faz 1A + 1B ortak kabul kapısı — birleşik dal kanıtı (7 Kasım 2026)
+
+Birleşik dal `claude/prova-question-types` (`d17c38f1`): Faz 0 + istemci dalları (`claude/qt-child`, `claude/qt-parent`, `claude/qt-ai`) + `20261107000500_qt10_question_views`.
+
+| Kontrol | Komut | Sonuç |
+|---|---|---|
+| Tam pgTAP | `python3 scripts/test-q02-sql.py --run-local --fresh` | 133 dosya / 6577 iddia; yalnız önceden var olan 066/069. Bir koşuda `116` (anon EXECUTE yüzeyi) 1 kez başarısız; tek başına ve tekrar koşuda geçti → kararsız, izleniyor |
+| Core | `packages/core: npx tsc --noEmit; npx vitest run` | temiz; 66 dosya / 704 test |
+| Mobil | `apps/mobile: npx tsc --noEmit; npx expo lint; vitest question-types` | 0 hata; lint temiz; 19/19 |
+| Edge | CI `deno test` satırı | 360/360 (yapı paritesi + red-team) |
+| Backoffice | `pnpm typecheck`, `pnpm build` | temiz; build 0 |
+| Çocuk UI (web build, izole yığın) | `scripts/test-qt-child-ui.cjs --run-local` | 16/16 (birleşik dalda yeniden) — `screens/child/` |
+| Hazırlama/atama/PDF UI | `scripts/test-qt-author-ui.cjs --run-local` | 14/14 (AI tür seçimi dahil; Edge sahte uç) — `screens/author/`, öğrenci/anahtar PDF ayrı |
+| Backoffice UI | `scripts/test-qt-backoffice-ui.py --run-local` | geçti (birleşik dalda, 68 migration) — `screens/backoffice/` |
+| Yarış | `scripts/test-qt-answer-races.py --run-local` | 7/7 |
+
+| Kapı maddesi | Durum |
+|---|---|
+| Manuel + AI aynı sürümlü şema | [x] (`save_question_with_sources`, AI `interaction_types` → `complete_prova_generation`) |
+| Katı AI şeması + deterministik doğrulama | [x] Edge + SQL; gerçek sağlayıcının `anyOf` şemasını kabulü DOĞRULANMADI (sağlayıcı pilotu gerekli; Gemini riskli) |
+| Anahtar ayrımı / sızıntı yok | [x] çocuk/cihaz; not: veli cihazındaki AI üretim günlüğü dönen anahtarı yerelde saklar (veli verisi; telefonda çocuk modu için risk notu — günlükte anahtarı saklamamak takip işi) |
+| Çocuk cevapsız/kısmi/dolu, taslak, yeniden yükleme, bitirme | [x] UI; çevrimdışı/iki cihaz çakışması core günlük + SQL yarış testleriyle, UI senaryosu olarak koşulmadı |
+| Veli incelemesi/rapor ayrımı | [x] |
+| Paket eşitliği; AI'sız manuel yol | [x] |
+| Telefon/dar/tablet/masaüstü + backoffice | [x] web build (390/360/768/1280); fiziksel değil |
+| PDF öğrenci ≠ anahtar, Türkçe font | [x] headless Chrome; native `expo-print` cihazda koşulmadı |
+| DB yetki/negatif, golden, core | [x] |
+| Gerçek cihaz (Pencil, VoiceOver/TalkBack, döndürme, büyük yazı) | **DIŞ ENGEL** — fiziksel cihaz erişimi |
+| Yayın | YAPILMADI — Faz 0 DB onayı var (H08 hattı uygular); istemci/Edge yayını ayrıca onay ister |
+
+Bilinen sınırlar: kaydedilmiş yapılandırılmış soru düzenlenemez (AI/elle düzenleme kapalı); ortak kaynak grupları ve kütüphane paylaşımı yalnız eski türler; ağırlık (weights) için UI yok; global yapılandırılmış soru backoffice'te salt okunur (admin kaydetme RPC'si yok). Ürün kararı: amaç “yazılıya hazırlık” veya tür “şıklı/açık uçlu” seçiliyken yapılandırılmış sorular (sayısal dahil) “Karma” seçimi ister.
