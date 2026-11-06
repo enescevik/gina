@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { createProvaGenerationJournal } from "./prova-generation-journal";
+import { createProvaGenerationJournal, generationPayloadSchema } from "./prova-generation-journal";
+import { aiInteractionTypesFor, aiTypesAllowed } from "./question-authoring";
+import { provaAiUnits } from "./prova-question-fit";
 const id = (n: number) =>
   `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
 const input = {
@@ -130,5 +132,56 @@ describe("paid Prova generation recovery", () => {
     const j = fixture().open(), r = j.prepare(input);
     j.cancel(r, { request_id: r.request_id, status: "cancelled" });
     expect(() => j.complete(r, result)).toThrow("generation_request_changed");
+  });
+});
+
+// QT-AI: tür seçimi isteğe bağlı alan; eski kayıtlar yüklenir, yeni alan idempotency anahtarının parçasıdır.
+describe("QT-AI interaction_types in the generation journal", () => {
+  const practice = { ...input, assessment: "practice" as const, kind: "mixed" as const };
+  it("old journal records without interaction_types still load (byte-identical payload)", () => {
+    const f = fixture();
+    const key = [...(f.open().prepare(input), f.data.keys())][0]!;
+    const stored = f.data.get(key)!;
+    expect(stored).not.toContain("interaction_types");
+    expect(JSON.parse(stored).payload).toEqual(input);
+    expect(f.open().read()!.payload).toEqual(input);
+  });
+  it("records with interaction_types round-trip; unknown/duplicate types are refused", () => {
+    const f = fixture();
+    const r = f.open().prepare({ ...practice, interaction_types: ["true_false", "numeric"] });
+    expect(f.open().read()!.payload.interaction_types).toEqual(["true_false", "numeric"]);
+    expect(() => f.open().prepare(practice)).toThrow("generation_pending");
+    expect(generationPayloadSchema.safeParse({ ...practice, interaction_types: ["crossword"] }).success).toBe(false);
+    expect(generationPayloadSchema.safeParse({ ...practice, interaction_types: ["numeric", "numeric"] }).success).toBe(false);
+    expect(generationPayloadSchema.safeParse({ ...practice, interaction_types: [] }).success).toBe(false);
+    expect(r.payload.interaction_types).toEqual(["true_false", "numeric"]);
+  });
+  it("a structured AI result row completes, recovers and becomes a question unit", () => {
+    const f = fixture();
+    const r = f.open().prepare({ ...practice, interaction_types: ["true_false"] });
+    const structured = {
+      ...result,
+      questions: [{
+        ...result.questions[0]!, kind: "structured" as const, expected_answer: null,
+        interaction_type: "true_false" as const, schema_version: 1,
+        payload: { statements: [{ id: "s1", text: "Isı bir enerjidir." }] }, answer_key: { answers: { s1: true } },
+      }],
+    };
+    const done = f.open().complete(r, structured);
+    expect(done.result!.questions[0]!.kind).toBe("structured");
+    const again = f.open().read()!;
+    expect(again.result!.questions[0]!.payload).toEqual({ statements: [{ id: "s1", text: "Isı bir enerjidir." }] });
+    expect(again.result!.questions[0]!.answer_key).toEqual({ answers: { s1: true } });
+    const units = provaAiUnits(again.result);
+    expect(units).toHaveLength(1);
+    expect(units[0]!.kind).toBe("question");
+  });
+  it("selection helper: empty → field omitted; written track keeps only open_ended + numeric", () => {
+    expect(aiInteractionTypesFor([], false)).toBeUndefined();
+    expect(aiInteractionTypesFor(["numeric", "true_false"], false)).toEqual(["true_false", "numeric"]);
+    expect(aiInteractionTypesFor(["true_false", "multiple_choice"], true)).toBeUndefined();
+    expect(aiInteractionTypesFor(["numeric", "matching", "open_ended"], true)).toEqual(["open_ended", "numeric"]);
+    expect(aiTypesAllowed(true)).toEqual(["open_ended", "numeric"]);
+    expect(aiTypesAllowed(false)).toHaveLength(8);
   });
 });

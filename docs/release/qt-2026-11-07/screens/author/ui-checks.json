@@ -102,9 +102,25 @@
       }
     },
     {
+      "check": "ai_type_choice_written_limit_errors_and_structured_rows_assigned",
+      "passed": true,
+      "requests": [
+        null,
+        [
+          "true_false",
+          "numeric"
+        ],
+        [
+          "true_false",
+          "matching",
+          "numeric"
+        ]
+      ]
+    },
+    {
       "check": "screens_at_390_360_768_1280",
       "passed": true,
-      "count": 37
+      "count": 41
     },
     {
       "check": "no_runtime_errors_overflow_raw_ids_or_keys",
@@ -137,6 +153,10 @@
     "builder-device-warning-phone-390x844.png",
     "builder-preview-key-phone-390x844.png",
     "booklet-paper-note-phone-390x844.png",
+    "ai-types-written-phone-390x844.png",
+    "ai-model-unsupported-phone-390x844.png",
+    "ai-types-practice-phone-390x844.png",
+    "ai-structured-results-phone-390x844.png",
     "type-picker-narrow-360x740.png",
     "matching-editor-errors-narrow-360x740.png",
     "builder-assigned-narrow-360x740.png",

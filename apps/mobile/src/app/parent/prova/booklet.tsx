@@ -17,9 +17,7 @@ import { supabase } from "@/lib/supabase";
 
 type Source = "library" | "exam";
 
-const QUESTION_COLUMNS = "id, topic, kind, difficulty, stem, choices, correct_key, expected_answer, solution";
-/** QT: görünümler (current_question_bank) yeni sütunları taşımaz; yapılandırılmış içerik tablodan okunur. */
-const STRUCTURED_COLUMNS = "id, interaction_type, payload";
+const QUESTION_COLUMNS = "id, topic, kind, difficulty, stem, choices, correct_key, expected_answer, solution, interaction_type, payload";
 const DIFFICULTY_ORDER = ["kolay", "orta", "orta_ustu", "zor"];
 /** Tek kitapçıkta en fazla soru (PDF boyutu ve yazdırma süresi için). */
 const MAX_QUESTIONS = 100;
@@ -36,16 +34,6 @@ interface QuestionRow {
   correct_key: string | null;
   expected_answer: string | null;
   solution: string | null;
-}
-
-/** QT: yapılandırılmış soruların öğrenci içeriğini (payload) satırlara ekler; anahtar burada YOK. */
-async function withStructuredContent(rows: QuestionRow[]): Promise<QuestionRow[]> {
-  const ids = rows.filter((q) => q.kind === "structured" && q.payload === undefined).map((q) => q.id);
-  if (!ids.length) return rows;
-  const { data, error } = await supabase.from("question_bank").select(STRUCTURED_COLUMNS).in("id", ids);
-  if (error) throw error;
-  const byId = new Map(data.map((r) => [r.id, r]));
-  return rows.map((q) => (byId.has(q.id) ? { ...q, ...byId.get(q.id) } : q));
 }
 
 function bookletStructuredLabels(t: TFunction): BookletLabels["structured"] {
@@ -128,7 +116,7 @@ export default function ProvaBookletScreen() {
         .order("topic")
         .limit(500);
       if (error) throw error;
-      return withStructuredContent(data as QuestionRow[]);
+      return data as QuestionRow[];
     },
   });
 
@@ -153,7 +141,7 @@ export default function ProvaBookletScreen() {
     queryFn: async () => {
       const ids = selectedExam?.question_ids ?? [];
       if (ids.length === 0) return [];
-      const { data, error } = await supabase.from("question_bank").select(`${QUESTION_COLUMNS}, interaction_type, payload`).in("id", ids);
+      const { data, error } = await supabase.from("question_bank").select(QUESTION_COLUMNS).in("id", ids);
       if (error) throw error;
       // Denemedeki sırayı koru.
       const byId = new Map((data as QuestionRow[]).map((q) => [q.id, q]));
