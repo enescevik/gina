@@ -1,3 +1,4 @@
+import { anthropicUsage } from "./anthropic-usage.ts";
 import { anthropicHttpError } from "./ai-provider.ts";
 import type { AiChain } from "./ai-chain-types.ts";
 // Prova AI fonksiyonlarının (prova-generate / prova-grade / prova-plan) ortak yardımcıları.
@@ -216,6 +217,7 @@ export function apiKeyOrResponse(
 }
 
 export interface AiResult<T> {
+  providerUsage?: ReturnType<typeof anthropicUsage>;
   model?: string;
   provider?: string;
   chainRunId?: string;
@@ -322,6 +324,7 @@ export async function callClaude<T>(
   }
   return {
     output,
+    providerUsage: anthropicUsage(data.usage, res.headers.get("request-id")),
     inputTokens: data.usage?.input_tokens ?? null,
     outputTokens: data.usage?.output_tokens ?? null,
   };
