@@ -107,3 +107,17 @@ Komutlar ve sonuçlar: `pnpm --filter @gina/mobile exec tsc --noEmit` (geçti), 
 - Bulgular: P1 ×3 (Q00-A1-1, -2, -3; üçü düzeltildi), P2 ×16 (8'i düzeltildi: -4, -5, -6, -7, -8, -9, -18, -19; 3'ü karar bekliyor: -10, -11, -14; 5'i açık takip: -12, -13, -15, -16, -17).
 - Düzeltme commit'leri: `3561aae` (UX), `c0bc600` (erişilebilirlik + not tekilleştirme).
 
+## U03 sonrası kanıt (6 Kasım 2026)
+
+Kaynak: [u03-2026-11-06](../u03-2026-11-06/README.md), dal `worktree-agent-a9dd00406a1b459dc`. İzole Auth+PostgREST (`--ui-hold`), web exportu, Playwright 390×844 / 768×1024 / 1280×800 → 15/15 ([ui-checks.json](../u03-2026-11-06/ui/ui-checks.json)).
+
+| Bulgu / satır | Sonra | Kanıt |
+|---|---|---|
+| Q00-A1-12 plan başlığı | Düzeltildi: "Bugün için alan var" (takvimle aynı) | `../u03-2026-11-06/ui/home-one-child-no-tasks-phone.png` |
+| Q00-A1-13 çevrimdışı ~20 sn | Ana ekran: çevrimdışı ilk yüklemede 1,4 sn'de "Çevrimdışısın" + yeniden dene; yavaş bağlantıda 6 sn'de "Hâlâ bağlanıyor…"; veri varken band. Puanlar ekranı açık. | `home-offline-first-load-phone.png`, `home-slow-phone.png`, `home-offline-cached-phone.png` |
+| Q00-A1-15 Tümü tekrarı | Takvim kapsamında (U05/takvim); ana ekranda tekrar eden çocuk bloğu yok — değişiklik yok | `home-many-phone.png` |
+| Q00-A1-16 çocuk modu kartı iki sekmede | Düzeltildi: yalnız Menü › Cihazlar (5 sekmede toplam 1) | `menu-devices-phone.png` |
+| Ana ekran satırı (aynı veri üç bölümde, zil) | Onay → sıradaki iş → plan; görev kartı toplamı kaldırıldı; Ödüller/Prova kısayol tekrarı azaltıldı; zil Duyurular'a, okunmamış rozeti | `home-many-{phone,tablet,desktop}.png`, `home-bell-unread-phone.png` |
+| Ortak hata satırı (tek sorgu hatası bütün ekranı kapatıyor) | Düzeltildi: kart düzeyinde hata + yeniden dene (görev/ilerleme/plan/onay) | `home-tasks-error-phone.png`, `home-plan-error-phone.png` |
+| Ana ekran satırı kalan sınırı (onay bekleyen yoktu) | 3 bekleyen + 1 geri gönderilmiş görev gerçek cihaz `complete_task` ile; düğmeler tıklanmadı | `home-many-phone.png` |
+
