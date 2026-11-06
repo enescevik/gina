@@ -1,0 +1,29 @@
+{
+ "stage": "extract",
+ "target": "local-isolated",
+ "at": "2026-11-06T17:51:17.560Z",
+ "checks": [
+  {
+   "name": "operator_step_extracts_revision",
+   "ok": true,
+   "exit": 0,
+   "outcome": "done",
+   "scenarios": 46,
+   "created": 46,
+   "error": null
+  },
+  {
+   "name": "operator_rerun_no_duplicate_work",
+   "ok": true,
+   "exit": 0
+  },
+  {
+   "name": "pilot_candidate_imported_from_this_revision",
+   "ok": true,
+   "key": "tr-2026-2027-t1-turkce2-g5-c6",
+   "status": "draft",
+   "question_count": 6,
+   "from_revision": 46
+  }
+ ]
+}
