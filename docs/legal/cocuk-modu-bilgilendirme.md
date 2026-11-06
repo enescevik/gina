@@ -12,7 +12,7 @@
 | **Gösterildiği yerler** | Çocuk modunun ilk açılışı (ebeveyn çocukla birlikte okur ve kutuyu işaretler) ve çocuk modundaki "Hakkında" bölümü (eşleştirilmiş tablet ve ebeveyn telefonu). Web'de yayımlanmaz; mağazalara bildirilen yasal sayfa listesinde yer almaz. |
 | **Niteliği** | Hukuken zorunlu değildir; KVKK aydınlatması çocuğun kanuni temsilcisi olan ebeveyne yapılır ve bu metin onun yerine geçmez. Aydınlatma Tebliği m.5/1-g'deki "açık, sade, muğlak olmayan dil" ilkesinin çocuklar için iyi uygulamasıdır; Apple 5.1.4 ve Google Play aile politikaları için destekleyici kanıttır. |
 | **Birlikte okunacak belgeler** | Veli Beyanı (§3, §6, §8, §13), KVKK Aydınlatma Metni, Gizlilik Politikası, Kullanım Koşulları §5, Hesap ve Veri Silme (bağlantılar: B.6) |
-| **Dil** | Türkçe metin esastır (805 sayılı Kanun); İngilizce çeviri yalnızca bilgi amaçlıdır. |
+| **Dil** | Türkçe metin esastır (805 sayılı Kanun); İngilizce çeviri yalnızca bilgi amaçlıdır ve sayfanın sonundadır. / The Turkish text prevails; an English version is at the end of this page. |
 
 ---
 
@@ -111,3 +111,121 @@ Bu ekran senin için. Buradan çıkmak için annenin ya da babanın gizli şifre
 | 0.2 (C11 teknik düzeltme) | 2026-11-06 | Uygulamayla teknik karşılaştırma: çocuk modu kapsamı (hedef, oda, Prova cevapları ve çözüm defteri), yapay zekâ üretimi sorular ve onaylı değerlendirme, eşleştirme yönü (kod/QR çocuk cihazında, 10 dakika), QR için kamera izni istenmediği, isteğe bağlı PIN ve çok çocuklu cihaz davranışı, cihaz sınırı varsayılanları. Metin uygulamada henüz gösterilmiyor. Hukuk uzmanı onayı yoktur. |
 | 0.2 (D16 teknik düzeltme) | 2026-11-06 | B.3 PIN'siz giriş (PIN'i olmayan çocuk profiline dokunarak girer); B.4 eşleştirme C13-AUTH-1 davranışına göre: 8 karakterli kod, 5 dakikalık tek kullanımlık onay jetonu, yanlış kod sınırı (10 dk'da ebeveyn başına 10 / aile başına 20 → 15 dk), tablette aile adı ve 15 dakikalık "Bu benim ailem değil" iptali, eşleyen ebeveyne not; kaydedilenlere eşleyen ebeveyn ve kod denemeleri eklendi. Hukuk uzmanı onayı yoktur. Ayrıntı: `docs/release/d16-2026-11-06/README.md`. |
 | 0.2 | 2026-10-30 | Belge seti tutarlılık kontrolü: ekran yolları diğer belgelerle eşitlendi ("Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu"; "Ayarlar > Çocuklar > [Çocuk] > Cihazlar"); B.6'ya Çerez Politikası bağlantısı eklendi. |
+| 0.2 (D18 İngilizce sürüm) | 2026-11-06 | Belgenin sonuna güncel Türkçe metinden (D16/D17 sonrası) çevrilen bilgi amaçlı İngilizce bölüm eklendi; Türkçe metnin içeriği değiştirilmedi. Hukuk uzmanı onayı yoktur. Ayrıntı: `docs/release/d18-2026-11-06/README.md`. |
+
+---
+
+# Gina Aile – Child Mode Short Notice (English)
+
+| | |
+|---|---|
+| **App** | Gina ("Gina Aile") |
+| **Document** | `docs/legal/cocuk-modu-bilgilendirme.md` |
+| **Version** | 0.2 (draft) |
+| **Date** | 30 October 2026 |
+| **Effective date** | [YÜRÜRLÜK TARİHİ] |
+| **Status** | **Draft. No legal expert has reviewed or approved it (6 November 2026); it is not used without expert approval and a written approval record.** App audit: this text and the confirmation box are not shown in the app yet; the scope of child mode (Prova answers, workbook, goals, room) and the direction of pairing have been corrected below to match current behaviour. Comparison: `docs/release/c11-2026-11-06/legal-review.md`. |
+| **Data controller** | [VERİ SORUMLUSU UNVANI], [ADRES], [E-POSTA], MERSİS/tax ID: [MERSİS/VKN] |
+| **Where shown** | First opening of child mode (the parent reads it with the child and ticks the box) and the "About" section in child mode (paired tablet and parent's phone). Not published on the web; not in the list of legal pages given to the stores. |
+| **Nature** | Not legally required; the KVKK information is given to the parent as the child's legal representative and this text does not replace it. It is good practice, for children, of the principle of "clear, plain, unambiguous language" in Art. 5(1)(g) of the Information Communiqué; supporting evidence for Apple 5.1.4 and the Google Play families policies. |
+| **Documents to read together** | Parent Declaration (§3, §6, §8, §13), KVKK Privacy Notice, Privacy Policy, Terms of Use §5, Account and Data Deletion (links: B.6) |
+| **Language** | The Turkish text prevails (Law No. 805 on the Compulsory Use of Turkish); this English translation is for information only. It was translated from the Turkish text on 6 November 2026 (D18) and has the same content. Placeholders and Turkish product notes in square brackets are shared with the Turkish text; an English gloss follows in parentheses. Part A is a plain translation of the child-facing Turkish text; if an English child-facing text is shown in the app, its wording for children needs a separate product/expert review. |
+
+---
+
+## Part A. For children (text shown in child mode)
+
+> The app shows this text with the child's profile name. If the profile was opened by a guardian, "your mum or dad" is replaced by "the grown-up who looks after you" [ÜRÜN KARARI: metin değişkeni] (product decision: text variable). The text is written for ages 7-10; for younger children the parent explains it.
+
+### Hello [ÇOCUK ADI] (child's name)!
+
+**What does Gina do?**
+Gina is an app that shows your chores, your week and the stars you earn. Your mum or dad opened this screen for you. When you finish a chore, you press the "Done" button. Your mum or dad checks and approves it. They give the stars. Here you can choose goals, decorate your room and solve the practice tests (Prova) your mum or dad gives you.
+
+**What is saved here?**
+Your name (or nickname), the avatar you chose, your chores, the times you said "Done", your stars, the goals and room choices you picked, the answers you wrote in practice tests and what you wrote and drew in your workbook. Your photo and your surname are not here.
+
+**Who can see it?**
+The grown-ups who added you to Gina, that is your mum or dad, can see it. Your brothers and sisters cannot see your chores, and you cannot see theirs. If your mum or dad wants, they can share your school scores, practice test results and chore summary with your teacher.
+
+**Is there a robot or a chat here?**
+No. In Gina there is no robot or chat that talks to you. You cannot write messages, you cannot chat with anyone, and nobody can send you messages. Some questions in the practice tests may have been made by a computer program; your mum or dad checks them first. Your mum or dad may ask a computer program for help to check your answers. There are no ads here either; nothing is bought.
+
+**What should you do if something is wrong?**
+If a chore is written wrongly, a star is missing or your name is spelled wrongly, tell your mum or dad. They can fix it or delete it. If you are curious about something, ask them too.
+
+**Leaving this screen**
+This screen is for you. To leave it, you need your mum's or dad's secret code (PIN). You do not know this code; do not try to guess it. If you want to leave, tell your mum or dad. You may also have your own 4-number code (PIN) that opens your screen; do not tell it to your brothers, sisters or friends.
+
+**Confirmation box for the parent (in-app; not pre-ticked):**
+
+☐ I have read/explained the Child Mode Notice to my child in an age-appropriate way.
+
+---
+
+## Part B. Short technical note for parents
+
+### B.1 What this text is and is not
+
+- The confirmation box is not the child's consent; it is a record that you have fulfilled your responsibility to inform (TMK Art. 339, Turkish Civil Code — parents take the child's views into account) in Parent Declaration §3.5 and §8. The record contains only the fields in Parent Declaration §13 (declaration type "informing the child", text version and hash, language, date and time, parent account and family and child profile IDs, app version); the child's name is not written.
+- The box is asked for when child mode is first opened; the text can always be read again from the "About" section and, when it changes materially, the new version is shown again at the next first opening [ÜRÜN KARARI: yeniden gösterim akışı] (product decision: re-display flow).
+- Gina is offered on the stores for parents aged 18 or over; child mode is a limited view used under parental supervision. The child does not open an account and does not give an email address or phone number.
+- You, as parent/guardian, exercise the KVKK rights (information, rectification, erasure) on the child's behalf: Settings > Privacy and Legal > Data Subject Request (not yet available; at present Help > support request) or [WEB ADRESİ]/legal/kvkk-basvuru-formu. You can make most of the corrections and deletions your child asks for yourself from within the app.
+
+### B.2 What is and is not shown in child mode
+
+| Shown | Not shown |
+|---|---|
+| The child's name or nickname and the ready-made avatar they chose | Birth year (used only for an age-appropriate interface); surname, photo, Turkish ID number, phone and email are never requested at all |
+| Their own chores, "Done" marks and approval status; their week and goals | Profiles, chores and stars of other children in the family (if more than one child has been selected for a device and the PIN is off, a child using the device can also enter the other selected profiles) |
+| Stars earned, their collection, room/pet and any defined rewards | Free-text notes written by the parent, grade/score records, development tracking records |
+| Their own calendar and class schedule | AI summaries, AI suggestions and drafts meant for the parent; chat or messaging |
+| Prova practice tests assigned by the parent (some questions may have been generated with AI and reviewed by the parent) and feedback approved by the parent | Unapproved parent or AI feedback, the parent's marking layer |
+| — | Settings, purchase screen, subscription, family invite code, parent email, account/profile deletion, consent boxes, external links, browser and store |
+
+- **Recorded in child mode:** the "Done" mark (with chore ID and time), chosen goals, room/pet preferences, and the answers the child writes in Prova practice tests together with the workbook containing handwriting/drawing. Decisions on approval, stars, rewards and scores belong to the parent. There is no sending messages or writing notes in child mode [ÜRÜN KARARI: çocuğun görev önerme özelliği eklenirse güncellenir] (product decision: updated if a feature for the child to suggest chores is added).
+- **AI:** AI features work only on paid plans (Gina Plus and Gina Pro), only in the parent area and with the parent's separate confirmation for each operation; they are not available on the free plan (Gina Başlangıç). The child does not interact with AI directly and the child's device cannot start an AI request; however, on Gina Pro, with the parent's separate confirmation, the child's Prova answer and workbook are sent to the provider (Anthropic, USA) for an assessment suggestion (Privacy Policy Section 5). Expert review is needed: how this should be explained in the text for children.
+- **No third parties:** there is no analytics, advertising, tracking tool or crash reporting in child mode. Notification content contains no personal data.
+
+### B.3 Child mode on the parent's phone
+
+- Child mode is a restricted view running within the parent session on your phone; no separate sign-in is needed.
+- **Entry:** A child with a PIN set enters with the 4-digit Child PIN; a child without a PIN enters by tapping their profile (the Child PIN is optional). You set the PIN under Settings > Children > [Child]; it is stored on the server only as a hash; it locks for 60 seconds after 5 wrong attempts. This PIN is for the child to choose their own screen; it does not protect the parent area.
+- **Exit:** the 4-digit Parent PIN. Do not share your Parent PIN with your child; choose one different from the Child PIN and your phone lock. Biometric authentication is not available in this release [ÜRÜN KARARI: Faz 2] (product decision: phase 2).
+- Actions taken in child mode (B.2) are written to the selected child's profile; your parent data, settings and purchase screens are not visible. Notifications, calls and other apps on your phone are under the control of the operating system; Gina cannot restrict them.
+
+### B.4 Pairing a tablet
+
+- **How it is done (current flow in the app):** Gina is opened on the child's device and the device shows a single-use, 8-character Device Pairing Code (letters and digits; shown in groups of 4+4 on screen, e.g. ACDE FH34) valid for 10 minutes, together with a QR code carrying the same code. You scan the QR code or type the code on your own phone; after seeing which device will be connected to which family, you confirm within 5 minutes at the latest (the confirmation token is single-use and tied to you, your family and that code), and you choose which child profiles the device will open and whether a PIN will be asked for. Nothing is connected without your confirmation. No email or password is entered on the tablet.
+- **Wrong code attempts are limited:** after 10 failed attempts per parent or 20 per family (all parents) within 10 minutes, code entry is stopped for 15 minutes; during this time even the correct code is not accepted. The safest way is to scan the QR code with your phone's camera.
+- **Check on the tablet side:** When pairing happens, the tablet shows the name of the family it is connected to ("This tablet is connected to this family"). If the family is wrong, the tablet cancels the pairing with one tap via "This is not my family" within 15 minutes after pairing; the device is removed, can get a new code, and an in-app note is left for the parent who paired the device (the note contains no device name, family name or child information). After 15 minutes, only a parent of that family can remove the pairing.
+- **The Device Pairing Code is not the family invite code.** The family invite code is only for joining the family and cannot be used for pairing devices; in this release only the other parent/guardian aged 18 or over can be invited to the family, and every parent/guardian who joins sees the child profiles.
+- **The session on the tablet is anonymous:** it accesses only the child profiles you selected, only within the limits in B.2. If you selected more than one child and the PIN is on, each child enters with their own 4-digit PIN; if you turn the PIN off, the selected children enter by tapping their profiles and someone with access to the device can open all of these profiles. The limits are enforced on the server side for every request (row-level access control); there is no parent area on the tablet.
+- **What is recorded:** device ID, anonymous session ID, the record of the pairing code, the parent who paired the device, time and result of the parent's code attempts (for the attempt limit), time of pairing and of last use, revocation record and the child's "Done" marks (same as the KVKK Privacy Notice). No location, contacts or photo permission is requested. The QR code carries only the 8-character code (it contains no name, family or child information); the QR code is read by the parent phone's own camera, and Gina does not ask for camera permission for this.
+- The number of devices that can be paired depends on the plan (defaults in the app: Başlangıç 1, Plus 3, Pro unlimited); the exact limits are stated in the Subscription Terms by business decision.
+- **Supervision and responsibility:** We enforce the technical limits of child mode on the server side; these limits also apply when the child accesses the device without your supervision. Gina is not a parental control or content filtering tool: the physical supervision of the device, the device lock, screen time and access to apps, browsers and stores other than Gina are limited by operating-system controls (Apple Screen Time, Google Family Link) and by your supervision (Parent Declaration §6, Terms of Use §5.2).
+
+### B.5 Revoking a pairing
+
+- **Path:** Settings > Children > [Child] > Devices > [Device] > Remove Pairing (from the phone or the parent web app).
+- **Revocation is effective immediately:** the server checks the device's revocation status on every request; after revocation every request from the tablet is rejected and the device cannot receive new data. A new code is needed to pair again.
+- **Automatic revocation:** the pairing is removed when the child profile is deleted or deactivated (for the 18-year rule see the KVKK Privacy Notice), when the account is deleted and when the device has not been used for [90 gün] (90 days). If the new version of the Parent Declaration is not confirmed, child mode is turned off [ÜRÜN KARARI: yeniden onay akışı] (product decision: re-confirmation flow).
+- **Lost or stolen tablet:** remove the pairing immediately. No parent credentials are on the tablet; clearing the cache on the device after revocation [ÜRÜN KARARI] (product decision). Report suspected unauthorised use to [E-POSTA].
+- **What happens to the data:** the pairing and anonymous session record are deleted on revocation; the security log of the revocation is kept for [12 ay] (12 months). The "Done" marks the child made are part of the child profile and remain until the profile is deleted. Profile deletion: Settings > Children > [Child] > Delete Profile; account deletion: [WEB ADRESİ]/legal/hesap-ve-veri-silme.
+
+### B.6 Related documents and contact
+
+- Privacy Policy: [WEB ADRESİ]/legal/gizlilik-politikasi; KVKK Privacy Notice: [WEB ADRESİ]/legal/kvkk-aydinlatma-metni; Terms of Use: [WEB ADRESİ]/legal/kullanim-kosullari; Subscription Terms: [WEB ADRESİ]/legal/abonelik-kosullari; Account and Data Deletion: [WEB ADRESİ]/legal/hesap-ve-veri-silme; Data Subject Request Form: [WEB ADRESİ]/legal/kvkk-basvuru-formu; Cookie Policy (web only): [WEB ADRESİ]/legal/cerez-politikasi.
+- For questions: [E-POSTA] or the in-app form. There is no telephone channel.
+
+---
+
+## Change log
+
+| Version | Date | Change |
+|---|---|---|
+| 0.2 | 30 October 2026 | First draft; created with the 0.2 revision of the document set and reviewed the same day against the review notes. The summary in Parent Declaration §8 extended into language for ages 7-10 (no messages/chat/AI, siblings' data not visible, Parent PIN needed to exit); technical note for parents added (data shown/not shown, PINs, distinction between Device Pairing Code and family invite code, tablet pairing and revocation). Under DECISIONS.md: revocation effective immediately (instead of the earlier "[1 saat]" (1 hour)), only parents/guardians aged 18+ in the family, no AI in child mode or on the free plan, contact by email only, security logs [12 ay] (12 months); confirmation record aligned with Parent Declaration §13; devices per plan left as [ÜRÜN KARARI] (product decision). |
+| 0.2 (C11 technical correction) | 6 November 2026 | Technical comparison with the app: scope of child mode (goals, room, Prova answers and workbook), AI-generated questions and approved assessment, direction of pairing (code/QR on the child's device, 10 minutes), no camera permission for the QR code, optional PIN and multi-child device behaviour, device limit defaults. The text is not shown in the app yet. No legal expert approval. |
+| 0.2 (D16 technical correction) | 6 November 2026 | B.3 entry without a PIN (a child with no PIN enters by tapping their profile); B.4 pairing according to C13-AUTH-1 behaviour: 8-character code, 5-minute single-use confirmation token, wrong-code limit (10 per parent / 20 per family in 10 minutes → 15 minutes), family name on the tablet and 15-minute "This is not my family" cancellation, note to the pairing parent; the pairing parent and code attempts added to what is recorded. No legal expert approval. Details: `docs/release/d16-2026-11-06/README.md`. |
+| 0.2 | 30 October 2026 | Consistency check across the document set: screen paths aligned with the other documents ("Settings > Privacy and Legal > Data Subject Request"; "Settings > Children > [Child] > Devices"); Cookie Policy link added to B.6. |
+| 0.2 (D18 English version) | 6 November 2026 | This English section added, translated from the current Turkish text (after D16/D17); the content of the Turkish text was not changed. No legal expert approval. Details: `docs/release/d18-2026-11-06/README.md`. |
