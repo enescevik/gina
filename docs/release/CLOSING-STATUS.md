@@ -44,7 +44,7 @@ Durumlar:
 | D11 yönetim P2 düzeltmeleri | MAIN'DE, YAYIN BEKLİYOR | Playwright 7/7 |
 | D12 aile süzgeci, denetimde yönetici adı | MAIN'DE, YAYIN BEKLİYOR | migration `410000`, pgTAP 127; önce migration sonra yönetim yayını |
 | D14 AI sorusunu düzenleme | YAPILIYOR | D10 notu şimdilik yalnız atla/yeniden yaz diyor |
-| D15 MEB gerçek kabul pilotu | YAPILIYOR | Resmî senaryo → gerçek AI üretimi → atanmış sınav; K01'den önce |
+| D15 MEB gerçek kabul pilotu | MAIN'DE, CANLI KOŞU BEKLİYOR | migration `440000` (yalnız sentetik aileye süreli pilot kapsamı), pgTAP 129; yerelde resmî ÖDSGM indirmesiyle zincir 71/71. Canlı için Enes: tek senaryonun editoryal incelemesi + yönetici kimliği |
 | D16 teknik/hukuk metin uyumu | MAIN'DE (metin) | İngilizce gizlilik eşitlendi, 8 karakterli eşleme, şirket kurma ön şart değil. Hukuk onayı dışarıda (X03). İngilizce Kullanım Koşulları yok |
 | D17 eşleme saklama işleri, eski eşleme testleri | YAPILIYOR | Gizlilikteki "90 gün kullanılmayan eşleme kaldırılır" vaadi kodda yoktu |
 | D11 kararları K3/K4/K5 | ERTELENDİ | DECISIONS.md |
