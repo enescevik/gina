@@ -53,7 +53,7 @@ Bu ögeler için açık rıza istemeyiz; aydınlatma yükümlülüğümüzü bu 
 
 ## 4. Neden çerez bandı göstermiyoruz
 
-Çerez bandı, açık rıza gerektiren çerezler için rıza alma yoludur. Gina web uygulamasında işlevsel, performans/analitik veya reklam/pazarlama kategorisinde hiçbir öge yoktur; Cloudflare'ın çerezsiz Web Analytics özelliği dâhil hiçbir analitik aracı etkin değildir [TEKNİK DOĞRULAMA: Cloudflare Pages'te Web Analytics kapalı]. Rıza alacak bir şey olmadığından bant göstermiyoruz; siteye girmeniz veya kullanmaya devam etmeniz rıza sayılmaz. Bilgilendirme, alt bilgideki bu Politika bağlantısıyla yapılır.
+Çerez bandı, açık rıza gerektiren çerezler için rıza alma yoludur. Gina web uygulamasında performans/analitik veya reklam/pazarlama kategorisinde hiçbir öge yoktur; §2'deki uygulama denetiminde sayılan birinci taraf işlevsel yerel depolama ögeleri ise yalnızca sizin başlattığınız işlemi (oturum, yarım kalan işlemin tekrar denenmesi, eşleştirme, çocuk modu) sürdürmek için yazılır ve takip veya reklam için kullanılmaz [AVUKAT: bu işlevsel ögelerin Rehber'e göre "kesinlikle gerekli" sayılıp sayılmadığı; sayılmıyorsa rıza bandı gerekip gerekmediği]; Cloudflare'ın çerezsiz Web Analytics özelliği dâhil hiçbir analitik aracı etkin değildir [TEKNİK DOĞRULAMA: Cloudflare Pages'te Web Analytics kapalı]. Bu ögeler için rıza gerekmediği değerlendirmesiyle (uzman onayı bekliyor) bant göstermiyoruz; siteye girmeniz veya kullanmaya devam etmeniz rıza sayılmaz. Bilgilendirme, alt bilgideki bu Politika bağlantısıyla yapılır.
 
 ## 5. Rıza gerektiren ögeler eklenirse
 
@@ -106,6 +106,7 @@ Güncel sürüm ve yürürlük tarihi sayfanın başındadır; değişiklik gün
 | 0.2 (C11 teknik düzeltme) | 2026-11-06 | Durum satırı (uzman onayı yok); §2'ye web uygulamasının gerçek yerel depolama ögeleri (işlem kuyrukları, bekleyen eşleştirme, çocuk modu ve önbellek) ve öğretmen paylaşım sayfası eklendi; "tarayıcıya kalıcı yazılmaz" ifadesi düzeltildi. |
 | 0.2 | 2026-10-30 | Belge seti tutarlılık kontrolü: ilgili belgeler listesine Abonelik Koşulları bağlantısı eklendi. İçerik değişmedi. |
 | 0.2 (D18 İngilizce sürüm) | 2026-11-06 | Belgenin sonuna güncel Türkçe metinden çevrilen bilgi amaçlı İngilizce bölüm eklendi; Türkçe metnin içeriği değiştirilmedi. Hukuk uzmanı onayı yoktur. Ayrıntı: `docs/release/d18-2026-11-06/README.md`. |
+| 0.2 (D19 tutarlılık düzeltmesi) | 2026-11-06 | Koddan doğrulanan davranışa göre (TR ve EN birlikte): §4'teki "işlevsel kategoride hiçbir öge yoktur" ifadesi kısa özet ve §2 uygulama denetimiyle çelişiyordu; işlevsel yerel depolama ögeleri §4'te anıldı ve sınıflandırması [AVUKAT] notuyla işaretlendi. KVKK Aydınlatma Metni §12 aynı şekilde eşitlendi. Hukuk uzmanı onayı yoktur. Ayrıntı: `docs/release/d19-2026-11-06/README.md`. |
 
 ---
 
@@ -164,7 +165,7 @@ We do not ask for explicit consent for these items; we fulfil our information du
 
 ## 4. Why we do not show a cookie banner
 
-A cookie banner is a way to obtain consent for cookies that require explicit consent. The Gina web app has no item in the functional, performance/analytics or advertising/marketing categories; no analytics tool is active, including Cloudflare's cookieless Web Analytics feature [TEKNİK DOĞRULAMA: Cloudflare Pages'te Web Analytics kapalı] (technical verification: Web Analytics off in Cloudflare Pages). Because there is nothing to obtain consent for, we show no banner; visiting the site or continuing to use it does not count as consent. Information is given through the link to this Policy in the footer.
+A cookie banner is a way to obtain consent for cookies that require explicit consent. The Gina web app has no item in the performance/analytics or advertising/marketing categories; the first-party functional local storage items listed in the app audit in §2 are written only to keep an operation you started going (session, retrying an unfinished operation, pairing, child mode) and are not used for tracking or advertising [AVUKAT: bu işlevsel ögelerin Rehber'e göre "kesinlikle gerekli" sayılıp sayılmadığı; sayılmıyorsa rıza bandı gerekip gerekmediği] (Lawyer note: whether these functional items count as "strictly necessary" under the Guide; if not, whether a consent banner is needed); no analytics tool is active, including Cloudflare's cookieless Web Analytics feature [TEKNİK DOĞRULAMA: Cloudflare Pages'te Web Analytics kapalı] (technical verification: Web Analytics off in Cloudflare Pages). On the assessment that these items do not require consent (awaiting expert approval), we show no banner; visiting the site or continuing to use it does not count as consent. Information is given through the link to this Policy in the footer.
 
 ## 5. If items requiring consent are added
 
@@ -217,3 +218,4 @@ The current version and effective date are at the top of the page; the change lo
 | 0.2 (C11 technical correction) | 6 November 2026 | Status row (no expert approval); the web app's actual local storage items (action queues, pending pairing, child mode and cache) and the teacher share page added to §2; the statement "nothing is written persistently to the browser" corrected. |
 | 0.2 | 30 October 2026 | Consistency check across the document set: Subscription Terms link added to the list of related documents. Content unchanged. |
 | 0.2 (D18 English version) | 6 November 2026 | This English section added, translated from the current Turkish text; the content of the Turkish text was not changed. No legal expert approval. Details: `docs/release/d18-2026-11-06/README.md`. |
+| 0.2 (D19 consistency correction) | 6 November 2026 | Following behaviour verified in the code (TR and EN together): the statement in §4 that "there is no item in the functional category" contradicted the short summary and the §2 app audit; the functional local storage items are now mentioned in §4 and their classification marked with an [AVUKAT] note. KVKK Privacy Notice §12 aligned in the same way. No legal expert approval. Details: `docs/release/d19-2026-11-06/README.md`. |

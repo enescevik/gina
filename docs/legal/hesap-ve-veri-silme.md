@@ -69,7 +69,7 @@ Bu silmeler de canlı sistemden hemen, yedeklerden en geç [30 gün] içinde kal
 | Yapay zekâ çıktıları | Gina'daki tüm yapay zekâ özetleri ve çıktıları (Anthropic için Bölüm 7) |
 | Cihaz eşleştirmeleri | Eşleştirilmiş tabletler, anonim çocuk oturumları, eşleştirme kodları; anında geçersiz olur |
 | Bildirim belirteçleri | Push belirteçleri ve bildirim tercihleri (APNs/FCM için Bölüm 7; Expo kullanılmaz) |
-| Giriş bağlantıları | Apple ile Giriş (Apple'a belirteç iptali bildirilir), Google ile Giriş, e-posta/şifre girişi |
+| Giriş bağlantıları | Apple ile Giriş (Apple'a belirteç iptali bildirimi hedeflenir, uygulamada henüz yapılmaz; bkz. başlıktaki denetim notu), Google ile Giriş, e-posta/şifre girişi |
 
 ## 6. Yasal veya meşru nedenle sınırlı süre tutulanlar
 
@@ -112,7 +112,7 @@ Gina Plus ve Gina Pro abonelikleri yalnızca App Store (satıcı Apple Distribut
 ## 10. İletişim ve KVKK başvurusu
 
 - E-posta: [E-POSTA] (kayıtlı adresinizden) · Posta: [ADRES] · KEP: [KEP ADRESİ – varsa]. Telefon kanalımız yoktur.
-- KVKK Başvuru Formu: [WEB ADRESİ]/legal/kvkk-basvuru-formu (uygulamada Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu).
+- KVKK Başvuru Formu: [WEB ADRESİ]/legal/kvkk-basvuru-formu (uygulamada Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu; bu ekran henüz yoktur, şu an uygulama içinden Yardım > destek talebi açılabilir).
 - Başvurular en geç 30 gün içinde ücretsiz sonuçlandırılır; yanıtı yetersiz bulursanız Kişisel Verileri Koruma Kurulu'na (kvkk.gov.tr) şikâyet edebilirsiniz; süreler KVKK Başvuru Formu'ndadır.
 
 ## Değişiklik geçmişi
@@ -123,6 +123,7 @@ Gina Plus ve Gina Pro abonelikleri yalnızca App Store (satıcı Apple Distribut
 | 0.2 (C11 teknik düzeltme) | 2026-11-06 | Uygulama denetimi 6 Kasım koduyla yeniden doğrulandı: etki önizlemesi, yeniden doğrulama (şifre veya e-posta kodu), çok ebeveynli silme davranışı, arşiv ≠ silme, yüklenen dosyalar, Expo yerine doğrudan APNs/FCM; uygulanmamış vaatler güncellendi. Hukuk uzmanı onayı yoktur. |
 | 0.2 | 2026-10-30 | Belge seti tutarlılık kontrolü: cihaz eşleştirme ekran yolu "Ayarlar > Çocuklar > [Çocuk] > Cihazlar" olarak eşitlendi; rıza/beyan kayıtlarının hukuki sebebi Aydınlatma §5 ile aynı biçimde "m.5/2-ç ve m.5/2-e" yazıldı. |
 | 0.2 (D18 İngilizce sürüm) | 2026-11-06 | Belgenin sonuna güncel Türkçe metinden çevrilen bilgi amaçlı İngilizce bölüm eklendi; Türkçe metnin içeriği değiştirilmedi. Hukuk uzmanı onayı yoktur. Ayrıntı: `docs/release/d18-2026-11-06/README.md`. |
+| 0.2 (D19 tutarlılık düzeltmesi) | 2026-11-06 | Koddan doğrulanan davranışa göre (TR ve EN birlikte): §5 "Giriş bağlantıları" satırında Apple belirteç iptalinin henüz uygulanmadığı (başlıktaki denetim notuyla aynı); §10'da uygulama içi KVKK Başvurusu ekranının henüz olmadığı. §9 çok ebeveynli silme anlatımı koddan doğrulandı (`20261031120000_account_lifecycle.sql`); Veli Beyanı §10 buna eşitlendi. Hukuk uzmanı onayı yoktur. Ayrıntı: `docs/release/d19-2026-11-06/README.md`. |
 
 ---
 
@@ -197,7 +198,7 @@ These deletions are also removed from the live system immediately and from backu
 | AI outputs | All AI summaries and outputs in Gina (for Anthropic, Section 7) |
 | Device pairings | Paired tablets, anonymous child sessions, pairing codes; become invalid immediately |
 | Notification tokens | Push tokens and notification preferences (for APNs/FCM, Section 7; Expo is not used) |
-| Sign-in links | Sign in with Apple (token revocation is notified to Apple), Sign in with Google, email/password sign-in |
+| Sign-in links | Sign in with Apple (notifying Apple of token revocation is intended but not yet carried out by the app; see the audit note at the top), Sign in with Google, email/password sign-in |
 
 ## 6. What is kept for a limited time for legal or legitimate reasons
 
@@ -240,7 +241,7 @@ Cancellation takes effect at the end of the period; to use the Plus/Pro features
 ## 10. Contact and KVKK requests
 
 - Email: [E-POSTA] (from your registered address) · Post: [ADRES] · KEP: [KEP ADRESİ – varsa] (if any). We have no telephone channel.
-- Data Subject Request Form: [WEB ADRESİ]/legal/kvkk-basvuru-formu (in the app, Settings > Privacy and Legal > Data Subject Request).
+- Data Subject Request Form: [WEB ADRESİ]/legal/kvkk-basvuru-formu (in the app, Settings > Privacy and Legal > Data Subject Request; this screen does not exist yet, at present you can open a support request from Help in the app).
 - Requests are concluded free of charge within 30 days at the latest; if you find the reply insufficient, you can complain to the Personal Data Protection Board (kvkk.gov.tr); the deadlines are in the Data Subject Request Form.
 
 ## Change log
@@ -251,3 +252,4 @@ Cancellation takes effect at the end of the period; to use the Plus/Pro features
 | 0.2 (C11 technical correction) | 6 November 2026 | App audit re-verified against the 6 November code: impact preview, re-verification (password or email code), deletion behaviour with several parents, archive ≠ deletion, uploaded files, direct APNs/FCM instead of Expo; unimplemented promises updated. No legal expert approval. |
 | 0.2 | 30 October 2026 | Consistency check across the document set: device pairing screen path aligned as "Settings > Children > [Child] > Devices"; legal basis of consent/declaration records written as "Art. 5(2)(ç) and Art. 5(2)(e)", the same as Privacy Notice §5. |
 | 0.2 (D18 English version) | 6 November 2026 | This English section added, translated from the current Turkish text; the content of the Turkish text was not changed. No legal expert approval. Details: `docs/release/d18-2026-11-06/README.md`. |
+| 0.2 (D19 consistency correction) | 6 November 2026 | Following behaviour verified in the code (TR and EN together): in the §5 "Sign-in links" row, Apple token revocation not yet implemented (same as the audit note at the top); in §10, the in-app Data Subject Request screen does not exist yet. The §9 multi-parent deletion description verified in the code (`20261031120000_account_lifecycle.sql`); Parent Declaration §10 aligned with it. No legal expert approval. Details: `docs/release/d19-2026-11-06/README.md`. |
