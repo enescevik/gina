@@ -36,7 +36,7 @@ Kapalı kalanlar: `channels.email.provider` boş (ürün e-postası kapalı), `c
 
 ## Ayrıca: Prova QT Faz 0
 
-Migration `20261107000000`–`20261107000400` main'de (Enes'in diğer thread'deki onayıyla birleştirildi). **Üretime uygulanmadı:** izin kuralı üretime yazmadan önce onayı bu thread'de istiyor. Uygulama/Edge/web değişiklikleri ve `20261107010000+` bu yayına girmez.
+Migration `20261107000000`–`20261107000400` main'de (Enes'in diğer thread'deki onayıyla birleştirildi). **Üretime uygulandı** (Enes onayı bu thread'de, 6 Kasım 21:57Z): 5/5 tek işlem, ledger 160, son `20261107000400`; sonrası ACL 0, RLS kapalı 0, sağlık temiz. Uygulama/Edge/web değişiklikleri ve `20261107010000+` bu yayına girmez.
 
 ## Eski istemci uyumu
 
