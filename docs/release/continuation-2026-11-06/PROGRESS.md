@@ -38,7 +38,7 @@ Saatler Europe/Istanbul. Koordinatör: Claude (oturum modeli claude-opus-5-5; al
 | C02 | YAPILIYOR | |
 | C03 | AÇIK | C02 ile dosya çakışması nedeniyle C02 birleşince |
 | C04 | YAPILIYOR | |
-| C05 | YAPILIYOR | |
+| C05 | KOD HAZIR — izole zincir kanıtlı; gerçek AI BEKLİYOR (C08/C14) | Main `ea09f96`. Kaynak hedefleri, çıkarım kuyruğu `--process-queue`, onaysız kaynakta yayın reddi, `get_curriculum_source_status` (yerine koyma yok, stale), soru başına gerekçeli uygunluk incelemesi. Gerçek edge-runtime ile resmî indirme (turkce2.xlsx, hash manifestle aynı) → 46 aday → yayın → aile seçimi → deterministik 6 soru blok eşleşmesi; DNS/SSRF fail-closed. Zincir 39/39, pgTAP 4.102/0. **Açık:** hosted DNS tek çağrı doğrulaması (C14 sonrası), veli uygunluk inceleme ekranı (C04), çıkarım zamanlanmış değil, gerçek AI içerik kalitesi. |
 | C06 | KOD HAZIR — izole test edildi; fiziksel kabul C15 | Main `2925682`. Tek eşleme yolu + hedef önizleme (`preview_device_pairing`), QR kodu girişte 10 dk korunur, veli çıkış PIN'i ortak `PinEntry` + sunucu kilidi (5 yanlış/60 sn), iptal nedeni. Üretim dönüş adresleri salt okunur doğrulandı (hepsi listede). Playwright 16/16, pgTAP 4.034/0. **Açık:** eşleme kodu deneme sınırı yok; çocuk modunda PIN'siz çocuk istemci farkı; hedef kartı metni; gerçek OAuth/kamera/e-posta (C15/X01). |
 | C07 | YAPILIYOR | |
 | C08–C11 | AÇIK | Faz 3 |
@@ -49,3 +49,4 @@ Saatler Europe/Istanbul. Koordinatör: Claude (oturum modeli claude-opus-5-5; al
 ## Günlük
 | 12:55 | C01 | ajan → main `b8bef9e` | KOD HAZIR | Ayrıntı: `docs/release/c01-2026-11-06/README.md`. Yayın sırası: migration önce, istemci sonra. |
 | 13:05 | C06 | ajan → main `2925682` | KOD HAZIR | `docs/release/c06-2026-11-06/README.md`. Kullanıcı adımı: Google/Apple konsolunda callback `https://wixjxlxgyhgdacadsawo.supabase.co/auth/v1/callback` doğrulaması. |
+| 13:15 | C05 | ajan → main `ea09f96` | KOD HAZIR | `docs/release/c05-2026-11-06/README.md`. 16 dosya kontrolü 648 aday onayı değildir; 1 dosya uçtan uca. |
