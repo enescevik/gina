@@ -1,5 +1,7 @@
 # Claude gece çalışma protokolü
 
+> **6 Kasım devam notu:** 5–6 Kasım gece çalışması tamamlandı; bu protokolün N00/Fable başlangıcını veya eski 07.00/kota hedefini yeni oturumda tekrar başlatma. Güncel işler, öncelikler ve kapanış ölçütleri [ana listenin §4A bölümündedir](CLAUDE-REMAINING-WORK.md#4a--6-kasım-sonrası-devam-planı). Mevcut başlangıç cevaplarını `release/overnight-2026-11-06/FABLE-PREFLIGHT.md` ve `DECISIONS.md` üzerinden koru. Aşağıdaki genel alt ajan/checkpoint ilkeleri sürer; yeni tarihli gece hedefi ancak gerçekten belirlenirse geçerlidir.
+
 5 Kasım 2026 · Ana iş [N00](CLAUDE-REMAINING-WORK.md). Bu dosya gelecek Claude oturumunun talimatıdır; bu dokümantasyon çalışmasında Fable çalıştırılmadı, hesap kotası görülmedi veya gece otomasyonu başlatılmadı.
 
 ## Önce Fable ile incele ve başlangıç sorularını bitir
