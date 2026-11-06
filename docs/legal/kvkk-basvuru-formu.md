@@ -8,7 +8,7 @@
 | Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** Uygulama denetimi: uygulama içi KVKK başvuru formu ve girişsiz, e-posta doğrulamalı web formu yoktur; uygulamada yalnızca genel Yardım > destek talebi vardır (`supabase/migrations/20261103030000_support_help.sql`). Uygulamada destek e-posta adresi gösterilmez. Karşılaştırma: `docs/release/c11-2026-11-06/legal-review.md`. |
 | Veri sorumlusu | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/VKN: [MERSİS/VKN] · KEP: [KEP ADRESİ – varsa] |
 | Yayın yeri | https://ginafamily.com/legal/kvkk-basvuru-formu (herkese açık HTML, TR/EN) · uygulama içi Ayarlar > Gizlilik ve Yasal > KVKK Başvurusu (bu ekran henüz yoktur) |
-| Dil | Türkçe metin esastır (805 sayılı Kanun); İngilizce çeviri bilgi amaçlıdır. |
+| Dil | Türkçe metin esastır (805 sayılı Kanun); İngilizce çeviri bilgi amaçlıdır ve sayfanın sonundadır. / The Turkish text prevails; an English version is at the end of this page. |
 | İlgili belgeler | /legal/kvkk-aydinlatma-metni · /legal/gizlilik-politikasi · /legal/hesap-ve-veri-silme · /legal/kullanim-kosullari · /legal/abonelik-kosullari · /legal/cerez-politikasi · Veli Beyanı (uygulama içinde) |
 
 ## 1. Bu belge ne içindir
@@ -100,3 +100,110 @@ Başvuru, ekleri ve yanıtımız ispat amacıyla talebin kapanmasından itibaren
 | 0.2 | 2026-10-30 | İlk taslak (belge seti 0.2 ile; inceleme notları ve DECISIONS.md uygulandı): kanallar (uygulama içi/web formu, kayıtlı e-posta, posta, varsa KEP; telefon yok), Tebliğ m.5/2 alanları, 30 gün ücretsiz yanıt ve m.7 ücret kuralı, Kurul'a 30/60 gün şikâyet, çocuk adına yalnız veli/vasi ve doğum yılı, 18 yaş kuralı Veli Beyanı §11'e bağlı; incelemedeki "veli olmayan yetişkin" davet modeli DECISIONS gereği uygulanmadı; saklama süreleri ve Anthropic istisnaları diğer belgelerle hizalandı; slug'lar /legal/* ile eşitlendi. |
 | 0.2 (C11 teknik düzeltme) | 2026-11-06 | Durum satırı: uzman onayı yok; uygulama içi ve web KVKK formlarının henüz olmadığı yazıldı; yapay zekâ onayının işlem bazlı olduğu düzeltildi. |
 | 0.2 | 2026-10-30 | Belge seti tutarlılık kontrolü: ilgili belgeler listesine Abonelik Koşulları ve Çerez Politikası bağlantıları eklendi. İçerik değişmedi. |
+| 0.2 (D18 İngilizce sürüm) | 2026-11-06 | Belgenin sonuna güncel Türkçe metinden çevrilen bilgi amaçlı İngilizce bölüm eklendi; Türkçe metnin içeriği değiştirilmedi. Hukuk uzmanı onayı yoktur. Ayrıntı: `docs/release/d18-2026-11-06/README.md`. |
+
+---
+
+# Gina Aile – KVKK Data Subject Request Form and Response Procedure (English)
+
+| | |
+|---|---|
+| Version | 0.2 (draft) |
+| Date | 30 October 2026 |
+| Effective date | [YÜRÜRLÜK TARİHİ] |
+| Status | **Draft. No legal expert has reviewed or approved it (6 November 2026); it is not published without expert approval and a written approval record.** App audit: there is no in-app KVKK request form and no no-sign-in, email-verified web form; the app has only the general Help > support request (`supabase/migrations/20261103030000_support_help.sql`). The support email address is not shown in the app. Comparison: `docs/release/c11-2026-11-06/legal-review.md`. |
+| Data controller | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/tax ID: [MERSİS/VKN] · KEP (registered electronic mail): [KEP ADRESİ – varsa] (if any) |
+| Published at | https://ginafamily.com/legal/kvkk-basvuru-formu (public HTML, TR/EN) · in the app under Settings > Privacy and Legal > Data Subject Request (this screen does not exist yet) |
+| Language | The Turkish text prevails (Law No. 805 on the Compulsory Use of Turkish); this English translation is for information only. It was translated from the Turkish text on 6 November 2026 (D18) and has the same content. Placeholders and Turkish lawyer/product notes in square brackets are shared with the Turkish text; an English gloss follows in parentheses. |
+| Related documents | /legal/kvkk-aydinlatma-metni · /legal/gizlilik-politikasi · /legal/hesap-ve-veri-silme · /legal/kullanim-kosullari · /legal/abonelik-kosullari · /legal/cerez-politikasi · Parent Declaration (in the app) |
+
+## 1. What this document is for
+
+It explains how to exercise your rights under Article 11 of Turkey's Personal Data Protection Law No. 6698 ("KVKK"), in accordance with KVKK Art. 13 and the Communiqué on the Procedures and Principles of Application to the Data Controller ("Communiqué"). Which data we process and why is explained in the Privacy Notice and the Privacy Policy.
+
+**Who can apply:** parent and guardian account holders aged 18 or over (including the other parent/guardian who joined the family with the invite code); for a child profile, the child's parent or guardian (Section 5); former child profile holders who have come of age.
+
+No request is needed to delete an account or profile, to view and correct data or to revoke a pairing; you do these instantly from the parent menu in the app (see Account and Data Deletion). Because AI confirmation is asked separately for each operation, there is no general permission to withdraw; it is enough not to confirm later operations.
+
+## 2. Request channels
+
+| Channel | How | Note |
+|---|---|---|
+| In-app form | Settings > Privacy and Legal > Data Subject Request | Your session verifies your identity; not accessible from child mode or a paired tablet. For those who cannot sign in, the web form (https://ginafamily.com/legal/kvkk-basvuru-formu) is confirmed with a verification link sent to the registered email. [ÜRÜN KARARI: web formu v1'de yoksa kaldırılır] (Product decision: removed if there is no web form in v1.) |
+| Email | From the address registered to your account to [E-POSTA] | Under the Communiqué, only email from an address registered in our system is valid; those without an account add the information in Section 3. |
+| Post | Petition with wet signature to [VERİ SORUMLUSU UNVANI], [ADRES] | Write "KVKK Başvurusu" (KVKK request) on the envelope. |
+| KEP, secure e-signature, mobile signature | [KEP ADRESİ – varsa; yoksa satır kaldırılır] (KEP address if any; otherwise the row is removed) | — |
+
+We do not accept requests by telephone or SMS. The date of the request is, for post, the date the petition is served on us, and for the other channels, the date it reaches us (Communiqué Art. 5(4)-(5)).
+
+## 3. Required information and identity verification
+
+Under Communiqué Art. 5(2), every request must contain your first name and surname (signature for written requests); Turkish ID number (for foreigners, nationality and passport/identity number); residential or business address for notification; email address if any, and the subject of the request; relevant documents are attached (Art. 5(3)). For incomplete requests we ask you to complete what is missing. [AVUKAT: eksik başvuruda sürenin başlangıcı; uygulama içi formda T.C. kimlik numarası ve adres istenmeli mi] (Lawyer note: when the period starts for an incomplete request; whether the in-app form should ask for the Turkish ID number and address.)
+
+We give your data only to a person whose identity we have verified; as a rule we do not ask for a copy of an identity document, and in case of doubt we send a verification link to your registered email. We process your request information only to conclude this request and for evidence (KVKK Art. 5(2)(ç) and Art. 5(2)(e)), do not add it to your account and keep it for [3 yıl] (3 years) (Section 9).
+
+## 4. Response time, fees and the right to complain
+
+- **Time:** We conclude your request as soon as possible and **free of charge within 30 days at the latest** (KVKK Art. 13(2); Communiqué Art. 6(5)). We accept your request or reject it with reasons, and send the reply in writing or electronically (to your registered email) (Communiqué Art. 6(2)-(3)).
+- **Fees:** Replies by email and in the app are free. For a printed reply, no fee is charged up to ten pages, and 1 TL may be charged for each page beyond that; for media such as CD/USB the fee cannot exceed the cost of the medium (Communiqué Art. 7). If a fee is to be charged, we tell you first; if the error is ours, it is refunded (KVKK Art. 13(3)).
+- **Complaint:** If your request is rejected, you find the reply insufficient or no reply is given in time, you can complain to the Personal Data Protection Board (kvkk.gov.tr) within 30 days of learning the reply and in any case within 60 days of the request date (KVKK Art. 14); you must have applied to us first. Your right to compensation is reserved.
+
+## 5. Requests on behalf of a child
+
+- Children do not open accounts in Gina and do not give an email address or phone number. Rights relating to a child profile are exercised only by the child's **parent or guardian**; we redirect requests coming from the child to their parent. [AVUKAT: ayırt etme gücüne sahip çocuğa (örn. 15–16 yaş) doğrudan başvuru hakkı] (Lawyer note: a direct right to apply for a child capable of judgement (e.g. aged 15-16).)
+- A child profile contains only a name/nickname and birth year; you identify the child with this information and the family account's registered email; we do not ask for a Turkish ID number or date of birth.
+- **Authority check:** For a parent/guardian in the family account, the Parent Declaration record and family membership are enough; a guardian attaches the guardianship decision. A parent who is not in the family account can apply by documenting that they are the parent (for example with a civil registry record extract); the objection route in Parent Declaration §4.1 applies. In custody disputes we act only on a valid court decision. [AVUKAT: aile hesabında olmayan ebeveynin talepleri] (Lawyer note: requests from a parent who is not in the family account.)
+- Parent accounts in the family have equal authority over the child profile; one parent's deletion request deletes the profile for everyone. [ÜRÜN KARARI: diğer ebeveynlere bildirim] (Product decision: notification to the other parents.)
+- When the child turns 18, your authority to represent them ends; the profile is deactivated and deleted under the rule in Parent Declaration §11. The person who has come of age applies in their own name; we verify their identity according to Section 3.
+
+## 6. Request form template
+
+The in-app form contains the same fields; for a request by post or email, use this table.
+
+| Field | Description | Required? |
+|---|---|---|
+| Full name | First name and surname of the applicant | Yes |
+| Identity number | Turkish ID number; for foreigners, nationality and passport/identity number | Yes |
+| Registered email | The address in your Gina account; the reply is sent here | Yes for account holders |
+| Address for notification | Residential or business address | Yes |
+| Capacity | On my own behalf / on behalf of my child (parent or guardian; write the name/nickname and birth year in the profile) / as an attorney (subject-specific power of attorney attached) | Yes |
+| Proof of authority | Guardian: guardianship decision; parent not in the family account: civil registry record extract or court decision | Conditional |
+| Subject of the request (KVKK Art. 11) | Tick one or more of the items in Section 7 | Yes |
+| Description of the request | Which data or period; for rectification, the correct value; state if you want the reply by post | Yes |
+| Date and signature | Wet signature for requests by post; electronic signature for KEP, e-signature or mobile signature | Yes for written requests |
+
+## 7. Your rights (KVKK Art. 11) and how we handle your request
+
+| Right | What we do |
+|---|---|
+| (a) learn whether data is processed; (b) request information and a copy; (c) purpose and use in line with the purpose | A query limited to your account; a readable copy of your data (the app has no export feature) [ÜRÜN KARARI: dosya biçimi] (product decision: file format); purposes and legal bases according to Privacy Notice Section 5. |
+| (ç) know the third parties to whom data is transferred | The recipients in Privacy Notice Sections 6–7; Anthropic (USA) only if you turned on the AI feature. |
+| (d) rectification; (e) erasure or destruction | We correct data you cannot correct from within the app. Erasure under KVKK Art. 7 and Art. 12 of the Deletion Regulation: if the processing conditions no longer exist, the account/profile deletion flow runs and backups are purged within [30 gün] (30 days). Records kept for legal reasons (purchase records [10 yıl] (10 years), security logs [12 ay] (12 months), consent/declaration and request records [3 yıl] (3 years)) are stated in the reply with the reasons. |
+| (f) notifying recipients of rectification and erasure | Our notification token record is deleted (Expo is not used; APNs/FCM report an invalid token during sending). Revocation of the Sign in with Apple token and forwarding a deletion request to Anthropic do not exist in the app yet (app audit 6 November 2026); the process must be set with an expert. Inputs at Anthropic are, as a rule, deleted within 30 days; content flagged on suspicion of a violation may be kept for up to 2 years; for the models we use, the 30-day retention is mandatory and we cannot shorten it. Summaries in Gina (at most 12 months) are deleted. |
+| (g) objecting to automated analysis | AI outputs do not produce automated decisions with legal effect; on objection the outputs are deleted and the feature is turned off. |
+| (ğ) compensation for damage | The request is recorded and passed to a lawyer; your right to compensation is reserved. |
+
+## 8. Summary of the internal procedure
+
+Scheduled flow for a one-person team:
+
+| Day | Step |
+|---|---|
+| 0 | **Registration.** Request number, channel, date, capacity and type of request are written in the register; the 30-day deadline and reminders on days 10, 20 and 27 are entered in the calendar; an acknowledgement is sent within 1 business day. |
+| 1–5 | **Identity and authority verification.** In-app form: account session. Web form and email: registered address or verification link. Post: signature and identity details. On behalf of a child: Parent Declaration record, family membership, guardian/parent document. Missing items are requested in one go. |
+| 5–20 | **Fulfilling the request** (Section 7). In the backoffice, only a query limited to the family account concerned is made and logged; notification to recipients (Art. 11(f)) is recorded with its date; requests involving compensation or a dispute are passed to a lawyer. |
+| 20–28 | **Reply.** Acceptance or reasoned rejection is written with the content in Communiqué Art. 6(4) (party details, subject of the request, our explanations); the right to complain to the Board and the deadlines are stated; sent by email or post. |
+| 30 | **Statutory deadline.** In case of holiday or illness, [YEDEK İRTİBAT KİŞİSİ] (backup contact person) takes over the process. [AVUKAT: tek kişilik ekipte yedek irtibat kişisi/temsilci] (Lawyer note: backup contact person/representative in a one-person team.) |
+
+## 9. Record keeping, changes and version
+
+The request, its attachments and our reply are kept for evidence for [3 yıl] (3 years) from the closing of the request (the same as Privacy Policy Section 10 and Privacy Notice Section 9), and then deleted by periodic destruction. We update the document when the legislation or our workflow changes; the current version is at https://ginafamily.com/legal/kvkk-basvuru-formu and under Settings > Privacy and Legal.
+
+## Change log
+
+| Version | Date | Change |
+|---|---|---|
+| 0.2 | 30 October 2026 | First draft (with the 0.2 document set; review notes and DECISIONS.md applied): channels (in-app/web form, registered email, post, KEP if any; no telephone), Communiqué Art. 5(2) fields, free reply within 30 days and the Art. 7 fee rule, complaint to the Board within 30/60 days, on behalf of a child only the parent/guardian and birth year, 18-year rule tied to Parent Declaration §11; the "non-parent adult" invitation model in the review not applied under DECISIONS; retention periods and Anthropic exceptions aligned with the other documents; slugs aligned with /legal/*. |
+| 0.2 (C11 technical correction) | 6 November 2026 | Status row: no expert approval; noted that the in-app and web KVKK forms do not exist yet; corrected that AI confirmation is per operation. |
+| 0.2 | 30 October 2026 | Consistency check across the document set: Subscription Terms and Cookie Policy links added to the list of related documents. Content unchanged. |
+| 0.2 (D18 English version) | 6 November 2026 | This English section added, translated from the current Turkish text; the content of the Turkish text was not changed. No legal expert approval. Details: `docs/release/d18-2026-11-06/README.md`. |

@@ -9,7 +9,7 @@
 | Veri sorumlusu | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/VKN: [MERSİS/VKN] · KEP: [KEP ADRESİ – varsa] |
 | Yayın yeri | https://ginafamily.com/legal/cerez-politikasi (herkese açık HTML, TR/EN); web alt bilgisi; Gizlilik Politikası §16 ve Aydınlatma Metni §12 bağlantıları; rıza gerektiren öge eklenirse rıza bandı |
 | İlgili belgeler | [Gizlilik Politikası](./gizlilik-politikasi.md) · [KVKK Aydınlatma Metni](./kvkk-aydinlatma-metni.md) · [Kullanım Koşulları](./kullanim-kosullari.md) · [Abonelik Koşulları](./abonelik-kosullari-ve-on-bilgilendirme.md) · [Hesap ve Veri Silme](./hesap-ve-veri-silme.md) · [KVKK Başvuru Formu](./kvkk-basvuru-formu.md) |
-| Dil | Türkçe metin esastır (805 sayılı Kanun); İngilizce çeviri bilgi amaçlıdır. |
+| Dil | Türkçe metin esastır (805 sayılı Kanun); İngilizce çeviri bilgi amaçlıdır ve sayfanın sonundadır. / The Turkish text prevails; an English version is at the end of this page. |
 
 ## Kısa özet
 
@@ -105,3 +105,115 @@ Güncel sürüm ve yürürlük tarihi sayfanın başındadır; değişiklik gün
 | 0.2 | 2026-10-30 | İlk taslak (0.1 yayımlanmadı); belge setinin 0.2 revizyonuyla birlikte oluşturuldu. İnceleme notları ve DECISIONS.md ile hizalandı: m.9/4-c standart sözleşme + m.9/5 bildirim, AB SCC güvence sayılmaz, hizmeti oluşturan sağlayıcıda açık rıza yolu yok; güvenlik günlükleri [12 ay], rıza kayıtları [3 YIL], bildirim [15 GÜN]; telefon kanalı ve web'de satış yok; yer tutucular ve /legal/* slug'ları diğer belgelerle eşitlendi. |
 | 0.2 (C11 teknik düzeltme) | 2026-11-06 | Durum satırı (uzman onayı yok); §2'ye web uygulamasının gerçek yerel depolama ögeleri (işlem kuyrukları, bekleyen eşleştirme, çocuk modu ve önbellek) ve öğretmen paylaşım sayfası eklendi; "tarayıcıya kalıcı yazılmaz" ifadesi düzeltildi. |
 | 0.2 | 2026-10-30 | Belge seti tutarlılık kontrolü: ilgili belgeler listesine Abonelik Koşulları bağlantısı eklendi. İçerik değişmedi. |
+| 0.2 (D18 İngilizce sürüm) | 2026-11-06 | Belgenin sonuna güncel Türkçe metinden çevrilen bilgi amaçlı İngilizce bölüm eklendi; Türkçe metnin içeriği değiştirilmedi. Hukuk uzmanı onayı yoktur. Ayrıntı: `docs/release/d18-2026-11-06/README.md`. |
+
+---
+
+# Gina Aile – Cookies and Similar Technologies Policy (Web) (English)
+
+| | |
+|---|---|
+| Version | 0.2 (draft) |
+| Date | 30 October 2026 |
+| Effective date | [YÜRÜRLÜK TARİHİ] |
+| Status | **Draft. No legal expert has reviewed or approved it (6 November 2026); it is not published without expert approval and a written approval record.** App audit in §2: the web app uses more local storage items than are in the table. |
+| Data controller | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/tax ID: [MERSİS/VKN] · KEP (registered electronic mail): [KEP ADRESİ – varsa] (if any) |
+| Published at | [WEB ADRESİ]/legal/cerez-politikasi (public HTML, TR/EN); web footer; links from Privacy Policy §16 and Privacy Notice §12; a consent banner if an item requiring consent is added |
+| Related documents | [Privacy Policy](./gizlilik-politikasi.md) · [KVKK Privacy Notice](./kvkk-aydinlatma-metni.md) · [Terms of Use](./kullanim-kosullari.md) · [Subscription Terms](./abonelik-kosullari-ve-on-bilgilendirme.md) · [Account and Data Deletion](./hesap-ve-veri-silme.md) · [Data Subject Request Form](./kvkk-basvuru-formu.md) |
+| Language | The Turkish text prevails (Law No. 805 on the Compulsory Use of Turkish); this English translation is for information only. It was translated from the Turkish text on 6 November 2026 (D18) and has the same content. Placeholders and Turkish lawyer/technical notes in square brackets are shared with the Turkish text; an English gloss follows in parentheses. |
+
+## Short summary
+
+- The Gina web app writes data to your browser to keep you signed in, remember your language/region preference and, when the network drops, retry unfinished actions (e.g. an answer, a calendar command, a support message) without losing them (§2). These are first-party, functional items; expert review is needed on whether they require explicit consent.
+- We use no analytics, advertising or tracking cookies; that is why we show no cookie banner. Visiting the site does not count as consent.
+- If we add an item that requires consent, we first update this Policy and show a consent banner that you can decline and that is not pre-ticked.
+- Our mobile apps do not use cookies and contain no tracking SDK.
+
+## 1. Scope and definitions
+
+This Policy covers the Gina parent web app offered by [VERİ SORUMLUSU UNVANI] ("we") at [WEB ADRESİ] and the legal pages at the same address. What data we process for what purpose is described in the KVKK Privacy Notice and the Privacy Policy; this Policy only explains the items stored in your browser and the network records created automatically during a web visit. The admin panel accessed only by our team is out of scope.
+
+- **Cookie:** A small text file that a website writes to your browser and that is sent back to the server with every following request.
+- **Local storage (local storage / session storage):** An area that the browser sets aside for the web app and that is not sent to the server automatically; the app sends the data when needed.
+- **Similar technologies:** Methods such as pixels, web beacons and device fingerprinting. Gina does not use them.
+
+The Personal Data Protection Authority's Guidelines on Cookie Practices (July 2025) are based on cookies; because the effect on the user is the same, we also apply the same principles (category, purpose, duration, party, consent) to local storage.
+
+## 2. Items we use
+
+[TEKNİK DOĞRULAMA: tablo yayın öncesi üretim derlemesinde tarayıcı araçlarıyla doğrulanır; kullanılmayan satır silinir.] (Technical verification: the table is verified with browser tools on the production build before publication; unused rows are deleted.)
+
+| Item | Type | Purpose | Duration | Party | Category |
+|---|---|---|---|---|---|
+| `sb-[SUPABASE PROJE REFERANSI]-auth-token` | Local storage | Session: the access and refresh token that recognises you after sign-in; sent only to our Supabase project in Frankfurt (EU) | Until you sign out or clear browser data; renewed automatically when it expires | First party | Strictly necessary |
+| `sb-[SUPABASE PROJE REFERANSI]-auth-token-code-verifier` | Local storage | Verification value of the secure flow (PKCE) when signing in with Apple or Google | Deleted when sign-in is completed | First party | Strictly necessary |
+| `[DİL/BÖLGE TERCİHİ ANAHTARI]` (language/region preference key) | Local storage | Remembering the language you chose (Turkish/English) and the region setting for date and number formats | Until you change it or clear browser data | First party | Strictly necessary (an interface preference you requested) |
+| `__cf_bm`, `cf_clearance` | Cookie | Only if Cloudflare bot protection is on: telling automated traffic apart from human visitors | `__cf_bm` at most 30 minutes; `cf_clearance` [CLOUDFLARE DOĞRULAMA SÜRESİ] (Cloudflare clearance duration) | Cloudflare (our hosting provider); security only | Strictly necessary [TEKNİK KARAR: koruma kapalıysa satır silinir] (Technical decision: the row is deleted if the protection is off.) |
+
+**App audit (6 November 2026):** In addition to the table above, the web app writes first-party, functional items to the browser's local storage (`localStorage`/`sessionStorage`): short-lived queues for retrying unfinished actions when the network drops (keys prefixed `gina:` and `gina.`; e.g. the child's Prova answer journal `gina.answer-journal.v1:*`, the parent review journal, the support message queue `gina.help-outbox.v1:*`, calendar/plan/setup/library commands), a pending pairing code read from a QR code (`gina-pending-pairing`), the child mode and paired device record, and a room view cache. These items may contain personal data (e.g. the child's draft answer), are sent to the server only when the action is completed, and are intended to be deleted when the action ends or on sign-out; they are not used for advertising or tracking. Before publication the table must be completed with these items using browser tools on the production build, and expert review is needed for the "strictly necessary/functional" classification. If you only read the legal pages without signing in, no item is written (apart from Cloudflare security cookies, if any). The read-only page opened through a teacher share link is also within the scope of this Policy. Because there are no purchases on the web, there are no payment or store cookies. No item is used or shared for tracking, profiling or advertising.
+
+## 3. Legal basis of strictly necessary items and the effect of blocking them
+
+According to the Guidelines, only cookies strictly necessary to carry out communication or to provide a service you expressly requested do not require explicit consent; they rely on the other processing conditions in KVKK Art. 5(2). We process the items on the following bases:
+
+- **Session and sign-in verification items:** Performance of the service under the Terms of Use (Art. 5(2)(c)): without a session you cannot stay signed in. Also our legitimate interest (Art. 5(2)(f)): preventing your account from being taken over and preventing forged requests.
+- **Language/region preference:** Performance of the service (Art. 5(2)(c)); written only to show the language you chose.
+- **Cloudflare security cookies:** Our legitimate interest (Art. 5(2)(f)): keeping the service running without interruption and securely against attacks and bot traffic.
+
+We do not ask for explicit consent for these items; we fulfil our information duty with this Policy and the KVKK Privacy Notice. You can delete or block the items in your browser (§7); however, without the session item you cannot sign in, if the language preference is deleted your browser's language is used, and if Cloudflare cookies are blocked the security check may be repeated.
+
+## 4. Why we do not show a cookie banner
+
+A cookie banner is a way to obtain consent for cookies that require explicit consent. The Gina web app has no item in the functional, performance/analytics or advertising/marketing categories; no analytics tool is active, including Cloudflare's cookieless Web Analytics feature [TEKNİK DOĞRULAMA: Cloudflare Pages'te Web Analytics kapalı] (technical verification: Web Analytics off in Cloudflare Pages). Because there is nothing to obtain consent for, we show no banner; visiting the site or continuing to use it does not count as consent. Information is given through the link to this Policy in the footer.
+
+## 5. If items requiring consent are added
+
+If in the future we add a performance/analytics item or a functional item subject to consent, the following rules apply; we have no plans for advertising or tracking cookies:
+
+1. First this Policy, the Privacy Policy and the KVKK Privacy Notice are updated; the new item's name, purpose, duration, party and information on transfers abroad are added to the §2 table.
+2. On your first visit, a consent banner offering a choice by category is shown. Boxes are not pre-ticked; the "Decline" option is in the same place and as easy as "Accept"; scrolling the page, closing the banner or continuing to use the site does not count as consent.
+3. No item is loaded before consent is given. Declining does not prevent you from using the web app; consent is not made a precondition of the service (there is no "cookie wall").
+4. You can withdraw your consent at any time, as easily as you gave it, from the "Cookie Preferences" link in the footer; the item is removed and no new data is collected.
+5. To remember your choice, only a first-party item containing the choice, the version of this Policy and a timestamp is kept; if you are signed in, the same record is also written to your account's consent records and is subject to the period in the Privacy Policy ([3 YIL] (3 years)).
+6. Your consent is asked for again after [12 AY] (12 months) at the latest [AVUKAT: yenileme aralığı] (Lawyer note: renewal interval).
+
+A cookieless, aggregated analytics tool is also covered by this section [AVUKAT: çerezsiz ölçümün Rehber ve KVKK m.5 karşısındaki durumu] (Lawyer note: status of cookieless measurement under the Guidelines and KVKK Art. 5).
+
+## 6. Cloudflare network logs and IP address
+
+The web app and these pages are hosted on the infrastructure of Cloudflare, Inc. (USA). On every visit Cloudflare processes your IP address, the time of the request, the requested address and your browser information to establish the connection and protect against attacks. This is not a cookie; we explain it here because it happens automatically with your visit.
+
+- **Legal basis:** Our legitimate interest (Art. 5(2)(f)): providing the service securely and without interruption; preventing attacks and abuse.
+- **Transfer abroad:** Cloudflare's network operates globally, including in the USA. The transfer is made by signing with Cloudflare the standard contract announced by the Board (KVKK Art. 9(4)(c)) and notifying it to the Authority within five business days (Art. 9(5)): [STANDART SÖZLEŞME İMZA TARİHİ / KURUM BİLDİRİM TARİHİ – Cloudflare] (standard contract signature date / Authority notification date). Because Cloudflare is part of the service itself, we do not rely on your explicit consent; if an appropriate safeguard cannot be provided, we change the provider (Privacy Notice §7). The EU Standard Contractual Clauses in the contract are an additional measure; they are not a safeguard under KVKK Art. 9.
+- **Retention:** Security logs on our own servers (Supabase, Frankfurt) are kept with IP address and timestamp for [12 ay] (12 months) [AVUKAT: 5651 sayılı Kanun trafik verisi yükümlülüğü] (Lawyer note: traffic data obligation under Turkey's Internet Law No. 5651). Cloudflare's network log retention period: [CLOUDFLARE GÜNLÜK SAKLAMA SÜRESİ – veri işleme sözleşmesinden] (Cloudflare log retention period – from the data processing agreement).
+
+Cloudflare does not use this data for advertising or profiling; it processes it only for network security and to provide the service [AVUKAT: Cloudflare bu işlemede veri işleyen mi, ayrı veri sorumlusu mu] (Lawyer note: whether Cloudflare is a processor or a separate controller for this processing).
+
+## 7. Deleting and blocking from browser settings
+
+- **Signing out** deletes the session item.
+- **Clearing site data:** In the "site data" or "website data" section of your browser's privacy settings (menu names vary by browser and version), you can delete the cookies and site data stored for [WEB ADRESİ].
+- **Blocking:** In the same settings you can block cookies and site data for [WEB ADRESİ]; in that case you cannot sign in to the web app. When a private/incognito window is closed, the items are deleted automatically.
+
+These affect only your browser; to delete the data in your account, use Settings > Account > Delete Account or the [Account and Data Deletion](./hesap-ve-veri-silme.md) page.
+
+## 8. Mobile app
+
+Our iOS and Android apps do not use cookies. Session information is stored on your device in the app's protected area and deleted on sign-out; this is covered by the Privacy Policy. The apps contain no third-party analytics, advertising or tracking SDK; advertising IDs (IDFA/AAID) are not collected; in the first release there is no crash reporting either. The notification library (expo-notifications; notifications are sent directly through APNs/FCM, the Expo notification service is not used) and the store SDKs process only the data needed for the service and do not collect data for tracking; our store privacy declarations state "tracking: no".
+
+## 9. Your rights and contact
+
+For your personal data linked to these items, you can exercise your rights under KVKK Art. 11 (information, rectification, erasure, objection and others) through the [Data Subject Request Form](./kvkk-basvuru-formu.md), from your registered email to [E-POSTA], in writing to [ADRES] or, if available, by KEP. Requests are answered free of charge within 30 days at the latest; we have no telephone channel. Your right to complain to the Personal Data Protection Board is reserved.
+
+## 10. Changes
+
+The current version and effective date are at the top of the page; the change log is below and kept in the source repository. An item requiring consent is always announced with the consent banner in §5. Other material changes are subject to the notice rule in the Privacy Policy (at least [15 GÜN] (15 days) before they take effect) [AVUKAT: tüm belgelerde tek bildirim süresi] (Lawyer note: a single notice period across all documents). Minor corrections are published only on this page. The Turkish text prevails.
+
+## Change log
+
+| Version | Date | Change |
+|---|---|---|
+| 0.2 | 30 October 2026 | First draft (0.1 was not published); created together with the 0.2 revision of the document set. Aligned with the review notes and DECISIONS.md: Art. 9(4)(c) standard contract + Art. 9(5) notification, EU SCCs are not a safeguard, no explicit consent route for providers that make up the service; security logs [12 ay] (12 months), consent records [3 YIL] (3 years), notice [15 GÜN] (15 days); no telephone channel and no sales on the web; placeholders and /legal/* slugs aligned with the other documents. |
+| 0.2 (C11 technical correction) | 6 November 2026 | Status row (no expert approval); the web app's actual local storage items (action queues, pending pairing, child mode and cache) and the teacher share page added to §2; the statement "nothing is written persistently to the browser" corrected. |
+| 0.2 | 30 October 2026 | Consistency check across the document set: Subscription Terms link added to the list of related documents. Content unchanged. |
+| 0.2 (D18 English version) | 6 November 2026 | This English section added, translated from the current Turkish text; the content of the Turkish text was not changed. No legal expert approval. Details: `docs/release/d18-2026-11-06/README.md`. |

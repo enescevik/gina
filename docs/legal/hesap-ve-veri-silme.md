@@ -5,7 +5,7 @@
 | Sürüm | 0.2 (taslak) |
 | Tarih | 2026-10-30 |
 | Yürürlük tarihi | [YÜRÜRLÜK TARİHİ] |
-| Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** Türkçe metin esastır; İngilizce çeviri bilgi amaçlıdır. |
+| Durum | **Taslak. Hukuk uzmanı incelemesi ve onayı yapılmadı (6 Kasım 2026); uzman onayı ve yazılı onay kaydı olmadan yayımlanmaz.** Türkçe metin esastır; İngilizce çeviri bilgi amaçlıdır ve sayfanın sonundadır. / The Turkish text prevails; an English version is at the end of this page. |
 | Veri sorumlusu | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/VKN: [MERSİS/VKN] |
 | Yayın yeri | https://ginafamily.com/legal/hesap-ve-veri-silme; Google Play "Veri güvenliği" ve App Store Connect "Privacy Choices" bağlantısı; uygulamada Ayarlar > Hesap > Hesabı Sil |
 | İlgili belgeler | [Gizlilik Politikası](./gizlilik-politikasi.md) · [KVKK Aydınlatma Metni](./kvkk-aydinlatma-metni.md) · [Kullanım Koşulları](./kullanim-kosullari.md) · [Abonelik Koşulları](./abonelik-kosullari-ve-on-bilgilendirme.md) · [Çerez Politikası](./cerez-politikasi.md) · [KVKK Başvuru Formu](./kvkk-basvuru-formu.md) |
@@ -122,3 +122,132 @@ Gina Plus ve Gina Pro abonelikleri yalnızca App Store (satıcı Apple Distribut
 | 0.2 | 2026-10-30 | İlk taslak; belge ailesinin 0.2 revizyonuyla birlikte envanter maddesi ve inceleme notlarına göre yazıldı (0.1 yayımlanmadı). Slug'lar ve süreler DECISIONS.md ile hizalandı; e-posta doğrulamalı web silme, hemen/dönem sonunda silme, bildirim için e-posta adresinin tutulması, Apple belirteç iptali, anında eşleştirme iptali, yalnızca doğum yılı, 18 yaş kuralı, telefon kanalı ve dışa aktarma yokluğu yazıldı. Çok ebeveynli silme [ÜRÜN KARARI]. |
 | 0.2 (C11 teknik düzeltme) | 2026-11-06 | Uygulama denetimi 6 Kasım koduyla yeniden doğrulandı: etki önizlemesi, yeniden doğrulama (şifre veya e-posta kodu), çok ebeveynli silme davranışı, arşiv ≠ silme, yüklenen dosyalar, Expo yerine doğrudan APNs/FCM; uygulanmamış vaatler güncellendi. Hukuk uzmanı onayı yoktur. |
 | 0.2 | 2026-10-30 | Belge seti tutarlılık kontrolü: cihaz eşleştirme ekran yolu "Ayarlar > Çocuklar > [Çocuk] > Cihazlar" olarak eşitlendi; rıza/beyan kayıtlarının hukuki sebebi Aydınlatma §5 ile aynı biçimde "m.5/2-ç ve m.5/2-e" yazıldı. |
+| 0.2 (D18 İngilizce sürüm) | 2026-11-06 | Belgenin sonuna güncel Türkçe metinden çevrilen bilgi amaçlı İngilizce bölüm eklendi; Türkçe metnin içeriği değiştirilmedi. Hukuk uzmanı onayı yoktur. Ayrıntı: `docs/release/d18-2026-11-06/README.md`. |
+
+---
+
+# Gina Aile – Account and Data Deletion (English)
+
+| | |
+|---|---|
+| Version | 0.2 (draft) |
+| Date | 30 October 2026 |
+| Effective date | [YÜRÜRLÜK TARİHİ] |
+| Status | **Draft. No legal expert has reviewed or approved it (6 November 2026); it is not published without expert approval and a written approval record.** The Turkish text prevails; this English translation is for information only. It was translated from the Turkish text on 6 November 2026 (D18) and has the same content. Placeholders and Turkish lawyer/product notes in square brackets are shared with the Turkish text; an English gloss follows in parentheses. |
+| Data controller | [VERİ SORUMLUSU UNVANI] · [ADRES] · [E-POSTA] · MERSİS/tax ID: [MERSİS/VKN] |
+| Published at | [WEB ADRESİ]/legal/hesap-ve-veri-silme; Google Play "Data safety" and App Store Connect "Privacy Choices" link; in the app, Settings > Account > Delete Account |
+| Related documents | [Privacy Policy](./gizlilik-politikasi.md) · [KVKK Privacy Notice](./kvkk-aydinlatma-metni.md) · [Terms of Use](./kullanim-kosullari.md) · [Subscription Terms](./abonelik-kosullari-ve-on-bilgilendirme.md) · [Cookie Policy](./cerez-politikasi.md) · [Data Subject Request Form](./kvkk-basvuru-formu.md) |
+
+## App audit of 31 October 2026 (re-verified on 6 November 2026) — must be updated before publication
+
+The sections of this document below are a **legal draft** describing the target behaviour, not evidence of a working feature. The current app (`supabase/functions/delete-account/handler.ts`, `supabase/migrations/20261106040000_deletion_preview.sql`): **Delete my account** in the parent menu and on the family set-up screen → impact preview (valid for 15 minutes; if the target changes, no deletion takes place) → re-verification with the current password or a single-use email code from the last 5 minutes + confirmation of the irreversible action → immediate deletion. The account is removed separately from each family it is a member of. If there is another parent, shared child records are kept and family ownership is transferred; if the last parent is deleted, the family/child data and the paired anonymous device accounts are deleted. Notes written by the deleted user, share links they created, push preferences and sessions are removed. The server's RLS/Edge membership check also closes access with an old JWT. The store subscription is not cancelled. A single child profile is deleted from the child card in the parent menu, with an impact preview and a second confirmation explaining the data scope (`confirm_child_deletion`); other children are kept, another parent's personal note about that child is not deleted, and family-linked content (uploaded files, question bank, rewards) is kept. Unlike deletion, a child profile can be **archived** (a reversible pause; earned records are kept, paired devices are blocked) and records can be archived and restored in bulk; archiving is not deletion and has no time limit. Uploaded documents/images are deleted when the family is deleted; the storage object is removed by an hourly cleanup job.
+
+**Draft promises not yet implemented:** deletion scheduled for the end of the period; the no-sign-in web deletion form with email verification; deletion received/completed emails (no email provider is connected); automatic deactivation at 18; Sign in with Apple token revocation (social sign-in appears in the app if the provider setting is on; no revocation request is sent to Apple on deletion); statutory retention periods (purchase, consent and audit records are currently deleted at once together with the family) and automation of deletion from backups. If there is an active subscription, the deletion preview shows a warning and a link to the Subscription screen in the app (and from there to the store's management page); the deletion screen also shows the warning "cancel the subscription in the store first". Do not publish these as if they existed. Supabase/store service logs and backups are not deleted by the app transaction; the retention/destruction policy must be verified separately against the real production settings. The published text must be matched to the path and behaviour in the app; the controller's name, contact details, retention periods and the web request route must be completed.
+
+## Short summary (not binding)
+
+- You can delete your account from within the app via **Settings > Account > Delete Account**; if you cannot sign in, you send a request with the form on this page by verifying your registered email. The account is not suspended; it is deleted completely.
+- Data is deleted from the live system immediately and from backups within [30 gün] (30 days) at the latest; only records kept for legal reasons (purchase records [10 yıl] (10 years), security logs [12 ay] (12 months)) remain for a limited time.
+- **Deleting the account does not cancel your subscription;** cancel the subscription in the App Store or Google Play first.
+
+## 1. What this page is for
+
+This page explains how to delete your Gina Aile ("Gina") account and data, what is deleted and what is kept for how long (KVKK Art. 7, Art. 11(e); Regulation on the Deletion, Destruction or Anonymisation of Personal Data Art. 12; Apple 5.1.1(v); Google Play account deletion policy); the periods are the same as in the Privacy Policy, the Privacy Notice and our store declarations.
+
+Only a parent or guardian aged 18 or over opens and deletes the account. Children have no account; an account cannot be deleted from child mode or from a paired tablet.
+
+## 2. Deleting your account from within the app
+
+1. Go to the parent area (leaving child mode asks for the 4-digit parent PIN).
+2. Select **Settings > Account > Delete Account**.
+3. If you have an active subscription, a warning and the store's cancellation link are shown (Section 8); if you do not cancel, billing continues in the store.
+4. Choose **Delete now** or **Delete at the end of the subscription period**. With scheduled deletion, your account is deleted automatically at the end of the period; you can cancel the schedule from the same screen until that date. The option to delete immediately is always available. [ÜRÜN KARARI: abonelik yenilenirse planlı tarih] (Product decision: the scheduled date if the subscription renews.)
+5. Confirm; for security we may ask you to sign in again.
+
+At the moment of confirmation (with scheduled deletion, when the date arrives), access is closed; sessions and tablet pairings become invalid immediately. You do not need to write to the support team; a deleted account cannot be restored. There is no bulk data export feature; before deleting, you can request a copy of your data with the Data Subject Request Form (Art. 11(b); Section 10).
+
+## 3. Deletion request via the web without signing in
+
+If you cannot get into the app, use the **Deletion request** form on this page:
+
+1. Enter the email address registered to your account. If you used "Hide My Email" with Sign in with Apple, enter the relay address Apple gave you.
+2. We send to this address a single-use verification link valid for [DOĞRULAMA BAĞLANTISI SÜRESİ, örn. 24 saat] (verification link validity, e.g. 24 hours); for security reasons we do not show on screen whether the address is linked to an account.
+3. Click the link and confirm the request; the account is deleted as in Section 2. If you have an active subscription, we warn you in the email with the store's cancellation link. [ÜRÜN KARARI: web talebinde "dönem sonunda sil" seçeneği] (Product decision: a "delete at the end of the period" option for web requests.)
+
+The form asks for no information other than the email address. If you cannot access your registered address, send your request with the information in the Data Subject Request Form by post ([ADRES]) or KEP (registered electronic mail; [KEP ADRESİ – varsa], if any); we do not ask for a copy of an identity card. The web form deletes the entire account; for a single child profile, use the app.
+
+## 4. Deleting a single child profile or specific data without deleting the account
+
+- **Child profile:** Settings > Children > [Child] > Delete Profile. The profile (name/nickname, birth year, child PIN), chore and star history, calendar, notes, grade/score and development records, AI outputs for that child and paired device sessions are deleted; the family and other children are not affected. A deleted profile is deleted for everyone in the family.
+- **Individual records:** Chores, notes, calendar entries and AI summaries are deleted from the relevant screens (summaries are deleted automatically after 12 months at the latest).
+- **Device pairing:** removed under Settings > Children > [Child] > Devices; revocation is effective immediately, and the device can no longer access data.
+
+These deletions are also removed from the live system immediately and from backups within [30 gün] (30 days) at the latest.
+
+## 5. What is deleted when the account is deleted
+
+| Data | Scope |
+|---|---|
+| Parent account | Email, name, password hash, language/region preference, parent PIN, settings and permissions |
+| Family | Family name, family invite codes, memberships, time zone |
+| Child profiles | Name/nickname, birth year, avatar and grade level if any, child PIN |
+| Chores and points | Chores, completion/approval history, child mode activity records, stars, rewards, grade/score information |
+| Calendar, notes, development | Calendar and class schedule, notes, development (milestone) records |
+| Uploaded documents and images, Prova records | Images/PDFs uploaded to the family (when the family is deleted; the storage object by the hourly cleanup), question bank, practice tests, the child's answers and workbooks, AI confirmation records and assessment suggestions; teacher share links you created |
+| AI outputs | All AI summaries and outputs in Gina (for Anthropic, Section 7) |
+| Device pairings | Paired tablets, anonymous child sessions, pairing codes; become invalid immediately |
+| Notification tokens | Push tokens and notification preferences (for APNs/FCM, Section 7; Expo is not used) |
+| Sign-in links | Sign in with Apple (token revocation is notified to Apple), Sign in with Google, email/password sign-in |
+
+## 6. What is kept for a limited time for legal or legitimate reasons
+
+The following records are kept after deletion too; access to them is restricted, they are pseudonymised where possible, not used for any other purpose, and deleted by periodic destruction (at least every six months) when the period ends.
+
+| Record | Period | Reason |
+|---|---|---|
+| Purchase and subscription verification records (transaction ID, plan, dates) | [10 yıl] (10 years) | Tax and commercial legislation (KVKK Art. 5(2)(ç)) |
+| Security and server logs (IP, timestamp) | [12 ay] (12 months) | Security, prevention of abuse (Art. 5(2)(f)) [AVUKAT: 5651 sayılı Kanun] (Lawyer note: Turkey's Internet Law No. 5651.) |
+| Consent, feature permission, parent declaration and pre-purchase information records (under a pseudonymous ID; no child name) | [3 yıl] (3 years) | Evidence; legal obligation (Art. 5(2)(ç)) and establishment, exercise or protection of a right (Art. 5(2)(e)) [AVUKAT: zamanaşımı] (Lawyer note: limitation period.) |
+| Record of your deletion request, KVKK requests and support correspondence | [3 yıl] (3 years) | Proof that the request was fulfilled |
+| Your registered email address | Until the deletion is completed | Received and completed notices; deleted afterwards |
+| Record of revocation of the Sign in with Apple token | [APPLE BELİRTEÇ İPTAL KAYDI SÜRESİ] (retention period of the Apple token revocation record) | Proof of Apple's revocation requirement [AVUKAT] (Lawyer note.) |
+| Data covered by an ongoing dispute or a request from a competent authority | Until concluded | Legal obligation, protection of rights |
+
+## 7. Periods, backups and service providers
+
+- **Live system:** Access is closed at the moment of confirmation and the data is deleted from our database (Supabase, Frankfurt/EU).
+- **Backups:** Encrypted backups are kept in the same region and drop out of the rotation within [30 gün] (30 days) at the latest; if a backup is restored, deleted accounts are deleted again.
+- **AI (Anthropic, USA):** Pseudonymised inputs and outputs sent only on a paid plan and with your permission are, as a rule, deleted at Anthropic within 30 days; for the models we use, this retention is mandatory and cannot be shortened by a deletion request. Content flagged on suspicion of a usage policy violation may be kept by Anthropic for up to 2 years.
+- **Notification delivery (Apple APNs, Google FCM):** Notifications are sent directly through APNs and FCM, not through Expo; notification text contains no child name, note or score. Our token record is deleted immediately together with the account; tokens that APNs/FCM consider invalid are deleted automatically during sending; send queue records are cleaned up after 30 days. The placeholder "token deletion period at Expo" in the earlier draft was therefore removed.
+- **Period and notification:** We send information to your registered email when we receive and when we complete your request, and complete the process within 30 days at the latest (KVKK Art. 13; Deletion Regulation Art. 12).
+
+## 8. Subscription warning: cancel in the store first
+
+Gina Plus and Gina Pro subscriptions are sold only through the App Store (seller Apple Distribution International Ltd.) or Google Play (Google Commerce Ltd.); your card details and your purchase history in the store do not reach us. **Deleting the account or removing the app does not cancel the subscription;** the store keeps charging until you cancel.
+
+- **App Store:** Settings > [Your name] > Subscriptions > Gina > Cancel Subscription.
+- **Google Play:** Play Store > Profile > Payments & subscriptions > Subscriptions > Gina > Cancel subscription.
+- The warning on the deletion screen and the Settings > Subscription > Manage subscription link take you to these screens.
+
+Cancellation takes effect at the end of the period; to use the Plus/Pro features until that date, there is the "delete at the end of the subscription period" option. Refunds are subject to the refund policy of the selling store (on the App Store, reportaproblem.apple.com); if necessary, we support you with the store (Subscription Terms Sections 8–10).
+
+## 9. More than one parent, age 18 and requests on a child's behalf
+
+- **If there is another parent/guardian in the family (current behaviour in the app):** only your account, your family membership and personal records belonging to you (notes you wrote, share links you created, notification preferences) are deleted; family ownership passes to the other parent, and the child profiles and shared records stay with them. When the last parent account is deleted, the family, all child profiles and the anonymous sessions of paired devices are deleted. Expert review is needed: consistency of this rule with the Parent Declaration and the KVKK deletion obligation.
+- **A child who turns 18:** The profile is deactivated on 31 December of the year found by adding 18 to the birth year and is deleted automatically within [SİLME SÜRESİ, örn. 90 gün] (deletion period, e.g. 90 days); you receive a notice beforehand (Parent Declaration Section 11). Your child who has come of age can request deletion via [E-POSTA] by verifying their identity. [AVUKAT: kimlik doğrulama yöntemi] (Lawyer note: identity verification method.)
+- **Requests on a child's behalf:** Only a parent/guardian in the family account can make them; for other cases, Section 5 of the Data Subject Request Form applies.
+
+## 10. Contact and KVKK requests
+
+- Email: [E-POSTA] (from your registered address) · Post: [ADRES] · KEP: [KEP ADRESİ – varsa] (if any). We have no telephone channel.
+- Data Subject Request Form: [WEB ADRESİ]/legal/kvkk-basvuru-formu (in the app, Settings > Privacy and Legal > Data Subject Request).
+- Requests are concluded free of charge within 30 days at the latest; if you find the reply insufficient, you can complain to the Personal Data Protection Board (kvkk.gov.tr); the deadlines are in the Data Subject Request Form.
+
+## Change log
+
+| Version | Date | Change |
+|---|---|---|
+| 0.2 | 30 October 2026 | First draft; written together with the 0.2 revision of the document family according to the inventory item and the review notes (0.1 was not published). Slugs and periods aligned with DECISIONS.md; web deletion with email verification, deletion now/at the end of the period, keeping the email address for notices, Apple token revocation, immediate pairing revocation, birth year only, 18-year rule, no telephone channel and no data export written. Deletion with several parents [ÜRÜN KARARI] (product decision). |
+| 0.2 (C11 technical correction) | 6 November 2026 | App audit re-verified against the 6 November code: impact preview, re-verification (password or email code), deletion behaviour with several parents, archive ≠ deletion, uploaded files, direct APNs/FCM instead of Expo; unimplemented promises updated. No legal expert approval. |
+| 0.2 | 30 October 2026 | Consistency check across the document set: device pairing screen path aligned as "Settings > Children > [Child] > Devices"; legal basis of consent/declaration records written as "Art. 5(2)(ç) and Art. 5(2)(e)", the same as Privacy Notice §5. |
+| 0.2 (D18 English version) | 6 November 2026 | This English section added, translated from the current Turkish text; the content of the Turkish text was not changed. No legal expert approval. Details: `docs/release/d18-2026-11-06/README.md`. |

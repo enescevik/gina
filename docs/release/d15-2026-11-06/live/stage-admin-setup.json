@@ -1,7 +1,7 @@
 {
  "stage": "admin-setup",
  "target": "production",
- "at": "2026-11-06T18:53:31.693Z",
+ "at": "2026-11-06T18:57:48.399Z",
  "checks": [
   {
    "name": "admin_session_valid",
