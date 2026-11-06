@@ -101,7 +101,7 @@ export async function runAiOperation<T>(
     const { code, uncertain } = failure;
     const detail = e && typeof e === "object" && "validationCode" in e &&
         typeof e.validationCode === "string" &&
-        /^(envelope|item|fields|title|subject|topic|date|time|page|note|steps_or_kind)$/
+        /^(envelope|item|fields|title|subject|topic|date|time|page|note|steps_or_kind|evidence|steps)$/
           .test(e.validationCode)
       ? `${code}_${e.validationCode}`
       : code;

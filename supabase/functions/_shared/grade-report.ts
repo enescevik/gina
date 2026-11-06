@@ -89,21 +89,22 @@ export function validateGradeReport(
   value: unknown,
   refs: Map<string, { topic: string; grade: boolean }>,
 ): GradeReport {
-  const fail = (): never => {
-    throw Error("ai_result_invalid");
+  // D5: only a fixed rule name reaches operational diagnostics (ai_operation_jobs.error_code), never content.
+  const fail = (code: string): never => {
+    throw Object.assign(new Error("ai_result_invalid"), { validationCode: code });
   };
   const text = (v: unknown, max = 1800): v is string =>
     typeof v === "string" && v.trim().length > 0 && v.length <= max;
   const list = (v: unknown, max = 12): v is string[] =>
     Array.isArray(v) && v.length <= max && v.every((x) => text(x));
-  if (!value || typeof value !== "object") return fail();
+  if (!value || typeof value !== "object") return fail("envelope");
   const r = value as GradeReport;
   const topics = new Set([...refs.values()].map((x) => x.topic));
   if (
     !Array.isArray(r.degerlendirmeler) ||
     r.degerlendirmeler.length !==
       [...refs.values()].filter((x) => x.grade).length
-  ) return fail();
+  ) return fail("envelope");
   const seen = new Set<string>();
   for (const g of r.degerlendirmeler) {
     if (
@@ -112,37 +113,40 @@ export function validateGradeReport(
         (!Number.isInteger(g.puan) || g.puan < 0 || g.puan > 100)) ||
       !text(g.kisa_geri_bildirim) || !list(g.eksikler, 3) ||
       !list(g.iyilestirme_onerileri, 3)
-    ) return fail();
+    ) return fail("item");
     seen.add(g.ref);
   }
   const s = r.ozet;
   if (
     !s || !list(s.guclu_konular, 30) || !list(s.zayif_konular, 30) ||
-    ![...s.guclu_konular, ...s.zayif_konular].every((t) => topics.has(t)) ||
     !text(s.genel_oneri, 3500) || !list(s.veli_destegi, 5) ||
     !list(s.sinirlar, 5) || !s.sinirlar.length
-  ) return fail();
+  ) return fail("fields");
+  if (
+    ![...s.guclu_konular, ...s.zayif_konular].every((t) => topics.has(t))
+  ) return fail("topic");
   if (
     !Array.isArray(s.konu_analizi) || s.konu_analizi.length > 30 ||
     !s.konu_analizi.length
-  ) return fail();
+  ) return fail("fields");
   for (const k of s.konu_analizi) {
+    if (!k || !text(k.gozlem) || !text(k.sonraki_adim)) return fail("fields");
+    if (!topics.has(k.konu)) return fail("topic");
     if (
-      !k || !topics.has(k.konu) || !list(k.kanitlar, 30) ||
-      !k.kanitlar.length || !k.kanitlar.every((ref) =>
-        refs.get(ref)?.topic === k.konu
-      ) || !text(k.gozlem) || !text(k.sonraki_adim)
-    ) return fail();
+      !list(k.kanitlar, 30) || !k.kanitlar.length ||
+      !k.kanitlar.every((ref) => refs.get(ref)?.topic === k.konu)
+    ) return fail("evidence");
   }
   if (!Array.isArray(s.calisma_adimlari) || s.calisma_adimlari.length > 4) {
-    return fail();
+    return fail("steps");
   }
   for (const a of s.calisma_adimlari) {
+    if (!a) return fail("steps");
+    if (!topics.has(a.konu)) return fail("topic");
     if (
-      !a || !topics.has(a.konu) || !text(a.etkinlik) ||
-      !text(a.basari_olcutu) || !Number.isInteger(a.sure_dk) || a.sure_dk < 5 ||
-      a.sure_dk > 20
-    ) return fail();
+      !text(a.etkinlik) || !text(a.basari_olcutu) ||
+      !Number.isInteger(a.sure_dk) || a.sure_dk < 5 || a.sure_dk > 20
+    ) return fail("steps");
   }
   return r;
 }
