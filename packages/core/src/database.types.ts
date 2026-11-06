@@ -2631,6 +2631,9 @@ isOneToOne: false
 "admin_cohort_review_queue":
 { Args: { "p_group": string }; Returns: Json
                            },
+"admin_content_prereview_health":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "admin_content_prereviews":
 { Args: { "p_limit"?: number,"p_status"?: string }; Returns: Json
                            },
