@@ -1,11 +1,14 @@
 // Q00 A1 (auth/veli/aile/ayarlar) after-fix UI checks. Run only with the disposable test-isolated-services.py --ui-hold fixture and a web export of this checkout served on GINA_QA_WEB_URL (default http://127.0.0.1:8189).
+// Usage: GINA_QA_UI_FIXTURE=<fixture.json> GINA_QA_WEB_URL=http://127.0.0.1:<port> [GINA_QA_A1_OUT=<dir>] GINA_QA_PLAYWRIGHT_PATH=<playwright> node scripts/test-screen-review-a1-ui.cjs
+// D17: pairing follows C13-AUTH-1 — the tablet shows an 8-character code (4+4), the parent enters it on
+// /parent/pair-device, previews device + family (single-use preview token) and confirms; the access screen follows.
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const { chromium } = require(process.env.GINA_QA_PLAYWRIGHT_PATH || 'playwright');
-const f = JSON.parse(fs.readFileSync('/tmp/gina-experience-ui-private.json'));
+const f = JSON.parse(fs.readFileSync(process.env.GINA_QA_UI_FIXTURE || '/tmp/gina-experience-ui-private.json'));
 assert.match(f.email, /^gina-[0-9a-f-]+@example\.invalid$/);
 assert.equal(new URL(f.url).hostname, '127.0.0.1');
 const ROOT = process.cwd();
-const OUT = path.join(ROOT, 'docs/release/experience-review/a1');
+const OUT = process.env.GINA_QA_A1_OUT ? path.resolve(process.env.GINA_QA_A1_OUT) : path.join(ROOT, 'docs/release/experience-review/a1');
 fs.mkdirSync(OUT, { recursive: true });
 const APP = process.env.GINA_QA_WEB_URL || 'http://127.0.0.1:8189';
 const VIEWPORTS = { phone: { width: 390, height: 844 }, tablet: { width: 768, height: 1024 }, desktop: { width: 1280, height: 800 } };
@@ -87,6 +90,7 @@ const dump = async (page, n = 30) => (await page.locator('body').innerText()).sp
   check('grades_home_button_goes_home', page.url().endsWith('/parent'), page.url());
   // 5 families help text
   await page.goto(APP + '/parent/families'); await page.waitForTimeout(2500);
+  await page.getByRole('button', { name: t['u02.family.tab.join'], exact: true }).first().click(); await page.waitForTimeout(500);  // join form is its own tab (U02)
   check('families_invite_path_matches_menu', (await page.locator('body').innerText()).includes('Ayarlar → Ailem → “Diğer ebeveyni davet edin”'));
   await shot(page, 'after-families-phone');
   // 6 callback error title
@@ -98,27 +102,35 @@ const dump = async (page, n = 30) => (await page.locator('body').innerText()).sp
   await c2.route(f.url + '/**', async route => { try { if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } }); const res = await route.fetch(); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } }); } catch { await route.fulfill({ status: 503 }); } });
   const dev = await c2.newPage(); await dev.goto(APP + '/device/pair'); await dev.waitForTimeout(3000);
   await dev.getByLabel('Bu cihazın adı', { exact: true }).fill('Deneme tableti');
-  await dev.getByRole('button', { name: 'Eşleştirme kodu oluştur', exact: true }).click(); await dev.waitForTimeout(2500);
-  const code = (await dev.locator('body').innerText()).match(/\b\d{6}\b/)?.[0];
-  await uiLogin(page); await page.goto(APP + '/parent/menu?section=devices'); await page.waitForTimeout(2000);
-  await page.getByLabel('Çocuk cihazındaki 6 haneli kod', { exact: true }).fill(code);
-  await page.getByRole('button', { name: 'Cihazı bağla', exact: true }).last().click(); await page.waitForTimeout(3500);
-  let text = await page.locator('body').innerText();
-  check('device_summary_no_child_sentence', text.includes('Henüz çocuk seçilmedi') && !text.includes('Henüz çocuk seçilmedi bu cihaz'), text.split('\n').find(l => l.includes('Henüz')) || '');
+  await dev.getByRole('button', { name: t['unified.pairCodeAction'], exact: true }).click(); await dev.getByTestId('pairing-active').waitFor();
+  const shown = (await dev.getByTestId('pairing-code').innerText()).trim();
+  check('device_shows_grouped_8_char_code', /^[ACDEFHJKMNPRTUVWXY3479]{4} [ACDEFHJKMNPRTUVWXY3479]{4}$/.test(shown), shown.replace(/\S/g, '•'));
+  const code = shown.replace(/\s/g, '');
+  await uiLogin(page); await page.goto(APP + '/parent/pair-device');
+  const codeField = page.getByLabel(t['auth1.parentPair.codeLabel'], { exact: true }); await codeField.waitFor();
+  await codeField.fill(code);
+  await page.getByRole('button', { name: t['c06.pair.show'], exact: true }).last().click();
+  await page.getByTestId('pairing-target').waitFor();
+  check('parent_previews_device_and_family_before_pairing', (await page.getByTestId('pairing-target').innerText()).includes('Deneme tableti'));
+  await page.getByRole('button', { name: t['u02.parentPair.confirm'], exact: true }).last().click();
+  await page.waitForURL('**/parent/device-access**', { timeout: 20000 }); await page.getByTestId('device-access-summary').waitFor(); await page.waitForTimeout(1000);
+  let text = await page.getByTestId('device-access-summary').innerText();
+  check('device_summary_no_child_sentence', text.includes(t['experience.noChildSelected']) && !text.includes(t['experience.noChildSelected'] + ' bu cihaz'), text.split('\n').find(l => l.includes('Henüz')) || '');
   await shot(page, 'after-device-access-no-child-phone');
   await page.getByRole('checkbox', { name: 'Synthetic child' }).or(page.getByRole('radio', { name: 'Synthetic child' })).first().click(); await page.waitForTimeout(500);
-  text = await page.locator('body').innerText();
-  check('device_summary_with_child_sentence', /Synthetic child bu cihazı/.test(text));
+  text = await page.getByTestId('device-access-summary').innerText();
+  check('device_summary_with_child_sentence', text.includes('Synthetic child') && !text.includes(t['experience.noChildSelected']), text.split('\n').join(' | '));
   await shot(page, 'after-device-access-child-phone');
   await c2.close();
   // 7 new user → empty home → wizard auto-open → saved feedback
   await page.goto(APP + '/parent/menu?section=account'); await page.waitForTimeout(2000);
   await page.getByRole('button', { name: 'Çıkış yap', exact: true }).click(); await page.waitForTimeout(2500);
   const email = `gina-a1-after-${Date.now()}@example.invalid`, password = 'Deneme-Sifre-2026!';
-  await page.goto(APP + '/'); await page.getByRole('button', { name: 'Kayıt ol', exact: true }).click();
+  await page.goto(APP + '/'); await page.getByRole('button', { name: t['u01.intentSignUp'], exact: true }).click();  // U01: sign-up is the "Yeni hesap" choice
   await page.getByLabel('E-posta', { exact: true }).fill(email); await page.getByLabel('Şifre', { exact: true }).fill(password);
   await page.getByRole('switch', { name: /18 yaşını/ }).click(); await page.getByRole('button', { name: 'Kayıt ol', exact: true }).first().click();
   await page.waitForURL('**/family', { timeout: 20000 }); await page.waitForTimeout(1000);
+  await page.getByRole('button', { name: new RegExp('^' + t['u01.familyCreateTitle']) }).first().click(); await page.waitForTimeout(500);  // U01: create/join choice first
   await page.getByLabel('Aile adı', { exact: true }).fill('A1 Sonra Ailesi');
   await page.getByRole('button', { name: 'Yeni aile oluştur', exact: true }).last().click();
   await page.waitForURL('**/parent', { timeout: 30000 }); await page.waitForTimeout(2500);
