@@ -3829,5 +3829,22 @@
   "u02.family.joinOpens": "Katıldıktan sonra {{name}} ailesi açılır; çocukları, görevleri ve takvimi eşinizle birlikte görürsünüz.",
   "u02.family.joinKeeps": "{{name}} aileniz silinmez; “Aile değiştir” bölümünden geri dönebilirsiniz.",
   "u02.family.joinFirst": "Bu, hesabınızın ilk ailesi olacak.",
-  "u02.family.joinAction": "{{name}} ailesine katıl"
+  "u02.family.joinAction": "{{name}} ailesine katıl",
+  "c06.pair.resumed": "Giriş yapmadan önce okuttuğunuz QR'daki kod saklandı. Cihaz ve aile doğruysa onaylayın; onaylamadan hiçbir şey bağlanmaz.",
+  "c06.pair.lostTitle": "QR'daki kod artık geçerli değil",
+  "c06.pair.lostBody": "Girişten önce okuttuğunuz kodun süresi doldu ya da kod kullanıldı. Çocuğun cihazında “Yeni kod oluştur”a dokunup yeni QR'ı okutun veya kodu aşağıya yazın.",
+  "c06.pair.targetTitle": "Bağlanacak cihazı doğrulayın",
+  "c06.pair.device": "Cihaz (çocuğun cihazında yazılan ad)",
+  "c06.pair.family": "Bağlanacağı aile",
+  "c06.pair.checkDevice": "Çocuğun cihazındaki ad ve kod bununla aynı olmalı. Farklıysa onaylamayın.",
+  "c06.pair.notThis": "Bu cihaz değil",
+  "c06.pair.show": "Cihazı göster",
+  "c06.pair.previewFirst": "Önce cihazın adını ve bağlanacağı aileyi gösteririz; onaylamadan hiçbir cihaz ailenize bağlanmaz.",
+  "c06.access.pinExisting": "Önceki ayar: PIN'i olan çocuk PIN'iyle, PIN'i olmayan profiline dokunarak girer. Kaydettiğinizde yukarıdaki seçim geçerli olur.",
+  "c06.family.switchTo": "Açık aileyi değiştir: {{name}}",
+  "c06.family.staysBehind": "Şu an açık olan “{{name}}” içinde kalanlar: {{children}} · {{devices}} bağlı cihaz. Hiçbiri silinmez.",
+  "c06.family.switchAction": "“{{name}}” ile devam et",
+  "c06.family.joinOpens": "Katıldıktan sonra “{{name}}” açılır; çocukları, görevleri ve takvimi eşinizle birlikte görürsünüz.",
+  "c06.family.joinKeeps": "Şu anki aileniz “{{name}}” silinmez; “Aile değiştir” bölümünden geri dönebilirsiniz.",
+  "c06.family.joinAction": "Katıl: {{name}}"
 }

@@ -15,6 +15,7 @@ import { AccountDeletion } from "@/components/account-deletion";
 import { DeletionPreviewSheet } from "@/components/deletion-preview-sheet";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
+import { PinSetup } from "@/components/ui/pin-setup";
 import { ErrorText } from "@/components/ui/screen";
 import { ParentScreen as Screen, parentStyles, FormSection, InfoCard, NavigationCard } from "@/components/ui/parent-screen";
 import { useSession } from "@/lib/session";
@@ -65,25 +66,13 @@ async function confirmChildDeletion(preview: DeletionPreview, requestId: string)
   return data;
 }
 
-/** Veli PIN'i: telefonda çocuk modundan çıkış için (set_parent_pin RPC). */
+/** Veli PIN'i: telefonda çocuk modundan çıkış için; ortak PinEntry + onay alanı (set_parent_pin RPC). */
 function ParentPinRow() {
   const { t } = useTranslation();
-  const queryClient = useQueryClient();
-  const [pin, setPin] = useState("");
-  const savePin = useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase.rpc("set_parent_pin", { p_pin: pin });
-      if (error) throw error;
-    },
-    onSuccess: () => { setPin(""); void queryClient.invalidateQueries({ queryKey: ["parent_pin_set"] }); },
-  });
-  return <View style={parentStyles.card}>
+  return <View testID="parent-pin-setup" style={parentStyles.card}>
     <Text style={parentStyles.title}>{t("parent.parentPin")}</Text>
-    <Text style={parentStyles.copy}>{t("unified.parentPinHelp")}</Text>
-    <Field label={t("parentV5.newParentPin")} keyboardType="number-pad" secureTextEntry maxLength={4} value={pin} onChangeText={value => setPin(value.replace(/\D/g, ""))} />
-    <Button variant="secondary" title={t("parent.savePin")} loading={savePin.isPending} disabled={pin.length !== 4} onPress={() => savePin.mutate()} />
-    {savePin.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.muted}>{t("unified.pinSaved")}</Text> : null}
-    <ErrorText error={savePin.error} />
+    <PinSetup />
+    <Text style={parentStyles.muted}>{t("u02.pinRecovery.lock")}</Text>
   </View>;
 }
 
@@ -101,7 +90,6 @@ export default function ParentMenuScreen() {
   const [section,setSection] = useState(["family","devices","learning","account","help"].includes(requested) ? requested : "family");
   const [setup, setSetup] = useState<SetupChild | "new" | null>(params.setup === "new" ? "new" : null);
   const [savedChild, setSavedChild] = useState<"new" | "edit" | null>(null);
-  const [pairCode, setPairCode] = useState("");
   const [deleting, setDeleting] = useState<{ childId: string; name: string } | null>(null);
   const [deletedName, setDeletedName] = useState<string | null>(null);
 
@@ -133,19 +121,6 @@ export default function ParentMenuScreen() {
     },
   });
 
-
-  const pairDevice = useMutation({
-    mutationFn: async (code: string) => {
-      const { data, error } = await supabase.rpc("pair_child_device", { p_code: code });
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (deviceId) => {
-      if(deviceId) router.push({pathname:"/parent/device-access",params:{deviceId}});
-      setPairCode("");
-      void queryClient.invalidateQueries({ queryKey: ["devices"] });
-    },
-  });
 
   const signOut = useMutation({ mutationFn: async () => {
     await unregisterPush(); const { error } = await supabase.auth.signOut(); if (error) throw error; router.replace("/");
@@ -195,13 +170,8 @@ export default function ParentMenuScreen() {
       <Text style={parentStyles.copy}>{t("parentToday.menuDevicesBody")}</Text>
       {/* Child mode's "set a parent PIN first" link still opens ?section=security: show the PIN first then. */}
       {params.section === "security" ? <ParentPinRow/> : null}
-      <InfoCard title={t("parent.pairDevice")} body={t("unified.pairIntro")} steps={[t("unified.pairStep1"),t("unified.pairStep2"),t("unified.pairStep3")]} />
-      <View style={parentStyles.card}>
-        <Field label={t("unified.pairCode")} keyboardType="number-pad" maxLength={6} value={pairCode} onChangeText={value=>{setPairCode(value.replace(/\D/g,""));pairDevice.reset();}} />
-        <Button title={t("parent.pairDevice")} loading={pairDevice.isPending} disabled={pairCode.length !== 6} onPress={() => pairDevice.mutate(pairCode)} />
-        {pairDevice.isSuccess ? <Text accessibilityLiveRegion="polite" style={parentStyles.copy}>{t("unified.pairSaved")}</Text> : null}
-        <ErrorText error={pairDevice.error}/>
-      </View>
+      {/* C06: one pairing path. Typed code, QR link and post-sign-in hand-off all use /parent/pair-device (preview, then confirm). */}
+      <NavigationCard title={t("parent.pairDevice")} body={t("unified.pairIntro")} icon={<Tablet size={23} color="#6042DE"/>} onPress={()=>router.push("/parent/pair-device")}/>
       <View style={parentStyles.card}><Text style={parentStyles.title}>{t("unified.connectedDevices")}</Text>
         {devices.data?.length ? <Text style={parentStyles.muted}>{t("unified.deviceRemoveHelp")}</Text> : <Text style={parentStyles.copy}>{t("unified.noDevices")}</Text>}
         {devices.data?.map(device=><View key={device.id} style={{gap:10,borderTopWidth:1,borderColor:"#EEE8EF",paddingTop:14}}><NavigationCard title={device.name} body={t("experience.device.manage")} onPress={()=>router.push({pathname:"/parent/device-access",params:{deviceId:device.id}})}/><ConfirmAction title={t("parent.removeDevice")} message={t("unified.deviceRemoveHelp")} busy={revokeDevice.isPending} onConfirm={()=>revokeDevice.mutate(device.id)}/></View>)}
