@@ -81,7 +81,7 @@ Koordinatör C14 sonrası C15'i beklemek için durdu; bu hataydı — bağımsı
 
 | İş | Kapsam | Durum |
 |---|---|---|
-| D1 | AI ortak kaynak → gerçek soru grubu + çocuğa ortak içerik; soru düzeyinde dönem/program eşleşmesi; Prova dersinin kanonik kimliğe bağlanması; MEB soru uygunluğu veli inceleme ekranı (migration `350000`, pgTAP 121) | YAPILIYOR |
+| D1 | AI ortak kaynak → gerçek soru grubu + çocuğa ortak içerik; soru düzeyinde dönem/program eşleşmesi; Prova dersinin kanonik kimliğe bağlanması; MEB soru uygunluğu veli inceleme ekranı (migration `350000`, pgTAP 121) | KOD HAZIR — tablo türü dahil, D5 gerçek çıktı biçimi fixture; bağlanmamış ortak kaynaklı AI sorusu atanamaz (`prova_shared_source_unlinked`). pgTAP 5.407/0, Playwright 10/10. **Yayın notu:** migration + `prova-generate` v6 birlikte; üretimde `question_groups.enabled=true` gerekir. Açık: gerçek modelin v6 istemine uyumu, kitapçıkta grup gösterimi. |
 | D2 | PIN'siz çocuk modu; tablet yeniden açılışında eşleme onay kartı; red bildirimi; u02 testi (`360000`, 122) | KOD HAZIR — pgTAP 5.311/0, Playwright D2 9/9, U02 15/15; yayımlanmadı. Açık: red notu yalnız uygulama içi, eski `childModeSubtitle` metni çelişkili. |
 | D3 | Operatör bölge/okul kapsam ekranı; kanal hataları sayfası; soru bazlı katkı ret notu; yönetim `confirm` pencereleri, A3-4/A3-7 (`370000`, 123) | KOD HAZIR — pgTAP 5.388/0, Playwright 10/10. Bulgu: içerik operatörü katkıyı reddedebiliyor ama kabul edemiyor (kabul `admin_import_library_bundle`'ı çağırıyor, C07'de yalnız yönetici) → D7. Rol verme/kaldırma ekranı yok → D7. |
 | D4 | Görülemeyen 6 alt akış; reduced-motion solma; giriş odak halkası; kitapçık sınıf seçimi; native PDF yolu | YAPILIYOR |
