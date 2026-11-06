@@ -123,7 +123,8 @@ try:
         execute format('alter function %s owner to supabase_auth_admin', r.signature);
       end loop;
     end $$;
-    grant references on auth.users to postgres;
+    -- Mirror the local stack ACL (postgres=arwdDxtm on auth.users): account-deletion triggers delete device users.
+    grant all on auth.users to postgres;
     create publication supabase_realtime;""", owner=True)
     if WITH_STORAGE:
         if sql(DB, 'select count(*) from storage.objects;').strip() != '0':
