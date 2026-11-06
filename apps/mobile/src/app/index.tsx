@@ -1,19 +1,14 @@
 import { Redirect } from "expo-router";
 import { ActivityIndicator, Platform, View } from "react-native";
+import { readAuthRedirectError, type AuthRedirectError } from "@gina/core";
 
 import { usePairingLinkCapture, usePendingPairing } from "@/components/device/pending-pairing";
 import { useSession } from "@/lib/session";
 
 /** An auth redirect that falls back to the site root (expired/used e-mail link) keeps its reason for sign-in. */
-function rootRedirectError(): { error: string; error_code?: string } | null {
+function rootRedirectError(): AuthRedirectError | null {
   if (Platform.OS !== "web" || typeof window === "undefined") return null;
-  const read = (raw: string) => new URLSearchParams(raw);
-  const query = read(window.location.search);
-  const hash = read(window.location.hash.slice(1));
-  const error = query.get("error") ?? hash.get("error");
-  if (!error || !/^[a-z_]{1,64}$/.test(error)) return null;
-  const code = query.get("error_code") ?? hash.get("error_code");
-  return { error, ...(code && /^[a-z_]{1,64}$/.test(code) ? { error_code: code } : {}) };
+  return readAuthRedirectError(window.location.search, window.location.hash);
 }
 
 /** Rol yönlendirmesi: JWT'deki `gina` claim'ine göre doğru alana gider. */

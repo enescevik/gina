@@ -20,6 +20,25 @@ export interface ChannelDependencies {
   render: RenderOptions;
   now?: () => number;
   budgetMs?: number;
+  /** Pause between receipt attempts (tests pass 0). */
+  receiptRetryDelayMs?: number;
+}
+
+/**
+ * A receipt is idempotent in the DB (an accepted row replays as true). A transient storage error right
+ * after a provider accepted the message would otherwise leave the row leased and, after the lease
+ * expires, claimable again: a second copy. Retry the receipt briefly before giving up.
+ */
+async function recordDurably(d: ChannelDependencies, ...args: Parameters<ChannelDependencies["record"]>) {
+  const delay = d.receiptRetryDelayMs ?? 250;
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await d.record(...args);
+    } catch (reason) {
+      if (attempt >= 3) throw reason;
+      if (delay > 0) await new Promise((resolve) => setTimeout(resolve, delay * attempt));
+    }
+  }
 }
 
 export interface ChannelCounts extends Record<string, number> {
@@ -82,7 +101,7 @@ export async function drainChannels(d: ChannelDependencies): Promise<ChannelCoun
       }
       counts[status]++;
       // The receipt must be durable before the next row; a failing receipt stops the worker.
-      await d.record(row, status, provider, messageId, error, retryAfter);
+      await recordDurably(d, row, status, provider, messageId, error, retryAfter);
       if (now() - started >= budget) break;
     }
   }
