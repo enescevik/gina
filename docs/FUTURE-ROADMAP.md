@@ -92,7 +92,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F8 — Öğretmene kazanım özeti; favori PDF; uyarlanabilir zorluk
 
-- Kaynak: §4.9, §4.14–15. Durum: PLANLANDI. Efor: **L**.
+- Kaynak: §4.1, §4.9, §4.14–15. Durum: KISMEN KOD HAZIR (favoriden veli taslağı ve tarayıcı kabulü). Efor: **L**.
 - Kapsam: Öğretmene kazanım özeti; favori PDF; uyarlanabilir zorluk.
 - Bağımlılık: F7, veli onayı, soru sürümü.
 - Paket kapısı: Mevcut paylaşım/PDF hakları; tür kapısı yok.
@@ -236,3 +236,5 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - F7a: mevcut Gelişim ekranına ortak kazanım kümesi gözlemleri eklendi. Mevcut 1–3–7 tekrar (`makeRepeatCalendarDrafts`) ve haftalık rapor yeniden yapılmadı. Son cevap soru kimliği başına bir kez sayılır; kütüphaneden tekrar edinilen aynı item bağımsız kanıtı artırmaz. 5 farklı puanlanmış sorudan azsa sayısal ortalama/renk kuvveti gösterilmez; bekleyen/boş cevaplar paydada değildir, kısmi puan korunur. Aynı sorudaki çoklu kazanım ayrı ayrı ölçülmüş gibi parçalanmaz. Aile/çocuk/eğitim dönemi/sınıf/ders/tarih kapsamı mevcut raporla aynıdır. Pekiştirme kapsamı ilk kazanım yerine tam sıralanmış kümeye taşındı; eski sessize alma süreleri taşınır. 14 yeni SQL, 4 şema testi; tüm DB 7.121, core 772, lint/typecheck yeşil. F7 açık: AI üretiminde tercih/few-shot entegrasyonu, “3 deneme/sınava kadar” atomik tüketim, haftalık AI özeti ve fiziksel/görsel kabul.
 
 - Yayın ayrımı düzeltmesi: mevcut GitHub iş akışları main'e push ile **web ve backoffice'i otomatik yayımlıyor**. “Üretim migration/native yayını yok” kaydı yalnız DB/Edge/native içindir; web/BO dağıtımı yok anlamına gelmez. Yeni DB tablolarına bağlı yeteneklerin uçtan uca kabulü migration/Edge/native eşlemesi tamamlanmadan yapılmış sayılmaz.
+
+- F8a: favorilerde aynı sınıf ve açıkça seçilen çocukla en fazla 10 seçim; ortak metin/görsel grubu bütün olarak tek blok, toplam 100 soru üst sınırı. Veli mevcut Prova düzenleyicisinde kontrol eder; otomatik atama, AI çağrısı veya kota yok. Tek dokunuş kilidi ve aynı taslak/istek kimliği tekrarları sınırlar. Sentetik gerçek web uygulamasında 390×844/1280×800; tercih kaydı, az veri, iki sorulu ortak kaynak taslağı ve yatay taşma testi geçti. Kanıt: `release/future-f8-2026-11-07/`. Favori PDF, öğretmen özet kapsamı, zorluk önerisi ve fiziksel kabul hâlâ açık.

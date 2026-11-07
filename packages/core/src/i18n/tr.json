@@ -5202,5 +5202,10 @@
   "outcomeObservations.grade": "{{grade}}. sınıf",
   "outcomeObservations.limited": "{{count}} puanlanmış farklı soru: yorum yapmak için henüz az veri var.",
   "outcomeObservations.score": "{{count}} farklı soruda ortalama {{score}} / 100",
-  "outcomeObservations.excluded": "{{pending}} puan bekleyen ve {{blank}} cevapsız soru ortalamaya katılmadı."
+  "outcomeObservations.excluded": "{{pending}} puan bekleyen ve {{blank}} cevapsız soru ortalamaya katılmadı.",
+  "questionLikes.practiceTitle": "Sevdiğim Sorularla Kısa Tekrar",
+  "questionLikes.practiceHelp": "{{name}} için aynı sınıftan en fazla 10 favori seçin. Taslağı birlikte kontrol ettikten sonra atayabilirsiniz.",
+  "questionLikes.groupHelp": "Ortak metin veya görsele bağlı bir soru seçilirse bağlamı kaybolmasın diye grubun tamamı taslağa alınır. Soru sayısı kontrol adımında gösterilir.",
+  "questionLikes.practice": "Taslağı hazırla ({{count}} seçili)",
+  "questionLikes.selectPractice": "Tekrar taslağına ekle"
 }

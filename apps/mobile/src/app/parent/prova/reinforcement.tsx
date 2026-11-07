@@ -14,6 +14,7 @@ interface Suggestion { child_id:string; child_name:string; question_id:string; s
 export default function Reinforcement() {
   const {t}=useTranslation(); const {claims}=useSession(); const cache=useQueryClient();
   const key=["reinforcement_suggestions",claims?.family_id];
+  const starting=useRef(false);
   const prepared=useRef(new Map<string,{id:string;request:string;content:ProvaDraft}>());
   const suggestions=useQuery({queryKey:key,queryFn:async()=>{
     const {data,error}=await supabase.rpc("get_reinforcement_suggestions");if(error)throw error;
@@ -59,7 +60,7 @@ export default function Reinforcement() {
       <Text style={parentStyles.muted}>{row.subject} · {row.stem}</Text>
       {!row.outcome_known?<Text style={parentStyles.muted}>{t("reinforcement.outcomeMissing")}</Text>:null}
       <Button title={t("reinforcement.shortPractice")} loading={create.isPending&&create.variables?.question_id===row.question_id} disabled={!row.outcome_known||dismiss.isPending||create.isPending}
-        onPress={()=>create.mutate(row)} />
+        onPress={()=>{if(starting.current)return;starting.current=true;create.mutate(row,{onSettled:()=>{starting.current=false;}});}} />
       {row.attempt_id?<Button variant="secondary" title={t("reinforcement.openPlan")} onPress={()=>router.push({pathname:"/parent/prova/repeat/[attemptId]",params:{attemptId:row.attempt_id!}})} />:null}
       <Button variant="ghost" title={t("reinforcement.skip")} disabled={dismiss.isPending} onPress={()=>dismiss.mutate(row)} />
       {(create.error&&create.variables?.child_id===row.child_id&&create.variables?.question_id===row.question_id)||(dismiss.error&&dismiss.variables?.child_id===row.child_id&&dismiss.variables?.question_id===row.question_id)?<Text accessibilityRole="alert">{t(create.error?.message==="not_enough_questions"?"reinforcement.notEnough":"questionLikes.error")}</Text>:null}

@@ -5207,5 +5207,10 @@
   "outcomeObservations.grade": "Grade {{grade}}",
   "outcomeObservations.limited": "{{count}} distinct scored questions: more observations are needed before interpreting.",
   "outcomeObservations.score": "Average {{score}} / 100 across {{count}} distinct questions",
-  "outcomeObservations.excluded": "{{pending}} awaiting review and {{blank}} unanswered questions are excluded from the average."
+  "outcomeObservations.excluded": "{{pending}} awaiting review and {{blank}} unanswered questions are excluded from the average.",
+  "questionLikes.practiceTitle": "A Short Review with Favorite Questions",
+  "questionLikes.practiceHelp": "Choose up to 10 favorites from the same grade for {{name}}. Review the draft before assigning it.",
+  "questionLikes.groupHelp": "If a selected question shares a passage or image, its whole group is included to preserve context. The review step shows the total question count.",
+  "questionLikes.practice": "Prepare draft ({{count}} selected)",
+  "questionLikes.selectPractice": "Add to review draft"
 }
