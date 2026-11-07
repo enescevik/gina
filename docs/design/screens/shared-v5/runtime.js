@@ -34,7 +34,8 @@ export function render(group,screens){
  const q=new URLSearchParams(location.search),id=q.get('screen')||screens[0].id,state=q.get('state')||'normal',device=group==='child'&&q.get('device')==='tablet'?'tablet':'phone';
  const s=screens.find(x=>x.id===id)||screens[0],ctx={state,device,blank:state==='empty'};
  const value=(v)=>typeof v==='function'?v(ctx):v;
- let content=state==='normal'?value(s.body):s.states?.[state]?value(s.states[state]):state==='empty'?empty(s.emptyTitle||'Henüz bir kayıt yok',s.emptyText||'Hazır olduğunda burada görünecek.'):state==='loading'?loading():error();
+ const stateBody=Object.entries(s.states??{}).find(([name])=>name===state)?.[1];
+ let content=state==='normal'?value(s.body):stateBody?value(stateBody):state==='empty'?empty(s.emptyTitle||'Henüz bir kayıt yok',s.emptyText||'Hazır olduğunda burada görünecek.'):state==='loading'?loading():error();
  const plate=s.kind==='desk'?'desk':s.kind==='shelf'&&state==='normal'?'collection':'board';
  const child=group==='child';
  const frame=document.getElementById('frame');frame.className=`${device} ${child?'child':'parent'} ${s.kind||'board'} ${state!=='normal'?'state-view':''}`;

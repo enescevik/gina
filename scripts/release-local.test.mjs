@@ -109,7 +109,7 @@ test('hash karşılaştırma: sahte sunucuyla eşleşme, fark, 404 ve yeniden de
     const fetcher = async url => { const u = new URL(url); requested.push(u.origin + u.pathname); const body = live[u.pathname]; return new Response(body ?? 'not found', { status: body ? 200 : 404 }); };
     const ok = await compareLiveHashes({ files, origins: ['https://gina-web.pages.dev', 'https://abc123.gina-web.pages.dev'], fetcher, delayMs: 0 });
     assert.equal(ok.ok, true); assert.equal(ok.total, 6); assert.equal(ok.matched, 6);
-    assert.ok(requested.includes('https://gina-web.pages.dev/') && requested.includes('https://abc123.gina-web.pages.dev/_expo/static/js/app.js'));
+    assert.ok(requested.some(url => url === 'https://gina-web.pages.dev/') && requested.some(url => url === 'https://abc123.gina-web.pages.dev/_expo/static/js/app.js'));
     let calls = 0;
     const stale = await compareLiveHashes({ files, origins: ['https://gina-web.pages.dev'], attempts: 2, delayMs: 0, fetcher: async url => { calls++; const u = new URL(url); return new Response(u.pathname === '/' ? '<html>OLD</html>' : live[u.pathname] ?? 'x', { status: live[u.pathname] ? 200 : 404 }); } });
     assert.equal(stale.ok, false); assert.equal(stale.matched, 2);

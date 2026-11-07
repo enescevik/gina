@@ -1,6 +1,6 @@
 // Loopback only: /auth/v1 + /rest/v1 proxy with CORS, and a static server for apps/backoffice/out.
 import http from 'node:http';
-import { readFile, stat } from 'node:fs/promises';
+import readPreviewFile from '../../../../../scripts/read-preview-file.cjs';
 import { join, extname, normalize } from 'node:path';
 const auth = Number(process.env.AUTH_PORT), rest = Number(process.env.REST_PORT), out = process.env.OUT_DIR;
 const cors = { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*', 'access-control-expose-headers': '*' };
@@ -19,7 +19,7 @@ const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '
 const statics = http.createServer(async (req, res) => {
   const path = normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname)).replace(/^(\.\.[/\\])+/, '');
   for (const c of [path, path + '.html', join(path, 'index.html')]) {
-    try { const f = join(out, c); if ((await stat(f)).isFile()) { res.writeHead(200, { 'content-type': types[extname(f)] ?? 'application/octet-stream' }); res.end(await readFile(f)); return; } } catch {}
+    try { const body = readPreviewFile(out, c); if (body) { res.writeHead(200, { 'content-type': types[extname(c)] ?? 'application/octet-stream' }); res.end(body); return; } } catch {}
   }
   res.writeHead(404); res.end('not found');
 });
