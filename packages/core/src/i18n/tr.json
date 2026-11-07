@@ -5112,5 +5112,15 @@
   "subscription.limitDevices": "Mevcut paketindeki bağlı cihaz sınırına ulaştın. Bu tableti de bağlamak için daha fazla cihaz içeren bir paket seçebilirsin.",
   "subscription.limitTasks": "Mevcut paketindeki aktif görev sınırına ulaştın. Daha fazla görev içeren paketleri inceleyebilirsin.",
   "subscription.limitNotes": "Mevcut paketindeki not sınırına ulaştın. Daha fazla not içeren paketleri inceleyebilirsin.",
-  "subscription.viewPlans": "Paketleri incele"
+  "subscription.viewPlans": "Paketleri incele",
+  "questionLikes": {
+    "title": "Beğendiğim Sorular",
+    "body": "Beğendiğiniz soruları burada saklayın. Bu seçim çocuğa ek çalışma atamaz ve puanı değiştirmez.",
+    "add": "♡ Bu Soruyu Beğendim",
+    "remove": "♥ Beğeniyi Geri Al",
+    "error": "Beğeni kaydedilemedi. Yeniden deneyebilirsiniz.",
+    "retry": "Yeniden Dene",
+    "empty": "Henüz beğendiğiniz soru yok. Hazırlama sırasında bir soruyu açıp kalbe dokunun.",
+    "more": "Daha Fazla Göster"
+  }
 }

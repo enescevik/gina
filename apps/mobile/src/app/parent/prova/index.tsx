@@ -201,6 +201,7 @@ export default function ParentProvaScreen() {
           <View style={{ gap: 7, flex: wide ? 1 : undefined }}><Text style={[b.h1, wide && { fontSize: 38 }]}>{t("prova.title")}</Text><Text style={[b.copy, { color: p.muted }]}>{t("provaBuilder.hubBody")}</Text></View>
           {createButton}
         </View>
+        <NavigationCard title={t("questionLikes.title")} onPress={() => router.push("/parent/prova/favorites")} />
         {children.data && children.data.length > 1
           ? (
             <ChildPicker
