@@ -19,12 +19,12 @@ function baseUrl(): string {
   return (configured && /^https:\/\//.test(configured) ? configured : DEFAULT_BASE_URL).replace(/\/$/, "");
 }
 
-export function toOpenAiContent(user: AiUserContent): unknown {
+export function toOpenAiContent(user: AiUserContent, detail?: "high"): unknown {
   if (typeof user === "string") return user;
   return user.map((part) => {
     if (part.type === "text") return { type: "text", text: part.text };
     if (part.type === "image") {
-      return { type: "image_url", image_url: { url: `data:${part.source.media_type};base64,${part.source.data}` } };
+      return { type: "image_url", image_url: { url: `data:${part.source.media_type};base64,${part.source.data}`, ...(detail ? { detail } : {}) } };
     }
     return { type: "file", file: { filename: "document.pdf", file_data: `data:application/pdf;base64,${part.source.data}` } };
   });
@@ -35,12 +35,12 @@ export const openAiAdapter: AiAdapter = {
   provider: "openai_compatible",
   keySecretName: "OPENAI_API_KEY",
   tokenizer: "estimate",
-  countTokens(_apiKey: string, _cfg: AiConfig, system: string, user: AiUserContent): Promise<number> {
-    return Promise.resolve(estimateInputTokens(system, user));
+  countTokens(_apiKey: string, cfg: AiConfig, system: string, user: AiUserContent): Promise<number> {
+    return Promise.resolve(estimateInputTokens(system, user, cfg.estimatedImageTokens));
   },
   async generate<T>(apiKey: string, cfg: AiConfig, system: string, user: AiUserContent, schema: Record<string, unknown>): Promise<AiResult<T>> {
     if (!apiKey) throw new AiProviderError("provider_unconfigured");
-    const estimated = estimateInputTokens(system, user);
+    const estimated = estimateInputTokens(system, user, cfg.estimatedImageTokens);
     if (estimated > (cfg.maxInputTokens ?? 8000)) throw new AiProviderError("ai_input_too_large");
     const res = await fetch(`${baseUrl()}/chat/completions`, {
       method: "POST",
@@ -50,7 +50,7 @@ export const openAiAdapter: AiAdapter = {
         model: cfg.model,
         max_completion_tokens: cfg.maxOutputTokens,
         ...(cfg.reasoningEffort ? { reasoning_effort: cfg.reasoningEffort } : {}),
-        messages: [{ role: "system", content: system }, { role: "user", content: toOpenAiContent(user) }],
+        messages: [{ role: "system", content: system }, { role: "user", content: toOpenAiContent(user, cfg.imageDetail) }],
         response_format: { type: "json_schema", json_schema: { name: "gina_output", strict: true, schema } },
       }),
     });

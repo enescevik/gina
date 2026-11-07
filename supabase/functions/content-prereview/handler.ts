@@ -1,10 +1,11 @@
+import { checkedReviewImages, reviewImageMessage, type ReviewImage } from "../_shared/prereview-media.ts";
 // E01/C09 content pre-review Edge handler. Called by an admin or content operator (JWT, proven by the
 // role-gated request_content_prereview RPC) or by the scheduler (x-cron-secret). The record is claimed with a
 // lease, the normalized content goes to the RESOLVED provider (C08 generateWith), the output is validated
 // against the contract and the verdict is stored. Kill switch / inactive model / missing key / paused
 // provider / obsolete source -> no provider call. Retryable failures are bounded (3 attempts in the DB);
 // non-retryable failures (auth, rejected, too large, refusal, unconfigured) go straight to the admin queue.
-// Images are never sent: the verdict carries an explicit media flag and an image-bearing record is not approved.
+// Library PNGs require a current lease and verified bytes; other missing media remains unapproved.
 import type { AiConfig, AiResult, AiUserContent } from "../_shared/prova.ts";
 import { type AiFailure, AiProviderError, classifyAiError } from "../_shared/ai-provider.ts";
 import {
@@ -34,6 +35,7 @@ export interface Dependencies {
   resolve(): Promise<AiConfig | Response>;
   /** C08: generateWith — the resolved adapter performs exactly one paid call. */
   call(apiKey: string, config: AiConfig, system: string, user: AiUserContent, schema: Record<string, unknown>): Promise<AiResult<unknown>>;
+  media?(id: string, lease: string): Promise<unknown>;
   promptVersion?: string;
 }
 
@@ -165,9 +167,17 @@ export async function reviewOne(deps: Dependencies, kind: PrereviewKind, id: str
   const { config, apiKey } = prepared;
   const meta = { model: config.model, provider: providerOf(config) };
 
+  let images: ReviewImage[] = [];
+  if (mediaCount > 0 && kind === 'library_package' && deps.media) {
+    try { images = await checkedReviewImages(await deps.media(id, lease), mediaCount); }
+    catch { return toAdmin('media_unavailable', 'prereview_media_unavailable', meta); }
+  }
+  const mediaReviewed = mediaCount > 0 && images.length === mediaCount;
+  const userText = buildUserMessage(c.content, mediaCount, mediaReviewed);
+  const userMessage = mediaReviewed ? reviewImageMessage(userText, images) : userText;
   let result: AiResult<unknown>;
   try {
-    result = await deps.call(apiKey, { ...config, promptVersion, execution: { kind: "prereview", lease } }, SYSTEM, buildUserMessage(c.content, mediaCount), SCHEMA);
+    result = await deps.call(apiKey, { ...config, promptVersion, execution: { kind: "prereview", lease } }, SYSTEM, userMessage, SCHEMA);
   } catch (e) {
     const failure = classifyAiError(e);
     if (!config.chain) await providerHealth(deps, meta.provider, { ok: false, error: failure.code, uncertain: failure.uncertain });
@@ -180,7 +190,7 @@ export async function reviewOne(deps: Dependencies, kind: PrereviewKind, id: str
   meta.provider = result.provider ?? meta.provider;
   try {
     const output = validateOutput(result.output);
-    const decision = decide(output, undefined, { mediaCount });
+    const decision = decide(output, undefined, { mediaCount, mediaReviewed });
     const verdict = buildVerdict(output, decision, {
       ...meta,
       promptVersion,
@@ -188,6 +198,8 @@ export async function reviewOne(deps: Dependencies, kind: PrereviewKind, id: str
       outputTokens: result.outputTokens,
       providerUsage: result.providerUsage,
       mediaCount,
+      mediaReviewed,
+      mediaProof: images.map(({source_key,sha256})=>({source_key,sha256})),
     });
     if (!await finish(decision.status, verdict, null)) return { kind, id, prereview_status: "pending", outcome: "error", reason: "finish_failed" };
     return { kind, id, prereview_status: decision.status, outcome: "reviewed", reason: decision.reason };

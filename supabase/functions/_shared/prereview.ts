@@ -4,8 +4,8 @@ import type { AiResult } from "./prova.ts";
 // the admin queue (needs_admin / ai_rejected_suggestion) always ends with a human decision.
 // Nothing here calls a provider: the Edge handler injects the call.
 
-// v2 (C09): görseller modele gösterilmez; görsele bağlı doğruluk için solution_correct=unsure istenir.
-export const PREREVIEW_PROMPT_VERSION = "prereview-v3";
+// v4: lease-bound immutable library PNGs can be reviewed; missing media still fails closed.
+export const PREREVIEW_PROMPT_VERSION = "prereview-v4";
 export const PREREVIEW_CONFIDENCE_THRESHOLD = 0.85;
 export const PREREVIEW_MAX_ATTEMPTS = 3;
 
@@ -85,7 +85,7 @@ export const SYSTEM =
   `Sen GINA içerik ön inceleme asistanısın. Sana bir kütüphane taslak paketi, bir aile katkı kopyası veya bir MEB ortak yazılı senaryo adayının normalize edilmiş tam metni verilir. Görevin: içeriği okuyup beş rubrik sorusunu cevaplamak, bulguları listelemek ve bir öneri vermek. Kararı sen vermiyorsun; onay/ret son kararı yönetici verir, bağımsız eğitimci incelemesi ayrı bir kademedir.
 Rubrik: solution_correct (öğretmen cevabı/çözümü doğru ve beklenen cevapla tutarlı mı), measures_target_skill (soru iddia edilen kazanımı/beceriyi gerçekten ölçüyor mu; senaryo adayında blok sayıları ve çıktı metinleri tutarlı mı), age_language_appropriate (sınıf düzeyine, yaşa ve Türkçe diline uygun mu; cezalandırıcı/utandırıcı dil yok mu), copyright_or_copy_suspicion (telifli ders kitabı, yayınevi veya başka kaynağın aynen kopyası şüphesi var mı), leaked_exam_suspicion (okul yazılısı, öğretmen EBA havuzu veya gizli sınav sorusunun paylaşımı şüphesi var mı).
 Her rubrik cevabı yes/no/unsure. Emin değilsen unsure yaz; uydurma. Her sorunlu nokta findings içinde code+severity+detail ile yer alsın; blocking yalnız yayını engelleyecek sorun için. Kişisel veri (çocuk adı, okul adı, telefon) görürsen personal_data bulgusu yaz. confidence 0-1 arasında, bulguların eksiksizliğine duyduğun güvendir; içerik iyi diye otomatik yüksek verme. recommendation: approve yalnız tüm rubrik geçerse; reject yalnız açık ve ciddi sorun varsa; aksi admin_review. summary en çok 600 karakter, Türkçe. Yalnız istenen JSON'u döndür.
-Görseller: sana hiçbir görsel gösterilmez; yalnız başlık, metin ve alternatif metin (alt) gelir. Bir sorunun doğruluğu, cevabı veya anlaşılırlığı görsele bağlıysa (şekil, grafik, çizim, tablo görüntüsü) solution_correct için unsure yaz ve bunu advisory bir other bulgusuyla belirt; görseli görmüş gibi yorum yapma.
+Görseller: yalnız mesajda gerçekten eklenmiş görselleri incele. Kaynak anahtarını sorudaki source_key ile eşleştir; şekil, ölçek, etiket, grafik verisi ve cevabı birlikte kontrol et. Mesajda görsellerin gösterilmediği belirtiliyorsa veya gereken görsel eksik/okunamazsa solution_correct için unsure yaz ve eksikliği belirt. Alt metni görseli görmenin yerine kullanma.
 Kapsam ayrımı: Kaynak hücresi/hash doğrulaması, içerikteki kazanım ilişkisi ve bağımsız alan uzmanı onayı ayrı olgulardır. subject_expert_approval=false, pending_subject_review ve okul senaryosu seçilmemiş olması kendi başına soru/çözüm/rubrik hatası değildir; bunları gerekiyorsa advisory olarak kaydet. Bunları yapılmış gibi gösterme. İçerik kazanımın verilen gerçek metnini ölçmüyorsa veya kaynak iddiası verilen kanıtla çelişiyorsa measures_target_skill=unsure/no ve somut bulgu yaz. Confidence yine incelemenin ve bulguların eksiksizliğine duyduğun güvendir; yönetici iş akışının tamamlanmışlığına verilen puan değildir. Gerçek içerik belirsizliğini, hesap/anahtar hatasını, rubrik çelişkisini, dil ve yaş sorununu açıkça işaretle. Yanıtın kısa olsun; her özeti en çok400 karakter tut. Hiçbir puan ya da öneri hedeflenmez. Her kaydı bağımsız incele.`;
 
 export const SCHEMA = {
@@ -195,7 +195,7 @@ export interface Decision {
 export function decide(
   output: PrereviewOutput,
   threshold = PREREVIEW_CONFIDENCE_THRESHOLD,
-  context: { mediaCount?: number } = {},
+  context: { mediaCount?: number; mediaReviewed?: boolean } = {},
 ): Decision {
   const blocking = output.findings.filter((f) => f.severity === "blocking");
   const rubricFails = RUBRIC_KEYS.filter((k) => output.rubric[k] !== RUBRIC_PASS[k]);
@@ -210,17 +210,17 @@ export function decide(
   if (output.recommendation !== "approve") {
     return { status: "needs_admin", reason: "model_requested_review" };
   }
-  // C09: the model never saw the images; image-dependent correctness is not proven -> the admin decides.
-  if ((context.mediaCount ?? 0) > 0) return { status: "needs_admin", reason: "media_not_reviewed" };
+  // Complete, hash-checked image delivery is required in addition to the unchanged quality gate.
+  if ((context.mediaCount ?? 0) > 0 && context.mediaReviewed !== true) return { status: "needs_admin", reason: "media_not_reviewed" };
   return { status: "ai_approved", reason: "all_checks_passed" };
 }
 
-/** Explicit record flag: images are counted by the database, never sent to the model. */
-export function mediaFlag(count: number) {
+/** Images are counted by the database; reviewed is set only after complete verified delivery. */
+export function mediaFlag(count: number, reviewed = false) {
   return {
     count,
-    reviewed: false,
-    image_dependent_correctness: count > 0 ? "not_proven" : "not_applicable",
+    reviewed: count > 0 && reviewed,
+    image_dependent_correctness: count > 0 ? (reviewed ? "reviewed" : "not_proven") : "not_applicable",
   } as const;
 }
 
@@ -236,6 +236,8 @@ export function buildVerdict(
     inputTokens: number | null;
     outputTokens: number | null;
     mediaCount?: number;
+    mediaReviewed?: boolean;
+    mediaProof?: {source_key:string;sha256:string}[];
   },
 ) {
   return {
@@ -250,7 +252,8 @@ export function buildVerdict(
     summary: output.summary,
     input_tokens: meta.inputTokens,
     output_tokens: meta.outputTokens,
-    media: mediaFlag(meta.mediaCount ?? 0),
+    media: mediaFlag(meta.mediaCount ?? 0, meta.mediaReviewed),
+    ...(meta.mediaProof ? { media_proof: meta.mediaProof } : {}),
     advisory: true,
     ...(meta.providerUsage ? { provider_usage: meta.providerUsage } : {}),
   };
@@ -279,7 +282,7 @@ export function failureVerdict(
 }
 
 /** The user message: normalized content as JSON, never a bare URL. */
-export function buildUserMessage(content: Record<string, unknown>, mediaCount = 0): string {
+export function buildUserMessage(content: Record<string, unknown>, mediaCount = 0, mediaReviewed = false): string {
   const kind = String(content.kind ?? "");
   const intro = kind === "library_package"
     ? "Kütüphane taslak paketi (öğrenci alanları, öğretmen cevap/çözüm/rubrik, ortak kaynak metinleri):"
@@ -287,7 +290,7 @@ export function buildUserMessage(content: Record<string, unknown>, mediaCount = 
     ? "Aile katkı kopyası (yayın için önerilen özgün soru; aile ve çocuk kimliği çıkarıldı):"
     : "MEB ortak yazılı senaryo adayı (bloklar, soru sayıları ve tam kazanım metinleri):";
   const media = mediaCount > 0
-    ? `\nBu kayıtta ${mediaCount} görsel var ve sana GÖSTERİLMEDİ (yalnız alt metin). Görsele bağlı doğruluğu kanıtlanmış sayma.`
+    ? (mediaReviewed ? `\nBu kayıttaki ${mediaCount} görsel, kaynak anahtarlarıyla mesajda eklenmiştir. Görselleri gerçekten incele.` : `\nBu kayıtta ${mediaCount} görsel var ve sana GÖSTERİLMEDİ (yalnız alt metin). Görsele bağlı doğruluğu kanıtlanmış sayma.`)
     : "";
   return `${intro}${media}\n${JSON.stringify(content)}`;
 }
