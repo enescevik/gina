@@ -1,3 +1,4 @@
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // Content review UI tour (E01 + M01 + P05 + S06). Run only through scripts/test-content-review-ui.py:
 // disposable local Auth/PostgREST, synthetic example.invalid admin, no Edge runtime, no paid AI call.
 const fs = require('node:fs'), http = require('node:http'), path = require('node:path'), assert = require('node:assert/strict');
@@ -27,7 +28,7 @@ function serve() {
   });
 }
 async function api(token, method, route, body, extra = {}) {
-  const r = await fetch(`http://127.0.0.1:${f.rest}${route}`, { method, headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json', ...extra }, body: body ? JSON.stringify(body) : undefined });
+  const r = await loopbackFixtureFetch(`http://127.0.0.1:${f.rest}${route}`, { method, headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json', ...extra }, body: body ? JSON.stringify(body) : undefined });
   assert.ok(r.ok, 'local_api_failed ' + route + ' ' + r.status);
   return r.status === 204 ? null : r.json();
 }
@@ -35,7 +36,7 @@ const ok = (name) => { checks[name] = true; };
 
 (async () => {
   const site = await serve();
-  const login = await fetch(`http://127.0.0.1:${f.auth}/token?grant_type=password`, { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
+  const login = await loopbackFixtureFetch(`http://127.0.0.1:${f.auth}/token?grant_type=password`, { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
   assert.equal(login.status, 200);
   const token = (await login.json()).access_token;
 

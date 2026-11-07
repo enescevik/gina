@@ -668,7 +668,7 @@ ${common}
   }</th></tr></thead><tbody>${keyRows}</tbody></table>
 </section>`;
 
-  const head = `<!doctype html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>${
+  const head = `<!doctype html><html><head><meta charset="utf-8"/><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; font-src data:; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>${
     escapeHtml(title)
   }</title><style>${STYLE}${copy === "key" ? ".key{page-break-before:auto;break-before:auto}" : ""}</style></head><body>`;
   // Öğrenci nüshasında anahtar bölümü hiç üretilmez; anahtar nüshasında soru gövdesi yok.

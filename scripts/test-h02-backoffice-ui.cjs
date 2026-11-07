@@ -1,3 +1,4 @@
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // H02 backoffice tours. Run only through `scripts/test-h02-panel-extraction.py --run-local --with-ui`: disposable
 // Auth/PostgREST + the real Supabase edge-runtime image (curriculum-source-fetch + curriculum-source-extract, real
 // ÖDSGM network), synthetic example.invalid admin, static backoffice export built against a placeholder origin.
@@ -31,7 +32,7 @@ function serve() {
 const ok = (name) => { checks[name] = true; };
 let token = null;
 async function sources() {
-  const r = await fetch(`http://127.0.0.1:${f.rest}/rpc/admin_list_curriculum_sources`, { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: '{}' });
+  const r = await loopbackFixtureFetch(`http://127.0.0.1:${f.rest}/rpc/admin_list_curriculum_sources`, { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: '{}' });
   assert.equal(r.status, 200);
   return r.json();
 }
@@ -82,7 +83,7 @@ async function login(site) {
 
 (async () => {
   const site = await serve();
-  const auth = await fetch(`http://127.0.0.1:${f.auth}/token?grant_type=password`, { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
+  const auth = await loopbackFixtureFetch(`http://127.0.0.1:${f.auth}/token?grant_type=password`, { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
   assert.equal(auth.status, 200);
   token = (await auth.json()).access_token;
   browser = await chromium.launch({ channel: 'chrome', headless: true });

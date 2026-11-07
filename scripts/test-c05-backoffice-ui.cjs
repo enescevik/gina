@@ -1,3 +1,4 @@
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // C05 backoffice tour. Run only through `scripts/test-curriculum-pipeline-chain.py --run-local --with-ui`:
 // disposable Auth/PostgREST + the real Supabase edge-runtime image (curriculum-source-fetch, real ÖDSGM network),
 // synthetic example.invalid admin, static backoffice export built against a placeholder origin.
@@ -29,7 +30,7 @@ const ok = (name) => { checks[name] = true; };
 
 (async () => {
   const site = await serve();
-  const login = await fetch(`http://127.0.0.1:${f.auth}/token?grant_type=password`, { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
+  const login = await loopbackFixtureFetch(`http://127.0.0.1:${f.auth}/token?grant_type=password`, { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
   assert.equal(login.status, 200);
   browser = await chromium.launch({ channel: 'chrome', headless: true });
   const c = await browser.newContext({ viewport: { width: 1280, height: 800 }, locale: 'tr-TR', timezoneId: 'Europe/Istanbul' });

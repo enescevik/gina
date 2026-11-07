@@ -31,15 +31,15 @@ test('deepmerge retains ordinary nested/array/symbol semantics',()=>{
 });
 
 for(const mode of ['CommonJS','ESM']) test(`minimatch ${mode} bounds preprocessing while preserving ordinary matching`,()=>{
-  const loader=mode==='CommonJS'?`require(${JSON.stringify(modernMinimatch)})`:`await import(${JSON.stringify(pathToFileURL(resolve(dirname(modernMinimatch),'../esm/index.js')).href)})`;
-  const code=`(async()=>{const {Minimatch}=${loader};
+  const entry=mode==='CommonJS'?modernMinimatch:pathToFileURL(resolve(dirname(modernMinimatch),'../esm/index.js')).href;
+  const code=`(async()=>{const {Minimatch}=process.argv[1]==='CommonJS'?require(process.argv[2]):await import(process.argv[2]);
     const amplified=new Minimatch(Array(30).fill('**/../a/b').join('/'),{optimizationLevel:2,braceExpandMax:64});
     if(amplified.set.length>64)process.exit(2);
     const small=new Minimatch('**/../a/b/**/../c/d',{optimizationLevel:2});
     if(!small.match('../a/b/../c/d')||!small.match('x/a/b/y/c/d'))process.exit(3);
     const large=new Minimatch('{x,*}/{0..999}',{optimizationLevel:2});
     if(large.set.length!==2000||!large.match('y/999')||large.match('.y/5'))process.exit(4);})().catch(()=>process.exit(5));`;
-  const result=spawnSync(process.execPath,['--max-old-space-size=96','-e',code],{timeout:2000,stdio:'ignore'});
+  const result=spawnSync(process.execPath,['--max-old-space-size=96','-e',code,mode,entry],{timeout:2000,stdio:'ignore'});
   assert.equal(result.status,0,'preprocessing must complete within the isolated memory/time bound');
 });
 

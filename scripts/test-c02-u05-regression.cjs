@@ -1,3 +1,4 @@
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // C02 regression copy of scripts/test-u05-planner-ui.cjs (U05 flows re-accepted on the C02 build: empty/full
 // cell moves, bell-based times, copy day, server-side subject confirmation, source text, bag, sources,
 // distribution). Differences: output under docs/release/c02-2026-11-06/u05-regression and the C02 cell text.
@@ -38,11 +39,11 @@ const addDays = (d, n) => new Date(new Date(d + "T12:00:00Z").getTime() + n * 86
 const clock = (m) => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 
 (async () => {
-  const login = await fetch(f.url + "/auth/v1/token?grant_type=password", { method: "POST", headers: { apikey: f.anon, "content-type": "application/json" }, body: JSON.stringify({ email: f.email, password: f.password }) });
+  const login = await loopbackFixtureFetch(f.url + "/auth/v1/token?grant_type=password", { method: "POST", headers: { apikey: f.anon, "content-type": "application/json" }, body: JSON.stringify({ email: f.email, password: f.password }) });
   assert.ok(login.ok);
   const session = await login.json();
   async function api(path, body, prefer) {
-    const res = await fetch(f.url + "/rest/v1/" + path, { method: body ? "POST" : "GET", headers: { apikey: f.anon, authorization: "Bearer " + session.access_token, "content-type": "application/json", ...(prefer ? { prefer } : {}) }, body: body ? JSON.stringify(body) : undefined });
+    const res = await loopbackFixtureFetch(f.url + "/rest/v1/" + path, { method: body ? "POST" : "GET", headers: { apikey: f.anon, authorization: "Bearer " + session.access_token, "content-type": "application/json", ...(prefer ? { prefer } : {}) }, body: body ? JSON.stringify(body) : undefined });
     const text = await res.text();
     assert.ok(res.ok, path + " " + text.slice(0, 300));
     return text ? JSON.parse(text) : null;
@@ -102,7 +103,7 @@ insert into public.app_settings(key,value) values('sources.enabled','true'::json
   await ctx.route(f.url + "/**", async (route) => {
     try {
       if (route.request().method() === "OPTIONS") return route.fulfill({ status: 204, headers: { "access-control-allow-origin": "*", "access-control-allow-headers": "*", "access-control-allow-methods": "*" } });
-      const res = await route.fetch();
+      const res = await route.fetch({ maxRedirects: 0 });
       await route.fulfill({ response: res, headers: { ...res.headers(), "access-control-allow-origin": "*" } });
     } catch { await route.fulfill({ status: 503, body: "Local fixture unavailable" }); }
   });

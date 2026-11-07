@@ -25,5 +25,5 @@ for(let [i,slug] of ['homework-math','tidy-room'].entries()){await skin(ctx,'par
 await skin(ctx,'parent-card',33,1303,789,265,1.8);await draw(ctx,'chrome','timeline-line',88,1440,15,74);await draw(ctx,'chrome','timeline-dot-filled',79,1411,33,33);await draw(ctx,'chrome','timeline-dot-empty',79,1500,33,33);
 await skin(ctx,'parent-insight-card',33,1585,789,134,1.8);await draw(ctx,'rooms','parent-insight-book',65,1615,94,79,true);await skin(ctx,'button-outline',33,1738,789,84,1.5);
 }
-window.ready=(async()=>{for(let g in dirs)maps[g]=await(await fetch(ROOT+dirs[g]+'manifest.json')).json();await child();await parent();document.querySelector('#pet').onchange=child;document.querySelector('#character').onchange=child;return true})().catch(e=>{document.body.insertAdjacentHTML('beforeend','<pre>'+e.stack+'</pre>');throw e});
+window.ready=(async()=>{for(let g in dirs)maps[g]=await(await fetch(ROOT+dirs[g]+'manifest.json')).json();await child();await parent();document.querySelector('#pet').onchange=child;document.querySelector('#character').onchange=child;return true})().catch(e=>{const error=document.createElement('pre');error.textContent=String(e.stack??e);document.body.append(error);throw e});
 </script></html>

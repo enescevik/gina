@@ -1,3 +1,4 @@
+const loopbackFixtureFetch = require('../../../../scripts/loopback-fixture-fetch.cjs');
 // P04 UI bağlama kabulü. Yalnız test-isolated-services.py --ui-hold'un geçici sentetik fixture'ı kabul edilir.
 // Ortam: GINA_QA_UI_FIXTURE (fixture JSON), GINA_QA_WEB (yerel web export adresi), GINA_QA_WEB_BACKEND (export'a gömülü
 // loopback yer tutucu adres; istekler fixture'a yönlendirilir), GINA_QA_WEB_ANON (gömülü yer tutucu anon anahtar),
@@ -17,10 +18,10 @@ const after = (body, n = 3) => body.split('\n').flatMap((l, i, a) => l.trim() ==
 const drawing = { version: 1, width: 1000, height: 1400, elements: [{ id: randomUUID(), type: 'stroke', color: '#201951', size: 4, points: [[120, 140], [260, 300], [420, 330], [520, 260]] }] };
 
 (async () => {
-  const login = await fetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
+  const login = await loopbackFixtureFetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
   assert.ok(login.ok); const session = await login.json();
   async function api(path, body, prefer) {
-    const res = await fetch(f.url + '/rest/v1/' + path, { method: body ? 'POST' : 'GET', headers: { apikey: f.anon, authorization: 'Bearer ' + session.access_token, 'content-type': 'application/json', ...(prefer ? { prefer } : {}) }, body: body ? JSON.stringify(body) : undefined });
+    const res = await loopbackFixtureFetch(f.url + '/rest/v1/' + path, { method: body ? 'POST' : 'GET', headers: { apikey: f.anon, authorization: 'Bearer ' + session.access_token, 'content-type': 'application/json', ...(prefer ? { prefer } : {}) }, body: body ? JSON.stringify(body) : undefined });
     const text = await res.text(); assert.ok(res.ok, path + ' ' + text.slice(0, 300)); return text ? JSON.parse(text) : null;
   }
   stage = 'seed';

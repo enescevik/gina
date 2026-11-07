@@ -1,3 +1,4 @@
+const loopbackFixtureFetch = require('../../../../scripts/loopback-fixture-fetch.cjs');
 // U03 (veli Bugün, menü, bildirim girişleri) UI acceptance against the disposable synthetic fixture from
 // `GINA_QA_UI_FIXTURE=<unique path> scripts/test-isolated-services.py --run-local --ui-hold`.
 // The web export is built against a placeholder origin (GINA_QA_PLACEHOLDER_URL / _ANON); this script forwards those
@@ -41,16 +42,16 @@ function serve() {
 }
 
 async function token(email, password) {
-  const r = await fetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email, password }) });
+  const r = await loopbackFixtureFetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email, password }) });
   assert.ok(r.ok, 'login ' + r.status); return r.json();
 }
 async function refresh(session) {
-  const r = await fetch(f.url + '/auth/v1/token?grant_type=refresh_token', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ refresh_token: session.refresh_token }) });
+  const r = await loopbackFixtureFetch(f.url + '/auth/v1/token?grant_type=refresh_token', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ refresh_token: session.refresh_token }) });
   assert.ok(r.ok, 'refresh ' + r.status); return r.json();
 }
 function client(sessionRef) {
   return async function api(p, body, { method, prefer } = {}) {
-    const res = await fetch(f.url + '/rest/v1/' + p, { method: method || (body ? 'POST' : 'GET'), headers: { apikey: f.anon, authorization: 'Bearer ' + sessionRef.s.access_token, 'content-type': 'application/json', ...(prefer ? { prefer } : {}) }, body: body ? JSON.stringify(body) : undefined });
+    const res = await loopbackFixtureFetch(f.url + '/rest/v1/' + p, { method: method || (body ? 'POST' : 'GET'), headers: { apikey: f.anon, authorization: 'Bearer ' + sessionRef.s.access_token, 'content-type': 'application/json', ...(prefer ? { prefer } : {}) }, body: body ? JSON.stringify(body) : undefined });
     const text = await res.text(); const data = text ? JSON.parse(text) : null;
     assert.ok(res.ok, p.split('?')[0] + ' ' + res.status + ' ' + JSON.stringify(data).slice(0, 200)); return data;
   };
@@ -75,7 +76,7 @@ function client(sessionRef) {
   const bag = await tpl(sib.id, 'Çantayı hazırla', 'pack-school-bag');
   const piano = await tpl(ece, 'Piyano çalış', 'music'); await tpl(ece, 'Su iç', 'drink-water');
   // A real paired device completes the work (complete_task is device-only).
-  const anon = await (await fetch(f.url + '/auth/v1/signup', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ data: {} }) })).json();
+  const anon = await (await loopbackFixtureFetch(f.url + '/auth/v1/signup', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ data: {} }) })).json();
   assert.ok(anon.access_token, 'anonymous device session'); const D = { s: anon }; const dapi = client(D);
   const code = await dapi('rpc/request_pairing', { p_device_name: 'U03 tablet' });
   const deviceId = await api('rpc/pair_child_device', { p_code: code }); D.s = await refresh(D.s);
@@ -291,7 +292,7 @@ function client(sessionRef) {
 
   stage = 'zero_children';
   const email0 = `gina-${randomUUID()}@example.invalid`, password0 = 'U03-' + randomUUID();
-  const signup = await fetch(f.url + '/auth/v1/signup', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: email0, password: password0 }) });
+  const signup = await loopbackFixtureFetch(f.url + '/auth/v1/signup', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: email0, password: password0 }) });
   assert.ok(signup.ok, 'synthetic signup ' + signup.status);
   const B = { s: await token(email0, password0) }; const bapi = client(B);
   await bapi('rpc/create_family', { p_name: 'Deneme Ailesi', p_display_name: 'Deniz' });

@@ -1,3 +1,4 @@
+const loopbackFixtureFetch = require('../../../../scripts/loopback-fixture-fetch.cjs');
 // C09 backoffice tour against the disposable gina_c09_* services + the unchanged content-prereview Edge
 // (deterministic provider boundary). Synthetic data only; nothing leaves the machine.
 // Usage: C09_WORK=<scratch> SHOT_DIR=<dir> GINA_QA_PLAYWRIGHT_PATH=<playwright> node tour.cjs
@@ -11,7 +12,7 @@ const CC = { current: 'c0940000-0000-4000-8000-000000000001', old: 'c0940000-000
 const sql = (q) => execFileSync('docker', ['exec', '-i', 'supabase_db_gina', 'psql', '-X', '-qAt', '-U', 'postgres', '-d', f.db, '-v', 'ON_ERROR_STOP=1'], { input: q }).toString().trim();
 const results = [];
 let browser;
-const stats = async () => (await fetch(f.edge + '/content-prereview/__qa-provider-stats')).json();
+const stats = async () => (await loopbackFixtureFetch(f.edge + '/content-prereview/__qa-provider-stats')).json();
 
 async function session(who) {
   const c = await browser.newContext({ viewport: { width: 1280, height: 800 }, locale: 'tr-TR', timezoneId: 'Europe/Istanbul' });
@@ -58,7 +59,7 @@ async function openItems(p) {
 
   await check('scheduled_drain_through_real_edge', async () => {
     const before = (await stats()).calls;
-    const r = await fetch(f.url + '/functions/v1/content-prereview', { method: 'POST', headers: { 'content-type': 'application/json', 'x-cron-secret': f.cron_secret }, body: JSON.stringify({ drain: true, limit: 10 }) });
+    const r = await loopbackFixtureFetch(f.url + '/functions/v1/content-prereview', { method: 'POST', headers: { 'content-type': 'application/json', 'x-cron-secret': f.cron_secret }, body: JSON.stringify({ drain: true, limit: 10 }) });
     const body = await r.json();
     assert.equal(r.status, 200, JSON.stringify(body));
     assert.equal(ai(CS.wrong).split('|')[0], 'ai_rejected_suggestion');
@@ -68,7 +69,7 @@ async function openItems(p) {
     assert.equal(calls, 2, 'obsolete candidate never reaches the provider');
     assert.equal(sql(`select prereview_verdict->'media'->>'image_dependent_correctness' from gina.content_prereviews where target_id='${CS.image}'`), 'not_proven');
     assert.equal(sql(`select status from gina.contribution_sets where id='${CS.wrong}'`), 'pending', 'reject suggestion does not reject');
-    const bad = await fetch(f.url + '/functions/v1/content-prereview', { method: 'POST', headers: { 'content-type': 'application/json', 'x-cron-secret': 'wrong' }, body: JSON.stringify({ drain: true }) });
+    const bad = await loopbackFixtureFetch(f.url + '/functions/v1/content-prereview', { method: 'POST', headers: { 'content-type': 'application/json', 'x-cron-secret': 'wrong' }, body: JSON.stringify({ drain: true }) });
     assert.equal(bad.status, 403);
     return { processed: body.processed, provider_calls: calls, results: body.results.map(x => `${x.kind}:${x.prereview_status}:${x.reason ?? ''}`) };
   });
