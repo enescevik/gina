@@ -74,7 +74,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F6 — Hata güvenli/kıyassız dil; mola/akşam tercihleri; izin ve denetim görünümü
 
-- Kaynak: §3a, §4.7. Durum: PLANLANDI. Efor: **M**.
+- Kaynak: §3a, §4.7. Durum: KISMEN KOD HAZIR (mola/akşam ve okuma tercihleri; ortak izin denetimi/dil taraması açık). Efor: **M**.
 - Kapsam: Hata güvenli/kıyassız dil; mola/akşam tercihleri; izin ve denetim görünümü.
 - Bağımlılık: Mevcut izinler, bildirim sessiz saatleri.
 - Paket kapısı: Tüm paketler.
@@ -228,3 +228,5 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - Uzlaştırma: başka sahibin #172 (`300328e8`) çalışması main'e alındı. Yapılandırılmış kütüphane **içe aktarma/edinme** 12 açık türde artık mevcut; özel anahtar ayrı kalıyor, OYSS için uygun olmayan türler reddediliyor. F12'de bu alt iş yeniden uygulanmayacak. Kaydedilmiş soru düzenleme, global yönetici kaydetme ve grup sınavı desteği ayrı açık kalemlerdir. Aktif iki dalın pointer veya dosyaları değiştirilmedi. Birleşik taze DB **152 dosya/7.093 kontrol**, turbo 7/7, Node 117/117 temiz.
 
 - CodeQL ilk çalışma `42340592737` başarılı, fakat **205 açık uyarı** var. Yeşil analiz sıfır açık anlamına gelmez. Çoğu test/yayın betiği; core regex, HTML kitapçık ve kaynak ayrıştırıcı uyarıları da var. Hiçbiri otomatik bastırılmadı. Tam metadata: `release/future-f5-2026-11-07/codeql-initial-findings.json`. F5 kabulü bu triyaj tamamlanmadan kapanmaz. İlk düzeltme: HTML entity yalnız bir kez çözülür; geçersiz workbook sayılarının hata metni satır/kontrol karakteri kaçışını korur; olumsuz testler eklendi.
+
+- F6a: mevcut okuma ayarları ekranı “Çalışma ve Okuma Tercihleri” olarak genişletildi; yeni ikinci tercih ekranı yok. Veli çocuk başına 10–60 dk mola aralığı, varsayılan kapalı akşam hatırlatma penceresi seçer. Aile timezone kullanılır; saat aralığı uyarıdır, kilit değildir. Prova ekranının ön planda geçen süresi soru türü/sekme değişiminde korunur, arka planda sayılmaz; sayaç/deadline/puan/ödül ve güvenlik bildirimleri değiştirilmez. Hatırlatma çocuğun davranışından sağlık sonucu çıkarmaz. RLS mevcut çocuk tablosu ebeveyn güncelleme sınırını kullanır; çocuğa yalnız kendi tercih projeksiyonu verilir. 12 yeni pgTAP, 7 core zaman/sınır testi; tüm taze DB 7.107 kontrol, lint/typecheck/core yeşil. Kanıt: `release/future-f6-2026-11-07/`. Henüz üretim yayını/fiziksel kabul yok. F6 kalan: uygulama geneli kıyassız dil, izin denetimi ve mevcut gün-ertele akışının birleştirilmiş kabulü.

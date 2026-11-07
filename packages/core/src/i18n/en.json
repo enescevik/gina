@@ -5189,5 +5189,15 @@
     "empty": "No open question reports.",
     "reviewed": "Mark Reviewed",
     "firstPage": "Showing the first 50 open reports; reviewed items leave this queue."
-  }
+  },
+  "studyPreferences.title": "Study and Reading Preferences",
+  "studyPreferences.body": "Adjust break reminders and reading aloud for your child. These are suggestions; assessment time and notification permissions stay unchanged.",
+  "studyPreferences.breakMinutes": "Break reminder interval",
+  "studyPreferences.minutes": "min",
+  "studyPreferences.evening": "Evening rest reminder",
+  "studyPreferences.start": "Start (family time zone)",
+  "studyPreferences.end": "End (family time zone)",
+  "studyPreferences.eveningNotice": "Rest time is approaching. You can take a break after this activity.",
+  "studyPreferences.breakNotice": "After this activity, you could stretch or drink some water. Your assessment timer is still running.",
+  "studyPreferences.understood": "Got it, thanks"
 }

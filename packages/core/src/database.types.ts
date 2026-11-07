@@ -747,14 +747,14 @@ isOneToOne: false
                   ]
                 },"children": {
                   Row: {
-                    "archive_revision": number,"archived_at": string | null,"avatar": string,"birth_date": string | null,"birth_year": number | null,"created_at": string,"family_id": string,"gender": string,"grade": number | null,"id": string,"interests": (string)[],"name": string,"question_reading_enabled": boolean,"sort_order": number
+                    "archive_revision": number,"archived_at": string | null,"avatar": string,"birth_date": string | null,"birth_year": number | null,"created_at": string,"evening_reminder_end": number,"evening_reminder_start": number | null,"family_id": string,"gender": string,"grade": number | null,"id": string,"interests": (string)[],"name": string,"question_reading_enabled": boolean,"sort_order": number,"study_break_minutes": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "archive_revision"?: number,"archived_at"?: string | null,"avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"family_id": string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name": string,"question_reading_enabled"?: boolean,"sort_order"?: number
+                    "archive_revision"?: number,"archived_at"?: string | null,"avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"evening_reminder_end"?: number,"evening_reminder_start"?: number | null,"family_id": string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name": string,"question_reading_enabled"?: boolean,"sort_order"?: number,"study_break_minutes"?: number
                   }
                   Update: {
-                    "archive_revision"?: number,"archived_at"?: string | null,"avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"family_id"?: string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name"?: string,"question_reading_enabled"?: boolean,"sort_order"?: number
+                    "archive_revision"?: number,"archived_at"?: string | null,"avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"evening_reminder_end"?: number,"evening_reminder_start"?: number | null,"family_id"?: string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name"?: string,"question_reading_enabled"?: boolean,"sort_order"?: number,"study_break_minutes"?: number
                   }
                   Relationships: [
                     {
@@ -3981,6 +3981,11 @@ isOneToOne: false
                            },
 "get_structured_score_overrides":
 { Args: { "p_attempt_id": string }; Returns: Json
+                           },
+"get_study_preferences":
+{ Args: { "p_child_id": string }; Returns: {
+              "break_minutes": number,"evening_end": number,"evening_start": number,"timezone": string
+            }[]
                            },
 "get_timetable_sources":
 { Args: { "p_child_id": string }; Returns: Json

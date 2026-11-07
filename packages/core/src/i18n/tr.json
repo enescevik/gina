@@ -5184,5 +5184,15 @@
     "empty": "Açık soru bildirimi yok.",
     "reviewed": "İnceledim",
     "firstPage": "İlk 50 açık bildirim gösteriliyor; işlenenler listeden çıkar."
-  }
+  },
+  "studyPreferences.title": "Çalışma ve Okuma Tercihleri",
+  "studyPreferences.body": "Çocuğunuz için mola hatırlatmasını ve sesli okumayı düzenleyin. Bunlar öneridir; Prova süresini veya bildirim izinlerini değiştirmez.",
+  "studyPreferences.breakMinutes": "Mola hatırlatma aralığı",
+  "studyPreferences.minutes": "dk",
+  "studyPreferences.evening": "Akşam dinlenme hatırlatması",
+  "studyPreferences.start": "Başlangıç (aile saat dilimi)",
+  "studyPreferences.end": "Bitiş (aile saat dilimi)",
+  "studyPreferences.eveningNotice": "Dinlenme zamanı yaklaşıyor. Bu çalışmadan sonra ara verebilirsin.",
+  "studyPreferences.breakNotice": "Bu çalışmadan sonra biraz esneyebilir veya su içebilirsin. Prova süren işlemeye devam ediyor.",
+  "studyPreferences.understood": "Tamam, teşekkürler"
 }

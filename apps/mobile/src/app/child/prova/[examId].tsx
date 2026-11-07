@@ -1,3 +1,4 @@
+import { useStudyReminder } from "@/components/learning/study-reminder";
 import { ReportQuestion } from "@/components/learning/report-question";
 import { QuestionReader } from "@/components/learning/question-reader";
 import { ChildQuestionSolution } from "@/components/learning/child-question-solution";
@@ -148,7 +149,7 @@ export default function TakeExamScreen() {
     queryKey: ["notebook_exam_title", examId],
     enabled: !!attempt.data,
     queryFn: async () => {
-      const { data, error } = await supabase.from("exams").select("title, grade, subject").eq(
+      const { data, error } = await supabase.from("exams").select("title, grade, subject, child_id").eq(
         "id",
         examId,
       ).single();
@@ -156,6 +157,8 @@ export default function TakeExamScreen() {
       return data;
     },
   });
+
+  const studyReminder = useStudyReminder(examInfo.data?.child_id ?? "");
 
   const savedAnswers = useQuery({
     queryKey: ["attempt_saved_answers", attempt.data?.id],
@@ -751,7 +754,7 @@ export default function TakeExamScreen() {
         progress={`${index + 1} / ${list.length}`}
         questionId={q.id}
         stem={q.stem}
-        questionExtras={<View style={{gap:6}}><QuestionReader key={q.id} examId={examId} text={q.stem} language={examInfo.data?.subject==="İngilizce"?"en-US":"tr-TR"} />{attempt.data?.id?<><ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} /><ReportQuestion key={q.id} attemptId={attempt.data.id} questionId={q.id} /></>:null}</View>}
+        questionExtras={<View style={{gap:6}}>{studyReminder}<QuestionReader key={q.id} examId={examId} text={q.stem} language={examInfo.data?.subject==="İngilizce"?"en-US":"tr-TR"} />{attempt.data?.id?<><ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} /><ReportQuestion key={q.id} attemptId={attempt.data.id} questionId={q.id} /></>:null}</View>}
         document={current?.document}
         text=""
         onChange={(document) => editAnswer({ answer: current?.answer, document })}
@@ -785,7 +788,7 @@ export default function TakeExamScreen() {
         progress={`${index + 1} / ${list.length}`}
         questionId={q.id}
         stem={q.stem}
-        questionExtras={<View style={{gap:6}}><QuestionReader key={q.id} examId={examId} text={q.stem} language={examInfo.data?.subject==="İngilizce"?"en-US":"tr-TR"} />{attempt.data?.id?<><ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} /><ReportQuestion key={q.id} attemptId={attempt.data.id} questionId={q.id} /></>:null}</View>}
+        questionExtras={<View style={{gap:6}}>{studyReminder}<QuestionReader key={q.id} examId={examId} text={q.stem} language={examInfo.data?.subject==="İngilizce"?"en-US":"tr-TR"} />{attempt.data?.id?<><ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} /><ReportQuestion key={q.id} attemptId={attempt.data.id} questionId={q.id} /></>:null}</View>}
         document={current?.document}
         text={current?.text ?? ""}
         onChange={(document) => editAnswer({ ...current, document })}
@@ -910,6 +913,7 @@ export default function TakeExamScreen() {
           </Text>
         )
         : null}
+      {studyReminder}
       {list.length > 1
         ? (
           <QuestionNavigator
