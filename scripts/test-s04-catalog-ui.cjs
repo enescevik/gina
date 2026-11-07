@@ -1,3 +1,4 @@
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // S04 yönetim ekranları: hazır ders seçenekleri/eşanlamlılar ve kaynaklı takvim taslağı içe aktarma.
 // Yalnız test-isolated-services.py --run-local --ui-hold geçici fixture'ıyla ve yerel backoffice export'uyla çalışır.
 // Fixture: GINA_QA_UI_FIXTURE; backoffice: GINA_QA_BACKOFFICE (varsayılan http://127.0.0.1:3194).
@@ -14,11 +15,11 @@ fs.mkdirSync(out, { recursive: true });
 const results = [];
 let browser, p, stage = 'setup';
 (async () => {
-  const login = await fetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
+  const login = await loopbackFixtureFetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
   assert.equal(login.status, 200);
   const session = await login.json();
   async function api(path, body) {
-    const r = await fetch(f.url + '/rest/v1/' + path, { method: body ? 'POST' : 'GET', headers: { apikey: f.anon, authorization: 'Bearer ' + session.access_token, 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+    const r = await loopbackFixtureFetch(f.url + '/rest/v1/' + path, { method: body ? 'POST' : 'GET', headers: { apikey: f.anon, authorization: 'Bearer ' + session.access_token, 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
     assert.ok(r.ok, 'local_api_failed ' + path + ' ' + (r.ok ? '' : await r.text()));
     return r.status === 204 ? null : r.json();
   }

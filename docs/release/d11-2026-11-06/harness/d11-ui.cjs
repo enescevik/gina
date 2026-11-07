@@ -1,3 +1,4 @@
+const loopbackFixtureFetch = require('../../../../scripts/loopback-fixture-fetch.cjs');
 // D11 — yönetim P2 kapanışları için Playwright kontrolleri (1280×800 ve 768×1024, tr-TR, Chrome headless).
 // Ortam: `python3 scripts/test-isolated-services.py --run-local --ui-hold` (GINA_QA_UI_SERVICE=1, benzersiz GINA_QA_UI_FIXTURE)
 // tek kullanımlık `gina_http_<hex>_audit` klonunu ve geçici GoTrue/PostgREST'i açar; fixture sentetik yönetici hesabını verir.
@@ -18,7 +19,7 @@ const pass = (check, detail = {}) => { results.push({ check, passed: true, detai
 const uuidRe = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 
 async function rest(method, p, body, token = f.service, extra = {}) {
-  const res = await fetch(f.url + p, { method, headers: { apikey: token === f.service ? f.service : f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json', ...extra }, body: body === undefined ? undefined : JSON.stringify(body) });
+  const res = await loopbackFixtureFetch(f.url + p, { method, headers: { apikey: token === f.service ? f.service : f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json', ...extra }, body: body === undefined ? undefined : JSON.stringify(body) });
   const text = await res.text(); let data; try { data = JSON.parse(text); } catch { data = text; }
   if (!res.ok) throw Error(`${method} ${p.split('?')[0]} ${res.status} ${String(text).slice(0, 200)}`);
   return data;

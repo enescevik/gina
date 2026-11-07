@@ -1,3 +1,4 @@
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // C10 UI + channel chain against a disposable local Auth/REST/Edge fixture (synthetic data only).
 // Usage: GINA_QA_UI_FIXTURE=<fixture.json> GINA_QA_WEB=http://127.0.0.1:<port> GINA_QA_WEB_BACKEND=<placeholder url baked into export>
 //        GINA_QA_WEB_ANON=<placeholder anon> GINA_QA_PLAYWRIGHT_PATH=<playwright> node scripts/test-c10-channels-ui.cjs
@@ -31,7 +32,7 @@ function drain() {
   return JSON.parse(raw.trim().split('\n').pop());
 }
 async function rpc(name, args, token) {
-  const res = await fetch(f.url + '/rest/v1/rpc/' + name, { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: JSON.stringify(args) });
+  const res = await loopbackFixtureFetch(f.url + '/rest/v1/rpc/' + name, { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: JSON.stringify(args) });
   return { status: res.status, body: await res.json().catch(() => null) };
 }
 async function publish(token, title) {
@@ -51,7 +52,7 @@ async function publish(token, title) {
        update public.app_settings set value='"noreply@example.invalid"' where key='channels.email.from_address';
        update public.app_settings set value='true' where key='channels.email.sender_domain_verified';
        insert into gina.channel_provider_status(channel,provider,configured,missing) values('email','smtp',true,'{}') on conflict(channel) do update set configured=true,missing='{}',reported_at=now();`);
-  const login = await fetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
+  const login = await loopbackFixtureFetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
   const token = (await login.json()).access_token; assert.ok(token);
 
   browser = await chromium.launch({ channel: 'chrome', headless: true });

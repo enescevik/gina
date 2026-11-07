@@ -1,3 +1,5 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // C11 UI acceptance (backoffice + mobile web), only against the disposable fixture from
 // `GINA_QA_UI_FIXTURE=… python3 scripts/test-isolated-services.py --run-local --ui-hold`, a backoffice export
 // (GINA_QA_BACKOFFICE_DIST) and a mobile web export (GINA_QA_DIST) built against that fixture. Never demo/production.
@@ -31,10 +33,10 @@ function serve(dist) {
 
 (async () => {
 try {
-  const login = await fetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
+  const login = await loopbackFixtureFetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
   assert.ok(login.ok); const session = await login.json();
   async function api(p, body) {
-    const res = await fetch(f.url + '/rest/v1/' + p, { method: body ? 'POST' : 'GET', headers: { apikey: f.anon, authorization: 'Bearer ' + session.access_token, 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+    const res = await loopbackFixtureFetch(f.url + '/rest/v1/' + p, { method: body ? 'POST' : 'GET', headers: { apikey: f.anon, authorization: 'Bearer ' + session.access_token, 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
     const text = await res.text(); assert.ok(res.ok, p + ' ' + text); return text ? JSON.parse(text) : null;
   }
   const rpc = (fn, args) => api('rpc/' + fn, args ?? {});
@@ -45,7 +47,7 @@ try {
     await c.route(f.url + '/**', async (route) => {
       try {
         if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
-        const res = await route.fetch(); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
+        const res = await loopbackFixtureRouteFetch(route); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
       } catch { await route.fulfill({ status: 503, body: 'Local service unavailable' }); }
     });
     const page = await c.newPage(); page.setDefaultTimeout(25000);

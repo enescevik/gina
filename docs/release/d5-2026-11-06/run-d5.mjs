@@ -20,7 +20,7 @@ const { createClient } = require('@supabase/supabase-js');
 
 const stage = process.argv[2];
 const state = existsSync(STATE) ? JSON.parse(readFileSync(STATE, 'utf8')) : {};
-const save = () => { writeFileSync(STATE, JSON.stringify(state, null, 1)); chmodSync(STATE, 0o600); };
+const save = () => { writeFileSync(STATE, JSON.stringify(state, null, 1), { mode: 0o600 }); chmodSync(STATE, 0o600); };
 const short = (id) => (typeof id === 'string' ? id.slice(0, 8) : id);
 const now = () => new Date().toISOString();
 

@@ -1,3 +1,5 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // U02 UI checks against a disposable local Auth/REST/Realtime fixture (synthetic data only).
 // Usage: GINA_QA_UI_FIXTURE=<fixture.json> GINA_U02_WEB=http://127.0.0.1:<port> \
 //        GINA_QA_PLAYWRIGHT_PATH=<playwright> [GINA_U02_OUT=<dir>] [GINA_U02_FAIL_DIR=<dir>] node scripts/test-u02-device-family-ui.cjs
@@ -27,14 +29,14 @@ assert.ok(db, 'fixture database not found');
 const sql = (text) => psql(db, text);
 
 async function auth(pathname, body) {
-  const res = await fetch(f.url + '/auth/v1/' + pathname, { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const res = await loopbackFixtureFetch(f.url + '/auth/v1/' + pathname, { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify(body) });
   assert.ok(res.ok, pathname + ' ' + res.status); return res.json();
 }
 async function routeLocal(context) {
   await context.route(f.url + '/**', async (route) => {
     try {
       if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
-      const res = await route.fetch(); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
+      const res = await loopbackFixtureRouteFetch(route); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
     } catch { await route.fulfill({ status: 503, body: 'Local fixture unavailable' }).catch(() => {}); }
   });
 }
@@ -66,7 +68,7 @@ async function shownCode(page) {
   return shown.replace(/\s/g, '');
 }
 async function rpc(name, args, token) {
-  const res = await fetch(f.url + '/rest/v1/rpc/' + name, { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: JSON.stringify(args) });
+  const res = await loopbackFixtureFetch(f.url + '/rest/v1/rpc/' + name, { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: JSON.stringify(args) });
   return { status: res.status, body: await res.json().catch(() => null) };
 }
 function decodeQr(png) {
@@ -287,7 +289,7 @@ function decodeQr(png) {
 
   // 9) Access revoked while the child device session is open.
   const revokeDevice = async (id) => {
-    const res = await fetch(f.url + '/rest/v1/rpc/revoke_device', { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + parentToken, 'content-type': 'application/json' }, body: JSON.stringify({ p_device_id: id }) });
+    const res = await loopbackFixtureFetch(f.url + '/rest/v1/rpc/revoke_device', { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + parentToken, 'content-type': 'application/json' }, body: JSON.stringify({ p_device_id: id }) });
     assert.ok(res.ok, 'revoke ' + res.status);
   };
   // 9a) PIN screen open when the parent revokes: the open session must leave for pairing.
@@ -312,7 +314,7 @@ function decodeQr(png) {
     const res = await rpc('pair_child_device', { p_code: newCode, p_preview_token: preview.body.preview_token }, parentToken);
     assert.equal(res.status, 200, 'pair2 ' + JSON.stringify(res.body)); return res.body;
   })();
-  const cfg = await fetch(f.url + '/rest/v1/rpc/configure_child_device', { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + parentToken, 'content-type': 'application/json' }, body: JSON.stringify({ p_device_id: deviceId2, p_name: 'Telefon', p_child_ids: [f.childId], p_pin_required: false }) });
+  const cfg = await loopbackFixtureFetch(f.url + '/rest/v1/rpc/configure_child_device', { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + parentToken, 'content-type': 'application/json' }, body: JSON.stringify({ p_device_id: deviceId2, p_name: 'Telefon', p_child_ids: [f.childId], p_pin_required: false }) });
   assert.ok(cfg.ok, 'configure2 ' + cfg.status);
   await device2.clock.resume().catch(() => {});
   await device2.getByTestId('pairing-receipt').waitFor({ timeout: 60000 });

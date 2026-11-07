@@ -1,3 +1,5 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // L02 UI: bulk archive/restore on routines, rewards and notes against the disposable fixture
 // from `GINA_QA_UI_FIXTURE=… scripts/test-isolated-services.py --run-local --ui-hold` only.
 // Web export: GINA_QA_WEB (built against that fixture). Never point this at demo/production.
@@ -10,8 +12,8 @@ const out=process.cwd()+'/docs/release/bulk-archive-2026-11-06/ui';fs.mkdirSync(
 let browser,page,stage='setup';const results=[];
 const ok=check=>{results.push({check,passed:true});console.log('PASS '+check);};
 (async()=>{
- const login=await fetch(f.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:f.anon,'content-type':'application/json'},body:JSON.stringify({email:f.email,password:f.password})});assert.ok(login.ok);const session=await login.json();
- async function api(path,body,prefer){const res=await fetch(f.url+'/rest/v1/'+path,{method:body?'POST':'GET',headers:{apikey:f.anon,authorization:'Bearer '+session.access_token,'content-type':'application/json',...(prefer?{prefer}:{})},body:body?JSON.stringify(body):undefined});const text=await res.text();assert.ok(res.ok,path+' '+text);return text?JSON.parse(text):null;}
+ const login=await loopbackFixtureFetch(f.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:f.anon,'content-type':'application/json'},body:JSON.stringify({email:f.email,password:f.password})});assert.ok(login.ok);const session=await login.json();
+ async function api(path,body,prefer){const res=await loopbackFixtureFetch(f.url+'/rest/v1/'+path,{method:body?'POST':'GET',headers:{apikey:f.anon,authorization:'Bearer '+session.access_token,'content-type':'application/json',...(prefer?{prefer}:{})},body:body?JSON.stringify(body):undefined});const text=await res.text();assert.ok(res.ok,path+' '+text);return text?JSON.parse(text):null;}
  for(const key of ['childId','familyId'])assert.match(f[key],/^[0-9a-f-]{36}$/);
  // Fresh synthetic children keep this flow independent from the service-contract state.
  const [ada,can]=await api('children',[{family_id:f.familyId,name:'Ada',grade:3},{family_id:f.familyId,name:'Can',grade:5}],'return=representation');
@@ -30,7 +32,7 @@ const ok=check=>{results.push({check,passed:true});console.log('PASS '+check);};
  const runsBefore=(await history()).length;
 
  browser=await chromium.launch({channel:'chrome',headless:true});const c=await browser.newContext({viewport:{width:390,height:844},locale:'tr-TR',timezoneId:'Europe/Istanbul'});
- await c.route(f.url+'/**',async route=>{try{if(route.request().method()==='OPTIONS')return route.fulfill({status:204,headers:{'access-control-allow-origin':'*','access-control-allow-headers':'*','access-control-allow-methods':'*'}});const res=await route.fetch();await route.fulfill({response:res,headers:{...res.headers(),'access-control-allow-origin':'*'}});}catch{await route.fulfill({status:503,body:'Local fixture unavailable'});}});
+ await c.route(f.url+'/**',async route=>{try{if(route.request().method()==='OPTIONS')return route.fulfill({status:204,headers:{'access-control-allow-origin':'*','access-control-allow-headers':'*','access-control-allow-methods':'*'}});const res=await loopbackFixtureRouteFetch(route);await route.fulfill({response:res,headers:{...res.headers(),'access-control-allow-origin':'*'}});}catch{await route.fulfill({status:503,body:'Local fixture unavailable'});}});
  page=await c.newPage();page.setDefaultTimeout(25000);const errors=[];page.on('pageerror',e=>errors.push(e.message));
  async function shot(name){await page.waitForTimeout(400);await page.screenshot({path:`${out}/${name}.png`});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'document does not overflow: '+name);assert.ok(!(await page.locator('body').innerText()).includes('bulkArchive.'),'translation resolved: '+name);}
  const phone=()=>page.setViewportSize({width:390,height:844}),tablet=()=>page.setViewportSize({width:1280,height:800});
@@ -54,7 +56,7 @@ const ok=check=>{results.push({check,passed:true});console.log('PASS '+check);};
  // After the preview, Can picks the third reward as a goal: the server must skip it at apply time.
  await api('rpc/set_child_goal',{p_reward_id:R.race,p_acting_child_id:can.id});
  const applies=[];page.on('request',r=>{if(r.url().endsWith('/rest/v1/rpc/bulk_archive_apply')&&r.method()==='POST')applies.push(JSON.parse(r.postData()));});
- let lose=true;await page.route('**/rest/v1/rpc/bulk_archive_apply',async route=>{if(lose){lose=false;const res=await route.fetch();assert.ok(res.ok());await route.fulfill({status:503,headers:{'access-control-allow-origin':'*','content-type':'application/json'},body:JSON.stringify({message:'Synthetic lost response'})});}else await route.fallback();});
+ let lose=true;await page.route('**/rest/v1/rpc/bulk_archive_apply',async route=>{if(lose){lose=false;const res=await loopbackFixtureRouteFetch(route);assert.ok(res.ok());await route.fulfill({status:503,headers:{'access-control-allow-origin':'*','content-type':'application/json'},body:JSON.stringify({message:'Synthetic lost response'})});}else await route.fallback();});
  await btn('Seçilenleri arşivle').dblclick();
  await text('Toplu işlem sonucu alınamadı. Yeniden dene: aynı istek ikinci kez uygulanmaz.').waitFor();
  assert.equal(applies.length,1,'double tap sends one request');ok('double_tap_sends_single_apply');

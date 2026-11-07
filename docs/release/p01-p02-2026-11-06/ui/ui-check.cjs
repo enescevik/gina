@@ -1,3 +1,4 @@
+const loopbackFixtureFetch = require('../../../../scripts/loopback-fixture-fetch.cjs');
 // P01/P02 + P04 inceleme düzeltmesi UI kabulü. Yalnız test-isolated-services.py --ui-hold'un geçici sentetik
 // fixture'ı kabul edilir (loopback). Ortam: GINA_QA_UI_FIXTURE, GINA_QA_WEB, GINA_QA_WEB_BACKEND, GINA_QA_WEB_ANON,
 // GINA_QA_PLAYWRIGHT_PATH. Ücretli AI çağrısı yok: "AI" bloğu deterministik sentetik bir soru, senaryo kataloğu
@@ -16,10 +17,10 @@ const sizes = { phone: { width: 390, height: 844 }, tablet: { width: 768, height
 const TAG = randomUUID().slice(0, 4);
 
 (async () => {
-  const login = await fetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
+  const login = await loopbackFixtureFetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: f.email, password: f.password }) });
   assert.ok(login.ok); const session = await login.json();
   async function api(path, body, prefer, method) {
-    const res = await fetch(f.url + '/rest/v1/' + path, { method: method || (body ? 'POST' : 'GET'), headers: { apikey: f.anon, authorization: 'Bearer ' + session.access_token, 'content-type': 'application/json', ...(prefer ? { prefer } : {}) }, body: body ? JSON.stringify(body) : undefined });
+    const res = await loopbackFixtureFetch(f.url + '/rest/v1/' + path, { method: method || (body ? 'POST' : 'GET'), headers: { apikey: f.anon, authorization: 'Bearer ' + session.access_token, 'content-type': 'application/json', ...(prefer ? { prefer } : {}) }, body: body ? JSON.stringify(body) : undefined });
     const text = await res.text(); if (!res.ok) throw new Error(path + ' ' + res.status + ' ' + text.slice(0, 300)); return text ? JSON.parse(text) : null;
   }
   stage = 'seed';

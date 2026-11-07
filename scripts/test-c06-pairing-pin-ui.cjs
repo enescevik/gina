@@ -1,3 +1,5 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // C06 UI checks against a disposable local Auth/REST/Realtime fixture (synthetic data only).
 // Usage: GINA_QA_UI_FIXTURE=<fixture.json> GINA_C06_WEB=http://127.0.0.1:<port> \
 //        GINA_QA_PLAYWRIGHT_PATH=<playwright> node scripts/test-c06-pairing-pin-ui.cjs
@@ -26,18 +28,18 @@ const sql = (text) => psql(db, text);
 const authSql = (text) => execFileSync('docker', ['exec', '-i', 'supabase_db_gina', 'psql', '-X', '-qAt', '-U', 'supabase_admin', '-d', db, '-v', 'ON_ERROR_STOP=1'], { input: text, encoding: 'utf8' }).trim();
 
 async function auth(pathname, body, token) {
-  const res = await fetch(f.url + '/auth/v1/' + pathname, { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json', ...(token ? { authorization: 'Bearer ' + token } : {}) }, body: JSON.stringify(body) });
+  const res = await loopbackFixtureFetch(f.url + '/auth/v1/' + pathname, { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json', ...(token ? { authorization: 'Bearer ' + token } : {}) }, body: JSON.stringify(body) });
   return { ok: res.ok, status: res.status, body: await res.json().catch(() => null) };
 }
 async function rpc(name, args, token) {
-  const res = await fetch(f.url + '/rest/v1/rpc/' + name, { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: JSON.stringify(args) });
+  const res = await loopbackFixtureFetch(f.url + '/rest/v1/rpc/' + name, { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: JSON.stringify(args) });
   return { status: res.status, body: await res.json().catch(() => null) };
 }
 async function routeLocal(context) {
   await context.route(f.url + '/**', async (route) => {
     try {
       if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
-      const res = await route.fetch({ maxRedirects: 0 }); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
+      const res = await loopbackFixtureRouteFetch(route); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
     } catch { await route.fulfill({ status: 503, body: 'Local fixture unavailable' }).catch(() => {}); }
   });
 }

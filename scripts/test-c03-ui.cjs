@@ -1,3 +1,5 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // C03 UI acceptance: return reason chosen by parent A (double tap → one request), lost-reply approval retried
 // with the same request id (one result, stars once), the reason on the co-parent's home and in the child's
 // next step, calendar/Prova-draft bulk selection on the preview/apply/undo/history contract, and help reply
@@ -31,12 +33,12 @@ function serve() {
 (async () => {
 try {
   const sessionOf = async (email, password) => {
-    const r = await fetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email, password }) });
+    const r = await loopbackFixtureFetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email, password }) });
     assert.ok(r.ok, 'login'); return r.json();
   };
   let session = await sessionOf(f.email, f.password);
   const apiAs = (token) => async (p, body, prefer, method) => {
-    const res = await fetch(f.url + '/rest/v1/' + p, { method: method ?? (body ? 'POST' : 'GET'), headers: { apikey: f.anon, authorization: 'Bearer ' + token(), 'content-type': 'application/json', ...(prefer ? { prefer } : {}) }, body: body ? JSON.stringify(body) : undefined });
+    const res = await loopbackFixtureFetch(f.url + '/rest/v1/' + p, { method: method ?? (body ? 'POST' : 'GET'), headers: { apikey: f.anon, authorization: 'Bearer ' + token(), 'content-type': 'application/json', ...(prefer ? { prefer } : {}) }, body: body ? JSON.stringify(body) : undefined });
     const text = await res.text(); assert.ok(res.ok, p + ' ' + text.slice(0, 300)); return text ? JSON.parse(text) : null;
   };
   const api = apiAs(() => session.access_token);
@@ -63,7 +65,7 @@ try {
   const completion = async (id) => (await api(`task_completions?template_id=eq.${id}&due_date=eq.${today}&select=id,status,return_reason,return_note`))[0];
   // Co-parent signs up and joins with the family invite code.
   const coEmail = `gina-${randomUUID()}@example.invalid`, coPassword = randomBytes(18).toString('base64url');
-  const signup = await fetch(f.url + '/auth/v1/signup', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: coEmail, password: coPassword }) });
+  const signup = await loopbackFixtureFetch(f.url + '/auth/v1/signup', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email: coEmail, password: coPassword }) });
   assert.ok(signup.ok, 'co-parent signup');
   let coSession = await sessionOf(coEmail, coPassword);
   const invite = (await api(`families?id=eq.${f.familyId}&select=invite_code`))[0].invite_code;
@@ -80,7 +82,7 @@ try {
   browser = await chromium.launch({ channel: 'chrome', headless: true });
   const newContext = async (viewport) => {
     const c = await browser.newContext({ viewport, locale: 'tr-TR', timezoneId: 'Europe/Istanbul' });
-    await c.route(f.url + '/**', async (route) => { try { if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } }); const res = await route.fetch(); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } }); } catch { await route.fulfill({ status: 503, body: 'Local fixture unavailable' }); } });
+    await c.route(f.url + '/**', async (route) => { try { if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } }); const res = await loopbackFixtureRouteFetch(route); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } }); } catch { await route.fulfill({ status: 503, body: 'Local fixture unavailable' }); } });
     const page = await c.newPage(); page.setDefaultTimeout(25000);
     const errors = []; page.on('pageerror', (e) => errors.push(e.message));
     return { c, page, errors };
@@ -141,7 +143,7 @@ try {
   let dropped = false;
   await A.page.route('**/rest/v1/rpc/review_task_once', async (route) => {
     if (dropped) return route.fallback();
-    dropped = true; const res = await route.fetch(); assert.ok(res.ok, 'server applied the first request');
+    dropped = true; const res = await loopbackFixtureRouteFetch(route); assert.ok(res.ok, 'server applied the first request');
     await route.fulfill({ status: 503, body: 'synthetic lost reply', headers: { 'access-control-allow-origin': '*' } });
   });
   const second = card.locator('div').filter({ hasText: `Kitap oku ${tag}` }).filter({ has: A.page.getByRole('button', { name: 'Onayla', exact: true }) }).last();

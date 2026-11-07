@@ -1,3 +1,4 @@
+const loopbackFixtureFetch = require('../../../../scripts/loopback-fixture-fetch.cjs');
 // D12 — D11-K1 (/families "Bitişi 14 gün içinde" + sıralama) ve D11-K2 (/overrides "Yapan" e-postası) Playwright kontrolleri.
 // Ortam D11 ile aynı: `python3 scripts/test-isolated-services.py --run-local --ui-hold` (GINA_QA_UI_SERVICE=1, benzersiz
 // GINA_QA_UI_FIXTURE) tek kullanımlık DB klonu + geçici GoTrue/PostgREST açar; fixture sentetik yönetici hesabını verir.
@@ -16,7 +17,7 @@ const results = [];
 const pass = (check, detail = {}) => { results.push({ check, passed: true, detail }); console.error('ok', check, JSON.stringify(detail)); };
 
 async function rest(method, p, body, token = f.service, extra = {}) {
-  const res = await fetch(f.url + p, { method, headers: { apikey: token === f.service ? f.service : f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json', ...extra }, body: body === undefined ? undefined : JSON.stringify(body) });
+  const res = await loopbackFixtureFetch(f.url + p, { method, headers: { apikey: token === f.service ? f.service : f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json', ...extra }, body: body === undefined ? undefined : JSON.stringify(body) });
   const text = await res.text(); let data; try { data = JSON.parse(text); } catch { data = text; }
   if (!res.ok) { const e = Error(`${method} ${p.split('?')[0]} ${res.status} ${String(text).slice(0, 200)}`); e.status = res.status; e.body = data; throw e; }
   return data;

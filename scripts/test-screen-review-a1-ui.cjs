@@ -1,3 +1,5 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // Q00 A1 (auth/veli/aile/ayarlar) after-fix UI checks. Run only with the disposable test-isolated-services.py --ui-hold fixture and a web export of this checkout served on GINA_QA_WEB_URL (default http://127.0.0.1:8189).
 // Usage: GINA_QA_UI_FIXTURE=<fixture.json> GINA_QA_WEB_URL=http://127.0.0.1:<port> [GINA_QA_A1_OUT=<dir>] GINA_QA_PLAYWRIGHT_PATH=<playwright> node scripts/test-screen-review-a1-ui.cjs
 // D17: pairing follows C13-AUTH-1 — the tablet shows an 8-character code (4+4), the parent enters it on
@@ -16,13 +18,13 @@ const tr = JSON.parse(fs.readFileSync(path.join(ROOT, 'packages/core/src/i18n/tr
 const t = new Proxy(tr, { get: (obj, key) => obj[key] ?? String(key).split('.').reduce((v, k) => v?.[k], obj) });
 
 async function api(path, body, token) {
-  const res = await fetch(f.url + '/rest/v1/' + path, { method: body ? 'POST' : 'GET', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json', prefer: 'return=representation' }, body: body ? JSON.stringify(body) : undefined });
+  const res = await loopbackFixtureFetch(f.url + '/rest/v1/' + path, { method: body ? 'POST' : 'GET', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json', prefer: 'return=representation' }, body: body ? JSON.stringify(body) : undefined });
   const text = await res.text();
   if (!res.ok) throw new Error(path + ' ' + res.status + ' ' + text.slice(0, 300));
   return text ? JSON.parse(text) : null;
 }
 async function login(email = f.email, password = f.password) {
-  const res = await fetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email, password }) });
+  const res = await loopbackFixtureFetch(f.url + '/auth/v1/token?grant_type=password', { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify({ email, password }) });
   assert.ok(res.ok, 'login ' + res.status);
   return (await res.json()).access_token;
 }
@@ -32,7 +34,7 @@ async function openBrowser(viewport = VIEWPORTS.phone, opts = {}) {
   await context.route(f.url + '/**', async route => {
     try {
       if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
-      const res = await route.fetch();
+      const res = await loopbackFixtureRouteFetch(route);
       await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
     } catch { await route.fulfill({ status: 503, body: 'Local fixture unavailable' }); }
   });
@@ -99,7 +101,7 @@ const dump = async (page, n = 30) => (await page.locator('body').innerText()).sp
   await shot(page, 'after-auth-callback-error-phone');
   // 8 device access summary without a selected child
   const c2 = await browser.newContext({ viewport: VIEWPORTS.phone, locale: 'tr-TR' });
-  await c2.route(f.url + '/**', async route => { try { if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } }); const res = await route.fetch(); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } }); } catch { await route.fulfill({ status: 503 }); } });
+  await c2.route(f.url + '/**', async route => { try { if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } }); const res = await loopbackFixtureRouteFetch(route); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } }); } catch { await route.fulfill({ status: 503 }); } });
   const dev = await c2.newPage(); await dev.goto(APP + '/device/pair'); await dev.waitForTimeout(3000);
   await dev.getByLabel('Bu cihazın adı', { exact: true }).fill('Deneme tableti');
   await dev.getByRole('button', { name: t['unified.pairCodeAction'], exact: true }).click(); await dev.getByTestId('pairing-active').waitFor();

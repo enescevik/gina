@@ -1,3 +1,5 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // U03/L04 calendar UI: past day shows that day's routine version, a later-dated edit leaves today
 // unchanged, archived events stay hidden from the parent, and "Tümü" with two children does not repeat
 // per-child blocks. Only against the disposable fixture from
@@ -13,8 +15,8 @@ let browser,page,stage='setup';const results=[];
 const ok=(check,detail)=>{results.push({check,passed:true,...(detail?{detail}:{})});console.log('PASS '+check);};
 const istanbulDay=(offset=0)=>{const d=new Date(Date.now()+offset*86400000);return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Istanbul',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);};
 (async()=>{
- const login=await fetch(f.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:f.anon,'content-type':'application/json'},body:JSON.stringify({email:f.email,password:f.password})});assert.ok(login.ok);const session=await login.json();
- async function api(path,body,prefer,method){const res=await fetch(f.url+'/rest/v1/'+path,{method:method??(body?'POST':'GET'),headers:{apikey:f.anon,authorization:'Bearer '+session.access_token,'content-type':'application/json',...(prefer?{prefer}:{})},body:body?JSON.stringify(body):undefined});const text=await res.text();assert.ok(res.ok,path+' '+text);return text?JSON.parse(text):null;}
+ const login=await loopbackFixtureFetch(f.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:f.anon,'content-type':'application/json'},body:JSON.stringify({email:f.email,password:f.password})});assert.ok(login.ok);const session=await login.json();
+ async function api(path,body,prefer,method){const res=await loopbackFixtureFetch(f.url+'/rest/v1/'+path,{method:method??(body?'POST':'GET'),headers:{apikey:f.anon,authorization:'Bearer '+session.access_token,'content-type':'application/json',...(prefer?{prefer}:{})},body:body?JSON.stringify(body):undefined});const text=await res.text();assert.ok(res.ok,path+' '+text);return text?JSON.parse(text):null;}
  await api(`families?id=eq.${f.familyId}`,{timezone:'Europe/Istanbul'},null,'PATCH');
  const today=istanbulDay(0),yesterday=istanbulDay(-1),later=istanbulDay(3);
  const tag=randomUUID().slice(0,4);
@@ -44,7 +46,7 @@ const istanbulDay=(offset=0)=>{const d=new Date(Date.now()+offset*86400000);retu
  ok('archived_event_hidden_from_parent_rest_read');
 
  browser=await chromium.launch({channel:'chrome',headless:true});const c=await browser.newContext({viewport:{width:390,height:844},locale:'tr-TR',timezoneId:'Europe/Istanbul'});
- await c.route(f.url+'/**',async route=>{try{if(route.request().method()==='OPTIONS')return route.fulfill({status:204,headers:{'access-control-allow-origin':'*','access-control-allow-headers':'*','access-control-allow-methods':'*'}});const res=await route.fetch();await route.fulfill({response:res,headers:{...res.headers(),'access-control-allow-origin':'*'}});}catch{await route.fulfill({status:503,body:'Local fixture unavailable'});}});
+ await c.route(f.url+'/**',async route=>{try{if(route.request().method()==='OPTIONS')return route.fulfill({status:204,headers:{'access-control-allow-origin':'*','access-control-allow-headers':'*','access-control-allow-methods':'*'}});const res=await loopbackFixtureRouteFetch(route);await route.fulfill({response:res,headers:{...res.headers(),'access-control-allow-origin':'*'}});}catch{await route.fulfill({status:503,body:'Local fixture unavailable'});}});
  page=await c.newPage();page.setDefaultTimeout(25000);const errors=[];page.on('pageerror',e=>errors.push(e.message));
  async function shot(name){await page.waitForFunction(()=>!document.querySelector('[role=progressbar]'));await page.waitForTimeout(500);await page.screenshot({path:`${out}/${name}.png`,fullPage:true});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'document does not overflow: '+name);const body=await page.locator('body').innerText();assert.ok(!/dayPlan\.|planHistory\./.test(body),'translation resolved: '+name);}
  const phone=()=>page.setViewportSize({width:390,height:844}),desktop=()=>page.setViewportSize({width:1280,height:800});

@@ -1,3 +1,5 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
+const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // D2 UI checks (C06/AUTH-1 remainder) against a disposable local Auth/REST/Realtime fixture (synthetic data only).
 // - Parent-phone child mode follows the server PIN rule: a child without a PIN enters directly, a child with a
 //   PIN uses the shared PinEntry; a PIN added meanwhile switches back to PinEntry.
@@ -28,18 +30,18 @@ assert.ok(db, 'fixture database not found');
 const sql = (text) => psql(db, text);
 
 async function auth(pathname, body) {
-  const res = await fetch(f.url + '/auth/v1/' + pathname, { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const res = await loopbackFixtureFetch(f.url + '/auth/v1/' + pathname, { method: 'POST', headers: { apikey: f.anon, 'content-type': 'application/json' }, body: JSON.stringify(body) });
   assert.ok(res.ok, pathname + ' ' + res.status); return res.json();
 }
 async function rpc(name, args, token) {
-  const res = await fetch(f.url + '/rest/v1/rpc/' + name, { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: JSON.stringify(args) });
+  const res = await loopbackFixtureFetch(f.url + '/rest/v1/rpc/' + name, { method: 'POST', headers: { apikey: f.anon, authorization: 'Bearer ' + token, 'content-type': 'application/json' }, body: JSON.stringify(args) });
   return { status: res.status, body: await res.json().catch(() => null) };
 }
 async function routeLocal(context) {
   await context.route(f.url + '/**', async (route) => {
     try {
       if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
-      const res = await route.fetch(); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
+      const res = await loopbackFixtureRouteFetch(route); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
     } catch { await route.fulfill({ status: 503, body: 'Local fixture unavailable' }).catch(() => {}); }
   });
 }
