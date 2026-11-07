@@ -160,7 +160,7 @@ function GroupsEditor({ user }: { user: string }) {
         topic: unit.title,
         stem: `${unit.count} soru${unit.has_media ? " · Görselli" : ""}${
           unit.key.startsWith("source:") ? " · Ortak kaynakla birlikte" : ""
-        }${!unit.eligible ? " · Ölçütlü inceleme gerekir" : ""}`,
+        }${!unit.review_eligible ? " · Grup sınavına uygun değil" : !unit.eligible ? " · Ölçütlü inceleme gerekir" : ""}`,
       },
     }))
     : (library.data?.items.filter((i) =>

@@ -133,6 +133,7 @@ function Choice(
 }
 export default function GroupExams() {
   const { t, i18n } = useTranslation();
+  const formatPoints = new Intl.NumberFormat(i18n.language, { maximumFractionDigits: 2 });
   const { animation } = useRouteMotion();
   const { claims } = useSession();
   const cache = useQueryClient();
@@ -637,10 +638,17 @@ export default function GroupExams() {
                                 {report.data.interim
                                   ? `${t("groupPhases.interim")} · `
                                   : ""}
-                                {t("prova.resultMc", {
-                                  correct: report.data.correct,
-                                  total: report.data.total,
-                                })}
+                                {report.data.maximum == null
+                                  ? t("prova.resultMc", {
+                                    correct: report.data.correct,
+                                    total: report.data.total,
+                                  })
+                                  : report.data.points == null
+                                  ? t("group.pointsPending")
+                                  : t("group.pointsResult", {
+                                    points: formatPoints.format(report.data.points),
+                                    maximum: report.data.maximum,
+                                  })}
                               </Text>
                             )}
                           <RankingNotice
@@ -711,8 +719,8 @@ export default function GroupExams() {
                                       {r.mine ? ` · ${t("group.you")}` : ""}
                                     </Text>
                                     <Text style={u.bold}>
-                                      {report.data?.requires_review
-                                        ? `${r.points} / ${r.maximum}`
+                                      {r.points != null
+                                        ? `${formatPoints.format(r.points)} / ${r.maximum}`
                                         : `${r.correct} / ${r.total}`}
                                     </Text>
                                   </View>

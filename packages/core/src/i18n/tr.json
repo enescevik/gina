@@ -226,6 +226,8 @@
   "prova.min": "dk",
   "prova.untimed": "süresiz",
   "prova.inProgress": "Çözülüyor…",
+  "group.pointsResult": "Puan: {{points}} / {{maximum}}",
+  "group.pointsPending": "Puan bekleniyor",
   "prova.resultMc": "Çoktan seçmeli: {{correct}} / {{total}} doğru",
   "prova.viewResult": "Sonucu ve geri bildirimi gör",
   "prova.status.draft": "Taslak",

@@ -226,6 +226,8 @@
   "prova.min": "min",
   "prova.untimed": "untimed",
   "prova.inProgress": "In progress…",
+  "group.pointsResult": "Score: {{points}} / {{maximum}}",
+  "group.pointsPending": "Score pending",
   "prova.resultMc": "Multiple choice: {{correct}} / {{total}} correct",
   "prova.viewResult": "View result and feedback",
   "prova.status.draft": "Draft",

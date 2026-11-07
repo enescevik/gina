@@ -80,7 +80,8 @@ function Report({
   cancelled: boolean;
   onSaved: () => void;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const formatPoints = new Intl.NumberFormat(i18n.language, { maximumFractionDigits: 2 });
   const journal = useMemo(() => cohortAppealJournal(user, family), [
     user,
     family,
@@ -158,7 +159,7 @@ function Report({
       >
         <Text style={u.heading}>
           {published
-            ? t("cohort.score", { points, maximum })
+            ? t("cohort.score", { points: points == null ? "—" : formatPoints.format(points), maximum })
             : t("cohort.waiting")}
         </Text>
         <Text style={u.small}>
@@ -240,7 +241,7 @@ function Report({
                     ? "cohort.unreadable"
                     : "cohort.pendingReview",
                 )
-                : t("cohort.score", { points: q.points, maximum: q.maximum })}
+                : t("cohort.score", { points: formatPoints.format(q.points), maximum: q.maximum })}
             </Text>
             {!published
               ? <Text style={u.small}>{t("cohort.provisional")}</Text>

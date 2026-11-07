@@ -102,6 +102,79 @@ select is(jsonb_array_length(public.get_group_exams()->'entries'),0,'failed enro
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000004302","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000004302"}}',true);
 select is(public.enroll_group_exam('60000000-0000-4000-8000-000000004701','20000000-0000-4000-8000-000000004702',false,true)::text,current_setting('test.exam'),'existing enrollment recovers after withdrawal');
 reset role;
+-- A mixed cohort preserves a structured question with its source and private key.
+savepoint structured_cohort;
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000004301","role":"authenticated","gina":{"admin":true}}',true);
+update state set id=(public.admin_import_library_bundle(gen_random_uuid(),
+ jsonb_set(jsonb_set(jsonb_set(jsonb_set(jsonb_set(pg_temp.bundle(),
+ '{package_key}','"test-cohort-typed"'),'{questions,0,student,kind}','"open_ended"'),
+ '{questions,0,student,choices}','[]'),'{questions,0,teacher,correct_key}','null'),'{questions,0,metadata,interaction}',
+ '{"type":"true_false","schema_version":1,"payload":{"statements":[{"id":"a","text":"First"},{"id":"b","text":"Second"}]},"answer_key":{"answers":{"a":true,"b":false}}}'))->>'id')::uuid;
+select public.admin_review_library_question(gen_random_uuid(),(select id from state),key,1,0,'suitable','Synthetic test only')
+ from unnest(array['question-1','question-2','question-3','question-4'])key;
+reset role;
+select set_config('request.jwt.claims','{"role":"service_role"}',true);
+select public.prepare_library_delivery_media('00000000-0000-4000-8000-000000004301',(select id from state),
+ jsonb_build_array(jsonb_build_object('source_hash',pg_temp.bundle()#>>'{assets,0,sha256}','base64',pg_temp.bundle()#>>'{assets,0,base64}')));
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000004301","role":"authenticated","gina":{"admin":true}}',true);
+select public.admin_set_library_publication(gen_random_uuid(),(select id from state),0,
+ public.admin_library_publication((select id from state))#>>'{checks,review_fingerprint}','Typed cohort','Test',
+ array['free']::public.plan_code[],'Test curriculum',true,'published');
+select is(public.admin_group_package_catalog()#>>'{0,units,0,eligible}','true','structured common source remains eligible for automatic scoring');
+select ok(public.admin_group_package_catalog()::text not like '%answer_key%','typed catalog never exposes the key');
+select lives_ok($$select pg_temp.make_group('60000000-0000-4000-8000-000000004711')$$,'mixed cohort creation freezes the private interaction');
+reset role;
+select is((select content#>>'{interaction,answer_key,answers,b}' from public.group_exam_questions
+ where group_id='60000000-0000-4000-8000-000000004711' and ord=1),'false','frozen snapshot stores the original key');
+select is((select content#>>'{interaction,policy}' from public.group_exam_questions
+ where group_id='60000000-0000-4000-8000-000000004711' and ord=1),'per_item','frozen snapshot stores scoring policy');
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000004302","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000004302"}}',true);
+select set_config('test.typed_exam',public.enroll_group_exam('60000000-0000-4000-8000-000000004711','20000000-0000-4000-8000-000000004702',true,true)::text,true);
+reset role;
+select lives_ok($$set constraints all immediate$$,'frozen typed question and its private key satisfy the content hash');
+select is((select count(*)::int from gina.exam_item_bindings where exam_id=current_setting('test.typed_exam')::uuid),4,'all assigned items are bound to immutable hashes');
+select throws_ok($$update public.question_answer_keys set key='{"answers":{"a":false,"b":false}}'
+ where question_id=(select question_ids[1] from public.exams where id=current_setting('test.typed_exam')::uuid)$$,
+ 'P0001','question_in_use','assigned key cannot be changed');
+-- Withdrawing the immutable source revision does not invalidate the assigned snapshot.
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000004301","role":"authenticated","gina":{"admin":true}}',true);
+select public.admin_set_library_publication(gen_random_uuid(),(select id from state),1,
+ public.admin_library_publication((select id from state))#>>'{checks,review_fingerprint}','Typed cohort','Test',
+ array['free']::public.plan_code[],'Test curriculum',true,'archived','Test withdrawal');
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000004704","role":"authenticated","gina":{"role":"device","family_id":"10000000-0000-4000-8000-000000004302","device_id":"30000000-0000-4000-8000-000000004704","child_id":"20000000-0000-4000-8000-000000004702"}}',true);
+select set_config('test.typed_question',(select question_ids[1]::text from public.exams where id=current_setting('test.typed_exam')::uuid),true);
+select is(public.get_question_answer_keys(array[current_setting('test.typed_question')::uuid]),'[]'::jsonb,'paired child cannot retrieve typed answer keys');
+select set_config('test.typed_attempt',(public.start_exam_attempt(current_setting('test.typed_exam')::uuid)).id::text,true);
+select is(public.submit_exam_answer_v4(gen_random_uuid(),current_setting('test.typed_attempt')::uuid,current_setting('test.typed_question')::uuid,
+ 0,null,null,null,'{"type":"true_false","v":1,"items":{"a":true}}'),1,'child can submit a partial structured answer');
+-- The scheduled settlement uses the same submitted-status scoring trigger.
+savepoint typed_settlement;
+reset role;
+update public.group_exams set status='cancelled' where id='60000000-0000-4000-8000-000000004711';
+select is(public.settle_group_attempts(),1,'settlement submits the open typed attempt');
+select is((select score_exact from public.exam_answers where attempt_id=current_setting('test.typed_attempt')::uuid),
+ 50::numeric,'settlement also records fractional credit');
+rollback to typed_settlement;
+select lives_ok($$select public.finish_exam_attempt(current_setting('test.typed_attempt')::uuid)$$,'child can finish a typed cohort');
+reset role;
+select is((select score_exact from public.exam_answers where attempt_id=current_setting('test.typed_attempt')::uuid
+ and question_id=current_setting('test.typed_question')::uuid),50::numeric,'shared scorer preserves partial credit');
+select throws_ok($$update public.exam_answers set graded_by='parent',score=100 where attempt_id=current_setting('test.typed_attempt')::uuid
+ and question_id=current_setting('test.typed_question')::uuid$$,'P0001','group_review_automatic','parent grade cannot replace shared partial credit');
+update public.group_exams set ends_at=now()-interval '1 minute' where id in('60000000-0000-4000-8000-000000004711','60000000-0000-4000-8000-000000004701');
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000004302","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000004302"}}',true);
+select is((public.get_group_result('60000000-0000-4000-8000-000000004711','20000000-0000-4000-8000-000000004702')->>'points')::numeric,0.5::numeric,'fractional credit reaches family result');
+select is((public.get_group_result('60000000-0000-4000-8000-000000004711','20000000-0000-4000-8000-000000004702')#>>'{ranking,0,points}')::numeric,0.5::numeric,'ranking uses the same fractional credit');
+select is(public.get_group_result('60000000-0000-4000-8000-000000004701','20000000-0000-4000-8000-000000004702')->>'correct','1','legacy cohort retains its original whole answer count');
+select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000004303","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000004303"}}',true);
+select throws_ok($$select public.get_group_result('60000000-0000-4000-8000-000000004711','20000000-0000-4000-8000-000000004702')$$,'P0001','not_found','another family cannot read the typed result');
+rollback to structured_cohort;
 delete from public.families where id='10000000-0000-4000-8000-000000004302';
 select is((select count(*)::int from gina.library_source_copies),0,'family deletion cleans cohort image copies');
 select is((select count(*)::int from public.question_source_groups),0,'family deletion cleans shared context');

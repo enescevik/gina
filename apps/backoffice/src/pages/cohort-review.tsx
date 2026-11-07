@@ -192,7 +192,7 @@ function Workspace({ user, group }: { user: string; group: string }) {
     const target = detail.data.questions.find((x) =>
       focus === "appeal"
         ? x.appeal?.status === "open"
-        : x.question.kind !== "multiple_choice" && !x.reviewed
+        : x.question.kind === "open_ended" && !x.reviewed
     );
     setFocus(null);
     if (target && target.ord !== ord) setOrd(target.ord);
@@ -777,16 +777,16 @@ function ReviewQuestion({
           : null}
       </Card>
       <Card
-        title={q.question.kind === "multiple_choice"
+        title={q.question.kind !== "open_ended"
           ? "Otomatik cevap kontrolü"
           : "Sabit puanlama ölçütleri"}
       >
-        {q.question.kind === "multiple_choice"
+        {q.question.kind !== "open_ended"
           ? (
             <>
-              <p>Doğru seçenek: {q.question.correct_key}</p>
-              <p className="mt-3 font-bold">{q.points} / {q.maximum} puan</p>
-              <p>Şıklı sorunun ortak puanı elle değiştirilmez.</p>
+              {q.question.kind === "multiple_choice" && <p>Doğru seçenek: {q.question.correct_key}</p>}
+              <p className="mt-3 font-bold">{q.points == null ? "Puan bekleniyor" : `${q.points.toLocaleString("tr-TR", { maximumFractionDigits: 2 })} / ${q.maximum} puan`}</p>
+              <p>Otomatik hesaplanan ortak puan elle değiştirilmez.</p>
             </>
           )
           : (

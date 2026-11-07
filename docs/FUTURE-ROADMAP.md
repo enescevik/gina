@@ -145,6 +145,8 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 - F12c grup sınavı devamı: İlk incelemede yayımlanmış paket seçimi, dondurulmuş grup snapshot’ı, aileye kopyalama ve puan toplama ayrı yollar. Paket tabanlı yapılandırılmış türleri etkinleştirmeden önce soru ve özel anahtarı birlikte dondur, öğrenciye yalnız öğrenci projeksiyonunu ver ve grup toplamında kesirli sunucu puanını kullan. Eski şıklı ve yazılı sınavların sonuç sözleşmesini koru. Kabul testleri karma paket, ortak kaynak, kısmi/boş cevap, kaynak revizyonundan sonra değişmezlik, aile sınırı ve özel anahtar sızıntısını kapsamalı.
 
+- F12c grup sınavı: Yayımlanmış paketteki otomatik puanlanan yapılandırılmış sorular, ortak kaynak, özel anahtar ve puanlama politikasıyla dondurulur. Çocuk yalnız öğrenci içeriğini görür. Sunucunun kesirli puanı aile sonucuna ve isteğe bağlı sıralamaya taşınır. Şıklı ve ölçütlü eski sınavların sonuç sözleşmesi korunur. İnsan incelemesi gerektirebilen yapılandırılmış varyantlar bu akışa alınmaz. Canlı migration ve cihaz kabulü açık.
+
 ### F13 — Gerçek sağlayıcı pilotu, bulmaca; dikte/sesli cevap ayrı kapılı
 
 - Kaynak: §8 Faz 3. Durum: PLANLANDI. Efor: **L**.
