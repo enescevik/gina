@@ -22,7 +22,7 @@
   "passed": true,
   "results": [
     {
-      "check": "release_build_with_switches_off_shows_nothing_new",
+      "check": "release_build_offers_all_14_types",
       "passed": true
     },
     {
@@ -76,7 +76,7 @@
     }
   ],
   "screenshots": [
-    "switch-off-type-picker-phone-390x844.png",
+    "release-type-picker-phone-390x844.png",
     "type-picker-phone-390x844.png",
     "mark-text-editor-phone-390x844.png",
     "mark-text-preview-key-phone-390x844.png",

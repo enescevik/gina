@@ -35,13 +35,19 @@
       "attempt_question_count": 9,
       "device_question_types": [
         "classification",
+        "clock",
+        "error_fix",
         "fill_blank",
+        "mark_text",
         "matching",
+        "multi_choice",
         "multiple_choice",
         "numeric",
         "open_ended",
         "ordering",
-        "true_false"
+        "region_select",
+        "true_false",
+        "two_stage"
       ]
     },
     {

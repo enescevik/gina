@@ -130,3 +130,22 @@ Birleşik dal `claude/prova-question-types` @ `d952d4f9` (origin/main `86d815ce`
 Kararlar uygulandı: sayısal soru açık uçlu/yazılı amacında Karma'sız; AI günlüğü yapılandırılmış anahtarı cihazda saklamaz; 1–4. sınıf saat 1–12 (sunucu korumalı); ekran okuyucuda saat okuma maddesi veliye düşer (yalnız iOS/Android).
 
 **Açık / dış engel:** gerçek cihaz kabulü (Pencil/parmak, VoiceOver/TalkBack — ekran okuyucu saat notu dahil, döndürme/pinch, büyük yazı, native `expo-print` PDF) — DIŞ ENGEL; görsel bölgelerin gerçek görselle yerleşimi (izole yığında Storage/Edge yok; yalnız birim + etiket listesi yolu); gerçek AI sağlayıcısında 12 varyantlı şemanın kabulü (sentetik pilot gerekli, Gemini riskli); dikte/sesli cevap ses depolama + rıza kararı; kaydedilmiş yapılandırılmış soru düzenleme, ortak kaynak grubu/kütüphane paylaşımı, global yapılandırılmış soru düzenleme (admin RPC) yok; çocuk notu metni (saat) taslak.
+
+## Yayın öncesi regresyon (Enes onayı sonrası, anahtarlar açık)
+
+Kaynak: `claude/prova-question-types` (origin/main `40a0ffc5` — Codex locale yayını 33 dahil — ile uzlaştırıldı). Migration numaraları main'deki Codex dosyalarıyla çakıştığı için `20261107050000`–`050400` olarak yeniden numaralandı (sıra korunur; main'in son dosyası `20261107040000_prereview_input_budget`). İstemci anahtarı `PHASE2A_CHILD_ENABLED=PHASE2B_CHILD_ENABLED=true`.
+
+| Kontrol | Sonuç |
+|---|---|
+| pgTAP şablon + `--fresh`, Europe/Istanbul + UTC (main #163 öncesi birleşim) | 140 dosya / 6896 / 0 hata (4 koşu) |
+| pgTAP `--fresh` Istanbul + şablon UTC (son birleşim, #163/#164 dahil) | 141 dosya / 6903 / 0 hata |
+| Edge `deno check` + CI `deno test` satırlarının tamamı | temiz / 0 hata |
+| Core tsc + vitest | 738/738 |
+| Mobil tsc / lint / vitest | temiz / temiz / 55/55 |
+| Backoffice typecheck + lint + build | temiz |
+| Yarış | 7/7 |
+| UI: çocuk 1A/1B · 2A · 2B | 16/16 · 10/10 · 11/11 |
+| UI: hazırlama 1A/1B · 2A/2B | 14/14 · 8/8 (yayın derlemesi 14 tür gösterir) |
+| UI: backoffice | geçti |
+
+Yayın adımları: başlatılmadı — üretim kimlik bilgilerine (Supabase Management, Cloudflare, EAS) bu oturumda erişim izni yok; Enes onayı / izin kuralı bekleniyor.

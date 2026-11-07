@@ -33,14 +33,18 @@
       "reported": [
         "classification",
         "clock",
+        "error_fix",
         "fill_blank",
+        "mark_text",
         "matching",
+        "multi_choice",
         "multiple_choice",
         "numeric",
         "open_ended",
         "ordering",
         "region_select",
-        "true_false"
+        "true_false",
+        "two_stage"
       ]
     },
     {

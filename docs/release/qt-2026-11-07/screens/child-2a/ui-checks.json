@@ -33,6 +33,7 @@
       "passed": true,
       "reported": [
         "classification",
+        "clock",
         "error_fix",
         "fill_blank",
         "mark_text",
@@ -42,6 +43,7 @@
         "numeric",
         "open_ended",
         "ordering",
+        "region_select",
         "true_false",
         "two_stage"
       ]
