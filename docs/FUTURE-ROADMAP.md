@@ -38,7 +38,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F2 — Çocuk ❤️/zorlandım; veli ➕ süreli tercih; pekiştirme kartı ve mini deneme
 
-- Kaynak: §1, §1.1–1.2, §4.1–2. Durum: PLANLANDI. Efor: **M**.
+- Kaynak: §1, §1.1–1.2, §4.1–2. Durum: YAPILIYOR (F2a çocuk sinyali kod hazır; ➕/kart/mini tekrar açık). Efor: **M**.
 - Kapsam: Çocuk ❤️/zorlandım; veli ➕ süreli tercih; pekiştirme kartı ve mini deneme.
 - Bağımlılık: F1, atanmış soru erişimi, sonuç/tekrar RPC.
 - Paket kapısı: Sinyaller ve kütüphane tüm paketler; AI mevcut hak ve izinle.
@@ -202,3 +202,6 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - 7 Kasım: izole çalışma ağacı oluşturuldu, yerel WIP korundu; brand chat'inin doğru son listesi alındı. F1 ebeveyn beğeni temeliyle başlandı. Henüz üretim migration/istemci yayını yok.
 
 - F1: izole taze DB 15/15 olumsuz/işlev kontrolü; root turbo lint/typecheck/test ve 749 core testi geçti. Kod: ebeveyn önizleme beğenisi, geri alma ve 30 satırlık sayfalı favori listesi. Liste ilk aşamada ders/konu ve soru metnini gösterir; toplu deneme oluşturma ve ayrıntılı kaynak filtresi F2 kapsamındadır. Kanıt: `release/future-f1-2026-11-07/`.
+
+- F1 push sonrası genel CI InitPlan kuralını reddetti; düzeltme ayrı migration ile, mevcut güvenlik testi korunarak yapıldı. Tüm taze DB regresyonu 144 dosya/6.939 kontrol geçti. Yalnız yeni tablo testleri genel şema testinin yerine sayılmayacak.
+- F2a: çocuk soru üzerinde geri alınabilir ❤️/zorlandım; RPC alan izin listesi ve sunucu RLS. 17 işlev/yetki kontrolü geçti. F2 henüz bitmedi: sonuç/veli kartı, ➕ süresi, öneri sessizliği ve mini deneme açık.

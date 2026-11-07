@@ -9,10 +9,11 @@ select no_plan();
 select set_eq($$select tablename::text,policyname::text,cmd::text,permissive::text from pg_policies where schemaname='public'
  and (coalesce(qual,'')||' '||coalesce(with_check,'')) ~ '(gina\.(is_parent|is_device|family_id|child_id|is_admin|is_admin_strict|is_service|role|claims)\(\)|auth\.uid\(\))'$$,
  $$values
- ('admins','admins_select_self','SELECT','PERMISSIVE'),
  ('question_reactions','question_reactions_read','SELECT','PERMISSIVE'),
  ('question_reactions','question_reactions_insert','INSERT','PERMISSIVE'),
  ('question_reactions','question_reactions_delete','DELETE','PERMISSIVE'),
+ ('question_child_signals','question_child_signals_access','ALL','PERMISSIVE'),
+ ('admins','admins_select_self','SELECT','PERMISSIVE'),
  ('ai_usage_kinds','admin_read','SELECT','PERMISSIVE'),
  ('ai_chains','admin_read','SELECT','PERMISSIVE'),
  ('ai_chain_steps','admin_read','SELECT','PERMISSIVE'),
@@ -124,7 +125,7 @@ select set_eq($$select tablename::text,policyname::text,cmd::text,permissive::te
 select is((select count(*)::int from pg_policies where schemaname='public' and roles<>'{authenticated}'
  and (coalesce(qual,'')||' '||coalesce(with_check,'')) ~ '(gina\.(is_parent|is_device|family_id|child_id|is_admin|is_admin_strict|is_service|role|claims)\(\)|auth\.uid\(\))'),0,'helper-based policies still target authenticated only');
 -- 20261106170000 (Q02-6): children_parent_all → select/insert/update (DELETE yok): 110 → 112.
-select is((select count(*)::int from pg_policies where schemaname='public'),120,'public policy count (112 existing + 5 chain admin reads + 3 private reaction policies)');
+select is((select count(*)::int from pg_policies where schemaname='public'),121,'public policy count (117 existing + 4 learning signal policies)');
 
 -- 2. Satır başına değerlendirme kalmadı: her yardımcı çağrı `( SELECT f() AS ...)` skaler alt sorgu (InitPlan) içinde.
 create function pg_temp.bare_calls() returns int language sql as $$

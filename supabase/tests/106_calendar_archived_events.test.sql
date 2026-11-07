@@ -37,7 +37,7 @@ select is((select cmd||'/'||permissive||'/'||array_to_string(roles,',') from pg_
 select ok((select qual from pg_policies where schemaname='public' and tablename='events' and policyname='events_parent_all') ~ 'archived_at IS NULL','parent USING excludes archived rows');
 select ok((select with_check from pg_policies where schemaname='public' and tablename='events' and policyname='events_parent_all') !~ 'archived_at','parent WITH CHECK unchanged (no archive term)');
 select ok((select qual from pg_policies where schemaname='public' and tablename='events' and policyname='events_parent_all') ~ '\( SELECT gina\.is_parent\(\) AS','helper call stays an InitPlan subquery');
-select is((select count(*)::int from pg_policies where schemaname='public'),120,'public policy count (112 existing + 5 chain admin reads + 3 private reaction policies)');
+select is((select count(*)::int from pg_policies where schemaname='public'),121,'public policy count (117 existing + 4 learning signal policies)');
 select is((select count(*)::int from pg_policies where schemaname='public' and tablename='events'),2,'events still has two policies');
 
 -- 2. Veli okuması.

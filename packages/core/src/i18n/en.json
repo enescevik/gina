@@ -5127,5 +5127,12 @@
     "retry": "Try Again",
     "empty": "No liked questions yet. Open a question while preparing a practice and tap the heart.",
     "more": "Show More"
+  },
+  "childSignals": {
+    "liked": "♡ I Liked This Question",
+    "likedSelected": "♥ Liked · Undo",
+    "struggled": "I Found This Tricky",
+    "struggledSelected": "Tricky · Undo",
+    "error": "We could not save your mark right now. Your answer is unaffected; you can try again later."
   }
 }

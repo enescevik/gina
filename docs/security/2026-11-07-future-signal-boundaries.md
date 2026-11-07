@@ -11,3 +11,9 @@
 ## §6.1 sürekli kural
 
 Bulunan her güvenlik açığı aynı teslimde düzeltme, açığı tekrar üreten olumsuz test ve tarihli kayıt gerektirir. Tekrarlanan açık sınıfı genel CI kuralına dönüştürülür. Eksik testle bulgu kapatılamaz. F5'te bütün migration'lara genellenmiş otomatik denetim ve engelleyici sır taraması eklenecektir.
+
+## F1-INITPLAN — CI regresyonu ve kalıcı kontrol
+
+Yeni beğeni politikaları aile sınırını korudu ancak mevcut InitPlan performans kuralını ihlal etti. Main CI `100_q02_fixes_rls_initplan`, `106_calendar_archived_events` ve `119_c13_authz_hardening` ile reddetti. Uygulanmış olabilecek migration değiştirilmedi; `20261107160500_question_reaction_initplan.sql` yardımcıları skaler SELECT'e alır. Politika envanteri yeni 3 beğeni + 1 çocuk sinyali politikasıyla açıkça güncellendi; çıplak çağrıya izin veren test istisnası eklenmedi. Sonraki push öncesinde bütün taze DB regresyonu **144 dosya, 6.939 kontrol, 0 hata** çalıştırıldı.
+
+F2a: çocuk sinyali yalnız atanmış denemedeki soruya yazılır; kardeş denemesi, yabancı soru/aile, bilinmeyen alan, anon erişimi reddedilir. `146_question_child_signals.test.sql`: 17 kontrol; aynı beyanı tekrar gönderme tek satırdır; bir beyanı değiştirmek diğerini silmez, puan değişmez.
