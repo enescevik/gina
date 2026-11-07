@@ -37,7 +37,9 @@ Deno.serve(createHandler({
     if (resolved instanceof Response) return resolved;
     const { data: budget, error: budgetError } = await service.from("app_settings").select("value").eq("key", "content_prereview.max_input_tokens").maybeSingle();
     if (budgetError) return json({ error: "ai_configuration_unavailable" }, 503);
-    try { return prereviewConfig(resolved, budget?.value); }
+    const { data: outputBudget, error: outputError } = await service.from("app_settings").select("value").eq("key", "content_prereview.max_output_tokens").maybeSingle();
+    if (outputError) return json({ error: "ai_configuration_unavailable" }, 503);
+    try { return prereviewConfig(resolved, budget?.value, outputBudget?.value ?? 24000); }
     catch { return json({ error: "ai_configuration_unavailable" }, 503); }
   },
   call: generateWith,

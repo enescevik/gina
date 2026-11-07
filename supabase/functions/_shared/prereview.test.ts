@@ -142,3 +142,19 @@ Deno.test('Anthropic usage retains cache billing counters and unknown fields can
   const verdict = buildVerdict(clean,decide(clean),{model:'m',promptVersion:'v',inputTokens:10,outputTokens:20,providerUsage:usage});
   assert(verdict.provider_usage?.cache_creation_input_tokens === 300);
 });
+
+Deno.test('review output budget covers every fallback without changing generation or reasoning settings', () => {
+  const base = { model: 'claude-sonnet-5-5', maxInputTokens: 8000, maxOutputTokens: 16000, promptVersion: 'v1', capabilities: { contextTokens: 40000 } } as AiConfig;
+  const config = { ...base, chain: { steps: [{ position: 1, config: base }, { position: 2, config: { ...base, capabilities: { contextTokens: 1000000 } } }] } } as AiConfig;
+  const result = prereviewConfig(config, 24000, 24000);
+  assert(result.maxOutputTokens === 24000 && result.maxInputTokens === 16000);
+  assert(result.chain!.steps.every(s => s.config.maxOutputTokens === 24000));
+  assert(result.chain!.steps[1].config.maxInputTokens === 24000);
+  assert(config.maxOutputTokens === 16000 && config.chain!.steps[0].config.maxOutputTokens === 16000);
+  for (const value of [null, 0, 1499, 32001, '24000', 24000.5]) {
+    let rejected = false; try { prereviewConfig(config, 24000, value); } catch { rejected = true; } assert(rejected);
+  }
+  let rejected = false;
+  try { prereviewConfig({ ...base, capabilities: { contextTokens: 20000 } } as AiConfig, 24000, 24000); } catch { rejected = true; }
+  assert(rejected, 'output must leave room for input');
+});
