@@ -1,5 +1,11 @@
 import { z } from "zod";
 import type { AnswerJournalStorage } from "./answer-journal";
+import { LEGACY_INTERACTION_TYPES, PHASE2A_INTERACTION_TYPES, PHASE2B_INTERACTION_TYPES, STRUCTURED_INTERACTION_TYPES } from "./question-types";
+/**
+ * QT-AI: AI tür seçiminde gönderilebilecek türler. 1A/1B prova-generate `parseInteractionTypes` ile aynı;
+ * 2A/2B istemcide faz anahtarının arkasındadır (sunucu bu türleri henüz üretmez → `interaction_types_invalid`).
+ */
+export const AI_INTERACTION_TYPES = [...LEGACY_INTERACTION_TYPES, ...STRUCTURED_INTERACTION_TYPES, ...PHASE2A_INTERACTION_TYPES, ...PHASE2B_INTERACTION_TYPES] as const;
 export const PROVA_GENERATION_PREFIX = "gina:prova:generation:v1:";
 export const generationPayloadSchema = z.object({
   draft_id: z.uuid(),
@@ -20,12 +26,19 @@ export const generationPayloadSchema = z.object({
   locale: z.enum(["tr", "en"]),
   source_id: z.uuid().optional(),
   ai_consent: z.literal(true).optional(),
+  /** QT-AI: isteğe bağlı tür seçimi. Yoksa istek gövdesi eski davranışla birebir aynıdır (eski kayıtlar da yüklenir). */
+  interaction_types: z.array(z.enum(AI_INTERACTION_TYPES)).min(1).max(AI_INTERACTION_TYPES.length).optional(),
 }).strict().refine((p) =>
+  (!p.interaction_types || new Set(p.interaction_types).size === p.interaction_types.length) &&
   p.topic_plan.reduce((n, r) => n + r.count, 0) === p.count &&
   new Set(p.topic_plan.map((r) => r.topic)).size === p.topic_plan.length &&
   (!p.source_id || p.ai_consent === true)
 );
 const choice = z.object({ key: z.string(), text: z.string() });
+function withoutStructuredKeys<T extends { questions: { answer_key?: unknown }[] }>(result: T): T {
+  return { ...result, questions: result.questions.map(({ answer_key: _k, ...q }) => q) };
+}
+
 export const generationResultSchema = z.object({
   ok: z.literal(true),
   model: z.string().min(1),
@@ -34,7 +47,12 @@ export const generationResultSchema = z.object({
   questions: z.array(z.object({
     id: z.uuid(),
     topic: z.string(),
-    kind: z.enum(["multiple_choice", "open_ended"]),
+    kind: z.enum(["multiple_choice", "open_ended", "structured"]),
+    /** QT-AI: yapılandırılmış satırda tür + öğrenci içeriği + veliye dönen özel anahtar (complete_prova_generation). */
+    interaction_type: z.enum([...STRUCTURED_INTERACTION_TYPES, ...PHASE2A_INTERACTION_TYPES, ...PHASE2B_INTERACTION_TYPES]).optional(),
+    schema_version: z.number().int().optional(),
+    payload: z.record(z.string(), z.unknown()).optional(),
+    answer_key: z.record(z.string(), z.unknown()).optional(),
     difficulty: z.enum(["kolay", "orta", "orta_ustu", "zor"]),
     stem: z.string().min(1),
     choices: z.array(choice).nullable(),
@@ -91,7 +109,8 @@ export function createProvaGenerationJournal(
     if (!value) return null;
     const r = recordSchema.parse(JSON.parse(value));
     if (r.payload.draft_id !== draft) throw Error("generation_scope_changed");
-    return r;
+    // Eski bir kayıtta anahtar kalmışsa okunurken de atılır.
+    return r.result ? { ...r, result: withoutStructuredKeys(r.result) } : r;
   };
   const same = (r: ProvaGenerationRecord) => {
     const current = read();
@@ -117,9 +136,11 @@ export function createProvaGenerationJournal(
         new Set(result.questions.map((q) => q.id)).size !==
           result.questions.length
       ) throw Error("generation_result_invalid");
+      // QT: yapılandırılmış satırların özel cevap anahtarı cihaz depolamasına yazılmaz (telefonda çocuk modu);
+      // önizleme anahtarı gerektiğinde get_question_answer_keys ile sunucudan okunur.
       const next = recordSchema.parse({
         ...current,
-        result,
+        result: withoutStructuredKeys(result),
         safeFailure: undefined,
       });
       store.set(key, JSON.stringify(next));

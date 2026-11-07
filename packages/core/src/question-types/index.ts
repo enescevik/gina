@@ -1,4 +1,7 @@
 import { z } from "zod";
+import { crosswordAnswerErrors, crosswordAnswerState, isPhase3Type, type CrosswordAnswer, type CrosswordPayload, type Phase3InteractionType } from "./phase3";
+import { isPhase2bType, phase2bAnswerErrors, phase2bAnswerState, stimulusSchema, type Phase2bAnswer, type Phase2bInteractionType } from "./phase2b";
+import { isPhase2aType, phase2aAnswerErrors, phase2aAnswerState, type Phase2aAnswer, type Phase2aInteractionType } from "./phase2a";
 
 /**
  * QT00 — yapılandırılmış soru türleri sözleşmesi (istemci tarafı).
@@ -58,7 +61,7 @@ const ID = z.string().regex(/^[a-z][a-z0-9_]{0,23}$/);
 const entry = (max: number) => z.object({ id: ID, text: z.string().refine((s) => s.trim().length >= 1 && s.trim().length <= max) }).strict();
 
 export const studentPayloadSchemas = {
-  true_false: z.object({ statements: z.array(entry(500)).min(1).max(10) }).strict(),
+  true_false: z.object({ statements: z.array(entry(500)).min(1).max(10), stimulus: stimulusSchema.optional() }).strict(),
   fill_blank: z.object({
     segments: z.array(z.discriminatedUnion("type", [
       z.object({ type: z.literal("text"), text: z.string().min(1).max(1000) }).strict(),
@@ -67,21 +70,25 @@ export const studentPayloadSchemas = {
     input: z.enum(["bank", "keyboard"]),
     bank: z.array(entry(80)).max(16).optional(),
     bank_reuse: z.boolean().optional(),
+    stimulus: stimulusSchema.optional(),
   }).strict(),
   matching: z.object({
     left: z.array(entry(300)).min(2).max(8),
     right: z.array(entry(300)).min(2).max(10),
     policy: z.enum(["one_to_one", "many_to_one"]),
+    stimulus: stimulusSchema.optional(),
   }).strict(),
   numeric: z.object({
     units: z.array(entry(20)).max(8),
     unit_required: z.boolean(),
     work_area: z.boolean().optional(),
+    stimulus: stimulusSchema.optional(),
   }).strict(),
-  ordering: z.object({ items: z.array(entry(300)).min(2).max(10), mode: z.enum(["sequence", "sentence"]) }).strict(),
+  ordering: z.object({ items: z.array(entry(300)).min(2).max(10), mode: z.enum(["sequence", "sentence"]), stimulus: stimulusSchema.optional() }).strict(),
   classification: z.object({
     items: z.array(entry(200)).min(2).max(16),
     categories: z.array(z.object({ id: ID, text: z.string().min(1).max(80), capacity: z.number().int().min(1).max(16).optional() }).strict()).min(2).max(5),
+    stimulus: stimulusSchema.optional(),
   }).strict(),
 } satisfies Record<StructuredInteractionType, z.ZodType>;
 
@@ -122,11 +129,18 @@ export { parseNumberInput } from "./number";
 // ---------------------------------------------------------------------------------------------
 // Cevap doğrulaması (SQL gina.qt_answer_errors ile aynı kodlar). Boş dizi = geçerli.
 const ids = (arr: { id: string }[] | undefined) => (arr ?? []).map((x) => x.id);
-export function answerErrors(type: StructuredInteractionType, payload: unknown, answer: unknown): string[] {
+export function answerErrors(type: StructuredInteractionType | Phase2aInteractionType | Phase2bInteractionType | Phase3InteractionType, payload: unknown, answer: unknown): string[] {
+  if (payload && typeof payload === "object" && "stimulus" in payload) {
+    const { stimulus: _s, ...rest } = payload as Record<string, unknown>;
+    payload = rest;
+  }
   if (!answer || typeof answer !== "object" || Array.isArray(answer) || JSON.stringify(answer).length > 8000) return ["answer_invalid"];
   const a = answer as Record<string, unknown>;
   if (a.type !== type) return ["answer_type_mismatch"];
   if (a.v !== 1) return ["answer_version_unsupported"];
+  if (isPhase2aType(type)) return phase2aAnswerErrors(type, payload as Record<string, unknown>, a);
+  if (isPhase2bType(type)) return phase2bAnswerErrors(type, payload as Record<string, unknown>, a);
+  if (isPhase3Type(type)) return crosswordAnswerErrors(payload as CrosswordPayload, a);
   const field = { true_false: "items", fill_blank: "blanks", matching: "pairs", classification: "placement", ordering: "order", numeric: null }[type];
   const allowed = new Set(["type", "v", ...(field ? [field] : ["value", "unit"])]);
   if (Object.keys(a).some((k) => !allowed.has(k))) return ["answer_unknown_field"];
@@ -193,9 +207,12 @@ export function answerErrors(type: StructuredInteractionType, payload: unknown, 
 // ---------------------------------------------------------------------------------------------
 // Cevap doluluk durumu (SQL score_details.answer_state ile aynı tanım). Puan DEĞİLDİR.
 export type AnswerState = "unanswered" | "partial" | "complete";
-export function answerState(type: StructuredInteractionType, payload: unknown, answer: StructuredAnswer | null | undefined): AnswerState {
+export function answerState(type: StructuredInteractionType | Phase2aInteractionType | Phase2bInteractionType | Phase3InteractionType, payload: unknown, answer: StructuredAnswer | Phase2aAnswer | Phase2bAnswer | CrosswordAnswer | null | undefined): AnswerState {
   const p = payload as Record<string, unknown>;
   if (!answer) return "unanswered";
+  if (isPhase2aType(answer.type)) return phase2aAnswerState(p, answer as Phase2aAnswer);
+  if (isPhase2bType(answer.type)) return phase2bAnswerState(answer as Phase2bAnswer);
+  if (isPhase3Type(answer.type)) return crosswordAnswerState(p as CrosswordPayload, answer as CrosswordAnswer);
   const ratio = (done: number, total: number): AnswerState => (done === 0 ? "unanswered" : done < total ? "partial" : "complete");
   switch (answer.type) {
     case "true_false":
@@ -277,3 +294,6 @@ export function categoryFull(p: ClassificationPayload, a: AnswerOf<"classificati
 }
 
 export * from "./authoring";
+export * from "./phase2a";
+export * from "./phase2b";
+export * from "./phase3";

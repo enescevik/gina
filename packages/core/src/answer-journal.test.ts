@@ -174,4 +174,18 @@ describe("durable answer journal", () => {
     expect(f.data.size).toBe(0);
     expect(saved).toBe(false);
   });
+  it("keeps 2A structured answers and refuses unknown answer shapes", () => {
+    const f = fixture(), j = f.open();
+    const a = { type: "error_fix" as const, v: 1 as const, marks: { w2: { text: "gitti" } } };
+    j.edit(uid(5), { answer: a }, 0);
+    expect(f.open().restore()[uid(5)]).toEqual({ answer: a });
+    expect(() => j.edit(uid(6), { answer: { type: "mark_text", v: 2, selected: [] } as never }, 0)).toThrow();
+  });
+  it("keeps 2B region/clock answers and refuses a malformed time", () => {
+    const f = fixture(), j = f.open();
+    j.edit(uid(5), { answer: { type: "region_select", v: 1, selected: ["r1"] } }, 0);
+    j.edit(uid(6), { answer: { type: "clock", v: 1, time: "03:30" } }, 0);
+    expect(f.open().restore()[uid(6)]).toEqual({ answer: { type: "clock", v: 1, time: "03:30" } });
+    expect(() => j.edit(uid(7), { answer: { type: "clock", v: 1, time: "3:30" } as never }, 0)).toThrow();
+  });
 });
