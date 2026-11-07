@@ -39,7 +39,7 @@ jobs:
     env:
       CF_PAGES_PROJECT: ${{ vars.CF_PAGES_WEB_PROJECT || 'gina-web' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Secret kontrolü
         id: secrets
         env:
