@@ -60,3 +60,6 @@ apps/mobile/credentials/
 # local secrets (never commit)
 docs/secrets/
 __pycache__/
+
+# Claude agent worktrees
+.claude/worktrees/
