@@ -5276,5 +5276,12 @@
   "structuredRevision.stale": "Taslak değişmiş veya kapanmış. Taslağı yeniden aç ve güncel sürümü kontrol et.",
   "structuredRevision.failed": "Yeni sürüm kaydedilemedi. Soruyu ve taslağı kontrol edip yeniden dene.",
   "structuredRevision.keepRules": "Bu sorunun yanıt kuralları ve görsel yerleşimi yeni sürümde korunur.",
-  "structuredRevision.draft": "Açık taslak · {{title}}"
+  "structuredRevision.draft": "Açık taslak · {{title}}",
+  "groupRevision.title": "Ortak kaynağı ve soru metinlerini düzenle",
+  "groupRevision.help": "Yeni sürüm yalnız bu taslakta kullanılır. Cevap anahtarları ve görseller korunur. Atanmış sınavlar özgün grupla devam eder.",
+  "groupRevision.sourceTitle": "Ortak kaynak başlığı",
+  "groupRevision.sourceBody": "Ortak kaynak metni",
+  "groupRevision.prompt": "{{number}}. soru metni",
+  "groupRevision.save": "Yeni grup sürümünü kaydet",
+  "groupRevision.failed": "Grup kaydedilemedi. Ortak metni ve tüm soru metinlerini kontrol edip yeniden dene."
 }

@@ -128,7 +128,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F12 — Sürümlü yapılandırılmış soru düzenleme; grup/kütüphane taşıma; global yönetici düzenleme
 
-- Kaynak: §8. Durum: PLANLANDI. Efor: **L**.
+- Kaynak: §8. Durum: KISMEN KOD HAZIR (F12a ve ortak grup sürümleme). Efor: **L**.
 - Kapsam: Sürümlü yapılandırılmış soru düzenleme; grup/kütüphane taşıma; global yönetici düzenleme.
 - Bağımlılık: QT sözleşmesi, atanmış sürüm/hash, aktif kütüphane dallarıyla koordinasyon.
 - Paket kapısı: Türler tüm paketler; AI ayrı hak.
@@ -139,6 +139,8 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 - F12a kabul kanıtı: geçerli düzenleme yeni kimlik ve ayrı özel anahtar üretir; eski sınavın içerik hash'i, puanlaması ve öğrenci projeksiyonu aynı kalır. Aynı istek bir kimlik döndürür; değişmiş istek verisi, eski taslak revizyonu, aile dışı kaynak, çocuk oturumu ve grup üyesi olumsuz testlerde reddedilir. Veli ekranda hangi taslağa uyguladığını görür.
 - F12a uygulaması: Prova önizlemesinden velinin aileye ait tekil sorusu düzenlenir. Kayıt ve açık taslak bloğunun değişimi atomiktir. Yanıt formu eski payload ve anahtarı kayıpsız temsil edebildiğinde açılır. Diğer biçimlerde metin düzenlenir, özgün yanıt kuralları aynen taşınır. Mevcut görseller ve dönem etiketi yeni sürüme bağlanır. Üretim ve cihaz kabulü açık.
 - F12b incelemesi: kütüphaneden aileye yapılandırılmış soru ve ortak kaynak grubu edinme yolu son migration'larda zaten var. Eksik yol, AI veya veli kaynaklı mevcut bir ortak grubu tüm üyeleriyle atomik biçimde sürümlemek. AI düzenlemesinde ayrıca mevcut içerik uyarısı, özel anahtar ve değişmeyen eski atama birlikte doğrulanmalı.
+- F12b ortak grup teslimi: açık taslakta AI veya veli kaynaklı grupta başlık, ortak metin ve bütün soru yönergeleri düzenlenebilir. Her üye yeni kimlik alır. Yapılandırılmış anahtar, puan, puanlama politikası, görsel ve dönem etiketi taşınır. Eski tip cevap alanları ve AI içerik uyarıları korunur. Tek işlemde taslak bloğu değişir. Geçersiz üye, sürüm yarışı veya yetkisiz çağrı işlemin tamamını reddeder. Eski sınav özgün üyeleri kullanır. Bu işlem cevap anahtarını yeniden yazmaz ve yeni bir AI üretimi başlatmaz. Üretim ve cihaz kabulü açık.
+- F12c ilk inceleme: yönetim soru sayfası yapılandırılmış soruda üst bilgiyi doğrudan güncelliyor. Yapı ve anahtar ayrı salt okunur önizlemede. Yeni yönetici kaydı için tam yönetici yetkili bir RPC, ayrı soru kimliği ve eski/yeni kimliği içeren denetim izi gerekir. Önce global sürüm, ardından grup sınavı kabulü.
 
 ### F13 — Gerçek sağlayıcı pilotu, bulmaca; dikte/sesli cevap ayrı kapılı
 

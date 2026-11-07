@@ -558,6 +558,19 @@ export default function ProvaBuilder() {
     preview?.kind === "structured" && preview.family_id === familyId &&
     !!preview.provenance && typeof preview.provenance === "object" && !Array.isArray(preview.provenance) &&
     preview.provenance.generator === "parent";
+  const canReviseGroup = revisionReady && previewBlock?.kind === "group" &&
+    (previewBlock.source === "manual" || previewBlock.source === "ai") &&
+    questionsOf(previewBlock, mat).every(q => q.family_id === familyId &&
+      (isAiEditable(q.provenance) || (!!q.provenance && typeof q.provenance === "object" &&
+        !Array.isArray(q.provenance) && q.provenance.generator === "parent")));
+  async function openGroupRevision(groupId: string) {
+    try {
+      const saved = await save.mutateAsync(draft);
+      router.push({ pathname: "/parent/prova/shared-source", params: {
+        revisionGroup: groupId, draftId: id, draftVersion: String(saved.version),
+      } });
+    } catch {}
+  }
   async function openRevision(sourceId: string) {
     try {
       const saved = await save.mutateAsync(draft);
@@ -1503,6 +1516,8 @@ export default function ProvaBuilder() {
                                 />
                               )
                               : null}
+                            {canReviseGroup && !locked ? <SatinButton secondary title={t("groupRevision.title")}
+                              busy={save.isPending} onPress={() => void openGroupRevision(previewBlock.id)} /> : null}
                             <Toggle
                               label={t("provaBuilder.answerShow")}
                               value={answer}

@@ -1,3 +1,4 @@
+import { QuestionGroupRevision } from "@/components/learning/question-group-revision";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
@@ -16,6 +17,17 @@ import {
 } from "@gina/core";
 
 export default function SharedQuestionScreen() {
+  const { revisionGroup, draftId, draftVersion } = useLocalSearchParams<{
+    revisionGroup?: string; draftId?: string; draftVersion?: string;
+  }>();
+  const version = Number(draftVersion);
+  if (revisionGroup && draftId && Number.isInteger(version) && version > 0) {
+    return <QuestionGroupRevision groupId={revisionGroup} draftId={draftId} version={version} />;
+  }
+  return <LegacySharedQuestionScreen />;
+}
+
+function LegacySharedQuestionScreen() {
   const { t } = useTranslation();
   const { claims } = useSession();
   const params = useLocalSearchParams<

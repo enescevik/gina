@@ -5281,5 +5281,12 @@
   "structuredRevision.stale": "The draft has changed or closed. Reopen it to check the current version.",
   "structuredRevision.failed": "The new version could not be saved. Check the question and draft, then try again.",
   "structuredRevision.keepRules": "The new version keeps the original answer rules and image layout.",
-  "structuredRevision.draft": "Open draft · {{title}}"
+  "structuredRevision.draft": "Open draft · {{title}}",
+  "groupRevision.title": "Edit shared source and question text",
+  "groupRevision.help": "Only this draft uses the new version. Answer keys and images are kept. Assigned exams keep the original group.",
+  "groupRevision.sourceTitle": "Shared source title",
+  "groupRevision.sourceBody": "Shared source text",
+  "groupRevision.prompt": "Question {{number}} text",
+  "groupRevision.save": "Save new group version",
+  "groupRevision.failed": "The group could not be saved. Check the shared source and each question, then try again."
 }
