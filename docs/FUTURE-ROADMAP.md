@@ -54,6 +54,8 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 - Kabul: Aktif denemede cevap anahtarı sızmaz; çözüm yalnız sunucu sonuç kapısı izin verirse; TTS genel+deneme override, durdurma; çocuk AI çağrısı yok.
 - Test planı: Devam eden deneme olumsuz testi; TTS arka plan/ekran değişimi/döndürme ve cihaz offline doğrulama.
 
+- F3 Android: Expo Speech yaması kurulu yerel sesi işletim sisteminden doğrular. Ses seçimi başarısızsa veya motor aynı yerel sesi uygulamazsa okuma durur. Eski derlemelerde Android düğmesi kapalı kalır. Android modülü önceden derlenmiş paket yerine kaynak koddan derlendi ve Kotlin derlemesi geçti. Yeni native derleme ve Türkçe sesli fiziksel Android cihazda uçak modu kabulü gerekir.
+
 ### F4 — Çocuk/veli soruyu bildir; yönetimde kalite kuyruğu
 
 - Kaynak: §4.13. Durum: KOD HAZIR (yönetici kuyruğu; otomatik kaldırma yok). Efor: **M**.

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
-/** Android is fail-closed until the chosen engine's network requirement can be verified. */
+/** Android needs an installed local voice reported by the native module. */
 export function QuestionReader({examId,text,language="tr-TR"}:{examId:string;text:string;language?:string}) {
   const ready=useFutureLearningReady();
   const {t}=useTranslation();const {claims}=useSession();const [speaking,setSpeaking]=useState(false);
@@ -17,6 +17,11 @@ export function QuestionReader({examId,text,language="tr-TR"}:{examId:string;tex
   const permission=useQuery({queryKey:["question_reading_permission",claims?.family_id,claims?.child_id,examId],
     enabled:ready,queryFn:async()=>{const {data,error}=await supabase.rpc("get_question_reading_permission",{p_exam_id:examId});if(error)throw error;return data;},
     refetchInterval:15000,
+  });
+  const androidVoice=useQuery({
+    queryKey:["offline_question_voice",language],
+    enabled:ready&&permission.data===true&&Platform.OS==="android",
+    queryFn:async()=>selectLocalQuestionVoice("android",await Speech.getAvailableVoicesAsync(),language),
   });
   useEffect(()=>{
     const stop=()=>{generation.current++;void Speech.stop();setSpeaking(false);};
@@ -32,21 +37,20 @@ export function QuestionReader({examId,text,language="tr-TR"}:{examId:string;tex
     if(speaking)return;
     const allowed=await permission.refetch();
     if(current!==generation.current||allowed.error||allowed.data!==true)return;
-    if(Platform.OS==="android"){setUnavailable(true);return;}
     try {
       const voices=await Speech.getAvailableVoicesAsync();
       const voice=selectLocalQuestionVoice(Platform.OS,voices,language);
       if(current!==generation.current)return;
       if(!voice||text.length>Speech.maxSpeechInputLength){setUnavailable(true);return;}
       setSpeaking(true);
-      Speech.speak(text,{language,voice,rate:0.85,
+      Speech.speak(text,{language,voice,rate:0.85,...(Platform.OS==="android"?{localOnly:true}:{}),
         onDone:()=>{if(current===generation.current)setSpeaking(false);},
         onStopped:()=>{if(current===generation.current)setSpeaking(false);},
         onError:()=>{if(current===generation.current){setSpeaking(false);setUnavailable(true);}},
       });
     }catch{if(current===generation.current){setSpeaking(false);setUnavailable(true);}}
   }
-  if(!ready||permission.data!==true||permission.error||Platform.OS==="android")return null;
+  if(!ready||permission.data!==true||permission.error||(Platform.OS==="android"&&!androidVoice.data))return null;
   return <View style={{gap:4}}>
     <Button variant="ghost" title={t(speaking?"questionReading.stop":"questionReading.read")} onPress={()=>void read()} />
     {unavailable?<Text accessibilityRole="alert">{t("questionReading.unavailable")}</Text>:null}

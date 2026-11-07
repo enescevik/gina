@@ -1,0 +1,115 @@
+diff --git a/android/src/main/java/expo/modules/speech/SpeechModule.kt b/android/src/main/java/expo/modules/speech/SpeechModule.kt
+index af958a56b6e8710dcb5f1a26144270347447ed8c..443cb7e2cae6ada1266cfbae0808146399f67121 100644
+--- a/android/src/main/java/expo/modules/speech/SpeechModule.kt
++++ b/android/src/main/java/expo/modules/speech/SpeechModule.kt
+@@ -100,37 +100,51 @@ class SpeechModule : Module() {
+         identifier = it.name,
+         name = it.name,
+         quality = quality,
+-        language = LanguageUtils.getISOCode(it.locale)
++        language = LanguageUtils.getISOCode(it.locale),
++        localService = it.isInstalledLocalVoice()
+       )
+     }
+   }
+ 
++  private fun Voice.isInstalledLocalVoice(): Boolean =
++    !isNetworkConnectionRequired && features?.contains(TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED) == false
++
+   private fun speakOut(id: String, text: String, options: SpeechOptions) {
+     options.pitch?.let(textToSpeech::setPitch)
+     options.rate?.let(textToSpeech::setSpeechRate)
+ 
+-    textToSpeech.language = options.language?.let {
+-      try {
+-        val locale = Locale.Builder().setLanguage(it).build()
+-        val languageAvailable = textToSpeech.isLanguageAvailable(locale)
+-
+-        return@let if (
+-          languageAvailable != TextToSpeech.LANG_MISSING_DATA &&
+-          languageAvailable != TextToSpeech.LANG_NOT_SUPPORTED
+-        ) {
+-          locale
+-        } else {
++    if (options.localOnly == true) {
++      val voice = textToSpeech.voices.firstOrNull { it.name == options.voice && it.isInstalledLocalVoice() }
++      if (voice == null || textToSpeech.setVoice(voice) != TextToSpeech.SUCCESS ||
++        textToSpeech.voice?.let { it.name == voice.name && it.isInstalledLocalVoice() } != true
++      ) {
++        sendEvent(speakingErrorEvent, idToMap(id))
++        return
++      }
++    } else {
++      textToSpeech.language = options.language?.let {
++        try {
++          val locale = Locale.Builder().setLanguage(it).build()
++          val languageAvailable = textToSpeech.isLanguageAvailable(locale)
++
++          return@let if (
++            languageAvailable != TextToSpeech.LANG_MISSING_DATA &&
++            languageAvailable != TextToSpeech.LANG_NOT_SUPPORTED
++          ) {
++            locale
++          } else {
++            Locale.getDefault()
++          }
++        } catch (_: IllformedLocaleException) {
+           Locale.getDefault()
+         }
+-      } catch (_: IllformedLocaleException) {
+-        Locale.getDefault()
+-      }
+-    } ?: Locale.getDefault()
++      } ?: Locale.getDefault()
+ 
+-    options.voice?.let { voiceName ->
+-      textToSpeech.voices
+-        .firstOrNull { it.name == voiceName }
+-        ?.let(textToSpeech::setVoice)
++      options.voice?.let { voiceName ->
++        textToSpeech.voices
++          .firstOrNull { it.name == voiceName }
++          ?.let(textToSpeech::setVoice)
++      }
+     }
+ 
+     val params = Bundle().apply {
+@@ -140,12 +154,13 @@ class SpeechModule : Module() {
+       }
+     }
+ 
+-    textToSpeech.speak(
++    val result = textToSpeech.speak(
+       text,
+       TextToSpeech.QUEUE_ADD,
+       params,
+       id
+     )
++    if (options.localOnly == true && result != TextToSpeech.SUCCESS) sendEvent(speakingErrorEvent, idToMap(id))
+   }
+ 
+   // TextToSpeech object related code
+diff --git a/android/src/main/java/expo/modules/speech/SpeechOptions.kt b/android/src/main/java/expo/modules/speech/SpeechOptions.kt
+index 44ac50454d1b0e49d9fe651a826f56fd7e4de01a..984f27f96706979113056df8481d2421b0c455fc 100644
+--- a/android/src/main/java/expo/modules/speech/SpeechOptions.kt
++++ b/android/src/main/java/expo/modules/speech/SpeechOptions.kt
+@@ -10,5 +10,6 @@ data class SpeechOptions(
+   @Field val pitch: Float?,
+   @Field val rate: Float?,
+   @Field val voice: String?,
+-  @Field val volume: Float?
++  @Field val volume: Float?,
++  @Field val localOnly: Boolean?
+ ) : Record
+diff --git a/android/src/main/java/expo/modules/speech/VoiceRecord.kt b/android/src/main/java/expo/modules/speech/VoiceRecord.kt
+index 480ce46933b687d41694c8c7909e47ee99624580..4e3b7cd20db5544148b7fabee68df25f95dff4d5 100644
+--- a/android/src/main/java/expo/modules/speech/VoiceRecord.kt
++++ b/android/src/main/java/expo/modules/speech/VoiceRecord.kt
+@@ -15,5 +15,6 @@ data class VoiceRecord(
+   @Field val identifier: String,
+   @Field val name: String,
+   @Field val quality: VoiceQuality,
+-  @Field val language: String
++  @Field val language: String,
++  @Field val localService: Boolean
+ ) : Record

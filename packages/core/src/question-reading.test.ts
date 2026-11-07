@@ -6,6 +6,7 @@ describe("question reading privacy policy",()=>{
  it("never selects a network web voice",()=>expect(selectLocalQuestionVoice("web",[remote,local],"tr-TR")).toBe("local"));
  it("fails closed when local property is absent on web",()=>expect(selectLocalQuestionVoice("web",[{identifier:"unknown",language:"tr-TR"}],"tr")).toBeNull());
  it("does not silently read with a different language",()=>expect(selectLocalQuestionVoice("web",[local],"en-US")).toBeNull());
- it("fails closed for Android until engine capability is exposed",()=>expect(selectLocalQuestionVoice("android",[local],"tr-TR")).toBeNull());
+ it("selects an explicitly installed offline Android voice",()=>expect(selectLocalQuestionVoice("android",[remote,local],"tr-TR")).toBe("local"));
+ it("fails closed with old or network Android voice descriptors",()=>expect(selectLocalQuestionVoice("android",[{identifier:"old",language:"tr-TR"},remote],"tr-TR")).toBeNull());
  it("uses an available system voice on iOS",()=>expect(selectLocalQuestionVoice("ios",[{identifier:"installed",language:"tr-TR"}],"tr-TR")).toBe("installed"));
 });
