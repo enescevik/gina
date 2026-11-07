@@ -107,6 +107,6 @@ export { selectLocalQuestionVoice } from "./question-reading";
 
 export { isEveningReminder, minutesClock, clockMinutes, studyReminderDelta } from "./study-preferences";
 
-export { outcomeObservationsSchema, practiceDifficultySuggestion } from "./outcome-observations";
+export { outcomeObservationsSchema, practiceDifficultySuggestion, teacherOutcomeSnapshotSchema, teacherOutcomePreviewSchema, teacherOutcomeSubjectsSchema, type TeacherOutcomeSnapshot } from "./outcome-observations";
 
 export { childErrorMessageKey } from "./child-error";

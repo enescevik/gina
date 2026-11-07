@@ -5256,5 +5256,13 @@
   "studyPermissions.teacher": "Manage teacher links",
   "studyPermissions.teacherHelp": "On the sharing screen, you can review link access, expiry and status, and revoke access.",
   "practiceDifficulty.evidence": "Based on {{count}} distinct scored questions in the same outcome group for {{subject}} over the past 30 days, you could try a short practice at {{difficulty}} difficulty.",
-  "practiceDifficulty.apply": "Choose {{difficulty}} difficulty"
+  "practiceDifficulty.apply": "Choose {{difficulty}} difficulty",
+  "share.scope.learning_outcomes": "Learning outcome summary",
+  "share.preview.scope.learning_outcomes": "The link includes the preview below for the chosen subject.",
+  "share.error.outcome_preview_changed": "The summary changed. Review the updated preview and create the link again.",
+  "share.error.outcome_share_empty": "Choose a subject with enough scored questions to share.",
+  "teacherOutcomes.chooseSubject": "Subject to share",
+  "teacherOutcomes.subjectWindow": "{{subject}} · 30 days before sharing",
+  "teacherOutcomes.row": "Grade {{grade}} · {{count}} scored questions · average {{score}} / 100",
+  "teacherOutcomes.empty": "This subject has too little evidence to share."
 }

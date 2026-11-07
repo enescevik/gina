@@ -1,3 +1,5 @@
+import { teacherOutcomeSnapshotSchema, type TeacherOutcomeSnapshot } from "@gina/core";
+import { TeacherOutcomeSummary } from "@/components/learning/teacher-outcome-snapshot";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import Head from "expo-router/head";
@@ -25,6 +27,7 @@ interface SharedView {
     mc_total: number | null;
     topics: { topic: string; correct: number; total: number }[];
   }[];
+  learning_outcomes?: TeacherOutcomeSnapshot;
   tasks_summary?: { days: number; completed: number; approved: number; returned: number };
 }
 
@@ -180,6 +183,13 @@ export default function SharedChildViewScreen() {
                   ))}
                 </View>
               ))}
+            </View>
+          ) : null}
+
+          {data.learning_outcomes && teacherOutcomeSnapshotSchema.safeParse(data.learning_outcomes).success ? (
+            <View className="gap-2">
+              <Text className="text-2xl font-display text-ink">{t("share.scope.learning_outcomes")}</Text>
+              <TeacherOutcomeSummary snapshot={data.learning_outcomes} />
             </View>
           ) : null}
 

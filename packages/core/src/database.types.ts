@@ -721,14 +721,14 @@ isOneToOne: false
                   ]
                 },"child_shares": {
                   Row: {
-                    "child_id": string,"created_at": string,"created_by": string | null,"expires_at": string,"family_id": string,"id": string,"label": string,"last_viewed_at": string | null,"revoked_at": string | null,"scopes": (string)[],"token_hash": string,"view_count": number
+                    "child_id": string,"created_at": string,"created_by": string | null,"expires_at": string,"family_id": string,"id": string,"label": string,"last_viewed_at": string | null,"outcome_snapshot": Json | null,"revoked_at": string | null,"scopes": (string)[],"token_hash": string,"view_count": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "child_id": string,"created_at"?: string,"created_by"?: string | null,"expires_at"?: string,"family_id": string,"id"?: string,"label": string,"last_viewed_at"?: string | null,"revoked_at"?: string | null,"scopes": (string)[],"token_hash": string,"view_count"?: number
+                    "child_id": string,"created_at"?: string,"created_by"?: string | null,"expires_at"?: string,"family_id": string,"id"?: string,"label": string,"last_viewed_at"?: string | null,"outcome_snapshot"?: Json | null,"revoked_at"?: string | null,"scopes": (string)[],"token_hash": string,"view_count"?: number
                   }
                   Update: {
-                    "child_id"?: string,"created_at"?: string,"created_by"?: string | null,"expires_at"?: string,"family_id"?: string,"id"?: string,"label"?: string,"last_viewed_at"?: string | null,"revoked_at"?: string | null,"scopes"?: (string)[],"token_hash"?: string,"view_count"?: number
+                    "child_id"?: string,"created_at"?: string,"created_by"?: string | null,"expires_at"?: string,"family_id"?: string,"id"?: string,"label"?: string,"last_viewed_at"?: string | null,"outcome_snapshot"?: Json | null,"revoked_at"?: string | null,"scopes"?: (string)[],"token_hash"?: string,"view_count"?: number
                   }
                   Relationships: [
                     {
@@ -3572,6 +3572,11 @@ isOneToOne: false
 "contribution_review_trail":
 { Args: { "p_id": string }; Returns: Json
                            },
+"create_child_outcome_share":
+{ Args: { "p_child_id": string,"p_expires_in_days": number,"p_label": string,"p_preview_hash": string,"p_scopes": (string)[],"p_subject": string }; Returns: {
+              "expires_at": string,"id": string,"token": string
+            }[]
+                           },
 "create_child_share":
 { Args: { "p_child_id": string,"p_expires_in_days"?: number,"p_label": string,"p_scopes": (string)[] }; Returns: {
               "expires_at": string,"id": string,"token": string
@@ -4146,6 +4151,9 @@ isOneToOne: false
                            },
 "preview_question_contribution":
 { Args: { "p_question_id": string }; Returns: Json
+                           },
+"preview_teacher_outcome_share":
+{ Args: { "p_child_id": string,"p_subject"?: string }; Returns: Json
                            },
 "push_claim_batch":
 { Args: { "p_limit"?: number }; Returns: {

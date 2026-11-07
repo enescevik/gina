@@ -1,3 +1,6 @@
+import { teacherOutcomePreviewSchema, teacherOutcomeSubjectsSchema } from "@gina/core";
+import { ReportPicker } from "@/components/learning/learning-progress-view";
+import { TeacherOutcomeSummary } from "@/components/learning/teacher-outcome-snapshot";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -12,7 +15,7 @@ import { ParentScreen as Screen, ChildPicker, parentStyles, EmptyCard } from "@/
 import { ConfirmAction } from "@/components/ui/confirm-action";
 import { supabase } from "@/lib/supabase";
 
-type ShareScope = "grades" | "prova" | "tasks_summary";
+type ShareScope = "grades" | "prova" | "tasks_summary" | "learning_outcomes";
 const SCOPES: ShareScope[] = ["grades", "prova", "tasks_summary"];
 const EXPIRY_DAYS = [7, 30, 90, 180] as const;
 type ShareFilter = "all" | "active" | "ended";
@@ -30,7 +33,7 @@ function shareBaseUrl(): string | null {
 function errorMessage(t: (key: string) => string, error: unknown): string | null {
   if (!error) return null;
   const message = error instanceof Error ? error.message : typeof error === "object" && error && "message" in error ? String(error.message) : String(error);
-  const known = ["invalid_label", "invalid_scopes", "invalid_expiry", "too_many_shares", "child_not_found", "share_not_found", "share_failed"];
+  const known = ["invalid_label", "invalid_scopes", "invalid_expiry", "too_many_shares", "outcome_preview_changed", "outcome_share_empty", "child_not_found", "share_not_found", "share_failed"];
   return known.includes(message) ? t(`share.error.${message}`) : t("release.genericError");
 }
 
@@ -44,6 +47,7 @@ export default function ParentShareScreen() {
 
   const [childId, setChildId] = useState<string | null>(null);
   const [label, setLabel] = useState("");
+  const [outcomeSubject, setOutcomeSubject] = useState("");
   const [scopes, setScopes] = useState<ShareScope[]>(["grades"]);
   const [days, setDays] = useState<number>(30);
   const [createdLink, setCreatedLink] = useState<string | null>(null);
@@ -79,20 +83,61 @@ export default function ParentShareScreen() {
     },
   });
 
+  const wantsOutcomes = scopes.includes("learning_outcomes");
+  const outcomeSubjects = useQuery({
+    queryKey: ["teacher_outcome_subjects", selectedChild],
+    enabled: !!selectedChild,
+    retry: false,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("preview_teacher_outcome_share", { p_child_id: selectedChild! });
+      if (error?.code === "PGRST202") return [];
+      if (error) throw error;
+      return teacherOutcomeSubjectsSchema.parse(data).subjects;
+    },
+  });
+  const outcomePreview = useQuery({
+    queryKey: ["teacher_outcome_preview", selectedChild, outcomeSubject],
+    enabled: !!selectedChild && wantsOutcomes && !!outcomeSubject,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("preview_teacher_outcome_share", {
+        p_child_id: selectedChild!,
+        p_subject: outcomeSubject,
+      });
+      if (error) throw error;
+      return teacherOutcomePreviewSchema.parse(data);
+    },
+  });
+  const availableScopes = outcomeSubjects.data?.length
+    ? [...SCOPES, "learning_outcomes" as const]
+    : SCOPES;
+  const previewReady = !!outcomePreview.data?.snapshot.rows.length && !outcomePreview.error && !outcomePreview.isFetching;
+
   const createShare = useMutation({
     mutationFn: async () => {
       if (!baseUrl) throw new Error(t("share.noWebUrl"));
       if (!selectedChild) throw new Error("child_not_found");
-      const { data, error } = await supabase.rpc("create_child_share", {
+      const args = {
         p_child_id: selectedChild,
         p_label: label.trim(),
         p_scopes: scopes,
         p_expires_in_days: days,
-      });
+      };
+      if (wantsOutcomes && !previewReady) throw new Error("outcome_share_empty");
+      const { data, error } = wantsOutcomes
+        ? await supabase.rpc("create_child_outcome_share", {
+            ...args,
+            p_subject: outcomeSubject,
+            p_preview_hash: outcomePreview.data!.hash,
+          })
+        : await supabase.rpc("create_child_share", args);
       if (error) throw error;
       const token = data?.[0]?.token;
       if (!token) throw new Error("share_failed");
       return token;
+    },
+    onError: (error) => {
+      if (error && typeof error === "object" && "message" in error && error.message === "outcome_preview_changed")
+        void outcomePreview.refetch();
     },
     onSuccess: (token) => {
       const base = shareBaseUrl();
@@ -154,7 +199,7 @@ export default function ParentShareScreen() {
 
   return (
     <Screen title={t("share.title")} subtitle={t("unified.shareHelp")} loading={children.isLoading || (!!selectedChild && shares.isLoading)} error={children.error ?? shares.error} onRetry={() => { void children.refetch(); if (selectedChild) void shares.refetch(); }}>
-      <ChildPicker profiles={children.data ?? []} selected={selectedChild} onSelect={id => { if (!createShare.isPending) { setChildId(id); setCreatedLink(null); setActionError(null); setRevokedLabel(null); } }} />
+      <ChildPicker profiles={children.data ?? []} selected={selectedChild} onSelect={id => { if (!createShare.isPending) { setChildId(id); setOutcomeSubject(""); setScopes(current=>current.filter(scope=>scope!=="learning_outcomes")); setCreatedLink(null); setActionError(null); setRevokedLabel(null); } }} />
       {!baseUrl ? <Text style={parentStyles.copy}>{t("share.noWebUrl")}</Text> : null}
       {createdLink ? (
         <View className="gap-3 rounded-parent border border-teal bg-teal-light p-4">
@@ -227,7 +272,7 @@ export default function ParentShareScreen() {
           <Field label={t("share.label")} editable={!createShare.isPending} value={label} onChangeText={setLabel} placeholder={t("share.labelPlaceholder")} maxLength={80} />
           <Text className="text-sm font-body text-ink">{t("share.scopes")}</Text>
           <View className="flex-row flex-wrap gap-2">
-            {SCOPES.map((scope) => (
+            {availableScopes.map((scope) => (
               <Pressable
                 key={scope}
                 accessibilityRole="checkbox"
@@ -240,6 +285,11 @@ export default function ParentShareScreen() {
               </Pressable>
             ))}
           </View>
+          {wantsOutcomes ? (
+            <ReportPicker label={t("teacherOutcomes.chooseSubject")} value={outcomeSubject}
+              options={(outcomeSubjects.data ?? []).map(value=>({value,label:value}))}
+              onChange={value=>{if(!createShare.isPending)setOutcomeSubject(value);}} />
+          ) : null}
           <Text className="font-body text-xs text-gray-500">{t("share.neverShared")}</Text>
           <Text className="text-sm font-body text-ink">{t("share.expiry")}</Text>
           <View className="flex-row flex-wrap gap-2">
@@ -265,9 +315,11 @@ export default function ParentShareScreen() {
               {child?.grade != null ? ` · ${t("share.preview.grade", { grade: child.grade })}` : ""}
             </Text>
             {scopes.length === 0 ? <Text className="font-body text-sm text-danger">{t("share.error.invalid_scopes")}</Text> : null}
-            {SCOPES.filter((scope) => scopes.includes(scope)).map((scope) => (
+            {availableScopes.filter((scope) => scopes.includes(scope)).map((scope) => (
               <Text key={scope} className="font-body text-sm text-ink">• {t(`share.preview.scope.${scope}`)}</Text>
             ))}
+            {wantsOutcomes && outcomePreview.data ? <TeacherOutcomeSummary snapshot={outcomePreview.data.snapshot} /> : null}
+            {wantsOutcomes && outcomePreview.error ? <Button variant="ghost" title={t("common.retry")} onPress={()=>void outcomePreview.refetch()} /> : null}
             <Text className="font-body text-sm text-ink">{t("share.preview.until", { date: previewExpiry, count: days })}</Text>
             <Text className="font-body text-xs text-gray-500">{t("share.preview.notShared")}</Text>
             <Text className="font-body text-xs text-gray-500">{t("share.preview.revocable")}</Text>
@@ -276,8 +328,8 @@ export default function ParentShareScreen() {
           <Button
             title={t("share.create")}
             loading={createShare.isPending}
-            disabled={!baseUrl || !label.trim() || scopes.length === 0 || createShare.isPending}
-            onPress={() => createShare.mutate()}
+            disabled={(wantsOutcomes && !previewReady) || !baseUrl || !label.trim() || scopes.length === 0 || createShare.isPending}
+            onPress={() => { if (!wantsOutcomes || previewReady) createShare.mutate(); }}
           />
         </View>
       ) : (

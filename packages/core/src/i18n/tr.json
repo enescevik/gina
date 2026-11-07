@@ -5251,5 +5251,13 @@
   "studyPermissions.teacher": "Öğretmen bağlantılarını yönet",
   "studyPermissions.teacherHelp": "Paylaşım ekranından bağlantıların kapsamını, bitiş tarihini ve durumunu görebilir, erişimi iptal edebilirsiniz.",
   "practiceDifficulty.evidence": "{{subject}} dersinde son 30 günde aynı kazanım grubundan puanlanan {{count}} farklı soruya göre {{difficulty}} düzeyinde kısa bir pratik deneyebilirsiniz.",
-  "practiceDifficulty.apply": "{{difficulty}} düzeyini seç"
+  "practiceDifficulty.apply": "{{difficulty}} düzeyini seç",
+  "share.scope.learning_outcomes": "Kazanım özeti",
+  "share.preview.scope.learning_outcomes": "Seçilen dersin aşağıdaki kazanım özeti bağlantıya eklenir.",
+  "share.error.outcome_preview_changed": "Özet güncellendi. Önizlemeyi tekrar kontrol edip bağlantıyı oluşturun.",
+  "share.error.outcome_share_empty": "Paylaşmak için yeterli sayıda puanlanmış soru bulunan bir ders seçin.",
+  "teacherOutcomes.chooseSubject": "Paylaşılacak ders",
+  "teacherOutcomes.subjectWindow": "{{subject}} · paylaşım anındaki 30 günlük özet",
+  "teacherOutcomes.row": "{{grade}}. sınıf · {{count}} puanlanmış soru · ortalama {{score}} / 100",
+  "teacherOutcomes.empty": "Bu derste paylaşılabilecek yeterli gözlem yok."
 }

@@ -15,3 +15,23 @@ export function practiceDifficultySuggestion(rows: z.infer<typeof outcomeObserva
   if (row.mean_points >= 85) return { difficulty: "orta", scored: row.scored } as const;
   return null;
 }
+
+export const teacherOutcomeSnapshotSchema = z.object({
+  subject: z.string().min(1).max(80),
+  days: z.literal(30),
+  rows: z.array(z.object({
+    outcomes: z.array(z.string().min(1).max(80)).min(1).max(20),
+    grade: z.number().int().min(1).max(12),
+    scored: z.number().int().min(5),
+    mean_points: z.number().min(0).max(100),
+  }).strict()).max(20),
+}).strict();
+
+export const teacherOutcomePreviewSchema = z.object({
+  snapshot: teacherOutcomeSnapshotSchema,
+  hash: z.string().regex(/^[a-f0-9]{64}$/),
+}).strict();
+export const teacherOutcomeSubjectsSchema = z.object({
+  subjects: z.array(z.string()),
+}).strict();
+export type TeacherOutcomeSnapshot = z.infer<typeof teacherOutcomeSnapshotSchema>;
