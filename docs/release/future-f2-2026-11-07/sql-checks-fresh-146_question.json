@@ -1,0 +1,13 @@
+{
+  "environment": "empty-disposable-database-fresh-public-schema-all-migrations",
+  "timezone": "Europe/Istanbul",
+  "files": [
+    {
+      "file": "146_question_child_signals.test.sql",
+      "passed": 17,
+      "failed": 0
+    }
+  ],
+  "failures": [],
+  "assertions": 17
+}

@@ -5122,5 +5122,12 @@
     "retry": "Yeniden Dene",
     "empty": "Henüz beğendiğiniz soru yok. Hazırlama sırasında bir soruyu açıp kalbe dokunun.",
     "more": "Daha Fazla Göster"
+  },
+  "childSignals": {
+    "liked": "♡ Bu Soruyu Sevdim",
+    "likedSelected": "♥ Sevdim · Geri Al",
+    "struggled": "Bunda Zorlandım",
+    "struggledSelected": "Zorlandım · Geri Al",
+    "error": "İşaretini şu anda kaydedemedik. Cevabın etkilenmedi; sonra yeniden deneyebilirsin."
   }
 }

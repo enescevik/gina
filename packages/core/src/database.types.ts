@@ -2139,6 +2139,50 @@ isOneToOne: false
       referencedColumns: ["type"]
     }
                   ]
+                },"question_child_signals": {
+                  Row: {
+                    "attempt_id": string,"family_id": string,"liked": boolean,"question_id": string,"struggled": boolean
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempt_id": string,"family_id": string,"liked"?: boolean,"question_id": string,"struggled"?: boolean
+                  }
+                  Update: {
+                    "attempt_id"?: string,"family_id"?: string,"liked"?: boolean,"question_id"?: string,"struggled"?: boolean
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "question_child_signals_attempt_id_fkey"
+      columns: ["attempt_id"]
+isOneToOne: false
+      referencedRelation: "exam_attempts"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_child_signals_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_child_signals_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_child_signals_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_child_signals_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "standalone_question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"question_contributions": {
                   Row: {
                     "consent_version": string,"content": NonNullable<Json>,"content_hash": string,"created_at": string,"family_id": string,"id": string,"library_item_id": string | null,"review_note": string | null,"reviewed_at": string | null,"reviewed_by": string | null,"source_question_id": string | null,"status": string,"submitted_by": string | null
@@ -4343,6 +4387,9 @@ isOneToOne: false
                            },
 "set_prova_draft_discarded":
 { Args: { "p_discarded": boolean,"p_id": string,"p_request_id": string,"p_version": number }; Returns: Json
+                           },
+"set_question_child_signal":
+{ Args: { "p_attempt_id": string,"p_field": string,"p_question_id": string,"p_selected": boolean }; Returns: undefined
                            },
 "set_room_pet":
 { Args: { "p_acting_child_id"?: string,"p_pet": string }; Returns: undefined

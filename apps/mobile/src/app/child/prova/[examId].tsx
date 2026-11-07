@@ -1,3 +1,4 @@
+import { ChildQuestionSignal } from "@/components/learning/child-question-signal";
 import { DecisionSheet } from "@/components/ui/decision-sheet";
 import { invalidateProvaLists } from "@/lib/prova-cache";
 import { ChildReviewFeedback } from "@/components/learning/child-review-feedback";
@@ -905,6 +906,7 @@ export default function TakeExamScreen() {
         ? (
           <View className="gap-4 rounded-child bg-cream p-5">
             <ContextualQuestion questionId={q.id} stem={q.stem} />
+            {attempt.data?.id ? <ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} /> : null}
             {/* QT41: görsel bölge sorusunda görsel, bölgelerle birlikte soru içinde çizilir (iki kez değil). */}
             {q.interaction_type === "region_select" && (q.payload as { figure?: { kind?: string } } | null)?.figure?.kind === "image"
               ? null
