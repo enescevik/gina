@@ -1,7 +1,7 @@
 // Q03 — repo ve rapor sızıntı taraması. Eşleşen DEĞERİ asla yazmaz; yalnız desen adı, dosya ve satır.
 // Kullanım: node scripts/security/leak-scan.mjs [--json çıktı.json]
 import { createHash } from 'node:crypto';
-import { readdirSync, readFileSync, lstatSync, writeFileSync } from 'node:fs';
+import { closeSync, constants, fstatSync, lstatSync, openSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, relative, extname } from 'node:path';
 
 const root = process.cwd();
@@ -99,7 +99,14 @@ function walk(dir) {
     if (BINARY.has(extname(entry).toLowerCase()) || st.size > 6 * 1024 * 1024) continue;
     if (rel === 'pnpm-lock.yaml' || rel.startsWith('patches/')) continue; // hash yoğun; ayrı pnpm audit kapsar
     let text;
-    try { text = readFileSync(full, 'utf8'); } catch { continue; }
+    let fd;
+    try {
+      fd = openSync(full, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
+      const opened = fstatSync(fd);
+      if (!opened.isFile() || opened.dev !== st.dev || opened.ino !== st.ino || opened.size > 6 * 1024 * 1024) continue;
+      text = readFileSync(fd, 'utf8');
+    } catch { continue; }
+    finally { if (fd !== undefined) closeSync(fd); }
     if (text.includes('\u0000')) continue;
     scanned++;
     const isDocs = rel.startsWith('docs/') || rel.startsWith('research_notes/') || rel.endsWith('.md') || rel.endsWith('.json');

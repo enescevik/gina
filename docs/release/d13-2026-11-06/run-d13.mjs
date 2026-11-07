@@ -8,7 +8,7 @@
 import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, appendFileSync, existsSync, chmodSync, mkdirSync } from 'node:fs';
-import { randomBytes, randomUUID } from 'node:crypto';
+import { randomBytes, randomInt, randomUUID } from 'node:crypto';
 
 const ROOT = new URL('../../../', import.meta.url);
 const OUT = new URL('./', import.meta.url);
@@ -85,7 +85,7 @@ async function stageSetup() {
   if (state.userId) throw Error('already_set_up');
   state.email = `gina-d13-${randomUUID()}@example.invalid`;
   state.password = randomBytes(24).toString('base64url');
-  state.pin = String(1000 + (randomBytes(2).readUInt16BE() % 9000));
+  state.pin = String(randomInt(1000, 10000));
   save();
   const created = await must(admin.auth.admin.createUser({ email: state.email, password: state.password, email_confirm: true }), 'create_user');
   state.userId = created.user.id; save();

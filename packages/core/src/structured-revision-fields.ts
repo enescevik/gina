@@ -36,8 +36,22 @@ export function loadRevisionFields(type: string, payload: Record<string, unknown
 function toForm(type: string, p: Record<string, unknown>, k: Record<string, unknown>): Form | null {
   if (!isStructuredType(type) && !isPhase2AuthorType(type)) return null;
   // Existing identifiers can be arbitrary. The authoring models use a short numeric suffix for additions.
-  const ids = JSON.stringify(p).match(/"id":"[a-z][a-z0-9_]*"/g) ?? [];
-  const seq = Math.max(100, ...ids.map(id => Number(id.match(/\d+(?=")/)?.[0] ?? 0)).filter(n => n < 1000000));
+  let seq = 100;
+  const pending: unknown[] = [p];
+  while (pending.length) {
+    const value = pending.pop();
+    if (value === null || typeof value !== "object") continue;
+    for (const [field, entry] of Object.entries(value)) {
+      if (field === "id" && typeof entry === "string" && /^[a-z][a-z0-9_]*$/.test(entry)) {
+        let start = entry.length;
+        while (start > 0 && entry.charCodeAt(start - 1) >= 48 && entry.charCodeAt(start - 1) <= 57) start--;
+        const suffix = Number(entry.slice(start));
+        if (suffix < 1_000_000) seq = Math.max(seq, suffix);
+      } else if (entry !== null && typeof entry === "object") {
+        pending.push(entry);
+      }
+    }
+  }
   const s = (value: unknown) => value == null ? "" : String(value);
   switch (type) {
     case "true_false":
