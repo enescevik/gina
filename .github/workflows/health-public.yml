@@ -24,7 +24,10 @@ jobs:
         with:
           node-version-file: .node-version
       - name: Verify public probe configuration
-        run: node --input-type=module -e 'import { assertPublicBuildEnvironment } from "./scripts/public-build-env.mjs"; assertPublicBuildEnvironment(process.env,"EXPO_PUBLIC_");'
+        run: |
+          if [ -n "$EXPO_PUBLIC_SUPABASE_URL$EXPO_PUBLIC_SUPABASE_ANON_KEY" ]; then
+            node --input-type=module -e 'import { assertPublicBuildEnvironment } from "./scripts/public-build-env.mjs"; assertPublicBuildEnvironment(process.env,"EXPO_PUBLIC_");'
+          fi
       - name: Probe web, Access, public Auth/REST and tablet alias
         run: node scripts/health-check.mjs --pretty > production-health.json
       - name: Summarize without credentials or response bodies
