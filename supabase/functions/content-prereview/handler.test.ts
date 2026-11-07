@@ -436,9 +436,9 @@ Deno.test("H07 an AI approval touches only the pre-review RPCs (no approve / pub
 });
 
 
-Deno.test("failed paid review retains usage and remains needs_admin", async () => {
+for (const chained of [false, true]) Deno.test(`failed paid review retains usage and stops (chain=${chained})`, async () => {
   const f = fixture();
-  f.deps.resolve = async () => ({ ...config, chain: { id: "synthetic", usage_key: "content_prereview", plan: "pro", updated_at: "v1", on_rate_limit: true, on_server_error: true, on_timeout: false, attempt_seconds: 120, total_seconds: 130, steps: [] } });
+  if (chained) f.deps.resolve = async () => ({ ...config, chain: { id: "synthetic", usage_key: "content_prereview", plan: "pro", updated_at: "v1", on_rate_limit: true, on_server_error: true, on_timeout: false, attempt_seconds: 120, total_seconds: 130, steps: [] } });
   f.deps.call = async () => { throw new AiProviderError("anthropic_max_tokens", { model: "actual-fallback", provider: "anthropic", inputTokens: 120, outputTokens: 100, providerUsage: { input_tokens: 120, output_tokens: 100, cache_read_input_tokens: 0, cache_creation_input_tokens: 0, cache_creation: { ephemeral_5m_input_tokens: 0, ephemeral_1h_input_tokens: 0 }, service_tier: "standard", request_id: "synthetic" } }); };
   const response = await f.handler(post({ kind: "curriculum_candidate", id: ID }));
   const body = await response.json();

@@ -49,6 +49,7 @@ export interface RecordResult {
 const NON_RETRYABLE = new Set<AiFailure["kind"]>([
   "auth",
   "rejected",
+  "truncated", // A larger output budget/operator decision is needed; replaying charges again.
   "input_too_large",
   "token_count_invalid",
   "unsupported",
