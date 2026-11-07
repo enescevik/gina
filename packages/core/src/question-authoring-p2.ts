@@ -187,6 +187,7 @@ export function buildPhase2Content(d: Phase2Draft): { payload: Record<string, un
 }
 /** "8:30" / "08.30" / "8 30" → "08:30"; geçersiz → null. */
 export function normalizeTime(s: string): string | null {
+  if(s.length>64)return null;
   const m = /^\s*(\d{1,2})\s*[:.\s]\s*(\d{2})\s*$/.exec(s);
   if (!m) return null;
   const h = Number(m[1]), min = Number(m[2]);

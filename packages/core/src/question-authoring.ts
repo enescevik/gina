@@ -1,3 +1,4 @@
+import {blankMarkupMatches} from "./blank-markup";
 /**
  * QT10–QT13, QT20–QT21 — veli hazırlama formu modeli (saf).
  *
@@ -214,12 +215,11 @@ export function addRow(draft: StructuredDraft, side?: "left" | "right" | "catego
 
 // ---------------------------------------------------------------------------------------------
 // Boşluk doldurma: işaretli metni ayrıştır, boşluk kimliklerini cevaba göre koru.
-const BLANK_RE = /\[\[([^\]]*)\]\]/g;
 const normWord = (s: string) => s.normalize("NFC").trim().replace(/\s+/g, " ");
 
 /** Metin değişince boşluk kimliklerini eşleştir: aynı ham cevap → aynı kimlik; yeni boşluk → yeni kimlik. */
 export function reconcileBlanks(draft: FillBlankDraft & { seq: number }, markup: string): FillBlankDraft & { seq: number } {
-  const raws = [...markup.matchAll(BLANK_RE)].map((m) => m[1] ?? "");
+  const raws = [...blankMarkupMatches(markup)].map((m) => m[1] ?? "");
   const free = [...draft.blanks];
   let seq = draft.seq;
   const used = new Set<string>();
@@ -246,7 +246,7 @@ function fillBlankParts(d: FillBlankDraft) {
   const segments: ({ type: "text"; text: string } | { type: "blank"; id: string })[] = [];
   let last = 0;
   let i = 0;
-  for (const m of d.markup.matchAll(BLANK_RE)) {
+  for (const m of blankMarkupMatches(d.markup)) {
     if (m.index! > last) segments.push({ type: "text", text: d.markup.slice(last, m.index) });
     const id = d.blanks[i]?.id ?? `b_x${i}`;
     segments.push({ type: "blank", id });

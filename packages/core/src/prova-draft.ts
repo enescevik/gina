@@ -212,6 +212,7 @@ export function parseRubricInput(
   ];
   const rows = criteria.split("\n").map((l) => l.trim()).filter(Boolean);
   const parsed = rows.map((line) => {
+    if(line.length>1024)return null;
     const m = /^(.+?)\s*\|\s*(\d{1,3})$/.exec(line);
     return m ? { text: m[1]!.trim(), points: Number(m[2]) } : null;
   });

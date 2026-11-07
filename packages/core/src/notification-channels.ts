@@ -111,7 +111,7 @@ export function normalizeContact(kind: ContactKind, value: string): string {
 }
 export function contactLooksValid(kind: ContactKind, value: string): boolean {
   const v = normalizeContact(kind, value);
-  return kind === "email" ? /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) && v.length <= 254 : /^\+[1-9][0-9]{7,14}$/.test(v);
+  return kind === "email" ? v.length <= 254 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) : /^\+[1-9][0-9]{7,14}$/.test(v);
 }
 
 // C10 — client rules for the parent channel screens (server stays the authority) ---------------------

@@ -103,7 +103,9 @@ export function reviewErrorKey(message: string | null | undefined): string {
 export function suggestionTaskTitle(text: string, max = 80): string {
   const clean = text.replace(/\s+/g, " ").trim();
   const sentence = clean.split(/(?<=[.!?…])\s/)[0] ?? clean;
-  const base = sentence.replace(/[.!?…]+$/, "").trim();
+  let end = sentence.length;
+  while(end>0 && ".!?…".includes(sentence[end-1]!))end--;
+  const base = sentence.slice(0,end).trim();
   if (base.length <= max) return base;
   const cut = base.slice(0, max - 1);
   const space = cut.lastIndexOf(" ");

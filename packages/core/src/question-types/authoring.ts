@@ -1,3 +1,4 @@
+import {blankMarkupMatches} from "../blank-markup";
 /**
  * Hazırlama (veli/editör/AI) içerik + anahtar doğrulaması. SQL `gina.qt_question_errors` ile aynı kodlar;
  * sunucu doğrulaması her zaman son karardır, bu fonksiyon formda anında geri bildirim içindir.
@@ -216,7 +217,7 @@ export function fillBlankFromMarkup(markup: string): { segments: ({ type: "text"
   const accepted: Record<string, string[]> = {};
   let n = 0;
   let last = 0;
-  for (const m of markup.matchAll(/\[\[([^\]]+)\]\]/g)) {
+  for (const m of blankMarkupMatches(markup,false)) {
     if (m.index! > last) segments.push({ type: "text", text: markup.slice(last, m.index) });
     const id = `b${++n}`;
     segments.push({ type: "blank", id });

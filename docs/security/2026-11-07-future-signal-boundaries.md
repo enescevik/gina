@@ -42,3 +42,7 @@ Son taze regresyon 151 dosyada 7.032 kontrol; Edge ilgili 130 test, Node 117 tes
 ## CodeQL ilk bulgu takibi
 
 Analiz başarılı olsa da 205 uyarı açıktır; güvenlik kabulü kapatılmadı. `curriculum-source` ardışık entity çözümü `&amp;lt;` değerini iki kez yorumluyordu; tek geçişli çözüm ve nested-entity regresyonu eklendi. `meb-extract` geçersiz sayı tanısında ters eğik çizgi/satır sonu kaçışı eksikti; tek satır güvenli tanı ve olumsuz test eklendi. Bunlar tek başına XSS istismarı kanıtı değildir: kaynak metin veri olarak işlenir. Kalan core ReDoS/kitapçık ve yerel betik uyarılarının triyajı açıktır, hiçbiri topluca bastırılmadı.
+
+### Uzun girdi / düzenli ifade regresyonu
+
+CodeQL core işaretleri sonrasında boşluk işaretleri üç çağrı yerinde tek geçişli tarayıcıya taşındı; 1.500 üretilmiş bozuk/geçerli metin örneği eski ayrıştırıcıyla birebir karşılaştırılır. 200.000 kapanmamış açıcı, 100.000 haneli anlamsız ölçü, uzun hatalı saat/e-posta/rubrik için olumsuz testler eklendi. E-posta uzunluğu regex öncesi denetlenir, saat/rubrik girişi hesaplama öncesi sınırlanır, cümle sonu noktalaması sondan doğrusal taranır. Defter değerinde sayının ortasından yeniden başlanmaz; uzun sayıdan kırpılmış ölçü uydurulmaz. Root 7/7 kontrol, 768 core testi geçti. Kitapçık HTML uyarıları için mevcut script/URL kaçış olumsuz testleri var; uyarılar test geçmesiyle otomatik kapatılmadı, HTML veri akışı incelemesi açık.
