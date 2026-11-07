@@ -1,0 +1,227 @@
+{
+  "checkedAt": "2026-11-07T01:32:43.948Z",
+  "ok": true,
+  "failed": [],
+  "skipped": [],
+  "note": "Kişisel veri okunmadı; anon/public uçlar ve oturumsuz HTTP. Atlanan kontrol başarı sayılmaz.",
+  "checks": [
+    {
+      "id": "web-root",
+      "status": "pass",
+      "http": 200,
+      "headers": {
+        "content-security-policy": true,
+        "x-content-type-options": true,
+        "x-frame-options": true,
+        "referrer-policy": true
+      },
+      "scriptSrcNoUnsafeInline": true,
+      "noCookies": true
+    },
+    {
+      "id": "backoffice-access",
+      "status": "pass",
+      "probes": 12,
+      "unprotected": []
+    },
+    {
+      "id": "supabase-rest",
+      "status": "pass",
+      "http": 401,
+      "keyKind": "publishable",
+      "anonDenied": true
+    },
+    {
+      "id": "supabase-auth",
+      "status": "pass",
+      "http": 200,
+      "version": "v2.197.0"
+    },
+    {
+      "id": "edge-functions",
+      "status": "pass",
+      "count": 28,
+      "inactive": [],
+      "functions": [
+        {
+          "name": "ai-preflight",
+          "version": 42,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "ai-weekly-summary",
+          "version": 45,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "apple-notifications",
+          "version": 40,
+          "status": "ACTIVE",
+          "verify_jwt": false
+        },
+        {
+          "name": "apple-revocation-worker",
+          "version": 26,
+          "status": "ACTIVE",
+          "verify_jwt": false
+        },
+        {
+          "name": "apple-token",
+          "version": 26,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "channel-unsubscribe",
+          "version": 28,
+          "status": "ACTIVE",
+          "verify_jwt": false
+        },
+        {
+          "name": "content-prereview",
+          "version": 34,
+          "status": "ACTIVE",
+          "verify_jwt": false
+        },
+        {
+          "name": "contribution-submit",
+          "version": 29,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "curriculum-source-extract",
+          "version": 27,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "curriculum-source-fetch",
+          "version": 30,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "delete-account",
+          "version": 43,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "google-rtdn",
+          "version": 40,
+          "status": "ACTIVE",
+          "verify_jwt": false
+        },
+        {
+          "name": "iap-operator-reconcile",
+          "version": 29,
+          "status": "ACTIVE",
+          "verify_jwt": false
+        },
+        {
+          "name": "iap-reconcile",
+          "version": 40,
+          "status": "ACTIVE",
+          "verify_jwt": false
+        },
+        {
+          "name": "iap-verify",
+          "version": 41,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "learning-plan-import",
+          "version": 35,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "learning-source",
+          "version": 35,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "library-generation-batch",
+          "version": 4,
+          "status": "ACTIVE",
+          "verify_jwt": false
+        },
+        {
+          "name": "library-media",
+          "version": 32,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "prova-generate",
+          "version": 49,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "prova-grade",
+          "version": 50,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "prova-plan",
+          "version": 46,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "prova-review",
+          "version": 39,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "push-send",
+          "version": 43,
+          "status": "ACTIVE",
+          "verify_jwt": false
+        },
+        {
+          "name": "room-weather",
+          "version": 28,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "setup-suggestions",
+          "version": 41,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        },
+        {
+          "name": "source-cleanup",
+          "version": 35,
+          "status": "ACTIVE",
+          "verify_jwt": false
+        },
+        {
+          "name": "timetable-import",
+          "version": 41,
+          "status": "ACTIVE",
+          "verify_jwt": true
+        }
+      ]
+    },
+    {
+      "id": "tablet-alias",
+      "status": "pass",
+      "http": 200,
+      "version": "1.0.0",
+      "build": "34",
+      "sourceCommit": "0e4f5a379d0afaa0981c4f9c4f374c3d72eddb05",
+      "origin": "local-eas-build",
+      "expectedBuild": "34"
+    }
+  ]
+}

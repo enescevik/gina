@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "sourceCommit": "0e4f5a379d0afaa0981c4f9c4f374c3d72eddb05",
+  "checks": [
+    {
+      "file": "build/apps/mobile/ios/GinaAile/Info.plist",
+      "equal": true,
+      "sha256": "c1a9e9124d5cf35282655e5e8cc6aea9cb7260816554164455dde2ac04c21cdc"
+    },
+    {
+      "file": "build/apps/mobile/ios/GinaAile/Supporting/Expo.plist",
+      "equal": true,
+      "sha256": "9e93c2a9d202979e3b37d5b3e4e20f4dd6e88c2d48add9769a7ea98bfc7556a8"
+    },
+    {
+      "file": "build/apps/mobile/app.json",
+      "equal": true,
+      "sha256": "6b24102a9a8b31914625c1db3e65047a1278c1039f54ad1453f5a93eedbedfc2"
+    },
+    {
+      "file": "build/pnpm-lock.yaml",
+      "equal": true,
+      "sha256": "b88f6247247d4df3ae8e8fcb5808c990d6be4e76d59dbc9e072e10ddaf913a84"
+    }
+  ],
+  "method": "One Release xcarchive exported separately for App Store and registered-device ad hoc distribution."
+}

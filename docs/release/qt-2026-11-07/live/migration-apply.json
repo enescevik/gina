@@ -1,0 +1,27 @@
+[
+  {
+    "version": "20261107050000",
+    "name": "qt10_question_views",
+    "applied": true
+  },
+  {
+    "version": "20261107050100",
+    "name": "qt30_phase2a_types",
+    "applied": true
+  },
+  {
+    "version": "20261107050200",
+    "name": "qt40_phase2b_types",
+    "applied": true
+  },
+  {
+    "version": "20261107050300",
+    "name": "qt50_crossword",
+    "applied": true
+  },
+  {
+    "version": "20261107050400",
+    "name": "qt_enable_phase2",
+    "applied": true
+  }
+]

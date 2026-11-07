@@ -1,5 +1,7 @@
 # Prova soru türleri — ilerleme ve kanıt kaydı
 
+> Güncel yayın durumu: [1.0.0 (34) canlı yayın kaydı](LIVE-RELEASE.md). Aşağıdaki “yayımlanmadı / kod hazır” ifadeleri ilgili test koşusunun tarihsel durumudur; güncel yayın durumu bu kayıttan okunmalıdır. Fiziksel cihaz kabulü ayrı ve açıktır.
+
 Plan: [PROVA-QUESTION-TYPES-PLAN.md](../../learning/PROVA-QUESTION-TYPES-PLAN.md) · Sözleşme: [PROVA-QUESTION-TYPES-CONTRACT.md](../../learning/PROVA-QUESTION-TYPES-CONTRACT.md)
 Branch: `claude/prova-question-types` (worktree `../gina-qtypes`, taban `origin/main 7dc3ef9`). Main'e merge, prod migration, Edge deploy ve istemci yayını **yapılmadı**; koordinatör onayı bekleniyor (tek yayın hattı H08 thread'inde).
 

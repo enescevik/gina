@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "team": "gina-family",
+  "project": "gina-backoffice",
+  "checks": [
+    {
+      "url": "https://gina-backoffice.pages.dev/",
+      "status": 302,
+      "protectedByAccess": true
+    },
+    {
+      "url": "https://gina-backoffice.pages.dev/sign-in",
+      "status": 302,
+      "protectedByAccess": true
+    },
+    {
+      "url": "https://gina-backoffice.pages.dev/dashboard",
+      "status": 302,
+      "protectedByAccess": true
+    },
+    {
+      "url": "https://gina-backoffice.pages.dev/support",
+      "status": 302,
+      "protectedByAccess": true
+    },
+    {
+      "url": "https://gina-backoffice.pages.dev/library-publication",
+      "status": 302,
+      "protectedByAccess": true
+    },
+    {
+      "url": "https://gina-backoffice.pages.dev/brand/logo.png",
+      "status": 302,
+      "protectedByAccess": true
+    },
+    {
+      "url": "https://access-check-7b74eb29-ed52-4cb7-86d3-0bb189cae08a.gina-backoffice.pages.dev/",
+      "status": 302,
+      "protectedByAccess": true
+    },
+    {
+      "url": "https://access-check-7b74eb29-ed52-4cb7-86d3-0bb189cae08a.gina-backoffice.pages.dev/sign-in",
+      "status": 302,
+      "protectedByAccess": true
+    },
+    {
+      "url": "https://access-check-7b74eb29-ed52-4cb7-86d3-0bb189cae08a.gina-backoffice.pages.dev/dashboard",
+      "status": 302,
+      "protectedByAccess": true
+    },
+    {
+      "url": "https://access-check-7b74eb29-ed52-4cb7-86d3-0bb189cae08a.gina-backoffice.pages.dev/support",
+      "status": 302,
+      "protectedByAccess": true
+    },
+    {
+      "url": "https://access-check-7b74eb29-ed52-4cb7-86d3-0bb189cae08a.gina-backoffice.pages.dev/library-publication",
+      "status": 302,
+      "protectedByAccess": true
+    },
+    {
+      "url": "https://access-check-7b74eb29-ed52-4cb7-86d3-0bb189cae08a.gina-backoffice.pages.dev/brand/logo.png",
+      "status": 302,
+      "protectedByAccess": true
+    }
+  ]
+}
