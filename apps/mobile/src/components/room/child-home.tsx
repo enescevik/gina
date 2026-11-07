@@ -1,4 +1,4 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { CalendarDays, Check, ChevronRight, Circle, ClipboardCheck, Clock3, GraduationCap, House, LockKeyhole, Pencil, Play, Star, Timer, Trophy, X } from 'lucide-react-native';
 import { useCallback, useRef, useState, type ComponentRef } from 'react';
@@ -18,6 +18,8 @@ import { Button } from '@/components/ui/button';
 import { TaskFocus, useOpenFocus } from '@/components/tasks/task-focus';
 import { TaskIcon } from '@/components/task-icon';
 import { ErrorText } from '@/components/ui/screen';
+import { useFutureLearningReady } from '@/lib/future-learning';
+import { supabase } from '@/lib/supabase';
 import { childPath } from '@/lib/active-child';
 import { useChildExamCount } from '@/lib/use-child-exam-count';
 import { useChildGoal } from '@/lib/use-child-goal';
@@ -35,6 +37,19 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
   const data = useChildToday(childId, actingAsParent);
   const goal = useChildGoal(childId);
   const exams = useChildExamCount(childId);
+  const ready = useFutureLearningReady();
+  const daily = useQuery({
+    queryKey: ['daily_practice', childId],
+    enabled: ready && !!childId,
+    staleTime: 0,
+    refetchInterval: 15000,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('get_daily_practice', { p_child_id: childId });
+      if (error) throw error;
+      return data;
+    },
+  });
+  const dailyId = ready && !daily.isError && !daily.isPaused ? daily.data : null;
   const homework = useChildHomework(childId, data.today);
   const openFocus = useOpenFocus(childId, data.today);
   const client = useQueryClient();
@@ -72,7 +87,12 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
         {next.status === 'returned' && <View testID="child-returned-explain" style={{ backgroundColor: '#FFF6E5', borderRadius: 14, padding: 10, gap: 4 }}><Text style={[s.small, { color: c.ink }]}>{t('childMint.returnedTitle')}</Text><ReturnNext returned={next.returned} compact/></View>}
         {primary(t(next.status === 'returned' ? 'childMint.returnedAction' : 'childMint.start'), () => openTask(next.id))}
       </View> : homeworkNext ? <HomeworkNext item={homeworkNext} compact={!wide} onOpen={() => go('calendar')} /> : (!waiting && (exams.data ?? 0) > 0 ? null : <View style={s.card}><View style={s.row}><Collectible slug={waiting ? 'star-filled' : data.due.length ? 'reward-trophy' : 'display-first-task'} size={shortLandscape ? 48 : 64}/><View style={{ flex: 1 }}><Text style={s.heading}>{t(waiting ? 'childMint.waitingTitle' : data.due.some(x=>!x.available && x.status==='returned') ? 'routine.pausedTitle' : data.due.length ? 'childMint.allDone' : 'childMint.emptyTitle')}</Text><Text style={s.text}>{t(waiting ? 'childMint.waitingBody' : data.due.some(x=>!x.available && x.status==='returned') ? 'routine.pausedBody' : data.due.length ? 'childMint.allDoneBody' : 'childMint.emptyBody')}</Text></View></View>{!data.due.length && !(exams.data ?? 0) && primary(t('betaUx.exploreCollection'), () => go('collection'))}</View>)}
-      {!next && !homeworkNext && !data.loading && !error && !waiting && (exams.data ?? 0) > 0 && <View style={s.card}><View style={s.row}><Collectible slug="reward-book" size={shortLandscape ? 48 : 64}/><View style={{ flex: 1 }}><Text style={s.heading}>{t('childMint.provaWaitingTitle', { count: exams.data ?? 0 })}</Text><Text style={s.text}>{t('childMint.provaWaitingBody')}</Text></View></View>{primary(t('childMint.provaWaitingAction'), () => go('prova'))}</View>}
+      {!next && !homeworkNext && !data.loading && !error && !waiting && dailyId && <View style={s.card}>
+        <Text style={s.heading}>{t('dailyPractice.title')}</Text>
+        <Text style={s.text}>{t('dailyPractice.invitation')}</Text>
+        {primary(t('dailyPractice.open'), () => router.push({ pathname: actingAsParent ? '/parent/child-mode/prova/[examId]' : '/child/prova/[examId]', params: { examId: dailyId } }))}
+      </View>}
+      {!next && !homeworkNext && !data.loading && !error && !waiting && !dailyId && (exams.data ?? 0) > 0 && <View style={s.card}><View style={s.row}><Collectible slug="reward-book" size={shortLandscape ? 48 : 64}/><View style={{ flex: 1 }}><Text style={s.heading}>{t('childMint.provaWaitingTitle', { count: exams.data ?? 0 })}</Text><Text style={s.text}>{t('childMint.provaWaitingBody')}</Text></View></View>{primary(t('childMint.provaWaitingAction'), () => go('prova'))}</View>}
     </View>
     {data.due.length > 0 && <View style={[s.section, s.divider, !wide && { gap: 8, paddingTop: 12 }]}>
       <Text accessibilityRole="header" style={s.heading}>{t('childMint.steps')}</Text>

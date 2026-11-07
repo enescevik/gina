@@ -101,7 +101,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F9 — Günün sorusu ve öğrenme odaklı rozetler
 
-- Kaynak: §4.11–12. Durum: PLANLANDI. Efor: **M**.
+- Kaynak: §4.11–12. Durum: KOD HAZIR (veli seçimi ve ilk tamamlama rozeti). Efor: **M**.
 - Kapsam: Günün sorusu ve öğrenme odaklı rozetler.
 - Bağımlılık: F7; görev/rozet idempotency.
 - Paket kapısı: Tüm paketler, erişilebilir içerikle.
@@ -261,3 +261,5 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - F8b: Serbest, tek dersli pratikte veliye son 30 günün aynı kazanım grubundan en az beş farklı puanlı sorusuyla zorluk önerisi gösterilir. Birden çok grup, bekleyen puan, az veri ve 60–84,9 arası ortalamada öneri çıkmaz. 60 altı kolay, 85 ve üzeri orta bir başlangıç önerir. Bu eşikler ürün tercihi, ölçüm sonucu değildir. Yazılı/senaryo kapsamı dışarıda kalır. Zorluk ancak veli düğmeye dokununca değişir. 778 core, lint ve tip denetimi geçti. Öğretmene ders bazlı kazanım paylaşımı açık.
 
 - F8c: Veli tek ders seçerek son 30 günün puanlanmış kazanım özetini önizler ve süreli öğretmen bağlantısı oluşturur. En az beş puanlı yanıt içeren satırlar paylaşılır. Bağlantı yalnız onaylanan anlık özeti taşır. Veri önizleme ile kayıt arasında değişirse yeni onay gerekir. Mevcut süre sonu ve geri çekme geçerlidir. Taze yerel SQL: 160 dosya, 7.169 kontrol, sıfır hata. Lint, tip denetimi ve çekirdek testleri geçti. Üretim ve cihaz kabulü açık.
+
+- F9: Veli mevcut, başlanmamış, süresiz ve tek soruluk bir pratik atamasını ailenin yerel günü için öne çıkarabilir. Çocuk odasında öncelikli görev/ödev yoksa isteğe bağlı kart görünür; yapılandırılan sakin saatlerde ve gönderimden sonra gizlenir. Yanıt gönderildiğinde ilk tamamlama rozeti bir kez verilir. Boş gönderim, beğeni, seri, ek yıldız, AI çağrısı ve push yok. Otomatik kütüphane seçimi, diğer tekrar rozetleri ve fiziksel cihaz kabulü açık.

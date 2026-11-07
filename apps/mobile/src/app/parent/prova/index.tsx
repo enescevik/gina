@@ -1,6 +1,6 @@
 import {useFutureLearningReady} from "@/lib/future-learning";
 import { useCallback, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
@@ -63,16 +63,26 @@ interface HubExam {
   duration_minutes: number | null;
   question_ids: string[];
   children: { name: string; avatar: string | null } | null;
+  assessment_track: string | null;
+  blueprint_id: string | null;
   exam_attempts: HubAttempt[];
 }
 const HUB_EXAM_SELECT: string =
-  "id,child_id,title,kind,status,timed,duration_minutes,question_ids,children(name,avatar),exam_attempts(id,status,mc_total,mc_correct,open_total,open_graded,open_pending,open_unanswered,provisional,score_pct,finished_at,created_at)";
+  "id,child_id,title,kind,status,timed,duration_minutes,question_ids,assessment_track,blueprint_id,children(name,avatar),exam_attempts(id,status,mc_total,mc_correct,open_total,open_graded,open_pending,open_unanswered,provisional,score_pct,finished_at,created_at)";
 
 const HUB_TABS = ["prepare", "sent", "review"] as const;
 type HubTab = (typeof HUB_TABS)[number];
 
 export default function ParentProvaScreen() {
   const ready=useFutureLearningReady();
+  const queryClient = useQueryClient();
+  const pinPractice = useMutation({
+    mutationFn: async ({ id }: { id: string; childId: string }) => {
+      const { error } = await supabase.rpc('pin_daily_practice', { p_exam_id: id });
+      if (error) throw error;
+    },
+    onSuccess: (_, { childId }) => queryClient.invalidateQueries({ queryKey: ['daily_practice', childId] }),
+  });
   const { t } = useTranslation(),
     { claims } = useSession(),
     familyId = claims?.family_id ?? "";
@@ -360,6 +370,12 @@ export default function ParentProvaScreen() {
                         ? t("prova.inProgress")
                         : t(`prova.status.${exam.status}`)}
                     </Text>
+                    {ready && !latest && exam.kind === "practice" && exam.status === "assigned" && !exam.timed && exam.question_ids.length === 1 && !exam.assessment_track && !exam.blueprint_id && (
+                      pinPractice.variables?.id === exam.id && pinPractice.isSuccess
+                        ? <Text accessibilityLiveRegion="polite" style={b.muted}>{t("dailyPractice.pinned")}</Text>
+                        : <SatinButton secondary title={t("dailyPractice.pin")} busy={pinPractice.isPending} onPress={() => pinPractice.mutate({ id: exam.id, childId: exam.child_id })} />
+                    )}
+                    {pinPractice.variables?.id === exam.id && pinPractice.isError && <Text accessibilityLiveRegion="polite" style={b.muted}>{t("dailyPractice.pinFailed")}</Text>}
                     {latest?.status === "submitted"
                       ? (
                         <SatinButton

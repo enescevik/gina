@@ -5259,5 +5259,11 @@
   "teacherOutcomes.chooseSubject": "Paylaşılacak ders",
   "teacherOutcomes.subjectWindow": "{{subject}} · paylaşım anındaki 30 günlük özet",
   "teacherOutcomes.row": "{{grade}}. sınıf · {{count}} puanlanmış soru · ortalama {{score}} / 100",
-  "teacherOutcomes.empty": "Bu derste paylaşılabilecek yeterli gözlem yok."
+  "teacherOutcomes.empty": "Bu derste paylaşılabilecek yeterli gözlem yok.",
+  "dailyPractice.title": "Günün sorusu",
+  "dailyPractice.invitation": "İstersen bugün bir soru keşfedebilirsin.",
+  "dailyPractice.open": "Soruyu aç",
+  "dailyPractice.pin": "Günün sorusu olarak göster",
+  "dailyPractice.pinned": "Günün sorusu olarak gösterilecek.",
+  "dailyPractice.pinFailed": "Bu soru gösterilemedi. Bugün için bir soru zaten seçilmiş olabilir."
 }

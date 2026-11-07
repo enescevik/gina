@@ -5264,5 +5264,11 @@
   "teacherOutcomes.chooseSubject": "Subject to share",
   "teacherOutcomes.subjectWindow": "{{subject}} · 30 days before sharing",
   "teacherOutcomes.row": "Grade {{grade}} · {{count}} scored questions · average {{score}} / 100",
-  "teacherOutcomes.empty": "This subject has too little evidence to share."
+  "teacherOutcomes.empty": "This subject has too little evidence to share.",
+  "dailyPractice.title": "Question of the day",
+  "dailyPractice.invitation": "Explore a question today if you feel like it.",
+  "dailyPractice.open": "Open question",
+  "dailyPractice.pin": "Show as question of the day",
+  "dailyPractice.pinned": "This will appear as the question of the day.",
+  "dailyPractice.pinFailed": "This question could not be shown. There may already be a question for today."
 }
