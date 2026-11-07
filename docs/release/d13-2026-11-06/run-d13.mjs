@@ -61,7 +61,7 @@ async function device() {
 }
 const token = async (c) => (await c.auth.getSession()).data.session.access_token;
 async function fn(c, name, body) {
-  const r = await fetch(`${URL_BASE}/functions/v1/${name}`, { method: 'POST', headers: { Authorization: `Bearer ${await token(c)}`, apikey: ANON, 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const r = await fetch(`${URL_BASE}/functions/v1/${name}`, { method: 'POST', redirect: 'error', headers: { Authorization: `Bearer ${await token(c)}`, apikey: ANON, 'content-type': 'application/json' }, body: JSON.stringify(body) });
   const text = await r.text(); let json; try { json = JSON.parse(text); } catch { json = { raw: text.slice(0, 200) }; }
   return { status: r.status, body: json };
 }

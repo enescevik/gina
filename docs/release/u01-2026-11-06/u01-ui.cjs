@@ -235,4 +235,4 @@ async function token(email, password) {
   server.close();
   const failed = Object.entries(checks).filter(([, v]) => v === false);
   process.exitCode = failed.length ? 1 : 0;
-})().catch(e => { console.error('stage error', e.message.slice(0, 400)); fs.writeFileSync(path.join(OUT, 'ui-checks.json'), JSON.stringify({ ...checks, stage_error: e.message.slice(0, 200) }, null, 2) + '\n'); process.exit(1); });
+})().catch(e => { console.error('stage error', e.message.slice(0, 400)); fs.writeFileSync(path.join(OUT, 'ui-checks.json'), JSON.stringify({ ...checks, stage_error: true }, null, 2) + '\n'); process.exit(1); });

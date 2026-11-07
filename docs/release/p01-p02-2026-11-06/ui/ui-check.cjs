@@ -331,7 +331,7 @@ const TAG = randomUUID().slice(0, 4);
   fs.writeFileSync(`${out}/ui-checks.json`, JSON.stringify({ ok: true, results }, null, 2));
   console.log(JSON.stringify({ ok: true, count: results.length }));
 }).catch(e => {
-  fs.writeFileSync(`${out}/ui-checks.json`, JSON.stringify({ ok: false, stage, error: String(e && e.message || e).slice(0, 600), results }, null, 2));
+  fs.writeFileSync(`${out}/ui-checks.json`, JSON.stringify({ ok: false, stage, error: 'ui_check_failed', results }, null, 2));
   console.error('FAILED at ' + stage + ': ' + String(e && e.message || e).slice(0, 600));
   process.exitCode = 1;
 }).finally(async () => { if (browser) await browser.close(); });
