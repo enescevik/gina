@@ -267,6 +267,11 @@ function Review() {
                             })}
                           </Text>
                         </View>
+                        {child.prova&&child.prova.attempts>0?<View style={{gap:4}}>
+                          <Text style={[s.text,s.bold]}>{t("weeklyReview.provaTitle")}</Text>
+                          <Text style={s.text}>{t("weeklyReview.provaCounts",{attempts:child.prova.attempts,scored:child.prova.scored,pending:child.prova.pending})}</Text>
+                          <Text style={s.small}>{t("weeklyReview.provaSignals",{liked:child.prova.liked,struggled:child.prova.struggled,repeated:child.prova.repeated_observations})}</Text>
+                        </View>:null}
                         {child.tasks.length
                           ? child.tasks.map((task) => (
                             <View key={task.status} style={s.row}>

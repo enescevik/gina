@@ -14,6 +14,10 @@ export const weeklySummarySchema = z.object({
   ),
   veliye_oneriler: z.array(text(500)).max(3),
 }).strict();
+const evidenceCount = z.number().int().nonnegative();
+const weeklyProvaSchema=z.object({attempts:evidenceCount,scored:evidenceCount,partial:evidenceCount,
+ pending:evidenceCount,blank:evidenceCount,repeated_observations:evidenceCount,liked:evidenceCount,struggled:evidenceCount,
+}).strict().refine(v=>v.partial<=v.scored);
 export const weeklyReviewSchema = z.object({
   week_start: date,
   weeks: z.array(date).length(8),
@@ -25,6 +29,7 @@ export const weeklyReviewSchema = z.object({
       alias: text(80),
       name: text(150).nullable(),
       grade: z.number().int().nullable(),
+      prova: weeklyProvaSchema.optional(),
       stars_earned: z.number().int().nonnegative(),
       tasks: z.array(
         z.object({
