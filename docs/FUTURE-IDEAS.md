@@ -276,3 +276,19 @@ Gina'da AI'ye giden girdiler: veli metinleri, MEB tablosu yapıştırma, fotoğr
 3. Prova zorlanmasına bağlı ders eğitmeni kartı (haftada en fazla 1, etiketli, kapatılabilir).
 4. Randevunun takvime düşmesi ve eğitmen notunun göreve dönüşmesi.
 5. Meet entegrasyonu (veli katılımı, kayıt kapalı, özel mesaj yok).
+
+## 8. Prova soru türleri: Faz 3 ve sonrası — Enes kararı (7 Kasım)
+
+Faz 0–2B (14 tür) 1.0 (34) ile yayında. Faz 3'e şimdilik geçilmiyor; aşağıdakiler gelecek iş olarak tutulur. Teknik ayrıntı ve kabul kapısı: [soru türleri planı](learning/PROVA-QUESTION-TYPES-PLAN.md), [veri/RPC sözleşmesi](learning/PROVA-QUESTION-TYPES-CONTRACT.md), [ilerleme ve kanıt](release/qt-2026-11-07/PROGRESS.md).
+
+| Fikir | Bugünkü durum | Başlamadan önce gereken |
+|---|---|---|
+| **Bulmaca (QT50)** | Sunucu + core hazır ve üretimde **kapalı** (`interaction_types.crossword enabled=false`, migration `20261107050300`); TR büyük harf kuralı, ipucu bazlı puan, kesişme doğrulaması ve golden testler var. Çocuk/veli ekranı, PDF ve AI şeması **yok**. | Çocuk hücre girişi (mobil klavye, erişilebilir alternatif), hazırlama ekranı, PDF ızgarası, AI şeması; açma migration'ı + istemci anahtarı aynı yayında. |
+| **Dikte / dinle-yaz (QT43)** | Tanımlı değil. | Ses depolama kararı: veli kaydı (özel ses türü, imzalı URL, silme yaşam döngüsü) mı, cihaz TTS mi? TTS metni çocuğun cihazına taşır, cevap sızar. Tekrar/hız politikası ve PDF'te öğretmen metni eki. |
+| **Sesli cevap (QT51)** | Tanımlı değil. Ürün fikri olarak [§3](#3-soruya-sesli-yanıt--veli-iznine-bağlı-varsayılan-kapalı). | Çocuk sesi için ayrı açık rıza (mevcut izinlerden türetilmez), saklama/silme süresi, hukuk görüşü; transkripsiyon yalnız yardımcı, kesin puan veli. |
+| **Kaydedilmiş yapılandırılmış soruyu düzenleme** | Yapılandırılmış soru kaydedildikten sonra düzenlenemiyor; AI düzenleme açıkça kapalı (`ai_edit_structured_unsupported`). | Sürümlü düzenleme (yeni soru sürümü + anahtar/hash), atanmış sınavı etkilememe; AI düzenleme şeması. |
+| **Ortak kaynak grubu ve kütüphane paylaşımında yeni türler** | Ortak kaynak grupları ve kütüphane paylaşımı yalnız eski türleri (şıklı/açık uçlu) taşıyor; yapılandırılmış üye açık hatayla reddediliyor. Toplu (grup) sınav da yapılandırılmış cevap kabul etmiyor. | Grup/kütüphane kopyasında payload + özel anahtarın birlikte taşınması, grup sınavı puanlaması; kütüphane içerik işi kullanıcının backoffice operasyonuyla ayrı. |
+| **Global yapılandırılmış soru düzenleme (backoffice)** | Backoffice listeler ve önizler (anahtar dahil) ama salt okunur. | Yönetici kaydetme RPC'si (kök, payload, anahtar, hash yeniden hesaplama) ve yetki/denetim izi. |
+| **Gerçek AI sağlayıcısında 14 türlük şema pilotu** | Edge şeması ve deterministik doğrulama sahte sağlayıcıyla test edildi; gerçek sağlayıcıların büyük `anyOf` şemasını kabulü doğrulanmadı (en büyük risk Gemini — adaptör `additionalProperties` alanını siliyor). | Mevcut bütçe içinde sınırlı sentetik pilot (her sağlayıcı × tür); başarısızlıkta türleri sağlayıcı bazında kısıtlama. Toplu kütüphane üretimine dönüşmez. |
+
+Ayrıca açık (fikir değil, kabul işi): 14 türün fiziksel cihaz kabulü (Pencil/parmak, VoiceOver/TalkBack, döndürme, büyük yazı, native PDF) ve görsel üzerinde bölge seçmenin gerçek görselle doğrulanması.
