@@ -1,5 +1,8 @@
 begin;
 select no_plan();
+select ok((select enabled from public.interaction_types where type='crossword'),'general rollout enables crossword');
+-- Recreate the earlier closed-registry state to exercise the expiring pilot rules.
+update public.interaction_types set enabled=false where type='crossword';
 insert into auth.users(id,email) values ('00000000-0000-4000-8000-000000017501','crossword-parent@test.local'),('00000000-0000-4000-8000-000000017503','crossword-device@test.local');
 insert into public.families(id,name,created_by) values ('10000000-0000-4000-8000-000000017501','QT3','00000000-0000-4000-8000-000000017501');
 insert into public.family_members(family_id,user_id) values ('10000000-0000-4000-8000-000000017501','00000000-0000-4000-8000-000000017501');

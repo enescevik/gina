@@ -14,8 +14,8 @@ export const CLIENT_SUPPORTED_WITH_PHASE2A: readonly string[] = [...CLIENT_SUPPO
 export const PHASE2B_CHILD_ENABLED: boolean = true; // Yayın: Enes onayı 6 Kasım 2026 (14 türlük paket)
 export const CLIENT_SUPPORTED_WITH_PHASE2B: readonly string[] = [...CLIENT_SUPPORTED_INTERACTION_TYPES, ...PHASE2B_INTERACTION_TYPES];
 
-// Keep creation behind the QA build switch until the production migration and client ship together.
-export const CROSSWORD_AUTHOR_ENABLED = process.env.EXPO_PUBLIC_QT_CROSSWORD === "1";
+// The iPad authoring, solving, and scoring pilot passed.
+export const CROSSWORD_AUTHOR_ENABLED: boolean = true;
 
 /** Çocuk ekranının sunucuya bildirdiği tür listesi (her faz kendi anahtarıyla eklenir). */
 export const CHILD_SUPPORTED_TYPES: readonly string[] = [
