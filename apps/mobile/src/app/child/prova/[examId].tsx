@@ -1,3 +1,4 @@
+import { QuestionReader } from "@/components/learning/question-reader";
 import { ChildQuestionSolution } from "@/components/learning/child-question-solution";
 import { ChildQuestionSignal } from "@/components/learning/child-question-signal";
 import { DecisionSheet } from "@/components/ui/decision-sheet";
@@ -146,7 +147,7 @@ export default function TakeExamScreen() {
     queryKey: ["notebook_exam_title", examId],
     enabled: !!attempt.data,
     queryFn: async () => {
-      const { data, error } = await supabase.from("exams").select("title, grade").eq(
+      const { data, error } = await supabase.from("exams").select("title, grade, subject").eq(
         "id",
         examId,
       ).single();
@@ -748,6 +749,7 @@ export default function TakeExamScreen() {
         progress={`${index + 1} / ${list.length}`}
         questionId={q.id}
         stem={q.stem}
+        questionExtras={<View style={{gap:6}}><QuestionReader key={q.id} examId={examId} text={q.stem} language={examInfo.data?.subject==="İngilizce"?"en-US":"tr-TR"} />{attempt.data?.id?<ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} />:null}</View>}
         document={current?.document}
         text=""
         onChange={(document) => editAnswer({ answer: current?.answer, document })}
@@ -781,6 +783,7 @@ export default function TakeExamScreen() {
         progress={`${index + 1} / ${list.length}`}
         questionId={q.id}
         stem={q.stem}
+        questionExtras={<View style={{gap:6}}><QuestionReader key={q.id} examId={examId} text={q.stem} language={examInfo.data?.subject==="İngilizce"?"en-US":"tr-TR"} />{attempt.data?.id?<ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} />:null}</View>}
         document={current?.document}
         text={current?.text ?? ""}
         onChange={(document) => editAnswer({ ...current, document })}
@@ -919,6 +922,7 @@ export default function TakeExamScreen() {
         ? (
           <View className="gap-4 rounded-child bg-cream p-5">
             <ContextualQuestion questionId={q.id} stem={q.stem} />
+            <QuestionReader key={q.id} examId={examId} text={q.stem} language={examInfo.data?.subject==="İngilizce"?"en-US":"tr-TR"} />
             {attempt.data?.id ? <ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} /> : null}
             {/* QT41: görsel bölge sorusunda görsel, bölgelerle birlikte soru içinde çizilir (iki kez değil). */}
             {q.interaction_type === "region_select" && (q.payload as { figure?: { kind?: string } } | null)?.figure?.kind === "image"

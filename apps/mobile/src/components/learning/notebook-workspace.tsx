@@ -51,6 +51,7 @@ export function NotebookWorkspace({
   exitLabel,
   footer,
   alerts,
+  questionExtras,
 }: {
   title: string;
   progress?: string;
@@ -68,6 +69,7 @@ export function NotebookWorkspace({
   exitLabel?: string;
   footer: ReactNode;
   alerts: ReactNode;
+  questionExtras?: ReactNode;
 }) {
   const { t } = useTranslation();
   const { width, height, fontScale } = useWindowDimensions();
@@ -169,6 +171,7 @@ export function NotebookWorkspace({
           </>
         )}
         {shared.data ? <SharedContext context={shared.data} /> : null}
+        {questionExtras}
         <View style={compactSummary ? s.questionSummary : { gap: 10 }}>
           <QuestionMedia
             style={[s.diagram, compactSummary && s.summaryImage]}

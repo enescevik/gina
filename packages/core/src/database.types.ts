@@ -747,14 +747,14 @@ isOneToOne: false
                   ]
                 },"children": {
                   Row: {
-                    "archive_revision": number,"archived_at": string | null,"avatar": string,"birth_date": string | null,"birth_year": number | null,"created_at": string,"family_id": string,"gender": string,"grade": number | null,"id": string,"interests": (string)[],"name": string,"sort_order": number
+                    "archive_revision": number,"archived_at": string | null,"avatar": string,"birth_date": string | null,"birth_year": number | null,"created_at": string,"family_id": string,"gender": string,"grade": number | null,"id": string,"interests": (string)[],"name": string,"question_reading_enabled": boolean,"sort_order": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "archive_revision"?: number,"archived_at"?: string | null,"avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"family_id": string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name": string,"sort_order"?: number
+                    "archive_revision"?: number,"archived_at"?: string | null,"avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"family_id": string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name": string,"question_reading_enabled"?: boolean,"sort_order"?: number
                   }
                   Update: {
-                    "archive_revision"?: number,"archived_at"?: string | null,"avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"family_id"?: string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name"?: string,"sort_order"?: number
+                    "archive_revision"?: number,"archived_at"?: string | null,"avatar"?: string,"birth_date"?: string | null,"birth_year"?: number | null,"created_at"?: string,"family_id"?: string,"gender"?: string,"grade"?: number | null,"id"?: string,"interests"?: (string)[],"name"?: string,"question_reading_enabled"?: boolean,"sort_order"?: number
                   }
                   Relationships: [
                     {
@@ -1069,14 +1069,14 @@ isOneToOne: false
                   ]
                 },"exams": {
                   Row: {
-                    "academic_year": number | null,"assessment_track": string | null,"blueprint_id": string | null,"child_id": string,"content_locked_at": string | null,"created_at": string,"created_by": string | null,"duration_minutes": number | null,"education_context": Json | null,"education_period_id": string | null,"exam_scope": string | null,"family_id": string,"grade": number,"id": string,"kind": string,"preparation": Json | null,"question_ids": (string)[],"school_declared": boolean | null,"status": Database["public"]['Enums']["exam_status"],"subject": string,"subject_links": Json | null,"term": number | null,"timed": boolean,"title": string,"updated_at": string
+                    "academic_year": number | null,"assessment_track": string | null,"blueprint_id": string | null,"child_id": string,"content_locked_at": string | null,"created_at": string,"created_by": string | null,"duration_minutes": number | null,"education_context": Json | null,"education_period_id": string | null,"exam_scope": string | null,"family_id": string,"grade": number,"id": string,"kind": string,"preparation": Json | null,"question_ids": (string)[],"question_reading_override": string,"school_declared": boolean | null,"status": Database["public"]['Enums']["exam_status"],"subject": string,"subject_links": Json | null,"term": number | null,"timed": boolean,"title": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "academic_year"?: number | null,"assessment_track"?: string | null,"blueprint_id"?: string | null,"child_id": string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"education_context"?: Json | null,"education_period_id"?: string | null,"exam_scope"?: string | null,"family_id": string,"grade": number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"school_declared"?: boolean | null,"status"?: Database["public"]['Enums']["exam_status"],"subject": string,"subject_links"?: Json | null,"term"?: number | null,"timed"?: boolean,"title": string,"updated_at"?: string
+                    "academic_year"?: number | null,"assessment_track"?: string | null,"blueprint_id"?: string | null,"child_id": string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"education_context"?: Json | null,"education_period_id"?: string | null,"exam_scope"?: string | null,"family_id": string,"grade": number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"question_reading_override"?: string,"school_declared"?: boolean | null,"status"?: Database["public"]['Enums']["exam_status"],"subject": string,"subject_links"?: Json | null,"term"?: number | null,"timed"?: boolean,"title": string,"updated_at"?: string
                   }
                   Update: {
-                    "academic_year"?: number | null,"assessment_track"?: string | null,"blueprint_id"?: string | null,"child_id"?: string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"education_context"?: Json | null,"education_period_id"?: string | null,"exam_scope"?: string | null,"family_id"?: string,"grade"?: number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"school_declared"?: boolean | null,"status"?: Database["public"]['Enums']["exam_status"],"subject"?: string,"subject_links"?: Json | null,"term"?: number | null,"timed"?: boolean,"title"?: string,"updated_at"?: string
+                    "academic_year"?: number | null,"assessment_track"?: string | null,"blueprint_id"?: string | null,"child_id"?: string,"content_locked_at"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number | null,"education_context"?: Json | null,"education_period_id"?: string | null,"exam_scope"?: string | null,"family_id"?: string,"grade"?: number,"id"?: string,"kind"?: string,"preparation"?: Json | null,"question_ids"?: (string)[],"question_reading_override"?: string,"school_declared"?: boolean | null,"status"?: Database["public"]['Enums']["exam_status"],"subject"?: string,"subject_links"?: Json | null,"term"?: number | null,"timed"?: boolean,"title"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -3516,6 +3516,9 @@ isOneToOne: false
 "content_prereview_finish":
 { Args: { "p_error"?: string,"p_id": string,"p_kind": string,"p_lease": string,"p_status": string,"p_verdict": Json }; Returns: Json
                            },
+"content_prereview_library_images":
+{ Args: { "p_id": string,"p_lease": string }; Returns: Json
+                           },
 "content_prereview_next":
 { Args: { "p_limit"?: number }; Returns: Json
                            },
@@ -3555,6 +3558,7 @@ isOneToOne: false
 "kind": string,
 "preparation": Json | null,
 "question_ids": (string)[],
+"question_reading_override": string,
 "school_declared": boolean | null,
 "status": Database["public"]['Enums']["exam_status"],
 "subject": string,
@@ -3874,6 +3878,9 @@ isOneToOne: false
                            },
 "get_question_media":
 { Args: { "p_question_ids": (string)[] }; Returns: Json
+                           },
+"get_question_reading_permission":
+{ Args: { "p_exam_id": string }; Returns: boolean
                            },
 "get_reinforcement_questions":
 { Args: { "p_child_id": string,"p_question_id": string }; Returns: (string)[]

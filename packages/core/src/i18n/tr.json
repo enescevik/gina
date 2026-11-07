@@ -5153,5 +5153,17 @@
     "hide": "Çözümü Gizle",
     "loading": "Çözüm açılıyor…",
     "notReady": "Değerlendirme tamamlanınca varsa çözüm yolunu burada görebilirsin."
+  },
+  "questionReading": {
+    "title": "Sesli Okuma Tercihleri",
+    "body": "Sorular cihazın uygun sesiyle okunabilir; mikrofon açılmaz ve sesli cevap kaydı yapılmaz. Desteklenen yerel ses yoksa metin görünmeye devam eder. Deneme tercihi çocuk tercihinden önceliklidir.",
+    "child": "{{name}} için sesli okuma",
+    "examPreferences": "Deneme Tercihleri",
+    "recent": "Son 10 deneme",
+    "inherit": "Çocuğun genel tercihini kullan",
+    "allow": "Bu denemede sesli okumaya izin ver",
+    "read": "Soruyu Sesli Oku",
+    "stop": "Okumayı Durdur",
+    "unavailable": "Bu cihazda uygun yerel ses şu anda kullanılamıyor. Soruyu ekrandan okuyabilirsin."
   }
 }

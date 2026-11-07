@@ -5158,5 +5158,17 @@
     "hide": "Hide Solution",
     "loading": "Opening the solution…",
     "notReady": "When review is complete, an available solution will appear here."
+  },
+  "questionReading": {
+    "title": "Reading Aloud Preferences",
+    "body": "Questions can be read using a suitable device voice. No microphone or voice-answer recording is used. Text remains available when no supported local voice exists. An exam preference overrides the child preference.",
+    "child": "Read aloud for {{name}}",
+    "examPreferences": "Exam Preferences",
+    "recent": "10 most recent practices",
+    "inherit": "Use the child’s general preference",
+    "allow": "Allow reading aloud in this practice",
+    "read": "Read the Question",
+    "stop": "Stop Reading",
+    "unavailable": "A suitable local voice is not available on this device right now. You can read the question on screen."
   }
 }

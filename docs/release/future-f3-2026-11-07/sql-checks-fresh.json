@@ -736,8 +736,13 @@
       "file": "148_child_solution.test.sql",
       "passed": 8,
       "failed": 0
+    },
+    {
+      "file": "149_question_reading.test.sql",
+      "passed": 10,
+      "failed": 0
     }
   ],
   "failures": [],
-  "assertions": 6978
+  "assertions": 6988
 }

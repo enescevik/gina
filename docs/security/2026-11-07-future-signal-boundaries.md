@@ -21,3 +21,7 @@ F2a: çocuk sinyali yalnız atanmış denemedeki soruya yazılır; kardeş denem
 ## F2b — sınıf, süre ve bozuk etiket sınırları
 
 `147_question_focus.test.sql`: yabancı çocuk/soru, farklı sınıf, doğrudan süre yazımı, çocuk/anon RPC ve bozuk JSON etiket olumsuz testleri. Bozuk `outcome_ids` öneri ekranını çökertebileceği için JSON türü kontrollü uzunluk ölçümü kullanıldı; bilinmeyen etiket eşleşme üretmez. Pozitif testler süreli tercih/geri alma, tekil tekrar, öneri sessizliği ve orijinal sorunun sona gelmesini kapsar. Güncel taze regresyon 145 dosyada 6.962 kontrol, 0 hata. Gerçek sağlayıcı çağrısı yapılmadı.
+
+## F3 — kayıtlı çözüm ve yerel okuma
+
+`148_child_solution.test.sql`: aktif/gönderilmiş denemede çözüm yok, kardeş/ilgisiz soru/sahte aile/anon reddi; iki alanlı projeksiyon. `149_question_reading.test.sql`: çocuk tercih değiştiremez, deneme override genel tercihten önce gelir, sahte aile ve anon reddedilir. `question-reading.test.ts`: uzak web sesi, eksik yerellik bilgisi, dil uyuşmazlığı ve Android ağ özelliği belirsizliği reddedilir. Çözüme veya okumaya canlı AI bağlanmadı; mikrofon ve ses kaydı yok. Yerel okuma yeni native modül içerir; cihaz/sürüm/offline kabulü henüz yok.

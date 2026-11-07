@@ -1,0 +1,52 @@
+import { selectLocalQuestionVoice } from "@gina/core";
+import { useEffect, useRef, useState } from "react";
+import { AppState, Platform, Text, View } from "react-native";
+import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
+import * as Speech from "expo-speech";
+import { Button } from "@/components/ui/button";
+import { useSession } from "@/lib/session";
+import { supabase } from "@/lib/supabase";
+
+/** Android is fail-closed until the chosen engine's network requirement can be verified. */
+export function QuestionReader({examId,text,language="tr-TR"}:{examId:string;text:string;language?:string}) {
+  const {t}=useTranslation();const {claims}=useSession();const [speaking,setSpeaking]=useState(false);
+  const [unavailable,setUnavailable]=useState(false);const generation=useRef(0);
+  const permission=useQuery({queryKey:["question_reading_permission",claims?.family_id,claims?.child_id,examId],
+    queryFn:async()=>{const {data,error}=await supabase.rpc("get_question_reading_permission",{p_exam_id:examId});if(error)throw error;return data;},
+    refetchInterval:15000,
+  });
+  useEffect(()=>{
+    const stop=()=>{generation.current++;void Speech.stop();setSpeaking(false);};
+    const listener=AppState.addEventListener("change",state=>{if(state!=="active")stop();});
+    // Cancellation counter, not a rendered node ref; cleanup must invalidate the latest request.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return ()=>{listener.remove();generation.current++;void Speech.stop();};
+  },[text,language]);
+  useEffect(()=>{if(permission.data!==true||permission.error){const current=++generation.current;void Speech.stop().then(()=>{if(current===generation.current)setSpeaking(false);});}},[permission.data,permission.error]);
+  async function read(){
+    const current=++generation.current;setUnavailable(false);
+    await Speech.stop();setSpeaking(false);
+    if(speaking)return;
+    const allowed=await permission.refetch();
+    if(current!==generation.current||allowed.error||allowed.data!==true)return;
+    if(Platform.OS==="android"){setUnavailable(true);return;}
+    try {
+      const voices=await Speech.getAvailableVoicesAsync();
+      const voice=selectLocalQuestionVoice(Platform.OS,voices,language);
+      if(current!==generation.current)return;
+      if(!voice||text.length>Speech.maxSpeechInputLength){setUnavailable(true);return;}
+      setSpeaking(true);
+      Speech.speak(text,{language,voice,rate:0.85,
+        onDone:()=>{if(current===generation.current)setSpeaking(false);},
+        onStopped:()=>{if(current===generation.current)setSpeaking(false);},
+        onError:()=>{if(current===generation.current){setSpeaking(false);setUnavailable(true);}},
+      });
+    }catch{if(current===generation.current){setSpeaking(false);setUnavailable(true);}}
+  }
+  if(permission.data!==true||permission.error||Platform.OS==="android")return null;
+  return <View style={{gap:4}}>
+    <Button variant="ghost" title={t(speaking?"questionReading.stop":"questionReading.read")} onPress={()=>void read()} />
+    {unavailable?<Text accessibilityRole="alert">{t("questionReading.unavailable")}</Text>:null}
+  </View>;
+}

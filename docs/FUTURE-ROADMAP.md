@@ -47,7 +47,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F3 — Sonuçta kayıtlı çözüm yolunu aç; cihaz TTS
 
-- Kaynak: §4.5–6. Durum: YAPILIYOR (F3a kayıtlı çözüm kod hazır; TTS açık). Efor: **M**.
+- Kaynak: §4.5–6. Durum: KOD HAZIR (iOS/web; Android yerel motor kapısı ve fiziksel kabul açık). Efor: **M**.
 - Kapsam: Sonuçta kayıtlı çözüm yolunu aç; cihaz TTS.
 - Bağımlılık: Sonuç yetkisi, Expo 58 TTS dokümanı.
 - Paket kapısı: Tüm paketler.
@@ -212,3 +212,6 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - F2 kapsam kararı: AI benzer üretimde tercihi/few-shot örneği kullanma **F7'ye** alındı; F5 enjeksiyon ve çıktı kontrollerini beklemesi daha güvenli. Sonraki 3 deneme/sınava-kadar tüketim politikası da F7. Karma sınıf içerebilen favori listesinden toplu set/PDF için sınıf/çocuk kapsamı F8'de kurulacak; sessizce yanlış sınıf ataması yapılmayacak. Mini set burada yalnız doğrulanmış aile erişimi ve açık kazanım etiketleriyle çalışır; MEB onayı iddiası yok.
 
 - F3a: çözüm/açıklama yalnız `graded` denemede, atanmış soruda ve geçerli aile/çocukta iki alanlı projeksiyonla açılır; aktif veya yalnız gönderilmiş denemede kapalıdır. Taze DB **146 dosya/6.970 kontrol**, turbo 7/7 geçti; 8 yeni çözüm kapısı testi var. TTS henüz tamamlanmadı; Expo 58 Speech API Android ses motorunun ağ gereksinimi bilgisini sunmadığı için cihaz-içi garanti ayrıca ele alınacak.
+
+- F3b: çocuk genel tercihi ve deneme `inherit/on/off` önceliği; veli tercih ekranı; soru/defterde isteğe bağlı okuma ve durdurma; soru değişimi/arka plan/izin okunamama durumunda durma. Expo 58'in resmi `expo-speech ~58.0.3` modülü eklendi. iOS kullanılabilir sistem sesi, web yalnız `localService=true`; Android ağ gereksinimi bilgisi API'de bulunmadığından düğme gizli/kapalı. Sessiz mod/kurulu TR sesi/gerçek offline ses davranışı fiziksel kabul gerektirir. İlk kapsam soru yönergesidir; görsel/matematik alternatif anlatımını veya VoiceOver'ı ikame etmez. **Yeni native derleme gerektirir; 34 için OTA uyumlu olduğu varsayılmaz.** Mikrofon/sesli cevap/ses saklama yok.
+- F3 doğrulama: taze DB **148 dosya/6.988 kontrol**, okuma tercihi 10 + çözüm 8 olumsuz/işlev testi; core **754** (5 yerel ses seçim/gizlilik testi dahil). SDK uyumluluk, lint ve tip kontrolleri push öncesi tamamlanır. Gerçek sesin cihazda kabulü kapatılmadı.
