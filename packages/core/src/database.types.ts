@@ -2309,6 +2309,50 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"question_reports": {
+                  Row: {
+                    "attempt_id": string | null,"created_at": string,"family_id": string,"id": string,"question_id": string,"reason": string,"reporter_id": string,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "attempt_id"?: string | null,"created_at"?: string,"family_id": string,"id": string,"question_id": string,"reason": string,"reporter_id": string,"status"?: string
+                  }
+                  Update: {
+                    "attempt_id"?: string | null,"created_at"?: string,"family_id"?: string,"id"?: string,"question_id"?: string,"reason"?: string,"reporter_id"?: string,"status"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "question_reports_attempt_id_fkey"
+      columns: ["attempt_id"]
+isOneToOne: false
+      referencedRelation: "exam_attempts"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_reports_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_reports_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_reports_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_reports_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "standalone_question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"question_source_groups": {
                   Row: {
                     "body": string,"created_at": string,"family_id": string,"finalized_at": string | null,"grade": number,"id": string,"previous_id": string | null,"series_id": string,"subject": string,"title": string,"version": number
@@ -4194,6 +4238,9 @@ isOneToOne: false
 "reply_help_ticket":
 { Args: { "p_body": string,"p_internal"?: boolean,"p_request_id": string,"p_revision": number,"p_status"?: string,"p_ticket_id": string }; Returns: Json
                            },
+"report_question":
+{ Args: { "p_attempt_id"?: string,"p_question_id": string,"p_reason": string,"p_request_id": string }; Returns: string
+                           },
 "request_contact_verification":
 { Args: { "p_kind": string,"p_value": string }; Returns: Json
                            },
@@ -4263,6 +4310,9 @@ isOneToOne: false
                            },
 "resolve_ai_chain":
 { Args: { "p_plan": string,"p_usage_key": string }; Returns: Json
+                           },
+"resolve_question_report":
+{ Args: { "p_id": string,"p_status": string }; Returns: undefined
                            },
 "resume_prova_generation":
 { Args: { "p_family_id": string,"p_id": string,"p_intent": Json,"p_user_id": string }; Returns: Json

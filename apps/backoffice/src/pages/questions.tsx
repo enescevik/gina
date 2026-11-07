@@ -1,3 +1,4 @@
+import { QuestionReports } from "@/components/question-reports";
 import {
   LEGACY_INTERACTION_TYPES,
   PHASE2A_INTERACTION_TYPES,
@@ -283,6 +284,7 @@ export default function QuestionsPage() {
 
   return (
     <Layout title={t.questions.title}>
+      <QuestionReports />
       <p className="mb-4 text-sm text-slate-500">{t.questions.help}</p>
       {msg ? <Notice tone={msg.tone}>{msg.text}</Notice> : null}
       {list.error ? <Notice tone="error">{errorMessage(list.error, t.errors)}</Notice> : null}

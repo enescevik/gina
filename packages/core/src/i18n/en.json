@@ -5170,5 +5170,24 @@
     "read": "Read the Question",
     "stop": "Stop Reading",
     "unavailable": "A suitable local voice is not available on this device right now. You can read the question on screen."
+  },
+  "questionReports": {
+    "report": "Report This Question",
+    "help": "You can report something incorrect or unclear. The question and your selected reason go to the review team; your answer is not shared. Your score stays the same.",
+    "sent": "Thank you. We have received your report for review.",
+    "error": "The report could not be sent right now. You can try again.",
+    "limited": "We have received enough reports for now. Please try again later.",
+    "reasons": {
+      "incorrect": "There Is an Error",
+      "unclear": "The Instructions Are Unclear",
+      "image": "The Image Is Missing or Unreadable",
+      "inappropriate": "The Content Is Upsetting"
+    },
+    "queue": "Question Reports",
+    "queueHelp": "Only the reported question and reason are shown; no child answer or drawing is included. Marking reviewed does not unpublish content automatically; use the relevant publication screen when needed.",
+    "loading": "Loading reports…",
+    "empty": "No open question reports.",
+    "reviewed": "Mark Reviewed",
+    "firstPage": "Showing the first 50 open reports; reviewed items leave this queue."
   }
 }

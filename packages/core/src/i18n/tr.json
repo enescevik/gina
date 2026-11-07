@@ -5165,5 +5165,24 @@
     "read": "Soruyu Sesli Oku",
     "stop": "Okumayı Durdur",
     "unavailable": "Bu cihazda uygun yerel ses şu anda kullanılamıyor. Soruyu ekrandan okuyabilirsin."
+  },
+  "questionReports": {
+    "report": "Soruyu Bildir",
+    "help": "Bir şey yanlış veya anlaşılmıyorsa bildirebilirsin. Soru ve seçtiğin neden yönetim ekibine iletilir; cevabın paylaşılmaz. Puanın değişmez.",
+    "sent": "Bildirdin, teşekkürler. İncelemek üzere aldık.",
+    "error": "Bildirim şu anda gönderilemedi. Yeniden deneyebilirsin.",
+    "limited": "Şimdilik yeterli bildirim aldık. Daha sonra yeniden deneyebilirsin.",
+    "reasons": {
+      "incorrect": "Soruda Bir Hata Var",
+      "unclear": "Ne İstendiği Anlaşılmıyor",
+      "image": "Görsel Açılmıyor veya Okunmuyor",
+      "inappropriate": "Rahatsız Edici İçerik Var"
+    },
+    "queue": "Soru Bildirimleri",
+    "queueHelp": "Yalnız bildirilen soru ve neden gösterilir; çocuk cevabı veya çizimi taşınmaz. İncelendi işareti içeriği otomatik yayımdan kaldırmaz; gerekiyorsa ilgili içerik yayın ekranından işlem yapın.",
+    "loading": "Bildirimler yükleniyor…",
+    "empty": "Açık soru bildirimi yok.",
+    "reviewed": "İnceledim",
+    "firstPage": "İlk 50 açık bildirim gösteriliyor; işlenenler listeden çıkar."
   }
 }

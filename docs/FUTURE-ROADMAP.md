@@ -56,7 +56,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F4 — Çocuk/veli soruyu bildir; yönetimde kalite kuyruğu
 
-- Kaynak: §4.13. Durum: PLANLANDI. Efor: **M**.
+- Kaynak: §4.13. Durum: KOD HAZIR (yönetici kuyruğu; otomatik kaldırma yok). Efor: **M**.
 - Kapsam: Çocuk/veli soruyu bildir; yönetimde kalite kuyruğu.
 - Bağımlılık: Atanmış soru erişimi, backoffice rolü.
 - Paket kapısı: Tüm paketler.
@@ -215,3 +215,5 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 
 - F3b: çocuk genel tercihi ve deneme `inherit/on/off` önceliği; veli tercih ekranı; soru/defterde isteğe bağlı okuma ve durdurma; soru değişimi/arka plan/izin okunamama durumunda durma. Expo 58'in resmi `expo-speech ~58.0.3` modülü eklendi. iOS kullanılabilir sistem sesi, web yalnız `localService=true`; Android ağ gereksinimi bilgisi API'de bulunmadığından düğme gizli/kapalı. Sessiz mod/kurulu TR sesi/gerçek offline ses davranışı fiziksel kabul gerektirir. İlk kapsam soru yönergesidir; görsel/matematik alternatif anlatımını veya VoiceOver'ı ikame etmez. **Yeni native derleme gerektirir; 34 için OTA uyumlu olduğu varsayılmaz.** Mikrofon/sesli cevap/ses saklama yok.
 - F3 doğrulama: taze DB **148 dosya/6.988 kontrol**, okuma tercihi 10 + çözüm 8 olumsuz/işlev testi; core **754** (5 yerel ses seçim/gizlilik testi dahil). SDK uyumluluk, lint ve tip kontrolleri push öncesi tamamlanır. Gerçek sesin cihazda kabulü kapatılmadı.
+
+- F4: çocuk atanmış sorudan veya veli aile soru önizlemesinden 4 seçmeli nedenle bildirir; idempotent request ID, kullanıcı başına 10/saat sınırı. Sunucu yalnız soru ID/neden/bağlamı tutar, cevap/çizim/ses kopyalamaz. Tam yönetici Soru Bankası içindeki ayrı kuyruktan incelendi işaretler; denetim izi tekil. Kullanılmış soruyu veya çocuğun puanını otomatik değiştirmez; yayın geri çekme mevcut içerik yayın akışında insan kararıdır. Paylaşılan cihazda aktif çocuk sınırı yeniden doğrulanır; eski kardeş isteğinin replay'i reddedilir. Taze DB **149 dosya/7.010 kontrol**, turbo 7/7 ve core 754 temiz. Backoffice mevcut TR altyapısında, yeni metinlerin EN karşılığı ortak i18n'de hazır; genel BO dil değiştirme uyarlaması F6'da izlenecek.

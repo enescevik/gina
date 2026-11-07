@@ -25,3 +25,7 @@ F2a: çocuk sinyali yalnız atanmış denemedeki soruya yazılır; kardeş denem
 ## F3 — kayıtlı çözüm ve yerel okuma
 
 `148_child_solution.test.sql`: aktif/gönderilmiş denemede çözüm yok, kardeş/ilgisiz soru/sahte aile/anon reddi; iki alanlı projeksiyon. `149_question_reading.test.sql`: çocuk tercih değiştiremez, deneme override genel tercihten önce gelir, sahte aile ve anon reddedilir. `question-reading.test.ts`: uzak web sesi, eksik yerellik bilgisi, dil uyuşmazlığı ve Android ağ özelliği belirsizliği reddedilir. Çözüme veya okumaya canlı AI bağlanmadı; mikrofon ve ses kaydı yok. Yerel okuma yeni native modül içerir; cihaz/sürüm/offline kabulü henüz yok.
+
+## F4 — soru bildirimi
+
+`150_question_reports.test.sql` 22 kontrol: request replay/çatışma, kardeş/ilgisiz soru, serbest neden reddi, doğrudan INSERT engeli, yarışa dayanıklı kullanıcı kilidi + oran sınırı, eski isteği sınır tüketmeden yeniden deneme, yetkisiz moderasyon ve tek audit. Paylaşılan tablette aktif çocuk değişince önceki kardeş raporu okunamaz/replay edilemez. Yönetici yalnız bildirilen içerik kökü ve nedeni görür; çocuk cevabı/çizimi bu yüzeye kopyalanmaz. Tam regresyon 7.010 kontrol, 0 hata.

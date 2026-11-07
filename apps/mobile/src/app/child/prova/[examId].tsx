@@ -1,3 +1,4 @@
+import { ReportQuestion } from "@/components/learning/report-question";
 import { QuestionReader } from "@/components/learning/question-reader";
 import { ChildQuestionSolution } from "@/components/learning/child-question-solution";
 import { ChildQuestionSignal } from "@/components/learning/child-question-signal";
@@ -648,6 +649,7 @@ export default function TakeExamScreen() {
           {list.slice(0,signalLimit).map(question=><View key={question.id} style={{gap:8}}>
             <Text>{question.stem}</Text>
             <ChildQuestionSignal attemptId={result.id} questionId={question.id} />
+            <ReportQuestion attemptId={result.id} questionId={question.id} />
             <ChildQuestionSolution attemptId={result.id} questionId={question.id} />
           </View>)}
           {signalLimit<list.length?<Button variant="ghost" title={t("questionLikes.more")} onPress={()=>setSignalLimit(n=>n+10)} />:null}
@@ -749,7 +751,7 @@ export default function TakeExamScreen() {
         progress={`${index + 1} / ${list.length}`}
         questionId={q.id}
         stem={q.stem}
-        questionExtras={<View style={{gap:6}}><QuestionReader key={q.id} examId={examId} text={q.stem} language={examInfo.data?.subject==="İngilizce"?"en-US":"tr-TR"} />{attempt.data?.id?<ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} />:null}</View>}
+        questionExtras={<View style={{gap:6}}><QuestionReader key={q.id} examId={examId} text={q.stem} language={examInfo.data?.subject==="İngilizce"?"en-US":"tr-TR"} />{attempt.data?.id?<><ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} /><ReportQuestion key={q.id} attemptId={attempt.data.id} questionId={q.id} /></>:null}</View>}
         document={current?.document}
         text=""
         onChange={(document) => editAnswer({ answer: current?.answer, document })}
@@ -783,7 +785,7 @@ export default function TakeExamScreen() {
         progress={`${index + 1} / ${list.length}`}
         questionId={q.id}
         stem={q.stem}
-        questionExtras={<View style={{gap:6}}><QuestionReader key={q.id} examId={examId} text={q.stem} language={examInfo.data?.subject==="İngilizce"?"en-US":"tr-TR"} />{attempt.data?.id?<ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} />:null}</View>}
+        questionExtras={<View style={{gap:6}}><QuestionReader key={q.id} examId={examId} text={q.stem} language={examInfo.data?.subject==="İngilizce"?"en-US":"tr-TR"} />{attempt.data?.id?<><ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} /><ReportQuestion key={q.id} attemptId={attempt.data.id} questionId={q.id} /></>:null}</View>}
         document={current?.document}
         text={current?.text ?? ""}
         onChange={(document) => editAnswer({ ...current, document })}
@@ -922,6 +924,7 @@ export default function TakeExamScreen() {
         ? (
           <View className="gap-4 rounded-child bg-cream p-5">
             <ContextualQuestion questionId={q.id} stem={q.stem} />
+            {attempt.data?.id?<ReportQuestion key={q.id} attemptId={attempt.data.id} questionId={q.id} />:null}
             <QuestionReader key={q.id} examId={examId} text={q.stem} language={examInfo.data?.subject==="İngilizce"?"en-US":"tr-TR"} />
             {attempt.data?.id ? <ChildQuestionSignal attemptId={attempt.data.id} questionId={q.id} /> : null}
             {/* QT41: görsel bölge sorusunda görsel, bölgelerle birlikte soru içinde çizilir (iki kez değil). */}
