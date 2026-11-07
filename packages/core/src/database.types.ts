@@ -3913,6 +3913,14 @@ isOneToOne: false
 "get_prova_entitlement":
 { Args: { "p_family_id"?: string }; Returns: Json
                            },
+"get_prova_favorite_shapes":
+{ Args: { "p_family_id": string,"p_grade": number,"p_parent_id": string,"p_subject": string }; Returns: {
+              "cognitive_demand": string,"difficulty": string,"kind": string
+            }[]
+                           },
+"get_prova_favorite_style_available":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
 "get_prova_question_fit":
 { Args: { "p_child_id": string,"p_question_ids": (string)[] }; Returns: Json
                            },

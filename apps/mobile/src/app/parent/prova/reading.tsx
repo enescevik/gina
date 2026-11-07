@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { DeferStudyDay } from "@/components/learning/defer-study-day";
 import {useFutureLearningReady} from "@/lib/future-learning";
 import {NumberChoice} from "@/components/ui/number-choice";
@@ -39,6 +40,13 @@ export default function ReadingPreferences(){
  },onSuccess:async()=>{await Promise.all([cache.invalidateQueries({queryKey:["reading_children",family]}),cache.invalidateQueries({queryKey:["reading_exams",family]}),cache.invalidateQueries({queryKey:["question_reading_permission",family]}),cache.invalidateQueries({queryKey:["study_preference_history",family]})]);}});
  if(!ready)return <ParentScreen title={t("futureLearning.unavailable")}>{null}</ParentScreen>;
   return <ParentScreen title={t("studyPreferences.title")} subtitle={t("studyPreferences.body")} loading={children.isPending} error={children.error} onRetry={()=>void children.refetch()}>
+  <View style={parentStyles.card}>
+   <Text accessibilityRole="header" style={parentStyles.title}>{t("studyPermissions.title")}</Text>
+   <Text style={parentStyles.copy}>{t("studyPermissions.weeklyHelp")}</Text>
+   <Button variant="secondary" title={t("studyPermissions.weekly")} onPress={()=>router.push("/parent/weekly-review")} />
+   <Text style={parentStyles.copy}>{t("studyPermissions.teacherHelp")}</Text>
+   <Button variant="secondary" title={t("studyPermissions.teacher")} onPress={()=>router.push("/parent/share")} />
+  </View>
   {children.data?.map(item=><View key={item.id} style={parentStyles.card}>
    <Text style={parentStyles.title}>{item.name}</Text>
    {family ? <DeferStudyDay childId={item.id} familyId={family} /> : null}

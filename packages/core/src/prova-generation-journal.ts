@@ -26,13 +26,15 @@ export const generationPayloadSchema = z.object({
   locale: z.enum(["tr", "en"]),
   source_id: z.uuid().optional(),
   ai_consent: z.literal(true).optional(),
+  use_favorite_style: z.literal(true).optional(),
   /** QT-AI: isteğe bağlı tür seçimi. Yoksa istek gövdesi eski davranışla birebir aynıdır (eski kayıtlar da yüklenir). */
   interaction_types: z.array(z.enum(AI_INTERACTION_TYPES)).min(1).max(AI_INTERACTION_TYPES.length).optional(),
 }).strict().refine((p) =>
   (!p.interaction_types || new Set(p.interaction_types).size === p.interaction_types.length) &&
   p.topic_plan.reduce((n, r) => n + r.count, 0) === p.count &&
   new Set(p.topic_plan.map((r) => r.topic)).size === p.topic_plan.length &&
-  (!p.source_id || p.ai_consent === true)
+  (!p.source_id || p.ai_consent === true) &&
+  (!p.use_favorite_style || (p.assessment === "practice" && !p.source_id && !p.blueprint_id))
 );
 const choice = z.object({ key: z.string(), text: z.string() });
 function withoutStructuredKeys<T extends { questions: { answer_key?: unknown }[] }>(result: T): T {

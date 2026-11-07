@@ -5240,5 +5240,14 @@
   "deferStudyDay.confirm": "Henüz gönderilmemiş görevler ve kalan Prova tekrarları yarına taşınır. Aynı görev yarın zaten varsa tek kez görünür. Tekrar sırasını korumak için aynı dizinin sonraki oturumları da bir gün kayar.",
   "deferStudyDay.result": "{{tasks}} görev ve {{repeats}} tekrar oturumu ertelendi.",
   "deferStudyDay.empty": "Bugün ertelenecek görev veya tekrar kalmadı.",
-  "deferStudyDay.error": "Erteleme kaydedilemedi. Sayfayı yenileyip yeniden deneyin."
+  "deferStudyDay.error": "Erteleme kaydedilemedi. Sayfayı yenileyip yeniden deneyin.",
+  "favoriteStyle.label": "Favorilerimin soru biçimini kullan",
+  "favoriteStyle.help": "Bu sınıf ve dersteki kendi favorilerinizin soru türü, zorluk ve düşünme düzeyi örnek alınır. Soru metinleri ve cevaplar paylaşılmaz.",
+  "favoriteStyle.unavailable": "Favori biçimi yalnız belgesiz ve senaryosuz pratikte kullanılabilir.",
+  "prova.qt.author.aiErr.favorite_style_unavailable": "Favori biçimi yalnız belgesiz ve senaryosuz pratikte kullanılabilir.",
+  "studyPermissions.title": "İzinler ve paylaşım",
+  "studyPermissions.weekly": "Haftalık özeti aç",
+  "studyPermissions.weeklyHelp": "Yapay zekâ ile haftalık özet hazırlamayı her seferinde özet ekranından onaylayabilirsiniz.",
+  "studyPermissions.teacher": "Öğretmen bağlantılarını yönet",
+  "studyPermissions.teacherHelp": "Paylaşım ekranından bağlantıların kapsamını, bitiş tarihini ve durumunu görebilir, erişimi iptal edebilirsiniz."
 }

@@ -101,6 +101,7 @@ export function ProvaSourcePicker(
     [blueprintId, setBlueprintId] = useState<string | null>(null);
   // QT-AI: isteğe bağlı tür seçimi; boşsa istek eski gövdeyle birebir aynı gider.
   const [aiTypes, setAiTypes] = useState<string[]>([]);
+  const [useFavoriteStyle, setUseFavoriteStyle] = useState(false);
   const writtenTrack = draft.purpose === "written" || draft.context?.track === "meb_common";
   const requestedTypes = aiInteractionTypesFor(aiTypes, writtenTrack, AI_PHASES);
   const [preview, setPreview] = useState<BuilderQuestion | null>(null),
@@ -142,6 +143,7 @@ export function ProvaSourcePicker(
       setMode("sources");
       setTopics(draft.subjects.length === 1 ? draft.topics : []);
       setBlueprintId(null);
+      setUseFavoriteStyle(false);
       setSelected([]);
       setSubject(draft.subjects[0] ?? "");
       setLocalError(null);
@@ -156,6 +158,17 @@ export function ProvaSourcePicker(
       return data === true;
     },
   });
+  const favoriteStyleAvailable = useQuery({
+    queryKey: ["prova_favorite_style", familyId],
+    enabled: visible && mode === "ai" && !writtenTrack,
+    retry: false,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("get_prova_favorite_style_available");
+      return !error && data === true;
+    },
+  });
+  const canUseFavoriteStyle = favoriteStyleAvailable.data === true &&
+    mode === "ai" && !writtenTrack && !blueprintId;
   const entitlement = useQuery({
     queryKey: ["builder_entitlement", familyId],
     enabled: visible,
@@ -300,6 +313,7 @@ export function ProvaSourcePicker(
             ? { source_id: file.id, ai_consent: true as const }
             : {}),
           ...(requestedTypes ? { interaction_types: requestedTypes } : {}),
+          ...(canUseFavoriteStyle && useFavoriteStyle ? { use_favorite_style: true as const } : {}),
         };
         record = journal.prepare(payload);
         setGenerationRecord(record);
@@ -1031,6 +1045,13 @@ export function ProvaSourcePicker(
                             )
                             : null}
                         </View>
+                        {canUseFavoriteStyle ? (
+                          <View style={{ gap: 6 }}>
+                            <Toggle label={t("favoriteStyle.label")} value={useFavoriteStyle}
+                              disabled={busy || !!generationRecord} onChange={setUseFavoriteStyle} />
+                            <Text style={b.muted}>{t("favoriteStyle.help")}</Text>
+                          </View>
+                        ) : null}
                         <View testID="qt-ai-types" style={{ gap: 8 }}>
                           <Text style={b.bold}>{t("prova.qt.author.ai.typesTitle")}</Text>
                           <Text style={b.muted}>{t("prova.qt.author.ai.typesHelp")}</Text>

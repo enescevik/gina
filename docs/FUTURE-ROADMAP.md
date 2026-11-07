@@ -74,7 +74,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F6 — Hata güvenli/kıyassız dil; mola/akşam tercihleri; izin ve denetim görünümü
 
-- Kaynak: §3a, §4.7. Durum: KISMEN KOD HAZIR (mola/akşam/okuma ve çocuk hata dili; çalışma tercihi geçmişi ve gün ertele hazır, diğer izinler açık). Efor: **M**.
+- Kaynak: §3a, §4.7. Durum: KISMEN KOD HAZIR (mola/akşam/okuma ve çocuk hata dili; çalışma tercihi geçmişi, gün ertele ve mevcut izin ekranlarına erişim hazır). Efor: **M**.
 - Kapsam: Hata güvenli/kıyassız dil; mola/akşam tercihleri; izin ve denetim görünümü.
 - Bağımlılık: Mevcut izinler, bildirim sessiz saatleri.
 - Paket kapısı: Tüm paketler.
@@ -83,7 +83,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F7 — Veli kazanım ısı haritası, 1–3–7 tekrar ve haftalık özet
 
-- Kaynak: §4.3–4, §4.10, §3a. Durum: KISMEN KOD HAZIR (mevcut 1–3–7 ve haftalık özet korundu, yeni kazanım gözlemleri; AI kişiselleştirme açık). Efor: **L**.
+- Kaynak: §4.3–4, §4.10, §3a. Durum: KISMEN KOD HAZIR (mevcut 1–3–7 ve haftalık özet korundu, yeni kazanım gözlemleri ve isteğe bağlı favori biçimi; odak süresi seçenekleri açık). Efor: **L**.
 - Kapsam: Veli kazanım ısı haritası, 1–3–7 tekrar ve haftalık özet.
 - Bağımlılık: F2 sinyalleri, tamamlanmış puanlar, mevcut plan üretimi.
 - Paket kapısı: Harita/manuel tekrar tüm paketler; AI özet mevcut ücretli hak.
@@ -254,3 +254,6 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - F6c: çalışma ve sesli okuma tercihleri için veliye son 20 değişikliği gösteren geçmiş eklendi. Yalnız gerçek değer değişiklikleri kayda girer; doğrudan tablo erişimi yoktur. Çocuk, anonim ve başka aile kapsamı kapalı; istemciye aktör kimliği yerine “siz / aileden bir veli / bilinmiyor” döner. 157 dosya/7.135 taze DB kontrolü ve son eklenen gerçek yabancı aile testiyle hedefli 7/7; 776 core ve lint/typecheck geçti. Bu kayıt mikrofon, AI özeti veya öğretmen paylaşımı için izin toplamaz. Gün ertele ve diğer izinlerin tek görünümde birleştirilmesi açık.
 
 - F6d: Veli, çalışma tercihleri ekranından aile saat dilimindeki bugünü erteleyebilir. Henüz gönderilmemiş görev yarına taşınır. Yarın zaten planlı olan rutin bir kez görünür. Bugüne kalan Prova tekrarları ve aynı dizideki sonraki oturumlar yerel saatlerini ve aralıklarını koruyarak bir gün kayar. Tamamlanmış veya gönderilmiş işler ve yıldızlar korunur. Sağlık gerekçesi toplanmaz. Aynı güne ait tekrar çağrı ilk sonucu döndürür. Çocuk Bugün ve Haftam ekranları tarihli plandan okur. 158 dosya ve 7.152 SQL kontrolü, 776 core testi, lint ve tip denetimi geçti. Üretim ve fiziksel kabul bekliyor.
+
+- F6e: Veli çalışma ayarlarından mevcut haftalık AI özeti onayına ve iptal edilebilir öğretmen bağlantılarına ulaşabilir. TTS ve mola geçmişi aynı ekranda. Yapay zekâ onayı işlem bazında kalır, ses kaydı izni hukuk kapısında kalır.
+- F7c: Veli, serbest Prova üretiminde kendi favorilerinin biçim örüntülerini isteğe bağlı kullanabilir. Aynı sınıf ve ders, son 12 favoriden en fazla üç sabit tür/zorluk/düşünme düzeyi örüntüsü. Başka velinin tercihi, soru metni, cevap, kimlik ve serbest kaynak alanı sağlayıcıya gitmez. Yazılı, senaryo ve belge yollarında kontrol kapalıdır. Makbuz ve istemci günlüğü seçimi dondurur. Önceki SQL regresyonu 158 dosya ve 7.152 kontrol yeşil. Yeni aile/veli/alan sınırı testleri 5/5, 32 Edge güven sınırı testi ve 776 core geçti. Üretim ve gerçek sağlayıcı kabulü açık.

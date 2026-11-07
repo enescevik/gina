@@ -1,3 +1,4 @@
+import { FAVORITE_STYLE_RULE, favoriteStyleShapes } from "../_shared/favorite-question-style.ts";
 import { fail } from "../_shared/error-contract.ts";
 import { classifyAiError, generateWith } from "../_shared/ai-route.ts";
 import { PROMPT_VERSION, SCHEMA, SYSTEM_PROMPT } from "./generation-schema.ts";
@@ -53,6 +54,7 @@ interface GenerateBody {
   note?: string;
   source_id?: string;
   ai_consent?: boolean;
+  use_favorite_style?: true;
   subject?: string;
   grade?: number;
   topic?: string;
@@ -147,6 +149,10 @@ Deno.serve(async (req) => {
   if (draftScope?.purpose === "written" && assessment !== "written") {
     return fail("prova_draft_changed", 409);
   }
+  if (body.use_favorite_style !== undefined && (
+    body.use_favorite_style !== true || assessment !== "practice" ||
+    body.source_id || body.blueprint_id || draftScope?.track === "meb_common"
+  )) return fail("favorite_style_unavailable", 400);
   // QT-AI: yazılı/OYSS (meb_common) isteğinde alıştırma türleri istenemez; açık neden, sessiz dönüşüm yok.
   // Rezervasyondan ve sağlayıcıdan ÖNCE: ücret/kota oluşmaz.
   const writtenTrack = assessment === "written" || draftScope?.purpose === "written" ||
@@ -167,7 +173,7 @@ Deno.serve(async (req) => {
       return fail("interaction_type_unavailable", 409, { details: { types: disabled.join(",") } });
     }
   }
-  const promptVersion = structuredRequested ? STRUCTURED_PROMPT_VERSION : PROMPT_VERSION;
+  const basePromptVersion = structuredRequested ? STRUCTURED_PROMPT_VERSION : PROMPT_VERSION;
   let ent;
   try {
     ent = await provaEntitlement(db, parent.familyId);
@@ -300,7 +306,20 @@ Deno.serve(async (req) => {
     )
     : null;
   if (document instanceof Response) return document;
-  const systemPrompt = structuredRequested ? SYSTEM_PROMPT + "\n" + STRUCTURED_PROMPT : SYSTEM_PROMPT;
+  let favoriteShapes: ReturnType<typeof favoriteStyleShapes> = [];
+  if (body.use_favorite_style) {
+    const { data, error } = await db.rpc("get_prova_favorite_shapes", {
+      p_family_id: parent.familyId,
+      p_parent_id: parent.userId,
+      p_subject: subject,
+      p_grade: grade,
+    });
+    if (error) return fail("data_failed", 503);
+    favoriteShapes = favoriteStyleShapes(data);
+  }
+  const promptVersion = favoriteShapes.length ? basePromptVersion + "-favorite-shapes-v1" : basePromptVersion;
+  const baseSystemPrompt = structuredRequested ? SYSTEM_PROMPT + "\n" + STRUCTURED_PROMPT : SYSTEM_PROMPT;
+  const systemPrompt = favoriteShapes.length ? baseSystemPrompt + "\n" + FAVORITE_STYLE_RULE : baseSystemPrompt;
   const schema = interactionTypes
     ? structuredGenerationSchema(SCHEMA, interactionTypes, {
       difficulties: DIFFICULTIES,
@@ -310,6 +329,7 @@ Deno.serve(async (req) => {
   const userPrompt = JSON.stringify({
     _data_class: "untrusted_source_data",
     ...request,
+    ...(favoriteShapes.length ? { favori_bicim_oruntuleri: favoriteShapes } : {}),
     ek_not: typeof body.note === "string" ? body.note.slice(0, 1500) : "",
     belge: document ? { id: document.id, sha256: document.sha256 } : null,
   });
