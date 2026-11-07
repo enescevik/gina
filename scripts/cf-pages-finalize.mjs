@@ -77,7 +77,7 @@ function* htmlFiles(dir) {
 }
 
 // Çalıştırılabilir satır içi script'ler: src yok, type yok ya da JS/module.
-const scriptRe = /<script\b([^>]*)>([\s\S]*?)<\/script[\t\n\f\r ]*>/gi;
+const scriptRe = /<script\b([^>]*)>([\s\S]*?)<\/script(?=[\t\n\f\r />])(?:[^>"']|"[^"]*"|'[^']*')*>/gi;
 const executableType = /^(?:|text\/javascript|application\/javascript|module)$/i;
 const hashes = new Set();
 for (const file of htmlFiles(outDir)) {
