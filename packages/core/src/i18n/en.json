@@ -5112,5 +5112,10 @@
     "title": "App language",
     "help": "Your choice is remembered on this device. Your content and school subjects are not translated.",
     "temporary": "Language changed, but could not be saved on this device. You may need to select it again when you reopen the app."
-  }
+  },
+  "subscription.limitChildren": "You have reached your plan’s child limit. To add another child, choose a plan with more child profiles.",
+  "subscription.limitDevices": "You have reached your plan’s connected device limit. To connect this tablet too, choose a plan with more devices.",
+  "subscription.limitTasks": "You have reached your plan’s active task limit. Explore plans with more tasks.",
+  "subscription.limitNotes": "You have reached your plan’s note limit. Explore plans with more notes.",
+  "subscription.viewPlans": "Explore plans"
 }

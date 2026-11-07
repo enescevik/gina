@@ -34,6 +34,7 @@ export function SetupWizard({
   onSave,
   onClose,
   error,
+  errorAction,
   children,
   saveLabel,
   hideContinue = false,
@@ -48,6 +49,7 @@ export function SetupWizard({
   onSave: () => void;
   onClose: () => void;
   error?: string | null;
+  errorAction?: { label: string; onPress: () => void };
   children: ReactNode;
   saveLabel?: string;
   hideContinue?: boolean;
@@ -191,6 +193,7 @@ export function SetupWizard({
                     {error}
                   </Text>
                 )}
+                {error && errorAction && !leave ? <SatinButton title={errorAction.label} disabled={busy} onPress={() => askLeave(errorAction.onPress)} /> : null}
               </ScrollView>
               {!hideContinue && <View style={[u.footer, { gap: 12 }]}>
                 {step > 0 && (

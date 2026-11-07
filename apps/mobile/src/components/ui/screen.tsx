@@ -1,3 +1,5 @@
+import { planLimitMessageKey } from "@gina/core";
+import { Button } from "./button";
 import { useTranslation } from "react-i18next";
 import type { ReactNode } from "react";
 import { ScrollView, Text, View } from "react-native";
@@ -30,13 +32,15 @@ export function Screen({ title, children, tone = "parent", scroll = true }: Scre
   );
 }
 
-export function ErrorText({ error }: { error: unknown }) {
+export function ErrorText({ error, onViewPlans }: { error: unknown; onViewPlans?: () => void }) {
   const { t, i18n } = useTranslation();
   if (!error) return null;
   const detail = typeof error === "object" && error !== null ? error as { message?: string; code?: string; status?: number } : {};
   const message = detail.message ?? String(error);
+  const planLimitKey = planLimitMessageKey(error);
   let copy: string;
-  if (i18n.exists(`prova.ai.errors.${detail.code ?? message}`)) copy = t(`prova.ai.errors.${detail.code ?? message}`);
+  if (planLimitKey) copy = t(planLimitKey);
+  else if (i18n.exists(`prova.ai.errors.${detail.code ?? message}`)) copy = t(`prova.ai.errors.${detail.code ?? message}`);
   else if (i18n.exists(`prova.ai.errors.${message}`)) copy = t(`prova.ai.errors.${message}`);
   // C12 (Q00-A2-13): sınıflandırılmış Edge hatası (ProvaAiError: izin/paket, çevrimdışı, geçici servis…) kendi
   // kategori metnini taşır; koda sahip olduğu için aşağıdaki genel metne düşmemeli.
@@ -55,5 +59,5 @@ export function ErrorText({ error }: { error: unknown }) {
   else if (detail.code?.startsWith("23") || detail.status === 400) copy = t("release.invalidForm");
   else if ((error instanceof Error || typeof error === "string") && !detail.code && !detail.status && /\s/.test(message) && !/^(TypeError|SyntaxError|JSON|Cannot|Unexpected)/.test(message)) copy = message;
   else copy = t("release.genericError");
-  return <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={{ fontFamily: "Nunito_600SemiBold", color: "#A43135", fontSize: 15, lineHeight: 22 }}>{copy}</Text>;
+  return <View style={{ gap: 12 }}><Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={{ fontFamily: "Nunito_600SemiBold", color: "#A43135", fontSize: 15, lineHeight: 22 }}>{copy}</Text>{planLimitKey && onViewPlans ? <Button title={t("subscription.viewPlans")} onPress={onViewPlans} /> : null}</View>;
 }

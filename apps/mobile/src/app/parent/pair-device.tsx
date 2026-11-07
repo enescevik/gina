@@ -129,7 +129,7 @@ export default function PairDeviceScreen() {
           <Target icon={<Users size={22} color="#6042DE" />} label={t("c06.pair.family")} value={preview.family_name ?? "—"} />
           <Text style={parentStyles.muted}>{t("c06.pair.checkDevice")}</Text>
           <Text testID="pairing-confirm-remaining" style={parentStyles.muted}>{t("auth1.parentPair.confirmRemaining", { time: formatSeconds(remaining) })}</Text>
-          <ErrorText error={pair.error} />
+          <ErrorText error={pair.error} onViewPlans={() => router.push("/parent/subscription")} />
           <Button
             title={t("u02.parentPair.confirm")}
             loading={pair.isPending}

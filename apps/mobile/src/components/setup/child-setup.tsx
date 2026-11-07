@@ -1,3 +1,5 @@
+import { planLimitMessageKey } from "@gina/core";
+import { router } from "expo-router";
 import { AiSuggestions } from "./ai-suggestions";
 import { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -142,14 +144,19 @@ export function ChildSetup({
       error={
         save.error
           ? t(
-              save.error.message.includes("plan_limit")
-                ? "betaUx.planLimit"
-                : save.error.message.includes("education_use_transition")
-                  ? "education.profileGradeHelp"
-                  : "betaUx.childSaveError",
+              planLimitMessageKey(save.error) ??
+                (save.error.message.includes("plan_limit")
+                  ? "betaUx.planLimit"
+                  : save.error.message.includes("education_use_transition")
+                    ? "education.profileGradeHelp"
+                    : "betaUx.childSaveError"),
             )
           : null
       }
+      errorAction={planLimitMessageKey(save.error) ? {
+        label: t("subscription.viewPlans"),
+        onPress: () => { onClose(); router.push("/parent/subscription"); },
+      } : undefined}
     >
       {step === 0 && (
         <>

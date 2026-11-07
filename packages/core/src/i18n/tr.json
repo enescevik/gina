@@ -5107,5 +5107,10 @@
     "title": "Uygulama dili",
     "help": "Bu cihazdaki seçimin hatırlanır. İçeriklerin ve derslerin dili değişmez.",
     "temporary": "Dil değişti; bu cihazda saklanamadı. Yeniden açınca tekrar seçmen gerekebilir."
-  }
+  },
+  "subscription.limitChildren": "Mevcut paketindeki çocuk sayısı sınırına ulaştın. Bir çocuk daha eklemek için daha fazla çocuk profili içeren bir paket seçebilirsin.",
+  "subscription.limitDevices": "Mevcut paketindeki bağlı cihaz sınırına ulaştın. Bu tableti de bağlamak için daha fazla cihaz içeren bir paket seçebilirsin.",
+  "subscription.limitTasks": "Mevcut paketindeki aktif görev sınırına ulaştın. Daha fazla görev içeren paketleri inceleyebilirsin.",
+  "subscription.limitNotes": "Mevcut paketindeki not sınırına ulaştın. Daha fazla not içeren paketleri inceleyebilirsin.",
+  "subscription.viewPlans": "Paketleri incele"
 }
