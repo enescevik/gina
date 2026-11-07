@@ -14,7 +14,12 @@ export function prereviewConfig(config: AiConfig, setting: unknown, outputSettin
     const output = outputSetting === undefined ? step.maxOutputTokens : Number(outputSetting);
     const context = step.capabilities?.contextTokens ?? Number(limit) + output;
     if (output >= context) throw Error('ai_configuration_unavailable');
-    return { ...step, maxOutputTokens: output, maxInputTokens: Math.min(Number(limit), context - output) };
+    return {
+      ...step, maxOutputTokens: output, maxInputTokens: Math.min(Number(limit), context - output),
+      // Match the reasoning setting used by the recorded review calibration.
+      ...(step.adapter === 'openai-chat' && ['gpt-6.1-sol', 'gpt-6-astra'].includes(step.model)
+        ? { reasoningEffort: 'medium' as const } : {}),
+    };
   };
   return {
     ...apply(config),

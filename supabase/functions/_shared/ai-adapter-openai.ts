@@ -4,6 +4,7 @@
 // Girdi görsel/PDF: image_url data URL; PDF `file` içerik parçası. Tek POST, otomatik tekrar yok.
 import type { AiConfig, AiResult, AiUserContent } from "./prova.ts";
 import { type AiAdapter, AiProviderError, estimateInputTokens, parseStructuredText, registerAdapter } from "./ai-provider.ts";
+import { openAiUsage } from "./openai-usage.ts";
 
 export const OPENAI_BASE_URL_ENV = "OPENAI_BASE_URL";
 const DEFAULT_BASE_URL = "https://api.openai.com/v1";
@@ -48,6 +49,7 @@ export const openAiAdapter: AiAdapter = {
       body: JSON.stringify({
         model: cfg.model,
         max_completion_tokens: cfg.maxOutputTokens,
+        ...(cfg.reasoningEffort ? { reasoning_effort: cfg.reasoningEffort } : {}),
         messages: [{ role: "system", content: system }, { role: "user", content: toOpenAiContent(user) }],
         response_format: { type: "json_schema", json_schema: { name: "gina_output", strict: true, schema } },
       }),
@@ -61,6 +63,7 @@ export const openAiAdapter: AiAdapter = {
     if (choice.finish_reason === "content_filter") throw new AiProviderError("openai_refusal");
     return {
       output: parseStructuredText<T>(choice.message?.content),
+      providerUsage: openAiUsage(data.usage, res.headers.get("x-request-id"), data.service_tier),
       inputTokens: Number.isInteger(data.usage?.prompt_tokens) ? data.usage.prompt_tokens : null,
       outputTokens: Number.isInteger(data.usage?.completion_tokens) ? data.usage.completion_tokens : null,
     };

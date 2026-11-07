@@ -57,6 +57,7 @@ export async function provaEntitlement(
 }
 
 export interface AiConfig {
+  reasoningEffort?: "low" | "medium" | "high" | "xhigh" | "max";
   chain?: AiChain;
   execution?: { kind: "operation" | "generation" | "prereview"; id?: string; lease: string };
   signal?: AbortSignal;

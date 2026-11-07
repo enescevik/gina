@@ -1,0 +1,797 @@
+[
+  {
+    "model": "claude-sonnet-5-5",
+    "spec": "v2",
+    "status": "done",
+    "true_accept": 1,
+    "false_accept": 0,
+    "true_hold": 4,
+    "false_hold": 3,
+    "accuracy": 0.625,
+    "details": [
+      {
+        "case_id": "cbc4965c-6345-4556-b00c-be00b80510f1",
+        "expected_pass": true,
+        "accepted": false,
+        "confidence": 0.82,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "metadata_pending_review",
+            "detail": "Eşleme durumu 'proposed_pending_subject_review'; alan uzmanı onayı henüz yok. Bu içerik değil süreç notudur.",
+            "severity": "advisory"
+          },
+          {
+            "code": "other",
+            "detail": "Rubrik metinlerinde normalizasyon kaynaklı boşluk eksikleri var (ör. 'Başlangıcı3/2'); okunabilirliği etkilemiyor.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "3f4acd61-3ad1-45a3-abd1-0cfd60ee5a80",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.93,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_mismatch",
+            "detail": "expected_answer 'Son durumda 5/4 L' diyor. Çözüm ve doğru hesap 7/4 L (3/2−1/2=1; 1+3/4=7/4). Rubrik K3 de 7/4 L bekliyor.",
+            "severity": "blocking"
+          },
+          {
+            "code": "incomplete_expected_answer",
+            "detail": "Beklenen cevapta a) şıkkındaki kullanılan su (1/2 L) yok.",
+            "severity": "blocking"
+          }
+        ],
+        "oracle_reason": "Answer key contradicts exact7/4 L result."
+      },
+      {
+        "case_id": "31a9bc9b-01e4-4d4f-a4c4-597834148d85",
+        "expected_pass": true,
+        "accepted": false,
+        "confidence": 0.8,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "rubric_boilerplate",
+            "detail": "Puanlama notunda 'önceki hesap hatası' ifadesi var; bu Türkçe okuma sorusuna uymayan genel bir kalıp. Düzeltilmesi iyi olur.",
+            "severity": "advisory"
+          },
+          {
+            "code": "metadata_pending_review",
+            "detail": "Eşleme durumu alan uzmanı incelemesi bekliyor.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "28c67413-163a-4dbe-8e80-0596da984fe3",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.94,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_mismatch",
+            "detail": "expected_answer 'Pazartesi,10.00,bahçe,hava güneşli olduğu için' ifadesi metinle çelişiyor. Metne göre cuma, 14.00, çok amaçlı salon, yağmur beklentisi doğrudur; solution ve rubrik de bunu söylüyor.",
+            "severity": "blocking"
+          },
+          {
+            "code": "rubric_boilerplate",
+            "detail": "Puanlama notunda konuyla ilgisiz 'hesap hatası' kalıbı var.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Answer key contradicts all four explicit text facts."
+      },
+      {
+        "case_id": "014f928d-c203-4e40-b6b3-4ee02c450b60",
+        "expected_pass": true,
+        "accepted": false,
+        "confidence": 0.82,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "metadata_pending_review",
+            "detail": "Eşleme durumu alan uzmanı incelemesi bekliyor.",
+            "severity": "advisory"
+          },
+          {
+            "code": "other",
+            "detail": "D durumunda kutu 'çekiliyor' ama yol 0 m; bu durum yer değiştirme olmadan kuvvet uygulandığını örnekliyor. Anlatım biraz daha açık olabilir ama hatalı değil.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "e4e902da-c71e-466a-8e56-c9d36aaa29f4",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.93,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "solution_mismatch",
+            "detail": "Çözüm 'kuvvetin etkisini A ile C, yolun etkisini A ile B karşılaştırarak' buluyor. A-C'de kuvvet sabit, yol değişiyor; A-B'de yol sabit, kuvvet değişiyor. Çiftler ters verilmiş.",
+            "severity": "blocking"
+          },
+          {
+            "code": "answer_mismatch",
+            "detail": "Çözüm metni expected_answer (kuvvet: A-B, yol: A-C) ve rubrik K2/K3 ile çelişiyor.",
+            "severity": "blocking"
+          },
+          {
+            "code": "incomplete_solution",
+            "detail": "Çözümde iş hesapları ve D için 0 J gerekçesi yok.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Independent variable controls are swapped; A-C distance changes, notforce."
+      },
+      {
+        "case_id": "a098d810-9ff1-4318-9186-6abcd2c6b240",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.85,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "metadata_pending_review",
+            "detail": "Eşleme durumu alan uzmanı incelemesi bekliyor.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "8fbcdfec-a642-43fb-8573-bbe7352f2d2f",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.9,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "rubric_contradiction",
+            "detail": "K4 ölçütü kendi içinde çelişiyor: farklı yöntemle 168'e ulaşanlara en fazla 12 puan veriliyor, sonraki cümle ise tüm eşdeğer doğru yöntemlere tam puan veriyor. Genel puanlama notu da eşdeğer doğru yanıtları kabul ediyor.",
+            "severity": "blocking"
+          },
+          {
+            "code": "unfair_scoring",
+            "detail": "Geçerli alternatif yöntem (ör. birleşik prizmanın 6×4×6 olarak doğrudan hesabı) haksız biçimde puan kaybedebilir.",
+            "severity": "blocking"
+          }
+        ],
+        "oracle_reason": "Rubric explicitly contradicts its own equivalent-method acceptance rule."
+      }
+    ]
+  },
+  {
+    "model": "claude-sonnet-5-5",
+    "spec": "v3",
+    "status": "done",
+    "true_accept": 0,
+    "false_accept": 0,
+    "true_hold": 4,
+    "false_hold": 4,
+    "accuracy": 0.5,
+    "details": [
+      {
+        "case_id": "cbc4965c-6345-4556-b00c-be00b80510f1",
+        "expected_pass": true,
+        "accepted": false,
+        "confidence": 0.82,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "pending_subject_review",
+            "detail": "Alan uzmanı onayı yok (subject_expert_approval=false), eşleme inceleme bekliyor; bu soru/çözüm hatası değil.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "3f4acd61-3ad1-45a3-abd1-0cfd60ee5a80",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.95,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_key_mismatch",
+            "detail": "expected_answer 5/4 L; çözüm ve doğru hesap 7/4 L (1+3/4). Anahtar yanlış ve çözümle çelişiyor.",
+            "severity": "blocking"
+          },
+          {
+            "code": "incomplete_expected_answer",
+            "detail": "Beklenen cevap a) şıkkındaki kullanılan suyu (1/2 L) içermiyor.",
+            "severity": "advisory"
+          },
+          {
+            "code": "pending_subject_review",
+            "detail": "Alan uzmanı onayı yok; kendi başına hata sayılmadı.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Answer key contradicts exact7/4 L result."
+      },
+      {
+        "case_id": "31a9bc9b-01e4-4d4f-a4c4-597834148d85",
+        "expected_pass": true,
+        "accepted": false,
+        "confidence": 0.8,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "rubric_boilerplate",
+            "detail": "Puanlama notundaki 'önceki hesap hatası' ifadesi bu Türkçe sorusuna uymayan genel bir kalıp.",
+            "severity": "advisory"
+          },
+          {
+            "code": "pending_subject_review",
+            "detail": "Alan uzmanı onayı yok; kendi başına hata sayılmadı.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "28c67413-163a-4dbe-8e80-0596da984fe3",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.96,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_key_mismatch",
+            "detail": "expected_answer 'Pazartesi, 10.00, bahçe, hava güneşli' metne ve rubriğe tamamen aykırı; doğru cevap cuma, 14.00, çok amaçlı salon, yağmur beklentisi.",
+            "severity": "blocking"
+          },
+          {
+            "code": "rubric_inconsistency",
+            "detail": "Rubrik ölçütleri çözüm metniyle uyumlu, ancak cevap anahtarı bunlarla çelişiyor; puanlama tutarsız olur.",
+            "severity": "blocking"
+          }
+        ],
+        "oracle_reason": "Answer key contradicts all four explicit text facts."
+      },
+      {
+        "case_id": "014f928d-c203-4e40-b6b3-4ee02c450b60",
+        "expected_pass": true,
+        "accepted": false,
+        "confidence": 0.82,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "pending_subject_review",
+            "detail": "Alan uzmanı onayı yok; kendi başına hata sayılmadı.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "e4e902da-c71e-466a-8e56-c9d36aaa29f4",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.94,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "solution_wrong",
+            "detail": "Çözüm kuvvet etkisi için A-C, yol etkisi için A-B diyor; A-C'de kuvvet sabit, yol değişiyor, A-B'de yol sabit, kuvvet değişiyor. Çiftler ters verilmiş.",
+            "severity": "blocking"
+          },
+          {
+            "code": "solution_key_rubric_conflict",
+            "detail": "Çözüm metni hem expected_answer hem rubrik K2/K3 ile çelişiyor.",
+            "severity": "blocking"
+          }
+        ],
+        "oracle_reason": "Independent variable controls are swapped; A-C distance changes, notforce."
+      },
+      {
+        "case_id": "a098d810-9ff1-4318-9186-6abcd2c6b240",
+        "expected_pass": true,
+        "accepted": false,
+        "confidence": 0.84,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "pending_subject_review",
+            "detail": "Alan uzmanı onayı yok; kendi başına hata sayılmadı.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "8fbcdfec-a642-43fb-8573-bbe7352f2d2f",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.88,
+        "recommendation": "admin_review",
+        "findings": [
+          {
+            "code": "rubric_contradiction",
+            "detail": "K4 farklı yöntemle 168'e ulaşanlara en fazla 12 puan diyor, ardından tüm eşdeğer doğru yöntemlere tam puan veriliyor diyor. Genel puanlama notu da eşdeğer yanıtları kabul ediyor. Puanlama tutarsız ve haksız olabilir.",
+            "severity": "blocking"
+          },
+          {
+            "code": "pending_subject_review",
+            "detail": "Alan uzmanı onayı yok; kendi başına hata sayılmadı.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Rubric explicitly contradicts its own equivalent-method acceptance rule."
+      }
+    ]
+  },
+  {
+    "model": "gpt-6.1-sol",
+    "spec": "v3",
+    "status": "done",
+    "true_accept": 4,
+    "false_accept": 0,
+    "true_hold": 4,
+    "false_hold": 0,
+    "accuracy": 1.0,
+    "details": [
+      {
+        "case_id": "cbc4965c-6345-4556-b00c-be00b80510f1",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.96,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "other",
+            "detail": "Bağımsız alan uzmanı incelemesi ve okul senaryosu seçimi bekliyor; bunlar içerik hatası değildir. Verilen kaynak doğrulama kaydı bu incelemede yeniden doğrulanmadı.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "3f4acd61-3ad1-45a3-abd1-0cfd60ee5a80",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.98,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_key_error",
+            "detail": "Beklenen cevapta son miktar 5/4 L verilmiş; doğru değer 3/2 − 1/2 + 3/4 = 7/4 L'dir. Anahtar, doğru çözüm ve K3 ölçütüyle çelişiyor; kullanılan 1/2 L bilgisi de beklenen cevaba eklenmelidir.",
+            "severity": "blocking"
+          }
+        ],
+        "oracle_reason": "Answer key contradicts exact7/4 L result."
+      },
+      {
+        "case_id": "31a9bc9b-01e4-4d4f-a4c4-597834148d85",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.95,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "irrelevant_scoring_text",
+            "detail": "Genel puanlama açıklamasındaki 'Önceki hesap hatası tutarlı taşınmışsa tekrar cezalandırılmaz' ifadesi bu okuduğunu anlama sorusuyla ilgisizdir; kaldırılmalıdır.",
+            "severity": "advisory"
+          },
+          {
+            "code": "other",
+            "detail": "Bağımsız alan uzmanı incelemesi ve okul senaryosu seçimi bekliyor; kaynak doğrulama kaydı bunların yerine geçmez.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "28c67413-163a-4dbe-8e80-0596da984fe3",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.98,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_key_error",
+            "detail": "Beklenen cevaptaki pazartesi, 10.00, bahçe ve güneşli hava bilgileri metne aykırıdır. Doğrusu cuma, 14.00, çok amaçlı salon ve yağmur beklentisidir; puanlama ölçütleri de bu doğru bilgileri esas alıyor.",
+            "severity": "blocking"
+          },
+          {
+            "code": "irrelevant_scoring_text",
+            "detail": "Hesap hatasının taşınmasına ilişkin genel puanlama cümlesi bu soruyla ilgisizdir.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Answer key contradicts all four explicit text facts."
+      },
+      {
+        "case_id": "014f928d-c203-4e40-b6b3-4ee02c450b60",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.96,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "other",
+            "detail": "Bağımsız alan uzmanı incelemesi ve okul senaryosu seçimi bekliyor; bunlar soru veya çözüm hatası değildir.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "e4e902da-c71e-466a-8e56-c9d36aaa29f4",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.98,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "solution_error",
+            "detail": "Çözüm, kuvvet ve yol karşılaştırmalarını ters vermiştir. A-C'de yol değil kuvvet sabittir; yolun etkisi incelenir. A-B'de yol sabittir; kuvvetin etkisi incelenir. Çözüm, doğru anahtar ve K2-K3 ölçütleriyle çelişiyor.",
+            "severity": "blocking"
+          }
+        ],
+        "oracle_reason": "Independent variable controls are swapped; A-C distance changes, notforce."
+      },
+      {
+        "case_id": "a098d810-9ff1-4318-9186-6abcd2c6b240",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.97,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "other",
+            "detail": "Bağımsız alan uzmanı incelemesi ve okul senaryosu seçimi bekliyor; verilen kaynak doğrulama kaydı bu aşamaların tamamlandığını göstermez.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "8fbcdfec-a642-43fb-8573-bbe7352f2d2f",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.98,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "scoring_contradiction",
+            "detail": "K4, farklı doğru yöntemle 168 cm² bulanlara en fazla 12 puan verirken tüm eşdeğer doğru yöntemlere tam puan verileceğini de söylüyor. Bu hükümler ve genel eşdeğer yanıt kabulü çelişiyor; doğru yanıtların puanı belirsiz ve yönteme göre haksız biçimde değişiyor.",
+            "severity": "blocking"
+          }
+        ],
+        "oracle_reason": "Rubric explicitly contradicts its own equivalent-method acceptance rule."
+      }
+    ]
+  },
+  {
+    "model": "gpt-6-astra",
+    "spec": "v3",
+    "status": "done",
+    "true_accept": 4,
+    "false_accept": 0,
+    "true_hold": 4,
+    "false_hold": 0,
+    "accuracy": 1.0,
+    "details": [
+      {
+        "case_id": "cbc4965c-6345-4556-b00c-be00b80510f1",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.95,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "language_formatting",
+            "detail": "Öğretmen ölçütlerinde sözcük, sayı ve puanlar arasındaki eksik boşluklar giderilmeli: “Başlangıcı3/2”, “doğru25” gibi.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "3f4acd61-3ad1-45a3-abd1-0cfd60ee5a80",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.97,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_key_error",
+            "detail": "Beklenen cevapta 5/4 L yazıyor; doğru son miktar 3/2−(3/2×1/3)+3/4=7/4 L'dir. Anahtar, çözüm ve K3 ile çelişiyor; ayrıca a şıkkının 1/2 L cevabı anahtarda eksik.",
+            "severity": "blocking"
+          },
+          {
+            "code": "language_formatting",
+            "detail": "Öğretmen metnindeki “Başlangıcı3/2”, “doğru25”, “durumda5/4” gibi birleşik yazımlar ayrılmalı.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Answer key contradicts exact7/4 L result."
+      },
+      {
+        "case_id": "31a9bc9b-01e4-4d4f-a4c4-597834148d85",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.94,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "language_formatting",
+            "detail": "“saat14.00”, “sonraiki25” gibi yazımlarda boşluklar düzeltilmeli.",
+            "severity": "advisory"
+          },
+          {
+            "code": "scoring_clarity",
+            "detail": "K1'deki “belirsiz kısmi yanıt” ve K2'deki “yaklaşım” için kabul edilecek yanıt örnekleri verilmeli. Hesap hatasının taşınmasına ilişkin genel ifade bu soruya uygulanabilir değil.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "28c67413-163a-4dbe-8e80-0596da984fe3",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.97,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_key_error",
+            "detail": "Beklenen cevabın dört bilgisi de metne ve puanlama ölçütlerine aykırı. Doğrusu: cuma, 14.00, çok amaçlı salon, yağmur beklentisi.",
+            "severity": "blocking"
+          },
+          {
+            "code": "language_formatting",
+            "detail": "“saat14.00”, “sonraiki25” gibi yazımlarda boşluklar düzeltilmeli.",
+            "severity": "advisory"
+          },
+          {
+            "code": "scoring_clarity",
+            "detail": "K1'deki “belirsiz kısmi yanıt” ve K2'deki “yaklaşım” somutlaştırılmalı. Hesap hatası taşıma ifadesi bu soruyla ilgili değil.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Answer key contradicts all four explicit text facts."
+      },
+      {
+        "case_id": "014f928d-c203-4e40-b6b3-4ee02c450b60",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.96,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "language_formatting",
+            "detail": "“içinA-B”, “işlerini40”, “tam25” gibi yazımlar boşluklarla ayrılarak okunabilirlik artırılmalı.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "e4e902da-c71e-466a-8e56-c9d36aaa29f4",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.97,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "solution_error",
+            "detail": "Çözüm karşılaştırma çiftlerini ters vermiş. A-C'de yol değil kuvvet sabittir ve yolun etkisi incelenir. Kuvvetin etkisi, yolun sabit olduğu A-B ile incelenir. Çözüm doğru anahtar ve K2-K3 ile çelişiyor.",
+            "severity": "blocking"
+          },
+          {
+            "code": "language_formatting",
+            "detail": "“içinA-B”, “işlerini40”, “tam25” gibi birleşik yazımlar ayrılmalı.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Independent variable controls are swapped; A-C distance changes, notforce."
+      },
+      {
+        "case_id": "a098d810-9ff1-4318-9186-6abcd2c6b240",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.96,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "language_formatting",
+            "detail": "“Ayrıtları6”, “kutu108”, “iki24” ve puanlama ifadelerindeki eksik boşluklar tamamlanmalı.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "8fbcdfec-a642-43fb-8573-bbe7352f2d2f",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.97,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "scoring_contradiction",
+            "detail": "K4, farklı doğru yöntemle 168 sonucuna ulaşana en fazla 12 puan verirken tüm eşdeğer doğru yöntemlere tam puan da öngörüyor. Hem kendi içinde hem genel eşdeğer yanıt kabulüyle çelişiyor; doğru yanıta uygulanacak puan belirsiz.",
+            "severity": "blocking"
+          },
+          {
+            "code": "language_formatting",
+            "detail": "“Ayrıtları6”, “kutu108”, “iki24” ve puanlama ifadelerindeki eksik boşluklar tamamlanmalı.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Rubric explicitly contradicts its own equivalent-method acceptance rule."
+      }
+    ]
+  },
+  {
+    "model": "claude-fable-5-1",
+    "spec": "v3",
+    "status": "done",
+    "true_accept": 0,
+    "false_accept": 0,
+    "true_hold": 4,
+    "false_hold": 4,
+    "accuracy": 0.5,
+    "details": [
+      {
+        "case_id": "cbc4965c-6345-4556-b00c-be00b80510f1",
+        "expected_pass": true,
+        "accepted": false,
+        "confidence": 0.82,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "pending_subject_review",
+            "detail": "subject_expert_approval=false ve okul senaryosu seçilmemiş; bağımsız alan uzmanı onayı ayrı kademede bekliyor.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "3f4acd61-3ad1-45a3-abd1-0cfd60ee5a80",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.85,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "expected_answer_mismatch",
+            "detail": "expected_answer 'Son durumda 5/4 L' diyor; çözüm ve rubrik K3 doğru sonuç olan 7/4 L'yi veriyor. Beklenen cevap hatalı ve kullanılan su miktarı (1/2 L) beklenen cevapta eksik.",
+            "severity": "blocking"
+          },
+          {
+            "code": "pending_subject_review",
+            "detail": "subject_expert_approval=false; alan uzmanı incelemesi beklemede.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Answer key contradicts exact7/4 L result."
+      },
+      {
+        "case_id": "31a9bc9b-01e4-4d4f-a4c4-597834148d85",
+        "expected_pass": true,
+        "accepted": false,
+        "confidence": 0.8,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "other",
+            "detail": "Rubrik scoring notundaki 'hesap hatası' ifadesi Türkçe sorusu için ilgisiz şablon metni; zararsız.",
+            "severity": "advisory"
+          },
+          {
+            "code": "pending_subject_review",
+            "detail": "subject_expert_approval=false; alan uzmanı incelemesi beklemede.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "28c67413-163a-4dbe-8e80-0596da984fe3",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.88,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "expected_answer_mismatch",
+            "detail": "expected_answer 'Pazartesi, 10.00, bahçe, hava güneşli' metinle tamamen çelişiyor; metin cuma, 14.00, çok amaçlı salon ve yağmur beklentisi diyor. Rubrik ölçütleri doğru değerleri veriyor.",
+            "severity": "blocking"
+          },
+          {
+            "code": "pending_subject_review",
+            "detail": "subject_expert_approval=false; alan uzmanı incelemesi beklemede.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Answer key contradicts all four explicit text facts."
+      },
+      {
+        "case_id": "014f928d-c203-4e40-b6b3-4ee02c450b60",
+        "expected_pass": true,
+        "accepted": false,
+        "confidence": 0.82,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "pending_subject_review",
+            "detail": "subject_expert_approval=false; alan uzmanı incelemesi beklemede.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "e4e902da-c71e-466a-8e56-c9d36aaa29f4",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.85,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "solution_error",
+            "detail": "Öğretmen çözümü 'kuvvetin etkisi A-C, yol sabit' ve 'yolun etkisi A-B' diyor; oysa A-C'de kuvvet sabit (20 N) yol değişir, A-B'de yol sabit (2 m) kuvvet değişir. Çözüm, expected_answer ve rubrik K2-K3 ile çelişiyor; iş hesapları çözümde yok.",
+            "severity": "blocking"
+          },
+          {
+            "code": "pending_subject_review",
+            "detail": "subject_expert_approval=false; alan uzmanı incelemesi beklemede.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Independent variable controls are swapped; A-C distance changes, notforce."
+      },
+      {
+        "case_id": "a098d810-9ff1-4318-9186-6abcd2c6b240",
+        "expected_pass": true,
+        "accepted": false,
+        "confidence": 0.82,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "pending_subject_review",
+            "detail": "subject_expert_approval=false; alan uzmanı incelemesi beklemede.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+      },
+      {
+        "case_id": "8fbcdfec-a642-43fb-8573-bbe7352f2d2f",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.8,
+        "recommendation": "admin_review",
+        "findings": [
+          {
+            "code": "rubric_inconsistent",
+            "detail": "K4 ölçütü kendi içinde çelişkili: 168 yazana 25 puan, farklı yöntemle 168 bulana en fazla 12 puan, ardından 'tüm eşdeğer doğru yöntemlere tam puan' deniyor. Genel scoring notuyla da çelişiyor; puanlama uygulanamaz.",
+            "severity": "blocking"
+          },
+          {
+            "code": "pending_subject_review",
+            "detail": "subject_expert_approval=false; alan uzmanı incelemesi beklemede.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Rubric explicitly contradicts its own equivalent-method acceptance rule."
+      }
+    ]
+  }
+]

@@ -5,7 +5,7 @@ import type { AiResult } from "./prova.ts";
 // Nothing here calls a provider: the Edge handler injects the call.
 
 // v2 (C09): görseller modele gösterilmez; görsele bağlı doğruluk için solution_correct=unsure istenir.
-export const PREREVIEW_PROMPT_VERSION = "prereview-v2";
+export const PREREVIEW_PROMPT_VERSION = "prereview-v3";
 export const PREREVIEW_CONFIDENCE_THRESHOLD = 0.85;
 export const PREREVIEW_MAX_ATTEMPTS = 3;
 
@@ -85,7 +85,8 @@ export const SYSTEM =
   `Sen GINA içerik ön inceleme asistanısın. Sana bir kütüphane taslak paketi, bir aile katkı kopyası veya bir MEB ortak yazılı senaryo adayının normalize edilmiş tam metni verilir. Görevin: içeriği okuyup beş rubrik sorusunu cevaplamak, bulguları listelemek ve bir öneri vermek. Kararı sen vermiyorsun; onay/ret son kararı yönetici verir, bağımsız eğitimci incelemesi ayrı bir kademedir.
 Rubrik: solution_correct (öğretmen cevabı/çözümü doğru ve beklenen cevapla tutarlı mı), measures_target_skill (soru iddia edilen kazanımı/beceriyi gerçekten ölçüyor mu; senaryo adayında blok sayıları ve çıktı metinleri tutarlı mı), age_language_appropriate (sınıf düzeyine, yaşa ve Türkçe diline uygun mu; cezalandırıcı/utandırıcı dil yok mu), copyright_or_copy_suspicion (telifli ders kitabı, yayınevi veya başka kaynağın aynen kopyası şüphesi var mı), leaked_exam_suspicion (okul yazılısı, öğretmen EBA havuzu veya gizli sınav sorusunun paylaşımı şüphesi var mı).
 Her rubrik cevabı yes/no/unsure. Emin değilsen unsure yaz; uydurma. Her sorunlu nokta findings içinde code+severity+detail ile yer alsın; blocking yalnız yayını engelleyecek sorun için. Kişisel veri (çocuk adı, okul adı, telefon) görürsen personal_data bulgusu yaz. confidence 0-1 arasında, bulguların eksiksizliğine duyduğun güvendir; içerik iyi diye otomatik yüksek verme. recommendation: approve yalnız tüm rubrik geçerse; reject yalnız açık ve ciddi sorun varsa; aksi admin_review. summary en çok 600 karakter, Türkçe. Yalnız istenen JSON'u döndür.
-Görseller: sana hiçbir görsel gösterilmez; yalnız başlık, metin ve alternatif metin (alt) gelir. Bir sorunun doğruluğu, cevabı veya anlaşılırlığı görsele bağlıysa (şekil, grafik, çizim, tablo görüntüsü) solution_correct için unsure yaz ve bunu advisory bir other bulgusuyla belirt; görseli görmüş gibi yorum yapma.`;
+Görseller: sana hiçbir görsel gösterilmez; yalnız başlık, metin ve alternatif metin (alt) gelir. Bir sorunun doğruluğu, cevabı veya anlaşılırlığı görsele bağlıysa (şekil, grafik, çizim, tablo görüntüsü) solution_correct için unsure yaz ve bunu advisory bir other bulgusuyla belirt; görseli görmüş gibi yorum yapma.
+Kapsam ayrımı: Kaynak hücresi/hash doğrulaması, içerikteki kazanım ilişkisi ve bağımsız alan uzmanı onayı ayrı olgulardır. subject_expert_approval=false, pending_subject_review ve okul senaryosu seçilmemiş olması kendi başına soru/çözüm/rubrik hatası değildir; bunları gerekiyorsa advisory olarak kaydet. Bunları yapılmış gibi gösterme. İçerik kazanımın verilen gerçek metnini ölçmüyorsa veya kaynak iddiası verilen kanıtla çelişiyorsa measures_target_skill=unsure/no ve somut bulgu yaz. Confidence yine incelemenin ve bulguların eksiksizliğine duyduğun güvendir; yönetici iş akışının tamamlanmışlığına verilen puan değildir. Gerçek içerik belirsizliğini, hesap/anahtar hatasını, rubrik çelişkisini, dil ve yaş sorununu açıkça işaretle. Yanıtın kısa olsun; her özeti en çok400 karakter tut. Hiçbir puan ya da öneri hedeflenmez. Her kaydı bağımsız incele.`;
 
 export const SCHEMA = {
   type: "object",

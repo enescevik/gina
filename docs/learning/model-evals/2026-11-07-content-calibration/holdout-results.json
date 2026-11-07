@@ -1,0 +1,302 @@
+[
+  {
+    "model": "gpt-6.1-sol",
+    "spec": "v3",
+    "status": "done",
+    "true_accept": 3,
+    "false_accept": 0,
+    "true_hold": 3,
+    "false_hold": 0,
+    "accuracy": 1.0,
+    "details": [
+      {
+        "case_id": "758032c1-e4aa-47df-976d-f448193113ad",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.97,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "age_or_language",
+            "item": "student.stem",
+            "detail": "“sırasıyla145”, “ve96”, “Kitaplar20’şer” gibi birleşik yazımlarda sözcük ve sayı arasına boşluk eklenmeli.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Independent exact arithmetic or direct text/table facts."
+      },
+      {
+        "case_id": "0701f1f0-a733-4ea7-98bc-8281a2260024",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.99,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_key_mismatch",
+            "item": "teacher.expected_answer",
+            "detail": "Beklenen cevap yanlış ve çözüm/rubrik ile çelişiyor. 145+178+96=419; 419=20×20+19 olduğundan doğru cevap 419 kitap, 20 tam kutu ve 19 artan kitaptır.",
+            "severity": "blocking"
+          },
+          {
+            "code": "age_or_language",
+            "item": "student.stem",
+            "detail": "“sırasıyla145”, “ve96”, “Kitaplar20’şer” gibi birleşik yazımlarda boşluklar düzeltilmeli.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Expected answer contradicts explicit source facts and worked solution."
+      },
+      {
+        "case_id": "09a7e911-674c-400b-9e48-4ce8ec66aae5",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.96,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "rubric_incomplete",
+            "item": "teacher.rubric",
+            "detail": "Yönerge her dersin yeri için cümle istiyor; K3 ve K4 yalnız yer bilgisini değerlendiriyor. Tek sözcüklü doğru yanıtların kabul edilip edilmeyeceği açıklanmalı; okuduğunu anlama odağı korunmalı.",
+            "severity": "advisory"
+          },
+          {
+            "code": "age_or_language",
+            "item": "teacher.rubric.criteria",
+            "detail": "Öğretmen ölçütlerindeki “günüMonday”, “saati3:00”, “yerinilibrary” gibi birleşik yazımlar düzeltilmeli.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Independent exact arithmetic or direct text/table facts."
+      },
+      {
+        "case_id": "3a81c133-945a-4e72-988e-b9de4ad7acf7",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.99,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_key_mismatch",
+            "item": "teacher.expected_answer",
+            "detail": "Beklenen cevap derslerin bilgilerini karıştırıyor. Art dersi Monday, three o’clock, library; music dersinin yeri hall olmalıdır. Çözüm ve puanlama ölçütleri doğru bilgileri veriyor.",
+            "severity": "blocking"
+          },
+          {
+            "code": "rubric_incomplete",
+            "item": "teacher.rubric",
+            "detail": "Yerler için cümle yazılması istenmesine rağmen K3 ve K4 yalnız yer bilgisini puanlıyor. Tek sözcüklü yanıtların durumu açıklanmalı.",
+            "severity": "advisory"
+          },
+          {
+            "code": "age_or_language",
+            "item": "teacher.rubric.criteria",
+            "detail": "“günüMonday”, “saati3:00”, “yerinilibrary” gibi birleşik yazımlar düzeltilmeli.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Expected answer contradicts explicit source facts and worked solution."
+      },
+      {
+        "case_id": "ff476150-9796-452a-b5ab-c741748939ae",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.96,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "age_or_language",
+            "item": "student.stem",
+            "detail": "“cam80 cm,bez45 cm,pürüzlü kaplama20 cm” ifadesi “cam: 80 cm, bez: 45 cm, pürüzlü kaplama: 20 cm” biçiminde düzenlenmeli.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Independent exact arithmetic or direct text/table facts."
+      },
+      {
+        "case_id": "4ac0606d-02df-4227-9dd2-95ca0349fc5c",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.99,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_key_mismatch",
+            "item": "teacher.expected_answer",
+            "detail": "Beklenen cevap verilerle ve çözümle çelişiyor: Pürüzlü kaplamada yol 80 değil 20 cm'dir; en uzun yol camda alınır. Bu koşullarda hareketi zorlaştırıcı etki arttıkça durma yolu kısalır; fren bisikleti hızlandırmaz, yavaşlatır.",
+            "severity": "blocking"
+          },
+          {
+            "code": "age_or_language",
+            "item": "student.stem",
+            "detail": "“cam80 cm,bez45 cm,pürüzlü kaplama20 cm” ifadesinde yüzey adları, sayılar ve virgüller arasındaki boşluklar düzenlenmeli.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Expected answer contradicts explicit source facts and worked solution."
+      }
+    ]
+  },
+  {
+    "model": "gpt-6-astra",
+    "spec": "v3",
+    "status": "done",
+    "true_accept": 3,
+    "false_accept": 0,
+    "true_hold": 3,
+    "false_hold": 0,
+    "accuracy": 1.0,
+    "details": [
+      {
+        "case_id": "758032c1-e4aa-47df-976d-f448193113ad",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.95,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "rubric_incomplete",
+            "item": "teacher.rubric",
+            "detail": "K1–K4 için 12 puanlık kısmi doğruluğun hangi yanıtları kapsadığı açıklanmamış; puanlama örneklerle netleştirilmeli.",
+            "severity": "advisory"
+          },
+          {
+            "code": "age_or_language",
+            "item": "student.stem",
+            "detail": "“sırasıyla145”, “ve96”, “Kitaplar20’şer” gibi birleşik yazımlarda boşluklar düzeltilmeli; anlam anlaşılır.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Independent exact arithmetic or direct text/table facts."
+      },
+      {
+        "case_id": "0701f1f0-a733-4ea7-98bc-8281a2260024",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.97,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_key_mismatch",
+            "item": "teacher.expected_answer",
+            "detail": "145+178+96=419 ve 419=20×20+19. Beklenen yanıttaki 429 kitap, 21 kutu ve 9 kalan yanlıştır; doğru çözüm ve puanlama ölçütleriyle çelişir.",
+            "severity": "blocking"
+          },
+          {
+            "code": "rubric_incomplete",
+            "item": "teacher.rubric",
+            "detail": "K1–K4 için 12 puanlık kısmi doğruluğun koşulları tanımlanmamış.",
+            "severity": "advisory"
+          },
+          {
+            "code": "age_or_language",
+            "item": "student.stem",
+            "detail": "“sırasıyla145”, “ve96”, “Kitaplar20’şer” gibi birleşik yazımlarda boşluklar düzeltilmeli.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Expected answer contradicts explicit source facts and worked solution."
+      },
+      {
+        "case_id": "09a7e911-674c-400b-9e48-4ce8ec66aae5",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.94,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "rubric_incomplete",
+            "item": "teacher.rubric",
+            "detail": "Kısmi doğruluk düzeyi tanımlanmamış. Ayrıca b bölümünde cümle istenirken ölçütler yalnız yer bilgisini arıyor; tek sözcüklü doğru yanıtların nasıl puanlanacağı açıklanmalı.",
+            "severity": "advisory"
+          },
+          {
+            "code": "age_or_language",
+            "item": "teacher.rubric.criteria",
+            "detail": "Öğretmen ölçütlerindeki “günüMonday”, “saati3:00”, “yerinilibrary” gibi birleşik yazımlar düzeltilmeli.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Independent exact arithmetic or direct text/table facts."
+      },
+      {
+        "case_id": "3a81c133-945a-4e72-988e-b9de4ad7acf7",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.97,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_key_mismatch",
+            "item": "teacher.expected_answer",
+            "detail": "Sanat dersi pazartesi saat üçte kütüphanede, müzik dersi salondadır. Beklenen yanıt sanat dersinin gününü, saatini ve yerini; müzik dersinin yerini yanlış verir. Çözüm ve ölçütlerle çelişir.",
+            "severity": "blocking"
+          },
+          {
+            "code": "rubric_incomplete",
+            "item": "teacher.rubric",
+            "detail": "Kısmi doğruluk düzeyi ve b bölümündeki cümle yazma koşulunun puanlamaya etkisi açıklanmamış.",
+            "severity": "advisory"
+          },
+          {
+            "code": "age_or_language",
+            "item": "teacher.rubric.criteria",
+            "detail": "“günüMonday”, “saati3:00”, “yerinilibrary” gibi birleşik yazımlar düzeltilmeli.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Expected answer contradicts explicit source facts and worked solution."
+      },
+      {
+        "case_id": "ff476150-9796-452a-b5ab-c741748939ae",
+        "expected_pass": true,
+        "accepted": true,
+        "confidence": 0.94,
+        "recommendation": "approve",
+        "findings": [
+          {
+            "code": "rubric_incomplete",
+            "item": "teacher.rubric",
+            "detail": "K1–K4 için kısmi doğruluk koşulları açıklanmamış. Beklenen yanıta 80, 45 ve 20 cm değerlerinin eklenmesi, K3'teki sayısal destek koşulunu daha görünür kılar.",
+            "severity": "advisory"
+          },
+          {
+            "code": "age_or_language",
+            "item": "student.stem",
+            "detail": "“cam80 cm,bez45 cm,pürüzlü kaplama20 cm” ifadesinde sözcük-sayı ve virgül sonrası boşluklar düzeltilmeli.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Independent exact arithmetic or direct text/table facts."
+      },
+      {
+        "case_id": "4ac0606d-02df-4227-9dd2-95ca0349fc5c",
+        "expected_pass": false,
+        "accepted": false,
+        "confidence": 0.97,
+        "recommendation": "reject",
+        "findings": [
+          {
+            "code": "answer_key_mismatch",
+            "item": "teacher.expected_answer",
+            "detail": "Pürüzlü kaplamada yol 80 değil 20 cm'dir ve en kısadır. Verilen koşullarda hareketi zorlaştırıcı etki arttıkça durma yolu kısalır; fren bisikleti hızlandırmaz, yavaşlatır. Beklenen yanıt veri, çözüm ve ölçütlerle çelişir.",
+            "severity": "blocking"
+          },
+          {
+            "code": "rubric_incomplete",
+            "item": "teacher.rubric",
+            "detail": "K1–K4 için 12 puanlık kısmi doğruluğun koşulları tanımlanmamış.",
+            "severity": "advisory"
+          },
+          {
+            "code": "age_or_language",
+            "item": "student.stem",
+            "detail": "“cam80 cm,bez45 cm,pürüzlü kaplama20 cm” ifadesindeki eksik boşluklar düzeltilmeli.",
+            "severity": "advisory"
+          }
+        ],
+        "oracle_reason": "Expected answer contradicts explicit source facts and worked solution."
+      }
+    ]
+  }
+]

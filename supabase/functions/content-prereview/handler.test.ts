@@ -163,10 +163,10 @@ Deno.test("content change and prompt version change each trigger exactly one new
   f.state.hash = "b".repeat(64);
   const changed = await (await f.handler(post({ kind: "curriculum_candidate", id: ID }))).json();
   assert(changed.outcome === "reviewed" && calls(f) === 2, "changed content reviewed again");
-  f.deps.promptVersion = "prereview-v3";
+  f.deps.promptVersion = "next-test-prompt";
   const bumped = await (await f.handler(post({ kind: "curriculum_candidate", id: ID }))).json();
   assert(bumped.outcome === "reviewed" && calls(f) === 3, "new prompt version reviewed again");
-  assert((f.row()?.verdict as Record<string, unknown>).prompt_version === "prereview-v3");
+  assert((f.row()?.verdict as Record<string, unknown>).prompt_version === "next-test-prompt");
   await f.handler(post({ kind: "curriculum_candidate", id: ID }));
   assert(calls(f) === 3, "then cached again");
 });
