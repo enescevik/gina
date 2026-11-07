@@ -166,9 +166,10 @@ export function migrationApplySql({ version, name, sql }) {
 export const APPLIED_MIGRATIONS_SQL = 'select version, name from supabase_migrations.schema_migrations order by version';
 
 export async function managementQuery({ ref, token, query, fetcher = fetch }) {
+  if (!/^[a-z]{20}$/.test(ref)) throw new Error('invalid-project-ref');
   const response = await fetcher(`https://api.supabase.com/v1/projects/${ref}/database/query`, {
     method: 'POST', headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
-    body: JSON.stringify({ query }), signal: AbortSignal.timeout(120000),
+    body: JSON.stringify({ query }), redirect: 'error', signal: AbortSignal.timeout(120000),
   });
   if (!response.ok) throw new Error(`management-query-failed: HTTP ${response.status}`); // gövde yazdırılmaz
   return response.json();
@@ -276,10 +277,23 @@ export function tabletManifestPlist({ ipaUrl, version, build, bundleId = BUNDLE_
 `;
 }
 
+function previousTabletMetadata(value) {
+  if (value == null) return null;
+  const build = String(value.build);
+  if (!/^\d+$/.test(build) || !Number.isSafeInteger(Number(build))) throw new Error('invalid-previous-tablet-build');
+  const metadata = { build };
+  if (typeof value.version === 'string' && /^\d+\.\d+\.\d+$/.test(value.version)) metadata.version = value.version;
+  if (typeof value.sourceCommit === 'string' && /^[a-f0-9]{40}$/.test(value.sourceCommit)) metadata.sourceCommit = value.sourceCommit;
+  if (typeof value.sha256 === 'string' && /^[a-f0-9]{64}$/.test(value.sha256)) metadata.sha256 = value.sha256;
+  if (Number.isSafeInteger(value.bytes) && value.bytes > 0) metadata.bytes = value.bytes;
+  return metadata;
+}
+
 /** Yerel Ad Hoc IPA için statik kurulum klasörü: index.html, manifest-N.plist, gina-N.ipa, icon.png, release.json. */
 export function buildTabletInstallDir({ ipaPath, iconPath, outDir, version, build, sourceCommit, baseUrl = TABLET_ALIAS_ORIGIN, previousRelease = null }) {
   if (!/^\d+$/.test(build) || !/^\d+\.\d+\.\d+$/.test(version) || !/^[a-f0-9]{40}$/.test(sourceCommit)) throw new Error('invalid-tablet-release-identity');
   if (!isPublicHttps(baseUrl)) throw new Error('invalid-tablet-base-url');
+  previousRelease = previousTabletMetadata(previousRelease);
   if (previousRelease && Number(previousRelease.build) > Number(build)) throw new Error('refusing-older-tablet-release');
   const ipaName = `gina-${build}.ipa`, manifestName = `manifest-${build}.plist`;
   const base = baseUrl.replace(/\/$/, '');
@@ -573,7 +587,9 @@ async function executePlan(command, steps, ctx) {
       }
       case 'expected-build': break;
       case 'previous': {
-        try { const r = await fetch(`${TABLET_ALIAS_ORIGIN}/release.json`, { signal: AbortSignal.timeout(30000) }); if (r.ok) record.previousRelease = await r.json(); } catch { record.previousRelease = null; }
+        const r = await fetch(`${TABLET_ALIAS_ORIGIN}/release.json`, { redirect: 'error', signal: AbortSignal.timeout(30000) });
+        if (r.status !== 404 && !r.ok) throw new Error(`previous-tablet-release-http-${r.status}`);
+        record.previousRelease = r.ok ? previousTabletMetadata(await r.json()) : null;
         break;
       }
       case 'install-dir': {

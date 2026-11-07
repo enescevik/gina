@@ -113,7 +113,7 @@ async function adminSession() {
 }
 const bearer = async (c) => c.__token ?? token(c);
 async function fn(c, name, body) {
-  const r = await fetch(`${URL_BASE}/functions/v1/${name}`, { method: 'POST', headers: { Authorization: `Bearer ${await bearer(c)}`, apikey: ANON, 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const r = await fetch(`${URL_BASE}/functions/v1/${name}`, { method: 'POST', redirect: 'error', headers: { Authorization: `Bearer ${await bearer(c)}`, apikey: ANON, 'content-type': 'application/json' }, body: JSON.stringify(body) });
   const text = await r.text(); let json; try { json = JSON.parse(text); } catch { json = { raw: text.slice(0, 200) }; }
   return { status: r.status, body: json };
 }

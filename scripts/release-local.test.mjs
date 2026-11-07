@@ -137,7 +137,8 @@ test('tablet kurulum klasörü ve canlı doğrulama: manifest/IPA/release.json/s
     assert.throws(() => buildTabletInstallDir({ ...base, previousRelease: { build: '29' } }), /refusing-older-tablet-release/);
     assert.throws(() => buildTabletInstallDir({ ...base, build: 'x' }), /invalid-tablet-release-identity/);
     assert.throws(() => buildTabletInstallDir({ ...base, baseUrl: 'http://localhost:8081' }), /invalid-tablet-base-url/);
-    const record = buildTabletInstallDir({ ...base, previousRelease: { build: '27', sha256: 'c'.repeat(64) } });
+    const record = buildTabletInstallDir({ ...base, previousRelease: { build: '27', sha256: 'c'.repeat(64), extra: 'not published' } });
+    assert.deepEqual(JSON.parse(readFileSync(join(out, 'previous-release.json'), 'utf8')), { build: '27', sha256: 'c'.repeat(64) });
     assert.equal(record.sha256, sha(Buffer.from('fake ipa bytes for test')));
     assert.equal(record.ipaName, 'gina-28.ipa');
     const release = JSON.parse(readFileSync(join(out, 'release.json'), 'utf8'));
