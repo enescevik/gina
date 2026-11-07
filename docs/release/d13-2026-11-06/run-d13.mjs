@@ -5,9 +5,10 @@
 // Kurallar (C14b ile aynı): gerçek aile/kullanıcıya dokunmaz; anahtar/parola/token yazdırmaz. Durum yalnız gitignored
 // `.codex-setup/d13/ai-state.json` içinde (0600). Ücretli çağrı tavanı 2 (beklenen: 1 prova-grade); her gerçek çağrı
 // `calls.jsonl`'a (kişisel veri ve sır içermeyen özet) yazılır. Otomatik tekrar yok.
+import { readPilotState, savePilotState } from '../../../scripts/pilot-state.mjs';
 import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
-import { readFileSync, writeFileSync, appendFileSync, existsSync, chmodSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from 'node:fs';
 import { randomBytes, randomInt, randomUUID } from 'node:crypto';
 
 const ROOT = new URL('../../../', import.meta.url);
@@ -23,8 +24,8 @@ const { createClient } = require('@supabase/supabase-js');
 
 const stage = process.argv[2];
 mkdirSync(STATE_DIR, { recursive: true });
-const state = existsSync(STATE) ? JSON.parse(readFileSync(STATE, 'utf8')) : {};
-const save = () => { writeFileSync(STATE, JSON.stringify(state, null, 1)); chmodSync(STATE, 0o600); };
+const state = readPilotState(STATE);
+const save = () => savePilotState(STATE, state);
 const now = () => new Date().toISOString();
 
 const cli = spawnSync('pnpm', ['exec', 'supabase', 'projects', 'api-keys', '--project-ref', PROJECT, '--output', 'json'], { encoding: 'utf8', cwd: ROOT.pathname });

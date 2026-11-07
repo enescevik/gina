@@ -144,6 +144,14 @@ export function listLocalMigrations(dir = join(ROOT, 'supabase/migrations')) {
   return readdirSync(dir).map(parseMigrationFile).filter(Boolean).sort((a, b) => a.version.localeCompare(b.version));
 }
 
+export function readCommittedMigration(commit, file, run = defaultRun) {
+  if (!/^[a-f0-9]{40}$/.test(commit) || !parseMigrationFile(file)) throw new Error('invalid-migration-source');
+  const path = 'supabase/migrations/' + file;
+  const entry = run('git', ['ls-tree', commit, '--', path]);
+  if (!/^100(?:644|755) blob [a-f0-9]{40}\t/.test(entry)) throw new Error('migration-not-regular-committed-file');
+  return execFileSync('git', ['show', commit + ':' + path], { cwd: ROOT, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 });
+}
+
 /** Uygulanmış sürüm listesine göre bekleyenler; yerelde olmayan uzak sürüm uyarı olur. */
 export function pendingMigrations(local, appliedVersions) {
   const applied = new Set(appliedVersions.map(String));
@@ -529,11 +537,13 @@ async function executePlan(command, steps, ctx) {
         break;
       }
       case 'apply': {
-        for (const file of record.pending ?? []) {
-          const m = parseMigrationFile(file);
-          const sql = readFileSync(join(ROOT, 'supabase/migrations', file), 'utf8');
+        const queries = (record.pending ?? []).map(file => ({
+          file,
+          query: migrationApplySql({ ...parseMigrationFile(file), sql: readCommittedMigration(ctx.source.commit, file) }),
+        }));
+        for (const { file, query } of queries) {
           console.log(`  uygulanıyor: ${file}`);
-          await managementQuery({ ref: ctx.ref, token: env.SUPABASE_ACCESS_TOKEN, query: migrationApplySql({ ...m, sql }) });
+          await managementQuery({ ref: ctx.ref, token: env.SUPABASE_ACCESS_TOKEN, query });
         }
         break;
       }
