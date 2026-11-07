@@ -124,6 +124,7 @@ export default function ParentHomeScreen() {
     },
   });
 
+  useRealtimeInvalidate("task_routine_sync", familyId ? `family_id=eq.${familyId}` : null, [["plan_for_days", familyId], ["plan_for_day", familyId]]);
   useRealtimeInvalidate("task_templates", familyId ? `family_id=eq.${familyId}` : null, [["family_task_templates", familyId], ["plan_for_days", familyId]]);
 
   useRealtimeInvalidate("task_completions", familyId ? `family_id=eq.${familyId}` : null, [

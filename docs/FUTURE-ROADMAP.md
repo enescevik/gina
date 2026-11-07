@@ -74,7 +74,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F6 — Hata güvenli/kıyassız dil; mola/akşam tercihleri; izin ve denetim görünümü
 
-- Kaynak: §3a, §4.7. Durum: KISMEN KOD HAZIR (mola/akşam/okuma ve çocuk hata dili; çalışma tercihi geçmişi hazır; diğer izinler ve gün ertele açık). Efor: **M**.
+- Kaynak: §3a, §4.7. Durum: KISMEN KOD HAZIR (mola/akşam/okuma ve çocuk hata dili; çalışma tercihi geçmişi ve gün ertele hazır, diğer izinler açık). Efor: **M**.
 - Kapsam: Hata güvenli/kıyassız dil; mola/akşam tercihleri; izin ve denetim görünümü.
 - Bağımlılık: Mevcut izinler, bildirim sessiz saatleri.
 - Paket kapısı: Tüm paketler.
@@ -252,3 +252,5 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - Güvenlik izleme: ilk 10 ayrıştırma uyarısının CodeQL açık listesinden kalktığı doğrulandı. Gözlem 195 açık uyarı (32 yüksek, 163 orta); tüm depo güvenlik kabulü hâlâ açık. IPA incelemesindeki shell zincirleri kaldırıldı; 118 Node kontrolü ve sentetik IPA denetimi geçti.
 
 - F6c: çalışma ve sesli okuma tercihleri için veliye son 20 değişikliği gösteren geçmiş eklendi. Yalnız gerçek değer değişiklikleri kayda girer; doğrudan tablo erişimi yoktur. Çocuk, anonim ve başka aile kapsamı kapalı; istemciye aktör kimliği yerine “siz / aileden bir veli / bilinmiyor” döner. 157 dosya/7.135 taze DB kontrolü ve son eklenen gerçek yabancı aile testiyle hedefli 7/7; 776 core ve lint/typecheck geçti. Bu kayıt mikrofon, AI özeti veya öğretmen paylaşımı için izin toplamaz. Gün ertele ve diğer izinlerin tek görünümde birleştirilmesi açık.
+
+- F6d: Veli, çalışma tercihleri ekranından aile saat dilimindeki bugünü erteleyebilir. Henüz gönderilmemiş görev yarına taşınır. Yarın zaten planlı olan rutin bir kez görünür. Bugüne kalan Prova tekrarları ve aynı dizideki sonraki oturumlar yerel saatlerini ve aralıklarını koruyarak bir gün kayar. Tamamlanmış veya gönderilmiş işler ve yıldızlar korunur. Sağlık gerekçesi toplanmaz. Aynı güne ait tekrar çağrı ilk sonucu döndürür. Çocuk Bugün ve Haftam ekranları tarihli plandan okur. 158 dosya ve 7.152 SQL kontrolü, 776 core testi, lint ve tip denetimi geçti. Üretim ve fiziksel kabul bekliyor.

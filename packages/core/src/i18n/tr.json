@@ -5235,5 +5235,10 @@
   "studyHistory.setting.evening_end": "Akşam bitişi",
   "studyHistory.actor.self": "Siz",
   "studyHistory.actor.parent": "Aileden bir veli",
-  "studyHistory.actor.unknown": "İşlemi yapan bilinmiyor"
+  "studyHistory.actor.unknown": "İşlemi yapan bilinmiyor",
+  "deferStudyDay.action": "Bugün ertele",
+  "deferStudyDay.confirm": "Henüz gönderilmemiş görevler ve kalan Prova tekrarları yarına taşınır. Aynı görev yarın zaten varsa tek kez görünür. Tekrar sırasını korumak için aynı dizinin sonraki oturumları da bir gün kayar.",
+  "deferStudyDay.result": "{{tasks}} görev ve {{repeats}} tekrar oturumu ertelendi.",
+  "deferStudyDay.empty": "Bugün ertelenecek görev veya tekrar kalmadı.",
+  "deferStudyDay.error": "Erteleme kaydedilemedi. Sayfayı yenileyip yeniden deneyin."
 }

@@ -5240,5 +5240,10 @@
   "studyHistory.setting.evening_end": "Evening end",
   "studyHistory.actor.self": "You",
   "studyHistory.actor.parent": "A parent in your family",
-  "studyHistory.actor.unknown": "Actor unavailable"
+  "studyHistory.actor.unknown": "Actor unavailable",
+  "deferStudyDay.action": "Defer today",
+  "deferStudyDay.confirm": "Tasks you have not submitted and practice reviews move to tomorrow. If a task is already scheduled tomorrow, it appears once. Later sessions in the same review series also move one day to preserve their order.",
+  "deferStudyDay.result": "Deferred {{tasks}} tasks and {{repeats}} review sessions.",
+  "deferStudyDay.empty": "There are no tasks or review sessions left to defer today.",
+  "deferStudyDay.error": "Could not defer today. Refresh and try again."
 }

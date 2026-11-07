@@ -3646,6 +3646,11 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"defer_study_day":
+{ Args: { "p_child_id": string,"p_day": string }; Returns: {
+              "repeat_count": number,"task_count": number
+            }[]
+                           },
 "delete_learning_source":
 { Args: { "p_source_id": string }; Returns: undefined
                            },
@@ -3984,6 +3989,11 @@ isOneToOne: false
                            },
 "get_structured_score_overrides":
 { Args: { "p_attempt_id": string }; Returns: Json
+                           },
+"get_study_day_deferral":
+{ Args: { "p_child_id": string }; Returns: {
+              "day": string,"deferred": boolean,"repeat_count": number,"task_count": number
+            }[]
                            },
 "get_study_preference_history":
 { Args: { "p_child_id": string }; Returns: {

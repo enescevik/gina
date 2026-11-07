@@ -4,7 +4,7 @@ import { WeekStrip } from "@/components/room/week-strip";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
-import { localDateOf, readReturnReason, tasksWithRecordedWork, weekDatesOf } from "@gina/core";
+import { localDateOf, readReturnReason, tasksWithRecordedWork, templatesForPlanDay, weekDatesOf } from "@gina/core";
 import { ReturnNext } from "@/components/child-home/return-next";
 
 import { TaskIcon } from "@/components/task-icon";
@@ -13,6 +13,8 @@ import { ChildScreen as Screen, ChildEmptyState, childStyles } from "@/component
 import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { useActiveChild } from "@/lib/active-child";
+import { useWeekPlans } from "@/components/planner/week-plans";
+import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
 /** Çocuğun «Haftam» ekranı: haftanın günleri, o gün düşen görevler ve durumları. */
@@ -23,9 +25,12 @@ export default function ChildWeekScreen() {
   const today = localDateOf(new Date(), timeZone);
   const week = weekDatesOf(today);
   const [selected, setSelected] = useState(today);
+  const { claims } = useSession();
+  const familyId = claims?.family_id ?? "";
   const from = week[0] ?? today;
   const to = week[6] ?? today;
 
+  const [plans] = useWeekPlans(familyId, childId ? [childId] : [], from, to);
   const templates = useQuery({
     queryKey: ["task_templates", childId],
     enabled: !!childId,
@@ -57,18 +62,20 @@ export default function ChildWeekScreen() {
 
   useRealtimeInvalidate("task_completions", childId ? `child_id=eq.${childId}` : null, [["task_completions_week", childId, from]]);
 
-  useRealtimeInvalidate("task_templates", childId ? `child_id=eq.${childId}` : null, [["task_templates", childId]]);
-  useRealtimeInvalidate("task_routine_sync", childId ? `child_id=eq.${childId}` : null, [["task_routine_sync", childId]]);
+  useRealtimeInvalidate("task_templates", childId ? `child_id=eq.${childId}` : null, [["task_templates", childId], ["plan_for_days", familyId, childId]]);
+  useRealtimeInvalidate("task_routine_sync", childId ? `child_id=eq.${childId}` : null, [["task_routine_sync", childId], ["plan_for_days", familyId, childId]]);
   const byKey = new Map((completions.data ?? []).map((c) => [`${c.template_id}:${c.due_date}`, c.status]));
   const reasonByKey = new Map((completions.data ?? []).map((c) => [`${c.template_id}:${c.due_date}`, c.status === "returned" ? readReturnReason(c) : null]));
   const dayFormat = new Intl.DateTimeFormat(i18n.language, { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" });
 
   return (
-    <Screen tone="child" loading={templates.isLoading || completions.isLoading} title={t("child.week")}>
-      <ErrorText tone="child" error={templates.error ?? completions.error} />
+    <Screen tone="child" loading={templates.isLoading || completions.isLoading || plans?.isLoading} title={t("child.week")}>
+      <ErrorText tone="child" error={templates.error ?? completions.error ?? plans?.error} />
       <WeekStrip week={week} selected={selected} onSelect={setSelected} />
       {[selected].map((date) => {
-        const due = tasksWithRecordedWork(templates.data ?? [], completions.data ?? [], date);
+        const plan = plans?.data?.find((entry) => entry.day === date);
+        const planned = plan ? templatesForPlanDay(plan, templates.data ?? []) : [];
+        const due = tasksWithRecordedWork(planned, completions.data ?? [], date);
         const isToday = date === today;
         return (
           <View key={date} style={{ gap: 12 }}>
@@ -76,7 +83,7 @@ export default function ChildWeekScreen() {
               {dayFormat.format(new Date(`${date}T00:00:00Z`))}
               {isToday ? ` · ${t("calendar.today")}` : ""}
             </Text>
-            {due.length === 0 && !templates.error ? <ChildEmptyState title={t("child.noTasks")} body={t("betaUx.childWeekEmpty")}/> : null}
+            {due.length === 0 && !templates.error && !plans?.error ? <ChildEmptyState title={t("child.noTasks")} body={t("betaUx.childWeekEmpty")}/> : null}
             {due.map((task) => {
               const status = byKey.get(`${task.id}:${date}`);
               return (

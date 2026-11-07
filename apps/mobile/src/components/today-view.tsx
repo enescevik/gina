@@ -6,7 +6,7 @@ import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Text, View, useWindowDimensions } from "react-native";
 
-import { localDateOf, starBalance, tasksWithRecordedWork, type CompletionStatus } from "@gina/core";
+import { localDateOf, starBalance, tasksWithRecordedWork, templatesForPlanDay, type CompletionStatus } from "@gina/core";
 
 import { LARGE_FONT_REFLOW_ABOVE } from "@/components/room/layout";
 import { NineSlice, SkinIcon, SkinPressable, SkinProgress } from "@/components/room/nine-slice";
@@ -18,6 +18,8 @@ import { useFamilyTimezone } from "@/lib/family";
 import { useRealtimeInvalidate } from "@/lib/realtime";
 import { supabase } from "@/lib/supabase";
 import { useChildExamCount } from "@/lib/use-child-exam-count";
+import { useSession } from "@/lib/session";
+import { useWeekPlans } from "@/components/planner/week-plans";
 import { useChildGoal } from "@/lib/use-child-goal";
 
 export interface TodayViewProps {
@@ -35,6 +37,9 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
   const timeZone = useFamilyTimezone();
   const today = localDateOf(new Date(), timeZone);
   const queryClient = useQueryClient();
+  const { claims } = useSession();
+  const familyId = claims?.family_id ?? "";
+  const [plans] = useWeekPlans(familyId, [childId], today, today);
 
   const templates = useQuery({
     queryKey: ["task_templates", childId],
@@ -75,8 +80,8 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
   // Veli onayladığında ya da görev eklediğinde ekran anında yenilenir.
   useRealtimeInvalidate("task_completions", `child_id=eq.${childId}`, [["task_completions", childId, today]]);
   useRealtimeInvalidate("star_events", `child_id=eq.${childId}`, [["star_balance", childId]]);
-  useRealtimeInvalidate("task_templates", `child_id=eq.${childId}`, [["task_templates", childId]]);
-  useRealtimeInvalidate("task_routine_sync", `child_id=eq.${childId}`, [["task_routine_sync", childId]]);
+  useRealtimeInvalidate("task_templates", `child_id=eq.${childId}`, [["task_templates", childId], ["plan_for_days", familyId, childId]]);
+  useRealtimeInvalidate("task_routine_sync", `child_id=eq.${childId}`, [["task_routine_sync", childId], ["plan_for_days", familyId, childId]]);
 
   const complete = useMutation({
     mutationFn: async (templateId: string) => {
@@ -99,7 +104,9 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
   // Dar telefon/büyük yazı: görev kâğıdında çip metnin altına iner (minimumLogicalSize altına sıkıştırılmaz).
   const stacked = width < 600 || fontScale > LARGE_FONT_REFLOW_ABOVE;
 
-  const due = tasksWithRecordedWork(templates.data ?? [], completions.data ?? [], today);
+  const plan = plans?.data?.[0];
+  const planned = plan ? templatesForPlanDay(plan, templates.data ?? []) : [];
+  const due = tasksWithRecordedWork(planned, completions.data ?? [], today);
   const byTemplate = new Map((completions.data ?? []).map((c) => [c.template_id, c]));
   const statusOf = (id: string) => (byTemplate.get(id)?.status ?? null) as CompletionStatus | null;
   const doneCount = due.filter((task) => statusOf(task.id) === "done" || statusOf(task.id) === "approved").length;
@@ -146,7 +153,7 @@ export function TodayView({ childId, actingAsParent = false }: TodayViewProps) {
           {goalBody}
         </SkinPressable>
 
-      <ErrorText error={templates.error ?? completions.error ?? stars.error ?? goal.error ?? exams.error ?? complete.error} />
+      <ErrorText error={templates.error ?? completions.error ?? plans?.error ?? stars.error ?? goal.error ?? exams.error ?? complete.error} />
       {templates.error || completions.error || stars.error || goal.error || exams.error ? <Button title={t("common.retry")} onPress={() => { void templates.refetch(); void completions.refetch(); void stars.refetch(); void goal.refetch(); void exams.refetch(); }} /> : null}
 
       <NineSlice skin="panel-generic" contentStyle={{ gap: 10 }}>
