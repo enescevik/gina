@@ -46,3 +46,9 @@ Analiz başarılı olsa da 205 uyarı açıktır; güvenlik kabulü kapatılmad�
 ### Uzun girdi / düzenli ifade regresyonu
 
 CodeQL core işaretleri sonrasında boşluk işaretleri üç çağrı yerinde tek geçişli tarayıcıya taşındı; 1.500 üretilmiş bozuk/geçerli metin örneği eski ayrıştırıcıyla birebir karşılaştırılır. 200.000 kapanmamış açıcı, 100.000 haneli anlamsız ölçü, uzun hatalı saat/e-posta/rubrik için olumsuz testler eklendi. E-posta uzunluğu regex öncesi denetlenir, saat/rubrik girişi hesaplama öncesi sınırlanır, cümle sonu noktalaması sondan doğrusal taranır. Defter değerinde sayının ortasından yeniden başlanmaz; uzun sayıdan kırpılmış ölçü uydurulmaz. Root 7/7 kontrol, 768 core testi geçti. Kitapçık HTML uyarıları için mevcut script/URL kaçış olumsuz testleri var; uyarılar test geçmesiyle otomatik kapatılmadı, HTML veri akışı incelemesi açık.
+
+### İlk taramanın doğrulanmış düzeltmeleri ve IPA yolu
+
+Son tarama gözleminde ilk 205 uyarı 195'e düştü; #1–8, #13 ve #15 açık listede yok. 32 yüksek ve 163 orta uyarı inceleme bekliyor. Uygulama/Edge/core içinde kalan altı uyarıdan dördü test fixture'ı, ikisi HTML kitapçık veri akışı. Yerel test/yayın betikleri otomatik olarak güvenli varsayılmadı.
+
+Yayın betiğinde #32/#33 ile ilişkili iki shell zinciri kaldırıldı: IPA arşiv yolu ayrı sabit argümandır; `unzip` ve `plutil` doğrudan çağrılır. Hermes paketi sınırlı kuyruklu akışta literal byte aramasıyla denetlenir; nokta regex jokeri olamaz. Parçalı host ve benzer yanlış host negatif testi, ayrıca macOS'ta boşluk/noktalı virgüllü sentetik IPA denetimi geçti. Bu değişiklik hiçbir yayın işlemi başlatmadı. Sonraki CodeQL sonucu ayrıca izlenir.

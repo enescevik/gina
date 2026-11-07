@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import {
   APPLIED_MIGRATIONS_SQL, buildPlan, buildTabletInstallDir, compareLiveHashes, envPresence, extractDeploymentUrl,
-  hashDirectory, loadReleaseEnv, migrationApplySql, parseInfoPlistJson, parseMigrationFile, parseReleaseArgs,
+  hashDirectory, loadReleaseEnv, migrationApplySql, streamIncludesLiteral, parseInfoPlistJson, parseMigrationFile, parseReleaseArgs,
   parseRemoteBuildNumber, pendingMigrations, servedPath, sourceState, supabaseProjectRef, verifyTabletDeployment, versionMapping,
 } from './release-local.mjs';
 
@@ -202,4 +202,11 @@ test('CLI dry-run: komut çalıştırmaz, env değerini yazmaz, service_role’�
   assert.doesNotMatch(secret.stderr, new RegExp(serviceRole.slice(0, 20)));
   const bad = run(['publish-all']);
   assert.equal(bad.status, 2);
+});
+
+test('IPA endpoint scan treats dots as literal and matches across chunk boundaries', async () => {
+  const chunks = async function* (...parts) { for (const part of parts) yield Buffer.from(part); };
+  assert.equal(await streamIncludesLiteral(chunks('https://project.', 'supabase.co'), 'project.supabase.co'), true);
+  assert.equal(await streamIncludesLiteral(chunks('https://projectXsupabaseYco'), 'project.supabase.co'), false);
+  assert.equal(await streamIncludesLiteral(chunks('payload'), ''), false);
 });

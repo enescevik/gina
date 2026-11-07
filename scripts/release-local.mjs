@@ -15,7 +15,7 @@
 //   ek bayraklar: --ipa PATH  --install-dir PATH  --deployment-url URL  --target web|backoffice|tablet|ios|all
 //                 --expected-build N  --expected-sha256 HEX  --dist PATH
 import { createHash } from 'node:crypto';
-import { execFileSync, spawnSync } from 'node:child_process';
+import { execFileSync, spawn, spawnSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -327,11 +327,37 @@ export function parseInfoPlistJson(json) {
 
 /** IPA içinden Info.plist okur (macOS: unzip + plutil). Yalnız --execute yolunda çağrılır. */
 export function inspectIpa(ipaPath) {
-  if (!existsSync(ipaPath)) throw new Error(`ipa-missing: ${ipaPath}`);
-  const plist = execFileSync('sh', ['-c', `unzip -p "$1" 'Payload/*.app/Info.plist' | plutil -convert json -o - -`, 'sh', ipaPath], { encoding: 'utf8' });
+  const archive = resolve(ipaPath);
+  if (!existsSync(archive)) throw new Error('ipa-missing');
+  const xml = execFileSync('unzip', ['-p', archive, 'Payload/*.app/Info.plist'], { maxBuffer: 8 * 1024 * 1024, timeout: 30000, stdio: ['ignore', 'pipe', 'ignore'] });
+  const plist = execFileSync('plutil', ['-convert', 'json', '-o', '-', '-'], { input: xml, encoding: 'utf8', timeout: 30000, stdio: ['pipe', 'pipe', 'ignore'] });
   const info = parseInfoPlistJson(plist);
-  const codesign = spawnSync('codesign', ['-dv', '--verbose=2', `${ipaPath}`], { encoding: 'utf8' }); // IPA için bilgi amaçlı; .app çıkarılmadan tam doğrulama yapılmaz
-  return { ...info, sha256: sha256File(ipaPath), bytes: statSync(ipaPath).size, codesignExit: codesign.status };
+  const codesign = spawnSync('codesign', ['-dv', '--verbose=2', archive], { encoding: 'utf8', timeout: 30000 }); // IPA için bilgi amaçlı; .app çıkarılmadan tam doğrulama yapılmaz
+  return { ...info, sha256: sha256File(archive), bytes: statSync(archive).size, codesignExit: codesign.status };
+}
+
+/** Binary Hermes bundles are scanned as bytes; host dots and other metacharacters stay literal. */
+export async function streamIncludesLiteral(stream, needle) {
+  const pattern = Buffer.from(needle);
+  if (!pattern.length) return false;
+  let tail = Buffer.alloc(0), found = false;
+  for await (const raw of stream) {
+    if (found) continue;
+    const chunk = Buffer.concat([tail, Buffer.from(raw)]);
+    found = chunk.includes(pattern);
+    tail = pattern.length > 1 ? chunk.subarray(Math.max(0, chunk.length - pattern.length + 1)) : Buffer.alloc(0);
+  }
+  return found;
+}
+
+async function ipaContainsHost(ipaPath, host) {
+  const child = spawn('unzip', ['-p', resolve(ipaPath), 'Payload/*.app/main.jsbundle'], { stdio: ['ignore', 'pipe', 'ignore'], timeout: 120000 });
+  const status = new Promise(resolveStatus => {
+    child.once('error', () => resolveStatus(null));
+    child.once('close', resolveStatus);
+  });
+  const [found, code] = await Promise.all([streamIncludesLiteral(child.stdout, host), status]);
+  return found && code === 0;
 }
 
 // ---------------------------------------------------------------- plan
@@ -533,8 +559,7 @@ async function executePlan(command, steps, ctx) {
         if (record.remoteBuild && command === 'tablet:build' && record.ipa.build !== record.remoteBuild) throw new Error('ipa-build-differs-from-remote');
         if (isPublicHttps(env.EXPO_PUBLIC_SUPABASE_URL)) {
           const host = new URL(env.EXPO_PUBLIC_SUPABASE_URL).hostname;
-          const grep = spawnSync('sh', ['-c', `unzip -p "$1" 'Payload/*.app/main.jsbundle' | grep -c "$2"`, 'sh', ctx.ipa, host], { encoding: 'utf8' });
-          record.ipa.productionEndpointEmbedded = Number(grep.stdout.trim()) > 0;
+          record.ipa.productionEndpointEmbedded = await ipaContainsHost(ctx.ipa, host);
         } else record.ipa.productionEndpointEmbedded = null;
         if (['ios:build', 'tablet:build'].includes(command) && record.ipa.productionEndpointEmbedded !== true) throw new Error('production-supabase-url-not-embedded');
         break;
