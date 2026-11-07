@@ -164,7 +164,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### B3 — Otomatik sağlık/kesinti ve haftalık güvenlik fark uyarıları
 
-- Kaynak: brand son liste, §6.2. Durum: PLANLANDI. Efor: **M**.
+- Kaynak: brand son liste, §6.2. Durum: KISMEN KOD HAZIR (iki saatte bir herkese açık sağlık kontrolü; özel Edge/tekil alarm açık). Efor: **M**.
 - Kapsam: Otomatik sağlık/kesinti ve haftalık güvenlik fark uyarıları.
 - Bağımlılık: health-check, Access kontrolü, sırlar ve bildirim alıcısı.
 - Paket kapısı: İşletim.
@@ -241,3 +241,5 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 
 - F8b: kitapçığın “Favorilerim” kaynağı aile/veli RLS'iyle yalnız kendi favorilerini alır; sınıf/ders/konu filtresi, 500 kaynak/100 baskı sınırı. Öğrenci nüshasında anahtar ve çocuk adı yok; ortak kaynak ayrı bağlam olarak korunur. Sentetik tarayıcı yazdırma kontrolü geçti; fiziksel PDF/yazıcı kabulü açık.
 - Dağıtım uyumu: prod ledger salt okunur denetlendi; son sürüm `20261107180500`, F1–F8 SQL henüz uygulanmadı. Otomatik web/BO dağıtımı nedeniyle UI eski şemada yeni butonları sunmuyor. `future_learning_ready` yalnız imzalı istemciye açık; release sırasında bu migration en son, diğer migration/Edge kontrollerinden sonra etkinleşir. Eski sunucu simülasyonu geçti. Yeni native binary ve DB/Edge yayın sırası açık. Yeni taze DB: 155 dosya/7.123 kontrol; 12 web kabulü, 772 core, lint/typecheck yeşil.
+
+- B3a: `Public production health` iki saatte bir ve elle çalışır. Veli webi, BO Access, anon Auth/REST, tablet manifesti; yalnız açık istemci yapılandırması, yönetim tokenı/oturum/çocuk verisi yok. Mevcut fixture'larla 26/26 probe ve public env testi. Edge envanteri yetkisiz olduğundan açıkça atlanır; bu strict yayın doğrulaması değildir. GitHub başarısız iş durumu kullanılır; yeni alıcıya mesaj gönderilmez. Tekilleştirilmiş kesinti/iyileşme alarmı ve haftalık güvenlik farkı ayrı B3b kabulü.

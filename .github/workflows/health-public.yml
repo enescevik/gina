@@ -1,0 +1,35 @@
+# Read-only public probes. Do not add management tokens or user sessions here.
+name: Public production health
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '43 */2 * * *'
+permissions:
+  contents: read
+concurrency:
+  group: public-production-health
+  cancel-in-progress: false
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
+      EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}
+      CF_ACCESS_TEAM: ${{ vars.CF_ACCESS_TEAM || 'gina-family' }}
+      CF_PAGES_PROJECT: ${{ vars.CF_PAGES_BACKOFFICE_PROJECT || 'gina-backoffice' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Verify public probe configuration
+        run: node --input-type=module -e 'import { assertPublicBuildEnvironment } from "./scripts/public-build-env.mjs"; assertPublicBuildEnvironment(process.env,"EXPO_PUBLIC_");'
+      - name: Probe web, Access, public Auth/REST and tablet alias
+        run: node scripts/health-check.mjs --pretty > production-health.json
+      - name: Summarize without credentials or response bodies
+        if: always()
+        run: |
+          if [ -f production-health.json ]; then
+            node --input-type=module -e 'import { readFileSync } from "node:fs"; const r=JSON.parse(readFileSync("production-health.json","utf8")); console.log("## Public production health\n\n"+r.checks.map(c=>`- ${c.id}: ${c.status}`).join("\n")+"\n\nThe Edge inventory is deliberately skipped. This is not a strict release check.");' >> "$GITHUB_STEP_SUMMARY"
+          fi
