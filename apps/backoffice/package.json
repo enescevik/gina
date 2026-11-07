@@ -13,9 +13,9 @@
     "@gina/api": "workspace:*",
     "@gina/core": "workspace:*",
     "@supabase/supabase-js": "^2.118.0",
-    "next": "16.4.3",
-    "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "next": "16.4.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@gina/config": "workspace:*",
@@ -24,10 +24,10 @@
     "@types/react-dom": "~19.3.0",
     "autoprefixer": "^10.6.2",
     "eslint": "^9.39.5",
-    "eslint-config-next": "16.4.3",
+    "eslint-config-next": "16.4.5",
     "postcss": "^8.5.32",
     "tailwindcss": "3.4.19",
     "typescript": "~6.0.3",
-    "wrangler": "4.156.0"
+    "wrangler": "4.157.0"
   }
 }
