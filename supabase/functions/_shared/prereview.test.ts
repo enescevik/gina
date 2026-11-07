@@ -115,7 +115,7 @@ Deno.test("C09 media: an image-bearing record is never ai_approved and the verdi
   assert(failureVerdict("ai_disabled", null, { mediaCount: 2 }).media.image_dependent_correctness === "not_proven");
   assert(buildUserMessage({ kind: "library_package" }, 2).includes("2 görsel var ve sana GÖSTERİLMEDİ"));
   assert(!buildUserMessage({ kind: "library_package" }, 0).includes("GÖSTERİLMEDİ"));
-  assert(SYSTEM.includes("yalnız mesajda gerçekten eklenmiş görselleri incele") && PREREVIEW_PROMPT_VERSION === "prereview-v5");
+  assert(SYSTEM.includes("yalnız mesajda gerçekten eklenmiş görselleri incele") && PREREVIEW_PROMPT_VERSION === "prereview-v6");
 });
 
 import { prereviewConfig } from './prereview-config.ts';
