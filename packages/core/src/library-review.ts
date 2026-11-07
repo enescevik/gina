@@ -1,4 +1,17 @@
 import { z } from "zod";
+import { questionContentErrors } from "./question-types";
+
+/** Private import metadata; never project this object into a student payload. */
+export const libraryInteractionSchema = z.object({
+  type: z.enum(["true_false", "fill_blank", "matching", "numeric", "ordering", "classification", "mark_text", "error_fix", "multi_choice", "two_stage", "region_select", "clock"]),
+  schema_version: z.literal(1),
+  payload: z.record(z.string(), z.unknown()),
+  answer_key: z.record(z.string(), z.unknown()),
+}).strict().superRefine((value, ctx) => {
+  for (const message of questionContentErrors(value.type, value.payload, value.answer_key, value.schema_version)) {
+    ctx.addIssue({ code: "custom", message });
+  }
+});
 const key = z.string().regex(/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,99}$/);
 const text = (max: number) => z.string().max(max);
 const positive = z.number().int().min(1);
@@ -140,6 +153,15 @@ export const libraryBundleSchema = z
       if (!b.sources.some((s) => s.asset_key === a.key))
         fail("Kullanılmayan görsel var.");
     for (const q of b.questions) {
+      if (Object.hasOwn(q.metadata, "interaction")) {
+        const interaction = libraryInteractionSchema.safeParse(q.metadata.interaction);
+        if (!interaction.success || q.student.kind !== "open_ended")
+          fail("Etkileşimli soru sözleşmesi geçersiz.");
+        else if (interaction.data.type === "region_select" &&
+          (interaction.data.payload.figure as { kind?: string } | undefined)?.kind === "image" &&
+          !b.sources.some((s) => s.key === q.source_key && s.asset_key))
+          fail("Etkileşimli soru görseli eksik.");
+      }
       if (q.student.grade !== b.grade || q.student.subject !== b.subject)
         fail("Sınıf veya ders eşleşmiyor.");
       if (q.source_key && !b.sources.some((s) => s.key === q.source_key))
