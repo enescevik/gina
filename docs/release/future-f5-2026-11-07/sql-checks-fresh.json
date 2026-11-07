@@ -756,8 +756,13 @@
       "file": "152_child_pin_window.test.sql",
       "passed": 13,
       "failed": 0
+    },
+    {
+      "file": "162_library_structured_interactions.test.sql",
+      "passed": 61,
+      "failed": 0
     }
   ],
   "failures": [],
-  "assertions": 7032
+  "assertions": 7093
 }

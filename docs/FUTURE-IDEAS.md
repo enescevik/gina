@@ -2,6 +2,8 @@
 
 6 Kasım 2026 (aynı gün Enes'in geri bildirimiyle güncellendi: beğeni veli tarafına alındı, uzman gözüyle bölüm eklendi). Kaynak: Enes'in proje sohbetindeki isteği; ek fikirler için ayrıca beyin fırtınası yapıldı.
 
+**Güncel yürütme kaydı:** Bu başlangıç fikir belgesinden sonraki uygulama ve test durumu [FUTURE-ROADMAP.md](FUTURE-ROADMAP.md) içinde izlenir.
+
 **Bu belge uygulama değildir.** Hiçbir ekran, tablo, RPC veya Edge işi yapılmadı. Aşağıdaki maddeler ilk sürümden (TestFlight / mağaza gönderimi) sonra ele alınacak fikirlerdir. Enes her madde için kararı Claude'a bıraktı; "Öneri" satırları bu yüzden önerilen varsayılan karardır ve uygulamaya başlarken geçerli sayılır. Tüm maddeler [DECISIONS.md](DECISIONS.md)'deki ilkelere tabidir; özellikle **çocuk AI ile doğrudan etkileşmez**, üçüncü taraf analitik yok, push içeriğinde kişisel veri yok.
 
 ---
