@@ -59,7 +59,8 @@ export function NotebookWorkspace({
   document?: NotebookDocument;
   text: string;
   onChange: (d: NotebookDocument) => void;
-  onTextChange: (text: string) => void;
+  /** Verilmezse (ör. sayısal sorunun işlem alanı) klavyeyle cevap alanı gösterilmez. */
+  onTextChange?: (text: string) => void;
   status: string;
   saved?: boolean;
   disabled: boolean;
@@ -136,7 +137,7 @@ export function NotebookWorkspace({
             <Text style={s.takeText}>{t(questionFocused ? "notebook.backToNotebook" : "notebook.fullQuestion")}</Text>
           </Pressable>
         )}
-        <Pressable
+        {onTextChange ? <Pressable
           accessibilityRole="button"
           accessibilityLabel={t("notebook.keyboardAnswer")}
           accessibilityState={{ expanded: answerOpen }}
@@ -144,14 +145,14 @@ export function NotebookWorkspace({
           style={s.smallButton}
         >
           <Type size={21} color={p.purple} />
-        </Pressable>
+        </Pressable> : null}
       </View>
       <ScrollView
         style={s.fill}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={[s.questionContent, wide && { flexGrow: 1 }]}
       >
-        {answerOpen && (
+        {answerOpen && onTextChange && (
           <>
             <Text style={s.soft}>{t("notebook.answerTextHint")}</Text>
             <TextInput

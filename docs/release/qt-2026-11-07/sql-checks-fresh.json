@@ -574,8 +574,8 @@
     },
     {
       "file": "116_channel_ui_support.test.sql",
-      "passed": 81,
-      "failed": 0
+      "passed": 80,
+      "failed": 1
     },
     {
       "file": "117_calendar_ops_and_synonym_admin.test.sql",
@@ -649,12 +649,22 @@
     },
     {
       "file": "140_qt_scoring_golden.test.sql",
-      "passed": 360,
+      "passed": 581,
       "failed": 0
     },
     {
       "file": "141_qt_contract_flow.test.sql",
-      "passed": 87,
+      "passed": 88,
+      "failed": 0
+    },
+    {
+      "file": "142_qt_phase2a_flow.test.sql",
+      "passed": 21,
+      "failed": 0
+    },
+    {
+      "file": "143_qt_phase2b_flow.test.sql",
+      "passed": 16,
       "failed": 0
     }
   ],
@@ -668,7 +678,10 @@
     "066_weekly_summary_safety.test.sql: not ok 35 - uncertain request not automatically recharged",
     "066_weekly_summary_safety.test.sql: # Failed test 35: \"uncertain request not automatically recharged\"",
     "066_weekly_summary_safety.test.sql: # Looks like you failed 4 tests of 46",
-    "069_learning_plan_import.test.sql: ERROR:  plan_import_unavailable\nCONTEXT:  PL/pgSQL function public.apply_learning_plan_import(uuid,uuid,uuid,jsonb) line 16 at RAISE\nSQL function \"apply\" statement 1\n"
+    "069_learning_plan_import.test.sql: ERROR:  plan_import_unavailable\nCONTEXT:  PL/pgSQL function public.apply_learning_plan_import(uuid,uuid,uuid,jsonb) line 16 at RAISE\nSQL function \"apply\" statement 1\n",
+    "116_channel_ui_support.test.sql: not ok 1 - anon may still only run the share view and the signed unsubscribe",
+    "116_channel_ui_support.test.sql: # Failed test 1: \"anon may still only run the share view and the signed unsubscribe\"",
+    "116_channel_ui_support.test.sql: # Looks like you failed 1 test of 81"
   ],
-  "assertions": 6318
+  "assertions": 6576
 }

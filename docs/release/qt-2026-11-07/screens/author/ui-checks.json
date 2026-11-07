@@ -1,0 +1,180 @@
+{
+  "environment": "disposable-local-gotrue-postgrest (own clone of gina_completion_audit)",
+  "database_pattern": "gina_qtau_<hex>_audit",
+  "viewports": {
+    "phone": {
+      "width": 390,
+      "height": 844
+    },
+    "narrow": {
+      "width": 360,
+      "height": 740
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024
+    },
+    "desktop": {
+      "width": 1280,
+      "height": 800
+    }
+  },
+  "passed": true,
+  "results": [
+    {
+      "check": "author_true_false_ids_stable_after_reorder",
+      "passed": true,
+      "ids": [
+        "s2",
+        "s1",
+        "s3"
+      ]
+    },
+    {
+      "check": "author_fill_blank_bank",
+      "passed": true,
+      "bank": [
+        "katı",
+        "buhar",
+        "sıvı"
+      ]
+    },
+    {
+      "check": "author_fill_blank_keyboard_guidance_not_blocking",
+      "passed": true
+    },
+    {
+      "check": "author_matching_with_distractor",
+      "passed": true
+    },
+    {
+      "check": "author_numeric_units_conversion_tolerance_points",
+      "passed": true,
+      "key": {
+        "unit": "u1",
+        "value": "150",
+        "unit_weight": 0.25,
+        "unit_factors": {
+          "u1": 1,
+          "u2": 100
+        },
+        "abs_tolerance": 0.5,
+        "process_required": true
+      }
+    },
+    {
+      "check": "author_ordering_two_accepted_orders",
+      "passed": true
+    },
+    {
+      "check": "author_classification_capacity",
+      "passed": true
+    },
+    {
+      "check": "broken_question_inline_errors_and_server_detail_codes_match",
+      "passed": true,
+      "server": "key_missing_id",
+      "inline": [
+        "key_missing_id"
+      ]
+    },
+    {
+      "check": "meb_common_blocks_practice_types_ui_and_server",
+      "passed": true,
+      "server": "interaction_type_not_allowed_for_track"
+    },
+    {
+      "check": "assign_mixed_structured_prova_with_device_warning",
+      "passed": true,
+      "exam_status": "assigned",
+      "bound_items": 7
+    },
+    {
+      "check": "booklet_student_and_private_key_separate_pdf_turkish_fonts",
+      "passed": true,
+      "booklet-student": {
+        "pages": 3,
+        "nunito": true
+      },
+      "booklet-answer-key": {
+        "pages": 1,
+        "nunito": true
+      }
+    },
+    {
+      "check": "ai_type_choice_written_limit_errors_and_structured_rows_assigned",
+      "passed": true,
+      "requests": [
+        null,
+        [
+          "true_false",
+          "numeric"
+        ],
+        [
+          "true_false",
+          "matching",
+          "numeric"
+        ]
+      ]
+    },
+    {
+      "check": "screens_at_390_360_768_1280",
+      "passed": true,
+      "count": 41
+    },
+    {
+      "check": "no_runtime_errors_overflow_raw_ids_or_keys",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    "type-picker-phone-390x844.png",
+    "tf-editor-phone-390x844.png",
+    "tf-preview-phone-390x844.png",
+    "tf-preview-key-phone-390x844.png",
+    "fill-bank-editor-phone-390x844.png",
+    "fill-bank-preview-phone-390x844.png",
+    "fill-bank-preview-key-phone-390x844.png",
+    "matching-editor-phone-390x844.png",
+    "matching-preview-phone-390x844.png",
+    "matching-preview-key-phone-390x844.png",
+    "numeric-editor-phone-390x844.png",
+    "numeric-preview-phone-390x844.png",
+    "numeric-preview-key-phone-390x844.png",
+    "ordering-editor-phone-390x844.png",
+    "ordering-preview-phone-390x844.png",
+    "ordering-preview-key-phone-390x844.png",
+    "classification-editor-phone-390x844.png",
+    "classification-preview-phone-390x844.png",
+    "classification-preview-key-phone-390x844.png",
+    "validation-errors-phone-390x844.png",
+    "validation-key-missing-phone-390x844.png",
+    "builder-meb-common-blocked-phone-390x844.png",
+    "builder-device-warning-phone-390x844.png",
+    "builder-preview-key-phone-390x844.png",
+    "booklet-paper-note-phone-390x844.png",
+    "ai-types-written-phone-390x844.png",
+    "ai-model-unsupported-phone-390x844.png",
+    "ai-types-practice-phone-390x844.png",
+    "ai-structured-results-phone-390x844.png",
+    "type-picker-narrow-360x740.png",
+    "matching-editor-errors-narrow-360x740.png",
+    "builder-assigned-narrow-360x740.png",
+    "booklet-paper-note-narrow-360x740.png",
+    "type-picker-tablet-768x1024.png",
+    "matching-editor-errors-tablet-768x1024.png",
+    "builder-assigned-tablet-768x1024.png",
+    "booklet-paper-note-tablet-768x1024.png",
+    "type-picker-desktop-1280x800.png",
+    "matching-editor-errors-desktop-1280x800.png",
+    "builder-assigned-desktop-1280x800.png",
+    "booklet-paper-note-desktop-1280x800.png"
+  ],
+  "cleanup": {
+    "db_rest": "removed",
+    "db_auth": "removed",
+    "database": "dropped",
+    "containers_left": "none",
+    "database_left": "0"
+  }
+}

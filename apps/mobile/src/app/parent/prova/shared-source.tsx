@@ -79,9 +79,15 @@ export default function SharedQuestionScreen() {
         supabase.rpc("get_question_media", { p_question_ids: [ids[0]!] }),
       ]);
       if (questions.error || media.error) throw questions.error ?? media.error;
-      const rows = members.map((m) =>
+      const all = members.map((m) =>
         questions.data.find((q) => q.id === m.question_id)!
       );
+      // QT: ortak kaynak grupları bu fazda yalnız eski iki türü taşır. Yapılandırılmış üye varsa
+      // grup bu editörde açılmaz (sessizce açık uçluya çevrilmez).
+      const legacy = (q: (typeof all)[number]): q is typeof q & { kind: "multiple_choice" | "open_ended" } =>
+        q.kind === "multiple_choice" || q.kind === "open_ended";
+      if (!all.every(legacy)) throw new Error(t("prova.qt.author.sharedSourceStructured"));
+      const rows = all;
       // D14: üyelerin kişi adı uyarıları tek ipucunda birleşir (sunucu her üyeyi ayrı denetler).
       const flags = rows.flatMap((q) => questionContentReviewOf(q)?.flags ?? []);
       const review: QuestionContentReview | null = aiGroupId && flags.length
@@ -97,8 +103,6 @@ export default function SharedQuestionScreen() {
         questions: members.map((m, i) => {
           const q = rows[i]!;
           const rubric = readQuestionRubric(q.provenance);
-          // Ortak kaynak grupları bu fazda yalnız eski türleri taşır; yapılandırılmış üye sessizce dönüştürülmez.
-          if (q.kind === "structured") throw new Error("question_group_structured_unsupported");
           return {
             topic: q.topic,
             kind: q.kind,

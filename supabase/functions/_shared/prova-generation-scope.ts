@@ -31,5 +31,7 @@ export async function generationDraftScope(
   if (!child || (child.grade >= 1 && child.grade !== grade)) {
     return fail("prova_draft_changed", 409);
   }
-  return { id: d.id, version: d.version, purpose: c.purpose };
+  // QT-AI: C04 taslağı sınav izini (track) taşıyorsa eklenir; meb_common'da alıştırma türleri üretilmez.
+  const track = typeof c.context?.track === "string" ? c.context.track as string : null;
+  return { id: d.id, version: d.version, purpose: c.purpose, ...(track ? { track } : {}) };
 }

@@ -108,6 +108,8 @@ export function questionsOf(block: ProvaBlock, material: BuilderMaterial) {
   });
 }
 export function hasAnswer(q: BuilderQuestion) {
+  // QT: yapılandırılmış sorunun anahtarı ayrı tabloda; sunucu anahtarsız satırı kabul etmez.
+  if (q.kind === "structured") return true;
   if (q.kind === "open_ended") return !!q.expected_answer?.trim();
   return Array.isArray(q.choices) &&
     q.choices.some((c) =>

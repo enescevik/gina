@@ -1,8 +1,17 @@
-import type { Database, Json, Tables } from "@gina/core";
+import {
+  LEGACY_INTERACTION_TYPES,
+  PHASE2A_INTERACTION_TYPES,
+  PHASE2B_INTERACTION_TYPES,
+  STRUCTURED_INTERACTION_TYPES,
+  type Database,
+  type Json,
+  type Tables,
+} from "@gina/core";
 import { useMemo, useState } from "react";
 
 import { Card, Layout, Notice } from "@/components/Layout";
 import { useConfirm } from "@/components/confirm-dialog";
+import { StructuredQuestionPreview, structuredSummary, typeLabel } from "@/components/structured-question-preview";
 import { fmtDateTime, fmtNumber } from "@/lib/format";
 import { t } from "@/lib/i18n";
 import { errorMessage, supabase } from "@/lib/supabase";
@@ -26,6 +35,8 @@ function readChoices(value: Json | null): Choice[] | null {
   return out;
 }
 const DIFFICULTIES: Difficulty[] = ["kolay", "orta", "orta_ustu", "zor"];
+/** QT: tür filtresi — eski türler `kind`, yapılandırılmış türler `interaction_type` sütunuyla süzülür. */
+const TYPE_FILTERS: string[] = [...LEGACY_INTERACTION_TYPES, ...STRUCTURED_INTERACTION_TYPES, ...PHASE2A_INTERACTION_TYPES, ...PHASE2B_INTERACTION_TYPES];
 
 function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?: unknown) => void }) {
   const [draft, setDraft] = useState({
@@ -45,6 +56,8 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
   const confirm = useConfirm();
   const [rows, setRows] = useState<Choice[] | null>(() => readChoices(q.choices));
   const set = (patch: Partial<typeof draft>) => setDraft({ ...draft, ...patch });
+  // QT: yapılandırılmış soruda metin/içerik/anahtar içerik özetine (content_hash) bağlıdır; burada yalnız üst bilgi düzenlenir.
+  const structured = q.kind === "structured";
 
   async function save() {
     let choices: Json | null = null;
@@ -63,6 +76,21 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
       }
     }
     setBusy(true);
+    const meta = {
+      grade: draft.grade,
+      subject: draft.subject.trim(),
+      topic: draft.topic.trim(),
+      difficulty: draft.difficulty,
+      solution: draft.solution || null,
+      explanation: draft.explanation || null,
+      source_urls: draft.source_urls.split("\n").map((s) => s.trim()).filter(Boolean),
+    };
+    if (structured) {
+      const { error } = await supabase().from("question_bank").update(meta).eq("id", q.id).is("family_id", null);
+      setBusy(false);
+      onDone(error ? null : t.common.saved, error ?? undefined);
+      return;
+    }
     const { error } = await supabase()
       .from("question_bank")
       .update({
@@ -133,10 +161,21 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
         </div>
         <div>
           <label className="label">{t.questions.kind}</label>
-          <p className="py-1.5 text-sm">{t.questions.kinds[q.kind]}</p>
+          <p className="py-1.5 text-sm">{typeLabel(q.kind, q.interaction_type)}</p>
         </div>
-        {area("stem", t.questions.stem, 4)}
-        {q.kind === "multiple_choice" ? (
+        {structured ? (
+          <>
+            <p className="rounded-2xl bg-slate-50 p-3 text-sm text-slate-600 md:col-span-2">{t.questions.structured.readOnly}</p>
+            <div className="md:col-span-2">
+              <p className="label">{t.questions.stem}</p>
+              <p className="whitespace-pre-wrap rounded border border-slate-200 p-2 text-sm">{q.stem}</p>
+            </div>
+            <StructuredQuestionPreview questionId={q.id} interactionType={q.interaction_type} schemaVersion={q.schema_version} payload={q.payload} />
+          </>
+        ) : (
+          area("stem", t.questions.stem, 4)
+        )}
+        {structured ? null : q.kind === "multiple_choice" ? (
           <>
             {rows ? (
               <fieldset className="md:col-span-2">
@@ -197,6 +236,7 @@ export default function QuestionsPage() {
   const [grade, setGrade] = useState<number | null>(null);
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
+  const [type, setType] = useState("");
   const [limit, setLimit] = useState(PAGE);
   const [selected, setSelected] = useState<Question | null>(null);
   const [msg, setMsg] = useState<{ text: string; tone: "ok" | "error" } | null>(null);
@@ -215,9 +255,10 @@ export default function QuestionsPage() {
     if (grade != null) q = q.eq("grade", grade);
     if (subject) q = q.eq("subject", subject);
     if (topic) q = q.eq("topic", topic);
+    if (type) q = (LEGACY_INTERACTION_TYPES as readonly string[]).includes(type) ? q.eq("kind", type as Question["kind"]) : q.eq("interaction_type", type);
     const res = await q;
     return { rows: unwrap(res), count: res.count ?? 0 };
-  }, [grade, subject, topic, limit]);
+  }, [grade, subject, topic, type, limit]);
 
   const options = useMemo(() => {
     const f = facets.data ?? [];
@@ -246,7 +287,7 @@ export default function QuestionsPage() {
       {msg ? <Notice tone={msg.tone}>{msg.text}</Notice> : null}
       {list.error ? <Notice tone="error">{errorMessage(list.error, t.errors)}</Notice> : null}
 
-      <div className="mb-4 grid gap-2 md:grid-cols-3">
+      <div className="mb-4 grid gap-2 md:grid-cols-4">
         <select aria-label={t.questions.grade} className="input" value={grade ?? ""} onChange={(e) => { setGrade(e.target.value ? Number(e.target.value) : null); setSubject(""); setTopic(""); setLimit(PAGE); }}>
           <option value="">{`${t.questions.grade}: ${t.questions.all}`}</option>
           {options.grades.map((g) => (
@@ -263,6 +304,12 @@ export default function QuestionsPage() {
           <option value="">{`${t.questions.topic}: ${t.questions.all}`}</option>
           {options.topics.map((s) => (
             <option key={s} value={s}>{s}</option>
+          ))}
+        </select>
+        <select aria-label={t.questions.kind} className="input" value={type} onChange={(e) => { setType(e.target.value); setLimit(PAGE); }}>
+          <option value="">{`${t.questions.kind}: ${t.questions.all}`}</option>
+          {TYPE_FILTERS.map((k) => (
+            <option key={k} value={k}>{t.questions.types[k]}</option>
           ))}
         </select>
       </div>
@@ -299,7 +346,12 @@ export default function QuestionsPage() {
                       <td>{q.subject}</td>
                       <td>{q.topic}</td>
                       <td className="max-w-md">{q.stem.length > 140 ? `${q.stem.slice(0, 140)}…` : q.stem}</td>
-                      <td>{t.questions.kinds[q.kind]}</td>
+                      <td>
+                        {typeLabel(q.kind, q.interaction_type)}
+                        {q.kind === "structured" ? (
+                          <span className="block text-xs text-slate-500">{structuredSummary(q.interaction_type, q.payload)}</span>
+                        ) : null}
+                      </td>
                       <td>{t.questions.difficulties[q.difficulty]}</td>
                       <td className="text-right">{fmtNumber(q.times_asked)}</td>
                       <td className="text-xs text-slate-500">

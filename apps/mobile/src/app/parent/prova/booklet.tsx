@@ -10,13 +10,14 @@ import { Toggle } from "@/components/ui/toggle";
 import { Field } from "@/components/ui/field";
 import { ErrorText } from "@/components/ui/screen";
 import { ParentScreen as Screen, parentStyles } from "@/components/ui/parent-screen";
-import { attachBookletImages, buildBookletHtml, printBooklet, type BookletChoice, type BookletQuestion } from "@/lib/prova-booklet";
+import { attachBookletImages, buildBookletHtml, printBooklet, type BookletChoice, type BookletLabels, type BookletQuestion } from "@/lib/prova-booklet";
+import type { TFunction } from "i18next";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
 type Source = "library" | "exam";
 
-const QUESTION_COLUMNS = "id, topic, kind, difficulty, stem, choices, correct_key, expected_answer, solution";
+const QUESTION_COLUMNS = "id, topic, kind, difficulty, stem, choices, correct_key, expected_answer, solution, interaction_type, payload";
 const DIFFICULTY_ORDER = ["kolay", "orta", "orta_ustu", "zor"];
 /** Tek kitapçıkta en fazla soru (PDF boyutu ve yazdırma süresi için). */
 const MAX_QUESTIONS = 100;
@@ -24,7 +25,9 @@ const MAX_QUESTIONS = 100;
 interface QuestionRow {
   id: string;
   topic: string;
-  kind: "multiple_choice" | "open_ended";
+  kind: "multiple_choice" | "open_ended" | "structured";
+  interaction_type?: string | null;
+  payload?: unknown;
   difficulty: string;
   stem: string;
   choices: unknown;
@@ -33,25 +36,49 @@ interface QuestionRow {
   solution: string | null;
 }
 
-/**
- * P02: öğrenci nüshası ve cevap anahtarı ayrı belgeler. Ortak düzen (`buildBookletHtml`) tek
- * belge üretir; bütün içerik kaçışlandığı için bölüm etiketleri yalnız düzenin kendisinden gelir.
- */
-function splitBooklet(html: string): { student: string; key: string } {
-  const keyStart = html.indexOf('<section class="key">');
-  const bodyEnd = html.lastIndexOf("</body>");
-  const mainStart = html.indexOf("<main>");
-  const mainEnd = html.indexOf("</main>");
-  const coverStart = html.indexOf('<section class="cover">');
-  if (keyStart < 0 || bodyEnd < 0 || mainStart < 0 || mainEnd < 0 || coverStart < 0) {
-    throw new Error("invalid_booklet_layout");
-  }
-  const coverEnd = html.indexOf("</section>", coverStart) + "</section>".length;
-  const student = html.slice(0, keyStart) + html.slice(bodyEnd);
-  const key = (html.slice(0, coverStart) + html.slice(coverEnd, mainStart) +
-    html.slice(mainEnd + "</main>".length))
-    .replace("</style>", ".key{page-break-before:auto;break-before:auto}</style>");
-  return { student, key };
+function bookletStructuredLabels(t: TFunction): BookletLabels["structured"] {
+  const k = (key: string, vars?: Record<string, unknown>) => t(`prova.qt.author.booklet.${key}`, vars);
+  return {
+    type: (type) => t(`prova.qt.author.type.${type}`),
+    trueShort: k("trueShort"),
+    falseShort: k("falseShort"),
+    tfHelp: k("tfHelp"),
+    fillHelpBank: k("fillHelpBank"),
+    fillHelpBankReuse: k("fillHelpBankReuse"),
+    fillHelpKeyboard: k("fillHelpKeyboard"),
+    wordBank: k("wordBank"),
+    matchingHelp: k("matchingHelp"),
+    matchingHelpMany: k("matchingHelpMany"),
+    numericAnswer: k("numericAnswer"),
+    numericUnit: k("numericUnit"),
+    numericWork: k("numericWork"),
+    orderingHelp: k("orderingHelp"),
+    orderingHelpSentence: k("orderingHelpSentence"),
+    classificationHelp: k("classificationHelp"),
+    capacity: (n) => k("capacity", { count: n }),
+    acceptedOrder: (n) => k("acceptedOrder", { n }),
+    conversion: (unit, factor, base) => k("conversion", { unit, factor, base }),
+    tolerance: (abs) => k("tolerance", { abs }),
+    relTolerance: (pct) => k("relTolerance", { pct }),
+    unitWeight: (pct) => k("unitWeight", { pct }),
+    processRequired: k("processRequired"),
+    caseInsensitive: k("caseInsensitive"),
+    keyUnavailable: k("keyUnavailable"),
+    markHelp: (unit, max) => k(max ? "markHelpMax" : "markHelp", { unit: k(`unit_${unit}`), count: max }),
+    errorFixHelp: (unit) => k("errorFixHelp", { unit: k(`unit_${unit}`) }),
+    multiHelp: (count) => (count ? k("multiHelpCount", { count }) : k("multiHelpAll")),
+    stage: (n) => k("stage", { n }),
+    regionHelp: k("regionHelp"),
+    regionCountHelp: (n) => k("regionCount", { count: n }),
+    clockRead: k("clockRead"),
+    clockSet: k("clockSet"),
+    clockTime: k("clockTime"),
+    stimulusAlt: k("stimulusAlt"),
+    regionCount: (n) => k("regionCount", { count: n }),
+    accept12h: k("accept12h"),
+    parentScores: k("parentScores"),
+    fixPolicyReview: k("fixPolicyReview"),
+  };
 }
 
 function toBooklet(q: QuestionRow): BookletQuestion {
@@ -63,7 +90,7 @@ function toBooklet(q: QuestionRow): BookletQuestion {
   return { ...q, choices };
 }
 
-/** Kitapçık: kütüphaneden (ders/sınıf/konular) ya da mevcut bir denemeden yazdırılabilir A4 PDF; cevap anahtarı son sayfada. */
+/** Kitapçık: kütüphaneden (ders/sınıf/konular) ya da mevcut bir denemeden yazdırılabilir A4 PDF. Öğrenci nüshası ve cevap anahtarı ayrı belgelerdir. */
 export default function ProvaBookletScreen() {
   const { t } = useTranslation();
   const { claims } = useSession();
@@ -158,12 +185,25 @@ export default function ProvaBookletScreen() {
     mutationFn: async (copy: "student" | "key") => {
       if (questions.length === 0) throw new Error(t("prova.booklet.noQuestions"));
       const baseTitle = title.trim() || defaultTitle || t("prova.booklet.title");
+      // Özel anahtar yalnız cevap anahtarı nüshasında ve yalnız veli RPC'siyle alınır; öğrenci nüshasına hiç girmez.
+      let keys = new Map<string, unknown>();
+      const structuredIds = questions.filter((q) => q.kind === "structured").map((q) => q.id);
+      if (copy === "key" && structuredIds.length) {
+        const { data, error } = await supabase.rpc("get_question_answer_keys", { p_question_ids: structuredIds });
+        if (error) throw error;
+        keys = new Map(((data ?? []) as unknown as { question_id: string; key: unknown }[]).map((k) => [k.question_id, k.key]));
+      }
+      const rows = questions.map((q) => {
+        const b = toBooklet(q);
+        return copy === "key" && q.kind === "structured" ? { ...b, answer_key: keys.get(q.id) } : b;
+      });
       const html = buildBookletHtml({
+        copy,
         title: copy === "key"
           ? `${baseTitle} · ${t("prova.booklet.answerKey")}`
           : baseTitle,
         subtitle: source === "exam" && selectedExam ? `${selectedExam.subject} · ${selectedExam.grade}. ${t("prova.gradeWord")}` : undefined,
-        questions: await attachBookletImages(questions.map(toBooklet)),
+        questions: await attachBookletImages(rows),
         includeSolutions,
         labels: {
           answerKey: t("prova.booklet.answerKey"),
@@ -174,11 +214,11 @@ export default function ProvaBookletScreen() {
           solution: t("prova.booklet.solution"),
           expected: t("prova.booklet.expected"),
           difficulty: (d) => t(`prova.difficulty.${d}`),
+          structured: bookletStructuredLabels(t),
         },
       });
-      const parts = splitBooklet(html);
       await printBooklet(
-        copy === "key" ? parts.key : parts.student,
+        html,
         t(copy === "key" ? "provaP02.booklet.keyShare" : "provaP02.booklet.studentShare"),
       );
     },
@@ -290,6 +330,14 @@ export default function ProvaBookletScreen() {
       <Text className="font-body text-sm text-gray-600">{t("prova.selectedCount", { count: questions.length })}</Text>
       <ErrorText error={generate.error ?? subjects.error ?? libraryQuestions.error ?? exams.error ?? examQuestions.error} />
       <Text className="font-body text-sm text-gray-600">{t("provaP02.booklet.twoCopies")}</Text>
+      {questions.some((q) => q.kind === "structured")
+        ? (
+          <View testID="qt-booklet-paper-note" style={{ backgroundColor: "#EDF7F1", borderColor: "#D4E9DD", borderWidth: 1, borderRadius: 16, padding: 12, gap: 4 }}>
+            <Text style={parentStyles.copy}>{t("prova.qt.author.booklet.paperNote")}</Text>
+            <Text style={parentStyles.muted}>{t("prova.qt.author.booklet.keyPrivate")}</Text>
+          </View>
+        )
+        : null}
       <Button title={t("provaP02.booklet.student")} loading={generate.isPending && generate.variables === "student"} disabled={questions.length === 0 || generate.isPending} onPress={() => generate.mutate("student")} />
       <Button variant="secondary" title={t("provaP02.booklet.key")} loading={generate.isPending && generate.variables === "key"} disabled={questions.length === 0 || generate.isPending} onPress={() => generate.mutate("key")} />
       <Button variant="ghost" title={t("prova.backToList")} onPress={() => router.back()} />
