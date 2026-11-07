@@ -5,6 +5,6 @@ import {useSession} from './session';
 export function useFutureLearningReady(scope: "all" | "daily_practice" = "all"){
  const {claims,session}=useSession();
  const result=useQuery({queryKey:['future_learning_ready',scope,session?.user.id,claims?.family_id],enabled:!!session&&!!claims?.family_id,
-  staleTime:60000,retry:false,queryFn:async()=>{const {data,error}=await supabase.rpc(scope==='daily_practice'?'daily_practice_ready':'future_learning_ready');return !error&&data===true;}});
+  staleTime:60000,retry:false,queryFn:async()=>{const {data,error,status}=await supabase.rpc(scope==='daily_practice'?'daily_practice_ready':'future_learning_ready');if(error&&status===0)throw error;return !error&&data===true;}});
  return result.data===true;
 }
