@@ -298,10 +298,10 @@ Deno.test("resolveAi refuses a name-only model with reasons and affected feature
 });
 
 Deno.test("OpenAI adapter retains billing counters and forwards explicit review effort", async () => {
-  const response = new Response(JSON.stringify({ choices: [{ finish_reason: "stop", message: { content: '{"summary":"ok"}' } }], usage: { prompt_tokens: 120, completion_tokens: 60, prompt_tokens_details: { cached_tokens: 80 }, completion_tokens_details: { reasoning_tokens: 20 } }, service_tier: "default" }), { headers: { "content-type": "application/json", "x-request-id": "req-billing-test" } });
+  const response = new Response(JSON.stringify({ choices: [{ finish_reason: "stop", message: { content: '{"summary":"ok"}' } }], usage: { prompt_tokens: 120, completion_tokens: 60, prompt_tokens_details: { cached_tokens: 80, cache_write_tokens: 20 }, completion_tokens_details: { reasoning_tokens: 20 } }, service_tier: "default" }), { headers: { "content-type": "application/json", "x-request-id": "req-billing-test" } });
   await withFetch([response], async (requests) => {
     const result = await openAiAdapter.generate("synthetic-key", { ...base, reasoningEffort: "medium" }, "s", "u", schema);
-    assert(result.inputTokens === 120 && result.providerUsage?.input_tokens === 40 && result.providerUsage.cache_read_input_tokens === 80 && result.providerUsage.output_tokens === 60 && result.providerUsage.request_id === "req-billing-test", "billing counters lost or duplicated");
+    assert(result.inputTokens === 120 && result.providerUsage?.input_tokens === 20 && result.providerUsage.cache_read_input_tokens === 80 && result.providerUsage.output_tokens === 60 && result.providerUsage.request_id === "req-billing-test", "billing counters lost or duplicated");
     assert(JSON.parse(String(requests[0].init?.body)).reasoning_effort === "medium", "calibration effort lost");
   });
 });
