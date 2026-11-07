@@ -62,3 +62,14 @@ Yöntem: `git cherry origin/main <branch>` ile '+' sayısı; '+' olanlar için t
 ## 5. Açık PR
 
 GitHub'da açık PR yok.
+
+## 6. Sonuç (7 Kasım ~05:10)
+
+- **Plan limiti WIP'i main'e alındı:** `f8d6a771 feat: plan limiti hatasında 'Planları incele' yönlendirmesi (5 Kasım WIP'inden)`. Güncel main üzerine taşındı, 5 dosyada çakışma vardı:
+  - `parent/menu.tsx`: main'deki yeni eşleştirme akışı korundu (artık `/parent/pair-device`). Buton eşleştirme ekranındaki `ErrorText`e eklendi.
+  - `child-setup.tsx`: önce özel plan limiti mesajı gösteriliyor, eşleşme yoksa main'deki `betaUx.planLimit` ve eğitim geçişi mesajları kullanılıyor. Buna "Paketleri incele" butonu eklendi.
+  - i18n en/tr: 5 yeni `subscription.*` anahtarı. `core/index.ts`: `plan-limit` dışa aktarıldı.
+  - Kontroller: `turbo lint typecheck test` 7/7, core vitest 70 dosya / 749 test, mobil tsc ve expo lint temiz. Native-text, notebook-layout ve answer-recovery kontrolleri 17/17 geçti.
+  - `wip/plan-limit-cta-2026-11-05` yerel branch'i ve gina-avatars worktree'si olduğu gibi duruyor (silinmedi).
+- **live-acceptance ekran görüntüleri:** commitlenmedi. main'de referansları yok ve key/SMTP içerebilirler. Dokunulmadı.
+- `codex/library-batch-review` ve `codex/content-review-calibration`: Codex aktif olduğu için dokunulmadı.
