@@ -1,6 +1,7 @@
 // Q03 — repo ve rapor sızıntı taraması. Eşleşen DEĞERİ asla yazmaz; yalnız desen adı, dosya ve satır.
 // Kullanım: node scripts/security/leak-scan.mjs [--json çıktı.json]
-import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { readdirSync, readFileSync, lstatSync, writeFileSync } from 'node:fs';
 import { join, relative, extname } from 'node:path';
 
 const root = process.cwd();
@@ -33,8 +34,6 @@ const PATTERNS = [
 // Q03 düzeltme turunda eklenenler: e-posta deseni için bilinçli belgeleme (Q03-LEAK-1) ve URL userinfo test vektörleri;
 // `assigned_secret_literal` için sır ADI (ortam değişkeni adı) yazan belge satırları. Değer hiçbirinde yok.
 const ALLOWLIST = new Map([
-  ['scripts/check-testflight.test.mjs|supabase_secret_key', 'test yer tutucusu; önek adı literal, anahtar değil'],
-  ['supabase/functions/push-send/providers.test.ts|private_key_block', 'test çalışma anında ürettiği geçici anahtarı sarar'],
   ['docs/DEPLOY.md|email_non_placeholder', 'hesap sahibinin Access izin listesi e-postası; belgeleme amaçlı (Q03-LEAK-1), sır değil'],
   ['docs/release/RELEASE-COMPLETION-2026-11-04.md|email_non_placeholder', 'aynı Access izin listesi e-postası (Q03-LEAK-1)'],
   ['docs/release/FAMILY-EXPERIENCE-13.md|email_non_placeholder', 'aynı Access izin listesi e-postası (Q03-LEAK-1)'],
@@ -44,9 +43,40 @@ const ALLOWLIST = new Map([
   ['docs/release/content-prereview-2026-11-06/README.md|assigned_secret_literal', 'x-cron-secret başlığının SIR ADI (ortam değişkeni adı) belgelenir; değer yok'],
   ['supabase/functions/README.md|assigned_secret_literal', 'aynı; sır adı belgelenir, değer yok'],
 ]);
+const EXACT_SOURCE_LINES = new Map([
+  [
+    "supabase/functions/_shared/apple-signin.fixture.ts|private_key_block|020114ccf96b37067aa2d73c04bfd37c6f9b34534192b46c9680f05df0980800",
+    "crypto.subtle.generateKey + PKCS8 template, never a stored key"
+  ],
+  [
+    "supabase/functions/_shared/google-acknowledge.test.ts|private_key_block|5dbb5e5fd5da1bf4f0403458179ed724dd43cddc6afe0d70dd1943f32daf6ca1",
+    "runtime-generated fake Play service account key"
+  ],
+  [
+    "supabase/functions/apple-revocation-worker/handler.ts|assigned_secret_literal|3cf6504d365a8cae284720083f93cdd42145859f5e9497de6e6f2d6ab5a8329a",
+    "comment names the cron environment variable, not its value"
+  ],
+  [
+    "scripts/health-check.test.mjs|assigned_secret_literal|9da802ef3f17f78508a8b1fcb75a83aa22ec06b63d6266a39ab0f654050c1355",
+    "offline synthetic health test credential"
+  ],
+  [
+    "scripts/release-local.test.mjs|assigned_secret_literal|90a184c16bf96c382cbf10ddb61a4094da824d41ca06755cbdd86ed4cf021fe7",
+    "offline synthetic release test credential"
+  ],
+  [
+    "supabase/functions/push-send/providers.test.ts|private_key_block|9bea822eba4a3a450e42173ed96db27d09fa7dd611f78adb5777404ce0db8424",
+    "runtime-generated provider test PEM template"
+  ],
+  [
+    "scripts/check-testflight.test.mjs|supabase_secret_key|0a6f6800f716c33a1e58d1218fb7794aef3ece6062ee3af3d497a140fa8dcdb7",
+    "test yer tutucusu; önek adı literal, anahtar değil"
+  ]
+]);
 const findings = [];
 const allowlisted = [];
 const secretFiles = [];
+let templatesScanned = 0;
 let scanned = 0;
 
 function walk(dir) {
@@ -54,9 +84,18 @@ function walk(dir) {
     const full = join(dir, entry);
     const rel = relative(root, full);
     let st;
-    try { st = statSync(full); } catch { continue; }
+    try { st = lstatSync(full); } catch { continue; }
+    if (st.isSymbolicLink()) continue; // Never follow links outside the checkout or recurse through a link loop.
     if (st.isDirectory()) { if (!SKIP_DIRS.has(entry)) walk(full); continue; }
-    if (SECRET_FILE.test(rel)) { secretFiles.push(rel); continue; }
+    if (SECRET_FILE.test(rel)) {
+      if (!/\.env\.(example|sample|template)$/.test(rel)) {
+        secretFiles.push(rel);
+        findings.push({ pattern: 'secret_file', severity: 'high', file: rel, line: 1 });
+        continue;
+      }
+      templatesScanned++;
+      // Examples are scanned too: an accidental real value in a template must still block.
+    }
     if (BINARY.has(extname(entry).toLowerCase()) || st.size > 6 * 1024 * 1024) continue;
     if (rel === 'pnpm-lock.yaml' || rel.startsWith('patches/')) continue; // hash yoğun; ayrı pnpm audit kapsar
     let text;
@@ -71,8 +110,8 @@ function walk(dir) {
         if (p.onlyDocs && !isDocs) continue;
         if (!p.re.test(line)) continue;
         if (p.exclude && p.exclude.test(line)) continue;
-        if (rel === 'scripts/security/leak-scan.mjs') continue;
-        const reason = ALLOWLIST.get(rel + '|' + p.name);
+
+        const reason = EXACT_SOURCE_LINES.get(rel + '|' + p.name + '|' + createHash('sha256').update(line).digest('hex')) ?? ALLOWLIST.get(rel + '|' + p.name);
         if (reason) { allowlisted.push({ pattern: p.name, file: rel, line: i + 1, reason }); continue; }
         findings.push({ pattern: p.name, severity: p.severity, file: rel, line: i + 1 });
       }
@@ -85,13 +124,13 @@ const bySeverity = {};
 for (const f of findings) bySeverity[f.severity] = (bySeverity[f.severity] ?? 0) + 1;
 const byPattern = {};
 for (const f of findings) byPattern[f.pattern] = (byPattern[f.pattern] ?? 0) + 1;
-const report = { scanned_files: scanned, secret_files_present_not_opened: secretFiles, by_severity: bySeverity, by_pattern: byPattern, allowlisted, findings };
+const report = { templates_scanned: templatesScanned, scanned_files: scanned, secret_files_present_not_opened: secretFiles, by_severity: bySeverity, by_pattern: byPattern, allowlisted, findings };
 const jsonAt = process.argv.indexOf('--json');
 if (jsonAt > 0) writeFileSync(process.argv[jsonAt + 1], JSON.stringify(report, null, 1) + '\n');
 // --summary <dosya>: Markdown özet (CI'da $GITHUB_STEP_SUMMARY'ye eklenir). Değer yazılmaz; yalnız desen, dosya:satır.
 const summaryAt = process.argv.indexOf('--summary');
 if (summaryAt > 0) {
-  const lines = ['## Sızıntı taraması (bilgi amaçlı)', '', `Taranan dosya: ${scanned}; sır dosyası (açılmadı): ${secretFiles.length}; allowlist: ${allowlisted.length}`, '',
+  const lines = ['## Sızıntı taraması (engelleyici)', '', `Taranan dosya: ${scanned}; sır dosyası (açılmadı): ${secretFiles.length}; allowlist: ${allowlisted.length}`, '',
     '| Önem | Desen | Dosya:satır |', '|---|---|---|',
     ...findings.map(f => `| ${f.severity} | ${f.pattern} | \`${f.file}:${f.line}\` |`)];
   if (!findings.length) lines.push('| — | — | bulgu yok |');
@@ -100,4 +139,4 @@ if (summaryAt > 0) {
 }
 console.log(JSON.stringify({ scanned_files: scanned, secret_files_present_not_opened: secretFiles.length, by_severity: bySeverity, by_pattern: byPattern }));
 for (const f of findings.filter(f => f.severity === 'high' || f.severity === 'medium')) console.log(`${f.severity} ${f.pattern} ${f.file}:${f.line}`);
-process.exitCode = findings.some(f => f.severity === 'high') ? 1 : 0;
+process.exitCode = findings.some(f => f.severity === 'high' || f.pattern === 'assigned_secret_literal') ? 1 : 0;

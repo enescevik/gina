@@ -19,8 +19,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: node scripts/security-audit.mjs
-      # Q03-LEAK-1: repo/rapor sızıntı taraması, bilgi amaçlı. Eşleşen değer yazılmaz (yalnız desen + dosya:satır);
-      # bilinen yanlış pozitifler betikteki allowlist'te gerekçesiyle durur. İş akışını durdurmaz; özet iş sayfasına yazılır.
-      - name: Leak scan (informational)
-        continue-on-error: true
+      - name: Blocking secret scan
         run: node scripts/security/leak-scan.mjs --json leak-scan.json --summary "$GITHUB_STEP_SUMMARY"
+      - name: Secret scan regression
+        run: node --test scripts/security/leak-scan.test.mjs

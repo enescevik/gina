@@ -1,0 +1,13 @@
+{
+  "environment": "empty-disposable-database-fresh-public-schema-all-migrations",
+  "timezone": "Europe/Istanbul",
+  "files": [
+    {
+      "file": "151_schema_security_guard.test.sql",
+      "passed": 9,
+      "failed": 0
+    }
+  ],
+  "failures": [],
+  "assertions": 9
+}

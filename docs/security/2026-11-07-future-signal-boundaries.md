@@ -29,3 +29,12 @@ F2a: çocuk sinyali yalnız atanmış denemedeki soruya yazılır; kardeş denem
 ## F4 — soru bildirimi
 
 `150_question_reports.test.sql` 22 kontrol: request replay/çatışma, kardeş/ilgisiz soru, serbest neden reddi, doğrudan INSERT engeli, yarışa dayanıklı kullanıcı kilidi + oran sınırı, eski isteği sınır tüketmeden yeniden deneme, yetkisiz moderasyon ve tek audit. Paylaşılan tablette aktif çocuk değişince önceki kardeş raporu okunamaz/replay edilemez. Yönetici yalnız bildirilen içerik kökü ve nedeni görür; çocuk cevabı/çizimi bu yüzeye kopyalanmaz. Tam regresyon 7.010 kontrol, 0 hata.
+
+## F5 — kalıcı güvenlik kontrolleri
+
+- Sızıntı taramasında bütün dosyayı kapsayan yüksek önem istisnası yeni anahtarı saklayabilirdi: tam satır hash'ine daraltıldı. `.env.example` içeriğini atlama ve symlink döngüsü de kaldırıldı; `scripts/security/leak-scan.test.mjs` 8 vaka. CI taramayı artık engelleyici çalıştırır; gerçek anahtar değeri rapora yazılmaz.
+- İç uygulama tablolarında istemci grant'i olmasa da RLS koruması tamamlandı. `151_schema_security_guard.test.sql`: 9 katalog bulgusu/karşı örnek. İstemci helper'ı çağıramaz.
+- Veli telefonundaki çocuk PIN'i kilit bitiminden sonra sayacı sıfır pencereye almıyordu; sayacın büyümesi ve her hatada yeniden kilitlenmesi giderildi. `152_child_pin_window.test.sql` 13 vaka: kalıcı başarısızlık sayacı, kilidi doğru PIN'le aşamama, süre bitimi, uzun/biçimsiz giriş, başarıyla toparlanma ve aile sınırı.
+- Prompt sistem güven sınırı ve veri etiketi v12/v8; şema değişmedi, açıklanan istem değişikliği nedeniyle golden prompt hash/sürüm kanıtı güncellendi. 30 TR/EN veri sınırı örneği ve kaynak ref ihlali. Canlı model saldırı kabulü yapılmış gibi gösterilmez.
+
+Son taze regresyon 151 dosyada 7.032 kontrol; Edge ilgili 130 test, Node 117 test temiz. Canlı Auth limitleri yalnız sayısal ayarlarla raporlandı; SMTP/anahtar değerleri alınan rapora yazılmadı.

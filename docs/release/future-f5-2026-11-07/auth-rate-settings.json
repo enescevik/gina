@@ -1,0 +1,12 @@
+{
+  "checkedAt": "2026-11-07T04:48:17.777Z",
+  "settings": {
+    "rate_limit_anonymous_users": 30,
+    "rate_limit_email_sent": 30,
+    "rate_limit_sms_sent": 30,
+    "rate_limit_token_refresh": 150,
+    "rate_limit_verify": 30,
+    "rate_limit_otp": 30,
+    "rate_limit_web3": 30
+  }
+}

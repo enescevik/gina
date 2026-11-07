@@ -23,7 +23,7 @@ import { apiKeyOrResponse, logUsage, parentOrResponse, provaEntitlement, resolve
 // D9: v5 — grup sorularının ortak metni/tablosu yükte bir kez (`ortak_kaynaklar`), maddeler ref ile bağlı.
 // D13: v7 — amaç duyarlı puanlama: maddede `degerlendirme_amaci` (sonuc | surec | sorudan_cikar). Yalnız sonucu
 // ölçen soruda eşdeğer/alternatif cevap tam puan; süreç/gerekçe ölçen soruda rubrik ölçütleri yazıldığı gibi.
-const PROMPT_VERSION = "prova-grade/v7-purpose-aware";
+const PROMPT_VERSION = "prova-grade/v8-untrusted-data-boundary";
 
 function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

@@ -308,6 +308,7 @@ Deno.serve(async (req) => {
     })
     : SCHEMA;
   const userPrompt = JSON.stringify({
+    _data_class: "untrusted_source_data",
     ...request,
     ek_not: typeof body.note === "string" ? body.note.slice(0, 1500) : "",
     belge: document ? { id: document.id, sha256: document.sha256 } : null,

@@ -1,3 +1,4 @@
+import { UNTRUSTED_DATA_RULE } from "../_shared/untrusted-data.ts";
 // Provider schema remains stable; v11 versions the explicit content-quality controls.
 import { DIFFICULTIES } from "../_shared/prova.ts";
 import {
@@ -12,11 +13,11 @@ import {
 // D13: v8 — açık uçlu rubrikte `assesses` (result | process): soru yalnız sonucu mu, süreci/gerekçeyi mi ölçüyor.
 // QT-AI: v9 — isteğe bağlı `interaction_types`: yapılandırılmış türler (ayırıcı + schema_version 1, tür başına katı şema,
 // payload/anahtar ayrımı, deterministik doğrulama). Tür istenmeyen çağrıda istem, şema ve satırlar v8 ile aynıdır.
-export const PROMPT_VERSION = "prova-generate/v11-quality-controls";
+export const PROMPT_VERSION = "prova-generate/v12-untrusted-data-boundary";
 
 // Enes'in eşinin ChatGPT promptundan uyarlanan şablon (docs/PROVA.md «AI soru üretimi»).
 export const SYSTEM_PROMPT =
-  `Sen Türkiye'deki MEB müfredatına hâkim, deneyimli bir öğretmensin ve Gina Aile uygulamasının Prova modülü için yazılı/deneme soruları hazırlıyorsun.
+  UNTRUSTED_DATA_RULE + "\n" + `Sen Türkiye'deki MEB müfredatına hâkim, deneyimli bir öğretmensin ve Gina Aile uygulamasının Prova modülü için yazılı/deneme soruları hazırlıyorsun.
 Veli sana ders, sınıf, konu(lar), her konu için soru sayısı, soru türü ve zorluk verir. Örnek bir veli isteği: "Okulun senaryoları belli (Fen Senaryo 2). Önümüzdeki yazılı için 5 soru, zorluk orta üstü (zor değil, kolay değil). Konular senaryodaki konular; MEB örnek soruları stilinde."
 Kurallar:
 - Soruları MEB ÖDSGM örnek soruları ve MEB ders kitapları üslubunda, sınıf düzeyine uygun, açık ve tek anlamlı yaz. Konunun dışına çıkma.

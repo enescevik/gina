@@ -412,7 +412,7 @@ Deno.test("D9: legacy v5 (table only in provenance) and v6 ungrouped self-contai
   check(sharedSourcePlan(["q1"], () => "M1", [open("q1", p1, { generator: "parent", shared_source: shared })], []).sources.length === 0);
 });
 
-Deno.test("D9: payload without groups keeps the D6 shape; masking covers shared content", () => {
+Deno.test("F5: untrusted evidence label preserves D6 item fields and masking", () => {
   const plain: GradeQuestionRow[] = [
     open("q1", "Dikdörtgenin çevresi kaç cm'dir?"),
     { ...open("q2", "Hangisi kesirdir?"), kind: "multiple_choice", choices: [{ key: "A", text: "1/2" }], correct_key: "A" },
@@ -420,7 +420,8 @@ Deno.test("D9: payload without groups keeps the D6 shape; masking covers shared 
   const ans = [{ question_id: "q1", answer_text: "28" }, { question_id: "q2", answer_key: "A", is_correct: true }];
   const { payload } = buildGradePayload(["q1", "q2"], plain, ans, []);
   // D6 (v4) prova-grade/index.ts içindeki eski satır içi yükün alan sırası.
-  check(JSON.stringify(Object.keys(payload)) === '["maddeler"]');
+  check(JSON.stringify(Object.keys(payload)) === '["_data_class","maddeler"]');
+  check(payload._data_class === 'untrusted_evidence');
   check(JSON.stringify(Object.keys(payload.maddeler[0])) === JSON.stringify([
     "ref", "konu", "tur", "soru", "beklenen_cevap", "cozum_yolu", "alternatif_dogru_cevaplar", "rubrik", "degerlendirme_amaci", "secenekler",
     "dogru_secim", "secilen", "dogru_mu", "puanlama_gerekli", "veli_puani", "ogrenci_cevabi",
