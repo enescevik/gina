@@ -713,6 +713,11 @@
       "failed": 0
     },
     {
+      "file": "145_prereview_library_images.test.sql",
+      "passed": 8,
+      "failed": 0
+    },
+    {
       "file": "145_question_reactions.test.sql",
       "passed": 15,
       "failed": 0
@@ -734,5 +739,5 @@
     }
   ],
   "failures": [],
-  "assertions": 6970
+  "assertions": 6978
 }
