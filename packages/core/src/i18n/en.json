@@ -5254,5 +5254,7 @@
   "studyPermissions.weekly": "Open the weekly review",
   "studyPermissions.weeklyHelp": "You can approve each AI weekly summary on the review screen.",
   "studyPermissions.teacher": "Manage teacher links",
-  "studyPermissions.teacherHelp": "On the sharing screen, you can review link access, expiry and status, and revoke access."
+  "studyPermissions.teacherHelp": "On the sharing screen, you can review link access, expiry and status, and revoke access.",
+  "practiceDifficulty.evidence": "Based on {{count}} distinct scored questions in the same outcome group for {{subject}} over the past 30 days, you could try a short practice at {{difficulty}} difficulty.",
+  "practiceDifficulty.apply": "Choose {{difficulty}} difficulty"
 }

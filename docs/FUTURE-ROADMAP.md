@@ -92,7 +92,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F8 — Öğretmene kazanım özeti; favori PDF; uyarlanabilir zorluk
 
-- Kaynak: §4.1, §4.9, §4.14–15. Durum: KISMEN KOD HAZIR (favoriden taslak ve kitapçık, tarayıcı kabulü). Efor: **L**.
+- Kaynak: §4.1, §4.9, §4.14–15. Durum: KISMEN KOD HAZIR (favoriden taslak ve kitapçık, tarayıcı kabulü ve veli onaylı zorluk önerisi). Efor: **L**.
 - Kapsam: Öğretmene kazanım özeti; favori PDF; uyarlanabilir zorluk.
 - Bağımlılık: F7, veli onayı, soru sürümü.
 - Paket kapısı: Mevcut paylaşım/PDF hakları; tür kapısı yok.
@@ -257,3 +257,5 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 
 - F6e: Veli çalışma ayarlarından mevcut haftalık AI özeti onayına ve iptal edilebilir öğretmen bağlantılarına ulaşabilir. TTS ve mola geçmişi aynı ekranda. Yapay zekâ onayı işlem bazında kalır, ses kaydı izni hukuk kapısında kalır.
 - F7c: Veli, serbest Prova üretiminde kendi favorilerinin biçim örüntülerini isteğe bağlı kullanabilir. Aynı sınıf ve ders, son 12 favoriden en fazla üç sabit tür/zorluk/düşünme düzeyi örüntüsü. Başka velinin tercihi, soru metni, cevap, kimlik ve serbest kaynak alanı sağlayıcıya gitmez. Yazılı, senaryo ve belge yollarında kontrol kapalıdır. Makbuz ve istemci günlüğü seçimi dondurur. Önceki SQL regresyonu 158 dosya ve 7.152 kontrol yeşil. Yeni aile/veli/alan sınırı testleri 5/5, 32 Edge güven sınırı testi ve 776 core geçti. Üretim ve gerçek sağlayıcı kabulü açık.
+
+- F8b: Serbest, tek dersli pratikte veliye son 30 günün aynı kazanım grubundan en az beş farklı puanlı sorusuyla zorluk önerisi gösterilir. Birden çok grup, bekleyen puan, az veri ve 60–84,9 arası ortalamada öneri çıkmaz. 60 altı kolay, 85 ve üzeri orta bir başlangıç önerir. Bu eşikler ürün tercihi, ölçüm sonucu değildir. Yazılı/senaryo kapsamı dışarıda kalır. Zorluk ancak veli düğmeye dokununca değişir. 778 core, lint ve tip denetimi geçti. Öğretmene ders bazlı kazanım paylaşımı açık.

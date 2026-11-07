@@ -1,3 +1,4 @@
+import { PracticeDifficultyHint } from "./practice-difficulty-hint";
 import { NumberChoice, PromptExamples } from "@/components/ui/number-choice";
 import { invalidateProvaLists } from "@/lib/prova-cache";
 import {
@@ -1087,6 +1088,7 @@ export default function ProvaBuilder() {
                                   />
                                 ))}
                             </View>
+                            <PracticeDifficultyHint draft={draft} onAccept={difficulty => update({ difficulty })} />
                             <Field
                               label={t("provaBuilder.note")}
                               value={draft.note}

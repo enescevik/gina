@@ -5249,5 +5249,7 @@
   "studyPermissions.weekly": "Haftalık özeti aç",
   "studyPermissions.weeklyHelp": "Yapay zekâ ile haftalık özet hazırlamayı her seferinde özet ekranından onaylayabilirsiniz.",
   "studyPermissions.teacher": "Öğretmen bağlantılarını yönet",
-  "studyPermissions.teacherHelp": "Paylaşım ekranından bağlantıların kapsamını, bitiş tarihini ve durumunu görebilir, erişimi iptal edebilirsiniz."
+  "studyPermissions.teacherHelp": "Paylaşım ekranından bağlantıların kapsamını, bitiş tarihini ve durumunu görebilir, erişimi iptal edebilirsiniz.",
+  "practiceDifficulty.evidence": "{{subject}} dersinde son 30 günde aynı kazanım grubundan puanlanan {{count}} farklı soruya göre {{difficulty}} düzeyinde kısa bir pratik deneyebilirsiniz.",
+  "practiceDifficulty.apply": "{{difficulty}} düzeyini seç"
 }
