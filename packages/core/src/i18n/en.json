@@ -5199,5 +5199,13 @@
   "studyPreferences.end": "End (family time zone)",
   "studyPreferences.eveningNotice": "Rest time is approaching. You can take a break after this activity.",
   "studyPreferences.breakNotice": "After this activity, you could stretch or drink some water. Your assessment timer is still running.",
-  "studyPreferences.understood": "Got it, thanks"
+  "studyPreferences.understood": "Got it, thanks",
+  "outcomeObservations.title": "Observations by Learning Outcome Labels",
+  "outcomeObservations.help": "Only the latest answer to each question is counted. Jointly tagged outcomes are not assessed separately. This is not a diagnosis or MEB approval.",
+  "outcomeObservations.loading": "Loading observations…",
+  "outcomeObservations.empty": "No answers with learning outcome labels in this period. Topic summaries are available below.",
+  "outcomeObservations.grade": "Grade {{grade}}",
+  "outcomeObservations.limited": "{{count}} distinct scored questions: more observations are needed before interpreting.",
+  "outcomeObservations.score": "Average {{score}} / 100 across {{count}} distinct questions",
+  "outcomeObservations.excluded": "{{pending}} awaiting review and {{blank}} unanswered questions are excluded from the average."
 }

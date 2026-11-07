@@ -5194,5 +5194,13 @@
   "studyPreferences.end": "Bitiş (aile saat dilimi)",
   "studyPreferences.eveningNotice": "Dinlenme zamanı yaklaşıyor. Bu çalışmadan sonra ara verebilirsin.",
   "studyPreferences.breakNotice": "Bu çalışmadan sonra biraz esneyebilir veya su içebilirsin. Prova süren işlemeye devam ediyor.",
-  "studyPreferences.understood": "Tamam, teşekkürler"
+  "studyPreferences.understood": "Tamam, teşekkürler",
+  "outcomeObservations.title": "Kazanım Etiketlerine Göre Gözlemler",
+  "outcomeObservations.help": "Aynı sorunun son cevabı bir kez sayılır. Birlikte etiketlenen kazanımlar ayrı ayrı ölçülmüş sayılmaz. Bu görünüm tanı veya MEB onayı değildir.",
+  "outcomeObservations.loading": "Gözlemler yükleniyor…",
+  "outcomeObservations.empty": "Bu aralıkta kazanım etiketiyle ilişkilendirilmiş cevap yok. Konu özetlerini aşağıda görebilirsiniz.",
+  "outcomeObservations.grade": "{{grade}}. sınıf",
+  "outcomeObservations.limited": "{{count}} puanlanmış farklı soru: yorum yapmak için henüz az veri var.",
+  "outcomeObservations.score": "{{count}} farklı soruda ortalama {{score}} / 100",
+  "outcomeObservations.excluded": "{{pending}} puan bekleyen ve {{blank}} cevapsız soru ortalamaya katılmadı."
 }

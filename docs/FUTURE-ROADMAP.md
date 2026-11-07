@@ -83,7 +83,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F7 — Veli kazanım ısı haritası, 1–3–7 tekrar ve haftalık özet
 
-- Kaynak: §4.3–4, §4.10, §3a. Durum: PLANLANDI. Efor: **L**.
+- Kaynak: §4.3–4, §4.10, §3a. Durum: KISMEN KOD HAZIR (mevcut 1–3–7 ve haftalık özet korundu, yeni kazanım gözlemleri; AI kişiselleştirme açık). Efor: **L**.
 - Kapsam: Veli kazanım ısı haritası, 1–3–7 tekrar ve haftalık özet.
 - Bağımlılık: F2 sinyalleri, tamamlanmış puanlar, mevcut plan üretimi.
 - Paket kapısı: Harita/manuel tekrar tüm paketler; AI özet mevcut ücretli hak.
@@ -232,3 +232,7 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - F6a: mevcut okuma ayarları ekranı “Çalışma ve Okuma Tercihleri” olarak genişletildi; yeni ikinci tercih ekranı yok. Veli çocuk başına 10–60 dk mola aralığı, varsayılan kapalı akşam hatırlatma penceresi seçer. Aile timezone kullanılır; saat aralığı uyarıdır, kilit değildir. Prova ekranının ön planda geçen süresi soru türü/sekme değişiminde korunur, arka planda sayılmaz; sayaç/deadline/puan/ödül ve güvenlik bildirimleri değiştirilmez. Hatırlatma çocuğun davranışından sağlık sonucu çıkarmaz. RLS mevcut çocuk tablosu ebeveyn güncelleme sınırını kullanır; çocuğa yalnız kendi tercih projeksiyonu verilir. 12 yeni pgTAP, 7 core zaman/sınır testi; tüm taze DB 7.107 kontrol, lint/typecheck/core yeşil. Kanıt: `release/future-f6-2026-11-07/`. Henüz üretim yayını/fiziksel kabul yok. F6 kalan: uygulama geneli kıyassız dil, izin denetimi ve mevcut gün-ertele akışının birleştirilmiş kabulü.
 
 - F5 izleme: core uzun girdi yolları güçlendirildi; üç boşluk ayrıştırıcısı doğrusal tarama, e-posta/saat/rubrik erken sınırı, defter ölçü aramasında sayı ortası yeniden tarama engeli. 1.500 semantik eşdeğerlik örneği ve 100–200 bin karakterli olumsuz girdiler; 768 core testi, lint/typecheck yeşil. Uyarıların tamamı kapandı iddiası yok; yeni CodeQL sonucu ve betik triyajı sürüyor.
+
+- F7a: mevcut Gelişim ekranına ortak kazanım kümesi gözlemleri eklendi. Mevcut 1–3–7 tekrar (`makeRepeatCalendarDrafts`) ve haftalık rapor yeniden yapılmadı. Son cevap soru kimliği başına bir kez sayılır; kütüphaneden tekrar edinilen aynı item bağımsız kanıtı artırmaz. 5 farklı puanlanmış sorudan azsa sayısal ortalama/renk kuvveti gösterilmez; bekleyen/boş cevaplar paydada değildir, kısmi puan korunur. Aynı sorudaki çoklu kazanım ayrı ayrı ölçülmüş gibi parçalanmaz. Aile/çocuk/eğitim dönemi/sınıf/ders/tarih kapsamı mevcut raporla aynıdır. Pekiştirme kapsamı ilk kazanım yerine tam sıralanmış kümeye taşındı; eski sessize alma süreleri taşınır. 14 yeni SQL, 4 şema testi; tüm DB 7.121, core 772, lint/typecheck yeşil. F7 açık: AI üretiminde tercih/few-shot entegrasyonu, “3 deneme/sınava kadar” atomik tüketim, haftalık AI özeti ve fiziksel/görsel kabul.
+
+- Yayın ayrımı düzeltmesi: mevcut GitHub iş akışları main'e push ile **web ve backoffice'i otomatik yayımlıyor**. “Üretim migration/native yayını yok” kaydı yalnız DB/Edge/native içindir; web/BO dağıtımı yok anlamına gelmez. Yeni DB tablolarına bağlı yeteneklerin uçtan uca kabulü migration/Edge/native eşlemesi tamamlanmadan yapılmış sayılmaz.

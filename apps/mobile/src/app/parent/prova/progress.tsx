@@ -1,3 +1,4 @@
+import { OutcomeObservations } from "@/components/learning/outcome-observations";
 import {
   ReportPeriodFilter,
   useReportPeriods,
@@ -387,6 +388,7 @@ export default function ProvaProgressScreen() {
               })}
             </Text>
             <ProgressSummary report={report.data} />
+            {child?<OutcomeObservations key={`${child.id}:${period}:${days}:${grade}:${subject}`} childId={child.id} days={days} grade={grade} subject={subject} period={period} />:null}
             <View style={{ flexDirection: wide ? "row" : "column", gap: 20 }}>
               <View style={wide ? { flex: 2, minWidth: 0 } : undefined}>
                 <ProgressChart report={report.data} />

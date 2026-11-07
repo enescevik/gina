@@ -4007,6 +4007,9 @@ isOneToOne: false
 "join_family":
 { Args: { "p_display_name"?: string,"p_invite_code": string }; Returns: string
                            },
+"learning_outcome_observations":
+{ Args: { "p_child_id": string,"p_days"?: number,"p_grade"?: number,"p_period"?: string,"p_subject"?: string }; Returns: Json
+                           },
 "learning_progress":
 { Args: { "p_child_id": string,"p_days"?: number,"p_grade"?: number,"p_subject"?: string }; Returns: Json
                            },
