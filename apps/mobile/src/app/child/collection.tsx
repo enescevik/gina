@@ -78,7 +78,7 @@ export default function ChildCollectionScreen() {
           </View>
         ))}
       </View>
-      <ErrorText error={badges.error} />
+      <ErrorText tone="child" error={badges.error} />
     </Screen>
   );
 }

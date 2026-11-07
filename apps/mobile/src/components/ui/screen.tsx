@@ -1,4 +1,4 @@
-import { planLimitMessageKey } from "@gina/core";
+import { childErrorMessageKey, planLimitMessageKey } from "@gina/core";
 import { Button } from "./button";
 import { useTranslation } from "react-i18next";
 import type { ReactNode } from "react";
@@ -32,9 +32,10 @@ export function Screen({ title, children, tone = "parent", scroll = true }: Scre
   );
 }
 
-export function ErrorText({ error, onViewPlans }: { error: unknown; onViewPlans?: () => void }) {
+export function ErrorText({ error, onViewPlans, tone = "parent" }: { error: unknown; onViewPlans?: () => void; tone?: "parent" | "child" }) {
   const { t, i18n } = useTranslation();
   if (!error) return null;
+  if(tone==="child")return <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={{fontFamily:"Nunito_600SemiBold",fontSize:16,lineHeight:24,color:"#24203C",backgroundColor:"#F0ECFC",borderRadius:12,padding:10}}>{t(childErrorMessageKey(error))}</Text>;
   const detail = typeof error === "object" && error !== null ? error as { message?: string; code?: string; status?: number } : {};
   const message = detail.message ?? String(error);
   const planLimitKey = planLimitMessageKey(error);

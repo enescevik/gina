@@ -46,7 +46,7 @@ export default function ChildPickerScreen() {
 
   return (
     <Screen tone="child" surface="access" loading={children.isLoading} title={t("child.pickProfile")}>
-      <ErrorText error={children.error ?? enter.error} />
+      <ErrorText tone="child" error={children.error ?? enter.error} />
       {children.error ? <Button title={t("common.retry")} onPress={() => void children.refetch()} /> : null}
       <View className="flex-row flex-wrap gap-4">
         {children.data?.children.map((child) => (

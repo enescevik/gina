@@ -66,7 +66,7 @@ export default function ChildPinScreen() {
         <Text style={{ fontFamily: "Nunito_600SemiBold", fontSize: 17, color: "#625C85", textAlign: "center" }}>{t("experience.pin.prompt")}</Text>
       </View>
       <PinEntry label={t("childV5.pinLabel")} value={pin} onChange={setPin} disabled={busy} onSubmit={() => void submit()} />
-      <ErrorText error={error} />
+      <ErrorText tone="child" error={error} />
       <Button size="child" title={t("unified.enterMyWorld")} loading={busy} disabled={!childId || pin.length !== 4} onPress={submit} />
       <PinRecovery audience="child" />
       <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => router.back()} />

@@ -104,7 +104,7 @@ export default function ChildGoalScreen() {
         <Text style={[childStyles.copy, { fontSize: 14 }]}>{current.data ? t("goal.summaryChange") : t("goal.summaryFree")}</Text>
       </View> : null}
       {selected && <Button title={t("betaUx.childGoalReview")} loading={choose.isPending} onPress={() => choose.mutate(selected)}/>}
-      <ErrorText error={rewards.error ?? choose.error} />
+      <ErrorText tone="child" error={rewards.error ?? choose.error} />
       <Button variant="ghost" title={t("common.cancel")} onPress={leave} />
     </Screen>
   );

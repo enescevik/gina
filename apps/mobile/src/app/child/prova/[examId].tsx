@@ -548,7 +548,7 @@ export default function TakeExamScreen() {
       {unanswered.length > 0 && counts.partial > 0 ? <Text testID="qt-finish-partial" className="font-body text-base text-ink">{t("prova.qt.child.finishPartial", { count: counts.partial })}</Text> : null}
       {firstOpen >= 0 && <Button variant="secondary" title={t(counts.partial && !unanswered.length ? "prova.qt.child.goToPartial" : "prova.goToUnanswered")} disabled={finish.isPending || timeUp} onPress={() => goTo(firstOpen)} />}
       <Button title={t("experience.submitAnswers")} disabled={saving || timeUp || !!localError || !savedAnswers.isSuccess} loading={finish.isPending} onPress={() => finish.mutate()} />
-      <ErrorText error={finish.error} />
+      <ErrorText tone="child" error={finish.error} />
       <Button variant="ghost" title={t("experience.checkAgain")} disabled={finish.isPending} onPress={() => setConfirmFinish(false)} />
     </>}
   </DecisionSheet>;
@@ -765,7 +765,7 @@ export default function TakeExamScreen() {
         status={(deadline ? t("prova.timeLeft", { time: formatRemaining(deadline - now) }) + " · " : "") +
           (localError ? t("notebook.localFailed") : timeUp ? t("provaV5.timeEnded") : writes.error ? t("notebook.localPending")
             : dirty || saving || !localReady ? t("provaV5.savingAnswer") : t("notebook.saved"))}
-        alerts={<>{localNotice}<ErrorText error={writes.error} /></>}
+        alerts={<>{localNotice}<ErrorText tone="child" error={writes.error} /></>}
         footer={
           <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
             <SatinButton
@@ -816,7 +816,7 @@ export default function TakeExamScreen() {
         alerts={
           <>
             {localNotice}
-            <ErrorText error={writes.error ?? finish.error} />
+            <ErrorText tone="child" error={writes.error ?? finish.error} />
             {writes.error && !timeUp
               ? (
                 <Button
@@ -1037,7 +1037,7 @@ export default function TakeExamScreen() {
           ? t("provaV5.savingAnswer")
           : t("provaV5.answerSaved")}
       </Text>
-      <ErrorText
+      <ErrorText tone="child"
         error={attempt.error ?? questions.error ?? savedAnswers.error ??
           writes.error ?? finish.error}
       />

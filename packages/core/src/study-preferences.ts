@@ -9,3 +9,9 @@ export function isEveningReminder(now: Date, timezone: string, start: number|nul
 }
 export const minutesClock=(minutes:number)=>`${Math.floor(minutes/60).toString().padStart(2,'0')}:${(minutes%60).toString().padStart(2,'0')}`;
 export const clockMinutes=(clock:string)=>Number(clock.slice(0,2))*60+Number(clock.slice(3,5));
+
+/** Ignore background intervals and wall-clock jumps; this never drives the assessment deadline. */
+export function studyReminderDelta(previous:number,now:number,foreground:boolean){
+ if(!foreground||!Number.isFinite(previous)||!Number.isFinite(now))return 0;
+ return Math.max(0,Math.min(now-previous,10000));
+}

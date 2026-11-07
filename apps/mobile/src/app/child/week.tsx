@@ -65,7 +65,7 @@ export default function ChildWeekScreen() {
 
   return (
     <Screen tone="child" loading={templates.isLoading || completions.isLoading} title={t("child.week")}>
-      <ErrorText error={templates.error ?? completions.error} />
+      <ErrorText tone="child" error={templates.error ?? completions.error} />
       <WeekStrip week={week} selected={selected} onSelect={setSelected} />
       {[selected].map((date) => {
         const due = tasksWithRecordedWork(templates.data ?? [], completions.data ?? [], date);

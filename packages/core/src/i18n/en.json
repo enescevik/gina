@@ -5218,5 +5218,12 @@
   "questionLikes.bookletHelp": "Choose grade, subject and topics from your own favorites. Print up to 100 questions from your 500 most recent favorites. The student copy has no answers or child name.",
   "questionLikes.allSubjects": "All subjects in this grade",
   "prova.booklet.source.favorites": "My favorites",
-  "futureLearning.unavailable": "This section is currently unavailable"
+  "futureLearning.unavailable": "This section is currently unavailable",
+  "childError.retry": "This step did not finish. You can try again.",
+  "childError.waitPin": "Wait a moment, then you can try the PIN again.",
+  "childError.tryPin": "That PIN did not match. You can check it again.",
+  "childError.connection": "The connection may have dropped. You can try again.",
+  "weeklyReview.provaTitle": "Practice Observations",
+  "weeklyReview.provaCounts": "{{attempts}} practices · {{scored}} scored questions · {{pending}} awaiting review",
+  "weeklyReview.provaSignals": "{{liked}} likes · {{struggled}} “tricky” marks · {{repeated}} repeat encounters"
 }

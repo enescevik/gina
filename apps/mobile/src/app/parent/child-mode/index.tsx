@@ -123,7 +123,7 @@ export default function ChildModeEntryScreen() {
           ) : (
             <PinEntry label={t("childV5.pinLabel")} value={pin} onChange={setPin} disabled={busy || pinStatus.isLoading} onSubmit={() => void submit()} />
           )}
-          <ErrorText error={error} />
+          <ErrorText tone="child" error={error} />
           <Button size="child" testID="child-mode-enter" title={t("unified.enterMyWorld")} loading={busy || pinStatus.isLoading} disabled={!noPin && pin.length !== 4} onPress={submit} />
           {noPin ? null : <PinRecovery audience="child" />}
           <Button variant="ghost" title={t("common.cancel")} disabled={busy} onPress={() => { if (children.data?.length === 1) router.back(); else setSelected(null); setPin(""); setError(null); }} />

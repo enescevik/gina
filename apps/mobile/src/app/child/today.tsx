@@ -52,7 +52,7 @@ export default function TodayScreen() {
         </View>
       </View>
       <Button variant="secondary" title={t("room.myCollection")} onPress={() => router.push("/child/collection")} />
-      <ErrorText error={logout.error ?? child.error} />
+      <ErrorText tone="child" error={logout.error ?? child.error} />
       <Button variant="secondary" title={t("childV5.customize")} onPress={() => router.push("/child/room-preview")} />
       <Button variant="ghost" title={t("child.switchProfile")} loading={logout.isPending} onPress={() => logout.mutate()} />
     </Screen>

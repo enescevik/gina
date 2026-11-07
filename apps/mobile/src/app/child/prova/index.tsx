@@ -146,7 +146,7 @@ export default function ChildProvaScreen() {
         );
       })}
       </ChildColumns>
-      <ErrorText error={exams.error} />
+      <ErrorText tone="child" error={exams.error} />
     </Screen>
   );
 }

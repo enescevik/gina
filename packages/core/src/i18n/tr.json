@@ -5213,5 +5213,12 @@
   "questionLikes.bookletHelp": "Kendi favorilerinizden sınıf, ders ve konu seçin. En yeni 500 favori içinden en fazla 100 soru basılır. Öğrenci nüshasında cevaplar ve çocuk adı yer almaz.",
   "questionLikes.allSubjects": "Bu sınıftaki tüm dersler",
   "prova.booklet.source.favorites": "Favorilerim",
-  "futureLearning.unavailable": "Bu bölüm şu anda kullanılamıyor"
+  "futureLearning.unavailable": "Bu bölüm şu anda kullanılamıyor",
+  "childError.retry": "Bu adım tamamlanmadı. Yeniden deneyebilirsin.",
+  "childError.waitPin": "Biraz bekleyip PIN’i tekrar deneyebilirsin.",
+  "childError.tryPin": "Bu PIN eşleşmedi. Bir daha kontrol edebilirsin.",
+  "childError.connection": "Bağlantı kesilmiş olabilir. Yeniden deneyebilirsin.",
+  "weeklyReview.provaTitle": "Prova Gözlemleri",
+  "weeklyReview.provaCounts": "{{attempts}} Prova · {{scored}} soru puanlandı · {{pending}} soru inceleme bekliyor",
+  "weeklyReview.provaSignals": "{{liked}} beğeni · {{struggled}} “zorlandım” işareti · {{repeated}} tekrar karşılaşma"
 }

@@ -3,7 +3,7 @@ import {useEffect,useRef,useState} from 'react';
 import {AppState,Text,View} from 'react-native';
 import {useQuery} from '@tanstack/react-query';
 import {useTranslation} from 'react-i18next';
-import {isEveningReminder} from '@gina/core';
+import {isEveningReminder,studyReminderDelta} from '@gina/core';
 import {supabase} from '@/lib/supabase';
 import {useSession} from '@/lib/session';
 import {Button} from '@/components/ui/button';
@@ -17,9 +17,9 @@ export function useStudyReminder(childId:string){
   queryFn:async()=>{const {data,error}=await supabase.rpc('get_study_preferences',{p_child_id:childId});if(error)throw error;return data?.[0]??null;},refetchInterval:60000});
  useEffect(()=>{
   if(!ready||!childId)return;
-  last.current=Date.now();
+  active.current=AppState.currentState==='active';last.current=Date.now();
   const listener=AppState.addEventListener('change',state=>{active.current=state==='active';last.current=Date.now();});
-  const timer=setInterval(()=>{const n=Date.now();if(active.current)setElapsed(v=>v+Math.max(0,Math.min(n-last.current,10000)));last.current=n;setNow(new Date(n));},5000);
+  const timer=setInterval(()=>{const n=Date.now();const delta=studyReminderDelta(last.current,n,active.current);last.current=n;if(delta>0)setElapsed(v=>v+delta);setNow(new Date(n));},5000);
   return()=>{listener.remove();clearInterval(timer);};
  },[ready,childId]);
  const p=prefs.data;if(!ready||!p||prefs.error)return null;

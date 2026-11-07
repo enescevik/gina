@@ -105,6 +105,8 @@ export * from "./legal";
 export * from "./plan-limit";
 export { selectLocalQuestionVoice } from "./question-reading";
 
-export { isEveningReminder, minutesClock, clockMinutes } from "./study-preferences";
+export { isEveningReminder, minutesClock, clockMinutes, studyReminderDelta } from "./study-preferences";
 
 export { outcomeObservationsSchema } from "./outcome-observations";
+
+export { childErrorMessageKey } from "./child-error";
