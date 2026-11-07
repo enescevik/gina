@@ -156,6 +156,7 @@ export type GenerationContext = {
   scenario?: ScenarioProvenance | null;
   /** QT-AI: istenen etkileşim türleri. Yoksa eski davranış (yalnız `kind`); eski kayıtlı bağlamlar bu alanı taşımaz. */
   interactionTypes?: string[];
+  interactionTypeCounts?: { type: string; count: number }[];
   /** QT-AI: yazılı/OYSS (meb_common) isteği; alıştırma türleri doğrulamada da reddedilir (savunma derinliği). */
   writtenTrack?: boolean;
 };
@@ -437,6 +438,9 @@ export function validateGenerationResult(
     if (!isStructuredQuestion(q, context)) continue;
     for (const e of structuredQuestionErrors(q, context, sharedIds).errors) structuredCodes.add(e);
   }
+  if (context.interactionTypeCounts?.some(({ type, count }) =>
+    questions.filter((q) => q?.interaction_type === type).length !== count
+  )) structuredCodes.add("interaction_type_count_mismatch");
   if (structuredCodes.size) throw new GenerationInvalidError([...structuredCodes].sort());
   if (
     questions.length !== total ||
