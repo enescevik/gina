@@ -31,7 +31,7 @@ function weightsOk(w: unknown, ids: string[]) {
 const isNum = (v: unknown): v is number => typeof v === "number" && Number.isFinite(v);
 
 
-/** AI üretiminin bildiği türler. Faz 3 (crossword) ve diğerleri Edge'de açıkça `type_unknown`. */
+/** AI üretiminde doğrulanan etkileşim türleri. */
 export const PHASE1_TYPES = ["true_false", "fill_blank", "matching", "numeric", "ordering", "classification"] as const;
 export const PHASE2A_TYPES = ["mark_text", "error_fix", "multi_choice", "two_stage"] as const;
 export const PHASE2B_TYPES = ["region_select", "clock"] as const;
@@ -39,15 +39,17 @@ const PHASE2A: readonly string[] = PHASE2A_TYPES, PHASE2B: readonly string[] = P
 
 export function questionContentErrors(type: string, payload: unknown, key: unknown, schemaVersion = 1): string[] {
   if (schemaVersion !== 1) return ["schema_version_unsupported"];
-  if (!PHASE1.includes(type) && !PHASE2A.includes(type) && !PHASE2B.includes(type)) return ["type_unknown"];
+  if (type !== "crossword" && !PHASE1.includes(type) && !PHASE2A.includes(type) && !PHASE2B.includes(type)) return ["type_unknown"];
   // Uyaran (stimulus) her yapılandırılmış türde isteğe bağlı; önce kendisi, sonra kalan payload doğrulanır (core/SQL sırası).
   if (isObj(payload) && "stimulus" in payload) {
+    if (type === "crossword") return ["payload_unknown_field"];
     const se = stimulusErrors(payload.stimulus);
     if (se.length) return se;
     if (JSON.stringify(payload).length > 16000) return ["payload_invalid"];
     const { stimulus: _s, ...rest } = payload;
     payload = rest;
   }
+  if (type === "crossword") return crosswordErrors(payload, key);
   if (PHASE2A.includes(type)) return phase2aContentErrors(type, payload, key);
   if (PHASE2B.includes(type)) return phase2bContentErrors(type, payload, key);
   if (type === "numeric" && isObj(payload)) {
@@ -395,3 +397,40 @@ function phase2bContentErrors(type: string, p: unknown, k: unknown): string[] {
   return [...err].sort();
 }
 
+
+function crosswordErrors(payload: unknown, key: unknown): string[] {
+  if (!isObj(payload) || !onlyKeys(payload, ["rows", "cols", "blocks", "clues"])) return ["payload_unknown_field"];
+  const rows = Number(payload.rows), cols = Number(payload.cols);
+  if (!Number.isInteger(payload.rows) || !Number.isInteger(payload.cols) || rows < 2 || cols < 2 || rows > 12 || cols > 12) return ["grid_invalid"];
+  const blocks = payload.blocks ?? [];
+  if (!Array.isArray(blocks) || blocks.some(b => typeof b !== "string" || !/^r[1-9]\d*_c[1-9]\d*$/.test(b))) return ["grid_invalid"];
+  if (!Array.isArray(payload.clues) || payload.clues.length < 1 || payload.clues.length > 20) return ["clues_invalid"];
+  if (!isObj(key) || !onlyKeys(key, ["answers"]) || !isObj(key.answers)) return ["key_unknown_id"];
+  const letters = new Map<string, string>();
+  const ids = new Set<string>();
+  const errors = new Set<string>();
+  for (const clue of payload.clues) {
+    if (!isObj(clue) || !onlyKeys(clue, ["id", "dir", "row", "col", "length", "text"]) ||
+      typeof clue.id !== "string" || !/^[a-z][a-z0-9_]{0,23}$/.test(clue.id) || ids.has(clue.id) ||
+      !Number.isInteger(clue.row) || !Number.isInteger(clue.col) || !Number.isInteger(clue.length) ||
+      (clue.dir !== "across" && clue.dir !== "down") || typeof clue.text !== "string" ||
+      !clue.text.trim() || clue.text.length > 300) return ["clues_invalid"];
+    const row = Number(clue.row), col = Number(clue.col), length = Number(clue.length);
+    if (row < 1 || col < 1 || length < 2 || length > 12 ||
+      row + (clue.dir === "down" ? length - 1 : 0) > rows ||
+      col + (clue.dir === "across" ? length - 1 : 0) > cols) return ["clues_invalid"];
+    ids.add(clue.id);
+    const raw = key.answers[clue.id];
+    if (typeof raw !== "string" || !raw.trim()) { errors.add("key_missing_id"); continue; }
+    const answer = raw.normalize("NFC").trim().toLocaleUpperCase("tr-TR");
+    if (answer.length !== length || !/^[A-ZÇĞİÖŞÜ]+$/.test(answer)) { errors.add("key_value_invalid"); continue; }
+    for (let i = 0; i < length; i++) {
+      const cell = `r${row + (clue.dir === "down" ? i : 0)}_c${col + (clue.dir === "across" ? i : 0)}`;
+      if (blocks.includes(cell)) errors.add("clue_on_block");
+      if (letters.has(cell) && letters.get(cell) !== answer[i]) errors.add("crossing_mismatch");
+      letters.set(cell, answer[i]!);
+    }
+  }
+  if (Object.keys(key.answers).some(id => !ids.has(id))) errors.add("key_unknown_id");
+  return [...errors].sort();
+}

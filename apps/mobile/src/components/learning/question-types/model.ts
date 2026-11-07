@@ -6,7 +6,7 @@
  * `score_details` + veliye açık anahtarın ekranda nasıl okunacağını belirler.
  */
 import {
-  answerState,
+  answerState, crosswordAnswerSchema, crosswordPayloadSchema, type CrosswordAnswer, type Phase3InteractionType,
   type AnswerOf,
   type AnswerState,
   categoryFull,
@@ -59,10 +59,10 @@ export function readPayload<T extends StructuredInteractionType>(type: T, payloa
 }
 
 /** İstemcinin okuyabildiği bütün yapılandırılmış cevaplar (1A/1B + 2A). */
-export type ClientAnswer = StructuredAnswer | Phase2aAnswer | Phase2bAnswer;
-export type ClientInteractionType = StructuredInteractionType | Phase2aInteractionType | Phase2bInteractionType;
-export const clientAnswerSchema = z.union([structuredAnswerSchema, phase2aAnswerSchema, phase2bAnswerSchema]);
-export const isClientType = (t: string | null | undefined): t is ClientInteractionType => isStructuredType(t) || isPhase2aType(t ?? "") || isPhase2bType(t ?? "");
+export type ClientAnswer = StructuredAnswer | Phase2aAnswer | Phase2bAnswer | CrosswordAnswer;
+export type ClientInteractionType = StructuredInteractionType | Phase2aInteractionType | Phase2bInteractionType | Phase3InteractionType;
+export const clientAnswerSchema = z.union([structuredAnswerSchema, phase2aAnswerSchema, phase2bAnswerSchema, crosswordAnswerSchema]);
+export const isClientType = (t: string | null | undefined): t is ClientInteractionType => t === "crossword" || isStructuredType(t) || isPhase2aType(t ?? "") || isPhase2bType(t ?? "");
 
 /** 2A payload'ı (öğrenci projeksiyonu ya da veli tam payload'ı; ikisi de aynı anahtarları taşır). */
 export function readPhase2aPayload<T extends Phase2aInteractionType>(type: T, payload: unknown) {
@@ -87,7 +87,8 @@ export function readStructuredAnswer(type: string, value: unknown): ClientAnswer
 export function canRender(type: string | null | undefined, schemaVersion: number | null | undefined, payload: unknown): boolean {
   if (!isClientType(type) || (schemaVersion ?? 1) !== 1) return false;
   if (payload && typeof payload === "object" && "stimulus" in payload && !readStimulus(payload)) return false;
-  return isPhase2aType(type) ? readPhase2aPayload(type, payload) !== null
+  return type === "crossword" ? crosswordPayloadSchema.safeParse(withoutStimulus(payload)).success
+    : isPhase2aType(type) ? readPhase2aPayload(type, payload) !== null
     : isPhase2bType(type) ? readPhase2bPayload(type, payload) !== null
     : readPayload(type, payload) !== null;
 }

@@ -18,7 +18,7 @@ import {
   legacyKindFor,
   parseInteractionTypes,
   disabledInteractionTypes,
-  STRUCTURED_PROMPT,
+  CROSSWORD_PROMPT, STRUCTURED_PROMPT,
   STRUCTURED_PROMPT_VERSION,
   structuredGenerationSchema,
 } from "../_shared/structured-generation.ts";
@@ -173,7 +173,8 @@ Deno.serve(async (req) => {
       return fail("interaction_type_unavailable", 409, { details: { types: disabled.join(",") } });
     }
   }
-  const basePromptVersion = structuredRequested ? STRUCTURED_PROMPT_VERSION : PROMPT_VERSION;
+  const crosswordRequested = interactionTypes?.includes("crossword") === true;
+  const basePromptVersion = crosswordRequested ? STRUCTURED_PROMPT_VERSION + "-crossword-v1" : structuredRequested ? STRUCTURED_PROMPT_VERSION : PROMPT_VERSION;
   let ent;
   try {
     ent = await provaEntitlement(db, parent.familyId);
@@ -318,7 +319,7 @@ Deno.serve(async (req) => {
     favoriteShapes = favoriteStyleShapes(data);
   }
   const promptVersion = favoriteShapes.length ? basePromptVersion + "-favorite-shapes-v1" : basePromptVersion;
-  const baseSystemPrompt = structuredRequested ? SYSTEM_PROMPT + "\n" + STRUCTURED_PROMPT : SYSTEM_PROMPT;
+  const baseSystemPrompt = structuredRequested ? SYSTEM_PROMPT + "\n" + STRUCTURED_PROMPT + (crosswordRequested ? "\n" + CROSSWORD_PROMPT : "") : SYSTEM_PROMPT;
   const systemPrompt = favoriteShapes.length ? baseSystemPrompt + "\n" + FAVORITE_STYLE_RULE : baseSystemPrompt;
   const schema = interactionTypes
     ? structuredGenerationSchema(SCHEMA, interactionTypes, {

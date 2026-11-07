@@ -1,5 +1,5 @@
 import {
-  answerState,
+  answerState, crosswordPayloadSchema, type CrosswordAnswer,
   type AnswerOf,
   type Phase2aAnswerOf,
   type Phase2bAnswerOf,
@@ -9,10 +9,11 @@ import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { CircleAlert, Undo2 } from "lucide-react-native";
 import { Pressable } from "@/components/ui/pressable";
+import { CrosswordQuestion } from "./crossword";
 import { ClassificationQuestion } from "./classification";
 import { FillBlankQuestion } from "./fill-blank";
 import { MatchingQuestion } from "./matching";
-import { canRender, isClientType, readPayload, readPhase2aPayload, readPhase2bPayload, readStimulus, type ClientAnswer, type ClientInteractionType, type ScoreDetails } from "./model";
+import { canRender, isClientType, readPayload, readPhase2aPayload, readPhase2bPayload, readStimulus, withoutStimulus, type ClientAnswer, type ClientInteractionType, type ScoreDetails } from "./model";
 import { ErrorFixQuestion, MarkTextQuestion, MultiChoiceQuestion, TwoStageQuestion } from "./phase2a";
 import { ClockQuestion, RegionSelectQuestion, StimulusView } from "./phase2b";
 import { NumericQuestion } from "./numeric";
@@ -118,6 +119,10 @@ export function StructuredQuestion({
   const common = { disabled: locked };
   let body: ReactNode;
   switch (type) {
+    case "crossword":
+      body = <CrosswordQuestion {...common} payload={crosswordPayloadSchema.parse(withoutStimulus(payload))}
+        answer={answer as CrosswordAnswer | undefined} onChange={a => change(a, true)} />;
+      break;
     case "true_false":
       body = <TrueFalseQuestion {...common} payload={readPayload("true_false", payload)!} answer={answer as AnswerOf<"true_false"> | undefined} onChange={(a) => change(a)} />;
       break;

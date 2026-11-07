@@ -1,3 +1,4 @@
+import { crosswordPayloadSchema, clueCells } from "./question-types";
 /** Pure, escaped print layout shared by the mobile/web export path and tests. */
 export interface BookletChoice {
   key: string;
@@ -126,6 +127,9 @@ h1, h2, h3 { font-family: "Baloo 2", "Nunito", -apple-system, "Segoe UI", Roboto
 .qt .sq { margin-left: 0; margin-right: 2mm; }
 .qt .passage { line-height: 2.2; border: 1px solid #E4DCF1; border-radius: 2mm; padding: 2mm 3mm; }
 .qt .stage { margin-bottom: 2mm; }
+.qt .crossword-grid { width: auto; }
+.qt .crossword-grid td { width: 8mm; height: 8mm; padding: 1mm; font-size: 8pt; }
+.qt .crossword-grid td.closed { background: #D3CCDB; }
 .qt .regiongrid { width: auto; max-width: 100%; }
 .qt .rcell { width: 14mm; height: 14mm; text-align: center; vertical-align: middle; }
 .qt .rl { font-size: 7pt; color: #9AA8B5; }
@@ -173,6 +177,8 @@ export interface StructuredBookletLabels {
   stage: (n: number) => string;
   regionHelp: string;
   regionCountHelp: (n: number) => string;
+  crosswordAcross?: string;
+  crosswordDown?: string;
   clockRead: string;
   clockSet: string;
   clockTime: string;
@@ -340,11 +346,37 @@ function sectorsSvg(n: number): string {
 function passageHtml(p: Record<string, unknown>): string {
   return (Array.isArray(p.segments) ? p.segments : []).map((seg) => multiline(obj(seg).text)).join("");
 }
+function crosswordBooklet(q: BookletQuestion, L: StructuredBookletLabels, teacher: boolean): string {
+  const { stimulus: _stimulus, ...payload } = obj(q.payload);
+  const parsed = crosswordPayloadSchema.safeParse(payload);
+  if (!parsed.success) return "";
+  const { rows, cols, clues } = parsed.data;
+  const active = new Set(clues.flatMap(clueCells));
+  const starts = new Map<string, number[]>();
+  clues.forEach((clue, index) => {
+    const first = clueCells(clue)[0]!;
+    starts.set(first, [...(starts.get(first) ?? []), index + 1]);
+  });
+  const answers = teacher ? obj(obj(q.answer_key).answers) : {};
+  const grid = teacher ? "" : `<table class="grid crossword-grid"><tbody>${Array.from({ length: rows }, (_, row) => `<tr>${
+    Array.from({ length: cols }, (_, col) => {
+      const id = `r${row + 1}_c${col + 1}`;
+      return active.has(id) ? `<td>${starts.get(id)?.join(", ") ?? ""}</td>` : '<td class="closed"></td>';
+    }).join("")
+  }</tr>`).join("")}</tbody></table>`;
+  const list = clues.map(clue => {
+    const direction = clue.dir === "across" ? L.crosswordAcross ?? "Yatay" : L.crosswordDown ?? "Dikey";
+    const key = teacher ? ` <b>${escapeHtml(answers[clue.id] ?? "—")}</b>` : "";
+    return `<li>${escapeHtml(direction)} · ${escapeHtml(clue.text)} (${clue.length})${key}</li>`;
+  }).join("");
+  return `<div class="qt qt-crossword">${grid}<ol>${list}</ol></div>`;
+}
 function phase2StudentHtml(q: BookletQuestion, L: StructuredBookletLabels): string | null {
   const p = obj(q.payload);
   const help = (text: string) => `<div class="help">${escapeHtml(text)}</div>`;
   const opts = (arr: unknown, mark: "sq" | "ci") => `<table><tbody>${entries(arr).map((o, i) => `<tr><td><span class="${mark}"></span><b>${letter(i)})</b> ${escapeHtml(o.text)}</td></tr>`).join("")}</tbody></table>`;
   switch (q.interaction_type) {
+    case "crossword": return crosswordBooklet(q, L, false);
     case "mark_text":
       return `<div class="qt qt-mark">${help(L.markHelp(p.unit === "sentence" ? "sentence" : "word", typeof p.max_select === "number" ? p.max_select : undefined))}<div class="passage">${passageHtml(p)}</div></div>`;
     case "error_fix":
@@ -390,6 +422,7 @@ function phase2KeyHtml(q: BookletQuestion, L: StructuredBookletLabels): string |
   const textOf = (arr: unknown, id: unknown) => entries(arr).find((e) => e.id === id)?.text ?? "—";
   const segs = (Array.isArray(p.segments) ? p.segments : []).map(obj).filter((s) => typeof s.id === "string").map((s) => ({ id: String(s.id), text: String(s.text) }));
   switch (q.interaction_type) {
+    case "crossword": return crosswordBooklet(q, L, true);
     case "mark_text":
       return `<ul>${(Array.isArray(k.targets) ? k.targets : []).map((id) => li(`<b>${escapeHtml(segs.find((s) => s.id === id)?.text ?? "—")}</b>`)).join("")}</ul>`;
     case "error_fix":

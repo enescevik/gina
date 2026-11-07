@@ -151,7 +151,7 @@ describe("QT-AI interaction_types in the generation journal", () => {
     const r = f.open().prepare({ ...practice, interaction_types: ["true_false", "numeric"] });
     expect(f.open().read()!.payload.interaction_types).toEqual(["true_false", "numeric"]);
     expect(() => f.open().prepare(practice)).toThrow("generation_pending");
-    expect(generationPayloadSchema.safeParse({ ...practice, interaction_types: ["crossword"] }).success).toBe(false);
+    expect(generationPayloadSchema.safeParse({ ...practice, interaction_types: ["crossword"] }).success).toBe(true);
     expect(generationPayloadSchema.safeParse({ ...practice, interaction_types: ["numeric", "numeric"] }).success).toBe(false);
     expect(generationPayloadSchema.safeParse({ ...practice, interaction_types: [] }).success).toBe(false);
     expect(r.payload.interaction_types).toEqual(["true_false", "numeric"]);

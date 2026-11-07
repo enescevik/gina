@@ -23,8 +23,8 @@ const list = (v: unknown): Obj[] => (Array.isArray(v) ? v.filter(isObj) : []);
 const text = (v: unknown) => (typeof v === "string" ? v : "");
 const s = t.questions.structured;
 /** Önizlemesi olan türler: 1A/1B + Faz 2A + Faz 2B. Diğerleri (ör. bulmaca) ham JSON ile gösterilir. */
-type PreviewType = StructuredInteractionType | Phase2aInteractionType | Phase2bInteractionType;
-const isPreviewType = (v: unknown): v is PreviewType => typeof v === "string" && (isStructuredType(v) || isPhase2aType(v) || isPhase2bType(v));
+type PreviewType = StructuredInteractionType | Phase2aInteractionType | Phase2bInteractionType | "crossword";
+const isPreviewType = (v: unknown): v is PreviewType => typeof v === "string" && (isStructuredType(v) || isPhase2aType(v) || isPhase2bType(v) || v === "crossword");
 
 export function typeLabel(kind: string, interactionType: string | null | undefined): string {
   const type = interactionType ?? kind;
@@ -46,6 +46,7 @@ export function structuredSummary(interactionType: string | null | undefined, pa
     two_stage: 2,
     region_select: list(payload.regions).length,
     clock: 1,
+    crossword: list(payload.clues).length,
   };
   const base = interactionType === "numeric" || interactionType === "clock" ? s.summary[interactionType] ?? "" : `${n[interactionType]} ${s.summary[interactionType] ?? ""}`;
   return isObj(payload.stimulus) ? `${base} · ${s.stimulusKind[text(payload.stimulus.kind)] ?? ""}` : base;
@@ -176,6 +177,11 @@ function PayloadBody({ type, p }: { type: PreviewType; p: Obj }) {
         </div>
       );
     }
+    case "crossword":
+      return <div><p>{String(p.rows)} × {String(p.cols)}</p>
+        <ol className="list-decimal pl-5">{list(p.clues).map(clue => <li key={text(clue.id)}>
+          {clue.dir === "across" ? "Yatay" : "Dikey"} · {text(clue.text)}
+        </li>)}</ol></div>;
     case "clock":
       return (
         <p>
@@ -338,6 +344,8 @@ function KeyView({ type, p, k }: { type: PreviewType; p: Obj; k: Obj }) {
   } else if (type === "region_select") {
     if (typeof k.count === "number") rows.push([s.regionCount, `${k.count} / ${list(p.regions).length}`]);
     if (Array.isArray(k.targets)) rows.push([s.targets, k.targets.map((x) => label(p.regions, x)).join(", ")]);
+  } else if (type === "crossword" && isObj(k.answers)) {
+    for (const [id, answer] of Object.entries(k.answers)) rows.push([label(p.clues, id), text(answer)]);
   } else if (type === "clock") {
     rows.push([s.value, text(k.time)]);
     if (k.accept_12h) rows.push([s.accept12h, "✓"]);

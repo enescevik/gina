@@ -1,7 +1,7 @@
-import { isPhase2aType, isPhase2bType } from "@gina/core";
+import { isPhase2aType, isPhase2bType, crosswordPayloadSchema, clueCells } from "@gina/core";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
-import { autoResultHint, orderingSummary, reviewRows, type ClientAnswer, type ClientInteractionType, type ScoreDetails } from "./model";
+import { autoResultHint, orderingSummary, reviewRows, withoutStimulus, type ClientAnswer, type ClientInteractionType, type ScoreDetails } from "./model";
 import { phase2aReviewRows, phase2aSummary } from "./phase2a-model";
 import { phase2bReviewRows, regionCountSummary } from "./phase2b-model";
 import { MarkBadge, qt } from "./ui";
@@ -21,6 +21,17 @@ export function StructuredReview({
   answerKey: unknown;
 }) {
   const { t } = useTranslation();
+  if (type === "crossword") {
+    const parsed = crosswordPayloadSchema.safeParse(withoutStimulus(payload));
+    const keys = (answerKey as { answers?: Record<string, string> } | null)?.answers;
+    const cells = answer?.type === "crossword" ? answer.cells : {};
+    return <View style={{ gap: 10 }}>{parsed.success ? parsed.data.clues.map(clue => <View key={clue.id}>
+      <Text style={{ color: qt.ink, fontWeight: "700" }}>{clue.text}</Text>
+      <Text style={{ color: qt.ink }}>{t("prova.qt.crossword.review", {
+        entered: clueCells(clue).map(id => cells[id] ?? "–").join(""), expected: keys?.[clue.id] ?? "–",
+      })}</Text>
+    </View>) : null}</View>;
+  }
   const p2Labels = {
     selected: t("prova.qt.review.p2.selected"),
     notSelected: t("prova.qt.review.p2.notSelected"),

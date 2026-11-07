@@ -447,14 +447,14 @@ export function unsupportedTypesForChild(devices: DeviceTypeSupport[], used: str
 export type AiInteractionType = (typeof AI_INTERACTION_TYPES)[number];
 export const AI_WRITTEN_TRACK_TYPES: readonly AiInteractionType[] = ["open_ended", "numeric"];
 /** Faz anahtarları kapalıyken (varsayılan) yalnız 1A/1B + eski türler; 2A/2B ayrı anahtarlarla görünür. */
-export function aiTypesAllowed(writtenTrack: boolean, phases: { phase2a?: boolean; phase2b?: boolean } = {}): readonly AiInteractionType[] {
+export function aiTypesAllowed(writtenTrack: boolean, phases: { phase2a?: boolean; phase2b?: boolean; phase3?: boolean } = {}): readonly AiInteractionType[] {
   if (writtenTrack) return AI_WRITTEN_TRACK_TYPES;
   return AI_INTERACTION_TYPES.filter((t) =>
-    (PHASE2A_INTERACTION_TYPES as readonly string[]).includes(t) ? !!phases.phase2a
+    t === "crossword" ? !!phases.phase3 : (PHASE2A_INTERACTION_TYPES as readonly string[]).includes(t) ? !!phases.phase2a
       : (PHASE2B_INTERACTION_TYPES as readonly string[]).includes(t) ? !!phases.phase2b : true);
 }
 /** Seçimi isteğe çevirir: boş seçim → undefined (alan hiç gönderilmez, eski davranış). Sıra sabit (kanonik). */
-export function aiInteractionTypesFor(selected: readonly string[], writtenTrack: boolean, phases: { phase2a?: boolean; phase2b?: boolean } = {}): AiInteractionType[] | undefined {
+export function aiInteractionTypesFor(selected: readonly string[], writtenTrack: boolean, phases: { phase2a?: boolean; phase2b?: boolean; phase3?: boolean } = {}): AiInteractionType[] | undefined {
   const allowed = aiTypesAllowed(writtenTrack, phases);
   const out = allowed.filter((t) => selected.includes(t));
   return out.length ? [...out] : undefined;

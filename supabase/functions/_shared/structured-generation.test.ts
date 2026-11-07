@@ -620,3 +620,18 @@ Deno.test("job: 2A/2B rows flow to complete_prova_generation_v2 with payload/key
   const written: GenerationContext = { ...ctx, writtenTrack: true };
   assertEquals(rejectCodes(r, written), ["interaction_type_not_allowed_for_track"]);
 });
+
+Deno.test("crossword schema keeps Turkish crossing keys private and rejects mismatched intersections", () => {
+  const puzzle = {
+    ...aiStructured.true_false(), interaction_type: "crossword", stem: "İpuçlarından kelimeleri bul.",
+    structure: { rows: 3, cols: 3, blocks: [], clues: [
+      { id: "a", dir: "across", row: 1, col: 1, length: 3, text: "Üzerinde yazı yazılan beyaz yüzey.", answer: "KAR" },
+      { id: "b", dir: "down", row: 1, col: 1, length: 3, text: "Geceleri ışık veren gök cismi.", answer: "KÜN" },
+    ] },
+  };
+  const split = splitStructuredQuestion(puzzle);
+  assert(split.ok);
+  assertEquals(split.value.answer_key, { answers: { a: "KAR", b: "KÜN" } });
+  assert(!JSON.stringify(split.value.payload).includes('"answer"'));
+  expectCode(mutate(puzzle, s => { s.clues[1].answer = "AYI"; }), "crossing_mismatch", "crossings share a cell");
+});

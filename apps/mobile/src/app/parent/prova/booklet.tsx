@@ -73,6 +73,8 @@ function bookletStructuredLabels(t: TFunction): BookletLabels["structured"] {
     stage: (n) => k("stage", { n }),
     regionHelp: k("regionHelp"),
     regionCountHelp: (n) => k("regionCount", { count: n }),
+    crosswordAcross: t("prova.qt.crossword.across"),
+    crosswordDown: t("prova.qt.crossword.down"),
     clockRead: k("clockRead"),
     clockSet: k("clockSet"),
     clockTime: k("clockTime"),

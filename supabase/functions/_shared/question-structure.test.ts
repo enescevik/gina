@@ -9,10 +9,10 @@ import { parseNumberInput, questionContentErrors } from "./question-structure.ts
 // Edge, AI'ın üretebildiği türleri doğrular: 1A/1B + Faz 2A (mark_text, error_fix, multi_choice, two_stage) +
 // Faz 2B (clock, region_select) ve her türde isteğe bağlı uyaran (stimulus). 2A/2B sunucuda enabled=false gelir;
 // Edge doğrulayıcı yine kabul eder (açılınca çalışsın), üretim isteği ise kapalı türü sağlayıcıdan önce reddeder.
-// Faz 3 (crossword) ve kütüphane türleri (drag_magic) AI üretiminde yok: Edge açıkça type_unknown döner.
+// Kütüphaneye özel türler AI üretiminde açıkça type_unknown döner.
 const AI_TYPES = new Set([
   "true_false", "fill_blank", "matching", "numeric", "ordering", "classification",
-  "mark_text", "error_fix", "multi_choice", "two_stage", "region_select", "clock",
+  "mark_text", "error_fix", "multi_choice", "two_stage", "region_select", "clock", "crossword",
 ]);
 const aiCases = fixtures.content.filter((c) => AI_TYPES.has(c.type));
 Deno.test("non-AI phase types are refused explicitly by the Edge validator", () => {

@@ -20,7 +20,7 @@ export const isPhase2AuthorType = (t: unknown): t is Phase2InteractionType =>
   typeof t === "string" && (PHASE2_INTERACTION_TYPES as readonly string[]).includes(t);
 
 /** Alıştırma türleri (OYSS/meb_common izinde engelli): 1A/1B listesi + bütün 2A/2B türleri (SQL practice_only=true). */
-export const AUTHOR_PRACTICE_ONLY_TYPES: ReadonlySet<string> = new Set<string>([...PRACTICE_ONLY_TYPES, ...PHASE2_INTERACTION_TYPES]);
+export const AUTHOR_PRACTICE_ONLY_TYPES: ReadonlySet<string> = new Set<string>([...PRACTICE_ONLY_TYPES, ...PHASE2_INTERACTION_TYPES, "crossword"]);
 
 type Row = { id: string; text: string };
 export interface Token { id: string; text: string }

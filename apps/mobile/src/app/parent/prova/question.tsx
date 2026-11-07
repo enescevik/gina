@@ -1,3 +1,5 @@
+import { buildCrossword, CrosswordAuthor, newCrosswordDraft } from "@/components/learning/crossword-author";
+import { CrosswordQuestion } from "@/components/learning/question-types/crossword";
 import { StructuredRevision } from "@/components/learning/structured-revision";
 import * as Crypto from "expo-crypto";
 import { Toggle } from "@/components/ui/toggle";
@@ -20,7 +22,7 @@ import {
 import { uploadLearningFile } from "@/lib/learning-files";
 
 import {
-  AUTHOR_PRACTICE_ONLY_TYPES,
+  AUTHOR_PRACTICE_ONLY_TYPES, crosswordContentErrors,
   buildPhase2Content,
   clockRequires12h,
   buildStimulus,
@@ -71,19 +73,20 @@ import {
   StimulusEditor,
   StimulusPreview,
 } from "@/components/learning/structured-question-author-p2";
-import { PHASE2A_AUTHOR_ENABLED, PHASE2B_AUTHOR_ENABLED } from "@/components/learning/question-types/support";
+import { CROSSWORD_AUTHOR_ENABLED, PHASE2A_AUTHOR_ENABLED, PHASE2B_AUTHOR_ENABLED } from "@/components/learning/question-types/support";
 import { supabase } from "@/lib/supabase";
 
 type Kind = Enums<"question_kind">;
 /** QT: eski iki tür + yapılandırılmış etkileşim türleri (her pakette aynı; AI gerekmez). */
-type QuestionType = Exclude<Kind, "structured"> | StructuredInteractionType | Phase2InteractionType;
+type QuestionType = Exclude<Kind, "structured"> | StructuredInteractionType | Phase2InteractionType | "crossword";
 /** Faz 2A/2B türleri yalnız kendi anahtarı açıkken listelenir (varsayılan kapalı; sunucuda da enabled=false). */
 const QUESTION_TYPES: QuestionType[] = [
   "multiple_choice", "open_ended", ...STRUCTURED_INTERACTION_TYPES,
   ...(PHASE2A_AUTHOR_ENABLED ? PHASE2A_INTERACTION_TYPES : []),
   ...(PHASE2B_AUTHOR_ENABLED ? PHASE2B_INTERACTION_TYPES : []),
+  ...(CROSSWORD_AUTHOR_ENABLED ? ["crossword" as const] : []),
 ];
-const isAuthoredType = (k: string): boolean => isStructuredType(k) || isPhase2AuthorType(k);
+const isAuthoredType = (k: string): boolean => isStructuredType(k) || isPhase2AuthorType(k) || k === "crossword";
 type Difficulty = Enums<"question_difficulty">;
 const DIFFICULTIES: Difficulty[] = ["kolay", "orta", "orta_ustu", "zor"];
 const KEYS = ["A", "B", "C", "D"] as const;
@@ -143,7 +146,7 @@ function NewQuestionScreen() {
   const [topic, setTopic] = useState("");
   const [scenario, setScenario] = useState("");
   const [qtype, setQtype] = useState<QuestionType>("multiple_choice");
-  const kind: Kind = isStructuredType(qtype) || isPhase2AuthorType(qtype) ? "structured" : qtype;
+  const kind: Kind = isStructuredType(qtype) || isPhase2AuthorType(qtype) || qtype === "crossword" ? "structured" : qtype;
   const setKind = (k: Kind) => {
     if (k !== "structured") setQtype(k);
   };
@@ -152,6 +155,8 @@ function NewQuestionScreen() {
   const [stim, setStim] = useState<StimulusDraft>(newStimulusDraft);
   // QT: tür başına taslak; tür değiştirip geri dönünce yazılanlar kaybolmaz.
   const [drafts, setDrafts] = useState<Partial<Record<StructuredInteractionType, StructuredDraft>>>({});
+  const [crosswordDraft, setCrosswordDraft] = useState(newCrosswordDraft);
+  const crossword = qtype === "crossword" ? buildCrossword(crosswordDraft) : null;
   const [touched, setTouched] = useState(false);
   const [points, setPoints] = useState("");
   const [showKey, setShowKey] = useState(false);
@@ -162,14 +167,14 @@ function NewQuestionScreen() {
   // 1–4. sınıf: çocuk 1–12 saat adımlayıcısı görür → 12 saatlik kabul her zaman açık gönderilir.
   const p2: Phase2Draft | null = p2Raw?.type === "clock" && clockRequires12h(Number(grade)) ? { ...p2Raw, accept12h: true } : p2Raw;
   /** Hazırlanan yapılandırılmış soru (1A/1B ya da 2A/2B); null = eski tür. */
-  const authored: { type: string } | null = structured ?? p2;
-  const stimulus = PHASE2B_AUTHOR_ENABLED && authored ? buildStimulus(stim) : null;
+  const authored: { type: string } | null = structured ?? p2 ?? (crossword ? { type: "crossword" } : null);
+  const stimulus = PHASE2B_AUTHOR_ENABLED && authored && !crossword ? buildStimulus(stim) : null;
   const structuredErrors = structured
     ? [...new Set([...structuredDraftErrors(structured), ...stimulusErrors(stimulus)])].sort()
-    : p2 ? phase2DraftErrors(p2, { hasImage: images.length > 0, stimulus, grade: Number(grade) || null }) : [];
+    : p2 ? phase2DraftErrors(p2, { hasImage: images.length > 0, stimulus, grade: Number(grade) || null }) : crossword ? [...crosswordContentErrors(crossword.payload, crossword.answer_key), ...stimulusErrors(stimulus)] : [];
   const pointsValue = points.trim() ? Number(points.trim().replace(",", ".")) : null;
   const pointsInvalid = pointsValue !== null && !(pointsValue > 0 && pointsValue <= 100);
-  const baseContent = structured ? buildStructuredContent(structured) : p2 ? buildPhase2Content(p2) : null;
+  const baseContent = structured ? buildStructuredContent(structured) : p2 ? buildPhase2Content(p2) : crossword;
   const content = baseContent && stimulus ? { ...baseContent, payload: { ...baseContent.payload, stimulus } } : baseContent;
   const [difficulty, setDifficulty] = useState<Difficulty>("orta_ustu");
   const [stem, setStem] = useState("");
@@ -658,7 +663,7 @@ function NewQuestionScreen() {
           {authored
             ? (
               <View className="gap-4">
-                {structured
+                {crossword ? <CrosswordAuthor draft={crosswordDraft} onChange={setCrosswordDraft} disabled={save.isPending} /> : structured
                   ? (
                     <StructuredQuestionEditor
                       draft={structured}
@@ -685,7 +690,7 @@ function NewQuestionScreen() {
                     />
                   )
                   : null}
-                {PHASE2B_AUTHOR_ENABLED
+                {PHASE2B_AUTHOR_ENABLED && !crossword
                   ? <StimulusEditor draft={stim} disabled={save.isPending} onChange={(next) => { setTouched(true); setStim(next); }} />
                   : null}
                 <Field
@@ -825,7 +830,7 @@ function NewQuestionScreen() {
             {authored && content
               ? (
                 <>
-                  <StimulusPreview stimulus={content.payload.stimulus} />
+                  <StimulusPreview stimulus={stimulus} />
                   {structured
                     ? (
                       <StructuredQuestionPreview
@@ -834,7 +839,12 @@ function NewQuestionScreen() {
                         answerKey={showKey ? content.answer_key : undefined}
                       />
                     )
-                    : (
+                    : crossword ? <>
+                      <CrosswordQuestion payload={crossword.payload} disabled onChange={() => {}} />
+                      {showKey ? crossword.payload.clues.map(clue => <Text key={clue.id} style={parentStyles.muted}>
+                        {clue.text} · {crossword.answer_key.answers[clue.id]}
+                      </Text>) : null}
+                    </> : (
                       <View testID="qt-preview">
                         <Phase2QuestionPreview
                           type={authored.type}

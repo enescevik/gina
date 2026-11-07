@@ -5,7 +5,7 @@ import { aiInteractionTypesFor, aiTypesAllowed, canonicalSubject, catalogBluepri
   structuredFitsKind,
 } from "@gina/core";
 import i18next from "@/lib/i18n";
-import { PHASE2A_AUTHOR_ENABLED, PHASE2B_AUTHOR_ENABLED } from "./question-types/support";
+import { CROSSWORD_AUTHOR_ENABLED, PHASE2A_AUTHOR_ENABLED, PHASE2B_AUTHOR_ENABLED } from "./question-types/support";
 import { structuredTypeLabel } from "./structured-question-author";
 import { useMemo, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -48,7 +48,7 @@ import { type BuilderQuestion, loadAiEdits } from "./prova-builder-data";
 import { aiEditRoute } from "@/lib/prova-draft";
 
 /** 2A/2B AI tür seçenekleri yalnız faz anahtarı açıkken görünür. */
-const AI_PHASES = { phase2a: PHASE2A_AUTHOR_ENABLED, phase2b: PHASE2B_AUTHOR_ENABLED };
+const AI_PHASES = { phase2a: PHASE2A_AUTHOR_ENABLED, phase2b: PHASE2B_AUTHOR_ENABLED, phase3: CROSSWORD_AUTHOR_ENABLED };
 /** QT-AI: tür/model hataları kendi sakin metinleriyle (prova.qt.author.aiErr.*); diğerleri eski yolla. */
 function provaErrorMessage(error: unknown): string | null {
   const code = error instanceof ProvaAiError ? error.code

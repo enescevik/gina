@@ -27,6 +27,7 @@ export const STRUCTURED_INTERACTION_TYPES = [
   "two_stage",
   "region_select",
   "clock",
+  "crossword",
 ] as const;
 export type LegacyInteractionType = (typeof LEGACY_INTERACTION_TYPES)[number];
 export type StructuredInteractionType = (typeof STRUCTURED_INTERACTION_TYPES)[number];
@@ -44,6 +45,7 @@ export const PRACTICE_ONLY_TYPES: ReadonlySet<string> = new Set([
   "two_stage",
   "region_select",
   "clock",
+  "crossword",
 ]);
 const ALL_TYPES: readonly string[] = [...LEGACY_INTERACTION_TYPES, ...STRUCTURED_INTERACTION_TYPES];
 export const isStructuredType = (t: unknown): t is StructuredInteractionType =>
@@ -189,6 +191,12 @@ export const STRUCTURE_JSON_SCHEMAS: Record<StructuredInteractionType, Record<st
     targets: arr(str(), "targets mode: region ids; count mode: empty."),
     max_select: { type: "integer", description: "0 = no limit." },
   }),
+  crossword: obj({
+    rows: { type: "integer" }, cols: { type: "integer" }, blocks: arr(str()),
+    clues: arr(obj({ id: str(ID_RULE), dir: { type: "string", enum: ["across", "down"] },
+      row: { type: "integer" }, col: { type: "integer" }, length: { type: "integer" },
+      text: str("Clue without its answer."), answer: str("Private Turkish word matching length and intersections.") })),
+  }),
   clock: obj({
     mode: { type: "string", enum: ["read", "set"], description: "read = clock shows a time, child writes it; set = child sets the time named in the stem." },
     display: { type: "string", enum: ["analog", "digital"] },
@@ -219,7 +227,7 @@ function structuredQuestionSchema(type: StructuredInteractionType, difficulties:
     difficulty: { type: "string", enum: [...difficulties] },
     stem: str("Instruction/question shown to the child; never contains the answer."),
     structure: STRUCTURE_JSON_SCHEMAS[type],
-    stimulus: STIMULUS_JSON_SCHEMA,
+    stimulus: type === "crossword" ? obj({ ...STIMULUS_JSON_SCHEMA.properties, kind: { type: "string", enum: ["none"] } }) : STIMULUS_JSON_SCHEMA,
     solution: str("Short solution for the parent (private)."),
     explanation: str(),
     source_urls: arr(str()),
@@ -520,6 +528,15 @@ export function splitStructuredQuestion(q: unknown): SplitResult {
       } else return fail("key_invalid");
       break;
     }
+    case "crossword": {
+      if (!Array.isArray(s.clues) || s.clues.some(c => !exactKeys(c, ["id", "dir", "row", "col", "length", "text", "answer"]))) return fail("clues_invalid");
+      const clues = s.clues as Obj[];
+      payload = { rows: s.rows, cols: s.cols, blocks: s.blocks,
+        clues: clues.map(({ id, dir, row, col, length, text }) => ({ id, dir, row, col, length, text })) };
+      key = { answers: Object.fromEntries(clues.map(c => [String(c.id), c.answer])) };
+      if (clues.some(c => mentions(c.text, String(c.answer)))) err.add("payload_answer_leak");
+      break;
+    }
     case "clock": {
       const read = s.mode === "read";
       if (!read && s.shown_time !== "") err.add("clock_invalid");
@@ -673,6 +690,7 @@ function answerTexts(type: StructuredInteractionType, p: Obj, k: Obj): string[] 
   else if (type === "error_fix") out.push(...Object.values((k.errors ?? {}) as Record<string, { accepted: unknown[] }>).flatMap((e) => e.accepted));
   else if (type === "multi_choice") out.push(...((k.correct as unknown[]) ?? []).map((t) => byId(p.options, t)));
   else if (type === "two_stage") out.push(byId((p.stage1 as Obj)?.options, k.stage1));
+  else if (type === "crossword" && isObj(k.answers)) out.push(...Object.values(k.answers));
   else if (type === "clock" && typeof k.time === "string") out.push(...TIME_FORMS(k.time));
   return out.filter((x): x is string => typeof x === "string" && norm(x).length >= 2);
 }
@@ -769,6 +787,10 @@ export function semanticErrors(type: StructuredInteractionType, q: Obj, payload:
       }
       break;
     }
+    case "crossword":
+      collect(payload.clues);
+      if (answerTexts(type, payload, key).some(answer => visible.some(line => mentions(line, answer)))) err.add("payload_answer_leak");
+      break;
     case "clock": {
       // Okuma: yönerge gösterilen saati yazarsa cevap sızar. Dijital saati okuyup aynısını yazmak ölçme değildir.
       if (payload.mode === "read") {
@@ -838,6 +860,7 @@ Etkileşimli (yapılandırılmış) soru türleri:
 - stimulus (isteğe bağlı uyaran, her türde): gerekmiyorsa kind "none" ve bütün alanlar boş. Tablo (kind "table": columns 1–6, rows 1–12, her satırda sütun sayısı kadar hücre) ya da sütun grafiği (kind "bar_chart": bars 2–10, değer 0–100000). alt zorunlu: verinin metin karşılığıdır (ekran okuyucu); veriyi aktarabilir ama sorunun cevabını, hesap sonucunu ya da doğru seçeneği söylemez.
 - Yapılandırılmış soruda choices, correct_key, expected_answer ve rubric yoktur; solution kısa çözüm açıklamasıdır (yalnız veli görür).`;
 /** Yapılandırılmış ek yalnız tür istendiğinde istemdedir; sürümü ayrı tutulur (temel kalite istemiyle birlikte sürümlenir). */
+export const CROSSWORD_PROMPT = "Bulmaca: 2–12 satır ve sütun kullan. İpuçları yatay (across) veya dikey (down). Konumlar 1 tabanlı. Her cevabın uzunluğu ve kesişen harfleri uyuşsun. Türkçe İ/I ayrımını koru. İpucu veya yönerge cevabı içermesin. Uyaran kind none olmalı.";
 export const STRUCTURED_PROMPT_VERSION = "prova-generate/v12-untrusted-structured-phase2";
 
 // ---------------------------------------------------------------------------------------------------------------

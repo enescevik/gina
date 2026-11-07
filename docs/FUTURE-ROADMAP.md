@@ -147,6 +147,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 - Kaynak: §8 Faz 3. Durum: PLANLANDI. Efor: **L**.
 - Kapsam: Gerçek sağlayıcı pilotu, bulmaca; dikte/sesli cevap ayrı kapılı.
+- Bulmaca uygulaması: veli hazırlama, çocuk ızgarası ve ipucu bazında erişilebilir kelime girişi, veli incelemesi, öğrenci ve cevap anahtarı PDF'leri, AI şeması ve Türkçe kesişim denetimi. Açılış için istemci yapısında `EXPO_PUBLIC_QT_CROSSWORD=1` ve sunucu tür anahtarı aynı yayında kullanılır. Üretim anahtarı ve fiziksel cihaz kabulü açık.
 - Bağımlılık: F12, 14 tür fiziksel kabul, hukuk kapıları.
 - Paket kapısı: Tür kapısı yok; AI mevcut hak/kota.
 - Kabul: Bulmaca kapalı kalır: UI+PDF+AI+erişilebilir alternatif ve aynı yayın anahtarı tamamlanınca açılır. Ses/dikte hukuk onayına bağlı.

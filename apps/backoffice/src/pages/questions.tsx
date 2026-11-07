@@ -37,7 +37,7 @@ function readChoices(value: Json | null): Choice[] | null {
 }
 const DIFFICULTIES: Difficulty[] = ["kolay", "orta", "orta_ustu", "zor"];
 /** QT: tür filtresi — eski türler `kind`, yapılandırılmış türler `interaction_type` sütunuyla süzülür. */
-const TYPE_FILTERS: string[] = [...LEGACY_INTERACTION_TYPES, ...STRUCTURED_INTERACTION_TYPES, ...PHASE2A_INTERACTION_TYPES, ...PHASE2B_INTERACTION_TYPES];
+const TYPE_FILTERS: string[] = [...LEGACY_INTERACTION_TYPES, ...STRUCTURED_INTERACTION_TYPES, ...PHASE2A_INTERACTION_TYPES, ...PHASE2B_INTERACTION_TYPES, "crossword"];
 
 function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?: unknown) => void }) {
   const [draft, setDraft] = useState({

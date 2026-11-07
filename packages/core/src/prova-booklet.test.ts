@@ -244,3 +244,17 @@ it("QT 2A/2B: private key lists values and stimulus alt text", () => {
 it("QT 2B: region image must be an embedded data image", () => {
   expect(() => qtRender("student", [{ ...P2[6]!, images: [{ dataUri: "https://x/y.png", alt: "x" }] }])).toThrow("invalid_booklet_image");
 });
+
+it("prints numbered crossword cells and hides solution words from the student copy", () => {
+  const html = render([{
+    ...q, kind: "structured", interaction_type: "crossword", context: undefined, images: [],
+    payload: { rows: 3, cols: 3, clues: [{ id: "c", dir: "across", row: 1, col: 1, length: 3, text: "Denizde yol alan taşıt." }] },
+    answer_key: { answers: { c: "BOT" } },
+  }]);
+  const [student, teacher] = html.split('<section class="key">');
+  expect(student).toContain('<table class="grid crossword-grid">');
+  expect(student).toContain("<td>1</td>");
+  expect(student).toContain("Denizde yol alan taşıt.");
+  expect(student).not.toContain("<b>BOT</b>");
+  expect(teacher).toContain("<b>BOT</b>");
+});
