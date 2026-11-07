@@ -403,7 +403,7 @@ function phase2StudentHtml(q: BookletQuestion, L: StructuredBookletLabels): stri
         return Array.isArray(b) ? `<span class="rbox" style="left:${b[0]! * 100}%;top:${b[1]! * 100}%;width:${b[2]! * 100}%;height:${b[3]! * 100}%">${letter(i)}</span>` : "";
       }).join("");
       if (img && !DATA_IMAGE.test(img.dataUri)) throw new Error("invalid_booklet_image");
-      return `<div class="qt qt-region">${help(L.regionHelp)}${img ? `<div class="regimg"><img src="${img.dataUri}" alt="${escapeHtml(img.alt)}"/>${boxes}</div>` : ""}<table><tbody>${
+      return `<div class="qt qt-region">${help(L.regionHelp)}${img ? `<div class="regimg"><img src="${escapeHtml(img.dataUri)}" alt="${escapeHtml(img.alt)}"/>${boxes}</div>` : ""}<table><tbody>${
         regions.map((r, i) => `<tr><td><span class="sq"></span><b>${letter(i)})</b> ${escapeHtml(r.text)}</td></tr>`).join("")}</tbody></table></div>`;
     }
     case "clock": {
@@ -615,9 +615,9 @@ export function buildBookletHtml(
       const regionImage = q.kind === "structured" && q.interaction_type === "region_select" && obj(obj(q.payload).figure).kind === "image";
       const images = (regionImage ? [] : q.images ?? []).map((image) => {
         if (
-          !/^data:image\/(png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(image.dataUri)
+          !DATA_IMAGE.test(image.dataUri)
         ) throw new Error("invalid_booklet_image");
-        return `<figure><img src="${image.dataUri}" alt="${
+        return `<figure><img src="${escapeHtml(image.dataUri)}" alt="${
           escapeHtml(image.alt)
         }"/><figcaption>${escapeHtml(image.alt)}</figcaption></figure>`;
       }).join("");
