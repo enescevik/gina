@@ -1,3 +1,4 @@
+import {useFutureLearningReady} from "@/lib/future-learning";
 import {useMutation,useQuery,useInfiniteQuery} from "@tanstack/react-query";
 import {useRef,useState} from "react";
 import {router} from "expo-router";
@@ -15,6 +16,7 @@ import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
 
 export default function FavoriteQuestions() {
+  const ready=useFutureLearningReady();
   const { t } = useTranslation();
   const { claims, session } = useSession();
   const family = claims?.family_id;
@@ -23,7 +25,7 @@ export default function FavoriteQuestions() {
   const [selection,setSelection]=useState<{child:string;ids:string[]}>({child:"",ids:[]});
   const starting=useRef(false);
   const prepared=useRef(new Map<string,{id:string;request:string;content:ProvaDraft}>());
-  const children=useQuery({queryKey:["favorite_children",family],enabled:!!family,queryFn:async()=>{
+  const children=useQuery({queryKey:["favorite_children",family],enabled:ready&&!!family,queryFn:async()=>{
     const {data,error}=await supabase.from("children").select("id,name,grade,avatar").eq("family_id",family!).is("archived_at",null).order("sort_order");if(error)throw error;return data;
   }});
   const child=children.data?.find(c=>c.id===childId)??children.data?.[0];
@@ -51,7 +53,7 @@ export default function FavoriteQuestions() {
   const favorites = useInfiniteQuery({
     queryKey: ["question_favorites", family, user],
     initialPageParam: 0,
-    enabled: !!family && !!user,
+    enabled: ready && !!family && !!user,
     queryFn: async ({pageParam}) => {
       const {data, error} = await supabase.from("question_reactions")
         .select("question_id,created_at,question_bank(id,stem,subject,topic,grade)")
@@ -64,9 +66,11 @@ export default function FavoriteQuestions() {
     getNextPageParam: (last, pages) => last.length === 30 ? pages.length*30 : undefined,
   });
   const rows = favorites.data?.pages.flat() ?? [];
+  if(!ready)return <ParentScreen title={t("futureLearning.unavailable")}>{null}</ParentScreen>;
   return <ParentScreen title={t("questionLikes.title")} subtitle={t("questionLikes.body")}
     loading={favorites.isPending} error={favorites.error} onRetry={() => void favorites.refetch()}>
     {!rows.length && !favorites.isPending && !favorites.error ? <EmptyCard title={t("questionLikes.empty")} slug="display-bookworm" /> : null}
+    {rows.length>0?<Button variant="secondary" title={t("questionLikes.printBooklet")} onPress={()=>router.push({pathname:"/parent/prova/booklet",params:{source:"favorites",grade:String(child?.grade??rows.find(r=>r.question_bank)?.question_bank?.grade??5)}})} />:null}
     {children.data&&children.data.length>1?<ChildPicker profiles={children.data} selected={child?.id??null} onSelect={id=>{setChildId(id);setSelection({child:id??"",ids:[]});}} />:null}
     {child?<View style={parentStyles.card}>
       <Text style={parentStyles.copy}>{t("questionLikes.practiceHelp",{name:child.name})}</Text>

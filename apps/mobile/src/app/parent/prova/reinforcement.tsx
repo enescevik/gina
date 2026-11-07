@@ -1,3 +1,4 @@
+import {useFutureLearningReady} from "@/lib/future-learning";
 import { randomUUID } from "expo-crypto";
 import { useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,11 +13,12 @@ import { supabase } from "@/lib/supabase";
 import { persistProvaDraft } from "@/lib/prova-draft";
 interface Suggestion { child_id:string; child_name:string; question_id:string; subject:string; topic:string; stem:string; attempt_id:string|null; reason:"struggled"|"focus"; outcome_known:boolean }
 export default function Reinforcement() {
+  const ready=useFutureLearningReady();
   const {t}=useTranslation(); const {claims}=useSession(); const cache=useQueryClient();
   const key=["reinforcement_suggestions",claims?.family_id];
   const starting=useRef(false);
   const prepared=useRef(new Map<string,{id:string;request:string;content:ProvaDraft}>());
-  const suggestions=useQuery({queryKey:key,queryFn:async()=>{
+  const suggestions=useQuery({queryKey:key,enabled:ready,queryFn:async()=>{
     const {data,error}=await supabase.rpc("get_reinforcement_suggestions");if(error)throw error;
     return data as unknown as Suggestion[];
   }});
@@ -52,6 +54,7 @@ export default function Reinforcement() {
     const {error}=await supabase.rpc("snooze_reinforcement",{p_child_id:row.child_id,p_question_id:row.question_id});
     if(error)throw error;
   },onSuccess:async()=>{await cache.invalidateQueries({queryKey:key});}});
+  if(!ready)return <ParentScreen title={t("futureLearning.unavailable")}>{null}</ParentScreen>;
   return <ParentScreen title={t("reinforcement.title")} subtitle={t("reinforcement.body")}
     loading={suggestions.isPending} error={suggestions.error} onRetry={()=>void suggestions.refetch()}>
     {suggestions.data?.length===0?<EmptyCard title={t("reinforcement.empty")} slug="display-bookworm" />:null}

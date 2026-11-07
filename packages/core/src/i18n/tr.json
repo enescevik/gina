@@ -5207,5 +5207,11 @@
   "questionLikes.practiceHelp": "{{name}} için aynı sınıftan en fazla 10 favori seçin. Taslağı birlikte kontrol ettikten sonra atayabilirsiniz.",
   "questionLikes.groupHelp": "Ortak metin veya görsele bağlı bir soru seçilirse bağlamı kaybolmasın diye grubun tamamı taslağa alınır. Soru sayısı kontrol adımında gösterilir.",
   "questionLikes.practice": "Taslağı hazırla ({{count}} seçili)",
-  "questionLikes.selectPractice": "Tekrar taslağına ekle"
+  "questionLikes.selectPractice": "Tekrar taslağına ekle",
+  "questionLikes.printBooklet": "Favorilerden kitapçık hazırla",
+  "questionLikes.bookletTitle": "Favori Sorular · {{grade}}. Sınıf",
+  "questionLikes.bookletHelp": "Kendi favorilerinizden sınıf, ders ve konu seçin. En yeni 500 favori içinden en fazla 100 soru basılır. Öğrenci nüshasında cevaplar ve çocuk adı yer almaz.",
+  "questionLikes.allSubjects": "Bu sınıftaki tüm dersler",
+  "prova.booklet.source.favorites": "Favorilerim",
+  "futureLearning.unavailable": "Bu bölüm şu anda kullanılamıyor"
 }

@@ -1,3 +1,4 @@
+import {useFutureLearningReady} from "@/lib/future-learning";
 import { useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
@@ -71,6 +72,7 @@ const HUB_TABS = ["prepare", "sent", "review"] as const;
 type HubTab = (typeof HUB_TABS)[number];
 
 export default function ParentProvaScreen() {
+  const ready=useFutureLearningReady();
   const { t } = useTranslation(),
     { claims } = useSession(),
     familyId = claims?.family_id ?? "";
@@ -201,9 +203,9 @@ export default function ParentProvaScreen() {
           <View style={{ gap: 7, flex: wide ? 1 : undefined }}><Text style={[b.h1, wide && { fontSize: 38 }]}>{t("prova.title")}</Text><Text style={[b.copy, { color: p.muted }]}>{t("provaBuilder.hubBody")}</Text></View>
           {createButton}
         </View>
-        <NavigationCard title={t("studyPreferences.title")} onPress={() => router.push("/parent/prova/reading")} />
-        <NavigationCard title={t("reinforcement.title")} onPress={() => router.push("/parent/prova/reinforcement")} />
-        <NavigationCard title={t("questionLikes.title")} onPress={() => router.push("/parent/prova/favorites")} />
+        {ready?<NavigationCard title={t("studyPreferences.title")} onPress={() => router.push("/parent/prova/reading")} />:null}
+        {ready?<NavigationCard title={t("reinforcement.title")} onPress={() => router.push("/parent/prova/reinforcement")} />:null}
+        {ready?<NavigationCard title={t("questionLikes.title")} onPress={() => router.push("/parent/prova/favorites")} />:null}
         {children.data && children.data.length > 1
           ? (
             <ChildPicker

@@ -1,3 +1,4 @@
+import {useFutureLearningReady} from "@/lib/future-learning";
 import {NumberChoice} from "@/components/ui/number-choice";
 import {TimeChoice} from "@/components/ui/date-time-choice";
 import {minutesClock,clockMinutes} from "@gina/core";
@@ -11,12 +12,13 @@ import { Toggle } from "@/components/ui/toggle";
 import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
 export default function ReadingPreferences(){
+  const ready=useFutureLearningReady();
  const {t}=useTranslation();const {claims}=useSession();const family=claims?.family_id;const cache=useQueryClient();
  const [child,setChild]=useState<string|null>(null);const [exam,setExam]=useState<string|null>(null);
- const children=useQuery({queryKey:["reading_children",family],queryFn:async()=>{
+ const children=useQuery({queryKey:["reading_children",family],enabled:ready&&!!family,queryFn:async()=>{
   const {data,error}=await supabase.from("children").select("id,name,question_reading_enabled,study_break_minutes,evening_reminder_start,evening_reminder_end").eq("family_id",family!).is("archived_at",null).order("sort_order");if(error)throw error;return data;
  }});
- const exams=useQuery({queryKey:["reading_exams",family,child],enabled:!!child,queryFn:async()=>{
+ const exams=useQuery({queryKey:["reading_exams",family,child],enabled:ready&&!!child,queryFn:async()=>{
   const {data,error}=await supabase.from("exams").select("id,title,question_reading_override").eq("family_id",family!).eq("child_id",child!).order("created_at",{ascending:false}).limit(10);if(error)throw error;return data;
  }});
  const study=useMutation({mutationFn:async(change:{id:string;study_break_minutes?:number;evening_reminder_start?:number|null;evening_reminder_end?:number})=>{
@@ -27,7 +29,8 @@ export default function ReadingPreferences(){
    :await supabase.from("exams").update({question_reading_override:change.mode}).eq("id",change.id).eq("family_id",family!).select("id").single();
   if(result.error)throw result.error;
  },onSuccess:async()=>{await Promise.all([cache.invalidateQueries({queryKey:["reading_children",family]}),cache.invalidateQueries({queryKey:["reading_exams",family]}),cache.invalidateQueries({queryKey:["question_reading_permission",family]})]);}});
- return <ParentScreen title={t("studyPreferences.title")} subtitle={t("studyPreferences.body")} loading={children.isPending} error={children.error} onRetry={()=>void children.refetch()}>
+ if(!ready)return <ParentScreen title={t("futureLearning.unavailable")}>{null}</ParentScreen>;
+  return <ParentScreen title={t("studyPreferences.title")} subtitle={t("studyPreferences.body")} loading={children.isPending} error={children.error} onRetry={()=>void children.refetch()}>
   {children.data?.map(item=><View key={item.id} style={parentStyles.card}>
    <Text style={parentStyles.title}>{item.name}</Text>
    <NumberChoice label={t("studyPreferences.breakMinutes")} value={item.study_break_minutes} min={10} max={60} presets={[15,20,25,30]} unit={t("studyPreferences.minutes")} disabled={study.isPending} onChange={value=>study.mutate({id:item.id,study_break_minutes:value})} />

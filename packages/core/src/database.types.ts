@@ -3769,6 +3769,9 @@ isOneToOne: false
 "finish_store_notification":
 { Args: { "p_error"?: string,"p_event_key": string,"p_platform": Database["public"]['Enums']["store_platform"],"p_store_key"?: string,"p_token": string }; Returns: boolean
                            },
+"future_learning_ready":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
 "get_ai_usage":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },

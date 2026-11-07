@@ -15,6 +15,8 @@ export function QuestionReports(){
   try{unwrap(await supabase().rpc("resolve_question_report",{p_id:id,p_status:"reviewed"}));reports.reload();}
   catch(e){setError(e);}finally{setBusy(null);}
  }
+ // PostgREST cannot see this new table before the coordinated migration.
+ if(reports.error&&typeof reports.error==="object"&&"code" in reports.error&&["42P01","PGRST205"].includes(String(reports.error.code)))return null;
  return <Card title={copy.queue}>
   <p>{copy.queueHelp}</p>
   {reports.loading?<p>{copy.loading}</p>:null}

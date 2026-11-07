@@ -1,3 +1,4 @@
+import {useFutureLearningReady} from "@/lib/future-learning";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
@@ -7,6 +8,7 @@ import { useSession } from "@/lib/session";
 
 /** A quality preference, never a reinforcement instruction or a reward. */
 export function QuestionLike({ questionId }: { questionId: string }) {
+  const ready=useFutureLearningReady();
   const { t } = useTranslation();
   const { claims, session } = useSession();
   const cache = useQueryClient();
@@ -15,7 +17,7 @@ export function QuestionLike({ questionId }: { questionId: string }) {
   const key = ["question_like", family, user, questionId];
   const liked = useQuery({
     queryKey: key,
-    enabled: !!family && !!user,
+    enabled: ready && !!family && !!user,
     queryFn: async () => {
       const { data, error } = await supabase.from("question_reactions")
         .select("question_id").eq("family_id", family!).eq("parent_user_id", user!)
@@ -37,9 +39,11 @@ export function QuestionLike({ questionId }: { questionId: string }) {
       await Promise.all([
         cache.invalidateQueries({queryKey:key}),
         cache.invalidateQueries({queryKey:["question_favorites",family,user]}),
+        cache.invalidateQueries({queryKey:["booklet_favorites",family,user]}),
       ]);
     },
   });
+  if(!ready)return null;
   return <View style={{gap: 6}}>
     <Button variant="ghost" title={t(liked.data ? "questionLikes.remove" : "questionLikes.add")}
       accessibilityState={{selected: liked.data === true}}

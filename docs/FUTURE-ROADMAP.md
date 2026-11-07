@@ -92,7 +92,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F8 — Öğretmene kazanım özeti; favori PDF; uyarlanabilir zorluk
 
-- Kaynak: §4.1, §4.9, §4.14–15. Durum: KISMEN KOD HAZIR (favoriden veli taslağı ve tarayıcı kabulü). Efor: **L**.
+- Kaynak: §4.1, §4.9, §4.14–15. Durum: KISMEN KOD HAZIR (favoriden taslak ve kitapçık, tarayıcı kabulü). Efor: **L**.
 - Kapsam: Öğretmene kazanım özeti; favori PDF; uyarlanabilir zorluk.
 - Bağımlılık: F7, veli onayı, soru sürümü.
 - Paket kapısı: Mevcut paylaşım/PDF hakları; tür kapısı yok.
@@ -238,3 +238,6 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - Yayın ayrımı düzeltmesi: mevcut GitHub iş akışları main'e push ile **web ve backoffice'i otomatik yayımlıyor**. “Üretim migration/native yayını yok” kaydı yalnız DB/Edge/native içindir; web/BO dağıtımı yok anlamına gelmez. Yeni DB tablolarına bağlı yeteneklerin uçtan uca kabulü migration/Edge/native eşlemesi tamamlanmadan yapılmış sayılmaz.
 
 - F8a: favorilerde aynı sınıf ve açıkça seçilen çocukla en fazla 10 seçim; ortak metin/görsel grubu bütün olarak tek blok, toplam 100 soru üst sınırı. Veli mevcut Prova düzenleyicisinde kontrol eder; otomatik atama, AI çağrısı veya kota yok. Tek dokunuş kilidi ve aynı taslak/istek kimliği tekrarları sınırlar. Sentetik gerçek web uygulamasında 390×844/1280×800; tercih kaydı, az veri, iki sorulu ortak kaynak taslağı ve yatay taşma testi geçti. Kanıt: `release/future-f8-2026-11-07/`. Favori PDF, öğretmen özet kapsamı, zorluk önerisi ve fiziksel kabul hâlâ açık.
+
+- F8b: kitapçığın “Favorilerim” kaynağı aile/veli RLS'iyle yalnız kendi favorilerini alır; sınıf/ders/konu filtresi, 500 kaynak/100 baskı sınırı. Öğrenci nüshasında anahtar ve çocuk adı yok; ortak kaynak ayrı bağlam olarak korunur. Sentetik tarayıcı yazdırma kontrolü geçti; fiziksel PDF/yazıcı kabulü açık.
+- Dağıtım uyumu: prod ledger salt okunur denetlendi; son sürüm `20261107180500`, F1–F8 SQL henüz uygulanmadı. Otomatik web/BO dağıtımı nedeniyle UI eski şemada yeni butonları sunmuyor. `future_learning_ready` yalnız imzalı istemciye açık; release sırasında bu migration en son, diğer migration/Edge kontrollerinden sonra etkinleşir. Eski sunucu simülasyonu geçti. Yeni native binary ve DB/Edge yayın sırası açık. Yeni taze DB: 155 dosya/7.123 kontrol; 12 web kabulü, 772 core, lint/typecheck yeşil.

@@ -1,5 +1,6 @@
+import {useFutureLearningReady} from "@/lib/future-learning";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
@@ -15,7 +16,7 @@ import type { TFunction } from "i18next";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 
-type Source = "library" | "exam";
+type Source = "library" | "exam" | "favorites";
 
 const QUESTION_COLUMNS = "id, topic, kind, difficulty, stem, choices, correct_key, expected_answer, solution, interaction_type, payload";
 const DIFFICULTY_ORDER = ["kolay", "orta", "orta_ustu", "zor"];
@@ -24,6 +25,8 @@ const MAX_QUESTIONS = 100;
 
 interface QuestionRow {
   id: string;
+  subject?: string;
+  grade?: number;
   topic: string;
   kind: "multiple_choice" | "open_ended" | "structured";
   interaction_type?: string | null;
@@ -92,13 +95,16 @@ function toBooklet(q: QuestionRow): BookletQuestion {
 
 /** Kitapçık: kütüphaneden (ders/sınıf/konular) ya da mevcut bir denemeden yazdırılabilir A4 PDF. Öğrenci nüshası ve cevap anahtarı ayrı belgelerdir. */
 export default function ProvaBookletScreen() {
+  const ready=useFutureLearningReady();
   const { t } = useTranslation();
-  const { claims } = useSession();
+  const { claims, session } = useSession();
+  const params = useLocalSearchParams<{ source?: string; grade?: string }>();
+  const userId = session?.user.id;
   const familyId = claims?.family_id ?? "";
 
-  const [source, setSource] = useState<Source>("library");
+  const [source, setSource] = useState<Source>(params.source === "favorites" ? "favorites" : "library");
   const [subject, setSubject] = useState("");
-  const [grade, setGrade] = useState(5);
+  const [grade, setGrade] = useState(() => /^[1-9]$|^1[0-2]$/.test(params.grade ?? "") ? Number(params.grade) : 5);
   const [topics, setTopics] = useState<string[]>([]);
   const [examId, setExamId] = useState<string | null>(null);
   const [title, setTitle] = useState("");
@@ -108,7 +114,7 @@ export default function ProvaBookletScreen() {
 
   const subjects = useQuery({
     queryKey: ["question_bank_subjects", familyId],
-    enabled: !!familyId,
+    enabled: source === "library" && !!familyId,
     queryFn: async () => {
       const { data, error } = await supabase.from("current_question_bank").select("subject, grade");
       if (error) throw error;
@@ -118,6 +124,23 @@ export default function ProvaBookletScreen() {
     },
   });
 
+  const favoriteQuestions = useQuery({
+    queryKey: ["booklet_favorites", familyId, userId],
+    enabled: ready && source === "favorites" && !!familyId && !!userId,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("question_reactions")
+        .select(`question_bank(${QUESTION_COLUMNS},grade,subject)`)
+        .eq("family_id", familyId).eq("parent_user_id", userId!)
+        .order("created_at", { ascending: false }).order("question_id").limit(500);
+      if (error) throw error;
+      return (data as unknown as { question_bank: QuestionRow | null }[]).flatMap(r => r.question_bank ? [r.question_bank] : []);
+    },
+  });
+  const favoriteSubjects = useMemo(() => {
+    const seen = new Map<string, { subject: string; grade: number }>();
+    for (const q of favoriteQuestions.data ?? []) if (q.subject && q.grade) seen.set(`${q.grade}:${q.subject}`, { subject: q.subject, grade: q.grade });
+    return [...seen.values()].sort((a, b) => a.grade - b.grade || a.subject.localeCompare(b.subject, "tr"));
+  }, [favoriteQuestions.data]);
   const libraryQuestions = useQuery({
     queryKey: ["booklet_library", familyId, subject.trim(), gradeNum],
     enabled: source === "library" && !!familyId && !!subject.trim(),
@@ -163,11 +186,15 @@ export default function ProvaBookletScreen() {
     },
   });
 
-  const availableTopics = useMemo(() => Array.from(new Set((libraryQuestions.data ?? []).map((q) => q.topic))), [libraryQuestions.data]);
+  const bookletPool = useMemo(() => source === "favorites"
+    ? (favoriteQuestions.data ?? []).filter(q => q.grade === gradeNum && (!subject.trim() || q.subject === subject.trim()))
+    : libraryQuestions.data ?? [], [source, favoriteQuestions.data, libraryQuestions.data, gradeNum, subject]);
+  const availableTopics = useMemo(() => Array.from(new Set(bookletPool.map(q => q.topic))), [bookletPool]);
+  const subjectOptions = source === "favorites" ? favoriteSubjects : subjects.data;
 
   const questions = useMemo(() => {
     if (source === "exam") return (examQuestions.data ?? []).slice(0, MAX_QUESTIONS);
-    const pool = (libraryQuestions.data ?? []).filter((q) => topics.length === 0 || topics.includes(q.topic));
+    const pool = bookletPool.filter((q) => topics.length === 0 || topics.includes(q.topic));
     // Konu sırası korunur, konu içinde kolaydan zora.
     return [...pool]
       .sort(
@@ -176,10 +203,10 @@ export default function ProvaBookletScreen() {
           DIFFICULTY_ORDER.indexOf(a.difficulty) - DIFFICULTY_ORDER.indexOf(b.difficulty),
       )
       .slice(0, MAX_QUESTIONS);
-  }, [source, examQuestions.data, libraryQuestions.data, topics, availableTopics]);
+  }, [source, examQuestions.data, bookletPool, topics, availableTopics]);
 
   const defaultTitle =
-    source === "exam" ? (selectedExam?.title ?? "") : subject.trim() ? t("prova.booklet.defaultTitle", { subject: subject.trim(), grade: gradeNum }) : "";
+    source === "exam" ? (selectedExam?.title ?? "") : source === "favorites" ? t("questionLikes.bookletTitle", {grade:gradeNum}) : subject.trim() ? t("prova.booklet.defaultTitle", { subject: subject.trim(), grade: gradeNum }) : "";
 
   const generate = useMutation({
     mutationFn: async (copy: "student" | "key") => {
@@ -231,24 +258,25 @@ export default function ProvaBookletScreen() {
     setTopics((ts) => (ts.includes(topic) ? ts.filter((x) => x !== topic) : [...ts, topic]));
   }
 
+  if(source==="favorites"&&!ready)return <Screen title={t("futureLearning.unavailable")}>{null}</Screen>;
   return (
     <Screen title={t("prova.booklet.title")} subtitle={t("unified.bookletHelp")} loading={subjects.isLoading || exams.isLoading} error={subjects.error ?? exams.error} onRetry={() => { void subjects.refetch(); void exams.refetch(); }}>
       <View style={parentStyles.card}>
       <Text className="font-body text-base text-gray-600">{t("provaP02.booklet.intro")}</Text>
 
       <View className="flex-row gap-2">
-        {(["library", "exam"] as const).map((s) => (
-          <Pressable key={s} accessibilityRole="button" onPress={() => setSource(s)} accessibilityState={{ selected: source === s }} aria-pressed={source === s} className={chip(source === s)}>
+        {(["library", "exam", "favorites"] as const).filter(s=>s!=="favorites"||ready).map((s) => (
+          <Pressable key={s} accessibilityRole="button" onPress={() => {setSource(s);setTopics([]);setSubject("");}} accessibilityState={{ selected: source === s }} aria-pressed={source === s} className={chip(source === s)}>
             <Text className={chipText(source === s)}>{t(`prova.booklet.source.${s}`)}</Text>
           </Pressable>
         ))}
       </View>
 
-      {source === "library" ? (
+      {source !== "exam" ? (
         <>
-          {subjects.data && subjects.data.length > 0 ? (
+          {subjectOptions && subjectOptions.length > 0 ? (
             <View className="flex-row flex-wrap gap-2">
-              {subjects.data.map((s) => {
+              {subjectOptions.map((s) => {
                 const active = subject.trim() === s.subject && gradeNum === s.grade;
                 return (
                   <Pressable
@@ -269,7 +297,10 @@ export default function ProvaBookletScreen() {
               })}
             </View>
           ) : null}
-          <Field label={t("grades.subject")} value={subject} onChangeText={setSubject} />
+          {source === "favorites" ? <>
+            <Text style={parentStyles.muted}>{t("questionLikes.bookletHelp")}</Text>
+            {subject ? <Button variant="ghost" title={t("questionLikes.allSubjects")} onPress={() => {setSubject("");setTopics([]);}} /> : null}
+          </> : <Field label={t("grades.subject")} value={subject} onChangeText={value=>{setSubject(value);setTopics([]);}} />}
           {/* Q00-C12-T3: sınıf serbest metin değil; 1–12 arası tek dokunuşla seçilir. */}
           <Text nativeID="booklet-grade-label" className="font-body-bold text-sm text-ink">{t("prova.grade")}</Text>
           <View accessibilityRole="radiogroup" aria-labelledby="booklet-grade-label" className="flex-row flex-wrap gap-2">
@@ -281,7 +312,7 @@ export default function ProvaBookletScreen() {
                 accessibilityState={{ checked: grade === g }}
                 aria-checked={grade === g}
                 onPress={() => {
-                  if (g !== grade) setTopics([]);
+                  if (g !== grade) {setTopics([]);if(source === "favorites")setSubject("");}
                   setGrade(g);
                 }}
                 className={chip(grade === g)}
@@ -328,7 +359,7 @@ export default function ProvaBookletScreen() {
       </View>
 
       <Text className="font-body text-sm text-gray-600">{t("prova.selectedCount", { count: questions.length })}</Text>
-      <ErrorText error={generate.error ?? subjects.error ?? libraryQuestions.error ?? exams.error ?? examQuestions.error} />
+      <ErrorText error={generate.error ?? subjects.error ?? libraryQuestions.error ?? favoriteQuestions.error ?? exams.error ?? examQuestions.error} />
       <Text className="font-body text-sm text-gray-600">{t("provaP02.booklet.twoCopies")}</Text>
       {questions.some((q) => q.kind === "structured")
         ? (

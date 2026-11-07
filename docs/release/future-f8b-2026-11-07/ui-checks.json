@@ -1,0 +1,17 @@
+{
+  "checks": [
+    "evening preference saves and reveals clock controls",
+    "preferences phone layout",
+    "preferences tablet layout",
+    "insufficient evidence does not render a score",
+    "observations phone layout",
+    "observations tablet layout",
+    "favorites phone layout",
+    "favorites tablet layout",
+    "favorite booklet student print has context and no answer key",
+    "favorite group opens a private two-question draft",
+    "pre-migration server does not show unsupported controls",
+    "no uncaught browser errors"
+  ],
+  "failures": []
+}

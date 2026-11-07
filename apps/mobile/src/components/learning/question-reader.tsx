@@ -1,3 +1,4 @@
+import {useFutureLearningReady} from "@/lib/future-learning";
 import { selectLocalQuestionVoice } from "@gina/core";
 import { useEffect, useRef, useState } from "react";
 import { AppState, Platform, Text, View } from "react-native";
@@ -10,10 +11,11 @@ import { supabase } from "@/lib/supabase";
 
 /** Android is fail-closed until the chosen engine's network requirement can be verified. */
 export function QuestionReader({examId,text,language="tr-TR"}:{examId:string;text:string;language?:string}) {
+  const ready=useFutureLearningReady();
   const {t}=useTranslation();const {claims}=useSession();const [speaking,setSpeaking]=useState(false);
   const [unavailable,setUnavailable]=useState(false);const generation=useRef(0);
   const permission=useQuery({queryKey:["question_reading_permission",claims?.family_id,claims?.child_id,examId],
-    queryFn:async()=>{const {data,error}=await supabase.rpc("get_question_reading_permission",{p_exam_id:examId});if(error)throw error;return data;},
+    enabled:ready,queryFn:async()=>{const {data,error}=await supabase.rpc("get_question_reading_permission",{p_exam_id:examId});if(error)throw error;return data;},
     refetchInterval:15000,
   });
   useEffect(()=>{
@@ -44,7 +46,7 @@ export function QuestionReader({examId,text,language="tr-TR"}:{examId:string;tex
       });
     }catch{if(current===generation.current){setSpeaking(false);setUnavailable(true);}}
   }
-  if(permission.data!==true||permission.error||Platform.OS==="android")return null;
+  if(!ready||permission.data!==true||permission.error||Platform.OS==="android")return null;
   return <View style={{gap:4}}>
     <Button variant="ghost" title={t(speaking?"questionReading.stop":"questionReading.read")} onPress={()=>void read()} />
     {unavailable?<Text accessibilityRole="alert">{t("questionReading.unavailable")}</Text>:null}

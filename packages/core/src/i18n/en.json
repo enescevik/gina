@@ -5212,5 +5212,11 @@
   "questionLikes.practiceHelp": "Choose up to 10 favorites from the same grade for {{name}}. Review the draft before assigning it.",
   "questionLikes.groupHelp": "If a selected question shares a passage or image, its whole group is included to preserve context. The review step shows the total question count.",
   "questionLikes.practice": "Prepare draft ({{count}} selected)",
-  "questionLikes.selectPractice": "Add to review draft"
+  "questionLikes.selectPractice": "Add to review draft",
+  "questionLikes.printBooklet": "Make a booklet from favorites",
+  "questionLikes.bookletTitle": "Favorite Questions · Grade {{grade}}",
+  "questionLikes.bookletHelp": "Choose grade, subject and topics from your own favorites. Print up to 100 questions from your 500 most recent favorites. The student copy has no answers or child name.",
+  "questionLikes.allSubjects": "All subjects in this grade",
+  "prova.booklet.source.favorites": "My favorites",
+  "futureLearning.unavailable": "This section is currently unavailable"
 }

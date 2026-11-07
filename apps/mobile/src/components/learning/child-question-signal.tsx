@@ -1,3 +1,4 @@
+import {useFutureLearningReady} from "@/lib/future-learning";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
@@ -6,12 +7,13 @@ import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
 
 export function ChildQuestionSignal({attemptId,questionId}:{attemptId:string;questionId:string}) {
+  const ready=useFutureLearningReady();
   const {t}=useTranslation();
   const {claims}=useSession();
   const family=claims?.family_id;
   const cache=useQueryClient();
   const key=["child_question_signal",family,attemptId,questionId];
-  const signal=useQuery({queryKey:key,enabled:!!family,queryFn:async()=>{
+  const signal=useQuery({queryKey:key,enabled:ready&&!!family,queryFn:async()=>{
     const {data,error}=await supabase.from("question_child_signals").select("liked,struggled")
       .eq("attempt_id",attemptId).eq("question_id",questionId).maybeSingle();
     if(error)throw error;
@@ -23,6 +25,7 @@ export function ChildQuestionSignal({attemptId,questionId}:{attemptId:string;que
       p_question_id:questionId,p_field:field,p_selected:!signal.data[field]});
     if(error)throw error;
   },onSuccess:async()=>{await cache.invalidateQueries({queryKey:key});}});
+  if(!ready)return null;
   return <View style={{gap:4}}>
     <View style={{flexDirection:"row",flexWrap:"wrap",gap:8}}>
       {(["liked","struggled"] as const).map(field=><Button key={field} variant="ghost"
