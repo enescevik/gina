@@ -65,7 +65,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F5 — Güvenlik temelleri: bulgu→test kuralı, Dependabot, CodeQL, engelleyici sır taraması, migration RLS denetimi, PIN/giriş oran sınırı, enjeksiyon seti
 
-- Kaynak: §6.1–6.4. Durum: KOD HAZIR (CodeQL ilk koşusu ve canlı sağlayıcı red-team kabulü açık). Efor: **L**.
+- Kaynak: §6.1–6.4. Durum: KOD HAZIR; GÜVENLİK KABULÜ AÇIK (ilk CodeQL 205 bulgu; triyaj ve canlı sağlayıcı red-team bekliyor). Efor: **L**.
 - Kapsam: Güvenlik temelleri: bulgu→test kuralı, Dependabot, CodeQL, engelleyici sır taraması, migration RLS denetimi, PIN/giriş oran sınırı, enjeksiyon seti.
 - Bağımlılık: Mevcut security.yml, ACL betiği, PIN/Auth/Edge yolları.
 - Paket kapısı: Paket bağımsız.
@@ -226,3 +226,5 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - F5 kanıt: **151 DB dosyası/7.032 kontrol**, ilgili Edge 130, Node 117, turbo lint/typecheck/test 7/7. CI ve CodeQL son baş commit'inde doğrulanmadan YAYINDA/KABUL TAMAM yazılmayacak.
 
 - Uzlaştırma: başka sahibin #172 (`300328e8`) çalışması main'e alındı. Yapılandırılmış kütüphane **içe aktarma/edinme** 12 açık türde artık mevcut; özel anahtar ayrı kalıyor, OYSS için uygun olmayan türler reddediliyor. F12'de bu alt iş yeniden uygulanmayacak. Kaydedilmiş soru düzenleme, global yönetici kaydetme ve grup sınavı desteği ayrı açık kalemlerdir. Aktif iki dalın pointer veya dosyaları değiştirilmedi. Birleşik taze DB **152 dosya/7.093 kontrol**, turbo 7/7, Node 117/117 temiz.
+
+- CodeQL ilk çalışma `42340592737` başarılı, fakat **205 açık uyarı** var. Yeşil analiz sıfır açık anlamına gelmez. Çoğu test/yayın betiği; core regex, HTML kitapçık ve kaynak ayrıştırıcı uyarıları da var. Hiçbiri otomatik bastırılmadı. Tam metadata: `release/future-f5-2026-11-07/codeql-initial-findings.json`. F5 kabulü bu triyaj tamamlanmadan kapanmaz. İlk düzeltme: HTML entity yalnız bir kez çözülür; geçersiz workbook sayılarının hata metni satır/kontrol karakteri kaçışını korur; olumsuz testler eklendi.

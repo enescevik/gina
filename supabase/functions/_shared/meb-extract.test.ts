@@ -174,3 +174,12 @@ Deno.test("a worksheet target outside xl/worksheets is refused", async () => {
   const r = await extractionResult({ sha256: await sha256Hex(body), label: "Türkçe", resolved_url: "https://cdn.eba.gov.tr/turkce2.xlsx", school_year: "2026-2027", term: 1 }, body);
   assertEquals(r.error, "extract:worksheet_path");
 });
+
+Deno.test("invalid workbook integers cannot inject multiline diagnostics", () => {
+  try { pyInt("bad\\value\nforged-entry"); throw new Error("expected rejection"); }
+  catch (error) {
+    assert(error instanceof ExtractError);
+    assertEquals(error.message.includes("\n"), false);
+    assert(error.message.includes("\\\\value\\nforged-entry"));
+  }
+});

@@ -38,3 +38,7 @@ F2a: çocuk sinyali yalnız atanmış denemedeki soruya yazılır; kardeş denem
 - Prompt sistem güven sınırı ve veri etiketi v12/v8; şema değişmedi, açıklanan istem değişikliği nedeniyle golden prompt hash/sürüm kanıtı güncellendi. 30 TR/EN veri sınırı örneği ve kaynak ref ihlali. Canlı model saldırı kabulü yapılmış gibi gösterilmez.
 
 Son taze regresyon 151 dosyada 7.032 kontrol; Edge ilgili 130 test, Node 117 test temiz. Canlı Auth limitleri yalnız sayısal ayarlarla raporlandı; SMTP/anahtar değerleri alınan rapora yazılmadı.
+
+## CodeQL ilk bulgu takibi
+
+Analiz başarılı olsa da 205 uyarı açıktır; güvenlik kabulü kapatılmadı. `curriculum-source` ardışık entity çözümü `&amp;lt;` değerini iki kez yorumluyordu; tek geçişli çözüm ve nested-entity regresyonu eklendi. `meb-extract` geçersiz sayı tanısında ters eğik çizgi/satır sonu kaçışı eksikti; tek satır güvenli tanı ve olumsuz test eklendi. Bunlar tek başına XSS istismarı kanıtı değildir: kaynak metin veri olarak işlenir. Kalan core ReDoS/kitapçık ve yerel betik uyarılarının triyajı açıktır, hiçbiri topluca bastırılmadı.

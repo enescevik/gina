@@ -296,9 +296,10 @@ export interface IndexLink {
   href: string;
   text: string;
 }
+// Decode exactly once: replacement output is not parsed as another entity.
+const HTML_ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', "#39": "'", nbsp: " " };
 const decodeEntities = (s: string) =>
-  s.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&nbsp;/g, " ");
+  s.replace(/&(amp|lt|gt|quot|#39|nbsp);/g, (_, name: string) => HTML_ENTITIES[name]);
 /** Anchors and publish/update dates. Page text is data; it never widens the host policy. */
 export function parseIndex(page: string) {
   const links: IndexLink[] = [];

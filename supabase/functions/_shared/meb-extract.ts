@@ -48,7 +48,20 @@ export function pyInt(text: string): number {
   for (const ch of m[2]) if (ch !== "_") n = n * 10 + digitValue(ch);
   return m[1] === "-" ? -n : n;
 }
-const pyRepr = (s: string) => (s.includes("'") && !s.includes('"') ? `"${s}"` : `'${s.replace(/'/g, "\\'")}'`);
+// Error text is plain data; escape control characters and backslashes as well as the delimiter.
+const pyRepr = (s: string) => {
+  const quote = s.includes("'") && !s.includes('"') ? '"' : "'";
+  const escaped = Array.from(s, (ch) => {
+    if (ch === "\\") return "\\\\";
+    if (ch === quote) return "\\" + ch;
+    if (ch === "\n") return "\\n";
+    if (ch === "\r") return "\\r";
+    if (ch === "\t") return "\\t";
+    const cp = ch.codePointAt(0)!;
+    return cp < 32 || cp === 127 ? "\\x" + cp.toString(16).padStart(2, "0") : ch;
+  }).join("");
+  return quote + escaped + quote;
+};
 /** Code point order (Python str comparison), not UTF-16 unit order. */
 export function cmp(a: string, b: string) {
   const x = Array.from(a), y = Array.from(b);

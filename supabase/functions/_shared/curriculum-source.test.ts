@@ -119,3 +119,8 @@ Deno.test("index page text is data: dates parsed, instruction-like anchors never
   await assertRejects(() => fetchWithPolicy(links[3].href, { transport: transportFor({}).transport, resolve: publicResolver }), PolicyError, "https_required");
   assertEquals(Object.keys(INDEX_PAGES), ["oyss:2026-2027:1"], "no index URL is guessed for other terms");
 });
+
+Deno.test("nested HTML entities are decoded only once and cannot alter a download path", () => {
+  const parsed = parseIndex('<a href="https://cdn.eba.gov.tr/a?x=&amp;lt;file&amp;gt;">&amp;lt;script&amp;gt;</a>');
+  assertEquals(parsed.links[0], { href: "https://cdn.eba.gov.tr/a?x=&lt;file&gt;", text: "&lt;script&gt;" });
+});

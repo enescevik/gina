@@ -1,0 +1,1443 @@
+{
+  "run_id": 42340592737,
+  "status": "completed",
+  "conclusion": "success",
+  "open_alerts": [
+    {
+      "line": 564,
+      "number": 205,
+      "path": "scripts/release-local.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 481,
+      "number": 204,
+      "path": "scripts/release-local.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 287,
+      "number": 203,
+      "path": "scripts/release-local.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 236,
+      "number": 202,
+      "path": "docs/release/u01-2026-11-06/u01-ui.cjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 333,
+      "number": 201,
+      "path": "docs/release/p01-p02-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 464,
+      "number": 200,
+      "path": "docs/release/d5-2026-11-06/run-d5.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 379,
+      "number": 199,
+      "path": "docs/release/d5-2026-11-06/run-d5.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 322,
+      "number": 198,
+      "path": "docs/release/d5-2026-11-06/run-d5.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 426,
+      "number": 197,
+      "path": "docs/release/d15-2026-11-06/run-meb-pilot.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 23,
+      "number": 196,
+      "path": "docs/release/d5-2026-11-06/run-d5.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 464,
+      "number": 195,
+      "path": "docs/release/c14b-2026-11-06/ai/run-c14b.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 65,
+      "number": 194,
+      "path": "docs/release/d15-2026-11-06/run-meb-pilot.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 379,
+      "number": 193,
+      "path": "docs/release/c14b-2026-11-06/ai/run-c14b.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 322,
+      "number": 192,
+      "path": "docs/release/c14b-2026-11-06/ai/run-c14b.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 23,
+      "number": 191,
+      "path": "docs/release/c14b-2026-11-06/ai/run-c14b.mjs",
+      "rule": "js/http-to-file-access",
+      "severity": "medium"
+    },
+    {
+      "line": 18,
+      "number": 190,
+      "path": "scripts/u02/serve-spa.mjs",
+      "rule": "js/file-system-race",
+      "severity": "high"
+    },
+    {
+      "line": 102,
+      "number": 189,
+      "path": "scripts/security/leak-scan.mjs",
+      "rule": "js/file-system-race",
+      "severity": "high"
+    },
+    {
+      "line": 116,
+      "number": 188,
+      "path": "scripts/rollback.mjs",
+      "rule": "js/file-system-race",
+      "severity": "high"
+    },
+    {
+      "line": 35,
+      "number": 187,
+      "path": "scripts/prepare-tablet-install.mjs",
+      "rule": "js/file-system-race",
+      "severity": "high"
+    },
+    {
+      "line": 186,
+      "number": 186,
+      "path": "docs/release/d7-2026-11-06/harness/d7-ui.cjs",
+      "rule": "js/file-system-race",
+      "severity": "high"
+    },
+    {
+      "line": 204,
+      "number": 185,
+      "path": "docs/release/d3-2026-11-06/harness/d3-ui.cjs",
+      "rule": "js/file-system-race",
+      "severity": "high"
+    },
+    {
+      "line": 23,
+      "number": 184,
+      "path": "docs/release/c09-2026-11-06/harness/serve.mjs",
+      "rule": "js/file-system-race",
+      "severity": "high"
+    },
+    {
+      "line": 22,
+      "number": 183,
+      "path": "docs/release/c07-2026-11-06/harness/serve.mjs",
+      "rule": "js/file-system-race",
+      "severity": "high"
+    },
+    {
+      "line": 22,
+      "number": 182,
+      "path": "docs/release/b03-b04-2026-11-06/harness/serve.mjs",
+      "rule": "js/file-system-race",
+      "severity": "high"
+    },
+    {
+      "line": 22,
+      "number": 181,
+      "path": "docs/release/admin-workqueue-2026-11-06/ui/harness/serve.mjs",
+      "rule": "js/file-system-race",
+      "severity": "high"
+    },
+    {
+      "line": 188,
+      "number": 180,
+      "path": "scripts/test-deletion-preview-ui.cjs",
+      "rule": "js/insecure-temporary-file",
+      "severity": "high"
+    },
+    {
+      "line": 325,
+      "number": 179,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/insecure-temporary-file",
+      "severity": "high"
+    },
+    {
+      "line": 315,
+      "number": 178,
+      "path": "scripts/test-u02-device-family-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 315,
+      "number": 177,
+      "path": "scripts/test-u02-device-family-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 315,
+      "number": 176,
+      "path": "scripts/test-u02-device-family-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 42,
+      "number": 175,
+      "path": "scripts/test-u05-planner-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 42,
+      "number": 174,
+      "path": "scripts/test-u05-planner-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 42,
+      "number": 173,
+      "path": "scripts/test-u05-planner-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 38,
+      "number": 172,
+      "path": "scripts/test-u05-planner-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 38,
+      "number": 171,
+      "path": "scripts/test-u05-planner-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 38,
+      "number": 170,
+      "path": "scripts/test-u05-planner-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 290,
+      "number": 169,
+      "path": "scripts/test-u02-device-family-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 290,
+      "number": 168,
+      "path": "scripts/test-u02-device-family-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 69,
+      "number": 167,
+      "path": "scripts/test-u02-device-family-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 69,
+      "number": 166,
+      "path": "scripts/test-u02-device-family-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 30,
+      "number": 165,
+      "path": "scripts/test-u02-device-family-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 30,
+      "number": 164,
+      "path": "scripts/test-u02-device-family-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 30,
+      "number": 163,
+      "path": "scripts/test-u02-device-family-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 25,
+      "number": 162,
+      "path": "scripts/test-screen-review-a1-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 25,
+      "number": 161,
+      "path": "scripts/test-screen-review-a1-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 25,
+      "number": 160,
+      "path": "scripts/test-screen-review-a1-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 19,
+      "number": 159,
+      "path": "scripts/test-screen-review-a1-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 19,
+      "number": 158,
+      "path": "scripts/test-screen-review-a1-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 21,
+      "number": 157,
+      "path": "scripts/test-s04-catalog-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 21,
+      "number": 156,
+      "path": "scripts/test-s04-catalog-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 17,
+      "number": 155,
+      "path": "scripts/test-s04-catalog-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 17,
+      "number": 154,
+      "path": "scripts/test-s04-catalog-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 17,
+      "number": 153,
+      "path": "scripts/test-s04-catalog-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 85,
+      "number": 152,
+      "path": "scripts/test-h02-backoffice-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 85,
+      "number": 151,
+      "path": "scripts/test-h02-backoffice-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 85,
+      "number": 150,
+      "path": "scripts/test-h02-backoffice-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 149,
+      "path": "scripts/test-h02-backoffice-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 148,
+      "path": "scripts/test-h02-backoffice-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 35,
+      "number": 147,
+      "path": "scripts/test-deletion-preview-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 35,
+      "number": 146,
+      "path": "scripts/test-deletion-preview-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 32,
+      "number": 145,
+      "path": "scripts/test-deletion-preview-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 32,
+      "number": 144,
+      "path": "scripts/test-deletion-preview-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 32,
+      "number": 143,
+      "path": "scripts/test-deletion-preview-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 35,
+      "number": 142,
+      "path": "scripts/test-d2-pin-receipt-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 35,
+      "number": 141,
+      "path": "scripts/test-d2-pin-receipt-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 31,
+      "number": 140,
+      "path": "scripts/test-d2-pin-receipt-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 31,
+      "number": 139,
+      "path": "scripts/test-d2-pin-receipt-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 31,
+      "number": 138,
+      "path": "scripts/test-d2-pin-receipt-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 38,
+      "number": 137,
+      "path": "scripts/test-content-review-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 38,
+      "number": 136,
+      "path": "scripts/test-content-review-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 38,
+      "number": 135,
+      "path": "scripts/test-content-review-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 30,
+      "number": 134,
+      "path": "scripts/test-content-review-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 30,
+      "number": 133,
+      "path": "scripts/test-content-review-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 17,
+      "number": 132,
+      "path": "scripts/test-calendar-plan-history-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 17,
+      "number": 131,
+      "path": "scripts/test-calendar-plan-history-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 17,
+      "number": 130,
+      "path": "scripts/test-calendar-plan-history-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 16,
+      "number": 129,
+      "path": "scripts/test-calendar-plan-history-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 16,
+      "number": 128,
+      "path": "scripts/test-calendar-plan-history-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 16,
+      "number": 127,
+      "path": "scripts/test-calendar-plan-history-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 33,
+      "number": 126,
+      "path": "scripts/test-c06-pairing-pin-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 33,
+      "number": 125,
+      "path": "scripts/test-c06-pairing-pin-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 33,
+      "number": 124,
+      "path": "scripts/test-c06-pairing-pin-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 29,
+      "number": 123,
+      "path": "scripts/test-c06-pairing-pin-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 29,
+      "number": 122,
+      "path": "scripts/test-c06-pairing-pin-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 29,
+      "number": 121,
+      "path": "scripts/test-c06-pairing-pin-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 37,
+      "number": 120,
+      "path": "scripts/test-c11-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 37,
+      "number": 119,
+      "path": "scripts/test-c11-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 37,
+      "number": 118,
+      "path": "scripts/test-c11-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 117,
+      "path": "scripts/test-c11-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 116,
+      "path": "scripts/test-c11-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 115,
+      "path": "scripts/test-c11-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 54,
+      "number": 114,
+      "path": "scripts/test-c10-channels-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 54,
+      "number": 113,
+      "path": "scripts/test-c10-channels-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 54,
+      "number": 112,
+      "path": "scripts/test-c10-channels-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 111,
+      "path": "scripts/test-c10-channels-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 110,
+      "path": "scripts/test-c10-channels-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 66,
+      "number": 109,
+      "path": "scripts/test-c03-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 66,
+      "number": 108,
+      "path": "scripts/test-c03-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 32,
+      "number": 107,
+      "path": "scripts/test-c05-backoffice-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 32,
+      "number": 106,
+      "path": "scripts/test-c05-backoffice-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 32,
+      "number": 105,
+      "path": "scripts/test-c05-backoffice-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 39,
+      "number": 104,
+      "path": "scripts/test-c03-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 39,
+      "number": 103,
+      "path": "scripts/test-c03-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 39,
+      "number": 102,
+      "path": "scripts/test-c03-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 101,
+      "path": "scripts/test-c03-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 100,
+      "path": "scripts/test-c03-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 99,
+      "path": "scripts/test-c03-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 37,
+      "number": 98,
+      "path": "scripts/test-c02-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 37,
+      "number": 97,
+      "path": "scripts/test-c02-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 37,
+      "number": 96,
+      "path": "scripts/test-c02-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 95,
+      "path": "scripts/test-c02-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 94,
+      "path": "scripts/test-c02-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 34,
+      "number": 93,
+      "path": "scripts/test-c02-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 45,
+      "number": 92,
+      "path": "scripts/test-c02-u05-regression.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 45,
+      "number": 91,
+      "path": "scripts/test-c02-u05-regression.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 45,
+      "number": 90,
+      "path": "scripts/test-c02-u05-regression.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 41,
+      "number": 89,
+      "path": "scripts/test-c02-u05-regression.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 41,
+      "number": 88,
+      "path": "scripts/test-c02-u05-regression.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 41,
+      "number": 87,
+      "path": "scripts/test-c02-u05-regression.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 14,
+      "number": 86,
+      "path": "scripts/test-bulk-archive-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 14,
+      "number": 85,
+      "path": "scripts/test-bulk-archive-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 14,
+      "number": 84,
+      "path": "scripts/test-bulk-archive-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 13,
+      "number": 83,
+      "path": "scripts/test-bulk-archive-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 13,
+      "number": 82,
+      "path": "scripts/test-bulk-archive-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 13,
+      "number": 81,
+      "path": "scripts/test-bulk-archive-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 171,
+      "number": 80,
+      "path": "scripts/release-local.mjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 294,
+      "number": 79,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 294,
+      "number": 78,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 78,
+      "number": 77,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 78,
+      "number": 76,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 53,
+      "number": 75,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 53,
+      "number": 74,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 53,
+      "number": 73,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 48,
+      "number": 72,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 48,
+      "number": 71,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 44,
+      "number": 70,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 44,
+      "number": 69,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 44,
+      "number": 68,
+      "path": "docs/release/u03-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 38,
+      "number": 67,
+      "path": "docs/release/u01-2026-11-06/u01-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 38,
+      "number": 66,
+      "path": "docs/release/u01-2026-11-06/u01-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 38,
+      "number": 65,
+      "path": "docs/release/u01-2026-11-06/u01-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 33,
+      "number": 64,
+      "path": "docs/release/u01-2026-11-06/u01-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 33,
+      "number": 63,
+      "path": "docs/release/u01-2026-11-06/u01-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 22,
+      "number": 62,
+      "path": "docs/release/p01-p02-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 22,
+      "number": 61,
+      "path": "docs/release/p01-p02-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 22,
+      "number": 60,
+      "path": "docs/release/p01-p02-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 19,
+      "number": 59,
+      "path": "docs/release/p01-p02-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 19,
+      "number": 58,
+      "path": "docs/release/p01-p02-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 19,
+      "number": 57,
+      "path": "docs/release/p01-p02-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 23,
+      "number": 56,
+      "path": "docs/release/open-answer-scoring-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 23,
+      "number": 55,
+      "path": "docs/release/open-answer-scoring-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 23,
+      "number": 54,
+      "path": "docs/release/open-answer-scoring-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 20,
+      "number": 53,
+      "path": "docs/release/open-answer-scoring-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 20,
+      "number": 52,
+      "path": "docs/release/open-answer-scoring-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 20,
+      "number": 51,
+      "path": "docs/release/open-answer-scoring-2026-11-06/ui/ui-check.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 62,
+      "number": 50,
+      "path": "docs/release/d5-2026-11-06/run-d5.mjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 116,
+      "number": 49,
+      "path": "docs/release/d15-2026-11-06/run-meb-pilot.mjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 64,
+      "number": 48,
+      "path": "docs/release/d13-2026-11-06/run-d13.mjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 62,
+      "number": 47,
+      "path": "docs/release/c14b-2026-11-06/ai/run-c14b.mjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 21,
+      "number": 46,
+      "path": "docs/release/d11-2026-11-06/harness/d11-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 21,
+      "number": 45,
+      "path": "docs/release/d11-2026-11-06/harness/d11-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 21,
+      "number": 44,
+      "path": "docs/release/d11-2026-11-06/harness/d11-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 19,
+      "number": 43,
+      "path": "docs/release/d12-2026-11-06/harness/d12-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 19,
+      "number": 42,
+      "path": "docs/release/d12-2026-11-06/harness/d12-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 19,
+      "number": 41,
+      "path": "docs/release/d12-2026-11-06/harness/d12-ui.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 71,
+      "number": 40,
+      "path": "docs/release/c09-2026-11-06/harness/tour.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 61,
+      "number": 39,
+      "path": "docs/release/c09-2026-11-06/harness/tour.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 61,
+      "number": 38,
+      "path": "docs/release/c09-2026-11-06/harness/tour.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 14,
+      "number": 37,
+      "path": "docs/release/c09-2026-11-06/harness/tour.cjs",
+      "rule": "js/file-access-to-http",
+      "severity": "medium"
+    },
+    {
+      "line": 36,
+      "number": 36,
+      "path": "docs/design/screens/shared-v5/runtime.js",
+      "rule": "js/unvalidated-dynamic-method-call",
+      "severity": "high"
+    },
+    {
+      "line": 22,
+      "number": 35,
+      "path": "docs/design/screens/child/reference.html",
+      "rule": "js/unvalidated-dynamic-method-call",
+      "severity": "high"
+    },
+    {
+      "line": 22,
+      "number": 34,
+      "path": "docs/design/screens/child/reference.html",
+      "rule": "js/unvalidated-dynamic-method-call",
+      "severity": "high"
+    },
+    {
+      "line": 536,
+      "number": 33,
+      "path": "scripts/release-local.mjs",
+      "rule": "js/shell-command-injection-from-environment",
+      "severity": "medium"
+    },
+    {
+      "line": 331,
+      "number": 32,
+      "path": "scripts/release-local.mjs",
+      "rule": "js/shell-command-injection-from-environment",
+      "severity": "medium"
+    },
+    {
+      "line": 187,
+      "number": 31,
+      "path": "supabase/functions/curriculum-source-fetch/handler.test.ts",
+      "rule": "js/incomplete-url-substring-sanitization",
+      "severity": "high"
+    },
+    {
+      "line": 187,
+      "number": 30,
+      "path": "supabase/functions/curriculum-source-fetch/handler.test.ts",
+      "rule": "js/incomplete-url-substring-sanitization",
+      "severity": "high"
+    },
+    {
+      "line": 155,
+      "number": 29,
+      "path": "supabase/functions/curriculum-source-fetch/handler.test.ts",
+      "rule": "js/incomplete-url-substring-sanitization",
+      "severity": "high"
+    },
+    {
+      "line": 63,
+      "number": 28,
+      "path": "supabase/functions/_shared/ai-route.test.ts",
+      "rule": "js/incomplete-url-substring-sanitization",
+      "severity": "high"
+    },
+    {
+      "line": 112,
+      "number": 27,
+      "path": "scripts/release-local.test.mjs",
+      "rule": "js/incomplete-url-substring-sanitization",
+      "severity": "high"
+    },
+    {
+      "line": 644,
+      "number": 26,
+      "path": "packages/core/src/prova-booklet.ts",
+      "rule": "js/html-constructed-from-input",
+      "severity": "medium"
+    },
+    {
+      "line": 642,
+      "number": 25,
+      "path": "packages/core/src/prova-booklet.ts",
+      "rule": "js/html-constructed-from-input",
+      "severity": "medium"
+    },
+    {
+      "line": 28,
+      "number": 24,
+      "path": "docs/design/room-v2/references/brief-13-montage.html",
+      "rule": "js/xss-through-exception",
+      "severity": "medium"
+    },
+    {
+      "line": 1,
+      "number": 23,
+      "path": "docs/design/screens/child/motion.html",
+      "rule": "js/xss-through-dom",
+      "severity": "high"
+    },
+    {
+      "line": 24,
+      "number": 22,
+      "path": "docs/design/screens/child/cat-motion-v5/index.html",
+      "rule": "js/xss-through-dom",
+      "severity": "high"
+    },
+    {
+      "line": 1,
+      "number": 21,
+      "path": "docs/design/audits/2026-11-03/index.html",
+      "rule": "js/xss-through-dom",
+      "severity": "high"
+    },
+    {
+      "line": 1,
+      "number": 20,
+      "path": "docs/design/audits/2026-11-03/index.html",
+      "rule": "js/xss-through-dom",
+      "severity": "high"
+    },
+    {
+      "line": 86,
+      "number": 19,
+      "path": "docs/release/d5-2026-11-06/run-d5.mjs",
+      "rule": "js/biased-cryptographic-random",
+      "severity": "high"
+    },
+    {
+      "line": 141,
+      "number": 18,
+      "path": "docs/release/d15-2026-11-06/run-meb-pilot.mjs",
+      "rule": "js/biased-cryptographic-random",
+      "severity": "high"
+    },
+    {
+      "line": 88,
+      "number": 17,
+      "path": "docs/release/d13-2026-11-06/run-d13.mjs",
+      "rule": "js/biased-cryptographic-random",
+      "severity": "high"
+    },
+    {
+      "line": 86,
+      "number": 16,
+      "path": "docs/release/c14b-2026-11-06/ai/run-c14b.mjs",
+      "rule": "js/biased-cryptographic-random",
+      "severity": "high"
+    },
+    {
+      "line": 300,
+      "number": 15,
+      "path": "supabase/functions/_shared/curriculum-source.ts",
+      "rule": "js/double-escaping",
+      "severity": "high"
+    },
+    {
+      "line": 80,
+      "number": 14,
+      "path": "scripts/cf-pages-finalize.mjs",
+      "rule": "js/bad-tag-filter",
+      "severity": "high"
+    },
+    {
+      "line": 51,
+      "number": 13,
+      "path": "supabase/functions/_shared/meb-extract.ts",
+      "rule": "js/incomplete-sanitization",
+      "severity": "high"
+    },
+    {
+      "line": 232,
+      "number": 12,
+      "path": "scripts/release-local.mjs",
+      "rule": "js/incomplete-sanitization",
+      "severity": "high"
+    },
+    {
+      "line": 35,
+      "number": 11,
+      "path": "scripts/check-toolchain-security.test.mjs",
+      "rule": "js/bad-code-sanitization",
+      "severity": "medium"
+    },
+    {
+      "line": 203,
+      "number": 10,
+      "path": "scripts/security/c13-perf.mjs",
+      "rule": "js/redos",
+      "severity": "high"
+    },
+    {
+      "line": 203,
+      "number": 9,
+      "path": "scripts/security/c13-perf.mjs",
+      "rule": "js/redos",
+      "severity": "high"
+    },
+    {
+      "line": 106,
+      "number": 8,
+      "path": "packages/core/src/task-review.ts",
+      "rule": "js/polynomial-redos",
+      "severity": "high"
+    },
+    {
+      "line": 219,
+      "number": 7,
+      "path": "packages/core/src/question-types/authoring.ts",
+      "rule": "js/polynomial-redos",
+      "severity": "high"
+    },
+    {
+      "line": 249,
+      "number": 6,
+      "path": "packages/core/src/question-authoring.ts",
+      "rule": "js/polynomial-redos",
+      "severity": "high"
+    },
+    {
+      "line": 222,
+      "number": 5,
+      "path": "packages/core/src/question-authoring.ts",
+      "rule": "js/polynomial-redos",
+      "severity": "high"
+    },
+    {
+      "line": 190,
+      "number": 4,
+      "path": "packages/core/src/question-authoring-p2.ts",
+      "rule": "js/polynomial-redos",
+      "severity": "high"
+    },
+    {
+      "line": 215,
+      "number": 3,
+      "path": "packages/core/src/prova-draft.ts",
+      "rule": "js/polynomial-redos",
+      "severity": "high"
+    },
+    {
+      "line": 114,
+      "number": 2,
+      "path": "packages/core/src/notification-channels.ts",
+      "rule": "js/polynomial-redos",
+      "severity": "high"
+    },
+    {
+      "line": 5,
+      "number": 1,
+      "path": "packages/core/src/notebook-tokens.ts",
+      "rule": "js/polynomial-redos",
+      "severity": "high"
+    }
+  ],
+  "interpretation": "Successful analysis is not zero findings. Alerts await triage; none dismissed automatically."
+}
