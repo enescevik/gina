@@ -2279,14 +2279,14 @@ isOneToOne: false
                   ]
                 },"question_focus": {
                   Row: {
-                    "child_id": string,"created_by": string,"expires_at": string,"family_id": string,"question_id": string
+                    "attempts_left": number | null,"child_id": string,"created_by": string,"duration_mode": string,"event_id": string | null,"expires_at": string,"family_id": string,"question_id": string,"selected_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "child_id": string,"created_by": string,"expires_at": string,"family_id": string,"question_id": string
+                    "attempts_left"?: number | null,"child_id": string,"created_by": string,"duration_mode"?: string,"event_id"?: string | null,"expires_at": string,"family_id": string,"question_id": string,"selected_at"?: string
                   }
                   Update: {
-                    "child_id"?: string,"created_by"?: string,"expires_at"?: string,"family_id"?: string,"question_id"?: string
+                    "attempts_left"?: number | null,"child_id"?: string,"created_by"?: string,"duration_mode"?: string,"event_id"?: string | null,"expires_at"?: string,"family_id"?: string,"question_id"?: string,"selected_at"?: string
                   }
                   Relationships: [
                     {
@@ -2294,6 +2294,12 @@ isOneToOne: false
       columns: ["child_id"]
 isOneToOne: false
       referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_focus_event_id_fkey"
+      columns: ["event_id"]
+isOneToOne: false
+      referencedRelation: "events"
       referencedColumns: ["id"]
     },{
       foreignKeyName: "question_focus_family_id_fkey"
@@ -4638,6 +4644,9 @@ isOneToOne: false
                            },
 "set_question_focus":
 { Args: { "p_child_id": string,"p_question_id": string,"p_selected": boolean }; Returns: undefined
+                           },
+"set_question_focus_window":
+{ Args: { "p_child": string,"p_event"?: string,"p_mode": string,"p_question": string,"p_request": string }; Returns: undefined
                            },
 "set_room_pet":
 { Args: { "p_acting_child_id"?: string,"p_pet": string }; Returns: undefined

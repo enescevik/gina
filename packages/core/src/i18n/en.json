@@ -5157,6 +5157,15 @@
     "title": "Practice Suggestions",
     "body": "A short warm-up or a break may help. You choose; no work is assigned automatically.",
     "focus": "➕ Add a Practice Note",
+    "windowHelp": "Choose how long to prioritize the question, then select the children. This does not assign work automatically.",
+    "window": {
+      "week": "For seven days",
+      "attempts": "Next three practice attempts",
+      "event": "Until a calendar exam"
+    },
+    "noFocusEvents": "No upcoming exams in the calendar.",
+    "focusAttemptsLeft_one": "{{count}} practice attempt left",
+    "focusAttemptsLeft_other": "{{count}} practice attempts left",
     "focusHelp": "For which child? Your choice lasts 7 days and can be removed. It is separate from liking and does not assign work automatically.",
     "empty": "There are no new practice suggestions right now.",
     "said": "{{name}} found the {{topic}} question tricky. Shall we practise?",

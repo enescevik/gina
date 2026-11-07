@@ -83,12 +83,14 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F7 — Veli kazanım ısı haritası, 1–3–7 tekrar ve haftalık özet
 
-- Kaynak: §4.3–4, §4.10, §3a. Durum: KISMEN KOD HAZIR (mevcut 1–3–7 ve haftalık özet korundu, yeni kazanım gözlemleri ve isteğe bağlı favori biçimi; odak süresi seçenekleri açık). Efor: **L**.
+- Kaynak: §4.3–4, §4.10, §3a. Durum: KISMEN KOD HAZIR (1–3–7, kazanım gözlemleri, isteğe bağlı favori biçimi ve odak süresi seçenekleri hazır; cihaz kabulü açık). Efor: **L**.
 - Kapsam: Veli kazanım ısı haritası, 1–3–7 tekrar ve haftalık özet.
 - Bağımlılık: F2 sinyalleri, tamamlanmış puanlar, mevcut plan üretimi.
 - Paket kapısı: Harita/manuel tekrar tüm paketler; AI özet mevcut ücretli hak.
 - Kabul: Cevapsız/puan bekliyor 0 başarı sayılmaz; yetersiz örnek belirtilir; çocuklar arası kıyas yok; tekrar tekil, iptal/erteleme mümkün.
 - Test planı: Kısmi puan/eksik veri, DST/timezone, çift cron, silinen çocuk, plan iptal ve tekrar dağılımı.
+
+- F7 odak süresi: veli yedi gün, aynı dersin sonraki üç tamamlanan bireysel Provası veya takvimde seçili sınavın başlangıcına kadar odak seçebilir. Sayaç ilk tamamlanmada atomik azalır. Aynı kayıt isteği tekrarlandığında süre veya hak sıfırlanmaz. Takvim sınavı ertelenirse aktif odak tarihi güncellenir. Sınav arşivlenirse odak kaldırılır. Başka aile, yanlış sınıf ve çocuk oturumu sınırları korunur. Fiziksel cihaz ve canlı migration kabulü açık.
 
 ### F8 — Öğretmene kazanım özeti; favori PDF; uyarlanabilir zorluk
 

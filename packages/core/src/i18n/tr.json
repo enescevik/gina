@@ -5152,6 +5152,15 @@
     "title": "Pekiştirme Önerileri",
     "body": "Kısa bir ısınma veya mola birlikte iyi gelebilir. Önerileri siz seçersiniz; otomatik görev atanmaz.",
     "focus": "➕ Pekiştirme Notu Ekle",
+    "windowHelp": "Sorunun ne kadar süre öne çıkacağını belirleyin, sonra çocukları seçin. Otomatik ödev atanmaz.",
+    "window": {
+      "week": "Yedi gün",
+      "attempts": "Sonraki üç Prova",
+      "event": "Takvimdeki sınava kadar"
+    },
+    "noFocusEvents": "Takvimde yaklaşan bir sınav yok.",
+    "focusAttemptsLeft_one": "{{count}} Prova kaldı",
+    "focusAttemptsLeft_other": "{{count}} Prova kaldı",
     "focusHelp": "Hangi çocuk için? Seçim 7 gün geçerlidir; geri alabilirsiniz. Beğeniden farklıdır ve otomatik ödev atamaz.",
     "empty": "Şu anda yeni bir pekiştirme önerisi yok.",
     "said": "{{name}}, {{topic}} sorusunda zorlandığını söyledi. Pekiştirelim mi?",

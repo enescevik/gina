@@ -68,4 +68,43 @@ select throws_ok($$select public.set_question_focus('d1450000-0000-4000-8000-000
 reset role;set local role anon;
 select throws_ok($$select public.get_reinforcement_suggestions()$$,'42501',null,'anon RPC denied');
 reset role;
+-- The same command cannot reset uses, including when its response is retried after completion.
+select pg_temp.parent('1');set local role authenticated;
+select lives_ok($$select public.set_question_focus_window('a1470000-0000-4000-8000-000000000001',
+ 'd1450000-0000-4000-8000-000000000001','c1450000-0000-4000-8000-000000000001','attempts')$$,'parent can choose three attempts');
+select is((select attempts_left::int from public.question_focus),3,'three uses available');
+reset role;
+insert into public.exams(id,family_id,child_id,title,subject,grade,question_ids,status,kind)
+ values('e1470000-0000-4000-8000-000000000001','b1450000-0000-4000-8000-000000000001',
+ 'd1450000-0000-4000-8000-000000000001','Focus practice','Matematik',5,
+ array['c1450000-0000-4000-8000-000000000001']::uuid[],'assigned','level_test');
+insert into public.exam_attempts(family_id,exam_id,child_id)
+ values('b1450000-0000-4000-8000-000000000001','e1470000-0000-4000-8000-000000000001','d1450000-0000-4000-8000-000000000001');
+update public.exam_attempts set status='submitted' where status='in_progress';
+select is((select attempts_left::int from public.question_focus),2,'completion consumes one use');
+select pg_temp.parent('1');set local role authenticated;
+select public.set_question_focus_window('a1470000-0000-4000-8000-000000000001',
+ 'd1450000-0000-4000-8000-000000000001','c1450000-0000-4000-8000-000000000001','attempts');
+select is((select attempts_left::int from public.question_focus),2,'same request cannot reset the counter');
+reset role;
+insert into public.exam_attempts(family_id,exam_id,child_id)
+ select 'b1450000-0000-4000-8000-000000000001','e1470000-0000-4000-8000-000000000001','d1450000-0000-4000-8000-000000000001'
+ from generate_series(1,2);
+update public.exam_attempts set status='submitted' where status='in_progress';
+select ok((select attempts_left=0 and expires_at<=now() from public.question_focus),'third completion deactivates focus');
+insert into public.events(id,family_id,child_id,type,title,starts_at) values
+ ('a1470000-0000-4000-8000-000000000002','b1450000-0000-4000-8000-000000000001',null,'exam','Family exam',now()+interval '2 days'),
+ ('a1470000-0000-4000-8000-000000000003','b1450000-0000-4000-8000-000000000002',null,'exam','Foreign exam',now()+interval '2 days');
+select pg_temp.parent('1');set local role authenticated;
+select throws_ok($$select public.set_question_focus_window(gen_random_uuid(),
+ 'd1450000-0000-4000-8000-000000000001','c1450000-0000-4000-8000-000000000001','event',
+ 'a1470000-0000-4000-8000-000000000003')$$,'P0001','focus_event_unavailable','foreign calendar event cannot be used');
+select lives_ok($$select public.set_question_focus_window(gen_random_uuid(),
+ 'd1450000-0000-4000-8000-000000000001','c1450000-0000-4000-8000-000000000001','event',
+ 'a1470000-0000-4000-8000-000000000002')$$,'parent can choose an upcoming exam');
+reset role;
+update public.events set starts_at=now()+interval '3 days' where id='a1470000-0000-4000-8000-000000000002';
+select is((select expires_at from public.question_focus),now()+interval '3 days','rescheduling keeps active focus aligned');
+update public.events set archived_at=now() where id='a1470000-0000-4000-8000-000000000002';
+select is((select count(*)::int from public.question_focus),0,'archiving exam ends the focus');
 select * from finish();rollback;
