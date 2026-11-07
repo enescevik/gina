@@ -30,6 +30,10 @@
       "autoIncrement": false,
       "environment": "production",
       "channel": "production"
+    },
+    "production-reserved": {
+      "extends": "production",
+      "autoIncrement": false
     }
   },
   "submit": {
