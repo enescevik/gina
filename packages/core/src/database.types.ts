@@ -2183,6 +2183,44 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"question_reactions": {
+                  Row: {
+                    "created_at": string,"family_id": string,"parent_user_id": string,"question_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"family_id": string,"parent_user_id": string,"question_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"family_id"?: string,"parent_user_id"?: string,"question_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "question_reactions_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_reactions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_reactions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_reactions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "standalone_question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"question_source_groups": {
                   Row: {
                     "body": string,"created_at": string,"family_id": string,"finalized_at": string | null,"grade": number,"id": string,"previous_id": string | null,"series_id": string,"subject": string,"title": string,"version": number

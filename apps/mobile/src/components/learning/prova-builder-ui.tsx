@@ -1,3 +1,4 @@
+import { QuestionLike } from "./question-like";
 import { SetupSourceLinks } from "@/components/setup/source-links";
 import { type ReactNode } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -122,6 +123,7 @@ export function BuilderQuestionPreview(
         : null}
       <Text style={b.h2}>{q.stem}</Text>
       <QuestionMedia questionId={q.id} />
+      <QuestionLike questionId={q.id} />
       {q.kind === "structured" ? <StructuredBuilderPreview q={q} showAnswer={showAnswer} /> : null}
       {Array.isArray(q.choices)
         ? (q.choices as { key: string; text: string }[]).map((c) => (

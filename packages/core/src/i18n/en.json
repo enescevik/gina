@@ -5117,5 +5117,15 @@
   "subscription.limitDevices": "You have reached your plan’s connected device limit. To connect this tablet too, choose a plan with more devices.",
   "subscription.limitTasks": "You have reached your plan’s active task limit. Explore plans with more tasks.",
   "subscription.limitNotes": "You have reached your plan’s note limit. Explore plans with more notes.",
-  "subscription.viewPlans": "Explore plans"
+  "subscription.viewPlans": "Explore plans",
+  "questionLikes": {
+    "title": "Questions I Like",
+    "body": "Keep the questions you like here. Liking a question does not assign extra practice or change scores.",
+    "add": "♡ I Like This Question",
+    "remove": "♥ Remove Like",
+    "error": "Could not save your preference. Please try again.",
+    "retry": "Try Again",
+    "empty": "No liked questions yet. Open a question while preparing a practice and tap the heart.",
+    "more": "Show More"
+  }
 }
