@@ -28,7 +28,7 @@ import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, appendFileSync, existsSync, chmodSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { randomBytes, randomUUID, createHash } from 'node:crypto';
+import { randomBytes, randomInt, randomUUID, createHash } from 'node:crypto';
 
 const ROOT = new URL('../../../', import.meta.url);
 const LOCAL = process.env.GINA_MEB_PILOT_TARGET === 'local';
@@ -138,7 +138,7 @@ async function stageSetup() {
   if (state.userId) throw Error('already_set_up');
   state.email = `gina-d15-${randomUUID()}@example.invalid`;
   state.password = randomBytes(24).toString('base64url');
-  state.pin = String(1000 + (randomBytes(2).readUInt16BE() % 9000));
+  state.pin = String(randomInt(1000, 10000));
   save();
   const created = await must(admin.auth.admin.createUser({ email: state.email, password: state.password, email_confirm: true }), 'create_user');
   state.userId = created.user.id; save();

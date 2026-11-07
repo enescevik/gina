@@ -10,6 +10,13 @@ describe("structured revision authoring", () => {
     expect(buildRevisionFields(form!)).toEqual({ payload, answer_key: key });
   });
 
+  it("uses only real identifier suffixes to seed additions", () => {
+    const id = "s" + "9".repeat(50_000);
+    const payload = { statements: [{ id, text: 'Literal "id":"s999999"' }, { id: "s2_145", text: "İkinci ifade." }] };
+    const form = loadRevisionFields("true_false", payload, { answers: { [id]: true, s2_145: false } });
+    expect(form?.seq).toBe(145);
+  });
+
   it("keeps ordering alternatives and image region coordinates", () => {
     const order = { items: [{ id: "a", text: "A" }, { id: "b", text: "B" }], mode: "sequence" };
     const orderKey = { orders: [["a", "b"], ["b", "a"]] };

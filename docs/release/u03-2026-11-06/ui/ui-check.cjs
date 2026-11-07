@@ -11,7 +11,7 @@ const placeholder = process.env.GINA_QA_PLACEHOLDER_URL || 'http://127.0.0.1:654
 const dist = process.env.GINA_QA_WEB_DIST; assert.ok(dist && fs.existsSync(path.join(dist, 'index.html')), 'GINA_QA_WEB_DIST required');
 const ROOT = process.cwd();
 const out = path.join(ROOT, 'docs/release/u03-2026-11-06/ui'); fs.mkdirSync(out, { recursive: true });
-const failDir = process.env.GINA_QA_FAIL_DIR || require('node:os').tmpdir();
+const failRoot = process.env.GINA_QA_FAIL_DIR || require('node:os').tmpdir();
 const tr = JSON.parse(fs.readFileSync(path.join(ROOT, 'packages/core/src/i18n/tr.json')));
 const t = (key, vars = {}) => {
   let v = tr[key];
@@ -322,6 +322,6 @@ function client(sessionRef) {
   await browser.close(); server.close();
 })().catch(async e => {
   console.log('CHECK_FAILED ' + stage + ' ' + String(e && e.message).slice(0, 700));
-  if (page) { await page.screenshot({ path: failDir + '/gina-u03-ui-failed.png' }).catch(() => undefined); fs.writeFileSync(failDir + '/gina-u03-ui-failure.txt', await page.locator('body').innerText().catch(() => '')); }
+  if (page) { const failDir = fs.mkdtempSync(require('node:path').join(failRoot, 'gina-ui-failure-')); console.error('Failure artifacts: ' + failDir); await page.screenshot({ path: failDir + '/gina-u03-ui-failed.png' }).catch(() => undefined); fs.writeFileSync(failDir + '/gina-u03-ui-failure.txt', await page.locator('body').innerText().catch(() => '')); }
   if (browser) await browser.close(); if (server) server.close(); process.exitCode = 1;
 });

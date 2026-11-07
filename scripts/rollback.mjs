@@ -6,7 +6,7 @@
 // Secret'lar env'den okunur (CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID); yazdırılmaz.
 // Kullanım: node scripts/rollback.mjs <web|backoffice|tablet|db> [--to ID] [--name slug] [--execute] [--json]
 import { spawnSync } from 'node:child_process';
-import { existsSync, writeFileSync } from 'node:fs';
+import { writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
@@ -112,8 +112,12 @@ async function executeRollback(args, steps, env, fetcher = fetch) {
       console.log(JSON.stringify({ success: body.success ?? null, id: body.result?.id ?? null, url: body.result?.url ?? null }));
     } else if (s.kind === 'write') {
       const path = join(ROOT, s.path);
-      if (existsSync(path)) throw new Error('migration-file-exists');
-      writeFileSync(path, forwardFixTemplate({ name: args.name, version: s.path.match(/(\d{14})_/)[1] }));
+      try {
+        writeFileSync(path, forwardFixTemplate({ name: args.name, version: s.path.match(/(\d{14})_/)[1] }), { flag: 'wx' });
+      } catch (error) {
+        if (error.code === 'EEXIST') throw new Error('migration-file-exists');
+        throw error;
+      }
       console.log(`  yazıldı: ${s.path}`);
     } else console.log('  (elle kontrol)');
   }

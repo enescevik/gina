@@ -1,7 +1,7 @@
 // Q03 — repo ve rapor sızıntı taraması. Eşleşen DEĞERİ asla yazmaz; yalnız desen adı, dosya ve satır.
 // Kullanım: node scripts/security/leak-scan.mjs [--json çıktı.json]
 import { createHash } from 'node:crypto';
-import { readdirSync, readFileSync, lstatSync, writeFileSync } from 'node:fs';
+import { closeSync, constants, fstatSync, openSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, relative, extname } from 'node:path';
 
 const root = process.cwd();
@@ -80,13 +80,12 @@ let templatesScanned = 0;
 let scanned = 0;
 
 function walk(dir) {
-  for (const entry of readdirSync(dir)) {
+  for (const item of readdirSync(dir, { withFileTypes: true })) {
+    const entry = item.name;
     const full = join(dir, entry);
     const rel = relative(root, full);
-    let st;
-    try { st = lstatSync(full); } catch { continue; }
-    if (st.isSymbolicLink()) continue; // Never follow links outside the checkout or recurse through a link loop.
-    if (st.isDirectory()) { if (!SKIP_DIRS.has(entry)) walk(full); continue; }
+    if (item.isSymbolicLink()) continue; // Never follow links outside the checkout or recurse through a link loop.
+    if (item.isDirectory()) { if (!SKIP_DIRS.has(entry)) walk(full); continue; }
     if (SECRET_FILE.test(rel)) {
       if (!/\.env\.(example|sample|template)$/.test(rel)) {
         secretFiles.push(rel);
@@ -96,10 +95,17 @@ function walk(dir) {
       templatesScanned++;
       // Examples are scanned too: an accidental real value in a template must still block.
     }
-    if (BINARY.has(extname(entry).toLowerCase()) || st.size > 6 * 1024 * 1024) continue;
+    if (BINARY.has(extname(entry).toLowerCase())) continue;
     if (rel === 'pnpm-lock.yaml' || rel.startsWith('patches/')) continue; // hash yoğun; ayrı pnpm audit kapsar
     let text;
-    try { text = readFileSync(full, 'utf8'); } catch { continue; }
+    let fd;
+    try {
+      fd = openSync(full, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
+      const opened = fstatSync(fd);
+      if (!opened.isFile() || opened.size > 6 * 1024 * 1024) continue;
+      text = readFileSync(fd, 'utf8');
+    } catch { continue; }
+    finally { if (fd !== undefined) closeSync(fd); }
     if (text.includes('\u0000')) continue;
     scanned++;
     const isDocs = rel.startsWith('docs/') || rel.startsWith('research_notes/') || rel.endsWith('.md') || rel.endsWith('.json');
