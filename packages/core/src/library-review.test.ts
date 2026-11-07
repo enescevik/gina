@@ -3,8 +3,10 @@ import {
   libraryFileSchema,
   libraryPendingSchema,
   libraryReviewCommandSchema,
+  libraryInteractionSchema,
   localLibraryPreview,
 } from "./library-review";
+import qtFixtures from "./question-types/fixtures.json";
 const uuid = "00000000-0000-4000-8000-000000000001";
 const teacher = {
   correct_key: null,
@@ -63,6 +65,20 @@ const make = () => ({
   },
 });
 describe("library editorial contracts", () => {
+  it("validates all twelve enabled structured contracts and rejects disabled crossword", () => {
+    for (const item of qtFixtures.content.filter((item) => item.valid)) {
+      const interaction = { type: item.type, schema_version: 1, payload: item.payload, answer_key: item.key };
+      expect(libraryInteractionSchema.safeParse(interaction).success, item.name).toBe(item.type !== "crossword");
+    }
+  });
+  it("keeps typed content in private metadata and validates its key at import", () => {
+    const value = make();
+    const interaction = { type: "true_false", schema_version: 1, payload: { statements: [{ id: "a", text: "A statement" }] }, answer_key: { answers: { a: true } } };
+    value.p_bundle.questions[0]!.metadata = { interaction };
+    expect(libraryFileSchema.safeParse(value).success).toBe(true);
+    interaction.answer_key.answers = {} as { a: boolean };
+    expect(libraryFileSchema.safeParse(value).success).toBe(false);
+  });
   it("preserves a shared text and full teacher criteria without inventing an image", () => {
     const file = libraryFileSchema.parse(make());
     const d = localLibraryPreview(file);
