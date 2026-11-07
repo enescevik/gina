@@ -25,6 +25,7 @@ import { Toggle } from "@/components/ui/toggle";
 import type { LocalLearningFile } from "@/lib/learning-files";
 import { BuilderChoice } from "./prova-builder-ui";
 
+type RegionImage = Pick<LocalLearningFile, "uri" | "width" | "height">;
 type Of<T extends Phase2Draft["type"]> = Extract<Phase2Draft, { type: T }>;
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -89,7 +90,7 @@ function TokenPicker({ draft, selected, onToggle, disabled }: { draft: { passage
 }
 
 /** Görsel üzerinde dokunarak kutu yerleştirme (kutular normalize 0–1). */
-function BoxPlacer({ image, draft, onChange, disabled }: { image: LocalLearningFile | null; draft: Of<"region_select">; onChange: (d: Phase2Draft) => void; disabled?: boolean }) {
+function BoxPlacer({ image, draft, onChange, disabled }: { image: RegionImage | null; draft: Of<"region_select">; onChange: (d: Phase2Draft) => void; disabled?: boolean }) {
   const { t } = useTranslation();
   const [size, setSize] = useState({ w: 0, h: 0 });
   if (!image) return <Text style={s.muted} testID="qt-region-no-image">{t("prova.qt.author.region.needImage")}</Text>;
@@ -141,7 +142,7 @@ function BoxPlacer({ image, draft, onChange, disabled }: { image: LocalLearningF
   );
 }
 
-export function Phase2QuestionEditor({ draft, onChange, image, grade = null, disabled = false }: { draft: Phase2Draft; onChange: (d: Phase2Draft) => void; image: LocalLearningFile | null; grade?: number | null; disabled?: boolean }) {
+export function Phase2QuestionEditor({ draft, onChange, image, grade = null, disabled = false, allowImageFigure = true }: { draft: Phase2Draft; onChange: (d: Phase2Draft) => void; image: RegionImage | null; grade?: number | null; disabled?: boolean; allowImageFigure?: boolean }) {
   const { t } = useTranslation();
   const set = (patch: Partial<Phase2Draft>) => onChange({ ...draft, ...patch } as Phase2Draft);
   switch (draft.type) {
@@ -211,7 +212,7 @@ export function Phase2QuestionEditor({ draft, onChange, image, grade = null, dis
       const regions = regionList(d);
       return (
         <View style={s.gap} testID="qt-editor-region_select">
-          <Chips values={["grid", "sectors", "image"] as const} value={d.figure} disabled={disabled} label={(v) => t(`prova.qt.author.region.figure_${v}`)}
+          <Chips values={allowImageFigure ? ["grid", "sectors", "image"] as const : ["grid", "sectors"] as const} value={d.figure} disabled={disabled} label={(v) => t(`prova.qt.author.region.figure_${v}`)}
             onChange={(figure) => set({ figure, targets: [], keyMode: figure === "image" ? "targets" : d.keyMode })} />
           {d.figure === "grid"
             ? (

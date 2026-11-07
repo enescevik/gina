@@ -1,3 +1,4 @@
+import { useFutureLearningReady } from "@/lib/future-learning";
 import { PracticeDifficultyHint } from "./practice-difficulty-hint";
 import { NumberChoice, PromptExamples } from "@/components/ui/number-choice";
 import { invalidateProvaLists } from "@/lib/prova-cache";
@@ -540,6 +541,7 @@ export default function ProvaBuilder() {
       ["start", "scope", "questions", "review"][draft.step]
     }Title`,
   );
+  const revisionReady = useFutureLearningReady();
   const preview = flat[Math.min(previewIndex, flat.length - 1)],
     previewBlock = preview
       ? draft.blocks.find((block) =>
@@ -552,6 +554,18 @@ export default function ProvaBuilder() {
       questionsOf(previewBlock, mat).every((q) => q.kind !== "structured" && isAiEditable(q.provenance))
     ? { kind: previewBlock.kind, id: previewBlock.id }
     : null;
+  const canRevise = revisionReady && previewBlock?.kind === "question" && previewBlock.source === "manual" &&
+    preview?.kind === "structured" && preview.family_id === familyId &&
+    !!preview.provenance && typeof preview.provenance === "object" && !Array.isArray(preview.provenance) &&
+    preview.provenance.generator === "parent";
+  async function openRevision(sourceId: string) {
+    try {
+      const saved = await save.mutateAsync(draft);
+      router.push({ pathname: "/parent/prova/question", params: {
+        revisionFrom: sourceId, draftId: id, draftVersion: String(saved.version),
+      } });
+    } catch {}
+  }
   async function openAiEdit(target: { kind: "question" | "group"; id: string }) {
     try {
       await save.mutateAsync(draft);
@@ -1482,9 +1496,9 @@ export default function ProvaBuilder() {
                                   key={preview.id}
                                   q={preview}
                                   showAnswer={answer}
-                                  onEdit={previewEdit && !locked
-                                    ? () => void openAiEdit(previewEdit)
-                                    : undefined}
+                                  onEdit={locked ? undefined : canRevise
+                                    ? () => void openRevision(preview.id)
+                                    : previewEdit ? () => void openAiEdit(previewEdit) : undefined}
                                   editable={!!previewEdit}
                                 />
                               )

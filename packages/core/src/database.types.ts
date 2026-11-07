@@ -4400,6 +4400,9 @@ isOneToOne: false
 "review_task_once":
 { Args: { "p_approve": boolean,"p_completion_id": string,"p_expected_completed_at": string,"p_request_id": string,"p_return_note"?: string,"p_return_reason"?: string }; Returns: Json
                            },
+"revise_structured_question":
+{ Args: { "p_changes": Json,"p_draft_id": string,"p_request_id": string,"p_source_id": string,"p_version": number }; Returns: string
+                           },
 "revoke_child_share":
 { Args: { "p_share_id": string }; Returns: undefined
                            },

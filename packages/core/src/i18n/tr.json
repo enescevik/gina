@@ -5265,5 +5265,16 @@
   "dailyPractice.open": "Soruyu aç",
   "dailyPractice.pin": "Günün sorusu olarak göster",
   "dailyPractice.pinned": "Günün sorusu olarak gösterilecek.",
-  "dailyPractice.pinFailed": "Bu soru gösterilemedi. Bugün için bir soru zaten seçilmiş olabilir."
+  "dailyPractice.pinFailed": "Bu soru gösterilemedi. Bugün için bir soru zaten seçilmiş olabilir.",
+  "structuredRevision.title": "Soruyu düzenle",
+  "structuredRevision.help": "Yeni sürüm yalnız bu açık taslakta kullanılır. Atanmış sınavlar özgün soruyla devam eder.",
+  "structuredRevision.stem": "Soru metni",
+  "structuredRevision.topic": "Konu",
+  "structuredRevision.solution": "Çözüm yolu",
+  "structuredRevision.explanation": "Açıklama",
+  "structuredRevision.save": "Yeni sürümü taslağa kaydet",
+  "structuredRevision.stale": "Taslak değişmiş veya kapanmış. Taslağı yeniden aç ve güncel sürümü kontrol et.",
+  "structuredRevision.failed": "Yeni sürüm kaydedilemedi. Soruyu ve taslağı kontrol edip yeniden dene.",
+  "structuredRevision.keepRules": "Bu sorunun yanıt kuralları ve görsel yerleşimi yeni sürümde korunur.",
+  "structuredRevision.draft": "Açık taslak · {{title}}"
 }

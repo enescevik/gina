@@ -18,6 +18,7 @@ export * from "./answer-journal";
 export * from "./question-types";
 export * from "./question-authoring";
 export * from "./question-authoring-p2";
+export * from "./structured-revision-fields";
 export * from "./learning-progress";
 
 export * from "./notebook";

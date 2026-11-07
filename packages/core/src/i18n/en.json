@@ -5270,5 +5270,16 @@
   "dailyPractice.open": "Open question",
   "dailyPractice.pin": "Show as question of the day",
   "dailyPractice.pinned": "This will appear as the question of the day.",
-  "dailyPractice.pinFailed": "This question could not be shown. There may already be a question for today."
+  "dailyPractice.pinFailed": "This question could not be shown. There may already be a question for today.",
+  "structuredRevision.title": "Edit question",
+  "structuredRevision.help": "The new version is used in this open draft. Assigned exams keep their original question.",
+  "structuredRevision.stem": "Question text",
+  "structuredRevision.topic": "Topic",
+  "structuredRevision.solution": "Solution",
+  "structuredRevision.explanation": "Explanation",
+  "structuredRevision.save": "Save new version in draft",
+  "structuredRevision.stale": "The draft has changed or closed. Reopen it to check the current version.",
+  "structuredRevision.failed": "The new version could not be saved. Check the question and draft, then try again.",
+  "structuredRevision.keepRules": "The new version keeps the original answer rules and image layout.",
+  "structuredRevision.draft": "Open draft · {{title}}"
 }

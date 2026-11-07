@@ -1,3 +1,4 @@
+import { StructuredRevision } from "@/components/learning/structured-revision";
 import * as Crypto from "expo-crypto";
 import { Toggle } from "@/components/ui/toggle";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -89,6 +90,16 @@ const KEYS = ["A", "B", "C", "D"] as const;
 
 /** Parent-owned question; optional contribution is a separate consented snapshot. */
 export default function QuestionScreen() {
+  const { revisionFrom, draftId, draftVersion } = useLocalSearchParams<{
+    revisionFrom?: string; draftId?: string; draftVersion?: string;
+  }>();
+  if (revisionFrom && draftId && Number.isInteger(Number(draftVersion)) && Number(draftVersion) > 0) {
+    return <StructuredRevision sourceId={revisionFrom} draftId={draftId} version={Number(draftVersion)} />;
+  }
+  return <NewQuestionScreen />;
+}
+
+function NewQuestionScreen() {
   const { t } = useTranslation();
   const params = useLocalSearchParams<
     { draftId?: string; subject?: string; grade?: string; editFrom?: string }

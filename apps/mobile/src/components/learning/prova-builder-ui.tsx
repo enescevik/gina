@@ -21,7 +21,7 @@ import { Phase2QuestionPreview, StimulusPreview } from "./structured-question-au
  * taşımayabilir; içerik o zaman question_bank'tan okunur. Anahtar yalnız “cevabı göster” açıkken
  * veli RPC'siyle (`get_question_answer_keys`) alınır.
  */
-function StructuredBuilderPreview({ q, showAnswer }: { q: BuilderQuestion; showAnswer: boolean }) {
+export function StructuredBuilderPreview({ q, showAnswer }: { q: BuilderQuestion; showAnswer: boolean }) {
   // AI sonucu satırı veliye dönen anahtarı taşır; o zaman ayrıca RPC çağrılmaz.
   const row = q as BuilderQuestion & { interaction_type?: string | null; payload?: unknown; answer_key?: unknown };
   const content = useQuery({
