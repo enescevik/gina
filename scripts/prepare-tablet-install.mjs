@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 // Usage: node scripts/prepare-tablet-install.mjs STORE_JSON TABLET_JSON ICON_PNG OUTPUT_DIR
@@ -22,10 +22,13 @@ if (store.distribution !== 'STORE' || tablet.distribution !== 'INTERNAL' ||
 }
 const out = resolve(outputDir);
 const recordPath = resolve(out, 'release.json');
-if (existsSync(recordPath)) {
-  const previous = JSON.parse(readFileSync(recordPath, 'utf8'));
-  if (Number(previous.build) > Number(tablet.appBuildVersion)) throw new Error('Refusing to replace a newer tablet release');
+let previous;
+try {
+  previous = JSON.parse(readFileSync(recordPath, 'utf8'));
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
 }
+if (Number(previous?.build) > Number(tablet.appBuildVersion)) throw new Error('Refusing to replace a newer tablet release');
 const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const installUrl = `https://expo.dev/accounts/enescevik/projects/gina-aile/builds/${tablet.id}`;
 const record = { version: tablet.appVersion, build: tablet.appBuildVersion, sourceCommit: tablet.gitCommitHash,

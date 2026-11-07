@@ -200,7 +200,7 @@ select json_build_object('collections',(select count(*) from public.library_coll
 
   // ---------------------------------------------------------------- RLS audit: helpers called bare in policies (evaluated per row)
   const policies = JSON.parse(psql(`select coalesce(json_agg(json_build_object('schema',schemaname,'table',tablename,'name',policyname,'cmd',cmd,'permissive',permissive,'qual',qual,'with_check',with_check)),'[]') from pg_policies where schemaname in ('public','gina','storage')`).stdout.trim());
-  const helper = /(?:gina\.[a-z_]+|auth\.(?:uid|jwt|role))\((?:\s*'[^']*'(?:::[a-z_\[\]]+)?\s*(?:,\s*)?)*\)/g;
+  const helper = /(?:gina\.[a-z_]+|auth\.(?:uid|jwt|role))\((?:\s*'[^']*'(?:::[a-z_\[\]]+)?(?:\s*,\s*'[^']*'(?:::[a-z_\[\]]+)?)*)?\s*\)/g;
   const migrations = readdirSync(new URL('supabase/migrations/', ROOT)).filter(f => f.endsWith('.sql')).sort();
   const migText = Object.fromEntries(migrations.map(f => [f, readFileSync(new URL('supabase/migrations/' + f, ROOT), 'utf8')]));
   const bare = [];

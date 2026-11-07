@@ -229,8 +229,15 @@ export async function compareLiveHashes({ files, origins, fetcher = fetch, attem
 }
 
 export function extractDeploymentUrl(output, project) {
-  const re = new RegExp(`https://([a-z0-9]{6,12})\\.${project.replace(/[-]/g, '\\-')}\\.pages\\.dev`, 'g');
-  const matches = [...String(output).matchAll(re)].map(m => m[0]);
+  if (!/^[a-z0-9-]+$/.test(project)) throw new Error('invalid-pages-project');
+  const host = new RegExp(`^[a-z0-9]{6,12}\\.${project}\\.pages\\.dev$`);
+  const matches = [];
+  for (const [candidate] of String(output).matchAll(/https:\/\/[^\s<>"'`]+/g)) {
+    try {
+      const url = new URL(candidate);
+      if (!url.port && host.test(url.hostname) && url.href === url.origin + '/') matches.push(url.origin);
+    } catch { /* CLI output can contain unrelated text. */ }
+  }
   if (!matches.length) throw new Error('deployment-url-not-found');
   return matches.at(-1);
 }

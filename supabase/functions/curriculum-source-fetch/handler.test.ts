@@ -152,7 +152,7 @@ Deno.test("policy failures become unverified receipts: foreign host on page, non
   const foreign = await (await handleCurriculumSourceFetch(request({ request_id: id, target: { ...target, subject: "Fizik" } }), deps)).json();
   assertEquals(foreign.outcome, "unverified");
   assert(String(foreign.error).startsWith("file:host_not_allowed"));
-  assertEquals(t.calls.filter((u) => u.startsWith("https://evil.invalid")), [], "page-provided foreign link never requested");
+  assertEquals(t.calls.filter((u) => new URL(u).hostname === "evil.invalid"), [], "page-provided foreign link never requested");
   const html = await (await handleCurriculumSourceFetch(request({ request_id: id, target: { ...target, subject: "Fen Bilimleri" } }), deps)).json();
   assertEquals(html.outcome, "unverified");
   assertEquals(html.error, "file:mime_rejected:text/html");
@@ -184,7 +184,7 @@ Deno.test("index page comes only from the registry: new term after admin registr
   assertEquals(fetched.outcome, "new_revision");
   assertEquals((withTerm2.calls[0].args.p_source as { index_url: string }).index_url, term2);
   assertEquals((withTerm2.calls[0].args.p_source as { source_key: string }).source_key, "oyss:2026-2027:2:matematik");
-  assert(t.calls.includes(term2) && !t.calls.includes(INDEX), "term-2 fetch never reads the term-1 page");
+  assert(t.calls.some(url => url === term2) && !t.calls.some(url => url === INDEX), "term-2 fetch never reads the term-1 page");
   const none = fakeDb(() => null);
   const t2 = transportFor(routes());
   const unpublished = await (await handleCurriculumSourceFetch(request({ request_id: id, target: { ...target, term: 2 } }), { ...deps, db: none.db, transport: t2.transport })).json();

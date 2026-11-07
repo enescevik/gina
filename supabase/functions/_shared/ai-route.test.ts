@@ -60,7 +60,7 @@ Deno.test("C08 generateWith routes to the resolved adapter and refuses an unregi
     const result = await generateWith<{ ok: boolean }>("o-synthetic", openai, "sys", "user", schema);
     assertEquals(result.output, { ok: true });
     assertEquals(urls.length, 1);
-    assert(!urls[0].includes("anthropic.com"), "OpenAI config must not call Anthropic");
+    assert(new URL(urls[0]).hostname === "api.openai.com", "OpenAI config must not call Anthropic");
     assertEquals(headers[0].get("x-api-key"), null);
   });
   await withFetch([], async (urls) => {

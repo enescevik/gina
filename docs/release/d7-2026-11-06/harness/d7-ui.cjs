@@ -1,3 +1,4 @@
+const readPreviewFile = require('../../../../scripts/read-preview-file.cjs');
 // D7 UI checks against a disposable local stack (own `gina_d7_<hex>_audit` clone of the empty
 // `gina_completion_audit` template + temporary GoTrue/PostgREST containers on loopback ports).
 // Backoffice static export is driven with Playwright at 1280×800 and 768×1024.
@@ -182,8 +183,7 @@ const navText = (page) => page.locator('nav[aria-label="Yönetim bölümleri"]')
   statics = http.createServer((req, res) => {
     const p = path.normalize(decodeURIComponent(new URL(req.url, 'http://x').pathname)).replace(/^(\.\.[/\\])+/, '');
     for (const c of [p, p + '.html', path.join(p, 'index.html')]) {
-      const f = path.join(boDir, c);
-      try { if (fs.statSync(f).isFile()) { res.writeHead(200, { 'content-type': { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.svg': 'image/svg+xml', '.woff2': 'font/woff2' }[path.extname(f)] ?? 'application/octet-stream' }); res.end(fs.readFileSync(f)); return; } } catch {}
+      try { const body = readPreviewFile(boDir, c); if (body) { res.writeHead(200, { 'content-type': { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.png': 'image/png', '.svg': 'image/svg+xml', '.woff2': 'font/woff2' }[path.extname(c)] ?? 'application/octet-stream' }); res.end(body); return; } } catch {}
     }
     res.writeHead(404); res.end('not found');
   });
