@@ -1,0 +1,618 @@
+[
+  {
+    "id": "cbc4965c-6345-4556-b00c-be00b80510f1",
+    "input": {
+      "case_id": "a",
+      "content": {
+        "grade": 7,
+        "outcome": {
+          "id": "outcome-5c9c24393ec414e61ff500c9",
+          "grade": 7,
+          "subject": "Matematik",
+          "code": "MAT.7.1.4",
+          "text": "MAT.7.1.4. Rasyonel sayılar ve işlemler içeren gerçek yaşam problemlerini çözebilme",
+          "evidence": {
+            "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6",
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+            "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+            "sheet": "7.sınıf",
+            "cell": "C10",
+            "count_cell": "D10"
+          },
+          "source_verification": {
+            "method": "Live official XLSX SHA256 and XML-cell comparison",
+            "verified_at": "2026-11-07",
+            "file_sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+            "raw_outcome_cell": "MAT.7.1.4. Rasyonel sayılar ve işlemler içeren gerçek yaşam problemlerini  çözebilme",
+            "raw_count_cell": "2",
+            "wording_exact_after_whitespace": true,
+            "code_present": true,
+            "school_scenario_selected": false,
+            "subject_expert_approval": false
+          }
+        },
+        "student": {
+          "stem": "Bir kapta 1 1/2 L su vardır. Başlangıçtaki suyun 1/3’ü kullanılır. Sonra kaba 3/4 L su eklenir. a) Kullanılan suyu bulunuz. b) Kapta son durumda kaç litre su olduğunu kesirli işlemle bulunuz ve her kesrin bütününü açıklayınız.",
+          "kind": "open_ended",
+          "difficulty": "orta"
+        },
+        "teacher": {
+          "expected_answer": "1/2 L kullanılır; son durumda 7/4 L vardır.",
+          "solution": "Başlangıç 3/2 L. Kullanılan (3/2)×(1/3)=1/2 L. Kalan 3/2−1/2=1 L. Son 1+3/4=7/4 L. 1/3 başlangıçtaki suyun,3/4 ise litre biriminin payıdır.",
+          "rubric": {
+            "max_points": 100,
+            "criteria": [
+              {
+                "id": "K1",
+                "points": 25,
+                "criterion": "Başlangıcı3/2 L ifade eder; doğru25, yalnız yaklaşım12, yanlış0."
+              },
+              {
+                "id": "K2",
+                "points": 25,
+                "criterion": "Başlangıcın1/3’ünü1/2 L bulur; doğru25, doğru modelde işlem hatası12, ilgisiz0."
+              },
+              {
+                "id": "K3",
+                "points": 25,
+                "criterion": "Son miktarı7/4 L veya eşdeğer1,75 L bulur; doğru yöntemle25, yalnız doğru sonuç12, ilgisiz0."
+              },
+              {
+                "id": "K4",
+                "points": 25,
+                "criterion": "Kesirlerin farklı bütünlerini ve işlem sırasını açıklar; eksiksiz25, kısmi12, yok0."
+              }
+            ],
+            "scoring": "Eşdeğer doğru yanıtlar kabul edilir. Önceki hesap hatası tutarlı taşınmışsa tekrar cezalandırılmaz."
+          }
+        },
+        "metadata": {
+          "mapping_status": "proposed_pending_subject_review",
+          "subject_expert_approval": false,
+          "school_track_applicability": "pending_review"
+        }
+      }
+    },
+    "expected_pass": true,
+    "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+  },
+  {
+    "id": "3f4acd61-3ad1-45a3-abd1-0cfd60ee5a80",
+    "input": {
+      "case_id": "a-mutant",
+      "content": {
+        "grade": 7,
+        "outcome": {
+          "id": "outcome-5c9c24393ec414e61ff500c9",
+          "grade": 7,
+          "subject": "Matematik",
+          "code": "MAT.7.1.4",
+          "text": "MAT.7.1.4. Rasyonel sayılar ve işlemler içeren gerçek yaşam problemlerini çözebilme",
+          "evidence": {
+            "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-d6",
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+            "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+            "sheet": "7.sınıf",
+            "cell": "C10",
+            "count_cell": "D10"
+          },
+          "source_verification": {
+            "method": "Live official XLSX SHA256 and XML-cell comparison",
+            "verified_at": "2026-11-07",
+            "file_sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+            "raw_outcome_cell": "MAT.7.1.4. Rasyonel sayılar ve işlemler içeren gerçek yaşam problemlerini  çözebilme",
+            "raw_count_cell": "2",
+            "wording_exact_after_whitespace": true,
+            "code_present": true,
+            "school_scenario_selected": false,
+            "subject_expert_approval": false
+          }
+        },
+        "student": {
+          "stem": "Bir kapta 1 1/2 L su vardır. Başlangıçtaki suyun 1/3’ü kullanılır. Sonra kaba 3/4 L su eklenir. a) Kullanılan suyu bulunuz. b) Kapta son durumda kaç litre su olduğunu kesirli işlemle bulunuz ve her kesrin bütününü açıklayınız.",
+          "kind": "open_ended",
+          "difficulty": "orta"
+        },
+        "teacher": {
+          "expected_answer": "Son durumda5/4 L su vardır.",
+          "solution": "Başlangıç 3/2 L. Kullanılan (3/2)×(1/3)=1/2 L. Kalan 3/2−1/2=1 L. Son 1+3/4=7/4 L. 1/3 başlangıçtaki suyun,3/4 ise litre biriminin payıdır.",
+          "rubric": {
+            "max_points": 100,
+            "criteria": [
+              {
+                "id": "K1",
+                "points": 25,
+                "criterion": "Başlangıcı3/2 L ifade eder; doğru25, yalnız yaklaşım12, yanlış0."
+              },
+              {
+                "id": "K2",
+                "points": 25,
+                "criterion": "Başlangıcın1/3’ünü1/2 L bulur; doğru25, doğru modelde işlem hatası12, ilgisiz0."
+              },
+              {
+                "id": "K3",
+                "points": 25,
+                "criterion": "Son miktarı7/4 L veya eşdeğer1,75 L bulur; doğru yöntemle25, yalnız doğru sonuç12, ilgisiz0."
+              },
+              {
+                "id": "K4",
+                "points": 25,
+                "criterion": "Kesirlerin farklı bütünlerini ve işlem sırasını açıklar; eksiksiz25, kısmi12, yok0."
+              }
+            ],
+            "scoring": "Eşdeğer doğru yanıtlar kabul edilir. Önceki hesap hatası tutarlı taşınmışsa tekrar cezalandırılmaz."
+          }
+        },
+        "metadata": {
+          "mapping_status": "proposed_pending_subject_review",
+          "subject_expert_approval": false,
+          "school_track_applicability": "pending_review"
+        }
+      }
+    },
+    "expected_pass": false,
+    "oracle_reason": "Answer key contradicts exact7/4 L result."
+  },
+  {
+    "id": "31a9bc9b-01e4-4d4f-a4c4-597834148d85",
+    "input": {
+      "case_id": "b",
+      "content": {
+        "grade": 7,
+        "outcome": {
+          "id": "outcome-684f83931a7edd9e9619abc3",
+          "grade": 7,
+          "subject": "Türkçe",
+          "code": "T.O.7.5",
+          "text": "T.O.7.5. Metnin yüzey anlamını belirleyebilme",
+          "evidence": {
+            "scenario_id": "tr-2026-2027-t1-turkce2-g7-c6",
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx",
+            "sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+            "sheet": "7. SINIF",
+            "cell": "B11",
+            "count_cell": "C11"
+          },
+          "source_verification": {
+            "method": "Live official XLSX SHA256 and XML-cell comparison",
+            "verified_at": "2026-11-07",
+            "file_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+            "raw_outcome_cell": "T.O.7.5. Metnin yüzey anlamını belirleyebilme",
+            "raw_count_cell": "1",
+            "wording_exact_after_whitespace": true,
+            "code_present": true,
+            "school_scenario_selected": false,
+            "subject_expert_approval": false
+          }
+        },
+        "student": {
+          "stem": "Metin: Okulun kitap onarım çalışması cuma günü saat14.00’te çok amaçlı salonda yapılacaktır. Bahçe, yağmur beklendiği için kullanılmayacaktır. a) Çalışmanın gününü ve başlama saatini yazınız. b) Çalışmanın yerini ve bahçenin kullanılmama nedenini yazınız. Yalnız metindeki bilgilere dayanınız.",
+          "kind": "open_ended",
+          "difficulty": "orta"
+        },
+        "teacher": {
+          "expected_answer": "Cuma,14.00,çok amaçlı salon,yağmur beklentisi.",
+          "solution": "Metin gün ve saati ilk cümlede; yer bilgisini ilk cümlede ve neden bilgisini ikinci cümlede açık verir.",
+          "rubric": {
+            "max_points": 100,
+            "criteria": [
+              {
+                "id": "K1",
+                "points": 25,
+                "criterion": "Gün:cuma25, belirsiz kısmi yanıt12, yanlış0."
+              },
+              {
+                "id": "K2",
+                "points": 25,
+                "criterion": "Saat:14.00 veya öğleden sonraiki25, yaklaşım12, yanlış0."
+              },
+              {
+                "id": "K3",
+                "points": 25,
+                "criterion": "Yer:çok amaçlı salon25, yalnız salon12, yanlış0."
+              },
+              {
+                "id": "K4",
+                "points": 25,
+                "criterion": "Neden:yağmur beklendiği için25, yalnız kötü hava12, ilgisiz0."
+              }
+            ],
+            "scoring": "Eşdeğer doğru yanıtlar kabul edilir. Önceki hesap hatası tutarlı taşınmışsa tekrar cezalandırılmaz."
+          }
+        },
+        "metadata": {
+          "mapping_status": "proposed_pending_subject_review",
+          "subject_expert_approval": false,
+          "school_track_applicability": "pending_review"
+        }
+      }
+    },
+    "expected_pass": true,
+    "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+  },
+  {
+    "id": "28c67413-163a-4dbe-8e80-0596da984fe3",
+    "input": {
+      "case_id": "b-mutant",
+      "content": {
+        "grade": 7,
+        "outcome": {
+          "id": "outcome-684f83931a7edd9e9619abc3",
+          "grade": 7,
+          "subject": "Türkçe",
+          "code": "T.O.7.5",
+          "text": "T.O.7.5. Metnin yüzey anlamını belirleyebilme",
+          "evidence": {
+            "scenario_id": "tr-2026-2027-t1-turkce2-g7-c6",
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/turkce2.xlsx",
+            "sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+            "sheet": "7. SINIF",
+            "cell": "B11",
+            "count_cell": "C11"
+          },
+          "source_verification": {
+            "method": "Live official XLSX SHA256 and XML-cell comparison",
+            "verified_at": "2026-11-07",
+            "file_sha256": "6405d02aaaadaa4d25a3ce54954dd256a045da9f35d49ee806a3b29565a82cee",
+            "raw_outcome_cell": "T.O.7.5. Metnin yüzey anlamını belirleyebilme",
+            "raw_count_cell": "1",
+            "wording_exact_after_whitespace": true,
+            "code_present": true,
+            "school_scenario_selected": false,
+            "subject_expert_approval": false
+          }
+        },
+        "student": {
+          "stem": "Metin: Okulun kitap onarım çalışması cuma günü saat14.00’te çok amaçlı salonda yapılacaktır. Bahçe, yağmur beklendiği için kullanılmayacaktır. a) Çalışmanın gününü ve başlama saatini yazınız. b) Çalışmanın yerini ve bahçenin kullanılmama nedenini yazınız. Yalnız metindeki bilgilere dayanınız.",
+          "kind": "open_ended",
+          "difficulty": "orta"
+        },
+        "teacher": {
+          "expected_answer": "Pazartesi,10.00,bahçe,hava güneşli olduğu için.",
+          "solution": "Metin gün ve saati ilk cümlede; yer bilgisini ilk cümlede ve neden bilgisini ikinci cümlede açık verir.",
+          "rubric": {
+            "max_points": 100,
+            "criteria": [
+              {
+                "id": "K1",
+                "points": 25,
+                "criterion": "Gün:cuma25, belirsiz kısmi yanıt12, yanlış0."
+              },
+              {
+                "id": "K2",
+                "points": 25,
+                "criterion": "Saat:14.00 veya öğleden sonraiki25, yaklaşım12, yanlış0."
+              },
+              {
+                "id": "K3",
+                "points": 25,
+                "criterion": "Yer:çok amaçlı salon25, yalnız salon12, yanlış0."
+              },
+              {
+                "id": "K4",
+                "points": 25,
+                "criterion": "Neden:yağmur beklendiği için25, yalnız kötü hava12, ilgisiz0."
+              }
+            ],
+            "scoring": "Eşdeğer doğru yanıtlar kabul edilir. Önceki hesap hatası tutarlı taşınmışsa tekrar cezalandırılmaz."
+          }
+        },
+        "metadata": {
+          "mapping_status": "proposed_pending_subject_review",
+          "subject_expert_approval": false,
+          "school_track_applicability": "pending_review"
+        }
+      }
+    },
+    "expected_pass": false,
+    "oracle_reason": "Answer key contradicts all four explicit text facts."
+  },
+  {
+    "id": "014f928d-c203-4e40-b6b3-4ee02c450b60",
+    "input": {
+      "case_id": "c",
+      "content": {
+        "grade": 7,
+        "outcome": {
+          "id": "outcome-8950f76d91ba6d9344420ab4",
+          "grade": 7,
+          "subject": "Fen Bilimleri",
+          "code": "FB.7.2.1",
+          "text": "FB.7.2.1. Fiziksel anlamda yapılan işin bağlı olduğu faktörlere ilişkin bilimsel çıkarım yapabilme",
+          "evidence": {
+            "scenario_id": "tr-2026-2027-t1-fen3_2-g7-d6",
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/fen3_2.xlsx",
+            "sha256": "f01e0f96328e6c766776cd1e4dad760923a31331e701ce906b59eef359b75a3c",
+            "sheet": "7. sınıf",
+            "cell": "C12",
+            "count_cell": "D12"
+          },
+          "source_verification": {
+            "method": "Live official XLSX SHA256 and XML-cell comparison",
+            "verified_at": "2026-11-07",
+            "file_sha256": "f01e0f96328e6c766776cd1e4dad760923a31331e701ce906b59eef359b75a3c",
+            "raw_outcome_cell": "FB.7.2.1. Fiziksel anlamda yapılan işin bağlı olduğu faktörlere ilişkin bilimsel çıkarım yapabilme",
+            "raw_count_cell": "3",
+            "wording_exact_after_whitespace": true,
+            "code_present": true,
+            "school_scenario_selected": false,
+            "subject_expert_approval": false
+          }
+        },
+        "student": {
+          "stem": "Bir kutu hareket yönünde sabit kuvvetle çekiliyor. A:20 N,2 m; B:40 N,2 m; C:20 N,4 m; D:60 N,0 m. İş=kuvvet×kuvvet yönünde yol. a) İşleri hesaplayınız. b) Kuvvetin ve yolun işe etkisini ayrı incelemek için hangi çiftleri karşılaştırırsınız? Her çiftte sabit tutulanı ve çıkarımınızı yazınız. c) D için yapılan işi açıklayınız.",
+          "kind": "open_ended",
+          "difficulty": "orta"
+        },
+        "teacher": {
+          "expected_answer": "A40 J,B80 J,C80 J,D0 J. Kuvvet etkisiA-B(sabit yol); yol etkisiA-C(sabit kuvvet). Yol yoksa kutuya iş yapılmaz.",
+          "solution": "20×2=40;40×2=80;20×4=80;60×0=0. A-B’de yalnız kuvvet iki katına çıkar; A-C’de yalnız yol iki katına çıkar.",
+          "rubric": {
+            "max_points": 100,
+            "criteria": [
+              {
+                "id": "K1",
+                "points": 25,
+                "criterion": "A,B,C işlerini40,80,80 J bulur:üçü doğru25,iki doğru17,bir doğru8,hiçbiri0."
+              },
+              {
+                "id": "K2",
+                "points": 25,
+                "criterion": "Kuvvet içinA-B seçer,yolun2 m sabit olduğunu ve kuvvet iki katına çıkınca işin iki katına çıktığını açıklar:tam25,kısmi12,yok0."
+              },
+              {
+                "id": "K3",
+                "points": 25,
+                "criterion": "Yol içinA-C seçer,kuvvetin20 N sabit olduğunu ve yol iki katına çıkınca işin iki katına çıktığını açıklar:tam25,kısmi12,yok0."
+              },
+              {
+                "id": "K4",
+                "points": 25,
+                "criterion": "D’de yer değiştirme olmadığı için0 J olduğunu gerekçelendirir:tam25,yalnız0 J12,yanlış0."
+              }
+            ],
+            "scoring": "Eşdeğer doğru yanıtlar kabul edilir. Önceki hesap hatası tutarlı taşınmışsa tekrar cezalandırılmaz."
+          }
+        },
+        "metadata": {
+          "mapping_status": "proposed_pending_subject_review",
+          "subject_expert_approval": false,
+          "school_track_applicability": "pending_review"
+        }
+      }
+    },
+    "expected_pass": true,
+    "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+  },
+  {
+    "id": "e4e902da-c71e-466a-8e56-c9d36aaa29f4",
+    "input": {
+      "case_id": "c-mutant",
+      "content": {
+        "grade": 7,
+        "outcome": {
+          "id": "outcome-8950f76d91ba6d9344420ab4",
+          "grade": 7,
+          "subject": "Fen Bilimleri",
+          "code": "FB.7.2.1",
+          "text": "FB.7.2.1. Fiziksel anlamda yapılan işin bağlı olduğu faktörlere ilişkin bilimsel çıkarım yapabilme",
+          "evidence": {
+            "scenario_id": "tr-2026-2027-t1-fen3_2-g7-d6",
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/fen3_2.xlsx",
+            "sha256": "f01e0f96328e6c766776cd1e4dad760923a31331e701ce906b59eef359b75a3c",
+            "sheet": "7. sınıf",
+            "cell": "C12",
+            "count_cell": "D12"
+          },
+          "source_verification": {
+            "method": "Live official XLSX SHA256 and XML-cell comparison",
+            "verified_at": "2026-11-07",
+            "file_sha256": "f01e0f96328e6c766776cd1e4dad760923a31331e701ce906b59eef359b75a3c",
+            "raw_outcome_cell": "FB.7.2.1. Fiziksel anlamda yapılan işin bağlı olduğu faktörlere ilişkin bilimsel çıkarım yapabilme",
+            "raw_count_cell": "3",
+            "wording_exact_after_whitespace": true,
+            "code_present": true,
+            "school_scenario_selected": false,
+            "subject_expert_approval": false
+          }
+        },
+        "student": {
+          "stem": "Bir kutu hareket yönünde sabit kuvvetle çekiliyor. A:20 N,2 m; B:40 N,2 m; C:20 N,4 m; D:60 N,0 m. İş=kuvvet×kuvvet yönünde yol. a) İşleri hesaplayınız. b) Kuvvetin ve yolun işe etkisini ayrı incelemek için hangi çiftleri karşılaştırırsınız? Her çiftte sabit tutulanı ve çıkarımınızı yazınız. c) D için yapılan işi açıklayınız.",
+          "kind": "open_ended",
+          "difficulty": "orta"
+        },
+        "teacher": {
+          "expected_answer": "A40 J,B80 J,C80 J,D0 J. Kuvvet etkisiA-B(sabit yol); yol etkisiA-C(sabit kuvvet). Yol yoksa kutuya iş yapılmaz.",
+          "solution": "Kuvvetin etkisini A ile C’yi karşılaştırarak buluruz; bu çiftte yol sabittir. Yolun etkisi A ile B’den anlaşılır.",
+          "rubric": {
+            "max_points": 100,
+            "criteria": [
+              {
+                "id": "K1",
+                "points": 25,
+                "criterion": "A,B,C işlerini40,80,80 J bulur:üçü doğru25,iki doğru17,bir doğru8,hiçbiri0."
+              },
+              {
+                "id": "K2",
+                "points": 25,
+                "criterion": "Kuvvet içinA-B seçer,yolun2 m sabit olduğunu ve kuvvet iki katına çıkınca işin iki katına çıktığını açıklar:tam25,kısmi12,yok0."
+              },
+              {
+                "id": "K3",
+                "points": 25,
+                "criterion": "Yol içinA-C seçer,kuvvetin20 N sabit olduğunu ve yol iki katına çıkınca işin iki katına çıktığını açıklar:tam25,kısmi12,yok0."
+              },
+              {
+                "id": "K4",
+                "points": 25,
+                "criterion": "D’de yer değiştirme olmadığı için0 J olduğunu gerekçelendirir:tam25,yalnız0 J12,yanlış0."
+              }
+            ],
+            "scoring": "Eşdeğer doğru yanıtlar kabul edilir. Önceki hesap hatası tutarlı taşınmışsa tekrar cezalandırılmaz."
+          }
+        },
+        "metadata": {
+          "mapping_status": "proposed_pending_subject_review",
+          "subject_expert_approval": false,
+          "school_track_applicability": "pending_review"
+        }
+      }
+    },
+    "expected_pass": false,
+    "oracle_reason": "Independent variable controls are swapped; A-C distance changes, notforce."
+  },
+  {
+    "id": "a098d810-9ff1-4318-9186-6abcd2c6b240",
+    "input": {
+      "case_id": "d",
+      "content": {
+        "grade": 7,
+        "outcome": {
+          "id": "outcome-a644d1c179650f46412fe3fa",
+          "grade": 7,
+          "subject": "Matematik",
+          "code": "MAT.7.4.2",
+          "text": "MAT.7.4.2. Dikdörtgenler prizmasının yüzey alanını yorumlayabilme",
+          "evidence": {
+            "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-h6",
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+            "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+            "sheet": "7.sınıf",
+            "cell": "C12",
+            "count_cell": "H12"
+          },
+          "source_verification": {
+            "method": "Live official XLSX SHA256 and XML-cell comparison",
+            "verified_at": "2026-11-07",
+            "file_sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+            "raw_outcome_cell": "MAT.7.4.2. Dikdörtgenler prizmasının yüzey alanını yorumlayabilme",
+            "raw_count_cell": "1",
+            "wording_exact_after_whitespace": true,
+            "code_present": true,
+            "school_scenario_selected": false,
+            "subject_expert_approval": false
+          }
+        },
+        "student": {
+          "stem": "Ayrıtları6 cm,4 cm,3 cm olan kapalı iki özdeş kutu,6×4 boyutlu yüzleri tam çakışacak biçimde birleştiriliyor. a) Bir kutunun yüzey alanını bulunuz. b) Yeni paketin dış yüzey alanını bulunuz; hangi yüzlerin dışta kalmadığını ve nedenini açıklayınız.",
+          "kind": "open_ended",
+          "difficulty": "orta"
+        },
+        "teacher": {
+          "expected_answer": "Tek kutu108 cm²; paket168 cm². İki24 cm² yüz içte kalır.",
+          "solution": "Tek kutu2×(24+18+12)=108. İki kutu216 cm² yüzey taşır; temas eden iki24 cm² yüz çıkar:216−48=168 cm².",
+          "rubric": {
+            "max_points": 100,
+            "criteria": [
+              {
+                "id": "K1",
+                "points": 25,
+                "criterion": "Üç farklı yüz alanını24,18,12 bulur:tam25,kısmi12,yok0."
+              },
+              {
+                "id": "K2",
+                "points": 25,
+                "criterion": "Tek kutunun yüzeyini108 cm² bulur ve karşılıklı yüzleri sayar:tam25,yalnız doğru sonuç12,yok0."
+              },
+              {
+                "id": "K3",
+                "points": 25,
+                "criterion": "İki temas yüzünün toplam48 cm² olduğunu ve dıştan görünmediğini açıklar:tam25,kısmi12,yok0."
+              },
+              {
+                "id": "K4",
+                "points": 25,
+                "criterion": "Dış alanı168 cm² bulur; eşdeğer yöntem kabul:tam25,doğru yöntemle işlem hatası12,yok0."
+              }
+            ],
+            "scoring": "Eşdeğer doğru yanıtlar kabul edilir. Önceki hesap hatası tutarlı taşınmışsa tekrar cezalandırılmaz."
+          }
+        },
+        "metadata": {
+          "mapping_status": "proposed_pending_subject_review",
+          "subject_expert_approval": false,
+          "school_track_applicability": "pending_review"
+        }
+      }
+    },
+    "expected_pass": true,
+    "oracle_reason": "Exact arithmetic or explicit text; complete consistent rubric; source cell verified. Pending independent human review is a workflow state."
+  },
+  {
+    "id": "8fbcdfec-a642-43fb-8573-bbe7352f2d2f",
+    "input": {
+      "case_id": "d-mutant",
+      "content": {
+        "grade": 7,
+        "outcome": {
+          "id": "outcome-a644d1c179650f46412fe3fa",
+          "grade": 7,
+          "subject": "Matematik",
+          "code": "MAT.7.4.2",
+          "text": "MAT.7.4.2. Dikdörtgenler prizmasının yüzey alanını yorumlayabilme",
+          "evidence": {
+            "scenario_id": "tr-2026-2027-t1-ilkmat2-g7-h6",
+            "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+            "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+            "sheet": "7.sınıf",
+            "cell": "C12",
+            "count_cell": "H12"
+          },
+          "source_verification": {
+            "method": "Live official XLSX SHA256 and XML-cell comparison",
+            "verified_at": "2026-11-07",
+            "file_sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+            "raw_outcome_cell": "MAT.7.4.2. Dikdörtgenler prizmasının yüzey alanını yorumlayabilme",
+            "raw_count_cell": "1",
+            "wording_exact_after_whitespace": true,
+            "code_present": true,
+            "school_scenario_selected": false,
+            "subject_expert_approval": false
+          }
+        },
+        "student": {
+          "stem": "Ayrıtları6 cm,4 cm,3 cm olan kapalı iki özdeş kutu,6×4 boyutlu yüzleri tam çakışacak biçimde birleştiriliyor. a) Bir kutunun yüzey alanını bulunuz. b) Yeni paketin dış yüzey alanını bulunuz; hangi yüzlerin dışta kalmadığını ve nedenini açıklayınız.",
+          "kind": "open_ended",
+          "difficulty": "orta"
+        },
+        "teacher": {
+          "expected_answer": "Tek kutu108 cm²; paket168 cm². İki24 cm² yüz içte kalır.",
+          "solution": "Tek kutu2×(24+18+12)=108. İki kutu216 cm² yüzey taşır; temas eden iki24 cm² yüz çıkar:216−48=168 cm².",
+          "rubric": {
+            "max_points": 100,
+            "criteria": [
+              {
+                "id": "K1",
+                "points": 25,
+                "criterion": "Üç farklı yüz alanını24,18,12 bulur:tam25,kısmi12,yok0."
+              },
+              {
+                "id": "K2",
+                "points": 25,
+                "criterion": "Tek kutunun yüzeyini108 cm² bulur ve karşılıklı yüzleri sayar:tam25,yalnız doğru sonuç12,yok0."
+              },
+              {
+                "id": "K3",
+                "points": 25,
+                "criterion": "İki temas yüzünün toplam48 cm² olduğunu ve dıştan görünmediğini açıklar:tam25,kısmi12,yok0."
+              },
+              {
+                "id": "K4",
+                "points": 25,
+                "criterion": "168 cm² yazanlar25 puan alır. Ancak eşdeğer168 sonucuna farklı yöntemle ulaşanların bu ölçütten alabileceği en fazla12 puandır. Tüm eşdeğer doğru yöntemlere tam puan verilir."
+              }
+            ],
+            "scoring": "Eşdeğer doğru yanıtlar kabul edilir. Önceki hesap hatası tutarlı taşınmışsa tekrar cezalandırılmaz."
+          }
+        },
+        "metadata": {
+          "mapping_status": "proposed_pending_subject_review",
+          "subject_expert_approval": false,
+          "school_track_applicability": "pending_review"
+        }
+      }
+    },
+    "expected_pass": false,
+    "oracle_reason": "Rubric explicitly contradicts its own equivalent-method acceptance rule."
+  }
+]

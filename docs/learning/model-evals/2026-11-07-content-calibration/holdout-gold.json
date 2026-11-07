@@ -1,0 +1,482 @@
+[
+  {
+    "id": "758032c1-e4aa-47df-976d-f448193113ad",
+    "content": {
+      "grade": 5,
+      "subject": "Matematik",
+      "outcome": {
+        "id": "outcome-66d896be15c15cfd38ffcbd5",
+        "grade": 5,
+        "subject": "Matematik",
+        "code": "MAT.5.1.2",
+        "text": "MAT.5.1.2. Doğal sayılar ve işlemler içeren gerçek yaşam problemlerini çözebilme",
+        "evidence": {
+          "scenario_id": "tr-2026-2027-t1-ilkmat2-g5-i6",
+          "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+          "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+          "sheet": "5.sınıf",
+          "cell": "C15",
+          "count_cell": "I15"
+        },
+        "source_verification": {
+          "method": "Live official XLSX SHA256 and XML-cell comparison",
+          "verified_at": "2026-11-07",
+          "file_sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+          "raw_outcome_cell": "MAT.5.1.2. Doğal sayılar ve işlemler içeren gerçek yaşam problemlerini çözebilme",
+          "raw_count_cell": "2",
+          "wording_exact_after_whitespace": true,
+          "code_present": true,
+          "school_scenario_selected": false,
+          "subject_expert_approval": false
+        }
+      },
+      "student": {
+        "grade": 5,
+        "subject": "Matematik",
+        "kind": "open_ended",
+        "difficulty": "orta",
+        "stem": "Bir sınıfın kitap toplama çalışmasında üç gün sırasıyla145,178 ve96 kitap toplandı. Kitaplar20’şer kitap alan kutulara konulacak. a) Toplam kitap sayısını işlemlerle bulunuz. b) En çok kaç kutu tamamen dolar ve kaç kitap artar? Sonucunuzu çarpma ve toplama ile kontrol ediniz."
+      },
+      "teacher": {
+        "expected_answer": "419 kitap;20 tam kutu;19 kitap artar.",
+        "solution": "145+178+96=419;419=20×20+19;19<20.",
+        "explanation": "Verilen metin veya verilerden hareketle kazanımın hedeflediği beceri değerlendirilir.",
+        "common_misconception": "İşlem veya metin bilgisi kontrol edilmeden sonuç yazılması hataya yol açar.",
+        "next_step": "Benzer bağlamda farklı verilerle yeni bir gerekçeli yanıt oluşturulur.",
+        "rubric": {
+          "max_points": 100,
+          "criteria": [
+            {
+              "id": "K1",
+              "points": 25,
+              "criterion": "Toplamı419 bulur ve toplama işlemini gösterir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K2",
+              "points": 25,
+              "criterion": "20 tam kutu bulur. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K3",
+              "points": 25,
+              "criterion": "19 artık kitabı bulur ve20’den az olduğunu belirtir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K4",
+              "points": 25,
+              "criterion": "20×20+19=419 kontrolünü yapar. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            }
+          ],
+          "scoring": "Eşdeğer doğru yanıtlar tam puan alır. Aynı hatadan ikinci kez puan düşülmez."
+        }
+      },
+      "metadata": {
+        "mapping_status": "proposed_pending_subject_review",
+        "subject_expert_approval": false,
+        "school_track_applicability": "pending_review"
+      }
+    },
+    "expected_pass": true,
+    "oracle_reason": "Independent exact arithmetic or direct text/table facts."
+  },
+  {
+    "id": "0701f1f0-a733-4ea7-98bc-8281a2260024",
+    "content": {
+      "grade": 5,
+      "subject": "Matematik",
+      "outcome": {
+        "id": "outcome-66d896be15c15cfd38ffcbd5",
+        "grade": 5,
+        "subject": "Matematik",
+        "code": "MAT.5.1.2",
+        "text": "MAT.5.1.2. Doğal sayılar ve işlemler içeren gerçek yaşam problemlerini çözebilme",
+        "evidence": {
+          "scenario_id": "tr-2026-2027-t1-ilkmat2-g5-i6",
+          "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ilkmat2.xlsx",
+          "sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+          "sheet": "5.sınıf",
+          "cell": "C15",
+          "count_cell": "I15"
+        },
+        "source_verification": {
+          "method": "Live official XLSX SHA256 and XML-cell comparison",
+          "verified_at": "2026-11-07",
+          "file_sha256": "d5429b5962a08adc04acd71ceaae2d517bca507f8b4cf94354bcd55a9670aebf",
+          "raw_outcome_cell": "MAT.5.1.2. Doğal sayılar ve işlemler içeren gerçek yaşam problemlerini çözebilme",
+          "raw_count_cell": "2",
+          "wording_exact_after_whitespace": true,
+          "code_present": true,
+          "school_scenario_selected": false,
+          "subject_expert_approval": false
+        }
+      },
+      "student": {
+        "grade": 5,
+        "subject": "Matematik",
+        "kind": "open_ended",
+        "difficulty": "orta",
+        "stem": "Bir sınıfın kitap toplama çalışmasında üç gün sırasıyla145,178 ve96 kitap toplandı. Kitaplar20’şer kitap alan kutulara konulacak. a) Toplam kitap sayısını işlemlerle bulunuz. b) En çok kaç kutu tamamen dolar ve kaç kitap artar? Sonucunuzu çarpma ve toplama ile kontrol ediniz."
+      },
+      "teacher": {
+        "expected_answer": "429 kitap;21 tam kutu;9 kitap artar.",
+        "solution": "145+178+96=419;419=20×20+19;19<20.",
+        "explanation": "Verilen metin veya verilerden hareketle kazanımın hedeflediği beceri değerlendirilir.",
+        "common_misconception": "İşlem veya metin bilgisi kontrol edilmeden sonuç yazılması hataya yol açar.",
+        "next_step": "Benzer bağlamda farklı verilerle yeni bir gerekçeli yanıt oluşturulur.",
+        "rubric": {
+          "max_points": 100,
+          "criteria": [
+            {
+              "id": "K1",
+              "points": 25,
+              "criterion": "Toplamı419 bulur ve toplama işlemini gösterir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K2",
+              "points": 25,
+              "criterion": "20 tam kutu bulur. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K3",
+              "points": 25,
+              "criterion": "19 artık kitabı bulur ve20’den az olduğunu belirtir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K4",
+              "points": 25,
+              "criterion": "20×20+19=419 kontrolünü yapar. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            }
+          ],
+          "scoring": "Eşdeğer doğru yanıtlar tam puan alır. Aynı hatadan ikinci kez puan düşülmez."
+        }
+      },
+      "metadata": {
+        "mapping_status": "proposed_pending_subject_review",
+        "subject_expert_approval": false,
+        "school_track_applicability": "pending_review"
+      }
+    },
+    "expected_pass": false,
+    "oracle_reason": "Expected answer contradicts explicit source facts and worked solution."
+  },
+  {
+    "id": "09a7e911-674c-400b-9e48-4ce8ec66aae5",
+    "content": {
+      "grade": 5,
+      "subject": "İngilizce",
+      "outcome": {
+        "id": "outcome-25a303a026b0ff88ab783ded",
+        "grade": 5,
+        "subject": "İngilizce",
+        "code": "ENG.5.2.R3",
+        "text": "ENG.5.2.R3. Students can make meaning of / derive meaning from the current content about “classroom life with classroom rules and language; school subjects; timetables; classroom objects; days of the week; time” by reading it carefully.",
+        "evidence": {
+          "scenario_id": "tr-2026-2027-t1-ingilizce_orta2-g5-h6",
+          "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ingilizce_orta2.xlsx",
+          "sha256": "7517a025357dd00a2f02c2975875dfa6737a48247f756d3db27bf0f8213a9f85",
+          "sheet": "5. sınıf",
+          "cell": "B14",
+          "count_cell": "H14"
+        },
+        "source_verification": {
+          "method": "Live official XLSX SHA256 and XML-cell comparison",
+          "verified_at": "2026-11-07",
+          "file_sha256": "7517a025357dd00a2f02c2975875dfa6737a48247f756d3db27bf0f8213a9f85",
+          "raw_outcome_cell": "ENG.5.2.R3. Students can make meaning of / derive meaning from the current content about “classroom life with classroom rules and language; school subjects; timetables; classroom objects; days of the week; time” by reading it carefully. ",
+          "raw_count_cell": "1",
+          "wording_exact_after_whitespace": true,
+          "code_present": true,
+          "school_scenario_selected": false,
+          "subject_expert_approval": false
+        }
+      },
+      "student": {
+        "grade": 5,
+        "subject": "İngilizce",
+        "kind": "open_ended",
+        "difficulty": "orta",
+        "stem": "Read the school timetable note. The art lesson is on Monday at three o’clock in the library. The music lesson is on Friday at two o’clock in the hall. a) When is the art lesson? Write the day and time. b) Where are the art and music lessons? Write a sentence for each lesson."
+      },
+      "teacher": {
+        "expected_answer": "The art lesson is on Monday at three o’clock. It is in the library. The music lesson is in the hall.",
+        "solution": "The first sentence gives Monday,three o’clock and library; the second gives hall for music.",
+        "explanation": "Verilen metin veya verilerden hareketle kazanımın hedeflediği beceri değerlendirilir.",
+        "common_misconception": "İşlem veya metin bilgisi kontrol edilmeden sonuç yazılması hataya yol açar.",
+        "next_step": "Benzer bağlamda farklı verilerle yeni bir gerekçeli yanıt oluşturulur.",
+        "rubric": {
+          "max_points": 100,
+          "criteria": [
+            {
+              "id": "K1",
+              "points": 25,
+              "criterion": "Art günüMonday bilgisini verir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K2",
+              "points": 25,
+              "criterion": "Art saati3:00 veya three o’clock bilgisini verir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K3",
+              "points": 25,
+              "criterion": "Art yerinilibrary olarak verir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K4",
+              "points": 25,
+              "criterion": "Music yerinihall olarak verir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            }
+          ],
+          "scoring": "Eşdeğer doğru yanıtlar tam puan alır. Aynı hatadan ikinci kez puan düşülmez."
+        }
+      },
+      "metadata": {
+        "mapping_status": "proposed_pending_subject_review",
+        "subject_expert_approval": false,
+        "school_track_applicability": "pending_review"
+      }
+    },
+    "expected_pass": true,
+    "oracle_reason": "Independent exact arithmetic or direct text/table facts."
+  },
+  {
+    "id": "3a81c133-945a-4e72-988e-b9de4ad7acf7",
+    "content": {
+      "grade": 5,
+      "subject": "İngilizce",
+      "outcome": {
+        "id": "outcome-25a303a026b0ff88ab783ded",
+        "grade": 5,
+        "subject": "İngilizce",
+        "code": "ENG.5.2.R3",
+        "text": "ENG.5.2.R3. Students can make meaning of / derive meaning from the current content about “classroom life with classroom rules and language; school subjects; timetables; classroom objects; days of the week; time” by reading it carefully.",
+        "evidence": {
+          "scenario_id": "tr-2026-2027-t1-ingilizce_orta2-g5-h6",
+          "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/ingilizce_orta2.xlsx",
+          "sha256": "7517a025357dd00a2f02c2975875dfa6737a48247f756d3db27bf0f8213a9f85",
+          "sheet": "5. sınıf",
+          "cell": "B14",
+          "count_cell": "H14"
+        },
+        "source_verification": {
+          "method": "Live official XLSX SHA256 and XML-cell comparison",
+          "verified_at": "2026-11-07",
+          "file_sha256": "7517a025357dd00a2f02c2975875dfa6737a48247f756d3db27bf0f8213a9f85",
+          "raw_outcome_cell": "ENG.5.2.R3. Students can make meaning of / derive meaning from the current content about “classroom life with classroom rules and language; school subjects; timetables; classroom objects; days of the week; time” by reading it carefully. ",
+          "raw_count_cell": "1",
+          "wording_exact_after_whitespace": true,
+          "code_present": true,
+          "school_scenario_selected": false,
+          "subject_expert_approval": false
+        }
+      },
+      "student": {
+        "grade": 5,
+        "subject": "İngilizce",
+        "kind": "open_ended",
+        "difficulty": "orta",
+        "stem": "Read the school timetable note. The art lesson is on Monday at three o’clock in the library. The music lesson is on Friday at two o’clock in the hall. a) When is the art lesson? Write the day and time. b) Where are the art and music lessons? Write a sentence for each lesson."
+      },
+      "teacher": {
+        "expected_answer": "The art lesson is on Friday at two o’clock in the hall. The music lesson is in the library.",
+        "solution": "The first sentence gives Monday,three o’clock and library; the second gives hall for music.",
+        "explanation": "Verilen metin veya verilerden hareketle kazanımın hedeflediği beceri değerlendirilir.",
+        "common_misconception": "İşlem veya metin bilgisi kontrol edilmeden sonuç yazılması hataya yol açar.",
+        "next_step": "Benzer bağlamda farklı verilerle yeni bir gerekçeli yanıt oluşturulur.",
+        "rubric": {
+          "max_points": 100,
+          "criteria": [
+            {
+              "id": "K1",
+              "points": 25,
+              "criterion": "Art günüMonday bilgisini verir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K2",
+              "points": 25,
+              "criterion": "Art saati3:00 veya three o’clock bilgisini verir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K3",
+              "points": 25,
+              "criterion": "Art yerinilibrary olarak verir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K4",
+              "points": 25,
+              "criterion": "Music yerinihall olarak verir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            }
+          ],
+          "scoring": "Eşdeğer doğru yanıtlar tam puan alır. Aynı hatadan ikinci kez puan düşülmez."
+        }
+      },
+      "metadata": {
+        "mapping_status": "proposed_pending_subject_review",
+        "subject_expert_approval": false,
+        "school_track_applicability": "pending_review"
+      }
+    },
+    "expected_pass": false,
+    "oracle_reason": "Expected answer contradicts explicit source facts and worked solution."
+  },
+  {
+    "id": "ff476150-9796-452a-b5ab-c741748939ae",
+    "content": {
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "outcome": {
+        "id": "outcome-22bd4da6375be22312dc25e5",
+        "grade": 5,
+        "subject": "Fen Bilimleri",
+        "code": "FB.5.2.4",
+        "text": "FB.5.2.4. Sürtünme kuvvetinin çeşitli ortamlardaki etkilerine yönelik tümevarımsal akıl yürütebilme",
+        "evidence": {
+          "scenario_id": "tr-2026-2027-t1-fen3_2-g5-h6",
+          "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/fen3_2.xlsx",
+          "sha256": "f01e0f96328e6c766776cd1e4dad760923a31331e701ce906b59eef359b75a3c",
+          "sheet": "5. sınıf",
+          "cell": "C14",
+          "count_cell": "H14"
+        },
+        "source_verification": {
+          "method": "Live official XLSX SHA256 and XML-cell comparison",
+          "verified_at": "2026-11-07",
+          "file_sha256": "f01e0f96328e6c766776cd1e4dad760923a31331e701ce906b59eef359b75a3c",
+          "raw_outcome_cell": "FB.5.2.4. Sürtünme kuvvetinin çeşitli ortamlardaki etkilerine yönelik tümevarımsal akıl yürütebilme",
+          "raw_count_cell": "2",
+          "wording_exact_after_whitespace": true,
+          "code_present": true,
+          "school_scenario_selected": false,
+          "subject_expert_approval": false
+        }
+      },
+      "student": {
+        "grade": 5,
+        "subject": "Fen Bilimleri",
+        "kind": "open_ended",
+        "difficulty": "orta",
+        "stem": "Aynı oyuncak araba aynı başlangıç hızıyla üç yatay yüzeyde ilerletiliyor. Yüzey dışındaki koşullar aynı tutuluyor. Durana kadar aldığı yollar ayrı ayrı ölçülüyor: cam80 cm,bez45 cm,pürüzlü kaplama20 cm. a) Bu gözlemleri karşılaştırınız. b) Koşullar aynıyken yüzeyin hareketi zorlaştırıcı etkisi hakkında bir genelleme yazıp verilerle destekleyiniz. c) Bisiklet freninin tekerleğin hareketini zorlaştırması bu genellemeyle nasıl ilişkilidir?"
+      },
+      "teacher": {
+        "expected_answer": "Araba camda en uzun,pürüzlü kaplamada en kısa yolu alır. Bu deneyde yüzeyin hareketi zorlaştırıcı etkisi arttıkça durma yolu kısalır. Sürtünme hareketi yavaşlatabilir; fren de hareketi zorlaştırarak bisikletin yavaşlamasına katkı sağlar.",
+        "solution": "80>45>20. Aynı araba ve başlangıç hızıyla gözlenen fark yüzeye bağlanır. Sonuç bu deney koşullarına dayanır; sürtünmenin her koşulda zararlı olduğu iddia edilmez.",
+        "explanation": "Verilen metin veya verilerden hareketle kazanımın hedeflediği beceri değerlendirilir.",
+        "common_misconception": "İşlem veya metin bilgisi kontrol edilmeden sonuç yazılması hataya yol açar.",
+        "next_step": "Benzer bağlamda farklı verilerle yeni bir gerekçeli yanıt oluşturulur.",
+        "rubric": {
+          "max_points": 100,
+          "criteria": [
+            {
+              "id": "K1",
+              "points": 25,
+              "criterion": "Üç yolun sırasını doğru belirtir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K2",
+              "points": 25,
+              "criterion": "Sabit koşullar altında farkın yüzeyle ilişkisini açıklar. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K3",
+              "points": 25,
+              "criterion": "Genellemesini en az iki sayısal gözlemle destekler. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K4",
+              "points": 25,
+              "criterion": "Freni sürtünmenin hareketi zorlaştırmasıyla doğru ilişkilendirir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            }
+          ],
+          "scoring": "Eşdeğer doğru yanıtlar tam puan alır. Aynı hatadan ikinci kez puan düşülmez."
+        }
+      },
+      "metadata": {
+        "mapping_status": "proposed_pending_subject_review",
+        "subject_expert_approval": false,
+        "school_track_applicability": "pending_review"
+      }
+    },
+    "expected_pass": true,
+    "oracle_reason": "Independent exact arithmetic or direct text/table facts."
+  },
+  {
+    "id": "4ac0606d-02df-4227-9dd2-95ca0349fc5c",
+    "content": {
+      "grade": 5,
+      "subject": "Fen Bilimleri",
+      "outcome": {
+        "id": "outcome-22bd4da6375be22312dc25e5",
+        "grade": 5,
+        "subject": "Fen Bilimleri",
+        "code": "FB.5.2.4",
+        "text": "FB.5.2.4. Sürtünme kuvvetinin çeşitli ortamlardaki etkilerine yönelik tümevarımsal akıl yürütebilme",
+        "evidence": {
+          "scenario_id": "tr-2026-2027-t1-fen3_2-g5-h6",
+          "url": "https://cdn.eba.gov.tr/yardimcikaynaklar/2026/09/KSDT/fen3_2.xlsx",
+          "sha256": "f01e0f96328e6c766776cd1e4dad760923a31331e701ce906b59eef359b75a3c",
+          "sheet": "5. sınıf",
+          "cell": "C14",
+          "count_cell": "H14"
+        },
+        "source_verification": {
+          "method": "Live official XLSX SHA256 and XML-cell comparison",
+          "verified_at": "2026-11-07",
+          "file_sha256": "f01e0f96328e6c766776cd1e4dad760923a31331e701ce906b59eef359b75a3c",
+          "raw_outcome_cell": "FB.5.2.4. Sürtünme kuvvetinin çeşitli ortamlardaki etkilerine yönelik tümevarımsal akıl yürütebilme",
+          "raw_count_cell": "2",
+          "wording_exact_after_whitespace": true,
+          "code_present": true,
+          "school_scenario_selected": false,
+          "subject_expert_approval": false
+        }
+      },
+      "student": {
+        "grade": 5,
+        "subject": "Fen Bilimleri",
+        "kind": "open_ended",
+        "difficulty": "orta",
+        "stem": "Aynı oyuncak araba aynı başlangıç hızıyla üç yatay yüzeyde ilerletiliyor. Yüzey dışındaki koşullar aynı tutuluyor. Durana kadar aldığı yollar ayrı ayrı ölçülüyor: cam80 cm,bez45 cm,pürüzlü kaplama20 cm. a) Bu gözlemleri karşılaştırınız. b) Koşullar aynıyken yüzeyin hareketi zorlaştırıcı etkisi hakkında bir genelleme yazıp verilerle destekleyiniz. c) Bisiklet freninin tekerleğin hareketini zorlaştırması bu genellemeyle nasıl ilişkilidir?"
+      },
+      "teacher": {
+        "expected_answer": "Pürüzlü kaplamada araba80 cm giderek en uzun yolu alır; yüzeyin hareketi zorlaştırıcı etkisi arttıkça durma yolu uzar; fren bisikleti hızlandırır.",
+        "solution": "80>45>20. Aynı araba ve başlangıç hızıyla gözlenen fark yüzeye bağlanır. Sonuç bu deney koşullarına dayanır; sürtünmenin her koşulda zararlı olduğu iddia edilmez.",
+        "explanation": "Verilen metin veya verilerden hareketle kazanımın hedeflediği beceri değerlendirilir.",
+        "common_misconception": "İşlem veya metin bilgisi kontrol edilmeden sonuç yazılması hataya yol açar.",
+        "next_step": "Benzer bağlamda farklı verilerle yeni bir gerekçeli yanıt oluşturulur.",
+        "rubric": {
+          "max_points": 100,
+          "criteria": [
+            {
+              "id": "K1",
+              "points": 25,
+              "criterion": "Üç yolun sırasını doğru belirtir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K2",
+              "points": 25,
+              "criterion": "Sabit koşullar altında farkın yüzeyle ilişkisini açıklar. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K3",
+              "points": 25,
+              "criterion": "Genellemesini en az iki sayısal gözlemle destekler. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            },
+            {
+              "id": "K4",
+              "points": 25,
+              "criterion": "Freni sürtünmenin hareketi zorlaştırmasıyla doğru ilişkilendirir. Tam doğru25,kısmi doğru12,ilgili yanıt yoksa0."
+            }
+          ],
+          "scoring": "Eşdeğer doğru yanıtlar tam puan alır. Aynı hatadan ikinci kez puan düşülmez."
+        }
+      },
+      "metadata": {
+        "mapping_status": "proposed_pending_subject_review",
+        "subject_expert_approval": false,
+        "school_track_applicability": "pending_review"
+      }
+    },
+    "expected_pass": false,
+    "oracle_reason": "Expected answer contradicts explicit source facts and worked solution."
+  }
+]

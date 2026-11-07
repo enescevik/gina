@@ -1,5 +1,5 @@
 import { anthropicUsage } from "./anthropic-usage.ts";
-import { anthropicHttpError } from "./ai-provider.ts";
+import { AiProviderError, anthropicHttpError } from "./ai-provider.ts";
 import type { AiChain } from "./ai-chain-types.ts";
 // Prova AI fonksiyonlarının (prova-generate / prova-grade / prova-plan) ortak yardımcıları.
 // Kurallar (docs/DECISIONS.md): yalnız veli (gina.role = parent) çağırır; paket kapısı sunucuda;
@@ -57,6 +57,7 @@ export async function provaEntitlement(
 }
 
 export interface AiConfig {
+  reasoningEffort?: "low" | "medium" | "high" | "xhigh" | "max";
   chain?: AiChain;
   execution?: { kind: "operation" | "generation" | "prereview"; id?: string; lease: string };
   signal?: AbortSignal;
@@ -306,9 +307,10 @@ export async function callClaude<T>(
   });
   if (!res.ok) throw await anthropicHttpError(res);
   const data = await res.json();
-  if (data.stop_reason === "refusal") throw new Error("anthropic_refusal");
+  const billing = { providerUsage: anthropicUsage(data.usage, res.headers.get("request-id")), model: cfg.model, provider: "anthropic", inputTokens: data.usage?.input_tokens ?? null, outputTokens: data.usage?.output_tokens ?? null };
+  if (data.stop_reason === "refusal") throw new AiProviderError("anthropic_refusal", billing);
   if (data.stop_reason === "max_tokens") {
-    throw new Error("anthropic_max_tokens");
+    throw new AiProviderError("anthropic_max_tokens", billing);
   }
   const block = (Array.isArray(data.content) ? data.content : []).find((
     b: { type: string },

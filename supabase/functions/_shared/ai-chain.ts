@@ -105,6 +105,7 @@ export async function runAiChain<T>(
         p_ok: false,
         p_error: failure.code,
         p_uncertain: failure.uncertain,
+        ...(e instanceof AiProviderError && e.billing ? { p_input: e.billing.inputTokens, p_output: e.billing.outputTokens } : {}),
       });
       last = e;
       const advance = failure.kind === "rate_limited" && chain.on_rate_limit ||
@@ -130,6 +131,6 @@ export async function runAiChain<T>(
     };
   }
   // A later definite rejection must not turn an earlier ambiguous charge into a retryable job.
-  if (uncertain) throw new AiProviderError("provider_outcome_unknown");
+  if (uncertain) throw new AiProviderError("provider_outcome_unknown", last instanceof AiProviderError ? last.billing : undefined);
   throw last;
 }

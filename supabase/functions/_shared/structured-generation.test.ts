@@ -37,10 +37,10 @@ const expectCode = (q: unknown, code: string, why: string) => {
 };
 
 // ---------------------------------------------------------------------------------------------------------------
-Deno.test("legacy parity: provider schema and system prompt bytes equal v8 (base a5c648fb); only the version string moved", async () => {
+Deno.test("legacy provider schema stays stable and the quality prompt is explicitly versioned", async () => {
   assertEquals(await sha256(JSON.stringify(SCHEMA)), "612ca930824fd43452af1bec4006e80af4e980bb9d256c5af369675273e54a2b");
-  assertEquals(await sha256(SYSTEM_PROMPT), "0cf89dc70da4117d7b346bd8ded7e5f9fabbc0638ab8a976ed5a02966cf2be33");
-  assertEquals(PROMPT_VERSION, "prova-generate/v9-structured-types");
+  assertEquals(await sha256(SYSTEM_PROMPT), "2e64e9026588966beb96f38244cec83e8c4772b635d2148d574d9535cc6d09fd");
+  assertEquals(PROMPT_VERSION, "prova-generate/v11-quality-controls");
 });
 
 Deno.test("request option: absent = legacy; malformed refused; written/OYSS refuses practice-only and multiple choice explicitly", () => {
@@ -395,7 +395,7 @@ Deno.test("job: mixed legacy + structured rows; legacy row unchanged, structured
     for (const secret of ["ÇÖZÜM-GİZLİ", "SYSTEM-GİZLİ", "PROMPT-GİZLİ", "mock-model", "pairs", "answers"]) assert(!payload.includes(secret), secret);
     assert(!JSON.stringify(row.provenance).includes('"answer_key"'), "key not duplicated into provenance");
     assertEquals(row.provenance.generator, "ai");
-    assertEquals(row.provenance.prompt_version, "prova-generate/v9-structured-types");
+    assertEquals(row.provenance.prompt_version, "prova-generate/v11-quality-controls");
   }
 });
 Deno.test("job: one invalid structured row rejects the whole job before saving (no complete, no charge) with fixed reason codes", async () => {
@@ -461,15 +461,15 @@ Deno.test("job: shared passage with a structured question keeps the self-contain
 
 // ---------------------------------------------------------------------------------------------------------------
 // Faz 2A / 2B / uyaran (QT-AI v10)
-Deno.test("2A/2B: practice-only on written/OYSS, prompt appendix versioned separately, legacy prompt untouched", () => {
+Deno.test("2A/2B: practice-only on written/OYSS, prompt appendix and base quality prompt versioned separately", () => {
   const all: Any[] = ["mark_text", "error_fix", "multi_choice", "two_stage", "region_select", "clock"];
   assertEquals(parseInteractionTypes(all, false), { types: all });
   assertEquals(parseInteractionTypes(["open_ended", ...all], true), {
     error: "interaction_type_not_allowed_for_track",
     details: { track: "meb_common", types: all.join(",") },
   });
-  assertEquals(STRUCTURED_PROMPT_VERSION, "prova-generate/v10-structured-phase2");
-  assertEquals(PROMPT_VERSION, "prova-generate/v9-structured-types", "legacy (no interaction_types) keeps v9");
+  assertEquals(STRUCTURED_PROMPT_VERSION, "prova-generate/v11-quality-structured-phase2");
+  assertEquals(PROMPT_VERSION, "prova-generate/v11-quality-controls", "legacy route uses the versioned quality prompt");
   for (const t of [...all, "stimulus"]) assert(STRUCTURED_PROMPT.includes(t), t);
   assert(STRUCTURED_PROMPT.includes("Görsel/resim üzerinde bölge asla yok"));
   const s: Any = structuredGenerationSchema(SCHEMA as Any, all as Any, vocab);
@@ -601,7 +601,7 @@ Deno.test("job: 2A/2B rows flow to complete_prova_generation_v2 with payload/key
     total: 4,
     topics: [{ topic: "Canlılar", count: 4 }],
     interactionTypes: ["two_stage", "multi_choice", "region_select", "clock"],
-    promptVersion: "prova-generate/v10-structured-phase2",
+    promptVersion: "prova-generate/v11-quality-structured-phase2",
   };
   const named = mutate(aiStructured.two_stage(), (s) => (s.stage1.prompt = "Ayşe suyu dondurucuya koydu. Su hangi hâle geçer?"));
   const r = output([named, aiStructured.multi_choice_chart(), aiStructured.region_grid(), aiStructured.clock_read()]);
@@ -614,7 +614,7 @@ Deno.test("job: 2A/2B rows flow to complete_prova_generation_v2 with payload/key
   assertEquals(rows[1].payload.stimulus.kind, "bar_chart");
   assertEquals(rows[3].answer_key, { time: "03:15", accept_12h: true });
   for (const row of rows) {
-    assertEquals(row.provenance.prompt_version, "prova-generate/v10-structured-phase2");
+    assertEquals(row.provenance.prompt_version, "prova-generate/v11-quality-structured-phase2");
     assert(!/"(correct|targets|count|time|stage1_answer|accept_12h)"/.test(JSON.stringify(row.payload)), "key in payload");
   }
   const written: GenerationContext = { ...ctx, writtenTrack: true };

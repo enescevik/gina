@@ -1,5 +1,4 @@
-// prova-generate istem ve sağlayıcı şeması (QT-AI: testlerde eski şema/istem baytlarının korunduğu kanıtlanabilsin
-// diye index.ts'den ayrıldı; içerik v8 ile aynı, yalnız sürüm dizesi değişti).
+// Provider schema remains stable; v11 versions the explicit content-quality controls.
 import { DIFFICULTIES } from "../_shared/prova.ts";
 import {
   COGNITIVE_DEMANDS,
@@ -13,7 +12,7 @@ import {
 // D13: v8 — açık uçlu rubrikte `assesses` (result | process): soru yalnız sonucu mu, süreci/gerekçeyi mi ölçüyor.
 // QT-AI: v9 — isteğe bağlı `interaction_types`: yapılandırılmış türler (ayırıcı + schema_version 1, tür başına katı şema,
 // payload/anahtar ayrımı, deterministik doğrulama). Tür istenmeyen çağrıda istem, şema ve satırlar v8 ile aynıdır.
-export const PROMPT_VERSION = "prova-generate/v9-structured-types";
+export const PROMPT_VERSION = "prova-generate/v11-quality-controls";
 
 // Enes'in eşinin ChatGPT promptundan uyarlanan şablon (docs/PROVA.md «AI soru üretimi»).
 export const SYSTEM_PROMPT =
@@ -40,6 +39,12 @@ Kurallar:
 - Ortak metin/tablo gerekirse shared_sources listesine bir kez yaz (id, kind, content) ve bağlı soruların (en az iki, en çok on iki) shared_source_id alanına aynı id'yi koy; aynı metni soru gövdesinde tekrarlama. Ortak kaynak çocuğa soruların üstünde bir kez gösterilir; bağlı her soru yine ayrı sayılır ve ayrı cevaplanır. Görsel dosya yoksa visual_description yalnız metinle tarif edilebilen bir durum olsun. Gerekmiyorsa shared_sources boş liste, shared_source_id boş metin kalır.
 - Sorularda hiçbir kişi adı kullanma; uydurma ve yaygın adlar da buna dahildir (çocuğun ya da sınıf arkadaşlarının adına denk gelebilir). Kişi gerekiyorsa "bir öğrenci", "arkadaşı", "öğretmeni" gibi rol ifadesi kullan. Marka ya da hassas konu kullanma; çocuklara uygun, kapsayıcı bir dil kullan.
 - İstenen dilde yaz (tr = Türkçe, en = İngilizce).
+Kalite kontrolleri:
+- Önce sorunun ölçtüğü tek ana beceriyi ve gereken kanıtı belirle. İddia edilen kazanımın ana fiili ile istenen öğrenci işi örtüşsün; yalnız konu benzerliği yeterli değildir.
+- Kök, cevap ve çözümü bağımsız yeniden kontrol et. Kesrin bütünü, birim, referans düzeyi, kontrol edilen değişken, yuvarlama ve stok/zaman varsayımları açık olsun. Eksik görseli ya da veriyi tahmin ederek tamamlama.
+- Rubrik yalnız kökte açıkça isteneni puanlasın. Aynı beceriyi veya taşınan hatayı iki kez cezalandırma. Eşdeğer doğru yöntemlere tutarlı puan ver; ölçüt toplamı100 olsa bile ölçüt içindeki bonus, kısmi puan ve tam puan koşulları birbiriyle çelişmesin.
+- Bilimsel genellemede en az birkaç bağımsız tam gözlemden çıkarım yap. Bir ilkeyi varsayıp bilinmeyeni hesapladıktan sonra aynı hesabı o ilkenin kanıtı olarak sunma.
+- Gereksiz uzun hikâye ve alt görev ekleme. Açıklama alanına sürüm notu, editör değerlendirmesi veya yapılmış uzman incelemesi iddiası yazma. Aynı istemde yalnız sayıları değiştirilmiş soruları tekrar etme.
 Yanıtı yalnız verilen JSON şemasıyla ver.`;
 
 export const SCHEMA = {

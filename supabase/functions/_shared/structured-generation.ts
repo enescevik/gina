@@ -837,8 +837,8 @@ Etkileşimli (yapılandırılmış) soru türleri:
 - clock (Saat): mode "read" (saat gösterilir, çocuk okur; display "analog", shown_time = time; yönergede saati yazma) ya da "set" (yönergede istenen saat yazılır, çocuk saati kurar; shown_time boş). step_minutes 1. sınıfta 60/30, 2. sınıfta 15, 3–4. sınıfta 5; time bu adıma uyar. accept_12h genelde true.
 - stimulus (isteğe bağlı uyaran, her türde): gerekmiyorsa kind "none" ve bütün alanlar boş. Tablo (kind "table": columns 1–6, rows 1–12, her satırda sütun sayısı kadar hücre) ya da sütun grafiği (kind "bar_chart": bars 2–10, değer 0–100000). alt zorunlu: verinin metin karşılığıdır (ekran okuyucu); veriyi aktarabilir ama sorunun cevabını, hesap sonucunu ya da doğru seçeneği söylemez.
 - Yapılandırılmış soruda choices, correct_key, expected_answer ve rubric yoktur; solution kısa çözüm açıklamasıdır (yalnız veli görür).`;
-/** Yapılandırılmış ek yalnız tür istendiğinde istemdedir; sürümü ayrı tutulur (tür istenmeyen çağrı v9 baytlarıyla kalır). */
-export const STRUCTURED_PROMPT_VERSION = "prova-generate/v10-structured-phase2";
+/** Yapılandırılmış ek yalnız tür istendiğinde istemdedir; sürümü ayrı tutulur (temel kalite istemiyle birlikte sürümlenir). */
+export const STRUCTURED_PROMPT_VERSION = "prova-generate/v11-quality-structured-phase2";
 
 // ---------------------------------------------------------------------------------------------------------------
 // 6) Tür açık mı? Faz 2A/2B türleri sunucuda enabled=false gelir; kapalı tür SQL'de (qt_insert_structured)
