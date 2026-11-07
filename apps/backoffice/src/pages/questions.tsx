@@ -8,7 +8,7 @@ import {
   type Json,
   type Tables,
 } from "@gina/core";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import { Card, Layout, Notice } from "@/components/Layout";
 import { useConfirm } from "@/components/confirm-dialog";
@@ -59,6 +59,11 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
   const set = (patch: Partial<typeof draft>) => setDraft({ ...draft, ...patch });
   // QT: yapılandırılmış soruda metin/içerik/anahtar içerik özetine (content_hash) bağlıdır; burada yalnız üst bilgi düzenlenir.
   const structured = q.kind === "structured";
+  const [payloadText, setPayloadText] = useState(() => JSON.stringify(q.payload, null, 2) ?? "");
+  const [keyText, setKeyText] = useState("");
+  const revision = useRef<{ id: string; body: string } | null>(null);
+  const isRevision = q.provenance != null && typeof q.provenance === "object" &&
+    !Array.isArray(q.provenance) && typeof q.provenance.revised_from === "string";
 
   async function save() {
     let choices: Json | null = null;
@@ -87,9 +92,24 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
       source_urls: draft.source_urls.split("\n").map((s) => s.trim()).filter(Boolean),
     };
     if (structured) {
-      const { error } = await supabase().from("question_bank").update(meta).eq("id", q.id).is("family_id", null);
+      let override: { payload?: Json; answer_key?: Json } = {};
+      if (keyText.trim() || payloadText !== (JSON.stringify(q.payload, null, 2) ?? "")) {
+        try {
+          override = { payload: JSON.parse(payloadText) as Json, answer_key: JSON.parse(keyText) as Json };
+        } catch {
+          setBusy(false);
+          onDone(null, new Error(t.questions.structured.invalidRevisionJson));
+          return;
+        }
+      }
+      const changes = { ...meta, ...override, stem: draft.stem.trim() };
+      const body = JSON.stringify(changes);
+      if (revision.current?.body !== body) revision.current = { id: crypto.randomUUID(), body };
+      const { error } = await supabase().rpc("admin_revise_global_question", {
+        p_request_id: revision.current.id, p_source_id: q.id, p_changes: changes,
+      });
       setBusy(false);
-      onDone(error ? null : t.common.saved, error ?? undefined);
+      onDone(error ? null : t.questions.structured.revisionSaved, error ?? undefined);
       return;
     }
     const { error } = await supabase()
@@ -167,11 +187,19 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
         {structured ? (
           <>
             <p className="rounded-2xl bg-slate-50 p-3 text-sm text-slate-600 md:col-span-2">{t.questions.structured.readOnly}</p>
-            <div className="md:col-span-2">
-              <p className="label">{t.questions.stem}</p>
-              <p className="whitespace-pre-wrap rounded border border-slate-200 p-2 text-sm">{q.stem}</p>
-            </div>
+            {area("stem", t.questions.stem, 4)}
             <StructuredQuestionPreview questionId={q.id} interactionType={q.interaction_type} schemaVersion={q.schema_version} payload={q.payload} />
+            <details className="md:col-span-2">
+              <summary className="cursor-pointer py-3">{t.questions.structured.editRules}</summary>
+              <div className="grid gap-3 md:grid-cols-2">
+                <label className="label">{t.questions.structured.studentView}
+                  <textarea className="input font-mono" rows={8} value={payloadText} onChange={e => setPayloadText(e.target.value)} />
+                </label>
+                <label className="label">{t.questions.structured.privateKey}
+                  <textarea className="input font-mono" rows={8} value={keyText} onChange={e => setKeyText(e.target.value)} />
+                </label>
+              </div>
+            </details>
           </>
         ) : (
           area("stem", t.questions.stem, 4)
@@ -220,14 +248,14 @@ function Editor({ q, onDone }: { q: Question; onDone: (text: string | null, err?
       </div>
       <div className="mt-4 flex gap-2">
         <button className="btn" disabled={busy} onClick={() => void save()}>
-          {t.common.save}
+          {structured ? t.questions.structured.saveRevision : t.common.save}
         </button>
         <button className="btn-secondary" onClick={() => onDone(null)}>
           {t.common.close}
         </button>
-        <button className="btn-danger ml-auto" onClick={() => void remove()}>
+        {isRevision ? null : <button className="btn-danger ml-auto" onClick={() => void remove()}>
           {t.common.delete}
-        </button>
+        </button>}
       </div>
     </Card>
   );
@@ -245,7 +273,7 @@ export default function QuestionsPage() {
   const facets = useAdminQuery(async () => unwrap(await supabase().rpc("admin_question_facets")));
   const list = useAdminQuery(async () => {
     let q = supabase()
-      .from("question_bank")
+      .from("current_question_bank")
       .select("*", { count: "exact" })
       .is("family_id", null)
       .order("grade")
@@ -258,7 +286,7 @@ export default function QuestionsPage() {
     if (topic) q = q.eq("topic", topic);
     if (type) q = (LEGACY_INTERACTION_TYPES as readonly string[]).includes(type) ? q.eq("kind", type as Question["kind"]) : q.eq("interaction_type", type);
     const res = await q;
-    return { rows: unwrap(res), count: res.count ?? 0 };
+    return { rows: unwrap(res) as Question[], count: res.count ?? 0 };
   }, [grade, subject, topic, type, limit]);
 
   const options = useMemo(() => {

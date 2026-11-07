@@ -1219,6 +1219,56 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"global_question_revisions": {
+                  Row: {
+                    "previous_id": string,"question_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "previous_id": string,"question_id": string
+                  }
+                  Update: {
+                    "previous_id"?: string,"question_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "global_question_revisions_previous_id_fkey"
+      columns: ["previous_id"]
+isOneToOne: true
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "global_question_revisions_previous_id_fkey"
+      columns: ["previous_id"]
+isOneToOne: true
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "global_question_revisions_previous_id_fkey"
+      columns: ["previous_id"]
+isOneToOne: true
+      referencedRelation: "standalone_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "global_question_revisions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: true
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "global_question_revisions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: true
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "global_question_revisions_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: true
+      referencedRelation: "standalone_question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"grades": {
                   Row: {
                     "child_id": string,"created_at": string,"education_context": Json | null,"family_id": string,"graded_on": string,"id": string,"kind": Database["public"]['Enums']["grade_kind"],"max_score": number,"note": string | null,"revision": number,"score": number,"subject": string,"withdrawn_at": string | null
@@ -3229,6 +3279,9 @@ isOneToOne: false
                            },
 "admin_review_library_question":
 { Args: { "p_expected_review_revision": number,"p_note": string,"p_outcome": string,"p_package_id": string,"p_question_key": string,"p_question_revision": number,"p_request_id": string }; Returns: Json
+                           },
+"admin_revise_global_question":
+{ Args: { "p_changes": Json,"p_request_id": string,"p_source_id": string }; Returns: string
                            },
 "admin_save_ai_chain":
 { Args: { "p_attempt_seconds": number,"p_enabled": boolean,"p_expected_updated_at"?: string,"p_id": string,"p_models": (string)[],"p_name": string,"p_on_rate_limit": boolean,"p_on_server_error": boolean,"p_on_timeout": boolean,"p_total_seconds": number }; Returns: Json

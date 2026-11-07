@@ -129,7 +129,7 @@ select set_eq($$select tablename::text,policyname::text,cmd::text,permissive::te
 select is((select count(*)::int from pg_policies where schemaname='public' and roles<>'{authenticated}'
  and (coalesce(qual,'')||' '||coalesce(with_check,'')) ~ '(gina\.(is_parent|is_device|family_id|child_id|is_admin|is_admin_strict|is_service|role|claims)\(\)|auth\.uid\(\))'),0,'helper-based policies still target authenticated only');
 -- 20261106170000 (Q02-6): children_parent_all → select/insert/update (DELETE yok): 110 → 112.
-select is((select count(*)::int from pg_policies where schemaname='public'),125,'public policy count (117 existing + 8 learning feedback policies)');
+select is((select count(*)::int from pg_policies where schemaname='public'),126,'public policy count includes global revision lineage read policy');
 
 -- 2. Satır başına değerlendirme kalmadı: her yardımcı çağrı `( SELECT f() AS ...)` skaler alt sorgu (InitPlan) içinde.
 create function pg_temp.bare_calls() returns int language sql as $$

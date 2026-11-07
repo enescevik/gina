@@ -163,7 +163,11 @@ export const tr = {
       valid: "Yapı geçerli (sözleşme doğrulaması)",
       invalid: "Yapı hatalı",
       readOnly:
-        "Yapılandırılmış soruda metin, içerik ve anahtar burada değiştirilemez (içerik özeti anahtara bağlıdır). Sınıf, ders, konu, zorluk, çözüm, anlatım ve kaynaklar düzenlenebilir.",
+        "Kaydettiğinizde yeni bir soru sürümü oluşturulur. Atanmış sınavlar özgün sürümle devam eder.",
+      saveRevision: "Yeni sürümü kaydet",
+      revisionSaved: "Yeni soru sürümü kaydedildi.",
+      editRules: "Soru yapısını ve cevap anahtarını düzenle",
+      invalidRevisionJson: "Soru yapısı ve cevap anahtarı geçerli JSON olmalı. Yalnız metni değiştirmek için iki alanı olduğu gibi bırakın.",
       shuffledNote: "Çocuğa sınav içinde sabit, karışık sırayla gösterilir.",
       policy: { one_to_one: "Birebir", many_to_one: "Çoktan bire" } as Record<string, string>,
       mode: { sequence: "Olay / işlem sırası", sentence: "Cümle kurma" } as Record<string, string>,
