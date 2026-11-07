@@ -12,6 +12,8 @@ import { router } from "expo-router";
 import { useSession } from "@/lib/session";
 import { supabase } from "@/lib/supabase";
 import { type LibraryCommand, libraryJournal } from "@/lib/library-acquisition";
+import { AI_INTERACTION_TYPES, provaGenerationKind } from "@gina/core";
+import { structuredTypeLabel } from "./structured-question-author";
 import type { DraftRecord } from "@/lib/prova-draft";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,6 +40,19 @@ interface Unit {
   count: number;
   owned: boolean;
 }
+interface AutomaticPreview {
+  needed: number;
+  matched: number;
+  credits: number;
+  topics_requested: number;
+  topics_covered: number;
+  uncovered_topics: string[];
+  uncovered_types: string[];
+  fingerprint: string;
+  scenario: string | null;
+  items: { package_id: string; unit_key: string; topic: string; kind: string }[];
+}
+
 export function LibraryPackages(
   { draft, allowance }: { draft?: DraftRecord; allowance: number },
 ) {
@@ -66,6 +81,53 @@ export function LibraryPackages(
     [keys, setKeys] = useState<string[]>([]),
     [done, setDone] = useState(false),
     [error, setError] = useState<string | null>(null);
+  const [autoTypes, setAutoTypes] = useState<string[]>([]);
+  const [preview, setPreview] = useState<AutomaticPreview | null>(null);
+  const [autoOpen, setAutoOpen] = useState(false);
+  const [blueprintId, setBlueprintId] = useState<string>();
+  const scenarioMode = draft?.content.context?.track === "meb_common";
+  const scenarios = useQuery({
+    queryKey: ["library_oyss_blueprints", familyId, draft?.content.childId, draft?.content.grade, draft?.content.subjects, draft?.content.context?.term, draft?.content.context?.academicYear],
+    enabled: autoOpen && !!scenarioMode && !!draft?.content.childId && draft.content.subjects.length === 1,
+    queryFn: async () => {
+      if (!draft) return [];
+      const {data,error} = await supabase.from("exam_blueprints").select("id,name,source_context")
+        .eq("grade",draft.content.grade!).eq("subject",draft.content.subjects[0])
+        .eq("source_context->>origin","reviewed_catalogue")
+        .eq("source_context->>child_id",draft.content.childId!)
+        .eq("source_context->>term",String(draft.content.context?.term))
+        .eq("source_context->>academic_year",`${draft.content.context?.academicYear}-${(draft.content.context?.academicYear ?? 0) + 1}`);
+      if (error) throw error;
+      return (data ?? []).map(option => {
+        const source = option.source_context;
+        const exam = source && typeof source === "object" && !Array.isArray(source) ? source.exam : null;
+        return { id: option.id, label: typeof exam === "number"
+          ? t("libraryPackages.scenarioOption", { exam, name: option.name })
+          : option.name };
+      });
+    },
+  });
+  const draftKind = draft ? provaGenerationKind(draft.content) : "mixed";
+  const choices: readonly string[] = draft?.content.context?.track === "meb_common"
+    ? ["open_ended"]
+    : draftKind === "mixed" ? AI_INTERACTION_TYPES : [draftKind];
+  const types = scenarioMode ? ["open_ended"] : autoTypes.filter(type => choices.includes(type));
+  const typeLabel = (type: string) => type === "open_ended" || type === "multiple_choice"
+    ? t(`provaBuilder.${type}`) : structuredTypeLabel(t, type);
+  const previewMutation = useMutation({
+    mutationFn: async () => {
+      if (!draft) throw Error("prova_draft_not_found");
+      const {data,error} = await supabase.rpc("prepare_library_prova", {
+        p_draft_id: draft.id, p_version: draft.version, p_types: types, p_blueprint_id: blueprintId,
+      });
+      if (error) throw error;
+      return data as unknown as AutomaticPreview;
+    },
+    onSuccess: setPreview,
+    onError: error => setError(t(`libraryPackages.errors.${error.message}`, {
+      defaultValue: t("libraryPackages.failed"),
+    })),
+  });
   const catalog = useQuery({
     queryKey: [
       "family_packages",
@@ -116,6 +178,7 @@ export function LibraryPackages(
       setPending(null);
       setDone(true);
       setKeys([]);
+      setPreview(null);
       await Promise.all(
         [
           "learning_library",
@@ -125,6 +188,7 @@ export function LibraryPackages(
           "question_bank",
           "question_bank_count",
           "booklet_library",
+          "family_library_credits",
         ].map((key) => cache.invalidateQueries({ queryKey: [key] })),
       );
     },
@@ -156,6 +220,23 @@ export function LibraryPackages(
         p_unit_keys: keys,
         p_draft_id: draft.id,
       });
+      setPending(command);
+      mutation.mutate(command);
+    } catch {
+      setStorageFailed(true);
+    }
+  }
+  function submitAutomatic() {
+    if (!draft || !preview || locked || (scenarioMode && !blueprintId) || preview.needed === 0 ||
+      preview.matched !== preview.needed || preview.credits > allowance ||
+      preview.uncovered_types.length > 0) return;
+    try {
+      const command = journal.prepare({
+        p_draft_id: draft.id, p_version: draft.version, p_types: types, p_blueprint_id: blueprintId,
+        p_expected: preview.fingerprint,
+      });
+      setError(null);
+      setDone(false);
       setPending(command);
       mutation.mutate(command);
     } catch {
@@ -220,6 +301,80 @@ export function LibraryPackages(
           </View>
         )
         : null}
+      {draft && draft.content.format !== "meb" && !draft.submitted_at ? (
+        <View style={p.card}>
+          <Button
+            variant="secondary"
+            title={t("libraryPackages.automatic")}
+            disabled={locked || previewMutation.isPending}
+            onPress={() => setAutoOpen(value => !value)}
+          />
+          {autoOpen ? (
+            <>
+              <Text style={p.copy}>{t("libraryPackages.automaticHelp")}</Text>
+              {scenarioMode ? (
+                <>
+                  <Text style={p.muted}>{t("libraryPackages.scenarioHelp")}</Text>
+                  {scenarios.data?.map(option => (
+                    <BuilderChoice key={option.id} label={option.label}
+                      selected={blueprintId === option.id}
+                      disabled={locked || previewMutation.isPending}
+                      onPress={() => {setPreview(null);setBlueprintId(option.id);}}
+                    />
+                  ))}
+                  <Button variant="secondary" title={t("libraryPackages.openScenarios")}
+                    disabled={locked}
+                    onPress={() => router.push("/parent/prova/catalog")} />
+                </>
+              ) : null}
+              <View style={{flexDirection:"row", flexWrap:"wrap", gap:8}}>
+                {choices.map(type => (
+                  <BuilderChoice key={type} label={typeLabel(type)}
+                    selected={types.includes(type)} disabled={locked || previewMutation.isPending || !!scenarioMode}
+                    onPress={() => {
+                      setPreview(null);
+                      setAutoTypes(old => old.includes(type) ? old.filter(x => x !== type) : [...old,type]);
+                    }}
+                  />
+                ))}
+              </View>
+              <Button
+                variant="secondary" title={t("libraryPackages.automaticPreview")}
+                disabled={locked || !types.length || previewMutation.isPending || (scenarioMode && !blueprintId)}
+                loading={previewMutation.isPending}
+                onPress={() => {setError(null);setPreview(null);previewMutation.mutate();}}
+              />
+              {preview ? (
+                <>
+                  {preview.scenario ? <Text style={p.copy}>{t("libraryPackages.scenarioPreview", { name:preview.scenario, count:preview.needed })}</Text> : null}
+                  <Text style={p.copy} accessibilityLiveRegion="polite">
+                    {t("libraryPackages.automaticSummary", { ...preview })}
+                  </Text>
+                  {preview.uncovered_topics.length ? (
+                    <Text style={p.muted}>{t("libraryPackages.automaticTopics", {
+                      topics:preview.uncovered_topics.join(", "),
+                    })}</Text>
+                  ) : null}
+                  {preview.uncovered_types.length ? (
+                    <Text style={p.muted}>{t("libraryPackages.automaticTypes", {
+                      types:preview.uncovered_types.map(typeLabel).join(", "),
+                    })}</Text>
+                  ) : null}
+                  {preview.items.map(item => (
+                    <Text style={p.muted} key={item.package_id+":"+item.unit_key}>
+                      {typeLabel(item.kind)} · {item.topic}
+                    </Text>
+                  ))}
+                  <Button title={t("provaBuilder.addSelected")} onPress={submitAutomatic}
+                    disabled={locked || !preview.needed || preview.matched !== preview.needed ||
+                      preview.uncovered_types.length > 0 || preview.credits > allowance}
+                  />
+                </>
+              ) : null}
+            </>
+          ) : null}
+        </View>
+      ) : null}
       {!draft
         ? (
           <NavigationCard
