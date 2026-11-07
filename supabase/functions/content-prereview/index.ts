@@ -42,5 +42,10 @@ Deno.serve(createHandler({
     try { return prereviewConfig(resolved, budget?.value, outputBudget?.value ?? 24000); }
     catch { return json({ error: "ai_configuration_unavailable" }, 503); }
   },
+  media: async (id, lease) => {
+    const r = await service.rpc("content_prereview_library_images", { p_id: id, p_lease: lease });
+    if (r.error) throw Error("prereview_media_unavailable");
+    return r.data;
+  },
   call: generateWith,
 }));

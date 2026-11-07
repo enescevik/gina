@@ -1,0 +1,8 @@
+import { assertEquals, assertRejects } from 'jsr:@std/assert';
+import {checkedReviewImages,reviewImageMessage} from './prereview-media.ts';
+const base64='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ0sAAAAASUVORK5CYII=';
+async function fixture(){const bytes=Uint8Array.from(atob(base64),c=>c.charCodeAt(0));const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(v=>v.toString(16).padStart(2,'0')).join('');return {source_key:'diagram',sha256:hash,base64};}
+Deno.test('review media: exact PNG bytes are hash checked and sent with their source identity',async()=>{const image=await fixture();const images=await checkedReviewImages([image],1);const message=reviewImageMessage('question',images);assertEquals(typeof message,'object');assertEquals(message[2],{type:'image',source:{type:'base64',media_type:'image/png',data:base64}});});
+Deno.test('review media: missing or duplicate source cannot mark all images reviewed',async()=>{const image=await fixture();await assertRejects(()=>checkedReviewImages([image],2));await assertRejects(()=>checkedReviewImages([image,image],2));});
+Deno.test('review media: changed bytes and non-PNG bytes fail before a paid call',async()=>{const image=await fixture();await assertRejects(()=>checkedReviewImages([{...image,sha256:'0'.repeat(64)}],1));await assertRejects(()=>checkedReviewImages([{...image,base64:btoa('not-a-png-image')}],1));});
+Deno.test('review media: bounded image count and byte budget',async()=>{const image=await fixture();await assertRejects(()=>checkedReviewImages(Array.from({length:9},(_,i)=>({...image,source_key:'s'+i})),9));await assertRejects(()=>checkedReviewImages([{...image,base64:'A'.repeat(2800001)}],1));});

@@ -18,7 +18,7 @@ export function prereviewConfig(config: AiConfig, setting: unknown, outputSettin
       ...step, maxOutputTokens: output, maxInputTokens: Math.min(Number(limit), context - output),
       // Match the reasoning setting used by the recorded review calibration.
       ...(step.adapter === 'openai-chat' && ['gpt-6.1-sol', 'gpt-6-astra'].includes(step.model)
-        ? { reasoningEffort: 'medium' as const } : {}),
+        ? { reasoningEffort: 'medium' as const, imageDetail: 'high' as const, estimatedImageTokens: 4096 } : {}),
     };
   };
   return {

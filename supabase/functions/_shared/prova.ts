@@ -57,6 +57,9 @@ export async function provaEntitlement(
 }
 
 export interface AiConfig {
+  /** Operator-reviewed vision budget; base64 bytes are not text tokens. */
+  estimatedImageTokens?: number;
+  imageDetail?: "high";
   reasoningEffort?: "low" | "medium" | "high" | "xhigh" | "max";
   chain?: AiChain;
   execution?: { kind: "operation" | "generation" | "prereview"; id?: string; lease: string };

@@ -325,3 +325,11 @@ Deno.test("truncated responses preserve usage without another paid call", async 
     });
   }
 });
+
+Deno.test('review images use bounded high-detail token allowance rather than base64 text size',async()=>{
+ await withFetch([json({choices:[{finish_reason:'stop',message:{content:'{"summary":"checked"}'}}],usage:{prompt_tokens:8000,completion_tokens:10}})],async requests=>{
+  const user=[{type:'image' as const,source:{type:'base64' as const,media_type:'image/png' as const,data:'A'.repeat(30000)}},{type:'image' as const,source:{type:'base64' as const,media_type:'image/png' as const,data:'B'.repeat(30000)}}];
+  await openAiAdapter.generate('synthetic',{...base,maxInputTokens:9000,estimatedImageTokens:4096,imageDetail:'high'},'s',user,schema);
+  const body=JSON.parse(String(requests[0].init?.body));assert(body.messages[1].content[0].image_url.detail==='high','unbounded auto image detail');assert(requests.length===1,'second paid call');
+ });
+});
