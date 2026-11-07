@@ -25,7 +25,13 @@ select pg_temp.as_parent();
 select throws_like($$select public.save_question_with_sources(gen_random_uuid(),pg_temp.puzzle())$$,
  '%interaction_type_unavailable%','production gate defaults closed');
 reset role;
-update public.interaction_types set enabled=true where type='crossword';
+insert into gina.crossword_pilot_access values (
+ '10000000-0000-4000-8000-000000017501', '00000000-0000-4000-8000-000000017501', now()+interval '1 day'
+);
+select ok(not (select enabled from public.interaction_types where type='crossword'),'registry remains closed');
+select ok(not gina.crossword_pilot_allowed('10000000-0000-4000-8000-000000017501','00000000-0000-4000-8000-000000017503'),'another account cannot use the family grant');
+select ok(not gina.crossword_pilot_allowed(gen_random_uuid(),'00000000-0000-4000-8000-000000017501'),'the granted account cannot use another family');
+select ok(not has_function_privilege('authenticated','gina.crossword_pilot_allowed(uuid,uuid)','execute'),'grant lookup is private');
 set local role authenticated;
 select pg_temp.as_parent();
 select lives_ok($$select public.save_question_with_sources('40000000-0000-4000-8000-000000017511',pg_temp.puzzle())$$,'parent saves a crossword when enabled');
@@ -45,5 +51,11 @@ select is(public.submit_exam_answer_v4(gen_random_uuid(),(select id from att),'4
 select lives_ok($$select public.finish_exam_attempt((select id from att))$$,'finish applies per-clue grading');
 reset role;
 select is((select score_exact::numeric(7,4) from public.exam_answers where attempt_id=(select id from att)),50.0000::numeric(7,4),'one of two clues scores half');
+update gina.crossword_pilot_access set expires_at=now();
+set local role authenticated;
+select pg_temp.as_parent();
+select throws_like($$select public.save_question_with_sources(gen_random_uuid(),pg_temp.puzzle())$$,
+ '%interaction_type_unavailable%','expired pilot cannot create questions');
+reset role;
 select * from finish();
 rollback;
