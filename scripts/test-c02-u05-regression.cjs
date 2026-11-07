@@ -1,3 +1,4 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
 const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // C02 regression copy of scripts/test-u05-planner-ui.cjs (U05 flows re-accepted on the C02 build: empty/full
 // cell moves, bell-based times, copy day, server-side subject confirmation, source text, bag, sources,
@@ -103,7 +104,7 @@ insert into public.app_settings(key,value) values('sources.enabled','true'::json
   await ctx.route(f.url + "/**", async (route) => {
     try {
       if (route.request().method() === "OPTIONS") return route.fulfill({ status: 204, headers: { "access-control-allow-origin": "*", "access-control-allow-headers": "*", "access-control-allow-methods": "*" } });
-      const res = await route.fetch({ maxRedirects: 0 });
+      const res = await loopbackFixtureRouteFetch(route);
       await route.fulfill({ response: res, headers: { ...res.headers(), "access-control-allow-origin": "*" } });
     } catch { await route.fulfill({ status: 503, body: "Local fixture unavailable" }); }
   });

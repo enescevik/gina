@@ -1,3 +1,4 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
 const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // D2 UI checks (C06/AUTH-1 remainder) against a disposable local Auth/REST/Realtime fixture (synthetic data only).
 // - Parent-phone child mode follows the server PIN rule: a child without a PIN enters directly, a child with a
@@ -40,7 +41,7 @@ async function routeLocal(context) {
   await context.route(f.url + '/**', async (route) => {
     try {
       if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
-      const res = await route.fetch({ maxRedirects: 0 }); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
+      const res = await loopbackFixtureRouteFetch(route); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
     } catch { await route.fulfill({ status: 503, body: 'Local fixture unavailable' }).catch(() => {}); }
   });
 }

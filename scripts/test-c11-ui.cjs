@@ -1,3 +1,4 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
 const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // C11 UI acceptance (backoffice + mobile web), only against the disposable fixture from
 // `GINA_QA_UI_FIXTURE=… python3 scripts/test-isolated-services.py --run-local --ui-hold`, a backoffice export
@@ -46,7 +47,7 @@ try {
     await c.route(f.url + '/**', async (route) => {
       try {
         if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
-        const res = await route.fetch({ maxRedirects: 0 }); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
+        const res = await loopbackFixtureRouteFetch(route); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
       } catch { await route.fulfill({ status: 503, body: 'Local service unavailable' }); }
     });
     const page = await c.newPage(); page.setDefaultTimeout(25000);

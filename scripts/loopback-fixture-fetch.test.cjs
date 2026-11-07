@@ -28,3 +28,14 @@ test('fixture requests never follow a redirect', async () => {
     await new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
   }
 });
+
+test('browser fixture routing does not replay redirects in the browser', async () => {
+  const route = {
+    request: () => ({ url: () => 'http://127.0.0.1:4321/start' }),
+    fetch: async options => {
+      assert.equal(options.maxRedirects, 0);
+      return { status: () => 307 };
+    },
+  };
+  await assert.rejects(request.loopbackFixtureRouteFetch(route), /cannot redirect/);
+});

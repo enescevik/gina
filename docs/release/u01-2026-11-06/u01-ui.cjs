@@ -1,3 +1,4 @@
+const { loopbackFixtureRouteFetch } = require('../../../scripts/loopback-fixture-fetch.cjs');
 const loopbackFixtureFetch = require('../../../scripts/loopback-fixture-fetch.cjs');
 // U01 giriş/kurtarma UI kontrolleri. Yalnız test-isolated-services.py --ui-hold fixture'ı ve bu checkout'un
 // web exportuyla çalıştır: GINA_QA_UI_FIXTURE=<yol> GINA_QA_WEB_DIR=<export> node docs/release/u01-2026-11-06/u01-ui.cjs
@@ -51,7 +52,7 @@ async function token(email, password) {
     await context.route(f.url + '/**', async route => {
       try {
         if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
-        const res = await route.fetch({ maxRedirects: 0 });
+        const res = await loopbackFixtureRouteFetch(route);
         await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
       } catch { await route.fulfill({ status: 503, body: 'unavailable' }); }
     });

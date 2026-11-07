@@ -1,3 +1,4 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
 const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // C03 UI acceptance: return reason chosen by parent A (double tap → one request), lost-reply approval retried
 // with the same request id (one result, stars once), the reason on the co-parent's home and in the child's
@@ -81,7 +82,7 @@ try {
   browser = await chromium.launch({ channel: 'chrome', headless: true });
   const newContext = async (viewport) => {
     const c = await browser.newContext({ viewport, locale: 'tr-TR', timezoneId: 'Europe/Istanbul' });
-    await c.route(f.url + '/**', async (route) => { try { if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } }); const res = await route.fetch({ maxRedirects: 0 }); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } }); } catch { await route.fulfill({ status: 503, body: 'Local fixture unavailable' }); } });
+    await c.route(f.url + '/**', async (route) => { try { if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } }); const res = await loopbackFixtureRouteFetch(route); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } }); } catch { await route.fulfill({ status: 503, body: 'Local fixture unavailable' }); } });
     const page = await c.newPage(); page.setDefaultTimeout(25000);
     const errors = []; page.on('pageerror', (e) => errors.push(e.message));
     return { c, page, errors };
@@ -142,7 +143,7 @@ try {
   let dropped = false;
   await A.page.route('**/rest/v1/rpc/review_task_once', async (route) => {
     if (dropped) return route.fallback();
-    dropped = true; const res = await route.fetch({ maxRedirects: 0 }); assert.ok(res.ok, 'server applied the first request');
+    dropped = true; const res = await loopbackFixtureRouteFetch(route); assert.ok(res.ok, 'server applied the first request');
     await route.fulfill({ status: 503, body: 'synthetic lost reply', headers: { 'access-control-allow-origin': '*' } });
   });
   const second = card.locator('div').filter({ hasText: `Kitap oku ${tag}` }).filter({ has: A.page.getByRole('button', { name: 'Onayla', exact: true }) }).last();

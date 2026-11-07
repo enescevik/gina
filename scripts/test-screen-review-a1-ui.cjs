@@ -1,3 +1,4 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
 const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // Q00 A1 (auth/veli/aile/ayarlar) after-fix UI checks. Run only with the disposable test-isolated-services.py --ui-hold fixture and a web export of this checkout served on GINA_QA_WEB_URL (default http://127.0.0.1:8189).
 // Usage: GINA_QA_UI_FIXTURE=<fixture.json> GINA_QA_WEB_URL=http://127.0.0.1:<port> [GINA_QA_A1_OUT=<dir>] GINA_QA_PLAYWRIGHT_PATH=<playwright> node scripts/test-screen-review-a1-ui.cjs
@@ -33,7 +34,7 @@ async function openBrowser(viewport = VIEWPORTS.phone, opts = {}) {
   await context.route(f.url + '/**', async route => {
     try {
       if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
-      const res = await route.fetch({ maxRedirects: 0 });
+      const res = await loopbackFixtureRouteFetch(route);
       await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } });
     } catch { await route.fulfill({ status: 503, body: 'Local fixture unavailable' }); }
   });
@@ -100,7 +101,7 @@ const dump = async (page, n = 30) => (await page.locator('body').innerText()).sp
   await shot(page, 'after-auth-callback-error-phone');
   // 8 device access summary without a selected child
   const c2 = await browser.newContext({ viewport: VIEWPORTS.phone, locale: 'tr-TR' });
-  await c2.route(f.url + '/**', async route => { try { if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } }); const res = await route.fetch({ maxRedirects: 0 }); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } }); } catch { await route.fulfill({ status: 503 }); } });
+  await c2.route(f.url + '/**', async route => { try { if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } }); const res = await loopbackFixtureRouteFetch(route); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } }); } catch { await route.fulfill({ status: 503 }); } });
   const dev = await c2.newPage(); await dev.goto(APP + '/device/pair'); await dev.waitForTimeout(3000);
   await dev.getByLabel('Bu cihazın adı', { exact: true }).fill('Deneme tableti');
   await dev.getByRole('button', { name: t['unified.pairCodeAction'], exact: true }).click(); await dev.getByTestId('pairing-active').waitFor();

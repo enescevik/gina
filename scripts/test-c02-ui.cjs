@@ -1,3 +1,4 @@
+const { loopbackFixtureRouteFetch } = require('./loopback-fixture-fetch.cjs');
 const loopbackFixtureFetch = require('./loopback-fixture-fetch.cjs');
 // C02 UI acceptance: subject identity across two devices (device-local U05 binding transferred only after
 // the parent confirms; a second session binds another lesson), the same dated records on home / calendar
@@ -67,7 +68,7 @@ try {
   browser = await chromium.launch({ channel: 'chrome', headless: true });
   const newContext = async (viewport) => {
     const c = await browser.newContext({ viewport, locale: 'tr-TR', timezoneId: 'Europe/Istanbul' });
-    await c.route(f.url + '/**', async (route) => { try { if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } }); const res = await route.fetch({ maxRedirects: 0 }); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } }); } catch { await route.fulfill({ status: 503, body: 'Local fixture unavailable' }); } });
+    await c.route(f.url + '/**', async (route) => { try { if (route.request().method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } }); const res = await loopbackFixtureRouteFetch(route); await route.fulfill({ response: res, headers: { ...res.headers(), 'access-control-allow-origin': '*' } }); } catch { await route.fulfill({ status: 503, body: 'Local fixture unavailable' }); } });
     const page = await c.newPage(); page.setDefaultTimeout(25000);
     const errors = []; page.on('pageerror', (e) => errors.push(e.message));
     return { c, page, errors };
