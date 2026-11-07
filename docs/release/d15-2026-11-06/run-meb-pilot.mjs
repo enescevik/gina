@@ -23,9 +23,10 @@
 // Kurallar: gerçek aile/kullanıcıya dokunmaz; sentetik hesaplar `@example.invalid`. Anahtar/parola/token yazdırmaz;
 // durum yalnız gitignored `.codex-setup/d15/meb-pilot-state.json` (0600) içinde. Ücretli çağrı tavanı 3
 // (`calls.jsonl`, kişisel veri/sır yok). Global `curriculum_catalog.enabled` anahtarı DEĞİŞTİRİLMEZ.
+import { readPilotState, savePilotState } from '../../../scripts/pilot-state.mjs';
 import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
-import { readFileSync, writeFileSync, appendFileSync, existsSync, chmodSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { randomBytes, randomInt, randomUUID, createHash } from 'node:crypto';
@@ -61,8 +62,8 @@ if (LOCAL) {
   ANON = keys.find((k) => k.name === 'anon')?.api_key;
   if (!SERVICE || !ANON) throw Error('credentials_unavailable');
 }
-const state = existsSync(STATE) ? JSON.parse(readFileSync(STATE, 'utf8')) : {};
-const save = () => { writeFileSync(STATE, JSON.stringify(state, null, 1), { mode: 0o600 }); chmodSync(STATE, 0o600); };
+const state = readPilotState(STATE);
+const save = () => savePilotState(STATE, state);
 const short = (id) => (typeof id === 'string' ? id.slice(0, 8) : id);
 const now = () => new Date().toISOString();
 const options = { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } };

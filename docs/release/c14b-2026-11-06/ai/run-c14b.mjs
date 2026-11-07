@@ -4,9 +4,10 @@
 // Kurallar: gerçek aile/kullanıcıya dokunmaz; anahtar/parola/token yazdırmaz. Durum (parola, oturum yenileme
 // belirteci) yalnız gitignored `.codex-setup/c14b/ai-state.json` içinde (0600). Ücretli çağrı tavanı 30; her
 // gerçek çağrı `calls.jsonl`'a (kişisel veri ve sır içermeyen özet) yazılır. Otomatik tekrar yok.
+import { readPilotState, savePilotState } from '../../../../scripts/pilot-state.mjs';
 import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
-import { readFileSync, writeFileSync, appendFileSync, existsSync, chmodSync } from 'node:fs';
+import { readFileSync, writeFileSync, appendFileSync, existsSync } from 'node:fs';
 import { randomBytes, randomInt, randomUUID } from 'node:crypto';
 
 const ROOT = new URL('../../../../', import.meta.url);
@@ -19,8 +20,8 @@ const require = createRequire(new URL('apps/mobile/package.json', ROOT));
 const { createClient } = require('@supabase/supabase-js');
 
 const stage = process.argv[2];
-const state = existsSync(STATE) ? JSON.parse(readFileSync(STATE, 'utf8')) : {};
-const save = () => { writeFileSync(STATE, JSON.stringify(state, null, 1), { mode: 0o600 }); chmodSync(STATE, 0o600); };
+const state = readPilotState(STATE);
+const save = () => savePilotState(STATE, state);
 const short = (id) => (typeof id === 'string' ? id.slice(0, 8) : id);
 const now = () => new Date().toISOString();
 
