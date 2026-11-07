@@ -1,3 +1,4 @@
+import { AiProviderError } from "../_shared/ai-provider.ts";
 import type { AiConfig } from "../_shared/prova.ts";
 import { PREREVIEW_PROMPT_VERSION, RUBRIC_PASS } from "../_shared/prereview.ts";
 import { json } from "../_shared/supabase.ts";
@@ -434,3 +435,14 @@ Deno.test("H07 an AI approval touches only the pre-review RPCs (no approve / pub
   assert(f.state.rpcLog.every((n) => allowed.has(n)), f.state.rpcLog.join(","));
 });
 
+
+Deno.test("failed paid review retains usage and remains needs_admin", async () => {
+  const f = fixture();
+  f.deps.resolve = async () => ({ ...config, chain: { id: "synthetic", usage_key: "content_prereview", plan: "pro", updated_at: "v1", on_rate_limit: true, on_server_error: true, on_timeout: false, attempt_seconds: 120, total_seconds: 130, steps: [] } });
+  f.deps.call = async () => { throw new AiProviderError("anthropic_max_tokens", { model: "actual-fallback", provider: "anthropic", inputTokens: 120, outputTokens: 100, providerUsage: { input_tokens: 120, output_tokens: 100, cache_read_input_tokens: 0, cache_creation_input_tokens: 0, cache_creation: { ephemeral_5m_input_tokens: 0, ephemeral_1h_input_tokens: 0 }, service_tier: "standard", request_id: "synthetic" } }); };
+  const response = await f.handler(post({ kind: "curriculum_candidate", id: ID }));
+  const body = await response.json();
+  assert(body.prereview_status === "needs_admin", "failure approved");
+  const verdict = f.row()?.verdict as Record<string, unknown>;
+  assert(verdict.model === "actual-fallback" && (verdict.provider_usage as Record<string, unknown>).output_tokens === 100, "usage/model lost");
+});

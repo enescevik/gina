@@ -260,7 +260,7 @@ export function buildVerdict(
 export function failureVerdict(
   reason: string,
   detail: string | null,
-  meta: { model?: string | null; provider?: string | null; promptVersion?: string; mediaCount?: number } = {},
+  meta: { model?: string | null; provider?: string | null; promptVersion?: string; mediaCount?: number; providerUsage?: AiResult<unknown>["providerUsage"] } = {},
 ) {
   return {
     model: meta.model ?? null,
@@ -269,6 +269,7 @@ export function failureVerdict(
     confidence: 0,
     recommendation: "admin_review",
     decision_reason: reason,
+    ...(meta.providerUsage ? { provider_usage: meta.providerUsage } : {}),
     rubric: null,
     findings: [{ code: "other", severity: "advisory", detail: detail ?? reason, item: null }],
     summary: null,

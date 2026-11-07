@@ -1,4 +1,6 @@
 // S06 adapter sözleşme testleri: sahte sunucu, gerçek sağlayıcı yok, ücretli çağrı yok.
+import { AiProviderError } from "./ai-provider.ts";
+import { callClaude } from "./prova.ts";
 import { isContractBody } from "./error-contract.ts";
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 import { adapterFor, adapterKey, classifyAiError, registeredAdapterIds } from "./ai-adapters.ts";
@@ -304,4 +306,22 @@ Deno.test("OpenAI adapter retains billing counters and forwards explicit review 
     assert(result.inputTokens === 120 && result.providerUsage?.input_tokens === 20 && result.providerUsage.cache_read_input_tokens === 80 && result.providerUsage.output_tokens === 60 && result.providerUsage.request_id === "req-billing-test", "billing counters lost or duplicated");
     assert(JSON.parse(String(requests[0].init?.body)).reasoning_effort === "medium", "calibration effort lost");
   });
+});
+
+Deno.test("truncated responses preserve usage without another paid call", async () => {
+  for (const provider of ["openai", "anthropic"]) {
+    const response = provider === "openai"
+      ? { choices: [{ finish_reason: "length", message: { content: "{" } }], usage: { prompt_tokens: 120, completion_tokens: 100, prompt_tokens_details: { cached_tokens: 20, cache_write_tokens: 40 } }, service_tier: "default" }
+      : { stop_reason: "max_tokens", content: [], usage: { input_tokens: 60, output_tokens: 100, cache_read_input_tokens: 20, cache_creation_input_tokens: 40 } };
+    await withFetch(provider === "anthropic" ? [json({ input_tokens: 5 }), json(response)] : [json(response)], async (requests) => {
+      let error: unknown;
+      try {
+        if (provider === "openai") await openAiAdapter.generate("synthetic", base, "s", "u", schema);
+        else await callClaude("synthetic", base, "s", "u", schema);
+      } catch (e) { error = e; }
+      assert(error instanceof AiProviderError && error.billing?.providerUsage.output_tokens === 100, "paid failure usage lost");
+      assert(error.billing.providerUsage.input_tokens === 60, "cache tokens double counted");
+      assert(classifyAiError(error).kind === "truncated" && requests.length === (provider === "anthropic" ? 2 : 1), "failure policy changed");
+    });
+  }
 });

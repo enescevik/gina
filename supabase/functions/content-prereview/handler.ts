@@ -6,7 +6,7 @@
 // non-retryable failures (auth, rejected, too large, refusal, unconfigured) go straight to the admin queue.
 // Images are never sent: the verdict carries an explicit media flag and an image-bearing record is not approved.
 import type { AiConfig, AiResult, AiUserContent } from "../_shared/prova.ts";
-import { type AiFailure, classifyAiError } from "../_shared/ai-provider.ts";
+import { type AiFailure, AiProviderError, classifyAiError } from "../_shared/ai-provider.ts";
 import {
   buildUserMessage,
   buildVerdict,
@@ -170,7 +170,7 @@ export async function reviewOne(deps: Dependencies, kind: PrereviewKind, id: str
   } catch (e) {
     const failure = classifyAiError(e);
     if (!config.chain) await providerHealth(deps, meta.provider, { ok: false, error: failure.code, uncertain: failure.uncertain });
-    if (NON_RETRYABLE.has(failure.kind) || config.chain && failure.uncertain) return toAdmin(`provider_${failure.kind}`, failure.code, meta);
+    if (NON_RETRYABLE.has(failure.kind) || config.chain && failure.uncertain) return toAdmin(`provider_${failure.kind}`, failure.code, { ...meta, ...(e instanceof AiProviderError && e.billing ? { model: e.billing.model, provider: e.billing.provider, providerUsage: e.billing.providerUsage } : {}) });
     return retry(failure.code);
   }
   // The provider answered; a contract violation is ours to retry, not a provider outage.

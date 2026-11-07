@@ -56,11 +56,12 @@ export const openAiAdapter: AiAdapter = {
     });
     if (!res.ok) throw new AiProviderError(`openai_${res.status}`);
     const data = await res.json();
+    const billing = { providerUsage: openAiUsage(data.usage, res.headers.get("x-request-id"), data.service_tier), model: cfg.model, provider: "openai_compatible", inputTokens: Number.isSafeInteger(data.usage?.prompt_tokens) ? data.usage.prompt_tokens : null, outputTokens: Number.isSafeInteger(data.usage?.completion_tokens) ? data.usage.completion_tokens : null };
     const choice = Array.isArray(data.choices) ? data.choices[0] : null;
     if (!choice) throw new AiProviderError("ai_result_invalid");
-    if (choice.message?.refusal) throw new AiProviderError("openai_refusal");
-    if (choice.finish_reason === "length") throw new AiProviderError("openai_max_tokens");
-    if (choice.finish_reason === "content_filter") throw new AiProviderError("openai_refusal");
+    if (choice.message?.refusal) throw new AiProviderError("openai_refusal", billing);
+    if (choice.finish_reason === "length") throw new AiProviderError("openai_max_tokens", billing);
+    if (choice.finish_reason === "content_filter") throw new AiProviderError("openai_refusal", billing);
     return {
       output: parseStructuredText<T>(choice.message?.content),
       providerUsage: openAiUsage(data.usage, res.headers.get("x-request-id"), data.service_tier),

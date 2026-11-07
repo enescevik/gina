@@ -256,3 +256,15 @@ Deno.test("chain: Anthropic credit/spend cap errors are safe fallback, ordinary 
     "rejected",
   );
 });
+
+Deno.test("chain: truncated usage survives uncertain wrapper and journals failed tokens", async () => {
+  const billing = { model: "first", provider: "openai_compatible", inputTokens: 120, outputTokens: 100, providerUsage: { input_tokens: 120, output_tokens: 100, cache_read_input_tokens: 0, cache_creation_input_tokens: 0, cache_creation: { ephemeral_5m_input_tokens: 0, ephemeral_1h_input_tokens: 0 }, service_tier: "standard", request_id: "synthetic" } };
+  const f = fixture(new AiProviderError("openai_max_tokens", billing));
+  let error: unknown;
+  try { await runAiChain(cfg, "s", "u", {}, f.deps); } catch (e) { error = e; }
+  assertEquals(error instanceof AiProviderError ? error.billing : null, billing);
+  assertEquals(f.calls, ["first"]);
+  const finished = f.entries.find(e => e.name === "ai_chain_finish_attempt")!;
+  assertEquals(finished.args.p_input, 120);
+  assertEquals(finished.args.p_output, 100);
+});

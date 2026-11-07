@@ -39,7 +39,7 @@ export interface AiFailure {
 }
 
 export class AiProviderError extends Error {
-  constructor(code: string) {
+  constructor(code: string, readonly billing?: { providerUsage: NonNullable<AiResult<unknown>["providerUsage"]>; model: string; provider: string; inputTokens: number | null; outputTokens: number | null }) {
     super(code);
   }
 }
