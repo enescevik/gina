@@ -254,7 +254,7 @@ async function untilSaved(attempt, q, pick, expected) {
   await kid.getByText(t('prova.questionOf', { n: 1, total: ORDER.length }), { exact: true }).first().waitFor({ timeout: 45000 });
   const attempt = sql(`select id from public.exam_attempts where exam_id='${F.exam}';`);
   const reported = sql(`select array_to_string(question_types,',') from public.devices where auth_user_id='${F.device.id}';`);
-  assert.ok(reported.includes('region_select') && reported.includes('clock') && !reported.includes('mark_text'), 'QA build reports 2B (not 2A)');
+  assert.ok(reported.includes('region_select') && reported.includes('clock') && reported.includes('mark_text'), 'release build reports 1A/1B + 2A + 2B (switches on since release approval)');
   pass('child_build_reports_2b_only', { reported: reported.split(',') });
 
   // Bar chart stimulus + grid colouring (count key; child never learns which/how many are "right").

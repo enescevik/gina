@@ -339,7 +339,7 @@ async function authorAll(page, WEB) {
   await phone.goto(`${WEB}/parent/prova/question?subject=Matematik&grade=5`);
   await phone.getByTestId('qt-type-picker').waitFor();
   const picker = await targets48(phone, 'qt-type-picker');
-  assert.equal(picker, 8, 'two legacy + six structured type buttons');
+  assert.equal(picker, 14, 'two legacy + twelve structured type buttons (2A/2B switches on since release approval)');
   await shot(phone, 'type-picker', 'qt-type-picker');
   await authorAll(phone, WEB);
 
