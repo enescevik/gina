@@ -5293,6 +5293,7 @@
   "dailyPractice.title": "Question of the day",
   "dailyPractice.invitation": "Explore a question today if you feel like it.",
   "dailyPractice.open": "Open question",
+  "dailyPractice.openFailed": "This question could not be opened. Try again.",
   "dailyPractice.pin": "Show as question of the day",
   "dailyPractice.pinned": "This will appear as the question of the day.",
   "dailyPractice.pinFailed": "This question could not be shown. There may already be a question for today.",

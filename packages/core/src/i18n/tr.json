@@ -5288,6 +5288,7 @@
   "dailyPractice.title": "Günün sorusu",
   "dailyPractice.invitation": "İstersen bugün bir soru keşfedebilirsin.",
   "dailyPractice.open": "Soruyu aç",
+  "dailyPractice.openFailed": "Soru açılamadı. Tekrar deneyebilirsin.",
   "dailyPractice.pin": "Günün sorusu olarak göster",
   "dailyPractice.pinned": "Günün sorusu olarak gösterilecek.",
   "dailyPractice.pinFailed": "Bu soru gösterilemedi. Bugün için bir soru zaten seçilmiş olabilir.",

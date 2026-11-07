@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { CalendarDays, Check, ChevronRight, Circle, ClipboardCheck, Clock3, GraduationCap, House, LockKeyhole, Pencil, Play, Star, Timer, Trophy, X } from 'lucide-react-native';
 import { useCallback, useRef, useState, type ComponentRef } from 'react';
@@ -44,12 +44,32 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
     staleTime: 0,
     refetchInterval: 15000,
     queryFn: async () => {
-      const { data, error } = await supabase.rpc('get_daily_practice', { p_child_id: childId });
+      const offer = await supabase.rpc('daily_practice_offer', { p_child_id: childId });
+      if (offer.error?.code !== 'PGRST202') {
+        if (offer.error) throw offer.error;
+        return offer.data as { exam_id?: string; automatic?: boolean; legacy?: boolean } | null;
+      }
+      const legacy = await supabase.rpc('get_daily_practice', { p_child_id: childId });
+      if (legacy.error) throw legacy.error;
+      return legacy.data ? { exam_id: legacy.data, legacy: true } : null;
+    },
+  });
+  const dailyOffer = ready && !daily.isError && !daily.isPaused ? daily.data : null;
+  const openDaily = useMutation({
+    mutationFn: async () => {
+      const { data, error } = await supabase.rpc('open_daily_practice', { p_child_id: childId });
       if (error) throw error;
       return data;
     },
+    onSuccess: (examId) => {
+      void daily.refetch();
+      if (examId) goToDaily(examId);
+    },
   });
-  const dailyId = ready && !daily.isError && !daily.isPaused ? daily.data : null;
+  const goToDaily = (examId: string) => router.push({
+    pathname: actingAsParent ? '/parent/child-mode/prova/[examId]' : '/child/prova/[examId]',
+    params: { examId },
+  });
   const homework = useChildHomework(childId, data.today);
   const openFocus = useOpenFocus(childId, data.today);
   const client = useQueryClient();
@@ -87,12 +107,16 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
         {next.status === 'returned' && <View testID="child-returned-explain" style={{ backgroundColor: '#FFF6E5', borderRadius: 14, padding: 10, gap: 4 }}><Text style={[s.small, { color: c.ink }]}>{t('childMint.returnedTitle')}</Text><ReturnNext returned={next.returned} compact/></View>}
         {primary(t(next.status === 'returned' ? 'childMint.returnedAction' : 'childMint.start'), () => openTask(next.id))}
       </View> : homeworkNext ? <HomeworkNext item={homeworkNext} compact={!wide} onOpen={() => go('calendar')} /> : (!waiting && (exams.data ?? 0) > 0 ? null : <View style={s.card}><View style={s.row}><Collectible slug={waiting ? 'star-filled' : data.due.length ? 'reward-trophy' : 'display-first-task'} size={shortLandscape ? 48 : 64}/><View style={{ flex: 1 }}><Text style={s.heading}>{t(waiting ? 'childMint.waitingTitle' : data.due.some(x=>!x.available && x.status==='returned') ? 'routine.pausedTitle' : data.due.length ? 'childMint.allDone' : 'childMint.emptyTitle')}</Text><Text style={s.text}>{t(waiting ? 'childMint.waitingBody' : data.due.some(x=>!x.available && x.status==='returned') ? 'routine.pausedBody' : data.due.length ? 'childMint.allDoneBody' : 'childMint.emptyBody')}</Text></View></View>{!data.due.length && !(exams.data ?? 0) && primary(t('betaUx.exploreCollection'), () => go('collection'))}</View>)}
-      {!next && !homeworkNext && !data.loading && !error && !waiting && dailyId && <View style={s.card}>
+      {!next && !homeworkNext && !data.loading && !error && !waiting && dailyOffer && <View style={s.card}>
         <Text style={s.heading}>{t('dailyPractice.title')}</Text>
         <Text style={s.text}>{t('dailyPractice.invitation')}</Text>
-        {primary(t('dailyPractice.open'), () => router.push({ pathname: actingAsParent ? '/parent/child-mode/prova/[examId]' : '/child/prova/[examId]', params: { examId: dailyId } }))}
+        {primary(t('dailyPractice.open'), () => {
+          if (dailyOffer.legacy && dailyOffer.exam_id) goToDaily(dailyOffer.exam_id);
+          else if (!openDaily.isPending) openDaily.mutate();
+        }, openDaily.isPending)}
+        {openDaily.isError && <Text accessibilityRole="alert" style={s.text}>{t('dailyPractice.openFailed')}</Text>}
       </View>}
-      {!next && !homeworkNext && !data.loading && !error && !waiting && !dailyId && (exams.data ?? 0) > 0 && <View style={s.card}><View style={s.row}><Collectible slug="reward-book" size={shortLandscape ? 48 : 64}/><View style={{ flex: 1 }}><Text style={s.heading}>{t('childMint.provaWaitingTitle', { count: exams.data ?? 0 })}</Text><Text style={s.text}>{t('childMint.provaWaitingBody')}</Text></View></View>{primary(t('childMint.provaWaitingAction'), () => go('prova'))}</View>}
+      {!next && !homeworkNext && !data.loading && !error && !waiting && !dailyOffer && (exams.data ?? 0) > 0 && <View style={s.card}><View style={s.row}><Collectible slug="reward-book" size={shortLandscape ? 48 : 64}/><View style={{ flex: 1 }}><Text style={s.heading}>{t('childMint.provaWaitingTitle', { count: exams.data ?? 0 })}</Text><Text style={s.text}>{t('childMint.provaWaitingBody')}</Text></View></View>{primary(t('childMint.provaWaitingAction'), () => go('prova'))}</View>}
     </View>
     {data.due.length > 0 && <View style={[s.section, s.divider, !wide && { gap: 8, paddingTop: 12 }]}>
       <Text accessibilityRole="header" style={s.heading}>{t('childMint.steps')}</Text>

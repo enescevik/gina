@@ -44,6 +44,63 @@ update public.plans set cohort_monthly=5,prova_monthly_exams=null,library_monthl
 update public.app_settings set value='true' where key in('cohorts.enabled','sources.enabled','question_groups.enabled');
 set local role authenticated;
 select set_config('request.jwt.claims','{"sub":"00000000-0000-4000-8000-000000004302","role":"authenticated","gina":{"role":"parent","family_id":"10000000-0000-4000-8000-000000004302"}}',true);
+savepoint automatic_daily;
+reset role;
+update public.plans set library_monthly=5 where code='free';
+update public.app_settings set value='true' where key='library_packages.enabled';
+set local role authenticated;
+select public.acquire_library_units(gen_random_uuid(),(select id from state),1,array['question:question-4']);
+select is(public.daily_practice_offer('20000000-0000-4000-8000-000000004702'),null::jsonb,'without a signal there is no automatic offer');
+select set_config('test.auto_q',(select id::text from public.question_bank where family_id=gina.family_id()),true);
+select public.set_question_focus('20000000-0000-4000-8000-000000004702',current_setting('test.auto_q')::uuid,true);
+select is(public.daily_practice_offer('20000000-0000-4000-8000-000000004702'),'{"automatic":true}'::jsonb,'an active parent focus makes an acquired question eligible');
+select is(public.daily_practice_offer('20000000-0000-4000-8000-000000004703'),null::jsonb,'cannot see another family offer');
+reset role;
+select is((select count(*) from gina.daily_practice_slots),0::bigint,'preview does not create any slot');
+set local role authenticated;
+select public.set_question_focus('20000000-0000-4000-8000-000000004702',current_setting('test.auto_q')::uuid,false);
+reset role;
+insert into public.exams(id,family_id,child_id,title,subject,grade,question_ids,status,kind)
+ values('60000000-0000-4000-8000-000000004720','10000000-0000-4000-8000-000000004302',
+ '20000000-0000-4000-8000-000000004702','Earlier practice','Matematik',5,array[current_setting('test.auto_q')::uuid],'completed','level_test');
+insert into public.exam_attempts(id,family_id,child_id,exam_id,status,finished_at)
+ values('60000000-0000-4000-8000-000000004721','10000000-0000-4000-8000-000000004302',
+ '20000000-0000-4000-8000-000000004702','60000000-0000-4000-8000-000000004720','graded',now());
+insert into public.question_child_signals(family_id,attempt_id,question_id,liked)
+ values('10000000-0000-4000-8000-000000004302','60000000-0000-4000-8000-000000004721',current_setting('test.auto_q')::uuid,true);
+set local role authenticated;
+select is(public.daily_practice_offer('20000000-0000-4000-8000-000000004702'),'{"automatic":true}'::jsonb,'a child like also selects an acquired question');
+reset role;
+savepoint quiet_daily;
+with wall as (select extract(hour from now() at time zone f.timezone)::int*60
+  + extract(minute from now() at time zone f.timezone)::int as minute_of_day from public.families f where id='10000000-0000-4000-8000-000000004302')
+update public.children set evening_reminder_start=wall.minute_of_day,evening_reminder_end=(wall.minute_of_day+60)%1440
+ from wall where id='20000000-0000-4000-8000-000000004702';
+set local role authenticated;
+select is(public.daily_practice_offer('20000000-0000-4000-8000-000000004702'),null::jsonb,'quiet hours suppress the automatic offer');
+select is(public.open_daily_practice('20000000-0000-4000-8000-000000004702'),null::uuid,'quiet hours also prevent direct open');
+rollback to quiet_daily;
+set local role authenticated;
+select set_config('test.auto_exam',public.open_daily_practice('20000000-0000-4000-8000-000000004702')::text,true);
+select ok(current_setting('test.auto_exam')<>'' ,'opening creates the selected exam');
+select is(public.open_daily_practice('20000000-0000-4000-8000-000000004702')::text,current_setting('test.auto_exam'),'retries reuse today’s assignment');
+reset role;
+select is((select question_ids[1]::text from public.exams where id=current_setting('test.auto_exam')::uuid),current_setting('test.auto_q'),'assignment contains the acquired question');
+select is((select count(*) from public.push_outbox where payload->>'exam_id'=current_setting('test.auto_exam')),0::bigint,'automatic invitation sends no push');
+select is((select count(*) from gina.library_acquisition_charges),1::bigint,'opening creates no additional library charge');
+insert into public.exam_attempts(id,family_id,child_id,exam_id)
+ values('60000000-0000-4000-8000-000000004722','10000000-0000-4000-8000-000000004302',
+ '20000000-0000-4000-8000-000000004702',current_setting('test.auto_exam')::uuid);
+insert into public.exam_answers(attempt_id,question_id,answer_key)
+ values('60000000-0000-4000-8000-000000004722',current_setting('test.auto_q')::uuid,'A');
+update public.exam_attempts set status='submitted',finished_at=now() where id='60000000-0000-4000-8000-000000004722';
+select is((select count(*) from public.child_badge_awards where child_id='20000000-0000-4000-8000-000000004702'
+ and badge_slug='daily-practice-first'),1::bigint,'automatic completion uses the same single badge');
+set local role authenticated;
+select is(public.daily_practice_offer('20000000-0000-4000-8000-000000004702'),null::jsonb,'completion suppresses any second offer today');
+reset role;
+rollback to automatic_daily;
+set local role authenticated;
 select throws_ok($$select public.admin_group_package_catalog()$$,'42501','forbidden','parent cannot read operator catalog');
 reset role;update public.app_settings set value='false' where key='sources.enabled';set local role authenticated;
 select throws_ok($$select public.enroll_group_exam('60000000-0000-4000-8000-000000004701','20000000-0000-4000-8000-000000004702',false,true)$$,'P0001','source_not_ready','media rollout gate rejects new enrollment');

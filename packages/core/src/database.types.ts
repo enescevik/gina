@@ -3908,6 +3908,9 @@ isOneToOne: false
 "get_curriculum_source_target":
 { Args: { "p_exam_family": string,"p_term": number,"p_year": string }; Returns: Json
                            },
+"daily_practice_offer":
+{ Args: { "p_child_id": string }; Returns: Json
+                           },
 "get_daily_practice":
 { Args: { "p_child_id": string }; Returns: string
                            },
@@ -4182,6 +4185,9 @@ isOneToOne: false
 { Args: { "p_blueprint_id"?: string,"p_grade": number,"p_max_questions"?: number,"p_per_topic"?: number,"p_subject": string }; Returns: {
               "difficulty": Database["public"]['Enums']["question_difficulty"],"ord": number,"question_id": string,"topic": string
             }[]
+                           },
+"open_daily_practice":
+{ Args: { "p_child_id": string }; Returns: string
                            },
 "pin_daily_practice":
 { Args: { "p_exam_id": string }; Returns: string
