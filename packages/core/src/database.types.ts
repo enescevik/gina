@@ -3765,6 +3765,9 @@ isOneToOne: false
 "get_child_education":
 { Args: { "p_child_id": string }; Returns: Json
                            },
+"get_child_question_solution":
+{ Args: { "p_attempt_id": string,"p_question_id": string }; Returns: Json
+                           },
 "get_child_question_type_support":
 { Args: { "p_child_id": string }; Returns: Json
                            },

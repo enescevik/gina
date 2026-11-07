@@ -1,3 +1,4 @@
+import { ChildQuestionSolution } from "@/components/learning/child-question-solution";
 import { ChildQuestionSignal } from "@/components/learning/child-question-signal";
 import { DecisionSheet } from "@/components/ui/decision-sheet";
 import { invalidateProvaLists } from "@/lib/prova-cache";
@@ -646,6 +647,7 @@ export default function TakeExamScreen() {
           {list.slice(0,signalLimit).map(question=><View key={question.id} style={{gap:8}}>
             <Text>{question.stem}</Text>
             <ChildQuestionSignal attemptId={result.id} questionId={question.id} />
+            <ChildQuestionSolution attemptId={result.id} questionId={question.id} />
           </View>)}
           {signalLimit<list.length?<Button variant="ghost" title={t("questionLikes.more")} onPress={()=>setSignalLimit(n=>n+10)} />:null}
         </View>:null}

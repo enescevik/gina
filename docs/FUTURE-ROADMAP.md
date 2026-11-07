@@ -47,7 +47,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F3 — Sonuçta kayıtlı çözüm yolunu aç; cihaz TTS
 
-- Kaynak: §4.5–6. Durum: PLANLANDI. Efor: **M**.
+- Kaynak: §4.5–6. Durum: YAPILIYOR (F3a kayıtlı çözüm kod hazır; TTS açık). Efor: **M**.
 - Kapsam: Sonuçta kayıtlı çözüm yolunu aç; cihaz TTS.
 - Bağımlılık: Sonuç yetkisi, Expo 58 TTS dokümanı.
 - Paket kapısı: Tüm paketler.
@@ -210,3 +210,5 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 
 - F2 ilk teslim: çocukta sınav sırasında ve sonuçta geri alınabilir sinyal; veliye gerekçesi ayrı ➕/zorlanma kartı; 7 günlük odak ve aynı kazanıma 7 günlük sessizlik; 3–5 soruluk aile içi taslak ve mevcut tekrar planına geçiş. Tam taze DB **145 dosya/6.962 kontrol**, turbo lint/tip/test **7/7**, core **749**, Node betikleri **109/109** temiz. Test kanıtı `release/future-f2-2026-11-07/`. Üretim ve fiziksel kabul henüz yok.
 - F2 kapsam kararı: AI benzer üretimde tercihi/few-shot örneği kullanma **F7'ye** alındı; F5 enjeksiyon ve çıktı kontrollerini beklemesi daha güvenli. Sonraki 3 deneme/sınava-kadar tüketim politikası da F7. Karma sınıf içerebilen favori listesinden toplu set/PDF için sınıf/çocuk kapsamı F8'de kurulacak; sessizce yanlış sınıf ataması yapılmayacak. Mini set burada yalnız doğrulanmış aile erişimi ve açık kazanım etiketleriyle çalışır; MEB onayı iddiası yok.
+
+- F3a: çözüm/açıklama yalnız `graded` denemede, atanmış soruda ve geçerli aile/çocukta iki alanlı projeksiyonla açılır; aktif veya yalnız gönderilmiş denemede kapalıdır. Taze DB **146 dosya/6.970 kontrol**, turbo 7/7 geçti; 8 yeni çözüm kapısı testi var. TTS henüz tamamlanmadı; Expo 58 Speech API Android ses motorunun ağ gereksinimi bilgisini sunmadığı için cihaz-içi garanti ayrıca ele alınacak.

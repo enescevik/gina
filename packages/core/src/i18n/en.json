@@ -5152,5 +5152,11 @@
     "notEnough": "There are not enough acquired questions for this learning outcome yet. Review the practice plan or add questions in the builder.",
     "focusReason": "You added a practice note for {{name}} on {{topic}}.",
     "noMatchingChild": "There is no active child profile at this grade level."
+  },
+  "questionSolution": {
+    "show": "See the Solution",
+    "hide": "Hide Solution",
+    "loading": "Opening the solution…",
+    "notReady": "When review is complete, an available solution will appear here."
   }
 }

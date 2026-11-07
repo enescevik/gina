@@ -5147,5 +5147,11 @@
     "notEnough": "Bu kazanımda henüz yeterli edinilmiş soru yok. Tekrar planını inceleyebilir veya hazırlama ekranından yeni soru ekleyebilirsiniz.",
     "focusReason": "{{name}} için {{topic}} konusunda bir pekiştirme notu eklediniz.",
     "noMatchingChild": "Bu sınıf düzeyinde etkin bir çocuk profili bulunamadı."
+  },
+  "questionSolution": {
+    "show": "Çözüm Yolunu Gör",
+    "hide": "Çözümü Gizle",
+    "loading": "Çözüm açılıyor…",
+    "notReady": "Değerlendirme tamamlanınca varsa çözüm yolunu burada görebilirsin."
   }
 }
