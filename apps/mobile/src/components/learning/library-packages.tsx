@@ -98,7 +98,13 @@ export function LibraryPackages(
         .eq("source_context->>term",String(draft.content.context?.term))
         .eq("source_context->>academic_year",`${draft.content.context?.academicYear}-${(draft.content.context?.academicYear ?? 0) + 1}`);
       if (error) throw error;
-      return data ?? [];
+      return (data ?? []).map(option => {
+        const source = option.source_context;
+        const exam = source && typeof source === "object" && !Array.isArray(source) ? source.exam : null;
+        return { id: option.id, label: typeof exam === "number"
+          ? t("libraryPackages.scenarioOption", { exam, name: option.name })
+          : option.name };
+      });
     },
   });
   const draftKind = draft ? provaGenerationKind(draft.content) : "mixed";
@@ -310,7 +316,7 @@ export function LibraryPackages(
                 <>
                   <Text style={p.muted}>{t("libraryPackages.scenarioHelp")}</Text>
                   {scenarios.data?.map(option => (
-                    <BuilderChoice key={option.id} label={option.name}
+                    <BuilderChoice key={option.id} label={option.label}
                       selected={blueprintId === option.id}
                       disabled={locked || previewMutation.isPending}
                       onPress={() => {setPreview(null);setBlueprintId(option.id);}}

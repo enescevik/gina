@@ -2436,6 +2436,7 @@
   "provaHub.questionUnit": "soru",
   "provaHub.topicUnit": "konu",
   "libraryPackages": {
+    "scenarioOption": "{{exam}}. yazılı · {{name}}",
     "openScenarios": "MEB senaryolarını aç",
     "scenarioHelp": "Okulun bildirdiği senaryoyu MEB kataloğunda seçip onayla. Burada o senaryonun soru adedi ve kazanımlarıyla kütüphaneden açık uçlu hazırlık soruları seçilir.",
     "scenarioPreview": "{{name}} · Senaryo hedefi {{count}} soru. Onaylarsan taslağın soru sayısı bu hedefe göre güncellenir.",

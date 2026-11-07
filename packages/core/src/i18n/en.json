@@ -2441,6 +2441,7 @@
   "provaHub.topicUnit_one": "topic",
   "provaHub.topicUnit_other": "topics",
   "libraryPackages": {
+    "scenarioOption": "Exam {{exam}} · {{name}}",
     "openScenarios": "Open MEB scenarios",
     "scenarioHelp": "Confirm the scenario announced by the school in the MEB catalog. The library uses its count and learning outcomes to choose open-ended practice questions.",
     "scenarioPreview": "{{name}} · Scenario target: {{count}} questions. Confirming updates the draft question count to this target.",
