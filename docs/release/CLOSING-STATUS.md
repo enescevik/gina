@@ -1,8 +1,8 @@
 # GINA — tek güncel kapanış tablosu
 
-**Son salt okunur sunucu kontrolü (7 Kasım 02:43 TR):** ledger 164, son migration `20261107040000`; 13 etkin cron, son 24 saatte 1.834 başarılı/0 başarısız çalışma. [Kanıt](locale-brand-2026-11-07/evidence/server-state.json). Bu tur migration uygulanmadı.
+**Prova soru türleri ve 1.0 yayını tamam (7 Kasım):** `a20dd390`, PR #165 ile main `0e4f5a37` içinde. Bu tur beş migration uygulandı (ledger 164 → 169); sonraki bağımsız AI ön inceleme yayınıyla son ledger **170**. Web/yönetim, **iOS/TestFlight 1.0.0 (34)** ve **tablet 34** canlı. 2A/2B açık. `health-check --strict --expected-tablet-build 34` geçti; ACL **0**, public RLS-off **0**, Access **12/12**. Build 34, App Store **1.0 taslağına** bağlandı; yeni ikon taslakta ve Apps listesinde görünüyor. **App Review'a gönderilmedi.** Fiziksel cihaz kabulü açık. [Yayın ve imza/sağlık kanıtları](qt-2026-11-07/LIVE-RELEASE.md).
 
-**Dil/ikon yayını tamam:** iOS/TestFlight ve kayıtlı tablet **0.1.0 (33)**; web, yönetim ve eski Expo web güncel. Fiziksel cihaz kabulü açık. Ayrıntı:  [7 Kasım dil ve marka yüzeyleri](locale-brand-2026-11-07/README.md). H04 ürün e-postası tasarımı da [PR #160](https://github.com/enescevik/gina/pull/160) ile canlıda. Aşağıdaki H08 yayın tablosu tarihsel kayıttır; sonradan başka thread tarafından yayımlanan AI yönetim değişikliklerinin yerine geçmez.
+**Önceki dil/ikon yayını (33):** iOS/TestFlight ve kayıtlı tablet **0.1.0 (33)**; web, yönetim ve eski Expo web güncel. Fiziksel cihaz kabulü açık. Ayrıntı:  [7 Kasım dil ve marka yüzeyleri](locale-brand-2026-11-07/README.md). H04 ürün e-postası tasarımı da [PR #160](https://github.com/enescevik/gina/pull/160) ile canlıda. Aşağıdaki H08 yayın tablosu tarihsel kayıttır; sonradan başka thread tarafından yayımlanan AI yönetim değişikliklerinin yerine geçmez.
 
 **7 Kasım 01:25 TR bağımsız kabul güncellemesi:** [Codex canlı kontrolü](codex-live-acceptance-2026-11-07/README.md). TestFlight 32 iki testçide kurulu; H02 panel akışı ve Gmail EN confirm/reset teslimi doğrulandı; H01 sunucu sırları kuruldu. Ürün SMTP kanalı ayrıca 01:42 TR’de açıldı; Gmail teslimi ve vazgeçme testi geçti. C15 ve gerçek Apple iptali açık. Son canlı ledger 161; bu kabul turu migration/istemci yayını yapmadı.
 
@@ -16,12 +16,13 @@
 | C14b | Enes 15:38Z | `b04207c`; `prova-grade` ek düzeltme `8fb2eef` | 146, son `20261106390000` | 8 + `prova-grade` | web `1c0cf214`, yönetim `30000ffb` | iOS 29 gönderim `d9628cbd` (IPA `a5ad4764…`); tablet 29 `b9q067lwk9`, kaynak `8fb2eef` (IPA `d2d254c6…`) |
 | C14c | Enes 18:23Z | **`bba2b01`** | **151, son `20261106450000`** | `prova-generate` v8, `prova-grade` v7, `prova-review` v3 | **web `7f515ca0`, yönetim `d4ebcb30`** | **iOS 30 gönderim `b7ccb6a4` (IPA `7ddc64f9…`); tablet 30 `c4aic5og2w`, kaynak `bba2b01` (IPA `be558e9e…`)** |
 | **H08 (tarihsel)** | Enes 19:51Z (yayın yetkisi) | **`fe08cb60`** | **160, son `20261107000400`** (470000/480000 başka hatta 20:57Z; QT Faz 0 21:58Z) | `delete-account` v18, `apple-token`, `apple-revocation-worker`, `push-send` v17, H02/H07 fonksiyonları | **web `f1adee0b`, yönetim `04c33ac6`** | **iOS 32 gönderim `670700d0` (IPA `ef6e6834…`); tablet 32 `gxt6d74dz6` (IPA `04834182…`)** |
+| **QT / 1.0 (34)** | Enes, bu sohbet | **`0e4f5a37`** (Prova `a20dd390` + sürüm/profil) | **169**, beş QT migration; son bağımsız kontrol **170** | bu tur `prova-generate` v40; son kontrolde v49 ACTIVE | web `b684a4fc`, yönetim `317282f6`, Expo web `1uvxppixdc` | **TestFlight 1.0.0 (34)** / 2 testçi; tablet **`tyf5ccr0v0`**; mağaza 1.0 taslağına bağlı, incelemeye gönderilmedi |
 
 - **Ayarlar:** `question_groups.enabled=true`; `curriculum_catalog.enabled=false`; `content_prereview.enabled=true` (21:04Z, Codex/PR #156, günlük sınır 25); `channels.email.provider="smtp"` (7 Kasım Codex kabulüyle açık; doğrulama/duyuru kanalı).
 - **Zamanlanmış işler (7 Kasım bağımsız kontrolü: 13 etkin; son 3 saatte çalışmış işlerde başarısızlık 0; günlük işlerin bir kısmı bu aralıkta hiç çalışmadı):** `prune-unused-devices` 03:25, `prune-pairing-records` 03:35, `apple-revocation-worker` */15, `content-prereview-drain` */10, `push-send`, `settle-group-attempts`, `source-cleanup`.
 - **Canlı sağlık:** `health-check.mjs --strict` temiz, ACL 0, RLS kapalı tablo 0.
 - **Alan adı / e-posta** ([STATUS](domain-email-2026-11-06/STATUS.md) esas): `ginafamily.com`, `www`, `admin.ginafamily.com` kurulu; Auth e-postaları `noreply@ginafamily.com` (Brevo SMTP), TR reset gerçek teslimatla doğrulandı; `destek@ginafamily.com` yönlendirmesi Active ve Cloudflare teslim kaydı var; Gmail "GINA Destek" göndericisi kurulu ve INBOX teslimatı doğrulandı. Gmail EN yeni hesap ve reset teslimatı SPF/DKIM/DMARC pass ile ayrıca doğrulandı (Codex canlı kabul). Açık: farklı sağlayıcı teslimatı, bağlantıyla parola değiştirme cihaz kabulü ; ürün bildirim kanalında Gmail teslim/vazgeçme kabulü tamam.
-- **iOS dağıtımı:** iOS 32 gönderimi `670700d0`; Codex gerçek App Store Connect oturumunda mevcut Team (Expo) ve iki testçide Installed 0.1.0 (32) kaydını doğruladı. İşleme, grup erişimi ve kurulum kapandı; C15 işlev/etkileşim kabulü açık.
+- **iOS dağıtımı:** **1.0.0 (34)**, submission `801dca6b-c320-46a9-8026-7733a34e1fb6`; Apple işlemesi tamam, **Team (Expo)** grubunda 2 testçiye açık. Mağaza **1.0 Prepare for Submission** taslağında seçili, manuel yayın korunuyor; App Review gönderilmedi. Fiziksel kurulum/etkileşim C15 kabulü açık. [TestFlight/taslak kanıtı](qt-2026-11-07/live/testflight-final.json).
 - **H08 zamanındaki kaynak farkı (tarihsel):** H08 istemcileri `fe08cb60` tabanlıydı. Bu cümle artık güncel istemci durumunu tanımlamaz. Son dil/ikon yayını ve gerçek derleme/hash eşlemesi için [7 Kasım yayın kaydını](locale-brand-2026-11-07/README.md) kullan; başka thread’lerdeki sonraki yayınları da kendi kaynak kaydıyla karşılaştır.
 
 ## Güncel kalan işler (H00–H08)
@@ -73,7 +74,7 @@ Kütüphane içerik üretimi/onayı ve 3B dünya Claude'un açık işi değildir
 
 ## Prova yeni soru türleri (ayrı thread)
 
-Faz 0 = yalnız veri sözleşmesi, puanlama ve RPC altyapısı; **kullanıcı özelliği olarak tamamlanmış sayılmaz.** Üretimde yalnız migration `20261107000000`–`000400`. Çocuk ekranı, veli incelemesi, AI üretim şemaları, gönderim/uyumluluk ve PDF ([QT PROGRESS](qt-2026-11-07/PROGRESS.md)) Prova thread'inin dalında; main'de ve yayında değil.
+Faz 0–2B kaynağı `a20dd390`, PR #165 ile main `0e4f5a37` içinde. Çocuk/veli ekranları, AI şemaları, gönderim/uyumluluk ve PDF değişiklikleri web/yönetim ile yayımlandı; iOS/tablet 34 yayın kanıtı [LIVE-RELEASE](qt-2026-11-07/LIVE-RELEASE.md) içinde izlenir. 2A/2B açık, faz 3 `crossword` kapalı. Fiziksel cihaz etkileşimi ve gerçek AI tür pilotu kabulü açık; yayın bu kabulün yerine geçmez. Kaydedilmiş yapılandırılmış soruyu düzenleme ve paylaşım sınırları [QT PROGRESS](qt-2026-11-07/PROGRESS.md) içinde korunur.
 
 ## 1. Kodda tamam ve canlıda, kabul kanıtı tam (tarihsel, sorumlu Claude)
 

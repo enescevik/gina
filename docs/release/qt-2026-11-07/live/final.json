@@ -1,0 +1,962 @@
+{
+  "checkedAt": "2026-11-07T01:28:34.902Z",
+  "ledger": [
+    {
+      "version": "20261029200000",
+      "name": "schema"
+    },
+    {
+      "version": "20261029200100",
+      "name": "rls"
+    },
+    {
+      "version": "20261029200200",
+      "name": "auth_hook"
+    },
+    {
+      "version": "20261029200300",
+      "name": "rpc"
+    },
+    {
+      "version": "20261029200400",
+      "name": "realtime"
+    },
+    {
+      "version": "20261029200500",
+      "name": "child_mode"
+    },
+    {
+      "version": "20261030010000",
+      "name": "entitlements"
+    },
+    {
+      "version": "20261030020000",
+      "name": "plan_products"
+    },
+    {
+      "version": "20261030030000",
+      "name": "ai_summaries"
+    },
+    {
+      "version": "20261030040000",
+      "name": "prova"
+    },
+    {
+      "version": "20261030050000",
+      "name": "resubmit"
+    },
+    {
+      "version": "20261030060000",
+      "name": "rewards"
+    },
+    {
+      "version": "20261030070000",
+      "name": "badge_icons_v3"
+    },
+    {
+      "version": "20261030080000",
+      "name": "prova_ai"
+    },
+    {
+      "version": "20261030090000",
+      "name": "prova_level"
+    },
+    {
+      "version": "20261030100000",
+      "name": "iap"
+    },
+    {
+      "version": "20261030110000",
+      "name": "push"
+    },
+    {
+      "version": "20261030120000",
+      "name": "backoffice"
+    },
+    {
+      "version": "20261030130000",
+      "name": "teacher_share"
+    },
+    {
+      "version": "20261030140000",
+      "name": "entitlement_service_role"
+    },
+    {
+      "version": "20261030150000",
+      "name": "prova_answers_child_privacy"
+    },
+    {
+      "version": "20261030160000",
+      "name": "room_pet"
+    },
+    {
+      "version": "20261031100000",
+      "name": "room_preference_boundary"
+    },
+    {
+      "version": "20261031110000",
+      "name": "prova_resume"
+    },
+    {
+      "version": "20261031120000",
+      "name": "account_lifecycle"
+    },
+    {
+      "version": "20261031130000",
+      "name": "child_deletion"
+    },
+    {
+      "version": "20261031140000",
+      "name": "room_atmosphere"
+    },
+    {
+      "version": "20261101170000",
+      "name": "school_timetables"
+    },
+    {
+      "version": "20261102010000",
+      "name": "device_access_and_family_switch"
+    },
+    {
+      "version": "20261102020000",
+      "name": "prova_generation_jobs"
+    },
+    {
+      "version": "20261102040000",
+      "name": "beta_plan_access"
+    },
+    {
+      "version": "20261102050000",
+      "name": "child_setup"
+    },
+    {
+      "version": "20261102060000",
+      "name": "goal_selection_guard"
+    },
+    {
+      "version": "20261102070000",
+      "name": "setup_ai_drafts"
+    },
+    {
+      "version": "20261102080000",
+      "name": "setup_ai_retry_month"
+    },
+    {
+      "version": "20261102120000",
+      "name": "review_receipts"
+    },
+    {
+      "version": "20261102121000",
+      "name": "ai_operations"
+    },
+    {
+      "version": "20261102123000",
+      "name": "learning_library"
+    },
+    {
+      "version": "20261102124000",
+      "name": "generation_credits"
+    },
+    {
+      "version": "20261102130000",
+      "name": "learning_sources"
+    },
+    {
+      "version": "20261102131000",
+      "name": "exam_boundaries"
+    },
+    {
+      "version": "20261102132000",
+      "name": "timetable_import"
+    },
+    {
+      "version": "20261102140000",
+      "name": "group_exams"
+    },
+    {
+      "version": "20261102143000",
+      "name": "answer_write_receipts"
+    },
+    {
+      "version": "20261102144000",
+      "name": "function_lint"
+    },
+    {
+      "version": "20261102150000",
+      "name": "setup_suggestion_batch"
+    },
+    {
+      "version": "20261102160000",
+      "name": "answer_notebooks"
+    },
+    {
+      "version": "20261102160500",
+      "name": "group_notebook_guard"
+    },
+    {
+      "version": "20261102180000",
+      "name": "assigned_question_integrity"
+    },
+    {
+      "version": "20261102181000",
+      "name": "shared_question_sources"
+    },
+    {
+      "version": "20261102200000",
+      "name": "parent_answer_reviews"
+    },
+    {
+      "version": "20261102203000",
+      "name": "review_feedback_visibility"
+    },
+    {
+      "version": "20261103010000",
+      "name": "prova_drafts"
+    },
+    {
+      "version": "20261103011000",
+      "name": "credit_deletion_order"
+    },
+    {
+      "version": "20261103020000",
+      "name": "learning_progress"
+    },
+    {
+      "version": "20261103030000",
+      "name": "support_help"
+    },
+    {
+      "version": "20261103031000",
+      "name": "report_distinct_observations"
+    },
+    {
+      "version": "20261103032000",
+      "name": "operator_help_queue"
+    },
+    {
+      "version": "20261103033000",
+      "name": "help_article_editor"
+    },
+    {
+      "version": "20261103034000",
+      "name": "library_bundle_import"
+    },
+    {
+      "version": "20261103035000",
+      "name": "library_editorial_review"
+    },
+    {
+      "version": "20261103040000",
+      "name": "library_publication"
+    },
+    {
+      "version": "20261103050000",
+      "name": "library_family_access"
+    },
+    {
+      "version": "20261103060000",
+      "name": "repeat_candidates"
+    },
+    {
+      "version": "20261103061000",
+      "name": "calendar_commands"
+    },
+    {
+      "version": "20261103062000",
+      "name": "study_plan_calendar"
+    },
+    {
+      "version": "20261103063000",
+      "name": "notification_event_identity"
+    },
+    {
+      "version": "20261103064000",
+      "name": "setup_recovery"
+    },
+    {
+      "version": "20261103065000",
+      "name": "group_library_packages"
+    },
+    {
+      "version": "20261103070000",
+      "name": "store_notification_recovery"
+    },
+    {
+      "version": "20261103071000",
+      "name": "atomic_store_entitlements"
+    },
+    {
+      "version": "20261103072000",
+      "name": "billing_operations"
+    },
+    {
+      "version": "20261103073000",
+      "name": "override_commands"
+    },
+    {
+      "version": "20261103074000",
+      "name": "operator_reconciliation"
+    },
+    {
+      "version": "20261103075000",
+      "name": "document_setup"
+    },
+    {
+      "version": "20261103076000",
+      "name": "family_blueprint"
+    },
+    {
+      "version": "20261103077000",
+      "name": "contribution_sets"
+    },
+    {
+      "version": "20261103078000",
+      "name": "curriculum_source_review"
+    },
+    {
+      "version": "20261103079000",
+      "name": "catalogue_family_selection"
+    },
+    {
+      "version": "20261103080000",
+      "name": "prova_generation_recovery"
+    },
+    {
+      "version": "20261103081000",
+      "name": "cohort_written_review"
+    },
+    {
+      "version": "20261103082000",
+      "name": "cohort_result_notifications"
+    },
+    {
+      "version": "20261103083000",
+      "name": "push_delivery_recovery"
+    },
+    {
+      "version": "20261103084000",
+      "name": "push_operations"
+    },
+    {
+      "version": "20261103085000",
+      "name": "repeat_calendar"
+    },
+    {
+      "version": "20261103086000",
+      "name": "timetable_save_receipts"
+    },
+    {
+      "version": "20261103087000",
+      "name": "school_bags"
+    },
+    {
+      "version": "20261103088000",
+      "name": "weekly_summary_safety"
+    },
+    {
+      "version": "20261103089000",
+      "name": "learning_plan"
+    },
+    {
+      "version": "20261103090000",
+      "name": "task_submission_receipts"
+    },
+    {
+      "version": "20261103091000",
+      "name": "learning_plan_import"
+    },
+    {
+      "version": "20261103092000",
+      "name": "weekly_summary_reader"
+    },
+    {
+      "version": "20261103093000",
+      "name": "exam_list_realtime"
+    },
+    {
+      "version": "20261103094000",
+      "name": "realtime_claim_nulls"
+    },
+    {
+      "version": "20261105010000",
+      "name": "learning_source_sets"
+    },
+    {
+      "version": "20261105011000",
+      "name": "guided_input_catalog"
+    },
+    {
+      "version": "20261105012000",
+      "name": "family_creation_identity"
+    },
+    {
+      "version": "20261105020000",
+      "name": "timetable_policy_read"
+    },
+    {
+      "version": "20261105030000",
+      "name": "prova_draft_lifecycle"
+    },
+    {
+      "version": "20261105040000",
+      "name": "child_education_periods"
+    },
+    {
+      "version": "20261105050000",
+      "name": "child_profile_archive"
+    },
+    {
+      "version": "20261105060000",
+      "name": "education_calendars"
+    },
+    {
+      "version": "20261105061000",
+      "name": "parent_announcements"
+    },
+    {
+      "version": "20261105070000",
+      "name": "education_reports"
+    },
+    {
+      "version": "20261105071000",
+      "name": "school_grade_lifecycle"
+    },
+    {
+      "version": "20261105072000",
+      "name": "task_routine_lifecycle"
+    },
+    {
+      "version": "20261105180000",
+      "name": "reward_history"
+    },
+    {
+      "version": "20261105190000",
+      "name": "note_history"
+    },
+    {
+      "version": "20261106010000",
+      "name": "curriculum_source_fetch"
+    },
+    {
+      "version": "20261106020000",
+      "name": "period_transfer"
+    },
+    {
+      "version": "20261106030000",
+      "name": "bulk_archive"
+    },
+    {
+      "version": "20261106040000",
+      "name": "deletion_preview"
+    },
+    {
+      "version": "20261106050000",
+      "name": "content_prereview"
+    },
+    {
+      "version": "20261106060000",
+      "name": "ai_provider_matrix"
+    },
+    {
+      "version": "20261106070000",
+      "name": "store_verification_hardening"
+    },
+    {
+      "version": "20261106080000",
+      "name": "notification_channels"
+    },
+    {
+      "version": "20261106090000",
+      "name": "dated_plan_history"
+    },
+    {
+      "version": "20261106100000",
+      "name": "admin_workqueue"
+    },
+    {
+      "version": "20261106110000",
+      "name": "library_credit_safety"
+    },
+    {
+      "version": "20261106120000",
+      "name": "shared_limits"
+    },
+    {
+      "version": "20261106130000",
+      "name": "rls_initplan_and_indexes"
+    },
+    {
+      "version": "20261106140000",
+      "name": "open_answer_pending_score"
+    },
+    {
+      "version": "20261106150000",
+      "name": "rls_grant_hygiene"
+    },
+    {
+      "version": "20261106160000",
+      "name": "routine_audit_origin"
+    },
+    {
+      "version": "20261106170000",
+      "name": "star_balance_and_child_delete"
+    },
+    {
+      "version": "20261106180000",
+      "name": "subject_catalog_and_calendar_seed"
+    },
+    {
+      "version": "20261106200000",
+      "name": "calendar_archived_events"
+    },
+    {
+      "version": "20261106210000",
+      "name": "support_assignment"
+    },
+    {
+      "version": "20261106220000",
+      "name": "blueprint_truth_and_archive_guard"
+    },
+    {
+      "version": "20261106230000",
+      "name": "subject_link_and_dated_views"
+    },
+    {
+      "version": "20261106240000",
+      "name": "prova_draft_context"
+    },
+    {
+      "version": "20261106250000",
+      "name": "curriculum_pipeline_ops"
+    },
+    {
+      "version": "20261106260000",
+      "name": "pairing_handoff"
+    },
+    {
+      "version": "20261106270000",
+      "name": "operator_access"
+    },
+    {
+      "version": "20261106280000",
+      "name": "task_return_reason_and_bulk_scopes"
+    },
+    {
+      "version": "20261106290000",
+      "name": "ai_routing_and_grade_split"
+    },
+    {
+      "version": "20261106300000",
+      "name": "channel_ui_support"
+    },
+    {
+      "version": "20261106310000",
+      "name": "calendar_ops_and_synonym_admin"
+    },
+    {
+      "version": "20261106320000",
+      "name": "prereview_ops"
+    },
+    {
+      "version": "20261106330000",
+      "name": "c13_hardening"
+    },
+    {
+      "version": "20261106340000",
+      "name": "pairing_bruteforce_guard"
+    },
+    {
+      "version": "20261106350000",
+      "name": "prova_shared_ai_and_subject_fit"
+    },
+    {
+      "version": "20261106360000",
+      "name": "pairing_reject_notice"
+    },
+    {
+      "version": "20261106370000",
+      "name": "operator_scope_admin_and_question_notes"
+    },
+    {
+      "version": "20261106380000",
+      "name": "ai_quality_fixes"
+    },
+    {
+      "version": "20261106390000",
+      "name": "content_accept_and_role_admin"
+    },
+    {
+      "version": "20261106400000",
+      "name": "question_content_review_surface"
+    },
+    {
+      "version": "20261106410000",
+      "name": "families_filter_and_audit_actors"
+    },
+    {
+      "version": "20261106430000",
+      "name": "ai_question_edit"
+    },
+    {
+      "version": "20261106440000",
+      "name": "curriculum_pilot_scope"
+    },
+    {
+      "version": "20261106450000",
+      "name": "pairing_retention_jobs"
+    },
+    {
+      "version": "20261106460000",
+      "name": "apple_token_revocation"
+    },
+    {
+      "version": "20261106470000",
+      "name": "curriculum_panel_extraction"
+    },
+    {
+      "version": "20261106480000",
+      "name": "prereview_activation_readiness"
+    },
+    {
+      "version": "20261106490000",
+      "name": "channel_claim_account_locale"
+    },
+    {
+      "version": "20261107000000",
+      "name": "qt00_structured_kind"
+    },
+    {
+      "version": "20261107000100",
+      "name": "qt00_question_contract"
+    },
+    {
+      "version": "20261107000200",
+      "name": "qt01_scoring"
+    },
+    {
+      "version": "20261107000300",
+      "name": "qt00_rpcs"
+    },
+    {
+      "version": "20261107000400",
+      "name": "qt00_report_states"
+    },
+    {
+      "version": "20261107010000",
+      "name": "prereview_admin_budget"
+    },
+    {
+      "version": "20261107020000",
+      "name": "ai_model_flow_impact"
+    },
+    {
+      "version": "20261107030000",
+      "name": "ai_operation_chains"
+    },
+    {
+      "version": "20261107040000",
+      "name": "prereview_input_budget"
+    },
+    {
+      "version": "20261107050000",
+      "name": "qt10_question_views"
+    },
+    {
+      "version": "20261107050100",
+      "name": "qt30_phase2a_types"
+    },
+    {
+      "version": "20261107050200",
+      "name": "qt40_phase2b_types"
+    },
+    {
+      "version": "20261107050300",
+      "name": "qt50_crossword"
+    },
+    {
+      "version": "20261107050400",
+      "name": "qt_enable_phase2"
+    },
+    {
+      "version": "20261107120000",
+      "name": "prereview_output_budget"
+    }
+  ],
+  "edge": [
+    {
+      "name": "ai-weekly-summary",
+      "version": 45,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1794006192443
+    },
+    {
+      "name": "apple-notifications",
+      "version": 40,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1793970411183
+    },
+    {
+      "name": "delete-account",
+      "version": 43,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1793998860999
+    },
+    {
+      "name": "google-rtdn",
+      "version": 40,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1793970411183
+    },
+    {
+      "name": "iap-reconcile",
+      "version": 40,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1793970411183
+    },
+    {
+      "name": "iap-verify",
+      "version": 41,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1793970411183
+    },
+    {
+      "name": "prova-generate",
+      "version": 49,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1794010420078
+    },
+    {
+      "name": "prova-grade",
+      "version": 50,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1794006192443
+    },
+    {
+      "name": "prova-plan",
+      "version": 46,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1794006192443
+    },
+    {
+      "name": "push-send",
+      "version": 43,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1794005500857
+    },
+    {
+      "name": "setup-suggestions",
+      "version": 41,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1794006192443
+    },
+    {
+      "name": "ai-preflight",
+      "version": 42,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1793979709796
+    },
+    {
+      "name": "learning-source",
+      "version": 35,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1793970411183
+    },
+    {
+      "name": "source-cleanup",
+      "version": 35,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1793970411183
+    },
+    {
+      "name": "timetable-import",
+      "version": 41,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1794006192443
+    },
+    {
+      "name": "prova-review",
+      "version": 39,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1794006192443
+    },
+    {
+      "name": "library-media",
+      "version": 32,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1793970411183
+    },
+    {
+      "name": "iap-operator-reconcile",
+      "version": 29,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1793970411183
+    },
+    {
+      "name": "learning-plan-import",
+      "version": 35,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1794006192443
+    },
+    {
+      "name": "contribution-submit",
+      "version": 29,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1793970411183
+    },
+    {
+      "name": "channel-unsubscribe",
+      "version": 28,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1793970411183
+    },
+    {
+      "name": "content-prereview",
+      "version": 34,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1794011931342
+    },
+    {
+      "name": "curriculum-source-fetch",
+      "version": 30,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1793998919524
+    },
+    {
+      "name": "room-weather",
+      "version": 28,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1793970411183
+    },
+    {
+      "name": "curriculum-source-extract",
+      "version": 27,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1793998925847
+    },
+    {
+      "name": "apple-token",
+      "version": 26,
+      "status": "ACTIVE",
+      "verify_jwt": true,
+      "updated_at": 1793998868798
+    },
+    {
+      "name": "apple-revocation-worker",
+      "version": 26,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1793998879317
+    },
+    {
+      "name": "library-generation-batch",
+      "version": 4,
+      "status": "ACTIVE",
+      "verify_jwt": false,
+      "updated_at": 1794014844310
+    }
+  ],
+  "acl": [],
+  "rlsOff": [],
+  "types": [
+    {
+      "type": "classification",
+      "phase": "1B",
+      "enabled": true
+    },
+    {
+      "type": "clock",
+      "phase": "2B",
+      "enabled": true
+    },
+    {
+      "type": "crossword",
+      "phase": "3",
+      "enabled": false
+    },
+    {
+      "type": "error_fix",
+      "phase": "2A",
+      "enabled": true
+    },
+    {
+      "type": "fill_blank",
+      "phase": "1A",
+      "enabled": true
+    },
+    {
+      "type": "mark_text",
+      "phase": "2A",
+      "enabled": true
+    },
+    {
+      "type": "matching",
+      "phase": "1A",
+      "enabled": true
+    },
+    {
+      "type": "multi_choice",
+      "phase": "2A",
+      "enabled": true
+    },
+    {
+      "type": "multiple_choice",
+      "phase": "legacy",
+      "enabled": true
+    },
+    {
+      "type": "numeric",
+      "phase": "1A",
+      "enabled": true
+    },
+    {
+      "type": "open_ended",
+      "phase": "legacy",
+      "enabled": true
+    },
+    {
+      "type": "ordering",
+      "phase": "1B",
+      "enabled": true
+    },
+    {
+      "type": "region_select",
+      "phase": "2B",
+      "enabled": true
+    },
+    {
+      "type": "true_false",
+      "phase": "1A",
+      "enabled": true
+    },
+    {
+      "type": "two_stage",
+      "phase": "2A",
+      "enabled": true
+    }
+  ]
+}

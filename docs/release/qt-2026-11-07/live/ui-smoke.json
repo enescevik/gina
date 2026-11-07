@@ -1,0 +1,12 @@
+{
+  "source": "0e4f5a379d0afaa0981c4f9c4f374c3d72eddb05",
+  "approvedProvaSource": "a20dd390",
+  "clientPhase2A": true,
+  "clientPhase2B": true,
+  "manualAuthorTypesVisible": 14,
+  "adminFilterTypesVisible": 14,
+  "realFamilyDataMutated": false,
+  "nativeDeviceAcceptance": false,
+  "sourceMainCI": "passed",
+  "sourceMainSecurity": "passed"
+}

@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "build": "34",
+  "sourceCommit": "0e4f5a379d0afaa0981c4f9c4f374c3d72eddb05",
+  "origin": "local-eas-build",
+  "installUrl": "itms-services://?action=download-manifest&url=https%3A%2F%2Fgina-aile-enescevik--tablet.expo.app%2Fmanifest-34.plist",
+  "sha256": "01b5acf43e69ccbb0c47192e00b8e6826eff8167a397f3854e7edbc02b1d9cb3",
+  "bytes": 61739617,
+  "ipaName": "gina-34.ipa",
+  "manifestName": "manifest-34.plist"
+}
