@@ -1,3 +1,4 @@
+import { QuestionFocus } from "./question-focus";
 import { QuestionLike } from "./question-like";
 import { SetupSourceLinks } from "@/components/setup/source-links";
 import { type ReactNode } from "react";
@@ -124,6 +125,7 @@ export function BuilderQuestionPreview(
       <Text style={b.h2}>{q.stem}</Text>
       <QuestionMedia questionId={q.id} />
       <QuestionLike questionId={q.id} />
+      <QuestionFocus questionId={q.id} grade={q.grade} />
       {q.kind === "structured" ? <StructuredBuilderPreview q={q} showAnswer={showAnswer} /> : null}
       {Array.isArray(q.choices)
         ? (q.choices as { key: string; text: string }[]).map((c) => (

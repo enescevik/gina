@@ -5133,6 +5133,24 @@
     "likedSelected": "♥ Liked · Undo",
     "struggled": "I Found This Tricky",
     "struggledSelected": "Tricky · Undo",
-    "error": "We could not save your mark right now. Your answer is unaffected; you can try again later."
+    "error": "We could not save your mark right now. Your answer is unaffected; you can try again later.",
+    "review": "Look Back at the Questions",
+    "optional": "If you like, mark questions you enjoyed or found tricky. This does not change your score."
+  },
+  "reinforcement": {
+    "title": "Practice Suggestions",
+    "body": "A short warm-up or a break may help. You choose; no work is assigned automatically.",
+    "focus": "➕ Add a Practice Note",
+    "focusHelp": "For which child? Your choice lasts 7 days and can be removed. It is separate from liking and does not assign work automatically.",
+    "empty": "There are no new practice suggestions right now.",
+    "said": "{{name}} found the {{topic}} question tricky. Shall we practise?",
+    "outcomeMissing": "This question has no verified learning outcome label. We will not guess matching questions; you can review the practice plan.",
+    "shortPractice": "Prepare a 3–5 Question Warm-up",
+    "openPlan": "Review Practice Plan",
+    "skip": "Not Now · 7 Days",
+    "warmup": "Let’s Try Again",
+    "notEnough": "There are not enough acquired questions for this learning outcome yet. Review the practice plan or add questions in the builder.",
+    "focusReason": "You added a practice note for {{name}} on {{topic}}.",
+    "noMatchingChild": "There is no active child profile at this grade level."
   }
 }

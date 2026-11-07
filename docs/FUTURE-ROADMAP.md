@@ -38,7 +38,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F2 — Çocuk ❤️/zorlandım; veli ➕ süreli tercih; pekiştirme kartı ve mini deneme
 
-- Kaynak: §1, §1.1–1.2, §4.1–2. Durum: YAPILIYOR (F2a çocuk sinyali kod hazır; ➕/kart/mini tekrar açık). Efor: **M**.
+- Kaynak: §1, §1.1–1.2, §4.1–2. Durum: KOD HAZIR (ilk teslim; aşağıdaki kapsam kararları geçerli). Efor: **M**.
 - Kapsam: Çocuk ❤️/zorlandım; veli ➕ süreli tercih; pekiştirme kartı ve mini deneme.
 - Bağımlılık: F1, atanmış soru erişimi, sonuç/tekrar RPC.
 - Paket kapısı: Sinyaller ve kütüphane tüm paketler; AI mevcut hak ve izinle.
@@ -205,3 +205,8 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 
 - F1 push sonrası genel CI InitPlan kuralını reddetti; düzeltme ayrı migration ile, mevcut güvenlik testi korunarak yapıldı. Tüm taze DB regresyonu 144 dosya/6.939 kontrol geçti. Yalnız yeni tablo testleri genel şema testinin yerine sayılmayacak.
 - F2a: çocuk soru üzerinde geri alınabilir ❤️/zorlandım; RPC alan izin listesi ve sunucu RLS. 17 işlev/yetki kontrolü geçti. F2 henüz bitmedi: sonuç/veli kartı, ➕ süresi, öneri sessizliği ve mini deneme açık.
+
+- F2b uygulama kararı: ilk süre **7 gün**; 3 deneme sayacı ve sınava-kadar tercihi sonraki kişiselleştirme işinde atomik deneme tüketimiyle eklenir. Süre istemciden alınmaz; aynı true isteği aktif tercihin süresini uzatmaz. Pekiştirme kartı yalnız bitmiş denemede çocuğun beyanından doğar; otomatik tanı veya başarısızlık yorumu yok. Kazanım etiketi olmayan soruda konu başlığından tahmin yapılmaz. Etiket bulunması içerik/MEB onayı anlamına gelmez. Mini set edinilmiş aile sorularından aynı sınıf/ders/kazanım etiket **kümesi** ile 3–5 sorudur, özgün soru sondadır; yetersizse açıklama + mevcut tekrar planı. Henüz AI benzer üretime otomatik bağlanmadı; ücretli çağrı yapılmadı.
+
+- F2 ilk teslim: çocukta sınav sırasında ve sonuçta geri alınabilir sinyal; veliye gerekçesi ayrı ➕/zorlanma kartı; 7 günlük odak ve aynı kazanıma 7 günlük sessizlik; 3–5 soruluk aile içi taslak ve mevcut tekrar planına geçiş. Tam taze DB **145 dosya/6.962 kontrol**, turbo lint/tip/test **7/7**, core **749**, Node betikleri **109/109** temiz. Test kanıtı `release/future-f2-2026-11-07/`. Üretim ve fiziksel kabul henüz yok.
+- F2 kapsam kararı: AI benzer üretimde tercihi/few-shot örneği kullanma **F7'ye** alındı; F5 enjeksiyon ve çıktı kontrollerini beklemesi daha güvenli. Sonraki 3 deneme/sınava-kadar tüketim politikası da F7. Karma sınıf içerebilen favori listesinden toplu set/PDF için sınıf/çocuk kapsamı F8'de kurulacak; sessizce yanlış sınıf ataması yapılmayacak. Mini set burada yalnız doğrulanmış aile erişimi ve açık kazanım etiketleriyle çalışır; MEB onayı iddiası yok.

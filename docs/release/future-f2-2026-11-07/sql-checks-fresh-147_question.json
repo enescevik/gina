@@ -1,0 +1,13 @@
+{
+  "environment": "empty-disposable-database-fresh-public-schema-all-migrations",
+  "timezone": "Europe/Istanbul",
+  "files": [
+    {
+      "file": "147_question_focus.test.sql",
+      "passed": 21,
+      "failed": 0
+    }
+  ],
+  "failures": [],
+  "assertions": 21
+}

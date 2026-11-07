@@ -5128,6 +5128,24 @@
     "likedSelected": "♥ Sevdim · Geri Al",
     "struggled": "Bunda Zorlandım",
     "struggledSelected": "Zorlandım · Geri Al",
-    "error": "İşaretini şu anda kaydedemedik. Cevabın etkilenmedi; sonra yeniden deneyebilirsin."
+    "error": "İşaretini şu anda kaydedemedik. Cevabın etkilenmedi; sonra yeniden deneyebilirsin.",
+    "review": "Sorulara Yeniden Bak",
+    "optional": "İstersen sevdiğin veya zorlandığın soruları işaretleyebilirsin. Bu, puanını değiştirmez."
+  },
+  "reinforcement": {
+    "title": "Pekiştirme Önerileri",
+    "body": "Kısa bir ısınma veya mola birlikte iyi gelebilir. Önerileri siz seçersiniz; otomatik görev atanmaz.",
+    "focus": "➕ Pekiştirme Notu Ekle",
+    "focusHelp": "Hangi çocuk için? Seçim 7 gün geçerlidir; geri alabilirsiniz. Beğeniden farklıdır ve otomatik ödev atamaz.",
+    "empty": "Şu anda yeni bir pekiştirme önerisi yok.",
+    "said": "{{name}}, {{topic}} sorusunda zorlandığını söyledi. Pekiştirelim mi?",
+    "outcomeMissing": "Bu soruda doğrulanmış kazanım etiketi yok. Benzer soru eşleşmesi tahmin edilmeyecek; tekrar planını inceleyebilirsiniz.",
+    "shortPractice": "3–5 Soruluk Isınma Hazırla",
+    "openPlan": "Tekrar Planını İncele",
+    "skip": "Şimdilik Geç · 7 Gün",
+    "warmup": "Bir Daha Deneyelim",
+    "notEnough": "Bu kazanımda henüz yeterli edinilmiş soru yok. Tekrar planını inceleyebilir veya hazırlama ekranından yeni soru ekleyebilirsiniz.",
+    "focusReason": "{{name}} için {{topic}} konusunda bir pekiştirme notu eklediniz.",
+    "noMatchingChild": "Bu sınıf düzeyinde etkin bir çocuk profili bulunamadı."
   }
 }

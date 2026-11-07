@@ -101,6 +101,8 @@ function formatRemaining(ms: number): string {
 /** Deneme çözme: tek tek soru, şıklı ya da açık uçlu; süreli denemede geri sayım; bitince sonuç. */
 export default function TakeExamScreen() {
   const { t } = useTranslation();
+  const [showQuestionSignals,setShowQuestionSignals]=useState(false);
+  const [signalLimit,setSignalLimit]=useState(10);
   const { width } = useWindowDimensions();
   const { examId } = useLocalSearchParams<{ examId: string }>();
   const queryClient = useQueryClient();
@@ -638,6 +640,15 @@ export default function TakeExamScreen() {
           )}
         </View>
         <ChildReviewFeedback attemptId={result.id} />
+        <Button variant="ghost" title={t("childSignals.review")} onPress={()=>setShowQuestionSignals(!showQuestionSignals)} accessibilityState={{expanded:showQuestionSignals}} />
+        {showQuestionSignals?<View style={{gap:16}}>
+          <Text>{t("childSignals.optional")}</Text>
+          {list.slice(0,signalLimit).map(question=><View key={question.id} style={{gap:8}}>
+            <Text>{question.stem}</Text>
+            <ChildQuestionSignal attemptId={result.id} questionId={question.id} />
+          </View>)}
+          {signalLimit<list.length?<Button variant="ghost" title={t("questionLikes.more")} onPress={()=>setSignalLimit(n=>n+10)} />:null}
+        </View>:null}
         {localNotice}
         {anyDirty
           ? (

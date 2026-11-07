@@ -721,8 +721,13 @@
       "file": "146_question_child_signals.test.sql",
       "passed": 17,
       "failed": 0
+    },
+    {
+      "file": "147_question_focus.test.sql",
+      "passed": 23,
+      "failed": 0
     }
   ],
   "failures": [],
-  "assertions": 6939
+  "assertions": 6962
 }

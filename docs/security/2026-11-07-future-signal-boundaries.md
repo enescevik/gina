@@ -17,3 +17,7 @@ Bulunan her güvenlik açığı aynı teslimde düzeltme, açığı tekrar üret
 Yeni beğeni politikaları aile sınırını korudu ancak mevcut InitPlan performans kuralını ihlal etti. Main CI `100_q02_fixes_rls_initplan`, `106_calendar_archived_events` ve `119_c13_authz_hardening` ile reddetti. Uygulanmış olabilecek migration değiştirilmedi; `20261107160500_question_reaction_initplan.sql` yardımcıları skaler SELECT'e alır. Politika envanteri yeni 3 beğeni + 1 çocuk sinyali politikasıyla açıkça güncellendi; çıplak çağrıya izin veren test istisnası eklenmedi. Sonraki push öncesinde bütün taze DB regresyonu **144 dosya, 6.939 kontrol, 0 hata** çalıştırıldı.
 
 F2a: çocuk sinyali yalnız atanmış denemedeki soruya yazılır; kardeş denemesi, yabancı soru/aile, bilinmeyen alan, anon erişimi reddedilir. `146_question_child_signals.test.sql`: 17 kontrol; aynı beyanı tekrar gönderme tek satırdır; bir beyanı değiştirmek diğerini silmez, puan değişmez.
+
+## F2b — sınıf, süre ve bozuk etiket sınırları
+
+`147_question_focus.test.sql`: yabancı çocuk/soru, farklı sınıf, doğrudan süre yazımı, çocuk/anon RPC ve bozuk JSON etiket olumsuz testleri. Bozuk `outcome_ids` öneri ekranını çökertebileceği için JSON türü kontrollü uzunluk ölçümü kullanıldı; bilinmeyen etiket eşleşme üretmez. Pozitif testler süreli tercih/geri alma, tekil tekrar, öneri sessizliği ve orijinal sorunun sona gelmesini kapsar. Güncel taze regresyon 145 dosyada 6.962 kontrol, 0 hata. Gerçek sağlayıcı çağrısı yapılmadı.

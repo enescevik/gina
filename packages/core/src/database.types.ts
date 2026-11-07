@@ -2227,6 +2227,50 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"question_focus": {
+                  Row: {
+                    "child_id": string,"created_by": string,"expires_at": string,"family_id": string,"question_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "child_id": string,"created_by": string,"expires_at": string,"family_id": string,"question_id": string
+                  }
+                  Update: {
+                    "child_id"?: string,"created_by"?: string,"expires_at"?: string,"family_id"?: string,"question_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "question_focus_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_focus_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_focus_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "current_question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_focus_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "question_bank"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "question_focus_question_id_fkey"
+      columns: ["question_id"]
+isOneToOne: false
+      referencedRelation: "standalone_question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"question_reactions": {
                   Row: {
                     "created_at": string,"family_id": string,"parent_user_id": string,"question_id": string
@@ -2320,6 +2364,32 @@ isOneToOne: true
       columns: ["question_id"]
 isOneToOne: true
       referencedRelation: "standalone_question_bank"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"reinforcement_snoozes": {
+                  Row: {
+                    "child_id": string,"family_id": string,"scope_key": string,"until_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "child_id": string,"family_id": string,"scope_key": string,"until_at": string
+                  }
+                  Update: {
+                    "child_id"?: string,"family_id"?: string,"scope_key"?: string,"until_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "reinforcement_snoozes_child_id_fkey"
+      columns: ["child_id"]
+isOneToOne: false
+      referencedRelation: "children"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "reinforcement_snoozes_family_id_fkey"
+      columns: ["family_id"]
+isOneToOne: false
+      referencedRelation: "families"
       referencedColumns: ["id"]
     }
                   ]
@@ -3802,6 +3872,12 @@ isOneToOne: false
 "get_question_media":
 { Args: { "p_question_ids": (string)[] }; Returns: Json
                            },
+"get_reinforcement_questions":
+{ Args: { "p_child_id": string,"p_question_id": string }; Returns: (string)[]
+                           },
+"get_reinforcement_suggestions":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "get_repeat_calendar":
 { Args: { "p_attempt_id": string }; Returns: Json
                            },
@@ -4391,6 +4467,9 @@ isOneToOne: false
 "set_question_child_signal":
 { Args: { "p_attempt_id": string,"p_field": string,"p_question_id": string,"p_selected": boolean }; Returns: undefined
                            },
+"set_question_focus":
+{ Args: { "p_child_id": string,"p_question_id": string,"p_selected": boolean }; Returns: undefined
+                           },
 "set_room_pet":
 { Args: { "p_acting_child_id"?: string,"p_pet": string }; Returns: undefined
                            },
@@ -4433,6 +4512,9 @@ isOneToOne: false
                            },
 "shared_source_limits":
 { Args: { "p_action"?: string,"p_family"?: string }; Returns: Json
+                           },
+"snooze_reinforcement":
+{ Args: { "p_child_id": string,"p_question_id": string }; Returns: undefined
                            },
 "start_exam_attempt":
 { Args: { "p_exam_id": string }; Returns: {
