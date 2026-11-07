@@ -80,6 +80,13 @@ export function parseInteractionTypes(raw: unknown, writtenTrack: boolean): Inte
   }
   return { types };
 }
+/** When every selected type fits, give the model an exact, balanced allocation. */
+export function interactionTypeCounts(types: readonly InteractionType[] | null, total: number) {
+  if (!types || types.length < 2 || total < types.length) return undefined;
+  const perType = Math.floor(total / types.length);
+  const extra = total % types.length;
+  return types.map((type, index) => ({ type, count: perType + Number(index < extra) }));
+}
 /** Eski `kind` alanı (bağlam/doğrulayıcı) için yalnız eski türlerden türetilir. */
 export function legacyKindFor(types: readonly string[]): "mixed" | "multiple_choice" | "open_ended" {
   const mc = types.includes("multiple_choice"), oe = types.includes("open_ended");
@@ -219,11 +226,11 @@ export const STIMULUS_JSON_SCHEMA = obj({
   unit: str(),
 });
 /** Yapılandırılmış soru nesnesinin üst düzey alanları (stem, çözüm, senaryo izi). Rubrik/şık yoktur. */
-function structuredQuestionSchema(type: StructuredInteractionType, difficulties: readonly string[], cognitive: readonly string[]) {
+function structuredQuestionSchema(type: StructuredInteractionType, difficulties: readonly string[], cognitive: readonly string[], topicSchema: Record<string, unknown>) {
   return obj({
     interaction_type: { type: "string", enum: [type] },
     schema_version: { type: "integer", description: "Always 1." },
-    topic: str(),
+    topic: topicSchema,
     difficulty: { type: "string", enum: [...difficulties] },
     stem: str("Instruction/question shown to the child; never contains the answer."),
     structure: STRUCTURE_JSON_SCHEMAS[type],
@@ -245,26 +252,30 @@ function structuredQuestionSchema(type: StructuredInteractionType, difficulties:
 export function structuredGenerationSchema(
   base: { properties: { questions: { items: Record<string, unknown> } } } & Record<string, unknown>,
   types: readonly InteractionType[],
-  vocab: { difficulties: readonly string[]; cognitive: readonly string[] },
+  vocab: { difficulties: readonly string[]; cognitive: readonly string[]; topics?: readonly string[] },
 ) {
   const legacyItem = base.properties.questions.items as {
     properties: Record<string, unknown>;
     required: string[];
   } & Record<string, unknown>;
   const legacy = types.filter((t): t is LegacyInteractionType => (LEGACY_INTERACTION_TYPES as readonly string[]).includes(t));
+  const topicSchema = vocab.topics?.length
+    ? { type: "string", enum: [...new Set(vocab.topics)] }
+    : str();
   const variants: unknown[] = [];
-  if (legacy.length) {
+  for (const type of legacy) {
     variants.push({
       ...legacyItem,
       required: [...legacyItem.required, "interaction_type"],
       properties: {
         ...legacyItem.properties,
-        interaction_type: { type: "string", enum: legacy },
-        kind: { type: "string", enum: legacy },
+        topic: topicSchema,
+        interaction_type: { type: "string", enum: [type] },
+        kind: { type: "string", enum: [type] },
       },
     });
   }
-  for (const t of types) if (isStructuredType(t)) variants.push(structuredQuestionSchema(t, vocab.difficulties, vocab.cognitive));
+  for (const t of types) if (isStructuredType(t)) variants.push(structuredQuestionSchema(t, vocab.difficulties, vocab.cognitive, topicSchema));
   return {
     ...base,
     properties: {
@@ -840,7 +851,8 @@ export function visibleStructuredTexts(payload: Obj, prefix = ""): { field: stri
 // 5) Üretim istemi eki (TR). Yalnız yapılandırılmış tür istendiğinde sistem istemine eklenir.
 export const STRUCTURED_PROMPT = `
 Etkileşimli (yapılandırılmış) soru türleri:
-- Yalnız isteğin etkilesim_turleri listesindeki türleri üret; listede olmayan türü üretme, bir türü başka türe çevirme. Türleri listede dengeli dağıt.
+- Her sorunun topic alanında konular listesindeki konu metnini aynen kullan. Soru kökünde alt konuya inebilirsin.
+- Yalnız isteğin etkilesim_turleri listesindeki türleri üret; listede olmayan türü üretme, bir türü başka türe çevirme. soru_turu_adetleri verilirse her türü tam belirtilen adet kadar üret; yoksa türleri dengeli dağıt.
 - Her yapılandırılmış soruda interaction_type türün adı, schema_version 1 ve structure o türün alanlarıyla doldurulur. Kimlik (id): küçük harfle başlar, küçük harf/rakam/alt çizgi, en çok 24 karakter (ör. s1, b1, w1, l1, r1, a, c1); soru içinde benzersiz.
 - Çocuğun gördüğü metinler (stem, structure içindeki text/prompt alanları ve stimulus) doğru cevabı ele vermez: "(Doğru)", "cevap:", ipucu parantezi yazma. Doğru cevap yalnız answer, accepted, tokens, pairs, orders, category, value, targets, errors, correct, stage1_answer, stage2_answer, count, time alanlarına yazılır.
 - Öncelikli hedef 1–4. sınıf (7–9 yaş): kısa, somut, günlük hayattan, sınıf düzeyinde kelimeler. Çift olumsuz ("... değildir değil") ve hileli ifade kullanma.
@@ -861,7 +873,7 @@ Etkileşimli (yapılandırılmış) soru türleri:
 - Yapılandırılmış soruda choices, correct_key, expected_answer ve rubric yoktur; solution kısa çözüm açıklamasıdır (yalnız veli görür).`;
 /** Yapılandırılmış ek yalnız tür istendiğinde istemdedir; sürümü ayrı tutulur (temel kalite istemiyle birlikte sürümlenir). */
 export const CROSSWORD_PROMPT = "Bulmaca: 2–12 satır ve sütun kullan. İpuçları yatay (across) veya dikey (down). Konumlar 1 tabanlı. Her cevabın uzunluğu ve kesişen harfleri uyuşsun. Türkçe İ/I ayrımını koru. İpucu veya yönerge cevabı içermesin. Uyaran kind none olmalı.";
-export const STRUCTURED_PROMPT_VERSION = "prova-generate/v12-untrusted-structured-phase2";
+export const STRUCTURED_PROMPT_VERSION = "prova-generate/v13-structured-type-counts";
 
 // ---------------------------------------------------------------------------------------------------------------
 // 6) Tür açık mı? Faz 2A/2B türleri sunucuda enabled=false gelir; kapalı tür SQL'de (qt_insert_structured)

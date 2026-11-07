@@ -20,7 +20,7 @@ import {
   disabledInteractionTypes,
   CROSSWORD_PROMPT, STRUCTURED_PROMPT,
   STRUCTURED_PROMPT_VERSION,
-  structuredGenerationSchema,
+  structuredGenerationSchema, interactionTypeCounts,
 } from "../_shared/structured-generation.ts";
 // Prova AI soru üretimi. Veli uygulamadan çağırır (JWT ile); çocuk asla çağırmaz.
 // Deploy: `supabase functions deploy prova-generate` (verify_jwt açık kalır).
@@ -276,6 +276,7 @@ Deno.serve(async (req) => {
   const apiKey = apiKeyOrResponse(ai);
   if (apiKey instanceof Response) return apiKey;
 
+  const typeCounts = interactionTypeCounts(interactionTypes, total);
   const request = {
     dil: locale,
     ders: subject,
@@ -289,6 +290,7 @@ Deno.serve(async (req) => {
       ? "karışık (şıklı ve açık uçlu, yaklaşık yarı yarıya)"
       : kind,
     ...(interactionTypes ? { etkilesim_turleri: interactionTypes } : {}),
+    ...(typeCounts ? { soru_turu_adetleri: typeCounts } : {}),
     zorluk: difficulty,
     amac: assessment === "written"
       ? "Okul yazılısı provası: açık uçlu / kısa cevaplı"
@@ -325,6 +327,7 @@ Deno.serve(async (req) => {
     ? structuredGenerationSchema(SCHEMA, interactionTypes, {
       difficulties: DIFFICULTIES,
       cognitive: COGNITIVE_DEMANDS,
+      topics: topics.map(({ topic }) => topic),
     })
     : SCHEMA;
   const userPrompt = JSON.stringify({
@@ -365,6 +368,7 @@ Deno.serve(async (req) => {
     catalogueBound,
     scenario,
     ...(interactionTypes ? { interactionTypes, writtenTrack } : {}),
+    ...(typeCounts ? { interactionTypeCounts: typeCounts } : {}),
   };
   const { data: reservation, error: reservationError } = await db.rpc(
     "reserve_prova_generation_v3",

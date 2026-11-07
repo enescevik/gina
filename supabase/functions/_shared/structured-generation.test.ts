@@ -21,6 +21,7 @@ import {
   STRUCTURE_JSON_SCHEMAS,
   STRUCTURED_PROMPT,
   STRUCTURED_PROMPT_VERSION,
+  interactionTypeCounts,
   structuredGenerationSchema,
 } from "./structured-generation.ts";
 
@@ -468,7 +469,7 @@ Deno.test("2A/2B: practice-only on written/OYSS, prompt appendix and base qualit
     error: "interaction_type_not_allowed_for_track",
     details: { track: "meb_common", types: all.join(",") },
   });
-  assertEquals(STRUCTURED_PROMPT_VERSION, "prova-generate/v12-untrusted-structured-phase2");
+  assertEquals(STRUCTURED_PROMPT_VERSION, "prova-generate/v13-structured-type-counts");
   assertEquals(PROMPT_VERSION, "prova-generate/v12-untrusted-data-boundary", "legacy route uses the versioned quality prompt");
   for (const t of [...all, "stimulus"]) assert(STRUCTURED_PROMPT.includes(t), t);
   assert(STRUCTURED_PROMPT.includes("Görsel/resim üzerinde bölge asla yok"));
@@ -601,7 +602,7 @@ Deno.test("job: 2A/2B rows flow to complete_prova_generation_v2 with payload/key
     total: 4,
     topics: [{ topic: "Canlılar", count: 4 }],
     interactionTypes: ["two_stage", "multi_choice", "region_select", "clock"],
-    promptVersion: "prova-generate/v12-untrusted-structured-phase2",
+    promptVersion: "prova-generate/v13-structured-type-counts",
   };
   const named = mutate(aiStructured.two_stage(), (s) => (s.stage1.prompt = "Ayşe suyu dondurucuya koydu. Su hangi hâle geçer?"));
   const r = output([named, aiStructured.multi_choice_chart(), aiStructured.region_grid(), aiStructured.clock_read()]);
@@ -614,7 +615,7 @@ Deno.test("job: 2A/2B rows flow to complete_prova_generation_v2 with payload/key
   assertEquals(rows[1].payload.stimulus.kind, "bar_chart");
   assertEquals(rows[3].answer_key, { time: "03:15", accept_12h: true });
   for (const row of rows) {
-    assertEquals(row.provenance.prompt_version, "prova-generate/v12-untrusted-structured-phase2");
+    assertEquals(row.provenance.prompt_version, "prova-generate/v13-structured-type-counts");
     assert(!/"(correct|targets|count|time|stage1_answer|accept_12h)"/.test(JSON.stringify(row.payload)), "key in payload");
   }
   const written: GenerationContext = { ...ctx, writtenTrack: true };
@@ -634,4 +635,20 @@ Deno.test("crossword schema keeps Turkish crossing keys private and rejects mism
   assertEquals(split.value.answer_key, { answers: { a: "KAR", b: "KÜN" } });
   assert(!JSON.stringify(split.value.payload).includes('"answer"'));
   expectCode(mutate(puzzle, s => { s.clues[1].answer = "AYI"; }), "crossing_mismatch", "crossings share a cell");
+});
+
+
+Deno.test("mixed generation uses exact balanced counts and detects omitted types", () => {
+  const types = ["open_ended", "true_false", "matching"] as const;
+  assertEquals(interactionTypeCounts(types, 2), undefined);
+  assertEquals(interactionTypeCounts(types, 7), [
+    { type: "open_ended", count: 3 },
+    { type: "true_false", count: 2 },
+    { type: "matching", count: 2 },
+  ]);
+  const context = { ...base, interactionTypeCounts: interactionTypeCounts(types, 3) };
+  assertEquals(
+    rejectCodes(output([openEnded, openEnded, openEnded]), context),
+    ["interaction_type_count_mismatch"],
+  );
 });
