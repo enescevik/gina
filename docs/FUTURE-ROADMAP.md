@@ -134,6 +134,9 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 - Paket kapısı: Türler tüm paketler; AI ayrı hak.
 - Kabul: Başlamış deneme değişmez; payload+özel anahtar birlikte sürümlenir; çocuk projeksiyonu izinli alanlardan; toplu kütüphane üretimi kapsam dışı.
 - Test planı: Eski istemci/atanmış deneme, revision/idempotency yarışları, grup puanlama ve özel anahtar/PDF sızıntı testleri.
+- Uygulama sırası: (F12a) velinin kendi bağımsız sorusunu yeni kimlikle kaydetmesi ve seçili açık taslakta yeni sürümü kullanması. (F12b) AI destekli düzenleme, içerik denetimi ve ortak kaynak grubunun bütün halinde sürümlenmesi. (F12c) global yönetici sürümü, denetim izi ve grup sınavı kabulü. Kütüphane için yalnız taşıma sözleşmesi ve sentetik örnekler; içerik üretimi ayrı.
+- Mevcut kod: `gina.qt_insert_structured` öğrenci payload'ını, özel anahtarı ve içerik hash'ini aynı işlemde doğrular. `save_ai_question_edit` yapılandırılmış türü reddeder. Atanmış denemeler `exam_items` ile mevcut kimlik ve hash'e bağlıdır. İlk aşamada bu zinciri değiştirmeden yeni satır oluştur; yeni kimliğe geçişi yalnız açık taslağın mevcut revizyon kontrolünden geçir. Kilitli veya gönderilmiş taslakta değiştirme denemesini reddet. Ortak kaynak üyesinde tekil düzenleme sunma.
+- F12a kabul kanıtı: geçerli düzenleme yeni kimlik ve ayrı özel anahtar üretir; eski sınavın içerik hash'i, puanlaması ve öğrenci projeksiyonu aynı kalır. Aynı istek bir kimlik döndürür; değişmiş istek verisi, eski taslak revizyonu, aile dışı kaynak, çocuk oturumu ve grup üyesi olumsuz testlerde reddedilir. Veli ekranda hangi taslağa uyguladığını görür.
 
 ### F13 — Gerçek sağlayıcı pilotu, bulmaca; dikte/sesli cevap ayrı kapılı
 
