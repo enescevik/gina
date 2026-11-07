@@ -494,13 +494,13 @@ export default function ProvaBuilder() {
     draft.format !== "meb" && flat.length === draft.target && !missing &&
     !mismatch && !noAnswer && !material.isPending && !material.error && checked &&
     contextIssues.length === 0;
-  async function navigateStep(step: number) {
+  async function navigateStep(step: number, format = draft.format) {
     if (step > 0 && !scopeValid) {
       setError(new Error(t("provaBuilder.missingScope")));
       return;
     }
     try {
-      await save.mutateAsync({ ...draft, step });
+      await save.mutateAsync({ ...draft, step, format });
       scroll.current?.scrollTo({ y: 0, animated: false });
     } catch {}
   }
@@ -1534,6 +1534,13 @@ export default function ProvaBuilder() {
                   ? <BuilderCard>{summary}</BuilderCard>
                   : null}
               </ScrollView>
+              {draft.format === "meb" && !locked
+                ? (
+                  <Text accessibilityRole="alert" style={b.hint}>
+                    {t("provaBuilder.mebBlockedAction")}
+                  </Text>
+                )
+                : null}
               <View style={b.footer}>
                 <SatinButton
                   secondary
@@ -1544,10 +1551,12 @@ export default function ProvaBuilder() {
                 />
                 <SatinButton
                   busy={submit.isPending}
-                  disabled={locked || (draft.step === 3 && !publishValid) ||
-                    draft.format === "meb"}
+                  disabled={locked || (draft.step === 3 &&
+                    draft.format !== "meb" && !publishValid)}
                   title={t(
-                    draft.step === 3
+                    draft.format === "meb"
+                      ? "provaBuilder.continueAsSchool"
+                      : draft.step === 3
                       ? (width < 360
                         ? "provaBuilder.sendShort"
                         : "provaBuilder.send")
@@ -1558,7 +1567,9 @@ export default function ProvaBuilder() {
                       : "provaBuilder.continue",
                   )}
                   onPress={() => {
-                    if (draft.step === 3) submit.mutate();
+                    if (draft.format === "meb") {
+                      void navigateStep(draft.step === 1 ? 2 : draft.step, "school");
+                    } else if (draft.step === 3) submit.mutate();
                     else void navigateStep(draft.step + 1);
                   }}
                 />
