@@ -173,7 +173,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### B3 — Otomatik sağlık/kesinti ve haftalık güvenlik fark uyarıları
 
-- Kaynak: brand son liste, §6.2. Durum: KISMEN KOD HAZIR (iki saatte bir herkese açık sağlık kontrolü; özel Edge/tekil alarm açık). Efor: **M**.
+- Kaynak: brand son liste, §6.2. Durum: KOD HAZIR (zamanlanmış Edge ve public kontroller, kesinti tekilleştirme, haftalık CodeQL farkı). Efor: **M**.
 - Kapsam: Otomatik sağlık/kesinti ve haftalık güvenlik fark uyarıları.
 - Bağımlılık: health-check, Access kontrolü, sırlar ve bildirim alıcısı.
 - Paket kapısı: İşletim.
@@ -272,3 +272,5 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - F8c: Veli tek ders seçerek son 30 günün puanlanmış kazanım özetini önizler ve süreli öğretmen bağlantısı oluşturur. En az beş puanlı yanıt içeren satırlar paylaşılır. Bağlantı yalnız onaylanan anlık özeti taşır. Veri önizleme ile kayıt arasında değişirse yeni onay gerekir. Mevcut süre sonu ve geri çekme geçerlidir. Taze yerel SQL: 160 dosya, 7.169 kontrol, sıfır hata. Lint, tip denetimi ve çekirdek testleri geçti. Üretim ve cihaz kabulü açık.
 
 - F9: Veli mevcut, başlanmamış, süresiz ve tek soruluk bir pratik atamasını ailenin yerel günü için öne çıkarabilir. Çocuk odasında öncelikli görev/ödev yoksa isteğe bağlı kart görünür; yapılandırılan sakin saatlerde ve gönderimden sonra gizlenir. Yanıt gönderildiğinde ilk tamamlama rozeti bir kez verilir. Boş gönderim, beğeni, seri, ek yıldız, AI çağrısı ve push yok. Otomatik kütüphane seçimi, diğer tekrar rozetleri ve fiziksel cihaz kabulü açık.
+
+- B3b: Web kök kontrolü artık Pages yönlendirmesinin hedefi olan ginafamily.com güvenlik başlıklarını denetler. İki saatlik kontrolde REST/Auth yalnız yayımlanabilir istemci anahtarıyla çalışır. Yedi özel Edge rotasında kimliksiz OPTIONS 204 ve GET 401 beklenir. Bu kontrol girişli iş akışlarını doğrulamaz. GitHub durum anlık görüntüleri kesinti ve iyileşme geçişlerini saklar. Haftalık CodeQL karşılaştırması ilk çalışmada taban çizgisi kurar. Yeni bulgular GitHub çalışmasında bir kez işaretlenir. Harici bildirim alıcısı yapılandırılmadı.

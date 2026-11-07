@@ -1,21 +1,34 @@
-# Read-only public probes. Do not add management tokens or user sessions here.
 name: Public production health
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Monitor to run
+        type: choice
+        options: [health, security]
+        default: health
   schedule:
     - cron: '43 */2 * * *'
+    - cron: '18 7 * * 1'
 permissions:
   contents: read
+  actions: read
+  security-events: read
 concurrency:
-  group: public-production-health
+  group: production-monitor
   cancel-in-progress: false
 jobs:
   probe:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
-      EXPO_PUBLIC_SUPABASE_URL: ${{ secrets.EXPO_PUBLIC_SUPABASE_URL }}
-      EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.EXPO_PUBLIC_SUPABASE_ANON_KEY }}
+      MODE: ${{ inputs.mode || (github.event.schedule == '18 7 * * 1' && 'security' || 'health') }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      EXPO_PUBLIC_SUPABASE_URL: https://wixjxlxgyhgdacadsawo.supabase.co
+      EXPO_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.MONITOR_SUPABASE_ANON_KEY }}
+      MONITOR_SUPABASE_URL: https://wixjxlxgyhgdacadsawo.supabase.co
       CF_ACCESS_TEAM: ${{ vars.CF_ACCESS_TEAM || 'gina-family' }}
       CF_PAGES_PROJECT: ${{ vars.CF_PAGES_BACKOFFICE_PROJECT || 'gina-backoffice' }}
     steps:
@@ -23,16 +36,31 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .node-version
-      - name: Verify public probe configuration
+      - name: Load previous snapshot
         run: |
-          if [ -n "$EXPO_PUBLIC_SUPABASE_URL$EXPO_PUBLIC_SUPABASE_ANON_KEY" ]; then
-            node --input-type=module -e 'import { assertPublicBuildEnvironment } from "./scripts/public-build-env.mjs"; assertPublicBuildEnvironment(process.env,"EXPO_PUBLIC_");'
+          artifact_run=$(gh api -X GET "repos/$GH_REPO/actions/artifacts" -f name="production-monitor-$MODE" \
+            --jq '[.artifacts[] | select(.expired == false and .workflow_run.head_branch == "main")] | sort_by(.created_at) | last | .workflow_run.id // empty')
+          if [ -n "$artifact_run" ]; then
+            gh run download "$artifact_run" -n "production-monitor-$MODE" -D previous-monitor
           fi
-      - name: Probe web, Access, public Auth/REST and tablet alias
-        run: node scripts/health-check.mjs --pretty > production-health.json
-      - name: Summarize without credentials or response bodies
-        if: always()
+      - name: Read open CodeQL alerts
+        if: env.MODE == 'security'
+        run: gh api -X GET --paginate --slurp "repos/$GH_REPO/code-scanning/alerts" -f state=open -f ref=refs/heads/main -F per_page=100 | jq 'map(map({number}))' > security-alerts.json
+      - name: Probe and compare
+        run: node scripts/production-monitor.mjs "$MODE" previous-monitor/state.json state.json >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: production-monitor-${{ env.MODE }}
+          path: state.json
+          retention-days: 30
+          if-no-files-found: error
+      - name: Flag new incidents or security alerts once
         run: |
-          if [ -f production-health.json ]; then
-            node --input-type=module -e 'import { readFileSync } from "node:fs"; const r=JSON.parse(readFileSync("production-health.json","utf8")); console.log("## Public production health\n\n"+r.checks.map(c=>`- ${c.id}: ${c.status}`).join("\n")+"\n\nThe Edge inventory is deliberately skipped. This is not a strict release check.");' >> "$GITHUB_STEP_SUMMARY"
-          fi
+          node --input-type=module -e '
+            import { readFileSync } from "node:fs";
+            const { opened, resolved } = JSON.parse(readFileSync("state.json", "utf8"));
+            if (resolved.length) console.log("::notice::Recovered or closed: " + resolved.join(", "));
+            if (opened.length) {
+              console.error("::error::New findings: " + opened.join(", "));
+              process.exitCode = 1;
+            }'

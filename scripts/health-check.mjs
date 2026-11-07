@@ -14,7 +14,7 @@ import { parseArgs, parseEnv } from 'node:util';
 import { isPublicHttps, publicKeyKind } from './check-testflight.mjs';
 import { checkBackofficeAccess } from './check-backoffice-access.mjs';
 
-export const DEFAULT_ORIGINS = { web: 'https://gina-web.pages.dev', tablet: 'https://gina-aile-enescevik--tablet.expo.app' };
+export const DEFAULT_ORIGINS = { web: 'https://ginafamily.com', tablet: 'https://gina-aile-enescevik--tablet.expo.app' };
 const REQUIRED_WEB_HEADERS = ['content-security-policy', 'x-content-type-options', 'x-frame-options', 'referrer-policy'];
 
 const check = (id, status, detail = {}) => ({ id, status, ...detail });

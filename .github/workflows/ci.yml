@@ -28,7 +28,7 @@ jobs:
       - run: pnpm turbo run lint typecheck test
       - run: node --test scripts/check-testflight.test.mjs scripts/check-native-text.test.mjs scripts/prepare-tablet-install.test.mjs scripts/check-notebook-layout.test.mjs scripts/check-projection-refresh.test.mjs scripts/check-answer-recovery.test.mjs scripts/check-realtime-readiness.test.mjs
       - run: node --test scripts/check-toolchain-security.test.mjs scripts/public-build-env.test.mjs scripts/deploy-preflight.test.mjs scripts/check-backoffice-access.test.mjs
-      - run: node --test scripts/release-local.test.mjs scripts/health-check.test.mjs scripts/rollback.test.mjs scripts/release-summary.test.mjs
+      - run: node --test scripts/release-local.test.mjs scripts/health-check.test.mjs scripts/production-monitor.test.mjs scripts/rollback.test.mjs scripts/release-summary.test.mjs
       - run: node scripts/check-auth-email-templates.mjs
       - run: python3 scripts/test-meb-scenarios.py
       - run: python3 scripts/test-curriculum-candidates.py
