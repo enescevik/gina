@@ -1,0 +1,20 @@
+[
+  {
+    "key": "q1",
+    "field": "stem",
+    "before": "Bir dağ kasabasında dört gün boyunca ölçülen gece en düşük sıcaklıkları (°C) şöyledir: 1. gün -7/2, 2. gün -11/4, 3. gün 1/4, 4. gün -13/4. Bir öğrenci şu yargıyı ileri sürüyor: \"Sıfıra uzaklığı (mutlak değeri) daha büyük olan sıcaklık her zaman daha yüksektir.\" a) Bu yargı doğru mudur? Verilen sıcaklıklardan seçeceğiniz sayı çiftleriyle karşılaştırma yaparak karşı örnek gösteriniz. b) Sıcaklıkları ortak paydada karşılaştırarak en soğuk ve en sıcak günü belirtiniz. c) Negatif sayılar için mutlak değer ile büyüklük arasındaki doğru ilişkiyi bir cümleyle yazınız.",
+    "after": "Bir dağ kasabasında dört gün boyunca ölçülen gece en düşük sıcaklıkları (°C) şöyledir: 1. gün -7/2, 2. gün -11/4, 3. gün 1/4, 4. gün -13/4. Bir öğrenci şu yargıyı ileri sürüyor: \"Sıfıra uzaklığı (mutlak değeri) daha büyük olan sıcaklık her zaman daha yüksektir.\" a) Bu yargı doğru mudur? Verilen sıcaklıklardan seçeceğiniz bir sayı çiftiyle karşılaştırma yaparak karşı örnek gösteriniz. b) Sıcaklıkları uygun bir yöntemle karşılaştırarak en soğuk ve en sıcak günü belirtiniz. c) Negatif sayılar için mutlak değer ile büyüklük arasındaki doğru ilişkiyi bir cümleyle yazınız."
+  },
+  {
+    "key": "q1",
+    "field": "rubric.k3",
+    "before": "Ortak payda kullanarak sıcaklıkları doğru karşılaştırır ve en soğuk ile en sıcak günü doğru belirler.",
+    "after": "Ortak payda, ondalık gösterim veya sayı doğrusu gibi uygun bir yöntemle sıcaklıkları doğru karşılaştırır ve en soğuk ile en sıcak günü doğru belirler."
+  },
+  {
+    "key": "q2",
+    "field": "stem",
+    "before": "Uzunluğu 17,5 m olan bir ip rulosunun 2/7'si perde için ayrılıyor. Rulodan geriye kalan ip, her biri 5/6 m uzunluğunda eş parçalara kesiliyor ve artan parça kalmıyor. Daha sonra bu parçaların her birine, kendi uzunluğunun 1/5'i kadar ek ip eklenerek parçalar uzatılıyor. a) Kaç parça elde edilmiştir? b) Uzatılmış her parçanın uzunluğu kaç metredir? c) Uzatılmış parçaların toplam uzunluğu, perde için ayrılandan sonra kalan ipin uzunluğundan kaç metre fazladır? İşlemlerinizi ve gerekçenizi yazınız.",
+    "after": "Uzunluğu 17,5 m olan bir ip rulosunun 2/7'si perde için ayrılıyor. Rulodan geriye kalan ip, her biri 5/6 m uzunluğunda eş parçalara kesiliyor ve artan parça kalmıyor. Daha sonra bu parçaların her birine, kendi uzunluğunun 1/5'i kadar ek ip eklenerek parçalar uzatılıyor. Eklemeler için ayrı bir ip kaynağı kullanılıyor; kesme ve ekleme sırasında uzunluk kaybı olmadığı kabul ediliyor. a) Kaç parça elde edilmiştir? b) Uzatılmış her parçanın uzunluğu kaç metredir? c) Uzatılmış parçaların toplam uzunluğu, perde için ayrılandan sonra kalan ipin uzunluğundan kaç metre fazladır? İşlemlerinizi ve gerekçenizi yazınız."
+  }
+]

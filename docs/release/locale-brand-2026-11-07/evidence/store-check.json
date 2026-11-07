@@ -1,0 +1,18 @@
+{
+  "bundleId": "com.enescevik.gina",
+  "version": "0.1.0",
+  "build": "33",
+  "deviceFamilies": [
+    1,
+    2
+  ],
+  "codesignVerified": true,
+  "getTaskAllow": false,
+  "registeredDeviceCount": 0,
+  "allDevices": false,
+  "languageKeyBundled": true,
+  "productionHostBundled": true,
+  "sha256": "b6337543e38e0471f5dfbf036508586bcba0b31b270a4e188cbefb850e196305",
+  "bytes": 72017777,
+  "ok": true
+}

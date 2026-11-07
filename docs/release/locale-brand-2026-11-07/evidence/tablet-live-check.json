@@ -1,0 +1,31 @@
+{
+  "origin": "https://gina-aile-enescevik--tablet.expo.app",
+  "ok": true,
+  "checks": [
+    {
+      "id": "release-json",
+      "ok": true,
+      "live": {
+        "build": "33",
+        "version": "0.1.0",
+        "sourceCommit": "6d4e80c1763ca0d7f1b81410bdba02c092128046"
+      }
+    },
+    {
+      "id": "manifest",
+      "ok": true
+    },
+    {
+      "id": "ipa-hash",
+      "ok": true,
+      "bytes": 61533473
+    },
+    {
+      "id": "page-version",
+      "ok": true
+    }
+  ],
+  "expoWebUnchanged": true,
+  "iconMatches": true,
+  "iconMetadata": true
+}

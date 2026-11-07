@@ -1,0 +1,13 @@
+{
+  "exact_roundtrip": true,
+  "unique_package": true,
+  "successful_generation_count": 2,
+  "questions": 2,
+  "answers": 2,
+  "published": false,
+  "human_editorial_approval": false,
+  "prereview": "needs_admin",
+  "prereview_reason": "low_confidence",
+  "billing_usd": null,
+  "temporary_database_bridge_removed": true
+}

@@ -1,3 +1,4 @@
+import type { AiResult } from "./prova.ts";
 // E01 content pre-review: rubric, provider output contract and the approval threshold.
 // The verdict is advisory. `ai_approved` is not a publication and not the admin decision;
 // the admin queue (needs_admin / ai_rejected_suggestion) always ends with a human decision.
@@ -228,6 +229,7 @@ export function buildVerdict(
   decision: Decision,
   meta: {
     model: string;
+    providerUsage?: AiResult<unknown>["providerUsage"];
     provider?: string | null;
     promptVersion: string;
     inputTokens: number | null;
@@ -249,6 +251,7 @@ export function buildVerdict(
     output_tokens: meta.outputTokens,
     media: mediaFlag(meta.mediaCount ?? 0),
     advisory: true,
+    ...(meta.providerUsage ? { provider_usage: meta.providerUsage } : {}),
   };
 }
 

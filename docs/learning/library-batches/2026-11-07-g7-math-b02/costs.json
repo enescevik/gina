@@ -1,0 +1,34 @@
+{
+  "generation": "0.060211",
+  "prereview": "0.0228064",
+  "second_batch_total_usd": "0.0830174",
+  "all_six_questions_usd": "0.1930079",
+  "basis": "Actual provider counters and standard Sonnet 5.5 tariff; excludes tax and account-specific adjustments",
+  "pricing_source": "https://platform.claude.com/docs/en/models/sonnet-5-5/overview",
+  "provider_usage": {
+    "generation": {
+      "request_id": "req_011CgnYrEy7p5jrjQ8rZBmEg",
+      "input_tokens": 1433,
+      "service_tier": "standard",
+      "output_tokens": 5336,
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 1594
+      },
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 1594
+    },
+    "prereview": {
+      "request_id": "req_011CgnYytQqk5BCWLFQ23xWj",
+      "input_tokens": 4352,
+      "service_tier": "standard",
+      "output_tokens": 1391,
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 0,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_read_input_tokens": 1924,
+      "cache_creation_input_tokens": 0
+    }
+  }
+}

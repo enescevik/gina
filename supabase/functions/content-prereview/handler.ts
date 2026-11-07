@@ -185,6 +185,7 @@ export async function reviewOne(deps: Dependencies, kind: PrereviewKind, id: str
       promptVersion,
       inputTokens: result.inputTokens,
       outputTokens: result.outputTokens,
+      providerUsage: result.providerUsage,
       mediaCount,
     });
     if (!await finish(decision.status, verdict, null)) return { kind, id, prereview_status: "pending", outcome: "error", reason: "finish_failed" };

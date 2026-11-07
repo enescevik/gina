@@ -1,0 +1,145 @@
+{
+  "review": {
+    "lease": null,
+    "attempts": 1,
+    "queued_at": "2026-11-06T23:31:13.290379+00:00",
+    "target_id": "72c33209-f463-4768-acd9-e4a30602c250",
+    "claimed_at": null,
+    "last_error": null,
+    "updated_at": "2026-11-06T23:31:30.113941+00:00",
+    "target_kind": "library_package",
+    "content_hash": "036e4f140c387e4f44ef0713b16bacdba1ae2755508abdc78964ca1e7cdc8b42",
+    "prereview_at": "2026-11-06T23:31:30.113941+00:00",
+    "prompt_version": "prereview-v2",
+    "prereview_status": "ai_approved",
+    "prereview_verdict": {
+      "media": {
+        "count": 0,
+        "reviewed": false,
+        "image_dependent_correctness": "not_applicable"
+      },
+      "model": "claude-sonnet-5-5",
+      "rubric": {
+        "solution_correct": "yes",
+        "leaked_exam_suspicion": "no",
+        "measures_target_skill": "yes",
+        "age_language_appropriate": "yes",
+        "copyright_or_copy_suspicion": "no"
+      },
+      "summary": "Dört sorunun çözümleri tek tek yeniden hesaplandı ve hepsi doğru: Q1 sıralaması -0,8 < -3/4 < -7/10 < 0,6 < 5/8; Q2 a<b<c ve -55/72; Q3 130 L = 13/24; Q4 2 700 TL = 9/40. Rubrik puanları her soruda 100 ediyor ve beklenen cevapla tutarlı. Sorular kazanımlarla uyumlu, dil 7. sınıfa uygun. Kişisel veri, telif veya sızdırılmış sınav şüphesi görülmedi. Yalnız kazanım eşlemesi uzman onayı bekliyor (advisory).",
+      "advisory": true,
+      "findings": [
+        {
+          "code": "other",
+          "item": null,
+          "detail": "Kazanım eşlemesi (MAT.7.1.3 ve MAT.7.1.4) 'proposed_pending_subject_review' durumunda; okul türü uygunluğu da 'pending_review'. Alan uzmanı eşlemeyi yine de doğrulamalı.",
+          "severity": "advisory"
+        },
+        {
+          "code": "other",
+          "item": null,
+          "detail": "Tüm sorular açık uçlu ve kaynak (sources) listesi boş; özgün üretim gibi görünüyor, ancak otomatik ön incelemede dış kaynakla birebir karşılaştırma yapılamadı.",
+          "severity": "advisory"
+        }
+      ],
+      "provider": "anthropic",
+      "confidence": 0.86,
+      "content_hash": "036e4f140c387e4f44ef0713b16bacdba1ae2755508abdc78964ca1e7cdc8b42",
+      "input_tokens": 7420,
+      "output_tokens": 1546,
+      "prompt_version": "prereview-v2",
+      "provider_usage": {
+        "request_id": "req_011CgnYd1zuVB28UkbgQBG9p",
+        "input_tokens": 7420,
+        "service_tier": "standard",
+        "output_tokens": 1546,
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 1924
+        },
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 1924
+      },
+      "recommendation": "approve",
+      "decision_reason": "all_checks_passed"
+    }
+  },
+  "answers": 4,
+  "package": {
+    "id": "72c33209-f463-4768-acd9-e4a30602c250",
+    "revision": 1,
+    "package_key": "gina-g7-math-rational-chain-20261107"
+  },
+  "attempts": [
+    {
+      "id": "1e20962b-5974-40b6-bd41-95da72633560",
+      "lease": null,
+      "run_id": "904d74f2-6b61-45dd-a060-b989660e2f03",
+      "status": "failed",
+      "chain_id": "a1000000-0000-4000-8000-000000000004",
+      "model_id": "claude-sonnet-5-5",
+      "position": 1,
+      "provider": "anthropic",
+      "uncertain": false,
+      "usage_key": "question_generation",
+      "created_at": "2026-11-06T23:17:02.73833+00:00",
+      "error_code": "anthropic_400",
+      "finished_at": "2026-11-06T23:17:03.397063+00:00",
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "id": "6be5069c-cab8-4a23-ad5c-d5a435dc5d23",
+      "lease": null,
+      "run_id": "4a6b0087-0729-4caf-ab36-914ebdc6631c",
+      "status": "succeeded",
+      "chain_id": "a1000000-0000-4000-8000-000000000004",
+      "model_id": "claude-sonnet-5-5",
+      "position": 1,
+      "provider": "anthropic",
+      "uncertain": false,
+      "usage_key": "question_generation",
+      "created_at": "2026-11-06T23:18:06.751838+00:00",
+      "error_code": null,
+      "finished_at": "2026-11-06T23:18:56.483052+00:00",
+      "input_tokens": 719,
+      "output_tokens": 6995
+    },
+    {
+      "id": "3f505368-4257-4436-b3a7-2f31e0b2a258",
+      "lease": "150ea66b-2ed3-473a-a02b-60affbf8a77a",
+      "run_id": "e31577bb-dd9f-4405-9189-1217bf65b342",
+      "status": "failed",
+      "chain_id": "a1000000-0000-4000-8000-000000000002",
+      "model_id": "claude-sonnet-5-5",
+      "position": 1,
+      "provider": "anthropic",
+      "uncertain": false,
+      "usage_key": "content_prereview",
+      "created_at": "2026-11-06T23:20:03.368884+00:00",
+      "error_code": "ai_input_too_large",
+      "finished_at": "2026-11-06T23:20:03.595735+00:00",
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "id": "e3b72ba7-0c40-4bd1-bd71-65e34c35faeb",
+      "lease": "bc408f40-06ac-4e80-bf06-8996c44e05e6",
+      "run_id": "f16b86a8-9088-4914-ab6c-591046fe3fd8",
+      "status": "succeeded",
+      "chain_id": "a1000000-0000-4000-8000-000000000002",
+      "model_id": "claude-sonnet-5-5",
+      "position": 1,
+      "provider": "anthropic",
+      "uncertain": false,
+      "usage_key": "content_prereview",
+      "created_at": "2026-11-06T23:31:16.984064+00:00",
+      "error_code": null,
+      "finished_at": "2026-11-06T23:31:29.776433+00:00",
+      "input_tokens": 7420,
+      "output_tokens": 1546
+    }
+  ],
+  "questions": 4,
+  "publication_count": 0
+}

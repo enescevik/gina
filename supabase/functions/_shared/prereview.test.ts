@@ -117,3 +117,28 @@ Deno.test("C09 media: an image-bearing record is never ai_approved and the verdi
   assert(!buildUserMessage({ kind: "library_package" }, 0).includes("GÖSTERİLMEDİ"));
   assert(SYSTEM.includes("sana hiçbir görsel gösterilmez") && PREREVIEW_PROMPT_VERSION === "prereview-v2");
 });
+
+import { prereviewConfig } from './prereview-config.ts';
+import { anthropicUsage } from './anthropic-usage.ts';
+import type { AiConfig } from './prova.ts';
+Deno.test('prereview budget applies to fallback configurations without changing family configuration', () => {
+  const step = { model: 'm', maxOutputTokens: 2000, maxInputTokens: 8000, promptVersion: 'v1', capabilities: { contextTokens: 18000 } } as AiConfig;
+  const config = { ...step, chain: { steps: [{ position: 1, config: step }, { position: 2, config: { ...step, capabilities: { contextTokens: 100000 } } }] } } as AiConfig;
+  const result = prereviewConfig(config, 24000);
+  assert(result.maxInputTokens === 16000);
+  assert(result.chain!.steps[1].config.maxInputTokens === 24000);
+  assert(config.maxInputTokens === 8000 && config.chain!.steps[1].config.maxInputTokens === 8000);
+  for (const value of [0, 32001, '24000', -1, 1234.5]) {
+    let rejected = false; try { prereviewConfig(config, value); } catch { rejected = true; } assert(rejected);
+  }
+});
+Deno.test('Anthropic usage retains cache billing counters and unknown fields cannot look like zero', () => {
+  const usage = anthropicUsage({input_tokens: 10,output_tokens: 20,cache_creation_input_tokens: 300,cache_read_input_tokens: 400,cache_creation: {ephemeral_5m_input_tokens: 100,ephemeral_1h_input_tokens: 200},service_tier:'standard',secret:'never-store'},'req-example');
+  assert(usage.cache_creation_input_tokens === 300 && usage.cache_creation.ephemeral_1h_input_tokens === 200);
+  assert(usage.cache_read_input_tokens === 400 && usage.request_id === 'req-example');
+  assert(!JSON.stringify(usage).includes('never-store'));
+  assert(anthropicUsage({},null).cache_read_input_tokens === null);
+  assert(anthropicUsage({cache_read_input_tokens:0},null).cache_read_input_tokens === 0);
+  const verdict = buildVerdict(clean,decide(clean),{model:'m',promptVersion:'v',inputTokens:10,outputTokens:20,providerUsage:usage});
+  assert(verdict.provider_usage?.cache_creation_input_tokens === 300);
+});
