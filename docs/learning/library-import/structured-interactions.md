@@ -23,7 +23,9 @@ so adding support does not invalidate their review fingerprints. Any actual
 interaction edit requires a new package revision and a fresh prereview.
 
 Acquisition calls the existing QT insert function, creating a real structured
-question and a separate private `question_answer_keys` row. It does not copy the
+question and a separate private `question_answer_keys` row. The exam item weight
+is 1, matching legacy library items; a teacher rubric scored out of 100 does not
+make an item one hundred times heavier in a mixed exam. It does not copy the
 interaction or key into public question provenance. Sources, groups, publication
 checks, plan gates, credit accounting and request replay remain atomic. Selected
 practice-only types, or items explicitly marked `metadata.assessment_track=free`,

@@ -120,6 +120,8 @@ reset role;
 select is((select count(*)::int from public.question_bank where family_id='10000000-0000-4000-8000-000000004302' and kind='structured'),2,'acquisition creates real structured questions');
 select is((select count(*)::int from public.question_answer_keys where family_id='10000000-0000-4000-8000-000000004302'),2,'scoring keys stored separately');
 select ok(not exists(select 1 from public.question_bank where family_id='10000000-0000-4000-8000-000000004302' and (payload ? 'answer_key' or provenance ? 'interaction' or provenance ? 'answer_key')),'public payload and provenance never copy private metadata');
+select is((select min(points) from public.question_answer_keys where family_id='10000000-0000-4000-8000-000000004302'),1::numeric,'structured library default weight equals legacy default');
+select is((select max(points) from public.question_answer_keys where family_id='10000000-0000-4000-8000-000000004302'),1::numeric,'teacher rubric scale cannot become a 100-fold exam weight');
 select lives_ok($$set constraints all immediate$$,'acquired keys satisfy native QT content hash');
 set constraints all deferred;
 set local role authenticated;
