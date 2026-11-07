@@ -3985,6 +3985,11 @@ isOneToOne: false
 "get_structured_score_overrides":
 { Args: { "p_attempt_id": string }; Returns: Json
                            },
+"get_study_preference_history":
+{ Args: { "p_child_id": string }; Returns: {
+              "actor": string,"changed_at": string,"id": number,"new_value": string,"setting": string
+            }[]
+                           },
 "get_study_preferences":
 { Args: { "p_child_id": string }; Returns: {
               "break_minutes": number,"evening_end": number,"evening_start": number,"timezone": string

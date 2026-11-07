@@ -5225,5 +5225,20 @@
   "childError.connection": "The connection may have dropped. You can try again.",
   "weeklyReview.provaTitle": "Practice Observations",
   "weeklyReview.provaCounts": "{{attempts}} practices · {{scored}} scored questions · {{pending}} awaiting review",
-  "weeklyReview.provaSignals": "{{liked}} likes · {{struggled}} “tricky” marks · {{repeated}} repeat encounters"
+  "weeklyReview.provaSignals": "{{liked}} likes · {{struggled}} “tricky” marks · {{repeated}} repeat encounters",
+  "studyHistory.title": "Preference history",
+  "studyHistory.loading": "Loading history…",
+  "studyHistory.empty": "No changes recorded yet.",
+  "studyHistory.minutes": "{{count}} min",
+  "studyHistory.on": "On",
+  "studyHistory.off": "Off",
+  "studyHistory.inherit": "Use child preference",
+  "studyHistory.setting.reading": "Read aloud",
+  "studyHistory.setting.exam_reading": "Read aloud for a practice",
+  "studyHistory.setting.break": "Break interval",
+  "studyHistory.setting.evening_start": "Evening start",
+  "studyHistory.setting.evening_end": "Evening end",
+  "studyHistory.actor.self": "You",
+  "studyHistory.actor.parent": "A parent in your family",
+  "studyHistory.actor.unknown": "Actor unavailable"
 }

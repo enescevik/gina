@@ -5220,5 +5220,20 @@
   "childError.connection": "Bağlantı kesilmiş olabilir. Yeniden deneyebilirsin.",
   "weeklyReview.provaTitle": "Prova Gözlemleri",
   "weeklyReview.provaCounts": "{{attempts}} Prova · {{scored}} soru puanlandı · {{pending}} soru inceleme bekliyor",
-  "weeklyReview.provaSignals": "{{liked}} beğeni · {{struggled}} “zorlandım” işareti · {{repeated}} tekrar karşılaşma"
+  "weeklyReview.provaSignals": "{{liked}} beğeni · {{struggled}} “zorlandım” işareti · {{repeated}} tekrar karşılaşma",
+  "studyHistory.title": "Tercih geçmişi",
+  "studyHistory.loading": "Geçmiş yükleniyor…",
+  "studyHistory.empty": "Henüz kaydedilmiş değişiklik yok.",
+  "studyHistory.minutes": "{{count}} dk",
+  "studyHistory.on": "Açık",
+  "studyHistory.off": "Kapalı",
+  "studyHistory.inherit": "Çocuk tercihini kullan",
+  "studyHistory.setting.reading": "Sesli okuma",
+  "studyHistory.setting.exam_reading": "Prova için sesli okuma",
+  "studyHistory.setting.break": "Mola aralığı",
+  "studyHistory.setting.evening_start": "Akşam başlangıcı",
+  "studyHistory.setting.evening_end": "Akşam bitişi",
+  "studyHistory.actor.self": "Siz",
+  "studyHistory.actor.parent": "Aileden bir veli",
+  "studyHistory.actor.unknown": "İşlemi yapan bilinmiyor"
 }

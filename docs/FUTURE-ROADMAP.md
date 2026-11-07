@@ -74,7 +74,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F6 — Hata güvenli/kıyassız dil; mola/akşam tercihleri; izin ve denetim görünümü
 
-- Kaynak: §3a, §4.7. Durum: KISMEN KOD HAZIR (mola/akşam/okuma ve çocuk hata dili; ortak izin denetimi ve gün ertele açık). Efor: **M**.
+- Kaynak: §3a, §4.7. Durum: KISMEN KOD HAZIR (mola/akşam/okuma ve çocuk hata dili; çalışma tercihi geçmişi hazır; diğer izinler ve gün ertele açık). Efor: **M**.
 - Kapsam: Hata güvenli/kıyassız dil; mola/akşam tercihleri; izin ve denetim görünümü.
 - Bağımlılık: Mevcut izinler, bildirim sessiz saatleri.
 - Paket kapısı: Tüm paketler.
@@ -250,3 +250,5 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - F6b: çocuk ekranlarının ortak hata bileşeni yalnız kısa TR/EN bağlantı/PIN/yeniden deneme metni sunar; ham sağlayıcı hatası ve paket yükseltme gösterilmez. Prova mola sayacı zaman farkını React güncellemesinden önce alır; arka plan/saat geri kayması ve uzun donma kontrolü eklendi. Üç hata dili ve bir süre testi. Veli hata ayrıntıları değişmedi.
 - F7b: tamamlanmış haftanın özetine takma adlı Prova sayımları eklendi (puanlı/kısmi/bekleyen/boş, isteğe bağlı çocuk işaretleri, tekrar karşılaşma). Çocuk/okul adı, ham soru/cevap, kaynak ve veli özel favorileri AI'ya gitmez. Mevcut haftalık AI paket/kota, veli tetiklemesi ve dondurulmuş bağlam korunur; eski snapshot tekrar ücretlendirilmez. Konu ustalığı veya sağlık yorumu yok. 6 SQL sınır/çıktı, 37 Edge, 776 core; tüm taze DB 156 dosya/7.129 kontrol. Ücretli model çağrısı, canlı migration veya native yayın yok. F7 tercihle soru üretimi ve süre seçenekleri açık.
 - Güvenlik izleme: ilk 10 ayrıştırma uyarısının CodeQL açık listesinden kalktığı doğrulandı. Gözlem 195 açık uyarı (32 yüksek, 163 orta); tüm depo güvenlik kabulü hâlâ açık. IPA incelemesindeki shell zincirleri kaldırıldı; 118 Node kontrolü ve sentetik IPA denetimi geçti.
+
+- F6c: çalışma ve sesli okuma tercihleri için veliye son 20 değişikliği gösteren geçmiş eklendi. Yalnız gerçek değer değişiklikleri kayda girer; doğrudan tablo erişimi yoktur. Çocuk, anonim ve başka aile kapsamı kapalı; istemciye aktör kimliği yerine “siz / aileden bir veli / bilinmiyor” döner. 157 dosya/7.135 taze DB kontrolü ve son eklenen gerçek yabancı aile testiyle hedefli 7/7; 776 core ve lint/typecheck geçti. Bu kayıt mikrofon, AI özeti veya öğretmen paylaşımı için izin toplamaz. Gün ertele ve diğer izinlerin tek görünümde birleştirilmesi açık.
