@@ -143,6 +143,8 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 - F12c ilk inceleme: yönetim soru sayfası yapılandırılmış soruda üst bilgiyi doğrudan güncelliyor. Yapı ve anahtar ayrı salt okunur önizlemede. Yeni yönetici kaydı için tam yönetici yetkili bir RPC, ayrı soru kimliği ve eski/yeni kimliği içeren denetim izi gerekir. Önce global sürüm, ardından grup sınavı kabulü.
 - F12c global sürüm: tam yönetici yapılandırılmış sorunun yeni kimliğini oluşturur. Öğrenci içeriği ve özel anahtar birlikte doğrulanır. Denetim kaydı eski/yeni kimlik ve işlem özeti taşır. Soru seçiminde güncel kimlik sunulur. Atanmış sınav özgün içerik ve anahtara bağlı kalır. Grup sınavı mevcut kütüphane snapshot'ını kullanır. Yapılandırılmış toplu sınav puanlaması ayrı kapsam olarak açık kalır.
 
+- F12c grup sınavı devamı: İlk incelemede yayımlanmış paket seçimi, dondurulmuş grup snapshot’ı, aileye kopyalama ve puan toplama ayrı yollar. Paket tabanlı yapılandırılmış türleri etkinleştirmeden önce soru ve özel anahtarı birlikte dondur, öğrenciye yalnız öğrenci projeksiyonunu ver ve grup toplamında kesirli sunucu puanını kullan. Eski şıklı ve yazılı sınavların sonuç sözleşmesini koru. Kabul testleri karma paket, ortak kaynak, kısmi/boş cevap, kaynak revizyonundan sonra değişmezlik, aile sınırı ve özel anahtar sızıntısını kapsamalı.
+
 ### F13 — Gerçek sağlayıcı pilotu, bulmaca; dikte/sesli cevap ayrı kapılı
 
 - Kaynak: §8 Faz 3. Durum: PLANLANDI. Efor: **L**.
@@ -173,7 +175,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### B3 — Otomatik sağlık/kesinti ve haftalık güvenlik fark uyarıları
 
-- Kaynak: brand son liste, §6.2. Durum: KOD HAZIR (zamanlanmış Edge ve public kontroller, kesinti tekilleştirme, haftalık CodeQL farkı). Efor: **M**.
+- Kaynak: brand son liste, §6.2. Durum: YAYINDA (zamanlanmış Edge ve public kontroller, kesinti tekilleştirme, haftalık CodeQL farkı). Efor: **M**.
 - Kapsam: Otomatik sağlık/kesinti ve haftalık güvenlik fark uyarıları.
 - Bağımlılık: health-check, Access kontrolü, sırlar ve bildirim alıcısı.
 - Paket kapısı: İşletim.
@@ -274,3 +276,5 @@ Ek kararlar: sinyal kayıtları silinebilir ve yaşlandırılabilir olsun; zorlu
 - F9: Veli mevcut, başlanmamış, süresiz ve tek soruluk bir pratik atamasını ailenin yerel günü için öne çıkarabilir. Çocuk odasında öncelikli görev/ödev yoksa isteğe bağlı kart görünür; yapılandırılan sakin saatlerde ve gönderimden sonra gizlenir. Yanıt gönderildiğinde ilk tamamlama rozeti bir kez verilir. Boş gönderim, beğeni, seri, ek yıldız, AI çağrısı ve push yok. Otomatik kütüphane seçimi, diğer tekrar rozetleri ve fiziksel cihaz kabulü açık.
 
 - B3b: Web kök kontrolü artık Pages yönlendirmesinin hedefi olan ginafamily.com güvenlik başlıklarını denetler. İki saatlik kontrolde REST/Auth yalnız yayımlanabilir istemci anahtarıyla çalışır. Yedi özel Edge rotasında kimliksiz OPTIONS 204 ve GET 401 beklenir. Bu kontrol girişli iş akışlarını doğrulamaz. GitHub durum anlık görüntüleri kesinti ve iyileşme geçişlerini saklar. Haftalık CodeQL karşılaştırması ilk çalışmada taban çizgisi kurar. Yeni bulgular GitHub çalışmasında bir kez işaretlenir. Harici bildirim alıcısı yapılandırılmadı.
+
+- B3 canlı doğrulama: [sağlık](https://github.com/enescevik/gina/actions/runs/42363598421) sıfır açık kesinti ve sıfır atlanan kontrol bildirdi. [Haftalık güvenlik](https://github.com/enescevik/gina/actions/runs/42363600811) ilk taban çizgisinde 194 açık bulguyu kaydetti (33 yüksek, 161 orta). Mevcut bulguların değerlendirilmesi ve giderilmesi ayrı iş.
