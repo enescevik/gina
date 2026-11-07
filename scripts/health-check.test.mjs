@@ -14,7 +14,7 @@ function healthyFetcher(overrides = {}) {
   return async (url, options = {}) => {
     const u = new URL(url);
     if (overrides[u.origin + u.pathname]) return overrides[u.origin + u.pathname](u, options);
-    if (u.origin === 'https://gina-web.pages.dev') return new Response('<html>', { status: 200, headers: webHeaders });
+    if (u.origin === 'https://ginafamily.com') return new Response('<html>', { status: 200, headers: webHeaders });
     if (u.hostname.endsWith('gina-backoffice.pages.dev')) return accessRedirect(url);
     if (u.pathname === '/rest/v1/families') return new Response(JSON.stringify({ code: '42501', message: 'permission denied' }), { status: options.headers?.apikey ? 401 : 401 });
     if (u.pathname === '/auth/v1/health') return new Response(JSON.stringify({ version: 'v2.x', name: 'GoTrue', description: 'x' }), { status: 200 });
@@ -48,14 +48,14 @@ test('token yokken Edge listesi açıkça ATLANDI; --strict ile başarısızlık
 
 test('web kökü: eksik CSP/nosniff, unsafe-inline, çerez veya 5xx başarısızlıktır', async () => {
   const f = headers => async () => new Response('x', { status: 200, headers });
-  assert.equal((await checkWebRoot({ origin: 'https://gina-web.pages.dev', fetcher: f(webHeaders) })).status, 'pass');
-  assert.equal((await checkWebRoot({ origin: 'https://gina-web.pages.dev', fetcher: f({ ...webHeaders, 'x-content-type-options': 'none' }) })).status, 'fail');
+  assert.equal((await checkWebRoot({ origin: 'https://ginafamily.com', fetcher: f(webHeaders) })).status, 'pass');
+  assert.equal((await checkWebRoot({ origin: 'https://ginafamily.com', fetcher: f({ ...webHeaders, 'x-content-type-options': 'none' }) })).status, 'fail');
   const { 'content-security-policy': _csp, ...noCsp } = webHeaders;
-  assert.equal((await checkWebRoot({ origin: 'https://gina-web.pages.dev', fetcher: f(noCsp) })).status, 'fail');
-  assert.equal((await checkWebRoot({ origin: 'https://gina-web.pages.dev', fetcher: f({ ...webHeaders, 'content-security-policy': "script-src 'self' 'unsafe-inline'" }) })).status, 'fail');
-  assert.equal((await checkWebRoot({ origin: 'https://gina-web.pages.dev', fetcher: f({ ...webHeaders, 'set-cookie': 'sid=1' }) })).status, 'fail');
-  assert.equal((await checkWebRoot({ origin: 'https://gina-web.pages.dev', fetcher: async () => new Response('x', { status: 503, headers: webHeaders }) })).status, 'fail');
-  assert.equal((await checkWebRoot({ origin: 'https://gina-web.pages.dev', fetcher: async () => { throw new Error('offline'); } })).status, 'fail');
+  assert.equal((await checkWebRoot({ origin: 'https://ginafamily.com', fetcher: f(noCsp) })).status, 'fail');
+  assert.equal((await checkWebRoot({ origin: 'https://ginafamily.com', fetcher: f({ ...webHeaders, 'content-security-policy': "script-src 'self' 'unsafe-inline'" }) })).status, 'fail');
+  assert.equal((await checkWebRoot({ origin: 'https://ginafamily.com', fetcher: f({ ...webHeaders, 'set-cookie': 'sid=1' }) })).status, 'fail');
+  assert.equal((await checkWebRoot({ origin: 'https://ginafamily.com', fetcher: async () => new Response('x', { status: 503, headers: webHeaders }) })).status, 'fail');
+  assert.equal((await checkWebRoot({ origin: 'https://ginafamily.com', fetcher: async () => { throw new Error('offline'); } })).status, 'fail');
 });
 
 test('Supabase: service_role anahtarı istek atılmadan reddedilir; yerel URL reddedilir; auth sürümü okunur', async () => {
