@@ -3908,6 +3908,9 @@ isOneToOne: false
 "get_curriculum_source_target":
 { Args: { "p_exam_family": string,"p_term": number,"p_year": string }; Returns: Json
                            },
+"daily_practice_ready":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
 "daily_practice_offer":
 { Args: { "p_child_id": string }; Returns: Json
                            },

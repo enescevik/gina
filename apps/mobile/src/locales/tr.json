@@ -1,5 +1,10 @@
 {
-  "CFBundleDisplayName": "Gina Aile",
-  "NSCameraUsageDescription": "Okul duyurularını fotoğraflayıp takvime eklemek için kamera kullanılır.",
-  "NSPhotoLibraryUsageDescription": "Sorularınıza ve ders programınıza seçtiğiniz görseli eklemek için fotoğraf erişimi kullanılır."
+  "ios": {
+    "CFBundleDisplayName": "Gina Aile",
+    "NSCameraUsageDescription": "Okul duyurularını fotoğraflayıp takvime eklemek için kamera kullanılır.",
+    "NSPhotoLibraryUsageDescription": "Sorularınıza ve ders programınıza seçtiğiniz görseli eklemek için fotoğraf erişimi kullanılır."
+  },
+  "android": {
+    "app_name": "Gina Aile"
+  }
 }

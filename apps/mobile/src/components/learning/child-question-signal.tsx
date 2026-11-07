@@ -7,7 +7,7 @@ import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
 
 export function ChildQuestionSignal({attemptId,questionId}:{attemptId:string;questionId:string}) {
-  const ready=useFutureLearningReady();
+  const ready=useFutureLearningReady("daily_practice");
   const {t}=useTranslation();
   const {claims}=useSession();
   const family=claims?.family_id;

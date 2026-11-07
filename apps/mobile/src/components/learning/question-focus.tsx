@@ -20,7 +20,7 @@ type Focus = {
 };
 
 export function QuestionFocus({ questionId, grade }: { questionId: string; grade: number }) {
-  const ready = useFutureLearningReady();
+  const ready = useFutureLearningReady("daily_practice");
   const { t, i18n } = useTranslation();
   const { claims } = useSession();
   const family = claims?.family_id;

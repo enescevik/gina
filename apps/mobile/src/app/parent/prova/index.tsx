@@ -75,6 +75,7 @@ type HubTab = (typeof HUB_TABS)[number];
 
 export default function ParentProvaScreen() {
   const ready=useFutureLearningReady();
+  const dailyReady=useFutureLearningReady("daily_practice");
   const queryClient = useQueryClient();
   const pinPractice = useMutation({
     mutationFn: async ({ id }: { id: string; childId: string }) => {
@@ -213,7 +214,7 @@ export default function ParentProvaScreen() {
           <View style={{ gap: 7, flex: wide ? 1 : undefined }}><Text style={[b.h1, wide && { fontSize: 38 }]}>{t("prova.title")}</Text><Text style={[b.copy, { color: p.muted }]}>{t("provaBuilder.hubBody")}</Text></View>
           {createButton}
         </View>
-        {ready?<NavigationCard title={t("studyPreferences.title")} onPress={() => router.push("/parent/prova/reading")} />:null}
+        {dailyReady?<NavigationCard title={t("studyPreferences.title")} onPress={() => router.push("/parent/prova/reading")} />:null}
         {ready?<NavigationCard title={t("reinforcement.title")} onPress={() => router.push("/parent/prova/reinforcement")} />:null}
         {ready?<NavigationCard title={t("questionLikes.title")} onPress={() => router.push("/parent/prova/favorites")} />:null}
         {children.data && children.data.length > 1
@@ -370,7 +371,7 @@ export default function ParentProvaScreen() {
                         ? t("prova.inProgress")
                         : t(`prova.status.${exam.status}`)}
                     </Text>
-                    {ready && !latest && exam.kind === "practice" && exam.status === "assigned" && !exam.timed && exam.question_ids.length === 1 && !exam.assessment_track && !exam.blueprint_id && (
+                    {dailyReady && !latest && exam.kind === "practice" && exam.status === "assigned" && !exam.timed && exam.question_ids.length === 1 && !exam.assessment_track && !exam.blueprint_id && (
                       pinPractice.variables?.id === exam.id && pinPractice.isSuccess
                         ? <Text accessibilityLiveRegion="polite" style={b.muted}>{t("dailyPractice.pinned")}</Text>
                         : <SatinButton secondary title={t("dailyPractice.pin")} busy={pinPractice.isPending} onPress={() => pinPractice.mutate({ id: exam.id, childId: exam.child_id })} />

@@ -2,7 +2,7 @@ import {useFutureLearningReady} from "@/lib/future-learning";
 import { selectLocalQuestionVoice } from "@gina/core";
 import { useEffect, useRef, useState } from "react";
 import { AppState, Platform, Text, View } from "react-native";
-import { useQuery } from "@tanstack/react-query";
+import { onlineManager, useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import * as Speech from "expo-speech";
 import { Button } from "@/components/ui/button";
@@ -11,15 +11,16 @@ import { supabase } from "@/lib/supabase";
 
 /** Android needs an installed local voice reported by the native module. */
 export function QuestionReader({examId,text,language="tr-TR"}:{examId:string;text:string;language?:string}) {
-  const ready=useFutureLearningReady();
-  const {t}=useTranslation();const {claims}=useSession();const [speaking,setSpeaking]=useState(false);
+  const ready=useFutureLearningReady("daily_practice");
+  const {t}=useTranslation();const {claims,session}=useSession();const [speaking,setSpeaking]=useState(false);
   const [unavailable,setUnavailable]=useState(false);const generation=useRef(0);
-  const permission=useQuery({queryKey:["question_reading_permission",claims?.family_id,claims?.child_id,examId],
+  const permission=useQuery({queryKey:["question_reading_permission",claims?.family_id,claims?.child_id,examId,session?.user.id],
     enabled:ready,queryFn:async()=>{const {data,error}=await supabase.rpc("get_question_reading_permission",{p_exam_id:examId});if(error)throw error;return data;},
     refetchInterval:15000,
   });
   const androidVoice=useQuery({
     queryKey:["offline_question_voice",language],
+    networkMode:"always",
     enabled:ready&&permission.data===true&&Platform.OS==="android",
     queryFn:async()=>selectLocalQuestionVoice("android",await Speech.getAvailableVoicesAsync(),language),
   });
@@ -35,7 +36,10 @@ export function QuestionReader({examId,text,language="tr-TR"}:{examId:string;tex
     const current=++generation.current;setUnavailable(false);
     await Speech.stop();setSpeaking(false);
     if(speaking)return;
-    const allowed=await permission.refetch();
+    // While offline, only an already authorized exam in this session can be read.
+    const allowed=Platform.OS==="android"&&!onlineManager.isOnline()
+      ? permission
+      : await permission.refetch();
     if(current!==generation.current||allowed.error||allowed.data!==true)return;
     try {
       const voices=await Speech.getAvailableVoicesAsync();

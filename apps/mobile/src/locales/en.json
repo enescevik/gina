@@ -1,5 +1,10 @@
 {
-  "CFBundleDisplayName": "Gina Family",
-  "NSCameraUsageDescription": "The camera is used to photograph school notices and add them to the calendar.",
-  "NSPhotoLibraryUsageDescription": "Photo access lets you add a selected image to questions and school timetables."
+  "ios": {
+    "CFBundleDisplayName": "Gina Family",
+    "NSCameraUsageDescription": "The camera is used to photograph school notices and add them to the calendar.",
+    "NSPhotoLibraryUsageDescription": "Photo access lets you add a selected image to questions and school timetables."
+  },
+  "android": {
+    "app_name": "Gina Family"
+  }
 }

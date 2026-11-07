@@ -37,7 +37,7 @@ export function RoomChildHome({ childId, childName, actingAsParent = false, onPa
   const data = useChildToday(childId, actingAsParent);
   const goal = useChildGoal(childId);
   const exams = useChildExamCount(childId);
-  const ready = useFutureLearningReady();
+  const ready = useFutureLearningReady("daily_practice");
   const daily = useQuery({
     queryKey: ['daily_practice', childId],
     enabled: ready && !!childId,

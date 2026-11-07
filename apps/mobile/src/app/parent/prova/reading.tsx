@@ -14,7 +14,8 @@ import { Toggle } from "@/components/ui/toggle";
 import { supabase } from "@/lib/supabase";
 import { useSession } from "@/lib/session";
 export default function ReadingPreferences(){
-  const ready=useFutureLearningReady();
+  const ready=useFutureLearningReady("daily_practice");
+  const allLearningReady=useFutureLearningReady();
  const {t}=useTranslation();const {claims}=useSession();const family=claims?.family_id;const cache=useQueryClient();
  const [child,setChild]=useState<string|null>(null);const [exam,setExam]=useState<string|null>(null);
  const [historyChild,setHistoryChild]=useState<string|null>(null);
@@ -49,7 +50,7 @@ export default function ReadingPreferences(){
   </View>
   {children.data?.map(item=><View key={item.id} style={parentStyles.card}>
    <Text style={parentStyles.title}>{item.name}</Text>
-   {family ? <DeferStudyDay childId={item.id} familyId={family} /> : null}
+   {family && allLearningReady ? <DeferStudyDay childId={item.id} familyId={family} /> : null}
    <NumberChoice label={t("studyPreferences.breakMinutes")} value={item.study_break_minutes} min={10} max={60} presets={[15,20,25,30]} unit={t("studyPreferences.minutes")} disabled={study.isPending} onChange={value=>study.mutate({id:item.id,study_break_minutes:value})} />
    <Toggle label={t("studyPreferences.evening")} value={item.evening_reminder_start!==null} disabled={study.isPending} onChange={on=>study.mutate({id:item.id,evening_reminder_start:on?1260:null})} />
    {item.evening_reminder_start!==null?<View style={{gap:12}}>

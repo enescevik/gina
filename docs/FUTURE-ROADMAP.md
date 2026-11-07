@@ -105,7 +105,7 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 
 ### F9 — Günün sorusu ve öğrenme odaklı rozetler
 
-- Kaynak: §4.11–12. Durum: KOD HAZIR (veli seçimi, otomatik seçim ve ilk tamamlama rozeti). Efor: **M**.
+- Kaynak: §4.11–12. Durum: YAYINDA (veli seçimi, otomatik seçim ve ilk tamamlama rozeti). Efor: **M**.
 - Kapsam: Günün sorusu ve öğrenme odaklı rozetler.
 - Bağımlılık: F7; görev/rozet idempotency.
 - Paket kapısı: Tüm paketler, erişilebilir içerikle.
@@ -113,6 +113,8 @@ Durum geçişi: PLANLANDI → YAPILIYOR → KOD HAZIR → YAYINDA → KABUL TAMA
 - Test planı: Aynı soruyu yeniden açma ödül çoğaltmaz; mola/akşam; çevrimdışı tekrar.
 
 - F9 otomatik seçim: mevcut veli sabitlemesi önceliklidir. Sonra çocuğa ait etkin odak, ardından son 90 gündeki beğeni sinyali değerlendirilir. Yalnız ailenin edindiği, incelemesi güncel, yayımlanmış ve tek başına çözülebilen kütüphane soruları seçilir. Yeni atama yalnız çocuk kartı açtığında yaratılır. Mevcut Prova plan sınırı uygulanır, ek kütüphane hakkı veya AI çağrısı harcanmaz. Yerel sessiz saat, günlük tek atama, bildirim göndermeme ve ilk tamamlama rozetinin tekliği doğrulanır. Canlı migration, fiziksel cihaz kabulü ve diğer tekrar rozetleri açık.
+
+- F9 üretim yayını: `20261107222000` ve bağımlılıkları `gina-prod` üzerinde uygulandı. `20261107222100` Günün Sorusu ve okuma ayarlarını ayrı açar. Canlı işlemsel testte odak, sessiz saatler, aile sınırı, tekrar açma, rozet ve bildirim kontrolü geçti. Geçici veriler geri alındı. Yayın öncesi mevcut tek soruluk kütüphane edinimi sayısı sıfırdı.
 
 ### F10 — Cihaz üstü ses→metin cevap ve veli metin düzeltme/silme
 
