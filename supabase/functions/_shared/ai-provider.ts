@@ -113,7 +113,11 @@ export function providerRecord(provider: AiProviderId) {
 }
 
 /** Tahmini tokenizer: Türkçe için muhafazakâr ~3 bayt/token; sağlayıcı sayımı yokken kullanılır. */
-export function estimateInputTokens(system: string, user: AiUserContent): number {
+export function estimateInputTokens(system: string, user: AiUserContent, imageTokens?: number): number {
+  if (Array.isArray(user) && Number.isSafeInteger(imageTokens) && Number(imageTokens) >= 3000) {
+    const images = user.filter(p => p.type === "image").length;
+    return estimateInputTokens(system, user.filter(p => p.type !== "image")) + images * Number(imageTokens);
+  }
   const text = system + (typeof user === "string" ? user : JSON.stringify(user));
   return Math.ceil(new TextEncoder().encode(text).length / 3);
 }

@@ -1,0 +1,18 @@
+begin;
+select no_plan();
+select ok(not has_function_privilege('anon','public.content_prereview_library_images(uuid,uuid)','execute'),'anonymous cannot read private review images');
+select ok(not has_function_privilege('authenticated','public.content_prereview_library_images(uuid,uuid)','execute'),'authenticated cannot read private review images');
+select ok(has_function_privilege('service_role','public.content_prereview_library_images(uuid,uuid)','execute'),'service can use lease-bound image reader');
+select ok(gina.prereview_no_call('prereview_media_unavailable'),'missing image cannot count as a paid provider call');
+insert into gina.library_import_packages(id,package_key,revision,content_hash,title,grade,subject,provenance,created_by) values('60000000-0000-4000-8000-000000014501','media-145',1,repeat('a',64),'Image lease fixture',5,'Matematik','{}','00000000-0000-4000-8000-000000014501');
+insert into gina.library_import_assets(sha256,png,width,height) values(repeat('b',64),decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ0sAAAAASUVORK5CYII=','base64'),1,1);
+insert into gina.library_import_sources(package_id,source_key,title,body,alt,asset_hash,minimum_reading_width,provenance) values('60000000-0000-4000-8000-000000014501','figure','Triangle','','A triangle',repeat('b',64),0,'{}');
+insert into gina.content_prereviews(target_kind,target_id,content_hash,lease,claimed_at) values('library_package','60000000-0000-4000-8000-000000014501',repeat('a',64),'70000000-0000-4000-8000-000000014501',now());
+select set_config('request.jwt.claims','{"role":"service_role"}',true);
+select throws_ok($$select public.content_prereview_library_images('60000000-0000-4000-8000-000000014501','70000000-0000-4000-8000-000000014502')$$,'P0001','prereview_lease_lost','wrong lease returns no bytes');
+select is(jsonb_array_length(public.content_prereview_library_images('60000000-0000-4000-8000-000000014501','70000000-0000-4000-8000-000000014501')),1,'current lease receives complete source count');
+select is(public.content_prereview_library_images('60000000-0000-4000-8000-000000014501','70000000-0000-4000-8000-000000014501')->0->>'source_key','figure','source identity preserved');
+update gina.content_prereviews set claimed_at=now()-interval '4 minutes' where target_id='60000000-0000-4000-8000-000000014501';
+select throws_ok($$select public.content_prereview_library_images('60000000-0000-4000-8000-000000014501','70000000-0000-4000-8000-000000014501')$$,'P0001','prereview_lease_lost','expired lease returns no bytes');
+select * from finish();
+rollback;

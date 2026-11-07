@@ -446,3 +446,28 @@ for (const chained of [false, true]) Deno.test(`failed paid review retains usage
   const verdict = f.row()?.verdict as Record<string, unknown>;
   assert(verdict.model === "actual-fallback" && (verdict.provider_usage as Record<string, unknown>).output_tokens === 100, "usage/model lost");
 });
+
+Deno.test('document kind text cannot invoke a library media loader for another record kind',async()=>{
+ const f=fixture();f.state.content={...f.state.content,kind:'library_package'};f.state.mediaCount=1;
+ const base64='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ0sAAAAASUVORK5CYII=';
+ const bytes=Uint8Array.from(atob(base64),c=>c.charCodeAt(0));const sha256=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(v=>v.toString(16).padStart(2,'0')).join('');
+ f.deps.media=async()=>[{source_key:'figure',base64,sha256}];let saw=false;
+ f.deps.call=async(_key,_config,_system,user)=>{saw=Array.isArray(user)&&user.some(p=>p.type==='image'&&p.source.data===base64);return {output:cleanOutput,inputTokens:100,outputTokens:100};};
+ const body=await(await f.handler(post({kind:'curriculum_candidate',id:ID}))).json();
+ // Requested kind, not untrusted document text, governs which private media loader is used.
+ assert(body.prereview_status==='needs_admin'&&!saw);
+});
+
+Deno.test('complete leased library PNGs reach model and can pass unchanged quality gate',async()=>{
+ const f=fixture();f.state.content={kind:'library_package',id:ID};f.state.mediaCount=1;
+ const base64='iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aZ0sAAAAASUVORK5CYII=';
+ const bytes=Uint8Array.from(atob(base64),c=>c.charCodeAt(0));const sha256=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))).map(v=>v.toString(16).padStart(2,'0')).join('');
+ f.deps.media=async(id,lease)=>{assert(id===ID&&lease.length>0);return [{source_key:'figure',base64,sha256}];};let saw=false;
+ f.deps.call=async(_key,_config,_system,user)=>{saw=Array.isArray(user)&&user.some(p=>p.type==='image'&&p.source.data===base64);return {output:cleanOutput,inputTokens:100,outputTokens:100};};
+ const body=await(await f.handler(post({kind:'library_package',id:ID}))).json();assert(body.prereview_status==='ai_approved'&&saw,JSON.stringify(body));
+ const verdict=f.state.rows.get('library_package:'+ID)?.verdict as {media:{reviewed:boolean};media_proof:{sha256:string}[]};assert(verdict.media.reviewed&&verdict.media_proof[0].sha256===sha256);assert(!JSON.stringify(verdict).includes(base64),'image bytes persisted in verdict');
+});
+Deno.test('missing library image fails closed before any paid call',async()=>{
+ const f=fixture();f.state.content={kind:'library_package',id:ID};f.state.mediaCount=1;f.deps.media=async()=>[];
+ const body=await(await f.handler(post({kind:'library_package',id:ID}))).json();assert(body.prereview_status==='needs_admin'&&body.reason==='media_unavailable'&&calls(f)===0,JSON.stringify(body));
+});
