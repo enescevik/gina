@@ -3,14 +3,25 @@ import { deviceRecordStorage as store } from "./device-record-storage";
 import { supabase } from "./supabase";
 import { z } from "zod";
 const prefix = "gina.library.acquire.v1:";
-const schema = z.object({
+const packageCommand = z.object({
   p_request_id: z.uuid(),
   p_package_id: z.uuid(),
   p_publication_version: z.number().int().positive(),
   p_unit_keys: z.array(z.string().min(1).max(120)).min(1).max(100),
   p_draft_id: z.uuid(),
 });
+const automaticCommand = z.object({
+  p_request_id: z.uuid(),
+  p_draft_id: z.uuid(),
+  p_version: z.number().int().positive(),
+  p_types: z.array(z.string().min(1).max(40)).min(1).max(14),
+  p_expected: z.string().regex(/^[a-f0-9]{32}$/),
+  p_blueprint_id: z.uuid().optional(),
+});
+const schema = z.union([packageCommand, automaticCommand]);
 export type LibraryCommand = z.infer<typeof schema>;
+type LibraryCommandInput = Omit<z.infer<typeof packageCommand>, "p_request_id"> |
+  Omit<z.infer<typeof automaticCommand>, "p_request_id">;
 let generation = 0;
 export function clearLibraryCommands() {
   generation++;
@@ -29,7 +40,7 @@ export function libraryJournal(user: string, family: string) {
       const value = store.get(key);
       return value ? schema.parse(JSON.parse(value)) : null;
     },
-    prepare(input: Omit<LibraryCommand, "p_request_id">) {
+    prepare(input: LibraryCommandInput) {
       guard();
       if (store.get(key)) throw Error("library_pending");
       const value = schema.parse({ ...input, p_request_id: randomUUID() });
@@ -45,9 +56,10 @@ export function libraryJournal(user: string, family: string) {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 20000);
       try {
-        const result = await supabase.rpc(
-          "acquire_library_units",
-          schema.parse(value),
+        const command = schema.parse(value);
+        const result = await ("p_types" in command
+          ? supabase.rpc("prepare_library_prova", command)
+          : supabase.rpc("acquire_library_units", command)
         ).abortSignal(controller.signal);
         guard();
         // SQL errors roll back the entire operation. A lost HTTP response stays recoverable.

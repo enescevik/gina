@@ -3032,6 +3032,8 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"prepare_library_prova":
+{ Args: { p_draft_id: string; p_version: number; p_types: string[]; p_request_id?: string; p_expected?: string; p_blueprint_id?: string }; Returns: Json },
 "acquire_library_units":
 { Args: { "p_draft_id"?: string,"p_package_id": string,"p_publication_version": number,"p_request_id": string,"p_unit_keys": (string)[] }; Returns: Json
                            },

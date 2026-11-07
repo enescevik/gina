@@ -1536,9 +1536,13 @@ export default function ProvaBuilder() {
               </ScrollView>
               {draft.format === "meb" && !locked
                 ? (
-                  <Text accessibilityRole="alert" style={b.hint}>
-                    {t("provaBuilder.mebBlockedAction")}
-                  </Text>
+                  <View style={b.hint}>
+                    <Text accessibilityRole="alert" style={b.muted}>
+                      {t("provaBuilder.mebBlockedAction")}
+                    </Text>
+                    <SatinButton secondary title={t("libraryPackages.openScenarios")}
+                      onPress={() => router.push("/parent/prova/catalog")} />
+                  </View>
                 )
                 : null}
               <View style={b.footer}>
